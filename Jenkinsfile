@@ -6,7 +6,7 @@ import uk.gov.hmcts.RPMTagger
 import uk.gov.hmcts.Versioner
 
 properties(
-  [[$class: 'GithubProjectProperty', projectUrlStr: 'https://git.reform.hmcts.net/probate/sol-ccd-service.git'],
+  [[$class: 'GithubProjectProperty', projectUrlStr: 'https://github.com/hmcts/sol-ccd-service.git'],
    pipelineTriggers([[$class: 'GitHubPushTrigger']])]
 )
 
