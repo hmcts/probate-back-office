@@ -1,0 +1,19 @@
+package uk.gov.hmcts.probate.service;
+
+import org.springframework.context.support.ResourceBundleMessageSource;
+import org.springframework.stereotype.Component;
+
+import javax.annotation.Resource;
+import java.util.Locale;
+
+@Component
+public class BusinessValidationMessageRetriever {
+
+    @Resource
+    private ResourceBundleMessageSource validationMessageSource;
+
+    public String getMessage(String code, String[] args, Locale locale) {
+        return validationMessageSource.getMessage(code, args, locale);
+    }
+
+}

@@ -1,0 +1,51 @@
+version: '2.1'
+
+services:
+  sol-ccd-service:
+      #context: .
+    #image: sol-ccd-service
+    image: docker.artifactory.reform.hmcts.net/probate/sol-ccd-service:${SOL_CCD_SERVICE_API_DOCKER_VERSION:-latest}
+    container_name: sol-ccd-service
+    environment:
+      - SERVER_PORT=4104
+      - AUTH_PROVIDER_SERVICE_CLIENT_BASEURL=http://service-auth-provider-api:8080/
+      - AUTHORISED_SERVICES=TEST
+      - PDF_SERVICE_URL=http://pdf-service-api:5500
+      - PDF_SERVICE_PDFAPI=/api/v1/pdf-generator/html
+      - JAVA_OPTS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005
+
+      # these environment variables are used by java-logging library
+      - REFORM_SERVICE_NAME=sol-ccd-service
+      - REFORM_TEAM=probate
+      - REFORM_ENVIRONMENT
+      - ROOT_APPENDER
+      - JSON_CONSOLE_PRETTY_PRINT=false
+    ports:
+     - 4104:4104
+     - 5005:5005
+    depends_on:
+     - service-auth-provider-api
+     - pdf-service-api
+
+  service-auth-provider-api:
+    image: docker.artifactory.reform.hmcts.net/auth/service-auth-provider-api:${SERVICE_AUTH_API_DOCKER_VERSION:-latest}
+    environment:
+      - AUTH_PROVIDER_SERVICE_SERVER_JWT_KEY=wThK0f0/lh3FlxFcL4xUWDMI5C1J9KyQBgXV4wseh1e5J1uYJIjvTvArHxQDrYoHJ23xFxjHkOnvNbR5dXRoxA==
+      - AUTH_PROVIDER_SERVICE_SERVER_MICROSERVICE_KEYS_TEST=asdddsf
+      - AUTH_PROVIDER_SERVICE_TESTING_SUPPORT_ENABLED=true
+    ports:
+      - 4502:8080
+
+  pdf-service-api:
+    image: docker.artifactory.reform.hmcts.net/cmc/pdf-service-api
+    environment:
+      - ROOT_APPENDER
+      - JSON_CONSOLE_PRETTY_PRINT
+      - ROOT_LOGGING_LEVEL
+      - REFORM_SERVICE_NAME
+      - REFORM_TEAM
+      - REFORM_ENVIRONMENT
+    #volumes:
+    #  - ./build/install/pdf-service:/opt/app/
+    ports:
+      - 5500:5500

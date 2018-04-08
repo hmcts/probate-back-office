@@ -1,0 +1,36 @@
+server:
+  port: ${probate.sol.ccd.port}
+
+management:
+  security:
+    enabled: false
+
+authorised.services: probate_backend
+auth.provider.service.client:
+  key: DummyKey
+  baseUrl: http://localhost:4502
+  microservice: probate_backend
+  tokenTimeToLiveInSeconds: 900
+
+pdf.service:
+  url: http://localhost:5500
+  pdfApi: /api/v1/pdf-generator/html
+  templatesDirectory: /pdfTemplates/
+
+template:
+  properties:
+    legalStatement.applicantFirstName: "/submitdata/applicantFirstName"
+    legalStatement.applicantLastName: "/submitdata/applicantLastName"
+    legalStatement.applicantAddress: "/submitdata/applicantAddress"
+    legalStatement.deceasedDod: "/submitdata/deceasedDod"
+    legalStatement.deceasedOtherNames.name_0.lastName: "/submitdata/deceasedOtherNames/name_0/lastName"
+    legalStatement.legalStatement.intro: "/submitdata/legalStatement/intro"
+    legalStatement.declaration.accept: "/submitdata/declaration/accept"
+    legalStatement.noOfApplicants: "/submitdata/noOfApplicants"
+
+spring:
+  jackson:
+    serialization:
+      wrap_root_value: false
+    deserialization:
+      unwrap_root_value: true

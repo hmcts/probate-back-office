@@ -1,0 +1,48 @@
+version: '2.1'
+
+services:
+  integration-test:
+    #build:
+      #context: .
+    #image: sol-ccd-services-integration-tests
+    image: docker.artifactory.reform.hmcts.net/probate/sol-ccd-services-integration-tests:${SOL_CCD_SERVICE_INTEGRATION_TEST_DOCKER_VERSION:-latest}
+    environment:
+      - AUTH_PROVIDER_SERVICE_SERVER_JWT_KEY=wThK0f0/lh3FlxFcL4xUWDMI5C1J9KyQBgXV4wseh1e5J1uYJIjvTvArHxQDrYoHJ23xFxjHkOnvNbR5dXRoxA==
+      - AUTH_PROVIDER_SERVICE_SERVER_MICROSERVICE_KEYS_TEST=asdddsf
+      - AUTH_PROVIDER_SERVICE_TESTING_SUPPORT_ENABLED=true
+      - SOL_CCD_SERVICE_BASE_URL=http://sols-ccd-service:4104
+      - SERVICE_AUTH_PROVIDER_BASE_URL=http://service-auth-provider-api:4502
+      - SERVICE_NAME=TEST
+    depends_on:
+      - sol-ccd-service
+      - service-auth-provider-api
+    volumes:
+      - ./test/serenity:/opt/app/target/site/serenity
+
+  sol-ccd-service:
+    #build:
+      #context: .
+    #image: sol-ccd-service
+    image: docker.artifactory.reform.hmcts.net/probate/sol-ccd-service:${SOL_CCD_SERVICE_API_DOCKER_VERSION:-latest}
+    container_name: sol-ccd-service
+    environment:
+      - SERVER_PORT=4104
+      - AUTH_PROVIDER_SERVICE_CLIENT_BASEURL=http://service-auth-provider-api:8080/
+      - AUTHORISED_SERVICES=TEST
+      - PDF_SERVICE_URL=http://pdf-service-api:5500
+      - PDF_SERVICE_PDFAPI=/api/v1/pdf-generator/html
+      - JAVA_OPTS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005
+    ports:
+     - 4104:4104
+     - 5005:5005
+    depends_on:
+        - service-auth-provider-api
+
+  service-auth-provider-api:
+    image: docker.artifactory.reform.hmcts.net/auth/service-auth-provider-api:${SERVICE_AUTH_API_DOCKER_VERSION:-latest}
+    environment:
+      - AUTH_PROVIDER_SERVICE_SERVER_JWT_KEY=wThK0f0/lh3FlxFcL4xUWDMI5C1J9KyQBgXV4wseh1e5J1uYJIjvTvArHxQDrYoHJ23xFxjHkOnvNbR5dXRoxA==
+      - AUTH_PROVIDER_SERVICE_SERVER_MICROSERVICE_KEYS_TEST=asdddsf
+      - AUTH_PROVIDER_SERVICE_TESTING_SUPPORT_ENABLED=true
+    ports:
+      - 4502:8080

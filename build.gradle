@@ -1,0 +1,135 @@
+buildscript {
+  repositories {
+    mavenLocal()
+    maven { url "http://artifactory.reform.hmcts.net/artifactory/libs-release" }
+    maven { url "http://repo1.maven.org/maven2/" }
+    maven { url "https://plugins.gradle.org/m2/" }
+  }
+  dependencies {
+    classpath group: 'org.sonarsource.scanner.gradle', name: 'sonarqube-gradle-plugin', version: '2.5'
+  }
+}
+
+plugins {
+  id 'application'
+  id 'checkstyle'
+  id 'jacoco'
+  id 'io.spring.dependency-management' version '1.0.3.RELEASE'
+  id 'org.springframework.boot' version '1.5.6.RELEASE'
+  id 'org.owasp.dependencycheck' version '3.0.2'
+  id 'com.github.ben-manes.versions' version '0.15.0'
+}
+
+apply plugin: 'org.sonarqube'
+apply plugin: 'findbugs'
+
+group = 'uk.gov.hmcts.probate'
+version = "0.0.1"
+mainClassName = 'uk.gov.hmcts.probate.BusinessRulesValidationApplication'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+checkstyle.toolVersion = '8.2'
+checkstyle.configFile = new File(rootDir, "checkstyle.xml")
+mainClassName = 'uk.gov.hmcts.probate.BusinessRulesValidationApplication'
+
+
+check.dependsOn dependencyCheckAnalyze
+
+// make build fail on Checkstyle issues (https://github.com/gradle/gradle/issues/881)
+tasks.withType(Checkstyle).each { checkstyleTask ->
+  checkstyleTask.doLast {
+    reports.all { report ->
+      def outputFile = report.destination
+      if (outputFile.exists() && outputFile.text.contains("<error ")) {
+        throw new GradleException("There were checkstyle warnings! For more info check $outputFile")
+      }
+    }
+  }
+}
+
+tasks.withType(FindBugs) {
+  reports {
+    xml.enabled = false
+    html.enabled = true
+  }
+}
+
+dependencyCheck {
+  suppressionFiles = ['dependency-check-suppressions.xml']
+}
+
+findbugs{
+  ignoreFailures=true
+  reportLevel = "low"
+}
+
+sonarqube {
+  properties {
+    property "sonar.jacoco.reportPath", "${project.buildDir}/jacoco/test.exec"
+    property "sonar.host.url", "https://sonar.reform.hmcts.net/"
+  }
+}
+
+// https://jeremylong.github.io/DependencyCheck/dependency-check-gradle/configuration.html
+dependencyCheck {
+  // Specifies if the build should be failed if a CVSS score above a specified level is identified.
+  // range of 0-10 fails the build, anything greater and it doesn't fail the build
+  failBuildOnCVSS = System.getProperty('dependencyCheck.failBuild') == 'true' ? 0 : 11
+  suppressionFile = 'dependency-check-suppressions.xml'
+}
+
+def springBootVersion = '1.5.6.RELEASE'
+
+repositories {
+  mavenLocal()
+  mavenCentral()
+  jcenter()
+  maven { url "http://artifactory.reform.hmcts.net/artifactory/libs-release" }
+  maven { url "http://repo1.maven.org/maven2/" }
+  maven { url "https://plugins.gradle.org/m2/" }
+}
+
+dependencies {
+  compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: springBootVersion
+  compile group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: springBootVersion
+  compile group: 'org.springframework.boot', name: 'spring-boot-starter-aop', version: springBootVersion
+
+  compile group: 'uk.gov.hmcts.reform', name: 'java-logging-spring', version: '1.2.1'
+  compile group: 'uk.gov.hmcts.reform', name: 'java-logging-httpcomponents', version: '1.2.1'
+  compile group: 'uk.gov.hmcts.reform', name: 'http-proxy-spring-boot-autoconfigure', version: '1.1.0'
+  compile group: 'uk.gov.hmcts.auth.checker', name: 'auth-checker-spring', version: '1.0.0.46'
+  compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-hystrix', version: '1.3.4.RELEASE'
+  compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-hystrix-dashboard', version: '1.3.4.RELEASE'
+  compile group: 'com.fasterxml.jackson.datatype', name:'jackson-datatype-jsr310', version:'2.9.2'
+  compile group: 'com.jayway.jsonpath', name: 'json-path', version: '2.4.0'
+
+  testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: springBootVersion
+  testCompile group: 'uk.gov.hmcts.auth.provider.service', name: 'service-token-generator-spring', version: '1.0.0.179'
+  testCompile group: 'org.pdfbox', name: 'com.springsource.org.pdfbox', version: '0.7.3'
+}
+
+compileJava {
+  options.compilerArgs << '-parameters'
+}
+
+jar {
+  manifest {
+
+    attributes 'Implementation-Title': project.name,
+      'Implementation-Version': project.version
+  }
+}
+
+task printVersion {
+  doLast {
+    print project.version
+  }
+}
+
+run {
+  if (debug == 'true') {
+    jvmArgs = ['-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5005']
+  }
+}

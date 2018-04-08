@@ -1,0 +1,12 @@
+{
+  "ccddata": {
+    "deceased": {
+      "deceasedDob": "2015-12-12",
+      "deceasedDod": "2016-12-12"
+    },
+    "iht": {
+      "netValue": 2000.00,
+      "grossValue": 3000.00
+    }
+  }
+}
