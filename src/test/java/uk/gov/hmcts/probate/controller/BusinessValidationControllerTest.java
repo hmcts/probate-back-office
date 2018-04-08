@@ -1,21 +1,40 @@
 package uk.gov.hmcts.probate.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import uk.gov.hmcts.probate.model.BusinessValidationError;
-import uk.gov.hmcts.probate.model.BusinessValidationResponse;
-import uk.gov.hmcts.probate.model.BusinessValidationStatus;
-import uk.gov.hmcts.probate.model.CCDData;
-import uk.gov.hmcts.probate.service.BusinessValidationService;
+import uk.gov.hmcts.probate.exception.BadRequestException;
+import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
+import uk.gov.hmcts.probate.model.ccd.CCDData;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
+import uk.gov.hmcts.probate.model.ccd.raw.response.AfterSubmitCallbackResponse;
+import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
+import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
+import uk.gov.hmcts.probate.service.ConfirmationResponseService;
+import uk.gov.hmcts.probate.service.EventValidationService;
+import uk.gov.hmcts.probate.service.StateChangeService;
+import uk.gov.hmcts.probate.transformer.CCDDataTransformer;
+import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
+import uk.gov.hmcts.probate.validator.SolAddDeceasedEstateDetailsValidationRule;
+import uk.gov.hmcts.probate.validator.SolExecutorDetailsValidationRule;
+import uk.gov.hmcts.probate.validator.SolicitorCreateValidationRule;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -24,54 +43,275 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class BusinessValidationControllerTest {
 
-    private BusinessValidationController businessValidationController;
     @Mock
-    private BusinessValidationService businessValidationServiceMock;
+    private EventValidationService eventValidationServiceMock;
+    @Mock
+    private ObjectMapper objectMapper;
+    @Mock
+    private CCDDataTransformer ccdBeanTransformer;
+    @Mock
+    private CallbackRequest callbackRequestMock;
+    @Mock
+    private HttpServletRequest httpServletRequest;
+    @Mock
+    private CaseDetails caseDetailsMock;
+    @Mock
+    private CaseData caseDataMock;
     @Mock
     private CCDData ccdDataMock;
     @Mock
     private BindingResult bindingResultMock;
     @Mock
-    private BusinessValidationError businessValidationErrorMock;
-    @Mock
     private FieldError fieldErrorMock;
+    @Mock
+    private List<SolicitorCreateValidationRule> solicitorCreateValidationRules;
+    @Mock
+    private List<SolAddDeceasedEstateDetailsValidationRule> solAddDeceasedEstateDetailsValidationRules;
+    @Mock
+    private List<SolExecutorDetailsValidationRule> solExecutorDetailsValidationRules;
+    @Mock
+    private CallbackResponseTransformer callbackResponseTransformerMock;
+    @Mock
+    private CallbackResponse callbackResponseMock;
+    @Mock
+    private ResponseCaseData responseCaseDataMock;
+    @Mock
+    private ConfirmationResponseService confirmationResponseServiceMock;
+    @Mock
+    private AfterSubmitCallbackResponse afterSubmitCallbackResponseMock;
+    @Mock
+    private StateChangeService stateChangeServiceMock;
+
+    private FieldErrorResponse businessValidationErrorMock;
+
+    private BusinessValidationController underTest;
 
     @Before
     public void setUp() {
-        businessValidationController = new BusinessValidationController(businessValidationServiceMock);
+        MockitoAnnotations.initMocks(this);
+        businessValidationErrorMock = FieldErrorResponse.builder().build();
+        underTest = new BusinessValidationController(eventValidationServiceMock,
+            ccdBeanTransformer,
+            objectMapper,
+            solicitorCreateValidationRules,
+            solAddDeceasedEstateDetailsValidationRules,
+            solExecutorDetailsValidationRules,
+            callbackResponseTransformerMock,
+            confirmationResponseServiceMock,
+            stateChangeServiceMock);
+
+        when(httpServletRequest.getRequestURI()).thenReturn("/test-uri");
+    }
+
+    @Test
+    public void shouldErrorForLogRequest() throws JsonProcessingException {
+        when(objectMapper.writeValueAsString(callbackRequestMock)).thenThrow(JsonProcessingException.class);
+        ResponseEntity<CallbackResponse> response = underTest.validateSolicitorcreate(callbackRequestMock,
+            bindingResultMock, httpServletRequest);
+
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
     }
 
     @Test
     public void shouldValidateWithNoErrors() {
         when(bindingResultMock.hasErrors()).thenReturn(false);
-        when(businessValidationServiceMock.validateForm(ccdDataMock)).thenReturn(Collections.emptyList());
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        when(ccdBeanTransformer.transform(callbackRequestMock)).thenReturn(ccdDataMock);
+        when(eventValidationServiceMock.validate(ccdDataMock, solicitorCreateValidationRules)).thenReturn(Collections.emptyList());
 
-        BusinessValidationResponse response = businessValidationController.validate(ccdDataMock, bindingResultMock);
+        ResponseEntity<CallbackResponse> response = underTest.validateSolicitorcreate(callbackRequestMock,
+            bindingResultMock, httpServletRequest);
 
-        assertThat(response.getErrors().isEmpty(), is(true));
-        assertThat(response.getStatus(), is(BusinessValidationStatus.SUCCESS));
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        assertThat(response.getBody().getErrors().isEmpty(), is(true));
     }
 
     @Test
     public void shouldValidateWithFieldErrors() {
         when(bindingResultMock.hasErrors()).thenReturn(true);
         when(bindingResultMock.getFieldErrors()).thenReturn(Arrays.asList(fieldErrorMock));
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        when(ccdBeanTransformer.transform(callbackRequestMock)).thenReturn(ccdDataMock);
 
-        BusinessValidationResponse response = businessValidationController.validate(ccdDataMock, bindingResultMock);
+        ResponseEntity<CallbackResponse> response = underTest.validateSolicitorcreate(callbackRequestMock,
+            bindingResultMock, httpServletRequest);
 
-        assertThat(response.getErrors().isEmpty(), is(false));
-        assertThat(response.getStatus(), is(BusinessValidationStatus.FAILURE));
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        assertThat(response.getBody().getErrors().isEmpty(), is(false));
     }
 
     @Test
     public void shouldValidateWithBusinessErrors() {
         when(bindingResultMock.hasErrors()).thenReturn(false);
-        List<BusinessValidationError> businessErrors = Arrays.asList(businessValidationErrorMock);
-        when(businessValidationServiceMock.validateForm(ccdDataMock)).thenReturn(businessErrors);
+        List<FieldErrorResponse> businessErrors = Arrays.asList(businessValidationErrorMock);
+        when(eventValidationServiceMock.validate(ccdDataMock, solicitorCreateValidationRules)).thenReturn(businessErrors);
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        when(ccdBeanTransformer.transform(callbackRequestMock)).thenReturn(ccdDataMock);
 
-        BusinessValidationResponse response = businessValidationController.validate(ccdDataMock, bindingResultMock);
+        ResponseEntity<CallbackResponse> response = underTest.validateSolicitorcreate(callbackRequestMock,
+            bindingResultMock, httpServletRequest);
 
-        assertThat(response.getErrors().isEmpty(), is(false));
-        assertThat(response.getStatus(), is(BusinessValidationStatus.FAILURE));
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        assertThat(response.getBody().getErrors().isEmpty(), is(false));
     }
+
+    @Test(expected = BadRequestException.class)
+    public void shouldErrorForWillUpdate() {
+        when(bindingResultMock.hasErrors()).thenReturn(true);
+
+        ResponseEntity<CallbackResponse> response = underTest.willUpdate(callbackRequestMock,
+            bindingResultMock);
+
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+    }
+
+    @Test
+    public void shouldValidateAndStopForWillUpdate() {
+        when(bindingResultMock.hasErrors()).thenReturn(false);
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        when(stateChangeServiceMock.getChangedStateForWillDetails(caseDataMock)).thenReturn(Optional.of("Stopped"));
+        when(callbackResponseTransformerMock.transformWithConditionalStateChange(callbackRequestMock, Optional.of("Stopped")))
+            .thenReturn(callbackResponseMock);
+
+        ResponseEntity<CallbackResponse> response = underTest.willUpdate(callbackRequestMock,
+            bindingResultMock);
+
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        assertThat(response.getBody(), is(callbackResponseMock));
+    }
+
+    @Test
+    public void shouldValidateSolsAndDeceasedEstateDetails() {
+        when(bindingResultMock.hasErrors()).thenReturn(false);
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        when(ccdBeanTransformer.transform(callbackRequestMock)).thenReturn(ccdDataMock);
+        when(eventValidationServiceMock.validate(ccdDataMock, solAddDeceasedEstateDetailsValidationRules))
+            .thenReturn(Collections.emptyList());
+        when(callbackResponseTransformerMock
+            .transformWithConditionalStateChange(callbackRequestMock, null)).thenReturn(callbackResponseMock);
+
+        ResponseEntity<CallbackResponse> response = underTest.validateSolAddDeceasedEstateDetails(callbackRequestMock,
+            bindingResultMock, httpServletRequest);
+
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        assertThat(response.getBody(), is(callbackResponseMock));
+    }
+
+    @Test(expected = BadRequestException.class)
+    public void shouldErrorForWillConfirmation() {
+        when(bindingResultMock.hasErrors()).thenReturn(true);
+
+        ResponseEntity<AfterSubmitCallbackResponse> response = underTest.stopForWillConfirmation(callbackRequestMock,
+            bindingResultMock);
+
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+    }
+
+    @Test
+    public void shouldValidateAndConfirmStopForWillUpdate() {
+        when(bindingResultMock.hasErrors()).thenReturn(false);
+        when(callbackResponseMock.getData()).thenReturn(responseCaseDataMock);
+        when(confirmationResponseServiceMock.getStopWillConfirmation(callbackRequestMock)).thenReturn(afterSubmitCallbackResponseMock);
+
+        ResponseEntity<AfterSubmitCallbackResponse> response = underTest.stopForWillConfirmation(callbackRequestMock,
+            bindingResultMock);
+
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        assertThat(response.getBody(), is(afterSubmitCallbackResponseMock));
+    }
+
+    @Test(expected = BadRequestException.class)
+    public void shouldErrorForDomicilityConfirmation() {
+        when(bindingResultMock.hasErrors()).thenReturn(true);
+
+        ResponseEntity<AfterSubmitCallbackResponse> response = underTest.stopForDomicilityConfirmation(callbackRequestMock,
+            bindingResultMock);
+
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+    }
+
+
+    @Test
+    public void shouldValidateAndStopForDomicility() {
+        when(bindingResultMock.hasErrors()).thenReturn(false);
+        when(confirmationResponseServiceMock.getDomicilityStopConfirmation(callbackRequestMock))
+            .thenReturn(afterSubmitCallbackResponseMock);
+        ResponseEntity<AfterSubmitCallbackResponse> response = underTest.stopForDomicilityConfirmation(callbackRequestMock,
+            bindingResultMock);
+
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        assertThat(response.getBody(), is(afterSubmitCallbackResponseMock));
+    }
+
+    @Test
+    public void shouldValidateAndStopForExecutors() {
+        when(bindingResultMock.hasErrors()).thenReturn(false);
+        when(confirmationResponseServiceMock.getExecutorsStopConfirmation(callbackRequestMock))
+            .thenReturn(afterSubmitCallbackResponseMock);
+        ResponseEntity<AfterSubmitCallbackResponse> response = underTest.stopForExecutorConfirmation(callbackRequestMock,
+            bindingResultMock);
+
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        assertThat(response.getBody(), is(afterSubmitCallbackResponseMock));
+    }
+
+    @Test(expected = BadRequestException.class)
+    public void shouldErrorForExecutorsConfirmation() {
+        when(bindingResultMock.hasErrors()).thenReturn(true);
+
+        ResponseEntity<AfterSubmitCallbackResponse> response = underTest.stopForExecutorConfirmation(callbackRequestMock,
+            bindingResultMock);
+
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+    }
+
+    @Test
+    public void shouldValidateForExecutors() {
+        when(bindingResultMock.hasErrors()).thenReturn(false);
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        when(stateChangeServiceMock.getChangedStateForExecutors(caseDataMock)).thenReturn(Optional.of("Stopped"));
+        when(callbackResponseTransformerMock.transformWithConditionalStateChange(callbackRequestMock, Optional.of("Stopped")))
+            .thenReturn(callbackResponseMock);
+
+        ResponseEntity<CallbackResponse> response = underTest.validateSolExecutorDetails(callbackRequestMock,
+            bindingResultMock, httpServletRequest);
+
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        assertThat(response.getBody(), is(callbackResponseMock));
+    }
+
+    @Test
+    public void shouldValidateWithErrorForExecutors() {
+        when(bindingResultMock.hasErrors()).thenReturn(false);
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        businessValidationErrorMock = FieldErrorResponse.builder()
+            .message("message")
+            .build();
+        List<FieldErrorResponse> businessErrors = Arrays.asList(businessValidationErrorMock);
+        when(ccdBeanTransformer.transform(callbackRequestMock)).thenReturn(ccdDataMock);
+        when(eventValidationServiceMock.validate(ccdDataMock, solExecutorDetailsValidationRules)).thenReturn(businessErrors);
+
+        ResponseEntity<CallbackResponse> response = underTest.validateSolExecutorDetails(callbackRequestMock,
+            bindingResultMock, httpServletRequest);
+
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        assertThat(response.getBody().getErrors().get(0), is("message"));
+    }
+
+
+    @Test(expected = BadRequestException.class)
+    public void shouldValidateAndStopForExecutorsWithErrors() {
+        when(bindingResultMock.hasErrors()).thenReturn(true);
+
+        ResponseEntity<CallbackResponse> response = underTest.validateSolExecutorDetails(callbackRequestMock,
+            bindingResultMock, httpServletRequest);
+    }
+
 }

@@ -5,9 +5,13 @@ management:
   security:
     enabled: false
 
-authorised.services: probate_backend
+security:
+  basic:
+    enabled: false
+
+authorised.services: probate_backend,ccd_data,ccd-datamgmt-api,ccd_ps,ccd
 auth.provider.service.client:
-  key: DummyKey
+  key: CMPRGOBNAUXKYDJL
   baseUrl: http://localhost:4502
   microservice: probate_backend
   tokenTimeToLiveInSeconds: 900
@@ -15,22 +19,43 @@ auth.provider.service.client:
 pdf.service:
   url: http://localhost:5500
   pdfApi: /api/v1/pdf-generator/html
-  templatesDirectory: /pdfTemplates/
+  templatesDirectory: templates/pdf/
 
-template:
-  properties:
-    legalStatement.applicantFirstName: "/submitdata/applicantFirstName"
-    legalStatement.applicantLastName: "/submitdata/applicantLastName"
-    legalStatement.applicantAddress: "/submitdata/applicantAddress"
-    legalStatement.deceasedDod: "/submitdata/deceasedDod"
-    legalStatement.deceasedOtherNames.name_0.lastName: "/submitdata/deceasedOtherNames/name_0/lastName"
-    legalStatement.legalStatement.intro: "/submitdata/legalStatement/intro"
-    legalStatement.declaration.accept: "/submitdata/declaration/accept"
-    legalStatement.noOfApplicants: "/submitdata/noOfApplicants"
+fee.api:
+  url: http://localhost:4411/fees-register/fees/lookup
+  service: probate
+  jurisdiction1: family
+  jurisdiction2: probate registry
+  channel: default
+  applicantType: all
+
+markdown.templatesDirectory: templates/markdown/
+
+#dev deployment of ccd-print-service used for local
+#host: https://return-case-doc.dev.ccd.reform.hmcts.net:3453
+printservice:
+  templatesDirectory: templates/printService/
+  host: http://localhost:3453
+  path: /print/jurisdictions/PROBATE/case-types/GrantOfRepresentation/cases/%s/probate/
 
 spring:
   jackson:
     serialization:
       wrap_root_value: false
     deserialization:
-      unwrap_root_value: true
+      unwrap_root_value: false
+
+spring.jackson.serialization.write_dates_as_timestamps: false
+
+####Evidence management Service URL's
+#hard coded to point to docker container ccd-data-store-api CCD_DM_DOMAIN value
+evidence.management.host: http://localhost:8080
+evidence.management.upload.file.url: /documents
+
+http.connect.timeout: 60000
+http.connect.request.timeout: 60000
+
+idam.user.host: ${IDAM_CLIENT_URL:http://localhost:4501}
+idam.service.host: ${PROVIDER_SERVICE_CLIENT_URL:http://localhost:4502}
+
+#logging.level.root: DEBUG

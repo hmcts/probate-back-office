@@ -29,15 +29,19 @@ services:
 
   service-auth-provider-api:
     image: docker.artifactory.reform.hmcts.net/auth/service-auth-provider-api:${SERVICE_AUTH_API_DOCKER_VERSION:-latest}
+    container_name: service-auth-provider-api
     environment:
       - AUTH_PROVIDER_SERVICE_SERVER_JWT_KEY=wThK0f0/lh3FlxFcL4xUWDMI5C1J9KyQBgXV4wseh1e5J1uYJIjvTvArHxQDrYoHJ23xFxjHkOnvNbR5dXRoxA==
       - AUTH_PROVIDER_SERVICE_SERVER_MICROSERVICE_KEYS_TEST=asdddsf
+      - AUTH_PROVIDER_SERVICE_SERVER_MICROSERVICE_KEYS_PROBATE_BACKEND=CMPRGOBNAUXKYDJL
+      - AUTH_PROVIDER_SERVICE_SERVER_MICROSERVICE_KEYS_EM_GW=AAAAAAAAAAAAAAAA
       - AUTH_PROVIDER_SERVICE_TESTING_SUPPORT_ENABLED=true
     ports:
       - 4502:8080
 
   pdf-service-api:
-    image: docker.artifactory.reform.hmcts.net/cmc/pdf-service-api
+    image: docker.artifactory.reform.hmcts.net/cmc/pdf-service-api:latest
+    container_name: pdf-service-api
     environment:
       - ROOT_APPENDER
       - JSON_CONSOLE_PRETTY_PRINT
@@ -49,3 +53,127 @@ services:
     #  - ./build/install/pdf-service:/opt/app/
     ports:
       - 5500:5500
+
+  idam-api:
+    image: docker.artifactory.reform.hmcts.net/auth/idam-api:latest
+    container_name: idam-api
+    command: --wait-for-database 60
+    environment:
+      - IDAM_SUPERUSER_EMAIL=cmc-int-test@cmc.reform.hmcts.net
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://idam-database:5432/idam
+      - SPRING_MAIL_HOST=smtp-server
+      - IDAM_TESTING_SUPPORT_ENABLED=true
+      - NOTIFY_API_KEY=${GOV_NOTIFY_API_KEY}
+      - NOTIFY_CMC_ACTIVATE_USER_TEMPLATE=76aa8695-64e8-4afd-ae13-bc8385302b1f
+      - IDAM_SECRET=cmc_it_test_secret_key
+      - NOTIFY=false
+      - NOTIFY_CMC_WELCOME_USER_TEMPLATE=fake
+      - NOTIFY_DIVORCE_WELCOME_USER_TEMPLATE=fake
+      - NOTIFY_SSCS_WELCOME_USER_TEMPLATE=fake
+      - NOTIFY_RESET_PASSWORD_TEMPLATE=fake
+      - NOTIFY_PROBATE_ACTIVATE_USER_TEMPLATE=fake
+      - NOTIFY_PROBATE_BACKEND_ACTIVATE_USER_TEMPLATE=fake
+      - NOTIFY_DIVORCE_ACTIVATE_USER_TEMPLATE=fake
+      - NOTIFY_SSCS_ACTIVATE_USER_TEMPLATE=fake
+      - NOTIFY_CCD_ACTIVATE_USER_TEMPLATE=fake
+      - http_proxy
+      - https_proxy
+      - no_proxy
+      # these environment variables are used by java-logging library
+      - ROOT_APPENDER=JSON_CONSOLE
+      - JSON_CONSOLE_PRETTY_PRINT=false
+      - REFORM_SERVICE_TYPE=java
+      - REFORM_SERVICE_NAME=idam-api
+      - REFORM_TEAM=cc
+      - REFORM_ENVIRONMENT=docker
+    ports:
+      - 4501:8080
+    links:
+      - smtp-server
+      - idam-database
+    depends_on:
+      - idam-database
+      - smtp-server
+
+  idam-database:
+    image: docker.artifactory.reform.hmcts.net/auth/idam-database:latest
+    container_name: idam-database
+    ports:
+      - 5430:5432
+
+  smtp-server:
+    container_name: smtp-server
+    image: mailhog/mailhog
+
+  document-management-store:
+    image: docker.artifactory.reform.hmcts.net/evidence/document-management-store:latest
+    command: --wait-for-database 30
+    environment:
+      - SERVER_PORT=8080
+      - S2S_NAMES_WHITELIST=probate_backend
+      - IDAM_SUPERUSER_EMAIL
+      - IDAM_SECRET_KEY=AAAAAAAAAAAAAAAA
+      - GOV_NOTIFY_API_KEY
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://document-management-store-database:5432/evidence
+      - SPRING_DATASOURCE_USERNAME=evidence
+      - SPRING_DATASOURCE_PASSWORD=evidence
+      - SPRING_PROFILES_ACTIVE=dev
+      - IDAM_TESTING_SUPPORT_ENABLED=true
+      - LOGGING_LEVEL_UK_GOV_HMCTS_IDAM=DEBUG
+      - IDAM_USER_BASE_URI=http://idam-api:8080
+      - IDAM_S2S_BASE_URI=http://service-auth-provider-api:8080
+      - http_proxy=
+      - https_proxy=
+      - no_proxy=
+       # these environment variables are used by java-logging library
+      - ROOT_APPENDER=JSON_CONSOLE
+      - JSON_CONSOLE_PRETTY_PRINT=false
+      - REFORM_SERVICE_TYPE=java
+      - REFORM_SERVICE_NAME=document-management-store-app
+      - REFORM_TEAM=cc
+      - REFORM_ENVIRONMENT=docker
+#      healthcheck env vars
+      - PACKAGES_ENVIRONMENT=docker
+      - PACKAGES_PROJECT=evidence
+      - PACKAGES_NAME=document-management-store-app
+      - PACKAGES_VERSION=unknown
+#      debug mode
+      - JAVA_OPTS=-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005
+    links:
+     - document-management-store-database
+     - idam-api
+     - service-auth-provider-api
+    depends_on:
+     - document-management-store-database
+     - idam-api
+     - service-auth-provider-api
+    ports:
+     - 8080:8080
+
+  document-management-store-database:
+    build:
+      context: ./docker/database
+    image: docker.artifactory.reform.hmcts.net/evidence/document-management-store-database:latest
+
+  fees-api:
+    image: docker.artifactory.reform.hmcts.net/fees-register/fees-api:${FEES_API_DOCKER_VERSION:-latest}
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://fees-database:5432/fees_register
+      - SPRING_DATASOURCE_USERNAME=fees_register
+      - SPRING_DATASOURCE_PASSWORD=fees_register
+      #- AUTH_IDAM_CLIENT_BASEURL=http://idam-api:8080
+      - ROOT_APPENDER=JSON_CONSOLE
+    ports:
+      - 4411:8080
+    links:
+      #- idam-api
+      - fees-database
+    depends_on:
+      #- idam-api
+      - fees-database
+
+  fees-database:
+    image: docker.artifactory.reform.hmcts.net/fees-register/fees-database:${FEES_DATABASE_DOCKER_VERSION:-latest}
+    environment:
+      - FEES_REGISTER_DB_USERNAME=fees_register
+      - FEES_REGISTER_DB_PASSWORD=fees_register

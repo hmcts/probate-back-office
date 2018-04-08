@@ -4,10 +4,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
-import uk.gov.hmcts.probate.model.BusinessValidationError;
-import uk.gov.hmcts.probate.model.CCDData;
-import uk.gov.hmcts.probate.model.InheritanceTax;
+import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
+import uk.gov.hmcts.probate.model.ccd.CCDData;
+import uk.gov.hmcts.probate.model.ccd.InheritanceTax;
 import uk.gov.hmcts.probate.service.BusinessValidationMessageService;
 
 import java.util.List;
@@ -32,16 +33,19 @@ public class IHTValidationRuleTest {
     @Mock
     private BusinessValidationMessageService businessValidationMessageService;
     @Mock
-    private BusinessValidationError businessValidationError;
-    @Mock
     private CCDData ccdDataMock;
     @Mock
     private InheritanceTax inheritanceTaxMock;
+
+    private FieldErrorResponse businessValidationError;
 
     private IHTValidationRule underTest;
 
     @Before
     public void setUp() throws Exception {
+        MockitoAnnotations.initMocks(this);
+        businessValidationError = FieldErrorResponse.builder().build();
+
         this.underTest = new IHTValidationRule(businessValidationMessageService);
         when(ccdDataMock.getIht()).thenReturn(inheritanceTaxMock);
     }
@@ -51,7 +55,7 @@ public class IHTValidationRuleTest {
         when(inheritanceTaxMock.getGrossValue()).thenReturn(HIGHER_VALUE);
         when(inheritanceTaxMock.getNetValue()).thenReturn(LOWER_VALUE);
 
-        List<BusinessValidationError> validationError = underTest.validate(ccdDataMock);
+        List<FieldErrorResponse> validationError = underTest.validate(ccdDataMock);
 
         verify(businessValidationMessageService, never()).generateError(any(String.class), any(String.class));
         assertThat(validationError.isEmpty(), is(true));
@@ -63,7 +67,7 @@ public class IHTValidationRuleTest {
         when(inheritanceTaxMock.getGrossValue()).thenReturn(HIGHER_VALUE);
         when(inheritanceTaxMock.getNetValue()).thenReturn(LOWER_VALUE);
 
-        List<BusinessValidationError> validationError = underTest.validate(ccdDataMock);
+        List<FieldErrorResponse> validationError = underTest.validate(ccdDataMock);
 
         verify(businessValidationMessageService, never()).generateError(any(String.class), any(String.class));
         assertThat(validationError.isEmpty(), is(true));
@@ -77,7 +81,7 @@ public class IHTValidationRuleTest {
             businessValidationMessageService.generateError(BUSINESS_ERROR, IHT_NET_GREATER_THAN_GROSS)
         ).thenReturn(businessValidationError);
 
-        List<BusinessValidationError> validationError = underTest.validate(ccdDataMock);
+        List<FieldErrorResponse> validationError = underTest.validate(ccdDataMock);
 
         assertThat(validationError.isEmpty(), is(false));
         verify(businessValidationMessageService, times(1)).generateError(BUSINESS_ERROR, IHT_NET_GREATER_THAN_GROSS);

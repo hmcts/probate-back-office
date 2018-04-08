@@ -6,8 +6,16 @@ import uk.gov.hmcts.RPMTagger
 import uk.gov.hmcts.Versioner
 
 properties(
-  [[$class: 'GithubProjectProperty', projectUrlStr: 'https://github.com/hmcts/sol-ccd-service.git'],
-   pipelineTriggers([[$class: 'GitHubPushTrigger']])]
+  [[$class: 'GithubProjectProperty', projectUrlStr: 'https://git.reform.hmcts.net/probate/sol-ccd-service.git'],
+   pipelineTriggers([[$class: 'GitHubPushTrigger']]),
+
+  parameters([
+    string(description: 'Sol ccd url', defaultValue: 'http://betaDevaprobateapp01.reform.hmcts.net:4104', name: 'SOL_CCD_SERVICE_BASE_URL'),
+    string(description: 'Idam url', defaultValue: 'http://betaDevAccidamAppLB.reform.hmcts.net', name: 'IDAM_BASE_URL'),
+    string(description: 'PDF service url', defaultValue: 'http://devpdfservicelb.moneyclaim.reform.hmcts.net:4301', name: 'PDF_SERVICE_BASE_URL'),
+    string(description: 'Fee service url', defaultValue: 'https://test.fees-register.reform.hmcts.net:4431', name: 'FEE_SERVICE_BASE_URL'),
+    string(description: 'Evidence management url', defaultValue: 'https://api-gateway.dev.dm.reform.hmcts.net', name: 'EVIDENECE_MANAGEMENT_BASE_URL'),
+  ])]
 )
 
 //@Library(['Reform', 'PROBATE'])
@@ -18,13 +26,12 @@ def versioner = new Versioner(this)
 def rpmTagger
 def app = "sol-ccd-service"
 def artifactorySourceRepo = "probate-local"
+def version
+def serviceVersion
+def serviceDockerVersion
 
 node {
   try {
-    def version
-    def serviceVersion
-    def serviceDockerVersion
-
     stage('Checkout') {
       deleteDir()
       checkout scm
@@ -41,6 +48,30 @@ node {
 
     stage('Build') {
       sh "./gradlew clean checkstyleTest"
+    }
+
+    stage('Test') {
+      try {
+        sh "./gradlew clean test"
+      } finally {
+        dest_dir = "${env.JENKINS_HOME}/reports/probate/sol-ccd-service/"
+        sh "mkdir -p $dest_dir"
+        sh "cp -R ./build/reports/* $dest_dir"
+
+        publishHTML target: [
+          alwaysLinkToLastBuild: true,
+          reportDir            : "${env.JENKINS_HOME}/reports/probate/sol-ccd-service/tests/test",
+          reportFiles          : "index.html",
+          reportName           : "sol-ccd-service Test Report"
+        ]
+
+        publishHTML target: [
+          alwaysLinkToLastBuild: true,
+          reportDir            : "${env.JENKINS_HOME}/reports/probate/sol-ccd-service/jacoco",
+          reportFiles          : "index.html",
+          reportName           : "sol-ccd-service Code Coverage Report"
+        ]
+      }
     }
 
     try {
@@ -104,6 +135,7 @@ node {
       }
 
       sh "echo Docker version is: $serviceDockerVersion"
+      env.DOCKER_VERSION_TAG = serviceDockerVersion
     }
 
     stage('Package (RPM)') {
@@ -132,18 +164,19 @@ node {
 
       stage('Deploy (Dev)') {
         ansible.runDeployPlaybook(version, 'dev')
-      }
-
-      stage('Tag Deploy success (Dev)') {
         rpmTagger.tagDeploymentSuccessfulOn('dev')
       }
 
-      /*
       stage('Tag Smoke Test success (Dev)') {
-        rpmTagger.tagTestingPassedOn('dev')
-      } */
-    }
+        sh "curl ${params.IDAM_BASE_URL}/health"
+        sh "curl ${params.PDF_SERVICE_BASE_URL}/health"
+        sh "curl ${params.FEE_SERVICE_BASE_URL}/health"
+        sh "curl ${params.EVIDENECE_MANAGEMENT_BASE_URL}/health"
+        sh "curl ${params.SOL_CCD_SERVICE_BASE_URL}/health"
 
+        rpmTagger.tagTestingPassedOn('dev')
+      }
+    }
     if ("master" == "${env.BRANCH_NAME}") {
       def rpmName = packager.rpmName(app, serviceVersion)
       sh "echo $rpmName"
@@ -176,7 +209,15 @@ node {
 
   }
 
-  stage ('Starting Integration job') {
-    build job: 'sol-ccd-services-integration-tests'
+  stage('Starting Integration job') {
+    try {
+      if ("develop" == "${env.BRANCH_NAME}") {
+        build '../sol-ccd-services-integration-tests/develop'
+      } else if ("master" == "${env.BRANCH_NAME}") {
+        build '../sol-ccd-services-integration-tests/master'
+      }
+    } catch (err) {
+      sh 'echo Integration test failed'
+    }
   }
 }

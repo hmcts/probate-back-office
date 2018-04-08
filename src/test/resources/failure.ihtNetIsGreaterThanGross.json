@@ -1,8 +1,32 @@
 {
-  "ccddata": {
-    "iht": {
-      "netValue": 3000.00,
-      "grossValue": 2000.00
+  "case_details": {
+    "id": 1512040945638398,
+    "jurisdiction": "PROBATE",
+    "state": "SolDraftCase",
+    "case_type_id": "GrantOfRepresentation",
+    "last_modified": null,
+    "security_classification": "PUBLIC",
+    "case_data": {
+      "deceasedDateOfBirth": "2007-11-07",
+      "deceasedDateOfDeath": "2017-09-11",
+      "deceasedAddress": {
+        "AddressLine1": "Line 1",
+        "PostCode": "Postcode"
+      },
+      "deceasedDomicileInEngWales": "Yes",
+      "ihtNetValue": 3000.00,
+      "ihtGrossValue": 2000.00
+    },
+    "data_classification": {
+      "ihtNetValue": "PUBLIC",
+      "ihtNetValue": "PUBLIC"
+    },
+    "after_submit_callback_response": null,
+    "callback_response_status_code": null,
+    "security_classifications": {
+      "ihtNetValue": "PUBLIC",
+      "ihtGrossValue": "PUBLIC"
     }
-  }
+  },
+  "event_id": "solAddDeceasedEstateDetails"
 }

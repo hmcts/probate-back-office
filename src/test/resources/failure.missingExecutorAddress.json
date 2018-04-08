@@ -1,0 +1,54 @@
+{
+  "case_details": {
+    "id": 1512040945638398,
+    "jurisdiction": "PROBATE",
+    "state": "SolDraftCase",
+    "case_type_id": "GrantOfRepresentation",
+    "last_modified": null,
+    "security_classification": "PUBLIC",
+    "case_data": {
+      "deceasedDateOfDeath": "2017-09-11",
+      "solsSolicitorFirmPostcode": "A11 1AA",
+      "solsSolicitorAppReference": "Eiusmod atque quae incididunt sint aut dicta consectetur et autem aut ducimus id",
+      "deceasedDateOfBirth": "2007-11-07",
+      "deceasedForenames": "Amet",
+      "solsSolicitorFirmName": "First",
+      "deceasedSurname": "Voluptatum",
+      "ihtNetValue": 10000,
+      "ihtGrossValue": 11000,
+      "solsSOTJobTitle": "Lawyer",
+      "solsSOTName": "Solicitor Name",
+      "solsIHTFormId": "IHT207",
+      "outsideUKGrantCopies": 1,
+      "solsPaymentMethods": "cheque",
+      "extraCopiesOfGrant": 1,
+      "deceasedDomicileInEngWales": "Yes",
+      "primaryApplicantIsApplying": "Yes",
+      "primaryApplicantAddress": {
+        "PostCode": "postcode"
+      }
+    },
+    "data_classification": {
+      "deceasedDateOfDeath": "PUBLIC",
+      "solsSolicitorFirmPostcode": "PUBLIC",
+      "solsSolicitorAppReference": "PUBLIC",
+      "deceasedDateOfBirth": "PUBLIC",
+      "deceasedForenames": "PUBLIC",
+      "solsSolicitorFirmName": "PUBLIC",
+      "deceasedSurname": "PUBLIC"
+    },
+    "after_submit_callback_response": null,
+    "callback_response_status_code": null,
+    "callback_response_status": null,
+    "security_classifications": {
+      "deceasedDateOfDeath": "PUBLIC",
+      "solsSolicitorFirmPostcode": "PUBLIC",
+      "solsSolicitorAppReference": "PUBLIC",
+      "deceasedDateOfBirth": "PUBLIC",
+      "deceasedForenames": "PUBLIC",
+      "solsSolicitorFirmName": "PUBLIC",
+      "deceasedSurname": "PUBLIC"
+    }
+  },
+  "event_id": "solicitorCreate"
+}

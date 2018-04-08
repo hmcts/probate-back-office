@@ -1,9 +1,9 @@
 package uk.gov.hmcts.probate.validator;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.Data;
 import org.springframework.stereotype.Component;
-import uk.gov.hmcts.probate.model.BusinessValidationError;
-import uk.gov.hmcts.probate.model.CCDData;
+import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
+import uk.gov.hmcts.probate.model.ccd.CCDData;
 import uk.gov.hmcts.probate.service.BusinessValidationMessageService;
 
 import java.time.LocalDate;
@@ -13,8 +13,9 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+@Data
 @Component
-public class DobDodValidationRule implements ValidationRule {
+class DobDodValidationRule implements SolicitorCreateValidationRule {
 
     public static final String CODE_DOD_BEFORE_DOB = "dodIsBeforeDob";
     public static final String CODE_DOD_ON_DOB = "dodIsSameAsDob";
@@ -23,13 +24,8 @@ public class DobDodValidationRule implements ValidationRule {
 
     private final BusinessValidationMessageService businessValidationMessageService;
 
-    @Autowired
-    public DobDodValidationRule(BusinessValidationMessageService businessValidationMessageService) {
-        this.businessValidationMessageService = businessValidationMessageService;
-    }
-
     @Override
-    public List<BusinessValidationError> validate(CCDData ccdData) {
+    public List<FieldErrorResponse> validate(CCDData ccdData) {
 
         return Optional.ofNullable(ccdData.getDeceased())
             .map(deceased -> {

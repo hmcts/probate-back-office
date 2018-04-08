@@ -1,9 +1,9 @@
 package uk.gov.hmcts.probate.validator;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.Data;
 import org.springframework.stereotype.Component;
-import uk.gov.hmcts.probate.model.BusinessValidationError;
-import uk.gov.hmcts.probate.model.CCDData;
+import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
+import uk.gov.hmcts.probate.model.ccd.CCDData;
 import uk.gov.hmcts.probate.service.BusinessValidationMessageService;
 
 import java.util.ArrayList;
@@ -12,8 +12,9 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+@Data
 @Component
-class IHTValidationRule implements ValidationRule {
+class IHTValidationRule implements SolAddDeceasedEstateDetailsValidationRule {
 
     public static final String IHT_NET_GREATER_THAN_GROSS = "ihtNetGreaterThanGross";
     public static final String IHT_NET_IS_NULL = "ihtNetIsNull";
@@ -21,13 +22,8 @@ class IHTValidationRule implements ValidationRule {
 
     private final BusinessValidationMessageService businessValidationMessageService;
 
-    @Autowired
-    public IHTValidationRule(BusinessValidationMessageService businessValidationMessageService) {
-        this.businessValidationMessageService = businessValidationMessageService;
-    }
-
     @Override
-    public List<BusinessValidationError> validate(CCDData ccdData) {
+    public List<FieldErrorResponse> validate(CCDData ccdData) {
         return Optional.ofNullable(ccdData.getIht())
             .map(iht -> {
                 List<String> codes = new ArrayList<>();

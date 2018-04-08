@@ -5,9 +5,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import uk.gov.hmcts.probate.model.BusinessValidationError;
-import uk.gov.hmcts.probate.model.CCDData;
-import uk.gov.hmcts.probate.model.Deceased;
+import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
+import uk.gov.hmcts.probate.model.ccd.CCDData;
+import uk.gov.hmcts.probate.model.ccd.Deceased;
 import uk.gov.hmcts.probate.service.BusinessValidationMessageService;
 
 import java.time.LocalDate;
@@ -28,6 +28,7 @@ import static uk.gov.hmcts.probate.validator.ValidationRule.BUSINESS_ERROR;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DobDodValidationRuleTest {
+
     private static final String DATE_31_DEC_1970 = "1970-12-31";
     private static final String DATE_30_DEC_1970 = "1970-12-30";
     private static final String DATE_01_JAN_1971 = "1971-01-01";
@@ -37,17 +38,18 @@ public class DobDodValidationRuleTest {
     @Mock
     private BusinessValidationMessageService businessValidationMessageService;
     @Mock
-    private BusinessValidationError businessValidationError;
-    @Mock
     private CCDData ccdDataMock;
     @Mock
     private Deceased deceasedMock;
+
+    private FieldErrorResponse businessValidationError;
 
     private DobDodValidationRule underTest;
 
     @Before
     public void setUp() throws Exception {
         underTest = new DobDodValidationRule(businessValidationMessageService);
+        businessValidationError = FieldErrorResponse.builder().build();
         when(ccdDataMock.getDeceased()).thenReturn(deceasedMock);
     }
 
@@ -56,7 +58,7 @@ public class DobDodValidationRuleTest {
     public void testValidateWithSuccessWhenDeceasedIsNull() throws Exception {
         when(ccdDataMock.getDeceased()).thenReturn(null);
 
-        List<BusinessValidationError> validationError = underTest.validate(ccdDataMock);
+        List<FieldErrorResponse> validationError = underTest.validate(ccdDataMock);
 
         verify(businessValidationMessageService, never()).generateError(any(String.class), any(String.class));
         assertThat(validationError.isEmpty(), is(true));
@@ -67,7 +69,7 @@ public class DobDodValidationRuleTest {
         when(deceasedMock.getDateOfBirth()).thenReturn(getDate(DATE_31_DEC_1970));
         when(deceasedMock.getDateOfDeath()).thenReturn(getDate(DATE_01_JAN_1971));
 
-        List<BusinessValidationError> validationErrors = underTest.validate(ccdDataMock);
+        List<FieldErrorResponse> validationErrors = underTest.validate(ccdDataMock);
 
         assertThat(validationErrors.isEmpty(), is(true));
     }
@@ -80,7 +82,7 @@ public class DobDodValidationRuleTest {
             businessValidationMessageService.generateError(BUSINESS_ERROR, CODE_DOD_BEFORE_DOB)
         ).thenReturn(businessValidationError);
 
-        List<BusinessValidationError> validationError = underTest.validate(ccdDataMock);
+        List<FieldErrorResponse> validationError = underTest.validate(ccdDataMock);
 
         assertTrue(validationError.contains(businessValidationError));
     }
@@ -93,7 +95,7 @@ public class DobDodValidationRuleTest {
             businessValidationMessageService.generateError(BUSINESS_ERROR, CODE_DOD_ON_DOB)
         ).thenReturn(businessValidationError);
 
-        List<BusinessValidationError> validationError = underTest.validate(ccdDataMock);
+        List<FieldErrorResponse> validationError = underTest.validate(ccdDataMock);
         assertTrue(validationError.contains(businessValidationError));
 
         //validationError.ifPresent(error -> assertThat(error, is(businessValidationError)));
@@ -107,7 +109,7 @@ public class DobDodValidationRuleTest {
             businessValidationMessageService.generateError(BUSINESS_ERROR, CODE_DOB_IN_FUTURE)
         ).thenReturn(businessValidationError);
 
-        List<BusinessValidationError> validationError = underTest.validate(ccdDataMock);
+        List<FieldErrorResponse> validationError = underTest.validate(ccdDataMock);
     }
 
     @Test
@@ -118,7 +120,7 @@ public class DobDodValidationRuleTest {
             businessValidationMessageService.generateError(BUSINESS_ERROR, CODE_DOD_IN_FUTURE)
         ).thenReturn(businessValidationError);
 
-        List<BusinessValidationError> validationError = underTest.validate(ccdDataMock);
+        List<FieldErrorResponse> validationError = underTest.validate(ccdDataMock);
         assertTrue(validationError.contains(businessValidationError));
     }
 
