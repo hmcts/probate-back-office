@@ -31,11 +31,11 @@ def version
 def serviceVersion
 def serviceDockerVersion
 def storeRPMToArtifactory = false
-def newAppVersion
+
 
 node {
   try {
-
+    def newAppVersion
     if(store_rpm != 'no' || "master"  == "${env.BRANCH_NAME}" || "develop"  == "${env.BRANCH_NAME}") {
         storeRPMToArtifactory = true
     }
