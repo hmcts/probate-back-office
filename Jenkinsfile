@@ -46,9 +46,9 @@ node {
       }
       echo "${newAppVersion}"
       stage('Add SNAPSHOT using SED') {
-        sh '''
-            sed -i '/version/ s/"/${newAppVersion}"/2' build.gradle
-                '''
+                sh """ 
+                    sed -i '/version/ s/"/${newAppVersion}"/2' build.gradle
+                """
       }
     }
 
