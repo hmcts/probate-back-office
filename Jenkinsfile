@@ -31,6 +31,7 @@ def version
 def serviceVersion
 def serviceDockerVersion
 def storeRPMToArtifactory = false
+def newAppVersion
 
 node {
   try {
