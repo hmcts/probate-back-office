@@ -24,7 +24,7 @@ apply plugin: 'org.sonarqube'
 apply plugin: 'findbugs'
 
 group = 'uk.gov.hmcts.probate'
-version = "0.0.1"
+version = "0.0.2"
 mainClassName = 'uk.gov.hmcts.probate.BusinessRulesValidationApplication'
 
 sourceCompatibility = 1.8
