@@ -15,6 +15,7 @@ properties(
     string(description: 'PDF service url', defaultValue: 'http://devpdfservicelb.moneyclaim.reform.hmcts.net:4301', name: 'PDF_SERVICE_BASE_URL'),
     string(description: 'Fee service url', defaultValue: 'https://test.fees-register.reform.hmcts.net:4431', name: 'FEE_SERVICE_BASE_URL'),
     string(description: 'Evidence management url', defaultValue: 'https://api-gateway.dev.dm.reform.hmcts.net', name: 'EVIDENECE_MANAGEMENT_BASE_URL'),
+    string(description: 'Store RPM variable for branches than master or develop (other than "no" stores rpm)', defaultValue: 'no', name: 'store_rpm'),
   ])]
 )
 
@@ -29,19 +30,29 @@ def artifactorySourceRepo = "probate-local"
 def version
 def serviceVersion
 def serviceDockerVersion
+def storeRPMToArtifactory = false
 
 node {
   try {
+
+    if(store_rpm != 'no' || "master"  == "${env.BRANCH_NAME}" || "develop"  == "${env.BRANCH_NAME}") {
+        storeRPMToArtifactory = true
+    }
+
     stage('Checkout') {
       deleteDir()
       checkout scm
     }
 
     if ("master" != "${env.BRANCH_NAME}") {
-      stage('Develop Branch SNAPSHOT') {
+      newAppVersion = "-SNAPSHOT"
+      if("develop"  != "${env.BRANCH_NAME}") {
+          newAppVersion = "-${env.BRANCH_NAME}-SNAPSHOT"
+      }
+      echo "${newAppVersion}"
+      stage('Add SNAPSHOT using SED') {
         sh '''
-                    sed 's/version = "0.0.1"/version = "0.0.1-SNAPSHOT"/' build.gradle > build_gradle
-                    mv build_gradle build.gradle
+            sed -i '/version/ s/"/${newAppVersion}"/2' build.gradle
                 '''
       }
     }
@@ -138,25 +149,21 @@ node {
       env.DOCKER_VERSION_TAG = serviceDockerVersion
     }
 
-    stage('Package (RPM)') {
-      if ("master" != "${env.BRANCH_NAME}") {
-        serviceVersion = packager.javaRPM(app, 'build/libs/sol-ccd-service-0.0.1-SNAPSHOT.jar',
-          'springboot', 'src/main/resources/application.yml')
-      } else {
-        serviceVersion = packager.javaRPM(app, 'build/libs/sol-ccd-service-0.0.1.jar',
-          'springboot', 'src/main/resources/application.yml')
+    if(storeRPMToArtifactory) {
+      stage('Package (RPM)') {
+        serviceVersion = packager.javaRPM(app, 'build/libs/sol-ccd-service-$(./gradlew -q printVersion).jar',
+            'springboot', 'src/main/resources/application.yml')
+        sh "echo $serviceVersion"
+        version = "{probate_sol_ccd_buildnumber: ${serviceVersion} }"
+        sh "echo $version"
+        def rpmName = packager.rpmName(app, serviceVersion)
+        sh "echo $rpmName"
+        rpmTagger = new RPMTagger(this, app, rpmName, artifactorySourceRepo)
+        packager.publishJavaRPM(app)
       }
-
-      sh "echo $serviceVersion"
-      version = "{probate_sol_ccd_buildnumber: ${serviceVersion} }"
-      sh "echo $version"
     }
 
     if ("develop" == "${env.BRANCH_NAME}") {
-      def rpmName = packager.rpmName(app, serviceVersion)
-      sh "echo $rpmName"
-      rpmTagger = new RPMTagger(this, app, rpmName, artifactorySourceRepo)
-      packager.publishJavaRPM(app)
 
       stage('Install (Dev)') {
         ansible.runInstallPlaybook(version, 'dev')
@@ -177,29 +184,7 @@ node {
         rpmTagger.tagTestingPassedOn('dev')
       }
     }
-    if ("master" == "${env.BRANCH_NAME}") {
-      def rpmName = packager.rpmName(app, serviceVersion)
-      sh "echo $rpmName"
-      rpmTagger = new RPMTagger(this, app, rpmName, artifactorySourceRepo)
-      packager.publishJavaRPM(app)
-      /* removed auto deploy to test
-      stage('Install (Test)') {
-        ansible.runInstallPlaybook(version, 'test')
-      }
 
-      stage('Deploy (Test)') {
-        ansible.runDeployPlaybook(version, 'test')
-      }
-
-      stage('Tag Deploy success (Test)') {
-        rpmTagger.tagDeploymentSuccessfulOn('test')
-      }
-      */
-      /*
-      stage('Tag Smoke Test success (test)') {
-        rpmTagger.tagTestingPassedOn('test')
-      } */
-    }
   } catch (err) {
     slackSend(
       channel: '#probate-jenkins',
