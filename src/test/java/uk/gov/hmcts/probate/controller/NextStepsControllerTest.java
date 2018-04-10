@@ -78,7 +78,6 @@ public class NextStepsControllerTest {
 
 
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
-    public static final String NEXTSTEPS_VALIDATE_URL = "/nextsteps/validate";
     public static final String NEXTSTEPS_CONFIRMATION_URL = "/nextsteps/confirmation";
 
     @Autowired
@@ -224,36 +223,6 @@ public class NextStepsControllerTest {
                 .andExpect(jsonPath("$.fieldErrors[0].code").value("NotNull"))
                 .andExpect(jsonPath("$.fieldErrors[0].message")
                         .value("Payment method cannot be empty. It must be one of fee account or cheque"));
-    }
-
-    @Test
-    public void shouldValidateNextStepsWithPaymentMethodIsNullError() throws Exception {
-        caseDataBuilder.solsPaymentMethods(null);
-        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
-        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
-
-        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
-        mockMvc.perform(post(NEXTSTEPS_VALIDATE_URL).content(json).contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(status().isBadRequest())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.fieldErrors[0].param").value("callbackRequest"))
-                .andExpect(jsonPath("$.fieldErrors[0].field").value("caseDetails.data.solsPaymentMethods"))
-                .andExpect(jsonPath("$.fieldErrors[0].code").value("NotNull"))
-                .andExpect(jsonPath("$.fieldErrors[0].message")
-                        .value("Payment method cannot be empty. It must be one of fee account or cheque"));
-    }
-
-    @Test
-    public void shouldValidateNextStepsWithFees() throws Exception {
-        caseDataBuilder.applicationFee(null);
-
-        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
-        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
-
-        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
-        mockMvc.perform(post(NEXTSTEPS_VALIDATE_URL).content(json).contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
     }
 
     @Test
