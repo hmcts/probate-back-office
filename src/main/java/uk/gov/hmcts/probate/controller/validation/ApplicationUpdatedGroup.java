@@ -1,4 +1,4 @@
 package uk.gov.hmcts.probate.controller.validation;
 
-public interface SolicitorCreateEventGroup {
+public interface ApplicationUpdatedGroup {
 }

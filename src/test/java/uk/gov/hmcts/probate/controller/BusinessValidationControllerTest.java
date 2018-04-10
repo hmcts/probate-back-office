@@ -1,317 +1,220 @@
 package uk.gov.hmcts.probate.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.mockito.runners.MockitoJUnitRunner;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
-import uk.gov.hmcts.probate.exception.BadRequestException;
-import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
-import uk.gov.hmcts.probate.model.ccd.CCDData;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData.CaseDataBuilder;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
-import uk.gov.hmcts.probate.model.ccd.raw.response.AfterSubmitCallbackResponse;
-import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
-import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
-import uk.gov.hmcts.probate.service.ConfirmationResponseService;
-import uk.gov.hmcts.probate.service.EventValidationService;
-import uk.gov.hmcts.probate.service.StateChangeService;
-import uk.gov.hmcts.probate.transformer.CCDDataTransformer;
-import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
-import uk.gov.hmcts.probate.validator.SolAddDeceasedEstateDetailsValidationRule;
-import uk.gov.hmcts.probate.validator.SolExecutorDetailsValidationRule;
-import uk.gov.hmcts.probate.validator.SolicitorCreateValidationRule;
+import uk.gov.hmcts.probate.util.TestUtils;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.math.BigDecimal;
+import java.time.LocalDate;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
-import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@RunWith(MockitoJUnitRunner.class)
+@RunWith(SpringRunner.class)
+@SpringBootTest
+@AutoConfigureMockMvc
 public class BusinessValidationControllerTest {
 
-    @Mock
-    private EventValidationService eventValidationServiceMock;
-    @Mock
-    private ObjectMapper objectMapper;
-    @Mock
-    private CCDDataTransformer ccdBeanTransformer;
-    @Mock
-    private CallbackRequest callbackRequestMock;
-    @Mock
-    private HttpServletRequest httpServletRequest;
-    @Mock
-    private CaseDetails caseDetailsMock;
-    @Mock
-    private CaseData caseDataMock;
-    @Mock
-    private CCDData ccdDataMock;
-    @Mock
-    private BindingResult bindingResultMock;
-    @Mock
-    private FieldError fieldErrorMock;
-    @Mock
-    private List<SolicitorCreateValidationRule> solicitorCreateValidationRules;
-    @Mock
-    private List<SolAddDeceasedEstateDetailsValidationRule> solAddDeceasedEstateDetailsValidationRules;
-    @Mock
-    private List<SolExecutorDetailsValidationRule> solExecutorDetailsValidationRules;
-    @Mock
-    private CallbackResponseTransformer callbackResponseTransformerMock;
-    @Mock
-    private CallbackResponse callbackResponseMock;
-    @Mock
-    private ResponseCaseData responseCaseDataMock;
-    @Mock
-    private ConfirmationResponseService confirmationResponseServiceMock;
-    @Mock
-    private AfterSubmitCallbackResponse afterSubmitCallbackResponseMock;
-    @Mock
-    private StateChangeService stateChangeServiceMock;
+    private static final LocalDate DOB = LocalDate.of(1990, 4, 4);
+    private static final LocalDate DOD = LocalDate.of(2017, 4, 4);
+    private static final Long ID = 1L;
+    private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
+    private static final String FORNAME = "Andy";
+    private static final String SURANME = "Michael";
+    private static final String SOLICITOR_APP_REFERENCE = "Reff";
+    private static final String SOLICITOR_FIRM_NAME = "Legal Service Ltd";
+    private static final String SOLICITOR_FIRM_POSTCODE = "SW1E 6EA";
+    private static final String IHT_FORM = "IHT207";
+    private static final String SOLICITOR_NAME = "Peter Crouch";
+    private static final String SOLICITOR_JOB_TITLE = "Lawyer";
+    private static final String PAYMENT_METHOD = "Cheque";
+    private static final float PAYMENT_AMOUNT = 150;
+    private static final String WILL_HAS_CODICLIS = "Yes";
+    private static final String NUMBER_OF_CODICLIS = "1";
+    private static final BigDecimal APPLICATION_FEE = BigDecimal.TEN;
+    private static final BigDecimal FEE_FOR_UK_COPIES = BigDecimal.TEN;
+    private static final BigDecimal FEE_FOR_NON_UK_COPIES = BigDecimal.TEN;
+    private static final BigDecimal TOTAL_FEE = BigDecimal.TEN;
+    private static final Float NET = 900f;
+    private static final Float GROSS = 1000f;
+    private static final Long EXTRA_UK = 1L;
+    private static final Long EXTRA_OUTSIDE_UK = 2L;
+    private static final String DEC_ADD_LINE1 = "DecLine1";
+    private static final String DEC_ADD_PC = "DecPC";
+    private static final SolsAddress DECEASED_ADDRESS = SolsAddress.builder().addressLine1(DEC_ADD_LINE1).postCode(DEC_ADD_PC).build();
+    private static final String EX_ADD_LINE1 = "ExLine1";
+    private static final String EX_ADD_PC = "ExPC";
+    private static final SolsAddress PRIMARY_ADDRESS = SolsAddress.builder().addressLine1(EX_ADD_LINE1).postCode(EX_ADD_PC).build();
+    private static final String PRIMARY_APPLICANT_APPLYING = "Yes";
+    private static final String PRIMARY_APPLICANT_HAS_ALIAS = "No";
+    private static final String OTHER_EXEC_EXISTS = "No";
+    private static final String WILL_EXISTS = "Yes";
+    private static final String WILL_ACCESS_ORIGINAL = "Yes";
+    private static final String PRIMARY_FORENAMES = "ExFN";
+    private static final String PRIMARY_SURNAME = "ExSN";
+    private static final String DECEASED_OTHER_NAMES = "No";
+    private static final String DECEASED_DOM_UK = "Yes";
 
-    private FieldErrorResponse businessValidationErrorMock;
 
-    private BusinessValidationController underTest;
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+    public static final String CASE_VALIDATE_URL = "/case/validate";
+
+    @Autowired
+    private MockMvc mockMvc;
+
+    @Autowired
+    private TestUtils utils;
+
+    private CaseDataBuilder caseDataBuilder;
 
     @Before
-    public void setUp() {
-        MockitoAnnotations.initMocks(this);
-        businessValidationErrorMock = FieldErrorResponse.builder().build();
-        underTest = new BusinessValidationController(eventValidationServiceMock,
-            ccdBeanTransformer,
-            objectMapper,
-            solicitorCreateValidationRules,
-            solAddDeceasedEstateDetailsValidationRules,
-            solExecutorDetailsValidationRules,
-            callbackResponseTransformerMock,
-            confirmationResponseServiceMock,
-            stateChangeServiceMock);
+    public void setup() {
+        OBJECT_MAPPER.registerModule(new JavaTimeModule());
 
-        when(httpServletRequest.getRequestURI()).thenReturn("/test-uri");
+        caseDataBuilder = CaseData.builder()
+                .deceasedDateOfBirth(DOB)
+                .deceasedDateOfDeath(DOD)
+                .deceasedForenames(FORNAME)
+                .deceasedSurname(SURANME)
+                .deceasedAddress(DECEASED_ADDRESS)
+                .deceasedAnyOtherNames(DECEASED_OTHER_NAMES)
+                .deceasedDomicileInEngWales(DECEASED_DOM_UK)
+                .primaryApplicantForenames(PRIMARY_FORENAMES)
+                .primaryApplicantSurname(PRIMARY_SURNAME)
+                .primaryApplicantAddress(PRIMARY_ADDRESS)
+                .primaryApplicantIsApplying(PRIMARY_APPLICANT_APPLYING)
+                .primaryApplicantHasAlias(PRIMARY_APPLICANT_HAS_ALIAS)
+                .otherExecutorExists(OTHER_EXEC_EXISTS)
+                .willExists(WILL_EXISTS)
+                .willAccessOriginal(WILL_ACCESS_ORIGINAL)
+                .ihtNetValue(NET)
+                .ihtGrossValue(GROSS)
+                .solsSolicitorAppReference(SOLICITOR_APP_REFERENCE)
+                .willHasCodicils(WILL_HAS_CODICLIS)
+                .willNumberOfCodicils(NUMBER_OF_CODICLIS)
+                .solsSolicitorFirmName(SOLICITOR_FIRM_NAME)
+                .solsSolicitorFirmPostcode(SOLICITOR_FIRM_POSTCODE)
+                .solsIHTFormId(IHT_FORM)
+                .solsSOTName(SOLICITOR_NAME)
+                .solsSOTJobTitle(SOLICITOR_JOB_TITLE)
+                .solsPaymentMethods(PAYMENT_METHOD)
+                .applicationFee(APPLICATION_FEE)
+                .feeForUkCopies(FEE_FOR_UK_COPIES)
+                .feeForNonUkCopies(FEE_FOR_NON_UK_COPIES)
+                .extraCopiesOfGrant(EXTRA_UK)
+                .outsideUKGrantCopies(EXTRA_OUTSIDE_UK)
+                .totalFee(TOTAL_FEE);
     }
 
     @Test
-    public void shouldErrorForLogRequest() throws JsonProcessingException {
-        when(objectMapper.writeValueAsString(callbackRequestMock)).thenThrow(JsonProcessingException.class);
-        ResponseEntity<CallbackResponse> response = underTest.validateSolicitorcreate(callbackRequestMock,
-            bindingResultMock, httpServletRequest);
+    public void shouldValidateWithNoErrors() throws Exception {
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
 
-        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
+        MvcResult mvcResult = mockMvc.perform(post(CASE_VALIDATE_URL).content(json).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andReturn();
+
+        System.out.print(mvcResult.getResponse().getContentAsString());
+
     }
 
     @Test
-    public void shouldValidateWithNoErrors() {
-        when(bindingResultMock.hasErrors()).thenReturn(false);
-        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
-        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
-        when(ccdBeanTransformer.transform(callbackRequestMock)).thenReturn(ccdDataMock);
-        when(eventValidationServiceMock.validate(ccdDataMock, solicitorCreateValidationRules)).thenReturn(Collections.emptyList());
+    public void shouldValidateWithDodIsNullError() throws Exception {
+        caseDataBuilder.deceasedDateOfDeath(null);
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
 
-        ResponseEntity<CallbackResponse> response = underTest.validateSolicitorcreate(callbackRequestMock,
-            bindingResultMock, httpServletRequest);
-
-        assertThat(response.getStatusCode(), is(HttpStatus.OK));
-        assertThat(response.getBody().getErrors().isEmpty(), is(true));
+        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
+        mockMvc.perform(post(CASE_VALIDATE_URL).content(json).contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.fieldErrors[0].param").value("callbackRequest"))
+                .andExpect(jsonPath("$.fieldErrors[0].field").value("caseDetails.data.deceasedDateOfDeath"))
+                .andExpect(jsonPath("$.fieldErrors[0].code").value("NotNull"))
+                .andExpect(jsonPath("$.fieldErrors[0].message").value("Date of death cannot be empty"));
     }
 
     @Test
-    public void shouldValidateWithFieldErrors() {
-        when(bindingResultMock.hasErrors()).thenReturn(true);
-        when(bindingResultMock.getFieldErrors()).thenReturn(Arrays.asList(fieldErrorMock));
-        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
-        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
-        when(ccdBeanTransformer.transform(callbackRequestMock)).thenReturn(ccdDataMock);
+    public void shouldValidateDobIsNullError() throws Exception {
+        caseDataBuilder.deceasedDateOfBirth(null);
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
 
-        ResponseEntity<CallbackResponse> response = underTest.validateSolicitorcreate(callbackRequestMock,
-            bindingResultMock, httpServletRequest);
-
-        assertThat(response.getStatusCode(), is(HttpStatus.OK));
-        assertThat(response.getBody().getErrors().isEmpty(), is(false));
+        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
+        mockMvc.perform(post(CASE_VALIDATE_URL).content(json).contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.fieldErrors[0].param").value("callbackRequest"))
+                .andExpect(jsonPath("$.fieldErrors[0].field").value("caseDetails.data.deceasedDateOfBirth"))
+                .andExpect(jsonPath("$.fieldErrors[0].code").value("NotNull"))
+                .andExpect(jsonPath("$.fieldErrors[0].message").value("Date of birth cannot be empty"));
     }
 
     @Test
-    public void shouldValidateWithBusinessErrors() {
-        when(bindingResultMock.hasErrors()).thenReturn(false);
-        List<FieldErrorResponse> businessErrors = Arrays.asList(businessValidationErrorMock);
-        when(eventValidationServiceMock.validate(ccdDataMock, solicitorCreateValidationRules)).thenReturn(businessErrors);
-        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
-        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
-        when(ccdBeanTransformer.transform(callbackRequestMock)).thenReturn(ccdDataMock);
+    public void shouldValidateWithFornameIsNullError() throws Exception {
+        caseDataBuilder.deceasedForenames(null);
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
 
-        ResponseEntity<CallbackResponse> response = underTest.validateSolicitorcreate(callbackRequestMock,
-            bindingResultMock, httpServletRequest);
-
-        assertThat(response.getStatusCode(), is(HttpStatus.OK));
-        assertThat(response.getBody().getErrors().isEmpty(), is(false));
-    }
-
-    @Test(expected = BadRequestException.class)
-    public void shouldErrorForWillUpdate() {
-        when(bindingResultMock.hasErrors()).thenReturn(true);
-
-        ResponseEntity<CallbackResponse> response = underTest.willUpdate(callbackRequestMock,
-            bindingResultMock);
-
-        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
+        mockMvc.perform(post(CASE_VALIDATE_URL).content(json).contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.fieldErrors[0].param").value("callbackRequest"))
+                .andExpect(jsonPath("$.fieldErrors[0].field").value("caseDetails.data.deceasedForenames"))
+                .andExpect(jsonPath("$.fieldErrors[0].code").value("NotBlank"))
+                .andExpect(jsonPath("$.fieldErrors[0].message").value("Deceased forename cannot be empty"));
     }
 
     @Test
-    public void shouldValidateAndStopForWillUpdate() {
-        when(bindingResultMock.hasErrors()).thenReturn(false);
-        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
-        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
-        when(stateChangeServiceMock.getChangedStateForWillDetails(caseDataMock)).thenReturn(Optional.of("Stopped"));
-        when(callbackResponseTransformerMock.transformWithConditionalStateChange(callbackRequestMock, Optional.of("Stopped")))
-            .thenReturn(callbackResponseMock);
+    public void shouldValidateWithSurnameIsNullError() throws Exception {
+        caseDataBuilder.deceasedSurname(null);
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
 
-        ResponseEntity<CallbackResponse> response = underTest.willUpdate(callbackRequestMock,
-            bindingResultMock);
-
-        assertThat(response.getStatusCode(), is(HttpStatus.OK));
-        assertThat(response.getBody(), is(callbackResponseMock));
+        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
+        mockMvc.perform(post(CASE_VALIDATE_URL).content(json).contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.fieldErrors[0].param").value("callbackRequest"))
+                .andExpect(jsonPath("$.fieldErrors[0].field").value("caseDetails.data.deceasedSurname"))
+                .andExpect(jsonPath("$.fieldErrors[0].code").value("NotBlank"))
+                .andExpect(jsonPath("$.fieldErrors[0].message").value("Deceased surname cannot be empty"));
     }
 
     @Test
-    public void shouldValidateSolsAndDeceasedEstateDetails() {
-        when(bindingResultMock.hasErrors()).thenReturn(false);
-        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
-        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
-        when(ccdBeanTransformer.transform(callbackRequestMock)).thenReturn(ccdDataMock);
-        when(eventValidationServiceMock.validate(ccdDataMock, solAddDeceasedEstateDetailsValidationRules))
-            .thenReturn(Collections.emptyList());
-        when(callbackResponseTransformerMock
-            .transformWithConditionalStateChange(callbackRequestMock, null)).thenReturn(callbackResponseMock);
+    public void shouldValidateWithSolicitorIHTFormIsNullError() throws Exception {
+        caseDataBuilder.solsIHTFormId(null);
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
 
-        ResponseEntity<CallbackResponse> response = underTest.validateSolAddDeceasedEstateDetails(callbackRequestMock,
-            bindingResultMock, httpServletRequest);
-
-        assertThat(response.getStatusCode(), is(HttpStatus.OK));
-        assertThat(response.getBody(), is(callbackResponseMock));
+        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
+        mockMvc.perform(post(CASE_VALIDATE_URL).content(json).contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.fieldErrors[0].param").value("callbackRequest"))
+                .andExpect(jsonPath("$.fieldErrors[0].field").value("caseDetails.data.solsIHTFormId"))
+                .andExpect(jsonPath("$.fieldErrors[0].code").value("NotBlank"))
+                .andExpect(jsonPath("$.fieldErrors[0].message").value("Solicitor IHT Form cannot be empty"));
     }
-
-    @Test(expected = BadRequestException.class)
-    public void shouldErrorForWillConfirmation() {
-        when(bindingResultMock.hasErrors()).thenReturn(true);
-
-        ResponseEntity<AfterSubmitCallbackResponse> response = underTest.stopForWillConfirmation(callbackRequestMock,
-            bindingResultMock);
-
-        assertThat(response.getStatusCode(), is(HttpStatus.OK));
-    }
-
-    @Test
-    public void shouldValidateAndConfirmStopForWillUpdate() {
-        when(bindingResultMock.hasErrors()).thenReturn(false);
-        when(callbackResponseMock.getData()).thenReturn(responseCaseDataMock);
-        when(confirmationResponseServiceMock.getStopWillConfirmation(callbackRequestMock)).thenReturn(afterSubmitCallbackResponseMock);
-
-        ResponseEntity<AfterSubmitCallbackResponse> response = underTest.stopForWillConfirmation(callbackRequestMock,
-            bindingResultMock);
-
-        assertThat(response.getStatusCode(), is(HttpStatus.OK));
-        assertThat(response.getBody(), is(afterSubmitCallbackResponseMock));
-    }
-
-    @Test(expected = BadRequestException.class)
-    public void shouldErrorForDomicilityConfirmation() {
-        when(bindingResultMock.hasErrors()).thenReturn(true);
-
-        ResponseEntity<AfterSubmitCallbackResponse> response = underTest.stopForDomicilityConfirmation(callbackRequestMock,
-            bindingResultMock);
-
-        assertThat(response.getStatusCode(), is(HttpStatus.OK));
-    }
-
-
-    @Test
-    public void shouldValidateAndStopForDomicility() {
-        when(bindingResultMock.hasErrors()).thenReturn(false);
-        when(confirmationResponseServiceMock.getDomicilityStopConfirmation(callbackRequestMock))
-            .thenReturn(afterSubmitCallbackResponseMock);
-        ResponseEntity<AfterSubmitCallbackResponse> response = underTest.stopForDomicilityConfirmation(callbackRequestMock,
-            bindingResultMock);
-
-        assertThat(response.getStatusCode(), is(HttpStatus.OK));
-        assertThat(response.getBody(), is(afterSubmitCallbackResponseMock));
-    }
-
-    @Test
-    public void shouldValidateAndStopForExecutors() {
-        when(bindingResultMock.hasErrors()).thenReturn(false);
-        when(confirmationResponseServiceMock.getExecutorsStopConfirmation(callbackRequestMock))
-            .thenReturn(afterSubmitCallbackResponseMock);
-        ResponseEntity<AfterSubmitCallbackResponse> response = underTest.stopForExecutorConfirmation(callbackRequestMock,
-            bindingResultMock);
-
-        assertThat(response.getStatusCode(), is(HttpStatus.OK));
-        assertThat(response.getBody(), is(afterSubmitCallbackResponseMock));
-    }
-
-    @Test(expected = BadRequestException.class)
-    public void shouldErrorForExecutorsConfirmation() {
-        when(bindingResultMock.hasErrors()).thenReturn(true);
-
-        ResponseEntity<AfterSubmitCallbackResponse> response = underTest.stopForExecutorConfirmation(callbackRequestMock,
-            bindingResultMock);
-
-        assertThat(response.getStatusCode(), is(HttpStatus.OK));
-    }
-
-    @Test
-    public void shouldValidateForExecutors() {
-        when(bindingResultMock.hasErrors()).thenReturn(false);
-        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
-        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
-        when(stateChangeServiceMock.getChangedStateForExecutors(caseDataMock)).thenReturn(Optional.of("Stopped"));
-        when(callbackResponseTransformerMock.transformWithConditionalStateChange(callbackRequestMock, Optional.of("Stopped")))
-            .thenReturn(callbackResponseMock);
-
-        ResponseEntity<CallbackResponse> response = underTest.validateSolExecutorDetails(callbackRequestMock,
-            bindingResultMock, httpServletRequest);
-
-        assertThat(response.getStatusCode(), is(HttpStatus.OK));
-        assertThat(response.getBody(), is(callbackResponseMock));
-    }
-
-    @Test
-    public void shouldValidateWithErrorForExecutors() {
-        when(bindingResultMock.hasErrors()).thenReturn(false);
-        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
-        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
-        businessValidationErrorMock = FieldErrorResponse.builder()
-            .message("message")
-            .build();
-        List<FieldErrorResponse> businessErrors = Arrays.asList(businessValidationErrorMock);
-        when(ccdBeanTransformer.transform(callbackRequestMock)).thenReturn(ccdDataMock);
-        when(eventValidationServiceMock.validate(ccdDataMock, solExecutorDetailsValidationRules)).thenReturn(businessErrors);
-
-        ResponseEntity<CallbackResponse> response = underTest.validateSolExecutorDetails(callbackRequestMock,
-            bindingResultMock, httpServletRequest);
-
-        assertThat(response.getStatusCode(), is(HttpStatus.OK));
-        assertThat(response.getBody().getErrors().get(0), is("message"));
-    }
-
-
-    @Test(expected = BadRequestException.class)
-    public void shouldValidateAndStopForExecutorsWithErrors() {
-        when(bindingResultMock.hasErrors()).thenReturn(true);
-
-        ResponseEntity<CallbackResponse> response = underTest.validateSolExecutorDetails(callbackRequestMock,
-            bindingResultMock, httpServletRequest);
-    }
-
 }

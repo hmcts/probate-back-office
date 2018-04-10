@@ -18,7 +18,7 @@ import java.util.Optional;
 @Component
 public class CallbackResponseTransformer {
 
-    private static final String PAYEMNT_METHOD_VALUE_FEE_ACCOUNT = "fee account";
+    public static final String PAYEMNT_METHOD_VALUE_FEE_ACCOUNT = "fee account";
     public static final String PAYMENT_REFERENCE_FEE_PREFIX = "Fee account PBA-";
     public static final String PAYMENT_REFERENCE_CHEQUE = "Cheque (payable to ‘HM Courts & Tribunals Service’)";
 
@@ -113,6 +113,8 @@ public class CallbackResponseTransformer {
             .solsDeceasedAliasNamesList(caseData.getSolsDeceasedAliasNamesList())
             .solsSolicitorAppReference(caseData.getSolsSolicitorAppReference())
             .solsAdditionalInfo(caseData.getSolsAdditionalInfo())
+
+            .solsSOTNeedToUpdate(caseData.getSolsSOTNeedToUpdate())
 
             .ihtGrossValue(this.transformToString(caseData.getIhtGrossValue()))
             .ihtNetValue(this.transformToString(caseData.getIhtNetValue()))

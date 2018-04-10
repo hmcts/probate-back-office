@@ -146,7 +146,7 @@ public class CallbackResponseTransformerTest {
 
     @Test
     public void shouldConvertRequestToDataBeanForWithStateChange() {
-        when(stateChangeServiceMock.getChangedStateForWillDetails(caseDataMock)).thenReturn(CHANGED_STATE);
+        when(stateChangeServiceMock.getChangedStateForCaseUpdate(caseDataMock)).thenReturn(CHANGED_STATE);
 
         CallbackResponse callbackResponse = underTest.transformWithConditionalStateChange(callbackRequestMock, CHANGED_STATE);
 

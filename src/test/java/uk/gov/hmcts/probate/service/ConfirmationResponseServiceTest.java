@@ -80,7 +80,7 @@ public class ConfirmationResponseServiceTest {
         when(markdownSubstitutionServiceMock.generatePage(anyString(), any(MarkdownTemplate.class), anyMap()))
             .thenReturn(willBodyTemplateResponseMock);
 
-        AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getDomicilityStopConfirmation(callbackRequestMock);
+        AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getStopConfirmation(callbackRequestMock);
 
         assertEquals(null, afterSubmitCallbackResponse.getConfirmationHeader());
         assertEquals(CONFIRMATION_BODY, afterSubmitCallbackResponse.getConfirmationBody());
@@ -94,7 +94,7 @@ public class ConfirmationResponseServiceTest {
         when(markdownSubstitutionServiceMock.generatePage(anyString(), any(MarkdownTemplate.class), anyMap()))
             .thenReturn(willBodyTemplateResponseMock);
 
-        AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getDomicilityStopConfirmation(callbackRequestMock);
+        AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getStopConfirmation(callbackRequestMock);
 
         assertEquals(null, afterSubmitCallbackResponse.getConfirmationHeader());
         assertEquals(null, afterSubmitCallbackResponse.getConfirmationBody());
@@ -110,7 +110,7 @@ public class ConfirmationResponseServiceTest {
         when(markdownSubstitutionServiceMock.generatePage(anyString(), any(MarkdownTemplate.class), anyMap()))
             .thenReturn(willBodyTemplateResponseMock);
 
-        AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getStopWillConfirmation(callbackRequestMock);
+        AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getStopConfirmation(callbackRequestMock);
 
         assertEquals(null, afterSubmitCallbackResponse.getConfirmationHeader());
         assertEquals(CONFIRMATION_BODY, afterSubmitCallbackResponse.getConfirmationBody());
@@ -125,7 +125,7 @@ public class ConfirmationResponseServiceTest {
         when(markdownSubstitutionServiceMock.generatePage(anyString(), any(MarkdownTemplate.class), anyMap()))
             .thenReturn(willBodyTemplateResponseMock);
 
-        AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getStopWillConfirmation(callbackRequestMock);
+        AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getStopConfirmation(callbackRequestMock);
 
         assertEquals(null, afterSubmitCallbackResponse.getConfirmationHeader());
         assertEquals(CONFIRMATION_BODY, afterSubmitCallbackResponse.getConfirmationBody());
@@ -140,7 +140,7 @@ public class ConfirmationResponseServiceTest {
         when(markdownSubstitutionServiceMock.generatePage(anyString(), any(MarkdownTemplate.class), anyMap()))
             .thenReturn(willBodyTemplateResponseMock);
 
-        AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getStopWillConfirmation(callbackRequestMock);
+        AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getStopConfirmation(callbackRequestMock);
 
         assertEquals(null, afterSubmitCallbackResponse.getConfirmationHeader());
         assertEquals(null, afterSubmitCallbackResponse.getConfirmationBody());
@@ -154,7 +154,7 @@ public class ConfirmationResponseServiceTest {
         when(markdownSubstitutionServiceMock.generatePage(anyString(), any(MarkdownTemplate.class), anyMap()))
             .thenReturn(willBodyTemplateResponseMock);
 
-        AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getExecutorsStopConfirmation(callbackRequestMock);
+        AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getStopConfirmation(callbackRequestMock);
 
         assertEquals(null, afterSubmitCallbackResponse.getConfirmationHeader());
         assertEquals(CONFIRMATION_BODY, afterSubmitCallbackResponse.getConfirmationBody());
@@ -168,7 +168,7 @@ public class ConfirmationResponseServiceTest {
         when(markdownSubstitutionServiceMock.generatePage(anyString(), any(MarkdownTemplate.class), anyMap()))
             .thenReturn(willBodyTemplateResponseMock);
 
-        AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getExecutorsStopConfirmation(callbackRequestMock);
+        AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getStopConfirmation(callbackRequestMock);
 
         assertEquals(null, afterSubmitCallbackResponse.getConfirmationHeader());
         assertEquals(null, afterSubmitCallbackResponse.getConfirmationBody());
@@ -202,6 +202,7 @@ public class ConfirmationResponseServiceTest {
         when(inheritanceTax.getFormName()).thenReturn("IHT207");
         when(fee.getPaymentMethod()).thenReturn("Cheque");
         when(fee.getAmount()).thenReturn(BigDecimal.valueOf(100.00));
+        when(fee.getApplicationFee()).thenReturn(BigDecimal.valueOf(50.00));
         when(fee.getAmountInPounds()).thenReturn(BigDecimal.valueOf(100).setScale(2, BigDecimal.ROUND_HALF_UP));
         when(ccdDataMock.getSolsAdditionalInfo()).thenReturn("solsAdditionalInfo");
 

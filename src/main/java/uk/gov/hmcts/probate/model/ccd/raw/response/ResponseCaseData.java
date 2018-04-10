@@ -43,6 +43,7 @@ public class ResponseCaseData {
     private final String solsFeeAccountNumber;
     private final String solsPaymentReferenceNumber;
     private final CCDDocument solsLegalStatementDocument;
+    private final String solsSOTNeedToUpdate;
     private final CCDDocument solsNextStepsDocument;
     private final String solsAdditionalInfo;
     private final String primaryApplicantForenames;

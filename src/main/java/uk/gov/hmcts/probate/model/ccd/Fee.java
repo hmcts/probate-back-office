@@ -10,9 +10,11 @@ import java.math.BigDecimal;
 @Builder
 public class Fee implements Serializable {
     private final String paymentMethod;
+    private final BigDecimal applicationFee;
     private final BigDecimal amount;
     private final Long extraCopiesOfGrant;
     private final Long outsideUKGrantCopies;
+    private final String paymentReferenceNumber;
 
     public BigDecimal getAmountInPounds() {
         return amount.divide(BigDecimal.valueOf(100), 2, BigDecimal.ROUND_HALF_UP);

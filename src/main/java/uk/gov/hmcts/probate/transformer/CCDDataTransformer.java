@@ -11,15 +11,71 @@ import uk.gov.hmcts.probate.model.ccd.Solicitor;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutors;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
+import uk.gov.hmcts.probate.model.fee.FeeServiceResponse;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static uk.gov.hmcts.probate.transformer.CallbackResponseTransformer.PAYEMNT_METHOD_VALUE_FEE_ACCOUNT;
+import static uk.gov.hmcts.probate.transformer.CallbackResponseTransformer.PAYMENT_REFERENCE_CHEQUE;
+import static uk.gov.hmcts.probate.transformer.CallbackResponseTransformer.PAYMENT_REFERENCE_FEE_PREFIX;
+
 @Data
 @Component
 public class CCDDataTransformer {
+
+    public CCDData transform(CallbackRequest callbackRequest, FeeServiceResponse feeServiceResponse) {
+        CaseData caseData = callbackRequest.getCaseDetails().getData();
+
+        Solicitor solicitor = Solicitor.builder()
+                .firmName(caseData.getSolsSolicitorFirmName())
+                .firmPostcode(caseData.getSolsSolicitorFirmPostcode())
+                .fullname(caseData.getSolsSOTName())
+                .jobRole(caseData.getSolsSOTJobTitle())
+                .build();
+
+        Deceased deceased = Deceased.builder()
+                .firstname(caseData.getDeceasedForenames())
+                .lastname(caseData.getDeceasedSurname())
+                .dateOfBirth((caseData.getDeceasedDateOfBirth()))
+                .dateOfDeath((caseData.getDeceasedDateOfDeath()))
+                .build();
+
+        InheritanceTax inheritanceTax = InheritanceTax.builder()
+                .formName(caseData.getSolsIHTFormId())
+                .netValue(caseData.getIhtNetValue())
+                .grossValue(caseData.getIhtGrossValue())
+                .build();
+
+
+        String paymentreference = PAYMENT_REFERENCE_CHEQUE;
+        if (PAYEMNT_METHOD_VALUE_FEE_ACCOUNT.equals(caseData.getSolsPaymentMethods())) {
+            paymentreference = PAYMENT_REFERENCE_FEE_PREFIX + caseData.getSolsFeeAccountNumber();
+        }
+
+
+        Fee fee = Fee.builder()
+                .extraCopiesOfGrant(caseData.getExtraCopiesOfGrant())
+                .outsideUKGrantCopies(caseData.getOutsideUKGrantCopies())
+                .paymentMethod(caseData.getSolsPaymentMethods())
+                .amount(feeServiceResponse.getTotal())
+                .applicationFee(feeServiceResponse.getApplicationFee())
+                .paymentReferenceNumber(paymentreference)
+                .build();
+
+        return CCDData.builder()
+                .solicitorReference(getSolicitorAppReference(caseData.getSolsSolicitorAppReference()))
+                .caseSubmissionDate(getCaseSubmissionDate(callbackRequest.getCaseDetails().getLastModified()))
+                .solicitor(solicitor)
+                .deceased(deceased)
+                .iht(inheritanceTax)
+                .fee(fee)
+                .solsAdditionalInfo(caseData.getSolsAdditionalInfo())
+                .executors(getAllExecutors(caseData))
+                .build();
+    }
 
     public CCDData transform(CallbackRequest callbackRequest) {
         CaseData caseData = callbackRequest.getCaseDetails().getData();
@@ -48,6 +104,7 @@ public class CCDDataTransformer {
             .extraCopiesOfGrant(caseData.getExtraCopiesOfGrant())
             .outsideUKGrantCopies(caseData.getOutsideUKGrantCopies())
             .paymentMethod(caseData.getSolsPaymentMethods())
+            .applicationFee(caseData.getApplicationFee())
             .amount(caseData.getTotalFee())
             .build();
 

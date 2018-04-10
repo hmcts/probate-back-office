@@ -1,4 +1,4 @@
 package uk.gov.hmcts.probate.controller.validation;
 
-public interface SolAddDeceasedDetailsEventGroup {
+public interface ApplicationReviewedGroup {
 }

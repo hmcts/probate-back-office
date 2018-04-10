@@ -49,37 +49,57 @@ public class ConfirmationResponseService {
 
     private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
-    public AfterSubmitCallbackResponse getStopWillConfirmation(CallbackRequest callbackRequest) {
-        return getStopConfirmation(generateWillStopBodyMarkdown(callbackRequest.getCaseDetails().getData()));
-    }
-
-    public AfterSubmitCallbackResponse getDomicilityStopConfirmation(CallbackRequest callbackRequest) {
-        return getStopConfirmation(generateDomicilityStopBodyMarkdown(callbackRequest.getCaseDetails().getData()));
-    }
-
-    public AfterSubmitCallbackResponse getExecutorsStopConfirmation(CallbackRequest callbackRequest) {
-        return getStopConfirmation(generateExecutorsStopBodyMarkdown(callbackRequest.getCaseDetails().getData()));
+    public AfterSubmitCallbackResponse getStopConfirmation(CallbackRequest callbackRequest) {
+        return getStopConfirmationUsingMarkdown(generateStopBodyMarkdown(callbackRequest.getCaseDetails().getData()));
     }
 
     public AfterSubmitCallbackResponse getNextStepsConfirmation(CCDData ccdData) {
-        return getStopConfirmation(generateNextStepsBodyMarkdown(ccdData));
+        return getStopConfirmationUsingMarkdown(generateNextStepsBodyMarkdown(ccdData));
     }
 
-    private AfterSubmitCallbackResponse getStopConfirmation(TemplateResponse templateResponse) {
+    private TemplateResponse generateStopBodyMarkdown(CaseData caseData) {
+        Optional<TemplateResponse> response = getStopBodyMarkdown(caseData, noWillRule, STOP_BODY);
+        if (response.isPresent()) {
+            return response.get();
+        }
+
+        response = getStopBodyMarkdown(caseData, noOriginalWillRule, STOP_BODY);
+        if (response.isPresent()) {
+            return response.get();
+        }
+
+        response = getStopBodyMarkdown(caseData, domicilityConfirmationResponseRule, STOP_BODY);
+        if (response.isPresent()) {
+            return response.get();
+        }
+
+        response = getStopBodyMarkdown(caseData, executorsConfirmationResponseRule, STOP_BODY);
+        if (response.isPresent()) {
+            return response.get();
+        }
+
+        return response.orElseGet(() -> new TemplateResponse(null));
+    }
+
+    private Optional<TemplateResponse> getStopBodyMarkdown(CaseData caseData,
+                                                           ChangeRule changeRule,
+                                                           MarkdownTemplate template) {
+        if (changeRule.isChangeNeeded(caseData)) {
+            String messageKey = changeRule.getConfirmationBodyMessageKey();
+            String reasonText = messageResourceService.getMessage(messageKey);
+            Map<String, String> keyValue = new HashMap<>();
+            keyValue.put("{{reason}}", reasonText);
+            return Optional.of(markdownSubstitutionService.generatePage(templatesDirectory, template, keyValue));
+        }
+
+        return Optional.empty();
+    }
+
+    private AfterSubmitCallbackResponse getStopConfirmationUsingMarkdown(TemplateResponse templateResponse) {
         return AfterSubmitCallbackResponse.builder()
             .confirmationHeader(null)
             .confirmationBody(templateResponse.getTemplate())
             .build();
-    }
-
-    private TemplateResponse generateDomicilityStopBodyMarkdown(CaseData caseData) {
-        Optional<TemplateResponse> response = getStopBodyMarkdown(caseData, domicilityConfirmationResponseRule, STOP_BODY);
-        return response.orElseGet(() -> new TemplateResponse(null));
-    }
-
-    private TemplateResponse generateExecutorsStopBodyMarkdown(CaseData caseData) {
-        Optional<TemplateResponse> response = getStopBodyMarkdown(caseData, executorsConfirmationResponseRule, STOP_BODY);
-        return response.orElseGet(() -> new TemplateResponse(null));
     }
 
     private TemplateResponse generateNextStepsBodyMarkdown(CCDData ccdData) {
@@ -100,6 +120,12 @@ public class ConfirmationResponseService {
         keyValue.put("{{ihtForm}}", ccdData.getIht().getFormName());
         keyValue.put("{{paymentMethod}}", ccdData.getFee().getPaymentMethod());
         keyValue.put("{{paymentAmount}}", ccdData.getFee().getAmountInPounds().toString());
+
+        keyValue.put("{{applicationFee}}", ccdData.getFee().getApplicationFee().toString());
+        keyValue.put("{{feeForUkCopies}}", ccdData.getFee().getExtraCopiesOfGrant().toString());
+        keyValue.put("{{feeForNonUkCopies}}", ccdData.getFee().getOutsideUKGrantCopies().toString());
+        keyValue.put("{{solsPaymentReferenceNumber}}", ccdData.getFee().getPaymentReferenceNumber());
+
         String additionalInfo = ccdData.getSolsAdditionalInfo();
         if (Strings.isNullOrEmpty(additionalInfo)) {
             additionalInfo = "None";
@@ -133,27 +159,4 @@ public class ConfirmationResponseService {
         return df.format(amount);
     }
 
-    private TemplateResponse generateWillStopBodyMarkdown(CaseData caseData) {
-        Optional<TemplateResponse> response = getStopBodyMarkdown(caseData, noWillRule, STOP_BODY);
-        if (response.isPresent()) {
-            return response.get();
-        }
-
-        response = getStopBodyMarkdown(caseData, noOriginalWillRule, STOP_BODY);
-        return response.orElseGet(() -> new TemplateResponse(null));
-    }
-
-    private Optional<TemplateResponse> getStopBodyMarkdown(CaseData caseData,
-                                                           ChangeRule changeRule,
-                                                           MarkdownTemplate template) {
-        if (changeRule.isChangeNeeded(caseData)) {
-            String messageKey = changeRule.getConfirmationBodyMessageKey();
-            String reasonText = messageResourceService.getMessage(messageKey);
-            Map<String, String> keyValue = new HashMap<>();
-            keyValue.put("{{reason}}", reasonText);
-            return Optional.of(markdownSubstitutionService.generatePage(templatesDirectory, template, keyValue));
-        }
-
-        return Optional.empty();
-    }
 }
