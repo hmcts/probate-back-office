@@ -92,6 +92,7 @@ public class CCDDataTransformer {
             .lastname(caseData.getDeceasedSurname())
             .dateOfBirth((caseData.getDeceasedDateOfBirth()))
             .dateOfDeath((caseData.getDeceasedDateOfDeath()))
+                .address(caseData.getDeceasedAddress())
             .build();
 
         InheritanceTax inheritanceTax = InheritanceTax.builder()

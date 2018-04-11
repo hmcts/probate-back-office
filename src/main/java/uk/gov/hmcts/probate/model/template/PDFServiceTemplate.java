@@ -2,8 +2,7 @@ package uk.gov.hmcts.probate.model.template;
 
 public enum PDFServiceTemplate {
 
-    LEGAL_STATEMENT("legalStatement"),
-    NEXT_STEPS("nextSteps");
+    LEGAL_STATEMENT("legalStatement");
 
     private final String htmlFileName;
 

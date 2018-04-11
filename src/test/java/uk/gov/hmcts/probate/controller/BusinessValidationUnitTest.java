@@ -21,7 +21,6 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.AfterSubmitCallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
-import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
 import uk.gov.hmcts.probate.service.ConfirmationResponseService;
 import uk.gov.hmcts.probate.service.EventValidationService;
 import uk.gov.hmcts.probate.service.StateChangeService;
@@ -68,8 +67,6 @@ public class BusinessValidationUnitTest {
     private CallbackResponseTransformer callbackResponseTransformerMock;
     @Mock
     private CallbackResponse callbackResponseMock;
-    @Mock
-    private ResponseCaseData responseCaseDataMock;
     @Mock
     private ConfirmationResponseService confirmationResponseServiceMock;
     @Mock

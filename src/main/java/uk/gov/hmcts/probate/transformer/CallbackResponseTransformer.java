@@ -9,7 +9,6 @@ import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData.ResponseCaseDataBuilder;
 import uk.gov.hmcts.probate.model.fee.FeeServiceResponse;
 import uk.gov.hmcts.probate.model.template.PDFServiceTemplate;
-import uk.gov.hmcts.probate.model.template.TemplateResponse;
 
 import java.math.BigDecimal;
 import java.time.format.DateTimeFormatter;
@@ -29,15 +28,6 @@ public class CallbackResponseTransformer {
 
         ResponseCaseData responseCaseData = this.getResponseCaseData(caseData)
             .state(newState.orElse(null))
-            .build();
-
-        return this.transform(responseCaseData);
-    }
-
-    //TODO: Waiting for CCD to complete the task to handle markdown
-    public CallbackResponse transform(CallbackRequest callbackRequest, TemplateResponse templateResponse) {
-        CaseData caseData = callbackRequest.getCaseDetails().getData();
-        ResponseCaseData responseCaseData = this.getResponseCaseData(caseData)
             .build();
 
         return this.transform(responseCaseData);
@@ -68,9 +58,6 @@ public class CallbackResponseTransformer {
         switch (pdfServiceTemplate) {
             case LEGAL_STATEMENT:
                 responseCaseData.solsLegalStatementDocument(ccdDocument);
-                break;
-            case NEXT_STEPS:
-                responseCaseData.solsNextStepsDocument(ccdDocument);
                 break;
             default:
                 break;
