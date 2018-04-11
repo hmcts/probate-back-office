@@ -10,7 +10,6 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
@@ -64,6 +63,12 @@ public class ExecutorsRuleTest {
         when(caseDataMock.getPrimaryApplicantIsApplying()).thenReturn(NO);
 
         assertEquals(false, undertest.isChangeNeeded(caseDataMock));
+    }
+
+    @Test
+    public void shouldGetBodyMessageKey() {
+
+        assertEquals("stopBodyNoApplyingExecutors", undertest.getConfirmationBodyMessageKey());
     }
 
 }

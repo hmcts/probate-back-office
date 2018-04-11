@@ -3,7 +3,7 @@ package uk.gov.hmcts.probate.model.ccd.raw;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Data;
-import uk.gov.hmcts.probate.controller.validation.SolAddEstateDetailsEventGroup;
+import uk.gov.hmcts.probate.controller.validation.ApplicationUpdatedGroup;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -12,8 +12,8 @@ import javax.validation.constraints.Size;
 @Builder
 public class SolsAddress {
 
-    @NotNull(groups = {SolAddEstateDetailsEventGroup.class}, message = "{deceasedAddressIsNull}")
-    @Size(min = 1, groups = {SolAddEstateDetailsEventGroup.class}, message = "{deceasedAddressIsNull}")
+    @NotNull(groups = {ApplicationUpdatedGroup.class}, message = "{deceasedAddressIsNull}")
+    @Size(min = 1, groups = {ApplicationUpdatedGroup.class}, message = "{deceasedAddressIsNull}")
     @JsonProperty(value = "AddressLine1")
     private final String addressLine1;
 
@@ -29,8 +29,8 @@ public class SolsAddress {
     @JsonProperty(value = "PostTown")
     private final String postTown;
 
-    @NotNull(groups = {SolAddEstateDetailsEventGroup.class}, message = "{deceasedPostcodeIsNull}")
-    @Size(min = 1, groups = {SolAddEstateDetailsEventGroup.class}, message = "{deceasedPostcodeIsNull}")
+    @NotNull(groups = {ApplicationUpdatedGroup.class}, message = "{deceasedPostcodeIsNull}")
+    @Size(min = 1, groups = {ApplicationUpdatedGroup.class}, message = "{deceasedPostcodeIsNull}")
     @JsonProperty(value = "PostCode")
     private final String postCode;
 

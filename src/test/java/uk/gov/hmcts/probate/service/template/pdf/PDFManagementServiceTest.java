@@ -1,12 +1,17 @@
 package uk.gov.hmcts.probate.service.template.pdf;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.hateoas.Link;
+import uk.gov.hmcts.probate.exception.BadRequestException;
+import uk.gov.hmcts.probate.exception.ConnectionException;
 import uk.gov.hmcts.probate.model.ccd.raw.CCDDocument;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.evidencemanagement.EvidenceManagementFile;
 import uk.gov.hmcts.probate.model.evidencemanagement.EvidenceManagementFileUpload;
 import uk.gov.hmcts.probate.service.evidencemanagement.upload.UploadService;
@@ -21,19 +26,20 @@ import static uk.gov.hmcts.probate.model.template.PDFServiceTemplate.LEGAL_STATE
 public class PDFManagementServiceTest {
 
     @Mock
-    private PDFGeneratorService pdfGeneratorService;
-
+    private PDFGeneratorService pdfGeneratorServiceMock;
     @Mock
-    private UploadService uploadService;
+    private UploadService uploadServiceMock;
+    @Mock
+    private ObjectMapper objectMapperMock;
 
     @Mock
     private EvidenceManagementFileUpload evidenceManagementFileUpload;
-
     @Mock
     private EvidenceManagementFile evidenceManagementFile;
-
     @Mock
     private Link link;
+    @Mock
+    private CallbackRequest callbackRequestMock;
 
     @InjectMocks
     private PDFManagementService underTest;
@@ -44,24 +50,44 @@ public class PDFManagementServiceTest {
     }
 
     @Test
-    public void generateAndUpload() throws IOException {
+    public void shouldGenerateAndUpload() throws IOException {
         String json = "{}";
         String fileName = "filename";
         String href = "href";
 
-        when(pdfGeneratorService.generatePdf(LEGAL_STATEMENT, json)).thenReturn(evidenceManagementFileUpload);
-        when(uploadService.store(evidenceManagementFileUpload)).thenReturn(evidenceManagementFile);
+        when(objectMapperMock.writeValueAsString(callbackRequestMock)).thenReturn(json);
+        when(pdfGeneratorServiceMock.generatePdf(LEGAL_STATEMENT, json)).thenReturn(evidenceManagementFileUpload);
+        when(uploadServiceMock.store(evidenceManagementFileUpload)).thenReturn(evidenceManagementFile);
         when(evidenceManagementFile.getLink(Link.REL_SELF)).thenReturn(link);
         when(evidenceManagementFile.getLink("binary")).thenReturn(link);
         when(evidenceManagementFile.getOriginalDocumentName()).thenReturn(fileName);
 
         when(link.getHref()).thenReturn(href);
 
-        CCDDocument response = underTest.generateAndUpload(LEGAL_STATEMENT, json);
+        CCDDocument response = underTest.generateAndUpload(callbackRequestMock, LEGAL_STATEMENT);
 
         assertNotNull(response);
         assertEquals(fileName, response.getDocumentFilename());
         assertEquals(href, response.getDocumentBinaryUrl());
         assertEquals(href, response.getDocumentUrl());
+    }
+
+    @Test(expected = BadRequestException.class)
+    public void shouldThrowExceptionForInvalidRequest() throws IOException {
+
+        when(objectMapperMock.writeValueAsString(callbackRequestMock)).thenThrow(JsonProcessingException.class);
+
+        CCDDocument response = underTest.generateAndUpload(callbackRequestMock, LEGAL_STATEMENT);
+    }
+
+    @Test(expected = ConnectionException.class)
+    public void shouldThrowExceptionWhenUnableToGeneratePDF() throws IOException {
+        String json = "{}";
+
+        when(objectMapperMock.writeValueAsString(callbackRequestMock)).thenReturn(json);
+
+        when(pdfGeneratorServiceMock.generatePdf(LEGAL_STATEMENT, json)).thenThrow(IOException.class);
+
+        CCDDocument response = underTest.generateAndUpload(callbackRequestMock, LEGAL_STATEMENT);
     }
 }

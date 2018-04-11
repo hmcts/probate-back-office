@@ -37,4 +37,10 @@ public class NoWillRuleTest {
         assertEquals(false, undertest.isChangeNeeded(caseDataMock));
     }
 
+    @Test
+    public void shouldGetBodyMessageKey() {
+
+        assertEquals("willStopBodyNoWill", undertest.getConfirmationBodyMessageKey());
+    }
+
 }

@@ -1,5 +1,5 @@
 This probate application has now been submitted
-==================================================
+-------------------------------------------------
 
 {{solsSolicitorFirmName}}, {{solsSolicitorFirmPostcode}}
 
@@ -12,7 +12,21 @@ This probate application has now been submitted
 
 **Submitted on:** {{caseSubmissionDate}}
 
-What you need to do now
+Payment summary
+-------------------------------------------------
+**Application fee** {{applicationFee}}
+
+**Fee for additional UK copies** {{feeForUkCopies}}
+
+**Fee for certified copies** {{feeForNonUkCopies}}
+
+**Fee amount** {{paymentAmount}}
+
+**Payment method** {{paymentMethod}}
+
+**Payment reference number** {{solsPaymentReferenceNumber}}
+
+What you need to do now:
 ==================================================
 
 You will now need to send us:
@@ -31,7 +45,7 @@ You will now need to send us:
 {{additionalInfo}}
 
 Where to send us your documents
-==================================================
+-------------------------------
 
 You should:
 
@@ -40,15 +54,14 @@ You should:
 
 If using recorded delivery, send to:
 
-Digital Applications
-Birmingham Probate Registry
-The Priory Courts
-33 Bull Street
-Birmingham
+Birmingham Probate Registry,
+The Priory Courts,
+33 Bull Street,
+Birmingham,
+West Midlands,
 B4 6DU
 
-The DX is: 701990 BIRMINGHAM 7
-
+Or by DX to: 701990
 What happens next
 =================
 

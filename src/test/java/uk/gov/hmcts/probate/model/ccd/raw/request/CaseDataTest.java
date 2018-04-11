@@ -80,12 +80,24 @@ public class CaseDataTest {
     public void shouldGetExecutorsNotApplying() {
         when(additionalExecutor1Mock.getAdditionalApplying()).thenReturn("Yes");
         when(additionalExecutor2Mock.getAdditionalApplying()).thenReturn("No");
-        when(additionalExecutor3Mock.getAdditionalExecReasonNotApplying()).thenReturn(NOT_APPLYING_REASON);
+        when(additionalExecutor2Mock.getAdditionalExecReasonNotApplying()).thenReturn(NOT_APPLYING_REASON);
         when(additionalExecutor3Mock.getAdditionalApplying()).thenReturn("No");
         when(additionalExecutor3Mock.getAdditionalExecReasonNotApplying()).thenReturn(NOT_APPLYING_REASON);
 
         List<AdditionalExecutors> notApplying = underTest.getExecutorsNotApplying();
 
         assertEquals(2, notApplying.size());
+    }
+
+    @Test
+    public void shouldGetExecutorsCombinationsOfNulls() {
+        when(additionalExecutors1Mock.getAdditionalExecutor()).thenReturn(null);
+        when(additionalExecutor2Mock.getAdditionalApplying()).thenReturn(null);
+        when(additionalExecutor3Mock.getAdditionalApplying()).thenReturn("No");
+        when(additionalExecutor3Mock.getAdditionalExecReasonNotApplying()).thenReturn(NOT_APPLYING_REASON);
+
+        List<AdditionalExecutors> notApplying = underTest.getExecutorsNotApplying();
+
+        assertEquals(1, notApplying.size());
     }
 }

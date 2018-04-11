@@ -9,7 +9,6 @@ import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData.ResponseCaseDataBuilder;
 import uk.gov.hmcts.probate.model.fee.FeeServiceResponse;
 import uk.gov.hmcts.probate.model.template.PDFServiceTemplate;
-import uk.gov.hmcts.probate.model.template.TemplateResponse;
 
 import java.math.BigDecimal;
 import java.time.format.DateTimeFormatter;
@@ -18,7 +17,7 @@ import java.util.Optional;
 @Component
 public class CallbackResponseTransformer {
 
-    private static final String PAYEMNT_METHOD_VALUE_FEE_ACCOUNT = "fee account";
+    public static final String PAYEMNT_METHOD_VALUE_FEE_ACCOUNT = "fee account";
     public static final String PAYMENT_REFERENCE_FEE_PREFIX = "Fee account PBA-";
     public static final String PAYMENT_REFERENCE_CHEQUE = "Cheque (payable to ‘HM Courts & Tribunals Service’)";
 
@@ -29,15 +28,6 @@ public class CallbackResponseTransformer {
 
         ResponseCaseData responseCaseData = this.getResponseCaseData(caseData)
             .state(newState.orElse(null))
-            .build();
-
-        return this.transform(responseCaseData);
-    }
-
-    //TODO: Waiting for CCD to complete the task to handle markdown
-    public CallbackResponse transform(CallbackRequest callbackRequest, TemplateResponse templateResponse) {
-        CaseData caseData = callbackRequest.getCaseDetails().getData();
-        ResponseCaseData responseCaseData = this.getResponseCaseData(caseData)
             .build();
 
         return this.transform(responseCaseData);
@@ -68,9 +58,6 @@ public class CallbackResponseTransformer {
         switch (pdfServiceTemplate) {
             case LEGAL_STATEMENT:
                 responseCaseData.solsLegalStatementDocument(ccdDocument);
-                break;
-            case NEXT_STEPS:
-                responseCaseData.solsNextStepsDocument(ccdDocument);
                 break;
             default:
                 break;
@@ -113,6 +100,8 @@ public class CallbackResponseTransformer {
             .solsDeceasedAliasNamesList(caseData.getSolsDeceasedAliasNamesList())
             .solsSolicitorAppReference(caseData.getSolsSolicitorAppReference())
             .solsAdditionalInfo(caseData.getSolsAdditionalInfo())
+
+            .solsSOTNeedToUpdate(caseData.getSolsSOTNeedToUpdate())
 
             .ihtGrossValue(this.transformToString(caseData.getIhtGrossValue()))
             .ihtNetValue(this.transformToString(caseData.getIhtNetValue()))

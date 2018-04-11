@@ -3,22 +3,16 @@ package uk.gov.hmcts.probate.model.ccd.raw.request;
 import lombok.Builder;
 import lombok.Data;
 import org.hibernate.validator.constraints.NotBlank;
-import uk.gov.hmcts.probate.controller.validation.FeeGroup;
-import uk.gov.hmcts.probate.controller.validation.SolAddDeceasedDetailsEventGroup;
-import uk.gov.hmcts.probate.controller.validation.SolAddEstateDetailsEventGroup;
-import uk.gov.hmcts.probate.controller.validation.SolAddFirmDetailsEventGroup;
-import uk.gov.hmcts.probate.controller.validation.SolCheckYourAnswers;
-import uk.gov.hmcts.probate.controller.validation.SolExecutorDetailsUpdated;
-import uk.gov.hmcts.probate.controller.validation.SolReviewLegalStatement;
-import uk.gov.hmcts.probate.controller.validation.SolicitorAddWillDetailsGroup;
-import uk.gov.hmcts.probate.controller.validation.SolicitorApplicationSubmittedEventGroup;
+import uk.gov.hmcts.probate.controller.validation.ApplicationCreatedGroup;
+import uk.gov.hmcts.probate.controller.validation.ApplicationReviewedGroup;
+import uk.gov.hmcts.probate.controller.validation.ApplicationUpdatedGroup;
+import uk.gov.hmcts.probate.controller.validation.NextStepsConfirmationGroup;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutors;
 import uk.gov.hmcts.probate.model.ccd.raw.AliasNames;
 import uk.gov.hmcts.probate.model.ccd.raw.CCDDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 
-import javax.validation.Valid;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
@@ -35,145 +29,131 @@ public class CaseData {
     private static final String NO_VALUE = "No";
 
     // EVENT = solicitorCreateApplication
-    @NotBlank(groups = {SolAddFirmDetailsEventGroup.class, SolicitorApplicationSubmittedEventGroup.class},
+    @NotBlank(groups = {ApplicationCreatedGroup.class},
         message = "{solsSolicitorFirmNameIsNull}")
     private final String solsSolicitorFirmName;
 
-    @NotBlank(groups = {SolAddFirmDetailsEventGroup.class, SolicitorApplicationSubmittedEventGroup.class},
+    @NotBlank(groups = {ApplicationCreatedGroup.class},
         message = "{solsSolicitorFirmPostcodeIsNull}")
     private final String solsSolicitorFirmPostcode;
 
-    // EVENT = solicitorAddDeceasedDetails
-    @NotBlank(groups = {SolAddDeceasedDetailsEventGroup.class, SolicitorApplicationSubmittedEventGroup.class},
+    @NotBlank(groups = {ApplicationCreatedGroup.class}, message = "{solsSolicitorAppReferenceIsNull}")
+    private final String solsSolicitorAppReference;
+
+    private final String solsSolicitorEmail;
+
+    private final String solsSolicitorPhoneNumber;
+
+    // EVENT = solicitorUpdateApplication
+    @NotBlank(groups = {ApplicationUpdatedGroup.class},
         message = "{deceasedForenameIsNull}")
     private final String deceasedForenames;
 
-    @NotBlank(groups = {SolAddDeceasedDetailsEventGroup.class, SolicitorApplicationSubmittedEventGroup.class},
+    @NotBlank(groups = {ApplicationUpdatedGroup.class},
         message = "{deceasedSurnameIsNull}")
     private final String deceasedSurname;
 
-    @NotNull(groups = {SolAddDeceasedDetailsEventGroup.class, SolicitorApplicationSubmittedEventGroup.class,
-        SolCheckYourAnswers.class}, message = "{dodIsNull}")
+    @NotNull(groups = {ApplicationUpdatedGroup.class}, message = "{dodIsNull}")
     private final LocalDate deceasedDateOfDeath;
 
-    @NotNull(groups = {SolAddDeceasedDetailsEventGroup.class, SolicitorApplicationSubmittedEventGroup.class,
-        SolCheckYourAnswers.class}, message = "{dobIsNull}")
+    @NotNull(groups = {ApplicationUpdatedGroup.class}, message = "{dobIsNull}")
     private final LocalDate deceasedDateOfBirth;
 
-    private final String solsSolicitorAppReference;
-
-    @NotBlank(groups = {SolicitorApplicationSubmittedEventGroup.class}, message = "{solsSOTNameIsNull}")
-    private final String solsSOTName;
-
-    @NotBlank(groups = {SolicitorApplicationSubmittedEventGroup.class}, message = "{solsSOTJobTitleIsNull}")
-    private final String solsSOTJobTitle;
-
-    @NotBlank(groups = {SolicitorApplicationSubmittedEventGroup.class}, message = "{solsIHTFormIdIsNull}")
-    private final String solsIHTFormId;
-
-    @NotBlank(groups = {SolicitorAddWillDetailsGroup.class}, message = "{willExistsIsNull}")
+    @NotBlank(groups = {ApplicationUpdatedGroup.class}, message = "{willExistsIsNull}")
     private final String willExists;
 
-    @NotBlank(groups = {SolicitorAddWillDetailsGroup.class}, message = "{willAsOriginalIsNull}")
+    @NotBlank(groups = {ApplicationUpdatedGroup.class}, message = "{willAsOriginalIsNull}")
     private final String willAccessOriginal;
 
-    @NotBlank(groups = {SolicitorAddWillDetailsGroup.class}, message = "{willNumberOfCodicilsIsNull}")
+    @NotBlank(groups = {ApplicationUpdatedGroup.class}, message = "{willNumberOfCodicilsIsNull}")
     private final String willHasCodicils;
 
     private final String willNumberOfCodicils;
 
-    // EVENT = SolAddDeceasedEstateDetails
-    @NotNull(groups = {SolAddEstateDetailsEventGroup.class, SolExecutorDetailsUpdated.class, FeeGroup.class},
-        message = "{ihtNetIsNull}")
-    @DecimalMin(groups = {SolAddEstateDetailsEventGroup.class, SolExecutorDetailsUpdated.class, FeeGroup.class},
-        value = "0.0", message = "{ihtNetNegative}")
-    private final Float ihtNetValue;
-
-    @NotNull(groups = {SolAddEstateDetailsEventGroup.class, SolExecutorDetailsUpdated.class, FeeGroup.class},
-        message = "{ihtGrossIsNull}")
-    @DecimalMin(groups = {SolAddEstateDetailsEventGroup.class, SolExecutorDetailsUpdated.class, FeeGroup.class},
-        value = "0.0", message = "{ihtGrossNegative}")
-    private final Float ihtGrossValue;
-
-    @NotBlank(groups = {SolAddEstateDetailsEventGroup.class}, message = "{deceasedDomicileInEngWalesIsNull}")
+    @NotBlank(groups = {ApplicationUpdatedGroup.class}, message = "{deceasedDomicileInEngWalesIsNull}")
     private final String deceasedDomicileInEngWales;
 
-    //EVENT solicitorAddExecutorDetails
-    @NotBlank(groups = {SolExecutorDetailsUpdated.class}, message = "{primaryApplicantForenamesIsNull}")
-    private final String primaryApplicantForenames;
-
-    @NotBlank(groups = {SolExecutorDetailsUpdated.class}, message = "{primaryApplicantSurnameIsNull}")
-    private final String primaryApplicantSurname;
-
-    @NotBlank(groups = {SolExecutorDetailsUpdated.class}, message = "{primaryApplicantHasAliasIsNull}")
-    private final String primaryApplicantHasAlias;
-
-    @NotBlank(groups = {SolExecutorDetailsUpdated.class}, message = "{primaryApplicantIsApplyingIsNull}")
-    private final String primaryApplicantIsApplying;
-
-    @NotBlank(groups = {SolExecutorDetailsUpdated.class}, message = "{otherExecutorExistsIsNull}")
-    private final String otherExecutorExists;
-
-    private final String solsExecutorAliasNames;
-
-    private final String solsPrimaryExecutorNotApplyingReason;
-
-    private final List<AdditionalExecutors> solsAdditionalExecutorList;
-
-    @Valid
-    @NotNull(groups = {SolExecutorDetailsUpdated.class, SolAddEstateDetailsEventGroup.class}, message = "{deceasedAddressIsNull}")
+    @NotNull(groups = {ApplicationUpdatedGroup.class}, message = "{deceasedAddressIsNull}")
     private final SolsAddress deceasedAddress;
 
-    @NotNull(groups = {SolExecutorDetailsUpdated.class}, message = "{deceasedAnyOtherNamesIsNull}")
+    @NotNull(groups = {ApplicationUpdatedGroup.class}, message = "{deceasedAnyOtherNamesIsNull}")
     private final String deceasedAnyOtherNames;
-
-    @NotNull(groups = {SolExecutorDetailsUpdated.class}, message = "{primaryApplicantAddressIsNull}")
-    private final SolsAddress primaryApplicantAddress;
 
     private final List<AliasNames> solsDeceasedAliasNamesList;
 
-    @NotNull(groups = {SolCheckYourAnswers.class}, message = "{solsCYANeedToUpdateIsNull}")
-    private final String solsCYANeedToUpdate;
+    @NotBlank(groups = {ApplicationUpdatedGroup.class}, message = "{solsIHTFormIdIsNull}")
+    private final String solsIHTFormId;
 
-    private final String solsCYAStateTransition;
+    @NotNull(groups = {ApplicationUpdatedGroup.class},  message = "{ihtNetIsNull}")
+    @DecimalMin(groups = {ApplicationUpdatedGroup.class}, value = "0.0", message = "{ihtNetNegative}")
+    private final Float ihtNetValue;
 
-    //EVENT = review legal statement
+    @NotNull(groups = {ApplicationUpdatedGroup.class}, message = "{ihtGrossIsNull}")
+    @DecimalMin(groups = {ApplicationUpdatedGroup.class}, value = "0.0", message = "{ihtGrossNegative}")
+    private final Float ihtGrossValue;
+
+    @NotBlank(groups = {ApplicationUpdatedGroup.class}, message = "{primaryApplicantForenamesIsNull}")
+    private final String primaryApplicantForenames;
+
+    @NotBlank(groups = {ApplicationUpdatedGroup.class}, message = "{primaryApplicantSurnameIsNull}")
+    private final String primaryApplicantSurname;
+
+    @NotBlank(groups = {ApplicationUpdatedGroup.class}, message = "{primaryApplicantHasAliasIsNull}")
+    private final String primaryApplicantHasAlias;
+
+    private final String solsExecutorAliasNames;
+
+    @NotBlank(groups = {ApplicationUpdatedGroup.class}, message = "{primaryApplicantIsApplyingIsNull}")
+    private final String primaryApplicantIsApplying;
+
+    private final String solsPrimaryExecutorNotApplyingReason;
+
+    private final SolsAddress primaryApplicantAddress;
+
+    @NotBlank(groups = {ApplicationUpdatedGroup.class}, message = "{otherExecutorExistsIsNull}")
+    private final String otherExecutorExists;
+
+    private final List<AdditionalExecutors> solsAdditionalExecutorList;
+
+    private final String solsAdditionalInfo;
+
+    //EVENT = review
     private final CCDDocument solsLegalStatementDocument;
 
-    @NotNull(groups = {SolReviewLegalStatement.class}, message = "{solsSOTNeedToUpdateIsNull}")
+    @NotNull(groups = {ApplicationReviewedGroup.class}, message = "{solsSOTNeedToUpdateIsNull}")
     private final String solsSOTNeedToUpdate;
 
-    private final String solsSOTStateTransition;
+    @NotBlank(groups = {ApplicationReviewedGroup.class}, message = "{solsSOTNameIsNull}")
+    private final String solsSOTName;
 
-    //EVENT = solicitorPaySubmit
+    @NotBlank(groups = {ApplicationReviewedGroup.class}, message = "{solsSOTJobTitleIsNull}")
+    private final String solsSOTJobTitle;
+
     private final Long extraCopiesOfGrant;
 
     private final Long outsideUKGrantCopies;
 
-    @NotNull(groups = {FeeGroup.class, SolicitorApplicationSubmittedEventGroup.class}, message = "{solicitorPaymentMethodIsNull}")
+    @NotNull(groups = {ApplicationReviewedGroup.class}, message = "{solicitorPaymentMethodIsNull}")
     private final String solsPaymentMethods;
-
-    @NotNull(groups = {SolicitorApplicationSubmittedEventGroup.class}, message = "{applicationFeeIsNull}")
-    @DecimalMin(groups = {SolicitorApplicationSubmittedEventGroup.class}, value = "0.0", message = "{applicationFeeNegative}")
-    private final BigDecimal applicationFee;
-
-    @NotNull(groups = {SolicitorApplicationSubmittedEventGroup.class}, message = "{feeForUkCopiesIsNull}")
-    @DecimalMin(groups = {SolicitorApplicationSubmittedEventGroup.class}, value = "0.0", message = "{feeForUkCopiesNegative}")
-    private final BigDecimal feeForUkCopies;
-
-    @NotNull(groups = {SolicitorApplicationSubmittedEventGroup.class}, message = "{feeForNonUkCopiesIsNull}")
-    @DecimalMin(groups = {SolicitorApplicationSubmittedEventGroup.class}, value = "0.0", message = "{feeForNonUkCopiesNegative}")
-    private final BigDecimal feeForNonUkCopies;
-
-    @NotNull(groups = {SolicitorApplicationSubmittedEventGroup.class}, message = "{totalFeeIsNull}")
-    @DecimalMin(groups = {SolicitorApplicationSubmittedEventGroup.class}, value = "0.0", message = "{totalFeeNegative}")
-    private final BigDecimal totalFee;
 
     private final String solsFeeAccountNumber;
 
-    //EVENT solicitorNextSteps
-    private final String solsAdditionalInfo;
+    //next steps
+    @NotNull(groups = {NextStepsConfirmationGroup.class}, message = "{applicationFeeIsNull}")
+    @DecimalMin(groups = {NextStepsConfirmationGroup.class}, value = "0.0", message = "{applicationFeeNegative}")
+    private final BigDecimal applicationFee;
 
+    @NotNull(groups = {NextStepsConfirmationGroup.class}, message = "{feeForUkCopiesIsNull}")
+    @DecimalMin(groups = {NextStepsConfirmationGroup.class}, value = "0.0", message = "{feeForUkCopiesNegative}")
+    private final BigDecimal feeForUkCopies;
+
+    @NotNull(groups = {NextStepsConfirmationGroup.class}, message = "{feeForNonUkCopiesIsNull}")
+    @DecimalMin(groups = {NextStepsConfirmationGroup.class}, value = "0.0", message = "{feeForNonUkCopiesNegative}")
+    private final BigDecimal feeForNonUkCopies;
+
+    @NotNull(groups = {NextStepsConfirmationGroup.class}, message = "{totalFeeIsNull}")
+    @DecimalMin(groups = {NextStepsConfirmationGroup.class}, value = "0.0", message = "{totalFeeNegative}")
+    private final BigDecimal totalFee;
 
     public void setExecutorsApplying(List<AdditionalExecutors> executorsApplying) {
 
