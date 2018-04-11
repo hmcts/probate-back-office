@@ -19,12 +19,15 @@ import uk.gov.hmcts.probate.controller.validation.ApplicationUpdatedGroup;
 import uk.gov.hmcts.probate.exception.BadRequestException;
 import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
+import uk.gov.hmcts.probate.model.ccd.raw.CCDDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.response.AfterSubmitCallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
+import uk.gov.hmcts.probate.model.template.PDFServiceTemplate;
 import uk.gov.hmcts.probate.service.ConfirmationResponseService;
 import uk.gov.hmcts.probate.service.EventValidationService;
 import uk.gov.hmcts.probate.service.StateChangeService;
+import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CCDDataTransformer;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.validator.ValidationRule;
@@ -52,6 +55,7 @@ public class BusinessValidationController {
     private final CallbackResponseTransformer callbackResponseTransformer;
     private final ConfirmationResponseService confirmationResponseService;
     private final StateChangeService stateChangeService;
+    private final PDFManagementService pdfManagementService;
 
     @PostMapping(path = "/validate", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<CallbackResponse> validate(
@@ -70,6 +74,10 @@ public class BusinessValidationController {
             Optional<String> newState = stateChangeService.getChangedStateForCaseUpdate(callbackRequest.getCaseDetails().getData());
             if (newState.isPresent()) {
                 response = callbackResponseTransformer.transformWithConditionalStateChange(callbackRequest, newState);
+            } else {
+                PDFServiceTemplate pdfServiceTemplate = PDFServiceTemplate.LEGAL_STATEMENT;
+                CCDDocument document = pdfManagementService.generateAndUpload(callbackRequest, pdfServiceTemplate);
+                response = callbackResponseTransformer.transform(callbackRequest, pdfServiceTemplate, document);
             }
         }
 

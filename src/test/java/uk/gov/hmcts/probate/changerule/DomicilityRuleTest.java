@@ -6,8 +6,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 
-import java.util.Optional;
-
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
@@ -38,5 +36,9 @@ public class DomicilityRuleTest {
         assertEquals(false, undertest.isChangeNeeded(caseDataMock));
     }
 
+    @Test
+    public void shouldGetBodyMessageKey() {
 
+        assertEquals("stopBodyNotDomiciled", undertest.getConfirmationBodyMessageKey());
+    }
 }

@@ -16,14 +16,17 @@ import org.springframework.validation.FieldError;
 import uk.gov.hmcts.probate.exception.BadRequestException;
 import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
+import uk.gov.hmcts.probate.model.ccd.raw.CCDDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.AfterSubmitCallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
+import uk.gov.hmcts.probate.model.template.PDFServiceTemplate;
 import uk.gov.hmcts.probate.service.ConfirmationResponseService;
 import uk.gov.hmcts.probate.service.EventValidationService;
 import uk.gov.hmcts.probate.service.StateChangeService;
+import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CCDDataTransformer;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.validator.ValidationRule;
@@ -68,13 +71,17 @@ public class BusinessValidationUnitTest {
     @Mock
     private CallbackResponse callbackResponseMock;
     @Mock
+    private CCDDocument ccdDocumentMock;
+    @Mock
     private ConfirmationResponseService confirmationResponseServiceMock;
     @Mock
     private AfterSubmitCallbackResponse afterSubmitCallbackResponseMock;
     @Mock
     private StateChangeService stateChangeServiceMock;
-
     private FieldErrorResponse businessValidationErrorMock;
+    @Mock
+    private PDFManagementService pdfManagementServiceMock;
+
 
     private BusinessValidationController underTest;
 
@@ -88,7 +95,7 @@ public class BusinessValidationUnitTest {
             validationRules,
             callbackResponseTransformerMock,
             confirmationResponseServiceMock,
-            stateChangeServiceMock);
+                stateChangeServiceMock, pdfManagementServiceMock);
 
         when(httpServletRequest.getRequestURI()).thenReturn("/test-uri");
     }
@@ -101,6 +108,10 @@ public class BusinessValidationUnitTest {
         when(ccdBeanTransformer.transform(callbackRequestMock)).thenReturn(ccdDataMock);
         when(eventValidationServiceMock.validate(ccdDataMock, validationRules)).thenReturn(Collections.emptyList());
         when(stateChangeServiceMock.getChangedStateForCaseUpdate(caseDataMock)).thenReturn(Optional.empty());
+        when(pdfManagementServiceMock.generateAndUpload(callbackRequestMock, PDFServiceTemplate.LEGAL_STATEMENT))
+                .thenReturn(ccdDocumentMock);
+        when(callbackResponseTransformerMock.transform(callbackRequestMock, PDFServiceTemplate.LEGAL_STATEMENT,
+                ccdDocumentMock)).thenReturn(callbackResponseMock);
 
         ResponseEntity<CallbackResponse> response = underTest.validate(callbackRequestMock,
                 bindingResultMock, httpServletRequest);

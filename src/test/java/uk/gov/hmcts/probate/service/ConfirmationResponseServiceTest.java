@@ -12,6 +12,7 @@ import uk.gov.hmcts.probate.changerule.NoOriginalWillRule;
 import uk.gov.hmcts.probate.changerule.NoWillRule;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
 import uk.gov.hmcts.probate.model.ccd.Deceased;
+import uk.gov.hmcts.probate.model.ccd.Executor;
 import uk.gov.hmcts.probate.model.ccd.Fee;
 import uk.gov.hmcts.probate.model.ccd.InheritanceTax;
 import uk.gov.hmcts.probate.model.ccd.Solicitor;
@@ -25,6 +26,8 @@ import uk.gov.hmcts.probate.service.template.markdown.MarkdownSubstitutionServic
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
@@ -59,6 +62,15 @@ public class ConfirmationResponseServiceTest {
     private MarkdownSubstitutionService markdownSubstitutionServiceMock;
     @Mock
     private MessageResourceService messageResourceServiceMock;
+    private List<Executor> executorsList = new ArrayList<>();
+    @Mock
+    private Executor executorMock;
+    @Mock
+    private Executor renouncingExecutorMock;
+    @Mock
+    private Executor deadBeforeExecutorMock;
+    @Mock
+    private Executor deadAfterExecutorMock;
 
     @Before
     public void setup() {
@@ -70,6 +82,14 @@ public class ConfirmationResponseServiceTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
         when(willBodyTemplateResponseMock.getTemplate()).thenReturn(CONFIRMATION_BODY);
+
+        when(executorMock.isApplying()).thenReturn(true);
+        when(renouncingExecutorMock.isApplying()).thenReturn(false);
+        when(renouncingExecutorMock.getReasonNotApplying()).thenReturn("Renunciation");
+        when(deadBeforeExecutorMock.isApplying()).thenReturn(false);
+        when(deadBeforeExecutorMock.getReasonNotApplying()).thenReturn("DiedBefore");
+        when(deadAfterExecutorMock.isApplying()).thenReturn(false);
+        when(deadAfterExecutorMock.getReasonNotApplying()).thenReturn("DiedAfter");
     }
 
     @Test
@@ -179,6 +199,52 @@ public class ConfirmationResponseServiceTest {
 
     @Test
     public void shouldGetNextStepsConfirmation() {
+        CCDData ccdDataMock = getCcdDataForConfirmation();
+
+        when(markdownSubstitutionServiceMock.generatePage(any(String.class), any(MarkdownTemplate.class), nextStepsKeyValueMap.capture()))
+                .thenReturn(willBodyTemplateResponseMock);
+
+        AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getNextStepsConfirmation(ccdDataMock);
+
+        assertEquals(null, afterSubmitCallbackResponse.getConfirmationHeader());
+        assertEquals(CONFIRMATION_BODY, afterSubmitCallbackResponse.getConfirmationBody());
+        Map<String, String> nextStepsValues = nextStepsKeyValueMap.getValue();
+        assertEquals("31/12/2000", nextStepsValues.get("{{caseSubmissionDate}}"));
+        assertConfirmationValues(nextStepsValues);
+    }
+
+    @Test
+    public void shouldGetNextStepsConfirmationWithNoSubmissionDate() {
+        CCDData ccdDataMock = getCcdDataForConfirmation();
+        when(ccdDataMock.getCaseSubmissionDate()).thenReturn(null);
+
+        when(markdownSubstitutionServiceMock.generatePage(any(String.class), any(MarkdownTemplate.class), nextStepsKeyValueMap.capture()))
+                .thenReturn(willBodyTemplateResponseMock);
+
+        AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getNextStepsConfirmation(ccdDataMock);
+
+        assertEquals(null, afterSubmitCallbackResponse.getConfirmationHeader());
+        assertEquals(CONFIRMATION_BODY, afterSubmitCallbackResponse.getConfirmationBody());
+        Map<String, String> nextStepsValues = nextStepsKeyValueMap.getValue();
+        assertEquals("", nextStepsValues.get("{{caseSubmissionDate}}"));
+        assertConfirmationValues(nextStepsValues);
+    }
+
+    private void assertConfirmationValues(Map<String, String> nextStepsValues) {
+        assertEquals("ref", nextStepsValues.get("{{solicitorReference}}"));
+        assertEquals("Sol Firm Name", nextStepsValues.get("{{solsSolicitorFirmName}}"));
+        assertEquals("Andy Test", nextStepsValues.get("{{solicitorName}}"));
+        assertEquals("Lawyer", nextStepsValues.get("{{solicitorJobRole}}"));
+        assertEquals("Firstname", nextStepsValues.get("{{deceasedFirstname}}"));
+        assertEquals("Lastname", nextStepsValues.get("{{deceasedLastname}}"));
+        assertEquals("31/12/2000", nextStepsValues.get("{{deceasedDateOfDeath}}"));
+        assertEquals("IHT207", nextStepsValues.get("{{ihtForm}}"));
+        assertEquals("Cheque", nextStepsValues.get("{{paymentMethod}}"));
+        assertEquals("100.00", nextStepsValues.get("{{paymentAmount}}"));
+        assertEquals("solsAdditionalInfo", nextStepsValues.get("{{additionalInfo}}"));
+    }
+
+    private CCDData getCcdDataForConfirmation() {
         Solicitor solicitor = mock(Solicitor.class);
         Deceased deceased = mock(Deceased.class);
         InheritanceTax inheritanceTax = mock(InheritanceTax.class);
@@ -205,27 +271,12 @@ public class ConfirmationResponseServiceTest {
         when(fee.getApplicationFee()).thenReturn(BigDecimal.valueOf(50.00));
         when(fee.getAmountInPounds()).thenReturn(BigDecimal.valueOf(100).setScale(2, BigDecimal.ROUND_HALF_UP));
         when(ccdDataMock.getSolsAdditionalInfo()).thenReturn("solsAdditionalInfo");
-
-        when(markdownSubstitutionServiceMock.generatePage(any(String.class), any(MarkdownTemplate.class), nextStepsKeyValueMap.capture()))
-            .thenReturn(willBodyTemplateResponseMock);
-
-        AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getNextStepsConfirmation(ccdDataMock);
-
-        assertEquals(null, afterSubmitCallbackResponse.getConfirmationHeader());
-        assertEquals(CONFIRMATION_BODY, afterSubmitCallbackResponse.getConfirmationBody());
-        Map<String, String> nextStepsValues = nextStepsKeyValueMap.getValue();
-        assertEquals("ref", nextStepsValues.get("{{solicitorReference}}"));
-        assertEquals("31/12/2000", nextStepsValues.get("{{caseSubmissionDate}}"));
-        assertEquals("Sol Firm Name", nextStepsValues.get("{{solsSolicitorFirmName}}"));
-        assertEquals("Andy Test", nextStepsValues.get("{{solicitorName}}"));
-        assertEquals("Lawyer", nextStepsValues.get("{{solicitorJobRole}}"));
-        assertEquals("Firstname", nextStepsValues.get("{{deceasedFirstname}}"));
-        assertEquals("Lastname", nextStepsValues.get("{{deceasedLastname}}"));
-        assertEquals("31/12/2000", nextStepsValues.get("{{deceasedDateOfDeath}}"));
-        assertEquals("IHT207", nextStepsValues.get("{{ihtForm}}"));
-        assertEquals("Cheque", nextStepsValues.get("{{paymentMethod}}"));
-        assertEquals("100.00", nextStepsValues.get("{{paymentAmount}}"));
-        assertEquals("solsAdditionalInfo", nextStepsValues.get("{{additionalInfo}}"));
+        executorsList.add(executorMock);
+        executorsList.add(renouncingExecutorMock);
+        executorsList.add(deadBeforeExecutorMock);
+        executorsList.add(deadAfterExecutorMock);
+        when(ccdDataMock.getExecutors()).thenReturn(executorsList);
+        return ccdDataMock;
     }
 
 }

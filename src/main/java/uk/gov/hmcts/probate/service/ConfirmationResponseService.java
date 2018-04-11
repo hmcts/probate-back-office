@@ -18,7 +18,6 @@ import uk.gov.hmcts.probate.model.template.MarkdownTemplate;
 import uk.gov.hmcts.probate.model.template.TemplateResponse;
 import uk.gov.hmcts.probate.service.template.markdown.MarkdownSubstitutionService;
 
-import java.text.DecimalFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
@@ -152,11 +151,6 @@ public class ConfirmationResponseService {
                 || REASON_FOR_NOT_APPLYING_DIED_AFTER.equals(executor.getReasonNotApplying()))
             .map(executor -> "* death certificate for " + executor.getForename() + " " + executor.getLastname())
             .collect(Collectors.joining("\n"));
-    }
-
-    private String getFormattedAmount(Float amount) {
-        DecimalFormat df = new DecimalFormat("0.00##");
-        return df.format(amount);
     }
 
 }

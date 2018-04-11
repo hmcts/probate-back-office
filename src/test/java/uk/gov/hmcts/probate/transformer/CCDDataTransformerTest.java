@@ -43,10 +43,11 @@ public class CCDDataTransformerTest {
     private static final Float IHT_NET = 9000f;
     private static final BigDecimal TOTAL_FEE = new BigDecimal(155.00);
     private static final BigDecimal APPLICATION_FEE = new BigDecimal(200.00);
-    private static final String PAYMENT_REF_NUMBER_CHEQUE = "Cheque (payable to ‘HM Courts & Tribunals Service’)";
+    private static final String PAYMENT_METHOD_CHEQUE = "cheque";
+    private static final String PAYMENT_METHOD_FEE = "fee account";
     private static final String FEE_ACCOUNT = "FeeAct1";
-    private static final String PAYMENT_METHOD_FEE = "Fee account PBA-FeeAct1";
-    private static final String PAYMENT_REF_NUMBER_FEE = "Cheque (payable to ‘HM Courts & Tribunals Service’)";
+    private static final String PAYMENT_REF_NUMBER_FEE = "Fee account PBA-FeeAct1";
+    private static final String PAYMENT_REF_NUMBER_CHEQUE = "Cheque (payable to ‘HM Courts & Tribunals Service’)";
 
     private static final String YES = "Yes";
 
@@ -103,7 +104,7 @@ public class CCDDataTransformerTest {
     }
 
     @Test
-    public void shouldCovertRequestToDataBean() {
+    public void shouldConvertRequestToDataBean() {
 
         CCDData ccdData = underTest.transform(callbackRequestMock);
 
@@ -112,7 +113,7 @@ public class CCDDataTransformerTest {
     }
 
     @Test
-    public void shouldCovertRequestToDataBeanWithNoLastModifiedDate() {
+    public void shouldConvertRequestToDataBeanWithNoLastModifiedDate() {
         when(caseDetailsMock.getLastModified()).thenReturn(null);
 
         CCDData ccdData = underTest.transform(callbackRequestMock);
@@ -122,8 +123,31 @@ public class CCDDataTransformerTest {
     }
 
     @Test
-    public void shouldCovertRequestToDataBeanWithFeeServiceForCheque() {
+    public void shouldConvertRequestToDataBeanWithLastModifiedDateEmptyData() {
+        String[] lmDate = {};
+        when(caseDetailsMock.getLastModified()).thenReturn(lmDate);
 
+        CCDData ccdData = underTest.transform(callbackRequestMock);
+
+        assertAll(ccdData);
+        assertEquals(null, ccdData.getCaseSubmissionDate());
+    }
+
+    @Test
+    public void shouldConvertRequestToDataBeanWithLastModifiedDateMissingData() {
+        String[] lmDate = {null, null, null, null, null, null, null, null};
+        when(caseDetailsMock.getLastModified()).thenReturn(lmDate);
+
+        CCDData ccdData = underTest.transform(callbackRequestMock);
+
+        assertAll(ccdData);
+        assertEquals(null, ccdData.getCaseSubmissionDate());
+    }
+
+    @Test
+    public void shouldConvertRequestToDataBeanWithFeeServiceForCheque() {
+
+        when(caseDataMock.getSolsPaymentMethods()).thenReturn(PAYMENT_METHOD_CHEQUE);
         when(feeServiceResponseMock.getTotal()).thenReturn(TOTAL_FEE);
         when(feeServiceResponseMock.getApplicationFee()).thenReturn(APPLICATION_FEE);
 
@@ -136,7 +160,7 @@ public class CCDDataTransformerTest {
     }
 
     @Test
-    public void shouldCovertRequestToDataBeanWithFeeServiceForFee() {
+    public void shouldConvertRequestToDataBeanWithFeeServiceForFee() {
 
         when(caseDataMock.getSolsPaymentMethods()).thenReturn(PAYMENT_METHOD_FEE);
         when(caseDataMock.getSolsFeeAccountNumber()).thenReturn(FEE_ACCOUNT);
