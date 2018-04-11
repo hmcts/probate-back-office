@@ -108,7 +108,6 @@ public class CaseData {
 
     private final String solsPrimaryExecutorNotApplyingReason;
 
-    @NotNull(groups = {ApplicationUpdatedGroup.class}, message = "{primaryApplicantAddressIsNull}")
     private final SolsAddress primaryApplicantAddress;
 
     @NotBlank(groups = {ApplicationUpdatedGroup.class}, message = "{otherExecutorExistsIsNull}")
