@@ -36,7 +36,7 @@ public class IdamHttpHeaderFactoryTest {
         HttpHeaders httpHeaders = underTest.getMultiPartHttpHeader();
 
         assertTrue(httpHeaders.containsKey("ServiceAuthorization"));
-        assertTrue(httpHeaders.containsKey("user-id"));
+        assertTrue(httpHeaders.containsKey("Authorization"));
         assertEquals(MediaType.MULTIPART_FORM_DATA, httpHeaders.getContentType());
     }
 
