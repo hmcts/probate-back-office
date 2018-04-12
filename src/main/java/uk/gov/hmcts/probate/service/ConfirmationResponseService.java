@@ -18,6 +18,7 @@ import uk.gov.hmcts.probate.model.template.MarkdownTemplate;
 import uk.gov.hmcts.probate.model.template.TemplateResponse;
 import uk.gov.hmcts.probate.service.template.markdown.MarkdownSubstitutionService;
 
+import java.math.BigDecimal;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
@@ -121,8 +122,8 @@ public class ConfirmationResponseService {
         keyValue.put("{{paymentAmount}}", ccdData.getFee().getAmountInPounds().toString());
 
         keyValue.put("{{applicationFee}}", ccdData.getFee().getApplicationFee().toString());
-        keyValue.put("{{feeForUkCopies}}", ccdData.getFee().getExtraCopiesOfGrant().toString());
-        keyValue.put("{{feeForNonUkCopies}}", ccdData.getFee().getOutsideUKGrantCopies().toString());
+        keyValue.put("{{feeForUkCopies}}", getOptionalNumberAsString(ccdData.getFee().getExtraCopiesOfGrant()));
+        keyValue.put("{{feeForNonUkCopies}}", getOptionalNumberAsString(ccdData.getFee().getOutsideUKGrantCopies()));
         keyValue.put("{{solsPaymentReferenceNumber}}", ccdData.getFee().getPaymentReferenceNumber());
 
         String additionalInfo = ccdData.getSolsAdditionalInfo();
@@ -151,6 +152,13 @@ public class ConfirmationResponseService {
                 || REASON_FOR_NOT_APPLYING_DIED_AFTER.equals(executor.getReasonNotApplying()))
             .map(executor -> "* death certificate for " + executor.getForename() + " " + executor.getLastname())
             .collect(Collectors.joining("\n"));
+    }
+
+    private String getOptionalNumberAsString(Long amount) {
+        if (amount == null) {
+            return "";
+        }
+        return amount.toString();
     }
 
 }

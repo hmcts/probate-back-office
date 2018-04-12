@@ -230,6 +230,25 @@ public class ConfirmationResponseServiceTest {
         assertConfirmationValues(nextStepsValues);
     }
 
+    @Test
+    public void shouldGetNextStepsConfirmationWithNoCopies() {
+        CCDData ccdDataMock = getCcdDataForConfirmation();
+        when(ccdDataMock.getFee().getExtraCopiesOfGrant()).thenReturn(null);
+        when(ccdDataMock.getFee().getOutsideUKGrantCopies()).thenReturn(null);
+
+        when(markdownSubstitutionServiceMock.generatePage(any(String.class), any(MarkdownTemplate.class), nextStepsKeyValueMap.capture()))
+                .thenReturn(willBodyTemplateResponseMock);
+
+        AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getNextStepsConfirmation(ccdDataMock);
+
+        assertEquals(null, afterSubmitCallbackResponse.getConfirmationHeader());
+        assertEquals(CONFIRMATION_BODY, afterSubmitCallbackResponse.getConfirmationBody());
+        Map<String, String> nextStepsValues = nextStepsKeyValueMap.getValue();
+        assertEquals("", nextStepsValues.get("{{feeForUkCopies}}"));
+        assertEquals("", nextStepsValues.get("{{feeForNonUkCopies}}"));
+        assertConfirmationValues(nextStepsValues);
+    }
+
     private void assertConfirmationValues(Map<String, String> nextStepsValues) {
         assertEquals("ref", nextStepsValues.get("{{solicitorReference}}"));
         assertEquals("Sol Firm Name", nextStepsValues.get("{{solsSolicitorFirmName}}"));
