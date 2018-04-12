@@ -130,6 +130,55 @@ You should get a response similar to this:
   {"status":"UP","diskSpace":{"status":"UP","total":249644974080,"free":137188298752,"threshold":10485760}}
 ```
 
+## Setting up the ccd database and roles locally
+
+Follow these instructions to setup data on ccd for Sols - using the latest definition (xls)
+
+### Host change in definition file
+make a note of your local ip address using ifconfig (for me it was labelled tun0)
+change the endpoint host on any sols callbacks to use this ip address in the definition
+
+### Start up
+launch the all the containers
+```bash
+docker-compose up
+```
+
+### Roles
+upload needed roles
+```bash
+./bin/ccd-add-all-roles.sh
+```
+
+### Import
+import the amended definition
+```bash
+./bin/ccd-import-definition.sh "../CCD_Probate_V11.1-Dev.xlsx"
+```
+
+### User token
+grab a user token from the out of
+```bash
+./bin/idam-login.sh ProbateSolicitor1@gmail.com
+```
+
+### Go to ccd web app
+```
+http://localhost:3451/?jwt=<user-token>
+```
+
+login to ccd
+Use ProbateSolicitor1@gmail.com : password
+
+### Notes:
+You may need to forcibly remove any relevant images dbfirst to ensure the db init is correctly completed
+```bash
+docker image rmi -f $(docker image ls -a -q)
+```
+When the containers are restarted, ccd data has to be reloaded
+The user token expires approx every 4 hours
+
+
 ## Hystrix
 
 [Hystrix](https://github.com/Netflix/Hystrix/wiki) is a library that helps you control the interactions
