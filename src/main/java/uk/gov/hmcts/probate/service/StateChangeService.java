@@ -6,6 +6,7 @@ import uk.gov.hmcts.probate.changerule.DomicilityRule;
 import uk.gov.hmcts.probate.changerule.ExecutorsRule;
 import uk.gov.hmcts.probate.changerule.NoOriginalWillRule;
 import uk.gov.hmcts.probate.changerule.NoWillRule;
+import uk.gov.hmcts.probate.changerule.UpdateApplicationRule;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 
 import java.util.Optional;
@@ -14,11 +15,13 @@ import java.util.Optional;
 @Component
 public class StateChangeService {
     private static final String STATE_STOPPED = "Stopped";
+    private static final String STATE_UPDATE_APPLICATION = "SolAppCreated";
 
     private final NoWillRule noWillRule;
     private final NoOriginalWillRule noOriginalWillRule;
     private final DomicilityRule domicilityRule;
     private final ExecutorsRule executorsRule;
+    private final UpdateApplicationRule updateApplicationRule;
 
     public Optional<String> getChangedStateForCaseUpdate(CaseData caseData) {
         if (noWillRule.isChangeNeeded(caseData)) {
@@ -32,6 +35,13 @@ public class StateChangeService {
         }
         if (executorsRule.isChangeNeeded(caseData)) {
             return Optional.of(STATE_STOPPED);
+        }
+        return Optional.empty();
+    }
+
+    public Optional<String> getChangedStateForCaseReview(CaseData caseData) {
+        if (updateApplicationRule.isChangeNeeded(caseData)) {
+            return Optional.of(STATE_UPDATE_APPLICATION);
         }
         return Optional.empty();
     }

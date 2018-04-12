@@ -75,6 +75,7 @@ public class NextStepsControllerTest {
     private static final BigDecimal FEE_FOR_UK_COPIES = BigDecimal.TEN;
     private static final BigDecimal FEE_FOR_NON_UK_COPIES = BigDecimal.TEN;
     private static final BigDecimal TOTAL_FEE = BigDecimal.TEN;
+    private static final String NEED_TO_UPDATE = "No";
 
 
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
@@ -117,6 +118,7 @@ public class NextStepsControllerTest {
                 .willHasCodicils(WILL_HAS_CODICLIS)
                 .willNumberOfCodicils(NUMBER_OF_CODICLIS)
                 .solsIHTFormId(IHT_FORM)
+                .solsSOTNeedToUpdate(NEED_TO_UPDATE)
                 .solsSOTName(SOLICITOR_NAME)
                 .solsSOTJobTitle(SOLICITOR_JOB_TITLE)
                 .solsPaymentMethods(PAYMENT_METHOD)
@@ -138,11 +140,7 @@ public class NextStepsControllerTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
             .andReturn();
-
-        System.out.print(mvcResult.getResponse().getContentAsString());
-
     }
-
 
     @Test
     public void shouldConfirmNextStepsWithSolicitorFirmIsNullError() throws Exception {
@@ -296,5 +294,20 @@ public class NextStepsControllerTest {
                 .andExpect(jsonPath("$.fieldErrors[0].message")
                         .value("Fee for non UK Copies cannot be null"));
     }
+
+    @Test
+    public void shouldProduceEmptyConfirmNextStepsWithNoErrorsForReviewStateChange() throws Exception {
+        caseDataBuilder.solsSOTNeedToUpdate("Yes");
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
+
+        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
+        MvcResult mvcResult = mockMvc.perform(post(NEXTSTEPS_CONFIRMATION_URL).content(json).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string("{\"confirmation_header\":null,\"confirmation_body\":null}"))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andReturn();
+    }
+
 
 }

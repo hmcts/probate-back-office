@@ -49,20 +49,13 @@ public class CCDDataTransformer {
                 .grossValue(caseData.getIhtGrossValue())
                 .build();
 
-
-        String paymentreference = PAYMENT_REFERENCE_CHEQUE;
-        if (PAYEMNT_METHOD_VALUE_FEE_ACCOUNT.equals(caseData.getSolsPaymentMethods())) {
-            paymentreference = PAYMENT_REFERENCE_FEE_PREFIX + caseData.getSolsFeeAccountNumber();
-        }
-
-
         Fee fee = Fee.builder()
                 .extraCopiesOfGrant(caseData.getExtraCopiesOfGrant())
                 .outsideUKGrantCopies(caseData.getOutsideUKGrantCopies())
                 .paymentMethod(caseData.getSolsPaymentMethods())
                 .amount(feeServiceResponse.getTotal())
                 .applicationFee(feeServiceResponse.getApplicationFee())
-                .paymentReferenceNumber(paymentreference)
+                .paymentReferenceNumber(getPaymentReferenceNumber(caseData))
                 .build();
 
         return CCDData.builder()
@@ -105,6 +98,7 @@ public class CCDDataTransformer {
             .extraCopiesOfGrant(caseData.getExtraCopiesOfGrant())
             .outsideUKGrantCopies(caseData.getOutsideUKGrantCopies())
             .paymentMethod(caseData.getSolsPaymentMethods())
+            .paymentReferenceNumber(getPaymentReferenceNumber(caseData))
             .applicationFee(caseData.getApplicationFee())
             .amount(caseData.getTotalFee())
             .build();
@@ -119,6 +113,14 @@ public class CCDDataTransformer {
             .solsAdditionalInfo(caseData.getSolsAdditionalInfo())
             .executors(getAllExecutors(caseData))
             .build();
+    }
+
+    private String getPaymentReferenceNumber(CaseData caseData) {
+        if (PAYEMNT_METHOD_VALUE_FEE_ACCOUNT.equals(caseData.getSolsPaymentMethods())) {
+            return PAYMENT_REFERENCE_FEE_PREFIX + caseData.getSolsFeeAccountNumber();
+        } else {
+            return PAYMENT_REFERENCE_CHEQUE;
+        }
     }
 
     private String getSolicitorAppReference(String solsSolicitorAppReference) {

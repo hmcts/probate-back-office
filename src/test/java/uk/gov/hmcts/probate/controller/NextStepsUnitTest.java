@@ -21,11 +21,13 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.model.fee.FeeServiceResponse;
 import uk.gov.hmcts.probate.service.ConfirmationResponseService;
+import uk.gov.hmcts.probate.service.StateChangeService;
 import uk.gov.hmcts.probate.service.fee.FeeService;
 import uk.gov.hmcts.probate.transformer.CCDDataTransformer;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Optional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -67,6 +69,8 @@ public class NextStepsUnitTest {
     private FeeServiceResponse feeServiceResponseMock;
     @Mock
     private CallbackResponse callbackResponseMock;
+    @Mock
+    private StateChangeService stateChangeServiceMock;
 
 
     @Before
@@ -74,12 +78,15 @@ public class NextStepsUnitTest {
         MockitoAnnotations.initMocks(this);
 
         underTest = new NextStepsController(ccdBeanTransformerMock, confirmationResponseServiceMock, callbackResponseTransformerMock,
-                objectMapperMock, feeServiceMock);
+                objectMapperMock, feeServiceMock, stateChangeServiceMock);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
     }
 
     @Test
-    public void shouldGetFeesWithNoErrors() {
-        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+    public void shouldValidateWithNoErrors() {
+        when(stateChangeServiceMock.getChangedStateForCaseReview(caseDataMock)).thenReturn(Optional.empty());
         when(ccdBeanTransformerMock.transform(callbackRequestMock)).thenReturn(ccdDataMock);
         when(ccdDataMock.getIht()).thenReturn(inheritanceTaxMock);
         when(ccdDataMock.getFee()).thenReturn(feeMock);
@@ -87,7 +94,7 @@ public class NextStepsUnitTest {
         when(callbackResponseTransformerMock.transform(callbackRequestMock, feeServiceResponseMock)).thenReturn(callbackResponseMock);
 
 
-        ResponseEntity<CallbackResponse> response = underTest.getFees(callbackRequestMock,
+        ResponseEntity<CallbackResponse> response = underTest.validate(callbackRequestMock,
                 bindingResultMock, httpServletRequestMock);
 
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
@@ -95,10 +102,13 @@ public class NextStepsUnitTest {
     }
 
     @Test(expected = BadRequestException.class)
-    public void shouldGetFeesWithError() {
+    public void shouldValidateWithError() {
+        when(ccdBeanTransformerMock.transform(callbackRequestMock)).thenReturn(ccdDataMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
         when(bindingResultMock.hasErrors()).thenReturn(true);
+        when(stateChangeServiceMock.getChangedStateForCaseReview(caseDataMock)).thenReturn(Optional.empty());
 
-        ResponseEntity<CallbackResponse> response = underTest.getFees(callbackRequestMock,
+        ResponseEntity<CallbackResponse> response = underTest.validate(callbackRequestMock,
                 bindingResultMock, httpServletRequestMock);
 
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
@@ -106,14 +116,34 @@ public class NextStepsUnitTest {
     }
 
     @Test(expected = BadRequestException.class)
-    public void shouldGetFeesWithErrorAndLogRequest() throws JsonProcessingException {
+    public void shouldValidateWithErrorAndLogRequest() throws JsonProcessingException {
+        when(ccdBeanTransformerMock.transform(callbackRequestMock)).thenReturn(ccdDataMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
         when(bindingResultMock.hasErrors()).thenReturn(true);
+        when(stateChangeServiceMock.getChangedStateForCaseReview(caseDataMock)).thenReturn(Optional.empty());
         when(objectMapperMock.writeValueAsString(callbackRequestMock)).thenThrow(JsonProcessingException.class);
 
-        ResponseEntity<CallbackResponse> response = underTest.getFees(callbackRequestMock,
+        ResponseEntity<CallbackResponse> response = underTest.validate(callbackRequestMock,
                 bindingResultMock, httpServletRequestMock);
 
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(response.getBody(), is(callbackResponseMock));
     }
+
+    @Test
+    public void shouldValidateWithNoErrorsForStateChange() {
+        Optional<String> newState = Optional.of("changedState");
+        when(stateChangeServiceMock.getChangedStateForCaseReview(caseDataMock)).thenReturn(newState);
+        when(ccdBeanTransformerMock.transform(callbackRequestMock)).thenReturn(ccdDataMock);
+        when(callbackResponseTransformerMock.transformWithConditionalStateChange(callbackRequestMock, newState))
+                .thenReturn(callbackResponseMock);
+
+
+        ResponseEntity<CallbackResponse> response = underTest.validate(callbackRequestMock,
+                bindingResultMock, httpServletRequestMock);
+
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        assertThat(response.getBody(), is(callbackResponseMock));
+    }
+
 }

@@ -268,7 +268,7 @@ public class ConfirmationResponseServiceTest {
         when(inheritanceTax.getFormName()).thenReturn("IHT207");
         when(fee.getPaymentMethod()).thenReturn("Cheque");
         when(fee.getAmount()).thenReturn(BigDecimal.valueOf(100.00));
-        when(fee.getApplicationFee()).thenReturn(BigDecimal.valueOf(50.00));
+        when(fee.getApplicationFeeInPounds()).thenReturn(BigDecimal.valueOf(50.00));
         when(fee.getAmountInPounds()).thenReturn(BigDecimal.valueOf(100).setScale(2, BigDecimal.ROUND_HALF_UP));
         when(ccdDataMock.getSolsAdditionalInfo()).thenReturn("solsAdditionalInfo");
         executorsList.add(executorMock);
