@@ -120,7 +120,7 @@ public class ConfirmationResponseService {
         keyValue.put("{{paymentMethod}}", ccdData.getFee().getPaymentMethod());
         keyValue.put("{{paymentAmount}}", ccdData.getFee().getAmountInPounds().toString());
 
-        keyValue.put("{{applicationFee}}", ccdData.getFee().getApplicationFee().toString());
+        keyValue.put("{{applicationFee}}", ccdData.getFee().getApplicationFeeInPounds().toString());
         keyValue.put("{{feeForUkCopies}}", ccdData.getFee().getExtraCopiesOfGrant().toString());
         keyValue.put("{{feeForNonUkCopies}}", ccdData.getFee().getOutsideUKGrantCopies().toString());
         keyValue.put("{{solsPaymentReferenceNumber}}", ccdData.getFee().getPaymentReferenceNumber());

@@ -19,4 +19,9 @@ public class Fee implements Serializable {
     public BigDecimal getAmountInPounds() {
         return amount.divide(BigDecimal.valueOf(100), 2, BigDecimal.ROUND_HALF_UP);
     }
+
+    public BigDecimal getApplicationFeeInPounds() {
+        return applicationFee.divide(BigDecimal.valueOf(100), 2, BigDecimal.ROUND_HALF_UP);
+    }
+
 }
