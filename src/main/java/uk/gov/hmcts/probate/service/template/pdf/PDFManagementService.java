@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
 import org.springframework.hateoas.Link;
 import org.springframework.stereotype.Service;
+import uk.gov.hmcts.probate.config.PDFServiceConfiguration;
 import uk.gov.hmcts.probate.exception.BadRequestException;
 import uk.gov.hmcts.probate.exception.ConnectionException;
 import uk.gov.hmcts.probate.model.ccd.raw.CCDDocument;
@@ -19,10 +20,10 @@ import java.io.IOException;
 @Data
 @Service
 public class PDFManagementService {
+    private final PDFServiceConfiguration pdfServiceConfiguration;
     private final PDFGeneratorService pdfGeneratorService;
     private final UploadService uploadService;
     private final ObjectMapper objectMapper;
-
 
     public CCDDocument generateAndUpload(CallbackRequest callbackRequest, PDFServiceTemplate pdfServiceTemplate) {
         try {
@@ -32,7 +33,7 @@ public class PDFManagementService {
             return CCDDocument.builder()
                     .documentBinaryUrl(store.getLink("binary").getHref())
                     .documentUrl(store.getLink(Link.REL_SELF).getHref())
-                    .documentFilename(store.getOriginalDocumentName())
+                    .documentFilename(pdfServiceConfiguration.getDefaultDisplayFilename())
                     .build();
         } catch (JsonProcessingException e) {
             throw new BadRequestException(e.getMessage(), null);
