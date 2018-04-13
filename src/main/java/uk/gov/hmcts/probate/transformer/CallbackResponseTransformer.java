@@ -22,6 +22,8 @@ public class CallbackResponseTransformer {
     public static final String PAYMENT_REFERENCE_CHEQUE = "Cheque (payable to ‘HM Courts & Tribunals Service’)";
 
     private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    private static final String APPLICATION_TYPE_SOLS = "Solicitor";
+    private static final String REGISTRY_LOCATION_BIRMINGHAM = "Birmingham";
 
     public CallbackResponse transformWithConditionalStateChange(CallbackRequest callbackRequest, Optional<String> newState) {
         CaseData caseData = callbackRequest.getCaseDetails().getData();
@@ -73,6 +75,8 @@ public class CallbackResponseTransformer {
     private ResponseCaseDataBuilder getResponseCaseData(CaseData caseData) {
 
         return ResponseCaseData.builder()
+            .applicationType(APPLICATION_TYPE_SOLS)
+            .registryLocation(REGISTRY_LOCATION_BIRMINGHAM)
             .solsSolicitorFirmName(caseData.getSolsSolicitorFirmName())
             .solsSolicitorFirmPostcode(caseData.getSolsSolicitorFirmPostcode())
             .solsSOTName(caseData.getSolsSOTName())

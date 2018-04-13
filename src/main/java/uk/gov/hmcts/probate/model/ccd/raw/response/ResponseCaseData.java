@@ -16,6 +16,9 @@ import java.util.List;
 public class ResponseCaseData {
 
     private final String state;
+    private final String applicationType;
+    private final String registryLocation;
+
     private final String deceasedDateOfDeath;
     private final String deceasedDateOfBirth;
     private final String deceasedForenames;

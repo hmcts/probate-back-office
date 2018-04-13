@@ -31,6 +31,9 @@ import static org.mockito.MockitoAnnotations.initMocks;
 public class CallbackResponseTransformerTest {
     private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
+    private static final String APPLICATION_TYPE = "Solicitor";
+    private static final String REGISTRY_LOCATION = "Birmingham";
+
     private static final String SOLICITOR_FIRM_NAME = "Sol Firm Name";
     private static final String SOLICITOR_FIRM_POSTCODE = "SW13 6EA";
     private static final String SOLICITOR_SOT_NAME = "Andy Test";
@@ -77,7 +80,6 @@ public class CallbackResponseTransformerTest {
     private static final String YES = "Yes";
     private static final String NO = "No";
     private static final Optional<String> ORIGINAL_STATE = Optional.empty();
-    private static final Optional<String> STOPPED_STATE = Optional.of("Stopped");
     private static final Optional<String> CHANGED_STATE = Optional.of("Changed");
 
 
@@ -222,6 +224,9 @@ public class CallbackResponseTransformerTest {
     }
 
     private void assertCommon(CallbackResponse callbackResponse) {
+        assertEquals(APPLICATION_TYPE, callbackResponse.getData().getApplicationType());
+        assertEquals(REGISTRY_LOCATION, callbackResponse.getData().getRegistryLocation());
+
         assertEquals(SOLICITOR_FIRM_NAME, callbackResponse.getData().getSolsSolicitorFirmName());
         assertEquals(SOLICITOR_FIRM_POSTCODE, callbackResponse.getData().getSolsSolicitorFirmPostcode());
         assertEquals(SOLICITOR_SOT_NAME, callbackResponse.getData().getSolsSOTName());
