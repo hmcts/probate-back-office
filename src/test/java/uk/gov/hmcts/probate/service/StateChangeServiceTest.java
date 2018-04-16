@@ -10,6 +10,7 @@ import uk.gov.hmcts.probate.changerule.DomicilityRule;
 import uk.gov.hmcts.probate.changerule.ExecutorsRule;
 import uk.gov.hmcts.probate.changerule.NoOriginalWillRule;
 import uk.gov.hmcts.probate.changerule.NoWillRule;
+import uk.gov.hmcts.probate.changerule.UpdateApplicationRule;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 
 import java.util.Optional;
@@ -32,6 +33,8 @@ public class StateChangeServiceTest {
     private DomicilityRule domicilityRule;
     @Mock
     private ExecutorsRule executorsStateRule;
+    @Mock
+    private UpdateApplicationRule updateApplicationRule;
 
     @Mock
     private CaseData caseDataMock;
@@ -40,7 +43,7 @@ public class StateChangeServiceTest {
     public void setup() {
         initMocks(this);
 
-        underTest = new StateChangeService(noWillRule, noOriginalWillRule, domicilityRule, executorsStateRule);
+        underTest = new StateChangeService(noWillRule, noOriginalWillRule, domicilityRule, executorsStateRule, updateApplicationRule);
     }
 
     @Test
@@ -115,6 +118,24 @@ public class StateChangeServiceTest {
         when(noOriginalWillRule.isChangeNeeded(caseDataMock)).thenReturn(false);
 
         Optional<String> newState = underTest.getChangedStateForCaseUpdate(caseDataMock);
+
+        assertEquals(false, newState.isPresent());
+    }
+
+    @Test
+    public void shouldChangeStateForCaseReview() {
+        when(updateApplicationRule.isChangeNeeded(caseDataMock)).thenReturn(true);
+
+        Optional<String> newState = underTest.getChangedStateForCaseReview(caseDataMock);
+
+        assertEquals("SolAppCreated", newState.get());
+    }
+
+    @Test
+    public void shouldNotChangeStateForReview() {
+        when(updateApplicationRule.isChangeNeeded(caseDataMock)).thenReturn(false);
+
+        Optional<String> newState = underTest.getChangedStateForCaseReview(caseDataMock);
 
         assertEquals(false, newState.isPresent());
     }
