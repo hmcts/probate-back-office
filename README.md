@@ -151,10 +151,15 @@ upload needed roles
 ```
 
 ### Import
+Use the latest version of the spreadsheet from 
+https://git.reform.hmcts.net/probate/ccd-import-spreadsheet
+#### Pick the correct one for the current ccd version you are working on
 import the amended definition
 ```bash
 ./bin/ccd-import-definition.sh "../CCD_Probate_V11.1-Dev.xlsx"
 ```
+Make sure you update the caseEvents tab, cell S1 to be local and update the ip address in T1
+The copy the fields as instructed on the next row of the spreadsheet
 
 ### User token
 grab a user token from the out of

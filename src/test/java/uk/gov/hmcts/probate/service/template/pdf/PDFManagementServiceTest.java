@@ -8,6 +8,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.hateoas.Link;
+import uk.gov.hmcts.probate.config.PDFServiceConfiguration;
 import uk.gov.hmcts.probate.exception.BadRequestException;
 import uk.gov.hmcts.probate.exception.ConnectionException;
 import uk.gov.hmcts.probate.model.ccd.raw.CCDDocument;
@@ -25,6 +26,8 @@ import static uk.gov.hmcts.probate.model.template.PDFServiceTemplate.LEGAL_STATE
 
 public class PDFManagementServiceTest {
 
+    @Mock
+    private PDFServiceConfiguration pdfServiceConfigurationMock;
     @Mock
     private PDFGeneratorService pdfGeneratorServiceMock;
     @Mock
@@ -55,6 +58,7 @@ public class PDFManagementServiceTest {
         String fileName = "filename";
         String href = "href";
 
+        when(pdfServiceConfigurationMock.getDefaultDisplayFilename()).thenReturn(fileName);
         when(objectMapperMock.writeValueAsString(callbackRequestMock)).thenReturn(json);
         when(pdfGeneratorServiceMock.generatePdf(LEGAL_STATEMENT, json)).thenReturn(evidenceManagementFileUpload);
         when(uploadServiceMock.store(evidenceManagementFileUpload)).thenReturn(evidenceManagementFile);
