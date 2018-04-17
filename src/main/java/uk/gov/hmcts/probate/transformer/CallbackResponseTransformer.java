@@ -57,6 +57,7 @@ public class CallbackResponseTransformer {
         CaseData caseData = callbackRequest.getCaseDetails().getData();
 
         ResponseCaseDataBuilder responseCaseData = this.getResponseCaseData(caseData);
+        responseCaseData.solsSOTNeedToUpdate(null);
         switch (pdfServiceTemplate) {
             case LEGAL_STATEMENT:
                 responseCaseData.solsLegalStatementDocument(ccdDocument);

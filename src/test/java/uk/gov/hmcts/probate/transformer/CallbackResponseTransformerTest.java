@@ -179,6 +179,7 @@ public class CallbackResponseTransformerTest {
         assertEquals(DOC_BINARY_URL, callbackResponse.getData().getSolsLegalStatementDocument().getDocumentBinaryUrl());
         assertEquals(DOC_URL, callbackResponse.getData().getSolsLegalStatementDocument().getDocumentUrl());
         assertEquals(DOC_NAME, callbackResponse.getData().getSolsLegalStatementDocument().getDocumentFilename());
+        assertEquals(null, callbackResponse.getData().getSolsSOTNeedToUpdate());
     }
 
     @Test

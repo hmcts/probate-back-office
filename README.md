@@ -130,7 +130,7 @@ You should get a response similar to this:
   {"status":"UP","diskSpace":{"status":"UP","total":249644974080,"free":137188298752,"threshold":10485760}}
 ```
 
-## Setting up the ccd database and roles locally
+## Setting up the ccd with roles locally
 
 Follow these instructions to setup data on ccd for Sols - using the latest definition (xls)
 
@@ -141,7 +141,7 @@ change the endpoint host on any sols callbacks to use this ip address in the def
 ### Start up
 launch the all the containers
 ```bash
-docker-compose up
+docker-compose -f docker/docker-compose-with-ccd.yml up
 ```
 
 ### Roles
@@ -158,31 +158,35 @@ import the amended definition
 ```bash
 ./bin/ccd-import-definition.sh "../CCD_Probate_V11.1-Dev.xlsx"
 ```
-Make sure you update the caseEvents tab, cell S1 to be local and update the ip address in T1
-The copy the fields as instructed on the next row of the spreadsheet
-
-### User token
-grab a user token from the out of
-```bash
-./bin/idam-login.sh ProbateSolicitor1@gmail.com
-```
+Make sure you update the caseEvents tab, cell S1 to be local and update the ip address in T1  
+The copy the fields as instructed on the next row of the spreadsheet  
+Also update the PrintableDocumentsUrl in the caseType tab on the spreadsheet in the same manner
 
 ### Go to ccd web app
 ```
-http://localhost:3451/?jwt=<user-token>
+http://localhost:3451/
 ```
 
 login to ccd
-Use ProbateSolicitor1@gmail.com : password
+For a solicitor use ProbateSolicitor1@gmail.com : password  
+Alternatively, for a caseworker use  
+ProbateSolCW1@gmail.com : password
 
 ### Notes:
-You may need to forcibly remove any relevant images dbfirst to ensure the db init is correctly completed
+You may need to forcibly remove any relevant images db first to ensure the db init is correctly completed
 ```bash
 docker image rmi -f $(docker image ls -a -q)
 ```
+You may also find removing all ontainers helps
+```bash
+docker container rm -f $(docker container ls -a -q)
+```
+
 When the containers are restarted, ccd data has to be reloaded
 The user token expires approx every 4 hours
 
+### Mac users
+You will need to reconfigure your docker settings to allow at least 6.5Gb
 
 ## Hystrix
 
