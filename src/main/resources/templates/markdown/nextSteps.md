@@ -26,10 +26,14 @@ Payment summary
 
 **Payment reference number** {{solsPaymentReferenceNumber}}
 
-What you need to do now:
+**Notes for this application**
+
+{{additionalInfo}}
+
+What you need to do now
 ==================================================
 
-You will now need to send us:
+You now need to send us:
 
 *   the original will - you must mark with your signature the top right corner of the front of the will
     (not on any cover sheet if there is one)
@@ -39,10 +43,7 @@ You will now need to send us:
 {{deadExecutors}}
 *   fee payment: your {{paymentMethod}} for £{{paymentAmount}} (grant and copies)
 *   the printed version of this page which will be used as your cover letter to us
-
-**Additional information**
-
-{{additionalInfo}}
+*   Print a copy of this page for your records
 
 Where to send us your documents
 -------------------------------
