@@ -110,6 +110,7 @@ services:
     command: --wait-for-database 30
     environment:
       - SERVER_PORT=8080
+      - S2S_NAMES_WHITELIST=ccd_gw,ccd_data,ccd_ps,probate_backend
       - IDAM_SUPERUSER_EMAIL
       - IDAM_SECRET_KEY=AAAAAAAAAAAAAAAA
       - GOV_NOTIFY_API_KEY
@@ -119,8 +120,8 @@ services:
       - SPRING_PROFILES_ACTIVE=dev
       - IDAM_TESTING_SUPPORT_ENABLED=true
       - LOGGING_LEVEL_UK_GOV_HMCTS_IDAM=DEBUG
-      - IDAM_CLIENT_URL=http://idam-api:8080
-      - PROVIDER_SERVICE_CLIENT_URL=http://service-auth-provider-api:8080
+      - IDAM_USER_BASE_URI=http://idam-api:8080
+      - IDAM_S2S_BASE_URI=http://service-auth-provider-api:8080
       - http_proxy=
       - https_proxy=
       - no_proxy=
@@ -146,48 +147,13 @@ services:
      - document-management-store-database
      - idam-api
      - service-auth-provider-api
+    ports:
+     - 8080:8080
 
   document-management-store-database:
     build:
       context: ./docker/database
     image: docker.artifactory.reform.hmcts.net/evidence/document-management-store-database:latest
-
-  document-management-store-api-gateway-web:
-    image: docker.artifactory.reform.hmcts.net/evidence/document-management-store-api-gateway-web:latest
-    environment:
-      - NODE_ENV=development
-      - PORT=8080
-      - EM_API_URL=http://document-management-store:8080
-      - IDAM_BASE_URL=http://idam-api:8080
-      - IDAM_S2S_URL=http://service-auth-provider-api:8080
-      - IDAM_SERVICE_KEY=AAAAAAAAAAAAAAAA
-      - IDAM_SERVICE_NAME=em_gw
-      - CORS_ORIGIN_METHODS=GET,POST,PUT,DELETE,OPTIONS
-      - CORS_ORIGIN_WHITELIST=http://document-management-store:8080
-      # these environment variables are used by java-logging library
-      - ROOT_APPENDER=JSON_CONSOLE
-      - LOG_OUTPUT=single
-      - JSON_CONSOLE_PRETTY_PRINT=false
-      - REFORM_SERVICE_TYPE=node
-      - REFORM_SERVICE_NAME=document-management-api-gateway-web
-      - REFORM_TEAM=evidence
-      - REFORM_ENVIRONMENT=docker
-  #      healthcheck env vars
-      - PACKAGES_ENVIRONMENT=docker
-      - PACKAGES_PROJECT=evidence
-      - PACKAGES_NAME=document-management-api-gateway-web
-      - PACKAGES_VERSION=unkown
-      - XFWD=true
-    ports:
-      - 8080:8080
-    links:
-     - document-management-store
-     - idam-api
-     - service-auth-provider-api
-    depends_on:
-     - document-management-store
-     - idam-api
-     - service-auth-provider-api
 
   fees-api:
     image: docker.artifactory.reform.hmcts.net/fees-register/fees-api:${FEES_API_DOCKER_VERSION:-latest}
