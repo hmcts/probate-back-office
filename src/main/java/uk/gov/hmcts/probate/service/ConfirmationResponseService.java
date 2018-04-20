@@ -35,6 +35,7 @@ public class ConfirmationResponseService {
     private static final String REASON_FOR_NOT_APPLYING_RENUNCIATION = "Renunciation";
     private static final String REASON_FOR_NOT_APPLYING_DIED_BEFORE = "DiedBefore";
     private static final String REASON_FOR_NOT_APPLYING_DIED_AFTER = "DiedAfter";
+    private static final String IHT_400421 = "IHT400421";
 
     @Value("${markdown.templatesDirectory}")
     private String templatesDirectory;
@@ -128,8 +129,15 @@ public class ConfirmationResponseService {
 
         String additionalInfo = ccdData.getSolsAdditionalInfo();
         if (Strings.isNullOrEmpty(additionalInfo)) {
-            additionalInfo = "None";
+            additionalInfo = "None provided";
         }
+
+        String ihtFormValue = ccdData.getIht().getFormName();
+        String iht400 = "";
+        if (ihtFormValue.contentEquals(IHT_400421)) {
+            iht400 = "* the stamped (receipted) IHT 421 with this application";
+        }
+        keyValue.put("{{iht400}}", iht400);
         keyValue.put("{{additionalInfo}}", additionalInfo);
         keyValue.put("{{renouncingExecutors}}", getRenouncingExecutors(ccdData.getExecutors()));
         keyValue.put("{{deadExecutors}}", getDeadExecutors(ccdData.getExecutors()));
