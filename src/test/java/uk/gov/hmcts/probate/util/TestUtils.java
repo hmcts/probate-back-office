@@ -13,7 +13,7 @@ import java.nio.file.Files;
 @Component
 public class TestUtils {
 
-    public String getJsonFromFile(String fileName) throws IOException {
+    public String getStringFromFile(String fileName) throws IOException {
         File file = ResourceUtils.getFile(this.getClass().getResource("/" + fileName));
 
         return new String(Files.readAllBytes(file.toPath()));
