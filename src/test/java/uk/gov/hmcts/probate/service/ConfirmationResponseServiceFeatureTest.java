@@ -16,7 +16,11 @@ import uk.gov.hmcts.probate.config.ApplicationConfiguration;
 import uk.gov.hmcts.probate.config.EvidenceManagementRestTemplate;
 import uk.gov.hmcts.probate.config.FeeServiceConfiguration;
 import uk.gov.hmcts.probate.config.PDFServiceConfiguration;
-import uk.gov.hmcts.probate.model.ccd.*;
+import uk.gov.hmcts.probate.model.ccd.CCDData;
+import uk.gov.hmcts.probate.model.ccd.Deceased;
+import uk.gov.hmcts.probate.model.ccd.Fee;
+import uk.gov.hmcts.probate.model.ccd.InheritanceTax;
+import uk.gov.hmcts.probate.model.ccd.Solicitor;
 import uk.gov.hmcts.probate.model.ccd.raw.response.AfterSubmitCallbackResponse;
 import uk.gov.hmcts.probate.util.TestUtils;
 
