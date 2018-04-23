@@ -37,7 +37,7 @@ markdown.templatesDirectory: templates/markdown/
 printservice:
   templatesDirectory: templates/printService/
   host: http://localhost:3453
-  path: /print/jurisdictions/PROBATE/case-types/GrantOfRepresentation/cases/%s/probate/
+  path: /jurisdictions/PROBATE/case-types/GrantOfRepresentation/cases/%s/probate/
 
 spring:
   jackson:
