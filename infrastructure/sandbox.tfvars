@@ -6,13 +6,9 @@ vault_section = "test"
 packages_environment = "test"
 packages_version = "3.0.0"
 
-
 outbound_proxy = ""
 
-
-
 log_level = "INFO"
-
 
 idam_service_api = "http://betadevbccidams2slb.reform.hmcts.net"
 pdf_service_api_url = "http://cmc-pdf-service-sandbox.service.core-compute-sandbox.internal"

@@ -9,4 +9,4 @@ packages_version = "3.0.0"
 outbound_proxy = ""
 
 
-
+log_level = "INFO"
