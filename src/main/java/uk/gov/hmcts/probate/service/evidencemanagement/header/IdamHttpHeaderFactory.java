@@ -16,7 +16,8 @@ class IdamHttpHeaderFactory implements HttpHeadersFactory {
     @Override
     public HttpHeaders getMultiPartHttpHeader() {
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization", httpServletRequest.getHeader("Authorization"));
+        headers.add("ServiceAuthorization", httpServletRequest.getHeader("ServiceAuthorization"));
+        headers.add("user-id", httpServletRequest.getHeader("user-id"));
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
         return headers;
     }
