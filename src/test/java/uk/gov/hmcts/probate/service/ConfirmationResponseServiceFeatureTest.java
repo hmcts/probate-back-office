@@ -1,7 +1,6 @@
 package uk.gov.hmcts.probate.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.collect.Lists;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +28,9 @@ import uk.gov.hmcts.probate.util.TestUtils;
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
@@ -78,7 +80,7 @@ public class ConfirmationResponseServiceFeatureTest {
     @Test
     public void shouldGenerateCorrectConfirmationBodyWithRenouncingExecutor() throws Exception {
         Executor renouncingExecutor = createRenouncingExecutor();
-        CCDData ccdData = createCCDataBuilder().executors(Lists.newArrayList(renouncingExecutor)).build();
+        CCDData ccdData = createCCDataBuilder().executors(Collections.singletonList(renouncingExecutor)).build();
         AfterSubmitCallbackResponse stopConfirmation = confirmationResponseService.getNextStepsConfirmation(ccdData);
 
         String expectedConfirmationBody = testUtils.getStringFromFile("expectedConfirmationBodyWithRenouncingExecutor.md");
@@ -89,7 +91,7 @@ public class ConfirmationResponseServiceFeatureTest {
     @Test
     public void shouldGenerateCorrectConfirmationBodyWithDeadExecutor() throws Exception {
         Executor deadExecutor = createDeadExecutor();
-        CCDData ccdData = createCCDataBuilder().executors(Lists.newArrayList(deadExecutor)).build();
+        CCDData ccdData = createCCDataBuilder().executors(Collections.singletonList(deadExecutor)).build();
         AfterSubmitCallbackResponse stopConfirmation = confirmationResponseService.getNextStepsConfirmation(ccdData);
 
         String expectedConfirmationBody = testUtils.getStringFromFile("expectedConfirmationBodyWithDeadExecutor.md");
@@ -112,7 +114,7 @@ public class ConfirmationResponseServiceFeatureTest {
         Executor renouncingExecutor = createRenouncingExecutor();
         Executor deadExecutor = createDeadExecutor();
         CCDData ccdData = createCCDataBuilder()
-                .executors(Lists.newArrayList(renouncingExecutor, deadExecutor))
+                .executors(Arrays.asList(renouncingExecutor, deadExecutor))
                 .iht(createInheritanceTax("IHT400421")).build();
         AfterSubmitCallbackResponse stopConfirmation = confirmationResponseService.getNextStepsConfirmation(ccdData);
 
@@ -129,7 +131,7 @@ public class ConfirmationResponseServiceFeatureTest {
                 .deceased(createDeceased())
                 .iht(createInheritanceTax(IHT_FORM))
                 .fee(createFee())
-                .executors(Lists.newArrayList())
+                .executors(new ArrayList<>())
                 .solsAdditionalInfo(ADDITIONAL_INFO);
     }
 

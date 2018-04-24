@@ -46,7 +46,7 @@ You now need to send us:
 *   completed inheritance tax form IHT207
 
 
-* death certificate for Bob Martin
+*   death certificate for Bob Martin
 
 
 Where to send us your documents

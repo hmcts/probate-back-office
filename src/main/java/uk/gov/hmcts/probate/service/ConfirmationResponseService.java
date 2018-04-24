@@ -135,7 +135,7 @@ public class ConfirmationResponseService {
         String ihtFormValue = ccdData.getIht().getFormName();
         String iht400 = "";
         if (ihtFormValue.contentEquals(IHT_400421)) {
-            iht400 = "* the stamped (receipted) IHT 421 with this application";
+            iht400 = "*   the stamped (receipted) IHT 421 with this application";
         }
         keyValue.put("{{iht400}}", iht400);
         keyValue.put("{{additionalInfo}}", additionalInfo);
@@ -149,7 +149,7 @@ public class ConfirmationResponseService {
         return executors.stream()
             .filter(executor -> !executor.isApplying())
             .filter(executor -> REASON_FOR_NOT_APPLYING_RENUNCIATION.equals(executor.getReasonNotApplying()))
-            .map(executor -> "* renunciation form for " + executor.getForename() + " " + executor.getLastname())
+            .map(executor -> "*   renunciation form for " + executor.getForename() + " " + executor.getLastname())
             .collect(Collectors.joining("\n"));
     }
 
@@ -158,7 +158,7 @@ public class ConfirmationResponseService {
             .filter(executor -> !executor.isApplying())
             .filter(executor -> REASON_FOR_NOT_APPLYING_DIED_BEFORE.equals(executor.getReasonNotApplying())
                 || REASON_FOR_NOT_APPLYING_DIED_AFTER.equals(executor.getReasonNotApplying()))
-            .map(executor -> "* death certificate for " + executor.getForename() + " " + executor.getLastname())
+            .map(executor -> "*   death certificate for " + executor.getForename() + " " + executor.getLastname())
             .collect(Collectors.joining("\n"));
     }
 
