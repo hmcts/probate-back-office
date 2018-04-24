@@ -43,8 +43,9 @@ You now need to send us:
 *   2 unstapled photocopies of the signed will - these must be on plain A4 paper
 *   fee payment: your Cheque for £0.10 (grant and copies)
 *   the printed version of this page which will be used as your cover letter to us
-*   completed inheritance tax form IHT400421
-*   the stamped (receipted) IHT 421 with this application
+*   completed inheritance tax form IHT207
+*   death certificate for Bob Martin
+*   death certificate for John Martin
 
 Where to send us your documents
 -------------------------------

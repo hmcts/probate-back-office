@@ -48,7 +48,6 @@ You now need to send us:
 *   renunciation form for Tim Smith
 *   death certificate for Bob Martin
 
-
 Where to send us your documents
 -------------------------------
 

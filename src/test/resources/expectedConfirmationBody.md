@@ -45,10 +45,6 @@ You now need to send us:
 *   the printed version of this page which will be used as your cover letter to us
 *   completed inheritance tax form IHT207
 
-
-
-
-
 Where to send us your documents
 -------------------------------
 

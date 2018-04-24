@@ -44,10 +44,7 @@ You now need to send us:
 *   fee payment: your Cheque for £0.10 (grant and copies)
 *   the printed version of this page which will be used as your cover letter to us
 *   completed inheritance tax form IHT207
-
 *   renunciation form for Tim Smith
-
-
 
 Where to send us your documents
 -------------------------------

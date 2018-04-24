@@ -45,6 +45,10 @@ You now need to send us:
 *   the printed version of this page which will be used as your cover letter to us
 *   completed inheritance tax form IHT400421
 *   the stamped (receipted) IHT 421 with this application
+*   renunciation form for Tim Smith
+*   renunciation form for John Smith
+*   death certificate for Bob Martin
+*   death certificate for John Martin
 
 Where to send us your documents
 -------------------------------

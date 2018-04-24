@@ -1,6 +1,7 @@
 package uk.gov.hmcts.probate.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.Lists;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,7 +80,7 @@ public class ConfirmationResponseServiceFeatureTest {
 
     @Test
     public void shouldGenerateCorrectConfirmationBodyWithRenouncingExecutor() throws Exception {
-        Executor renouncingExecutor = createRenouncingExecutor();
+        Executor renouncingExecutor = createRenouncingExecutor("Tim", "Smith");
         CCDData ccdData = createCCDataBuilder().executors(Collections.singletonList(renouncingExecutor)).build();
         AfterSubmitCallbackResponse stopConfirmation = confirmationResponseService.getNextStepsConfirmation(ccdData);
 
@@ -89,12 +90,36 @@ public class ConfirmationResponseServiceFeatureTest {
     }
 
     @Test
+    public void shouldGenerateCorrectConfirmationBodyWithMultipleRenouncingExecutors() throws Exception {
+        Executor renouncingExecutor = createRenouncingExecutor("Tim", "Smith");
+        Executor renouncingExecutor2 = createRenouncingExecutor("John", "Smith");
+        CCDData ccdData = createCCDataBuilder().executors(Arrays.asList(renouncingExecutor, renouncingExecutor2)).build();
+        AfterSubmitCallbackResponse stopConfirmation = confirmationResponseService.getNextStepsConfirmation(ccdData);
+
+        String expectedConfirmationBody = testUtils.getStringFromFile("expectedConfirmationBodyWithMultipleRenouncingExecutors.md");
+
+        assertThat(stopConfirmation.getConfirmationBody(), is(expectedConfirmationBody));
+    }
+
+    @Test
     public void shouldGenerateCorrectConfirmationBodyWithDeadExecutor() throws Exception {
-        Executor deadExecutor = createDeadExecutor();
+        Executor deadExecutor = createDeadExecutor("Bob", "Martin");
         CCDData ccdData = createCCDataBuilder().executors(Collections.singletonList(deadExecutor)).build();
         AfterSubmitCallbackResponse stopConfirmation = confirmationResponseService.getNextStepsConfirmation(ccdData);
 
         String expectedConfirmationBody = testUtils.getStringFromFile("expectedConfirmationBodyWithDeadExecutor.md");
+
+        assertThat(stopConfirmation.getConfirmationBody(), is(expectedConfirmationBody));
+    }
+
+    @Test
+    public void shouldGenerateCorrectConfirmationBodyWithMultipleDeadExecutors() throws Exception {
+        Executor deadExecutor = createDeadExecutor("Bob", "Martin");
+        Executor deadExecutor2 = createDeadExecutor("John", "Martin");
+        CCDData ccdData = createCCDataBuilder().executors(Arrays.asList(deadExecutor, deadExecutor2)).build();
+        AfterSubmitCallbackResponse stopConfirmation = confirmationResponseService.getNextStepsConfirmation(ccdData);
+
+        String expectedConfirmationBody = testUtils.getStringFromFile("expectedConfirmationBodyWithMultipleDeadExecutors.md");
 
         assertThat(stopConfirmation.getConfirmationBody(), is(expectedConfirmationBody));
     }
@@ -111,14 +136,30 @@ public class ConfirmationResponseServiceFeatureTest {
 
     @Test
     public void shouldGenerateCorrectConfirmationBodyWithAllCombinationsForAdditionalOptions() throws Exception {
-        Executor renouncingExecutor = createRenouncingExecutor();
-        Executor deadExecutor = createDeadExecutor();
+        Executor renouncingExecutor = createRenouncingExecutor("Tim", "Smith");
+        Executor deadExecutor = createDeadExecutor("Bob", "Martin");
         CCDData ccdData = createCCDataBuilder()
                 .executors(Arrays.asList(renouncingExecutor, deadExecutor))
                 .iht(createInheritanceTax("IHT400421")).build();
         AfterSubmitCallbackResponse stopConfirmation = confirmationResponseService.getNextStepsConfirmation(ccdData);
 
         String expectedConfirmationBody = testUtils.getStringFromFile("expectedConfirmationBodyWithAllCombinations.md");
+
+        assertThat(stopConfirmation.getConfirmationBody(), is(expectedConfirmationBody));
+    }
+
+    @Test
+    public void shouldGenerateCorrectConfirmationBodyWithAllCombinationsForAdditionalOptionsAndMultiples() throws Exception {
+        Executor renouncingExecutor = createRenouncingExecutor("Tim", "Smith");
+        Executor renouncingExecutor2 = createRenouncingExecutor("John", "Smith");
+        Executor deadExecutor = createDeadExecutor("Bob", "Martin");
+        Executor deadExecutor2 = createDeadExecutor("John", "Martin");
+        CCDData ccdData = createCCDataBuilder()
+                .executors(Arrays.asList(renouncingExecutor, renouncingExecutor2, deadExecutor, deadExecutor2))
+                .iht(createInheritanceTax("IHT400421")).build();
+        AfterSubmitCallbackResponse stopConfirmation = confirmationResponseService.getNextStepsConfirmation(ccdData);
+
+        String expectedConfirmationBody = testUtils.getStringFromFile("expectedConfirmationBodyWithAllCombinationsAndMultiples.md");
 
         assertThat(stopConfirmation.getConfirmationBody(), is(expectedConfirmationBody));
     }
@@ -172,19 +213,19 @@ public class ConfirmationResponseServiceFeatureTest {
                 .build();
     }
 
-    private Executor createDeadExecutor() {
+    private Executor createDeadExecutor(String forename, String lastname) {
         return Executor.builder()
-                .forename("Bob")
-                .lastname("Martin")
+                .forename(forename)
+                .lastname(lastname)
                 .reasonNotApplying(REASON_FOR_NOT_APPLYING_DIED_BEFORE)
                 .build();
     }
 
 
-    private Executor createRenouncingExecutor() {
+    private Executor createRenouncingExecutor(String forename, String lastname) {
         return Executor.builder()
-                .forename("Tim")
-                .lastname("Smith")
+                .forename(forename)
+                .lastname(lastname)
                 .reasonNotApplying(REASON_FOR_NOT_APPLYING_RENUNCIATION)
                 .build();
     }

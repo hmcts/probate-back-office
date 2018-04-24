@@ -44,11 +44,7 @@ You now need to send us:
 *   fee payment: your {{paymentMethod}} for £{{paymentAmount}} (grant and copies)
 *   the printed version of this page which will be used as your cover letter to us
 *   completed inheritance tax form {{ihtForm}}
-{{iht400}}
-{{renouncingExecutors}}
-{{deadExecutors}}
-
-
+{{iht400}}{{renouncingExecutors}}{{deadExecutors}}
 Where to send us your documents
 -------------------------------
 

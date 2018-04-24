@@ -2,6 +2,7 @@ package uk.gov.hmcts.probate.service;
 
 import com.google.common.base.Strings;
 import lombok.Data;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.changerule.ChangeRule;
@@ -18,7 +19,6 @@ import uk.gov.hmcts.probate.model.template.MarkdownTemplate;
 import uk.gov.hmcts.probate.model.template.TemplateResponse;
 import uk.gov.hmcts.probate.service.template.markdown.MarkdownSubstitutionService;
 
-import java.math.BigDecimal;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
@@ -135,7 +135,7 @@ public class ConfirmationResponseService {
         String ihtFormValue = ccdData.getIht().getFormName();
         String iht400 = "";
         if (ihtFormValue.contentEquals(IHT_400421)) {
-            iht400 = "*   the stamped (receipted) IHT 421 with this application";
+            iht400 = "*   the stamped (receipted) IHT 421 with this application\n";
         }
         keyValue.put("{{iht400}}", iht400);
         keyValue.put("{{additionalInfo}}", additionalInfo);
@@ -146,20 +146,22 @@ public class ConfirmationResponseService {
     }
 
     private String getRenouncingExecutors(List<Executor> executors) {
-        return executors.stream()
+        String renouncingExecutors = executors.stream()
             .filter(executor -> !executor.isApplying())
             .filter(executor -> REASON_FOR_NOT_APPLYING_RENUNCIATION.equals(executor.getReasonNotApplying()))
             .map(executor -> "*   renunciation form for " + executor.getForename() + " " + executor.getLastname())
             .collect(Collectors.joining("\n"));
+        return !StringUtils.isEmpty(renouncingExecutors) ? renouncingExecutors + "\n" : renouncingExecutors;
     }
 
     private String getDeadExecutors(List<Executor> executors) {
-        return executors.stream()
+        String deadExecutors = executors.stream()
             .filter(executor -> !executor.isApplying())
             .filter(executor -> REASON_FOR_NOT_APPLYING_DIED_BEFORE.equals(executor.getReasonNotApplying())
                 || REASON_FOR_NOT_APPLYING_DIED_AFTER.equals(executor.getReasonNotApplying()))
             .map(executor -> "*   death certificate for " + executor.getForename() + " " + executor.getLastname())
             .collect(Collectors.joining("\n"));
+        return !StringUtils.isEmpty(deadExecutors) ? deadExecutors + "\n" : deadExecutors;
     }
 
     private String getOptionalNumberAsString(Long amount) {
