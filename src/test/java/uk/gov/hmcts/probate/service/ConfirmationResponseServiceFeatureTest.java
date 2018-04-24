@@ -1,6 +1,7 @@
 package uk.gov.hmcts.probate.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.Lists;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import uk.gov.hmcts.probate.config.FeeServiceConfiguration;
 import uk.gov.hmcts.probate.config.PDFServiceConfiguration;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
 import uk.gov.hmcts.probate.model.ccd.Deceased;
+import uk.gov.hmcts.probate.model.ccd.Executor;
 import uk.gov.hmcts.probate.model.ccd.Fee;
 import uk.gov.hmcts.probate.model.ccd.InheritanceTax;
 import uk.gov.hmcts.probate.model.ccd.Solicitor;
@@ -27,7 +29,6 @@ import uk.gov.hmcts.probate.util.TestUtils;
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.ArrayList;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
@@ -37,10 +38,10 @@ import static org.junit.Assert.assertThat;
 @TestPropertySource(properties = {"markdown.templatesDirectory=templates/markdown/"})
 public class ConfirmationResponseServiceFeatureTest {
 
+    private final TestUtils testUtils = new TestUtils();
+    private static final String REASON_FOR_NOT_APPLYING_RENUNCIATION = "Renunciation";
+    private static final String REASON_FOR_NOT_APPLYING_DIED_BEFORE = "DiedBefore";
     public static final String SOLICITOR_REFERENCE = "SOL_REF_X12345";
-
-    @Autowired
-    private ConfirmationResponseService confirmationResponseService;
 
     private static final LocalDate DOB = LocalDate.of(1990, 4, 4);
     private static final LocalDate DOD = LocalDate.of(2017, 4, 4);
@@ -59,29 +60,97 @@ public class ConfirmationResponseServiceFeatureTest {
     private static final Long EXTRA_UK = 1L;
     private static final Long EXTRA_OUTSIDE_UK = 2L;
     private static final String PAYMENT_REFERENCE = "XXXXX123456";
+    public static final String ADDITIONAL_INFO = "ADDITIONAL INFO";
 
-    private CCDData createCCData() {
-        Solicitor solicitor = Solicitor.builder()
-                .firmName(SOLICITOR_FIRM_NAME)
-                .firmPostcode(SOLICITOR_FIRM_POSTCODE)
-                .fullname(SOLICITOR_NAME)
-                .jobRole(SOLICITOR_JOB_TITLE)
+    @Autowired
+    private ConfirmationResponseService confirmationResponseService;
+
+    @Test
+    public void shouldGenerateCorrectConfirmationBodyWithNoAdditionalOptions() throws Exception {
+        CCDData ccdData = createCCDataBuilder().build();
+        AfterSubmitCallbackResponse stopConfirmation = confirmationResponseService.getNextStepsConfirmation(ccdData);
+
+        String expectedConfirmationBody = testUtils.getStringFromFile("expectedConfirmationBody.md");
+
+        assertThat(stopConfirmation.getConfirmationBody(), is(expectedConfirmationBody));
+    }
+
+    @Test
+    public void shouldGenerateCorrectConfirmationBodyWithRenouncingExecutor() throws Exception {
+        Executor renouncingExecutor = Executor.builder()
+                .forename("Tim")
+                .lastname("Smith")
+                .reasonNotApplying(REASON_FOR_NOT_APPLYING_RENUNCIATION)
                 .build();
+        CCDData ccdData = createCCDataBuilder().executors(Lists.newArrayList(renouncingExecutor)).build();
+        AfterSubmitCallbackResponse stopConfirmation = confirmationResponseService.getNextStepsConfirmation(ccdData);
 
-        Deceased deceased = Deceased.builder()
-                .firstname(FORENAME)
-                .lastname(SURNAME)
-                .dateOfBirth(DOB)
-                .dateOfDeath(DOD)
+        String expectedConfirmationBody = testUtils.getStringFromFile("expectedConfirmationBodyWithRenouncingExecutor.md");
+
+        assertThat(stopConfirmation.getConfirmationBody(), is(expectedConfirmationBody));
+    }
+
+    @Test
+    public void shouldGenerateCorrectConfirmationBodyWithDeadExecutor() throws Exception {
+        Executor deadExecutor = Executor.builder()
+                .forename("Bob")
+                .lastname("Martin")
+                .reasonNotApplying(REASON_FOR_NOT_APPLYING_DIED_BEFORE)
                 .build();
+        CCDData ccdData = createCCDataBuilder().executors(Lists.newArrayList(deadExecutor)).build();
+        AfterSubmitCallbackResponse stopConfirmation = confirmationResponseService.getNextStepsConfirmation(ccdData);
 
-        InheritanceTax inheritanceTax = InheritanceTax.builder()
-                .formName(IHT_FORM)
-                .netValue(NET)
-                .grossValue(GROSS)
+        String expectedConfirmationBody = testUtils.getStringFromFile("expectedConfirmationBodyWithDeadExecutor.md");
+
+        assertThat(stopConfirmation.getConfirmationBody(), is(expectedConfirmationBody));
+    }
+
+    @Test
+    public void shouldGenerateCorrectConfirmationBodyWithIHT400421() throws Exception {
+        CCDData ccdData = createCCDataBuilder().iht(createInheritanceTax("IHT400421")).build();
+        AfterSubmitCallbackResponse stopConfirmation = confirmationResponseService.getNextStepsConfirmation(ccdData);
+
+        String expectedConfirmationBody = testUtils.getStringFromFile("expectedConfirmationBodyWithIHT400421.md");
+
+        assertThat(stopConfirmation.getConfirmationBody(), is(expectedConfirmationBody));
+    }
+
+    @Test
+    public void shouldGenerateCorrectConfirmationBodyWithAllCombinationsForAdditionalOptions() throws Exception {
+        Executor renouncingExecutor = Executor.builder()
+                .forename("Tim")
+                .lastname("Smith")
+                .reasonNotApplying(REASON_FOR_NOT_APPLYING_RENUNCIATION)
                 .build();
+        Executor deadExecutor = Executor.builder()
+                .forename("Bob")
+                .lastname("Martin")
+                .reasonNotApplying(REASON_FOR_NOT_APPLYING_DIED_BEFORE)
+                .build();
+        CCDData ccdData = createCCDataBuilder()
+                .executors(Lists.newArrayList(renouncingExecutor, deadExecutor))
+                .iht(createInheritanceTax("IHT400421")).build();
+        AfterSubmitCallbackResponse stopConfirmation = confirmationResponseService.getNextStepsConfirmation(ccdData);
 
-        Fee fee = Fee.builder()
+        String expectedConfirmationBody = testUtils.getStringFromFile("expectedConfirmationBodyWithAllCombinations.md");
+
+        assertThat(stopConfirmation.getConfirmationBody(), is(expectedConfirmationBody));
+    }
+
+    private CCDData.CCDDataBuilder createCCDataBuilder() {
+        return CCDData.builder()
+                .solicitorReference(SOLICITOR_REFERENCE)
+                .caseSubmissionDate(LocalDate.of(2018, 1, 1))
+                .solicitor(createSolicitor())
+                .deceased(createDeceased())
+                .iht(createInheritanceTax(IHT_FORM))
+                .fee(createFee())
+                .executors(Lists.newArrayList())
+                .solsAdditionalInfo(ADDITIONAL_INFO);
+    }
+
+    private Fee createFee() {
+        return Fee.builder()
                 .extraCopiesOfGrant(EXTRA_UK)
                 .outsideUKGrantCopies(EXTRA_OUTSIDE_UK)
                 .paymentMethod(PAYMENT_METHOD)
@@ -89,26 +158,32 @@ public class ConfirmationResponseServiceFeatureTest {
                 .applicationFee(APPLICATION_FEE)
                 .paymentReferenceNumber(PAYMENT_REFERENCE)
                 .build();
+    }
 
-        return CCDData.builder()
-                .solicitorReference(SOLICITOR_REFERENCE)
-                .caseSubmissionDate(LocalDate.of(2018, 1, 1))
-                .solicitor(solicitor)
-                .deceased(deceased)
-                .iht(inheritanceTax)
-                .fee(fee)
-                .solsAdditionalInfo("ADDITIONAL INFO")
-                .executors(new ArrayList<>())
+    private InheritanceTax createInheritanceTax(String ihtForm) {
+        return InheritanceTax.builder()
+                .formName(ihtForm)
+                .netValue(NET)
+                .grossValue(GROSS)
                 .build();
     }
 
-    @Test
-    public void shouldGenerateCorrectConfirmationBody() throws Exception {
-        CCDData ccdData = createCCData();
-        AfterSubmitCallbackResponse stopConfirmation = confirmationResponseService.getNextStepsConfirmation(ccdData);
-        TestUtils testUtils = new TestUtils();
-        String expectedConfirmationBody = testUtils.getStringFromFile("expectedConfirmationBody.md");
-        assertThat(stopConfirmation.getConfirmationBody(), is(expectedConfirmationBody));
+    private Deceased createDeceased() {
+        return Deceased.builder()
+                .firstname(FORENAME)
+                .lastname(SURNAME)
+                .dateOfBirth(DOB)
+                .dateOfDeath(DOD)
+                .build();
+    }
+
+    private Solicitor createSolicitor() {
+        return Solicitor.builder()
+                .firmName(SOLICITOR_FIRM_NAME)
+                .firmPostcode(SOLICITOR_FIRM_POSTCODE)
+                .fullname(SOLICITOR_NAME)
+                .jobRole(SOLICITOR_JOB_TITLE)
+                .build();
     }
 
     @Configuration
