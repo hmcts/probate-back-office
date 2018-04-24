@@ -199,9 +199,7 @@ node {
     try {
       if ("develop" == "${env.BRANCH_NAME}") {
         build '../sol-ccd-services-integration-tests/develop'
-      } else if ("master" == "${env.BRANCH_NAME}") {
-        build '../sol-ccd-services-integration-tests/master'
-      }
+      } 
     } catch (err) {
       sh 'echo Integration test failed'
     }

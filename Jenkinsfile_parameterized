@@ -1,0 +1,27 @@
+#!groovy
+//noinspection GroovyUnusedAssignment
+@Library("Infrastructure") _
+
+//noinspection GroovyAssignabilityCheck
+properties([
+		parameters([
+			choice(name: 'ENVIRONMENT', choices: 'sandbox\nsaat\nsprod\nnonprod\nprod', description: 'Environment where code should be build and deployed')
+		])
+])
+
+List<LinkedHashMap<String, Object>> secrets = [
+
+]
+
+static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
+  [ $class: 'AzureKeyVaultSecret',
+    secretType: 'Secret',
+    name: secretName,
+    version: '',
+    envVariable: envVar
+  ]
+}
+
+withParameterizedPipeline('java', 'probate', 'business-service', params.ENVIRONMENT, 'sandbox') {
+  loadVaultSecrets(secrets)
+}

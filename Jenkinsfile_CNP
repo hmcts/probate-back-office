@@ -1,0 +1,25 @@
+#!groovy
+
+@Library("Infrastructure")
+
+String product = "probate"
+String component = "business-service"
+
+List<LinkedHashMap<String, Object>> secrets = [
+
+]
+
+static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
+  [ $class: 'AzureKeyVaultSecret',
+    secretType: 'Secret',
+    name: secretName,
+    version: '',
+    envVariable: envVar
+  ]
+}
+
+withPipeline("java", product, component) {
+
+  loadVaultSecrets(secrets)
+  //enableSlackNotifications('#probate-jenkins')
+}
