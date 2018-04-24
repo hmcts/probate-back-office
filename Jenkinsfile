@@ -200,7 +200,8 @@ node {
       if ("develop" == "${env.BRANCH_NAME}") {
         build '../sol-ccd-services-integration-tests/develop'
       } else if ("master" == "${env.BRANCH_NAME}") {
-        build '../sol-ccd-services-integration-tests/master'
+        //build '../sol-ccd-services-integration-tests/master'  
+	      // only doing on devlop not in master
       }
     } catch (err) {
       sh 'echo Integration test failed'
