@@ -162,7 +162,15 @@ node {
 
     }
 
-    stage ('Starting Integration job') {
-        build job: 'sol-ccd-services-integration-tests'
+  stage('Starting Integration job') {
+    try {
+      if ("develop" == "${env.BRANCH_NAME}") {
+        build '../sol-ccd-services-integration-tests/develop'
+      } else if ("master" == "${env.BRANCH_NAME}") {
+        //build '../sol-ccd-services-integration-tests/master'  
+	      // only doing on devlop not in master
+      }
+    } catch (err) {
+      sh 'echo Integration test failed'
     }
 }
