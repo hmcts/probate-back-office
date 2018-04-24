@@ -38,7 +38,6 @@ public class BusinessRulesValidationApplication {
         return filter;
     }
 
-
     @Bean
     public Function<HttpServletRequest, Collection<String>> authorizedServicesExtractor() {
         return request -> authorisedServices;

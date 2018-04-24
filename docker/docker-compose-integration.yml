@@ -17,7 +17,7 @@ services:
       - sol-ccd-service
       - service-auth-provider-api
     volumes:
-      - ./test/serenity:/opt/app/target/site/serenity
+      - ./test/site/serenity:/opt/app/target/site/serenity
 
   sol-ccd-service:
     #build:

@@ -3,12 +3,11 @@ package uk.gov.hmcts.probate.service;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
-import uk.gov.hmcts.probate.model.BusinessValidationError;
+import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
 
 import java.util.Locale;
 
@@ -17,27 +16,32 @@ import static org.hamcrest.Matchers.is;
 
 @RunWith(MockitoJUnitRunner.class)
 public class BusinessValidationMessageServiceTest {
-    @InjectMocks
-    private BusinessValidationMessageService businessValidationMessageService;
 
     @Mock
     private BusinessValidationMessageRetriever businessValidationMessageRetrieverMock;
 
+    private BusinessValidationMessageService underTest;
+
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
+        underTest = new BusinessValidationMessageService(businessValidationMessageRetrieverMock);
     }
 
     @Test
     public void shouldValidateFormWithNoErrors() {
+        String code = "dobIsNull";
+        String param = "someParam";
+        String message = "Date of birth cannot be empty";
+
         Mockito.when(
-            businessValidationMessageRetrieverMock.getMessage("dobIsNull", null, Locale.UK)
-        ).thenReturn("Date of birth cannot be empty");
+            businessValidationMessageRetrieverMock.getMessage(code, null, Locale.UK)
+        ).thenReturn(message);
 
-        BusinessValidationError error = businessValidationMessageService.generateError("someParam", "dobIsNull");
+        FieldErrorResponse error = underTest.generateError(param, code);
 
-        assertThat(error.getParam(), is("someParam"));
-        assertThat(error.getCode(), is("dobIsNull"));
-        assertThat(error.getMsg(), is("Date of birth cannot be empty"));
+        assertThat(error.getParam(), is(param));
+        assertThat(error.getCode(), is(code));
+        assertThat(error.getMessage(), is(message));
     }
 }

@@ -16,7 +16,16 @@ public class ApplicationConfiguration {
     }
 
     @Bean
+    public ResourceBundleMessageSource resourceMessageSource() {
+        ResourceBundleMessageSource source = new ResourceBundleMessageSource();
+        source.setBasename("ResourceMessages");
+        return source;
+    }
+
+
+    @Bean
     public RestTemplate restTemplate() {
         return new RestTemplate();
     }
+
 }

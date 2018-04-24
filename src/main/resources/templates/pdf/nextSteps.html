@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title th:remove="all" th:text="${title}">Probate application</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <style type="text/css">
+
+    body {
+      font-family: Verdana, Arial;
+    }
+
+    .incomplete-banner {
+      border: 1px solid #000;
+      background-color: #ffafaf;
+      text-align: center;
+      padding: 10px 0;
+      font-size: 1.3em;
+    }
+
+    .sequence {
+      border-bottom: 1px solid #000;
+      padding: 10px 0 10px 3px;
+    }
+
+    .table-content {
+      display: block;
+      padding-top: 8px;
+    }
+
+    .pagebreak {
+      min-height: 1020px;
+    }
+
+    .legal-header {
+      font-size: 1.2em;
+      text-align: center;
+    }
+
+    .spacer {
+      height: 20px;
+    }
+
+  </style>
+</head>
+<body>
+<main id="content" role="main">
+  <div class="phase-banner">
+    <p>
+      <strong class="phase-tag">ALPHA</strong>
+      <span>This is a prototype for demonstration only – your feedback will help us build the real thing.</span>
+    </p>
+  </div>
+
+  <div class="govuk-box-highlight">
+    <h2 class="heading-xlarge">This probate application has now <br/> been submitted</h2>
+    <p class="font-medium"></p>
+    <p class="font-medium">{{ case_details.case_data.solsSolicitorFirmName }}, {{
+      case_details.case_data.solsSolicitorFirmPostcode }}<br/>
+      {{ case_details.case_data.solsSOTName }} </p>
+    <p class="font-medium"><strong class="bold">Probate registry reference:</strong><br/> {{
+      case_details.case_data.deceasedSurname }}, {{ case_details.case_data.deceasedForenames }}, died
+      {{ case_details.case_data.deceasedDateOfDeath }}
+    </p>
+
+    <div class="font-medium"><strong class="bold">Your reference:</strong> {{
+      case_details.case_data.solsSolicitorAppReference }}
+    </div>
+
+    <div class="font-medium"><strong class="bold">Submitted on:</strong> {{ case_details.case_data.solsSolicitorAppReference
+      }}
+    </div>
+    <p></p>
+  </div>
+  <h1 class="heading-medium">
+    <span class="print-hidden">What you need to do now</span>
+    <span class="print-only">This application includes:</span>
+  </h1>
+  <form method="post" class="form">
+    <div class="inset-page inset-page-slim">
+      <p class="print-hidden">You will now need to send us:</p>
+      <ul class="list list-bullet print-list-checkbox">
+        <li class="print-only">the original will - marked with your signature on the top right corner of the front of
+          the will
+        </li>
+        <li class="print-only">2 unstapled photocopies of the signed will on plain A4 paper</li>
+        <li class="print-only">completed inheritance tax form {{ case_details.case_data.solsIHTFormId }}</li>
+        <li class="print-hidden">fee payment: your cheque for £{{ case_details.case_data.totalFee }} (grant and
+          copies)
+        </li>
+        <li class="print-hidden">the printed version of this page which will be used as your cover letter to us</li>
+      </ul>
+      <div class="form-group">
+        <label class="form-label">Additional information<span
+          class="print-hidden"> (optional)</span></label>
+        <div class="form-hint print-hidden">Use this to give us any other information or special instructions</div>
+        <div class="form-group"><br/>{{ case_details.case_data.solsAdditionalInfo }}</div>
+      </div>
+    </div>
+  </form>
+  <h2 class="heading-medium">Where to send us your documents</h2>
+  <div class="print-hidden">You should:</div>
+  <ul class="list list-bullet print-hidden">
+    <li>use recorded delivery or Document Exchange (DX)</li>
+    <li>keep copies of all documents</li>
+  </ul>
+  <p>If using recorded delivery, send to:<br/>
+    Digital Applications, Probate Registry, Combined Court Building, St Aldates, Oxford, Oxfordshire, OX1 1TL</p>
+  <p>Or by DX to: 96454 OXFORD 4</p>
+  <div class="print-hidden">
+    <h1 class="heading-medium">What happens next</h1>
+
+    <p>When we've received your documents we'll start to process your application.</p>
+
+    <p>You will receive your grant of probate and a copy of the will<!--and codicil(s) (if applicable)--> , plus any
+      extra copies you've ordered, after 7 working days of us receiving your documents.</p>
+    <p>We'll email you if we need you to provide any more information.</p>
+  </div>
+</main>
+
+</body>
+</html>
