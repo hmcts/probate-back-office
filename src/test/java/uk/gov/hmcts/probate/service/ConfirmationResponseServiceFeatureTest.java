@@ -77,11 +77,7 @@ public class ConfirmationResponseServiceFeatureTest {
 
     @Test
     public void shouldGenerateCorrectConfirmationBodyWithRenouncingExecutor() throws Exception {
-        Executor renouncingExecutor = Executor.builder()
-                .forename("Tim")
-                .lastname("Smith")
-                .reasonNotApplying(REASON_FOR_NOT_APPLYING_RENUNCIATION)
-                .build();
+        Executor renouncingExecutor = createRenouncingExecutor();
         CCDData ccdData = createCCDataBuilder().executors(Lists.newArrayList(renouncingExecutor)).build();
         AfterSubmitCallbackResponse stopConfirmation = confirmationResponseService.getNextStepsConfirmation(ccdData);
 
@@ -92,11 +88,7 @@ public class ConfirmationResponseServiceFeatureTest {
 
     @Test
     public void shouldGenerateCorrectConfirmationBodyWithDeadExecutor() throws Exception {
-        Executor deadExecutor = Executor.builder()
-                .forename("Bob")
-                .lastname("Martin")
-                .reasonNotApplying(REASON_FOR_NOT_APPLYING_DIED_BEFORE)
-                .build();
+        Executor deadExecutor = createDeadExecutor();
         CCDData ccdData = createCCDataBuilder().executors(Lists.newArrayList(deadExecutor)).build();
         AfterSubmitCallbackResponse stopConfirmation = confirmationResponseService.getNextStepsConfirmation(ccdData);
 
@@ -117,16 +109,8 @@ public class ConfirmationResponseServiceFeatureTest {
 
     @Test
     public void shouldGenerateCorrectConfirmationBodyWithAllCombinationsForAdditionalOptions() throws Exception {
-        Executor renouncingExecutor = Executor.builder()
-                .forename("Tim")
-                .lastname("Smith")
-                .reasonNotApplying(REASON_FOR_NOT_APPLYING_RENUNCIATION)
-                .build();
-        Executor deadExecutor = Executor.builder()
-                .forename("Bob")
-                .lastname("Martin")
-                .reasonNotApplying(REASON_FOR_NOT_APPLYING_DIED_BEFORE)
-                .build();
+        Executor renouncingExecutor = createRenouncingExecutor();
+        Executor deadExecutor = createDeadExecutor();
         CCDData ccdData = createCCDataBuilder()
                 .executors(Lists.newArrayList(renouncingExecutor, deadExecutor))
                 .iht(createInheritanceTax("IHT400421")).build();
@@ -183,6 +167,23 @@ public class ConfirmationResponseServiceFeatureTest {
                 .firmPostcode(SOLICITOR_FIRM_POSTCODE)
                 .fullname(SOLICITOR_NAME)
                 .jobRole(SOLICITOR_JOB_TITLE)
+                .build();
+    }
+
+    private Executor createDeadExecutor() {
+        return Executor.builder()
+                .forename("Bob")
+                .lastname("Martin")
+                .reasonNotApplying(REASON_FOR_NOT_APPLYING_DIED_BEFORE)
+                .build();
+    }
+
+
+    private Executor createRenouncingExecutor() {
+        return Executor.builder()
+                .forename("Tim")
+                .lastname("Smith")
+                .reasonNotApplying(REASON_FOR_NOT_APPLYING_RENUNCIATION)
                 .build();
     }
 
