@@ -3,7 +3,7 @@
 @Library("Infrastructure")
 
 String product = "probate"
-String component = "business-service"
+String component = "sol-ccd-service"
 
 List<LinkedHashMap<String, Object>> secrets = [
 

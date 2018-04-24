@@ -22,6 +22,6 @@ static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
   ]
 }
 
-withParameterizedPipeline('java', 'probate', 'business-service', params.ENVIRONMENT, 'sandbox') {
+withParameterizedPipeline('java', 'probate', 'sol-ccd-service', params.ENVIRONMENT, 'sandbox') {
   loadVaultSecrets(secrets)
 }
