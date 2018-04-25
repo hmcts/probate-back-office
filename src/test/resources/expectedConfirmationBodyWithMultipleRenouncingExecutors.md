@@ -1,35 +1,35 @@
 This probate application has now been submitted
 -------------------------------------------------
 
-{{solsSolicitorFirmName}}, {{solsSolicitorFirmPostcode}}
+Legal Service Ltd, SW1E 6EA
 
-{{solicitorName}}, {{solicitorJobRole}}
+Peter Crouch, Lawyer
 
 **Probate registry reference:**
-{{deceasedLastname}}, {{deceasedFirstname}}, died {{deceasedDateOfDeath}}
+Michael, Andy, died 04/04/2017
 
-**Your reference:** {{solicitorReference}}
+**Your reference:** SOL_REF_X12345
 
-**Submitted on:** {{caseSubmissionDate}}
+**Submitted on:** 01/01/2018
 
 Payment summary
 -------------------------------------------------
-**Application fee** {{applicationFee}}
+**Application fee** 0.10
 
-**Fee for additional UK copies** {{feeForUkCopies}}
+**Fee for additional UK copies** 1
 
-**Fee for certified copies** {{feeForNonUkCopies}}
+**Fee for certified copies** 2
 
-**Fee amount** {{paymentAmount}}
+**Fee amount** 0.10
 
-**Payment method** {{paymentMethod}}
+**Payment method** Cheque
 
-**Payment reference number** {{solsPaymentReferenceNumber}}
+**Payment reference number** XXXXX123456
 
 Notes for this application
 -------------------------------------------------
 
-{{additionalInfo}}
+ADDITIONAL INFO
 
 What you need to do now
 ==================================================
@@ -41,10 +41,12 @@ You now need to send us:
 *   the original will - you must mark with your signature the top right corner of the front of the will
     (not on any cover sheet if there is one)
 *   2 unstapled photocopies of the signed will - these must be on plain A4 paper
-*   fee payment: your {{paymentMethod}} for £{{paymentAmount}} (grant and copies)
+*   fee payment: your Cheque for £0.10 (grant and copies)
 *   the printed version of this page which will be used as your cover letter to us
-*   completed inheritance tax form {{ihtForm}}
-{{iht400}}{{renouncingExecutors}}{{deadExecutors}}
+*   completed inheritance tax form IHT207
+*   renunciation form for Tim Smith
+*   renunciation form for John Smith
+
 Where to send us your documents
 -------------------------------
 
