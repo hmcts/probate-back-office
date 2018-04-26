@@ -97,7 +97,7 @@
                   {% if case_details.case_data.primaryApplicantAddress.Country != null and
                   case_details.case_data.primaryApplicantAddress.Country != "" %}{{
                   case_details.case_data.primaryApplicantAddress.Country }}{% endif %}
-                  ,{% endif %}
+                  {% endif %}
                   {% for executor in case_details.case_data.solsAdditionalExecutorList %}
                   {{ executor.value.additionalExecForenames }} {{ executor.value.additionalExecLastname }}
                   {% if executor.value.additionalApplying == "Yes" %} of
