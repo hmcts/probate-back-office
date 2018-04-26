@@ -77,14 +77,6 @@ variable "fee_api_url" {
   type = "string"
 }
 
-variable "proxy_host" {
-  type = "string"
-}
-
-variable "proxy_port" {
-  type = "string"
-}
-
 variable "log_level" {
   type = "string"
 }
