@@ -18,6 +18,7 @@ import static org.mockito.MockitoAnnotations.initMocks;
 
 public class CaseDataTest {
 
+    private static final String YES = "Yes";
     private static final String PRIMARY_APP_FNAME = "fName";
     private static final String PRIMARY_APP_SNAME = "sName";
     private static final SolsAddress PRIMARY_APP_ADDRESS = mock(SolsAddress.class);
@@ -58,6 +59,7 @@ public class CaseDataTest {
         underTest = CaseData.builder()
             .primaryApplicantForenames(PRIMARY_APP_FNAME)
             .primaryApplicantForenames(PRIMARY_APP_SNAME)
+            .primaryApplicantIsApplying(YES)
             .primaryApplicantAddress(PRIMARY_APP_ADDRESS)
             .solsExecutorAliasNames(PRIMARY_APP_NAME_ON_WILL)
             .solsAdditionalExecutorList(additionalExecutorsList)

@@ -74,8 +74,8 @@
               <td colspan="2">
                 <p>This statement is based on the information given in your application. It will be stored as a public record.</p>
                 <p>We,
-                  {{ case_details.case_data.primaryApplicantForenames }} {{ case_details.case_data.primaryApplicantSurname }}
-                  {% if case_details.case_data.primaryApplicantAddress.PostCode != "" %} of
+                  {% if case_details.case_data.primaryApplicantIsApplying == "Yes" and case_details.case_data.primaryApplicantAddress.PostCode != "" %}
+                  {{ case_details.case_data.primaryApplicantForenames }} {{ case_details.case_data.primaryApplicantSurname }} of
                   {% if case_details.case_data.primaryApplicantAddress.AddressLine1 != null and
                   case_details.case_data.primaryApplicantAddress.AddressLine1 != "" %}{{
                   case_details.case_data.primaryApplicantAddress.AddressLine1 }},{% endif %}
@@ -97,7 +97,7 @@
                   {% if case_details.case_data.primaryApplicantAddress.Country != null and
                   case_details.case_data.primaryApplicantAddress.Country != "" %}{{
                   case_details.case_data.primaryApplicantAddress.Country }}{% endif %}
-                  {% endif %}
+                  ,{% endif %}
                   {% for executor in case_details.case_data.solsAdditionalExecutorList %}
                   {{ executor.value.additionalExecForenames }} {{ executor.value.additionalExecLastname }}
                   {% if executor.value.additionalApplying == "Yes" %} of

@@ -80,6 +80,8 @@ public class CallbackResponseTransformer {
             .registryLocation(REGISTRY_LOCATION_BIRMINGHAM)
             .solsSolicitorFirmName(caseData.getSolsSolicitorFirmName())
             .solsSolicitorFirmPostcode(caseData.getSolsSolicitorFirmPostcode())
+            .solsSolicitorEmail(caseData.getSolsSolicitorEmail())
+            .solsSolicitorPhoneNumber(caseData.getSolsSolicitorPhoneNumber())
             .solsSOTName(caseData.getSolsSOTName())
             .solsSOTJobTitle(caseData.getSolsSOTJobTitle())
             .deceasedForenames(caseData.getDeceasedForenames())
