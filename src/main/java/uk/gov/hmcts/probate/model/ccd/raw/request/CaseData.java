@@ -177,10 +177,14 @@ public class CaseData {
         return YES_VALUE.equals(primaryApplicantIsApplying);
     }
 
+    private boolean isPrimaryApplicantNotApplying() {
+        return NO_VALUE.equals(primaryApplicantIsApplying);
+    }
+
     private List<AdditionalExecutors> getAllExecutors(boolean applying) {
         List<AdditionalExecutors> totalExecutors = new ArrayList<>();
-        if (applying && YES_VALUE.equals(getPrimaryApplicantIsApplying())
-                || (!applying && NO_VALUE.equals(getPrimaryApplicantIsApplying()))) {
+        if ((applying && isPrimaryApplicantApplying())
+                || (!applying && isPrimaryApplicantNotApplying())) {
             AdditionalExecutor primaryExecutor = AdditionalExecutor.builder()
                     .additionalExecForenames(getPrimaryApplicantForenames())
                     .additionalExecLastname(getPrimaryApplicantSurname())
