@@ -28,8 +28,6 @@ variable "component" {
 
 variable "subscription" {}
 
-variable "vault_env" {}
-
 variable "vault_section" {
   type = "string"
 }
