@@ -177,27 +177,33 @@ public class CaseData {
         return YES_VALUE.equals(primaryApplicantIsApplying);
     }
 
+    private boolean isPrimaryApplicantNotApplying() {
+        return NO_VALUE.equals(primaryApplicantIsApplying);
+    }
+
     private List<AdditionalExecutors> getAllExecutors(boolean applying) {
         List<AdditionalExecutors> totalExecutors = new ArrayList<>();
-        AdditionalExecutor primaryExecutor = AdditionalExecutor.builder()
-            .additionalExecForenames(getPrimaryApplicantForenames())
-            .additionalExecLastname(getPrimaryApplicantSurname())
-            .additionalApplying(YES_VALUE)
-            .additionalExecAddress(getPrimaryApplicantAddress())
-            .additionalExecNameOnWill(getPrimaryApplicantHasAlias())
-            .additionalExecAliasNameOnWill(getSolsExecutorAliasNames())
-            .additionalExecReasonNotApplying(getSolsPrimaryExecutorNotApplyingReason())
-            .build();
+        if ((applying && isPrimaryApplicantApplying())
+                || (!applying && isPrimaryApplicantNotApplying())) {
+            AdditionalExecutor primaryExecutor = AdditionalExecutor.builder()
+                    .additionalExecForenames(getPrimaryApplicantForenames())
+                    .additionalExecLastname(getPrimaryApplicantSurname())
+                    .additionalApplying(getPrimaryApplicantIsApplying())
+                    .additionalExecAddress(getPrimaryApplicantAddress())
+                    .additionalExecNameOnWill(getPrimaryApplicantHasAlias())
+                    .additionalExecAliasNameOnWill(getSolsExecutorAliasNames())
+                    .additionalExecReasonNotApplying(getSolsPrimaryExecutorNotApplyingReason())
+                    .build();
 
-        AdditionalExecutors primaryAdditionalExecutors = AdditionalExecutors.builder()
-            .additionalExecutor(primaryExecutor)
-            .build();
+            AdditionalExecutors primaryAdditionalExecutors = AdditionalExecutors.builder()
+                    .additionalExecutor(primaryExecutor)
+                    .build();
+            totalExecutors.add(primaryAdditionalExecutors);
+        }
 
         if (getSolsAdditionalExecutorList() != null) {
             totalExecutors.addAll(getSolsAdditionalExecutorList());
         }
-
-        totalExecutors.add(primaryAdditionalExecutors);
 
         return totalExecutors.stream().filter(ex -> isApplying(ex, applying)).collect(Collectors.toList());
     }

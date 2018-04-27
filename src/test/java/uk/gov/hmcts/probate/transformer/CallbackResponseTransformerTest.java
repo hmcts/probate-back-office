@@ -36,6 +36,8 @@ public class CallbackResponseTransformerTest {
 
     private static final String SOLICITOR_FIRM_NAME = "Sol Firm Name";
     private static final String SOLICITOR_FIRM_POSTCODE = "SW13 6EA";
+    private static final String SOLICITOR_FIRM_EMAIL = "sol@email.com";
+    private static final String SOLICITOR_FIRM_PHONE = "0123456789";
     private static final String SOLICITOR_SOT_NAME = "Andy Test";
     private static final String SOLICITOR_SOT_JOB_TITLE = "Lawyer";
 
@@ -114,6 +116,8 @@ public class CallbackResponseTransformerTest {
 
         when(caseDataMock.getSolsSolicitorFirmName()).thenReturn(SOLICITOR_FIRM_NAME);
         when(caseDataMock.getSolsSolicitorFirmPostcode()).thenReturn(SOLICITOR_FIRM_POSTCODE);
+        when(caseDataMock.getSolsSolicitorEmail()).thenReturn(SOLICITOR_FIRM_EMAIL);
+        when(caseDataMock.getSolsSolicitorPhoneNumber()).thenReturn(SOLICITOR_FIRM_PHONE);
         when(caseDataMock.getSolsSOTName()).thenReturn(SOLICITOR_SOT_NAME);
         when(caseDataMock.getSolsSOTJobTitle()).thenReturn(SOLICITOR_SOT_JOB_TITLE);
 
@@ -230,6 +234,8 @@ public class CallbackResponseTransformerTest {
 
         assertEquals(SOLICITOR_FIRM_NAME, callbackResponse.getData().getSolsSolicitorFirmName());
         assertEquals(SOLICITOR_FIRM_POSTCODE, callbackResponse.getData().getSolsSolicitorFirmPostcode());
+        assertEquals(SOLICITOR_FIRM_EMAIL, callbackResponse.getData().getSolsSolicitorEmail());
+        assertEquals(SOLICITOR_FIRM_PHONE, callbackResponse.getData().getSolsSolicitorPhoneNumber());
         assertEquals(SOLICITOR_SOT_NAME, callbackResponse.getData().getSolsSOTName());
         assertEquals(SOLICITOR_SOT_JOB_TITLE, callbackResponse.getData().getSolsSOTJobTitle());
 
