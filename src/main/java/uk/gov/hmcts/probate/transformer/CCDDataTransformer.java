@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static java.lang.Integer.parseInt;
+import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.transformer.CallbackResponseTransformer.PAYMENT_METHOD_VALUE_FEE_ACCOUNT;
 import static uk.gov.hmcts.probate.transformer.CallbackResponseTransformer.PAYMENT_REFERENCE_CHEQUE;
 import static uk.gov.hmcts.probate.transformer.CallbackResponseTransformer.PAYMENT_REFERENCE_FEE_PREFIX;
@@ -139,7 +140,7 @@ public class CCDDataTransformer {
             executors = caseData.getSolsAdditionalExecutorList().stream()
                     .map(AdditionalExecutors::getAdditionalExecutor)
                     .map(executor -> Executor.builder()
-                            .applying("Yes".equals(executor.getAdditionalApplying()))
+                            .applying(YES.equals(executor.getAdditionalApplying()))
                             .address(executor.getAdditionalExecAddress())
                             .reasonNotApplying(executor.getAdditionalExecReasonNotApplying())
                             .forename(executor.getAdditionalExecForenames())
