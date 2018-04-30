@@ -20,11 +20,11 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static uk.gov.hmcts.probate.model.Constants.BUSINESS_ERROR;
 import static uk.gov.hmcts.probate.validator.DobDodValidationRule.CODE_DOB_IN_FUTURE;
 import static uk.gov.hmcts.probate.validator.DobDodValidationRule.CODE_DOD_BEFORE_DOB;
 import static uk.gov.hmcts.probate.validator.DobDodValidationRule.CODE_DOD_IN_FUTURE;
 import static uk.gov.hmcts.probate.validator.DobDodValidationRule.CODE_DOD_ON_DOB;
-import static uk.gov.hmcts.probate.validator.ValidationRule.BUSINESS_ERROR;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DobDodValidationRuleTest {
@@ -47,7 +47,7 @@ public class DobDodValidationRuleTest {
     private DobDodValidationRule underTest;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         underTest = new DobDodValidationRule(businessValidationMessageService);
         businessValidationError = FieldErrorResponse.builder().build();
         when(ccdDataMock.getDeceased()).thenReturn(deceasedMock);
@@ -55,7 +55,7 @@ public class DobDodValidationRuleTest {
 
 
     @Test
-    public void testValidateWithSuccessWhenDeceasedIsNull() throws Exception {
+    public void testValidateWithSuccessWhenDeceasedIsNull() {
         when(ccdDataMock.getDeceased()).thenReturn(null);
 
         List<FieldErrorResponse> validationError = underTest.validate(ccdDataMock);
@@ -65,7 +65,7 @@ public class DobDodValidationRuleTest {
     }
 
     @Test
-    public void shouldValidateSuccessWithDobBeforeDod() throws Exception {
+    public void shouldValidateSuccessWithDobBeforeDod() {
         when(deceasedMock.getDateOfBirth()).thenReturn(getDate(DATE_31_DEC_1970));
         when(deceasedMock.getDateOfDeath()).thenReturn(getDate(DATE_01_JAN_1971));
 
@@ -75,11 +75,11 @@ public class DobDodValidationRuleTest {
     }
 
     @Test
-    public void shouldValidateFailureWithDobAfterDod() throws Exception {
+    public void shouldValidateFailureWithDobAfterDod() {
         when(deceasedMock.getDateOfBirth()).thenReturn(getDate(DATE_31_DEC_1970));
         when(deceasedMock.getDateOfDeath()).thenReturn(getDate(DATE_30_DEC_1970));
         when(
-            businessValidationMessageService.generateError(BUSINESS_ERROR, CODE_DOD_BEFORE_DOB)
+                businessValidationMessageService.generateError(BUSINESS_ERROR, CODE_DOD_BEFORE_DOB)
         ).thenReturn(businessValidationError);
 
         List<FieldErrorResponse> validationError = underTest.validate(ccdDataMock);
@@ -88,11 +88,11 @@ public class DobDodValidationRuleTest {
     }
 
     @Test
-    public void shouldValidateFailureWithDobEqualsDod() throws Exception {
+    public void shouldValidateFailureWithDobEqualsDod() {
         when(deceasedMock.getDateOfBirth()).thenReturn(getDate(DATE_31_DEC_1970));
         when(deceasedMock.getDateOfDeath()).thenReturn(getDate(DATE_31_DEC_1970));
         when(
-            businessValidationMessageService.generateError(BUSINESS_ERROR, CODE_DOD_ON_DOB)
+                businessValidationMessageService.generateError(BUSINESS_ERROR, CODE_DOD_ON_DOB)
         ).thenReturn(businessValidationError);
 
         List<FieldErrorResponse> validationError = underTest.validate(ccdDataMock);
@@ -102,22 +102,22 @@ public class DobDodValidationRuleTest {
     }
 
     @Test
-    public void shouldValidateFailureWithDobInTheFuture() throws Exception {
+    public void shouldValidateFailureWithDobInTheFuture() {
         when(deceasedMock.getDateOfBirth()).thenReturn(getDate(DATE_01_JAN_2099));
         when(deceasedMock.getDateOfDeath()).thenReturn(getDate(DATE_02_JAN_2099));
         when(
-            businessValidationMessageService.generateError(BUSINESS_ERROR, CODE_DOB_IN_FUTURE)
+                businessValidationMessageService.generateError(BUSINESS_ERROR, CODE_DOB_IN_FUTURE)
         ).thenReturn(businessValidationError);
 
         List<FieldErrorResponse> validationError = underTest.validate(ccdDataMock);
     }
 
     @Test
-    public void shouldValidateFailureWithDodInTheFuture() throws Exception {
+    public void shouldValidateFailureWithDodInTheFuture() {
         when(deceasedMock.getDateOfBirth()).thenReturn(getDate(DATE_01_JAN_1971));
         when(deceasedMock.getDateOfDeath()).thenReturn(getDate(DATE_02_JAN_2099));
         when(
-            businessValidationMessageService.generateError(BUSINESS_ERROR, CODE_DOD_IN_FUTURE)
+                businessValidationMessageService.generateError(BUSINESS_ERROR, CODE_DOD_IN_FUTURE)
         ).thenReturn(businessValidationError);
 
         List<FieldErrorResponse> validationError = underTest.validate(ccdDataMock);
