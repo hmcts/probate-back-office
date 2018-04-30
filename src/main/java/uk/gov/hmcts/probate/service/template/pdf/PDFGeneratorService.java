@@ -46,7 +46,7 @@ public class PDFGeneratorService {
         } catch (HttpClientErrorException e) {
             throw new ClientException(e.getStatusCode().value(), e.getMessage());
         } catch (RestClientException e) {
-            throw new ConnectionException("Could not connect to PDF service");
+            throw new ConnectionException("Could not connect to PDF service: " + e.getMessage());
         }
 
         return new EvidenceManagementFileUpload(MediaType.APPLICATION_PDF, postResult);
