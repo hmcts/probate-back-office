@@ -14,7 +14,7 @@ import java.util.stream.Stream;
 @EqualsAndHashCode(callSuper = true)
 public class BadRequestException extends RuntimeException {
 
-    protected final List<FieldErrorResponse> errors;
+    private final List<FieldErrorResponse> errors;
 
     public BadRequestException(final String message, final Errors errors) {
         super(message);

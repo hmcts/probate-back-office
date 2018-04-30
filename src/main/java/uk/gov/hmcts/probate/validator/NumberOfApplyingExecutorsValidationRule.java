@@ -13,6 +13,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static uk.gov.hmcts.probate.model.Constants.BUSINESS_ERROR;
+
 @Data
 @Component
 class NumberOfApplyingExecutorsValidationRule implements SolExecutorDetailsValidationRule {
@@ -25,11 +27,11 @@ class NumberOfApplyingExecutorsValidationRule implements SolExecutorDetailsValid
     @Override
     public List<FieldErrorResponse> validate(CCDData ccdData) {
         return Optional.ofNullable(ccdData)
-            .map(this::getErrorCodeForInvalidNumberOfApplyingExecutors)
-            .map(List::stream)
-            .orElse(Stream.empty())
-            .map(code -> businessValidationMessageService.generateError(BUSINESS_ERROR, code))
-            .collect(Collectors.toList());
+                .map(this::getErrorCodeForInvalidNumberOfApplyingExecutors)
+                .map(List::stream)
+                .orElse(Stream.empty())
+                .map(code -> businessValidationMessageService.generateError(BUSINESS_ERROR, code))
+                .collect(Collectors.toList());
     }
 
     private List<String> getErrorCodeForInvalidNumberOfApplyingExecutors(CCDData ccdData) {
