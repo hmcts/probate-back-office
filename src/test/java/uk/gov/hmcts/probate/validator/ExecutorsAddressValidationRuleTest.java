@@ -17,6 +17,7 @@ import java.util.List;
 
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.when;
+import static uk.gov.hmcts.probate.model.Constants.BUSINESS_ERROR;
 
 public class ExecutorsAddressValidationRuleTest {
 
@@ -46,10 +47,10 @@ public class ExecutorsAddressValidationRuleTest {
 
         when(ccdData.getExecutors()).thenReturn(Collections.singletonList(executor));
 
-        when(businessValidationMessageService.generateError(eq(ValidationRule.BUSINESS_ERROR), eq("executorAddressIsNull")))
+        when(businessValidationMessageService.generateError(eq(BUSINESS_ERROR), eq("executorAddressIsNull")))
                 .thenReturn(executorAddressIsNullError);
 
-        when(businessValidationMessageService.generateError(eq(ValidationRule.BUSINESS_ERROR), eq("executorPostcodeIsNull")))
+        when(businessValidationMessageService.generateError(eq(BUSINESS_ERROR), eq("executorPostcodeIsNull")))
                 .thenReturn(executorPostcodeIsNullError);
     }
 
