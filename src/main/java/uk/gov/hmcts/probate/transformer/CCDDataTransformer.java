@@ -166,7 +166,7 @@ public class CCDDataTransformer {
         try {
             return LocalDate.of(parseInt(lastModified[0]), parseInt(lastModified[1]), parseInt(lastModified[2]));
         } catch (ArrayIndexOutOfBoundsException | NumberFormatException | DateTimeException | NullPointerException e) {
-            log.warn(e.getMessage());
+            log.warn(e.getMessage(), e);
             return null;
         }
     }
