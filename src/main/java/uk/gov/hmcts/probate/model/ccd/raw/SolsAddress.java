@@ -7,10 +7,11 @@ import uk.gov.hmcts.probate.controller.validation.ApplicationUpdatedGroup;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 
 @Data
 @Builder
-public class SolsAddress {
+public class SolsAddress implements Serializable {
 
     @NotNull(groups = {ApplicationUpdatedGroup.class}, message = "{deceasedAddressIsNull}")
     @Size(min = 1, groups = {ApplicationUpdatedGroup.class}, message = "{deceasedAddressIsNull}")
