@@ -5,10 +5,12 @@ import lombok.Builder;
 import lombok.Value;
 import org.springframework.validation.FieldError;
 
+import java.io.Serializable;
+
 @Builder
 @Value
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class FieldErrorResponse {
+public class FieldErrorResponse implements Serializable {
     private final String param;
     private final String field;
     private final String code;
@@ -16,10 +18,10 @@ public class FieldErrorResponse {
 
     public static FieldErrorResponse of(FieldError fieldError) {
         return FieldErrorResponse.builder()
-            .param(fieldError.getObjectName())
-            .field(fieldError.getField())
-            .code(fieldError.getCode())
-            .message(fieldError.getDefaultMessage())
-            .build();
+                .param(fieldError.getObjectName())
+                .field(fieldError.getField())
+                .code(fieldError.getCode())
+                .message(fieldError.getDefaultMessage())
+                .build();
     }
 }

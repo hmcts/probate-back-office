@@ -14,19 +14,15 @@ import java.util.stream.Stream;
 @EqualsAndHashCode(callSuper = true)
 public class BadRequestException extends RuntimeException {
 
-    protected List<FieldErrorResponse> errors;
-
-    protected BadRequestException() {
-
-    }
+    private final List<FieldErrorResponse> errors;
 
     public BadRequestException(final String message, final Errors errors) {
         super(message);
         this.errors = Optional.ofNullable(errors)
-            .map(Errors::getFieldErrors)
-            .map(List::stream)
-            .orElse(Stream.empty())
-            .map(FieldErrorResponse::of)
-            .collect(Collectors.toList());
+                .map(Errors::getFieldErrors)
+                .map(List::stream)
+                .orElse(Stream.empty())
+                .map(FieldErrorResponse::of)
+                .collect(Collectors.toList());
     }
 }

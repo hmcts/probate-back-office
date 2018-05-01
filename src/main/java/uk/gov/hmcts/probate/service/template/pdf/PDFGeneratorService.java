@@ -1,6 +1,8 @@
 package uk.gov.hmcts.probate.service.template.pdf;
 
 import lombok.Data;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -33,6 +35,8 @@ public class PDFGeneratorService {
     private static final String PARAMETER_TEMPLATE = "template";
     private static final String PARAMETER_PLACEHOLDER_VALUES = "placeholderValues";
 
+    private static final Logger log = LoggerFactory.getLogger(PDFGeneratorService.class);
+
     public EvidenceManagementFileUpload generatePdf(PDFServiceTemplate pdfServiceTemplate, String pdfGenerationData) {
         URI uri = URI.create(String.format("%s%s", pdfServiceConfiguration.getUrl(), pdfServiceConfiguration.getPdfApi()));
 
@@ -44,9 +48,11 @@ public class PDFGeneratorService {
             ByteArrayResource responseResource = restTemplate.postForObject(uri, multipartRequest, ByteArrayResource.class);
             postResult = responseResource.getByteArray();
         } catch (HttpClientErrorException e) {
+            log.warn(e.getMessage(), e);
             throw new ClientException(e.getStatusCode().value(), e.getMessage());
         } catch (RestClientException e) {
-            throw new ConnectionException("Could not connect to PDF service");
+            log.warn(e.getMessage(), e);
+            throw new ConnectionException("Could not connect to PDF service: " + e.getMessage());
         }
 
         return new EvidenceManagementFileUpload(MediaType.APPLICATION_PDF, postResult);

@@ -7,6 +7,8 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static uk.gov.hmcts.probate.model.Constants.YES;
+
 @Component
 public class ExecutorsRule implements ChangeRule {
     private static final String MESSAGE_KEY = "stopBodyNoApplyingExecutors";
