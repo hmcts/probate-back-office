@@ -16,9 +16,9 @@ Payment summary
 -------------------------------------------------
 **Application fee** £0.10
 
-**Fee for additional UK copies** £1
+**Fee for additional UK copies** £1.00
 
-**Fee for certified copies** £2
+**Fee for certified copies** £2.00
 
 **Fee amount** £0.10
 

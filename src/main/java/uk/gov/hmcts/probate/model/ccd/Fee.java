@@ -14,14 +14,8 @@ public class Fee implements Serializable {
     private final BigDecimal amount;
     private final Long extraCopiesOfGrant;
     private final Long outsideUKGrantCopies;
+    private final BigDecimal feeForUkCopies;
+    private final BigDecimal feeForNonUkCopies;
     private final String paymentReferenceNumber;
-
-    public BigDecimal getAmountInPounds() {
-        return amount.divide(BigDecimal.valueOf(100), 2, BigDecimal.ROUND_HALF_UP);
-    }
-
-    public BigDecimal getApplicationFeeInPounds() {
-        return applicationFee.divide(BigDecimal.valueOf(100), 2, BigDecimal.ROUND_HALF_UP);
-    }
 
 }
