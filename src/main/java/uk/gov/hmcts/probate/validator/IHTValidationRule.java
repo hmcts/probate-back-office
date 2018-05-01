@@ -12,6 +12,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static uk.gov.hmcts.probate.model.Constants.BUSINESS_ERROR;
+
 @Data
 @Component
 class IHTValidationRule implements SolAddDeceasedEstateDetailsValidationRule {
@@ -25,18 +27,18 @@ class IHTValidationRule implements SolAddDeceasedEstateDetailsValidationRule {
     @Override
     public List<FieldErrorResponse> validate(CCDData ccdData) {
         return Optional.ofNullable(ccdData.getIht())
-            .map(iht -> {
-                List<String> codes = new ArrayList<>();
+                .map(iht -> {
+                    List<String> codes = new ArrayList<>();
 
-                if (iht.getNetValue() > iht.getGrossValue()) {
-                    codes.add(IHT_NET_GREATER_THAN_GROSS);
-                }
+                    if (iht.getNetValue() > iht.getGrossValue()) {
+                        codes.add(IHT_NET_GREATER_THAN_GROSS);
+                    }
 
-                return codes;
-            })
-            .map(List::stream)
-            .orElse(Stream.empty())
-            .map(code -> businessValidationMessageService.generateError(BUSINESS_ERROR, code))
-            .collect(Collectors.toList());
+                    return codes;
+                })
+                .map(List::stream)
+                .orElse(Stream.empty())
+                .map(code -> businessValidationMessageService.generateError(BUSINESS_ERROR, code))
+                .collect(Collectors.toList());
     }
 }

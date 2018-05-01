@@ -7,8 +7,5 @@ import java.util.List;
 
 public interface ValidationRule {
 
-    String BUSINESS_ERROR = "businessError";
-
     List<FieldErrorResponse> validate(CCDData form);
-
 }

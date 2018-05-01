@@ -21,20 +21,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static uk.gov.hmcts.probate.model.Constants.NO;
+import static uk.gov.hmcts.probate.model.Constants.YES;
+
 @Builder
 @Data
 public class CaseData {
 
-    private static final String YES_VALUE = "Yes";
-    private static final String NO_VALUE = "No";
-
     // EVENT = solicitorCreateApplication
     @NotBlank(groups = {ApplicationCreatedGroup.class},
-        message = "{solsSolicitorFirmNameIsNull}")
+            message = "{solsSolicitorFirmNameIsNull}")
     private final String solsSolicitorFirmName;
 
     @NotBlank(groups = {ApplicationCreatedGroup.class},
-        message = "{solsSolicitorFirmPostcodeIsNull}")
+            message = "{solsSolicitorFirmPostcodeIsNull}")
     private final String solsSolicitorFirmPostcode;
 
     @NotBlank(groups = {ApplicationCreatedGroup.class}, message = "{solsSolicitorAppReferenceIsNull}")
@@ -46,11 +46,11 @@ public class CaseData {
 
     // EVENT = solicitorUpdateApplication
     @NotBlank(groups = {ApplicationUpdatedGroup.class},
-        message = "{deceasedForenameIsNull}")
+            message = "{deceasedForenameIsNull}")
     private final String deceasedForenames;
 
     @NotBlank(groups = {ApplicationUpdatedGroup.class},
-        message = "{deceasedSurnameIsNull}")
+            message = "{deceasedSurnameIsNull}")
     private final String deceasedSurname;
 
     @NotNull(groups = {ApplicationUpdatedGroup.class}, message = "{dodIsNull}")
@@ -84,7 +84,7 @@ public class CaseData {
     @NotBlank(groups = {ApplicationUpdatedGroup.class}, message = "{solsIHTFormIdIsNull}")
     private final String solsIHTFormId;
 
-    @NotNull(groups = {ApplicationUpdatedGroup.class},  message = "{ihtNetIsNull}")
+    @NotNull(groups = {ApplicationUpdatedGroup.class}, message = "{ihtNetIsNull}")
     @DecimalMin(groups = {ApplicationUpdatedGroup.class}, value = "0.0", message = "{ihtNetNegative}")
     private final Float ihtNetValue;
 
@@ -155,13 +155,10 @@ public class CaseData {
     @DecimalMin(groups = {NextStepsConfirmationGroup.class}, value = "0.0", message = "{totalFeeNegative}")
     private final BigDecimal totalFee;
 
-    public void setExecutorsApplying(List<AdditionalExecutors> executorsApplying) {
+    private List<AdditionalExecutors> executorsApplying;
 
-    }
+    private List<AdditionalExecutors> executorsNotApplying;
 
-    public void setExecutorsNotApplying(List<AdditionalExecutors> executorsNotApplying) {
-
-    }
 
     public List<AdditionalExecutors> getExecutorsApplying() {
 
@@ -174,11 +171,11 @@ public class CaseData {
     }
 
     public boolean isPrimaryApplicantApplying() {
-        return YES_VALUE.equals(primaryApplicantIsApplying);
+        return YES.equals(primaryApplicantIsApplying);
     }
 
     private boolean isPrimaryApplicantNotApplying() {
-        return NO_VALUE.equals(primaryApplicantIsApplying);
+        return NO.equals(primaryApplicantIsApplying);
     }
 
     private List<AdditionalExecutors> getAllExecutors(boolean applying) {
@@ -209,10 +206,10 @@ public class CaseData {
     }
 
     private boolean isApplying(AdditionalExecutors ex, boolean applying) {
-        return (ex != null
-            && ex.getAdditionalExecutor() != null
-            && ex.getAdditionalExecutor().getAdditionalApplying() != null
-            && ex.getAdditionalExecutor().getAdditionalApplying().equals(applying ? YES_VALUE : NO_VALUE));
-    }
+        if (ex == null || ex.getAdditionalExecutor() == null || ex.getAdditionalExecutor().getAdditionalApplying() == null) {
+            return false;
+        }
 
+        return ex.getAdditionalExecutor().getAdditionalApplying().equals(applying ? YES : NO);
+    }
 }
