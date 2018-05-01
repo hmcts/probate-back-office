@@ -19,6 +19,7 @@ import uk.gov.hmcts.probate.model.template.MarkdownTemplate;
 import uk.gov.hmcts.probate.model.template.TemplateResponse;
 import uk.gov.hmcts.probate.service.template.markdown.MarkdownSubstitutionService;
 
+import java.math.BigDecimal;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
@@ -120,11 +121,10 @@ public class ConfirmationResponseService {
         keyValue.put("{{deceasedDateOfDeath}}", ccdData.getDeceased().getDateOfDeath().format(formatter));
         keyValue.put("{{ihtForm}}", ccdData.getIht().getFormName());
         keyValue.put("{{paymentMethod}}", ccdData.getFee().getPaymentMethod());
-        keyValue.put("{{paymentAmount}}", ccdData.getFee().getAmountInPounds().toString());
-
-        keyValue.put("{{applicationFee}}", ccdData.getFee().getApplicationFeeInPounds().toString());
-        keyValue.put("{{feeForUkCopies}}", getOptionalNumberAsString(ccdData.getFee().getExtraCopiesOfGrant()));
-        keyValue.put("{{feeForNonUkCopies}}", getOptionalNumberAsString(ccdData.getFee().getOutsideUKGrantCopies()));
+        keyValue.put("{{paymentAmount}}", getAmountAsString(ccdData.getFee().getAmount()));
+        keyValue.put("{{applicationFee}}", getAmountAsString(ccdData.getFee().getApplicationFee()));
+        keyValue.put("{{feeForUkCopies}}", getOptionalAmountAsString(ccdData.getFee().getFeeForUkCopies()));
+        keyValue.put("{{feeForNonUkCopies}}", getOptionalAmountAsString(ccdData.getFee().getFeeForNonUkCopies()));
         keyValue.put("{{solsPaymentReferenceNumber}}", ccdData.getFee().getPaymentReferenceNumber());
 
         String additionalInfo = ccdData.getSolsAdditionalInfo();
@@ -164,11 +164,14 @@ public class ConfirmationResponseService {
         return !StringUtils.isEmpty(deadExecutors) ? deadExecutors + "\n" : deadExecutors;
     }
 
-    private String getOptionalNumberAsString(Long amount) {
+    private String getOptionalAmountAsString(BigDecimal amount) {
         if (amount == null) {
             return "";
         }
-        return amount.toString();
+        return getAmountAsString(amount);
     }
 
+    private String getAmountAsString(BigDecimal amount) {
+        return amount.divide(BigDecimal.valueOf(100), 2, BigDecimal.ROUND_HALF_UP).toString();
+    }
 }
