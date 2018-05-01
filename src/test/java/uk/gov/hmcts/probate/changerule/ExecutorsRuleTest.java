@@ -66,6 +66,14 @@ public class ExecutorsRuleTest {
     }
 
     @Test
+    public void shouldReturnTrueWhenExecutorListIsNullAndPrimaryApplicantIsNotApplying() {
+        when(caseDataMock.getSolsAdditionalExecutorList()).thenReturn(null);
+        when(caseDataMock.getPrimaryApplicantIsApplying()).thenReturn(NO);
+
+        assertEquals(true, undertest.isChangeNeeded(caseDataMock));
+    }
+
+    @Test
     public void shouldGetBodyMessageKey() {
 
         assertEquals("stopBodyNoApplyingExecutors", undertest.getConfirmationBodyMessageKey());

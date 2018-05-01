@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -173,6 +174,61 @@ public class CCDDataTransformerTest {
         assertCaseSubmissionDate(ccdData);
         assertEquals(APPLICATION_FEE.floatValue(), ccdData.getFee().getApplicationFee().floatValue(), 0.01);
         assertEquals(PAYMENT_REF_NUMBER_FEE, ccdData.getFee().getPaymentReferenceNumber());
+    }
+
+    @Test
+    public void shouldConvertRequestToDataBeanWhenLastModifiedDateIsNull() {
+
+        when(caseDetailsMock.getLastModified()).thenReturn(null);
+
+        CCDData ccdData = underTest.transform(callbackRequestMock);
+
+        assertAll(ccdData);
+        assertNull(ccdData.getCaseSubmissionDate());
+    }
+
+    @Test
+    public void shouldConvertRequestToDataBeanWhenLastModifiedDateIsEmpty() {
+
+        when(caseDetailsMock.getLastModified()).thenReturn(new String[0]);
+
+        CCDData ccdData = underTest.transform(callbackRequestMock);
+
+        assertAll(ccdData);
+        assertNull(ccdData.getCaseSubmissionDate());
+    }
+
+    @Test
+    public void shouldConvertRequestToDataBeanWhenLastModifiedDateHasNullFirstElement() {
+
+        when(caseDetailsMock.getLastModified()).thenReturn(new String[]{null});
+
+        CCDData ccdData = underTest.transform(callbackRequestMock);
+
+        assertAll(ccdData);
+        assertNull(ccdData.getCaseSubmissionDate());
+    }
+
+    @Test
+    public void shouldConvertRequestToDataBeanWhenLastModifiedDateHasNullSecondElement() {
+
+        when(caseDetailsMock.getLastModified()).thenReturn(new String[]{"", null});
+
+        CCDData ccdData = underTest.transform(callbackRequestMock);
+
+        assertAll(ccdData);
+        assertNull(ccdData.getCaseSubmissionDate());
+    }
+
+    @Test
+    public void shouldConvertRequestToDataBeanWhenLastModifiedDateHasNullThirdElement() {
+
+        when(caseDetailsMock.getLastModified()).thenReturn(new String[]{"", "", null});
+
+        CCDData ccdData = underTest.transform(callbackRequestMock);
+
+        assertAll(ccdData);
+        assertNull(ccdData.getCaseSubmissionDate());
     }
 
     private void assertAll(CCDData ccdData) {
