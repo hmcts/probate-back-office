@@ -33,7 +33,7 @@ public class PrintServiceTemplateController {
     @PostMapping(path = "/documents", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<List> getAllDocuments(@RequestBody CaseDetails caseDetails, BindingResult bindingResult) {
 
-        log.debug("POST /pdf-template/documents: {}", caseDetails);
+        log.debug("POST /template/documents: {}", caseDetails);
 
         if (bindingResult.hasErrors()) {
             throw new BadRequestException("Invalid payload", bindingResult);
