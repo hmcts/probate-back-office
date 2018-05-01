@@ -96,7 +96,7 @@
 <p>
   <strong>Case number:</strong> {{ id }}<br>
   <strong>Jurisdiction:</strong> {{ jurisdiction }}<br>
-  <strong>Case type:</strong> {{ case_type_id }}<br>
+  <strong>Case type:</strong> Grant of representation<br>
   <strong>Record type:</strong> SOLS<br>
 </p>
 <p>
@@ -248,11 +248,11 @@
     </tr>
     <tr>
       <td colspan="2">IHT Gross value:</td>
-      <td>{% if case_data.ihtGrossValue %}{{ (case_data.ihtGrossValue/100) | money('0,0.00') }}{% endif %}</td>
+      <td>{% if case_data.ihtGrossValue %}£{{ (case_data.ihtGrossValue/100) | money('0,0.00') }}{% endif %}</td>
     </tr>
     <tr>
       <td colspan="2">IHT Net value:</td>
-      <td>{% if case_data.ihtNetValue %}{{ (case_data.ihtNetValue/100) | money('0,0.00') }}{% endif %}</td>
+      <td>{% if case_data.ihtNetValue %}£{{ (case_data.ihtNetValue/100) | money('0,0.00') }}{% endif %}</td>
     </tr>
     <tr>
       <td colspan="2">Payment reference:</td>
@@ -290,7 +290,7 @@
     </tr>
     <tr>
       <td colspan="2">Total fee due:</td>
-      <td>{% if case_data.totalFee %}{{ (case_data.totalFee/100) | money('0,0.00') }}{% endif %}</td>
+      <td>{% if case_data.totalFee %}£{{ (case_data.totalFee/100) | money('0,0.00') }}{% endif %}</td>
     </tr>
   </table>
 </pre>

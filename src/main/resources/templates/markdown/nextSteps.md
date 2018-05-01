@@ -14,13 +14,13 @@ This probate application has now been submitted
 
 Payment summary
 -------------------------------------------------
-**Application fee** {{applicationFee}}
+**Application fee** £{{applicationFee}}
 
-**Fee for additional UK copies** {{feeForUkCopies}}
+**Fee for additional UK copies** £{{feeForUkCopies}}
 
-**Fee for certified copies** {{feeForNonUkCopies}}
+**Fee for certified copies** £{{feeForNonUkCopies}}
 
-**Fee amount** {{paymentAmount}}
+**Fee amount** £{{paymentAmount}}
 
 **Payment method** {{paymentMethod}}
 
