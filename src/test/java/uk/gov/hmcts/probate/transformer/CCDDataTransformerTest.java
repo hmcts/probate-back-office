@@ -21,6 +21,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -49,8 +50,6 @@ public class CCDDataTransformerTest {
     private static final String FEE_ACCOUNT = "FeeAct1";
     private static final String PAYMENT_REF_NUMBER_FEE = "Fee account PBA-FeeAct1";
     private static final String PAYMENT_REF_NUMBER_CHEQUE = "Cheque (payable to ‘HM Courts & Tribunals Service’)";
-
-    private static final String YES = "Yes";
 
     @Mock
     private CallbackRequest callbackRequestMock;
@@ -91,7 +90,7 @@ public class CCDDataTransformerTest {
 
         when(caseDetailsMock.getLastModified()).thenReturn(LAST_MODIFIED_STR);
 
-        List<AdditionalExecutors> additionalExecutors = new ArrayList();
+        List<AdditionalExecutors> additionalExecutors = new ArrayList<>();
         AdditionalExecutors additionalExecutors1 = mock(AdditionalExecutors.class);
         AdditionalExecutors additionalExecutors2 = mock(AdditionalExecutors.class);
         AdditionalExecutor additionalExecutor1 = mock(AdditionalExecutor.class);
@@ -120,7 +119,7 @@ public class CCDDataTransformerTest {
         CCDData ccdData = underTest.transform(callbackRequestMock);
 
         assertAll(ccdData);
-        assertEquals(null, ccdData.getCaseSubmissionDate());
+        assertNull(ccdData.getCaseSubmissionDate());
     }
 
     @Test
@@ -131,7 +130,7 @@ public class CCDDataTransformerTest {
         CCDData ccdData = underTest.transform(callbackRequestMock);
 
         assertAll(ccdData);
-        assertEquals(null, ccdData.getCaseSubmissionDate());
+        assertNull(ccdData.getCaseSubmissionDate());
     }
 
     @Test
@@ -142,7 +141,7 @@ public class CCDDataTransformerTest {
         CCDData ccdData = underTest.transform(callbackRequestMock);
 
         assertAll(ccdData);
-        assertEquals(null, ccdData.getCaseSubmissionDate());
+        assertNull(ccdData.getCaseSubmissionDate());
     }
 
     @Test
@@ -243,7 +242,7 @@ public class CCDDataTransformerTest {
         assertEquals(IHT_FORM_ID, ccdData.getIht().getFormName());
         assertEquals(IHT_GROSS, ccdData.getIht().getGrossValue());
         assertEquals(IHT_NET, ccdData.getIht().getNetValue());
-        assertEquals(true, ccdData.getExecutors().get(2).isApplying());
+        assertTrue(ccdData.getExecutors().get(2).isApplying());
         assertEquals(TOTAL_FEE.floatValue(), ccdData.getFee().getAmount().floatValue(), 0.01);
     }
 
@@ -252,6 +251,5 @@ public class CCDDataTransformerTest {
         assertEquals(1, ccdData.getCaseSubmissionDate().getMonthValue());
         assertEquals(2, ccdData.getCaseSubmissionDate().getDayOfMonth());
         assertEquals(3, ccdData.getExecutors().size());
-
     }
 }

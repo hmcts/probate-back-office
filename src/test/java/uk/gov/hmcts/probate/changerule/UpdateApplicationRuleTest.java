@@ -6,7 +6,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
@@ -27,21 +28,18 @@ public class UpdateApplicationRuleTest {
     public void shouldChangeState() {
         when(caseDataMock.getSolsSOTNeedToUpdate()).thenReturn("Yes");
 
-        assertEquals(true, undertest.isChangeNeeded(caseDataMock));
+        assertTrue(undertest.isChangeNeeded(caseDataMock));
     }
 
     @Test
     public void shouldNotChangeState() {
         when(caseDataMock.getSolsSOTNeedToUpdate()).thenReturn("No");
 
-        assertEquals(false, undertest.isChangeNeeded(caseDataMock));
+        assertFalse(undertest.isChangeNeeded(caseDataMock));
     }
 
     @Test(expected = UnsupportedOperationException.class)
     public void shouldGetBodyMessageKey() {
-
         undertest.getConfirmationBodyMessageKey();
     }
-
-
 }

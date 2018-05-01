@@ -7,7 +7,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
 
-import java.util.Arrays;
+import java.util.Collections;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.notNullValue;
@@ -24,7 +24,7 @@ public class BadRequestExceptionTest {
     public void shouldCreateBadRequestException() {
         final String message = "MESSAGE";
         FieldError fieldError = new FieldError("", "field", "defaultMessage");
-        when(errors.getFieldErrors()).thenReturn(Arrays.asList(fieldError));
+        when(errors.getFieldErrors()).thenReturn(Collections.singletonList(fieldError));
         BadRequestException badRequestException = new BadRequestException(message, errors);
 
         assertThat(badRequestException, notNullValue());

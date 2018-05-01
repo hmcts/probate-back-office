@@ -7,13 +7,15 @@ import org.mockito.Mock;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 public class NoWillRuleTest {
 
     @InjectMocks
-    private NoWillRule undertest;
+    private NoWillRule underTest;
 
     @Mock
     private CaseData caseDataMock;
@@ -27,20 +29,20 @@ public class NoWillRuleTest {
     public void shouldChangeState() {
         when(caseDataMock.getWillExists()).thenReturn("No");
 
-        assertEquals(true, undertest.isChangeNeeded(caseDataMock));
+        assertTrue(underTest.isChangeNeeded(caseDataMock));
     }
 
     @Test
     public void shouldNotChangeState() {
         when(caseDataMock.getWillExists()).thenReturn("Yes");
 
-        assertEquals(false, undertest.isChangeNeeded(caseDataMock));
+        assertFalse(underTest.isChangeNeeded(caseDataMock));
     }
 
     @Test
     public void shouldGetBodyMessageKey() {
 
-        assertEquals("willStopBodyNoWill", undertest.getConfirmationBodyMessageKey());
+        assertEquals("willStopBodyNoWill", underTest.getConfirmationBodyMessageKey());
     }
 
 }

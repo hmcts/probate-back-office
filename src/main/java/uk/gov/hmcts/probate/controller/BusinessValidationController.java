@@ -60,8 +60,8 @@ public class BusinessValidationController {
     @PostMapping(path = "/validate", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<CallbackResponse> validate(
             @Validated({ApplicationCreatedGroup.class, ApplicationUpdatedGroup.class}) @RequestBody CallbackRequest callbackRequest,
-        BindingResult bindingResult,
-        HttpServletRequest request) {
+            BindingResult bindingResult,
+            HttpServletRequest request) {
 
         logRequest(request.getRequestURI(), callbackRequest);
 
@@ -69,7 +69,7 @@ public class BusinessValidationController {
             throw new BadRequestException("Invalid payload", bindingResult);
         }
 
-        CallbackResponse response = validateRequest(bindingResult, callbackRequest, validationRules);
+        CallbackResponse response = validateRequest(callbackRequest, validationRules);
         if (response.getErrors().isEmpty()) {
             Optional<String> newState = stateChangeService.getChangedStateForCaseUpdate(callbackRequest.getCaseDetails().getData());
             if (newState.isPresent()) {
@@ -87,7 +87,7 @@ public class BusinessValidationController {
     @PostMapping(path = "/stopConfirmation", consumes = APPLICATION_JSON_UTF8_VALUE, produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<AfterSubmitCallbackResponse> stopWithConfirmation(
             @Validated({ApplicationCreatedGroup.class, ApplicationUpdatedGroup.class}) @RequestBody CallbackRequest callbackRequest,
-        BindingResult bindingResult) {
+            BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
             throw new BadRequestException("Invalid payload", bindingResult);
@@ -97,13 +97,8 @@ public class BusinessValidationController {
         return ResponseEntity.ok(afterSubmitCallbackResponse);
     }
 
-    private CallbackResponse validateRequest(BindingResult bindingResult, CallbackRequest callbackRequest,
-                                      List<? extends ValidationRule> rules) {
-        if (bindingResult.hasErrors()) {
-            return CallbackResponse.builder()
-                .errors(collectErrors(bindingResult.getFieldErrors(), Collections.emptyList()))
-                .build();
-        }
+    private CallbackResponse validateRequest(CallbackRequest callbackRequest,
+                                             List<? extends ValidationRule> rules) {
 
         CCDData ccdData = ccdBeanTransformer.transform(callbackRequest);
 
@@ -111,23 +106,23 @@ public class BusinessValidationController {
 
         if (!businessErrors.isEmpty()) {
             return CallbackResponse.builder()
-                .errors(collectErrors(Collections.emptyList(), businessErrors))
-                .build();
+                    .errors(collectErrors(Collections.emptyList(), businessErrors))
+                    .build();
         }
 
         return CallbackResponse.builder()
-            .errors(Collections.emptyList())
-            .build();
+                .errors(Collections.emptyList())
+                .build();
     }
 
     private List<String> collectErrors(List<FieldError> errors, List<FieldErrorResponse> fieldErrorResponses) {
         List<String> allErrors = errors.parallelStream()
-            .map(FieldError::getDefaultMessage)
-            .collect(Collectors.toList());
+                .map(FieldError::getDefaultMessage)
+                .collect(Collectors.toList());
 
         allErrors.addAll(fieldErrorResponses.parallelStream()
-            .map(FieldErrorResponse::getMessage)
-            .collect(Collectors.toList()));
+                .map(FieldErrorResponse::getMessage)
+                .collect(Collectors.toList()));
         return allErrors;
     }
 

@@ -43,7 +43,7 @@ public class ConfirmationResponseServiceFeatureTest {
     private final TestUtils testUtils = new TestUtils();
     private static final String REASON_FOR_NOT_APPLYING_RENUNCIATION = "Renunciation";
     private static final String REASON_FOR_NOT_APPLYING_DIED_BEFORE = "DiedBefore";
-    public static final String SOLICITOR_REFERENCE = "SOL_REF_X12345";
+    private static final String SOLICITOR_REFERENCE = "SOL_REF_X12345";
 
     private static final LocalDate DOB = LocalDate.of(1990, 4, 4);
     private static final LocalDate DOD = LocalDate.of(2017, 4, 4);
@@ -62,7 +62,7 @@ public class ConfirmationResponseServiceFeatureTest {
     private static final Long EXTRA_UK = 1L;
     private static final Long EXTRA_OUTSIDE_UK = 2L;
     private static final String PAYMENT_REFERENCE = "XXXXX123456";
-    public static final String ADDITIONAL_INFO = "ADDITIONAL INFO";
+    private static final String ADDITIONAL_INFO = "ADDITIONAL INFO";
 
     @Autowired
     private ConfirmationResponseService confirmationResponseService;

@@ -5,21 +5,20 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.MediaType;
-import org.springframework.util.MultiValueMap;
 import uk.gov.hmcts.probate.config.EvidenceManagementRestTemplate;
 import uk.gov.hmcts.probate.model.evidencemanagement.EvidenceManagementFile;
 import uk.gov.hmcts.probate.model.evidencemanagement.EvidenceManagementFileUpload;
 import uk.gov.hmcts.probate.service.evidencemanagement.builder.DocumentManagementURIBuilder;
 import uk.gov.hmcts.probate.service.evidencemanagement.header.HttpHeadersFactory;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -55,25 +54,19 @@ public class EmUploadServiceTest {
         evidenceManagementFile.setLinks(new HashMap<>());
 
         HashMap embedded = new HashMap();
-        embedded.put("documents", Arrays.asList(evidenceManagementFile));
+        embedded.put("documents", Collections.singletonList(evidenceManagementFile));
         HashMap response = new HashMap();
         response.put("_embedded", embedded);
 
         when(documentManagementURIBuilder.buildUrl()).thenReturn(URL);
-        when(evidenceManagementRestTemplate.postForObject(
-                eq(URL),
-                org.mockito.Matchers.<HttpEntity<MultiValueMap>>any(),
-                eq(HashMap.class))).thenReturn(response);
+        when(evidenceManagementRestTemplate.postForObject(eq(URL), any(), eq(HashMap.class))).thenReturn(response);
         EvidenceManagementFileUpload evidenceManagementFileUpload =
                 new EvidenceManagementFileUpload(MediaType.APPLICATION_PDF, new byte[100]);
 
         EvidenceManagementFile actualEvidenceManagementFile = emUploadService.store(evidenceManagementFileUpload);
 
         assertThat(actualEvidenceManagementFile, equalTo(evidenceManagementFile));
-        verify(evidenceManagementRestTemplate).postForObject(
-                eq(URL),
-                org.mockito.Matchers.<HttpEntity<MultiValueMap>>any(),
-                eq(HashMap.class));
+        verify(evidenceManagementRestTemplate).postForObject(eq(URL), any(), eq(HashMap.class));
         verify(httpHeadersFactory).getMultiPartHttpHeader();
         verify(documentManagementURIBuilder).buildUrl();
     }

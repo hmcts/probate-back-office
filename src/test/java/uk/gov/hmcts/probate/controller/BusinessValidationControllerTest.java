@@ -34,18 +34,17 @@ public class BusinessValidationControllerTest {
     private static final LocalDate DOD = LocalDate.of(2017, 4, 4);
     private static final Long ID = 1L;
     private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
-    private static final String FORNAME = "Andy";
-    private static final String SURANME = "Michael";
-    private static final String SOLICITOR_APP_REFERENCE = "Reff";
+    private static final String FORENAME = "Andy";
+    private static final String SURNAME = "Michael";
+    private static final String SOLICITOR_APP_REFERENCE = "Reference";
     private static final String SOLICITOR_FIRM_NAME = "Legal Service Ltd";
     private static final String SOLICITOR_FIRM_POSTCODE = "SW1E 6EA";
     private static final String IHT_FORM = "IHT207";
     private static final String SOLICITOR_NAME = "Peter Crouch";
     private static final String SOLICITOR_JOB_TITLE = "Lawyer";
     private static final String PAYMENT_METHOD = "Cheque";
-    private static final float PAYMENT_AMOUNT = 150;
-    private static final String WILL_HAS_CODICLIS = "Yes";
-    private static final String NUMBER_OF_CODICLIS = "1";
+    private static final String WILL_HAS_CODICILS = "Yes";
+    private static final String NUMBER_OF_CODICILS = "1";
     private static final BigDecimal APPLICATION_FEE = BigDecimal.TEN;
     private static final BigDecimal FEE_FOR_UK_COPIES = BigDecimal.TEN;
     private static final BigDecimal FEE_FOR_NON_UK_COPIES = BigDecimal.TEN;
@@ -70,9 +69,8 @@ public class BusinessValidationControllerTest {
     private static final String DECEASED_OTHER_NAMES = "No";
     private static final String DECEASED_DOM_UK = "Yes";
 
-
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
-    public static final String CASE_VALIDATE_URL = "/case/validate";
+    private static final String CASE_VALIDATE_URL = "/case/validate";
 
     @Autowired
     private MockMvc mockMvc;
@@ -86,8 +84,8 @@ public class BusinessValidationControllerTest {
         caseDataBuilder = CaseData.builder()
                 .deceasedDateOfBirth(DOB)
                 .deceasedDateOfDeath(DOD)
-                .deceasedForenames(FORNAME)
-                .deceasedSurname(SURANME)
+                .deceasedForenames(FORENAME)
+                .deceasedSurname(SURNAME)
                 .deceasedAddress(DECEASED_ADDRESS)
                 .deceasedAnyOtherNames(DECEASED_OTHER_NAMES)
                 .deceasedDomicileInEngWales(DECEASED_DOM_UK)
@@ -102,8 +100,8 @@ public class BusinessValidationControllerTest {
                 .ihtNetValue(NET)
                 .ihtGrossValue(GROSS)
                 .solsSolicitorAppReference(SOLICITOR_APP_REFERENCE)
-                .willHasCodicils(WILL_HAS_CODICLIS)
-                .willNumberOfCodicils(NUMBER_OF_CODICLIS)
+                .willHasCodicils(WILL_HAS_CODICILS)
+                .willNumberOfCodicils(NUMBER_OF_CODICILS)
                 .solsSolicitorFirmName(SOLICITOR_FIRM_NAME)
                 .solsSolicitorFirmPostcode(SOLICITOR_FIRM_POSTCODE)
                 .solsIHTFormId(IHT_FORM)
@@ -151,7 +149,7 @@ public class BusinessValidationControllerTest {
     }
 
     @Test
-    public void shouldValidateWithFornameIsNullError() throws Exception {
+    public void shouldValidateWithForenameIsNullError() throws Exception {
         caseDataBuilder.deceasedForenames(null);
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
