@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import uk.gov.hmcts.probate.model.Constants;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutors;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
@@ -17,7 +18,6 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
-import static uk.gov.hmcts.probate.changerule.ChangeRule.NO;
 
 public class CaseDataTest {
 
@@ -138,7 +138,7 @@ public class CaseDataTest {
         return CaseData.builder()
                 .primaryApplicantForenames(PRIMARY_APP_FNAME)
                 .primaryApplicantForenames(PRIMARY_APP_SNAME)
-                .primaryApplicantIsApplying(NO)
+                .primaryApplicantIsApplying(Constants.NO)
                 .primaryApplicantAddress(PRIMARY_APP_ADDRESS)
                 .solsExecutorAliasNames(PRIMARY_APP_NAME_ON_WILL)
                 .solsAdditionalExecutorList(additionalExecutorsList)

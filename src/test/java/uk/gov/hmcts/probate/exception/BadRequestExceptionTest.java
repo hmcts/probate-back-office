@@ -21,13 +21,6 @@ public class BadRequestExceptionTest {
     private Errors errors;
 
     @Test
-    public void shouldCreateBadRequestExceptionWithEmptyConstructor() {
-        BadRequestException badRequestException = new BadRequestException();
-
-        assertThat(badRequestException, notNullValue());
-    }
-
-    @Test
     public void shouldCreateBadRequestException() {
         final String message = "MESSAGE";
         FieldError fieldError = new FieldError("", "field", "defaultMessage");
