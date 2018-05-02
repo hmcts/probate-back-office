@@ -11,7 +11,6 @@ import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutors;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
-import uk.gov.hmcts.probate.model.fee.FeeServiceResponse;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -60,9 +59,6 @@ public class CCDDataTransformerTest {
 
     @Mock
     private CaseData caseDataMock;
-
-    @Mock
-    private FeeServiceResponse feeServiceResponseMock;
 
     @InjectMocks
     private CCDDataTransformer underTest;
