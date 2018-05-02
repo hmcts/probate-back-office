@@ -94,4 +94,15 @@ public class PDFManagementServiceTest {
 
         underTest.generateAndUpload(callbackRequestMock, LEGAL_STATEMENT);
     }
+
+    @Test(expected = ConnectionException.class)
+    public void shouldThrowConnectExceptionWhenFileUploadThrowsIOException() throws IOException {
+        String json = "{}";
+
+        when(objectMapperMock.writeValueAsString(callbackRequestMock)).thenReturn(json);
+        when(pdfGeneratorServiceMock.generatePdf(LEGAL_STATEMENT, json)).thenReturn(evidenceManagementFileUpload);
+        when(uploadServiceMock.store(evidenceManagementFileUpload)).thenThrow(new IOException());
+
+        underTest.generateAndUpload(callbackRequestMock, LEGAL_STATEMENT);
+    }
 }
