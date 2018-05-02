@@ -189,6 +189,19 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
+    public void shouldConvertRequestToDataBeanForPaymentWithLegalStatementDocNullWhenPdfServiceTemplateIsNull() {
+
+        when(ccdDocumentMock.getDocumentBinaryUrl()).thenReturn(DOC_BINARY_URL);
+        when(ccdDocumentMock.getDocumentUrl()).thenReturn(DOC_URL);
+        when(ccdDocumentMock.getDocumentFilename()).thenReturn(DOC_NAME);
+        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, null, ccdDocumentMock);
+
+        assertCommon(callbackResponse);
+
+        assertNull(callbackResponse.getData().getSolsLegalStatementDocument());
+    }
+
+    @Test
     public void shouldConvertRequestToDataBeanForPaymentWithFeeAccount() {
 
         when(caseDataMock.getSolsPaymentMethods()).thenReturn(SOL_PAY_METHODS_FEE);
