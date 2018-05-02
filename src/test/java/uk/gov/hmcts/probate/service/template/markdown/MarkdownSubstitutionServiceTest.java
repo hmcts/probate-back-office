@@ -14,6 +14,7 @@ import java.net.URL;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.Matchers.any;
@@ -65,6 +66,17 @@ public class MarkdownSubstitutionServiceTest {
                 .thenReturn(Optional.empty());
 
         Map<String, String> keyValue = Collections.singletonMap("name", "markdown");
+        underTest.generatePage(RESOURCE_PATH, MarkdownTemplate.NEXT_STEPS, keyValue);
+    }
+
+    @Test(expected = RuntimeException.class)
+    public void shouldThrowRuntimeExceptionWhenFileDoesNotExist() {
+        when(fileSystemResource.getFile()).thenReturn(new File(UUID.randomUUID().toString()));
+        when(fileSystemResourceService.getFileSystemResource(any(String.class)))
+                .thenReturn(Optional.of(fileSystemResource));
+
+        Map<String, String> keyValue = Collections.singletonMap("name", "markdown");
+
         underTest.generatePage(RESOURCE_PATH, MarkdownTemplate.NEXT_STEPS, keyValue);
     }
 }
