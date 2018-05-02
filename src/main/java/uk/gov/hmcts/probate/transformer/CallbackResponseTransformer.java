@@ -34,7 +34,7 @@ public class CallbackResponseTransformer {
                 .state(newState.orElse(null))
                 .build();
 
-        return this.transform(responseCaseData);
+        return transform(responseCaseData);
     }
 
     public CallbackResponse transform(CallbackRequest callbackRequest, FeeServiceResponse feeServiceResponse) {
@@ -52,7 +52,7 @@ public class CallbackResponseTransformer {
                 .totalFee(totalFee)
                 .build();
 
-        return this.transform(responseCaseData);
+        return transform(responseCaseData);
     }
 
     public CallbackResponse transform(CallbackRequest callbackRequest, PDFServiceTemplate pdfServiceTemplate, CCDDocument ccdDocument) {
@@ -64,7 +64,7 @@ public class CallbackResponseTransformer {
             responseCaseData.solsLegalStatementDocument(ccdDocument);
         }
 
-        return this.transform(responseCaseData.build());
+        return transform(responseCaseData.build());
     }
 
     private CallbackResponse transform(ResponseCaseData responseCaseData) {
@@ -108,20 +108,20 @@ public class CallbackResponseTransformer {
 
                 .solsSOTNeedToUpdate(caseData.getSolsSOTNeedToUpdate())
 
-                .ihtGrossValue(this.transformToString(caseData.getIhtGrossValue()))
-                .ihtNetValue(this.transformToString(caseData.getIhtNetValue()))
+                .ihtGrossValue(transformToString(caseData.getIhtGrossValue()))
+                .ihtNetValue(transformToString(caseData.getIhtNetValue()))
                 .deceasedDomicileInEngWales(caseData.getDeceasedDomicileInEngWales())
 
                 .solsPaymentMethods(caseData.getSolsPaymentMethods())
                 .solsFeeAccountNumber(caseData.getSolsFeeAccountNumber())
-                .solsPaymentReferenceNumber(this.getPaymentReference(caseData))
+                .solsPaymentReferenceNumber(getPaymentReference(caseData))
 
-                .extraCopiesOfGrant(this.transformToString(caseData.getExtraCopiesOfGrant()))
-                .outsideUKGrantCopies(this.transformToString(caseData.getOutsideUKGrantCopies()))
+                .extraCopiesOfGrant(transformToString(caseData.getExtraCopiesOfGrant()))
+                .outsideUKGrantCopies(transformToString(caseData.getOutsideUKGrantCopies()))
                 .feeForNonUkCopies(transformMoneyGBPToString(caseData.getFeeForNonUkCopies()))
-                .feeForUkCopies(this.transformMoneyGBPToString(caseData.getFeeForUkCopies()))
-                .applicationFee(this.transformMoneyGBPToString(caseData.getApplicationFee()))
-                .totalFee(this.transformMoneyGBPToString(caseData.getTotalFee()))
+                .feeForUkCopies(transformMoneyGBPToString(caseData.getFeeForUkCopies()))
+                .applicationFee(transformMoneyGBPToString(caseData.getApplicationFee()))
+                .totalFee(transformMoneyGBPToString(caseData.getTotalFee()))
 
                 .solsLegalStatementDocument(caseData.getSolsLegalStatementDocument());
     }

@@ -57,6 +57,8 @@ public class ConfirmationResponseServiceFeatureTest {
     private static final String PAYMENT_METHOD = "Cheque";
     private static final BigDecimal APPLICATION_FEE = BigDecimal.TEN;
     private static final BigDecimal TOTAL_FEE = BigDecimal.TEN;
+    private static final BigDecimal FEE_UK = new BigDecimal(100);
+    private static final BigDecimal FEE_NON_UK = new BigDecimal(200);
     private static final Float NET = 900f;
     private static final Float GROSS = 1000f;
     private static final Long EXTRA_UK = 1L;
@@ -183,6 +185,8 @@ public class ConfirmationResponseServiceFeatureTest {
                 .amount(TOTAL_FEE)
                 .applicationFee(APPLICATION_FEE)
                 .paymentReferenceNumber(PAYMENT_REFERENCE)
+                .feeForUkCopies(FEE_UK)
+                .feeForNonUkCopies(FEE_NON_UK)
                 .build();
     }
 

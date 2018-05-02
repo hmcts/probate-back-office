@@ -21,7 +21,6 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -45,6 +44,8 @@ public class CCDDataTransformerTest {
     private static final Float IHT_NET = 9000f;
     private static final BigDecimal TOTAL_FEE = new BigDecimal(155.00);
     private static final BigDecimal APPLICATION_FEE = new BigDecimal(200.00);
+    private static final BigDecimal FEE_UK_COPIES = new BigDecimal(0.50);
+    private static final BigDecimal FEE_NON_UK_COPIES = new BigDecimal(1.50);
     private static final String PAYMENT_METHOD_CHEQUE = "cheque";
     private static final String PAYMENT_METHOD_FEE = "fee account";
     private static final String FEE_ACCOUNT = "FeeAct1";
@@ -86,7 +87,10 @@ public class CCDDataTransformerTest {
         when(caseDataMock.getSolsIHTFormId()).thenReturn(IHT_FORM_ID);
         when(caseDataMock.getIhtGrossValue()).thenReturn(IHT_GROSS);
         when(caseDataMock.getIhtNetValue()).thenReturn(IHT_NET);
+        when(caseDataMock.getFeeForUkCopies()).thenReturn(FEE_UK_COPIES);
+        when(caseDataMock.getFeeForNonUkCopies()).thenReturn(FEE_NON_UK_COPIES);
         when(caseDataMock.getTotalFee()).thenReturn(TOTAL_FEE);
+        when(caseDataMock.getApplicationFee()).thenReturn(APPLICATION_FEE);
 
         when(caseDetailsMock.getLastModified()).thenReturn(LAST_MODIFIED_STR);
 
@@ -119,7 +123,7 @@ public class CCDDataTransformerTest {
         CCDData ccdData = underTest.transform(callbackRequestMock);
 
         assertAll(ccdData);
-        assertNull(ccdData.getCaseSubmissionDate());
+        assertEquals(null, ccdData.getCaseSubmissionDate());
     }
 
     @Test
@@ -130,7 +134,7 @@ public class CCDDataTransformerTest {
         CCDData ccdData = underTest.transform(callbackRequestMock);
 
         assertAll(ccdData);
-        assertNull(ccdData.getCaseSubmissionDate());
+        assertEquals(null, ccdData.getCaseSubmissionDate());
     }
 
     @Test
@@ -141,17 +145,17 @@ public class CCDDataTransformerTest {
         CCDData ccdData = underTest.transform(callbackRequestMock);
 
         assertAll(ccdData);
-        assertNull(ccdData.getCaseSubmissionDate());
+        assertEquals(null, ccdData.getCaseSubmissionDate());
     }
 
     @Test
     public void shouldConvertRequestToDataBeanWithFeeServiceForCheque() {
 
         when(caseDataMock.getSolsPaymentMethods()).thenReturn(PAYMENT_METHOD_CHEQUE);
-        when(feeServiceResponseMock.getTotal()).thenReturn(TOTAL_FEE);
-        when(feeServiceResponseMock.getApplicationFee()).thenReturn(APPLICATION_FEE);
+        when(caseDataMock.getTotalFee()).thenReturn(TOTAL_FEE);
+        when(caseDataMock.getApplicationFee()).thenReturn(APPLICATION_FEE);
 
-        CCDData ccdData = underTest.transform(callbackRequestMock, feeServiceResponseMock);
+        CCDData ccdData = underTest.transform(callbackRequestMock);
 
         assertAll(ccdData);
         assertCaseSubmissionDate(ccdData);
@@ -163,16 +167,34 @@ public class CCDDataTransformerTest {
     public void shouldConvertRequestToDataBeanWithFeeServiceForFee() {
 
         when(caseDataMock.getSolsPaymentMethods()).thenReturn(PAYMENT_METHOD_FEE);
+        when(caseDataMock.getTotalFee()).thenReturn(TOTAL_FEE);
+        when(caseDataMock.getApplicationFee()).thenReturn(APPLICATION_FEE);
         when(caseDataMock.getSolsFeeAccountNumber()).thenReturn(FEE_ACCOUNT);
-        when(feeServiceResponseMock.getTotal()).thenReturn(TOTAL_FEE);
-        when(feeServiceResponseMock.getApplicationFee()).thenReturn(APPLICATION_FEE);
 
-        CCDData ccdData = underTest.transform(callbackRequestMock, feeServiceResponseMock);
+        CCDData ccdData = underTest.transform(callbackRequestMock);
 
         assertAll(ccdData);
         assertCaseSubmissionDate(ccdData);
         assertEquals(APPLICATION_FEE.floatValue(), ccdData.getFee().getApplicationFee().floatValue(), 0.01);
         assertEquals(PAYMENT_REF_NUMBER_FEE, ccdData.getFee().getPaymentReferenceNumber());
+    }
+
+    @Test
+    public void shouldConvertRequestToDataBeanWithFeeDataMissing() {
+        String[] lmDate = {null, null, null, null, null, null, null, null};
+        when(caseDataMock.getFeeForUkCopies()).thenReturn(null);
+        when(caseDataMock.getFeeForNonUkCopies()).thenReturn(null);
+
+        CCDData ccdData = underTest.transform(callbackRequestMock);
+
+        assertBasic(ccdData);
+        assertNull(ccdData.getFee().getFeeForUkCopies());
+        assertNull(ccdData.getFee().getFeeForNonUkCopies());
+    }
+
+    private void assertFees(CCDData ccdData) {
+        assertEquals(FEE_UK_COPIES.floatValue(), ccdData.getFee().getFeeForUkCopies().floatValue(), 0.01);
+        assertEquals(FEE_NON_UK_COPIES.floatValue(), ccdData.getFee().getFeeForNonUkCopies().floatValue(), 0.01);
     }
 
     @Test
@@ -231,6 +253,11 @@ public class CCDDataTransformerTest {
     }
 
     private void assertAll(CCDData ccdData) {
+        assertBasic(ccdData);
+        assertFees(ccdData);
+    }
+
+    private void assertBasic(CCDData ccdData) {
         assertEquals(SOLICITOR_FIRM_NAME, ccdData.getSolicitor().getFirmName());
         assertEquals(SOLICITOR_FIRM_POSTCODE, ccdData.getSolicitor().getFirmPostcode());
         assertEquals(SOLICITOR_SOT_NAME, ccdData.getSolicitor().getFullname());
@@ -242,8 +269,9 @@ public class CCDDataTransformerTest {
         assertEquals(IHT_FORM_ID, ccdData.getIht().getFormName());
         assertEquals(IHT_GROSS, ccdData.getIht().getGrossValue());
         assertEquals(IHT_NET, ccdData.getIht().getNetValue());
-        assertTrue(ccdData.getExecutors().get(2).isApplying());
+        assertEquals(true, ccdData.getExecutors().get(2).isApplying());
         assertEquals(TOTAL_FEE.floatValue(), ccdData.getFee().getAmount().floatValue(), 0.01);
+        assertEquals(APPLICATION_FEE.floatValue(), ccdData.getFee().getApplicationFee().floatValue(), 0.01);
     }
 
     private void assertCaseSubmissionDate(CCDData ccdData) {
@@ -251,5 +279,6 @@ public class CCDDataTransformerTest {
         assertEquals(1, ccdData.getCaseSubmissionDate().getMonthValue());
         assertEquals(2, ccdData.getCaseSubmissionDate().getDayOfMonth());
         assertEquals(3, ccdData.getExecutors().size());
+
     }
 }

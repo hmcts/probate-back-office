@@ -232,10 +232,29 @@ public class ConfirmationResponseServiceTest {
     }
 
     @Test
+    public void shouldGetNextStepsConfirmationWithCopies() {
+        CCDData ccdDataMock = getCcdDataForConfirmation();
+
+        when(markdownSubstitutionServiceMock.generatePage(any(String.class), any(MarkdownTemplate.class), nextStepsKeyValueMap.capture()))
+                .thenReturn(willBodyTemplateResponseMock);
+
+        AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getNextStepsConfirmation(ccdDataMock);
+
+        assertEquals(null, afterSubmitCallbackResponse.getConfirmationHeader());
+        assertEquals(CONFIRMATION_BODY, afterSubmitCallbackResponse.getConfirmationBody());
+        Map<String, String> nextStepsValues = nextStepsKeyValueMap.getValue();
+        assertEquals("0.50", nextStepsValues.get("{{feeForUkCopies}}"));
+        assertEquals("1.50", nextStepsValues.get("{{feeForNonUkCopies}}"));
+        assertConfirmationValues(nextStepsValues);
+    }
+
+    @Test
     public void shouldGetNextStepsConfirmationWithNoCopies() {
         CCDData ccdDataMock = getCcdDataForConfirmation();
         when(ccdDataMock.getFee().getExtraCopiesOfGrant()).thenReturn(null);
         when(ccdDataMock.getFee().getOutsideUKGrantCopies()).thenReturn(null);
+        when(ccdDataMock.getFee().getFeeForUkCopies()).thenReturn(null);
+        when(ccdDataMock.getFee().getFeeForNonUkCopies()).thenReturn(null);
 
         when(markdownSubstitutionServiceMock.generatePage(any(String.class), any(MarkdownTemplate.class), nextStepsKeyValueMap.capture()))
                 .thenReturn(willBodyTemplateResponseMock);
@@ -287,9 +306,12 @@ public class ConfirmationResponseServiceTest {
         when(deceased.getDateOfDeath()).thenReturn(date);
         when(inheritanceTax.getFormName()).thenReturn("IHT207");
         when(fee.getPaymentMethod()).thenReturn("Cheque");
-        when(fee.getAmount()).thenReturn(BigDecimal.valueOf(100.00));
-        when(fee.getApplicationFeeInPounds()).thenReturn(BigDecimal.valueOf(50.00));
-        when(fee.getAmountInPounds()).thenReturn(BigDecimal.valueOf(100).setScale(2, BigDecimal.ROUND_HALF_UP));
+        when(fee.getAmount()).thenReturn(BigDecimal.valueOf(10000));
+        when(fee.getApplicationFee()).thenReturn(BigDecimal.valueOf(5000));
+        when(ccdDataMock.getFee().getExtraCopiesOfGrant()).thenReturn(1L);
+        when(ccdDataMock.getFee().getOutsideUKGrantCopies()).thenReturn(3L);
+        when(ccdDataMock.getFee().getFeeForUkCopies()).thenReturn(BigDecimal.valueOf(50));
+        when(ccdDataMock.getFee().getFeeForNonUkCopies()).thenReturn(BigDecimal.valueOf(150));
         when(ccdDataMock.getSolsAdditionalInfo()).thenReturn("solsAdditionalInfo");
         executorsList.add(executorMock);
         executorsList.add(renouncingExecutorMock);
