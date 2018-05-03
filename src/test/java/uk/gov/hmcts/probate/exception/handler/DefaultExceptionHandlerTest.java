@@ -5,7 +5,6 @@ import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import uk.gov.hmcts.probate.exception.BadRequestException;
 import uk.gov.hmcts.probate.exception.ClientException;
 import uk.gov.hmcts.probate.exception.ConnectionException;
@@ -32,9 +31,6 @@ public class DefaultExceptionHandlerTest {
 
     @Mock
     private BadRequestException badRequestException;
-
-    @Mock
-    private BindingResult bindingResult;
 
     @InjectMocks
     private DefaultExceptionHandler underTest;
@@ -70,16 +66,16 @@ public class DefaultExceptionHandlerTest {
     @Test
     public void shouldHandleMissingPDFDataAsStatusUN() {
         final FieldErrorResponse bve1Mock = FieldErrorResponse.builder()
-            .param("Object")
-            .field("field1")
-            .message("message")
-            .build();
+                .param("Object")
+                .field("field1")
+                .message("message")
+                .build();
 
         final FieldErrorResponse bve2Mock = FieldErrorResponse.builder()
-            .param("Object")
-            .field("field2")
-            .message("message")
-            .build();
+                .param("Object")
+                .field("field2")
+                .message("message")
+                .build();
 
         when(badRequestException.getErrors()).thenReturn(Arrays.asList(bve1Mock, bve2Mock));
 

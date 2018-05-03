@@ -32,7 +32,6 @@ import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.validator.ValidationRule;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -81,6 +80,8 @@ public class BusinessValidationUnitTest {
     private FieldErrorResponse businessValidationErrorMock;
     @Mock
     private PDFManagementService pdfManagementServiceMock;
+    @Mock
+    private JsonProcessingException jsonProcessingException;
 
 
     private BusinessValidationController underTest;
@@ -90,11 +91,11 @@ public class BusinessValidationUnitTest {
         MockitoAnnotations.initMocks(this);
         businessValidationErrorMock = FieldErrorResponse.builder().build();
         underTest = new BusinessValidationController(eventValidationServiceMock,
-            ccdBeanTransformer,
-            objectMapper,
-            validationRules,
-            callbackResponseTransformerMock,
-            confirmationResponseServiceMock,
+                ccdBeanTransformer,
+                objectMapper,
+                validationRules,
+                callbackResponseTransformerMock,
+                confirmationResponseServiceMock,
                 stateChangeServiceMock, pdfManagementServiceMock);
 
         when(httpServletRequest.getRequestURI()).thenReturn("/test-uri");
@@ -142,7 +143,7 @@ public class BusinessValidationUnitTest {
 
     @Test
     public void shouldErrorForLogRequest() throws JsonProcessingException {
-        when(objectMapper.writeValueAsString(callbackRequestMock)).thenThrow(JsonProcessingException.class);
+        when(objectMapper.writeValueAsString(callbackRequestMock)).thenThrow(jsonProcessingException);
 
         when(bindingResultMock.hasErrors()).thenReturn(false);
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
@@ -160,13 +161,13 @@ public class BusinessValidationUnitTest {
     @Test(expected = BadRequestException.class)
     public void shouldValidateWithFieldErrors() {
         when(bindingResultMock.hasErrors()).thenReturn(true);
-        when(bindingResultMock.getFieldErrors()).thenReturn(Arrays.asList(fieldErrorMock));
+        when(bindingResultMock.getFieldErrors()).thenReturn(Collections.singletonList(fieldErrorMock));
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
         when(ccdBeanTransformer.transform(callbackRequestMock)).thenReturn(ccdDataMock);
 
         ResponseEntity<CallbackResponse> response = underTest.validate(callbackRequestMock,
-            bindingResultMock, httpServletRequest);
+                bindingResultMock, httpServletRequest);
 
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(response.getBody().getErrors().isEmpty(), is(false));
@@ -175,14 +176,14 @@ public class BusinessValidationUnitTest {
     @Test
     public void shouldValidateWithBusinessErrors() {
         when(bindingResultMock.hasErrors()).thenReturn(false);
-        List<FieldErrorResponse> businessErrors = Arrays.asList(businessValidationErrorMock);
+        List<FieldErrorResponse> businessErrors = Collections.singletonList(businessValidationErrorMock);
         when(eventValidationServiceMock.validate(ccdDataMock, validationRules)).thenReturn(businessErrors);
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
         when(ccdBeanTransformer.transform(callbackRequestMock)).thenReturn(ccdDataMock);
 
         ResponseEntity<CallbackResponse> response = underTest.validate(callbackRequestMock,
-            bindingResultMock, httpServletRequest);
+                bindingResultMock, httpServletRequest);
 
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(response.getBody().getErrors().isEmpty(), is(false));
@@ -193,7 +194,7 @@ public class BusinessValidationUnitTest {
         when(bindingResultMock.hasErrors()).thenReturn(true);
 
         ResponseEntity<AfterSubmitCallbackResponse> response = underTest.stopWithConfirmation(callbackRequestMock,
-            bindingResultMock);
+                bindingResultMock);
 
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
     }

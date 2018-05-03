@@ -31,6 +31,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyMap;
 import static org.mockito.Matchers.anyString;
@@ -39,7 +40,7 @@ import static org.mockito.Mockito.when;
 
 public class ConfirmationResponseServiceTest {
 
-    public static final String CONFIRMATION_BODY = "someBody";
+    private static final String CONFIRMATION_BODY = "someBody";
     private ConfirmationResponseService underTest;
 
     @Mock
@@ -62,7 +63,7 @@ public class ConfirmationResponseServiceTest {
     private MarkdownSubstitutionService markdownSubstitutionServiceMock;
     @Mock
     private MessageResourceService messageResourceServiceMock;
-    private List<Executor> executorsList = new ArrayList<>();
+    private final List<Executor> executorsList = new ArrayList<>();
     @Mock
     private Executor executorMock;
     @Mock
@@ -102,7 +103,7 @@ public class ConfirmationResponseServiceTest {
 
         AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getStopConfirmation(callbackRequestMock);
 
-        assertEquals(null, afterSubmitCallbackResponse.getConfirmationHeader());
+        assertNull(afterSubmitCallbackResponse.getConfirmationHeader());
         assertEquals(CONFIRMATION_BODY, afterSubmitCallbackResponse.getConfirmationBody());
     }
 
@@ -116,8 +117,8 @@ public class ConfirmationResponseServiceTest {
 
         AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getStopConfirmation(callbackRequestMock);
 
-        assertEquals(null, afterSubmitCallbackResponse.getConfirmationHeader());
-        assertEquals(null, afterSubmitCallbackResponse.getConfirmationBody());
+        assertNull(afterSubmitCallbackResponse.getConfirmationHeader());
+        assertNull(afterSubmitCallbackResponse.getConfirmationBody());
     }
 
 
@@ -132,7 +133,7 @@ public class ConfirmationResponseServiceTest {
 
         AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getStopConfirmation(callbackRequestMock);
 
-        assertEquals(null, afterSubmitCallbackResponse.getConfirmationHeader());
+        assertNull(afterSubmitCallbackResponse.getConfirmationHeader());
         assertEquals(CONFIRMATION_BODY, afterSubmitCallbackResponse.getConfirmationBody());
     }
 
@@ -147,7 +148,7 @@ public class ConfirmationResponseServiceTest {
 
         AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getStopConfirmation(callbackRequestMock);
 
-        assertEquals(null, afterSubmitCallbackResponse.getConfirmationHeader());
+        assertNull(afterSubmitCallbackResponse.getConfirmationHeader());
         assertEquals(CONFIRMATION_BODY, afterSubmitCallbackResponse.getConfirmationBody());
     }
 
@@ -162,8 +163,8 @@ public class ConfirmationResponseServiceTest {
 
         AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getStopConfirmation(callbackRequestMock);
 
-        assertEquals(null, afterSubmitCallbackResponse.getConfirmationHeader());
-        assertEquals(null, afterSubmitCallbackResponse.getConfirmationBody());
+        assertNull(afterSubmitCallbackResponse.getConfirmationHeader());
+        assertNull(afterSubmitCallbackResponse.getConfirmationBody());
     }
 
     @Test
@@ -176,7 +177,7 @@ public class ConfirmationResponseServiceTest {
 
         AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getStopConfirmation(callbackRequestMock);
 
-        assertEquals(null, afterSubmitCallbackResponse.getConfirmationHeader());
+        assertNull(afterSubmitCallbackResponse.getConfirmationHeader());
         assertEquals(CONFIRMATION_BODY, afterSubmitCallbackResponse.getConfirmationBody());
     }
 
@@ -190,8 +191,8 @@ public class ConfirmationResponseServiceTest {
 
         AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getStopConfirmation(callbackRequestMock);
 
-        assertEquals(null, afterSubmitCallbackResponse.getConfirmationHeader());
-        assertEquals(null, afterSubmitCallbackResponse.getConfirmationBody());
+        assertNull(afterSubmitCallbackResponse.getConfirmationHeader());
+        assertNull(afterSubmitCallbackResponse.getConfirmationBody());
     }
 
     @Captor
@@ -206,7 +207,7 @@ public class ConfirmationResponseServiceTest {
 
         AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getNextStepsConfirmation(ccdDataMock);
 
-        assertEquals(null, afterSubmitCallbackResponse.getConfirmationHeader());
+        assertNull(afterSubmitCallbackResponse.getConfirmationHeader());
         assertEquals(CONFIRMATION_BODY, afterSubmitCallbackResponse.getConfirmationBody());
         Map<String, String> nextStepsValues = nextStepsKeyValueMap.getValue();
         assertEquals("31/12/2000", nextStepsValues.get("{{caseSubmissionDate}}"));
@@ -223,10 +224,27 @@ public class ConfirmationResponseServiceTest {
 
         AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getNextStepsConfirmation(ccdDataMock);
 
-        assertEquals(null, afterSubmitCallbackResponse.getConfirmationHeader());
+        assertNull(afterSubmitCallbackResponse.getConfirmationHeader());
         assertEquals(CONFIRMATION_BODY, afterSubmitCallbackResponse.getConfirmationBody());
         Map<String, String> nextStepsValues = nextStepsKeyValueMap.getValue();
         assertEquals("", nextStepsValues.get("{{caseSubmissionDate}}"));
+        assertConfirmationValues(nextStepsValues);
+    }
+
+    @Test
+    public void shouldGetNextStepsConfirmationWithCopies() {
+        CCDData ccdDataMock = getCcdDataForConfirmation();
+
+        when(markdownSubstitutionServiceMock.generatePage(any(String.class), any(MarkdownTemplate.class), nextStepsKeyValueMap.capture()))
+                .thenReturn(willBodyTemplateResponseMock);
+
+        AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getNextStepsConfirmation(ccdDataMock);
+
+        assertEquals(null, afterSubmitCallbackResponse.getConfirmationHeader());
+        assertEquals(CONFIRMATION_BODY, afterSubmitCallbackResponse.getConfirmationBody());
+        Map<String, String> nextStepsValues = nextStepsKeyValueMap.getValue();
+        assertEquals("0.50", nextStepsValues.get("{{feeForUkCopies}}"));
+        assertEquals("1.50", nextStepsValues.get("{{feeForNonUkCopies}}"));
         assertConfirmationValues(nextStepsValues);
     }
 
@@ -235,13 +253,15 @@ public class ConfirmationResponseServiceTest {
         CCDData ccdDataMock = getCcdDataForConfirmation();
         when(ccdDataMock.getFee().getExtraCopiesOfGrant()).thenReturn(null);
         when(ccdDataMock.getFee().getOutsideUKGrantCopies()).thenReturn(null);
+        when(ccdDataMock.getFee().getFeeForUkCopies()).thenReturn(null);
+        when(ccdDataMock.getFee().getFeeForNonUkCopies()).thenReturn(null);
 
         when(markdownSubstitutionServiceMock.generatePage(any(String.class), any(MarkdownTemplate.class), nextStepsKeyValueMap.capture()))
                 .thenReturn(willBodyTemplateResponseMock);
 
         AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getNextStepsConfirmation(ccdDataMock);
 
-        assertEquals(null, afterSubmitCallbackResponse.getConfirmationHeader());
+        assertNull(afterSubmitCallbackResponse.getConfirmationHeader());
         assertEquals(CONFIRMATION_BODY, afterSubmitCallbackResponse.getConfirmationBody());
         Map<String, String> nextStepsValues = nextStepsKeyValueMap.getValue();
         assertEquals("", nextStepsValues.get("{{feeForUkCopies}}"));
@@ -286,9 +306,12 @@ public class ConfirmationResponseServiceTest {
         when(deceased.getDateOfDeath()).thenReturn(date);
         when(inheritanceTax.getFormName()).thenReturn("IHT207");
         when(fee.getPaymentMethod()).thenReturn("Cheque");
-        when(fee.getAmount()).thenReturn(BigDecimal.valueOf(100.00));
-        when(fee.getApplicationFeeInPounds()).thenReturn(BigDecimal.valueOf(50.00));
-        when(fee.getAmountInPounds()).thenReturn(BigDecimal.valueOf(100).setScale(2, BigDecimal.ROUND_HALF_UP));
+        when(fee.getAmount()).thenReturn(BigDecimal.valueOf(10000));
+        when(fee.getApplicationFee()).thenReturn(BigDecimal.valueOf(5000));
+        when(ccdDataMock.getFee().getExtraCopiesOfGrant()).thenReturn(1L);
+        when(ccdDataMock.getFee().getOutsideUKGrantCopies()).thenReturn(3L);
+        when(ccdDataMock.getFee().getFeeForUkCopies()).thenReturn(BigDecimal.valueOf(50));
+        when(ccdDataMock.getFee().getFeeForNonUkCopies()).thenReturn(BigDecimal.valueOf(150));
         when(ccdDataMock.getSolsAdditionalInfo()).thenReturn("solsAdditionalInfo");
         executorsList.add(executorMock);
         executorsList.add(renouncingExecutorMock);

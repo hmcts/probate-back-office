@@ -10,7 +10,6 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.template.DocumentResponse;
 import uk.gov.hmcts.probate.service.FileSystemResourceService;
 
-import java.io.IOException;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -19,6 +18,7 @@ import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 public class PrintServiceTest {
+
     @InjectMocks
     private PrintService underTest;
 
@@ -32,13 +32,11 @@ public class PrintServiceTest {
     private CaseData caseDataMock;
 
     @Before
-    public void setup() throws IOException {
+    public void setup() {
         initMocks(this);
         when(fileSystemResourceServiceMock.getFileFromResourceAsString(any(String.class))).thenReturn("some template");
-        ReflectionTestUtils.setField(
-            underTest, "printServiceHost", "somePrintServiceHost");
-        ReflectionTestUtils.setField(
-            underTest, "printServicePath", "somePrintServicePath/%s/probate/");
+        ReflectionTestUtils.setField(underTest, "printServiceHost", "somePrintServiceHost");
+        ReflectionTestUtils.setField(underTest, "printServicePath", "somePrintServicePath/%s/probate/");
     }
 
     @Test
@@ -47,6 +45,7 @@ public class PrintServiceTest {
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
         when(caseDataMock.getSolsSolicitorFirmName()).thenReturn("Solicitor FirmName");
         List<DocumentResponse> docs = underTest.getAllDocuments(caseDetailsMock);
+
         assertEquals(1, docs.size());
         assertEquals("Print Case Details", docs.get(0).getName());
         assertEquals("HTML", docs.get(0).getType());
@@ -58,6 +57,7 @@ public class PrintServiceTest {
         when(caseDetailsMock.getId()).thenReturn(1000L);
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
         List<DocumentResponse> docs = underTest.getAllDocuments(caseDetailsMock);
+
         assertEquals(1, docs.size());
         assertEquals("Print Case Details", docs.get(0).getName());
         assertEquals("HTML", docs.get(0).getType());
@@ -75,6 +75,4 @@ public class PrintServiceTest {
         String template = underTest.getPACaseDetailsTemplateForPrintService();
         assertEquals("some template", template);
     }
-
-
 }

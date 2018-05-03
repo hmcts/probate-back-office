@@ -1,6 +1,5 @@
 package uk.gov.hmcts.probate.validator;
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -14,8 +13,13 @@ import uk.gov.hmcts.probate.service.BusinessValidationMessageService;
 
 import java.util.List;
 
+import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.when;
+import static uk.gov.hmcts.probate.model.Constants.BUSINESS_ERROR;
 
 
 public class DeceasedAddressValidationRuleTest {
@@ -45,10 +49,10 @@ public class DeceasedAddressValidationRuleTest {
 
         when(ccdData.getDeceased()).thenReturn(deceasedMock);
 
-        when(businessValidationMessageService.generateError(eq(ValidationRule.BUSINESS_ERROR), eq("deceasedAddressIsNull")))
+        when(businessValidationMessageService.generateError(eq(BUSINESS_ERROR), eq("deceasedAddressIsNull")))
                 .thenReturn(executorAddressIsNullError);
 
-        when(businessValidationMessageService.generateError(eq(ValidationRule.BUSINESS_ERROR), eq("deceasedPostcodeIsNull")))
+        when(businessValidationMessageService.generateError(eq(BUSINESS_ERROR), eq("deceasedPostcodeIsNull")))
                 .thenReturn(executorPostcodeIsNullError);
     }
 
@@ -58,9 +62,9 @@ public class DeceasedAddressValidationRuleTest {
 
         List<FieldErrorResponse> errors = deceasedAddressValidationRule.validate(ccdData);
 
-        Assert.assertEquals(2, errors.size());
-        Assert.assertTrue(errors.contains(executorAddressIsNullError));
-        Assert.assertTrue(errors.contains(executorPostcodeIsNullError));
+        assertEquals(2, errors.size());
+        assertTrue(errors.contains(executorAddressIsNullError));
+        assertTrue(errors.contains(executorPostcodeIsNullError));
     }
 
     @Test
@@ -70,8 +74,8 @@ public class DeceasedAddressValidationRuleTest {
 
         List<FieldErrorResponse> errors = deceasedAddressValidationRule.validate(ccdData);
 
-        Assert.assertEquals(1, errors.size());
-        Assert.assertTrue(errors.contains(executorAddressIsNullError));
+        assertEquals(1, errors.size());
+        assertTrue(errors.contains(executorAddressIsNullError));
     }
 
     @Test
@@ -81,7 +85,64 @@ public class DeceasedAddressValidationRuleTest {
 
         List<FieldErrorResponse> errors = deceasedAddressValidationRule.validate(ccdData);
 
-        Assert.assertEquals(1, errors.size());
-        Assert.assertTrue(errors.contains(executorPostcodeIsNullError));
+        assertEquals(1, errors.size());
+        assertTrue(errors.contains(executorPostcodeIsNullError));
+    }
+
+    @Test
+    public void shouldReturnAddressAndPostCodeErrorMessageWhenNullAddressProvided() {
+        when(deceasedMock.getAddress()).thenReturn(null);
+        List<FieldErrorResponse> errors = deceasedAddressValidationRule.validate(ccdData);
+
+        assertEquals(2, errors.size());
+        assertThat(errors, containsInAnyOrder(executorAddressIsNullError, executorPostcodeIsNullError));
+    }
+
+    @Test
+    public void shouldReturnAddressErrorMessageWhenEmptyAddressLine1Provided() {
+        when(deceasedMock.getAddress()).thenReturn(addressMock);
+        when(addressMock.getPostCode()).thenReturn("PC");
+        when(addressMock.getAddressLine1()).thenReturn("");
+
+        List<FieldErrorResponse> errors = deceasedAddressValidationRule.validate(ccdData);
+
+        assertEquals(1, errors.size());
+        assertTrue(errors.contains(executorAddressIsNullError));
+    }
+
+    @Test
+    public void shouldReturnAddressErrorMessageWhenNullAddressLine1Provided() {
+        when(deceasedMock.getAddress()).thenReturn(addressMock);
+        when(addressMock.getPostCode()).thenReturn("PC");
+        when(addressMock.getAddressLine1()).thenReturn(null);
+
+        List<FieldErrorResponse> errors = deceasedAddressValidationRule.validate(ccdData);
+
+        assertEquals(1, errors.size());
+        assertTrue(errors.contains(executorAddressIsNullError));
+    }
+
+    @Test
+    public void shouldReturnPostcodeErrorMessageWhenNullPostcodeProvided() {
+        when(deceasedMock.getAddress()).thenReturn(addressMock);
+        when(addressMock.getAddressLine1()).thenReturn("line1");
+        when(addressMock.getPostCode()).thenReturn(null);
+
+        List<FieldErrorResponse> errors = deceasedAddressValidationRule.validate(ccdData);
+
+        assertEquals(1, errors.size());
+        assertTrue(errors.contains(executorPostcodeIsNullError));
+    }
+
+    @Test
+    public void shouldReturnPostcodeErrorMessageWhenEmptyPostcodeProvided() {
+        when(deceasedMock.getAddress()).thenReturn(addressMock);
+        when(addressMock.getAddressLine1()).thenReturn("line1");
+        when(addressMock.getPostCode()).thenReturn("");
+
+        List<FieldErrorResponse> errors = deceasedAddressValidationRule.validate(ccdData);
+
+        assertEquals(1, errors.size());
+        assertTrue(errors.contains(executorPostcodeIsNullError));
     }
 }

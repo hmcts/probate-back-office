@@ -73,42 +73,18 @@
             <tr>
               <td colspan="2">
                 <p>This statement is based on the information given in your application. It will be stored as a public record.</p>
-                <p>We,
-                  {% if case_details.case_data.primaryApplicantIsApplying == "Yes" and case_details.case_data.primaryApplicantAddress.PostCode != "" %}
-                  {{ case_details.case_data.primaryApplicantForenames }} {{ case_details.case_data.primaryApplicantSurname }} of
-                  {% if case_details.case_data.primaryApplicantAddress.AddressLine1 != null and
-                  case_details.case_data.primaryApplicantAddress.AddressLine1 != "" %}{{
-                  case_details.case_data.primaryApplicantAddress.AddressLine1 }},{% endif %}
-                  {% if case_details.case_data.primaryApplicantAddress.AddressLine2 != null and
-                  case_details.case_data.primaryApplicantAddress.AddressLine2 != "" %}{{
-                  case_details.case_data.primaryApplicantAddress.AddressLine2 }},{% endif %}
-                  {% if case_details.case_data.primaryApplicantAddress.AddressLine3 != null and
-                  case_details.case_data.primaryApplicantAddress.AddressLine3 != "" %}{{
-                  case_details.case_data.primaryApplicantAddress.AddressLine3 }},{% endif %}
-                  {% if case_details.case_data.primaryApplicantAddress.PostTown != null and
-                  case_details.case_data.primaryApplicantAddress.PostTown != "" %}{{
-                  case_details.case_data.primaryApplicantAddress.PostTown }},{% endif %}
-                  {% if case_details.case_data.primaryApplicantAddress.County != null and
-                  case_details.case_data.primaryApplicantAddress.County != "" %}{{
-                  case_details.case_data.primaryApplicantAddress.County }},{% endif %}
-                  {% if case_details.case_data.primaryApplicantAddress.PostCode != null and
-                  case_details.case_data.primaryApplicantAddress.PostCode != "" %}{{
-                  case_details.case_data.primaryApplicantAddress.PostCode }},{% endif %}
-                  {% if case_details.case_data.primaryApplicantAddress.Country != null and
-                  case_details.case_data.primaryApplicantAddress.Country != "" %}{{
-                  case_details.case_data.primaryApplicantAddress.Country }}{% endif %}
-                  {% endif %}
-                  {% for executor in case_details.case_data.solsAdditionalExecutorList %}
-                  {{ executor.value.additionalExecForenames }} {{ executor.value.additionalExecLastname }}
-                  {% if executor.value.additionalApplying == "Yes" %} of
+                <p>{% if (case_details.case_data.executorsApplying|length > 1) %}We{% else %}I{% endif %},
+                  {% set countApplying = 1 %}{% for executor in case_details.case_data.executorsApplying %}
+                    {{ executor.value.additionalExecForenames }} {{ executor.value.additionalExecLastname }} of
                     {% if executor.value.additionalExecAddress.AddressLine1 != null and executor.value.additionalExecAddress.AddressLine1 != "" %}{{ executor.value.additionalExecAddress.AddressLine1 }},{% endif %}
                     {% if executor.value.additionalExecAddress.AddressLine2 != null and executor.value.additionalExecAddress.AddressLine2 != "" %}{{ executor.value.additionalExecAddress.AddressLine2 }},{% endif %}
                     {% if executor.value.additionalExecAddress.AddressLine3 != null and executor.value.additionalExecAddress.AddressLine3 != "" %}{{ executor.value.additionalExecAddress.AddressLine3 }},{% endif %}
                     {% if executor.value.additionalExecAddress.PostTown != null and executor.value.additionalExecAddress.PostTown != "" %}{{ executor.value.additionalExecAddress.PostTown }},{% endif %}
-                  {% if executor.value.additionalExecAddress.County != null and executor.value.additionalExecAddress.County != "" %}{{ executor.value.additionalExecAddress.County }},{% endif %}
+                    {% if executor.value.additionalExecAddress.County != null and executor.value.additionalExecAddress.County != "" %}{{ executor.value.additionalExecAddress.County }},{% endif %}
                     {% if executor.value.additionalExecAddress.PostCode != null and executor.value.additionalExecAddress.PostCode != ""%}{{ executor.value.additionalExecAddress.PostCode }},{% endif %}
                     {% if executor.value.additionalExecAddress.Country != null and executor.value.additionalExecAddress.Country != ""%}{{ executor.value.additionalExecAddress.Country }}{% endif %}
-                  {% endif %}
+                    {% if (countApplying < (case_details.case_data.executorsApplying|length)) %} and {% endif %}
+                    {% set countApplying = countApplying + 1 %}
                   {% endfor %}
                   make the following statement:</p>
               </td>

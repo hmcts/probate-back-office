@@ -10,7 +10,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.template.DocumentResponse;
 import uk.gov.hmcts.probate.service.FileSystemResourceService;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Data
@@ -57,10 +57,7 @@ public class PrintService {
         String url = String.format(urlTemplate, caseId);
 
         DocumentResponse documentResponse = new DocumentResponse(DOCUMENT_NAME, DOCUMENT_TYPE, url);
-        List<DocumentResponse> docs = new ArrayList<>();
-        docs.add(documentResponse);
 
-        return docs;
-
+        return Collections.singletonList(documentResponse);
     }
 }

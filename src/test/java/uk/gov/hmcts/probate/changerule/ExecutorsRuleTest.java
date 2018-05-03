@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
@@ -29,13 +31,11 @@ public class ExecutorsRuleTest {
     @Mock
     private AdditionalExecutor additionalExecutor1Mock;
 
-    private List<AdditionalExecutors> additionalExecutorsList;
-
     @Before
     public void setup() {
         initMocks(this);
 
-        additionalExecutorsList = new ArrayList<>();
+        List<AdditionalExecutors> additionalExecutorsList = new ArrayList<>();
         when(additionalExecutors1Mock.getAdditionalExecutor()).thenReturn(additionalExecutor1Mock);
         additionalExecutorsList.add(additionalExecutors1Mock);
         when(caseDataMock.getSolsAdditionalExecutorList()).thenReturn(additionalExecutorsList);
@@ -46,7 +46,7 @@ public class ExecutorsRuleTest {
         when(additionalExecutor1Mock.getAdditionalApplying()).thenReturn(NO);
         when(caseDataMock.getPrimaryApplicantIsApplying()).thenReturn(NO);
 
-        assertEquals(true, undertest.isChangeNeeded(caseDataMock));
+        assertTrue(undertest.isChangeNeeded(caseDataMock));
     }
 
     @Test
@@ -54,7 +54,7 @@ public class ExecutorsRuleTest {
         when(additionalExecutor1Mock.getAdditionalApplying()).thenReturn(NO);
         when(caseDataMock.getPrimaryApplicantIsApplying()).thenReturn(YES);
 
-        assertEquals(false, undertest.isChangeNeeded(caseDataMock));
+        assertFalse(undertest.isChangeNeeded(caseDataMock));
     }
 
     @Test
@@ -62,13 +62,19 @@ public class ExecutorsRuleTest {
         when(additionalExecutor1Mock.getAdditionalApplying()).thenReturn(YES);
         when(caseDataMock.getPrimaryApplicantIsApplying()).thenReturn(NO);
 
-        assertEquals(false, undertest.isChangeNeeded(caseDataMock));
+        assertFalse(undertest.isChangeNeeded(caseDataMock));
+    }
+
+    @Test
+    public void shouldReturnTrueWhenExecutorListIsNullAndPrimaryApplicantIsNotApplying() {
+        when(caseDataMock.getSolsAdditionalExecutorList()).thenReturn(null);
+        when(caseDataMock.getPrimaryApplicantIsApplying()).thenReturn(NO);
+
+        assertTrue(undertest.isChangeNeeded(caseDataMock));
     }
 
     @Test
     public void shouldGetBodyMessageKey() {
-
         assertEquals("stopBodyNoApplyingExecutors", undertest.getConfirmationBodyMessageKey());
     }
-
 }

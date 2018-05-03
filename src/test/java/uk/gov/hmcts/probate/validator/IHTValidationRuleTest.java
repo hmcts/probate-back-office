@@ -21,8 +21,8 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static uk.gov.hmcts.probate.model.Constants.BUSINESS_ERROR;
 import static uk.gov.hmcts.probate.validator.IHTValidationRule.IHT_NET_GREATER_THAN_GROSS;
-import static uk.gov.hmcts.probate.validator.ValidationRule.BUSINESS_ERROR;
 
 @RunWith(MockitoJUnitRunner.class)
 public class IHTValidationRuleTest {
@@ -42,7 +42,7 @@ public class IHTValidationRuleTest {
     private IHTValidationRule underTest;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         MockitoAnnotations.initMocks(this);
         businessValidationError = FieldErrorResponse.builder().build();
 
@@ -51,7 +51,7 @@ public class IHTValidationRuleTest {
     }
 
     @Test
-    public void testValidateWithSuccess() throws Exception {
+    public void testValidateWithSuccess() {
         when(inheritanceTaxMock.getGrossValue()).thenReturn(HIGHER_VALUE);
         when(inheritanceTaxMock.getNetValue()).thenReturn(LOWER_VALUE);
 
@@ -62,7 +62,7 @@ public class IHTValidationRuleTest {
     }
 
     @Test
-    public void testValidateWithSuccessWhenIhtIsNull() throws Exception {
+    public void testValidateWithSuccessWhenIhtIsNull() {
         when(ccdDataMock.getIht()).thenReturn(null);
         when(inheritanceTaxMock.getGrossValue()).thenReturn(HIGHER_VALUE);
         when(inheritanceTaxMock.getNetValue()).thenReturn(LOWER_VALUE);
@@ -74,12 +74,11 @@ public class IHTValidationRuleTest {
     }
 
     @Test
-    public void testValidateFailureWhenNetHigherThanGross() throws Exception {
+    public void testValidateFailureWhenNetHigherThanGross() {
         when(inheritanceTaxMock.getGrossValue()).thenReturn(LOWER_VALUE);
         when(inheritanceTaxMock.getNetValue()).thenReturn(HIGHER_VALUE);
-        when(
-            businessValidationMessageService.generateError(BUSINESS_ERROR, IHT_NET_GREATER_THAN_GROSS)
-        ).thenReturn(businessValidationError);
+        when(businessValidationMessageService.generateError(BUSINESS_ERROR, IHT_NET_GREATER_THAN_GROSS))
+                .thenReturn(businessValidationError);
 
         List<FieldErrorResponse> validationError = underTest.validate(ccdDataMock);
 

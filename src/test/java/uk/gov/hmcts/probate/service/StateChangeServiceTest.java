@@ -16,6 +16,8 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
@@ -53,6 +55,7 @@ public class StateChangeServiceTest {
 
         Optional<String> newState = underTest.getChangedStateForCaseUpdate(caseDataMock);
 
+        assertTrue(newState.isPresent());
         assertEquals("Stopped", newState.get());
     }
 
@@ -73,6 +76,7 @@ public class StateChangeServiceTest {
 
         Optional<String> newState = underTest.getChangedStateForCaseUpdate(caseDataMock);
 
+        assertTrue(newState.isPresent());
         assertEquals("Stopped", newState.get());
     }
 
@@ -82,6 +86,7 @@ public class StateChangeServiceTest {
 
         Optional<String> newState = underTest.getChangedStateForCaseUpdate(caseDataMock);
 
+        assertTrue(newState.isPresent());
         assertEquals("Stopped", newState.get());
     }
 
@@ -100,6 +105,7 @@ public class StateChangeServiceTest {
 
         Optional<String> newState = underTest.getChangedStateForCaseUpdate(caseDataMock);
 
+        assertTrue(newState.isPresent());
         assertEquals("Stopped", newState.get());
     }
 
@@ -119,7 +125,7 @@ public class StateChangeServiceTest {
 
         Optional<String> newState = underTest.getChangedStateForCaseUpdate(caseDataMock);
 
-        assertEquals(false, newState.isPresent());
+        assertFalse(newState.isPresent());
     }
 
     @Test
@@ -128,6 +134,7 @@ public class StateChangeServiceTest {
 
         Optional<String> newState = underTest.getChangedStateForCaseReview(caseDataMock);
 
+        assertTrue(newState.isPresent());
         assertEquals("SolAppCreated", newState.get());
     }
 
@@ -137,7 +144,7 @@ public class StateChangeServiceTest {
 
         Optional<String> newState = underTest.getChangedStateForCaseReview(caseDataMock);
 
-        assertEquals(false, newState.isPresent());
+        assertFalse(newState.isPresent());
     }
 
 }
