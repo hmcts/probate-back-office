@@ -8,6 +8,7 @@ import uk.gov.hmcts.probate.model.ccd.CCDData;
 import uk.gov.hmcts.probate.validator.ValidationRule;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -36,7 +37,7 @@ public class EventValidationServiceTest {
     public void shouldGatherValidationErrors() {
 
         List<FieldErrorResponse> fieldErrorResponses = eventValidationService
-                .validate(ccdDataMock, Arrays.asList(validationRule));
+                .validate(ccdDataMock, Collections.singletonList(validationRule));
 
         assertEquals(2, fieldErrorResponses.size());
 

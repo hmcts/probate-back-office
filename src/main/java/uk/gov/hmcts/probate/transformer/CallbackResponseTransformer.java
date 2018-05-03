@@ -19,9 +19,9 @@ import static uk.gov.hmcts.probate.model.template.PDFServiceTemplate.LEGAL_STATE
 @Component
 public class CallbackResponseTransformer {
 
-    public static final String PAYMENT_METHOD_VALUE_FEE_ACCOUNT = "fee account";
-    public static final String PAYMENT_REFERENCE_FEE_PREFIX = "Fee account PBA-";
-    public static final String PAYMENT_REFERENCE_CHEQUE = "Cheque (payable to ‘HM Courts & Tribunals Service’)";
+    static final String PAYMENT_METHOD_VALUE_FEE_ACCOUNT = "fee account";
+    static final String PAYMENT_REFERENCE_FEE_PREFIX = "Fee account PBA-";
+    static final String PAYMENT_REFERENCE_CHEQUE = "Cheque (payable to ‘HM Courts & Tribunals Service’)";
 
     private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private static final String APPLICATION_TYPE_SOLS = "Solicitor";

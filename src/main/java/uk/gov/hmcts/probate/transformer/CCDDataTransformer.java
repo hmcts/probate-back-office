@@ -13,7 +13,6 @@ import uk.gov.hmcts.probate.model.ccd.Solicitor;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutors;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
-import uk.gov.hmcts.probate.model.fee.FeeServiceResponse;
 
 import java.time.DateTimeException;
 import java.time.LocalDate;
