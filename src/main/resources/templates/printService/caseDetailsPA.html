@@ -173,11 +173,30 @@
     {% for additionalExecutor in case_data.solsAdditionalExecutorList %}
     {% if additionalExecutor.value.additionalApplying == "No" %}
     <tr>
-      <td>{{ additionalExecutor.value.additionalExecForenames }} {{ additionalExecutor.value.additionalExecLastname }}</td>
+      <td>{{ executorsNotApplying.value.additionalExecForenames }} {{ additionalExecutor.value.additionalExecLastname }}</td>
       {% if additionalExecutor.value.additionalExecReasonNotApplying == "DiedBefore" %}<td>Died before the deceased.</td>{% endif %}
       {% if additionalExecutor.value.additionalExecReasonNotApplying == "DiedAfter" %}<td>Died after the deceased.</td>{% endif %}
       {% if additionalExecutor.value.additionalExecReasonNotApplying == "PowerReserved" %}<td>Does not want to apply now, but may do in the future. They have been notified in writing.</td>{% endif %}
       {% if additionalExecutor.value.additionalExecReasonNotApplying == "Renunciation" %}<td>Does not want to apply now, and gives up the right to do so in the future.</td>{% endif %}
+    </tr>
+    <tr>
+      <td colspan="2" class="spacer"></td>
+    </tr>
+    {% endif %}
+    {% endfor %}
+
+        <tr>
+      <td>Executors applying (name + email + mobile + address + (othernames) )</td>
+    </tr>
+    {% for executor in executorsApplying %}
+    <tr>
+      <td>{{ applyingExecutorName }}</td>
+      <td>{{ applyingExecutorPhoneNumber }}</td>
+      <td>{{ applyingExecutorEmail }}</td>
+      <td>{{ applyingExecutorAddress }}</td>
+      {% if applyingExecutorOtherNames %}<td>Executor other names: {{ applyingExecutorOtherNames }}</td>
+      {% else %}<td>Executor has no other names.</td>{% endif %}
+
     </tr>
     <tr>
       <td colspan="2" class="spacer"></td>
