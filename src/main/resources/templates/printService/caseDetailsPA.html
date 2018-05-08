@@ -172,18 +172,13 @@
     </tr>
     {% for executor in case_data.executorsNotApplying %}
     <tr>
-      <td>{{ executor.value. }} {{ additionalExecutor.value.additionalExecLastname }}</td>
-      {% if additionalExecutor.value.additionalExecReasonNotApplying == "DiedBefore" %}<td>Died before the deceased.</td>{% endif %}
-      {% if additionalExecutor.value.additionalExecReasonNotApplying == "DiedAfter" %}<td>Died after the deceased.</td>{% endif %}
-      {% if additionalExecutor.value.additionalExecReasonNotApplying == "PowerReserved" %}<td>Does not want to apply now, but may do in the future. They have been notified in writing.</td>{% endif %}
-      {% if additionalExecutor.value.additionalExecReasonNotApplying == "Renunciation" %}<td>Does not want to apply now, and gives up the right to do so in the future.</td>{% endif %}
+      <td>{{ executor.value.notApplyingExecutorName }}</td>
+      <td>{{ executor.value.notApplyingExecutorReason }}</td>
     </tr>
     <tr>
       <td colspan="2" class="spacer"></td>
     </tr>
     {% endif %}
-
-
 
     <tr>
       <td>IHT form completed online:</td>
