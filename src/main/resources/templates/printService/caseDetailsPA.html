@@ -190,11 +190,11 @@
     </tr>
     {% for executor in case_data.executorsApplying %}
     <tr>
-      <td>{{ executor.applyingExecutorName }}</td>
-      <td>{{ executor.applyingExecutorPhoneNumber }}</td>
-      <td>{{ executor.applyingExecutorEmail }}</td>
-      <td>{{ executor.applyingExecutorAddress }}</td>
-      {% if executor.applyingExecutorOtherNames %}<td>Executor other names: {{ applyingExecutorOtherNames }}</td>
+      <td>{{ executor.value.applyingExecutorName }}</td>
+      <td>{{ executor.value.applyingExecutorPhoneNumber }}</td>
+      <td>{{ executor.value.applyingExecutorEmail }}</td>
+      <td>{{ executor.value.applyingExecutorAddress }}</td>
+      {% if executor.value.applyingExecutorOtherNames %}<td>Executor other names: {{ executor.value.applyingExecutorOtherNames }}</td>
       {% else %}<td>Executor has no other names.</td>{% endif %}
 
     </tr>
