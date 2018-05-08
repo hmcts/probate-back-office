@@ -170,10 +170,9 @@
     <tr>
       <td>Executors not applying (name + reason)</td>
     </tr>
-    {% for additionalExecutor in case_data.solsAdditionalExecutorList %}
-    {% if additionalExecutor.value.additionalApplying == "No" %}
+    {% for executor in case_data.executorsNotApplying %}
     <tr>
-      <td>{{ additionalExecutor.value.additionalExecForenames }} {{ additionalExecutor.value.additionalExecLastname }}</td>
+      <td>{{ executor.value. }} {{ additionalExecutor.value.additionalExecLastname }}</td>
       {% if additionalExecutor.value.additionalExecReasonNotApplying == "DiedBefore" %}<td>Died before the deceased.</td>{% endif %}
       {% if additionalExecutor.value.additionalExecReasonNotApplying == "DiedAfter" %}<td>Died after the deceased.</td>{% endif %}
       {% if additionalExecutor.value.additionalExecReasonNotApplying == "PowerReserved" %}<td>Does not want to apply now, but may do in the future. They have been notified in writing.</td>{% endif %}
@@ -183,7 +182,7 @@
       <td colspan="2" class="spacer"></td>
     </tr>
     {% endif %}
-    {% endfor %}
+
 
 
     <tr>
