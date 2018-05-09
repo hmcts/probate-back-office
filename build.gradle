@@ -94,8 +94,6 @@ sonarqube {
   }
 }
 
-test.finalizedBy jacocoTestReport
-
 tasks.withType(JavaCompile) {
   options.compilerArgs << "-Xlint:unchecked" << "-Werror"
 }
