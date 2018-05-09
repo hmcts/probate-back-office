@@ -1,3 +1,15 @@
+buildscript {
+  repositories {
+    mavenLocal()
+    maven { url "http://artifactory.reform.hmcts.net/artifactory/libs-release" }
+    maven { url "http://repo1.maven.org/maven2/" }
+    maven { url "https://plugins.gradle.org/m2/" }
+  }
+  dependencies {
+    classpath group: 'org.sonarsource.scanner.gradle', name: 'sonarqube-gradle-plugin', version: '2.6.2'
+  }
+}
+
 plugins {
   id 'application'
   id 'checkstyle'
@@ -9,8 +21,13 @@ plugins {
   id 'com.github.ben-manes.versions' version '0.17.0'
 }
 
-group = 'uk.gov.hmcts.reform'
-version = '0.0.1'
+apply plugin: 'org.sonarqube'
+apply plugin: 'findbugs'
+apply plugin: 'jacoco'
+
+group = 'uk.gov.hmcts.reform.bo'
+version = "0.0.1"
+mainClassName = 'uk.gov.hmcts.reform.bo.Application'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -41,6 +58,39 @@ sourceSets {
       srcDir file('src/smokeTest/java')
     }
     resources.srcDir file('src/smokeTest/resources')
+  }
+}
+
+jacoco {
+  toolVersion = '0.8.0'
+}
+
+jacocoTestReport {
+  group = "Reporting"
+  reports {
+    xml.enabled false
+    html.destination "${buildDir}/reports/jacoco"
+  }
+}
+
+tasks.withType(FindBugs) {
+  reports {
+    xml.enabled = false
+    html.enabled = true
+  }
+}
+
+findbugs {
+  ignoreFailures = true
+  reportLevel = "low"
+}
+
+sonarqube {
+  properties {
+    property "sonar.projectName", "PROBATE :: Back-Office"
+    property "sonar.projectKey", "Back-Office-API"
+    property "sonar.jacoco.reportPath", "${project.buildDir}/jacoco/test.exec"
+    property "sonar.host.url", "https://sonar.reform.hmcts.net/"
   }
 }
 
@@ -120,6 +170,10 @@ repositories {
   }
 }
 
+compileJava {
+    options.compilerArgs << '-parameters'
+}
+
 // it is important to specify logback classic and core packages explicitly as libraries like spring boot
 // enforces it's own (older) version which is not recommended.
 def versions = [
@@ -174,10 +228,23 @@ dependencies {
 
 mainClassName = 'uk.gov.hmcts.reform.bo.Application'
 
-bootJar {
-  archiveName = 'spring-boot-template.jar'
+jar {
+    archiveName = 'back-office.jar'
+    manifest {
 
-  manifest {
-    attributes('Implementation-Version': project.version.toString())
-  }
+        attributes 'Implementation-Title': project.name,
+                'Implementation-Version': project.version
+    }
+}
+
+task printVersion {
+    doLast {
+        print project.version
+    }
+}
+
+run {
+    if (debug == 'true') {
+        jvmArgs = ['-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5005']
+    }
 }
