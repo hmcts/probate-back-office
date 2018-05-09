@@ -120,6 +120,10 @@ repositories {
   }
 }
 
+compileJava {
+    options.compilerArgs << '-parameters'
+}
+
 // it is important to specify logback classic and core packages explicitly as libraries like spring boot
 // enforces it's own (older) version which is not recommended.
 def versions = [
@@ -174,10 +178,23 @@ dependencies {
 
 mainClassName = 'uk.gov.hmcts.reform.bo.Application'
 
-bootJar {
-  archiveName = 'spring-boot-template.jar'
+jar {
+    archiveName = 'back-office.jar'
+    manifest {
 
-  manifest {
-    attributes('Implementation-Version': project.version.toString())
-  }
+        attributes 'Implementation-Title': project.name,
+                'Implementation-Version': project.version
+    }
+}
+
+task printVersion {
+    doLast {
+        print project.version
+    }
+}
+
+run {
+    if (debug == 'true') {
+        jvmArgs = ['-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5005']
+    }
 }
