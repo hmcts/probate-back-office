@@ -41,7 +41,7 @@ module "probate-back-office" {
 
 module "probate-back-office-vault" {
   source              = "git@github.com:hmcts/moj-module-key-vault?ref=master"
-  name                = "pro-persist-ser-${var.env}"
+  name                = "pro-back-off-${var.env}"
   product             = "${var.product}"
   env                 = "${var.env}"
   tenant_id           = "${var.tenant_id}"
