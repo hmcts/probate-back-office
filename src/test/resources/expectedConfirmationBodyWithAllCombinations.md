@@ -71,6 +71,6 @@ What happens next
 
 When we've received your documents we'll start to process your application.
 
-You will receive your grant of probate and a copy of the will, plus any extra copies you've ordered, after 7 working days of us receiving your documents.
+You will receive your grant of probate and a copy of the will, plus any extra copies you've ordered, within 20 working days of us receiving your documents.
 
 We'll email you if we need you to provide any more information.
