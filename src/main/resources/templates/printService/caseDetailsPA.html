@@ -185,6 +185,24 @@
     {% endif %}
     {% endfor %}
 
+        <tr>
+      <td>Executors applying (name + email + mobile + address + (othernames) )</td>
+    </tr>
+    {% for executor in case_data.executorsApplying %}
+    <tr>
+      <td>{{ executor.value.applyingExecutorName }}</td>
+      <td>{{ executor.value.applyingExecutorPhoneNumber }}</td>
+      <td>{{ executor.value.applyingExecutorEmail }}</td>
+      <td>{{ executor.value.applyingExecutorAddress }}</td>
+      {% if executor.value.applyingExecutorOtherNames %}<td>Executor other names: {{ executor.value.applyingExecutorOtherNames }}</td>
+      {% else %}<td>Executor has no other names.</td>{% endif %}
+
+    </tr>
+    <tr>
+      <td colspan="2" class="spacer"></td>
+    </tr>
+    {% endfor %}
+
 
     <tr>
       <td>IHT form completed online:</td>
