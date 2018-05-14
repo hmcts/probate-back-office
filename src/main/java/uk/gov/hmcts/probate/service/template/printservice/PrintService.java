@@ -49,7 +49,7 @@ public class PrintService {
 
     public List<DocumentResponse> getAllDocuments(CaseDetails caseDetails) {
         Long caseId = caseDetails.getId();
-        String type = PrintTemplateApplicationType.valueOf(caseDetails.getData().getApplicationType())
+        String type = PrintTemplateApplicationType.valueOf(caseDetails.getData().getApplicationType().toUpperCase())
                 .getPrintType();
 
         String urlTemplate = printServiceHost + printServicePath + type;

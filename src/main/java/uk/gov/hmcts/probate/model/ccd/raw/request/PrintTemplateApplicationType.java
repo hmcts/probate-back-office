@@ -2,8 +2,8 @@ package uk.gov.hmcts.probate.model.ccd.raw.request;
 
 public enum PrintTemplateApplicationType {
 
-    Solicitor("sol"),
-    Personal("pa");
+    SOLICITOR("sol"),
+    PERSONAL("pa");
 
     private final String printType;
 
