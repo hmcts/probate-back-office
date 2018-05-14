@@ -292,6 +292,14 @@
       <td colspan="2">Total fee due:</td>
       <td>{% if case_data.totalFee %}£{{ (case_data.totalFee/100) | money('0,0.00') }}{% endif %}</td>
     </tr>
+    <tr>
+      <td colspan="2">Registry location:</td>
+      <td>{{ case_data.registryLocation }}</td>
+    </tr>
+    <tr>
+      <td colspan="2">Application Type:</td>
+      <td>{{ case_data.applicationType }}</td>
+    </tr>
   </table>
 </pre>
 </body>

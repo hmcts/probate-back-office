@@ -13,7 +13,6 @@ import uk.gov.hmcts.probate.service.FileSystemResourceService;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
@@ -34,16 +33,20 @@ public class PrintServiceTest {
     @Before
     public void setup() {
         initMocks(this);
-        when(fileSystemResourceServiceMock.getFileFromResourceAsString(any(String.class))).thenReturn("some template");
+        ReflectionTestUtils.setField(underTest, "templatesDirectory", "someTemplateDirectory/");
         ReflectionTestUtils.setField(underTest, "printServiceHost", "somePrintServiceHost");
         ReflectionTestUtils.setField(underTest, "printServicePath", "somePrintServicePath/%s/probate/");
+        when(fileSystemResourceServiceMock.getFileFromResourceAsString("someTemplateDirectory/caseDetailsSOL.html"))
+                .thenReturn("some Solicitor template");
+        when(fileSystemResourceServiceMock.getFileFromResourceAsString("someTemplateDirectory/caseDetailsPA.html"))
+                .thenReturn("some Personal template");
     }
 
     @Test
     public void shouldReturnAllSolicitorDocuments() {
         when(caseDetailsMock.getId()).thenReturn(1000L);
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
-        when(caseDataMock.getSolsSolicitorFirmName()).thenReturn("Solicitor FirmName");
+        when(caseDataMock.getApplicationType()).thenReturn("Solicitor");
         List<DocumentResponse> docs = underTest.getAllDocuments(caseDetailsMock);
 
         assertEquals(1, docs.size());
@@ -56,6 +59,7 @@ public class PrintServiceTest {
     public void shouldReturnAllPADocuments() {
         when(caseDetailsMock.getId()).thenReturn(1000L);
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        when(caseDataMock.getApplicationType()).thenReturn("Personal");
         List<DocumentResponse> docs = underTest.getAllDocuments(caseDetailsMock);
 
         assertEquals(1, docs.size());
@@ -67,12 +71,12 @@ public class PrintServiceTest {
     @Test
     public void shouldGetSolicitorTemplateForCaseDetails() {
         String template = underTest.getSolicitorCaseDetailsTemplateForPrintService();
-        assertEquals("some template", template);
+        assertEquals("some Solicitor template", template);
     }
 
     @Test
     public void shouldGetPATemplateForCaseDetails() {
         String template = underTest.getPACaseDetailsTemplateForPrintService();
-        assertEquals("some template", template);
+        assertEquals("some Personal template", template);
     }
 }
