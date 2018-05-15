@@ -60,4 +60,5 @@ http.connect.request.timeout: 60000
 idam.user.host: ${IDAM_CLIENT_URL:http://localhost:4501}
 idam.service.host: ${PROVIDER_SERVICE_CLIENT_URL:http://localhost:4502}
 
+probate.sol.ccd.service.url: http://localhost:${probate.sol.ccd.port}
 #logging.level.root: DEBUG

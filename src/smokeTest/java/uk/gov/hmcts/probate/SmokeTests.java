@@ -42,6 +42,9 @@ public class SmokeTests {
     @Value("${printservice.host}")
     private String printServiceHost;
 
+    @Value("${probate.sol.ccd.service.url}")
+    private String solCcdServiceUrl;
+
     private RestAssuredConfig config;
 
     @Before
@@ -81,6 +84,11 @@ public class SmokeTests {
     @Test
     public void shouldGetOkStatusFromHealthEndpointForPrintService() {
         checkHealthEndpoint(printServiceHost);
+    }
+
+    @Test
+    public void shouldGetOkStatusFromHealthEndpointForSolCcdService() {
+        checkHealthEndpoint(solCcdServiceUrl);
     }
 
     private void checkHealthEndpoint(String url) {
