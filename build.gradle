@@ -95,6 +95,23 @@ dependencyCheck {
   suppressionFile = 'dependency-check-suppressions.xml'
 }
 
+sourceSets {
+    smokeTest {
+        java {
+            compileClasspath += main.output
+            runtimeClasspath += main.output
+            srcDir file('src/smokeTest/java')
+        }
+        resources.srcDir file('src/smokeTest/resources')
+    }
+}
+
+task smoke(type: Test) {
+    description = "Runs Smoke Tests"
+    testClassesDirs = sourceSets.smokeTest.output.classesDirs
+    classpath = sourceSets.smokeTest.runtimeClasspath
+}
+
 def springBootVersion = '1.5.6.RELEASE'
 
 repositories {
@@ -133,6 +150,10 @@ dependencies {
 
   testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: springBootVersion
   testCompile group: 'org.pdfbox', name: 'com.springsource.org.pdfbox', version: '0.7.3'
+  testCompile group: 'io.rest-assured', name: 'rest-assured', version: '3.0.7'
+
+  smokeTestCompile sourceSets.main.runtimeClasspath
+  smokeTestCompile sourceSets.test.runtimeClasspath
 }
 
 compileJava {

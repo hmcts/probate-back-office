@@ -42,7 +42,8 @@ public class FeeServiceTest {
 
         when(responseEntity.getBody()).thenReturn(fee);
         when(restTemplate.getForEntity(any(), eq(Fee.class))).thenReturn(responseEntity);
-        when(feeServiceConfiguration.getUrl()).thenReturn("http://test.test/lookup");
+        when(feeServiceConfiguration.getUrl()).thenReturn("http://test.test");
+        when(feeServiceConfiguration.getApi()).thenReturn("/lookup");
     }
 
     @Test
