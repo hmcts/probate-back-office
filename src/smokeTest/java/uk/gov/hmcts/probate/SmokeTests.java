@@ -58,7 +58,6 @@ public class SmokeTests {
         checkHealthEndpoint(pdfServiceConfiguration.getUrl());
     }
 
-    //@Ignore
     @Test
     public void shouldGetOkStatusFromHealthEndpointForFeeService() {
         checkHealthEndpoint(feeServiceConfiguration.getUrl());
