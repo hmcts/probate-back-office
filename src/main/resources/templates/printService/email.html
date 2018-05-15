@@ -54,7 +54,7 @@
   </tr>
   <tr>
     <td colspan="2" class="sequence">
-      <strong><span th:text="#{sequenceNumber(${sequenceNumber})}">--</span></strong>
+      <strong><span th:text="#{sequenceNumber(${registrySequenceNumber})}">--</span></strong>
     </td>
   </tr>
   </thead>
@@ -119,7 +119,7 @@
   </tr>
   <tr>
     <td th:text="#{noOfApplicants}">Number of applicants:</td>
-    <td>1</td>
+    <td th:text="${noOfApplicants}">--</td>
   </tr>
   <tr>
     <td th:text="#{deceasedDob}">Deceased date of birth:</td>
@@ -183,6 +183,30 @@
     <td th:text="#{noOfExecutors}">Number of executors:</td>
     <td th:text="${noOfExecutors}">--</td>
   </tr>
+
+  <tr>
+    <td th:text="#{dealingWithEstate}">Will other executors be dealing with the estate</td>
+    <td th:text="${dealingWithEstate}">--</td>
+  </tr>
+
+  <tr>
+    <td colspan="2" th:text="#{executorsApplying}">Other Executors applying (name + email + number + othernames used)</td>
+  </tr>
+
+  <tr th:each="executor: ${executorsApplying}">
+    <td th:text="${executor.class.simpleName} == 'ObjectNode' ? ${executor.get('fullName').asText()}">
+      --
+    </td>
+    <td th:utext="${executor.class.simpleName} == 'ObjectNode' ? ${executor.get('email').asText()}">
+      --
+    </td>
+    <td th:utext="${executor.class.simpleName} == 'ObjectNode' ? ${executor.get('mobile').asText()}">
+      --
+    </td>
+    <td th:utext="${executor.class.simpleName} == 'ObjectNode' and ${executor.get('currentName')} != null? ${executor.get('currentName').asText()}">
+      --
+    </td>
+  </tr>
   <tr>
     <td colspan="2" th:text="#{executorsNotApplying}">Executors not applying (name + reason)</td>
   </tr>
@@ -241,7 +265,7 @@
   <thead>
   <tr>
     <td colspan="2" class="sequence">
-      <strong><span th:text="#{sequenceNumber(${sequenceNumber})}">--</span></strong>
+      <strong><span th:text="#{sequenceNumber(${registrySequenceNumber})}">--</span></strong>
     </td>
   </tr>
   </thead>
@@ -294,16 +318,19 @@
   <tr th:if="${legalStatement} != null">
     <td valign="top" th:text="#{legalStatement}">Legal statement:</td>
     <td>
-      <p th:text="${legalStatement.get('intro').asText()}">--</p>
+      <p th:utext="${legalStatement.get('intro').asText()}">--</p>
       <p th:text="${legalStatement.get('applicant').asText()}">--</p>
       <p th:text="${legalStatement.get('deceased').asText()}">--</p>
-      <p th:text="${legalStatement.get('will').asText()}">--</p>
-      <p th:utext="${legalStatement.get('executor').asText()}">--</p>
-      <p th:each="exec: ${legalStatement.get('otherExecutors')}">
-        <span th:utext="${exec.asText()}">--</span>
-      </p>
-      <p th:utext="${legalStatement.get('estateValue').asText()}">--</p>
-      <p th:utext="${legalStatement.get('accept').asText()}">--</p>
+      <p th:text="${legalStatement.get('deceasedOtherNames')} != null ? ${legalStatement.get('deceasedOtherNames').asText()}">--</p>
+      <th:block th:each="executor : ${legalStatement.get('executorsApplying')}">
+        <p th:text="${executor.get('name').asText()}">--</p>
+        <p th:text="${executor.get('sign').asText()}">--</p>
+      </th:block>
+      <p th:utext="${legalStatement.get('deceasedEstateValue')} != null ?${legalStatement.get('deceasedEstateValue').asText()}">--</p>
+      <p th:text="${legalStatement.get('deceasedEstateLand')} != null ? ${legalStatement.get('deceasedEstateLand').asText()}">--</p>
+      <th:block th:each="executor : ${legalStatement.get('executorsNotApplying')}">
+        <p th:text="${executor.asText()}">--</p>
+      </th:block>
     </td>
   </tr>
   </tbody>

@@ -1,11 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 {% macro names(forenames, surname) %}{{ forenames }} {{ surname }}{% endmacro %}
-{% macro notApplyingReason(reason) %}
-<td valign="top">{% if reason == "DiedBefore" %}They died before the deceased.{% endif %}{% if reason == "DiedAfter"%}They died after the deceased.{% endif %}{% if reason == "PowerReserved" %}They're holding power reserved.{% endif%}{% if reason == "Renunciation" %}They have renounced.{% endif %}
-</td>
-{% endmacro %}
-{% macro notApplyingReasonLS(reason, deceasedForenames, deceasedSurname) %} {% if reason == "DiedBefore" %}because they died before {{ deceasedForenames }} {{ deceasedSurname }} died.{% endif %}{% if reason == "DiedAfter"%}because they died after {{ deceasedForenames }} {{ deceasedSurname }} died.{% endif %}{% if reason == "PowerReserved" %}but reserves power to do so at a later date. They have been notified in writing.{% endif%}{% if reason == "Renunciation" %}now and gives up the right to do so in the future.{% endif %}{% endmacro %}
+{% macro notApplyingReason(reason) %}{% if reason == "DiedBefore" %}They died before the deceased.{% endif %}{% if reason == "DiedAfter"%}They died after the deceased.{% endif %}{% if reason == "PowerReserved" %}They're holding power reserved.{% endif%}{% if reason == "Renunciation" %}They have renounced.{% endif %}{% endmacro %}
 <head>
   <title>Application for probate for {{ names(case_data.deceasedForenames,case_data.deceasedSurname) }}</title>
 </head>
@@ -18,7 +14,7 @@
   <strong>Record type:</strong> PA<br>
 </p>
 <p>
-  <strong>Date digital application submitted:</strong> {{ last_modified | date("DD/MM/YYYY") }}
+  <strong>Date digital application submitted:</strong> {{ case_data.applicationSubmittedDate | date("DD/MM/YYYY") }}
 </p>
 <pre>
 <table border="0">
@@ -63,7 +59,7 @@
   </tr>
   <tr>
     <td colspan="2">Number of executors:</td>
-    <td>{{( case_data.executorsApplying | length ) + ( case_data.executorsNotApplying | length ) }}</td>
+    <td>{{( case_data.executorsApplying | length ) + ( case_data.executorsNotApplying | length ) + 1 }}</td>
   </tr>
 
   <tr>
@@ -74,7 +70,7 @@
     <td></td><td>Executor {{ notApplyingCount }} name:</td><td>{{ executor.value.notApplyingExecutorName }}</td>
   </tr>
   <tr>
-    <td></td><td>Not applying reason:</td>{{ notApplyingReason(executor.value.notApplyingExecutorReason) }}
+    <td></td><td>Not applying reason:</td><td valign="top">{{ notApplyingReason(executor.value.notApplyingExecutorReason) }}</td>
   </tr>
   {% set notApplyingCount = notApplyingCount + 1 %}<tr><td>&nbsp;</td></tr>{% endfor %}
   <tr>
@@ -92,7 +88,7 @@
     <td></td><td>Other names:</td>
     {% if executor.value.applyingExecutorOtherNames %}
     <td>{{ executor.value.applyingExecutorOtherNames }}</td>
-    {% else %}<td>Executor has no other names.</td>{% endif %}
+    {% endif %}
   </tr>
   <tr>
     <td></td><td>Address:</td><td>{{ executor.value.applyingExecutorAddress.AddressLine1 }}</td>
@@ -135,6 +131,30 @@
   </tr>
   <tr>
     <td><strong>Additional information</strong></td>
+  </tr>
+  <tr>
+    <td colspan="2">Is the applicant an executor:</td>
+    <td>{% if case_data.primaryApplicantIsApplying %}{{ case_data.primaryApplicantIsApplying }}{% endif %}</td>
+  </tr>
+  <tr>
+    <td colspan="2">Applicant forename(s):</td>
+    <td>{% if case_data.primaryApplicantForenames %}{{ case_data.primaryApplicantForenames }}{% endif %}</td>
+  </tr>
+  <tr>
+    <td colspan="2">Applicant surname:</td>
+    <td>{% if case_data.primaryApplicantSurname %}{{ case_data.primaryApplicantSurname }}{% endif %}</td>
+  </tr>
+  <tr>
+    <td colspan="2">Applicant address</td>
+    <td>{% if case_data.primaryApplicantAddress.AddressLine1 %}{{ case_data.primaryApplicantAddress.AddressLine1 }}{% endif %}</td>
+  </tr>
+  <tr>
+    <td colspan="2">Applicant phone number</td>
+    <td>{% if case_data.primaryApplicantPhoneNumber %}{{ case_data.primaryApplicantPhoneNumber }}{% endif %}</td>
+  </tr>
+  <tr>
+    <td colspan="2">Applicant email address</td>
+    <td>{% if case_data.primaryApplicantEmailAddress %}{{ case_data.primaryApplicantEmailAddress }}{% endif %}</td>
   </tr>
   <tr>
     <td colspan="2">Will Y/N:</td>
@@ -206,93 +226,81 @@
     <td colspan="2">&nbsp;</td>
   </tr>
   <tr>
-    <td colspan="3">
+    <td colspan="3" align="center">
       <strong>IN THE HIGH COURT OF JUSTICE</strong><br />
       FAMILY DIVISION<br />
       (PROBATE)
     </td>
   </tr>
-  <tr>
-    <td colspan="2">&nbsp;</td>
-  </tr>
+  <tr><td>&nbsp;</td></tr>
   <tr>
     <td valign="top" nowrap="true"><strong>Declaration:</strong></td>
     <td>
       <table border="0">
-        <tr><td>We confirm that we will administer the estate of {{ case_data.deceasedForenames }} {{ case_data.deceasedSurname }}, according to law. We will:</td></tr>
+        <tr><td>{{ case_data.declaration.confirm }}</td></tr>
         <tr>
           <td>
-          <ul>
-            <li>collect the whole estate</li>
-            <li>keep full details (an inventory) of the estate</li>
-            <li>keep a full account of how the estate has been administered</li>
-          </ul>
+            <ul>
+              {% if case_data.declaration.confirmItem1 %}<li>{{ case_data.declaration.confirmItem1 }}</li>{% endif %}
+              {% if case_data.declaration.confirmItem2 %}<li>{{ case_data.declaration.confirmItem2 }}</li>{% endif %}
+              {% if case_data.declaration.confirmItem3 %}<li>{{ case_data.declaration.confirmItem3 }}</li>{% endif %}
+            </ul>
           </td>
         </tr>
         <tr><td>&nbsp;</td></tr>
-        <tr><td>If the probate registry (court) asks us to do so, we will:</td></tr>
+        <tr><td>{{ case_data.declaration.requests }}</td></tr>
         <tr>
           <td>
-          <ul>
-            <li>provide the full details of the estate and how it has been administered</li>
-            <li>return the grant of probate to the court</li>
-          </ul>
+            <ul>
+              {% if case_data.declaration.requestsItem1 %}<li>{{ case_data.declaration.requestsItem1 }}</li>{% endif %}
+              {% if case_data.declaration.requestsItem2 %}<li>{{ case_data.declaration.requestsItem2 }}</li>{% endif %}
+              {% if case_data.declaration.requestsItem3 %}<li>{{ case_data.declaration.requestsItem3 }}</li>{% endif %}
+            </ul>
           </td>
         </tr>
         <tr><td>&nbsp;</td></tr>
-        <tr><td>We understand that:</td></tr>
+        <tr><td>{{ case_data.declaration.understand }}</td></tr>
         <tr>
           <td>
-          <ul>
-            <li>our application will be rejected if we do not answer any questions about the information we have given</li>
-            <li>criminal proceedings for fraud may be brought against us if we are found to have been deliberately untruthful or dishonest </li>
-          </ul>
+            <ul>
+              {% if case_data.declaration.understandItem1 %}<li>{{ case_data.declaration.understandItem1 }}</li>{% endif %}
+              {% if case_data.declaration.understandItem2 %}<li>{{ case_data.declaration.understandItem2 }}</li>{% endif %}
+            </ul>
           </td>
         </tr>
-        <tr><td>I confirm that I will administer the estate of the person who died according to law, and that my application is truthful.</td></tr>
+        <tr><td>{% if case_data.declaration.accept %}{{ case_data.declaration.accept }}{% endif %}</td></tr>
       </table>
     </td>
   </tr>
-  <tr>
-    <td colspan="2">&nbsp;</td>
-  </tr>
-  <tr>
-    <td colspan="2">&nbsp;</td>
-  </tr>
-  <tr>
-    <td colspan="2">&nbsp;</td>
-  </tr>
-  <tr>
-    <td colspan="2">&nbsp;</td>
-  </tr>
-  <tr>
-    <td valign="top" nowrap="true"><strong>Legal Statement:</strong></td>
+  <tr><td colspan="2">&nbsp;</td></tr>
+  <tr><td colspan="2">&nbsp;</td></tr>
+  <tr><td colspan="2">&nbsp;</td></tr>
+  <tr><td colspan="2">&nbsp;</td></tr>
+  <tr><td colspan="2">&nbsp;</td></tr>
+  <td valign="top" nowrap="true"><strong>Legal Statement:</strong></td>
     <td>
-      <table border="0">
-        <tr><td>This statement is based on the information {{ case_data.primaryApplicantForenames }} {{ case_data.primaryApplicantSurname }} has given in their application. It will be stored as a public record.</td></tr>
-        <tr><td>&nbsp;</td></tr>
-        <tr><td>We, {{ case_data.primaryApplicantForenames }} {{ case_data.primaryApplicantSurname }}  of {{case_data.primaryApplicantAddress.AddressLine1}} and {% for executor in case_data.executorsApplying %} {{ executor.value.applyingExecutorName }} of {{ executor.value.applyingExecutorAddress.AddressLine1 }} {% endfor %} make the following statement:</td></tr>
-        <tr><td>&nbsp;</td></tr>
-        <tr><td>{{ case_data.deceasedForenames }} {{ case_data.deceasedSurname }} was born on {{ case_data.deceasedDateOfBirth|date("d MMMM YYYY", existingFormat="yyyy-MM-dd") }} and died on {{ case_data.deceasedDateOfDeath|date("d MMMM YYYY", existingFormat="yyyy-MM-dd") }}, domiciled in England and Wales.</td></tr>
-        <tr><td>&nbsp;</td></tr>
-        <tr><td>{% if (case_data.deceasedAliasNameList | length > 0) %}They were also known as {% set deceasedAliasCount = 0 %}{% for alias in case_data.deceasedAliasNameList %}{{ alias.value.Forenames }} {{ alias.value.LastName }}{% set deceasedAliasCount = deceasedAliasCount + 1 %}{% if (deceasedAliasCount < (case_data.deceasedAliasNameList | length)) %} and {% endif %}{% endfor %}.{% endif %}</td></tr>
-        <tr><td>&nbsp;</td></tr>
-        <tr><td>{{ case_data.primaryApplicantForenames }} {{ case_data.primaryApplicantSurname }}, an executor named in the will or codicils, is applying for probate.</td></tr>
-        <tr><td>{{ case_data.primaryApplicantForenames }} {{ case_data.primaryApplicantSurname }} will sign and send to the probate registry what they believe to be the true and original last will and testament and any codicils of {{ case_data.deceasedForenames }} {{ case_data.deceasedSurname }}.</td></tr>
-        <tr><td>&nbsp;</td></tr>
-        {% for executor in case_data.executorsApplying %}
-        <tr><td>{{ executor.value.applyingExecutorName }}, an executor named in the will or codicils, is applying for probate.</td></tr>
-        <tr><td>{{ executor.value.applyingExecutorName }} will sign a photocopy of what they believe to be the true and original last will and testament and any codicils of {{ case_data.deceasedForenames }} {{ case_data.deceasedSurname }}. {{ case_data.primaryApplicantForenames }} {{ case_data.primaryApplicantSurname }} will send the signed photocopy to the probate registry.</td></tr>
-        {% endfor %}
-        <tr><td>&nbsp;</td></tr>
-        <tr><td>The gross value for the estate amounts to £{{ (case_data.ihtGrossValue/100) | money('0,0.00') }} and the net value for the estate amounts to £{{ (case_data.ihtNetValue/100) | money('0,0.00') }}.</td></tr>
-        <tr><td>&nbsp;</td></tr>
-        <tr><td>To the best of our knowledge, information and belief, there was no land vested in {{ case_data.deceasedForenames }} {{ case_data.deceasedSurname }} which was settled previously to the death (and not by the will) of {{ case_data.deceasedForenames }} {{ case_data.deceasedSurname }} and which remained settled land notwithstanding such death.</td></tr>
-        <tr><td>&nbsp;</td></tr>
-        {% for executor in case_data.executorsNotApplying %}
-        <tr><td>{{ executor.value.notApplyingExecutorName }}, an executor named in the will or codicils, is not making this application {{ notApplyingReasonLS(executor.value.notApplyingExecutorReason,case_data.deceasedForenames,case_data.deceasedSurname)}}</td></tr>
-        {% endfor %}
-      </table>
+    <table border="0">
+      <tr><td>{{ case_data.legalStatement.intro }}</td></tr>
+      <tr><td>&nbsp;</td></tr>
+      <tr><td>{{ case_data.legalStatement.applicant }}</td></tr>
+      <tr><td>&nbsp;</td></tr>
+      <tr><td>{{ case_data.legalStatement.deceased }}</td></tr>
+      <tr><td>&nbsp;</td></tr>
+      <tr><td>{{ case_data.legalStatement.deceasedOtherNames }}</td></tr>
+      <tr><td>&nbsp;</td></tr>
+      {% for executorApplying in case_data.legalStatement.executorsApplying %}
+      <tr><td>{% if executorApplying.value.name %}{{ executorApplying.value.name }}{% endif %}</td></tr>
+      <tr><td>{% if executorApplying.value.sign %}{{ executorApplying.value.sign }}{% endif %}</td></tr>
+      {% endfor %}
+      <tr><td>&nbsp;</td></tr>
+      {% if case_data.legalStatement.deceasedEstateValue %}<tr><td>{{ case_data.legalStatement.deceasedEstateValue }}</td></tr>{% endif %}
+      <tr><td>&nbsp;</td></tr>
+      {% if case_data.legalStatement.deceasedEstateLand %}<tr><td>{{ case_data.legalStatement.deceasedEstateLand }}</td></tr>{% endif %}
+      <tr><td>&nbsp;</td></tr>
+      {% for executorsNotApplying in case_data.legalStatement.executorsNotApplying %}
+      <tr><td>{{ executorsNotApplying.value.executor }}</td></tr>
+      {% endfor %}
+    </table>
     </td>
   </tr>
 </table>

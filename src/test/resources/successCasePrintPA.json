@@ -1,0 +1,175 @@
+{
+  "data": {
+    "applicationID": 57,
+    "applicationSubmittedDate": "2018-05-03",
+    "deceasedDomicileInEngWales": "Yes",
+    "ihtFormCompletedOnline": "No",
+    "softStop": "No",
+    "outsideUKGrantCopies": 1,
+    "extraCopiesOfGrant": 2,
+    "deceasedAnyOtherNames": "Yes",
+    "numberOfExecutors": 1,
+    "willHasCodicils": "No",
+    "deceasedForenames": "DecForename",
+    "numberOfApplicants": 1,
+    "willAccessOriginal": "Yes",
+    "primaryApplicantEmailAddress": "primary@hotmail.co.uk",
+    "primaryApplicantIsApplying": "Yes",
+    "willExists": "Yes",
+    "primaryApplicantForenames": "PrimaryForename",
+    "primaryApplicantSurname": "PrimarySurname",
+    "ihtReferenceNumber": "Not applicable",
+    "primaryApplicantPhoneNumber": "7878",
+    "deceasedSurname": "DecSurname",
+    "deceasedDateOfDeath": "2000-01-01",
+    "deceasedDateOfBirth": "1900-01-01",
+    "registryLocation": "Oxford",
+    "applicationType": "Personal",
+    "deceasedAliasNameList":[{
+      "value": {
+        "Forenames": "DecAlias1FN",
+        "LastName": "DecAlias1SN"
+      }
+    }, {
+      "value": {
+        "Forenames": "DecAlias2FN",
+        "LastName": "DecAlias2SN"
+      }
+    }, {
+      "value": {
+        "Forenames": "DecAlias3FN",
+        "LastName": "DecAlias3SN"
+      }
+    }],
+    "executorsNotApplying": [
+      {
+        "value": {
+          "notApplyingExecutorName": "Exec2Name",
+          "notApplyingExecutorReason": "DiedBefore"
+        }
+      },
+      {
+        "value": {
+          "notApplyingExecutorName": "Exec3Name",
+          "notApplyingExecutorReason": "DiedAfter"
+        }
+      },
+      {
+        "value": {
+          "notApplyingExecutorName": "Exec4Name",
+          "notApplyingExecutorReason": "PowerReserved"
+        }
+      },
+      {
+        "value": {
+          "notApplyingExecutorName": "Exec5Name",
+          "notApplyingExecutorReason": "Renunciation"
+        }
+      }
+    ],
+    "totalFee": "150",
+    "ihtGrossValue": "1000",
+    "ihtNetValue": "800",
+    "deceasedAddress": {
+      "AddressLine1": "Deceased address lines concatenated with PC"
+    },
+    "primaryApplicantAddress": {
+      "AddressLine1": "Primary address lines concatenated with PC"
+    },
+    "executorsApplying": [
+      {
+        "value": {
+          "applyingExecutorName": "Exec6Name",
+          "applyingExecutorAddress": {
+            "AddressLine1": "Exec6Address"
+          },
+          "applyingExecutorPhoneNumber": "6666666666",
+          "applyingExecutorEmail": "exec6@hotmail.co.uk"
+        },
+        "id": "366406fe-e6c3-4bdf-8709-121f8f64c1f7"
+      },
+      {
+        "value": {
+          "applyingExecutorName": "Exec7Name",
+          "applyingExecutorAddress": {
+            "AddressLine1": "Exec7Address"
+          },
+          "applyingExecutorPhoneNumber": "7777777777",
+          "applyingExecutorEmail": "exec7@hotmail.co.uk",
+          "applyingExecutorOtherNames": "Exec7OtherNames"
+        },
+        "id": "366406fe-e6c3-4bdf-8709-121f8f64c1f8"
+      }
+      ],
+      "legalStatement": {
+        "intro": "This statement is based on the information applicant_fname applicant_lname has given in their application. It will be stored as a public record.",
+        "applicant": "We, PrimaryForename PrimarySurname of Primary address lines concatenated with PC, Exec6Name of Exec6Address and Exec7Name of Exec7Address, make the following statement:",
+        "deceased": "DecForename DecSurname was born on 1 January 1900 and died on 1 January 2000, domiciled in England and Wales.",
+        "deceasedOtherNames": "They were also known as DecAlias1FN DecAlias1SN, DecAlias2FN DecAlias2SN and DecAlias3FN DecAlias3SN.",
+        "executorsApplying": [
+          {
+            "value": {
+              "name": "PrimaryForename PrimarySurname, an executor named in the will or codicils, is applying for probate.",
+              "sign": "PrimaryForename PrimarySurname will sign and send to the probate registry what they believe to be the true and original last will and testament and any codicils of DecForename DecSurname."
+            }
+          },
+          {
+            "value": {
+              "name": "Exec6Name, an executor named in the will or codicils, is applying for probate.",
+              "sign": "Exec6Name will sign a photocopy of what they believe to be the true and original last will and testament and any codicils of DecForename DecSurname. applicant_fname applicant_lname will send the signed photocopy to the probate registry."
+            }
+          },
+          {
+            "value": {
+              "name": "Exec7Name, an executor named in the will or codicils as exec6, is applying for probate.",
+              "sign": "Exec7Name will sign a photocopy of what they believe to be the true and original last will and testament and any codicils of DecForename DecSurname. applicant_fname applicant_lname will send the signed photocopy to the probate registry."
+            }
+          }
+        ],
+        "deceasedEstateValue": "The gross value for the estate amounts to £300 and the net value for the estate amounts to £100.",
+        "deceasedEstateLand": "To the best of our knowledge, information and belief, there was no land vested in DecForename DecSurname which was settled previously to the death (and not by the will) of DecForename DecSurname and which remained settled land notwithstanding such death.To the best of our knowledge, information and belief, there was no land vested in DecForename DecSurname which was settled previously to the death (and not by the will) of DecForename DecSurname and which remained settled land notwithstanding such death.",
+        "executorsNotApplying": [
+          {
+            "value": {
+              "executor": "Exec2Name, an executor named in the will or codicils, is not making this application because they died before DecForename DecSurname died."
+            }
+          },
+          {
+            "value": {
+              "executor": "Exec3Name, an executor named in the will or codicils, is not making this application but reserves power to do so at a later date. They have been notified in writing."
+            }
+          },
+          {
+            "value": {
+              "executor": "Exec4Name, an executor named in the will or codicils, is not making this application because they died after DecForename DecSurname died."
+            }
+          },
+          {
+            "value": {
+              "executor": "Exec5Name, an executor named in the will or codicils, is not making this application now and gives up the right to do so in the future."
+            }
+          }
+        ]
+      },
+     "declaration": {
+        "accept": "I confirm that I will administer the estate of the person who died according to law, and that my application is truthful.",
+        "confirm": "I confirm that I will administer the estate of deceased person, according to law. I will:",
+        "requests": "If the probate registry (court) asks me to do so, I will:",
+        "understand": "I understand that:",
+        "confirmItem1": "collect the whole estate",
+        "confirmItem2": "keep full details (an inventory) of the estate",
+        "confirmItem3": "keep a full account of how the estate has been distributed",
+        "requestsItem1": "provide the full details of the estate and how it has been distributed",
+        "requestsItem2": "return the grant of probate to the court",
+        "understandItem1": "my application will be rejected if I do not provide information (if asked)",
+        "understandItem2": "criminal proceedings for fraud may be brought against me if I am found to have been deliberately untruthful or dishonest"
+      }
+  },
+  "event": {
+    "id": "applyForGrant",
+    "summary": "dddddd",
+    "description": "dddddd"
+  },
+  "event_token": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJnbXQ0YXJyZGQ4ZWVvY2U1MmVra2tyN3E3MiIsInN1YiI6IjIzIiwiaWF0IjoxNTI2MzczMzIwLCJldmVudC1pZCI6ImFwcGx5Rm9yR3JhbnQiLCJjYXNlLXR5cGUtaWQiOiJHcmFudE9mUmVwcmVzZW50YXRpb24iLCJqdXJpc2RpY3Rpb24taWQiOiJQUk9CQVRFIiwiY2FzZS12ZXJzaW9uIjoiYmYyMWE5ZThmYmM1YTM4NDZmYjA1YjRmYTA4NTllMDkxN2IyMjAyZiJ9.gVQsC4A4o0JrKgF9f7DWfO5T9IqkWP-GBDWZEOnncGU",
+  "ignore_warning": false
+}
