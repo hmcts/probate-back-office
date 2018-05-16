@@ -1,16 +1,14 @@
 package uk.gov.hmcts.probate.health;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
-import uk.gov.hmcts.probate.config.EvidenceManagementClientConfiguration;
 import uk.gov.hmcts.probate.config.FeeServiceConfiguration;
 import uk.gov.hmcts.probate.config.PDFServiceConfiguration;
-import uk.gov.hmcts.probate.service.evidencemanagement.upload.UploadRequestBuilder;
+
+Ø
 
 @Configuration
 public class HealthConfiguration {
