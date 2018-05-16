@@ -6,7 +6,6 @@ import io.restassured.config.RestAssuredConfig;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.ComponentScan;
@@ -14,8 +13,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
-import uk.gov.hmcts.probate.config.FeeServiceConfiguration;
-import uk.gov.hmcts.probate.config.PDFServiceConfiguration;
 
 import static io.restassured.RestAssured.given;
 
@@ -24,26 +21,8 @@ import static io.restassured.RestAssured.given;
 @ContextConfiguration
 public class SmokeTests {
 
-    @Autowired
-    private PDFServiceConfiguration pdfServiceConfiguration;
-
-    @Autowired
-    private FeeServiceConfiguration feeServiceConfiguration;
-
-    @Value("${idam.service.host}")
-    private String idamServiceHost;
-
-    @Value("${idam.user.host}")
-    private String idamUserHost;
-
-    @Value("${evidence.management.host}")
-    private String evidenceManagementHost;
-
-    @Value("${printservice.host}")
-    private String printServiceHost;
-
-    @Value("${probate.sol.ccd.service.url}")
-    private String solCcdServiceUrl;
+    @Value("${test.instance.uri}")
+    private String url;
 
     private RestAssuredConfig config;
 
@@ -57,41 +36,7 @@ public class SmokeTests {
     }
 
     @Test
-    public void shouldGetOkStatusFromHealthEndpointForPdfService() {
-        checkHealthEndpoint(pdfServiceConfiguration.getUrl());
-    }
-
-    @Test
-    public void shouldGetOkStatusFromHealthEndpointForFeeService() {
-        checkHealthEndpoint(feeServiceConfiguration.getUrl());
-    }
-
-    @Test
-    public void shouldGetOkStatusFromHealthEndpointForIdamServiceHost() {
-        checkHealthEndpoint(idamServiceHost);
-    }
-
-    @Test
-    public void shouldGetOkStatusFromHealthEndpointForIdamUserHost() {
-        checkHealthEndpoint(idamUserHost);
-    }
-    
-    @Test
-    public void shouldGetOkStatusFromHealthEndpointForEvidenceManagement() {
-        checkHealthEndpoint(evidenceManagementHost);
-    }
-
-    @Test
-    public void shouldGetOkStatusFromHealthEndpointForPrintService() {
-        checkHealthEndpoint(printServiceHost);
-    }
-
-    @Test
     public void shouldGetOkStatusFromHealthEndpointForSolCcdService() {
-        checkHealthEndpoint(solCcdServiceUrl);
-    }
-
-    private void checkHealthEndpoint(String url) {
         given().config(config)
                 .when()
                 .get(url + "/health")
