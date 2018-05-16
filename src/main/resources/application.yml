@@ -57,7 +57,6 @@ evidence.management.upload.file.url: /documents
 http.connect.timeout: 60000
 http.connect.request.timeout: 60000
 
-idam.user.host: ${IDAM_CLIENT_URL:http://localhost:4501}
 idam.service.host: ${PROVIDER_SERVICE_CLIENT_URL:http://localhost:4502}
 
 #logging.level.root: DEBUG
