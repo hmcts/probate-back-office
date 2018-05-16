@@ -23,7 +23,8 @@ pdf.service:
   defaultDisplayFilename: legal_statement.pdf
 
 fee.api:
-  url: http://localhost:4411/fees-register/fees/lookup
+  url: http://localhost:4411
+  api: /fees-register/fees/lookup
   service: probate
   jurisdiction1: family
   jurisdiction2: probate registry
@@ -60,3 +61,4 @@ idam.user.host: ${IDAM_CLIENT_URL:http://localhost:4501}
 idam.service.host: ${PROVIDER_SERVICE_CLIENT_URL:http://localhost:4502}
 
 #logging.level.root: DEBUG
+test.instance-uri: "${TEST_URL:}"
