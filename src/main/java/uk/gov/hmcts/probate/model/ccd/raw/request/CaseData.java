@@ -159,6 +159,9 @@ public class CaseData {
 
     private List<AdditionalExecutors> executorsNotApplying;
 
+    private final String applicationType;
+
+    private final String registryLocation;
 
     public List<AdditionalExecutors> getExecutorsApplying() {
 
