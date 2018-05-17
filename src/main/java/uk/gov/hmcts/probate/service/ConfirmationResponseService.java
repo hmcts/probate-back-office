@@ -2,6 +2,7 @@ package uk.gov.hmcts.probate.service;
 
 import com.google.common.base.Strings;
 import lombok.Data;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.changerule.ChangeRule;
@@ -35,6 +36,7 @@ public class ConfirmationResponseService {
     private static final String REASON_FOR_NOT_APPLYING_RENUNCIATION = "Renunciation";
     private static final String REASON_FOR_NOT_APPLYING_DIED_BEFORE = "DiedBefore";
     private static final String REASON_FOR_NOT_APPLYING_DIED_AFTER = "DiedAfter";
+    private static final String IHT_400421 = "IHT400421";
 
     @Value("${markdown.templatesDirectory}")
     private String templatesDirectory;
@@ -119,17 +121,23 @@ public class ConfirmationResponseService {
         keyValue.put("{{deceasedDateOfDeath}}", ccdData.getDeceased().getDateOfDeath().format(formatter));
         keyValue.put("{{ihtForm}}", ccdData.getIht().getFormName());
         keyValue.put("{{paymentMethod}}", ccdData.getFee().getPaymentMethod());
-        keyValue.put("{{paymentAmount}}", ccdData.getFee().getAmountInPounds().toString());
-
-        keyValue.put("{{applicationFee}}", ccdData.getFee().getApplicationFeeInPounds().toString());
-        keyValue.put("{{feeForUkCopies}}", getOptionalNumberAsString(ccdData.getFee().getExtraCopiesOfGrant()));
-        keyValue.put("{{feeForNonUkCopies}}", getOptionalNumberAsString(ccdData.getFee().getOutsideUKGrantCopies()));
+        keyValue.put("{{paymentAmount}}", getAmountAsString(ccdData.getFee().getAmount()));
+        keyValue.put("{{applicationFee}}", getAmountAsString(ccdData.getFee().getApplicationFee()));
+        keyValue.put("{{feeForUkCopies}}", getOptionalAmountAsString(ccdData.getFee().getFeeForUkCopies()));
+        keyValue.put("{{feeForNonUkCopies}}", getOptionalAmountAsString(ccdData.getFee().getFeeForNonUkCopies()));
         keyValue.put("{{solsPaymentReferenceNumber}}", ccdData.getFee().getPaymentReferenceNumber());
 
         String additionalInfo = ccdData.getSolsAdditionalInfo();
         if (Strings.isNullOrEmpty(additionalInfo)) {
-            additionalInfo = "None";
+            additionalInfo = "None provided";
         }
+
+        String ihtFormValue = ccdData.getIht().getFormName();
+        String iht400 = "";
+        if (ihtFormValue.contentEquals(IHT_400421)) {
+            iht400 = "*   the stamped (receipted) IHT 421 with this application\n";
+        }
+        keyValue.put("{{iht400}}", iht400);
         keyValue.put("{{additionalInfo}}", additionalInfo);
         keyValue.put("{{renouncingExecutors}}", getRenouncingExecutors(ccdData.getExecutors()));
         keyValue.put("{{deadExecutors}}", getDeadExecutors(ccdData.getExecutors()));
@@ -138,27 +146,32 @@ public class ConfirmationResponseService {
     }
 
     private String getRenouncingExecutors(List<Executor> executors) {
-        return executors.stream()
+        String renouncingExecutors = executors.stream()
             .filter(executor -> !executor.isApplying())
             .filter(executor -> REASON_FOR_NOT_APPLYING_RENUNCIATION.equals(executor.getReasonNotApplying()))
-            .map(executor -> "* renunciation form for " + executor.getForename() + " " + executor.getLastname())
+            .map(executor -> "*   renunciation form for " + executor.getForename() + " " + executor.getLastname())
             .collect(Collectors.joining("\n"));
+        return !StringUtils.isEmpty(renouncingExecutors) ? renouncingExecutors + "\n" : renouncingExecutors;
     }
 
     private String getDeadExecutors(List<Executor> executors) {
-        return executors.stream()
+        String deadExecutors = executors.stream()
             .filter(executor -> !executor.isApplying())
             .filter(executor -> REASON_FOR_NOT_APPLYING_DIED_BEFORE.equals(executor.getReasonNotApplying())
                 || REASON_FOR_NOT_APPLYING_DIED_AFTER.equals(executor.getReasonNotApplying()))
-            .map(executor -> "* death certificate for " + executor.getForename() + " " + executor.getLastname())
+            .map(executor -> "*   death certificate for " + executor.getForename() + " " + executor.getLastname())
             .collect(Collectors.joining("\n"));
+        return !StringUtils.isEmpty(deadExecutors) ? deadExecutors + "\n" : deadExecutors;
     }
 
-    private String getOptionalNumberAsString(Long amount) {
+    private String getOptionalAmountAsString(BigDecimal amount) {
         if (amount == null) {
             return "";
         }
-        return amount.toString();
+        return getAmountAsString(amount);
     }
 
+    private String getAmountAsString(BigDecimal amount) {
+        return amount.divide(BigDecimal.valueOf(100), 2, BigDecimal.ROUND_HALF_UP).toString();
+    }
 }

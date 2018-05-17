@@ -143,6 +143,7 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://fees-database:5432/fees_register
       - SPRING_DATASOURCE_USERNAME=fees_register
       - SPRING_DATASOURCE_PASSWORD=fees_register
+      - SPRING_PROFILES_ACTIVE=embedded
       - AUTH_IDAM_CLIENT_BASEURL=http://idam-api:8080
       - ROOT_APPENDER=JSON_CONSOLE
     ports:
@@ -345,7 +346,7 @@ services:
       - PROXY_DEFINITION_DATA=http://ccd-definition-store-api:4451/api/data
       - PROXY_DEFINITION_DISPLAY=http://ccd-definition-store-api:4451/api/display
       # this NEEDS to be your local ip address
-      - PROXY_PRINT_SERVICE=http://172.16.1.89:3100
+      - PROXY_PRINT_SERVICE=http://172.16.10.163:3100
       - PROXY_DOCUMENT_MANAGEMENT=http://document-management-store:8080
     ports:
       - 3453:3453

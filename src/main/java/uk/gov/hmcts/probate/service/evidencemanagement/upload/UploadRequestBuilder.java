@@ -20,6 +20,9 @@ public class UploadRequestBuilder {
 
     private static final Logger log = LoggerFactory.getLogger(UploadRequestBuilder.class);
 
+    private UploadRequestBuilder() {
+    }
+
     public static MultiValueMap<String, Object> prepareRequest(EvidenceManagementFileUpload file) {
         MultiValueMap<String, Object> parameters = new LinkedMultiValueMap<>();
 
@@ -34,8 +37,8 @@ public class UploadRequestBuilder {
     public static MultiValueMap<String, Object> prepareRequest(List<EvidenceManagementFileUpload> files) {
         MultiValueMap<String, Object> parameters = new LinkedMultiValueMap<>();
         files.stream()
-            .map(UploadRequestBuilder::buildPartFromFile)
-            .forEach(file -> parameters.add(FILES_PARAMETER, file));
+                .map(UploadRequestBuilder::buildPartFromFile)
+                .forEach(file -> parameters.add(FILES_PARAMETER, file));
 
         parameters.add(CLASSIFICATION_PARAMETER, CLASSIFICATION_PRIVATE_PARAMETER);
         log.info(parameters.toString());

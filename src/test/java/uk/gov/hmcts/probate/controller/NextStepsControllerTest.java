@@ -11,13 +11,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData.CaseDataBuilder;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
-import uk.gov.hmcts.probate.util.TestUtils;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -45,7 +43,6 @@ public class NextStepsControllerTest {
     private static final String SOLICITOR_NAME = "Peter Crouch";
     private static final String SOLICITOR_JOB_TITLE = "Lawyer";
     private static final String PAYMENT_METHOD = "Cheque";
-    private static final float PAYMENT_AMOUNT = 150;
     private static final String WILL_HAS_CODICLIS = "Yes";
     private static final String NUMBER_OF_CODICLIS = "1";
     private static final Float NET = 1000f;
@@ -77,15 +74,11 @@ public class NextStepsControllerTest {
     private static final BigDecimal TOTAL_FEE = BigDecimal.TEN;
     private static final String NEED_TO_UPDATE = "No";
 
-
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
-    public static final String NEXTSTEPS_CONFIRMATION_URL = "/nextsteps/confirmation";
+    private static final String NEXTSTEPS_CONFIRMATION_URL = "/nextsteps/confirmation";
 
     @Autowired
     private MockMvc mockMvc;
-
-    @Autowired
-    private TestUtils utils;
 
     private CaseDataBuilder caseDataBuilder;
 
@@ -136,10 +129,9 @@ public class NextStepsControllerTest {
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
 
         String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
-        MvcResult mvcResult = mockMvc.perform(post(NEXTSTEPS_CONFIRMATION_URL).content(json).contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-            .andReturn();
+        mockMvc.perform(post(NEXTSTEPS_CONFIRMATION_URL).content(json).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
     }
 
     @Test
@@ -150,12 +142,12 @@ public class NextStepsControllerTest {
 
         String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
         mockMvc.perform(post(NEXTSTEPS_CONFIRMATION_URL).content(json).contentType(MediaType.APPLICATION_JSON_UTF8))
-            .andExpect(status().isBadRequest())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-            .andExpect(jsonPath("$.fieldErrors[0].param").value("callbackRequest"))
-            .andExpect(jsonPath("$.fieldErrors[0].field").value("caseDetails.data.solsSolicitorFirmName"))
-            .andExpect(jsonPath("$.fieldErrors[0].code").value("NotBlank"))
-            .andExpect(jsonPath("$.fieldErrors[0].message").value("Solicitor firm name cannot be empty"));
+                .andExpect(status().isBadRequest())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.fieldErrors[0].param").value("callbackRequest"))
+                .andExpect(jsonPath("$.fieldErrors[0].field").value("caseDetails.data.solsSolicitorFirmName"))
+                .andExpect(jsonPath("$.fieldErrors[0].code").value("NotBlank"))
+                .andExpect(jsonPath("$.fieldErrors[0].message").value("Solicitor firm name cannot be empty"));
     }
 
     @Test
@@ -166,12 +158,12 @@ public class NextStepsControllerTest {
 
         String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
         mockMvc.perform(post(NEXTSTEPS_CONFIRMATION_URL).content(json).contentType(MediaType.APPLICATION_JSON_UTF8))
-            .andExpect(status().isBadRequest())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-            .andExpect(jsonPath("$.fieldErrors[0].param").value("callbackRequest"))
-            .andExpect(jsonPath("$.fieldErrors[0].field").value("caseDetails.data.solsSolicitorFirmPostcode"))
-            .andExpect(jsonPath("$.fieldErrors[0].code").value("NotBlank"))
-            .andExpect(jsonPath("$.fieldErrors[0].message").value("Solicitor firm postcode cannot be empty"));
+                .andExpect(status().isBadRequest())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.fieldErrors[0].param").value("callbackRequest"))
+                .andExpect(jsonPath("$.fieldErrors[0].field").value("caseDetails.data.solsSolicitorFirmPostcode"))
+                .andExpect(jsonPath("$.fieldErrors[0].code").value("NotBlank"))
+                .andExpect(jsonPath("$.fieldErrors[0].message").value("Solicitor firm postcode cannot be empty"));
     }
 
     @Test
@@ -182,12 +174,12 @@ public class NextStepsControllerTest {
 
         String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
         mockMvc.perform(post(NEXTSTEPS_CONFIRMATION_URL).content(json).contentType(MediaType.APPLICATION_JSON_UTF8))
-            .andExpect(status().isBadRequest())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-            .andExpect(jsonPath("$.fieldErrors[0].param").value("callbackRequest"))
-            .andExpect(jsonPath("$.fieldErrors[0].field").value("caseDetails.data.solsSOTName"))
-            .andExpect(jsonPath("$.fieldErrors[0].code").value("NotBlank"))
-            .andExpect(jsonPath("$.fieldErrors[0].message").value("Solicitor SOT name cannot be empty"));
+                .andExpect(status().isBadRequest())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.fieldErrors[0].param").value("callbackRequest"))
+                .andExpect(jsonPath("$.fieldErrors[0].field").value("caseDetails.data.solsSOTName"))
+                .andExpect(jsonPath("$.fieldErrors[0].code").value("NotBlank"))
+                .andExpect(jsonPath("$.fieldErrors[0].message").value("Solicitor SOT name cannot be empty"));
     }
 
     @Test
@@ -198,12 +190,12 @@ public class NextStepsControllerTest {
 
         String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
         mockMvc.perform(post(NEXTSTEPS_CONFIRMATION_URL).content(json).contentType(MediaType.APPLICATION_JSON_UTF8))
-            .andExpect(status().isBadRequest())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-            .andExpect(jsonPath("$.fieldErrors[0].param").value("callbackRequest"))
-            .andExpect(jsonPath("$.fieldErrors[0].field").value("caseDetails.data.solsSOTJobTitle"))
-            .andExpect(jsonPath("$.fieldErrors[0].code").value("NotBlank"))
-            .andExpect(jsonPath("$.fieldErrors[0].message").value("Solicitor SOT job title cannot be empty"));
+                .andExpect(status().isBadRequest())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.fieldErrors[0].param").value("callbackRequest"))
+                .andExpect(jsonPath("$.fieldErrors[0].field").value("caseDetails.data.solsSOTJobTitle"))
+                .andExpect(jsonPath("$.fieldErrors[0].code").value("NotBlank"))
+                .andExpect(jsonPath("$.fieldErrors[0].message").value("Solicitor SOT job title cannot be empty"));
     }
 
     @Test
@@ -302,12 +294,9 @@ public class NextStepsControllerTest {
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
 
         String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
-        MvcResult mvcResult = mockMvc.perform(post(NEXTSTEPS_CONFIRMATION_URL).content(json).contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(post(NEXTSTEPS_CONFIRMATION_URL).content(json).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().string("{\"confirmation_header\":null,\"confirmation_body\":null}"))
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andReturn();
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
     }
-
-
 }

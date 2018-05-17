@@ -150,6 +150,7 @@ dependencies {
 
   testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: springBootVersion
   testCompile group: 'org.pdfbox', name: 'com.springsource.org.pdfbox', version: '0.7.3'
+  testCompile group: 'org.springframework.security', name: 'spring-security-test', version: '4.2.5.RELEASE'
   testCompile group: 'io.rest-assured', name: 'rest-assured', version: '3.0.7'
 
   smokeTestCompile sourceSets.main.runtimeClasspath
@@ -165,7 +166,7 @@ jar {
   manifest {
 
     attributes 'Implementation-Title': project.name,
-      'Implementation-Version': project.version
+            'Implementation-Version': project.version
   }
 }
 

@@ -11,7 +11,6 @@ import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutors;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
-import uk.gov.hmcts.probate.model.fee.FeeServiceResponse;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -20,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -43,13 +43,13 @@ public class CCDDataTransformerTest {
     private static final Float IHT_NET = 9000f;
     private static final BigDecimal TOTAL_FEE = new BigDecimal(155.00);
     private static final BigDecimal APPLICATION_FEE = new BigDecimal(200.00);
+    private static final BigDecimal FEE_UK_COPIES = new BigDecimal(0.50);
+    private static final BigDecimal FEE_NON_UK_COPIES = new BigDecimal(1.50);
     private static final String PAYMENT_METHOD_CHEQUE = "cheque";
     private static final String PAYMENT_METHOD_FEE = "fee account";
     private static final String FEE_ACCOUNT = "FeeAct1";
     private static final String PAYMENT_REF_NUMBER_FEE = "Fee account PBA-FeeAct1";
     private static final String PAYMENT_REF_NUMBER_CHEQUE = "Cheque (payable to ‘HM Courts & Tribunals Service’)";
-
-    private static final String YES = "Yes";
 
     @Mock
     private CallbackRequest callbackRequestMock;
@@ -59,9 +59,6 @@ public class CCDDataTransformerTest {
 
     @Mock
     private CaseData caseDataMock;
-
-    @Mock
-    private FeeServiceResponse feeServiceResponseMock;
 
     @InjectMocks
     private CCDDataTransformer underTest;
@@ -86,11 +83,14 @@ public class CCDDataTransformerTest {
         when(caseDataMock.getSolsIHTFormId()).thenReturn(IHT_FORM_ID);
         when(caseDataMock.getIhtGrossValue()).thenReturn(IHT_GROSS);
         when(caseDataMock.getIhtNetValue()).thenReturn(IHT_NET);
+        when(caseDataMock.getFeeForUkCopies()).thenReturn(FEE_UK_COPIES);
+        when(caseDataMock.getFeeForNonUkCopies()).thenReturn(FEE_NON_UK_COPIES);
         when(caseDataMock.getTotalFee()).thenReturn(TOTAL_FEE);
+        when(caseDataMock.getApplicationFee()).thenReturn(APPLICATION_FEE);
 
         when(caseDetailsMock.getLastModified()).thenReturn(LAST_MODIFIED_STR);
 
-        List<AdditionalExecutors> additionalExecutors = new ArrayList();
+        List<AdditionalExecutors> additionalExecutors = new ArrayList<>();
         AdditionalExecutors additionalExecutors1 = mock(AdditionalExecutors.class);
         AdditionalExecutors additionalExecutors2 = mock(AdditionalExecutors.class);
         AdditionalExecutor additionalExecutor1 = mock(AdditionalExecutor.class);
@@ -148,10 +148,10 @@ public class CCDDataTransformerTest {
     public void shouldConvertRequestToDataBeanWithFeeServiceForCheque() {
 
         when(caseDataMock.getSolsPaymentMethods()).thenReturn(PAYMENT_METHOD_CHEQUE);
-        when(feeServiceResponseMock.getTotal()).thenReturn(TOTAL_FEE);
-        when(feeServiceResponseMock.getApplicationFee()).thenReturn(APPLICATION_FEE);
+        when(caseDataMock.getTotalFee()).thenReturn(TOTAL_FEE);
+        when(caseDataMock.getApplicationFee()).thenReturn(APPLICATION_FEE);
 
-        CCDData ccdData = underTest.transform(callbackRequestMock, feeServiceResponseMock);
+        CCDData ccdData = underTest.transform(callbackRequestMock);
 
         assertAll(ccdData);
         assertCaseSubmissionDate(ccdData);
@@ -163,11 +163,11 @@ public class CCDDataTransformerTest {
     public void shouldConvertRequestToDataBeanWithFeeServiceForFee() {
 
         when(caseDataMock.getSolsPaymentMethods()).thenReturn(PAYMENT_METHOD_FEE);
+        when(caseDataMock.getTotalFee()).thenReturn(TOTAL_FEE);
+        when(caseDataMock.getApplicationFee()).thenReturn(APPLICATION_FEE);
         when(caseDataMock.getSolsFeeAccountNumber()).thenReturn(FEE_ACCOUNT);
-        when(feeServiceResponseMock.getTotal()).thenReturn(TOTAL_FEE);
-        when(feeServiceResponseMock.getApplicationFee()).thenReturn(APPLICATION_FEE);
 
-        CCDData ccdData = underTest.transform(callbackRequestMock, feeServiceResponseMock);
+        CCDData ccdData = underTest.transform(callbackRequestMock);
 
         assertAll(ccdData);
         assertCaseSubmissionDate(ccdData);
@@ -175,7 +175,85 @@ public class CCDDataTransformerTest {
         assertEquals(PAYMENT_REF_NUMBER_FEE, ccdData.getFee().getPaymentReferenceNumber());
     }
 
+    @Test
+    public void shouldConvertRequestToDataBeanWithFeeDataMissing() {
+        String[] lmDate = {null, null, null, null, null, null, null, null};
+        when(caseDataMock.getFeeForUkCopies()).thenReturn(null);
+        when(caseDataMock.getFeeForNonUkCopies()).thenReturn(null);
+
+        CCDData ccdData = underTest.transform(callbackRequestMock);
+
+        assertBasic(ccdData);
+        assertNull(ccdData.getFee().getFeeForUkCopies());
+        assertNull(ccdData.getFee().getFeeForNonUkCopies());
+    }
+
+    private void assertFees(CCDData ccdData) {
+        assertEquals(FEE_UK_COPIES.floatValue(), ccdData.getFee().getFeeForUkCopies().floatValue(), 0.01);
+        assertEquals(FEE_NON_UK_COPIES.floatValue(), ccdData.getFee().getFeeForNonUkCopies().floatValue(), 0.01);
+    }
+
+    @Test
+    public void shouldConvertRequestToDataBeanWhenLastModifiedDateIsNull() {
+
+        when(caseDetailsMock.getLastModified()).thenReturn(null);
+
+        CCDData ccdData = underTest.transform(callbackRequestMock);
+
+        assertAll(ccdData);
+        assertNull(ccdData.getCaseSubmissionDate());
+    }
+
+    @Test
+    public void shouldConvertRequestToDataBeanWhenLastModifiedDateIsEmpty() {
+
+        when(caseDetailsMock.getLastModified()).thenReturn(new String[0]);
+
+        CCDData ccdData = underTest.transform(callbackRequestMock);
+
+        assertAll(ccdData);
+        assertNull(ccdData.getCaseSubmissionDate());
+    }
+
+    @Test
+    public void shouldConvertRequestToDataBeanWhenLastModifiedDateHasNullFirstElement() {
+
+        when(caseDetailsMock.getLastModified()).thenReturn(new String[]{null});
+
+        CCDData ccdData = underTest.transform(callbackRequestMock);
+
+        assertAll(ccdData);
+        assertNull(ccdData.getCaseSubmissionDate());
+    }
+
+    @Test
+    public void shouldConvertRequestToDataBeanWhenLastModifiedDateHasNullSecondElement() {
+
+        when(caseDetailsMock.getLastModified()).thenReturn(new String[]{"", null});
+
+        CCDData ccdData = underTest.transform(callbackRequestMock);
+
+        assertAll(ccdData);
+        assertNull(ccdData.getCaseSubmissionDate());
+    }
+
+    @Test
+    public void shouldConvertRequestToDataBeanWhenLastModifiedDateHasNullThirdElement() {
+
+        when(caseDetailsMock.getLastModified()).thenReturn(new String[]{"", "", null});
+
+        CCDData ccdData = underTest.transform(callbackRequestMock);
+
+        assertAll(ccdData);
+        assertNull(ccdData.getCaseSubmissionDate());
+    }
+
     private void assertAll(CCDData ccdData) {
+        assertBasic(ccdData);
+        assertFees(ccdData);
+    }
+
+    private void assertBasic(CCDData ccdData) {
         assertEquals(SOLICITOR_FIRM_NAME, ccdData.getSolicitor().getFirmName());
         assertEquals(SOLICITOR_FIRM_POSTCODE, ccdData.getSolicitor().getFirmPostcode());
         assertEquals(SOLICITOR_SOT_NAME, ccdData.getSolicitor().getFullname());
@@ -189,6 +267,7 @@ public class CCDDataTransformerTest {
         assertEquals(IHT_NET, ccdData.getIht().getNetValue());
         assertEquals(true, ccdData.getExecutors().get(2).isApplying());
         assertEquals(TOTAL_FEE.floatValue(), ccdData.getFee().getAmount().floatValue(), 0.01);
+        assertEquals(APPLICATION_FEE.floatValue(), ccdData.getFee().getApplicationFee().floatValue(), 0.01);
     }
 
     private void assertCaseSubmissionDate(CCDData ccdData) {

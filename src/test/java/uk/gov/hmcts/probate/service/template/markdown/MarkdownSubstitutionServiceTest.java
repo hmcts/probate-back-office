@@ -1,6 +1,5 @@
 package uk.gov.hmcts.probate.service.template.markdown;
 
-import org.assertj.core.util.Maps;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -12,10 +11,12 @@ import uk.gov.hmcts.probate.service.FileSystemResourceService;
 
 import java.io.File;
 import java.net.URL;
+import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertNotNull;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -31,19 +32,17 @@ public class MarkdownSubstitutionServiceTest {
     @Mock
     private FileSystemResource fileSystemResource;
 
-    private File file;
-
     @InjectMocks
     private MarkdownSubstitutionService underTest;
 
     @Before
     public void setup() {
         initMocks(this);
-        file = Optional.ofNullable(this.getClass().getClassLoader().getResource(RESOURCE_PATH))
-            .map(URL::getPath)
-            .map(FileSystemResource::new)
-            .get()
-            .getFile();
+        File file = Optional.ofNullable(this.getClass().getClassLoader().getResource(RESOURCE_PATH))
+                .map(URL::getPath)
+                .map(FileSystemResource::new)
+                .get()
+                .getFile();
 
         when(fileSystemResource.getFile()).thenReturn(file);
     }
@@ -51,22 +50,33 @@ public class MarkdownSubstitutionServiceTest {
     @Test
     public void shouldGenerateMarkdown() {
         when(fileSystemResourceService.getFileSystemResource(any(String.class)))
-            .thenReturn(Optional.of(fileSystemResource));
+                .thenReturn(Optional.of(fileSystemResource));
 
-        Map<String, String> keyValue = Maps.newHashMap("name", "markdown");
+        Map<String, String> keyValue = Collections.singletonMap("name", "markdown");
 
         TemplateResponse response = underTest.generatePage(RESOURCE_PATH, MarkdownTemplate.NEXT_STEPS, keyValue);
 
-        assertTrue(response != null);
+        assertNotNull(response);
         verify(fileSystemResourceService).getFileSystemResource(any(String.class));
     }
 
     @Test(expected = RuntimeException.class)
     public void shouldThrowRuntimeExceptionWhenGeneratePageCouldNotParseFile() {
         when(fileSystemResourceService.getFileSystemResource(any(String.class)))
-            .thenReturn(Optional.empty());
+                .thenReturn(Optional.empty());
 
-        Map<String, String> keyValue = Maps.newHashMap("name", "markdown");
+        Map<String, String> keyValue = Collections.singletonMap("name", "markdown");
+        underTest.generatePage(RESOURCE_PATH, MarkdownTemplate.NEXT_STEPS, keyValue);
+    }
+
+    @Test(expected = RuntimeException.class)
+    public void shouldThrowRuntimeExceptionWhenFileDoesNotExist() {
+        when(fileSystemResource.getFile()).thenReturn(new File(UUID.randomUUID().toString()));
+        when(fileSystemResourceService.getFileSystemResource(any(String.class)))
+                .thenReturn(Optional.of(fileSystemResource));
+
+        Map<String, String> keyValue = Collections.singletonMap("name", "markdown");
+
         underTest.generatePage(RESOURCE_PATH, MarkdownTemplate.NEXT_STEPS, keyValue);
     }
 }

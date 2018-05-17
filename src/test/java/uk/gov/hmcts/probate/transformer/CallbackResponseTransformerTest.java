@@ -25,6 +25,8 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
@@ -36,6 +38,8 @@ public class CallbackResponseTransformerTest {
 
     private static final String SOLICITOR_FIRM_NAME = "Sol Firm Name";
     private static final String SOLICITOR_FIRM_POSTCODE = "SW13 6EA";
+    private static final String SOLICITOR_FIRM_EMAIL = "sol@email.com";
+    private static final String SOLICITOR_FIRM_PHONE = "0123456789";
     private static final String SOLICITOR_SOT_NAME = "Andy Test";
     private static final String SOLICITOR_SOT_JOB_TITLE = "Lawyer";
 
@@ -69,16 +73,15 @@ public class CallbackResponseTransformerTest {
     private static final String APPLICANT_HAS_ALIAS = "Yes";
     private static final String OTHER_EXECS_EXIST = "No";
     private static final String PRIMARY_EXEC_ALIAS_NAMES = "Alias names";
-    private static final List<AdditionalExecutors> ADDITIONAL_EXEC_LIST = Collections.EMPTY_LIST;
-    private static final List<AliasNames> DECEASED_ALIAS_NAMES_LIST = Collections.EMPTY_LIST;
+    private static final List<AdditionalExecutors> ADDITIONAL_EXEC_LIST = Collections.emptyList();
+    private static final List<AliasNames> DECEASED_ALIAS_NAMES_LIST = Collections.emptyList();
     private static final SolsAddress DECEASED_ADDRESS = Mockito.mock(SolsAddress.class);
     private static final SolsAddress EXEC_ADDRESS = Mockito.mock(SolsAddress.class);
-    private static final List<AliasNames> ALIAS_NAMES = Collections.EMPTY_LIST;
+    private static final List<AliasNames> ALIAS_NAMES = Collections.emptyList();
     private static final String APP_REF = "app ref";
     private static final String ADDITIONAL_INFO = "additional info";
 
     private static final String YES = "Yes";
-    private static final String NO = "No";
     private static final Optional<String> ORIGINAL_STATE = Optional.empty();
     private static final Optional<String> CHANGED_STATE = Optional.of("Changed");
 
@@ -114,6 +117,8 @@ public class CallbackResponseTransformerTest {
 
         when(caseDataMock.getSolsSolicitorFirmName()).thenReturn(SOLICITOR_FIRM_NAME);
         when(caseDataMock.getSolsSolicitorFirmPostcode()).thenReturn(SOLICITOR_FIRM_POSTCODE);
+        when(caseDataMock.getSolsSolicitorEmail()).thenReturn(SOLICITOR_FIRM_EMAIL);
+        when(caseDataMock.getSolsSolicitorPhoneNumber()).thenReturn(SOLICITOR_FIRM_PHONE);
         when(caseDataMock.getSolsSOTName()).thenReturn(SOLICITOR_SOT_NAME);
         when(caseDataMock.getSolsSOTJobTitle()).thenReturn(SOLICITOR_SOT_JOB_TITLE);
 
@@ -154,6 +159,7 @@ public class CallbackResponseTransformerTest {
 
         assertCommon(callbackResponse);
 
+        assertTrue(CHANGED_STATE.isPresent());
         assertEquals(CHANGED_STATE.get(), callbackResponse.getData().getState());
     }
 
@@ -163,7 +169,7 @@ public class CallbackResponseTransformerTest {
 
         assertCommon(callbackResponse);
 
-        assertEquals(null, callbackResponse.getData().getState());
+        assertNull(callbackResponse.getData().getState());
     }
 
     @Test
@@ -179,7 +185,20 @@ public class CallbackResponseTransformerTest {
         assertEquals(DOC_BINARY_URL, callbackResponse.getData().getSolsLegalStatementDocument().getDocumentBinaryUrl());
         assertEquals(DOC_URL, callbackResponse.getData().getSolsLegalStatementDocument().getDocumentUrl());
         assertEquals(DOC_NAME, callbackResponse.getData().getSolsLegalStatementDocument().getDocumentFilename());
-        assertEquals(null, callbackResponse.getData().getSolsSOTNeedToUpdate());
+        assertNull(callbackResponse.getData().getSolsSOTNeedToUpdate());
+    }
+
+    @Test
+    public void shouldConvertRequestToDataBeanForPaymentWithLegalStatementDocNullWhenPdfServiceTemplateIsNull() {
+
+        when(ccdDocumentMock.getDocumentBinaryUrl()).thenReturn(DOC_BINARY_URL);
+        when(ccdDocumentMock.getDocumentUrl()).thenReturn(DOC_URL);
+        when(ccdDocumentMock.getDocumentFilename()).thenReturn(DOC_NAME);
+        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, null, ccdDocumentMock);
+
+        assertCommon(callbackResponse);
+
+        assertNull(callbackResponse.getData().getSolsLegalStatementDocument());
     }
 
     @Test
@@ -220,7 +239,7 @@ public class CallbackResponseTransformerTest {
 
         assertEquals("6600", callbackResponse.getData().getTotalFee());
         assertEquals(SOL_PAY_METHODS_CHEQUE, callbackResponse.getData().getSolsPaymentMethods());
-        assertEquals(null, callbackResponse.getData().getSolsFeeAccountNumber());
+        assertNull(callbackResponse.getData().getSolsFeeAccountNumber());
         assertEquals(PAY_REF_CHEQUE, callbackResponse.getData().getSolsPaymentReferenceNumber());
     }
 
@@ -230,6 +249,8 @@ public class CallbackResponseTransformerTest {
 
         assertEquals(SOLICITOR_FIRM_NAME, callbackResponse.getData().getSolsSolicitorFirmName());
         assertEquals(SOLICITOR_FIRM_POSTCODE, callbackResponse.getData().getSolsSolicitorFirmPostcode());
+        assertEquals(SOLICITOR_FIRM_EMAIL, callbackResponse.getData().getSolsSolicitorEmail());
+        assertEquals(SOLICITOR_FIRM_PHONE, callbackResponse.getData().getSolsSolicitorPhoneNumber());
         assertEquals(SOLICITOR_SOT_NAME, callbackResponse.getData().getSolsSOTName());
         assertEquals(SOLICITOR_SOT_JOB_TITLE, callbackResponse.getData().getSolsSOTJobTitle());
 

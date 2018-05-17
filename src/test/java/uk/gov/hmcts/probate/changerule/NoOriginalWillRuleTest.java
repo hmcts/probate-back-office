@@ -7,14 +7,15 @@ import org.mockito.Mock;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 public class NoOriginalWillRuleTest {
 
-
     @InjectMocks
-    private NoOriginalWillRule undertest;
+    private NoOriginalWillRule underTest;
 
     @Mock
     private CaseData caseDataMock;
@@ -27,22 +28,19 @@ public class NoOriginalWillRuleTest {
     @Test
     public void shouldNeedChange() {
         when(caseDataMock.getWillAccessOriginal()).thenReturn("No");
-        boolean changeNeeded = undertest.isChangeNeeded(caseDataMock);
 
-        assertEquals(true, changeNeeded);
+        assertTrue(underTest.isChangeNeeded(caseDataMock));
     }
 
     @Test
     public void shouldNotNeedChange() {
         when(caseDataMock.getWillAccessOriginal()).thenReturn("Yes");
 
-        assertEquals(false, undertest.isChangeNeeded(caseDataMock));
+        assertFalse(underTest.isChangeNeeded(caseDataMock));
     }
 
     @Test
     public void shouldGetBodyMessageKey() {
-
-        assertEquals("willStopBodyNoOriginal", undertest.getConfirmationBodyMessageKey());
+        assertEquals("willStopBodyNoOriginal", underTest.getConfirmationBodyMessageKey());
     }
-
 }

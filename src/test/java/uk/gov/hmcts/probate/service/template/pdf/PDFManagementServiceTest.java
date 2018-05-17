@@ -43,6 +43,8 @@ public class PDFManagementServiceTest {
     private Link link;
     @Mock
     private CallbackRequest callbackRequestMock;
+    @Mock
+    private JsonProcessingException jsonProcessingException;
 
     @InjectMocks
     private PDFManagementService underTest;
@@ -78,10 +80,9 @@ public class PDFManagementServiceTest {
 
     @Test(expected = BadRequestException.class)
     public void shouldThrowExceptionForInvalidRequest() throws IOException {
+        when(objectMapperMock.writeValueAsString(callbackRequestMock)).thenThrow(jsonProcessingException);
 
-        when(objectMapperMock.writeValueAsString(callbackRequestMock)).thenThrow(JsonProcessingException.class);
-
-        CCDDocument response = underTest.generateAndUpload(callbackRequestMock, LEGAL_STATEMENT);
+        underTest.generateAndUpload(callbackRequestMock, LEGAL_STATEMENT);
     }
 
     @Test(expected = ConnectionException.class)
@@ -89,9 +90,19 @@ public class PDFManagementServiceTest {
         String json = "{}";
 
         when(objectMapperMock.writeValueAsString(callbackRequestMock)).thenReturn(json);
+        when(pdfGeneratorServiceMock.generatePdf(LEGAL_STATEMENT, json)).thenThrow(new ConnectionException(""));
 
-        when(pdfGeneratorServiceMock.generatePdf(LEGAL_STATEMENT, json)).thenThrow(IOException.class);
+        underTest.generateAndUpload(callbackRequestMock, LEGAL_STATEMENT);
+    }
 
-        CCDDocument response = underTest.generateAndUpload(callbackRequestMock, LEGAL_STATEMENT);
+    @Test(expected = ConnectionException.class)
+    public void shouldThrowConnectExceptionWhenFileUploadThrowsIOException() throws IOException {
+        String json = "{}";
+
+        when(objectMapperMock.writeValueAsString(callbackRequestMock)).thenReturn(json);
+        when(pdfGeneratorServiceMock.generatePdf(LEGAL_STATEMENT, json)).thenReturn(evidenceManagementFileUpload);
+        when(uploadServiceMock.store(evidenceManagementFileUpload)).thenThrow(new IOException());
+
+        underTest.generateAndUpload(callbackRequestMock, LEGAL_STATEMENT);
     }
 }

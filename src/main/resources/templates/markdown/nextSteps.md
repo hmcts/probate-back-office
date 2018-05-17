@@ -14,36 +14,37 @@ This probate application has now been submitted
 
 Payment summary
 -------------------------------------------------
-**Application fee** {{applicationFee}}
+**Application fee** £{{applicationFee}}
 
-**Fee for additional UK copies** {{feeForUkCopies}}
+**Fee for additional UK copies** £{{feeForUkCopies}}
 
-**Fee for certified copies** {{feeForNonUkCopies}}
+**Fee for certified copies** £{{feeForNonUkCopies}}
 
-**Fee amount** {{paymentAmount}}
+**Fee amount** £{{paymentAmount}}
 
 **Payment method** {{paymentMethod}}
 
 **Payment reference number** {{solsPaymentReferenceNumber}}
 
-What you need to do now:
+Notes for this application
+-------------------------------------------------
+
+{{additionalInfo}}
+
+What you need to do now
 ==================================================
 
-You will now need to send us:
+Print a copy of this page for your records. 
+ 
+You now need to send us:
 
 *   the original will - you must mark with your signature the top right corner of the front of the will
     (not on any cover sheet if there is one)
 *   2 unstapled photocopies of the signed will - these must be on plain A4 paper
-*   completed inheritance tax form {{ihtForm}}
-{{renouncingExecutors}}
-{{deadExecutors}}
 *   fee payment: your {{paymentMethod}} for £{{paymentAmount}} (grant and copies)
 *   the printed version of this page which will be used as your cover letter to us
-
-**Additional information**
-
-{{additionalInfo}}
-
+*   completed inheritance tax form {{ihtForm}}
+{{iht400}}{{renouncingExecutors}}{{deadExecutors}}
 Where to send us your documents
 -------------------------------
 
@@ -67,6 +68,6 @@ What happens next
 
 When we've received your documents we'll start to process your application.
 
-You will receive your grant of probate and a copy of the will, plus any extra copies you've ordered, after 7 working days of us receiving your documents.
+You will receive your grant of probate and a copy of the will, plus any extra copies you've ordered, within 20 working days of us receiving your documents.
 
 We'll email you if we need you to provide any more information.

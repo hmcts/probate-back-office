@@ -13,6 +13,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import static uk.gov.hmcts.probate.model.Constants.BUSINESS_ERROR;
+
 @Data
 @Component
 class ExecutorsAddressValidationRule implements SolExecutorDetailsValidationRule {
@@ -24,16 +26,16 @@ class ExecutorsAddressValidationRule implements SolExecutorDetailsValidationRule
         Set<FieldErrorResponse> errors = new HashSet<>();
 
         ccdData.getExecutors().stream()
-            .filter(Executor::isApplying)
-            .map(Executor::getAddress)
-            .forEach(address -> {
-                if (address == null || Strings.isNullOrEmpty(address.getAddressLine1())) {
-                    errors.add(businessValidationMessageService.generateError(BUSINESS_ERROR, "executorAddressIsNull"));
-                }
-                if (address == null || Strings.isNullOrEmpty(address.getPostCode())) {
-                    errors.add(businessValidationMessageService.generateError(BUSINESS_ERROR, "executorPostcodeIsNull"));
-                }
-            });
+                .filter(Executor::isApplying)
+                .map(Executor::getAddress)
+                .forEach(address -> {
+                    if (address == null || Strings.isNullOrEmpty(address.getAddressLine1())) {
+                        errors.add(businessValidationMessageService.generateError(BUSINESS_ERROR, "executorAddressIsNull"));
+                    }
+                    if (address == null || Strings.isNullOrEmpty(address.getPostCode())) {
+                        errors.add(businessValidationMessageService.generateError(BUSINESS_ERROR, "executorPostcodeIsNull"));
+                    }
+                });
 
         return new ArrayList<>(errors);
     }

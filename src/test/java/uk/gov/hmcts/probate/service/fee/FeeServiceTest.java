@@ -75,6 +75,16 @@ public class FeeServiceTest {
     }
 
     @Test
+    public void copiesFeeEqualsZero() {
+        when(fee.getFeeAmount()).thenReturn(BigDecimal.ZERO);
+        when(responseEntity.getStatusCode()).thenReturn(HttpStatus.NO_CONTENT);
+
+        BigDecimal copiesFee = feeService.getCopiesFee(null);
+
+        assertEquals(BigDecimal.ZERO, copiesFee);
+    }
+
+    @Test
     public void getTotalFee() {
         when(responseEntity.getStatusCode()).thenReturn(HttpStatus.OK);
         when(fee.getFeeAmount()).thenReturn(BigDecimal.ONE);

@@ -1,16 +1,16 @@
 package uk.gov.hmcts.probate.service.template.printservice;
 
-import com.google.common.base.Strings;
 import lombok.Data;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
+import uk.gov.hmcts.probate.model.ccd.raw.request.PrintTemplateApplicationType;
 import uk.gov.hmcts.probate.model.template.DocumentResponse;
 import uk.gov.hmcts.probate.service.FileSystemResourceService;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Data
@@ -21,8 +21,6 @@ public class PrintService {
     private static final String TEMPLATE_CASE_DETAILS_SOL = "caseDetailsSOL.html";
     private static final String TEMPLATE_CASE_DETAILS_PA = "caseDetailsPA.html";
 
-    private static final String PRINT_SERVICE_URL_TYPE_PA = "pa";
-    private static final String PRINT_SERVICE_URL_TYPE_SOL = "sol";
     private static final String DOCUMENT_NAME = "Print Case Details";
     private static final String DOCUMENT_TYPE = "HTML";
 
@@ -51,16 +49,14 @@ public class PrintService {
 
     public List<DocumentResponse> getAllDocuments(CaseDetails caseDetails) {
         Long caseId = caseDetails.getId();
-        String type = Strings.isNullOrEmpty(caseDetails.getData().getSolsSolicitorFirmName())
-            ? PRINT_SERVICE_URL_TYPE_PA : PRINT_SERVICE_URL_TYPE_SOL;
+        String type = PrintTemplateApplicationType.valueOf(caseDetails.getData().getApplicationType().toUpperCase())
+                .getPrintType();
+
         String urlTemplate = printServiceHost + printServicePath + type;
         String url = String.format(urlTemplate, caseId);
 
         DocumentResponse documentResponse = new DocumentResponse(DOCUMENT_NAME, DOCUMENT_TYPE, url);
-        List<DocumentResponse> docs = new ArrayList<>();
-        docs.add(documentResponse);
 
-        return docs;
-
+        return Collections.singletonList(documentResponse);
     }
 }

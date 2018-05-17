@@ -199,7 +199,7 @@ node {
     try {
       if ("develop" == "${env.BRANCH_NAME}") {
         build '../sol-ccd-services-integration-tests/develop'
-      } 
+      }
     } catch (err) {
       sh 'echo Integration test failed'
     }
