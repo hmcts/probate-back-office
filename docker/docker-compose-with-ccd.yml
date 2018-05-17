@@ -7,6 +7,7 @@ services:
     environment:
       - AUTH_PROVIDER_SERVICE_SERVER_JWT_KEY=wThK0f0/lh3FlxFcL4xUWDMI5C1J9KyQBgXV4wseh1e5J1uYJIjvTvArHxQDrYoHJ23xFxjHkOnvNbR5dXRoxA==
       - AUTH_PROVIDER_SERVICE_SERVER_MICROSERVICE_KEYS_PROBATE_BACKEND=CMPRGOBNAUXKYDJL
+      - AUTH_PROVIDER_SERVICE_SERVER_MICROSERVICE_KEYS_PROBATE_FRONTEND=AAAAAAAAAAAAAAAA
       - auth.provider.service.server.microserviceKeys.ccd_data=AAAAAAAAAAAAAAAA
       - auth.provider.service.server.microserviceKeys.ccd_ps=AAAAAAAAAAAAAAAA
       - auth.provider.service.server.microserviceKeys.ccd_gw=AAAAAAAAAAAAAAAA
@@ -44,6 +45,7 @@ services:
       - NOTIFY_CMC_ACTIVATE_USER_TEMPLATE=76aa8695-64e8-4afd-ae13-bc8385302b1f
       - IDAM_SECRET=idam_test_secret
       - IDAM_API_OAUTH2_CLIENT_CLIENT_SECRETS_CCD_GATEWAY=OOOOOOOOOOOOOOOO
+      - IDAM_API_OAUTH2_CLIENT_CLIENT_SECRETS_PROBATE=123456
       - IDAM_CCD_WHITELIST=http://localhost:3451/oauth2redirect
       - NOTIFY=false
       - NOTIFY_CMC_WELCOME_USER_TEMPLATE=fake
@@ -346,7 +348,7 @@ services:
       - PROXY_DEFINITION_DATA=http://ccd-definition-store-api:4451/api/data
       - PROXY_DEFINITION_DISPLAY=http://ccd-definition-store-api:4451/api/display
       # this NEEDS to be your local ip address
-      - PROXY_PRINT_SERVICE=http://172.16.10.128:3100
+      - PROXY_PRINT_SERVICE=http://172.16.10.163:3100
       - PROXY_DOCUMENT_MANAGEMENT=http://document-management-store:8080
     ports:
       - 3453:3453

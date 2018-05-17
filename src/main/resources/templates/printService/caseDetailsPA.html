@@ -293,9 +293,9 @@
       <tr><td>{% if executorApplying.value.sign %}{{ executorApplying.value.sign }}{% endif %}</td></tr>
       {% endfor %}
       <tr><td>&nbsp;</td></tr>
-      {% if case_data.legalStatement.deceasedEstateValue %}<tr><td>{{ case_data.legalStatement.deceasedEstateValue }}</td></tr>{% endif %}
+      {% if case_data.legalStatement.deceasedEstateValue %}<tr><td>{{ case_data.legalStatement.deceasedEstateValue | replace('&pound;', '£') }}</td></tr>{% endif %}
       <tr><td>&nbsp;</td></tr>
-      {% if case_data.legalStatement.deceasedEstateLand %}<tr><td>{{ case_data.legalStatement.deceasedEstateLand }}</td></tr>{% endif %}
+      {% if case_data.legalStatement.deceasedEstateLand %}<tr><td>{{ case_data.legalStatement.deceasedEstateLand | replace('&pound;', '£') }}</td></tr>{% endif %}
       <tr><td>&nbsp;</td></tr>
       {% for executorsNotApplying in case_data.legalStatement.executorsNotApplying %}
       <tr><td>{{ executorsNotApplying.value.executor }}</td></tr>
