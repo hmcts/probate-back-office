@@ -1,4 +1,4 @@
-package uk.gov.hmcts.probate.util;
+package uk.gov.hmcts.probate.functional.util;
 
 import io.restassured.http.ContentType;
 import io.restassured.http.Header;
@@ -7,8 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.util.ResourceUtils;
-import uk.gov.hmcts.probate.SolCCDServiceAuthTokenGenerator;
-import uk.gov.hmcts.probate.TestContextConfiguration;
+import uk.gov.hmcts.probate.functional.SolCCDServiceAuthTokenGenerator;
+import uk.gov.hmcts.probate.functional.TestContextConfiguration;
 
 import javax.annotation.PostConstruct;
 import java.io.File;

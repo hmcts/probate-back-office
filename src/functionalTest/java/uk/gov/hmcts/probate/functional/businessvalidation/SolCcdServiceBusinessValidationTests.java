@@ -1,4 +1,4 @@
-package uk.gov.hmcts.probate.businessvalidation;
+package uk.gov.hmcts.probate.functional.businessvalidation;
 
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
@@ -6,7 +6,7 @@ import net.serenitybdd.junit.runners.SerenityRunner;
 import net.serenitybdd.rest.SerenityRest;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import uk.gov.hmcts.probate.IntegrationTestBase;
+import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;

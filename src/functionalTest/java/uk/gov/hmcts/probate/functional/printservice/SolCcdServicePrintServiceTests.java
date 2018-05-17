@@ -1,11 +1,11 @@
-package uk.gov.hmcts.probate.printservice;
+package uk.gov.hmcts.probate.functional.printservice;
 
 import io.restassured.response.Response;
 import net.serenitybdd.junit.runners.SerenityRunner;
 import net.serenitybdd.rest.SerenityRest;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import uk.gov.hmcts.probate.IntegrationTestBase;
+import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;

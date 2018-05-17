@@ -1,9 +1,9 @@
-package uk.gov.hmcts.probate.fee;
+package uk.gov.hmcts.probate.functional.fee;
 
 import net.serenitybdd.junit.runners.SerenityRunner;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import uk.gov.hmcts.probate.IntegrationTestBase;
+import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 
 import static io.restassured.http.ContentType.JSON;
 import static net.serenitybdd.rest.SerenityRest.given;

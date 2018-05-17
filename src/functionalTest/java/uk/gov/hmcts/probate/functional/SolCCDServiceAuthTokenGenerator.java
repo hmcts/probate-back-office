@@ -1,12 +1,12 @@
-package uk.gov.hmcts.probate;
+package uk.gov.hmcts.probate.functional;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import uk.gov.hmcts.probate.model.ClientAuthorizationCodeResponse;
-import uk.gov.hmcts.probate.model.ClientAuthorizationResponse;
+import uk.gov.hmcts.probate.functional.model.ClientAuthorizationCodeResponse;
+import uk.gov.hmcts.probate.functional.model.ClientAuthorizationResponse;
 
 import java.io.IOException;
 

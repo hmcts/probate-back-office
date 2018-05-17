@@ -1,10 +1,10 @@
-package uk.gov.hmcts.probate.nextsteps;
+package uk.gov.hmcts.probate.functional.nextsteps;
 
 import io.restassured.response.Response;
 import net.serenitybdd.junit.runners.SerenityRunner;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import uk.gov.hmcts.probate.IntegrationTestBase;
+import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;

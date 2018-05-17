@@ -1,4 +1,4 @@
-package uk.gov.hmcts.probate.checkyouranswers;
+package uk.gov.hmcts.probate.functional.checkyouranswers;
 
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
@@ -8,7 +8,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.pdfbox.pdmodel.PDDocument;
 import org.pdfbox.util.PDFTextStripper;
-import uk.gov.hmcts.probate.IntegrationTestBase;
+import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
