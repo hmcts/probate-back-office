@@ -28,6 +28,7 @@ public class SmokeTests {
 
     @Before
     public void setUp() {
+        RestAssured.useRelaxedHTTPSValidation();
         config = RestAssured.config()
                 .httpClient(HttpClientConfig.httpClientConfig()
                         .setParam("http.connection.timeout", 20000)
