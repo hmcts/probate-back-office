@@ -106,6 +106,12 @@ sourceSets {
     }
 }
 
+task smoke(type: Test) {
+  description = "Runs Smoke Tests"
+  testClassesDirs = sourceSets.smokeTest.output.classesDirs
+  classpath = sourceSets.smokeTest.runtimeClasspath
+}
+
 def springBootVersion = '1.5.6.RELEASE'
 
 repositories {
