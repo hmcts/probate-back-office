@@ -24,7 +24,7 @@ apply plugin: 'findbugs'
 apply plugin: 'jacoco'
 
 group = 'uk.gov.hmcts.probate'
-version = "0.0.2"
+version = "4.0.0"
 mainClassName = 'uk.gov.hmcts.probate.BusinessRulesValidationApplication'
 
 sourceCompatibility = 1.8
