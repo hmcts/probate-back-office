@@ -4,6 +4,7 @@ import io.restassured.http.ContentType;
 import io.restassured.http.Header;
 import io.restassured.http.Headers;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.util.ResourceUtils;
@@ -22,14 +23,14 @@ public class TestUtils {
     @Autowired
     protected SolCCDServiceAuthTokenGenerator serviceAuthTokenGenerator;
 
-    private String serviceToken;
+    @Value("${user.id.url}")
     private String userId;
+
+    private String serviceToken;
 
     @PostConstruct
     public void init() {
         serviceToken = serviceAuthTokenGenerator.generateServiceToken();
-
-        userId = System.getenv().get("IDAM_USER_ID");
 
         if (userId == null || userId.isEmpty()) {
             serviceAuthTokenGenerator.createNewUser();

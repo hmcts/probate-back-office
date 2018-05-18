@@ -3,6 +3,7 @@
 !gradle/wrapper/gradle-wrapper.jar
 /out/**
 /docker/test/
+/target/
 
 ### STS ###
 .apt_generated
