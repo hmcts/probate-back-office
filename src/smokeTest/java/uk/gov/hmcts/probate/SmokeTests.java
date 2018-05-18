@@ -19,7 +19,7 @@ import static io.restassured.RestAssured.given;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@ContextConfiguration
+@ContextConfiguration(classes = SmokeTestConfiguration.class)
 public class SmokeTests {
 
     @Value("${test.instance.uri}")
@@ -44,12 +44,5 @@ public class SmokeTests {
                 .get(url + "/health")
                 .then()
                 .statusCode(HttpStatus.OK.value());
-    }
-
-    @Configuration
-    @ComponentScan("uk.gov.hmcts.probate.config")
-    @PropertySource("file:src/test/resources/application.properties")
-    public class Config {
-
     }
 }
