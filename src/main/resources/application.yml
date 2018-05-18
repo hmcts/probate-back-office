@@ -60,4 +60,3 @@ http.connect.request.timeout: 60000
 idam.service.host: ${PROVIDER_SERVICE_CLIENT_URL:http://localhost:4502}
 
 #logging.level.root: DEBUG
-test.instance.uri: ${TEST_URL:http://localhost:4104}

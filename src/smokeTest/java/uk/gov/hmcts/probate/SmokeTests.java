@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -47,6 +48,7 @@ public class SmokeTests {
 
     @Configuration
     @ComponentScan("uk.gov.hmcts.probate.config")
+    @PropertySource("file:src/test/resources/application.properties")
     public class Config {
 
     }
