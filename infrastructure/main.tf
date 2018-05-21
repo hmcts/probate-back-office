@@ -63,5 +63,5 @@ module "probate-sol-ccd-service-vault" {
   tenant_id           = "${var.tenant_id}"
   object_id           = "${var.jenkins_AAD_objectId}"
   resource_group_name = "${module.probate-sol-ccd-service.resource_group_name}"
-  product_group_object_id = "68839600-92da-4862-bb24-1259814d1384"
+  product_group_object_id = "33ed3c5a-bd38-4083-84e3-2ba17841e31e"
 }
