@@ -23,8 +23,7 @@ public class HealthConfiguration {
 
     @Value("${idam.service.host}")
     private String idamServiceHost;
-
-
+    
     @Value("${evidence.management.host}")
     private String evidenceManagementHost;
 
