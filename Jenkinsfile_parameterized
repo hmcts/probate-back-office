@@ -13,7 +13,7 @@ List<LinkedHashMap<String, Object>> secrets = [
     secret('serviceAuthProviderBaseUrl', 'SERVICE_AUTH_PROVIDER_BASE_URL'),
     secret('userAuthProviderOauth2Url', 'USER_AUTH_PROVIDER_OAUTH2_URL'),
     secret('evidenceManagementUrl', 'EVIDENCE_MANAGEMENT_URL'),
-    secret('idamUserId', 'IDAM_USER_ID'),
+    secret('idamUserId', 'IDAM_USER_ID')
 ]
 
 static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
