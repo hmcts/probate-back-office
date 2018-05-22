@@ -58,7 +58,7 @@ public class HealthConfiguration {
     public ExternalEndpointHealthIndicator printServiceHealthIndicator() {
         return new ExternalEndpointHealthIndicator(printServiceHost, restTemplate);
     }
-    
+
     @Bean
     public ProbateSolCcdHealthIndicator probateSolCcdHealthIndicator() {
         return new ProbateSolCcdHealthIndicator(commitId);

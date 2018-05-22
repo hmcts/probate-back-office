@@ -40,19 +40,18 @@ public class ExternalEndpointHealthIndicator implements HealthIndicator {
             return getHealthWithDownStatus(url, "HTTP Status code not 200", "HTTP Status: " + responseEntity.getStatusCodeValue());
         }
 
-        return getHealthWithUpStatus(url, "HTTP Status OK", "status is okay");
+        return getHealthWithUpStatus(url);
 
     }
 
-    public static Health getHealthWithUpStatus(String url, String message, String status) {
+    private Health getHealthWithUpStatus(String url) {
         return Health.up()
                 .withDetail(URL_KEY, url)
                 .withDetail(MESSAGE_KEY, "HTTP Status OK")
                 .build();
     }
 
-    public static Health getHealthWithDownStatus(String url, String message, String status) {
-
+    private Health getHealthWithDownStatus(String url, String message, String status) {
         return Health.down()
                 .withDetail(URL_KEY, url)
                 .withDetail(MESSAGE_KEY, message)
