@@ -22,7 +22,6 @@ plugins {
 }
 
 apply plugin: 'org.sonarqube'
-apply plugin: 'findbugs'
 apply plugin: 'jacoco'
 
 group = 'uk.gov.hmcts.reform.bo'
@@ -71,18 +70,6 @@ jacocoTestReport {
     xml.enabled false
     html.destination "${buildDir}/reports/jacoco"
   }
-}
-
-tasks.withType(FindBugs) {
-  reports {
-    xml.enabled = false
-    html.enabled = true
-  }
-}
-
-findbugs {
-  ignoreFailures = true
-  reportLevel = "low"
 }
 
 sonarqube {
