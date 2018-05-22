@@ -1,6 +1,7 @@
 package uk.gov.hmcts.probate.health;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.HealthIndicator;
 import org.springframework.http.HttpStatus;
@@ -10,6 +11,7 @@ import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.client.UnknownHttpStatusCodeException;
 
+@Slf4j
 @AllArgsConstructor
 public class ExternalEndpointHealthIndicator implements HealthIndicator {
 
@@ -28,11 +30,14 @@ public class ExternalEndpointHealthIndicator implements HealthIndicator {
             responseEntity = restTemplate.getForEntity(url + "/health", String.class);
 
         } catch (ResourceAccessException rae) {
+            log.debug(rae.getMessage(), rae);
             return getHealthWithDownStatus(url, rae.getMessage(), "ResourceAccessException");
         } catch (HttpStatusCodeException hsce) {
+            log.debug(hsce.getMessage(), hsce);
             return getHealthWithDownStatus(url, hsce.getMessage(),
                     "HttpStatusCodeException - HTTP Status: " + hsce.getStatusCode().value());
         } catch (UnknownHttpStatusCodeException uhsce) {
+            log.debug(uhsce.getMessage(), uhsce);
             return getHealthWithDownStatus(url, uhsce.getMessage(), "UnknownHttpStatusCodeException - " + uhsce.getStatusText());
         }
 
