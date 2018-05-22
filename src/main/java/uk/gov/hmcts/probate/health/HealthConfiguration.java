@@ -4,13 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
-import org.springframework.core.io.ClassPathResource;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.web.client.RestTemplate;
 import uk.gov.hmcts.probate.config.FeeServiceConfiguration;
 import uk.gov.hmcts.probate.config.PDFServiceConfiguration;
 
 @Configuration
+@PropertySource(value = "git.properties", ignoreResourceNotFound = true)
 public class HealthConfiguration {
 
     @Autowired
@@ -62,15 +62,5 @@ public class HealthConfiguration {
     @Bean
     public ProbateSolCcdHealthIndicator probateSolCcdHealthIndicator() {
         return new ProbateSolCcdHealthIndicator(commitId);
-    }
-
-    @Bean
-    public PropertySourcesPlaceholderConfigurer placeholderConfigurer() {
-        PropertySourcesPlaceholderConfigurer propsConfig
-                = new PropertySourcesPlaceholderConfigurer();
-        propsConfig.setLocation(new ClassPathResource("git.properties"));
-        propsConfig.setIgnoreResourceNotFound(true);
-        propsConfig.setIgnoreUnresolvablePlaceholders(true);
-        return propsConfig;
     }
 }
