@@ -35,32 +35,37 @@ public class HealthConfiguration {
     private String commitId;
 
     @Bean
-    public SolsHealthIndicator pdfServiceHealthIndicator() {
-        return new SolsHealthIndicator(pdfServiceConfiguration.getUrl(), restTemplate);
+    public ExternalEndpointHealthIndicator pdfServiceHealthIndicator() {
+        return new ExternalEndpointHealthIndicator(pdfServiceConfiguration.getUrl(), restTemplate);
     }
 
     @Bean
-    public SolsHealthIndicator feeServiceHealthIndicator() {
-        return new SolsHealthIndicator(feeServiceConfiguration.getUrl(), restTemplate);
+    public ExternalEndpointHealthIndicator feeServiceHealthIndicator() {
+        return new ExternalEndpointHealthIndicator(feeServiceConfiguration.getUrl(), restTemplate);
     }
 
     @Bean
-    public SolsHealthIndicator idamServiceHealthIndicator() {
-        return new SolsHealthIndicator(idamServiceHost, restTemplate);
+    public ExternalEndpointHealthIndicator idamServiceHealthIndicator() {
+        return new ExternalEndpointHealthIndicator(idamServiceHost, restTemplate);
     }
 
     @Bean
-    public SolsHealthIndicator evidenceManagementHealthIndicator() {
-        return new SolsHealthIndicator(evidenceManagementHost, restTemplate);
+    public ExternalEndpointHealthIndicator evidenceManagementHealthIndicator() {
+        return new ExternalEndpointHealthIndicator(evidenceManagementHost, restTemplate);
     }
 
     @Bean
-    public SolsHealthIndicator printServiceHealthIndicator() {
-        return new SolsHealthIndicator(printServiceHost, restTemplate);
+    public ExternalEndpointHealthIndicator printServiceHealthIndicator() {
+        return new ExternalEndpointHealthIndicator(printServiceHost, restTemplate);
+    }
+    
+    @Bean
+    public ProbateSolCcdHealthIndicator probateSolCcdHealthIndicator() {
+        return new ProbateSolCcdHealthIndicator(commitId);
     }
 
     @Bean
-    public static PropertySourcesPlaceholderConfigurer placeholderConfigurer() {
+    public PropertySourcesPlaceholderConfigurer placeholderConfigurer() {
         PropertySourcesPlaceholderConfigurer propsConfig
                 = new PropertySourcesPlaceholderConfigurer();
         propsConfig.setLocation(new ClassPathResource("git.properties"));
