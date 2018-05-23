@@ -7,6 +7,7 @@ buildscript {
   }
   dependencies {
     classpath group: 'org.sonarsource.scanner.gradle', name: 'sonarqube-gradle-plugin', version: '2.6.2'
+    classpath("net.serenity-bdd:serenity-gradle-plugin:1.5.2")
   }
 }
 
@@ -23,6 +24,7 @@ plugins {
 apply plugin: 'org.sonarqube'
 apply plugin: 'findbugs'
 apply plugin: 'jacoco'
+apply plugin: 'net.serenity-bdd.aggregator'
 apply plugin: "com.gorylenko.gradle-git-properties"
 
 group = 'uk.gov.hmcts.probate'
@@ -126,6 +128,7 @@ task functional(type: Test) {
   description = "Runs functional Tests"
   testClassesDirs = sourceSets.functionalTest.output.classesDirs
   classpath = sourceSets.functionalTest.runtimeClasspath
+  finalizedBy aggregate
 }
 
 gitProperties {
