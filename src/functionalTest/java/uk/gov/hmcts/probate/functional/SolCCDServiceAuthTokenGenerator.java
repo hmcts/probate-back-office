@@ -73,6 +73,7 @@ public class SolCCDServiceAuthTokenGenerator {
     private String generateClientCode() {
         String code = "";
         String jsonResponse = given()
+                .relaxedHTTPSValidation()
                 .header("Authorization", "Basic dGVzdEBURVNULkNPTToxMjM=")
                 .post(baseServiceOauth2Url + "/oauth2/authorize?response_type=code" +
                         "&client_id=" + clientId +
@@ -92,6 +93,7 @@ public class SolCCDServiceAuthTokenGenerator {
 
     public void createNewUser() {
         given().headers("Content-type", "application/json")
+                .relaxedHTTPSValidation()
                 .body("{ \"email\":\"test@TEST.COM\", \"forename\":\"test@TEST.COM\",\"surname\":\"test@TEST.COM\",\"password\":\"123\",\"continue-url\":\"test\"}")
                 .post(baseServiceOauth2Url + "/testing-support/accounts");
     }

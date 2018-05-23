@@ -124,7 +124,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
 
     @Test
     public void verifyEmptyRequestReturnsError() {
-        SerenityRest.given().headers(utils.getHeaders())
+        SerenityRest.given().relaxedHTTPSValidation().headers(utils.getHeaders())
                 .contentType(ContentType.JSON)
                 .body("")
                 .when().post("/case/validate")
