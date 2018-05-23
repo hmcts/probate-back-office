@@ -97,6 +97,7 @@ public class SolCcdServiceNextStepsTests extends IntegrationTestBase {
 
     private void validatePostRequestSuccessForLegalStatement(String validationString) {
         Response response = given()
+                .relaxedHTTPSValidation()
                 .headers(utils.getHeadersWithUserId())
                 .body(utils.getJsonFromFile("success.nextsteps.json"))
                 .post("/nextsteps/confirmation");
@@ -107,7 +108,8 @@ public class SolCcdServiceNextStepsTests extends IntegrationTestBase {
     }
 
     private void validatePostRequestFailureForLegalStatement(String oldString, String replacingString, String errorMsg) {
-        given().headers(utils.getHeaders())
+        given().relaxedHTTPSValidation()
+                .headers(utils.getHeaders())
                 .body(replaceString(oldString, replacingString))
                 .post("/nextsteps/validate").then().statusCode(400)
                 .and().body("fieldErrors[0].field", equalToIgnoringCase(errorMsg))

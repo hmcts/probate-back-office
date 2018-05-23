@@ -101,7 +101,8 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
 
     @Test
     public void verifyIncorrectInputReturns400() {
-        given().headers(utils.getHeaders())
+        given().relaxedHTTPSValidation()
+                .headers(utils.getHeaders())
                 .body(utils.getJsonFromFile("incorrectInput.checkYourAnswersPayload.json")).
                 when().post("/case/validate").then().statusCode(400);
     }
@@ -129,6 +130,7 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
     @Test
     public void validatePostRequestSuccessCYAForBeforeSignSOT() {
         Response response = given()
+                .relaxedHTTPSValidation()
                 .headers(utils.getHeadersWithUserId())
                 .body(utils.getJsonFromFile("success.beforeSignSOT.checkYourAnswersPayload.json")).
                         when().post("/nextsteps/validate");
@@ -138,7 +140,8 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
 
     @Test
     public void verifyStateChangeFromCYABeforeLegalStatement() {
-        given().headers(utils.getHeadersWithUserId())
+        given().relaxedHTTPSValidation()
+                .headers(utils.getHeadersWithUserId())
                 .body(utils.getJsonFromFile("success.stateChange.checkYourAnswersPayload.json"))
                 .when().post("/nextsteps/validate")
                 .then().statusCode(200)
@@ -147,7 +150,8 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
 
     @Test
     public void verifyStateChangeFromCYABeforeSigningSOT() {
-        given().headers(utils.getHeadersWithUserId())
+        given().relaxedHTTPSValidation()
+                .headers(utils.getHeadersWithUserId())
                 .body(utils.getJsonFromFile("success.stateChange.beforeSOTcheckYourAnswersPayload.json"))
                 .when().post("/nextsteps/validate")
                 .then().statusCode(200)
@@ -169,6 +173,7 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
 
     private void validatePostRequestSuccessForLegalStatement(String validationString) {
         Response response = given()
+                .relaxedHTTPSValidation()
                 .headers(utils.getHeadersWithUserId())
                 .body(utils.getJsonFromFile("success.beforeLegalStatement.checkYourAnswersPayload.json")).
                         when().post("/case/validate");
@@ -179,7 +184,8 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
 
 
     private void validatePostRequestFailureForLegalStatement(String oldString, String replacingString, String errorMsg) {
-        given().headers(utils.getHeaders())
+        given().relaxedHTTPSValidation()
+                .headers(utils.getHeaders())
                 .body(replaceString(oldString, replacingString))
                 .when().post("/case/validate").then().statusCode(400)
                 .and().body("fieldErrors[0].field", equalToIgnoringCase(errorMsg))
@@ -198,6 +204,7 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
         IntegrationTestBase.setEvidenceManagementUrlAsBaseUri();
         try {
             ValidatableResponse response2 = given()
+                    .relaxedHTTPSValidation()
                     .headers(utils.getHeadersWithUserId())
                     .when().get("/documents/" + documentId + "/binary")
                     .then().assertThat().statusCode(200);

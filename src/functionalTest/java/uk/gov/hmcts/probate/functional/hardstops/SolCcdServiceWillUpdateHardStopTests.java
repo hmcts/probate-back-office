@@ -17,7 +17,8 @@ public class SolCcdServiceWillUpdateHardStopTests extends IntegrationTestBase {
 
     @Test
     public void validateWillUpdateWithoutHardStop() {
-        given().headers(utils.getHeadersWithUserId())
+        given().relaxedHTTPSValidation()
+                .headers(utils.getHeadersWithUserId())
                 .body(utils.getJsonFromFile("success.willUpdate.json"))
                 .post("/case/validate").then().statusCode(200)
                 .and().body("data.willExists", equalToIgnoringCase("Yes"))
@@ -26,7 +27,8 @@ public class SolCcdServiceWillUpdateHardStopTests extends IntegrationTestBase {
 
     @Test
     public void validateHardStopForWillUpdate() {
-        given().headers(utils.getHeadersWithUserId())
+        given().relaxedHTTPSValidation()
+                .headers(utils.getHeadersWithUserId())
                 .body(utils.getJsonFromFile("hardStop.noWillNotExists.json"))
                 .post("/case/validate").then().statusCode(200)
                 .and().body("data.state", equalToIgnoringCase("Stopped"))
@@ -36,7 +38,8 @@ public class SolCcdServiceWillUpdateHardStopTests extends IntegrationTestBase {
 
     @Test
     public void validateHardStopWithNoWillAccessOriginal() {
-        given().headers(utils.getHeadersWithUserId())
+        given().relaxedHTTPSValidation()
+                .headers(utils.getHeadersWithUserId())
                 .body(utils.getJsonFromFile("hardStop.noWillAccessOriginal.json"))
                 .post("/case/validate").then().statusCode(200)
                 .and().body("data.state", equalToIgnoringCase("Stopped"))
@@ -46,7 +49,8 @@ public class SolCcdServiceWillUpdateHardStopTests extends IntegrationTestBase {
 
     @Test
     public void validateHardStopWithNoWillExistsAndNoWillAccessOriginal() {
-        given().headers(utils.getHeadersWithUserId())
+        given().relaxedHTTPSValidation()
+                .headers(utils.getHeadersWithUserId())
                 .body(utils.getJsonFromFile("hardStop.noWillExists.noWillAccessOriginal.json"))
                 .post("/case/validate").then().statusCode(200)
                 .and().body("data.state", equalToIgnoringCase("Stopped"))
@@ -57,6 +61,7 @@ public class SolCcdServiceWillUpdateHardStopTests extends IntegrationTestBase {
     @Test
     public void validateHardMessageWithNoWillExists() {
         Response response = given()
+                .relaxedHTTPSValidation()
                 .headers(utils.getHeadersWithUserId())
                 .body(utils.getJsonFromFile("hardStop.noWillNotExists.json"))
                 .post("/case/stopConfirmation");
@@ -67,6 +72,7 @@ public class SolCcdServiceWillUpdateHardStopTests extends IntegrationTestBase {
     @Test
     public void validateHardMessageWithNoOriginalWill() {
         Response response = given()
+                .relaxedHTTPSValidation()
                 .headers(utils.getHeadersWithUserId())
                 .body(utils.getJsonFromFile("hardStop.noWillAccessOriginal.json"))
                 .post("/case/stopConfirmation");
@@ -77,6 +83,7 @@ public class SolCcdServiceWillUpdateHardStopTests extends IntegrationTestBase {
     @Test
     public void validateHardStopMessageWithNoOriginalWillAndNoWillExists() {
         Response response = given()
+                .relaxedHTTPSValidation()
                 .headers(utils.getHeadersWithUserId())
                 .body(utils.getJsonFromFile("hardStop.noWillExists.noWillAccessOriginal.json"))
                 .post("/case/stopConfirmation");

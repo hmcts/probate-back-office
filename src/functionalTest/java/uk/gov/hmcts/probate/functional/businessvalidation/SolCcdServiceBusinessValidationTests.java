@@ -150,6 +150,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
 
     private void validatePostSuccess(String jsonFileName) {
         SerenityRest.given()
+                .relaxedHTTPSValidation()
                 .headers(utils.getHeadersWithUserId())
                 .body(utils.getJsonFromFile(jsonFileName))
                 .when().post("/case/validate")
@@ -170,6 +171,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
 
     private void validatePostFailure(String jsonFileName, String errorMessage, Integer statusCode) {
         Response response = SerenityRest.given()
+                .relaxedHTTPSValidation()
                 .headers(utils.getHeadersWithUserId())
                 .body(utils.getJsonFromFile(jsonFileName))
                 .when().post("/case/validate")
