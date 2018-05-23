@@ -20,3 +20,5 @@
 *.ipr
 
 .DS_store
+
+git.properties

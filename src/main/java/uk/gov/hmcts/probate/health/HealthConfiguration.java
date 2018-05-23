@@ -8,7 +8,6 @@ import org.springframework.web.client.RestTemplate;
 import uk.gov.hmcts.probate.config.FeeServiceConfiguration;
 import uk.gov.hmcts.probate.config.PDFServiceConfiguration;
 
-
 @Configuration
 public class HealthConfiguration {
 
@@ -23,7 +22,6 @@ public class HealthConfiguration {
 
     @Value("${idam.service.host}")
     private String idamServiceHost;
-
 
     @Value("${evidence.management.host}")
     private String evidenceManagementHost;
@@ -55,5 +53,4 @@ public class HealthConfiguration {
     public SolsHealthIndicator printServiceHealthIndicator() {
         return new SolsHealthIndicator(printServiceHost, restTemplate);
     }
-
 }
