@@ -17,14 +17,16 @@ public class SolCcdServiceExecutorHardStopTests extends IntegrationTestBase {
 
     @Test
     public void validateDeceasedDetailWithoutDomicileHardStop() {
-        given().headers(utils.getHeadersWithUserId())
+        given().relaxedHTTPSValidation()
+                .headers(utils.getHeadersWithUserId())
                 .body(utils.getJsonFromFile("success.executorWithoutHardStop.json"))
                 .when().post("/case/validate").then().statusCode(200);
     }
 
     @Test
     public void validateHardStopForDomicile() {
-        given().headers(utils.getHeadersWithUserId())
+        given().relaxedHTTPSValidation()
+                .headers(utils.getHeadersWithUserId())
                 .body(utils.getJsonFromFile("hardStop.executor.json"))
                 .when().post("/case/validate").then().statusCode(200)
                 .and().body("data.state", equalToIgnoringCase("Stopped"))
@@ -35,6 +37,7 @@ public class SolCcdServiceExecutorHardStopTests extends IntegrationTestBase {
     @Test
     public void validateHardStopMessageForNoDomicile() {
         Response response = given()
+                .relaxedHTTPSValidation()
                 .headers(utils.getHeadersWithUserId())
                 .body(utils.getJsonFromFile("hardStop.executor.json"))
                 .when().post("/case/stopConfirmation");

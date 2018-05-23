@@ -12,7 +12,8 @@ public class SolCcdServiceServiceAuthTests extends IntegrationTestBase {
 
     @Test
     public void verifyThatWithCorrectAuthorizationWeReceiveSuccess() {
-        given().headers(utils.getHeaders())
+        given().relaxedHTTPSValidation()
+                .headers(utils.getHeaders())
                 .body(utils.getJsonFromFile("success.solicitorCreate.json"))
                 .post("/nextsteps/validate")
                 .then().assertThat().statusCode(200);
@@ -20,7 +21,8 @@ public class SolCcdServiceServiceAuthTests extends IntegrationTestBase {
 
     @Test
     public void verifyThatWithInCorrectAuthorizationWeReceive403() {
-        given().headers(utils.getHeaders("InvalidToken"))
+        given().relaxedHTTPSValidation()
+                .headers(utils.getHeaders("InvalidToken"))
                 .body(utils.getJsonFromFile("success.solicitorCreate.json"))
                 .post("/validate/addDeceasedDetails")
                 .then().assertThat().statusCode(403);
@@ -28,7 +30,8 @@ public class SolCcdServiceServiceAuthTests extends IntegrationTestBase {
 
     @Test
     public void verifyThatWithEmptyAuthorizationHeaderWeReceive403() {
-        given().headers(utils.getHeaders(""))
+        given().relaxedHTTPSValidation()
+                .headers(utils.getHeaders(""))
                 .body(utils.getJsonFromFile("success.solicitorCreate.json"))
                 .post("/validate/addDeceasedDetails")
                 .then().assertThat().statusCode(403);
