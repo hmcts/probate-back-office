@@ -4,13 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.web.client.RestTemplate;
 import uk.gov.hmcts.probate.config.FeeServiceConfiguration;
 import uk.gov.hmcts.probate.config.PDFServiceConfiguration;
 
 @Configuration
-@PropertySource(value = "git.properties", ignoreResourceNotFound = true)
 public class HealthConfiguration {
 
     @Autowired
@@ -30,9 +28,6 @@ public class HealthConfiguration {
 
     @Value("${printservice.host}")
     private String printServiceHost;
-
-    @Value("${git.commit.id}")
-    private String commitId;
 
     @Bean
     public ExternalEndpointHealthIndicator pdfServiceHealthIndicator() {
@@ -57,10 +52,5 @@ public class HealthConfiguration {
     @Bean
     public ExternalEndpointHealthIndicator printServiceHealthIndicator() {
         return new ExternalEndpointHealthIndicator(printServiceHost, restTemplate);
-    }
-
-    @Bean
-    public ProbateSolCcdHealthIndicator probateSolCcdHealthIndicator() {
-        return new ProbateSolCcdHealthIndicator(commitId);
     }
 }

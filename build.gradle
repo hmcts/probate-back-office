@@ -23,6 +23,7 @@ plugins {
 apply plugin: 'org.sonarqube'
 apply plugin: 'findbugs'
 apply plugin: 'jacoco'
+apply plugin: "com.gorylenko.gradle-git-properties"
 
 group = 'uk.gov.hmcts.probate'
 version = "0.0.2"
