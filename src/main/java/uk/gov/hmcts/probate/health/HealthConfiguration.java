@@ -30,27 +30,27 @@ public class HealthConfiguration {
     private String printServiceHost;
 
     @Bean
-    public ExternalEndpointHealthIndicator pdfServiceHealthIndicator() {
-        return new ExternalEndpointHealthIndicator(pdfServiceConfiguration.getUrl(), restTemplate);
+    public SolsHealthIndicator pdfServiceHealthIndicator() {
+        return new SolsHealthIndicator(pdfServiceConfiguration.getUrl(), restTemplate);
     }
 
     @Bean
-    public ExternalEndpointHealthIndicator feeServiceHealthIndicator() {
-        return new ExternalEndpointHealthIndicator(feeServiceConfiguration.getUrl(), restTemplate);
+    public SolsHealthIndicator feeServiceHealthIndicator() {
+        return new SolsHealthIndicator(feeServiceConfiguration.getUrl(), restTemplate);
     }
 
     @Bean
-    public ExternalEndpointHealthIndicator idamServiceHealthIndicator() {
-        return new ExternalEndpointHealthIndicator(idamServiceHost, restTemplate);
+    public SolsHealthIndicator idamServiceHealthIndicator() {
+        return new SolsHealthIndicator(idamServiceHost, restTemplate);
     }
 
     @Bean
-    public ExternalEndpointHealthIndicator evidenceManagementHealthIndicator() {
-        return new ExternalEndpointHealthIndicator(evidenceManagementHost, restTemplate);
+    public SolsHealthIndicator evidenceManagementHealthIndicator() {
+        return new SolsHealthIndicator(evidenceManagementHost, restTemplate);
     }
 
     @Bean
-    public ExternalEndpointHealthIndicator printServiceHealthIndicator() {
-        return new ExternalEndpointHealthIndicator(printServiceHost, restTemplate);
+    public SolsHealthIndicator printServiceHealthIndicator() {
+        return new SolsHealthIndicator(printServiceHost, restTemplate);
     }
 }

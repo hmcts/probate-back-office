@@ -19,7 +19,7 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class ExternalEndpointHealthIndicatorTest {
+public class SolsHealthIndicatorTest {
 
     private static final String URL = "http://url.com";
 
@@ -29,18 +29,18 @@ public class ExternalEndpointHealthIndicatorTest {
     @Mock
     private ResponseEntity responseEntity;
 
-    private ExternalEndpointHealthIndicator externalEndpointHealthIndicator;
+    private SolsHealthIndicator solsHealthIndicator;
 
     @Before
     public void setUp() {
-        externalEndpointHealthIndicator = new ExternalEndpointHealthIndicator(URL, restTemplate);
+        solsHealthIndicator = new SolsHealthIndicator(URL, restTemplate);
     }
 
     @Test
     public void shouldReturnStatusOfUpWhenHttpStatusIsOK() {
         when(restTemplate.getForEntity(URL + "/health", String.class)).thenReturn(responseEntity);
         when(responseEntity.getStatusCode()).thenReturn(HttpStatus.OK);
-        Health health = externalEndpointHealthIndicator.health();
+        Health health = solsHealthIndicator.health();
 
         assertThat(health.getStatus(), is(Status.UP));
         assertThat(health.getDetails().get("url"), is(URL));
@@ -51,7 +51,7 @@ public class ExternalEndpointHealthIndicatorTest {
         when(restTemplate.getForEntity(URL + "/health", String.class)).thenReturn(responseEntity);
         when(responseEntity.getStatusCode()).thenReturn(HttpStatus.NO_CONTENT);
         when(responseEntity.getStatusCodeValue()).thenReturn(HttpStatus.NO_CONTENT.value());
-        Health health = externalEndpointHealthIndicator.health();
+        Health health = solsHealthIndicator.health();
 
         assertThat(health.getStatus(), is(Status.DOWN));
         assertThat(health.getDetails().get("url"), is(URL));
@@ -64,7 +64,7 @@ public class ExternalEndpointHealthIndicatorTest {
         final String message = "EXCEPTION MESSAGE";
         when(restTemplate.getForEntity(URL + "/health", String.class)).thenThrow(new ResourceAccessException(message));
 
-        Health health = externalEndpointHealthIndicator.health();
+        Health health = solsHealthIndicator.health();
 
         assertThat(health.getStatus(), is(Status.DOWN));
         assertThat(health.getDetails().get("url"), is(URL));
@@ -76,7 +76,7 @@ public class ExternalEndpointHealthIndicatorTest {
     public void shouldReturnStatusOfDownWhenHttpStatusCodeExceptionIsThrown() {
         when(restTemplate.getForEntity(URL + "/health", String.class)).thenThrow(new HttpClientErrorException(HttpStatus.BAD_REQUEST));
 
-        Health health = externalEndpointHealthIndicator.health();
+        Health health = solsHealthIndicator.health();
 
         assertThat(health.getStatus(), is(Status.DOWN));
         assertThat(health.getDetails().get("url"), is(URL));
@@ -90,7 +90,7 @@ public class ExternalEndpointHealthIndicatorTest {
         when(restTemplate.getForEntity(URL + "/health", String.class))
                 .thenThrow(new UnknownHttpStatusCodeException(1000, statusText, null, null, null));
 
-        Health health = externalEndpointHealthIndicator.health();
+        Health health = solsHealthIndicator.health();
 
         assertThat(health.getStatus(), is(Status.DOWN));
         assertThat(health.getDetails().get("url"), is(URL));

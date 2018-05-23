@@ -13,7 +13,7 @@ import org.springframework.web.client.UnknownHttpStatusCodeException;
 
 @Slf4j
 @AllArgsConstructor
-public class ExternalEndpointHealthIndicator implements HealthIndicator {
+public class SolsHealthIndicator implements HealthIndicator {
 
     private static final String EXCEPTION_KEY = "exception";
     private static final String MESSAGE_KEY = "message";
