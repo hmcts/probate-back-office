@@ -130,6 +130,7 @@ task functional(type: Test) {
 
 gitProperties {
   gitPropertiesDir = new File("${project.rootDir}/src/main/resources/uk/gov/hmcts/probate/sol")
+  keys = ['git.commit.id','git.commit.time','git.commit.message.full']
 }
 
 def springBootVersion = '1.5.6.RELEASE'
