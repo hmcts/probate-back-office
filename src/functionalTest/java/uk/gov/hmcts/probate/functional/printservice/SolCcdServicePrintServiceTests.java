@@ -3,6 +3,7 @@ package uk.gov.hmcts.probate.functional.printservice;
 import io.restassured.response.Response;
 import net.serenitybdd.junit.runners.SerenityRunner;
 import net.serenitybdd.rest.SerenityRest;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
@@ -14,6 +15,7 @@ import static junit.framework.TestCase.assertTrue;
 @RunWith(SerenityRunner.class)
 public class SolCcdServicePrintServiceTests extends IntegrationTestBase {
 
+    @Ignore
     @Test
     public void verifySuccessForGetPrintTemplateDocuments() {
         Response response = SerenityRest.given()
@@ -60,7 +62,7 @@ public class SolCcdServicePrintServiceTests extends IntegrationTestBase {
 
     }
 
-
+    @Ignore
     @Test
     public void verifyPaTemplateDetails() {
         Response response = SerenityRest.given()

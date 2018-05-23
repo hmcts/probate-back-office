@@ -4,6 +4,7 @@ import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import io.restassured.response.ValidatableResponse;
 import net.serenitybdd.junit.runners.SerenityRunner;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.pdfbox.pdmodel.PDDocument;
@@ -99,6 +100,7 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
         validatePostRequestSuccessForLegalStatement("AdditionalExecutor1 willname");
     }
 
+    @Ignore
     @Test
     public void verifyIncorrectInputReturns400() {
         given().relaxedHTTPSValidation()
