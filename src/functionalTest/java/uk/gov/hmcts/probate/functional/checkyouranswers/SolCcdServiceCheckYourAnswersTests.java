@@ -99,8 +99,7 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
     public void verifyAdditionalExecutor1AliasNameInTheReturnedPDF() {
         validatePostRequestSuccessForLegalStatement("AdditionalExecutor1 willname");
     }
-
-    @Ignore
+    
     @Test
     public void verifyIncorrectInputReturns400() {
         given().relaxedHTTPSValidation()
