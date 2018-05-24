@@ -45,6 +45,8 @@
     },
     "solsSolicitorEmail": "contact@lonGenArt.com",
     "deceasedDomicileInEngWales": "Yes",
+    "applicationType":"Solicitor",
+    "registryLocation":"Birmingham",
     "ihtNetValue": "90009",
     "deceasedSurname": "decln",
     "solsAdditionalExecutorList": [
