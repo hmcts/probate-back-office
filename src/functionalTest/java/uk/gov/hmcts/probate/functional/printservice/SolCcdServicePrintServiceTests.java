@@ -17,6 +17,7 @@ public class SolCcdServicePrintServiceTests extends IntegrationTestBase {
     @Test
     public void verifySuccessForGetPrintTemplateDocuments() {
         Response response = SerenityRest.given()
+                .relaxedHTTPSValidation()
                 .headers(utils.getHeadersWithUserId())
                 .body(utils.getJsonFromFile("success.printCaseDetails.json")).
                         when().post("/template/documents");
@@ -29,7 +30,7 @@ public class SolCcdServicePrintServiceTests extends IntegrationTestBase {
 
     @Test
     public void verifySolsTemplateDetails() {
-        Response response = SerenityRest.given()
+        Response response = SerenityRest.given().relaxedHTTPSValidation()
                 .headers(utils.getHeadersWithUserId())
                 .when().get("/template/case-details/sol");
 
@@ -59,7 +60,7 @@ public class SolCcdServicePrintServiceTests extends IntegrationTestBase {
 
     @Test
     public void verifyPaTemplateDetails() {
-        Response response = SerenityRest.given()
+        Response response = SerenityRest.given().relaxedHTTPSValidation()
                 .headers(utils.getHeadersWithUserId())
                 .when().get("/template/case-details/pa");
 
