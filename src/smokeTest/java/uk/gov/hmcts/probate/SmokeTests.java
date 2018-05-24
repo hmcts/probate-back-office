@@ -3,6 +3,10 @@ package uk.gov.hmcts.probate;
 import io.restassured.RestAssured;
 import io.restassured.config.HttpClientConfig;
 import io.restassured.config.RestAssuredConfig;
+import io.restassured.response.Response;
+import io.restassured.response.ResponseBody;
+import io.restassured.specification.RequestSpecification;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,6 +25,12 @@ public class SmokeTests {
 
     @Value("${test.instance.uri}")
     private String url;
+
+    @Value("${git.commit.id}")
+    private String gitCommitIdFull;
+
+    @Value("${git.commit.time}")
+    private String gitCommitTime;
 
     private RestAssuredConfig config;
 
@@ -42,4 +52,36 @@ public class SmokeTests {
                 .then()
                 .statusCode(HttpStatus.OK.value());
     }
+
+    @Test
+    public void shouldGetOkStatusFromInfoEndpointForSolCcdService() {
+        given().config(config)
+                .when()
+                .get(url + "/info")
+                .then()
+                .statusCode(HttpStatus.OK.value());
+    }
+
+    @Test
+    public void shouldReturnGitCommitIdInfoForSolCcdService() {
+
+        String bodyAsString = getJsonString();
+        Assert.assertTrue(bodyAsString.contains(gitCommitIdFull));
+    }
+
+    @Test
+    public void shouldReturnGitCommitTimeInfoForSolCcdService() {
+
+        String bodyAsString = getJsonString();
+        Assert.assertTrue(bodyAsString.contains(gitCommitTime));
+    }
+
+    private String getJsonString() {
+        RestAssured.baseURI = url;
+        RequestSpecification httpRequest = RestAssured.given();
+        Response response = httpRequest.get("/info");
+        ResponseBody body = response.getBody();
+        return body.asString();
+    }
+
 }
