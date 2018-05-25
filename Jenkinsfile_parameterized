@@ -26,14 +26,14 @@ static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
 }
 
 withParameterizedPipeline('java', 'probate', 'sol-ccd-service', params.ENVIRONMENT, 'sandbox') {
-  loadVaultSecrets(secrets)
-}
+    loadVaultSecrets(secrets)
 
-after('functionalTest:saat') {
-    publishHTML target: [
-            reportDir            : "target/site/serenity/",
-            reportFiles          : "index.html",
-            reportName           : "SAAT Functional Tests",
-            alwaysLinkToLastBuild: true
-    ]
+    after('functionalTest:saat') {
+        publishHTML target: [
+                reportDir            : "target/site/serenity/",
+                reportFiles          : "index.html",
+                reportName           : "SAAT Functional Tests",
+                alwaysLinkToLastBuild: true
+        ]
+    }
 }
