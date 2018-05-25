@@ -219,10 +219,9 @@ dependencies {
 
 mainClassName = 'uk.gov.hmcts.reform.bo.Application'
 
-jar {
+bootJar {
   archiveName = 'back-office.jar'
   manifest {
-
     attributes 'Implementation-Title': project.name,
       'Implementation-Version': project.version
   }
