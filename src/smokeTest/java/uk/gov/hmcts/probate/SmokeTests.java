@@ -17,7 +17,6 @@ import static org.hamcrest.core.IsNull.notNullValue;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@ContextConfiguration(classes = SmokeTestConfiguration.class)
 public class SmokeTests {
 
     @Value("${test.instance.uri}")
