@@ -100,7 +100,7 @@ dependencyCheck {
 }
 
 sourceSets {
-    smokeTest {
+    testSmoke {
         java {
             compileClasspath += main.output
             runtimeClasspath += main.output
@@ -108,7 +108,7 @@ sourceSets {
         }
         resources.srcDir file('src/smokeTest/resources')
     }
-    functionalTest {
+    testFunctional {
       java {
         compileClasspath += main.output
         runtimeClasspath += main.output
@@ -120,14 +120,14 @@ sourceSets {
 
 task smoke(type: Test) {
   description = "Runs Smoke Tests"
-  testClassesDirs = sourceSets.smokeTest.output.classesDirs
-  classpath = sourceSets.smokeTest.runtimeClasspath
+  testClassesDirs = sourceSets.testSmoke.output.classesDirs
+  classpath = sourceSets.testSmoke.runtimeClasspath
 }
 
 task functional(type: Test) {
   description = "Runs functional Tests"
-  testClassesDirs = sourceSets.functionalTest.output.classesDirs
-  classpath = sourceSets.functionalTest.runtimeClasspath
+  testClassesDirs = sourceSets.testFunctional.output.classesDirs
+  classpath = sourceSets.testFunctional.runtimeClasspath
   finalizedBy aggregate
 }
 
@@ -178,17 +178,17 @@ dependencies {
   testCompile group: 'org.pdfbox', name: 'com.springsource.org.pdfbox', version: '0.7.3'
   testCompile group: 'org.springframework.security', name: 'spring-security-test', version: '4.2.5.RELEASE'
 
-  smokeTestCompile group: 'io.rest-assured', name: 'rest-assured', version: '3.0.7'
-  smokeTestCompile sourceSets.main.runtimeClasspath
-  smokeTestCompile sourceSets.test.runtimeClasspath
+  testSmokeCompile group: 'io.rest-assured', name: 'rest-assured', version: '3.0.7'
+  testSmokeCompile sourceSets.main.runtimeClasspath
+  testSmokeCompile sourceSets.test.runtimeClasspath
 
-  functionalTestCompile group: 'net.serenity-bdd', name: 'serenity-core', version: '1.5.2'
-  functionalTestCompile group: 'net.serenity-bdd', name: 'serenity-junit', version: '1.5.2'
-  functionalTestCompile group: 'net.serenity-bdd', name: 'serenity-rest-assured', version: '1.5.2'
-  functionalTestCompile group: 'net.serenity-bdd', name: 'serenity-spring', version: '1.0.26'
-  functionalTestCompile group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.0'
-  functionalTestCompile sourceSets.main.runtimeClasspath
-  functionalTestCompile sourceSets.test.runtimeClasspath
+  testFunctionalCompile group: 'net.serenity-bdd', name: 'serenity-core', version: '1.5.2'
+  testFunctionalCompile group: 'net.serenity-bdd', name: 'serenity-junit', version: '1.5.2'
+  testFunctionalCompile group: 'net.serenity-bdd', name: 'serenity-rest-assured', version: '1.5.2'
+  testFunctionalCompile group: 'net.serenity-bdd', name: 'serenity-spring', version: '1.0.26'
+  testFunctionalCompile group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.0'
+  testFunctionalCompile sourceSets.main.runtimeClasspath
+  testFunctionalCompile sourceSets.test.runtimeClasspath
 }
 
 compileJava {
