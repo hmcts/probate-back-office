@@ -28,7 +28,7 @@ static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
 withParameterizedPipeline('java', 'probate', 'sol-ccd-service', params.ENVIRONMENT, 'sandbox') {
     loadVaultSecrets(secrets)
 
-    after('test') {
+    after('test:saat') {
         junit 'build/test-results/test/**/*.xml'
         publishHTML target: [
                 allowMissing         : true,
