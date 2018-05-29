@@ -2,12 +2,12 @@
 <suppressions xmlns="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.1.xsd">
 
     <suppress>
-        <notes>Only affect PATCH requests, those are not supported by Sol CCD APIs.</notes>
+        <notes><![CDATA[Only affect PATCH requests, those are not supported by Sol CCD APIs.]]></notes>
         <gav regex="true">^org\.springframework\.boot:spring-boot-starter-actuator:.*$</gav>
         <cve>CVE-2017-8046</cve>
     </suppress>
     <suppress>
-        <notes>Spring Boot application that are not installed as a service, or are not using the embedded launch script are not susceptible.</notes>
+        <notes><![CDATA[Spring Boot application that are not installed as a service, or are not using the embedded launch script are not susceptible.]]></notes>
         <gav regex="true">^org\.springframework\.boot:spring-boot-starter-actuator:.*$</gav>
         <cve>CVE-2018-1196</cve>
     </suppress>
