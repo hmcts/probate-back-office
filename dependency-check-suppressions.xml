@@ -1,21 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <suppressions xmlns="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.1.xsd">
-
-  <!--
-
-  Add dependency check suppression rules here, in accordance with
-  https://jeremylong.github.io/DependencyCheck/general/suppression.html
-
-  Example:
-
-  <suppress>
-    <notes><![CDATA[
-      Does not apply as we're not using the XmlMapper.
-    ]]></notes>
-    <gav regex="true">^com\.fasterxml\.jackson\.(core|datatype|module):jackson-.*:.*$</gav>
-    <cve>CVE-2016-7051</cve>
-  </suppress>
-
-  -->
-
+    <suppress>
+        <notes><![CDATA[
+   file name: spring-boot-starter-web-1.5.6.RELEASE.jar
+   ]]></notes>
+        <gav regex="true">^org\.springframework\.boot:spring-boot-.*:.*$</gav>
+        <cve>CVE-2017-8046</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: spring-boot-starter-web-1.5.6.RELEASE.jar
+   ]]></notes>
+        <gav regex="true">^(org\.springframework\.boot:spring-boot-.*)|(uk\.gov\.hmcts\.auth\.provider\.service:service-token-generator-spring:.*)|(uk\.gov\.hmcts\.auth\.idam:user-token-parser-spring:.*)|(uk\.gov\.hmcts\.auth\.provider\.service:service-token-parser-spring:.*)|(uk\.gov\.hmcts\.auth\.provider\.service:service-token-parser:.*)|(uk\.gov\.hmcts\.auth\.provider\.service:service-token-generator:.*)$</gav>
+        <cve>CVE-2018-1196</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: service-token-generator-spring-1.0.5.jar
+   ]]></notes>
+        <gav regex="true">^(uk\.gov\.hmcts\.auth\.provider\.service:service-token-generator-spring:.*)|(uk\.gov\.hmcts\.auth\.provider\.service:service-token-parser:.*)|(uk\.gov\.hmcts\.auth\.idam:user-token-parser-spring:.*)|(uk\.gov\.hmcts\.auth\.provider\.service:service-token-parser-spring:.*)|(uk\.gov\.hmcts\.auth\.provider\.service:service-token-generator:.*)$</gav>
+        <cve>CVE-2016-9878</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: service-token-generator-spring-1.0.5.jar
+   ]]></notes>
+        <gav regex="true">^(uk\.gov\.hmcts\.auth\.provider\.service:service-token-generator-spring:.*)|(uk\.gov\.hmcts\.auth\.provider\.service:service-token-parser:.*)|(uk\.gov\.hmcts\.auth\.idam:user-token-parser-spring:.*)|(uk\.gov\.hmcts\.auth\.provider\.service:service-token-parser-spring:.*)|(uk\.gov\.hmcts\.auth\.provider\.service:service-token-generator:.*)$</gav>
+        <cve>CVE-2018-1270</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: service-token-generator-spring-1.0.5.jar
+   ]]></notes>
+        <gav regex="true">^(uk\.gov\.hmcts\.auth\.provider\.service:service-token-generator-spring:.*)|(uk\.gov\.hmcts\.auth\.provider\.service:service-token-parser:.*)|(uk\.gov\.hmcts\.auth\.idam:user-token-parser-spring:.*)|(uk\.gov\.hmcts\.auth\.provider\.service:service-token-parser-spring:.*)|(uk\.gov\.hmcts\.auth\.provider\.service:service-token-generator:.*)$</gav>
+        <cve>CVE-2018-1271</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: service-token-generator-spring-1.0.5.jar
+   ]]></notes>
+        <gav regex="true">^(uk\.gov\.hmcts\.auth\.provider\.service:service-token-generator-spring:.*)|(uk\.gov\.hmcts\.auth\.provider\.service:service-token-parser:.*)|(uk\.gov\.hmcts\.auth\.idam:user-token-parser-spring:.*)|(uk\.gov\.hmcts\.auth\.provider\.service:service-token-parser-spring:.*)|(uk\.gov\.hmcts\.auth\.provider\.service:service-token-generator:.*)$</gav>
+        <cve>CVE-2018-1272</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: AppleJavaExtensions-1.4.jar
+   ]]></notes>
+        <gav regex="true">^com\.apple:AppleJavaExtensions:.*$</gav>
+        <cve>CVE-2010-0538</cve>
+    </suppress>
 </suppressions>

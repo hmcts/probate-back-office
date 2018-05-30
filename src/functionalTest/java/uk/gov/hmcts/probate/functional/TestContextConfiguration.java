@@ -6,6 +6,6 @@ import org.springframework.context.annotation.PropertySource;
 
 @Configuration
 @ComponentScan("uk.gov.hmcts.probate.functional")
-@PropertySource("file:src/test/resources/application.properties")
+@PropertySource("application.properties")
 public class TestContextConfiguration {
 }

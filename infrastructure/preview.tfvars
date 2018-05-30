@@ -7,6 +7,7 @@ packages_environment = "preprod"
 packages_version = "3.0.0"
 
 outbound_proxy = ""
+log_level = "INFO"
 
 idam_service_api = "http://betaPreProdccidamAppLB.reform.hmcts.net:4502"
 pdf_service_api_url = "http://cmc-pdf-service-aat.service.core-compute-aat.internal"
