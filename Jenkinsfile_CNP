@@ -1,0 +1,27 @@
+#!groovy
+
+@Library("Infrastructure")
+
+String product = "probate"
+String component = "sol-ccd-service"
+
+List<LinkedHashMap<String, Object>> secrets = [
+
+]
+
+static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
+  [ $class: 'AzureKeyVaultSecret',
+    secretType: 'Secret',
+    name: secretName,
+    version: '',
+    envVariable: envVar
+  ]
+}
+
+withPipeline("java", product, component) {
+  before('buildinfra:prod') {
+    error 'Deliberately breaking pipeline to prevent prod deployment'
+  }
+  loadVaultSecrets(secrets)
+  //enableSlackNotifications('#probate-jenkins')
+}
