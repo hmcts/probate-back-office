@@ -5,7 +5,7 @@
     "summary": "Probate application"
   },
   "ignore_warning": true,
-  "event_token": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJjc2liOWZjOGFmamIwOHVpc2thNDVvdmNkOCIsInN1YiI6IjIzIiwiaWF0IjoxNTI2NTUwNDM5LCJldmVudC1pZCI6ImFwcGx5Rm9yR3JhbnQiLCJjYXNlLXR5cGUtaWQiOiJHcmFudE9mUmVwcmVzZW50YXRpb24iLCJqdXJpc2RpY3Rpb24taWQiOiJQUk9CQVRFIiwiY2FzZS12ZXJzaW9uIjoiYmYyMWE5ZThmYmM1YTM4NDZmYjA1YjRmYTA4NTllMDkxN2IyMjAyZiJ9.udawuAEq_2jOKZdg8qqtPinMLuqFLzn5_SjBUR_kz2A",
+  "event_token": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJsbmQyYTdla2I5YmltbWZhc2JuaGc2MzFtaCIsInN1YiI6IjIzIiwiaWF0IjoxNTI2ODkyODc1LCJldmVudC1pZCI6ImFwcGx5Rm9yR3JhbnQiLCJjYXNlLXR5cGUtaWQiOiJHcmFudE9mUmVwcmVzZW50YXRpb24iLCJqdXJpc2RpY3Rpb24taWQiOiJQUk9CQVRFIiwiY2FzZS12ZXJzaW9uIjoiYmYyMWE5ZThmYmM1YTM4NDZmYjA1YjRmYTA4NTllMDkxN2IyMjAyZiJ9.gh0QcxATkUAHFQGzLItNFJQeLHJXDY2dkXFjVNbUc4I",
   "data": {
     "applicationID": "603",
     "applicationSubmittedDate": "2018-05-17",
@@ -170,7 +170,7 @@
           }
         }
       ],
-      "intro": "This statement is based on the information Amal Mason has given in their application. It will be stored as a public record."
+      "intro": "This statement is based on the information you&rsquo;ve given in your application. It will be stored as a public record."
     },
     "deceasedAddress": {
       "AddressLine1": "dddddddddddxxxxxxxxxxxxxxxxxxxx"

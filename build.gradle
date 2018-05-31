@@ -28,7 +28,7 @@ apply plugin: 'net.serenity-bdd.aggregator'
 apply plugin: "com.gorylenko.gradle-git-properties"
 
 group = 'uk.gov.hmcts.probate'
-version = "0.0.2"
+version = "4.0.0"
 mainClassName = 'uk.gov.hmcts.probate.BusinessRulesValidationApplication'
 
 sourceCompatibility = 1.8
