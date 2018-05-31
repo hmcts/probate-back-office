@@ -2,16 +2,9 @@
 <suppressions xmlns="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.1.xsd">
     <suppress>
         <notes><![CDATA[
-   file name: spring-boot-starter-web-1.5.6.RELEASE.jar
+   file name: service-token-generator-spring-1.0.5.jar
    ]]></notes>
-        <gav regex="true">^org\.springframework\.boot:spring-boot-.*:.*$</gav>
-        <cve>CVE-2017-8046</cve>
-    </suppress>
-    <suppress>
-        <notes><![CDATA[
-   file name: spring-boot-starter-web-1.5.6.RELEASE.jar
-   ]]></notes>
-        <gav regex="true">^(org\.springframework\.boot:spring-boot-.*)|(uk\.gov\.hmcts\.auth\.provider\.service:service-token-generator-spring:.*)|(uk\.gov\.hmcts\.auth\.idam:user-token-parser-spring:.*)|(uk\.gov\.hmcts\.auth\.provider\.service:service-token-parser-spring:.*)|(uk\.gov\.hmcts\.auth\.provider\.service:service-token-parser:.*)|(uk\.gov\.hmcts\.auth\.provider\.service:service-token-generator:.*)$</gav>
+        <gav regex="true">^(uk\.gov\.hmcts\.auth\.provider\.service:service-token-generator-spring:.*)|(uk\.gov\.hmcts\.auth\.idam:user-token-parser-spring:.*)|(uk\.gov\.hmcts\.auth\.provider\.service:service-token-parser-spring:.*)|(uk\.gov\.hmcts\.auth\.provider\.service:service-token-parser:.*)|(uk\.gov\.hmcts\.auth\.provider\.service:service-token-generator:.*)$</gav>
         <cve>CVE-2018-1196</cve>
     </suppress>
     <suppress>
