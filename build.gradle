@@ -134,7 +134,7 @@ gitProperties {
   dateFormatTimeZone = "GMT"
 }
 
-def springBootVersion = '1.5.6.RELEASE'
+def springBootVersion = '1.5.13.RELEASE'
 
 repositories {
   mavenLocal()
