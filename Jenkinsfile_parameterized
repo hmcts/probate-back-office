@@ -30,6 +30,7 @@ withParameterizedPipeline('java', 'probate', 'sol-ccd-service', params.ENVIRONME
 
     after('test') {
         junit 'build/test-results/test/**/*.xml'
+	archiveArtifacts 'build/reports/tests/test/index.html'
         publishHTML target: [
                 allowMissing         : true,
                 alwaysLinkToLastBuild: true,
