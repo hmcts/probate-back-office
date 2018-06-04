@@ -66,7 +66,7 @@ public class BusinessValidationController {
         logRequest(request.getRequestURI(), callbackRequest);
 
         if (bindingResult.hasErrors()) {
-            log.error(" Case Id {}: ERROR {}:", callbackRequest.getCaseDetails().getId(), bindingResult);
+            log.error("Case Id: {} ERROR: {}", callbackRequest.getCaseDetails().getId(), bindingResult);
             throw new BadRequestException("Invalid payload", bindingResult);
         }
 
@@ -91,7 +91,7 @@ public class BusinessValidationController {
             BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
-            log.error("Case Id {}: ERROR {}:", callbackRequest.getCaseDetails().getId(), bindingResult);
+            log.error("Case: Id {} ERROR: {}", callbackRequest.getCaseDetails().getId(), bindingResult);
             throw new BadRequestException("Invalid payload", bindingResult);
         }
 
@@ -131,10 +131,10 @@ public class BusinessValidationController {
 
     private void logRequest(String uri, CallbackRequest callbackRequest) {
         try {
-            log.info("POST {}: Case Id: {} ", uri, callbackRequest.getCaseDetails().getId().toString());
-            log.debug("POST {}: {}", uri, objectMapper.writeValueAsString(callbackRequest));
+            log.info("POST: {} Case Id: {} ", uri, callbackRequest.getCaseDetails().getId().toString());
+            log.debug("POST: {} {}", uri, objectMapper.writeValueAsString(callbackRequest));
         } catch (JsonProcessingException e) {
-            log.error("POST {}:", uri, e);
+            log.error("POST: {}", uri, e);
         }
     }
 }
