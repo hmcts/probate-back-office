@@ -6,7 +6,7 @@ services:
     container_name: service-auth-provider-api
     environment:
       - AUTH_PROVIDER_SERVICE_SERVER_JWT_KEY=wThK0f0/lh3FlxFcL4xUWDMI5C1J9KyQBgXV4wseh1e5J1uYJIjvTvArHxQDrYoHJ23xFxjHkOnvNbR5dXRoxA==
-      - AUTH_PROVIDER_SERVICE_SERVER_MICROSERVICE_KEYS_PROBATE_BACKEND=CMPRGOBNAUXKYDJL
+      - AUTH_PROVIDER_SERVICE_SERVER_MICROSERVICE_KEYS_PROBATE_BACKEND=AAAAAAAAAAAAAAAA
       - auth.provider.service.server.microserviceKeys.ccd_data=AAAAAAAAAAAAAAAA
       - auth.provider.service.server.microserviceKeys.ccd_ps=AAAAAAAAAAAAAAAA
       - auth.provider.service.server.microserviceKeys.ccd_gw=AAAAAAAAAAAAAAAA
