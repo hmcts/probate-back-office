@@ -120,7 +120,7 @@ task smoke(type: Test) {
   classpath = sourceSets.testSmoke.runtimeClasspath
 }
 
-task testFunctional(type: Test) {
+task functional(type: Test) {
   description = "Runs functional Tests"
   testClassesDirs = sourceSets.testFunctional.output.classesDirs
   classpath = sourceSets.testFunctional.runtimeClasspath
