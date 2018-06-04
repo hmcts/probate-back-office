@@ -3,10 +3,12 @@ package uk.gov.hmcts.probate.functional;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.functional.model.ClientAuthorizationCodeResponse;
 import uk.gov.hmcts.probate.functional.model.ClientAuthorizationResponse;
+import uk.gov.hmcts.reform.authorisation.generators.ServiceAuthTokenGenerator;
 
 import java.io.IOException;
 
@@ -34,9 +36,11 @@ public class SolCCDServiceAuthTokenGenerator {
     @Value("${user.auth.provider.oauth2.url}")
     private String baseServiceOauth2Url;
 
+    @Autowired
+    private ServiceAuthTokenGenerator tokenGenerator;
+
     public String generateServiceToken() {
-        return "Bearer " + post(baseServiceAuthUrl + "/testing-support/lease?microservice={microservice}", serviceName)
-                .body().asString();
+        return tokenGenerator.generate();
     }
 
     public String getUserId() {
