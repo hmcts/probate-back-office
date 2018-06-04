@@ -120,7 +120,7 @@ task smoke(type: Test) {
   classpath = sourceSets.testSmoke.runtimeClasspath
 }
 
-task functional(type: Test) {
+task testFunctional(type: Test) {
   description = "Runs functional Tests"
   testClassesDirs = sourceSets.testFunctional.output.classesDirs
   classpath = sourceSets.testFunctional.runtimeClasspath
@@ -196,6 +196,7 @@ dependencies {
   testFunctionalCompile group: 'net.serenity-bdd', name: 'serenity-rest-assured', version: '1.5.2'
   testFunctionalCompile group: 'net.serenity-bdd', name: 'serenity-spring', version: '1.0.26'
   testFunctionalCompile group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.0'
+  testFunctionalCompile group: 'uk.gov.hmcts.reform', name: 'service-auth-provider-client', version: '0.6.0'
   testFunctionalCompile sourceSets.main.runtimeClasspath
   testFunctionalCompile sourceSets.test.runtimeClasspath
 }
