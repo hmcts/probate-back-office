@@ -10,6 +10,8 @@ packages_version = "3.0.0"
 outbound_proxy = ""
 log_level = "INFO"
 
+capacity = "2"
+
 idam_service_api = "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
 pdf_service_api_url = "http://cmc-pdf-service-aat.service.core-compute-aat.internal"
 printservice_host = "http://ccd-case-print-service-aat.service.core-compute-aat.internal"

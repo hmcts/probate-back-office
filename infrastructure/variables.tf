@@ -79,5 +79,8 @@ variable "log_level" {
   type = "string"
 }
 
+variable "capacity" {
+  default = "1"
+}
 
 

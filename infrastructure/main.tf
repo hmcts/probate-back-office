@@ -28,7 +28,8 @@ module "probate-sol-ccd-service" {
   is_frontend  = false
   subscription = "${var.subscription}"
   asp_name     = "${var.product}-${var.env}-asp"
-
+  capacity     = "${var.capacity}"
+  
   app_settings = {
 
 	  // Logging vars

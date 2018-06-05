@@ -156,6 +156,15 @@ gitProperties {
 def springBootVersion = '1.5.13.RELEASE'
 def reformsJavaLoggingVersion = '2.0.2'
 
+jacocoTestReport {
+    executionData(test)
+    reports {
+        xml.enabled = true
+        csv.enabled = false
+        xml.destination = file("${project.buildDir}/reports/jacoco/test/jacocoTestReport.xml")
+    }
+}
+
 repositories {
   mavenLocal()
   mavenCentral()
@@ -164,6 +173,7 @@ repositories {
   maven { url "https://dl.bintray.com/hmcts/hmcts-maven" }
   maven { url "http://repo.maven.apache.org/maven2" }
 }
+
 
 distributions {
   main {
