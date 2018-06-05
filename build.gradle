@@ -106,6 +106,14 @@ dependencyCheck {
   suppressionFile = 'dependency-check-suppressions.xml'
 }
 
+pitest {
+  targetClasses = ['uk.gov.hmcts.probate.*']
+  threads = 4
+  outputFormats = ['XML', 'HTML']
+  timestampedReports = false
+  mutationThreshold = 50
+}
+
 sourceSets {
     testSmoke {
         java {
