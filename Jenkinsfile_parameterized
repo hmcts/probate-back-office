@@ -60,7 +60,7 @@ withParameterizedPipeline('java', 'probate', 'sol-ccd-service', params.ENVIRONME
         ]
     }
     
-    after('functionalTest:saat') {
+    after('functionalTest') {
         publishHTML target: [
                 reportDir            : "target/site/serenity/",
                 reportFiles          : "index.html",
