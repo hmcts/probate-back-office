@@ -19,6 +19,7 @@ plugins {
   id 'org.owasp.dependencycheck' version '3.2.1'
   id 'com.github.ben-manes.versions' version '0.15.0'
   id 'com.gorylenko.gradle-git-properties' version '1.4.21'
+  id 'info.solidsoft.pitest' version '1.3.0'
 }
 
 apply plugin: 'org.sonarqube'
@@ -93,6 +94,14 @@ dependencyCheck {
   // range of 0-10 fails the build, anything greater and it doesn't fail the build
   failBuildOnCVSS = System.getProperty('dependencyCheck.failBuild') == 'true' ? 0 : 11
   suppressionFile = 'dependency-check-suppressions.xml'
+}
+
+pitest {
+  targetClasses = ['uk.gov.hmcts.probate.*']
+  threads = 4
+  outputFormats = ['XML', 'HTML']
+  timestampedReports = false
+  mutationThreshold = 50
 }
 
 sourceSets {
