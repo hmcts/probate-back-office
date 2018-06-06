@@ -40,10 +40,10 @@ public class PDFManagementService {
                     .documentFilename(pdfServiceConfiguration.getDefaultDisplayFilename())
                     .build();
         } catch (JsonProcessingException e) {
-            log.warn(e.getMessage(), e);
+            log.error(e.getMessage(), e);
             throw new BadRequestException(e.getMessage(), null);
         } catch (IOException e) {
-            log.warn(e.getMessage(), e);
+            log.error(e.getMessage(), e);
             throw new ConnectionException(e.getMessage());
         }
     }

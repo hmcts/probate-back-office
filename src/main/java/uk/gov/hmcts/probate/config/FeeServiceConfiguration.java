@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 public class FeeServiceConfiguration {
 
     private String url;
+    private String api;
     private String service;
     private String jurisdiction1;
     private String jurisdiction2;

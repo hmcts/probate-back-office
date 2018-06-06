@@ -192,6 +192,7 @@ public class BusinessValidationUnitTest {
     @Test(expected = BadRequestException.class)
     public void shouldErrorForConfirmation() {
         when(bindingResultMock.hasErrors()).thenReturn(true);
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
 
         ResponseEntity<AfterSubmitCallbackResponse> response = underTest.stopWithConfirmation(callbackRequestMock,
                 bindingResultMock);
