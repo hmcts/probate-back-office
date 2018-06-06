@@ -48,10 +48,10 @@ public class PDFGeneratorService {
             ByteArrayResource responseResource = restTemplate.postForObject(uri, multipartRequest, ByteArrayResource.class);
             postResult = responseResource.getByteArray();
         } catch (HttpClientErrorException e) {
-            log.warn(e.getMessage(), e);
+            log.error(e.getMessage(), e);
             throw new ClientException(e.getStatusCode().value(), e.getMessage());
         } catch (RestClientException e) {
-            log.warn(e.getMessage(), e);
+            log.error(e.getMessage(), e);
             throw new ConnectionException("Could not connect to PDF service: " + e.getMessage());
         }
 

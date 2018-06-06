@@ -1,0 +1,100 @@
+{
+  "case_details": {
+    "id": 1512040945638398,
+    "jurisdiction": "PROBATE",
+    "state": "SolDraftCase",
+    "case_type_id": "GrantOfRepresentation",
+    "last_modified": null,
+    "security_classification": "PUBLIC",
+    "case_data": {
+      "otherExecutorExists": "Yes",
+      "deceasedAddress": {
+        "AddressLine1": "1",
+        "AddressLine2": "1",
+        "AddressLine3": "1",
+        "PostTown": "1",
+        "County": "1",
+        "PostCode": "1",
+        "Country": "1"
+      },
+      "deceasedAnyOtherNames": "Yes",
+      "solsSolicitorPhoneNumber": "07958995330",
+      "solsAdditionalInfo": "Additional Info",
+      "deceasedDateOfBirth": "2018-01-02",
+      "willHasCodicils": "Yes",
+      "solsDeceasedAliasNamesList": [
+        {
+          "value": {
+            "SolsAliasname": "decalias1"
+          },
+          "id": "95d45c17-aba1-4441-8d98-aaaa2ec49668"
+        }
+      ],
+      "willAccessOriginal": "Yes",
+      "solsSolicitorFirmName": "firmname",
+      "willExists": "Yes",
+      "deceasedDateOfDeath": "2018-01-01",
+      "primaryApplicantForenames": "Ex1fn",
+      "primaryApplicantAddress": {
+        "AddressLine1": "2",
+        "AddressLine2": "2",
+        "AddressLine3": "2",
+        "PostTown": "2",
+        "County": "2",
+        "PostCode": "2",
+        "Country": "2"
+      },
+      "solsSolicitorEmail": "contact@lonGenArt.com",
+      "solsSolicitorPhoneNumber": "0208 863 98688",
+      "deceasedDomicileInEngWales": "Yes",
+      "ihtNetValue": "90009",
+      "deceasedSurname": "decln",
+      "solsAdditionalExecutorList": [
+        {
+          "value": {
+            "additionalExecForenames": "Ex2fn",
+            "additionalExecLastname": "Ex2ln",
+            "additionalExecNameOnWill": "Yes",
+            "additionalExecAliasNameOnWill": "Wx2wn",
+            "additionalApplying": "No",
+            "additionalExecReasonNotApplying": "DiedBefore"
+          },
+          "id": "366406fe-e6c3-4bdf-8709-121f8f64c1f7"
+        }
+      ],
+      "solsSolicitorFirmPostcode": "firmpc",
+      "deceasedForenames": "decfn",
+      "willNumberOfCodicils": "1",
+      "primaryApplicantIsApplying": "Yes",
+      "primaryApplicantHasAlias": "Yes",
+      "solsIHTFormId": "IHT205",
+      "ihtGrossValue": "100001",
+      "solsExecutorAliasNames": "ex1wn",
+      "primaryApplicantSurname": "Ex1ln",
+      "solsSolicitorAppReference": "appref",
+      "solsSOTNeedToUpdate":"No"
+    },
+    "data_classification": {
+      "deceasedDateOfDeath": "PUBLIC",
+      "solsSolicitorFirmPostcode": "PUBLIC",
+      "solsSolicitorAppReference": "PUBLIC",
+      "deceasedDateOfBirth": "PUBLIC",
+      "deceasedForenames": "PUBLIC",
+      "solsSolicitorFirmName": "PUBLIC",
+      "deceasedSurname": "PUBLIC"
+    },
+    "after_submit_callback_response": null,
+    "callback_response_status_code": null,
+    "callback_response_status": null,
+    "security_classifications": {
+      "deceasedDateOfDeath": "PUBLIC",
+      "solsSolicitorFirmPostcode": "PUBLIC",
+      "solsSolicitorAppReference": "PUBLIC",
+      "deceasedDateOfBirth": "PUBLIC",
+      "deceasedForenames": "PUBLIC",
+      "solsSolicitorFirmName": "PUBLIC",
+      "deceasedSurname": "PUBLIC"
+    }
+  },
+  "event_id": "solicitorCreate"
+}
