@@ -1,0 +1,62 @@
+server:
+  port: ${probate.sol.ccd.port}
+
+management:
+  security:
+    enabled: false
+
+security:
+  basic:
+    enabled: false
+
+authorised.services: probate_backend,ccd_data,ccd-datamgmt-api,ccd_ps,ccd
+auth.provider.service.client:
+  key: CMPRGOBNAUXKYDJL
+  baseUrl: http://localhost:4502
+  microservice: probate_backend
+  tokenTimeToLiveInSeconds: 900
+
+pdf.service:
+  url: http://localhost:5500
+  pdfApi: /api/v1/pdf-generator/html
+  templatesDirectory: templates/pdf/
+  defaultDisplayFilename: legal_statement.pdf
+
+fee.api:
+  url: http://localhost:4411
+  api: /fees-register/fees/lookup
+  service: probate
+  jurisdiction1: family
+  jurisdiction2: probate registry
+  channel: default
+  applicantType: all
+
+markdown.templatesDirectory: templates/markdown/
+
+#dev deployment of ccd-print-service used for local
+#host: https://return-case-doc.dev.ccd.reform.hmcts.net:3453
+printservice:
+  templatesDirectory: templates/printService/
+  host: http://localhost:3453
+  path: /jurisdictions/PROBATE/case-types/GrantOfRepresentation/cases/%s/probate/
+
+spring:
+  jackson:
+    serialization:
+      wrap_root_value: false
+    deserialization:
+      unwrap_root_value: false
+  application:
+    name: probate-sol-ccd
+
+spring.jackson.serialization.write_dates_as_timestamps: false
+
+####Evidence management Service URL's
+#hard coded to point to docker container ccd-data-store-api CCD_DM_DOMAIN value
+evidence.management.host: http://localhost:8080
+evidence.management.upload.file.url: /documents
+
+http.connect.timeout: 60000
+http.connect.request.timeout: 60000
+
+idam.service.host: ${PROVIDER_SERVICE_CLIENT_URL:http://localhost:4502}

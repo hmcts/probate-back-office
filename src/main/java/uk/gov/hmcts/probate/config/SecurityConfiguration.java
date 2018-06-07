@@ -7,8 +7,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import uk.gov.hmcts.auth.checker.spring.serviceonly.AuthCheckerServiceOnlyFilter;
 import uk.gov.hmcts.probate.exception.handler.AuthenticationExceptionHandler;
+import uk.gov.hmcts.reform.auth.checker.spring.serviceonly.AuthCheckerServiceOnlyFilter;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
