@@ -7,3 +7,5 @@ packages_environment = "preprod"
 packages_version = "3.0.0"
 
 log_level = "INFO"
+
+capacity = "2"
