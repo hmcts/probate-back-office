@@ -23,6 +23,7 @@ module "probate-sol-ccd-service" {
   source = "git@github.com:hmcts/moj-module-webapp.git?ref=master"
   product = "${var.product}-${var.microservice}"
   location = "${var.location}"
+  capacity     = "${var.capacity}"
   APPINSIGHTS_INSTRUMENTATIONKEY = "${var.APPINSIGHTS_INSTRUMENTATIONKEY}"
   env = "${var.env}"
   ilbIp = "${var.ilbIp}"
