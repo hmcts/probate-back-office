@@ -83,7 +83,7 @@ variable "capacity" {
   default = "1"
 }
 
-variable "APPINSIGHTS_INSTRUMENTATIONKEY" {
+variable "APPINSIGHTS_INSTRUMENTATION_KEY" {
   description = "Instrumentation key of the App Insights instance this webapp should use. Module will create own App Insights resource if this is not provided"
   default = ""
 }
