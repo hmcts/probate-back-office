@@ -24,7 +24,6 @@ module "probate-sol-ccd-service" {
   product = "${var.product}-${var.microservice}"
   location = "${var.location}"
   capacity     = "${var.capacity}"
-  APPINSIGHTS_INSTRUMENTATIONKEY = "${var.APPINSIGHTS_INSTRUMENTATIONKEY}"
   env = "${var.env}"
   ilbIp = "${var.ilbIp}"
   is_frontend  = false
