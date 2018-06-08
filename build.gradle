@@ -175,15 +175,12 @@ repositories {
 }
 
 
-distributions {
-  main {
-    contents {
-      from(file("$projectDir/lib/AI-Agent.xml")) {
-        into "lib"
-      }
-    }
+processResources {
+  from ('src/lib/AI-Agent.xml') {
+    into 'lib'
   }
 }
+
 
 dependencies {
   compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: springBootVersion
