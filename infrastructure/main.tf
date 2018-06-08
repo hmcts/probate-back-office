@@ -23,19 +23,19 @@ module "probate-sol-ccd-service" {
   source = "git@github.com:hmcts/moj-module-webapp.git?ref=master"
   product = "${var.product}-${var.microservice}"
   location = "${var.location}"
+  APPINSIGHTS_INSTRUMENTATIONKEY = "${var.APPINSIGHTS_INSTRUMENTATIONKEY}"
   env = "${var.env}"
   ilbIp = "${var.ilbIp}"
   is_frontend  = false
   subscription = "${var.subscription}"
   asp_name     = "${var.product}-${var.env}-asp"
-  capacity     = "${var.capacity}"
-  
+
   app_settings = {
 
 	  // Logging vars
     REFORM_TEAM = "${var.product}"
     REFORM_SERVICE_NAME = "${var.microservice}"
-    REFORM_ENVIRONMENT = "${var.env}"  
+    REFORM_ENVIRONMENT = "${var.env}"
 
     DEPLOYMENT_ENV= "${var.deployment_env}"
 
@@ -47,7 +47,7 @@ module "probate-sol-ccd-service" {
     IDAM_USER_HOST = "${var.idam_user_host}"
     IDAM_SERVICE_HOST = "${var.idam_service_api}"
     FEE_API_URL = "${var.fee_api_url}"
-    EVIDENCE_MANAGEMENT_HOST = "${var.evidence_management_host}" 
+    EVIDENCE_MANAGEMENT_HOST = "${var.evidence_management_host}"
 
     java_app_name = "${var.microservice}"
     LOG_LEVEL = "${var.log_level}"

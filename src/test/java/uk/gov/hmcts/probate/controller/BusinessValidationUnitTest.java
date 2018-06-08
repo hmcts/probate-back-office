@@ -15,6 +15,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import uk.gov.hmcts.probate.exception.BadRequestException;
 import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
+import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
 import uk.gov.hmcts.probate.model.ccd.raw.CCDDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
@@ -82,6 +83,8 @@ public class BusinessValidationUnitTest {
     private PDFManagementService pdfManagementServiceMock;
     @Mock
     private JsonProcessingException jsonProcessingException;
+    @Mock
+    private AppInsights appInsightsMock;
 
 
     private BusinessValidationController underTest;
@@ -96,7 +99,7 @@ public class BusinessValidationUnitTest {
                 validationRules,
                 callbackResponseTransformerMock,
                 confirmationResponseServiceMock,
-                stateChangeServiceMock, pdfManagementServiceMock);
+                stateChangeServiceMock, pdfManagementServiceMock, appInsightsMock);
 
         when(httpServletRequest.getRequestURI()).thenReturn("/test-uri");
     }

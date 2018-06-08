@@ -5,8 +5,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -19,6 +21,7 @@ import uk.gov.hmcts.probate.controller.validation.ApplicationUpdatedGroup;
 import uk.gov.hmcts.probate.exception.BadRequestException;
 import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
+import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.ccd.raw.CCDDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.response.AfterSubmitCallbackResponse;
@@ -40,9 +43,12 @@ import java.util.stream.Collectors;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static uk.gov.hmcts.probate.insights.AppInsightsEvent.CBR_RECEIVED;
+import static uk.gov.hmcts.probate.insights.AppInsightsEvent.BINDING_EXCEPTION;
 
 @Data
 @Controller
+@Component
 @RequestMapping("/case")
 public class BusinessValidationController {
 
@@ -56,6 +62,7 @@ public class BusinessValidationController {
     private final ConfirmationResponseService confirmationResponseService;
     private final StateChangeService stateChangeService;
     private final PDFManagementService pdfManagementService;
+    private final AppInsights appInsights;
 
     @PostMapping(path = "/validate", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<CallbackResponse> validate(
@@ -67,6 +74,7 @@ public class BusinessValidationController {
 
         if (bindingResult.hasErrors()) {
             log.error("Case Id: {} ERROR: {}", callbackRequest.getCaseDetails().getId(), bindingResult);
+            appInsights.trackEvent(BINDING_EXCEPTION, callbackRequest.getCaseDetails().getId().toString());
             throw new BadRequestException("Invalid payload", bindingResult);
         }
 
@@ -92,6 +100,7 @@ public class BusinessValidationController {
 
         if (bindingResult.hasErrors()) {
             log.error("Case: Id {} ERROR: {}", callbackRequest.getCaseDetails().getId(), bindingResult);
+            appInsights.trackEvent(BINDING_EXCEPTION, callbackRequest.getCaseDetails().getId().toString());
             throw new BadRequestException("Invalid payload", bindingResult);
         }
 
@@ -133,6 +142,7 @@ public class BusinessValidationController {
         try {
             log.info("POST: {} Case Id: {} ", uri, callbackRequest.getCaseDetails().getId().toString());
             log.debug("POST: {} {}", uri, objectMapper.writeValueAsString(callbackRequest));
+            appInsights.trackEvent(CBR_RECEIVED, callbackRequest.getCaseDetails().getId().toString());
         } catch (JsonProcessingException e) {
             log.error("POST: {}", uri, e);
         }

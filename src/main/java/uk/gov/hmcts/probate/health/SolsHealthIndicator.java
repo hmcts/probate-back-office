@@ -30,14 +30,14 @@ public class SolsHealthIndicator implements HealthIndicator {
             responseEntity = restTemplate.getForEntity(url + "/health", String.class);
 
         } catch (ResourceAccessException rae) {
-            log.error(rae.getMessage(), rae);
+            log.error(rae.getMessage());
             return getHealthWithDownStatus(url, rae.getMessage(), "ResourceAccessException");
         } catch (HttpStatusCodeException hsce) {
-            log.error(hsce.getMessage(), hsce);
+            log.error(hsce.getMessage());
             return getHealthWithDownStatus(url, hsce.getMessage(),
                     "HttpStatusCodeException - HTTP Status: " + hsce.getStatusCode().value());
         } catch (UnknownHttpStatusCodeException uhsce) {
-            log.error(uhsce.getMessage(), uhsce);
+            log.error(uhsce.getMessage());
             return getHealthWithDownStatus(url, uhsce.getMessage(), "UnknownHttpStatusCodeException - " + uhsce.getStatusText());
         }
 
