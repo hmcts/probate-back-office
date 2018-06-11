@@ -65,8 +65,8 @@ withParameterizedPipeline('java', 'probate', 'sol-ccd-service', params.ENVIRONME
                 reportName           : "sol-ccd-service find Bugs Report"
         ]
     }
-    
-    after('functionalTest:saat') {
+
+    after('functionalTest:sandbox') {
         publishHTML target: [
                 reportDir            : "target/site/serenity/",
                 reportFiles          : "index.html",
@@ -75,20 +75,11 @@ withParameterizedPipeline('java', 'probate', 'sol-ccd-service', params.ENVIRONME
         ]
     }
 
-    after('functionalTest:aat') {
+    after('functionalTest:saat') {
         publishHTML target: [
                 reportDir            : "target/site/serenity/",
                 reportFiles          : "index.html",
-                reportName           : "AAT Functional Tests",
-                alwaysLinkToLastBuild: true
-        ]
-    }
-
-    after('functionalTest:spreview') {
-        publishHTML target: [
-                reportDir            : "target/site/serenity/",
-                reportFiles          : "index.html",
-                reportName           : "Preview Functional Tests",
+                reportName           : "SAAT Functional Tests",
                 alwaysLinkToLastBuild: true
         ]
     }
