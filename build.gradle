@@ -107,7 +107,7 @@ dependencyCheck {
 
 pitest {
   targetClasses = ['uk.gov.hmcts.probate.*']
-  threads = 4
+  threads = 10
   outputFormats = ['XML', 'HTML']
   timestampedReports = false
   mutationThreshold = 50
