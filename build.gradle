@@ -113,6 +113,13 @@ pitest {
   mutationThreshold = 50
 }
 
+sonarqube {
+  properties {
+    property "sonar.pitest.mode", "reuseReport"
+    property "sonar.pitest.reportsDirectory", "build/reports/pitest"
+  }
+}
+
 sourceSets {
     testSmoke {
         java {
