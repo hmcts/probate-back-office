@@ -29,9 +29,15 @@ static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
 withParameterizedPipeline('java', 'probate', 'sol-ccd-service', params.ENVIRONMENT, 'sandbox') {
     loadVaultSecrets(secrets)
 
-    after('test') {
+    after('build') {
+        try {
+            sh './gradlew pitest'
+        } finally {
+            steps.archiveArtifacts "build/reports/pitest/**/*.*"
+        }
+
         junit 'build/test-results/test/**/*.xml'
-	archiveArtifacts 'build/reports/tests/test/index.html'
+	    archiveArtifacts 'build/reports/tests/test/index.html'
         publishHTML target: [
                 allowMissing         : true,
                 alwaysLinkToLastBuild: true,
@@ -59,30 +65,12 @@ withParameterizedPipeline('java', 'probate', 'sol-ccd-service', params.ENVIRONME
                 reportName           : "sol-ccd-service find Bugs Report"
         ]
     }
-    
+
     after('functionalTest:saat') {
         publishHTML target: [
                 reportDir            : "target/site/serenity/",
                 reportFiles          : "index.html",
                 reportName           : "SAAT Functional Tests",
-                alwaysLinkToLastBuild: true
-        ]
-    }
-
-    after('functionalTest:aat') {
-        publishHTML target: [
-                reportDir            : "target/site/serenity/",
-                reportFiles          : "index.html",
-                reportName           : "AAT Functional Tests",
-                alwaysLinkToLastBuild: true
-        ]
-    }
-
-    after('functionalTest:spreview') {
-        publishHTML target: [
-                reportDir            : "target/site/serenity/",
-                reportFiles          : "index.html",
-                reportName           : "Preview Functional Tests",
                 alwaysLinkToLastBuild: true
         ]
     }

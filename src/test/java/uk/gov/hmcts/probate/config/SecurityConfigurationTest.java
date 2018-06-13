@@ -15,13 +15,18 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-import uk.gov.hmcts.probate.insights.AppInsights;
+import uk.gov.hmcts.reform.auth.checker.core.SubjectResolver;
+import uk.gov.hmcts.reform.auth.checker.core.service.Service;
 
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestBuilders.formLogin;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestBuilders.logout;
+import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.authenticated;
 import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.unauthenticated;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
@@ -29,20 +34,29 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(properties = {"s2s.enabled=true"})
 public class SecurityConfigurationTest {
 
+    private static final String PRINCIPAL = "ccd-datamgmt-api";
+
+    private static final String SERVICE_AUTHORIZATION = "ServiceAuthorization";
+
     @Autowired
     private WebApplicationContext context;
 
     private MockMvc mvc;
 
     @MockBean
-    AppInsights appInsights;
+    private SubjectResolver<Service> serviceResolver;
 
+    private Service service;
+    
     @Before
     public void setUp() {
         mvc = MockMvcBuilders.webAppContextSetup(context)
                 .apply(springSecurity())
                 .defaultRequest(get("/").accept(MediaType.TEXT_HTML))
                 .build();
+
+        service = new Service(PRINCIPAL);
+        when(serviceResolver.getTokenDetails(anyString())).thenReturn(service);
     }
 
     @Test
@@ -58,6 +72,12 @@ public class SecurityConfigurationTest {
     @Test
     public void shouldGet404ForLogout() throws Exception {
         mvc.perform(logout()).andExpect(status().isForbidden());
+    }
+
+    @Test
+    public void shouldAuthenticateForEndpointWithServiceAuthorizationHeader() throws Exception {
+        mvc.perform(post("/case/validate").header(SERVICE_AUTHORIZATION, "Bearer xxxxx.yyyyy.zzzzz"))
+                .andExpect(authenticated());
     }
 
     @TestConfiguration
