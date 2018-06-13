@@ -7,6 +7,7 @@ USER gradle
 
 WORKDIR /home/gradle/src
 RUN gradle test
+RUN gradle assemble
 
 FROM openjdk:8-alpine
 
