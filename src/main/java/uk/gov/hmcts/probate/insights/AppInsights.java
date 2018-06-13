@@ -15,7 +15,7 @@ public class AppInsights extends AbstractAppInsights {
         super(client);
     }
 
-    public void trackEvent(AppInsightsEvent appInsightsEvent, String caseId) {
-        telemetry.trackEvent(appInsightsEvent.toString(), singletonMap("CaseID", caseId), null);
+    public void trackEvent(AppInsightsEvent appInsightsEvent, String uri) {
+        telemetry.trackEvent(appInsightsEvent.toString(), singletonMap("uri", uri), null);
     }
 }

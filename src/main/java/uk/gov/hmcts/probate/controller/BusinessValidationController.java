@@ -42,8 +42,6 @@ import java.util.stream.Collectors;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
-import static uk.gov.hmcts.probate.insights.AppInsightsEvent.CBR_RECEIVED;
-import static uk.gov.hmcts.probate.insights.AppInsightsEvent.BINDING_EXCEPTION;
 
 @Data
 @Controller
@@ -61,7 +59,6 @@ public class BusinessValidationController {
     private final ConfirmationResponseService confirmationResponseService;
     private final StateChangeService stateChangeService;
     private final PDFManagementService pdfManagementService;
-    private final AppInsights appInsights;
 
     @PostMapping(path = "/validate", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<CallbackResponse> validate(
@@ -73,7 +70,6 @@ public class BusinessValidationController {
 
         if (bindingResult.hasErrors()) {
             log.error("Case Id: {} ERROR: {}", callbackRequest.getCaseDetails().getId(), bindingResult);
-            appInsights.trackEvent(BINDING_EXCEPTION, callbackRequest.getCaseDetails().getId().toString());
             throw new BadRequestException("Invalid payload", bindingResult);
         }
 
@@ -99,7 +95,6 @@ public class BusinessValidationController {
 
         if (bindingResult.hasErrors()) {
             log.error("Case: Id {} ERROR: {}", callbackRequest.getCaseDetails().getId(), bindingResult);
-            appInsights.trackEvent(BINDING_EXCEPTION, callbackRequest.getCaseDetails().getId().toString());
             throw new BadRequestException("Invalid payload", bindingResult);
         }
 
@@ -141,7 +136,6 @@ public class BusinessValidationController {
         try {
             log.info("POST: {} Case Id: {} ", uri, callbackRequest.getCaseDetails().getId().toString());
             log.debug("POST: {} {}", uri, objectMapper.writeValueAsString(callbackRequest));
-            appInsights.trackEvent(CBR_RECEIVED, callbackRequest.getCaseDetails().getId().toString());
         } catch (JsonProcessingException e) {
             log.error("POST: {}", uri, e);
         }

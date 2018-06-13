@@ -1,8 +1,7 @@
 package uk.gov.hmcts.probate.insights;
 
 public enum AppInsightsEvent {
-    CBR_RECEIVED("Call Back Request Received"),
-    BINDING_EXCEPTION("Binding Exception occurred");
+    REQUEST_SENT("Request made to: ");
 
     private String displayName;
 
