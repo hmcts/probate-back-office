@@ -34,13 +34,13 @@ locals {
 module "probate-sol-ccd-service" {
   source              = "git@github.com:hmcts/moj-module-webapp.git?ref=infra_versions"
   product             = "${var.product}-${var.microservice}-${var.env}"
-  resource_group_name = "${azurerm_resource_group.resource_group.name}"
+  //resource_group_name = "${azurerm_resource_group.resource_group.name}"
   location            = "${var.location}"
   env                 = "${var.env}"
   ilbIp               = "${var.ilbIp}"
   is_frontend         = false
   subscription        = "${var.subscription}"
-  asp_id            = "${data.terraform_remote_state.probate_infrastructure.aspA}"
+  asp_id              = "${data.terraform_remote_state.probate_infrastructure.aspA}"
   capacity            = "${var.capacity}"
   deploymentTag       = "${var.product}"
 
