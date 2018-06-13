@@ -18,5 +18,11 @@
                 <Method name="getSolicitorCaseDetailsTemplate" reportCaughtExceptions="true" reportExecutionTime="true"/>
                 <Method name="getPACaseDetailsTemplate" reportCaughtExceptions="true" reportExecutionTime="true"/>
             </Class>
+            <Class name="uk.gov.hmcts.probate.service.templates.printService">
+                <Method name="getAllDocuments" reportCaughtExceptions="true" reportExecutionTime="true"/>
+            </Class>
+            <Class name="uk.gov.hmcts.probate.service.template.pdf.PDFGeneratorService">
+                <Method name="generatePdf" reportCaughtExceptions="true" reportExecutionTime="true"/>
+            </Class>
         </Instrumentation>
     </ApplicationInsightsAgent>
