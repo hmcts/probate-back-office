@@ -40,7 +40,7 @@ module "probate-sol-ccd-service" {
   ilbIp               = "${var.ilbIp}"
   is_frontend         = false
   subscription        = "${var.subscription}"
-  asp_name            = "${data.terraform_remote_state.probate_infrastructure.aspA}"
+  asp_id            = "${data.terraform_remote_state.probate_infrastructure.aspA}"
   capacity            = "${var.capacity}"
   deploymentTag       = "${var.product}"
 
