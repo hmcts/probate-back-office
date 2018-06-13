@@ -89,7 +89,7 @@ sonarqube {
     property "sonar.projectName", "PROBATE :: Sol-CCD-Service"
     property "sonar.projectKey", "Sols-CCD-Service-API"
     property "sonar.jacoco.reportPath", "${project.buildDir}/jacoco/test.exec"
-    property "sonar.host.url", "https://sonar.reform.hmcts.net/"
+    property "sonar.host.url", "https://sonar02.reform.hmcts.net/"
     property "sonar.pitest.mode", "reuseReport"
     property "sonar.pitest.reportsDirectory", "build/reports/pitest"
   }
