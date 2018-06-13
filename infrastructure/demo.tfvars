@@ -10,7 +10,7 @@ packages_version = "3.0.0"
 outbound_proxy = ""
 log_level = "INFO"
 
-idam_service_api = "https://rpe-service-auth-provider-demo.service.core-compute-demo.internal/"
+idam_service_api = "https://rpe-service-auth-provider-demo.service.core-compute-demo.internal"
 pdf_service_api_url = "http://cmc-pdf-service-demo.service.core-compute-demo.internal"
 printservice_host = "https://return-case-doc.ccd.demo.platform.hmcts.net"
 fee_api_url = "https://preprod.fees-register.reform.hmcts.net:4411"
