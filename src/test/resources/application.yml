@@ -66,11 +66,11 @@ notifications:
   templates:
     email:
       personal:
-        documentReceived: "04308c65-a0bb-40b4-a3f3-ba8869048520"
-        grantIssued: "9344693b-9ea3-487d-bec1-68201214fd27"
+        documentReceived: "pa-document-received"
+        grantIssued: "pa-grant-issued"
       solicitor:
-        documentReceived: "7f8ff32d-8297-4702-9867-312047f81492"
-        grantIssued: "95aa541b-e55e-4d7c-a6f5-810b5f03adba"
+        documentReceived: "sol-document-received"
+        grantIssued: "sol-grant-issued"
 
 registries:
   oxford:

@@ -64,11 +64,11 @@ class DefaultExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(value = NotificationClientException.class)
-    public ResponseEntity notificationClientException(Exception exception) {
+    public ResponseEntity<ErrorResponse> handle(NotificationClientException exception) {
         log.warn("Notification service exception", exception);
-
+        ErrorResponse errorResponse = new ErrorResponse(SERVICE_UNAVAILABLE.value(), CLIENT_ERROR, exception.getMessage());
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        return new ResponseEntity<>(exception.getMessage(), headers, SERVICE_UNAVAILABLE);
+        return new ResponseEntity<>(errorResponse, headers, SERVICE_UNAVAILABLE);
     }
 }

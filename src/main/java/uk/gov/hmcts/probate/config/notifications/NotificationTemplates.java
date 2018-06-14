@@ -1,8 +1,7 @@
 package uk.gov.hmcts.probate.config.notifications;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
@@ -11,9 +10,8 @@ import uk.gov.hmcts.probate.model.ApplicationType;
 import javax.validation.Valid;
 import java.util.Map;
 
-@AllArgsConstructor
-@NoArgsConstructor
-@Data
+@Getter
+@Setter
 @Component
 @Validated
 @ConfigurationProperties("notifications.templates")
