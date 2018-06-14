@@ -60,3 +60,22 @@ http.connect.timeout: 60000
 http.connect.request.timeout: 60000
 
 idam.service.host: ${PROVIDER_SERVICE_CLIENT_URL:http://localhost:4502}
+
+notifications:
+  govNotifyApiKey: "dummy_key"
+  templates:
+    email:
+      personal:
+        documentReceived: "04308c65-a0bb-40b4-a3f3-ba8869048520"
+        grantIssued: "9344693b-9ea3-487d-bec1-68201214fd27"
+      solicitor:
+        documentReceived: "7f8ff32d-8297-4702-9867-312047f81492"
+        grantIssued: "95aa541b-e55e-4d7c-a6f5-810b5f03adba"
+
+registries:
+  oxford:
+    name: Oxford Registry
+    phone: 0123456789
+  birmingham:
+    name: Birmingham Registry
+    phone: 1234567890

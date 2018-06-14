@@ -14,6 +14,7 @@ import uk.gov.hmcts.probate.exception.BadRequestException;
 import uk.gov.hmcts.probate.exception.ClientException;
 import uk.gov.hmcts.probate.exception.ConnectionException;
 import uk.gov.hmcts.probate.exception.model.ErrorResponse;
+import uk.gov.service.notify.NotificationClientException;
 
 import static net.logstash.logback.argument.StructuredArguments.keyValue;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
@@ -60,5 +61,14 @@ class DefaultExceptionHandler extends ResponseEntityExceptionHandler {
         headers.setContentType(MediaType.APPLICATION_JSON);
 
         return new ResponseEntity<>(errorResponse, headers, SERVICE_UNAVAILABLE);
+    }
+
+    @ExceptionHandler(value = NotificationClientException.class)
+    public ResponseEntity notificationClientException(Exception exception) {
+        log.warn("Notification service exception", exception);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        return new ResponseEntity<>(exception.getMessage(), headers, SERVICE_UNAVAILABLE);
     }
 }
