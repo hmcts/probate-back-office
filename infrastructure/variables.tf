@@ -82,5 +82,3 @@ variable "log_level" {
 variable "capacity" {
   default = "1"
 }
-
-
