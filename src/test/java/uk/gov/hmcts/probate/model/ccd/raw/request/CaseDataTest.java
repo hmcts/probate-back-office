@@ -22,10 +22,12 @@ import static org.mockito.MockitoAnnotations.initMocks;
 public class CaseDataTest {
 
     private static final String YES = "Yes";
-    private static final String PRIMARY_APP_FNAME = "fName";
-    private static final String PRIMARY_APP_SNAME = "sName";
-    private static final SolsAddress PRIMARY_APP_ADDRESS = mock(SolsAddress.class);
-    private static final String PRIMARY_APP_NAME_ON_WILL = "willName";
+    private static final String PRIMARY_APPLICANT_FIRST_NAME = "fName";
+    private static final String PRIMARY_APPLICANT_SURNAME = "sName";
+    private static final SolsAddress PRIMARY_APPLICANT_ADDRESS = mock(SolsAddress.class);
+    private static final String PRIMARY_APPLICANT_NAME_ON_WILL = "willName";
+    private static final String DECEASED_FIRST_NAME = "Name";
+    private static final String DECEASED_SURNAME = "Surname";
     private static final String NOT_APPLYING_REASON = "not applying reason";
 
     @Mock
@@ -61,13 +63,13 @@ public class CaseDataTest {
         additionalExecutorsList.add(null);
 
         underTest = CaseData.builder()
-            .primaryApplicantForenames(PRIMARY_APP_FNAME)
-            .primaryApplicantForenames(PRIMARY_APP_SNAME)
-            .primaryApplicantIsApplying(YES)
-            .primaryApplicantAddress(PRIMARY_APP_ADDRESS)
-            .solsExecutorAliasNames(PRIMARY_APP_NAME_ON_WILL)
-            .solsAdditionalExecutorList(additionalExecutorsList)
-            .build();
+                .primaryApplicantForenames(PRIMARY_APPLICANT_FIRST_NAME)
+                .primaryApplicantForenames(PRIMARY_APPLICANT_SURNAME)
+                .primaryApplicantIsApplying(YES)
+                .primaryApplicantAddress(PRIMARY_APPLICANT_ADDRESS)
+                .solsExecutorAliasNames(PRIMARY_APPLICANT_NAME_ON_WILL)
+                .solsAdditionalExecutorList(additionalExecutorsList)
+                .build();
     }
 
     @Test
@@ -136,13 +138,33 @@ public class CaseDataTest {
         additionalExecutorsList.add(additionalExecutors3Mock);
         additionalExecutorsList.add(null);
         return CaseData.builder()
-                .primaryApplicantForenames(PRIMARY_APP_FNAME)
-                .primaryApplicantForenames(PRIMARY_APP_SNAME)
+                .primaryApplicantForenames(PRIMARY_APPLICANT_FIRST_NAME)
+                .primaryApplicantForenames(PRIMARY_APPLICANT_SURNAME)
                 .primaryApplicantIsApplying(Constants.NO)
-                .primaryApplicantAddress(PRIMARY_APP_ADDRESS)
-                .solsExecutorAliasNames(PRIMARY_APP_NAME_ON_WILL)
+                .primaryApplicantAddress(PRIMARY_APPLICANT_ADDRESS)
+                .solsExecutorAliasNames(PRIMARY_APPLICANT_NAME_ON_WILL)
                 .solsAdditionalExecutorList(additionalExecutorsList)
                 .build();
     }
 
+    @Test
+    public void shouldReturnPrimaryApplicantFullName() {
+        final CaseData caseData = CaseData.builder()
+                .primaryApplicantForenames(PRIMARY_APPLICANT_FIRST_NAME)
+                .primaryApplicantSurname(PRIMARY_APPLICANT_SURNAME)
+                .build();
+
+        assertEquals(PRIMARY_APPLICANT_FIRST_NAME + " " + PRIMARY_APPLICANT_SURNAME,
+                caseData.getPrimaryApplicantFullName());
+    }
+
+    @Test
+    public void shouldReturnDeceasedFullName() {
+        final CaseData caseData = CaseData.builder()
+                .deceasedForenames(DECEASED_FIRST_NAME)
+                .deceasedSurname(DECEASED_SURNAME)
+                .build();
+
+        assertEquals(DECEASED_FIRST_NAME + " " + DECEASED_SURNAME, caseData.getDeceasedFullName());
+    }
 }

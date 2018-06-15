@@ -7,6 +7,7 @@ import uk.gov.hmcts.probate.controller.validation.ApplicationCreatedGroup;
 import uk.gov.hmcts.probate.controller.validation.ApplicationReviewedGroup;
 import uk.gov.hmcts.probate.controller.validation.ApplicationUpdatedGroup;
 import uk.gov.hmcts.probate.controller.validation.NextStepsConfirmationGroup;
+import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutors;
 import uk.gov.hmcts.probate.model.ccd.raw.AliasNames;
@@ -98,6 +99,8 @@ public class CaseData {
     @NotBlank(groups = {ApplicationUpdatedGroup.class}, message = "{primaryApplicantSurnameIsNull}")
     private final String primaryApplicantSurname;
 
+    private final String primaryApplicantEmailAddress;
+
     @NotBlank(groups = {ApplicationUpdatedGroup.class}, message = "{primaryApplicantHasAliasIsNull}")
     private final String primaryApplicantHasAlias;
 
@@ -159,7 +162,7 @@ public class CaseData {
 
     private List<AdditionalExecutors> executorsNotApplying;
 
-    private final String applicationType;
+    private final ApplicationType applicationType;
 
     private final String registryLocation;
 
@@ -214,5 +217,13 @@ public class CaseData {
         }
 
         return ex.getAdditionalExecutor().getAdditionalApplying().equals(applying ? YES : NO);
+    }
+
+    public String getDeceasedFullName() {
+        return String.join(" ", deceasedForenames, deceasedSurname);
+    }
+
+    public String getPrimaryApplicantFullName() {
+        return String.join(" ", primaryApplicantForenames, primaryApplicantSurname);
     }
 }

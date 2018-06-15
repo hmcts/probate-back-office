@@ -6,7 +6,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
-import uk.gov.hmcts.probate.model.ccd.raw.request.PrintTemplateApplicationType;
 import uk.gov.hmcts.probate.model.template.DocumentResponse;
 import uk.gov.hmcts.probate.service.FileSystemResourceService;
 
@@ -49,10 +48,8 @@ public class PrintService {
 
     public List<DocumentResponse> getAllDocuments(CaseDetails caseDetails) {
         Long caseId = caseDetails.getId();
-        String type = PrintTemplateApplicationType.valueOf(caseDetails.getData().getApplicationType().toUpperCase())
-                .getPrintType();
-
-        String urlTemplate = printServiceHost + printServicePath + type;
+        String applicationTypeCode = caseDetails.getData().getApplicationType().getCode();
+        String urlTemplate = printServiceHost + printServicePath + applicationTypeCode;
         String url = String.format(urlTemplate, caseId);
 
         DocumentResponse documentResponse = new DocumentResponse(DOCUMENT_NAME, DOCUMENT_TYPE, url);

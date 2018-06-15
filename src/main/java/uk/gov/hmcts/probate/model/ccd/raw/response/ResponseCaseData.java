@@ -63,5 +63,5 @@ public class ResponseCaseData {
     private final String deceasedAnyOtherNames;
     private final SolsAddress primaryApplicantAddress;
     private final List<AliasNames> solsDeceasedAliasNamesList;
-
+    private final String ccdState;
 }

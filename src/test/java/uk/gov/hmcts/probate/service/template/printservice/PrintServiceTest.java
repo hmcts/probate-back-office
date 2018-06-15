@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.test.util.ReflectionTestUtils;
+import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.template.DocumentResponse;
@@ -46,7 +47,7 @@ public class PrintServiceTest {
     public void shouldReturnAllSolicitorDocuments() {
         when(caseDetailsMock.getId()).thenReturn(1000L);
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
-        when(caseDataMock.getApplicationType()).thenReturn("Solicitor");
+        when(caseDataMock.getApplicationType()).thenReturn(ApplicationType.SOLICITOR);
         List<DocumentResponse> docs = underTest.getAllDocuments(caseDetailsMock);
 
         assertEquals(1, docs.size());
@@ -59,7 +60,7 @@ public class PrintServiceTest {
     public void shouldReturnAllPADocuments() {
         when(caseDetailsMock.getId()).thenReturn(1000L);
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
-        when(caseDataMock.getApplicationType()).thenReturn("Personal");
+        when(caseDataMock.getApplicationType()).thenReturn(ApplicationType.PERSONAL);
         List<DocumentResponse> docs = underTest.getAllDocuments(caseDetailsMock);
 
         assertEquals(1, docs.size());

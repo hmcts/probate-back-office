@@ -32,6 +32,17 @@ public class CallbackResponseTransformer {
 
         ResponseCaseData responseCaseData = this.getResponseCaseData(caseData)
                 .state(newState.orElse(null))
+                .ccdState(callbackRequest.getCaseDetails().getState())
+                .build();
+
+        return transform(responseCaseData);
+    }
+
+    public CallbackResponse addCcdState(CallbackRequest callbackRequest) {
+        CaseData caseData = callbackRequest.getCaseDetails().getData();
+
+        ResponseCaseData responseCaseData = this.getResponseCaseData(caseData)
+                .ccdState(callbackRequest.getCaseDetails().getState())
                 .build();
 
         return transform(responseCaseData);
@@ -50,6 +61,7 @@ public class CallbackResponseTransformer {
                 .feeForUkCopies(feeForUkCopies)
                 .applicationFee(applicationFee)
                 .totalFee(totalFee)
+                .ccdState(callbackRequest.getCaseDetails().getState())
                 .build();
 
         return transform(responseCaseData);
@@ -60,6 +72,7 @@ public class CallbackResponseTransformer {
 
         ResponseCaseDataBuilder responseCaseData = this.getResponseCaseData(caseData);
         responseCaseData.solsSOTNeedToUpdate(null);
+        responseCaseData.ccdState(callbackRequest.getCaseDetails().getState());
         if (LEGAL_STATEMENT.equals(pdfServiceTemplate)) {
             responseCaseData.solsLegalStatementDocument(ccdDocument);
         }
