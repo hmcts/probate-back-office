@@ -26,7 +26,7 @@ static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
   ]
 }
 
-withParameterizedPipeline('java', 'probate', 'sol-ccd-service', params.ENVIRONMENT, 'sandbox') {
+withParameterizedPipeline('java', 'probate', 'bo-sol-ccd-service', params.ENVIRONMENT, 'sandbox') {
     loadVaultSecrets(secrets)
 
     after('build') {
@@ -45,7 +45,7 @@ withParameterizedPipeline('java', 'probate', 'sol-ccd-service', params.ENVIRONME
                 keepAll              : true,
                 reportDir            : "build/reports/tests/test",
                 reportFiles          : "index.html",
-                reportName           : "sol-ccd-service Test Report"
+                reportName           : "bo-sol-ccd-service Test Report"
         ]
 
         publishHTML target: [
@@ -54,7 +54,7 @@ withParameterizedPipeline('java', 'probate', 'sol-ccd-service', params.ENVIRONME
                 keepAll              : true,
                 reportDir            : "build/reports/jacoco",
                 reportFiles          : "index.html",
-                reportName           : "sol-ccd-service Code Coverage Report"
+                reportName           : "bo-sol-ccd-service Code Coverage Report"
         ]
 
         publishHTML target: [
@@ -63,7 +63,7 @@ withParameterizedPipeline('java', 'probate', 'sol-ccd-service', params.ENVIRONME
                 keepAll              : true,
                 reportDir            : "build/reports/findbugs",
                 reportFiles          : "main.html",
-                reportName           : "sol-ccd-service find Bugs Report"
+                reportName           : "bo-sol-ccd-service find Bugs Report"
         ]
     }
 
@@ -71,7 +71,7 @@ withParameterizedPipeline('java', 'probate', 'sol-ccd-service', params.ENVIRONME
         publishHTML target: [
                 reportDir            : "target/site/serenity/",
                 reportFiles          : "index.html",
-                reportName           : "SAAT Functional Tests",
+                reportName           : "BO-SAAT Functional Tests",
                 alwaysLinkToLastBuild: true
         ]
     }

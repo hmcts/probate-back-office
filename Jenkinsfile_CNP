@@ -3,7 +3,7 @@
 @Library("Infrastructure")
 
 String product = "probate"
-String component = "sol-ccd-service"
+String component = "bo-sol-ccd-service"
 
 List<LinkedHashMap<String, Object>> secrets = [
     secret('serviceAuthProviderBaseUrl', 'SERVICE_AUTH_PROVIDER_BASE_URL'),
@@ -44,7 +44,7 @@ withPipeline("java", product, component) {
             keepAll              : true,
             reportDir            : "build/reports/tests/test",
             reportFiles          : "index.html",
-            reportName           : "sol-ccd-service Test Report"
+            reportName           : "bo-sol-ccd-service Test Report"
     ]
 
     publishHTML target: [
@@ -53,7 +53,7 @@ withPipeline("java", product, component) {
             keepAll              : true,
             reportDir            : "build/reports/jacoco",
             reportFiles          : "index.html",
-            reportName           : "sol-ccd-service Code Coverage Report"
+            reportName           : "bo-sol-ccd-service Code Coverage Report"
     ]
 
     publishHTML target: [
@@ -62,7 +62,7 @@ withPipeline("java", product, component) {
             keepAll              : true,
             reportDir            : "build/reports/findbugs",
             reportFiles          : "main.html",
-            reportName           : "sol-ccd-service find Bugs Report"
+            reportName           : "bo-sol-ccd-service find Bugs Report"
     ]
   }
 
