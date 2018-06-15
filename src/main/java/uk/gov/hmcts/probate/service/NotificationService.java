@@ -7,7 +7,7 @@ import uk.gov.hmcts.probate.config.properties.registries.RegistriesProperties;
 import uk.gov.hmcts.probate.config.properties.registries.Registry;
 import uk.gov.hmcts.probate.exception.BadRequestException;
 import uk.gov.hmcts.probate.model.ApplicationType;
-import uk.gov.hmcts.probate.model.Event;
+import uk.gov.hmcts.probate.model.State;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.service.notify.NotificationClient;
 import uk.gov.service.notify.NotificationClientException;
@@ -22,10 +22,10 @@ public class NotificationService {
     private final RegistriesProperties registriesProperties;
     private final NotificationClient notificationClient;
 
-    public void sendEmail(Event event, CaseData caseData)
+    public void sendEmail(State state, CaseData caseData)
             throws NotificationClientException, BadRequestException {
 
-        String templateId = getTemplateId(event, caseData.getApplicationType());
+        String templateId = getTemplateId(state, caseData.getApplicationType());
         String emailAddress = getEmail(caseData);
         Map<String, String> personalisation = getPersonalisation(caseData);
         String reference = caseData.getSolsSolicitorAppReference();
@@ -47,14 +47,14 @@ public class NotificationService {
         return personalisation;
     }
 
-    private String getTemplateId(Event event, ApplicationType applicationType) {
-        switch (event) {
+    private String getTemplateId(State state, ApplicationType applicationType) {
+        switch (state) {
             case DOCUMENTS_RECEIVED:
                 return notificationTemplates.getEmail().get(applicationType).getDocumentReceived();
             case GRANT_ISSUED:
                 return notificationTemplates.getEmail().get(applicationType).getGrantIssued();
             default:
-                throw new BadRequestException("Unsupported event", null);
+                throw new BadRequestException("Unsupported state", null);
         }
     }
 

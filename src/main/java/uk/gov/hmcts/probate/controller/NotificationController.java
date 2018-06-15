@@ -16,8 +16,8 @@ import uk.gov.service.notify.NotificationClientException;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
-import static uk.gov.hmcts.probate.model.Event.DOCUMENTS_RECEIVED;
-import static uk.gov.hmcts.probate.model.Event.GRANT_ISSUED;
+import static uk.gov.hmcts.probate.model.State.DOCUMENTS_RECEIVED;
+import static uk.gov.hmcts.probate.model.State.GRANT_ISSUED;
 
 @RequiredArgsConstructor
 @RequestMapping(value = "/notify", consumes = APPLICATION_JSON_UTF8_VALUE, produces = APPLICATION_JSON_VALUE)

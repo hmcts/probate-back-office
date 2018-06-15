@@ -19,8 +19,8 @@ import static org.mockito.Mockito.anyString;
 import static org.mockito.Mockito.verify;
 import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
-import static uk.gov.hmcts.probate.model.Event.DOCUMENTS_RECEIVED;
-import static uk.gov.hmcts.probate.model.Event.GRANT_ISSUED;
+import static uk.gov.hmcts.probate.model.State.DOCUMENTS_RECEIVED;
+import static uk.gov.hmcts.probate.model.State.GRANT_ISSUED;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest

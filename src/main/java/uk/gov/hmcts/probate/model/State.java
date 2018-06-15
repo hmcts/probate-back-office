@@ -1,6 +1,6 @@
 package uk.gov.hmcts.probate.model;
 
-public enum Event {
+public enum State {
     DOCUMENTS_RECEIVED,
     GRANT_ISSUED
 }

@@ -4,8 +4,18 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public enum ApplicationType {
     @JsonProperty("Solicitor")
-    SOLICITOR,
+    SOLICITOR("sol"),
 
     @JsonProperty("Personal")
-    PERSONAL
+    PERSONAL("pa");
+
+    private final String code;
+
+    ApplicationType(String code) {
+        this.code = code;
+    }
+
+    public String getCode() {
+        return code;
+    }
 }
