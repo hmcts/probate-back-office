@@ -31,7 +31,7 @@ withParameterizedPipeline('java', 'probate', 'sol-ccd-service', params.ENVIRONME
 
     after('build') {
 //        try {
-            sh './gradlew pitest'
+          //  sh './gradlew pitest'
 //        } finally {
 //            steps.archiveArtifacts "build/reports/pitest/**/*.*"
 //        }
