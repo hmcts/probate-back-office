@@ -30,15 +30,9 @@ withParameterizedPipeline('java', 'probate', 'bo-sol-ccd-service', params.ENVIRO
     loadVaultSecrets(secrets)
 
     after('build') {
-        // try {
-        //     sh './gradlew pitest'
-        // } finally {
-        //     steps.archiveArtifacts "build/reports/pitest/**/*.*"
-        // }
-    
-
-        //junit 'build/test-results/test/**/*.xml'
-	    //archiveArtifacts 'build/reports/tests/test/index.html'
+        sh './gradlew test'
+        junit 'build/test-results/test/**/*.xml'
+	    archiveArtifacts 'build/reports/tests/test/index.html'
         publishHTML target: [
                 allowMissing         : true,
                 alwaysLinkToLastBuild: true,
@@ -65,6 +59,11 @@ withParameterizedPipeline('java', 'probate', 'bo-sol-ccd-service', params.ENVIRO
                 reportFiles          : "main.html",
                 reportName           : "bo-sol-ccd-service find Bugs Report"
         ]
+        try {
+            sh './gradlew pitest'
+        } finally {
+            steps.archiveArtifacts "build/reports/pitest/**/*.*"
+        }
     }
 
     after('functionalTest:saat') {
