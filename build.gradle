@@ -86,7 +86,7 @@ findbugs {
 
 sonarqube {
   properties {
-    property "sonar.projectName", "PROBATE :: Sol-CCD-Service"
+    property "sonar.projectName", "PROBATE :: BO-Sol-CCD-Service"
     property "sonar.projectKey", "Sols-CCD-Service-API"
     property "sonar.jacoco.reportPath", "${project.buildDir}/jacoco/test.exec"
     property "sonar.host.url", "https://sonar.reform.hmcts.net/"
@@ -242,7 +242,7 @@ compileJava {
 }
 
 jar {
-  archiveName = 'sol-ccd-service.jar'
+  archiveName = 'bo-sol-ccd-service.jar'
   manifest {
 
     attributes 'Implementation-Title': project.name,

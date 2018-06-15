@@ -1,7 +1,7 @@
 output "vaultUri" {
-  value = "${module.probate-sol-ccd-service-vault.key_vault_uri}"
+  value = "${module.probate-bo-sol-ccd-service-vault.key_vault_uri}"
 }
 
 output "vaultName" {
-  value = "${module.probate-sol-ccd-service-vault.key_vault_name}"
+  value = "${module.probate-bo-sol-ccd-service-vault.key_vault_name}"
 }

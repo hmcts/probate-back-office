@@ -19,7 +19,7 @@ locals {
   aseName = "${data.terraform_remote_state.core_apps_compute.ase_name[0]}"
 }
 
-module "probate-sol-ccd-service" {
+module "probate-bo-sol-ccd-service" {
   source = "git@github.com:hmcts/moj-module-webapp.git?ref=master"
   product = "${var.product}-${var.microservice}"
   location = "${var.location}"
@@ -56,13 +56,13 @@ module "probate-sol-ccd-service" {
   }
 }
 
-module "probate-sol-ccd-service-vault" {
+module "probate-bo-sol-ccd-service-vault" {
   source              = "git@github.com:hmcts/moj-module-key-vault?ref=master"
-  name                = "pro-sol-ccd-ser-${var.env}"
+  name                = "pro-bo-sol-ccd-ser-${var.env}"
   product             = "${var.product}"
   env                 = "${var.env}"
   tenant_id           = "${var.tenant_id}"
   object_id           = "${var.jenkins_AAD_objectId}"
-  resource_group_name = "${module.probate-sol-ccd-service.resource_group_name}"
+  resource_group_name = "${module.probate-bo-sol-ccd-service.resource_group_name}"
   product_group_object_id = "33ed3c5a-bd38-4083-84e3-2ba17841e31e"
 }
