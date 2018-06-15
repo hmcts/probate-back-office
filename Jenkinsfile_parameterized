@@ -29,12 +29,13 @@ static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
 withParameterizedPipeline('java', 'probate', 'sol-ccd-service', params.ENVIRONMENT, 'sandbox') {
     loadVaultSecrets(secrets)
 
-    after('build') {
+   after('build') {
         try {
             sh './gradlew pitest'
         } finally {
             steps.archiveArtifacts "build/reports/pitest/**/*.*"
         }
+   }
 
         junit 'build/test-results/test/**/*.xml'
 	    archiveArtifacts 'build/reports/tests/test/index.html'
@@ -74,4 +75,4 @@ withParameterizedPipeline('java', 'probate', 'sol-ccd-service', params.ENVIRONME
                 alwaysLinkToLastBuild: true
         ]
     }
-}
+
