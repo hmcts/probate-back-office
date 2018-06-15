@@ -35,9 +35,10 @@ withParameterizedPipeline('java', 'probate', 'sol-ccd-service', params.ENVIRONME
         } finally {
             steps.archiveArtifacts "build/reports/pitest/**/*.*"
         }
+    
 
-        junit 'build/test-results/test/**/*.xml'
-	    archiveArtifacts 'build/reports/tests/test/index.html'
+        //junit 'build/test-results/test/**/*.xml'
+	    //archiveArtifacts 'build/reports/tests/test/index.html'
         publishHTML target: [
                 allowMissing         : true,
                 alwaysLinkToLastBuild: true,
