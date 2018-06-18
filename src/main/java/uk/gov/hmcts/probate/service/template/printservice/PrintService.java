@@ -5,7 +5,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.request.PrintTemplateApplicationType;
 import uk.gov.hmcts.probate.model.template.DocumentResponse;
@@ -13,8 +12,6 @@ import uk.gov.hmcts.probate.service.FileSystemResourceService;
 
 import java.util.Collections;
 import java.util.List;
-
-import static uk.gov.hmcts.probate.insights.AppInsightsEvent.REQUEST_SENT;
 
 @Data
 @Service
@@ -35,8 +32,6 @@ public class PrintService {
 
     @Value("${printservice.path}")
     private String printServicePath;
-
-    private final AppInsights appInsights;
 
     private final FileSystemResourceService fileSystemResourceService;
 
@@ -59,8 +54,6 @@ public class PrintService {
 
         String urlTemplate = printServiceHost + printServicePath + type;
         String url = String.format(urlTemplate, caseId);
-
-        appInsights.trackEvent(REQUEST_SENT, url);
 
         DocumentResponse documentResponse = new DocumentResponse(DOCUMENT_NAME, DOCUMENT_TYPE, url);
 

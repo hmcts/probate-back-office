@@ -16,7 +16,6 @@ import org.springframework.web.client.RestTemplate;
 import uk.gov.hmcts.probate.config.PDFServiceConfiguration;
 import uk.gov.hmcts.probate.exception.ClientException;
 import uk.gov.hmcts.probate.exception.ConnectionException;
-import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.evidencemanagement.EvidenceManagementFileUpload;
 import uk.gov.hmcts.probate.model.template.PDFServiceTemplate;
 import uk.gov.hmcts.probate.service.FileSystemResourceService;
@@ -24,7 +23,6 @@ import uk.gov.hmcts.probate.service.FileSystemResourceService;
 import java.net.URI;
 
 import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
-import static uk.gov.hmcts.probate.insights.AppInsightsEvent.REQUEST_SENT;
 
 @Data
 @Component
@@ -33,7 +31,6 @@ public class PDFGeneratorService {
     private final RestTemplate restTemplate;
     private final FileSystemResourceService fileSystemResourceService;
     private final PDFServiceConfiguration pdfServiceConfiguration;
-    private final AppInsights appInsights;
 
     private static final String PARAMETER_TEMPLATE = "template";
     private static final String PARAMETER_PLACEHOLDER_VALUES = "placeholderValues";
@@ -45,7 +42,7 @@ public class PDFGeneratorService {
 
         String htmlTemplateFileName = pdfServiceTemplate.getHtmlFileName();
         HttpEntity<MultiValueMap<String, Object>> multipartRequest = createMultipartPostRequest(htmlTemplateFileName, pdfGenerationData);
-        appInsights.trackEvent(REQUEST_SENT, uri.toString());
+
         byte[] postResult;
         try {
             ByteArrayResource responseResource = restTemplate.postForObject(uri, multipartRequest, ByteArrayResource.class);

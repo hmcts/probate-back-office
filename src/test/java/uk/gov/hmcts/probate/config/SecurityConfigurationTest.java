@@ -15,7 +15,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.reform.auth.checker.core.SubjectResolver;
 import uk.gov.hmcts.reform.auth.checker.core.service.Service;
 
@@ -46,9 +45,6 @@ public class SecurityConfigurationTest {
 
     @MockBean
     private SubjectResolver<Service> serviceResolver;
-
-    @MockBean
-    private AppInsights appInsights;
 
     private Service service;
     
