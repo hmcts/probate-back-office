@@ -2,14 +2,15 @@ package uk.gov.hmcts.probate.insights;
 
 import com.microsoft.applicationinsights.TelemetryClient;
 import com.microsoft.applicationinsights.telemetry.TelemetryContext;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.util.Assert;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.insights.AppInsightsEvent.REQUEST_SENT;
 
 public class AppInsightsTest {
