@@ -36,34 +36,34 @@ withPipeline("java", product, component) {
 //      steps.archiveArtifacts "build/reports/pitest/**/*.*"
 //    }
 
-//    junit 'build/test-results/test/**/*.xml'
-//    archiveArtifacts 'build/reports/tests/test/index.html'
-//    publishHTML target: [
-//            allowMissing         : true,
-//            alwaysLinkToLastBuild: true,
-//            keepAll              : true,
-//            reportDir            : "build/reports/tests/test",
-//            reportFiles          : "index.html",
-//            reportName           : "sol-ccd-service Test Report"
-//    ]
-//
-//    publishHTML target: [
-//            allowMissing         : true,
-//            alwaysLinkToLastBuild: true,
-//            keepAll              : true,
-//            reportDir            : "build/reports/jacoco",
-//            reportFiles          : "index.html",
-//            reportName           : "sol-ccd-service Code Coverage Report"
-//    ]
-//
-//    publishHTML target: [
-//            allowMissing         : true,
-//            alwaysLinkToLastBuild: true,
-//            keepAll              : true,
-//            reportDir            : "build/reports/findbugs",
-//            reportFiles          : "main.html",
-//            reportName           : "sol-ccd-service find Bugs Report"
-//    ]
+    junit 'build/test-results/test/**/*.xml'
+    archiveArtifacts 'build/reports/tests/test/index.html'
+    publishHTML target: [
+            allowMissing         : true,
+            alwaysLinkToLastBuild: true,
+            keepAll              : true,
+            reportDir            : "build/reports/tests/test",
+            reportFiles          : "index.html",
+            reportName           : "sol-ccd-service Test Report"
+    ]
+
+    publishHTML target: [
+            allowMissing         : true,
+            alwaysLinkToLastBuild: true,
+            keepAll              : true,
+            reportDir            : "build/reports/jacoco",
+            reportFiles          : "index.html",
+            reportName           : "sol-ccd-service Code Coverage Report"
+    ]
+
+    publishHTML target: [
+            allowMissing         : true,
+            alwaysLinkToLastBuild: true,
+            keepAll              : true,
+            reportDir            : "build/reports/findbugs",
+            reportFiles          : "main.html",
+            reportName           : "sol-ccd-service find Bugs Report"
+    ]
   }
 
   after('functionalTest:aat') {
