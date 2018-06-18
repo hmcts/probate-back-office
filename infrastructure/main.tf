@@ -13,6 +13,9 @@ data "vault_generic_secret" "idam_backend_service_key" {
   path = "secret/${var.vault_section}/ccidam/service-auth-provider/api/microservice-keys/probate-backend"
 }
 
+data "vault_generic_secret" "govNotifyApiKey" {
+  path = "secret/${var.vault_section}/probate/probate_bo_govNotifyApiKey"
+}
 
 
 locals {
@@ -47,8 +50,8 @@ module "probate-bo-sol-ccd-service" {
     IDAM_USER_HOST = "${var.idam_user_host}"
     IDAM_SERVICE_HOST = "${var.idam_service_api}"
     FEE_API_URL = "${var.fee_api_url}"
-    EVIDENCE_MANAGEMENT_HOST = "${var.evidence_management_host}" 
-
+    EVIDENCE_MANAGEMENT_HOST = "${var.evidence_management_host}"
+    NOTIFICATIONS_GOVNOTIFYAPIKEY = "${data.vault_generic_secret.govNotifyApiKey.data["value"]}"
     java_app_name = "${var.microservice}"
     LOG_LEVEL = "${var.log_level}"
     //ROOT_APPENDER = "JSON_CONSOLE" //Remove json logging
