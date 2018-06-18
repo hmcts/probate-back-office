@@ -61,7 +61,7 @@ module "probate-bo-sol-ccd-service" {
 
 module "probate-bo-sol-ccd-service-vault" {
   source              = "git@github.com:hmcts/moj-module-key-vault?ref=master"
-  name                = "pro-bo-sol-ccd-ser-${var.env}"
+  name                = "pro-bo-sol-ccd-${var.env}"
   product             = "${var.product}"
   env                 = "${var.env}"
   tenant_id           = "${var.tenant_id}"
