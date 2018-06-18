@@ -30,11 +30,11 @@ withPipeline("java", product, component) {
   //enableSlackNotifications('#probate-jenkins')
 
   after('test') {
-//    try {
-//      sh './gradlew pitest'
-//    } finally {
-//      steps.archiveArtifacts "build/reports/pitest/**/*.*"
-//    }
+    try {
+      sh './gradlew pitest'
+    } finally {
+      steps.archiveArtifacts "build/reports/pitest/**/*.*"
+    }
 
     junit 'build/test-results/test/**/*.xml'
     archiveArtifacts 'build/reports/tests/test/index.html'
