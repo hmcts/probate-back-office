@@ -30,11 +30,11 @@ withParameterizedPipeline('java', 'probate', 'sol-ccd-service', params.ENVIRONME
     loadVaultSecrets(secrets)
 
     after('build') {
-//        try {
-//            sh './gradlew pitest'
-//        } finally {
-//            steps.archiveArtifacts "build/reports/pitest/**/*.*"
-//        }
+        try {
+            sh './gradlew pitest'
+        } finally {
+            steps.archiveArtifacts "build/reports/pitest/**/*.*"
+        }
 
 
         //junit 'build/test-results/test/**/*.xml'
