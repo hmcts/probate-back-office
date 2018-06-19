@@ -11,7 +11,7 @@ security:
 
 authorised.services: probate_backend,ccd_data,ccd-datamgmt-api,ccd_ps,ccd
 auth.provider.service.client:
-  key: CMPRGOBNAUXKYDJL
+  key: DUMMYKEYVALUE
   baseUrl: http://localhost:4502
   microservice: probate_backend
   tokenTimeToLiveInSeconds: 900
