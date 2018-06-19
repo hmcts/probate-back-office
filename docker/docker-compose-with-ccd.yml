@@ -2,17 +2,20 @@ version: '2.1'
 
 services:
   service-auth-provider-api:
-    image: docker.artifactory.reform.hmcts.net/auth/service-auth-provider-api:47e18b53aad48ae8124744041988565e07dfed50
-    container_name: service-auth-provider-api
+    image: hmcts/service-auth-provider-app
     environment:
+      - SERVER_PORT=8080
+      - JAVA_OPTS=-Xms8m -Xmx256m -Djava.security.egd=file:/dev/./urandom -XX:MaxMetaspaceSize=128m
       - AUTH_PROVIDER_SERVICE_SERVER_JWT_KEY=wThK0f0/lh3FlxFcL4xUWDMI5C1J9KyQBgXV4wseh1e5J1uYJIjvTvArHxQDrYoHJ23xFxjHkOnvNbR5dXRoxA==
-      - AUTH_PROVIDER_SERVICE_SERVER_MICROSERVICE_KEYS_PROBATE_BACKEND=AAAAAAAAAAAAAAAA
-      - auth.provider.service.server.microserviceKeys.ccd_data=AAAAAAAAAAAAAAAA
-      - auth.provider.service.server.microserviceKeys.ccd_ps=AAAAAAAAAAAAAAAA
-      - auth.provider.service.server.microserviceKeys.ccd_gw=AAAAAAAAAAAAAAAA
-      - auth.provider.service.server.microserviceKeys.ccd_definition=AAAAAAAAAAAAAAAA
+      - AUTH_PROVIDER_SERVICE_SERVER_MICROSERVICE_KEYS_CMC=AAAAAAAAAAAAAAAA
+      - AUTH_PROVIDER_SERVICE_SERVER_MICROSERVICE_KEYS_CMC_LEGAL_FRONTEND=AAAAAAAAAAAAAAAA
+      - AUTH_PROVIDER_SERVICE_SERVER_MICROSERVICE_KEYS_CMC_CLAIM_STORE=AAAAAAAAAAAAAAAA
       - AUTH_PROVIDER_SERVICE_SERVER_MICROSERVICE_KEYS_EM_GW=AAAAAAAAAAAAAAAA
+      - AUTH_PROVIDER_SERVICE_SERVER_MICROSERVICE_KEYS_CCD_DATA=AAAAAAAAAAAAAAAA
+      - AUTH_PROVIDER_SERVICE_SERVER_MICROSERVICE_KEYS_CCD_DEFINITION=AAAAAAAAAAAAAAAA
+      - AUTH_PROVIDER_SERVICE_SERVER_MICROSERVICE_KEYS_CCD_GW=AAAAAAAAAAAAAAAA
       - AUTH_PROVIDER_SERVICE_TESTING_SUPPORT_ENABLED=true
+      - AUTH_PROVIDER_SERVICE_SERVER_MICROSERVICE_KEYS_PROBATE_BACKEND=AAAAAAAAAAAAAAAA
     ports:
       - 4502:8080
 
