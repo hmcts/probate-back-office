@@ -11,6 +11,7 @@ log_level = "INFO"
 
 idam_service_api = "http://betaPreProdccidamAppLB.reform.hmcts.net:4502"
 pdf_service_api_url = "http://cmc-pdf-service-aat.service.core-compute-aat.internal"
+printservice_internal_host = "http://ccd-case-print-service-aat.service.core-compute-aat.internal"
 printservice_host = "https://return-case-doc-ccd.nonprod.platform.hmcts.net"
 idam_user_host = "http://betaPreProdccidamAppLB.reform.hmcts.net:4501"
 fee_api_url = "https://preprod.fees-register.reform.hmcts.net;4411"

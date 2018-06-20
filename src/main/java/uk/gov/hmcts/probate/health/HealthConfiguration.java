@@ -26,8 +26,8 @@ public class HealthConfiguration {
     @Value("${evidence.management.host}")
     private String evidenceManagementHost;
 
-    @Value("${printservice.host}")
-    private String printServiceHost;
+    @Value("${printservice.internal.host}")
+    private String printServiceInternalHost;
 
     @Bean
     public SolsHealthIndicator pdfServiceHealthIndicator() {
@@ -51,6 +51,6 @@ public class HealthConfiguration {
 
     @Bean
     public SolsHealthIndicator printServiceHealthIndicator() {
-        return new SolsHealthIndicator(printServiceHost, restTemplate);
+        return new SolsHealthIndicator(printServiceInternalHost, restTemplate);
     }
 }
