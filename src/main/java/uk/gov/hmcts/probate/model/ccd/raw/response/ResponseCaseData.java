@@ -54,6 +54,7 @@ public class ResponseCaseData {
     private final String solsAdditionalInfo;
     private final String primaryApplicantForenames;
     private final String primaryApplicantSurname;
+    private final String primaryApplicantEmailAddress;
     private final String primaryApplicantHasAlias;
     private final String primaryApplicantIsApplying;
     private final String solsPrimaryExecutorNotApplyingReason;

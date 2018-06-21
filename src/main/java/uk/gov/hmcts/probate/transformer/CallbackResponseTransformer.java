@@ -106,6 +106,7 @@ public class CallbackResponseTransformer {
                 .solsIHTFormId(caseData.getSolsIHTFormId())
                 .primaryApplicantForenames(caseData.getPrimaryApplicantForenames())
                 .primaryApplicantSurname(caseData.getPrimaryApplicantSurname())
+                .primaryApplicantEmailAddress(caseData.getPrimaryApplicantEmailAddress())
                 .primaryApplicantIsApplying(caseData.getPrimaryApplicantIsApplying())
                 .solsPrimaryExecutorNotApplyingReason(caseData.getSolsPrimaryExecutorNotApplyingReason())
                 .primaryApplicantHasAlias(caseData.getPrimaryApplicantHasAlias())

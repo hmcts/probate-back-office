@@ -121,6 +121,10 @@ public class CaseData {
 
     private final String solsAdditionalInfo;
 
+    private final String boEmailDocsReceivedNotification;
+
+    private final String boEmailGrantIssuedNotification;
+
     //EVENT = review
     private final CCDDocument solsLegalStatementDocument;
 
@@ -236,5 +240,13 @@ public class CaseData {
 
     public String getPrimaryApplicantFullName() {
         return String.join(" ", primaryApplicantForenames, primaryApplicantSurname);
+    }
+
+    public boolean isDocsReceivedEmailNotificationRequested() {
+        return YES.equals(boEmailDocsReceivedNotification);
+    }
+
+    public boolean isGrantIssuedEmailNotificationRequested() {
+        return YES.equals(boEmailGrantIssuedNotification);
     }
 }
