@@ -28,14 +28,14 @@ static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
 
 withParameterizedPipeline('java', 'probate', 'sol-ccd-service', params.ENVIRONMENT, 'sandbox') {
     loadVaultSecrets(secrets)
-
+/*
     after('build') {
         try {
             sh './gradlew pitest'
         } finally {
             steps.archiveArtifacts "build/reports/pitest/**/*.*"
         }
-    }
+    }*/
 
     after('functionalTest:saat') {
         publishHTML target: [
