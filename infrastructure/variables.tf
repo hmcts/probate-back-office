@@ -5,7 +5,7 @@ variable "product" {
 }
 
 variable "microservice" {
-  default = "sol-ccd-service"
+  default = "back-office"
 }
 
 variable "location" {
