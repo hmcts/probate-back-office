@@ -148,10 +148,6 @@ public class CaseData {
 
     private final String casePrinted;
 
-    private final String boEmailDocsReceivedNotification;
-
-    private final String boEmailGrantIssuedNotification;
-
     private final List<StopReasons> boCaseStopReasonList;
 
     private final String boCaseStopReasons;
