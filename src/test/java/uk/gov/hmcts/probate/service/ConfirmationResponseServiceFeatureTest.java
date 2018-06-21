@@ -16,7 +16,6 @@ import uk.gov.hmcts.probate.config.ApplicationConfiguration;
 import uk.gov.hmcts.probate.config.EvidenceManagementRestTemplate;
 import uk.gov.hmcts.probate.config.FeeServiceConfiguration;
 import uk.gov.hmcts.probate.config.PDFServiceConfiguration;
-import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
 import uk.gov.hmcts.probate.model.ccd.Deceased;
 import uk.gov.hmcts.probate.model.ccd.Executor;
@@ -66,9 +65,6 @@ public class ConfirmationResponseServiceFeatureTest {
     private static final Long EXTRA_OUTSIDE_UK = 2L;
     private static final String PAYMENT_REFERENCE = "XXXXX123456";
     private static final String ADDITIONAL_INFO = "ADDITIONAL INFO";
-
-    @MockBean
-    private AppInsights appInsights;
 
     @Autowired
     private ConfirmationResponseService confirmationResponseService;

@@ -66,7 +66,7 @@ idam.service.host: ${PROVIDER_SERVICE_CLIENT_URL:http://localhost:4502}
 logging:
   level:
     org.springframework.web: ERROR
-    uk.gov.hmcts.probate: INFO
+    uk.gov.hmcts.probate: DEBUG
   pattern:
     console: "%d{yyyy-MMM-dd HH:mm:ss.SSS} %-5level [%thread] %logger{15} - %msg%n"
 

@@ -11,7 +11,6 @@ import org.springframework.hateoas.Link;
 import uk.gov.hmcts.probate.config.PDFServiceConfiguration;
 import uk.gov.hmcts.probate.exception.BadRequestException;
 import uk.gov.hmcts.probate.exception.ConnectionException;
-import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.ccd.raw.CCDDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.evidencemanagement.EvidenceManagementFile;
@@ -49,9 +48,6 @@ public class PDFManagementServiceTest {
 
     @InjectMocks
     private PDFManagementService underTest;
-
-    @Mock
-    private AppInsights appInsights;
 
     @Before
     public void setUp() {
