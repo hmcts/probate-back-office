@@ -33,7 +33,9 @@ public class NotificationController {
 
         CaseData caseData = callbackRequest.getCaseDetails().getData();
 
-        notificationService.sendEmail(DOCUMENTS_RECEIVED, caseData);
+        if (caseData.isDocsReceivedEmailNotificationRequested()) {
+            notificationService.sendEmail(DOCUMENTS_RECEIVED, caseData);
+        }
 
         return ResponseEntity.ok(callbackResponseTransformer.addCcdState(callbackRequest));
     }
@@ -44,7 +46,9 @@ public class NotificationController {
 
         CaseData caseData = callbackRequest.getCaseDetails().getData();
 
-        notificationService.sendEmail(GRANT_ISSUED, caseData);
+        if (caseData.isGrantIssuedEmailNotificationRequested()) {
+            notificationService.sendEmail(GRANT_ISSUED, caseData);
+        }
 
         return ResponseEntity.ok(callbackResponseTransformer.addCcdState(callbackRequest));
     }
