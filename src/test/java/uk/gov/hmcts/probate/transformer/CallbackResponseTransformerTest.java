@@ -69,6 +69,7 @@ public class CallbackResponseTransformerTest {
     private static final String DOC_NAME = "docName";
     private static final String APPLICANT_FORENAME = "applicant forename";
     private static final String APPLICANT_SURNAME = "applicant surname";
+    private static final String APPLICANT_EMAIL_ADDRESS = "pa@email.com";
     private static final String PRIMARY_EXEC_APPLYING = "Yes";
     private static final String APPLICANT_HAS_ALIAS = "Yes";
     private static final String OTHER_EXECS_EXIST = "No";
@@ -134,6 +135,7 @@ public class CallbackResponseTransformerTest {
 
         when(caseDataMock.getPrimaryApplicantForenames()).thenReturn(APPLICANT_FORENAME);
         when(caseDataMock.getPrimaryApplicantSurname()).thenReturn(APPLICANT_SURNAME);
+        when(caseDataMock.getPrimaryApplicantEmailAddress()).thenReturn(APPLICANT_EMAIL_ADDRESS);
         when(caseDataMock.getPrimaryApplicantIsApplying()).thenReturn(PRIMARY_EXEC_APPLYING);
         when(caseDataMock.getPrimaryApplicantHasAlias()).thenReturn(APPLICANT_HAS_ALIAS);
         when(caseDataMock.getOtherExecutorExists()).thenReturn(OTHER_EXECS_EXIST);
@@ -266,6 +268,7 @@ public class CallbackResponseTransformerTest {
 
         assertEquals(APPLICANT_FORENAME, callbackResponse.getData().getPrimaryApplicantForenames());
         assertEquals(APPLICANT_SURNAME, callbackResponse.getData().getPrimaryApplicantSurname());
+        assertEquals(APPLICANT_EMAIL_ADDRESS, callbackResponse.getData().getPrimaryApplicantEmailAddress());
         assertEquals(PRIMARY_EXEC_APPLYING, callbackResponse.getData().getPrimaryApplicantIsApplying());
         assertEquals(APPLICANT_HAS_ALIAS, callbackResponse.getData().getPrimaryApplicantHasAlias());
         assertEquals(OTHER_EXECS_EXIST, callbackResponse.getData().getOtherExecutorExists());
