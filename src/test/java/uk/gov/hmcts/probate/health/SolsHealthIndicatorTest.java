@@ -22,6 +22,7 @@ import static org.mockito.Mockito.when;
 public class SolsHealthIndicatorTest {
 
     private static final String URL = "http://url.com";
+    private static final String HEALTH = "/health";
 
     @Mock
     private RestTemplate restTemplate;
@@ -33,12 +34,12 @@ public class SolsHealthIndicatorTest {
 
     @Before
     public void setUp() {
-        solsHealthIndicator = new SolsHealthIndicator(URL, restTemplate);
+        solsHealthIndicator = new SolsHealthIndicator(URL, restTemplate, HEALTH);
     }
 
     @Test
     public void shouldReturnStatusOfUpWhenHttpStatusIsOK() {
-        when(restTemplate.getForEntity(URL + "/health", String.class)).thenReturn(responseEntity);
+        when(restTemplate.getForEntity(URL + HEALTH, String.class)).thenReturn(responseEntity);
         when(responseEntity.getStatusCode()).thenReturn(HttpStatus.OK);
         Health health = solsHealthIndicator.health();
 
@@ -48,7 +49,7 @@ public class SolsHealthIndicatorTest {
 
     @Test
     public void shouldReturnStatusOfDownWhenHttpStatusIsNotOK() {
-        when(restTemplate.getForEntity(URL + "/health", String.class)).thenReturn(responseEntity);
+        when(restTemplate.getForEntity(URL + HEALTH, String.class)).thenReturn(responseEntity);
         when(responseEntity.getStatusCode()).thenReturn(HttpStatus.NO_CONTENT);
         when(responseEntity.getStatusCodeValue()).thenReturn(HttpStatus.NO_CONTENT.value());
         Health health = solsHealthIndicator.health();
@@ -62,7 +63,7 @@ public class SolsHealthIndicatorTest {
     @Test
     public void shouldReturnStatusOfDownWhenResourceAccessExceptionIsThrown() {
         final String message = "EXCEPTION MESSAGE";
-        when(restTemplate.getForEntity(URL + "/health", String.class)).thenThrow(new ResourceAccessException(message));
+        when(restTemplate.getForEntity(URL + HEALTH, String.class)).thenThrow(new ResourceAccessException(message));
 
         Health health = solsHealthIndicator.health();
 
@@ -74,7 +75,7 @@ public class SolsHealthIndicatorTest {
 
     @Test
     public void shouldReturnStatusOfDownWhenHttpStatusCodeExceptionIsThrown() {
-        when(restTemplate.getForEntity(URL + "/health", String.class)).thenThrow(new HttpClientErrorException(HttpStatus.BAD_REQUEST));
+        when(restTemplate.getForEntity(URL + HEALTH, String.class)).thenThrow(new HttpClientErrorException(HttpStatus.BAD_REQUEST));
 
         Health health = solsHealthIndicator.health();
 
@@ -87,7 +88,7 @@ public class SolsHealthIndicatorTest {
     @Test
     public void shouldReturnStatusOfDownWhenUnknownHttpStatusCodeExceptionIsThrown() {
         final String statusText = "status text";
-        when(restTemplate.getForEntity(URL + "/health", String.class))
+        when(restTemplate.getForEntity(URL + HEALTH, String.class))
                 .thenThrow(new UnknownHttpStatusCodeException(1000, statusText, null, null, null));
 
         Health health = solsHealthIndicator.health();
