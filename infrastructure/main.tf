@@ -51,6 +51,7 @@ module "probate-back-office" {
     AUTH_PROVIDER_SERVICE_CLIENT_BASEURL = "${var.idam_service_api}"
     PDF_SERVICE_URL = "${var.pdf_service_api_url}"
     PRINTSERVICE_HOST = "${var.printservice_host}"
+    PRINTSERVICE_INTERNAL_HOST = "${var.printservice_internal_host}"
     IDAM_USER_HOST = "${var.idam_user_host}"
     IDAM_SERVICE_HOST = "${var.idam_service_api}"
     FEE_API_URL = "${var.fee_api_url}"
