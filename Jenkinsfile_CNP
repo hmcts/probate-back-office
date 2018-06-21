@@ -31,9 +31,9 @@ withPipeline("java", product, component) {
 
   after('test') {
     try {
-      sh './gradlew pitest'
+      //sh './gradlew pitest'
     } finally {
-      steps.archiveArtifacts "build/reports/pitest/**/*.*"
+      //steps.archiveArtifacts "build/reports/pitest/**/*.*"
     }
 
     junit 'build/test-results/test/**/*.xml'
