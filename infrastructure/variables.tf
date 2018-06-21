@@ -67,6 +67,10 @@ variable "printservice_host" {
   type = "string"
 }
 
+variable "printservice_internal_host" {
+  type = "string"
+}
+
 variable "evidence_management_host" {
   type = "string"
 }
