@@ -3,7 +3,7 @@
 @Library("Infrastructure")
 
 String product = "probate"
-String component = "sol-ccd-service"
+String component = "back-office"
 
 List<LinkedHashMap<String, Object>> secrets = [
     secret('serviceAuthProviderBaseUrl', 'SERVICE_AUTH_PROVIDER_BASE_URL'),
