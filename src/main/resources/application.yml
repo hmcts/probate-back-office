@@ -84,8 +84,8 @@ notifications:
 
 registries:
   oxford:
-    name: Oxford Registry
-    phone: 0123456789
+    name: Oxford Probate Registry
+    phone: 0300 303 0648
   birmingham:
-    name: Birmingham Registry
-    phone: 1234567890
+    name: Birmingham Probate Registry
+    phone: 0121 681 3414
