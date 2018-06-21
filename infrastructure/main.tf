@@ -11,19 +11,19 @@ provider "vault" {
 
 data "vault_generic_secret" "idam_backend_service_key" {
   path = "secret/${var.vault_section}/ccidam/service-auth-provider/api/microservice-keys/probate-backend"
-  
-  previewVaultName    = "pro-bo-aat"
-  nonPreviewVaultName = "pro-bo-${var.env}"
-  vaultName           = "${(var.env == "preview" || var.env == "spreview") ? local.previewVaultName : local.nonPreviewVaultName}"
-  nonPreviewVaultUri  = "${module.probate-back-office-vault.key_vault_uri}"
-  previewVaultUri     = "https://pro-bo-aat.vault.azure.net/"
-  vaultUri            = "${(var.env == "preview" || var.env == "spreview") ? local.previewVaultUri : local.nonPreviewVaultUri}"
 }
 
 
 
 locals {
   aseName = "${data.terraform_remote_state.core_apps_compute.ase_name[0]}"
+    
+  previewVaultName    = "pro-bo-aat"
+  nonPreviewVaultName = "pro-bo-${var.env}"
+  vaultName           = "${(var.env == "preview" || var.env == "spreview") ? local.previewVaultName : local.nonPreviewVaultName}"
+  nonPreviewVaultUri  = "${module.probate-back-office-vault.key_vault_uri}"
+  previewVaultUri     = "https://pro-bo-aat.vault.azure.net/"
+  vaultUri            = "${(var.env == "preview" || var.env == "spreview") ? local.previewVaultUri : local.nonPreviewVaultUri}"
 }
 
 module "probate-back-office" {
