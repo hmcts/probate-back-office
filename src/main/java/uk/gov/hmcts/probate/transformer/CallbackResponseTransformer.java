@@ -141,7 +141,7 @@ public class CallbackResponseTransformer {
                 .casePrinted(caseData.getCasePrinted())
                 .boEmailDocsReceivedNotification(caseData.getBoEmailDocsReceivedNotification())
                 .boEmailGrantIssuedNotification(caseData.getBoEmailGrantIssuedNotification())
-                .boCaseStopReasons(caseData.getBoCaseStopReasons())
+
                 .boCaseStopReasonList(caseData.getBoCaseStopReasonList());
     }
 

@@ -150,7 +150,6 @@ public class CaseData {
 
     private final List<StopReasons> boCaseStopReasonList;
 
-    private final String boCaseStopReasons;
 
     //next steps
     @NotNull(groups = {NextStepsConfirmationGroup.class}, message = "{applicationFeeIsNull}")
