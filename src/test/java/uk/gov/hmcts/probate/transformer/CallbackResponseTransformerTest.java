@@ -9,6 +9,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutors;
 import uk.gov.hmcts.probate.model.ccd.raw.AliasNames;
 import uk.gov.hmcts.probate.model.ccd.raw.CCDDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
+import uk.gov.hmcts.probate.model.ccd.raw.StopReasons;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
@@ -82,6 +83,11 @@ public class CallbackResponseTransformerTest {
     private static final String APP_REF = "app ref";
     private static final String ADDITIONAL_INFO = "additional info";
 
+    private static final String BO_EMAIL_GRANT_ISSUED = "Yes";
+    private static final String BO_DOCS_RECEIVED = "Yes";
+    private static final String CASE_PRINT = "Yes";
+    private static final List<StopReasons> STOP_REASONS_LIST = Collections.emptyList();
+
     private static final String YES = "Yes";
     private static final Optional<String> ORIGINAL_STATE = Optional.empty();
     private static final Optional<String> CHANGED_STATE = Optional.of("Changed");
@@ -148,6 +154,11 @@ public class CallbackResponseTransformerTest {
         when(caseDataMock.getSolsDeceasedAliasNamesList()).thenReturn(ALIAS_NAMES);
         when(caseDataMock.getSolsSolicitorAppReference()).thenReturn(APP_REF);
         when(caseDataMock.getSolsAdditionalInfo()).thenReturn(ADDITIONAL_INFO);
+
+        when(caseDataMock.getBoEmailGrantIssuedNotification()).thenReturn(BO_EMAIL_GRANT_ISSUED);
+        when(caseDataMock.getBoEmailDocsReceivedNotification()).thenReturn(BO_DOCS_RECEIVED);
+        when(caseDataMock.getCasePrinted()).thenReturn(CASE_PRINT);
+        when(caseDataMock.getBoCaseStopReasonList()).thenReturn(STOP_REASONS_LIST);
 
         when(caseDataMock.getWillExists()).thenReturn(YES);
 
@@ -279,5 +290,10 @@ public class CallbackResponseTransformerTest {
         assertEquals(ALIAS_NAMES, callbackResponse.getData().getSolsDeceasedAliasNamesList());
         assertEquals(APP_REF, callbackResponse.getData().getSolsSolicitorAppReference());
         assertEquals(ADDITIONAL_INFO, callbackResponse.getData().getSolsAdditionalInfo());
+
+        assertEquals(BO_DOCS_RECEIVED, callbackResponse.getData().getBoEmailDocsReceivedNotification());
+        assertEquals(BO_EMAIL_GRANT_ISSUED, callbackResponse.getData().getBoEmailGrantIssuedNotification());
+        assertEquals(CASE_PRINT, callbackResponse.getData().getCasePrinted());
+        assertEquals(STOP_REASONS_LIST, callbackResponse.getData().getBoCaseStopReasonList());
     }
 }
