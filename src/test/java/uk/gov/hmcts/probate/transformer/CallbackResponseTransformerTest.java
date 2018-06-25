@@ -157,6 +157,8 @@ public class CallbackResponseTransformerTest {
 
         when(caseDataMock.getBoEmailGrantIssuedNotification()).thenReturn(BO_EMAIL_GRANT_ISSUED);
         when(caseDataMock.getBoEmailDocsReceivedNotification()).thenReturn(BO_DOCS_RECEIVED);
+        when(caseDataMock.getBoEmailGrantIssuedNotificationOrDefault()).thenReturn(BO_EMAIL_GRANT_ISSUED);
+        when(caseDataMock.getBoEmailDocsReceivedNotificationOrDefault()).thenReturn(BO_DOCS_RECEIVED);
         when(caseDataMock.getCasePrinted()).thenReturn(CASE_PRINT);
         when(caseDataMock.getBoCaseStopReasonList()).thenReturn(STOP_REASONS_LIST);
 

@@ -4,7 +4,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import uk.gov.hmcts.probate.model.Constants;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutors;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
@@ -18,10 +17,11 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
+import static uk.gov.hmcts.probate.model.Constants.NO;
+import static uk.gov.hmcts.probate.model.Constants.YES;
 
 public class CaseDataTest {
 
-    private static final String YES = "Yes";
     private static final String PRIMARY_APPLICANT_FIRST_NAME = "fName";
     private static final String PRIMARY_APPLICANT_SURNAME = "sName";
     private static final SolsAddress PRIMARY_APPLICANT_ADDRESS = mock(SolsAddress.class);
@@ -140,7 +140,7 @@ public class CaseDataTest {
         return CaseData.builder()
                 .primaryApplicantForenames(PRIMARY_APPLICANT_FIRST_NAME)
                 .primaryApplicantForenames(PRIMARY_APPLICANT_SURNAME)
-                .primaryApplicantIsApplying(Constants.NO)
+                .primaryApplicantIsApplying(NO)
                 .primaryApplicantAddress(PRIMARY_APPLICANT_ADDRESS)
                 .solsExecutorAliasNames(PRIMARY_APPLICANT_NAME_ON_WILL)
                 .solsAdditionalExecutorList(additionalExecutorsList)
@@ -166,5 +166,55 @@ public class CaseDataTest {
                 .build();
 
         assertEquals(DECEASED_FIRST_NAME + " " + DECEASED_SURNAME, caseData.getDeceasedFullName());
+    }
+
+    @Test
+    public void getBoEmailDocsReceivedNotificationOrDefaultShouldReturnDefaultValue() {
+        final CaseData caseData = CaseData.builder().build();
+
+        assertEquals(YES, caseData.getBoEmailDocsReceivedNotificationOrDefault());
+    }
+
+    @Test
+    public void getBoEmailDocsReceivedNotificationOrDefaultShouldReturnPredefinedYesValue() {
+        final CaseData caseData = CaseData.builder()
+                .boEmailDocsReceivedNotification(YES)
+                .build();
+
+        assertEquals(YES, caseData.getBoEmailDocsReceivedNotificationOrDefault());
+    }
+
+    @Test
+    public void getBoEmailDocsReceivedNotificationOrDefaultShouldReturnPredefinedNoValue() {
+        final CaseData caseData = CaseData.builder()
+                .boEmailDocsReceivedNotification(NO)
+                .build();
+
+        assertEquals(NO, caseData.getBoEmailDocsReceivedNotificationOrDefault());
+    }
+
+    @Test
+    public void getBoEmailGrantIssuedNotificationOrDefaultShouldReturnDefaultValue() {
+        final CaseData caseData = CaseData.builder().build();
+
+        assertEquals(YES, caseData.getBoEmailGrantIssuedNotificationOrDefault());
+    }
+
+    @Test
+    public void getBoEmailGrantIssuedNotificationOrDefaultShouldReturnPredefinedYesValue() {
+        final CaseData caseData = CaseData.builder()
+                .boEmailGrantIssuedNotification(YES)
+                .build();
+
+        assertEquals(YES, caseData.getBoEmailGrantIssuedNotificationOrDefault());
+    }
+
+    @Test
+    public void getBoEmailGrantIssuedNotificationOrDefaultShouldReturnPredefinedNoValue() {
+        final CaseData caseData = CaseData.builder()
+                .boEmailGrantIssuedNotification(NO)
+                .build();
+
+        assertEquals(NO, caseData.getBoEmailGrantIssuedNotificationOrDefault());
     }
 }
