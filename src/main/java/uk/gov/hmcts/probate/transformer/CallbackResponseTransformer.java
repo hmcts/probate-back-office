@@ -137,7 +137,12 @@ public class CallbackResponseTransformer {
                 .applicationFee(transformMoneyGBPToString(caseData.getApplicationFee()))
                 .totalFee(transformMoneyGBPToString(caseData.getTotalFee()))
 
-                .solsLegalStatementDocument(caseData.getSolsLegalStatementDocument());
+                .solsLegalStatementDocument(caseData.getSolsLegalStatementDocument())
+                .casePrinted(caseData.getCasePrinted())
+                .boEmailDocsReceivedNotification(caseData.getBoEmailDocsReceivedNotification())
+                .boEmailGrantIssuedNotification(caseData.getBoEmailGrantIssuedNotification())
+
+                .boCaseStopReasonList(caseData.getBoCaseStopReasonList());
     }
 
     private String getPaymentReference(CaseData caseData) {

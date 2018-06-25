@@ -13,6 +13,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutors;
 import uk.gov.hmcts.probate.model.ccd.raw.AliasNames;
 import uk.gov.hmcts.probate.model.ccd.raw.CCDDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
+import uk.gov.hmcts.probate.model.ccd.raw.StopReasons;
 
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
@@ -144,6 +145,11 @@ public class CaseData {
     private final String solsPaymentMethods;
 
     private final String solsFeeAccountNumber;
+
+    private final String casePrinted;
+
+    private final List<StopReasons> boCaseStopReasonList;
+
 
     //next steps
     @NotNull(groups = {NextStepsConfirmationGroup.class}, message = "{applicationFeeIsNull}")
