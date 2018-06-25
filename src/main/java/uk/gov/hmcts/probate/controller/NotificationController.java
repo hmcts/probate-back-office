@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import uk.gov.hmcts.probate.exception.BadRequestException;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
@@ -29,7 +28,7 @@ public class NotificationController {
 
     @PostMapping(path = "/documents-received")
     public ResponseEntity<CallbackResponse> sendDocumentReceivedNotification(@RequestBody CallbackRequest callbackRequest)
-            throws BadRequestException, NotificationClientException {
+            throws NotificationClientException {
 
         CaseData caseData = callbackRequest.getCaseDetails().getData();
 
@@ -42,7 +41,7 @@ public class NotificationController {
 
     @PostMapping(path = "/grant-issued")
     public ResponseEntity<CallbackResponse> sendGrantIssuedNotification(@RequestBody CallbackRequest callbackRequest)
-            throws BadRequestException, NotificationClientException {
+            throws NotificationClientException {
 
         CaseData caseData = callbackRequest.getCaseDetails().getData();
 

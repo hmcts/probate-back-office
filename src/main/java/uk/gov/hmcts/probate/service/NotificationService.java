@@ -23,7 +23,7 @@ public class NotificationService {
     private final NotificationClient notificationClient;
 
     public void sendEmail(State state, CaseData caseData)
-            throws NotificationClientException, BadRequestException {
+            throws NotificationClientException {
 
         String templateId = getTemplateId(state, caseData.getApplicationType());
         String emailAddress = getEmail(caseData);
