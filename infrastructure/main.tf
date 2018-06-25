@@ -18,7 +18,7 @@ data "vault_generic_secret" "idam_backend_service_key" {
 locals {
   aseName = "${data.terraform_remote_state.core_apps_compute.ase_name[0]}"
     
-  previewVaultName    = "pro-bo-aat"
+  previewVaultName    = "pro-bo"
   nonPreviewVaultName = "pro-bo-${var.env}"
   vaultName           = "${(var.env == "preview" || var.env == "spreview") ? local.previewVaultName : local.nonPreviewVaultName}"
   nonPreviewVaultUri  = "${module.probate-back-office-vault.key_vault_uri}"
