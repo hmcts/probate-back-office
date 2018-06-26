@@ -2,9 +2,11 @@ package uk.gov.hmcts.probate.transformer;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.runners.MockitoJUnitRunner;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutors;
 import uk.gov.hmcts.probate.model.ccd.raw.AliasNames;
 import uk.gov.hmcts.probate.model.ccd.raw.CCDDocument;
@@ -29,8 +31,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
-import static org.mockito.MockitoAnnotations.initMocks;
 
+@RunWith(MockitoJUnitRunner.class)
 public class CallbackResponseTransformerTest {
     private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
@@ -105,8 +107,7 @@ public class CallbackResponseTransformerTest {
     @Mock
     private CaseDetails caseDetailsMock;
 
-    @Mock
-    private CaseData caseDataMock;
+    private CaseData.CaseDataBuilder caseDataBuilder;
 
     @Mock
     private FeeServiceResponse feeServiceResponseMock;
@@ -117,56 +118,50 @@ public class CallbackResponseTransformerTest {
     @Before
     public void setup() {
 
-        initMocks(this);
+        caseDataBuilder = CaseData.builder()
+                .solsSolicitorFirmName(SOLICITOR_FIRM_NAME)
+                .solsSolicitorFirmPostcode(SOLICITOR_FIRM_POSTCODE)
+                .solsSolicitorEmail(SOLICITOR_FIRM_EMAIL)
+                .solsSolicitorPhoneNumber(SOLICITOR_FIRM_PHONE)
+                .solsSOTName(SOLICITOR_SOT_NAME)
+                .solsSOTJobTitle(SOLICITOR_SOT_JOB_TITLE)
+                .deceasedForenames(DECEASED_FIRSTNAME)
+                .deceasedSurname(DECEASED_LASTNAME)
+                .deceasedDateOfBirth(DOB)
+                .deceasedDateOfDeath(DOD)
+                .willNumberOfCodicils(NUM_CODICILS)
+                .solsIHTFormId(IHT_FORM_ID)
+                .ihtGrossValue(IHT_GROSS)
+                .ihtNetValue(IHT_NET)
+                .primaryApplicantForenames(APPLICANT_FORENAME)
+                .primaryApplicantSurname(APPLICANT_SURNAME)
+                .primaryApplicantEmailAddress(APPLICANT_EMAIL_ADDRESS)
+                .primaryApplicantIsApplying(PRIMARY_EXEC_APPLYING)
+                .primaryApplicantHasAlias(APPLICANT_HAS_ALIAS)
+                .otherExecutorExists(OTHER_EXECS_EXIST)
+                .solsExecutorAliasNames(PRIMARY_EXEC_ALIAS_NAMES)
+                .solsAdditionalExecutorList(ADDITIONAL_EXEC_LIST)
+                .deceasedAddress(DECEASED_ADDRESS)
+                .deceasedAnyOtherNames(YES)
+                .solsDeceasedAliasNamesList(DECEASED_ALIAS_NAMES_LIST)
+                .primaryApplicantAddress(EXEC_ADDRESS)
+                .solsDeceasedAliasNamesList(ALIAS_NAMES)
+                .solsSolicitorAppReference(APP_REF)
+                .solsAdditionalInfo(ADDITIONAL_INFO)
+                .boEmailGrantIssuedNotification(BO_EMAIL_GRANT_ISSUED)
+                .boEmailDocsReceivedNotification(BO_DOCS_RECEIVED)
+                .casePrinted(CASE_PRINT)
+                .boCaseStopReasonList(STOP_REASONS_LIST)
+                .willExists(YES);
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
-        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
-
-        when(caseDataMock.getSolsSolicitorFirmName()).thenReturn(SOLICITOR_FIRM_NAME);
-        when(caseDataMock.getSolsSolicitorFirmPostcode()).thenReturn(SOLICITOR_FIRM_POSTCODE);
-        when(caseDataMock.getSolsSolicitorEmail()).thenReturn(SOLICITOR_FIRM_EMAIL);
-        when(caseDataMock.getSolsSolicitorPhoneNumber()).thenReturn(SOLICITOR_FIRM_PHONE);
-        when(caseDataMock.getSolsSOTName()).thenReturn(SOLICITOR_SOT_NAME);
-        when(caseDataMock.getSolsSOTJobTitle()).thenReturn(SOLICITOR_SOT_JOB_TITLE);
-
-        when(caseDataMock.getDeceasedForenames()).thenReturn(DECEASED_FIRSTNAME);
-        when(caseDataMock.getDeceasedSurname()).thenReturn(DECEASED_LASTNAME);
-        when(caseDataMock.getDeceasedDateOfBirth()).thenReturn(DOB);
-        when(caseDataMock.getDeceasedDateOfDeath()).thenReturn(DOD);
-        when(caseDataMock.getWillNumberOfCodicils()).thenReturn(NUM_CODICILS);
-
-        when(caseDataMock.getSolsIHTFormId()).thenReturn(IHT_FORM_ID);
-        when(caseDataMock.getIhtGrossValue()).thenReturn(IHT_GROSS);
-        when(caseDataMock.getIhtNetValue()).thenReturn(IHT_NET);
-
-        when(caseDataMock.getPrimaryApplicantForenames()).thenReturn(APPLICANT_FORENAME);
-        when(caseDataMock.getPrimaryApplicantSurname()).thenReturn(APPLICANT_SURNAME);
-        when(caseDataMock.getPrimaryApplicantEmailAddress()).thenReturn(APPLICANT_EMAIL_ADDRESS);
-        when(caseDataMock.getPrimaryApplicantIsApplying()).thenReturn(PRIMARY_EXEC_APPLYING);
-        when(caseDataMock.getPrimaryApplicantHasAlias()).thenReturn(APPLICANT_HAS_ALIAS);
-        when(caseDataMock.getOtherExecutorExists()).thenReturn(OTHER_EXECS_EXIST);
-        when(caseDataMock.getSolsExecutorAliasNames()).thenReturn(PRIMARY_EXEC_ALIAS_NAMES);
-        when(caseDataMock.getSolsAdditionalExecutorList()).thenReturn(ADDITIONAL_EXEC_LIST);
-        when(caseDataMock.getDeceasedAddress()).thenReturn(DECEASED_ADDRESS);
-        when(caseDataMock.getDeceasedAnyOtherNames()).thenReturn(YES);
-        when(caseDataMock.getSolsDeceasedAliasNamesList()).thenReturn(DECEASED_ALIAS_NAMES_LIST);
-        when(caseDataMock.getPrimaryApplicantAddress()).thenReturn(EXEC_ADDRESS);
-        when(caseDataMock.getSolsDeceasedAliasNamesList()).thenReturn(ALIAS_NAMES);
-        when(caseDataMock.getSolsSolicitorAppReference()).thenReturn(APP_REF);
-        when(caseDataMock.getSolsAdditionalInfo()).thenReturn(ADDITIONAL_INFO);
-
-        when(caseDataMock.getBoEmailGrantIssuedNotification()).thenReturn(BO_EMAIL_GRANT_ISSUED);
-        when(caseDataMock.getBoEmailDocsReceivedNotification()).thenReturn(BO_DOCS_RECEIVED);
-        when(caseDataMock.getCasePrinted()).thenReturn(CASE_PRINT);
-        when(caseDataMock.getBoCaseStopReasonList()).thenReturn(STOP_REASONS_LIST);
-
-        when(caseDataMock.getWillExists()).thenReturn(YES);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
     }
 
     @Test
     public void shouldConvertRequestToDataBeanForWithStateChange() {
-        when(stateChangeServiceMock.getChangedStateForCaseUpdate(caseDataMock)).thenReturn(CHANGED_STATE);
+        when(stateChangeServiceMock.getChangedStateForCaseUpdate(caseDataBuilder.build())).thenReturn(CHANGED_STATE);
 
         CallbackResponse callbackResponse = underTest.transformWithConditionalStateChange(callbackRequestMock, CHANGED_STATE);
 
@@ -216,10 +211,10 @@ public class CallbackResponseTransformerTest {
 
     @Test
     public void shouldConvertRequestToDataBeanForPaymentWithFeeAccount() {
-
-        when(caseDataMock.getSolsPaymentMethods()).thenReturn(SOL_PAY_METHODS_FEE);
-        when(caseDataMock.getSolsFeeAccountNumber()).thenReturn(FEE_ACCT_NUMBER);
-
+        CaseData caseData = caseDataBuilder.solsPaymentMethods(SOL_PAY_METHODS_FEE)
+                .solsFeeAccountNumber(FEE_ACCT_NUMBER)
+                .build();
+        when(caseDetailsMock.getData()).thenReturn(caseData);
 
         when(feeServiceResponseMock.getFeeForNonUkCopies()).thenReturn(feeForNonUkCopies);
         when(feeServiceResponseMock.getFeeForUkCopies()).thenReturn(feeForUkCopies);
@@ -238,8 +233,9 @@ public class CallbackResponseTransformerTest {
 
     @Test
     public void shouldConvertRequestToDataBeanForPaymentWithCheque() {
-
-        when(caseDataMock.getSolsPaymentMethods()).thenReturn(SOL_PAY_METHODS_CHEQUE);
+        CaseData caseData = caseDataBuilder.solsPaymentMethods(SOL_PAY_METHODS_CHEQUE)
+                .build();
+        when(caseDetailsMock.getData()).thenReturn(caseData);
 
         when(feeServiceResponseMock.getFeeForNonUkCopies()).thenReturn(feeForNonUkCopies);
         when(feeServiceResponseMock.getFeeForUkCopies()).thenReturn(feeForUkCopies);
