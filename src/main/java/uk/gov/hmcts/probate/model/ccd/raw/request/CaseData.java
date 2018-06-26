@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.model.ccd.raw.request;
 
+import com.google.common.base.Strings;
 import lombok.Builder;
 import lombok.Data;
 import org.hibernate.validator.constraints.NotBlank;
@@ -243,5 +244,21 @@ public class CaseData {
 
     public boolean isGrantIssuedEmailNotificationRequested() {
         return YES.equals(boEmailGrantIssuedNotification);
+    }
+
+    public String getBoEmailDocsReceivedNotificationOrDefault() {
+        if (Strings.isNullOrEmpty(boEmailDocsReceivedNotification)) {
+            return YES;
+        }
+
+        return boEmailDocsReceivedNotification;
+    }
+
+    public String getBoEmailGrantIssuedNotificationOrDefault() {
+        if (Strings.isNullOrEmpty(boEmailGrantIssuedNotification)) {
+            return YES;
+        }
+
+        return boEmailGrantIssuedNotification;
     }
 }
