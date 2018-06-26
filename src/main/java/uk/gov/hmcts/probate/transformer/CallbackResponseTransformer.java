@@ -139,8 +139,8 @@ public class CallbackResponseTransformer {
 
                 .solsLegalStatementDocument(caseData.getSolsLegalStatementDocument())
                 .casePrinted(caseData.getCasePrinted())
-                .boEmailDocsReceivedNotification(caseData.getBoEmailDocsReceivedNotificationOrDefault())
-                .boEmailGrantIssuedNotification(caseData.getBoEmailGrantIssuedNotificationOrDefault())
+                .boEmailDocsReceivedNotification(caseData.getBoEmailDocsReceivedNotification())
+                .boEmailGrantIssuedNotification(caseData.getBoEmailGrantIssuedNotification())
 
                 .boCaseStopReasonList(caseData.getBoCaseStopReasonList());
     }
