@@ -36,7 +36,7 @@ public class NotificationController {
             notificationService.sendEmail(DOCUMENTS_RECEIVED, caseData);
         }
 
-        return ResponseEntity.ok(callbackResponseTransformer.addCcdState(callbackRequest));
+        return ResponseEntity.ok(callbackResponseTransformer.addDocumentReceivedNotification(callbackRequest));
     }
 
     @PostMapping(path = "/grant-issued")
@@ -49,6 +49,6 @@ public class NotificationController {
             notificationService.sendEmail(GRANT_ISSUED, caseData);
         }
 
-        return ResponseEntity.ok(callbackResponseTransformer.addCcdState(callbackRequest));
+        return ResponseEntity.ok(callbackResponseTransformer.addGrandIssuedNotification(callbackRequest));
     }
 }

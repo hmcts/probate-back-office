@@ -48,6 +48,28 @@ public class CallbackResponseTransformer {
         return transform(responseCaseData);
     }
 
+    public CallbackResponse addDocumentReceivedNotification(CallbackRequest callbackRequest) {
+        CaseData caseData = callbackRequest.getCaseDetails().getData();
+
+        ResponseCaseData responseCaseData = this.getResponseCaseData(caseData)
+                .ccdState(callbackRequest.getCaseDetails().getState())
+                .boEmailDocsReceivedNotificationRequested(caseData.getBoEmailDocsReceivedNotificationOrDefault())
+                .build();
+
+        return transform(responseCaseData);
+    }
+
+    public CallbackResponse addGrandIssuedNotification(CallbackRequest callbackRequest) {
+        CaseData caseData = callbackRequest.getCaseDetails().getData();
+
+        ResponseCaseData responseCaseData = this.getResponseCaseData(caseData)
+                .ccdState(callbackRequest.getCaseDetails().getState())
+                .boEmailGrantIssuedNotificationRequested(caseData.getBoEmailGrantIssuedNotificationOrDefault())
+                .build();
+
+        return transform(responseCaseData);
+    }
+
     public CallbackResponse transform(CallbackRequest callbackRequest, FeeServiceResponse feeServiceResponse) {
         CaseData caseData = callbackRequest.getCaseDetails().getData();
 
@@ -139,8 +161,10 @@ public class CallbackResponseTransformer {
 
                 .solsLegalStatementDocument(caseData.getSolsLegalStatementDocument())
                 .casePrinted(caseData.getCasePrinted())
-                .boEmailDocsReceivedNotification(caseData.getBoEmailDocsReceivedNotification())
-                .boEmailGrantIssuedNotification(caseData.getBoEmailGrantIssuedNotification())
+                .boEmailDocsReceivedNotificationRequested(caseData.getBoEmailDocsReceivedNotificationRequested())
+                .boEmailGrantIssuedNotificationRequested(caseData.getBoEmailGrantIssuedNotificationRequested())
+                .boEmailDocsReceivedNotificationOrDefault(caseData.getBoEmailDocsReceivedNotificationOrDefault())
+                .boEmailGrantIssuedNotificationOrDefault(caseData.getBoEmailGrantIssuedNotificationOrDefault())
 
                 .boCaseStopReasonList(caseData.getBoCaseStopReasonList());
     }

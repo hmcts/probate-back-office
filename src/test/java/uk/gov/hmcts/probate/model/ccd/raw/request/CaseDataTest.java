@@ -178,7 +178,7 @@ public class CaseDataTest {
     @Test
     public void getBoEmailDocsReceivedNotificationOrDefaultShouldReturnPredefinedYesValue() {
         final CaseData caseData = CaseData.builder()
-                .boEmailDocsReceivedNotification(YES)
+                .boEmailDocsReceivedNotificationOrDefault(YES)
                 .build();
 
         assertEquals(YES, caseData.getBoEmailDocsReceivedNotificationOrDefault());
@@ -187,7 +187,7 @@ public class CaseDataTest {
     @Test
     public void getBoEmailDocsReceivedNotificationOrDefaultShouldReturnPredefinedNoValue() {
         final CaseData caseData = CaseData.builder()
-                .boEmailDocsReceivedNotification(NO)
+                .boEmailDocsReceivedNotificationOrDefault(NO)
                 .build();
 
         assertEquals(NO, caseData.getBoEmailDocsReceivedNotificationOrDefault());
@@ -203,7 +203,7 @@ public class CaseDataTest {
     @Test
     public void getBoEmailGrantIssuedNotificationOrDefaultShouldReturnPredefinedYesValue() {
         final CaseData caseData = CaseData.builder()
-                .boEmailGrantIssuedNotification(YES)
+                .boEmailGrantIssuedNotificationOrDefault(YES)
                 .build();
 
         assertEquals(YES, caseData.getBoEmailGrantIssuedNotificationOrDefault());
@@ -212,7 +212,7 @@ public class CaseDataTest {
     @Test
     public void getBoEmailGrantIssuedNotificationOrDefaultShouldReturnPredefinedNoValue() {
         final CaseData caseData = CaseData.builder()
-                .boEmailGrantIssuedNotification(NO)
+                .boEmailGrantIssuedNotificationOrDefault(NO)
                 .build();
 
         assertEquals(NO, caseData.getBoEmailGrantIssuedNotificationOrDefault());
