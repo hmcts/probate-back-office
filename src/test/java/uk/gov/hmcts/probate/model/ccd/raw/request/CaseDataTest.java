@@ -169,52 +169,52 @@ public class CaseDataTest {
     }
 
     @Test
-    public void getBoEmailDocsReceivedNotificationOrDefaultShouldReturnDefaultValue() {
+    public void getBoEmailDocsReceivedNotificationShouldReturnDefaultValue() {
         final CaseData caseData = CaseData.builder().build();
 
-        assertEquals(YES, caseData.getBoEmailDocsReceivedNotificationOrDefault());
+        assertEquals(YES, caseData.getBoEmailDocsReceivedNotification());
     }
 
     @Test
-    public void getBoEmailDocsReceivedNotificationOrDefaultShouldReturnPredefinedYesValue() {
+    public void getBoEmailDocsReceivedNotificationShouldReturnPredefinedYesValue() {
         final CaseData caseData = CaseData.builder()
-                .boEmailDocsReceivedNotificationOrDefault(YES)
+                .boEmailDocsReceivedNotification(YES)
                 .build();
 
-        assertEquals(YES, caseData.getBoEmailDocsReceivedNotificationOrDefault());
+        assertEquals(YES, caseData.getBoEmailDocsReceivedNotification());
     }
 
     @Test
-    public void getBoEmailDocsReceivedNotificationOrDefaultShouldReturnPredefinedNoValue() {
+    public void getBoEmailDocsReceivedNotificationShouldReturnPredefinedNoValue() {
         final CaseData caseData = CaseData.builder()
-                .boEmailDocsReceivedNotificationOrDefault(NO)
+                .boEmailDocsReceivedNotification(NO)
                 .build();
 
-        assertEquals(NO, caseData.getBoEmailDocsReceivedNotificationOrDefault());
+        assertEquals(NO, caseData.getBoEmailDocsReceivedNotification());
     }
 
     @Test
-    public void getBoEmailGrantIssuedNotificationOrDefaultShouldReturnDefaultValue() {
+    public void getBoEmailGrantIssuedNotificationShouldReturnDefaultValue() {
         final CaseData caseData = CaseData.builder().build();
 
-        assertEquals(YES, caseData.getBoEmailGrantIssuedNotificationOrDefault());
+        assertEquals(YES, caseData.getBoEmailGrantIssuedNotification());
     }
 
     @Test
-    public void getBoEmailGrantIssuedNotificationOrDefaultShouldReturnPredefinedYesValue() {
+    public void getBoEmailGrantIssuedNotificationShouldReturnPredefinedYesValue() {
         final CaseData caseData = CaseData.builder()
-                .boEmailGrantIssuedNotificationOrDefault(YES)
+                .boEmailGrantIssuedNotification(YES)
                 .build();
 
-        assertEquals(YES, caseData.getBoEmailGrantIssuedNotificationOrDefault());
+        assertEquals(YES, caseData.getBoEmailGrantIssuedNotification());
     }
 
     @Test
-    public void getBoEmailGrantIssuedNotificationOrDefaultShouldReturnPredefinedNoValue() {
+    public void getBoEmailGrantIssuedNotificationShouldReturnPredefinedNoValue() {
         final CaseData caseData = CaseData.builder()
-                .boEmailGrantIssuedNotificationOrDefault(NO)
+                .boEmailGrantIssuedNotification(NO)
                 .build();
 
-        assertEquals(NO, caseData.getBoEmailGrantIssuedNotificationOrDefault());
+        assertEquals(NO, caseData.getBoEmailGrantIssuedNotification());
     }
 }

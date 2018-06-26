@@ -124,11 +124,11 @@ public class CaseData {
 
     private final String boEmailDocsReceivedNotificationRequested;
 
-    private final String boEmailDocsReceivedNotificationOrDefault;
+    private final String boEmailDocsReceivedNotification;
 
     private final String boEmailGrantIssuedNotificationRequested;
 
-    private final String boEmailGrantIssuedNotificationOrDefault;
+    private final String boEmailGrantIssuedNotification;
 
     //EVENT = review
     private final CCDDocument solsLegalStatementDocument;
@@ -243,26 +243,26 @@ public class CaseData {
     }
 
     public boolean isDocsReceivedEmailNotificationRequested() {
-        return YES.equals(boEmailDocsReceivedNotificationOrDefault);
+        return YES.equals(boEmailDocsReceivedNotification);
     }
 
     public boolean isGrantIssuedEmailNotificationRequested() {
-        return YES.equals(boEmailGrantIssuedNotificationOrDefault);
+        return YES.equals(boEmailGrantIssuedNotification);
     }
 
-    public String getBoEmailDocsReceivedNotificationOrDefault() {
-        if (Strings.isNullOrEmpty(boEmailDocsReceivedNotificationOrDefault)) {
+    public String getBoEmailDocsReceivedNotification() {
+        if (Strings.isNullOrEmpty(boEmailDocsReceivedNotification)) {
             return YES;
         }
 
-        return boEmailDocsReceivedNotificationOrDefault;
+        return boEmailDocsReceivedNotification;
     }
 
-    public String getBoEmailGrantIssuedNotificationOrDefault() {
-        if (Strings.isNullOrEmpty(boEmailGrantIssuedNotificationOrDefault)) {
+    public String getBoEmailGrantIssuedNotification() {
+        if (Strings.isNullOrEmpty(boEmailGrantIssuedNotification)) {
             return YES;
         }
 
-        return boEmailGrantIssuedNotificationOrDefault;
+        return boEmailGrantIssuedNotification;
     }
 }

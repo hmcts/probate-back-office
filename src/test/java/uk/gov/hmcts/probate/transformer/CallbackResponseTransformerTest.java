@@ -149,9 +149,9 @@ public class CallbackResponseTransformerTest {
                 .solsSolicitorAppReference(APP_REF)
                 .solsAdditionalInfo(ADDITIONAL_INFO)
                 .boEmailGrantIssuedNotificationRequested(BO_EMAIL_GRANT_ISSUED)
-                .boEmailGrantIssuedNotificationOrDefault(BO_EMAIL_GRANT_ISSUED)
+                .boEmailGrantIssuedNotification(BO_EMAIL_GRANT_ISSUED)
                 .boEmailDocsReceivedNotificationRequested(BO_DOCS_RECEIVED)
-                .boEmailDocsReceivedNotificationOrDefault(BO_DOCS_RECEIVED)
+                .boEmailDocsReceivedNotification(BO_DOCS_RECEIVED)
                 .casePrinted(CASE_PRINT)
                 .boCaseStopReasonList(STOP_REASONS_LIST)
                 .willExists(YES);

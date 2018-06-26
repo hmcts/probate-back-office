@@ -53,7 +53,7 @@ public class CallbackResponseTransformer {
 
         ResponseCaseData responseCaseData = this.getResponseCaseData(caseData)
                 .ccdState(callbackRequest.getCaseDetails().getState())
-                .boEmailDocsReceivedNotificationRequested(caseData.getBoEmailDocsReceivedNotificationOrDefault())
+                .boEmailDocsReceivedNotificationRequested(caseData.getBoEmailDocsReceivedNotification())
                 .build();
 
         return transform(responseCaseData);
@@ -64,7 +64,7 @@ public class CallbackResponseTransformer {
 
         ResponseCaseData responseCaseData = this.getResponseCaseData(caseData)
                 .ccdState(callbackRequest.getCaseDetails().getState())
-                .boEmailGrantIssuedNotificationRequested(caseData.getBoEmailGrantIssuedNotificationOrDefault())
+                .boEmailGrantIssuedNotificationRequested(caseData.getBoEmailGrantIssuedNotification())
                 .build();
 
         return transform(responseCaseData);
@@ -163,8 +163,8 @@ public class CallbackResponseTransformer {
                 .casePrinted(caseData.getCasePrinted())
                 .boEmailDocsReceivedNotificationRequested(caseData.getBoEmailDocsReceivedNotificationRequested())
                 .boEmailGrantIssuedNotificationRequested(caseData.getBoEmailGrantIssuedNotificationRequested())
-                .boEmailDocsReceivedNotificationOrDefault(caseData.getBoEmailDocsReceivedNotificationOrDefault())
-                .boEmailGrantIssuedNotificationOrDefault(caseData.getBoEmailGrantIssuedNotificationOrDefault())
+                .boEmailDocsReceivedNotification(caseData.getBoEmailDocsReceivedNotification())
+                .boEmailGrantIssuedNotification(caseData.getBoEmailGrantIssuedNotification())
 
                 .boCaseStopReasonList(caseData.getBoCaseStopReasonList());
     }
