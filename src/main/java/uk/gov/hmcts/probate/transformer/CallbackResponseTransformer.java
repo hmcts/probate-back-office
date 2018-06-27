@@ -48,6 +48,28 @@ public class CallbackResponseTransformer {
         return transform(responseCaseData);
     }
 
+    public CallbackResponse addDocumentReceivedNotification(CallbackRequest callbackRequest) {
+        CaseData caseData = callbackRequest.getCaseDetails().getData();
+
+        ResponseCaseData responseCaseData = this.getResponseCaseData(caseData)
+                .ccdState(callbackRequest.getCaseDetails().getState())
+                .boEmailDocsReceivedNotificationRequested(caseData.getBoEmailDocsReceivedNotification())
+                .build();
+
+        return transform(responseCaseData);
+    }
+
+    public CallbackResponse addGrandIssuedNotification(CallbackRequest callbackRequest) {
+        CaseData caseData = callbackRequest.getCaseDetails().getData();
+
+        ResponseCaseData responseCaseData = this.getResponseCaseData(caseData)
+                .ccdState(callbackRequest.getCaseDetails().getState())
+                .boEmailGrantIssuedNotificationRequested(caseData.getBoEmailGrantIssuedNotification())
+                .build();
+
+        return transform(responseCaseData);
+    }
+
     public CallbackResponse transform(CallbackRequest callbackRequest, FeeServiceResponse feeServiceResponse) {
         CaseData caseData = callbackRequest.getCaseDetails().getData();
 
@@ -139,6 +161,8 @@ public class CallbackResponseTransformer {
 
                 .solsLegalStatementDocument(caseData.getSolsLegalStatementDocument())
                 .casePrinted(caseData.getCasePrinted())
+                .boEmailDocsReceivedNotificationRequested(caseData.getBoEmailDocsReceivedNotificationRequested())
+                .boEmailGrantIssuedNotificationRequested(caseData.getBoEmailGrantIssuedNotificationRequested())
                 .boEmailDocsReceivedNotification(caseData.getBoEmailDocsReceivedNotification())
                 .boEmailGrantIssuedNotification(caseData.getBoEmailGrantIssuedNotification())
 

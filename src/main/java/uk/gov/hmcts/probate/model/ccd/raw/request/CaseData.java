@@ -1,8 +1,8 @@
 package uk.gov.hmcts.probate.model.ccd.raw.request;
 
-import com.google.common.base.Strings;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 import org.hibernate.validator.constraints.NotBlank;
 import uk.gov.hmcts.probate.controller.validation.ApplicationCreatedGroup;
 import uk.gov.hmcts.probate.controller.validation.ApplicationReviewedGroup;
@@ -122,9 +122,15 @@ public class CaseData {
 
     private final String solsAdditionalInfo;
 
-    private final String boEmailDocsReceivedNotification;
+    private final String boEmailDocsReceivedNotificationRequested;
 
-    private final String boEmailGrantIssuedNotification;
+    @Getter(lazy = true)
+    private final String boEmailDocsReceivedNotification = YES;
+
+    private final String boEmailGrantIssuedNotificationRequested;
+
+    @Getter(lazy = true)
+    private final String boEmailGrantIssuedNotification = YES;
 
     //EVENT = review
     private final CCDDocument solsLegalStatementDocument;
@@ -239,26 +245,10 @@ public class CaseData {
     }
 
     public boolean isDocsReceivedEmailNotificationRequested() {
-        return YES.equals(boEmailDocsReceivedNotification);
+        return YES.equals(getBoEmailDocsReceivedNotification());
     }
 
     public boolean isGrantIssuedEmailNotificationRequested() {
-        return YES.equals(boEmailGrantIssuedNotification);
-    }
-
-    public String getBoEmailDocsReceivedNotificationOrDefault() {
-        if (Strings.isNullOrEmpty(boEmailDocsReceivedNotification)) {
-            return YES;
-        }
-
-        return boEmailDocsReceivedNotification;
-    }
-
-    public String getBoEmailGrantIssuedNotificationOrDefault() {
-        if (Strings.isNullOrEmpty(boEmailGrantIssuedNotification)) {
-            return YES;
-        }
-
-        return boEmailGrantIssuedNotification;
+        return YES.equals(getBoEmailGrantIssuedNotification());
     }
 }

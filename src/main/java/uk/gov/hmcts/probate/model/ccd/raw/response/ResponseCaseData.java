@@ -67,8 +67,9 @@ public class ResponseCaseData {
     private final List<AliasNames> solsDeceasedAliasNamesList;
     private final String ccdState;
     private final String casePrinted;
+    private final String boEmailDocsReceivedNotificationRequested;
+    private final String boEmailGrantIssuedNotificationRequested;
     private final String boEmailDocsReceivedNotification;
     private final String boEmailGrantIssuedNotification;
     private final List<StopReasons> boCaseStopReasonList;
-
 }
