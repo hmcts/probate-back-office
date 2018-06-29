@@ -7,14 +7,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 import uk.gov.hmcts.probate.config.FeeServiceConfiguration;
-import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.fee.Fee;
 import uk.gov.hmcts.probate.model.fee.FeeServiceResponse;
 
 import java.math.BigDecimal;
 import java.net.URI;
-
-import static uk.gov.hmcts.probate.insights.AppInsightsEvent.REQUEST_SENT;
 
 @Data
 @Service
@@ -22,14 +19,13 @@ public class FeeService {
 
     private final FeeServiceConfiguration feeServiceConfiguration;
     private final RestTemplate restTemplate;
-    private final AppInsights appInsights;
 
     private static final String FEE_API_EVENT_TYPE_ISSUE = "issue";
     private static final String FEE_API_EVENT_TYPE_COPIES = "copies";
 
     public BigDecimal getApplicationFee(BigDecimal amountInPound) {
         URI uri = buildUri(FEE_API_EVENT_TYPE_ISSUE, amountInPound.toString());
-        appInsights.trackEvent(REQUEST_SENT, uri.toString());
+
         ResponseEntity<Fee> responseEntity = restTemplate.getForEntity(uri, Fee.class);
 
         if (responseEntity.getStatusCode().equals(HttpStatus.NO_CONTENT)) {

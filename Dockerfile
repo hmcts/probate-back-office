@@ -16,7 +16,7 @@ RUN mkdir -p /opt/app/
 WORKDIR /opt/app
 
 COPY docker/entrypoint.sh /
-COPY --from=builder /home/gradle/src/build/libs/sol-ccd-service*.jar /opt/app/sol-ccd-service.jar
+COPY --from=builder /home/gradle/src/build/libs/bo-sol-ccd-service*.jar /opt/app/bo-sol-ccd-service.jar
 
 HEALTHCHECK --interval=10s --timeout=10s --retries=10 CMD http_proxy= curl --silent --fail http://localhost:4104/health
 

@@ -2,13 +2,16 @@ package uk.gov.hmcts.probate.transformer;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.runners.MockitoJUnitRunner;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutors;
 import uk.gov.hmcts.probate.model.ccd.raw.AliasNames;
 import uk.gov.hmcts.probate.model.ccd.raw.CCDDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
+import uk.gov.hmcts.probate.model.ccd.raw.StopReasons;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
@@ -28,8 +31,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
-import static org.mockito.MockitoAnnotations.initMocks;
 
+@RunWith(MockitoJUnitRunner.class)
 public class CallbackResponseTransformerTest {
     private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
@@ -69,6 +72,7 @@ public class CallbackResponseTransformerTest {
     private static final String DOC_NAME = "docName";
     private static final String APPLICANT_FORENAME = "applicant forename";
     private static final String APPLICANT_SURNAME = "applicant surname";
+    private static final String APPLICANT_EMAIL_ADDRESS = "pa@email.com";
     private static final String PRIMARY_EXEC_APPLYING = "Yes";
     private static final String APPLICANT_HAS_ALIAS = "Yes";
     private static final String OTHER_EXECS_EXIST = "No";
@@ -80,6 +84,11 @@ public class CallbackResponseTransformerTest {
     private static final List<AliasNames> ALIAS_NAMES = Collections.emptyList();
     private static final String APP_REF = "app ref";
     private static final String ADDITIONAL_INFO = "additional info";
+
+    private static final String BO_EMAIL_GRANT_ISSUED = "Yes";
+    private static final String BO_DOCS_RECEIVED = "Yes";
+    private static final String CASE_PRINT = "Yes";
+    private static final List<StopReasons> STOP_REASONS_LIST = Collections.emptyList();
 
     private static final String YES = "Yes";
     private static final Optional<String> ORIGINAL_STATE = Optional.empty();
@@ -98,8 +107,7 @@ public class CallbackResponseTransformerTest {
     @Mock
     private CaseDetails caseDetailsMock;
 
-    @Mock
-    private CaseData caseDataMock;
+    private CaseData.CaseDataBuilder caseDataBuilder;
 
     @Mock
     private FeeServiceResponse feeServiceResponseMock;
@@ -110,50 +118,50 @@ public class CallbackResponseTransformerTest {
     @Before
     public void setup() {
 
-        initMocks(this);
+        caseDataBuilder = CaseData.builder()
+                .solsSolicitorFirmName(SOLICITOR_FIRM_NAME)
+                .solsSolicitorFirmPostcode(SOLICITOR_FIRM_POSTCODE)
+                .solsSolicitorEmail(SOLICITOR_FIRM_EMAIL)
+                .solsSolicitorPhoneNumber(SOLICITOR_FIRM_PHONE)
+                .solsSOTName(SOLICITOR_SOT_NAME)
+                .solsSOTJobTitle(SOLICITOR_SOT_JOB_TITLE)
+                .deceasedForenames(DECEASED_FIRSTNAME)
+                .deceasedSurname(DECEASED_LASTNAME)
+                .deceasedDateOfBirth(DOB)
+                .deceasedDateOfDeath(DOD)
+                .willNumberOfCodicils(NUM_CODICILS)
+                .solsIHTFormId(IHT_FORM_ID)
+                .ihtGrossValue(IHT_GROSS)
+                .ihtNetValue(IHT_NET)
+                .primaryApplicantForenames(APPLICANT_FORENAME)
+                .primaryApplicantSurname(APPLICANT_SURNAME)
+                .primaryApplicantEmailAddress(APPLICANT_EMAIL_ADDRESS)
+                .primaryApplicantIsApplying(PRIMARY_EXEC_APPLYING)
+                .primaryApplicantHasAlias(APPLICANT_HAS_ALIAS)
+                .otherExecutorExists(OTHER_EXECS_EXIST)
+                .solsExecutorAliasNames(PRIMARY_EXEC_ALIAS_NAMES)
+                .solsAdditionalExecutorList(ADDITIONAL_EXEC_LIST)
+                .deceasedAddress(DECEASED_ADDRESS)
+                .deceasedAnyOtherNames(YES)
+                .solsDeceasedAliasNamesList(DECEASED_ALIAS_NAMES_LIST)
+                .primaryApplicantAddress(EXEC_ADDRESS)
+                .solsDeceasedAliasNamesList(ALIAS_NAMES)
+                .solsSolicitorAppReference(APP_REF)
+                .solsAdditionalInfo(ADDITIONAL_INFO)
+                .boEmailGrantIssuedNotificationRequested(BO_EMAIL_GRANT_ISSUED)
+                .boEmailDocsReceivedNotificationRequested(BO_DOCS_RECEIVED)
+                .casePrinted(CASE_PRINT)
+                .boCaseStopReasonList(STOP_REASONS_LIST)
+                .willExists(YES);
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
-        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
-
-        when(caseDataMock.getSolsSolicitorFirmName()).thenReturn(SOLICITOR_FIRM_NAME);
-        when(caseDataMock.getSolsSolicitorFirmPostcode()).thenReturn(SOLICITOR_FIRM_POSTCODE);
-        when(caseDataMock.getSolsSolicitorEmail()).thenReturn(SOLICITOR_FIRM_EMAIL);
-        when(caseDataMock.getSolsSolicitorPhoneNumber()).thenReturn(SOLICITOR_FIRM_PHONE);
-        when(caseDataMock.getSolsSOTName()).thenReturn(SOLICITOR_SOT_NAME);
-        when(caseDataMock.getSolsSOTJobTitle()).thenReturn(SOLICITOR_SOT_JOB_TITLE);
-
-        when(caseDataMock.getDeceasedForenames()).thenReturn(DECEASED_FIRSTNAME);
-        when(caseDataMock.getDeceasedSurname()).thenReturn(DECEASED_LASTNAME);
-        when(caseDataMock.getDeceasedDateOfBirth()).thenReturn(DOB);
-        when(caseDataMock.getDeceasedDateOfDeath()).thenReturn(DOD);
-        when(caseDataMock.getWillNumberOfCodicils()).thenReturn(NUM_CODICILS);
-
-        when(caseDataMock.getSolsIHTFormId()).thenReturn(IHT_FORM_ID);
-        when(caseDataMock.getIhtGrossValue()).thenReturn(IHT_GROSS);
-        when(caseDataMock.getIhtNetValue()).thenReturn(IHT_NET);
-
-        when(caseDataMock.getPrimaryApplicantForenames()).thenReturn(APPLICANT_FORENAME);
-        when(caseDataMock.getPrimaryApplicantSurname()).thenReturn(APPLICANT_SURNAME);
-        when(caseDataMock.getPrimaryApplicantIsApplying()).thenReturn(PRIMARY_EXEC_APPLYING);
-        when(caseDataMock.getPrimaryApplicantHasAlias()).thenReturn(APPLICANT_HAS_ALIAS);
-        when(caseDataMock.getOtherExecutorExists()).thenReturn(OTHER_EXECS_EXIST);
-        when(caseDataMock.getSolsExecutorAliasNames()).thenReturn(PRIMARY_EXEC_ALIAS_NAMES);
-        when(caseDataMock.getSolsAdditionalExecutorList()).thenReturn(ADDITIONAL_EXEC_LIST);
-        when(caseDataMock.getDeceasedAddress()).thenReturn(DECEASED_ADDRESS);
-        when(caseDataMock.getDeceasedAnyOtherNames()).thenReturn(YES);
-        when(caseDataMock.getSolsDeceasedAliasNamesList()).thenReturn(DECEASED_ALIAS_NAMES_LIST);
-        when(caseDataMock.getPrimaryApplicantAddress()).thenReturn(EXEC_ADDRESS);
-        when(caseDataMock.getSolsDeceasedAliasNamesList()).thenReturn(ALIAS_NAMES);
-        when(caseDataMock.getSolsSolicitorAppReference()).thenReturn(APP_REF);
-        when(caseDataMock.getSolsAdditionalInfo()).thenReturn(ADDITIONAL_INFO);
-
-        when(caseDataMock.getWillExists()).thenReturn(YES);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
     }
 
     @Test
     public void shouldConvertRequestToDataBeanForWithStateChange() {
-        when(stateChangeServiceMock.getChangedStateForCaseUpdate(caseDataMock)).thenReturn(CHANGED_STATE);
+        when(stateChangeServiceMock.getChangedStateForCaseUpdate(caseDataBuilder.build())).thenReturn(CHANGED_STATE);
 
         CallbackResponse callbackResponse = underTest.transformWithConditionalStateChange(callbackRequestMock, CHANGED_STATE);
 
@@ -203,10 +211,10 @@ public class CallbackResponseTransformerTest {
 
     @Test
     public void shouldConvertRequestToDataBeanForPaymentWithFeeAccount() {
-
-        when(caseDataMock.getSolsPaymentMethods()).thenReturn(SOL_PAY_METHODS_FEE);
-        when(caseDataMock.getSolsFeeAccountNumber()).thenReturn(FEE_ACCT_NUMBER);
-
+        CaseData caseData = caseDataBuilder.solsPaymentMethods(SOL_PAY_METHODS_FEE)
+                .solsFeeAccountNumber(FEE_ACCT_NUMBER)
+                .build();
+        when(caseDetailsMock.getData()).thenReturn(caseData);
 
         when(feeServiceResponseMock.getFeeForNonUkCopies()).thenReturn(feeForNonUkCopies);
         when(feeServiceResponseMock.getFeeForUkCopies()).thenReturn(feeForUkCopies);
@@ -225,8 +233,9 @@ public class CallbackResponseTransformerTest {
 
     @Test
     public void shouldConvertRequestToDataBeanForPaymentWithCheque() {
-
-        when(caseDataMock.getSolsPaymentMethods()).thenReturn(SOL_PAY_METHODS_CHEQUE);
+        CaseData caseData = caseDataBuilder.solsPaymentMethods(SOL_PAY_METHODS_CHEQUE)
+                .build();
+        when(caseDetailsMock.getData()).thenReturn(caseData);
 
         when(feeServiceResponseMock.getFeeForNonUkCopies()).thenReturn(feeForNonUkCopies);
         when(feeServiceResponseMock.getFeeForUkCopies()).thenReturn(feeForUkCopies);
@@ -266,6 +275,7 @@ public class CallbackResponseTransformerTest {
 
         assertEquals(APPLICANT_FORENAME, callbackResponse.getData().getPrimaryApplicantForenames());
         assertEquals(APPLICANT_SURNAME, callbackResponse.getData().getPrimaryApplicantSurname());
+        assertEquals(APPLICANT_EMAIL_ADDRESS, callbackResponse.getData().getPrimaryApplicantEmailAddress());
         assertEquals(PRIMARY_EXEC_APPLYING, callbackResponse.getData().getPrimaryApplicantIsApplying());
         assertEquals(APPLICANT_HAS_ALIAS, callbackResponse.getData().getPrimaryApplicantHasAlias());
         assertEquals(OTHER_EXECS_EXIST, callbackResponse.getData().getOtherExecutorExists());
@@ -276,5 +286,10 @@ public class CallbackResponseTransformerTest {
         assertEquals(ALIAS_NAMES, callbackResponse.getData().getSolsDeceasedAliasNamesList());
         assertEquals(APP_REF, callbackResponse.getData().getSolsSolicitorAppReference());
         assertEquals(ADDITIONAL_INFO, callbackResponse.getData().getSolsAdditionalInfo());
+
+        assertEquals(BO_DOCS_RECEIVED, callbackResponse.getData().getBoEmailDocsReceivedNotificationRequested());
+        assertEquals(BO_EMAIL_GRANT_ISSUED, callbackResponse.getData().getBoEmailGrantIssuedNotificationRequested());
+        assertEquals(CASE_PRINT, callbackResponse.getData().getCasePrinted());
+        assertEquals(STOP_REASONS_LIST, callbackResponse.getData().getBoCaseStopReasonList());
     }
 }

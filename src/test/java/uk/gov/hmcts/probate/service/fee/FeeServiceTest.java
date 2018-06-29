@@ -9,7 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 import uk.gov.hmcts.probate.config.FeeServiceConfiguration;
-import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.fee.Fee;
 import uk.gov.hmcts.probate.model.fee.FeeServiceResponse;
 
@@ -36,9 +35,6 @@ public class FeeServiceTest {
 
     @Mock
     private FeeServiceConfiguration feeServiceConfiguration;
-
-    @Mock
-    AppInsights appInsights;
 
     @Before
     public void setUp() {
@@ -72,6 +68,7 @@ public class FeeServiceTest {
     public void copiesFeeShouldReturnZeroValue() {
         when(fee.getFeeAmount()).thenReturn(BigDecimal.ZERO);
         when(responseEntity.getStatusCode()).thenReturn(HttpStatus.NO_CONTENT);
+
         BigDecimal copiesFee = feeService.getCopiesFee(5L);
 
         assertEquals(BigDecimal.ZERO, copiesFee);
@@ -81,6 +78,7 @@ public class FeeServiceTest {
     public void copiesFeeEqualsZero() {
         when(fee.getFeeAmount()).thenReturn(BigDecimal.ZERO);
         when(responseEntity.getStatusCode()).thenReturn(HttpStatus.NO_CONTENT);
+
         BigDecimal copiesFee = feeService.getCopiesFee(null);
 
         assertEquals(BigDecimal.ZERO, copiesFee);

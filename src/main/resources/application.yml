@@ -38,8 +38,6 @@ markdown.templatesDirectory: templates/markdown/
 printservice:
   templatesDirectory: templates/printService/
   host: http://localhost:3453
-  internal:
-    host: http://localhost:3453
   path: /jurisdictions/PROBATE/case-types/GrantOfRepresentation/cases/%s/probate/
 
 spring:
@@ -49,7 +47,7 @@ spring:
     deserialization:
       unwrap_root_value: false
   application:
-    name: probate-sol-ccd
+    name: probate-bo-sol-ccd
 
 spring.jackson.serialization.write_dates_as_timestamps: false
 
@@ -66,9 +64,28 @@ idam.service.host: ${PROVIDER_SERVICE_CLIENT_URL:http://localhost:4502}
 logging:
   level:
     org.springframework.web: ERROR
-    uk.gov.hmcts.probate: INFO
+    uk.gov.hmcts.probate: DEBUG
   pattern:
     console: "%d{yyyy-MMM-dd HH:mm:ss.SSS} %-5level [%thread] %logger{15} - %msg%n"
 
 azure:
   app_insights_key: ${APPINSIGHTS_INSTRUMENTATIONKEY:false}
+
+notifications:
+  govNotifyApiKey: "dummy_key"
+  templates:
+    email:
+      personal:
+        documentReceived: "04308c65-a0bb-40b4-a3f3-ba8869048520"
+        grantIssued: "9344693b-9ea3-487d-bec1-68201214fd27"
+      solicitor:
+        documentReceived: "7f8ff32d-8297-4702-9867-312047f81492"
+        grantIssued: "95aa541b-e55e-4d7c-a6f5-810b5f03adba"
+
+registries:
+  oxford:
+    name: Oxford Probate Registry
+    phone: 0300 303 0648
+  birmingham:
+    name: Birmingham Probate Registry
+    phone: 0121 681 3414

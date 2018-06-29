@@ -14,7 +14,6 @@ import org.springframework.web.client.RestTemplate;
 import uk.gov.hmcts.probate.config.PDFServiceConfiguration;
 import uk.gov.hmcts.probate.exception.ClientException;
 import uk.gov.hmcts.probate.exception.ConnectionException;
-import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.template.PDFServiceTemplate;
 import uk.gov.hmcts.probate.service.FileSystemResourceService;
 
@@ -55,9 +54,6 @@ public class PDFGeneratorServiceTest {
 
     @Mock
     private RestClientException restClientException;
-
-    @Mock
-    private AppInsights appInsights;
 
     @InjectMocks
     private PDFGeneratorService underTest;
