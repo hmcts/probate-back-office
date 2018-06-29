@@ -5,7 +5,7 @@ variable "product" {
 }
 
 variable "microservice" {
-  default = "bo-sol-ccd-service"
+  default = "back-office"
 }
 
 variable "location" {
@@ -55,15 +55,15 @@ variable "idam_service_api" {
   type = "string"
 }
 
-variable "idam_user_host" {
-  type = "string"
-}
-
 variable "pdf_service_api_url" {
   type = "string"
 }
 
 variable "printservice_host" {
+  type = "string"
+}
+
+variable "printservice_internal_host" {
   type = "string"
 }
 

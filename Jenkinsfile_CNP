@@ -3,7 +3,7 @@
 @Library("Infrastructure")
 
 String product = "probate"
-String component = "bo-sol-ccd-service"
+String component = "back-office"
 
 List<LinkedHashMap<String, Object>> secrets = [
     secret('serviceAuthProviderBaseUrl', 'SERVICE_AUTH_PROVIDER_BASE_URL'),
@@ -23,9 +23,6 @@ static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
 }
 
 withPipeline("java", product, component) {
-  before('buildinfra:prod') {
-    error 'Deliberately breaking pipeline to prevent prod deployment'
-  }
   loadVaultSecrets(secrets)
   //enableSlackNotifications('#probate-jenkins')
 

@@ -20,9 +20,16 @@ data "vault_generic_secret" "govNotifyApiKey" {
 
 locals {
   aseName = "${data.terraform_remote_state.core_apps_compute.ase_name[0]}"
+    
+  previewVaultName    = "pro-bo"
+  nonPreviewVaultName = "pro-bo-${var.env}"
+  vaultName           = "${(var.env == "preview" || var.env == "spreview") ? local.previewVaultName : local.nonPreviewVaultName}"
+  nonPreviewVaultUri  = "${module.probate-back-office-vault.key_vault_uri}"
+  previewVaultUri     = "https://pro-bo-aat.vault.azure.net/"
+  vaultUri            = "${(var.env == "preview" || var.env == "spreview") ? local.previewVaultUri : local.nonPreviewVaultUri}"
 }
 
-module "probate-bo-sol-ccd-service" {
+module "probate-back-office" {
   source = "git@github.com:hmcts/moj-module-webapp.git?ref=master"
   product = "${var.product}-${var.microservice}"
   location = "${var.location}"
@@ -47,7 +54,7 @@ module "probate-bo-sol-ccd-service" {
     AUTH_PROVIDER_SERVICE_CLIENT_BASEURL = "${var.idam_service_api}"
     PDF_SERVICE_URL = "${var.pdf_service_api_url}"
     PRINTSERVICE_HOST = "${var.printservice_host}"
-    IDAM_USER_HOST = "${var.idam_user_host}"
+    PRINTSERVICE_INTERNAL_HOST = "${var.printservice_internal_host}"
     IDAM_SERVICE_HOST = "${var.idam_service_api}"
     FEE_API_URL = "${var.fee_api_url}"
     EVIDENCE_MANAGEMENT_HOST = "${var.evidence_management_host}"
@@ -59,13 +66,13 @@ module "probate-bo-sol-ccd-service" {
   }
 }
 
-module "probate-bo-sol-ccd-service-vault" {
+module "probate-back-office-vault" {
   source              = "git@github.com:hmcts/moj-module-key-vault?ref=master"
-  name                = "pro-bo-sol-ccd-${var.env}"
+  name                = "${local.vaultName}"
   product             = "${var.product}"
   env                 = "${var.env}"
   tenant_id           = "${var.tenant_id}"
   object_id           = "${var.jenkins_AAD_objectId}"
-  resource_group_name = "${module.probate-bo-sol-ccd-service.resource_group_name}"
+  resource_group_name = "${module.probate-back-office.resource_group_name}"
   product_group_object_id = "33ed3c5a-bd38-4083-84e3-2ba17841e31e"
 }

@@ -4,67 +4,38 @@
 
 //noinspection GroovyAssignabilityCheck
 properties([
-		parameters([
-			choice(name: 'ENVIRONMENT', choices: 'sandbox\nsaat\nsprod\nnonprod\nprod', description: 'Environment where code should be build and deployed')
-		])
+        parameters([
+                choice(name: 'ENVIRONMENT', choices: 'sandbox\nsaat\nsprod\nnonprod\nprod', description: 'Environment where code should be build and deployed')
+        ])
 ])
 
 List<LinkedHashMap<String, Object>> secrets = [
-    secret('serviceAuthProviderBaseUrl', 'SERVICE_AUTH_PROVIDER_BASE_URL'),
-    secret('userAuthProviderOauth2Url', 'USER_AUTH_PROVIDER_OAUTH2_URL'),
-    secret('evidenceManagementUrl', 'EVIDENCE_MANAGEMENT_URL'),
-    secret('idamUserId', 'IDAM_USER_ID'),
-    secret('s2sAuthTotpSecret', 'S2S_AUTH_TOTP_SECRET')
+        secret('serviceAuthProviderBaseUrl', 'SERVICE_AUTH_PROVIDER_BASE_URL'),
+        secret('userAuthProviderOauth2Url', 'USER_AUTH_PROVIDER_OAUTH2_URL'),
+        secret('evidenceManagementUrl', 'EVIDENCE_MANAGEMENT_URL'),
+        secret('idamUserId', 'IDAM_USER_ID'),
+        secret('s2sAuthTotpSecret', 'S2S_AUTH_TOTP_SECRET')
 ]
 
 static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
-  [ $class: 'AzureKeyVaultSecret',
-    secretType: 'Secret',
-    name: secretName,
-    version: '',
-    envVariable: envVar
-  ]
+    [ $class: 'AzureKeyVaultSecret',
+      secretType: 'Secret',
+      name: secretName,
+      version: '',
+      envVariable: envVar
+    ]
 }
 
-withParameterizedPipeline('java', 'probate', 'bo-sol-ccd-service', params.ENVIRONMENT, 'sandbox') {
+withParameterizedPipeline('java', 'probate', 'back-office', params.ENVIRONMENT, 'sandbox') {
     loadVaultSecrets(secrets)
-
+ 
     after('build') {
-        sh './gradlew test'
-        junit 'build/test-results/test/**/*.xml'
-	    archiveArtifacts 'build/reports/tests/test/index.html'
-        publishHTML target: [
-                allowMissing         : true,
-                alwaysLinkToLastBuild: true,
-                keepAll              : true,
-                reportDir            : "build/reports/tests/test",
-                reportFiles          : "index.html",
-                reportName           : "bo-sol-ccd-service Test Report"
-        ]
-
-        publishHTML target: [
-                allowMissing         : true,
-                alwaysLinkToLastBuild: true,
-                keepAll              : true,
-                reportDir            : "build/reports/jacoco",
-                reportFiles          : "index.html",
-                reportName           : "bo-sol-ccd-service Code Coverage Report"
-        ]
-
-        publishHTML target: [
-                allowMissing         : true,
-                alwaysLinkToLastBuild: true,
-                keepAll              : true,
-                reportDir            : "build/reports/findbugs",
-                reportFiles          : "main.html",
-                reportName           : "bo-sol-ccd-service find Bugs Report"
-        ]
         try {
-            sh './gradlew pitest'
+           sh './gradlew pitest'
         } finally {
-            steps.archiveArtifacts "build/reports/pitest/**/*.*"
+           steps.archiveArtifacts "build/reports/pitest/**/*.*"
         }
-    }
+     }
 
     after('functionalTest:saat') {
         publishHTML target: [
