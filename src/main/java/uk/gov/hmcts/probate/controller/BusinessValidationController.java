@@ -7,7 +7,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -44,7 +43,6 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @Data
 @Controller
-@Component
 @RequestMapping("/case")
 public class BusinessValidationController {
 

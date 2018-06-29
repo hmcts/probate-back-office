@@ -10,6 +10,7 @@ import uk.gov.hmcts.probate.exception.ClientException;
 import uk.gov.hmcts.probate.exception.ConnectionException;
 import uk.gov.hmcts.probate.exception.model.ErrorResponse;
 import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
+import uk.gov.service.notify.NotificationClientException;
 
 import java.util.Arrays;
 
@@ -31,6 +32,9 @@ public class DefaultExceptionHandlerTest {
 
     @Mock
     private BadRequestException badRequestException;
+
+    @Mock
+    private NotificationClientException notificationClientException;
 
     @InjectMocks
     private DefaultExceptionHandler underTest;
@@ -86,5 +90,16 @@ public class DefaultExceptionHandlerTest {
 
         assertEquals(response.getBody().getFieldErrors().get(0), bve1Mock);
         assertEquals(response.getBody().getFieldErrors().get(1), bve2Mock);
+    }
+
+    @Test
+    public void shouldReturnNotificationClientException() {
+        when(notificationClientException.getMessage()).thenReturn(EXCEPTION_MESSAGE);
+
+        ResponseEntity<ErrorResponse> response = underTest.handle(notificationClientException);
+
+        assertEquals(response.getStatusCode(), SERVICE_UNAVAILABLE);
+        assertEquals(response.getBody().getError(), DefaultExceptionHandler.CLIENT_ERROR);
+        assertEquals(response.getBody().getMessage(), EXCEPTION_MESSAGE);
     }
 }

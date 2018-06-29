@@ -32,6 +32,39 @@ public class CallbackResponseTransformer {
 
         ResponseCaseData responseCaseData = this.getResponseCaseData(caseData)
                 .state(newState.orElse(null))
+                .ccdState(callbackRequest.getCaseDetails().getState())
+                .build();
+
+        return transform(responseCaseData);
+    }
+
+    public CallbackResponse addCcdState(CallbackRequest callbackRequest) {
+        CaseData caseData = callbackRequest.getCaseDetails().getData();
+
+        ResponseCaseData responseCaseData = this.getResponseCaseData(caseData)
+                .ccdState(callbackRequest.getCaseDetails().getState())
+                .build();
+
+        return transform(responseCaseData);
+    }
+
+    public CallbackResponse addDocumentReceivedNotification(CallbackRequest callbackRequest) {
+        CaseData caseData = callbackRequest.getCaseDetails().getData();
+
+        ResponseCaseData responseCaseData = this.getResponseCaseData(caseData)
+                .ccdState(callbackRequest.getCaseDetails().getState())
+                .boEmailDocsReceivedNotificationRequested(caseData.getBoEmailDocsReceivedNotification())
+                .build();
+
+        return transform(responseCaseData);
+    }
+
+    public CallbackResponse addGrandIssuedNotification(CallbackRequest callbackRequest) {
+        CaseData caseData = callbackRequest.getCaseDetails().getData();
+
+        ResponseCaseData responseCaseData = this.getResponseCaseData(caseData)
+                .ccdState(callbackRequest.getCaseDetails().getState())
+                .boEmailGrantIssuedNotificationRequested(caseData.getBoEmailGrantIssuedNotification())
                 .build();
 
         return transform(responseCaseData);
@@ -50,6 +83,7 @@ public class CallbackResponseTransformer {
                 .feeForUkCopies(feeForUkCopies)
                 .applicationFee(applicationFee)
                 .totalFee(totalFee)
+                .ccdState(callbackRequest.getCaseDetails().getState())
                 .build();
 
         return transform(responseCaseData);
@@ -60,6 +94,7 @@ public class CallbackResponseTransformer {
 
         ResponseCaseDataBuilder responseCaseData = this.getResponseCaseData(caseData);
         responseCaseData.solsSOTNeedToUpdate(null);
+        responseCaseData.ccdState(callbackRequest.getCaseDetails().getState());
         if (LEGAL_STATEMENT.equals(pdfServiceTemplate)) {
             responseCaseData.solsLegalStatementDocument(ccdDocument);
         }
@@ -93,6 +128,7 @@ public class CallbackResponseTransformer {
                 .solsIHTFormId(caseData.getSolsIHTFormId())
                 .primaryApplicantForenames(caseData.getPrimaryApplicantForenames())
                 .primaryApplicantSurname(caseData.getPrimaryApplicantSurname())
+                .primaryApplicantEmailAddress(caseData.getPrimaryApplicantEmailAddress())
                 .primaryApplicantIsApplying(caseData.getPrimaryApplicantIsApplying())
                 .solsPrimaryExecutorNotApplyingReason(caseData.getSolsPrimaryExecutorNotApplyingReason())
                 .primaryApplicantHasAlias(caseData.getPrimaryApplicantHasAlias())
@@ -123,7 +159,14 @@ public class CallbackResponseTransformer {
                 .applicationFee(transformMoneyGBPToString(caseData.getApplicationFee()))
                 .totalFee(transformMoneyGBPToString(caseData.getTotalFee()))
 
-                .solsLegalStatementDocument(caseData.getSolsLegalStatementDocument());
+                .solsLegalStatementDocument(caseData.getSolsLegalStatementDocument())
+                .casePrinted(caseData.getCasePrinted())
+                .boEmailDocsReceivedNotificationRequested(caseData.getBoEmailDocsReceivedNotificationRequested())
+                .boEmailGrantIssuedNotificationRequested(caseData.getBoEmailGrantIssuedNotificationRequested())
+                .boEmailDocsReceivedNotification(caseData.getBoEmailDocsReceivedNotification())
+                .boEmailGrantIssuedNotification(caseData.getBoEmailGrantIssuedNotification())
+
+                .boCaseStopReasonList(caseData.getBoCaseStopReasonList());
     }
 
     private String getPaymentReference(CaseData caseData) {

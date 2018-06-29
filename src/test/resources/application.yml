@@ -38,8 +38,6 @@ markdown.templatesDirectory: templates/markdown/
 printservice:
   templatesDirectory: templates/printService/
   host: http://localhost:3453
-  internal:
-      host: http://localhost:3453
   path: /jurisdictions/PROBATE/case-types/GrantOfRepresentation/cases/%s/probate/
 
 spring:
@@ -49,7 +47,7 @@ spring:
     deserialization:
       unwrap_root_value: false
   application:
-    name: probate-sol-ccd
+    name: probate-bo-sol-ccd
 
 spring.jackson.serialization.write_dates_as_timestamps: false
 
@@ -62,3 +60,22 @@ http.connect.timeout: 60000
 http.connect.request.timeout: 60000
 
 idam.service.host: ${PROVIDER_SERVICE_CLIENT_URL:http://localhost:4502}
+
+notifications:
+  govNotifyApiKey: "dummy_key"
+  templates:
+    email:
+      personal:
+        documentReceived: "pa-document-received"
+        grantIssued: "pa-grant-issued"
+      solicitor:
+        documentReceived: "sol-document-received"
+        grantIssued: "sol-grant-issued"
+
+registries:
+  oxford:
+    name: Oxford Registry
+    phone: 0123456789
+  birmingham:
+    name: Birmingham Registry
+    phone: 1234567890
