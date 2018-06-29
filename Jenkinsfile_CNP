@@ -27,6 +27,12 @@ withPipeline("java", product, component) {
   //enableSlackNotifications('#probate-jenkins')
 
   after('test') {
+    try {
+      sh './gradlew pitest'
+    } finally {
+      steps.archiveArtifacts "build/reports/pitest/**/*.*"
+    }
+
     junit 'build/test-results/test/**/*.xml'
     archiveArtifacts 'build/reports/tests/test/index.html'
     publishHTML target: [
@@ -35,7 +41,7 @@ withPipeline("java", product, component) {
             keepAll              : true,
             reportDir            : "build/reports/tests/test",
             reportFiles          : "index.html",
-            reportName           : "bo-sol-ccd-service Test Report"
+            reportName           : "sol-ccd-service Test Report"
     ]
 
     publishHTML target: [
@@ -44,7 +50,7 @@ withPipeline("java", product, component) {
             keepAll              : true,
             reportDir            : "build/reports/jacoco",
             reportFiles          : "index.html",
-            reportName           : "bo-sol-ccd-service Code Coverage Report"
+            reportName           : "sol-ccd-service Code Coverage Report"
     ]
 
     publishHTML target: [
@@ -53,7 +59,7 @@ withPipeline("java", product, component) {
             keepAll              : true,
             reportDir            : "build/reports/findbugs",
             reportFiles          : "main.html",
-            reportName           : "bo-sol-ccd-service find Bugs Report"
+            reportName           : "sol-ccd-service find Bugs Report"
     ]
     try {
       sh './gradlew pitest'

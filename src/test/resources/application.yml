@@ -49,7 +49,7 @@ spring:
     deserialization:
       unwrap_root_value: false
   application:
-    name: probate-bo-sol-ccd
+    name: probate-sol-ccd
 
 spring.jackson.serialization.write_dates_as_timestamps: false
 

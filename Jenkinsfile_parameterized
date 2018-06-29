@@ -41,7 +41,7 @@ withParameterizedPipeline('java', 'probate', 'back-office', params.ENVIRONMENT, 
         publishHTML target: [
                 reportDir            : "target/site/serenity/",
                 reportFiles          : "index.html",
-                reportName           : "BO-SAAT Functional Tests",
+                reportName           : "SAAT Functional Tests",
                 alwaysLinkToLastBuild: true
         ]
     }
