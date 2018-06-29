@@ -7,6 +7,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutors;
 import uk.gov.hmcts.probate.model.ccd.raw.AliasNames;
 import uk.gov.hmcts.probate.model.ccd.raw.CCDDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
+import uk.gov.hmcts.probate.model.ccd.raw.StopReasons;
 
 import java.util.List;
 
@@ -53,6 +54,7 @@ public class ResponseCaseData {
     private final String solsAdditionalInfo;
     private final String primaryApplicantForenames;
     private final String primaryApplicantSurname;
+    private final String primaryApplicantEmailAddress;
     private final String primaryApplicantHasAlias;
     private final String primaryApplicantIsApplying;
     private final String solsPrimaryExecutorNotApplyingReason;
@@ -63,5 +65,11 @@ public class ResponseCaseData {
     private final String deceasedAnyOtherNames;
     private final SolsAddress primaryApplicantAddress;
     private final List<AliasNames> solsDeceasedAliasNamesList;
-
+    private final String ccdState;
+    private final String casePrinted;
+    private final String boEmailDocsReceivedNotificationRequested;
+    private final String boEmailGrantIssuedNotificationRequested;
+    private final String boEmailDocsReceivedNotification;
+    private final String boEmailGrantIssuedNotification;
+    private final List<StopReasons> boCaseStopReasonList;
 }

@@ -1,22 +1,11 @@
 package uk.gov.hmcts.probate.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Import;
-import org.springframework.test.context.ContextConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
-import uk.gov.hmcts.probate.config.ApplicationConfiguration;
-import uk.gov.hmcts.probate.config.EvidenceManagementRestTemplate;
-import uk.gov.hmcts.probate.config.FeeServiceConfiguration;
-import uk.gov.hmcts.probate.config.PDFServiceConfiguration;
-import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
 import uk.gov.hmcts.probate.model.ccd.Deceased;
 import uk.gov.hmcts.probate.model.ccd.Executor;
@@ -26,7 +15,6 @@ import uk.gov.hmcts.probate.model.ccd.Solicitor;
 import uk.gov.hmcts.probate.model.ccd.raw.response.AfterSubmitCallbackResponse;
 import uk.gov.hmcts.probate.util.TestUtils;
 
-import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -37,7 +25,7 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
 @RunWith(SpringRunner.class)
-@ContextConfiguration
+@SpringBootTest
 @TestPropertySource(properties = {"markdown.templatesDirectory=templates/markdown/"})
 public class ConfirmationResponseServiceFeatureTest {
 
@@ -66,9 +54,6 @@ public class ConfirmationResponseServiceFeatureTest {
     private static final Long EXTRA_OUTSIDE_UK = 2L;
     private static final String PAYMENT_REFERENCE = "XXXXX123456";
     private static final String ADDITIONAL_INFO = "ADDITIONAL INFO";
-
-    @MockBean
-    private AppInsights appInsights;
 
     @Autowired
     private ConfirmationResponseService confirmationResponseService;
@@ -235,31 +220,5 @@ public class ConfirmationResponseServiceFeatureTest {
                 .lastname(lastname)
                 .reasonNotApplying(REASON_FOR_NOT_APPLYING_RENUNCIATION)
                 .build();
-    }
-
-    @TestConfiguration
-    @ComponentScan(basePackages = {"uk.gov.hmcts.probate.changerule",
-            "uk.gov.hmcts.probate.validator",
-            "uk.gov.hmcts.probate.service"}
-    )
-    @Import({ApplicationConfiguration.class})
-    public static class Config {
-
-        @MockBean
-        HttpServletRequest httpServletRequest;
-
-        @MockBean
-        EvidenceManagementRestTemplate evidenceManagementRestTemplate;
-
-        @MockBean
-        FeeServiceConfiguration feeServiceConfiguration;
-
-        @MockBean
-        PDFServiceConfiguration pdfServiceConfiguration;
-
-        @Bean
-        public ObjectMapper objectMapper() {
-            return new ObjectMapper();
-        }
     }
 }

@@ -21,13 +21,14 @@ public class SolsHealthIndicator implements HealthIndicator {
 
     private final String url;
     private final RestTemplate restTemplate;
+    private final String endpoint;
 
     @Override
     public Health health() {
         ResponseEntity<String> responseEntity;
 
         try {
-            responseEntity = restTemplate.getForEntity(url + "/health", String.class);
+            responseEntity = restTemplate.getForEntity(url + endpoint, String.class);
 
         } catch (ResourceAccessException rae) {
             log.trace(rae.getMessage(), rae);

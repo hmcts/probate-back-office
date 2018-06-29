@@ -61,6 +61,11 @@ withPipeline("java", product, component) {
             reportFiles          : "main.html",
             reportName           : "sol-ccd-service find Bugs Report"
     ]
+    try {
+      sh './gradlew pitest'
+    } finally {
+      steps.archiveArtifacts "build/reports/pitest/**/*.*"
+    }
   }
 
   after('functionalTest:aat') {
