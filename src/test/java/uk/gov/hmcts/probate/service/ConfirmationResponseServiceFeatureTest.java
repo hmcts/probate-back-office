@@ -4,8 +4,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
+import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
 import uk.gov.hmcts.probate.model.ccd.Deceased;
 import uk.gov.hmcts.probate.model.ccd.Executor;
@@ -57,6 +59,9 @@ public class ConfirmationResponseServiceFeatureTest {
 
     @Autowired
     private ConfirmationResponseService confirmationResponseService;
+
+    @MockBean
+    private AppInsights appInsights;
 
     @Test
     public void shouldGenerateCorrectConfirmationBodyWithNoAdditionalOptions() throws Exception {

@@ -8,10 +8,12 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import uk.gov.hmcts.probate.exception.BadRequestException;
+import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
 import uk.gov.hmcts.probate.model.ccd.Fee;
 import uk.gov.hmcts.probate.model.ccd.InheritanceTax;
@@ -72,6 +74,8 @@ public class NextStepsUnitTest {
     @Mock
     private StateChangeService stateChangeServiceMock;
 
+    @MockBean
+    private AppInsights appInsights;
 
     @Before
     public void setUp() {
