@@ -6,9 +6,11 @@ import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.test.context.junit4.SpringRunner;
 import uk.gov.hmcts.probate.exception.BadRequestException;
+import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.service.notify.NotificationClient;
 import uk.gov.service.notify.NotificationClientException;
@@ -16,6 +18,7 @@ import uk.gov.service.notify.NotificationClientException;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.anyString;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
@@ -29,6 +32,9 @@ public class NotificationServiceTest {
     @Autowired
     private NotificationService notificationService;
 
+    @MockBean
+    private AppInsights appInsights;
+
     @SpyBean
     private NotificationClient notificationClient;
 
@@ -38,7 +44,7 @@ public class NotificationServiceTest {
 
     @Before
     public void setUp() throws NotificationClientException {
-        Mockito.doReturn(null)
+        doReturn(null)
                 .when(notificationClient).sendEmail(anyString(), anyString(), any(), anyString());
 
         solicitorCaseData = CaseData.builder()
