@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
+import uk.gov.hmcts.probate.transformer.BOCaseTransformer;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 
 import javax.servlet.http.HttpServletRequest;
@@ -26,12 +27,14 @@ public class StateController {
 
     private final ObjectMapper objectMapper;
     private final CallbackResponseTransformer callbackResponseTransformer;
+    private final BOCaseTransformer boCaseTransformer;
 
     @PostMapping(path = "/copyState", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<CallbackResponse> copyState(@RequestBody CallbackRequest callbackRequest, HttpServletRequest request) {
 
         logRequest(request.getRequestURI(), callbackRequest);
 
+        callbackRequest = boCaseTransformer.transformExecutors(callbackRequest);
         CallbackResponse response = callbackResponseTransformer.addCcdState(callbackRequest);
 
         return ResponseEntity.ok(response);
