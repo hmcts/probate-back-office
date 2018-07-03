@@ -3,6 +3,7 @@ package uk.gov.hmcts.probate.model.ccd.raw.response;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;
 import lombok.Data;
+import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutors;
 import uk.gov.hmcts.probate.model.ccd.raw.AliasNames;
 import uk.gov.hmcts.probate.model.ccd.raw.CCDDocument;
@@ -17,7 +18,7 @@ import java.util.List;
 public class ResponseCaseData {
 
     private final String state;
-    private final String applicationType;
+    private final ApplicationType applicationType;
     private final String registryLocation;
 
     private final String deceasedDateOfDeath;

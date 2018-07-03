@@ -1,6 +1,7 @@
 package uk.gov.hmcts.probate.transformer;
 
 import org.springframework.stereotype.Component;
+import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.ccd.raw.CCDDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
@@ -14,6 +15,7 @@ import java.math.BigDecimal;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
+import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
 import static uk.gov.hmcts.probate.model.template.PDFServiceTemplate.LEGAL_STATEMENT;
 
 @Component
@@ -24,7 +26,7 @@ public class CallbackResponseTransformer {
     static final String PAYMENT_REFERENCE_CHEQUE = "Cheque (payable to ‘HM Courts & Tribunals Service’)";
 
     private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-    private static final String APPLICATION_TYPE_SOLS = "Solicitor";
+    private static final ApplicationType DEFAULT_APPLICATION_TYPE = SOLICITOR;
     private static final String REGISTRY_LOCATION_BIRMINGHAM = "Birmingham";
 
     public CallbackResponse transformWithConditionalStateChange(CallbackRequest callbackRequest, Optional<String> newState) {
@@ -109,7 +111,7 @@ public class CallbackResponseTransformer {
     private ResponseCaseDataBuilder getResponseCaseData(CaseData caseData) {
 
         return ResponseCaseData.builder()
-                .applicationType(APPLICATION_TYPE_SOLS)
+                .applicationType(Optional.ofNullable(caseData.getApplicationType()).orElse(DEFAULT_APPLICATION_TYPE))
                 .registryLocation(REGISTRY_LOCATION_BIRMINGHAM)
                 .solsSolicitorFirmName(caseData.getSolsSolicitorFirmName())
                 .solsSolicitorFirmPostcode(caseData.getSolsSolicitorFirmPostcode())

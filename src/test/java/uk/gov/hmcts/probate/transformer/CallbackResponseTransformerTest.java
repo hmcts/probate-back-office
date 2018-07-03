@@ -7,6 +7,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
+import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutors;
 import uk.gov.hmcts.probate.model.ccd.raw.AliasNames;
 import uk.gov.hmcts.probate.model.ccd.raw.CCDDocument;
@@ -31,12 +32,13 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
+import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CallbackResponseTransformerTest {
     private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-    private static final String APPLICATION_TYPE = "Solicitor";
+    private static final ApplicationType APPLICATION_TYPE = SOLICITOR;
     private static final String REGISTRY_LOCATION = "Birmingham";
 
     private static final String SOLICITOR_FIRM_NAME = "Sol Firm Name";
