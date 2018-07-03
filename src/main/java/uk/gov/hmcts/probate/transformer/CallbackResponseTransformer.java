@@ -139,8 +139,10 @@ public class CallbackResponseTransformer {
                 .otherExecutorExists(caseData.getOtherExecutorExists())
                 .solsExecutorAliasNames(caseData.getSolsExecutorAliasNames())
                 .solsAdditionalExecutorList(caseData.getSolsAdditionalExecutorList())
-                .executorsApplying(additionalExecutorsListFilter.filter(caseData.getSolsAdditionalExecutorList(), "Yes", caseData.getOtherExecutorExists()))
-                .executorsNotApplying(additionalExecutorsListFilter.filter(caseData.getSolsAdditionalExecutorList(), "No", caseData.getOtherExecutorExists()))
+                .executorsApplying(additionalExecutorsListFilter.filter(
+                        caseData.getSolsAdditionalExecutorList(), "Yes", caseData.getOtherExecutorExists()))
+                .executorsNotApplying(additionalExecutorsListFilter.filter(
+                        caseData.getSolsAdditionalExecutorList(), "No", caseData.getOtherExecutorExists()))
                 .deceasedAddress(caseData.getDeceasedAddress())
                 .deceasedAnyOtherNames(caseData.getDeceasedAnyOtherNames())
                 .primaryApplicantAddress(caseData.getPrimaryApplicantAddress())
