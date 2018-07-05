@@ -136,6 +136,8 @@ public class CallbackResponseTransformer {
                 .primaryApplicantHasAlias(caseData.getPrimaryApplicantHasAlias())
                 .otherExecutorExists(caseData.getOtherExecutorExists())
                 .solsExecutorAliasNames(caseData.getSolsExecutorAliasNames())
+                .solsExecutorAliasFirstName(transformToFirstName(caseData.getSolsExecutorAliasNames()))
+                .solsExecutorAliasSurname(transformToSurame(caseData.getSolsExecutorAliasNames()))
                 .solsAdditionalExecutorList(caseData.getSolsAdditionalExecutorList())
                 .deceasedAddress(caseData.getDeceasedAddress())
                 .deceasedAnyOtherNames(caseData.getDeceasedAnyOtherNames())
@@ -198,5 +200,15 @@ public class CallbackResponseTransformer {
                 .map(Float::intValue)
                 .map(String::valueOf)
                 .orElse(null);
+    }
+
+    private String transformToFirstName(String aliasName) {
+        String firstName = aliasName.substring(0, (aliasName.lastIndexOf(" ") - 1)).trim();
+        return firstName;
+    }
+
+    private String transformToSurame(String aliasName) {
+        String surname = aliasName.substring((aliasName.lastIndexOf(" ") + 1), aliasName.length()).trim();
+        return surname;
     }
 }
