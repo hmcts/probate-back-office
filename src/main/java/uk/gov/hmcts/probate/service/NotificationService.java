@@ -39,7 +39,7 @@ public class NotificationService {
         HashMap<String, String> personalisation = new HashMap<>();
         personalisation.put("applicant_name", caseData.getPrimaryApplicantFullName());
         personalisation.put("deceased_name", caseData.getDeceasedFullName());
-        personalisation.put("solicitor_name", caseData.getSolsSolicitorFirmName());
+        personalisation.put("solicitor_name", caseData.getSolsSOTName());
         personalisation.put("solicitor_reference", caseData.getSolsSolicitorAppReference());
         personalisation.put("registry_name", registry.getName());
         personalisation.put("registry_phone", registry.getPhone());
