@@ -27,7 +27,7 @@ public class CallbackResponseTransformer {
 
     private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private static final ApplicationType DEFAULT_APPLICATION_TYPE = SOLICITOR;
-    private static final String REGISTRY_LOCATION_BIRMINGHAM = "Birmingham";
+    private static final String DEFAULT_REGISTRY_LOCATION = "Birmingham";
 
     public CallbackResponse transformWithConditionalStateChange(CallbackRequest callbackRequest, Optional<String> newState) {
         CaseData caseData = callbackRequest.getCaseDetails().getData();
@@ -112,7 +112,7 @@ public class CallbackResponseTransformer {
 
         return ResponseCaseData.builder()
                 .applicationType(Optional.ofNullable(caseData.getApplicationType()).orElse(DEFAULT_APPLICATION_TYPE))
-                .registryLocation(REGISTRY_LOCATION_BIRMINGHAM)
+                .registryLocation(Optional.ofNullable(caseData.getRegistryLocation()).orElse(DEFAULT_REGISTRY_LOCATION))
                 .solsSolicitorFirmName(caseData.getSolsSolicitorFirmName())
                 .solsSolicitorFirmPostcode(caseData.getSolsSolicitorFirmPostcode())
                 .solsSolicitorEmail(caseData.getSolsSolicitorEmail())
