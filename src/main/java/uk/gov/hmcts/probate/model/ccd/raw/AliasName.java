@@ -12,4 +12,8 @@ public class AliasName {
 
     @JsonProperty(value = "SolsAliasname")
     private final String solsAliasname;
+
+    private final String solsAliasFirstName;
+
+    private final String solsAliasSurname;
 }
