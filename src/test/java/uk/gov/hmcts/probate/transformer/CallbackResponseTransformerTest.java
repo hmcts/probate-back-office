@@ -112,6 +112,9 @@ public class CallbackResponseTransformerTest {
     private CaseData.CaseDataBuilder caseDataBuilder;
 
     @Mock
+    private AdditionalExecutorsListFilter additionalExecutorsListFilter;
+
+    @Mock
     private FeeServiceResponse feeServiceResponseMock;
 
     @Mock
@@ -154,10 +157,14 @@ public class CallbackResponseTransformerTest {
                 .boEmailDocsReceivedNotificationRequested(BO_DOCS_RECEIVED)
                 .casePrinted(CASE_PRINT)
                 .boCaseStopReasonList(STOP_REASONS_LIST)
-                .willExists(YES);
+                .willExists(YES)
+                .executorsApplying(ADDITIONAL_EXEC_LIST)
+                .executorsNotApplying(ADDITIONAL_EXEC_LIST);
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        when(additionalExecutorsListFilter.filter(ADDITIONAL_EXEC_LIST, "Yes", "No")).thenReturn(ADDITIONAL_EXEC_LIST);
+        when(additionalExecutorsListFilter.filter(ADDITIONAL_EXEC_LIST, "No", "No")).thenReturn(ADDITIONAL_EXEC_LIST);
 
     }
 
@@ -293,5 +300,7 @@ public class CallbackResponseTransformerTest {
         assertEquals(BO_EMAIL_GRANT_ISSUED, callbackResponse.getData().getBoEmailGrantIssuedNotificationRequested());
         assertEquals(CASE_PRINT, callbackResponse.getData().getCasePrinted());
         assertEquals(STOP_REASONS_LIST, callbackResponse.getData().getBoCaseStopReasonList());
+        assertEquals(ADDITIONAL_EXEC_LIST, callbackResponse.getData().getExecutorsApplying());
+        assertEquals(ADDITIONAL_EXEC_LIST, callbackResponse.getData().getExecutorsNotApplying());
     }
 }

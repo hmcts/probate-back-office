@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.transformer;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.ccd.raw.CCDDocument;
@@ -19,6 +20,7 @@ import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
 import static uk.gov.hmcts.probate.model.template.PDFServiceTemplate.LEGAL_STATEMENT;
 
 @Component
+@RequiredArgsConstructor
 public class CallbackResponseTransformer {
 
     static final String PAYMENT_METHOD_VALUE_FEE_ACCOUNT = "fee account";
@@ -28,6 +30,8 @@ public class CallbackResponseTransformer {
     private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private static final ApplicationType DEFAULT_APPLICATION_TYPE = SOLICITOR;
     private static final String DEFAULT_REGISTRY_LOCATION = "Birmingham";
+
+    private final AdditionalExecutorsListFilter additionalExecutorsListFilter;
 
     public CallbackResponse transformWithConditionalStateChange(CallbackRequest callbackRequest, Optional<String> newState) {
         CaseData caseData = callbackRequest.getCaseDetails().getData();
@@ -137,6 +141,10 @@ public class CallbackResponseTransformer {
                 .otherExecutorExists(caseData.getOtherExecutorExists())
                 .solsExecutorAliasNames(caseData.getSolsExecutorAliasNames())
                 .solsAdditionalExecutorList(caseData.getSolsAdditionalExecutorList())
+                .executorsApplying(additionalExecutorsListFilter.filter(
+                        caseData.getSolsAdditionalExecutorList(), "Yes", caseData.getOtherExecutorExists()))
+                .executorsNotApplying(additionalExecutorsListFilter.filter(
+                        caseData.getSolsAdditionalExecutorList(), "No", caseData.getOtherExecutorExists()))
                 .deceasedAddress(caseData.getDeceasedAddress())
                 .deceasedAnyOtherNames(caseData.getDeceasedAnyOtherNames())
                 .primaryApplicantAddress(caseData.getPrimaryApplicantAddress())

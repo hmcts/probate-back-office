@@ -62,6 +62,8 @@ public class ResponseCaseData {
     private final String otherExecutorExists;
     private final String solsExecutorAliasNames;
     private final List<AdditionalExecutors> solsAdditionalExecutorList;
+    private final List<AdditionalExecutors> executorsApplying;
+    private final List<AdditionalExecutors> executorsNotApplying;
     private final SolsAddress deceasedAddress;
     private final String deceasedAnyOtherNames;
     private final SolsAddress primaryApplicantAddress;
