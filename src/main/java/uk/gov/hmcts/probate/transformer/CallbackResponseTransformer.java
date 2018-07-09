@@ -227,9 +227,6 @@ public class CallbackResponseTransformer {
 
     private AliasNames parseDeceasedAliasList(AliasNames aliasNames) {
         Map<String, String> namesMap = nameParser.parse(aliasNames.getAliasName().getSolsAliasname());
-        if (namesMap.size() == 0) {
-            return (AliasNames)Collections.emptyList();
-        }
         return AliasNames.builder()
                 .aliasName(AliasName.builder()
                         .solsAliasFirstName(namesMap.get(FIRST_NAMES))
@@ -249,9 +246,6 @@ public class CallbackResponseTransformer {
 
     private AdditionalExecutors parseAdditionalExecutorsList(AdditionalExecutors additionalExecutors) {
         Map<String, String> namesMap = nameParser.parse(additionalExecutors.getAdditionalExecutor().getAdditionalExecAliasNameOnWill());
-        if (namesMap.size() == 0) {
-            return (AdditionalExecutors)Collections.emptyList();
-        }
         return AdditionalExecutors.builder()
                 .additionalExecutor(AdditionalExecutor.builder()
                         .additionalExecAliasFirstNameOnWill(namesMap.get(FIRST_NAMES))
