@@ -1,7 +1,12 @@
 package uk.gov.hmcts.probate.transformer;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.model.ApplicationType;
+import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
+import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutors;
+import uk.gov.hmcts.probate.model.ccd.raw.AliasName;
+import uk.gov.hmcts.probate.model.ccd.raw.AliasNames;
 import uk.gov.hmcts.probate.model.ccd.raw.CCDDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
@@ -13,10 +18,16 @@ import uk.gov.hmcts.probate.model.template.PDFServiceTemplate;
 
 import java.math.BigDecimal;
 import java.time.format.DateTimeFormatter;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
 import static uk.gov.hmcts.probate.model.template.PDFServiceTemplate.LEGAL_STATEMENT;
+import static uk.gov.hmcts.probate.transformer.NameParser.FIRST_NAMES;
+import static uk.gov.hmcts.probate.transformer.NameParser.SURNAME;
 
 @Component
 public class CallbackResponseTransformer {
@@ -28,6 +39,9 @@ public class CallbackResponseTransformer {
     private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private static final ApplicationType DEFAULT_APPLICATION_TYPE = SOLICITOR;
     private static final String DEFAULT_REGISTRY_LOCATION = "Birmingham";
+
+    @Autowired
+    private NameParser nameParser = new NameParser();
 
     public CallbackResponse transformWithConditionalStateChange(CallbackRequest callbackRequest, Optional<String> newState) {
         CaseData caseData = callbackRequest.getCaseDetails().getData();
@@ -136,13 +150,13 @@ public class CallbackResponseTransformer {
                 .primaryApplicantHasAlias(caseData.getPrimaryApplicantHasAlias())
                 .otherExecutorExists(caseData.getOtherExecutorExists())
                 .solsExecutorAliasNames(caseData.getSolsExecutorAliasNames())
-                .solsExecutorAliasFirstName(transformToFirstName(caseData.getSolsExecutorAliasNames()))
-                .solsExecutorAliasSurname(transformToSurame(caseData.getSolsExecutorAliasNames()))
-                .solsAdditionalExecutorList(caseData.getSolsAdditionalExecutorList())
+                .solsExecutorAliasFirstName(transformPrimaryApplicantFirstName(caseData.getSolsExecutorAliasNames()))
+                .solsExecutorAliasSurname(transformPrimaryApplicantSurname(caseData.getSolsExecutorAliasNames()))
+                .solsAdditionalExecutorList(transformAdditionalExecutorsAliasNameLists(caseData.getSolsAdditionalExecutorList()))
                 .deceasedAddress(caseData.getDeceasedAddress())
                 .deceasedAnyOtherNames(caseData.getDeceasedAnyOtherNames())
                 .primaryApplicantAddress(caseData.getPrimaryApplicantAddress())
-                .solsDeceasedAliasNamesList(caseData.getSolsDeceasedAliasNamesList())
+                .solsDeceasedAliasNamesList(transformDeceasedAliasNameLists(caseData.getSolsDeceasedAliasNamesList()))
                 .solsSolicitorAppReference(caseData.getSolsSolicitorAppReference())
                 .solsAdditionalInfo(caseData.getSolsAdditionalInfo())
 
@@ -202,13 +216,64 @@ public class CallbackResponseTransformer {
                 .orElse(null);
     }
 
-    private String transformToFirstName(String aliasName) {
-        String firstName = aliasName.substring(0, (aliasName.lastIndexOf(" ") - 1)).trim();
-        return firstName;
+    private List<AliasNames> transformDeceasedAliasNameLists(List<AliasNames> aliasNamesList) {
+        if (aliasNamesList == null) {
+            return Collections.emptyList();
+        }
+        return aliasNamesList.stream()
+                .map(this::parseDeceasedAliasList)
+                .collect(Collectors.toList());
     }
 
-    private String transformToSurame(String aliasName) {
-        String surname = aliasName.substring((aliasName.lastIndexOf(" ") + 1), aliasName.length()).trim();
-        return surname;
+    private AliasNames parseDeceasedAliasList(AliasNames aliasNames) {
+        Map<String, String> namesMap = nameParser.parse(aliasNames.getAliasName().getSolsAliasname());
+        if (namesMap.size() == 0) {
+            return (AliasNames)Collections.emptyList();
+        }
+        return AliasNames.builder()
+                .aliasName(AliasName.builder()
+                        .solsAliasFirstName(namesMap.get(FIRST_NAMES))
+                        .solsAliasSurname(namesMap.get(SURNAME))
+                        .build())
+                .build();
     }
+
+    private List<AdditionalExecutors> transformAdditionalExecutorsAliasNameLists(List<AdditionalExecutors> aliasNamesList) {
+        if (aliasNamesList == null) {
+            return Collections.emptyList();
+        }
+        return aliasNamesList.stream()
+                .map(this::parseAdditionalExecutorsList)
+                .collect(Collectors.toList());
+    }
+
+    private AdditionalExecutors parseAdditionalExecutorsList(AdditionalExecutors additionalExecutors) {
+        Map<String, String> namesMap = nameParser.parse(additionalExecutors.getAdditionalExecutor().getAdditionalExecAliasNameOnWill());
+        if (namesMap.size() == 0) {
+            return (AdditionalExecutors)Collections.emptyList();
+        }
+        return AdditionalExecutors.builder()
+                .additionalExecutor(AdditionalExecutor.builder()
+                        .additionalExecAliasFirstNameOnWill(namesMap.get(FIRST_NAMES))
+                        .additionalExecAliasSurNameOnWill(namesMap.get(SURNAME))
+                        .build())
+                .build();
+    }
+
+    private String transformPrimaryApplicantFirstName(String primaryApplicantAlias) {
+        Map<String, String> namesMap = nameParser.parse(primaryApplicantAlias);
+        if (namesMap.size() == 0) {
+            return "";
+        }
+        return namesMap.get(FIRST_NAMES);
+    }
+
+    private String transformPrimaryApplicantSurname(String primaryApplicantAlias) {
+        Map<String, String> namesMap = nameParser.parse(primaryApplicantAlias);
+        if (namesMap.size() == 0) {
+            return "";
+        }
+        return namesMap.get(SURNAME);
+    }
+
 }
