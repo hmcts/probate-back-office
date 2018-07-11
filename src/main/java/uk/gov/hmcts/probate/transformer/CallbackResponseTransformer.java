@@ -168,7 +168,12 @@ public class CallbackResponseTransformer {
                 .boEmailDocsReceivedNotification(caseData.getBoEmailDocsReceivedNotification())
                 .boEmailGrantIssuedNotification(caseData.getBoEmailGrantIssuedNotification())
 
-                .boCaseStopReasonList(caseData.getBoCaseStopReasonList());
+                .boCaseStopReasonList(caseData.getBoCaseStopReasonList())
+
+                .boWillMessage(caseData.getBoWillMessage())
+                .boExecutorLimitation(caseData.getBoExecutorLimitation())
+                .boAdminClauseLimitation(caseData.getBoAdminClauseLimitation())
+                .boLimitationText(caseData.getBoLimitationText());
     }
 
     private String getPaymentReference(CaseData caseData) {
