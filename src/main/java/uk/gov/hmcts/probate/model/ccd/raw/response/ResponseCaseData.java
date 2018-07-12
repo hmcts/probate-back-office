@@ -73,6 +73,9 @@ public class ResponseCaseData {
     private final String boEmailDocsReceivedNotification;
     private final String boEmailGrantIssuedNotification;
     private final List<StopReasons> boCaseStopReasonList;
+    private final String boDeceasedTitle;
+    private final String boDeceasedHonours;
+
     private final String boWillMessage;
     private final String boExecutorLimitation;
     private final String boAdminClauseLimitation;

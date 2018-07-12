@@ -96,10 +96,13 @@ public class CallbackResponseTransformerTest {
     private static final String YES = "Yes";
     private static final Optional<String> ORIGINAL_STATE = Optional.empty();
     private static final Optional<String> CHANGED_STATE = Optional.of("Changed");
+
+    private static final String DECEASED_TITLE = "Deceased Title";
+    private static final String DECEASED_HONOURS = "Deceased Honours";
+
     private static final String LIMITATION_TEXT = "Limitation Text";
     private static final String EXECUTOR_LIMITATION = "Executor Limitation";
     private static final String ADMIN_CLAUSE_LIMITATION = "Admin Clause Limitation";
-
 
     @InjectMocks
     private CallbackResponseTransformer underTest;
@@ -159,6 +162,8 @@ public class CallbackResponseTransformerTest {
                 .casePrinted(CASE_PRINT)
                 .boCaseStopReasonList(STOP_REASONS_LIST)
                 .willExists(YES)
+                .boDeceasedTitle(DECEASED_TITLE)
+                .boDeceasedHonours(DECEASED_HONOURS)
                 .boWillMessage(WILL_MESSAGE)
                 .boExecutorLimitation(EXECUTOR_LIMITATION)
                 .boAdminClauseLimitation(ADMIN_CLAUSE_LIMITATION)
@@ -301,6 +306,9 @@ public class CallbackResponseTransformerTest {
         assertEquals(BO_EMAIL_GRANT_ISSUED, callbackResponse.getData().getBoEmailGrantIssuedNotificationRequested());
         assertEquals(CASE_PRINT, callbackResponse.getData().getCasePrinted());
         assertEquals(STOP_REASONS_LIST, callbackResponse.getData().getBoCaseStopReasonList());
+
+        assertEquals(DECEASED_TITLE, callbackResponse.getData().getBoDeceasedTitle());
+        assertEquals(DECEASED_HONOURS, callbackResponse.getData().getBoDeceasedHonours());
 
         assertEquals(WILL_MESSAGE, callbackResponse.getData().getBoWillMessage());
         assertEquals(EXECUTOR_LIMITATION, callbackResponse.getData().getBoExecutorLimitation());
