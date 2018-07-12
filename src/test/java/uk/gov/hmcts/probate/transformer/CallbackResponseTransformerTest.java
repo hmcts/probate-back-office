@@ -9,6 +9,8 @@ import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutors;
+import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorsApplying;
+import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorsNotApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.AliasNames;
 import uk.gov.hmcts.probate.model.ccd.raw.CCDDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
@@ -80,6 +82,8 @@ public class CallbackResponseTransformerTest {
     private static final String OTHER_EXECS_EXIST = "No";
     private static final String PRIMARY_EXEC_ALIAS_NAMES = "Alias names";
     private static final List<AdditionalExecutors> ADDITIONAL_EXEC_LIST = Collections.emptyList();
+    private static final List<AdditionalExecutorsApplying> ADDITIONAL_EXEC_LIST_APP = Collections.emptyList();
+    private static final List<AdditionalExecutorsNotApplying> ADDITIONAL_EXEC_LIST_NOT_APP = Collections.emptyList();
     private static final List<AliasNames> DECEASED_ALIAS_NAMES_LIST = Collections.emptyList();
     private static final SolsAddress DECEASED_ADDRESS = Mockito.mock(SolsAddress.class);
     private static final SolsAddress EXEC_ADDRESS = Mockito.mock(SolsAddress.class);
@@ -158,14 +162,11 @@ public class CallbackResponseTransformerTest {
                 .casePrinted(CASE_PRINT)
                 .boCaseStopReasonList(STOP_REASONS_LIST)
                 .willExists(YES)
-                .executorsApplying(ADDITIONAL_EXEC_LIST)
-                .executorsNotApplying(ADDITIONAL_EXEC_LIST);
+                .executorsApplying(ADDITIONAL_EXEC_LIST_APP)
+                .executorsNotApplying(ADDITIONAL_EXEC_LIST_NOT_APP);
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-        when(additionalExecutorsListFilter.filter(ADDITIONAL_EXEC_LIST, "Yes", "No")).thenReturn(ADDITIONAL_EXEC_LIST);
-        when(additionalExecutorsListFilter.filter(ADDITIONAL_EXEC_LIST, "No", "No")).thenReturn(ADDITIONAL_EXEC_LIST);
-
     }
 
     @Test

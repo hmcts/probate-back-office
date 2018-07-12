@@ -5,10 +5,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
+import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
+import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutors;
+import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorsApplying;
+import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorsNotApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.AliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.AliasNames;
 import uk.gov.hmcts.probate.model.ccd.raw.CCDDocument;
+import uk.gov.hmcts.probate.model.ccd.raw.ProbateAliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
@@ -154,14 +159,11 @@ public class CallbackResponseTransformer {
                 .primaryApplicantHasAlias(caseData.getPrimaryApplicantHasAlias())
                 .otherExecutorExists(caseData.getOtherExecutorExists())
                 .solsExecutorAliasNames(caseData.getSolsExecutorAliasNames())
-                .solsExecutorAliasFirstName(transformPrimaryApplicantFirstName(caseData.getSolsExecutorAliasNames()))
-                .solsExecutorAliasSurname(transformPrimaryApplicantSurname(caseData.getSolsExecutorAliasNames()))
+                .solsExecutorAliasFirstNames(transformPrimaryApplicantFirstName(caseData.getSolsExecutorAliasNames()))
+                .solsExecutorAliasSurnames(transformPrimaryApplicantSurname(caseData.getSolsExecutorAliasNames()))
                 .solsAdditionalExecutorList(transformAdditionalExecutorsAliasNameLists(caseData.getSolsAdditionalExecutorList()))
-                .solsAdditionalExecutorList(caseData.getSolsAdditionalExecutorList())
-                .executorsApplying(additionalExecutorsListFilter.filter(
-                        caseData.getSolsAdditionalExecutorList(), "Yes", caseData.getOtherExecutorExists()))
-                .executorsNotApplying(additionalExecutorsListFilter.filter(
-                        caseData.getSolsAdditionalExecutorList(), "No", caseData.getOtherExecutorExists()))
+                .executorsApplying(transformApplyingExecLists(caseData))
+                .executorsNotApplying(transformNotApplyingExecLists(caseData))
                 .deceasedAddress(caseData.getDeceasedAddress())
                 .deceasedAnyOtherNames(caseData.getDeceasedAnyOtherNames())
                 .primaryApplicantAddress(caseData.getPrimaryApplicantAddress())
@@ -225,6 +227,58 @@ public class CallbackResponseTransformer {
                 .orElse(null);
     }
 
+    private List<AdditionalExecutorsApplying> transformApplyingExecLists(CaseData caseData ) {
+        List<AdditionalExecutors> applyingList =  additionalExecutorsListFilter.filter(
+                    caseData.getSolsAdditionalExecutorList(),
+                    caseData);
+
+        return applyingList.stream().map(this::mapToAdditionalExecutorsApplying).collect(Collectors.toList());
+    }
+
+    private AdditionalExecutorsApplying mapToAdditionalExecutorsApplying(AdditionalExecutors applyingList) {
+        Map<String, String> namesMap = nameParser.parse(applyingList.getAdditionalExecutor().getAdditionalExecAliasNameOnWill());
+        return AdditionalExecutorsApplying.builder()
+                .additionalExecutorApplying(AdditionalExecutorApplying.builder()
+                        .applyingExecutorFirstName(applyingList.getAdditionalExecutor().getAdditionalExecForenames())
+                        .applyingExecutorSurname(applyingList.getAdditionalExecutor().getAdditionalExecLastname())
+                        .applyingExecutorPhoneNumber(null)
+                        .applyingExecutorEmail(null)
+                        .applyingExecutorAddress(applyingList.getAdditionalExecutor().getAdditionalExecAddress())
+                        .aliasName(ProbateAliasName.builder()
+                                .lastName(namesMap.get(SURNAME))
+                                .forenames(namesMap.get(FIRST_NAMES))
+                                .build())
+                        .build())
+                .build();
+    }
+
+    private List<AdditionalExecutorsNotApplying> transformNotApplyingExecLists(CaseData caseData ) {
+        List<AdditionalExecutors> notApplyingList =  additionalExecutorsListFilter.filter(
+                caseData.getSolsAdditionalExecutorList(),
+                caseData);
+
+        return notApplyingList.stream().map(this::mapToAdditionalExecutorNotApplying).collect(Collectors.toList());
+    }
+
+    private AdditionalExecutorsNotApplying mapToAdditionalExecutorNotApplying(AdditionalExecutors notApplyingList) {
+        Map<String, String> namesMap = nameParser.parse(notApplyingList.getAdditionalExecutor().getAdditionalExecAliasNameOnWill());
+        return AdditionalExecutorsNotApplying.builder()
+                .additionalExecutorNotApplying(AdditionalExecutorNotApplying.builder()
+                        .notApplyingExecutorFirstName(notApplyingList.getAdditionalExecutor().getAdditionalExecForenames())
+                        .notApplyingExecutorSurname(notApplyingList.getAdditionalExecutor().getAdditionalExecLastname())
+                        .notApplyingExecutorNameOnWill(notApplyingList.getAdditionalExecutor().getAdditionalExecAliasNameOnWill())
+                        .notApplyingExecutorNameDifferenceComment(null)
+                        .notApplyingExecutorReason(notApplyingList.getAdditionalExecutor().getAdditionalExecReasonNotApplying())
+                        .notApplyingExecutorNotified(null)
+                        .notApplyingExecAddress(notApplyingList.getAdditionalExecutor().getAdditionalExecAddress())
+                        .aliasName(ProbateAliasName.builder()
+                                .lastName(namesMap.get(SURNAME))
+                                .forenames(namesMap.get(FIRST_NAMES))
+                                .build())
+                        .build())
+                .build();
+    }
+
     private List<AliasNames> transformDeceasedAliasNameLists(List<AliasNames> aliasNamesList) {
         if (aliasNamesList == null) {
             return Collections.emptyList();
@@ -238,8 +292,11 @@ public class CallbackResponseTransformer {
         Map<String, String> namesMap = nameParser.parse(aliasNames.getAliasName().getSolsAliasname());
         return AliasNames.builder()
                 .aliasName(AliasName.builder()
-                        .solsAliasFirstName(namesMap.get(FIRST_NAMES))
-                        .solsAliasSurname(namesMap.get(SURNAME))
+                        .solsAliasname(aliasNames.getAliasName().getSolsAliasname())
+                        .probateAliasName(ProbateAliasName.builder()
+                                .lastName(namesMap.get(SURNAME))
+                                .forenames(namesMap.get(FIRST_NAMES))
+                                .build())
                         .build())
                 .build();
     }
@@ -257,11 +314,21 @@ public class CallbackResponseTransformer {
         Map<String, String> namesMap = nameParser.parse(additionalExecutors.getAdditionalExecutor().getAdditionalExecAliasNameOnWill());
         return AdditionalExecutors.builder()
                 .additionalExecutor(AdditionalExecutor.builder()
-                        .additionalExecAliasFirstNameOnWill(namesMap.get(FIRST_NAMES))
-                        .additionalExecAliasSurNameOnWill(namesMap.get(SURNAME))
+                        .aliasName(ProbateAliasName.builder()
+                                .forenames(namesMap.get(FIRST_NAMES))
+                                .lastName(namesMap.get(SURNAME))
+                                .build())
+                        .additionalApplying(additionalExecutors.getAdditionalExecutor().getAdditionalApplying())
+                        .additionalExecAddress(additionalExecutors.getAdditionalExecutor().getAdditionalExecAddress())
+                        .additionalExecAliasNameOnWill(additionalExecutors.getAdditionalExecutor().getAdditionalExecAliasNameOnWill())
+                        .additionalExecForenames(additionalExecutors.getAdditionalExecutor().getAdditionalExecForenames())
+                        .additionalExecLastname(additionalExecutors.getAdditionalExecutor().getAdditionalExecLastname())
+                        .additionalExecNameOnWill(additionalExecutors.getAdditionalExecutor().getAdditionalExecNameOnWill())
+                        .additionalExecReasonNotApplying(additionalExecutors.getAdditionalExecutor().getAdditionalExecReasonNotApplying())
                         .build())
                 .build();
     }
+
 
     private String transformPrimaryApplicantFirstName(String primaryApplicantAlias) {
         Map<String, String> namesMap = nameParser.parse(primaryApplicantAlias);

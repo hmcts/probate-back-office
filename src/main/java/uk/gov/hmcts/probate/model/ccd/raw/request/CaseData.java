@@ -11,6 +11,8 @@ import uk.gov.hmcts.probate.controller.validation.NextStepsConfirmationGroup;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutors;
+import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorsApplying;
+import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorsNotApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.AliasNames;
 import uk.gov.hmcts.probate.model.ccd.raw.CCDDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
@@ -108,6 +110,10 @@ public class CaseData {
 
     private final String solsExecutorAliasNames;
 
+    private final String solsExecutorAliasFirstNames;
+
+    private final String solsExecutorAliasSurnames;
+
     @NotBlank(groups = {ApplicationUpdatedGroup.class}, message = "{primaryApplicantIsApplyingIsNull}")
     private final String primaryApplicantIsApplying;
 
@@ -175,9 +181,9 @@ public class CaseData {
     @DecimalMin(groups = {NextStepsConfirmationGroup.class}, value = "0.0", message = "{totalFeeNegative}")
     private final BigDecimal totalFee;
 
-    private List<AdditionalExecutors> executorsApplying;
+    private List<AdditionalExecutorsApplying> executorsApplying;
 
-    private List<AdditionalExecutors> executorsNotApplying;
+    private List<AdditionalExecutorsNotApplying> executorsNotApplying;
 
     private final ApplicationType applicationType;
 

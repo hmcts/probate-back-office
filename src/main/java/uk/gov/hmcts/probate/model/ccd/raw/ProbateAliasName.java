@@ -8,11 +8,11 @@ import lombok.Data;
 @Data
 @Builder
 @AllArgsConstructor
-public class AliasName {
+public class ProbateAliasName {
 
-    @JsonProperty(value = "SolsAliasname")
-    private final String solsAliasname;
+    @JsonProperty(value = "Forenames")
+    private final String forenames;
 
-    private ProbateAliasName probateAliasName;
-
+    @JsonProperty(value = "LastName")
+    private final String lastName;
 }
