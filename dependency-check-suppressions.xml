@@ -64,4 +64,11 @@
         <filePath regex="true">.*spring-expression-4.3.18.RELEASE.*\.jar</filePath>
         <cve>CVE-2018-1258</cve>
     </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: spring-context-support-4.3.18.RELEASE.jar
+   ]]></notes>
+        <filePath regex="true">.*spring-context-support-4.3.18.RELEASE.*\.jar</filePath>
+        <cve>CVE-2018-1258</cve>
+    </suppress>
 </suppressions>
