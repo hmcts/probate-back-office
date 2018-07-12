@@ -5,6 +5,7 @@ import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.ccd.raw.CCDDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData.ResponseCaseDataBuilder;
@@ -30,73 +31,59 @@ public class CallbackResponseTransformer {
     private static final String DEFAULT_REGISTRY_LOCATION = "Birmingham";
 
     public CallbackResponse transformWithConditionalStateChange(CallbackRequest callbackRequest, Optional<String> newState) {
-        CaseData caseData = callbackRequest.getCaseDetails().getData();
-
-        ResponseCaseData responseCaseData = this.getResponseCaseData(caseData)
+        ResponseCaseData responseCaseData = this.getResponseCaseData(callbackRequest.getCaseDetails())
                 .state(newState.orElse(null))
-                .ccdState(callbackRequest.getCaseDetails().getState())
                 .build();
 
         return transform(responseCaseData);
     }
 
     public CallbackResponse addCcdState(CallbackRequest callbackRequest) {
-        CaseData caseData = callbackRequest.getCaseDetails().getData();
-
-        ResponseCaseData responseCaseData = this.getResponseCaseData(caseData)
-                .ccdState(callbackRequest.getCaseDetails().getState())
+        ResponseCaseData responseCaseData = this.getResponseCaseData(callbackRequest.getCaseDetails())
                 .build();
 
         return transform(responseCaseData);
     }
 
     public CallbackResponse addDocumentReceivedNotification(CallbackRequest callbackRequest) {
-        CaseData caseData = callbackRequest.getCaseDetails().getData();
+        CaseDetails caseDetails = callbackRequest.getCaseDetails();
 
-        ResponseCaseData responseCaseData = this.getResponseCaseData(caseData)
-                .ccdState(callbackRequest.getCaseDetails().getState())
-                .boEmailDocsReceivedNotificationRequested(caseData.getBoEmailDocsReceivedNotification())
+        ResponseCaseData responseCaseData = this.getResponseCaseData(caseDetails)
+                .boEmailDocsReceivedNotificationRequested(caseDetails.getData().getBoEmailDocsReceivedNotification())
                 .build();
 
         return transform(responseCaseData);
     }
 
     public CallbackResponse addGrandIssuedNotification(CallbackRequest callbackRequest) {
-        CaseData caseData = callbackRequest.getCaseDetails().getData();
+        CaseDetails caseDetails = callbackRequest.getCaseDetails();
 
-        ResponseCaseData responseCaseData = this.getResponseCaseData(caseData)
-                .ccdState(callbackRequest.getCaseDetails().getState())
-                .boEmailGrantIssuedNotificationRequested(caseData.getBoEmailGrantIssuedNotification())
+        ResponseCaseData responseCaseData = this.getResponseCaseData(caseDetails)
+                .boEmailGrantIssuedNotificationRequested(caseDetails.getData().getBoEmailGrantIssuedNotification())
                 .build();
 
         return transform(responseCaseData);
     }
 
     public CallbackResponse transform(CallbackRequest callbackRequest, FeeServiceResponse feeServiceResponse) {
-        CaseData caseData = callbackRequest.getCaseDetails().getData();
-
         String feeForNonUkCopies = transformMoneyGBPToString(feeServiceResponse.getFeeForNonUkCopies());
         String feeForUkCopies = transformMoneyGBPToString(feeServiceResponse.getFeeForUkCopies());
         String applicationFee = transformMoneyGBPToString(feeServiceResponse.getApplicationFee());
         String totalFee = transformMoneyGBPToString(feeServiceResponse.getTotal());
 
-        ResponseCaseData responseCaseData = this.getResponseCaseData(caseData)
+        ResponseCaseData responseCaseData = this.getResponseCaseData(callbackRequest.getCaseDetails())
                 .feeForNonUkCopies(feeForNonUkCopies)
                 .feeForUkCopies(feeForUkCopies)
                 .applicationFee(applicationFee)
                 .totalFee(totalFee)
-                .ccdState(callbackRequest.getCaseDetails().getState())
                 .build();
 
         return transform(responseCaseData);
     }
 
     public CallbackResponse transform(CallbackRequest callbackRequest, PDFServiceTemplate pdfServiceTemplate, CCDDocument ccdDocument) {
-        CaseData caseData = callbackRequest.getCaseDetails().getData();
-
-        ResponseCaseDataBuilder responseCaseData = this.getResponseCaseData(caseData);
+        ResponseCaseDataBuilder responseCaseData = this.getResponseCaseData(callbackRequest.getCaseDetails());
         responseCaseData.solsSOTNeedToUpdate(null);
-        responseCaseData.ccdState(callbackRequest.getCaseDetails().getState());
         if (LEGAL_STATEMENT.equals(pdfServiceTemplate)) {
             responseCaseData.solsLegalStatementDocument(ccdDocument);
         }
@@ -104,11 +91,19 @@ public class CallbackResponseTransformer {
         return transform(responseCaseData.build());
     }
 
+    public CallbackResponse transform(CallbackRequest callbackRequest) {
+        ResponseCaseData responseCaseData = this.getResponseCaseData(callbackRequest.getCaseDetails())
+                .build();
+
+        return transform(responseCaseData);
+    }
+
     private CallbackResponse transform(ResponseCaseData responseCaseData) {
         return CallbackResponse.builder().data(responseCaseData).build();
     }
 
-    private ResponseCaseDataBuilder getResponseCaseData(CaseData caseData) {
+    private ResponseCaseDataBuilder getResponseCaseData(CaseDetails caseDetails) {
+        CaseData caseData = caseDetails.getData();
 
         return ResponseCaseData.builder()
                 .applicationType(Optional.ofNullable(caseData.getApplicationType()).orElse(DEFAULT_APPLICATION_TYPE))
@@ -168,7 +163,12 @@ public class CallbackResponseTransformer {
                 .boEmailDocsReceivedNotification(caseData.getBoEmailDocsReceivedNotification())
                 .boEmailGrantIssuedNotification(caseData.getBoEmailGrantIssuedNotification())
 
-                .boCaseStopReasonList(caseData.getBoCaseStopReasonList());
+                .boCaseStopReasonList(caseData.getBoCaseStopReasonList())
+
+                .boDeceasedTitle(caseData.getBoDeceasedTitle())
+                .boDeceasedHonours(caseData.getBoDeceasedHonours())
+
+                .ccdState(caseDetails.getState());
     }
 
     private String getPaymentReference(CaseData caseData) {

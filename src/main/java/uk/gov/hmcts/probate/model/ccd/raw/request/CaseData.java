@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 import org.hibernate.validator.constraints.NotBlank;
+import uk.gov.hmcts.probate.controller.validation.AmendCaseDetailsGroup;
 import uk.gov.hmcts.probate.controller.validation.ApplicationCreatedGroup;
 import uk.gov.hmcts.probate.controller.validation.ApplicationReviewedGroup;
 import uk.gov.hmcts.probate.controller.validation.ApplicationUpdatedGroup;
@@ -48,18 +49,18 @@ public class CaseData {
     private final String solsSolicitorPhoneNumber;
 
     // EVENT = solicitorUpdateApplication
-    @NotBlank(groups = {ApplicationUpdatedGroup.class},
+    @NotBlank(groups = {ApplicationUpdatedGroup.class, AmendCaseDetailsGroup.class},
             message = "{deceasedForenameIsNull}")
     private final String deceasedForenames;
 
-    @NotBlank(groups = {ApplicationUpdatedGroup.class},
+    @NotBlank(groups = {ApplicationUpdatedGroup.class, AmendCaseDetailsGroup.class},
             message = "{deceasedSurnameIsNull}")
     private final String deceasedSurname;
 
-    @NotNull(groups = {ApplicationUpdatedGroup.class}, message = "{dodIsNull}")
+    @NotNull(groups = {ApplicationUpdatedGroup.class, AmendCaseDetailsGroup.class}, message = "{dodIsNull}")
     private final LocalDate deceasedDateOfDeath;
 
-    @NotNull(groups = {ApplicationUpdatedGroup.class}, message = "{dobIsNull}")
+    @NotNull(groups = {ApplicationUpdatedGroup.class, AmendCaseDetailsGroup.class}, message = "{dobIsNull}")
     private final LocalDate deceasedDateOfBirth;
 
     @NotBlank(groups = {ApplicationUpdatedGroup.class}, message = "{willExistsIsNull}")
@@ -76,7 +77,7 @@ public class CaseData {
     @NotBlank(groups = {ApplicationUpdatedGroup.class}, message = "{deceasedDomicileInEngWalesIsNull}")
     private final String deceasedDomicileInEngWales;
 
-    @NotNull(groups = {ApplicationUpdatedGroup.class}, message = "{deceasedAddressIsNull}")
+    @NotNull(groups = {ApplicationUpdatedGroup.class, AmendCaseDetailsGroup.class}, message = "{deceasedAddressIsNull}")
     private final SolsAddress deceasedAddress;
 
     @NotNull(groups = {ApplicationUpdatedGroup.class}, message = "{deceasedAnyOtherNamesIsNull}")
@@ -182,6 +183,11 @@ public class CaseData {
     private final ApplicationType applicationType;
 
     private final String registryLocation;
+
+    // EVENT = Amend case details
+    private final String boDeceasedTitle;
+
+    private final String boDeceasedHonours;
 
     public List<AdditionalExecutors> getExecutorsApplying() {
 

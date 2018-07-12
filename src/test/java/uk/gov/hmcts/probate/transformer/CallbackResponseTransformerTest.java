@@ -96,6 +96,8 @@ public class CallbackResponseTransformerTest {
     private static final Optional<String> ORIGINAL_STATE = Optional.empty();
     private static final Optional<String> CHANGED_STATE = Optional.of("Changed");
 
+    private static final String DECEASED_TITLE = "Deceased Title";
+    private static final String DECEASED_HONOURS = "Deceased Honours";
 
     @InjectMocks
     private CallbackResponseTransformer underTest;
@@ -154,7 +156,9 @@ public class CallbackResponseTransformerTest {
                 .boEmailDocsReceivedNotificationRequested(BO_DOCS_RECEIVED)
                 .casePrinted(CASE_PRINT)
                 .boCaseStopReasonList(STOP_REASONS_LIST)
-                .willExists(YES);
+                .willExists(YES)
+                .boDeceasedTitle(DECEASED_TITLE)
+                .boDeceasedHonours(DECEASED_HONOURS);
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
@@ -293,5 +297,8 @@ public class CallbackResponseTransformerTest {
         assertEquals(BO_EMAIL_GRANT_ISSUED, callbackResponse.getData().getBoEmailGrantIssuedNotificationRequested());
         assertEquals(CASE_PRINT, callbackResponse.getData().getCasePrinted());
         assertEquals(STOP_REASONS_LIST, callbackResponse.getData().getBoCaseStopReasonList());
+
+        assertEquals(DECEASED_TITLE, callbackResponse.getData().getBoDeceasedTitle());
+        assertEquals(DECEASED_HONOURS, callbackResponse.getData().getBoDeceasedHonours());
     }
 }

@@ -23,9 +23,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -73,6 +71,7 @@ public class BusinessValidationControllerTest {
 
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private static final String CASE_VALIDATE_URL = "/case/validate";
+    private static final String CASE_VALIDATE_CASE_DETAILS_URL = "/case/validateCaseDetails";
 
     @Autowired
     private MockMvc mockMvc;
@@ -123,66 +122,22 @@ public class BusinessValidationControllerTest {
 
     @Test
     public void shouldValidateWithDodIsNullError() throws Exception {
-        caseDataBuilder.deceasedDateOfDeath(null);
-        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
-        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
-
-        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
-        mockMvc.perform(post(CASE_VALIDATE_URL).content(json).contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(status().isBadRequest())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.fieldErrors[0].param").value("callbackRequest"))
-                .andExpect(jsonPath("$.fieldErrors[0].field").value("caseDetails.data.deceasedDateOfDeath"))
-                .andExpect(jsonPath("$.fieldErrors[0].code").value("NotNull"))
-                .andExpect(jsonPath("$.fieldErrors[0].message").value("Date of death cannot be empty"));
+        validateDodIsNullError(CASE_VALIDATE_URL);
     }
 
     @Test
     public void shouldValidateDobIsNullError() throws Exception {
-        caseDataBuilder.deceasedDateOfBirth(null);
-        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
-        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
-
-        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
-        mockMvc.perform(post(CASE_VALIDATE_URL).content(json).contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(status().isBadRequest())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.fieldErrors[0].param").value("callbackRequest"))
-                .andExpect(jsonPath("$.fieldErrors[0].field").value("caseDetails.data.deceasedDateOfBirth"))
-                .andExpect(jsonPath("$.fieldErrors[0].code").value("NotNull"))
-                .andExpect(jsonPath("$.fieldErrors[0].message").value("Date of birth cannot be empty"));
+        validateDobIsNullError(CASE_VALIDATE_URL);
     }
 
     @Test
     public void shouldValidateWithForenameIsNullError() throws Exception {
-        caseDataBuilder.deceasedForenames(null);
-        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
-        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
-
-        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
-        mockMvc.perform(post(CASE_VALIDATE_URL).content(json).contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(status().isBadRequest())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.fieldErrors[0].param").value("callbackRequest"))
-                .andExpect(jsonPath("$.fieldErrors[0].field").value("caseDetails.data.deceasedForenames"))
-                .andExpect(jsonPath("$.fieldErrors[0].code").value("NotBlank"))
-                .andExpect(jsonPath("$.fieldErrors[0].message").value("Deceased forename cannot be empty"));
+        validateForenameIsNullError(CASE_VALIDATE_URL);
     }
 
     @Test
     public void shouldValidateWithSurnameIsNullError() throws Exception {
-        caseDataBuilder.deceasedSurname(null);
-        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
-        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
-
-        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
-        mockMvc.perform(post(CASE_VALIDATE_URL).content(json).contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(status().isBadRequest())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.fieldErrors[0].param").value("callbackRequest"))
-                .andExpect(jsonPath("$.fieldErrors[0].field").value("caseDetails.data.deceasedSurname"))
-                .andExpect(jsonPath("$.fieldErrors[0].code").value("NotBlank"))
-                .andExpect(jsonPath("$.fieldErrors[0].message").value("Deceased surname cannot be empty"));
+        validateSurnameIsNullError(CASE_VALIDATE_URL);
     }
 
     @Test
@@ -199,5 +154,85 @@ public class BusinessValidationControllerTest {
                 .andExpect(jsonPath("$.fieldErrors[0].field").value("caseDetails.data.solsIHTFormId"))
                 .andExpect(jsonPath("$.fieldErrors[0].code").value("NotBlank"))
                 .andExpect(jsonPath("$.fieldErrors[0].message").value("Solicitor IHT Form cannot be empty"));
+    }
+
+    @Test
+    public void shouldValidateWithDodIsNullErrorForCaseDetails() throws Exception {
+        validateDodIsNullError(CASE_VALIDATE_CASE_DETAILS_URL);
+    }
+
+    @Test
+    public void shouldValidateDobIsNullErrorForCaseDetails() throws Exception {
+        validateDobIsNullError(CASE_VALIDATE_CASE_DETAILS_URL);
+    }
+
+    @Test
+    public void shouldValidateWithDeceasedForenameIsNullErrorForCaseDetails() throws Exception {
+        validateForenameIsNullError(CASE_VALIDATE_CASE_DETAILS_URL);
+    }
+
+    @Test
+    public void shouldValidateWithDeceasedSurnameIsNullErrorForCaseDetails() throws Exception {
+        validateSurnameIsNullError(CASE_VALIDATE_CASE_DETAILS_URL);
+    }
+
+    private void validateDodIsNullError(String url) throws Exception {
+        caseDataBuilder.deceasedDateOfDeath(null);
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
+
+        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
+        mockMvc.perform(post(url).content(json).contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.fieldErrors[0].param").value("callbackRequest"))
+                .andExpect(jsonPath("$.fieldErrors[0].field").value("caseDetails.data.deceasedDateOfDeath"))
+                .andExpect(jsonPath("$.fieldErrors[0].code").value("NotNull"))
+                .andExpect(jsonPath("$.fieldErrors[0].message").value("Date of death cannot be empty"));
+    }
+
+    private void validateDobIsNullError(String url) throws Exception {
+        caseDataBuilder.deceasedDateOfBirth(null);
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
+
+        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
+        mockMvc.perform(post(url).content(json).contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.fieldErrors[0].param").value("callbackRequest"))
+                .andExpect(jsonPath("$.fieldErrors[0].field").value("caseDetails.data.deceasedDateOfBirth"))
+                .andExpect(jsonPath("$.fieldErrors[0].code").value("NotNull"))
+                .andExpect(jsonPath("$.fieldErrors[0].message").value("Date of birth cannot be empty"));
+    }
+
+    private void validateForenameIsNullError(String url) throws Exception {
+        caseDataBuilder.deceasedForenames(null);
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
+
+        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
+        mockMvc.perform(post(url).content(json).contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.fieldErrors[0].param").value("callbackRequest"))
+                .andExpect(jsonPath("$.fieldErrors[0].field").value("caseDetails.data.deceasedForenames"))
+                .andExpect(jsonPath("$.fieldErrors[0].code").value("NotBlank"))
+                .andExpect(jsonPath("$.fieldErrors[0].message").value("Deceased forename cannot be empty"));
+    }
+
+    private void validateSurnameIsNullError(String url) throws Exception {
+        caseDataBuilder.deceasedSurname(null);
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
+
+        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
+        mockMvc.perform(post(url).content(json).contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.fieldErrors[0].param").value("callbackRequest"))
+                .andExpect(jsonPath("$.fieldErrors[0].field").value("caseDetails.data.deceasedSurname"))
+                .andExpect(jsonPath("$.fieldErrors[0].code").value("NotBlank"))
+                .andExpect(jsonPath("$.fieldErrors[0].message").value("Deceased surname cannot be empty"));
     }
 }
