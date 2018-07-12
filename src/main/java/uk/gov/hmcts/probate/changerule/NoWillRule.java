@@ -11,7 +11,7 @@ public class NoWillRule implements ChangeRule {
 
     @Override
     public boolean isChangeNeeded(CaseData caseData) {
-        return (NO.equals(caseData.getWillExists()));
+        return NO.equals(caseData.getWillExists());
     }
 
     @Override
