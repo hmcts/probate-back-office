@@ -10,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -34,7 +33,6 @@ import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.validator.ValidationRule;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -108,27 +106,9 @@ public class BusinessValidationController {
 
         List<FieldErrorResponse> businessErrors = eventValidationService.validate(ccdData, rules);
 
-        if (!businessErrors.isEmpty()) {
-            return CallbackResponse.builder()
-                    .errors(collectErrors(Collections.emptyList(), businessErrors))
-                    .build();
-        }
-
         return CallbackResponse.builder()
-                .errors(Collections.emptyList())
+                .errors(businessErrors.stream().map(FieldErrorResponse::getMessage).collect(Collectors.toList()))
                 .build();
-
-    }
-
-    private List<String> collectErrors(List<FieldError> errors, List<FieldErrorResponse> fieldErrorResponses) {
-        List<String> allErrors = errors.parallelStream()
-                .map(FieldError::getDefaultMessage)
-                .collect(Collectors.toList());
-
-        allErrors.addAll(fieldErrorResponses.parallelStream()
-                .map(FieldErrorResponse::getMessage)
-                .collect(Collectors.toList()));
-        return allErrors;
     }
 
     private void logRequest(String uri, CallbackRequest callbackRequest) {
