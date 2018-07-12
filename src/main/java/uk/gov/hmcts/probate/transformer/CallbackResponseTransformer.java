@@ -168,7 +168,12 @@ public class CallbackResponseTransformer {
                 .boDeceasedTitle(caseData.getBoDeceasedTitle())
                 .boDeceasedHonours(caseData.getBoDeceasedHonours())
 
-                .ccdState(caseDetails.getState());
+                .ccdState(caseDetails.getState())
+
+                .boWillMessage(caseData.getBoWillMessage())
+                .boExecutorLimitation(caseData.getBoExecutorLimitation())
+                .boAdminClauseLimitation(caseData.getBoAdminClauseLimitation())
+                .boLimitationText(caseData.getBoLimitationText());
     }
 
     private String getPaymentReference(CaseData caseData) {

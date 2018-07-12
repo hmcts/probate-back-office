@@ -189,6 +189,14 @@ public class CaseData {
 
     private final String boDeceasedHonours;
 
+    private final String boWillMessage;
+
+    private final String boExecutorLimitation;
+
+    private final String boAdminClauseLimitation;
+
+    private final String boLimitationText;
+
     public List<AdditionalExecutors> getExecutorsApplying() {
 
         return getAllExecutors(true);
