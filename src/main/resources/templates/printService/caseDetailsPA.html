@@ -198,18 +198,6 @@
     <td>{% if case_data.deceasedMarriedAfterDateOnWill %}{{ case_data.deceasedMarriedAfterDateOnWill }}{% endif %}</td>
   </tr>
   <tr>
-    <td colspan="2">Will date:</td>
-    <td>{% if case_data.willDate %}{{ case_data.willDate | date("DD/MM/YYYY", existingFormat="yyyy-MM-dd") }}{% endif %}</td>
-  </tr>
-  <tr>
-    <td colspan="2">Codicil with date:</td>
-    <td>{% if case_data.codicilWithDate %}{{ case_data.codicilWithDate | date("DD/MM/YYYY", existingFormat="yyyy-MM-dd") }}{% endif %}</td>
-  </tr>
-  <tr>
-    <td colspan="2">Codicil date:</td>
-    <td>{% if case_data.codicilDate %}{{ case_data.codicilDate | date("DD/MM/YYYY", existingFormat="yyyy-MM-dd") }}{% endif %}</td>
-  </tr>
-  <tr>
     <td colspan="2">Registry location:</td>
     <td>{{ case_data.registryLocation }}</td>
   </tr>
