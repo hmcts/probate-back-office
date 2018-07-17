@@ -1,8 +1,7 @@
 package uk.gov.hmcts.probate.service.template.pdf;
 
-import lombok.Data;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -26,8 +25,9 @@ import java.net.URI;
 import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 import static uk.gov.hmcts.probate.insights.AppInsightsEvent.REQUEST_SENT;
 
-@Data
+@Slf4j
 @Component
+@RequiredArgsConstructor
 public class PDFGeneratorService {
 
     private final RestTemplate restTemplate;
@@ -37,8 +37,6 @@ public class PDFGeneratorService {
 
     private static final String PARAMETER_TEMPLATE = "template";
     private static final String PARAMETER_PLACEHOLDER_VALUES = "placeholderValues";
-
-    private static final Logger log = LoggerFactory.getLogger(PDFGeneratorService.class);
 
     public EvidenceManagementFileUpload generatePdf(PDFServiceTemplate pdfServiceTemplate, String pdfGenerationData) {
         URI uri = URI.create(String.format("%s%s", pdfServiceConfiguration.getUrl(), pdfServiceConfiguration.getPdfApi()));

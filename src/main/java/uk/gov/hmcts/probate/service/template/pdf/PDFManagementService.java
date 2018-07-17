@@ -2,9 +2,8 @@ package uk.gov.hmcts.probate.service.template.pdf;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.Data;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.hateoas.Link;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.config.PDFServiceConfiguration;
@@ -19,15 +18,14 @@ import uk.gov.hmcts.probate.service.evidencemanagement.upload.UploadService;
 
 import java.io.IOException;
 
-@Data
+@Slf4j
 @Service
+@RequiredArgsConstructor
 public class PDFManagementService {
     private final PDFServiceConfiguration pdfServiceConfiguration;
     private final PDFGeneratorService pdfGeneratorService;
     private final UploadService uploadService;
     private final ObjectMapper objectMapper;
-
-    private static final Logger log = LoggerFactory.getLogger(PDFManagementService.class);
 
     public CCDDocument generateAndUpload(CallbackRequest callbackRequest, PDFServiceTemplate pdfServiceTemplate) {
         try {

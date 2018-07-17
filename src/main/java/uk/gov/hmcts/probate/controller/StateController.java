@@ -2,9 +2,8 @@ package uk.gov.hmcts.probate.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.Data;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -17,12 +16,11 @@ import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 
 import javax.servlet.http.HttpServletRequest;
 
-@Data
+@Slf4j
 @Controller
+@RequiredArgsConstructor
 @RequestMapping("/case")
 public class StateController {
-
-    private static final Logger log = LoggerFactory.getLogger(StateController.class);
 
     private final ObjectMapper objectMapper;
     private final CallbackResponseTransformer callbackResponseTransformer;
