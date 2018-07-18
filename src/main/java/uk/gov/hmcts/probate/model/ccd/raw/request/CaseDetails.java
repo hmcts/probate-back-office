@@ -18,4 +18,6 @@ public class CaseDetails {
 
     @NotNull
     private final Long id;
+
+    private String state;
 }
