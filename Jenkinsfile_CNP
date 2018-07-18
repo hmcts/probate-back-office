@@ -25,6 +25,9 @@ static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
 withPipeline("java", product, component) {
   env.APPINSIGHTS_INSTRUMENTATIONKEY=false
   loadVaultSecrets(secrets)
+  before('buildinfra:prod') {
+    error 'Deliberately breaking pipeline to prevent prod deployment'
+  }
   //enableSlackNotifications('#probate-jenkins')
 
   after('test') {
