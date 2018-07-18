@@ -63,10 +63,10 @@
 <body>
 <table>
     <thead>
-        <tr>
-            <td colspan="2" class="sequence">
-            </td>
-        </tr>
+    <tr>
+        <td colspan="2" class="sequence">
+        </td>
+    </tr>
     </thead>
     <tbody class="table-content">
     <tr>
@@ -89,11 +89,12 @@
     </tr>
     <tr>
         <td colspan="2" class="legal-body">
-            <p>BE IT KNOWN that <span class="upperCase"> <strong>{% if case_details.case_data.boDeceasedTitle != null and case_details.case_data.boDeceasedTitle != "" %}{{ case_details.case_data.boDeceasedTitle }}{% endif %}<br /> [case_details.case_data.deceasedForenames] [case_details.case_data.deceasedSurname] {% if case_details.case_data.boDeceasedHonours != null and case_details.case_data.boDeceasedHonours != "" %}{{ case_details.case_data.boDeceasedHonours }}{% endif %}}</strong></span>
-            <p>{% if case_details.case_data.solsDeceasedAliasNamesList != null and
+            <p>BE IT KNOWN that <span class="upperCase"> <strong>{% if case_details.case_data.boDeceasedTitle != null and case_details.case_data.boDeceasedTitle != "" %}{{ case_details.case_data.boDeceasedTitle }}{% endif %}<br/> [case_details.case_data.deceasedForenames] [case_details.case_data.deceasedSurname] {% if case_details.case_data.boDeceasedHonours != null and case_details.case_data.boDeceasedHonours != "" %}{{ case_details.case_data.boDeceasedHonours }}{% endif %}}</strong></span>
+                <br />{% if case_details.case_data.solsDeceasedAliasNamesList != null and
                 case_details.case_data.solsDeceasedAliasNamesList != "" %}{Otherwise
-                {case_details.case_data.solsDeceasedAliasNamesList}}{% endif %}</p>
-            <p>of <strong><span class="camelCase">[case_details.case_data.deceasedAddress]</span></strong></p>
+                {case_details.case_data.solsDeceasedAliasNamesList}}{% endif %}
+                <br />of <strong><span class="camelCase">[case_details.case_data.deceasedAddress]</span></strong>
+            </p>
             <p>died on the <strong>[case_details.case_data.deceasedDateOfDeath]</strong></p>
             <p>domiciled in <strong><span class="camelCase">England and Wales</span></strong></p>
             <p>AND BE IT FURTHER KNOWN that the last Will and Testament <strong><span class="camelCase">{% if
@@ -106,7 +107,8 @@
                 else %}Executor{% endif %}</p>
             <p class="indent"><strong> <span class="upperCase">[case_details.case_data.primaryApplicantForenames] [case_details.case_data.primaryApplicantSurname]</span></strong>of
                 <strong><span class="camelCase">[case_details.case_data.primaryApplicantAddress]</span></strong></p>
-            <p class="indent">{% for executor in case_details.case_data.executorsApplying %}<span class="andGap">and</span>
+            <p class="indent">{% for executor in case_details.case_data.executorsApplying %}<span
+                    class="andGap">and</span>
                 <span style="text-transform: uppercase;">{<strong>{executor.value.applyingExecutorFirstName }} {{ executor.value.applyingExecutorSurname }</strong>}</span>
                 of <span class="camelCase"><strong>{% if executor.value.applyingExecutorAddress.AddressLine1 != null and
                 executor.value.applyingExecutorAddress.AddressLine1 != "" %}{{
@@ -135,14 +137,16 @@
             <p>{% if (case_details.case_data.executorsNotApplying|length > 0 &&
                 case_details.case_data.executorsNotApplying.notApplyingExecutorReason = "PowerReserved") %}Power
                 reserved to another Executor{% endif %}
-                <br />
-                {% if case_details.case_data.boExecutorLimitation != null and case_details.case_data.boExecutorLimitation
+                <br/>
+                {% if case_details.case_data.boExecutorLimitation != null and
+                case_details.case_data.boExecutorLimitation
                 != "" %}{{case_details.case_data.boExecutorLimitation}}{% endif %}
-                <br />
+                <br/>
                 {% if case_details.case_data.boAdminClauseLimitation != null and
-                case_details.case_data.boAdminClauseLimitation != "" %}{{case_details.case_data.boAdminClauseLimitation}}{%
+                case_details.case_data.boAdminClauseLimitation != ""
+                %}{{case_details.case_data.boAdminClauseLimitation}}{%
                 endif %}
-                <br />
+                <br/>
                 % if case_details.case_data.boLimitationText != null and case_details.case_data.boLimitationText != ""
                 %}{{case_details.case_data.boLimitationText}}{% endif %}
             <p>It is hereby certified that it appears from information supplied on the application for this grant that
@@ -162,7 +166,8 @@
     <tr>
         <td>
             <p style="text-align:center;" style="font-size: 0.9em;">DISTRICT REGISTRAR/PROBATE OFFICER</p>
-            <p style="font-size: 0.9em;" style="font-size: 0.9em;">Extracted {% if (case_details.case_data.applicationType != "Personal")
+            <p style="font-size: 0.9em;" style="font-size: 0.9em;">Extracted {% if
+                (case_details.case_data.applicationType != "Personal")
                 %}case_details.case_data.solsSolicitorFirmName (Ref:case_details.case_data.solsSolicitorAppReference)
                 case_details.case_data.solsSolicitorFirmPostcode {% else %}personally{% endif %}</p>
             <p style="text-align:center;" style="font-size: 0.9em;">PROBATE</p>
