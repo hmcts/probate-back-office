@@ -165,13 +165,13 @@
     </tr>
     <tr>
         <td>
-            <p style="text-align:center;" style="font-size: 0.9em;">DISTRICT REGISTRAR/PROBATE OFFICER</p>
-            <p style="font-size: 0.9em;" style="font-size: 0.9em;">Extracted {% if
+            <p style="text-align:center; font-size: 0.9em;">DISTRICT REGISTRAR/PROBATE OFFICER</p>
+            <p style="font-size: 0.9em; font-size: 0.9em;">Extracted {% if
                 (case_details.case_data.applicationType != "Personal")
                 %}case_details.case_data.solsSolicitorFirmName (Ref:case_details.case_data.solsSolicitorAppReference)
                 case_details.case_data.solsSolicitorFirmPostcode {% else %}personally{% endif %}</p>
-            <p style="text-align:center;" style="font-size: 0.9em;">PROBATE</p>
-            <p style="text-align:right;" style="font-size: 0.9em;"><strong>[case_details.id]</strong></p>
+            <p style="text-align:center; font-size: 0.9em;">PROBATE</p>
+            <p style="text-align:right; font-size: 0.9em;"><strong>[case_details.id]</strong></p>
         </td>
     </tr>
     </tbody>
