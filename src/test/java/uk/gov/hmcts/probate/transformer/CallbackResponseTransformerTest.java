@@ -87,6 +87,8 @@ public class CallbackResponseTransformerTest {
     private static final List<AliasNames> ALIAS_NAMES = Collections.emptyList();
     private static final String APP_REF = "app ref";
     private static final String ADDITIONAL_INFO = "additional info";
+    private static final String IHT_REFERENCE = "123456789abcde";
+    private static final String IHT_ONLINE = "Yes";
 
     private static final String BO_EMAIL_GRANT_ISSUED = "Yes";
     private static final String BO_DOCS_RECEIVED = "Yes";
@@ -167,7 +169,9 @@ public class CallbackResponseTransformerTest {
                 .boWillMessage(WILL_MESSAGE)
                 .boExecutorLimitation(EXECUTOR_LIMITATION)
                 .boAdminClauseLimitation(ADMIN_CLAUSE_LIMITATION)
-                .boLimitationText(LIMITATION_TEXT);
+                .boLimitationText(LIMITATION_TEXT)
+                .ihtReferenceNumber(IHT_REFERENCE)
+                .ihtFormCompletedOnline(IHT_ONLINE);
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
@@ -314,5 +318,8 @@ public class CallbackResponseTransformerTest {
         assertEquals(EXECUTOR_LIMITATION, callbackResponse.getData().getBoExecutorLimitation());
         assertEquals(ADMIN_CLAUSE_LIMITATION, callbackResponse.getData().getBoAdminClauseLimitation());
         assertEquals(LIMITATION_TEXT, callbackResponse.getData().getBoLimitationText());
+
+        assertEquals(IHT_REFERENCE, callbackResponse.getData().getIhtReferenceNumber());
+        assertEquals(IHT_ONLINE, callbackResponse.getData().getIhtFormCompletedOnline());
     }
 }
