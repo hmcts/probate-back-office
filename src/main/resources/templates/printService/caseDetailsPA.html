@@ -3,26 +3,10 @@
 {% macro names(forenames, surname) %}{{ forenames }} {{ surname }}{% endmacro %}
 {% macro notApplyingReason(reason) %}{% if reason == "DiedBefore" %}They died before the deceased.{% endif %}{% if reason == "DiedAfter"%}They died after the deceased.{% endif %}{% if reason == "PowerReserved" %}They're holding power reserved.{% endif%}{% if reason == "Renunciation" %}They have renounced.{% endif %}{% endmacro %}
 {% macro replaceAllEncoded(original) %}{{ original | replace('&rsquo;', '’')  | replace('&pound;', '£') }}{% endmacro %}
-<head class="font">
+<head>
   <title>Application for probate for {{ names(case_data.deceasedForenames,case_data.deceasedSurname) }}</title>
-  <style type="text/css">
-
-    body {
-      font-family: Verdana, Arial;
-    }
-
-    .font {
-      font-family: Verdana, Arial;
-      font-size: 1.0em;
-    }
-
-    table-header {
-      font-size: 1.2em;font-weight: bold;text-align: left;
-    }
-
-  </style>
 </head>
-<body class="font">
+<body>
 <h1>Application for probate for {{ names(case_data.deceasedForenames,case_data.deceasedSurname) }}</h1>
 <p>
   <strong>Case Number:</strong> {{ id }}<br>
@@ -33,7 +17,7 @@
 <p>
   <strong>Date digital application submitted:</strong> {{ case_data.applicationSubmittedDate | date("DD/MM/YYYY") }}
 </p>
-<pre class="font">
+<pre>
 <table border="0">
   <tr>
     <td><strong>Deceased details</strong></td>
