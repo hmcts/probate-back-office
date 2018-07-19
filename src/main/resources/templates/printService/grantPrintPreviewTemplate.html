@@ -59,10 +59,28 @@
             margin-right: 30px;
         }
 
+        #watermark {
+            height: 1500px;
+            width: 1500px;
+            position: absolute;
+            overflow: hidden;
+            opacity: 0.50;
+            top: 30%;
+            text-align: center;
+            z-index: 0;
+            color: #ff0000;
+            -moz-transform: rotate(-45deg);
+            -webkit-transform: rotate(-45deg);
+            margin-left: 255px;
+
+        }
     </style>
 </head>
 <body>
 <table>
+    <div id="watermark" style = "font-size: 5.0em">
+        NOT OFFICIAL - DRAFT
+    </div>
     <thead>
     <tr>
         <td colspan="2" class="sequence">

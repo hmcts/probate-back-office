@@ -60,10 +60,30 @@
             margin-right: 30px;
         }
 
+        #watermark {
+            height: 1500px;
+            width: 1500px;
+            position: absolute;
+            overflow: hidden;
+            font-size: 56px;
+            opacity: 0.50;
+            top: 30%;
+            text-align: center;
+            z-index: 0;
+            color: #ff0000;
+            -moz-transform: rotate(-45deg);
+            -webkit-transform: rotate(-45deg);
+            margin-left: 255px;
+
+        }
+
     </style>
 </head>
 <body>
 <table>
+    <div id="watermark">
+        DRAFT COPY - NOT FOR CIRCULATION
+    </div>
     <thead>
         <tr>
             <td colspan="2" class="sequence">
@@ -92,12 +112,12 @@
     <tr>
         <td colspan="2" class="legal-body">
             <p>BE IT KNOWN that <span class="upperCase"> <strong> Professor Lillian Marie Hodgson MBE</strong></span>
-            <br />Otherwise Lillian Marie Hodgson one, Lillian Marie Hodgson two
+                <br />Otherwise Lillian Marie Hodgson one, Lillian Marie Hodgson two
                 <br />of  <strong><span class="camelCase">14 Ashley Court Frodsham Cheshire WA6 7BG</span></strong>
             </p>
             <p>died on the <strong>24th February 2018</strong>
-            </p>
-            <p>domiciled in <strong><span class="camelCase">England and Wales</span></strong>
+                <br />
+                domiciled in <strong><span class="camelCase">England and Wales</span></strong>
             </p>
             <p>AND BE IT FURTHER KNOWN that the last Will and Testament <strong>with a codicil</strong> of the said deceased (a copy of
                 which is
@@ -122,6 +142,7 @@
                 <span style="text-transform: uppercase;"><strong>William Kenneth Hancock</strong></span>
                 of <span class="camelCase"><strong>1 Abberley View Bishops Wood Road Ombersley Droitwich Worcestershire WR9 0LB</strong></span>
             </p>
+
             <p>Power reserved to another Executor
                 <br />
                 Executor Limitation text here
