@@ -1,5 +1,7 @@
 package uk.gov.hmcts.probate.functional.util;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.http.Header;
@@ -62,6 +64,8 @@ public class TestCaseCreator {
     @Rule
     public SpringIntegration springIntegration;
 
+    private ObjectMapper objectMapper = new ObjectMapper();
+
     public TestCaseCreator() {
         this.springIntegration = new SpringIntegration();
 
@@ -75,26 +79,34 @@ public class TestCaseCreator {
 
     @Ignore
     @Test
-    public void validatePostSuccessCCDCase() {
+    public void createPaCase() throws Exception {
+        createCase("create.pa.ccd.json", "citizens", "applyForGrant");
+    }
 
+    @Ignore
+    @Test
+    public void createSolsCase() throws Exception {
+        createCase("create.sols.ccd.json", "caseworkers", "solicitorCreateApplication");
+    }
+
+    private void createCase(String fileName, String role, String eventName) throws Exception {
         Headers headersWithUserId = getHeadersWithUserId();
         userId = getUserId(clientToken);
-        String token = generateEventToken(headersWithUserId);
-        String rep = getJsonFromFile("success.pa.ccd.json").replace("\"event_token\": \"sampletoken\"", "\"event_token\":\"" + token + "\"");
+        String token = generateEventToken(role, eventName, headersWithUserId);
+        String rep = getJsonFromFile(fileName).replace("\"event_token\": \"sampletoken\"", "\"event_token\":\"" + token + "\"");
+
 
         SerenityRest.given()
                 .relaxedHTTPSValidation()
                 .headers(headersWithUserId)
                 .baseUri(solCcdServiceUrl)
                 .body(rep)
-                .when().post("/citizens/" + userId + "/jurisdictions/PROBATE/case-types/GrantOfRepresentation/cases").
-                then()
+                .when().post("/" + role + "/" + userId + "/jurisdictions/PROBATE/case-types/GrantOfRepresentation/cases").
+                        then()
                 .statusCode(201);
-
-
     }
 
-    public Headers getHeadersWithUserId() {
+    public Headers getHeadersWithUserId() throws Exception {
         return getHeadersWithUserId(generateServiceToken());
     }
 
@@ -105,31 +117,31 @@ public class TestCaseCreator {
         return serviceToken;
     }
 
-    public Headers getHeadersWithUserId(String serviceToken) {
+    public Headers getHeadersWithUserId(String serviceToken) throws Exception {
         return Headers.headers(
                 new Header("ServiceAuthorization", serviceToken),
                 new Header("Content-Type", ContentType.JSON.toString()),
                 new Header("Authorization", generateUserTokenWithNoRoles()));
     }
 
-    private String generateEventToken(Headers headersWithUserId) {
+    private String generateEventToken(String role, String eventName, Headers headersWithUserId) {
         log.info("User Id: {}", userId);
         RestAssured.baseURI = solCcdServiceUrl;
         return SerenityRest.given()
                 .relaxedHTTPSValidation()
                 .headers(headersWithUserId)
-                .when().get("/citizens/" + userId + "/jurisdictions/PROBATE/case-types/GrantOfRepresentation/event-triggers/applyForGrant/token")
+                .when().get(role + userId + "/jurisdictions/PROBATE/case-types/GrantOfRepresentation/event-triggers/" + eventName + "/token")
                 .then().assertThat().statusCode(200).extract().path("token");
     }
 
 
-    public String generateUserTokenWithNoRoles() {
+    public String generateUserTokenWithNoRoles() throws Exception {
         clientToken = generateClientToken();
         log.info("Client Token : {}", clientToken);
         return clientToken;
     }
 
-    private String generateClientToken() {
+    private String generateClientToken() throws Exception {
         String code = generateClientCode();
         log.info("Client Code: {}", code);
         return "Bearer " + RestAssured.given().relaxedHTTPSValidation().post(idamUserBaseUrl + "/oauth2/token?code=" + code +
@@ -140,13 +152,13 @@ public class TestCaseCreator {
                 .body().path("access_token");
     }
 
-    private String generateClientCode() {
+    private String generateClientCode() throws Exception {
         final String encoded = Base64.getEncoder().encodeToString((idamUsername + ":" + idamPassword).getBytes());
-        return RestAssured.given().relaxedHTTPSValidation().baseUri(idamUserBaseUrl)
+        JsonNode jsonNode = objectMapper.readValue(RestAssured.given().relaxedHTTPSValidation().baseUri(idamUserBaseUrl)
                 .header("Authorization", "Basic " + encoded)
                 .post("/oauth2/authorize?response_type=code&client_id=probate&redirect_uri=" + redirectUri)
-                .body().path("code");
-
+                .body().print(), JsonNode.class);
+        return jsonNode.get("code").asText();
     }
 
     private String getJsonFromFile(String fileName) {
@@ -160,10 +172,10 @@ public class TestCaseCreator {
     }
 
     public String getUserId(String userToken) {
-        return ((Integer) RestAssured.given()
+        return "" + RestAssured.given()
                 .header("Authorization", userToken)
                 .get(idamUserBaseUrl + "/details")
                 .body()
-                .path("id")).toString();
+                .path("id");
     }
 }
