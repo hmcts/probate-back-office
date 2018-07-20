@@ -130,7 +130,7 @@ public class TestCaseCreator {
         return SerenityRest.given()
                 .relaxedHTTPSValidation()
                 .headers(headersWithUserId)
-                .when().get(role + userId + "/jurisdictions/PROBATE/case-types/GrantOfRepresentation/event-triggers/" + eventName + "/token")
+                .when().get("/" + role + "/" + userId + "/jurisdictions/PROBATE/case-types/GrantOfRepresentation/event-triggers/" + eventName + "/token")
                 .then().assertThat().statusCode(200).extract().path("token");
     }
 
