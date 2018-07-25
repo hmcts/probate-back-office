@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.transformer;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,6 +29,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import static org.hamcrest.Matchers.comparesEqualTo;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -57,8 +59,8 @@ public class CallbackResponseTransformerTest {
 
 
     private static final String IHT_FORM_ID = "IHT207";
-    private static final Float IHT_GROSS = 10000f;
-    private static final Float IHT_NET = 9000f;
+    private static final BigDecimal IHT_GROSS = BigDecimal.valueOf(10000f);
+    private static final BigDecimal IHT_NET = BigDecimal.valueOf(9000f);
 
     private static final String SOL_PAY_METHODS_FEE = "fee account";
     private static final String SOL_PAY_METHODS_CHEQUE = "cheque";
@@ -289,8 +291,8 @@ public class CallbackResponseTransformerTest {
         assertEquals(NUM_CODICILS, callbackResponse.getData().getWillNumberOfCodicils());
 
         assertEquals(IHT_FORM_ID, callbackResponse.getData().getSolsIHTFormId());
-        assertEquals("10000", callbackResponse.getData().getIhtGrossValue());
-        assertEquals("9000", callbackResponse.getData().getIhtNetValue());
+        Assert.assertThat(new BigDecimal("10000"),  comparesEqualTo(callbackResponse.getData().getIhtGrossValue()));
+        Assert.assertThat(new BigDecimal("9000"),  comparesEqualTo(callbackResponse.getData().getIhtNetValue()));
 
         assertEquals(APPLICANT_FORENAME, callbackResponse.getData().getPrimaryApplicantForenames());
         assertEquals(APPLICANT_SURNAME, callbackResponse.getData().getPrimaryApplicantSurname());
