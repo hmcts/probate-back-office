@@ -20,11 +20,10 @@ import uk.gov.hmcts.probate.controller.validation.ApplicationUpdatedGroup;
 import uk.gov.hmcts.probate.exception.BadRequestException;
 import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
-import uk.gov.hmcts.probate.model.ccd.raw.CCDDocument;
+import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.response.AfterSubmitCallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
-import uk.gov.hmcts.probate.model.template.PDFServiceTemplate;
 import uk.gov.hmcts.probate.service.ConfirmationResponseService;
 import uk.gov.hmcts.probate.service.EventValidationService;
 import uk.gov.hmcts.probate.service.StateChangeService;
@@ -40,6 +39,7 @@ import java.util.stream.Collectors;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT;
 
 @Data
 @Controller
@@ -77,9 +77,8 @@ public class BusinessValidationController {
             if (newState.isPresent()) {
                 response = callbackResponseTransformer.transformWithConditionalStateChange(callbackRequest, newState);
             } else {
-                PDFServiceTemplate pdfServiceTemplate = PDFServiceTemplate.LEGAL_STATEMENT;
-                CCDDocument document = pdfManagementService.generateAndUpload(callbackRequest, pdfServiceTemplate);
-                response = callbackResponseTransformer.transform(callbackRequest, pdfServiceTemplate, document);
+                Document document = pdfManagementService.generateAndUpload(callbackRequest, LEGAL_STATEMENT);
+                response = callbackResponseTransformer.transform(callbackRequest, document);
             }
         }
 

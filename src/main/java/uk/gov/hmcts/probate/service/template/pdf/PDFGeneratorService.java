@@ -17,8 +17,8 @@ import uk.gov.hmcts.probate.config.PDFServiceConfiguration;
 import uk.gov.hmcts.probate.exception.ClientException;
 import uk.gov.hmcts.probate.exception.ConnectionException;
 import uk.gov.hmcts.probate.insights.AppInsights;
+import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.evidencemanagement.EvidenceManagementFileUpload;
-import uk.gov.hmcts.probate.model.template.PDFServiceTemplate;
 import uk.gov.hmcts.probate.service.FileSystemResourceService;
 
 import java.net.URI;
@@ -40,11 +40,11 @@ public class PDFGeneratorService {
 
     private static final Logger log = LoggerFactory.getLogger(PDFGeneratorService.class);
 
-    public EvidenceManagementFileUpload generatePdf(PDFServiceTemplate pdfServiceTemplate, String pdfGenerationData) {
+    public EvidenceManagementFileUpload generatePdf(DocumentType documentType, String pdfGenerationData) {
         URI uri = URI.create(String.format("%s%s", pdfServiceConfiguration.getUrl(), pdfServiceConfiguration.getPdfApi()));
 
-        String htmlTemplateFileName = pdfServiceTemplate.getHtmlFileName();
-        HttpEntity<MultiValueMap<String, Object>> multipartRequest = createMultipartPostRequest(htmlTemplateFileName, pdfGenerationData);
+        HttpEntity<MultiValueMap<String, Object>> multipartRequest = createMultipartPostRequest(
+                documentType.getTemplateName(), pdfGenerationData);
         appInsights.trackEvent(REQUEST_SENT, uri.toString());
         byte[] postResult;
         try {

@@ -10,7 +10,7 @@ import uk.gov.hmcts.probate.model.ccd.Executor;
 import uk.gov.hmcts.probate.model.ccd.Fee;
 import uk.gov.hmcts.probate.model.ccd.InheritanceTax;
 import uk.gov.hmcts.probate.model.ccd.Solicitor;
-import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutors;
+import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 
@@ -95,7 +95,7 @@ public class CCDDataTransformer {
         List<Executor> executors = new ArrayList<>();
         if (caseData.getSolsAdditionalExecutorList() != null) {
             executors = caseData.getSolsAdditionalExecutorList().stream()
-                    .map(AdditionalExecutors::getAdditionalExecutor)
+                    .map(CollectionMember::getValue)
                     .map(executor -> Executor.builder()
                             .applying(YES.equals(executor.getAdditionalApplying()))
                             .address(executor.getAdditionalExecAddress())

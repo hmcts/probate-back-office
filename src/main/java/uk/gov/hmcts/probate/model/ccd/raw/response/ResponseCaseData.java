@@ -4,11 +4,13 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;
 import lombok.Data;
 import uk.gov.hmcts.probate.model.ApplicationType;
-import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutors;
-import uk.gov.hmcts.probate.model.ccd.raw.AliasNames;
-import uk.gov.hmcts.probate.model.ccd.raw.CCDDocument;
+import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
+import uk.gov.hmcts.probate.model.ccd.raw.AliasName;
+import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
+import uk.gov.hmcts.probate.model.ccd.raw.Document;
+import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
-import uk.gov.hmcts.probate.model.ccd.raw.StopReasons;
+import uk.gov.hmcts.probate.model.ccd.raw.StopReason;
 
 import java.util.List;
 
@@ -49,9 +51,10 @@ public class ResponseCaseData {
     private final String solsPaymentMethods;
     private final String solsFeeAccountNumber;
     private final String solsPaymentReferenceNumber;
-    private final CCDDocument solsLegalStatementDocument;
+    private final DocumentLink solsLegalStatementDocument;
+    private final List<CollectionMember<Document>> probateDocumentsGenerated;
     private final String solsSOTNeedToUpdate;
-    private final CCDDocument solsNextStepsDocument;
+    private final DocumentLink solsNextStepsDocument;
     private final String solsAdditionalInfo;
     private final String primaryApplicantForenames;
     private final String primaryApplicantSurname;
@@ -61,18 +64,18 @@ public class ResponseCaseData {
     private final String solsPrimaryExecutorNotApplyingReason;
     private final String otherExecutorExists;
     private final String solsExecutorAliasNames;
-    private final List<AdditionalExecutors> solsAdditionalExecutorList;
+    private final List<CollectionMember<AdditionalExecutor>> solsAdditionalExecutorList;
     private final SolsAddress deceasedAddress;
     private final String deceasedAnyOtherNames;
     private final SolsAddress primaryApplicantAddress;
-    private final List<AliasNames> solsDeceasedAliasNamesList;
+    private final List<CollectionMember<AliasName>> solsDeceasedAliasNamesList;
     private final String ccdState;
     private final String casePrinted;
     private final String boEmailDocsReceivedNotificationRequested;
     private final String boEmailGrantIssuedNotificationRequested;
     private final String boEmailDocsReceivedNotification;
     private final String boEmailGrantIssuedNotification;
-    private final List<StopReasons> boCaseStopReasonList;
+    private final List<CollectionMember<StopReason>> boCaseStopReasonList;
     private final String boDeceasedTitle;
     private final String boDeceasedHonours;
 

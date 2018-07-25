@@ -23,7 +23,7 @@ public class DocumentManagementURIBuilder {
         return dmHost + evidenceManagementServiceURL;
     }
 
-    public String buildUrlWithId(String id) {
+    public String buildUrl(String id) {
         return buildUrl() + "/" + id;
     }
 }

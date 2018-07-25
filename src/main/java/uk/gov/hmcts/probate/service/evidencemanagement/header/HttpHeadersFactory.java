@@ -6,5 +6,7 @@ public interface HttpHeadersFactory {
 
     HttpHeaders getMultiPartHttpHeader();
 
+    HttpHeaders getApplicationJsonHttpHeader();
+
     HttpHeaders getHttpHeader();
 }

@@ -8,17 +8,18 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 import uk.gov.hmcts.probate.model.ApplicationType;
-import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutors;
-import uk.gov.hmcts.probate.model.ccd.raw.AliasNames;
-import uk.gov.hmcts.probate.model.ccd.raw.CCDDocument;
+import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
+import uk.gov.hmcts.probate.model.ccd.raw.AliasName;
+import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
+import uk.gov.hmcts.probate.model.ccd.raw.Document;
+import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
-import uk.gov.hmcts.probate.model.ccd.raw.StopReasons;
+import uk.gov.hmcts.probate.model.ccd.raw.StopReason;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.model.fee.FeeServiceResponse;
-import uk.gov.hmcts.probate.model.template.PDFServiceTemplate;
 import uk.gov.hmcts.probate.service.StateChangeService;
 
 import java.math.BigDecimal;
@@ -33,10 +34,12 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
+import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_DRAFT;
+import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CallbackResponseTransformerTest {
-    public static final String WILL_MESSAGE = "Will message";
+    private static final String WILL_MESSAGE = "Will message";
     private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     private static final ApplicationType APPLICATION_TYPE = SOLICITOR;
@@ -80,11 +83,11 @@ public class CallbackResponseTransformerTest {
     private static final String APPLICANT_HAS_ALIAS = "Yes";
     private static final String OTHER_EXECS_EXIST = "No";
     private static final String PRIMARY_EXEC_ALIAS_NAMES = "Alias names";
-    private static final List<AdditionalExecutors> ADDITIONAL_EXEC_LIST = Collections.emptyList();
-    private static final List<AliasNames> DECEASED_ALIAS_NAMES_LIST = Collections.emptyList();
+    private static final List<CollectionMember<AdditionalExecutor>> ADDITIONAL_EXEC_LIST = Collections.emptyList();
+    private static final List<CollectionMember<AliasName>> DECEASED_ALIAS_NAMES_LIST = Collections.emptyList();
     private static final SolsAddress DECEASED_ADDRESS = Mockito.mock(SolsAddress.class);
     private static final SolsAddress EXEC_ADDRESS = Mockito.mock(SolsAddress.class);
-    private static final List<AliasNames> ALIAS_NAMES = Collections.emptyList();
+    private static final List<CollectionMember<AliasName>> ALIAS_NAMES = Collections.emptyList();
     private static final String APP_REF = "app ref";
     private static final String ADDITIONAL_INFO = "additional info";
     private static final String IHT_REFERENCE = "123456789abcde";
@@ -93,7 +96,7 @@ public class CallbackResponseTransformerTest {
     private static final String BO_EMAIL_GRANT_ISSUED = "Yes";
     private static final String BO_DOCS_RECEIVED = "Yes";
     private static final String CASE_PRINT = "Yes";
-    private static final List<StopReasons> STOP_REASONS_LIST = Collections.emptyList();
+    private static final List<CollectionMember<StopReason>> STOP_REASONS_LIST = Collections.emptyList();
 
     private static final String YES = "Yes";
     private static final Optional<String> ORIGINAL_STATE = Optional.empty();
@@ -124,7 +127,7 @@ public class CallbackResponseTransformerTest {
     private FeeServiceResponse feeServiceResponseMock;
 
     @Mock
-    private CCDDocument ccdDocumentMock;
+    private DocumentLink documentLinkMock;
 
     @Before
     public void setup() {
@@ -202,10 +205,15 @@ public class CallbackResponseTransformerTest {
     @Test
     public void shouldConvertRequestToDataBeanForPaymentWithExecutorDetails() {
 
-        when(ccdDocumentMock.getDocumentBinaryUrl()).thenReturn(DOC_BINARY_URL);
-        when(ccdDocumentMock.getDocumentUrl()).thenReturn(DOC_URL);
-        when(ccdDocumentMock.getDocumentFilename()).thenReturn(DOC_NAME);
-        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, PDFServiceTemplate.LEGAL_STATEMENT, ccdDocumentMock);
+        when(documentLinkMock.getDocumentBinaryUrl()).thenReturn(DOC_BINARY_URL);
+        when(documentLinkMock.getDocumentUrl()).thenReturn(DOC_URL);
+        when(documentLinkMock.getDocumentFilename()).thenReturn(DOC_NAME);
+        Document document = Document.builder()
+                .documentLink(documentLinkMock)
+                .documentType(LEGAL_STATEMENT)
+                .build();
+
+        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, document);
 
         assertCommon(callbackResponse);
 
@@ -218,14 +226,31 @@ public class CallbackResponseTransformerTest {
     @Test
     public void shouldConvertRequestToDataBeanForPaymentWithLegalStatementDocNullWhenPdfServiceTemplateIsNull() {
 
-        when(ccdDocumentMock.getDocumentBinaryUrl()).thenReturn(DOC_BINARY_URL);
-        when(ccdDocumentMock.getDocumentUrl()).thenReturn(DOC_URL);
-        when(ccdDocumentMock.getDocumentFilename()).thenReturn(DOC_NAME);
-        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, null, ccdDocumentMock);
+        when(documentLinkMock.getDocumentBinaryUrl()).thenReturn(DOC_BINARY_URL);
+        when(documentLinkMock.getDocumentUrl()).thenReturn(DOC_URL);
+        when(documentLinkMock.getDocumentFilename()).thenReturn(DOC_NAME);
+        Document document = Document.builder()
+                .documentLink(documentLinkMock)
+                .build();
+        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, document);
 
         assertCommon(callbackResponse);
 
         assertNull(callbackResponse.getData().getSolsLegalStatementDocument());
+    }
+
+    @Test
+    public void shouldAddDigitalGrantDraftToGeneratedDocuments() {
+        Document document = Document.builder()
+                .documentLink(documentLinkMock)
+                .documentType(DIGITAL_GRANT_DRAFT)
+                .build();
+
+        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, document);
+
+        assertCommon(callbackResponse);
+
+        assertEquals(1, callbackResponse.getData().getProbateDocumentsGenerated().size());
     }
 
     @Test
