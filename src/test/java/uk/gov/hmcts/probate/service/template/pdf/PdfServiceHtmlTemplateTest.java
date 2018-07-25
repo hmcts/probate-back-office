@@ -50,8 +50,8 @@ public class PdfServiceHtmlTemplateTest {
     private static final BigDecimal FEE_FOR_UK_COPIES = BigDecimal.TEN;
     private static final BigDecimal FEE_FOR_NON_UK_COPIES = BigDecimal.TEN;
     private static final BigDecimal TOTAL_FEE = BigDecimal.TEN;
-    private static final BigDecimal NET = new BigDecimal("800000");
-    private static final BigDecimal GROSS = new BigDecimal("999999999");
+    private static final BigDecimal NET = new BigDecimal("100001");
+    private static final BigDecimal GROSS = new BigDecimal("9000043");
     private static final Long EXTRA_UK = 1L;
     private static final Long EXTRA_OUTSIDE_UK = 2L;
     private static final String DEC_ADD_LINE1 = "DecLine1";
@@ -128,7 +128,7 @@ public class PdfServiceHtmlTemplateTest {
         module.addSerializer(BigDecimal.class, new BigDecimalNumberSerializer());
         otherObjectMapper.registerModule(module);
 
-        jsonData = objectMapper.writeValueAsString(callbackRequest);
+        jsonData = otherObjectMapper.writeValueAsString(callbackRequest);
     }
 
     @Ignore
