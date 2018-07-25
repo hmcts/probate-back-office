@@ -169,11 +169,14 @@ public class CallbackResponseTransformer {
                 .boDeceasedHonours(caseData.getBoDeceasedHonours())
 
                 .ccdState(caseDetails.getState())
+                .ihtReferenceNumber(caseData.getIhtReferenceNumber())
+                .ihtFormCompletedOnline(caseData.getIhtFormCompletedOnline())
 
                 .boWillMessage(caseData.getBoWillMessage())
                 .boExecutorLimitation(caseData.getBoExecutorLimitation())
                 .boAdminClauseLimitation(caseData.getBoAdminClauseLimitation())
                 .boLimitationText(caseData.getBoLimitationText());
+
     }
 
     private String getPaymentReference(CaseData caseData) {

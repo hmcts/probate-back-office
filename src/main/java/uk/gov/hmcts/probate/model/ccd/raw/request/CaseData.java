@@ -158,6 +158,10 @@ public class CaseData {
 
     private final List<StopReasons> boCaseStopReasonList;
 
+    private final String ihtReferenceNumber;
+
+    private final String ihtFormCompletedOnline;
+
 
     //next steps
     @NotNull(groups = {NextStepsConfirmationGroup.class}, message = "{applicationFeeIsNull}")

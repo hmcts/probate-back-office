@@ -80,4 +80,6 @@ public class ResponseCaseData {
     private final String boExecutorLimitation;
     private final String boAdminClauseLimitation;
     private final String boLimitationText;
+    private final String ihtReferenceNumber;
+    private final String ihtFormCompletedOnline;
 }
