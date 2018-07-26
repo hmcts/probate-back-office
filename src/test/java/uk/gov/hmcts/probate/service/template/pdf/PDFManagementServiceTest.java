@@ -4,9 +4,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.InjectMocks;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.hateoas.Link;
 import uk.gov.hmcts.probate.config.PDFServiceConfiguration;
 import uk.gov.hmcts.probate.exception.BadRequestException;
@@ -25,6 +25,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.template.PDFServiceTemplate.LEGAL_STATEMENT;
 
+@RunWith(MockitoJUnitRunner.class)
 public class PDFManagementServiceTest {
 
     @Mock
@@ -47,7 +48,6 @@ public class PDFManagementServiceTest {
     @Mock
     private JsonProcessingException jsonProcessingException;
 
-    @InjectMocks
     private PDFManagementService underTest;
 
     @Mock
@@ -55,7 +55,9 @@ public class PDFManagementServiceTest {
 
     @Before
     public void setUp() {
-        MockitoAnnotations.initMocks(this);
+        when(objectMapperMock.copy()).thenReturn(objectMapperMock);
+        underTest = new PDFManagementService(pdfServiceConfigurationMock, pdfGeneratorServiceMock, uploadServiceMock,
+                objectMapperMock);
     }
 
     @Test

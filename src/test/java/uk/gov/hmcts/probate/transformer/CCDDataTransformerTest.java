@@ -39,8 +39,8 @@ public class CCDDataTransformerTest {
     private static final LocalDate DOD = LocalDate.parse("2017-12-31", dateTimeFormatter);
 
     private static final String IHT_FORM_ID = "IHT207";
-    private static final Float IHT_GROSS = 10000f;
-    private static final Float IHT_NET = 9000f;
+    private static final BigDecimal IHT_GROSS = BigDecimal.valueOf(10000f);
+    private static final BigDecimal IHT_NET = BigDecimal.valueOf(9000f);
     private static final BigDecimal TOTAL_FEE = new BigDecimal(155.00);
     private static final BigDecimal APPLICATION_FEE = new BigDecimal(200.00);
     private static final BigDecimal FEE_UK_COPIES = new BigDecimal(0.50);

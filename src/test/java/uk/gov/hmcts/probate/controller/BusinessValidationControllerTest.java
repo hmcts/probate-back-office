@@ -2,6 +2,7 @@ package uk.gov.hmcts.probate.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,6 +19,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData.CaseDataBuilder;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
+import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -51,8 +53,8 @@ public class BusinessValidationControllerTest {
     private static final BigDecimal FEE_FOR_UK_COPIES = BigDecimal.TEN;
     private static final BigDecimal FEE_FOR_NON_UK_COPIES = BigDecimal.TEN;
     private static final BigDecimal TOTAL_FEE = BigDecimal.TEN;
-    private static final Float NET = 900f;
-    private static final Float GROSS = 1000f;
+    private static final BigDecimal NET = new BigDecimal("77777777");
+    private static final BigDecimal GROSS = new BigDecimal("999999999");
     private static final Long EXTRA_UK = 1L;
     private static final Long EXTRA_OUTSIDE_UK = 2L;
     private static final String DEC_ADD_LINE1 = "DecLine1";
@@ -82,6 +84,9 @@ public class BusinessValidationControllerTest {
 
     @MockBean
     private AppInsights appInsights;
+
+    @MockBean
+    private PDFManagementService pdfManagementService;
 
     @Before
     public void setup() {

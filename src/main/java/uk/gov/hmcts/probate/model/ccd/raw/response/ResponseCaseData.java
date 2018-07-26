@@ -10,6 +10,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.CCDDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.StopReasons;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Builder
@@ -37,8 +38,8 @@ public class ResponseCaseData {
     private final String willAccessOriginal;
     private final String willHasCodicils;
     private final String willNumberOfCodicils;
-    private final String ihtNetValue;
-    private final String ihtGrossValue;
+    private final BigDecimal ihtNetValue;
+    private final BigDecimal ihtGrossValue;
     private final String deceasedDomicileInEngWales;
     private final String extraCopiesOfGrant;
     private final String outsideUKGrantCopies;
