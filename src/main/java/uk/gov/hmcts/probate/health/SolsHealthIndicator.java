@@ -1,6 +1,6 @@
 package uk.gov.hmcts.probate.health;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.HealthIndicator;
@@ -12,7 +12,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.client.UnknownHttpStatusCodeException;
 
 @Slf4j
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class SolsHealthIndicator implements HealthIndicator {
 
     private static final String EXCEPTION_KEY = "exception";

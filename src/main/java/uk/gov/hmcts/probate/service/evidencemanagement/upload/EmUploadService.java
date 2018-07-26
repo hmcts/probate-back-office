@@ -2,9 +2,7 @@ package uk.gov.hmcts.probate.service.evidencemanagement.upload;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.Data;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.MultiValueMap;
@@ -22,16 +20,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Data
 @Service
+@RequiredArgsConstructor
 public class EmUploadService implements UploadService {
 
     private final HttpHeadersFactory headers;
     private final EvidenceManagementRestTemplate evidenceManagementRestTemplate;
     private final DocumentManagementURIBuilder documentManagementURIBuilder;
     private final ObjectMapper objectMapper;
-
-    private static final Logger log = LoggerFactory.getLogger(EmUploadService.class);
 
     @Override
     public EvidenceManagementFile store(EvidenceManagementFileUpload file) throws IOException {

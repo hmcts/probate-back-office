@@ -50,8 +50,8 @@ public class ConfirmationResponseServiceFeatureTest {
     private static final BigDecimal TOTAL_FEE = BigDecimal.TEN;
     private static final BigDecimal FEE_UK = new BigDecimal(100);
     private static final BigDecimal FEE_NON_UK = new BigDecimal(200);
-    private static final Float NET = 900f;
-    private static final Float GROSS = 1000f;
+    private static final BigDecimal NET = BigDecimal.valueOf(900f);
+    private static final BigDecimal GROSS = BigDecimal.valueOf(1000f);
     private static final Long EXTRA_UK = 1L;
     private static final Long EXTRA_OUTSIDE_UK = 2L;
     private static final String PAYMENT_REFERENCE = "XXXXX123456";

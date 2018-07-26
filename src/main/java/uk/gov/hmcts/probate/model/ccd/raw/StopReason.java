@@ -1,11 +1,12 @@
 package uk.gov.hmcts.probate.model.ccd.raw;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Builder;
+import lombok.Data;
 
-@Getter
-@AllArgsConstructor
+
+@Data
+@Builder
 public class StopReason {
 
     @JsonProperty(value = "caseStopReason")
