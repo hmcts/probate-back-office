@@ -22,8 +22,8 @@ public class BigDecimalNumberSerializerTest {
         Writer jsonWriter = new StringWriter();
         JsonGenerator jsonGenerator = new JsonFactory().createGenerator(jsonWriter);
         SerializerProvider serializerProvider = new ObjectMapper().getSerializerProvider();
-        new BigDecimalNumberSerializer().serialize(new BigDecimal("90000"), jsonGenerator, serializerProvider);
+        new BigDecimalNumberSerializer().serialize(new BigDecimal("90000.00"), jsonGenerator, serializerProvider);
         jsonGenerator.flush();
-        assertThat(jsonWriter.toString(), is(equalTo("90000")));
+        assertThat(jsonWriter.toString(), is(equalTo("90000.00")));
     }
 }
