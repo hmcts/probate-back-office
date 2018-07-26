@@ -14,7 +14,7 @@ public class InheritanceTaxTest {
     public void shouldGetNetValueInPounds() {
 
         InheritanceTax inheritanceTax = InheritanceTax.builder().formName("FORM_NAME")
-                .grossValue(1000F).netValue(800F).build();
+                .grossValue(BigDecimal.valueOf(1000F)).netValue(BigDecimal.valueOf(800F)).build();
 
         assertThat(inheritanceTax.getNetValueInPounds(), comparesEqualTo(new BigDecimal(8.00)));
     }

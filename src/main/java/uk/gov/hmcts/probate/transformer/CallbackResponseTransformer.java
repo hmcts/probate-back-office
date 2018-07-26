@@ -141,8 +141,8 @@ public class CallbackResponseTransformer {
 
                 .solsSOTNeedToUpdate(caseData.getSolsSOTNeedToUpdate())
 
-                .ihtGrossValue(transformToString(caseData.getIhtGrossValue()))
-                .ihtNetValue(transformToString(caseData.getIhtNetValue()))
+                .ihtGrossValue(caseData.getIhtGrossValue())
+                .ihtNetValue(caseData.getIhtNetValue())
                 .deceasedDomicileInEngWales(caseData.getDeceasedDomicileInEngWales())
 
                 .solsPaymentMethods(caseData.getSolsPaymentMethods())
@@ -200,11 +200,5 @@ public class CallbackResponseTransformer {
                 .map(String::valueOf)
                 .orElse(null);
     }
-
-    private String transformToString(Float value) {
-        return Optional.ofNullable(value)
-                .map(Float::intValue)
-                .map(String::valueOf)
-                .orElse(null);
-    }
+    
 }

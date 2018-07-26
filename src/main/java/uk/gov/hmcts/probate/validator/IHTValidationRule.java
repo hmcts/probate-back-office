@@ -30,7 +30,7 @@ class IHTValidationRule implements SolAddDeceasedEstateDetailsValidationRule {
                 .map(iht -> {
                     List<String> codes = new ArrayList<>();
 
-                    if (iht.getNetValue() > iht.getGrossValue()) {
+                    if (iht.getNetValue().compareTo(iht.getGrossValue()) > 0) {
                         codes.add(IHT_NET_GREATER_THAN_GROSS);
                     }
 
