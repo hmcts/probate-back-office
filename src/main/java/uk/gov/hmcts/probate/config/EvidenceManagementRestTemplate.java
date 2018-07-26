@@ -30,10 +30,10 @@ import static java.util.Arrays.asList;
 @Component
 public class EvidenceManagementRestTemplate extends RestTemplate {
     private static final MediaType MEDIA_TYPE_HAL_JSON =
-        new MediaType("application", "vnd.uk.gov.hmcts.dm.document-collection.v1+hal+json",
-            MappingJackson2HttpMessageConverter.DEFAULT_CHARSET);
+            new MediaType("application", "vnd.uk.gov.hmcts.dm.document-collection.v1+hal+json",
+                    MappingJackson2HttpMessageConverter.DEFAULT_CHARSET);
     private static final MediaType MEDIA_TYPE_DOC = new MediaType("application",
-        "vnd.uk.gov.hmcts.dm.document.v1+hal+json");
+            "vnd.uk.gov.hmcts.dm.document.v1+hal+json");
 
 
     @Value("${http.connect.timeout}")
@@ -52,8 +52,7 @@ public class EvidenceManagementRestTemplate extends RestTemplate {
 
         MappingJackson2HttpMessageConverter jackson2HttpConverter = new MappingJackson2HttpMessageConverter();
         jackson2HttpConverter.setObjectMapper(objectMapper);
-        jackson2HttpConverter.setSupportedMediaTypes(
-            ImmutableList.of(MEDIA_TYPE_HAL_JSON, MediaType.APPLICATION_JSON, MEDIA_TYPE_DOC));
+        jackson2HttpConverter.setSupportedMediaTypes(ImmutableList.of(MEDIA_TYPE_HAL_JSON, MEDIA_TYPE_DOC));
 
         HttpMessageConverter<Resource> resourceHttpMessageConverter = new ResourceHttpMessageConverter();
 
@@ -62,26 +61,26 @@ public class EvidenceManagementRestTemplate extends RestTemplate {
         formHttpMessageConverter.addPartConverter(resourceHttpMessageConverter);
 
         this.setMessageConverters(asList(jackson2HttpConverter,
-            resourceHttpMessageConverter,
-            formHttpMessageConverter,
-            new StringHttpMessageConverter()));
+                resourceHttpMessageConverter,
+                formHttpMessageConverter,
+                new StringHttpMessageConverter()));
         this.setRequestFactory(getClientHttpRequestFactory());
     }
 
     private ClientHttpRequestFactory getClientHttpRequestFactory() {
         RequestConfig config = RequestConfig.custom()
-            .setConnectTimeout(httpConnectTimeout)
-            .setConnectionRequestTimeout(httpConnectRequestTimeout)
-            .build();
+                .setConnectTimeout(httpConnectTimeout)
+                .setConnectionRequestTimeout(httpConnectRequestTimeout)
+                .build();
 
         CloseableHttpClient client = HttpClientBuilder
-            .create()
-            .useSystemProperties()
-            .addInterceptorFirst(new OutboundRequestIdSettingInterceptor())
-            .addInterceptorFirst((HttpRequestInterceptor) new OutboundRequestLoggingInterceptor())
-            .addInterceptorLast((HttpResponseInterceptor) new OutboundRequestLoggingInterceptor())
-            .setDefaultRequestConfig(config)
-            .build();
+                .create()
+                .useSystemProperties()
+                .addInterceptorFirst(new OutboundRequestIdSettingInterceptor())
+                .addInterceptorFirst((HttpRequestInterceptor) new OutboundRequestLoggingInterceptor())
+                .addInterceptorLast((HttpResponseInterceptor) new OutboundRequestLoggingInterceptor())
+                .setDefaultRequestConfig(config)
+                .build();
 
         return new HttpComponentsClientHttpRequestFactory(client);
     }

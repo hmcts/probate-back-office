@@ -16,8 +16,8 @@ import uk.gov.hmcts.probate.config.PDFServiceConfiguration;
 import uk.gov.hmcts.probate.exception.ClientException;
 import uk.gov.hmcts.probate.exception.ConnectionException;
 import uk.gov.hmcts.probate.insights.AppInsights;
+import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.evidencemanagement.EvidenceManagementFileUpload;
-import uk.gov.hmcts.probate.model.template.PDFServiceTemplate;
 import uk.gov.hmcts.probate.service.FileSystemResourceService;
 
 import java.net.URI;
@@ -38,11 +38,11 @@ public class PDFGeneratorService {
     private static final String PARAMETER_TEMPLATE = "template";
     private static final String PARAMETER_PLACEHOLDER_VALUES = "placeholderValues";
 
-    public EvidenceManagementFileUpload generatePdf(PDFServiceTemplate pdfServiceTemplate, String pdfGenerationData) {
+    public EvidenceManagementFileUpload generatePdf(DocumentType documentType, String pdfGenerationData) {
         URI uri = URI.create(String.format("%s%s", pdfServiceConfiguration.getUrl(), pdfServiceConfiguration.getPdfApi()));
 
-        String htmlTemplateFileName = pdfServiceTemplate.getHtmlFileName();
-        HttpEntity<MultiValueMap<String, Object>> multipartRequest = createMultipartPostRequest(htmlTemplateFileName, pdfGenerationData);
+        HttpEntity<MultiValueMap<String, Object>> multipartRequest = createMultipartPostRequest(
+                documentType.getTemplateName(), pdfGenerationData);
         appInsights.trackEvent(REQUEST_SENT, uri.toString());
         byte[] postResult;
         try {
@@ -59,7 +59,8 @@ public class PDFGeneratorService {
         return new EvidenceManagementFileUpload(MediaType.APPLICATION_PDF, postResult);
     }
 
-    private HttpEntity<MultiValueMap<String, Object>> createMultipartPostRequest(String pdfTemplateFileName, String pdfGenerationData) {
+    private HttpEntity<MultiValueMap<String, Object>> createMultipartPostRequest(String pdfTemplateFileName, String
+            pdfGenerationData) {
         MultiValueMap<String, Object> parameters = new LinkedMultiValueMap<>();
         String templatePath = pdfServiceConfiguration.getTemplatesDirectory() + pdfTemplateFileName + ".html";
 

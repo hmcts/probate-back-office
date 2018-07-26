@@ -12,18 +12,19 @@ import uk.gov.hmcts.probate.config.PDFServiceConfiguration;
 import uk.gov.hmcts.probate.exception.BadRequestException;
 import uk.gov.hmcts.probate.exception.ConnectionException;
 import uk.gov.hmcts.probate.insights.AppInsights;
-import uk.gov.hmcts.probate.model.ccd.raw.CCDDocument;
+import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.evidencemanagement.EvidenceManagementFile;
 import uk.gov.hmcts.probate.model.evidencemanagement.EvidenceManagementFileUpload;
 import uk.gov.hmcts.probate.service.evidencemanagement.upload.UploadService;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.when;
-import static uk.gov.hmcts.probate.model.template.PDFServiceTemplate.LEGAL_STATEMENT;
+import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT;
 
 @RunWith(MockitoJUnitRunner.class)
 public class PDFManagementServiceTest {
@@ -47,6 +48,8 @@ public class PDFManagementServiceTest {
     private CallbackRequest callbackRequestMock;
     @Mock
     private JsonProcessingException jsonProcessingException;
+    @Mock
+    private HttpServletRequest httpServletRequest;
 
     private PDFManagementService underTest;
 
@@ -57,13 +60,13 @@ public class PDFManagementServiceTest {
     public void setUp() {
         when(objectMapperMock.copy()).thenReturn(objectMapperMock);
         underTest = new PDFManagementService(pdfServiceConfigurationMock, pdfGeneratorServiceMock, uploadServiceMock,
-                objectMapperMock);
+                objectMapperMock, httpServletRequest);
     }
 
     @Test
     public void shouldGenerateAndUpload() throws IOException {
         String json = "{}";
-        String fileName = "filename";
+        String fileName = "legalStatement.pdf";
         String href = "href";
 
         when(pdfServiceConfigurationMock.getDefaultDisplayFilename()).thenReturn(fileName);
@@ -76,12 +79,12 @@ public class PDFManagementServiceTest {
 
         when(link.getHref()).thenReturn(href);
 
-        CCDDocument response = underTest.generateAndUpload(callbackRequestMock, LEGAL_STATEMENT);
+        Document response = underTest.generateAndUpload(callbackRequestMock, LEGAL_STATEMENT);
 
         assertNotNull(response);
-        assertEquals(fileName, response.getDocumentFilename());
-        assertEquals(href, response.getDocumentBinaryUrl());
-        assertEquals(href, response.getDocumentUrl());
+        assertEquals(fileName, response.getDocumentLink().getDocumentFilename());
+        assertEquals(href, response.getDocumentLink().getDocumentBinaryUrl());
+        assertEquals(href, response.getDocumentLink().getDocumentUrl());
     }
 
     @Test(expected = BadRequestException.class)
