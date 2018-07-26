@@ -1,6 +1,6 @@
 package uk.gov.hmcts.probate.service;
 
-import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.changerule.DomicilityRule;
 import uk.gov.hmcts.probate.changerule.ExecutorsRule;
@@ -11,8 +11,8 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 
 import java.util.Optional;
 
-@Data
 @Component
+@RequiredArgsConstructor
 public class StateChangeService {
     private static final String STATE_STOPPED = "Stopped";
     private static final String STATE_UPDATE_APPLICATION = "SolAppCreated";

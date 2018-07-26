@@ -3,10 +3,9 @@ package uk.gov.hmcts.probate.service.template.pdf;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
-import lombok.Data;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.hateoas.Link;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.config.PDFServiceConfiguration;
@@ -23,14 +22,15 @@ import uk.gov.hmcts.probate.service.evidencemanagement.upload.UploadService;
 import java.io.IOException;
 import java.math.BigDecimal;
 
+@Slf4j
 @Service
+@RequiredArgsConstructor
 public class PDFManagementService {
 
     private final PDFGeneratorService pdfGeneratorService;
     private final UploadService uploadService;
     private final ObjectMapper pdfServiceObjectMapper;
     private final PDFServiceConfiguration pdfServiceConfiguration;
-    private static final Logger log = LoggerFactory.getLogger(PDFManagementService.class);
 
     @Autowired
     public PDFManagementService(PDFServiceConfiguration pdfServiceConfiguration, PDFGeneratorService pdfGeneratorService,

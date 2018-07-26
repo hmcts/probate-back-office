@@ -1,7 +1,7 @@
 package uk.gov.hmcts.probate.service;
 
 import com.google.common.base.Strings;
-import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -29,8 +29,8 @@ import java.util.stream.Collectors;
 
 import static uk.gov.hmcts.probate.model.template.MarkdownTemplate.STOP_BODY;
 
-@Data
 @Component
+@RequiredArgsConstructor
 public class ConfirmationResponseService {
 
     private static final String REASON_FOR_NOT_APPLYING_RENUNCIATION = "Renunciation";

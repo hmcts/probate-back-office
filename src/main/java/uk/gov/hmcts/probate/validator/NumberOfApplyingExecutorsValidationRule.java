@@ -1,6 +1,6 @@
 package uk.gov.hmcts.probate.validator;
 
-import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
@@ -15,8 +15,8 @@ import java.util.stream.Stream;
 
 import static uk.gov.hmcts.probate.model.Constants.BUSINESS_ERROR;
 
-@Data
 @Component
+@RequiredArgsConstructor
 class NumberOfApplyingExecutorsValidationRule implements SolExecutorDetailsValidationRule {
 
     public static final String TOO_MANY_EXECUTORS = "tooManyExecutors";
