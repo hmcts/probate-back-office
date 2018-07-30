@@ -5,7 +5,7 @@ import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
-import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutors;
+import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 
 import java.util.ArrayList;
@@ -27,7 +27,7 @@ public class ExecutorsRuleTest {
     @Mock
     private CaseData caseDataMock;
     @Mock
-    private AdditionalExecutors additionalExecutors1Mock;
+    private CollectionMember<AdditionalExecutor> additionalExecutors1Mock;
     @Mock
     private AdditionalExecutor additionalExecutor1Mock;
 
@@ -35,8 +35,8 @@ public class ExecutorsRuleTest {
     public void setup() {
         initMocks(this);
 
-        List<AdditionalExecutors> additionalExecutorsList = new ArrayList<>();
-        when(additionalExecutors1Mock.getAdditionalExecutor()).thenReturn(additionalExecutor1Mock);
+        List<CollectionMember<AdditionalExecutor>> additionalExecutorsList = new ArrayList<>();
+        when(additionalExecutors1Mock.getValue()).thenReturn(additionalExecutor1Mock);
         additionalExecutorsList.add(additionalExecutors1Mock);
         when(caseDataMock.getSolsAdditionalExecutorList()).thenReturn(additionalExecutorsList);
     }

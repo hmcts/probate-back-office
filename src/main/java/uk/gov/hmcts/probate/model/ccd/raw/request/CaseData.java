@@ -11,11 +11,12 @@ import uk.gov.hmcts.probate.controller.validation.ApplicationUpdatedGroup;
 import uk.gov.hmcts.probate.controller.validation.NextStepsConfirmationGroup;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
-import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutors;
-import uk.gov.hmcts.probate.model.ccd.raw.AliasNames;
-import uk.gov.hmcts.probate.model.ccd.raw.CCDDocument;
+import uk.gov.hmcts.probate.model.ccd.raw.AliasName;
+import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
+import uk.gov.hmcts.probate.model.ccd.raw.Document;
+import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
-import uk.gov.hmcts.probate.model.ccd.raw.StopReasons;
+import uk.gov.hmcts.probate.model.ccd.raw.StopReason;
 
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
@@ -83,18 +84,18 @@ public class CaseData {
     @NotNull(groups = {ApplicationUpdatedGroup.class}, message = "{deceasedAnyOtherNamesIsNull}")
     private final String deceasedAnyOtherNames;
 
-    private final List<AliasNames> solsDeceasedAliasNamesList;
+    private final List<CollectionMember<AliasName>> solsDeceasedAliasNamesList;
 
     @NotBlank(groups = {ApplicationUpdatedGroup.class}, message = "{solsIHTFormIdIsNull}")
     private final String solsIHTFormId;
 
     @NotNull(groups = {ApplicationUpdatedGroup.class}, message = "{ihtNetIsNull}")
     @DecimalMin(groups = {ApplicationUpdatedGroup.class}, value = "0.0", message = "{ihtNetNegative}")
-    private final Float ihtNetValue;
+    private final BigDecimal ihtNetValue;
 
     @NotNull(groups = {ApplicationUpdatedGroup.class}, message = "{ihtGrossIsNull}")
     @DecimalMin(groups = {ApplicationUpdatedGroup.class}, value = "0.0", message = "{ihtGrossNegative}")
-    private final Float ihtGrossValue;
+    private final BigDecimal ihtGrossValue;
 
     @NotBlank(groups = {ApplicationUpdatedGroup.class}, message = "{primaryApplicantForenamesIsNull}")
     private final String primaryApplicantForenames;
@@ -119,7 +120,7 @@ public class CaseData {
     @NotBlank(groups = {ApplicationUpdatedGroup.class}, message = "{otherExecutorExistsIsNull}")
     private final String otherExecutorExists;
 
-    private final List<AdditionalExecutors> solsAdditionalExecutorList;
+    private final List<CollectionMember<AdditionalExecutor>> solsAdditionalExecutorList;
 
     private final String solsAdditionalInfo;
 
@@ -134,7 +135,9 @@ public class CaseData {
     private final String boEmailGrantIssuedNotification = YES;
 
     //EVENT = review
-    private final CCDDocument solsLegalStatementDocument;
+    private final DocumentLink solsLegalStatementDocument;
+
+    private final List<CollectionMember<Document>> probateDocumentsGenerated = new ArrayList<>();
 
     @NotNull(groups = {ApplicationReviewedGroup.class}, message = "{solsSOTNeedToUpdateIsNull}")
     private final String solsSOTNeedToUpdate;
@@ -156,7 +159,11 @@ public class CaseData {
 
     private final String casePrinted;
 
-    private final List<StopReasons> boCaseStopReasonList;
+    private final List<CollectionMember<StopReason>> boCaseStopReasonList;
+
+    private final String ihtReferenceNumber;
+
+    private final String ihtFormCompletedOnline;
 
 
     //next steps
@@ -176,9 +183,9 @@ public class CaseData {
     @DecimalMin(groups = {NextStepsConfirmationGroup.class}, value = "0.0", message = "{totalFeeNegative}")
     private final BigDecimal totalFee;
 
-    private List<AdditionalExecutors> executorsApplying;
+    private List<CollectionMember<AdditionalExecutor>> executorsApplying;
 
-    private List<AdditionalExecutors> executorsNotApplying;
+    private List<CollectionMember<AdditionalExecutor>> executorsNotApplying;
 
     private final ApplicationType applicationType;
 
@@ -197,13 +204,11 @@ public class CaseData {
 
     private final String boLimitationText;
 
-    public List<AdditionalExecutors> getExecutorsApplying() {
-
+    public List<CollectionMember<AdditionalExecutor>> getExecutorsApplying() {
         return getAllExecutors(true);
     }
 
-    public List<AdditionalExecutors> getExecutorsNotApplying() {
-
+    public List<CollectionMember<AdditionalExecutor>> getExecutorsNotApplying() {
         return getAllExecutors(false);
     }
 
@@ -215,8 +220,8 @@ public class CaseData {
         return NO.equals(primaryApplicantIsApplying);
     }
 
-    private List<AdditionalExecutors> getAllExecutors(boolean applying) {
-        List<AdditionalExecutors> totalExecutors = new ArrayList<>();
+    private List<CollectionMember<AdditionalExecutor>> getAllExecutors(boolean applying) {
+        List<CollectionMember<AdditionalExecutor>> totalExecutors = new ArrayList<>();
         if ((applying && isPrimaryApplicantApplying())
                 || (!applying && isPrimaryApplicantNotApplying())) {
             AdditionalExecutor primaryExecutor = AdditionalExecutor.builder()
@@ -229,9 +234,7 @@ public class CaseData {
                     .additionalExecReasonNotApplying(getSolsPrimaryExecutorNotApplyingReason())
                     .build();
 
-            AdditionalExecutors primaryAdditionalExecutors = AdditionalExecutors.builder()
-                    .additionalExecutor(primaryExecutor)
-                    .build();
+            CollectionMember<AdditionalExecutor> primaryAdditionalExecutors = new CollectionMember<>(null, primaryExecutor);
             totalExecutors.add(primaryAdditionalExecutors);
         }
 
@@ -242,12 +245,12 @@ public class CaseData {
         return totalExecutors.stream().filter(ex -> isApplying(ex, applying)).collect(Collectors.toList());
     }
 
-    private boolean isApplying(AdditionalExecutors ex, boolean applying) {
-        if (ex == null || ex.getAdditionalExecutor() == null || ex.getAdditionalExecutor().getAdditionalApplying() == null) {
+    private boolean isApplying(CollectionMember<AdditionalExecutor> ex, boolean applying) {
+        if (ex == null || ex.getValue() == null || ex.getValue().getAdditionalApplying() == null) {
             return false;
         }
 
-        return ex.getAdditionalExecutor().getAdditionalApplying().equals(applying ? YES : NO);
+        return ex.getValue().getAdditionalApplying().equals(applying ? YES : NO);
     }
 
     public String getDeceasedFullName() {

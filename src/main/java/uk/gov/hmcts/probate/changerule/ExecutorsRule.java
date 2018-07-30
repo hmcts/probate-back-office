@@ -1,7 +1,7 @@
 package uk.gov.hmcts.probate.changerule;
 
 import org.springframework.stereotype.Component;
-import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutors;
+import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 
 import static uk.gov.hmcts.probate.model.Constants.YES;
@@ -15,7 +15,7 @@ public class ExecutorsRule implements ChangeRule {
         long numApplying = 0;
         if (caseData.getSolsAdditionalExecutorList() != null) {
             numApplying = caseData.getSolsAdditionalExecutorList().stream()
-                    .map(AdditionalExecutors::getAdditionalExecutor)
+                    .map(CollectionMember::getValue)
                     .filter(additionalExecutor -> YES.equals(additionalExecutor.getAdditionalApplying()))
                     .count();
         }

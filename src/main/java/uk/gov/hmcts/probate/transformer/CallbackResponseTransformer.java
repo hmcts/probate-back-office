@@ -2,7 +2,8 @@ package uk.gov.hmcts.probate.transformer;
 
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.model.ApplicationType;
-import uk.gov.hmcts.probate.model.ccd.raw.CCDDocument;
+import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
+import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
@@ -10,14 +11,15 @@ import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData.ResponseCaseDataBuilder;
 import uk.gov.hmcts.probate.model.fee.FeeServiceResponse;
-import uk.gov.hmcts.probate.model.template.PDFServiceTemplate;
 
 import java.math.BigDecimal;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
-import static uk.gov.hmcts.probate.model.template.PDFServiceTemplate.LEGAL_STATEMENT;
+import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_DRAFT;
+import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT;
 
 @Component
 public class CallbackResponseTransformer {
@@ -81,18 +83,24 @@ public class CallbackResponseTransformer {
         return transform(responseCaseData);
     }
 
-    public CallbackResponse transform(CallbackRequest callbackRequest, PDFServiceTemplate pdfServiceTemplate, CCDDocument ccdDocument) {
-        ResponseCaseDataBuilder responseCaseData = this.getResponseCaseData(callbackRequest.getCaseDetails());
-        responseCaseData.solsSOTNeedToUpdate(null);
-        if (LEGAL_STATEMENT.equals(pdfServiceTemplate)) {
-            responseCaseData.solsLegalStatementDocument(ccdDocument);
+    public CallbackResponse transform(CallbackRequest callbackRequest, Document document) {
+        if (DIGITAL_GRANT_DRAFT.equals(document.getDocumentType()) || DIGITAL_GRANT.equals(document.getDocumentType())) {
+            callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated()
+                    .add(new CollectionMember<>(null, document));
         }
 
-        return transform(responseCaseData.build());
+        ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails());
+        responseCaseDataBuilder.solsSOTNeedToUpdate(null);
+
+        if (LEGAL_STATEMENT.equals(document.getDocumentType())) {
+            responseCaseDataBuilder.solsLegalStatementDocument(document.getDocumentLink());
+        }
+
+        return transform(responseCaseDataBuilder.build());
     }
 
     public CallbackResponse transform(CallbackRequest callbackRequest) {
-        ResponseCaseData responseCaseData = this.getResponseCaseData(callbackRequest.getCaseDetails())
+        ResponseCaseData responseCaseData = getResponseCaseData(callbackRequest.getCaseDetails())
                 .build();
 
         return transform(responseCaseData);
@@ -141,8 +149,8 @@ public class CallbackResponseTransformer {
 
                 .solsSOTNeedToUpdate(caseData.getSolsSOTNeedToUpdate())
 
-                .ihtGrossValue(transformToString(caseData.getIhtGrossValue()))
-                .ihtNetValue(transformToString(caseData.getIhtNetValue()))
+                .ihtGrossValue(caseData.getIhtGrossValue())
+                .ihtNetValue(caseData.getIhtNetValue())
                 .deceasedDomicileInEngWales(caseData.getDeceasedDomicileInEngWales())
 
                 .solsPaymentMethods(caseData.getSolsPaymentMethods())
@@ -169,11 +177,14 @@ public class CallbackResponseTransformer {
                 .boDeceasedHonours(caseData.getBoDeceasedHonours())
 
                 .ccdState(caseDetails.getState())
+                .ihtReferenceNumber(caseData.getIhtReferenceNumber())
+                .ihtFormCompletedOnline(caseData.getIhtFormCompletedOnline())
 
                 .boWillMessage(caseData.getBoWillMessage())
                 .boExecutorLimitation(caseData.getBoExecutorLimitation())
                 .boAdminClauseLimitation(caseData.getBoAdminClauseLimitation())
-                .boLimitationText(caseData.getBoLimitationText());
+                .boLimitationText(caseData.getBoLimitationText())
+                .probateDocumentsGenerated(caseData.getProbateDocumentsGenerated());
     }
 
     private String getPaymentReference(CaseData caseData) {
@@ -197,11 +208,5 @@ public class CallbackResponseTransformer {
                 .map(String::valueOf)
                 .orElse(null);
     }
-
-    private String transformToString(Float value) {
-        return Optional.ofNullable(value)
-                .map(Float::intValue)
-                .map(String::valueOf)
-                .orElse(null);
-    }
+    
 }

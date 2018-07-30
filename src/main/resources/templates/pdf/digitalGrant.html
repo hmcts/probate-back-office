@@ -181,20 +181,20 @@
     <tr>
         <td>
             <!--<p>-->
-                <!--{% if case_details.case_data.executorsNotApplying != null %}-->
-                <!--{% set notApplyingCount = 1 %}-->
-                <!--{% set powerReservedCounter = 0 %}-->
-                <!--{% for executor in case_details.case_data.executorsNotApplying %}-->
-                <!--{% if executor.value.notApplyingExecutorReason == "PowerReserved"}-->
-                <!--{% set powerReservedCounter = powerReservedCounter + 1 %}-->
-                <!--{% endif %}-->
-                <!--{% set notApplyingCount = notApplyingCount + 1 %}-->
-                <!--{% endfor %}-->
+            <!--{% if case_details.case_data.executorsNotApplying != null %}-->
+            <!--{% set notApplyingCount = 1 %}-->
+            <!--{% set powerReservedCounter = 0 %}-->
+            <!--{% for executor in case_details.case_data.executorsNotApplying %}-->
+            <!--{% if executor.value.notApplyingExecutorReason == "PowerReserved"}-->
+            <!--{% set powerReservedCounter = powerReservedCounter + 1 %}-->
+            <!--{% endif %}-->
+            <!--{% set notApplyingCount = notApplyingCount + 1 %}-->
+            <!--{% endfor %}-->
 
-                <!--{% if powerReservedCounter == 0 %}{% endif %}-->
-                <!--{% if powerReservedCounter == 1 %}Power reserved to another Executor{% endif %}-->
-                <!--{% if powerReservedCounter > 1 %}Power reserved to other Executors{% endif %}-->
-                <!--{% endif %}-->
+            <!--{% if powerReservedCounter == 0 %}{% endif %}-->
+            <!--{% if powerReservedCounter == 1 %}Power reserved to another Executor{% endif %}-->
+            <!--{% if powerReservedCounter > 1 %}Power reserved to other Executors{% endif %}-->
+            <!--{% endif %}-->
             <!--</p>-->
             <p>
                 {% if case_details.case_data.boExecutorLimitation != null and
