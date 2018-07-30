@@ -8,10 +8,8 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.hateoas.Link;
-import uk.gov.hmcts.probate.config.PDFServiceConfiguration;
 import uk.gov.hmcts.probate.exception.BadRequestException;
 import uk.gov.hmcts.probate.exception.ConnectionException;
-import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.evidencemanagement.EvidenceManagementFile;
@@ -29,8 +27,6 @@ import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT;
 @RunWith(MockitoJUnitRunner.class)
 public class PDFManagementServiceTest {
 
-    @Mock
-    private PDFServiceConfiguration pdfServiceConfigurationMock;
     @Mock
     private PDFGeneratorService pdfGeneratorServiceMock;
     @Mock
@@ -53,13 +49,10 @@ public class PDFManagementServiceTest {
 
     private PDFManagementService underTest;
 
-    @Mock
-    private AppInsights appInsights;
-
     @Before
     public void setUp() {
         when(objectMapperMock.copy()).thenReturn(objectMapperMock);
-        underTest = new PDFManagementService(pdfServiceConfigurationMock, pdfGeneratorServiceMock, uploadServiceMock,
+        underTest = new PDFManagementService(pdfGeneratorServiceMock, uploadServiceMock,
                 objectMapperMock, httpServletRequest);
     }
 
@@ -69,7 +62,6 @@ public class PDFManagementServiceTest {
         String fileName = "legalStatement.pdf";
         String href = "href";
 
-        when(pdfServiceConfigurationMock.getDefaultDisplayFilename()).thenReturn(fileName);
         when(objectMapperMock.writeValueAsString(callbackRequestMock)).thenReturn(json);
         when(pdfGeneratorServiceMock.generatePdf(LEGAL_STATEMENT, json)).thenReturn(evidenceManagementFileUpload);
         when(uploadServiceMock.store(evidenceManagementFileUpload)).thenReturn(evidenceManagementFile);
