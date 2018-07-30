@@ -130,7 +130,7 @@
                     {% if case_details.case_data.deceasedAddress.PostCode != null and case_details.case_data.deceasedAddress.PostCode != ""%}{{ case_details.case_data.deceasedAddress.PostCode }},{% endif %}
                     {% if case_details.case_data.deceasedAddress.Country != null and case_details.case_data.deceasedAddress.Country != ""%}{{ case_details.case_data.deceasedAddress.Country }}{% endif %}</span></strong>
             </p>
-            <p>died on the <strong>{{case_details.case_data.deceasedDateOfDeath}}</strong>
+            <p>died on the <strong>{{case_details.case_data.deceasedDateOfDeath|date("dd MMMMM yyyy", existingFormat="yyyy-MM-dd")}}</strong>
                 <br/>
                 domiciled in <strong><span class="camelCase">England and Wales</span></strong>
             </p>
@@ -211,17 +211,16 @@
             </p>
             <p>It is hereby certified that it appears from information supplied on the application for this grant that
                 the gross value of the said estate in the United Kingdom does not exceed
-                £ {{case_details.case_data.ihtGrossValue}} and the net value of the such estate amounts to
-                £ {{case_details.case_data.ihtNetValue}}
+                £{{(case_details.case_data.ihtGrossValue / 100) | numberformat("#")}} and the net value of the such estate amounts to
+                £{{(case_details.case_data.ihtNetValue / 100) | numberformat("#")}}
             </p>
             <p>
-                DATED the <strong>14th May 2018</strong>
+                DATED the <strong>{{case_details.case_data.currentDate|date("dd MMMMM yyyy", existingFormat="yyyy-MM-dd")}}</strong>
             </p>
         </td>
     </tr>
     <tr>
         <td>
-            <img src="signature.jpg" class="center" ></img>
             <p style="text-align:center; font-size: 0.9em;" >DISTRICT REGISTRAR/PROBATE OFFICER</p>
             <span class="circle"></span>
         </td>

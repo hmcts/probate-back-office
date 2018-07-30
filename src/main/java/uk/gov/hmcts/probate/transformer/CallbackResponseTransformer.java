@@ -33,7 +33,7 @@ public class CallbackResponseTransformer {
     private static final String DEFAULT_REGISTRY_LOCATION = "Birmingham";
 
     public CallbackResponse transformWithConditionalStateChange(CallbackRequest callbackRequest, Optional<String> newState) {
-        ResponseCaseData responseCaseData = this.getResponseCaseData(callbackRequest.getCaseDetails())
+        ResponseCaseData responseCaseData = getResponseCaseData(callbackRequest.getCaseDetails())
                 .state(newState.orElse(null))
                 .build();
 
@@ -41,7 +41,7 @@ public class CallbackResponseTransformer {
     }
 
     public CallbackResponse addCcdState(CallbackRequest callbackRequest) {
-        ResponseCaseData responseCaseData = this.getResponseCaseData(callbackRequest.getCaseDetails())
+        ResponseCaseData responseCaseData = getResponseCaseData(callbackRequest.getCaseDetails())
                 .build();
 
         return transform(responseCaseData);
@@ -50,7 +50,7 @@ public class CallbackResponseTransformer {
     public CallbackResponse addDocumentReceivedNotification(CallbackRequest callbackRequest) {
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
 
-        ResponseCaseData responseCaseData = this.getResponseCaseData(caseDetails)
+        ResponseCaseData responseCaseData = getResponseCaseData(caseDetails)
                 .boEmailDocsReceivedNotificationRequested(caseDetails.getData().getBoEmailDocsReceivedNotification())
                 .build();
 
@@ -60,7 +60,7 @@ public class CallbackResponseTransformer {
     public CallbackResponse addGrandIssuedNotification(CallbackRequest callbackRequest) {
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
 
-        ResponseCaseData responseCaseData = this.getResponseCaseData(caseDetails)
+        ResponseCaseData responseCaseData = getResponseCaseData(caseDetails)
                 .boEmailGrantIssuedNotificationRequested(caseDetails.getData().getBoEmailGrantIssuedNotification())
                 .build();
 
@@ -73,7 +73,7 @@ public class CallbackResponseTransformer {
         String applicationFee = transformMoneyGBPToString(feeServiceResponse.getApplicationFee());
         String totalFee = transformMoneyGBPToString(feeServiceResponse.getTotal());
 
-        ResponseCaseData responseCaseData = this.getResponseCaseData(callbackRequest.getCaseDetails())
+        ResponseCaseData responseCaseData = getResponseCaseData(callbackRequest.getCaseDetails())
                 .feeForNonUkCopies(feeForNonUkCopies)
                 .feeForUkCopies(feeForUkCopies)
                 .applicationFee(applicationFee)
@@ -208,5 +208,5 @@ public class CallbackResponseTransformer {
                 .map(String::valueOf)
                 .orElse(null);
     }
-    
+
 }
