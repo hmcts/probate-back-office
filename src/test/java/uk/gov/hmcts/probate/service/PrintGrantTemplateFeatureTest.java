@@ -15,6 +15,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.util.TestUtils;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @RunWith(SpringRunner.class)
@@ -45,8 +46,8 @@ public class PrintGrantTemplateFeatureTest {
     private static final String APPLICANT_FORENAME = "Fred";
     private static final String APPLICANT_SURNAME = "Bloggs";
 
-    private static final Float NET = 2000f;
-    private static final Float GROSS = 4000f;
+    private static final BigDecimal NET = BigDecimal.valueOf(2000);
+    private static final BigDecimal GROSS = BigDecimal.valueOf(4000);
 
     private static final String REGISTRY_LOCATION = "Oxford";
 
@@ -123,7 +124,7 @@ public class PrintGrantTemplateFeatureTest {
 
 
 
-        String expectedPrintTemplate = testUtils.getStringFromFile("PrintTemplateWithMultipleExecutorSOLs.md");
+//        String expectedPrintTemplate = testUtils.getStringFromFile("PrintTemplateWithMultipleExecutorSOLs.md");
 
     }
 
