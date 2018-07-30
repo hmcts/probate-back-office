@@ -1,13 +1,13 @@
 package uk.gov.hmcts.probate.service;
 
-import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
 
 import java.util.Locale;
 
-@Data
 @Component
+@RequiredArgsConstructor
 public class BusinessValidationMessageService {
 
     private final BusinessValidationMessageRetriever businessValidationMessageRetriever;

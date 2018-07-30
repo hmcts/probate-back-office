@@ -11,10 +11,10 @@ import java.math.BigDecimal;
 public class InheritanceTax implements Serializable {
 
     private final String formName;
-    private final Float netValue;
-    private final Float grossValue;
+    private final BigDecimal netValue;
+    private final BigDecimal grossValue;
 
     public BigDecimal getNetValueInPounds() {
-        return BigDecimal.valueOf(netValue).divide(BigDecimal.valueOf(100), 2, BigDecimal.ROUND_HALF_UP);
+        return netValue.divide(BigDecimal.valueOf(100), 2, BigDecimal.ROUND_HALF_UP);
     }
 }

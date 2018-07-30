@@ -5,7 +5,7 @@ import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
-import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutors;
+import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 
 import java.util.ArrayList;
@@ -38,11 +38,11 @@ public class CaseDataTest {
     private AdditionalExecutor additionalExecutor3Mock;
 
     @Mock
-    private AdditionalExecutors additionalExecutors1Mock;
+    private CollectionMember<AdditionalExecutor> additionalExecutors1Mock;
     @Mock
-    private AdditionalExecutors additionalExecutors2Mock;
+    private CollectionMember<AdditionalExecutor> additionalExecutors2Mock;
     @Mock
-    private AdditionalExecutors additionalExecutors3Mock;
+    private CollectionMember<AdditionalExecutor> additionalExecutors3Mock;
 
     @InjectMocks
     private CaseData underTest;
@@ -52,11 +52,11 @@ public class CaseDataTest {
 
         initMocks(this);
 
-        when(additionalExecutors1Mock.getAdditionalExecutor()).thenReturn(additionalExecutor1Mock);
-        when(additionalExecutors2Mock.getAdditionalExecutor()).thenReturn(additionalExecutor2Mock);
-        when(additionalExecutors3Mock.getAdditionalExecutor()).thenReturn(additionalExecutor3Mock);
+        when(additionalExecutors1Mock.getValue()).thenReturn(additionalExecutor1Mock);
+        when(additionalExecutors2Mock.getValue()).thenReturn(additionalExecutor2Mock);
+        when(additionalExecutors3Mock.getValue()).thenReturn(additionalExecutor3Mock);
 
-        List<AdditionalExecutors> additionalExecutorsList = new ArrayList<>();
+        List<CollectionMember<AdditionalExecutor>> additionalExecutorsList = new ArrayList<>();
         additionalExecutorsList.add(additionalExecutors1Mock);
         additionalExecutorsList.add(additionalExecutors2Mock);
         additionalExecutorsList.add(additionalExecutors3Mock);
@@ -79,7 +79,7 @@ public class CaseDataTest {
         when(additionalExecutor3Mock.getAdditionalApplying()).thenReturn("No");
         when(additionalExecutor3Mock.getAdditionalExecReasonNotApplying()).thenReturn(NOT_APPLYING_REASON);
 
-        List<AdditionalExecutors> applying = underTest.getExecutorsApplying();
+        List<CollectionMember<AdditionalExecutor>> applying = underTest.getExecutorsApplying();
 
         assertEquals(3, applying.size());
     }
@@ -92,19 +92,19 @@ public class CaseDataTest {
         when(additionalExecutor3Mock.getAdditionalApplying()).thenReturn("No");
         when(additionalExecutor3Mock.getAdditionalExecReasonNotApplying()).thenReturn(NOT_APPLYING_REASON);
 
-        List<AdditionalExecutors> notApplying = underTest.getExecutorsNotApplying();
+        List<CollectionMember<AdditionalExecutor>> notApplying = underTest.getExecutorsNotApplying();
 
         assertEquals(2, notApplying.size());
     }
 
     @Test
     public void shouldGetExecutorsCombinationsOfNulls() {
-        when(additionalExecutors1Mock.getAdditionalExecutor()).thenReturn(null);
+        when(additionalExecutors1Mock.getValue()).thenReturn(null);
         when(additionalExecutor2Mock.getAdditionalApplying()).thenReturn(null);
         when(additionalExecutor3Mock.getAdditionalApplying()).thenReturn("No");
         when(additionalExecutor3Mock.getAdditionalExecReasonNotApplying()).thenReturn(NOT_APPLYING_REASON);
 
-        List<AdditionalExecutors> notApplying = underTest.getExecutorsNotApplying();
+        List<CollectionMember<AdditionalExecutor>> notApplying = underTest.getExecutorsNotApplying();
 
         assertEquals(1, notApplying.size());
     }
@@ -132,7 +132,7 @@ public class CaseDataTest {
     }
 
     private CaseData getCaseDataWhenPrimaryExecutorNotApplying() {
-        List<AdditionalExecutors> additionalExecutorsList = new ArrayList<>();
+        List<CollectionMember<AdditionalExecutor>> additionalExecutorsList = new ArrayList<>();
         additionalExecutorsList.add(additionalExecutors1Mock);
         additionalExecutorsList.add(additionalExecutors2Mock);
         additionalExecutorsList.add(additionalExecutors3Mock);

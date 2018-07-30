@@ -7,7 +7,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
-import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutors;
+import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
@@ -20,6 +20,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -39,8 +40,8 @@ public class CCDDataTransformerTest {
     private static final LocalDate DOD = LocalDate.parse("2017-12-31", dateTimeFormatter);
 
     private static final String IHT_FORM_ID = "IHT207";
-    private static final Float IHT_GROSS = 10000f;
-    private static final Float IHT_NET = 9000f;
+    private static final BigDecimal IHT_GROSS = BigDecimal.valueOf(10000f);
+    private static final BigDecimal IHT_NET = BigDecimal.valueOf(9000f);
     private static final BigDecimal TOTAL_FEE = new BigDecimal(155.00);
     private static final BigDecimal APPLICATION_FEE = new BigDecimal(200.00);
     private static final BigDecimal FEE_UK_COPIES = new BigDecimal(0.50);
@@ -90,13 +91,13 @@ public class CCDDataTransformerTest {
 
         when(caseDetailsMock.getLastModified()).thenReturn(LAST_MODIFIED_STR);
 
-        List<AdditionalExecutors> additionalExecutors = new ArrayList<>();
-        AdditionalExecutors additionalExecutors1 = mock(AdditionalExecutors.class);
-        AdditionalExecutors additionalExecutors2 = mock(AdditionalExecutors.class);
+        List<CollectionMember<AdditionalExecutor>> additionalExecutors = new ArrayList<>();
+        CollectionMember<AdditionalExecutor> additionalExecutors1 = mock(CollectionMember.class);
+        CollectionMember<AdditionalExecutor> additionalExecutors2 = mock(CollectionMember.class);
         AdditionalExecutor additionalExecutor1 = mock(AdditionalExecutor.class);
         AdditionalExecutor additionalExecutor2 = mock(AdditionalExecutor.class);
-        when(additionalExecutors1.getAdditionalExecutor()).thenReturn(additionalExecutor1);
-        when(additionalExecutors2.getAdditionalExecutor()).thenReturn(additionalExecutor2);
+        when(additionalExecutors1.getValue()).thenReturn(additionalExecutor1);
+        when(additionalExecutors2.getValue()).thenReturn(additionalExecutor2);
         additionalExecutors.add(additionalExecutors1);
         additionalExecutors.add(additionalExecutors2);
         when(caseDataMock.getSolsAdditionalExecutorList()).thenReturn(additionalExecutors);
@@ -119,7 +120,7 @@ public class CCDDataTransformerTest {
         CCDData ccdData = underTest.transform(callbackRequestMock);
 
         assertAll(ccdData);
-        assertEquals(null, ccdData.getCaseSubmissionDate());
+        assertNull(ccdData.getCaseSubmissionDate());
     }
 
     @Test
@@ -130,7 +131,7 @@ public class CCDDataTransformerTest {
         CCDData ccdData = underTest.transform(callbackRequestMock);
 
         assertAll(ccdData);
-        assertEquals(null, ccdData.getCaseSubmissionDate());
+        assertNull(ccdData.getCaseSubmissionDate());
     }
 
     @Test
@@ -141,7 +142,7 @@ public class CCDDataTransformerTest {
         CCDData ccdData = underTest.transform(callbackRequestMock);
 
         assertAll(ccdData);
-        assertEquals(null, ccdData.getCaseSubmissionDate());
+        assertNull(ccdData.getCaseSubmissionDate());
     }
 
     @Test
@@ -177,7 +178,6 @@ public class CCDDataTransformerTest {
 
     @Test
     public void shouldConvertRequestToDataBeanWithFeeDataMissing() {
-        String[] lmDate = {null, null, null, null, null, null, null, null};
         when(caseDataMock.getFeeForUkCopies()).thenReturn(null);
         when(caseDataMock.getFeeForNonUkCopies()).thenReturn(null);
 
@@ -265,7 +265,7 @@ public class CCDDataTransformerTest {
         assertEquals(IHT_FORM_ID, ccdData.getIht().getFormName());
         assertEquals(IHT_GROSS, ccdData.getIht().getGrossValue());
         assertEquals(IHT_NET, ccdData.getIht().getNetValue());
-        assertEquals(true, ccdData.getExecutors().get(2).isApplying());
+        assertTrue(ccdData.getExecutors().get(2).isApplying());
         assertEquals(TOTAL_FEE.floatValue(), ccdData.getFee().getAmount().floatValue(), 0.01);
         assertEquals(APPLICATION_FEE.floatValue(), ccdData.getFee().getApplicationFee().floatValue(), 0.01);
     }

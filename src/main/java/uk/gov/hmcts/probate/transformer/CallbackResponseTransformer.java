@@ -7,20 +7,17 @@ import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
-import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutors;
-import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorsApplying;
-import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorsNotApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.AliasName;
-import uk.gov.hmcts.probate.model.ccd.raw.AliasNames;
-import uk.gov.hmcts.probate.model.ccd.raw.CCDDocument;
+import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
+import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.ProbateAliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData.ResponseCaseDataBuilder;
 import uk.gov.hmcts.probate.model.fee.FeeServiceResponse;
-import uk.gov.hmcts.probate.model.template.PDFServiceTemplate;
 
 import java.math.BigDecimal;
 import java.time.format.DateTimeFormatter;
@@ -31,7 +28,9 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
-import static uk.gov.hmcts.probate.model.template.PDFServiceTemplate.LEGAL_STATEMENT;
+import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_DRAFT;
+import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT;
 import static uk.gov.hmcts.probate.transformer.NameParser.FIRST_NAMES;
 import static uk.gov.hmcts.probate.transformer.NameParser.SURNAME;
 
@@ -53,85 +52,85 @@ public class CallbackResponseTransformer {
     private final AdditionalExecutorsListFilter additionalExecutorsListFilter;
 
     public CallbackResponse transformWithConditionalStateChange(CallbackRequest callbackRequest, Optional<String> newState) {
-        CaseData caseData = callbackRequest.getCaseDetails().getData();
-
-        ResponseCaseData responseCaseData = this.getResponseCaseData(caseData)
+        ResponseCaseData responseCaseData = this.getResponseCaseData(callbackRequest.getCaseDetails())
                 .state(newState.orElse(null))
-                .ccdState(callbackRequest.getCaseDetails().getState())
                 .build();
 
         return transform(responseCaseData);
     }
 
     public CallbackResponse addCcdState(CallbackRequest callbackRequest) {
-        CaseData caseData = callbackRequest.getCaseDetails().getData();
-
-        ResponseCaseData responseCaseData = this.getResponseCaseData(caseData)
-                .ccdState(callbackRequest.getCaseDetails().getState())
+        ResponseCaseData responseCaseData = this.getResponseCaseData(callbackRequest.getCaseDetails())
                 .build();
 
         return transform(responseCaseData);
     }
 
     public CallbackResponse addDocumentReceivedNotification(CallbackRequest callbackRequest) {
-        CaseData caseData = callbackRequest.getCaseDetails().getData();
+        CaseDetails caseDetails = callbackRequest.getCaseDetails();
 
-        ResponseCaseData responseCaseData = this.getResponseCaseData(caseData)
-                .ccdState(callbackRequest.getCaseDetails().getState())
-                .boEmailDocsReceivedNotificationRequested(caseData.getBoEmailDocsReceivedNotification())
+        ResponseCaseData responseCaseData = this.getResponseCaseData(caseDetails)
+                .boEmailDocsReceivedNotificationRequested(caseDetails.getData().getBoEmailDocsReceivedNotification())
                 .build();
 
         return transform(responseCaseData);
     }
 
     public CallbackResponse addGrandIssuedNotification(CallbackRequest callbackRequest) {
-        CaseData caseData = callbackRequest.getCaseDetails().getData();
+        CaseDetails caseDetails = callbackRequest.getCaseDetails();
 
-        ResponseCaseData responseCaseData = this.getResponseCaseData(caseData)
-                .ccdState(callbackRequest.getCaseDetails().getState())
-                .boEmailGrantIssuedNotificationRequested(caseData.getBoEmailGrantIssuedNotification())
+        ResponseCaseData responseCaseData = this.getResponseCaseData(caseDetails)
+                .boEmailGrantIssuedNotificationRequested(caseDetails.getData().getBoEmailGrantIssuedNotification())
                 .build();
 
         return transform(responseCaseData);
     }
 
     public CallbackResponse transform(CallbackRequest callbackRequest, FeeServiceResponse feeServiceResponse) {
-        CaseData caseData = callbackRequest.getCaseDetails().getData();
-
         String feeForNonUkCopies = transformMoneyGBPToString(feeServiceResponse.getFeeForNonUkCopies());
         String feeForUkCopies = transformMoneyGBPToString(feeServiceResponse.getFeeForUkCopies());
         String applicationFee = transformMoneyGBPToString(feeServiceResponse.getApplicationFee());
         String totalFee = transformMoneyGBPToString(feeServiceResponse.getTotal());
 
-        ResponseCaseData responseCaseData = this.getResponseCaseData(caseData)
+        ResponseCaseData responseCaseData = this.getResponseCaseData(callbackRequest.getCaseDetails())
                 .feeForNonUkCopies(feeForNonUkCopies)
                 .feeForUkCopies(feeForUkCopies)
                 .applicationFee(applicationFee)
                 .totalFee(totalFee)
-                .ccdState(callbackRequest.getCaseDetails().getState())
                 .build();
 
         return transform(responseCaseData);
     }
 
-    public CallbackResponse transform(CallbackRequest callbackRequest, PDFServiceTemplate pdfServiceTemplate, CCDDocument ccdDocument) {
-        CaseData caseData = callbackRequest.getCaseDetails().getData();
-
-        ResponseCaseDataBuilder responseCaseData = this.getResponseCaseData(caseData);
-        responseCaseData.solsSOTNeedToUpdate(null);
-        responseCaseData.ccdState(callbackRequest.getCaseDetails().getState());
-        if (LEGAL_STATEMENT.equals(pdfServiceTemplate)) {
-            responseCaseData.solsLegalStatementDocument(ccdDocument);
+    public CallbackResponse transform(CallbackRequest callbackRequest, Document document) {
+        if (DIGITAL_GRANT_DRAFT.equals(document.getDocumentType()) || DIGITAL_GRANT.equals(document.getDocumentType())) {
+            callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated()
+                    .add(new CollectionMember<>(null, document));
         }
 
-        return transform(responseCaseData.build());
+        ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails());
+        responseCaseDataBuilder.solsSOTNeedToUpdate(null);
+
+        if (LEGAL_STATEMENT.equals(document.getDocumentType())) {
+            responseCaseDataBuilder.solsLegalStatementDocument(document.getDocumentLink());
+        }
+
+        return transform(responseCaseDataBuilder.build());
+    }
+
+    public CallbackResponse transform(CallbackRequest callbackRequest) {
+        ResponseCaseData responseCaseData = getResponseCaseData(callbackRequest.getCaseDetails())
+                .build();
+
+        return transform(responseCaseData);
     }
 
     private CallbackResponse transform(ResponseCaseData responseCaseData) {
         return CallbackResponse.builder().data(responseCaseData).build();
     }
 
-    private ResponseCaseDataBuilder getResponseCaseData(CaseData caseData) {
+    private ResponseCaseDataBuilder getResponseCaseData(CaseDetails caseDetails) {
+        CaseData caseData = caseDetails.getData();
 
         return ResponseCaseData.builder()
                 .applicationType(Optional.ofNullable(caseData.getApplicationType()).orElse(DEFAULT_APPLICATION_TYPE))
@@ -173,8 +172,8 @@ public class CallbackResponseTransformer {
 
                 .solsSOTNeedToUpdate(caseData.getSolsSOTNeedToUpdate())
 
-                .ihtGrossValue(transformToString(caseData.getIhtGrossValue()))
-                .ihtNetValue(transformToString(caseData.getIhtNetValue()))
+                .ihtGrossValue(caseData.getIhtGrossValue())
+                .ihtNetValue(caseData.getIhtNetValue())
                 .deceasedDomicileInEngWales(caseData.getDeceasedDomicileInEngWales())
 
                 .solsPaymentMethods(caseData.getSolsPaymentMethods())
@@ -195,7 +194,20 @@ public class CallbackResponseTransformer {
                 .boEmailDocsReceivedNotification(caseData.getBoEmailDocsReceivedNotification())
                 .boEmailGrantIssuedNotification(caseData.getBoEmailGrantIssuedNotification())
 
-                .boCaseStopReasonList(caseData.getBoCaseStopReasonList());
+                .boCaseStopReasonList(caseData.getBoCaseStopReasonList())
+
+                .boDeceasedTitle(caseData.getBoDeceasedTitle())
+                .boDeceasedHonours(caseData.getBoDeceasedHonours())
+
+                .ccdState(caseDetails.getState())
+                .ihtReferenceNumber(caseData.getIhtReferenceNumber())
+                .ihtFormCompletedOnline(caseData.getIhtFormCompletedOnline())
+
+                .boWillMessage(caseData.getBoWillMessage())
+                .boExecutorLimitation(caseData.getBoExecutorLimitation())
+                .boAdminClauseLimitation(caseData.getBoAdminClauseLimitation())
+                .boLimitationText(caseData.getBoLimitationText())
+                .probateDocumentsGenerated(caseData.getProbateDocumentsGenerated());
     }
 
     private String getPaymentReference(CaseData caseData) {
@@ -220,66 +232,59 @@ public class CallbackResponseTransformer {
                 .orElse(null);
     }
 
-    private String transformToString(Float value) {
-        return Optional.ofNullable(value)
-                .map(Float::intValue)
-                .map(String::valueOf)
-                .orElse(null);
-    }
-
-    private List<AdditionalExecutorsApplying> transformApplyingExecLists(CaseData caseData ) {
-        List<AdditionalExecutors> applyingList =  additionalExecutorsListFilter.filter(
-                    caseData.getSolsAdditionalExecutorList(),
-                    caseData);
+    private List<CollectionMember<AdditionalExecutorApplying>> transformApplyingExecLists(CaseData caseData) {
+        List<CollectionMember<AdditionalExecutor>> applyingList = additionalExecutorsListFilter.filter(
+                caseData.getSolsAdditionalExecutorList(),
+                caseData);
 
         return applyingList.stream().map(this::mapToAdditionalExecutorsApplying).collect(Collectors.toList());
     }
 
-    private AdditionalExecutorsApplying mapToAdditionalExecutorsApplying(AdditionalExecutors applyingList) {
-        Map<String, String> namesMap = nameParser.parse(applyingList.getAdditionalExecutor().getAdditionalExecAliasNameOnWill());
-        return AdditionalExecutorsApplying.builder()
-                .additionalExecutorApplying(AdditionalExecutorApplying.builder()
-                        .applyingExecutorFirstName(applyingList.getAdditionalExecutor().getAdditionalExecForenames())
-                        .applyingExecutorSurname(applyingList.getAdditionalExecutor().getAdditionalExecLastname())
-                        .applyingExecutorPhoneNumber(null)
-                        .applyingExecutorEmail(null)
-                        .applyingExecutorAddress(applyingList.getAdditionalExecutor().getAdditionalExecAddress())
-                        .aliasName(ProbateAliasName.builder()
-                                .lastName(namesMap.get(SURNAME))
-                                .forenames(namesMap.get(FIRST_NAMES))
-                                .build())
+    private CollectionMember<AdditionalExecutorApplying> mapToAdditionalExecutorsApplying(CollectionMember<AdditionalExecutor> applyingList) {
+        Map<String, String> namesMap = nameParser.parse(applyingList.getValue().getAdditionalExecAliasNameOnWill());
+        AdditionalExecutorApplying additionalExecutorApplying = AdditionalExecutorApplying.builder()
+                .applyingExecutorFirstName(applyingList.getValue().getAdditionalExecForenames())
+                .applyingExecutorSurname(applyingList.getValue().getAdditionalExecLastname())
+                .applyingExecutorPhoneNumber(null)
+                .applyingExecutorEmail(null)
+                .applyingExecutorAddress(applyingList.getValue().getAdditionalExecAddress())
+                .aliasName(ProbateAliasName.builder()
+                        .lastName(namesMap.get(SURNAME))
+                        .forenames(namesMap.get(FIRST_NAMES))
                         .build())
                 .build();
+
+        return new CollectionMember<>(null, additionalExecutorApplying);
     }
 
-    private List<AdditionalExecutorsNotApplying> transformNotApplyingExecLists(CaseData caseData ) {
-        List<AdditionalExecutors> notApplyingList =  additionalExecutorsListFilter.filter(
+    private List<CollectionMember<AdditionalExecutorNotApplying>> transformNotApplyingExecLists(CaseData caseData) {
+        List<CollectionMember<AdditionalExecutor>> notApplyingList = additionalExecutorsListFilter.filter(
                 caseData.getSolsAdditionalExecutorList(),
                 caseData);
 
         return notApplyingList.stream().map(this::mapToAdditionalExecutorNotApplying).collect(Collectors.toList());
     }
 
-    private AdditionalExecutorsNotApplying mapToAdditionalExecutorNotApplying(AdditionalExecutors notApplyingList) {
-        Map<String, String> namesMap = nameParser.parse(notApplyingList.getAdditionalExecutor().getAdditionalExecAliasNameOnWill());
-        return AdditionalExecutorsNotApplying.builder()
-                .additionalExecutorNotApplying(AdditionalExecutorNotApplying.builder()
-                        .notApplyingExecutorFirstName(notApplyingList.getAdditionalExecutor().getAdditionalExecForenames())
-                        .notApplyingExecutorSurname(notApplyingList.getAdditionalExecutor().getAdditionalExecLastname())
-                        .notApplyingExecutorNameOnWill(notApplyingList.getAdditionalExecutor().getAdditionalExecAliasNameOnWill())
-                        .notApplyingExecutorNameDifferenceComment(null)
-                        .notApplyingExecutorReason(notApplyingList.getAdditionalExecutor().getAdditionalExecReasonNotApplying())
-                        .notApplyingExecutorNotified(null)
-                        .notApplyingExecAddress(notApplyingList.getAdditionalExecutor().getAdditionalExecAddress())
-                        .aliasName(ProbateAliasName.builder()
-                                .lastName(namesMap.get(SURNAME))
-                                .forenames(namesMap.get(FIRST_NAMES))
-                                .build())
+    private CollectionMember<AdditionalExecutorNotApplying> mapToAdditionalExecutorNotApplying(CollectionMember<AdditionalExecutor> notApplyingList) {
+        Map<String, String> namesMap = nameParser.parse(notApplyingList.getValue().getAdditionalExecAliasNameOnWill());
+        AdditionalExecutorNotApplying additionalExecutorNotApplying = AdditionalExecutorNotApplying.builder()
+                .notApplyingExecutorFirstName(notApplyingList.getValue().getAdditionalExecForenames())
+                .notApplyingExecutorSurname(notApplyingList.getValue().getAdditionalExecLastname())
+                .notApplyingExecutorNameOnWill(notApplyingList.getValue().getAdditionalExecAliasNameOnWill())
+                .notApplyingExecutorNameDifferenceComment(null)
+                .notApplyingExecutorReason(notApplyingList.getValue().getAdditionalExecReasonNotApplying())
+                .notApplyingExecutorNotified(null)
+                .notApplyingExecAddress(notApplyingList.getValue().getAdditionalExecAddress())
+                .aliasName(ProbateAliasName.builder()
+                        .lastName(namesMap.get(SURNAME))
+                        .forenames(namesMap.get(FIRST_NAMES))
                         .build())
                 .build();
+
+        return new CollectionMember<>(null, additionalExecutorNotApplying);
     }
 
-    private List<AliasNames> transformDeceasedAliasNameLists(List<AliasNames> aliasNamesList) {
+    private List<CollectionMember<AliasName>> transformDeceasedAliasNameLists(List<CollectionMember<AliasName>> aliasNamesList) {
         if (aliasNamesList == null) {
             return Collections.emptyList();
         }
@@ -288,20 +293,20 @@ public class CallbackResponseTransformer {
                 .collect(Collectors.toList());
     }
 
-    private AliasNames parseDeceasedAliasList(AliasNames aliasNames) {
-        Map<String, String> namesMap = nameParser.parse(aliasNames.getAliasName().getSolsAliasname());
-        return AliasNames.builder()
-                .aliasName(AliasName.builder()
-                        .solsAliasname(aliasNames.getAliasName().getSolsAliasname())
-                        .probateAliasName(ProbateAliasName.builder()
-                                .lastName(namesMap.get(SURNAME))
-                                .forenames(namesMap.get(FIRST_NAMES))
-                                .build())
+    private CollectionMember<AliasName> parseDeceasedAliasList(CollectionMember<AliasName> aliasNames) {
+        Map<String, String> namesMap = nameParser.parse(aliasNames.getValue().getSolsAliasname());
+        AliasName aliasName = AliasName.builder()
+                .solsAliasname(aliasNames.getValue().getSolsAliasname())
+                .probateAliasName(ProbateAliasName.builder()
+                        .lastName(namesMap.get(SURNAME))
+                        .forenames(namesMap.get(FIRST_NAMES))
                         .build())
                 .build();
+
+        return new CollectionMember<>(null, aliasName);
     }
 
-    private List<AdditionalExecutors> transformAdditionalExecutorsAliasNameLists(List<AdditionalExecutors> aliasNamesList) {
+    private List<CollectionMember<AdditionalExecutor>> transformAdditionalExecutorsAliasNameLists(List<CollectionMember<AdditionalExecutor>> aliasNamesList) {
         if (aliasNamesList == null) {
             return Collections.emptyList();
         }
@@ -310,25 +315,24 @@ public class CallbackResponseTransformer {
                 .collect(Collectors.toList());
     }
 
-    private AdditionalExecutors parseAdditionalExecutorsList(AdditionalExecutors additionalExecutors) {
-        Map<String, String> namesMap = nameParser.parse(additionalExecutors.getAdditionalExecutor().getAdditionalExecAliasNameOnWill());
-        return AdditionalExecutors.builder()
-                .additionalExecutor(AdditionalExecutor.builder()
-                        .aliasName(ProbateAliasName.builder()
-                                .forenames(namesMap.get(FIRST_NAMES))
-                                .lastName(namesMap.get(SURNAME))
-                                .build())
-                        .additionalApplying(additionalExecutors.getAdditionalExecutor().getAdditionalApplying())
-                        .additionalExecAddress(additionalExecutors.getAdditionalExecutor().getAdditionalExecAddress())
-                        .additionalExecAliasNameOnWill(additionalExecutors.getAdditionalExecutor().getAdditionalExecAliasNameOnWill())
-                        .additionalExecForenames(additionalExecutors.getAdditionalExecutor().getAdditionalExecForenames())
-                        .additionalExecLastname(additionalExecutors.getAdditionalExecutor().getAdditionalExecLastname())
-                        .additionalExecNameOnWill(additionalExecutors.getAdditionalExecutor().getAdditionalExecNameOnWill())
-                        .additionalExecReasonNotApplying(additionalExecutors.getAdditionalExecutor().getAdditionalExecReasonNotApplying())
+    private CollectionMember<AdditionalExecutor> parseAdditionalExecutorsList(CollectionMember<AdditionalExecutor> additionalExecutors) {
+        Map<String, String> namesMap = nameParser.parse(additionalExecutors.getValue().getAdditionalExecAliasNameOnWill());
+        AdditionalExecutor additionalExecutor = AdditionalExecutor.builder()
+                .aliasName(ProbateAliasName.builder()
+                        .forenames(namesMap.get(FIRST_NAMES))
+                        .lastName(namesMap.get(SURNAME))
                         .build())
+                .additionalApplying(additionalExecutors.getValue().getAdditionalApplying())
+                .additionalExecAddress(additionalExecutors.getValue().getAdditionalExecAddress())
+                .additionalExecAliasNameOnWill(additionalExecutors.getValue().getAdditionalExecAliasNameOnWill())
+                .additionalExecForenames(additionalExecutors.getValue().getAdditionalExecForenames())
+                .additionalExecLastname(additionalExecutors.getValue().getAdditionalExecLastname())
+                .additionalExecNameOnWill(additionalExecutors.getValue().getAdditionalExecNameOnWill())
+                .additionalExecReasonNotApplying(additionalExecutors.getValue().getAdditionalExecReasonNotApplying())
                 .build();
-    }
 
+        return new CollectionMember<>(null, additionalExecutor);
+    }
 
     private String transformPrimaryApplicantFirstName(String primaryApplicantAlias) {
         Map<String, String> namesMap = nameParser.parse(primaryApplicantAlias);
@@ -345,5 +349,4 @@ public class CallbackResponseTransformer {
         }
         return namesMap.get(SURNAME);
     }
-
 }

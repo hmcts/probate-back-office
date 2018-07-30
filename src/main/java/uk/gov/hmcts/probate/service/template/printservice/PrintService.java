@@ -1,8 +1,6 @@
 package uk.gov.hmcts.probate.service.template.printservice;
 
-import lombok.Data;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.insights.AppInsights;
@@ -15,10 +13,9 @@ import java.util.List;
 
 import static uk.gov.hmcts.probate.insights.AppInsightsEvent.REQUEST_SENT;
 
-@Data
 @Service
+@RequiredArgsConstructor
 public class PrintService {
-    private static final Logger log = LoggerFactory.getLogger(PrintService.class);
 
     private static final String TEMPLATE_CASE_DETAILS_SOL = "caseDetailsSOL.html";
     private static final String TEMPLATE_CASE_DETAILS_PA = "caseDetailsPA.html";

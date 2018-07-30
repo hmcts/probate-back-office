@@ -14,7 +14,7 @@ plugins {
   id 'application'
   id 'checkstyle'
   id 'io.spring.dependency-management' version '1.0.3.RELEASE'
-  id 'org.springframework.boot' version '1.5.13.RELEASE'
+  id 'org.springframework.boot' version '1.5.14.RELEASE'
   id 'org.owasp.dependencycheck' version '3.2.1'
   id 'com.github.ben-manes.versions' version '0.15.0'
   id 'com.gorylenko.gradle-git-properties' version '1.4.21'
@@ -151,7 +151,7 @@ gitProperties {
   dateFormatTimeZone = "GMT"
 }
 
-def springBootVersion = '1.5.13.RELEASE'
+def springBootVersion = '1.5.14.RELEASE'
 def reformsJavaLoggingVersion = '2.0.2'
 
 jacocoTestReport {
@@ -211,6 +211,7 @@ dependencies {
   testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: springBootVersion
   testCompile group: 'org.pdfbox', name: 'com.springsource.org.pdfbox', version: '0.7.3'
   testCompile group: 'org.springframework.security', name: 'spring-security-test', version: '4.2.5.RELEASE'
+  testCompile group: 'com.mitchellbosecke', name: 'pebble', version: '2.4.0'
 
   testSmokeCompile group: 'io.rest-assured', name: 'rest-assured', version: '3.0.7'
   testSmokeCompile sourceSets.main.runtimeClasspath
