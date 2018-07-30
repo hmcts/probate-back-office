@@ -1,6 +1,6 @@
 package uk.gov.hmcts.probate.health;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,23 +9,17 @@ import uk.gov.hmcts.probate.config.FeeServiceConfiguration;
 import uk.gov.hmcts.probate.config.PDFServiceConfiguration;
 import uk.gov.service.notify.NotificationClient;
 
+@RequiredArgsConstructor
 @Configuration
 public class HealthConfiguration {
 
     private static final String HEALTH_ENDPOINT = "/health";
     private static final String STATUS_ENDPOINT = "/_status";
 
-    @Autowired
-    private RestTemplate restTemplate;
-
-    @Autowired
-    private PDFServiceConfiguration pdfServiceConfiguration;
-
-    @Autowired
-    private FeeServiceConfiguration feeServiceConfiguration;
-
-    @Autowired
-    private NotificationClient notificationClient;
+    private final RestTemplate restTemplate;
+    private final PDFServiceConfiguration pdfServiceConfiguration;
+    private final FeeServiceConfiguration feeServiceConfiguration;
+    private final NotificationClient notificationClient;
 
     @Value("${idam.service.host}")
     private String idamServiceHost;
