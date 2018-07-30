@@ -13,15 +13,9 @@ import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.ccd.Executor;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
-import uk.gov.hmcts.probate.model.ccd.raw.response.AfterSubmitCallbackResponse;
 import uk.gov.hmcts.probate.util.TestUtils;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Collections;
-
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -29,6 +23,8 @@ import static org.junit.Assert.assertThat;
 public class PrintGrantTemplateFeatureTest {
 
     private final TestUtils testUtils = new TestUtils();
+
+    private static final String DIGITAL_GRANT_DRAFT = "digitalGrantDraft";
 
     private static final String REASON_FOR_NOT_APPLYING_POWER_RESERVED = "PowerReserved";
     private static final String REASON_FOR_NOT_APPLYING_DIED_BEFORE = "DiedBefore";
@@ -44,7 +40,7 @@ public class PrintGrantTemplateFeatureTest {
     private static final String DECEASED_TITLE = "Lord";
     private static final String ALIAS_NAME = "John Doe";
     private static final String ALIAS_NAME_SCEOND = "John Smith";
-    private static final String DECEASED_ALIAS_NAMES_LIST = Collections.list(ALIAS_NAME_SCEOND, ALIAS_NAME);
+  //  private static final String DECEASED_ALIAS_NAMES_LIST = Collections.list(ALIAS_NAME_SCEOND, ALIAS_NAME);
 
     private static final String APPLICANT_FORENAME = "Fred";
     private static final String APPLICANT_SURNAME = "Bloggs";
@@ -80,7 +76,7 @@ public class PrintGrantTemplateFeatureTest {
                 .deceasedForenames(DECEASED_FIRSTNAME)
                 .deceasedSurname(DECEASED_LASTNAME)
                 .deceasedAddress(createAddress())
-                .solsDeceasedAliasNamesList(DECEASED_ALIAS_NAMES_LIST)
+               // .solsDeceasedAliasNamesList(DECEASED_ALIAS_NAMES_LIST)
                 .deceasedDateOfDeath(DOD)
                 .boDeceasedTitle(DECEASED_TITLE)
                 .boDeceasedHonours(DECEASED_HONOURS)
@@ -101,11 +97,10 @@ public class PrintGrantTemplateFeatureTest {
         CaseData caseData = caseDataBuilder
                 .applicationType(ApplicationType.SOLICITOR)
                 .build();
-        //AfterSubmitCallbackResponse stopConfirmation = confirmationResponseService.getNextStepsConfirmation(ccdData);
+
 
         String expectedPrintTemplate = testUtils.getStringFromFile("PrintTemplateSingleExecutorSOLs.md");
 
-       // assertThat(stopConfirmation.getConfirmationBody(), is(expectedPrintTemplate));
     }
 
     @Test
@@ -114,25 +109,22 @@ public class PrintGrantTemplateFeatureTest {
                 .applicationType(ApplicationType.PERSONAL)
                 .build();
 
-      //  AfterSubmitCallbackResponse stopConfirmation = confirmationResponseService.getNextStepsConfirmation(ccdData);
-
         String expectedPrintTemplate = testUtils.getStringFromFile("PrintTemplateSingleExecutorPA.md");
 
-      //  assertThat(stopConfirmation.getConfirmationBody(), is(expectedPrintTemplate));
+
     }
 
     @Test
     public void shouldGenerateCorrectTemplateMultipleExecutorsSOls() throws Exception {
         CaseData caseData = caseDataBuilder
                 .applicationType(ApplicationType.SOLICITOR)
-                .executorsApplying(createApplyingExecutors())
+               // .executorsApplying(createApplyingExecutors())
                 .build();
 
-       // AfterSubmitCallbackResponse stopConfirmation = confirmationResponseService.getNextStepsConfirmation(ccdData);
+
 
         String expectedPrintTemplate = testUtils.getStringFromFile("PrintTemplateWithMultipleExecutorSOLs.md");
 
-      //  assertThat(stopConfirmation.getConfirmationBody(), is(expectedPrintTemplate));
     }
 
     @Test
@@ -145,25 +137,25 @@ public class PrintGrantTemplateFeatureTest {
                 .boLimitationText(LIMITATION_TEXT)
                 .build();
 
-      //  AfterSubmitCallbackResponse stopConfirmation = confirmationResponseService.getNextStepsConfirmation(ccdData);
+
 
         String expectedPrintTemplate = testUtils.getStringFromFile("PrintTemplateWithGrantInfoSOLs.md");
 
-      //  assertThat(stopConfirmation.getConfirmationBody(), is(expectedPrintTemplate));
+
     }
 
     @Test
     public void shouldGenerateCorrectTemplateWithPowerReservedMultipleSOls() throws Exception {
         CaseData caseData = caseDataBuilder
                 .applicationType(ApplicationType.SOLICITOR)
-                .executorsNotApplying(createNotApplyingExecutors())
+              //  .executorsNotApplying(createNotApplyingExecutors())
                 .build();
 
-      //  AfterSubmitCallbackResponse stopConfirmation = confirmationResponseService.getNextStepsConfirmation(ccdData);
+
 
         String expectedPrintTemplate = testUtils.getStringFromFile("PrintTemplateWithPowerReservedMultipleSOLs.md");
 
-      //  assertThat(stopConfirmation.getConfirmationBody(), is(expectedPrintTemplate));
+
     }
 
     @Test
@@ -171,14 +163,12 @@ public class PrintGrantTemplateFeatureTest {
 
         CaseData caseData = caseDataBuilder
                 .applicationType(ApplicationType.SOLICITOR)
-                .executorsNotApplying(createNotApplyingExecutors())
+               // .executorsNotApplying(createNotApplyingExecutors())
                 .build();
 
-       // AfterSubmitCallbackResponse stopConfirmation = confirmationResponseService.getNextStepsConfirmation(ccdData);
 
         String expectedPrintTemplate = testUtils.getStringFromFile("PrintTemplateWithPowerReservedSingleSOLs.md");
 
-      //  assertThat(stopConfirmation.getConfirmationBody(), is(expectedPrintTemplate));
     }
 
     private Executor createNotApplyingExecutors() {

@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <title th:remove="all" th:text="${title}">Grant of Probate</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <style type="text/css">
+
+        body {
+            font-family: "Times New Roman", sans-serif;
+        }
+
+        .table-content {
+            display: block;
+            padding-top: 8px;
+        }
+
+        .legal-header {
+            font-size: 1.5em;
+            text-align: center;
+        }
+
+        .legal-subheader {
+            font-size: 1.2em;
+            text-align: center;
+        }
+
+        .legal-msg {
+            font-size: 0.8em;
+            text-align: center;
+        }
+
+        .legal-body {
+            font-size: 0.9em;
+            text-align: left;
+        }
+
+        .camelCase {
+            text-transform: capitalize;
+        }
+
+        .upperCase {
+            text-transform: uppercase;
+        }
+
+        .circle {
+            border-radius: 50%;
+            border: 1px solid black;
+            height: 200px;
+            width: 200px;
+            float: right;
+        }
+
+        .indent {
+            padding-left: 55px;
+        }
+
+        .andGap {
+            margin-left: -55px;
+            margin-right: 30px;
+        }
+
+        #watermark {
+            height: 600px;
+            width: 600px;
+            background-position: center;
+            z-index: -1;
+            position: absolute;
+            overflow: hidden;
+            top: 30%;
+            text-align: center;
+            color: #ff8080;
+            margin-left: 100px;
+        }
+
+    </style>
+</head>
+<body>
+<div id="watermark" style = "font-size: 5.0em">
+    DRAFT COPY -
+    <br /> NOT FOR CIRCULATION
+</div>
+<table>
+    <thead>
+    <tr>
+        <td colspan="1" class="sequence">
+        </td>
+    </tr>
+    </thead>
+    <tbody class="table-content">
+    <tr>
+        <td colspan="1" class="legal-msg">
+            <u>COPIES OF THIS GRANT ARE NOT VALID UNLESS<br/>
+                THEY BEAR THE IMPRESSED SEAL OF THE COURT<br/>
+            </u>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="1" class="legal-header">
+            <Strong>IN THE HIGH COURT OF JUSTICE</Strong><br/>
+        </td>
+
+    </tr>
+    <tr>
+        <td colspan="1" class="legal-subheader">
+            The District Probate Registry at {{case_details.case_data.registryLocation}}<br/>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="1" class="legal-body">
+            <p>BE IT KNOWN that <span class="upperCase"> <strong> {% if case_details.case_data.boDeceasedTitle != null and case_details.case_data.boDeceasedTitle != "" %}{{ case_details.case_data.boDeceasedTitle }}{% endif %} {{case_details.case_data.deceasedForenames}} {{case_details.case_data.deceasedSurname}} {% if case_details.case_data.boDeceasedHonours != null and case_details.case_data.boDeceasedHonours != "" %}{{ case_details.case_data.boDeceasedHonours }}{% endif %}</strong></span>
+                <br/>
+                {% set count = 1 %} {% for alias in case_details.case_data.solsDeceasedAliasNamesList %}
+                Otherwise
+                {% if alias.value %}
+                {{ alias.value }},
+                {% endif %}
+                {% set applyingCount = applyingCount + 1 %}{% endfor %}
+                <br/>of <strong><span class="camelCase">{% if case_details.case_data.deceasedAddress.AddressLine1 != null and case_details.case_data.deceasedAddress.AddressLine1 != "" %}{{ case_details.case_data.deceasedAddress.AddressLine1 }},{% endif %}
+                    {% if case_details.case_data.deceasedAddress.AddressLine2 != null and case_details.case_data.deceasedAddress.AddressLine2 != "" %}{{ case_details.case_data.deceasedAddress.AddressLine2 }},{% endif %}
+                    {% if case_details.case_data.deceasedAddress.AddressLine3 != null and case_details.case_data.deceasedAddress.AddressLine3 != "" %}{{ case_details.case_data.deceasedAddress.AddressLine3 }},{% endif %}
+                    {% if case_details.case_data.deceasedAddress.PostTown != null and case_details.case_data.deceasedAddress.PostTown != "" %}{{ case_details.case_data.deceasedAddress.PostTown }},{% endif %}
+                    {% if case_details.case_data.deceasedAddress.County != null and case_details.case_data.deceasedAddress.County != "" %}{{ case_details.case_data.deceasedAddress.County }},{% endif %}
+                    {% if case_details.case_data.deceasedAddress.PostCode != null and case_details.case_data.deceasedAddress.PostCode != ""%}{{ case_details.case_data.deceasedAddress.PostCode }},{% endif %}
+                    {% if case_details.case_data.deceasedAddress.Country != null and case_details.case_data.deceasedAddress.Country != ""%}{{ case_details.case_data.deceasedAddress.Country }}{% endif %}</span></strong>
+            </p>
+            <p>died on the <strong>{{case_details.case_data.deceasedDateOfDeath}}</strong>
+                <br/>
+                domiciled in <strong><span class="camelCase">England and Wales</span></strong>
+            </p>
+            <p>AND BE IT FURTHER KNOWN that the last Will and Testament
+                <strong><span class="camelCase">
+                {% if case_details.case_data.boWillMessage != null and case_details.case_data.boWillMessage != ""%}{{ case_details.case_data.boWillMessage }}{% endif %}
+                </span></strong>
+                of the said deceased (a copy of
+                which is annexed) was proved and registered in the High Court of Justice and the Administration of all
+                the estate
+                which by law devolves to and vests in the personal representative of said deceased was granted by the
+                said Court on this date to the Executor
+            </p>
+            <p class="indent">
+                <strong>
+                    <span class="upperCase">{{case_details.case_data.primaryApplicantForenames}} {{case_details.case_data.primaryApplicantSurname}}</span>
+                </strong> of
+                <strong>
+                    <span class="camelCase">{% if case_details.case_data.primaryApplicantAddress.AddressLine1 != null and case_details.case_data.primaryApplicantAddress.AddressLine1 != "" %}{{ case_details.case_data.primaryApplicantAddress.AddressLine1 }},{% endif %}
+                    {% if case_details.case_data.primaryApplicantAddress.AddressLine2 != null and case_details.case_data.primaryApplicantAddress.AddressLine2 != "" %}{{ case_details.case_data.primaryApplicantAddress.AddressLine2 }},{% endif %}
+                    {% if case_details.case_data.primaryApplicantAddress.AddressLine3 != null and case_details.case_data.primaryApplicantAddress.AddressLine3 != "" %}{{ case_details.case_data.primaryApplicantAddress.AddressLine3 }},{% endif %}
+                    {% if case_details.case_data.primaryApplicantAddress.PostTown != null and case_details.case_data.primaryApplicantAddress.PostTown != "" %}{{ case_details.case_data.primaryApplicantAddress.PostTown }},{% endif %}
+                    {% if case_details.case_data.primaryApplicantAddress.County != null and case_details.case_data.primaryApplicantAddress.County != "" %}{{ case_details.case_data.primaryApplicantAddress.County }},{% endif %}
+                    {% if case_details.case_data.primaryApplicantAddress.PostCode != null and case_details.case_data.primaryApplicantAddress.PostCode != ""%}{{ case_details.case_data.primaryApplicantAddress.PostCode }},{% endif %}
+                    {% if case_details.case_data.primaryApplicantAddress.Country != null and case_details.case_data.primaryApplicantAddress.Country != ""%}{{ case_details.case_data.primaryApplicantAddress.Country }}{% endif %}</span>
+                </strong>
+            </p>
+
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p>
+                {% if case_details.case_data.boExecutorLimitation != null and
+                case_details.case_data.boExecutorLimitation != ""%}
+                {{ case_details.case_data.boExecutorLimitation }}{%endif %}
+                <br/>
+                {% if case_details.case_data.boAdminClauseLimitation != null and
+                case_details.case_data.boAdminClauseLimitation != ""%}
+                {{ case_details.case_data.boAdminClauseLimitation}}{% endif %}
+                <br/>
+                {% if case_details.case_data.boLimitationText != null and case_details.case_data.boLimitationText != ""%}
+                {{ case_details.case_data.boLimitationText }}{% endif %}
+
+            </p>
+            <p>It is hereby certified that it appears from information supplied on the application for this grant that
+                the gross value of the said estate in the United Kingdom does not exceed
+                £ {{case_details.case_data.ihtGrossValue}} and the net value of the such estate amounts to
+                £ {{case_details.case_data.ihtNetValue}}
+            </p>
+            <p>
+                DATED the <strong>14th May 2018</strong>
+            </p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p class="circle"></p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p style="text-align:center; font-size: 0.9em;">DISTRICT REGISTRAR/PROBATE OFFICER</p>
+            <p style="font-size: 0.9em;">Extracted {% if
+                case_details.case_data.applicationType != "Personal"%}
+                {{case_details.case_data.solsSolicitorFirmName}} (Ref:
+                {{case_details.case_data.solsSolicitorAppReference}})
+                {{case_details.case_data.solsSolicitorFirmPostcode}} {% else %}personally{% endif %}</p>
+            <p style="text-align:center; font-size: 0.9em;">PROBATE</p>
+            <p style="text-align:right; font-size: 0.9em;"><strong>{{case_details.id}}</strong></p>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
