@@ -15,4 +15,7 @@ public class ProbateAliasName {
 
     @JsonProperty(value = "LastName")
     private final String lastName;
+
+    @JsonProperty(value = "AppearOnGrant")
+    private final String appearOnGrant;
 }

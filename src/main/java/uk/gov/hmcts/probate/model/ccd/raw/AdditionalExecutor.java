@@ -11,7 +11,6 @@ public class AdditionalExecutor {
     private final String additionalExecLastname;
     private final String additionalExecNameOnWill;
     private final String additionalExecAliasNameOnWill;
-    private ProbateAliasName aliasName;
     private final String additionalApplying;
     private final SolsAddress additionalExecAddress;
     private final String additionalExecReasonNotApplying;

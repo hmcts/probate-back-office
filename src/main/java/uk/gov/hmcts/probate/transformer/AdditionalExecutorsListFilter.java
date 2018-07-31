@@ -14,14 +14,14 @@ public class AdditionalExecutorsListFilter {
 
     private static final String NO = "No";
 
-    public List<CollectionMember<AdditionalExecutor>> filter(List<CollectionMember<AdditionalExecutor>> additionalExecutors, CaseData caseData) {
+    public List<CollectionMember<AdditionalExecutor>> filter(List<CollectionMember<AdditionalExecutor>> additionalExecutors, CaseData caseData, String applying) {
 
         if (caseData.getOtherExecutorExists().equalsIgnoreCase(NO)) {
             return Collections.emptyList();
         }
 
         return additionalExecutors.stream()
-                .filter(additionalExecutor -> additionalExecutor.getValue().getAdditionalApplying().equalsIgnoreCase(caseData.getPrimaryApplicantIsApplying()))
+                .filter(additionalExecutor -> additionalExecutor.getValue().getAdditionalApplying().equalsIgnoreCase(applying))
                 .collect(Collectors.toList());
     }
 
