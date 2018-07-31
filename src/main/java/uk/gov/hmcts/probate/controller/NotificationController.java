@@ -39,16 +39,16 @@ public class NotificationController {
         return ResponseEntity.ok(callbackResponseTransformer.addDocumentReceivedNotification(callbackRequest));
     }
 
-    @PostMapping(path = "/grant-issued")
-    public ResponseEntity<CallbackResponse> sendGrantIssuedNotification(@RequestBody CallbackRequest callbackRequest)
-            throws NotificationClientException {
-
-        CaseData caseData = callbackRequest.getCaseDetails().getData();
-
-        if (caseData.isGrantIssuedEmailNotificationRequested()) {
-            notificationService.sendEmail(GRANT_ISSUED, caseData);
-        }
-
-        return ResponseEntity.ok(callbackResponseTransformer.addGrandIssuedNotification(callbackRequest));
-    }
+//    @PostMapping(path = "/grant-issued")
+//    public ResponseEntity<CallbackResponse> sendGrantIssuedNotification(@RequestBody CallbackRequest callbackRequest)
+//            throws NotificationClientException {
+//
+//        CaseData caseData = callbackRequest.getCaseDetails().getData();
+//
+//        if (caseData.isGrantIssuedEmailNotificationRequested()) {
+//            notificationService.sendEmail(GRANT_ISSUED, caseData);
+//        }
+//
+//        return ResponseEntity.ok(callbackResponseTransformer.grantIssued(callbackRequest));
+//    }
 }
