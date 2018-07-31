@@ -57,14 +57,18 @@ public class CallbackResponseTransformer {
         return transform(responseCaseData);
     }
 
-    public CallbackResponse addGrandIssuedNotification(CallbackRequest callbackRequest) {
-        CaseDetails caseDetails = callbackRequest.getCaseDetails();
+    public CallbackResponse grantIssued(CallbackRequest callbackRequest, Document document) {
+        if (DIGITAL_GRANT_DRAFT.equals(document.getDocumentType()) || DIGITAL_GRANT.equals(document.getDocumentType())) {
+            callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated()
+                    .add(new CollectionMember<>(null, document));
+        }
 
-        ResponseCaseData responseCaseData = getResponseCaseData(caseDetails)
-                .boEmailGrantIssuedNotificationRequested(caseDetails.getData().getBoEmailGrantIssuedNotification())
-                .build();
+        ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails());
+        responseCaseDataBuilder.boEmailGrantIssuedNotificationRequested(
+                callbackRequest.getCaseDetails().getData().getBoEmailGrantIssuedNotification());
+        responseCaseDataBuilder.solsSOTNeedToUpdate(null);
 
-        return transform(responseCaseData);
+        return transform(responseCaseDataBuilder.build());
     }
 
     public CallbackResponse transform(CallbackRequest callbackRequest, FeeServiceResponse feeServiceResponse) {
@@ -208,5 +212,4 @@ public class CallbackResponseTransformer {
                 .map(String::valueOf)
                 .orElse(null);
     }
-
 }
