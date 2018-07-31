@@ -82,10 +82,6 @@
     </style>
 </head>
 <body>
-<div id="watermark" style = "font-size: 5.0em">
-    DRAFT COPY -
-    <br /> NOT FOR CIRCULATION
-</div>
 <table>
     <thead>
     <tr>
@@ -173,7 +169,6 @@
             <!--{% if executor.value.Country != null and executor.value.Country != ""%}{{ executor.value.Country }}{% endif %}-->
             <!--{% set applyingCount = applyingCount + 1 %}{% endfor %}-->
             <!--</strong></span>-->
-            <!--{% endfor %}-->
             <!--</p>-->
 
         </td>
@@ -185,7 +180,7 @@
             <!--{% set notApplyingCount = 1 %}-->
             <!--{% set powerReservedCounter = 0 %}-->
             <!--{% for executor in case_details.case_data.executorsNotApplying %}-->
-            <!--{% if executor.value.notApplyingExecutorReason == "PowerReserved"}-->
+            <!--{% if executor.value.notApplyingExecutorReason == "PowerReserved" %}-->
             <!--{% set powerReservedCounter = powerReservedCounter + 1 %}-->
             <!--{% endif %}-->
             <!--{% set notApplyingCount = notApplyingCount + 1 %}-->
