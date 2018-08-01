@@ -103,7 +103,7 @@ pitest {
   outputFormats = ['XML', 'HTML']
   timestampedReports = false
   mutationThreshold = 50
-  timeoutConst = 30000
+  timeoutConstInMillis = 30000
 }
 
 sonarqube {
