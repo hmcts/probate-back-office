@@ -49,8 +49,13 @@ public class TestCaseCreator {
     @Value("${idam.secret}")
     private String idamSecret;
 
-    @Value("${idam.username}")
     private String idamUsername;
+
+    @Value("${idam.pa.username}")
+    private String idamPaUsername;
+
+    @Value("${idam.sol.username}")
+    private String idamSolUsername;
 
     @Value("${idam.userpassword}")
     private String idamPassword;
@@ -80,12 +85,14 @@ public class TestCaseCreator {
     @Ignore
     @Test
     public void createPaCase() throws Exception {
+        idamUsername = idamPaUsername;
         createCase("create.pa.ccd.json", "citizens", "applyForGrant");
     }
 
     @Ignore
     @Test
     public void createSolsCase() throws Exception {
+        idamUsername = idamSolUsername;
         createCase("create.sols.ccd.json", "caseworkers", "solicitorCreateApplication");
     }
 

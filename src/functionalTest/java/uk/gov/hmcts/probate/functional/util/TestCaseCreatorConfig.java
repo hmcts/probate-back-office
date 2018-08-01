@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
 @Configuration
-@PropertySource("case-creation-demo.properties")
+@PropertySource("case-creation-aat.properties")
 public class TestCaseCreatorConfig {
 
     @Bean

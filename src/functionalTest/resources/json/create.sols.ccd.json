@@ -8,6 +8,12 @@
   "event_token": "sampletoken",
   "data": {
     "otherExecutorExists": "Yes",
+    "solsSOTName": "SolName",
+    "solsSOTJobTitle": "job title",
+    "extraCopiesOfGrant": "1",
+    "outsideUKGrantCopies": "2",
+    "solsPaymentMethods": "fee account",
+    "solsFeeAccountNumber": "54321",
     "deceasedAddress": {
       "AddressLine1": "1",
       "AddressLine2": "1",
