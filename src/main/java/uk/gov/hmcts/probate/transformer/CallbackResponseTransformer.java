@@ -2,21 +2,24 @@ package uk.gov.hmcts.probate.transformer;
 
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.model.ApplicationType;
-import uk.gov.hmcts.probate.model.ccd.raw.CCDDocument;
+import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
+import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData.ResponseCaseDataBuilder;
 import uk.gov.hmcts.probate.model.fee.FeeServiceResponse;
-import uk.gov.hmcts.probate.model.template.PDFServiceTemplate;
 
 import java.math.BigDecimal;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
-import static uk.gov.hmcts.probate.model.template.PDFServiceTemplate.LEGAL_STATEMENT;
+import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_DRAFT;
+import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT;
 
 @Component
 public class CallbackResponseTransformer {
@@ -30,85 +33,89 @@ public class CallbackResponseTransformer {
     private static final String DEFAULT_REGISTRY_LOCATION = "Birmingham";
 
     public CallbackResponse transformWithConditionalStateChange(CallbackRequest callbackRequest, Optional<String> newState) {
-        CaseData caseData = callbackRequest.getCaseDetails().getData();
-
-        ResponseCaseData responseCaseData = this.getResponseCaseData(caseData)
+        ResponseCaseData responseCaseData = getResponseCaseData(callbackRequest.getCaseDetails())
                 .state(newState.orElse(null))
-                .ccdState(callbackRequest.getCaseDetails().getState())
                 .build();
 
         return transform(responseCaseData);
     }
 
     public CallbackResponse addCcdState(CallbackRequest callbackRequest) {
-        CaseData caseData = callbackRequest.getCaseDetails().getData();
-
-        ResponseCaseData responseCaseData = this.getResponseCaseData(caseData)
-                .ccdState(callbackRequest.getCaseDetails().getState())
+        ResponseCaseData responseCaseData = getResponseCaseData(callbackRequest.getCaseDetails())
                 .build();
 
         return transform(responseCaseData);
     }
 
     public CallbackResponse addDocumentReceivedNotification(CallbackRequest callbackRequest) {
-        CaseData caseData = callbackRequest.getCaseDetails().getData();
+        CaseDetails caseDetails = callbackRequest.getCaseDetails();
 
-        ResponseCaseData responseCaseData = this.getResponseCaseData(caseData)
-                .ccdState(callbackRequest.getCaseDetails().getState())
-                .boEmailDocsReceivedNotificationRequested(caseData.getBoEmailDocsReceivedNotification())
+        ResponseCaseData responseCaseData = getResponseCaseData(caseDetails)
+                .boEmailDocsReceivedNotificationRequested(caseDetails.getData().getBoEmailDocsReceivedNotification())
                 .build();
 
         return transform(responseCaseData);
     }
 
-    public CallbackResponse addGrandIssuedNotification(CallbackRequest callbackRequest) {
-        CaseData caseData = callbackRequest.getCaseDetails().getData();
+    public CallbackResponse grantIssued(CallbackRequest callbackRequest, Document document) {
+        if (DIGITAL_GRANT_DRAFT.equals(document.getDocumentType()) || DIGITAL_GRANT.equals(document.getDocumentType())) {
+            callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated()
+                    .add(new CollectionMember<>(null, document));
+        }
 
-        ResponseCaseData responseCaseData = this.getResponseCaseData(caseData)
-                .ccdState(callbackRequest.getCaseDetails().getState())
-                .boEmailGrantIssuedNotificationRequested(caseData.getBoEmailGrantIssuedNotification())
-                .build();
+        ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails());
+        responseCaseDataBuilder.boEmailGrantIssuedNotificationRequested(
+                callbackRequest.getCaseDetails().getData().getBoEmailGrantIssuedNotification());
+        responseCaseDataBuilder.solsSOTNeedToUpdate(null);
 
-        return transform(responseCaseData);
+        return transform(responseCaseDataBuilder.build());
     }
 
     public CallbackResponse transform(CallbackRequest callbackRequest, FeeServiceResponse feeServiceResponse) {
-        CaseData caseData = callbackRequest.getCaseDetails().getData();
-
         String feeForNonUkCopies = transformMoneyGBPToString(feeServiceResponse.getFeeForNonUkCopies());
         String feeForUkCopies = transformMoneyGBPToString(feeServiceResponse.getFeeForUkCopies());
         String applicationFee = transformMoneyGBPToString(feeServiceResponse.getApplicationFee());
         String totalFee = transformMoneyGBPToString(feeServiceResponse.getTotal());
 
-        ResponseCaseData responseCaseData = this.getResponseCaseData(caseData)
+        ResponseCaseData responseCaseData = getResponseCaseData(callbackRequest.getCaseDetails())
                 .feeForNonUkCopies(feeForNonUkCopies)
                 .feeForUkCopies(feeForUkCopies)
                 .applicationFee(applicationFee)
                 .totalFee(totalFee)
-                .ccdState(callbackRequest.getCaseDetails().getState())
                 .build();
 
         return transform(responseCaseData);
     }
 
-    public CallbackResponse transform(CallbackRequest callbackRequest, PDFServiceTemplate pdfServiceTemplate, CCDDocument ccdDocument) {
-        CaseData caseData = callbackRequest.getCaseDetails().getData();
-
-        ResponseCaseDataBuilder responseCaseData = this.getResponseCaseData(caseData);
-        responseCaseData.solsSOTNeedToUpdate(null);
-        responseCaseData.ccdState(callbackRequest.getCaseDetails().getState());
-        if (LEGAL_STATEMENT.equals(pdfServiceTemplate)) {
-            responseCaseData.solsLegalStatementDocument(ccdDocument);
+    public CallbackResponse transform(CallbackRequest callbackRequest, Document document) {
+        if (DIGITAL_GRANT_DRAFT.equals(document.getDocumentType()) || DIGITAL_GRANT.equals(document.getDocumentType())) {
+            callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated()
+                    .add(new CollectionMember<>(null, document));
         }
 
-        return transform(responseCaseData.build());
+        ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails());
+        responseCaseDataBuilder.solsSOTNeedToUpdate(null);
+
+        if (LEGAL_STATEMENT.equals(document.getDocumentType())) {
+            responseCaseDataBuilder.solsLegalStatementDocument(document.getDocumentLink());
+        }
+
+        return transform(responseCaseDataBuilder.build());
+    }
+
+    public CallbackResponse transform(CallbackRequest callbackRequest) {
+        ResponseCaseData responseCaseData = getResponseCaseData(callbackRequest.getCaseDetails())
+                .build();
+
+        return transform(responseCaseData);
     }
 
     private CallbackResponse transform(ResponseCaseData responseCaseData) {
         return CallbackResponse.builder().data(responseCaseData).build();
     }
 
-    private ResponseCaseDataBuilder getResponseCaseData(CaseData caseData) {
+    private ResponseCaseDataBuilder getResponseCaseData(CaseDetails caseDetails) {
+        CaseData caseData = caseDetails.getData();
 
         return ResponseCaseData.builder()
                 .applicationType(Optional.ofNullable(caseData.getApplicationType()).orElse(DEFAULT_APPLICATION_TYPE))
@@ -146,8 +153,8 @@ public class CallbackResponseTransformer {
 
                 .solsSOTNeedToUpdate(caseData.getSolsSOTNeedToUpdate())
 
-                .ihtGrossValue(transformToString(caseData.getIhtGrossValue()))
-                .ihtNetValue(transformToString(caseData.getIhtNetValue()))
+                .ihtGrossValue(caseData.getIhtGrossValue())
+                .ihtNetValue(caseData.getIhtNetValue())
                 .deceasedDomicileInEngWales(caseData.getDeceasedDomicileInEngWales())
 
                 .solsPaymentMethods(caseData.getSolsPaymentMethods())
@@ -168,7 +175,20 @@ public class CallbackResponseTransformer {
                 .boEmailDocsReceivedNotification(caseData.getBoEmailDocsReceivedNotification())
                 .boEmailGrantIssuedNotification(caseData.getBoEmailGrantIssuedNotification())
 
-                .boCaseStopReasonList(caseData.getBoCaseStopReasonList());
+                .boCaseStopReasonList(caseData.getBoCaseStopReasonList())
+
+                .boDeceasedTitle(caseData.getBoDeceasedTitle())
+                .boDeceasedHonours(caseData.getBoDeceasedHonours())
+
+                .ccdState(caseDetails.getState())
+                .ihtReferenceNumber(caseData.getIhtReferenceNumber())
+                .ihtFormCompletedOnline(caseData.getIhtFormCompletedOnline())
+
+                .boWillMessage(caseData.getBoWillMessage())
+                .boExecutorLimitation(caseData.getBoExecutorLimitation())
+                .boAdminClauseLimitation(caseData.getBoAdminClauseLimitation())
+                .boLimitationText(caseData.getBoLimitationText())
+                .probateDocumentsGenerated(caseData.getProbateDocumentsGenerated());
     }
 
     private String getPaymentReference(CaseData caseData) {
@@ -189,13 +209,6 @@ public class CallbackResponseTransformer {
 
     private String transformToString(Long longValue) {
         return Optional.ofNullable(longValue)
-                .map(String::valueOf)
-                .orElse(null);
-    }
-
-    private String transformToString(Float value) {
-        return Optional.ofNullable(value)
-                .map(Float::intValue)
                 .map(String::valueOf)
                 .orElse(null);
     }

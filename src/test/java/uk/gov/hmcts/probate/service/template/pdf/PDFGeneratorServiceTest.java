@@ -15,7 +15,6 @@ import uk.gov.hmcts.probate.config.PDFServiceConfiguration;
 import uk.gov.hmcts.probate.exception.ClientException;
 import uk.gov.hmcts.probate.exception.ConnectionException;
 import uk.gov.hmcts.probate.insights.AppInsights;
-import uk.gov.hmcts.probate.model.template.PDFServiceTemplate;
 import uk.gov.hmcts.probate.service.FileSystemResourceService;
 
 import java.net.URI;
@@ -26,6 +25,7 @@ import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
+import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT;
 
 public class PDFGeneratorServiceTest {
 
@@ -73,8 +73,7 @@ public class PDFGeneratorServiceTest {
         when(restTemplateMock.postForObject(any(URI.class), any(HttpEntity.class), eq(ByteArrayResource.class)))
                 .thenReturn(byteArrayResourceMock);
 
-        underTest
-                .generatePdf(PDFServiceTemplate.LEGAL_STATEMENT, "{\"data\":\"value\"}");
+        underTest.generatePdf(LEGAL_STATEMENT, "{\"data\":\"value\"}");
 
         verify(restTemplateMock).postForObject(any(URI.class), any(HttpEntity.class), eq(ByteArrayResource.class));
     }
@@ -84,7 +83,7 @@ public class PDFGeneratorServiceTest {
         when(restTemplateMock.postForObject(any(URI.class), any(HttpEntity.class), eq(ByteArrayResource.class)))
                 .thenThrow(clientException);
 
-        underTest.generatePdf(PDFServiceTemplate.LEGAL_STATEMENT, "{\"data\":\"value\"}");
+        underTest.generatePdf(LEGAL_STATEMENT, "{\"data\":\"value\"}");
     }
 
     @Test(expected = ConnectionException.class)
@@ -92,7 +91,7 @@ public class PDFGeneratorServiceTest {
         when(restTemplateMock.postForObject(any(URI.class), any(HttpEntity.class), eq(ByteArrayResource.class)))
                 .thenThrow(pdfConnectionExceptionMock);
 
-        underTest.generatePdf(PDFServiceTemplate.LEGAL_STATEMENT, "{\"data\":\"value\"}");
+        underTest.generatePdf(LEGAL_STATEMENT, "{\"data\":\"value\"}");
     }
 
     @Test(expected = ClientException.class)
@@ -102,7 +101,7 @@ public class PDFGeneratorServiceTest {
         when(restTemplateMock.postForObject(any(URI.class), any(HttpEntity.class), eq(ByteArrayResource.class)))
                 .thenThrow(httpClientErrorException);
 
-        underTest.generatePdf(PDFServiceTemplate.LEGAL_STATEMENT, "{\"data\":\"value\"}");
+        underTest.generatePdf(LEGAL_STATEMENT, "{\"data\":\"value\"}");
 
         verify(httpClientErrorException).getStatusCode();
         verify(httpClientErrorException).getMessage();
@@ -113,6 +112,6 @@ public class PDFGeneratorServiceTest {
         when(restTemplateMock.postForObject(any(URI.class), any(HttpEntity.class), eq(ByteArrayResource.class)))
                 .thenThrow(restClientException);
 
-        underTest.generatePdf(PDFServiceTemplate.LEGAL_STATEMENT, "{\"data\":\"value\"}");
+        underTest.generatePdf(LEGAL_STATEMENT, "{\"data\":\"value\"}");
     }
 }

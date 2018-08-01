@@ -4,31 +4,29 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.InjectMocks;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.hateoas.Link;
-import uk.gov.hmcts.probate.config.PDFServiceConfiguration;
 import uk.gov.hmcts.probate.exception.BadRequestException;
 import uk.gov.hmcts.probate.exception.ConnectionException;
-import uk.gov.hmcts.probate.insights.AppInsights;
-import uk.gov.hmcts.probate.model.ccd.raw.CCDDocument;
+import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.evidencemanagement.EvidenceManagementFile;
 import uk.gov.hmcts.probate.model.evidencemanagement.EvidenceManagementFileUpload;
 import uk.gov.hmcts.probate.service.evidencemanagement.upload.UploadService;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.when;
-import static uk.gov.hmcts.probate.model.template.PDFServiceTemplate.LEGAL_STATEMENT;
+import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT;
 
+@RunWith(MockitoJUnitRunner.class)
 public class PDFManagementServiceTest {
 
-    @Mock
-    private PDFServiceConfiguration pdfServiceConfigurationMock;
     @Mock
     private PDFGeneratorService pdfGeneratorServiceMock;
     @Mock
@@ -46,25 +44,24 @@ public class PDFManagementServiceTest {
     private CallbackRequest callbackRequestMock;
     @Mock
     private JsonProcessingException jsonProcessingException;
-
-    @InjectMocks
-    private PDFManagementService underTest;
-
     @Mock
-    private AppInsights appInsights;
+    private HttpServletRequest httpServletRequest;
+
+    private PDFManagementService underTest;
 
     @Before
     public void setUp() {
-        MockitoAnnotations.initMocks(this);
+        when(objectMapperMock.copy()).thenReturn(objectMapperMock);
+        underTest = new PDFManagementService(pdfGeneratorServiceMock, uploadServiceMock,
+                objectMapperMock, httpServletRequest);
     }
 
     @Test
     public void shouldGenerateAndUpload() throws IOException {
         String json = "{}";
-        String fileName = "filename";
+        String fileName = "legalStatement.pdf";
         String href = "href";
 
-        when(pdfServiceConfigurationMock.getDefaultDisplayFilename()).thenReturn(fileName);
         when(objectMapperMock.writeValueAsString(callbackRequestMock)).thenReturn(json);
         when(pdfGeneratorServiceMock.generatePdf(LEGAL_STATEMENT, json)).thenReturn(evidenceManagementFileUpload);
         when(uploadServiceMock.store(evidenceManagementFileUpload)).thenReturn(evidenceManagementFile);
@@ -74,12 +71,12 @@ public class PDFManagementServiceTest {
 
         when(link.getHref()).thenReturn(href);
 
-        CCDDocument response = underTest.generateAndUpload(callbackRequestMock, LEGAL_STATEMENT);
+        Document response = underTest.generateAndUpload(callbackRequestMock, LEGAL_STATEMENT);
 
         assertNotNull(response);
-        assertEquals(fileName, response.getDocumentFilename());
-        assertEquals(href, response.getDocumentBinaryUrl());
-        assertEquals(href, response.getDocumentUrl());
+        assertEquals(fileName, response.getDocumentLink().getDocumentFilename());
+        assertEquals(href, response.getDocumentLink().getDocumentBinaryUrl());
+        assertEquals(href, response.getDocumentLink().getDocumentUrl());
     }
 
     @Test(expected = BadRequestException.class)

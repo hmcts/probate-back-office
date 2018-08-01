@@ -16,13 +16,12 @@ import org.springframework.validation.FieldError;
 import uk.gov.hmcts.probate.exception.BadRequestException;
 import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
-import uk.gov.hmcts.probate.model.ccd.raw.CCDDocument;
+import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.AfterSubmitCallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
-import uk.gov.hmcts.probate.model.template.PDFServiceTemplate;
 import uk.gov.hmcts.probate.service.ConfirmationResponseService;
 import uk.gov.hmcts.probate.service.EventValidationService;
 import uk.gov.hmcts.probate.service.StateChangeService;
@@ -39,6 +38,7 @@ import java.util.Optional;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.when;
+import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT;
 
 @RunWith(MockitoJUnitRunner.class)
 public class BusinessValidationUnitTest {
@@ -70,7 +70,7 @@ public class BusinessValidationUnitTest {
     @Mock
     private CallbackResponse callbackResponseMock;
     @Mock
-    private CCDDocument ccdDocumentMock;
+    private Document documentMock;
     @Mock
     private ConfirmationResponseService confirmationResponseServiceMock;
     @Mock
@@ -109,10 +109,10 @@ public class BusinessValidationUnitTest {
         when(ccdBeanTransformer.transform(callbackRequestMock)).thenReturn(ccdDataMock);
         when(eventValidationServiceMock.validate(ccdDataMock, validationRules)).thenReturn(Collections.emptyList());
         when(stateChangeServiceMock.getChangedStateForCaseUpdate(caseDataMock)).thenReturn(Optional.empty());
-        when(pdfManagementServiceMock.generateAndUpload(callbackRequestMock, PDFServiceTemplate.LEGAL_STATEMENT))
-                .thenReturn(ccdDocumentMock);
-        when(callbackResponseTransformerMock.transform(callbackRequestMock, PDFServiceTemplate.LEGAL_STATEMENT,
-                ccdDocumentMock)).thenReturn(callbackResponseMock);
+        when(pdfManagementServiceMock.generateAndUpload(callbackRequestMock, LEGAL_STATEMENT))
+                .thenReturn(documentMock);
+        when(callbackResponseTransformerMock.transform(callbackRequestMock, documentMock))
+                .thenReturn(callbackResponseMock);
 
         ResponseEntity<CallbackResponse> response = underTest.validate(callbackRequestMock,
                 bindingResultMock, httpServletRequest);

@@ -1,10 +1,9 @@
 package uk.gov.hmcts.probate.service.template.markdown;
 
-import lombok.Data;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.model.template.MarkdownTemplate;
@@ -16,11 +15,10 @@ import java.nio.charset.Charset;
 import java.util.Map;
 import java.util.Optional;
 
-@Data
+@Slf4j
 @Service
+@RequiredArgsConstructor
 public class MarkdownSubstitutionService {
-
-    private static final Logger log = LoggerFactory.getLogger(MarkdownSubstitutionService.class);
 
     private final FileSystemResourceService fileSystemResourceService;
 
