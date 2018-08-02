@@ -52,7 +52,7 @@ public class CallbackResponseTransformer {
     private final AdditionalExecutorsListFilter additionalExecutorsListFilter;
 
     public CallbackResponse transformWithConditionalStateChange(CallbackRequest callbackRequest, Optional<String> newState) {
-        ResponseCaseData responseCaseData = this.getResponseCaseData(callbackRequest.getCaseDetails())
+        ResponseCaseData responseCaseData = getResponseCaseData(callbackRequest.getCaseDetails())
                 .state(newState.orElse(null))
                 .build();
 
@@ -60,7 +60,7 @@ public class CallbackResponseTransformer {
     }
 
     public CallbackResponse addCcdState(CallbackRequest callbackRequest) {
-        ResponseCaseData responseCaseData = this.getResponseCaseData(callbackRequest.getCaseDetails())
+        ResponseCaseData responseCaseData = getResponseCaseData(callbackRequest.getCaseDetails())
                 .build();
 
         return transform(responseCaseData);
@@ -69,7 +69,7 @@ public class CallbackResponseTransformer {
     public CallbackResponse addDocumentReceivedNotification(CallbackRequest callbackRequest) {
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
 
-        ResponseCaseData responseCaseData = this.getResponseCaseData(caseDetails)
+        ResponseCaseData responseCaseData = getResponseCaseData(caseDetails)
                 .boEmailDocsReceivedNotificationRequested(caseDetails.getData().getBoEmailDocsReceivedNotification())
                 .build();
 
@@ -79,7 +79,7 @@ public class CallbackResponseTransformer {
     public CallbackResponse addGrandIssuedNotification(CallbackRequest callbackRequest) {
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
 
-        ResponseCaseData responseCaseData = this.getResponseCaseData(caseDetails)
+        ResponseCaseData responseCaseData = getResponseCaseData(caseDetails)
                 .boEmailGrantIssuedNotificationRequested(caseDetails.getData().getBoEmailGrantIssuedNotification())
                 .build();
 
@@ -92,7 +92,7 @@ public class CallbackResponseTransformer {
         String applicationFee = transformMoneyGBPToString(feeServiceResponse.getApplicationFee());
         String totalFee = transformMoneyGBPToString(feeServiceResponse.getTotal());
 
-        ResponseCaseData responseCaseData = this.getResponseCaseData(callbackRequest.getCaseDetails())
+        ResponseCaseData responseCaseData = getResponseCaseData(callbackRequest.getCaseDetails())
                 .feeForNonUkCopies(feeForNonUkCopies)
                 .feeForUkCopies(feeForUkCopies)
                 .applicationFee(applicationFee)
@@ -118,8 +118,15 @@ public class CallbackResponseTransformer {
         return transform(responseCaseDataBuilder.build());
     }
 
-    public CallbackResponse transform(CallbackRequest callbackRequest) {
+    public CallbackResponse validate(CallbackRequest callbackRequest) {
         ResponseCaseData responseCaseData = getResponseCaseData(callbackRequest.getCaseDetails())
+                .build();
+
+        return transform(responseCaseData);
+    }
+
+    public CallbackResponse transformCase(CallbackRequest callbackRequest) {
+        ResponseCaseData responseCaseData = getTransformedResponseCaseData(callbackRequest.getCaseDetails())
                 .build();
 
         return transform(responseCaseData);
@@ -158,6 +165,88 @@ public class CallbackResponseTransformer {
                 .primaryApplicantHasAlias(caseData.getPrimaryApplicantHasAlias())
                 .otherExecutorExists(caseData.getOtherExecutorExists())
                 .solsExecutorAliasNames(caseData.getSolsExecutorAliasNames())
+                .solsExecutorAliasFirstNames(caseData.getSolsExecutorAliasFirstNames())
+                .solsExecutorAliasSurnames(caseData.getSolsExecutorAliasSurnames())
+                .solsAdditionalExecutorList(caseData.getSolsAdditionalExecutorList())
+                .executorsApplying(caseData.getExecutorsApplying())
+                .executorsNotApplying(caseData.getExecutorsNotApplying())
+                .deceasedAddress(caseData.getDeceasedAddress())
+                .deceasedAnyOtherNames(caseData.getDeceasedAnyOtherNames())
+                .primaryApplicantAddress(caseData.getPrimaryApplicantAddress())
+                .solsDeceasedAliasNamesList(caseData.getSolsDeceasedAliasNamesList())
+                .BODeceasedAliasNamesList(caseData.getBODeceasedAliasNamesList())
+                .solsSolicitorAppReference(caseData.getSolsSolicitorAppReference())
+                .solsAdditionalInfo(caseData.getSolsAdditionalInfo())
+
+                .solsSOTNeedToUpdate(caseData.getSolsSOTNeedToUpdate())
+
+                .ihtGrossValue(caseData.getIhtGrossValue())
+                .ihtNetValue(caseData.getIhtNetValue())
+                .deceasedDomicileInEngWales(caseData.getDeceasedDomicileInEngWales())
+
+                .solsPaymentMethods(caseData.getSolsPaymentMethods())
+                .solsFeeAccountNumber(caseData.getSolsFeeAccountNumber())
+                .solsPaymentReferenceNumber(getPaymentReference(caseData))
+
+                .extraCopiesOfGrant(transformToString(caseData.getExtraCopiesOfGrant()))
+                .outsideUKGrantCopies(transformToString(caseData.getOutsideUKGrantCopies()))
+                .feeForNonUkCopies(transformMoneyGBPToString(caseData.getFeeForNonUkCopies()))
+                .feeForUkCopies(transformMoneyGBPToString(caseData.getFeeForUkCopies()))
+                .applicationFee(transformMoneyGBPToString(caseData.getApplicationFee()))
+                .totalFee(transformMoneyGBPToString(caseData.getTotalFee()))
+
+                .solsLegalStatementDocument(caseData.getSolsLegalStatementDocument())
+                .casePrinted(caseData.getCasePrinted())
+                .boEmailDocsReceivedNotificationRequested(caseData.getBoEmailDocsReceivedNotificationRequested())
+                .boEmailGrantIssuedNotificationRequested(caseData.getBoEmailGrantIssuedNotificationRequested())
+                .boEmailDocsReceivedNotification(caseData.getBoEmailDocsReceivedNotification())
+                .boEmailGrantIssuedNotification(caseData.getBoEmailGrantIssuedNotification())
+
+                .boCaseStopReasonList(caseData.getBoCaseStopReasonList())
+
+                .boDeceasedTitle(caseData.getBoDeceasedTitle())
+                .boDeceasedHonours(caseData.getBoDeceasedHonours())
+
+                .ccdState(caseDetails.getState())
+                .ihtReferenceNumber(caseData.getIhtReferenceNumber())
+                .ihtFormCompletedOnline(caseData.getIhtFormCompletedOnline())
+
+                .boWillMessage(caseData.getBoWillMessage())
+                .boExecutorLimitation(caseData.getBoExecutorLimitation())
+                .boAdminClauseLimitation(caseData.getBoAdminClauseLimitation())
+                .boLimitationText(caseData.getBoLimitationText())
+                .probateDocumentsGenerated(caseData.getProbateDocumentsGenerated());
+    }
+
+    private ResponseCaseDataBuilder getTransformedResponseCaseData(CaseDetails caseDetails) {
+        CaseData caseData = caseDetails.getData();
+
+        return ResponseCaseData.builder()
+                .applicationType(Optional.ofNullable(caseData.getApplicationType()).orElse(DEFAULT_APPLICATION_TYPE))
+                .registryLocation(Optional.ofNullable(caseData.getRegistryLocation()).orElse(DEFAULT_REGISTRY_LOCATION))
+                .solsSolicitorFirmName(caseData.getSolsSolicitorFirmName())
+                .solsSolicitorFirmPostcode(caseData.getSolsSolicitorFirmPostcode())
+                .solsSolicitorEmail(caseData.getSolsSolicitorEmail())
+                .solsSolicitorPhoneNumber(caseData.getSolsSolicitorPhoneNumber())
+                .solsSOTName(caseData.getSolsSOTName())
+                .solsSOTJobTitle(caseData.getSolsSOTJobTitle())
+                .deceasedForenames(caseData.getDeceasedForenames())
+                .deceasedSurname(caseData.getDeceasedSurname())
+                .deceasedDateOfBirth(dateTimeFormatter.format(caseData.getDeceasedDateOfBirth()))
+                .deceasedDateOfDeath(dateTimeFormatter.format(caseData.getDeceasedDateOfDeath()))
+                .willExists(caseData.getWillExists())
+                .willAccessOriginal((caseData.getWillAccessOriginal()))
+                .willHasCodicils(caseData.getWillHasCodicils())
+                .willNumberOfCodicils(caseData.getWillNumberOfCodicils())
+                .solsIHTFormId(caseData.getSolsIHTFormId())
+                .primaryApplicantForenames(caseData.getPrimaryApplicantForenames())
+                .primaryApplicantSurname(caseData.getPrimaryApplicantSurname())
+                .primaryApplicantEmailAddress(caseData.getPrimaryApplicantEmailAddress())
+                .primaryApplicantIsApplying(caseData.getPrimaryApplicantIsApplying())
+                .solsPrimaryExecutorNotApplyingReason(caseData.getSolsPrimaryExecutorNotApplyingReason())
+                .primaryApplicantHasAlias(caseData.getPrimaryApplicantHasAlias())
+                .otherExecutorExists(caseData.getOtherExecutorExists())
+                .solsExecutorAliasNames(caseData.getSolsExecutorAliasNames())
                 .solsExecutorAliasFirstNames(transformPrimaryApplicantFirstName(caseData.getSolsExecutorAliasNames()))
                 .solsExecutorAliasSurnames(transformPrimaryApplicantSurname(caseData.getSolsExecutorAliasNames()))
                 .solsAdditionalExecutorList(caseData.getSolsAdditionalExecutorList())
@@ -167,6 +256,7 @@ public class CallbackResponseTransformer {
                 .deceasedAnyOtherNames(caseData.getDeceasedAnyOtherNames())
                 .primaryApplicantAddress(caseData.getPrimaryApplicantAddress())
                 .solsDeceasedAliasNamesList(transformDeceasedAliasNameLists(caseData.getSolsDeceasedAliasNamesList()))
+                .BODeceasedAliasNamesList(transformBODeceasedAliasNameLists(caseData.getSolsDeceasedAliasNamesList()))
                 .solsSolicitorAppReference(caseData.getSolsSolicitorAppReference())
                 .solsAdditionalInfo(caseData.getSolsAdditionalInfo())
 
@@ -237,7 +327,9 @@ public class CallbackResponseTransformer {
                 caseData.getSolsAdditionalExecutorList(),
                 caseData, "Yes");
 
-        return applyingList.stream().map(this::mapToAdditionalExecutorsApplying).collect(Collectors.toList());
+        return applyingList.stream()
+                .map(this::mapToAdditionalExecutorsApplying)
+                .collect(Collectors.toList());
     }
 
     private CollectionMember<AdditionalExecutorApplying> mapToAdditionalExecutorsApplying(CollectionMember<AdditionalExecutor> applyingList) {
@@ -306,6 +398,24 @@ public class CallbackResponseTransformer {
                         .appearOnGrant("Yes")
                         .build())
                 .build();
+
+        return new CollectionMember<>(null, aliasName);
+    }
+
+    private List<CollectionMember<ProbateAliasName>> transformBODeceasedAliasNameLists(List<CollectionMember<AliasName>> aliasNamesList) {
+        if (aliasNamesList == null) {
+            return Collections.emptyList();
+        }
+        return aliasNamesList.stream()
+                .map(this::parseBODeceasedAliasList)
+                .collect(Collectors.toList());
+    }
+    private CollectionMember<ProbateAliasName> parseBODeceasedAliasList(CollectionMember<AliasName> aliasNames) {
+        ProbateAliasName aliasName = ProbateAliasName.builder()
+                        .lastName(aliasNames.getValue().getAliasName().getLastName())
+                        .forenames(aliasNames.getValue().getAliasName().getForenames())
+                        .appearOnGrant(aliasNames.getValue().getAliasName().getAppearOnGrant())
+                        .build();
 
         return new CollectionMember<>(null, aliasName);
     }

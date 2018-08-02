@@ -97,7 +97,7 @@ public class BusinessValidationController {
         CallbackResponse response = validateRequest(callbackRequest, validationRules);
 
         if (response.getErrors().isEmpty()) {
-            response = callbackResponseTransformer.transform(callbackRequest);
+            response = callbackResponseTransformer.validate(callbackRequest);
         }
 
         return ResponseEntity.ok(response);
@@ -116,6 +116,25 @@ public class BusinessValidationController {
         AfterSubmitCallbackResponse afterSubmitCallbackResponse = confirmationResponseService.getStopConfirmation(callbackRequest);
         return ResponseEntity.ok(afterSubmitCallbackResponse);
     }
+
+//    @PostMapping(path = "/transformCase", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+//    public ResponseEntity<CallbackResponse> transformCaseDetails(
+//            @Validated({AmendCaseDetailsGroup.class}) @RequestBody CallbackRequest callbackRequest,
+//            BindingResult bindingResult) {
+//
+//        if (bindingResult.hasErrors()) {
+//            log.error("Case Id: {} ERROR: {}", callbackRequest.getCaseDetails().getId(), bindingResult);
+//            throw new BadRequestException("Invalid payload", bindingResult);
+//        }
+//
+//        CallbackResponse response = validateRequest(callbackRequest, validationRules);
+//
+//        if (response.getErrors().isEmpty()) {
+//            response = callbackResponseTransformer.transformCase(callbackRequest);
+//        }
+//
+//        return ResponseEntity.ok(response);
+//    }
 
     private CallbackResponse validateRequest(CallbackRequest callbackRequest,
                                              List<? extends ValidationRule> rules) {
