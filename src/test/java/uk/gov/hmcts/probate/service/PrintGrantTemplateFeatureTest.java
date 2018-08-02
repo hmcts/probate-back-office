@@ -60,7 +60,7 @@ public class PrintGrantTemplateFeatureTest {
     private static final String LIMITATION_TEXT = "Limitation should text appears here";
 
     @Autowired
-    private DocumentController DocumentController;
+    private DocumentController documentController;
 
     @MockBean
     private AppInsights appInsights;
