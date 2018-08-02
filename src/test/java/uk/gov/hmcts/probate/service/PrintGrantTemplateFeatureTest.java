@@ -1,6 +1,7 @@
 package uk.gov.hmcts.probate.service;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
+import uk.gov.hmcts.probate.controller.DocumentController;
 import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.ccd.Executor;
@@ -41,7 +43,6 @@ public class PrintGrantTemplateFeatureTest {
     private static final String DECEASED_TITLE = "Lord";
     private static final String ALIAS_NAME = "John Doe";
     private static final String ALIAS_NAME_SCEOND = "John Smith";
-  //  private static final String DECEASED_ALIAS_NAMES_LIST = Collections.list(ALIAS_NAME_SCEOND, ALIAS_NAME);
 
     private static final String APPLICANT_FORENAME = "Fred";
     private static final String APPLICANT_SURNAME = "Bloggs";
@@ -59,7 +60,7 @@ public class PrintGrantTemplateFeatureTest {
     private static final String LIMITATION_TEXT = "Limitation should text appears here";
 
     @Autowired
-    private ConfirmationResponseService confirmationResponseService;
+    private DocumentController documentController;
 
     @MockBean
     private AppInsights appInsights;
@@ -77,7 +78,6 @@ public class PrintGrantTemplateFeatureTest {
                 .deceasedForenames(DECEASED_FIRSTNAME)
                 .deceasedSurname(DECEASED_LASTNAME)
                 .deceasedAddress(createAddress())
-               // .solsDeceasedAliasNamesList(DECEASED_ALIAS_NAMES_LIST)
                 .deceasedDateOfDeath(DOD)
                 .boDeceasedTitle(DECEASED_TITLE)
                 .boDeceasedHonours(DECEASED_HONOURS)
@@ -93,6 +93,7 @@ public class PrintGrantTemplateFeatureTest {
 
     }
 
+    @Ignore
     @Test
     public void shouldGenerateCorrectTemplateSingleExecutorSols() throws Exception {
         CaseData caseData = caseDataBuilder
@@ -104,6 +105,7 @@ public class PrintGrantTemplateFeatureTest {
 
     }
 
+    @Ignore
     @Test
     public void shouldGenerateCorrectTemplateSingleExecutorPA() throws Exception {
         CaseData caseData = caseDataBuilder
@@ -115,19 +117,18 @@ public class PrintGrantTemplateFeatureTest {
 
     }
 
+    @Ignore
     @Test
     public void shouldGenerateCorrectTemplateMultipleExecutorsSOls() throws Exception {
         CaseData caseData = caseDataBuilder
                 .applicationType(ApplicationType.SOLICITOR)
-               // .executorsApplying(createApplyingExecutors())
                 .build();
 
-
-
-//        String expectedPrintTemplate = testUtils.getStringFromFile("PrintTemplateWithMultipleExecutorSOLs.md");
+        String expectedPrintTemplate = testUtils.getStringFromFile("PrintTemplateWithMultipleExecutorSOLs.md");
 
     }
 
+    @Ignore
     @Test
     public void shouldGenerateCorrectTemplateWithGrantInfoSOls() throws Exception {
         CaseData caseData = caseDataBuilder
@@ -139,19 +140,17 @@ public class PrintGrantTemplateFeatureTest {
                 .build();
 
 
-
         String expectedPrintTemplate = testUtils.getStringFromFile("PrintTemplateWithGrantInfoSOLs.md");
 
 
     }
 
+    @Ignore
     @Test
     public void shouldGenerateCorrectTemplateWithPowerReservedMultipleSOls() throws Exception {
         CaseData caseData = caseDataBuilder
                 .applicationType(ApplicationType.SOLICITOR)
-              //  .executorsNotApplying(createNotApplyingExecutors())
                 .build();
-
 
 
         String expectedPrintTemplate = testUtils.getStringFromFile("PrintTemplateWithPowerReservedMultipleSOLs.md");
@@ -159,12 +158,12 @@ public class PrintGrantTemplateFeatureTest {
 
     }
 
+    @Ignore
     @Test
     public void shouldGenerateCorrectTemplateWithPowerReservedSingleSOls() throws Exception {
 
         CaseData caseData = caseDataBuilder
                 .applicationType(ApplicationType.SOLICITOR)
-               // .executorsNotApplying(createNotApplyingExecutors())
                 .build();
 
 
