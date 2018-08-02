@@ -9,6 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
+import uk.gov.hmcts.probate.controller.DocumentController;
 import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.ccd.Executor;
@@ -42,7 +43,6 @@ public class PrintGrantTemplateFeatureTest {
     private static final String DECEASED_TITLE = "Lord";
     private static final String ALIAS_NAME = "John Doe";
     private static final String ALIAS_NAME_SCEOND = "John Smith";
-    //private static final String DECEASED_ALIAS_NAMES_LIST = Collections.list(ALIAS_NAME_SCEOND, ALIAS_NAME);
 
     private static final String APPLICANT_FORENAME = "Fred";
     private static final String APPLICANT_SURNAME = "Bloggs";
@@ -60,7 +60,7 @@ public class PrintGrantTemplateFeatureTest {
     private static final String LIMITATION_TEXT = "Limitation should text appears here";
 
     @Autowired
-    private ConfirmationResponseService confirmationResponseService;
+    private DocumentController DocumentController;
 
     @MockBean
     private AppInsights appInsights;
@@ -122,7 +122,6 @@ public class PrintGrantTemplateFeatureTest {
     public void shouldGenerateCorrectTemplateMultipleExecutorsSOls() throws Exception {
         CaseData caseData = caseDataBuilder
                 .applicationType(ApplicationType.SOLICITOR)
-                //.executorsApplying(createApplyingExecutors())
                 .build();
 
         String expectedPrintTemplate = testUtils.getStringFromFile("PrintTemplateWithMultipleExecutorSOLs.md");
@@ -151,7 +150,6 @@ public class PrintGrantTemplateFeatureTest {
     public void shouldGenerateCorrectTemplateWithPowerReservedMultipleSOls() throws Exception {
         CaseData caseData = caseDataBuilder
                 .applicationType(ApplicationType.SOLICITOR)
-                //.executorsNotApplying(createNotApplyingExecutors())
                 .build();
 
 
@@ -166,7 +164,6 @@ public class PrintGrantTemplateFeatureTest {
 
         CaseData caseData = caseDataBuilder
                 .applicationType(ApplicationType.SOLICITOR)
-                //.executorsNotApplying(createNotApplyingExecutors())
                 .build();
 
 
