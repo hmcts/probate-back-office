@@ -3,10 +3,12 @@ package uk.gov.hmcts.probate.model.ccd.raw.response;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;
 import lombok.Data;
+import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutors;
 import uk.gov.hmcts.probate.model.ccd.raw.AliasNames;
 import uk.gov.hmcts.probate.model.ccd.raw.CCDDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
+import uk.gov.hmcts.probate.model.ccd.raw.StopReasons;
 
 import java.util.List;
 
@@ -16,7 +18,7 @@ import java.util.List;
 public class ResponseCaseData {
 
     private final String state;
-    private final String applicationType;
+    private final ApplicationType applicationType;
     private final String registryLocation;
 
     private final String deceasedDateOfDeath;
@@ -53,6 +55,7 @@ public class ResponseCaseData {
     private final String solsAdditionalInfo;
     private final String primaryApplicantForenames;
     private final String primaryApplicantSurname;
+    private final String primaryApplicantEmailAddress;
     private final String primaryApplicantHasAlias;
     private final String primaryApplicantIsApplying;
     private final String solsPrimaryExecutorNotApplyingReason;
@@ -63,5 +66,11 @@ public class ResponseCaseData {
     private final String deceasedAnyOtherNames;
     private final SolsAddress primaryApplicantAddress;
     private final List<AliasNames> solsDeceasedAliasNamesList;
-
+    private final String ccdState;
+    private final String casePrinted;
+    private final String boEmailDocsReceivedNotificationRequested;
+    private final String boEmailGrantIssuedNotificationRequested;
+    private final String boEmailDocsReceivedNotification;
+    private final String boEmailGrantIssuedNotification;
+    private final List<StopReasons> boCaseStopReasonList;
 }

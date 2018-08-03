@@ -36,7 +36,6 @@ withParameterizedPipeline('java', 'probate', 'back-office', params.ENVIRONMENT, 
            steps.archiveArtifacts "build/reports/pitest/**/*.*"
         }
      }
-    
 
     after('functionalTest:saat') {
         publishHTML target: [
