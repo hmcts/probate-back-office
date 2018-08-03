@@ -12,6 +12,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import uk.gov.hmcts.probate.controller.validation.AmendCaseDetailsGroup;
 import uk.gov.hmcts.probate.controller.validation.ApplicationCreatedGroup;
 import uk.gov.hmcts.probate.controller.validation.ApplicationUpdatedGroup;
@@ -55,6 +56,7 @@ public class BusinessValidationController {
     private final PDFManagementService pdfManagementService;
 
     @PostMapping(path = "/validate", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseBody
     public ResponseEntity<CallbackResponse> validate(
             @Validated({ApplicationCreatedGroup.class, ApplicationUpdatedGroup.class}) @RequestBody CallbackRequest callbackRequest,
             BindingResult bindingResult,
@@ -82,6 +84,7 @@ public class BusinessValidationController {
     }
 
     @PostMapping(path = "/validateCaseDetails", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseBody
     public ResponseEntity<CallbackResponse> validateCaseDetails(
             @Validated({AmendCaseDetailsGroup.class}) @RequestBody CallbackRequest callbackRequest,
             BindingResult bindingResult,
@@ -104,6 +107,7 @@ public class BusinessValidationController {
     }
 
     @PostMapping(path = "/stopConfirmation", consumes = APPLICATION_JSON_UTF8_VALUE, produces = {APPLICATION_JSON_VALUE})
+    @ResponseBody
     public ResponseEntity<AfterSubmitCallbackResponse> stopWithConfirmation(
             @Validated({ApplicationCreatedGroup.class, ApplicationUpdatedGroup.class}) @RequestBody CallbackRequest callbackRequest,
             BindingResult bindingResult) {
@@ -117,24 +121,25 @@ public class BusinessValidationController {
         return ResponseEntity.ok(afterSubmitCallbackResponse);
     }
 
-//    @PostMapping(path = "/transformCase", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-//    public ResponseEntity<CallbackResponse> transformCaseDetails(
-//            @Validated({AmendCaseDetailsGroup.class}) @RequestBody CallbackRequest callbackRequest,
-//            BindingResult bindingResult) {
-//
-//        if (bindingResult.hasErrors()) {
-//            log.error("Case Id: {} ERROR: {}", callbackRequest.getCaseDetails().getId(), bindingResult);
-//            throw new BadRequestException("Invalid payload", bindingResult);
-//        }
-//
-//        CallbackResponse response = validateRequest(callbackRequest, validationRules);
-//
-//        if (response.getErrors().isEmpty()) {
-//            response = callbackResponseTransformer.transformCase(callbackRequest);
-//        }
-//
-//        return ResponseEntity.ok(response);
-//    }
+    @PostMapping(path = "/transformCase", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ResponseBody
+    public ResponseEntity<CallbackResponse> transformCaseDetails(
+            @Validated({AmendCaseDetailsGroup.class}) @RequestBody CallbackRequest callbackRequest,
+            BindingResult bindingResult) {
+
+        if (bindingResult.hasErrors()) {
+            log.error("Case Id: {} ERROR: {}", callbackRequest.getCaseDetails().getId(), bindingResult);
+            throw new BadRequestException("Invalid payload", bindingResult);
+        }
+
+        CallbackResponse response = validateRequest(callbackRequest, validationRules);
+
+        if (response.getErrors().isEmpty()) {
+            response = callbackResponseTransformer.transformCase(callbackRequest);
+        }
+
+        return ResponseEntity.ok(response);
+    }
 
     private CallbackResponse validateRequest(CallbackRequest callbackRequest,
                                              List<? extends ValidationRule> rules) {

@@ -248,7 +248,7 @@ public class NextStepsControllerTest {
         String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
         mockMvc.perform(post(NEXTSTEPS_CONFIRMATION_URL).content(json).contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(status().isBadRequest())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().contentType(MediaType.ALL))
                 .andExpect(jsonPath("$.fieldErrors[0].param").value("callbackRequest"))
                 .andExpect(jsonPath("$.fieldErrors[0].field").value("caseDetails.data.totalFee"))
                 .andExpect(jsonPath("$.fieldErrors[0].code").value("NotNull"))
