@@ -118,7 +118,7 @@ public class CallbackResponseTransformer {
         return transform(responseCaseDataBuilder.build());
     }
 
-    public CallbackResponse validate(CallbackRequest callbackRequest) {
+    public CallbackResponse transform(CallbackRequest callbackRequest) {
         ResponseCaseData responseCaseData = getResponseCaseData(callbackRequest.getCaseDetails())
                 .build();
 
@@ -168,13 +168,13 @@ public class CallbackResponseTransformer {
                 .solsExecutorAliasFirstNames(caseData.getSolsExecutorAliasFirstNames())
                 .solsExecutorAliasSurnames(caseData.getSolsExecutorAliasSurnames())
                 .solsAdditionalExecutorList(caseData.getSolsAdditionalExecutorList())
-                .executorsApplying(caseData.getExecutorsApplying())
-                .executorsNotApplying(caseData.getExecutorsNotApplying())
+                .executorsApplying(caseData.getAdditionalExecutorsApplying())
+                .executorsNotApplying(caseData.getAdditionalExecutorsNotApplying())
                 .deceasedAddress(caseData.getDeceasedAddress())
                 .deceasedAnyOtherNames(caseData.getDeceasedAnyOtherNames())
                 .primaryApplicantAddress(caseData.getPrimaryApplicantAddress())
                 .solsDeceasedAliasNamesList(caseData.getSolsDeceasedAliasNamesList())
-                .BODeceasedAliasNamesList(caseData.getBODeceasedAliasNamesList())
+                //.BODeceasedAliasNamesList(caseData.getBODeceasedAliasNamesList())
                 .solsSolicitorAppReference(caseData.getSolsSolicitorAppReference())
                 .solsAdditionalInfo(caseData.getSolsAdditionalInfo())
 
@@ -256,7 +256,7 @@ public class CallbackResponseTransformer {
                 .deceasedAnyOtherNames(caseData.getDeceasedAnyOtherNames())
                 .primaryApplicantAddress(caseData.getPrimaryApplicantAddress())
                 .solsDeceasedAliasNamesList(transformDeceasedAliasNameLists(caseData.getSolsDeceasedAliasNamesList()))
-                .BODeceasedAliasNamesList(transformBODeceasedAliasNameLists(caseData.getSolsDeceasedAliasNamesList()))
+                //.BODeceasedAliasNamesList(transformBODeceasedAliasNameLists(caseData.getSolsDeceasedAliasNamesList()))
                 .solsSolicitorAppReference(caseData.getSolsSolicitorAppReference())
                 .solsAdditionalInfo(caseData.getSolsAdditionalInfo())
 

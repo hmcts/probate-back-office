@@ -43,25 +43,4 @@ public class StateControllerTest {
                 .andExpect(content().string(containsString("ccdState")));
     }
 
-    @Test
-    public void shouldReturnAliasNameTransformed() throws Exception {
-        String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadAliasNames.json");
-
-        mockMvc.perform(post(COPY_STATE_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(content().string(containsString("ccdState")));
-    }
-
-    @Test
-    public void shouldReturnAdditionalExecutorsTransformed() throws Exception {
-        String solicitorPayload = testUtils.getStringFromFile("solicitorAdditionalExecutors.json");
-
-        mockMvc.perform(post(COPY_STATE_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(content().string(containsString("ccdState")));
-    }
-
-
 }

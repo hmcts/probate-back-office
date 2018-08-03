@@ -5,8 +5,6 @@ import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
-import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
-import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 
@@ -82,7 +80,7 @@ public class CaseDataTest {
         when(additionalExecutor3Mock.getAdditionalApplying()).thenReturn("No");
         when(additionalExecutor3Mock.getAdditionalExecReasonNotApplying()).thenReturn(NOT_APPLYING_REASON);
 
-        List<CollectionMember<AdditionalExecutorApplying>> applying = underTest.getExecutorsApplying();
+        List<CollectionMember<AdditionalExecutor>> applying = underTest.getExecutorsApplying();
 
         assertEquals(3, applying.size());
     }
@@ -96,7 +94,7 @@ public class CaseDataTest {
         when(additionalExecutor3Mock.getAdditionalApplying()).thenReturn("No");
         when(additionalExecutor3Mock.getAdditionalExecReasonNotApplying()).thenReturn(NOT_APPLYING_REASON);
 
-        List<CollectionMember<AdditionalExecutorNotApplying>> notApplying = underTest.getExecutorsNotApplying();
+        List<CollectionMember<AdditionalExecutor>> notApplying = underTest.getExecutorsNotApplying();
 
         assertEquals(2, notApplying.size());
     }
@@ -108,7 +106,7 @@ public class CaseDataTest {
         when(additionalExecutor3Mock.getAdditionalApplying()).thenReturn("No");
         when(additionalExecutor3Mock.getAdditionalExecReasonNotApplying()).thenReturn(NOT_APPLYING_REASON);
 
-        List<CollectionMember<AdditionalExecutorNotApplying>> notApplying = underTest.getExecutorsNotApplying();
+        List<CollectionMember<AdditionalExecutor>> notApplying = underTest.getExecutorsNotApplying();
 
         assertEquals(1, notApplying.size());
     }

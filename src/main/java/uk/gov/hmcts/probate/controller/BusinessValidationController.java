@@ -100,7 +100,7 @@ public class BusinessValidationController {
         CallbackResponse response = validateRequest(callbackRequest, validationRules);
 
         if (response.getErrors().isEmpty()) {
-            response = callbackResponseTransformer.validate(callbackRequest);
+            response = callbackResponseTransformer.transform(callbackRequest);
         }
 
         return ResponseEntity.ok(response);
@@ -121,25 +121,25 @@ public class BusinessValidationController {
         return ResponseEntity.ok(afterSubmitCallbackResponse);
     }
 
-    @PostMapping(path = "/transformCase", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @ResponseBody
-    public ResponseEntity<CallbackResponse> transformCaseDetails(
-            @Validated({AmendCaseDetailsGroup.class}) @RequestBody CallbackRequest callbackRequest,
-            BindingResult bindingResult) {
-
-        if (bindingResult.hasErrors()) {
-            log.error("Case Id: {} ERROR: {}", callbackRequest.getCaseDetails().getId(), bindingResult);
-            throw new BadRequestException("Invalid payload", bindingResult);
-        }
-
-        CallbackResponse response = validateRequest(callbackRequest, validationRules);
-
-        if (response.getErrors().isEmpty()) {
-            response = callbackResponseTransformer.transformCase(callbackRequest);
-        }
-
-        return ResponseEntity.ok(response);
-    }
+//    @PostMapping(path = "/transformCase", consumes = APPLICATION_JSON_UTF8_VALUE, produces = {APPLICATION_JSON_VALUE})
+//    @ResponseBody
+//    public ResponseEntity<CallbackResponse> transformCaseDetails(
+//           @RequestBody CallbackRequest callbackRequest,
+//            BindingResult bindingResult) {
+//
+//        if (bindingResult.hasErrors()) {
+//            log.error("Case Id: {} ERROR: {}", callbackRequest.getCaseDetails().getId(), bindingResult);
+//            throw new BadRequestException("Invalid payload", bindingResult);
+//        }
+//
+//        CallbackResponse response = validateRequest(callbackRequest, validationRules);
+//
+//        if (response.getErrors().isEmpty()) {
+//            response = callbackResponseTransformer.transformCase(callbackRequest);
+//        }
+//
+//        return ResponseEntity.ok(response);
+//    }
 
     private CallbackResponse validateRequest(CallbackRequest callbackRequest,
                                              List<? extends ValidationRule> rules) {
