@@ -10,7 +10,4 @@ public class AliasName {
 
     @JsonProperty(value = "SolsAliasname")
     private final String solsAliasname;
-
-    private ProbateAliasName aliasName;
-
 }

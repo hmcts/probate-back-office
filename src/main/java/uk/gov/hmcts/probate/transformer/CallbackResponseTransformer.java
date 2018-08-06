@@ -96,7 +96,7 @@ public class CallbackResponseTransformer {
         String applicationFee = transformMoneyGBPToString(feeServiceResponse.getApplicationFee());
         String totalFee = transformMoneyGBPToString(feeServiceResponse.getTotal());
 
-        ResponseCaseData responseCaseData = this.getResponseCaseData(callbackRequest.getCaseDetails(), false)
+        ResponseCaseData responseCaseData = getResponseCaseData(callbackRequest.getCaseDetails(), false)
                 .feeForNonUkCopies(feeForNonUkCopies)
                 .feeForUkCopies(feeForUkCopies)
                 .applicationFee(applicationFee)
@@ -112,7 +112,7 @@ public class CallbackResponseTransformer {
                     .add(new CollectionMember<>(null, document));
         }
 
-        ResponseCaseDataBuilder responseCaseDataBuilder = this.getResponseCaseData(callbackRequest.getCaseDetails(), false);
+        ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), false);
         responseCaseDataBuilder.solsSOTNeedToUpdate(null);
 
         if (LEGAL_STATEMENT.equals(document.getDocumentType())) {
@@ -123,14 +123,14 @@ public class CallbackResponseTransformer {
     }
 
     public CallbackResponse transform(CallbackRequest callbackRequest) {
-        ResponseCaseData responseCaseData = this.getResponseCaseData(callbackRequest.getCaseDetails(), false)
+        ResponseCaseData responseCaseData = getResponseCaseData(callbackRequest.getCaseDetails(), false)
                 .build();
 
         return transform(responseCaseData);
     }
 
     public CallbackResponse transformCase(CallbackRequest callbackRequest) {
-        ResponseCaseData responseCaseData = this.getResponseCaseData(callbackRequest.getCaseDetails(), true)
+        ResponseCaseData responseCaseData = getResponseCaseData(callbackRequest.getCaseDetails(), true)
                 .build();
 
         return transform(responseCaseData);

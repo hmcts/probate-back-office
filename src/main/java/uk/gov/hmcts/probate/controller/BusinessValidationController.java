@@ -119,7 +119,7 @@ public class BusinessValidationController {
 
     @PostMapping(path = "/transformCase", consumes = APPLICATION_JSON_UTF8_VALUE, produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> transformCaseDetails(
-           @RequestBody CallbackRequest callbackRequest,
+            @RequestBody CallbackRequest callbackRequest,
             BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
