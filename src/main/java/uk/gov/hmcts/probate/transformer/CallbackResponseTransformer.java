@@ -52,7 +52,7 @@ public class CallbackResponseTransformer {
     private final AdditionalExecutorsListFilter additionalExecutorsListFilter;
 
     public CallbackResponse transformWithConditionalStateChange(CallbackRequest callbackRequest, Optional<String> newState) {
-        ResponseCaseData responseCaseData = getResponseCaseData(callbackRequest.getCaseDetails())
+        ResponseCaseData responseCaseData = this.getResponseCaseData(callbackRequest.getCaseDetails())
                 .state(newState.orElse(null))
                 .build();
 
@@ -60,7 +60,7 @@ public class CallbackResponseTransformer {
     }
 
     public CallbackResponse addCcdState(CallbackRequest callbackRequest) {
-        ResponseCaseData responseCaseData = getResponseCaseData(callbackRequest.getCaseDetails())
+        ResponseCaseData responseCaseData = this.getResponseCaseData(callbackRequest.getCaseDetails())
                 .build();
 
         return transform(responseCaseData);
@@ -69,7 +69,7 @@ public class CallbackResponseTransformer {
     public CallbackResponse addDocumentReceivedNotification(CallbackRequest callbackRequest) {
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
 
-        ResponseCaseData responseCaseData = getResponseCaseData(caseDetails)
+        ResponseCaseData responseCaseData = this.getResponseCaseData(caseDetails)
                 .boEmailDocsReceivedNotificationRequested(caseDetails.getData().getBoEmailDocsReceivedNotification())
                 .build();
 
@@ -79,7 +79,7 @@ public class CallbackResponseTransformer {
     public CallbackResponse addGrandIssuedNotification(CallbackRequest callbackRequest) {
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
 
-        ResponseCaseData responseCaseData = getResponseCaseData(caseDetails)
+        ResponseCaseData responseCaseData = this.getResponseCaseData(caseDetails)
                 .boEmailGrantIssuedNotificationRequested(caseDetails.getData().getBoEmailGrantIssuedNotification())
                 .build();
 
@@ -92,7 +92,7 @@ public class CallbackResponseTransformer {
         String applicationFee = transformMoneyGBPToString(feeServiceResponse.getApplicationFee());
         String totalFee = transformMoneyGBPToString(feeServiceResponse.getTotal());
 
-        ResponseCaseData responseCaseData = getResponseCaseData(callbackRequest.getCaseDetails())
+        ResponseCaseData responseCaseData = this.getResponseCaseData(callbackRequest.getCaseDetails())
                 .feeForNonUkCopies(feeForNonUkCopies)
                 .feeForUkCopies(feeForUkCopies)
                 .applicationFee(applicationFee)
@@ -108,7 +108,7 @@ public class CallbackResponseTransformer {
                     .add(new CollectionMember<>(null, document));
         }
 
-        ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails());
+        ResponseCaseDataBuilder responseCaseDataBuilder = this.getResponseCaseData(callbackRequest.getCaseDetails());
         responseCaseDataBuilder.solsSOTNeedToUpdate(null);
 
         if (LEGAL_STATEMENT.equals(document.getDocumentType())) {
@@ -119,14 +119,14 @@ public class CallbackResponseTransformer {
     }
 
     public CallbackResponse transform(CallbackRequest callbackRequest) {
-        ResponseCaseData responseCaseData = getResponseCaseData(callbackRequest.getCaseDetails())
+        ResponseCaseData responseCaseData = this.getResponseCaseData(callbackRequest.getCaseDetails())
                 .build();
 
         return transform(responseCaseData);
     }
 
     public CallbackResponse transformCase(CallbackRequest callbackRequest) {
-        ResponseCaseData responseCaseData = getTransformedResponseCaseData(callbackRequest.getCaseDetails())
+        ResponseCaseData responseCaseData = this.getTransformedResponseCaseData(callbackRequest.getCaseDetails())
                 .build();
 
         return transform(responseCaseData);
@@ -256,7 +256,7 @@ public class CallbackResponseTransformer {
                 .deceasedAnyOtherNames(caseData.getDeceasedAnyOtherNames())
                 .primaryApplicantAddress(caseData.getPrimaryApplicantAddress())
                 .solsDeceasedAliasNamesList(transformDeceasedAliasNameLists(caseData.getSolsDeceasedAliasNamesList()))
-                //.BODeceasedAliasNamesList(transformBODeceasedAliasNameLists(caseData.getSolsDeceasedAliasNamesList()))
+                .BODeceasedAliasNamesList(transformBODeceasedAliasNameLists(caseData.getSolsDeceasedAliasNamesList()))
                 .solsSolicitorAppReference(caseData.getSolsSolicitorAppReference())
                 .solsAdditionalInfo(caseData.getSolsAdditionalInfo())
 
