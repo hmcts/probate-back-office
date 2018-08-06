@@ -84,8 +84,7 @@ public class BusinessValidationControllerTest {
 
     private CaseDataBuilder caseDataBuilder;
 
-    @Autowired
-    private TestUtils testUtils;
+    private final TestUtils testUtils = new TestUtils();
 
     @MockBean
     private AppInsights appInsights;

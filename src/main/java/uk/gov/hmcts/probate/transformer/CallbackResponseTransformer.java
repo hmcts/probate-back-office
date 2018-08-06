@@ -1,6 +1,5 @@
 package uk.gov.hmcts.probate.transformer;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.model.ApplicationType;
@@ -48,10 +47,10 @@ public class CallbackResponseTransformer {
     @Autowired
     private NameParser nameParser = new NameParser();
 
-    private final AdditionalExecutorsListFilter additionalExecutorsListFilter;
+    private AdditionalExecutorsListFilter additionalExecutorsListFilter;
 
     public CallbackResponse transformWithConditionalStateChange(CallbackRequest callbackRequest, Optional<String> newState) {
-        ResponseCaseData responseCaseData = getResponseCaseData(callbackRequest.getCaseDetails())
+        ResponseCaseData responseCaseData = getResponseCaseData(callbackRequest.getCaseDetails(), false)
                 .state(newState.orElse(null))
                 .build();
 
@@ -59,7 +58,7 @@ public class CallbackResponseTransformer {
     }
 
     public CallbackResponse addCcdState(CallbackRequest callbackRequest) {
-        ResponseCaseData responseCaseData = getResponseCaseData(callbackRequest.getCaseDetails())
+        ResponseCaseData responseCaseData = getResponseCaseData(callbackRequest.getCaseDetails(), false)
                 .build();
 
         return transform(responseCaseData);
@@ -68,7 +67,7 @@ public class CallbackResponseTransformer {
     public CallbackResponse addDocumentReceivedNotification(CallbackRequest callbackRequest) {
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
 
-        ResponseCaseData responseCaseData = getResponseCaseData(caseDetails)
+        ResponseCaseData responseCaseData = getResponseCaseData(caseDetails, false)
                 .boEmailDocsReceivedNotificationRequested(caseDetails.getData().getBoEmailDocsReceivedNotification())
                 .build();
 
@@ -81,7 +80,7 @@ public class CallbackResponseTransformer {
                     .add(new CollectionMember<>(null, document));
         }
 
-        ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails());
+        ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), false);
         responseCaseDataBuilder.boEmailGrantIssuedNotificationRequested(
                 callbackRequest.getCaseDetails().getData().getBoEmailGrantIssuedNotification());
         responseCaseDataBuilder.solsSOTNeedToUpdate(null);
@@ -96,7 +95,6 @@ public class CallbackResponseTransformer {
         String totalFee = transformMoneyGBPToString(feeServiceResponse.getTotal());
 
         ResponseCaseData responseCaseData = this.getResponseCaseData(callbackRequest.getCaseDetails(), false)
-        ResponseCaseData responseCaseData = getResponseCaseData(callbackRequest.getCaseDetails())
                 .feeForNonUkCopies(feeForNonUkCopies)
                 .feeForUkCopies(feeForUkCopies)
                 .applicationFee(applicationFee)
