@@ -174,7 +174,7 @@ public class CallbackResponseTransformer {
                 .deceasedAnyOtherNames(caseData.getDeceasedAnyOtherNames())
                 .primaryApplicantAddress(caseData.getPrimaryApplicantAddress())
                 .solsDeceasedAliasNamesList(caseData.getSolsDeceasedAliasNamesList())
-                //.BODeceasedAliasNamesList(caseData.getBODeceasedAliasNamesList())
+                .BODeceasedAliasNamesList(caseData.getBODeceasedAliasNamesList())
                 .solsSolicitorAppReference(caseData.getSolsSolicitorAppReference())
                 .solsAdditionalInfo(caseData.getSolsAdditionalInfo())
 

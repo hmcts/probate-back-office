@@ -17,6 +17,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.AliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
+import uk.gov.hmcts.probate.model.ccd.raw.ProbateAliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.StopReason;
 
@@ -88,7 +89,7 @@ public class CaseData {
 
     private final List<CollectionMember<AliasName>> solsDeceasedAliasNamesList;
 
-   // private final List<CollectionMember<ProbateAliasName>> BODeceasedAliasNamesList;
+    private final List<CollectionMember<ProbateAliasName>> BODeceasedAliasNamesList;
 
     @NotBlank(groups = {ApplicationUpdatedGroup.class}, message = "{solsIHTFormIdIsNull}")
     private final String solsIHTFormId;
