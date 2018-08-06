@@ -20,4 +20,6 @@ public class CaseDetails {
     private final Long id;
 
     private String state;
+
+    private String grantSignatureBase64;
 }

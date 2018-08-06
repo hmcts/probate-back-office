@@ -41,7 +41,6 @@ public class PrintGrantTemplateFeatureTest {
     private static final String DECEASED_TITLE = "Lord";
     private static final String ALIAS_NAME = "John Doe";
     private static final String ALIAS_NAME_SCEOND = "John Smith";
-  //  private static final String DECEASED_ALIAS_NAMES_LIST = Collections.list(ALIAS_NAME_SCEOND, ALIAS_NAME);
 
     private static final String APPLICANT_FORENAME = "Fred";
     private static final String APPLICANT_SURNAME = "Bloggs";
@@ -77,7 +76,6 @@ public class PrintGrantTemplateFeatureTest {
                 .deceasedForenames(DECEASED_FIRSTNAME)
                 .deceasedSurname(DECEASED_LASTNAME)
                 .deceasedAddress(createAddress())
-               // .solsDeceasedAliasNamesList(DECEASED_ALIAS_NAMES_LIST)
                 .deceasedDateOfDeath(DOD)
                 .boDeceasedTitle(DECEASED_TITLE)
                 .boDeceasedHonours(DECEASED_HONOURS)
@@ -119,12 +117,9 @@ public class PrintGrantTemplateFeatureTest {
     public void shouldGenerateCorrectTemplateMultipleExecutorsSOls() throws Exception {
         CaseData caseData = caseDataBuilder
                 .applicationType(ApplicationType.SOLICITOR)
-               // .executorsApplying(createApplyingExecutors())
                 .build();
 
-
-
-//        String expectedPrintTemplate = testUtils.getStringFromFile("PrintTemplateWithMultipleExecutorSOLs.md");
+        String expectedPrintTemplate = testUtils.getStringFromFile("PrintTemplateMultipleExecutorSOLs.md");
 
     }
 
@@ -138,8 +133,6 @@ public class PrintGrantTemplateFeatureTest {
                 .boLimitationText(LIMITATION_TEXT)
                 .build();
 
-
-
         String expectedPrintTemplate = testUtils.getStringFromFile("PrintTemplateWithGrantInfoSOLs.md");
 
 
@@ -149,10 +142,7 @@ public class PrintGrantTemplateFeatureTest {
     public void shouldGenerateCorrectTemplateWithPowerReservedMultipleSOls() throws Exception {
         CaseData caseData = caseDataBuilder
                 .applicationType(ApplicationType.SOLICITOR)
-              //  .executorsNotApplying(createNotApplyingExecutors())
                 .build();
-
-
 
         String expectedPrintTemplate = testUtils.getStringFromFile("PrintTemplateWithPowerReservedMultipleSOLs.md");
 
@@ -164,7 +154,6 @@ public class PrintGrantTemplateFeatureTest {
 
         CaseData caseData = caseDataBuilder
                 .applicationType(ApplicationType.SOLICITOR)
-               // .executorsNotApplying(createNotApplyingExecutors())
                 .build();
 
 
