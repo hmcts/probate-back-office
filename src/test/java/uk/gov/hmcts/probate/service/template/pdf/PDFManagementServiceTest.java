@@ -8,6 +8,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.hateoas.Link;
+import uk.gov.hmcts.probate.config.PDFServiceConfiguration;
 import uk.gov.hmcts.probate.exception.BadRequestException;
 import uk.gov.hmcts.probate.exception.ConnectionException;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
@@ -46,6 +47,8 @@ public class PDFManagementServiceTest {
     private JsonProcessingException jsonProcessingException;
     @Mock
     private HttpServletRequest httpServletRequest;
+    @Mock
+    private PDFServiceConfiguration pdfServiceConfiguration;
 
     private PDFManagementService underTest;
 
@@ -53,7 +56,7 @@ public class PDFManagementServiceTest {
     public void setUp() {
         when(objectMapperMock.copy()).thenReturn(objectMapperMock);
         underTest = new PDFManagementService(pdfGeneratorServiceMock, uploadServiceMock,
-                objectMapperMock, httpServletRequest);
+                objectMapperMock, httpServletRequest, pdfServiceConfiguration);
     }
 
     @Test

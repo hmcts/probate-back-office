@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Link;
 import org.springframework.stereotype.Service;
+import uk.gov.hmcts.probate.config.PDFServiceConfiguration;
 import uk.gov.hmcts.probate.exception.BadRequestException;
 import uk.gov.hmcts.probate.exception.ConnectionException;
 import uk.gov.hmcts.probate.model.DocumentType;
@@ -23,6 +24,8 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
+
 @Slf4j
 @Service
 public class PDFManagementService {
@@ -31,10 +34,12 @@ public class PDFManagementService {
     private final UploadService uploadService;
     private final ObjectMapper objectMapper;
     private final HttpServletRequest httpServletRequest;
+    private final PDFServiceConfiguration pdfServiceConfiguration;
 
     @Autowired
     public PDFManagementService(PDFGeneratorService pdfGeneratorService, UploadService uploadService,
-                                ObjectMapper objectMapper, HttpServletRequest httpServletRequest) {
+                                ObjectMapper objectMapper, HttpServletRequest httpServletRequest,
+                                PDFServiceConfiguration pdfServiceConfiguration) {
         this.pdfGeneratorService = pdfGeneratorService;
         this.uploadService = uploadService;
         this.objectMapper = objectMapper.copy();
@@ -42,9 +47,14 @@ public class PDFManagementService {
         module.addSerializer(BigDecimal.class, new BigDecimalNumberSerializer());
         this.objectMapper.registerModule(module);
         this.httpServletRequest = httpServletRequest;
+        this.pdfServiceConfiguration = pdfServiceConfiguration;
     }
 
     public Document generateAndUpload(CallbackRequest callbackRequest, DocumentType documentType) {
+        if (DIGITAL_GRANT.equals(documentType)) {
+            callbackRequest.getCaseDetails().setGrantSignatureBase64(pdfServiceConfiguration.getGrantSignatureBase64());
+        }
+
         try {
             String json = objectMapper.writeValueAsString(callbackRequest);
             EvidenceManagementFileUpload fileUpload = pdfGeneratorService.generatePdf(documentType, json);

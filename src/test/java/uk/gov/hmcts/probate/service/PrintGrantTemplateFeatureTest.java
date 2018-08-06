@@ -124,7 +124,7 @@ public class PrintGrantTemplateFeatureTest {
                 .applicationType(ApplicationType.SOLICITOR)
                 .build();
 
-        String expectedPrintTemplate = testUtils.getStringFromFile("PrintTemplateWithMultipleExecutorSOLs.md");
+        String expectedPrintTemplate = testUtils.getStringFromFile("PrintTemplateMultipleExecutorSOLs.md");
 
     }
 
@@ -139,10 +139,7 @@ public class PrintGrantTemplateFeatureTest {
                 .boLimitationText(LIMITATION_TEXT)
                 .build();
 
-
         String expectedPrintTemplate = testUtils.getStringFromFile("PrintTemplateWithGrantInfoSOLs.md");
-
-
     }
 
     @Ignore
@@ -152,10 +149,7 @@ public class PrintGrantTemplateFeatureTest {
                 .applicationType(ApplicationType.SOLICITOR)
                 .build();
 
-
         String expectedPrintTemplate = testUtils.getStringFromFile("PrintTemplateWithPowerReservedMultipleSOLs.md");
-
-
     }
 
     @Ignore
@@ -168,7 +162,6 @@ public class PrintGrantTemplateFeatureTest {
 
 
         String expectedPrintTemplate = testUtils.getStringFromFile("PrintTemplateWithPowerReservedSingleSOLs.md");
-
     }
 
     private Executor createNotApplyingExecutors() {
