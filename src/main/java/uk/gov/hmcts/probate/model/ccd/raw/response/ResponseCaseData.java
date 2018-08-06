@@ -70,8 +70,6 @@ public class ResponseCaseData {
     private final String solsExecutorAliasNames;
     private final String solsExecutorAliasFirstNames;
     private final String solsExecutorAliasSurnames;
-    private final String forenames;
-    private final String lastName;
     private final List<CollectionMember<AdditionalExecutorApplying>> executorsApplying;
     private final List<CollectionMember<AdditionalExecutorNotApplying>> executorsNotApplying;
     private final List<CollectionMember<AdditionalExecutor>> solsAdditionalExecutorList;
