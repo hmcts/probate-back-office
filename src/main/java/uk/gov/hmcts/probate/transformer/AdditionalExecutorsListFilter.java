@@ -14,7 +14,9 @@ public class AdditionalExecutorsListFilter {
 
     private static final String NO = "No";
 
-    public List<CollectionMember<AdditionalExecutor>> filter(List<CollectionMember<AdditionalExecutor>> additionalExecutors, CaseData caseData, String applying) {
+    public List<CollectionMember<AdditionalExecutor>>
+        filter(List<CollectionMember<AdditionalExecutor>> additionalExecutors,
+               CaseData caseData, String applying) {
 
         if (caseData.getOtherExecutorExists().equalsIgnoreCase(NO)) {
             return Collections.emptyList();

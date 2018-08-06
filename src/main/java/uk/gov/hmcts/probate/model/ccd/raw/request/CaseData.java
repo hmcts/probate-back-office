@@ -91,7 +91,7 @@ public class CaseData {
 
     private final List<CollectionMember<AliasName>> solsDeceasedAliasNamesList;
 
-    private final List<CollectionMember<ProbateAliasName>> BODeceasedAliasNamesList;
+    private final List<CollectionMember<ProbateAliasName>> boDeceasedAliasNamesList;
 
     @NotBlank(groups = {ApplicationUpdatedGroup.class}, message = "{solsIHTFormIdIsNull}")
     private final String solsIHTFormId;

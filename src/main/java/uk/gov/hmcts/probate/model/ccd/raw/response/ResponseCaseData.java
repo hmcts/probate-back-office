@@ -77,7 +77,7 @@ public class ResponseCaseData {
     private final String deceasedAnyOtherNames;
     private final SolsAddress primaryApplicantAddress;
     private final List<CollectionMember<AliasName>> solsDeceasedAliasNamesList;
-    private final List<CollectionMember<ProbateAliasName>> BODeceasedAliasNamesList;
+    private final List<CollectionMember<ProbateAliasName>> boDeceasedAliasNamesList;
     private final String ccdState;
     private final String casePrinted;
     private final String boEmailDocsReceivedNotificationRequested;

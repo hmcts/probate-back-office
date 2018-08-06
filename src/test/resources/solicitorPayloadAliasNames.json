@@ -28,9 +28,7 @@
       "solsDeceasedAliasNamesList": [
         {
           "value": {
-            "SolsAliasname": "Fred Jones",
-            "solsAliasFirstName": null,
-            "solsAliasSurname": null
+            "SolsAliasname": "Fred Jones"
           },
           "id": "de97b99a-dc68-4d32-8d69-da4153b4fd08"
         }
