@@ -35,7 +35,6 @@ import static uk.gov.hmcts.probate.transformer.NameParser.FIRST_NAMES;
 import static uk.gov.hmcts.probate.transformer.NameParser.SURNAME;
 
 @Component
-@RequiredArgsConstructor
 public class CallbackResponseTransformer {
 
     static final String PAYMENT_METHOD_VALUE_FEE_ACCOUNT = "fee account";
@@ -52,7 +51,7 @@ public class CallbackResponseTransformer {
     private final AdditionalExecutorsListFilter additionalExecutorsListFilter;
 
     public CallbackResponse transformWithConditionalStateChange(CallbackRequest callbackRequest, Optional<String> newState) {
-        ResponseCaseData responseCaseData = this.getResponseCaseData(callbackRequest.getCaseDetails(), false)
+        ResponseCaseData responseCaseData = getResponseCaseData(callbackRequest.getCaseDetails())
                 .state(newState.orElse(null))
                 .build();
 
@@ -60,7 +59,7 @@ public class CallbackResponseTransformer {
     }
 
     public CallbackResponse addCcdState(CallbackRequest callbackRequest) {
-        ResponseCaseData responseCaseData = this.getResponseCaseData(callbackRequest.getCaseDetails(), false)
+        ResponseCaseData responseCaseData = getResponseCaseData(callbackRequest.getCaseDetails())
                 .build();
 
         return transform(responseCaseData);
@@ -69,21 +68,25 @@ public class CallbackResponseTransformer {
     public CallbackResponse addDocumentReceivedNotification(CallbackRequest callbackRequest) {
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
 
-        ResponseCaseData responseCaseData = this.getResponseCaseData(caseDetails, false)
+        ResponseCaseData responseCaseData = getResponseCaseData(caseDetails)
                 .boEmailDocsReceivedNotificationRequested(caseDetails.getData().getBoEmailDocsReceivedNotification())
                 .build();
 
         return transform(responseCaseData);
     }
 
-    public CallbackResponse addGrandIssuedNotification(CallbackRequest callbackRequest) {
-        CaseDetails caseDetails = callbackRequest.getCaseDetails();
+    public CallbackResponse grantIssued(CallbackRequest callbackRequest, Document document) {
+        if (DIGITAL_GRANT_DRAFT.equals(document.getDocumentType()) || DIGITAL_GRANT.equals(document.getDocumentType())) {
+            callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated()
+                    .add(new CollectionMember<>(null, document));
+        }
 
-        ResponseCaseData responseCaseData = this.getResponseCaseData(caseDetails, false)
-                .boEmailGrantIssuedNotificationRequested(caseDetails.getData().getBoEmailGrantIssuedNotification())
-                .build();
+        ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails());
+        responseCaseDataBuilder.boEmailGrantIssuedNotificationRequested(
+                callbackRequest.getCaseDetails().getData().getBoEmailGrantIssuedNotification());
+        responseCaseDataBuilder.solsSOTNeedToUpdate(null);
 
-        return transform(responseCaseData);
+        return transform(responseCaseDataBuilder.build());
     }
 
     public CallbackResponse transform(CallbackRequest callbackRequest, FeeServiceResponse feeServiceResponse) {
@@ -93,6 +96,7 @@ public class CallbackResponseTransformer {
         String totalFee = transformMoneyGBPToString(feeServiceResponse.getTotal());
 
         ResponseCaseData responseCaseData = this.getResponseCaseData(callbackRequest.getCaseDetails(), false)
+        ResponseCaseData responseCaseData = getResponseCaseData(callbackRequest.getCaseDetails())
                 .feeForNonUkCopies(feeForNonUkCopies)
                 .feeForUkCopies(feeForUkCopies)
                 .applicationFee(applicationFee)
@@ -165,16 +169,11 @@ public class CallbackResponseTransformer {
                 .primaryApplicantHasAlias(caseData.getPrimaryApplicantHasAlias())
                 .otherExecutorExists(caseData.getOtherExecutorExists())
                 .solsExecutorAliasNames(caseData.getSolsExecutorAliasNames())
-                .solsExecutorAliasFirstNames(caseData.getSolsExecutorAliasFirstNames())
-                .solsExecutorAliasSurnames(caseData.getSolsExecutorAliasSurnames())
                 .solsAdditionalExecutorList(caseData.getSolsAdditionalExecutorList())
-                .executorsApplying(caseData.getAdditionalExecutorsApplying())
-                .executorsNotApplying(caseData.getAdditionalExecutorsNotApplying())
                 .deceasedAddress(caseData.getDeceasedAddress())
                 .deceasedAnyOtherNames(caseData.getDeceasedAnyOtherNames())
                 .primaryApplicantAddress(caseData.getPrimaryApplicantAddress())
                 .solsDeceasedAliasNamesList(caseData.getSolsDeceasedAliasNamesList())
-                .BODeceasedAliasNamesList(caseData.getBODeceasedAliasNamesList())
                 .solsSolicitorAppReference(caseData.getSolsSolicitorAppReference())
                 .solsAdditionalInfo(caseData.getSolsAdditionalInfo())
 
@@ -243,7 +242,6 @@ public class CallbackResponseTransformer {
 
         return builder;
     }
-
 
     private String getPaymentReference(CaseData caseData) {
         if (PAYMENT_METHOD_VALUE_FEE_ACCOUNT.equals(caseData.getSolsPaymentMethods())) {

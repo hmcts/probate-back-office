@@ -3,7 +3,6 @@ package uk.gov.hmcts.probate.service.template.pdf;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Link;
@@ -25,33 +24,39 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
+
 @Slf4j
 @Service
-@RequiredArgsConstructor
 public class PDFManagementService {
 
     private final PDFGeneratorService pdfGeneratorService;
     private final UploadService uploadService;
-    private final ObjectMapper pdfServiceObjectMapper;
-    private final PDFServiceConfiguration pdfServiceConfiguration;
+    private final ObjectMapper objectMapper;
     private final HttpServletRequest httpServletRequest;
+    private final PDFServiceConfiguration pdfServiceConfiguration;
 
     @Autowired
-    public PDFManagementService(PDFServiceConfiguration pdfServiceConfiguration, PDFGeneratorService pdfGeneratorService,
-                                UploadService uploadService, ObjectMapper objectMapper, HttpServletRequest httpServletRequest) {
-        this.pdfServiceConfiguration = pdfServiceConfiguration;
+    public PDFManagementService(PDFGeneratorService pdfGeneratorService, UploadService uploadService,
+                                ObjectMapper objectMapper, HttpServletRequest httpServletRequest,
+                                PDFServiceConfiguration pdfServiceConfiguration) {
         this.pdfGeneratorService = pdfGeneratorService;
         this.uploadService = uploadService;
-        this.pdfServiceObjectMapper = objectMapper.copy();
+        this.objectMapper = objectMapper.copy();
         SimpleModule module = new SimpleModule();
         module.addSerializer(BigDecimal.class, new BigDecimalNumberSerializer());
-        this.pdfServiceObjectMapper.registerModule(module);
+        this.objectMapper.registerModule(module);
         this.httpServletRequest = httpServletRequest;
+        this.pdfServiceConfiguration = pdfServiceConfiguration;
     }
 
     public Document generateAndUpload(CallbackRequest callbackRequest, DocumentType documentType) {
+        if (DIGITAL_GRANT.equals(documentType)) {
+            callbackRequest.getCaseDetails().setGrantSignatureBase64(pdfServiceConfiguration.getGrantSignatureBase64());
+        }
+
         try {
-            String json = pdfServiceObjectMapper.writeValueAsString(callbackRequest);
+            String json = objectMapper.writeValueAsString(callbackRequest);
             EvidenceManagementFileUpload fileUpload = pdfGeneratorService.generatePdf(documentType, json);
             EvidenceManagementFile store = uploadService.store(fileUpload);
             DocumentLink documentLink = DocumentLink.builder()

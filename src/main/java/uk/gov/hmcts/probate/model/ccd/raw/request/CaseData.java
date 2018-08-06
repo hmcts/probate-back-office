@@ -64,6 +64,8 @@ public class CaseData {
     @NotNull(groups = {ApplicationUpdatedGroup.class, AmendCaseDetailsGroup.class}, message = "{dodIsNull}")
     private final LocalDate deceasedDateOfDeath;
 
+    private final LocalDate currentDate = LocalDate.now();
+
     @NotNull(groups = {ApplicationUpdatedGroup.class, AmendCaseDetailsGroup.class}, message = "{dobIsNull}")
     private final LocalDate deceasedDateOfBirth;
 

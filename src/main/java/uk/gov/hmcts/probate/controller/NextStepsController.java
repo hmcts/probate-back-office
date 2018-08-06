@@ -55,7 +55,7 @@ public class NextStepsController {
 
         logRequest(request.getRequestURI(), callbackRequest);
 
-        CallbackResponse callbackResponse = null;
+        CallbackResponse callbackResponse;
         Optional<String> newState = stateChangeService.getChangedStateForCaseReview(callbackRequest.getCaseDetails().getData());
         if (newState.isPresent()) {
             callbackResponse = callbackResponseTransformer
