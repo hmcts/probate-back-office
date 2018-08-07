@@ -36,6 +36,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
+import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT;
 
@@ -298,6 +299,24 @@ public class CallbackResponseTransformerTest {
         assertEquals(PAY_REF_CHEQUE, callbackResponse.getData().getSolsPaymentReferenceNumber());
     }
 
+    @Test
+    public void shouldAddDocumentToProbateDocumentsGenerated() {
+        Document document = Document.builder().documentType(DIGITAL_GRANT).build();
+        CallbackResponse callbackResponse = underTest.grantIssued(callbackRequestMock, document);
+
+        assertCommon(callbackResponse);
+
+        assertEquals(1, callbackResponse.getData().getProbateDocumentsGenerated().size());
+        assertEquals(document, callbackResponse.getData().getProbateDocumentsGenerated().get(0).getValue());
+    }
+
+    @Test
+    public void shouldTransformCallbackRequestToCallbackResponse() {
+        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock);
+
+        assertCommon(callbackResponse);
+    }
+
     private void assertCommon(CallbackResponse callbackResponse) {
         assertEquals(APPLICATION_TYPE, callbackResponse.getData().getApplicationType());
         assertEquals(REGISTRY_LOCATION, callbackResponse.getData().getRegistryLocation());
@@ -316,8 +335,8 @@ public class CallbackResponseTransformerTest {
         assertEquals(NUM_CODICILS, callbackResponse.getData().getWillNumberOfCodicils());
 
         assertEquals(IHT_FORM_ID, callbackResponse.getData().getSolsIHTFormId());
-        Assert.assertThat(new BigDecimal("10000"),  comparesEqualTo(callbackResponse.getData().getIhtGrossValue()));
-        Assert.assertThat(new BigDecimal("9000"),  comparesEqualTo(callbackResponse.getData().getIhtNetValue()));
+        Assert.assertThat(new BigDecimal("10000"), comparesEqualTo(callbackResponse.getData().getIhtGrossValue()));
+        Assert.assertThat(new BigDecimal("9000"), comparesEqualTo(callbackResponse.getData().getIhtNetValue()));
 
         assertEquals(APPLICANT_FORENAME, callbackResponse.getData().getPrimaryApplicantForenames());
         assertEquals(APPLICANT_SURNAME, callbackResponse.getData().getPrimaryApplicantSurname());
