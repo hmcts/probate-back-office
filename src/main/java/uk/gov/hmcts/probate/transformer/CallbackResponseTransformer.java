@@ -56,14 +56,14 @@ public class CallbackResponseTransformer {
                 .state(newState.orElse(null))
                 .build();
 
-        return transform(responseCaseData);
+        return transformResponse(responseCaseData);
     }
 
     public CallbackResponse addCcdState(CallbackRequest callbackRequest) {
         ResponseCaseData responseCaseData = getResponseCaseData(callbackRequest.getCaseDetails(), false)
                 .build();
 
-        return transform(responseCaseData);
+        return transformResponse(responseCaseData);
     }
 
     public CallbackResponse addDocumentReceivedNotification(CallbackRequest callbackRequest) {
@@ -73,7 +73,7 @@ public class CallbackResponseTransformer {
                 .boEmailDocsReceivedNotificationRequested(caseDetails.getData().getBoEmailDocsReceivedNotification())
                 .build();
 
-        return transform(responseCaseData);
+        return transformResponse(responseCaseData);
     }
 
     public CallbackResponse grantIssued(CallbackRequest callbackRequest, Document document) {
@@ -87,7 +87,7 @@ public class CallbackResponseTransformer {
                 callbackRequest.getCaseDetails().getData().getBoEmailGrantIssuedNotification());
         responseCaseDataBuilder.solsSOTNeedToUpdate(null);
 
-        return transform(responseCaseDataBuilder.build());
+        return transformResponse(responseCaseDataBuilder.build());
     }
 
     public CallbackResponse transform(CallbackRequest callbackRequest, FeeServiceResponse feeServiceResponse) {
@@ -103,7 +103,7 @@ public class CallbackResponseTransformer {
                 .totalFee(totalFee)
                 .build();
 
-        return transform(responseCaseData);
+        return transformResponse(responseCaseData);
     }
 
     public CallbackResponse transform(CallbackRequest callbackRequest, Document document) {
@@ -119,24 +119,24 @@ public class CallbackResponseTransformer {
             responseCaseDataBuilder.solsLegalStatementDocument(document.getDocumentLink());
         }
 
-        return transform(responseCaseDataBuilder.build());
+        return transformResponse(responseCaseDataBuilder.build());
     }
 
     public CallbackResponse transform(CallbackRequest callbackRequest) {
         ResponseCaseData responseCaseData = getResponseCaseData(callbackRequest.getCaseDetails(), false)
                 .build();
 
-        return transform(responseCaseData);
+        return transformResponse(responseCaseData);
     }
 
     public CallbackResponse transformCase(CallbackRequest callbackRequest) {
         ResponseCaseData responseCaseData = getResponseCaseData(callbackRequest.getCaseDetails(), true)
                 .build();
 
-        return transform(responseCaseData);
+        return transformResponse(responseCaseData);
     }
 
-    private CallbackResponse transform(ResponseCaseData responseCaseData) {
+    private CallbackResponse transformResponse(ResponseCaseData responseCaseData) {
         return CallbackResponse.builder().data(responseCaseData).build();
     }
 
