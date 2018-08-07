@@ -22,6 +22,7 @@ import uk.gov.hmcts.probate.util.TestUtils;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -69,6 +70,8 @@ public class DocumentControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("data")))
                 .andExpect(content().string(containsString("ccdState")));
+
+        doNothing().when(documentService).expire(Matchers.any(CallbackRequest.class), eq(DIGITAL_GRANT_DRAFT));
 
         verify(documentService).expire(Matchers.any(CallbackRequest.class), eq(DIGITAL_GRANT_DRAFT));
     }
