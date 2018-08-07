@@ -345,8 +345,8 @@ public class CallbackResponseTransformerTest {
         assertEquals(CASE_PRINT, callbackResponse.getData().getCasePrinted());
         assertEquals(STOP_REASONS_LIST, callbackResponse.getData().getBoCaseStopReasonList());
 
-        assertEquals(ADDITIONAL_EXEC_LIST, callbackResponse.getData().getExecutorsApplying());
-        assertEquals(ADDITIONAL_EXEC_LIST, callbackResponse.getData().getExecutorsNotApplying());
+        assertEquals(ADDITIONAL_EXEC_LIST, callbackResponse.getData().getAdditionalExecutorsApplying());
+        assertEquals(ADDITIONAL_EXEC_LIST, callbackResponse.getData().getAdditionalExecutorsNotApplying());
 
         assertEquals(DECEASED_TITLE, callbackResponse.getData().getBoDeceasedTitle());
         assertEquals(DECEASED_HONOURS, callbackResponse.getData().getBoDeceasedHonours());

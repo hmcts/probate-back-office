@@ -221,8 +221,8 @@ public class CallbackResponseTransformer {
                     .solsExecutorAliasFirstNames(transformPrimaryApplicantFirstName(caseData.getSolsExecutorAliasNames()))
                     .solsExecutorAliasSurnames(transformPrimaryApplicantSurname(caseData.getSolsExecutorAliasNames()))
 
-                    .executorsApplying(transformApplyingExecLists(caseData))
-                    .executorsNotApplying(transformNotApplyingExecLists(caseData))
+                    .additionalExecutorsApplying(transformApplyingExecLists(caseData))
+                    .additionalExecutorsNotApplying(transformNotApplyingExecLists(caseData))
 
                     .solsDeceasedAliasNamesList(caseData.getSolsDeceasedAliasNamesList())
                     .boDeceasedAliasNamesList(transformDeceasedAliasNameLists(caseData.getSolsDeceasedAliasNamesList()));
@@ -231,8 +231,8 @@ public class CallbackResponseTransformer {
                     .solsExecutorAliasFirstNames(caseData.getSolsExecutorAliasFirstNames())
                     .solsExecutorAliasSurnames(caseData.getSolsExecutorAliasSurnames())
 
-                    .executorsApplying(caseData.getAdditionalExecutorsApplying())
-                    .executorsNotApplying(caseData.getAdditionalExecutorsNotApplying())
+                    .additionalExecutorsApplying(caseData.getAdditionalExecutorsApplying())
+                    .additionalExecutorsNotApplying(caseData.getAdditionalExecutorsNotApplying())
 
                     .solsDeceasedAliasNamesList(caseData.getSolsDeceasedAliasNamesList())
                     .boDeceasedAliasNamesList(caseData.getBoDeceasedAliasNamesList());

@@ -1,6 +1,7 @@
 package uk.gov.hmcts.probate.model.ccd.raw.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Data;
 import uk.gov.hmcts.probate.model.ApplicationType;
@@ -70,8 +71,10 @@ public class ResponseCaseData {
     private final String solsExecutorAliasNames;
     private final String solsExecutorAliasFirstNames;
     private final String solsExecutorAliasSurnames;
-    private final List<CollectionMember<AdditionalExecutorApplying>> executorsApplying;
-    private final List<CollectionMember<AdditionalExecutorNotApplying>> executorsNotApplying;
+    @JsonProperty(value = "executorsApplying")
+    private final List<CollectionMember<AdditionalExecutorApplying>> additionalExecutorsApplying;
+    @JsonProperty(value = "executorsNotApplying")
+    private final List<CollectionMember<AdditionalExecutorNotApplying>> additionalExecutorsNotApplying;
     private final List<CollectionMember<AdditionalExecutor>> solsAdditionalExecutorList;
     private final SolsAddress deceasedAddress;
     private final String deceasedAnyOtherNames;

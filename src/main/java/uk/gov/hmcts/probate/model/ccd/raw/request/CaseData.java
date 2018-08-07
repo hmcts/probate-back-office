@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.model.ccd.raw.request;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
@@ -195,8 +196,9 @@ public class CaseData {
     @DecimalMin(groups = {NextStepsConfirmationGroup.class}, value = "0.0", message = "{totalFeeNegative}")
     private final BigDecimal totalFee;
 
+    @JsonProperty(value = "executorsApplying")
     private List<CollectionMember<AdditionalExecutorApplying>> additionalExecutorsApplying;
-
+    @JsonProperty(value = "executorsNotApplying")
     private List<CollectionMember<AdditionalExecutorNotApplying>> additionalExecutorsNotApplying;
 
     private final ApplicationType applicationType;

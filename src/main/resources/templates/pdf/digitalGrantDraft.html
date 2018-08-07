@@ -119,7 +119,7 @@
                 {% set count = 1 %} {% for alias in case_details.case_data.solsDeceasedAliasNamesList %}
                 Otherwise
                 {% if alias.value %}
-                {{ alias.value }}, 
+                {{ alias.value }},
                 {% endif %}
                 {% set applyingCount = applyingCount + 1 %}{% endfor %}
                 <br/>of <strong><span class="camelCase">{% if case_details.case_data.deceasedAddress.AddressLine1 != null and case_details.case_data.deceasedAddress.AddressLine1 != "" %}{{ case_details.case_data.deceasedAddress.AddressLine1}}{% endif %}
