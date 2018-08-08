@@ -127,11 +127,8 @@ public class BusinessValidationController {
             throw new BadRequestException("Invalid payload", bindingResult);
         }
 
-        CallbackResponse response = validateRequest(callbackRequest, validationRules);
+        CallbackResponse response = callbackResponseTransformer.transformCase(callbackRequest);
 
-        if (response.getErrors().isEmpty()) {
-            response = callbackResponseTransformer.transformCase(callbackRequest);
-        }
 
         return ResponseEntity.ok(response);
     }

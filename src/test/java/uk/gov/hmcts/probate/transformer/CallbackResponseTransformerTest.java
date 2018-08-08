@@ -128,8 +128,6 @@ public class CallbackResponseTransformerTest {
 
     private CaseData.CaseDataBuilder caseDataBuilder;
 
-    @Mock
-    private AdditionalExecutorsListFilter additionalExecutorsListFilter;
 
     @Mock
     private FeeServiceResponse feeServiceResponseMock;
