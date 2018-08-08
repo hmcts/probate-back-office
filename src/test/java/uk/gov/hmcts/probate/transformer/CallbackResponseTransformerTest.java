@@ -38,6 +38,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
+import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT;
 
@@ -301,6 +302,24 @@ public class CallbackResponseTransformerTest {
         assertEquals(SOL_PAY_METHODS_CHEQUE, callbackResponse.getData().getSolsPaymentMethods());
         assertNull(callbackResponse.getData().getSolsFeeAccountNumber());
         assertEquals(PAY_REF_CHEQUE, callbackResponse.getData().getSolsPaymentReferenceNumber());
+    }
+
+    @Test
+    public void shouldAddDocumentToProbateDocumentsGenerated() {
+        Document document = Document.builder().documentType(DIGITAL_GRANT).build();
+        CallbackResponse callbackResponse = underTest.grantIssued(callbackRequestMock, document);
+
+        assertCommon(callbackResponse);
+
+        assertEquals(1, callbackResponse.getData().getProbateDocumentsGenerated().size());
+        assertEquals(document, callbackResponse.getData().getProbateDocumentsGenerated().get(0).getValue());
+    }
+
+    @Test
+    public void shouldTransformCallbackRequestToCallbackResponse() {
+        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock);
+
+        assertCommon(callbackResponse);
     }
 
     private void assertCommon(CallbackResponse callbackResponse) {
