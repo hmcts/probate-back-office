@@ -20,7 +20,7 @@ public class ProbateAliasName {
     @JsonProperty(value = "AppearOnGrant")
     private final String appearOnGrant;
 
-    public static ProbateAliasName createFromAlias (Alias alias){
+    public static ProbateAliasName createFromAlias(Alias alias) {
         return new ProbateAliasName(alias.getFirstName(), alias.getLastName(), "YES");
     }
 

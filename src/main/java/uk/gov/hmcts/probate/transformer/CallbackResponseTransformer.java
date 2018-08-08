@@ -233,7 +233,6 @@ public class CallbackResponseTransformer {
             }
 
 
-
             if (caseData.getSolsAdditionalExecutorList() != null) {
 
                 List<CollectionMember<AdditionalExecutorApplying>> applyingExec = caseData.getSolsAdditionalExecutorList()
@@ -246,7 +245,10 @@ public class CallbackResponseTransformer {
                                 .applyingExecutorPhoneNumber(null)
                                 .applyingExecutorEmail(null)
                                 .applyingExecutorAddress(additionalExecutor.getAdditionalExecAddress())
-                                .aliasName(ProbateAliasName.createFromAlias(new Alias(Optional.ofNullable(additionalExecutor.getAdditionalExecAliasNameOnWill()).orElse(""))))
+                                .aliasName(ProbateAliasName
+                                        .createFromAlias(new Alias(
+                                                Optional.ofNullable(additionalExecutor.getAdditionalExecAliasNameOnWill())
+                                                        .orElse(""))))
                                 .build())
                         .map(executor -> new CollectionMember<>(null, executor))
                         .collect(Collectors.toList());
@@ -261,7 +263,10 @@ public class CallbackResponseTransformer {
                                 .notApplyingExecutorSurname(additionalExecutor.getAdditionalExecLastname())
                                 .notApplyingExecutorReason(additionalExecutor.getAdditionalExecReasonNotApplying())
                                 .notApplyingExecAddress(additionalExecutor.getAdditionalExecAddress())
-                                .aliasName(ProbateAliasName.createFromAlias(new Alias(Optional.ofNullable(additionalExecutor.getAdditionalExecAliasNameOnWill()).orElse(""))))
+                                .aliasName(ProbateAliasName
+                                        .createFromAlias(new Alias(
+                                                Optional.ofNullable(additionalExecutor.getAdditionalExecAliasNameOnWill())
+                                                        .orElse(""))))
                                 .build())
                         .map(executor -> new CollectionMember<>(null, executor))
                         .collect(Collectors.toList());
