@@ -58,6 +58,9 @@ public class SolCcdServicePrintServiceTests extends IntegrationTestBase {
         assertTrue(response.getBody().asString().contains("Additional information"));
         assertTrue(response.getBody().asString().contains("Registry location:"));
         assertTrue(response.getBody().asString().contains("Application Type:"));
+
+        assertTrue(response.getBody().asString().contains("case_data.registryLocation"));
+        assertTrue(response.getBody().asString().contains("case_data.applicationType"));
     }
 
     @Test
@@ -91,6 +94,9 @@ public class SolCcdServicePrintServiceTests extends IntegrationTestBase {
         assertTrue(response.getBody().asString().contains("Additional information"));
         assertTrue(response.getBody().asString().contains("Registry location:"));
         assertTrue(response.getBody().asString().contains("Application Type:"));
+
+        assertTrue(response.getBody().asString().contains("case_data.registryLocation"));
+        assertTrue(response.getBody().asString().contains("case_data.applicationType"));
     }
 
 }
