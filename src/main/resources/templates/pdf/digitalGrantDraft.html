@@ -161,7 +161,11 @@
             <p class="indent">{% for executor in case_details.case_data.executorsApplying %}
                 <br />
                 <span class="andGap">and </span>
-                <span style="text-transform: uppercase;"><strong>{{executor.value.applyingExecutorFirstName}} {{executor.value.applyingExecutorSurname}}</strong></span>
+                <span style="text-transform: uppercase;"><strong>
+                    {% if executor.value.applyingExecutorFirstName != null and executor.value.applyingExecutorFirstName != ""%}{{executor.value.applyingExecutorFirstName}}{% endif %}
+                    {% if executor.value.applyingExecutorSurname != null and executor.value.applyingExecutorSurname != ""%} {{executor.value.applyingExecutorSurname}}{% endif %}
+                    {% if executor.value.applyingExecutorName != null and executor.value.applyingExecutorName != ""%}{{executor.value.applyingExecutorName}}{% endif %}
+               </strong></span>
                 of <span class="camelCase"><strong>
                 {% if executor.value.applyingExecutorAddress.AddressLine1 != null and executor.value.applyingExecutorAddress.AddressLine1 != "" %}{{ executor.value.applyingExecutorAddress.AddressLine1 }}{% endif %}
                 {% if executor.value.applyingExecutorAddress.AddressLine2 != null and executor.value.applyingExecutorAddress.AddressLine2 != "" %}{{ executor.value.applyingExecutorAddress.AddressLine2 }}{% endif %}
