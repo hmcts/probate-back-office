@@ -3,13 +3,10 @@ package uk.gov.hmcts.probate.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import uk.gov.hmcts.probate.controller.validation.ApplicationCreatedGroup;
-import uk.gov.hmcts.probate.controller.validation.ApplicationUpdatedGroup;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
@@ -37,9 +34,7 @@ public class DocumentController {
     private final NotificationService notificationService;
 
     @PostMapping(path = "/generate-grant-draft", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<CallbackResponse> generateGrantDraft(
-            @Validated({ApplicationCreatedGroup.class, ApplicationUpdatedGroup.class})
-            @RequestBody CallbackRequest callbackRequest) {
+    public ResponseEntity<CallbackResponse> generateGrantDraft(@RequestBody CallbackRequest callbackRequest) {
 
         Document document = pdfManagementService.generateAndUpload(callbackRequest, DIGITAL_GRANT_DRAFT);
 
@@ -51,9 +46,8 @@ public class DocumentController {
     }
 
     @PostMapping(path = "/generate-grant", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<CallbackResponse> generateGrant(
-            @Validated({ApplicationCreatedGroup.class, ApplicationUpdatedGroup.class})
-            @RequestBody CallbackRequest callbackRequest) throws NotificationClientException {
+    public ResponseEntity<CallbackResponse> generateGrant(@RequestBody CallbackRequest callbackRequest)
+            throws NotificationClientException {
 
         Document document = pdfManagementService.generateAndUpload(callbackRequest, DIGITAL_GRANT);
 

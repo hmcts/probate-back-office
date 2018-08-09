@@ -10,6 +10,8 @@ import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
+import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
+import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.AliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
@@ -61,7 +63,6 @@ public class CallbackResponseTransformerTest {
     private static final LocalDate DOD = LocalDate.parse("2017-12-31", dateTimeFormatter);
     private static final String NUM_CODICILS = "9";
 
-
     private static final String IHT_FORM_ID = "IHT207";
     private static final BigDecimal IHT_GROSS = BigDecimal.valueOf(10000f);
     private static final BigDecimal IHT_NET = BigDecimal.valueOf(9000f);
@@ -87,6 +88,8 @@ public class CallbackResponseTransformerTest {
     private static final String OTHER_EXECS_EXIST = "No";
     private static final String PRIMARY_EXEC_ALIAS_NAMES = "Alias names";
     private static final List<CollectionMember<AdditionalExecutor>> ADDITIONAL_EXEC_LIST = Collections.emptyList();
+    private static final List<CollectionMember<AdditionalExecutorApplying>> ADDITIONAL_EXEC_LIST_APP = Collections.emptyList();
+    private static final List<CollectionMember<AdditionalExecutorNotApplying>> ADDITIONAL_EXEC_LIST_NOT_APP = Collections.emptyList();
     private static final List<CollectionMember<AliasName>> DECEASED_ALIAS_NAMES_LIST = Collections.emptyList();
     private static final SolsAddress DECEASED_ADDRESS = Mockito.mock(SolsAddress.class);
     private static final SolsAddress EXEC_ADDRESS = Mockito.mock(SolsAddress.class);
@@ -125,6 +128,7 @@ public class CallbackResponseTransformerTest {
     private CaseDetails caseDetailsMock;
 
     private CaseData.CaseDataBuilder caseDataBuilder;
+
 
     @Mock
     private FeeServiceResponse feeServiceResponseMock;
@@ -170,6 +174,8 @@ public class CallbackResponseTransformerTest {
                 .casePrinted(CASE_PRINT)
                 .boCaseStopReasonList(STOP_REASONS_LIST)
                 .willExists(YES)
+                .additionalExecutorsApplying(ADDITIONAL_EXEC_LIST_APP)
+                .additionalExecutorsNotApplying(ADDITIONAL_EXEC_LIST_NOT_APP)
                 .boDeceasedTitle(DECEASED_TITLE)
                 .boDeceasedHonours(DECEASED_HONOURS)
                 .boWillMessage(WILL_MESSAGE)
@@ -181,7 +187,6 @@ public class CallbackResponseTransformerTest {
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-
     }
 
     @Test
@@ -356,6 +361,9 @@ public class CallbackResponseTransformerTest {
         assertEquals(BO_EMAIL_GRANT_ISSUED, callbackResponse.getData().getBoEmailGrantIssuedNotificationRequested());
         assertEquals(CASE_PRINT, callbackResponse.getData().getCasePrinted());
         assertEquals(STOP_REASONS_LIST, callbackResponse.getData().getBoCaseStopReasonList());
+
+        assertEquals(ADDITIONAL_EXEC_LIST, callbackResponse.getData().getAdditionalExecutorsApplying());
+        assertEquals(ADDITIONAL_EXEC_LIST, callbackResponse.getData().getAdditionalExecutorsNotApplying());
 
         assertEquals(DECEASED_TITLE, callbackResponse.getData().getBoDeceasedTitle());
         assertEquals(DECEASED_HONOURS, callbackResponse.getData().getBoDeceasedHonours());
