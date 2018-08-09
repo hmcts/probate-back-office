@@ -10,6 +10,8 @@ import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
+import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
+import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.AliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
@@ -36,6 +38,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
+import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT;
 
@@ -59,7 +62,6 @@ public class CallbackResponseTransformerTest {
     private static final LocalDate DOB = LocalDate.parse("2016-12-31", dateTimeFormatter);
     private static final LocalDate DOD = LocalDate.parse("2017-12-31", dateTimeFormatter);
     private static final String NUM_CODICILS = "9";
-
 
     private static final String IHT_FORM_ID = "IHT207";
     private static final BigDecimal IHT_GROSS = BigDecimal.valueOf(10000f);
@@ -86,6 +88,8 @@ public class CallbackResponseTransformerTest {
     private static final String OTHER_EXECS_EXIST = "No";
     private static final String PRIMARY_EXEC_ALIAS_NAMES = "Alias names";
     private static final List<CollectionMember<AdditionalExecutor>> ADDITIONAL_EXEC_LIST = Collections.emptyList();
+    private static final List<CollectionMember<AdditionalExecutorApplying>> ADDITIONAL_EXEC_LIST_APP = Collections.emptyList();
+    private static final List<CollectionMember<AdditionalExecutorNotApplying>> ADDITIONAL_EXEC_LIST_NOT_APP = Collections.emptyList();
     private static final List<CollectionMember<AliasName>> DECEASED_ALIAS_NAMES_LIST = Collections.emptyList();
     private static final SolsAddress DECEASED_ADDRESS = Mockito.mock(SolsAddress.class);
     private static final SolsAddress EXEC_ADDRESS = Mockito.mock(SolsAddress.class);
@@ -124,6 +128,7 @@ public class CallbackResponseTransformerTest {
     private CaseDetails caseDetailsMock;
 
     private CaseData.CaseDataBuilder caseDataBuilder;
+
 
     @Mock
     private FeeServiceResponse feeServiceResponseMock;
@@ -169,6 +174,8 @@ public class CallbackResponseTransformerTest {
                 .casePrinted(CASE_PRINT)
                 .boCaseStopReasonList(STOP_REASONS_LIST)
                 .willExists(YES)
+                .additionalExecutorsApplying(ADDITIONAL_EXEC_LIST_APP)
+                .additionalExecutorsNotApplying(ADDITIONAL_EXEC_LIST_NOT_APP)
                 .boDeceasedTitle(DECEASED_TITLE)
                 .boDeceasedHonours(DECEASED_HONOURS)
                 .boWillMessage(WILL_MESSAGE)
@@ -180,7 +187,6 @@ public class CallbackResponseTransformerTest {
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-
     }
 
     @Test
@@ -298,6 +304,24 @@ public class CallbackResponseTransformerTest {
         assertEquals(PAY_REF_CHEQUE, callbackResponse.getData().getSolsPaymentReferenceNumber());
     }
 
+    @Test
+    public void shouldAddDocumentToProbateDocumentsGenerated() {
+        Document document = Document.builder().documentType(DIGITAL_GRANT).build();
+        CallbackResponse callbackResponse = underTest.grantIssued(callbackRequestMock, document);
+
+        assertCommon(callbackResponse);
+
+        assertEquals(1, callbackResponse.getData().getProbateDocumentsGenerated().size());
+        assertEquals(document, callbackResponse.getData().getProbateDocumentsGenerated().get(0).getValue());
+    }
+
+    @Test
+    public void shouldTransformCallbackRequestToCallbackResponse() {
+        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock);
+
+        assertCommon(callbackResponse);
+    }
+
     private void assertCommon(CallbackResponse callbackResponse) {
         assertEquals(APPLICATION_TYPE, callbackResponse.getData().getApplicationType());
         assertEquals(REGISTRY_LOCATION, callbackResponse.getData().getRegistryLocation());
@@ -316,8 +340,8 @@ public class CallbackResponseTransformerTest {
         assertEquals(NUM_CODICILS, callbackResponse.getData().getWillNumberOfCodicils());
 
         assertEquals(IHT_FORM_ID, callbackResponse.getData().getSolsIHTFormId());
-        Assert.assertThat(new BigDecimal("10000"),  comparesEqualTo(callbackResponse.getData().getIhtGrossValue()));
-        Assert.assertThat(new BigDecimal("9000"),  comparesEqualTo(callbackResponse.getData().getIhtNetValue()));
+        Assert.assertThat(new BigDecimal("10000"), comparesEqualTo(callbackResponse.getData().getIhtGrossValue()));
+        Assert.assertThat(new BigDecimal("9000"), comparesEqualTo(callbackResponse.getData().getIhtNetValue()));
 
         assertEquals(APPLICANT_FORENAME, callbackResponse.getData().getPrimaryApplicantForenames());
         assertEquals(APPLICANT_SURNAME, callbackResponse.getData().getPrimaryApplicantSurname());
@@ -337,6 +361,9 @@ public class CallbackResponseTransformerTest {
         assertEquals(BO_EMAIL_GRANT_ISSUED, callbackResponse.getData().getBoEmailGrantIssuedNotificationRequested());
         assertEquals(CASE_PRINT, callbackResponse.getData().getCasePrinted());
         assertEquals(STOP_REASONS_LIST, callbackResponse.getData().getBoCaseStopReasonList());
+
+        assertEquals(ADDITIONAL_EXEC_LIST, callbackResponse.getData().getAdditionalExecutorsApplying());
+        assertEquals(ADDITIONAL_EXEC_LIST, callbackResponse.getData().getAdditionalExecutorsNotApplying());
 
         assertEquals(DECEASED_TITLE, callbackResponse.getData().getBoDeceasedTitle());
         assertEquals(DECEASED_HONOURS, callbackResponse.getData().getBoDeceasedHonours());

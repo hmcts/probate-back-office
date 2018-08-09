@@ -72,6 +72,7 @@ public class CaseDataTest {
                 .build();
     }
 
+
     @Test
     public void shouldGetExecutorsApplying() {
         when(additionalExecutor1Mock.getAdditionalApplying()).thenReturn("Yes");
@@ -83,6 +84,7 @@ public class CaseDataTest {
 
         assertEquals(3, applying.size());
     }
+
 
     @Test
     public void shouldGetExecutorsNotApplying() {

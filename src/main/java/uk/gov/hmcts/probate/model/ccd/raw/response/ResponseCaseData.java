@@ -1,14 +1,18 @@
 package uk.gov.hmcts.probate.model.ccd.raw.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Data;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
+import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
+import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.AliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
+import uk.gov.hmcts.probate.model.ccd.raw.ProbateAliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.StopReason;
 
@@ -65,11 +69,18 @@ public class ResponseCaseData {
     private final String solsPrimaryExecutorNotApplyingReason;
     private final String otherExecutorExists;
     private final String solsExecutorAliasNames;
+    private final String solsExecutorAliasFirstNames;
+    private final String solsExecutorAliasSurnames;
+    @JsonProperty(value = "executorsApplying")
+    private final List<CollectionMember<AdditionalExecutorApplying>> additionalExecutorsApplying;
+    @JsonProperty(value = "executorsNotApplying")
+    private final List<CollectionMember<AdditionalExecutorNotApplying>> additionalExecutorsNotApplying;
     private final List<CollectionMember<AdditionalExecutor>> solsAdditionalExecutorList;
     private final SolsAddress deceasedAddress;
     private final String deceasedAnyOtherNames;
     private final SolsAddress primaryApplicantAddress;
     private final List<CollectionMember<AliasName>> solsDeceasedAliasNamesList;
+    private final List<CollectionMember<ProbateAliasName>> boDeceasedAliasNamesList;
     private final String ccdState;
     private final String casePrinted;
     private final String boEmailDocsReceivedNotificationRequested;

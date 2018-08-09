@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.model.ccd.raw.request;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
@@ -11,15 +12,19 @@ import uk.gov.hmcts.probate.controller.validation.ApplicationUpdatedGroup;
 import uk.gov.hmcts.probate.controller.validation.NextStepsConfirmationGroup;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
+import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
+import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.AliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
+import uk.gov.hmcts.probate.model.ccd.raw.ProbateAliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.StopReason;
 
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
+import java.beans.Transient;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -88,6 +93,8 @@ public class CaseData {
 
     private final List<CollectionMember<AliasName>> solsDeceasedAliasNamesList;
 
+    private final List<CollectionMember<ProbateAliasName>> boDeceasedAliasNamesList;
+
     @NotBlank(groups = {ApplicationUpdatedGroup.class}, message = "{solsIHTFormIdIsNull}")
     private final String solsIHTFormId;
 
@@ -111,6 +118,10 @@ public class CaseData {
     private final String primaryApplicantHasAlias;
 
     private final String solsExecutorAliasNames;
+
+    private final String solsExecutorAliasFirstNames;
+
+    private final String solsExecutorAliasSurnames;
 
     @NotBlank(groups = {ApplicationUpdatedGroup.class}, message = "{primaryApplicantIsApplyingIsNull}")
     private final String primaryApplicantIsApplying;
@@ -185,9 +196,10 @@ public class CaseData {
     @DecimalMin(groups = {NextStepsConfirmationGroup.class}, value = "0.0", message = "{totalFeeNegative}")
     private final BigDecimal totalFee;
 
-    private List<CollectionMember<AdditionalExecutor>> executorsApplying;
-
-    private List<CollectionMember<AdditionalExecutor>> executorsNotApplying;
+    @JsonProperty(value = "executorsApplying")
+    private List<CollectionMember<AdditionalExecutorApplying>> additionalExecutorsApplying;
+    @JsonProperty(value = "executorsNotApplying")
+    private List<CollectionMember<AdditionalExecutorNotApplying>> additionalExecutorsNotApplying;
 
     private final ApplicationType applicationType;
 
@@ -206,10 +218,12 @@ public class CaseData {
 
     private final String boLimitationText;
 
+    @Transient
     public List<CollectionMember<AdditionalExecutor>> getExecutorsApplying() {
         return getAllExecutors(true);
     }
 
+    @Transient
     public List<CollectionMember<AdditionalExecutor>> getExecutorsNotApplying() {
         return getAllExecutors(false);
     }

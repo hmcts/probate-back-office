@@ -117,6 +117,22 @@ public class BusinessValidationController {
         return ResponseEntity.ok(afterSubmitCallbackResponse);
     }
 
+    @PostMapping(path = "/transformCase", consumes = APPLICATION_JSON_UTF8_VALUE, produces = {APPLICATION_JSON_VALUE})
+    public ResponseEntity<CallbackResponse> transformCaseDetails(
+            @RequestBody CallbackRequest callbackRequest,
+            BindingResult bindingResult) {
+
+        if (bindingResult.hasErrors()) {
+            log.error("Case Id: {} ERROR: {}", callbackRequest.getCaseDetails().getId(), bindingResult);
+            throw new BadRequestException("Invalid payload", bindingResult);
+        }
+
+        CallbackResponse response = callbackResponseTransformer.transformCase(callbackRequest);
+
+
+        return ResponseEntity.ok(response);
+    }
+
     private CallbackResponse validateRequest(CallbackRequest callbackRequest,
                                              List<? extends ValidationRule> rules) {
 

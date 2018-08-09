@@ -116,12 +116,12 @@
         <td colspan="1" class="legal-body">
             <p>BE IT KNOWN that <span class="upperCase"> <strong> {% if case_details.case_data.boDeceasedTitle != null and case_details.case_data.boDeceasedTitle != "" %}{{ case_details.case_data.boDeceasedTitle }}{% endif %} {{case_details.case_data.deceasedForenames}} {{case_details.case_data.deceasedSurname}} {% if case_details.case_data.boDeceasedHonours != null and case_details.case_data.boDeceasedHonours != "" %}{{ case_details.case_data.boDeceasedHonours }}{% endif %}</strong></span>
                 <br/>
-                {% set count = 1 %} {% for alias in case_details.case_data.solsDeceasedAliasNamesList %}
+                {% if case_details.case_data.boDeceasedAliasNamesList != null and case_details.case_data.boDeceasedAliasNamesList != "" %}
                 Otherwise
-                {% if alias.value %}
-                {{ alias.value }},
+                {% for alias in case_details.case_data.boDeceasedAliasNamesList %}
+                 {{alias.value.Forenames}} {{alias.value.LastName}},
+                {% endfor %}
                 {% endif %}
-                {% set applyingCount = applyingCount + 1 %}{% endfor %}
                 <br/>of <strong><span class="camelCase">{% if case_details.case_data.deceasedAddress.AddressLine1 != null and case_details.case_data.deceasedAddress.AddressLine1 != "" %}{{ case_details.case_data.deceasedAddress.AddressLine1}}{% endif %}
                     {% if case_details.case_data.deceasedAddress.AddressLine2 != null and case_details.case_data.deceasedAddress.AddressLine2 != "" %}, {{case_details.case_data.deceasedAddress.AddressLine2}}{% endif %}
                     {% if case_details.case_data.deceasedAddress.AddressLine3 != null and case_details.case_data.deceasedAddress.AddressLine3 != "" %}, {{case_details.case_data.deceasedAddress.AddressLine3}}{% endif %}
@@ -158,11 +158,45 @@
                     {% if case_details.case_data.primaryApplicantAddress.Country != null and case_details.case_data.primaryApplicantAddress.Country != ""%}, {{case_details.case_data.primaryApplicantAddress.Country}}{% endif %}</span>
                 </strong>
             </p>
+            <p class="indent">{% for executor in case_details.case_data.executorsApplying %}
+                <br />
+                <span class="andGap">and </span>
+                <span style="text-transform: uppercase;"><strong>
+                    {% if executor.value.applyingExecutorFirstName != null and executor.value.applyingExecutorFirstName != ""%}{{executor.value.applyingExecutorFirstName}}{% endif %}
+                    {% if executor.value.applyingExecutorSurname != null and executor.value.applyingExecutorSurname != ""%} {{executor.value.applyingExecutorSurname}}{% endif %}
+                    {% if executor.value.applyingExecutorName != null and executor.value.applyingExecutorName != ""%}{{executor.value.applyingExecutorName}}{% endif %}
+               </strong></span>
+                of <span class="camelCase"><strong>
+                {% if executor.value.applyingExecutorAddress.AddressLine1 != null and executor.value.applyingExecutorAddress.AddressLine1 != "" %}{{ executor.value.applyingExecutorAddress.AddressLine1 }}{% endif %}
+                {% if executor.value.applyingExecutorAddress.AddressLine2 != null and executor.value.applyingExecutorAddress.AddressLine2 != "" %}{{ executor.value.applyingExecutorAddress.AddressLine2 }}{% endif %}
+                {% if executor.value.applyingExecutorAddress.AddressLine3 != null and executor.value.applyingExecutorAddress.AddressLine3 != "" %}{{ executor.value.applyingExecutorAddress.AddressLine3 }}{% endif %}
+                {% if executor.value.applyingExecutorAddress.PostTown != null and executor.value.applyingExecutorAddress.PostTown != "" %}{{ executor.value.applyingExecutorAddress.PostTown }}{% endif %}
+                {% if executor.value.applyingExecutorAddress.County != null and executor.value.applyingExecutorAddress.County != "" %}{{ executor.value.applyingExecutorAddress.County }}{% endif %}
+                {% if executor.value.applyingExecutorAddress.PostCode != null and executor.value.applyingExecutorAddress.PostCode != ""%}{{ executor.value.applyingExecutorAddress.PostCode }}{% endif %}
+                {% if executor.value.applyingExecutorAddress.Country != null and executor.value.applyingExecutorAddress.Country != ""%}{{ executor.value.applyingExecutorAddress.Country }}{% endif %}
+                </strong></span>
+                {% endfor %}
+            </p>
 
         </td>
     </tr>
     <tr>
         <td>
+            <p>
+            {% if case_details.case_data.executorsNotApplying != null %}
+            {% set powerReservedCounter = 0 %}
+            {% for executor in case_details.case_data.executorsNotApplying %}
+            {% if executor.value.notApplyingExecutorReason == "PowerReserved" %}
+            {% set powerReservedCounter = powerReservedCounter + 1 %}
+            {% endif %}
+            {% endfor %}
+
+            {% if powerReservedCounter == 0 %}{% endif %}
+            {% if powerReservedCounter == 1 %}Power reserved to another Executor{% endif %}
+            {% if powerReservedCounter > 1 %}Power reserved to other Executors{% endif %}
+            {% endif %}
+            </p>
+
             <p>
                 {% if case_details.case_data.boExecutorLimitation != null and
                 case_details.case_data.boExecutorLimitation != ""%}

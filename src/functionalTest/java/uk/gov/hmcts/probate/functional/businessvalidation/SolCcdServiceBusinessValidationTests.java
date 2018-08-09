@@ -17,9 +17,13 @@ import static org.hamcrest.Matchers.hasSize;
 @RunWith(SerenityRunner.class)
 public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
 
+    private static final String VALIDATE_URL = "/case/validate";
+    private static final String TRANSFORM_URL = "/case/transformCase";
+
+
     @Test
     public void verifyRequestWithDobBeforeDod() {
-        validatePostSuccess("success.solicitorCreate.json");
+        validatePostSuccess("success.solicitorCreate.json", VALIDATE_URL);
     }
 
     @Test
@@ -60,7 +64,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
 
     @Test
     public void verifyRequestWithIhtNetLessThanGross() {
-        validatePostSuccess("success.SolicitorAddDeceasedEstateDetails.json");
+        validatePostSuccess("success.SolicitorAddDeceasedEstateDetails.json", VALIDATE_URL);
     }
 
     @Test
@@ -119,7 +123,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
 
     @Test
     public void verifyRequestWithoutExecutorAddressWhileNotApplyingReturnsNoError() {
-        validatePostSuccess("success.missingExecutorAddressWhileNotApplying.json");
+        validatePostSuccess("success.missingExecutorAddressWhileNotApplying.json", VALIDATE_URL);
     }
 
     @Test
@@ -133,48 +137,81 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
 
     @Test
     public void verifyNoOfApplyingExecutorsLessThanFour() {
-        validatePostSuccess("success.LessThanFourExecutors.json");
+        validatePostSuccess("success.LessThanFourExecutors.json", VALIDATE_URL);
     }
 
 
     @Test
     public void verifyNoOfApplyingExecutorsEqualToFour() {
-        validatePostSuccess("success.equalToFourExecutors.json");
+        validatePostSuccess("success.equalToFourExecutors.json", VALIDATE_URL);
     }
 
     @Test
     public void verifyNoOfApplyingExecutorsMoreThanFour() {
         validatePostFailure("failure.moreThanFourExecutors.json",
-                "The total number executors applying cannot exceed 4", 200);
+                "The total number executors applying cannot exceed 4", 200, VALIDATE_URL);
     }
 
-    private void validatePostSuccess(String jsonFileName) {
+
+
+    @Test
+    public void verifyNoOfApplyingExecutorsLessThanFourTransformCase() {
+        validatePostSuccess("success.LessThanFourExecutors.json", TRANSFORM_URL);
+    }
+
+
+    @Test
+    public void verifyNoOfApplyingExecutorsEqualToFourTransformCase() {
+        validatePostSuccess("success.equalToFourExecutors.json", TRANSFORM_URL);
+    }
+
+    @Test
+    public void verifyRequestWithDobBeforeDodTransformCase() {
+        validatePostSuccess("success.solicitorCreate.json", TRANSFORM_URL);
+    }
+
+
+    @Test
+    public void verifyRequestWithIhtNetLessThanGrossTransformCase() {
+        validatePostSuccess("success.SolicitorAddDeceasedEstateDetails.json", TRANSFORM_URL);
+    }
+
+
+    @Test
+    public void verifyRequestWithoutExecutorAddressWhileNotApplyingReturnsNoErrorTransformCase() {
+        validatePostSuccess("success.missingExecutorAddressWhileNotApplying.json", TRANSFORM_URL);
+    }
+
+
+    private void validatePostSuccess(String jsonFileName, String URL) {
         SerenityRest.given()
                 .relaxedHTTPSValidation()
                 .headers(utils.getHeadersWithUserId())
                 .body(utils.getJsonFromFile(jsonFileName))
-                .when().post("/case/validate")
+                .when().post(URL)
                 .then().assertThat().statusCode(200);
     }
 
     private void validatePostFailureForSolicitorCreate(String jsonFileName, String errorMessage, Integer statusCode) {
-        validatePostFailure(jsonFileName, errorMessage, statusCode);
+        validatePostFailure(jsonFileName, errorMessage, statusCode, VALIDATE_URL);
     }
 
     private void validatePostFailureForSolicitorAddDeceasedEstateDetails(String jsonFileName, String errorMessage, Integer statusCode) {
-        validatePostFailure(jsonFileName, errorMessage, statusCode);
+        validatePostFailure(jsonFileName, errorMessage, statusCode, VALIDATE_URL);
     }
 
     private void validatePostFailureForSolicitorExecutorDetails(String jsonFileName, String errorMessage) {
-        validatePostFailure(jsonFileName, errorMessage, 200);
+        validatePostFailure(jsonFileName, errorMessage, 200, VALIDATE_URL);
     }
 
-    private void validatePostFailure(String jsonFileName, String errorMessage, Integer statusCode) {
+
+
+    private void validatePostFailure(String jsonFileName, String errorMessage, Integer statusCode, String URL) {
         Response response = SerenityRest.given()
                 .relaxedHTTPSValidation()
                 .headers(utils.getHeadersWithUserId())
                 .body(utils.getJsonFromFile(jsonFileName))
-                .when().post("/case/validate")
+                .when().post(URL)
                 .thenReturn();
 
         if (statusCode == 200) {
@@ -190,4 +227,5 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
             assert false;
         }
     }
+
 }
