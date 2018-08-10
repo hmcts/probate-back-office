@@ -16,12 +16,12 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     private static final String SOLICITOR_INFO ="Extracted Solicitor Firm Name (Ref: 1231-3984-3949-0300) KT10 0LA";
     private static final String PA = "Extracted personally";
     private static final String PRIMARY_APPLICANT = "EXECUTOR NAME 1 EXECUTOR LAST NAME 1";
-    private static final String WILL_MESSAGE ="With a Codicil";
+    private static final String WILL_MESSAGE ="With A Codicil";
     private static final String ADMIN_MESSAGE = "admin clause limitation message";
     private static final String LIMITATION_MESSAGE = "limitation message";
     private static final String EXECUTOR_LIMITATION_MESSAGE = "executor limitation message";
-    private static final String POWER_RESERVED = "Power reserved to other executors";
-    private static final String POWER_RESERVED_SINGLE = "Power reserved to another executor";
+    private static final String POWER_RESERVED = "Power reserved to other Executors";
+    private static final String POWER_RESERVED_SINGLE = "Power reserved to another Executor";
     private static final String TITLE = "CAPTAIN";
     private static final String HONOURS = "OBE";
     private static final String ADD_EXEC_ONE = "and ADD EX FIRST NAME 1 ADD EX LAST NAME 1";
