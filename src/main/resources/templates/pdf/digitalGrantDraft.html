@@ -87,33 +87,27 @@
     <br /> NOT FOR CIRCULATION
 </div>
 <table>
-    <thead>
-    <tr>
-        <td colspan="1" class="sequence">
-        </td>
-    </tr>
-    </thead>
     <tbody class="table-content">
     <tr>
-        <td colspan="1" class="legal-msg">
+        <td colspan="2" class="legal-msg">
             <u>COPIES OF THIS GRANT ARE NOT VALID UNLESS<br/>
                 THEY BEAR THE IMPRESSED SEAL OF THE COURT<br/>
             </u>
         </td>
     </tr>
     <tr>
-        <td colspan="1" class="legal-header">
+        <td colspan="2" class="legal-header">
             <Strong>IN THE HIGH COURT OF JUSTICE</Strong><br/>
         </td>
 
     </tr>
     <tr>
-        <td colspan="1" class="legal-subheader">
+        <td colspan="2" class="legal-subheader">
             The District Probate Registry at {{case_details.case_data.registryLocation}}<br/>
         </td>
     </tr>
     <tr>
-        <td colspan="1" class="legal-body">
+        <td colspan="2" class="legal-body">
             <p>BE IT KNOWN that <span class="upperCase"> <strong> {% if case_details.case_data.boDeceasedTitle != null and case_details.case_data.boDeceasedTitle != "" %}{{ case_details.case_data.boDeceasedTitle }}{% endif %} {{case_details.case_data.deceasedForenames}} {{case_details.case_data.deceasedSurname}} {% if case_details.case_data.boDeceasedHonours != null and case_details.case_data.boDeceasedHonours != "" %}{{ case_details.case_data.boDeceasedHonours }}{% endif %}</strong></span>
                 <br/>
                 {% if case_details.case_data.boDeceasedAliasNamesList != null and case_details.case_data.boDeceasedAliasNamesList != "" %}
@@ -138,7 +132,7 @@
                 <strong><span class="camelCase">
                 {% if case_details.case_data.boWillMessage != null and case_details.case_data.boWillMessage != ""%}{{ case_details.case_data.boWillMessage }}{% endif %}
                 </span></strong>
-                of the said deceased (a copy of which is available from the court) was proved and registered in the High Court of Justice and the Administration of all
+                of the said deceased (a copy of which is available from the court) was proved and registered in the High Court of Justice and that Administration of all
                 the estate which by law devolves to and vests in the personal representative of said deceased was granted by the said Court on this date to the Executor
             </p>
             <p class="indent">
@@ -178,7 +172,7 @@
         </td>
     </tr>
     <tr>
-        <td>
+        <td colspan="2">
             <p>
             {% if case_details.case_data.executorsNotApplying != null %}
             {% set powerReservedCounter = 0 %}
@@ -220,11 +214,13 @@
     <tr>
         <td>
             <p style="text-align:center; font-size: 0.9em;" >DISTRICT REGISTRAR/PROBATE OFFICER</p>
+        </td>
+        <td>
             <span class="circle"></span>
         </td>
     </tr>
     <tr>
-        <td>
+        <td colspan="2">
             <p style="font-size: 0.9em;">Extracted {% if
                 case_details.case_data.applicationType != "Personal"%}
                 {{case_details.case_data.solsSolicitorFirmName}} (Ref:
