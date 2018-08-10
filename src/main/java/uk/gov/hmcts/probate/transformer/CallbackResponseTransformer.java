@@ -50,13 +50,6 @@ public class CallbackResponseTransformer {
         return transformResponse(responseCaseData);
     }
 
-    public CallbackResponse addCcdState(CallbackRequest callbackRequest) {
-        ResponseCaseData responseCaseData = getResponseCaseData(callbackRequest.getCaseDetails(), false)
-                .build();
-
-        return transformResponse(responseCaseData);
-    }
-
     public CallbackResponse addDocumentReceivedNotification(CallbackRequest callbackRequest) {
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
 
@@ -201,7 +194,6 @@ public class CallbackResponseTransformer {
                 .boDeceasedTitle(caseData.getBoDeceasedTitle())
                 .boDeceasedHonours(caseData.getBoDeceasedHonours())
 
-                .ccdState(caseDetails.getState())
                 .ihtReferenceNumber(caseData.getIhtReferenceNumber())
                 .ihtFormCompletedOnline(caseData.getIhtFormCompletedOnline())
 
