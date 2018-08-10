@@ -126,14 +126,14 @@
             </p>
             <p>died on the <strong>{{case_details.case_data.deceasedDateOfDeath|date("dd MMMMM yyyy", existingFormat="yyyy-MM-dd")}}</strong>
                 <br/>
-                domiciled in <strong><span class="camelCase">England and Wales</span></strong>
+                domiciled in <strong>England and Wales</strong>
             </p>
             <p>AND BE IT FURTHER KNOWN that the last Will and Testament
                 <strong><span class="camelCase">
                 {% if case_details.case_data.boWillMessage != null and case_details.case_data.boWillMessage != ""%}{{ case_details.case_data.boWillMessage }}{% endif %}
                 </span></strong>
                 of the said deceased (a copy of which is available from the court) was proved and registered in the High Court of Justice and that Administration of all
-                the estate which by law devolves to and vests in the personal representative of said deceased was granted by the said Court on this date to the Executor
+                the estate which by law devolves to and vests in the personal representative of the said deceased was granted by the said Court on this date to the Executor
             </p>
             <p class="indent">
                 <strong>
@@ -207,13 +207,14 @@
                 £{{(case_details.case_data.ihtNetValue / 100) | numberformat("#")}}
             </p>
             <p>
-                DATED the <strong>{{case_details.case_data.currentDate|date("dd MMMMM yyyy", existingFormat="yyyy-MM-dd")}}</strong>
+                DATED the <strong>{{case_details.case_data.currentDate|date("dd MMMMM yyyy", existingFormat="yyyy-MM-dd")}}
+              </strong>
             </p>
         </td>
     </tr>
     <tr>
         <td>
-            <p style="text-align:center; font-size: 0.9em;" >DISTRICT REGISTRAR/PROBATE OFFICER</p>
+            <p style="text-align:center; font-size: 0.9em;" >DISTRICT REGISTRAR / PROBATE OFFICER</p>
         </td>
         <td>
             <span class="circle"></span>
@@ -223,7 +224,7 @@
         <td colspan="2">
             <p style="font-size: 0.9em;">Extracted {% if
                 case_details.case_data.applicationType != "Personal"%}
-                {{case_details.case_data.solsSolicitorFirmName}} (Ref:
+                <strong>by </strong>{{case_details.case_data.solsSolicitorFirmName}} (Ref:
                 {{case_details.case_data.solsSolicitorAppReference}})
                 {{case_details.case_data.solsSolicitorFirmPostcode}} {% else %}personally{% endif %}</p>
             <p style="text-align:center; font-size: 0.9em;">PROBATE</p>
