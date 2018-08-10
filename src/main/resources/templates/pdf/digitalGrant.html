@@ -113,11 +113,11 @@
                 {% endfor %}
                 {% endif %}
                 <br/>of <strong><span class="camelCase">{% if case_details.case_data.deceasedAddress.AddressLine1 != null and case_details.case_data.deceasedAddress.AddressLine1 != "" %}{{ case_details.case_data.deceasedAddress.AddressLine1 }},{% endif %}
-                    {% if case_details.case_data.deceasedAddress.AddressLine2 != null and case_details.case_data.deceasedAddress.AddressLine2 != "" %}{{ case_details.case_data.deceasedAddress.AddressLine2 }},{% endif %}
-                    {% if case_details.case_data.deceasedAddress.AddressLine3 != null and case_details.case_data.deceasedAddress.AddressLine3 != "" %}{{ case_details.case_data.deceasedAddress.AddressLine3 }},{% endif %}
-                    {% if case_details.case_data.deceasedAddress.PostTown != null and case_details.case_data.deceasedAddress.PostTown != "" %}{{ case_details.case_data.deceasedAddress.PostTown }},{% endif %}
-                    {% if case_details.case_data.deceasedAddress.County != null and case_details.case_data.deceasedAddress.County != "" %}{{ case_details.case_data.deceasedAddress.County }},{% endif %}
-                    {% if case_details.case_data.deceasedAddress.PostCode != null and case_details.case_data.deceasedAddress.PostCode != ""%}{{ case_details.case_data.deceasedAddress.PostCode }},{% endif %}
+                    {% if case_details.case_data.deceasedAddress.AddressLine2 != null and case_details.case_data.deceasedAddress.AddressLine2 != "" %}{{ case_details.case_data.deceasedAddress.AddressLine2 }}{% endif %}
+                    {% if case_details.case_data.deceasedAddress.AddressLine3 != null and case_details.case_data.deceasedAddress.AddressLine3 != "" %}{{ case_details.case_data.deceasedAddress.AddressLine3 }}{% endif %}
+                    {% if case_details.case_data.deceasedAddress.PostTown != null and case_details.case_data.deceasedAddress.PostTown != "" %}{{ case_details.case_data.deceasedAddress.PostTown }}{% endif %}
+                    {% if case_details.case_data.deceasedAddress.County != null and case_details.case_data.deceasedAddress.County != "" %}{{ case_details.case_data.deceasedAddress.County }}{% endif %}
+                    {% if case_details.case_data.deceasedAddress.PostCode != null and case_details.case_data.deceasedAddress.PostCode != ""%}{{ case_details.case_data.deceasedAddress.PostCode }}{% endif %}
                     {% if case_details.case_data.deceasedAddress.Country != null and case_details.case_data.deceasedAddress.Country != ""%}{{ case_details.case_data.deceasedAddress.Country }}{% endif %}</span></strong>
             </p>
             <p>died on the <strong>{{case_details.case_data.deceasedDateOfDeath|date("dd MMMMM yyyy", existingFormat="yyyy-MM-dd")}}</strong>
@@ -136,12 +136,12 @@
                     <span class="upperCase">{{case_details.case_data.primaryApplicantForenames}} {{case_details.case_data.primaryApplicantSurname}}</span>
                 </strong> of
                 <strong>
-                    <span class="camelCase">{% if case_details.case_data.primaryApplicantAddress.AddressLine1 != null and case_details.case_data.primaryApplicantAddress.AddressLine1 != "" %}{{ case_details.case_data.primaryApplicantAddress.AddressLine1 }},{% endif %}
-                    {% if case_details.case_data.primaryApplicantAddress.AddressLine2 != null and case_details.case_data.primaryApplicantAddress.AddressLine2 != "" %}{{ case_details.case_data.primaryApplicantAddress.AddressLine2 }},{% endif %}
-                    {% if case_details.case_data.primaryApplicantAddress.AddressLine3 != null and case_details.case_data.primaryApplicantAddress.AddressLine3 != "" %}{{ case_details.case_data.primaryApplicantAddress.AddressLine3 }},{% endif %}
-                    {% if case_details.case_data.primaryApplicantAddress.PostTown != null and case_details.case_data.primaryApplicantAddress.PostTown != "" %}{{ case_details.case_data.primaryApplicantAddress.PostTown }},{% endif %}
-                    {% if case_details.case_data.primaryApplicantAddress.County != null and case_details.case_data.primaryApplicantAddress.County != "" %}{{ case_details.case_data.primaryApplicantAddress.County }},{% endif %}
-                    {% if case_details.case_data.primaryApplicantAddress.PostCode != null and case_details.case_data.primaryApplicantAddress.PostCode != ""%}{{ case_details.case_data.primaryApplicantAddress.PostCode }},{% endif %}
+                    <span class="camelCase">{% if case_details.case_data.primaryApplicantAddress.AddressLine1 != null and case_details.case_data.primaryApplicantAddress.AddressLine1 != "" %}{{ case_details.case_data.primaryApplicantAddress.AddressLine1 }}{% endif %}
+                    {% if case_details.case_data.primaryApplicantAddress.AddressLine2 != null and case_details.case_data.primaryApplicantAddress.AddressLine2 != "" %}{{ case_details.case_data.primaryApplicantAddress.AddressLine2 }}{% endif %}
+                    {% if case_details.case_data.primaryApplicantAddress.AddressLine3 != null and case_details.case_data.primaryApplicantAddress.AddressLine3 != "" %}{{ case_details.case_data.primaryApplicantAddress.AddressLine3 }}{% endif %}
+                    {% if case_details.case_data.primaryApplicantAddress.PostTown != null and case_details.case_data.primaryApplicantAddress.PostTown != "" %}{{ case_details.case_data.primaryApplicantAddress.PostTown }}{% endif %}
+                    {% if case_details.case_data.primaryApplicantAddress.County != null and case_details.case_data.primaryApplicantAddress.County != "" %}{{ case_details.case_data.primaryApplicantAddress.County }}{% endif %}
+                    {% if case_details.case_data.primaryApplicantAddress.PostCode != null and case_details.case_data.primaryApplicantAddress.PostCode != ""%}{{ case_details.case_data.primaryApplicantAddress.PostCode }}{% endif %}
                     {% if case_details.case_data.primaryApplicantAddress.Country != null and case_details.case_data.primaryApplicantAddress.Country != ""%}{{ case_details.case_data.primaryApplicantAddress.Country }}{% endif %}</span>
                 </strong>
             </p>
