@@ -76,8 +76,7 @@ public class NotificationControllerTest {
                 .content(solicitorPayload)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("data")))
-                .andExpect(content().string(containsString("ccdState")));
+                .andExpect(content().string(containsString("data")));
     }
 
     @Test
@@ -89,8 +88,7 @@ public class NotificationControllerTest {
                 .content(solicitorPayload)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("data")))
-                .andExpect(content().string(containsString("ccdState")));
+                .andExpect(content().string(containsString("data")));
     }
 
     @Test
@@ -102,8 +100,7 @@ public class NotificationControllerTest {
                 .content(solicitorPayload)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("data")))
-                .andExpect(content().string(containsString("ccdState")));
+                .andExpect(content().string(containsString("data")));
 
         verify(documentService).expire(any(CallbackRequest.class), eq(DIGITAL_GRANT_DRAFT));
     }
@@ -117,8 +114,7 @@ public class NotificationControllerTest {
                 .content(solicitorPayload)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("data")))
-                .andExpect(content().string(containsString("ccdState")));
+                .andExpect(content().string(containsString("data")));
 
         verify(documentService).expire(any(CallbackRequest.class), eq(DIGITAL_GRANT_DRAFT));
     }

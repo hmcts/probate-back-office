@@ -24,7 +24,6 @@ import uk.gov.hmcts.probate.util.TestUtils;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-import static org.hamcrest.CoreMatchers.containsString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -253,8 +252,7 @@ public class BusinessValidationControllerTest {
 
         mockMvc.perform(post(CASE_TRANSFORM_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(content().string(containsString("ccdState")));
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
     }
 
     @Test
@@ -263,7 +261,6 @@ public class BusinessValidationControllerTest {
 
         mockMvc.perform(post(CASE_TRANSFORM_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(content().string(containsString("ccdState")));
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
     }
 }

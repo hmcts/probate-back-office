@@ -68,8 +68,7 @@ public class DocumentControllerTest {
                 .content(solicitorPayload)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("data")))
-                .andExpect(content().string(containsString("ccdState")));
+                .andExpect(content().string(containsString("data")));
 
         doNothing().when(documentService).expire(Matchers.any(CallbackRequest.class), eq(DIGITAL_GRANT_DRAFT));
 
