@@ -24,7 +24,6 @@ import uk.gov.hmcts.probate.model.ccd.raw.StopReason;
 
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
-import java.beans.Transient;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -218,15 +217,11 @@ public class CaseData {
 
     private final String boLimitationText;
 
-    @Transient
-    public List<CollectionMember<AdditionalExecutor>> getExecutorsApplying() {
-        return getAllExecutors(true);
-    }
+    @Getter(lazy = true)
+    private final List<CollectionMember<AdditionalExecutor>> executorsApplyingForLegalStatement = getAllExecutors(true);
 
-    @Transient
-    public List<CollectionMember<AdditionalExecutor>> getExecutorsNotApplying() {
-        return getAllExecutors(false);
-    }
+    @Getter(lazy = true)
+    private final List<CollectionMember<AdditionalExecutor>> executorsNotApplyingForLegalStatement = getAllExecutors(false);
 
     public boolean isPrimaryApplicantApplying() {
         return YES.equals(primaryApplicantIsApplying);

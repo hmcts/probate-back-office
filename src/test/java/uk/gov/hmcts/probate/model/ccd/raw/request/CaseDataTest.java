@@ -80,7 +80,7 @@ public class CaseDataTest {
         when(additionalExecutor3Mock.getAdditionalApplying()).thenReturn("No");
         when(additionalExecutor3Mock.getAdditionalExecReasonNotApplying()).thenReturn(NOT_APPLYING_REASON);
 
-        List<CollectionMember<AdditionalExecutor>> applying = underTest.getExecutorsApplying();
+        List<CollectionMember<AdditionalExecutor>> applying = underTest.getExecutorsApplyingForLegalStatement();
 
         assertEquals(3, applying.size());
     }
@@ -94,7 +94,7 @@ public class CaseDataTest {
         when(additionalExecutor3Mock.getAdditionalApplying()).thenReturn("No");
         when(additionalExecutor3Mock.getAdditionalExecReasonNotApplying()).thenReturn(NOT_APPLYING_REASON);
 
-        List<CollectionMember<AdditionalExecutor>> notApplying = underTest.getExecutorsNotApplying();
+        List<CollectionMember<AdditionalExecutor>> notApplying = underTest.getExecutorsNotApplyingForLegalStatement();
 
         assertEquals(2, notApplying.size());
     }
@@ -106,7 +106,7 @@ public class CaseDataTest {
         when(additionalExecutor3Mock.getAdditionalApplying()).thenReturn("No");
         when(additionalExecutor3Mock.getAdditionalExecReasonNotApplying()).thenReturn(NOT_APPLYING_REASON);
 
-        List<CollectionMember<AdditionalExecutor>> notApplying = underTest.getExecutorsNotApplying();
+        List<CollectionMember<AdditionalExecutor>> notApplying = underTest.getExecutorsNotApplyingForLegalStatement();
 
         assertEquals(1, notApplying.size());
     }
@@ -119,7 +119,7 @@ public class CaseDataTest {
         when(additionalExecutor2Mock.getAdditionalApplying()).thenReturn("Yes");
         when(additionalExecutor3Mock.getAdditionalApplying()).thenReturn("No");
 
-        assertThat(caseData.getExecutorsApplying(), hasSize(2));
+        assertThat(caseData.getExecutorsApplyingForLegalStatement(), hasSize(2));
     }
 
     @Test
@@ -130,7 +130,7 @@ public class CaseDataTest {
         when(additionalExecutor2Mock.getAdditionalApplying()).thenReturn("Yes");
         when(additionalExecutor3Mock.getAdditionalApplying()).thenReturn("No");
 
-        assertThat(caseData.getExecutorsNotApplying(), hasSize(2));
+        assertThat(caseData.getExecutorsNotApplyingForLegalStatement(), hasSize(2));
     }
 
     private CaseData getCaseDataWhenPrimaryExecutorNotApplying() {
