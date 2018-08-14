@@ -318,6 +318,7 @@ public class CaseData {
                     return day + "th " + formattedDate.substring(3);
             }
         } catch (ParseException ex) {
+            ex.getMessage();
             return null;
         }
     }
