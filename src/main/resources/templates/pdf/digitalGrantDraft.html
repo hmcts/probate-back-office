@@ -125,8 +125,7 @@
                     {% if case_details.case_data.deceasedAddress.PostCode != null and case_details.case_data.deceasedAddress.PostCode != ""%} {{case_details.case_data.deceasedAddress.PostCode}}{% endif %}
                     {% if case_details.case_data.deceasedAddress.Country != null and case_details.case_data.deceasedAddress.Country != ""%} {{case_details.case_data.deceasedAddress.Country}}{% endif %}</span></strong>
             </p>
-            <p>died on the <strong>{{case_details.case_data.deceasedDateOfDeath|date("dd MMMMM yyyy",
-                existingFormat="yyyy-MM-dd")}}</strong>
+            <p>died on the <strong>{{case_details.case_data.deceasedDateOfDeathFormatted}}</strong>
                 <br/>
                 domiciled in <strong>England and Wales</strong>
             </p>
@@ -210,14 +209,12 @@
             </p>
             <p>It is hereby certified that it appears from information supplied on the application for this grant that
                 the gross value of the said estate in the United Kingdom does not exceed
-                £{{(case_details.case_data.ihtGrossValue / 100) | numberformat("#")}} and the net value of the such
+                £{{(case_details.case_data.ihtGrossValue / 100) | numberformat("###,###")}} and the net value of the such
                 estate amounts to
-                £{{(case_details.case_data.ihtNetValue / 100) | numberformat("#")}}
+                £{{(case_details.case_data.ihtNetValue / 100) | numberformat("###,###")}}
             </p>
             <p>
-                DATED the <strong>{{case_details.case_data.currentDate|date("dd MMMMM yyyy",
-                existingFormat="yyyy-MM-dd")}}
-            </strong>
+                DATED the <strong>{{case_details.case_data.currentDateFormatted}}</strong>
             </p>
         </td>
     </tr>

@@ -26,6 +26,9 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     private static final String HONOURS = "OBE";
     private static final String ADD_EXEC_ONE = "and ADD EX FIRST NAME 1 ADD EX LAST NAME 1";
     private static final String ADD_EXEC_TWO = "and ADD EX FIRST NAME 2 ADD EX LAST NAME 2";
+    private static final String DOD = "1st January 2000";
+    private static final String IHT_NET = "8,000";
+    private static final String IHT_GROSS = "10,000";
 
     @Test
     public void verifySolicitorGenerateGrantShouldReturnOkResponseCode() {
@@ -286,6 +289,39 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         assertTrue(!response.contains(POWER_RESERVED));
         assertTrue(!response.contains(POWER_RESERVED_SINGLE));
         assertTrue(!response.contains(PA));
+
+    }
+
+    @Test
+    public void verifySuccessForGetDigitalGrantDraftDateFormat()  {
+        String response = generateDocument("solicitorPayloadNotifications.json", "/document/generate-grant-draft");
+
+        assertTrue(response.contains(DOD));
+
+    }
+
+    @Test
+    public void verifySuccessForGetDigitalGrantDateFormat()  {
+        String response = generateDocument("solicitorPayloadNotifications.json", "/document/generate-grant");
+
+        assertTrue(response.contains(DOD));
+    }
+
+    @Test
+    public void verifySuccessForGetDigitalGrantDraftMoneyFormat()  {
+        String response = generateDocument("solicitorPayloadNotifications.json", "/document/generate-grant-draft");
+
+        assertTrue(response.contains(IHT_GROSS));
+        assertTrue(response.contains(IHT_NET));
+
+    }
+
+    @Test
+    public void verifySuccessForGetDigitalGrantMoneyFormat()  {
+        String response = generateDocument("solicitorPayloadNotifications.json", "/document/generate-grant");
+
+        assertTrue(response.contains(IHT_GROSS));
+        assertTrue(response.contains(IHT_NET));
 
     }
 
