@@ -113,7 +113,7 @@
                 {{alias.value.Forenames}} {{alias.value.LastName}},
                 {% endfor %}
                 {% endif %}
-                <br/>of <strong><span class="camelCase">{% if case_details.case_data.deceasedAddress.AddressLine1 != null and case_details.case_data.deceasedAddress.AddressLine1 != "" %}{{ case_details.case_data.deceasedAddress.AddressLine1 }},{% endif %}
+                <br/>of <strong><span class="camelCase">{% if case_details.case_data.deceasedAddress.AddressLine1 != null and case_details.case_data.deceasedAddress.AddressLine1 != "" %}{{ case_details.case_data.deceasedAddress.AddressLine1 }}{% endif %}
                     {% if case_details.case_data.deceasedAddress.AddressLine2 != null and case_details.case_data.deceasedAddress.AddressLine2 != "" %}{{ case_details.case_data.deceasedAddress.AddressLine2 }}{% endif %}
                     {% if case_details.case_data.deceasedAddress.AddressLine3 != null and case_details.case_data.deceasedAddress.AddressLine3 != "" %}{{ case_details.case_data.deceasedAddress.AddressLine3 }}{% endif %}
                     {% if case_details.case_data.deceasedAddress.PostTown != null and case_details.case_data.deceasedAddress.PostTown != "" %}{{ case_details.case_data.deceasedAddress.PostTown }}{% endif %}
