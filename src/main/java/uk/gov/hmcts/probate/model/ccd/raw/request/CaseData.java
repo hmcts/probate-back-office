@@ -291,7 +291,7 @@ public class CaseData {
     }
 
     private String convertDate(LocalDate dateToConvert) {
-        if (dateToConvert == null){
+        if (dateToConvert == null) {
             return null;
         }
         DateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
@@ -308,7 +308,7 @@ public class CaseData {
 
                 case 2:
                 case 22:
-                    return day +  "nd " + formattedDate.substring(3);
+                    return day + "nd " + formattedDate.substring(3);
 
                 case 3:
                 case 23:
