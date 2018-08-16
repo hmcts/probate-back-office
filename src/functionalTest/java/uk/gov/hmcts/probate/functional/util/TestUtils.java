@@ -89,7 +89,6 @@ public class TestUtils {
             pdfStripper = new PDFTextStripper();
             pdDoc = new PDDocument(cosDoc);
             parsedText = pdfStripper.getText(pdDoc);
-            System.out.println(parsedText.replaceAll("[^A-Za-z0-9. ]+", ""));
         } catch (Exception e) {
             e.printStackTrace();
             try {

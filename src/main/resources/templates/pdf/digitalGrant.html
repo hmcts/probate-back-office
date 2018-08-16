@@ -113,7 +113,7 @@
                 {{alias.value.Forenames}} {{alias.value.LastName}},
                 {% endfor %}
                 {% endif %}
-                <br/>of <strong><span class="camelCase">{% if case_details.case_data.deceasedAddress.AddressLine1 != null and case_details.case_data.deceasedAddress.AddressLine1 != "" %}{{ case_details.case_data.deceasedAddress.AddressLine1 }},{% endif %}
+                <br/>of <strong><span class="camelCase">{% if case_details.case_data.deceasedAddress.AddressLine1 != null and case_details.case_data.deceasedAddress.AddressLine1 != "" %}{{ case_details.case_data.deceasedAddress.AddressLine1 }}{% endif %}
                     {% if case_details.case_data.deceasedAddress.AddressLine2 != null and case_details.case_data.deceasedAddress.AddressLine2 != "" %}{{ case_details.case_data.deceasedAddress.AddressLine2 }}{% endif %}
                     {% if case_details.case_data.deceasedAddress.AddressLine3 != null and case_details.case_data.deceasedAddress.AddressLine3 != "" %}{{ case_details.case_data.deceasedAddress.AddressLine3 }}{% endif %}
                     {% if case_details.case_data.deceasedAddress.PostTown != null and case_details.case_data.deceasedAddress.PostTown != "" %}{{ case_details.case_data.deceasedAddress.PostTown }}{% endif %}
@@ -121,8 +121,7 @@
                     {% if case_details.case_data.deceasedAddress.PostCode != null and case_details.case_data.deceasedAddress.PostCode != ""%}{{ case_details.case_data.deceasedAddress.PostCode }}{% endif %}
                     {% if case_details.case_data.deceasedAddress.Country != null and case_details.case_data.deceasedAddress.Country != ""%}{{ case_details.case_data.deceasedAddress.Country }}{% endif %}</span></strong>
             </p>
-            <p>died on the <strong>{{case_details.case_data.deceasedDateOfDeath|date("dd MMMMM yyyy",
-                existingFormat="yyyy-MM-dd")}}</strong>
+            <p>died on the <strong>{{case_details.case_data.deceasedDateOfDeathFormatted}}</strong>
                 <br/>
                 domiciled in <strong>England and Wales</strong>
             </p>
@@ -130,7 +129,7 @@
                 <strong><span class="camelCase">
                 {% if case_details.case_data.boWillMessage != null and case_details.case_data.boWillMessage != ""%}{{ case_details.case_data.boWillMessage }}{% endif %}
                 </span></strong>
-                of the said deceased (a copy of which is available from the court) was proved and registered in the High
+                of the said deceased (An official copy of which is available from the Court) was proved and registered in the High
                 Court of Justice and that Administration of all
                 the estate which by law devolves to and vests in the personal representative of the said deceased was
                 granted by the said Court on this date to the Executor{% set applyingExecCounter = 0 %}{% for executor
@@ -205,13 +204,12 @@
             </p>
             <p>It is hereby certified that it appears from information supplied on the application for this grant that
                 the gross value of the said estate in the United Kingdom does not exceed
-                £{{(case_details.case_data.ihtGrossValue / 100) | numberformat("#")}} and the net value of the such
+                £{{(case_details.case_data.ihtGrossValue / 100) | numberformat("###,###")}} and the net value of the such
                 estate amounts to
-                £{{(case_details.case_data.ihtNetValue / 100) | numberformat("#")}}
+                £{{(case_details.case_data.ihtNetValue / 100) | numberformat("###,###")}}
             </p>
             <p>
-                DATED the <strong>{{case_details.case_data.currentDate|date("dd MMMMM yyyy",
-                existingFormat="yyyy-MM-dd")}}</strong>
+                DATED the <strong>{{case_details.case_data.currentDateFormatted}}</strong>
             </p>
         </td>
     </tr>
@@ -228,7 +226,7 @@
         <td colspan="2">
             <p style="font-size: 0.9em;">Extracted {% if
                 case_details.case_data.applicationType != "Personal"%}
-                <strong>by </strong>{{case_details.case_data.solsSolicitorFirmName}} (Ref:
+                by {{case_details.case_data.solsSolicitorFirmName}} (Ref:
                 {{case_details.case_data.solsSolicitorAppReference}})
                 {{case_details.case_data.solsSolicitorFirmPostcode}} {% else %}personally{% endif %}</p>
             <p style="text-align:center; font-size: 0.9em;">PROBATE</p>
