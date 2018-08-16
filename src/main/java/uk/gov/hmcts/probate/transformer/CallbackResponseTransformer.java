@@ -190,6 +190,7 @@ public class CallbackResponseTransformer {
                 .solsDeceasedAliasNamesList(caseData.getSolsDeceasedAliasNamesList())
 
                 .boCaseStopReasonList(caseData.getBoCaseStopReasonList())
+                .boStopDetails(caseData.getBoStopDetails())
 
                 .boDeceasedTitle(caseData.getBoDeceasedTitle())
                 .boDeceasedHonours(caseData.getBoDeceasedHonours())
