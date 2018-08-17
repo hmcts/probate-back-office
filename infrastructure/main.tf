@@ -17,6 +17,10 @@ data "vault_generic_secret" "govNotifyApiKey" {
   path = "secret/${var.vault_section}/probate/probate_bo_govNotifyApiKey"
 }
 
+data "vault_generic_secret" "pdf_service_grantSignatureBase64" {
+  path = "secret/${var.vault_section}/probate/pdf_service_grantSignatureBase64"
+}
+
 
 locals {
   aseName = "${data.terraform_remote_state.core_apps_compute.ase_name[0]}"
@@ -51,6 +55,7 @@ module "probate-back-office" {
     DEPLOYMENT_ENV= "${var.deployment_env}"
 
     AUTH_PROVIDER_SERVICE_CLIENT_KEY = "${data.vault_generic_secret.idam_backend_service_key.data["value"]}"
+    PDF_SERVICE_GRANTSIGNATUREBASE64 = "${data.vault_generic_secret.pdf_service_grantSignatureBase64.data["value"]}"
 
     AUTH_PROVIDER_SERVICE_CLIENT_BASEURL = "${var.idam_service_api}"
     PDF_SERVICE_URL = "${var.pdf_service_api_url}"

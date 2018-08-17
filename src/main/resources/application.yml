@@ -21,6 +21,7 @@ pdf.service:
   pdfApi: /api/v1/pdf-generator/html
   templatesDirectory: templates/pdf/
   defaultDisplayFilename: legal_statement.pdf
+  grantSignatureBase64: dummy_hash
 
 fee.api:
   url: http://localhost:4411
@@ -91,3 +92,6 @@ registries:
   birmingham:
     name: Birmingham Probate Registry
     phone: 0121 681 3401
+  manchester:
+    name: Manchester Probate Registry
+    phone: 0161 240 5701 / 0161 240 5702

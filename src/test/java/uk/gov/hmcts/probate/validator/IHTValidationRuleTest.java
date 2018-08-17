@@ -11,6 +11,7 @@ import uk.gov.hmcts.probate.model.ccd.CCDData;
 import uk.gov.hmcts.probate.model.ccd.InheritanceTax;
 import uk.gov.hmcts.probate.service.BusinessValidationMessageService;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -27,8 +28,8 @@ import static uk.gov.hmcts.probate.validator.IHTValidationRule.IHT_NET_GREATER_T
 @RunWith(MockitoJUnitRunner.class)
 public class IHTValidationRuleTest {
 
-    private static final float HIGHER_VALUE = 20f;
-    private static final float LOWER_VALUE = 1f;
+    private static final BigDecimal HIGHER_VALUE = BigDecimal.valueOf(20f);
+    private static final BigDecimal LOWER_VALUE = BigDecimal.valueOf(1f);
 
     @Mock
     private BusinessValidationMessageService businessValidationMessageService;
