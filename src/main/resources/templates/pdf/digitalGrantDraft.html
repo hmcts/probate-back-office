@@ -112,9 +112,8 @@
                 <br/>
                 {% if case_details.case_data.boDeceasedAliasNamesList != null and
                 case_details.case_data.boDeceasedAliasNamesList != "" %}
-                Otherwise
                 {% for alias in case_details.case_data.boDeceasedAliasNamesList %}
-                {{alias.value.Forenames}} {{alias.value.LastName}},
+                {% if loop.first %}Otherwise {{alias.value.Forenames}} {{alias.value.LastName}}{% else %}, {{alias.value.Forenames}} {{alias.value.LastName}}{% endif %}
                 {% endfor %}
                 {% endif %}
                 <br/>of <strong><span class="camelCase">{% if case_details.case_data.deceasedAddress.AddressLine1 != null and case_details.case_data.deceasedAddress.AddressLine1 != "" %}{{ case_details.case_data.deceasedAddress.AddressLine1}}{% endif %}
