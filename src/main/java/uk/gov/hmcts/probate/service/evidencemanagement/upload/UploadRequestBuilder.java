@@ -1,7 +1,6 @@
 package uk.gov.hmcts.probate.service.evidencemanagement.upload;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpEntity;
@@ -12,13 +11,12 @@ import uk.gov.hmcts.probate.model.evidencemanagement.EvidenceManagementFileUploa
 
 import java.util.List;
 
+@Slf4j
 public class UploadRequestBuilder {
 
     private static final String FILES_PARAMETER = "files";
     private static final String CLASSIFICATION_PARAMETER = "classification";
     private static final String CLASSIFICATION_PRIVATE_PARAMETER = "PRIVATE";
-
-    private static final Logger log = LoggerFactory.getLogger(UploadRequestBuilder.class);
 
     private UploadRequestBuilder() {
     }

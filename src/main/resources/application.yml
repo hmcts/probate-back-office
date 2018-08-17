@@ -21,6 +21,7 @@ pdf.service:
   pdfApi: /api/v1/pdf-generator/html
   templatesDirectory: templates/pdf/
   defaultDisplayFilename: legal_statement.pdf
+  grantSignatureBase64: dummy_hash
 
 fee.api:
   url: http://localhost:4411

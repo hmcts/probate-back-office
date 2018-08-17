@@ -1,7 +1,7 @@
 package uk.gov.hmcts.probate.validator;
 
 import com.google.common.base.Strings;
-import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
@@ -15,8 +15,8 @@ import java.util.Set;
 
 import static uk.gov.hmcts.probate.model.Constants.BUSINESS_ERROR;
 
-@Data
 @Component
+@RequiredArgsConstructor
 class ExecutorsAddressValidationRule implements SolExecutorDetailsValidationRule {
 
     private final BusinessValidationMessageService businessValidationMessageService;

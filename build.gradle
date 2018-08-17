@@ -103,6 +103,7 @@ pitest {
   outputFormats = ['XML', 'HTML']
   timestampedReports = false
   mutationThreshold = 50
+  timeoutConstInMillis = 30000
 }
 
 sonarqube {
@@ -211,6 +212,7 @@ dependencies {
   testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: springBootVersion
   testCompile group: 'org.pdfbox', name: 'com.springsource.org.pdfbox', version: '0.7.3'
   testCompile group: 'org.springframework.security', name: 'spring-security-test', version: '4.2.5.RELEASE'
+  testCompile group: 'com.mitchellbosecke', name: 'pebble', version: '2.4.0'
 
   testSmokeCompile group: 'io.rest-assured', name: 'rest-assured', version: '3.0.7'
   testSmokeCompile sourceSets.main.runtimeClasspath
