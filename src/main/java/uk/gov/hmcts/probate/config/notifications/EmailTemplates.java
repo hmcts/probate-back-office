@@ -5,6 +5,6 @@ import lombok.Data;
 @Data
 public class EmailTemplates {
     private String documentReceived;
-    private String caseStooped;
+    private String caseStopped;
     private String grantIssued;
 }
