@@ -56,6 +56,11 @@ public class SolCcdServicePrintServiceTests extends IntegrationTestBase {
         assertTrue(response.getBody().asString().contains("Executors not applying"));
         assertTrue(response.getBody().asString().contains("Not applying reason:"));
         assertTrue(response.getBody().asString().contains("Additional information"));
+        assertTrue(response.getBody().asString().contains("Registry location:"));
+        assertTrue(response.getBody().asString().contains("Application Type:"));
+
+        assertTrue(response.getBody().asString().contains("case_data.registryLocation"));
+        assertTrue(response.getBody().asString().contains("case_data.applicationType"));
     }
 
     @Test
@@ -87,7 +92,11 @@ public class SolCcdServicePrintServiceTests extends IntegrationTestBase {
         assertTrue(response.getBody().asString().contains("Executor details"));
         assertTrue(response.getBody().asString().contains("Number of executors:"));
         assertTrue(response.getBody().asString().contains("Additional information"));
+        assertTrue(response.getBody().asString().contains("Registry location:"));
+        assertTrue(response.getBody().asString().contains("Application Type:"));
 
+        assertTrue(response.getBody().asString().contains("case_data.registryLocation"));
+        assertTrue(response.getBody().asString().contains("case_data.applicationType"));
     }
 
 }
