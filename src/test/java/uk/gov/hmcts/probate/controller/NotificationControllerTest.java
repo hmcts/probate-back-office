@@ -118,4 +118,28 @@ public class NotificationControllerTest {
 
         verify(documentService).expire(any(CallbackRequest.class), eq(DIGITAL_GRANT_DRAFT));
     }
+
+    @Test
+    public void solicitorCaseStoppedShouldReturnDataPayloadOkResponseCode() throws Exception {
+
+        String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadNotifications.json");
+
+        mockMvc.perform(post("/notify/case-stopped")
+                .content(solicitorPayload)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("data")));
+    }
+
+    @Test
+    public void personalCaseStoppedShouldReturnDataPayloadOkResponseCode() throws Exception {
+
+        String solicitorPayload = testUtils.getStringFromFile("personalPayloadNotifications.json");
+
+        mockMvc.perform(post("/notify/case-stopped")
+                .content(solicitorPayload)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("data")));
+    }
 }

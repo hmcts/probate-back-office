@@ -19,6 +19,26 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
         validatePostSuccess("personalPayloadNotifications.json", "/notify/documents-received");
     }
 
+    @Test
+    public void verifySolicitorGrantIssuedShouldReturnOkResponseCode() {
+        validatePostSuccess("solicitorPayloadNotifications.json", "/document/generate-grant");
+    }
+
+    @Test
+    public void verifyPersonalApplicantGrantIssuedShouldReturnOkResponseCode() {
+        validatePostSuccess("personalPayloadNotifications.json", "/document/generate-grant");
+    }
+
+    @Test
+    public void verifySolicitorCaseStoppedShouldReturnOkResponseCode() {
+        validatePostSuccess("solicitorPayloadNotifications.json", "/notify/case-stopped");
+    }
+
+    @Test
+    public void verifyPersonalApplicantCaseStoppedShouldReturnOkResponseCode() {
+        validatePostSuccess("personalPayloadNotifications.json", "/notify/case-stopped");
+    }
+
     private void validatePostSuccess(String jsonFileName, String path) {
         SerenityRest.given()
                 .relaxedHTTPSValidation()
