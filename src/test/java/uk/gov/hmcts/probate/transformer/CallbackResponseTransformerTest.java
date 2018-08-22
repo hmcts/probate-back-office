@@ -103,7 +103,7 @@ public class CallbackResponseTransformerTest {
     private static final String BO_DOCS_RECEIVED = "Yes";
     private static final String CASE_PRINT = "Yes";
     private static final List<CollectionMember<StopReason>> STOP_REASONS_LIST = Collections.emptyList();
-    private static final String STOP_DETAILS = "Stop Details";
+    private static final String STOP_DETAILS = "";
 
     private static final String YES = "Yes";
     private static final Optional<String> ORIGINAL_STATE = Optional.empty();
@@ -315,6 +315,15 @@ public class CallbackResponseTransformerTest {
 
         assertEquals(1, callbackResponse.getData().getProbateDocumentsGenerated().size());
         assertEquals(document, callbackResponse.getData().getProbateDocumentsGenerated().get(0).getValue());
+    }
+
+    @Test
+    public void shouldConvertRequestToDataBeanWithStopDetailsChange() {
+        CallbackResponse callbackResponse = underTest.resetStopDetailsContents(callbackRequestMock);
+
+        assertCommon(callbackResponse);
+
+        assertTrue(callbackResponse.getData().getBoStopDetails().isEmpty());
     }
 
     @Test
