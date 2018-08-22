@@ -53,6 +53,8 @@ public class BusinessValidationController {
     private final ConfirmationResponseService confirmationResponseService;
     private final StateChangeService stateChangeService;
     private final PDFManagementService pdfManagementService;
+    private static final String DEFAULT_LOG_ERROR = "Case Id: {} ERROR: {}";
+    private static final String INVALID_PAYLOAD = "Invalid payload";
 
     @PostMapping(path = "/validate", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<CallbackResponse> validate(
@@ -63,8 +65,8 @@ public class BusinessValidationController {
         logRequest(request.getRequestURI(), callbackRequest);
 
         if (bindingResult.hasErrors()) {
-            log.error("Case Id: {} ERROR: {}", callbackRequest.getCaseDetails().getId(), bindingResult);
-            throw new BadRequestException("Invalid payload", bindingResult);
+            log.error(DEFAULT_LOG_ERROR, callbackRequest.getCaseDetails().getId(), bindingResult);
+            throw new BadRequestException(INVALID_PAYLOAD, bindingResult);
         }
 
         CallbackResponse response = validateRequest(callbackRequest, validationRules);
@@ -90,8 +92,8 @@ public class BusinessValidationController {
         logRequest(request.getRequestURI(), callbackRequest);
 
         if (bindingResult.hasErrors()) {
-            log.error("Case Id: {} ERROR: {}", callbackRequest.getCaseDetails().getId(), bindingResult);
-            throw new BadRequestException("Invalid payload", bindingResult);
+            log.error(DEFAULT_LOG_ERROR, callbackRequest.getCaseDetails().getId(), bindingResult);
+            throw new BadRequestException(INVALID_PAYLOAD, bindingResult);
         }
 
         CallbackResponse response = validateRequest(callbackRequest, validationRules);
@@ -109,8 +111,8 @@ public class BusinessValidationController {
             BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
-            log.error("Case: Id {} ERROR: {}", callbackRequest.getCaseDetails().getId(), bindingResult);
-            throw new BadRequestException("Invalid payload", bindingResult);
+            log.error(DEFAULT_LOG_ERROR, callbackRequest.getCaseDetails().getId(), bindingResult);
+            throw new BadRequestException(INVALID_PAYLOAD, bindingResult);
         }
 
         AfterSubmitCallbackResponse afterSubmitCallbackResponse = confirmationResponseService.getStopConfirmation(callbackRequest);
@@ -123,8 +125,8 @@ public class BusinessValidationController {
             BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
-            log.error("Case Id: {} ERROR: {}", callbackRequest.getCaseDetails().getId(), bindingResult);
-            throw new BadRequestException("Invalid payload", bindingResult);
+            log.error(DEFAULT_LOG_ERROR, callbackRequest.getCaseDetails().getId(), bindingResult);
+            throw new BadRequestException(INVALID_PAYLOAD, bindingResult);
         }
 
         CallbackResponse response = callbackResponseTransformer.transformCase(callbackRequest);
