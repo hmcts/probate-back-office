@@ -33,12 +33,11 @@ public class NotificationService {
         Map<String, String> personalisation = getPersonalisation(caseData, registry);
         String reference = caseData.getSolsSolicitorAppReference();
 
-        switch (state) {
-            case CASE_STOPPED:
-                notificationClient.sendEmail(templateId, emailAddress, personalisation, reference, emailReplyToId);
-                break;
-            default:
-                notificationClient.sendEmail(templateId, emailAddress, personalisation, reference);
+        if (state == State.CASE_STOPPED) {
+            notificationClient.sendEmail(templateId, emailAddress, personalisation, reference, emailReplyToId);
+
+        } else {
+            notificationClient.sendEmail(templateId, emailAddress, personalisation, reference);
         }
     }
 
