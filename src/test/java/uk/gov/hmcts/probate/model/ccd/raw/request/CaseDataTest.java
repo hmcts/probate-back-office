@@ -8,6 +8,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,6 +30,7 @@ public class CaseDataTest {
     private static final String DECEASED_FIRST_NAME = "Name";
     private static final String DECEASED_SURNAME = "Surname";
     private static final String NOT_APPLYING_REASON = "not applying reason";
+    private static final LocalDate LOCAL_DATE = LocalDate.of(2000,01,01);
 
     @Mock
     private AdditionalExecutor additionalExecutor1Mock;
@@ -168,5 +170,41 @@ public class CaseDataTest {
                 .build();
 
         assertEquals(DECEASED_FIRST_NAME + " " + DECEASED_SURNAME, caseData.getDeceasedFullName());
+    }
+
+    @Test
+    public void shouldReturnDODFormattedWithST() {
+        final CaseData caseData = CaseData.builder()
+                .deceasedDateOfDeath(LOCAL_DATE)
+                .build();
+
+        assertEquals("1st January 2000", caseData.getDeceasedDateOfDeathFormatted());
+    }
+
+    @Test
+    public void shouldReturnDODFormattedWithND() {
+        final CaseData caseData = CaseData.builder()
+                .deceasedDateOfDeath(LocalDate.of(2000,01,02))
+                .build();
+
+        assertEquals("2nd January 2000", caseData.getDeceasedDateOfDeathFormatted());
+    }
+
+    @Test
+    public void shouldReturnDODFormattedWithRD() {
+        final CaseData caseData = CaseData.builder()
+                .deceasedDateOfDeath(LocalDate.of(2000,01,03))
+                .build();
+
+        assertEquals("3rd January 2000", caseData.getDeceasedDateOfDeathFormatted());
+    }
+
+    @Test
+    public void shouldReturnDODFormattedWithTH() {
+        final CaseData caseData = CaseData.builder()
+                .deceasedDateOfDeath(LocalDate.of(2000,01,04))
+                .build();
+
+        assertEquals("4th January 2000", caseData.getDeceasedDateOfDeathFormatted());
     }
 }

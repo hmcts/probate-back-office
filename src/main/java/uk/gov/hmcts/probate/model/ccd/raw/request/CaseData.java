@@ -25,9 +25,14 @@ import uk.gov.hmcts.probate.model.ccd.raw.StopReason;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 import static uk.gov.hmcts.probate.model.Constants.NO;
@@ -66,6 +71,11 @@ public class CaseData {
     private final LocalDate deceasedDateOfDeath;
 
     private final LocalDate currentDate = LocalDate.now();
+
+    private final String currentDateFormatted = convertDate(currentDate);
+
+    @Getter(lazy = true)
+    private final String deceasedDateOfDeathFormatted = convertDate(deceasedDateOfDeath);
 
     @NotNull(groups = {ApplicationUpdatedGroup.class, AmendCaseDetailsGroup.class}, message = "{dobIsNull}")
     private final LocalDate deceasedDateOfBirth;
@@ -280,5 +290,38 @@ public class CaseData {
 
     public boolean isGrantIssuedEmailNotificationRequested() {
         return YES.equals(getBoEmailGrantIssuedNotification());
+    }
+
+    private String convertDate(LocalDate dateToConvert) {
+        if (dateToConvert == null) {
+            return null;
+        }
+        DateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+        DateFormat targetFormat = new SimpleDateFormat("dd MMMMM yyyy");
+        try {
+            Date date = originalFormat.parse(dateToConvert.toString());
+            String formattedDate = targetFormat.format(date);
+            int day = Integer.parseInt(formattedDate.substring(0, 2));
+            switch (day) {
+                case 1:
+                case 21:
+                case 31:
+                    return day + "st " + formattedDate.substring(3);
+
+                case 2:
+                case 22:
+                    return day + "nd " + formattedDate.substring(3);
+
+                case 3:
+                case 23:
+                    return day + "rd " + formattedDate.substring(3);
+
+                default:
+                    return day + "th " + formattedDate.substring(3);
+            }
+        } catch (ParseException ex) {
+            ex.getMessage();
+            return null;
+        }
     }
 }
