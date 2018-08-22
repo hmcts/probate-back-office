@@ -48,7 +48,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     @Test
     public void verifyPersonalApplicantGenerateGrantDraftShouldReturnOkResponseCode() {
-        validatePostSuccess("personalPayloadNotifications.json", "/document/generate-grant");
+        validatePostSuccess("personalPayloadNotifications.json", "/document/generate-grant-draft");
     }
 
     private void validatePostSuccess(String jsonFileName, String path) {
