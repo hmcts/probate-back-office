@@ -201,7 +201,8 @@ public class CallbackResponseTransformer {
                 .boExecutorLimitation(caseData.getBoExecutorLimitation())
                 .boAdminClauseLimitation(caseData.getBoAdminClauseLimitation())
                 .boLimitationText(caseData.getBoLimitationText())
-                .probateDocumentsGenerated(caseData.getProbateDocumentsGenerated());
+                .probateDocumentsGenerated(caseData.getProbateDocumentsGenerated())
+                .boDocumentsUploaded(caseData.getBoDocumentsUploaded());
 
         if (transform) {
             if (!Strings.isNullOrEmpty(caseData.getSolsExecutorAliasNames())) {

@@ -58,6 +58,7 @@ public class ResponseCaseData {
     private final String solsPaymentReferenceNumber;
     private final DocumentLink solsLegalStatementDocument;
     private final List<CollectionMember<Document>> probateDocumentsGenerated;
+    private final List<CollectionMember<Document>> boDocumentsUploaded;
     private final String solsSOTNeedToUpdate;
     private final DocumentLink solsNextStepsDocument;
     private final String solsAdditionalInfo;

@@ -161,6 +161,8 @@ public class CaseData {
 
     private final List<CollectionMember<Document>> probateDocumentsGenerated = new ArrayList<>();
 
+    private final List<CollectionMember<Document>> boDocumentsUploaded = new ArrayList<>();
+
     @NotNull(groups = {ApplicationReviewedGroup.class}, message = "{solsSOTNeedToUpdateIsNull}")
     private final String solsSOTNeedToUpdate;
 
