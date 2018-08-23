@@ -89,6 +89,7 @@ public class ResponseCaseData {
     private final String boEmailDocsReceivedNotification;
     private final String boEmailGrantIssuedNotification;
     private final List<CollectionMember<StopReason>> boCaseStopReasonList;
+    private final String boStopDetails;
     private final String boDeceasedTitle;
     private final String boDeceasedHonours;
 

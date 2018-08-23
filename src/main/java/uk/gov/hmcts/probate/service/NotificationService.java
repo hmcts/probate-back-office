@@ -25,17 +25,23 @@ public class NotificationService {
     public void sendEmail(State state, CaseData caseData)
             throws NotificationClientException {
 
-        String templateId = getTemplateId(state, caseData.getApplicationType());
-        String emailAddress = getEmail(caseData);
-        Map<String, String> personalisation = getPersonalisation(caseData);
-        String reference = caseData.getSolsSolicitorAppReference();
-
-        notificationClient.sendEmail(templateId, emailAddress, personalisation, reference);
-    }
-
-    private Map<String, String> getPersonalisation(CaseData caseData) {
         Registry registry = registriesProperties.getRegistries().get(caseData.getRegistryLocation().toLowerCase());
 
+        String templateId = getTemplateId(state, caseData.getApplicationType());
+        String emailReplyToId = registry.getEmailReplyToId();
+        String emailAddress = getEmail(caseData);
+        Map<String, String> personalisation = getPersonalisation(caseData, registry);
+        String reference = caseData.getSolsSolicitorAppReference();
+
+        if (state == State.CASE_STOPPED) {
+            notificationClient.sendEmail(templateId, emailAddress, personalisation, reference, emailReplyToId);
+
+        } else {
+            notificationClient.sendEmail(templateId, emailAddress, personalisation, reference);
+        }
+    }
+
+    private Map<String, String> getPersonalisation(CaseData caseData, Registry registry) {
         HashMap<String, String> personalisation = new HashMap<>();
         personalisation.put("applicant_name", caseData.getPrimaryApplicantFullName());
         personalisation.put("deceased_name", caseData.getDeceasedFullName());
@@ -43,6 +49,7 @@ public class NotificationService {
         personalisation.put("solicitor_reference", caseData.getSolsSolicitorAppReference());
         personalisation.put("registry_name", registry.getName());
         personalisation.put("registry_phone", registry.getPhone());
+        personalisation.put("case-stop-details", caseData.getBoStopDetails());
 
         return personalisation;
     }
@@ -51,6 +58,8 @@ public class NotificationService {
         switch (state) {
             case DOCUMENTS_RECEIVED:
                 return notificationTemplates.getEmail().get(applicationType).getDocumentReceived();
+            case CASE_STOPPED:
+                return notificationTemplates.getEmail().get(applicationType).getCaseStopped();
             case GRANT_ISSUED:
                 return notificationTemplates.getEmail().get(applicationType).getGrantIssued();
             default:

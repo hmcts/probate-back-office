@@ -185,6 +185,8 @@ public class CaseData {
 
     private final List<CollectionMember<StopReason>> boCaseStopReasonList;
 
+    private final String boStopDetails;
+
     private final String ihtReferenceNumber;
 
     private final String ihtFormCompletedOnline;

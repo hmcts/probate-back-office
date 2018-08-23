@@ -124,6 +124,7 @@ public class CallbackResponseTransformerTest {
     private static final String ALIAS_FORENAME = "AliasFN";
     private static final String ALIAS_SURNAME = "AliasSN";
     private static final String SOLS_ALIAS_NAME = "AliasFN AliasSN";
+    private static final String STOP_DETAILS = "";
 
     private static final Optional<String> ORIGINAL_STATE = Optional.empty();
     private static final Optional<String> CHANGED_STATE = Optional.of("Changed");
@@ -194,6 +195,7 @@ public class CallbackResponseTransformerTest {
                 .boEmailDocsReceivedNotificationRequested(BO_DOCS_RECEIVED)
                 .casePrinted(CASE_PRINT)
                 .boCaseStopReasonList(STOP_REASONS_LIST)
+                .boStopDetails(STOP_DETAILS)
                 .willExists(YES)
                 .additionalExecutorsApplying(ADDITIONAL_EXEC_LIST_APP)
                 .additionalExecutorsNotApplying(ADDITIONAL_EXEC_LIST_NOT_APP)
@@ -334,6 +336,15 @@ public class CallbackResponseTransformerTest {
 
         assertEquals(1, callbackResponse.getData().getProbateDocumentsGenerated().size());
         assertEquals(document, callbackResponse.getData().getProbateDocumentsGenerated().get(0).getValue());
+    }
+
+    @Test
+    public void shouldConvertRequestToDataBeanWithStopDetailsChange() {
+        CallbackResponse callbackResponse = underTest.resetStopDetailsContents(callbackRequestMock);
+
+        assertCommon(callbackResponse);
+
+        assertTrue(callbackResponse.getData().getBoStopDetails().isEmpty());
     }
 
     @Test
@@ -637,6 +648,7 @@ public class CallbackResponseTransformerTest {
         assertEquals(BO_EMAIL_GRANT_ISSUED, callbackResponse.getData().getBoEmailGrantIssuedNotificationRequested());
         assertEquals(CASE_PRINT, callbackResponse.getData().getCasePrinted());
         assertEquals(STOP_REASONS_LIST, callbackResponse.getData().getBoCaseStopReasonList());
+        assertEquals(STOP_DETAILS, callbackResponse.getData().getBoStopDetails());
 
         assertEquals(DECEASED_TITLE, callbackResponse.getData().getBoDeceasedTitle());
         assertEquals(DECEASED_HONOURS, callbackResponse.getData().getBoDeceasedHonours());
