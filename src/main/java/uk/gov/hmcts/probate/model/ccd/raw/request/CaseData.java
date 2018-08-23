@@ -16,8 +16,10 @@ import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.AliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
+import uk.gov.hmcts.probate.model.ccd.raw.Declaration;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
+import uk.gov.hmcts.probate.model.ccd.raw.LegalStatement;
 import uk.gov.hmcts.probate.model.ccd.raw.ProbateAliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.StopReason;
@@ -215,6 +217,18 @@ public class CaseData {
     private final ApplicationType applicationType;
 
     private final String registryLocation;
+
+    private final String paymentReferenceNumber;
+
+    private final Declaration declaration;
+
+    private final LegalStatement legalStatement;
+
+    private final String deceasedMarriedAfterWillOrCodicilDate;
+
+    private final List<CollectionMember<ProbateAliasName>> deceasedAliasNameList;
+
+    private final String primaryApplicantPhoneNumber;
 
     // EVENT = Amend case details
     private final String boDeceasedTitle;
