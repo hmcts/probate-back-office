@@ -103,6 +103,7 @@ public class CallbackResponseTransformerTest {
     private static final String BO_DOCS_RECEIVED = "Yes";
     private static final String CASE_PRINT = "Yes";
     private static final List<CollectionMember<StopReason>> STOP_REASONS_LIST = Collections.emptyList();
+    private static final String STOP_DETAILS = "";
 
     private static final String YES = "Yes";
     private static final Optional<String> ORIGINAL_STATE = Optional.empty();
@@ -173,6 +174,7 @@ public class CallbackResponseTransformerTest {
                 .boEmailDocsReceivedNotificationRequested(BO_DOCS_RECEIVED)
                 .casePrinted(CASE_PRINT)
                 .boCaseStopReasonList(STOP_REASONS_LIST)
+                .boStopDetails(STOP_DETAILS)
                 .willExists(YES)
                 .additionalExecutorsApplying(ADDITIONAL_EXEC_LIST_APP)
                 .additionalExecutorsNotApplying(ADDITIONAL_EXEC_LIST_NOT_APP)
@@ -316,6 +318,15 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
+    public void shouldConvertRequestToDataBeanWithStopDetailsChange() {
+        CallbackResponse callbackResponse = underTest.resetStopDetailsContents(callbackRequestMock);
+
+        assertCommon(callbackResponse);
+
+        assertTrue(callbackResponse.getData().getBoStopDetails().isEmpty());
+    }
+
+    @Test
     public void shouldTransformCallbackRequestToCallbackResponse() {
         CallbackResponse callbackResponse = underTest.transform(callbackRequestMock);
 
@@ -361,6 +372,7 @@ public class CallbackResponseTransformerTest {
         assertEquals(BO_EMAIL_GRANT_ISSUED, callbackResponse.getData().getBoEmailGrantIssuedNotificationRequested());
         assertEquals(CASE_PRINT, callbackResponse.getData().getCasePrinted());
         assertEquals(STOP_REASONS_LIST, callbackResponse.getData().getBoCaseStopReasonList());
+        assertEquals(STOP_DETAILS, callbackResponse.getData().getBoStopDetails());
 
         assertEquals(ADDITIONAL_EXEC_LIST, callbackResponse.getData().getAdditionalExecutorsApplying());
         assertEquals(ADDITIONAL_EXEC_LIST, callbackResponse.getData().getAdditionalExecutorsNotApplying());

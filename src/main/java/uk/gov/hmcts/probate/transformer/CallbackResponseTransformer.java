@@ -60,6 +60,16 @@ public class CallbackResponseTransformer {
         return transformResponse(responseCaseData);
     }
 
+    public CallbackResponse resetStopDetailsContents(CallbackRequest callbackRequest) {
+        CaseDetails caseDetails = callbackRequest.getCaseDetails();
+
+        ResponseCaseData responseCaseData = getResponseCaseData(caseDetails, false)
+                .boStopDetails("")
+                .build();
+
+        return transformResponse(responseCaseData);
+    }
+
     public CallbackResponse grantIssued(CallbackRequest callbackRequest, Document document) {
         if (DIGITAL_GRANT_DRAFT.equals(document.getDocumentType()) || DIGITAL_GRANT.equals(document.getDocumentType())) {
             callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated()
@@ -190,6 +200,7 @@ public class CallbackResponseTransformer {
                 .solsDeceasedAliasNamesList(caseData.getSolsDeceasedAliasNamesList())
 
                 .boCaseStopReasonList(caseData.getBoCaseStopReasonList())
+                .boStopDetails(caseData.getBoStopDetails())
 
                 .boDeceasedTitle(caseData.getBoDeceasedTitle())
                 .boDeceasedHonours(caseData.getBoDeceasedHonours())

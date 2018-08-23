@@ -15,6 +15,7 @@ import uk.gov.service.notify.NotificationClientException;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static uk.gov.hmcts.probate.model.State.CASE_STOPPED;
 import static uk.gov.hmcts.probate.model.State.DOCUMENTS_RECEIVED;
 
 @RequiredArgsConstructor
@@ -36,5 +37,16 @@ public class NotificationController {
         }
 
         return ResponseEntity.ok(callbackResponseTransformer.addDocumentReceivedNotification(callbackRequest));
+    }
+
+    @PostMapping(path = "/case-stopped")
+    public ResponseEntity<CallbackResponse> sendCaseStoppedNotification(@RequestBody CallbackRequest callbackRequest)
+            throws NotificationClientException {
+
+        CaseData caseData = callbackRequest.getCaseDetails().getData();
+
+        notificationService.sendEmail(CASE_STOPPED, caseData);
+
+        return ResponseEntity.ok(callbackResponseTransformer.resetStopDetailsContents(callbackRequest));
     }
 }
