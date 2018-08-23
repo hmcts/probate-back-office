@@ -8,10 +8,8 @@ import lombok.Data;
 @Builder
 public class LegalStatementExecutorsApplying {
 
-    @JsonProperty(value = "value")
     private final LegalStatementExecutorApplying value;
 
-    @JsonProperty(value = "id")
     private final String id;
 
 }

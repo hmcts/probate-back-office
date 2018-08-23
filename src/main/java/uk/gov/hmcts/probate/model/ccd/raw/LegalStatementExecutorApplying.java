@@ -8,7 +8,6 @@ import lombok.Data;
 @Builder
 public class LegalStatementExecutorApplying {
 
-    @JsonProperty(value = "name")
     private final String name;
 
     @JsonProperty(value = "sign")
