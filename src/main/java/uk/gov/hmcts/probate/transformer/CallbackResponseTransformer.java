@@ -207,7 +207,6 @@ public class CallbackResponseTransformer {
                 .boDeceasedTitle(caseData.getBoDeceasedTitle())
                 .boDeceasedHonours(caseData.getBoDeceasedHonours())
 
-                .ihtReferenceNumber(caseData.getIhtReferenceNumber())
                 .ihtFormCompletedOnline(caseData.getIhtFormCompletedOnline())
 
                 .boWillMessage(caseData.getBoWillMessage())
@@ -234,6 +233,15 @@ public class CallbackResponseTransformer {
     }
 
     private void updateCaseBuilder(CaseData caseData, ResponseCaseDataBuilder builder) {
+        if (caseData.getIhtFormCompletedOnline() != null) {
+            if (caseData.getIhtFormCompletedOnline().equalsIgnoreCase(ANSWER_YES)) {
+                builder
+                        .ihtReferenceNumber(caseData.getIhtReferenceNumber());
+            } else {
+                builder
+                        .ihtReferenceNumber(null);
+            }
+        }
         List<CollectionMember<ProbateAliasName>> deceasedAliasNames = (caseData.getDeceasedAliasNameList() == null
                 || caseData.getDeceasedAliasNameList().isEmpty())
                 ? caseData.getBoDeceasedAliasNamesList() : caseData.getDeceasedAliasNameList();
@@ -249,6 +257,9 @@ public class CallbackResponseTransformer {
     }
 
     private void updateCaseBuilderForTransformCase(CaseData caseData, ResponseCaseDataBuilder builder) {
+        builder
+                .ihtReferenceNumber(caseData.getIhtReferenceNumber());
+
         if (!Strings.isNullOrEmpty(caseData.getSolsExecutorAliasNames())) {
             Alias executorAlias = new Alias(caseData.getSolsExecutorAliasNames());
             builder
