@@ -484,7 +484,7 @@ public class CallbackResponseTransformerTest {
         assertEquals(0, callbackResponse.getData().getSolsDeceasedAliasNamesList().size());
         assertEquals(1, callbackResponse.getData().getBoDeceasedAliasNamesList().size());
         assertEquals(ALIAS_FORENAME, callbackResponse.getData().getBoDeceasedAliasNamesList().get(0).getValue().getForenames());
-        assertEquals(null, callbackResponse.getData().getBoDeceasedAliasNamesList().get(0).getValue().getLastName());
+        assertEquals(ALIAS_SURNAME, callbackResponse.getData().getBoDeceasedAliasNamesList().get(0).getValue().getLastName());
         assertEquals(YES, callbackResponse.getData().getBoDeceasedAliasNamesList().get(0).getValue().getAppearOnGrant());
     }
 
