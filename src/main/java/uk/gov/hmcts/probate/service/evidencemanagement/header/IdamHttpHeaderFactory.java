@@ -12,12 +12,15 @@ import javax.servlet.http.HttpServletRequest;
 class IdamHttpHeaderFactory implements HttpHeadersFactory {
 
     private final HttpServletRequest httpServletRequest;
+    private static final String SERVICE_AUTH = "ServiceAuthorization";
+    private static final String AUTHORISATION = "Authorization";
+    private static final String USER_ID = "user-id";
 
     @Override
     public HttpHeaders getMultiPartHttpHeader() {
         HttpHeaders headers = new HttpHeaders();
-        headers.add("ServiceAuthorization", httpServletRequest.getHeader("ServiceAuthorization"));
-        headers.add("user-id", httpServletRequest.getHeader("user-id"));
+        headers.add(SERVICE_AUTH, httpServletRequest.getHeader(SERVICE_AUTH));
+        headers.add(USER_ID, httpServletRequest.getHeader(USER_ID));
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
         return headers;
     }
@@ -25,8 +28,8 @@ class IdamHttpHeaderFactory implements HttpHeadersFactory {
     @Override
     public HttpHeaders getApplicationJsonHttpHeader() {
         HttpHeaders headers = new HttpHeaders();
-        headers.add("ServiceAuthorization", httpServletRequest.getHeader("ServiceAuthorization"));
-        headers.add("user-id", httpServletRequest.getHeader("user-id"));
+        headers.add(SERVICE_AUTH, httpServletRequest.getHeader(SERVICE_AUTH));
+        headers.add(USER_ID, httpServletRequest.getHeader(USER_ID));
         headers.setContentType(MediaType.APPLICATION_JSON);
 
         return headers;
@@ -35,7 +38,7 @@ class IdamHttpHeaderFactory implements HttpHeadersFactory {
     @Override
     public HttpHeaders getHttpHeader() {
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization", httpServletRequest.getHeader("Authorization"));
+        headers.add(AUTHORISATION, httpServletRequest.getHeader(SERVICE_AUTH));
         return headers;
     }
 }
