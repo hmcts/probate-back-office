@@ -1,9 +1,7 @@
 package uk.gov.hmcts.probate.transformer;
 
-import com.google.common.base.Strings;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import uk.gov.hmcts.probate.model.Alias;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
@@ -172,6 +170,7 @@ public class CallbackResponseTransformer {
                 .solsExecutorAliasNames(caseData.getSolsExecutorAliasNames())
                 .deceasedAddress(caseData.getDeceasedAddress())
                 .deceasedAnyOtherNames(caseData.getDeceasedAnyOtherNames())
+                .solsDeceasedAliasNamesList(caseData.getSolsDeceasedAliasNamesList())
                 .primaryApplicantAddress(caseData.getPrimaryApplicantAddress())
                 .solsSolicitorAppReference(caseData.getSolsSolicitorAppReference())
                 .solsAdditionalInfo(caseData.getSolsAdditionalInfo())
@@ -199,7 +198,6 @@ public class CallbackResponseTransformer {
                 .boEmailGrantIssuedNotificationRequested(caseData.getBoEmailGrantIssuedNotificationRequested())
                 .boEmailDocsReceivedNotification(caseData.getBoEmailDocsReceivedNotification())
                 .boEmailGrantIssuedNotification(caseData.getBoEmailGrantIssuedNotification())
-                .solsDeceasedAliasNamesList(caseData.getSolsDeceasedAliasNamesList())
 
                 .boCaseStopReasonList(caseData.getBoCaseStopReasonList())
                 .boStopDetails(caseData.getBoStopDetails())
@@ -234,48 +232,37 @@ public class CallbackResponseTransformer {
     }
 
     private void updateCaseBuilder(CaseData caseData, ResponseCaseDataBuilder builder) {
-        List<CollectionMember<ProbateAliasName>> deceasedAliasNames = (caseData.getDeceasedAliasNameList() == null
-                || caseData.getDeceasedAliasNameList().isEmpty())
-                ? caseData.getBoDeceasedAliasNamesList() : caseData.getDeceasedAliasNameList();
+        List<CollectionMember<AliasName>> deceasedAliasNames = EMPTY_LIST;
+        if (caseData.getDeceasedAliasNameList() != null) {
+                deceasedAliasNames = caseData.getDeceasedAliasNameList()
+                        .stream()
+                        .map(CollectionMember::getValue)
+                        .filter(aliasName -> aliasName.getForenames().length() > 0)
+                        .map(deceasedAliasName -> buildDeceasedAliasNameExecutor(deceasedAliasName))
+                        .map(alias -> new CollectionMember<>(null, alias))
+                        .collect(Collectors.toList());
+        }
+        if (deceasedAliasNames.isEmpty()) {
+            builder
+                    .solsDeceasedAliasNamesList(caseData.getSolsDeceasedAliasNamesList());
+        } else {
+            builder
+                    .solsDeceasedAliasNamesList(deceasedAliasNames)
+                    .deceasedAliasNamesList(EMPTY_LIST);
+        }
 
         builder
-                .solsExecutorAliasFirstNames(caseData.getSolsExecutorAliasFirstNames())
-                .solsExecutorAliasSurnames(caseData.getSolsExecutorAliasSurnames())
-                .boDeceasedAliasNamesList(deceasedAliasNames)
-                .solsDeceasedAliasNamesList(caseData.getSolsDeceasedAliasNamesList())
                 .solsAdditionalExecutorList(caseData.getSolsAdditionalExecutorList())
                 .additionalExecutorsApplying(caseData.getAdditionalExecutorsApplying())
                 .additionalExecutorsNotApplying(caseData.getAdditionalExecutorsNotApplying());
     }
 
     private void updateCaseBuilderForTransformCase(CaseData caseData, ResponseCaseDataBuilder builder) {
-        if (!Strings.isNullOrEmpty(caseData.getSolsExecutorAliasNames())) {
-            Alias executorAlias = new Alias(caseData.getSolsExecutorAliasNames());
-            builder
-                    .solsExecutorAliasFirstNames(executorAlias.getFirstName())
-                    .solsExecutorAliasSurnames(executorAlias.getLastName());
-        }
-
-        if (caseData.getSolsDeceasedAliasNamesList() != null) {
-            List<CollectionMember<ProbateAliasName>> deceasedAliases = caseData.getSolsDeceasedAliasNamesList()
-                    .stream()
-                    .map(CollectionMember::getValue)
-                    .map(AliasName::getSolsAliasname)
-                    .map(Alias::new)
-                    .map(alias -> new ProbateAliasName(alias.getFirstName(), alias.getLastName(), ANSWER_YES))
-                    .map(probateAliasName -> new CollectionMember<>(null, probateAliasName))
-                    .collect(Collectors.toList());
-
-            builder.boDeceasedAliasNamesList(deceasedAliases)
-                    .solsDeceasedAliasNamesList(EMPTY_LIST);
-        }
-
 
         if (caseData.getSolsAdditionalExecutorList().isEmpty()) {
             builder
                     .additionalExecutorsApplying(EMPTY_LIST)
-                    .additionalExecutorsNotApplying(EMPTY_LIST)
-                    .solsAdditionalExecutorList(EMPTY_LIST);
+                    .additionalExecutorsNotApplying(EMPTY_LIST);
         } else {
             List<CollectionMember<AdditionalExecutorApplying>> applyingExec = caseData.getSolsAdditionalExecutorList()
                     .stream()
@@ -296,29 +283,31 @@ public class CallbackResponseTransformer {
 
             builder
                     .additionalExecutorsApplying(applyingExec)
-                    .additionalExecutorsNotApplying(notApplyingExec)
-                    .solsAdditionalExecutorList(EMPTY_LIST);
+                    .additionalExecutorsNotApplying(notApplyingExec);
         }
     }
 
     private AdditionalExecutorApplying buildApplyingAdditionalExecutor(AdditionalExecutor additionalExecutorApplying) {
         return AdditionalExecutorApplying.builder()
-                .applyingExecutorFirstName(additionalExecutorApplying.getAdditionalExecForenames())
-                .applyingExecutorSurname(additionalExecutorApplying.getAdditionalExecLastname())
+                .applyingExecutorName(additionalExecutorApplying.getAdditionalExecForenames() + " " + additionalExecutorApplying.getAdditionalExecLastname())
                 .applyingExecutorPhoneNumber(null)
                 .applyingExecutorEmail(null)
                 .applyingExecutorAddress(additionalExecutorApplying.getAdditionalExecAddress())
-                .aliasName(createFromAlias(additionalExecutorApplying))
+                .applyingExecutorOtherNames(additionalExecutorApplying.getAdditionalExecAliasNameOnWill())
+                .build();
+    }
+
+    private AliasName buildDeceasedAliasNameExecutor(ProbateAliasName aliasNames) {
+        return AliasName.builder()
+                .solsAliasname(aliasNames.getForenames() + " " + aliasNames.getLastName())
                 .build();
     }
 
     private AdditionalExecutorNotApplying buildNotApplyingAdditionalExecutor(AdditionalExecutor additionalExecutorNotApplying) {
         return AdditionalExecutorNotApplying.builder()
-                .notApplyingExecutorFirstName(additionalExecutorNotApplying.getAdditionalExecForenames())
-                .notApplyingExecutorSurname(additionalExecutorNotApplying.getAdditionalExecLastname())
+                .notApplyingExecutorName(additionalExecutorNotApplying.getAdditionalExecForenames() + " " + additionalExecutorNotApplying.getAdditionalExecLastname())
                 .notApplyingExecutorReason(additionalExecutorNotApplying.getAdditionalExecReasonNotApplying())
-                .notApplyingExecAddress(additionalExecutorNotApplying.getAdditionalExecAddress())
-                .aliasName(createFromAlias(additionalExecutorNotApplying))
+                .notApplyingExecutorNameOnWill(additionalExecutorNotApplying.getAdditionalExecAliasNameOnWill())
                 .build();
     }
 
@@ -337,13 +326,6 @@ public class CallbackResponseTransformer {
         } else {
             return caseData.getPrimaryApplicantHasAlias();
         }
-    }
-
-    private ProbateAliasName createFromAlias(AdditionalExecutor additionalExecutor) {
-        return ProbateAliasName
-                .createFromAlias(new Alias(
-                        Optional.ofNullable(additionalExecutor.getAdditionalExecAliasNameOnWill())
-                                .orElse("")));
     }
 
     private String getPaymentReferenceNumber(CaseData caseData) {

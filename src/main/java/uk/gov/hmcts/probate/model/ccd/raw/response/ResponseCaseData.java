@@ -71,8 +71,6 @@ public class ResponseCaseData {
     private final String solsPrimaryExecutorNotApplyingReason;
     private final String otherExecutorExists;
     private final String solsExecutorAliasNames;
-    private final String solsExecutorAliasFirstNames;
-    private final String solsExecutorAliasSurnames;
     @JsonProperty(value = "executorsApplying")
     private final List<CollectionMember<AdditionalExecutorApplying>> additionalExecutorsApplying;
     @JsonProperty(value = "executorsNotApplying")
@@ -82,7 +80,7 @@ public class ResponseCaseData {
     private final String deceasedAnyOtherNames;
     private final SolsAddress primaryApplicantAddress;
     private final List<CollectionMember<AliasName>> solsDeceasedAliasNamesList;
-    private final List<CollectionMember<ProbateAliasName>> boDeceasedAliasNamesList;
+    private final List<CollectionMember<ProbateAliasName>> deceasedAliasNamesList;
     private final String casePrinted;
     private final String boEmailDocsReceivedNotificationRequested;
     private final String boEmailGrantIssuedNotificationRequested;
