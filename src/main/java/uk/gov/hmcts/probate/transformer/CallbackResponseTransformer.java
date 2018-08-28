@@ -243,16 +243,15 @@ public class CallbackResponseTransformer {
                         .collect(Collectors.toList());
         }
         if (deceasedAliasNames.isEmpty()) {
-            builder
+           builder
                     .solsDeceasedAliasNamesList(caseData.getSolsDeceasedAliasNamesList());
         } else {
             builder
                     .solsDeceasedAliasNamesList(deceasedAliasNames)
-                    .deceasedAliasNamesList(EMPTY_LIST);
+                    .deceasedAliasNamesList(null);
         }
 
         builder
-                .solsAdditionalExecutorList(caseData.getSolsAdditionalExecutorList())
                 .additionalExecutorsApplying(caseData.getAdditionalExecutorsApplying())
                 .additionalExecutorsNotApplying(caseData.getAdditionalExecutorsNotApplying());
     }

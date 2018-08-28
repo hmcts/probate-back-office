@@ -147,7 +147,7 @@
     </tr>
     <tr>
       <td colspan="2">Names used by the deceased for other assets:</td>
-      <td>{% if case_data.boDeceasedAliasNamesList | length == 0 %}{% for alias in case_data.solsDeceasedAliasNamesList %}{{ alias.value.SolsAliasname }}<br/>{% endfor %}{% endif %}{% if case_data.boDeceasedAliasNamesList %}{% for alias in case_data.boDeceasedAliasNamesList %}{{ alias.value.Forenames }} {{ alias.value.LastName }}<br/>{% endfor %}{% endif %}</td>
+      <td>{% for alias in case_data.solsDeceasedAliasNamesList %}{{ alias.value.SolsAliasname }}<br/>{% endfor %}</td>
     </tr>
     <tr>
       <td colspan="3" valign="top">Deceased address</td>
@@ -215,7 +215,7 @@
     {% for additionalExecutor in case_data.executorsNotApplying %}{% set notApplying = notApplying + 1 %}
     <tr>
       <td colspan="2">Executor {{ notApplying }} name:</td>
-      <td>{{ additionalExecutor.value.notApplyingExecutorFirstName }} {{ additionalExecutor.value.notApplyingExecutorSurname }}</td>
+      <td>{{ additionalExecutor.value.notApplyingExecutorName }}</td>
     </tr>
     <tr>
       <td></td>
@@ -263,7 +263,7 @@
     {% set applying = applying + 1 %}
     <tr>
       <td colspan="2">Executor {{ applying }} name:</td>
-      <td>{{ names(additionalExecutor.value.applyingExecutorFirstName,additionalExecutor.value.applyingExecutorSurname) }}</td>
+      <td>{{additionalExecutor.value.applyingExecutorName}}</td>
     </tr>
     {% if additionalExecutor.value.applyingExecutorAddress %}
     {{address(additionalExecutor.value.applyingExecutorAddress)}}
