@@ -3,6 +3,7 @@ package uk.gov.hmcts.probate.transformer;
 import com.google.common.base.Strings;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 import uk.gov.hmcts.probate.model.Alias;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
@@ -282,7 +283,7 @@ public class CallbackResponseTransformer {
         }
 
 
-        if (caseData.getSolsAdditionalExecutorList().isEmpty()) {
+        if (CollectionUtils.isEmpty(caseData.getSolsAdditionalExecutorList())) {
             builder
                     .additionalExecutorsApplying(EMPTY_LIST)
                     .additionalExecutorsNotApplying(EMPTY_LIST)
