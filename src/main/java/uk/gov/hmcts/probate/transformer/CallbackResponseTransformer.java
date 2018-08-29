@@ -2,6 +2,7 @@ package uk.gov.hmcts.probate.transformer;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
@@ -253,12 +254,13 @@ public class CallbackResponseTransformer {
 
         builder
                 .additionalExecutorsApplying(caseData.getAdditionalExecutorsApplying())
-                .additionalExecutorsNotApplying(caseData.getAdditionalExecutorsNotApplying());
+                .additionalExecutorsNotApplying(caseData.getAdditionalExecutorsNotApplying())
+                .solsAdditionalExecutorList(caseData.getSolsAdditionalExecutorList());
     }
 
     private void updateCaseBuilderForTransformCase(CaseData caseData, ResponseCaseDataBuilder builder) {
 
-        if (caseData.getSolsAdditionalExecutorList().isEmpty()) {
+        if (CollectionUtils.isEmpty(caseData.getSolsAdditionalExecutorList())) {
             builder
                     .additionalExecutorsApplying(EMPTY_LIST)
                     .additionalExecutorsNotApplying(EMPTY_LIST);
@@ -282,7 +284,8 @@ public class CallbackResponseTransformer {
 
             builder
                     .additionalExecutorsApplying(applyingExec)
-                    .additionalExecutorsNotApplying(notApplyingExec);
+                    .additionalExecutorsNotApplying(notApplyingExec)
+                    .solsAdditionalExecutorList(EMPTY_LIST);
         }
     }
 
