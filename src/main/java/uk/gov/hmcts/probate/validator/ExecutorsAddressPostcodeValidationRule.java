@@ -17,7 +17,7 @@ import static uk.gov.hmcts.probate.model.Constants.BUSINESS_ERROR;
 
 @Component
 @RequiredArgsConstructor
-class ExecutorsAddressValidationRule implements SolExecutorDetailsValidationRule, CaseworkerAmendValidationRule {
+class ExecutorsAddressPostcodeValidationRule implements SolExecutorDetailsValidationRule {
 
     private final BusinessValidationMessageService businessValidationMessageService;
 
@@ -29,8 +29,8 @@ class ExecutorsAddressValidationRule implements SolExecutorDetailsValidationRule
                 .filter(Executor::isApplying)
                 .map(Executor::getAddress)
                 .forEach(address -> {
-                    if (address == null || Strings.isNullOrEmpty(address.getAddressLine1())) {
-                        errors.add(businessValidationMessageService.generateError(BUSINESS_ERROR, "executorAddressIsNull"));
+                    if (address == null || Strings.isNullOrEmpty(address.getPostCode())) {
+                        errors.add(businessValidationMessageService.generateError(BUSINESS_ERROR, "executorPostcodeIsNull"));
                     }
                 });
 
