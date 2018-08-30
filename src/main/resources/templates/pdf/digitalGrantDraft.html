@@ -212,13 +212,19 @@
     <tr>
         <td colspan="2">
             <p>
-                {% if case_details.case_data.executorsNotApplying != null %}
                 {% set powerReservedCounter = 0 %}
+                {% if case_details.case_data.executorsNotApplying != null %}
                 {% for executor in case_details.case_data.executorsNotApplying %}
                 {% if executor.value.notApplyingExecutorReason == "PowerReserved" %}
                 {% set powerReservedCounter = powerReservedCounter + 1 %}
                 {% endif %}
                 {% endfor %}
+
+                {% if case_details.case_data.primaryApplicantIsApplying == "No" %}
+                {% if case_details.case_data.solsPrimaryExecutorNotApplyingReason == "PowerReserved" %}
+                {% set powerReservedCounter = powerReservedCounter + 1 %}
+                {% endif %}
+                {% endif %}
 
                 {% if powerReservedCounter == 0 %}{% endif %}
                 {% if powerReservedCounter == 1 %}Power reserved to another Executor{% endif %}
