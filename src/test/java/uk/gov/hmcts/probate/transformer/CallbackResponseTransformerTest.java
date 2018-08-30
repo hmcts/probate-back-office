@@ -463,7 +463,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldTransformCaseForSolicitorWithDeceasedAliasNAmes() {
+    public void shouldTransformCaseForSolicitorWithDeceasedAliasNames() {
         caseDataBuilder.applicationType(ApplicationType.SOLICITOR);
 
         List<CollectionMember<AliasName>> deceasedAliasNamesList = new ArrayList<>();

@@ -267,7 +267,8 @@ public class CallbackResponseTransformer {
 
     private void updateCaseBuilderForTransformCase(CaseData caseData, ResponseCaseDataBuilder builder) {
         builder
-                .ihtReferenceNumber(caseData.getIhtReferenceNumber());
+                .ihtReferenceNumber(caseData.getIhtReferenceNumber())
+                .solsDeceasedAliasNamesList(caseData.getSolsDeceasedAliasNamesList());
 
         if (CollectionUtils.isEmpty(caseData.getSolsAdditionalExecutorList())) {
             builder
