@@ -571,8 +571,8 @@ public class CallbackResponseTransformerTest {
         AdditionalExecutorApplying add1na = AdditionalExecutorApplying.builder()
                 .applyingExecutorAddress(EXEC_ADDRESS)
                 .applyingExecutorEmail(EXEC_EMAIL)
-                .applyingExecutorName(EXEC_NAME)
-                .applyingExecutorOtherNames(EXEC_OTHER_NAMES)
+                .applyingExecutorName(EXEC_FIRST_NAME + " " + EXEC_SURNAME)
+                .applyingExecutorOtherNames(ALIAS_FORENAME + " " + ALIAS_SURNAME)
                 .applyingExecutorPhoneNumber(EXEC_PHONE)
                 .build();
         return new CollectionMember<>(id, add1na);
@@ -590,13 +590,15 @@ public class CallbackResponseTransformerTest {
     }
 
     private void assertApplyingExecutorDetails(AdditionalExecutorApplying exec) {
-        assertEquals(EXEC_NAME, exec.getApplyingExecutorName());
-        assertEquals(EXEC_OTHER_NAMES, exec.getApplyingExecutorOtherNames());
+        assertEquals(EXEC_FIRST_NAME + " " + EXEC_SURNAME, exec.getApplyingExecutorName());
+        assertEquals(ALIAS_FORENAME + " " + ALIAS_SURNAME, exec.getApplyingExecutorOtherNames());
         assertApplyingExecutorDetailsFromSols(exec);
     }
 
     private void assertApplyingExecutorDetailsFromSols(AdditionalExecutorApplying exec) {
         assertEquals(EXEC_ADDRESS, exec.getApplyingExecutorAddress());
+        assertEquals(EXEC_FIRST_NAME + " " + EXEC_SURNAME, exec.getApplyingExecutorName());
+        assertEquals(ALIAS_FORENAME + " " + ALIAS_SURNAME, exec.getApplyingExecutorOtherNames());
     }
 
     private void assertNotApplyingExecutorDetails(AdditionalExecutorNotApplying exec) {
