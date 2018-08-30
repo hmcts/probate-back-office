@@ -516,6 +516,35 @@ public class CallbackResponseTransformerTest {
         assertEquals(0, callbackResponse.getData().getAdditionalExecutorsNotApplying().size());
     }
 
+
+    @Test
+    public void shouldTransformCaseForPAWithIHTOnlineYes() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL);
+        caseDataBuilder.ihtFormCompletedOnline(YES);
+        caseDataBuilder.ihtReferenceNumber(IHT_REFERENCE);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+
+        assertEquals(IHT_REFERENCE, callbackResponse.getData().getIhtReferenceNumber());
+    }
+
+    @Test
+    public void shouldTransformCaseForPAWithIHTOnlineNo() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL);
+        caseDataBuilder.ihtFormCompletedOnline(NO);
+        caseDataBuilder.ihtReferenceNumber(IHT_REFERENCE);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+
+        assertEquals(null, callbackResponse.getData().getIhtReferenceNumber());
+    }
+
     private CollectionMember<ProbateAliasName> createdeceasedAliasName(String id, String forename, String lastname, String onGrant) {
         ProbateAliasName pan = ProbateAliasName.builder()
                 .appearOnGrant(onGrant)

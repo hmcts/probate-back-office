@@ -171,7 +171,6 @@ public class CallbackResponseTransformer {
                 .solsExecutorAliasNames(caseData.getSolsExecutorAliasNames())
                 .deceasedAddress(caseData.getDeceasedAddress())
                 .deceasedAnyOtherNames(caseData.getDeceasedAnyOtherNames())
-                .solsDeceasedAliasNamesList(caseData.getSolsDeceasedAliasNamesList())
                 .primaryApplicantAddress(caseData.getPrimaryApplicantAddress())
                 .solsSolicitorAppReference(caseData.getSolsSolicitorAppReference())
                 .solsAdditionalInfo(caseData.getSolsAdditionalInfo())
@@ -206,7 +205,6 @@ public class CallbackResponseTransformer {
                 .boDeceasedTitle(caseData.getBoDeceasedTitle())
                 .boDeceasedHonours(caseData.getBoDeceasedHonours())
 
-                .ihtReferenceNumber(caseData.getIhtReferenceNumber())
                 .ihtFormCompletedOnline(caseData.getIhtFormCompletedOnline())
 
                 .boWillMessage(caseData.getBoWillMessage())
@@ -233,6 +231,15 @@ public class CallbackResponseTransformer {
     }
 
     private void updateCaseBuilder(CaseData caseData, ResponseCaseDataBuilder builder) {
+        if (caseData.getIhtFormCompletedOnline() != null) {
+            if (caseData.getIhtFormCompletedOnline().equalsIgnoreCase(ANSWER_YES)) {
+                builder
+                        .ihtReferenceNumber(caseData.getIhtReferenceNumber());
+            } else {
+                builder
+                        .ihtReferenceNumber(null);
+            }
+        }
         List<CollectionMember<AliasName>> deceasedAliasNames = EMPTY_LIST;
         if (caseData.getDeceasedAliasNameList() != null) {
                 deceasedAliasNames = caseData.getDeceasedAliasNameList()
@@ -259,6 +266,8 @@ public class CallbackResponseTransformer {
     }
 
     private void updateCaseBuilderForTransformCase(CaseData caseData, ResponseCaseDataBuilder builder) {
+        builder
+                .ihtReferenceNumber(caseData.getIhtReferenceNumber());
 
         if (CollectionUtils.isEmpty(caseData.getSolsAdditionalExecutorList())) {
             builder
