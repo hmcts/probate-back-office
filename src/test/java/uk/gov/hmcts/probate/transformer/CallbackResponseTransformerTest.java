@@ -149,6 +149,9 @@ public class CallbackResponseTransformerTest {
     @Mock
     private CaseDetails caseDetailsMock;
 
+    @Mock
+    private Document document;
+
     private CaseData.CaseDataBuilder caseDataBuilder;
 
 
@@ -340,7 +343,7 @@ public class CallbackResponseTransformerTest {
 
     @Test
     public void shouldConvertRequestToDataBeanWithStopDetailsChange() {
-        CallbackResponse callbackResponse = underTest.resetStopDetailsContents(callbackRequestMock);
+        CallbackResponse callbackResponse = underTest.caseStopped(callbackRequestMock, document);
 
         assertCommon(callbackResponse);
 

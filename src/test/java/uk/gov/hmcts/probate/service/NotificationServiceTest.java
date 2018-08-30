@@ -10,17 +10,24 @@ import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.test.context.junit4.SpringRunner;
 import uk.gov.hmcts.probate.exception.BadRequestException;
 import uk.gov.hmcts.probate.insights.AppInsights;
+import uk.gov.hmcts.probate.model.SentEmail;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
+import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.service.notify.NotificationClient;
 import uk.gov.service.notify.NotificationClientException;
+import uk.gov.service.notify.SendEmailResponse;
+
+import java.util.Optional;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.anyString;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
+import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
 import static uk.gov.hmcts.probate.model.State.CASE_STOPPED;
 import static uk.gov.hmcts.probate.model.State.DOCUMENTS_RECEIVED;
 import static uk.gov.hmcts.probate.model.State.GRANT_ISSUED;
@@ -35,6 +42,12 @@ public class NotificationServiceTest {
     @MockBean
     private AppInsights appInsights;
 
+    @MockBean
+    private SendEmailResponse sendEmailResponse;
+
+    @MockBean
+    private PDFManagementService pdfManagementService;
+
     @SpyBean
     private NotificationClient notificationClient;
 
@@ -47,7 +60,10 @@ public class NotificationServiceTest {
 
     @Before
     public void setUp() throws NotificationClientException {
-        doReturn(null)
+        when(sendEmailResponse.getFromEmail()).thenReturn(Optional.of("test@test.com"));
+        when(sendEmailResponse.getBody()).thenReturn("test-body");
+
+        doReturn(sendEmailResponse)
                 .when(notificationClient).sendEmail(anyString(), anyString(), any(), anyString(), anyString());
 
         personalCaseDataOxford = CaseData.builder()
@@ -154,11 +170,13 @@ public class NotificationServiceTest {
                 any(),
                 anyString(),
                 eq("birmingham-emailReplyToId"));
+
+        verify(pdfManagementService).generateAndUpload(any(SentEmail.class), eq(SENT_EMAIL));
     }
 
     @Test
     public void sendCaseStoppedEmailToSolicitorFromBirmingham()
-        throws NotificationClientException, BadRequestException {
+            throws NotificationClientException, BadRequestException {
 
         notificationService.sendEmail(CASE_STOPPED, solicitorCaseDataBirmingham);
 
@@ -168,6 +186,8 @@ public class NotificationServiceTest {
                 any(),
                 eq("1234-5678-9012"),
                 eq("birmingham-emailReplyToId"));
+
+        verify(pdfManagementService).generateAndUpload(any(SentEmail.class), eq(SENT_EMAIL));
     }
 
     @Test
@@ -182,6 +202,8 @@ public class NotificationServiceTest {
                 any(),
                 anyString(),
                 eq("oxford-emailReplyToId"));
+
+        verify(pdfManagementService).generateAndUpload(any(SentEmail.class), eq(SENT_EMAIL));
     }
 
     @Test
@@ -196,6 +218,8 @@ public class NotificationServiceTest {
                 any(),
                 eq("1234-5678-9012"),
                 eq("oxford-emailReplyToId"));
+
+        verify(pdfManagementService).generateAndUpload(any(SentEmail.class), eq(SENT_EMAIL));
     }
 
     @Test
@@ -210,6 +234,8 @@ public class NotificationServiceTest {
                 any(),
                 anyString(),
                 eq("manchester-emailReplyToId"));
+
+        verify(pdfManagementService).generateAndUpload(any(SentEmail.class), eq(SENT_EMAIL));
     }
 
     @Test
@@ -224,5 +250,7 @@ public class NotificationServiceTest {
                 any(),
                 eq("1234-5678-9012"),
                 eq("manchester-emailReplyToId"));
+
+        verify(pdfManagementService).generateAndUpload(any(SentEmail.class), eq(SENT_EMAIL));
     }
 }

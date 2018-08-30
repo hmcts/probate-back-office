@@ -11,6 +11,7 @@ import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import uk.gov.hmcts.probate.exception.BadRequestException;
 import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
@@ -21,10 +22,12 @@ import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.util.TestUtils;
 import uk.gov.service.notify.NotificationClientException;
 
+import java.util.Optional;
+
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -58,7 +61,9 @@ public class NotificationControllerTest {
 
     @Before
     public void setUp() throws NotificationClientException, BadRequestException {
-        doNothing().when(notificationService).sendEmail(any(), any());
+        Document document = Document.builder().build();
+
+        doReturn(Optional.of(document)).when(notificationService).sendEmail(any(), any());
 
         when(pdfManagementService.generateAndUpload(any(CallbackRequest.class), eq(DIGITAL_GRANT_DRAFT)))
                 .thenReturn(Document.builder().build());

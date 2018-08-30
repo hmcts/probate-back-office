@@ -3,6 +3,8 @@ package uk.gov.hmcts.probate.functional.util;
 import io.restassured.http.ContentType;
 import io.restassured.http.Header;
 import io.restassured.http.Headers;
+import io.restassured.response.Response;
+import net.serenitybdd.rest.SerenityRest;
 import org.pdfbox.cos.COSDocument;
 import org.pdfbox.pdfparser.PDFParser;
 import org.pdfbox.pdmodel.PDDocument;
@@ -74,7 +76,16 @@ public class TestUtils {
                 new Header("user-id", userId));
     }
 
-    public String parsePDFToString (InputStream inputStream){
+    public String downloadPdfAndParseToString(String documentUrl) {
+        Response document = SerenityRest.given()
+                .relaxedHTTPSValidation()
+                .headers(getHeadersWithUserId())
+                .when().get(documentUrl).andReturn();
+
+        return parsePDFToString(document.getBody().asInputStream());
+    }
+
+    public String parsePDFToString(InputStream inputStream) {
 
         PDFParser parser;
         PDDocument pdDoc = null;
