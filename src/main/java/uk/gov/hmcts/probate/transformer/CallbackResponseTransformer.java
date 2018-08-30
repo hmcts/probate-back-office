@@ -240,12 +240,12 @@ public class CallbackResponseTransformer {
                         .ihtReferenceNumber(null);
             }
         }
+
         List<CollectionMember<AliasName>> deceasedAliasNames = EMPTY_LIST;
         if (caseData.getDeceasedAliasNameList() != null) {
                 deceasedAliasNames = caseData.getDeceasedAliasNameList()
                         .stream()
                         .map(CollectionMember::getValue)
-                        .filter(aliasName -> aliasName.getForenames().length() > 0)
                         .map(deceasedAliasName -> buildDeceasedAliasNameExecutor(deceasedAliasName))
                         .map(alias -> new CollectionMember<>(null, alias))
                         .collect(Collectors.toList());
