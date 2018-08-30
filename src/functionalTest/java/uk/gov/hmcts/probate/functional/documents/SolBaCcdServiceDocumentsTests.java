@@ -354,9 +354,10 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     @Test
     public void verifySuccessForGetDigitalGrantDraftPrimaryApplicantNotApplyingPowerReserved()  {
         String response = generateDocument("solicitorPayloadNotificationsMultipleExsPANotApplyingPowerReserved.json", "/document/generate-grant-draft");
-System.out.println(response);
+
         assertTrue(!response.contains(PRIMARY_APPLICANT));
         assertTrue(!response.contains(ADD_EXEC_ONE));
+        assertTrue(!response.contains(POWER_RESERVED));
 
         assertTrue(response.contains(ADD_EXEC_ONE_PRIMARY_APPLICANT));
         assertTrue(response.contains(ADD_EXEC_TWO));
@@ -370,10 +371,39 @@ System.out.println(response);
 
         assertTrue(!response.contains(PRIMARY_APPLICANT));
         assertTrue(!response.contains(ADD_EXEC_ONE));
+        assertTrue(!response.contains(POWER_RESERVED));
 
         assertTrue(response.contains(ADD_EXEC_ONE_PRIMARY_APPLICANT));
         assertTrue(response.contains(ADD_EXEC_TWO));
         assertTrue(response.contains(POWER_RESERVED_SINGLE));
+
+    }
+
+    @Test
+    public void verifySuccessForGetDigitalGrantDraftPrimaryApplicantNotApplyingPowerReservedMultiple()  {
+        String response = generateDocument("solicitorPayloadNotificationsPANotApplyingPowerReservedMultiple.json", "/document/generate-grant-draft");
+
+        assertTrue(!response.contains(PRIMARY_APPLICANT));
+        assertTrue(!response.contains(ADD_EXEC_ONE));
+        assertTrue(!response.contains(POWER_RESERVED_SINGLE));
+
+        assertTrue(response.contains(ADD_EXEC_ONE_PRIMARY_APPLICANT));
+        assertTrue(response.contains(ADD_EXEC_TWO));
+        assertTrue(response.contains(POWER_RESERVED));
+
+    }
+
+    @Test
+    public void verifySuccessForGetDigitalGrantPrimaryApplicantNotApplyingPowerReservedMultiple()  {
+        String response = generateDocument("solicitorPayloadNotificationsPANotApplyingPowerReservedMultiple.json", "/document/generate-grant");
+
+        assertTrue(!response.contains(PRIMARY_APPLICANT));
+        assertTrue(!response.contains(ADD_EXEC_ONE));
+        assertTrue(!response.contains(POWER_RESERVED_SINGLE));
+
+        assertTrue(response.contains(ADD_EXEC_ONE_PRIMARY_APPLICANT));
+        assertTrue(response.contains(ADD_EXEC_TWO));
+        assertTrue(response.contains(POWER_RESERVED));
 
     }
 

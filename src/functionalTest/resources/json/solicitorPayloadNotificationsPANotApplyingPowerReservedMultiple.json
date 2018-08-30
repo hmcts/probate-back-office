@@ -26,11 +26,65 @@
     "case_data": {
       "otherExecutorExists": "No",
       "outsideUKGrantCopies": null,
+      "executorsNotApplying": [
+        {
+          "id": "7c077bb3-dd7a-4e28-9aca-3cbbd31ca2ac",
+          "value": {
+            "notApplyingExecutorName": null,
+            "notApplyingExecutorFirstName": "Jane",
+            "notApplyingExecutorSurname": "Doe",
+            "notApplyingExecutorNameOnWill": null,
+            "aliasName": {
+              "Forenames": null,
+              "LastName": null,
+              "AppearOnGrant": "Yes"
+            },
+            "notApplyingExecutorNameDifferenceComment": null,
+            "notApplyingExecutorReason": "PowerReserved",
+            "notApplyingExecutorNotified": "",
+            "notApplyingExecAddress": {
+              "AddressLine1": null,
+              "AddressLine2": null,
+              "AddressLine3": null,
+              "County": null,
+              "PostTown": null,
+              "PostCode": null,
+              "Country": null
+            }
+          }
+        },
+        {
+          "id": "36150cad-a394-493e-9064-248b500c9473",
+          "value": {
+            "notApplyingExecutorName": "",
+            "notApplyingExecutorFirstName": "exfn2",
+            "notApplyingExecutorSurname": "exln2",
+            "notApplyingExecutorNameOnWill": null,
+            "aliasName": {
+              "Forenames": null,
+              "LastName": null,
+              "AppearOnGrant": ""
+            },
+            "notApplyingExecutorNameDifferenceComment": null,
+            "notApplyingExecutorReason": "PowerReserved",
+            "notApplyingExecutorNotified": "",
+            "notApplyingExecAddress": {
+              "AddressLine1": null,
+              "AddressLine2": null,
+              "AddressLine3": null,
+              "County": null,
+              "PostTown": null,
+              "PostCode": null,
+              "Country": null
+            }
+          }
+        }
+      ],
       "executorsApplying": [
         {
           "id": "8e75cd11-b673-4523-9a1c-764ea75f5b04",
           "value": {
-            "applyingExecutorName": "Add ex first name 1 Add ex last name 1",
+            "applyingExecutorName": "",
             "applyingExecutorFirstName": "Add ex first name 1",
             "applyingExecutorSurname": "Add ex last name 1",
             "applyingExecutorPhoneNumber": null,
@@ -54,7 +108,7 @@
         {
           "id": "634a93e9-cedb-4b6b-8577-5d702abe0b3c",
           "value": {
-            "applyingExecutorName": "Add ex first name 2 Add ex last name 2",
+            "applyingExecutorName": "",
             "applyingExecutorFirstName": "Add ex first name 2",
             "applyingExecutorSurname": "Add ex last name 2",
             "applyingExecutorPhoneNumber": null,

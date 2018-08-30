@@ -219,6 +219,7 @@
                 {% set powerReservedCounter = powerReservedCounter + 1 %}
                 {% endif %}
                 {% endfor %}
+                {% endif %}
 
                 {% if case_details.case_data.primaryApplicantIsApplying == "No" %}
                 {% if case_details.case_data.solsPrimaryExecutorNotApplyingReason == "PowerReserved" %}
@@ -229,7 +230,6 @@
                 {% if powerReservedCounter == 0 %}{% endif %}
                 {% if powerReservedCounter == 1 %}Power reserved to another Executor{% endif %}
                 {% if powerReservedCounter > 1 %}Power reserved to other Executors{% endif %}
-                {% endif %}
             </p>
 
             <p>
