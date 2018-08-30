@@ -243,15 +243,15 @@ public class CallbackResponseTransformer {
 
         List<CollectionMember<AliasName>> deceasedAliasNames = EMPTY_LIST;
         if (caseData.getDeceasedAliasNameList() != null) {
-                deceasedAliasNames = caseData.getDeceasedAliasNameList()
-                        .stream()
-                        .map(CollectionMember::getValue)
-                        .map(deceasedAliasName -> buildDeceasedAliasNameExecutor(deceasedAliasName))
-                        .map(alias -> new CollectionMember<>(null, alias))
-                        .collect(Collectors.toList());
+            deceasedAliasNames = caseData.getDeceasedAliasNameList()
+                    .stream()
+                    .map(CollectionMember::getValue)
+                    .map(deceasedAliasName -> buildDeceasedAliasNameExecutor(deceasedAliasName))
+                    .map(alias -> new CollectionMember<>(null, alias))
+                    .collect(Collectors.toList());
         }
         if (deceasedAliasNames.isEmpty()) {
-           builder
+            builder
                     .solsDeceasedAliasNamesList(caseData.getSolsDeceasedAliasNamesList());
         } else {
             builder
@@ -301,7 +301,8 @@ public class CallbackResponseTransformer {
 
     private AdditionalExecutorApplying buildApplyingAdditionalExecutor(AdditionalExecutor additionalExecutorApplying) {
         return AdditionalExecutorApplying.builder()
-                .applyingExecutorName(additionalExecutorApplying.getAdditionalExecForenames() + " " + additionalExecutorApplying.getAdditionalExecLastname())
+                .applyingExecutorName(additionalExecutorApplying.getAdditionalExecForenames()
+                        + " " + additionalExecutorApplying.getAdditionalExecLastname())
                 .applyingExecutorPhoneNumber(null)
                 .applyingExecutorEmail(null)
                 .applyingExecutorAddress(additionalExecutorApplying.getAdditionalExecAddress())
@@ -317,7 +318,8 @@ public class CallbackResponseTransformer {
 
     private AdditionalExecutorNotApplying buildNotApplyingAdditionalExecutor(AdditionalExecutor additionalExecutorNotApplying) {
         return AdditionalExecutorNotApplying.builder()
-                .notApplyingExecutorName(additionalExecutorNotApplying.getAdditionalExecForenames() + " " + additionalExecutorNotApplying.getAdditionalExecLastname())
+                .notApplyingExecutorName(additionalExecutorNotApplying.getAdditionalExecForenames()
+                        + " " + additionalExecutorNotApplying.getAdditionalExecLastname())
                 .notApplyingExecutorReason(additionalExecutorNotApplying.getAdditionalExecReasonNotApplying())
                 .notApplyingExecutorNameOnWill(additionalExecutorNotApplying.getAdditionalExecAliasNameOnWill())
                 .build();
