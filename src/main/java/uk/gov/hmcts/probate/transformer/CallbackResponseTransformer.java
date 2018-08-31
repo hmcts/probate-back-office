@@ -215,8 +215,7 @@ public class CallbackResponseTransformer {
                 .boAdminClauseLimitation(caseData.getBoAdminClauseLimitation())
                 .boLimitationText(caseData.getBoLimitationText())
                 .probateDocumentsGenerated(caseData.getProbateDocumentsGenerated())
-                .boDocumentsUploaded(caseData.getBoDocumentsUploaded());
-                .probateDocumentsGenerated(caseData.getProbateDocumentsGenerated())
+                .boDocumentsUploaded(caseData.getBoDocumentsUploaded())
 
                 .primaryApplicantPhoneNumber(caseData.getPrimaryApplicantPhoneNumber())
                 .declaration(caseData.getDeclaration())
