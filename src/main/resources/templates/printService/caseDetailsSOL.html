@@ -147,7 +147,7 @@
     </tr>
     <tr>
       <td colspan="2">Names used by the deceased for other assets:</td>
-      <td>{% for alias in case_data.solsDeceasedAliasNamesList %}{{ alias.value.SolsAliasname }}<br/>{% endfor %}</td>
+      <td>{% if case_data.boDeceasedAliasNamesList | length == 0 %}{% for alias in case_data.solsDeceasedAliasNamesList %}{{ alias.value.SolsAliasname }}<br/>{% endfor %}{% endif %}{% if case_data.boDeceasedAliasNamesList %}{% for alias in case_data.boDeceasedAliasNamesList %}{{ alias.value.Forenames }} {{ alias.value.LastName }}<br/>{% endfor %}{% endif %}</td>
     </tr>
     <tr>
       <td colspan="3" valign="top">Deceased address</td>
@@ -173,7 +173,11 @@
     </tr>
     <tr>
       <td colspan="2">Number of executors:</td>
-      <td>{{( case_data.solsAdditionalExecutorList | length ) + 1 }}</td>
+      <td>{% if (case_data.executorsApplying | length == 0) and (case_data.executorsNotApplying | length == 0) %}
+        {{( case_data.solsAdditionalExecutorList | length ) + 1 }}
+        {% else %}
+        {{( case_data.executorsApplying | length ) + ( case_data.executorsNotApplying | length ) +1 }}
+        {% endif %}</td>
     </tr>
 
     <tr>
@@ -191,6 +195,8 @@
       {{ notApplyingReason(case_data.solsPrimaryExecutorNotApplyingReason) }}
     </tr>
     {% endif %}
+
+    {% if case_data.executorsNotApplying | length == 0 %}
     {% for additionalExecutor in case_data.solsAdditionalExecutorList %}
     {% if additionalExecutor.value.additionalApplying == "No" %}{% set notApplying = notApplying + 1 %}
     <tr>
@@ -204,6 +210,21 @@
     </tr>
     {% endif %}
     {% endfor %}
+    {% endif%}
+    {% if case_data.executorsNotApplying %}
+    {% for additionalExecutor in case_data.executorsNotApplying %}{% set notApplying = notApplying + 1 %}
+    <tr>
+      <td colspan="2">Executor {{ notApplying }} name:</td>
+      <td>{{ additionalExecutor.value.notApplyingExecutorFirstName }} {{ additionalExecutor.value.notApplyingExecutorSurname }}</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td>Not applying reason:</td>
+      {{ notApplyingReason(additionalExecutor.value.notApplyingExecutorReason) }}
+    </tr>
+    {% endfor %}
+    {% endif %}
+
     {% if notApplying == 0 %}
     <tr><td></td><td>None</td></tr>
     {% endif%}
@@ -223,6 +244,8 @@
     {{address(case_data.primaryApplicantAddress)}}
     <tr><td>&nbsp;</td></tr>
     {% endif %}
+
+    {% if case_data.executorsApplying | length == 0 %}
     {% for additionalExecutor in case_data.solsAdditionalExecutorList %}
     {% if additionalExecutor.value.additionalApplying == "Yes" %}{% set applying = applying + 1 %}
     <tr>
@@ -234,6 +257,20 @@
     {% endif %}
     <tr><td>&nbsp;</td></tr>
     </tr>{% endif %}{% endfor %}
+    {% endif %}
+    {% if case_data.executorsApplying %}
+    {% for additionalExecutor in case_data.executorsApplying %}
+    {% set applying = applying + 1 %}
+    <tr>
+      <td colspan="2">Executor {{ applying }} name:</td>
+      <td>{{ names(additionalExecutor.value.applyingExecutorFirstName,additionalExecutor.value.applyingExecutorSurname) }}</td>
+    </tr>
+    {% if additionalExecutor.value.applyingExecutorAddress %}
+    {{address(additionalExecutor.value.applyingExecutorAddress)}}
+    {% endif %}
+    <tr><td>&nbsp;</td></tr>
+    </tr>{% endfor %}
+    {% endif %}
 
     <tr>
       <td colspan="3"><strong>Estate details</strong></td>

@@ -3,7 +3,6 @@ package uk.gov.hmcts.probate.service;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -22,6 +21,7 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
+import static uk.gov.hmcts.probate.model.State.CASE_STOPPED;
 import static uk.gov.hmcts.probate.model.State.DOCUMENTS_RECEIVED;
 import static uk.gov.hmcts.probate.model.State.GRANT_ISSUED;
 
@@ -38,34 +38,63 @@ public class NotificationServiceTest {
     @SpyBean
     private NotificationClient notificationClient;
 
-    private CaseData solicitorCaseData;
-
-    private CaseData personalCaseData;
+    private CaseData personalCaseDataOxford;
+    private CaseData solicitorCaseDataOxford;
+    private CaseData personalCaseDataBirmingham;
+    private CaseData solicitorCaseDataBirmingham;
+    private CaseData personalCaseDataManchester;
+    private CaseData solicitorCaseDataManchester;
 
     @Before
     public void setUp() throws NotificationClientException {
         doReturn(null)
-                .when(notificationClient).sendEmail(anyString(), anyString(), any(), anyString());
+                .when(notificationClient).sendEmail(anyString(), anyString(), any(), anyString(), anyString());
 
-        solicitorCaseData = CaseData.builder()
+        personalCaseDataOxford = CaseData.builder()
+                .applicationType(PERSONAL)
+                .registryLocation("Oxford")
+                .primaryApplicantEmailAddress("personal@test.com")
+                .build();
+
+        solicitorCaseDataOxford = CaseData.builder()
+                .applicationType(SOLICITOR)
+                .registryLocation("Oxford")
+                .solsSolicitorEmail("solicitor@test.com")
+                .solsSolicitorAppReference("1234-5678-9012")
+                .build();
+
+        personalCaseDataBirmingham = CaseData.builder()
+                .applicationType(PERSONAL)
+                .registryLocation("Birmingham")
+                .primaryApplicantEmailAddress("personal@test.com")
+                .build();
+
+        solicitorCaseDataBirmingham = CaseData.builder()
                 .applicationType(SOLICITOR)
                 .registryLocation("Birmingham")
                 .solsSolicitorEmail("solicitor@test.com")
                 .solsSolicitorAppReference("1234-5678-9012")
                 .build();
 
-        personalCaseData = CaseData.builder()
+        personalCaseDataManchester = CaseData.builder()
                 .applicationType(PERSONAL)
-                .registryLocation("Birmingham")
+                .registryLocation("Manchester")
                 .primaryApplicantEmailAddress("personal@test.com")
+                .build();
+
+        solicitorCaseDataManchester = CaseData.builder()
+                .applicationType(SOLICITOR)
+                .registryLocation("Manchester")
+                .solsSolicitorEmail("solicitor@test.com")
+                .solsSolicitorAppReference("1234-5678-9012")
                 .build();
     }
 
     @Test
-    public void sendDocumentsReceivedEmailToPersonalApplicant()
+    public void sendDocumentsReceivedEmailToPersonalApplicantFromBirmingham()
             throws NotificationClientException, BadRequestException {
 
-        notificationService.sendEmail(DOCUMENTS_RECEIVED, personalCaseData);
+        notificationService.sendEmail(DOCUMENTS_RECEIVED, personalCaseDataBirmingham);
 
         verify(notificationClient).sendEmail(
                 eq("pa-document-received"),
@@ -75,10 +104,10 @@ public class NotificationServiceTest {
     }
 
     @Test
-    public void sendDocumentsReceivedEmailToSolicitor()
+    public void sendDocumentsReceivedEmailToSolicitorFromBirmingham()
             throws NotificationClientException, BadRequestException {
 
-        notificationService.sendEmail(DOCUMENTS_RECEIVED, solicitorCaseData);
+        notificationService.sendEmail(DOCUMENTS_RECEIVED, solicitorCaseDataBirmingham);
 
         verify(notificationClient).sendEmail(
                 eq("sol-document-received"),
@@ -88,10 +117,10 @@ public class NotificationServiceTest {
     }
 
     @Test
-    public void sendGrantIssuedEmailToPersonalApplicant()
+    public void sendGrantIssuedEmailToPersonalApplicantFromBirmingham()
             throws NotificationClientException, BadRequestException {
 
-        notificationService.sendEmail(GRANT_ISSUED, personalCaseData);
+        notificationService.sendEmail(GRANT_ISSUED, personalCaseDataBirmingham);
 
         verify(notificationClient).sendEmail(
                 eq("pa-grant-issued"),
@@ -101,15 +130,99 @@ public class NotificationServiceTest {
     }
 
     @Test
-    public void sendGrantIssuedEmailToSolicitor()
+    public void sendGrantIssuedEmailToSolicitorFromBirmingham()
             throws NotificationClientException, BadRequestException {
 
-        notificationService.sendEmail(GRANT_ISSUED, solicitorCaseData);
+        notificationService.sendEmail(GRANT_ISSUED, solicitorCaseDataBirmingham);
 
         verify(notificationClient).sendEmail(
                 eq("sol-grant-issued"),
                 eq("solicitor@test.com"),
                 any(),
                 eq("1234-5678-9012"));
+    }
+
+    @Test
+    public void sendCaseStoppedEmailToPersonalApplicantFromBirmingham()
+            throws NotificationClientException, BadRequestException {
+
+        notificationService.sendEmail(CASE_STOPPED, personalCaseDataBirmingham);
+
+        verify(notificationClient).sendEmail(
+                eq("pa-case-stopped"),
+                eq("personal@test.com"),
+                any(),
+                anyString(),
+                eq("birmingham-emailReplyToId"));
+    }
+
+    @Test
+    public void sendCaseStoppedEmailToSolicitorFromBirmingham()
+        throws NotificationClientException, BadRequestException {
+
+        notificationService.sendEmail(CASE_STOPPED, solicitorCaseDataBirmingham);
+
+        verify(notificationClient).sendEmail(
+                eq("sol-case-stopped"),
+                eq("solicitor@test.com"),
+                any(),
+                eq("1234-5678-9012"),
+                eq("birmingham-emailReplyToId"));
+    }
+
+    @Test
+    public void sendCaseStoppedEmailToPersonalApplicantFromOxford()
+            throws NotificationClientException, BadRequestException {
+
+        notificationService.sendEmail(CASE_STOPPED, personalCaseDataOxford);
+
+        verify(notificationClient).sendEmail(
+                eq("pa-case-stopped"),
+                eq("personal@test.com"),
+                any(),
+                anyString(),
+                eq("oxford-emailReplyToId"));
+    }
+
+    @Test
+    public void sendCaseStoppedEmailToSolicitorFromOxford()
+            throws NotificationClientException, BadRequestException {
+
+        notificationService.sendEmail(CASE_STOPPED, solicitorCaseDataOxford);
+
+        verify(notificationClient).sendEmail(
+                eq("sol-case-stopped"),
+                eq("solicitor@test.com"),
+                any(),
+                eq("1234-5678-9012"),
+                eq("oxford-emailReplyToId"));
+    }
+
+    @Test
+    public void sendCaseStoppedEmailToPersonalApplicantFromManchester()
+            throws NotificationClientException, BadRequestException {
+
+        notificationService.sendEmail(CASE_STOPPED, personalCaseDataManchester);
+
+        verify(notificationClient).sendEmail(
+                eq("pa-case-stopped"),
+                eq("personal@test.com"),
+                any(),
+                anyString(),
+                eq("manchester-emailReplyToId"));
+    }
+
+    @Test
+    public void sendCaseStoppedEmailToSolicitorFromManchester()
+            throws NotificationClientException, BadRequestException {
+
+        notificationService.sendEmail(CASE_STOPPED, solicitorCaseDataManchester);
+
+        verify(notificationClient).sendEmail(
+                eq("sol-case-stopped"),
+                eq("solicitor@test.com"),
+                any(),
+                eq("1234-5678-9012"),
+                eq("manchester-emailReplyToId"));
     }
 }

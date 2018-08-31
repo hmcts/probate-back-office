@@ -10,8 +10,10 @@ import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.AliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
+import uk.gov.hmcts.probate.model.ccd.raw.Declaration;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
+import uk.gov.hmcts.probate.model.ccd.raw.LegalStatement;
 import uk.gov.hmcts.probate.model.ccd.raw.ProbateAliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.StopReason;
@@ -55,7 +57,7 @@ public class ResponseCaseData {
     private final String totalFee;
     private final String solsPaymentMethods;
     private final String solsFeeAccountNumber;
-    private final String solsPaymentReferenceNumber;
+    private final String paymentReferenceNumber;
     private final DocumentLink solsLegalStatementDocument;
     private final List<CollectionMember<Document>> probateDocumentsGenerated;
     private final List<CollectionMember<Document>> boDocumentsUploaded;
@@ -88,6 +90,7 @@ public class ResponseCaseData {
     private final String boEmailDocsReceivedNotification;
     private final String boEmailGrantIssuedNotification;
     private final List<CollectionMember<StopReason>> boCaseStopReasonList;
+    private final String boStopDetails;
     private final String boDeceasedTitle;
     private final String boDeceasedHonours;
 
@@ -97,4 +100,11 @@ public class ResponseCaseData {
     private final String boLimitationText;
     private final String ihtReferenceNumber;
     private final String ihtFormCompletedOnline;
+
+    private final LegalStatement legalStatement;
+    private final Declaration declaration;
+    private final String deceasedMarriedAfterWillOrCodicilDate;
+    //Todo remove PA specific attr
+    private final String primaryApplicantPhoneNumber;
+
 }
