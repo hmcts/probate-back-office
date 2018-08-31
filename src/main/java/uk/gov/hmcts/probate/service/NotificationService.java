@@ -52,7 +52,7 @@ public class NotificationService {
             SendEmailResponse response = notificationClient.sendEmail(templateId, emailAddress, personalisation, reference, emailReplyToId);
             SentEmail sentEmail = SentEmail.builder()
                     .sentOn(LocalDateTime.now().format(formatter))
-                    .from(response.getFromEmail().get())
+                    .from(response.getFromEmail().orElse(""))
                     .to(emailAddress)
                     .subject(response.getSubject())
                     .body(markdownTransformationService.toHtml(response.getBody()))
