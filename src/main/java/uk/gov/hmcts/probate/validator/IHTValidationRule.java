@@ -16,7 +16,7 @@ import static uk.gov.hmcts.probate.model.Constants.BUSINESS_ERROR;
 
 @Component
 @RequiredArgsConstructor
-class IHTValidationRule implements SolAddDeceasedEstateDetailsValidationRule {
+class IHTValidationRule implements SolAddDeceasedEstateDetailsValidationRule, CaseworkerAmendValidationRule {
 
     public static final String IHT_NET_GREATER_THAN_GROSS = "ihtNetGreaterThanGross";
     public static final String IHT_NET_IS_NULL = "ihtNetIsNull";

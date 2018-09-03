@@ -23,6 +23,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.LegalStatement;
 import uk.gov.hmcts.probate.model.ccd.raw.ProbateAliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.StopReason;
+import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
@@ -156,6 +157,8 @@ public class CaseData {
     private final DocumentLink solsLegalStatementDocument;
 
     private final List<CollectionMember<Document>> probateDocumentsGenerated = new ArrayList<>();
+
+    private final List<CollectionMember<UploadDocument>> boDocumentsUploaded;
 
     @NotNull(groups = {ApplicationReviewedGroup.class}, message = "{solsSOTNeedToUpdateIsNull}")
     private final String solsSOTNeedToUpdate;

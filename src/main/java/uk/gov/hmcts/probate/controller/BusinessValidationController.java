@@ -28,6 +28,7 @@ import uk.gov.hmcts.probate.service.StateChangeService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CCDDataTransformer;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
+import uk.gov.hmcts.probate.validator.CaseworkerAmendValidationRule;
 import uk.gov.hmcts.probate.validator.ValidationRule;
 
 import javax.servlet.http.HttpServletRequest;
@@ -48,12 +49,13 @@ public class BusinessValidationController {
     private final EventValidationService eventValidationService;
     private final CCDDataTransformer ccdBeanTransformer;
     private final ObjectMapper objectMapper;
-    private final List<ValidationRule> validationRules;
+    private final List<ValidationRule> allValidationRules;
+    private final List<CaseworkerAmendValidationRule> allCaseworkerAmendValidationRules;
     private final CallbackResponseTransformer callbackResponseTransformer;
     private final ConfirmationResponseService confirmationResponseService;
     private final StateChangeService stateChangeService;
     private final PDFManagementService pdfManagementService;
-    private static final String LOG_ERROR_MESSAGE = "Case Id: {} ERROR: {}";
+    private static final String DEFAULT_LOG_ERROR = "Case Id: {} ERROR: {}";
     private static final String INVALID_PAYLOAD = "Invalid payload";
 
     @PostMapping(path = "/validate", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -65,11 +67,11 @@ public class BusinessValidationController {
         logRequest(request.getRequestURI(), callbackRequest);
 
         if (bindingResult.hasErrors()) {
-            log.error(LOG_ERROR_MESSAGE, callbackRequest.getCaseDetails().getId(), bindingResult);
+            log.error(DEFAULT_LOG_ERROR, callbackRequest.getCaseDetails().getId(), bindingResult);
             throw new BadRequestException(INVALID_PAYLOAD, bindingResult);
         }
 
-        CallbackResponse response = validateRequest(callbackRequest, validationRules);
+        CallbackResponse response = validateRequest(callbackRequest, allValidationRules);
         if (response.getErrors().isEmpty()) {
             Optional<String> newState = stateChangeService.getChangedStateForCaseUpdate(callbackRequest.getCaseDetails().getData());
             if (newState.isPresent()) {
@@ -92,11 +94,11 @@ public class BusinessValidationController {
         logRequest(request.getRequestURI(), callbackRequest);
 
         if (bindingResult.hasErrors()) {
-            log.error(LOG_ERROR_MESSAGE, callbackRequest.getCaseDetails().getId(), bindingResult);
+            log.error(DEFAULT_LOG_ERROR, callbackRequest.getCaseDetails().getId(), bindingResult);
             throw new BadRequestException(INVALID_PAYLOAD, bindingResult);
         }
 
-        CallbackResponse response = validateRequest(callbackRequest, validationRules);
+        CallbackResponse response = validateRequest(callbackRequest, allCaseworkerAmendValidationRules);
 
         if (response.getErrors().isEmpty()) {
             response = callbackResponseTransformer.transform(callbackRequest);
@@ -111,7 +113,7 @@ public class BusinessValidationController {
             BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
-            log.error(LOG_ERROR_MESSAGE, callbackRequest.getCaseDetails().getId(), bindingResult);
+            log.error(DEFAULT_LOG_ERROR, callbackRequest.getCaseDetails().getId(), bindingResult);
             throw new BadRequestException(INVALID_PAYLOAD, bindingResult);
         }
 
@@ -125,7 +127,7 @@ public class BusinessValidationController {
             BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
-            log.error(LOG_ERROR_MESSAGE, callbackRequest.getCaseDetails().getId(), bindingResult);
+            log.error(DEFAULT_LOG_ERROR, callbackRequest.getCaseDetails().getId(), bindingResult);
             throw new BadRequestException(INVALID_PAYLOAD, bindingResult);
         }
 

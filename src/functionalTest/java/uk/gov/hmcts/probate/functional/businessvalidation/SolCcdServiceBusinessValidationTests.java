@@ -19,6 +19,7 @@ import static org.junit.Assert.assertEquals;
 @RunWith(SerenityRunner.class)
 public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
 
+    private static final String VALIDATE_CASE_AMEND_URL = "/case/validateCaseDetails";
     private static final String VALIDATE_URL = "/case/validate";
     private static final String TRANSFORM_URL = "/case/transformCase";
 
@@ -30,37 +31,37 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
 
     @Test
     public void verifyRequestWithDobNullReturnsError() {
-        validatePostFailureForSolicitorCreate("failure.dobIsNull.json",
+        validatePostFailureForSolicitorCreateAndCaseAmend("failure.dobIsNull.json",
                 "Date of birth cannot be empty", 400);
     }
 
     @Test
     public void verifyRequestWithDodNullReturnsError() {
-        validatePostFailureForSolicitorCreate("failure.dodIsNull.json",
+        validatePostFailureForSolicitorCreateAndCaseAmend("failure.dodIsNull.json",
                 "Date of death cannot be empty", 400);
     }
 
     @Test
     public void verifyRequestWithDodBeforeDobReturnsError() {
-        validatePostFailureForSolicitorCreate("failure.dobIsAfterDod.json",
+        validatePostFailureForSolicitorCreateAndCaseAmend("failure.dobIsAfterDod.json",
                 "Date of death cannot be before date of birth", 200);
     }
 
     @Test
     public void verifyRequestWithDodSameAsDobReturnsError() {
-        validatePostFailureForSolicitorCreate("failure.dodIsSameAsDob.json",
+        validatePostFailureForSolicitorCreateAndCaseAmend("failure.dodIsSameAsDob.json",
                 "Date of death cannot be the same as date of birth", 200);
     }
 
     @Test
     public void verifyRequestWithDobInFutureReturnsError() {
-        validatePostFailureForSolicitorCreate("failure.dobIsInTheFuture.json",
+        validatePostFailureForSolicitorCreateAndCaseAmend("failure.dobIsInTheFuture.json",
                 "Date of birth cannot be in the future", 200);
     }
 
     @Test
     public void verifyRequestWithDodInFutureReturnsError() {
-        validatePostFailureForSolicitorCreate("failure.dodIsInTheFuture.json",
+        validatePostFailureForSolicitorCreateAndCaseAmend("failure.dodIsInTheFuture.json",
                 "Date of death cannot be in the future", 200);
     }
 
@@ -115,6 +116,8 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     public void verifyRequestWithoutExecutorAddressReturnsError() {
         validatePostFailureForSolicitorExecutorDetails("failure.missingExecutorAddress.json",
                 "The executor address line 1 cannot be empty");
+        validatePostFailureForCaseAmend("failure.missingExecutorAddress.json",
+                "The executor address line 1 cannot be empty");
     }
 
     @Test
@@ -126,6 +129,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     @Test
     public void verifyRequestWithoutExecutorAddressWhileNotApplyingReturnsNoError() {
         validatePostSuccess("success.missingExecutorAddressWhileNotApplying.json", VALIDATE_URL);
+        validatePostSuccess("success.missingExecutorAddressWhileNotApplying.json", VALIDATE_CASE_AMEND_URL);
     }
 
     @Test
@@ -140,21 +144,23 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     @Test
     public void verifyNoOfApplyingExecutorsLessThanFour() {
         validatePostSuccess("success.LessThanFourExecutors.json", VALIDATE_URL);
+        validatePostSuccess("success.LessThanFourExecutors.json", VALIDATE_CASE_AMEND_URL);
     }
 
 
     @Test
     public void verifyNoOfApplyingExecutorsEqualToFour() {
         validatePostSuccess("success.equalToFourExecutors.json", VALIDATE_URL);
+        validatePostSuccess("success.equalToFourExecutors.json", VALIDATE_CASE_AMEND_URL);
     }
 
     @Test
     public void verifyNoOfApplyingExecutorsMoreThanFour() {
         validatePostFailure("failure.moreThanFourExecutors.json",
                 "The total number executors applying cannot exceed 4", 200, VALIDATE_URL);
+        validatePostFailure("failure.moreThanFourExecutors.json",
+                "The total number executors applying cannot exceed 4", 200, VALIDATE_CASE_AMEND_URL);
     }
-
-
 
     @Test
     public void verifyNoOfApplyingExecutorsLessThanFourTransformCase() {
@@ -274,8 +280,9 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
                 .then().assertThat().statusCode(200);
     }
 
-    private void validatePostFailureForSolicitorCreate(String jsonFileName, String errorMessage, Integer statusCode) {
+    private void validatePostFailureForSolicitorCreateAndCaseAmend(String jsonFileName, String errorMessage, Integer statusCode) {
         validatePostFailure(jsonFileName, errorMessage, statusCode, VALIDATE_URL);
+        validatePostFailure(jsonFileName, errorMessage, statusCode, VALIDATE_CASE_AMEND_URL);
     }
 
     private void validatePostFailureForSolicitorAddDeceasedEstateDetails(String jsonFileName, String errorMessage, Integer statusCode) {
@@ -286,7 +293,9 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         validatePostFailure(jsonFileName, errorMessage, 200, VALIDATE_URL);
     }
 
-
+    private void validatePostFailureForCaseAmend(String jsonFileName, String errorMessage) {
+        validatePostFailure(jsonFileName, errorMessage, 200, VALIDATE_CASE_AMEND_URL);
+    }
 
     private void validatePostFailure(String jsonFileName, String errorMessage, Integer statusCode, String URL) {
         Response response = SerenityRest.given()

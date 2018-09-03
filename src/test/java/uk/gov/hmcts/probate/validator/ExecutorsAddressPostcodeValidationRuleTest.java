@@ -19,10 +19,10 @@ import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.Constants.BUSINESS_ERROR;
 
-public class ExecutorsAddressValidationRuleTest {
+public class ExecutorsAddressPostcodeValidationRuleTest {
 
     @InjectMocks
-    private ExecutorsAddressValidationRule executorsAddressValidationRule;
+    private ExecutorsAddressPostcodeValidationRule executorsAddressPostcodeValidationRule;
 
     @Mock
     private BusinessValidationMessageService businessValidationMessageService;
@@ -33,48 +33,48 @@ public class ExecutorsAddressValidationRuleTest {
     @Mock
     private Executor executor;
 
-    private FieldErrorResponse executorAddressIsNullError;
+    private FieldErrorResponse executorPostcodeIsNullError;
 
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
 
-        executorAddressIsNullError = FieldErrorResponse.builder().message("executorAddressIsNull").build();
+        executorPostcodeIsNullError = FieldErrorResponse.builder().message("executorPostcodeIsNull").build();
 
         when(executor.isApplying()).thenReturn(true);
 
         when(ccdData.getExecutors()).thenReturn(Collections.singletonList(executor));
 
-        when(businessValidationMessageService.generateError(eq(BUSINESS_ERROR), eq("executorAddressIsNull")))
-                .thenReturn(executorAddressIsNullError);
 
+        when(businessValidationMessageService.generateError(eq(BUSINESS_ERROR), eq("executorPostcodeIsNull")))
+                .thenReturn(executorPostcodeIsNullError);
     }
 
     @Test
     public void shouldReturnAddressAndPostcodeErrorMessagesWhenNoAddressProvided() {
         when(executor.getAddress()).thenReturn(null);
 
-        List<FieldErrorResponse> errors = executorsAddressValidationRule.validate(ccdData);
+        List<FieldErrorResponse> errors = executorsAddressPostcodeValidationRule.validate(ccdData);
 
         Assert.assertEquals(1, errors.size());
-        Assert.assertTrue(errors.contains(executorAddressIsNullError));
+        Assert.assertTrue(errors.contains(executorPostcodeIsNullError));
     }
 
     @Test
-    public void shouldReturnAddressErrorMessageWhenNoAddressLineProvided() {
-        when(executor.getAddress()).thenReturn(SolsAddress.builder().postCode("PS1 0LS").build());
-
-        List<FieldErrorResponse> errors = executorsAddressValidationRule.validate(ccdData);
-
-        Assert.assertEquals(1, errors.size());
-        Assert.assertTrue(errors.contains(executorAddressIsNullError));
-    }
-
-    @Test
-    public void shouldNotReturnErrorMessagesWhenAddressProvided() {
+    public void shouldReturnPostcodeErrorMessageWhenNoPostcodeProvided() {
         when(executor.getAddress()).thenReturn(SolsAddress.builder().addressLine1("1 White St").build());
 
-        List<FieldErrorResponse> errors = executorsAddressValidationRule.validate(ccdData);
+        List<FieldErrorResponse> errors = executorsAddressPostcodeValidationRule.validate(ccdData);
+
+        Assert.assertEquals(1, errors.size());
+        Assert.assertTrue(errors.contains(executorPostcodeIsNullError));
+    }
+
+    @Test
+    public void shouldNotReturnErrorMessagesWhenAddressAndPostcodeProvided() {
+        when(executor.getAddress()).thenReturn(SolsAddress.builder().addressLine1("1 White St").postCode("SW1 1AZ").build());
+
+        List<FieldErrorResponse> errors = executorsAddressPostcodeValidationRule.validate(ccdData);
 
         Assert.assertTrue(errors.isEmpty());
     }

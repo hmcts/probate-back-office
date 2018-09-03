@@ -56,9 +56,7 @@
         {
           "id": "36150cad-a394-493e-9064-248b500c9473",
           "value": {
-            "notApplyingExecutorName": "",
-            "notApplyingExecutorFirstName": "exfn2",
-            "notApplyingExecutorSurname": "exln2",
+            "notApplyingExecutorName": "exfn2 exln2",
             "notApplyingExecutorNameOnWill": null,
             "aliasName": {
               "Forenames": null,
@@ -84,9 +82,7 @@
         {
           "id": "8e75cd11-b673-4523-9a1c-764ea75f5b04",
           "value": {
-            "applyingExecutorName": "",
-            "applyingExecutorFirstName": "Add ex first name 1",
-            "applyingExecutorSurname": "Add ex last name 1",
+            "applyingExecutorName": "Add ex first name 1 Add ex last name 1",
             "applyingExecutorPhoneNumber": null,
             "applyingExecutorEmail": null,
             "aliasName": {
@@ -108,9 +104,7 @@
         {
           "id": "634a93e9-cedb-4b6b-8577-5d702abe0b3c",
           "value": {
-            "applyingExecutorName": "",
-            "applyingExecutorFirstName": "Add ex first name 2",
-            "applyingExecutorSurname": "Add ex last name 2",
+            "applyingExecutorName": "Add ex first name 2 Add ex last name 2",
             "applyingExecutorPhoneNumber": null,
             "applyingExecutorEmail": null,
             "aliasName": {

@@ -12,9 +12,9 @@ import javax.servlet.http.HttpServletRequest;
 class IdamHttpHeaderFactory implements HttpHeadersFactory {
 
     private final HttpServletRequest httpServletRequest;
-    private static final String SERVICE_AUTH = "ServiceAuthorization";
-    private static final String AUTHORISATION = "Authorization";
     private static final String USER_ID = "user-id";
+    private static final String SERVICE_AUTH = "ServiceAuthorization";
+    private static final String AUTHORIZATION = "Authorization";
 
     @Override
     public HttpHeaders getMultiPartHttpHeader() {
@@ -38,7 +38,7 @@ class IdamHttpHeaderFactory implements HttpHeadersFactory {
     @Override
     public HttpHeaders getHttpHeader() {
         HttpHeaders headers = new HttpHeaders();
-        headers.add(AUTHORISATION, httpServletRequest.getHeader(SERVICE_AUTH));
+        headers.add(AUTHORIZATION, httpServletRequest.getHeader(AUTHORIZATION));
         return headers;
     }
 }
