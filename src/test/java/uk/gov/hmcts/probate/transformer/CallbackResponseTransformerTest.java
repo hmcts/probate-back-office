@@ -363,7 +363,7 @@ public class CallbackResponseTransformerTest {
     public void shouldTransformPersonalCaseForDeceasedAliasNamesExist() {
         caseDataBuilder.applicationType(ApplicationType.PERSONAL);
         List<CollectionMember<ProbateAliasName>> deceasedAliasNamesList = new ArrayList<>();
-        deceasedAliasNamesList.add(createdeceasedAliasName("0", ALIAS_FORENAME, ALIAS_SURNAME, YES));
+        deceasedAliasNamesList.add(createdDeceasedAliasName("0", ALIAS_FORENAME, ALIAS_SURNAME, YES));
 
         caseDataBuilder.deceasedAliasNameList(deceasedAliasNamesList);
 
@@ -567,8 +567,7 @@ public class CallbackResponseTransformerTest {
         assertEquals(1, callbackResponse.getData().getBoDocumentsUploaded().size());
     }
 
-
-    private CollectionMember<ProbateAliasName> createdeceasedAliasName(String id, String forename, String lastname, String onGrant) {
+    private CollectionMember<ProbateAliasName> createdDeceasedAliasName(String id, String forename, String lastname, String onGrant) {
         ProbateAliasName pan = ProbateAliasName.builder()
                 .appearOnGrant(onGrant)
                 .forenames(forename)
@@ -576,6 +575,7 @@ public class CallbackResponseTransformerTest {
                 .build();
         return new CollectionMember<>(id, pan);
     }
+
     private CollectionMember<UploadDocument> createUploadDocuments(String id) {
         DocumentLink docLink = DocumentLink.builder()
                 .documentBinaryUrl("")
