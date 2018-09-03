@@ -26,7 +26,111 @@
     "case_data": {
       "otherExecutorExists": "No",
       "outsideUKGrantCopies": null,
-      "applicationType": "Personal",
+      "executorsNotApplying": [
+        {
+          "id": "7c077bb3-dd7a-4e28-9aca-3cbbd31ca2ac",
+          "value": {
+            "notApplyingExecutorName": null,
+            "notApplyingExecutorFirstName": "Jane",
+            "notApplyingExecutorSurname": "Doe",
+            "notApplyingExecutorNameOnWill": null,
+            "aliasName": {
+              "Forenames": null,
+              "LastName": null,
+              "AppearOnGrant": "Yes"
+            },
+            "notApplyingExecutorNameDifferenceComment": null,
+            "notApplyingExecutorReason": "PowerReserved",
+            "notApplyingExecutorNotified": "",
+            "notApplyingExecAddress": {
+              "AddressLine1": null,
+              "AddressLine2": null,
+              "AddressLine3": null,
+              "County": null,
+              "PostTown": null,
+              "PostCode": null,
+              "Country": null
+            }
+          }
+        },
+        {
+          "id": "36150cad-a394-493e-9064-248b500c9473",
+          "value": {
+            "notApplyingExecutorName": "",
+            "notApplyingExecutorFirstName": "exfn2",
+            "notApplyingExecutorSurname": "exln2",
+            "notApplyingExecutorNameOnWill": null,
+            "aliasName": {
+              "Forenames": null,
+              "LastName": null,
+              "AppearOnGrant": ""
+            },
+            "notApplyingExecutorNameDifferenceComment": null,
+            "notApplyingExecutorReason": "PowerReserved",
+            "notApplyingExecutorNotified": "",
+            "notApplyingExecAddress": {
+              "AddressLine1": null,
+              "AddressLine2": null,
+              "AddressLine3": null,
+              "County": null,
+              "PostTown": null,
+              "PostCode": null,
+              "Country": null
+            }
+          }
+        }
+      ],
+      "executorsApplying": [
+        {
+          "id": "8e75cd11-b673-4523-9a1c-764ea75f5b04",
+          "value": {
+            "applyingExecutorName": "",
+            "applyingExecutorFirstName": "Add ex first name 1",
+            "applyingExecutorSurname": "Add ex last name 1",
+            "applyingExecutorPhoneNumber": null,
+            "applyingExecutorEmail": null,
+            "aliasName": {
+              "Forenames": null,
+              "LastName": null,
+              "AppearOnGrant": ""
+            },
+            "applyingExecutorAddress": {
+              "AddressLine1": "11",
+              "AddressLine2": "",
+              "AddressLine3": "",
+              "County": "",
+              "PostTown": "",
+              "PostCode": "11",
+              "Country": ""
+            }
+          }
+        },
+        {
+          "id": "634a93e9-cedb-4b6b-8577-5d702abe0b3c",
+          "value": {
+            "applyingExecutorName": "",
+            "applyingExecutorFirstName": "Add ex first name 2",
+            "applyingExecutorSurname": "Add ex last name 2",
+            "applyingExecutorPhoneNumber": null,
+            "applyingExecutorEmail": null,
+            "aliasName": {
+              "Forenames": null,
+              "LastName": null,
+              "AppearOnGrant": ""
+            },
+            "applyingExecutorAddress": {
+              "AddressLine1": "22",
+              "AddressLine2": "",
+              "AddressLine3": "",
+              "County": "",
+              "PostTown": "",
+              "PostCode": "22",
+              "Country": ""
+            }
+          }
+        }
+      ],
+      "applicationType": "Solicitor",
       "deceasedAddress": {
         "County": "",
         "Country": "",
@@ -45,7 +149,7 @@
       "solsSolicitorFirmName": "Solicitor Firm Name",
       "deceasedDateOfDeath": "2000-01-01",
       "solsSOTNeedToUpdate": "No",
-      "primaryApplicantEmailAddress": "probBackosol@gmail.com",
+      "primaryApplicantEmailAddress": "personal@hmcts-test.com",
       "primaryApplicantForenames": "Executor name 1",
       "primaryApplicantAddress": {
         "County": "",
@@ -56,10 +160,9 @@
         "AddressLine2": "",
         "AddressLine3": ""
       },
-      "solsSolicitorEmail": "solicitor@hmcts-test.net",
+      "solsSolicitorEmail": "probBackosol@gmail.com",
       "deceasedDomicileInEngWales": "Yes",
       "ihtNetValue": "800000",
-      "boStopDetails": "stop details",
       "deceasedSurname": "Deceased Last Name",
       "solsLegalStatementDocument": {
         "document_url": "http://localhost:8080/documents/e1f4f972-1514-4247-bdb1-964998ef3710",
@@ -70,7 +173,8 @@
       "solsPaymentMethods": "fee account",
       "solsSolicitorFirmPostcode": "KT10 0LA",
       "deceasedForenames": "Deceased First Name",
-      "primaryApplicantIsApplying": "Yes",
+      "primaryApplicantIsApplying": "No",
+      "solsPrimaryExecutorNotApplyingReason" : "PowerReserved",
       "primaryApplicantHasAlias": "No",
       "solsPaymentReferenceNumber": "Cheque (payable to ‘HM Courts & Tribunals Service’)",
       "solsSOTName": "name",
@@ -79,14 +183,6 @@
       "registryLocation": "Birmingham",
       "primaryApplicantSurname": "Executor Last Name 1",
       "solsSolicitorAppReference": "1231-3984-3949-0300",
-      "deceasedAliasNameList": [
-        {
-          "value": {
-            "Forenames": "Giacomo",
-            "LastName": "Terrel"
-          }
-        }
-      ],
       "solsSOTJobTitle": "job title"
     },
     "data_classification": {
@@ -262,10 +358,9 @@
         "AddressLine2": "",
         "AddressLine3": ""
       },
-      "solsSolicitorEmail": "solicitor@hmcts-test.net",
+      "solsSolicitorEmail": "probBackosol@gmail.com",
       "deceasedDomicileInEngWales": "Yes",
       "ihtNetValue": "800000",
-      "boStopDetails": "stop details",
       "deceasedSurname": "Deceased Last Name",
       "solsLegalStatementDocument": {
         "document_url": "http://localhost:8080/documents/e1f4f972-1514-4247-bdb1-964998ef3710",
@@ -279,7 +374,7 @@
       "solsPaymentReferenceNumber": "Cheque (payable to ‘HM Courts & Tribunals Service’)",
       "ihtGrossValue": "1000000",
       "solsIHTFormId": "IHT205",
-      "registryLocation": "Oxford",
+      "registryLocation": "Birmingham",
       "primaryApplicantSurname": "Executor Last Name 1",
       "solsSolicitorAppReference": "1231-3984-3949-0300"
     },

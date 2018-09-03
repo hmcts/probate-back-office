@@ -105,8 +105,6 @@ public class CaseData {
 
     private final List<CollectionMember<AliasName>> solsDeceasedAliasNamesList;
 
-    private final List<CollectionMember<ProbateAliasName>> boDeceasedAliasNamesList;
-
     @NotBlank(groups = {ApplicationUpdatedGroup.class}, message = "{solsIHTFormIdIsNull}")
     private final String solsIHTFormId;
 
@@ -130,10 +128,6 @@ public class CaseData {
     private final String primaryApplicantHasAlias;
 
     private final String solsExecutorAliasNames;
-
-    private final String solsExecutorAliasFirstNames;
-
-    private final String solsExecutorAliasSurnames;
 
     @NotBlank(groups = {ApplicationUpdatedGroup.class}, message = "{primaryApplicantIsApplyingIsNull}")
     private final String primaryApplicantIsApplying;
