@@ -17,7 +17,7 @@ import static uk.gov.hmcts.probate.model.Constants.BUSINESS_ERROR;
 
 @Component
 @RequiredArgsConstructor
-class DeceasedAddressPostcodeValidationRule implements SolExecutorDetailsValidationRule, CaseworkerAmendValidationRule {
+class DeceasedAddressPostcodeValidationRule implements SolExecutorDetailsValidationRule {
 
     private final BusinessValidationMessageService businessValidationMessageService;
 
