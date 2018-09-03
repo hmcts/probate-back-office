@@ -28,6 +28,7 @@ import uk.gov.hmcts.probate.service.StateChangeService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CCDDataTransformer;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
+import uk.gov.hmcts.probate.validator.CaseworkerAmendValidationRule;
 import uk.gov.hmcts.probate.validator.ValidationRule;
 
 import javax.servlet.http.HttpServletRequest;
@@ -48,7 +49,8 @@ public class BusinessValidationController {
     private final EventValidationService eventValidationService;
     private final CCDDataTransformer ccdBeanTransformer;
     private final ObjectMapper objectMapper;
-    private final List<ValidationRule> validationRules;
+    private final List<ValidationRule> allValidationRules;
+    private final List<CaseworkerAmendValidationRule> allCaseworkerAmendValidationRules;
     private final CallbackResponseTransformer callbackResponseTransformer;
     private final ConfirmationResponseService confirmationResponseService;
     private final StateChangeService stateChangeService;
@@ -69,7 +71,7 @@ public class BusinessValidationController {
             throw new BadRequestException(INVALID_PAYLOAD, bindingResult);
         }
 
-        CallbackResponse response = validateRequest(callbackRequest, validationRules);
+        CallbackResponse response = validateRequest(callbackRequest, allValidationRules);
         if (response.getErrors().isEmpty()) {
             Optional<String> newState = stateChangeService.getChangedStateForCaseUpdate(callbackRequest.getCaseDetails().getData());
             if (newState.isPresent()) {
@@ -96,7 +98,7 @@ public class BusinessValidationController {
             throw new BadRequestException(INVALID_PAYLOAD, bindingResult);
         }
 
-        CallbackResponse response = validateRequest(callbackRequest, validationRules);
+        CallbackResponse response = validateRequest(callbackRequest, allCaseworkerAmendValidationRules);
 
         if (response.getErrors().isEmpty()) {
             response = callbackResponseTransformer.transform(callbackRequest);

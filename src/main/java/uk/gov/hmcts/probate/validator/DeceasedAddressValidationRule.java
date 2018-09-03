@@ -17,7 +17,7 @@ import static uk.gov.hmcts.probate.model.Constants.BUSINESS_ERROR;
 
 @Component
 @RequiredArgsConstructor
-class DeceasedAddressValidationRule implements SolExecutorDetailsValidationRule {
+class DeceasedAddressValidationRule implements SolExecutorDetailsValidationRule, CaseworkerAmendValidationRule {
 
     private final BusinessValidationMessageService businessValidationMessageService;
 
@@ -28,9 +28,6 @@ class DeceasedAddressValidationRule implements SolExecutorDetailsValidationRule 
         SolsAddress address = ccdData.getDeceased().getAddress();
         if (address == null || Strings.isNullOrEmpty(address.getAddressLine1())) {
             errors.add(businessValidationMessageService.generateError(BUSINESS_ERROR, "deceasedAddressIsNull"));
-        }
-        if (address == null || Strings.isNullOrEmpty(address.getPostCode())) {
-            errors.add(businessValidationMessageService.generateError(BUSINESS_ERROR, "deceasedPostcodeIsNull"));
         }
 
         return new ArrayList<>(errors);

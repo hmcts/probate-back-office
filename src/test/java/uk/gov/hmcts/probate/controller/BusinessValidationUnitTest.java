@@ -28,6 +28,7 @@ import uk.gov.hmcts.probate.service.StateChangeService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CCDDataTransformer;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
+import uk.gov.hmcts.probate.validator.CaseworkerAmendValidationRule;
 import uk.gov.hmcts.probate.validator.ValidationRule;
 
 import javax.servlet.http.HttpServletRequest;
@@ -66,6 +67,8 @@ public class BusinessValidationUnitTest {
     @Mock
     private List<ValidationRule> validationRules;
     @Mock
+    private List<CaseworkerAmendValidationRule> caseworkerAmendValidationRules;
+    @Mock
     private CallbackResponseTransformer callbackResponseTransformerMock;
     @Mock
     private CallbackResponse callbackResponseMock;
@@ -94,6 +97,7 @@ public class BusinessValidationUnitTest {
                 ccdBeanTransformer,
                 objectMapper,
                 validationRules,
+                caseworkerAmendValidationRules,
                 callbackResponseTransformerMock,
                 confirmationResponseServiceMock,
                 stateChangeServiceMock, pdfManagementServiceMock);
@@ -189,6 +193,58 @@ public class BusinessValidationUnitTest {
         assertThat(response.getBody().getErrors().isEmpty(), is(false));
     }
 
+    @Test
+    public void shouldValidateAmendCaseWithNoErrors() {
+        when(bindingResultMock.hasErrors()).thenReturn(false);
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        when(ccdBeanTransformer.transform(callbackRequestMock)).thenReturn(ccdDataMock);
+        when(eventValidationServiceMock.validate(ccdDataMock, caseworkerAmendValidationRules)).thenReturn(Collections.emptyList());
+        when(stateChangeServiceMock.getChangedStateForCaseUpdate(caseDataMock)).thenReturn(Optional.empty());
+        when(pdfManagementServiceMock.generateAndUpload(callbackRequestMock, LEGAL_STATEMENT))
+                .thenReturn(documentMock);
+        when(callbackResponseTransformerMock.transform(callbackRequestMock))
+                .thenReturn(callbackResponseMock);
+
+        ResponseEntity<CallbackResponse> response = underTest.validateCaseDetails(callbackRequestMock,
+                bindingResultMock, httpServletRequest);
+
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        assertThat(response.getBody().getErrors().isEmpty(), is(true));
+    }
+
+
+    @Test(expected = BadRequestException.class)
+    public void shouldValidateAmendCaseWithFieldErrors() {
+        when(bindingResultMock.hasErrors()).thenReturn(true);
+        when(bindingResultMock.getFieldErrors()).thenReturn(Collections.singletonList(fieldErrorMock));
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        when(ccdBeanTransformer.transform(callbackRequestMock)).thenReturn(ccdDataMock);
+
+        ResponseEntity<CallbackResponse> response = underTest.validateCaseDetails(callbackRequestMock,
+                bindingResultMock, httpServletRequest);
+
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        assertThat(response.getBody().getErrors().isEmpty(), is(false));
+    }
+
+    @Test
+    public void shouldValidateAmendCaseWithBusinessErrors() {
+        when(bindingResultMock.hasErrors()).thenReturn(false);
+        List<FieldErrorResponse> businessErrors = Collections.singletonList(businessValidationErrorMock);
+        when(eventValidationServiceMock.validate(ccdDataMock, caseworkerAmendValidationRules)).thenReturn(businessErrors);
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        when(ccdBeanTransformer.transform(callbackRequestMock)).thenReturn(ccdDataMock);
+
+        ResponseEntity<CallbackResponse> response = underTest.validateCaseDetails(callbackRequestMock,
+                bindingResultMock, httpServletRequest);
+
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        assertThat(response.getBody().getErrors().isEmpty(), is(false));
+    }
+
     @Test(expected = BadRequestException.class)
     public void shouldErrorForConfirmation() {
         when(bindingResultMock.hasErrors()).thenReturn(true);
@@ -211,4 +267,36 @@ public class BusinessValidationUnitTest {
 
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
     }
+
+    @Test(expected = BadRequestException.class)
+    public void shouldTransformCaseWithFieldErrors() {
+        when(bindingResultMock.hasErrors()).thenReturn(true);
+        when(bindingResultMock.getFieldErrors()).thenReturn(Collections.singletonList(fieldErrorMock));
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        when(ccdBeanTransformer.transform(callbackRequestMock)).thenReturn(ccdDataMock);
+
+        ResponseEntity<CallbackResponse> response = underTest.transformCaseDetails(callbackRequestMock,
+                bindingResultMock);
+
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        assertThat(response.getBody().getErrors().isEmpty(), is(false));
+    }
+
+    @Test
+    public void shouldTransformCaseWithNoErrors() {
+        when(bindingResultMock.hasErrors()).thenReturn(false);
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        when(ccdBeanTransformer.transform(callbackRequestMock)).thenReturn(ccdDataMock);
+        when(callbackResponseTransformerMock.transformCase(callbackRequestMock))
+                .thenReturn(callbackResponseMock);
+
+        ResponseEntity<CallbackResponse> response = underTest.transformCaseDetails(callbackRequestMock,
+                bindingResultMock);
+
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        assertThat(response.getBody().getErrors().isEmpty(), is(true));
+    }
+
 }
