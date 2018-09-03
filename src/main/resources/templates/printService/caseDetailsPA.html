@@ -35,8 +35,8 @@
     {% if case_data.deceasedAliasNameList %}
     <td>{% for alias in case_data.deceasedAliasNameList %}{{ alias.value.Forenames }} {{ alias.value.LastName }}<br/>{% endfor %}</td>
     {% endif %}
-    {% if case_data.boDeceasedAliasNamesList %}
-    <td>{% for alias in case_data.boDeceasedAliasNamesList %}{{ alias.value.Forenames }} {{ alias.value.LastName }}<br/>{% endfor %}</td>
+    {% if case_data.solsDeceasedAliasNamesList %}
+    <td>{% for alias in case_data.solsDeceasedAliasNamesList %}{{ alias.value.SolsAliasname }}<br/>{% endfor %}</td>
     {% endif %}
   </tr>
   <tr>
