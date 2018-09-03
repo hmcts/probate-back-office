@@ -50,7 +50,7 @@ public class BusinessValidationController {
     private final CCDDataTransformer ccdBeanTransformer;
     private final ObjectMapper objectMapper;
     private final List<ValidationRule> allValidationRules;
-    private final List<CaseworkerAmendValidationRule> allCaseworkerAmmendValidationRules;
+    private final List<CaseworkerAmendValidationRule> allCaseworkerAmendValidationRules;
     private final CallbackResponseTransformer callbackResponseTransformer;
     private final ConfirmationResponseService confirmationResponseService;
     private final StateChangeService stateChangeService;
@@ -98,7 +98,7 @@ public class BusinessValidationController {
             throw new BadRequestException(INVALID_PAYLOAD, bindingResult);
         }
 
-        CallbackResponse response = validateRequest(callbackRequest, allCaseworkerAmmendValidationRules);
+        CallbackResponse response = validateRequest(callbackRequest, allCaseworkerAmendValidationRules);
 
         if (response.getErrors().isEmpty()) {
             response = callbackResponseTransformer.transform(callbackRequest);
