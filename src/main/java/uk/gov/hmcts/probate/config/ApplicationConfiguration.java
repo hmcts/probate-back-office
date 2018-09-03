@@ -2,6 +2,8 @@ package uk.gov.hmcts.probate.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
+import org.commonmark.parser.Parser;
+import org.commonmark.renderer.html.HtmlRenderer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -41,5 +43,15 @@ public class ApplicationConfiguration {
         module.addSerializer(BigDecimal.class, new BigDecimalSerializer());
         objectMapper.registerModule(module);
         return objectMapper;
+    }
+
+    @Bean
+    public Parser parser() {
+        return Parser.builder().build();
+    }
+
+    @Bean
+    public HtmlRenderer htmlRenderer() {
+        return HtmlRenderer.builder().build();
     }
 }

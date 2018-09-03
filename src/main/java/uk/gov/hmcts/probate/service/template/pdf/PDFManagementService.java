@@ -11,6 +11,7 @@ import uk.gov.hmcts.probate.config.PDFServiceConfiguration;
 import uk.gov.hmcts.probate.exception.BadRequestException;
 import uk.gov.hmcts.probate.exception.ConnectionException;
 import uk.gov.hmcts.probate.model.DocumentType;
+import uk.gov.hmcts.probate.model.SentEmail;
 import uk.gov.hmcts.probate.model.ccd.raw.BigDecimalNumberSerializer;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
@@ -55,8 +56,15 @@ public class PDFManagementService {
             callbackRequest.getCaseDetails().setGrantSignatureBase64(pdfServiceConfiguration.getGrantSignatureBase64());
         }
 
+        return generateAndUpload(toJson(callbackRequest), documentType);
+    }
+
+    public Document generateAndUpload(SentEmail sentEmail, DocumentType documentType) {
+        return generateAndUpload(toJson(sentEmail), documentType);
+    }
+
+    private Document generateAndUpload(String json, DocumentType documentType) {
         try {
-            String json = objectMapper.writeValueAsString(callbackRequest);
             EvidenceManagementFileUpload fileUpload = pdfGeneratorService.generatePdf(documentType, json);
             EvidenceManagementFile store = uploadService.store(fileUpload);
             DocumentLink documentLink = DocumentLink.builder()
@@ -71,13 +79,18 @@ public class PDFManagementService {
                     .documentDateAdded(LocalDate.now())
                     .documentGeneratedBy(httpServletRequest.getHeader("user-id"))
                     .build();
-
-        } catch (JsonProcessingException e) {
-            log.error(e.getMessage(), e);
-            throw new BadRequestException(e.getMessage(), null);
         } catch (IOException e) {
             log.error(e.getMessage(), e);
             throw new ConnectionException(e.getMessage());
+        }
+    }
+
+    private String toJson(Object data) {
+        try {
+            return objectMapper.writeValueAsString(data);
+        } catch (JsonProcessingException e) {
+            log.error(e.getMessage(), e);
+            throw new BadRequestException(e.getMessage(), null);
         }
     }
 }

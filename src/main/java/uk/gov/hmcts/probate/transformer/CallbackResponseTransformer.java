@@ -63,8 +63,10 @@ public class CallbackResponseTransformer {
         return transformResponse(responseCaseData);
     }
 
-    public CallbackResponse resetStopDetailsContents(CallbackRequest callbackRequest) {
+    public CallbackResponse caseStopped(CallbackRequest callbackRequest, Document document) {
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
+
+        caseDetails.getData().getProbateDocumentsGenerated().add(new CollectionMember<>(null, document));
 
         ResponseCaseData responseCaseData = getResponseCaseData(caseDetails, false)
                 .boStopDetails("")
@@ -376,5 +378,4 @@ public class CallbackResponseTransformer {
                 .map(String::valueOf)
                 .orElse(null);
     }
-
 }

@@ -6,12 +6,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.service.notify.NotificationClientException;
+
+import java.util.Optional;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -45,8 +48,8 @@ public class NotificationController {
 
         CaseData caseData = callbackRequest.getCaseDetails().getData();
 
-        notificationService.sendEmail(CASE_STOPPED, caseData);
+        Optional<Document> document = notificationService.sendEmail(CASE_STOPPED, caseData);
 
-        return ResponseEntity.ok(callbackResponseTransformer.resetStopDetailsContents(callbackRequest));
+        return ResponseEntity.ok(callbackResponseTransformer.caseStopped(callbackRequest, document.orElse(null)));
     }
 }

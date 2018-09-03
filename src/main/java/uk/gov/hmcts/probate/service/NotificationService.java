@@ -7,13 +7,22 @@ import uk.gov.hmcts.probate.config.properties.registries.RegistriesProperties;
 import uk.gov.hmcts.probate.config.properties.registries.Registry;
 import uk.gov.hmcts.probate.exception.BadRequestException;
 import uk.gov.hmcts.probate.model.ApplicationType;
+import uk.gov.hmcts.probate.model.SentEmail;
 import uk.gov.hmcts.probate.model.State;
+import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
+import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.service.notify.NotificationClient;
 import uk.gov.service.notify.NotificationClientException;
+import uk.gov.service.notify.SendEmailResponse;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
+
+import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
 
 @RequiredArgsConstructor
 @Component
@@ -21,8 +30,12 @@ public class NotificationService {
     private final NotificationTemplates notificationTemplates;
     private final RegistriesProperties registriesProperties;
     private final NotificationClient notificationClient;
+    private final MarkdownTransformationService markdownTransformationService;
+    private final PDFManagementService pdfManagementService;
 
-    public void sendEmail(State state, CaseData caseData)
+    private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMM Y HH:mm");
+
+    public Optional<Document> sendEmail(State state, CaseData caseData)
             throws NotificationClientException {
 
         Registry registry = registriesProperties.getRegistries().get(caseData.getRegistryLocation().toLowerCase());
@@ -33,12 +46,24 @@ public class NotificationService {
         Map<String, String> personalisation = getPersonalisation(caseData, registry);
         String reference = caseData.getSolsSolicitorAppReference();
 
-        if (state == State.CASE_STOPPED) {
-            notificationClient.sendEmail(templateId, emailAddress, personalisation, reference, emailReplyToId);
+        Document document = null;
 
+        if (state == State.CASE_STOPPED) {
+            SendEmailResponse response = notificationClient.sendEmail(templateId, emailAddress, personalisation, reference, emailReplyToId);
+            SentEmail sentEmail = SentEmail.builder()
+                    .sentOn(LocalDateTime.now().format(formatter))
+                    .from(response.getFromEmail().orElse(""))
+                    .to(emailAddress)
+                    .subject(response.getSubject())
+                    .body(markdownTransformationService.toHtml(response.getBody()))
+                    .build();
+
+            document = pdfManagementService.generateAndUpload(sentEmail, SENT_EMAIL);
         } else {
             notificationClient.sendEmail(templateId, emailAddress, personalisation, reference);
         }
+
+        return Optional.ofNullable(document);
     }
 
     private Map<String, String> getPersonalisation(CaseData caseData, Registry registry) {
