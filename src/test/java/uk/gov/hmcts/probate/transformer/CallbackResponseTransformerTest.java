@@ -373,10 +373,7 @@ public class CallbackResponseTransformerTest {
         assertCommonDetails(callbackResponse);
         assertApplicationType(callbackResponse, ApplicationType.PERSONAL);
         assertEquals(NO, callbackResponse.getData().getPrimaryApplicantHasAlias());
-        assertEquals(0, callbackResponse.getData().getSolsDeceasedAliasNamesList().size());
-        assertEquals(1, callbackResponse.getData().getBoDeceasedAliasNamesList().size());
-        assertEquals(ALIAS_FORENAME, callbackResponse.getData().getBoDeceasedAliasNamesList().get(0).getValue().getForenames());
-        assertEquals(ALIAS_SURNAME, callbackResponse.getData().getBoDeceasedAliasNamesList().get(0).getValue().getLastName());
+        assertEquals(1, callbackResponse.getData().getSolsDeceasedAliasNamesList().size());
     }
 
     @Test
@@ -395,7 +392,6 @@ public class CallbackResponseTransformerTest {
         assertApplicationType(callbackResponse, ApplicationType.PERSONAL);
         assertEquals(NO, callbackResponse.getData().getPrimaryApplicantHasAlias());
         assertEquals(0, callbackResponse.getData().getSolsDeceasedAliasNamesList().size());
-        assertEquals(null, callbackResponse.getData().getBoDeceasedAliasNamesList());
     }
 
     @Test
@@ -470,7 +466,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldTransformCaseForSolicitorWithDeceasedAliasNAmes() {
+    public void shouldTransformCaseForSolicitorWithDeceasedAliasNames() {
         caseDataBuilder.applicationType(ApplicationType.SOLICITOR);
 
         List<CollectionMember<AliasName>> deceasedAliasNamesList = new ArrayList<>();
@@ -484,11 +480,7 @@ public class CallbackResponseTransformerTest {
         CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
 
         assertCommonDetails(callbackResponse);
-        assertEquals(0, callbackResponse.getData().getSolsDeceasedAliasNamesList().size());
-        assertEquals(1, callbackResponse.getData().getBoDeceasedAliasNamesList().size());
-        assertEquals(ALIAS_FORENAME, callbackResponse.getData().getBoDeceasedAliasNamesList().get(0).getValue().getForenames());
-        assertEquals(ALIAS_SURNAME, callbackResponse.getData().getBoDeceasedAliasNamesList().get(0).getValue().getLastName());
-        assertEquals(YES, callbackResponse.getData().getBoDeceasedAliasNamesList().get(0).getValue().getAppearOnGrant());
+        assertEquals(1, callbackResponse.getData().getSolsDeceasedAliasNamesList().size());
     }
 
     @Test
@@ -510,7 +502,6 @@ public class CallbackResponseTransformerTest {
         assertEquals(2, callbackResponse.getData().getAdditionalExecutorsApplying().size());
         assertApplyingExecutorDetailsFromSols(callbackResponse.getData().getAdditionalExecutorsApplying().get(0).getValue());
         assertEquals(1, callbackResponse.getData().getAdditionalExecutorsNotApplying().size());
-        assertEquals(0, callbackResponse.getData().getSolsAdditionalExecutorList().size());
     }
 
     @Test
@@ -526,7 +517,6 @@ public class CallbackResponseTransformerTest {
         assertCommonDetails(callbackResponse);
         assertEquals(0, callbackResponse.getData().getAdditionalExecutorsApplying().size());
         assertEquals(0, callbackResponse.getData().getAdditionalExecutorsNotApplying().size());
-        assertEquals(0, callbackResponse.getData().getSolsAdditionalExecutorList().size());
     }
 
 
@@ -582,56 +572,41 @@ public class CallbackResponseTransformerTest {
 
     private CollectionMember<AdditionalExecutorApplying> createAdditionalExecutorApplying(String id) {
         AdditionalExecutorApplying add1na = AdditionalExecutorApplying.builder()
-                .aliasName(ProbateAliasName.builder().forenames(ALIAS_FORENAME).lastName(ALIAS_SURNAME).appearOnGrant(YES).build())
                 .applyingExecutorAddress(EXEC_ADDRESS)
                 .applyingExecutorEmail(EXEC_EMAIL)
-                .applyingExecutorFirstName(EXEC_FIRST_NAME)
-                .applyingExecutorName(EXEC_NAME)
-                .applyingExecutorOtherNames(EXEC_OTHER_NAMES)
+                .applyingExecutorName(EXEC_FIRST_NAME + " " + EXEC_SURNAME)
+                .applyingExecutorOtherNames(ALIAS_FORENAME + " " + ALIAS_SURNAME)
                 .applyingExecutorPhoneNumber(EXEC_PHONE)
-                .applyingExecutorSurname(EXEC_SURNAME)
                 .build();
         return new CollectionMember<>(id, add1na);
     }
 
     private CollectionMember<AdditionalExecutorNotApplying> createAdditionalExecutorNotApplying(String id) {
         AdditionalExecutorNotApplying add1na = AdditionalExecutorNotApplying.builder()
-                .aliasName(ProbateAliasName.builder().forenames(ALIAS_FORENAME).lastName(ALIAS_SURNAME).appearOnGrant(YES).build())
-                .notApplyingExecAddress(EXEC_ADDRESS)
-                .notApplyingExecutorFirstName(EXEC_FIRST_NAME)
                 .notApplyingExecutorName(EXEC_NAME)
                 .notApplyingExecutorNameDifferenceComment(EXEC_NAME_DIFF)
                 .notApplyingExecutorNameOnWill(EXEC_WILL_NAME)
                 .notApplyingExecutorNotified(YES)
                 .notApplyingExecutorReason(STOP_REASON)
-                .notApplyingExecutorSurname(EXEC_SURNAME)
                 .build();
         return new CollectionMember<>(id, add1na);
     }
 
     private void assertApplyingExecutorDetails(AdditionalExecutorApplying exec) {
-        assertEquals(EXEC_NAME, exec.getApplyingExecutorName());
-        assertEquals(EXEC_OTHER_NAMES, exec.getApplyingExecutorOtherNames());
+        assertEquals(EXEC_FIRST_NAME + " " + EXEC_SURNAME, exec.getApplyingExecutorName());
+        assertEquals(ALIAS_FORENAME + " " + ALIAS_SURNAME, exec.getApplyingExecutorOtherNames());
         assertApplyingExecutorDetailsFromSols(exec);
     }
 
     private void assertApplyingExecutorDetailsFromSols(AdditionalExecutorApplying exec) {
         assertEquals(EXEC_ADDRESS, exec.getApplyingExecutorAddress());
-        assertEquals(EXEC_FIRST_NAME, exec.getApplyingExecutorFirstName());
-        assertEquals(EXEC_SURNAME, exec.getApplyingExecutorSurname());
-        assertEquals(ALIAS_FORENAME, exec.getAliasName().getForenames());
-        assertEquals(EXEC_APPEAR, exec.getAliasName().getAppearOnGrant());
+        assertEquals(EXEC_FIRST_NAME + " " + EXEC_SURNAME, exec.getApplyingExecutorName());
+        assertEquals(ALIAS_FORENAME + " " + ALIAS_SURNAME, exec.getApplyingExecutorOtherNames());
     }
 
     private void assertNotApplyingExecutorDetails(AdditionalExecutorNotApplying exec) {
-        assertEquals(EXEC_ADDRESS, exec.getNotApplyingExecAddress());
-        assertEquals(EXEC_FIRST_NAME, exec.getNotApplyingExecutorFirstName());
-        assertEquals(EXEC_SURNAME, exec.getNotApplyingExecutorSurname());
         assertEquals(EXEC_NAME, exec.getNotApplyingExecutorName());
         assertEquals(EXEC_OTHER_NAMES, exec.getNotApplyingExecutorNameOnWill());
-        assertEquals(ALIAS_FORENAME, exec.getAliasName().getForenames());
-        assertEquals(ALIAS_SURNAME, exec.getAliasName().getLastName());
-        assertEquals(EXEC_APPEAR, exec.getAliasName().getAppearOnGrant());
         assertEquals(EXEC_NAME_DIFF, exec.getNotApplyingExecutorNameDifferenceComment());
         assertEquals(STOP_REASON, exec.getNotApplyingExecutorReason());
         assertEquals(EXEC_NOTIFIED, exec.getNotApplyingExecutorNotified());
@@ -672,7 +647,6 @@ public class CallbackResponseTransformerTest {
         assertEquals(PRIMARY_EXEC_ALIAS_NAMES, callbackResponse.getData().getSolsExecutorAliasNames());
         assertEquals(DECEASED_ADDRESS, callbackResponse.getData().getDeceasedAddress());
         assertEquals(EXEC_ADDRESS, callbackResponse.getData().getPrimaryApplicantAddress());
-        assertEquals(ALIAS_NAMES, callbackResponse.getData().getSolsDeceasedAliasNamesList());
         assertEquals(APP_REF, callbackResponse.getData().getSolsSolicitorAppReference());
         assertEquals(ADDITIONAL_INFO, callbackResponse.getData().getSolsAdditionalInfo());
 

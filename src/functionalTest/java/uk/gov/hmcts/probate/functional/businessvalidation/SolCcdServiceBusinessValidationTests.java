@@ -1,6 +1,7 @@
 package uk.gov.hmcts.probate.functional.businessvalidation;
 
 import io.restassured.http.ContentType;
+import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import net.serenitybdd.junit.runners.SerenityRunner;
 import net.serenitybdd.rest.SerenityRest;
@@ -13,6 +14,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasSize;
+import static org.junit.Assert.assertEquals;
 
 @RunWith(SerenityRunner.class)
 public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
@@ -182,6 +184,86 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         validatePostSuccess("success.missingExecutorAddressWhileNotApplying.json", TRANSFORM_URL);
     }
 
+    @Test
+    public void shouldTransformCasePADeceasedAliasOneField() {
+        String response = transformCase("personalPayloadNotifications.json", TRANSFORM_URL);
+
+        JsonPath jsonPath = JsonPath.from(response);
+        String alias = jsonPath.get("data.solsDeceasedAliasNamesList[0].value.SolsAliasname");
+
+        assertEquals("Giacomo Terrel", alias);
+
+    }
+
+    @Test
+    public void shouldTransformCaseSOLSAdditionalExec() {
+        String response = transformCase("solicitorPayloadNotificationsAddExecs.json", TRANSFORM_URL);
+
+        JsonPath jsonPath = JsonPath.from(response);
+        String notApplyingName = jsonPath.get("data.executorsNotApplying[0].value.notApplyingExecutorName");
+        String notApplyingReason = jsonPath.get("data.executorsNotApplying[0].value.notApplyingExecutorReason");
+        String notApplyingAlias = jsonPath.get("data.executorsNotApplying[0].value.notApplyingExecutorNameOnWill");
+
+        String applyingName = jsonPath.get("data.executorsApplying[0].value.applyingExecutorName");
+        String applyingAlias = jsonPath.get("data.executorsApplying[0].value.applyingExecutorOtherNames");
+        String addressLine1 = jsonPath.get("data.executorsApplying[0].value.applyingExecutorAddress.AddressLine1");
+        String addressLine2 = jsonPath.get("data.executorsApplying[0].value.applyingExecutorAddress.AddressLine2");
+        String addressLine3 = jsonPath.get("data.executorsApplying[0].value.applyingExecutorAddress.AddressLine3");
+        String postTown = jsonPath.get("data.executorsApplying[0].value.applyingExecutorAddress.PostTown");
+        String postCode = jsonPath.get("data.executorsApplying[0].value.applyingExecutorAddress.PostCode");
+        String county = jsonPath.get("data.executorsApplying[0].value.applyingExecutorAddress.County");
+        String country = jsonPath.get("data.executorsApplying[0].value.applyingExecutorAddress.Country");
+
+        String applyingName_exec2 = jsonPath.get("data.executorsApplying[1].value.applyingExecutorName");
+        String applyingAlias_exec2 = jsonPath.get("data.executorsApplying[1].value.applyingExecutorOtherNames");
+        String addressLine1_exec2 = jsonPath.get("data.executorsApplying[1].value.applyingExecutorAddress.AddressLine1");
+        String addressLine2_exec2 = jsonPath.get("data.executorsApplying[1].value.applyingExecutorAddress.AddressLine2");
+        String addressLine3_exec2 = jsonPath.get("data.executorsApplying[1].value.applyingExecutorAddress.AddressLine3");
+        String postTown_exec2 = jsonPath.get("data.executorsApplying[1].value.applyingExecutorAddress.PostTown");
+        String postCode_exec2 = jsonPath.get("data.executorsApplying[1].value.applyingExecutorAddress.PostCode");
+        String county_exec2 = jsonPath.get("data.executorsApplying[1].value.applyingExecutorAddress.County");
+        String country_exec2 = jsonPath.get("data.executorsApplying[1].value.applyingExecutorAddress.Country");
+
+
+        assertEquals("exfn2 exln2", notApplyingName);
+        assertEquals("DiedBefore", notApplyingReason);
+        assertEquals("alias name", notApplyingAlias);
+
+        assertEquals("exfn1 exln1", applyingName);
+        assertEquals("Alias name exfn1", applyingAlias);
+        assertEquals("addressline 1", addressLine1);
+        assertEquals("addressline 2", addressLine2);
+        assertEquals("addressline 3", addressLine3);
+        assertEquals("posttown", postTown);
+        assertEquals("postcode", postCode);
+        assertEquals("country", country);
+        assertEquals("county", county);
+
+
+        assertEquals("ex3fn ex3ln", applyingName_exec2);
+        assertEquals(null, applyingAlias_exec2);
+        assertEquals("addressline 1", addressLine1_exec2);
+        assertEquals(null, addressLine2_exec2);
+        assertEquals(null, addressLine3_exec2);
+        assertEquals(null, postTown_exec2);
+        assertEquals("postcode", postCode_exec2);
+        assertEquals(null, country_exec2);
+        assertEquals(null, county_exec2);
+
+    }
+
+
+
+    private String transformCase(String jsonFileName, String path) {
+
+        Response jsonResponse = SerenityRest.given()
+                .relaxedHTTPSValidation()
+                .headers(utils.getHeadersWithUserId())
+                .body(utils.getJsonFromFile(jsonFileName))
+                .when().post(path).andReturn();
+
+        return jsonResponse.getBody().asString();
+    }
 
     private void validatePostSuccess(String jsonFileName, String URL) {
         SerenityRest.given()

@@ -26,52 +26,6 @@
     "case_data": {
       "otherExecutorExists": "No",
       "outsideUKGrantCopies": null,
-      "executorsApplying": [
-        {
-          "id": "8e75cd11-b673-4523-9a1c-764ea75f5b04",
-          "value": {
-            "applyingExecutorName": "Add ex first name 1 Add ex last name 1",
-            "applyingExecutorPhoneNumber": null,
-            "applyingExecutorEmail": null,
-            "aliasName": {
-              "Forenames": null,
-              "LastName": null,
-              "AppearOnGrant": ""
-            },
-            "applyingExecutorAddress": {
-              "AddressLine1": "11",
-              "AddressLine2": "",
-              "AddressLine3": "",
-              "County": "",
-              "PostTown": "",
-              "PostCode": "11",
-              "Country": ""
-            }
-          }
-        },
-        {
-          "id": "634a93e9-cedb-4b6b-8577-5d702abe0b3c",
-          "value": {
-            "applyingExecutorName": "Add ex first name 2 Add ex last name 2",
-            "applyingExecutorPhoneNumber": null,
-            "applyingExecutorEmail": null,
-            "aliasName": {
-              "Forenames": null,
-              "LastName": null,
-              "AppearOnGrant": ""
-            },
-            "applyingExecutorAddress": {
-              "AddressLine1": "22",
-              "AddressLine2": "",
-              "AddressLine3": "",
-              "County": "",
-              "PostTown": "",
-              "PostCode": "22",
-              "Country": ""
-            }
-          }
-        }
-      ],
       "applicationType": "Solicitor",
       "deceasedAddress": {
         "County": "",
@@ -113,6 +67,58 @@
       },
       "extraCopiesOfGrant": null,
       "solsPaymentMethods": "fee account",
+      "solsAdditionalExecutorList": [
+        {
+          "id": "da3159f2-51d4-4be7-a24d-06f354bf5e9f",
+          "value": {
+            "additionalApplying": "Yes",
+            "additionalExecAddress": {
+              "County": "county",
+              "Country": "country",
+              "PostCode": "postcode",
+              "PostTown": "posttown",
+              "AddressLine1": "addressline 1",
+              "AddressLine2": "addressline 2",
+              "AddressLine3": "addressline 3"
+            },
+            "additionalExecLastname": "exln1",
+            "additionalExecForenames": "exfn1",
+            "additionalExecNameOnWill": "Yes",
+            "additionalExecAliasNameOnWill": "Alias name exfn1"
+          }
+        },
+        {
+          "id": "98b20012-e829-41ec-afd5-82311bdb7bdd",
+          "value": {
+            "additionalApplying": "No",
+            "additionalExecLastname": "exln2",
+            "additionalExecForenames": "exfn2",
+            "additionalExecNameOnWill": "Yes",
+            "additionalExecAliasNameOnWill": "alias name",
+            "additionalExecReasonNotApplying": "DiedBefore"
+          }
+        },
+
+        {
+          "id": "98b20012-e829-41ec-afd5-82311bdb7bdd",
+          "value": {
+            "additionalApplying": "Yes",
+            "additionalExecLastname": "ex3ln",
+            "additionalExecForenames": "ex3fn",
+            "additionalExecNameOnWill": "No",
+            "additionalExecReasonNotApplying": "DiedBefore",
+            "additionalExecAddress": {
+              "County": null,
+              "Country": null,
+              "PostCode": "postcode",
+              "PostTown": null,
+              "AddressLine1": "addressline 1",
+              "AddressLine2": null,
+              "AddressLine3": null
+            }
+          }
+        }
+      ],
       "solsSolicitorFirmPostcode": "KT10 0LA",
       "deceasedForenames": "Deceased First Name",
       "primaryApplicantIsApplying": "Yes",

@@ -79,6 +79,14 @@
       "registryLocation": "Birmingham",
       "primaryApplicantSurname": "Executor Last Name 1",
       "solsSolicitorAppReference": "1231-3984-3949-0300",
+      "deceasedAliasNameList": [
+        {
+          "value": {
+            "Forenames": "Giacomo",
+            "LastName": "Terrel"
+          }
+        }
+      ],
       "solsSOTJobTitle": "job title"
     },
     "data_classification": {

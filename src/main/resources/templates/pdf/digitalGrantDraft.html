@@ -110,7 +110,7 @@
         <td colspan="2" class="legal-body">
             <p>BE IT KNOWN that <span class="upperCase"> <strong> {% if case_details.case_data.boDeceasedTitle != null and case_details.case_data.boDeceasedTitle != "" %}{{ case_details.case_data.boDeceasedTitle }}{% endif %} {{case_details.case_data.deceasedForenames}} {{case_details.case_data.deceasedSurname}} {% if case_details.case_data.boDeceasedHonours != null and case_details.case_data.boDeceasedHonours != "" %}{{ case_details.case_data.boDeceasedHonours }}{% endif %}</strong></span>
                 <br/>
-                {% if case_details.case_data.boDeceasedAliasNamesList != null and case_details.case_data.boDeceasedAliasNamesList != "" %}{% for alias in case_details.case_data.boDeceasedAliasNamesList %}{% if loop.first %}Otherwise {{alias.value.Forenames}} {{alias.value.LastName}}{% else %}, {{alias.value.Forenames}} {{alias.value.LastName}}{% endif %}{% endfor %}{% endif %}
+                {% if case_details.case_data.solsDeceasedAliasNamesList != null and case_details.case_data.solsDeceasedAliasNamesList != "" %}{% for alias in case_details.case_data.solsDeceasedAliasNamesList %}{% if loop.first %}Otherwise {{alias.value.SolsAliasname}}{% else %}, {{alias.value.SolsAliasname}}{% endif %}{% endfor %}{% endif %}
                 <br/>of <strong><span class="camelCase">{% if case_details.case_data.deceasedAddress.AddressLine1 != null and case_details.case_data.deceasedAddress.AddressLine1 != "" %}{{ case_details.case_data.deceasedAddress.AddressLine1}}{% endif %}
                     {% if case_details.case_data.deceasedAddress.AddressLine2 != null and case_details.case_data.deceasedAddress.AddressLine2 != "" %} {{case_details.case_data.deceasedAddress.AddressLine2}}{% endif %}
                     {% if case_details.case_data.deceasedAddress.AddressLine3 != null and case_details.case_data.deceasedAddress.AddressLine3 != "" %} {{case_details.case_data.deceasedAddress.AddressLine3}}{% endif %}
@@ -139,8 +139,6 @@
             <p class="indent">{% for executor in case_details.case_data.executorsApplying %}
                 {% if loop.first %}
                 <span style="text-transform: uppercase;"><strong>
-                    {% if executor.value.applyingExecutorFirstName != null and executor.value.applyingExecutorFirstName != ""%}{{executor.value.applyingExecutorFirstName}}{% endif %}
-                    {% if executor.value.applyingExecutorSurname != null and executor.value.applyingExecutorSurname != ""%} {{executor.value.applyingExecutorSurname}}{% endif %}
                     {% if executor.value.applyingExecutorName != null and executor.value.applyingExecutorName != ""%}{{executor.value.applyingExecutorName}}{% endif %}
                </strong></span>
                 of <span class="camelCase"><strong>
@@ -156,8 +154,6 @@
                 <br/>
                 <span class="andGap">and </span>
                 <span style="text-transform: uppercase;"><strong>
-                    {% if executor.value.applyingExecutorFirstName != null and executor.value.applyingExecutorFirstName != ""%}{{executor.value.applyingExecutorFirstName}}{% endif %}
-                    {% if executor.value.applyingExecutorSurname != null and executor.value.applyingExecutorSurname != ""%} {{executor.value.applyingExecutorSurname}}{% endif %}
                     {% if executor.value.applyingExecutorName != null and executor.value.applyingExecutorName != ""%}{{executor.value.applyingExecutorName}}{% endif %}
                </strong></span>
                 of <span class="camelCase"><strong>
@@ -190,8 +186,6 @@
                 <br/>
                 <span class="andGap">and </span>
                 <span style="text-transform: uppercase;"><strong>
-                    {% if executor.value.applyingExecutorFirstName != null and executor.value.applyingExecutorFirstName != ""%}{{executor.value.applyingExecutorFirstName}}{% endif %}
-                    {% if executor.value.applyingExecutorSurname != null and executor.value.applyingExecutorSurname != ""%} {{executor.value.applyingExecutorSurname}}{% endif %}
                     {% if executor.value.applyingExecutorName != null and executor.value.applyingExecutorName != ""%}{{executor.value.applyingExecutorName}}{% endif %}
                </strong></span>
                 of <span class="camelCase"><strong>
@@ -212,18 +206,24 @@
     <tr>
         <td colspan="2">
             <p>
-                {% if case_details.case_data.executorsNotApplying != null %}
                 {% set powerReservedCounter = 0 %}
+                {% if case_details.case_data.executorsNotApplying != null %}
                 {% for executor in case_details.case_data.executorsNotApplying %}
                 {% if executor.value.notApplyingExecutorReason == "PowerReserved" %}
                 {% set powerReservedCounter = powerReservedCounter + 1 %}
                 {% endif %}
                 {% endfor %}
+                {% endif %}
+
+                {% if case_details.case_data.primaryApplicantIsApplying == "No" %}
+                {% if case_details.case_data.solsPrimaryExecutorNotApplyingReason == "PowerReserved" %}
+                {% set powerReservedCounter = powerReservedCounter + 1 %}
+                {% endif %}
+                {% endif %}
 
                 {% if powerReservedCounter == 0 %}{% endif %}
                 {% if powerReservedCounter == 1 %}Power reserved to another Executor{% endif %}
                 {% if powerReservedCounter > 1 %}Power reserved to other Executors{% endif %}
-                {% endif %}
             </p>
 
             <p>

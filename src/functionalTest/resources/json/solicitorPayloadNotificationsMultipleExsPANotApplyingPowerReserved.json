@@ -31,6 +31,8 @@
           "id": "8e75cd11-b673-4523-9a1c-764ea75f5b04",
           "value": {
             "applyingExecutorName": "Add ex first name 1 Add ex last name 1",
+            "applyingExecutorFirstName": "Add ex first name 1",
+            "applyingExecutorSurname": "Add ex last name 1",
             "applyingExecutorPhoneNumber": null,
             "applyingExecutorEmail": null,
             "aliasName": {
@@ -53,6 +55,8 @@
           "id": "634a93e9-cedb-4b6b-8577-5d702abe0b3c",
           "value": {
             "applyingExecutorName": "Add ex first name 2 Add ex last name 2",
+            "applyingExecutorFirstName": "Add ex first name 2",
+            "applyingExecutorSurname": "Add ex last name 2",
             "applyingExecutorPhoneNumber": null,
             "applyingExecutorEmail": null,
             "aliasName": {
@@ -115,7 +119,8 @@
       "solsPaymentMethods": "fee account",
       "solsSolicitorFirmPostcode": "KT10 0LA",
       "deceasedForenames": "Deceased First Name",
-      "primaryApplicantIsApplying": "Yes",
+      "primaryApplicantIsApplying": "No",
+      "solsPrimaryExecutorNotApplyingReason" : "PowerReserved",
       "primaryApplicantHasAlias": "No",
       "solsPaymentReferenceNumber": "Cheque (payable to ‘HM Courts & Tribunals Service’)",
       "solsSOTName": "name",
