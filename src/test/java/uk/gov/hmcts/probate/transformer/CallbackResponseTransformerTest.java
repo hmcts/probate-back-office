@@ -9,6 +9,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 import uk.gov.hmcts.probate.model.ApplicationType;
+import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
@@ -19,6 +20,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.ProbateAliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.StopReason;
+import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
@@ -157,6 +159,9 @@ public class CallbackResponseTransformerTest {
 
     @Mock
     private DocumentLink documentLinkMock;
+
+    @Mock
+    private UploadDocument uploadDocumentMock;
 
     @Before
     public void setup() {
@@ -358,7 +363,7 @@ public class CallbackResponseTransformerTest {
     public void shouldTransformPersonalCaseForDeceasedAliasNamesExist() {
         caseDataBuilder.applicationType(ApplicationType.PERSONAL);
         List<CollectionMember<ProbateAliasName>> deceasedAliasNamesList = new ArrayList<>();
-        deceasedAliasNamesList.add(createdeceasedAliasName("0", ALIAS_FORENAME, ALIAS_SURNAME, YES));
+        deceasedAliasNamesList.add(createdDeceasedAliasName("0", ALIAS_FORENAME, ALIAS_SURNAME, YES));
 
         caseDataBuilder.deceasedAliasNameList(deceasedAliasNamesList);
 
@@ -545,7 +550,24 @@ public class CallbackResponseTransformerTest {
         assertEquals(null, callbackResponse.getData().getIhtReferenceNumber());
     }
 
-    private CollectionMember<ProbateAliasName> createdeceasedAliasName(String id, String forename, String lastname, String onGrant) {
+    @Test
+    public void shouldGetUploadedDocuments() {
+        caseDataBuilder.applicationType(ApplicationType.SOLICITOR);
+        List<CollectionMember<UploadDocument>> documents = new ArrayList<>();
+        documents.add(createUploadDocuments("0"));
+        caseDataBuilder.boDocumentsUploaded(documents);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+
+        assertCommonDetails(callbackResponse);
+        assertApplicationType(callbackResponse, ApplicationType.SOLICITOR);
+        assertEquals(1, callbackResponse.getData().getBoDocumentsUploaded().size());
+    }
+
+    private CollectionMember<ProbateAliasName> createdDeceasedAliasName(String id, String forename, String lastname, String onGrant) {
         ProbateAliasName pan = ProbateAliasName.builder()
                 .appearOnGrant(onGrant)
                 .forenames(forename)
@@ -554,6 +576,19 @@ public class CallbackResponseTransformerTest {
         return new CollectionMember<>(id, pan);
     }
 
+    private CollectionMember<UploadDocument> createUploadDocuments(String id) {
+        DocumentLink docLink = DocumentLink.builder()
+                .documentBinaryUrl("")
+                .documentFilename("")
+                .documentUrl("")
+                .build();
+
+        UploadDocument doc = UploadDocument.builder()
+                .comment("comment")
+                .documentLink(docLink)
+                .documentType(DocumentType.IHT).build();
+        return new CollectionMember<>(id, doc);
+    }
 
     private CollectionMember<AdditionalExecutor> createSolsAdditionalExecutor(String id, String applying, String reason) {
         AdditionalExecutor add1na = AdditionalExecutor.builder()

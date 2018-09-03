@@ -17,6 +17,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.LegalStatement;
 import uk.gov.hmcts.probate.model.ccd.raw.ProbateAliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.StopReason;
+import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -60,6 +61,7 @@ public class ResponseCaseData {
     private final String paymentReferenceNumber;
     private final DocumentLink solsLegalStatementDocument;
     private final List<CollectionMember<Document>> probateDocumentsGenerated;
+    private final List<CollectionMember<UploadDocument>> boDocumentsUploaded;
     private final String solsSOTNeedToUpdate;
     private final DocumentLink solsNextStepsDocument;
     private final String solsAdditionalInfo;

@@ -12,7 +12,22 @@ public enum DocumentType {
     DIGITAL_GRANT("digitalGrant"),
 
     @JsonProperty("digitalGrantDraft")
-    DIGITAL_GRANT_DRAFT("digitalGrantDraft");
+    DIGITAL_GRANT_DRAFT("digitalGrantDraft"),
+
+    @JsonProperty("email")
+    EMAIL("email"),
+
+    @JsonProperty("IHT")
+    IHT("IHT"),
+
+    @JsonProperty("other")
+    OTHER("other"),
+
+    @JsonProperty("deathCertificate")
+    DEATH_CERT("deathCertificate"),
+
+    @JsonProperty("correspondence")
+    CORRESPONDENCE("correspondence");
 
     private final String templateName;
 

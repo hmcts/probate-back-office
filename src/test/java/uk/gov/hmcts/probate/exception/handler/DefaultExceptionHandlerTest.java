@@ -85,8 +85,8 @@ public class DefaultExceptionHandlerTest {
 
         ResponseEntity<ErrorResponse> response = underTest.handle(badRequestException);
 
-        assertEquals(response.getStatusCode(), BAD_REQUEST);
-        assertEquals(response.getBody().getError(), DefaultExceptionHandler.INVALID_REQUEST);
+        assertEquals(BAD_REQUEST, response.getStatusCode());
+        assertEquals(DefaultExceptionHandler.INVALID_REQUEST, response.getBody().getError());
 
         assertEquals(bve1Mock, response.getBody().getFieldErrors().get(0));
         assertEquals(bve2Mock, response.getBody().getFieldErrors().get(1));
