@@ -4,6 +4,7 @@ import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import io.restassured.response.ValidatableResponse;
 import net.serenitybdd.junit.runners.SerenityRunner;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.pdfbox.pdmodel.PDDocument;
@@ -18,6 +19,7 @@ import static junit.framework.TestCase.assertTrue;
 import static net.serenitybdd.rest.SerenityRest.given;
 import static org.hamcrest.Matchers.equalToIgnoringCase;
 
+@Ignore
 @RunWith(SerenityRunner.class)
 public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
 

@@ -5,6 +5,7 @@ import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import net.serenitybdd.junit.runners.SerenityRunner;
 import net.serenitybdd.rest.SerenityRest;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
@@ -16,6 +17,7 @@ import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.Assert.assertEquals;
 
+@Ignore
 @RunWith(SerenityRunner.class)
 public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
 

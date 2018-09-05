@@ -1,6 +1,7 @@
 package uk.gov.hmcts.probate.functional.fee;
 
 import net.serenitybdd.junit.runners.SerenityRunner;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
@@ -10,6 +11,8 @@ import static net.serenitybdd.rest.SerenityRest.given;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalToIgnoringCase;
 
+
+@Ignore
 @RunWith(SerenityRunner.class)
 public class SolCcdServiceFeeTests extends IntegrationTestBase {
 

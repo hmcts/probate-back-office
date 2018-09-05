@@ -1,12 +1,15 @@
 package uk.gov.hmcts.probate.functional.serviceauth;
 
 import net.serenitybdd.junit.runners.SerenityRunner;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 
 import static io.restassured.RestAssured.given;
 
+
+@Ignore
 @RunWith(SerenityRunner.class)
 public class SolCcdServiceServiceAuthTests extends IntegrationTestBase {
 
