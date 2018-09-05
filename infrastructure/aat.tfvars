@@ -7,7 +7,7 @@ packages_environment = "preprod"
 packages_version = "3.0.0"
 
 
-outbound_proxy = ""
+outbound_proxy = "test"
 log_level = "INFO"
 
 capacity = "2"
