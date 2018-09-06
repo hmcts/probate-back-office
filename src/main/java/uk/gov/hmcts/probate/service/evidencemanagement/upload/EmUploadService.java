@@ -27,7 +27,7 @@ public class EmUploadService implements UploadService {
     private final HttpHeadersFactory headers;
     private final EvidenceManagementRestTemplate evidenceManagementRestTemplate;
     private final DocumentManagementURIBuilder documentManagementURIBuilder;
-    private ObjectMapper objectMapper;
+    private final ObjectMapper objectMapper;
 
     @Override
     public EvidenceManagementFile store(EvidenceManagementFileUpload file) throws IOException {
@@ -38,7 +38,7 @@ public class EmUploadService implements UploadService {
                 new HttpEntity<MultiValueMap>(parameters, headers.getMultiPartHttpHeader()),
                 HashMap.class);
 
-        objectMapper = new ObjectMapper();
+        ObjectMapper objectMapper = new ObjectMapper();
         Map embedded = (Map) response.get("_embedded");
         List documents = (List) embedded.get("documents");
 
