@@ -32,7 +32,7 @@ public class ResponseCaseData {
     private final String solsSOTName;
     private final String solsSOTJobTitle;
     private final String solsSolicitorAppReference;
-    private final String solsIHTFormId;
+    private final String ihtFormId;
     private final String willExists;
     private final String willAccessOriginal;
     private final String willHasCodicils;

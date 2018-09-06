@@ -84,8 +84,8 @@ public class CaseData {
 
     private final List<AliasNames> solsDeceasedAliasNamesList;
 
-    @NotBlank(groups = {ApplicationUpdatedGroup.class}, message = "{solsIHTFormIdIsNull}")
-    private final String solsIHTFormId;
+    @NotBlank(groups = {ApplicationUpdatedGroup.class}, message = "{ihtFormIdIsNull}")
+    private final String ihtFormId;
 
     @NotNull(groups = {ApplicationUpdatedGroup.class}, message = "{ihtNetIsNull}")
     @DecimalMin(groups = {ApplicationUpdatedGroup.class}, value = "0.0", message = "{ihtNetNegative}")

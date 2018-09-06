@@ -132,7 +132,7 @@ public class CallbackResponseTransformerTest {
                 .deceasedDateOfBirth(DOB)
                 .deceasedDateOfDeath(DOD)
                 .willNumberOfCodicils(NUM_CODICILS)
-                .solsIHTFormId(IHT_FORM_ID)
+                .ihtFormId(IHT_FORM_ID)
                 .ihtGrossValue(IHT_GROSS)
                 .ihtNetValue(IHT_NET)
                 .primaryApplicantForenames(APPLICANT_FORENAME)
@@ -271,7 +271,7 @@ public class CallbackResponseTransformerTest {
         assertEquals("2017-12-31", callbackResponse.getData().getDeceasedDateOfDeath());
         assertEquals(NUM_CODICILS, callbackResponse.getData().getWillNumberOfCodicils());
 
-        assertEquals(IHT_FORM_ID, callbackResponse.getData().getSolsIHTFormId());
+        assertEquals(IHT_FORM_ID, callbackResponse.getData().getIhtFormId());
         assertEquals("10000", callbackResponse.getData().getIhtGrossValue());
         assertEquals("9000", callbackResponse.getData().getIhtNetValue());
 

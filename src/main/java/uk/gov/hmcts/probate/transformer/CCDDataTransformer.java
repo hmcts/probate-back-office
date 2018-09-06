@@ -51,7 +51,7 @@ public class CCDDataTransformer {
                 .build();
 
         InheritanceTax inheritanceTax = InheritanceTax.builder()
-                .formName(caseData.getSolsIHTFormId())
+                .formName(caseData.getIhtFormId())
                 .netValue(caseData.getIhtNetValue())
                 .grossValue(caseData.getIhtGrossValue())
                 .build();

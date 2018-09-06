@@ -109,7 +109,7 @@ public class BusinessValidationControllerTest {
                 .willNumberOfCodicils(NUMBER_OF_CODICILS)
                 .solsSolicitorFirmName(SOLICITOR_FIRM_NAME)
                 .solsSolicitorFirmPostcode(SOLICITOR_FIRM_POSTCODE)
-                .solsIHTFormId(IHT_FORM)
+                .ihtFormId(IHT_FORM)
                 .solsSOTName(SOLICITOR_NAME)
                 .solsSOTJobTitle(SOLICITOR_JOB_TITLE)
                 .solsPaymentMethods(PAYMENT_METHOD)
@@ -187,7 +187,7 @@ public class BusinessValidationControllerTest {
 
     @Test
     public void shouldValidateWithSolicitorIHTFormIsNullError() throws Exception {
-        caseDataBuilder.solsIHTFormId(null);
+        caseDataBuilder.ihtFormId(null);
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
 
@@ -196,7 +196,7 @@ public class BusinessValidationControllerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.fieldErrors[0].param").value("callbackRequest"))
-                .andExpect(jsonPath("$.fieldErrors[0].field").value("caseDetails.data.solsIHTFormId"))
+                .andExpect(jsonPath("$.fieldErrors[0].field").value("caseDetails.data.ihtFormId"))
                 .andExpect(jsonPath("$.fieldErrors[0].code").value("NotBlank"))
                 .andExpect(jsonPath("$.fieldErrors[0].message").value("Solicitor IHT Form cannot be empty"));
     }
