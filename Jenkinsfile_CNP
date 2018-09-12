@@ -23,6 +23,7 @@ static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
 }
 
 withPipeline("java", product, component) {
+  env.TF_LOG='DEBUG'
   env.APPINSIGHTS_INSTRUMENTATIONKEY=false
   loadVaultSecrets(secrets)
   //enableSlackNotifications('#probate-jenkins')
