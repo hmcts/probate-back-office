@@ -68,7 +68,7 @@ module "probate-back-office" {
     java_app_name = "${var.microservice}"
     LOG_LEVEL = "${var.log_level}"
     //ROOT_APPENDER = "JSON_CONSOLE" //Remove json logging
-
+    DEMO_TEST = "Testing Demo for update config"
   }
 }
 
