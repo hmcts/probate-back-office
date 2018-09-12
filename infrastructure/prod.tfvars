@@ -20,3 +20,5 @@ printservice_internal_host = "http://ccd-case-print-service-prod.service.core-co
 printservice_host = "https://return-case-doc.ccd.platform.hmcts.net"
 fee_api_url = "https://fees-register.reform.hmcts.net:4411"
 evidence_management_host = "http://dm-store-prod.service.core-compute-prod.internal"
+asp_name = "probate-prod-asp-prod-asp"
+asp_rg = "mgmt-asp-prod"

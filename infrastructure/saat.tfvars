@@ -16,3 +16,5 @@ printservice_internal_host = "http://ccd-case-print-service-saat.service.core-co
 printservice_host = "http://ccd-case-print-service-saat.service.core-compute-saat.internal"
 fee_api_url = "http://fees-register-api-saat.service.core-compute-saat.internal"
 evidence_management_host = "http://dm-store-saat.service.core-compute-saat.internal"
+asp_name = "probate-saat"
+asp_rg = "probate-shared-infrastructure-saat"
