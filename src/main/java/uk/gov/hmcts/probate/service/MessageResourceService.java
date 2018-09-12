@@ -1,12 +1,12 @@
 package uk.gov.hmcts.probate.service;
 
-import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Component;
 
-@Data
 @Component
+@RequiredArgsConstructor
 public class MessageResourceService {
 
     @Qualifier("resourceMessageSource")

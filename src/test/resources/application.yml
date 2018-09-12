@@ -69,18 +69,23 @@ notifications:
     email:
       personal:
         documentReceived: "pa-document-received"
+        caseStopped: "pa-case-stopped"
         grantIssued: "pa-grant-issued"
       solicitor:
         documentReceived: "sol-document-received"
+        caseStopped: "sol-case-stopped"
         grantIssued: "sol-grant-issued"
 
 registries:
   oxford:
     name: Oxford Registry
     phone: 0123456789
+    emailReplyToId: "oxford-emailReplyToId"
   birmingham:
     name: Birmingham Registry
     phone: 1234567890
+    emailReplyToId: "birmingham-emailReplyToId"
   manchester:
     name: Manchester Probate Registry
     phone: 0161 240 5701 / 0161 240 5702
+    emailReplyToId: "manchester-emailReplyToId"

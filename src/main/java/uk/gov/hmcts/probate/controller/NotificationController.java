@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
@@ -13,10 +14,12 @@ import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.service.notify.NotificationClientException;
 
+import java.util.Optional;
+
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static uk.gov.hmcts.probate.model.State.CASE_STOPPED;
 import static uk.gov.hmcts.probate.model.State.DOCUMENTS_RECEIVED;
-import static uk.gov.hmcts.probate.model.State.GRANT_ISSUED;
 
 @RequiredArgsConstructor
 @RequestMapping(value = "/notify", consumes = APPLICATION_JSON_UTF8_VALUE, produces = APPLICATION_JSON_VALUE)
@@ -39,16 +42,14 @@ public class NotificationController {
         return ResponseEntity.ok(callbackResponseTransformer.addDocumentReceivedNotification(callbackRequest));
     }
 
-    @PostMapping(path = "/grant-issued")
-    public ResponseEntity<CallbackResponse> sendGrantIssuedNotification(@RequestBody CallbackRequest callbackRequest)
+    @PostMapping(path = "/case-stopped")
+    public ResponseEntity<CallbackResponse> sendCaseStoppedNotification(@RequestBody CallbackRequest callbackRequest)
             throws NotificationClientException {
 
         CaseData caseData = callbackRequest.getCaseDetails().getData();
 
-        if (caseData.isGrantIssuedEmailNotificationRequested()) {
-            notificationService.sendEmail(GRANT_ISSUED, caseData);
-        }
+        Optional<Document> document = notificationService.sendEmail(CASE_STOPPED, caseData);
 
-        return ResponseEntity.ok(callbackResponseTransformer.addGrandIssuedNotification(callbackRequest));
+        return ResponseEntity.ok(callbackResponseTransformer.caseStopped(callbackRequest, document.orElse(null)));
     }
 }

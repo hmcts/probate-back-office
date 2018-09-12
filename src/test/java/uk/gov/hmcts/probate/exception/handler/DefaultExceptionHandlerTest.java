@@ -51,9 +51,9 @@ public class DefaultExceptionHandlerTest {
 
         ResponseEntity<ErrorResponse> response = underTest.handle(clientException);
 
-        assertEquals(response.getStatusCode(), BAD_REQUEST);
-        assertEquals(response.getBody().getError(), DefaultExceptionHandler.CLIENT_ERROR);
-        assertEquals(response.getBody().getMessage(), EXCEPTION_MESSAGE);
+        assertEquals(BAD_REQUEST, response.getStatusCode());
+        assertEquals(DefaultExceptionHandler.CLIENT_ERROR, response.getBody().getError());
+        assertEquals(EXCEPTION_MESSAGE, response.getBody().getMessage());
     }
 
     @Test
@@ -62,9 +62,9 @@ public class DefaultExceptionHandlerTest {
 
         ResponseEntity<ErrorResponse> response = underTest.handle(connectionException);
 
-        assertEquals(response.getStatusCode(), SERVICE_UNAVAILABLE);
-        assertEquals(response.getBody().getError(), DefaultExceptionHandler.CONNECTION_ERROR);
-        assertEquals(response.getBody().getMessage(), EXCEPTION_MESSAGE);
+        assertEquals(SERVICE_UNAVAILABLE, response.getStatusCode());
+        assertEquals(DefaultExceptionHandler.CONNECTION_ERROR, response.getBody().getError());
+        assertEquals(EXCEPTION_MESSAGE, response.getBody().getMessage());
     }
 
     @Test
@@ -85,11 +85,11 @@ public class DefaultExceptionHandlerTest {
 
         ResponseEntity<ErrorResponse> response = underTest.handle(badRequestException);
 
-        assertEquals(response.getStatusCode(), BAD_REQUEST);
-        assertEquals(response.getBody().getError(), DefaultExceptionHandler.INVALID_REQUEST);
+        assertEquals(BAD_REQUEST, response.getStatusCode());
+        assertEquals(DefaultExceptionHandler.INVALID_REQUEST, response.getBody().getError());
 
-        assertEquals(response.getBody().getFieldErrors().get(0), bve1Mock);
-        assertEquals(response.getBody().getFieldErrors().get(1), bve2Mock);
+        assertEquals(bve1Mock, response.getBody().getFieldErrors().get(0));
+        assertEquals(bve2Mock, response.getBody().getFieldErrors().get(1));
     }
 
     @Test
@@ -98,8 +98,8 @@ public class DefaultExceptionHandlerTest {
 
         ResponseEntity<ErrorResponse> response = underTest.handle(notificationClientException);
 
-        assertEquals(response.getStatusCode(), SERVICE_UNAVAILABLE);
-        assertEquals(response.getBody().getError(), DefaultExceptionHandler.CLIENT_ERROR);
-        assertEquals(response.getBody().getMessage(), EXCEPTION_MESSAGE);
+        assertEquals(SERVICE_UNAVAILABLE, response.getStatusCode());
+        assertEquals(DefaultExceptionHandler.CLIENT_ERROR, response.getBody().getError());
+        assertEquals(EXCEPTION_MESSAGE, response.getBody().getMessage());
     }
 }

@@ -1,6 +1,6 @@
 package uk.gov.hmcts.probate.validator;
 
-import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
@@ -14,9 +14,9 @@ import java.util.stream.Stream;
 
 import static uk.gov.hmcts.probate.model.Constants.BUSINESS_ERROR;
 
-@Data
 @Component
-class IHTValidationRule implements SolAddDeceasedEstateDetailsValidationRule {
+@RequiredArgsConstructor
+class IHTValidationRule implements SolAddDeceasedEstateDetailsValidationRule, CaseworkerAmendValidationRule {
 
     public static final String IHT_NET_GREATER_THAN_GROSS = "ihtNetGreaterThanGross";
     public static final String IHT_NET_IS_NULL = "ihtNetIsNull";
@@ -30,7 +30,7 @@ class IHTValidationRule implements SolAddDeceasedEstateDetailsValidationRule {
                 .map(iht -> {
                     List<String> codes = new ArrayList<>();
 
-                    if (iht.getNetValue() > iht.getGrossValue()) {
+                    if (iht.getNetValue().compareTo(iht.getGrossValue()) > 0) {
                         codes.add(IHT_NET_GREATER_THAN_GROSS);
                     }
 

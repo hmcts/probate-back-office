@@ -1,15 +1,25 @@
 package uk.gov.hmcts.probate.model.ccd.raw.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Data;
 import uk.gov.hmcts.probate.model.ApplicationType;
-import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutors;
-import uk.gov.hmcts.probate.model.ccd.raw.AliasNames;
-import uk.gov.hmcts.probate.model.ccd.raw.CCDDocument;
+import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
+import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
+import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
+import uk.gov.hmcts.probate.model.ccd.raw.AliasName;
+import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
+import uk.gov.hmcts.probate.model.ccd.raw.Declaration;
+import uk.gov.hmcts.probate.model.ccd.raw.Document;
+import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
+import uk.gov.hmcts.probate.model.ccd.raw.LegalStatement;
+import uk.gov.hmcts.probate.model.ccd.raw.ProbateAliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
-import uk.gov.hmcts.probate.model.ccd.raw.StopReasons;
+import uk.gov.hmcts.probate.model.ccd.raw.StopReason;
+import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Builder
@@ -37,8 +47,8 @@ public class ResponseCaseData {
     private final String willAccessOriginal;
     private final String willHasCodicils;
     private final String willNumberOfCodicils;
-    private final String ihtNetValue;
-    private final String ihtGrossValue;
+    private final BigDecimal ihtNetValue;
+    private final BigDecimal ihtGrossValue;
     private final String deceasedDomicileInEngWales;
     private final String extraCopiesOfGrant;
     private final String outsideUKGrantCopies;
@@ -48,10 +58,12 @@ public class ResponseCaseData {
     private final String totalFee;
     private final String solsPaymentMethods;
     private final String solsFeeAccountNumber;
-    private final String solsPaymentReferenceNumber;
-    private final CCDDocument solsLegalStatementDocument;
+    private final String paymentReferenceNumber;
+    private final DocumentLink solsLegalStatementDocument;
+    private final List<CollectionMember<Document>> probateDocumentsGenerated;
+    private final List<CollectionMember<UploadDocument>> boDocumentsUploaded;
     private final String solsSOTNeedToUpdate;
-    private final CCDDocument solsNextStepsDocument;
+    private final DocumentLink solsNextStepsDocument;
     private final String solsAdditionalInfo;
     private final String primaryApplicantForenames;
     private final String primaryApplicantSurname;
@@ -61,16 +73,37 @@ public class ResponseCaseData {
     private final String solsPrimaryExecutorNotApplyingReason;
     private final String otherExecutorExists;
     private final String solsExecutorAliasNames;
-    private final List<AdditionalExecutors> solsAdditionalExecutorList;
+    @JsonProperty(value = "executorsApplying")
+    private final List<CollectionMember<AdditionalExecutorApplying>> additionalExecutorsApplying;
+    @JsonProperty(value = "executorsNotApplying")
+    private final List<CollectionMember<AdditionalExecutorNotApplying>> additionalExecutorsNotApplying;
+    private final List<CollectionMember<AdditionalExecutor>> solsAdditionalExecutorList;
     private final SolsAddress deceasedAddress;
     private final String deceasedAnyOtherNames;
     private final SolsAddress primaryApplicantAddress;
-    private final List<AliasNames> solsDeceasedAliasNamesList;
-    private final String ccdState;
+    private final List<CollectionMember<AliasName>> solsDeceasedAliasNamesList;
+    private final List<CollectionMember<ProbateAliasName>> deceasedAliasNamesList;
     private final String casePrinted;
     private final String boEmailDocsReceivedNotificationRequested;
     private final String boEmailGrantIssuedNotificationRequested;
     private final String boEmailDocsReceivedNotification;
     private final String boEmailGrantIssuedNotification;
-    private final List<StopReasons> boCaseStopReasonList;
+    private final List<CollectionMember<StopReason>> boCaseStopReasonList;
+    private final String boStopDetails;
+    private final String boDeceasedTitle;
+    private final String boDeceasedHonours;
+
+    private final String boWillMessage;
+    private final String boExecutorLimitation;
+    private final String boAdminClauseLimitation;
+    private final String boLimitationText;
+    private final String ihtReferenceNumber;
+    private final String ihtFormCompletedOnline;
+
+    private final LegalStatement legalStatement;
+    private final Declaration declaration;
+    private final String deceasedMarriedAfterWillOrCodicilDate;
+    //Todo remove PA specific attr
+    private final String primaryApplicantPhoneNumber;
+
 }

@@ -34,14 +34,12 @@ public class ExecutorsAddressValidationRuleTest {
     private Executor executor;
 
     private FieldErrorResponse executorAddressIsNullError;
-    private FieldErrorResponse executorPostcodeIsNullError;
 
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
 
         executorAddressIsNullError = FieldErrorResponse.builder().message("executorAddressIsNull").build();
-        executorPostcodeIsNullError = FieldErrorResponse.builder().message("executorPostcodeIsNull").build();
 
         when(executor.isApplying()).thenReturn(true);
 
@@ -50,8 +48,6 @@ public class ExecutorsAddressValidationRuleTest {
         when(businessValidationMessageService.generateError(eq(BUSINESS_ERROR), eq("executorAddressIsNull")))
                 .thenReturn(executorAddressIsNullError);
 
-        when(businessValidationMessageService.generateError(eq(BUSINESS_ERROR), eq("executorPostcodeIsNull")))
-                .thenReturn(executorPostcodeIsNullError);
     }
 
     @Test
@@ -60,9 +56,8 @@ public class ExecutorsAddressValidationRuleTest {
 
         List<FieldErrorResponse> errors = executorsAddressValidationRule.validate(ccdData);
 
-        Assert.assertEquals(2, errors.size());
+        Assert.assertEquals(1, errors.size());
         Assert.assertTrue(errors.contains(executorAddressIsNullError));
-        Assert.assertTrue(errors.contains(executorPostcodeIsNullError));
     }
 
     @Test
@@ -76,12 +71,12 @@ public class ExecutorsAddressValidationRuleTest {
     }
 
     @Test
-    public void shouldReturnPostcodeErrorMessageWhenNoPostcodeProvided() {
+    public void shouldNotReturnErrorMessagesWhenAddressProvided() {
         when(executor.getAddress()).thenReturn(SolsAddress.builder().addressLine1("1 White St").build());
 
         List<FieldErrorResponse> errors = executorsAddressValidationRule.validate(ccdData);
 
-        Assert.assertEquals(1, errors.size());
-        Assert.assertTrue(errors.contains(executorPostcodeIsNullError));
+        Assert.assertTrue(errors.isEmpty());
     }
+
 }

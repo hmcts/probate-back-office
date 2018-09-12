@@ -1,6 +1,6 @@
 package uk.gov.hmcts.probate.service.fee;
 
-import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -16,8 +16,8 @@ import java.net.URI;
 
 import static uk.gov.hmcts.probate.insights.AppInsightsEvent.REQUEST_SENT;
 
-@Data
 @Service
+@RequiredArgsConstructor
 public class FeeService {
 
     private final FeeServiceConfiguration feeServiceConfiguration;

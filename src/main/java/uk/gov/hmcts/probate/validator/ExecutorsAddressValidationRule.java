@@ -1,7 +1,7 @@
 package uk.gov.hmcts.probate.validator;
 
 import com.google.common.base.Strings;
-import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
@@ -15,9 +15,9 @@ import java.util.Set;
 
 import static uk.gov.hmcts.probate.model.Constants.BUSINESS_ERROR;
 
-@Data
 @Component
-class ExecutorsAddressValidationRule implements SolExecutorDetailsValidationRule {
+@RequiredArgsConstructor
+class ExecutorsAddressValidationRule implements SolExecutorDetailsValidationRule, CaseworkerAmendValidationRule {
 
     private final BusinessValidationMessageService businessValidationMessageService;
 
@@ -31,9 +31,6 @@ class ExecutorsAddressValidationRule implements SolExecutorDetailsValidationRule
                 .forEach(address -> {
                     if (address == null || Strings.isNullOrEmpty(address.getAddressLine1())) {
                         errors.add(businessValidationMessageService.generateError(BUSINESS_ERROR, "executorAddressIsNull"));
-                    }
-                    if (address == null || Strings.isNullOrEmpty(address.getPostCode())) {
-                        errors.add(businessValidationMessageService.generateError(BUSINESS_ERROR, "executorPostcodeIsNull"));
                     }
                 });
 

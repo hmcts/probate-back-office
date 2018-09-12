@@ -72,10 +72,10 @@
             </tr>
             <tr>
               <td colspan="2">
-                <p>The {% if (case_details.case_data.executorsApplying|length > 1) %}executors believe{% else %}executor believes{% endif %} that all the information stated in the legal statement is true. They have authorised {{ case_details.case_data.solsSolicitorFirmName }} to sign a statement of truth on their behalf.</p>
+                <p>The {% if (case_details.case_data.executorsApplyingForLegalStatement|length > 1) %}executors believe{% else %}executor believes{% endif %} that all the information stated in the legal statement is true. They have authorised {{ case_details.case_data.solsSolicitorFirmName }} to sign a statement of truth on their behalf.</p>
                 <p>This statement is based on the information given in your application. It will be stored as a public record.</p>
-                <p>{% if (case_details.case_data.executorsApplying|length > 1) %}We{% else %}I{% endif %},
-                  {% set countApplying = 1 %}{% for executor in case_details.case_data.executorsApplying %}
+                <p>{% if (case_details.case_data.executorsApplyingForLegalStatement|length > 1) %}We{% else %}I{% endif %},
+                  {% set countApplying = 1 %}{% for executor in case_details.case_data.executorsApplyingForLegalStatement %}
                     {{ executor.value.additionalExecForenames }} {{ executor.value.additionalExecLastname }} of
                     {% if executor.value.additionalExecAddress.AddressLine1 != null and executor.value.additionalExecAddress.AddressLine1 != "" %}{{ executor.value.additionalExecAddress.AddressLine1 }},{% endif %}
                     {% if executor.value.additionalExecAddress.AddressLine2 != null and executor.value.additionalExecAddress.AddressLine2 != "" %}{{ executor.value.additionalExecAddress.AddressLine2 }},{% endif %}
@@ -84,7 +84,7 @@
                     {% if executor.value.additionalExecAddress.County != null and executor.value.additionalExecAddress.County != "" %}{{ executor.value.additionalExecAddress.County }},{% endif %}
                     {% if executor.value.additionalExecAddress.PostCode != null and executor.value.additionalExecAddress.PostCode != ""%}{{ executor.value.additionalExecAddress.PostCode }},{% endif %}
                     {% if executor.value.additionalExecAddress.Country != null and executor.value.additionalExecAddress.Country != ""%}{{ executor.value.additionalExecAddress.Country }}{% endif %}
-                    {% if (countApplying < (case_details.case_data.executorsApplying|length)) %} and {% endif %}
+                    {% if (countApplying < (case_details.case_data.executorsApplyingForLegalStatement|length)) %} and {% endif %}
                     {% set countApplying = countApplying + 1 %}
                   {% endfor %}
                   make the following statement:</p>
@@ -146,7 +146,7 @@
             </tr>
             <tr>
               <td colspan="2">
-                {% for executor in case_details.case_data.executorsApplying %}
+                {% for executor in case_details.case_data.executorsApplyingForLegalStatement %}
                 <p>
                 {{ executor.value.additionalExecForenames }} {{ executor.value.additionalExecLastname }},
                   an executor named in the will {% if case_details.case_data.willHasCodicils == "Yes" %}and codicil{% if case_details.case_data.willNumberOfCodicils != "" and case_details.case_data.willNumberOfCodicils != "0" and case_details.case_data.willNumberOfCodicils != "1" %}s{% endif %}{% endif %}{% if executor.value.additionalExecNameOnWill == "Yes" %} as {{ executor.value.additionalExecAliasNameOnWill }}{% endif %},
@@ -169,8 +169,8 @@
             </tr>
             <tr>
               <td colspan="2">
-                {% if case_details.case_data.executorsNotApplying|length>0 %}
-                  {% for executor in case_details.case_data.executorsNotApplying %}
+                {% if case_details.case_data.executorsNotApplyingForLegalStatement|length>0 %}
+                  {% for executor in case_details.case_data.executorsNotApplyingForLegalStatement %}
                   <p><span>{{ executor.value.additionalExecForenames }} {{ executor.value.additionalExecLastname }}, another executor named in the will{% if executor.value.additionalExecNameOnWill == "Yes" %} as {{ executor.value.additionalExecAliasNameOnWill }}{% endif%},
                     {% if executor.value.additionalExecReasonNotApplying == "DiedBefore" %}is not making this application because they died before {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }} died.{% endif %}
                     {% if executor.value.additionalExecReasonNotApplying == "DiedAfter" %} is not making this application because they died after {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }} died.{% endif %}

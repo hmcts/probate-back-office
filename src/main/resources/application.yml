@@ -21,6 +21,7 @@ pdf.service:
   pdfApi: /api/v1/pdf-generator/html
   templatesDirectory: templates/pdf/
   defaultDisplayFilename: legal_statement.pdf
+  grantSignatureBase64: dummy_hash
 
 fee.api:
   url: http://localhost:4411
@@ -79,18 +80,23 @@ notifications:
     email:
       personal:
         documentReceived: "04308c65-a0bb-40b4-a3f3-ba8869048520"
+        caseStopped: "58aed5cb-0aab-44f5-842f-9f0a6a150f72"
         grantIssued: "9344693b-9ea3-487d-bec1-68201214fd27"
       solicitor:
         documentReceived: "7f8ff32d-8297-4702-9867-312047f81492"
+        caseStopped: "77041301-77a5-4382-a3a7-0bada17518b0"
         grantIssued: "95aa541b-e55e-4d7c-a6f5-810b5f03adba"
 
 registries:
   oxford:
     name: Oxford Probate Registry
     phone: 0300 303 0648
+    emailReplyToId: "3c2df3ad-6eaf-4395-b85c-1ef5c5c89d4f"
   birmingham:
     name: Birmingham Probate Registry
     phone: 0121 681 3401
+    emailReplyToId: "e3511bc5-98d8-457c-b49b-5b0c0ba4892a"
   manchester:
     name: Manchester Probate Registry
     phone: 0161 240 5701 / 0161 240 5702
+    emailReplyToId: "2734e490-1a31-46e8-9ba6-3ac3136b10fb"

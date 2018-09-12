@@ -1,8 +1,7 @@
 package uk.gov.hmcts.probate.controller;
 
-import lombok.Data;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -21,12 +20,11 @@ import java.util.List;
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 import static org.springframework.http.MediaType.TEXT_HTML_VALUE;
 
-@Data
+@Slf4j
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/template")
 public class PrintServiceTemplateController {
-
-    private static final Logger log = LoggerFactory.getLogger(PrintServiceTemplateController.class);
 
     private final PrintService printService;
 

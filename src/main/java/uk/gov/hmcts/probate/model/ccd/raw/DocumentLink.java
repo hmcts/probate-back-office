@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class CCDDocument {
+public class DocumentLink {
 
     @JsonProperty(value = "document_url")
     private final String documentUrl;
