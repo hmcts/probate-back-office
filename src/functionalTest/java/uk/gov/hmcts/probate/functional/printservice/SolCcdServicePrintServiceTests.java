@@ -88,5 +88,5 @@ public class SolCcdServicePrintServiceTests extends IntegrationTestBase {
         assertTrue(response.getBody().asString().contains("Additional information"));
 
     }
-
 }
+
