@@ -1,4 +1,4 @@
-package uk.gov.hmcts.probate.printservice;
+package uk.gov.hmcts.probate.functional.printservice;
 
 import io.restassured.response.Response;
 import net.serenitybdd.junit.runners.SerenityRunner;
@@ -88,5 +88,5 @@ public class SolCcdServicePrintServiceTests extends IntegrationTestBase {
         assertTrue(response.getBody().asString().contains("Additional information"));
 
     }
-
 }
+

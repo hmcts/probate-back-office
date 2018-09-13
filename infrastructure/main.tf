@@ -41,10 +41,11 @@ module "probate-back-office" {
   ilbIp = "${var.ilbIp}"
   is_frontend  = false
   subscription = "${var.subscription}"
-  asp_name     = "${var.product}-${var.env}-asp"
+  asp_name     = "${var.asp_name}"
   capacity     = "${var.capacity}"
   common_tags  = "${var.common_tags}"
-  
+  asp_rg       = "${var.asp_rg}"
+
   app_settings = {
 
 	  // Logging vars
@@ -68,7 +69,7 @@ module "probate-back-office" {
     java_app_name = "${var.microservice}"
     LOG_LEVEL = "${var.log_level}"
     //ROOT_APPENDER = "JSON_CONSOLE" //Remove json logging
-
+    DEMO_TEST = "Testing Demo for update config"
   }
 }
 

@@ -349,7 +349,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifySuccessForGetDigitalGrantDraftPrimaryApplicantNotApplyingPowerReserved()  {
+    public void verifySuccessForGetDigitalGrantDraftPrimaryApplicantNotApplyingPowerReserved() {
         String response = generateDocument("solicitorPayloadNotificationsMultipleExsPANotApplyingPowerReserved.json", "/document/generate-grant-draft");
 
         assertTrue(!response.contains(PRIMARY_APPLICANT));
@@ -363,7 +363,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifySuccessForGetDigitalGrantPrimaryApplicantNotApplyingPowerReserved()  {
+    public void verifySuccessForGetDigitalGrantPrimaryApplicantNotApplyingPowerReserved() {
         String response = generateDocument("solicitorPayloadNotificationsMultipleExsPANotApplyingPowerReserved.json", "/document/generate-grant");
 
         assertTrue(!response.contains(PRIMARY_APPLICANT));
@@ -377,7 +377,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifySuccessForGetDigitalGrantDraftPrimaryApplicantNotApplyingPowerReservedMultiple()  {
+    public void verifySuccessForGetDigitalGrantDraftPrimaryApplicantNotApplyingPowerReservedMultiple() {
         String response = generateDocument("solicitorPayloadNotificationsPANotApplyingPowerReservedMultiple.json", "/document/generate-grant-draft");
 
         assertTrue(!response.contains(PRIMARY_APPLICANT));
@@ -391,7 +391,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifySuccessForGetDigitalGrantPrimaryApplicantNotApplyingPowerReservedMultiple()  {
+    public void verifySuccessForGetDigitalGrantPrimaryApplicantNotApplyingPowerReservedMultiple() {
         String response = generateDocument("solicitorPayloadNotificationsPANotApplyingPowerReservedMultiple.json", "/document/generate-grant");
 
         assertTrue(!response.contains(PRIMARY_APPLICANT));
