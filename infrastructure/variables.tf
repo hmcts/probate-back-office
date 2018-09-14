@@ -1,7 +1,8 @@
 // Infrastructural variables
+variable "product" {}
 
-variable "product" {
-  default = "probate"
+variable "raw_product" {
+  default = "probate" // jenkins-library overrides product for PRs and adds e.g. pr-118-cmc
 }
 
 variable "microservice" {
@@ -30,6 +31,11 @@ variable "subscription" {}
 
 variable "vault_section" {
   type = "string"
+}
+
+variable "appinsights_instrumentation_key" {
+  description = "Instrumentation key of the App Insights instance this webapp should use. Module will create own App Insights resource if this is not provided"
+  default = ""
 }
 
 // CNP settings
