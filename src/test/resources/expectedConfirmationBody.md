@@ -14,13 +14,13 @@ Michael, Andy, died 04/04/2017
 
 Payment summary
 -------------------------------------------------
-**Application fee** &pound;0.10
+**Application fee** £0.10
 
-**Fee for additional UK copies** &pound;1.00
+**Fee for additional UK copies** £1.00
 
-**Fee for certified copies** &pound;2.00
+**Fee for certified copies** £2.00
 
-**Fee amount** &pound;0.10
+**Fee amount** £0.10
 
 **Payment method** Cheque
 
@@ -41,7 +41,7 @@ You now need to send us:
 *   the original will - you must mark with your signature the top right corner of the front of the will
     (not on any cover sheet if there is one)
 *   2 unstapled photocopies of the signed will - these must be on plain A4 paper
-*   fee payment: your Cheque for &pound;0.10 (grant and copies)
+*   fee payment: your Cheque for £0.10 (grant and copies)
 *   the printed version of this page which will be used as your cover letter to us
 *   completed inheritance tax form IHT207
 

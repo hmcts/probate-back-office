@@ -14,13 +14,13 @@ This probate application has now been submitted
 
 Payment summary
 -------------------------------------------------
-**Application fee** &pound;{{applicationFee}}
+**Application fee** £{{applicationFee}}
 
-**Fee for additional UK copies** &pound;{{feeForUkCopies}}
+**Fee for additional UK copies** £{{feeForUkCopies}}
 
-**Fee for certified copies** &pound;{{feeForNonUkCopies}}
+**Fee for certified copies** £{{feeForNonUkCopies}}
 
-**Fee amount** &pound;{{paymentAmount}}
+**Fee amount** £{{paymentAmount}}
 
 **Payment method** {{paymentMethod}}
 
@@ -41,7 +41,7 @@ You now need to send us:
 *   the original will - you must mark with your signature the top right corner of the front of the will
     (not on any cover sheet if there is one)
 *   2 unstapled photocopies of the signed will - these must be on plain A4 paper
-*   fee payment: your {{paymentMethod}} for &pound;{{paymentAmount}} (grant and copies)
+*   fee payment: your {{paymentMethod}} for £{{paymentAmount}} (grant and copies)
 *   the printed version of this page which will be used as your cover letter to us
 *   completed inheritance tax form {{ihtForm}}
 {{iht400}}{{renouncingExecutors}}{{deadExecutors}}

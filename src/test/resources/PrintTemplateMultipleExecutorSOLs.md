@@ -14,7 +14,7 @@ AND BE IT FURTHER KNOWN that the last Will and Testament of the said deceased (a
 AND     Sarah Bloggs of 123 Street name
 AND     Jane Doe of 123 Street name
 
-It is hereby certified that it appears from information supplied on the application for this grant that the gross value of the said estate in the United Kingdom does not exceed &pound;4,000 and the net value of the such estate amounts to &pound;2,000
+It is hereby certified that it appears from information supplied on the application for this grant that the gross value of the said estate in the United Kingdom does not exceed £4,000 and the net value of the such estate amounts to £2,000
 
 DATED the 2017/05/05
 

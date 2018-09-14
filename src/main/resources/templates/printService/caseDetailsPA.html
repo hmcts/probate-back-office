@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 {% macro names(forenames, surname) %}{{ forenames }} {{ surname }}{% endmacro %}
 {% macro notApplyingReason(reason) %}{% if reason == "DiedBefore" %}They died before the deceased.{% endif %}{% if reason == "DiedAfter"%}They died after the deceased.{% endif %}{% if reason == "PowerReserved" %}They're holding power reserved.{% endif%}{% if reason == "Renunciation" %}They have renounced.{% endif %}{% endmacro %}
 {% macro replaceAllEncoded(original) %}{{ original | replace('&rsquo;', '’')  | replace('&pound;', '£') }}{% endmacro %}
@@ -123,11 +122,11 @@
   </tr>
   <tr>
     <td colspan="2">IHT Gross value:</td>
-    <td>{% if case_data.ihtGrossValue %}&pound;{{ (case_data.ihtGrossValue/100) | money('0,0.00') }}{% endif %}</td>
+    <td>{% if case_data.ihtGrossValue %}£{{ (case_data.ihtGrossValue/100) | money('0,0.00') }}{% endif %}</td>
   </tr>
   <tr>
     <td colspan="2">IHT Net value:</td>
-    <td>{% if case_data.ihtNetValue %}&pound;{{ (case_data.ihtNetValue/100) | money('0,0.00') }}{% endif %}</td>
+    <td>{% if case_data.ihtNetValue %}£{{ (case_data.ihtNetValue/100) | money('0,0.00') }}{% endif %}</td>
   </tr>
   <tr>
     <td colspan="2">Payment reference:</td>
@@ -193,7 +192,7 @@
   </tr>
   <tr>
     <td colspan="2">Total fee due:</td>
-    <td>{% if case_data.totalFee %}&pound;{{ (case_data.totalFee/100) | money('0,0.00') }}{% endif %}</td>
+    <td>{% if case_data.totalFee %}£{{ (case_data.totalFee/100) | money('0,0.00') }}{% endif %}</td>
   </tr>
   <tr>
     <td colspan="2">Assets in an alias name:</td>
@@ -277,7 +276,7 @@
   <tr><td colspan="2">&nbsp;</td></tr>
   <tr><td colspan="2">&nbsp;</td></tr>
   <td valign="top" nowrap="true"><strong>Legal Statement:</strong></td>
-    <td>
+  <td>
     <table border="0">
       <tr><td>{{ replaceAllEncoded(case_data.legalStatement.intro) }}</td></tr>
       <tr><td>&nbsp;</td></tr>
@@ -300,7 +299,7 @@
       <tr><td>{{ replaceAllEncoded(executorsNotApplying.value.executor) }}</td></tr>
       {% endfor %}
     </table>
-    </td>
+  </td>
   </tr>
 </table>
 </body>
