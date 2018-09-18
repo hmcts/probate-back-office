@@ -540,6 +540,40 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
+    public void shouldTransformCaseForPAWithPrimaryApplicantAlias() {
+        caseDataBuilder.primaryApplicantAlias(PRIMARY_EXEC_ALIAS_NAMES);
+        caseDataBuilder.primaryApplicantSameWillName(YES);
+        caseDataBuilder.primaryApplicantAliasReason("Other");
+        caseDataBuilder.primaryApplicantAliasOtherReason("Married");
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+
+        assertEquals(YES, callbackResponse.getData().getPrimaryApplicantSameWillName());
+        assertEquals(PRIMARY_EXEC_ALIAS_NAMES, callbackResponse.getData().getPrimaryApplicantAlias());
+        assertEquals("Other", callbackResponse.getData().getPrimaryApplicantAliasReason());
+        assertEquals("Married", callbackResponse.getData().getPrimaryApplicantAliasOtherReason());
+    }
+
+    @Test
+    public void shouldTransformCaseForPAWithApplyExecAlias() {
+        List<CollectionMember<AdditionalExecutorApplying>> additionalExecsList = new ArrayList<>();
+        additionalExecsList.add(createAdditionalExecutorApplying("0"));
+        additionalExecsList.add(createAdditionalExecutorApplying("1"));
+        caseDataBuilder.additionalExecutorsApplying(additionalExecsList);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+
+        assertCommonDetails(callbackResponse);
+        assertEquals(2, callbackResponse.getData().getAdditionalExecutorsApplying().size());
+    }
+
+    @Test
     public void shouldTransformCaseForPAWithIHTOnlineNo() {
         caseDataBuilder.applicationType(ApplicationType.PERSONAL);
         caseDataBuilder.ihtFormCompletedOnline(NO);
@@ -612,6 +646,8 @@ public class CallbackResponseTransformerTest {
                 .applyingExecutorName(EXEC_FIRST_NAME + " " + EXEC_SURNAME)
                 .applyingExecutorOtherNames(ALIAS_FORENAME + " " + ALIAS_SURNAME)
                 .applyingExecutorPhoneNumber(EXEC_PHONE)
+                .applyingExecutorOtherNamesReason("Other")
+                .applyingExecutorOtherReason("Married")
                 .build();
         return new CollectionMember<>(id, add1na);
     }
@@ -630,6 +666,8 @@ public class CallbackResponseTransformerTest {
     private void assertApplyingExecutorDetails(AdditionalExecutorApplying exec) {
         assertEquals(EXEC_FIRST_NAME + " " + EXEC_SURNAME, exec.getApplyingExecutorName());
         assertEquals(ALIAS_FORENAME + " " + ALIAS_SURNAME, exec.getApplyingExecutorOtherNames());
+        assertEquals("Other", exec.getApplyingExecutorOtherNamesReason());
+        assertEquals("Married",  exec.getApplyingExecutorOtherReason());
         assertApplyingExecutorDetailsFromSols(exec);
     }
 

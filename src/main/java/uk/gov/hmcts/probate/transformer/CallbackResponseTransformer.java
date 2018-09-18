@@ -172,7 +172,7 @@ public class CallbackResponseTransformer {
                 .otherExecutorExists(getOtherExecutorExists(caseData))
                 .primaryApplicantAlias(caseData.getPrimaryApplicantAlias())
                 .primaryApplicantSameWillName(caseData.getPrimaryApplicantSameWillName())
-                .primaryApplicantAliasOtherReason(caseData.getPrimaryApplicantAliasOtherReason())
+                .primaryApplicantAliasReason(caseData.getPrimaryApplicantAliasReason())
                 .primaryApplicantAliasOtherReason(caseData.getPrimaryApplicantAliasOtherReason())
                 .deceasedAddress(caseData.getDeceasedAddress())
                 .deceasedAnyOtherNames(caseData.getDeceasedAnyOtherNames())
