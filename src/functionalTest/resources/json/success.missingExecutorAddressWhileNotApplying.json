@@ -62,7 +62,7 @@
       "primaryApplicantHasAlias": "Yes",
       "solsIHTFormId": "IHT205",
       "ihtGrossValue": "100001",
-      "solsExecutorAliasNames": "ex1wn",
+      "primaryApplicantAlias": "ex1wn",
       "primaryApplicantSurname": "Ex1ln",
       "solsSolicitorAppReference": "appref",
       "solsSOTNeedToUpdate":"No"

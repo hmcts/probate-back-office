@@ -69,7 +69,7 @@ public class CaseDataTest {
                 .primaryApplicantForenames(PRIMARY_APPLICANT_SURNAME)
                 .primaryApplicantIsApplying(YES)
                 .primaryApplicantAddress(PRIMARY_APPLICANT_ADDRESS)
-                .solsExecutorAliasNames(PRIMARY_APPLICANT_NAME_ON_WILL)
+                .primaryApplicantAlias(PRIMARY_APPLICANT_NAME_ON_WILL)
                 .solsAdditionalExecutorList(additionalExecutorsList)
                 .build();
     }
@@ -146,7 +146,7 @@ public class CaseDataTest {
                 .primaryApplicantForenames(PRIMARY_APPLICANT_SURNAME)
                 .primaryApplicantIsApplying(NO)
                 .primaryApplicantAddress(PRIMARY_APPLICANT_ADDRESS)
-                .solsExecutorAliasNames(PRIMARY_APPLICANT_NAME_ON_WILL)
+                .primaryApplicantAlias(PRIMARY_APPLICANT_NAME_ON_WILL)
                 .solsAdditionalExecutorList(additionalExecutorsList)
                 .build();
     }

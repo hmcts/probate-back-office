@@ -190,7 +190,7 @@ public class CallbackResponseTransformerTest {
                 .primaryApplicantIsApplying(PRIMARY_EXEC_APPLYING)
                 .primaryApplicantHasAlias(APPLICANT_HAS_ALIAS)
                 .otherExecutorExists(OTHER_EXECS_EXIST)
-                .solsExecutorAliasNames(PRIMARY_EXEC_ALIAS_NAMES)
+                .primaryApplicantAlias(PRIMARY_EXEC_ALIAS_NAMES)
                 .solsAdditionalExecutorList(ADDITIONAL_EXEC_LIST)
                 .deceasedAddress(DECEASED_ADDRESS)
                 .deceasedAnyOtherNames(YES)
@@ -679,7 +679,7 @@ public class CallbackResponseTransformerTest {
         assertEquals(APPLICANT_SURNAME, callbackResponse.getData().getPrimaryApplicantSurname());
         assertEquals(APPLICANT_EMAIL_ADDRESS, callbackResponse.getData().getPrimaryApplicantEmailAddress());
         assertEquals(PRIMARY_EXEC_APPLYING, callbackResponse.getData().getPrimaryApplicantIsApplying());
-        assertEquals(PRIMARY_EXEC_ALIAS_NAMES, callbackResponse.getData().getSolsExecutorAliasNames());
+        assertEquals(PRIMARY_EXEC_ALIAS_NAMES, callbackResponse.getData().getPrimaryApplicantAlias());
         assertEquals(DECEASED_ADDRESS, callbackResponse.getData().getDeceasedAddress());
         assertEquals(EXEC_ADDRESS, callbackResponse.getData().getPrimaryApplicantAddress());
         assertEquals(APP_REF, callbackResponse.getData().getSolsSolicitorAppReference());

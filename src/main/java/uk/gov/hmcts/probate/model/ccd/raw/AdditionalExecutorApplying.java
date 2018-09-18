@@ -10,8 +10,8 @@ public class AdditionalExecutorApplying {
     private final String applyingExecutorName;
     private final String applyingExecutorPhoneNumber;
     private final String applyingExecutorEmail;
-    private String applyingExecutorOtherNames;
     private final SolsAddress applyingExecutorAddress;
-
-
+    private final String applyingExecutorOtherNames;
+    private final String applyingExecutorOtherNamesReason;
+    private final String applyingExecutorOtherReason;
 }

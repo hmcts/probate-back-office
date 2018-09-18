@@ -127,7 +127,13 @@ public class CaseData {
     @NotBlank(groups = {ApplicationUpdatedGroup.class}, message = "{primaryApplicantHasAliasIsNull}")
     private final String primaryApplicantHasAlias;
 
-    private final String solsExecutorAliasNames;
+    private final String primaryApplicantAlias;
+
+    private final String primaryApplicantAliasReason;
+
+    private final String primaryApplicantAliasOtherReason;
+
+    private final String primaryApplicantSameWillName;
 
     @NotBlank(groups = {ApplicationUpdatedGroup.class}, message = "{primaryApplicantIsApplyingIsNull}")
     private final String primaryApplicantIsApplying;
@@ -264,7 +270,7 @@ public class CaseData {
                     .additionalApplying(getPrimaryApplicantIsApplying())
                     .additionalExecAddress(getPrimaryApplicantAddress())
                     .additionalExecNameOnWill(getPrimaryApplicantHasAlias())
-                    .additionalExecAliasNameOnWill(getSolsExecutorAliasNames())
+                    .additionalExecAliasNameOnWill(getPrimaryApplicantAlias())
                     .additionalExecReasonNotApplying(getSolsPrimaryExecutorNotApplyingReason())
                     .build();
 

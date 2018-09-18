@@ -40,7 +40,7 @@
       "primaryApplicantSurname": "exfn1",
       "primaryApplicantEmailAddress": null,
       "primaryApplicantHasAlias": "Yes",
-      "solsExecutorAliasNames": "Jane Doe",
+      "primaryApplicantAlias": "Jane Doe",
       "primaryApplicantIsApplying": "Yes",
       "solsPrimaryExecutorNotApplyingReason": null,
       "primaryApplicantAddress": {
