@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-<meta charset="UTF-8"/>
 {% macro names(forenames, surname) %}{{ forenames }} {{ surname }}{% endmacro %}
 {% macro notApplyingReason(reason) %}{% if reason == "DiedBefore" %}They died before the deceased.{% endif %}{% if reason == "DiedAfter"%}They died after the deceased.{% endif %}{% if reason == "PowerReserved" %}They're holding power reserved.{% endif%}{% if reason == "Renunciation" %}They have renounced.{% endif %}{% endmacro %}
 {% macro replaceAllEncoded(original) %}{{ original | replace('&rsquo;', '’')  | replace('&pound;', '£') }}{% endmacro %}
@@ -8,7 +7,6 @@
   <title>Application for probate for {{ names(case_data.deceasedForenames,case_data.deceasedSurname) }}</title>
 </head>
 <body>
-<meta charset="UTF-8"/>
 <h1>Application for probate for {{ names(case_data.deceasedForenames,case_data.deceasedSurname) }}</h1>
 <p>
   <strong>Case Number:</strong> {{ id }}<br>
@@ -237,24 +235,24 @@
     <td valign="top" nowrap="true"><strong>Declaration:</strong></td>
     <td>
       <table border="0">
-        <tr><td>{{ replaceAllEncoded(case_data.declaration.confirm) }}</td></tr>
+        <tr><td>{{ replaceAllEncoded(case_data.declaration.confirm)|safe }}</td></tr>
         <tr>
           <td>
             <ul>
-              {% if case_data.declaration.confirmItem1 %}<li>{{ replaceAllEncoded(case_data.declaration.confirmItem1) }}</li>{% endif %}
-              {% if case_data.declaration.confirmItem2 %}<li>{{ replaceAllEncoded(case_data.declaration.confirmItem2) }}</li>{% endif %}
-              {% if case_data.declaration.confirmItem3 %}<li>{{ replaceAllEncoded(case_data.declaration.confirmItem3) }}</li>{% endif %}
+              {% if case_data.declaration.confirmItem1 %}<li>{{ replaceAllEncoded(case_data.declaration.confirmItem1)|safe }}</li>{% endif %}
+              {% if case_data.declaration.confirmItem2 %}<li>{{ replaceAllEncoded(case_data.declaration.confirmItem2)|safe }}</li>{% endif %}
+              {% if case_data.declaration.confirmItem3 %}<li>{{ replaceAllEncoded(case_data.declaration.confirmItem3)|safe }}</li>{% endif %}
             </ul>
           </td>
         </tr>
         <tr><td>&nbsp;</td></tr>
-        <tr><td>{{ replaceAllEncoded(case_data.declaration.requests) }}</td></tr>
+        <tr><td>{{ replaceAllEncoded(case_data.declaration.requests)|safe }}</td></tr>
         <tr>
           <td>
             <ul>
-              {% if case_data.declaration.requestsItem1 %}<li>{{ replaceAllEncoded(case_data.declaration.requestsItem1) }}</li>{% endif %}
-              {% if case_data.declaration.requestsItem2 %}<li>{{ replaceAllEncoded(case_data.declaration.requestsItem2) }}</li>{% endif %}
-              {% if case_data.declaration.requestsItem3 %}<li>{{ replaceAllEncoded(case_data.declaration.requestsItem3) }}</li>{% endif %}
+              {% if case_data.declaration.requestsItem1 %}<li>{{ replaceAllEncoded(case_data.declaration.requestsItem1)|safe }}</li>{% endif %}
+              {% if case_data.declaration.requestsItem2 %}<li>{{ replaceAllEncoded(case_data.declaration.requestsItem2)|safe }}</li>{% endif %}
+              {% if case_data.declaration.requestsItem3 %}<li>{{ replaceAllEncoded(case_data.declaration.requestsItem3)|safe }}</li>{% endif %}
             </ul>
           </td>
         </tr>
@@ -280,25 +278,25 @@
   <td valign="top" nowrap="true"><strong>Legal Statement:</strong></td>
   <td>
     <table border="0">
-      <tr><td>{{ replaceAllEncoded(case_data.legalStatement.intro) }}</td></tr>
+      <tr><td>{{ replaceAllEncoded(case_data.legalStatement.intro)|safe }}</td></tr>
       <tr><td>&nbsp;</td></tr>
-      <tr><td>{{ replaceAllEncoded(case_data.legalStatement.applicant) }}</td></tr>
+      <tr><td>{{ replaceAllEncoded(case_data.legalStatement.applicant)|safe }}</td></tr>
       <tr><td>&nbsp;</td></tr>
-      <tr><td>{{ replaceAllEncoded(case_data.legalStatement.deceased) }}</td></tr>
+      <tr><td>{{ replaceAllEncoded(case_data.legalStatement.deceased)|safe }}</td></tr>
       <tr><td>&nbsp;</td></tr>
-      <tr><td>{{ replaceAllEncoded(case_data.legalStatement.deceasedOtherNames) }}</td></tr>
+      <tr><td>{{ replaceAllEncoded(case_data.legalStatement.deceasedOtherNames)|safe }}</td></tr>
       <tr><td>&nbsp;</td></tr>
       {% for executorApplying in case_data.legalStatement.executorsApplying %}
-      <tr><td>{% if executorApplying.value.name %}{{ replaceAllEncoded(executorApplying.value.name) }}{% endif %}</td></tr>
-      <tr><td>{% if executorApplying.value.sign %}{{ replaceAllEncoded(executorApplying.value.sign) }}{% endif %}</td></tr>
+      <tr><td>{% if executorApplying.value.name %}{{ replaceAllEncoded(executorApplying.value.name)|safe }}{% endif %}</td></tr>
+      <tr><td>{% if executorApplying.value.sign %}{{ replaceAllEncoded(executorApplying.value.sign)|safe }}{% endif %}</td></tr>
       {% endfor %}
       <tr><td>&nbsp;</td></tr>
-      {% if case_data.legalStatement.deceasedEstateValue %}<tr><td>{{ replaceAllEncoded(case_data.legalStatement.deceasedEstateValue) }}</td></tr>{% endif %}
+      {% if case_data.legalStatement.deceasedEstateValue %}<tr><td>{{ replaceAllEncoded(case_data.legalStatement.deceasedEstateValue)|safe }}</td></tr>{% endif %}
       <tr><td>&nbsp;</td></tr>
-      {% if case_data.legalStatement.deceasedEstateLand %}<tr><td>{{ replaceAllEncoded(case_data.legalStatement.deceasedEstateLand) }}</td></tr>{% endif %}
+      {% if case_data.legalStatement.deceasedEstateLand %}<tr><td>{{ replaceAllEncoded(case_data.legalStatement.deceasedEstateLand)|safe }}</td></tr>{% endif %}
       <tr><td>&nbsp;</td></tr>
       {% for executorsNotApplying in case_data.legalStatement.executorsNotApplying %}
-      <tr><td>{{ replaceAllEncoded(executorsNotApplying.value.executor) }}</td></tr>
+      <tr><td>{{ replaceAllEncoded(executorsNotApplying.value.executor)|safe }}</td></tr>
       {% endfor %}
     </table>
   </td>
