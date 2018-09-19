@@ -11,7 +11,7 @@ public class AdditionalExecutorApplying {
     private final String applyingExecutorPhoneNumber;
     private final String applyingExecutorEmail;
     private final SolsAddress applyingExecutorAddress;
-    private final String applyingExecutorOtherNames;
-    private final String applyingExecutorOtherNamesReason;
-    private final String applyingExecutorOtherReason;
+    private String applyingExecutorOtherNames;
+    private String applyingExecutorOtherNamesReason;
+    private String applyingExecutorOtherReason;
 }
