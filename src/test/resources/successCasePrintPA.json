@@ -86,7 +86,9 @@
             "AddressLine1": "ddddddddddddddddddddddddddddd"
 
           },
-          "applyingExecutorOtherNames": "Eric Lloyd4"
+          "applyingExecutorOtherNames": "Eric Lloyd4",
+          "applyingExecutorOtherNamesReason": "other",
+          "applyingExecutorOtherReason": "nickname"
         }
       },
 

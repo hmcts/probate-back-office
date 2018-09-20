@@ -89,6 +89,10 @@
     <td></td><td>Other names:</td>
     {% if executor.value.applyingExecutorOtherNames %}
     <td>{{ executor.value.applyingExecutorOtherNames }}</td>
+    <td>{{ executor.value.applyingExecutorOtherNamesReason }}</td>
+    {% endif %}
+    {% if executor.value.applyingExecutorOtherReason %}
+    <td>other reason: {{ executor.value.applyingExecutorOtherReason }}</td>
     {% endif %}
   </tr>
   <tr>
