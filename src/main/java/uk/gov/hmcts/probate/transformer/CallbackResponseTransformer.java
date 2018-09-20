@@ -219,7 +219,9 @@ public class CallbackResponseTransformer {
                 .primaryApplicantPhoneNumber(caseData.getPrimaryApplicantPhoneNumber())
                 .declaration(caseData.getDeclaration())
                 .legalStatement(caseData.getLegalStatement())
-                .deceasedMarriedAfterWillOrCodicilDate(caseData.getDeceasedMarriedAfterWillOrCodicilDate());
+                .deceasedMarriedAfterWillOrCodicilDate(caseData.getDeceasedMarriedAfterWillOrCodicilDate())
+
+                .payments(caseData.getPayments());
 
         if (transform) {
             updateCaseBuilderForTransformCase(caseData, builder);
