@@ -98,8 +98,8 @@ public class TestCaseCreator {
 
     @Test
     public void createBOSolsCase() throws Exception {
-        idamUsername = idamSolUsername;
-        createCase("create.sols.ccd.json", "caseworkers", "solicitorReviewAndConfirm");
+        idamUsername = idamBoUsername;
+        createCase("create.bo.sols.ccd.json", "caseworkers", "boPrintCase");
     }
 
     private void createCase(String fileName, String role, String eventName) throws Exception {
@@ -118,6 +118,7 @@ public class TestCaseCreator {
                         then()
                 .statusCode(201);
     }
+
 
     public Headers getHeadersWithUserId() throws Exception {
         return getHeadersWithUserId(generateServiceToken());
