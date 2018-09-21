@@ -544,7 +544,7 @@ public class CallbackResponseTransformerTest {
         caseDataBuilder.primaryApplicantAlias(PRIMARY_EXEC_ALIAS_NAMES);
         caseDataBuilder.primaryApplicantSameWillName(YES);
         caseDataBuilder.primaryApplicantAliasReason("Other");
-        caseDataBuilder.primaryApplicantAliasOtherReason("Married");
+        caseDataBuilder.primaryApplicantOtherReason("Married");
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
@@ -554,7 +554,25 @@ public class CallbackResponseTransformerTest {
         assertEquals(YES, callbackResponse.getData().getPrimaryApplicantSameWillName());
         assertEquals(PRIMARY_EXEC_ALIAS_NAMES, callbackResponse.getData().getPrimaryApplicantAlias());
         assertEquals("Other", callbackResponse.getData().getPrimaryApplicantAliasReason());
-        assertEquals("Married", callbackResponse.getData().getPrimaryApplicantAliasOtherReason());
+        assertEquals("Married", callbackResponse.getData().getPrimaryApplicantOtherReason());
+    }
+
+    @Test
+    public void shouldTransformCaseForPAWithPrimaryApplicantAliasOtherToBeNull() {
+        caseDataBuilder.primaryApplicantAlias(PRIMARY_EXEC_ALIAS_NAMES);
+        caseDataBuilder.primaryApplicantSameWillName(YES);
+        caseDataBuilder.primaryApplicantAliasReason("Marriage");
+        caseDataBuilder.primaryApplicantOtherReason("Married");
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+
+        assertEquals(YES, callbackResponse.getData().getPrimaryApplicantSameWillName());
+        assertEquals(PRIMARY_EXEC_ALIAS_NAMES, callbackResponse.getData().getPrimaryApplicantAlias());
+        assertEquals("Marriage", callbackResponse.getData().getPrimaryApplicantAliasReason());
+        assertEquals(null, callbackResponse.getData().getPrimaryApplicantOtherReason());
     }
 
     @Test

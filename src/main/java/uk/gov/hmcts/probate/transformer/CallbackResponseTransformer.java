@@ -44,6 +44,7 @@ public class CallbackResponseTransformer {
     private static final String DEFAULT_REGISTRY_LOCATION = "Birmingham";
     public static final String ANSWER_YES = "Yes";
     public static final String ANSWER_NO = "No";
+    public static final String OTHER = "other";
 
     public CallbackResponse transformWithConditionalStateChange(CallbackRequest callbackRequest, Optional<String> newState) {
         ResponseCaseData responseCaseData = getResponseCaseData(callbackRequest.getCaseDetails(), false)
@@ -173,7 +174,7 @@ public class CallbackResponseTransformer {
                 .primaryApplicantAlias(caseData.getPrimaryApplicantAlias())
                 .primaryApplicantSameWillName(caseData.getPrimaryApplicantSameWillName())
                 .primaryApplicantAliasReason(caseData.getPrimaryApplicantAliasReason())
-                .primaryApplicantAliasOtherReason(caseData.getPrimaryApplicantAliasOtherReason())
+                .primaryApplicantOtherReason(caseData.getPrimaryApplicantOtherReason())
                 .deceasedAddress(caseData.getDeceasedAddress())
                 .deceasedAnyOtherNames(caseData.getDeceasedAnyOtherNames())
                 .primaryApplicantAddress(caseData.getPrimaryApplicantAddress())
@@ -244,6 +245,16 @@ public class CallbackResponseTransformer {
             } else {
                 builder
                         .ihtReferenceNumber(null);
+            }
+        }
+
+        if (caseData.getPrimaryApplicantAliasReason() != null) {
+            if (caseData.getPrimaryApplicantAliasReason().equalsIgnoreCase(OTHER)) {
+                builder
+                        .primaryApplicantOtherReason(caseData.getPrimaryApplicantOtherReason());
+            } else {
+                builder
+                        .primaryApplicantOtherReason(null);
             }
         }
 

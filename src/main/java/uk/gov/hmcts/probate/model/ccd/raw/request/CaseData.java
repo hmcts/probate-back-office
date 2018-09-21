@@ -131,7 +131,7 @@ public class CaseData {
 
     private final String primaryApplicantAliasReason;
 
-    private final String primaryApplicantAliasOtherReason;
+    private final String primaryApplicantOtherReason;
 
     private final String primaryApplicantSameWillName;
 
