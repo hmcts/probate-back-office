@@ -11,7 +11,6 @@ import static junit.framework.TestCase.assertTrue;
 import static net.serenitybdd.rest.SerenityRest.given;
 import static org.hamcrest.Matchers.equalToIgnoringCase;
 
-
 @RunWith(SerenityRunner.class)
 public class SolCcdServiceDomicileHardStopTests extends IntegrationTestBase {
 
