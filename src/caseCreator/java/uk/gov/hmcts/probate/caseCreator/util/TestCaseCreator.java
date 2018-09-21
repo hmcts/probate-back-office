@@ -1,4 +1,4 @@
-package uk.gov.hmcts.probate.functional.util;
+package uk.gov.hmcts.probate.caseCreator.util;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -11,7 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 import net.serenitybdd.rest.SerenityRest;
 import net.thucydides.junit.spring.SpringIntegration;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -57,6 +56,9 @@ public class TestCaseCreator {
     @Value("${idam.sol.username}")
     private String idamSolUsername;
 
+    @Value("${idam.bo.username}")
+    private String idamBoUsername;
+
     @Value("${idam.userpassword}")
     private String idamPassword;
 
@@ -82,18 +84,22 @@ public class TestCaseCreator {
         RestAssured.defaultParser = Parser.JSON;
     }
 
-    @Ignore
     @Test
     public void createPaCase() throws Exception {
         idamUsername = idamPaUsername;
         createCase("create.pa.ccd.json", "citizens", "applyForGrant");
     }
 
-    @Ignore
     @Test
     public void createSolsCase() throws Exception {
         idamUsername = idamSolUsername;
         createCase("create.sols.ccd.json", "caseworkers", "solicitorCreateApplication");
+    }
+
+    @Test
+    public void createBOSolsCase() throws Exception {
+        idamUsername = idamSolUsername;
+        createCase("create.sols.ccd.json", "caseworkers", "solicitorReviewAndConfirm");
     }
 
     private void createCase(String fileName, String role, String eventName) throws Exception {
@@ -120,7 +126,7 @@ public class TestCaseCreator {
 
     public String generateServiceToken() {
         String serviceToken = relaxedServiceAuthTokenGenerator.generate();
-        log.info("Service Token: {}", serviceToken);
+        log.info("Service Token: {}" + serviceToken);
         return serviceToken;
     }
 
@@ -132,7 +138,7 @@ public class TestCaseCreator {
     }
 
     private String generateEventToken(String role, String eventName, Headers headersWithUserId) {
-        log.info("User Id: {}", userId);
+        log.info("User Id: {}"+ userId);
         RestAssured.baseURI = solCcdServiceUrl;
         return SerenityRest.given()
                 .relaxedHTTPSValidation()
@@ -144,13 +150,13 @@ public class TestCaseCreator {
 
     public String generateUserTokenWithNoRoles() throws Exception {
         clientToken = generateClientToken();
-        log.info("Client Token : {}", clientToken);
+        log.info("Client Token : {}" + clientToken);
         return clientToken;
     }
 
     private String generateClientToken() throws Exception {
         String code = generateClientCode();
-        log.info("Client Code: {}", code);
+        log.info("Client Code: {}" + code);
         return "Bearer " + RestAssured.given().relaxedHTTPSValidation().post(idamUserBaseUrl + "/oauth2/token?code=" + code +
                 "&client_secret=" + idamSecret +
                 "&client_id=probate" +

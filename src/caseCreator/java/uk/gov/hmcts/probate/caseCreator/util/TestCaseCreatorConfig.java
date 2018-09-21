@@ -1,4 +1,4 @@
-package uk.gov.hmcts.probate.functional.util;
+package uk.gov.hmcts.probate.caseCreator.util;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
 @Configuration
-@PropertySource("case-creation-demo.properties")
+@PropertySource("application.properties")
 public class TestCaseCreatorConfig {
 
     @Bean
