@@ -20,6 +20,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.Declaration;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.LegalStatement;
+import uk.gov.hmcts.probate.model.ccd.raw.Payment;
 import uk.gov.hmcts.probate.model.ccd.raw.ProbateAliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.StopReason;
@@ -239,6 +240,8 @@ public class CaseData {
     private final String boAdminClauseLimitation;
 
     private final String boLimitationText;
+
+    private final List<CollectionMember<Payment>> payments;
 
     @Getter(lazy = true)
     private final List<CollectionMember<AdditionalExecutor>> executorsApplyingForLegalStatement = getAllExecutors(true);

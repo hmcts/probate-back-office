@@ -75,7 +75,7 @@ azure:
   app_insights_key: ${APPINSIGHTS_INSTRUMENTATIONKEY:false}
 
 notifications:
-  govNotifyApiKey: "dummy_key"
+  govNotifyApiKey: "probate_back_office_live_test-4809d6a8-a10b-405d-88eb-1fee9b3042e3-682b1c3b-647e-4a32-99b9-98a8b7c7feb7"
   templates:
     email:
       personal:
@@ -99,4 +99,4 @@ registries:
   manchester:
     name: Manchester Probate Registry
     phone: 0161 240 5701 / 0161 240 5702
-    emailReplyToId: "2734e490-1a31-46e8-9ba6-3ac3136b10fb"
+    emailReplyToId: "cdb5b02c-c6b6-490b-9367-8af3a3ae80b1"

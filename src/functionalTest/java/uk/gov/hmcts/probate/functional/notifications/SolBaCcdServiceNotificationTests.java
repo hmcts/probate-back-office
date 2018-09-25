@@ -9,7 +9,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 
-import static org.junit.Assert.assertTrue;
+import static junit.framework.TestCase.assertTrue;
+
 
 @RunWith(SerenityRunner.class)
 public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {

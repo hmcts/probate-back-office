@@ -17,6 +17,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.AliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
+import uk.gov.hmcts.probate.model.ccd.raw.Payment;
 import uk.gov.hmcts.probate.model.ccd.raw.ProbateAliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.StopReason;
@@ -32,11 +33,13 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 import static java.util.Collections.EMPTY_LIST;
 import static java.util.Collections.emptyList;
+import static java.util.Collections.list;
 import static org.hamcrest.Matchers.comparesEqualTo;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -139,6 +142,18 @@ public class CallbackResponseTransformerTest {
     private static final String ADMIN_CLAUSE_LIMITATION = "Admin Clause Limitation";
     private static final String TOTAL_FEE = "6600";
 
+    private static final List<CollectionMember<Payment>> PAYMENTS_LIST = Arrays.asList(
+            new CollectionMember("id",
+                    Payment.builder()
+                            .amount("100")
+                            .date("20/09/2018")
+                            .method("online")
+                            .reference("Reference-123")
+                            .status("Success")
+                            .siteId("SiteId-123")
+                            .transactionId("TransactionId-123")
+                            .build()));
+
     @InjectMocks
     private CallbackResponseTransformer underTest;
 
@@ -214,7 +229,8 @@ public class CallbackResponseTransformerTest {
                 .boAdminClauseLimitation(ADMIN_CLAUSE_LIMITATION)
                 .boLimitationText(LIMITATION_TEXT)
                 .ihtReferenceNumber(IHT_REFERENCE)
-                .ihtFormCompletedOnline(IHT_ONLINE);
+                .ihtFormCompletedOnline(IHT_ONLINE)
+                .payments(PAYMENTS_LIST);
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
@@ -701,6 +717,8 @@ public class CallbackResponseTransformerTest {
 
         assertEquals(IHT_REFERENCE, callbackResponse.getData().getIhtReferenceNumber());
         assertEquals(IHT_ONLINE, callbackResponse.getData().getIhtFormCompletedOnline());
+
+        assertEquals(PAYMENTS_LIST, callbackResponse.getData().getPayments());
     }
 
     private void assertApplicationType(CallbackResponse callbackResponse, ApplicationType applicationType) {
