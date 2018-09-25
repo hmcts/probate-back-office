@@ -130,7 +130,7 @@ public class CallbackResponseTransformer {
 
     public CallbackResponse transformCase(CallbackRequest callbackRequest) {
 
-        boolean transform = callbackRequest.getCaseDetails().getData().getApplicationType() == ApplicationType.SOLICITOR ? true : false;
+        boolean transform = callbackRequest.getCaseDetails().getData().getApplicationType() == ApplicationType.SOLICITOR;
 
         ResponseCaseData responseCaseData = getResponseCaseData(callbackRequest.getCaseDetails(), transform)
                 .build();
@@ -251,7 +251,7 @@ public class CallbackResponseTransformer {
             deceasedAliasNames = caseData.getDeceasedAliasNameList()
                     .stream()
                     .map(CollectionMember::getValue)
-                    .map(deceasedAliasName -> buildDeceasedAliasNameExecutor(deceasedAliasName))
+                    .map(this::buildDeceasedAliasNameExecutor)
                     .map(alias -> new CollectionMember<>(null, alias))
                     .collect(Collectors.toList());
         }
@@ -284,7 +284,7 @@ public class CallbackResponseTransformer {
                     .stream()
                     .map(CollectionMember::getValue)
                     .filter(additionalExecutor -> ANSWER_YES.equalsIgnoreCase(additionalExecutor.getAdditionalApplying()))
-                    .map(additionalExecutorApplying -> buildApplyingAdditionalExecutor(additionalExecutorApplying))
+                    .map(this::buildApplyingAdditionalExecutor)
                     .map(executor -> new CollectionMember<>(null, executor))
                     .collect(Collectors.toList());
 
@@ -293,7 +293,7 @@ public class CallbackResponseTransformer {
                     .stream()
                     .map(CollectionMember::getValue)
                     .filter(additionalExecutor -> ANSWER_NO.equalsIgnoreCase(additionalExecutor.getAdditionalApplying()))
-                    .map(additionalExecutorNotApplying -> buildNotApplyingAdditionalExecutor(additionalExecutorNotApplying))
+                    .map(this::buildNotApplyingAdditionalExecutor)
                     .map(executor -> new CollectionMember<>(null, executor))
                     .collect(Collectors.toList());
 

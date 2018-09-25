@@ -146,11 +146,13 @@ public class CaseData {
 
     private final String boEmailDocsReceivedNotificationRequested;
 
+    @SuppressWarnings("squid:S1170")
     @Getter(lazy = true)
     private final String boEmailDocsReceivedNotification = YES;
 
     private final String boEmailGrantIssuedNotificationRequested;
 
+    @SuppressWarnings("squid:S1170")
     @Getter(lazy = true)
     private final String boEmailGrantIssuedNotification = YES;
 
