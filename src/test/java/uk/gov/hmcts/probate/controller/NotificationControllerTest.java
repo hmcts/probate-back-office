@@ -63,7 +63,7 @@ public class NotificationControllerTest {
     public void setUp() throws NotificationClientException, BadRequestException {
         Document document = Document.builder().build();
 
-        doReturn(Optional.of(document)).when(notificationService).sendEmail(any(), any());
+        doReturn(document).when(notificationService).sendEmail(any(), any());
 
         when(pdfManagementService.generateAndUpload(any(CallbackRequest.class), eq(DIGITAL_GRANT_DRAFT)))
                 .thenReturn(Document.builder().build());

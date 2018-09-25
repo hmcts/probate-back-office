@@ -43,6 +43,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
+import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT;
@@ -338,7 +339,9 @@ public class CallbackResponseTransformerTest {
     @Test
     public void shouldAddDocumentToProbateDocumentsGenerated() {
         Document document = Document.builder().documentType(DIGITAL_GRANT).build();
-        CallbackResponse callbackResponse = underTest.grantIssued(callbackRequestMock, document);
+        Document grantIssuedSentEmail = Document.builder().documentType(SENT_EMAIL).build();
+
+        CallbackResponse callbackResponse = underTest.grantIssued(callbackRequestMock, document, grantIssuedSentEmail);
 
         assertCommon(callbackResponse);
 

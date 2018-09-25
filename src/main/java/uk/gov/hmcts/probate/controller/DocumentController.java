@@ -55,10 +55,12 @@ public class DocumentController {
 
         CaseData caseData = callbackRequest.getCaseDetails().getData();
 
+        Document grantIssuedSentEmail = null;
+
         if (caseData.isGrantIssuedEmailNotificationRequested()) {
-            notificationService.sendEmail(GRANT_ISSUED, caseData);
+            grantIssuedSentEmail = notificationService.sendEmail(GRANT_ISSUED, caseData);
         }
 
-        return ResponseEntity.ok(callbackResponseTransformer.grantIssued(callbackRequest, document));
+        return ResponseEntity.ok(callbackResponseTransformer.grantIssued(callbackRequest, document, grantIssuedSentEmail));
     }
 }

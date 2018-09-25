@@ -53,8 +53,10 @@ public class CallbackResponseTransformer {
         return transformResponse(responseCaseData);
     }
 
-    public CallbackResponse addDocumentReceivedNotification(CallbackRequest callbackRequest) {
+    public CallbackResponse addDocumentReceivedNotification(CallbackRequest callbackRequest, Document documentsReceivedSentEmail) {
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
+
+        caseDetails.getData().getProbateNotificationsGenerated().add(new CollectionMember<>(null, documentsReceivedSentEmail));
 
         ResponseCaseData responseCaseData = getResponseCaseData(caseDetails, false)
                 .boEmailDocsReceivedNotificationRequested(caseDetails.getData().getBoEmailDocsReceivedNotification())
@@ -75,10 +77,12 @@ public class CallbackResponseTransformer {
         return transformResponse(responseCaseData);
     }
 
-    public CallbackResponse grantIssued(CallbackRequest callbackRequest, Document document) {
+    public CallbackResponse grantIssued(CallbackRequest callbackRequest, Document document, Document grantIssuedSentEmail) {
         if (DIGITAL_GRANT_DRAFT.equals(document.getDocumentType()) || DIGITAL_GRANT.equals(document.getDocumentType())) {
             callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated()
                     .add(new CollectionMember<>(null, document));
+            callbackRequest.getCaseDetails().getData().getProbateNotificationsGenerated()
+                    .add(new CollectionMember<>(null, grantIssuedSentEmail));
         }
 
         ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), false);
@@ -214,6 +218,7 @@ public class CallbackResponseTransformer {
                 .boAdminClauseLimitation(caseData.getBoAdminClauseLimitation())
                 .boLimitationText(caseData.getBoLimitationText())
                 .probateDocumentsGenerated(caseData.getProbateDocumentsGenerated())
+                .probateNotificationsGenerated(caseData.getProbateNotificationsGenerated())
                 .boDocumentsUploaded(caseData.getBoDocumentsUploaded())
 
                 .primaryApplicantPhoneNumber(caseData.getPrimaryApplicantPhoneNumber())
