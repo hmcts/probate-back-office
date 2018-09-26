@@ -107,7 +107,7 @@ public class PdfServiceHtmlTemplateTest {
                 .willNumberOfCodicils(NUMBER_OF_CODICILS)
                 .solsSolicitorFirmName(SOLICITOR_FIRM_NAME)
                 .solsSolicitorFirmPostcode(SOLICITOR_FIRM_POSTCODE)
-                .solsIHTFormId(IHT_FORM)
+                .ihtFormId(IHT_FORM)
                 .solsSOTName(SOLICITOR_NAME)
                 .solsSOTJobTitle(SOLICITOR_JOB_TITLE)
                 .solsPaymentMethods(PAYMENT_METHOD)

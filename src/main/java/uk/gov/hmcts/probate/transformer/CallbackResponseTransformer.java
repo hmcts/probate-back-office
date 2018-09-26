@@ -162,7 +162,7 @@ public class CallbackResponseTransformer {
                 .willAccessOriginal((caseData.getWillAccessOriginal()))
                 .willHasCodicils(caseData.getWillHasCodicils())
                 .willNumberOfCodicils(caseData.getWillNumberOfCodicils())
-                .solsIHTFormId(caseData.getSolsIHTFormId())
+                .ihtFormId(caseData.getIhtFormId())
                 .primaryApplicantForenames(caseData.getPrimaryApplicantForenames())
                 .primaryApplicantSurname(caseData.getPrimaryApplicantSurname())
                 .primaryApplicantEmailAddress(caseData.getPrimaryApplicantEmailAddress())
