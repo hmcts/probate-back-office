@@ -1,4 +1,4 @@
-package uk.gov.hmcts.probate.printservice;
+package uk.gov.hmcts.probate.functional.printservice;
 
 import io.restassured.response.Response;
 import net.serenitybdd.junit.runners.SerenityRunner;
@@ -9,7 +9,6 @@ import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
-
 
 @RunWith(SerenityRunner.class)
 public class SolCcdServicePrintServiceTests extends IntegrationTestBase {

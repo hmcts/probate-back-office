@@ -9,13 +9,13 @@ provider "vault" {
 }
 
 
-data "vault_generic_secret" "idam_backend_service_key" {
-  path = "secret/${var.vault_section}/ccidam/service-auth-provider/api/microservice-keys/probate-backend"
-}
+// data "vault_generic_secret" "idam_backend_service_key" {
+//   path = "secret/${var.vault_section}/ccidam/service-auth-provider/api/microservice-keys/probate-backend"
+// }
 
-data "vault_generic_secret" "govNotifyApiKey" {
-  path = "secret/${var.vault_section}/probate/probate_bo_govNotifyApiKey"
-}
+// data "vault_generic_secret" "govNotifyApiKey" {
+//   path = "secret/${var.vault_section}/probate/probate_bo_govNotifyApiKey"
+// }
 
 data "vault_generic_secret" "pdf_service_grantSignatureBase64" {
   path = "secret/${var.vault_section}/probate/pdf_service_grantSignatureBase64"
@@ -25,12 +25,28 @@ data "vault_generic_secret" "pdf_service_grantSignatureBase64" {
 locals {
   aseName = "${data.terraform_remote_state.core_apps_compute.ase_name[0]}"
     
-  previewVaultName    = "pro-bo"
-  nonPreviewVaultName = "pro-bo-${var.env}"
-  vaultName           = "${(var.env == "preview" || var.env == "spreview") ? local.previewVaultName : local.nonPreviewVaultName}"
-  nonPreviewVaultUri  = "${module.probate-back-office-vault.key_vault_uri}"
-  previewVaultUri     = "https://pro-bo-aat.vault.azure.net/"
-  vaultUri            = "${(var.env == "preview" || var.env == "spreview") ? local.previewVaultUri : local.nonPreviewVaultUri}"
+  //probate_frontend_hostname = "probate-frontend-aat.service.core-compute-aat.internal"
+  previewVaultName = "${var.raw_product}-aat"
+  previewEnv= "aat"
+  nonPreviewEnv = "${var.env}"
+  nonPreviewVaultName = "${var.raw_product}-${var.env}"
+  vaultName = "${(var.env == "preview" || var.env == "spreview") ? local.previewVaultName : local.nonPreviewVaultName}"
+  localenv = "${(var.env == "preview" || var.env == "spreview") ? local.previewEnv : local.nonPreviewEnv}"
+}
+
+data "azurerm_key_vault" "probate_key_vault" {
+  name = "${local.vaultName}"
+  resource_group_name = "${local.vaultName}"
+}
+
+data "azurerm_key_vault_secret" "govNotifyApiKey" {
+  name = "probate-bo-govNotifyApiKey"
+  vault_uri = "${data.azurerm_key_vault.probate_key_vault.vault_uri}"
+}
+
+data "azurerm_key_vault_secret" "s2s_key" {
+  name      = "microservicekey-probate-backend"
+  vault_uri = "https://s2s-${local.localenv}.vault.azure.net/"
 }
 
 module "probate-back-office" {
@@ -41,10 +57,11 @@ module "probate-back-office" {
   ilbIp = "${var.ilbIp}"
   is_frontend  = false
   subscription = "${var.subscription}"
-  asp_name     = "${var.product}-${var.env}"
+  asp_name     = "${var.asp_name}"
   capacity     = "${var.capacity}"
   common_tags  = "${var.common_tags}"
   asp_rg       = "${var.asp_rg}"
+  appinsights_instrumentation_key = "${var.appinsights_instrumentation_key}"
 
   app_settings = {
 
@@ -55,7 +72,8 @@ module "probate-back-office" {
 
     DEPLOYMENT_ENV= "${var.deployment_env}"
 
-    AUTH_PROVIDER_SERVICE_CLIENT_KEY = "${data.vault_generic_secret.idam_backend_service_key.data["value"]}"
+    AUTH_PROVIDER_SERVICE_CLIENT_KEY = "${data.azurerm_key_vault_secret.s2s_key.value}"
+    //AUTH_PROVIDER_SERVICE_CLIENT_KEY = "${data.vault_generic_secret.idam_backend_service_key.data["value"]}"
     PDF_SERVICE_GRANTSIGNATUREBASE64 = "${data.vault_generic_secret.pdf_service_grantSignatureBase64.data["value"]}"
 
     AUTH_PROVIDER_SERVICE_CLIENT_BASEURL = "${var.idam_service_api}"
@@ -65,7 +83,7 @@ module "probate-back-office" {
     IDAM_SERVICE_HOST = "${var.idam_service_api}"
     FEE_API_URL = "${var.fee_api_url}"
     EVIDENCE_MANAGEMENT_HOST = "${var.evidence_management_host}"
-    NOTIFICATIONS_GOVNOTIFYAPIKEY = "${data.vault_generic_secret.govNotifyApiKey.data["value"]}"
+    NOTIFICATIONS_GOVNOTIFYAPIKEY = "${data.azurerm_key_vault_secret.govNotifyApiKey.value}"
     java_app_name = "${var.microservice}"
     LOG_LEVEL = "${var.log_level}"
     //ROOT_APPENDER = "JSON_CONSOLE" //Remove json logging
@@ -73,13 +91,3 @@ module "probate-back-office" {
   }
 }
 
-module "probate-back-office-vault" {
-  source              = "git@github.com:hmcts/moj-module-key-vault?ref=master"
-  name                = "${local.vaultName}"
-  product             = "${var.product}"
-  env                 = "${var.env}"
-  tenant_id           = "${var.tenant_id}"
-  object_id           = "${var.jenkins_AAD_objectId}"
-  resource_group_name = "${module.probate-back-office.resource_group_name}"
-  product_group_object_id = "33ed3c5a-bd38-4083-84e3-2ba17841e31e"
-}

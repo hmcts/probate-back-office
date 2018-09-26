@@ -107,7 +107,7 @@ public class CaseData {
     private final List<CollectionMember<AliasName>> solsDeceasedAliasNamesList;
 
     @NotBlank(groups = {ApplicationUpdatedGroup.class}, message = "{solsIHTFormIdIsNull}")
-    private final String solsIHTFormId;
+    private final String ihtFormId;
 
     @NotNull(groups = {ApplicationUpdatedGroup.class}, message = "{ihtNetIsNull}")
     @DecimalMin(groups = {ApplicationUpdatedGroup.class}, value = "0.0", message = "{ihtNetNegative}")
@@ -146,11 +146,13 @@ public class CaseData {
 
     private final String boEmailDocsReceivedNotificationRequested;
 
+    @SuppressWarnings("squid:S1170")
     @Getter(lazy = true)
     private final String boEmailDocsReceivedNotification = YES;
 
     private final String boEmailGrantIssuedNotificationRequested;
 
+    @SuppressWarnings("squid:S1170")
     @Getter(lazy = true)
     private final String boEmailGrantIssuedNotification = YES;
 

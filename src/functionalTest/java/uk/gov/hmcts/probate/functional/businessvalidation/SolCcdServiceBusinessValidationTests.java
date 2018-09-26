@@ -259,7 +259,6 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     }
 
 
-
     private String transformCase(String jsonFileName, String path) {
 
         Response jsonResponse = SerenityRest.given()
