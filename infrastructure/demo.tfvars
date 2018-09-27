@@ -16,5 +16,5 @@ printservice_internal_host = "http://ccd-case-print-service-demo.service.core-co
 printservice_host = "https://return-case-doc.ccd.demo.platform.hmcts.net"
 fee_api_url = "http://fees-register-api-demo.service.core-compute-demo.internal"
 evidence_management_host = "http://dm-store-demo.service.core-compute-demo.internal"
-asp_name = "probate-demo-asp-demo-asp"
-asp_rg = "mgmt-asp-demo"
+asp_name = "probate-demo"
+asp_rg = "probate-demo"

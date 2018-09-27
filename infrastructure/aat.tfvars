@@ -18,5 +18,5 @@ printservice_internal_host = "http://ccd-case-print-service-aat.service.core-com
 printservice_host = "https://return-case-doc-ccd.nonprod.platform.hmcts.net"
 fee_api_url = "http://fees-register-api-aat.service.core-compute-aat.internal"
 evidence_management_host = "http://dm-store-aat.service.core-compute-aat.internal"
-asp_name = "probate-aat-asp-aat-asp"
-asp_rg = "mgmt-asp-aat"
+asp_name = "probate-aat"
+asp_rg = "probate-aat"
