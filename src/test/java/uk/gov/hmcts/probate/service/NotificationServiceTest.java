@@ -117,6 +117,8 @@ public class NotificationServiceTest {
                 eq("personal@test.com"),
                 any(),
                 anyString());
+
+        verify(pdfManagementService).generateAndUpload(any(SentEmail.class), eq(SENT_EMAIL));
     }
 
     @Test
@@ -130,6 +132,8 @@ public class NotificationServiceTest {
                 eq("solicitor@test.com"),
                 any(),
                 eq("1234-5678-9012"));
+
+        verify(pdfManagementService).generateAndUpload(any(SentEmail.class), eq(SENT_EMAIL));
     }
 
     @Test
@@ -143,6 +147,8 @@ public class NotificationServiceTest {
                 eq("personal@test.com"),
                 any(),
                 anyString());
+
+        verify(pdfManagementService).generateAndUpload(any(SentEmail.class), eq(SENT_EMAIL));
     }
 
     @Test
@@ -156,6 +162,8 @@ public class NotificationServiceTest {
                 eq("solicitor@test.com"),
                 any(),
                 eq("1234-5678-9012"));
+
+        verify(pdfManagementService).generateAndUpload(any(SentEmail.class), eq(SENT_EMAIL));
     }
 
     @Test
