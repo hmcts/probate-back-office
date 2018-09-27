@@ -72,11 +72,13 @@ public class BusinessValidationControllerTest {
     private static final String PRIMARY_SURNAME = "ExSN";
     private static final String DECEASED_OTHER_NAMES = "No";
     private static final String DECEASED_DOM_UK = "Yes";
+    private static final String ANSWER_NO = "No";
 
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private static final String CASE_VALIDATE_URL = "/case/validate";
     private static final String CASE_VALIDATE_CASE_DETAILS_URL = "/case/validateCaseDetails";
     private static final String CASE_TRANSFORM_URL = "/case/transformCase";
+    private static final String CASE_CHCEKLIST_URL = "/case/validateCheckListDetails";
 
     @Autowired
     private MockMvc mockMvc;
@@ -262,5 +264,25 @@ public class BusinessValidationControllerTest {
         mockMvc.perform(post(CASE_TRANSFORM_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
+    }
+
+    @Test
+    public void shouldReturnCheckListValidateSuccessful() throws Exception {
+        String solicitorPayload = testUtils.getStringFromFile("solicitorAdditionalExecutors.json");
+
+        mockMvc.perform(post(CASE_CHCEKLIST_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
+    }
+
+    @Test
+    public void shouldReturnCheckListValidateUnSuccessful() throws Exception {
+        String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadAliasNames.json");
+
+        mockMvc.perform(post(CASE_CHCEKLIST_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.errors[0]").value("Please ensure all checks have been completed"))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
+
     }
 }

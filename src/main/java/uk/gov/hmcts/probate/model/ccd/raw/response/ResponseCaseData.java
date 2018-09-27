@@ -107,6 +107,9 @@ public class ResponseCaseData {
     //Todo remove PA specific attr
     private final String primaryApplicantPhoneNumber;
 
+    private final String boExaminationChecklistQ2;
+    private final String boExaminationChecklistQ1;
+
     private final List<CollectionMember<Payment>> payments;
     
 }

@@ -221,6 +221,9 @@ public class CallbackResponseTransformer {
                 .legalStatement(caseData.getLegalStatement())
                 .deceasedMarriedAfterWillOrCodicilDate(caseData.getDeceasedMarriedAfterWillOrCodicilDate())
 
+                .boExaminationChecklistQ1(caseData.getBoExaminationChecklistQ1())
+                .boExaminationChecklistQ2(caseData.getBoExaminationChecklistQ2())
+
                 .payments(caseData.getPayments());
 
         if (transform) {

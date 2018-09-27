@@ -5,6 +5,7 @@ import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import net.serenitybdd.junit.runners.SerenityRunner;
 import net.serenitybdd.rest.SerenityRest;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
@@ -22,6 +23,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     private static final String VALIDATE_CASE_AMEND_URL = "/case/validateCaseDetails";
     private static final String VALIDATE_URL = "/case/validate";
     private static final String TRANSFORM_URL = "/case/transformCase";
+    private static final String CHECKLIST_URL = "/case/validateCheckListDetails";
 
 
     @Test
@@ -124,6 +126,13 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     public void verifyRequestWithoutExecutorPostcodeReturnsError() {
         validatePostFailureForSolicitorExecutorDetails("failure.missingExecutorPostcode.json",
                 "The executor postcode cannot be empty");
+    }
+
+    @Ignore
+    @Test
+    public void verifyRequestWithoutCheckListAnswerEqualsYes() {
+        validatePostFailureForCheckList("failure.missingExecutorPostcode.json",
+                "Please ensure all checks have been completed");
     }
 
     @Test
@@ -294,6 +303,9 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
 
     private void validatePostFailureForCaseAmend(String jsonFileName, String errorMessage) {
         validatePostFailure(jsonFileName, errorMessage, 200, VALIDATE_CASE_AMEND_URL);
+    }
+    private void validatePostFailureForCheckList(String jsonFileName, String errorMessage) {
+        validatePostFailure(jsonFileName, errorMessage, 200, CHECKLIST_URL);
     }
 
     private void validatePostFailure(String jsonFileName, String errorMessage, Integer statusCode, String URL) {

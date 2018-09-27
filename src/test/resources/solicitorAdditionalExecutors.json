@@ -115,7 +115,9 @@
       "grantIssuedEmailNotificationRequested":false,
       "primaryApplicantApplying":true,
       "primaryApplicantFullName":"exfn exln",
-      "deceasedFullName":"firstName lastName"
+      "deceasedFullName":"firstName lastName",
+      "boExaminationChecklistQ1": "yes",
+      "boExaminationChecklistQ2": "yes"
     },
     "last_modified":[
       "2018",

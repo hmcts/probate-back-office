@@ -29,6 +29,7 @@ import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CCDDataTransformer;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.validator.CaseworkerAmendValidationRule;
+import uk.gov.hmcts.probate.validator.CheckListAmendCaseValidationRule;
 import uk.gov.hmcts.probate.validator.ValidationRule;
 
 import javax.servlet.http.HttpServletRequest;
@@ -51,6 +52,7 @@ public class BusinessValidationController {
     private final ObjectMapper objectMapper;
     private final List<ValidationRule> allValidationRules;
     private final List<CaseworkerAmendValidationRule> allCaseworkerAmendValidationRules;
+    private final List<CheckListAmendCaseValidationRule> checkListAmendCaseValidationRules;
     private final CallbackResponseTransformer callbackResponseTransformer;
     private final ConfirmationResponseService confirmationResponseService;
     private final StateChangeService stateChangeService;
@@ -106,6 +108,23 @@ public class BusinessValidationController {
 
         return ResponseEntity.ok(response);
     }
+
+    @PostMapping(path = "/validateCheckListDetails", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<CallbackResponse> validateCheckListDetails(
+            @Validated({CheckListAmendCaseValidationRule.class}) @RequestBody CallbackRequest callbackRequest,
+            HttpServletRequest request) {
+
+        logRequest(request.getRequestURI(), callbackRequest);
+
+        CallbackResponse response = validateRequest(callbackRequest, checkListAmendCaseValidationRules);
+
+        if (response.getErrors().isEmpty()) {
+            response = callbackResponseTransformer.transform(callbackRequest);
+        }
+
+        return ResponseEntity.ok(response);
+    }
+
 
     @PostMapping(path = "/stopConfirmation", consumes = APPLICATION_JSON_UTF8_VALUE, produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<AfterSubmitCallbackResponse> stopWithConfirmation(

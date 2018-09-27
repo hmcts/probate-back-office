@@ -9,6 +9,7 @@ import uk.gov.hmcts.probate.controller.validation.AmendCaseDetailsGroup;
 import uk.gov.hmcts.probate.controller.validation.ApplicationCreatedGroup;
 import uk.gov.hmcts.probate.controller.validation.ApplicationReviewedGroup;
 import uk.gov.hmcts.probate.controller.validation.ApplicationUpdatedGroup;
+import uk.gov.hmcts.probate.controller.validation.CheckListDetailsGroup;
 import uk.gov.hmcts.probate.controller.validation.NextStepsConfirmationGroup;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
@@ -244,6 +245,12 @@ public class CaseData {
     private final String boLimitationText;
 
     private final List<CollectionMember<Payment>> payments;
+
+    @NotNull(groups = {CheckListDetailsGroup.class}, message = "{questionCanNotBeNo}")
+    private final String boExaminationChecklistQ1;
+
+    @NotNull(groups = {CheckListDetailsGroup.class}, message = "{questionCanNotBeNo}")
+    private final String boExaminationChecklistQ2;
 
     @Getter(lazy = true)
     private final List<CollectionMember<AdditionalExecutor>> executorsApplyingForLegalStatement = getAllExecutors(true);
