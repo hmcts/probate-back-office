@@ -17,6 +17,10 @@ import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.service.notify.NotificationClientException;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
@@ -40,27 +44,28 @@ public class DocumentController {
 
         documentService.expire(callbackRequest, DIGITAL_GRANT_DRAFT);
 
-        CallbackResponse response = callbackResponseTransformer.transform(callbackRequest, document);
-
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(callbackResponseTransformer.addDocuments(callbackRequest,
+                Arrays.asList(document)));
     }
 
     @PostMapping(path = "/generate-grant", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<CallbackResponse> generateGrant(@RequestBody CallbackRequest callbackRequest)
             throws NotificationClientException {
 
-        Document document = pdfManagementService.generateAndUpload(callbackRequest, DIGITAL_GRANT);
+        List<Document> documents = new ArrayList<>();
+
+        Document digitalGrantDocument = pdfManagementService.generateAndUpload(callbackRequest, DIGITAL_GRANT);
+        documents.add(digitalGrantDocument);
 
         documentService.expire(callbackRequest, DIGITAL_GRANT_DRAFT);
 
         CaseData caseData = callbackRequest.getCaseDetails().getData();
 
-        Document grantIssuedSentEmail = null;
-
         if (caseData.isGrantIssuedEmailNotificationRequested()) {
-            grantIssuedSentEmail = notificationService.sendEmail(GRANT_ISSUED, caseData);
+            Document grantIssuedSentEmail = notificationService.sendEmail(GRANT_ISSUED, caseData);
+            documents.add(grantIssuedSentEmail);
         }
 
-        return ResponseEntity.ok(callbackResponseTransformer.grantIssued(callbackRequest, document, grantIssuedSentEmail));
+        return ResponseEntity.ok(callbackResponseTransformer.addDocuments(callbackRequest, documents));
     }
 }

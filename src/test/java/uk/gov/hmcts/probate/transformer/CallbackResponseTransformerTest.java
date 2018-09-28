@@ -7,6 +7,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.Spy;
 import org.mockito.runners.MockitoJUnitRunner;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.DocumentType;
@@ -181,6 +182,9 @@ public class CallbackResponseTransformerTest {
     @Mock
     private UploadDocument uploadDocumentMock;
 
+    @Spy
+    private DocumentTransformer documentTransformer;
+
     @Before
     public void setup() {
 
@@ -301,7 +305,7 @@ public class CallbackResponseTransformerTest {
                 .documentType(DIGITAL_GRANT_DRAFT)
                 .build();
 
-        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, document);
+        CallbackResponse callbackResponse = underTest.addDocuments(callbackRequestMock, Arrays.asList(document));
 
         assertCommon(callbackResponse);
 
@@ -353,15 +357,16 @@ public class CallbackResponseTransformerTest {
 
     @Test
     public void shouldAddDocumentsToProbateDocumentsAndNotificationsGenerated() {
-        Document document = Document.builder().documentType(DIGITAL_GRANT).build();
+        Document grantDocument = Document.builder().documentType(DIGITAL_GRANT).build();
         Document grantIssuedSentEmail = Document.builder().documentType(SENT_EMAIL).build();
 
-        CallbackResponse callbackResponse = underTest.grantIssued(callbackRequestMock, document, grantIssuedSentEmail);
+        CallbackResponse callbackResponse = underTest.addDocuments(callbackRequestMock,
+                Arrays.asList(grantDocument, grantIssuedSentEmail));
 
         assertCommon(callbackResponse);
 
         assertEquals(1, callbackResponse.getData().getProbateDocumentsGenerated().size());
-        assertEquals(document, callbackResponse.getData().getProbateDocumentsGenerated().get(0).getValue());
+        assertEquals(grantDocument, callbackResponse.getData().getProbateDocumentsGenerated().get(0).getValue());
 
         assertEquals(1, callbackResponse.getData().getProbateNotificationsGenerated().size());
         assertEquals(grantIssuedSentEmail, callbackResponse.getData().getProbateNotificationsGenerated().get(0).getValue());
@@ -371,7 +376,7 @@ public class CallbackResponseTransformerTest {
     public void shouldAddDocumentToProbateNotificationsGenerated() {
         Document documentsReceivedSentEmail = Document.builder().documentType(SENT_EMAIL).build();
 
-        CallbackResponse callbackResponse = underTest.addDocumentReceivedNotification(callbackRequestMock, documentsReceivedSentEmail);
+        CallbackResponse callbackResponse = underTest.addDocuments(callbackRequestMock, Arrays.asList(documentsReceivedSentEmail));
 
         assertCommon(callbackResponse);
 
