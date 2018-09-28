@@ -39,7 +39,6 @@ import java.util.Optional;
 
 import static java.util.Collections.EMPTY_LIST;
 import static java.util.Collections.emptyList;
-import static java.util.Collections.list;
 import static org.hamcrest.Matchers.comparesEqualTo;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -320,7 +319,7 @@ public class CallbackResponseTransformerTest {
         when(feeServiceResponseMock.getApplicationFee()).thenReturn(applicationFee);
         when(feeServiceResponseMock.getTotal()).thenReturn(totalFee);
 
-        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, feeServiceResponseMock);
+        CallbackResponse callbackResponse = underTest.transformForSolicitorComplete(callbackRequestMock, feeServiceResponseMock);
 
         assertCommon(callbackResponse);
 
@@ -341,7 +340,7 @@ public class CallbackResponseTransformerTest {
         when(feeServiceResponseMock.getApplicationFee()).thenReturn(applicationFee);
         when(feeServiceResponseMock.getTotal()).thenReturn(totalFee);
 
-        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, feeServiceResponseMock);
+        CallbackResponse callbackResponse = underTest.transformForSolicitorComplete(callbackRequestMock, feeServiceResponseMock);
 
         assertCommon(callbackResponse);
 

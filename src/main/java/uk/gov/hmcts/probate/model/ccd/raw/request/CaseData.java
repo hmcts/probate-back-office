@@ -243,6 +243,8 @@ public class CaseData {
 
     private final List<CollectionMember<Payment>> payments;
 
+    private final String applicationSubmittedDate;
+
     @Getter(lazy = true)
     private final List<CollectionMember<AdditionalExecutor>> executorsApplyingForLegalStatement = getAllExecutors(true);
 
