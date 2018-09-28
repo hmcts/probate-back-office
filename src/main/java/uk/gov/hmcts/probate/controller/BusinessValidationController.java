@@ -119,9 +119,8 @@ public class BusinessValidationController {
         CallbackResponse response = validateRequest(callbackRequest, checkListAmendCaseValidationRules);
 
         if (response.getErrors().isEmpty()) {
-            response = callbackResponseTransformer.transform(callbackRequest);
+            response = callbackResponseTransformer.selectForQA(callbackRequest);
         }
-
         return ResponseEntity.ok(response);
     }
 

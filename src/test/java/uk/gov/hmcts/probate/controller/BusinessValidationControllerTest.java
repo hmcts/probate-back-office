@@ -267,11 +267,12 @@ public class BusinessValidationControllerTest {
     }
 
     @Test
-    public void shouldReturnCheckListValidateSuccessful() throws Exception {
+    public void shouldReturnCheckListValidateSuccessfulQAState() throws Exception {
         String solicitorPayload = testUtils.getStringFromFile("solicitorAdditionalExecutors.json");
 
         mockMvc.perform(post(CASE_CHCEKLIST_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.state").value("BOCaseQA"))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
     }
 
@@ -284,5 +285,14 @@ public class BusinessValidationControllerTest {
                 .andExpect(jsonPath("$.errors[0]").value("Please ensure all checks have been completed"))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
 
+    }
+
+    @Test
+    public void shouldReturnCheckListValidateSuccessful() throws Exception {
+        String solicitorPayload = testUtils.getStringFromFile("solicitorAdditionalExecutorsReadyToIssue.json");
+
+        mockMvc.perform(post(CASE_CHCEKLIST_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
     }
 }

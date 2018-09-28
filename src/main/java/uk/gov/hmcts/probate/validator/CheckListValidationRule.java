@@ -24,8 +24,8 @@ class CheckListValidationRule implements CheckListAmendCaseValidationRule {
     public List<FieldErrorResponse> validate(CCDData ccdData) {
         Set<FieldErrorResponse> errors = new HashSet<>();
 
-        if (ccdData.getBoExaminationChecklistQ1().equalsIgnoreCase(ANSWER_NO) ||
-                ccdData.getBoExaminationChecklistQ2().equalsIgnoreCase(ANSWER_NO)) {
+        if (ccdData.getBoExaminationChecklistQ1().equalsIgnoreCase(ANSWER_NO)
+                || ccdData.getBoExaminationChecklistQ2().equalsIgnoreCase(ANSWER_NO)) {
             errors.add(businessValidationMessageService.generateError(BUSINESS_ERROR, "questionCanNotBeNo"));
         }
         return new ArrayList<>(errors);

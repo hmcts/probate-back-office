@@ -151,7 +151,8 @@
       "docsReceivedEmailNotificationRequested": true,
       "grantIssuedEmailNotificationRequested": true,
       "boExaminationChecklistQ1": "No",
-      "boExaminationChecklistQ2": "yes"
+      "boExaminationChecklistQ2": "yes",
+      "boExaminationChecklistRequestQA" : "no"
     },
     "last_modified": [
       "2018",

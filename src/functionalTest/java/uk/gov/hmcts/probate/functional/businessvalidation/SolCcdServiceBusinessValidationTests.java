@@ -129,7 +129,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
 
     @Test
     public void verifyRequestCheckListAnswerEqualsYes() {
-        validatePostSuccess("success.missingExecutorAddressWhileNotApplying.json", CHECKLIST_URL);
+        validatePostSuccess("solicitorPayloadNotifications.json", CHECKLIST_URL);
     }
 
     @Test
@@ -149,7 +149,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         SerenityRest.given().relaxedHTTPSValidation().headers(utils.getHeaders())
                 .contentType(ContentType.JSON)
                 .body("")
-                .when().post("/case/validate")
+                .when().post(VALIDATE_URL)
                 .then().assertThat().statusCode(400);
     }
 
@@ -232,15 +232,15 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         String county = jsonPath.get("data.executorsApplying[0].value.applyingExecutorAddress.County");
         String country = jsonPath.get("data.executorsApplying[0].value.applyingExecutorAddress.Country");
 
-        String applyingName_exec2 = jsonPath.get("data.executorsApplying[1].value.applyingExecutorName");
-        String applyingAlias_exec2 = jsonPath.get("data.executorsApplying[1].value.applyingExecutorOtherNames");
-        String addressLine1_exec2 = jsonPath.get("data.executorsApplying[1].value.applyingExecutorAddress.AddressLine1");
-        String addressLine2_exec2 = jsonPath.get("data.executorsApplying[1].value.applyingExecutorAddress.AddressLine2");
-        String addressLine3_exec2 = jsonPath.get("data.executorsApplying[1].value.applyingExecutorAddress.AddressLine3");
-        String postTown_exec2 = jsonPath.get("data.executorsApplying[1].value.applyingExecutorAddress.PostTown");
-        String postCode_exec2 = jsonPath.get("data.executorsApplying[1].value.applyingExecutorAddress.PostCode");
-        String county_exec2 = jsonPath.get("data.executorsApplying[1].value.applyingExecutorAddress.County");
-        String country_exec2 = jsonPath.get("data.executorsApplying[1].value.applyingExecutorAddress.Country");
+        String applyingNameExec2 = jsonPath.get("data.executorsApplying[1].value.applyingExecutorName");
+        String applyingAliasExec2 = jsonPath.get("data.executorsApplying[1].value.applyingExecutorOtherNames");
+        String addressLine1Exec2 = jsonPath.get("data.executorsApplying[1].value.applyingExecutorAddress.AddressLine1");
+        String addressLine2Exec2 = jsonPath.get("data.executorsApplying[1].value.applyingExecutorAddress.AddressLine2");
+        String addressLine3Exec2 = jsonPath.get("data.executorsApplying[1].value.applyingExecutorAddress.AddressLine3");
+        String postTownExec2 = jsonPath.get("data.executorsApplying[1].value.applyingExecutorAddress.PostTown");
+        String postCodeExec2 = jsonPath.get("data.executorsApplying[1].value.applyingExecutorAddress.PostCode");
+        String countyExec2 = jsonPath.get("data.executorsApplying[1].value.applyingExecutorAddress.County");
+        String countryExec2 = jsonPath.get("data.executorsApplying[1].value.applyingExecutorAddress.Country");
 
 
         assertEquals("exfn2 exln2", notApplyingName);
@@ -258,15 +258,15 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         assertEquals("county", county);
 
 
-        assertEquals("ex3fn ex3ln", applyingName_exec2);
-        assertEquals(null, applyingAlias_exec2);
-        assertEquals("addressline 1", addressLine1_exec2);
-        assertEquals(null, addressLine2_exec2);
-        assertEquals(null, addressLine3_exec2);
-        assertEquals(null, postTown_exec2);
-        assertEquals("postcode", postCode_exec2);
-        assertEquals(null, country_exec2);
-        assertEquals(null, county_exec2);
+        assertEquals("ex3fn ex3ln", applyingNameExec2);
+        assertEquals(null, applyingAliasExec2);
+        assertEquals("addressline 1", addressLine1Exec2);
+        assertEquals(null, addressLine2Exec2);
+        assertEquals(null, addressLine3Exec2);
+        assertEquals(null, postTownExec2);
+        assertEquals("postcode", postCodeExec2);
+        assertEquals(null, countryExec2);
+        assertEquals(null, countyExec2);
 
     }
 

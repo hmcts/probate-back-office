@@ -102,7 +102,7 @@ public class CCDDataTransformer {
         return solsSolicitorAppReference == null ? "" : solsSolicitorAppReference;
     }
 
-    private String getBoExaminationCheckList (String boExaminationCheckList) {
+    private String getBoExaminationCheckList(String boExaminationCheckList) {
         return boExaminationCheckList == null ? "" : boExaminationCheckList;
     }
 

@@ -109,6 +109,7 @@ public class ResponseCaseData {
 
     private final String boExaminationChecklistQ2;
     private final String boExaminationChecklistQ1;
+    private final String boExaminationChecklistRequestQA;
 
     private final List<CollectionMember<Payment>> payments;
     
