@@ -39,7 +39,6 @@ import java.util.Optional;
 
 import static java.util.Collections.EMPTY_LIST;
 import static java.util.Collections.emptyList;
-import static java.util.Collections.list;
 import static org.hamcrest.Matchers.comparesEqualTo;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -230,7 +229,10 @@ public class CallbackResponseTransformerTest {
                 .boLimitationText(LIMITATION_TEXT)
                 .ihtReferenceNumber(IHT_REFERENCE)
                 .ihtFormCompletedOnline(IHT_ONLINE)
-                .payments(PAYMENTS_LIST);
+                .payments(PAYMENTS_LIST)
+                .boExaminationChecklistQ1(YES)
+                .boExaminationChecklistQ2(YES)
+                .boExaminationChecklistRequestQA(YES);
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
@@ -719,6 +721,9 @@ public class CallbackResponseTransformerTest {
         assertEquals(IHT_ONLINE, callbackResponse.getData().getIhtFormCompletedOnline());
 
         assertEquals(PAYMENTS_LIST, callbackResponse.getData().getPayments());
+        assertEquals(YES, callbackResponse.getData().getBoExaminationChecklistQ1());
+        assertEquals(YES, callbackResponse.getData().getBoExaminationChecklistQ2());
+        assertEquals(YES, callbackResponse.getData().getBoExaminationChecklistRequestQA());
     }
 
     private void assertApplicationType(CallbackResponse callbackResponse, ApplicationType applicationType) {
