@@ -5,7 +5,6 @@ import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import net.serenitybdd.junit.runners.SerenityRunner;
 import net.serenitybdd.rest.SerenityRest;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
@@ -128,10 +127,14 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
                 "The executor postcode cannot be empty");
     }
 
-    @Ignore
     @Test
-    public void verifyRequestWithoutCheckListAnswerEqualsYes() {
-        validatePostFailureForCheckList("failure.missingExecutorPostcode.json",
+    public void verifyRequestCheckListAnswerEqualsYes() {
+        validatePostSuccess("success.missingExecutorAddressWhileNotApplying.json", CHECKLIST_URL);
+    }
+
+    @Test
+    public void verifyRequestCheckListAnswerEqualsNo() {
+        validatePostFailureForCheckList("failure.checkList.json",
                 "Please ensure all checks have been completed");
     }
 

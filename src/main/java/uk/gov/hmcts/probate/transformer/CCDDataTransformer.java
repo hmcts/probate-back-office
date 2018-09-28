@@ -3,7 +3,6 @@ package uk.gov.hmcts.probate.transformer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
-import uk.gov.hmcts.probate.model.ccd.CheckList;
 import uk.gov.hmcts.probate.model.ccd.Deceased;
 import uk.gov.hmcts.probate.model.ccd.Executor;
 import uk.gov.hmcts.probate.model.ccd.Fee;
@@ -46,7 +45,8 @@ public class CCDDataTransformer {
                 .fee(buildFeeDetails(caseData))
                 .solsAdditionalInfo(caseData.getSolsAdditionalInfo())
                 .executors(getAllExecutors(caseData))
-                .checkList(buildCheckListDetails((caseData)))
+                .boExaminationChecklistQ1(getBoExaminationCheckList(caseData.getBoExaminationChecklistQ1()))
+                .boExaminationChecklistQ2(getBoExaminationCheckList(caseData.getBoExaminationChecklistQ2()))
                 .build();
     }
 
@@ -56,13 +56,6 @@ public class CCDDataTransformer {
                 .firmPostcode(caseData.getSolsSolicitorFirmPostcode())
                 .fullname(caseData.getSolsSOTName())
                 .jobRole(caseData.getSolsSOTJobTitle())
-                .build();
-    }
-
-    private CheckList buildCheckListDetails(CaseData caseData) {
-        return CheckList.builder()
-                .boExaminationChecklistQ1(caseData.getBoExaminationChecklistQ1())
-                .boExaminationChecklistQ2(caseData.getBoExaminationChecklistQ2())
                 .build();
     }
 
@@ -107,6 +100,10 @@ public class CCDDataTransformer {
 
     private String getSolicitorAppReference(String solsSolicitorAppReference) {
         return solsSolicitorAppReference == null ? "" : solsSolicitorAppReference;
+    }
+
+    private String getBoExaminationCheckList (String boExaminationCheckList) {
+        return boExaminationCheckList == null ? "" : boExaminationCheckList;
     }
 
     private List<Executor> getAllExecutors(CaseData caseData) {

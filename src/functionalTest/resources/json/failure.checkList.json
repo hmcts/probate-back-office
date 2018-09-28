@@ -72,8 +72,8 @@
       "primaryApplicantSurname": "Ex1ln",
       "solsSolicitorAppReference": "appref",
       "solsSOTNeedToUpdate":"No",
-      "boExaminationChecklistQ1": "yes",
-      "boExaminationChecklistQ2": "yes"
+      "boExaminationChecklistQ1": "no",
+      "boExaminationChecklistQ2": "no"
     },
     "data_classification": {
       "deceasedDateOfDeath": "PUBLIC",
