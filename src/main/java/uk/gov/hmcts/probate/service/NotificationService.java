@@ -20,7 +20,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
 
@@ -35,7 +34,7 @@ public class NotificationService {
 
     private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMM Y HH:mm");
 
-    public Optional<Document> sendEmail(State state, CaseData caseData)
+    public Document sendEmail(State state, CaseData caseData)
             throws NotificationClientException {
 
         Registry registry = registriesProperties.getRegistries().get(caseData.getRegistryLocation().toLowerCase());
@@ -46,24 +45,27 @@ public class NotificationService {
         Map<String, String> personalisation = getPersonalisation(caseData, registry);
         String reference = caseData.getSolsSolicitorAppReference();
 
-        Document document = null;
+        SendEmailResponse response;
 
         if (state == State.CASE_STOPPED) {
-            SendEmailResponse response = notificationClient.sendEmail(templateId, emailAddress, personalisation, reference, emailReplyToId);
-            SentEmail sentEmail = SentEmail.builder()
-                    .sentOn(LocalDateTime.now().format(formatter))
-                    .from(response.getFromEmail().orElse(""))
-                    .to(emailAddress)
-                    .subject(response.getSubject())
-                    .body(markdownTransformationService.toHtml(response.getBody()))
-                    .build();
-
-            document = pdfManagementService.generateAndUpload(sentEmail, SENT_EMAIL);
+            response = notificationClient.sendEmail(templateId, emailAddress, personalisation, reference, emailReplyToId);
         } else {
-            notificationClient.sendEmail(templateId, emailAddress, personalisation, reference);
+            response = notificationClient.sendEmail(templateId, emailAddress, personalisation, reference);
         }
 
-        return Optional.ofNullable(document);
+        return getGeneratedSentEmailDocument(response, emailAddress);
+    }
+
+    private Document getGeneratedSentEmailDocument(SendEmailResponse response, String emailAddress) {
+        SentEmail sentEmail = SentEmail.builder()
+                .sentOn(LocalDateTime.now().format(formatter))
+                .from(response.getFromEmail().orElse(""))
+                .to(emailAddress)
+                .subject(response.getSubject())
+                .body(markdownTransformationService.toHtml(response.getBody()))
+                .build();
+
+        return pdfManagementService.generateAndUpload(sentEmail, SENT_EMAIL);
     }
 
     private Map<String, String> getPersonalisation(CaseData caseData, Registry registry) {

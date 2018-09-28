@@ -14,7 +14,8 @@ import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.service.notify.NotificationClientException;
 
-import java.util.Optional;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -35,11 +36,14 @@ public class NotificationController {
 
         CaseData caseData = callbackRequest.getCaseDetails().getData();
 
+        List<Document> documents = new ArrayList<>();
+
         if (caseData.isDocsReceivedEmailNotificationRequested()) {
-            notificationService.sendEmail(DOCUMENTS_RECEIVED, caseData);
+            Document documentsReceivedSentEmail = notificationService.sendEmail(DOCUMENTS_RECEIVED, caseData);
+            documents.add(documentsReceivedSentEmail);
         }
 
-        return ResponseEntity.ok(callbackResponseTransformer.addDocumentReceivedNotification(callbackRequest));
+        return ResponseEntity.ok(callbackResponseTransformer.addDocuments(callbackRequest, documents));
     }
 
     @PostMapping(path = "/case-stopped")
@@ -48,8 +52,8 @@ public class NotificationController {
 
         CaseData caseData = callbackRequest.getCaseDetails().getData();
 
-        Optional<Document> document = notificationService.sendEmail(CASE_STOPPED, caseData);
+        Document document = notificationService.sendEmail(CASE_STOPPED, caseData);
 
-        return ResponseEntity.ok(callbackResponseTransformer.caseStopped(callbackRequest, document.orElse(null)));
+        return ResponseEntity.ok(callbackResponseTransformer.caseStopped(callbackRequest, document));
     }
 }

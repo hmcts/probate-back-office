@@ -160,6 +160,7 @@ public class CaseData {
     private final DocumentLink solsLegalStatementDocument;
 
     private final List<CollectionMember<Document>> probateDocumentsGenerated = new ArrayList<>();
+    private final List<CollectionMember<Document>> probateNotificationsGenerated = new ArrayList<>();
 
     private final List<CollectionMember<UploadDocument>> boDocumentsUploaded;
 

@@ -28,12 +28,14 @@ import java.util.stream.Collectors;
 import static java.util.Collections.EMPTY_LIST;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
-import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT;
+import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
 
 @Component
 @RequiredArgsConstructor
 public class CallbackResponseTransformer {
+
+    private final DocumentTransformer documentTransformer;
 
     static final String PAYMENT_METHOD_VALUE_FEE_ACCOUNT = "fee account";
     static final String PAYMENT_REFERENCE_FEE_PREFIX = "Fee account PBA-";
@@ -53,16 +55,6 @@ public class CallbackResponseTransformer {
         return transformResponse(responseCaseData);
     }
 
-    public CallbackResponse addDocumentReceivedNotification(CallbackRequest callbackRequest) {
-        CaseDetails caseDetails = callbackRequest.getCaseDetails();
-
-        ResponseCaseData responseCaseData = getResponseCaseData(caseDetails, false)
-                .boEmailDocsReceivedNotificationRequested(caseDetails.getData().getBoEmailDocsReceivedNotification())
-                .build();
-
-        return transformResponse(responseCaseData);
-    }
-
     public CallbackResponse caseStopped(CallbackRequest callbackRequest, Document document) {
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
 
@@ -75,15 +67,18 @@ public class CallbackResponseTransformer {
         return transformResponse(responseCaseData);
     }
 
-    public CallbackResponse grantIssued(CallbackRequest callbackRequest, Document document) {
-        if (DIGITAL_GRANT_DRAFT.equals(document.getDocumentType()) || DIGITAL_GRANT.equals(document.getDocumentType())) {
-            callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated()
-                    .add(new CollectionMember<>(null, document));
-        }
+    public CallbackResponse addDocuments(CallbackRequest callbackRequest, List<Document> documents) {
+        documents.forEach(document -> documentTransformer.addDocument(callbackRequest, document));
 
         ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), false);
-        responseCaseDataBuilder.boEmailGrantIssuedNotificationRequested(
-                callbackRequest.getCaseDetails().getData().getBoEmailGrantIssuedNotification());
+        if (documentTransformer.hasDocumentWithType(documents, DIGITAL_GRANT)) {
+            responseCaseDataBuilder.boEmailGrantIssuedNotificationRequested(
+                    callbackRequest.getCaseDetails().getData().getBoEmailGrantIssuedNotification());
+        }
+        if (documentTransformer.hasDocumentWithType(documents, SENT_EMAIL)) {
+            responseCaseDataBuilder.boEmailDocsReceivedNotificationRequested(
+                    callbackRequest.getCaseDetails().getData().getBoEmailDocsReceivedNotification());
+        }
         responseCaseDataBuilder.solsSOTNeedToUpdate(null);
 
         return transformResponse(responseCaseDataBuilder.build());
@@ -106,11 +101,6 @@ public class CallbackResponseTransformer {
     }
 
     public CallbackResponse transform(CallbackRequest callbackRequest, Document document) {
-        if (DIGITAL_GRANT_DRAFT.equals(document.getDocumentType()) || DIGITAL_GRANT.equals(document.getDocumentType())) {
-            callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated()
-                    .add(new CollectionMember<>(null, document));
-        }
-
         ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), false);
         responseCaseDataBuilder.solsSOTNeedToUpdate(null);
 
@@ -214,6 +204,7 @@ public class CallbackResponseTransformer {
                 .boAdminClauseLimitation(caseData.getBoAdminClauseLimitation())
                 .boLimitationText(caseData.getBoLimitationText())
                 .probateDocumentsGenerated(caseData.getProbateDocumentsGenerated())
+                .probateNotificationsGenerated(caseData.getProbateNotificationsGenerated())
                 .boDocumentsUploaded(caseData.getBoDocumentsUploaded())
 
                 .primaryApplicantPhoneNumber(caseData.getPrimaryApplicantPhoneNumber())
