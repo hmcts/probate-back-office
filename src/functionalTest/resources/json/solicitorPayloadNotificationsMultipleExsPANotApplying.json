@@ -1,0 +1,429 @@
+{
+  "case_details": {
+    "id": 1528365719153338,
+    "jurisdiction": "PROBATE",
+    "state": "CaseCreated",
+    "case_type_id": "GrantOfRepresentation",
+    "created_date": [
+      2018,
+      6,
+      7,
+      10,
+      1,
+      59,
+      151000000
+    ],
+    "last_modified": [
+      2018,
+      6,
+      7,
+      10,
+      8,
+      8,
+      695000000
+    ],
+    "security_classification": "PUBLIC",
+    "case_data": {
+      "otherExecutorExists": "No",
+      "outsideUKGrantCopies": null,
+      "executorsApplying": [
+        {
+          "id": "8e75cd11-b673-4523-9a1c-764ea75f5b04",
+          "value": {
+            "applyingExecutorName": "Add ex first name 1 Add ex last name 1",
+            "applyingExecutorPhoneNumber": null,
+            "applyingExecutorEmail": null,
+            "aliasName": {
+              "Forenames": null,
+              "LastName": null,
+              "AppearOnGrant": ""
+            },
+            "applyingExecutorAddress": {
+              "AddressLine1": "11",
+              "AddressLine2": "",
+              "AddressLine3": "",
+              "County": "",
+              "PostTown": "",
+              "PostCode": "11",
+              "Country": ""
+            }
+          }
+        },
+        {
+          "id": "634a93e9-cedb-4b6b-8577-5d702abe0b3c",
+          "value": {
+            "applyingExecutorName": "Add ex first name 2 Add ex last name 2",
+            "applyingExecutorPhoneNumber": null,
+            "applyingExecutorEmail": null,
+            "aliasName": {
+              "Forenames": null,
+              "LastName": null,
+              "AppearOnGrant": ""
+            },
+            "applyingExecutorAddress": {
+              "AddressLine1": "22",
+              "AddressLine2": "",
+              "AddressLine3": "",
+              "County": "",
+              "PostTown": "",
+              "PostCode": "22",
+              "Country": ""
+            }
+          }
+        }
+      ],
+      "applicationType": "Solicitor",
+      "deceasedAddress": {
+        "County": "",
+        "Country": "",
+        "PostCode": "2",
+        "PostTown": "",
+        "AddressLine1": "1",
+        "AddressLine2": "",
+        "AddressLine3": ""
+      },
+      "deceasedAnyOtherNames": "No",
+      "solsFeeAccountNumber": "1234",
+      "willHasCodicils": "No",
+      "deceasedDateOfBirth": "1900-01-01",
+      "willAccessOriginal": "Yes",
+      "willExists": "Yes",
+      "solsSolicitorFirmName": "Solicitor Firm Name",
+      "deceasedDateOfDeath": "2000-01-01",
+      "solsSOTNeedToUpdate": "No",
+      "primaryApplicantEmailAddress": "personal@hmcts-test.com",
+      "primaryApplicantForenames": "Executor name 1",
+      "primaryApplicantAddress": {
+        "County": "",
+        "Country": "",
+        "PostCode": "2",
+        "PostTown": "",
+        "AddressLine1": "1",
+        "AddressLine2": "",
+        "AddressLine3": ""
+      },
+      "solsSolicitorEmail": "probBackosol@gmail.com",
+      "deceasedDomicileInEngWales": "Yes",
+      "ihtNetValue": "800000",
+      "deceasedSurname": "Deceased Last Name",
+      "solsLegalStatementDocument": {
+        "document_url": "http://localhost:8080/documents/e1f4f972-1514-4247-bdb1-964998ef3710",
+        "document_filename": "legal_statement.pdf",
+        "document_binary_url": "http://localhost:8080/documents/e1f4f972-1514-4247-bdb1-964998ef3710/binary"
+      },
+      "extraCopiesOfGrant": null,
+      "solsPaymentMethods": "fee account",
+      "solsSolicitorFirmPostcode": "KT10 0LA",
+      "deceasedForenames": "Deceased First Name",
+      "primaryApplicantIsApplying": "No",
+      "primaryApplicantHasAlias": "No",
+      "solsPaymentReferenceNumber": "Cheque (payable to ‘HM Courts & Tribunals Service’)",
+      "solsSOTName": "name",
+      "ihtGrossValue": "1000000",
+      "ihtFormId": "IHT205",
+      "registryLocation": "Birmingham",
+      "primaryApplicantSurname": "Executor Last Name 1",
+      "solsSolicitorAppReference": "1231-3984-3949-0300",
+      "solsSOTJobTitle": "job title"
+    },
+    "data_classification": {
+      "otherExecutorExists": "PUBLIC",
+      "outsideUKGrantCopies": "PUBLIC",
+      "applicationType": "PUBLIC",
+      "deceasedAddress": {
+        "classification": "PUBLIC",
+        "value": {
+          "County": "PUBLIC",
+          "Country": "PUBLIC",
+          "PostCode": "PUBLIC",
+          "PostTown": "PUBLIC",
+          "AddressLine1": "PUBLIC",
+          "AddressLine2": "PUBLIC",
+          "AddressLine3": "PUBLIC"
+        }
+      },
+      "deceasedAnyOtherNames": "PUBLIC",
+      "solsFeeAccountNumber": "PUBLIC",
+      "willHasCodicils": "PUBLIC",
+      "deceasedDateOfBirth": "PUBLIC",
+      "willAccessOriginal": "PUBLIC",
+      "willExists": "PUBLIC",
+      "solsSolicitorFirmName": "PUBLIC",
+      "deceasedDateOfDeath": "PUBLIC",
+      "solsSOTNeedToUpdate": "PUBLIC",
+      "primaryApplicantForenames": "PUBLIC",
+      "primaryApplicantAddress": {
+        "classification": "PUBLIC",
+        "value": {
+          "County": "PUBLIC",
+          "Country": "PUBLIC",
+          "PostCode": "PUBLIC",
+          "PostTown": "PUBLIC",
+          "AddressLine1": "PUBLIC",
+          "AddressLine2": "PUBLIC",
+          "AddressLine3": "PUBLIC"
+        }
+      },
+      "solsSolicitorEmail": "PUBLIC",
+      "deceasedDomicileInEngWales": "PUBLIC",
+      "ihtNetValue": "PUBLIC",
+      "deceasedSurname": "PUBLIC",
+      "solsLegalStatementDocument": "PUBLIC",
+      "extraCopiesOfGrant": "PUBLIC",
+      "solsPaymentMethods": "PUBLIC",
+      "solsSolicitorFirmPostcode": "PUBLIC",
+      "deceasedForenames": "PUBLIC",
+      "primaryApplicantIsApplying": "PUBLIC",
+      "primaryApplicantHasAlias": "PUBLIC",
+      "solsPaymentReferenceNumber": "PUBLIC",
+      "solsSOTName": "PUBLIC",
+      "ihtGrossValue": "PUBLIC",
+      "ihtFormId": "PUBLIC",
+      "registryLocation": "PUBLIC",
+      "primaryApplicantSurname": "PUBLIC",
+      "solsSolicitorAppReference": "PUBLIC",
+      "solsSOTJobTitle": "PUBLIC"
+    },
+    "after_submit_callback_response": null,
+    "callback_response_status_code": null,
+    "callback_response_status": null,
+    "security_classifications": {
+      "otherExecutorExists": "PUBLIC",
+      "outsideUKGrantCopies": "PUBLIC",
+      "applicationType": "PUBLIC",
+      "deceasedAddress": {
+        "classification": "PUBLIC",
+        "value": {
+          "County": "PUBLIC",
+          "Country": "PUBLIC",
+          "PostCode": "PUBLIC",
+          "PostTown": "PUBLIC",
+          "AddressLine1": "PUBLIC",
+          "AddressLine2": "PUBLIC",
+          "AddressLine3": "PUBLIC"
+        }
+      },
+      "deceasedAnyOtherNames": "PUBLIC",
+      "solsFeeAccountNumber": "PUBLIC",
+      "willHasCodicils": "PUBLIC",
+      "deceasedDateOfBirth": "PUBLIC",
+      "willAccessOriginal": "PUBLIC",
+      "willExists": "PUBLIC",
+      "solsSolicitorFirmName": "PUBLIC",
+      "deceasedDateOfDeath": "PUBLIC",
+      "solsSOTNeedToUpdate": "PUBLIC",
+      "primaryApplicantForenames": "PUBLIC",
+      "primaryApplicantAddress": {
+        "classification": "PUBLIC",
+        "value": {
+          "County": "PUBLIC",
+          "Country": "PUBLIC",
+          "PostCode": "PUBLIC",
+          "PostTown": "PUBLIC",
+          "AddressLine1": "PUBLIC",
+          "AddressLine2": "PUBLIC",
+          "AddressLine3": "PUBLIC"
+        }
+      },
+      "solsSolicitorEmail": "PUBLIC",
+      "deceasedDomicileInEngWales": "PUBLIC",
+      "ihtNetValue": "PUBLIC",
+      "deceasedSurname": "PUBLIC",
+      "solsLegalStatementDocument": "PUBLIC",
+      "extraCopiesOfGrant": "PUBLIC",
+      "solsPaymentMethods": "PUBLIC",
+      "solsSolicitorFirmPostcode": "PUBLIC",
+      "deceasedForenames": "PUBLIC",
+      "primaryApplicantIsApplying": "PUBLIC",
+      "primaryApplicantHasAlias": "PUBLIC",
+      "solsPaymentReferenceNumber": "PUBLIC",
+      "solsSOTName": "PUBLIC",
+      "ihtGrossValue": "PUBLIC",
+      "ihtFormId": "PUBLIC",
+      "registryLocation": "PUBLIC",
+      "primaryApplicantSurname": "PUBLIC",
+      "solsSolicitorAppReference": "PUBLIC",
+      "solsSOTJobTitle": "PUBLIC"
+    }
+  },
+  "case_details_before": {
+    "id": 1528365719153338,
+    "jurisdiction": "PROBATE",
+    "state": "SolAppUpdated",
+    "case_type_id": "GrantOfRepresentation",
+    "created_date": [
+      2018,
+      6,
+      7,
+      10,
+      1,
+      59,
+      151000000
+    ],
+    "last_modified": [
+      2018,
+      6,
+      7,
+      10,
+      7,
+      44,
+      391000000
+    ],
+    "security_classification": "PUBLIC",
+    "case_data": {
+      "otherExecutorExists": "No",
+      "applicationType": "Solicitor",
+      "deceasedAddress": {
+        "County": "",
+        "Country": "",
+        "PostCode": "2",
+        "PostTown": "",
+        "AddressLine1": "1",
+        "AddressLine2": "",
+        "AddressLine3": ""
+      },
+      "deceasedAnyOtherNames": "No",
+      "willHasCodicils": "No",
+      "deceasedDateOfBirth": "1900-01-01",
+      "willAccessOriginal": "Yes",
+      "willExists": "Yes",
+      "solsSolicitorFirmName": "Solicitor Firm Name",
+      "deceasedDateOfDeath": "2000-01-01",
+      "primaryApplicantForenames": "Executor name 1",
+      "primaryApplicantAddress": {
+        "County": "",
+        "Country": "",
+        "PostCode": "2",
+        "PostTown": "",
+        "AddressLine1": "1",
+        "AddressLine2": "",
+        "AddressLine3": ""
+      },
+      "solsSolicitorEmail": "probBackosol@gmail.com",
+      "deceasedDomicileInEngWales": "Yes",
+      "ihtNetValue": "800000",
+      "deceasedSurname": "Deceased Last Name",
+      "solsLegalStatementDocument": {
+        "document_url": "http://localhost:8080/documents/e1f4f972-1514-4247-bdb1-964998ef3710",
+        "document_filename": "legal_statement.pdf",
+        "document_binary_url": "http://localhost:8080/documents/e1f4f972-1514-4247-bdb1-964998ef3710/binary"
+      },
+      "solsSolicitorFirmPostcode": "KT10 0LA",
+      "deceasedForenames": "Deceased First Name",
+      "primaryApplicantIsApplying": "Yes",
+      "primaryApplicantHasAlias": "No",
+      "solsPaymentReferenceNumber": "Cheque (payable to ‘HM Courts & Tribunals Service’)",
+      "ihtGrossValue": "1000000",
+      "ihtFormId": "IHT205",
+      "registryLocation": "Birmingham",
+      "primaryApplicantSurname": "Executor Last Name 1",
+      "solsSolicitorAppReference": "1231-3984-3949-0300"
+    },
+    "data_classification": {
+      "otherExecutorExists": "PUBLIC",
+      "applicationType": "PUBLIC",
+      "deceasedAddress": {
+        "value": {
+          "County": "PUBLIC",
+          "Country": "PUBLIC",
+          "PostCode": "PUBLIC",
+          "PostTown": "PUBLIC",
+          "AddressLine1": "PUBLIC",
+          "AddressLine2": "PUBLIC",
+          "AddressLine3": "PUBLIC"
+        },
+        "classification": "PUBLIC"
+      },
+      "deceasedAnyOtherNames": "PUBLIC",
+      "willHasCodicils": "PUBLIC",
+      "deceasedDateOfBirth": "PUBLIC",
+      "willAccessOriginal": "PUBLIC",
+      "willExists": "PUBLIC",
+      "solsSolicitorFirmName": "PUBLIC",
+      "deceasedDateOfDeath": "PUBLIC",
+      "primaryApplicantForenames": "PUBLIC",
+      "primaryApplicantAddress": {
+        "value": {
+          "County": "PUBLIC",
+          "Country": "PUBLIC",
+          "PostCode": "PUBLIC",
+          "PostTown": "PUBLIC",
+          "AddressLine1": "PUBLIC",
+          "AddressLine2": "PUBLIC",
+          "AddressLine3": "PUBLIC"
+        },
+        "classification": "PUBLIC"
+      },
+      "solsSolicitorEmail": "PUBLIC",
+      "deceasedDomicileInEngWales": "PUBLIC",
+      "ihtNetValue": "PUBLIC",
+      "deceasedSurname": "PUBLIC",
+      "solsLegalStatementDocument": "PUBLIC",
+      "solsSolicitorFirmPostcode": "PUBLIC",
+      "deceasedForenames": "PUBLIC",
+      "primaryApplicantIsApplying": "PUBLIC",
+      "primaryApplicantHasAlias": "PUBLIC",
+      "solsPaymentReferenceNumber": "PUBLIC",
+      "ihtGrossValue": "PUBLIC",
+      "ihtFormId": "PUBLIC",
+      "registryLocation": "PUBLIC",
+      "primaryApplicantSurname": "PUBLIC",
+      "solsSolicitorAppReference": "PUBLIC"
+    },
+    "after_submit_callback_response": null,
+    "callback_response_status_code": null,
+    "callback_response_status": null,
+    "security_classifications": {
+      "otherExecutorExists": "PUBLIC",
+      "applicationType": "PUBLIC",
+      "deceasedAddress": {
+        "value": {
+          "County": "PUBLIC",
+          "Country": "PUBLIC",
+          "PostCode": "PUBLIC",
+          "PostTown": "PUBLIC",
+          "AddressLine1": "PUBLIC",
+          "AddressLine2": "PUBLIC",
+          "AddressLine3": "PUBLIC"
+        },
+        "classification": "PUBLIC"
+      },
+      "deceasedAnyOtherNames": "PUBLIC",
+      "willHasCodicils": "PUBLIC",
+      "deceasedDateOfBirth": "PUBLIC",
+      "willAccessOriginal": "PUBLIC",
+      "willExists": "PUBLIC",
+      "solsSolicitorFirmName": "PUBLIC",
+      "deceasedDateOfDeath": "PUBLIC",
+      "primaryApplicantForenames": "PUBLIC",
+      "primaryApplicantAddress": {
+        "value": {
+          "County": "PUBLIC",
+          "Country": "PUBLIC",
+          "PostCode": "PUBLIC",
+          "PostTown": "PUBLIC",
+          "AddressLine1": "PUBLIC",
+          "AddressLine2": "PUBLIC",
+          "AddressLine3": "PUBLIC"
+        },
+        "classification": "PUBLIC"
+      },
+      "solsSolicitorEmail": "PUBLIC",
+      "deceasedDomicileInEngWales": "PUBLIC",
+      "ihtNetValue": "PUBLIC",
+      "deceasedSurname": "PUBLIC",
+      "solsLegalStatementDocument": "PUBLIC",
+      "solsSolicitorFirmPostcode": "PUBLIC",
+      "deceasedForenames": "PUBLIC",
+      "primaryApplicantIsApplying": "PUBLIC",
+      "primaryApplicantHasAlias": "PUBLIC",
+      "solsPaymentReferenceNumber": "PUBLIC",
+      "ihtGrossValue": "PUBLIC",
+      "ihtFormId": "PUBLIC",
+      "registryLocation": "PUBLIC",
+      "primaryApplicantSurname": "PUBLIC",
+      "solsSolicitorAppReference": "PUBLIC"
+    }
+  },
+  "event_id": "solicitorReviewAndConfirm"
+}

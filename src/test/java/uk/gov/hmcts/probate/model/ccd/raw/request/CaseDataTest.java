@@ -5,9 +5,10 @@ import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
-import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutors;
+import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,6 +30,7 @@ public class CaseDataTest {
     private static final String DECEASED_FIRST_NAME = "Name";
     private static final String DECEASED_SURNAME = "Surname";
     private static final String NOT_APPLYING_REASON = "not applying reason";
+    private static final LocalDate LOCAL_DATE = LocalDate.of(2000,01,01);
 
     @Mock
     private AdditionalExecutor additionalExecutor1Mock;
@@ -38,11 +40,11 @@ public class CaseDataTest {
     private AdditionalExecutor additionalExecutor3Mock;
 
     @Mock
-    private AdditionalExecutors additionalExecutors1Mock;
+    private CollectionMember<AdditionalExecutor> additionalExecutors1Mock;
     @Mock
-    private AdditionalExecutors additionalExecutors2Mock;
+    private CollectionMember<AdditionalExecutor> additionalExecutors2Mock;
     @Mock
-    private AdditionalExecutors additionalExecutors3Mock;
+    private CollectionMember<AdditionalExecutor> additionalExecutors3Mock;
 
     @InjectMocks
     private CaseData underTest;
@@ -52,11 +54,11 @@ public class CaseDataTest {
 
         initMocks(this);
 
-        when(additionalExecutors1Mock.getAdditionalExecutor()).thenReturn(additionalExecutor1Mock);
-        when(additionalExecutors2Mock.getAdditionalExecutor()).thenReturn(additionalExecutor2Mock);
-        when(additionalExecutors3Mock.getAdditionalExecutor()).thenReturn(additionalExecutor3Mock);
+        when(additionalExecutors1Mock.getValue()).thenReturn(additionalExecutor1Mock);
+        when(additionalExecutors2Mock.getValue()).thenReturn(additionalExecutor2Mock);
+        when(additionalExecutors3Mock.getValue()).thenReturn(additionalExecutor3Mock);
 
-        List<AdditionalExecutors> additionalExecutorsList = new ArrayList<>();
+        List<CollectionMember<AdditionalExecutor>> additionalExecutorsList = new ArrayList<>();
         additionalExecutorsList.add(additionalExecutors1Mock);
         additionalExecutorsList.add(additionalExecutors2Mock);
         additionalExecutorsList.add(additionalExecutors3Mock);
@@ -72,6 +74,7 @@ public class CaseDataTest {
                 .build();
     }
 
+
     @Test
     public void shouldGetExecutorsApplying() {
         when(additionalExecutor1Mock.getAdditionalApplying()).thenReturn("Yes");
@@ -79,10 +82,11 @@ public class CaseDataTest {
         when(additionalExecutor3Mock.getAdditionalApplying()).thenReturn("No");
         when(additionalExecutor3Mock.getAdditionalExecReasonNotApplying()).thenReturn(NOT_APPLYING_REASON);
 
-        List<AdditionalExecutors> applying = underTest.getExecutorsApplying();
+        List<CollectionMember<AdditionalExecutor>> applying = underTest.getExecutorsApplyingForLegalStatement();
 
         assertEquals(3, applying.size());
     }
+
 
     @Test
     public void shouldGetExecutorsNotApplying() {
@@ -92,19 +96,19 @@ public class CaseDataTest {
         when(additionalExecutor3Mock.getAdditionalApplying()).thenReturn("No");
         when(additionalExecutor3Mock.getAdditionalExecReasonNotApplying()).thenReturn(NOT_APPLYING_REASON);
 
-        List<AdditionalExecutors> notApplying = underTest.getExecutorsNotApplying();
+        List<CollectionMember<AdditionalExecutor>> notApplying = underTest.getExecutorsNotApplyingForLegalStatement();
 
         assertEquals(2, notApplying.size());
     }
 
     @Test
     public void shouldGetExecutorsCombinationsOfNulls() {
-        when(additionalExecutors1Mock.getAdditionalExecutor()).thenReturn(null);
+        when(additionalExecutors1Mock.getValue()).thenReturn(null);
         when(additionalExecutor2Mock.getAdditionalApplying()).thenReturn(null);
         when(additionalExecutor3Mock.getAdditionalApplying()).thenReturn("No");
         when(additionalExecutor3Mock.getAdditionalExecReasonNotApplying()).thenReturn(NOT_APPLYING_REASON);
 
-        List<AdditionalExecutors> notApplying = underTest.getExecutorsNotApplying();
+        List<CollectionMember<AdditionalExecutor>> notApplying = underTest.getExecutorsNotApplyingForLegalStatement();
 
         assertEquals(1, notApplying.size());
     }
@@ -117,7 +121,7 @@ public class CaseDataTest {
         when(additionalExecutor2Mock.getAdditionalApplying()).thenReturn("Yes");
         when(additionalExecutor3Mock.getAdditionalApplying()).thenReturn("No");
 
-        assertThat(caseData.getExecutorsApplying(), hasSize(2));
+        assertThat(caseData.getExecutorsApplyingForLegalStatement(), hasSize(2));
     }
 
     @Test
@@ -128,11 +132,11 @@ public class CaseDataTest {
         when(additionalExecutor2Mock.getAdditionalApplying()).thenReturn("Yes");
         when(additionalExecutor3Mock.getAdditionalApplying()).thenReturn("No");
 
-        assertThat(caseData.getExecutorsNotApplying(), hasSize(2));
+        assertThat(caseData.getExecutorsNotApplyingForLegalStatement(), hasSize(2));
     }
 
     private CaseData getCaseDataWhenPrimaryExecutorNotApplying() {
-        List<AdditionalExecutors> additionalExecutorsList = new ArrayList<>();
+        List<CollectionMember<AdditionalExecutor>> additionalExecutorsList = new ArrayList<>();
         additionalExecutorsList.add(additionalExecutors1Mock);
         additionalExecutorsList.add(additionalExecutors2Mock);
         additionalExecutorsList.add(additionalExecutors3Mock);
@@ -166,5 +170,50 @@ public class CaseDataTest {
                 .build();
 
         assertEquals(DECEASED_FIRST_NAME + " " + DECEASED_SURNAME, caseData.getDeceasedFullName());
+    }
+
+    @Test
+    public void shouldReturnDODFormattedWithST() {
+        final CaseData caseData = CaseData.builder()
+                .deceasedDateOfDeath(LOCAL_DATE)
+                .build();
+
+        assertEquals("1st January 2000", caseData.getDeceasedDateOfDeathFormatted());
+    }
+
+    @Test
+    public void shouldReturnDODFormattedWithND() {
+        final CaseData caseData = CaseData.builder()
+                .deceasedDateOfDeath(LocalDate.of(2000,01,02))
+                .build();
+
+        assertEquals("2nd January 2000", caseData.getDeceasedDateOfDeathFormatted());
+    }
+
+    @Test
+    public void shouldReturnDODFormattedWithRD() {
+        final CaseData caseData = CaseData.builder()
+                .deceasedDateOfDeath(LocalDate.of(2000,01,03))
+                .build();
+
+        assertEquals("3rd January 2000", caseData.getDeceasedDateOfDeathFormatted());
+    }
+
+    @Test
+    public void shouldReturnDODFormattedWithTH() {
+        final CaseData caseData = CaseData.builder()
+                .deceasedDateOfDeath(LocalDate.of(2000,01,04))
+                .build();
+
+        assertEquals("4th January 2000", caseData.getDeceasedDateOfDeathFormatted());
+    }
+
+    @Test
+    public void shouldThrowParseException() {
+        final CaseData caseData = CaseData.builder()
+                .deceasedDateOfDeath(LocalDate.of(300000,01,04))
+                .build();
+
+        assertEquals(null, caseData.getDeceasedDateOfDeathFormatted());
     }
 }

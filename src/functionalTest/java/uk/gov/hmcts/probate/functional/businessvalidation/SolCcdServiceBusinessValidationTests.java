@@ -1,6 +1,7 @@
 package uk.gov.hmcts.probate.functional.businessvalidation;
 
 import io.restassured.http.ContentType;
+import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import net.serenitybdd.junit.runners.SerenityRunner;
 import net.serenitybdd.rest.SerenityRest;
@@ -13,54 +14,60 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasSize;
+import static org.junit.Assert.assertEquals;
 
 @RunWith(SerenityRunner.class)
 public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
 
+    private static final String VALIDATE_CASE_AMEND_URL = "/case/validateCaseDetails";
+    private static final String VALIDATE_URL = "/case/validate";
+    private static final String TRANSFORM_URL = "/case/transformCase";
+
+
     @Test
     public void verifyRequestWithDobBeforeDod() {
-        validatePostSuccess("success.solicitorCreate.json");
+        validatePostSuccess("success.solicitorCreate.json", VALIDATE_URL);
     }
 
     @Test
     public void verifyRequestWithDobNullReturnsError() {
-        validatePostFailureForSolicitorCreate("failure.dobIsNull.json",
+        validatePostFailureForSolicitorCreateAndCaseAmend("failure.dobIsNull.json",
                 "Date of birth cannot be empty", 400);
     }
 
     @Test
     public void verifyRequestWithDodNullReturnsError() {
-        validatePostFailureForSolicitorCreate("failure.dodIsNull.json",
+        validatePostFailureForSolicitorCreateAndCaseAmend("failure.dodIsNull.json",
                 "Date of death cannot be empty", 400);
     }
 
     @Test
     public void verifyRequestWithDodBeforeDobReturnsError() {
-        validatePostFailureForSolicitorCreate("failure.dobIsAfterDod.json",
+        validatePostFailureForSolicitorCreateAndCaseAmend("failure.dobIsAfterDod.json",
                 "Date of death cannot be before date of birth", 200);
     }
 
     @Test
     public void verifyRequestWithDodSameAsDobReturnsError() {
-        validatePostFailureForSolicitorCreate("failure.dodIsSameAsDob.json",
+        validatePostFailureForSolicitorCreateAndCaseAmend("failure.dodIsSameAsDob.json",
                 "Date of death cannot be the same as date of birth", 200);
     }
 
     @Test
     public void verifyRequestWithDobInFutureReturnsError() {
-        validatePostFailureForSolicitorCreate("failure.dobIsInTheFuture.json",
+        validatePostFailureForSolicitorCreateAndCaseAmend("failure.dobIsInTheFuture.json",
                 "Date of birth cannot be in the future", 200);
     }
 
     @Test
     public void verifyRequestWithDodInFutureReturnsError() {
-        validatePostFailureForSolicitorCreate("failure.dodIsInTheFuture.json",
+        validatePostFailureForSolicitorCreateAndCaseAmend("failure.dodIsInTheFuture.json",
                 "Date of death cannot be in the future", 200);
     }
 
     @Test
     public void verifyRequestWithIhtNetLessThanGross() {
-        validatePostSuccess("success.SolicitorAddDeceasedEstateDetails.json");
+        validatePostSuccess("success.SolicitorAddDeceasedEstateDetails.json", VALIDATE_URL);
     }
 
     @Test
@@ -109,6 +116,8 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     public void verifyRequestWithoutExecutorAddressReturnsError() {
         validatePostFailureForSolicitorExecutorDetails("failure.missingExecutorAddress.json",
                 "The executor address line 1 cannot be empty");
+        validatePostFailureForCaseAmend("failure.missingExecutorAddress.json",
+                "The executor address line 1 cannot be empty");
     }
 
     @Test
@@ -119,7 +128,8 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
 
     @Test
     public void verifyRequestWithoutExecutorAddressWhileNotApplyingReturnsNoError() {
-        validatePostSuccess("success.missingExecutorAddressWhileNotApplying.json");
+        validatePostSuccess("success.missingExecutorAddressWhileNotApplying.json", VALIDATE_URL);
+        validatePostSuccess("success.missingExecutorAddressWhileNotApplying.json", VALIDATE_CASE_AMEND_URL);
     }
 
     @Test
@@ -133,48 +143,165 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
 
     @Test
     public void verifyNoOfApplyingExecutorsLessThanFour() {
-        validatePostSuccess("success.LessThanFourExecutors.json");
+        validatePostSuccess("success.LessThanFourExecutors.json", VALIDATE_URL);
+        validatePostSuccess("success.LessThanFourExecutors.json", VALIDATE_CASE_AMEND_URL);
     }
 
 
     @Test
     public void verifyNoOfApplyingExecutorsEqualToFour() {
-        validatePostSuccess("success.equalToFourExecutors.json");
+        validatePostSuccess("success.equalToFourExecutors.json", VALIDATE_URL);
+        validatePostSuccess("success.equalToFourExecutors.json", VALIDATE_CASE_AMEND_URL);
     }
 
     @Test
     public void verifyNoOfApplyingExecutorsMoreThanFour() {
         validatePostFailure("failure.moreThanFourExecutors.json",
-                "The total number executors applying cannot exceed 4", 200);
+                "The total number executors applying cannot exceed 4", 200, VALIDATE_URL);
+        validatePostFailure("failure.moreThanFourExecutors.json",
+                "The total number executors applying cannot exceed 4", 200, VALIDATE_CASE_AMEND_URL);
     }
 
-    private void validatePostSuccess(String jsonFileName) {
+    @Test
+    public void verifyNoOfApplyingExecutorsLessThanFourTransformCase() {
+        validatePostSuccess("success.LessThanFourExecutors.json", TRANSFORM_URL);
+    }
+
+
+    @Test
+    public void verifyNoOfApplyingExecutorsEqualToFourTransformCase() {
+        validatePostSuccess("success.equalToFourExecutors.json", TRANSFORM_URL);
+    }
+
+    @Test
+    public void verifyRequestWithDobBeforeDodTransformCase() {
+        validatePostSuccess("success.solicitorCreate.json", TRANSFORM_URL);
+    }
+
+
+    @Test
+    public void verifyRequestWithIhtNetLessThanGrossTransformCase() {
+        validatePostSuccess("success.SolicitorAddDeceasedEstateDetails.json", TRANSFORM_URL);
+    }
+
+
+    @Test
+    public void verifyRequestWithoutExecutorAddressWhileNotApplyingReturnsNoErrorTransformCase() {
+        validatePostSuccess("success.missingExecutorAddressWhileNotApplying.json", TRANSFORM_URL);
+    }
+
+    @Test
+    public void shouldTransformCasePADeceasedAliasOneField() {
+        String response = transformCase("personalPayloadNotifications.json", TRANSFORM_URL);
+
+        JsonPath jsonPath = JsonPath.from(response);
+        String alias = jsonPath.get("data.solsDeceasedAliasNamesList[0].value.SolsAliasname");
+
+        assertEquals("Giacomo Terrel", alias);
+
+    }
+
+    @Test
+    public void shouldTransformCaseSOLSAdditionalExec() {
+        String response = transformCase("solicitorPayloadNotificationsAddExecs.json", TRANSFORM_URL);
+
+        JsonPath jsonPath = JsonPath.from(response);
+        String notApplyingName = jsonPath.get("data.executorsNotApplying[0].value.notApplyingExecutorName");
+        String notApplyingReason = jsonPath.get("data.executorsNotApplying[0].value.notApplyingExecutorReason");
+        String notApplyingAlias = jsonPath.get("data.executorsNotApplying[0].value.notApplyingExecutorNameOnWill");
+
+        String applyingName = jsonPath.get("data.executorsApplying[0].value.applyingExecutorName");
+        String applyingAlias = jsonPath.get("data.executorsApplying[0].value.applyingExecutorOtherNames");
+        String addressLine1 = jsonPath.get("data.executorsApplying[0].value.applyingExecutorAddress.AddressLine1");
+        String addressLine2 = jsonPath.get("data.executorsApplying[0].value.applyingExecutorAddress.AddressLine2");
+        String addressLine3 = jsonPath.get("data.executorsApplying[0].value.applyingExecutorAddress.AddressLine3");
+        String postTown = jsonPath.get("data.executorsApplying[0].value.applyingExecutorAddress.PostTown");
+        String postCode = jsonPath.get("data.executorsApplying[0].value.applyingExecutorAddress.PostCode");
+        String county = jsonPath.get("data.executorsApplying[0].value.applyingExecutorAddress.County");
+        String country = jsonPath.get("data.executorsApplying[0].value.applyingExecutorAddress.Country");
+
+        String applyingName_exec2 = jsonPath.get("data.executorsApplying[1].value.applyingExecutorName");
+        String applyingAlias_exec2 = jsonPath.get("data.executorsApplying[1].value.applyingExecutorOtherNames");
+        String addressLine1_exec2 = jsonPath.get("data.executorsApplying[1].value.applyingExecutorAddress.AddressLine1");
+        String addressLine2_exec2 = jsonPath.get("data.executorsApplying[1].value.applyingExecutorAddress.AddressLine2");
+        String addressLine3_exec2 = jsonPath.get("data.executorsApplying[1].value.applyingExecutorAddress.AddressLine3");
+        String postTown_exec2 = jsonPath.get("data.executorsApplying[1].value.applyingExecutorAddress.PostTown");
+        String postCode_exec2 = jsonPath.get("data.executorsApplying[1].value.applyingExecutorAddress.PostCode");
+        String county_exec2 = jsonPath.get("data.executorsApplying[1].value.applyingExecutorAddress.County");
+        String country_exec2 = jsonPath.get("data.executorsApplying[1].value.applyingExecutorAddress.Country");
+
+
+        assertEquals("exfn2 exln2", notApplyingName);
+        assertEquals("DiedBefore", notApplyingReason);
+        assertEquals("alias name", notApplyingAlias);
+
+        assertEquals("exfn1 exln1", applyingName);
+        assertEquals("Alias name exfn1", applyingAlias);
+        assertEquals("addressline 1", addressLine1);
+        assertEquals("addressline 2", addressLine2);
+        assertEquals("addressline 3", addressLine3);
+        assertEquals("posttown", postTown);
+        assertEquals("postcode", postCode);
+        assertEquals("country", country);
+        assertEquals("county", county);
+
+
+        assertEquals("ex3fn ex3ln", applyingName_exec2);
+        assertEquals(null, applyingAlias_exec2);
+        assertEquals("addressline 1", addressLine1_exec2);
+        assertEquals(null, addressLine2_exec2);
+        assertEquals(null, addressLine3_exec2);
+        assertEquals(null, postTown_exec2);
+        assertEquals("postcode", postCode_exec2);
+        assertEquals(null, country_exec2);
+        assertEquals(null, county_exec2);
+
+    }
+
+
+    private String transformCase(String jsonFileName, String path) {
+
+        Response jsonResponse = SerenityRest.given()
+                .relaxedHTTPSValidation()
+                .headers(utils.getHeadersWithUserId())
+                .body(utils.getJsonFromFile(jsonFileName))
+                .when().post(path).andReturn();
+
+        return jsonResponse.getBody().asString();
+    }
+
+    private void validatePostSuccess(String jsonFileName, String URL) {
         SerenityRest.given()
                 .relaxedHTTPSValidation()
                 .headers(utils.getHeadersWithUserId())
                 .body(utils.getJsonFromFile(jsonFileName))
-                .when().post("/case/validate")
+                .when().post(URL)
                 .then().assertThat().statusCode(200);
     }
 
-    private void validatePostFailureForSolicitorCreate(String jsonFileName, String errorMessage, Integer statusCode) {
-        validatePostFailure(jsonFileName, errorMessage, statusCode);
+    private void validatePostFailureForSolicitorCreateAndCaseAmend(String jsonFileName, String errorMessage, Integer statusCode) {
+        validatePostFailure(jsonFileName, errorMessage, statusCode, VALIDATE_URL);
+        validatePostFailure(jsonFileName, errorMessage, statusCode, VALIDATE_CASE_AMEND_URL);
     }
 
     private void validatePostFailureForSolicitorAddDeceasedEstateDetails(String jsonFileName, String errorMessage, Integer statusCode) {
-        validatePostFailure(jsonFileName, errorMessage, statusCode);
+        validatePostFailure(jsonFileName, errorMessage, statusCode, VALIDATE_URL);
     }
 
     private void validatePostFailureForSolicitorExecutorDetails(String jsonFileName, String errorMessage) {
-        validatePostFailure(jsonFileName, errorMessage, 200);
+        validatePostFailure(jsonFileName, errorMessage, 200, VALIDATE_URL);
     }
 
-    private void validatePostFailure(String jsonFileName, String errorMessage, Integer statusCode) {
+    private void validatePostFailureForCaseAmend(String jsonFileName, String errorMessage) {
+        validatePostFailure(jsonFileName, errorMessage, 200, VALIDATE_CASE_AMEND_URL);
+    }
+
+    private void validatePostFailure(String jsonFileName, String errorMessage, Integer statusCode, String URL) {
         Response response = SerenityRest.given()
                 .relaxedHTTPSValidation()
                 .headers(utils.getHeadersWithUserId())
                 .body(utils.getJsonFromFile(jsonFileName))
-                .when().post("/case/validate")
+                .when().post(URL)
                 .thenReturn();
 
         if (statusCode == 200) {
@@ -190,4 +317,5 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
             assert false;
         }
     }
+
 }

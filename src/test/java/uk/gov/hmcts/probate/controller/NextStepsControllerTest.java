@@ -47,8 +47,8 @@ public class NextStepsControllerTest {
     private static final String PAYMENT_METHOD = "Cheque";
     private static final String WILL_HAS_CODICLIS = "Yes";
     private static final String NUMBER_OF_CODICLIS = "1";
-    private static final Float NET = 1000f;
-    private static final Float GROSS = 900f;
+    private static final BigDecimal NET = BigDecimal.valueOf(1000f);
+    private static final BigDecimal GROSS = BigDecimal.valueOf(900f);
     private static final Long EXTRA_UK = 1L;
     private static final Long EXTRA_OUTSIDE_UK = 2L;
     private static final String DECEASED_ADDRESS_L1 = "DECL1";

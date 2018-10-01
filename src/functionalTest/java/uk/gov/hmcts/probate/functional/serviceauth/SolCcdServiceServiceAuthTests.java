@@ -7,6 +7,7 @@ import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 
 import static io.restassured.RestAssured.given;
 
+
 @RunWith(SerenityRunner.class)
 public class SolCcdServiceServiceAuthTests extends IntegrationTestBase {
 

@@ -1,8 +1,6 @@
 package uk.gov.hmcts.probate.transformer;
 
-import lombok.Data;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
 import uk.gov.hmcts.probate.model.ccd.Deceased;
@@ -10,7 +8,7 @@ import uk.gov.hmcts.probate.model.ccd.Executor;
 import uk.gov.hmcts.probate.model.ccd.Fee;
 import uk.gov.hmcts.probate.model.ccd.InheritanceTax;
 import uk.gov.hmcts.probate.model.ccd.Solicitor;
-import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutors;
+import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 
@@ -26,37 +24,59 @@ import static uk.gov.hmcts.probate.transformer.CallbackResponseTransformer.PAYME
 import static uk.gov.hmcts.probate.transformer.CallbackResponseTransformer.PAYMENT_REFERENCE_CHEQUE;
 import static uk.gov.hmcts.probate.transformer.CallbackResponseTransformer.PAYMENT_REFERENCE_FEE_PREFIX;
 
-@Data
+@Slf4j
 @Component
 public class CCDDataTransformer {
 
-    private static final Logger log = LoggerFactory.getLogger(CCDDataTransformer.class);
-
     public CCDData transform(CallbackRequest callbackRequest) {
+
+        return buildCCDData(callbackRequest);
+    }
+
+    private CCDData buildCCDData(CallbackRequest callbackRequest) {
         CaseData caseData = callbackRequest.getCaseDetails().getData();
 
-        Solicitor solicitor = Solicitor.builder()
+        return CCDData.builder()
+                .solicitorReference(getSolicitorAppReference(caseData.getSolsSolicitorAppReference()))
+                .caseSubmissionDate(getCaseSubmissionDate(callbackRequest.getCaseDetails().getLastModified()))
+                .solicitor(buildSolicitorDetails(caseData))
+                .deceased(buildDeceasedDetails(caseData))
+                .iht(buildInheritanceTaxDetails(caseData))
+                .fee(buildFeeDetails(caseData))
+                .solsAdditionalInfo(caseData.getSolsAdditionalInfo())
+                .executors(getAllExecutors(caseData))
+                .build();
+    }
+
+    private Solicitor buildSolicitorDetails(CaseData caseData) {
+        return Solicitor.builder()
                 .firmName(caseData.getSolsSolicitorFirmName())
                 .firmPostcode(caseData.getSolsSolicitorFirmPostcode())
                 .fullname(caseData.getSolsSOTName())
                 .jobRole(caseData.getSolsSOTJobTitle())
                 .build();
+    }
 
-        Deceased deceased = Deceased.builder()
+    private Deceased buildDeceasedDetails(CaseData caseData) {
+        return Deceased.builder()
                 .firstname(caseData.getDeceasedForenames())
                 .lastname(caseData.getDeceasedSurname())
                 .dateOfBirth((caseData.getDeceasedDateOfBirth()))
                 .dateOfDeath((caseData.getDeceasedDateOfDeath()))
                 .address(caseData.getDeceasedAddress())
                 .build();
+    }
 
-        InheritanceTax inheritanceTax = InheritanceTax.builder()
+    private InheritanceTax buildInheritanceTaxDetails(CaseData caseData) {
+        return InheritanceTax.builder()
                 .formName(caseData.getIhtFormId())
                 .netValue(caseData.getIhtNetValue())
                 .grossValue(caseData.getIhtGrossValue())
                 .build();
+    }
 
-        Fee fee = Fee.builder()
+    private Fee buildFeeDetails(CaseData caseData) {
+        return Fee.builder()
                 .extraCopiesOfGrant(caseData.getExtraCopiesOfGrant())
                 .outsideUKGrantCopies(caseData.getOutsideUKGrantCopies())
                 .paymentMethod(caseData.getSolsPaymentMethods())
@@ -65,17 +85,6 @@ public class CCDDataTransformer {
                 .amount(caseData.getTotalFee())
                 .feeForUkCopies(caseData.getFeeForUkCopies())
                 .feeForNonUkCopies(caseData.getFeeForNonUkCopies())
-                .build();
-
-        return CCDData.builder()
-                .solicitorReference(getSolicitorAppReference(caseData.getSolsSolicitorAppReference()))
-                .caseSubmissionDate(getCaseSubmissionDate(callbackRequest.getCaseDetails().getLastModified()))
-                .solicitor(solicitor)
-                .deceased(deceased)
-                .iht(inheritanceTax)
-                .fee(fee)
-                .solsAdditionalInfo(caseData.getSolsAdditionalInfo())
-                .executors(getAllExecutors(caseData))
                 .build();
     }
 
@@ -95,7 +104,7 @@ public class CCDDataTransformer {
         List<Executor> executors = new ArrayList<>();
         if (caseData.getSolsAdditionalExecutorList() != null) {
             executors = caseData.getSolsAdditionalExecutorList().stream()
-                    .map(AdditionalExecutors::getAdditionalExecutor)
+                    .map(CollectionMember::getValue)
                     .map(executor -> Executor.builder()
                             .applying(YES.equals(executor.getAdditionalApplying()))
                             .address(executor.getAdditionalExecAddress())

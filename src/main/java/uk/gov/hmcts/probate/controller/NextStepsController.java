@@ -2,9 +2,8 @@ package uk.gov.hmcts.probate.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.Data;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -33,12 +32,11 @@ import java.util.Optional;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 
-@Data
+@Slf4j
 @Controller
+@RequiredArgsConstructor
 @RequestMapping("/nextsteps")
 public class NextStepsController {
-
-    private static final Logger log = LoggerFactory.getLogger(NextStepsController.class);
 
     private final CCDDataTransformer ccdBeanTransformer;
     private final ConfirmationResponseService confirmationResponseService;
@@ -57,7 +55,7 @@ public class NextStepsController {
 
         logRequest(request.getRequestURI(), callbackRequest);
 
-        CallbackResponse callbackResponse = null;
+        CallbackResponse callbackResponse;
         Optional<String> newState = stateChangeService.getChangedStateForCaseReview(callbackRequest.getCaseDetails().getData());
         if (newState.isPresent()) {
             callbackResponse = callbackResponseTransformer

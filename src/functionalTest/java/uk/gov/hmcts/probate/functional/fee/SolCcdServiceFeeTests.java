@@ -10,6 +10,7 @@ import static net.serenitybdd.rest.SerenityRest.given;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalToIgnoringCase;
 
+
 @RunWith(SerenityRunner.class)
 public class SolCcdServiceFeeTests extends IntegrationTestBase {
 

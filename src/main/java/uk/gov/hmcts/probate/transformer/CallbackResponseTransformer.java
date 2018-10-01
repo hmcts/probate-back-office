@@ -1,24 +1,38 @@
 package uk.gov.hmcts.probate.transformer;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 import uk.gov.hmcts.probate.model.ApplicationType;
-import uk.gov.hmcts.probate.model.ccd.raw.CCDDocument;
+import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
+import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
+import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
+import uk.gov.hmcts.probate.model.ccd.raw.AliasName;
+import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
+import uk.gov.hmcts.probate.model.ccd.raw.Document;
+import uk.gov.hmcts.probate.model.ccd.raw.ProbateAliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData.ResponseCaseDataBuilder;
 import uk.gov.hmcts.probate.model.fee.FeeServiceResponse;
-import uk.gov.hmcts.probate.model.template.PDFServiceTemplate;
 
 import java.math.BigDecimal;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
+import static java.util.Collections.EMPTY_LIST;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
-import static uk.gov.hmcts.probate.model.template.PDFServiceTemplate.LEGAL_STATEMENT;
+import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_DRAFT;
+import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT;
 
 @Component
+@RequiredArgsConstructor
 public class CallbackResponseTransformer {
 
     static final String PAYMENT_METHOD_VALUE_FEE_ACCOUNT = "fee account";
@@ -28,89 +42,110 @@ public class CallbackResponseTransformer {
     private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private static final ApplicationType DEFAULT_APPLICATION_TYPE = SOLICITOR;
     private static final String DEFAULT_REGISTRY_LOCATION = "Birmingham";
+    public static final String ANSWER_YES = "Yes";
+    public static final String ANSWER_NO = "No";
 
     public CallbackResponse transformWithConditionalStateChange(CallbackRequest callbackRequest, Optional<String> newState) {
-        CaseData caseData = callbackRequest.getCaseDetails().getData();
-
-        ResponseCaseData responseCaseData = this.getResponseCaseData(caseData)
+        ResponseCaseData responseCaseData = getResponseCaseData(callbackRequest.getCaseDetails(), false)
                 .state(newState.orElse(null))
-                .ccdState(callbackRequest.getCaseDetails().getState())
                 .build();
 
-        return transform(responseCaseData);
-    }
-
-    public CallbackResponse addCcdState(CallbackRequest callbackRequest) {
-        CaseData caseData = callbackRequest.getCaseDetails().getData();
-
-        ResponseCaseData responseCaseData = this.getResponseCaseData(caseData)
-                .ccdState(callbackRequest.getCaseDetails().getState())
-                .build();
-
-        return transform(responseCaseData);
+        return transformResponse(responseCaseData);
     }
 
     public CallbackResponse addDocumentReceivedNotification(CallbackRequest callbackRequest) {
-        CaseData caseData = callbackRequest.getCaseDetails().getData();
+        CaseDetails caseDetails = callbackRequest.getCaseDetails();
 
-        ResponseCaseData responseCaseData = this.getResponseCaseData(caseData)
-                .ccdState(callbackRequest.getCaseDetails().getState())
-                .boEmailDocsReceivedNotificationRequested(caseData.getBoEmailDocsReceivedNotification())
+        ResponseCaseData responseCaseData = getResponseCaseData(caseDetails, false)
+                .boEmailDocsReceivedNotificationRequested(caseDetails.getData().getBoEmailDocsReceivedNotification())
                 .build();
 
-        return transform(responseCaseData);
+        return transformResponse(responseCaseData);
     }
 
-    public CallbackResponse addGrandIssuedNotification(CallbackRequest callbackRequest) {
-        CaseData caseData = callbackRequest.getCaseDetails().getData();
+    public CallbackResponse caseStopped(CallbackRequest callbackRequest, Document document) {
+        CaseDetails caseDetails = callbackRequest.getCaseDetails();
 
-        ResponseCaseData responseCaseData = this.getResponseCaseData(caseData)
-                .ccdState(callbackRequest.getCaseDetails().getState())
-                .boEmailGrantIssuedNotificationRequested(caseData.getBoEmailGrantIssuedNotification())
+        caseDetails.getData().getProbateDocumentsGenerated().add(new CollectionMember<>(null, document));
+
+        ResponseCaseData responseCaseData = getResponseCaseData(caseDetails, false)
+                .boStopDetails("")
                 .build();
 
-        return transform(responseCaseData);
+        return transformResponse(responseCaseData);
+    }
+
+    public CallbackResponse grantIssued(CallbackRequest callbackRequest, Document document) {
+        if (DIGITAL_GRANT_DRAFT.equals(document.getDocumentType()) || DIGITAL_GRANT.equals(document.getDocumentType())) {
+            callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated()
+                    .add(new CollectionMember<>(null, document));
+        }
+
+        ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), false);
+        responseCaseDataBuilder.boEmailGrantIssuedNotificationRequested(
+                callbackRequest.getCaseDetails().getData().getBoEmailGrantIssuedNotification());
+        responseCaseDataBuilder.solsSOTNeedToUpdate(null);
+
+        return transformResponse(responseCaseDataBuilder.build());
     }
 
     public CallbackResponse transform(CallbackRequest callbackRequest, FeeServiceResponse feeServiceResponse) {
-        CaseData caseData = callbackRequest.getCaseDetails().getData();
-
         String feeForNonUkCopies = transformMoneyGBPToString(feeServiceResponse.getFeeForNonUkCopies());
         String feeForUkCopies = transformMoneyGBPToString(feeServiceResponse.getFeeForUkCopies());
         String applicationFee = transformMoneyGBPToString(feeServiceResponse.getApplicationFee());
         String totalFee = transformMoneyGBPToString(feeServiceResponse.getTotal());
 
-        ResponseCaseData responseCaseData = this.getResponseCaseData(caseData)
+        ResponseCaseData responseCaseData = getResponseCaseData(callbackRequest.getCaseDetails(), false)
                 .feeForNonUkCopies(feeForNonUkCopies)
                 .feeForUkCopies(feeForUkCopies)
                 .applicationFee(applicationFee)
                 .totalFee(totalFee)
-                .ccdState(callbackRequest.getCaseDetails().getState())
                 .build();
 
-        return transform(responseCaseData);
+        return transformResponse(responseCaseData);
     }
 
-    public CallbackResponse transform(CallbackRequest callbackRequest, PDFServiceTemplate pdfServiceTemplate, CCDDocument ccdDocument) {
-        CaseData caseData = callbackRequest.getCaseDetails().getData();
-
-        ResponseCaseDataBuilder responseCaseData = this.getResponseCaseData(caseData);
-        responseCaseData.solsSOTNeedToUpdate(null);
-        responseCaseData.ccdState(callbackRequest.getCaseDetails().getState());
-        if (LEGAL_STATEMENT.equals(pdfServiceTemplate)) {
-            responseCaseData.solsLegalStatementDocument(ccdDocument);
+    public CallbackResponse transform(CallbackRequest callbackRequest, Document document) {
+        if (DIGITAL_GRANT_DRAFT.equals(document.getDocumentType()) || DIGITAL_GRANT.equals(document.getDocumentType())) {
+            callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated()
+                    .add(new CollectionMember<>(null, document));
         }
 
-        return transform(responseCaseData.build());
+        ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), false);
+        responseCaseDataBuilder.solsSOTNeedToUpdate(null);
+
+        if (LEGAL_STATEMENT.equals(document.getDocumentType())) {
+            responseCaseDataBuilder.solsLegalStatementDocument(document.getDocumentLink());
+        }
+
+        return transformResponse(responseCaseDataBuilder.build());
     }
 
-    private CallbackResponse transform(ResponseCaseData responseCaseData) {
+    public CallbackResponse transform(CallbackRequest callbackRequest) {
+        ResponseCaseData responseCaseData = getResponseCaseData(callbackRequest.getCaseDetails(), false)
+                .build();
+
+        return transformResponse(responseCaseData);
+    }
+
+    public CallbackResponse transformCase(CallbackRequest callbackRequest) {
+
+        boolean transform = callbackRequest.getCaseDetails().getData().getApplicationType() == ApplicationType.SOLICITOR ? true : false;
+
+        ResponseCaseData responseCaseData = getResponseCaseData(callbackRequest.getCaseDetails(), transform)
+                .build();
+
+        return transformResponse(responseCaseData);
+    }
+
+    private CallbackResponse transformResponse(ResponseCaseData responseCaseData) {
         return CallbackResponse.builder().data(responseCaseData).build();
     }
 
-    private ResponseCaseDataBuilder getResponseCaseData(CaseData caseData) {
+    private ResponseCaseDataBuilder getResponseCaseData(CaseDetails caseDetails, boolean transform) {
+        CaseData caseData = caseDetails.getData();
 
-        return ResponseCaseData.builder()
+        ResponseCaseDataBuilder builder = ResponseCaseData.builder()
                 .applicationType(Optional.ofNullable(caseData.getApplicationType()).orElse(DEFAULT_APPLICATION_TYPE))
                 .registryLocation(Optional.ofNullable(caseData.getRegistryLocation()).orElse(DEFAULT_REGISTRY_LOCATION))
                 .solsSolicitorFirmName(caseData.getSolsSolicitorFirmName())
@@ -133,33 +168,31 @@ public class CallbackResponseTransformer {
                 .primaryApplicantEmailAddress(caseData.getPrimaryApplicantEmailAddress())
                 .primaryApplicantIsApplying(caseData.getPrimaryApplicantIsApplying())
                 .solsPrimaryExecutorNotApplyingReason(caseData.getSolsPrimaryExecutorNotApplyingReason())
-                .primaryApplicantHasAlias(caseData.getPrimaryApplicantHasAlias())
-                .otherExecutorExists(caseData.getOtherExecutorExists())
+                .primaryApplicantHasAlias(getPrimaryApplicantHasAlias(caseData))
+                .otherExecutorExists(getOtherExecutorExists(caseData))
                 .solsExecutorAliasNames(caseData.getSolsExecutorAliasNames())
-                .solsAdditionalExecutorList(caseData.getSolsAdditionalExecutorList())
                 .deceasedAddress(caseData.getDeceasedAddress())
                 .deceasedAnyOtherNames(caseData.getDeceasedAnyOtherNames())
                 .primaryApplicantAddress(caseData.getPrimaryApplicantAddress())
-                .solsDeceasedAliasNamesList(caseData.getSolsDeceasedAliasNamesList())
                 .solsSolicitorAppReference(caseData.getSolsSolicitorAppReference())
                 .solsAdditionalInfo(caseData.getSolsAdditionalInfo())
 
                 .solsSOTNeedToUpdate(caseData.getSolsSOTNeedToUpdate())
 
-                .ihtGrossValue(transformToString(caseData.getIhtGrossValue()))
-                .ihtNetValue(transformToString(caseData.getIhtNetValue()))
+                .ihtGrossValue(caseData.getIhtGrossValue())
+                .ihtNetValue(caseData.getIhtNetValue())
                 .deceasedDomicileInEngWales(caseData.getDeceasedDomicileInEngWales())
 
                 .solsPaymentMethods(caseData.getSolsPaymentMethods())
                 .solsFeeAccountNumber(caseData.getSolsFeeAccountNumber())
-                .solsPaymentReferenceNumber(getPaymentReference(caseData))
+                .paymentReferenceNumber(getPaymentReferenceNumber(caseData))
 
                 .extraCopiesOfGrant(transformToString(caseData.getExtraCopiesOfGrant()))
                 .outsideUKGrantCopies(transformToString(caseData.getOutsideUKGrantCopies()))
-                .feeForNonUkCopies(transformMoneyGBPToString(caseData.getFeeForNonUkCopies()))
-                .feeForUkCopies(transformMoneyGBPToString(caseData.getFeeForUkCopies()))
-                .applicationFee(transformMoneyGBPToString(caseData.getApplicationFee()))
-                .totalFee(transformMoneyGBPToString(caseData.getTotalFee()))
+                .feeForNonUkCopies(transformToString(caseData.getFeeForNonUkCopies()))
+                .feeForUkCopies(transformToString(caseData.getFeeForUkCopies()))
+                .applicationFee(transformToString(caseData.getApplicationFee()))
+                .totalFee(transformToString(caseData.getTotalFee()))
 
                 .solsLegalStatementDocument(caseData.getSolsLegalStatementDocument())
                 .casePrinted(caseData.getCasePrinted())
@@ -168,15 +201,163 @@ public class CallbackResponseTransformer {
                 .boEmailDocsReceivedNotification(caseData.getBoEmailDocsReceivedNotification())
                 .boEmailGrantIssuedNotification(caseData.getBoEmailGrantIssuedNotification())
 
-                .boCaseStopReasonList(caseData.getBoCaseStopReasonList());
+                .boCaseStopReasonList(caseData.getBoCaseStopReasonList())
+                .boStopDetails(caseData.getBoStopDetails())
+
+                .boDeceasedTitle(caseData.getBoDeceasedTitle())
+                .boDeceasedHonours(caseData.getBoDeceasedHonours())
+
+                .ihtFormCompletedOnline(caseData.getIhtFormCompletedOnline())
+
+                .boWillMessage(caseData.getBoWillMessage())
+                .boExecutorLimitation(caseData.getBoExecutorLimitation())
+                .boAdminClauseLimitation(caseData.getBoAdminClauseLimitation())
+                .boLimitationText(caseData.getBoLimitationText())
+                .probateDocumentsGenerated(caseData.getProbateDocumentsGenerated())
+                .boDocumentsUploaded(caseData.getBoDocumentsUploaded())
+
+                .primaryApplicantPhoneNumber(caseData.getPrimaryApplicantPhoneNumber())
+                .declaration(caseData.getDeclaration())
+                .legalStatement(caseData.getLegalStatement())
+                .deceasedMarriedAfterWillOrCodicilDate(caseData.getDeceasedMarriedAfterWillOrCodicilDate())
+
+                .payments(caseData.getPayments());
+
+        if (transform) {
+            updateCaseBuilderForTransformCase(caseData, builder);
+
+        } else {
+
+            updateCaseBuilder(caseData, builder);
+        }
+
+
+        return builder;
     }
 
-    private String getPaymentReference(CaseData caseData) {
-        if (PAYMENT_METHOD_VALUE_FEE_ACCOUNT.equals(caseData.getSolsPaymentMethods())) {
-            return PAYMENT_REFERENCE_FEE_PREFIX + caseData.getSolsFeeAccountNumber();
-        } else {
-            return PAYMENT_REFERENCE_CHEQUE;
+    private void updateCaseBuilder(CaseData caseData, ResponseCaseDataBuilder builder) {
+        if (caseData.getIhtFormCompletedOnline() != null) {
+            if (caseData.getIhtFormCompletedOnline().equalsIgnoreCase(ANSWER_YES)) {
+                builder
+                        .ihtReferenceNumber(caseData.getIhtReferenceNumber());
+            } else {
+                builder
+                        .ihtReferenceNumber(null);
+            }
         }
+
+        List<CollectionMember<AliasName>> deceasedAliasNames = EMPTY_LIST;
+        if (caseData.getDeceasedAliasNameList() != null) {
+            deceasedAliasNames = caseData.getDeceasedAliasNameList()
+                    .stream()
+                    .map(CollectionMember::getValue)
+                    .map(deceasedAliasName -> buildDeceasedAliasNameExecutor(deceasedAliasName))
+                    .map(alias -> new CollectionMember<>(null, alias))
+                    .collect(Collectors.toList());
+        }
+        if (deceasedAliasNames.isEmpty()) {
+            builder
+                    .solsDeceasedAliasNamesList(caseData.getSolsDeceasedAliasNamesList());
+        } else {
+            builder
+                    .solsDeceasedAliasNamesList(deceasedAliasNames)
+                    .deceasedAliasNamesList(null);
+        }
+
+        builder
+                .additionalExecutorsApplying(caseData.getAdditionalExecutorsApplying())
+                .additionalExecutorsNotApplying(caseData.getAdditionalExecutorsNotApplying())
+                .solsAdditionalExecutorList(caseData.getSolsAdditionalExecutorList());
+    }
+
+    private void updateCaseBuilderForTransformCase(CaseData caseData, ResponseCaseDataBuilder builder) {
+        builder
+                .ihtReferenceNumber(caseData.getIhtReferenceNumber())
+                .solsDeceasedAliasNamesList(caseData.getSolsDeceasedAliasNamesList());
+
+        if (CollectionUtils.isEmpty(caseData.getSolsAdditionalExecutorList())) {
+            builder
+                    .additionalExecutorsApplying(EMPTY_LIST)
+                    .additionalExecutorsNotApplying(EMPTY_LIST);
+        } else {
+            List<CollectionMember<AdditionalExecutorApplying>> applyingExec = caseData.getSolsAdditionalExecutorList()
+                    .stream()
+                    .map(CollectionMember::getValue)
+                    .filter(additionalExecutor -> ANSWER_YES.equalsIgnoreCase(additionalExecutor.getAdditionalApplying()))
+                    .map(additionalExecutorApplying -> buildApplyingAdditionalExecutor(additionalExecutorApplying))
+                    .map(executor -> new CollectionMember<>(null, executor))
+                    .collect(Collectors.toList());
+
+
+            List<CollectionMember<AdditionalExecutorNotApplying>> notApplyingExec = caseData.getSolsAdditionalExecutorList()
+                    .stream()
+                    .map(CollectionMember::getValue)
+                    .filter(additionalExecutor -> ANSWER_NO.equalsIgnoreCase(additionalExecutor.getAdditionalApplying()))
+                    .map(additionalExecutorNotApplying -> buildNotApplyingAdditionalExecutor(additionalExecutorNotApplying))
+                    .map(executor -> new CollectionMember<>(null, executor))
+                    .collect(Collectors.toList());
+
+            builder
+                    .additionalExecutorsApplying(applyingExec)
+                    .additionalExecutorsNotApplying(notApplyingExec)
+                    .solsAdditionalExecutorList(EMPTY_LIST);
+        }
+    }
+
+    private AdditionalExecutorApplying buildApplyingAdditionalExecutor(AdditionalExecutor additionalExecutorApplying) {
+        return AdditionalExecutorApplying.builder()
+                .applyingExecutorName(additionalExecutorApplying.getAdditionalExecForenames()
+                        + " " + additionalExecutorApplying.getAdditionalExecLastname())
+                .applyingExecutorPhoneNumber(null)
+                .applyingExecutorEmail(null)
+                .applyingExecutorAddress(additionalExecutorApplying.getAdditionalExecAddress())
+                .applyingExecutorOtherNames(additionalExecutorApplying.getAdditionalExecAliasNameOnWill())
+                .build();
+    }
+
+    private AliasName buildDeceasedAliasNameExecutor(ProbateAliasName aliasNames) {
+        return AliasName.builder()
+                .solsAliasname(aliasNames.getForenames() + " " + aliasNames.getLastName())
+                .build();
+    }
+
+    private AdditionalExecutorNotApplying buildNotApplyingAdditionalExecutor(AdditionalExecutor additionalExecutorNotApplying) {
+        return AdditionalExecutorNotApplying.builder()
+                .notApplyingExecutorName(additionalExecutorNotApplying.getAdditionalExecForenames()
+                        + " " + additionalExecutorNotApplying.getAdditionalExecLastname())
+                .notApplyingExecutorReason(additionalExecutorNotApplying.getAdditionalExecReasonNotApplying())
+                .notApplyingExecutorNameOnWill(additionalExecutorNotApplying.getAdditionalExecAliasNameOnWill())
+                .build();
+    }
+
+    private String getOtherExecutorExists(CaseData caseData) {
+        if (ApplicationType.PERSONAL.equals(caseData.getApplicationType())) {
+            return caseData.getAdditionalExecutorsApplying() == null || caseData.getAdditionalExecutorsApplying().isEmpty()
+                    ? ANSWER_NO : ANSWER_YES;
+        } else {
+            return caseData.getOtherExecutorExists();
+        }
+    }
+
+    private String getPrimaryApplicantHasAlias(CaseData caseData) {
+        if (ApplicationType.PERSONAL.equals(caseData.getApplicationType())) {
+            return ANSWER_NO;
+        } else {
+            return caseData.getPrimaryApplicantHasAlias();
+        }
+    }
+
+    private String getPaymentReferenceNumber(CaseData caseData) {
+        if (ApplicationType.PERSONAL.equals(caseData.getApplicationType())) {
+            return caseData.getPaymentReferenceNumber();
+        } else {
+            if (PAYMENT_METHOD_VALUE_FEE_ACCOUNT.equals(caseData.getSolsPaymentMethods())) {
+                return PAYMENT_REFERENCE_FEE_PREFIX + caseData.getSolsFeeAccountNumber();
+            } else {
+                return PAYMENT_REFERENCE_CHEQUE;
+            }
+        }
+
     }
 
     private String transformMoneyGBPToString(BigDecimal bdValue) {
@@ -187,15 +368,15 @@ public class CallbackResponseTransformer {
                 .orElse(null);
     }
 
-    private String transformToString(Long longValue) {
-        return Optional.ofNullable(longValue)
+    private String transformToString(BigDecimal bdValue) {
+        return Optional.ofNullable(bdValue)
+                .map(BigDecimal::intValue)
                 .map(String::valueOf)
                 .orElse(null);
     }
 
-    private String transformToString(Float value) {
-        return Optional.ofNullable(value)
-                .map(Float::intValue)
+    private String transformToString(Long longValue) {
+        return Optional.ofNullable(longValue)
                 .map(String::valueOf)
                 .orElse(null);
     }

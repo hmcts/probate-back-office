@@ -26,6 +26,6 @@ public class DocumentManagementURIBuilderTest {
 
     @Test
     public void shouldBuildUrlWithId() {
-        assertThat(documentManagementURIBuilder.buildUrlWithId(ID), is(HOST + URL + "/" + ID));
+        assertThat(documentManagementURIBuilder.buildUrl(ID), is(HOST + URL + "/" + ID));
     }
 }
