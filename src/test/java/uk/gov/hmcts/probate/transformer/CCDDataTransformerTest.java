@@ -81,7 +81,7 @@ public class CCDDataTransformerTest {
         when(caseDataMock.getDeceasedDateOfBirth()).thenReturn(DOB);
         when(caseDataMock.getDeceasedDateOfDeath()).thenReturn(DOD);
 
-        when(caseDataMock.getSolsIHTFormId()).thenReturn(IHT_FORM_ID);
+        when(caseDataMock.getIhtFormId()).thenReturn(IHT_FORM_ID);
         when(caseDataMock.getIhtGrossValue()).thenReturn(IHT_GROSS);
         when(caseDataMock.getIhtNetValue()).thenReturn(IHT_NET);
         when(caseDataMock.getFeeForUkCopies()).thenReturn(FEE_UK_COPIES);

@@ -113,6 +113,10 @@
     <td><strong>Estate details</strong></td>
   </tr>
   <tr>
+    <td colspan="2">IHT form completed:</td>
+    <td>{% if case_data.ihtFormId %}{{ case_data.ihtFormId }}{% endif %}</td>
+  </tr>
+  <tr>
     <td colspan="2">IHT form completed online:</td>
     <td>{% if case_data.ihtFormCompletedOnline %}{{ case_data.ihtFormCompletedOnline }}{% endif %}</td>
   </tr>

@@ -207,4 +207,13 @@ public class CaseDataTest {
 
         assertEquals("4th January 2000", caseData.getDeceasedDateOfDeathFormatted());
     }
+
+    @Test
+    public void shouldThrowParseException() {
+        final CaseData caseData = CaseData.builder()
+                .deceasedDateOfDeath(LocalDate.of(300000,01,04))
+                .build();
+
+        assertEquals(null, caseData.getDeceasedDateOfDeathFormatted());
+    }
 }
