@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.serenitybdd.rest.SerenityRest;
 import net.thucydides.junit.spring.SpringIntegration;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
