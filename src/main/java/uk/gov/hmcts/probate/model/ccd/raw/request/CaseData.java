@@ -106,7 +106,7 @@ public class CaseData {
 
     private final List<CollectionMember<AliasName>> solsDeceasedAliasNamesList;
 
-    @NotBlank(groups = {ApplicationUpdatedGroup.class}, message = "{solsIHTFormIdIsNull}")
+    @NotBlank(groups = {ApplicationUpdatedGroup.class}, message = "{ihtFormIdIsNull}")
     private final String ihtFormId;
 
     @NotNull(groups = {ApplicationUpdatedGroup.class}, message = "{ihtNetIsNull}")
