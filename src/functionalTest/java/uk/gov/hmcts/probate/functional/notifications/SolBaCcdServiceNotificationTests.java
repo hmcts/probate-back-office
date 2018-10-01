@@ -40,26 +40,55 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
 
     @Test
     public void verifySolicitorCaseStoppedShouldReturnOkResponseCode() {
-        ResponseBody body = validatePostSuccess("solicitorPayloadNotifications.json", "/notify/case-stopped");
 
-        JsonPath jsonPath = JsonPath.from(body.asString());
-        String documentUrl = jsonPath.get("data.probateDocumentsGenerated[0].value.DocumentLink.document_binary_url");
-
-        String document = utils.downloadPdfAndParseToString(documentUrl);
+        String document = sendEmail("solicitorPayloadNotifications.json", "/notify/case-stopped");
 
         assertTrue(document.contains(SOLS_STOP_DETAILS));
     }
 
     @Test
     public void verifyPersonalApplicantCaseStoppedShouldReturnOkResponseCode() {
-        ResponseBody body = validatePostSuccess("personalPayloadNotifications.json", "/notify/case-stopped");
+
+        String document = sendEmail("personalPayloadNotifications.json", "/notify/case-stopped");
+
+        assertTrue(document.contains(PA_STOP_DETAILS));
+    }
+
+    @Test
+    public void verifyPersonalApplicantCaseStoppedContentIsOk() {
+        String document = sendEmail("personalPayloadNotifications.json", "/notify/case-stopped");
+
+        assertTrue(document.contains(PA_STOP_DETAILS));
+        assertTrue(document.contains("Birmingham"));
+        assertTrue(document.contains("Executor name 1 Executor Last Name 1"));
+        assertTrue(document.contains("1528365719153338"));
+        assertTrue(document.contains("2000-01-01"));
+        assertTrue(document.contains("Deceased First Name Deceased Last Name"));
+    }
+
+    @Test
+    public void verifySolicitorCaseStoppedContentIsOkay() {
+
+        String document = sendEmail("solicitorPayloadNotifications.json", "/notify/case-stopped");
+
+        assertTrue(document.contains(SOLS_STOP_DETAILS));
+        assertTrue(document.contains("Birmingham"));
+        assertTrue(document.contains("1231-3984-3949-0300"));
+        assertTrue(document.contains("name"));
+        assertTrue(document.contains("1528365719153338"));
+        assertTrue(document.contains("2000-01-01"));
+        assertTrue(document.contains("Deceased First Name Deceased Last Name"));
+    }
+
+
+    private String sendEmail(String fileName, String url) {
+        ResponseBody body = validatePostSuccess(fileName, url);
 
         JsonPath jsonPath = JsonPath.from(body.asString());
         String documentUrl = jsonPath.get("data.probateDocumentsGenerated[0].value.DocumentLink.document_binary_url");
 
         String document = utils.downloadPdfAndParseToString(documentUrl);
-
-        assertTrue(document.contains(PA_STOP_DETAILS));
+        return document;
     }
 
     private ResponseBody validatePostSuccess(String jsonFileName, String path) {
