@@ -1,0 +1,166 @@
+{
+  "event": {
+    "id": "solicitorCreateApplication",
+    "description": "",
+    "summary": "Probate application"
+  },
+  "ignore_warning": true,
+  "event_token": "sampletoken",
+  "data": {
+    "otherExecutorExists": "Yes",
+    "solsSOTName": "SOLfirstNAME SOLmiddleNAME SOLsurNAME1 SOLsurNAME2",
+    "solsSOTJobTitle": "Junior Lawyer",
+    "extraCopiesOfGrant": "2",
+    "outsideUKGrantCopies": "2",
+    "solsPaymentMethods": "fee account",
+    "solsFeeAccountNumber": "54321",
+    "deceasedAddress": {
+      "AddressLine1": "1 the street show off building gated development London Chelsea AB12CD UK",
+      "AddressLine2": "show off building",
+      "AddressLine3": "gated development",
+      "PostTown": "London",
+      "County": "Chelsea",
+      "PostCode": "AB12CD",
+      "Country": "UK"
+    },
+    "deceasedAnyOtherNames": "Yes",
+    "solsSolicitorPhoneNumber": "07999999999",
+    "solsAdditionalInfo": "some sols notes",
+    "deceasedDateOfBirth": "1970-01-01",
+    "willHasCodicils": "Yes",
+    "solsDeceasedAliasNamesList": [
+      {
+        "value": {
+          "SolsAliasname": "DECEASEDaliasNAME11 DECEASEDaliasNAME12"
+        },
+        "id": "95d45c17-aba1-4441-8d98-aaaa2ec49661"
+      },
+      {
+        "value": {
+          "SolsAliasname": "DECEASEDaliasNAME21 DECEASEDaliasNAME22"
+        },
+        "id": "95d45c17-aba1-4441-8d98-aaaa2ec49662"
+      },
+      {
+        "value": {
+          "SolsAliasname": "DECEASEDaliasNAME31 DECEASEDaliasNAME32"
+        },
+        "id": "95d45c17-aba1-4441-8d98-aaaa2ec49663"
+      }
+    ],
+    "willAccessOriginal": "Yes",
+    "solsSolicitorFirmName": "Lousy Overpriced LawyerS",
+    "willExists": "Yes",
+    "deceasedDateOfDeath": "2018-01-01",
+    "primaryApplicantForenames": "EX1FIRSTname EX1MIDDLEname",
+    "solsExecutorAliasNames": "EX1ALIAS1 EX1ALIAS2 EX1ALIAS3",
+    "primaryApplicantSurname": "EX1SURname1 EX1SURname2",
+    "primaryApplicantAddress": {
+      "AddressLine1": "The Shard 32 London Bridge Street (EX1) London SE1 9SG UK",
+      "AddressLine2": "32 London Bridge Street",
+      "AddressLine3": "(EX1)",
+      "PostTown": "London",
+      "County": "",
+      "PostCode": "SE1 9SG",
+      "Country": "UK"
+    },
+    "solsSolicitorEmail": "contact@acme.com",
+    "solsSolicitorPhoneNumber": "0208 863 98688",
+    "deceasedDomicileInEngWales": "Yes",
+    "solsIHTFormId": "IHT205",
+    "ihtGrossValue": "100000051",
+    "ihtNetValue": "500149",
+    "deceasedSurname": "DEADsurNAME1 DEADsurNAME2",
+    "solsAdditionalExecutorList": [
+      {
+        "value": {
+          "additionalExecForenames": "EX2FIRSTname EX2MIDDLEname",
+          "additionalExecLastname": "EX2SURname1 EX2SURname2",
+          "additionalExecNameOnWill": "Yes",
+          "additionalExecAliasNameOnWill": "EX2ALIAS1 EX2ALIAS2 EX2ALIAS3",
+          "additionalApplying": "Yes",
+          "additionalExecAddress": {
+            "AddressLine1": "The Shard 32 London Bridge Street (EX2) London SE1 9SG UK",
+            "AddressLine2": "32 London Bridge Street",
+            "AddressLine3": "(EX2)",
+            "PostTown": "London",
+            "County": "",
+            "PostCode": "SE1 9SG",
+            "Country": "UK"
+          }
+        },
+        "id": "366406fe-e6c3-4bdf-8709-121f8f64c1f2"
+      },
+      {
+        "value": {
+          "additionalExecForenames": "EX3FIRSTname EX3MIDDLEname",
+          "additionalExecLastname": "EX3SURname1 EX3SURname2",
+          "additionalExecNameOnWill": "Yes",
+          "additionalExecAliasNameOnWill": "EX3ALIAS1 EX3ALIAS2 EX3ALIAS3",
+          "additionalApplying": "No",
+          "additionalExecReasonNotApplying": "PowerReserved"
+        },
+        "id": "366406fe-e6c3-4bdf-8709-121f8f64c1f3"
+      },
+      {
+        "value": {
+          "additionalExecForenames": "EX4FIRSTname EX4MIDDLEname",
+          "additionalExecLastname": "EX4SURname1 EX4SURname2",
+          "additionalExecNameOnWill": "Yes",
+          "additionalExecAliasNameOnWill": "EX4ALIAS1 EX4ALIAS2 EX4ALIAS3",
+          "additionalApplying": "No",
+          "additionalExecReasonNotApplying": "DiedBefore"
+        },
+        "id": "366406fe-e6c3-4bdf-8709-121f8f64c1f4"
+      },
+      {
+        "value": {
+          "additionalExecForenames": "EX5FIRSTname EX5MIDDLEname",
+          "additionalExecLastname": "EX5SURname1 EX5SURname2",
+          "additionalExecNameOnWill": "Yes",
+          "additionalExecAliasNameOnWill": "EX5ALIAS1 EX5ALIAS2 EX5ALIAS3",
+          "additionalApplying": "Yes",
+          "additionalExecAddress": {
+            "AddressLine1": "The Shard 32 London Bridge Street (EX5) London SE1 9SG UK",
+            "AddressLine2": "32 London Bridge Street",
+            "AddressLine3": "(EX5)",
+            "PostTown": "London",
+            "County": "",
+            "PostCode": "SE1 9SG",
+            "Country": "UK"
+          }
+        },
+        "id": "366406fe-e6c3-4bdf-8709-121f8f64c1f5"
+      },
+      {
+        "value": {
+          "additionalExecForenames": "EX6FIRSTname EX6MIDDLEname",
+          "additionalExecLastname": "EX6SURname1 EX6SURname2",
+          "additionalExecNameOnWill": "Yes",
+          "additionalExecAliasNameOnWill": "EX6ALIAS1 EX6ALIAS2 EX6ALIAS3",
+          "additionalApplying": "No",
+          "additionalExecReasonNotApplying": "DiedAfter"
+        },
+        "id": "366406fe-e6c3-4bdf-8709-121f8f64c1f6"
+      },
+      {
+        "value": {
+          "additionalExecForenames": "EX7FIRSTname EX7MIDDLEname",
+          "additionalExecLastname": "EX7SURname1 EX7SURname2",
+          "additionalExecNameOnWill": "Yes",
+          "additionalExecAliasNameOnWill": "EX7ALIAS1 EX7ALIAS2 EX7ALIAS3",
+          "additionalApplying": "No",
+          "additionalExecReasonNotApplying": "Renunciation"
+        },
+        "id": "366406fe-e6c3-4bdf-8709-121f8f64c1f7"
+      }
+    ],
+    "solsSolicitorFirmPostcode": "firmpc",
+    "deceasedForenames": "DEADfirstNAME DEADmiddleNAME",
+    "willNumberOfCodicils": "2",
+    "primaryApplicantIsApplying": "Yes",
+    "primaryApplicantHasAlias": "Yes",
+    "solsSolicitorAppReference": "sol-ref-123",
+    "solsSOTNeedToUpdate": "Yes"
+  }
+}
