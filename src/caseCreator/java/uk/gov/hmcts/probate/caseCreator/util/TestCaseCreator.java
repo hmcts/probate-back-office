@@ -96,6 +96,7 @@ public class TestCaseCreator {
         createCase("create.sols.ccd.json", "caseworkers", "solicitorCreateApplication");
     }
 
+    @Ignore
     @Test
     public void createBOSolsCase() throws Exception {
         idamUsername = idamBoUsername;
