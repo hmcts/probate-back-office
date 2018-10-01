@@ -135,7 +135,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     @Test
     public void verifyRequestCheckListAnswerEqualsNo() {
         validatePostFailureForCheckList("failure.checkList.json",
-                "Please ensure all checks have been completed");
+                "Ensure all checks have been completed, cancel to return to the examining state");
     }
 
     @Test
