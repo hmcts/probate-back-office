@@ -21,7 +21,7 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     private static final String DOCUMENTS_RECEIVED = "/notify/documents-received";
     private static final String GRANT_ISSUED = "/document/generate-grant";
     private static final String CASE_STOPPED = "/notify/case-stopped";
-    
+
     private static final String BIRMINGHAM_NO = "0121 681 3401";
 
     private static final String STOP_URL = "data.probateDocumentsGenerated[0].value.DocumentLink.document_binary_url";
@@ -139,7 +139,7 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
         assertTrue(document.contains("Birmingham"));
         assertTrue(document.contains("name"));
         assertTrue(document.contains("1528365719153338"));
-        assertTrue(document.contains("2000-01-01"));
+        assertTrue(document.contains("1st January 2000"));
         assertTrue(document.contains("Deceased First Name Deceased Last Name"));
         assertTrue(document.contains(BIRMINGHAM_NO));
     }
@@ -149,7 +149,7 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
         assertTrue(document.contains("Birmingham"));
         assertTrue(document.contains("Executor name 1 Executor Last Name 1"));
         assertTrue(document.contains("1528365719153338"));
-        assertTrue(document.contains("2000-01-01"));
+        assertTrue(document.contains("1st January 2000"));
         assertTrue(document.contains("Deceased First Name Deceased Last Name"));
         assertTrue(document.contains(BIRMINGHAM_NO));
     }

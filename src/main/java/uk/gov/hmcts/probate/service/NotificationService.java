@@ -80,7 +80,7 @@ public class NotificationService {
         personalisation.put("registry_name", registry.getName());
         personalisation.put("registry_phone", registry.getPhone());
         personalisation.put("case-stop-details", caseData.getBoStopDetails());
-        personalisation.put("deceased_dod", caseData.getDeceasedDateOfDeath().toString());
+        personalisation.put("deceased_dod", caseData.getDeceasedDateOfDeathFormatted());
         personalisation.put("ccd_reference", caseDetails.getId().toString());
 
         return personalisation;
