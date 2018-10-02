@@ -38,29 +38,29 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
         validatePostSuccess("personalPayloadNotifications.json", "/document/generate-grant");
     }
 
-    @Test
-    public void verifySolicitorCaseStoppedShouldReturnOkResponseCode() {
-        ResponseBody body = validatePostSuccess("solicitorPayloadNotifications.json", "/notify/case-stopped");
+//     @Test
+//     public void verifySolicitorCaseStoppedShouldReturnOkResponseCode() {
+//         ResponseBody body = validatePostSuccess("solicitorPayloadNotifications.json", "/notify/case-stopped");
 
-        JsonPath jsonPath = JsonPath.from(body.asString());
-        String documentUrl = jsonPath.get("data.probateDocumentsGenerated[0].value.DocumentLink.document_binary_url");
+//         JsonPath jsonPath = JsonPath.from(body.asString());
+//         String documentUrl = jsonPath.get("data.probateDocumentsGenerated[0].value.DocumentLink.document_binary_url");
 
-        String document = utils.downloadPdfAndParseToString(documentUrl);
+//         String document = utils.downloadPdfAndParseToString(documentUrl);
 
-        assertTrue(document.contains(SOLS_STOP_DETAILS));
-    }
+//         assertTrue(document.contains(SOLS_STOP_DETAILS));
+//     }
 
-    @Test
-    public void verifyPersonalApplicantCaseStoppedShouldReturnOkResponseCode() {
-        ResponseBody body = validatePostSuccess("personalPayloadNotifications.json", "/notify/case-stopped");
+//     @Test
+//     public void verifyPersonalApplicantCaseStoppedShouldReturnOkResponseCode() {
+//         ResponseBody body = validatePostSuccess("personalPayloadNotifications.json", "/notify/case-stopped");
 
-        JsonPath jsonPath = JsonPath.from(body.asString());
-        String documentUrl = jsonPath.get("data.probateDocumentsGenerated[0].value.DocumentLink.document_binary_url");
+//         JsonPath jsonPath = JsonPath.from(body.asString());
+//         String documentUrl = jsonPath.get("data.probateDocumentsGenerated[0].value.DocumentLink.document_binary_url");
 
-        String document = utils.downloadPdfAndParseToString(documentUrl);
+//         String document = utils.downloadPdfAndParseToString(documentUrl);
 
-        assertTrue(document.contains(PA_STOP_DETAILS));
-    }
+//         assertTrue(document.contains(PA_STOP_DETAILS));
+//     }
 
     private ResponseBody validatePostSuccess(String jsonFileName, String path) {
         Response response = SerenityRest.given()
