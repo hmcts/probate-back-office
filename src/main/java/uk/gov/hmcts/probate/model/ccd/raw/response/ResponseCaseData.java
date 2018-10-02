@@ -14,6 +14,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.Declaration;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.LegalStatement;
+import uk.gov.hmcts.probate.model.ccd.raw.Payment;
 import uk.gov.hmcts.probate.model.ccd.raw.ProbateAliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.StopReason;
@@ -42,7 +43,7 @@ public class ResponseCaseData {
     private final String solsSOTName;
     private final String solsSOTJobTitle;
     private final String solsSolicitorAppReference;
-    private final String solsIHTFormId;
+    private final String ihtFormId;
     private final String willExists;
     private final String willAccessOriginal;
     private final String willHasCodicils;
@@ -106,4 +107,6 @@ public class ResponseCaseData {
     //Todo remove PA specific attr
     private final String primaryApplicantPhoneNumber;
 
+    private final List<CollectionMember<Payment>> payments;
+    
 }

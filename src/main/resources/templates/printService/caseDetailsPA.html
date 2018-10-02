@@ -113,8 +113,13 @@
     <td><strong>Estate details</strong></td>
   </tr>
   <tr>
+  </tr>{% if not case_data.ihtReferenceNumber %}<tr>
     <td colspan="2">IHT form completed online:</td>
     <td>{% if case_data.ihtFormCompletedOnline %}{{ case_data.ihtFormCompletedOnline }}{% endif %}</td>
+  </tr>{% endif %}
+  <tr>
+    <td colspan="2">IHT form completed:</td>
+    <td>{% if case_data.ihtFormId %}{{ case_data.ihtFormId }}{% endif %}</td>
   </tr>
   <tr>
     <td colspan="2">IHT reference number:</td>
@@ -127,10 +132,6 @@
   <tr>
     <td colspan="2">IHT Net value:</td>
     <td>{% if case_data.ihtNetValue %}&pound;{{ (case_data.ihtNetValue/100) | money('0,0.00') }}{% endif %}</td>
-  </tr>
-  <tr>
-    <td colspan="2">Payment reference:</td>
-    <td>{% if case_data.paymentReferenceNumber %}{{ case_data.paymentReferenceNumber }}{% endif %}</td>
   </tr>
   <tr>
     <td colspan="3">&nbsp;</td>

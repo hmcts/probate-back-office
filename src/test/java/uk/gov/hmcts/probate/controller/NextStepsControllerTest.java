@@ -115,7 +115,7 @@ public class NextStepsControllerTest {
                 .solsSOTNeedToUpdate(SOT_NEED_TO_UPDATE)
                 .willHasCodicils(WILL_HAS_CODICLIS)
                 .willNumberOfCodicils(NUMBER_OF_CODICLIS)
-                .solsIHTFormId(IHT_FORM)
+                .ihtFormId(IHT_FORM)
                 .solsSOTNeedToUpdate(NEED_TO_UPDATE)
                 .solsSOTName(SOLICITOR_NAME)
                 .solsSOTJobTitle(SOLICITOR_JOB_TITLE)

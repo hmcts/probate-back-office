@@ -162,7 +162,7 @@ public class CallbackResponseTransformer {
                 .willAccessOriginal((caseData.getWillAccessOriginal()))
                 .willHasCodicils(caseData.getWillHasCodicils())
                 .willNumberOfCodicils(caseData.getWillNumberOfCodicils())
-                .solsIHTFormId(caseData.getSolsIHTFormId())
+                .ihtFormId(caseData.getIhtFormId())
                 .primaryApplicantForenames(caseData.getPrimaryApplicantForenames())
                 .primaryApplicantSurname(caseData.getPrimaryApplicantSurname())
                 .primaryApplicantEmailAddress(caseData.getPrimaryApplicantEmailAddress())
@@ -219,7 +219,9 @@ public class CallbackResponseTransformer {
                 .primaryApplicantPhoneNumber(caseData.getPrimaryApplicantPhoneNumber())
                 .declaration(caseData.getDeclaration())
                 .legalStatement(caseData.getLegalStatement())
-                .deceasedMarriedAfterWillOrCodicilDate(caseData.getDeceasedMarriedAfterWillOrCodicilDate());
+                .deceasedMarriedAfterWillOrCodicilDate(caseData.getDeceasedMarriedAfterWillOrCodicilDate())
+
+                .payments(caseData.getPayments());
 
         if (transform) {
             updateCaseBuilderForTransformCase(caseData, builder);

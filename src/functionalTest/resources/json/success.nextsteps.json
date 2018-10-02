@@ -112,7 +112,7 @@
       "primaryApplicantHasAlias": "Yes",
       "solsPaymentReferenceNumber": "Cheque (payable to ‘HM Courts & Tribunals Service’)",
       "ihtGrossValue": "100001",
-      "solsIHTFormId": "IHT205",
+      "ihtFormId": "IHT205",
       "solsExecutorAliasNames": "TestPrimaryExecutorAliasName",
       "primaryApplicantSurname": "TestPrimaryExecutorLastName",
       "solsSolicitorAppReference": "refCYA2"
@@ -211,7 +211,7 @@
       "primaryApplicantHasAlias": "PUBLIC",
       "solsPaymentReferenceNumber": "PUBLIC",
       "ihtGrossValue": "PUBLIC",
-      "solsIHTFormId": "PUBLIC",
+      "ihtFormId": "PUBLIC",
       "solsExecutorAliasNames": "PUBLIC",
       "primaryApplicantSurname": "PUBLIC",
       "solsSolicitorAppReference": "PUBLIC"
@@ -313,7 +313,7 @@
       "primaryApplicantHasAlias": "PUBLIC",
       "solsPaymentReferenceNumber": "PUBLIC",
       "ihtGrossValue": "PUBLIC",
-      "solsIHTFormId": "PUBLIC",
+      "ihtFormId": "PUBLIC",
       "solsExecutorAliasNames": "PUBLIC",
       "primaryApplicantSurname": "PUBLIC",
       "solsSolicitorAppReference": "PUBLIC"
@@ -419,7 +419,7 @@
       "primaryApplicantHasAlias": "Yes",
       "solsPaymentReferenceNumber": "Cheque (payable to ‘HM Courts & Tribunals Service’)",
       "ihtGrossValue": "100001",
-      "solsIHTFormId": "IHT205",
+      "ihtFormId": "IHT205",
       "solsExecutorAliasNames": "ex1wn",
       "primaryApplicantSurname": "ex1ln",
       "solsSolicitorAppReference": "refCYA2"
@@ -516,7 +516,7 @@
       "primaryApplicantHasAlias": "PUBLIC",
       "solsPaymentReferenceNumber": "PUBLIC",
       "ihtGrossValue": "PUBLIC",
-      "solsIHTFormId": "PUBLIC",
+      "ihtFormId": "PUBLIC",
       "solsExecutorAliasNames": "PUBLIC",
       "primaryApplicantSurname": "PUBLIC",
       "solsSolicitorAppReference": "PUBLIC"
@@ -616,7 +616,7 @@
       "primaryApplicantHasAlias": "PUBLIC",
       "solsPaymentReferenceNumber": "PUBLIC",
       "ihtGrossValue": "PUBLIC",
-      "solsIHTFormId": "PUBLIC",
+      "ihtFormId": "PUBLIC",
       "solsExecutorAliasNames": "PUBLIC",
       "primaryApplicantSurname": "PUBLIC",
       "solsSolicitorAppReference": "PUBLIC"
