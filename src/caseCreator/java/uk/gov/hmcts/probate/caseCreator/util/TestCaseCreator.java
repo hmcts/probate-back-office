@@ -129,7 +129,7 @@ public class TestCaseCreator {
 
     public String generateServiceToken() {
         String serviceToken = relaxedServiceAuthTokenGenerator.generate();
-        log.info("Service Token: {}" + serviceToken);
+        log.info("Service Token: {}", serviceToken);
         return serviceToken;
     }
 
@@ -141,7 +141,7 @@ public class TestCaseCreator {
     }
 
     private String generateEventToken(String role, String eventName, Headers headersWithUserId) {
-        log.info("User Id: {}"+ userId);
+        log.info("User Id: {}", userId);
         RestAssured.baseURI = solCcdServiceUrl;
         return SerenityRest.given()
                 .relaxedHTTPSValidation()
@@ -153,13 +153,13 @@ public class TestCaseCreator {
 
     public String generateUserTokenWithNoRoles() throws Exception {
         clientToken = generateClientToken();
-        log.info("Client Token : {}" + clientToken);
+        log.info("Client Token : {}", clientToken);
         return clientToken;
     }
 
     private String generateClientToken() throws Exception {
         String code = generateClientCode();
-        log.info("Client Code: {}" + code);
+        log.info("Client Code: {}", code);
         return "Bearer " + RestAssured.given().relaxedHTTPSValidation().post(idamUserBaseUrl + "/oauth2/token?code=" + code +
                 "&client_secret=" + idamSecret +
                 "&client_id=probate" +
