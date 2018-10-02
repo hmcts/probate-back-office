@@ -1,4 +1,4 @@
-package uk.gov.hmcts.probate.functional.util;
+package uk.gov.hmcts.probate.caseCreator.util;
 
 import com.warrenstrange.googleauth.GoogleAuthenticator;
 import io.restassured.http.ContentType;

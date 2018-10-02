@@ -1,4 +1,4 @@
-package uk.gov.hmcts.probate.functional.util;
+package uk.gov.hmcts.probate.caseCreator.util;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -57,6 +57,9 @@ public class TestCaseCreator {
     @Value("${idam.sol.username}")
     private String idamSolUsername;
 
+    @Value("${idam.bo.username}")
+    private String idamBoUsername;
+
     @Value("${idam.userpassword}")
     private String idamPassword;
 
@@ -82,18 +85,23 @@ public class TestCaseCreator {
         RestAssured.defaultParser = Parser.JSON;
     }
 
-    @Ignore
     @Test
     public void createPaCase() throws Exception {
         idamUsername = idamPaUsername;
         createCase("create.pa.ccd.json", "citizens", "applyForGrant");
     }
 
-    @Ignore
     @Test
     public void createSolsCase() throws Exception {
         idamUsername = idamSolUsername;
         createCase("create.sols.ccd.json", "caseworkers", "solicitorCreateApplication");
+    }
+
+    @Ignore
+    @Test
+    public void createBOSolsCase() throws Exception {
+        idamUsername = idamBoUsername;
+        createCase("create.bo.sols.ccd.json", "caseworkers", "boPrintCase");
     }
 
     private void createCase(String fileName, String role, String eventName) throws Exception {
@@ -112,6 +120,7 @@ public class TestCaseCreator {
                         then()
                 .statusCode(201);
     }
+
 
     public Headers getHeadersWithUserId() throws Exception {
         return getHeadersWithUserId(generateServiceToken());

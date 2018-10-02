@@ -130,6 +130,14 @@ sourceSets {
       }
       resources.srcDir file('src/functionalTest/resources')
     }
+  testCaseCreator {
+    java {
+      compileClasspath += main.output
+      runtimeClasspath += main.output
+      srcDir file('src/caseCreator/java')
+    }
+    resources.srcDir file('src/caseCreator/resources')
+  }
 }
 
 task smoke(type: Test) {
@@ -142,6 +150,13 @@ task functional(type: Test) {
   description = "Runs functional Tests"
   testClassesDirs = sourceSets.testFunctional.output.classesDirs
   classpath = sourceSets.testFunctional.runtimeClasspath
+  finalizedBy aggregate
+}
+
+task caseCreator(type: Test) {
+  description = "Runs functional Case creator Tests"
+  testClassesDirs = sourceSets.testCaseCreator.output.classesDirs
+  classpath = sourceSets.testCaseCreator.runtimeClasspath
   finalizedBy aggregate
 }
 
@@ -227,6 +242,15 @@ dependencies {
   testFunctionalCompile group: 'uk.gov.hmcts.reform', name: 'service-auth-provider-client', version: '0.6.0'
   testFunctionalCompile sourceSets.main.runtimeClasspath
   testFunctionalCompile sourceSets.test.runtimeClasspath
+
+  testCaseCreatorCompile group: 'net.serenity-bdd', name: 'serenity-core', version: '1.5.2'
+  testCaseCreatorCompile group: 'net.serenity-bdd', name: 'serenity-junit', version: '1.5.2'
+  testCaseCreatorCompile group: 'net.serenity-bdd', name: 'serenity-rest-assured', version: '1.5.2'
+  testCaseCreatorCompile group: 'net.serenity-bdd', name: 'serenity-spring', version: '1.0.26'
+  testCaseCreatorCompile group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.0'
+  testCaseCreatorCompile group: 'uk.gov.hmcts.reform', name: 'service-auth-provider-client', version: '0.6.0'
+  testCaseCreatorCompile sourceSets.main.runtimeClasspath
+  testCaseCreatorCompile sourceSets.test.runtimeClasspath
 }
 
 compileJava {
