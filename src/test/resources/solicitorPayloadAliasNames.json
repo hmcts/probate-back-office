@@ -149,7 +149,10 @@
       "deceasedFullName": "fname lname",
       "primaryApplicantApplying": true,
       "docsReceivedEmailNotificationRequested": true,
-      "grantIssuedEmailNotificationRequested": true
+      "grantIssuedEmailNotificationRequested": true,
+      "boExaminationChecklistQ1": "No",
+      "boExaminationChecklistQ2": "yes",
+      "boExaminationChecklistRequestQA" : "no"
     },
     "last_modified": [
       "2018",

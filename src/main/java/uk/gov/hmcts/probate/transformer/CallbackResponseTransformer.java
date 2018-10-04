@@ -46,6 +46,7 @@ public class CallbackResponseTransformer {
     private static final String DEFAULT_REGISTRY_LOCATION = "Birmingham";
     public static final String ANSWER_YES = "Yes";
     public static final String ANSWER_NO = "No";
+    public static final String QA_CASE_STATE = "BOCaseQA";
 
     public CallbackResponse transformWithConditionalStateChange(CallbackRequest callbackRequest, Optional<String> newState) {
         ResponseCaseData responseCaseData = getResponseCaseData(callbackRequest.getCaseDetails(), false)
@@ -81,6 +82,14 @@ public class CallbackResponseTransformer {
         }
         responseCaseDataBuilder.solsSOTNeedToUpdate(null);
 
+        return transformResponse(responseCaseDataBuilder.build());
+    }
+
+    public CallbackResponse selectForQA(CallbackRequest callbackRequest) {
+        ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), false);
+        if (callbackRequest.getCaseDetails().getData().getBoExaminationChecklistRequestQA().equalsIgnoreCase(ANSWER_YES)) {
+            responseCaseDataBuilder.state(QA_CASE_STATE);
+        }
         return transformResponse(responseCaseDataBuilder.build());
     }
 
@@ -211,6 +220,10 @@ public class CallbackResponseTransformer {
                 .declaration(caseData.getDeclaration())
                 .legalStatement(caseData.getLegalStatement())
                 .deceasedMarriedAfterWillOrCodicilDate(caseData.getDeceasedMarriedAfterWillOrCodicilDate())
+
+                .boExaminationChecklistQ1(caseData.getBoExaminationChecklistQ1())
+                .boExaminationChecklistQ2(caseData.getBoExaminationChecklistQ2())
+                .boExaminationChecklistRequestQA(caseData.getBoExaminationChecklistRequestQA())
 
                 .payments(caseData.getPayments());
 
