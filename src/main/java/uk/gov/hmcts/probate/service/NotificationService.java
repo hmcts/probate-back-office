@@ -11,6 +11,7 @@ import uk.gov.hmcts.probate.model.SentEmail;
 import uk.gov.hmcts.probate.model.State;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.service.notify.NotificationClient;
 import uk.gov.service.notify.NotificationClientException;
@@ -34,15 +35,16 @@ public class NotificationService {
 
     private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMM Y HH:mm");
 
-    public Document sendEmail(State state, CaseData caseData)
+    public Document sendEmail(State state, CaseDetails caseDetails)
             throws NotificationClientException {
 
+        CaseData caseData = caseDetails.getData();
         Registry registry = registriesProperties.getRegistries().get(caseData.getRegistryLocation().toLowerCase());
 
         String templateId = getTemplateId(state, caseData.getApplicationType());
         String emailReplyToId = registry.getEmailReplyToId();
         String emailAddress = getEmail(caseData);
-        Map<String, String> personalisation = getPersonalisation(caseData, registry);
+        Map<String, String> personalisation = getPersonalisation(caseDetails, registry);
         String reference = caseData.getSolsSolicitorAppReference();
 
         SendEmailResponse response;
@@ -68,7 +70,8 @@ public class NotificationService {
         return pdfManagementService.generateAndUpload(sentEmail, SENT_EMAIL);
     }
 
-    private Map<String, String> getPersonalisation(CaseData caseData, Registry registry) {
+    private Map<String, String> getPersonalisation(CaseDetails caseDetails, Registry registry) {
+        CaseData caseData = caseDetails.getData();
         HashMap<String, String> personalisation = new HashMap<>();
         personalisation.put("applicant_name", caseData.getPrimaryApplicantFullName());
         personalisation.put("deceased_name", caseData.getDeceasedFullName());
@@ -77,6 +80,8 @@ public class NotificationService {
         personalisation.put("registry_name", registry.getName());
         personalisation.put("registry_phone", registry.getPhone());
         personalisation.put("case-stop-details", caseData.getBoStopDetails());
+        personalisation.put("deceased_dod", caseData.getDeceasedDateOfDeathFormatted());
+        personalisation.put("ccd_reference", caseDetails.getId().toString());
 
         return personalisation;
     }

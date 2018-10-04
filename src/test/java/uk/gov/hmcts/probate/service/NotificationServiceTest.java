@@ -12,11 +12,13 @@ import uk.gov.hmcts.probate.exception.BadRequestException;
 import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.SentEmail;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.service.notify.NotificationClient;
 import uk.gov.service.notify.NotificationClientException;
 import uk.gov.service.notify.SendEmailResponse;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 import static org.mockito.Matchers.any;
@@ -51,12 +53,14 @@ public class NotificationServiceTest {
     @SpyBean
     private NotificationClient notificationClient;
 
-    private CaseData personalCaseDataOxford;
-    private CaseData solicitorCaseDataOxford;
-    private CaseData personalCaseDataBirmingham;
-    private CaseData solicitorCaseDataBirmingham;
-    private CaseData personalCaseDataManchester;
-    private CaseData solicitorCaseDataManchester;
+    private CaseDetails personalCaseDataOxford;
+    private CaseDetails solicitorCaseDataOxford;
+    private CaseDetails personalCaseDataBirmingham;
+    private CaseDetails solicitorCaseDataBirmingham;
+    private CaseDetails personalCaseDataManchester;
+    private CaseDetails solicitorCaseDataManchester;
+    private static final Long ID = 1L;
+    private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
 
     @Before
     public void setUp() throws NotificationClientException {
@@ -66,44 +70,50 @@ public class NotificationServiceTest {
         doReturn(sendEmailResponse)
                 .when(notificationClient).sendEmail(anyString(), anyString(), any(), anyString(), anyString());
 
-        personalCaseDataOxford = CaseData.builder()
+        personalCaseDataOxford = new CaseDetails(CaseData.builder()
                 .applicationType(PERSONAL)
                 .registryLocation("Oxford")
                 .primaryApplicantEmailAddress("personal@test.com")
-                .build();
+                .deceasedDateOfDeath(LocalDate.of(2000, 12, 12))
+                .build(), LAST_MODIFIED, ID);
 
-        solicitorCaseDataOxford = CaseData.builder()
+        solicitorCaseDataOxford = new CaseDetails(CaseData.builder()
                 .applicationType(SOLICITOR)
                 .registryLocation("Oxford")
                 .solsSolicitorEmail("solicitor@test.com")
                 .solsSolicitorAppReference("1234-5678-9012")
-                .build();
+                .deceasedDateOfDeath(LocalDate.of(2000, 12, 12))
+                .build(), LAST_MODIFIED, ID);
 
-        personalCaseDataBirmingham = CaseData.builder()
+        personalCaseDataBirmingham = new CaseDetails(CaseData.builder()
                 .applicationType(PERSONAL)
                 .registryLocation("Birmingham")
                 .primaryApplicantEmailAddress("personal@test.com")
-                .build();
+                .deceasedDateOfDeath(LocalDate.of(2000, 12, 12))
+                .build(), LAST_MODIFIED, ID);
 
-        solicitorCaseDataBirmingham = CaseData.builder()
+        solicitorCaseDataBirmingham = new CaseDetails(CaseData.builder()
                 .applicationType(SOLICITOR)
                 .registryLocation("Birmingham")
                 .solsSolicitorEmail("solicitor@test.com")
                 .solsSolicitorAppReference("1234-5678-9012")
-                .build();
+                .deceasedDateOfDeath(LocalDate.of(2000, 12, 12))
+                .build(), LAST_MODIFIED, ID);
 
-        personalCaseDataManchester = CaseData.builder()
+        personalCaseDataManchester = new CaseDetails(CaseData.builder()
                 .applicationType(PERSONAL)
                 .registryLocation("Manchester")
                 .primaryApplicantEmailAddress("personal@test.com")
-                .build();
+                .deceasedDateOfDeath(LocalDate.of(2000, 12, 12))
+                .build(), LAST_MODIFIED, ID);
 
-        solicitorCaseDataManchester = CaseData.builder()
+        solicitorCaseDataManchester = new CaseDetails(CaseData.builder()
                 .applicationType(SOLICITOR)
                 .registryLocation("Manchester")
                 .solsSolicitorEmail("solicitor@test.com")
                 .solsSolicitorAppReference("1234-5678-9012")
-                .build();
+                .deceasedDateOfDeath(LocalDate.of(2000, 12, 12))
+                .build(), LAST_MODIFIED, ID);
     }
 
     @Test

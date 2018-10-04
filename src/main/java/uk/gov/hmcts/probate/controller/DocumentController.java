@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.service.DocumentService;
 import uk.gov.hmcts.probate.service.NotificationService;
@@ -59,10 +60,11 @@ public class DocumentController {
 
         documentService.expire(callbackRequest, DIGITAL_GRANT_DRAFT);
 
+        CaseDetails caseDetails = callbackRequest.getCaseDetails();
         CaseData caseData = callbackRequest.getCaseDetails().getData();
 
         if (caseData.isGrantIssuedEmailNotificationRequested()) {
-            Document grantIssuedSentEmail = notificationService.sendEmail(GRANT_ISSUED, caseData);
+            Document grantIssuedSentEmail = notificationService.sendEmail(GRANT_ISSUED, caseDetails);
             documents.add(grantIssuedSentEmail);
         }
 
