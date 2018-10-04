@@ -38,11 +38,11 @@ public class EmUploadService implements UploadService {
                 new HttpEntity<MultiValueMap>(parameters, headers.getMultiPartHttpHeader()),
                 HashMap.class);
 
-        ObjectMapper objectMapper = new ObjectMapper();
+        ObjectMapper originalObjectMapper = new ObjectMapper();
         Map embedded = (Map) response.get("_embedded");
         List documents = (List) embedded.get("documents");
 
-        return objectMapper.readValue(objectMapper.writeValueAsString(documents.get(0)), EvidenceManagementFile.class);
+        return originalObjectMapper.readValue(originalObjectMapper.writeValueAsString(documents.get(0)), EvidenceManagementFile.class);
     }
 
     @Override

@@ -1,0 +1,207 @@
+{
+  "event": {
+    "id": "applyForGrant",
+    "description": "",
+    "summary": "Probate application"
+  },
+  "ignore_warning": true,
+  "event_token": "sampletoken",
+  "data": {
+    "applicationID": "603",
+    "applicationSubmittedDate": "2018-09-30",
+    "deceasedDomicileInEngWales": "Yes",
+    "ihtFormCompletedOnline": "Yes",
+    "softStop": "No",
+    "registryLocation": "Manchester",
+    "applicationType": "Personal",
+    "outsideUKGrantCopies": 2,
+    "extraCopiesOfGrant": 2,
+    "deceasedAnyOtherNames": "Yes",
+    "numberOfExecutors": 7,
+    "willHasCodicils": "Yes",
+    "willNumberOfCodicils": 2,
+    "numberOfApplicants": 3,
+    "willAccessOriginal": "Yes",
+    "primaryApplicantEmailAddress": "aatpa9@mailinator.com",
+    "primaryApplicantIsApplying": "Yes",
+    "willExists": "Yes",
+    "primaryApplicantForenames": "EX1FIRSTname EX1MIDDLEname",
+    "primaryApplicantSurname": "EX1SURname1 EX1SURname2",
+    "primaryApplicantPhoneNumber": "07999999991",
+    "willLatestCodicilHasDate": "Yes",
+    "deceasedForenames": "DEADfirstNAME DEADmiddleNAME",
+    "deceasedSurname": "DEADsurNAME1 DEADsurNAME2",
+    "deceasedDateOfDeath": "2018-01-01",
+    "willDate": "1984-02-27",
+    "willLatestCodicilDate": "1987-10-06",
+    "deceasedDateOfBirth": "1970-01-01",
+    "deceasedMarriedAfterWillOrCodicilDate": "Yes",
+    "totalFee": "21700",
+    "ihtReferenceNumber": "IHT-ref-123",
+    "ihtGrossValue": "100000051",
+    "ihtNetValue": "500149",
+    "deceasedAliasNameList": [
+      {
+        "value": {
+          "Forenames": "DECEASEDaliasNAME11",
+          "LastName": "DECEASEDaliasNAME12"
+        }
+      },
+      {
+        "value": {
+          "Forenames": "DECEASEDaliasNAME21",
+          "LastName": "DECEASEDaliasNAME22"
+        }
+      },
+      {
+        "value": {
+          "Forenames": "DECEASEDaliasNAME31",
+          "LastName": "DECEASEDaliasNAME32"
+        }
+      }
+    ],
+    "executorsNotApplying": [
+      {
+        "value": {
+          "notApplyingExecutorName": "EX3FIRSTname EX3MIDDLEname EX3SURname1 EX3SURname2",
+          "notApplyingExecutorReason": "PowerReserved"
+        }
+      },
+      {
+        "value": {
+          "notApplyingExecutorName": "EX4FIRSTname EX4MIDDLEname EX4SURname1 EX4SURname2",
+          "notApplyingExecutorReason": "DiedBefore"
+        }
+      },
+      {
+        "value": {
+          "notApplyingExecutorName": "EX6FIRSTname EX6MIDDLEname EX6SURname1 EX6SURname2",
+          "notApplyingExecutorReason": "DiedAfter"
+        }
+      },
+      {
+        "value": {
+          "notApplyingExecutorName": "EX7FIRSTname EX7MIDDLEname EX7SURname1 EX7SURname2",
+          "notApplyingExecutorReason": "Renunciation"
+        }
+      }
+    ],
+    "executorsApplying": [
+      {
+        "value": {
+          "applyingExecutorName": "EX2FIRSTname EX2MIDDLEname EX2SURname1 EX2SURname2",
+          "applyingExecutorPhoneNumber": "07999999992",
+          "applyingExecutorEmail": "ex2@email.com",
+          "applyingExecutorAddress": {
+            "AddressLine1": "The Shard 32 London Bridge Street (EX2) London SE1 9SG UK",
+            "AddressLine2": "32 London Bridge Street",
+            "AddressLine3": "(EX2)",
+            "PostTown": "London",
+            "County": "",
+            "PostCode": "SE1 9SG",
+            "Country": "UK"
+          },
+          "applyingExecutorOtherNames": "EX2ALIAS1 EX2ALIAS2 EX2ALIAS3"
+        }
+      },
+      {
+        "value": {
+          "applyingExecutorName": "EX5FIRSTname EX5MIDDLEname EX5SURname1 EX5SURname2",
+          "applyingExecutorPhoneNumber": "07999999995",
+          "applyingExecutorEmail": "ex5@email.com",
+          "applyingExecutorAddress": {
+            "AddressLine1": "The Shard 32 London Bridge Street (EX5) London SE1 9SG UK",
+            "AddressLine2": "32 London Bridge Street",
+            "AddressLine3": "(EX5)",
+            "PostTown": "London",
+            "County": "",
+            "PostCode": "SE1 9SG",
+            "Country": "UK"
+          },
+          "applyingExecutorOtherNames": "EX5ALIAS1 EX5ALIAS2 EX5ALIAS3"
+        }
+      }
+    ],
+    "declaration": {
+      "confirm": "We confirm that we will administer the estate of deadFirstName deadMiddleName deadSurName1 deadSurName2, according to law. We will:",
+      "confirmItem1": "collect the whole estate",
+      "confirmItem2": "keep full details (an inventory) of the estate",
+      "confirmItem3": "keep a full account of how the estate has been administered",
+      "requests": "If the probate registry (court) asks us to do so, we will:",
+      "requestsItem1": "provide the full details of the estate and how it has been administered",
+      "requestsItem2": "return the grant of probate to the court",
+      "understand": "We understand that:",
+      "understandItem1": "our application will be rejected if we do not answer any questions about the information we have given",
+      "understandItem2": "criminal proceedings for fraud may be brought against us if we are found to have been deliberately untruthful or dishonest",
+      "accept": "I confirm that I will administer the estate of the person who died according to law, and that my application is truthful."
+    },
+    "legalStatement": {
+      "intro": "This statement is based on the information ex1FirstName ex1MiddleName ex1SurName1 ex1SurName2 has given in their application. It will be stored as a public record.",
+      "applicant": "We, EX1FIRSTname EX1MIDDLEname EX1SURname1 EX1SURname2 of The Shard 32 London Bridge Street (EX1) London SE1 9SG, EX2ALIAS1 EX2ALIAS2 EX2ALIAS3 of The Shard 32 London Bridge Street (EX2) London SE1 9SG UK and EX5ALIAS1 EX5ALIAS2 EX5ALIAS3 of \tThe Shard 32 London Bridge Street (EX5) London SE1 9SG UK, make the following statement:",
+      "deceased": "DEADfirstNAME DEADmiddleNAME DEADsurNAME1 DEADsurNAME2 was born on 1 January 1970 and died on 1 January 2018, domiciled in England and Wales.",
+      "deceasedOtherNames": "They were also known as DECEASEDaliasNAME11 DECEASEDaliasNAME12, DECEASEDaliasNAME21 DECEASEDaliasNAME22 and DECEASEDaliasNAME31 DECEASEDaliasNAME32.",
+      "deceasedEstateValue": "The gross value for the estate amounts to Â£1000000 and the net value for the estate amounts to Â£5001.",
+      "deceasedEstateLand": "To the best of our knowledge, information and belief, there was no land vested in DEADfirstNAME DEADmiddleNAME DEADsurNAME1 DEADsurNAME2 which was settled previously to the death (and not by the will) of DEADfirstNAME DEADmiddleNAME DEADsurNAME1 DEADsurNAME2 and which remained settled land notwithstanding such death.",
+      "executorsApplying": [
+        {
+          "value": {
+            "name": "EX1FIRSTname EX1MIDDLEname EX1SURname1 EX1SURname2, an executor named in the will or codicils, is applying for probate.",
+            "sign": "EX1FIRSTname EX1MIDDLEname EX1SURname1 EX1SURname2 will sign and send to the probate registry what they believe to be the true and original last will and testament and any codicils of DEADfirstNAME DEADmiddleNAME DEADsurNAME1 DEADsurNAME2."
+          }
+        },
+        {
+          "value": {
+            "name": "EX2ALIAS1 EX2ALIAS2 EX2ALIAS3, an executor named in the will or codicils as EX2FIRSTname EX2MIDDLEname EX2SURname1 EX2SURname2, is applying for probate.",
+            "sign": "EX2ALIAS1 EX2ALIAS2 EX2ALIAS3 will sign a photocopy of what they believe to be the true and original last will and testament and any codicils of DEADfirstNAME DEADmiddleNAME DEADsurNAME1 DEADsurNAME2. EX1FIRSTname EX1MIDDLEname EX1SURname1 EX1SURname2 will send the signed photocopy to the probate registry."
+          }
+        },
+        {
+          "value": {
+            "name": "EX5ALIAS1 EX5ALIAS2 EX5ALIAS3, an executor named in the will or codicils as EX5FIRSTname EX5MIDDLEname EX5SURname1 EX5SURname2, is applying for probate.",
+            "sign": "EX5ALIAS1 EX5ALIAS2 EX5ALIAS3 will sign a photocopy of what they believe to be the true and original last will and testament and any codicils of DEADfirstNAME DEADmiddleNAME DEADsurNAME1 DEADsurNAME2. EX1FIRSTname EX1MIDDLEname EX1SURname1 EX1SURname2 will send the signed photocopy to the probate registry."
+          }
+        }
+      ],
+      "executorsNotApplying": [
+        {
+          "value": {
+            "executor": "EX3FIRSTname EX3MIDDLEname EX3SURname1 EX3SURname2, an executor named in the will or codicils, is not making this application but reserves power to do so at a later date. They have been notified in writing."
+          }
+        },
+        {
+          "value": {
+            "executor": "EX4FIRSTname EX4MIDDLEname EX4SURname1 EX4SURname2, an executor named in the will or codicils, is not making this application because they died before DEADfirstNAME DEADmiddleNAME DEADsurNAME1 DEADsurNAME2 died."
+          }
+        },
+        {
+          "value": {
+            "executor": "EX6FIRSTname EX6MIDDLEname EX6SURname1 EX6SURname2, an executor named in the will or codicils, is not making this application because they died after DEADfirstNAME DEADmiddleNAME DEADsurNAME1 DEADsurNAME2 died."
+          }
+        },
+        {
+          "value": {
+            "executor": "EX7FIRSTname EX7MIDDLEname EX7SURname1 EX7SURname2, an executor named in the will or codicils, is not making this application now and gives up the right to do so in the future."
+          }
+        }
+      ]
+    },
+    "deceasedAddress": {
+      "AddressLine1": "1 the street show off building gated development London Chelsea AB12CD UK",
+      "AddressLine2": "show off building",
+      "AddressLine3": "gated development",
+      "PostTown": "London",
+      "County": "Chelsea",
+      "PostCode": "AB12CD",
+      "Country": "UK"
+    },
+    "primaryApplicantAddress": {
+      "AddressLine1": "The Shard 32 London Bridge Street (EX1) London SE1 9SG UK",
+      "AddressLine2": "32 London Bridge Street",
+      "AddressLine3": "(EX1)",
+      "PostTown": "London",
+      "County": "",
+      "PostCode": "SE1 9SG",
+      "Country": "UK"
+    }
+  }
+}

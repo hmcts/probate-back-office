@@ -72,11 +72,13 @@ public class BusinessValidationControllerTest {
     private static final String PRIMARY_SURNAME = "ExSN";
     private static final String DECEASED_OTHER_NAMES = "No";
     private static final String DECEASED_DOM_UK = "Yes";
+    private static final String ANSWER_NO = "No";
 
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private static final String CASE_VALIDATE_URL = "/case/validate";
     private static final String CASE_VALIDATE_CASE_DETAILS_URL = "/case/validateCaseDetails";
     private static final String CASE_TRANSFORM_URL = "/case/transformCase";
+    private static final String CASE_CHCEKLIST_URL = "/case/validateCheckListDetails";
 
     @Autowired
     private MockMvc mockMvc;
@@ -118,7 +120,7 @@ public class BusinessValidationControllerTest {
                 .willNumberOfCodicils(NUMBER_OF_CODICILS)
                 .solsSolicitorFirmName(SOLICITOR_FIRM_NAME)
                 .solsSolicitorFirmPostcode(SOLICITOR_FIRM_POSTCODE)
-                .solsIHTFormId(IHT_FORM)
+                .ihtFormId(IHT_FORM)
                 .solsSOTName(SOLICITOR_NAME)
                 .solsSOTJobTitle(SOLICITOR_JOB_TITLE)
                 .solsPaymentMethods(PAYMENT_METHOD)
@@ -152,7 +154,7 @@ public class BusinessValidationControllerTest {
 
     @Test
     public void shouldValidateWithSolicitorIHTFormIsNullError() throws Exception {
-        caseDataBuilder.solsIHTFormId(null);
+        caseDataBuilder.ihtFormId(null);
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
 
@@ -161,7 +163,7 @@ public class BusinessValidationControllerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.fieldErrors[0].param").value("callbackRequest"))
-                .andExpect(jsonPath("$.fieldErrors[0].field").value("caseDetails.data.solsIHTFormId"))
+                .andExpect(jsonPath("$.fieldErrors[0].field").value("caseDetails.data.ihtFormId"))
                 .andExpect(jsonPath("$.fieldErrors[0].code").value("NotBlank"))
                 .andExpect(jsonPath("$.fieldErrors[0].message").value("Solicitor IHT Form cannot be empty"));
     }
@@ -260,6 +262,36 @@ public class BusinessValidationControllerTest {
         String solicitorPayload = testUtils.getStringFromFile("solicitorAdditionalExecutors.json");
 
         mockMvc.perform(post(CASE_TRANSFORM_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
+    }
+
+    @Test
+    public void shouldReturnCheckListValidateSuccessfulQAState() throws Exception {
+        String solicitorPayload = testUtils.getStringFromFile("solicitorAdditionalExecutors.json");
+
+        mockMvc.perform(post(CASE_CHCEKLIST_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.state").value("BOCaseQA"))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
+    }
+
+    @Test
+    public void shouldReturnCheckListValidateUnSuccessful() throws Exception {
+        String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadAliasNames.json");
+
+        mockMvc.perform(post(CASE_CHCEKLIST_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.errors[0]").value("Ensure all checks have been completed, cancel to return to the examining state"))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
+
+    }
+
+    @Test
+    public void shouldReturnCheckListValidateSuccessful() throws Exception {
+        String solicitorPayload = testUtils.getStringFromFile("solicitorAdditionalExecutorsReadyToIssue.json");
+
+        mockMvc.perform(post(CASE_CHCEKLIST_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
     }

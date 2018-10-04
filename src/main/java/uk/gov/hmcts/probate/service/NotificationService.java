@@ -11,6 +11,7 @@ import uk.gov.hmcts.probate.model.SentEmail;
 import uk.gov.hmcts.probate.model.State;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.service.notify.NotificationClient;
 import uk.gov.service.notify.NotificationClientException;
@@ -20,7 +21,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
 
@@ -35,38 +35,43 @@ public class NotificationService {
 
     private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMM Y HH:mm");
 
-    public Optional<Document> sendEmail(State state, CaseData caseData)
+    public Document sendEmail(State state, CaseDetails caseDetails)
             throws NotificationClientException {
 
+        CaseData caseData = caseDetails.getData();
         Registry registry = registriesProperties.getRegistries().get(caseData.getRegistryLocation().toLowerCase());
 
         String templateId = getTemplateId(state, caseData.getApplicationType());
         String emailReplyToId = registry.getEmailReplyToId();
         String emailAddress = getEmail(caseData);
-        Map<String, String> personalisation = getPersonalisation(caseData, registry);
+        Map<String, String> personalisation = getPersonalisation(caseDetails, registry);
         String reference = caseData.getSolsSolicitorAppReference();
 
-        Document document = null;
+        SendEmailResponse response;
 
         if (state == State.CASE_STOPPED) {
-            SendEmailResponse response = notificationClient.sendEmail(templateId, emailAddress, personalisation, reference, emailReplyToId);
-            SentEmail sentEmail = SentEmail.builder()
-                    .sentOn(LocalDateTime.now().format(formatter))
-                    .from(response.getFromEmail().orElse(""))
-                    .to(emailAddress)
-                    .subject(response.getSubject())
-                    .body(markdownTransformationService.toHtml(response.getBody()))
-                    .build();
-
-            document = pdfManagementService.generateAndUpload(sentEmail, SENT_EMAIL);
+            response = notificationClient.sendEmail(templateId, emailAddress, personalisation, reference, emailReplyToId);
         } else {
-            notificationClient.sendEmail(templateId, emailAddress, personalisation, reference);
+            response = notificationClient.sendEmail(templateId, emailAddress, personalisation, reference);
         }
 
-        return Optional.ofNullable(document);
+        return getGeneratedSentEmailDocument(response, emailAddress);
     }
 
-    private Map<String, String> getPersonalisation(CaseData caseData, Registry registry) {
+    private Document getGeneratedSentEmailDocument(SendEmailResponse response, String emailAddress) {
+        SentEmail sentEmail = SentEmail.builder()
+                .sentOn(LocalDateTime.now().format(formatter))
+                .from(response.getFromEmail().orElse(""))
+                .to(emailAddress)
+                .subject(response.getSubject())
+                .body(markdownTransformationService.toHtml(response.getBody()))
+                .build();
+
+        return pdfManagementService.generateAndUpload(sentEmail, SENT_EMAIL);
+    }
+
+    private Map<String, String> getPersonalisation(CaseDetails caseDetails, Registry registry) {
+        CaseData caseData = caseDetails.getData();
         HashMap<String, String> personalisation = new HashMap<>();
         personalisation.put("applicant_name", caseData.getPrimaryApplicantFullName());
         personalisation.put("deceased_name", caseData.getDeceasedFullName());
@@ -75,6 +80,8 @@ public class NotificationService {
         personalisation.put("registry_name", registry.getName());
         personalisation.put("registry_phone", registry.getPhone());
         personalisation.put("case-stop-details", caseData.getBoStopDetails());
+        personalisation.put("deceased_dod", caseData.getDeceasedDateOfDeathFormatted());
+        personalisation.put("ccd_reference", caseDetails.getId().toString());
 
         return personalisation;
     }

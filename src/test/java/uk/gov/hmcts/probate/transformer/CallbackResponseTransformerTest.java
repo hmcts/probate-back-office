@@ -7,6 +7,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.Spy;
 import org.mockito.runners.MockitoJUnitRunner;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.DocumentType;
@@ -48,6 +49,7 @@ import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT;
+import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CallbackResponseTransformerTest {
@@ -180,6 +182,9 @@ public class CallbackResponseTransformerTest {
     @Mock
     private UploadDocument uploadDocumentMock;
 
+    @Spy
+    private DocumentTransformer documentTransformer;
+
     @Before
     public void setup() {
 
@@ -195,7 +200,7 @@ public class CallbackResponseTransformerTest {
                 .deceasedDateOfBirth(DOB)
                 .deceasedDateOfDeath(DOD)
                 .willNumberOfCodicils(NUM_CODICILS)
-                .solsIHTFormId(IHT_FORM_ID)
+                .ihtFormId(IHT_FORM_ID)
                 .ihtGrossValue(IHT_GROSS)
                 .ihtNetValue(IHT_NET)
                 .primaryApplicantForenames(APPLICANT_FORENAME)
@@ -229,7 +234,10 @@ public class CallbackResponseTransformerTest {
                 .boLimitationText(LIMITATION_TEXT)
                 .ihtReferenceNumber(IHT_REFERENCE)
                 .ihtFormCompletedOnline(IHT_ONLINE)
-                .payments(PAYMENTS_LIST);
+                .payments(PAYMENTS_LIST)
+                .boExaminationChecklistQ1(YES)
+                .boExaminationChecklistQ2(YES)
+                .boExaminationChecklistRequestQA(YES);
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
@@ -300,7 +308,7 @@ public class CallbackResponseTransformerTest {
                 .documentType(DIGITAL_GRANT_DRAFT)
                 .build();
 
-        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, document);
+        CallbackResponse callbackResponse = underTest.addDocuments(callbackRequestMock, Arrays.asList(document));
 
         assertCommon(callbackResponse);
 
@@ -351,14 +359,32 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldAddDocumentToProbateDocumentsGenerated() {
-        Document document = Document.builder().documentType(DIGITAL_GRANT).build();
-        CallbackResponse callbackResponse = underTest.grantIssued(callbackRequestMock, document);
+    public void shouldAddDocumentsToProbateDocumentsAndNotificationsGenerated() {
+        Document grantDocument = Document.builder().documentType(DIGITAL_GRANT).build();
+        Document grantIssuedSentEmail = Document.builder().documentType(SENT_EMAIL).build();
+
+        CallbackResponse callbackResponse = underTest.addDocuments(callbackRequestMock,
+                Arrays.asList(grantDocument, grantIssuedSentEmail));
 
         assertCommon(callbackResponse);
 
         assertEquals(1, callbackResponse.getData().getProbateDocumentsGenerated().size());
-        assertEquals(document, callbackResponse.getData().getProbateDocumentsGenerated().get(0).getValue());
+        assertEquals(grantDocument, callbackResponse.getData().getProbateDocumentsGenerated().get(0).getValue());
+
+        assertEquals(1, callbackResponse.getData().getProbateNotificationsGenerated().size());
+        assertEquals(grantIssuedSentEmail, callbackResponse.getData().getProbateNotificationsGenerated().get(0).getValue());
+    }
+
+    @Test
+    public void shouldAddDocumentToProbateNotificationsGenerated() {
+        Document documentsReceivedSentEmail = Document.builder().documentType(SENT_EMAIL).build();
+
+        CallbackResponse callbackResponse = underTest.addDocuments(callbackRequestMock, Arrays.asList(documentsReceivedSentEmail));
+
+        assertCommon(callbackResponse);
+
+        assertEquals(1, callbackResponse.getData().getProbateNotificationsGenerated().size());
+        assertEquals(documentsReceivedSentEmail, callbackResponse.getData().getProbateNotificationsGenerated().get(0).getValue());
     }
 
     @Test
@@ -686,7 +712,7 @@ public class CallbackResponseTransformerTest {
         assertEquals("2017-12-31", callbackResponse.getData().getDeceasedDateOfDeath());
         assertEquals(NUM_CODICILS, callbackResponse.getData().getWillNumberOfCodicils());
 
-        assertEquals(IHT_FORM_ID, callbackResponse.getData().getSolsIHTFormId());
+        assertEquals(IHT_FORM_ID, callbackResponse.getData().getIhtFormId());
         Assert.assertThat(new BigDecimal("10000"), comparesEqualTo(callbackResponse.getData().getIhtGrossValue()));
         Assert.assertThat(new BigDecimal("9000"), comparesEqualTo(callbackResponse.getData().getIhtNetValue()));
 
@@ -718,6 +744,9 @@ public class CallbackResponseTransformerTest {
         assertEquals(IHT_ONLINE, callbackResponse.getData().getIhtFormCompletedOnline());
 
         assertEquals(PAYMENTS_LIST, callbackResponse.getData().getPayments());
+        assertEquals(YES, callbackResponse.getData().getBoExaminationChecklistQ1());
+        assertEquals(YES, callbackResponse.getData().getBoExaminationChecklistQ2());
+        assertEquals(YES, callbackResponse.getData().getBoExaminationChecklistRequestQA());
     }
 
     private void assertApplicationType(CallbackResponse callbackResponse, ApplicationType applicationType) {

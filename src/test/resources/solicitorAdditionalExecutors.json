@@ -26,7 +26,7 @@
       },
       "deceasedAnyOtherNames":"No",
       "solsDeceasedAliasNamesList":null,
-      "solsIHTFormId":"IHT205",
+      "ihtFormId":"IHT205",
       "ihtNetValue":200000.0,
       "ihtGrossValue":300000.0,
       "primaryApplicantForenames":"exfn",
@@ -115,7 +115,10 @@
       "grantIssuedEmailNotificationRequested":false,
       "primaryApplicantApplying":true,
       "primaryApplicantFullName":"exfn exln",
-      "deceasedFullName":"firstName lastName"
+      "deceasedFullName":"firstName lastName",
+      "boExaminationChecklistQ1": "yes",
+      "boExaminationChecklistQ2": "yes",
+      "boExaminationChecklistRequestQA" : "yes"
     },
     "last_modified":[
       "2018",

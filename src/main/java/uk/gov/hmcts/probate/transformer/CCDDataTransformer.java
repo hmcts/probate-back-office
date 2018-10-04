@@ -45,6 +45,8 @@ public class CCDDataTransformer {
                 .fee(buildFeeDetails(caseData))
                 .solsAdditionalInfo(caseData.getSolsAdditionalInfo())
                 .executors(getAllExecutors(caseData))
+                .boExaminationChecklistQ1(getBoExaminationCheckList(caseData.getBoExaminationChecklistQ1()))
+                .boExaminationChecklistQ2(getBoExaminationCheckList(caseData.getBoExaminationChecklistQ2()))
                 .build();
     }
 
@@ -69,7 +71,7 @@ public class CCDDataTransformer {
 
     private InheritanceTax buildInheritanceTaxDetails(CaseData caseData) {
         return InheritanceTax.builder()
-                .formName(caseData.getSolsIHTFormId())
+                .formName(caseData.getIhtFormId())
                 .netValue(caseData.getIhtNetValue())
                 .grossValue(caseData.getIhtGrossValue())
                 .build();
@@ -98,6 +100,10 @@ public class CCDDataTransformer {
 
     private String getSolicitorAppReference(String solsSolicitorAppReference) {
         return solsSolicitorAppReference == null ? "" : solsSolicitorAppReference;
+    }
+
+    private String getBoExaminationCheckList(String boExaminationCheckList) {
+        return boExaminationCheckList == null ? "" : boExaminationCheckList;
     }
 
     private List<Executor> getAllExecutors(CaseData caseData) {

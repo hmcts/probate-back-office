@@ -29,6 +29,7 @@ import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CCDDataTransformer;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.validator.CaseworkerAmendValidationRule;
+import uk.gov.hmcts.probate.validator.CheckListAmendCaseValidationRule;
 import uk.gov.hmcts.probate.validator.ValidationRule;
 
 import javax.servlet.http.HttpServletRequest;
@@ -69,6 +70,8 @@ public class BusinessValidationUnitTest {
     @Mock
     private List<CaseworkerAmendValidationRule> caseworkerAmendValidationRules;
     @Mock
+    private List<CheckListAmendCaseValidationRule> checkListAmendCaseValidationRules;
+    @Mock
     private CallbackResponseTransformer callbackResponseTransformerMock;
     @Mock
     private CallbackResponse callbackResponseMock;
@@ -98,6 +101,7 @@ public class BusinessValidationUnitTest {
                 objectMapper,
                 validationRules,
                 caseworkerAmendValidationRules,
+                checkListAmendCaseValidationRules,
                 callbackResponseTransformerMock,
                 confirmationResponseServiceMock,
                 stateChangeServiceMock, pdfManagementServiceMock);

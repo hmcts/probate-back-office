@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+<meta charset="UTF-8"/>
 {% macro names(forenames, surname) %}{{ forenames }} {{ surname }}{% endmacro %}
 {% macro address(address)%}
 <tr>
@@ -281,7 +282,7 @@
     </tr>
     <tr>
       <td colspan="2">IHT form completed:</td>
-      <td>{% if case_data.solsIHTFormId %}{{ case_data.solsIHTFormId }}{% endif %}</td>
+      <td>{% if case_data.ihtFormId %}{{ case_data.ihtFormId }}{% endif %}</td>
     </tr>
     <tr>
       <td colspan="2">IHT Gross value:</td>

@@ -33,7 +33,7 @@
           "id": "de97b99a-dc68-4d32-8d69-da4153b4fd08"
         }
       ],
-      "solsIHTFormId": "IHT205",
+      "ihtFormId": "IHT205",
       "ihtNetValue": 100000.0,
       "ihtGrossValue": 200000.0,
       "primaryApplicantForenames": "exfn",
@@ -149,7 +149,10 @@
       "deceasedFullName": "fname lname",
       "primaryApplicantApplying": true,
       "docsReceivedEmailNotificationRequested": true,
-      "grantIssuedEmailNotificationRequested": true
+      "grantIssuedEmailNotificationRequested": true,
+      "boExaminationChecklistQ1": "No",
+      "boExaminationChecklistQ2": "yes",
+      "boExaminationChecklistRequestQA" : "no"
     },
     "last_modified": [
       "2018",

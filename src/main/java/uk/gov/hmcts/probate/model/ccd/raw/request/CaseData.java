@@ -107,7 +107,7 @@ public class CaseData {
     private final List<CollectionMember<AliasName>> solsDeceasedAliasNamesList;
 
     @NotBlank(groups = {ApplicationUpdatedGroup.class}, message = "{solsIHTFormIdIsNull}")
-    private final String solsIHTFormId;
+    private final String ihtFormId;
 
     @NotNull(groups = {ApplicationUpdatedGroup.class}, message = "{ihtNetIsNull}")
     @DecimalMin(groups = {ApplicationUpdatedGroup.class}, value = "0.0", message = "{ihtNetNegative}")
@@ -146,11 +146,13 @@ public class CaseData {
 
     private final String boEmailDocsReceivedNotificationRequested;
 
+    @SuppressWarnings("squid:S1170")
     @Getter(lazy = true)
     private final String boEmailDocsReceivedNotification = YES;
 
     private final String boEmailGrantIssuedNotificationRequested;
 
+    @SuppressWarnings("squid:S1170")
     @Getter(lazy = true)
     private final String boEmailGrantIssuedNotification = YES;
 
@@ -158,6 +160,7 @@ public class CaseData {
     private final DocumentLink solsLegalStatementDocument;
 
     private final List<CollectionMember<Document>> probateDocumentsGenerated = new ArrayList<>();
+    private final List<CollectionMember<Document>> probateNotificationsGenerated = new ArrayList<>();
 
     private final List<CollectionMember<UploadDocument>> boDocumentsUploaded;
 
@@ -242,6 +245,12 @@ public class CaseData {
     private final String boLimitationText;
 
     private final List<CollectionMember<Payment>> payments;
+
+    private final String boExaminationChecklistQ1;
+
+    private final String boExaminationChecklistQ2;
+
+    private final String boExaminationChecklistRequestQA;
 
     private final String applicationSubmittedDate;
 

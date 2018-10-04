@@ -75,11 +75,14 @@
       "solsPaymentReferenceNumber": "Cheque (payable to ‘HM Courts & Tribunals Service’)",
       "solsSOTName": "name",
       "ihtGrossValue": "1000000",
-      "solsIHTFormId": "IHT205",
+      "ihtFormId": "IHT205",
       "registryLocation": "Birmingham",
       "primaryApplicantSurname": "Executor Last Name 1",
       "solsSolicitorAppReference": "1231-3984-3949-0300",
-      "solsSOTJobTitle": "job title"
+      "solsSOTJobTitle": "job title",
+      "boExaminationChecklistQ1": "yes",
+      "boExaminationChecklistQ2": "yes",
+      "boExaminationChecklistRequestQA" : "yes"
     },
     "data_classification": {
       "otherExecutorExists": "PUBLIC",
@@ -133,7 +136,7 @@
       "solsPaymentReferenceNumber": "PUBLIC",
       "solsSOTName": "PUBLIC",
       "ihtGrossValue": "PUBLIC",
-      "solsIHTFormId": "PUBLIC",
+      "ihtFormId": "PUBLIC",
       "registryLocation": "PUBLIC",
       "primaryApplicantSurname": "PUBLIC",
       "solsSolicitorAppReference": "PUBLIC",
@@ -194,7 +197,7 @@
       "solsPaymentReferenceNumber": "PUBLIC",
       "solsSOTName": "PUBLIC",
       "ihtGrossValue": "PUBLIC",
-      "solsIHTFormId": "PUBLIC",
+      "ihtFormId": "PUBLIC",
       "registryLocation": "PUBLIC",
       "primaryApplicantSurname": "PUBLIC",
       "solsSolicitorAppReference": "PUBLIC",
@@ -270,7 +273,7 @@
       "primaryApplicantHasAlias": "No",
       "solsPaymentReferenceNumber": "Cheque (payable to ‘HM Courts & Tribunals Service’)",
       "ihtGrossValue": "1000000",
-      "solsIHTFormId": "IHT205",
+      "ihtFormId": "IHT205",
       "registryLocation": "Birmingham",
       "primaryApplicantSurname": "Executor Last Name 1",
       "solsSolicitorAppReference": "1231-3984-3949-0300"
@@ -321,7 +324,7 @@
       "primaryApplicantHasAlias": "PUBLIC",
       "solsPaymentReferenceNumber": "PUBLIC",
       "ihtGrossValue": "PUBLIC",
-      "solsIHTFormId": "PUBLIC",
+      "ihtFormId": "PUBLIC",
       "registryLocation": "PUBLIC",
       "primaryApplicantSurname": "PUBLIC",
       "solsSolicitorAppReference": "PUBLIC"
@@ -375,7 +378,7 @@
       "primaryApplicantHasAlias": "PUBLIC",
       "solsPaymentReferenceNumber": "PUBLIC",
       "ihtGrossValue": "PUBLIC",
-      "solsIHTFormId": "PUBLIC",
+      "ihtFormId": "PUBLIC",
       "registryLocation": "PUBLIC",
       "primaryApplicantSurname": "PUBLIC",
       "solsSolicitorAppReference": "PUBLIC"

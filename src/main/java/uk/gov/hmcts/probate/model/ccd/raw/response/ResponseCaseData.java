@@ -43,7 +43,7 @@ public class ResponseCaseData {
     private final String solsSOTName;
     private final String solsSOTJobTitle;
     private final String solsSolicitorAppReference;
-    private final String solsIHTFormId;
+    private final String ihtFormId;
     private final String willExists;
     private final String willAccessOriginal;
     private final String willHasCodicils;
@@ -62,6 +62,7 @@ public class ResponseCaseData {
     private final String paymentReferenceNumber;
     private final DocumentLink solsLegalStatementDocument;
     private final List<CollectionMember<Document>> probateDocumentsGenerated;
+    private final List<CollectionMember<Document>> probateNotificationsGenerated;
     private final List<CollectionMember<UploadDocument>> boDocumentsUploaded;
     private final String solsSOTNeedToUpdate;
     private final DocumentLink solsNextStepsDocument;
@@ -107,8 +108,12 @@ public class ResponseCaseData {
     //Todo remove PA specific attr
     private final String primaryApplicantPhoneNumber;
 
+    private final String boExaminationChecklistQ2;
+    private final String boExaminationChecklistQ1;
+    private final String boExaminationChecklistRequestQA;
+
     private final List<CollectionMember<Payment>> payments;
 
     private final String applicationSubmittedDate;
-    
+
 }
