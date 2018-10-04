@@ -22,8 +22,6 @@ static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
   ]
 }
 
-String notificationsChannel = '#probate-jenkins'
-
 withPipeline("java", product, component) {
   env.TF_LOG='DEBUG'
   env.APPINSIGHTS_INSTRUMENTATIONKEY=false
