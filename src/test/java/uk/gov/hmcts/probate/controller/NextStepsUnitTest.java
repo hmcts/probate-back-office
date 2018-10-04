@@ -95,7 +95,8 @@ public class NextStepsUnitTest {
         when(ccdDataMock.getIht()).thenReturn(inheritanceTaxMock);
         when(ccdDataMock.getFee()).thenReturn(feeMock);
         when(feeServiceMock.getTotalFee(null, 0L, 0L)).thenReturn(feeServiceResponseMock);
-        when(callbackResponseTransformerMock.transformForSolicitorComplete(callbackRequestMock, feeServiceResponseMock)).thenReturn(callbackResponseMock);
+        when(callbackResponseTransformerMock
+                .transformForSolicitorComplete(callbackRequestMock, feeServiceResponseMock)).thenReturn(callbackResponseMock);
 
 
         ResponseEntity<CallbackResponse> response = underTest.validate(callbackRequestMock,
