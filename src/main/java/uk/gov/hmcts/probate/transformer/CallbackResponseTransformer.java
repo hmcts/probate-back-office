@@ -20,7 +20,10 @@ import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData.ResponseCase
 import uk.gov.hmcts.probate.model.fee.FeeServiceResponse;
 
 import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -46,6 +49,7 @@ public class CallbackResponseTransformer {
     private static final String DEFAULT_REGISTRY_LOCATION = "Birmingham";
     public static final String ANSWER_YES = "Yes";
     public static final String ANSWER_NO = "No";
+    public static final String DATE_FORMAT = "yyyy-MM-dd";
     public static final String QA_CASE_STATE = "BOCaseQA";
 
     public CallbackResponse transformWithConditionalStateChange(CallbackRequest callbackRequest, Optional<String> newState) {
@@ -93,17 +97,20 @@ public class CallbackResponseTransformer {
         return transformResponse(responseCaseDataBuilder.build());
     }
 
-    public CallbackResponse transform(CallbackRequest callbackRequest, FeeServiceResponse feeServiceResponse) {
+    public CallbackResponse transformForSolicitorComplete(CallbackRequest callbackRequest, FeeServiceResponse feeServiceResponse) {
         String feeForNonUkCopies = transformMoneyGBPToString(feeServiceResponse.getFeeForNonUkCopies());
         String feeForUkCopies = transformMoneyGBPToString(feeServiceResponse.getFeeForUkCopies());
         String applicationFee = transformMoneyGBPToString(feeServiceResponse.getApplicationFee());
         String totalFee = transformMoneyGBPToString(feeServiceResponse.getTotal());
 
+        DateFormat targetFormat = new SimpleDateFormat(DATE_FORMAT);
+        String applicationSubmittedDate = targetFormat.format(new Date());
         ResponseCaseData responseCaseData = getResponseCaseData(callbackRequest.getCaseDetails(), false)
                 .feeForNonUkCopies(feeForNonUkCopies)
                 .feeForUkCopies(feeForUkCopies)
                 .applicationFee(applicationFee)
                 .totalFee(totalFee)
+                .applicationSubmittedDate(applicationSubmittedDate)
                 .build();
 
         return transformResponse(responseCaseData);
@@ -225,7 +232,8 @@ public class CallbackResponseTransformer {
                 .boExaminationChecklistQ2(caseData.getBoExaminationChecklistQ2())
                 .boExaminationChecklistRequestQA(caseData.getBoExaminationChecklistRequestQA())
 
-                .payments(caseData.getPayments());
+                .payments(caseData.getPayments())
+                .applicationSubmittedDate(caseData.getApplicationSubmittedDate());
 
         if (transform) {
             updateCaseBuilderForTransformCase(caseData, builder);

@@ -72,7 +72,7 @@ public class NextStepsController {
                     ccdData.getFee().getExtraCopiesOfGrant(),
                     ccdData.getFee().getOutsideUKGrantCopies());
 
-            callbackResponse = callbackResponseTransformer.transform(callbackRequest, feeServiceResponse);
+            callbackResponse = callbackResponseTransformer.transformForSolicitorComplete(callbackRequest, feeServiceResponse);
         }
 
         return ResponseEntity.ok(callbackResponse);

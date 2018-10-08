@@ -252,6 +252,8 @@ public class CaseData {
 
     private final String boExaminationChecklistRequestQA;
 
+    private final String applicationSubmittedDate;
+
     @Getter(lazy = true)
     private final List<CollectionMember<AdditionalExecutor>> executorsApplyingForLegalStatement = getAllExecutors(true);
 

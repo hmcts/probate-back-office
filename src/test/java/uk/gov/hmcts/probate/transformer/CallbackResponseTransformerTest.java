@@ -327,7 +327,7 @@ public class CallbackResponseTransformerTest {
         when(feeServiceResponseMock.getApplicationFee()).thenReturn(applicationFee);
         when(feeServiceResponseMock.getTotal()).thenReturn(totalFee);
 
-        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, feeServiceResponseMock);
+        CallbackResponse callbackResponse = underTest.transformForSolicitorComplete(callbackRequestMock, feeServiceResponseMock);
 
         assertCommon(callbackResponse);
 
@@ -348,7 +348,7 @@ public class CallbackResponseTransformerTest {
         when(feeServiceResponseMock.getApplicationFee()).thenReturn(applicationFee);
         when(feeServiceResponseMock.getTotal()).thenReturn(totalFee);
 
-        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, feeServiceResponseMock);
+        CallbackResponse callbackResponse = underTest.transformForSolicitorComplete(callbackRequestMock, feeServiceResponseMock);
 
         assertCommon(callbackResponse);
 

@@ -113,5 +113,7 @@ public class ResponseCaseData {
     private final String boExaminationChecklistRequestQA;
 
     private final List<CollectionMember<Payment>> payments;
-    
+
+    private final String applicationSubmittedDate;
+
 }
