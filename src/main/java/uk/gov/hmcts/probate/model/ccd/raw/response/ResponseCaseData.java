@@ -108,5 +108,7 @@ public class ResponseCaseData {
     private final String primaryApplicantPhoneNumber;
 
     private final List<CollectionMember<Payment>> payments;
-    
+
+    private final String applicationSubmittedDate;
+
 }
