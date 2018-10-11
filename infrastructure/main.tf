@@ -17,9 +17,9 @@ provider "vault" {
 //   path = "secret/${var.vault_section}/probate/probate_bo_govNotifyApiKey"
 // }
 
-data "vault_generic_secret" "pdf_service_grantSignatureBase64" {
-  path = "secret/${var.vault_section}/probate/pdf_service_grantSignatureBase64"
-}
+# data "vault_generic_secret" "pdf_service_grantSignatureBase64" {
+#   path = "secret/${var.vault_section}/probate/pdf_service_grantSignatureBase64"
+# }
 
 
 locals {
@@ -32,6 +32,7 @@ locals {
   nonPreviewVaultName = "${var.raw_product}-${var.env}"
   vaultName = "${(var.env == "preview" || var.env == "spreview") ? local.previewVaultName : local.nonPreviewVaultName}"
   localenv = "${(var.env == "preview" || var.env == "spreview") ? local.previewEnv : local.nonPreviewEnv}"
+  pdf_service_grantSignatureBase64 = "${data.azurerm_key_vault_secret.pdf_service_grantSignatureBase64_first.value}${data.azurerm_key_vault_secret.pdf_service_grantSignatureBase64_last.value}"
 }
 
 data "azurerm_key_vault" "probate_key_vault" {
@@ -41,6 +42,16 @@ data "azurerm_key_vault" "probate_key_vault" {
 
 data "azurerm_key_vault_secret" "govNotifyApiKey" {
   name = "probate-bo-govNotifyApiKey"
+  vault_uri = "${data.azurerm_key_vault.probate_key_vault.vault_uri}"
+}
+
+data "azurerm_key_vault_secret" "pdf_service_grantSignatureBase64_first" {
+  name = "pdf-service-grantSignatureBase64-first"
+  vault_uri = "${data.azurerm_key_vault.probate_key_vault.vault_uri}"
+}
+
+data "azurerm_key_vault_secret" "pdf_service_grantSignatureBase64_last" {
+  name = "pdf-service-grantSignatureBase64-last"
   vault_uri = "${data.azurerm_key_vault.probate_key_vault.vault_uri}"
 }
 
@@ -74,7 +85,8 @@ module "probate-back-office" {
 
     AUTH_PROVIDER_SERVICE_CLIENT_KEY = "${data.azurerm_key_vault_secret.s2s_key.value}"
     //AUTH_PROVIDER_SERVICE_CLIENT_KEY = "${data.vault_generic_secret.idam_backend_service_key.data["value"]}"
-    PDF_SERVICE_GRANTSIGNATUREBASE64 = "${data.vault_generic_secret.pdf_service_grantSignatureBase64.data["value"]}"
+    //PDF_SERVICE_GRANTSIGNATUREBASE64 = "${data.vault_generic_secret.pdf_service_grantSignatureBase64.data["value"]}"
+    PDF_SERVICE_GRANTSIGNATUREBASE64 = "${local.pdf_service_grantSignatureBase64}"
 
     AUTH_PROVIDER_SERVICE_CLIENT_BASEURL = "${var.idam_service_api}"
     PDF_SERVICE_URL = "${var.pdf_service_api_url}"
@@ -87,7 +99,6 @@ module "probate-back-office" {
     java_app_name = "${var.microservice}"
     LOG_LEVEL = "${var.log_level}"
     //ROOT_APPENDER = "JSON_CONSOLE" //Remove json logging
-    DEMO_TEST = "Testing Demo for update config"
   }
 }
 
