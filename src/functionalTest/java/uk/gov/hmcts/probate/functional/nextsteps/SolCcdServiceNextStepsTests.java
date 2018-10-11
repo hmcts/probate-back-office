@@ -77,7 +77,7 @@ public class SolCcdServiceNextStepsTests extends IntegrationTestBase {
 
     @Test
     public void verifyEmptySolicitorIHTFormIdReturnsError() {
-        validatePostRequestFailureForLegalStatement("\"solsIHTFormId\": \"IHT205\"", "\"solsIHTFormId\": \"\"", "caseDetails.data.solsIHTFormId");
+        validatePostRequestFailureForLegalStatement("\"ihtFormId\": \"IHT205\"", "\"ihtFormId\": \"\"", "caseDetails.data.ihtFormId");
     }
 
     @Test

@@ -25,8 +25,60 @@ static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
 withPipeline("java", product, component) {
   env.APPINSIGHTS_INSTRUMENTATIONKEY=false
   loadVaultSecrets(secrets)
-  //enableSlackNotifications('#probate-jenkins')
-  before('buildinfra:prod') {
-    error 'Deliberately breaking pipeline to prevent prod deployment'
+  enableSlackNotifications('#probate-jenkins')
+
+  after('test') {
+    try {
+      //sh './gradlew pitest'
+    } finally {
+      //steps.archiveArtifacts "build/reports/pitest/**/*.*"
+    }
+
+    junit 'build/test-results/test/**/*.xml'
+    archiveArtifacts 'build/reports/tests/test/index.html'
+    publishHTML target: [
+            allowMissing         : true,
+            alwaysLinkToLastBuild: true,
+            keepAll              : true,
+            reportDir            : "build/reports/tests/test",
+            reportFiles          : "index.html",
+            reportName           : "sol-ccd-service Test Report"
+    ]
+
+    publishHTML target: [
+            allowMissing         : true,
+            alwaysLinkToLastBuild: true,
+            keepAll              : true,
+            reportDir            : "build/reports/jacoco",
+            reportFiles          : "index.html",
+            reportName           : "sol-ccd-service Code Coverage Report"
+    ]
+
+    publishHTML target: [
+            allowMissing         : true,
+            alwaysLinkToLastBuild: true,
+            keepAll              : true,
+            reportDir            : "build/reports/findbugs",
+            reportFiles          : "main.html",
+            reportName           : "sol-ccd-service find Bugs Report"
+    ]
+  }
+
+  after('functionalTest:aat') {
+    publishHTML target: [
+            reportDir            : "target/site/serenity/",
+            reportFiles          : "index.html",
+            reportName           : "AAT Functional Tests",
+            alwaysLinkToLastBuild: true
+    ]
+  }
+
+  after('functionalTest:preview') {
+    publishHTML target: [
+            reportDir            : "target/site/serenity/",
+            reportFiles          : "index.html",
+            reportName           : "Preview Functional Tests",
+            alwaysLinkToLastBuild: true
+    ]
   }
 }

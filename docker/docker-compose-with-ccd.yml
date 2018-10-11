@@ -306,7 +306,7 @@ services:
       - PROXY_DEFINITION_DATA=http://ccd-definition-store-api:4451/api/data
       - PROXY_DEFINITION_DISPLAY=http://ccd-definition-store-api:4451/api/display
       # this NEEDS to be your local ip address
-      - PROXY_PRINT_SERVICE=http://172.16.10.164:3100
+      - PROXY_PRINT_SERVICE=http://172.16.10.56:3100
       - PROXY_DOCUMENT_MANAGEMENT=http://document-management-store:8080
     ports:
       - 3453:3453
