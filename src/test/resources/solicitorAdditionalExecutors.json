@@ -33,6 +33,7 @@
       "primaryApplicantSurname":"exln",
       "primaryApplicantEmailAddress":null,
       "primaryApplicantHasAlias":"No",
+      "solsExecutorAliasNames":null,
       "primaryApplicantAlias":null,
       "primaryApplicantIsApplying":"Yes",
       "solsPrimaryExecutorNotApplyingReason":null,

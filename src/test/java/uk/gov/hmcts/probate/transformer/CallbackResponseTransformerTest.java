@@ -205,6 +205,7 @@ public class CallbackResponseTransformerTest {
                 .primaryApplicantHasAlias(APPLICANT_HAS_ALIAS)
                 .otherExecutorExists(OTHER_EXECS_EXIST)
                 .primaryApplicantAlias(PRIMARY_EXEC_ALIAS_NAMES)
+                .solsExecutorAliasNames(PRIMARY_EXEC_ALIAS_NAMES)
                 .solsAdditionalExecutorList(ADDITIONAL_EXEC_LIST)
                 .deceasedAddress(DECEASED_ADDRESS)
                 .deceasedAnyOtherNames(YES)

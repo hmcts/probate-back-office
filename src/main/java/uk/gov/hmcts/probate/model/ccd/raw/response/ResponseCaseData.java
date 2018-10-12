@@ -77,6 +77,7 @@ public class ResponseCaseData {
     private final String primaryApplicantSameWillName;
     private final String primaryApplicantAliasReason;
     private final String primaryApplicantOtherReason;
+    private final String solsExecutorAliasNames;
     @JsonProperty(value = "executorsApplying")
     private final List<CollectionMember<AdditionalExecutorApplying>> additionalExecutorsApplying;
     @JsonProperty(value = "executorsNotApplying")

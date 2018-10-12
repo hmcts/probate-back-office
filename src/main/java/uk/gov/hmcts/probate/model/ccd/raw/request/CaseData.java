@@ -134,6 +134,8 @@ public class CaseData {
 
     private final String primaryApplicantOtherReason;
 
+    private final String solsExecutorAliasNames;
+
     private final String primaryApplicantSameWillName;
 
     @NotBlank(groups = {ApplicationUpdatedGroup.class}, message = "{primaryApplicantIsApplyingIsNull}")

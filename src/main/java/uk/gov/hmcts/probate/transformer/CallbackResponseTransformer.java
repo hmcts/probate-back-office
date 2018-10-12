@@ -178,7 +178,6 @@ public class CallbackResponseTransformer {
                 .solsPrimaryExecutorNotApplyingReason(caseData.getSolsPrimaryExecutorNotApplyingReason())
                 .primaryApplicantHasAlias(getPrimaryApplicantHasAlias(caseData))
                 .otherExecutorExists(getOtherExecutorExists(caseData))
-                .primaryApplicantAlias(caseData.getPrimaryApplicantAlias())
                 .primaryApplicantSameWillName(caseData.getPrimaryApplicantSameWillName())
                 .primaryApplicantAliasReason(caseData.getPrimaryApplicantAliasReason())
                 .primaryApplicantOtherReason(caseData.getPrimaryApplicantOtherReason())
@@ -289,13 +288,25 @@ public class CallbackResponseTransformer {
         builder
                 .additionalExecutorsApplying(caseData.getAdditionalExecutorsApplying())
                 .additionalExecutorsNotApplying(caseData.getAdditionalExecutorsNotApplying())
-                .solsAdditionalExecutorList(caseData.getSolsAdditionalExecutorList());
+                .solsAdditionalExecutorList(caseData.getSolsAdditionalExecutorList())
+                .primaryApplicantAlias(caseData.getPrimaryApplicantAlias())
+                .solsExecutorAliasNames(caseData.getSolsExecutorAliasNames());
     }
 
     private void updateCaseBuilderForTransformCase(CaseData caseData, ResponseCaseDataBuilder builder) {
         builder
                 .ihtReferenceNumber(caseData.getIhtReferenceNumber())
                 .solsDeceasedAliasNamesList(caseData.getSolsDeceasedAliasNamesList());
+
+        if (caseData.getSolsExecutorAliasNames() != null) {
+            builder
+                    .primaryApplicantAlias(caseData.getSolsExecutorAliasNames())
+                    .solsExecutorAliasNames(null);
+        } else {
+            builder
+                    .primaryApplicantAlias(caseData.getPrimaryApplicantAlias())
+                    .solsExecutorAliasNames(caseData.getSolsExecutorAliasNames());
+        }
 
         if (CollectionUtils.isEmpty(caseData.getSolsAdditionalExecutorList())) {
             builder
