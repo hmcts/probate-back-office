@@ -277,7 +277,7 @@ public class CaseData {
                     .additionalApplying(getPrimaryApplicantIsApplying())
                     .additionalExecAddress(getPrimaryApplicantAddress())
                     .additionalExecNameOnWill(getPrimaryApplicantHasAlias())
-                    .additionalExecAliasNameOnWill(getPrimaryApplicantAlias())
+                    .additionalExecAliasNameOnWill(getSolsExecutorAliasNames())
                     .additionalExecReasonNotApplying(getSolsPrimaryExecutorNotApplyingReason())
                     .build();
 

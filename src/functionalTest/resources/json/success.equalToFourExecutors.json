@@ -146,7 +146,6 @@
             "ihtGrossValue": "100001",
             "ihtFormId": "IHT205",
             "solsExecutorAliasNames": "TestPrimaryExecutorAliasName",
-            "primaryApplicantAlias": "TestPrimaryExecutorAliasName",
             "primaryApplicantSurname": "TestPrimaryExecutorLastName",
             "solsSolicitorAppReference": "refCYA2"
         },
@@ -246,7 +245,6 @@
             "ihtGrossValue": "PUBLIC",
             "ihtFormId": "PUBLIC",
             "solsExecutorAliasNames": "PUBLIC",
-            "primaryApplicantAlias": "PUBLIC",
             "primaryApplicantSurname": "PUBLIC",
             "solsSolicitorAppReference": "PUBLIC"
         },
@@ -349,7 +347,6 @@
             "ihtGrossValue": "PUBLIC",
             "ihtFormId": "PUBLIC",
             "solsExecutorAliasNames": "PUBLIC",
-            "primaryApplicantAlias": "PUBLIC",
             "primaryApplicantSurname": "PUBLIC",
             "solsSolicitorAppReference": "PUBLIC"
         }
@@ -456,7 +453,6 @@
             "ihtGrossValue": "100001",
             "ihtFormId": "IHT205",
             "solsExecutorAliasNames": "ex1wn",
-            "primaryApplicantAlias": "ex1wn",
             "primaryApplicantSurname": "ex1ln",
             "solsSolicitorAppReference": "refCYA2"
         },
@@ -554,7 +550,6 @@
             "ihtGrossValue": "PUBLIC",
             "ihtFormId": "PUBLIC",
             "solsExecutorAliasNames": "PUBLIC",
-            "primaryApplicantAlias": "PUBLIC",
             "primaryApplicantSurname": "PUBLIC",
             "solsSolicitorAppReference": "PUBLIC"
         },
@@ -655,7 +650,6 @@
             "ihtGrossValue": "PUBLIC",
             "ihtFormId": "PUBLIC",
             "solsExecutorAliasNames": "PUBLIC",
-            "primaryApplicantAlias": "PUBLIC",
             "primaryApplicantSurname": "PUBLIC",
             "solsSolicitorAppReference": "PUBLIC"
         }
