@@ -128,7 +128,15 @@ public class CaseData {
     @NotBlank(groups = {ApplicationUpdatedGroup.class}, message = "{primaryApplicantHasAliasIsNull}")
     private final String primaryApplicantHasAlias;
 
+    private final String primaryApplicantAlias;
+
+    private final String primaryApplicantAliasReason;
+
+    private final String primaryApplicantOtherReason;
+
     private final String solsExecutorAliasNames;
+
+    private final String primaryApplicantSameWillName;
 
     @NotBlank(groups = {ApplicationUpdatedGroup.class}, message = "{primaryApplicantIsApplyingIsNull}")
     private final String primaryApplicantIsApplying;
