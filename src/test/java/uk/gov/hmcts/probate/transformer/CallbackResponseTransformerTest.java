@@ -595,6 +595,7 @@ public class CallbackResponseTransformerTest {
         assertEquals("Other", callbackResponse.getData().getPrimaryApplicantAliasReason());
         assertEquals("Married", callbackResponse.getData().getPrimaryApplicantOtherReason());
     }
+
     @Test
     public void shouldTransformCaseForPAWithPrimaryApplicantAliasOtherToBeNull() {
         caseDataBuilder.primaryApplicantAlias(PRIMARY_EXEC_ALIAS_NAMES);
@@ -609,6 +610,7 @@ public class CallbackResponseTransformerTest {
         assertEquals("Marriage", callbackResponse.getData().getPrimaryApplicantAliasReason());
         assertEquals(null, callbackResponse.getData().getPrimaryApplicantOtherReason());
     }
+
     @Test
     public void shouldTransformCaseForPAWithApplyExecAlias() {
         List<CollectionMember<AdditionalExecutorApplying>> additionalExecsList = new ArrayList<>();
@@ -716,7 +718,7 @@ public class CallbackResponseTransformerTest {
         assertEquals(EXEC_FIRST_NAME + " " + EXEC_SURNAME, exec.getApplyingExecutorName());
         assertEquals(ALIAS_FORENAME + " " + ALIAS_SURNAME, exec.getApplyingExecutorOtherNames());
         assertEquals("Other", exec.getApplyingExecutorOtherNamesReason());
-        assertEquals("Married",  exec.getApplyingExecutorOtherReason());
+        assertEquals("Married", exec.getApplyingExecutorOtherReason());
         assertApplyingExecutorDetailsFromSols(exec);
     }
 
