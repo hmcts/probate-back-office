@@ -74,6 +74,10 @@ public class ResponseCaseData {
     private final String primaryApplicantIsApplying;
     private final String solsPrimaryExecutorNotApplyingReason;
     private final String otherExecutorExists;
+    private final String primaryApplicantAlias;
+    private final String primaryApplicantSameWillName;
+    private final String primaryApplicantAliasReason;
+    private final String primaryApplicantOtherReason;
     private final String solsExecutorAliasNames;
     @JsonProperty(value = "executorsApplying")
     private final List<CollectionMember<AdditionalExecutorApplying>> additionalExecutorsApplying;
