@@ -47,6 +47,7 @@ public class CallbackResponseTransformer {
     public static final String ANSWER_YES = "Yes";
     public static final String ANSWER_NO = "No";
     public static final String QA_CASE_STATE = "BOCaseQA";
+    public static final String OTHER = "other";
 
     public CallbackResponse transformWithConditionalStateChange(CallbackRequest callbackRequest, Optional<String> newState) {
         ResponseCaseData responseCaseData = getResponseCaseData(callbackRequest.getCaseDetails(), false)
@@ -169,7 +170,9 @@ public class CallbackResponseTransformer {
                 .solsPrimaryExecutorNotApplyingReason(caseData.getSolsPrimaryExecutorNotApplyingReason())
                 .primaryApplicantHasAlias(getPrimaryApplicantHasAlias(caseData))
                 .otherExecutorExists(getOtherExecutorExists(caseData))
-                .solsExecutorAliasNames(caseData.getSolsExecutorAliasNames())
+                .primaryApplicantSameWillName(caseData.getPrimaryApplicantSameWillName())
+                .primaryApplicantAliasReason(caseData.getPrimaryApplicantAliasReason())
+                .primaryApplicantOtherReason(caseData.getPrimaryApplicantOtherReason())
                 .deceasedAddress(caseData.getDeceasedAddress())
                 .deceasedAnyOtherNames(caseData.getDeceasedAnyOtherNames())
                 .primaryApplicantAddress(caseData.getPrimaryApplicantAddress())
@@ -250,6 +253,16 @@ public class CallbackResponseTransformer {
             }
         }
 
+        if (caseData.getPrimaryApplicantAliasReason() != null) {
+            if (caseData.getPrimaryApplicantAliasReason().equalsIgnoreCase(OTHER)) {
+                builder
+                        .primaryApplicantOtherReason(caseData.getPrimaryApplicantOtherReason());
+            } else {
+                builder
+                        .primaryApplicantOtherReason(null);
+            }
+        }
+
         List<CollectionMember<AliasName>> deceasedAliasNames = EMPTY_LIST;
         if (caseData.getDeceasedAliasNameList() != null) {
             deceasedAliasNames = caseData.getDeceasedAliasNameList()
@@ -271,13 +284,25 @@ public class CallbackResponseTransformer {
         builder
                 .additionalExecutorsApplying(caseData.getAdditionalExecutorsApplying())
                 .additionalExecutorsNotApplying(caseData.getAdditionalExecutorsNotApplying())
-                .solsAdditionalExecutorList(caseData.getSolsAdditionalExecutorList());
+                .solsAdditionalExecutorList(caseData.getSolsAdditionalExecutorList())
+                .primaryApplicantAlias(caseData.getPrimaryApplicantAlias())
+                .solsExecutorAliasNames(caseData.getSolsExecutorAliasNames());
     }
 
     private void updateCaseBuilderForTransformCase(CaseData caseData, ResponseCaseDataBuilder builder) {
         builder
                 .ihtReferenceNumber(caseData.getIhtReferenceNumber())
                 .solsDeceasedAliasNamesList(caseData.getSolsDeceasedAliasNamesList());
+
+        if (caseData.getSolsExecutorAliasNames() != null) {
+            builder
+                    .primaryApplicantAlias(caseData.getSolsExecutorAliasNames())
+                    .solsExecutorAliasNames(null);
+        } else {
+            builder
+                    .primaryApplicantAlias(caseData.getPrimaryApplicantAlias())
+                    .solsExecutorAliasNames(caseData.getSolsExecutorAliasNames());
+        }
 
         if (CollectionUtils.isEmpty(caseData.getSolsAdditionalExecutorList())) {
             builder
