@@ -73,7 +73,7 @@
     "willNumberOfCodicils": "1",
     "primaryApplicantIsApplying": "Yes",
     "primaryApplicantHasAlias": "Yes",
-    "solsIHTFormId": "IHT205",
+    "ihtFormId": "IHT205",
     "ihtGrossValue": "100001",
     "solsExecutorAliasNames": "ex1wn",
     "primaryApplicantSurname": "Ex1ln",
