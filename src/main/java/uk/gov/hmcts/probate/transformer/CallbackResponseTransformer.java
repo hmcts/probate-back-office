@@ -31,12 +31,14 @@ import java.util.stream.Collectors;
 import static java.util.Collections.EMPTY_LIST;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
-import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT;
+import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
 
 @Component
 @RequiredArgsConstructor
 public class CallbackResponseTransformer {
+
+    private final DocumentTransformer documentTransformer;
 
     static final String PAYMENT_METHOD_VALUE_FEE_ACCOUNT = "fee account";
     static final String PAYMENT_REFERENCE_FEE_PREFIX = "Fee account PBA-";
@@ -47,22 +49,13 @@ public class CallbackResponseTransformer {
     private static final String DEFAULT_REGISTRY_LOCATION = "Birmingham";
     public static final String ANSWER_YES = "Yes";
     public static final String ANSWER_NO = "No";
+    public static final String QA_CASE_STATE = "BOCaseQA";
     public static final String DATE_FORMAT = "yyyy-MM-dd";
     public static final String OTHER = "other";
 
     public CallbackResponse transformWithConditionalStateChange(CallbackRequest callbackRequest, Optional<String> newState) {
         ResponseCaseData responseCaseData = getResponseCaseData(callbackRequest.getCaseDetails(), false)
                 .state(newState.orElse(null))
-                .build();
-
-        return transformResponse(responseCaseData);
-    }
-
-    public CallbackResponse addDocumentReceivedNotification(CallbackRequest callbackRequest) {
-        CaseDetails caseDetails = callbackRequest.getCaseDetails();
-
-        ResponseCaseData responseCaseData = getResponseCaseData(caseDetails, false)
-                .boEmailDocsReceivedNotificationRequested(caseDetails.getData().getBoEmailDocsReceivedNotification())
                 .build();
 
         return transformResponse(responseCaseData);
@@ -80,17 +73,28 @@ public class CallbackResponseTransformer {
         return transformResponse(responseCaseData);
     }
 
-    public CallbackResponse grantIssued(CallbackRequest callbackRequest, Document document) {
-        if (DIGITAL_GRANT_DRAFT.equals(document.getDocumentType()) || DIGITAL_GRANT.equals(document.getDocumentType())) {
-            callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated()
-                    .add(new CollectionMember<>(null, document));
-        }
+    public CallbackResponse addDocuments(CallbackRequest callbackRequest, List<Document> documents) {
+        documents.forEach(document -> documentTransformer.addDocument(callbackRequest, document));
 
         ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), false);
-        responseCaseDataBuilder.boEmailGrantIssuedNotificationRequested(
-                callbackRequest.getCaseDetails().getData().getBoEmailGrantIssuedNotification());
+        if (documentTransformer.hasDocumentWithType(documents, DIGITAL_GRANT)) {
+            responseCaseDataBuilder.boEmailGrantIssuedNotificationRequested(
+                    callbackRequest.getCaseDetails().getData().getBoEmailGrantIssuedNotification());
+        }
+        if (documentTransformer.hasDocumentWithType(documents, SENT_EMAIL)) {
+            responseCaseDataBuilder.boEmailDocsReceivedNotificationRequested(
+                    callbackRequest.getCaseDetails().getData().getBoEmailDocsReceivedNotification());
+        }
         responseCaseDataBuilder.solsSOTNeedToUpdate(null);
 
+        return transformResponse(responseCaseDataBuilder.build());
+    }
+
+    public CallbackResponse selectForQA(CallbackRequest callbackRequest) {
+        ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), false);
+        if (callbackRequest.getCaseDetails().getData().getBoExaminationChecklistRequestQA().equalsIgnoreCase(ANSWER_YES)) {
+            responseCaseDataBuilder.state(QA_CASE_STATE);
+        }
         return transformResponse(responseCaseDataBuilder.build());
     }
 
@@ -114,11 +118,6 @@ public class CallbackResponseTransformer {
     }
 
     public CallbackResponse transform(CallbackRequest callbackRequest, Document document) {
-        if (DIGITAL_GRANT_DRAFT.equals(document.getDocumentType()) || DIGITAL_GRANT.equals(document.getDocumentType())) {
-            callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated()
-                    .add(new CollectionMember<>(null, document));
-        }
-
         ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), false);
         responseCaseDataBuilder.solsSOTNeedToUpdate(null);
 
@@ -138,7 +137,7 @@ public class CallbackResponseTransformer {
 
     public CallbackResponse transformCase(CallbackRequest callbackRequest) {
 
-        boolean transform = callbackRequest.getCaseDetails().getData().getApplicationType() == ApplicationType.SOLICITOR ? true : false;
+        boolean transform = callbackRequest.getCaseDetails().getData().getApplicationType() == ApplicationType.SOLICITOR;
 
         ResponseCaseData responseCaseData = getResponseCaseData(callbackRequest.getCaseDetails(), transform)
                 .build();
@@ -224,6 +223,7 @@ public class CallbackResponseTransformer {
                 .boAdminClauseLimitation(caseData.getBoAdminClauseLimitation())
                 .boLimitationText(caseData.getBoLimitationText())
                 .probateDocumentsGenerated(caseData.getProbateDocumentsGenerated())
+                .probateNotificationsGenerated(caseData.getProbateNotificationsGenerated())
                 .boDocumentsUploaded(caseData.getBoDocumentsUploaded())
 
                 .primaryApplicantPhoneNumber(caseData.getPrimaryApplicantPhoneNumber())
@@ -231,7 +231,12 @@ public class CallbackResponseTransformer {
                 .legalStatement(caseData.getLegalStatement())
                 .deceasedMarriedAfterWillOrCodicilDate(caseData.getDeceasedMarriedAfterWillOrCodicilDate())
 
+                .boExaminationChecklistQ1(caseData.getBoExaminationChecklistQ1())
+                .boExaminationChecklistQ2(caseData.getBoExaminationChecklistQ2())
+                .boExaminationChecklistRequestQA(caseData.getBoExaminationChecklistRequestQA())
+
                 .payments(caseData.getPayments())
+                .deceasedMarriedAfterWillOrCodicilDate(caseData.getDeceasedMarriedAfterWillOrCodicilDate())
                 .applicationSubmittedDate(caseData.getApplicationSubmittedDate());
 
         if (transform) {
@@ -272,7 +277,7 @@ public class CallbackResponseTransformer {
             deceasedAliasNames = caseData.getDeceasedAliasNameList()
                     .stream()
                     .map(CollectionMember::getValue)
-                    .map(deceasedAliasName -> buildDeceasedAliasNameExecutor(deceasedAliasName))
+                    .map(this::buildDeceasedAliasNameExecutor)
                     .map(alias -> new CollectionMember<>(null, alias))
                     .collect(Collectors.toList());
         }
@@ -317,7 +322,7 @@ public class CallbackResponseTransformer {
                     .stream()
                     .map(CollectionMember::getValue)
                     .filter(additionalExecutor -> ANSWER_YES.equalsIgnoreCase(additionalExecutor.getAdditionalApplying()))
-                    .map(additionalExecutorApplying -> buildApplyingAdditionalExecutor(additionalExecutorApplying))
+                    .map(this::buildApplyingAdditionalExecutor)
                     .map(executor -> new CollectionMember<>(null, executor))
                     .collect(Collectors.toList());
 
@@ -326,7 +331,7 @@ public class CallbackResponseTransformer {
                     .stream()
                     .map(CollectionMember::getValue)
                     .filter(additionalExecutor -> ANSWER_NO.equalsIgnoreCase(additionalExecutor.getAdditionalApplying()))
-                    .map(additionalExecutorNotApplying -> buildNotApplyingAdditionalExecutor(additionalExecutorNotApplying))
+                    .map(this::buildNotApplyingAdditionalExecutor)
                     .map(executor -> new CollectionMember<>(null, executor))
                     .collect(Collectors.toList());
 

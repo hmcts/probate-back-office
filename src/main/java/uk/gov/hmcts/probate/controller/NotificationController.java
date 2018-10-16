@@ -9,12 +9,14 @@ import org.springframework.web.bind.annotation.RestController;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.service.notify.NotificationClientException;
 
-import java.util.Optional;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -32,24 +34,26 @@ public class NotificationController {
     @PostMapping(path = "/documents-received")
     public ResponseEntity<CallbackResponse> sendDocumentReceivedNotification(@RequestBody CallbackRequest callbackRequest)
             throws NotificationClientException {
-
+        CaseDetails caseDetails = callbackRequest.getCaseDetails();
         CaseData caseData = callbackRequest.getCaseDetails().getData();
 
+        List<Document> documents = new ArrayList<>();
+
         if (caseData.isDocsReceivedEmailNotificationRequested()) {
-            notificationService.sendEmail(DOCUMENTS_RECEIVED, caseData);
+            Document documentsReceivedSentEmail = notificationService.sendEmail(DOCUMENTS_RECEIVED, caseDetails);
+            documents.add(documentsReceivedSentEmail);
         }
 
-        return ResponseEntity.ok(callbackResponseTransformer.addDocumentReceivedNotification(callbackRequest));
+        return ResponseEntity.ok(callbackResponseTransformer.addDocuments(callbackRequest, documents));
     }
 
     @PostMapping(path = "/case-stopped")
     public ResponseEntity<CallbackResponse> sendCaseStoppedNotification(@RequestBody CallbackRequest callbackRequest)
             throws NotificationClientException {
+        CaseDetails caseDetails = callbackRequest.getCaseDetails();
 
-        CaseData caseData = callbackRequest.getCaseDetails().getData();
+        Document document = notificationService.sendEmail(CASE_STOPPED, caseDetails);
 
-        Optional<Document> document = notificationService.sendEmail(CASE_STOPPED, caseData);
-
-        return ResponseEntity.ok(callbackResponseTransformer.caseStopped(callbackRequest, document.orElse(null)));
+        return ResponseEntity.ok(callbackResponseTransformer.caseStopped(callbackRequest, document));
     }
 }
