@@ -99,13 +99,13 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
         validatePostRequestSuccessForLegalStatement("AdditionalExecutor1 willname");
     }
 
-     @Test
-     public void verifyIncorrectInputReturns400() {
-         given().relaxedHTTPSValidation()
-                 .headers(utils.getHeaders())
-                 .body(utils.getJsonFromFile("incorrectInput.checkYourAnswersPayload.json")).
-                 when().post("/case/validate").then().statusCode(400);
-     }
+//     @Test
+//     public void verifyIncorrectInputReturns400() {
+//         given().relaxedHTTPSValidation()
+//                 .headers(utils.getHeaders())
+//                 .body(utils.getJsonFromFile("incorrectInput.checkYourAnswersPayload.json")).
+//                 when().post("/case/validate").then().statusCode(400);
+//     }
 
     @Test
     public void verifyEmptyFirstNameReturnsError() {
