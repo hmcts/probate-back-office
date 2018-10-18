@@ -2,8 +2,12 @@
     "case_details": {
         "submit_data": {
             "id": 12345678,
-            "applicantFirstName": "TestFirstName,
+            "applicantFirstName": "TestFirstName",
             "applicantLastName": "TestLastName",
+            "applicantSameWillName":"No",
+            "applicantAlias":"TestApplicantAliasName",
+            "applicantAliasReason":"other",
+            "applicantAliasOtherReason":"nickname",
             "applicantAddress": "Test AddressLine1,Test AddressLine2",
             "applicantPhone": "324234",
             "applicantEmail": "bob.stones@email.co.uk",

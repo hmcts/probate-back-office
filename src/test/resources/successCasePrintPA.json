@@ -28,6 +28,10 @@
     "willExists": "Yes",
     "primaryApplicantForenames": "Amal",
     "primaryApplicantSurname": "Mason",
+    "primaryApplicantSameWillName": "No",
+    "primaryApplicantAlias":"Amal_Mason_Alias",
+    "primaryApplicantAliasReason":"other",
+    "primaryApplicantOtherReason":"nickname",
     "ihtReferenceNumber": "12345678F12345",
     "primaryApplicantPhoneNumber": "+643514579562",
     "willLatestCodicilHasDate": "Yes",
@@ -81,7 +85,9 @@
             "AddressLine1": "ddddddddddddddddddddddddddddd"
 
           },
-          "applyingExecutorOtherNames": "Eric Lloyd4"
+          "applyingExecutorOtherNames": "Eric Lloyd4",
+          "applyingExecutorOtherNamesReason": "other",
+          "applyingExecutorOtherReason": "nickname"
         }
       },
 
