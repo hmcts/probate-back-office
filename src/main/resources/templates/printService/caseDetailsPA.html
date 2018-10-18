@@ -160,6 +160,22 @@
     <td>{% if case_data.primaryApplicantSurname %}{{ case_data.primaryApplicantSurname }}{% endif %}</td>
   </tr>
   <tr>
+    <td colspan="2">Applicant name same as on the will Y/N:</td>
+    <td>{% if case_data.primaryApplicantSameWillName %}{{ case_data.primaryApplicantSameWillName }}{% endif %}</td>
+  </tr>
+  <tr>
+    <td colspan="2">Applicant name as appears on will:</td>
+    <td>{% if case_data.primaryApplicantAlias %}{{ case_data.primaryApplicantAlias }}{% endif %}</td>
+  </tr>
+    <tr>
+    <td colspan="2">Reason for applicant name change on will:</td>
+    <td>{% if case_data.primaryApplicantAliasReason %}{{ case_data.primaryApplicantAliasReason }}{% endif %}</td>
+  </tr>
+  <tr>
+    <td colspan="2">Other Reason for applicant name change on will:</td>
+    <td>{% if case_data.primaryApplicantOtherReason %}{{ case_data.primaryApplicantOtherReason }}{% endif %}</td>
+  </tr>
+  <tr>
     <td colspan="2">Applicant address</td>
     <td>{% if case_data.primaryApplicantAddress.AddressLine1 %}{{ case_data.primaryApplicantAddress.AddressLine1 }}{% endif %}</td>
   </tr>
