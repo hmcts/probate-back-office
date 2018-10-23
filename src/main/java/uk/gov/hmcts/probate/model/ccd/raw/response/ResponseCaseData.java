@@ -62,6 +62,7 @@ public class ResponseCaseData {
     private final String paymentReferenceNumber;
     private final DocumentLink solsLegalStatementDocument;
     private final List<CollectionMember<Document>> probateDocumentsGenerated;
+    private final List<CollectionMember<Document>> probateNotificationsGenerated;
     private final List<CollectionMember<UploadDocument>> boDocumentsUploaded;
     private final String solsSOTNeedToUpdate;
     private final DocumentLink solsNextStepsDocument;
@@ -73,6 +74,10 @@ public class ResponseCaseData {
     private final String primaryApplicantIsApplying;
     private final String solsPrimaryExecutorNotApplyingReason;
     private final String otherExecutorExists;
+    private final String primaryApplicantAlias;
+    private final String primaryApplicantSameWillName;
+    private final String primaryApplicantAliasReason;
+    private final String primaryApplicantOtherReason;
     private final String solsExecutorAliasNames;
     @JsonProperty(value = "executorsApplying")
     private final List<CollectionMember<AdditionalExecutorApplying>> additionalExecutorsApplying;
@@ -106,6 +111,10 @@ public class ResponseCaseData {
     private final String deceasedMarriedAfterWillOrCodicilDate;
     //Todo remove PA specific attr
     private final String primaryApplicantPhoneNumber;
+
+    private final String boExaminationChecklistQ2;
+    private final String boExaminationChecklistQ1;
+    private final String boExaminationChecklistRequestQA;
 
     private final List<CollectionMember<Payment>> payments;
 

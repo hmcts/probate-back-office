@@ -128,7 +128,15 @@ public class CaseData {
     @NotBlank(groups = {ApplicationUpdatedGroup.class}, message = "{primaryApplicantHasAliasIsNull}")
     private final String primaryApplicantHasAlias;
 
+    private final String primaryApplicantAlias;
+
+    private final String primaryApplicantAliasReason;
+
+    private final String primaryApplicantOtherReason;
+
     private final String solsExecutorAliasNames;
+
+    private final String primaryApplicantSameWillName;
 
     @NotBlank(groups = {ApplicationUpdatedGroup.class}, message = "{primaryApplicantIsApplyingIsNull}")
     private final String primaryApplicantIsApplying;
@@ -146,11 +154,13 @@ public class CaseData {
 
     private final String boEmailDocsReceivedNotificationRequested;
 
+    @SuppressWarnings("squid:S1170")
     @Getter(lazy = true)
     private final String boEmailDocsReceivedNotification = YES;
 
     private final String boEmailGrantIssuedNotificationRequested;
 
+    @SuppressWarnings("squid:S1170")
     @Getter(lazy = true)
     private final String boEmailGrantIssuedNotification = YES;
 
@@ -158,6 +168,8 @@ public class CaseData {
     private final DocumentLink solsLegalStatementDocument;
 
     private final List<CollectionMember<Document>> probateDocumentsGenerated = new ArrayList<>();
+
+    private final List<CollectionMember<Document>> probateNotificationsGenerated = new ArrayList<>();
 
     private final List<CollectionMember<UploadDocument>> boDocumentsUploaded;
 
@@ -242,6 +254,12 @@ public class CaseData {
     private final String boLimitationText;
 
     private final List<CollectionMember<Payment>> payments;
+
+    private final String boExaminationChecklistQ1;
+
+    private final String boExaminationChecklistQ2;
+
+    private final String boExaminationChecklistRequestQA;
 
     private final String applicationSubmittedDate;
 

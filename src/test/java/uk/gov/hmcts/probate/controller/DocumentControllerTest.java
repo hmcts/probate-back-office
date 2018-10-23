@@ -54,9 +54,9 @@ public class DocumentControllerTest {
     @Before
     public void setUp() {
         when(pdfManagementService.generateAndUpload(Mockito.any(CallbackRequest.class), eq(DIGITAL_GRANT_DRAFT)))
-                .thenReturn(Document.builder().build());
+                .thenReturn(Document.builder().documentType(DIGITAL_GRANT_DRAFT).build());
         when(pdfManagementService.generateAndUpload(Mockito.any(CallbackRequest.class), eq(DIGITAL_GRANT)))
-                .thenReturn(Document.builder().build());
+                .thenReturn(Document.builder().documentType(DIGITAL_GRANT).build());
     }
 
     @Test
