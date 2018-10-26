@@ -14,11 +14,14 @@ import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
+import uk.gov.hmcts.probate.model.ccd.raw.AdoptedRelatives;
 import uk.gov.hmcts.probate.model.ccd.raw.AliasName;
+import uk.gov.hmcts.probate.model.ccd.raw.AttorneyApplyingOnBehalf;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Declaration;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
+import uk.gov.hmcts.probate.model.ccd.raw.EstateItems;
 import uk.gov.hmcts.probate.model.ccd.raw.LegalStatement;
 import uk.gov.hmcts.probate.model.ccd.raw.Payment;
 import uk.gov.hmcts.probate.model.ccd.raw.ProbateAliasName;
@@ -262,6 +265,46 @@ public class CaseData {
     private final String boExaminationChecklistRequestQA;
 
     private final String applicationSubmittedDate;
+
+    private final String spouseOrPartner;
+    private final String childrenExistSurvived;
+    private final String childrenExistOverEighteenSurvived;
+    private final String childrenExistUnderEighteenSurvived;
+    private final String childrenExist;
+    private final String childrenExistOverEighteen;
+    private final String childrenExistUnderEighteen;
+    private final String gChildrenExist;
+    private final String gChildrenExistOverEighteen;
+    private final String gChildrenExistUnderEighteen;
+    private final String primaryApplicantSecondaryPhoneNumber;
+    private final String primaryApplicantRelationshipToDeceased;
+    private final String paRelationshipToDeceasedOther;
+    private final String deceasedMartialStatus;
+    private final String willDatedBeforeApril;
+    private final String deceasedEnterMarriageOrCP;
+    private final String dateOfMarriageOrCP;
+    private final String dateOfDivorcedCPJudicially;
+    private final String willsOutsideOfUK;
+    private final String courtOfDecree;
+    private final String willGiftUnderEighteen;
+    private final String applyingAsAnAttorney;
+    private final List<CollectionMember<AttorneyApplyingOnBehalf>> attorneyOnBehalfOfNameAndAddress;
+    private final String mentalCapacity;
+    private final String courtOfProtection;
+    private final String EPAorLPA;
+    private final String EPARegistered;
+    private final String domicilityCountry;
+    private final List<CollectionMember<EstateItems>> ukEstate;
+    private final String domicilityIHTCert;
+    private final String entitledToApply;
+    private final String entitledToApplyOther;
+    private final String notifiedApplicants;
+    private final String foreignAsset;
+    private final String foreignAssetEstateValue;
+    private final String legallyAdopted;
+    private final List<CollectionMember<AdoptedRelatives>> legallyAdoptiveRelatives;
+    private final String selectionList;
+
 
     @Getter(lazy = true)
     private final List<CollectionMember<AdditionalExecutor>> executorsApplyingForLegalStatement = getAllExecutors(true);

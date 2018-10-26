@@ -128,6 +128,20 @@ public class CallbackResponseTransformer {
         return transformResponse(responseCaseDataBuilder.build());
     }
 
+    public CallbackResponse paperForm(CallbackRequest callbackRequest) {
+        ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), false);
+
+        String applicationType = callbackRequest.getCaseDetails().getData().getApplyingAsAnAttorney();
+        if (applicationType == "Yes")
+        {
+            responseCaseDataBuilder.applicationType(ApplicationType.SOLICITOR);
+        }else {
+            responseCaseDataBuilder.applicationType(ApplicationType.PERSONAL);
+        }
+
+        return transformResponse(responseCaseDataBuilder.build());
+    }
+
     public CallbackResponse transform(CallbackRequest callbackRequest) {
         ResponseCaseData responseCaseData = getResponseCaseData(callbackRequest.getCaseDetails(), false)
                 .build();
@@ -237,7 +251,45 @@ public class CallbackResponseTransformer {
 
                 .payments(caseData.getPayments())
                 .deceasedMarriedAfterWillOrCodicilDate(caseData.getDeceasedMarriedAfterWillOrCodicilDate())
-                .applicationSubmittedDate(caseData.getApplicationSubmittedDate());
+                .applicationSubmittedDate(caseData.getApplicationSubmittedDate())
+
+                .spouseOrPartner(caseData.getSpouseOrPartner())
+                .childrenExistSurvived(caseData.getChildrenExistSurvived())
+                .childrenExistOverEighteenSurvived(caseData.getChildrenExistOverEighteenSurvived())
+                .childrenExistUnderEighteenSurvived(caseData.getChildrenExistUnderEighteenSurvived())
+                .childrenExist(caseData.getChildrenExist())
+                .childrenExistOverEighteen(caseData.getChildrenExistOverEighteen())
+                .childrenExistUnderEighteen(caseData.getChildrenExistUnderEighteen())
+                .gChildrenExist(caseData.getGChildrenExist())
+                .gChildrenExistOverEighteen(caseData.getGChildrenExistOverEighteen())
+                .gChildrenExistUnderEighteen(caseData.getGChildrenExistUnderEighteen())
+                .primaryApplicantSecondaryPhoneNumber(caseData.getPrimaryApplicantSecondaryPhoneNumber())
+                .primaryApplicantRelationshipToDeceased(caseData.getPrimaryApplicantRelationshipToDeceased())
+                .paRelationshipToDeceasedOther(caseData.getPaRelationshipToDeceasedOther())
+                .deceasedMartialStatus(caseData.getDeceasedMartialStatus())
+                .willDatedBeforeApril(caseData.getWillDatedBeforeApril())
+                .deceasedEnterMarriageOrCP(caseData.getDeceasedEnterMarriageOrCP())
+                .dateOfMarriageOrCP(caseData.getDateOfMarriageOrCP())
+                .dateOfDivorcedCPJudicially(caseData.getDateOfDivorcedCPJudicially())
+                .willsOutsideOfUK(caseData.getWillsOutsideOfUK())
+                .courtOfDecree(caseData.getCourtOfDecree())
+                .willGiftUnderEighteen(caseData.getWillGiftUnderEighteen())
+                .applyingAsAnAttorney(caseData.getApplyingAsAnAttorney())
+                .attorneyOnBehalfOfNameAndAddress(caseData.getAttorneyOnBehalfOfNameAndAddress())
+                .mentalCapacity(caseData.getMentalCapacity())
+                .courtOfProtection(caseData.getCourtOfProtection())
+                .EPAorLPA(caseData.getEPAorLPA())
+                .EPARegistered(caseData.getEPARegistered())
+                .domicilityCountry(caseData.getDomicilityCountry())
+                .ukEstate(caseData.getUkEstate())
+                .domicilityIHTCert(caseData.getDomicilityIHTCert())
+                .entitledToApply(caseData.getEntitledToApply())
+                .entitledToApplyOther(caseData.getEntitledToApplyOther())
+                .notifiedApplicants(caseData.getNotifiedApplicants())
+                .foreignAsset(caseData.getForeignAsset())
+                .foreignAssetEstateValue(caseData.getForeignAssetEstateValue())
+                .legallyAdopted(caseData.getLegallyAdopted())
+                .legallyAdoptiveRelatives(caseData.getLegallyAdoptiveRelatives());
 
         if (transform) {
             updateCaseBuilderForTransformCase(caseData, builder);
