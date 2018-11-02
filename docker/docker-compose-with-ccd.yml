@@ -14,6 +14,9 @@ services:
       - MICROSERVICE_KEYS_CCD_DEFINITION=AAAAAAAAAAAAAAAA
       - MICROSERVICE_KEYS_CCD_GW=AAAAAAAAAAAAAAAA
       - MICROSERVICE_KEYS_CCD_PS=AAAAAAAAAAAAAAAA
+      - MICROSERVICE_KEYS_BULK_SCAN_PROCESSOR=AAAAAAAAAAAAAAAA
+      - MICROSERVICE_KEYS_BULK_SCAN_PROCESSOR_TESTS=AAAAAAAAAAAAAAAA
+      - MICROSERVICE_KEYS_BULK_SCAN_ORCHESTRATOR=AAAAAAAAAAAAAAAA
       - TESTING_SUPPORT_ENABLED=true
       - MICROSERVICE_KEYS_PROBATE_BACKEND=AAAAAAAAAAAAAAAA
     ports:
@@ -67,6 +70,12 @@ services:
       - IDAM_API_OAUTH2_CLIENT_CLIENT_SECRETS_PROBATE=123456
       - IDAM_API_OAUTH2_CLIENT_CLIENT_ID_PROBATE=123456
       - IDAM_PROBATE_WHITELIST=http://localhost:3451/oauth2redirect
+      - IDAM_BSP_SYSTEMUPDATE_USER=bulkscanorchestrator+systemupdate@gmail.com
+      - IDAM_BSP_SYSTEMUPDATE_PASSWORD=Password12
+      - IDAM_USERS_PROBATE_USERNAME=bulkscan+ccd@gmail.com
+      - IDAM_USERS_PROBATE_PASSWORD=password
+      - IDAM_API_OAUTH2_CLIENT_CLIENT_SECRETS_BSP=123456
+      - IDAM_BSP_WHITELIST=https://localhost/receiver
       - http_proxy
       - https_proxy
       - no_proxy
@@ -99,6 +108,7 @@ services:
     environment:
      - IDAM_API_URL=http://idam-api:8080
      - IDAM_CONTINUE_URL_VALIDATOR_ENFORCE_TLS=false
+     - IDAM_API_OAUTH2_CLIENT_CLIENT_SECRETS_BULK_SCAN_ORCHESTRATOR=123456
      - IDAM_API_OAUTH2_CLIENT_CLIENT_SECRETS_CMC_LEGAL=123456
      - IDAM_API_OAUTH2_CLIENT_CLIENT_SECRETS_CCD_GATEWAY=123456
     ports:
@@ -118,10 +128,11 @@ services:
     command: --wait-for-database 30
     environment:
       - SERVER_PORT=8080
-      - S2S_NAMES_WHITELIST=ccd_gw,ccd_data,ccd_ps,probate_backend
+      - S2S_NAMES_WHITELIST=ccd_gw,ccd_data,ccd_ps,probate_backend,probate_frontend,bulk_scan_orchestrator,bulk_scan_processor
       - IDAM_SUPERUSER_EMAIL
       - IDAM_SECRET_KEY=AAAAAAAAAAAAAAAA
       - GOV_NOTIFY_API_KEY
+      - GOV_PAY_AUTH_KEY_PROBATE_FRONTEND=238mpukgl3uonfrqpt7ndqvr82ok75i3t8v66156q470k474iai66ukhdf
       - SPRING_DATASOURCE_URL=jdbc:postgresql://document-management-store-database:5432/evidence
       - SPRING_DATASOURCE_USERNAME=evidence
       - SPRING_DATASOURCE_PASSWORD=evidence
@@ -218,7 +229,7 @@ services:
       - DEFINITION_STORE_DB_USERNAME
       - DEFINITION_STORE_DB_PASSWORD
       - DEFINITION_STORE_IDAM_KEY=AAAAAAAAAAAAAAAA
-      - DEFINITION_STORE_S2S_AUTHORISED_SERVICES=ccd_data,ccd_gw,probate_backend
+      - DEFINITION_STORE_S2S_AUTHORISED_SERVICES=ccd_data,ccd_gw,probate_backend,probate_frontend,bulk_scan_orchestrator
       - DEFINITION_STORE_DB_USE_SSL=false
       - USER_PROFILE_HOST=http://ccd-user-profile-api:4453
       - IDAM_USER_URL=http://idam-api:8080
@@ -248,7 +259,7 @@ services:
         - DATA_STORE_DB_PASSWORD
         - DATA_STORE_IDAM_KEY=AAAAAAAAAAAAAAAA
         - DATA_STORE_TOKEN_SECRET=iuasbcuasdcbasdgcasdgcuysachjsacyasdgjcgasdj
-        - DATA_STORE_S2S_AUTHORISED_SERVICES=ccd_gw,ccd_data,ccd_ps,probate_backend
+        - DATA_STORE_S2S_AUTHORISED_SERVICES=ccd_gw,ccd_data,ccd_ps,probate_backend,probate_frontend,bulk_scan_orchestrator
         - DATA_STORE_DB_USE_SSL=false
         - DEFINITION_STORE_HOST=http://ccd-definition-store-api:4451
         - USER_PROFILE_HOST=http://ccd-user-profile-api:4453
@@ -279,6 +290,7 @@ services:
       - CCD_GW_LOGOUT_URL=http://localhost:8000/logout
       - CCD_GATEWAY_BASE_URL=http://localhost:3453
       - DM_GATEWAY_BASE_URL=https://api-gateway.dev.dm.reform.hmcts.net
+      - DM_URL_REMOTE=http://document-management-store:8080/documents
       - OAUTH2_CLIENT_ID=ccd_gateway
     ports:
       - 3451:3451
