@@ -24,6 +24,7 @@ import static uk.gov.hmcts.probate.insights.AppInsightsEvent.REQUEST_SENT;
 @RequiredArgsConstructor
 public class CaseMatchingService {
 
+    private static final String TEMPLATE_DIRECTORY = "templates/elasticsearch/";
     private static final String ES_QUERY = "case_matching_query.json";
     private static final String CASE_TYPE_ID = "ctid";
     private static final String CASE_TYPE_VALUE = "grantofrepresentation";
@@ -67,6 +68,6 @@ public class CaseMatchingService {
     }
 
     private String getQueryTemplate() {
-        return fileSystemResourceService.getFileFromResourceAsString("templates/elasticsearch/" + ES_QUERY);
+        return fileSystemResourceService.getFileFromResourceAsString(TEMPLATE_DIRECTORY + ES_QUERY);
     }
 }
