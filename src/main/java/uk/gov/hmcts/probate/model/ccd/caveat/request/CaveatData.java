@@ -2,9 +2,12 @@ package uk.gov.hmcts.probate.model.ccd.caveat.request;
 
 import lombok.Builder;
 import lombok.Data;
+import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
+import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Builder
 @Data
@@ -29,5 +32,9 @@ public class CaveatData {
     private final String cavCaveatorEmailAddress;
 
     private final SolsAddress cavCaveatorAddress;
+
+    // EVENT = cavUploadDocument
+
+    private final List<CollectionMember<UploadDocument>> cavDocumentsUploaded;
 
 }
