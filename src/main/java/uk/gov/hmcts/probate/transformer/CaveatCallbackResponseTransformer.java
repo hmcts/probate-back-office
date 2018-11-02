@@ -35,11 +35,15 @@ public class CaveatCallbackResponseTransformer {
                 .cavDeceasedForenames(caveatData.getCavDeceasedForenames())
                 .cavDeceasedSurname(caveatData.getCavDeceasedSurname())
                 .cavDeceasedDateOfDeath(dateTimeFormatter.format(caveatData.getCavDeceasedDateOfDeath()))
+                .cavDeceasedAnyOtherNames(caveatData.getCavDeceasedAnyOtherNames())
+                .cavDeceasedFullAliasNameList(caveatData.getCavDeceasedFullAliasNameList())
+                .cavDeceasedAddress(caveatData.getCavDeceasedAddress())
 
                 .cavCaveatorForenames(caveatData.getCavCaveatorForenames())
                 .cavCaveatorSurname(caveatData.getCavCaveatorSurname())
-                .cavCaveatorEmailAddress(caveatData.getCavCaveatorEmailAddress());
+                .cavCaveatorEmailAddress(caveatData.getCavCaveatorEmailAddress())
+                .cavCaveatorAddress(caveatData.getCavCaveatorAddress())
 
+                .cavDocumentsUploaded(caveatData.getCavDocumentsUploaded());
     }
-
 }
