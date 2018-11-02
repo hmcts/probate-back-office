@@ -2,10 +2,10 @@ package uk.gov.hmcts.probate.model.ccd.caveat.request;
 
 import lombok.Builder;
 import lombok.Data;
+import uk.gov.hmcts.probate.model.ccd.caveat.CavAddress;
 import uk.gov.hmcts.probate.model.ccd.caveat.CavAliasName;
 import uk.gov.hmcts.probate.model.ccd.caveat.CavFullAliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
-import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 
 import java.time.LocalDate;
@@ -29,7 +29,7 @@ public class CaveatData {
 
     private final List<CollectionMember<CavFullAliasName>> cavDeceasedFullAliasNameList;
 
-    private final SolsAddress cavDeceasedAddress;
+    private final CavAddress cavDeceasedAddress;
 
     // EVENT = cavRaiseCaveat - caveator data
 
@@ -39,10 +39,9 @@ public class CaveatData {
 
     private final String cavCaveatorEmailAddress;
 
-    private final SolsAddress cavCaveatorAddress;
+    private final CavAddress cavCaveatorAddress;
 
     // EVENT = cavUploadDocument
 
     private final List<CollectionMember<UploadDocument>> cavDocumentsUploaded;
-
 }
