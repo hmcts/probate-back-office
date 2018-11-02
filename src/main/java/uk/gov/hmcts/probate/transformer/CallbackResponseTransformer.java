@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 import uk.gov.hmcts.probate.model.ApplicationType;
+import uk.gov.hmcts.probate.model.ccd.CaseMatch;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
@@ -44,14 +45,15 @@ public class CallbackResponseTransformer {
     static final String PAYMENT_REFERENCE_FEE_PREFIX = "Fee account PBA-";
     static final String PAYMENT_REFERENCE_CHEQUE = "Cheque (payable to ‘HM Courts & Tribunals Service’)";
 
-    private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-    private static final ApplicationType DEFAULT_APPLICATION_TYPE = SOLICITOR;
-    private static final String DEFAULT_REGISTRY_LOCATION = "Birmingham";
     public static final String ANSWER_YES = "Yes";
     public static final String ANSWER_NO = "No";
     public static final String QA_CASE_STATE = "BOCaseQA";
     public static final String DATE_FORMAT = "yyyy-MM-dd";
     public static final String OTHER = "other";
+
+    private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(DATE_FORMAT);
+    private static final ApplicationType DEFAULT_APPLICATION_TYPE = SOLICITOR;
+    private static final String DEFAULT_REGISTRY_LOCATION = "Birmingham";
 
     public CallbackResponse transformWithConditionalStateChange(CallbackRequest callbackRequest, Optional<String> newState) {
         ResponseCaseData responseCaseData = getResponseCaseData(callbackRequest.getCaseDetails(), false)
@@ -86,6 +88,16 @@ public class CallbackResponseTransformer {
                     callbackRequest.getCaseDetails().getData().getBoEmailDocsReceivedNotification());
         }
         responseCaseDataBuilder.solsSOTNeedToUpdate(null);
+
+        return transformResponse(responseCaseDataBuilder.build());
+    }
+
+    public CallbackResponse addMatches(CallbackRequest callbackRequest, List<CaseMatch> matches) {
+        callbackRequest.getCaseDetails().getData().getCaseMatches().clear();
+        matches.forEach(match -> callbackRequest.getCaseDetails().getData().getCaseMatches()
+                .add(new CollectionMember<>(null, match)));
+
+        ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), false);
 
         return transformResponse(responseCaseDataBuilder.build());
     }
@@ -185,6 +197,7 @@ public class CallbackResponseTransformer {
                 .primaryApplicantAddress(caseData.getPrimaryApplicantAddress())
                 .solsSolicitorAppReference(caseData.getSolsSolicitorAppReference())
                 .solsAdditionalInfo(caseData.getSolsAdditionalInfo())
+                .caseMatches(caseData.getCaseMatches())
 
                 .solsSOTNeedToUpdate(caseData.getSolsSOTNeedToUpdate())
 

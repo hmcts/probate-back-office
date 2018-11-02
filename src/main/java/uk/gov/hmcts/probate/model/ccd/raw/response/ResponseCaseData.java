@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Data;
 import uk.gov.hmcts.probate.model.ApplicationType;
+import uk.gov.hmcts.probate.model.ccd.CaseMatch;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
@@ -64,6 +65,7 @@ public class ResponseCaseData {
     private final List<CollectionMember<Document>> probateDocumentsGenerated;
     private final List<CollectionMember<Document>> probateNotificationsGenerated;
     private final List<CollectionMember<UploadDocument>> boDocumentsUploaded;
+    private final List<CollectionMember<CaseMatch>> caseMatches;
     private final String solsSOTNeedToUpdate;
     private final DocumentLink solsNextStepsDocument;
     private final String solsAdditionalInfo;
