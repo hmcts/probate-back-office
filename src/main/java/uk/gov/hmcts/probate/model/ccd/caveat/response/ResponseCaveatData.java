@@ -3,6 +3,8 @@ package uk.gov.hmcts.probate.model.ccd.caveat.response;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;
 import lombok.Data;
+import uk.gov.hmcts.probate.model.ccd.caveat.CavAliasName;
+import uk.gov.hmcts.probate.model.ccd.caveat.CavFullAliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
@@ -17,6 +19,9 @@ public class ResponseCaveatData {
     private final String cavDeceasedForenames;
     private final String cavDeceasedSurname;
     private final String cavDeceasedDateOfDeath;
+    private final String cavDeceasedAnyOtherNames;
+    private final List<CollectionMember<CavAliasName>> cavDeceasedAliasNameList;
+    private final List<CollectionMember<CavFullAliasName>> cavDeceasedFullAliasNameList;
     private final SolsAddress cavDeceasedAddress;
 
     private final String cavCaveatorForenames;
