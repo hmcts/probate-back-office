@@ -123,8 +123,8 @@ services:
       context: ../docker/database
     image: docker.artifactory.reform.hmcts.net/evidence/document-management-store-database:latest
 
-  document-management-store:
-    image: docker.artifactory.reform.hmcts.net/evidence/document-management-store:latest
+  dm-store:
+    image: hmcts/dm-store:latest
     command: --wait-for-database 30
     environment:
       - SERVER_PORT=8080
@@ -146,12 +146,27 @@ services:
       - http_proxy=
       - https_proxy=
       - no_proxy=
+      - ENABLE_DELETE=true
+      - ENABLE_IDAM_HEALTH_CHECK=false
+      - ENABLE_METADATA_SEARCH=true
+      - ENABLE_DOCUMENT_AND_METADATA_UPLOAD=false
+      - ENABLE_FOLDER_API=true
+      - ENABLE_TTL=true
+      - ENABLE_THUMBNAIL=true
+      - DM_MULTIPART_WHITELIST=image/jpeg,application/pdf,image/tiff,image/png,image/bmp,text/plain,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.openxmlformats-officedocument.wordprocessingml.template,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.openxmlformats-officedocument.spreadsheetml.template,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation,application/vnd.openxmlformats-officedocument.presentationml.template,application/vnd.openxmlformats-officedocument.presentationml.slideshow
+      - DM_MULTIPART_WHITELIST_EXT=.jpg,.jpeg,.bmp,.tif,.tiff,.png,.pdf,.txt,.doc,.dot,.docx,.dotx,.xls,.xlt,.xla,.xlsx,.xltx,.xlsb,.ppt,.pot,.pps,.ppa,.pptx,.potx,.ppsx
+      - MAX_FILE_SIZE=500MB
+      - MAX_ACTIVE_DB_CONNECTIONS=10
+      - ENDPOINTS_HEALTH_SENSITIVE=false
+      - ENDPOINTS_INFO_SENSITIVE=false
+      - CASE_WORKER_ROLES=caseworker-probate
        # these environment variables are used by java-logging library
       - ROOT_APPENDER=JSON_CONSOLE
       - JSON_CONSOLE_PRETTY_PRINT=false
       - REFORM_SERVICE_TYPE=java
-      - REFORM_SERVICE_NAME=document-management-store-app
-      - REFORM_TEAM=cc
+     # - REFORM_SERVICE_NAME=document-management-store-app
+      - REFORM_SERVICE_NAME=dm-store
+      - REFORM_TEAM=evidence
       - REFORM_ENVIRONMENT=docker
 #      healthcheck env vars
       - PACKAGES_ENVIRONMENT=docker
@@ -269,7 +284,7 @@ services:
         - REFORM_TEAM=ccd
         - REFORM_ENVIRONMENT=local
         - APPINSIGHTS_INSTRUMENTATIONKEY=fake-key
-        - CCD_DM_DOMAIN=http://localhost:8080
+        - CCD_DM_DOMAIN=http://dm-store:8080
         - CCD_DEFAULTPRINTURL=http://localhost:3100/jurisdictions/:jid/case-types/:ctid/cases/:cid
       ports:
         - 4452:4452
@@ -290,7 +305,7 @@ services:
       - CCD_GW_LOGOUT_URL=http://localhost:8000/logout
       - CCD_GATEWAY_BASE_URL=http://localhost:3453
       - DM_GATEWAY_BASE_URL=https://api-gateway.dev.dm.reform.hmcts.net
-      - DM_URL_REMOTE=http://document-management-store:8080/documents
+      - DM_URL_REMOTE=http://dm-store:8080/documents
       - OAUTH2_CLIENT_ID=ccd_gateway
     ports:
       - 3451:3451
@@ -319,7 +334,7 @@ services:
       - PROXY_DEFINITION_DISPLAY=http://ccd-definition-store-api:4451/api/display
       # this NEEDS to be your local ip address
       - PROXY_PRINT_SERVICE=http://172.16.10.56:3100
-      - PROXY_DOCUMENT_MANAGEMENT=http://document-management-store:8080
+      - PROXY_DOCUMENT_MANAGEMENT=http://dm-store:8080
     ports:
       - 3453:3453
     depends_on:
