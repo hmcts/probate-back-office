@@ -4,7 +4,7 @@ binFolder=$(dirname "$0")
 (${binFolder}/idam-create-caseworker.sh caseworker-probate,caseworker-probate-solicitor ProbateSolicitor2@gmail.com)
 (${binFolder}/idam-create-caseworker.sh caseworker-probate,caseworker-probate-issuer ProbateSolCW1@gmail.com)
 (${binFolder}/idam-create-caseworker.sh caseworker-probate,caseworker-probate-issuer ProbateSolCW2@gmail.com)
-(${binFolder}/idam-create-caseworker.sh caseworker-probate,caseworker-probate-issuer bulkscan+ccd@gmail.com)
+(${binFolder}/idam-create-caseworker.sh caseworker-probate,caseworker-probate-issuer,caseworker-probate-examiner bulkscan+ccd@gmail.com)
 
 (${binFolder}/ccd-add-role.sh caseworker-probate)
 (${binFolder}/ccd-add-role.sh caseworker-probate-issuer)
