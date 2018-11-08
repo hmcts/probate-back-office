@@ -24,12 +24,14 @@ import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static java.util.Collections.EMPTY_LIST;
+import static java.util.Optional.ofNullable;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT;
@@ -92,10 +94,16 @@ public class CallbackResponseTransformer {
         return transformResponse(responseCaseDataBuilder.build());
     }
 
-    public CallbackResponse addMatches(CallbackRequest callbackRequest, List<CaseMatch> matches) {
-        callbackRequest.getCaseDetails().getData().getCaseMatches().clear();
-        matches.forEach(match -> callbackRequest.getCaseDetails().getData().getCaseMatches()
-                .add(new CollectionMember<>(null, match)));
+    public CallbackResponse addMatches(CallbackRequest callbackRequest, List<CaseMatch> newMatches) {
+        List<CollectionMember<CaseMatch>> storedMatches = callbackRequest.getCaseDetails().getData().getCaseMatches();
+
+        // Removing case matches that have been already added
+        storedMatches.stream()
+                .map(CollectionMember::getValue).forEach(newMatches::remove);
+
+        storedMatches.addAll(newMatches.stream().map(CollectionMember::new).collect(Collectors.toList()));
+
+        storedMatches.sort(Comparator.comparingInt(m -> ofNullable(m.getValue().getValid()).orElse("").length()));
 
         ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), false);
 
@@ -165,8 +173,8 @@ public class CallbackResponseTransformer {
         CaseData caseData = caseDetails.getData();
 
         ResponseCaseDataBuilder builder = ResponseCaseData.builder()
-                .applicationType(Optional.ofNullable(caseData.getApplicationType()).orElse(DEFAULT_APPLICATION_TYPE))
-                .registryLocation(Optional.ofNullable(caseData.getRegistryLocation()).orElse(DEFAULT_REGISTRY_LOCATION))
+                .applicationType(ofNullable(caseData.getApplicationType()).orElse(DEFAULT_APPLICATION_TYPE))
+                .registryLocation(ofNullable(caseData.getRegistryLocation()).orElse(DEFAULT_REGISTRY_LOCATION))
                 .solsSolicitorFirmName(caseData.getSolsSolicitorFirmName())
                 .solsSolicitorFirmPostcode(caseData.getSolsSolicitorFirmPostcode())
                 .solsSolicitorEmail(caseData.getSolsSolicitorEmail())
@@ -412,7 +420,7 @@ public class CallbackResponseTransformer {
     }
 
     private String transformMoneyGBPToString(BigDecimal bdValue) {
-        return Optional.ofNullable(bdValue)
+        return ofNullable(bdValue)
                 .map(value -> bdValue.multiply(new BigDecimal(100)))
                 .map(BigDecimal::intValue)
                 .map(String::valueOf)
@@ -420,14 +428,14 @@ public class CallbackResponseTransformer {
     }
 
     private String transformToString(BigDecimal bdValue) {
-        return Optional.ofNullable(bdValue)
+        return ofNullable(bdValue)
                 .map(BigDecimal::intValue)
                 .map(String::valueOf)
                 .orElse(null);
     }
 
     private String transformToString(Long longValue) {
-        return Optional.ofNullable(longValue)
+        return ofNullable(longValue)
                 .map(String::valueOf)
                 .orElse(null);
     }
