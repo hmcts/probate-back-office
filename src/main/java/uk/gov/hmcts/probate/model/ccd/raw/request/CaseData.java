@@ -266,16 +266,6 @@ public class CaseData {
 
     private final String applicationSubmittedDate;
 
-    private final String spouseOrPartner;
-    private final String childrenExistSurvived;
-    private final String childrenExistOverEighteenSurvived;
-    private final String childrenExistUnderEighteenSurvived;
-    private final String childrenExist;
-    private final String childrenExistOverEighteen;
-    private final String childrenExistUnderEighteen;
-    private final String gChildrenExist;
-    private final String gChildrenExistOverEighteen;
-    private final String gChildrenExistUnderEighteen;
     private final String primaryApplicantSecondaryPhoneNumber;
     private final String primaryApplicantRelationshipToDeceased;
     private final String paRelationshipToDeceasedOther;
@@ -305,6 +295,59 @@ public class CaseData {
     private final List<CollectionMember<AdoptedRelatives>> legallyAdoptiveRelatives;
     private final String selectionList;
 
+    private final String caseType;
+    private final String spouseOrPartner;
+    private final String childrenSurvived;
+    private final String childrenOverEighteenSurvived;
+    private final String childrenUnderEighteenSurvived;
+    private final String childrenDied;
+    private final String childrenDiedOverEighteen;
+    private final String childrenDiedUnderEighteen;
+    private final String gChildrenSurvived;
+    private final String gChildrenSurvivedOverEighteen;
+    private final String gChildrenSurvivedUnderEighteen;
+    private final String parentsExistSurvived;
+    private final String parentsExistOverEighteenSurvived;
+    private final String parentsExistUnderEighteenSurvived;
+    private final String wholeBloodSiblingSurvived;
+    private final String wholeBloodSiblingSurvivedOverEighteen;
+    private final String wholeBloodSiblingSurvivedUnderEighteen;
+    private final String wholeBloodSiblingDied;
+    private final String wholeBloodSiblingDiedOverEighteen;
+    private final String wholeBloodSiblingDiedUnderEighteen;
+    private final String wholeBloodNeicesAndNephews;
+    private final String wholeBloodNeicesAndNephewsOverEighteen;
+    private final String wholeBloodNeicesAndNephewsUnderEighteen;
+    private final String halfBloodSiblingsSurvived;
+    private final String halfBloodSiblingsSurvivedOverEighteen;
+    private final String halfBloodSiblingsSurvivedUnderEighteen;
+    private final String halfBloodSiblingsDied;
+    private final String halfBloodSiblingsDiedOverEighteen;
+    private final String halfBloodSiblingsDiedUnderEighteen;
+    private final String halfBloodNeicesAndNephews;
+    private final String halfBloodNeicesAndNephewsOverEighteen;
+    private final String halfBloodNeicesAndNephewsUnderEighteen;
+    private final String grandparentsDied;
+    private final String grandparentsDiedOverEighteen;
+    private final String grandparentsDiedUnderEighteen;
+    private final String wholeBloodUncleAndAuntsSurvived;
+    private final String wholeBloodUncleAndAuntsSurvivedOverEighteen;
+    private final String wholeBloodUncleAndAuntsSurvivedUnderEighteen;
+    private final String wholeBloodUncleAndAuntsDied;
+    private final String wholeBloodUncleAndAuntsDiedOverEighteen;
+    private final String wholeBloodUncleAndAuntsDiedUnderEighteen;
+    private final String wholeBloodCousinsSurvived;
+    private final String wholeBloodCousinsSurvivedOverEighteen;
+    private final String wholeBloodCousinsSurvivedUnderEighteen;
+    private final String halfBloodUncleAndAuntsSurvived;
+    private final String halfBloodUncleAndAuntsSurvivedOverEighteen;
+    private final String halfBloodUncleAndAuntsSurvivedUnderEighteen;
+    private final String halfBloodUncleAndAuntsDied;
+    private final String halfBloodUncleAndAuntsDiedOverEighteen;
+    private final String halfBloodUncleAndAuntsDiedUnderEighteen;
+    private final String halfBloodCousinsSurvived;
+    private final String halfBloodCousinsSurvivedOverEighteen;
+    private final String halfBloodCousinsSurvivedUnderEighteen;
 
     @Getter(lazy = true)
     private final List<CollectionMember<AdditionalExecutor>> executorsApplyingForLegalStatement = getAllExecutors(true);
