@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.model.ccd.caveat.response;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -11,7 +12,7 @@ import java.util.List;
 @Accessors(chain = true)
 public class CaveatCallbackResponse {
 
-    private ResponseCaveatData caveatData;
+    private ResponseCaveatData data;
     private List<String> errors;
     private List<String> warnings;
 

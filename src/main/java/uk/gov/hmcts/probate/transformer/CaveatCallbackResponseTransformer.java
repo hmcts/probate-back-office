@@ -16,6 +16,16 @@ public class CaveatCallbackResponseTransformer {
 
     private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
+    public CaveatCallbackResponse caveatRaised(CaveatCallbackRequest caveatCallbackRequest) {
+        CaveatDetails caveatDetails = caveatCallbackRequest.getCaveatDetails();
+
+        ResponseCaveatData responseCaveatData = getResponseCaveatData(caveatDetails)
+                .cavDeceasedForenames("new forename")
+                .build();
+
+        return transformResponse(responseCaveatData);
+    }
+
     public CaveatCallbackResponse transform(CaveatCallbackRequest callbackRequest) {
         ResponseCaveatData responseCaveatData = getResponseCaveatData(callbackRequest.getCaveatDetails())
                 .build();
@@ -24,7 +34,7 @@ public class CaveatCallbackResponseTransformer {
     }
 
     private CaveatCallbackResponse transformResponse(ResponseCaveatData responseCaveatData) {
-        return CaveatCallbackResponse.builder().caveatData(responseCaveatData).build();
+        return CaveatCallbackResponse.builder().data(responseCaveatData).build();
     }
 
     private ResponseCaveatData.ResponseCaveatDataBuilder getResponseCaveatData(CaveatDetails caveatDetails) {
