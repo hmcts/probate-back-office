@@ -53,10 +53,6 @@
     <td>{% if case_data.deceasedDateOfDeath %}{{ case_data.deceasedDateOfDeath | date("DD/MM/YYYY", existingFormat="yyyy-MM-dd") }}{% endif %}</td>
   </tr>
   <tr>
-    <td colspan="2">Deceased was domiciled in England or Wales:</td>
-    <td>{% if case_data.deceasedDomicileInEngWales %}{{ case_data.deceasedDomicileInEngWales }}{% endif %}</td>
-  </tr>
-  <tr>
     <td colspan="3">&nbsp;</td>
   </tr>
 
@@ -157,10 +153,6 @@
     <td>{{ ((case_data.executorsApplying | length) + 1) }}</td>
   </tr>
   <tr>
-    <td colspan="2">Is the applicant an executor:</td>
-    <td>{% if case_data.primaryApplicantIsApplying %}{{ case_data.primaryApplicantIsApplying }}{% endif %}</td>
-  </tr>
-  <tr>
     <td colspan="2">Applicant forename(s):</td>
     <td>{% if case_data.primaryApplicantForenames %}{{ case_data.primaryApplicantForenames }}{% endif %}</td>
   </tr>
@@ -195,14 +187,6 @@
   <tr>
     <td colspan="2">Applicant email address</td>
     <td>{% if case_data.primaryApplicantEmailAddress %}{{ case_data.primaryApplicantEmailAddress }}{% endif %}</td>
-  </tr>
-  <tr>
-    <td colspan="2">Will Y/N:</td>
-    <td>{% if case_data.willExists%}{{ case_data.willExists }}{% endif %}</td>
-  </tr>
-  <tr>
-    <td colspan="2">Is the will original:</td>
-    <td>{% if case_data.willAccessOriginal%}{{ case_data.willAccessOriginal}}{% endif %}</td>
   </tr>
   <tr>
     <td colspan="2">Will with codicils:</td>
