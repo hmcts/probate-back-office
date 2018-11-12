@@ -54,6 +54,8 @@ public class CaveatCallbackResponseTransformer {
                 .cavCaveatorEmailAddress(caveatData.getCavCaveatorEmailAddress())
                 .cavCaveatorAddress(caveatData.getCavCaveatorAddress())
 
+                .cavExpiryDate(dateTimeFormatter.format(caveatData.getCavExpiryDate()))
+
                 .cavDocumentsUploaded(caveatData.getCavDocumentsUploaded());
     }
 }

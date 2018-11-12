@@ -28,5 +28,7 @@ public class ResponseCaveatData {
     private final String cavCaveatorEmailAddress;
     private final CavAddress cavCaveatorAddress;
 
+    private final String cavExpiryDate;
+
     private final List<CollectionMember<UploadDocument>> cavDocumentsUploaded;
 }

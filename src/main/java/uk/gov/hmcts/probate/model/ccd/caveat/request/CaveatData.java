@@ -41,6 +41,10 @@ public class CaveatData {
 
     private final CavAddress cavCaveatorAddress;
 
+    // EVENT = cavRaiseCaveat - caveat details
+
+    private LocalDate cavExpiryDate;
+
     // EVENT = cavUploadDocument
 
     private final List<CollectionMember<UploadDocument>> cavDocumentsUploaded;
