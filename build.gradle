@@ -38,6 +38,7 @@ checkstyle.toolVersion = '8.2'
 checkstyle.configFile = new File(rootDir, "checkstyle.xml")
 mainClassName = 'uk.gov.hmcts.probate.BusinessRulesValidationApplication'
 
+ext['selenium.version']='3.8.1'
 
 check.dependsOn dependencyCheckAnalyze
 // make build fail on Checkstyle issues (https://github.com/gradle/gradle/issues/881)
