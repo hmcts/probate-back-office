@@ -6,7 +6,7 @@ buildscript {
   }
   dependencies {
     classpath group: 'org.sonarsource.scanner.gradle', name: 'sonarqube-gradle-plugin', version: '2.6.2'
-    classpath("net.serenity-bdd:serenity-gradle-plugin:1.5.2")
+    classpath("net.serenity-bdd:serenity-gradle-plugin:2.0.11")
   }
 }
 
@@ -114,22 +114,22 @@ sonarqube {
 }
 
 sourceSets {
-    testSmoke {
-        java {
-            compileClasspath += main.output
-            runtimeClasspath += main.output
-            srcDir file('src/smokeTest/java')
-        }
-        resources.srcDir file('src/smokeTest/resources')
+  testSmoke {
+    java {
+      compileClasspath += main.output
+      runtimeClasspath += main.output
+      srcDir file('src/smokeTest/java')
     }
-    testFunctional {
-      java {
-        compileClasspath += main.output
-        runtimeClasspath += main.output
-        srcDir file('src/functionalTest/java')
-      }
-      resources.srcDir file('src/functionalTest/resources')
+    resources.srcDir file('src/smokeTest/resources')
+  }
+  testFunctional {
+    java {
+      compileClasspath += main.output
+      runtimeClasspath += main.output
+      srcDir file('src/functionalTest/java')
     }
+    resources.srcDir file('src/functionalTest/resources')
+  }
   testCaseCreator {
     java {
       compileClasspath += main.output
@@ -171,12 +171,12 @@ def springBootVersion = '1.5.14.RELEASE'
 def reformsJavaLoggingVersion = '2.0.2'
 
 jacocoTestReport {
-    executionData(test)
-    reports {
-        xml.enabled = true
-        csv.enabled = false
-        xml.destination = file("${project.buildDir}/reports/jacoco/test/jacocoTestReport.xml")
-    }
+  executionData(test)
+  reports {
+    xml.enabled = true
+    csv.enabled = false
+    xml.destination = file("${project.buildDir}/reports/jacoco/test/jacocoTestReport.xml")
+  }
 }
 
 repositories {
@@ -234,19 +234,19 @@ dependencies {
   testSmokeCompile sourceSets.main.runtimeClasspath
   testSmokeCompile sourceSets.test.runtimeClasspath
 
-  testFunctionalCompile group: 'net.serenity-bdd', name: 'serenity-core', version: '1.5.2'
-  testFunctionalCompile group: 'net.serenity-bdd', name: 'serenity-junit', version: '1.5.2'
-  testFunctionalCompile group: 'net.serenity-bdd', name: 'serenity-rest-assured', version: '1.5.2'
-  testFunctionalCompile group: 'net.serenity-bdd', name: 'serenity-spring', version: '1.0.26'
+  testFunctionalCompile group: 'net.serenity-bdd', name: 'serenity-core', version: '2.0.11'
+  testFunctionalCompile group: 'net.serenity-bdd', name: 'serenity-junit', version: '2.0.11'
+  testFunctionalCompile group: 'net.serenity-bdd', name: 'serenity-rest-assured', version: '2.0.11'
+  testFunctionalCompile group: 'net.serenity-bdd', name: 'serenity-spring', version: '2.0.11'
   testFunctionalCompile group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.0'
   testFunctionalCompile group: 'uk.gov.hmcts.reform', name: 'service-auth-provider-client', version: '0.6.0'
   testFunctionalCompile sourceSets.main.runtimeClasspath
   testFunctionalCompile sourceSets.test.runtimeClasspath
 
-  testCaseCreatorCompile group: 'net.serenity-bdd', name: 'serenity-core', version: '1.5.2'
-  testCaseCreatorCompile group: 'net.serenity-bdd', name: 'serenity-junit', version: '1.5.2'
-  testCaseCreatorCompile group: 'net.serenity-bdd', name: 'serenity-rest-assured', version: '1.5.2'
-  testCaseCreatorCompile group: 'net.serenity-bdd', name: 'serenity-spring', version: '1.0.26'
+  testCaseCreatorCompile group: 'net.serenity-bdd', name: 'serenity-core', version: '2.0.11'
+  testCaseCreatorCompile group: 'net.serenity-bdd', name: 'serenity-junit', version: '2.0.11'
+  testCaseCreatorCompile group: 'net.serenity-bdd', name: 'serenity-rest-assured', version: '2.0.11'
+  testCaseCreatorCompile group: 'net.serenity-bdd', name: 'serenity-spring', version: '2.0.11'
   testCaseCreatorCompile group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.0'
   testCaseCreatorCompile group: 'uk.gov.hmcts.reform', name: 'service-auth-provider-client', version: '0.6.0'
   testCaseCreatorCompile sourceSets.main.runtimeClasspath
