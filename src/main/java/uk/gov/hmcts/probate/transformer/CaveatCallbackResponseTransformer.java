@@ -8,7 +8,10 @@ import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
 import uk.gov.hmcts.probate.model.ccd.caveat.response.CaveatCallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.caveat.response.ResponseCaveatData;
 
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+
+import static uk.gov.hmcts.probate.model.Constants.CAVEAT_LIFESPAN;
 
 @Component
 @RequiredArgsConstructor
@@ -20,7 +23,7 @@ public class CaveatCallbackResponseTransformer {
         CaveatDetails caveatDetails = caveatCallbackRequest.getCaveatDetails();
 
         ResponseCaveatData responseCaveatData = getResponseCaveatData(caveatDetails)
-                .cavDeceasedForenames("new forename")
+                .cavExpiryDate(dateTimeFormatter.format(LocalDate.now().plusMonths(CAVEAT_LIFESPAN)))
                 .build();
 
         return transformResponse(responseCaveatData);
@@ -53,8 +56,6 @@ public class CaveatCallbackResponseTransformer {
                 .cavCaveatorSurname(caveatData.getCavCaveatorSurname())
                 .cavCaveatorEmailAddress(caveatData.getCavCaveatorEmailAddress())
                 .cavCaveatorAddress(caveatData.getCavCaveatorAddress())
-
-                .cavExpiryDate(dateTimeFormatter.format(caveatData.getCavExpiryDate()))
 
                 .cavDocumentsUploaded(caveatData.getCavDocumentsUploaded());
     }
