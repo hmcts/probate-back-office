@@ -34,7 +34,7 @@ public class CaveatCallbackResponseTransformer {
     }
 
     private CaveatCallbackResponse transformResponse(ResponseCaveatData responseCaveatData) {
-        return CaveatCallbackResponse.builder().data(responseCaveatData).build();
+        return CaveatCallbackResponse.builder().caveatData(responseCaveatData).build();
     }
 
     private ResponseCaveatData.ResponseCaveatDataBuilder getResponseCaveatData(CaveatDetails caveatDetails) {

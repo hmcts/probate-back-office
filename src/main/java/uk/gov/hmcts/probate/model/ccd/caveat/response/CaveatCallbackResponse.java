@@ -12,7 +12,8 @@ import java.util.List;
 @Accessors(chain = true)
 public class CaveatCallbackResponse {
 
-    private ResponseCaveatData data;
+    @JsonProperty(value = "data")
+    private ResponseCaveatData caveatData;
     private List<String> errors;
     private List<String> warnings;
 
