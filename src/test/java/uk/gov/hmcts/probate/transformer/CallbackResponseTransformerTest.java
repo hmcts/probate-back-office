@@ -11,6 +11,7 @@ import org.mockito.Spy;
 import org.mockito.runners.MockitoJUnitRunner;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.DocumentType;
+import uk.gov.hmcts.probate.model.ccd.CaseMatch;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
@@ -35,6 +36,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -389,6 +391,18 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
+    public void shouldAddMatches() {
+        CaseMatch caseMatch = CaseMatch.builder().build();
+
+        CallbackResponse response = underTest.addMatches(callbackRequestMock, Collections.singletonList(caseMatch));
+
+        assertCommon(response);
+
+        assertEquals(1, response.getData().getCaseMatches().size());
+        assertEquals(caseMatch, response.getData().getCaseMatches().get(0).getValue());
+    }
+
+    @Test
     public void shouldConvertRequestToDataBeanWithStopDetailsChange() {
         CallbackResponse callbackResponse = underTest.caseStopped(callbackRequestMock, document);
 
@@ -614,7 +628,7 @@ public class CallbackResponseTransformerTest {
         assertEquals(YES, callbackResponse.getData().getPrimaryApplicantSameWillName());
         assertEquals(PRIMARY_EXEC_ALIAS_NAMES, callbackResponse.getData().getPrimaryApplicantAlias());
         assertEquals("Marriage", callbackResponse.getData().getPrimaryApplicantAliasReason());
-        assertEquals(null, callbackResponse.getData().getPrimaryApplicantOtherReason());
+        assertNull(callbackResponse.getData().getPrimaryApplicantOtherReason());
     }
 
     @Test
@@ -644,7 +658,7 @@ public class CallbackResponseTransformerTest {
 
         CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
 
-        assertEquals(null, callbackResponse.getData().getIhtReferenceNumber());
+        assertNull(callbackResponse.getData().getIhtReferenceNumber());
     }
 
     @Test
@@ -727,7 +741,7 @@ public class CallbackResponseTransformerTest {
         assertEquals(EXEC_FIRST_NAME + " " + EXEC_SURNAME, exec.getApplyingExecutorName());
         assertEquals(ALIAS_FORENAME + " " + ALIAS_SURNAME, exec.getApplyingExecutorOtherNames());
         assertEquals("Other", exec.getApplyingExecutorOtherNamesReason());
-        assertEquals("Married",  exec.getApplyingExecutorOtherReason());
+        assertEquals("Married", exec.getApplyingExecutorOtherReason());
         assertApplyingExecutorDetailsFromSols(exec);
     }
 

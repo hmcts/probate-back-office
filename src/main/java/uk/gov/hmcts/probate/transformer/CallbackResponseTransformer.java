@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 import uk.gov.hmcts.probate.model.ApplicationType;
+import uk.gov.hmcts.probate.model.ccd.CaseMatch;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
@@ -23,12 +24,14 @@ import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static java.util.Collections.EMPTY_LIST;
+import static java.util.Optional.ofNullable;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT;
@@ -44,14 +47,15 @@ public class CallbackResponseTransformer {
     static final String PAYMENT_REFERENCE_FEE_PREFIX = "Fee account PBA-";
     static final String PAYMENT_REFERENCE_CHEQUE = "Cheque (payable to ‘HM Courts & Tribunals Service’)";
 
-    private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-    private static final ApplicationType DEFAULT_APPLICATION_TYPE = SOLICITOR;
-    private static final String DEFAULT_REGISTRY_LOCATION = "Birmingham";
     public static final String ANSWER_YES = "Yes";
     public static final String ANSWER_NO = "No";
     public static final String QA_CASE_STATE = "BOCaseQA";
     public static final String DATE_FORMAT = "yyyy-MM-dd";
     public static final String OTHER = "other";
+
+    private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(DATE_FORMAT);
+    private static final ApplicationType DEFAULT_APPLICATION_TYPE = SOLICITOR;
+    private static final String DEFAULT_REGISTRY_LOCATION = "Birmingham";
 
     public CallbackResponse transformWithConditionalStateChange(CallbackRequest callbackRequest, Optional<String> newState) {
         ResponseCaseData responseCaseData = getResponseCaseData(callbackRequest.getCaseDetails(), false)
@@ -86,6 +90,22 @@ public class CallbackResponseTransformer {
                     callbackRequest.getCaseDetails().getData().getBoEmailDocsReceivedNotification());
         }
         responseCaseDataBuilder.solsSOTNeedToUpdate(null);
+
+        return transformResponse(responseCaseDataBuilder.build());
+    }
+
+    public CallbackResponse addMatches(CallbackRequest callbackRequest, List<CaseMatch> newMatches) {
+        List<CollectionMember<CaseMatch>> storedMatches = callbackRequest.getCaseDetails().getData().getCaseMatches();
+
+        // Removing case matches that have been already added
+        storedMatches.stream()
+                .map(CollectionMember::getValue).forEach(newMatches::remove);
+
+        storedMatches.addAll(newMatches.stream().map(CollectionMember::new).collect(Collectors.toList()));
+
+        storedMatches.sort(Comparator.comparingInt(m -> ofNullable(m.getValue().getValid()).orElse("").length()));
+
+        ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), false);
 
         return transformResponse(responseCaseDataBuilder.build());
     }
@@ -153,8 +173,8 @@ public class CallbackResponseTransformer {
         CaseData caseData = caseDetails.getData();
 
         ResponseCaseDataBuilder builder = ResponseCaseData.builder()
-                .applicationType(Optional.ofNullable(caseData.getApplicationType()).orElse(DEFAULT_APPLICATION_TYPE))
-                .registryLocation(Optional.ofNullable(caseData.getRegistryLocation()).orElse(DEFAULT_REGISTRY_LOCATION))
+                .applicationType(ofNullable(caseData.getApplicationType()).orElse(DEFAULT_APPLICATION_TYPE))
+                .registryLocation(ofNullable(caseData.getRegistryLocation()).orElse(DEFAULT_REGISTRY_LOCATION))
                 .solsSolicitorFirmName(caseData.getSolsSolicitorFirmName())
                 .solsSolicitorFirmPostcode(caseData.getSolsSolicitorFirmPostcode())
                 .solsSolicitorEmail(caseData.getSolsSolicitorEmail())
@@ -185,6 +205,7 @@ public class CallbackResponseTransformer {
                 .primaryApplicantAddress(caseData.getPrimaryApplicantAddress())
                 .solsSolicitorAppReference(caseData.getSolsSolicitorAppReference())
                 .solsAdditionalInfo(caseData.getSolsAdditionalInfo())
+                .caseMatches(caseData.getCaseMatches())
 
                 .solsSOTNeedToUpdate(caseData.getSolsSOTNeedToUpdate())
 
@@ -399,7 +420,7 @@ public class CallbackResponseTransformer {
     }
 
     private String transformMoneyGBPToString(BigDecimal bdValue) {
-        return Optional.ofNullable(bdValue)
+        return ofNullable(bdValue)
                 .map(value -> bdValue.multiply(new BigDecimal(100)))
                 .map(BigDecimal::intValue)
                 .map(String::valueOf)
@@ -407,14 +428,14 @@ public class CallbackResponseTransformer {
     }
 
     private String transformToString(BigDecimal bdValue) {
-        return Optional.ofNullable(bdValue)
+        return ofNullable(bdValue)
                 .map(BigDecimal::intValue)
                 .map(String::valueOf)
                 .orElse(null);
     }
 
     private String transformToString(Long longValue) {
-        return Optional.ofNullable(longValue)
+        return ofNullable(longValue)
                 .map(String::valueOf)
                 .orElse(null);
     }

@@ -42,6 +42,10 @@ printservice:
       host: http://localhost:3453
   path: /jurisdictions/PROBATE/case-types/GrantOfRepresentation/cases/%s/probate/
 
+ccd.gateway:
+  host: http://localhost:3453
+  caseMatchingPath: /data/searchCases
+
 spring:
   jackson:
     serialization:
