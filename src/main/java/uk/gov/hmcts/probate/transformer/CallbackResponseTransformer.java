@@ -44,7 +44,6 @@ public class CallbackResponseTransformer {
     static final String PAYMENT_REFERENCE_FEE_PREFIX = "Fee account PBA-";
     static final String PAYMENT_REFERENCE_CHEQUE = "Cheque (payable to ‘HM Courts & Tribunals Service’)";
 
-    private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private static final ApplicationType DEFAULT_APPLICATION_TYPE = SOLICITOR;
     private static final String DEFAULT_REGISTRY_LOCATION = "Birmingham";
     public static final String ANSWER_YES = "Yes";
@@ -52,6 +51,7 @@ public class CallbackResponseTransformer {
     public static final String QA_CASE_STATE = "BOCaseQA";
     public static final String DATE_FORMAT = "yyyy-MM-dd";
     public static final String OTHER = "other";
+    private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(DATE_FORMAT);
 
     public CallbackResponse transformWithConditionalStateChange(CallbackRequest callbackRequest, Optional<String> newState) {
         ResponseCaseData responseCaseData = getResponseCaseData(callbackRequest.getCaseDetails(), false)
