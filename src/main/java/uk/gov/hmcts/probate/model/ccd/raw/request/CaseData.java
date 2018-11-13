@@ -28,6 +28,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.ProbateAliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.StopReason;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
+import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocuments;
 
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
@@ -295,6 +296,9 @@ public class CaseData {
     private final List<CollectionMember<AdoptedRelatives>> legallyAdoptiveRelatives;
     private final String selectionList;
 
+    private final List<CollectionMember<ScannedDocuments>> scannedDocuments;
+    private final String evidenceHandled;
+
     private final String caseType;
     private final String spouseOrPartner;
     private final String childrenSurvived;
@@ -348,6 +352,13 @@ public class CaseData {
     private final String halfBloodCousinsSurvived;
     private final String halfBloodCousinsSurvivedOverEighteen;
     private final String halfBloodCousinsSurvivedUnderEighteen;
+
+    private final String applicationFeePaperForm;
+    private final String feeForCopiesPaperForm;
+    private final String totalFeePaperForm;
+    private final String paperPaymentMethod;
+    private final String paymentReferenceNumberPaperform;
+    private final String paperForm;
 
     @Getter(lazy = true)
     private final List<CollectionMember<AdditionalExecutor>> executorsApplyingForLegalStatement = getAllExecutors(true);

@@ -145,6 +145,15 @@ public class CallbackResponseTransformer {
         return transformResponse(responseCaseData);
     }
 
+    public CallbackResponse paperForm(CallbackRequest callbackRequest) {
+
+        ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), false);
+        responseCaseDataBuilder.paperForm(ANSWER_YES);
+
+        return transformResponse(responseCaseDataBuilder.build());
+    }
+
+
     private CallbackResponse transformResponse(ResponseCaseData responseCaseData) {
         return CallbackResponse.builder().data(responseCaseData).build();
     }
@@ -239,6 +248,9 @@ public class CallbackResponseTransformer {
                 .deceasedMarriedAfterWillOrCodicilDate(caseData.getDeceasedMarriedAfterWillOrCodicilDate())
                 .applicationSubmittedDate(caseData.getApplicationSubmittedDate())
 
+                .scannedDocuments(caseData.getScannedDocuments())
+                .evidenceHandled(caseData.getEvidenceHandled())
+
                 .primaryApplicantSecondaryPhoneNumber(caseData.getPrimaryApplicantSecondaryPhoneNumber())
                 .primaryApplicantRelationshipToDeceased(caseData.getPrimaryApplicantRelationshipToDeceased())
                 .paRelationshipToDeceasedOther(caseData.getPaRelationshipToDeceasedOther())
@@ -318,7 +330,13 @@ public class CallbackResponseTransformer {
                 .halfBloodUncleAndAuntsDiedUnderEighteen(caseData.getHalfBloodUncleAndAuntsDiedUnderEighteen())
                 .halfBloodCousinsSurvived(caseData.getHalfBloodCousinsSurvived())
                 .halfBloodCousinsSurvivedOverEighteen(caseData.getHalfBloodCousinsSurvivedOverEighteen())
-                .halfBloodCousinsSurvivedUnderEighteen(caseData.getHalfBloodCousinsSurvivedUnderEighteen());
+                .halfBloodCousinsSurvivedUnderEighteen(caseData.getHalfBloodCousinsSurvivedUnderEighteen())
+                .applicationFeePaperForm(caseData.getApplicationFeePaperForm())
+                .feeForCopiesPaperForm(caseData.getFeeForCopiesPaperForm())
+                .totalFeePaperForm(caseData.getTotalFeePaperForm())
+                .paperPaymentMethod(caseData.getPaperPaymentMethod())
+                .paymentReferenceNumberPaperform(caseData.getPaymentReferenceNumberPaperform())
+                .paperForm(caseData.getPaperForm());
 
         if (transform) {
             updateCaseBuilderForTransformCase(caseData, builder);

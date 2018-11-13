@@ -22,6 +22,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.ProbateAliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.StopReason;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
+import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocuments;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -122,6 +123,8 @@ public class ResponseCaseData {
     private final List<CollectionMember<Payment>> payments;
 
     private final String applicationSubmittedDate;
+    private final List<CollectionMember<ScannedDocuments>> scannedDocuments;
+    private final String evidenceHandled;
 
     private final String primaryApplicantSecondaryPhoneNumber;
     private final String primaryApplicantRelationshipToDeceased;
@@ -204,4 +207,11 @@ public class ResponseCaseData {
     private final String halfBloodCousinsSurvived;
     private final String halfBloodCousinsSurvivedOverEighteen;
     private final String halfBloodCousinsSurvivedUnderEighteen;
+
+    private final String applicationFeePaperForm;
+    private final String feeForCopiesPaperForm;
+    private final String totalFeePaperForm;
+    private final String paperPaymentMethod;
+    private final String paymentReferenceNumberPaperform;
+    private final String paperForm;
 }

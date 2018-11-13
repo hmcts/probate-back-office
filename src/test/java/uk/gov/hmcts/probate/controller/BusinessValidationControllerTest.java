@@ -79,6 +79,7 @@ public class BusinessValidationControllerTest {
     private static final String CASE_VALIDATE_CASE_DETAILS_URL = "/case/validateCaseDetails";
     private static final String CASE_TRANSFORM_URL = "/case/transformCase";
     private static final String CASE_CHCEKLIST_URL = "/case/validateCheckListDetails";
+    private static final String PAPER_FORM_URL = "/case/paperForm";
 
     @Autowired
     private MockMvc mockMvc;
@@ -295,4 +296,24 @@ public class BusinessValidationControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
     }
+
+    @Test
+    public void shouldReturnPaperFormSuccess() throws Exception {
+        String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadAliasNames.json");
+
+        mockMvc.perform(post(PAPER_FORM_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
+    }
+
+    @Test
+    public void shouldReturnPaperForm() throws Exception {
+        String solicitorPayload = testUtils.getStringFromFile("solicitorAdditionalExecutors.json");
+
+        mockMvc.perform(post(PAPER_FORM_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
+    }
+
+
 }

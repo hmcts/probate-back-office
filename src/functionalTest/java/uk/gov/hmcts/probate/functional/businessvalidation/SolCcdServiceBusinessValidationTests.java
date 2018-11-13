@@ -23,6 +23,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     private static final String VALIDATE_URL = "/case/validate";
     private static final String TRANSFORM_URL = "/case/transformCase";
     private static final String CHECKLIST_URL = "/case/validateCheckListDetails";
+    private static final String PAPER_FORM_URL = "/case/paperForm";
 
 
     @Test
@@ -172,6 +173,11 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
                 "The total number executors applying cannot exceed 4", 200, VALIDATE_URL);
         validatePostFailure("failure.moreThanFourExecutors.json",
                 "The total number executors applying cannot exceed 4", 200, VALIDATE_CASE_AMEND_URL);
+    }
+
+    @Test
+    public void verifySuccessPaperForm() {
+        validatePostSuccess("success.LessThanFourExecutors.json", PAPER_FORM_URL);
     }
 
     @Test
