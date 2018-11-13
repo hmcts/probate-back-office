@@ -234,6 +234,7 @@ dependencies {
   testSmokeCompile sourceSets.main.runtimeClasspath
   testSmokeCompile sourceSets.test.runtimeClasspath
 
+  testFunctionalCompile group: 'org.seleniumhq.selenium', name: 'selenium-api', version: '3.14.0'
   testFunctionalCompile group: 'net.serenity-bdd', name: 'serenity-core', version: '2.0.11'
   testFunctionalCompile group: 'net.serenity-bdd', name: 'serenity-junit', version: '2.0.11'
   testFunctionalCompile group: 'net.serenity-bdd', name: 'serenity-rest-assured', version: '2.0.11'
@@ -243,6 +244,7 @@ dependencies {
   testFunctionalCompile sourceSets.main.runtimeClasspath
   testFunctionalCompile sourceSets.test.runtimeClasspath
 
+  testCaseCreatorCompile group: 'org.seleniumhq.selenium', name: 'selenium-api', version: '3.14.0'
   testCaseCreatorCompile group: 'net.serenity-bdd', name: 'serenity-core', version: '2.0.11'
   testCaseCreatorCompile group: 'net.serenity-bdd', name: 'serenity-junit', version: '2.0.11'
   testCaseCreatorCompile group: 'net.serenity-bdd', name: 'serenity-rest-assured', version: '2.0.11'
