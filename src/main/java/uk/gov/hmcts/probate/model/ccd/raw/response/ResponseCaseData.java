@@ -141,8 +141,8 @@ public class ResponseCaseData {
     private final List<CollectionMember<AttorneyApplyingOnBehalf>> attorneyOnBehalfOfNameAndAddress;
     private final String mentalCapacity;
     private final String courtOfProtection;
-    private final String EPAorLPA;
-    private final String EPARegistered;
+    private final String epaOrLpa;
+    private final String epaRegistered;
     private final String domicilityCountry;
     private final List<CollectionMember<EstateItems>> ukEstate;
     private final String domicilityIHTCert;
@@ -162,9 +162,9 @@ public class ResponseCaseData {
     private final String childrenDied;
     private final String childrenDiedOverEighteen;
     private final String childrenDiedUnderEighteen;
-    private final String gChildrenSurvived;
-    private final String gChildrenSurvivedOverEighteen;
-    private final String gChildrenSurvivedUnderEighteen;
+    private final String grandChildrenSurvived;
+    private final String grandChildrenSurvivedOverEighteen;
+    private final String grandChildrenSurvivedUnderEighteen;
     private final String parentsExistSurvived;
     private final String parentsExistOverEighteenSurvived;
     private final String parentsExistUnderEighteenSurvived;

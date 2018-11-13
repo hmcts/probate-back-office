@@ -695,8 +695,8 @@ public class CallbackResponseTransformerTest {
                 .attorneyOnBehalfOfNameAndAddress(null)
                 .mentalCapacity(YES)
                 .courtOfProtection(YES)
-                .EPAorLPA(NO)
-                .EPARegistered(NO)
+                .epaOrLpa(NO)
+                .epaRegistered(NO)
                 .domicilityCountry("Spain")
                 .scannedDocuments(documents)
                 .ukEstate(estate)
@@ -718,9 +718,9 @@ public class CallbackResponseTransformerTest {
                 .childrenDied(YES)
                 .childrenDiedOverEighteen(NUM_CODICILS)
                 .childrenDiedUnderEighteen(NUM_CODICILS)
-                .gChildrenSurvived(YES)
-                .gChildrenSurvivedOverEighteen(NUM_CODICILS)
-                .gChildrenSurvivedUnderEighteen(NUM_CODICILS)
+                .grandChildrenSurvived(YES)
+                .grandChildrenSurvivedOverEighteen(NUM_CODICILS)
+                .grandChildrenSurvivedUnderEighteen(NUM_CODICILS)
                 .parentsExistSurvived(YES)
                 .parentsExistOverEighteenSurvived(NUM_CODICILS)
                 .parentsExistUnderEighteenSurvived(NUM_CODICILS)
@@ -818,7 +818,7 @@ public class CallbackResponseTransformerTest {
         return new CollectionMember<>(id, doc);
     }
 
-    private CollectionMember<EstateItems> createEstateItems (String id) {
+    private CollectionMember<EstateItems> createEstateItems(String id) {
         EstateItems items = EstateItems.builder()
                 .item("")
                 .value("")
@@ -827,7 +827,7 @@ public class CallbackResponseTransformerTest {
         return new CollectionMember<>(id, items);
     }
 
-    private CollectionMember<AdoptedRelatives> createAdoptiveRelativeList (String id) {
+    private CollectionMember<AdoptedRelatives> createAdoptiveRelativeList(String id) {
         AdoptedRelatives relatives = AdoptedRelatives.builder()
                 .adoptedInOrOut("IN")
                 .name("Jane Doe")
@@ -836,7 +836,7 @@ public class CallbackResponseTransformerTest {
         return new CollectionMember<>(id, relatives);
     }
 
-    private CollectionMember<AttorneyApplyingOnBehalf> createAttorneyApplyingList (String id) {
+    private CollectionMember<AttorneyApplyingOnBehalf> createAttorneyApplyingList(String id) {
         SolsAddress address = SolsAddress.builder()
                 .addressLine1("")
                 .addressLine2("")
@@ -997,12 +997,11 @@ public class CallbackResponseTransformerTest {
         assertEquals("Random Court Name", callbackResponse.getData().getCourtOfDecree());
         assertEquals(NO, callbackResponse.getData().getWillGiftUnderEighteen());
         assertEquals(YES, callbackResponse.getData().getApplyingAsAnAttorney());
-        assertEquals(null, callbackResponse.getData().getAttorneyOnBehalfOfNameAndAddress());
         assertEquals(YES, callbackResponse.getData().getMentalCapacity());
         assertEquals(YES, callbackResponse.getData().getCourtOfProtection());
-        assertEquals(NO, callbackResponse.getData().getEPAorLPA());
+        assertEquals(NO, callbackResponse.getData().getEpaOrLpa());
 
-        assertEquals(NO, callbackResponse.getData().getEPARegistered());
+        assertEquals(NO, callbackResponse.getData().getEpaRegistered());
         assertEquals("Spain", callbackResponse.getData().getDomicilityCountry());
         assertEquals(NO, callbackResponse.getData().getSpouseOrPartner());
 
@@ -1012,9 +1011,9 @@ public class CallbackResponseTransformerTest {
         assertEquals(YES, callbackResponse.getData().getChildrenDied());
         assertEquals(NUM_CODICILS, callbackResponse.getData().getChildrenDiedOverEighteen());
         assertEquals(NUM_CODICILS, callbackResponse.getData().getChildrenDiedUnderEighteen());
-        assertEquals(YES, callbackResponse.getData().getGChildrenSurvived());
-        assertEquals(NUM_CODICILS, callbackResponse.getData().getGChildrenSurvivedOverEighteen());
-        assertEquals(NUM_CODICILS, callbackResponse.getData().getGChildrenSurvivedUnderEighteen());
+        assertEquals(YES, callbackResponse.getData().getGrandChildrenSurvived());
+        assertEquals(NUM_CODICILS, callbackResponse.getData().getGrandChildrenSurvivedOverEighteen());
+        assertEquals(NUM_CODICILS, callbackResponse.getData().getGrandChildrenSurvivedUnderEighteen());
         assertEquals(YES, callbackResponse.getData().getParentsExistSurvived());
         assertEquals(NUM_CODICILS, callbackResponse.getData().getParentsExistOverEighteenSurvived());
         assertEquals(NUM_CODICILS, callbackResponse.getData().getParentsExistUnderEighteenSurvived());
