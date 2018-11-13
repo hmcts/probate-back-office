@@ -237,7 +237,10 @@ public class CallbackResponseTransformer {
 
                 .payments(caseData.getPayments())
                 .deceasedMarriedAfterWillOrCodicilDate(caseData.getDeceasedMarriedAfterWillOrCodicilDate())
-                .applicationSubmittedDate(caseData.getApplicationSubmittedDate());
+                .applicationSubmittedDate(caseData.getApplicationSubmittedDate())
+
+                .scannedDocuments(caseData.getScannedDocuments())
+                .evidenceHandled(caseData.getEvidenceHandled());
 
         if (transform) {
             updateCaseBuilderForTransformCase(caseData, builder);

@@ -16,6 +16,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.LegalStatement;
 import uk.gov.hmcts.probate.model.ccd.raw.Payment;
 import uk.gov.hmcts.probate.model.ccd.raw.ProbateAliasName;
+import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocuments;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.StopReason;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
@@ -119,5 +120,7 @@ public class ResponseCaseData {
     private final List<CollectionMember<Payment>> payments;
 
     private final String applicationSubmittedDate;
+    private final List<CollectionMember<ScannedDocuments>> scannedDocuments;
+    private final String evidenceHandled;
 
 }
