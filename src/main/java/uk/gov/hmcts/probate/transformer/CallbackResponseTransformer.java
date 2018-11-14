@@ -361,6 +361,16 @@ public class CallbackResponseTransformer {
             }
         }
 
+        if (caseData.getPaperForm() == null) {
+            builder
+                    .paperForm(ANSWER_NO);
+        }
+
+        if (caseData.getCaseType() == null) {
+            builder
+                    .caseType("gop");
+        }
+
         if (caseData.getPrimaryApplicantAliasReason() != null) {
             if (caseData.getPrimaryApplicantAliasReason().equalsIgnoreCase(OTHER)) {
                 builder
@@ -401,6 +411,16 @@ public class CallbackResponseTransformer {
         builder
                 .ihtReferenceNumber(caseData.getIhtReferenceNumber())
                 .solsDeceasedAliasNamesList(caseData.getSolsDeceasedAliasNamesList());
+
+        if (caseData.getPaperForm() == null) {
+            builder
+                    .paperForm(ANSWER_NO);
+        }
+
+        if (caseData.getCaseType() == null) {
+            builder
+                    .caseType("gop");
+        }
 
         if (caseData.getSolsExecutorAliasNames() != null) {
             builder
