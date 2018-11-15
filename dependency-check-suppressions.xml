@@ -71,4 +71,11 @@
         <filePath regex="true">.*spring-context-support-4.3.18.RELEASE.*\.jar</filePath>
         <cve>CVE-2018-1258</cve>
     </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: dom4j-1.6.1.jar
+   ]]></notes>
+        <gav regex="true">^dom4j:dom4j:.*$</gav>
+        <cve>CVE-2018-1000632</cve>
+    </suppress>
 </suppressions>
