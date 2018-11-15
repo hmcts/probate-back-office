@@ -267,20 +267,19 @@ public class CallbackResponseTransformer {
         }
 
 
-
         return builder;
     }
 
-    private boolean isPaperForm (CaseData caseData) {
-        if (caseData.getPaperForm() != null && caseData.getPaperForm().equals(ANSWER_YES)){
+    private boolean isPaperForm(CaseData caseData) {
+        if (caseData.getPaperForm() != null && caseData.getPaperForm().equals(ANSWER_YES)) {
             return true;
         }
         return false;
     }
 
-    private ResponseCaseDataBuilder getCaseCreatorResponseCaseBuilder (CaseData caseData, ResponseCaseDataBuilder builder) {
+    private ResponseCaseDataBuilder getCaseCreatorResponseCaseBuilder(CaseData caseData, ResponseCaseDataBuilder builder) {
 
-         builder
+        builder
                 .primaryApplicantSecondaryPhoneNumber(caseData.getPrimaryApplicantSecondaryPhoneNumber())
                 .primaryApplicantRelationshipToDeceased(caseData.getPrimaryApplicantRelationshipToDeceased())
                 .paRelationshipToDeceasedOther(caseData.getPaRelationshipToDeceasedOther())
