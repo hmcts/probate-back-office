@@ -38,6 +38,7 @@ checkstyle.toolVersion = '8.2'
 checkstyle.configFile = new File(rootDir, "checkstyle.xml")
 mainClassName = 'uk.gov.hmcts.probate.BusinessRulesValidationApplication'
 
+ext['selenium.version']='3.8.1'
 
 check.dependsOn dependencyCheckAnalyze
 // make build fail on Checkstyle issues (https://github.com/gradle/gradle/issues/881)
@@ -114,22 +115,22 @@ sonarqube {
 }
 
 sourceSets {
-    testSmoke {
-        java {
-            compileClasspath += main.output
-            runtimeClasspath += main.output
-            srcDir file('src/smokeTest/java')
-        }
-        resources.srcDir file('src/smokeTest/resources')
+  testSmoke {
+    java {
+      compileClasspath += main.output
+      runtimeClasspath += main.output
+      srcDir file('src/smokeTest/java')
     }
-    testFunctional {
-      java {
-        compileClasspath += main.output
-        runtimeClasspath += main.output
-        srcDir file('src/functionalTest/java')
-      }
-      resources.srcDir file('src/functionalTest/resources')
+    resources.srcDir file('src/smokeTest/resources')
+  }
+  testFunctional {
+    java {
+      compileClasspath += main.output
+      runtimeClasspath += main.output
+      srcDir file('src/functionalTest/java')
     }
+    resources.srcDir file('src/functionalTest/resources')
+  }
   testCaseCreator {
     java {
       compileClasspath += main.output
@@ -171,12 +172,12 @@ def springBootVersion = '1.5.14.RELEASE'
 def reformsJavaLoggingVersion = '2.0.2'
 
 jacocoTestReport {
-    executionData(test)
-    reports {
-        xml.enabled = true
-        csv.enabled = false
-        xml.destination = file("${project.buildDir}/reports/jacoco/test/jacocoTestReport.xml")
-    }
+  executionData(test)
+  reports {
+    xml.enabled = true
+    csv.enabled = false
+    xml.destination = file("${project.buildDir}/reports/jacoco/test/jacocoTestReport.xml")
+  }
 }
 
 repositories {
