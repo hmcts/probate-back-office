@@ -126,6 +126,11 @@ public class ResponseCaseData {
     private final List<CollectionMember<ScannedDocuments>> scannedDocuments;
     private final String evidenceHandled;
 
+
+    private final String caseType;
+    private final String paperForm;
+
+    //paper form case creator fields
     private final String primaryApplicantSecondaryPhoneNumber;
     private final String primaryApplicantRelationshipToDeceased;
     private final String paRelationshipToDeceasedOther;
@@ -154,10 +159,6 @@ public class ResponseCaseData {
     private final String legallyAdopted;
     private final List<CollectionMember<AdoptedRelatives>> legallyAdoptiveRelatives;
 
-    private final String caseType;
-    private final String paperForm;
-
-    //paper form case creator fields
     private final String spouseOrPartner;
     private final String childrenSurvived;
     private final String childrenOverEighteenSurvived;
