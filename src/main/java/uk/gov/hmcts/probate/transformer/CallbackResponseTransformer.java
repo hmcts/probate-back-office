@@ -149,6 +149,7 @@ public class CallbackResponseTransformer {
 
         ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), false);
         responseCaseDataBuilder.paperForm(ANSWER_YES);
+        responseCaseDataBuilder = getCaseCreatorResponseCaseBuilder(callbackRequest.getCaseDetails().getData(), responseCaseDataBuilder);
 
         return transformResponse(responseCaseDataBuilder.build());
     }
@@ -251,6 +252,35 @@ public class CallbackResponseTransformer {
                 .scannedDocuments(caseData.getScannedDocuments())
                 .evidenceHandled(caseData.getEvidenceHandled())
 
+                .paperForm(caseData.getPaperForm());
+
+        if (transform) {
+            updateCaseBuilderForTransformCase(caseData, builder);
+
+        } else {
+
+            updateCaseBuilder(caseData, builder);
+        }
+
+        if (isPaperForm(caseData)) {
+            builder = getCaseCreatorResponseCaseBuilder(caseData, builder);
+        }
+
+
+
+        return builder;
+    }
+
+    private boolean isPaperForm (CaseData caseData) {
+        if (caseData.getPaperForm() != null && caseData.getPaperForm().equals(ANSWER_YES)){
+            return true;
+        }
+        return false;
+    }
+
+    private ResponseCaseDataBuilder getCaseCreatorResponseCaseBuilder (CaseData caseData, ResponseCaseDataBuilder builder) {
+
+         builder
                 .primaryApplicantSecondaryPhoneNumber(caseData.getPrimaryApplicantSecondaryPhoneNumber())
                 .primaryApplicantRelationshipToDeceased(caseData.getPrimaryApplicantRelationshipToDeceased())
                 .paRelationshipToDeceasedOther(caseData.getPaRelationshipToDeceasedOther())
@@ -335,17 +365,7 @@ public class CallbackResponseTransformer {
                 .feeForCopiesPaperForm(caseData.getFeeForCopiesPaperForm())
                 .totalFeePaperForm(caseData.getTotalFeePaperForm())
                 .paperPaymentMethod(caseData.getPaperPaymentMethod())
-                .paymentReferenceNumberPaperform(caseData.getPaymentReferenceNumberPaperform())
-                .paperForm(caseData.getPaperForm());
-
-        if (transform) {
-            updateCaseBuilderForTransformCase(caseData, builder);
-
-        } else {
-
-            updateCaseBuilder(caseData, builder);
-        }
-
+                .paymentReferenceNumberPaperform(caseData.getPaymentReferenceNumberPaperform());
 
         return builder;
     }
