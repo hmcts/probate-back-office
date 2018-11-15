@@ -300,6 +300,9 @@ public class CaseData {
     private final String evidenceHandled;
 
     private final String caseType;
+    private final String paperForm;
+
+    //paper form case creator fields
     private final String spouseOrPartner;
     private final String childrenSurvived;
     private final String childrenOverEighteenSurvived;
@@ -352,13 +355,12 @@ public class CaseData {
     private final String halfBloodCousinsSurvived;
     private final String halfBloodCousinsSurvivedOverEighteen;
     private final String halfBloodCousinsSurvivedUnderEighteen;
-
     private final String applicationFeePaperForm;
     private final String feeForCopiesPaperForm;
     private final String totalFeePaperForm;
     private final String paperPaymentMethod;
     private final String paymentReferenceNumberPaperform;
-    private final String paperForm;
+
 
     @Getter(lazy = true)
     private final List<CollectionMember<AdditionalExecutor>> executorsApplyingForLegalStatement = getAllExecutors(true);
