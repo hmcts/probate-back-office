@@ -36,8 +36,6 @@ public class CaveatControllerTest {
 
         String caveatPayload = testUtils.getStringFromFile("caveatPayloadNotifications.json");
 
-        //String caveatPayload = testUtils.getStringFromFile("solicitorPayloadNotifications.json");
-
         mockMvc.perform(post("/caveat/raise")
                 .content(caveatPayload)
                 .contentType(MediaType.APPLICATION_JSON))
