@@ -149,7 +149,7 @@ public class CallbackResponseTransformer {
 
         ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), false);
         responseCaseDataBuilder.paperForm(ANSWER_YES);
-        responseCaseDataBuilder = getCaseCreatorResponseCaseBuilder(callbackRequest.getCaseDetails().getData(), responseCaseDataBuilder);
+        getCaseCreatorResponseCaseBuilder(callbackRequest.getCaseDetails().getData(), responseCaseDataBuilder);
 
         return transformResponse(responseCaseDataBuilder.build());
     }
@@ -271,10 +271,7 @@ public class CallbackResponseTransformer {
     }
 
     private boolean isPaperForm(CaseData caseData) {
-        if (caseData.getPaperForm() != null && caseData.getPaperForm().equals(ANSWER_YES)) {
-            return true;
-        }
-        return false;
+        return (caseData.getPaperForm() != null && caseData.getPaperForm().equals(ANSWER_YES));
     }
 
     private ResponseCaseDataBuilder getCaseCreatorResponseCaseBuilder(CaseData caseData, ResponseCaseDataBuilder builder) {
