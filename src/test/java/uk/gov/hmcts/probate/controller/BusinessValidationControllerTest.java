@@ -290,7 +290,7 @@ public class BusinessValidationControllerTest {
 
     @Test
     public void shouldReturnCheckListValidateUnSuccessfulScenario2() throws Exception {
-        String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadAliasNames.json");
+        String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadChecklist.json");
 
         mockMvc.perform(post(CASE_CHCEKLIST_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk())
