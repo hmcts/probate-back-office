@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class ScannedDocuments {
+public class ScannedDocument {
 
     private final String controlNumber;
 

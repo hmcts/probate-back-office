@@ -278,7 +278,7 @@ public class BusinessValidationControllerTest {
     }
 
     @Test
-    public void shouldReturnCheckListValidateUnSuccessful() throws Exception {
+    public void shouldReturnCheckListValidateUnSuccessfulQ1IsNo() throws Exception {
         String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadAliasNames.json");
 
         mockMvc.perform(post(CASE_CHCEKLIST_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON_UTF8))
@@ -289,7 +289,7 @@ public class BusinessValidationControllerTest {
     }
 
     @Test
-    public void shouldReturnCheckListValidateUnSuccessfulScenario2() throws Exception {
+    public void shouldReturnCheckListValidateUnSuccessfulQ2IsNo() throws Exception {
         String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadChecklist.json");
 
         mockMvc.perform(post(CASE_CHCEKLIST_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON_UTF8))
@@ -319,12 +319,13 @@ public class BusinessValidationControllerTest {
 
     @Test
     public void shouldReturnPaperForm() throws Exception {
-        String solicitorPayload = testUtils.getStringFromFile("solicitorAdditionalExecutors.json");
+        String caseCreatorJson = testUtils.getStringFromFile("paperForm.json");
 
-        mockMvc.perform(post(PAPER_FORM_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON_UTF8))
+        mockMvc.perform(post(PAPER_FORM_URL).content(caseCreatorJson).contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
     }
 
 
 }
+

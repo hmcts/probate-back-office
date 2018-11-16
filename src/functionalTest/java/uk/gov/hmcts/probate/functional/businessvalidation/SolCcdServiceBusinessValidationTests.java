@@ -177,7 +177,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
 
     @Test
     public void verifySuccessPaperForm() {
-        validatePostSuccess("success.LessThanFourExecutors.json", PAPER_FORM_URL);
+        validatePostSuccess("success.paperForm.json", PAPER_FORM_URL);
     }
 
     @Test

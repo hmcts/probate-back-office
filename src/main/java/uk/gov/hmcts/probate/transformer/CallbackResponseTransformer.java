@@ -277,7 +277,7 @@ public class CallbackResponseTransformer {
     private ResponseCaseDataBuilder getCaseCreatorResponseCaseBuilder(CaseData caseData, ResponseCaseDataBuilder builder) {
 
         builder
-                .primaryApplicantSecondaryPhoneNumber(caseData.getPrimaryApplicantSecondaryPhoneNumber())
+                .primaryApplicantSecondPhoneNumber(caseData.getPrimaryApplicantSecondPhoneNumber())
                 .primaryApplicantRelationshipToDeceased(caseData.getPrimaryApplicantRelationshipToDeceased())
                 .paRelationshipToDeceasedOther(caseData.getPaRelationshipToDeceasedOther())
                 .deceasedMartialStatus(caseData.getDeceasedMartialStatus())
@@ -295,15 +295,15 @@ public class CallbackResponseTransformer {
                 .epaOrLpa(caseData.getEpaOrLpa())
                 .epaRegistered(caseData.getEpaRegistered())
                 .domicilityCountry(caseData.getDomicilityCountry())
-                .ukEstate(caseData.getUkEstate())
+                .ukEstateItems(caseData.getUkEstateItems())
                 .domicilityIHTCert(caseData.getDomicilityIHTCert())
                 .entitledToApply(caseData.getEntitledToApply())
                 .entitledToApplyOther(caseData.getEntitledToApplyOther())
                 .notifiedApplicants(caseData.getNotifiedApplicants())
                 .foreignAsset(caseData.getForeignAsset())
                 .foreignAssetEstateValue(caseData.getForeignAssetEstateValue())
-                .legallyAdopted(caseData.getLegallyAdopted())
-                .legallyAdoptiveRelatives(caseData.getLegallyAdoptiveRelatives())
+                .adopted(caseData.getAdopted())
+                .adoptiveRelatives(caseData.getAdoptiveRelatives())
                 .caseType(caseData.getCaseType())
                 .spouseOrPartner(caseData.getSpouseOrPartner())
                 .childrenSurvived(caseData.getChildrenSurvived())
@@ -318,12 +318,12 @@ public class CallbackResponseTransformer {
                 .parentsExistSurvived(caseData.getParentsExistSurvived())
                 .parentsExistOverEighteenSurvived(caseData.getParentsExistOverEighteenSurvived())
                 .parentsExistUnderEighteenSurvived(caseData.getParentsExistUnderEighteenSurvived())
-                .wholeBloodSiblingSurvived(caseData.getWholeBloodSiblingSurvived())
-                .wholeBloodSiblingSurvivedOverEighteen(caseData.getWholeBloodSiblingSurvivedOverEighteen())
-                .wholeBloodSiblingSurvivedUnderEighteen(caseData.getWholeBloodSiblingSurvivedUnderEighteen())
-                .wholeBloodSiblingDied(caseData.getWholeBloodSiblingDied())
-                .wholeBloodSiblingDiedOverEighteen(caseData.getWholeBloodSiblingDiedOverEighteen())
-                .wholeBloodSiblingDiedUnderEighteen(caseData.getWholeBloodSiblingDiedUnderEighteen())
+                .wholeBloodSiblingsSurvived(caseData.getWholeBloodSiblingsSurvived())
+                .wholeBloodSiblingsSurvivedOverEighteen(caseData.getWholeBloodSiblingsSurvivedOverEighteen())
+                .wholeBloodSiblingsSurvivedUnderEighteen(caseData.getWholeBloodSiblingsSurvivedUnderEighteen())
+                .wholeBloodSiblingsDied(caseData.getWholeBloodSiblingsDied())
+                .wholeBloodSiblingsDiedOverEighteen(caseData.getWholeBloodSiblingsDiedOverEighteen())
+                .wholeBloodSiblingsDiedUnderEighteen(caseData.getWholeBloodSiblingsDiedUnderEighteen())
                 .wholeBloodNeicesAndNephews(caseData.getWholeBloodNeicesAndNephews())
                 .wholeBloodNeicesAndNephewsOverEighteen(caseData.getWholeBloodNeicesAndNephewsOverEighteen())
                 .wholeBloodNeicesAndNephewsUnderEighteen(caseData.getWholeBloodNeicesAndNephewsUnderEighteen())
@@ -339,21 +339,21 @@ public class CallbackResponseTransformer {
                 .grandparentsDied(caseData.getGrandparentsDied())
                 .grandparentsDiedOverEighteen(caseData.getGrandparentsDiedOverEighteen())
                 .grandparentsDiedUnderEighteen(caseData.getGrandparentsDiedUnderEighteen())
-                .wholeBloodUncleAndAuntsSurvived(caseData.getWholeBloodUncleAndAuntsSurvived())
-                .wholeBloodUncleAndAuntsSurvivedOverEighteen(caseData.getWholeBloodUncleAndAuntsSurvivedOverEighteen())
-                .wholeBloodUncleAndAuntsSurvivedUnderEighteen(caseData.getWholeBloodUncleAndAuntsSurvivedUnderEighteen())
-                .wholeBloodUncleAndAuntsDied(caseData.getWholeBloodUncleAndAuntsDied())
-                .wholeBloodUncleAndAuntsDiedOverEighteen(caseData.getWholeBloodUncleAndAuntsDiedOverEighteen())
-                .wholeBloodUncleAndAuntsDiedUnderEighteen(caseData.getWholeBloodUncleAndAuntsDiedUnderEighteen())
+                .wholeBloodUnclesAndAuntsSurvived(caseData.getWholeBloodUnclesAndAuntsSurvived())
+                .wholeBloodUnclesAndAuntsSurvivedOverEighteen(caseData.getWholeBloodUnclesAndAuntsSurvivedOverEighteen())
+                .wholeBloodUnclesAndAuntsSurvivedUnderEighteen(caseData.getWholeBloodUnclesAndAuntsSurvivedUnderEighteen())
+                .wholeBloodUnclesAndAuntsDied(caseData.getWholeBloodUnclesAndAuntsDied())
+                .wholeBloodUnclesAndAuntsDiedOverEighteen(caseData.getWholeBloodUnclesAndAuntsDiedOverEighteen())
+                .wholeBloodUnclesAndAuntsDiedUnderEighteen(caseData.getWholeBloodUnclesAndAuntsDiedUnderEighteen())
                 .wholeBloodCousinsSurvived(caseData.getWholeBloodCousinsSurvived())
                 .wholeBloodCousinsSurvivedOverEighteen(caseData.getWholeBloodCousinsSurvivedOverEighteen())
                 .wholeBloodCousinsSurvivedUnderEighteen(caseData.getWholeBloodCousinsSurvivedUnderEighteen())
-                .halfBloodUncleAndAuntsSurvived(caseData.getHalfBloodUncleAndAuntsSurvived())
-                .halfBloodUncleAndAuntsSurvivedOverEighteen(caseData.getHalfBloodUncleAndAuntsSurvivedOverEighteen())
-                .halfBloodUncleAndAuntsSurvivedUnderEighteen(caseData.getHalfBloodUncleAndAuntsSurvivedUnderEighteen())
-                .halfBloodUncleAndAuntsDied(caseData.getHalfBloodUncleAndAuntsDied())
-                .halfBloodUncleAndAuntsDiedOverEighteen(caseData.getHalfBloodUncleAndAuntsDiedOverEighteen())
-                .halfBloodUncleAndAuntsDiedUnderEighteen(caseData.getHalfBloodUncleAndAuntsDiedUnderEighteen())
+                .halfBloodUnclesAndAuntsSurvived(caseData.getHalfBloodUnclesAndAuntsSurvived())
+                .halfBloodUnclesAndAuntsSurvivedOverEighteen(caseData.getHalfBloodUnclesAndAuntsSurvivedOverEighteen())
+                .halfBloodUnclesAndAuntsSurvivedUnderEighteen(caseData.getHalfBloodUnclesAndAuntsSurvivedUnderEighteen())
+                .halfBloodUnclesAndAuntsDied(caseData.getHalfBloodUnclesAndAuntsDied())
+                .halfBloodUnclesAndAuntsDiedOverEighteen(caseData.getHalfBloodUnclesAndAuntsDiedOverEighteen())
+                .halfBloodUnclesAndAuntsDiedUnderEighteen(caseData.getHalfBloodUnclesAndAuntsDiedUnderEighteen())
                 .halfBloodCousinsSurvived(caseData.getHalfBloodCousinsSurvived())
                 .halfBloodCousinsSurvivedOverEighteen(caseData.getHalfBloodCousinsSurvivedOverEighteen())
                 .halfBloodCousinsSurvivedUnderEighteen(caseData.getHalfBloodCousinsSurvivedUnderEighteen())
@@ -377,7 +377,7 @@ public class CallbackResponseTransformer {
             }
         }
 
-        if (caseData.getPaperForm() == null) {
+        if (!isPaperForm(caseData)) {
             builder
                     .paperForm(ANSWER_NO);
         }
@@ -428,7 +428,7 @@ public class CallbackResponseTransformer {
                 .ihtReferenceNumber(caseData.getIhtReferenceNumber())
                 .solsDeceasedAliasNamesList(caseData.getSolsDeceasedAliasNamesList());
 
-        if (caseData.getPaperForm() == null) {
+        if (!isPaperForm(caseData)) {
             builder
                     .paperForm(ANSWER_NO);
         }

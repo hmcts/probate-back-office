@@ -8,12 +8,12 @@ import lombok.Data;
 @Data
 @Builder
 @AllArgsConstructor
-public class EstateItems {
+public class AttorneyApplyingOnBehalfOf {
 
-    @JsonProperty(value = "item")
-    private final String item;
+    @JsonProperty(value = "name")
+    private final String name;
 
-    @JsonProperty(value = "value")
-    private final String value;
+    @JsonProperty(value = "address")
+    private final SolsAddress address;
 
 }
