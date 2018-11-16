@@ -570,6 +570,70 @@ public class CallbackResponseTransformerTest {
         assertEquals(0, callbackResponse.getData().getAdditionalExecutorsNotApplying().size());
     }
 
+    @Test
+    public void shouldTransformCaseForSolicitorWithPaperFormIsNo() {
+        caseDataBuilder.applicationType(ApplicationType.SOLICITOR);
+        caseDataBuilder.solsAdditionalExecutorList(EMPTY_LIST);
+        caseDataBuilder.paperForm(NO);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+
+        assertCommonDetails(callbackResponse);
+        assertEquals(0, callbackResponse.getData().getAdditionalExecutorsApplying().size());
+        assertEquals(0, callbackResponse.getData().getAdditionalExecutorsNotApplying().size());
+    }
+
+    @Test
+    public void shouldTransformCaseForSolicitorWithPaperFormIsNull() {
+        caseDataBuilder.applicationType(ApplicationType.SOLICITOR);
+        caseDataBuilder.solsAdditionalExecutorList(EMPTY_LIST);
+        caseDataBuilder.paperForm(null);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+
+        assertCommonDetails(callbackResponse);
+        assertEquals(0, callbackResponse.getData().getAdditionalExecutorsApplying().size());
+        assertEquals(0, callbackResponse.getData().getAdditionalExecutorsNotApplying().size());
+    }
+
+    @Test
+    public void shouldTransformCaseForSolicitorWithCaseTypeIsGOP() {
+        caseDataBuilder.applicationType(ApplicationType.SOLICITOR);
+        caseDataBuilder.solsAdditionalExecutorList(EMPTY_LIST);
+        caseDataBuilder.caseType("gop");
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+
+        assertCommonDetails(callbackResponse);
+        assertEquals(0, callbackResponse.getData().getAdditionalExecutorsApplying().size());
+        assertEquals(0, callbackResponse.getData().getAdditionalExecutorsNotApplying().size());
+    }
+
+    @Test
+    public void shouldTransformCaseForSolicitorWithCaseTypeIsNull() {
+        caseDataBuilder.applicationType(ApplicationType.SOLICITOR);
+        caseDataBuilder.solsAdditionalExecutorList(EMPTY_LIST);
+        caseDataBuilder.caseType(null);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+
+        assertCommonDetails(callbackResponse);
+        assertEquals(0, callbackResponse.getData().getAdditionalExecutorsApplying().size());
+        assertEquals(0, callbackResponse.getData().getAdditionalExecutorsNotApplying().size());
+    }
+
 
     @Test
     public void shouldTransformCaseForPAWithIHTOnlineYes() {
@@ -642,6 +706,66 @@ public class CallbackResponseTransformerTest {
         caseDataBuilder.applicationType(ApplicationType.PERSONAL);
         caseDataBuilder.ihtFormCompletedOnline(NO);
         caseDataBuilder.ihtReferenceNumber(IHT_REFERENCE);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+
+        assertEquals(null, callbackResponse.getData().getIhtReferenceNumber());
+    }
+
+    @Test
+    public void shouldTransformCaseForWhenPaperFormIsNO() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL);
+        caseDataBuilder.ihtFormCompletedOnline(NO);
+        caseDataBuilder.ihtReferenceNumber(IHT_REFERENCE);
+        caseDataBuilder.paperForm(NO);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+
+        assertEquals(null, callbackResponse.getData().getIhtReferenceNumber());
+    }
+
+    @Test
+    public void shouldTransformCaseForWhenPaperFormIsNull() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL);
+        caseDataBuilder.ihtFormCompletedOnline(NO);
+        caseDataBuilder.ihtReferenceNumber(IHT_REFERENCE);
+        caseDataBuilder.paperForm(null);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+
+        assertEquals(null, callbackResponse.getData().getIhtReferenceNumber());
+    }
+
+    @Test
+    public void shouldTransformCaseForWhenCaseTypeIsGOP() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL);
+        caseDataBuilder.ihtFormCompletedOnline(NO);
+        caseDataBuilder.ihtReferenceNumber(IHT_REFERENCE);
+        caseDataBuilder.caseType("gop");
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+
+        assertEquals(null, callbackResponse.getData().getIhtReferenceNumber());
+    }
+
+    @Test
+    public void shouldTransformCaseForWhenCaseTypeIsNull() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL);
+        caseDataBuilder.ihtFormCompletedOnline(NO);
+        caseDataBuilder.ihtReferenceNumber(IHT_REFERENCE);
+        caseDataBuilder.caseType(null);
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
@@ -782,6 +906,8 @@ public class CallbackResponseTransformerTest {
         assertCommonDetails(callbackResponse);
         assertCommonPaperForm(callbackResponse);
     }
+
+
 
     private CollectionMember<ProbateAliasName> createdDeceasedAliasName(String id, String forename, String lastname, String onGrant) {
         ProbateAliasName pan = ProbateAliasName.builder()
