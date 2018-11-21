@@ -3,7 +3,6 @@ package uk.gov.hmcts.probate.model.ccd.caveat.request;
 import lombok.Builder;
 import lombok.Data;
 import uk.gov.hmcts.probate.model.ccd.caveat.CavAddress;
-import uk.gov.hmcts.probate.model.ccd.caveat.CavAliasName;
 import uk.gov.hmcts.probate.model.ccd.caveat.CavFullAliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
@@ -24,8 +23,6 @@ public class CaveatData {
     private final LocalDate cavDeceasedDateOfDeath;
 
     private final String cavDeceasedAnyOtherNames;
-
-    private final List<CollectionMember<CavAliasName>> cavDeceasedAliasNameList;
 
     private final List<CollectionMember<CavFullAliasName>> cavDeceasedFullAliasNameList;
 
