@@ -17,7 +17,8 @@
     "security_classification": "PUBLIC",
     "case_data": {
       "cavDeceasedSurname": "dl name 2",
-      "cavDeceasedDateOfDeath": "2017-11-11",
+      "cavDeceasedDateOfDeath": "2017-12-31",
+      "cavDeceasedDateOfBirth": "2016-12-31",
       "cavDeceasedAddress": {
         "AddressLine1": "2",
         "AddressLine2": "",
@@ -46,6 +47,7 @@
     "data_classification": {
       "cavDeceasedSurname": "PUBLIC",
       "cavDeceasedDateOfDeath": "PUBLIC",
+      "cavDeceasedDateOfBirth": "PUBLIC",
       "cavDeceasedAddress": {
         "classification": "PUBLIC",
         "value": {
@@ -85,6 +87,7 @@
     "security_classifications": {
       "cavDeceasedSurname": "PUBLIC",
       "cavDeceasedDateOfDeath": "PUBLIC",
+      "cavDeceasedDateOfBirth": "PUBLIC",
       "cavDeceasedAddress": {
         "classification": "PUBLIC",
         "value": {
