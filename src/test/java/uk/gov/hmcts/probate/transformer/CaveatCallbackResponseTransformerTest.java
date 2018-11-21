@@ -38,6 +38,7 @@ public class CaveatCallbackResponseTransformerTest {
     private static final String CAV_DECEASED_FORENAMES = "Forenames";
     private static final String CAV_DECEASED_SURNAME = "Surname";
     private static final LocalDate CAV_DECEASED_DOD = LocalDate.parse("2017-12-31", dateTimeFormatter);
+    private static final LocalDate CAV_DECEASED_DOB = LocalDate.parse("2016-12-31", dateTimeFormatter);
     private static final String CAV_DECEASED_HAS_ALIAS = YES;
     private static final String CAV_DECEASED_FULL_ALIAS_NAME = "AliasFN AliasSN";
     private static final List<CollectionMember<CavFullAliasName>> CAV_DECEASED_FULL_ALIAS_NAME_LIST = emptyList();
@@ -69,6 +70,7 @@ public class CaveatCallbackResponseTransformerTest {
                 .cavDeceasedForenames(CAV_DECEASED_FORENAMES)
                 .cavDeceasedSurname(CAV_DECEASED_SURNAME)
                 .cavDeceasedDateOfDeath(CAV_DECEASED_DOD)
+                .cavDeceasedDateOfBirth(CAV_DECEASED_DOB)
                 .cavDeceasedAnyOtherNames(CAV_DECEASED_HAS_ALIAS)
                 .cavDeceasedFullAliasNameList(CAV_DECEASED_FULL_ALIAS_NAME_LIST)
                 .cavDeceasedAddress(CAV_DECEASED_ADDRESS)
@@ -140,6 +142,7 @@ public class CaveatCallbackResponseTransformerTest {
         assertEquals(CAV_DECEASED_FORENAMES, caveatCallbackResponse.getCaveatData().getCavDeceasedForenames());
         assertEquals(CAV_DECEASED_SURNAME, caveatCallbackResponse.getCaveatData().getCavDeceasedSurname());
         assertEquals("2017-12-31", caveatCallbackResponse.getCaveatData().getCavDeceasedDateOfDeath());
+        assertEquals("2016-12-31", caveatCallbackResponse.getCaveatData().getCavDeceasedDateOfBirth());
         assertEquals(CAV_DECEASED_HAS_ALIAS, caveatCallbackResponse.getCaveatData().getCavDeceasedAnyOtherNames());
         assertEquals(CAV_DECEASED_ADDRESS, caveatCallbackResponse.getCaveatData().getCavDeceasedAddress());
 

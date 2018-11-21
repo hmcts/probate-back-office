@@ -18,6 +18,7 @@ public class ResponseCaveatData {
     private final String cavDeceasedForenames;
     private final String cavDeceasedSurname;
     private final String cavDeceasedDateOfDeath;
+    private final String cavDeceasedDateOfBirth;
     private final String cavDeceasedAnyOtherNames;
     private final List<CollectionMember<CavFullAliasName>> cavDeceasedFullAliasNameList;
     private final CavAddress cavDeceasedAddress;

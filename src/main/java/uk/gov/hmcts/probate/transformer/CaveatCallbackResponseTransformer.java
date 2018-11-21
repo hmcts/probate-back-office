@@ -48,6 +48,7 @@ public class CaveatCallbackResponseTransformer {
                 .cavDeceasedForenames(caveatData.getCavDeceasedForenames())
                 .cavDeceasedSurname(caveatData.getCavDeceasedSurname())
                 .cavDeceasedDateOfDeath(dateTimeFormatter.format(caveatData.getCavDeceasedDateOfDeath()))
+                .cavDeceasedDateOfBirth(dateTimeFormatter.format(caveatData.getCavDeceasedDateOfBirth()))
                 .cavDeceasedAnyOtherNames(caveatData.getCavDeceasedAnyOtherNames())
                 .cavDeceasedFullAliasNameList(caveatData.getCavDeceasedFullAliasNameList())
                 .cavDeceasedAddress(caveatData.getCavDeceasedAddress())

@@ -22,6 +22,8 @@ public class CaveatData {
 
     private final LocalDate cavDeceasedDateOfDeath;
 
+    private final LocalDate cavDeceasedDateOfBirth;
+
     private final String cavDeceasedAnyOtherNames;
 
     private final List<CollectionMember<CavFullAliasName>> cavDeceasedFullAliasNameList;
