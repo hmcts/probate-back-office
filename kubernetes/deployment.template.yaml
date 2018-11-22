@@ -25,7 +25,7 @@ spec:
             - name: LOG_LEVEL
               value: 'DEBUG'
             - name: APPINSIGHTS_INSTRUMENTATIONKEY
-                value: 'test'
+              value: 'test'
             - name: AUTH_PROVIDER_SERVICE_CLIENT_KEY
               value: ${S2S_AUTH_TOTP_SECRET}
             - name: NOTIFICATIONS_GOVNOTIFYAPIKEY
