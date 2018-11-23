@@ -60,6 +60,7 @@ public class CaveatCallbackResponseTransformer {
 
                 .cavMessageContent(caveatData.getCavMessageContent())
 
-                .cavDocumentsUploaded(caveatData.getCavDocumentsUploaded());
+                .cavDocumentsUploaded(caveatData.getCavDocumentsUploaded())
+                .cavDocumentsGenerated(caveatData.getCavDocumentsGenerated());
     }
 }

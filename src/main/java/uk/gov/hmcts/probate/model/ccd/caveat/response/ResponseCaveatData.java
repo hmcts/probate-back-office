@@ -6,6 +6,7 @@ import lombok.Data;
 import uk.gov.hmcts.probate.model.ccd.caveat.CavAddress;
 import uk.gov.hmcts.probate.model.ccd.caveat.CavFullAliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
+import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 
 import java.util.List;
@@ -32,4 +33,5 @@ public class ResponseCaveatData {
     private final String cavMessageContent;
 
     private final List<CollectionMember<UploadDocument>> cavDocumentsUploaded;
+    private final List<CollectionMember<Document>> cavDocumentsGenerated;
 }

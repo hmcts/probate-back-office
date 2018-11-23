@@ -5,6 +5,7 @@ import lombok.Data;
 import uk.gov.hmcts.probate.model.ccd.caveat.CavAddress;
 import uk.gov.hmcts.probate.model.ccd.caveat.CavFullAliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
+import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 
 import java.time.LocalDate;
@@ -51,4 +52,8 @@ public class CaveatData {
     // EVENT = cavUploadDocument
 
     private final List<CollectionMember<UploadDocument>> cavDocumentsUploaded;
+
+    // EVENT = misc
+
+    private final List<CollectionMember<Document>> cavDocumentsGenerated;
 }
