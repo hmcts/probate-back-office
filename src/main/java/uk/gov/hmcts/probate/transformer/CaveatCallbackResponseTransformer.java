@@ -58,6 +58,8 @@ public class CaveatCallbackResponseTransformer {
                 .cavCaveatorEmailAddress(caveatData.getCavCaveatorEmailAddress())
                 .cavCaveatorAddress(caveatData.getCavCaveatorAddress())
 
+                .cavMessageContent(caveatData.getCavMessageContent())
+
                 .cavDocumentsUploaded(caveatData.getCavDocumentsUploaded());
     }
 }

@@ -52,6 +52,8 @@ public class CaveatCallbackResponseTransformerTest {
     private static final LocalDate CAV_EXPIRY_DATE = LocalDate.now().plusMonths(CAVEAT_LIFESPAN);
     private static final String CAV_FORMATTED_EXPIRY_DATE = dateTimeFormatter.format(CAV_EXPIRY_DATE);
 
+    private static final String CAV_MESSAGE_CONTENT = "";
+
     @InjectMocks
     private CaveatCallbackResponseTransformer underTest;
 
@@ -78,7 +80,8 @@ public class CaveatCallbackResponseTransformerTest {
                 .cavCaveatorSurname(CAV_CAVEATOR_SURNAME)
                 .cavCaveatorEmailAddress(CAV_CAVEATOR_EMAIL_ADDRESS)
                 .cavCaveatorAddress(CAV_CAVEATOR_ADDRESS)
-                .cavExpiryDate(CAV_EXPIRY_DATE);
+                .cavExpiryDate(CAV_EXPIRY_DATE)
+                .cavMessageContent(CAV_MESSAGE_CONTENT);
 
         when(caveatCallbackRequestMock.getCaveatDetails()).thenReturn(caveatDetailsMock);
         when(caveatDetailsMock.getCaveatData()).thenReturn(caveatDataBuilder.build());
@@ -150,6 +153,7 @@ public class CaveatCallbackResponseTransformerTest {
         assertEquals(CAV_CAVEATOR_SURNAME, caveatCallbackResponse.getCaveatData().getCavCaveatorSurname());
         assertEquals(CAV_CAVEATOR_EMAIL_ADDRESS, caveatCallbackResponse.getCaveatData().getCavCaveatorEmailAddress());
         assertEquals(CAV_CAVEATOR_ADDRESS, caveatCallbackResponse.getCaveatData().getCavCaveatorAddress());
+        assertEquals(CAV_MESSAGE_CONTENT, caveatCallbackResponse.getCaveatData().getCavMessageContent());
     }
 
     private CollectionMember<UploadDocument> createUploadDocuments(String id) {
