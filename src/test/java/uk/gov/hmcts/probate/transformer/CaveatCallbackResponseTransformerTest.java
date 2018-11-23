@@ -7,6 +7,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
+import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ccd.caveat.CavAddress;
 import uk.gov.hmcts.probate.model.ccd.caveat.CavFullAliasName;
@@ -26,12 +27,16 @@ import java.util.List;
 import static java.util.Collections.emptyList;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
+import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
 import static uk.gov.hmcts.probate.model.Constants.CAVEAT_LIFESPAN;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CaveatCallbackResponseTransformerTest {
 
     private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+    private static final ApplicationType CAV_APPLICATION_TYPE = PERSONAL;
+    private static final String CAV_REGISTRY_LOCATION = "Leeds";
 
     private static final String YES = "Yes";
 
@@ -138,9 +143,11 @@ public class CaveatCallbackResponseTransformerTest {
 
     private void assertCommon(CaveatCallbackResponse caveatCallbackResponse) {
         assertCommonDetails(caveatCallbackResponse);
+        assertApplicationType(caveatCallbackResponse, CAV_APPLICATION_TYPE);
     }
 
     private void assertCommonDetails(CaveatCallbackResponse caveatCallbackResponse) {
+        assertEquals(CAV_REGISTRY_LOCATION, caveatCallbackResponse.getCaveatData().getCavRegistryLocation());
 
         assertEquals(CAV_DECEASED_FORENAMES, caveatCallbackResponse.getCaveatData().getCavDeceasedForenames());
         assertEquals(CAV_DECEASED_SURNAME, caveatCallbackResponse.getCaveatData().getCavDeceasedSurname());
@@ -154,6 +161,10 @@ public class CaveatCallbackResponseTransformerTest {
         assertEquals(CAV_CAVEATOR_EMAIL_ADDRESS, caveatCallbackResponse.getCaveatData().getCavCaveatorEmailAddress());
         assertEquals(CAV_CAVEATOR_ADDRESS, caveatCallbackResponse.getCaveatData().getCavCaveatorAddress());
         assertEquals(CAV_MESSAGE_CONTENT, caveatCallbackResponse.getCaveatData().getCavMessageContent());
+    }
+
+    private void assertApplicationType(CaveatCallbackResponse caveatCallbackResponse, ApplicationType cavApplicationType) {
+        assertEquals(cavApplicationType, caveatCallbackResponse.getCaveatData().getCavApplicationType());
     }
 
     private CollectionMember<UploadDocument> createUploadDocuments(String id) {

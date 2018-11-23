@@ -2,6 +2,7 @@ package uk.gov.hmcts.probate.transformer;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatCallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
@@ -11,6 +12,8 @@ import uk.gov.hmcts.probate.model.ccd.caveat.response.ResponseCaveatData;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+import static java.util.Optional.ofNullable;
+import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
 import static uk.gov.hmcts.probate.model.Constants.CAVEAT_LIFESPAN;
 
 @Component
@@ -18,6 +21,9 @@ import static uk.gov.hmcts.probate.model.Constants.CAVEAT_LIFESPAN;
 public class CaveatCallbackResponseTransformer {
 
     private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+    private static final ApplicationType DEFAULT_APPLICATION_TYPE = PERSONAL;
+    private static final String DEFAULT_REGISTRY_LOCATION = "Leeds";
 
     public CaveatCallbackResponse caveatRaised(CaveatCallbackRequest caveatCallbackRequest) {
         CaveatDetails caveatDetails = caveatCallbackRequest.getCaveatDetails();
@@ -45,6 +51,8 @@ public class CaveatCallbackResponseTransformer {
 
         return ResponseCaveatData.builder()
 
+                .cavApplicationType(ofNullable(caveatData.getCavApplicationType()).orElse(DEFAULT_APPLICATION_TYPE))
+                .cavRegistryLocation(ofNullable(caveatData.getCavRegistryLocation()).orElse(DEFAULT_REGISTRY_LOCATION))
                 .cavDeceasedForenames(caveatData.getCavDeceasedForenames())
                 .cavDeceasedSurname(caveatData.getCavDeceasedSurname())
                 .cavDeceasedDateOfDeath(dateTimeFormatter.format(caveatData.getCavDeceasedDateOfDeath()))

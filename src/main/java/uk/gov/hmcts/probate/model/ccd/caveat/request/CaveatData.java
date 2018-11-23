@@ -2,6 +2,7 @@ package uk.gov.hmcts.probate.model.ccd.caveat.request;
 
 import lombok.Builder;
 import lombok.Data;
+import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.ccd.caveat.CavAddress;
 import uk.gov.hmcts.probate.model.ccd.caveat.CavFullAliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
@@ -14,6 +15,9 @@ import java.util.List;
 @Builder
 @Data
 public class CaveatData {
+
+    private final ApplicationType cavApplicationType;
+    private final String cavRegistryLocation;
 
     // EVENT = cavRaiseCaveat - deceased data
 
