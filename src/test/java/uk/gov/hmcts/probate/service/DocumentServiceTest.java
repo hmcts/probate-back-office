@@ -45,9 +45,6 @@ public class DocumentServiceTest {
     private CaseDetails caseDetails;
 
     @Mock
-    private Logger log;
-
-    @Mock
     private Document document;
 
     @Before
