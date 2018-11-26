@@ -8,6 +8,8 @@ import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
 import uk.gov.hmcts.probate.model.ccd.caveat.response.CaveatCallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.caveat.response.ResponseCaveatData;
+import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
+import uk.gov.hmcts.probate.model.ccd.raw.Document;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -30,6 +32,18 @@ public class CaveatCallbackResponseTransformer {
 
         ResponseCaveatData responseCaveatData = getResponseCaveatData(caveatDetails)
                 .cavExpiryDate(dateTimeFormatter.format(LocalDate.now().plusMonths(CAVEAT_LIFESPAN)))
+                .build();
+
+        return transformResponse(responseCaveatData);
+    }
+
+    public CaveatCallbackResponse generalMessage(CaveatCallbackRequest caveatCallbackRequest, Document document) {
+        CaveatDetails caveatDetails = caveatCallbackRequest.getCaveatDetails();
+
+        caveatDetails.getCaveatData().getCavDocumentsGenerated().add(new CollectionMember<>(null, document));
+
+        ResponseCaveatData responseCaveatData = getResponseCaveatData(caveatDetails)
+                .cavMessageContent("")
                 .build();
 
         return transformResponse(responseCaveatData);
