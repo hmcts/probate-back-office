@@ -10,6 +10,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Builder
@@ -59,5 +60,13 @@ public class CaveatData {
 
     // EVENT = misc
 
-    private final List<CollectionMember<Document>> cavDocumentsGenerated;
+    private final List<CollectionMember<Document>> cavDocumentsGenerated = new ArrayList<>();
+
+    public String getDeceasedFullName() {
+        return String.join(" ", cavDeceasedForenames, cavDeceasedSurname);
+    }
+
+    public String getCaveatorFullName() {
+        return String.join(" ", cavCaveatorForenames, cavCaveatorSurname);
+    }
 }
