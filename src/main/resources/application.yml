@@ -1,14 +1,6 @@
 server:
   port: ${probate.sol.ccd.port}
 
-management:
-  security:
-    enabled: false
-
-security:
-  basic:
-    enabled: false
-
 authorised.services: probate_backend,ccd_data,ccd-datamgmt-api,ccd_ps,ccd
 auth.provider.service.client:
   key: DUMMYKEYVALUE

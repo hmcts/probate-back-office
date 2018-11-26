@@ -7,7 +7,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -108,7 +108,6 @@ public class NextStepsUnitTest {
 
     @Test(expected = BadRequestException.class)
     public void shouldValidateWithError() {
-        when(ccdBeanTransformerMock.transform(callbackRequestMock)).thenReturn(ccdDataMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
         when(bindingResultMock.hasErrors()).thenReturn(true);
         when(stateChangeServiceMock.getChangedStateForCaseReview(caseDataMock)).thenReturn(Optional.empty());
@@ -122,7 +121,6 @@ public class NextStepsUnitTest {
 
     @Test(expected = BadRequestException.class)
     public void shouldValidateWithErrorAndLogRequest() throws JsonProcessingException {
-        when(ccdBeanTransformerMock.transform(callbackRequestMock)).thenReturn(ccdDataMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
         when(bindingResultMock.hasErrors()).thenReturn(true);
         when(stateChangeServiceMock.getChangedStateForCaseReview(caseDataMock)).thenReturn(Optional.empty());
@@ -139,7 +137,6 @@ public class NextStepsUnitTest {
     public void shouldValidateWithNoErrorsForStateChange() {
         Optional<String> newState = Optional.of("changedState");
         when(stateChangeServiceMock.getChangedStateForCaseReview(caseDataMock)).thenReturn(newState);
-        when(ccdBeanTransformerMock.transform(callbackRequestMock)).thenReturn(ccdDataMock);
         when(callbackResponseTransformerMock.transformWithConditionalStateChange(callbackRequestMock, newState))
                 .thenReturn(callbackResponseMock);
 

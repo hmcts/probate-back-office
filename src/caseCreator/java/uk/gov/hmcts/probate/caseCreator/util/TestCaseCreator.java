@@ -8,8 +8,8 @@ import io.restassured.http.Header;
 import io.restassured.http.Headers;
 import io.restassured.parsing.Parser;
 import lombok.extern.slf4j.Slf4j;
+import net.serenitybdd.junit.spring.integration.SpringIntegrationMethodRule;
 import net.serenitybdd.rest.SerenityRest;
-import net.thucydides.junit.spring.SpringIntegration;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Rule;
@@ -70,12 +70,12 @@ public class TestCaseCreator {
     private RelaxedServiceAuthTokenGenerator relaxedServiceAuthTokenGenerator;
 
     @Rule
-    public SpringIntegration springIntegration;
+    public SpringIntegrationMethodRule springIntegration;
 
     private ObjectMapper objectMapper = new ObjectMapper();
 
     public TestCaseCreator() {
-        this.springIntegration = new SpringIntegration();
+        this.springIntegration = new SpringIntegrationMethodRule();
 
     }
 

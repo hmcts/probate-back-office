@@ -12,6 +12,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
 import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
@@ -80,6 +82,9 @@ public class NextStepsControllerTest {
     private static final String NEXTSTEPS_CONFIRMATION_URL = "/nextsteps/confirmation";
 
     @Autowired
+    private WebApplicationContext webApplicationContext;
+
+    @Autowired
     private MockMvc mockMvc;
 
     private CaseDataBuilder caseDataBuilder;
@@ -89,6 +94,8 @@ public class NextStepsControllerTest {
 
     @Before
     public void setup() {
+        mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+
         OBJECT_MAPPER.registerModule(new JavaTimeModule());
 
         caseDataBuilder = CaseData.builder()
