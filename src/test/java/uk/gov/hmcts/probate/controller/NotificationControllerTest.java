@@ -11,6 +11,8 @@ import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
 import uk.gov.hmcts.probate.exception.BadRequestException;
 import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
@@ -22,8 +24,8 @@ import uk.gov.hmcts.probate.util.TestUtils;
 import uk.gov.service.notify.NotificationClientException;
 
 import static org.hamcrest.CoreMatchers.containsString;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -37,6 +39,8 @@ import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_DRAFT;
 @SpringBootTest
 @AutoConfigureMockMvc
 public class NotificationControllerTest {
+    @Autowired
+    private WebApplicationContext webApplicationContext;
 
     @Autowired
     private MockMvc mockMvc;
@@ -58,6 +62,8 @@ public class NotificationControllerTest {
 
     @Before
     public void setUp() throws NotificationClientException, BadRequestException {
+        mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+
         Document document = Document.builder().documentType(DIGITAL_GRANT).build();
 
         doReturn(document).when(notificationService).sendEmail(any(), any());

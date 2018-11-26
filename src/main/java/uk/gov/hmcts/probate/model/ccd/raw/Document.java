@@ -1,6 +1,10 @@
 package uk.gov.hmcts.probate.model.ccd.raw;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import lombok.Builder;
 import lombok.Data;
 import uk.gov.hmcts.probate.model.DocumentType;
@@ -21,6 +25,8 @@ public class Document {
     private final String documentFileName;
 
     @JsonProperty("DocumentDateAdded")
+    @JsonDeserialize(using = LocalDateDeserializer.class)
+    @JsonSerialize(using = LocalDateSerializer.class)
     private final LocalDate documentDateAdded;
 
     @JsonProperty("DocumentGeneratedBy")
