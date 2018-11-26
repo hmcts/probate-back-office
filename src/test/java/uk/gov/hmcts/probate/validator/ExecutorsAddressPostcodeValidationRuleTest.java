@@ -15,7 +15,7 @@ import uk.gov.hmcts.probate.service.BusinessValidationMessageService;
 import java.util.Collections;
 import java.util.List;
 
-import static org.mockito.Matchers.eq;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.Constants.BUSINESS_ERROR;
 
