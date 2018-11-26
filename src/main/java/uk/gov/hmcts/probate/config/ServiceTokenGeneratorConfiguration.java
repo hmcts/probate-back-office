@@ -1,33 +1,26 @@
-package uk.gov.hmcts.probate.functional;
+package uk.gov.hmcts.probate.config;
 
 import feign.Feign;
 import feign.jackson.JacksonEncoder;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.openfeign.support.SpringMvcContract;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 import uk.gov.hmcts.reform.authorisation.ServiceAuthorisationApi;
 import uk.gov.hmcts.reform.authorisation.generators.ServiceAuthTokenGenerator;
 
-@Slf4j
 @Configuration
-@ComponentScan("uk.gov.hmcts.probate.functional")
-@PropertySource("application.properties")
-public class TestContextConfiguration {
-
+public class ServiceTokenGeneratorConfiguration {
     @Bean
-    public ServiceAuthTokenGenerator serviceAuthTokenGenerator(@Value("${service.auth.provider.base.url}") String s2sUrl,
-                                                               @Value("${s2s-auth.totp_secret}") String secret,
-                                                               @Value("${service.name}") String microservice) {
+    public ServiceAuthTokenGenerator serviceAuthTokenGenerator(
+            @Value("${auth.provider.service.client.baseUrl}") String s2sUrl,
+            @Value("${auth.provider.service.client.key}") String secret,
+            @Value("${auth.provider.service.client.microservice}") String microservice) {
+
         final ServiceAuthorisationApi serviceAuthorisationApi = Feign.builder()
                 .encoder(new JacksonEncoder())
                 .contract(new SpringMvcContract())
                 .target(ServiceAuthorisationApi.class, s2sUrl);
-        log.info("S2S URL: {}", s2sUrl);
-        log.info("service.name: {}", microservice);
         return new ServiceAuthTokenGenerator(secret, microservice, serviceAuthorisationApi);
     }
 }

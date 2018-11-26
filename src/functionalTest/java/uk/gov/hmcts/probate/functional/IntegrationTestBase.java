@@ -1,14 +1,14 @@
 package uk.gov.hmcts.probate.functional;
 
 import io.restassured.RestAssured;
-import net.thucydides.junit.spring.SpringIntegration;
+import net.serenitybdd.junit.spring.integration.SpringIntegrationMethodRule;
 import org.junit.Rule;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
-import uk.gov.hmcts.probate.functional.util.TestUtils;
+import uk.gov.hmcts.probate.functional.util.FunctionalTestUtils;
 
 @RunWith(SpringRunner.class)
 @ContextConfiguration(classes = TestContextConfiguration.class)
@@ -18,7 +18,7 @@ public abstract class IntegrationTestBase {
     protected SolCCDServiceAuthTokenGenerator serviceAuthTokenGenerator;
 
     @Autowired
-    protected TestUtils utils;
+    protected FunctionalTestUtils utils;
 
     private String solCcdServiceUrl;
     public static String evidenceManagementUrl;
@@ -40,10 +40,10 @@ public abstract class IntegrationTestBase {
     }
 
     @Rule
-    public SpringIntegration springIntegration;
+    public SpringIntegrationMethodRule springIntegration;
 
     public IntegrationTestBase() {
-        this.springIntegration = new SpringIntegration();
+        this.springIntegration = new SpringIntegrationMethodRule();
 
     }
 }
