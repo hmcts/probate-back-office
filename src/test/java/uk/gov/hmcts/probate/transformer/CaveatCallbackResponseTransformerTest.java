@@ -16,6 +16,7 @@ import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
 import uk.gov.hmcts.probate.model.ccd.caveat.response.CaveatCallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
+import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 
@@ -26,6 +27,7 @@ import java.util.List;
 
 import static java.util.Collections.emptyList;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
 import static uk.gov.hmcts.probate.model.Constants.CAVEAT_LIFESPAN;
@@ -64,6 +66,9 @@ public class CaveatCallbackResponseTransformerTest {
 
     @Mock
     private CaveatCallbackRequest caveatCallbackRequestMock;
+
+    @Mock
+    private Document document;
 
     @Mock
     private CaveatDetails caveatDetailsMock;
@@ -139,6 +144,15 @@ public class CaveatCallbackResponseTransformerTest {
         assertCommon(caveatCallbackResponse);
 
         assertEquals(CAV_FORMATTED_EXPIRY_DATE, caveatCallbackResponse.getCaveatData().getCavExpiryDate());
+    }
+
+    @Test
+    public void shouldConvertRequestToDataBeanWithCaveatMessageContentChange() {
+        CaveatCallbackResponse caveatCallbackResponse = underTest.generalMessage(caveatCallbackRequestMock, document);
+
+        assertCommon(caveatCallbackResponse);
+
+        assertTrue(caveatCallbackResponse.getCaveatData().getCavMessageContent().isEmpty());
     }
 
     private void assertCommon(CaveatCallbackResponse caveatCallbackResponse) {
