@@ -1,0 +1,123 @@
+{
+  "case_details": {
+    "id": 1542274092932452,
+    "jurisdiction": "PROBATE",
+    "state": "CavCaveatRaised",
+    "case_type_id": "Caveat",
+    "created_date": "2018-11-15T09:28:12.992",
+    "last_modified": [
+      2018,
+      6,
+      7,
+      10,
+      8,
+      8,
+      695000000
+    ],
+    "security_classification": "PUBLIC",
+    "case_data": {
+      "cavDeceasedSurname": "dl name 2",
+      "cavDeceasedDateOfDeath": "2017-12-31",
+      "cavDeceasedDateOfBirth": "2016-12-31",
+      "cavDeceasedAddress": {
+        "AddressLine1": "2",
+        "AddressLine2": "",
+        "AddressLine3": "",
+        "County": "",
+        "PostTown": "",
+        "PostCode": "2",
+        "Country": ""
+      },
+      "cavCaveatorEmailAddress": "test.test@hmcts.net",
+      "cavExpiryDate": "2019-05-15",
+      "cavDeceasedAnyOtherNames": "No",
+      "cavCaveatorForenames": "cf name 2",
+      "cavDeceasedForenames": "df name 2",
+      "cavCaveatorSurname": "cl name 2",
+      "cavCaveatorAddress": {
+        "AddressLine1": "2",
+        "AddressLine2": "",
+        "AddressLine3": "",
+        "County": "",
+        "PostTown": "",
+        "PostCode": "2",
+        "Country": ""
+      }
+    },
+    "data_classification": {
+      "cavDeceasedSurname": "PUBLIC",
+      "cavDeceasedDateOfDeath": "PUBLIC",
+      "cavDeceasedDateOfBirth": "PUBLIC",
+      "cavDeceasedAddress": {
+        "classification": "PUBLIC",
+        "value": {
+          "AddressLine1": "PUBLIC",
+          "AddressLine2": "PUBLIC",
+          "AddressLine3": "PUBLIC",
+          "County": "PUBLIC",
+          "PostTown": "PUBLIC",
+          "PostCode": "PUBLIC",
+          "Country": "PUBLIC"
+        }
+      },
+      "cavCaveatorEmailAddress": "PUBLIC",
+      "cavExpiryDate": "PUBLIC",
+      "cavDeceasedAnyOtherNames": "PUBLIC",
+      "cavCaveatorForenames": "PUBLIC",
+      "cavDeceasedForenames": "PUBLIC",
+      "cavCaveatorSurname": "PUBLIC",
+      "cavCaveatorAddress": {
+        "classification": "PUBLIC",
+        "value": {
+          "AddressLine1": "PUBLIC",
+          "AddressLine2": "PUBLIC",
+          "AddressLine3": "PUBLIC",
+          "County": "PUBLIC",
+          "PostTown": "PUBLIC",
+          "PostCode": "PUBLIC",
+          "Country": "PUBLIC"
+        }
+      }
+    },
+    "after_submit_callback_response": null,
+    "callback_response_status_code": null,
+    "callback_response_status": null,
+    "delete_draft_response_status_code": null,
+    "delete_draft_response_status": null,
+    "security_classifications": {
+      "cavDeceasedSurname": "PUBLIC",
+      "cavDeceasedDateOfDeath": "PUBLIC",
+      "cavDeceasedDateOfBirth": "PUBLIC",
+      "cavDeceasedAddress": {
+        "classification": "PUBLIC",
+        "value": {
+          "AddressLine1": "PUBLIC",
+          "AddressLine2": "PUBLIC",
+          "AddressLine3": "PUBLIC",
+          "County": "PUBLIC",
+          "PostTown": "PUBLIC",
+          "PostCode": "PUBLIC",
+          "Country": "PUBLIC"
+        }
+      },
+      "cavCaveatorEmailAddress": "PUBLIC",
+      "cavExpiryDate": "PUBLIC",
+      "cavDeceasedAnyOtherNames": "PUBLIC",
+      "cavCaveatorForenames": "PUBLIC",
+      "cavDeceasedForenames": "PUBLIC",
+      "cavCaveatorSurname": "PUBLIC",
+      "cavCaveatorAddress": {
+        "classification": "PUBLIC",
+        "value": {
+          "AddressLine1": "PUBLIC",
+          "AddressLine2": "PUBLIC",
+          "AddressLine3": "PUBLIC",
+          "County": "PUBLIC",
+          "PostTown": "PUBLIC",
+          "PostCode": "PUBLIC",
+          "Country": "PUBLIC"
+        }
+      }
+    }
+  }
+}
