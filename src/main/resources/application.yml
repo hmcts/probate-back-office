@@ -5,17 +5,12 @@ management:
   endpoints:
     web:
       exposure:
-        include: '*'
+        include: health,info
       base-path: /
   endpoint:
     health:
       show-details: always
-  security:
-    enabled: false
-
-security:
-  basic:
-    enabled: false
+      enabled: true
 
 authorised.services: probate_backend,ccd_data,ccd-datamgmt-api,ccd_ps,ccd
 auth.provider.service.client:
