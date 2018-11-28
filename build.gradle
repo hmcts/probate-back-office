@@ -268,7 +268,7 @@ compileJava {
   options.compilerArgs << '-parameters'
 }
 
-jar {
+bootJar {
   archiveName = 'back-office.jar'
   manifest {
 
