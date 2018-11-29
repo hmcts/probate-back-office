@@ -40,7 +40,7 @@ public class CaveatCallbackResponseTransformer {
     public CaveatCallbackResponse generalMessage(CaveatCallbackRequest caveatCallbackRequest, Document document) {
         CaveatDetails caveatDetails = caveatCallbackRequest.getCaveatDetails();
 
-        caveatDetails.getCaveatData().getCavDocumentsGenerated().add(new CollectionMember<>(null, document));
+        caveatDetails.getCaveatData().getDocumentsGenerated().add(new CollectionMember<>(null, document));
 
         ResponseCaveatData responseCaveatData = getResponseCaveatData(caveatDetails)
                 .cavMessageContent("")
@@ -65,24 +65,24 @@ public class CaveatCallbackResponseTransformer {
 
         return ResponseCaveatData.builder()
 
-                .cavApplicationType(ofNullable(caveatData.getCavApplicationType()).orElse(DEFAULT_APPLICATION_TYPE))
-                .cavRegistryLocation(ofNullable(caveatData.getCavRegistryLocation()).orElse(DEFAULT_REGISTRY_LOCATION))
-                .cavDeceasedForenames(caveatData.getCavDeceasedForenames())
-                .cavDeceasedSurname(caveatData.getCavDeceasedSurname())
-                .cavDeceasedDateOfDeath(dateTimeFormatter.format(caveatData.getCavDeceasedDateOfDeath()))
+                .cavApplicationType(ofNullable(caveatData.getApplicationType()).orElse(DEFAULT_APPLICATION_TYPE))
+                .cavRegistryLocation(ofNullable(caveatData.getRegistryLocation()).orElse(DEFAULT_REGISTRY_LOCATION))
+                .cavDeceasedForenames(caveatData.getDeceasedForenames())
+                .cavDeceasedSurname(caveatData.getDeceasedSurname())
+                .cavDeceasedDateOfDeath(dateTimeFormatter.format(caveatData.getDeceasedDateOfDeath()))
                 .cavDeceasedDateOfBirth(dateTimeFormatter.format(caveatData.getCavDeceasedDateOfBirth()))
-                .cavDeceasedAnyOtherNames(caveatData.getCavDeceasedAnyOtherNames())
-                .cavDeceasedFullAliasNameList(caveatData.getCavDeceasedFullAliasNameList())
-                .cavDeceasedAddress(caveatData.getCavDeceasedAddress())
+                .cavDeceasedAnyOtherNames(caveatData.getDeceasedAnyOtherNames())
+                .cavDeceasedFullAliasNameList(caveatData.getDeceasedFullAliasNameList())
+                .cavDeceasedAddress(caveatData.getDeceasedAddress())
 
-                .cavCaveatorForenames(caveatData.getCavCaveatorForenames())
-                .cavCaveatorSurname(caveatData.getCavCaveatorSurname())
-                .cavCaveatorEmailAddress(caveatData.getCavCaveatorEmailAddress())
-                .cavCaveatorAddress(caveatData.getCavCaveatorAddress())
+                .cavCaveatorForenames(caveatData.getCaveatorForenames())
+                .cavCaveatorSurname(caveatData.getCaveatorSurname())
+                .cavCaveatorEmailAddress(caveatData.getCaveatorEmailAddress())
+                .cavCaveatorAddress(caveatData.getCaveatorAddress())
 
-                .cavMessageContent(caveatData.getCavMessageContent())
+                .cavMessageContent(caveatData.getMessageContent())
 
-                .cavDocumentsUploaded(caveatData.getCavDocumentsUploaded())
-                .cavDocumentsGenerated(caveatData.getCavDocumentsGenerated());
+                .cavDocumentsUploaded(caveatData.getDocumentsUploaded())
+                .cavDocumentsGenerated(caveatData.getDocumentsGenerated());
     }
 }

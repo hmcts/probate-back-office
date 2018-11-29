@@ -64,10 +64,10 @@ public class NotificationService {
         throws NotificationClientException {
 
         CaveatData caveatData = caveatDetails.getCaveatData();
-        Registry registry = registriesProperties.getRegistries().get(caveatData.getCavRegistryLocation().toLowerCase());
+        Registry registry = registriesProperties.getRegistries().get(caveatData.getRegistryLocation().toLowerCase());
 
-        String templateId = getTemplateId(state, caveatData.getCavApplicationType());
-        String emailAddress = caveatData.getCavCaveatorEmailAddress();
+        String templateId = getTemplateId(state, caveatData.getApplicationType());
+        String emailAddress = caveatData.getCaveatorEmailAddress();
         Map<String, String> personalisation = getCaveatPersonalisation(caveatDetails, registry);
         String reference = caveatDetails.getId().toString();
         String emailReplyToId = registry.getEmailReplyToId();
@@ -115,7 +115,7 @@ public class NotificationService {
         personalisation.put("applicant_name", caveatData.getCaveatorFullName());
         personalisation.put("deceased_name", caveatData.getDeceasedFullName());
         personalisation.put("ccd_reference", caveatDetails.getId().toString());
-        personalisation.put("message_content", caveatData.getCavMessageContent());
+        personalisation.put("message_content", caveatData.getMessageContent());
         personalisation.put("registry_name", registry.getName());
         personalisation.put("registry_phone", registry.getPhone());
 
