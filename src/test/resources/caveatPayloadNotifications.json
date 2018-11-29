@@ -2,8 +2,8 @@
   "case_details": {
     "id": 1542274092932452,
     "jurisdiction": "PROBATE",
-    "state": "CavCaveatRaised",
     "case_type_id": "Caveat",
+    "state": "CavCaveatRaised",
     "created_date": "2018-11-15T09:28:12.992",
     "last_modified": [
       2018,
@@ -16,6 +16,8 @@
     ],
     "security_classification": "PUBLIC",
     "case_data": {
+      "cavApplicationType": "Personal",
+      "cavRegistryLocation": "Leeds",
       "cavDeceasedSurname": "dl name 2",
       "cavDeceasedDateOfDeath": "2017-12-31",
       "cavDeceasedDateOfBirth": "2016-12-31",
@@ -28,8 +30,11 @@
         "PostCode": "2",
         "Country": ""
       },
-      "cavCaveatorEmailAddress": "test.test@hmcts.net",
+      "cavDocumentsGenerated": [
+      ],
+      "cavCaveatorEmailAddress": "personal@hmcts-test.com",
       "cavExpiryDate": "2019-05-15",
+      "cavMessageContent": "content message",
       "cavDeceasedAnyOtherNames": "No",
       "cavCaveatorForenames": "cf name 2",
       "cavDeceasedForenames": "df name 2",
@@ -45,6 +50,8 @@
       }
     },
     "data_classification": {
+      "cavApplicationType": "PUBLIC",
+      "cavRegistryLocation": "PUBLIC",
       "cavDeceasedSurname": "PUBLIC",
       "cavDeceasedDateOfDeath": "PUBLIC",
       "cavDeceasedDateOfBirth": "PUBLIC",
@@ -62,6 +69,7 @@
       },
       "cavCaveatorEmailAddress": "PUBLIC",
       "cavExpiryDate": "PUBLIC",
+      "cavMessageContent": "PUBLIC",
       "cavDeceasedAnyOtherNames": "PUBLIC",
       "cavCaveatorForenames": "PUBLIC",
       "cavDeceasedForenames": "PUBLIC",
@@ -85,6 +93,8 @@
     "delete_draft_response_status_code": null,
     "delete_draft_response_status": null,
     "security_classifications": {
+      "cavApplicationType": "PUBLIC",
+      "cavRegistryLocation": "PUBLIC",
       "cavDeceasedSurname": "PUBLIC",
       "cavDeceasedDateOfDeath": "PUBLIC",
       "cavDeceasedDateOfBirth": "PUBLIC",
@@ -102,6 +112,7 @@
       },
       "cavCaveatorEmailAddress": "PUBLIC",
       "cavExpiryDate": "PUBLIC",
+      "cavMessageContent": "PUBLIC",
       "cavDeceasedAnyOtherNames": "PUBLIC",
       "cavCaveatorForenames": "PUBLIC",
       "cavDeceasedForenames": "PUBLIC",
