@@ -68,7 +68,7 @@ public class CaveatCallbackResponseTransformer {
                 .applicationType(ofNullable(caveatData.getApplicationType()).orElse(DEFAULT_APPLICATION_TYPE))
                 .registryLocation(ofNullable(caveatData.getRegistryLocation()).orElse(DEFAULT_REGISTRY_LOCATION))
                 .deceasedForenames(caveatData.getDeceasedForenames())
-                .deceasedForenames(caveatData.getDeceasedSurname())
+                .deceasedSurname(caveatData.getDeceasedSurname())
                 .deceasedDateOfDeath(dateTimeFormatter.format(caveatData.getDeceasedDateOfDeath()))
                 .deceasedDateOfBirth(dateTimeFormatter.format(caveatData.getDeceasedDateOfBirth()))
                 .deceasedAnyOtherNames(caveatData.getDeceasedAnyOtherNames())

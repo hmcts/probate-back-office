@@ -86,7 +86,7 @@ public class CaveatCallbackResponseTransformerTest {
                 .deceasedAnyOtherNames(CAV_DECEASED_HAS_ALIAS)
                 .deceasedFullAliasNameList(CAV_DECEASED_FULL_ALIAS_NAME_LIST)
                 .deceasedAddress(CAV_DECEASED_ADDRESS)
-                .deceasedForenames(CAV_CAVEATOR_FORENAMES)
+                .caveatorForenames(CAV_CAVEATOR_FORENAMES)
                 .caveatorSurname(CAV_CAVEATOR_SURNAME)
                 .caveatorEmailAddress(CAV_CAVEATOR_EMAIL_ADDRESS)
                 .caveatorAddress(CAV_CAVEATOR_ADDRESS)
