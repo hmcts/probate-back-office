@@ -28,7 +28,7 @@ public class CaveatData {
 
     private final LocalDate deceasedDateOfDeath;
 
-    private final LocalDate cavDeceasedDateOfBirth;
+    private final LocalDate deceasedDateOfBirth;
 
     private final String deceasedAnyOtherNames;
 

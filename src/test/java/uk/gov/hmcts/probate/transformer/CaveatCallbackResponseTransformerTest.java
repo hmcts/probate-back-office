@@ -79,19 +79,19 @@ public class CaveatCallbackResponseTransformerTest {
     public void setup() {
 
         caveatDataBuilder = CaveatData.builder()
-                .cavDeceasedForenames(CAV_DECEASED_FORENAMES)
-                .cavDeceasedSurname(CAV_DECEASED_SURNAME)
-                .cavDeceasedDateOfDeath(CAV_DECEASED_DOD)
-                .cavDeceasedDateOfBirth(CAV_DECEASED_DOB)
-                .cavDeceasedAnyOtherNames(CAV_DECEASED_HAS_ALIAS)
-                .cavDeceasedFullAliasNameList(CAV_DECEASED_FULL_ALIAS_NAME_LIST)
-                .cavDeceasedAddress(CAV_DECEASED_ADDRESS)
-                .cavCaveatorForenames(CAV_CAVEATOR_FORENAMES)
-                .cavCaveatorSurname(CAV_CAVEATOR_SURNAME)
-                .cavCaveatorEmailAddress(CAV_CAVEATOR_EMAIL_ADDRESS)
-                .cavCaveatorAddress(CAV_CAVEATOR_ADDRESS)
-                .cavExpiryDate(CAV_EXPIRY_DATE)
-                .cavMessageContent(CAV_MESSAGE_CONTENT);
+                .deceasedForenames(CAV_DECEASED_FORENAMES)
+                .deceasedSurname(CAV_DECEASED_SURNAME)
+                .deceasedDateOfDeath(CAV_DECEASED_DOD)
+                .deceasedDateOfBirth(CAV_DECEASED_DOB)
+                .deceasedAnyOtherNames(CAV_DECEASED_HAS_ALIAS)
+                .deceasedFullAliasNameList(CAV_DECEASED_FULL_ALIAS_NAME_LIST)
+                .deceasedAddress(CAV_DECEASED_ADDRESS)
+                .deceasedForenames(CAV_CAVEATOR_FORENAMES)
+                .caveatorSurname(CAV_CAVEATOR_SURNAME)
+                .caveatorEmailAddress(CAV_CAVEATOR_EMAIL_ADDRESS)
+                .caveatorAddress(CAV_CAVEATOR_ADDRESS)
+                .expiryDate(CAV_EXPIRY_DATE)
+                .messageContent(CAV_MESSAGE_CONTENT);
 
         when(caveatCallbackRequestMock.getCaveatDetails()).thenReturn(caveatDetailsMock);
         when(caveatDetailsMock.getCaveatData()).thenReturn(caveatDataBuilder.build());
@@ -111,7 +111,7 @@ public class CaveatCallbackResponseTransformerTest {
         CavFullAliasName an11 = CavFullAliasName.builder().fullAliasName(CAV_DECEASED_FULL_ALIAS_NAME).build();
         CollectionMember<CavFullAliasName> an1 = new CollectionMember<>("0", an11);
         cavDeceasedFullAliasNameList.add(an1);
-        caveatDataBuilder.cavDeceasedFullAliasNameList(cavDeceasedFullAliasNameList);
+        caveatDataBuilder.deceasedFullAliasNameList(cavDeceasedFullAliasNameList);
 
         when(caveatCallbackRequestMock.getCaveatDetails()).thenReturn(caveatDetailsMock);
         when(caveatDetailsMock.getCaveatData()).thenReturn(caveatDataBuilder.build());
@@ -119,14 +119,14 @@ public class CaveatCallbackResponseTransformerTest {
         CaveatCallbackResponse caveatCallbackResponse = underTest.transform(caveatCallbackRequestMock);
 
         assertCommonDetails(caveatCallbackResponse);
-        assertEquals(1, caveatCallbackResponse.getCaveatData().getCavDeceasedFullAliasNameList().size());
+        assertEquals(1, caveatCallbackResponse.getCaveatData().getDeceasedFullAliasNameList().size());
     }
 
     @Test
     public void shouldGetCaveatUploadedDocuments() {
         List<CollectionMember<UploadDocument>> documents = new ArrayList<>();
         documents.add(createUploadDocuments("0"));
-        caveatDataBuilder.cavDocumentsUploaded(documents);
+        caveatDataBuilder.documentsUploaded(documents);
 
         when(caveatCallbackRequestMock.getCaveatDetails()).thenReturn(caveatDetailsMock);
         when(caveatDetailsMock.getCaveatData()).thenReturn(caveatDataBuilder.build());
@@ -134,7 +134,7 @@ public class CaveatCallbackResponseTransformerTest {
         CaveatCallbackResponse caveatCallbackResponse = underTest.transform(caveatCallbackRequestMock);
 
         assertCommonDetails(caveatCallbackResponse);
-        assertEquals(1, caveatCallbackResponse.getCaveatData().getCavDocumentsUploaded().size());
+        assertEquals(1, caveatCallbackResponse.getCaveatData().getDocumentsUploaded().size());
     }
 
     @Test
@@ -143,7 +143,7 @@ public class CaveatCallbackResponseTransformerTest {
 
         assertCommon(caveatCallbackResponse);
 
-        assertEquals(CAV_FORMATTED_EXPIRY_DATE, caveatCallbackResponse.getCaveatData().getCavExpiryDate());
+        assertEquals(CAV_FORMATTED_EXPIRY_DATE, caveatCallbackResponse.getCaveatData().getExpiryDate());
     }
 
     @Test
@@ -152,7 +152,7 @@ public class CaveatCallbackResponseTransformerTest {
 
         assertCommon(caveatCallbackResponse);
 
-        assertTrue(caveatCallbackResponse.getCaveatData().getCavMessageContent().isEmpty());
+        assertTrue(caveatCallbackResponse.getCaveatData().getMessageContent().isEmpty());
     }
 
     private void assertCommon(CaveatCallbackResponse caveatCallbackResponse) {
@@ -161,24 +161,24 @@ public class CaveatCallbackResponseTransformerTest {
     }
 
     private void assertCommonDetails(CaveatCallbackResponse caveatCallbackResponse) {
-        assertEquals(CAV_REGISTRY_LOCATION, caveatCallbackResponse.getCaveatData().getCavRegistryLocation());
+        assertEquals(CAV_REGISTRY_LOCATION, caveatCallbackResponse.getCaveatData().getRegistryLocation());
 
-        assertEquals(CAV_DECEASED_FORENAMES, caveatCallbackResponse.getCaveatData().getCavDeceasedForenames());
-        assertEquals(CAV_DECEASED_SURNAME, caveatCallbackResponse.getCaveatData().getCavDeceasedSurname());
-        assertEquals("2017-12-31", caveatCallbackResponse.getCaveatData().getCavDeceasedDateOfDeath());
-        assertEquals("2016-12-31", caveatCallbackResponse.getCaveatData().getCavDeceasedDateOfBirth());
-        assertEquals(CAV_DECEASED_HAS_ALIAS, caveatCallbackResponse.getCaveatData().getCavDeceasedAnyOtherNames());
-        assertEquals(CAV_DECEASED_ADDRESS, caveatCallbackResponse.getCaveatData().getCavDeceasedAddress());
+        assertEquals(CAV_DECEASED_FORENAMES, caveatCallbackResponse.getCaveatData().getDeceasedForenames());
+        assertEquals(CAV_DECEASED_SURNAME, caveatCallbackResponse.getCaveatData().getDeceasedSurname());
+        assertEquals("2017-12-31", caveatCallbackResponse.getCaveatData().getDeceasedDateOfDeath());
+        assertEquals("2016-12-31", caveatCallbackResponse.getCaveatData().getDeceasedDateOfBirth());
+        assertEquals(CAV_DECEASED_HAS_ALIAS, caveatCallbackResponse.getCaveatData().getDeceasedAnyOtherNames());
+        assertEquals(CAV_DECEASED_ADDRESS, caveatCallbackResponse.getCaveatData().getDeceasedAddress());
 
-        assertEquals(CAV_CAVEATOR_FORENAMES, caveatCallbackResponse.getCaveatData().getCavCaveatorForenames());
-        assertEquals(CAV_CAVEATOR_SURNAME, caveatCallbackResponse.getCaveatData().getCavCaveatorSurname());
-        assertEquals(CAV_CAVEATOR_EMAIL_ADDRESS, caveatCallbackResponse.getCaveatData().getCavCaveatorEmailAddress());
-        assertEquals(CAV_CAVEATOR_ADDRESS, caveatCallbackResponse.getCaveatData().getCavCaveatorAddress());
-        assertEquals(CAV_MESSAGE_CONTENT, caveatCallbackResponse.getCaveatData().getCavMessageContent());
+        assertEquals(CAV_CAVEATOR_FORENAMES, caveatCallbackResponse.getCaveatData().getCaveatorForenames());
+        assertEquals(CAV_CAVEATOR_SURNAME, caveatCallbackResponse.getCaveatData().getCaveatorSurname());
+        assertEquals(CAV_CAVEATOR_EMAIL_ADDRESS, caveatCallbackResponse.getCaveatData().getCaveatorEmailAddress());
+        assertEquals(CAV_CAVEATOR_ADDRESS, caveatCallbackResponse.getCaveatData().getCaveatorAddress());
+        assertEquals(CAV_MESSAGE_CONTENT, caveatCallbackResponse.getCaveatData().getMessageContent());
     }
 
     private void assertApplicationType(CaveatCallbackResponse caveatCallbackResponse, ApplicationType cavApplicationType) {
-        assertEquals(cavApplicationType, caveatCallbackResponse.getCaveatData().getCavApplicationType());
+        assertEquals(cavApplicationType, caveatCallbackResponse.getCaveatData().getApplicationType());
     }
 
     private CollectionMember<UploadDocument> createUploadDocuments(String id) {
