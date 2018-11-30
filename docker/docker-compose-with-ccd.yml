@@ -264,6 +264,7 @@ services:
         - CCD_DM_DOMAIN=http://localhost:8080
         - CCD_DEFAULTPRINTURL=http://localhost:3100/jurisdictions/:jid/case-types/:ctid/cases/:cid
         - ELASTIC_SEARCH_HOSTS=http://elasticsearch:9200
+        - ELASTIC_SEARCH_DATA_NODES_HOSTS=http://elasticsearch:9200
       ports:
         - 4452:4452
       depends_on:

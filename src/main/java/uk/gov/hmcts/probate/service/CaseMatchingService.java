@@ -8,6 +8,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import uk.gov.hmcts.probate.config.CCDGatewayConfiguration;
 import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
+import uk.gov.hmcts.probate.model.ccd.raw.CaseLink;
 import uk.gov.hmcts.probate.model.ccd.raw.casematching.MatchedCases;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
@@ -51,7 +52,6 @@ public class CaseMatchingService {
                 .build().encode().toUri();
 
         HttpEntity<String> entity = new HttpEntity<>(jsonQuery, headers.getAuthorizationHeaders());
-
         MatchedCases matchedCases = restTemplate.postForObject(uri, entity, MatchedCases.class);
 
         appInsights.trackEvent(REQUEST_SENT, uri.toString());
@@ -59,10 +59,10 @@ public class CaseMatchingService {
         return matchedCases.getCases().stream()
                 .filter(c -> !c.getId().equals(caseDetails.getId()))
                 .map(c -> CaseMatch.builder()
-                        .ccdId(c.getId().toString())
                         .fullName(c.getData().getDeceasedFullName())
                         .dod(c.getData().getDeceasedDateOfDeath().format(dateTimeFormatter))
                         .postcode(c.getData().getDeceasedAddress().getPostCode())
+                        .caseLink(CaseLink.builder().caseReference(c.getId().toString()).build())
                         .build())
                 .collect(Collectors.toList());
     }
