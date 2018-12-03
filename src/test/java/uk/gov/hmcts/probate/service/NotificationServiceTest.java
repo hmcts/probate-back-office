@@ -125,31 +125,31 @@ public class NotificationServiceTest {
                 .build(), LAST_MODIFIED, ID);
 
         personalCaveatDataOxford = new CaveatDetails(CaveatData.builder()
-                .cavApplicationType(PERSONAL)
-                .cavRegistryLocation("Oxford")
-                .cavCaveatorEmailAddress("personal@test.com")
-                .cavDeceasedDateOfDeath(LocalDate.of(2000, 12, 12))
+                .applicationType(PERSONAL)
+                .registryLocation("Oxford")
+                .caveatorEmailAddress("personal@test.com")
+                .deceasedDateOfDeath(LocalDate.of(2000, 12, 12))
                 .build(), LAST_MODIFIED, ID);
 
         personalCaveatDataBirmingham = new CaveatDetails(CaveatData.builder()
-                .cavApplicationType(PERSONAL)
-                .cavRegistryLocation("Birmingham")
-                .cavCaveatorEmailAddress("personal@test.com")
-                .cavDeceasedDateOfDeath(LocalDate.of(2000, 12, 12))
+                .applicationType(PERSONAL)
+                .registryLocation("Birmingham")
+                .caveatorEmailAddress("personal@test.com")
+                .deceasedDateOfDeath(LocalDate.of(2000, 12, 12))
                 .build(), LAST_MODIFIED, ID);
 
         personalCaveatDataManchester = new CaveatDetails(CaveatData.builder()
-                .cavApplicationType(PERSONAL)
-                .cavRegistryLocation("Manchester")
-                .cavCaveatorEmailAddress("personal@test.com")
-                .cavDeceasedDateOfDeath(LocalDate.of(2000, 12, 12))
+                .applicationType(PERSONAL)
+                .registryLocation("Manchester")
+                .caveatorEmailAddress("personal@test.com")
+                .deceasedDateOfDeath(LocalDate.of(2000, 12, 12))
                 .build(), LAST_MODIFIED, ID);
 
         personalCaveatDataLeeds = new CaveatDetails(CaveatData.builder()
-                .cavApplicationType(PERSONAL)
-                .cavRegistryLocation("Leeds")
-                .cavCaveatorEmailAddress("personal@test.com")
-                .cavDeceasedDateOfDeath(LocalDate.of(2000, 12, 12))
+                .applicationType(PERSONAL)
+                .registryLocation("Leeds")
+                .caveatorEmailAddress("personal@test.com")
+                .deceasedDateOfDeath(LocalDate.of(2000, 12, 12))
                 .build(), LAST_MODIFIED, ID);
     }
 

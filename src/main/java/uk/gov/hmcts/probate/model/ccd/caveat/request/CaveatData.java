@@ -17,56 +17,56 @@ import java.util.List;
 @Data
 public class CaveatData {
 
-    private final ApplicationType cavApplicationType;
-    private final String cavRegistryLocation;
+    private final ApplicationType applicationType;
+    private final String registryLocation;
 
     // EVENT = cavRaiseCaveat - deceased data
 
-    private final String cavDeceasedForenames;
+    private final String deceasedForenames;
 
-    private final String cavDeceasedSurname;
+    private final String deceasedSurname;
 
-    private final LocalDate cavDeceasedDateOfDeath;
+    private final LocalDate deceasedDateOfDeath;
 
-    private final LocalDate cavDeceasedDateOfBirth;
+    private final LocalDate deceasedDateOfBirth;
 
-    private final String cavDeceasedAnyOtherNames;
+    private final String deceasedAnyOtherNames;
 
-    private final List<CollectionMember<CavFullAliasName>> cavDeceasedFullAliasNameList;
+    private final List<CollectionMember<CavFullAliasName>> deceasedFullAliasNameList;
 
-    private final CavAddress cavDeceasedAddress;
+    private final CavAddress deceasedAddress;
 
     // EVENT = cavRaiseCaveat - caveator data
 
-    private final String cavCaveatorForenames;
+    private final String caveatorForenames;
 
-    private final String cavCaveatorSurname;
+    private final String caveatorSurname;
 
-    private final String cavCaveatorEmailAddress;
+    private final String caveatorEmailAddress;
 
-    private final CavAddress cavCaveatorAddress;
+    private final CavAddress caveatorAddress;
 
     // EVENT = cavRaiseCaveat - caveat details
 
-    private LocalDate cavExpiryDate;
+    private LocalDate expiryDate;
 
     // EVENT = cavEmailCaveator
 
-    private final String cavMessageContent;
+    private final String messageContent;
 
     // EVENT = cavUploadDocument
 
-    private final List<CollectionMember<UploadDocument>> cavDocumentsUploaded;
+    private final List<CollectionMember<UploadDocument>> documentsUploaded;
 
     // EVENT = misc
 
-    private final List<CollectionMember<Document>> cavDocumentsGenerated = new ArrayList<>();
+    private final List<CollectionMember<Document>> documentsGenerated = new ArrayList<>();
 
     public String getDeceasedFullName() {
-        return String.join(" ", cavDeceasedForenames, cavDeceasedSurname);
+        return String.join(" ", deceasedForenames, deceasedSurname);
     }
 
     public String getCaveatorFullName() {
-        return String.join(" ", cavCaveatorForenames, cavCaveatorSurname);
+        return String.join(" ", caveatorForenames, caveatorSurname);
     }
 }

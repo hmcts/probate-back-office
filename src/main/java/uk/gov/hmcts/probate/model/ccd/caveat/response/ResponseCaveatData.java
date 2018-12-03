@@ -17,25 +17,25 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ResponseCaveatData {
 
-    private final ApplicationType cavApplicationType;
-    private final String cavRegistryLocation;
+    private final ApplicationType applicationType;
+    private final String registryLocation;
 
-    private final String cavDeceasedForenames;
-    private final String cavDeceasedSurname;
-    private final String cavDeceasedDateOfDeath;
-    private final String cavDeceasedDateOfBirth;
-    private final String cavDeceasedAnyOtherNames;
-    private final List<CollectionMember<CavFullAliasName>> cavDeceasedFullAliasNameList;
-    private final CavAddress cavDeceasedAddress;
+    private final String deceasedForenames;
+    private final String deceasedSurname;
+    private final String deceasedDateOfDeath;
+    private final String deceasedDateOfBirth;
+    private final String deceasedAnyOtherNames;
+    private final List<CollectionMember<CavFullAliasName>> deceasedFullAliasNameList;
+    private final CavAddress deceasedAddress;
 
-    private final String cavCaveatorForenames;
-    private final String cavCaveatorSurname;
-    private final String cavCaveatorEmailAddress;
-    private final CavAddress cavCaveatorAddress;
+    private final String caveatorForenames;
+    private final String caveatorSurname;
+    private final String caveatorEmailAddress;
+    private final CavAddress caveatorAddress;
 
-    private final String cavExpiryDate;
-    private final String cavMessageContent;
+    private final String expiryDate;
+    private final String messageContent;
 
-    private final List<CollectionMember<UploadDocument>> cavDocumentsUploaded;
-    private final List<CollectionMember<Document>> cavDocumentsGenerated;
+    private final List<CollectionMember<UploadDocument>> documentsUploaded;
+    private final List<CollectionMember<Document>> documentsGenerated;
 }
