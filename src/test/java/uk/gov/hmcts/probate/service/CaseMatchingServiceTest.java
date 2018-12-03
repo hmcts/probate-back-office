@@ -87,7 +87,7 @@ public class CaseMatchingServiceTest {
         List<CaseMatch> caseMatches = caseMatchingService.findMatches(caseDetails);
 
         assertEquals(1, caseMatches.size());
-        assertEquals("1", caseMatches.get(0).getCcdId());
+        assertEquals("1", caseMatches.get(0).getCaseLink().getCaseReference());
         assertEquals("names surname", caseMatches.get(0).getFullName());
         assertEquals("2000-01-01", caseMatches.get(0).getDod());
         assertEquals("SW12 0FA", caseMatches.get(0).getPostcode());
