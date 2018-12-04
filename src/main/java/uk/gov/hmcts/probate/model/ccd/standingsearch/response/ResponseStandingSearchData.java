@@ -4,8 +4,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;
 import lombok.Data;
 import uk.gov.hmcts.probate.model.ApplicationType;
-import uk.gov.hmcts.probate.model.ccd.caveat.CavAddress;
-import uk.gov.hmcts.probate.model.ccd.caveat.CavFullAliasName;
+import uk.gov.hmcts.probate.model.ccd.ProbateAddress;
+import uk.gov.hmcts.probate.model.ccd.ProbateFullAliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 
 import java.util.List;
@@ -23,13 +23,13 @@ public class ResponseStandingSearchData {
     private final String deceasedDateOfDeath;
     private final String deceasedDateOfBirth;
     private final String deceasedAnyOtherNames;
-    private final List<CollectionMember<CavFullAliasName>> deceasedFullAliasNameList;
-    private final CavAddress deceasedAddress;
+    private final List<CollectionMember<ProbateFullAliasName>> deceasedFullAliasNameList;
+    private final ProbateAddress deceasedAddress;
 
     private final String applicantForenames;
     private final String applicantSurname;
     private final String applicantEmailAddress;
-    private final CavAddress applicantAddress;
+    private final ProbateAddress applicantAddress;
 
     private final Long numberOfCopies;
     private final String expiryDate;

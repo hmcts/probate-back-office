@@ -3,8 +3,8 @@ package uk.gov.hmcts.probate.model.ccd.standingsearch.request;
 import lombok.Builder;
 import lombok.Data;
 import uk.gov.hmcts.probate.model.ApplicationType;
-import uk.gov.hmcts.probate.model.ccd.caveat.CavAddress;
-import uk.gov.hmcts.probate.model.ccd.caveat.CavFullAliasName;
+import uk.gov.hmcts.probate.model.ccd.ProbateAddress;
+import uk.gov.hmcts.probate.model.ccd.ProbateFullAliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 
 import java.time.LocalDate;
@@ -29,9 +29,9 @@ public class StandingSearchData {
 
     private final String deceasedAnyOtherNames;
 
-    private final List<CollectionMember<CavFullAliasName>> deceasedFullAliasNameList;
+    private final List<CollectionMember<ProbateFullAliasName>> deceasedFullAliasNameList;
 
-    private final CavAddress deceasedAddress;
+    private final ProbateAddress deceasedAddress;
 
     // EVENT = createStandingSearch - applicant data
 
@@ -41,7 +41,7 @@ public class StandingSearchData {
 
     private final String applicantEmailAddress;
 
-    private final CavAddress applicantAddress;
+    private final ProbateAddress applicantAddress;
 
     // EVENT = createStandingSearch - standing search details
 
