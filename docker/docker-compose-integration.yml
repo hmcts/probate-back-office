@@ -4,8 +4,8 @@ services:
   integration-test:
     #build:
       #context: .
-    #image: sol-ccd-services-integration-tests
-    image: docker.artifactory.reform.hmcts.net/probate/sol-ccd-services-integration-tests:${SOL_CCD_SERVICE_INTEGRATION_TEST_DOCKER_VERSION:-latest}
+    #image: back-offices-integration-tests
+    image: docker.artifactory.reform.hmcts.net/probate/back-offices-integration-tests:${SOL_CCD_SERVICE_INTEGRATION_TEST_DOCKER_VERSION:-latest}
     environment:
       - AUTH_PROVIDER_SERVICE_SERVER_JWT_KEY=wThK0f0/lh3FlxFcL4xUWDMI5C1J9KyQBgXV4wseh1e5J1uYJIjvTvArHxQDrYoHJ23xFxjHkOnvNbR5dXRoxA==
       - AUTH_PROVIDER_SERVICE_SERVER_MICROSERVICE_KEYS_TEST=asdddsf
@@ -14,17 +14,17 @@ services:
       - SERVICE_AUTH_PROVIDER_BASE_URL=http://service-auth-provider-api:4502
       - SERVICE_NAME=TEST
     depends_on:
-      - sol-ccd-service
+      - back-office
       - service-auth-provider-api
     volumes:
       - ./test/site/serenity:/opt/app/target/site/serenity
 
-  sol-ccd-service:
+  back-office:
     #build:
       #context: .
-    #image: sol-ccd-service
-    image: docker.artifactory.reform.hmcts.net/probate/sol-ccd-service:${SOL_CCD_SERVICE_API_DOCKER_VERSION:-latest}
-    container_name: sol-ccd-service
+    #image: back-office
+    image: docker.artifactory.reform.hmcts.net/probate/back-office:${SOL_CCD_SERVICE_API_DOCKER_VERSION:-latest}
+    container_name: back-office
     environment:
       - SERVER_PORT=4104
       - AUTH_PROVIDER_SERVICE_CLIENT_BASEURL=http://service-auth-provider-api:8080/

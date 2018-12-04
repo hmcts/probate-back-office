@@ -1,11 +1,11 @@
 version: '2.1'
 
 services:
-  sol-ccd-service:
+  back-office:
       #context: .
-    #image: sol-ccd-service
-    image: docker.artifactory.reform.hmcts.net/probate/sol-ccd-service:${SOL_CCD_SERVICE_API_DOCKER_VERSION:-latest}
-    container_name: sol-ccd-service
+    #image: back-office
+    image: docker.artifactory.reform.hmcts.net/probate/back-office:${SOL_CCD_SERVICE_API_DOCKER_VERSION:-latest}
+    container_name: back-office
     environment:
       - SERVER_PORT=4104
       - AUTH_PROVIDER_SERVICE_CLIENT_BASEURL=http://service-auth-provider-api:8080/
@@ -15,7 +15,7 @@ services:
       - JAVA_OPTS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005
 
       # these environment variables are used by java-logging library
-      - REFORM_SERVICE_NAME=sol-ccd-service
+      - REFORM_SERVICE_NAME=back-office
       - REFORM_TEAM=probate
       - REFORM_ENVIRONMENT
       - ROOT_APPENDER
