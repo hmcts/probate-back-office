@@ -38,6 +38,7 @@ checkstyle.toolVersion = '8.2'
 checkstyle.configFile = new File(rootDir, "checkstyle.xml")
 mainClassName = 'uk.gov.hmcts.probate.BusinessRulesValidationApplication'
 
+ext['selenium.version']='3.8.1'
 
 check.dependsOn dependencyCheckAnalyze
 // make build fail on Checkstyle issues (https://github.com/gradle/gradle/issues/881)
@@ -234,7 +235,6 @@ dependencies {
   testSmokeCompile sourceSets.main.runtimeClasspath
   testSmokeCompile sourceSets.test.runtimeClasspath
 
-  testFunctionalCompile group: 'org.seleniumhq.selenium', name: 'selenium-api', version: '3.14.0'
   testFunctionalCompile group: 'net.serenity-bdd', name: 'serenity-core', version: '2.0.11'
   testFunctionalCompile group: 'net.serenity-bdd', name: 'serenity-junit', version: '2.0.11'
   testFunctionalCompile group: 'net.serenity-bdd', name: 'serenity-rest-assured', version: '2.0.11'
@@ -244,7 +244,6 @@ dependencies {
   testFunctionalCompile sourceSets.main.runtimeClasspath
   testFunctionalCompile sourceSets.test.runtimeClasspath
 
-  testCaseCreatorCompile group: 'org.seleniumhq.selenium', name: 'selenium-api', version: '3.14.0'
   testCaseCreatorCompile group: 'net.serenity-bdd', name: 'serenity-core', version: '2.0.11'
   testCaseCreatorCompile group: 'net.serenity-bdd', name: 'serenity-junit', version: '2.0.11'
   testCaseCreatorCompile group: 'net.serenity-bdd', name: 'serenity-rest-assured', version: '2.0.11'

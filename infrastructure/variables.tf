@@ -77,6 +77,10 @@ variable "evidence_management_host" {
   type = "string"
 }
 
+variable "ccd_gateway_host" {
+  type = "string"
+}
+
 variable "fee_api_url" {
   type = "string"
 }
