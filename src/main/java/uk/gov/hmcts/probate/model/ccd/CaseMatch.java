@@ -16,5 +16,6 @@ public class CaseMatch implements Serializable {
     private final String postcode;
     private final String valid;
     private final String comment;
+    private final String type;
     private final CaseLink caseLink;
 }

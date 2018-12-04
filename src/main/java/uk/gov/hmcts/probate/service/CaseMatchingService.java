@@ -7,6 +7,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 import uk.gov.hmcts.probate.config.CCDGatewayConfiguration;
 import uk.gov.hmcts.probate.insights.AppInsights;
+import uk.gov.hmcts.probate.model.CaseType;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
 import uk.gov.hmcts.probate.model.ccd.raw.CaseLink;
 import uk.gov.hmcts.probate.model.ccd.raw.casematching.MatchedCases;
@@ -28,7 +29,6 @@ public class CaseMatchingService {
     private static final String TEMPLATE_DIRECTORY = "templates/elasticsearch/";
     private static final String ES_QUERY = "case_matching_query.json";
     private static final String CASE_TYPE_ID = "ctid";
-    private static final String CASE_TYPE_VALUE = "GrantOfRepresentation";
 
     private final CCDGatewayConfiguration ccdGatewayConfiguration;
     private final RestTemplate restTemplate;
@@ -38,7 +38,7 @@ public class CaseMatchingService {
 
     private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ISO_DATE;
 
-    public List<CaseMatch> findMatches(CaseDetails caseDetails) {
+    public List<CaseMatch> findMatches(CaseType caseType, CaseDetails caseDetails) {
         CaseData data = caseDetails.getData();
 
         String jsonQuery = getQueryTemplate()
@@ -48,7 +48,7 @@ public class CaseMatchingService {
 
         URI uri = UriComponentsBuilder
                 .fromHttpUrl(ccdGatewayConfiguration.getHost() + ccdGatewayConfiguration.getCaseMatchingPath())
-                .queryParam(CASE_TYPE_ID, CASE_TYPE_VALUE)
+                .queryParam(CASE_TYPE_ID, caseType.getCode())
                 .build().encode().toUri();
 
         HttpEntity<String> entity = new HttpEntity<>(jsonQuery, headers.getAuthorizationHeaders());
@@ -63,6 +63,7 @@ public class CaseMatchingService {
                         .dod(c.getData().getDeceasedDateOfDeath().format(dateTimeFormatter))
                         .postcode(c.getData().getDeceasedAddress().getPostCode())
                         .caseLink(CaseLink.builder().caseReference(c.getId().toString()).build())
+                        .type(caseType.getName())
                         .build())
                 .collect(Collectors.toList());
     }
