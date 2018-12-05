@@ -81,7 +81,6 @@ public class SolCcdServicePrintServiceTests extends IntegrationTestBase {
         assertTrue(response.getBody().asString().contains("Deceased date of death:"));
         assertTrue(response.getBody().asString().contains("Assets in an alias name:"));
         assertTrue(response.getBody().asString().contains("Names used by the deceased for other assets:"));
-        assertTrue(response.getBody().asString().contains("Deceased was domiciled in England or Wales:"));
         assertTrue(response.getBody().asString().contains("Executor details"));
         assertTrue(response.getBody().asString().contains("Number of executors:"));
         assertTrue(response.getBody().asString().contains("Additional information"));
