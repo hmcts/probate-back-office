@@ -8,7 +8,7 @@ import uk.gov.hmcts.probate.model.ccd.standingsearch.request.StandingSearchData;
 import uk.gov.hmcts.probate.model.ccd.standingsearch.request.StandingSearchDetails;
 import uk.gov.hmcts.probate.model.ccd.standingsearch.response.ResponseStandingSearchData;
 import uk.gov.hmcts.probate.model.ccd.standingsearch.response.StandingSearchCallbackResponse;
-
+import uk.gov.hmcts.probate.model.ccd.standingsearch.response.ResponseStandingSearchData.ResponseStandingSearchDataBuilder;
 import java.time.format.DateTimeFormatter;
 
 import static java.util.Optional.ofNullable;
@@ -34,7 +34,7 @@ public class StandingSearchCallbackResponseTransformer {
         return StandingSearchCallbackResponse.builder().responseStandingSearchData(responseStandingSearchData).build();
     }
 
-    private ResponseStandingSearchData.ResponseStandingSearchDataBuilder getResponseStandingSearchtData(StandingSearchDetails standingSearchDetails) {
+    private ResponseStandingSearchDataBuilder getResponseStandingSearchtData(StandingSearchDetails standingSearchDetails) {
         StandingSearchData standingSearchData = standingSearchDetails.getStandingSearchData();
 
         return ResponseStandingSearchData.builder()
