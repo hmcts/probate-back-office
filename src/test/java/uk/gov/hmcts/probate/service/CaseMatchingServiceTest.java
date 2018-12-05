@@ -30,6 +30,7 @@ import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
+import static uk.gov.hmcts.probate.model.CaseType.GRANT_OF_REPRESENTATION;
 
 public class CaseMatchingServiceTest {
 
@@ -84,7 +85,7 @@ public class CaseMatchingServiceTest {
 
     @Test
     public void findMatches() {
-        List<CaseMatch> caseMatches = caseMatchingService.findMatches(caseDetails);
+        List<CaseMatch> caseMatches = caseMatchingService.findMatches(GRANT_OF_REPRESENTATION, caseDetails);
 
         assertEquals(1, caseMatches.size());
         assertEquals("1", caseMatches.get(0).getCaseLink().getCaseReference());

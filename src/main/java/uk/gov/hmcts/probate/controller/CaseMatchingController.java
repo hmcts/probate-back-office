@@ -12,10 +12,13 @@ import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.service.CaseMatchingService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static uk.gov.hmcts.probate.model.CaseType.CAVEAT;
+import static uk.gov.hmcts.probate.model.CaseType.GRANT_OF_REPRESENTATION;
 
 @RequiredArgsConstructor
 @RequestMapping(value = "/case-matching", consumes = APPLICATION_JSON_UTF8_VALUE, produces = APPLICATION_JSON_VALUE)
@@ -27,7 +30,9 @@ public class CaseMatchingController {
 
     @PostMapping(path = "/search")
     public ResponseEntity<CallbackResponse> search(@RequestBody CallbackRequest callbackRequest) {
-        List<CaseMatch> caseMatches = caseMatchingService.findMatches(callbackRequest.getCaseDetails());
+        List<CaseMatch> caseMatches = new ArrayList<>();
+        caseMatches.addAll(caseMatchingService.findMatches(GRANT_OF_REPRESENTATION, callbackRequest.getCaseDetails()));
+        caseMatches.addAll(caseMatchingService.findMatches(CAVEAT, callbackRequest.getCaseDetails()));
 
         return ResponseEntity.ok(callbackResponseTransformer.addMatches(callbackRequest, caseMatches));
     }

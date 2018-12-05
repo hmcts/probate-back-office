@@ -20,11 +20,14 @@ import java.util.ArrayList;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static uk.gov.hmcts.probate.model.CaseType.CAVEAT;
+import static uk.gov.hmcts.probate.model.CaseType.GRANT_OF_REPRESENTATION;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -45,7 +48,8 @@ public class CaseMatchingControllerTest {
 
     @Before
     public void setUp() {
-        doReturn(new ArrayList<>()).when(caseMatchingService).findMatches(any(CaseDetails.class));
+        doReturn(new ArrayList<>()).when(caseMatchingService).findMatches(eq(GRANT_OF_REPRESENTATION), any(CaseDetails.class));
+        doReturn(new ArrayList<>()).when(caseMatchingService).findMatches(eq(CAVEAT), any(CaseDetails.class));
     }
 
     @Test
@@ -59,6 +63,7 @@ public class CaseMatchingControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("data")));
 
-        verify(caseMatchingService).findMatches(any(CaseDetails.class));
+        verify(caseMatchingService).findMatches(eq(GRANT_OF_REPRESENTATION), any(CaseDetails.class));
+        verify(caseMatchingService).findMatches(eq(CAVEAT), any(CaseDetails.class));
     }
 }
