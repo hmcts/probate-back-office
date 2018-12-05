@@ -78,7 +78,7 @@ findbugs {
 
 sonarqube {
   properties {
-    property "sonar.projectName", "PROBATE :: Sol-CCD-Service"
+    property "sonar.projectName", "PROBATE :: back-office"
     property "sonar.projectKey", "Sols-CCD-Service-API"
     property "sonar.jacoco.reportPath", "${project.buildDir}/jacoco/test.exec"
     property "sonar.host.url", "https://sonar.reform.hmcts.net/"
@@ -234,6 +234,7 @@ dependencies {
   testSmokeCompile sourceSets.main.runtimeClasspath
   testSmokeCompile sourceSets.test.runtimeClasspath
 
+  testFunctionalCompile group: 'org.seleniumhq.selenium', name: 'selenium-api', version: '3.14.0'
   testFunctionalCompile group: 'net.serenity-bdd', name: 'serenity-core', version: '2.0.11'
   testFunctionalCompile group: 'net.serenity-bdd', name: 'serenity-junit', version: '2.0.11'
   testFunctionalCompile group: 'net.serenity-bdd', name: 'serenity-rest-assured', version: '2.0.11'
@@ -243,6 +244,7 @@ dependencies {
   testFunctionalCompile sourceSets.main.runtimeClasspath
   testFunctionalCompile sourceSets.test.runtimeClasspath
 
+  testCaseCreatorCompile group: 'org.seleniumhq.selenium', name: 'selenium-api', version: '3.14.0'
   testCaseCreatorCompile group: 'net.serenity-bdd', name: 'serenity-core', version: '2.0.11'
   testCaseCreatorCompile group: 'net.serenity-bdd', name: 'serenity-junit', version: '2.0.11'
   testCaseCreatorCompile group: 'net.serenity-bdd', name: 'serenity-rest-assured', version: '2.0.11'
@@ -258,7 +260,7 @@ compileJava {
 }
 
 jar {
-  archiveName = 'sol-ccd-service.jar'
+  archiveName = 'back-office.jar'
   manifest {
 
     attributes 'Implementation-Title': project.name,
