@@ -14,8 +14,8 @@ List<LinkedHashMap<String, Object>> secrets = [
     secret('s2sAuthTotpSecret', 'S2S_AUTH_TOTP_SECRET'),
     secret('probate-bo-govNotifyApiKey', 'PROBATE_BO_NOTIFY_KEY'),
     secret('pdf-service-grantSignatureBase64-first', 'BO_GRANT_SIG_FIRST'),
-    secret('pdf-service-grantSignatureBase64-last','BO_GRANT_SIG_LAST'),
-    secret('ccd-gateway-host','CCD_GATEWAY_HOST')
+    secret('pdf-service-grantSignatureBase64-last','BO_GRANT_SIG_LAST')
+
 ]
 
 static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
@@ -29,6 +29,9 @@ static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
 
 withPipeline("java", product, component) {
   env.APPINSIGHTS_INSTRUMENTATIONKEY=false
+  setVaultName('probate')
+  enableDockerBuild()
+  enableDeployToAKS()
   loadVaultSecrets(secrets)
 
   enableSlackNotifications('#probate-jenkins')
@@ -51,7 +54,7 @@ withPipeline("java", product, component) {
             keepAll              : true,
             reportDir            : "build/reports/tests/test",
             reportFiles          : "index.html",
-            reportName           : "sol-ccd-service Test Report"
+            reportName           : "back-office Test Report"
     ]
 
     publishHTML target: [
@@ -60,7 +63,7 @@ withPipeline("java", product, component) {
             keepAll              : true,
             reportDir            : "build/reports/jacoco",
             reportFiles          : "index.html",
-            reportName           : "sol-ccd-service Code Coverage Report"
+            reportName           : "back-office Code Coverage Report"
     ]
 
     publishHTML target: [
@@ -69,7 +72,7 @@ withPipeline("java", product, component) {
             keepAll              : true,
             reportDir            : "build/reports/findbugs",
             reportFiles          : "main.html",
-            reportName           : "sol-ccd-service find Bugs Report"
+            reportName           : "back-office find Bugs Report"
     ]
   }
 
