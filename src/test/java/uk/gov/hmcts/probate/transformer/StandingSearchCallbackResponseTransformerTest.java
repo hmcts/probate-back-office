@@ -25,7 +25,7 @@ import static java.util.Collections.emptyList;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
-import static uk.gov.hmcts.probate.model.Constants.CAVEAT_LIFESPAN;
+import static uk.gov.hmcts.probate.model.Constants.STANDING_SEARCH_LIFESPAN;
 
 @RunWith(MockitoJUnitRunner.class)
 public class StandingSearchCallbackResponseTransformerTest {
@@ -51,7 +51,7 @@ public class StandingSearchCallbackResponseTransformerTest {
     private static final String SS_APPLICANT_EMAIL_ADDRESS = "applicant@email.com";
     private static final ProbateAddress SS_APPLICANT_ADDRESS = Mockito.mock(ProbateAddress.class);
 
-    private static final LocalDate SS_EXPIRY_DATE = LocalDate.now().plusMonths(CAVEAT_LIFESPAN);
+    private static final LocalDate SS_EXPIRY_DATE = LocalDate.now().plusMonths(STANDING_SEARCH_LIFESPAN);
     private static final String SS_FORMATTED_EXPIRY_DATE = dateTimeFormatter.format(SS_EXPIRY_DATE);
 
     @InjectMocks
