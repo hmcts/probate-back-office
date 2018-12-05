@@ -70,7 +70,6 @@ public class SolCcdServicePrintServiceTests extends IntegrationTestBase {
         assertTrue(response.getBody().asString().contains("Record type:"));
         assertTrue(response.getBody().asString().contains("Date digital application submitted:"));
         assertTrue(response.getBody().asString().contains("PA"));
-        assertTrue(response.getBody().asString().contains("Is the applicant an executor:"));
         assertTrue(response.getBody().asString().contains("Applicant forename(s):"));
         assertTrue(response.getBody().asString().contains("Applicant surname:"));
         assertTrue(response.getBody().asString().contains("Applicant address"));
