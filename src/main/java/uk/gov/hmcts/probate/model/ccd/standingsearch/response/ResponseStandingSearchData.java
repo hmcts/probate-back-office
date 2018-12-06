@@ -31,6 +31,6 @@ public class ResponseStandingSearchData {
     private final String applicantEmailAddress;
     private final ProbateAddress applicantAddress;
 
-    private final Long numberOfCopies;
+    private final String numberOfCopies;
     private final String expiryDate;
 }

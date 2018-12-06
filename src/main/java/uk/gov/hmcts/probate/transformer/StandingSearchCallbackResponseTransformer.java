@@ -67,6 +67,12 @@ public class StandingSearchCallbackResponseTransformer {
                 .applicantEmailAddress(standingSearchData.getApplicantEmailAddress())
                 .applicantAddress(standingSearchData.getApplicantAddress())
 
-                .numberOfCopies(standingSearchData.getNumberOfCopies());
+                .numberOfCopies(transformToString(standingSearchData.getNumberOfCopies()));
+    }
+
+    private String transformToString(Long longValue) {
+        return ofNullable(longValue)
+                .map(String::valueOf)
+                .orElse(null);
     }
 }
