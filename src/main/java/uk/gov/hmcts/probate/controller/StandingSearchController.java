@@ -21,10 +21,10 @@ public class StandingSearchController {
     private final StandingSearchCallbackResponseTransformer standingSearchCallbackResponseTransformer;
 
     @PostMapping(path = "/create")
-    public ResponseEntity<StandingSearchCallbackResponse> createStandingSearch(@RequestBody StandingSearchCallbackRequest standingSearchCallbackRequest) {
+    public ResponseEntity<StandingSearchCallbackResponse> createStandingSearch(@RequestBody StandingSearchCallbackRequest callbackRequest) {
 
-        StandingSearchCallbackResponse standingSearchCallbackResponse = standingSearchCallbackResponseTransformer.standingSearchCreated(standingSearchCallbackRequest);
+        StandingSearchCallbackResponse callbackResponse = standingSearchCallbackResponseTransformer.standingSearchCreated(callbackRequest);
 
-        return ResponseEntity.ok(standingSearchCallbackResponse);
+        return ResponseEntity.ok(callbackResponse);
     }
 }
