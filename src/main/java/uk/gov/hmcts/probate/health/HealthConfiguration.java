@@ -59,11 +59,6 @@ public class HealthConfiguration {
     }
 
     @Bean
-    public SolsHealthIndicator ccdGatewayHealthIndicator() {
-        return new SolsHealthIndicator(ccdGatewayHost, restTemplate, HEALTH_ENDPOINT);
-    }
-
-    @Bean
     public SolsHealthIndicator notificationHealthIndicator() {
         return new SolsHealthIndicator(notificationClient.getBaseUrl(), restTemplate, STATUS_ENDPOINT);
     }
