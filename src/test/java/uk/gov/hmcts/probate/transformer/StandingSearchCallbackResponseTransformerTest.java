@@ -111,6 +111,15 @@ public class StandingSearchCallbackResponseTransformerTest {
         assertEquals(1, standingSearchCallbackResponse.getResponseStandingSearchData().getDeceasedFullAliasNameList().size());
     }
 
+    @Test
+    public void shouldConvertRequestToDataBeanWithStandingSearchExpiryDateChange() {
+        StandingSearchCallbackResponse standingSearchCallbackResponse = underTest.standingSearchCreated(standingSearchCallbackRequestMock);
+
+        assertCommon(standingSearchCallbackResponse);
+
+        assertEquals(SS_FORMATTED_EXPIRY_DATE, standingSearchCallbackResponse.getResponseStandingSearchData().getExpiryDate());
+    }
+
     private void assertCommon(StandingSearchCallbackResponse standingSearchCallbackResponse) {
         assertCommonDetails(standingSearchCallbackResponse);
         assertApplicationType(standingSearchCallbackResponse, SS_APPLICATION_TYPE);
