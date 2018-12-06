@@ -9,10 +9,13 @@ import uk.gov.hmcts.probate.model.ccd.standingsearch.request.StandingSearchDetai
 import uk.gov.hmcts.probate.model.ccd.standingsearch.response.ResponseStandingSearchData;
 import uk.gov.hmcts.probate.model.ccd.standingsearch.response.StandingSearchCallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.standingsearch.response.ResponseStandingSearchData.ResponseStandingSearchDataBuilder;
+
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 import static java.util.Optional.ofNullable;
 import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
+import static uk.gov.hmcts.probate.model.Constants.STANDING_SEARCH_LIFESPAN;
 
 @Component
 @RequiredArgsConstructor
@@ -22,6 +25,16 @@ public class StandingSearchCallbackResponseTransformer {
 
     private static final ApplicationType DEFAULT_APPLICATION_TYPE = PERSONAL;
     private static final String DEFAULT_REGISTRY_LOCATION = "Leeds";
+
+    public StandingSearchCallbackResponse standingSearchCreated(StandingSearchCallbackRequest standingSearchCallbackRequest) {
+        StandingSearchDetails standingSearchDetails = standingSearchCallbackRequest.getStandingSearchDetails();
+
+        ResponseStandingSearchData responseStandingSearchData = getResponseStandingSearchtData(standingSearchDetails)
+                .expiryDate(dateTimeFormatter.format(LocalDate.now().plusMonths(STANDING_SEARCH_LIFESPAN)))
+                .build();
+
+        return transformResponse(responseStandingSearchData);
+    }
 
     public StandingSearchCallbackResponse transform(StandingSearchCallbackRequest callbackRequest) {
         ResponseStandingSearchData responseStandingSearchData = getResponseStandingSearchtData(callbackRequest.getStandingSearchDetails())
