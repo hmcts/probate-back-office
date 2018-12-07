@@ -30,8 +30,10 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_DRAFT;
+import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_DRAFT;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -104,6 +106,36 @@ public class NotificationControllerTest {
                 .andExpect(content().string(containsString("data")));
 
         verify(documentService).expire(any(CallbackRequest.class), eq(DIGITAL_GRANT_DRAFT));
+    }
+
+
+    @Test
+    public void solicitorGrantIssuedShouldReturnDataPayloadOkResponseCodeIntestacy() throws Exception {
+
+        String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadNotificationsIntestacy.json");
+
+        mockMvc.perform(post("/document/generate-grant")
+                .content(solicitorPayload)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("data")));
+
+        verify(documentService).expire(any(CallbackRequest.class), eq(INTESTACY_GRANT_DRAFT));
+    }
+
+
+    @Test
+    public void solicitorGrantIssuedShouldReturnDataPayloadOkResponseCodeAdmonWill() throws Exception {
+
+        String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadNotificationsAdmonWill.json");
+
+        mockMvc.perform(post("/document/generate-grant")
+                .content(solicitorPayload)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("data")));
+
+        verify(documentService).expire(any(CallbackRequest.class), eq(ADMON_WILL_GRANT_DRAFT));
     }
 
     @Test
