@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
-import uk.gov.hmcts.probate.functional.util.TestUtils;
+import uk.gov.hmcts.probate.functional.util.FunctionalTestUtils;
 
 @RunWith(SpringRunner.class)
 @ContextConfiguration(classes = TestContextConfiguration.class)
@@ -18,7 +18,7 @@ public abstract class IntegrationTestBase {
     protected SolCCDServiceAuthTokenGenerator serviceAuthTokenGenerator;
 
     @Autowired
-    protected TestUtils utils;
+    protected FunctionalTestUtils utils;
 
     private String solCcdServiceUrl;
     public static String evidenceManagementUrl;

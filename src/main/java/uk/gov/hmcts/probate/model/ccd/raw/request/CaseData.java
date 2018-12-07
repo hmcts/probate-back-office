@@ -1,14 +1,9 @@
 package uk.gov.hmcts.probate.model.ccd.raw.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
-import javax.validation.constraints.NotBlank;
 import uk.gov.hmcts.probate.controller.validation.AmendCaseDetailsGroup;
 import uk.gov.hmcts.probate.controller.validation.ApplicationCreatedGroup;
 import uk.gov.hmcts.probate.controller.validation.ApplicationReviewedGroup;
@@ -31,6 +26,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.StopReason;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 
 import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.text.DateFormat;
@@ -76,12 +72,8 @@ public class CaseData {
     private final String deceasedSurname;
 
     @NotNull(groups = {ApplicationUpdatedGroup.class, AmendCaseDetailsGroup.class}, message = "{dodIsNull}")
-    @JsonSerialize(using = LocalDateSerializer.class)
-    @JsonDeserialize(using = LocalDateDeserializer.class)
     private final LocalDate deceasedDateOfDeath;
 
-    @JsonSerialize(using = LocalDateSerializer.class)
-    @JsonDeserialize(using = LocalDateDeserializer.class)
     private final LocalDate currentDate = LocalDate.now();
 
     private final String currentDateFormatted = convertDate(currentDate);
@@ -90,8 +82,6 @@ public class CaseData {
     private final String deceasedDateOfDeathFormatted = convertDate(deceasedDateOfDeath);
 
     @NotNull(groups = {ApplicationUpdatedGroup.class, AmendCaseDetailsGroup.class}, message = "{dobIsNull}")
-    @JsonSerialize(using = LocalDateSerializer.class)
-    @JsonDeserialize(using = LocalDateDeserializer.class)
     private final LocalDate deceasedDateOfBirth;
 
     @NotBlank(groups = {ApplicationUpdatedGroup.class}, message = "{willExistsIsNull}")

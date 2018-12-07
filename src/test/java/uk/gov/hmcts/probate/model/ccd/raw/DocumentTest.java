@@ -2,6 +2,7 @@ package uk.gov.hmcts.probate.model.ccd.raw;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -12,6 +13,7 @@ public class DocumentTest {
     @Test
     public void canDeserialiseDateAdded() throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
 
         Document document = Document.builder().documentDateAdded(LocalDate.now()).build();
         String json = objectMapper.writeValueAsString(document);

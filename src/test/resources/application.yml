@@ -3,7 +3,7 @@ server:
 
 authorised.services: probate_backend,ccd_data,ccd-datamgmt-api,ccd_ps,ccd
 auth.provider.service.client:
-  key: DUMMYKEYVALUE
+  key: AAAAAAAAAAAAAAAA
   baseUrl: http://localhost:4502
   microservice: probate_backend
   tokenTimeToLiveInSeconds: 900
@@ -38,6 +38,7 @@ spring:
   jackson:
     serialization:
       wrap_root_value: false
+      write-dates-as-timestamps: false
     deserialization:
       unwrap_root_value: false
   application:

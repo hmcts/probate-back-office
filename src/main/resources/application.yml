@@ -14,16 +14,16 @@ management:
 
 authorised.services: probate_backend,ccd_data,ccd-datamgmt-api,ccd_ps,ccd
 auth.provider.service.client:
-  key: DUMMYKEYVALUE
+  key: AAAAAAAAAAAAAAAA
   baseUrl: http://localhost:4502
   microservice: probate_backend
   tokenTimeToLiveInSeconds: 900
 
 pdf.service:
   url: http://localhost:5500
-  pdfApi: /api/v1/pdf-generator/html
+  pdfApi: /api/v2/pdf-generator/html
   templatesDirectory: templates/pdf/
-  defaultDisplayFilename: legal_statement.pdf
+  defaultDisplayFilename: generated.pdf
   grantSignatureBase64: dummy_hash
 
 fee.api:
@@ -50,6 +50,7 @@ spring:
   jackson:
     serialization:
       wrap_root_value: false
+      write-dates-as-timestamps: false
     deserialization:
       unwrap_root_value: false
   application:
