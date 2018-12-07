@@ -14,6 +14,7 @@ import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.evidencemanagement.EvidenceManagementFileUpload;
 import uk.gov.hmcts.probate.service.FileSystemResourceService;
 import uk.gov.hmcts.reform.pdf.service.client.PDFServiceClient;
+import uk.gov.hmcts.reform.pdf.service.client.exception.PDFServiceClientException;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -37,7 +38,7 @@ public class PDFGeneratorService {
         byte[] postResult;
         try {
             postResult = generateFromHtml(documentType.getTemplateName(), pdfGenerationData);
-        } catch (IOException e) {
+        } catch (IOException | PDFServiceClientException e) {
             log.error(e.getMessage(), e);
             throw new ClientException(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage());
         }
