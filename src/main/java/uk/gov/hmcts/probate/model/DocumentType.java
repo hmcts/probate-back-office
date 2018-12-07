@@ -14,6 +14,18 @@ public enum DocumentType {
     @JsonProperty("digitalGrantDraft")
     DIGITAL_GRANT_DRAFT("digitalGrantDraft"),
 
+    @JsonProperty("IntestacyGrant")
+    INTESTACY_GRANT("IntestacyGrant"),
+
+    @JsonProperty("IntestacyGrant")
+    INTESTACY_GRANT_DRAFT("IntestacyGrant"),
+
+    @JsonProperty("AdmonWillGrant")
+    ADMON_WILL_GRANT("AdmonWillGrant"),
+
+    @JsonProperty("AdmonWillGrant")
+    ADMON_WILL_GRANT_DRAFT("AdmonWillGrant"),
+
     @JsonProperty("sentEmail")
     SENT_EMAIL("sentEmail"),
 

@@ -29,6 +29,22 @@ public class DocumentTransformer {
                 callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated()
                         .add(new CollectionMember<>(null, document));
                 break;
+            case INTESTACY_GRANT_DRAFT:
+                callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated()
+                        .add(new CollectionMember<>(null, document));
+                break;
+            case INTESTACY_GRANT:
+                callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated()
+                        .add(new CollectionMember<>(null, document));
+                break;
+            case ADMON_WILL_GRANT_DRAFT:
+                callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated()
+                        .add(new CollectionMember<>(null, document));
+                break;
+            case ADMON_WILL_GRANT:
+                callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated()
+                        .add(new CollectionMember<>(null, document));
+                break;
             case SENT_EMAIL:
                 callbackRequest.getCaseDetails().getData().getProbateNotificationsGenerated()
                         .add(new CollectionMember<>(null, document));
