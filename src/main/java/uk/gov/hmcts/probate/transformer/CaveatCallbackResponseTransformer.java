@@ -71,7 +71,7 @@ public class CaveatCallbackResponseTransformer {
                 .deceasedForenames(caveatData.getDeceasedForenames())
                 .deceasedSurname(caveatData.getDeceasedSurname())
                 .deceasedDateOfDeath(dateTimeFormatter.format(caveatData.getDeceasedDateOfDeath()))
-                .deceasedDateOfBirth(dateTimeFormatter.format(caveatData.getDeceasedDateOfBirth()))
+                .deceasedDateOfBirth(transformToString(caveatData.getDeceasedDateOfBirth()))
                 .deceasedAnyOtherNames(caveatData.getDeceasedAnyOtherNames())
                 .deceasedFullAliasNameList(caveatData.getDeceasedFullAliasNameList())
                 .deceasedAddress(caveatData.getDeceasedAddress())
@@ -81,9 +81,16 @@ public class CaveatCallbackResponseTransformer {
                 .caveatorEmailAddress(caveatData.getCaveatorEmailAddress())
                 .caveatorAddress(caveatData.getCaveatorAddress())
 
+                .expiryDate(transformToString(caveatData.getExpiryDate()))
                 .messageContent(caveatData.getMessageContent())
 
                 .documentsUploaded(caveatData.getDocumentsUploaded())
                 .documentsGenerated(caveatData.getDocumentsGenerated());
+    }
+
+    private String transformToString(LocalDate dateValue) {
+        return ofNullable(dateValue)
+                .map(String::valueOf)
+                .orElse(null);
     }
 }

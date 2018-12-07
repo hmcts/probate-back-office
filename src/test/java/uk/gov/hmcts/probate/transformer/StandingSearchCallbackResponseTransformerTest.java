@@ -139,6 +139,8 @@ public class StandingSearchCallbackResponseTransformerTest {
         assertEquals(SS_APPLICANT_SURNAME, standingSearchCallbackResponse.getResponseStandingSearchData().getApplicantSurname());
         assertEquals(SS_APPLICANT_EMAIL_ADDRESS, standingSearchCallbackResponse.getResponseStandingSearchData().getApplicantEmailAddress());
         assertEquals(SS_APPLICANT_ADDRESS, standingSearchCallbackResponse.getResponseStandingSearchData().getApplicantAddress());
+
+        assertEquals(SS_FORMATTED_EXPIRY_DATE, standingSearchCallbackResponse.getResponseStandingSearchData().getExpiryDate());
     }
 
     private void assertApplicationType(StandingSearchCallbackResponse standingSearchCallbackResponse, ApplicationType ssApplicationType) {

@@ -54,10 +54,11 @@ public class StandingSearchCallbackResponseTransformer {
 
                 .applicationType(ofNullable(standingSearchData.getApplicationType()).orElse(DEFAULT_APPLICATION_TYPE))
                 .registryLocation(ofNullable(standingSearchData.getRegistryLocation()).orElse(DEFAULT_REGISTRY_LOCATION))
+
                 .deceasedForenames(standingSearchData.getDeceasedForenames())
                 .deceasedSurname(standingSearchData.getDeceasedSurname())
                 .deceasedDateOfDeath(dateTimeFormatter.format(standingSearchData.getDeceasedDateOfDeath()))
-                .deceasedDateOfBirth(dateTimeFormatter.format(standingSearchData.getDeceasedDateOfBirth()))
+                .deceasedDateOfBirth(transformToString(standingSearchData.getDeceasedDateOfBirth()))
                 .deceasedAnyOtherNames(standingSearchData.getDeceasedAnyOtherNames())
                 .deceasedFullAliasNameList(standingSearchData.getDeceasedFullAliasNameList())
                 .deceasedAddress(standingSearchData.getDeceasedAddress())
@@ -67,11 +68,19 @@ public class StandingSearchCallbackResponseTransformer {
                 .applicantEmailAddress(standingSearchData.getApplicantEmailAddress())
                 .applicantAddress(standingSearchData.getApplicantAddress())
 
-                .numberOfCopies(transformToString(standingSearchData.getNumberOfCopies()));
+                .numberOfCopies(transformToString(standingSearchData.getNumberOfCopies()))
+
+                .expiryDate(transformToString(standingSearchData.getExpiryDate()));
     }
 
     private String transformToString(Long longValue) {
         return ofNullable(longValue)
+                .map(String::valueOf)
+                .orElse(null);
+    }
+
+    private String transformToString(LocalDate dateValue) {
+        return ofNullable(dateValue)
                 .map(String::valueOf)
                 .orElse(null);
     }
