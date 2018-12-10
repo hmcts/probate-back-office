@@ -87,8 +87,8 @@
         .image{
             display: block;
             margin: 0 auto;
-            height: 30mm;
-            width: 36mm;
+            height: 100px;
+            width: 100px;
         }
 
     </style>
@@ -102,7 +102,7 @@
     <tbody class="table-content">
     <tr>
         <td colspan="1">
-            <img src="Shield.jpg" class="image" align="left"/>
+            <img src="../../../java/uk/gov/hmcts/probate/Legislation.jpg" class="image" align="left"/>
         </td>
         <td colspan="2" class="text-leftAligned">
             High Court of Justice England and Wales<br/>
@@ -116,14 +116,14 @@
     </tr>
     <tr>
         <td>
-             <p class="line-top"></p>
+            <p class="line-top"></p>
         </td>
     </tr>
     <tr>
         <td colspan="3" class="text-header">
             <br/>
             <br/>
-            <Strong>Grant of Probate</Strong>
+            <Strong>Letter of Administration with will</Strong>
             <br/>
             <br/>
         </td>
@@ -137,19 +137,19 @@
         </td>
     </tr>
     <tr>
-        <td colspan="3" class="text-leftAligned">
+        <td colspan="2" class="text-leftAligned">
             {% if case_details.case_data.primaryApplicantIsApplying == "No" %}
-                {% for executor in case_details.case_data.executorsApplying %}
-                    {% if loop.first %}
-                            <span class="camelCase">
-                                 <strong>
-                                    {% if executor.value.applyingExecutorName != null and executor.value.applyingExecutorName != ""%}{{executor.value.applyingExecutorName}}{% endif %}
-                                </strong>
-                            </span>
-                    {% endif %}
-                {% endfor %}
+            {% for executor in case_details.case_data.executorsApplying %}
+            {% if loop.first %}
+            <span class="camelCase">
+                <strong>
+                    {% if executor.value.applyingExecutorName != null and executor.value.applyingExecutorName != ""%}{{executor.value.applyingExecutorName}}{% endif %}
+                </strong>
+            </span>
+            {% endif %}
+            {% endfor %}
             {% else %}
-                <span class="camelCase">
+            <span class="camelCase">
                     <strong>{{case_details.case_data.primaryApplicantForenames}} {{case_details.case_data.primaryApplicantSurname}}</strong>
                 </span>
             {% endif %} made an application to this Court for a Grant of Probate and declared the following information.
@@ -174,10 +174,8 @@
                 <br />
                 Died on <strong>{{case_details.case_data.deceasedDateOfDeathFormatted}}</strong> domiciled in <strong>England and Wales</strong>
             </p>
-            <p>The Last Will and Testament <strong><span class="camelCase">
-                {% if case_details.case_data.boWillMessage != null and case_details.case_data.boWillMessage != ""%}{{ case_details.case_data.boWillMessage }}{% endif %}
-                </span></strong> of <strong>{{case_details.case_data.deceasedForenames}} {{case_details.case_data.deceasedSurname}}</strong> (An official copy of which is available from the Court) was proved and registered before the High Court of Justice.
-                The Administration of <strong>{{case_details.case_data.deceasedForenames}} {{case_details.case_data.deceasedSurname}}</strong>'s estate is granted by this court to Executor{% set applyingExecCounter = 0 %}{% for executor
+            <p>
+                The Administration of <strong>{{case_details.case_data.deceasedForenames}} {{case_details.case_data.deceasedSurname}}</strong>'s is granted by the High Court of Justice on this date to the following Executor{% set applyingExecCounter = 0 %}{% for executor
                 in case_details.case_data.executorsApplying %}{% set applyingExecCounter = applyingExecCounter + 1 %}{%
                 endfor %}{% if applyingExecCounter > 0 %}s{% endif %}
             </p>
@@ -249,7 +247,7 @@
         </td>
     </tr>
     <tr>
-        <td colspan="3">
+        <td colspan="2">
             <p>
                 {% set powerReservedCounter = 0 %}
                 {% if case_details.case_data.executorsNotApplying != null %}
@@ -282,7 +280,7 @@
                 {{ case_details.case_data.boLimitationText }}{% endif %}
 
             </p>
-            <p>The application has stated that the gross value of the estate in the United Kingdom ammounts to
+            <p>The application has stated that the gross value of the estate in the United Kingdom amounts to
                 £{{(case_details.case_data.ihtGrossValue / 100) | numberformat("###,###")}} and the net value amounts to
                 £{{(case_details.case_data.ihtNetValue / 100) | numberformat("###,###")}}
             </p>
@@ -294,7 +292,7 @@
             <p class="text-centerAligned">DISTRICT REGISTRAR</p>
         </td>
         <td>
-            <img src="HMCTS_seal.png" class="image"/>
+            <span class="circle"></span>
         </td>
     </tr>
     <tr colspan="2">
@@ -311,7 +309,7 @@
         <td colspan="1">
             <br />
             <br />
-            <p style="text-align:right"> PROBATE</p>
+            <p style="text-align:right"> ADMINISTRATION</p>
         </td>
     </tr>
     </tbody>

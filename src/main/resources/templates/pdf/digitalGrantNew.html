@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
-    <title th:remove="all" th:text="${title}">Grant of Probate</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <style type="text/css">
 
@@ -72,14 +71,14 @@
 
         .line-top{
             width: 700px;
-            height: 0px;
+            height: 130px;
             border-bottom: 1px solid black;
             position: absolute;
         }
 
         .line-bottom{
             width: 700px;
-            height: 0px;
+            height: 800px;
             border-bottom: 1px solid black;
             position: absolute;
         }
@@ -87,24 +86,20 @@
         .image{
             display: block;
             margin: 0 auto;
-            height: 30mm;
-            width: 36mm;
+            height: 100px;
+            width: 100px;
         }
 
     </style>
 </head>
 <body>
-<div id="watermark" style="font-size: 5.0em">
-    DRAFT COPY -
-    <br/> NOT FOR CIRCULATION
-</div>
 <table>
     <tbody class="table-content">
     <tr>
-        <td colspan="1">
+        <td style="width: 200px">
             <img src="Shield.jpg" class="image" align="left"/>
         </td>
-        <td colspan="2" class="text-leftAligned">
+        <td style="width: 500px" class="text-leftAligned">
             High Court of Justice England and Wales<br/>
             Birmingham District Probate Registry<br/>
             Priory Court<br/>
@@ -115,16 +110,12 @@
         </td>
     </tr>
     <tr>
-        <td>
-             <p class="line-top"></p>
-        </td>
+        <p class="line-top"></p>
     </tr>
     <tr>
         <td colspan="3" class="text-header">
             <br/>
-            <br/>
             <Strong>Grant of Probate</Strong>
-            <br/>
             <br/>
         </td>
     </tr>
@@ -132,37 +123,40 @@
         <td colspan="2" class="text-rightAligned">
             Case Reference: {{case_details.id}}<br />
             Date of Issue: {{case_details.case_data.currentDateFormatted}}
-            <br/>
-            <br/>
         </td>
     </tr>
     <tr>
-        <td colspan="3" class="text-leftAligned">
+        <td colspan="2" class="text-leftAligned">
             {% if case_details.case_data.primaryApplicantIsApplying == "No" %}
                 {% for executor in case_details.case_data.executorsApplying %}
                     {% if loop.first %}
-                            <span class="camelCase">
-                                 <strong>
-                                    {% if executor.value.applyingExecutorName != null and executor.value.applyingExecutorName != ""%}{{executor.value.applyingExecutorName}}{% endif %}
-                                </strong>
-                            </span>
+                    <p>
+                        <span style="text-transform: uppercase;">
+                            <strong>
+                        {% if executor.value.applyingExecutorName != null and executor.value.applyingExecutorName != ""%}{{executor.value.applyingExecutorName}}{% endif %}
+                            </strong>
+                        </span>
+                    </p>
                     {% endif %}
                 {% endfor %}
             {% else %}
-                <span class="camelCase">
+            <p>
+                <span class="upperCase">
                     <strong>{{case_details.case_data.primaryApplicantForenames}} {{case_details.case_data.primaryApplicantSurname}}</strong>
                 </span>
-            {% endif %} made an application to this Court for a Grant of Probate and declared the following information.
+            </p>
+            {% endif %}
+            <p>made an application to this Court for a Grant of Probate and declared the following information.</p>
             <p>
-                {% if case_details.case_data.boDeceasedTitle != null and case_details.case_data.boDeceasedTitle != "" %}{{ case_details.case_data.boDeceasedTitle }}{% endif %}<strong>{{case_details.case_data.deceasedForenames}} {{case_details.case_data.deceasedSurname}}</strong> {% if case_details.case_data.boDeceasedHonours != null and case_details.case_data.boDeceasedHonours != "" %}{{ case_details.case_data.boDeceasedHonours }}{% endif %}
-                of {% if case_details.case_data.deceasedAddress.AddressLine1 != null and case_details.case_data.deceasedAddress.AddressLine1 != "" %}{{ case_details.case_data.deceasedAddress.AddressLine1}}{% endif %}
-                {% if case_details.case_data.deceasedAddress.AddressLine2 != null and case_details.case_data.deceasedAddress.AddressLine2 != "" %} {{case_details.case_data.deceasedAddress.AddressLine2}}{% endif %}
-                {% if case_details.case_data.deceasedAddress.AddressLine3 != null and case_details.case_data.deceasedAddress.AddressLine3 != "" %} {{case_details.case_data.deceasedAddress.AddressLine3}}{% endif %}
-                {% if case_details.case_data.deceasedAddress.PostTown != null and case_details.case_data.deceasedAddress.PostTown != "" %} {{case_details.case_data.deceasedAddress.PostTown}}{% endif %}
-                {% if case_details.case_data.deceasedAddress.County != null and case_details.case_data.deceasedAddress.County != "" %} {{case_details.case_data.deceasedAddress.County}}{% endif %}
-                {% if case_details.case_data.deceasedAddress.PostCode != null and case_details.case_data.deceasedAddress.PostCode != ""%} {{case_details.case_data.deceasedAddress.PostCode}}{% endif %}
-                {% if case_details.case_data.deceasedAddress.Country != null and case_details.case_data.deceasedAddress.Country != ""%} {{case_details.case_data.deceasedAddress.Country}}{% endif %}
-                <br />
+            {% if case_details.case_data.boDeceasedTitle != null and case_details.case_data.boDeceasedTitle != "" %}{{ case_details.case_data.boDeceasedTitle }}{% endif %} <strong>{{case_details.case_data.deceasedForenames}} {{case_details.case_data.deceasedSurname}}</strong> {% if case_details.case_data.boDeceasedHonours != null and case_details.case_data.boDeceasedHonours != "" %}{{ case_details.case_data.boDeceasedHonours }}{% endif %}
+            of {% if case_details.case_data.deceasedAddress.AddressLine1 != null and case_details.case_data.deceasedAddress.AddressLine1 != "" %}{{ case_details.case_data.deceasedAddress.AddressLine1}}{% endif %}
+                    {% if case_details.case_data.deceasedAddress.AddressLine2 != null and case_details.case_data.deceasedAddress.AddressLine2 != "" %} {{case_details.case_data.deceasedAddress.AddressLine2}}{% endif %}
+                    {% if case_details.case_data.deceasedAddress.AddressLine3 != null and case_details.case_data.deceasedAddress.AddressLine3 != "" %} {{case_details.case_data.deceasedAddress.AddressLine3}}{% endif %}
+                    {% if case_details.case_data.deceasedAddress.PostTown != null and case_details.case_data.deceasedAddress.PostTown != "" %} {{case_details.case_data.deceasedAddress.PostTown}}{% endif %}
+                    {% if case_details.case_data.deceasedAddress.County != null and case_details.case_data.deceasedAddress.County != "" %} {{case_details.case_data.deceasedAddress.County}}{% endif %}
+                    {% if case_details.case_data.deceasedAddress.PostCode != null and case_details.case_data.deceasedAddress.PostCode != ""%} {{case_details.case_data.deceasedAddress.PostCode}}{% endif %}
+                    {% if case_details.case_data.deceasedAddress.Country != null and case_details.case_data.deceasedAddress.Country != ""%} {{case_details.case_data.deceasedAddress.Country}}{% endif %}
+            <br />
                 {% if case_details.case_data.solsDeceasedAliasNamesList != null and case_details.case_data.solsDeceasedAliasNamesList != "" %}{% for alias in case_details.case_data.solsDeceasedAliasNamesList %}{% if loop.first %}Otherwise {{alias.value.SolsAliasname}}{% else %}, {{alias.value.SolsAliasname}}{% endif %}{% endfor %}{% endif %}
                 <br/>of <strong><span class="camelCase">{% if case_details.case_data.deceasedAddress.AddressLine1 != null and case_details.case_data.deceasedAddress.AddressLine1 != "" %}{{ case_details.case_data.deceasedAddress.AddressLine1}}{% endif %}
                     {% if case_details.case_data.deceasedAddress.AddressLine2 != null and case_details.case_data.deceasedAddress.AddressLine2 != "" %} {{case_details.case_data.deceasedAddress.AddressLine2}}{% endif %}
@@ -174,7 +168,8 @@
                 <br />
                 Died on <strong>{{case_details.case_data.deceasedDateOfDeathFormatted}}</strong> domiciled in <strong>England and Wales</strong>
             </p>
-            <p>The Last Will and Testament <strong><span class="camelCase">
+
+            <p>The Last Will and testament <strong><span class="camelCase">
                 {% if case_details.case_data.boWillMessage != null and case_details.case_data.boWillMessage != ""%}{{ case_details.case_data.boWillMessage }}{% endif %}
                 </span></strong> of <strong>{{case_details.case_data.deceasedForenames}} {{case_details.case_data.deceasedSurname}}</strong> (An official copy of which is available from the Court) was proved and registered before the High Court of Justice.
                 The Administration of <strong>{{case_details.case_data.deceasedForenames}} {{case_details.case_data.deceasedSurname}}</strong>'s estate is granted by this court to Executor{% set applyingExecCounter = 0 %}{% for executor
@@ -248,8 +243,9 @@
             {% endif %}
         </td>
     </tr>
+
     <tr>
-        <td colspan="3">
+        <td colspan="2">
             <p>
                 {% set powerReservedCounter = 0 %}
                 {% if case_details.case_data.executorsNotApplying != null %}
@@ -278,7 +274,8 @@
                 case_details.case_data.boAdminClauseLimitation != ""%}
                 {{ case_details.case_data.boAdminClauseLimitation}}{% endif %}
                 <br/>
-                {% if case_details.case_data.boLimitationText != null and case_details.case_data.boLimitationText != ""%}
+                {% if case_details.case_data.boLimitationText != null and case_details.case_data.boLimitationText !=
+                ""%}
                 {{ case_details.case_data.boLimitationText }}{% endif %}
 
             </p>
@@ -294,23 +291,19 @@
             <p class="text-centerAligned">DISTRICT REGISTRAR</p>
         </td>
         <td>
-            <img src="HMCTS_seal.png" class="image"/>
+            <span class="circle"></span>
         </td>
     </tr>
     <tr colspan="2">
-        <td colspan="2">
-            <br />
-            <br />
+        <td width="70%">
             <span class="line-bottom"></span>
             <p>Extracted {% if
-                case_details.case_data.applicationType != "Personal"%}
-                by {{case_details.case_data.solsSolicitorFirmName}} (Ref:
-                {{case_details.case_data.solsSolicitorAppReference}})
-                {{case_details.case_data.solsSolicitorFirmPostcode}} {% else %}personally{% endif %}</p>
+            case_details.case_data.applicationType != "Personal"%}
+            by {{case_details.case_data.solsSolicitorFirmName}} (Ref:
+            {{case_details.case_data.solsSolicitorAppReference}})
+            {{case_details.case_data.solsSolicitorFirmPostcode}} {% else %}personally{% endif %}</p>
         </td>
-        <td colspan="1">
-            <br />
-            <br />
+        <td width="30%">
             <p style="text-align:right"> PROBATE</p>
         </td>
     </tr>
