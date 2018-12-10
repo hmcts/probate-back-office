@@ -1,0 +1,36 @@
+{
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "multi_match": {
+            "query": ":deceasedForenames",
+            "fuzziness": 2,
+            "prefix_length": 0,
+            "fields": [
+              "data.deceasedForenames"
+            ]
+          }
+        },
+        {
+          "multi_match": {
+            "query": ":deceasedSurname",
+            "fuzziness": 2,
+            "prefix_length": 0,
+            "fields": [
+              "data.deceasedSurname"
+            ]
+          }
+        }
+      ],
+      "filter": {
+        "range": {
+          "data.deceasedDateOfDeath": {
+            "gte": ":deceasedDateOfDeath||-3d",
+            "lte": ":deceasedDateOfDeath||+3d"
+          }
+        }
+      }
+    }
+  }
+}

@@ -2,7 +2,7 @@
 <html lang="en">
 {% macro names(forenames, surname) %}{{ forenames }} {{ surname }}{% endmacro %}
 {% macro notApplyingReason(reason) %}{% if reason == "DiedBefore" %}They died before the deceased.{% endif %}{% if reason == "DiedAfter"%}They died after the deceased.{% endif %}{% if reason == "PowerReserved" %}They're holding power reserved.{% endif%}{% if reason == "Renunciation" %}They have renounced.{% endif %}{% endmacro %}
-{% macro replaceAllEncoded(original) %}{{ original | replace('&rsquo;', '’')  | replace('&pound;', '&pound;') }}{% endmacro %}
+{% macro replaceAllEncoded(original) %}{{ original | replace('&rsquo;', '’')  | replace('&pound;', '£') }}{% endmacro %}
 <head>
   <title>Application for probate for {{ names(case_data.deceasedForenames,case_data.deceasedSurname) }}</title>
 </head>
@@ -51,10 +51,6 @@
   <tr>
     <td colspan="2">Deceased date of death:</td>
     <td>{% if case_data.deceasedDateOfDeath %}{{ case_data.deceasedDateOfDeath | date("DD/MM/YYYY", existingFormat="yyyy-MM-dd") }}{% endif %}</td>
-  </tr>
-  <tr>
-    <td colspan="2">Deceased was domiciled in England or Wales:</td>
-    <td>{% if case_data.deceasedDomicileInEngWales %}{{ case_data.deceasedDomicileInEngWales }}{% endif %}</td>
   </tr>
   <tr>
     <td colspan="3">&nbsp;</td>
@@ -132,11 +128,15 @@
   </tr>
   <tr>
     <td colspan="2">IHT Gross value:</td>
-    <td>{% if case_data.ihtGrossValue %}&pound;{{ (case_data.ihtGrossValue/100) | money('0,0.00') }}{% endif %}</td>
+    <td>{% if case_data.ihtGrossValue %}£{{ (case_data.ihtGrossValue/100) | money('0,0.00') }}{% endif %}</td>
   </tr>
   <tr>
     <td colspan="2">IHT Net value:</td>
-    <td>{% if case_data.ihtNetValue %}&pound;{{ (case_data.ihtNetValue/100) | money('0,0.00') }}{% endif %}</td>
+    <td>{% if case_data.ihtNetValue %}£{{ (case_data.ihtNetValue/100) | money('0,0.00') }}{% endif %}</td>
+  </tr>
+  <tr>
+    <td colspan="2">Payment reference:</td>
+    <td>{% if case_data.paymentReferenceNumber %}{{ case_data.paymentReferenceNumber }}{% endif %}</td>
   </tr>
   <tr>
     <td colspan="2">Payment reference:</td>
@@ -151,10 +151,6 @@
   <tr>
     <td colspan="2">Number of applicants:</td>
     <td>{{ ((case_data.executorsApplying | length) + 1) }}</td>
-  </tr>
-  <tr>
-    <td colspan="2">Is the applicant an executor:</td>
-    <td>{% if case_data.primaryApplicantIsApplying %}{{ case_data.primaryApplicantIsApplying }}{% endif %}</td>
   </tr>
   <tr>
     <td colspan="2">Applicant forename(s):</td>
@@ -193,14 +189,6 @@
     <td>{% if case_data.primaryApplicantEmailAddress %}{{ case_data.primaryApplicantEmailAddress }}{% endif %}</td>
   </tr>
   <tr>
-    <td colspan="2">Will Y/N:</td>
-    <td>{% if case_data.willExists%}{{ case_data.willExists }}{% endif %}</td>
-  </tr>
-  <tr>
-    <td colspan="2">Is the will original:</td>
-    <td>{% if case_data.willAccessOriginal%}{{ case_data.willAccessOriginal}}{% endif %}</td>
-  </tr>
-  <tr>
     <td colspan="2">Will with codicils:</td>
     <td>{% if case_data.willHasCodicils %}{{ case_data.willHasCodicils }}{% endif %}</td>
   </tr>
@@ -218,7 +206,7 @@
   </tr>
   <tr>
     <td colspan="2">Total fee due:</td>
-    <td>{% if case_data.totalFee %}&pound;{{ (case_data.totalFee/100) | money('0,0.00') }}{% endif %}</td>
+    <td>{% if case_data.totalFee %}£{{ (case_data.totalFee/100) | money('0,0.00') }}{% endif %}</td>
   </tr>
   <tr>
     <td colspan="2">Assets in an alias name:</td>
