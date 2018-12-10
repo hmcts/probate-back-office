@@ -136,6 +136,25 @@ public class ResponseCaseData {
     private final String primaryApplicantSecondPhoneNumber;
     private final String primaryApplicantRelationshipToDeceased;
     private final String paRelationshipToDeceasedOther;
+    private final String applicationFeePaperForm;
+    private final String feeForCopiesPaperForm;
+    private final String totalFeePaperForm;
+    private final String paperPaymentMethod;
+    private final String paymentReferenceNumberPaperform;
+    private final String entitledToApply;
+    private final String entitledToApplyOther;
+    private final String notifiedApplicants;
+    private final String foreignAsset;
+    private final String foreignAssetEstateValue;
+    private final String adopted;
+    private final List<CollectionMember<AdoptedRelative>> adoptiveRelatives;
+    private final String mentalCapacity;
+    private final String courtOfProtection;
+    private final String epaOrLpa;
+    private final String epaRegistered;
+    private final String domicilityCountry;
+    private final List<CollectionMember<EstateItem>> ukEstateItems;
+    private final String domicilityIHTCert;
     private final String deceasedMartialStatus;
     private final String willDatedBeforeApril;
     private final String deceasedEnterMarriageOrCP;
@@ -146,20 +165,6 @@ public class ResponseCaseData {
     private final String willGiftUnderEighteen;
     private final String applyingAsAnAttorney;
     private final List<CollectionMember<AttorneyApplyingOnBehalfOf>> attorneyOnBehalfOfNameAndAddress;
-    private final String mentalCapacity;
-    private final String courtOfProtection;
-    private final String epaOrLpa;
-    private final String epaRegistered;
-    private final String domicilityCountry;
-    private final List<CollectionMember<EstateItem>> ukEstateItems;
-    private final String domicilityIHTCert;
-    private final String entitledToApply;
-    private final String entitledToApplyOther;
-    private final String notifiedApplicants;
-    private final String foreignAsset;
-    private final String foreignAssetEstateValue;
-    private final String adopted;
-    private final List<CollectionMember<AdoptedRelative>> adoptiveRelatives;
 
     private final String spouseOrPartner;
     private final String childrenSurvived;
@@ -168,9 +173,6 @@ public class ResponseCaseData {
     private final String childrenDied;
     private final String childrenDiedOverEighteen;
     private final String childrenDiedUnderEighteen;
-    private final String grandChildrenSurvived;
-    private final String grandChildrenSurvivedOverEighteen;
-    private final String grandChildrenSurvivedUnderEighteen;
     private final String parentsExistSurvived;
     private final String parentsExistOverEighteenSurvived;
     private final String parentsExistUnderEighteenSurvived;
@@ -195,15 +197,15 @@ public class ResponseCaseData {
     private final String grandparentsDied;
     private final String grandparentsDiedOverEighteen;
     private final String grandparentsDiedUnderEighteen;
-    private final String wholeBloodUnclesAndAuntsSurvived;
-    private final String wholeBloodUnclesAndAuntsSurvivedOverEighteen;
-    private final String wholeBloodUnclesAndAuntsSurvivedUnderEighteen;
+    private final String grandChildrenSurvived;
+    private final String grandChildrenSurvivedOverEighteen;
+    private final String grandChildrenSurvivedUnderEighteen;
     private final String wholeBloodUnclesAndAuntsDied;
     private final String wholeBloodUnclesAndAuntsDiedOverEighteen;
     private final String wholeBloodUnclesAndAuntsDiedUnderEighteen;
-    private final String wholeBloodCousinsSurvived;
-    private final String wholeBloodCousinsSurvivedOverEighteen;
-    private final String wholeBloodCousinsSurvivedUnderEighteen;
+    private final String wholeBloodUnclesAndAuntsSurvived;
+    private final String wholeBloodUnclesAndAuntsSurvivedOverEighteen;
+    private final String wholeBloodUnclesAndAuntsSurvivedUnderEighteen;
     private final String halfBloodUnclesAndAuntsSurvived;
     private final String halfBloodUnclesAndAuntsSurvivedOverEighteen;
     private final String halfBloodUnclesAndAuntsSurvivedUnderEighteen;
@@ -213,10 +215,9 @@ public class ResponseCaseData {
     private final String halfBloodCousinsSurvived;
     private final String halfBloodCousinsSurvivedOverEighteen;
     private final String halfBloodCousinsSurvivedUnderEighteen;
-    private final String applicationFeePaperForm;
-    private final String feeForCopiesPaperForm;
-    private final String totalFeePaperForm;
-    private final String paperPaymentMethod;
-    private final String paymentReferenceNumberPaperform;
+    private final String wholeBloodCousinsSurvived;
+    private final String wholeBloodCousinsSurvivedOverEighteen;
+    private final String wholeBloodCousinsSurvivedUnderEighteen;
+
 
 }
