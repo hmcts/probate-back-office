@@ -8,9 +8,12 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 import uk.gov.hmcts.probate.model.ApplicationType;
+import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ccd.ProbateAddress;
 import uk.gov.hmcts.probate.model.ccd.ProbateFullAliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
+import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
+import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 import uk.gov.hmcts.probate.model.ccd.standingsearch.request.StandingSearchCallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.standingsearch.request.StandingSearchData;
 import uk.gov.hmcts.probate.model.ccd.standingsearch.request.StandingSearchDetails;
@@ -112,6 +115,21 @@ public class StandingSearchCallbackResponseTransformerTest {
     }
 
     @Test
+    public void shouldGetStandingSearchUploadedDocuments() {
+        List<CollectionMember<UploadDocument>> documents = new ArrayList<>();
+        documents.add(createUploadDocuments("0"));
+        standingSearchDataBuilder.documentsUploaded(documents);
+
+        when(standingSearchCallbackRequestMock.getStandingSearchDetails()).thenReturn(standingSearchDetailsMock);
+        when(standingSearchDetailsMock.getStandingSearchData()).thenReturn(standingSearchDataBuilder.build());
+
+        StandingSearchCallbackResponse standingSearchCallbackResponse = underTest.transform(standingSearchCallbackRequestMock);
+
+        assertCommonDetails(standingSearchCallbackResponse);
+        assertEquals(1, standingSearchCallbackResponse.getResponseStandingSearchData().getDocumentsUploaded().size());
+    }
+
+    @Test
     public void shouldConvertRequestToDataBeanWithStandingSearchExpiryDateChange() {
         StandingSearchCallbackResponse standingSearchCallbackResponse = underTest.standingSearchCreated(standingSearchCallbackRequestMock);
 
@@ -145,6 +163,20 @@ public class StandingSearchCallbackResponseTransformerTest {
 
     private void assertApplicationType(StandingSearchCallbackResponse standingSearchCallbackResponse, ApplicationType ssApplicationType) {
         assertEquals(ssApplicationType, standingSearchCallbackResponse.getResponseStandingSearchData().getApplicationType());
+    }
+
+    private CollectionMember<UploadDocument> createUploadDocuments(String id) {
+        DocumentLink docLink = DocumentLink.builder()
+                .documentBinaryUrl("")
+                .documentFilename("")
+                .documentUrl("")
+                .build();
+
+        UploadDocument doc = UploadDocument.builder()
+                .comment("comment")
+                .documentLink(docLink)
+                .documentType(DocumentType.OTHER).build();
+        return new CollectionMember<>(id, doc);
     }
 
 }

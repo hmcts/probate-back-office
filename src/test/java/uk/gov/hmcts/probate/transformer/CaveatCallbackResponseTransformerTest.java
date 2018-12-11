@@ -193,7 +193,7 @@ public class CaveatCallbackResponseTransformerTest {
         UploadDocument doc = UploadDocument.builder()
                 .comment("comment")
                 .documentLink(docLink)
-                .documentType(DocumentType.IHT).build();
+                .documentType(DocumentType.CORRESPONDENCE).build();
         return new CollectionMember<>(id, doc);
     }
 }

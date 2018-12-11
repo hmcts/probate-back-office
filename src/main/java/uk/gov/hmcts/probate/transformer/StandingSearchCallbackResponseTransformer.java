@@ -70,7 +70,9 @@ public class StandingSearchCallbackResponseTransformer {
 
                 .numberOfCopies(transformToString(standingSearchData.getNumberOfCopies()))
 
-                .expiryDate(transformToString(standingSearchData.getExpiryDate()));
+                .expiryDate(transformToString(standingSearchData.getExpiryDate()))
+
+                .documentsUploaded(standingSearchData.getDocumentsUploaded());
     }
 
     private String transformToString(Long longValue) {

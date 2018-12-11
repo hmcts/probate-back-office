@@ -6,6 +6,7 @@ import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.ccd.ProbateAddress;
 import uk.gov.hmcts.probate.model.ccd.ProbateFullAliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
+import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -48,6 +49,10 @@ public class StandingSearchData {
     private final long numberOfCopies;
 
     private LocalDate expiryDate;
+
+    // EVENT = uploadDocument
+
+    private final List<CollectionMember<UploadDocument>> documentsUploaded;
 
     // EVENT = misc
 
