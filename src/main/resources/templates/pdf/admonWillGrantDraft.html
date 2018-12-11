@@ -103,6 +103,10 @@
     </style>
 </head>
 <body>
+<div id="watermark" style="font-size: 5.0em">
+    DRAFT COPY -
+    <br/> NOT FOR CIRCULATION
+</div>
 <table>
     <tbody class="table-content">
     <tr>
@@ -128,7 +132,7 @@
         <td colspan="3" class="text-header">
             <br/>
             <br/>
-            <Strong>Grant of Probate</Strong>
+            <Strong>Letter of Administration</Strong>
             <br/>
             <br/>
         </td>
@@ -179,10 +183,7 @@
                 <br />
                 Died on <strong>{{case_details.case_data.deceasedDateOfDeathFormatted}}</strong> domiciled in <strong>England and Wales</strong>
             </p>
-            <p>The Last Will and Testament <strong><span class="camelCase">
-                {% if case_details.case_data.boWillMessage != null and case_details.case_data.boWillMessage != ""%}{{ case_details.case_data.boWillMessage }}{% endif %}
-                </span></strong> of <strong>{{case_details.case_data.deceasedForenames}} {{case_details.case_data.deceasedSurname}}</strong> (An official copy of which is available from the Court) was proved and registered before the High Court of Justice.
-                The Administration of <strong>{{case_details.case_data.deceasedForenames}} {{case_details.case_data.deceasedSurname}}</strong>'s estate is granted by this court to the following Executor{% set applyingExecCounter = 0 %}{% for executor
+            <p>The Administration of <strong>{{case_details.case_data.deceasedForenames}} {{case_details.case_data.deceasedSurname}}</strong>'s is granted by the High Court of Justice on this date to the following Executor{% set applyingExecCounter = 0 %}{% for executor
                 in case_details.case_data.executorsApplying %}{% set applyingExecCounter = applyingExecCounter + 1 %}{%
                 endfor %}{% if applyingExecCounter > 0 %}s{% endif %}
             </p>
@@ -295,7 +296,6 @@
     </tr>
     <tr>
         <td colspan="2">
-            <img src="data:image/png;base64,{{case_details.grantSignatureBase64}}" class="center"/>
             <p class="text-centerAligned">DISTRICT REGISTRAR</p>
         </td>
         <td colspan="1">
@@ -316,7 +316,7 @@
         <td colspan="1">
             <br />
             <br />
-            <p style="text-align:left"> PROBATE</p>
+            <p style="text-align:left"> ADMINISTRATION</p>
         </td>
     </tr>
     </tbody>
