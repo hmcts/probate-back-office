@@ -17,14 +17,14 @@ public enum DocumentType {
     @JsonProperty("intestacyGrant")
     INTESTACY_GRANT("intestacyGrant"),
 
-    @JsonProperty("intestacyGrant")
-    INTESTACY_GRANT_DRAFT("intestacyGrant"),
+    @JsonProperty("intestacyGrantDraft")
+    INTESTACY_GRANT_DRAFT("intestacyGrantDraft"),
 
     @JsonProperty("admonWillGrant")
     ADMON_WILL_GRANT("admonWillGrant"),
 
-    @JsonProperty("admonWillGrant")
-    ADMON_WILL_GRANT_DRAFT("admonWillGrant"),
+    @JsonProperty("admonWillGrantDraft")
+    ADMON_WILL_GRANT_DRAFT("admonWillGrantDraft"),
 
     @JsonProperty("sentEmail")
     SENT_EMAIL("sentEmail"),
