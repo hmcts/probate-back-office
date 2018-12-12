@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <title th:remove="all" th:text="${title}">Grant of Probate</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <style type="text/css">
+
+        body {
+            font-family: "Times New Roman", sans-serif;
+        }
+
+        .table-content {
+            display: block;
+            padding-top: 8px;
+        }
+
+        .legal-header {
+            font-size: 1.5em;
+            text-align: center;
+        }
+
+        .legal-subheader {
+            font-size: 1.2em;
+            text-align: center;
+            padding-left: 10px;
+            margin-top: 2em;
+        }
+
+
+    </style>
+</head>
+<body>
+<table>
+    <tbody class="table-content">
+
+
+
+
+
+
+    <tr>
+        <td colspan="5" class="legal-subheader">
+            {{case_details.case_data.primaryApplicantFullName}}
+        </td>
+    </tr>
+    <tr>
+        <td colspan="5" class="legal-subheader">
+            {{case_details.case_data.primaryApplicantFullName}}<br/>
+            {{case_details.case_data.primaryApplicantAddress.addressLine1}}<br/>
+            {{case_details.case_data.primaryApplicantAddress.addressLine2}}<br/>
+            {{case_details.case_data.primaryApplicantAddress.postTown}}<br/>
+            {{case_details.case_data.primaryApplicantAddress.postCode}}<br/>
+            {{case_details.case_data.primaryApplicantAddress.country}}<br/>
+        </td>
+    </tr>
+
+    </tbody>
+</table>
+</body>
+</html>

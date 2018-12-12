@@ -56,6 +56,8 @@ spring:
   application:
     name: probate-sol-ccd
 
+spring.document.retriever.service.api.baseurl: localhost:8080
+
 spring.jackson.serialization.write_dates_as_timestamps: false
 
 ####Evidence management Service URL's
@@ -104,3 +106,8 @@ registries:
     name: Manchester Probate Registry
     phone: 0161 240 5701 / 0161 240 5702
     emailReplyToId: "cdb5b02c-c6b6-490b-9367-8af3a3ae80b1"
+document:
+  retriever:
+    service:
+      api:
+        baseurl: localhost:8080
