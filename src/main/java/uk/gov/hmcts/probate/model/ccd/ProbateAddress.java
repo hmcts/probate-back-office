@@ -1,4 +1,4 @@
-package uk.gov.hmcts.probate.model.ccd.caveat;
+package uk.gov.hmcts.probate.model.ccd;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
@@ -8,26 +8,26 @@ import java.io.Serializable;
 
 @Data
 @Builder
-public class CavAddress implements Serializable {
+public class ProbateAddress implements Serializable {
 
     @JsonProperty(value = "AddressLine1")
-    private final String addressLine1;
+    private final String proAddressLine1;
 
     @JsonProperty(value = "AddressLine2")
-    private final String addressLine2;
+    private final String proAddressLine2;
 
     @JsonProperty(value = "AddressLine3")
-    private final String addressLine3;
+    private final String proAddressLine3;
 
     @JsonProperty(value = "County")
-    private final String county;
+    private final String proCounty;
 
     @JsonProperty(value = "PostTown")
-    private final String postTown;
+    private final String proPostTown;
 
     @JsonProperty(value = "PostCode")
-    private final String postCode;
+    private final String proPostCode;
 
     @JsonProperty(value = "Country")
-    private final String country;
+    private final String proCountry;
 }
