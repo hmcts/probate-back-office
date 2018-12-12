@@ -19,6 +19,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static uk.gov.hmcts.probate.model.CaseType.CAVEAT;
 import static uk.gov.hmcts.probate.model.CaseType.GRANT_OF_REPRESENTATION;
+import static uk.gov.hmcts.probate.model.CaseType.LEGACY;
 
 @RequiredArgsConstructor
 @RequestMapping(value = "/case-matching", consumes = APPLICATION_JSON_UTF8_VALUE, produces = APPLICATION_JSON_VALUE)
@@ -33,6 +34,7 @@ public class CaseMatchingController {
         List<CaseMatch> caseMatches = new ArrayList<>();
         caseMatches.addAll(caseMatchingService.findMatches(GRANT_OF_REPRESENTATION, callbackRequest.getCaseDetails()));
         caseMatches.addAll(caseMatchingService.findMatches(CAVEAT, callbackRequest.getCaseDetails()));
+        caseMatches.addAll(caseMatchingService.findMatches(LEGACY, callbackRequest.getCaseDetails()));
 
         return ResponseEntity.ok(callbackResponseTransformer.addMatches(callbackRequest, caseMatches));
     }

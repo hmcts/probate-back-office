@@ -72,6 +72,9 @@ public class CaseData {
             message = "{deceasedSurnameIsNull}")
     private final String deceasedSurname;
 
+    @JsonProperty("legacy_case_type")
+    private final String legacyCaseType;
+
     @NotNull(groups = {ApplicationUpdatedGroup.class, AmendCaseDetailsGroup.class}, message = "{dodIsNull}")
     private final LocalDate deceasedDateOfDeath;
 
