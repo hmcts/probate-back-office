@@ -25,9 +25,9 @@ public class ProbateAddress implements Serializable {
     @JsonProperty(value = "PostTown")
     private final String postTown;
 
-    @JsonProperty(value = "PostCode")
-    private final String postCode;
-
     @JsonProperty(value = "Country")
     private final String country;
+
+    @JsonProperty(value = "PostCode")
+    private final String postCode;
 }
