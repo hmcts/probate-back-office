@@ -12,6 +12,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
+import uk.gov.hmcts.probate.service.BulkPrintService;
 import uk.gov.hmcts.probate.service.DocumentService;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
@@ -37,6 +38,7 @@ public class DocumentController {
     private final CallbackResponseTransformer callbackResponseTransformer;
     private final DocumentService documentService;
     private final NotificationService notificationService;
+    private final BulkPrintService bulkPrintService;
 
     @PostMapping(path = "/generate-grant-draft", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<CallbackResponse> generateGrantDraft(@RequestBody CallbackRequest callbackRequest) {
@@ -57,6 +59,7 @@ public class DocumentController {
 
         Document digitalGrantDocument = pdfManagementService.generateAndUpload(callbackRequest, DIGITAL_GRANT);
         documents.add(digitalGrantDocument);
+        bulkPrintService.sendToBulkPrint(callbackRequest, digitalGrantDocument);
 
         documentService.expire(callbackRequest, DIGITAL_GRANT_DRAFT);
 
@@ -70,4 +73,5 @@ public class DocumentController {
 
         return ResponseEntity.ok(callbackResponseTransformer.addDocuments(callbackRequest, documents));
     }
+
 }
