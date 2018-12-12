@@ -22,7 +22,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.LegalStatement;
 import uk.gov.hmcts.probate.model.ccd.raw.Payment;
 import uk.gov.hmcts.probate.model.ccd.raw.ProbateAliasName;
-import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocuments;
+import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.StopReason;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
@@ -264,9 +264,13 @@ public class CaseData {
 
     private final String applicationSubmittedDate;
 
-    private final List<CollectionMember<ScannedDocuments>> scannedDocuments;
-    private final String evidenceHandled;
+    //@Getter(lazy = true)
+    //private final List<CollectionMember<ScannedDocument>> scannedDocuments = new ArrayList<CollectionMember<ScannedDocument>>();
 
+    private final List<CollectionMember<ScannedDocument>> scannedDocuments = new ArrayList<>();
+
+    @Getter(lazy = true)
+    private final String evidenceHandled = NO;
 
     @Getter(lazy = true)
     private final List<CollectionMember<AdditionalExecutor>> executorsApplyingForLegalStatement = getAllExecutors(true);
