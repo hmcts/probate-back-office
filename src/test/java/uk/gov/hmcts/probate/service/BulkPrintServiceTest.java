@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -57,12 +58,16 @@ public class BulkPrintServiceTest {
     @Mock
     private PDFGeneratorService pdfGeneratorServiceMock;
 
+    @Mock
+    private ObjectMapper objectMapperMock;
+
     @Before
     public void setUp() throws Exception {
         when(authTokenGeneratorMock.generate()).thenReturn("authToken");
         when(documentStoreClientMock.retrieveDocument(any(Document.class), anyString())).thenReturn(new byte[256]);
         when(pdfGeneratorServiceMock.generatePdf(any(DocumentType.class), anyString()))
                 .thenReturn(new EvidenceManagementFileUpload(MediaType.APPLICATION_PDF, new byte[256]));
+        when(objectMapperMock.writeValueAsString(any(Object.class))).thenReturn("");
     }
 
     @Test
