@@ -82,3 +82,22 @@ registries:
     name: Manchester Probate Registry
     phone: 0161 240 5701 / 0161 240 5702
     emailReplyToId: "manchester-emailReplyToId"
+
+
+document:
+  retriever:
+    service:
+      api:
+        baseurl: localhost:8080
+
+idam:
+  s2s-auth:
+    url: ""
+
+send-letter:
+  url: ${SEND_LETTER_SERIVCE_BASEURL:http://localhost:8485}
+
+idam-s2s-auth:
+  ribbon:
+    eureka:
+      enabled: false
