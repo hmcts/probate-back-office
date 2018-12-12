@@ -42,32 +42,21 @@ public class DocumentController {
     private final CallbackResponseTransformer callbackResponseTransformer;
     private final DocumentService documentService;
     private final NotificationService notificationService;
-    private static final String GRANT_OF_REPRESENTATION = "gop";
+    private static final String GRANT_OF_PROBATE = "gop";
     private static final String ADMON_WILL = "admonWill";
     private static final String INTESTACY = "intestacy";
+    private static final String EDGE_CASE = "edgeCase";
 
     @PostMapping(path = "/generate-grant-draft", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<CallbackResponse> generateGrantDraft(@RequestBody CallbackRequest callbackRequest) {
-        DocumentType template;
         CaseData caseData = callbackRequest.getCaseDetails().getData();
 
-        switch (caseData.getCaseType()) {
-            case GRANT_OF_REPRESENTATION:
-                template = DIGITAL_GRANT_DRAFT;
-                break;
-            case INTESTACY:
-                template = INTESTACY_GRANT_DRAFT;
-                break;
-            case ADMON_WILL:
-                template = ADMON_WILL_GRANT_DRAFT;
-                break;
-            default:
-                template = DIGITAL_GRANT_DRAFT;
+        Document document = generateDocument(caseData.getCaseType(), callbackRequest);
+
+        DocumentType[] documentTypes = {DIGITAL_GRANT_DRAFT, DIGITAL_GRANT, INTESTACY_GRANT, INTESTACY_GRANT_DRAFT, ADMON_WILL_GRANT_DRAFT, ADMON_WILL_GRANT};
+        for (DocumentType documentType : documentTypes) {
+            documentService.expire(callbackRequest, documentType);
         }
-
-        Document document = pdfManagementService.generateAndUpload(callbackRequest, template);
-
-        documentService.expire(callbackRequest, template);
 
         return ResponseEntity.ok(callbackResponseTransformer.addDocuments(callbackRequest,
                 Arrays.asList(document)));
@@ -76,34 +65,17 @@ public class DocumentController {
     @PostMapping(path = "/generate-grant", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<CallbackResponse> generateGrant(@RequestBody CallbackRequest callbackRequest)
             throws NotificationClientException {
-        DocumentType template;
-        DocumentType draftTemplate;
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
         CaseData caseData = callbackRequest.getCaseDetails().getData();
         List<Document> documents = new ArrayList<>();
 
-        switch (caseData.getCaseType()) {
-            case GRANT_OF_REPRESENTATION:
-                template = DIGITAL_GRANT;
-                draftTemplate = DIGITAL_GRANT_DRAFT;
-                break;
-            case INTESTACY:
-                template = INTESTACY_GRANT;
-                draftTemplate = INTESTACY_GRANT_DRAFT;
-                break;
-            case ADMON_WILL:
-                template = ADMON_WILL_GRANT;
-                draftTemplate = ADMON_WILL_GRANT_DRAFT;
-                break;
-            default:
-                template = DIGITAL_GRANT;
-                draftTemplate = DIGITAL_GRANT_DRAFT;
-        }
-
-        Document digitalGrantDocument = pdfManagementService.generateAndUpload(callbackRequest, template);
+        Document digitalGrantDocument = generateDocument(caseData.getCaseType(), callbackRequest);
         documents.add(digitalGrantDocument);
 
-        documentService.expire(callbackRequest, draftTemplate);
+        DocumentType[] documentTypes = {DIGITAL_GRANT_DRAFT, DIGITAL_GRANT, INTESTACY_GRANT, INTESTACY_GRANT_DRAFT, ADMON_WILL_GRANT_DRAFT, ADMON_WILL_GRANT};
+        for (DocumentType documentType : documentTypes) {
+            documentService.expire(callbackRequest, documentType);
+        }
 
         if (caseData.isGrantIssuedEmailNotificationRequested()) {
             Document grantIssuedSentEmail = notificationService.sendEmail(GRANT_ISSUED, caseDetails);
@@ -111,5 +83,29 @@ public class DocumentController {
         }
 
         return ResponseEntity.ok(callbackResponseTransformer.addDocuments(callbackRequest, documents));
+    }
+
+    private Document generateDocument(String caseType, CallbackRequest callbackRequest) {
+        DocumentType template;
+
+        switch (caseType) {
+            case GRANT_OF_PROBATE:
+                template = DIGITAL_GRANT;
+                return pdfManagementService.generateAndUpload(callbackRequest, template);
+            case INTESTACY:
+                template = INTESTACY_GRANT;
+                return pdfManagementService.generateAndUpload(callbackRequest, template);
+            case ADMON_WILL:
+                template = ADMON_WILL_GRANT;
+                return pdfManagementService.generateAndUpload(callbackRequest, template);
+            case EDGE_CASE:
+                return Document.builder().documentType(DocumentType.EDGE_CASE).build();
+            default:
+                template = DIGITAL_GRANT;
+                return pdfManagementService.generateAndUpload(callbackRequest, template);
+
+        }
+
+
     }
 }

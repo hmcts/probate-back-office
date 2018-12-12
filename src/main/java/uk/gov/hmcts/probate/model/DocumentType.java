@@ -38,6 +38,9 @@ public enum DocumentType {
     @JsonProperty("other")
     OTHER("other"),
 
+    @JsonProperty("edgeCase")
+    EDGE_CASE("edgeCase"),
+
     @JsonProperty("deathCertificate")
     DEATH_CERT("deathCertificate"),
 

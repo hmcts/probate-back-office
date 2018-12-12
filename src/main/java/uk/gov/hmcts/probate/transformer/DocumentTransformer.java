@@ -34,6 +34,8 @@ public class DocumentTransformer {
                 callbackRequest.getCaseDetails().getData().getProbateNotificationsGenerated()
                         .add(new CollectionMember<>(null, document));
                 break;
+            case EDGE_CASE:
+                break;
             default:
         }
     }
