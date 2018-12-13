@@ -11,6 +11,7 @@ import uk.gov.hmcts.probate.controller.validation.ApplicationReviewedGroup;
 import uk.gov.hmcts.probate.controller.validation.ApplicationUpdatedGroup;
 import uk.gov.hmcts.probate.controller.validation.NextStepsConfirmationGroup;
 import uk.gov.hmcts.probate.model.ApplicationType;
+import uk.gov.hmcts.probate.model.ccd.CaseMatch;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
@@ -174,6 +175,8 @@ public class CaseData {
     private final List<CollectionMember<Document>> probateDocumentsGenerated = new ArrayList<>();
 
     private final List<CollectionMember<Document>> probateNotificationsGenerated = new ArrayList<>();
+
+    private final List<CollectionMember<CaseMatch>> caseMatches = new ArrayList<>();
 
     private final List<CollectionMember<UploadDocument>> boDocumentsUploaded;
 

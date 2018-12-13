@@ -79,10 +79,14 @@
         <cve>CVE-2018-1000632</cve>
     </suppress>
     <suppress>
-        <notes><![CDATA[
-   file name: applicationinsights-core-2.1.1.jar/META-INF/maven/com.google.guava/guava/pom.xml
-   ]]></notes>
+        <notes><![CDATA[ file name: applicationinsights-core-2.1.1.jar/META-INF/maven/com.google.guava/guava/pom.xml]]></notes>
         <gav regex="true">^com\.google\.guava:guava:.*$</gav>
         <cpe>cpe:/a:google:guava</cpe>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: guava-21.0.jar
+   ]]></notes>
+        <cve>CVE-2018-10237</cve>
     </suppress>
 </suppressions>

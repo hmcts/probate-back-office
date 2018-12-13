@@ -7,4 +7,5 @@ public class EmailTemplates {
     private String documentReceived;
     private String caseStopped;
     private String grantIssued;
+    private String generalCaveatMessage;
 }
