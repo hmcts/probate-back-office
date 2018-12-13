@@ -24,11 +24,26 @@
         }
       ],
       "filter": {
-        "range": {
-          "data.deceasedDateOfDeath": {
-            "gte": ":deceasedDateOfDeath||-3d",
-            "lte": ":deceasedDateOfDeath||+3d"
-          }
+        "bool": {
+          "should": [
+            {
+              "bool": {
+                "must_not": {
+                  "exists": {
+                    "field": "data.deceasedDateOfDeath"
+                  }
+                }
+              }
+            },
+            {
+              "range": {
+                "data.deceasedDateOfDeath": {
+                  "gte": ":deceasedDateOfDeath||-3d",
+                  "lte": ":deceasedDateOfDeath||+3d"
+                }
+              }
+            }
+          ]
         }
       }
     }
