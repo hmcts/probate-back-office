@@ -264,7 +264,7 @@ public class CaseData {
 
     private final String applicationSubmittedDate;
 
-    private final List<CollectionMember<ScannedDocument>> scannedDocuments;
+    private final List<CollectionMember<ScannedDocument>> scannedDocuments = new ArrayList<>();
 
     private final String evidenceHandled;
 
