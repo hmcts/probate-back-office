@@ -50,8 +50,31 @@ public class DocumentController {
     @PostMapping(path = "/generate-grant-draft", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<CallbackResponse> generateGrantDraft(@RequestBody CallbackRequest callbackRequest) {
         CaseData caseData = callbackRequest.getCaseDetails().getData();
+        Document document;
+        DocumentType template;
 
-        Document document = generateDocument(caseData.getCaseType(), callbackRequest);
+        switch (caseData.getCaseType()) {
+            case GRANT_OF_PROBATE:
+                template = DIGITAL_GRANT_DRAFT;
+                document = pdfManagementService.generateAndUpload(callbackRequest, template);
+                break;
+            case INTESTACY:
+                template = INTESTACY_GRANT_DRAFT;
+                document = pdfManagementService.generateAndUpload(callbackRequest, template);
+                break;
+            case ADMON_WILL:
+                template = ADMON_WILL_GRANT_DRAFT;
+                document = pdfManagementService.generateAndUpload(callbackRequest, template);
+                break;
+            case EDGE_CASE:
+                document = Document.builder().documentType(DocumentType.EDGE_CASE).build();
+                break;
+            default:
+                template = DIGITAL_GRANT_DRAFT;
+                document = pdfManagementService.generateAndUpload(callbackRequest, template);
+                break;
+
+        }
 
         DocumentType[] documentTypes = {DIGITAL_GRANT_DRAFT, INTESTACY_GRANT_DRAFT, ADMON_WILL_GRANT_DRAFT};
         for (DocumentType documentType : documentTypes) {
@@ -68,8 +91,31 @@ public class DocumentController {
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
         CaseData caseData = callbackRequest.getCaseDetails().getData();
         List<Document> documents = new ArrayList<>();
+        DocumentType template;
+        Document digitalGrantDocument;
 
-        Document digitalGrantDocument = generateDocument(caseData.getCaseType(), callbackRequest);
+        switch (caseData.getCaseType()) {
+            case EDGE_CASE:
+                digitalGrantDocument = Document.builder().documentType(DocumentType.EDGE_CASE).build();
+                break;
+            case INTESTACY:
+                template = INTESTACY_GRANT;
+                digitalGrantDocument = pdfManagementService.generateAndUpload(callbackRequest, template);
+                break;
+            case GRANT_OF_PROBATE:
+                template = DIGITAL_GRANT;
+                digitalGrantDocument = pdfManagementService.generateAndUpload(callbackRequest, template);
+                break;
+            case ADMON_WILL:
+                template = ADMON_WILL_GRANT;
+                digitalGrantDocument = pdfManagementService.generateAndUpload(callbackRequest, template);
+                break;
+            default:
+                template = DIGITAL_GRANT;
+                digitalGrantDocument = pdfManagementService.generateAndUpload(callbackRequest, template);
+                break;
+
+        }
         documents.add(digitalGrantDocument);
 
         DocumentType[] documentTypes = {DIGITAL_GRANT_DRAFT, INTESTACY_GRANT_DRAFT, ADMON_WILL_GRANT_DRAFT};
@@ -85,27 +131,4 @@ public class DocumentController {
         return ResponseEntity.ok(callbackResponseTransformer.addDocuments(callbackRequest, documents));
     }
 
-    private Document generateDocument(String caseType, CallbackRequest callbackRequest) {
-        DocumentType template;
-
-        switch (caseType) {
-            case GRANT_OF_PROBATE:
-                template = DIGITAL_GRANT;
-                return pdfManagementService.generateAndUpload(callbackRequest, template);
-            case INTESTACY:
-                template = INTESTACY_GRANT;
-                return pdfManagementService.generateAndUpload(callbackRequest, template);
-            case ADMON_WILL:
-                template = ADMON_WILL_GRANT;
-                return pdfManagementService.generateAndUpload(callbackRequest, template);
-            case EDGE_CASE:
-                return Document.builder().documentType(DocumentType.EDGE_CASE).build();
-            default:
-                template = DIGITAL_GRANT;
-                return pdfManagementService.generateAndUpload(callbackRequest, template);
-
-        }
-
-
-    }
 }
