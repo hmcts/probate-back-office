@@ -264,13 +264,9 @@ public class CaseData {
 
     private final String applicationSubmittedDate;
 
-    //@Getter(lazy = true)
-    //private final List<CollectionMember<ScannedDocument>> scannedDocuments = new ArrayList<CollectionMember<ScannedDocument>>();
+    private final List<CollectionMember<ScannedDocument>> scannedDocuments;
 
-    private final List<CollectionMember<ScannedDocument>> scannedDocuments = new ArrayList<>();
-
-    @Getter(lazy = true)
-    private final String evidenceHandled = NO;
+    private final String evidenceHandled;
 
     @Getter(lazy = true)
     private final List<CollectionMember<AdditionalExecutor>> executorsApplyingForLegalStatement = getAllExecutors(true);
