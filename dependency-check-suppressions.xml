@@ -89,4 +89,10 @@
    ]]></notes>
         <cve>CVE-2018-10237</cve>
     </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: slf4j-api-1.7.25.jar
+   ]]></notes>
+        <cpe>CVE-2018-8088</cpe>
+    </suppress>
 </suppressions>
