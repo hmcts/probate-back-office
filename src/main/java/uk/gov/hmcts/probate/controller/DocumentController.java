@@ -53,7 +53,7 @@ public class DocumentController {
 
         Document document = generateDocument(caseData.getCaseType(), callbackRequest);
 
-        DocumentType[] documentTypes = {DIGITAL_GRANT_DRAFT, DIGITAL_GRANT, INTESTACY_GRANT, INTESTACY_GRANT_DRAFT, ADMON_WILL_GRANT_DRAFT, ADMON_WILL_GRANT};
+        DocumentType[] documentTypes = {DIGITAL_GRANT_DRAFT, INTESTACY_GRANT_DRAFT, ADMON_WILL_GRANT_DRAFT};
         for (DocumentType documentType : documentTypes) {
             documentService.expire(callbackRequest, documentType);
         }
@@ -72,7 +72,7 @@ public class DocumentController {
         Document digitalGrantDocument = generateDocument(caseData.getCaseType(), callbackRequest);
         documents.add(digitalGrantDocument);
 
-        DocumentType[] documentTypes = {DIGITAL_GRANT_DRAFT, DIGITAL_GRANT, INTESTACY_GRANT, INTESTACY_GRANT_DRAFT, ADMON_WILL_GRANT_DRAFT, ADMON_WILL_GRANT};
+        DocumentType[] documentTypes = {DIGITAL_GRANT_DRAFT, INTESTACY_GRANT_DRAFT, ADMON_WILL_GRANT_DRAFT};
         for (DocumentType documentType : documentTypes) {
             documentService.expire(callbackRequest, documentType);
         }
