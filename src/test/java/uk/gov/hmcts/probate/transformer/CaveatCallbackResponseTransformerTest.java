@@ -174,6 +174,8 @@ public class CaveatCallbackResponseTransformerTest {
         assertEquals(CAV_CAVEATOR_SURNAME, caveatCallbackResponse.getCaveatData().getCaveatorSurname());
         assertEquals(CAV_CAVEATOR_EMAIL_ADDRESS, caveatCallbackResponse.getCaveatData().getCaveatorEmailAddress());
         assertEquals(CAV_CAVEATOR_ADDRESS, caveatCallbackResponse.getCaveatData().getCaveatorAddress());
+
+        assertEquals(CAV_FORMATTED_EXPIRY_DATE, caveatCallbackResponse.getCaveatData().getExpiryDate());
         assertEquals(CAV_MESSAGE_CONTENT, caveatCallbackResponse.getCaveatData().getMessageContent());
     }
 
@@ -191,7 +193,7 @@ public class CaveatCallbackResponseTransformerTest {
         UploadDocument doc = UploadDocument.builder()
                 .comment("comment")
                 .documentLink(docLink)
-                .documentType(DocumentType.IHT).build();
+                .documentType(DocumentType.CORRESPONDENCE).build();
         return new CollectionMember<>(id, doc);
     }
 }

@@ -8,9 +8,12 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 import uk.gov.hmcts.probate.model.ApplicationType;
+import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ccd.ProbateAddress;
 import uk.gov.hmcts.probate.model.ccd.ProbateFullAliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
+import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
+import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 import uk.gov.hmcts.probate.model.ccd.standingsearch.request.StandingSearchCallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.standingsearch.request.StandingSearchData;
 import uk.gov.hmcts.probate.model.ccd.standingsearch.request.StandingSearchDetails;
@@ -111,6 +114,30 @@ public class StandingSearchCallbackResponseTransformerTest {
         assertEquals(1, standingSearchCallbackResponse.getResponseStandingSearchData().getDeceasedFullAliasNameList().size());
     }
 
+    @Test
+    public void shouldGetStandingSearchUploadedDocuments() {
+        List<CollectionMember<UploadDocument>> documents = new ArrayList<>();
+        documents.add(createUploadDocuments("0"));
+        standingSearchDataBuilder.documentsUploaded(documents);
+
+        when(standingSearchCallbackRequestMock.getStandingSearchDetails()).thenReturn(standingSearchDetailsMock);
+        when(standingSearchDetailsMock.getStandingSearchData()).thenReturn(standingSearchDataBuilder.build());
+
+        StandingSearchCallbackResponse standingSearchCallbackResponse = underTest.transform(standingSearchCallbackRequestMock);
+
+        assertCommonDetails(standingSearchCallbackResponse);
+        assertEquals(1, standingSearchCallbackResponse.getResponseStandingSearchData().getDocumentsUploaded().size());
+    }
+
+    @Test
+    public void shouldConvertRequestToDataBeanWithStandingSearchExpiryDateChange() {
+        StandingSearchCallbackResponse standingSearchCallbackResponse = underTest.standingSearchCreated(standingSearchCallbackRequestMock);
+
+        assertCommon(standingSearchCallbackResponse);
+
+        assertEquals(SS_FORMATTED_EXPIRY_DATE, standingSearchCallbackResponse.getResponseStandingSearchData().getExpiryDate());
+    }
+
     private void assertCommon(StandingSearchCallbackResponse standingSearchCallbackResponse) {
         assertCommonDetails(standingSearchCallbackResponse);
         assertApplicationType(standingSearchCallbackResponse, SS_APPLICATION_TYPE);
@@ -130,10 +157,26 @@ public class StandingSearchCallbackResponseTransformerTest {
         assertEquals(SS_APPLICANT_SURNAME, standingSearchCallbackResponse.getResponseStandingSearchData().getApplicantSurname());
         assertEquals(SS_APPLICANT_EMAIL_ADDRESS, standingSearchCallbackResponse.getResponseStandingSearchData().getApplicantEmailAddress());
         assertEquals(SS_APPLICANT_ADDRESS, standingSearchCallbackResponse.getResponseStandingSearchData().getApplicantAddress());
+
+        assertEquals(SS_FORMATTED_EXPIRY_DATE, standingSearchCallbackResponse.getResponseStandingSearchData().getExpiryDate());
     }
 
     private void assertApplicationType(StandingSearchCallbackResponse standingSearchCallbackResponse, ApplicationType ssApplicationType) {
         assertEquals(ssApplicationType, standingSearchCallbackResponse.getResponseStandingSearchData().getApplicationType());
+    }
+
+    private CollectionMember<UploadDocument> createUploadDocuments(String id) {
+        DocumentLink docLink = DocumentLink.builder()
+                .documentBinaryUrl("")
+                .documentFilename("")
+                .documentUrl("")
+                .build();
+
+        UploadDocument doc = UploadDocument.builder()
+                .comment("comment")
+                .documentLink(docLink)
+                .documentType(DocumentType.OTHER).build();
+        return new CollectionMember<>(id, doc);
     }
 
 }

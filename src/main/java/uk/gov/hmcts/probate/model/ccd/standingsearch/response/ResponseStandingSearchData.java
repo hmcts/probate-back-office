@@ -7,6 +7,7 @@ import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.ccd.ProbateAddress;
 import uk.gov.hmcts.probate.model.ccd.ProbateFullAliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
+import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 
 import java.util.List;
 
@@ -31,6 +32,8 @@ public class ResponseStandingSearchData {
     private final String applicantEmailAddress;
     private final ProbateAddress applicantAddress;
 
-    private final Long numberOfCopies;
+    private final String numberOfCopies;
     private final String expiryDate;
+
+    private final List<CollectionMember<UploadDocument>> documentsUploaded;
 }
