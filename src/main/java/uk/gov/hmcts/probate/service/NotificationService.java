@@ -74,7 +74,7 @@ public class NotificationService {
 
         SendEmailResponse response;
 
-        response = notificationClient.sendEmail(templateId, emailAddress, personalisation, reference, emailReplyToId);
+        response = notificationClient.sendEmail(templateId, emailAddress, personalisation, reference);
 
         return getGeneratedSentEmailDocument(response, emailAddress);
     }
