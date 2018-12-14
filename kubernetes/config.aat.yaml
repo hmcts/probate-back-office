@@ -11,4 +11,6 @@ data:
   IDAM_SERVICE_HOST : "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
   FEE_API_URL : "http://fees-register-api-aat.service.core-compute-aat.internal"
   EVIDENCE_MANAGEMENT_HOST : "http://dm-store-aat.service.core-compute-aat.internal"
+  CCD_GATEWAY_HOST : "https://gateway-ccd.nonprod.platform.hmcts.net"
+
 

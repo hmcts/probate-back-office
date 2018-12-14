@@ -83,4 +83,17 @@
         <gav regex="true">^com\.google\.guava:guava:.*$</gav>
         <cpe>cpe:/a:google:guava</cpe>
     </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: guava-21.0.jar
+   ]]></notes>
+        <cve>CVE-2018-10237</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: slf4j-api-1.7.25.jar
+   ]]></notes>
+        <cve>CVE-2018-8088</cve>
+    </suppress>
+
 </suppressions>
