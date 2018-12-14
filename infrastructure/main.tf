@@ -99,6 +99,7 @@ module "probate-back-office" {
     NOTIFICATIONS_GOVNOTIFYAPIKEY = "${data.azurerm_key_vault_secret.govNotifyApiKey.value}"
     java_app_name = "${var.microservice}"
     LOG_LEVEL = "${var.log_level}"
+    TESTING = "JSON_CONSOLE" //Remove json logging
     //ROOT_APPENDER = "JSON_CONSOLE" //Remove json logging
   }
 }
