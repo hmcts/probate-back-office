@@ -21,6 +21,9 @@ provider "vault" {
 #   path = "secret/${var.vault_section}/probate/pdf_service_grantSignatureBase64"
 # }
 
+provider "azurerm" {
+  version = "1.19.0"
+}
 
 locals {
   aseName = "${data.terraform_remote_state.core_apps_compute.ase_name[0]}"
