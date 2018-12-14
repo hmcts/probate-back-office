@@ -99,3 +99,27 @@ registries:
     name: Leeds Probate Registry
     phone: 0113 389 6133
     emailReplyToId: "leeds-emailReplyToId"
+  liverpool:
+    name: Liverpool Probate Registry
+    phone: 0151 236 8264
+    emailReplyToId: "liverpool-emailReplyToId"
+  brighton:
+    name: Brighton Probate Registry
+    phone: 01273 573510
+    emailReplyToId: "brighton-emailReplyToId"
+  london:
+    name: London Probate Department
+    phone: 020 7421 8509
+    emailReplyToId: "london-emailReplyToId"
+  cardiff:
+    name: Probate Registry of Wales
+    phone: 02920 474373
+    emailReplyToId: "cardiff-emailReplyToId"
+  newcastle:
+    name: Newcastle-Upon-Tyne Probate Registry
+    phone: 0191 211 2170
+    emailReplyToId: "newcastle-emailReplyToId"
+  winchester:
+    name: Winchester Probate Registry
+    phone: 01962 814100
+    emailReplyToId: "winchester-emailReplyToId"
