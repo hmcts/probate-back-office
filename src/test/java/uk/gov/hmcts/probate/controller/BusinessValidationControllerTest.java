@@ -79,6 +79,7 @@ public class BusinessValidationControllerTest {
     private static final String CASE_VALIDATE_CASE_DETAILS_URL = "/case/validateCaseDetails";
     private static final String CASE_TRANSFORM_URL = "/case/transformCase";
     private static final String CASE_CHCEKLIST_URL = "/case/validateCheckListDetails";
+    private static final String PAPER_FORM_URL = "/case/paperForm";
 
     @Autowired
     private MockMvc mockMvc;
@@ -277,8 +278,19 @@ public class BusinessValidationControllerTest {
     }
 
     @Test
-    public void shouldReturnCheckListValidateUnSuccessful() throws Exception {
+    public void shouldReturnCheckListValidateUnSuccessfulQ1IsNo() throws Exception {
         String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadAliasNames.json");
+
+        mockMvc.perform(post(CASE_CHCEKLIST_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.errors[0]").value("Ensure all checks have been completed, cancel to return to the examining state"))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
+
+    }
+
+    @Test
+    public void shouldReturnCheckListValidateUnSuccessfulQ2IsNo() throws Exception {
+        String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadChecklist.json");
 
         mockMvc.perform(post(CASE_CHCEKLIST_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk())
@@ -295,4 +307,25 @@ public class BusinessValidationControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
     }
+
+    @Test
+    public void shouldReturnPaperFormSuccess() throws Exception {
+        String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadAliasNames.json");
+
+        mockMvc.perform(post(PAPER_FORM_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
+    }
+
+    @Test
+    public void shouldReturnPaperForm() throws Exception {
+        String caseCreatorJson = testUtils.getStringFromFile("paperForm.json");
+
+        mockMvc.perform(post(PAPER_FORM_URL).content(caseCreatorJson).contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
+    }
+
+
 }
+
