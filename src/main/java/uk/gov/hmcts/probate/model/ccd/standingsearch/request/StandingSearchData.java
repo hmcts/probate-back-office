@@ -1,4 +1,4 @@
-package uk.gov.hmcts.probate.model.ccd.caveat.request;
+package uk.gov.hmcts.probate.model.ccd.standingsearch.request;
 
 import lombok.Builder;
 import lombok.Data;
@@ -6,21 +6,19 @@ import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.ccd.ProbateAddress;
 import uk.gov.hmcts.probate.model.ccd.ProbateFullAliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
-import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 @Builder
 @Data
-public class CaveatData {
+public class StandingSearchData {
 
     private final ApplicationType applicationType;
     private final String registryLocation;
 
-    // EVENT = cavRaiseCaveat - deceased data
+    // EVENT = createStandingSearch - deceased data
 
     private final String deceasedForenames;
 
@@ -36,37 +34,34 @@ public class CaveatData {
 
     private final ProbateAddress deceasedAddress;
 
-    // EVENT = cavRaiseCaveat - caveator data
+    // EVENT = createStandingSearch - applicant data
 
-    private final String caveatorForenames;
+    private final String applicantForenames;
 
-    private final String caveatorSurname;
+    private final String applicantSurname;
 
-    private final String caveatorEmailAddress;
+    private final String applicantEmailAddress;
 
-    private final ProbateAddress caveatorAddress;
+    private final ProbateAddress applicantAddress;
 
-    // EVENT = cavRaiseCaveat - caveat details
+    // EVENT = createStandingSearch - standing search details
+
+    private final long numberOfCopies;
 
     private LocalDate expiryDate;
 
-    // EVENT = cavEmailCaveator
-
-    private final String messageContent;
-
-    // EVENT = cavUploadDocument
+    // EVENT = uploadDocument
 
     private final List<CollectionMember<UploadDocument>> documentsUploaded;
 
     // EVENT = misc
 
-    private final List<CollectionMember<Document>> documentsGenerated = new ArrayList<>();
-
     public String getDeceasedFullName() {
         return String.join(" ", deceasedForenames, deceasedSurname);
     }
 
-    public String getCaveatorFullName() {
-        return String.join(" ", caveatorForenames, caveatorSurname);
+    public String getApplicantFullName() {
+        return String.join(" ", applicantForenames, applicantSurname);
     }
+
 }

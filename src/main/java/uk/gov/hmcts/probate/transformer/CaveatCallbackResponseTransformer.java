@@ -8,6 +8,7 @@ import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
 import uk.gov.hmcts.probate.model.ccd.caveat.response.CaveatCallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.caveat.response.ResponseCaveatData;
+import uk.gov.hmcts.probate.model.ccd.caveat.response.ResponseCaveatData.ResponseCaveatDataBuilder;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 
@@ -60,7 +61,7 @@ public class CaveatCallbackResponseTransformer {
         return CaveatCallbackResponse.builder().caveatData(responseCaveatData).build();
     }
 
-    private ResponseCaveatData.ResponseCaveatDataBuilder getResponseCaveatData(CaveatDetails caveatDetails) {
+    private ResponseCaveatDataBuilder getResponseCaveatData(CaveatDetails caveatDetails) {
         CaveatData caveatData = caveatDetails.getCaveatData();
 
         return ResponseCaveatData.builder()
@@ -70,7 +71,7 @@ public class CaveatCallbackResponseTransformer {
                 .deceasedForenames(caveatData.getDeceasedForenames())
                 .deceasedSurname(caveatData.getDeceasedSurname())
                 .deceasedDateOfDeath(dateTimeFormatter.format(caveatData.getDeceasedDateOfDeath()))
-                .deceasedDateOfBirth(dateTimeFormatter.format(caveatData.getDeceasedDateOfBirth()))
+                .deceasedDateOfBirth(transformToString(caveatData.getDeceasedDateOfBirth()))
                 .deceasedAnyOtherNames(caveatData.getDeceasedAnyOtherNames())
                 .deceasedFullAliasNameList(caveatData.getDeceasedFullAliasNameList())
                 .deceasedAddress(caveatData.getDeceasedAddress())
@@ -80,9 +81,16 @@ public class CaveatCallbackResponseTransformer {
                 .caveatorEmailAddress(caveatData.getCaveatorEmailAddress())
                 .caveatorAddress(caveatData.getCaveatorAddress())
 
+                .expiryDate(transformToString(caveatData.getExpiryDate()))
                 .messageContent(caveatData.getMessageContent())
 
                 .documentsUploaded(caveatData.getDocumentsUploaded())
                 .documentsGenerated(caveatData.getDocumentsGenerated());
+    }
+
+    private String transformToString(LocalDate dateValue) {
+        return ofNullable(dateValue)
+                .map(String::valueOf)
+                .orElse(null);
     }
 }
