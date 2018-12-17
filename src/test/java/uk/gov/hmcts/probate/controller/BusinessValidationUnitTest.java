@@ -303,4 +303,19 @@ public class BusinessValidationUnitTest {
         assertThat(response.getBody().getErrors().isEmpty(), is(true));
     }
 
+    @Test(expected = BadRequestException.class)
+    public void shouldPaperFormWithFieldErrors() {
+        when(bindingResultMock.hasErrors()).thenReturn(true);
+        when(bindingResultMock.getFieldErrors()).thenReturn(Collections.singletonList(fieldErrorMock));
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        when(ccdBeanTransformer.transform(callbackRequestMock)).thenReturn(ccdDataMock);
+
+        ResponseEntity<CallbackResponse> response = underTest.paperFormCaseDetails(callbackRequestMock,
+                bindingResultMock);
+
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        assertThat(response.getBody().getErrors().isEmpty(), is(false));
+    }
+
 }

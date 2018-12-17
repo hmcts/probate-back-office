@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 import uk.gov.hmcts.probate.model.ApplicationType;
+import uk.gov.hmcts.probate.model.ccd.CaseMatch;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
@@ -24,12 +25,14 @@ import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static java.util.Collections.EMPTY_LIST;
+import static java.util.Optional.ofNullable;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT;
@@ -45,14 +48,16 @@ public class CallbackResponseTransformer {
     static final String PAYMENT_REFERENCE_FEE_PREFIX = "Fee account PBA-";
     static final String PAYMENT_REFERENCE_CHEQUE = "Cheque (payable to ‘HM Courts & Tribunals Service’)";
 
-    private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private static final ApplicationType DEFAULT_APPLICATION_TYPE = SOLICITOR;
     private static final String DEFAULT_REGISTRY_LOCATION = "Birmingham";
+
     public static final String ANSWER_YES = "Yes";
     public static final String ANSWER_NO = "No";
     public static final String QA_CASE_STATE = "BOCaseQA";
     public static final String DATE_FORMAT = "yyyy-MM-dd";
     public static final String OTHER = "other";
+
+    private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(DATE_FORMAT);
 
     public CallbackResponse transformWithConditionalStateChange(CallbackRequest callbackRequest, Optional<String> newState) {
         ResponseCaseData responseCaseData = getResponseCaseData(callbackRequest.getCaseDetails(), false)
@@ -87,6 +92,22 @@ public class CallbackResponseTransformer {
                     callbackRequest.getCaseDetails().getData().getBoEmailDocsReceivedNotification());
         }
         responseCaseDataBuilder.solsSOTNeedToUpdate(null);
+
+        return transformResponse(responseCaseDataBuilder.build());
+    }
+
+    public CallbackResponse addMatches(CallbackRequest callbackRequest, List<CaseMatch> newMatches) {
+        List<CollectionMember<CaseMatch>> storedMatches = callbackRequest.getCaseDetails().getData().getCaseMatches();
+
+        // Removing case matches that have been already added
+        storedMatches.stream()
+                .map(CollectionMember::getValue).forEach(newMatches::remove);
+
+        storedMatches.addAll(newMatches.stream().map(CollectionMember::new).collect(Collectors.toList()));
+
+        storedMatches.sort(Comparator.comparingInt(m -> ofNullable(m.getValue().getValid()).orElse("").length()));
+
+        ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), false);
 
         return transformResponse(responseCaseDataBuilder.build());
     }
@@ -151,6 +172,16 @@ public class CallbackResponseTransformer {
         return transformResponse(responseCaseData);
     }
 
+    public CallbackResponse paperForm(CallbackRequest callbackRequest) {
+
+        ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), false);
+        responseCaseDataBuilder.paperForm(ANSWER_YES);
+        getCaseCreatorResponseCaseBuilder(callbackRequest.getCaseDetails().getData(), responseCaseDataBuilder);
+
+        return transformResponse(responseCaseDataBuilder.build());
+    }
+
+
     private CallbackResponse transformResponse(ResponseCaseData responseCaseData) {
         return CallbackResponse.builder().data(responseCaseData).build();
     }
@@ -159,8 +190,8 @@ public class CallbackResponseTransformer {
         CaseData caseData = caseDetails.getData();
 
         ResponseCaseDataBuilder builder = ResponseCaseData.builder()
-                .applicationType(Optional.ofNullable(caseData.getApplicationType()).orElse(DEFAULT_APPLICATION_TYPE))
-                .registryLocation(Optional.ofNullable(caseData.getRegistryLocation()).orElse(DEFAULT_REGISTRY_LOCATION))
+                .applicationType(ofNullable(caseData.getApplicationType()).orElse(DEFAULT_APPLICATION_TYPE))
+                .registryLocation(ofNullable(caseData.getRegistryLocation()).orElse(DEFAULT_REGISTRY_LOCATION))
                 .solsSolicitorFirmName(caseData.getSolsSolicitorFirmName())
                 .solsSolicitorFirmPostcode(caseData.getSolsSolicitorFirmPostcode())
                 .solsSolicitorEmail(caseData.getSolsSolicitorEmail())
@@ -191,6 +222,7 @@ public class CallbackResponseTransformer {
                 .primaryApplicantAddress(caseData.getPrimaryApplicantAddress())
                 .solsSolicitorAppReference(caseData.getSolsSolicitorAppReference())
                 .solsAdditionalInfo(caseData.getSolsAdditionalInfo())
+                .caseMatches(caseData.getCaseMatches())
 
                 .solsSOTNeedToUpdate(caseData.getSolsSOTNeedToUpdate())
 
@@ -246,7 +278,9 @@ public class CallbackResponseTransformer {
                 .applicationSubmittedDate(caseData.getApplicationSubmittedDate())
 
                 .scannedDocuments(caseData.getScannedDocuments())
-                .evidenceHandled(caseData.getEvidenceHandled());
+                .evidenceHandled(caseData.getEvidenceHandled())
+
+                .paperForm(caseData.getPaperForm());
 
         if (transform) {
             updateCaseBuilderForTransformCase(caseData, builder);
@@ -256,6 +290,106 @@ public class CallbackResponseTransformer {
             updateCaseBuilder(caseData, builder);
         }
 
+        if (isPaperForm(caseData)) {
+            builder = getCaseCreatorResponseCaseBuilder(caseData, builder);
+        }
+
+
+        return builder;
+    }
+
+    private boolean isPaperForm(CaseData caseData) {
+        return (caseData.getPaperForm() != null && caseData.getPaperForm().equals(ANSWER_YES));
+    }
+
+    private ResponseCaseDataBuilder getCaseCreatorResponseCaseBuilder(CaseData caseData, ResponseCaseDataBuilder builder) {
+
+        builder
+                .primaryApplicantSecondPhoneNumber(caseData.getPrimaryApplicantSecondPhoneNumber())
+                .primaryApplicantRelationshipToDeceased(caseData.getPrimaryApplicantRelationshipToDeceased())
+                .paRelationshipToDeceasedOther(caseData.getPaRelationshipToDeceasedOther())
+                .deceasedMartialStatus(caseData.getDeceasedMartialStatus())
+                .willDatedBeforeApril(caseData.getWillDatedBeforeApril())
+                .deceasedEnterMarriageOrCP(caseData.getDeceasedEnterMarriageOrCP())
+                .dateOfMarriageOrCP(caseData.getDateOfMarriageOrCP())
+                .dateOfDivorcedCPJudicially(caseData.getDateOfDivorcedCPJudicially())
+                .willsOutsideOfUK(caseData.getWillsOutsideOfUK())
+                .courtOfDecree(caseData.getCourtOfDecree())
+                .willGiftUnderEighteen(caseData.getWillGiftUnderEighteen())
+                .applyingAsAnAttorney(caseData.getApplyingAsAnAttorney())
+                .attorneyOnBehalfOfNameAndAddress(caseData.getAttorneyOnBehalfOfNameAndAddress())
+                .mentalCapacity(caseData.getMentalCapacity())
+                .courtOfProtection(caseData.getCourtOfProtection())
+                .epaOrLpa(caseData.getEpaOrLpa())
+                .epaRegistered(caseData.getEpaRegistered())
+                .domicilityCountry(caseData.getDomicilityCountry())
+                .ukEstateItems(caseData.getUkEstateItems())
+                .domicilityIHTCert(caseData.getDomicilityIHTCert())
+                .entitledToApply(caseData.getEntitledToApply())
+                .entitledToApplyOther(caseData.getEntitledToApplyOther())
+                .notifiedApplicants(caseData.getNotifiedApplicants())
+                .foreignAsset(caseData.getForeignAsset())
+                .foreignAssetEstateValue(caseData.getForeignAssetEstateValue())
+                .adopted(caseData.getAdopted())
+                .adoptiveRelatives(caseData.getAdoptiveRelatives())
+                .caseType(caseData.getCaseType())
+                .spouseOrPartner(caseData.getSpouseOrPartner())
+                .childrenSurvived(caseData.getChildrenSurvived())
+                .childrenOverEighteenSurvived(caseData.getChildrenOverEighteenSurvived())
+                .childrenUnderEighteenSurvived(caseData.getChildrenUnderEighteenSurvived())
+                .childrenDied(caseData.getChildrenDied())
+                .childrenDiedOverEighteen(caseData.getChildrenDiedOverEighteen())
+                .childrenDiedUnderEighteen(caseData.getChildrenDiedUnderEighteen())
+                .grandChildrenSurvived(caseData.getGrandChildrenSurvived())
+                .grandChildrenSurvivedOverEighteen(caseData.getGrandChildrenSurvivedOverEighteen())
+                .grandChildrenSurvivedUnderEighteen(caseData.getGrandChildrenSurvivedUnderEighteen())
+                .parentsExistSurvived(caseData.getParentsExistSurvived())
+                .parentsExistOverEighteenSurvived(caseData.getParentsExistOverEighteenSurvived())
+                .parentsExistUnderEighteenSurvived(caseData.getParentsExistUnderEighteenSurvived())
+                .wholeBloodSiblingsSurvived(caseData.getWholeBloodSiblingsSurvived())
+                .wholeBloodSiblingsSurvivedOverEighteen(caseData.getWholeBloodSiblingsSurvivedOverEighteen())
+                .wholeBloodSiblingsSurvivedUnderEighteen(caseData.getWholeBloodSiblingsSurvivedUnderEighteen())
+                .wholeBloodSiblingsDied(caseData.getWholeBloodSiblingsDied())
+                .wholeBloodSiblingsDiedOverEighteen(caseData.getWholeBloodSiblingsDiedOverEighteen())
+                .wholeBloodSiblingsDiedUnderEighteen(caseData.getWholeBloodSiblingsDiedUnderEighteen())
+                .wholeBloodNeicesAndNephews(caseData.getWholeBloodNeicesAndNephews())
+                .wholeBloodNeicesAndNephewsOverEighteen(caseData.getWholeBloodNeicesAndNephewsOverEighteen())
+                .wholeBloodNeicesAndNephewsUnderEighteen(caseData.getWholeBloodNeicesAndNephewsUnderEighteen())
+                .halfBloodSiblingsSurvived(caseData.getHalfBloodSiblingsSurvived())
+                .halfBloodSiblingsSurvivedOverEighteen(caseData.getHalfBloodSiblingsSurvivedOverEighteen())
+                .halfBloodSiblingsSurvivedUnderEighteen(caseData.getHalfBloodSiblingsSurvivedUnderEighteen())
+                .halfBloodSiblingsDied(caseData.getHalfBloodSiblingsDied())
+                .halfBloodSiblingsDiedOverEighteen(caseData.getHalfBloodSiblingsDiedOverEighteen())
+                .halfBloodSiblingsDiedUnderEighteen(caseData.getHalfBloodSiblingsDiedUnderEighteen())
+                .halfBloodNeicesAndNephews(caseData.getHalfBloodNeicesAndNephews())
+                .halfBloodNeicesAndNephewsOverEighteen(caseData.getHalfBloodNeicesAndNephewsOverEighteen())
+                .halfBloodNeicesAndNephewsUnderEighteen(caseData.getHalfBloodNeicesAndNephewsUnderEighteen())
+                .grandparentsDied(caseData.getGrandparentsDied())
+                .grandparentsDiedOverEighteen(caseData.getGrandparentsDiedOverEighteen())
+                .grandparentsDiedUnderEighteen(caseData.getGrandparentsDiedUnderEighteen())
+                .wholeBloodUnclesAndAuntsSurvived(caseData.getWholeBloodUnclesAndAuntsSurvived())
+                .wholeBloodUnclesAndAuntsSurvivedOverEighteen(caseData.getWholeBloodUnclesAndAuntsSurvivedOverEighteen())
+                .wholeBloodUnclesAndAuntsSurvivedUnderEighteen(caseData.getWholeBloodUnclesAndAuntsSurvivedUnderEighteen())
+                .wholeBloodUnclesAndAuntsDied(caseData.getWholeBloodUnclesAndAuntsDied())
+                .wholeBloodUnclesAndAuntsDiedOverEighteen(caseData.getWholeBloodUnclesAndAuntsDiedOverEighteen())
+                .wholeBloodUnclesAndAuntsDiedUnderEighteen(caseData.getWholeBloodUnclesAndAuntsDiedUnderEighteen())
+                .wholeBloodCousinsSurvived(caseData.getWholeBloodCousinsSurvived())
+                .wholeBloodCousinsSurvivedOverEighteen(caseData.getWholeBloodCousinsSurvivedOverEighteen())
+                .wholeBloodCousinsSurvivedUnderEighteen(caseData.getWholeBloodCousinsSurvivedUnderEighteen())
+                .halfBloodUnclesAndAuntsSurvived(caseData.getHalfBloodUnclesAndAuntsSurvived())
+                .halfBloodUnclesAndAuntsSurvivedOverEighteen(caseData.getHalfBloodUnclesAndAuntsSurvivedOverEighteen())
+                .halfBloodUnclesAndAuntsSurvivedUnderEighteen(caseData.getHalfBloodUnclesAndAuntsSurvivedUnderEighteen())
+                .halfBloodUnclesAndAuntsDied(caseData.getHalfBloodUnclesAndAuntsDied())
+                .halfBloodUnclesAndAuntsDiedOverEighteen(caseData.getHalfBloodUnclesAndAuntsDiedOverEighteen())
+                .halfBloodUnclesAndAuntsDiedUnderEighteen(caseData.getHalfBloodUnclesAndAuntsDiedUnderEighteen())
+                .halfBloodCousinsSurvived(caseData.getHalfBloodCousinsSurvived())
+                .halfBloodCousinsSurvivedOverEighteen(caseData.getHalfBloodCousinsSurvivedOverEighteen())
+                .halfBloodCousinsSurvivedUnderEighteen(caseData.getHalfBloodCousinsSurvivedUnderEighteen())
+                .applicationFeePaperForm(caseData.getApplicationFeePaperForm())
+                .feeForCopiesPaperForm(caseData.getFeeForCopiesPaperForm())
+                .totalFeePaperForm(caseData.getTotalFeePaperForm())
+                .paperPaymentMethod(caseData.getPaperPaymentMethod())
+                .paymentReferenceNumberPaperform(caseData.getPaymentReferenceNumberPaperform());
 
         return builder;
     }
@@ -269,6 +403,16 @@ public class CallbackResponseTransformer {
                 builder
                         .ihtReferenceNumber(null);
             }
+        }
+
+        if (!isPaperForm(caseData)) {
+            builder
+                    .paperForm(ANSWER_NO);
+        }
+
+        if (caseData.getCaseType() == null) {
+            builder
+                    .caseType("gop");
         }
 
         if (caseData.getPrimaryApplicantAliasReason() != null) {
@@ -311,6 +455,16 @@ public class CallbackResponseTransformer {
         builder
                 .ihtReferenceNumber(caseData.getIhtReferenceNumber())
                 .solsDeceasedAliasNamesList(caseData.getSolsDeceasedAliasNamesList());
+
+        if (!isPaperForm(caseData)) {
+            builder
+                    .paperForm(ANSWER_NO);
+        }
+
+        if (caseData.getCaseType() == null) {
+            builder
+                    .caseType("gop");
+        }
 
         if (caseData.getSolsExecutorAliasNames() != null) {
             builder
@@ -408,7 +562,7 @@ public class CallbackResponseTransformer {
     }
 
     private String transformMoneyGBPToString(BigDecimal bdValue) {
-        return Optional.ofNullable(bdValue)
+        return ofNullable(bdValue)
                 .map(value -> bdValue.multiply(new BigDecimal(100)))
                 .map(BigDecimal::intValue)
                 .map(String::valueOf)
@@ -416,14 +570,14 @@ public class CallbackResponseTransformer {
     }
 
     private String transformToString(BigDecimal bdValue) {
-        return Optional.ofNullable(bdValue)
+        return ofNullable(bdValue)
                 .map(BigDecimal::intValue)
                 .map(String::valueOf)
                 .orElse(null);
     }
 
     private String transformToString(Long longValue) {
-        return Optional.ofNullable(longValue)
+        return ofNullable(longValue)
                 .map(String::valueOf)
                 .orElse(null);
     }

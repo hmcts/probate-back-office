@@ -44,7 +44,7 @@ withPipeline("java", product, component) {
             keepAll              : true,
             reportDir            : "build/reports/tests/test",
             reportFiles          : "index.html",
-            reportName           : "sol-ccd-service Test Report"
+            reportName           : "back-office Test Report"
     ]
 
     publishHTML target: [
@@ -53,7 +53,7 @@ withPipeline("java", product, component) {
             keepAll              : true,
             reportDir            : "build/reports/jacoco",
             reportFiles          : "index.html",
-            reportName           : "sol-ccd-service Code Coverage Report"
+            reportName           : "back-office Code Coverage Report"
     ]
 
     publishHTML target: [
@@ -62,7 +62,7 @@ withPipeline("java", product, component) {
             keepAll              : true,
             reportDir            : "build/reports/findbugs",
             reportFiles          : "main.html",
-            reportName           : "sol-ccd-service find Bugs Report"
+            reportName           : "back-office find Bugs Report"
     ]
   }
 

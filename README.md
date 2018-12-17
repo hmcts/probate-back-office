@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/hmcts/spring-boot-template.svg?branch=master)](https://travis-ci.org/hmcts/spring-boot-template)
 
-[![codecov](https://codecov.io/gh/hmcts/probate-sol-ccd-service/branch/master/graph/badge.svg)](https://codecov.io/gh/hmcts/probate-sol-ccd-service)
+[![codecov](https://codecov.io/gh/hmcts/probate-back-office/branch/master/graph/badge.svg)](https://codecov.io/gh/hmcts/probate-back-office)
 
 ## Purpose
 
@@ -223,3 +223,6 @@ Here are some other functionalities it provides:
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE.md) file for details
+
+
+    
