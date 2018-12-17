@@ -8,6 +8,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.test.context.junit4.SpringRunner;
+import uk.gov.hmcts.probate.config.properties.registries.RegistriesProperties;
+import uk.gov.hmcts.probate.config.properties.registries.Registry;
 import uk.gov.hmcts.probate.exception.BadRequestException;
 import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.SentEmail;
@@ -21,6 +23,7 @@ import uk.gov.service.notify.NotificationClientException;
 import uk.gov.service.notify.SendEmailResponse;
 
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -28,6 +31,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
@@ -54,9 +58,13 @@ public class NotificationServiceTest {
     @MockBean
     private PDFManagementService pdfManagementService;
 
+    @MockBean
+    private RegistriesProperties registriesProperties;
+
     @SpyBean
     private NotificationClient notificationClient;
 
+    private Registry registry;
     private CaseDetails personalCaseDataOxford;
     private CaseDetails solicitorCaseDataOxford;
     private CaseDetails personalCaseDataBirmingham;
@@ -74,11 +82,17 @@ public class NotificationServiceTest {
 
     @Before
     public void setUp() throws NotificationClientException {
+        registry = new Registry();
+        registry.setName("test");
+        registry.setPhone("123456");
+
         when(sendEmailResponse.getFromEmail()).thenReturn(Optional.of("test@test.com"));
         when(sendEmailResponse.getBody()).thenReturn("test-body");
 
         doReturn(sendEmailResponse).when(notificationClient).sendEmail(anyString(), anyString(), any(), isNull());
         doReturn(sendEmailResponse).when(notificationClient).sendEmail(any(), any(), any(), any(), any());
+
+
 
         personalCaseDataOxford = new CaseDetails(CaseData.builder()
                 .applicationType(PERSONAL)
@@ -158,6 +172,13 @@ public class NotificationServiceTest {
     public void sendDocumentsReceivedEmailToPersonalApplicantFromBirmingham()
             throws NotificationClientException, BadRequestException {
 
+        registry.setEmailReplyToId("oxford-emailReplyToId");
+        HashMap<String, Registry> map = new HashMap<>();
+        HashMap<String, Registry> spyMap = spy(map);
+        spyMap.put("leads", registry);
+        when(registriesProperties.getRegistries()).thenReturn(spyMap);
+        when(spyMap.get(anyString())).thenReturn(registry);
+
         notificationService.sendEmail(DOCUMENTS_RECEIVED, personalCaseDataBirmingham);
 
         verify(notificationClient).sendEmail(
@@ -172,6 +193,13 @@ public class NotificationServiceTest {
     @Test
     public void sendDocumentsReceivedEmailToSolicitorFromBirmingham()
             throws NotificationClientException, BadRequestException {
+
+        registry.setEmailReplyToId("oxford-emailReplyToId");
+        HashMap<String, Registry> map = new HashMap<>();
+        HashMap<String, Registry> spyMap = spy(map);
+        spyMap.put("leads", registry);
+        when(registriesProperties.getRegistries()).thenReturn(spyMap);
+        when(spyMap.get(anyString())).thenReturn(registry);
 
         notificationService.sendEmail(DOCUMENTS_RECEIVED, solicitorCaseDataBirmingham);
 
@@ -188,6 +216,13 @@ public class NotificationServiceTest {
     public void sendGrantIssuedEmailToPersonalApplicantFromBirmingham()
             throws NotificationClientException, BadRequestException {
 
+        registry.setEmailReplyToId("oxford-emailReplyToId");
+        HashMap<String, Registry> map = new HashMap<>();
+        HashMap<String, Registry> spyMap = spy(map);
+        spyMap.put("leads", registry);
+        when(registriesProperties.getRegistries()).thenReturn(spyMap);
+        when(spyMap.get(anyString())).thenReturn(registry);
+
         notificationService.sendEmail(GRANT_ISSUED, personalCaseDataBirmingham);
 
         verify(notificationClient).sendEmail(
@@ -203,6 +238,13 @@ public class NotificationServiceTest {
     public void sendGrantIssuedEmailToSolicitorFromBirmingham()
             throws NotificationClientException, BadRequestException {
 
+        registry.setEmailReplyToId("oxford-emailReplyToId");
+        HashMap<String, Registry> map = new HashMap<>();
+        HashMap<String, Registry> spyMap = spy(map);
+        spyMap.put("leads", registry);
+        when(registriesProperties.getRegistries()).thenReturn(spyMap);
+        when(spyMap.get(anyString())).thenReturn(registry);
+
         notificationService.sendEmail(GRANT_ISSUED, solicitorCaseDataBirmingham);
 
         verify(notificationClient).sendEmail(
@@ -217,6 +259,13 @@ public class NotificationServiceTest {
     @Test
     public void sendCaseStoppedEmailToPersonalApplicantFromBirmingham()
             throws NotificationClientException, BadRequestException {
+
+        registry.setEmailReplyToId("birmingham-emailReplyToId");
+        HashMap<String, Registry> map = new HashMap<>();
+        HashMap<String, Registry> spyMap = spy(map);
+        spyMap.put("birmingham", registry);
+        when(registriesProperties.getRegistries()).thenReturn(spyMap);
+        when(spyMap.get(anyString())).thenReturn(registry);
 
         notificationService.sendEmail(CASE_STOPPED, personalCaseDataBirmingham);
 
@@ -234,6 +283,13 @@ public class NotificationServiceTest {
     public void sendCaseStoppedEmailToSolicitorFromBirmingham()
             throws NotificationClientException, BadRequestException {
 
+        registry.setEmailReplyToId("birmingham-emailReplyToId");
+        HashMap<String, Registry> map = new HashMap<>();
+        HashMap<String, Registry> spyMap = spy(map);
+        spyMap.put("birmingham", registry);
+        when(registriesProperties.getRegistries()).thenReturn(spyMap);
+        when(spyMap.get(anyString())).thenReturn(registry);
+
         notificationService.sendEmail(CASE_STOPPED, solicitorCaseDataBirmingham);
 
         verify(notificationClient).sendEmail(
@@ -249,6 +305,13 @@ public class NotificationServiceTest {
     @Test
     public void sendCaseStoppedEmailToPersonalApplicantFromOxford()
             throws NotificationClientException, BadRequestException {
+
+        registry.setEmailReplyToId("oxford-emailReplyToId");
+        HashMap<String, Registry> map = new HashMap<>();
+        HashMap<String, Registry> spyMap = spy(map);
+        spyMap.put("oxford", registry);
+        when(registriesProperties.getRegistries()).thenReturn(spyMap);
+        when(spyMap.get(anyString())).thenReturn(registry);
 
         notificationService.sendEmail(CASE_STOPPED, personalCaseDataOxford);
 
@@ -266,6 +329,13 @@ public class NotificationServiceTest {
     public void sendCaseStoppedEmailToSolicitorFromOxford()
             throws NotificationClientException, BadRequestException {
 
+        registry.setEmailReplyToId("oxford-emailReplyToId");
+        HashMap<String, Registry> map = new HashMap<>();
+        HashMap<String, Registry> spyMap = spy(map);
+        spyMap.put("oxford", registry);
+        when(registriesProperties.getRegistries()).thenReturn(spyMap);
+        when(spyMap.get(anyString())).thenReturn(registry);
+
         notificationService.sendEmail(CASE_STOPPED, solicitorCaseDataOxford);
 
         verify(notificationClient).sendEmail(
@@ -282,6 +352,13 @@ public class NotificationServiceTest {
     public void sendCaseStoppedEmailToPersonalApplicantFromManchester()
             throws NotificationClientException, BadRequestException {
 
+        registry.setEmailReplyToId("manchester-emailReplyToId");
+        HashMap<String, Registry> map = new HashMap<>();
+        HashMap<String, Registry> spyMap = spy(map);
+        spyMap.put("manchester", registry);
+        when(registriesProperties.getRegistries()).thenReturn(spyMap);
+        when(spyMap.get(anyString())).thenReturn(registry);
+
         notificationService.sendEmail(CASE_STOPPED, personalCaseDataManchester);
 
         verify(notificationClient).sendEmail(
@@ -297,6 +374,12 @@ public class NotificationServiceTest {
     @Test
     public void sendCaseStoppedEmailToSolicitorFromManchester()
             throws NotificationClientException, BadRequestException {
+        registry.setEmailReplyToId("manchester-emailReplyToId");
+        HashMap<String, Registry> map = new HashMap<>();
+        HashMap<String, Registry> spyMap = spy(map);
+        spyMap.put("manchester", registry);
+        when(registriesProperties.getRegistries()).thenReturn(spyMap);
+        when(spyMap.get(anyString())).thenReturn(registry);
 
         notificationService.sendEmail(CASE_STOPPED, solicitorCaseDataManchester);
 
@@ -314,6 +397,13 @@ public class NotificationServiceTest {
     public void sendGeneralCaveatEmailToPersonalApplicantFromOxford()
             throws NotificationClientException, BadRequestException {
 
+        registry.setEmailReplyToId("oxford-emailReplyToId");
+        HashMap<String, Registry> map = new HashMap<>();
+        HashMap<String, Registry> spyMap = spy(map);
+        spyMap.put("oxford", registry);
+        when(registriesProperties.getRegistries()).thenReturn(spyMap);
+        when(spyMap.get(anyString())).thenReturn(registry);
+
         notificationService.sendCaveatEmail(GENERAL_CAVEAT_MESSAGE, personalCaveatDataOxford);
 
         verify(notificationClient).sendEmail(
@@ -329,6 +419,13 @@ public class NotificationServiceTest {
     @Test
     public void sendGeneralCaveatEmailToPersonalApplicantFromBirmingham()
             throws NotificationClientException, BadRequestException {
+
+        registry.setEmailReplyToId("birmingham-emailReplyToId");
+        HashMap<String, Registry> map = new HashMap<>();
+        HashMap<String, Registry> spyMap = spy(map);
+        spyMap.put("birmingham", registry);
+        when(registriesProperties.getRegistries()).thenReturn(spyMap);
+        when(spyMap.get(anyString())).thenReturn(registry);
 
         notificationService.sendCaveatEmail(GENERAL_CAVEAT_MESSAGE, personalCaveatDataBirmingham);
 
@@ -346,6 +443,13 @@ public class NotificationServiceTest {
     public void sendGeneralCaveatEmailToPersonalApplicantFromManchester()
             throws NotificationClientException, BadRequestException {
 
+        registry.setEmailReplyToId("manchester-emailReplyToId");
+        HashMap<String, Registry> map = new HashMap<>();
+        HashMap<String, Registry> spyMap = spy(map);
+        spyMap.put("manchester", registry);
+        when(registriesProperties.getRegistries()).thenReturn(spyMap);
+        when(spyMap.get(anyString())).thenReturn(registry);
+
         notificationService.sendCaveatEmail(GENERAL_CAVEAT_MESSAGE, personalCaveatDataManchester);
 
         verify(notificationClient).sendEmail(
@@ -361,6 +465,13 @@ public class NotificationServiceTest {
     @Test
     public void sendGeneralCaveatEmailToPersonalApplicantFromLeeds()
             throws NotificationClientException, BadRequestException {
+
+        registry.setEmailReplyToId("leeds-emailReplyToId");
+        HashMap<String, Registry> map = new HashMap<>();
+        HashMap<String, Registry> spyMap = spy(map);
+        spyMap.put("leads", registry);
+        when(registriesProperties.getRegistries()).thenReturn(spyMap);
+        when(spyMap.get(anyString())).thenReturn(registry);
 
         notificationService.sendCaveatEmail(GENERAL_CAVEAT_MESSAGE, personalCaveatDataLeeds);
 
