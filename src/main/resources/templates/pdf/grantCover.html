@@ -14,18 +14,12 @@
             padding-top: 8px;
         }
 
-        .legal-header {
-            font-size: 1.5em;
-            text-align: center;
-        }
-
         .legal-subheader {
-            font-size: 1.2em;
+            font-size: 20px;
             text-align: center;
-            padding-left: 10px;
-            margin-top: 2em;
+            padding-left: 23px;
+            padding-top: 122px;
         }
-
 
     </style>
 </head>
@@ -33,18 +27,9 @@
 <table>
     <tbody class="table-content">
 
-
-
-
-
-
     <tr>
-        <td colspan="5" class="legal-subheader">
+        <td colspan="1" class="legal-subheader">
             {{case_details.case_data.primaryApplicantFullName}}
-        </td>
-    </tr>
-    <tr>
-        <td colspan="5" class="legal-subheader">
             {{case_details.case_data.primaryApplicantFullName}}<br/>
             {{case_details.case_data.primaryApplicantAddress.addressLine1}}<br/>
             {{case_details.case_data.primaryApplicantAddress.addressLine2}}<br/>
@@ -53,7 +38,6 @@
             {{case_details.case_data.primaryApplicantAddress.country}}<br/>
         </td>
     </tr>
-
     </tbody>
 </table>
 </body>

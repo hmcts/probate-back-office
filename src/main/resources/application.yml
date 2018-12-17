@@ -145,3 +145,9 @@ document:
     service:
       api:
         baseurl: localhost:8080
+
+idam:
+  s2s-auth:
+    url: ""
+send-letter:
+  url: ${SEND_LETTER_SERIVCE_BASEURL:http://localhost:8485}
