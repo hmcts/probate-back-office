@@ -9,7 +9,7 @@ library "Infrastructure@${params.LIB_VERSION}"
 
 String product = "probate"
 
-String component = "sol-ccd-services"
+String component = "back-office"
 
 def type = "java"
 
