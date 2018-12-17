@@ -71,7 +71,7 @@ public class BulkPrintServiceTest {
     }
 
     @Test
-    public void testSuccessfullSendToBulkPrint() {
+    public void testSuccessfulSendToBulkPrintWithNoExtraCopies() {
 
         SolsAddress address = SolsAddress.builder().addressLine1("Address 1")
                 .addressLine2("Address 2")
@@ -82,7 +82,6 @@ public class BulkPrintServiceTest {
                 .primaryApplicantForenames("first")
                 .primaryApplicantSurname("last")
                 .primaryApplicantAddress(address)
-                .extraCopiesOfGrant(3L)
                 .build();
         CallbackRequest callbackRequest = new CallbackRequest(new CaseDetails(caseData, null, 0L));
         SendLetterResponse sendLetterResponse = new SendLetterResponse(UUID.randomUUID());
@@ -101,6 +100,41 @@ public class BulkPrintServiceTest {
         verify(sendLetterApiMock).sendLetter(anyString(), any(LetterWithPdfsRequest.class));
 
         assertNotNull(documents);
-        assertThat(documents.size(), is(8));
+        assertThat(documents.size(), is(6));
+    }
+
+
+    @Test
+    public void testSuccessfulSendToBulkPrintWithSixExtraCopies() {
+
+        SolsAddress address = SolsAddress.builder().addressLine1("Address 1")
+                .addressLine2("Address 2")
+                .postCode("EC2")
+                .country("UK")
+                .build();
+        CaseData caseData = CaseData.builder()
+                .primaryApplicantForenames("first")
+                .primaryApplicantSurname("last")
+                .primaryApplicantAddress(address)
+                .extraCopiesOfGrant(6L)
+                .build();
+        CallbackRequest callbackRequest = new CallbackRequest(new CaseDetails(caseData, null, 0L));
+        SendLetterResponse sendLetterResponse = new SendLetterResponse(UUID.randomUUID());
+        DocumentLink documentLink = DocumentLink.builder()
+                .documentUrl("http://localhost")
+                .build();
+        Document document = Document.builder()
+                .documentFileName("test.pdf")
+                .documentGeneratedBy("test")
+                .documentDateAdded(LocalDate.now())
+                .documentLink(documentLink)
+                .build();
+        when(sendLetterApiMock.sendLetter(anyString(), any(LetterWithPdfsRequest.class))).thenReturn(sendLetterResponse);
+        List<String> documents = bulkPrintService.sendToBulkPrint(callbackRequest, document);
+
+        verify(sendLetterApiMock).sendLetter(anyString(), any(LetterWithPdfsRequest.class));
+
+        assertNotNull(documents);
+        assertThat(documents.size(), is(12));
     }
 }

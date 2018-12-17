@@ -69,8 +69,15 @@ public class BulkPrintService {
                                                             String authHeaderValue) {
         List<String> documents = new LinkedList<>();
         String encodedGrantDocument = getPdfAsBase64EncodedString(caseDocument, authHeaderValue);
+        //Layer documents as cover letter first, grant, extra copies of grant to PA.
+        // Copies of grant going to IM and SME are separated by blank sheets.
         documents.add(encodeToString(pdfGeneratorService.generatePdf(DocumentType.GRANT_COVER, toJson(callbackRequest)).getBytes()));
-        LongStream.range(1, callbackRequest.getCaseDetails().getData().getExtraCopiesOfGrant() + 1)
+        documents.add(encodedGrantDocument);
+        Long extraCopiesOfGrant = 0L;
+        if (callbackRequest.getCaseDetails().getData().getExtraCopiesOfGrant() != null) {
+            extraCopiesOfGrant = callbackRequest.getCaseDetails().getData().getExtraCopiesOfGrant();
+        }
+        LongStream.range(1, extraCopiesOfGrant + 1)
                 .forEach(i -> documents.add(encodedGrantDocument));
         documents.add(encodeToString(pdfGeneratorService.generatePdf(DocumentType.BLANK, toJson(callbackRequest)).getBytes()));
         documents.add(encodedGrantDocument);

@@ -4,7 +4,7 @@ services:
   back-office:
       #context: .
     #image: back-office
-    image: docker.artifactory.reform.hmcts.net/probate/back-office:${SOL_CCD_SERVICE_API_DOCKER_VERSION:-latest}
+    image: back-office-demo:latest
     container_name: back-office
     environment:
       - SERVER_PORT=4104
@@ -13,7 +13,7 @@ services:
       - PDF_SERVICE_URL=http://pdf-service-api:5500
       - PDF_SERVICE_PDFAPI=/api/v1/pdf-generator/html
       - JAVA_OPTS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005
-
+      - APPINSIGHTS_INSTRUMENTATIONKEY=false
       # these environment variables are used by java-logging library
       - REFORM_SERVICE_NAME=back-office
       - REFORM_TEAM=probate
@@ -28,16 +28,22 @@ services:
      - pdf-service-api
 
   service-auth-provider-api:
-    image: docker.artifactory.reform.hmcts.net/auth/service-auth-provider-api:${SERVICE_AUTH_API_DOCKER_VERSION:-latest}
+    image: hmcts/service-auth-provider-app:latest
     container_name: service-auth-provider-api
     environment:
-      - AUTH_PROVIDER_SERVICE_SERVER_JWT_KEY=wThK0f0/lh3FlxFcL4xUWDMI5C1J9KyQBgXV4wseh1e5J1uYJIjvTvArHxQDrYoHJ23xFxjHkOnvNbR5dXRoxA==
-      - AUTH_PROVIDER_SERVICE_SERVER_MICROSERVICE_KEYS_TEST=asdddsf
-      - AUTH_PROVIDER_SERVICE_SERVER_MICROSERVICE_KEYS_PROBATE_BACKEND=CMPRGOBNAUXKYDJL
-      - AUTH_PROVIDER_SERVICE_SERVER_MICROSERVICE_KEYS_EM_GW=AAAAAAAAAAAAAAAA
-      - AUTH_PROVIDER_SERVICE_TESTING_SUPPORT_ENABLED=true
+    - SERVER_PORT=8080
+    - JAVA_OPTS=-Xms8m -Xmx256m -Djava.security.egd=file:/dev/./urandom -XX:MaxMetaspaceSize=128m
+    - JWT_KEY=wThK0f0/lh3FlxFcL4xUWDMI5C1J9KyQBgXV4wseh1e5J1uYJIjvTvArHxQDrYoHJ23xFxjHkOnvNbR5dXRoxA==
+    - MICROSERVICE_KEYS_EM_GW=AAAAAAAAAAAAAAAA
+    - MICROSERVICE_KEYS_CCD_DATA=AAAAAAAAAAAAAAAA
+    - MICROSERVICE_KEYS_CCD_DEFINITION=AAAAAAAAAAAAAAAA
+    - MICROSERVICE_KEYS_CCD_GW=AAAAAAAAAAAAAAAA
+    - MICROSERVICE_KEYS_CCD_PS=AAAAAAAAAAAAAAAA
+    - TESTING_SUPPORT_ENABLED=true
+    - MICROSERVICE_KEYS_PROBATE_BACKEND=AAAAAAAAAAAAAAAA
+    - MICROSERVICE_KEYS_PROBATE_FRONTEND=AAAAAAAAAAAAAAAA
     ports:
-      - 4502:8080
+    - 4502:8080
 
   pdf-service-api:
     image: docker.artifactory.reform.hmcts.net/cmc/pdf-service-api:latest
