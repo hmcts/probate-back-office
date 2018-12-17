@@ -278,7 +278,7 @@ compileJava {
 }
 
 bootJar {
-  archiveName = 'back-office.jar'
+  archiveName = 'sol-ccd-service.jar'
   manifest {
 
     attributes 'Implementation-Title': project.name,
