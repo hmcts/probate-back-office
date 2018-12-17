@@ -6,6 +6,7 @@ String product = "probate"
 String component = "back-office"
 
 List<LinkedHashMap<String, Object>> secrets = [
+ 
     secret('serviceAuthProviderBaseUrl', 'SERVICE_AUTH_PROVIDER_BASE_URL'),
     secret('userAuthProviderOauth2Url', 'USER_AUTH_PROVIDER_OAUTH2_URL'),
     secret('evidenceManagementUrl', 'EVIDENCE_MANAGEMENT_URL'),
@@ -13,7 +14,8 @@ List<LinkedHashMap<String, Object>> secrets = [
     secret('s2sAuthTotpSecret', 'S2S_AUTH_TOTP_SECRET'),
     secret('probate-bo-govNotifyApiKey', 'PROBATE_BO_NOTIFY_KEY'),
     secret('pdf-service-grantSignatureBase64-first', 'BO_GRANT_SIG_FIRST'),
-    secret('pdf-service-grantSignatureBase64-last','BO_GRANT_SIG_LAST')
+    secret('pdf-service-grantSignatureBase64-last','BO_GRANT_SIG_LAST'),
+    secret('ccd-gateway-host','CCD_GATEWAY_HOST')
 ]
 
 static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
@@ -33,6 +35,7 @@ withPipeline("java", product, component) {
   loadVaultSecrets(secrets)
 
   enableSlackNotifications('#probate-jenkins')
+
 
     after('test') {
     try {
@@ -89,3 +92,5 @@ withPipeline("java", product, component) {
     ]
   }
 }
+
+

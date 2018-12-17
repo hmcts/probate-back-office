@@ -9,4 +9,6 @@ public interface HttpHeadersFactory {
     HttpHeaders getApplicationJsonHttpHeader();
 
     HttpHeaders getHttpHeader();
+
+    HttpHeaders getAuthorizationHeaders();
 }

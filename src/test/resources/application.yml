@@ -34,6 +34,10 @@ printservice:
       host: http://localhost:3453
   path: /jurisdictions/PROBATE/case-types/GrantOfRepresentation/cases/%s/probate/
 
+ccd.gateway:
+  host: http://localhost:3453
+  caseMatchingPath: /data/searchCases
+
 spring:
   jackson:
     serialization:
@@ -64,10 +68,12 @@ notifications:
         documentReceived: "pa-document-received"
         caseStopped: "pa-case-stopped"
         grantIssued: "pa-grant-issued"
+        generalCaveatMessage: "pa-general-caveat-message"
       solicitor:
         documentReceived: "sol-document-received"
         caseStopped: "sol-case-stopped"
         grantIssued: "sol-grant-issued"
+        generalCaveatMessage: "sol-general-caveat-message"
 
 registries:
   oxford:
@@ -101,3 +107,7 @@ idam-s2s-auth:
   ribbon:
     eureka:
       enabled: false
+  leeds:
+    name: Leeds Probate Registry
+    phone: 0113 389 6133
+    emailReplyToId: "leeds-emailReplyToId"

@@ -80,7 +80,7 @@ findbugs {
 
 sonarqube {
   properties {
-    property "sonar.projectName", "PROBATE :: back-office"
+    property "sonar.projectName", "PROBATE :: BACK-OFFICE"
     property "sonar.projectKey", "Sols-CCD-Service-API"
     property "sonar.jacoco.reportPath", "${project.buildDir}/jacoco/test.exec"
     property "sonar.host.url", "https://sonar.reform.hmcts.net/"

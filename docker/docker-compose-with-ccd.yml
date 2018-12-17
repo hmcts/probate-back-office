@@ -227,6 +227,9 @@ services:
       - REFORM_TEAM=ccd
       - REFORM_ENVIRONMENT=local
       - APPINSIGHTS_INSTRUMENTATIONKEY=fake-key
+      - ELASTIC_SEARCH_ENABLED=true
+      - ELASTIC_SEARCH_FAIL_ON_IMPORT=true
+      - ELASTIC_SEARCH_HOST=elasticsearch
     ports:
       - 4451:4451
     depends_on:
@@ -260,6 +263,8 @@ services:
         - APPINSIGHTS_INSTRUMENTATIONKEY=fake-key
         - CCD_DM_DOMAIN=http://localhost:8080
         - CCD_DEFAULTPRINTURL=http://localhost:3100/jurisdictions/:jid/case-types/:ctid/cases/:cid
+        - ELASTIC_SEARCH_HOSTS=http://elasticsearch:9200
+        - ELASTIC_SEARCH_DATA_NODES_HOSTS=http://elasticsearch:9200
       ports:
         - 4452:4452
       depends_on:
@@ -321,6 +326,24 @@ services:
         condition: service_started
       idam-api:
         condition: service_started
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.3.0
+    container_name: elasticsearch
+    ports:
+      - 9200:9200
+      - 9300:9300
+
+  logstash:
+    build: logstash/.
+    container_name: logstash
+    volumes:
+      - ./logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml:ro
+      - ./logstash/pipeline:/usr/share/logstash/pipeline:ro
+    environment:
+      LS_JAVA_OPTS: "-Xmx256m -Xms256m"
+    depends_on:
+      - elasticsearch
 
 volumes:
   shared-database-data:
