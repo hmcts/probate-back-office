@@ -24,6 +24,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
+import lombok.Singular;
 import uk.gov.hmcts.probate.controller.validation.AmendCaseDetailsGroup;
 import uk.gov.hmcts.probate.controller.validation.ApplicationCreatedGroup;
 import uk.gov.hmcts.probate.controller.validation.ApplicationReviewedGroup;
@@ -274,7 +275,7 @@ public class CaseData {
 
     private final String applicationSubmittedDate;
 
-    private final List<CollectionMember<ScannedDocument>> scannedDocuments = new ArrayList<>();
+    private final List<CollectionMember<ScannedDocument>> scannedDocuments;
     
     private final String evidenceHandled;
 
@@ -405,8 +406,8 @@ public class CaseData {
         }
 
         return totalExecutors.stream().filter(ex -> isApplying(ex, applying)).collect(Collectors.toList());
-    }
-
+    }   
+    
     private boolean isApplying(CollectionMember<AdditionalExecutor> ex, boolean applying) {
         if (ex == null || ex.getValue() == null || ex.getValue().getAdditionalApplying() == null) {
             return false;

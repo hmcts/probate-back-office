@@ -1,5 +1,27 @@
 package uk.gov.hmcts.probate.transformer;
 
+import static java.util.Collections.EMPTY_LIST;
+import static java.util.Collections.emptyList;
+import static org.hamcrest.Matchers.comparesEqualTo;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.when;
+import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
+import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_DRAFT;
+import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT;
+import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -9,6 +31,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.runners.MockitoJUnitRunner;
+
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
@@ -24,6 +47,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.EstateItem;
 import uk.gov.hmcts.probate.model.ccd.raw.Payment;
 import uk.gov.hmcts.probate.model.ccd.raw.ProbateAliasName;
+import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.StopReason;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
@@ -31,31 +55,8 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
-import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 import uk.gov.hmcts.probate.model.fee.FeeServiceResponse;
 import uk.gov.hmcts.probate.service.StateChangeService;
-
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-
-import static java.util.Collections.EMPTY_LIST;
-import static java.util.Collections.emptyList;
-import static org.hamcrest.Matchers.comparesEqualTo;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.when;
-import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
-import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
-import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_DRAFT;
-import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT;
-import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CallbackResponseTransformerTest {
@@ -161,6 +162,22 @@ public class CallbackResponseTransformerTest {
                             .transactionId("TransactionId-123")
                             .build()));
 
+    private static final DocumentLink SCANNED_DOCUMENT_URL = DocumentLink.builder()
+            .documentBinaryUrl("http://somedoc")
+            .documentFilename("somedoc.pdf")
+            .documentUrl("http://somedoc/location")
+            .build();
+    
+    private static final List<CollectionMember<ScannedDocument>> SCANNED_DOCUMENTS_LIST = Arrays.asList(
+            new CollectionMember("id",
+                    ScannedDocument.builder()
+                            .fileName("scanneddocument.pdf")
+                            .controlNumber("1234")
+                            .scannedDate("2018-01-01T12:34:56.123")
+                            .type("other")
+                            .url(SCANNED_DOCUMENT_URL)
+                            .build()));
+    
     @InjectMocks
     private CallbackResponseTransformer underTest;
 
@@ -244,7 +261,8 @@ public class CallbackResponseTransformerTest {
                 .payments(PAYMENTS_LIST)
                 .boExaminationChecklistQ1(YES)
                 .boExaminationChecklistQ2(YES)
-                .boExaminationChecklistRequestQA(YES);
+                .boExaminationChecklistRequestQA(YES)
+                .scannedDocuments(SCANNED_DOCUMENTS_LIST);
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
@@ -808,9 +826,7 @@ public class CallbackResponseTransformerTest {
 
     @Test
     public void shouldGetPaperApplication() {
-        caseDataBuilder.applicationType(ApplicationType.SOLICITOR);
-        List<CollectionMember<ScannedDocument>> scannedDocuments = new ArrayList<>();
-        scannedDocuments.add(createScannedDocuments("0"));
+        caseDataBuilder.applicationType(ApplicationType.SOLICITOR);        
         List<CollectionMember<EstateItem>> estate = new ArrayList<>();
         estate.add(createEstateItems("0"));
         List<CollectionMember<AttorneyApplyingOnBehalfOf>> attorneyList = new ArrayList<>();
@@ -903,6 +919,7 @@ public class CallbackResponseTransformerTest {
                 .applicationFeePaperForm("0")
                 .feeForCopiesPaperForm("0")
                 .totalFeePaperForm("0")
+                .scannedDocuments(SCANNED_DOCUMENTS_LIST)
                 .paperPaymentMethod("debitOrCredit")
                 .paymentReferenceNumberPaperform(IHT_REFERENCE)
                 .paperForm(YES);
@@ -913,7 +930,7 @@ public class CallbackResponseTransformerTest {
         CallbackResponse callbackResponse = underTest.paperForm(callbackRequestMock);
         assertEquals(1, callbackResponse.getData().getUkEstateItems().size());
         assertEquals(1, callbackResponse.getData().getAttorneyOnBehalfOfNameAndAddress().size());
-        assertEquals(0, callbackResponse.getData().getScannedDocuments().size());
+        assertEquals(1, callbackResponse.getData().getScannedDocuments().size());
         assertEquals(1, callbackResponse.getData().getAdoptiveRelatives().size());
 
         assertCommonDetails(callbackResponse);
@@ -942,24 +959,6 @@ public class CallbackResponseTransformerTest {
                 .comment("comment")
                 .documentLink(docLink)
                 .documentType(DocumentType.IHT).build();
-        return new CollectionMember<>(id, doc);
-    }
-
-    private CollectionMember<ScannedDocument> createScannedDocuments(String id) {
-        DocumentLink urlDocLink = DocumentLink.builder()
-                .documentBinaryUrl("")
-                .documentFilename("")
-                .documentUrl("")
-                .build();
-        
-        ScannedDocument doc = ScannedDocument.builder()
-                .controlNumber("1234")
-                .fileName("scanneddocument.pdf")
-                .scannedDate("2018-01-01T12:34:56.123")
-                .exceptionRecordReference("")
-                .type("other")
-                .url(urlDocLink)
-                .build();
         return new CollectionMember<>(id, doc);
     }
 
@@ -1116,6 +1115,8 @@ public class CallbackResponseTransformerTest {
         assertEquals(YES, callbackResponse.getData().getBoExaminationChecklistQ1());
         assertEquals(YES, callbackResponse.getData().getBoExaminationChecklistQ2());
         assertEquals(YES, callbackResponse.getData().getBoExaminationChecklistRequestQA());
+        
+        assertEquals(SCANNED_DOCUMENTS_LIST, callbackResponse.getData().getScannedDocuments());
     }
 
     private void assertApplicationType(CallbackResponse callbackResponse, ApplicationType applicationType) {

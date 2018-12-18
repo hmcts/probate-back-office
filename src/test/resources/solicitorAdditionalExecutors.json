@@ -118,7 +118,8 @@
       "deceasedFullName":"firstName lastName",
       "boExaminationChecklistQ1": "yes",
       "boExaminationChecklistQ2": "yes",
-      "boExaminationChecklistRequestQA" : "yes"
+      "boExaminationChecklistRequestQA" : "yes",
+      "scannedDocuments": []
     },
     "last_modified":[
       "2018",

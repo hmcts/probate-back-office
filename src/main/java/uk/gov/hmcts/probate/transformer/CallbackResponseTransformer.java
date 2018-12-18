@@ -165,10 +165,7 @@ public class CallbackResponseTransformer {
                 .build();
 
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
-
-        ScannedDocument document = ScannedDocument.builder().build();
-        caseDetails.getData().getScannedDocuments().add(new CollectionMember<>(null, document));
-         
+        
         return transformResponse(responseCaseData);
     }
 
@@ -177,7 +174,7 @@ public class CallbackResponseTransformer {
         ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), false);
         responseCaseDataBuilder.paperForm(ANSWER_YES);
         getCaseCreatorResponseCaseBuilder(callbackRequest.getCaseDetails().getData(), responseCaseDataBuilder);
-
+        
         return transformResponse(responseCaseDataBuilder.build());
     }
 
