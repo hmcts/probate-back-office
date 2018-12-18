@@ -7,6 +7,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 @Data
 @Builder
 @AllArgsConstructor
@@ -18,7 +20,7 @@ public class ScannedDocument {
 
     private final String type;
 
-    private final String scannedDate;
+    private final LocalDateTime scannedDate;
 
     private final DocumentLink url;
     

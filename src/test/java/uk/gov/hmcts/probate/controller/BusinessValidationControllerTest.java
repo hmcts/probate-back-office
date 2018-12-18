@@ -26,6 +26,7 @@ import uk.gov.hmcts.probate.util.TestUtils;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
@@ -93,12 +94,13 @@ public class BusinessValidationControllerTest {
             .documentUrl("http://somedoc/location")
             .build();
 
+    private static final LocalDateTime scannedDate = LocalDateTime.parse("2018-01-01T12:34:56.123");
     private static final List<CollectionMember<ScannedDocument>> SCANNED_DOCUMENTS_LIST = Arrays.asList(
             new CollectionMember("id",
                     ScannedDocument.builder()
                             .fileName("scanneddocument.pdf")
                             .controlNumber("1234")
-                            .scannedDate("2018-01-01T12:34:56.123")
+                            .scannedDate(scannedDate)
                             .type("other")
                             .url(SCANNED_DOCUMENT_URL)
                             .build()));

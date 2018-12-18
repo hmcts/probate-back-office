@@ -37,6 +37,7 @@ import uk.gov.hmcts.probate.service.StateChangeService;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -149,6 +150,7 @@ public class CallbackResponseTransformerTest {
     private static final String ADMIN_CLAUSE_LIMITATION = "Admin Clause Limitation";
     private static final String TOTAL_FEE = "6600";
 
+    private static final LocalDateTime scannedDate = LocalDateTime.parse("2018-01-01T12:34:56.123");
     private static final List<CollectionMember<Payment>> PAYMENTS_LIST = Arrays.asList(
             new CollectionMember<Payment>("id",
                     Payment.builder()
@@ -172,7 +174,7 @@ public class CallbackResponseTransformerTest {
                     ScannedDocument.builder()
                             .fileName("scanneddocument.pdf")
                             .controlNumber("1234")
-                            .scannedDate("2018-01-01T12:34:56.123")
+                            .scannedDate(scannedDate)
                             .type("other")
                             .url(SCANNED_DOCUMENT_URL)
                             .build()));
