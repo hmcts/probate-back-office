@@ -28,7 +28,6 @@ public class DocumentStoreClient {
         try {
             HttpGet request = new HttpGet(document.getDocumentLink().getDocumentUrl());
             request.setHeader(SERVICE_AUTHORIZATION, authHeaderValue);
-            // request.setHeader(USER_ROLES, CASEWORKER_DIVORCE);
             CloseableHttpResponse closeableHttpResponse = closeableHttpClient.execute(request);
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
             closeableHttpResponse.getEntity().writeTo(byteArrayOutputStream);
