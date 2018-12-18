@@ -1,27 +1,5 @@
 package uk.gov.hmcts.probate.transformer;
 
-import static java.util.Collections.EMPTY_LIST;
-import static java.util.Collections.emptyList;
-import static org.hamcrest.Matchers.comparesEqualTo;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.when;
-import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
-import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
-import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_DRAFT;
-import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT;
-import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
-
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -31,7 +9,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.runners.MockitoJUnitRunner;
-
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
@@ -57,6 +34,28 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.model.fee.FeeServiceResponse;
 import uk.gov.hmcts.probate.service.StateChangeService;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+
+import static java.util.Collections.EMPTY_LIST;
+import static java.util.Collections.emptyList;
+import static org.hamcrest.Matchers.comparesEqualTo;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.when;
+import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
+import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_DRAFT;
+import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT;
+import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CallbackResponseTransformerTest {
@@ -151,7 +150,7 @@ public class CallbackResponseTransformerTest {
     private static final String TOTAL_FEE = "6600";
 
     private static final List<CollectionMember<Payment>> PAYMENTS_LIST = Arrays.asList(
-            new CollectionMember("id",
+            new CollectionMember<Payment>("id",
                     Payment.builder()
                             .amount("100")
                             .date("20/09/2018")
@@ -169,7 +168,7 @@ public class CallbackResponseTransformerTest {
             .build();
     
     private static final List<CollectionMember<ScannedDocument>> SCANNED_DOCUMENTS_LIST = Arrays.asList(
-            new CollectionMember("id",
+            new CollectionMember<ScannedDocument>("id",
                     ScannedDocument.builder()
                             .fileName("scanneddocument.pdf")
                             .controlNumber("1234")

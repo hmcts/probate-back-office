@@ -26,10 +26,10 @@ import uk.gov.hmcts.probate.util.TestUtils;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.hamcrest.Matchers.containsString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -153,7 +153,7 @@ public class BusinessValidationControllerTest {
                 .extraCopiesOfGrant(EXTRA_UK)
                 .outsideUKGrantCopies(EXTRA_OUTSIDE_UK)
                 .totalFee(TOTAL_FEE)
-                .scannedDocuments(new ArrayList<>());
+                .scannedDocuments(SCANNED_DOCUMENTS_LIST);
     }
 
     @Test
@@ -350,6 +350,16 @@ public class BusinessValidationControllerTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
     }
 
+    @Test
+    public void shouldReturnScannedDocuments() throws Exception {
+        String scannedDocumentsJson = testUtils.getStringFromFile("scannedDocuments.json");
+
+        mockMvc.perform(post(CASE_TRANSFORM_URL).content(scannedDocumentsJson).contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(content().string(containsString("controlNumber\":\"1234")))
+                .andExpect(content().string(containsString("fileName\":\"scanneddocument.pdf")));
+    }
 
 }
 
