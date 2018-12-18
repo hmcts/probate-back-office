@@ -11,6 +11,8 @@ import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
 import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.service.CaseMatchingService;
@@ -19,8 +21,8 @@ import uk.gov.hmcts.probate.util.TestUtils;
 import java.util.ArrayList;
 
 import static org.hamcrest.CoreMatchers.containsString;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -46,8 +48,13 @@ public class CaseMatchingControllerTest {
     @MockBean
     private AppInsights appInsights;
 
+    @Autowired
+    private WebApplicationContext webApplicationContext;
+
     @Before
     public void setUp() {
+        mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+
         doReturn(new ArrayList<>()).when(caseMatchingService).findMatches(eq(GRANT_OF_REPRESENTATION), any(CaseDetails.class));
         doReturn(new ArrayList<>()).when(caseMatchingService).findMatches(eq(CAVEAT), any(CaseDetails.class));
     }
