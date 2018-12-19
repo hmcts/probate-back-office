@@ -150,4 +150,5 @@ idam:
   s2s-auth:
     url: ""
 send-letter:
-  url: https://rpe-send-letter-service-aat.service.core-compute-aat.internal/
+  url: ${SEND_LETTER_SERIVCE_BASEURL:http://localhost:8485}
+
