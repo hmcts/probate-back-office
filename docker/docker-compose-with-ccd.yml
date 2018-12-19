@@ -23,7 +23,7 @@ services:
       - 4502:8080
 
   pdf-service-api:
-    image: docker.artifactory.reform.hmcts.net/reform/pdf-service-api:f7969638ccd7c83e6ce70330fa3a16e8a6ab53ae
+    image: docker.artifactory.reform.hmcts.net/reform/pdf-service-api:latest
     container_name: pdf-service-api
     environment:
       - JAVA_OPTS=-Xms8m -Xmx256m -Djava.security.egd=file:/dev/./urandom -XX:MaxMetaspaceSize=128m

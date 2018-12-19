@@ -1,6 +1,7 @@
 package uk.gov.hmcts.probate.model.ccd.raw.request;
 
 import org.hamcrest.Matchers;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,6 +12,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import uk.gov.hmcts.probate.util.TestUtils;
 
 import java.io.IOException;
+import java.time.LocalDate;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
@@ -42,5 +44,17 @@ public class CaseDataJsonTest {
         assertThat(caseData.getPayments().get(0).getValue().getSiteId(), is("P223"));
         assertThat(caseData.getPayments().get(0).getValue().getStatus(), is("Success"));
         assertThat(caseData.getPayments().get(0).getValue().getTransactionId(), is("r23k178busa0rp2mh27m0vchja"));
+    }
+
+    @Test
+    public void canDeserialiseDateAdded() throws IOException {
+
+        final CaseData caseData = CaseData.builder()
+                .deceasedDateOfDeath(LocalDate.of(2000,01,04))
+                .build();
+
+        CaseData caseDataFromJson = jacksonTester.parseObject(jacksonTester.write(caseData).getJson());
+
+        Assert.assertEquals(caseData.getDeceasedDateOfDeath(), caseDataFromJson.getDeceasedDateOfDeath());
     }
 }

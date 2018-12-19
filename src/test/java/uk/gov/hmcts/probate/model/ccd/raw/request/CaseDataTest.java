@@ -74,7 +74,6 @@ public class CaseDataTest {
                 .build();
     }
 
-
     @Test
     public void shouldGetExecutorsApplying() {
         when(additionalExecutor1Mock.getAdditionalApplying()).thenReturn("Yes");

@@ -1,17 +1,9 @@
 server:
   port: ${probate.sol.ccd.port}
 
-management:
-  security:
-    enabled: false
-
-security:
-  basic:
-    enabled: false
-
 authorised.services: probate_backend,ccd_data,ccd-datamgmt-api,ccd_ps,ccd
 auth.provider.service.client:
-  key: DUMMYKEYVALUE
+  key: AAAAAAAAAAAAAAAA
   baseUrl: http://localhost:4502
   microservice: probate_backend
   tokenTimeToLiveInSeconds: 900
@@ -50,6 +42,7 @@ spring:
   jackson:
     serialization:
       wrap_root_value: false
+      write-dates-as-timestamps: false
     deserialization:
       unwrap_root_value: false
   application:
@@ -99,3 +92,27 @@ registries:
     name: Leeds Probate Registry
     phone: 0113 389 6133
     emailReplyToId: "leeds-emailReplyToId"
+  liverpool:
+    name: Liverpool Probate Registry
+    phone: 0151 236 8264
+    emailReplyToId: "liverpool-emailReplyToId"
+  brighton:
+    name: Brighton Probate Registry
+    phone: 01273 573510
+    emailReplyToId: "brighton-emailReplyToId"
+  london:
+    name: London Probate Department
+    phone: 020 7421 8509
+    emailReplyToId: "london-emailReplyToId"
+  cardiff:
+    name: Probate Registry of Wales
+    phone: 02920 474373
+    emailReplyToId: "cardiff-emailReplyToId"
+  newcastle:
+    name: Newcastle-Upon-Tyne Probate Registry
+    phone: 0191 211 2170
+    emailReplyToId: "newcastle-emailReplyToId"
+  winchester:
+    name: Winchester Probate Registry
+    phone: 01962 814100
+    emailReplyToId: "winchester-emailReplyToId"

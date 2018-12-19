@@ -23,9 +23,10 @@ import uk.gov.service.notify.SendEmailResponse;
 import java.time.LocalDate;
 import java.util.Optional;
 
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.anyString;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -67,6 +68,12 @@ public class NotificationServiceTest {
     private CaveatDetails personalCaveatDataBirmingham;
     private CaveatDetails personalCaveatDataManchester;
     private CaveatDetails personalCaveatDataLeeds;
+    private CaveatDetails personalCaveatDataLiverpool;
+    private CaveatDetails personalCaveatDataBrighton;
+    private CaveatDetails personalCaveatDataLondon;
+    private CaveatDetails personalCaveatDataCardiff;
+    private CaveatDetails personalCaveatDataNewcastle;
+    private CaveatDetails personalCaveatDataWinchester;
 
     private static final Long ID = 1L;
     private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
@@ -76,8 +83,8 @@ public class NotificationServiceTest {
         when(sendEmailResponse.getFromEmail()).thenReturn(Optional.of("test@test.com"));
         when(sendEmailResponse.getBody()).thenReturn("test-body");
 
-        doReturn(sendEmailResponse)
-                .when(notificationClient).sendEmail(anyString(), anyString(), any(), anyString(), anyString());
+        doReturn(sendEmailResponse).when(notificationClient).sendEmail(anyString(), anyString(), any(), isNull());
+        doReturn(sendEmailResponse).when(notificationClient).sendEmail(any(), any(), any(), any(), any());
 
         personalCaseDataOxford = new CaseDetails(CaseData.builder()
                 .applicationType(PERSONAL)
@@ -151,6 +158,48 @@ public class NotificationServiceTest {
                 .caveatorEmailAddress("personal@test.com")
                 .deceasedDateOfDeath(LocalDate.of(2000, 12, 12))
                 .build(), LAST_MODIFIED, ID);
+
+        personalCaveatDataLiverpool = new CaveatDetails(CaveatData.builder()
+                .applicationType(PERSONAL)
+                .registryLocation("Liverpool")
+                .caveatorEmailAddress("personal@test.com")
+                .deceasedDateOfDeath(LocalDate.of(2000, 12, 12))
+                .build(), LAST_MODIFIED, ID);
+
+        personalCaveatDataBrighton = new CaveatDetails(CaveatData.builder()
+                .applicationType(PERSONAL)
+                .registryLocation("Brighton")
+                .caveatorEmailAddress("personal@test.com")
+                .deceasedDateOfDeath(LocalDate.of(2000, 12, 12))
+                .build(), LAST_MODIFIED, ID);
+
+        personalCaveatDataLondon = new CaveatDetails(CaveatData.builder()
+                .applicationType(PERSONAL)
+                .registryLocation("London")
+                .caveatorEmailAddress("personal@test.com")
+                .deceasedDateOfDeath(LocalDate.of(2000, 12, 12))
+                .build(), LAST_MODIFIED, ID);
+
+        personalCaveatDataCardiff = new CaveatDetails(CaveatData.builder()
+                .applicationType(PERSONAL)
+                .registryLocation("Cardiff")
+                .caveatorEmailAddress("personal@test.com")
+                .deceasedDateOfDeath(LocalDate.of(2000, 12, 12))
+                .build(), LAST_MODIFIED, ID);
+
+        personalCaveatDataNewcastle = new CaveatDetails(CaveatData.builder()
+                .applicationType(PERSONAL)
+                .registryLocation("Newcastle")
+                .caveatorEmailAddress("personal@test.com")
+                .deceasedDateOfDeath(LocalDate.of(2000, 12, 12))
+                .build(), LAST_MODIFIED, ID);
+
+        personalCaveatDataWinchester = new CaveatDetails(CaveatData.builder()
+                .applicationType(PERSONAL)
+                .registryLocation("Winchester")
+                .caveatorEmailAddress("personal@test.com")
+                .deceasedDateOfDeath(LocalDate.of(2000, 12, 12))
+                .build(), LAST_MODIFIED, ID);
     }
 
     @Test
@@ -163,7 +212,7 @@ public class NotificationServiceTest {
                 eq("pa-document-received"),
                 eq("personal@test.com"),
                 any(),
-                anyString());
+                isNull());
 
         verify(pdfManagementService).generateAndUpload(any(SentEmail.class), eq(SENT_EMAIL));
     }
@@ -193,7 +242,7 @@ public class NotificationServiceTest {
                 eq("pa-grant-issued"),
                 eq("personal@test.com"),
                 any(),
-                anyString());
+                isNull());
 
         verify(pdfManagementService).generateAndUpload(any(SentEmail.class), eq(SENT_EMAIL));
     }
@@ -223,7 +272,7 @@ public class NotificationServiceTest {
                 eq("pa-case-stopped"),
                 eq("personal@test.com"),
                 any(),
-                anyString(),
+                isNull(),
                 eq("birmingham-emailReplyToId"));
 
         verify(pdfManagementService).generateAndUpload(any(SentEmail.class), eq(SENT_EMAIL));
@@ -255,7 +304,7 @@ public class NotificationServiceTest {
                 eq("pa-case-stopped"),
                 eq("personal@test.com"),
                 any(),
-                anyString(),
+                isNull(),
                 eq("oxford-emailReplyToId"));
 
         verify(pdfManagementService).generateAndUpload(any(SentEmail.class), eq(SENT_EMAIL));
@@ -287,7 +336,7 @@ public class NotificationServiceTest {
                 eq("pa-case-stopped"),
                 eq("personal@test.com"),
                 any(),
-                anyString(),
+                isNull(),
                 eq("manchester-emailReplyToId"));
 
         verify(pdfManagementService).generateAndUpload(any(SentEmail.class), eq(SENT_EMAIL));
@@ -319,8 +368,7 @@ public class NotificationServiceTest {
                 eq("pa-general-caveat-message"),
                 eq("personal@test.com"),
                 any(),
-                anyString(),
-                eq("oxford-emailReplyToId"));
+                anyString());
 
         verify(pdfManagementService).generateAndUpload(any(SentEmail.class), eq(SENT_EMAIL));
     }
@@ -335,8 +383,7 @@ public class NotificationServiceTest {
                 eq("pa-general-caveat-message"),
                 eq("personal@test.com"),
                 any(),
-                anyString(),
-                eq("birmingham-emailReplyToId"));
+                anyString());
 
         verify(pdfManagementService).generateAndUpload(any(SentEmail.class), eq(SENT_EMAIL));
     }
@@ -351,8 +398,7 @@ public class NotificationServiceTest {
                 eq("pa-general-caveat-message"),
                 eq("personal@test.com"),
                 any(),
-                anyString(),
-                eq("manchester-emailReplyToId"));
+                anyString());
 
         verify(pdfManagementService).generateAndUpload(any(SentEmail.class), eq(SENT_EMAIL));
     }
@@ -367,8 +413,97 @@ public class NotificationServiceTest {
                 eq("pa-general-caveat-message"),
                 eq("personal@test.com"),
                 any(),
-                anyString(),
-                eq("leeds-emailReplyToId"));
+                anyString());
+
+        verify(pdfManagementService).generateAndUpload(any(SentEmail.class), eq(SENT_EMAIL));
+    }
+
+    @Test
+    public void sendGeneralCaveatEmailToPersonalApplicantFromLiverpool()
+            throws NotificationClientException, BadRequestException {
+
+        notificationService.sendCaveatEmail(GENERAL_CAVEAT_MESSAGE, personalCaveatDataLiverpool);
+
+        verify(notificationClient).sendEmail(
+                eq("pa-general-caveat-message"),
+                eq("personal@test.com"),
+                any(),
+                anyString());
+
+        verify(pdfManagementService).generateAndUpload(any(SentEmail.class), eq(SENT_EMAIL));
+    }
+
+    @Test
+    public void sendGeneralCaveatEmailToPersonalApplicantFromBrighton()
+            throws NotificationClientException, BadRequestException {
+
+        notificationService.sendCaveatEmail(GENERAL_CAVEAT_MESSAGE, personalCaveatDataBrighton);
+
+        verify(notificationClient).sendEmail(
+                eq("pa-general-caveat-message"),
+                eq("personal@test.com"),
+                any(),
+                anyString());
+
+        verify(pdfManagementService).generateAndUpload(any(SentEmail.class), eq(SENT_EMAIL));
+    }
+
+    @Test
+    public void sendGeneralCaveatEmailToPersonalApplicantFromLondon()
+            throws NotificationClientException, BadRequestException {
+
+        notificationService.sendCaveatEmail(GENERAL_CAVEAT_MESSAGE, personalCaveatDataLondon);
+
+        verify(notificationClient).sendEmail(
+                eq("pa-general-caveat-message"),
+                eq("personal@test.com"),
+                any(),
+                anyString());
+
+        verify(pdfManagementService).generateAndUpload(any(SentEmail.class), eq(SENT_EMAIL));
+    }
+
+    @Test
+    public void sendGeneralCaveatEmailToPersonalApplicantFromCardiff()
+            throws NotificationClientException, BadRequestException {
+
+        notificationService.sendCaveatEmail(GENERAL_CAVEAT_MESSAGE, personalCaveatDataCardiff);
+
+        verify(notificationClient).sendEmail(
+                eq("pa-general-caveat-message"),
+                eq("personal@test.com"),
+                any(),
+                anyString());
+
+        verify(pdfManagementService).generateAndUpload(any(SentEmail.class), eq(SENT_EMAIL));
+    }
+
+    @Test
+    public void sendGeneralCaveatEmailToPersonalApplicantFromNewcastle()
+            throws NotificationClientException, BadRequestException {
+
+        notificationService.sendCaveatEmail(GENERAL_CAVEAT_MESSAGE, personalCaveatDataNewcastle);
+
+        verify(notificationClient).sendEmail(
+                eq("pa-general-caveat-message"),
+                eq("personal@test.com"),
+                any(),
+                anyString());
+
+        verify(pdfManagementService).generateAndUpload(any(SentEmail.class), eq(SENT_EMAIL));
+    }
+
+    @Test
+    public void sendGeneralCaveatEmailToPersonalApplicantFromWinchester()
+            throws NotificationClientException, BadRequestException {
+
+        notificationService.sendCaveatEmail(GENERAL_CAVEAT_MESSAGE, personalCaveatDataWinchester);
+
+        verify(notificationClient).sendEmail(
+                eq("pa-general-caveat-message"),
+                eq("personal@test.com"),
+                any(),
+                anyString());
 
         verify(pdfManagementService).generateAndUpload(any(SentEmail.class), eq(SENT_EMAIL));
     }

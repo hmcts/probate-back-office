@@ -46,6 +46,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .antMatchers("/swagger-resources/**").permitAll()
             .antMatchers("/webjars/springfox-swagger-ui/**").permitAll()
             .antMatchers("/v2/api-docs").permitAll()
+                .antMatchers("/health").permitAll()
+                .antMatchers("/info").permitAll()
             .anyRequest().authenticated();
     }
 

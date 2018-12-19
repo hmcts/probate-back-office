@@ -8,7 +8,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.Spy;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
@@ -271,8 +271,6 @@ public class CallbackResponseTransformerTest {
 
     @Test
     public void shouldConvertRequestToDataBeanForWithStateChange() {
-        when(stateChangeServiceMock.getChangedStateForCaseUpdate(caseDataBuilder.build())).thenReturn(CHANGED_STATE);
-
         CallbackResponse callbackResponse = underTest.transformWithConditionalStateChange(callbackRequestMock, CHANGED_STATE);
 
         assertCommon(callbackResponse);
@@ -313,10 +311,6 @@ public class CallbackResponseTransformerTest {
 
     @Test
     public void shouldConvertRequestToDataBeanForPaymentWithLegalStatementDocNullWhenPdfServiceTemplateIsNull() {
-
-        when(documentLinkMock.getDocumentBinaryUrl()).thenReturn(DOC_BINARY_URL);
-        when(documentLinkMock.getDocumentUrl()).thenReturn(DOC_URL);
-        when(documentLinkMock.getDocumentFilename()).thenReturn(DOC_NAME);
         Document document = Document.builder()
                 .documentLink(documentLinkMock)
                 .build();
