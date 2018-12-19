@@ -1,7 +1,6 @@
 version: '2.1'
 
 services:
-
   service-auth-provider-api:
     image: hmcts/service-auth-provider-app
     container_name: service-auth-provider-api
