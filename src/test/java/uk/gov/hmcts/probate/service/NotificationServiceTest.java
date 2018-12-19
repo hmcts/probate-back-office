@@ -23,9 +23,10 @@ import uk.gov.service.notify.SendEmailResponse;
 import java.time.LocalDate;
 import java.util.Optional;
 
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.anyString;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -82,8 +83,8 @@ public class NotificationServiceTest {
         when(sendEmailResponse.getFromEmail()).thenReturn(Optional.of("test@test.com"));
         when(sendEmailResponse.getBody()).thenReturn("test-body");
 
-        doReturn(sendEmailResponse)
-                .when(notificationClient).sendEmail(anyString(), anyString(), any(), anyString(), anyString());
+        doReturn(sendEmailResponse).when(notificationClient).sendEmail(anyString(), anyString(), any(), isNull());
+        doReturn(sendEmailResponse).when(notificationClient).sendEmail(any(), any(), any(), any(), any());
 
         personalCaseDataOxford = new CaseDetails(CaseData.builder()
                 .applicationType(PERSONAL)
@@ -211,7 +212,7 @@ public class NotificationServiceTest {
                 eq("pa-document-received"),
                 eq("personal@test.com"),
                 any(),
-                anyString());
+                isNull());
 
         verify(pdfManagementService).generateAndUpload(any(SentEmail.class), eq(SENT_EMAIL));
     }
@@ -241,7 +242,7 @@ public class NotificationServiceTest {
                 eq("pa-grant-issued"),
                 eq("personal@test.com"),
                 any(),
-                anyString());
+                isNull());
 
         verify(pdfManagementService).generateAndUpload(any(SentEmail.class), eq(SENT_EMAIL));
     }
@@ -271,7 +272,7 @@ public class NotificationServiceTest {
                 eq("pa-case-stopped"),
                 eq("personal@test.com"),
                 any(),
-                anyString(),
+                isNull(),
                 eq("birmingham-emailReplyToId"));
 
         verify(pdfManagementService).generateAndUpload(any(SentEmail.class), eq(SENT_EMAIL));
@@ -303,7 +304,7 @@ public class NotificationServiceTest {
                 eq("pa-case-stopped"),
                 eq("personal@test.com"),
                 any(),
-                anyString(),
+                isNull(),
                 eq("oxford-emailReplyToId"));
 
         verify(pdfManagementService).generateAndUpload(any(SentEmail.class), eq(SENT_EMAIL));
@@ -335,7 +336,7 @@ public class NotificationServiceTest {
                 eq("pa-case-stopped"),
                 eq("personal@test.com"),
                 any(),
-                anyString(),
+                isNull(),
                 eq("manchester-emailReplyToId"));
 
         verify(pdfManagementService).generateAndUpload(any(SentEmail.class), eq(SENT_EMAIL));

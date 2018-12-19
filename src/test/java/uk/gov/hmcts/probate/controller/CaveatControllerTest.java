@@ -10,6 +10,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
 import uk.gov.hmcts.probate.exception.BadRequestException;
 import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
@@ -20,8 +22,8 @@ import uk.gov.hmcts.probate.util.TestUtils;
 import uk.gov.service.notify.NotificationClientException;
 
 import static org.hamcrest.CoreMatchers.containsString;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -49,8 +51,13 @@ public class CaveatControllerTest {
     @MockBean
     private PDFManagementService pdfManagementService;
 
+    @Autowired
+    private WebApplicationContext webApplicationContext;
+
     @Before
     public void setUp() throws NotificationClientException, BadRequestException {
+        mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+
         Document document = Document.builder().documentType(SENT_EMAIL).build();
 
         doReturn(document).when(notificationService).sendCaveatEmail(any(), any());
