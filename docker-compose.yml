@@ -20,7 +20,7 @@ services:
       - REFORM_ENVIRONMENT
       - ROOT_APPENDER
       - JSON_CONSOLE_PRETTY_PRINT=false
-      - SEND_LETTER_SERVICE_BASE_URL=https://rpe-send-letter-service-aat.service.core-compute-aat.internal/
+      - SEND_LETTER_SERIVCE_BASEURL=https://rpe-send-letter-service-aat.service.core-compute-aat.internal/
     ports:
      - 4104:4104
      - 5005:5005
