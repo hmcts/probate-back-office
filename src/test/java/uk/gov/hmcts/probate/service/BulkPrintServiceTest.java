@@ -100,7 +100,7 @@ public class BulkPrintServiceTest {
         verify(sendLetterApiMock).sendLetter(anyString(), any(LetterWithPdfsRequest.class));
 
         assertNotNull(documents);
-        assertThat(documents.size(), is(6));
+        assertThat(documents.size(), is(2));
     }
 
 
@@ -135,6 +135,6 @@ public class BulkPrintServiceTest {
         verify(sendLetterApiMock).sendLetter(anyString(), any(LetterWithPdfsRequest.class));
 
         assertNotNull(documents);
-        assertThat(documents.size(), is(12));
+        assertThat(documents.size(), is(8));
     }
 }

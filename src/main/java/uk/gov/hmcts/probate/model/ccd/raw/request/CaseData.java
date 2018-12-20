@@ -211,6 +211,10 @@ public class CaseData {
 
     private final String ihtFormCompletedOnline;
 
+    private final String edgeCase;
+
+    private final String localPrint;
+
 
     //next steps
     @NotNull(groups = {NextStepsConfirmationGroup.class}, message = "{applicationFeeIsNull}")
@@ -427,11 +431,11 @@ public class CaseData {
     }
 
     public boolean isGrantEdgeCase() {
-        return false;
+        return YES.equals(edgeCase);
     }
 
     public boolean isGrantForLocalPrinting() {
-        return false;
+        return YES.equals(localPrint);
     }
 
     public boolean isGrantIssuedEmailNotificationRequested() {

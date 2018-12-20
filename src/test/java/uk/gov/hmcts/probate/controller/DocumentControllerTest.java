@@ -34,8 +34,8 @@ import static org.hamcrest.CoreMatchers.containsString;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -125,4 +125,33 @@ public class DocumentControllerTest {
         verify(documentService).expire(any(CallbackRequest.class), eq(DIGITAL_GRANT_DRAFT));
     }
 
+    @Test
+    public void shouldNotGenerateDigitalGrantIfEdgeCase() throws Exception {
+        String solicitorPayload = testUtils.getStringFromFile("payloadWithEdgeCase.json");
+
+        mockMvc.perform(post("/document/generate-grant")
+                .content(solicitorPayload)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("data")));
+
+        doNothing().when(documentService).expire(any(CallbackRequest.class), eq(DIGITAL_GRANT_DRAFT));
+        verify(documentService).expire(any(CallbackRequest.class), eq(DIGITAL_GRANT_DRAFT));
+    }
+
+    @Test
+    public void shouldNotPrintDigitalGrantIfLocalPrint() throws Exception {
+        String solicitorPayload = testUtils.getStringFromFile("payloadWithLocalPrint.json");
+
+        mockMvc.perform(post("/document/generate-grant")
+                .content(solicitorPayload)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("data")));
+
+        verify(pdfManagementService).generateAndUpload(any(CallbackRequest.class), eq(DIGITAL_GRANT));
+
+        doNothing().when(documentService).expire(any(CallbackRequest.class), eq(DIGITAL_GRANT_DRAFT));
+        verify(documentService).expire(any(CallbackRequest.class), eq(DIGITAL_GRANT_DRAFT));
+    }
 }
