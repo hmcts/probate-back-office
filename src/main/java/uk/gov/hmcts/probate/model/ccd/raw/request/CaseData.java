@@ -426,6 +426,14 @@ public class CaseData {
         return YES.equals(getBoEmailDocsReceivedNotification());
     }
 
+    public boolean isGrantEdgeCase() {
+        return false;
+    }
+
+    public boolean isGrantForLocalPrinting() {
+        return false;
+    }
+
     public boolean isGrantIssuedEmailNotificationRequested() {
         return YES.equals(getBoEmailGrantIssuedNotification());
     }

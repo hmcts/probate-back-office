@@ -17,6 +17,7 @@ import uk.gov.hmcts.reform.sendletter.api.LetterWithPdfsRequest;
 import uk.gov.hmcts.reform.sendletter.api.SendLetterApi;
 import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
 
+import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -54,23 +55,25 @@ public class BulkPrintService {
                     sendLetterResponse.letterId);
         } catch (HttpClientErrorException ex) {
             log.error(ex.getResponseBodyAsString() + ' ' + ex.getLocalizedMessage() + ' ' + ex.getStatusCode());
+        } catch (IOException ioe) {
+            log.error("Error retrieving document from store with url {}",
+                    ioe);
         } catch (Exception e) {
             log.error(e.getMessage());
         }
         return pdfs;
     }
 
-    private String getPdfAsBase64EncodedString(Document caseDocument, String authHeaderValue) {
+    private String getPdfAsBase64EncodedString(Document caseDocument, String authHeaderValue) throws IOException {
         return Base64.getEncoder().encodeToString(documentStoreClient.retrieveDocument(caseDocument, authHeaderValue));
     }
 
     private List<String> arrangePdfDocumentsForBulkPrinting(CallbackRequest callbackRequest,
                                                             Document caseDocument,
-                                                            String authHeaderValue) {
+                                                            String authHeaderValue) throws IOException {
         List<String> documents = new LinkedList<>();
         String encodedGrantDocument = getPdfAsBase64EncodedString(caseDocument, authHeaderValue);
-        //Layer documents as cover letter first, grant, extra copies of grant to PA.
-        // Copies of grant going to IM and SME are separated by blank sheets.
+        //Layer documents as cover letter first, grant, and extra copies of grant to PA.
         documents.add(encodeToString(pdfGeneratorService.generatePdf(DocumentType.GRANT_COVER, toJson(callbackRequest)).getBytes()));
         documents.add(encodedGrantDocument);
         Long extraCopiesOfGrant = 0L;
@@ -78,11 +81,7 @@ public class BulkPrintService {
             extraCopiesOfGrant = callbackRequest.getCaseDetails().getData().getExtraCopiesOfGrant();
         }
         LongStream.range(1, extraCopiesOfGrant + 1)
-                .forEach(i -> documents.add(encodedGrantDocument));
-        documents.add(encodeToString(pdfGeneratorService.generatePdf(DocumentType.BLANK, toJson(callbackRequest)).getBytes()));
-        documents.add(encodedGrantDocument);
-        documents.add(encodeToString(pdfGeneratorService.generatePdf(DocumentType.BLANK, toJson(callbackRequest)).getBytes()));
-        documents.add(encodedGrantDocument);
+            .forEach(i -> documents.add(encodedGrantDocument));
         return documents;
     }
 

@@ -19,6 +19,7 @@ import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.service.notify.NotificationClientException;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -56,11 +57,15 @@ public class DocumentController {
             throws NotificationClientException {
 
         List<Document> documents = new ArrayList<>();
+        @Valid CaseData data = callbackRequest.getCaseDetails().getData();
 
-        Document digitalGrantDocument = pdfManagementService.generateAndUpload(callbackRequest, DIGITAL_GRANT);
-        documents.add(digitalGrantDocument);
-        bulkPrintService.sendToBulkPrint(callbackRequest, digitalGrantDocument);
-
+        if (!data.isGrantEdgeCase()) {
+            Document digitalGrantDocument = pdfManagementService.generateAndUpload(callbackRequest, DIGITAL_GRANT);
+            documents.add(digitalGrantDocument);
+            if (!data.isGrantForLocalPrinting()) {
+                bulkPrintService.sendToBulkPrint(callbackRequest, digitalGrantDocument);
+            }
+        }
         documentService.expire(callbackRequest, DIGITAL_GRANT_DRAFT);
 
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
