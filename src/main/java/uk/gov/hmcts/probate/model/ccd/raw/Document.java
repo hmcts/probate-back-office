@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.model.ccd.raw;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Data;
@@ -20,6 +21,7 @@ public class Document {
     @JsonProperty("DocumentFileName")
     private final String documentFileName;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     @JsonProperty("DocumentDateAdded")
     private final LocalDate documentDateAdded;
 

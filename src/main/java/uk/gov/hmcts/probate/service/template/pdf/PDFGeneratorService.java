@@ -1,75 +1,61 @@
 package uk.gov.hmcts.probate.service.template.pdf;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.io.ByteArrayResource;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.RestClientException;
-import org.springframework.web.client.RestTemplate;
 import uk.gov.hmcts.probate.config.PDFServiceConfiguration;
 import uk.gov.hmcts.probate.exception.ClientException;
-import uk.gov.hmcts.probate.exception.ConnectionException;
 import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.evidencemanagement.EvidenceManagementFileUpload;
 import uk.gov.hmcts.probate.service.FileSystemResourceService;
+import uk.gov.hmcts.reform.pdf.service.client.PDFServiceClient;
+import uk.gov.hmcts.reform.pdf.service.client.exception.PDFServiceClientException;
 
-import java.net.URI;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
-import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 import static uk.gov.hmcts.probate.insights.AppInsightsEvent.REQUEST_SENT;
 
 @Slf4j
 @Component
 @RequiredArgsConstructor
 public class PDFGeneratorService {
-
-    private final RestTemplate restTemplate;
+    public static final String TEMPLATE_EXTENSION = ".html";
     private final FileSystemResourceService fileSystemResourceService;
     private final PDFServiceConfiguration pdfServiceConfiguration;
     private final AppInsights appInsights;
 
-    private static final String PARAMETER_TEMPLATE = "template";
-    private static final String PARAMETER_PLACEHOLDER_VALUES = "placeholderValues";
+    private final ObjectMapper objectMapper;
+    private final PDFServiceClient pdfServiceClient;
 
     public EvidenceManagementFileUpload generatePdf(DocumentType documentType, String pdfGenerationData) {
-        URI uri = URI.create(String.format("%s%s", pdfServiceConfiguration.getUrl(), pdfServiceConfiguration.getPdfApi()));
-
-        HttpEntity<MultiValueMap<String, Object>> multipartRequest = createMultipartPostRequest(
-                documentType.getTemplateName(), pdfGenerationData);
-        appInsights.trackEvent(REQUEST_SENT, uri.toString());
         byte[] postResult;
         try {
-            ByteArrayResource responseResource = restTemplate.postForObject(uri, multipartRequest, ByteArrayResource.class);
-            postResult = responseResource.getByteArray();
-        } catch (HttpClientErrorException e) {
+            postResult = generateFromHtml(documentType.getTemplateName(), pdfGenerationData);
+        } catch (IOException | PDFServiceClientException e) {
             log.error(e.getMessage(), e);
-            throw new ClientException(e.getStatusCode().value(), e.getMessage());
-        } catch (RestClientException e) {
-            log.error(e.getMessage(), e);
-            throw new ConnectionException("Could not connect to PDF service: " + e.getMessage());
+            throw new ClientException(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage());
         }
-
         return new EvidenceManagementFileUpload(MediaType.APPLICATION_PDF, postResult);
     }
 
-    private HttpEntity<MultiValueMap<String, Object>> createMultipartPostRequest(String pdfTemplateFileName, String
-            pdfGenerationData) {
-        MultiValueMap<String, Object> parameters = new LinkedMultiValueMap<>();
-        String templatePath = pdfServiceConfiguration.getTemplatesDirectory() + pdfTemplateFileName + ".html";
+    private byte[] generateFromHtml(String templateName, String pdfGenerationData) throws IOException {
+        String templatePath = pdfServiceConfiguration.getTemplatesDirectory() + templateName + TEMPLATE_EXTENSION;
+        String templateAsString = fileSystemResourceService.getFileFromResourceAsString(templatePath);
 
-        parameters.add(PARAMETER_TEMPLATE, fileSystemResourceService.getFileSystemResource(templatePath).orElse(null));
-        parameters.add(PARAMETER_PLACEHOLDER_VALUES, pdfGenerationData);
+        Map<String, Object> paramMap = asMap(pdfGenerationData);
+        appInsights.trackEvent(REQUEST_SENT, pdfServiceConfiguration.getUrl());
 
-        HttpHeaders postHeaders = new HttpHeaders();
-        postHeaders.set(HttpHeaders.CONTENT_TYPE, MULTIPART_FORM_DATA_VALUE);
+        return pdfServiceClient.generateFromHtml(templateAsString.getBytes(), paramMap);
+    }
 
-        return new HttpEntity<>(parameters, postHeaders);
+    private Map<String, Object> asMap(String placeholderValues) throws IOException {
+        return objectMapper.readValue(placeholderValues, new TypeReference<HashMap<String, Object>>() {});
     }
 }
