@@ -159,19 +159,19 @@
         {
           "value": {
             "name": "Amal Mason, an executor named in the will or codicils, is applying for probate.",
-            "sign": "Amal Mason will sign and send to the probate registry what they believe to be the true and original last will and testament and any codicils of Suki Hammond."
+            "send": "Amal Mason will sign and send to the probate registry what they believe to be the true and original last will and testament and any codicils of Suki Hammond."
           }
         },
         {
           "value": {
             "name": "Eric Lloyd4, an executor named in the will or codicils as Inga Giles4, is applying for probate.",
-            "sign": "Eric Lloyd4 will sign a photocopy of what they believe to be the true and original last will and testament and any codicils of Suki Hammond. Amal Mason will send the signed photocopy to the probate registry."
+            "send": "Eric Lloyd4 will sign a photocopy of what they believe to be the true and original last will and testament and any codicils of Suki Hammond. Amal Mason will send the signed photocopy to the probate registry."
           }
         },
         {
           "value": {
             "name": "Devin Wade5, an executor named in the will or codicils, is applying for probate.",
-            "sign": "Devin Wade5 will sign a photocopy of what they believe to be the true and original last will and testament and any codicils of Suki Hammond. Amal Mason will send the signed photocopy to the probate registry."
+            "send": "Devin Wade5 will sign a photocopy of what they believe to be the true and original last will and testament and any codicils of Suki Hammond. Amal Mason will send the signed photocopy to the probate registry."
           }
         }
       ],

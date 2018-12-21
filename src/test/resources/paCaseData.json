@@ -72,7 +72,7 @@
         "id": "0a20b5fc-ba55-4972-8c5b-1cd7d25710cc",
         "value": {
           "name": "I am an executor named in the will as asdasas asdasdasd, and I am applying for probate.",
-          "sign": "I will sign and send to the probate registry what I believe to be the true and original last will and testament of Jon Jonny Jonathan."
+          "send": "I will sign and send to the probate registry what I believe to be the true and original last will and testament of Jon Jonny Jonathan."
         }
       }
     ],

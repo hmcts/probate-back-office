@@ -10,7 +10,7 @@ public class LegalStatementExecutorApplying {
 
     private final String name;
 
-    @JsonProperty(value = "sign")
-    private final String sign;
+    @JsonProperty(value = "send")
+    private final String send;
 
 }

@@ -302,7 +302,7 @@
       <tr><td>&nbsp;</td></tr>
       {% for executorApplying in case_data.legalStatement.executorsApplying %}
       <tr><td>{% if executorApplying.value.name %}{{ replaceAllEncoded(executorApplying.value.name)|safe }}{% endif %}</td></tr>
-      <tr><td>{% if executorApplying.value.sign %}{{ replaceAllEncoded(executorApplying.value.sign)|safe }}{% endif %}</td></tr>
+      <tr><td>{% if executorApplying.value.send %}{{ replaceAllEncoded(executorApplying.value.send)|safe }}{% endif %}</td></tr>
       {% endfor %}
       <tr><td>&nbsp;</td></tr>
       {% if case_data.legalStatement.deceasedEstateValue %}<tr><td>{{ replaceAllEncoded(case_data.legalStatement.deceasedEstateValue)|safe }}</td></tr>{% endif %}
