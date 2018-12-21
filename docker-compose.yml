@@ -4,7 +4,7 @@ services:
   back-office:
       #context: .
     #image: back-office
-    image: back-office-demo:latest
+    image: docker.artifactory.reform.hmcts.net/probate/back-office:${SOL_CCD_SERVICE_API_DOCKER_VERSION:-latest}
     container_name: back-office
     environment:
       - SERVER_PORT=4104
