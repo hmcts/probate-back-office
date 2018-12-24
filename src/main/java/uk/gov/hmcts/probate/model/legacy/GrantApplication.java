@@ -2,94 +2,175 @@ package uk.gov.hmcts.probate.model.legacy;
 
 import lombok.Data;
 
+import javax.persistence.Column;
+import java.time.LocalDate;
+
 @Data
 public class GrantApplication {
 
+    @Column(name = "PROBATE_NUMBER")
+    private String probateNumber; //varchar(11),
+    @Column(name = "PROBATE_VERSION")
+    private Long probateVersion; //int,
+    @Column(name = "DECEASED_ID")
+    private Long deceasedId; //bigint,
+    @Column(name = "DECEASED_FORENAMES")
+    private String deceasedForenames; //varchar(50),
+    @Column(name = "DECEASED_SURNAME")
+    private String deceasedSurname; //varchar(50),
+    @Column(name = "DATE_OF_BIRTH")
+    private LocalDate dateOfBirth; //date,
+    @Column(name = "DATE_OF_DEATH1")
+    private LocalDate dateOfDeath1; //date,
+    @Column(name = "DECEASED_ADDRESS")
+    private String deceasedAddress; //varchar(500),
+    @Column(name = "DECEASED_TEXT")
+    private String deceasedText; //varchar(32000),
+    @Column(name = "ALIAS_NAMES")
+    private String aliasNames; //varchar(32000),
+    @Column(name = "GRANT_APPLICATION_TEXT")
+    private String grantApplicationText; //varchar(32000),
+    @Column(name = "APPLICATION_EVENT_TEXT")
+    private String applicationEventText; //varchar(32000),
+    @Column(name = "OATH_TEXT")
+    private String oathText; //varchar(32000),
+    @Column(name = "EXECUTOR_TEXT")
+    private String executorText; //varchar(32000),
+    @Column(name = "OTHER_INFORMATION_TEXT")
+    private String otherInformationText; //varchar(32000),
+    @Column(name = "LINKED_DECEASED_IDS")
+    private String linkedDeceasedIds; //varchar(32000),
+    @Column(name = "CCD_CASE_NO")
+    private String ccdCaseNo; //varchar(20),
+    @Column(name = "ID")
+    private Long id; //bigint,
+    @Column(name = "DNM_IND")
+    private String dnmInd; //varchar(1),
+    @Column(name = "DECEASED_AGE_AT_DEATH")
+    private Long deceasedAgeAtDeath; //int,
+    @Column(name = "DECEASED_DEATH_TYPE")
+    private String deceasedDeathType; //varchar(40),
+    @Column(name = "DECEASED_DOMICILE")
+    private String deceasedDomicile; //varchar(60),
+    @Column(name = "DECEASED_DOMICILE_IN_WELSH")
+    private String deceasedDomicileInWelsh; //varchar(10),
+    @Column(name = "DECEASED_DOMICILE_WELSH")
+    private String deceasedDomicileWelsh; //varchar(60),
+    @Column(name = "DECEASED_HONOURS")
+    private String deceasedHonours; //varchar(100),
+    @Column(name = "DECEASED_SEX")
+    private String deceasedSex; //varchar(1),
+    @Column(name = "DECEASED_TITLE")
+    private String deceasedTitle; //varchar(35),
+    @Column(name = "APP_ADMIN_CLAUSE_LIMITATION")
+    private String appAdminClauseLimitation; //varchar(100),
+    @Column(name = "APP_ADMIN_CLAUSE_LIMITN_WELSH")
+    private String appAdminClauseLimitnWelsh; //varchar(100),
+    @Column(name = "APP_CASE_TYPE")
+    private String appCaseType; //varchar(20),
+    @Column(name = "APP_EXECUTOR_LIMITATION")
+    private String appExecutorLimitation; //varchar(100),
+    @Column(name = "APP_EXECUTOR_LIMITATION_WELSH")
+    private String appExecutorLimitationWelsh; //varchar(100),
+    @Column(name = "APP_RECEIVED_DATE")
+    private LocalDate appReceivedDate; //date,
+    @Column(name = "APPLICANT_ADDRESS")
+    private String applicantAddress; //varchar(500),
+    @Column(name = "APPLICANT_DX_EXCHANGE")
+    private String applicantDxExchange; //varchar(25),
+    @Column(name = "APPLICANT_DX_NUMBER")
+    private String applicantDxNumber; //varchar(10),
+    @Column(name = "APPLICANT_FORENAMES")
+    private String applicantForenames; //varchar(50),
+    @Column(name = "APPLICANT_HONOURS")
+    private String applicantHonours; //varchar(100),
+    @Column(name = "APPLICANT_SURNAME")
+    private String applicantSurname; //varchar(50),
+    @Column(name = "APPLICANT_TITLE")
+    private String applicantTitle; //varchar(35),
+    @Column(name = "GRANT_WELSH_LANGUAGE_IND")
+    private String grantWelshLanguageInd; //boolean,
+    @Column(name = "GRANT_WILL_TYPE")
+    private String grantWillType; //varchar(200),
+    @Column(name = "GRANT_WILL_TYPE_WELSH")
+    private String grantWillTypeWelsh; //varchar(200),
+    @Column(name = "EXCEPTED_ESTATE_IND")
+    private String exceptedEstateInd; //varchar(1),
+    @Column(name = "FILESLIP_SIGNAL")
+    private String fileslipSignal; //boolean,
+    @Column(name = "GRANT_APPLICANT_TYPE")
+    private String grantApplicantType; //varchar(1),
+    @Column(name = "GRANT_CONFIRMED_DATE")
+    private LocalDate grantConfirmedDate; //date,
+    @Column(name = "GRANT_ISSUED_DATE")
+    private LocalDate grantIssuedDate; //date,
+    @Column(name = "GRANT_ISSUED_SIGNAL")
+    private String grantIssuedSignal; //boolean,
+    @Column(name = "GRANT_LIMITATION")
+    private String grantLimitation; //varchar(800),
+    @Column(name = "GRANT_LIMITATION_WELSH")
+    private String grantLimitationWelsh; //varchar(800),
+    @Column(name = "GRANT_POWER_RESERVED")
+    private String grantPowerReserved; //varchar(1),
+    @Column(name = "GRANT_SOL_ID")
+    private String grantSolId; //varchar(10),
+    @Column(name = "GRANT_TYPE")
+    private String grantType; //varchar(3),
+    @Column(name = "GRANT_VERSION_DATE")
+    private LocalDate grantVersionDate; //date,
+    @Column(name = "GRANTEE1_ADDRESS")
+    private String grantee1Address; //varchar(500),
+    @Column(name = "GRANTEE1_FORENAMES")
+    private String grantee1Forenames; //varchar(50),
+    @Column(name = "GRANTEE1_HONOURS")
+    private String grantee1Honours; //varchar(100),
+    @Column(name = "GRANTEE1_SURNAME")
+    private String grantee1Surname; //varchar(50),
+    @Column(name = "GRANTEE1_TITLE")
+    private String grantee1Title; //varchar(35),
+    @Column(name = "GRANTEE2_ADDRESS")
+    private String grantee2Address; //varchar(500),
+    @Column(name = "GRANTEE2_FORENAMES")
+    private String grantee2Forenames; //varchar(50),
+    @Column(name = "GRANTEE2_HONOURS")
+    private String grantee2Honours; //varchar(100),
+    @Column(name = "GRANTEE2_SURNAME")
+    private String grantee2Surname; //varchar(50),
+    @Column(name = "GRANTEE2_TITLE")
+    private String grantee2Title; //varchar(35),
+    @Column(name = "GRANTEE3_ADDRESS")
+    private String grantee3Address; //varchar(500),
+    @Column(name = "GRANTEE3_FORENAMES")
+    private String grantee3Forenames; //varchar(50),
+    @Column(name = "GRANTEE3_HONOURS")
+    private String grantee3Honours; //varchar(100),
+    @Column(name = "GRANTEE3_SURNAME")
+    private String grantee3Surname; //varchar(50),
+    @Column(name = "GRANTEE3_TITLE")
+    private String grantee3Title; //varchar(35),
+    @Column(name = "GRANTEE4_ADDRESS")
+    private String grantee4Address; //varchar(500),
+    @Column(name = "GRANTEE4_FORENAMES")
+    private String grantee4Forenames; //varchar(50),
+    @Column(name = "GRANTEE4_HONOURS")
+    private String grantee4Honours; //varchar(100),
+    @Column(name = "GRANTEE4_SURNAME")
+    private String grantee4Surname; //varchar(50),
+    @Column(name = "GRANTEE4_TITLE")
+    private String grantee4Title; //varchar(35),
+    @Column(name = "GROSS_ESTATE_VALUE")
+    private Long grossEstateValue; //bigint,
+    @Column(name = "NET_ESTATE_VALUE")
+    private Long netEstateValue; //bigint,
+    @Column(name = "PLACE_OF_ORIGINAL_GRANT")
+    private String placeOfOriginalGrant; //varchar(60),
+    @Column(name = "PLACE_OF_ORIGINAL_GRANT_WELSH")
+    private String placeOfOriginalGrantWelsh; //varchar(60),
+    @Column(name = "POWER_RESERVED_WELSH")
+    private String powerReservedWelsh; //varchar(1),
+    @Column(name = "RESEAL_DATE")
+    private LocalDate resealDate; //date,
+    @Column(name = "SOLICITOR_REFERENCE")
+    private String solicitorReference; //varchar(30)
 
-
-
-//    PROBATE_NUMBER   	varchar(11)	,
-//    PROBATE_VERSION 	int	,
-//    DECEASED_ID          	bigint,
-//    DECEASED_FORENAMES	varchar(50)	,
-//    DECEASED_SURNAME	varchar(50)	,
-//    DATE_OF_BIRTH	date	,
-//    DATE_OF_DEATH1	date	,
-//    DECEASED_ADDRESS	varchar(500)	,
-//    DECEASED_TEXT	varchar(32000)	,
-//    ALIAS_NAMES	varchar(32000)	,
-//    GRANT_APPLICATION_TEXT	varchar(32000)	,
-//    APPLICATION_EVENT_TEXT	varchar(32000)	,
-//    OATH_TEXT 	varchar(32000)	,
-//    EXECUTOR_TEXT	varchar(32000)	,
-//    OTHER_INFORMATION_TEXT 	varchar(32000)	,
-//    LINKED_DECEASED_IDS	varchar(32000)	,
-//    CCD_CASE_NO	varchar(20)	,
-//    ID	bigint	,
-//    DNM_IND	varchar(1)	,
-//    DECEASED_AGE_AT_DEATH	int	,
-//    DECEASED_DEATH_TYPE	varchar(40)	,
-//    DECEASED_DOMICILE	varchar(60)	,
-//    DECEASED_DOMICILE_IN_WELSH	varchar(10)	,
-//    DECEASED_DOMICILE_WELSH	varchar(60)	,
-//    DECEASED_HONOURS	varchar(100)	,
-//    DECEASED_SEX	varchar(1)	,
-//    DECEASED_TITLE	varchar(35)	,
-//    APP_ADMIN_CLAUSE_LIMITATION	varchar(100)	,
-//    APP_ADMIN_CLAUSE_LIMITN_WELSH 	varchar(100)	,
-//    APP_CASE_TYPE	varchar(20)	,
-//    APP_EXECUTOR_LIMITATION 	varchar(100)	,
-//    APP_EXECUTOR_LIMITATION_WELSH 	varchar(100)	,
-//    APP_RECEIVED_DATE	date	,
-//    APPLICANT_ADDRESS 	varchar(500)	,
-//    APPLICANT_DX_EXCHANGE 	varchar(25)	,
-//    APPLICANT_DX_NUMBER 	varchar(10)	,
-//    APPLICANT_FORENAMES 	varchar(50)	,
-//    APPLICANT_HONOURS	varchar(100)	,
-//    APPLICANT_SURNAME 	varchar(50)	,
-//    APPLICANT_TITLE	varchar(35)	,
-//    GRANT_WELSH_LANGUAGE_IND 	boolean	,
-//    GRANT_WILL_TYPE 	varchar(200)	,
-//    GRANT_WILL_TYPE_WELSH	varchar(200)	,
-//    EXCEPTED_ESTATE_IND varchar(1),
-//    FILESLIP_SIGNAL boolean,
-//    GRANT_APPLICANT_TYPE varchar(1),
-//    GRANT_CONFIRMED_DATE date,
-//    GRANT_ISSUED_DATE date,
-//    GRANT_ISSUED_SIGNAL boolean,
-//    GRANT_LIMITATION varchar(800),
-//    GRANT_LIMITATION_WELSH varchar(800),
-//    GRANT_POWER_RESERVED varchar(1),
-//    GRANT_SOL_ID varchar(10),
-//    GRANT_TYPE varchar(3),
-//    GRANT_VERSION_DATE date,
-//    GRANTEE1_ADDRESS 	varchar(500)	,
-//    GRANTEE1_FORENAMES 	varchar(50)	,
-//    GRANTEE1_HONOURS 	varchar(100)	,
-//    GRANTEE1_SURNAME 	varchar(50)	,
-//    GRANTEE1_TITLE 	varchar(35)	,
-//    GRANTEE2_ADDRESS 	varchar(500)	,
-//    GRANTEE2_FORENAMES 	varchar(50)	,
-//    GRANTEE2_HONOURS 	varchar(100)	,
-//    GRANTEE2_SURNAME 	varchar(50)	,
-//    GRANTEE2_TITLE 	varchar(35)	,
-//    GRANTEE3_ADDRESS 	varchar(500)	,
-//    GRANTEE3_FORENAMES 	varchar(50)	,
-//    GRANTEE3_HONOURS 	varchar(100)	,
-//    GRANTEE3_SURNAME 	varchar(50)	,
-//    GRANTEE3_TITLE 	varchar(35)	,
-//    GRANTEE4_ADDRESS 	varchar(500)	,
-//    GRANTEE4_FORENAMES 	varchar(50)	,
-//    GRANTEE4_HONOURS 	varchar(100)	,
-//    GRANTEE4_SURNAME 	varchar(50)	,
-//    GRANTEE4_TITLE 	varchar(35)	,
-//    GROSS_ESTATE_VALUE	bigint	,
-//    NET_ESTATE_VALUE 	bigint	,
-//    PLACE_OF_ORIGINAL_GRANT 	varchar(60)	,
-//    PLACE_OF_ORIGINAL_GRANT_WELSH varchar(60),
-//    POWER_RESERVED_WELSH	varchar(1)	,
-//    RESEAL_DATE	date	,
-//    SOLICITOR_REFERENCE	varchar(30)
-//
-//
 }
