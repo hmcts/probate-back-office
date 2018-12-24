@@ -87,7 +87,7 @@ services:
     mem_limit: 160m
     memswap_limit: 0
     volumes:
-      - ./init-db.sh:/docker-entrypoint-initdb.d/init-db.sh
+      - ./init.sh:/docker-entrypoint-initdb.d/init.sh
       
   smtp-server:
     container_name: smtp-server
@@ -344,6 +344,20 @@ services:
       LS_JAVA_OPTS: "-Xmx256m -Xms256m"
     depends_on:
       - elasticsearch
+
+  probate-man-database:
+    image: postgres:9.6-alpine
+    build:
+      context: ../docker/probateman
+    container_name: probate-man-database
+    ports:
+      - 5344:5432
+    healthcheck:
+      test: psql -c 'select 1' -d postgres -U postgres
+      retries: 2
+    mem_limit: 160m
+    memswap_limit: 0
+
 
 volumes:
   shared-database-data:
