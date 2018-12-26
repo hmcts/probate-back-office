@@ -3,9 +3,11 @@ package uk.gov.hmcts.probate.model.legacy;
 import lombok.Data;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.time.LocalDate;
 
+@Entity
 @Data
 public class StandingSearch {
     @Id

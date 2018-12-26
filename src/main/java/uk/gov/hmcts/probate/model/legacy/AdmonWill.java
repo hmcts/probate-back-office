@@ -4,8 +4,10 @@ import lombok.Data;
 import org.joda.time.LocalDate;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.Id;
 
+@Entity
 @Data
 public class AdmonWill {
     @Id
