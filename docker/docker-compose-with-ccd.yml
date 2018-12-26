@@ -346,10 +346,8 @@ services:
       - elasticsearch
 
   probate-man-database:
-    image: postgres:9.6-alpine
     build:
       context: ../docker/probateman
-    container_name: probate-man-database
     ports:
       - 5344:5432
     healthcheck:
@@ -357,7 +355,6 @@ services:
       retries: 2
     mem_limit: 160m
     memswap_limit: 0
-
 
 volumes:
   shared-database-data:

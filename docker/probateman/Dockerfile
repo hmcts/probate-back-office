@@ -1,9 +1,5 @@
-FROM postgres:9.6
+FROM postgres:9.6-alpine
 
-COPY init.sh /docker-entrypoint-initdb.d
-
-COPY . /setUp
-WORKDIR /setUp
-RUN init.sh
+COPY init-db.sh /docker-entrypoint-initdb.d
 
 EXPOSE 5432
