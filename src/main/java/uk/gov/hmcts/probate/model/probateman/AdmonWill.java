@@ -1,4 +1,4 @@
-package uk.gov.hmcts.probate.model.legacy;
+package uk.gov.hmcts.probate.model.probateman;
 
 import lombok.Data;
 import org.joda.time.LocalDate;
