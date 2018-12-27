@@ -132,7 +132,7 @@ public class GrantApplication {
     private String applicantTitle; //varchar(35),
 
     @Column(name = "GRANT_WELSH_LANGUAGE_IND")
-    private String grantWelshLanguageInd; //boolean,
+    private Boolean grantWelshLanguageInd; //boolean,
 
     @Column(name = "GRANT_WILL_TYPE")
     private String grantWillType; //varchar(200),
@@ -144,7 +144,7 @@ public class GrantApplication {
     private String exceptedEstateInd; //varchar(1),
 
     @Column(name = "FILESLIP_SIGNAL")
-    private String fileslipSignal; //boolean,
+    private Boolean fileslipSignal; //boolean,
 
     @Column(name = "GRANT_APPLICANT_TYPE")
     private String grantApplicantType; //varchar(1),
@@ -156,7 +156,7 @@ public class GrantApplication {
     private LocalDate grantIssuedDate; //date,
 
     @Column(name = "GRANT_ISSUED_SIGNAL")
-    private String grantIssuedSignal; //boolean,
+    private Boolean grantIssuedSignal; //boolean,
 
     @Column(name = "GRANT_LIMITATION")
     private String grantLimitation; //varchar(800),
