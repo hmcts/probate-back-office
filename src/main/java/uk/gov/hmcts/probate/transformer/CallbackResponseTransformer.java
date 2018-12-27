@@ -187,7 +187,7 @@ public class CallbackResponseTransformer {
                 .applicationType(ofNullable(caseData.getApplicationType()).orElse(DEFAULT_APPLICATION_TYPE))
                 .registryLocation(ofNullable(caseData.getRegistryLocation()).orElse(DEFAULT_REGISTRY_LOCATION))
                 .solsSolicitorFirmName(caseData.getSolsSolicitorFirmName())
-                .solsSolicitorFirmPostcode(caseData.getSolsSolicitorFirmPostcode())
+                .solsSolicitorAddress(caseData.getSolsSolicitorAddress())
                 .solsSolicitorEmail(caseData.getSolsSolicitorEmail())
                 .solsSolicitorPhoneNumber(caseData.getSolsSolicitorPhoneNumber())
                 .solsSOTName(caseData.getSolsSOTName())

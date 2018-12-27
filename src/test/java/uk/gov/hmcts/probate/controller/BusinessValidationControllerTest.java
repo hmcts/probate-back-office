@@ -44,6 +44,7 @@ public class BusinessValidationControllerTest {
     private static final String SURNAME = "Michael";
     private static final String SOLICITOR_APP_REFERENCE = "Reference";
     private static final String SOLICITOR_FIRM_NAME = "Legal Service Ltd";
+    private static final String SOLICITOR_FIRM_LINE1 = "Aols Add Line1";
     private static final String SOLICITOR_FIRM_POSTCODE = "SW1E 6EA";
     private static final String IHT_FORM = "IHT207";
     private static final String SOLICITOR_NAME = "Peter Crouch";
@@ -104,6 +105,10 @@ public class BusinessValidationControllerTest {
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
 
         OBJECT_MAPPER.registerModule(new JavaTimeModule());
+        SolsAddress solsAddress = SolsAddress.builder()
+                .addressLine1(SOLICITOR_FIRM_LINE1)
+                .postCode(SOLICITOR_FIRM_POSTCODE)
+                .build();
 
         caseDataBuilder = CaseData.builder()
                 .deceasedDateOfBirth(DOB)
@@ -127,7 +132,7 @@ public class BusinessValidationControllerTest {
                 .willHasCodicils(WILL_HAS_CODICILS)
                 .willNumberOfCodicils(NUMBER_OF_CODICILS)
                 .solsSolicitorFirmName(SOLICITOR_FIRM_NAME)
-                .solsSolicitorFirmPostcode(SOLICITOR_FIRM_POSTCODE)
+                .solsSolicitorAddress(solsAddress)
                 .ihtFormId(IHT_FORM)
                 .solsSOTName(SOLICITOR_NAME)
                 .solsSOTJobTitle(SOLICITOR_JOB_TITLE)

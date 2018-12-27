@@ -2,7 +2,15 @@
   "case_details": {
     "case_data": {
       "solsSolicitorFirmName": null,
-      "solsSolicitorFirmPostcode": null,
+      "solsSolicitorAddress": {
+        "AddressLine1": "SolAddLn1",
+        "AddressLine2": "SolAddLn2",
+        "AddressLine3": "SolAddLn3",
+        "PostTown": "SolAddPT",
+        "County": "SolAddCounty",
+        "PostCode": null,
+        "Country": "SolAddCo"
+      },
       "solsSolicitorAppReference": null,
       "solsSolicitorEmail": null,
       "solsSolicitorPhoneNumber": null,

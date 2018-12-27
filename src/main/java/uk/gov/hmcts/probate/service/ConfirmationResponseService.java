@@ -113,7 +113,7 @@ public class ConfirmationResponseService {
         }
         keyValue.put("{{caseSubmissionDate}}", caseSubmissionDate);
         keyValue.put("{{solsSolicitorFirmName}}", ccdData.getSolicitor().getFirmName());
-        keyValue.put("{{solsSolicitorFirmPostcode}}", ccdData.getSolicitor().getFirmPostcode());
+        keyValue.put("{{solsSolicitorFirmPostcode}}", ccdData.getSolicitor().getFirmAddress().getPostCode());
         keyValue.put("{{solicitorName}}", ccdData.getSolicitor().getFullname());
         keyValue.put("{{solicitorJobRole}}", ccdData.getSolicitor().getJobRole());
         keyValue.put("{{deceasedFirstname}}", ccdData.getDeceased().getFirstname());

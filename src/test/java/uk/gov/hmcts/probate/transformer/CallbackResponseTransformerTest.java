@@ -69,6 +69,7 @@ public class CallbackResponseTransformerTest {
     private static final String REGISTRY_LOCATION = "Birmingham";
 
     private static final String SOLICITOR_FIRM_NAME = "Sol Firm Name";
+    private static final String SOLICITOR_FIRM_LINE1 = "Sols Add Line 1";
     private static final String SOLICITOR_FIRM_POSTCODE = "SW13 6EA";
     private static final String SOLICITOR_FIRM_EMAIL = "sol@email.com";
     private static final String SOLICITOR_FIRM_PHONE = "0123456789";
@@ -196,7 +197,7 @@ public class CallbackResponseTransformerTest {
 
         caseDataBuilder = CaseData.builder()
                 .solsSolicitorFirmName(SOLICITOR_FIRM_NAME)
-                .solsSolicitorFirmPostcode(SOLICITOR_FIRM_POSTCODE)
+                .solsSolicitorAddress(SolsAddress.builder().addressLine1(SOLICITOR_FIRM_LINE1).postCode(SOLICITOR_FIRM_POSTCODE).build())
                 .solsSolicitorEmail(SOLICITOR_FIRM_EMAIL)
                 .solsSolicitorPhoneNumber(SOLICITOR_FIRM_PHONE)
                 .solsSOTName(SOLICITOR_SOT_NAME)
@@ -1058,7 +1059,8 @@ public class CallbackResponseTransformerTest {
         assertEquals(REGISTRY_LOCATION, callbackResponse.getData().getRegistryLocation());
 
         assertEquals(SOLICITOR_FIRM_NAME, callbackResponse.getData().getSolsSolicitorFirmName());
-        assertEquals(SOLICITOR_FIRM_POSTCODE, callbackResponse.getData().getSolsSolicitorFirmPostcode());
+        assertEquals(SOLICITOR_FIRM_LINE1, callbackResponse.getData().getSolsSolicitorAddress().getAddressLine1());
+        assertEquals(SOLICITOR_FIRM_POSTCODE, callbackResponse.getData().getSolsSolicitorAddress().getPostCode());
         assertEquals(SOLICITOR_FIRM_EMAIL, callbackResponse.getData().getSolsSolicitorEmail());
         assertEquals(SOLICITOR_FIRM_PHONE, callbackResponse.getData().getSolsSolicitorPhoneNumber());
         assertEquals(SOLICITOR_SOT_NAME, callbackResponse.getData().getSolsSOTName());

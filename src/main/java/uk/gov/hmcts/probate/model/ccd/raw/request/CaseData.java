@@ -30,6 +30,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.StopReason;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 
+import javax.validation.Valid;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -56,9 +57,8 @@ public class CaseData {
             message = "{solsSolicitorFirmNameIsNull}")
     private final String solsSolicitorFirmName;
 
-    @NotBlank(groups = {ApplicationCreatedGroup.class},
-            message = "{solsSolicitorFirmPostcodeIsNull}")
-    private final String solsSolicitorFirmPostcode;
+    @Valid
+    private final SolsAddress solsSolicitorAddress;
 
     @NotBlank(groups = {ApplicationCreatedGroup.class}, message = "{solsSolicitorAppReferenceIsNull}")
     private final String solsSolicitorAppReference;
