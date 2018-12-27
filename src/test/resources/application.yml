@@ -47,6 +47,12 @@ spring:
       unwrap_root_value: false
   application:
     name: probate-sol-ccd
+  datasource:
+    url: jdbc:postgresql://${probate.postgresql.hostname}:${probate.postgresql.port}/${probate.postgresql.database}
+    username:  ${probate.postgresql.user}
+    password:  ${probate.postgresql.password}
+
+  database.driverClassName: org.postgresql.Driver
 
 spring.jackson.serialization.write_dates_as_timestamps: false
 
