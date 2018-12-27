@@ -12,7 +12,7 @@ import java.time.LocalDate;
 public class Caveat extends ProbateManModel {
 
     @Id
-    private Long ID;
+    private Long id;
 
     @Column(name = "CAVEAT_NUMBER")
     private String caveatNumber;
