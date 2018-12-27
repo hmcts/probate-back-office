@@ -9,7 +9,8 @@ import java.time.LocalDate;
 
 @Entity
 @Data
-public class StandingSearch {
+public class StandingSearch extends ProbateManModel{
+
     @Id
     private Long id; //bigint,
 

@@ -9,7 +9,8 @@ import javax.persistence.Id;
 
 @Entity
 @Data
-public class AdmonWill {
+public class AdmonWill extends ProbateManModel {
+
     @Id
     private Long id;// bigint
 

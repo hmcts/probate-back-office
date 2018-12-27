@@ -9,7 +9,7 @@ import java.time.LocalDate;
 
 @Entity
 @Data
-public class GrantApplication {
+public class GrantApplication extends ProbateManModel {
 
     @Id
     private Long id; //bigint,

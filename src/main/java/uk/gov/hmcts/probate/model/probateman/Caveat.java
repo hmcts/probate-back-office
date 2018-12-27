@@ -9,7 +9,7 @@ import java.time.LocalDate;
 
 @Entity
 @Data
-public class Caveat {
+public class Caveat extends ProbateManModel {
 
     @Id
     private Long ID;
