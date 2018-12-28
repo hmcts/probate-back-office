@@ -84,7 +84,15 @@
         },
         "data_classification": {
             "deceasedDateOfDeath": "PUBLIC",
-            "solsSolicitorFirmPostcode": "PUBLIC",
+            "solsSolicitorAddress": {
+                "AddressLine1": "PUBLIC",
+                "AddressLine2": "PUBLIC",
+                "AddressLine3": "PUBLIC",
+                "PostTown": "PUBLIC",
+                "County": "PUBLIC",
+                "PostCode": "PUBLIC",
+                "Country": "PUBLIC"
+            },
             "solsSolicitorAppReference": "PUBLIC",
             "deceasedDateOfBirth": "PUBLIC",
             "deceasedForenames": "PUBLIC",
@@ -96,7 +104,15 @@
         "callback_response_status": null,
         "security_classifications": {
             "deceasedDateOfDeath": "PUBLIC",
-            "solsSolicitorFirmPostcode": "PUBLIC",
+            "solsSolicitorAddress": {
+                "AddressLine1": "PUBLIC",
+                "AddressLine2": "PUBLIC",
+                "AddressLine3": "PUBLIC",
+                "PostTown": "PUBLIC",
+                "County": "PUBLIC",
+                "PostCode": "PUBLIC",
+                "Country": "PUBLIC"
+            },
             "solsSolicitorAppReference": "PUBLIC",
             "deceasedDateOfBirth": "PUBLIC",
             "deceasedForenames": "PUBLIC",

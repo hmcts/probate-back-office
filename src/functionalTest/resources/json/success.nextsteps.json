@@ -104,7 +104,15 @@
           }
         }
       ],
-      "solsSolicitorFirmPostcode": "firmpc",
+      "solsSolicitorAddress": {
+        "AddressLine1": "SolAddLn1",
+        "AddressLine2": "SolAddLn2",
+        "AddressLine3": "SolAddLn3",
+        "PostTown": "SolAddPT",
+        "County": "SolAddCounty",
+        "PostCode": "firmpc",
+        "Country": "SolAddCo"
+      },
       "deceasedForenames": "deceasedFirstName",
       "willNumberOfCodicils": "2",
       "primaryApplicantIsApplying": "Yes",
@@ -203,7 +211,15 @@
           }
         ]
       },
-      "solsSolicitorFirmPostcode": "PUBLIC",
+      "solsSolicitorAddress": {
+        "AddressLine1": "PUBLIC",
+        "AddressLine2": "PUBLIC",
+        "AddressLine3": "PUBLIC",
+        "PostTown": "PUBLIC",
+        "County": "PUBLIC",
+        "PostCode": "PUBLIC",
+        "Country": "PUBLIC"
+      },
       "deceasedForenames": "PUBLIC",
       "willNumberOfCodicils": "PUBLIC",
       "primaryApplicantIsApplying": "PUBLIC",
@@ -305,7 +321,15 @@
           }
         ]
       },
-      "solsSolicitorFirmPostcode": "PUBLIC",
+      "solsSolicitorAddress": {
+        "AddressLine1": "PUBLIC",
+        "AddressLine2": "PUBLIC",
+        "AddressLine3": "PUBLIC",
+        "PostTown": "PUBLIC",
+        "County": "PUBLIC",
+        "PostCode": "PUBLIC",
+        "Country": "PUBLIC"
+      },
       "deceasedForenames": "PUBLIC",
       "willNumberOfCodicils": "PUBLIC",
       "primaryApplicantIsApplying": "PUBLIC",
@@ -413,7 +437,15 @@
           }
         }
       ],
-      "solsSolicitorFirmPostcode": "firmpc",
+      "solsSolicitorAddress": {
+        "AddressLine1": "SolAddLn1",
+        "AddressLine2": "SolAddLn2",
+        "AddressLine3": "SolAddLn3",
+        "PostTown": "SolAddPT",
+        "County": "SolAddCounty",
+        "PostCode": "firmpc",
+        "Country": "SolAddCo"
+      },
       "willNumberOfCodicils": "2",
       "primaryApplicantIsApplying": "Yes",
       "primaryApplicantHasAlias": "Yes",
@@ -509,7 +541,15 @@
         ],
         "classification": "PUBLIC"
       },
-      "solsSolicitorFirmPostcode": "PUBLIC",
+      "solsSolicitorAddress": {
+        "AddressLine1": "PUBLIC",
+        "AddressLine2": "PUBLIC",
+        "AddressLine3": "PUBLIC",
+        "PostTown": "PUBLIC",
+        "County": "PUBLIC",
+        "PostCode": "PUBLIC",
+        "Country": "PUBLIC"
+      },
       "deceasedForenames": "PUBLIC",
       "willNumberOfCodicils": "PUBLIC",
       "primaryApplicantIsApplying": "PUBLIC",
@@ -609,7 +649,15 @@
         ],
         "classification": "PUBLIC"
       },
-      "solsSolicitorFirmPostcode": "PUBLIC",
+      "solsSolicitorAddress": {
+        "AddressLine1": "PUBLIC",
+        "AddressLine2": "PUBLIC",
+        "AddressLine3": "PUBLIC",
+        "PostTown": "PUBLIC",
+        "County": "PUBLIC",
+        "PostCode": "PUBLIC",
+        "Country": "PUBLIC"
+      },
       "deceasedForenames": "PUBLIC",
       "willNumberOfCodicils": "PUBLIC",
       "primaryApplicantIsApplying": "PUBLIC",

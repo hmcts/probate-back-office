@@ -12,6 +12,7 @@ import uk.gov.hmcts.probate.changerule.NoOriginalWillRule;
 import uk.gov.hmcts.probate.changerule.NoWillRule;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
 import uk.gov.hmcts.probate.model.ccd.Executor;
+import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.response.AfterSubmitCallbackResponse;
@@ -113,7 +114,14 @@ public class ConfirmationResponseService {
         }
         keyValue.put("{{caseSubmissionDate}}", caseSubmissionDate);
         keyValue.put("{{solsSolicitorFirmName}}", ccdData.getSolicitor().getFirmName());
-        keyValue.put("{{solsSolicitorFirmPostcode}}", ccdData.getSolicitor().getFirmAddress().getPostCode());
+        keyValue.put("{{solsSolicitorAddress}}", createAddressValueString(ccdData.getSolicitor().getFirmAddress()));
+        keyValue.put("{{solsSolicitorAddress.addressLine1}}", ccdData.getSolicitor().getFirmAddress().getAddressLine1());
+        keyValue.put("{{solsSolicitorAddress.addressLine2}}", ccdData.getSolicitor().getFirmAddress().getAddressLine2());
+        keyValue.put("{{solsSolicitorAddress.addressLine3}}", ccdData.getSolicitor().getFirmAddress().getAddressLine3());
+        keyValue.put("{{solsSolicitorAddress.postTown}}", ccdData.getSolicitor().getFirmAddress().getPostTown());
+        keyValue.put("{{solsSolicitorAddress.county}}", ccdData.getSolicitor().getFirmAddress().getCounty());
+        keyValue.put("{{solsSolicitorAddress.postCode}}", ccdData.getSolicitor().getFirmAddress().getPostCode());
+        keyValue.put("{{solsSolicitorAddress.country}}", ccdData.getSolicitor().getFirmAddress().getCounty());
         keyValue.put("{{solicitorName}}", ccdData.getSolicitor().getFullname());
         keyValue.put("{{solicitorJobRole}}", ccdData.getSolicitor().getJobRole());
         keyValue.put("{{deceasedFirstname}}", ccdData.getDeceased().getFirstname());
@@ -143,6 +151,22 @@ public class ConfirmationResponseService {
         keyValue.put("{{deadExecutors}}", getDeadExecutors(ccdData.getExecutors()));
 
         return markdownSubstitutionService.generatePage(templatesDirectory, MarkdownTemplate.NEXT_STEPS, keyValue);
+    }
+
+    private String createAddressValueString(SolsAddress address) {
+        StringBuilder solsSolicitorAddress = new StringBuilder();
+        return solsSolicitorAddress.append(defaultString(address.getAddressLine1()))
+                .append(defaultString(address.getAddressLine2()))
+                .append(defaultString(address.getAddressLine3()))
+                .append(defaultString(address.getPostTown()))
+                .append(defaultString(address.getCounty()))
+                .append(defaultString(address.getPostCode()))
+                .append(defaultString(address.getCountry()))
+                .toString();
+    }
+
+    private String defaultString(String value) {
+        return value == null ? "" : value + ", ";
     }
 
     private String getRenouncingExecutors(List<Executor> executors) {
