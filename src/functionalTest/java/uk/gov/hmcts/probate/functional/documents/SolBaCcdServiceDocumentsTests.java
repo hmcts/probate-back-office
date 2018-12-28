@@ -14,7 +14,8 @@ import static org.junit.Assert.assertTrue;
 @RunWith(SerenityRunner.class)
 public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
-    private static final String SOLICITOR_INFO = "Extracted by Solicitor Firm Name (Ref: 1231-3984-3949-0300) KT10 0LA";
+    private static final String SOLICITOR_INFO1 = "Extracted by Solicitor Firm Name (Ref: 1231-3984-3949-0300) SolAddLn1, SolAddLn2, SolAddLn3, ";
+    private static final String SOLICITOR_INFO2 = "SolAddPT, SolAddCounty, KT10 0LA, SolAddCo";
     private static final String PA = "Extracted personally";
     private static final String PRIMARY_APPLICANT = "EXECUTOR NAME 1 EXECUTOR LAST NAME 1";
     private static final String WILL_MESSAGE = "With A Codicil";
@@ -79,7 +80,8 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     public void verifySuccessForGetDigitalGrantWithSingleExecutorSols() {
         String response = generateDocument("solicitorPayloadNotifications.json", "/document/generate-grant");
 
-        assertTrue(response.contains(SOLICITOR_INFO));
+        assertTrue(response.contains(SOLICITOR_INFO1));
+        assertTrue(response.contains(SOLICITOR_INFO2));
         assertTrue(response.contains(PRIMARY_APPLICANT));
 
         assertTrue(!response.contains(PA));
@@ -117,7 +119,8 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
         assertTrue(response.contains(ADD_EXEC_ONE));
         assertTrue(response.contains(ADD_EXEC_TWO));
-        assertTrue(response.contains(SOLICITOR_INFO));
+        assertTrue(response.contains(SOLICITOR_INFO1));
+        assertTrue(response.contains(SOLICITOR_INFO2));
 
         assertTrue(!response.contains(WILL_MESSAGE));
         assertTrue(!response.contains(ADMIN_MESSAGE));
@@ -136,7 +139,8 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         String response = generateDocument("solicitorPayloadNotificationsPowerReservedMultiple.json", "/document/generate-grant");
 
         assertTrue(response.contains(POWER_RESERVED));
-        assertTrue(response.contains(SOLICITOR_INFO));
+        assertTrue(response.contains(SOLICITOR_INFO1));
+        assertTrue(response.contains(SOLICITOR_INFO2));
 
         assertTrue(!response.contains(WILL_MESSAGE));
         assertTrue(!response.contains(ADMIN_MESSAGE));
@@ -152,7 +156,8 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         String response = generateDocument("solicitorPayloadNotificationsPowerReserved.json", "/document/generate-grant");
 
         assertTrue(response.contains(POWER_RESERVED_SINGLE));
-        assertTrue(response.contains(SOLICITOR_INFO));
+        assertTrue(response.contains(SOLICITOR_INFO1));
+        assertTrue(response.contains(SOLICITOR_INFO2));
 
         assertTrue(!response.contains(WILL_MESSAGE));
         assertTrue(!response.contains(ADMIN_MESSAGE));
@@ -172,7 +177,8 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         assertTrue(response.contains(ADMIN_MESSAGE));
         assertTrue(response.contains(LIMITATION_MESSAGE));
         assertTrue(response.contains(EXECUTOR_LIMITATION_MESSAGE));
-        assertTrue(response.contains(SOLICITOR_INFO));
+        assertTrue(response.contains(SOLICITOR_INFO1));
+        assertTrue(response.contains(SOLICITOR_INFO2));
         assertTrue(response.contains(PRIMARY_APPLICANT));
         assertTrue(response.contains(TITLE));
         assertTrue(response.contains(HONOURS));
@@ -187,7 +193,8 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     public void verifySuccessForGetDigitalGrantDraftWithSingleExecutorSols() {
         String response = generateDocument("solicitorPayloadNotifications.json", "/document/generate-grant-draft");
 
-        assertTrue(response.contains(SOLICITOR_INFO));
+        assertTrue(response.contains(SOLICITOR_INFO1));
+        assertTrue(response.contains(SOLICITOR_INFO2));
         assertTrue(response.contains(PRIMARY_APPLICANT));
 
         assertTrue(!response.contains(WILL_MESSAGE));
@@ -225,7 +232,8 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         assertTrue(response.contains(PRIMARY_APPLICANT));
         assertTrue(response.contains(ADD_EXEC_ONE));
         assertTrue(response.contains(ADD_EXEC_TWO));
-        assertTrue(response.contains(SOLICITOR_INFO));
+        assertTrue(response.contains(SOLICITOR_INFO1));
+        assertTrue(response.contains(SOLICITOR_INFO2));
 
         assertTrue(!response.contains(WILL_MESSAGE));
         assertTrue(!response.contains(ADMIN_MESSAGE));
@@ -244,7 +252,8 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         String response = generateDocument("solicitorPayloadNotificationsPowerReservedMultiple.json", "/document/generate-grant-draft");
 
         assertTrue(response.contains(POWER_RESERVED));
-        assertTrue(response.contains(SOLICITOR_INFO));
+        assertTrue(response.contains(SOLICITOR_INFO1));
+        assertTrue(response.contains(SOLICITOR_INFO2));
 
         assertTrue(!response.contains(WILL_MESSAGE));
         assertTrue(!response.contains(ADMIN_MESSAGE));
@@ -260,7 +269,8 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         String response = generateDocument("solicitorPayloadNotificationsPowerReserved.json", "/document/generate-grant-draft");
 
         assertTrue(response.contains(POWER_RESERVED_SINGLE));
-        assertTrue(response.contains(SOLICITOR_INFO));
+        assertTrue(response.contains(SOLICITOR_INFO1));
+        assertTrue(response.contains(SOLICITOR_INFO2));
 
         assertTrue(!response.contains(WILL_MESSAGE));
         assertTrue(!response.contains(ADMIN_MESSAGE));
@@ -280,7 +290,8 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         assertTrue(response.contains(ADMIN_MESSAGE));
         assertTrue(response.contains(LIMITATION_MESSAGE));
         assertTrue(response.contains(EXECUTOR_LIMITATION_MESSAGE));
-        assertTrue(response.contains(SOLICITOR_INFO));
+        assertTrue(response.contains(SOLICITOR_INFO1));
+        assertTrue(response.contains(SOLICITOR_INFO2));
         assertTrue(response.contains(PRIMARY_APPLICANT));
         assertTrue(response.contains(TITLE));
         assertTrue(response.contains(HONOURS));

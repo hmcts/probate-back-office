@@ -1,36 +1,12 @@
 <!DOCTYPE html>
 {% macro address(address)%}
-<tr>
-    <td rowspan="3"></td>
-    <td rowspan="3" valign="top">Building and Street:</td>
-    <td>{% if address.AddressLine1 %}{{ address.AddressLine1 }}{% endif %}</td>
-</tr>
-<tr>
-    <td>{% if address.AddressLine2 %}{{ address.AddressLine2 }}{% endif %}</td>
-</tr>
-<tr>
-    <td>{% if address.AddressLine3 %}{{ address.AddressLine3 }}{% endif %}</td>
-</tr>
-<tr>
-    <td></td>
-    <td>Town or city:</td>
-    <td>{% if address.PostTown %}{{ address.PostTown }}{% endif %}</td>
-</tr>
-<tr>
-    <td></td>
-    <td>County:</td>
-    <td>{% if address.County %}{{ address.County }}{% endif %}</td>
-</tr>
-<tr>
-    <td></td>
-    <td>Postcode:</td>
-    <td>{% if address.PostCode %}{{ address.PostCode }}{% endif %}</td>
-</tr>
-<tr>
-    <td></td>
-    <td>Country:</td>
-    <td>{% if address.Country %}{{ address.Country }}{% endif %}</td>
-</tr>
+{% if address.AddressLine1 != null %}{{ address.AddressLine1 }}, {% endif %}
+{% if address.AddressLine2 != null %}{{ address.AddressLine2 }}, {% endif %}
+{% if address.AddressLine3 != null %}{{ address.AddressLine3 }}, {% endif %}
+{% if address.PostTown != null %}{{ address.PostTown }}, {% endif %}
+{% if address.County != null %}{{ address.County }}, {% endif %}
+{% if address.PostCode != null %}{{ address.PostCode }}, {% endif %}
+{% if address.Country != null %}{{ address.Country }}{% endif %}
 {% endmacro %}
 
 <html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
