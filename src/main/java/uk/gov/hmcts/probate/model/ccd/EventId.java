@@ -6,13 +6,10 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum EventId {
 
-    CREATE_DRAFT("createDraft"),
-    UPDATE_DRAFT("updateDraft"),
-    CREATE_APPLICATION("createApplication"),
-    CREATE_CASE("createCase"),
-    PAYMENT_FAILED("createCasePaymentFailed"),
-    PAYMENT_FAILED_TO_SUCCESS("createCasePaymentSuccess"),
-    PAYMENT_FAILED_AGAIN("createCasePaymentFailedMultiple");
+    APPLY_FOR_GRANT("applyForGrant"),
+    RAISE_CAVEAT("cavRaiseCaveat"),
+    CREATE_STANDING_SEARCH("createStandingSearch"),
+    CREATE_WILL_LODGEMENT("wlCreateWillLodgment");
 
     @Getter
     private final String name;

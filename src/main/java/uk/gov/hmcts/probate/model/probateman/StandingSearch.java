@@ -1,6 +1,7 @@
 package uk.gov.hmcts.probate.model.probateman;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,7 +10,8 @@ import java.time.LocalDate;
 
 @Entity
 @Data
-public class StandingSearch extends ProbateManModel{
+@EqualsAndHashCode(callSuper = false)
+public class StandingSearch extends ProbateManModel {
 
     @Id
     private Long id; //bigint,

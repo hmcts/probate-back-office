@@ -19,6 +19,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.util.TestUtils;
+import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
 import uk.gov.service.notify.NotificationClientException;
 
 import static org.hamcrest.CoreMatchers.containsString;
@@ -50,6 +51,9 @@ public class CaveatControllerTest {
 
     @MockBean
     private PDFManagementService pdfManagementService;
+
+    @MockBean
+    private CoreCaseDataApi coreCaseDataApi;
 
     @Autowired
     private WebApplicationContext webApplicationContext;

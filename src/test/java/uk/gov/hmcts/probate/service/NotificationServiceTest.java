@@ -16,6 +16,7 @@ import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
+import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
 import uk.gov.service.notify.NotificationClient;
 import uk.gov.service.notify.NotificationClientException;
 import uk.gov.service.notify.SendEmailResponse;
@@ -53,6 +54,9 @@ public class NotificationServiceTest {
 
     @MockBean
     private PDFManagementService pdfManagementService;
+
+    @MockBean
+    private CoreCaseDataApi coreCaseDataApi;
 
     @SpyBean
     private NotificationClient notificationClient;

@@ -1,6 +1,7 @@
 package uk.gov.hmcts.probate.model.probateman;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,6 +10,7 @@ import java.time.LocalDate;
 
 @Entity
 @Data
+@EqualsAndHashCode(callSuper = false)
 public class GrantApplication extends ProbateManModel {
 
     @Id

@@ -1,6 +1,7 @@
 package uk.gov.hmcts.probate.model.probateman;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.joda.time.LocalDate;
 
 import javax.persistence.Column;
@@ -9,6 +10,7 @@ import javax.persistence.Id;
 
 @Entity
 @Data
+@EqualsAndHashCode(callSuper = false)
 public class AdmonWill extends ProbateManModel {
 
     @Id

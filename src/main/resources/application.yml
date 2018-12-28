@@ -150,3 +150,7 @@ registries:
     name: Winchester Probate Registry
     phone: 01962 814100
     emailReplyToId: "de5b8f8d-fb9c-4fd7-aa3a-3732a86a2e5d"
+
+auth.idam.client.baseUrl: http://localhost:4501
+
+core_case_data.api.url: http://localhost:4452

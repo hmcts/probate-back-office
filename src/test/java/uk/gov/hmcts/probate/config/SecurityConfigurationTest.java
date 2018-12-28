@@ -16,9 +16,17 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import uk.gov.hmcts.probate.insights.AppInsights;
+import uk.gov.hmcts.reform.auth.checker.core.RequestAuthorizer;
 import uk.gov.hmcts.reform.auth.checker.core.SubjectResolver;
 import uk.gov.hmcts.reform.auth.checker.core.service.Service;
+import uk.gov.hmcts.reform.auth.checker.core.user.User;
+import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
 
+import javax.servlet.http.HttpServletRequest;
+
+import java.util.HashSet;
+
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestBuilders.formLogin;
@@ -39,6 +47,8 @@ public class SecurityConfigurationTest {
 
     private static final String SERVICE_AUTHORIZATION = "ServiceAuthorization";
 
+    private static final String AUTHORIZATION = "Authorization";
+
     @Autowired
     private WebApplicationContext context;
 
@@ -48,19 +58,28 @@ public class SecurityConfigurationTest {
     private SubjectResolver<Service> serviceResolver;
 
     @MockBean
+    private RequestAuthorizer<User> userRequestAuthorizer;
+
+    @MockBean
     private AppInsights appInsights;
 
+    @MockBean
+    private CoreCaseDataApi coreCaseDataApi;
+
     private Service service;
-    
+
     @Before
     public void setUp() {
         mvc = MockMvcBuilders.webAppContextSetup(context)
-                .apply(springSecurity())
-                .defaultRequest(get("/").accept(MediaType.TEXT_HTML))
-                .build();
+            .apply(springSecurity())
+            .defaultRequest(get("/").accept(MediaType.TEXT_HTML))
+            .build();
 
         service = new Service(PRINCIPAL);
         when(serviceResolver.getTokenDetails(anyString())).thenReturn(service);
+
+        User user = new User("123", new HashSet<>());
+        when(userRequestAuthorizer.authorise(any(HttpServletRequest.class))).thenReturn(user);
     }
 
     @Test
@@ -81,7 +100,14 @@ public class SecurityConfigurationTest {
     @Test
     public void shouldAuthenticateForEndpointWithServiceAuthorizationHeader() throws Exception {
         mvc.perform(post("/case/validate").header(SERVICE_AUTHORIZATION, "Bearer xxxxx.yyyyy.zzzzz"))
-                .andExpect(authenticated());
+            .andExpect(authenticated());
+    }
+
+    @Test
+    public void shouldAuthenticateForEndpointWithServiceAndUserAuthorizationHeader() throws Exception {
+        mvc.perform(post("/probateManTypes/CAVEAT/cases/1").header(SERVICE_AUTHORIZATION, "Bearer xxxxx.yyyyy.zzzzz")
+            .header(AUTHORIZATION, "Bearer jddslfjsdlfj"))
+            .andExpect(authenticated());
     }
 
     @TestConfiguration

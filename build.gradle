@@ -175,7 +175,8 @@ def versions = [
         springBootVersion: '2.0.6.RELEASE',
         reformsJavaLoggingVersion: '3.0.2',
         springSecurityVersion : '5.1.1.RELEASE',
-        ccdClient: '4.4.1'
+        ccdClient: '4.4.1',
+        mapStruct: '1.2.0.Final'
 ]
 
 jacocoTestReport {
@@ -243,8 +244,10 @@ dependencies {
   compile ('org.postgresql:postgresql:42.2.2') {
     exclude module: 'slf4j-simple'
   }
+  compile group: 'org.mapstruct', name: 'mapstruct-jdk8', version: versions.mapStruct
+  compileOnly group: 'org.mapstruct', name: 'mapstruct-processor', version: versions.mapStruct
 
-    testCompile("org.springframework.boot:spring-boot-starter-test:$versions.springBootVersion") {
+  testCompile("org.springframework.boot:spring-boot-starter-test:$versions.springBootVersion") {
     exclude group: 'com.vaadin.external.google', module:'android-json'
   }
   testCompile group: 'com.h2database', name: 'h2', version: '1.4.197'

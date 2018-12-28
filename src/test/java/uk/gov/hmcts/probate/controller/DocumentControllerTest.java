@@ -21,6 +21,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.service.DocumentService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.util.TestUtils;
+import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.mockito.ArgumentMatchers.eq;
@@ -55,6 +56,9 @@ public class DocumentControllerTest {
 
     @MockBean
     private AppInsights appInsights;
+
+    @MockBean
+    private CoreCaseDataApi coreCaseDataApi;
 
     @Before
     public void setUp() {

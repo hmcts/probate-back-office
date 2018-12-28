@@ -22,6 +22,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData.CaseDataBuilder;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.util.TestUtils;
+import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -98,6 +99,9 @@ public class BusinessValidationControllerTest {
 
     @MockBean
     private PDFManagementService pdfManagementService;
+
+    @MockBean
+    private CoreCaseDataApi coreCaseDataApi;
 
     @Before
     public void setup() {

@@ -17,14 +17,13 @@ public class ProbateManControllerTest {
 
     private static final String ID = "1234567";
 
-    private static final String GRANT_APPLICATION_URL = "/probateManTypes/grantApplication/";
+    private static final String GRANT_APPLICATION_URL = "/probateManTypes/GRANT_APPLICATION/cases/";
 
-    private static final String ADMON_WILL_URL = "/probateManTypes/admonWill/";
+    private static final String ADMON_WILL_URL = "/probateManTypes/ADMON_WILL/cases/";
 
-    private static final String CAVEAT_URL = "/probateManTypes/caveat/";
+    private static final String CAVEAT_URL = "/probateManTypes/CAVEAT/cases/";
 
-    private static final String STANDING_SEARCH_URL = "/probateManTypes/standingSearch/";
-
+    private static final String STANDING_SEARCH_URL = "/probateManTypes/STANDING_SEARCH/cases/";
 
     @Autowired
     private MockMvc mockMvc;

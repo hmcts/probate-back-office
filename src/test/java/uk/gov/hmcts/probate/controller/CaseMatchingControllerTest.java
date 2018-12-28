@@ -17,6 +17,7 @@ import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.criterion.CaseMatchingCriteria;
 import uk.gov.hmcts.probate.service.CaseMatchingService;
 import uk.gov.hmcts.probate.util.TestUtils;
+import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
 
 import java.util.ArrayList;
 
@@ -51,6 +52,9 @@ public class CaseMatchingControllerTest {
 
     @Autowired
     private WebApplicationContext webApplicationContext;
+
+    @MockBean
+    private CoreCaseDataApi coreCaseDataApi;
 
     @Before
     public void setUp() {
