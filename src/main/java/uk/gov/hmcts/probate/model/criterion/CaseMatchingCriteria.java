@@ -7,6 +7,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.standingsearch.request.StandingSearchDetails;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 @Builder
 @Data
@@ -14,14 +15,18 @@ public class CaseMatchingCriteria {
     private final Long id;
     private final String deceasedForenames;
     private final String deceasedSurname;
-    private final LocalDate deceasedDateOfDeath;
+    private final String deceasedDateOfBirth;
+    private final String deceasedDateOfDeath;
+
+    private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ISO_DATE;
 
     public static CaseMatchingCriteria of(CaseDetails caseDetails) {
         return CaseMatchingCriteria.builder()
                 .id(caseDetails.getId())
                 .deceasedForenames(caseDetails.getData().getDeceasedForenames())
                 .deceasedSurname(caseDetails.getData().getDeceasedSurname())
-                .deceasedDateOfDeath(caseDetails.getData().getDeceasedDateOfDeath())
+                .deceasedDateOfBirth(getDateFormatted(caseDetails.getData().getDeceasedDateOfBirth()))
+                .deceasedDateOfDeath(getDateFormatted(caseDetails.getData().getDeceasedDateOfDeath()))
                 .build();
     }
 
@@ -30,7 +35,8 @@ public class CaseMatchingCriteria {
                 .id(caveatDetails.getId())
                 .deceasedForenames(caveatDetails.getData().getDeceasedForenames())
                 .deceasedSurname(caveatDetails.getData().getDeceasedSurname())
-                .deceasedDateOfDeath(caveatDetails.getData().getDeceasedDateOfDeath())
+                .deceasedDateOfBirth(getDateFormatted(caveatDetails.getData().getDeceasedDateOfBirth()))
+                .deceasedDateOfDeath(getDateFormatted(caveatDetails.getData().getDeceasedDateOfDeath()))
                 .build();
     }
 
@@ -39,7 +45,16 @@ public class CaseMatchingCriteria {
                 .id(standingSearchDetails.getId())
                 .deceasedForenames(standingSearchDetails.getData().getDeceasedForenames())
                 .deceasedSurname(standingSearchDetails.getData().getDeceasedSurname())
-                .deceasedDateOfDeath(standingSearchDetails.getData().getDeceasedDateOfDeath())
+                .deceasedDateOfBirth(getDateFormatted(standingSearchDetails.getData().getDeceasedDateOfBirth()))
+                .deceasedDateOfDeath(getDateFormatted(standingSearchDetails.getData().getDeceasedDateOfDeath()))
                 .build();
+    }
+
+    private static String getDateFormatted(LocalDate date) {
+        if (date == null) {
+            return "";
+        }
+
+        return date.format(dateTimeFormatter);
     }
 }

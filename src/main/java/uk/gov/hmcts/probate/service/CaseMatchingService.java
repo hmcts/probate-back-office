@@ -15,7 +15,6 @@ import uk.gov.hmcts.probate.model.criterion.CaseMatchingCriteria;
 import uk.gov.hmcts.probate.service.evidencemanagement.header.HttpHeadersFactory;
 
 import java.net.URI;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -38,14 +37,13 @@ public class CaseMatchingService {
     private final HttpHeadersFactory headers;
     private final FileSystemResourceService fileSystemResourceService;
 
-    private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ISO_DATE;
-
     public List<CaseMatch> findMatches(CaseType caseType, CaseMatchingCriteria criteria) {
 
         String jsonQuery = getQueryTemplate()
                 .replace(":deceasedForenames", criteria.getDeceasedForenames())
                 .replace(":deceasedSurname", criteria.getDeceasedSurname())
-                .replace(":deceasedDateOfDeath", criteria.getDeceasedDateOfDeath().format(dateTimeFormatter));
+                .replace(":deceasedDateOfBirth", criteria.getDeceasedDateOfBirth())
+                .replace(":deceasedDateOfDeath", criteria.getDeceasedDateOfDeath());
 
         URI uri = UriComponentsBuilder
                 .fromHttpUrl(ccdGatewayConfiguration.getHost() + ccdGatewayConfiguration.getCaseMatchingPath())
