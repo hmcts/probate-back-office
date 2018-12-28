@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Data;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
+import uk.gov.hmcts.probate.model.ccd.standingsearch.request.StandingSearchDetails;
 
 import java.time.LocalDate;
 
@@ -27,9 +28,18 @@ public class CaseMatchingCriteria {
     public static CaseMatchingCriteria of(CaveatDetails caveatDetails) {
         return CaseMatchingCriteria.builder()
                 .id(caveatDetails.getId())
-                .deceasedForenames(caveatDetails.getCaveatData().getDeceasedForenames())
-                .deceasedSurname(caveatDetails.getCaveatData().getDeceasedSurname())
-                .deceasedDateOfDeath(caveatDetails.getCaveatData().getDeceasedDateOfDeath())
+                .deceasedForenames(caveatDetails.getData().getDeceasedForenames())
+                .deceasedSurname(caveatDetails.getData().getDeceasedSurname())
+                .deceasedDateOfDeath(caveatDetails.getData().getDeceasedDateOfDeath())
+                .build();
+    }
+
+    public static CaseMatchingCriteria of(StandingSearchDetails standingSearchDetails) {
+        return CaseMatchingCriteria.builder()
+                .id(standingSearchDetails.getId())
+                .deceasedForenames(standingSearchDetails.getData().getDeceasedForenames())
+                .deceasedSurname(standingSearchDetails.getData().getDeceasedSurname())
+                .deceasedDateOfDeath(standingSearchDetails.getData().getDeceasedDateOfDeath())
                 .build();
     }
 }
