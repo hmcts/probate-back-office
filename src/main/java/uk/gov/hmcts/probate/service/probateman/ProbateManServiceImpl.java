@@ -34,7 +34,9 @@ public class ProbateManServiceImpl implements ProbateManService {
         ProbateManModel probateManModel = probateManModelOptional
             .orElseThrow(() -> new IllegalArgumentException("Cannot find " + probateManType.name()
                 + " with id: " + id));
-        ProbateManMapper probateManMapper = mappers.get(probateManType);
+        ProbateManMapper probateManMapper = Optional.ofNullable(mappers.get(probateManType))
+            .orElseThrow(() ->
+                new IllegalArgumentException("Cannot find mapper for: " + probateManType.name()));
         return coreCaseDataService.createCase(
             probateManMapper.toCcdData(probateManModel),
             probateManType.getCcdCaseType(),
