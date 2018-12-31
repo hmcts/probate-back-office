@@ -115,4 +115,11 @@ public class FunctionalTestUtils {
         return parsedText;
     }
 
+    public Headers getHeaders(String userName, String password) {
+        return Headers.headers(
+            new Header("ServiceAuthorization", serviceAuthTokenGenerator.generateServiceToken()),
+            new Header("Content-Type", ContentType.JSON.toString()),
+            new Header("Authorization", serviceAuthTokenGenerator.generateClientToken(userName, password)));
+    }
+
 }

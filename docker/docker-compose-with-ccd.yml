@@ -227,8 +227,8 @@ services:
       - REFORM_TEAM=ccd
       - REFORM_ENVIRONMENT=local
       - APPINSIGHTS_INSTRUMENTATIONKEY=fake-key
-      - ELASTIC_SEARCH_ENABLED=true
-      - ELASTIC_SEARCH_FAIL_ON_IMPORT=true
+      - ELASTIC_SEARCH_ENABLED=false
+      - ELASTIC_SEARCH_FAIL_ON_IMPORT=false
       - ELASTIC_SEARCH_HOST=elasticsearch
     ports:
       - 4451:4451
