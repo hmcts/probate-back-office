@@ -7,6 +7,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.data.jpa.repository.JpaRepository;
+import uk.gov.hmcts.probate.model.ccd.grantapplication.request.GrantApplicationData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.probateman.Caveat;
 import uk.gov.hmcts.probate.model.probateman.GrantApplication;
@@ -75,15 +76,15 @@ public class ProbateManServiceImplTest {
     public void shouldSaveToCcd() {
         SecurityDTO securityDTO = SecurityDTO.builder().build();
         GrantApplication grantApplication = new GrantApplication();
-        CaseData caseData = CaseData.builder().build();
+        GrantApplicationData grantApplicationData = GrantApplicationData.builder().build();
         CaseDetails caseDetails = CaseDetails.builder().build();
 
         when(securityUtils.getSecurityDTO()).thenReturn(securityDTO);
         when(grantApplicationRepository.findById(ID)).thenReturn(Optional.of(grantApplication));
-        when(grantApplicationMapper.toCcdData(grantApplication)).thenReturn(caseData);
+        when(grantApplicationMapper.toCcdData(grantApplication)).thenReturn(grantApplicationData);
 
         when(coreCaseDataService.createCase(
-            caseData,
+            grantApplicationData,
             GRANT_OF_REPRESENTATION,
             APPLY_FOR_GRANT,
             securityDTO
@@ -96,7 +97,7 @@ public class ProbateManServiceImplTest {
         verify(securityUtils, times(1)).getSecurityDTO();
         verify(grantApplicationRepository, times(1)).findById(ID);
         verify(grantApplicationMapper, times(1)).toCcdData(grantApplication);
-        verify(coreCaseDataService, times(1)).createCase(caseData, GRANT_OF_REPRESENTATION, APPLY_FOR_GRANT, securityDTO);
+        verify(coreCaseDataService, times(1)).createCase(grantApplicationData, GRANT_OF_REPRESENTATION, APPLY_FOR_GRANT, securityDTO);
     }
 
     @Test(expected = IllegalArgumentException.class)
