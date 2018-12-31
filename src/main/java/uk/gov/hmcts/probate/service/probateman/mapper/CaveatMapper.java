@@ -12,8 +12,12 @@ import uk.gov.hmcts.probate.model.probateman.Caveat;
 public interface CaveatMapper extends ProbateManMapper<Caveat, CaveatData> {
 
     @Mappings({
-        @Mapping(target = "deceasedForenames", source = "deceasedForenames"),
-        @Mapping(target = "deceasedSurname", source = "deceasedSurname")
+            @Mapping(target = "deceasedDateOfBirth", source = "dateOfBirth"),
+            @Mapping(target = "deceasedDateOfDeath", source = "dateOfDeath"),
+            @Mapping(target = "deceasedForenames", source = "deceasedForenames"),
+            @Mapping(target = "deceasedSurname", source = "deceasedSurname"),
+            @Mapping(target = "documentsGenerated", ignore = true),
+            @Mapping(target = "caseMatches", ignore = true)
     })
     CaveatData toCcdData(Caveat caveat);
 }
