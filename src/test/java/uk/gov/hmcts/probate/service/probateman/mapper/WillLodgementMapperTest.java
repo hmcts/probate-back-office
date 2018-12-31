@@ -6,12 +6,11 @@ import org.mapstruct.factory.Mappers;
 import uk.gov.hmcts.probate.model.ccd.willlodgement.request.WillLodgementData;
 import uk.gov.hmcts.probate.model.probateman.WillLodgement;
 
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.notNullValue;
-import static org.junit.Assert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class WillLodgementMapperTest {
 
+    public static final String RK_NUMBER = "234342";
     private WillLodgementMapper willLodgementMapper;
 
     @Before
@@ -22,10 +21,14 @@ public class WillLodgementMapperTest {
     @Test
     public void shouldMapToCcdData() {
         WillLodgement willLodgement = new WillLodgement();
+        willLodgement.setRkNumber(RK_NUMBER);
+
+        WillLodgementData expectedWillLodgementData = WillLodgementData.builder()
+            .wlApplicantReferenceNumber(RK_NUMBER)
+            .build();
 
         WillLodgementData willLodgementData = willLodgementMapper.toCcdData(willLodgement);
 
-        assertThat(willLodgementData, is(notNullValue()));
+        assertThat(willLodgementData).isEqualToComparingFieldByFieldRecursively(expectedWillLodgementData);
     }
-
 }
