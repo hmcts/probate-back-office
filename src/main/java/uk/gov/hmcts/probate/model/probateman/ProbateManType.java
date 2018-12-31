@@ -8,7 +8,6 @@ import uk.gov.hmcts.probate.model.ccd.EventId;
 @RequiredArgsConstructor
 public enum ProbateManType {
 
-    ADMON_WILL(CcdCaseType.GRANT_OF_REPRESENTATION, EventId.APPLY_FOR_GRANT),
     CAVEAT(CcdCaseType.CAVEAT, EventId.RAISE_CAVEAT),
     GRANT_APPLICATION(CcdCaseType.GRANT_OF_REPRESENTATION, EventId.APPLY_FOR_GRANT),
     STANDING_SEARCH(CcdCaseType.GRANT_OF_REPRESENTATION, EventId.CREATE_STANDING_SEARCH),

@@ -11,7 +11,7 @@ import javax.persistence.Id;
 @Entity
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class AdmonWill extends ProbateManModel {
+public class WillLodgement extends ProbateManModel {
 
     @Id
     private Long id;// bigint

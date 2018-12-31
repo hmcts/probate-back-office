@@ -19,7 +19,7 @@ public class ProbateManControllerTest {
 
     private static final String GRANT_APPLICATION_URL = "/probateManTypes/GRANT_APPLICATION/cases/";
 
-    private static final String ADMON_WILL_URL = "/probateManTypes/ADMON_WILL/cases/";
+    private static final String WILL_LODGEMENT_URL = "/probateManTypes/WILL_LODGEMENT/cases/";
 
     private static final String CAVEAT_URL = "/probateManTypes/CAVEAT/cases/";
 
@@ -36,8 +36,8 @@ public class ProbateManControllerTest {
     }
 
     @Test
-    public void shouldSaveAdmonWillToCcd() throws Exception {
-        mockMvc.perform(post(ADMON_WILL_URL + ID)
+    public void shouldSaveWillLodgementToCcd() throws Exception {
+        mockMvc.perform(post(WILL_LODGEMENT_URL + ID)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk());
     }
