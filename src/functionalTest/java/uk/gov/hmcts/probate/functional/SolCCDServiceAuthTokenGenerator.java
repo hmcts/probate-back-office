@@ -26,6 +26,12 @@ public class SolCCDServiceAuthTokenGenerator {
     @Value("${idam.oauth2.client.secret}")
     private String clientSecret;
 
+    @Value("${idam.oauth2.client.probate.id}")
+    private String probateClientId;
+
+    @Value("${idam.oauth2.client.probate.secret}")
+    private String probateClientSecret;
+
     @Value("${idam.oauth2.redirect_uri}")
     private String redirectUri;
 
@@ -59,11 +65,11 @@ public class SolCCDServiceAuthTokenGenerator {
         String token = "";
 
         String jsonResponse = post(baseServiceOauth2Url + "/oauth2/token?code=" + code +
-                "&client_secret=" + clientSecret +
-                "&client_id=" + clientId +
-                "&redirect_uri=" + redirectUri +
-                "&grant_type=authorization_code")
-                .body().asString();
+            "&client_secret=" + clientSecret +
+            "&client_id=" + clientId +
+            "&redirect_uri=" + redirectUri +
+            "&grant_type=authorization_code")
+            .body().asString();
 
         ObjectMapper mapper = new ObjectMapper();
 
@@ -79,12 +85,12 @@ public class SolCCDServiceAuthTokenGenerator {
     private String generateClientCode() {
         String code = "";
         String jsonResponse = given()
-                .relaxedHTTPSValidation()
-                .header("Authorization", "Basic dGVzdEBURVNULkNPTToxMjM=")
-                .post(baseServiceOauth2Url + "/oauth2/authorize?response_type=code" +
-                        "&client_id=" + clientId +
-                        "&redirect_uri=" + redirectUri)
-                .asString();
+            .relaxedHTTPSValidation()
+            .header("Authorization", "Basic dGVzdEBURVNULkNPTToxMjM=")
+            .post(baseServiceOauth2Url + "/oauth2/authorize?response_type=code" +
+                "&client_id=" + clientId +
+                "&redirect_uri=" + redirectUri)
+            .asString();
 
         ObjectMapper mapper = new ObjectMapper();
 
@@ -99,16 +105,16 @@ public class SolCCDServiceAuthTokenGenerator {
 
     public void createNewUser() {
         given().headers("Content-type", "application/json")
-                .relaxedHTTPSValidation()
-                .body("{ \"email\":\"test@TEST.COM\", \"forename\":\"test@TEST.COM\",\"surname\":\"test@TEST.COM\",\"password\":\"123\",\"continue-url\":\"test\"}")
-                .post(baseServiceOauth2Url + "/testing-support/accounts");
+            .relaxedHTTPSValidation()
+            .body("{ \"email\":\"test@TEST.COM\", \"forename\":\"test@TEST.COM\",\"surname\":\"test@TEST.COM\",\"password\":\"123\",\"continue-url\":\"test\"}")
+            .post(baseServiceOauth2Url + "/testing-support/accounts");
     }
 
     public String generateClientToken(String userName, String password) {
         String code = generateClientCode(userName, password);
         String token = RestAssured.given().post(baseServiceOauth2Url + "/oauth2/token?code=" + code +
-            "&client_secret=" + clientSecret +
-            "&client_id=" + clientId +
+            "&client_secret=" + probateClientSecret +
+            "&client_id=" + probateClientId +
             "&redirect_uri=" + redirectUri +
             "&grant_type=authorization_code")
             .body().path("access_token");

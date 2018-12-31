@@ -5,7 +5,6 @@ import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 import org.mapstruct.ReportingPolicy;
 import uk.gov.hmcts.probate.model.ccd.grantapplication.request.GrantApplicationData;
-import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.probateman.GrantApplication;
 
 @Mapper(componentModel = "spring",
@@ -13,14 +12,12 @@ import uk.gov.hmcts.probate.model.probateman.GrantApplication;
 public interface GrantApplicationMapper extends ProbateManMapper<GrantApplication, GrantApplicationData> {
 
     @Mappings({
-        @Mapping(target = "gaDeceasedForenames", source = "deceasedForenames"),
-        @Mapping(target = "gaDeceasedSurname", source = "deceasedSurname"),
-        @Mapping(target = "gaPrimaryApplicantForenames", source = "applicantForenames"),
-        @Mapping(target = "gaPrimaryApplicantSurname", source = "applicantSurname"),
-        @Mapping(target = "gaDateOfBirth", source = "dateOfBirth"),
-        @Mapping(target = "gaDateOfDeath", source = "dateOfDeath1"),
-        @Mapping(target = "gaDeceasedAddress", ignore = true)
+        @Mapping(target = "deceasedForenames", source = "deceasedForenames"),
+        @Mapping(target = "deceasedSurname", source = "deceasedSurname"),
+        @Mapping(target = "primaryApplicantForenames", source = "applicantForenames"),
+        @Mapping(target = "primaryApplicantSurname", source = "applicantSurname"),
+        @Mapping(target = "deceasedDateOfBirth", source = "dateOfBirth"),
+        @Mapping(target = "deceasedDateOfDeath", source = "dateOfDeath1")
     })
-
     GrantApplicationData toCcdData(GrantApplication grantApplication);
 }

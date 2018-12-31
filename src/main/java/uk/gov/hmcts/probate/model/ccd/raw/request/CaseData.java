@@ -1,13 +1,9 @@
 package uk.gov.hmcts.probate.model.ccd.raw.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import uk.gov.hmcts.probate.controller.validation.AmendCaseDetailsGroup;
 import uk.gov.hmcts.probate.controller.validation.ApplicationCreatedGroup;
 import uk.gov.hmcts.probate.controller.validation.ApplicationReviewedGroup;
@@ -29,10 +25,10 @@ import uk.gov.hmcts.probate.model.ccd.raw.EstateItem;
 import uk.gov.hmcts.probate.model.ccd.raw.LegalStatement;
 import uk.gov.hmcts.probate.model.ccd.raw.Payment;
 import uk.gov.hmcts.probate.model.ccd.raw.ProbateAliasName;
-import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.StopReason;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
+import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotBlank;
@@ -51,9 +47,6 @@ import java.util.stream.Collectors;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 
-@JsonDeserialize(builder = CaseData.CaseDataBuilder.class)
-@NoArgsConstructor
-@AllArgsConstructor
 @Builder
 @Data
 public class CaseData {
@@ -61,320 +54,317 @@ public class CaseData {
     // EVENT = solicitorCreateApplication
     @NotBlank(groups = {ApplicationCreatedGroup.class},
         message = "{solsSolicitorFirmNameIsNull}")
-    private String solsSolicitorFirmName;
+    private final String solsSolicitorFirmName;
 
     @NotBlank(groups = {ApplicationCreatedGroup.class},
         message = "{solsSolicitorFirmPostcodeIsNull}")
-    private String solsSolicitorFirmPostcode;
+    private final String solsSolicitorFirmPostcode;
 
     @NotBlank(groups = {ApplicationCreatedGroup.class}, message = "{solsSolicitorAppReferenceIsNull}")
-    private String solsSolicitorAppReference;
+    private final String solsSolicitorAppReference;
 
-    private String solsSolicitorEmail;
+    private final String solsSolicitorEmail;
 
-    private String solsSolicitorPhoneNumber;
+    private final String solsSolicitorPhoneNumber;
 
     // EVENT = solicitorUpdateApplication
     @NotBlank(groups = {ApplicationUpdatedGroup.class, AmendCaseDetailsGroup.class},
         message = "{deceasedForenameIsNull}")
-    private String deceasedForenames;
+    private final String deceasedForenames;
 
     @NotBlank(groups = {ApplicationUpdatedGroup.class, AmendCaseDetailsGroup.class},
         message = "{deceasedSurnameIsNull}")
-    private String deceasedSurname;
+    private final String deceasedSurname;
 
     @JsonProperty("legacy_case_type")
-    private String legacyCaseType;
+    private final String legacyCaseType;
 
     @NotNull(groups = {ApplicationUpdatedGroup.class, AmendCaseDetailsGroup.class}, message = "{dodIsNull}")
-    private LocalDate deceasedDateOfDeath;
+    private final LocalDate deceasedDateOfDeath;
 
-    private LocalDate currentDate = LocalDate.now();
+    private final LocalDate currentDate = LocalDate.now();
 
-    private String currentDateFormatted = convertDate(currentDate);
+    private final String currentDateFormatted = convertDate(currentDate);
 
     @Getter(lazy = true)
     private final String deceasedDateOfDeathFormatted = convertDate(deceasedDateOfDeath);
 
     @NotNull(groups = {ApplicationUpdatedGroup.class, AmendCaseDetailsGroup.class}, message = "{dobIsNull}")
-    private LocalDate deceasedDateOfBirth;
+    private final LocalDate deceasedDateOfBirth;
 
     @NotBlank(groups = {ApplicationUpdatedGroup.class}, message = "{willExistsIsNull}")
-    private String willExists;
+    private final String willExists;
 
     @NotBlank(groups = {ApplicationUpdatedGroup.class}, message = "{willAsOriginalIsNull}")
-    private String willAccessOriginal;
+    private final String willAccessOriginal;
 
     @NotBlank(groups = {ApplicationUpdatedGroup.class}, message = "{willNumberOfCodicilsIsNull}")
-    private String willHasCodicils;
+    private final String willHasCodicils;
 
-    private String willNumberOfCodicils;
+    private final String willNumberOfCodicils;
 
     @NotBlank(groups = {ApplicationUpdatedGroup.class}, message = "{deceasedDomicileInEngWalesIsNull}")
-    private String deceasedDomicileInEngWales;
+    private final String deceasedDomicileInEngWales;
 
     @NotNull(groups = {ApplicationUpdatedGroup.class, AmendCaseDetailsGroup.class}, message = "{deceasedAddressIsNull}")
-    private SolsAddress deceasedAddress;
+    private final SolsAddress deceasedAddress;
 
     @NotNull(groups = {ApplicationUpdatedGroup.class}, message = "{deceasedAnyOtherNamesIsNull}")
-    private String deceasedAnyOtherNames;
+    private final String deceasedAnyOtherNames;
 
-    private List<CollectionMember<AliasName>> solsDeceasedAliasNamesList;
+    private final List<CollectionMember<AliasName>> solsDeceasedAliasNamesList;
 
     @NotBlank(groups = {ApplicationUpdatedGroup.class}, message = "{ihtFormIdIsNull}")
-    private String ihtFormId;
+    private final String ihtFormId;
 
     @NotNull(groups = {ApplicationUpdatedGroup.class}, message = "{ihtNetIsNull}")
     @DecimalMin(groups = {ApplicationUpdatedGroup.class}, value = "0.0", message = "{ihtNetNegative}")
-    private BigDecimal ihtNetValue;
+    private final BigDecimal ihtNetValue;
 
     @NotNull(groups = {ApplicationUpdatedGroup.class}, message = "{ihtGrossIsNull}")
     @DecimalMin(groups = {ApplicationUpdatedGroup.class}, value = "0.0", message = "{ihtGrossNegative}")
-    private BigDecimal ihtGrossValue;
+    private final BigDecimal ihtGrossValue;
 
     @NotBlank(groups = {ApplicationUpdatedGroup.class}, message = "{primaryApplicantForenamesIsNull}")
-    private String primaryApplicantForenames;
+    private final String primaryApplicantForenames;
 
     @NotBlank(groups = {ApplicationUpdatedGroup.class}, message = "{primaryApplicantSurnameIsNull}")
-    private String primaryApplicantSurname;
+    private final String primaryApplicantSurname;
 
-    private String primaryApplicantEmailAddress;
+    private final String primaryApplicantEmailAddress;
 
     @NotBlank(groups = {ApplicationUpdatedGroup.class}, message = "{primaryApplicantHasAliasIsNull}")
-    private String primaryApplicantHasAlias;
+    private final String primaryApplicantHasAlias;
 
-    private String primaryApplicantAlias;
+    private final String primaryApplicantAlias;
 
-    private String primaryApplicantAliasReason;
+    private final String primaryApplicantAliasReason;
 
-    private String primaryApplicantOtherReason;
+    private final String primaryApplicantOtherReason;
 
-    private String solsExecutorAliasNames;
+    private final String solsExecutorAliasNames;
 
-    private String primaryApplicantSameWillName;
+    private final String primaryApplicantSameWillName;
 
     @NotBlank(groups = {ApplicationUpdatedGroup.class}, message = "{primaryApplicantIsApplyingIsNull}")
-    private String primaryApplicantIsApplying;
+    private final String primaryApplicantIsApplying;
 
-    private String solsPrimaryExecutorNotApplyingReason;
+    private final String solsPrimaryExecutorNotApplyingReason;
 
-    private SolsAddress primaryApplicantAddress;
+    private final SolsAddress primaryApplicantAddress;
 
     @NotBlank(groups = {ApplicationUpdatedGroup.class}, message = "{otherExecutorExistsIsNull}")
-    private String otherExecutorExists;
+    private final String otherExecutorExists;
 
-    private List<CollectionMember<AdditionalExecutor>> solsAdditionalExecutorList;
+    private final List<CollectionMember<AdditionalExecutor>> solsAdditionalExecutorList;
 
-    private String solsAdditionalInfo;
+    private final String solsAdditionalInfo;
 
-    private String boEmailDocsReceivedNotificationRequested;
-
-    @SuppressWarnings("squid:S1170")
-    @Builder.Default
-    private String boEmailDocsReceivedNotification = YES;
-
-    private String boEmailGrantIssuedNotificationRequested;
+    private final String boEmailDocsReceivedNotificationRequested;
 
     @SuppressWarnings("squid:S1170")
-    @Builder.Default
-    private String boEmailGrantIssuedNotification = YES;
+    @Getter(lazy = true)
+    private final String boEmailDocsReceivedNotification = YES;
+
+    private final String boEmailGrantIssuedNotificationRequested;
+
+    @SuppressWarnings("squid:S1170")
+    @Getter(lazy = true)
+    private final String boEmailGrantIssuedNotification = YES;
 
     //EVENT = review
-    private DocumentLink solsLegalStatementDocument;
+    private final DocumentLink solsLegalStatementDocument;
 
-    @Builder.Default
-    private List<CollectionMember<Document>> probateDocumentsGenerated = new ArrayList<>();
+    private final List<CollectionMember<Document>> probateDocumentsGenerated = new ArrayList<>();
 
-    @Builder.Default
-    private List<CollectionMember<Document>> probateNotificationsGenerated = new ArrayList<>();
+    private final List<CollectionMember<Document>> probateNotificationsGenerated = new ArrayList<>();
 
-    @Builder.Default
-    private List<CollectionMember<CaseMatch>> caseMatches = new ArrayList<>();
+    private final List<CollectionMember<CaseMatch>> caseMatches = new ArrayList<>();
 
-    private List<CollectionMember<UploadDocument>> boDocumentsUploaded;
+    private final List<CollectionMember<UploadDocument>> boDocumentsUploaded;
 
     @NotNull(groups = {ApplicationReviewedGroup.class}, message = "{solsSOTNeedToUpdateIsNull}")
-    private String solsSOTNeedToUpdate;
+    private final String solsSOTNeedToUpdate;
 
     @NotBlank(groups = {ApplicationReviewedGroup.class}, message = "{solsSOTNameIsNull}")
-    private String solsSOTName;
+    private final String solsSOTName;
 
     @NotBlank(groups = {ApplicationReviewedGroup.class}, message = "{solsSOTJobTitleIsNull}")
-    private String solsSOTJobTitle;
+    private final String solsSOTJobTitle;
 
-    private Long extraCopiesOfGrant;
+    private final Long extraCopiesOfGrant;
 
-    private Long outsideUKGrantCopies;
+    private final Long outsideUKGrantCopies;
 
     @NotNull(groups = {ApplicationReviewedGroup.class}, message = "{solicitorPaymentMethodIsNull}")
-    private String solsPaymentMethods;
+    private final String solsPaymentMethods;
 
-    private String solsFeeAccountNumber;
+    private final String solsFeeAccountNumber;
 
-    private String casePrinted;
+    private final String casePrinted;
 
-    private List<CollectionMember<StopReason>> boCaseStopReasonList;
+    private final List<CollectionMember<StopReason>> boCaseStopReasonList;
 
-    private String boStopDetails;
+    private final String boStopDetails;
 
-    private String ihtReferenceNumber;
+    private final String ihtReferenceNumber;
 
-    private String ihtFormCompletedOnline;
+    private final String ihtFormCompletedOnline;
 
 
     //next steps
     @NotNull(groups = {NextStepsConfirmationGroup.class}, message = "{applicationFeeIsNull}")
     @DecimalMin(groups = {NextStepsConfirmationGroup.class}, value = "0.0", message = "{applicationFeeNegative}")
-    private BigDecimal applicationFee;
+    private final BigDecimal applicationFee;
 
     @NotNull(groups = {NextStepsConfirmationGroup.class}, message = "{feeForUkCopiesIsNull}")
     @DecimalMin(groups = {NextStepsConfirmationGroup.class}, value = "0.0", message = "{feeForUkCopiesNegative}")
-    private BigDecimal feeForUkCopies;
+    private final BigDecimal feeForUkCopies;
 
     @NotNull(groups = {NextStepsConfirmationGroup.class}, message = "{feeForNonUkCopiesIsNull}")
     @DecimalMin(groups = {NextStepsConfirmationGroup.class}, value = "0.0", message = "{feeForNonUkCopiesNegative}")
-    private BigDecimal feeForNonUkCopies;
+    private final BigDecimal feeForNonUkCopies;
 
     @NotNull(groups = {NextStepsConfirmationGroup.class}, message = "{totalFeeIsNull}")
     @DecimalMin(groups = {NextStepsConfirmationGroup.class}, value = "0.0", message = "{totalFeeNegative}")
-    private BigDecimal totalFee;
+    private final BigDecimal totalFee;
 
     @JsonProperty(value = "executorsApplying")
     private List<CollectionMember<AdditionalExecutorApplying>> additionalExecutorsApplying;
     @JsonProperty(value = "executorsNotApplying")
     private List<CollectionMember<AdditionalExecutorNotApplying>> additionalExecutorsNotApplying;
 
-    private ApplicationType applicationType;
+    private final ApplicationType applicationType;
 
-    private String registryLocation;
+    private final String registryLocation;
 
-    private String paymentReferenceNumber;
+    private final String paymentReferenceNumber;
 
-    private Declaration declaration;
+    private final Declaration declaration;
 
-    private LegalStatement legalStatement;
+    private final LegalStatement legalStatement;
 
-    private String deceasedMarriedAfterWillOrCodicilDate;
+    private final String deceasedMarriedAfterWillOrCodicilDate;
 
-    private List<CollectionMember<ProbateAliasName>> deceasedAliasNameList;
+    private final List<CollectionMember<ProbateAliasName>> deceasedAliasNameList;
 
-    private String primaryApplicantPhoneNumber;
+    private final String primaryApplicantPhoneNumber;
 
     // EVENT = Amend case details
-    private String boDeceasedTitle;
+    private final String boDeceasedTitle;
 
-    private String boDeceasedHonours;
+    private final String boDeceasedHonours;
 
-    private String boWillMessage;
+    private final String boWillMessage;
 
-    private String boExecutorLimitation;
+    private final String boExecutorLimitation;
 
-    private String boAdminClauseLimitation;
+    private final String boAdminClauseLimitation;
 
-    private String boLimitationText;
+    private final String boLimitationText;
 
-    private List<CollectionMember<Payment>> payments;
+    private final List<CollectionMember<Payment>> payments;
 
-    private String boExaminationChecklistQ1;
+    private final String boExaminationChecklistQ1;
 
-    private String boExaminationChecklistQ2;
+    private final String boExaminationChecklistQ2;
 
-    private String boExaminationChecklistRequestQA;
+    private final String boExaminationChecklistRequestQA;
 
-    private String applicationSubmittedDate;
+    private final String applicationSubmittedDate;
 
-    private List<CollectionMember<ScannedDocument>> scannedDocuments;
-    private String evidenceHandled;
+    private final List<CollectionMember<ScannedDocument>> scannedDocuments;
+    private final String evidenceHandled;
 
-    private String caseType;
-    private String paperForm;
+    private final String caseType;
+    private final String paperForm;
 
     //paper form case creator fields
-    private String primaryApplicantSecondPhoneNumber;
-    private String primaryApplicantRelationshipToDeceased;
-    private String paRelationshipToDeceasedOther;
-    private String deceasedMartialStatus;
-    private String willDatedBeforeApril;
-    private String deceasedEnterMarriageOrCP;
-    private String dateOfMarriageOrCP;
-    private String dateOfDivorcedCPJudicially;
-    private String willsOutsideOfUK;
-    private String courtOfDecree;
-    private String willGiftUnderEighteen;
-    private String applyingAsAnAttorney;
-    private List<CollectionMember<AttorneyApplyingOnBehalfOf>> attorneyOnBehalfOfNameAndAddress;
-    private String mentalCapacity;
-    private String courtOfProtection;
-    private String epaOrLpa;
-    private String epaRegistered;
-    private String domicilityCountry;
-    private List<CollectionMember<EstateItem>> ukEstateItems;
-    private String domicilityIHTCert;
-    private String entitledToApply;
-    private String entitledToApplyOther;
-    private String notifiedApplicants;
-    private String foreignAsset;
-    private String foreignAssetEstateValue;
-    private String adopted;
-    private List<CollectionMember<AdoptedRelative>> adoptiveRelatives;
+    private final String primaryApplicantSecondPhoneNumber;
+    private final String primaryApplicantRelationshipToDeceased;
+    private final String paRelationshipToDeceasedOther;
+    private final String deceasedMartialStatus;
+    private final String willDatedBeforeApril;
+    private final String deceasedEnterMarriageOrCP;
+    private final String dateOfMarriageOrCP;
+    private final String dateOfDivorcedCPJudicially;
+    private final String willsOutsideOfUK;
+    private final String courtOfDecree;
+    private final String willGiftUnderEighteen;
+    private final String applyingAsAnAttorney;
+    private final List<CollectionMember<AttorneyApplyingOnBehalfOf>> attorneyOnBehalfOfNameAndAddress;
+    private final String mentalCapacity;
+    private final String courtOfProtection;
+    private final String epaOrLpa;
+    private final String epaRegistered;
+    private final String domicilityCountry;
+    private final List<CollectionMember<EstateItem>> ukEstateItems;
+    private final String domicilityIHTCert;
+    private final String entitledToApply;
+    private final String entitledToApplyOther;
+    private final String notifiedApplicants;
+    private final String foreignAsset;
+    private final String foreignAssetEstateValue;
+    private final String adopted;
+    private final List<CollectionMember<AdoptedRelative>> adoptiveRelatives;
 
-    private String spouseOrPartner;
-    private String childrenSurvived;
-    private String childrenOverEighteenSurvived;
-    private String childrenUnderEighteenSurvived;
-    private String childrenDied;
-    private String childrenDiedOverEighteen;
-    private String childrenDiedUnderEighteen;
-    private String grandChildrenSurvived;
-    private String grandChildrenSurvivedOverEighteen;
-    private String grandChildrenSurvivedUnderEighteen;
-    private String parentsExistSurvived;
-    private String parentsExistOverEighteenSurvived;
-    private String parentsExistUnderEighteenSurvived;
-    private String wholeBloodSiblingsSurvived;
-    private String wholeBloodSiblingsSurvivedOverEighteen;
-    private String wholeBloodSiblingsSurvivedUnderEighteen;
-    private String wholeBloodSiblingsDied;
-    private String wholeBloodSiblingsDiedOverEighteen;
-    private String wholeBloodSiblingsDiedUnderEighteen;
-    private String wholeBloodNeicesAndNephews;
-    private String wholeBloodNeicesAndNephewsOverEighteen;
-    private String wholeBloodNeicesAndNephewsUnderEighteen;
-    private String halfBloodSiblingsSurvived;
-    private String halfBloodSiblingsSurvivedOverEighteen;
-    private String halfBloodSiblingsSurvivedUnderEighteen;
-    private String halfBloodSiblingsDied;
-    private String halfBloodSiblingsDiedOverEighteen;
-    private String halfBloodSiblingsDiedUnderEighteen;
-    private String halfBloodNeicesAndNephews;
-    private String halfBloodNeicesAndNephewsOverEighteen;
-    private String halfBloodNeicesAndNephewsUnderEighteen;
-    private String grandparentsDied;
-    private String grandparentsDiedOverEighteen;
-    private String grandparentsDiedUnderEighteen;
-    private String wholeBloodUnclesAndAuntsSurvived;
-    private String wholeBloodUnclesAndAuntsSurvivedOverEighteen;
-    private String wholeBloodUnclesAndAuntsSurvivedUnderEighteen;
-    private String wholeBloodUnclesAndAuntsDied;
-    private String wholeBloodUnclesAndAuntsDiedOverEighteen;
-    private String wholeBloodUnclesAndAuntsDiedUnderEighteen;
-    private String wholeBloodCousinsSurvived;
-    private String wholeBloodCousinsSurvivedOverEighteen;
-    private String wholeBloodCousinsSurvivedUnderEighteen;
-    private String halfBloodUnclesAndAuntsSurvived;
-    private String halfBloodUnclesAndAuntsSurvivedOverEighteen;
-    private String halfBloodUnclesAndAuntsSurvivedUnderEighteen;
-    private String halfBloodUnclesAndAuntsDied;
-    private String halfBloodUnclesAndAuntsDiedOverEighteen;
-    private String halfBloodUnclesAndAuntsDiedUnderEighteen;
-    private String halfBloodCousinsSurvived;
-    private String halfBloodCousinsSurvivedOverEighteen;
-    private String halfBloodCousinsSurvivedUnderEighteen;
-    private String applicationFeePaperForm;
-    private String feeForCopiesPaperForm;
-    private String totalFeePaperForm;
-    private String paperPaymentMethod;
-    private String paymentReferenceNumberPaperform;
+    private final String spouseOrPartner;
+    private final String childrenSurvived;
+    private final String childrenOverEighteenSurvived;
+    private final String childrenUnderEighteenSurvived;
+    private final String childrenDied;
+    private final String childrenDiedOverEighteen;
+    private final String childrenDiedUnderEighteen;
+    private final String grandChildrenSurvived;
+    private final String grandChildrenSurvivedOverEighteen;
+    private final String grandChildrenSurvivedUnderEighteen;
+    private final String parentsExistSurvived;
+    private final String parentsExistOverEighteenSurvived;
+    private final String parentsExistUnderEighteenSurvived;
+    private final String wholeBloodSiblingsSurvived;
+    private final String wholeBloodSiblingsSurvivedOverEighteen;
+    private final String wholeBloodSiblingsSurvivedUnderEighteen;
+    private final String wholeBloodSiblingsDied;
+    private final String wholeBloodSiblingsDiedOverEighteen;
+    private final String wholeBloodSiblingsDiedUnderEighteen;
+    private final String wholeBloodNeicesAndNephews;
+    private final String wholeBloodNeicesAndNephewsOverEighteen;
+    private final String wholeBloodNeicesAndNephewsUnderEighteen;
+    private final String halfBloodSiblingsSurvived;
+    private final String halfBloodSiblingsSurvivedOverEighteen;
+    private final String halfBloodSiblingsSurvivedUnderEighteen;
+    private final String halfBloodSiblingsDied;
+    private final String halfBloodSiblingsDiedOverEighteen;
+    private final String halfBloodSiblingsDiedUnderEighteen;
+    private final String halfBloodNeicesAndNephews;
+    private final String halfBloodNeicesAndNephewsOverEighteen;
+    private final String halfBloodNeicesAndNephewsUnderEighteen;
+    private final String grandparentsDied;
+    private final String grandparentsDiedOverEighteen;
+    private final String grandparentsDiedUnderEighteen;
+    private final String wholeBloodUnclesAndAuntsSurvived;
+    private final String wholeBloodUnclesAndAuntsSurvivedOverEighteen;
+    private final String wholeBloodUnclesAndAuntsSurvivedUnderEighteen;
+    private final String wholeBloodUnclesAndAuntsDied;
+    private final String wholeBloodUnclesAndAuntsDiedOverEighteen;
+    private final String wholeBloodUnclesAndAuntsDiedUnderEighteen;
+    private final String wholeBloodCousinsSurvived;
+    private final String wholeBloodCousinsSurvivedOverEighteen;
+    private final String wholeBloodCousinsSurvivedUnderEighteen;
+    private final String halfBloodUnclesAndAuntsSurvived;
+    private final String halfBloodUnclesAndAuntsSurvivedOverEighteen;
+    private final String halfBloodUnclesAndAuntsSurvivedUnderEighteen;
+    private final String halfBloodUnclesAndAuntsDied;
+    private final String halfBloodUnclesAndAuntsDiedOverEighteen;
+    private final String halfBloodUnclesAndAuntsDiedUnderEighteen;
+    private final String halfBloodCousinsSurvived;
+    private final String halfBloodCousinsSurvivedOverEighteen;
+    private final String halfBloodCousinsSurvivedUnderEighteen;
+    private final String applicationFeePaperForm;
+    private final String feeForCopiesPaperForm;
+    private final String totalFeePaperForm;
+    private final String paperPaymentMethod;
+    private final String paymentReferenceNumberPaperform;
 
 
     @Getter(lazy = true)
@@ -471,9 +461,5 @@ public class CaseData {
             ex.getMessage();
             return null;
         }
-    }
-
-    @JsonPOJOBuilder(withPrefix = "")
-    public static final class CaseDataBuilder {
     }
 }

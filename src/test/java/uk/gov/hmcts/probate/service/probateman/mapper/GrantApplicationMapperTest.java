@@ -1,19 +1,14 @@
 package uk.gov.hmcts.probate.service.probateman.mapper;
 
-import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;
 import org.mapstruct.factory.Mappers;
 import uk.gov.hmcts.probate.model.ccd.grantapplication.request.GrantApplicationData;
-import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
-import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.probateman.GrantApplication;
 
 import java.time.LocalDate;
 
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.notNullValue;
-import static org.junit.Assert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class GrantApplicationMapperTest {
 
@@ -44,17 +39,17 @@ public class GrantApplicationMapperTest {
         grantApplication.setDeceasedAddress(DECEASED_ADDRESS);
 
         GrantApplicationData expectedGrantApplicationData = GrantApplicationData.builder()
-                .gaPrimaryApplicantForenames(PRIMARY_APPLICANT_FORENAMES)
-                .gaPrimaryApplicantSurname(PRIMARY_APPLICANT_SURNAME)
-                .gaDeceasedForenames(DECEASED_FORENAMES)
-                .gaDeceasedSurname(DECEASED_SURNAME)
-                .gaDateOfBirth(DATE_OF_BIRTH)
-                .gaDateOfDeath(DATE_OF_DEATH)
-                .build();
+            .primaryApplicantForenames(PRIMARY_APPLICANT_FORENAMES)
+            .primaryApplicantSurname(PRIMARY_APPLICANT_SURNAME)
+            .deceasedForenames(DECEASED_FORENAMES)
+            .deceasedSurname(DECEASED_SURNAME)
+            .deceasedDateOfBirth(DATE_OF_BIRTH)
+            .deceasedDateOfDeath(DATE_OF_DEATH)
+            .build();
 
         GrantApplicationData grantApplicationData = grantApplicationMapper.toCcdData(grantApplication);
 
-        Assertions.assertThat(grantApplicationData).isEqualToComparingFieldByFieldRecursively(expectedGrantApplicationData);
+        assertThat(grantApplicationData).isEqualToComparingFieldByFieldRecursively(expectedGrantApplicationData);
     }
 
 }

@@ -6,9 +6,11 @@ import lombok.EqualsAndHashCode;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import java.time.LocalDate;
 
 @Entity
+@Table(name = "GRANT_APPLICATIONS_FLAT")
 @Data
 @EqualsAndHashCode(callSuper = false)
 public class GrantApplication extends ProbateManModel {

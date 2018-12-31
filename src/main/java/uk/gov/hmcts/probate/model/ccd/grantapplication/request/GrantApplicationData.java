@@ -1,7 +1,11 @@
 package uk.gov.hmcts.probate.model.ccd.grantapplication.request;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,23 +21,26 @@ import java.time.LocalDate;
 @Data
 public class GrantApplicationData {
 
-    private String gaPrimaryApplicantForenames;
+    private static final String DATE_FORMAT = "yyyy-MM-dd";
 
-    private String gaPrimaryApplicantSurname;
 
-    private String gaDeceasedForenames;
+    private String primaryApplicantForenames;
 
-    private String gaDeceasedSurname;
+    private String primaryApplicantSurname;
 
-    private LocalDate gaDateOfBirth;
+    private String deceasedForenames;
 
-    private LocalDate gaDateOfDeath;
+    private String deceasedSurname;
 
-    private SolsAddress gaDeceasedAddress;
+    @JsonDeserialize(using = LocalDateDeserializer.class)
+    @JsonSerialize(using = LocalDateSerializer.class)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DATE_FORMAT)
+    private LocalDate deceasedDateOfBirth;
 
-    private String wlApplicantEmailAddress;
-
-    private String wlApplicantReferenceNumber;
+    @JsonDeserialize(using = LocalDateDeserializer.class)
+    @JsonSerialize(using = LocalDateSerializer.class)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DATE_FORMAT)
+    private LocalDate deceasedDateOfDeath;
 
     @JsonPOJOBuilder(withPrefix = "")
     public static final class GrantApplicationDataBuilder {

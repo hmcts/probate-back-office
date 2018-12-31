@@ -17,11 +17,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.context.jdbc.Sql;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 
-import java.io.IOException;
-import java.util.Map;
-
 import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.notNullValue;
 
 @RunWith(SerenityRunner.class)
 public class ProbateManFunctionalTests extends IntegrationTestBase {
@@ -75,78 +71,20 @@ public class ProbateManFunctionalTests extends IntegrationTestBase {
     @Test
     @Sql(scripts = "/scripts/grant_application_insert.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = "/scripts/grant_application_clean_up.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
-    public void shouldCreateCcdCaseForGrantApplication() throws IOException {
-
+    public void shouldCreateCcdCaseForGrantApplication() {
+        SerenityRest.given()
+            .relaxedHTTPSValidation()
+            .headers(headers)
+            .when()
+            .post("/probateManTypes/GRANT_APPLICATION/cases/999")
+            .then()
+            .assertThat()
+            .statusCode(200)
+            .body("case_data.deceasedDateOfDeath", equalTo("2018-01-01"))
+            .body("case_data.primaryApplicantForenames", equalTo("AppFN1 AppFN2"))
+            .body("case_data.primaryApplicantSurname", equalTo("AppSN"))
+            .body("case_data.deceasedDateOfBirth", equalTo("1900-01-01"))
+            .body("case_data.deceasedForenames", equalTo("DeadFN1 DeadFN2"))
+            .body("case_data.deceasedSurname", equalTo("DeadSN"));
     }
-
-//    private void shouldSaveFormSuccessfully() throws IOException {
-//        String draftJsonStr = utils.getJsonFromFile("intestacyForm_partial.json");
-//        draftJsonStr = draftJsonStr.replace(EMAIL_PLACEHOLDER, email);
-//
-//        String responseJsonStr = SerenityRest.given()
-//            .relaxedHTTPSValidation()
-//            .headers(utils.getHeaders(email, PASSWORD))
-//            .body(draftJsonStr)
-//            .when()
-//            .post("/forms/" + email)
-//            .then()
-//            .assertThat()
-//            .statusCode(200)
-//            .body("ccdCase.id", notNullValue())
-//            .body("ccdCase.state", equalTo("Draft"))
-//            .extract().jsonPath().prettify();
-//        Map<String, Object> actualJsonMap = objectMapper.readValue(responseJsonStr, Map.class);
-//        Map<String, Object> ccdCase = (Map<String, Object>) actualJsonMap.get("ccdCase");
-//        caseId = (Long) ccdCase.get("id") ;
-//    }
-//
-//    private void shouldUpdateForm() {
-//        String draftJsonStr = utils.getJsonFromFile("intestacyForm_full.json");
-//        draftJsonStr = draftJsonStr.replace(EMAIL_PLACEHOLDER, email);
-//
-//        SerenityRest.given()
-//            .relaxedHTTPSValidation()
-//            .headers(utils.getHeaders(email, PASSWORD))
-//            .body(draftJsonStr)
-//            .when()
-//            .post("/forms/" + email)
-//            .then()
-//            .assertThat()
-//            .statusCode(200)
-//            .body("ccdCase.id", equalTo(caseId))
-//            .body("ccdCase.state", equalTo("Draft"));
-//    }
-//
-//    private void shouldSubmitForm() {
-//        String submitJsonStr = utils.getJsonFromFile("intestacyForm_full.json");
-//        submitJsonStr = submitJsonStr.replace(EMAIL_PLACEHOLDER, email);
-//
-//        SerenityRest.given()
-//            .relaxedHTTPSValidation()
-//            .headers(utils.getHeaders(email, PASSWORD))
-//            .body(submitJsonStr)
-//            .when()
-//            .post("/forms/" + email + "/submissions")
-//            .then()
-//            .assertThat()
-//            .statusCode(200)
-//            .body("ccdCase.id", equalTo(caseId))
-//            .body("ccdCase.state", equalTo("PAAppCreated"));
-//    }
-//
-//    private void shouldUpdatePaymentSuccessfully() {
-//        String paymentJsonStr = utils.getJsonFromFile("intestacyForm_full.json");
-//
-//        SerenityRest.given()
-//            .relaxedHTTPSValidation()
-//            .headers(utils.getHeaders(email, PASSWORD))
-//            .body(paymentJsonStr)
-//            .when()
-//            .post("/forms/" + email + "/payments")
-//            .then()
-//            .assertThat()
-//            .statusCode(200)
-//            .body("ccdCase.id", equalTo(caseId))
-//            .body("ccdCase.state", equalTo("CaseCreated"));
-//    }
 }
