@@ -7,12 +7,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
-import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.probateman.GrantApplication;
+import uk.gov.hmcts.probate.model.probateman.ProbateManType;
 import uk.gov.hmcts.probate.repositories.AdmonWillRepository;
 import uk.gov.hmcts.probate.repositories.CaveatRepository;
 import uk.gov.hmcts.probate.repositories.GrantApplicationRepository;
 import uk.gov.hmcts.probate.repositories.StandingSearchRepository;
+import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
 
 import java.util.Optional;
 
@@ -41,7 +42,7 @@ public class ProbateManServiceImplTest {
 
         Mockito.when(grantApplicationRepository.findById(1L)).thenReturn(Optional.of(grantApplication));
 
-        CaseDetails caseDetails = probateManService.saveToCcd(1L, GrantApplication.class);
+        CaseDetails caseDetails = probateManService.saveToCcd(1L, ProbateManType.GRANT_APPLICATION);
 
         Assert.assertTrue(true);
     }
