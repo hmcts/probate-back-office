@@ -1,55 +1,45 @@
 package uk.gov.hmcts.probate.service.probateman;
 
-import com.google.common.collect.ImmutableMap;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Component;
-import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
-import uk.gov.hmcts.probate.model.probateman.AdmonWill;
-import uk.gov.hmcts.probate.model.probateman.Caveat;
-import uk.gov.hmcts.probate.model.probateman.GrantApplication;
 import uk.gov.hmcts.probate.model.probateman.ProbateManModel;
-import uk.gov.hmcts.probate.model.probateman.StandingSearch;
-import uk.gov.hmcts.probate.repositories.AdmonWillRepository;
-import uk.gov.hmcts.probate.repositories.CaveatRepository;
-import uk.gov.hmcts.probate.repositories.GrantApplicationRepository;
-import uk.gov.hmcts.probate.repositories.StandingSearchRepository;
+import uk.gov.hmcts.probate.model.probateman.ProbateManType;
+import uk.gov.hmcts.probate.security.SecurityUtils;
+import uk.gov.hmcts.probate.service.CoreCaseDataService;
+import uk.gov.hmcts.probate.service.ProbateManService;
+import uk.gov.hmcts.probate.service.probateman.mapper.ProbateManMapper;
+import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
 
 import java.util.Map;
 import java.util.Optional;
 
 @Component
-public class ProbateManServiceImpl {
+@RequiredArgsConstructor
+public class ProbateManServiceImpl implements ProbateManService {
 
-    private Map<Class<? extends ProbateManModel>, JpaRepository> repositoryMap;
+    private final Map<ProbateManType, JpaRepository> repositories;
 
-    @Autowired
-    public ProbateManServiceImpl(
-        AdmonWillRepository admonWillRepository, CaveatRepository caveatRepository,
-        GrantApplicationRepository grantApplicationRepository,
-        StandingSearchRepository standingSearchRepository
-    ) {
-        repositoryMap = ImmutableMap.<Class<? extends ProbateManModel>, JpaRepository>builder()
-            .put(AdmonWill.class, admonWillRepository)
-            .put(Caveat.class, caveatRepository)
-            .put(GrantApplication.class, grantApplicationRepository)
-            .put(StandingSearch.class, standingSearchRepository)
-            .build();
-    }
+    private final Map<ProbateManType, ProbateManMapper> mappers;
 
+    private final SecurityUtils securityUtils;
 
-    public CaseDetails saveToCcd(Long id, Class<? extends ProbateManModel> clazz) {
+    private final CoreCaseDataService coreCaseDataService;
 
-        JpaRepository repository = Optional.ofNullable(repositoryMap.get(clazz))
+    public CaseDetails saveToCcd(Long id, ProbateManType probateManType) {
+        JpaRepository repository = Optional.ofNullable(repositories.get(probateManType))
             .orElseThrow(() ->
-                new IllegalArgumentException("Cannot find repository for class: " + clazz.getSimpleName()));
-
+                new IllegalArgumentException("Cannot find repository for: " + probateManType.name()));
         Optional<ProbateManModel> probateManModelOptional = repository.findById(id);
-
         ProbateManModel probateManModel = probateManModelOptional
-            .orElseThrow(() -> new IllegalArgumentException("Cannot find " + clazz + " with id: " + id));
-
-
-        return null;
+            .orElseThrow(() -> new IllegalArgumentException("Cannot find " + probateManType.name()
+                + " with id: " + id));
+        ProbateManMapper probateManMapper = mappers.get(probateManType);
+        return coreCaseDataService.createCase(
+            probateManMapper.toCcdData(probateManModel),
+            probateManType.getCcdCaseType(),
+            probateManType.getCaseCreationEventId(),
+            securityUtils.getSecurityDTO()
+        );
     }
 }
