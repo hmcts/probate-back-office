@@ -14,6 +14,8 @@ public interface StandingSearchMapper extends ProbateManMapper<StandingSearch, S
     @Mappings({
         @Mapping(target = "deceasedForenames", source = "deceasedForenames"),
         @Mapping(target = "deceasedSurname", source = "deceasedSurname"),
+        @Mapping(target = "deceasedDateOfBirth", source = "dateOfBirth"),
+        @Mapping(target = "deceasedDateOfDeath", source = "dateOfDeath1"),
         @Mapping(target = "deceasedAddress", ignore = true),
         @Mapping(target = "applicantAddress", ignore = true)
     })
