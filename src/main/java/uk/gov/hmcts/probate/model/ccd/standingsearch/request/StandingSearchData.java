@@ -3,12 +3,14 @@ package uk.gov.hmcts.probate.model.ccd.standingsearch.request;
 import lombok.Builder;
 import lombok.Data;
 import uk.gov.hmcts.probate.model.ApplicationType;
+import uk.gov.hmcts.probate.model.ccd.CaseMatch;
 import uk.gov.hmcts.probate.model.ccd.ProbateAddress;
 import uk.gov.hmcts.probate.model.ccd.ProbateFullAliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Builder
@@ -49,6 +51,8 @@ public class StandingSearchData {
     private final long numberOfCopies;
 
     private LocalDate expiryDate;
+
+    private final List<CollectionMember<CaseMatch>> caseMatches = new ArrayList<>();
 
     // EVENT = uploadDocument
 

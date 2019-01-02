@@ -11,7 +11,7 @@ public class StandingSearchDetails {
 
     @Valid
     @JsonProperty(value = "case_data")
-    private final StandingSearchData standingSearchData;
+    private final StandingSearchData data;
 
     @JsonProperty(value = "last_modified")
     private final String[] lastModified;
