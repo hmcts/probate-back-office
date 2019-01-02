@@ -9,6 +9,8 @@ import uk.gov.hmcts.probate.exception.BadRequestException;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.SentEmail;
 import uk.gov.hmcts.probate.model.State;
+import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
+import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
@@ -58,6 +60,24 @@ public class NotificationService {
         return getGeneratedSentEmailDocument(response, emailAddress);
     }
 
+    public Document sendCaveatEmail(State state, CaveatDetails caveatDetails)
+        throws NotificationClientException {
+
+        CaveatData caveatData = caveatDetails.getData();
+        Registry registry = registriesProperties.getRegistries().get(caveatData.getRegistryLocation().toLowerCase());
+
+        String templateId = getTemplateId(state, caveatData.getApplicationType());
+        String emailAddress = caveatData.getCaveatorEmailAddress();
+        Map<String, String> personalisation = getCaveatPersonalisation(caveatDetails, registry);
+        String reference = caveatDetails.getId().toString();
+
+        SendEmailResponse response;
+
+        response = notificationClient.sendEmail(templateId, emailAddress, personalisation, reference);
+
+        return getGeneratedSentEmailDocument(response, emailAddress);
+    }
+
     private Document getGeneratedSentEmailDocument(SendEmailResponse response, String emailAddress) {
         SentEmail sentEmail = SentEmail.builder()
                 .sentOn(LocalDateTime.now().format(formatter))
@@ -86,6 +106,21 @@ public class NotificationService {
         return personalisation;
     }
 
+    private Map<String, String> getCaveatPersonalisation(CaveatDetails caveatDetails, Registry registry) {
+        CaveatData caveatData = caveatDetails.getData();
+
+        HashMap<String, String> personalisation = new HashMap<>();
+
+        personalisation.put("applicant_name", caveatData.getCaveatorFullName());
+        personalisation.put("deceased_name", caveatData.getDeceasedFullName());
+        personalisation.put("ccd_reference", caveatDetails.getId().toString());
+        personalisation.put("message_content", caveatData.getMessageContent());
+        personalisation.put("registry_name", registry.getName());
+        personalisation.put("registry_phone", registry.getPhone());
+
+        return personalisation;
+    }
+
     private String getTemplateId(State state, ApplicationType applicationType) {
         switch (state) {
             case DOCUMENTS_RECEIVED:
@@ -94,6 +129,8 @@ public class NotificationService {
                 return notificationTemplates.getEmail().get(applicationType).getCaseStopped();
             case GRANT_ISSUED:
                 return notificationTemplates.getEmail().get(applicationType).getGrantIssued();
+            case GENERAL_CAVEAT_MESSAGE:
+                return notificationTemplates.getEmail().get(applicationType).getGeneralCaveatMessage();
             default:
                 throw new BadRequestException("Unsupported state", null);
         }

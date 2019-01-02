@@ -8,7 +8,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -171,8 +171,6 @@ public class BusinessValidationUnitTest {
         when(bindingResultMock.hasErrors()).thenReturn(true);
         when(bindingResultMock.getFieldErrors()).thenReturn(Collections.singletonList(fieldErrorMock));
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
-        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
-        when(ccdBeanTransformer.transform(callbackRequestMock)).thenReturn(ccdDataMock);
 
         ResponseEntity<CallbackResponse> response = underTest.validate(callbackRequestMock,
                 bindingResultMock, httpServletRequest);
@@ -187,7 +185,6 @@ public class BusinessValidationUnitTest {
         List<FieldErrorResponse> businessErrors = Collections.singletonList(businessValidationErrorMock);
         when(eventValidationServiceMock.validate(ccdDataMock, validationRules)).thenReturn(businessErrors);
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
-        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
         when(ccdBeanTransformer.transform(callbackRequestMock)).thenReturn(ccdDataMock);
 
         ResponseEntity<CallbackResponse> response = underTest.validate(callbackRequestMock,
@@ -201,12 +198,9 @@ public class BusinessValidationUnitTest {
     public void shouldValidateAmendCaseWithNoErrors() {
         when(bindingResultMock.hasErrors()).thenReturn(false);
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
-        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
         when(ccdBeanTransformer.transform(callbackRequestMock)).thenReturn(ccdDataMock);
         when(eventValidationServiceMock.validate(ccdDataMock, caseworkerAmendValidationRules)).thenReturn(Collections.emptyList());
-        when(stateChangeServiceMock.getChangedStateForCaseUpdate(caseDataMock)).thenReturn(Optional.empty());
-        when(pdfManagementServiceMock.generateAndUpload(callbackRequestMock, LEGAL_STATEMENT))
-                .thenReturn(documentMock);
+
         when(callbackResponseTransformerMock.transform(callbackRequestMock))
                 .thenReturn(callbackResponseMock);
 
@@ -223,8 +217,6 @@ public class BusinessValidationUnitTest {
         when(bindingResultMock.hasErrors()).thenReturn(true);
         when(bindingResultMock.getFieldErrors()).thenReturn(Collections.singletonList(fieldErrorMock));
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
-        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
-        when(ccdBeanTransformer.transform(callbackRequestMock)).thenReturn(ccdDataMock);
 
         ResponseEntity<CallbackResponse> response = underTest.validateCaseDetails(callbackRequestMock,
                 bindingResultMock, httpServletRequest);
@@ -239,7 +231,6 @@ public class BusinessValidationUnitTest {
         List<FieldErrorResponse> businessErrors = Collections.singletonList(businessValidationErrorMock);
         when(eventValidationServiceMock.validate(ccdDataMock, caseworkerAmendValidationRules)).thenReturn(businessErrors);
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
-        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
         when(ccdBeanTransformer.transform(callbackRequestMock)).thenReturn(ccdDataMock);
 
         ResponseEntity<CallbackResponse> response = underTest.validateCaseDetails(callbackRequestMock,
@@ -277,8 +268,6 @@ public class BusinessValidationUnitTest {
         when(bindingResultMock.hasErrors()).thenReturn(true);
         when(bindingResultMock.getFieldErrors()).thenReturn(Collections.singletonList(fieldErrorMock));
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
-        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
-        when(ccdBeanTransformer.transform(callbackRequestMock)).thenReturn(ccdDataMock);
 
         ResponseEntity<CallbackResponse> response = underTest.transformCaseDetails(callbackRequestMock,
                 bindingResultMock);
@@ -290,9 +279,6 @@ public class BusinessValidationUnitTest {
     @Test
     public void shouldTransformCaseWithNoErrors() {
         when(bindingResultMock.hasErrors()).thenReturn(false);
-        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
-        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
-        when(ccdBeanTransformer.transform(callbackRequestMock)).thenReturn(ccdDataMock);
         when(callbackResponseTransformerMock.transformCase(callbackRequestMock))
                 .thenReturn(callbackResponseMock);
 
@@ -301,6 +287,19 @@ public class BusinessValidationUnitTest {
 
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(response.getBody().getErrors().isEmpty(), is(true));
+    }
+
+    @Test(expected = BadRequestException.class)
+    public void shouldPaperFormWithFieldErrors() {
+        when(bindingResultMock.hasErrors()).thenReturn(true);
+        when(bindingResultMock.getFieldErrors()).thenReturn(Collections.singletonList(fieldErrorMock));
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+
+        ResponseEntity<CallbackResponse> response = underTest.paperFormCaseDetails(callbackRequestMock,
+                bindingResultMock);
+
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        assertThat(response.getBody().getErrors().isEmpty(), is(false));
     }
 
 }

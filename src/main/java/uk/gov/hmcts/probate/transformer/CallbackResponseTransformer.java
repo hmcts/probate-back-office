@@ -166,6 +166,16 @@ public class CallbackResponseTransformer {
         return transformResponse(responseCaseData);
     }
 
+    public CallbackResponse paperForm(CallbackRequest callbackRequest) {
+
+        ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), false);
+        responseCaseDataBuilder.paperForm(ANSWER_YES);
+        getCaseCreatorResponseCaseBuilder(callbackRequest.getCaseDetails().getData(), responseCaseDataBuilder);
+
+        return transformResponse(responseCaseDataBuilder.build());
+    }
+
+
     private CallbackResponse transformResponse(ResponseCaseData responseCaseData) {
         return CallbackResponse.builder().data(responseCaseData).build();
     }
@@ -259,7 +269,12 @@ public class CallbackResponseTransformer {
 
                 .payments(caseData.getPayments())
                 .deceasedMarriedAfterWillOrCodicilDate(caseData.getDeceasedMarriedAfterWillOrCodicilDate())
-                .applicationSubmittedDate(caseData.getApplicationSubmittedDate());
+                .applicationSubmittedDate(caseData.getApplicationSubmittedDate())
+
+                .scannedDocuments(caseData.getScannedDocuments())
+                .evidenceHandled(caseData.getEvidenceHandled())
+
+                .paperForm(caseData.getPaperForm());
 
         if (transform) {
             updateCaseBuilderForTransformCase(caseData, builder);
@@ -269,6 +284,106 @@ public class CallbackResponseTransformer {
             updateCaseBuilder(caseData, builder);
         }
 
+        if (isPaperForm(caseData)) {
+            builder = getCaseCreatorResponseCaseBuilder(caseData, builder);
+        }
+
+
+        return builder;
+    }
+
+    private boolean isPaperForm(CaseData caseData) {
+        return (caseData.getPaperForm() != null && caseData.getPaperForm().equals(ANSWER_YES));
+    }
+
+    private ResponseCaseDataBuilder getCaseCreatorResponseCaseBuilder(CaseData caseData, ResponseCaseDataBuilder builder) {
+
+        builder
+                .primaryApplicantSecondPhoneNumber(caseData.getPrimaryApplicantSecondPhoneNumber())
+                .primaryApplicantRelationshipToDeceased(caseData.getPrimaryApplicantRelationshipToDeceased())
+                .paRelationshipToDeceasedOther(caseData.getPaRelationshipToDeceasedOther())
+                .deceasedMartialStatus(caseData.getDeceasedMartialStatus())
+                .willDatedBeforeApril(caseData.getWillDatedBeforeApril())
+                .deceasedEnterMarriageOrCP(caseData.getDeceasedEnterMarriageOrCP())
+                .dateOfMarriageOrCP(caseData.getDateOfMarriageOrCP())
+                .dateOfDivorcedCPJudicially(caseData.getDateOfDivorcedCPJudicially())
+                .willsOutsideOfUK(caseData.getWillsOutsideOfUK())
+                .courtOfDecree(caseData.getCourtOfDecree())
+                .willGiftUnderEighteen(caseData.getWillGiftUnderEighteen())
+                .applyingAsAnAttorney(caseData.getApplyingAsAnAttorney())
+                .attorneyOnBehalfOfNameAndAddress(caseData.getAttorneyOnBehalfOfNameAndAddress())
+                .mentalCapacity(caseData.getMentalCapacity())
+                .courtOfProtection(caseData.getCourtOfProtection())
+                .epaOrLpa(caseData.getEpaOrLpa())
+                .epaRegistered(caseData.getEpaRegistered())
+                .domicilityCountry(caseData.getDomicilityCountry())
+                .ukEstateItems(caseData.getUkEstateItems())
+                .domicilityIHTCert(caseData.getDomicilityIHTCert())
+                .entitledToApply(caseData.getEntitledToApply())
+                .entitledToApplyOther(caseData.getEntitledToApplyOther())
+                .notifiedApplicants(caseData.getNotifiedApplicants())
+                .foreignAsset(caseData.getForeignAsset())
+                .foreignAssetEstateValue(caseData.getForeignAssetEstateValue())
+                .adopted(caseData.getAdopted())
+                .adoptiveRelatives(caseData.getAdoptiveRelatives())
+                .caseType(caseData.getCaseType())
+                .spouseOrPartner(caseData.getSpouseOrPartner())
+                .childrenSurvived(caseData.getChildrenSurvived())
+                .childrenOverEighteenSurvived(caseData.getChildrenOverEighteenSurvived())
+                .childrenUnderEighteenSurvived(caseData.getChildrenUnderEighteenSurvived())
+                .childrenDied(caseData.getChildrenDied())
+                .childrenDiedOverEighteen(caseData.getChildrenDiedOverEighteen())
+                .childrenDiedUnderEighteen(caseData.getChildrenDiedUnderEighteen())
+                .grandChildrenSurvived(caseData.getGrandChildrenSurvived())
+                .grandChildrenSurvivedOverEighteen(caseData.getGrandChildrenSurvivedOverEighteen())
+                .grandChildrenSurvivedUnderEighteen(caseData.getGrandChildrenSurvivedUnderEighteen())
+                .parentsExistSurvived(caseData.getParentsExistSurvived())
+                .parentsExistOverEighteenSurvived(caseData.getParentsExistOverEighteenSurvived())
+                .parentsExistUnderEighteenSurvived(caseData.getParentsExistUnderEighteenSurvived())
+                .wholeBloodSiblingsSurvived(caseData.getWholeBloodSiblingsSurvived())
+                .wholeBloodSiblingsSurvivedOverEighteen(caseData.getWholeBloodSiblingsSurvivedOverEighteen())
+                .wholeBloodSiblingsSurvivedUnderEighteen(caseData.getWholeBloodSiblingsSurvivedUnderEighteen())
+                .wholeBloodSiblingsDied(caseData.getWholeBloodSiblingsDied())
+                .wholeBloodSiblingsDiedOverEighteen(caseData.getWholeBloodSiblingsDiedOverEighteen())
+                .wholeBloodSiblingsDiedUnderEighteen(caseData.getWholeBloodSiblingsDiedUnderEighteen())
+                .wholeBloodNeicesAndNephews(caseData.getWholeBloodNeicesAndNephews())
+                .wholeBloodNeicesAndNephewsOverEighteen(caseData.getWholeBloodNeicesAndNephewsOverEighteen())
+                .wholeBloodNeicesAndNephewsUnderEighteen(caseData.getWholeBloodNeicesAndNephewsUnderEighteen())
+                .halfBloodSiblingsSurvived(caseData.getHalfBloodSiblingsSurvived())
+                .halfBloodSiblingsSurvivedOverEighteen(caseData.getHalfBloodSiblingsSurvivedOverEighteen())
+                .halfBloodSiblingsSurvivedUnderEighteen(caseData.getHalfBloodSiblingsSurvivedUnderEighteen())
+                .halfBloodSiblingsDied(caseData.getHalfBloodSiblingsDied())
+                .halfBloodSiblingsDiedOverEighteen(caseData.getHalfBloodSiblingsDiedOverEighteen())
+                .halfBloodSiblingsDiedUnderEighteen(caseData.getHalfBloodSiblingsDiedUnderEighteen())
+                .halfBloodNeicesAndNephews(caseData.getHalfBloodNeicesAndNephews())
+                .halfBloodNeicesAndNephewsOverEighteen(caseData.getHalfBloodNeicesAndNephewsOverEighteen())
+                .halfBloodNeicesAndNephewsUnderEighteen(caseData.getHalfBloodNeicesAndNephewsUnderEighteen())
+                .grandparentsDied(caseData.getGrandparentsDied())
+                .grandparentsDiedOverEighteen(caseData.getGrandparentsDiedOverEighteen())
+                .grandparentsDiedUnderEighteen(caseData.getGrandparentsDiedUnderEighteen())
+                .wholeBloodUnclesAndAuntsSurvived(caseData.getWholeBloodUnclesAndAuntsSurvived())
+                .wholeBloodUnclesAndAuntsSurvivedOverEighteen(caseData.getWholeBloodUnclesAndAuntsSurvivedOverEighteen())
+                .wholeBloodUnclesAndAuntsSurvivedUnderEighteen(caseData.getWholeBloodUnclesAndAuntsSurvivedUnderEighteen())
+                .wholeBloodUnclesAndAuntsDied(caseData.getWholeBloodUnclesAndAuntsDied())
+                .wholeBloodUnclesAndAuntsDiedOverEighteen(caseData.getWholeBloodUnclesAndAuntsDiedOverEighteen())
+                .wholeBloodUnclesAndAuntsDiedUnderEighteen(caseData.getWholeBloodUnclesAndAuntsDiedUnderEighteen())
+                .wholeBloodCousinsSurvived(caseData.getWholeBloodCousinsSurvived())
+                .wholeBloodCousinsSurvivedOverEighteen(caseData.getWholeBloodCousinsSurvivedOverEighteen())
+                .wholeBloodCousinsSurvivedUnderEighteen(caseData.getWholeBloodCousinsSurvivedUnderEighteen())
+                .halfBloodUnclesAndAuntsSurvived(caseData.getHalfBloodUnclesAndAuntsSurvived())
+                .halfBloodUnclesAndAuntsSurvivedOverEighteen(caseData.getHalfBloodUnclesAndAuntsSurvivedOverEighteen())
+                .halfBloodUnclesAndAuntsSurvivedUnderEighteen(caseData.getHalfBloodUnclesAndAuntsSurvivedUnderEighteen())
+                .halfBloodUnclesAndAuntsDied(caseData.getHalfBloodUnclesAndAuntsDied())
+                .halfBloodUnclesAndAuntsDiedOverEighteen(caseData.getHalfBloodUnclesAndAuntsDiedOverEighteen())
+                .halfBloodUnclesAndAuntsDiedUnderEighteen(caseData.getHalfBloodUnclesAndAuntsDiedUnderEighteen())
+                .halfBloodCousinsSurvived(caseData.getHalfBloodCousinsSurvived())
+                .halfBloodCousinsSurvivedOverEighteen(caseData.getHalfBloodCousinsSurvivedOverEighteen())
+                .halfBloodCousinsSurvivedUnderEighteen(caseData.getHalfBloodCousinsSurvivedUnderEighteen())
+                .applicationFeePaperForm(caseData.getApplicationFeePaperForm())
+                .feeForCopiesPaperForm(caseData.getFeeForCopiesPaperForm())
+                .totalFeePaperForm(caseData.getTotalFeePaperForm())
+                .paperPaymentMethod(caseData.getPaperPaymentMethod())
+                .paymentReferenceNumberPaperform(caseData.getPaymentReferenceNumberPaperform());
 
         return builder;
     }
@@ -282,6 +397,16 @@ public class CallbackResponseTransformer {
                 builder
                         .ihtReferenceNumber(null);
             }
+        }
+
+        if (!isPaperForm(caseData)) {
+            builder
+                    .paperForm(ANSWER_NO);
+        }
+
+        if (caseData.getCaseType() == null) {
+            builder
+                    .caseType("gop");
         }
 
         if (caseData.getPrimaryApplicantAliasReason() != null) {
@@ -324,6 +449,16 @@ public class CallbackResponseTransformer {
         builder
                 .ihtReferenceNumber(caseData.getIhtReferenceNumber())
                 .solsDeceasedAliasNamesList(caseData.getSolsDeceasedAliasNamesList());
+
+        if (!isPaperForm(caseData)) {
+            builder
+                    .paperForm(ANSWER_NO);
+        }
+
+        if (caseData.getCaseType() == null) {
+            builder
+                    .caseType("gop");
+        }
 
         if (caseData.getSolsExecutorAliasNames() != null) {
             builder

@@ -6,11 +6,19 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import uk.gov.hmcts.probate.model.CaseType;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
+import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatCallbackRequest;
+import uk.gov.hmcts.probate.model.ccd.caveat.response.CaveatCallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
+import uk.gov.hmcts.probate.model.ccd.standingsearch.request.StandingSearchCallbackRequest;
+import uk.gov.hmcts.probate.model.ccd.standingsearch.response.StandingSearchCallbackResponse;
+import uk.gov.hmcts.probate.model.criterion.CaseMatchingCriteria;
 import uk.gov.hmcts.probate.service.CaseMatchingService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
+import uk.gov.hmcts.probate.transformer.CaveatCallbackResponseTransformer;
+import uk.gov.hmcts.probate.transformer.StandingSearchCallbackResponseTransformer;
 
 import java.util.List;
 
@@ -23,12 +31,35 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 public class CaseMatchingController {
 
     private final CallbackResponseTransformer callbackResponseTransformer;
+    private final CaveatCallbackResponseTransformer caveatCallbackResponseTransformer;
+    private final StandingSearchCallbackResponseTransformer standingSearchCallbackResponseTransformer;
     private final CaseMatchingService caseMatchingService;
 
-    @PostMapping(path = "/search")
-    public ResponseEntity<CallbackResponse> search(@RequestBody CallbackRequest callbackRequest) {
-        List<CaseMatch> caseMatches = caseMatchingService.findMatches(callbackRequest.getCaseDetails());
+    @PostMapping(path = "/search-from-grant-flow")
+    public ResponseEntity<CallbackResponse> search(@RequestBody CallbackRequest request) {
+        CaseMatchingCriteria caseMatchingCriteria = CaseMatchingCriteria.of(request.getCaseDetails());
 
-        return ResponseEntity.ok(callbackResponseTransformer.addMatches(callbackRequest, caseMatches));
+        List<CaseMatch> caseMatches = caseMatchingService.findCrossMatches(CaseType.getAll(), caseMatchingCriteria);
+
+        return ResponseEntity.ok(callbackResponseTransformer.addMatches(request, caseMatches));
+    }
+
+    @PostMapping(path = "/search-from-caveat-flow")
+    public ResponseEntity<CaveatCallbackResponse> searchFromCaveatFlow(@RequestBody CaveatCallbackRequest request) {
+        CaseMatchingCriteria caseMatchingCriteria = CaseMatchingCriteria.of(request.getCaseDetails());
+
+        List<CaseMatch> caseMatches = caseMatchingService.findCrossMatches(CaseType.getAll(), caseMatchingCriteria);
+
+        return ResponseEntity.ok(caveatCallbackResponseTransformer.addMatches(request, caseMatches));
+    }
+
+    @PostMapping(path = "/search-from-standing-search-flow")
+    public ResponseEntity<StandingSearchCallbackResponse> searchFromStandingSearchFlow(
+            @RequestBody StandingSearchCallbackRequest request) {
+        CaseMatchingCriteria caseMatchingCriteria = CaseMatchingCriteria.of(request.getCaseDetails());
+
+        List<CaseMatch> caseMatches = caseMatchingService.findCrossMatches(CaseType.getAll(), caseMatchingCriteria);
+
+        return ResponseEntity.ok(standingSearchCallbackResponseTransformer.addMatches(request, caseMatches));
     }
 }
