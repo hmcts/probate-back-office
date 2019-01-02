@@ -52,7 +52,7 @@ public class CcdClientApiTest {
             .build();
         CaseDetails caseDetails = CaseDetails.builder().build();
 
-        when(coreCaseDataApi.startForCitizen(
+        when(coreCaseDataApi.startForCaseworker(
             AUTHORISATION,
             SERVICE_AUTHORISATION,
             USER_ID,
@@ -60,7 +60,7 @@ public class CcdClientApiTest {
             ccdCaseType.getName(),
             eventId.getName())).thenReturn(startEventResponse);
 
-        when(coreCaseDataApi.submitForCitizen(
+        when(coreCaseDataApi.submitForCaseworker(
             eq(AUTHORISATION),
             eq(SERVICE_AUTHORISATION),
             eq(USER_ID),
@@ -74,7 +74,7 @@ public class CcdClientApiTest {
         assertThat(actualCaseDetails, equalTo(caseDetails));
 
 
-        verify(coreCaseDataApi, times(1)).startForCitizen(
+        verify(coreCaseDataApi, times(1)).startForCaseworker(
             AUTHORISATION,
             SERVICE_AUTHORISATION,
             USER_ID,
@@ -82,7 +82,7 @@ public class CcdClientApiTest {
             ccdCaseType.getName(),
             eventId.getName());
 
-        verify(coreCaseDataApi, times(1)).submitForCitizen(
+        verify(coreCaseDataApi, times(1)).submitForCaseworker(
             eq(AUTHORISATION),
             eq(SERVICE_AUTHORISATION),
             eq(USER_ID),

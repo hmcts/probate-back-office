@@ -21,7 +21,7 @@ public class CcdClientApi implements CoreCaseDataService {
 
     @Override
     public CaseDetails createCase(Object object, CcdCaseType ccdCaseType, EventId eventId, SecurityDTO securityDTO) {
-        StartEventResponse startEventResponse = coreCaseDataApi.startForCitizen(
+        StartEventResponse startEventResponse = coreCaseDataApi.startForCaseworker(
             securityDTO.getAuthorisation(),
             securityDTO.getServiceAuthorisation(),
             securityDTO.getUserId(),
@@ -30,7 +30,7 @@ public class CcdClientApi implements CoreCaseDataService {
             eventId.getName()
         );
         CaseDataContent caseDataContent = createCaseDataContent(object, eventId, startEventResponse);
-        CaseDetails caseDetails = coreCaseDataApi.submitForCitizen(
+        CaseDetails caseDetails = coreCaseDataApi.submitForCaseworker(
             securityDTO.getAuthorisation(),
             securityDTO.getServiceAuthorisation(),
             securityDTO.getUserId(),

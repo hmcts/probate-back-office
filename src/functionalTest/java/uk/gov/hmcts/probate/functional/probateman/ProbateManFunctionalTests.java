@@ -17,6 +17,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.context.jdbc.Sql;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 
+import java.util.Arrays;
+
 import static org.hamcrest.Matchers.equalTo;
 
 @RunWith(SerenityRunner.class)
@@ -29,7 +31,7 @@ public class ProbateManFunctionalTests extends IntegrationTestBase {
 
     private static final String EMAIL_PLACEHOLDER = "XXXXXXXXXX";
     private static final String PASSWORD = "Probate123";
-    private static final String USER_GROUP_NAME = "probate-private-beta";
+    private static final String USER_GROUP_NAME = "caseworker-probate-issuer";
 
     private ObjectMapper objectMapper;
 
@@ -52,7 +54,7 @@ public class ProbateManFunctionalTests extends IntegrationTestBase {
             .forename(forename)
             .surname(surname)
             .password(PASSWORD)
-            .userGroupName(USER_GROUP_NAME)
+            .roles(Arrays.asList(Role.builder().code("caseworker-probate").build()))
             .build();
 
         SerenityRest.given()
@@ -86,5 +88,50 @@ public class ProbateManFunctionalTests extends IntegrationTestBase {
             .body("case_data.deceasedDateOfBirth", equalTo("1900-01-01"))
             .body("case_data.deceasedForenames", equalTo("DeadFN1 DeadFN2"))
             .body("case_data.deceasedSurname", equalTo("DeadSN"));
+    }
+
+    //TODO Test with spreadsheet and assert individual fields
+    @Test
+    @Sql(scripts = "/scripts/caveat_insert.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = "/scripts/caveat_clean_up.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    public void shouldCreateCcdCaseForCaveat() {
+        SerenityRest.given()
+            .relaxedHTTPSValidation()
+            .headers(headers)
+            .when()
+            .post("/probateManTypes/CAVEAT/cases/999")
+            .then()
+            .assertThat()
+            .statusCode(200).extract().jsonPath().prettyPrint();
+    }
+
+    //TODO Test with spreadsheet and assert individual fields
+    @Test
+    @Sql(scripts = "/scripts/standing_search_insert.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = "/scripts/standing_search_clean_up.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    public void shouldCreateCcdCaseForStandingSearch() {
+        SerenityRest.given()
+            .relaxedHTTPSValidation()
+            .headers(headers)
+            .when()
+            .post("/probateManTypes/STANDING_SEARCH/cases/999")
+            .then()
+            .assertThat()
+            .statusCode(200).extract().jsonPath().prettyPrint();
+    }
+
+    //TODO Test with spreadsheet and assert individual fields
+    @Test
+    @Sql(scripts = "/scripts/wills_insert.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = "/scripts/wills_clean_up.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    public void shouldCreateCcdCaseForWillLodgement() {
+        SerenityRest.given()
+            .relaxedHTTPSValidation()
+            .headers(headers)
+            .when()
+            .post("/probateManTypes/WILL_LODGEMENT/cases/999")
+            .then()
+            .assertThat()
+            .statusCode(200).extract().jsonPath().prettyPrint();
     }
 }

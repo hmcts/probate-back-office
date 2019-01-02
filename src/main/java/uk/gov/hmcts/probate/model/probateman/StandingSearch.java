@@ -6,10 +6,12 @@ import lombok.EqualsAndHashCode;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import java.time.LocalDate;
 
 @Entity
 @Data
+@Table(name = "STANDING_SEARCHES_FLAT")
 @EqualsAndHashCode(callSuper = false)
 public class StandingSearch extends ProbateManModel {
 
