@@ -54,10 +54,6 @@ public class DocumentController {
         DocumentType template;
 
         switch (caseData.getCaseType()) {
-            case GRANT_OF_PROBATE:
-                template = DIGITAL_GRANT_DRAFT;
-                document = pdfManagementService.generateAndUpload(callbackRequest, template);
-                break;
             case INTESTACY:
                 template = INTESTACY_GRANT_DRAFT;
                 document = pdfManagementService.generateAndUpload(callbackRequest, template);
@@ -69,6 +65,7 @@ public class DocumentController {
             case EDGE_CASE:
                 document = Document.builder().documentType(DocumentType.EDGE_CASE).build();
                 break;
+            case GRANT_OF_PROBATE:
             default:
                 template = DIGITAL_GRANT_DRAFT;
                 document = pdfManagementService.generateAndUpload(callbackRequest, template);
@@ -102,14 +99,11 @@ public class DocumentController {
                 template = INTESTACY_GRANT;
                 digitalGrantDocument = pdfManagementService.generateAndUpload(callbackRequest, template);
                 break;
-            case GRANT_OF_PROBATE:
-                template = DIGITAL_GRANT;
-                digitalGrantDocument = pdfManagementService.generateAndUpload(callbackRequest, template);
-                break;
             case ADMON_WILL:
                 template = ADMON_WILL_GRANT;
                 digitalGrantDocument = pdfManagementService.generateAndUpload(callbackRequest, template);
                 break;
+            case GRANT_OF_PROBATE:
             default:
                 template = DIGITAL_GRANT;
                 digitalGrantDocument = pdfManagementService.generateAndUpload(callbackRequest, template);
