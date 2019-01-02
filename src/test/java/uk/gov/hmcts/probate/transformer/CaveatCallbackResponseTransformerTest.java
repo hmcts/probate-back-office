@@ -6,11 +6,11 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.DocumentType;
-import uk.gov.hmcts.probate.model.ccd.caveat.CavAddress;
-import uk.gov.hmcts.probate.model.ccd.caveat.CavFullAliasName;
+import uk.gov.hmcts.probate.model.ccd.ProbateAddress;
+import uk.gov.hmcts.probate.model.ccd.ProbateFullAliasName;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatCallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
@@ -48,13 +48,13 @@ public class CaveatCallbackResponseTransformerTest {
     private static final LocalDate CAV_DECEASED_DOB = LocalDate.parse("2016-12-31", dateTimeFormatter);
     private static final String CAV_DECEASED_HAS_ALIAS = YES;
     private static final String CAV_DECEASED_FULL_ALIAS_NAME = "AliasFN AliasSN";
-    private static final List<CollectionMember<CavFullAliasName>> CAV_DECEASED_FULL_ALIAS_NAME_LIST = emptyList();
-    private static final CavAddress CAV_DECEASED_ADDRESS = Mockito.mock(CavAddress.class);
+    private static final List<CollectionMember<ProbateFullAliasName>> CAV_DECEASED_FULL_ALIAS_NAME_LIST = emptyList();
+    private static final ProbateAddress CAV_DECEASED_ADDRESS = Mockito.mock(ProbateAddress.class);
 
     private static final String CAV_CAVEATOR_FORENAMES = "Forenames";
     private static final String CAV_CAVEATOR_SURNAME = "Surname";
     private static final String CAV_CAVEATOR_EMAIL_ADDRESS = "cav@email.com";
-    private static final CavAddress CAV_CAVEATOR_ADDRESS = Mockito.mock(CavAddress.class);
+    private static final ProbateAddress CAV_CAVEATOR_ADDRESS = Mockito.mock(ProbateAddress.class);
 
     private static final LocalDate CAV_EXPIRY_DATE = LocalDate.now().plusMonths(CAVEAT_LIFESPAN);
     private static final String CAV_FORMATTED_EXPIRY_DATE = dateTimeFormatter.format(CAV_EXPIRY_DATE);
@@ -106,12 +106,12 @@ public class CaveatCallbackResponseTransformerTest {
 
     @Test
     public void shouldTransformCaseForCaveatWithDeceasedAliasNames() {
-        List<CollectionMember<CavFullAliasName>> cavDeceasedFullAliasNameList = new ArrayList<>();
+        List<CollectionMember<ProbateFullAliasName>> deceasedFullAliasNameList = new ArrayList<>();
 
-        CavFullAliasName an11 = CavFullAliasName.builder().fullAliasName(CAV_DECEASED_FULL_ALIAS_NAME).build();
-        CollectionMember<CavFullAliasName> an1 = new CollectionMember<>("0", an11);
-        cavDeceasedFullAliasNameList.add(an1);
-        caveatDataBuilder.deceasedFullAliasNameList(cavDeceasedFullAliasNameList);
+        ProbateFullAliasName an11 = ProbateFullAliasName.builder().fullAliasName(CAV_DECEASED_FULL_ALIAS_NAME).build();
+        CollectionMember<ProbateFullAliasName> an1 = new CollectionMember<>("0", an11);
+        deceasedFullAliasNameList.add(an1);
+        caveatDataBuilder.deceasedFullAliasNameList(deceasedFullAliasNameList);
 
         when(caveatCallbackRequestMock.getCaveatDetails()).thenReturn(caveatDetailsMock);
         when(caveatDetailsMock.getCaveatData()).thenReturn(caveatDataBuilder.build());
@@ -174,6 +174,8 @@ public class CaveatCallbackResponseTransformerTest {
         assertEquals(CAV_CAVEATOR_SURNAME, caveatCallbackResponse.getCaveatData().getCaveatorSurname());
         assertEquals(CAV_CAVEATOR_EMAIL_ADDRESS, caveatCallbackResponse.getCaveatData().getCaveatorEmailAddress());
         assertEquals(CAV_CAVEATOR_ADDRESS, caveatCallbackResponse.getCaveatData().getCaveatorAddress());
+
+        assertEquals(CAV_FORMATTED_EXPIRY_DATE, caveatCallbackResponse.getCaveatData().getExpiryDate());
         assertEquals(CAV_MESSAGE_CONTENT, caveatCallbackResponse.getCaveatData().getMessageContent());
     }
 
@@ -191,7 +193,7 @@ public class CaveatCallbackResponseTransformerTest {
         UploadDocument doc = UploadDocument.builder()
                 .comment("comment")
                 .documentLink(docLink)
-                .documentType(DocumentType.IHT).build();
+                .documentType(DocumentType.CORRESPONDENCE).build();
         return new CollectionMember<>(id, doc);
     }
 }

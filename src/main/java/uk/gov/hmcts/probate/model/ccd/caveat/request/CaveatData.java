@@ -3,8 +3,9 @@ package uk.gov.hmcts.probate.model.ccd.caveat.request;
 import lombok.Builder;
 import lombok.Data;
 import uk.gov.hmcts.probate.model.ApplicationType;
-import uk.gov.hmcts.probate.model.ccd.caveat.CavAddress;
-import uk.gov.hmcts.probate.model.ccd.caveat.CavFullAliasName;
+import uk.gov.hmcts.probate.model.ccd.CaseMatch;
+import uk.gov.hmcts.probate.model.ccd.ProbateAddress;
+import uk.gov.hmcts.probate.model.ccd.ProbateFullAliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
@@ -32,9 +33,9 @@ public class CaveatData {
 
     private final String deceasedAnyOtherNames;
 
-    private final List<CollectionMember<CavFullAliasName>> deceasedFullAliasNameList;
+    private final List<CollectionMember<ProbateFullAliasName>> deceasedFullAliasNameList;
 
-    private final CavAddress deceasedAddress;
+    private final ProbateAddress deceasedAddress;
 
     // EVENT = cavRaiseCaveat - caveator data
 
@@ -44,7 +45,7 @@ public class CaveatData {
 
     private final String caveatorEmailAddress;
 
-    private final CavAddress caveatorAddress;
+    private final ProbateAddress caveatorAddress;
 
     // EVENT = cavRaiseCaveat - caveat details
 
@@ -57,6 +58,8 @@ public class CaveatData {
     // EVENT = cavUploadDocument
 
     private final List<CollectionMember<UploadDocument>> documentsUploaded;
+
+    private final List<CollectionMember<CaseMatch>> caseMatches = new ArrayList<>();
 
     // EVENT = misc
 

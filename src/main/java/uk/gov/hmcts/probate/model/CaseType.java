@@ -2,7 +2,8 @@ package uk.gov.hmcts.probate.model;
 
 public enum CaseType {
     GRANT_OF_REPRESENTATION("GrantOfRepresentation", "Grant of Representation"),
-    CAVEAT("Caveat", "Caveat");
+    CAVEAT("Caveat", "Caveat"),
+    LEGACY("Legacy", "Legacy");
 
     private final String code;
     private final String name;

@@ -23,6 +23,8 @@ import uk.gov.hmcts.probate.service.evidencemanagement.upload.UploadService;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
@@ -46,6 +48,8 @@ public class PDFManagementService {
         this.objectMapper = objectMapper.copy();
         SimpleModule module = new SimpleModule();
         module.addSerializer(BigDecimal.class, new BigDecimalNumberSerializer());
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        this.objectMapper.setDateFormat(df);
         this.objectMapper.registerModule(module);
         this.httpServletRequest = httpServletRequest;
         this.pdfServiceConfiguration = pdfServiceConfiguration;

@@ -6,7 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.hateoas.Link;
 import uk.gov.hmcts.probate.config.PDFServiceConfiguration;
 import uk.gov.hmcts.probate.exception.BadRequestException;
@@ -72,20 +72,18 @@ public class PDFManagementServiceTest {
     @Test
     public void shouldGenerateAndUploadLegalStatement() throws IOException {
         String json = "{}";
-        String fileName = "legalStatement.pdf";
-        String href = "href";
-
         when(objectMapperMock.writeValueAsString(callbackRequestMock)).thenReturn(json);
         when(pdfGeneratorServiceMock.generatePdf(LEGAL_STATEMENT, json)).thenReturn(evidenceManagementFileUpload);
         when(uploadServiceMock.store(evidenceManagementFileUpload)).thenReturn(evidenceManagementFile);
         when(evidenceManagementFile.getLink(Link.REL_SELF)).thenReturn(link);
         when(evidenceManagementFile.getLink("binary")).thenReturn(link);
-        when(evidenceManagementFile.getOriginalDocumentName()).thenReturn(fileName);
 
+        String href = "href";
         when(link.getHref()).thenReturn(href);
 
         Document response = underTest.generateAndUpload(callbackRequestMock, LEGAL_STATEMENT);
 
+        String fileName = "legalStatement.pdf";
         assertNotNull(response);
         assertEquals(fileName, response.getDocumentLink().getDocumentFilename());
         assertEquals(href, response.getDocumentLink().getDocumentBinaryUrl());
@@ -95,20 +93,18 @@ public class PDFManagementServiceTest {
     @Test
     public void shouldGenerateAndUploadDigitalGrant() throws IOException {
         String json = "{}";
-        String fileName = "digitalGrant.pdf";
-        String href = "href";
-
         when(objectMapperMock.writeValueAsString(callbackRequestMock)).thenReturn(json);
         when(pdfGeneratorServiceMock.generatePdf(DIGITAL_GRANT, json)).thenReturn(evidenceManagementFileUpload);
         when(uploadServiceMock.store(evidenceManagementFileUpload)).thenReturn(evidenceManagementFile);
         when(evidenceManagementFile.getLink(Link.REL_SELF)).thenReturn(link);
         when(evidenceManagementFile.getLink("binary")).thenReturn(link);
-        when(evidenceManagementFile.getOriginalDocumentName()).thenReturn(fileName);
 
+        String href = "href";
         when(link.getHref()).thenReturn(href);
 
         Document response = underTest.generateAndUpload(callbackRequestMock, DIGITAL_GRANT);
 
+        String fileName = "digitalGrant.pdf";
         assertNotNull(response);
         assertEquals(fileName, response.getDocumentLink().getDocumentFilename());
         assertEquals(href, response.getDocumentLink().getDocumentBinaryUrl());
@@ -118,20 +114,19 @@ public class PDFManagementServiceTest {
     @Test
     public void shouldGenerateAndUploadSentEmail() throws IOException {
         String json = "{}";
-        String fileName = "sentEmail.pdf";
-        String href = "href";
 
         when(objectMapperMock.writeValueAsString(sentEmailMock)).thenReturn(json);
         when(pdfGeneratorServiceMock.generatePdf(SENT_EMAIL, json)).thenReturn(evidenceManagementFileUpload);
         when(uploadServiceMock.store(evidenceManagementFileUpload)).thenReturn(evidenceManagementFile);
         when(evidenceManagementFile.getLink(Link.REL_SELF)).thenReturn(link);
         when(evidenceManagementFile.getLink("binary")).thenReturn(link);
-        when(evidenceManagementFile.getOriginalDocumentName()).thenReturn(fileName);
 
+        String href = "href";
         when(link.getHref()).thenReturn(href);
 
         Document response = underTest.generateAndUpload(sentEmailMock, SENT_EMAIL);
 
+        String fileName = "sentEmail.pdf";
         assertNotNull(response);
         assertEquals(fileName, response.getDocumentLink().getDocumentFilename());
         assertEquals(href, response.getDocumentLink().getDocumentBinaryUrl());

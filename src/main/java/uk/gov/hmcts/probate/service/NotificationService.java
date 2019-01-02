@@ -70,11 +70,10 @@ public class NotificationService {
         String emailAddress = caveatData.getCaveatorEmailAddress();
         Map<String, String> personalisation = getCaveatPersonalisation(caveatDetails, registry);
         String reference = caveatDetails.getId().toString();
-        String emailReplyToId = registry.getEmailReplyToId();
 
         SendEmailResponse response;
 
-        response = notificationClient.sendEmail(templateId, emailAddress, personalisation, reference, emailReplyToId);
+        response = notificationClient.sendEmail(templateId, emailAddress, personalisation, reference);
 
         return getGeneratedSentEmailDocument(response, emailAddress);
     }
