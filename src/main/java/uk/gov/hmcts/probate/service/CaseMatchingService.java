@@ -11,13 +11,12 @@ import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.CaseType;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
 import uk.gov.hmcts.probate.model.ccd.raw.casematching.MatchedCases;
-import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
-import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
+import uk.gov.hmcts.probate.model.criterion.CaseMatchingCriteria;
 import uk.gov.hmcts.probate.service.evidencemanagement.header.HttpHeadersFactory;
 
 import java.net.URI;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -38,15 +37,13 @@ public class CaseMatchingService {
     private final HttpHeadersFactory headers;
     private final FileSystemResourceService fileSystemResourceService;
 
-    private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ISO_DATE;
-
-    public List<CaseMatch> findMatches(CaseType caseType, CaseDetails caseDetails) {
-        CaseData data = caseDetails.getData();
+    public List<CaseMatch> findMatches(CaseType caseType, CaseMatchingCriteria criteria) {
 
         String jsonQuery = getQueryTemplate()
-                .replace(":deceasedForenames", data.getDeceasedForenames())
-                .replace(":deceasedSurname", data.getDeceasedSurname())
-                .replace(":deceasedDateOfDeath", data.getDeceasedDateOfDeath().format(dateTimeFormatter));
+                .replace(":deceasedForenames", criteria.getDeceasedForenames())
+                .replace(":deceasedSurname", criteria.getDeceasedSurname())
+                .replace(":deceasedDateOfBirth", criteria.getDeceasedDateOfBirth())
+                .replace(":deceasedDateOfDeath", criteria.getDeceasedDateOfDeath());
 
         URI uri = UriComponentsBuilder
                 .fromHttpUrl(ccdGatewayConfiguration.getHost() + ccdGatewayConfiguration.getCaseMatchingPath())
@@ -66,8 +63,15 @@ public class CaseMatchingService {
         appInsights.trackEvent(REQUEST_SENT, uri.toString());
 
         return matchedCases.getCases().stream()
-                .filter(c -> !caseDetails.getId().equals(c.getId()))
+                .filter(c -> !criteria.getId().equals(c.getId()))
                 .map(c -> CaseMatch.buildCaseMatch(c, caseType))
+                .collect(Collectors.toList());
+    }
+
+    public List<CaseMatch> findCrossMatches(List<CaseType> caseTypes, CaseMatchingCriteria criteria) {
+        return caseTypes.stream()
+                .map(caseType -> findMatches(caseType, criteria))
+                .flatMap(Collection::stream)
                 .collect(Collectors.toList());
     }
 

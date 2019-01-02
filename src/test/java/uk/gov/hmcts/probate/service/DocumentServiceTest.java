@@ -7,7 +7,6 @@ import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.slf4j.Logger;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
@@ -48,13 +47,13 @@ public class DocumentServiceTest {
     private Document document;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         MockitoAnnotations.initMocks(this);
 
         when(document.getDocumentType()).thenReturn(DIGITAL_GRANT_DRAFT);
         when(document.getDocumentLink()).thenReturn(DocumentLink.builder().build());
 
-        List<CollectionMember<Document>> documents = Arrays.asList(new CollectionMember(null, document));
+        List<CollectionMember<Document>> documents = Arrays.asList(new CollectionMember(document));
 
         when(caseData.getProbateDocumentsGenerated()).thenReturn(documents);
         when(caseDetails.getData()).thenReturn(caseData);
