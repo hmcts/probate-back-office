@@ -95,9 +95,9 @@ public class DocumentControllerTest {
         doNothing().when(documentService).expire(ArgumentMatchers.any(CallbackRequest.class), eq(DIGITAL_GRANT_DRAFT));
 
         verify(documentService).expire(ArgumentMatchers.any(CallbackRequest.class), eq(DIGITAL_GRANT_DRAFT));
-        verify(documentService).expire(Matchers.any(CallbackRequest.class), eq(ADMON_WILL_GRANT_DRAFT));
-        verify(documentService).expire(Matchers.any(CallbackRequest.class), eq(DIGITAL_GRANT_DRAFT));
-        verify(documentService).expire(Matchers.any(CallbackRequest.class), eq(INTESTACY_GRANT_DRAFT));
+        verify(documentService).expire(ArgumentMatchers.any(CallbackRequest.class), eq(ADMON_WILL_GRANT_DRAFT));
+        verify(documentService).expire(ArgumentMatchers.any(CallbackRequest.class), eq(DIGITAL_GRANT_DRAFT));
+        verify(documentService).expire(ArgumentMatchers.any(CallbackRequest.class), eq(INTESTACY_GRANT_DRAFT));
     }
 
     @Test
@@ -111,11 +111,11 @@ public class DocumentControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("data")));
 
-        doNothing().when(documentService).expire(Matchers.any(CallbackRequest.class), eq(INTESTACY_GRANT_DRAFT));
+        doNothing().when(documentService).expire(ArgumentMatchers.any(CallbackRequest.class), eq(INTESTACY_GRANT_DRAFT));
 
-        verify(documentService).expire(Matchers.any(CallbackRequest.class), eq(ADMON_WILL_GRANT_DRAFT));
-        verify(documentService).expire(Matchers.any(CallbackRequest.class), eq(DIGITAL_GRANT_DRAFT));
-        verify(documentService).expire(Matchers.any(CallbackRequest.class), eq(INTESTACY_GRANT_DRAFT));
+        verify(documentService).expire(ArgumentMatchers.any(CallbackRequest.class), eq(ADMON_WILL_GRANT_DRAFT));
+        verify(documentService).expire(ArgumentMatchers.any(CallbackRequest.class), eq(DIGITAL_GRANT_DRAFT));
+        verify(documentService).expire(ArgumentMatchers.any(CallbackRequest.class), eq(INTESTACY_GRANT_DRAFT));
     }
 
     @Test
@@ -129,11 +129,11 @@ public class DocumentControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("data")));
 
-        doNothing().when(documentService).expire(Matchers.any(CallbackRequest.class), eq(ADMON_WILL_GRANT_DRAFT));
+        doNothing().when(documentService).expire(ArgumentMatchers.any(CallbackRequest.class), eq(ADMON_WILL_GRANT_DRAFT));
 
-        verify(documentService).expire(Matchers.any(CallbackRequest.class), eq(ADMON_WILL_GRANT_DRAFT));
-        verify(documentService).expire(Matchers.any(CallbackRequest.class), eq(DIGITAL_GRANT_DRAFT));
-        verify(documentService).expire(Matchers.any(CallbackRequest.class), eq(INTESTACY_GRANT_DRAFT));
+        verify(documentService).expire(ArgumentMatchers.any(CallbackRequest.class), eq(ADMON_WILL_GRANT_DRAFT));
+        verify(documentService).expire(ArgumentMatchers.any(CallbackRequest.class), eq(DIGITAL_GRANT_DRAFT));
+        verify(documentService).expire(ArgumentMatchers.any(CallbackRequest.class), eq(INTESTACY_GRANT_DRAFT));
     }
 
     @Test
@@ -147,11 +147,11 @@ public class DocumentControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("data")));
 
-        doNothing().when(documentService).expire(Matchers.any(CallbackRequest.class), eq(EDGE_CASE));
+        doNothing().when(documentService).expire(ArgumentMatchers.any(CallbackRequest.class), eq(EDGE_CASE));
 
-        verify(documentService).expire(Matchers.any(CallbackRequest.class), eq(ADMON_WILL_GRANT_DRAFT));
-        verify(documentService).expire(Matchers.any(CallbackRequest.class), eq(DIGITAL_GRANT_DRAFT));
-        verify(documentService).expire(Matchers.any(CallbackRequest.class), eq(INTESTACY_GRANT_DRAFT));
+        verify(documentService).expire(ArgumentMatchers.any(CallbackRequest.class), eq(ADMON_WILL_GRANT_DRAFT));
+        verify(documentService).expire(ArgumentMatchers.any(CallbackRequest.class), eq(DIGITAL_GRANT_DRAFT));
+        verify(documentService).expire(ArgumentMatchers.any(CallbackRequest.class), eq(INTESTACY_GRANT_DRAFT));
     }
 
     @Test
@@ -165,11 +165,11 @@ public class DocumentControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("data")));
 
-        doNothing().when(documentService).expire(Matchers.any(CallbackRequest.class), eq(EDGE_CASE));
+        doNothing().when(documentService).expire(ArgumentMatchers.any(CallbackRequest.class), eq(EDGE_CASE));
 
-        verify(documentService).expire(Matchers.any(CallbackRequest.class), eq(ADMON_WILL_GRANT_DRAFT));
-        verify(documentService).expire(Matchers.any(CallbackRequest.class), eq(DIGITAL_GRANT_DRAFT));
-        verify(documentService).expire(Matchers.any(CallbackRequest.class), eq(INTESTACY_GRANT_DRAFT));
+        verify(documentService).expire(ArgumentMatchers.any(CallbackRequest.class), eq(ADMON_WILL_GRANT_DRAFT));
+        verify(documentService).expire(ArgumentMatchers.any(CallbackRequest.class), eq(DIGITAL_GRANT_DRAFT));
+        verify(documentService).expire(ArgumentMatchers.any(CallbackRequest.class), eq(INTESTACY_GRANT_DRAFT));
     }
 
 }
