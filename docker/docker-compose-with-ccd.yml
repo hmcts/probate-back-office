@@ -1,6 +1,57 @@
 version: '2.1'
 
 services:
+  send-letter-service:
+    build:
+      context: .
+      args:
+      - http_proxy
+      - https_proxy
+      - no_proxy
+    image: docker.artifactory.reform.hmcts.net/reform/send-letter-service
+    container_name: send-letter-service
+    environment:
+    - JAVA_OPTS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=8003
+    - APPINSIGHTS_INSTRUMENTATIONKEY
+    - FTP_FINGERPRINT="fingerprint"
+    - FTP_HOSTNAME="hostname"
+    - FTP_PORT=22
+    - FTP_PRIVATE_KEY="private"
+    - FTP_PUBLIC_KEY="public"
+    - FTP_REPORTS_FOLDER="/reports/"
+    - FTP_TARGET_FOLDER="/target/"
+    - FTP_USER="user"
+    - LETTER_TRACKING_DB_PASSWORD="password"
+    - S2S_URL="false"
+    - SCHEDULING_ENABLED
+    - SPRING_FLYWAY_ENABLED=false
+    - ENCRYPTION_ENABLED
+    - ENCRYPTION_PUBLIC_KEY
+    - LETTER_TRACKING_DB_HOST="send-letter-database"
+    # these environment variables are used by java-logging library
+    - ROOT_APPENDER
+    - JSON_CONSOLE_PRETTY_PRINT
+    - ROOT_LOGGING_LEVEL
+    - REFORM_SERVICE_NAME
+    - REFORM_TEAM
+    - REFORM_ENVIRONMENT
+    ports:
+    - 8003:8003
+    - 8485:8485
+
+  send-letter-database:
+    image: docker.artifactory.reform.hmcts.net/reform/send-letter-database
+    container_name: send-letter-database
+    environment:
+    - LETTER_TRACKING_DB_PASSWORD=password
+    ports:
+    - 5432:5432
+    healthcheck:
+      test: psql -c 'select 1' -d letter_tracking -U letterservice
+      retries: 2
+    volumes:
+    - ./bulk-print/init-db.sh:/docker-entrypoint-initdb.d/init-db.sh
+
   service-auth-provider-api:
     image: hmcts/service-auth-provider-app
     container_name: service-auth-provider-api
@@ -8,7 +59,7 @@ services:
       - SERVER_PORT=8080
       - JAVA_OPTS=-Xms8m -Xmx256m -Djava.security.egd=file:/dev/./urandom -XX:MaxMetaspaceSize=128m
       - JWT_KEY=wThK0f0/lh3FlxFcL4xUWDMI5C1J9KyQBgXV4wseh1e5J1uYJIjvTvArHxQDrYoHJ23xFxjHkOnvNbR5dXRoxA==
-      - MICROSERVICE_KEYS_EM_GW=AAAAAAAAAAAAAAAA
+      - MICROSERVICEKEYS_EM_GW=AAAAAAAAAAAAAAAA
       - MICROSERVICE_KEYS_CCD_DATA=AAAAAAAAAAAAAAAA
       - MICROSERVICE_KEYS_CCD_DEFINITION=AAAAAAAAAAAAAAAA
       - MICROSERVICE_KEYS_CCD_GW=AAAAAAAAAAAAAAAA

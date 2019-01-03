@@ -8,9 +8,8 @@ if [ -z "$LETTER_TRACKING_DB_PASSWORD" ]; then
   exit 1
 fi
 
-psql -v ON_ERROR_STOP=1 --username postgres --set USERNAME=letterservice --set PASSWORD=${LETTER_TRACKING_DB_PASSWORD} <<-EOSQL
+psql -v ON_ERROR_STOP=1 --username postgres --set USERNAME=letterservice --set PASSWORD=password <<-EOSQL
   CREATE USER :USERNAME WITH PASSWORD ':PASSWORD';
-  CREATE ROLE :USERNAME WITH PASSWORD ':PASSWORD';
 
   CREATE DATABASE letter_tracking
     WITH OWNER = :USERNAME

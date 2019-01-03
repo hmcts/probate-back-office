@@ -218,6 +218,7 @@ public class ResponseCaseData {
     private final String wholeBloodCousinsSurvived;
     private final String wholeBloodCousinsSurvivedOverEighteen;
     private final String wholeBloodCousinsSurvivedUnderEighteen;
-
+    private final String grantSentToPrint;
+    private final String letterId;
 
 }
