@@ -26,7 +26,7 @@
     "case_data": {
       "otherExecutorExists": "No",
       "outsideUKGrantCopies": null,
-      "applicationType": "Personal",
+      "applicationType": "Solicitor",
       "deceasedAddress": {
         "County": "",
         "Country": "",
@@ -36,7 +36,7 @@
         "AddressLine2": "",
         "AddressLine3": ""
       },
-      "caseType": "gop",
+      "caseType": "edgeCase",
       "deceasedAnyOtherNames": "No",
       "solsFeeAccountNumber": "1234",
       "willHasCodicils": "No",
@@ -46,7 +46,7 @@
       "solsSolicitorFirmName": "Solicitor Firm Name",
       "deceasedDateOfDeath": "2000-01-01",
       "solsSOTNeedToUpdate": "No",
-      "primaryApplicantEmailAddress": "probBackosol@gmail.com",
+      "primaryApplicantEmailAddress": "personal@hmcts-test.com",
       "primaryApplicantForenames": "Executor name 1",
       "primaryApplicantAddress": {
         "County": "",
@@ -57,10 +57,26 @@
         "AddressLine2": "",
         "AddressLine3": ""
       },
-      "solsSolicitorEmail": "solicitor@hmcts-test.net",
+      "probateDocumentsGenerated": [
+        {
+          "id": "161186cd-24ee-4e37-8793-b388ebc94443",
+          "value": {
+            "DocumentLink": {
+              "document_url": "http://localhost:8080/documents/b533ddf6-3695-45a8-8546-aab63ff16093",
+              "document_filename": "digitalGrantDraft.pdf",
+              "document_binary_url": "http://localhost:8080/documents/b533ddf6-3695-45a8-8546-aab63ff16093/binary"
+            },
+            "DocumentType": "digitalGrantDraft",
+            "DocumentFileName": null,
+            "DocumentDateAdded": "2018-08-03",
+            "DocumentGeneratedBy": "30"
+          }
+        }
+      ],
+      "solsSolicitorEmail": "solicitor@hmcts-test.com",
       "deceasedDomicileInEngWales": "Yes",
       "ihtNetValue": "800000",
-      "boStopDetails": "PA stop details",
+      "boStopDetails": "stop details",
       "deceasedSurname": "Deceased Last Name",
       "solsLegalStatementDocument": {
         "document_url": "http://localhost:8080/documents/e1f4f972-1514-4247-bdb1-964998ef3710",
@@ -80,14 +96,6 @@
       "registryLocation": "Birmingham",
       "primaryApplicantSurname": "Executor Last Name 1",
       "solsSolicitorAppReference": "1231-3984-3949-0300",
-      "deceasedAliasNameList": [
-        {
-          "value": {
-            "Forenames": "Giacomo",
-            "LastName": "Terrel"
-          }
-        }
-      ],
       "solsSOTJobTitle": "job title"
     },
     "data_classification": {
@@ -266,7 +274,7 @@
       "solsSolicitorEmail": "solicitor@hmcts-test.net",
       "deceasedDomicileInEngWales": "Yes",
       "ihtNetValue": "800000",
-      "boStopDetails": "PA stop details",
+      "boStopDetails": "stop details",
       "deceasedSurname": "Deceased Last Name",
       "solsLegalStatementDocument": {
         "document_url": "http://localhost:8080/documents/e1f4f972-1514-4247-bdb1-964998ef3710",
@@ -280,7 +288,7 @@
       "solsPaymentReferenceNumber": "Cheque (payable to ‘HM Courts & Tribunals Service’)",
       "ihtGrossValue": "1000000",
       "ihtFormId": "IHT205",
-      "registryLocation": "Oxford",
+      "registryLocation": "Birmingham",
       "primaryApplicantSurname": "Executor Last Name 1",
       "solsSolicitorAppReference": "1231-3984-3949-0300"
     },
