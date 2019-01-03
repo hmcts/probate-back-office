@@ -26,52 +26,6 @@
     "case_data": {
       "otherExecutorExists": "No",
       "outsideUKGrantCopies": null,
-      "executorsApplying": [
-        {
-          "id": "8e75cd11-b673-4523-9a1c-764ea75f5b04",
-          "value": {
-            "applyingExecutorName": "Add ex first name 1 Add ex last name 1",
-            "applyingExecutorPhoneNumber": null,
-            "applyingExecutorEmail": null,
-            "aliasName": {
-              "Forenames": null,
-              "LastName": null,
-              "AppearOnGrant": ""
-            },
-            "applyingExecutorAddress": {
-              "AddressLine1": "11",
-              "AddressLine2": "",
-              "AddressLine3": "",
-              "County": "",
-              "PostTown": "",
-              "PostCode": "11",
-              "Country": ""
-            }
-          }
-        },
-        {
-          "id": "634a93e9-cedb-4b6b-8577-5d702abe0b3c",
-          "value": {
-            "applyingExecutorName": "Add ex first name 2 Add ex last name 2",
-            "applyingExecutorPhoneNumber": null,
-            "applyingExecutorEmail": null,
-            "aliasName": {
-              "Forenames": null,
-              "LastName": null,
-              "AppearOnGrant": ""
-            },
-            "applyingExecutorAddress": {
-              "AddressLine1": "22",
-              "AddressLine2": "",
-              "AddressLine3": "",
-              "County": "",
-              "PostTown": "",
-              "PostCode": "22",
-              "Country": ""
-            }
-          }
-        }
-      ],
       "applicationType": "Solicitor",
       "deceasedAddress": {
         "County": "",
@@ -82,7 +36,7 @@
         "AddressLine2": "",
         "AddressLine3": ""
       },
-      "caseType": "gop",
+      "caseType": "admonWill",
       "deceasedAnyOtherNames": "No",
       "solsFeeAccountNumber": "1234",
       "willHasCodicils": "No",
@@ -106,6 +60,7 @@
       "solsSolicitorEmail": "probBackosol@gmail.com",
       "deceasedDomicileInEngWales": "Yes",
       "ihtNetValue": "800000",
+      "boStopDetails": "SOLS stop details",
       "deceasedSurname": "Deceased Last Name",
       "solsLegalStatementDocument": {
         "document_url": "http://localhost:8080/documents/e1f4f972-1514-4247-bdb1-964998ef3710",
@@ -114,15 +69,7 @@
       },
       "extraCopiesOfGrant": null,
       "solsPaymentMethods": "fee account",
-      "solsSolicitorAddress": {
-        "AddressLine1": "SolAddLn1",
-        "AddressLine2": "SolAddLn2",
-        "AddressLine3": "SolAddLn3",
-        "PostTown": "SolAddPT",
-        "County": "SolAddCounty",
-        "PostCode": "KT10 0LA",
-        "Country": "SolAddCo"
-      },
+      "solsSolicitorFirmPostcode": "KT10 0LA",
       "deceasedForenames": "Deceased First Name",
       "primaryApplicantIsApplying": "Yes",
       "primaryApplicantHasAlias": "No",
@@ -133,7 +80,10 @@
       "registryLocation": "Birmingham",
       "primaryApplicantSurname": "Executor Last Name 1",
       "solsSolicitorAppReference": "1231-3984-3949-0300",
-      "solsSOTJobTitle": "job title"
+      "solsSOTJobTitle": "job title",
+      "boExaminationChecklistQ1": "yes",
+      "boExaminationChecklistQ2": "yes",
+      "boExaminationChecklistRequestQA" : "yes"
     },
     "data_classification": {
       "otherExecutorExists": "PUBLIC",
@@ -180,15 +130,7 @@
       "solsLegalStatementDocument": "PUBLIC",
       "extraCopiesOfGrant": "PUBLIC",
       "solsPaymentMethods": "PUBLIC",
-      "solsSolicitorAddress": {
-        "AddressLine1": "PUBLIC",
-        "AddressLine2": "PUBLIC",
-        "AddressLine3": "PUBLIC",
-        "PostTown": "PUBLIC",
-        "County": "PUBLIC",
-        "PostCode": "PUBLIC",
-        "Country": "PUBLIC"
-      },
+      "solsSolicitorFirmPostcode": "PUBLIC",
       "deceasedForenames": "PUBLIC",
       "primaryApplicantIsApplying": "PUBLIC",
       "primaryApplicantHasAlias": "PUBLIC",
@@ -249,15 +191,7 @@
       "solsLegalStatementDocument": "PUBLIC",
       "extraCopiesOfGrant": "PUBLIC",
       "solsPaymentMethods": "PUBLIC",
-      "solsSolicitorAddress": {
-        "AddressLine1": "PUBLIC",
-        "AddressLine2": "PUBLIC",
-        "AddressLine3": "PUBLIC",
-        "PostTown": "PUBLIC",
-        "County": "PUBLIC",
-        "PostCode": "PUBLIC",
-        "Country": "PUBLIC"
-      },
+      "solsSolicitorFirmPostcode": "PUBLIC",
       "deceasedForenames": "PUBLIC",
       "primaryApplicantIsApplying": "PUBLIC",
       "primaryApplicantHasAlias": "PUBLIC",
@@ -327,21 +261,14 @@
       "solsSolicitorEmail": "probBackosol@gmail.com",
       "deceasedDomicileInEngWales": "Yes",
       "ihtNetValue": "800000",
+      "boStopDetails": "SOLS stop details",
       "deceasedSurname": "Deceased Last Name",
       "solsLegalStatementDocument": {
         "document_url": "http://localhost:8080/documents/e1f4f972-1514-4247-bdb1-964998ef3710",
         "document_filename": "legal_statement.pdf",
         "document_binary_url": "http://localhost:8080/documents/e1f4f972-1514-4247-bdb1-964998ef3710/binary"
       },
-      "solsSolicitorAddress": {
-        "AddressLine1": "SolAddLn1",
-        "AddressLine2": "SolAddLn2",
-        "AddressLine3": "SolAddLn3",
-        "PostTown": "SolAddPT",
-        "County": "SolAddCounty",
-        "PostCode": "KT10 0LA",
-        "Country": "SolAddCo"
-      },
+      "solsSolicitorFirmPostcode": "KT10 0LA",
       "deceasedForenames": "Deceased First Name",
       "primaryApplicantIsApplying": "Yes",
       "primaryApplicantHasAlias": "No",
@@ -392,15 +319,7 @@
       "ihtNetValue": "PUBLIC",
       "deceasedSurname": "PUBLIC",
       "solsLegalStatementDocument": "PUBLIC",
-      "solsSolicitorAddress": {
-        "AddressLine1": "PUBLIC",
-        "AddressLine2": "PUBLIC",
-        "AddressLine3": "PUBLIC",
-        "PostTown": "PUBLIC",
-        "County": "PUBLIC",
-        "PostCode": "PUBLIC",
-        "Country": "PUBLIC"
-      },
+      "solsSolicitorFirmPostcode": "PUBLIC",
       "deceasedForenames": "PUBLIC",
       "primaryApplicantIsApplying": "PUBLIC",
       "primaryApplicantHasAlias": "PUBLIC",
@@ -454,15 +373,7 @@
       "ihtNetValue": "PUBLIC",
       "deceasedSurname": "PUBLIC",
       "solsLegalStatementDocument": "PUBLIC",
-      "solsSolicitorAddress": {
-        "AddressLine1": "PUBLIC",
-        "AddressLine2": "PUBLIC",
-        "AddressLine3": "PUBLIC",
-        "PostTown": "PUBLIC",
-        "County": "PUBLIC",
-        "PostCode": "PUBLIC",
-        "Country": "PUBLIC"
-      },
+      "solsSolicitorFirmPostcode": "PUBLIC",
       "deceasedForenames": "PUBLIC",
       "primaryApplicantIsApplying": "PUBLIC",
       "primaryApplicantHasAlias": "PUBLIC",

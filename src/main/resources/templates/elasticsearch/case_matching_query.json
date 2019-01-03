@@ -37,13 +37,22 @@
             },
             {
               "range": {
+                "data.deceasedDateOfBirth": {
+                  "gte": ":deceasedDateOfBirth||-3d",
+                  "lte": ":deceasedDateOfBirth||+3d"
+                }
+              }
+            },
+            {
+              "range": {
                 "data.deceasedDateOfDeath": {
                   "gte": ":deceasedDateOfDeath||-3d",
                   "lte": ":deceasedDateOfDeath||+3d"
                 }
               }
             }
-          ]
+          ],
+          "minimum_should_match": 1
         }
       }
     }

@@ -124,6 +124,7 @@
           }
         }
       ],
+      "caseType":"gop",
       "applicationType": "Solicitor",
       "deceasedAddress": {
         "County": "",

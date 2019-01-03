@@ -3,15 +3,20 @@ package uk.gov.hmcts.probate.transformer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.model.ApplicationType;
+import uk.gov.hmcts.probate.model.ccd.CaseMatch;
+import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.standingsearch.request.StandingSearchCallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.standingsearch.request.StandingSearchData;
 import uk.gov.hmcts.probate.model.ccd.standingsearch.request.StandingSearchDetails;
 import uk.gov.hmcts.probate.model.ccd.standingsearch.response.ResponseStandingSearchData;
-import uk.gov.hmcts.probate.model.ccd.standingsearch.response.StandingSearchCallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.standingsearch.response.ResponseStandingSearchData.ResponseStandingSearchDataBuilder;
+import uk.gov.hmcts.probate.model.ccd.standingsearch.response.StandingSearchCallbackResponse;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static java.util.Optional.ofNullable;
 import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
@@ -27,9 +32,9 @@ public class StandingSearchCallbackResponseTransformer {
     private static final String DEFAULT_REGISTRY_LOCATION = "Leeds";
 
     public StandingSearchCallbackResponse standingSearchCreated(StandingSearchCallbackRequest standingSearchCallbackRequest) {
-        StandingSearchDetails standingSearchDetails = standingSearchCallbackRequest.getStandingSearchDetails();
+        StandingSearchDetails standingSearchDetails = standingSearchCallbackRequest.getCaseDetails();
 
-        ResponseStandingSearchData responseStandingSearchData = getResponseStandingSearchtData(standingSearchDetails)
+        ResponseStandingSearchData responseStandingSearchData = getResponseStandingSearchData(standingSearchDetails)
                 .expiryDate(dateTimeFormatter.format(LocalDate.now().plusMonths(STANDING_SEARCH_LIFESPAN)))
                 .build();
 
@@ -37,18 +42,34 @@ public class StandingSearchCallbackResponseTransformer {
     }
 
     public StandingSearchCallbackResponse transform(StandingSearchCallbackRequest callbackRequest) {
-        ResponseStandingSearchData responseStandingSearchData = getResponseStandingSearchtData(callbackRequest.getStandingSearchDetails())
+        ResponseStandingSearchData responseStandingSearchData = getResponseStandingSearchData(callbackRequest.getCaseDetails())
                 .build();
 
         return transformResponse(responseStandingSearchData);
+    }
+
+    public StandingSearchCallbackResponse addMatches(StandingSearchCallbackRequest request, List<CaseMatch> newMatches) {
+        List<CollectionMember<CaseMatch>> storedMatches = request.getCaseDetails().getData().getCaseMatches();
+
+        // Removing case matches that have been already added
+        storedMatches.stream()
+                .map(CollectionMember::getValue).forEach(newMatches::remove);
+
+        storedMatches.addAll(newMatches.stream().map(CollectionMember::new).collect(Collectors.toList()));
+
+        storedMatches.sort(Comparator.comparingInt(m -> ofNullable(m.getValue().getValid()).orElse("").length()));
+
+        ResponseStandingSearchDataBuilder responseCaseDataBuilder = getResponseStandingSearchData(request.getCaseDetails());
+
+        return transformResponse(responseCaseDataBuilder.build());
     }
 
     private StandingSearchCallbackResponse transformResponse(ResponseStandingSearchData responseStandingSearchData) {
         return StandingSearchCallbackResponse.builder().responseStandingSearchData(responseStandingSearchData).build();
     }
 
-    private ResponseStandingSearchDataBuilder getResponseStandingSearchtData(StandingSearchDetails standingSearchDetails) {
-        StandingSearchData standingSearchData = standingSearchDetails.getStandingSearchData();
+    private ResponseStandingSearchDataBuilder getResponseStandingSearchData(StandingSearchDetails standingSearchDetails) {
+        StandingSearchData standingSearchData = standingSearchDetails.getData();
 
         return ResponseStandingSearchData.builder()
 
@@ -69,6 +90,8 @@ public class StandingSearchCallbackResponseTransformer {
                 .applicantAddress(standingSearchData.getApplicantAddress())
 
                 .numberOfCopies(transformToString(standingSearchData.getNumberOfCopies()))
+
+                .caseMatches(standingSearchData.getCaseMatches())
 
                 .expiryDate(transformToString(standingSearchData.getExpiryDate()))
 

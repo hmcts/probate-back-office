@@ -37,7 +37,7 @@ public class CaveatController {
     @PostMapping(path = "/general-message")
     public ResponseEntity<CaveatCallbackResponse> sendGeneralMessageNotification(@RequestBody CaveatCallbackRequest caveatCallbackRequest)
             throws NotificationClientException {
-        CaveatDetails caveatDetails = caveatCallbackRequest.getCaveatDetails();
+        CaveatDetails caveatDetails = caveatCallbackRequest.getCaseDetails();
 
         Document document = notificationService.sendCaveatEmail(GENERAL_CAVEAT_MESSAGE, caveatDetails);
 

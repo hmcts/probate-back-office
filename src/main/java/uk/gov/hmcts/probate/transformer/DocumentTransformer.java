@@ -22,16 +22,19 @@ public class DocumentTransformer {
     public void addDocument(CallbackRequest callbackRequest, Document document) {
         switch (document.getDocumentType()) {
             case DIGITAL_GRANT_DRAFT:
-                callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated()
-                        .add(new CollectionMember<>(null, document));
-                break;
             case DIGITAL_GRANT:
+            case INTESTACY_GRANT_DRAFT:
+            case INTESTACY_GRANT:
+            case ADMON_WILL_GRANT_DRAFT:
+            case ADMON_WILL_GRANT:
                 callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated()
                         .add(new CollectionMember<>(null, document));
                 break;
             case SENT_EMAIL:
                 callbackRequest.getCaseDetails().getData().getProbateNotificationsGenerated()
                         .add(new CollectionMember<>(null, document));
+                break;
+            case EDGE_CASE:
                 break;
             default:
         }

@@ -31,6 +31,6 @@ public class StandingSearchJsonTest {
     @Test
     public void canDeserialiseLastModified() throws IOException {
         StandingSearchCallbackRequest standingSearchDetails = jacksonTester.parseObject(jsonContent);
-        Assert.assertEquals("2018", standingSearchDetails.getStandingSearchDetails().getLastModified()[0]);
+        Assert.assertEquals("2018", standingSearchDetails.getCaseDetails().getLastModified()[0]);
     }
 }

@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
@@ -24,8 +25,12 @@ import java.util.List;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_DRAFT;
+import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_DRAFT;
 import static uk.gov.hmcts.probate.model.State.GRANT_ISSUED;
 
 @RequiredArgsConstructor
@@ -37,13 +42,41 @@ public class DocumentController {
     private final CallbackResponseTransformer callbackResponseTransformer;
     private final DocumentService documentService;
     private final NotificationService notificationService;
+    private static final String GRANT_OF_PROBATE = "gop";
+    private static final String ADMON_WILL = "admonWill";
+    private static final String INTESTACY = "intestacy";
+    private static final String EDGE_CASE = "edgeCase";
 
     @PostMapping(path = "/generate-grant-draft", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<CallbackResponse> generateGrantDraft(@RequestBody CallbackRequest callbackRequest) {
+        CaseData caseData = callbackRequest.getCaseDetails().getData();
+        Document document;
+        DocumentType template;
 
-        Document document = pdfManagementService.generateAndUpload(callbackRequest, DIGITAL_GRANT_DRAFT);
+        switch (caseData.getCaseType()) {
+            case INTESTACY:
+                template = INTESTACY_GRANT_DRAFT;
+                document = pdfManagementService.generateAndUpload(callbackRequest, template);
+                break;
+            case ADMON_WILL:
+                template = ADMON_WILL_GRANT_DRAFT;
+                document = pdfManagementService.generateAndUpload(callbackRequest, template);
+                break;
+            case EDGE_CASE:
+                document = Document.builder().documentType(DocumentType.EDGE_CASE).build();
+                break;
+            case GRANT_OF_PROBATE:
+            default:
+                template = DIGITAL_GRANT_DRAFT;
+                document = pdfManagementService.generateAndUpload(callbackRequest, template);
+                break;
 
-        documentService.expire(callbackRequest, DIGITAL_GRANT_DRAFT);
+        }
+
+        DocumentType[] documentTypes = {DIGITAL_GRANT_DRAFT, INTESTACY_GRANT_DRAFT, ADMON_WILL_GRANT_DRAFT};
+        for (DocumentType documentType : documentTypes) {
+            documentService.expire(callbackRequest, documentType);
+        }
 
         return ResponseEntity.ok(callbackResponseTransformer.addDocuments(callbackRequest,
                 Arrays.asList(document)));
@@ -52,16 +85,37 @@ public class DocumentController {
     @PostMapping(path = "/generate-grant", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<CallbackResponse> generateGrant(@RequestBody CallbackRequest callbackRequest)
             throws NotificationClientException {
-
-        List<Document> documents = new ArrayList<>();
-
-        Document digitalGrantDocument = pdfManagementService.generateAndUpload(callbackRequest, DIGITAL_GRANT);
-        documents.add(digitalGrantDocument);
-
-        documentService.expire(callbackRequest, DIGITAL_GRANT_DRAFT);
-
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
         CaseData caseData = callbackRequest.getCaseDetails().getData();
+        List<Document> documents = new ArrayList<>();
+        DocumentType template;
+        Document digitalGrantDocument;
+
+        switch (caseData.getCaseType()) {
+            case EDGE_CASE:
+                digitalGrantDocument = Document.builder().documentType(DocumentType.EDGE_CASE).build();
+                break;
+            case INTESTACY:
+                template = INTESTACY_GRANT;
+                digitalGrantDocument = pdfManagementService.generateAndUpload(callbackRequest, template);
+                break;
+            case ADMON_WILL:
+                template = ADMON_WILL_GRANT;
+                digitalGrantDocument = pdfManagementService.generateAndUpload(callbackRequest, template);
+                break;
+            case GRANT_OF_PROBATE:
+            default:
+                template = DIGITAL_GRANT;
+                digitalGrantDocument = pdfManagementService.generateAndUpload(callbackRequest, template);
+                break;
+
+        }
+        documents.add(digitalGrantDocument);
+
+        DocumentType[] documentTypes = {DIGITAL_GRANT_DRAFT, INTESTACY_GRANT_DRAFT, ADMON_WILL_GRANT_DRAFT};
+        for (DocumentType documentType : documentTypes) {
+            documentService.expire(callbackRequest, documentType);
+        }
 
         if (caseData.isGrantIssuedEmailNotificationRequested()) {
             Document grantIssuedSentEmail = notificationService.sendEmail(GRANT_ISSUED, caseDetails);
@@ -70,4 +124,5 @@ public class DocumentController {
 
         return ResponseEntity.ok(callbackResponseTransformer.addDocuments(callbackRequest, documents));
     }
+
 }
