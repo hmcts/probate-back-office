@@ -1,5 +1,6 @@
 version: '2.1'
-
+networks:
+  default: {}
 services:
   send-letter-service:
     build:
@@ -12,7 +13,8 @@ services:
     container_name: send-letter-service
     environment:
     - JAVA_OPTS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=8003
-    - APPINSIGHTS_INSTRUMENTATIONKEY
+    - APPINSIGHTS_INSTRUMENTATIONKEY=DUMMY
+    - SERVER_PORT=8485
     - FTP_FINGERPRINT="fingerprint"
     - FTP_HOSTNAME="hostname"
     - FTP_PORT=22
@@ -21,13 +23,13 @@ services:
     - FTP_REPORTS_FOLDER="/reports/"
     - FTP_TARGET_FOLDER="/target/"
     - FTP_USER="user"
-    - LETTER_TRACKING_DB_PASSWORD="password"
+    - LETTER_TRACKING_DB_PASSWORD=password
     - S2S_URL="false"
     - SCHEDULING_ENABLED
     - SPRING_FLYWAY_ENABLED=false
     - ENCRYPTION_ENABLED
     - ENCRYPTION_PUBLIC_KEY
-    - LETTER_TRACKING_DB_HOST="send-letter-database"
+    - LETTER_TRACKING_DB_HOST=localhost
     # these environment variables are used by java-logging library
     - ROOT_APPENDER
     - JSON_CONSOLE_PRETTY_PRINT
@@ -38,6 +40,10 @@ services:
     ports:
     - 8003:8003
     - 8485:8485
+    links:
+    - send-letter-database
+    depends_on:
+    - send-letter-database
 
   send-letter-database:
     image: docker.artifactory.reform.hmcts.net/reform/send-letter-database
@@ -60,12 +66,12 @@ services:
       - JAVA_OPTS=-Xms8m -Xmx256m -Djava.security.egd=file:/dev/./urandom -XX:MaxMetaspaceSize=128m
       - JWT_KEY=wThK0f0/lh3FlxFcL4xUWDMI5C1J9KyQBgXV4wseh1e5J1uYJIjvTvArHxQDrYoHJ23xFxjHkOnvNbR5dXRoxA==
       - MICROSERVICEKEYS_EM_GW=AAAAAAAAAAAAAAAA
-      - MICROSERVICE_KEYS_CCD_DATA=AAAAAAAAAAAAAAAA
-      - MICROSERVICE_KEYS_CCD_DEFINITION=AAAAAAAAAAAAAAAA
-      - MICROSERVICE_KEYS_CCD_GW=AAAAAAAAAAAAAAAA
-      - MICROSERVICE_KEYS_CCD_PS=AAAAAAAAAAAAAAAA
+      - MICROSERVICEKEYS_CCD_DATA=AAAAAAAAAAAAAAAA
+      - MICROSERVICEKEYS_CCD_DEFINITION=AAAAAAAAAAAAAAAA
+      - MICROSERVICEKEYS_CCD_GW=AAAAAAAAAAAAAAAA
+      - MICROSERVICEKEYS_CCD_PS=AAAAAAAAAAAAAAAA
       - TESTING_SUPPORT_ENABLED=true
-      - MICROSERVICE_KEYS_PROBATE_BACKEND=AAAAAAAAAAAAAAAA
+      - MICROSERVICEKEYS_PROBATE_BACKEND=AAAAAAAAAAAAAAAA
     ports:
       - 4502:8080
 

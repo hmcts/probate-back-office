@@ -211,8 +211,6 @@ public class CaseData {
 
     private final String ihtFormCompletedOnline;
 
-    private final String edgeCase;
-
     private final String localPrint;
 
 
@@ -428,10 +426,6 @@ public class CaseData {
 
     public boolean isDocsReceivedEmailNotificationRequested() {
         return YES.equals(getBoEmailDocsReceivedNotification());
-    }
-
-    public boolean isGrantEdgeCase() {
-        return YES.equals(edgeCase);
     }
 
     public boolean isGrantForLocalPrinting() {
