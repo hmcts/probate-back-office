@@ -1,36 +1,35 @@
 package uk.gov.hmcts.probate.service.template.pdf;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.core.io.ByteArrayResource;
-import org.springframework.core.io.FileSystemResource;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.RestClientException;
-import org.springframework.web.client.RestTemplate;
+import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.http.MediaType;
+import org.springframework.util.ReflectionUtils;
 import uk.gov.hmcts.probate.config.PDFServiceConfiguration;
 import uk.gov.hmcts.probate.exception.ClientException;
-import uk.gov.hmcts.probate.exception.ConnectionException;
 import uk.gov.hmcts.probate.insights.AppInsights;
+import uk.gov.hmcts.probate.model.evidencemanagement.EvidenceManagementFileUpload;
 import uk.gov.hmcts.probate.service.FileSystemResourceService;
+import uk.gov.hmcts.reform.pdf.service.client.PDFServiceClient;
+import uk.gov.hmcts.reform.pdf.service.client.exception.PDFServiceClientException;
 
-import java.net.URI;
-import java.util.Optional;
+import java.lang.reflect.Field;
 
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.verify;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.Matchers.greaterThan;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyMap;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
-import static org.mockito.MockitoAnnotations.initMocks;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT;
 
+@RunWith(MockitoJUnitRunner.class)
 public class PDFGeneratorServiceTest {
-
-    @Mock
-    private RestTemplate restTemplateMock;
 
     @Mock
     private FileSystemResourceService fileSystemResourceServiceMock;
@@ -39,79 +38,45 @@ public class PDFGeneratorServiceTest {
     private PDFServiceConfiguration pdfServiceConfiguration;
 
     @Mock
-    private ByteArrayResource byteArrayResourceMock;
-
-    @Mock
-    private ClientException clientException;
-
-    @Mock
-    private ConnectionException pdfConnectionExceptionMock;
-
-    @Mock
-    private HttpClientErrorException httpClientErrorException;
-
-    @Mock
-    private FileSystemResource fileSystemResourceMock;
-
-    @Mock
-    private RestClientException restClientException;
+    private PDFServiceClientException pdfServiceClientExceptionMock;
 
     @Mock
     private AppInsights appInsights;
+
+    @Mock
+    private PDFServiceClient pdfServiceClient;
 
     @InjectMocks
     private PDFGeneratorService underTest;
 
     @Before
-    public void setup() {
-        initMocks(this);
-        when(fileSystemResourceServiceMock.getFileSystemResource(any(String.class))).thenReturn(Optional.of(fileSystemResourceMock));
+    public void setup() throws IllegalAccessException {
+        Field objectMapper = ReflectionUtils.findField(PDFGeneratorService.class, "objectMapper");
+        objectMapper.setAccessible(true);
+        objectMapper.set(underTest, new ObjectMapper());
+
+        when(pdfServiceClientExceptionMock.getMessage()).thenReturn("blah");
+        when(pdfServiceClient.generateFromHtml(any(), any())).thenReturn("MockedBytes".getBytes());
+        when(fileSystemResourceServiceMock.getFileFromResourceAsString(anyString()))
+                .thenReturn("<htmlTemplate>");
     }
 
     @Test
-    public void shouldGeneratePDFWithResponseStatusOK() {
-        when(restTemplateMock.postForObject(any(URI.class), any(HttpEntity.class), eq(ByteArrayResource.class)))
-                .thenReturn(byteArrayResourceMock);
-
-        underTest.generatePdf(LEGAL_STATEMENT, "{\"data\":\"value\"}");
-
-        verify(restTemplateMock).postForObject(any(URI.class), any(HttpEntity.class), eq(ByteArrayResource.class));
+    public void shouldGeneratePDFWithBytesAndPDFContentType() {
+        EvidenceManagementFileUpload result = underTest.generatePdf(LEGAL_STATEMENT, "{\"data\":\"value\"}");
+        Assert.assertThat(result.getContentType(), equalTo(MediaType.APPLICATION_PDF));
+        Assert.assertThat(result.getBytes().length, greaterThan(0));
     }
 
     @Test(expected = ClientException.class)
-    public void shouldThrowPDFClientException() {
-        when(restTemplateMock.postForObject(any(URI.class), any(HttpEntity.class), eq(ByteArrayResource.class)))
-                .thenThrow(clientException);
-
+    public void shouldThrowClientException() {
+        when(pdfServiceClient.generateFromHtml(any(byte[].class), anyMap())).thenThrow(pdfServiceClientExceptionMock);
         underTest.generatePdf(LEGAL_STATEMENT, "{\"data\":\"value\"}");
     }
 
-    @Test(expected = ConnectionException.class)
+    @Test(expected = ClientException.class)
     public void shouldThrowPDFConnectionException() {
-        when(restTemplateMock.postForObject(any(URI.class), any(HttpEntity.class), eq(ByteArrayResource.class)))
-                .thenThrow(pdfConnectionExceptionMock);
-
-        underTest.generatePdf(LEGAL_STATEMENT, "{\"data\":\"value\"}");
-    }
-
-    @Test(expected = ClientException.class)
-    public void shouldThrowClientExceptionException() {
-        when(httpClientErrorException.getStatusCode()).thenReturn(HttpStatus.BAD_REQUEST);
-        when(httpClientErrorException.getMessage()).thenReturn("Error");
-        when(restTemplateMock.postForObject(any(URI.class), any(HttpEntity.class), eq(ByteArrayResource.class)))
-                .thenThrow(httpClientErrorException);
-
-        underTest.generatePdf(LEGAL_STATEMENT, "{\"data\":\"value\"}");
-
-        verify(httpClientErrorException).getStatusCode();
-        verify(httpClientErrorException).getMessage();
-    }
-
-    @Test(expected = ConnectionException.class)
-    public void shouldThrowConnectionException() {
-        when(restTemplateMock.postForObject(any(URI.class), any(HttpEntity.class), eq(ByteArrayResource.class)))
-                .thenThrow(restClientException);
-
+        when(pdfServiceClient.generateFromHtml(any(), any())).thenThrow(pdfServiceClientExceptionMock);
         underTest.generatePdf(LEGAL_STATEMENT, "{\"data\":\"value\"}");
     }
 }

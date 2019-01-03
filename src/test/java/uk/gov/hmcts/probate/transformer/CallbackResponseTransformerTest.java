@@ -8,16 +8,20 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.Spy;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.DocumentType;
+import uk.gov.hmcts.probate.model.ccd.CaseMatch;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
+import uk.gov.hmcts.probate.model.ccd.raw.AdoptedRelative;
 import uk.gov.hmcts.probate.model.ccd.raw.AliasName;
+import uk.gov.hmcts.probate.model.ccd.raw.AttorneyApplyingOnBehalfOf;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
+import uk.gov.hmcts.probate.model.ccd.raw.EstateItem;
 import uk.gov.hmcts.probate.model.ccd.raw.Payment;
 import uk.gov.hmcts.probate.model.ccd.raw.ProbateAliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
@@ -27,6 +31,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
+import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 import uk.gov.hmcts.probate.model.fee.FeeServiceResponse;
 import uk.gov.hmcts.probate.service.StateChangeService;
 
@@ -35,6 +40,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -246,8 +252,6 @@ public class CallbackResponseTransformerTest {
 
     @Test
     public void shouldConvertRequestToDataBeanForWithStateChange() {
-        when(stateChangeServiceMock.getChangedStateForCaseUpdate(caseDataBuilder.build())).thenReturn(CHANGED_STATE);
-
         CallbackResponse callbackResponse = underTest.transformWithConditionalStateChange(callbackRequestMock, CHANGED_STATE);
 
         assertCommon(callbackResponse);
@@ -288,10 +292,6 @@ public class CallbackResponseTransformerTest {
 
     @Test
     public void shouldConvertRequestToDataBeanForPaymentWithLegalStatementDocNullWhenPdfServiceTemplateIsNull() {
-
-        when(documentLinkMock.getDocumentBinaryUrl()).thenReturn(DOC_BINARY_URL);
-        when(documentLinkMock.getDocumentUrl()).thenReturn(DOC_URL);
-        when(documentLinkMock.getDocumentFilename()).thenReturn(DOC_NAME);
         Document document = Document.builder()
                 .documentLink(documentLinkMock)
                 .build();
@@ -386,6 +386,18 @@ public class CallbackResponseTransformerTest {
 
         assertEquals(1, callbackResponse.getData().getProbateNotificationsGenerated().size());
         assertEquals(documentsReceivedSentEmail, callbackResponse.getData().getProbateNotificationsGenerated().get(0).getValue());
+    }
+
+    @Test
+    public void shouldAddMatches() {
+        CaseMatch caseMatch = CaseMatch.builder().build();
+
+        CallbackResponse response = underTest.addMatches(callbackRequestMock, Collections.singletonList(caseMatch));
+
+        assertCommon(response);
+
+        assertEquals(1, response.getData().getCaseMatches().size());
+        assertEquals(caseMatch, response.getData().getCaseMatches().get(0).getValue());
     }
 
     @Test
@@ -566,6 +578,70 @@ public class CallbackResponseTransformerTest {
         assertEquals(0, callbackResponse.getData().getAdditionalExecutorsNotApplying().size());
     }
 
+    @Test
+    public void shouldTransformCaseForSolicitorWithPaperFormIsNo() {
+        caseDataBuilder.applicationType(ApplicationType.SOLICITOR);
+        caseDataBuilder.solsAdditionalExecutorList(EMPTY_LIST);
+        caseDataBuilder.paperForm(NO);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+
+        assertCommonDetails(callbackResponse);
+        assertEquals(0, callbackResponse.getData().getAdditionalExecutorsApplying().size());
+        assertEquals(0, callbackResponse.getData().getAdditionalExecutorsNotApplying().size());
+    }
+
+    @Test
+    public void shouldTransformCaseForSolicitorWithPaperFormIsNull() {
+        caseDataBuilder.applicationType(ApplicationType.SOLICITOR);
+        caseDataBuilder.solsAdditionalExecutorList(EMPTY_LIST);
+        caseDataBuilder.paperForm(null);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+
+        assertCommonDetails(callbackResponse);
+        assertEquals(0, callbackResponse.getData().getAdditionalExecutorsApplying().size());
+        assertEquals(0, callbackResponse.getData().getAdditionalExecutorsNotApplying().size());
+    }
+
+    @Test
+    public void shouldTransformCaseForSolicitorWithCaseTypeIsGOP() {
+        caseDataBuilder.applicationType(ApplicationType.SOLICITOR);
+        caseDataBuilder.solsAdditionalExecutorList(EMPTY_LIST);
+        caseDataBuilder.caseType("gop");
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+
+        assertCommonDetails(callbackResponse);
+        assertEquals(0, callbackResponse.getData().getAdditionalExecutorsApplying().size());
+        assertEquals(0, callbackResponse.getData().getAdditionalExecutorsNotApplying().size());
+    }
+
+    @Test
+    public void shouldTransformCaseForSolicitorWithCaseTypeIsNull() {
+        caseDataBuilder.applicationType(ApplicationType.SOLICITOR);
+        caseDataBuilder.solsAdditionalExecutorList(EMPTY_LIST);
+        caseDataBuilder.caseType(null);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+
+        assertCommonDetails(callbackResponse);
+        assertEquals(0, callbackResponse.getData().getAdditionalExecutorsApplying().size());
+        assertEquals(0, callbackResponse.getData().getAdditionalExecutorsNotApplying().size());
+    }
+
 
     @Test
     public void shouldTransformCaseForPAWithIHTOnlineYes() {
@@ -614,7 +690,7 @@ public class CallbackResponseTransformerTest {
         assertEquals(YES, callbackResponse.getData().getPrimaryApplicantSameWillName());
         assertEquals(PRIMARY_EXEC_ALIAS_NAMES, callbackResponse.getData().getPrimaryApplicantAlias());
         assertEquals("Marriage", callbackResponse.getData().getPrimaryApplicantAliasReason());
-        assertEquals(null, callbackResponse.getData().getPrimaryApplicantOtherReason());
+        assertNull(callbackResponse.getData().getPrimaryApplicantOtherReason());
     }
 
     @Test
@@ -644,6 +720,66 @@ public class CallbackResponseTransformerTest {
 
         CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
 
+        assertNull(callbackResponse.getData().getIhtReferenceNumber());
+    }
+
+    @Test
+    public void shouldTransformCaseForWhenPaperFormIsNO() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL);
+        caseDataBuilder.ihtFormCompletedOnline(NO);
+        caseDataBuilder.ihtReferenceNumber(IHT_REFERENCE);
+        caseDataBuilder.paperForm(NO);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+
+        assertEquals(null, callbackResponse.getData().getIhtReferenceNumber());
+    }
+
+    @Test
+    public void shouldTransformCaseForWhenPaperFormIsNull() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL);
+        caseDataBuilder.ihtFormCompletedOnline(NO);
+        caseDataBuilder.ihtReferenceNumber(IHT_REFERENCE);
+        caseDataBuilder.paperForm(null);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+
+        assertEquals(null, callbackResponse.getData().getIhtReferenceNumber());
+    }
+
+    @Test
+    public void shouldTransformCaseForWhenCaseTypeIsGOP() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL);
+        caseDataBuilder.ihtFormCompletedOnline(NO);
+        caseDataBuilder.ihtReferenceNumber(IHT_REFERENCE);
+        caseDataBuilder.caseType("gop");
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+
+        assertEquals(null, callbackResponse.getData().getIhtReferenceNumber());
+    }
+
+    @Test
+    public void shouldTransformCaseForWhenCaseTypeIsNull() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL);
+        caseDataBuilder.ihtFormCompletedOnline(NO);
+        caseDataBuilder.ihtReferenceNumber(IHT_REFERENCE);
+        caseDataBuilder.caseType(null);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+
         assertEquals(null, callbackResponse.getData().getIhtReferenceNumber());
     }
 
@@ -663,6 +799,123 @@ public class CallbackResponseTransformerTest {
         assertApplicationType(callbackResponse, ApplicationType.SOLICITOR);
         assertEquals(1, callbackResponse.getData().getBoDocumentsUploaded().size());
     }
+
+    @Test
+    public void shouldGetPaperApplication() {
+        caseDataBuilder.applicationType(ApplicationType.SOLICITOR);
+        List<CollectionMember<ScannedDocument>> documents = new ArrayList<>();
+        documents.add(createScannedDocuments("0"));
+        List<CollectionMember<EstateItem>> estate = new ArrayList<>();
+        estate.add(createEstateItems("0"));
+        List<CollectionMember<AttorneyApplyingOnBehalfOf>> attorneyList = new ArrayList<>();
+        attorneyList.add(createAttorneyApplyingList("0"));
+        List<CollectionMember<AdoptedRelative>> adoptedRelatives = new ArrayList<>();
+        adoptedRelatives.add(createAdoptiveRelativeList("0"));
+        caseDataBuilder
+                .primaryApplicantSecondPhoneNumber(EXEC_PHONE)
+                .primaryApplicantRelationshipToDeceased("other")
+                .paRelationshipToDeceasedOther("cousin")
+                .deceasedMartialStatus("neverMarried")
+                .willDatedBeforeApril(YES)
+                .deceasedEnterMarriageOrCP(NO)
+                .dateOfMarriageOrCP(null)
+                .dateOfDivorcedCPJudicially(null)
+                .willsOutsideOfUK(YES)
+                .courtOfDecree("Random Court Name")
+                .willGiftUnderEighteen(NO)
+                .applyingAsAnAttorney(YES)
+                .attorneyOnBehalfOfNameAndAddress(null)
+                .mentalCapacity(YES)
+                .courtOfProtection(YES)
+                .epaOrLpa(NO)
+                .epaRegistered(NO)
+                .domicilityCountry("Spain")
+                .scannedDocuments(documents)
+                .ukEstateItems(estate)
+                .attorneyOnBehalfOfNameAndAddress(attorneyList)
+                .adopted(YES)
+                .adoptiveRelatives(adoptedRelatives)
+                .domicilityIHTCert(YES)
+                .entitledToApply(YES)
+                .entitledToApplyOther(YES)
+                .notifiedApplicants(YES)
+                .foreignAsset(YES)
+                .foreignAssetEstateValue("123")
+                .caseType("intestacy")
+
+                .spouseOrPartner(NO)
+                .childrenSurvived(YES)
+                .childrenOverEighteenSurvived(NUM_CODICILS)
+                .childrenUnderEighteenSurvived(NUM_CODICILS)
+                .childrenDied(YES)
+                .childrenDiedOverEighteen(NUM_CODICILS)
+                .childrenDiedUnderEighteen(NUM_CODICILS)
+                .grandChildrenSurvived(YES)
+                .grandChildrenSurvivedOverEighteen(NUM_CODICILS)
+                .grandChildrenSurvivedUnderEighteen(NUM_CODICILS)
+                .parentsExistSurvived(YES)
+                .parentsExistOverEighteenSurvived(NUM_CODICILS)
+                .parentsExistUnderEighteenSurvived(NUM_CODICILS)
+                .wholeBloodSiblingsSurvived(YES)
+                .wholeBloodSiblingsSurvivedOverEighteen(NUM_CODICILS)
+                .wholeBloodSiblingsSurvivedUnderEighteen(NUM_CODICILS)
+                .wholeBloodSiblingsDied(YES)
+                .wholeBloodSiblingsDiedOverEighteen(NUM_CODICILS)
+                .wholeBloodSiblingsDiedUnderEighteen(NUM_CODICILS)
+                .wholeBloodNeicesAndNephews(YES)
+                .wholeBloodNeicesAndNephewsOverEighteen(NUM_CODICILS)
+                .wholeBloodNeicesAndNephewsUnderEighteen(NUM_CODICILS)
+                .halfBloodSiblingsSurvived(YES)
+                .halfBloodSiblingsSurvivedOverEighteen(NUM_CODICILS)
+                .halfBloodSiblingsSurvivedUnderEighteen(NUM_CODICILS)
+                .halfBloodSiblingsDied(YES)
+                .halfBloodSiblingsDiedOverEighteen(NUM_CODICILS)
+                .halfBloodSiblingsDiedUnderEighteen(NUM_CODICILS)
+                .halfBloodNeicesAndNephews(YES)
+                .halfBloodNeicesAndNephewsOverEighteen(NUM_CODICILS)
+                .halfBloodNeicesAndNephewsUnderEighteen(NUM_CODICILS)
+                .grandparentsDied(YES)
+                .grandparentsDiedOverEighteen(NUM_CODICILS)
+                .grandparentsDiedUnderEighteen(NUM_CODICILS)
+                .wholeBloodUnclesAndAuntsSurvived(YES)
+                .wholeBloodUnclesAndAuntsSurvivedOverEighteen(NUM_CODICILS)
+                .wholeBloodUnclesAndAuntsSurvivedUnderEighteen(NUM_CODICILS)
+                .wholeBloodUnclesAndAuntsDied(YES)
+                .wholeBloodUnclesAndAuntsDiedOverEighteen(NUM_CODICILS)
+                .wholeBloodUnclesAndAuntsDiedUnderEighteen(NUM_CODICILS)
+                .wholeBloodCousinsSurvived(YES)
+                .wholeBloodCousinsSurvivedOverEighteen(NUM_CODICILS)
+                .wholeBloodCousinsSurvivedUnderEighteen(NUM_CODICILS)
+                .halfBloodUnclesAndAuntsSurvived(YES)
+                .halfBloodUnclesAndAuntsSurvivedOverEighteen(NUM_CODICILS)
+                .halfBloodUnclesAndAuntsSurvivedUnderEighteen(NUM_CODICILS)
+                .halfBloodUnclesAndAuntsDied(YES)
+                .halfBloodUnclesAndAuntsDiedOverEighteen(NUM_CODICILS)
+                .halfBloodUnclesAndAuntsDiedUnderEighteen(NUM_CODICILS)
+                .halfBloodCousinsSurvived(YES)
+                .halfBloodCousinsSurvivedOverEighteen(NUM_CODICILS)
+                .halfBloodCousinsSurvivedUnderEighteen(NUM_CODICILS)
+                .applicationFeePaperForm("0")
+                .feeForCopiesPaperForm("0")
+                .totalFeePaperForm("0")
+                .paperPaymentMethod("debitOrCredit")
+                .paymentReferenceNumberPaperform(IHT_REFERENCE)
+                .paperForm(YES);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.paperForm(callbackRequestMock);
+        assertEquals(1, callbackResponse.getData().getUkEstateItems().size());
+        assertEquals(1, callbackResponse.getData().getAttorneyOnBehalfOfNameAndAddress().size());
+        assertEquals(1, callbackResponse.getData().getScannedDocuments().size());
+        assertEquals(1, callbackResponse.getData().getAdoptiveRelatives().size());
+
+        assertCommonDetails(callbackResponse);
+        assertCommonPaperForm(callbackResponse);
+    }
+
+
 
     private CollectionMember<ProbateAliasName> createdDeceasedAliasName(String id, String forename, String lastname, String onGrant) {
         ProbateAliasName pan = ProbateAliasName.builder()
@@ -685,6 +938,54 @@ public class CallbackResponseTransformerTest {
                 .documentLink(docLink)
                 .documentType(DocumentType.IHT).build();
         return new CollectionMember<>(id, doc);
+    }
+
+    private CollectionMember<ScannedDocument> createScannedDocuments(String id) {
+        ScannedDocument doc = ScannedDocument.builder()
+                .controlNumber("")
+                .fileName("")
+                .scannedDate("")
+                .exceptionRecordReference("")
+                .type("")
+                .url("")
+                .build();
+        return new CollectionMember<>(id, doc);
+    }
+
+    private CollectionMember<EstateItem> createEstateItems(String id) {
+        EstateItem items = EstateItem.builder()
+                .item("")
+                .value("")
+                .build();
+
+        return new CollectionMember<>(id, items);
+    }
+
+    private CollectionMember<AdoptedRelative> createAdoptiveRelativeList(String id) {
+        AdoptedRelative relatives = AdoptedRelative.builder()
+                .adoptedInOrOut("IN")
+                .name("Jane Doe")
+                .relationship("Sister")
+                .build();
+        return new CollectionMember<>(id, relatives);
+    }
+
+    private CollectionMember<AttorneyApplyingOnBehalfOf> createAttorneyApplyingList(String id) {
+        SolsAddress address = SolsAddress.builder()
+                .addressLine1("")
+                .addressLine2("")
+                .addressLine3("")
+                .postTown("")
+                .postCode("")
+                .county("")
+                .country("")
+                .build();
+
+        AttorneyApplyingOnBehalfOf list = AttorneyApplyingOnBehalfOf.builder()
+                .address(address)
+                .name("")
+                .build();
+        return new CollectionMember<>(id, list);
     }
 
     private CollectionMember<AdditionalExecutor> createSolsAdditionalExecutor(String id, String applying, String reason) {
@@ -727,7 +1028,7 @@ public class CallbackResponseTransformerTest {
         assertEquals(EXEC_FIRST_NAME + " " + EXEC_SURNAME, exec.getApplyingExecutorName());
         assertEquals(ALIAS_FORENAME + " " + ALIAS_SURNAME, exec.getApplyingExecutorOtherNames());
         assertEquals("Other", exec.getApplyingExecutorOtherNamesReason());
-        assertEquals("Married",  exec.getApplyingExecutorOtherReason());
+        assertEquals("Married", exec.getApplyingExecutorOtherReason());
         assertApplyingExecutorDetailsFromSols(exec);
     }
 
@@ -815,4 +1116,96 @@ public class CallbackResponseTransformerTest {
         assertEquals(emptyList(), callbackResponse.getData().getAdditionalExecutorsApplying());
         assertEquals(emptyList(), callbackResponse.getData().getAdditionalExecutorsNotApplying());
     }
+
+    private void assertCommonPaperForm(CallbackResponse callbackResponse) {
+        assertEquals(EXEC_PHONE, callbackResponse.getData().getPrimaryApplicantSecondPhoneNumber());
+        assertEquals("other", callbackResponse.getData().getPrimaryApplicantRelationshipToDeceased());
+        assertEquals("cousin", callbackResponse.getData().getPaRelationshipToDeceasedOther());
+        assertEquals("neverMarried", callbackResponse.getData().getDeceasedMartialStatus());
+
+        assertEquals(YES, callbackResponse.getData().getWillDatedBeforeApril());
+        assertEquals(NO, callbackResponse.getData().getDeceasedEnterMarriageOrCP());
+        assertEquals(null, callbackResponse.getData().getDateOfMarriageOrCP());
+        assertEquals(null, callbackResponse.getData().getDateOfDivorcedCPJudicially());
+        assertEquals(YES, callbackResponse.getData().getWillsOutsideOfUK());
+        assertEquals("Random Court Name", callbackResponse.getData().getCourtOfDecree());
+        assertEquals(NO, callbackResponse.getData().getWillGiftUnderEighteen());
+        assertEquals(YES, callbackResponse.getData().getApplyingAsAnAttorney());
+        assertEquals(YES, callbackResponse.getData().getMentalCapacity());
+        assertEquals(YES, callbackResponse.getData().getCourtOfProtection());
+        assertEquals(NO, callbackResponse.getData().getEpaOrLpa());
+
+        assertEquals(NO, callbackResponse.getData().getEpaRegistered());
+        assertEquals("Spain", callbackResponse.getData().getDomicilityCountry());
+        assertEquals(NO, callbackResponse.getData().getSpouseOrPartner());
+
+        assertEquals(YES, callbackResponse.getData().getChildrenSurvived());
+        assertEquals(NUM_CODICILS, callbackResponse.getData().getChildrenOverEighteenSurvived());
+        assertEquals(NUM_CODICILS, callbackResponse.getData().getChildrenUnderEighteenSurvived());
+        assertEquals(YES, callbackResponse.getData().getChildrenDied());
+        assertEquals(NUM_CODICILS, callbackResponse.getData().getChildrenDiedOverEighteen());
+        assertEquals(NUM_CODICILS, callbackResponse.getData().getChildrenDiedUnderEighteen());
+        assertEquals(YES, callbackResponse.getData().getGrandChildrenSurvived());
+        assertEquals(NUM_CODICILS, callbackResponse.getData().getGrandChildrenSurvivedOverEighteen());
+        assertEquals(NUM_CODICILS, callbackResponse.getData().getGrandChildrenSurvivedUnderEighteen());
+        assertEquals(YES, callbackResponse.getData().getParentsExistSurvived());
+        assertEquals(NUM_CODICILS, callbackResponse.getData().getParentsExistOverEighteenSurvived());
+        assertEquals(NUM_CODICILS, callbackResponse.getData().getParentsExistUnderEighteenSurvived());
+        assertEquals(YES, callbackResponse.getData().getWholeBloodSiblingsSurvived());
+        assertEquals(NUM_CODICILS, callbackResponse.getData().getWholeBloodSiblingsSurvivedOverEighteen());
+        assertEquals(NUM_CODICILS, callbackResponse.getData().getWholeBloodSiblingsSurvivedUnderEighteen());
+        assertEquals(YES, callbackResponse.getData().getWholeBloodSiblingsDied());
+        assertEquals(NUM_CODICILS, callbackResponse.getData().getWholeBloodSiblingsDiedOverEighteen());
+        assertEquals(NUM_CODICILS, callbackResponse.getData().getWholeBloodSiblingsDiedUnderEighteen());
+        assertEquals(YES, callbackResponse.getData().getWholeBloodNeicesAndNephews());
+        assertEquals(NUM_CODICILS, callbackResponse.getData().getWholeBloodNeicesAndNephewsOverEighteen());
+        assertEquals(NUM_CODICILS, callbackResponse.getData().getWholeBloodNeicesAndNephewsUnderEighteen());
+        assertEquals(YES, callbackResponse.getData().getHalfBloodSiblingsSurvived());
+        assertEquals(NUM_CODICILS, callbackResponse.getData().getHalfBloodSiblingsSurvivedOverEighteen());
+        assertEquals(NUM_CODICILS, callbackResponse.getData().getHalfBloodSiblingsSurvivedUnderEighteen());
+        assertEquals(YES, callbackResponse.getData().getHalfBloodSiblingsDied());
+        assertEquals(NUM_CODICILS, callbackResponse.getData().getHalfBloodSiblingsDiedUnderEighteen());
+        assertEquals(NUM_CODICILS, callbackResponse.getData().getHalfBloodSiblingsDiedOverEighteen());
+        assertEquals(YES, callbackResponse.getData().getHalfBloodNeicesAndNephews());
+        assertEquals(NUM_CODICILS, callbackResponse.getData().getHalfBloodNeicesAndNephewsUnderEighteen());
+        assertEquals(NUM_CODICILS, callbackResponse.getData().getHalfBloodNeicesAndNephewsOverEighteen());
+        assertEquals(YES, callbackResponse.getData().getGrandparentsDied());
+        assertEquals(NUM_CODICILS, callbackResponse.getData().getGrandparentsDiedOverEighteen());
+        assertEquals(NUM_CODICILS, callbackResponse.getData().getGrandparentsDiedUnderEighteen());
+        assertEquals(YES, callbackResponse.getData().getWholeBloodUnclesAndAuntsSurvived());
+        assertEquals(NUM_CODICILS, callbackResponse.getData().getWholeBloodUnclesAndAuntsSurvivedOverEighteen());
+        assertEquals(NUM_CODICILS, callbackResponse.getData().getWholeBloodUnclesAndAuntsSurvivedUnderEighteen());
+        assertEquals(YES, callbackResponse.getData().getWholeBloodUnclesAndAuntsDied());
+        assertEquals(NUM_CODICILS, callbackResponse.getData().getWholeBloodUnclesAndAuntsDiedOverEighteen());
+        assertEquals(NUM_CODICILS, callbackResponse.getData().getWholeBloodUnclesAndAuntsDiedUnderEighteen());
+        assertEquals(YES, callbackResponse.getData().getWholeBloodCousinsSurvived());
+        assertEquals(NUM_CODICILS, callbackResponse.getData().getWholeBloodCousinsSurvivedOverEighteen());
+        assertEquals(NUM_CODICILS, callbackResponse.getData().getWholeBloodCousinsSurvivedUnderEighteen());
+        assertEquals(YES, callbackResponse.getData().getHalfBloodUnclesAndAuntsSurvived());
+        assertEquals(NUM_CODICILS, callbackResponse.getData().getHalfBloodUnclesAndAuntsSurvivedOverEighteen());
+        assertEquals(NUM_CODICILS, callbackResponse.getData().getHalfBloodUnclesAndAuntsSurvivedUnderEighteen());
+        assertEquals(YES, callbackResponse.getData().getHalfBloodUnclesAndAuntsDied());
+        assertEquals(NUM_CODICILS, callbackResponse.getData().getHalfBloodUnclesAndAuntsSurvivedUnderEighteen());
+        assertEquals(NUM_CODICILS, callbackResponse.getData().getHalfBloodUnclesAndAuntsSurvivedOverEighteen());
+        assertEquals(YES, callbackResponse.getData().getHalfBloodCousinsSurvived());
+        assertEquals(NUM_CODICILS, callbackResponse.getData().getHalfBloodCousinsSurvivedOverEighteen());
+        assertEquals(NUM_CODICILS, callbackResponse.getData().getHalfBloodCousinsSurvivedUnderEighteen());
+
+        assertEquals(YES, callbackResponse.getData().getPaperForm());
+        assertEquals(IHT_REFERENCE, callbackResponse.getData().getPaymentReferenceNumberPaperform());
+        assertEquals("debitOrCredit", callbackResponse.getData().getPaperPaymentMethod());
+        assertEquals("0", callbackResponse.getData().getApplicationFeePaperForm());
+        assertEquals("0", callbackResponse.getData().getFeeForCopiesPaperForm());
+        assertEquals("0", callbackResponse.getData().getTotalFeePaperForm());
+        assertEquals(YES, callbackResponse.getData().getAdopted());
+        assertEquals(YES, callbackResponse.getData().getDomicilityIHTCert());
+        assertEquals(YES, callbackResponse.getData().getEntitledToApply());
+        assertEquals(YES, callbackResponse.getData().getEntitledToApplyOther());
+        assertEquals(YES, callbackResponse.getData().getNotifiedApplicants());
+        assertEquals(YES, callbackResponse.getData().getForeignAsset());
+        assertEquals("123", callbackResponse.getData().getForeignAssetEstateValue());
+        assertEquals("intestacy", callbackResponse.getData().getCaseType());
+
+    }
+
 }

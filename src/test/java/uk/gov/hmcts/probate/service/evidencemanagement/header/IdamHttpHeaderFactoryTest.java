@@ -6,7 +6,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 
@@ -52,5 +52,13 @@ public class IdamHttpHeaderFactoryTest {
         HttpHeaders httpHeaders = underTest.getHttpHeader();
 
         assertTrue(httpHeaders.containsKey("Authorization"));
+    }
+
+    @Test
+    public void getAuthorizationHeaders() {
+        HttpHeaders httpHeaders = underTest.getAuthorizationHeaders();
+
+        assertTrue(httpHeaders.containsKey("Authorization"));
+        assertEquals(MediaType.APPLICATION_JSON, httpHeaders.getContentType());
     }
 }

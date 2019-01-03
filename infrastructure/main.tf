@@ -21,6 +21,9 @@ provider "vault" {
 #   path = "secret/${var.vault_section}/probate/pdf_service_grantSignatureBase64"
 # }
 
+provider "azurerm" {
+  version = "1.19.0"
+}
 
 locals {
   aseName = "${data.terraform_remote_state.core_apps_compute.ase_name[0]}"
@@ -92,6 +95,7 @@ module "probate-back-office" {
     PDF_SERVICE_URL = "${var.pdf_service_api_url}"
     PRINTSERVICE_HOST = "${var.printservice_host}"
     PRINTSERVICE_INTERNAL_HOST = "${var.printservice_internal_host}"
+    CCD_GATEWAY_HOST = "${var.ccd_gateway_host}"
     IDAM_SERVICE_HOST = "${var.idam_service_api}"
     FEE_API_URL = "${var.fee_api_url}"
     EVIDENCE_MANAGEMENT_HOST = "${var.evidence_management_host}"

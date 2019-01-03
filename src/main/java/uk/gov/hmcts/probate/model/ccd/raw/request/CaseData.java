@@ -4,29 +4,34 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
-import org.hibernate.validator.constraints.NotBlank;
 import uk.gov.hmcts.probate.controller.validation.AmendCaseDetailsGroup;
 import uk.gov.hmcts.probate.controller.validation.ApplicationCreatedGroup;
 import uk.gov.hmcts.probate.controller.validation.ApplicationReviewedGroup;
 import uk.gov.hmcts.probate.controller.validation.ApplicationUpdatedGroup;
 import uk.gov.hmcts.probate.controller.validation.NextStepsConfirmationGroup;
 import uk.gov.hmcts.probate.model.ApplicationType;
+import uk.gov.hmcts.probate.model.ccd.CaseMatch;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
+import uk.gov.hmcts.probate.model.ccd.raw.AdoptedRelative;
 import uk.gov.hmcts.probate.model.ccd.raw.AliasName;
+import uk.gov.hmcts.probate.model.ccd.raw.AttorneyApplyingOnBehalfOf;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Declaration;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
+import uk.gov.hmcts.probate.model.ccd.raw.EstateItem;
 import uk.gov.hmcts.probate.model.ccd.raw.LegalStatement;
 import uk.gov.hmcts.probate.model.ccd.raw.Payment;
 import uk.gov.hmcts.probate.model.ccd.raw.ProbateAliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.StopReason;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
+import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 
 import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.text.DateFormat;
@@ -70,6 +75,9 @@ public class CaseData {
     @NotBlank(groups = {ApplicationUpdatedGroup.class, AmendCaseDetailsGroup.class},
             message = "{deceasedSurnameIsNull}")
     private final String deceasedSurname;
+
+    @JsonProperty("legacy_case_type")
+    private final String legacyCaseType;
 
     @NotNull(groups = {ApplicationUpdatedGroup.class, AmendCaseDetailsGroup.class}, message = "{dodIsNull}")
     private final LocalDate deceasedDateOfDeath;
@@ -171,6 +179,8 @@ public class CaseData {
 
     private final List<CollectionMember<Document>> probateNotificationsGenerated = new ArrayList<>();
 
+    private final List<CollectionMember<CaseMatch>> caseMatches = new ArrayList<>();
+
     private final List<CollectionMember<UploadDocument>> boDocumentsUploaded;
 
     @NotNull(groups = {ApplicationReviewedGroup.class}, message = "{solsSOTNeedToUpdateIsNull}")
@@ -262,6 +272,100 @@ public class CaseData {
     private final String boExaminationChecklistRequestQA;
 
     private final String applicationSubmittedDate;
+
+    private final List<CollectionMember<ScannedDocument>> scannedDocuments;
+    private final String evidenceHandled;
+
+    private final String caseType;
+    private final String paperForm;
+
+    //paper form case creator fields
+    private final String primaryApplicantSecondPhoneNumber;
+    private final String primaryApplicantRelationshipToDeceased;
+    private final String paRelationshipToDeceasedOther;
+    private final String deceasedMartialStatus;
+    private final String willDatedBeforeApril;
+    private final String deceasedEnterMarriageOrCP;
+    private final String dateOfMarriageOrCP;
+    private final String dateOfDivorcedCPJudicially;
+    private final String willsOutsideOfUK;
+    private final String courtOfDecree;
+    private final String willGiftUnderEighteen;
+    private final String applyingAsAnAttorney;
+    private final List<CollectionMember<AttorneyApplyingOnBehalfOf>> attorneyOnBehalfOfNameAndAddress;
+    private final String mentalCapacity;
+    private final String courtOfProtection;
+    private final String epaOrLpa;
+    private final String epaRegistered;
+    private final String domicilityCountry;
+    private final List<CollectionMember<EstateItem>> ukEstateItems;
+    private final String domicilityIHTCert;
+    private final String entitledToApply;
+    private final String entitledToApplyOther;
+    private final String notifiedApplicants;
+    private final String foreignAsset;
+    private final String foreignAssetEstateValue;
+    private final String adopted;
+    private final List<CollectionMember<AdoptedRelative>> adoptiveRelatives;
+
+    private final String spouseOrPartner;
+    private final String childrenSurvived;
+    private final String childrenOverEighteenSurvived;
+    private final String childrenUnderEighteenSurvived;
+    private final String childrenDied;
+    private final String childrenDiedOverEighteen;
+    private final String childrenDiedUnderEighteen;
+    private final String grandChildrenSurvived;
+    private final String grandChildrenSurvivedOverEighteen;
+    private final String grandChildrenSurvivedUnderEighteen;
+    private final String parentsExistSurvived;
+    private final String parentsExistOverEighteenSurvived;
+    private final String parentsExistUnderEighteenSurvived;
+    private final String wholeBloodSiblingsSurvived;
+    private final String wholeBloodSiblingsSurvivedOverEighteen;
+    private final String wholeBloodSiblingsSurvivedUnderEighteen;
+    private final String wholeBloodSiblingsDied;
+    private final String wholeBloodSiblingsDiedOverEighteen;
+    private final String wholeBloodSiblingsDiedUnderEighteen;
+    private final String wholeBloodNeicesAndNephews;
+    private final String wholeBloodNeicesAndNephewsOverEighteen;
+    private final String wholeBloodNeicesAndNephewsUnderEighteen;
+    private final String halfBloodSiblingsSurvived;
+    private final String halfBloodSiblingsSurvivedOverEighteen;
+    private final String halfBloodSiblingsSurvivedUnderEighteen;
+    private final String halfBloodSiblingsDied;
+    private final String halfBloodSiblingsDiedOverEighteen;
+    private final String halfBloodSiblingsDiedUnderEighteen;
+    private final String halfBloodNeicesAndNephews;
+    private final String halfBloodNeicesAndNephewsOverEighteen;
+    private final String halfBloodNeicesAndNephewsUnderEighteen;
+    private final String grandparentsDied;
+    private final String grandparentsDiedOverEighteen;
+    private final String grandparentsDiedUnderEighteen;
+    private final String wholeBloodUnclesAndAuntsSurvived;
+    private final String wholeBloodUnclesAndAuntsSurvivedOverEighteen;
+    private final String wholeBloodUnclesAndAuntsSurvivedUnderEighteen;
+    private final String wholeBloodUnclesAndAuntsDied;
+    private final String wholeBloodUnclesAndAuntsDiedOverEighteen;
+    private final String wholeBloodUnclesAndAuntsDiedUnderEighteen;
+    private final String wholeBloodCousinsSurvived;
+    private final String wholeBloodCousinsSurvivedOverEighteen;
+    private final String wholeBloodCousinsSurvivedUnderEighteen;
+    private final String halfBloodUnclesAndAuntsSurvived;
+    private final String halfBloodUnclesAndAuntsSurvivedOverEighteen;
+    private final String halfBloodUnclesAndAuntsSurvivedUnderEighteen;
+    private final String halfBloodUnclesAndAuntsDied;
+    private final String halfBloodUnclesAndAuntsDiedOverEighteen;
+    private final String halfBloodUnclesAndAuntsDiedUnderEighteen;
+    private final String halfBloodCousinsSurvived;
+    private final String halfBloodCousinsSurvivedOverEighteen;
+    private final String halfBloodCousinsSurvivedUnderEighteen;
+    private final String applicationFeePaperForm;
+    private final String feeForCopiesPaperForm;
+    private final String totalFeePaperForm;
+    private final String paperPaymentMethod;
+    private final String paymentReferenceNumberPaperform;
+
 
     @Getter(lazy = true)
     private final List<CollectionMember<AdditionalExecutor>> executorsApplyingForLegalStatement = getAllExecutors(true);
