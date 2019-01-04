@@ -37,8 +37,8 @@ public class BulkPrintService {
     private final ServiceAuthTokenGenerator tokenGenerator;
     private final PDFGeneratorService pdfGeneratorService;
 
-    public List<String> sendToBulkPrint(CallbackRequest callbackRequest, Document document) {
-        List<String> pdfs = new LinkedList<>();
+    public SendLetterResponse sendToBulkPrint(CallbackRequest callbackRequest, Document document) {
+        SendLetterResponse sendLetterResponse = null;
         try {
             String authHeaderValue = tokenGenerator.generate();
 
@@ -47,12 +47,12 @@ public class BulkPrintService {
 
             additionalData = Collections.unmodifiableMap(additionalData);
 
-            pdfs = arrangePdfDocumentsForBulkPrinting(callbackRequest, document, authHeaderValue);
+            List<String> pdfs = arrangePdfDocumentsForBulkPrinting(callbackRequest, document, authHeaderValue);
 
-            SendLetterResponse sendLetterResponse = sendLetterApi.sendLetter(authHeaderValue,
+            sendLetterResponse = sendLetterApi.sendLetter(authHeaderValue,
                     new LetterWithPdfsRequest(pdfs, XEROX_TYPE_PARAMETER, additionalData));
-            log.info("Letter service produced the following letter Id {} for a case {}",
-                    sendLetterResponse.letterId);
+            log.info("Letter service produced the following letter Id {} for a pdf size {}",
+                    sendLetterResponse.letterId, pdfs.size());
         } catch (HttpClientErrorException ex) {
             log.error(ex.getResponseBodyAsString() + ' ' + ex.getLocalizedMessage() + ' ' + ex.getStatusCode());
         } catch (IOException ioe) {
@@ -61,7 +61,7 @@ public class BulkPrintService {
         } catch (Exception e) {
             log.error(e.getMessage());
         }
-        return pdfs;
+        return sendLetterResponse;
     }
 
     private String getPdfAsBase64EncodedString(Document caseDocument, String authHeaderValue) throws IOException {

@@ -1,6 +1,7 @@
 package uk.gov.hmcts.probate.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,6 +19,7 @@ import uk.gov.hmcts.probate.service.DocumentService;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
+import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
 import uk.gov.service.notify.NotificationClientException;
 
 import javax.validation.Valid;
@@ -114,7 +116,11 @@ public class DocumentController {
         }
 
         if (!caseData.isGrantForLocalPrinting() && !caseData.getCaseType().equals(EDGE_CASE)) {
-            bulkPrintService.sendToBulkPrint(callbackRequest, digitalGrantDocument);
+            SendLetterResponse response = bulkPrintService.sendToBulkPrint(callbackRequest, digitalGrantDocument);
+            String letterId = response != null
+                    ? response.letterId.toString()
+                    : StringUtils.EMPTY;
+            callbackResponseTransformer.transformWithBulkPrintComplete(callbackRequest, letterId);
         }
 
         documents.add(digitalGrantDocument);

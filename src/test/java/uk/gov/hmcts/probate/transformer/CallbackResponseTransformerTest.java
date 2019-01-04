@@ -915,7 +915,19 @@ public class CallbackResponseTransformerTest {
         assertCommonPaperForm(callbackResponse);
     }
 
+    @Test
+    public void shouldTransformWithBulkPrintComplete() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL);
+        caseDataBuilder.caseType(null);
 
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.transformWithBulkPrintComplete(callbackRequestMock, "random");
+
+        assertEquals("random", callbackResponse.getData().getLetterId());
+        assertEquals("Yes", callbackResponse.getData().getGrantSentToPrint());
+    }
 
     private CollectionMember<ProbateAliasName> createdDeceasedAliasName(String id, String forename, String lastname, String onGrant) {
         ProbateAliasName pan = ProbateAliasName.builder()
