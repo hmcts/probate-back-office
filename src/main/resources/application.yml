@@ -60,6 +60,8 @@ spring:
   application:
     name: probate-sol-ccd
 
+spring.document.retriever.service.api.baseurl: localhost:8080
+
 spring.jackson.serialization.write_dates_as_timestamps: false
 
 ####Evidence management Service URL's
@@ -138,3 +140,15 @@ registries:
     name: Winchester Probate Registry
     phone: 01962 814100
     emailReplyToId: "de5b8f8d-fb9c-4fd7-aa3a-3732a86a2e5d"
+document:
+  retriever:
+    service:
+      api:
+        baseurl: localhost:8080
+
+idam:
+  s2s-auth:
+    url: ""
+send-letter:
+  url: ${SEND_LETTER_SERIVCE_BASEURL:http://localhost:8485}
+

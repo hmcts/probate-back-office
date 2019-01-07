@@ -101,6 +101,7 @@ module "probate-back-office" {
     EVIDENCE_MANAGEMENT_HOST = "${var.evidence_management_host}"
     NOTIFICATIONS_GOVNOTIFYAPIKEY = "${data.azurerm_key_vault_secret.govNotifyApiKey.value}"
     java_app_name = "${var.microservice}"
+    SEND_LETTER_SERIVCE_BASEURL = "{var.send_letter_base_url}"
     LOG_LEVEL = "${var.log_level}"
     //ROOT_APPENDER = "JSON_CONSOLE" //Remove json logging
   }

@@ -11,6 +11,12 @@ public enum DocumentType {
     @JsonProperty("digitalGrant")
     DIGITAL_GRANT("digitalGrant"),
 
+    @JsonProperty("grantCover")
+    GRANT_COVER("grantCover"),
+
+    @JsonProperty("blank")
+    BLANK("blank"),
+
     @JsonProperty("digitalGrantDraft")
     DIGITAL_GRANT_DRAFT("digitalGrantDraft"),
 
