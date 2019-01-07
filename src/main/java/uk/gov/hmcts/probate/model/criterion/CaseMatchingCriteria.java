@@ -15,6 +15,7 @@ public class CaseMatchingCriteria {
     private final Long id;
     private final String deceasedForenames;
     private final String deceasedSurname;
+    private final String deceasedAliases;
     private final String deceasedDateOfBirth;
     private final String deceasedDateOfDeath;
 
@@ -25,6 +26,7 @@ public class CaseMatchingCriteria {
                 .id(caseDetails.getId())
                 .deceasedForenames(caseDetails.getData().getDeceasedForenames())
                 .deceasedSurname(caseDetails.getData().getDeceasedSurname())
+                .deceasedAliases(caseDetails.getData().getDeceasedFullName())
                 .deceasedDateOfBirth(getDateFormatted(caseDetails.getData().getDeceasedDateOfBirth()))
                 .deceasedDateOfDeath(getDateFormatted(caseDetails.getData().getDeceasedDateOfDeath()))
                 .build();
@@ -35,6 +37,7 @@ public class CaseMatchingCriteria {
                 .id(caveatDetails.getId())
                 .deceasedForenames(caveatDetails.getData().getDeceasedForenames())
                 .deceasedSurname(caveatDetails.getData().getDeceasedSurname())
+                .deceasedAliases(caveatDetails.getData().getDeceasedFullName())
                 .deceasedDateOfBirth(getDateFormatted(caveatDetails.getData().getDeceasedDateOfBirth()))
                 .deceasedDateOfDeath(getDateFormatted(caveatDetails.getData().getDeceasedDateOfDeath()))
                 .build();
@@ -45,6 +48,7 @@ public class CaseMatchingCriteria {
                 .id(standingSearchDetails.getId())
                 .deceasedForenames(standingSearchDetails.getData().getDeceasedForenames())
                 .deceasedSurname(standingSearchDetails.getData().getDeceasedSurname())
+                .deceasedAliases(standingSearchDetails.getData().getDeceasedFullName())
                 .deceasedDateOfBirth(getDateFormatted(standingSearchDetails.getData().getDeceasedDateOfBirth()))
                 .deceasedDateOfDeath(getDateFormatted(standingSearchDetails.getData().getDeceasedDateOfDeath()))
                 .build();
