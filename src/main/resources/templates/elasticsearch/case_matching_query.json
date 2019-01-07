@@ -64,6 +64,17 @@
               "data.solsDeceasedAliasNamesList.*"
             ]
           }
+        },
+        {
+          "multi_match": {
+            "query": ":legacyDeceasedAliases",
+            "operator": "and",
+            "fuzziness": 2,
+            "prefix_length": 0,
+            "fields": [
+              "data.alias_names"
+            ]
+          }
         }
       ],
       "minimum_should_match": 1,
