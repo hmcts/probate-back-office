@@ -1,6 +1,7 @@
 package uk.gov.hmcts.probate.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,12 +14,15 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
+import uk.gov.hmcts.probate.service.BulkPrintService;
 import uk.gov.hmcts.probate.service.DocumentService;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
+import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
 import uk.gov.service.notify.NotificationClientException;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -46,6 +50,7 @@ public class DocumentController {
     private static final String ADMON_WILL = "admonWill";
     private static final String INTESTACY = "intestacy";
     private static final String EDGE_CASE = "edgeCase";
+    private final BulkPrintService bulkPrintService;
 
     @PostMapping(path = "/generate-grant-draft", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<CallbackResponse> generateGrantDraft(@RequestBody CallbackRequest callbackRequest) {
@@ -70,7 +75,6 @@ public class DocumentController {
                 template = DIGITAL_GRANT_DRAFT;
                 document = pdfManagementService.generateAndUpload(callbackRequest, template);
                 break;
-
         }
 
         DocumentType[] documentTypes = {DIGITAL_GRANT_DRAFT, INTESTACY_GRANT_DRAFT, ADMON_WILL_GRANT_DRAFT};
@@ -85,9 +89,10 @@ public class DocumentController {
     @PostMapping(path = "/generate-grant", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<CallbackResponse> generateGrant(@RequestBody CallbackRequest callbackRequest)
             throws NotificationClientException {
-        CaseDetails caseDetails = callbackRequest.getCaseDetails();
-        CaseData caseData = callbackRequest.getCaseDetails().getData();
+
         List<Document> documents = new ArrayList<>();
+        CaseDetails caseDetails = callbackRequest.getCaseDetails();
+        @Valid CaseData caseData = caseDetails.getData();
         DocumentType template;
         Document digitalGrantDocument;
 
@@ -108,21 +113,26 @@ public class DocumentController {
                 template = DIGITAL_GRANT;
                 digitalGrantDocument = pdfManagementService.generateAndUpload(callbackRequest, template);
                 break;
-
         }
+
+        if (!caseData.isGrantForLocalPrinting() && !caseData.getCaseType().equals(EDGE_CASE)) {
+            SendLetterResponse response = bulkPrintService.sendToBulkPrint(callbackRequest, digitalGrantDocument);
+            String letterId = response != null
+                    ? response.letterId.toString()
+                    : StringUtils.EMPTY;
+            callbackResponseTransformer.transformWithBulkPrintComplete(callbackRequest, letterId);
+        }
+
         documents.add(digitalGrantDocument);
 
         DocumentType[] documentTypes = {DIGITAL_GRANT_DRAFT, INTESTACY_GRANT_DRAFT, ADMON_WILL_GRANT_DRAFT};
         for (DocumentType documentType : documentTypes) {
             documentService.expire(callbackRequest, documentType);
         }
-
         if (caseData.isGrantIssuedEmailNotificationRequested()) {
             Document grantIssuedSentEmail = notificationService.sendEmail(GRANT_ISSUED, caseDetails);
             documents.add(grantIssuedSentEmail);
         }
-
         return ResponseEntity.ok(callbackResponseTransformer.addDocuments(callbackRequest, documents));
     }
-
 }
