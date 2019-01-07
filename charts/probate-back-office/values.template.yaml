@@ -30,6 +30,7 @@ ccd:
   caseManagementWeb:
     enabled: true
 
-  importer:
-    definitions:
-      - https://github.com/hmcts/Probate-CCD-Import-Spreadsheets/raw/master/spreadsheet/back-office/CCD_Probate_V04.32-Helm.xls
+  # importer:
+  #   definitions:
+  #     - https://github.com/hmcts/Probate-CCD-Import-Spreadsheets/raw/master/spreadsheet/back-office/CCD_Probate_V04.32-Hlm.xlsx
+#      - https://github.com/hmcts/Probate-CCD-Import-Spreadsheets/raw/master/spreadsheet/CCD_Probate_V21.02-Dev.xlsx
