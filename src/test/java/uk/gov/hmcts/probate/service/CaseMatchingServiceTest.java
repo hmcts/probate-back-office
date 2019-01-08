@@ -26,8 +26,8 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.CaseType.GRANT_OF_REPRESENTATION;
@@ -68,7 +68,9 @@ public class CaseMatchingServiceTest {
 
         when(caseMatchingCriteria.getDeceasedForenames()).thenReturn("names");
         when(caseMatchingCriteria.getDeceasedSurname()).thenReturn("surname");
-        when(caseMatchingCriteria.getDeceasedDateOfDeath()).thenReturn(LocalDate.of(2000, 1, 1));
+        when(caseMatchingCriteria.getDeceasedAliases()).thenReturn("name surname");
+        when(caseMatchingCriteria.getDeceasedDateOfBirth()).thenReturn("1900-01-01");
+        when(caseMatchingCriteria.getDeceasedDateOfDeath()).thenReturn("2000-01-01");
 
         when(ccdGatewayConfiguration.getHost()).thenReturn("http://localhost");
         when(ccdGatewayConfiguration.getCaseMatchingPath()).thenReturn("/path");

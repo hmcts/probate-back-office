@@ -85,8 +85,8 @@ public class StandingSearchCallbackResponseTransformerTest {
                 .applicantAddress(SS_APPLICANT_ADDRESS)
                 .expiryDate(SS_EXPIRY_DATE);
 
-        when(standingSearchCallbackRequestMock.getStandingSearchDetails()).thenReturn(standingSearchDetailsMock);
-        when(standingSearchDetailsMock.getStandingSearchData()).thenReturn(standingSearchDataBuilder.build());
+        when(standingSearchCallbackRequestMock.getCaseDetails()).thenReturn(standingSearchDetailsMock);
+        when(standingSearchDetailsMock.getData()).thenReturn(standingSearchDataBuilder.build());
     }
 
     @Test
@@ -105,8 +105,8 @@ public class StandingSearchCallbackResponseTransformerTest {
         deceasedFullAliasNameList.add(an1);
         standingSearchDataBuilder.deceasedFullAliasNameList(deceasedFullAliasNameList);
 
-        when(standingSearchCallbackRequestMock.getStandingSearchDetails()).thenReturn(standingSearchDetailsMock);
-        when(standingSearchDetailsMock.getStandingSearchData()).thenReturn(standingSearchDataBuilder.build());
+        when(standingSearchCallbackRequestMock.getCaseDetails()).thenReturn(standingSearchDetailsMock);
+        when(standingSearchDetailsMock.getData()).thenReturn(standingSearchDataBuilder.build());
 
         StandingSearchCallbackResponse standingSearchCallbackResponse = underTest.transform(standingSearchCallbackRequestMock);
 
@@ -120,8 +120,8 @@ public class StandingSearchCallbackResponseTransformerTest {
         documents.add(createUploadDocuments("0"));
         standingSearchDataBuilder.documentsUploaded(documents);
 
-        when(standingSearchCallbackRequestMock.getStandingSearchDetails()).thenReturn(standingSearchDetailsMock);
-        when(standingSearchDetailsMock.getStandingSearchData()).thenReturn(standingSearchDataBuilder.build());
+        when(standingSearchCallbackRequestMock.getCaseDetails()).thenReturn(standingSearchDetailsMock);
+        when(standingSearchDetailsMock.getData()).thenReturn(standingSearchDataBuilder.build());
 
         StandingSearchCallbackResponse standingSearchCallbackResponse = underTest.transform(standingSearchCallbackRequestMock);
 

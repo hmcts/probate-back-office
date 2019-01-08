@@ -33,8 +33,13 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_DRAFT;
+import static uk.gov.hmcts.probate.model.DocumentType.EDGE_CASE;
+import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_DRAFT;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -76,6 +81,19 @@ public class NotificationControllerTest {
                 .thenReturn(Document.builder().documentType(DIGITAL_GRANT_DRAFT).build());
         when(pdfManagementService.generateAndUpload(any(CallbackRequest.class), eq(DIGITAL_GRANT)))
                 .thenReturn(Document.builder().documentType(DIGITAL_GRANT).build());
+
+        when(pdfManagementService.generateAndUpload(any(CallbackRequest.class), eq(ADMON_WILL_GRANT_DRAFT)))
+                .thenReturn(Document.builder().documentType(ADMON_WILL_GRANT_DRAFT).build());
+        when(pdfManagementService.generateAndUpload(any(CallbackRequest.class), eq(ADMON_WILL_GRANT)))
+                .thenReturn(Document.builder().documentType(ADMON_WILL_GRANT).build());
+
+        when(pdfManagementService.generateAndUpload(any(CallbackRequest.class), eq(INTESTACY_GRANT_DRAFT)))
+                .thenReturn(Document.builder().documentType(INTESTACY_GRANT_DRAFT).build());
+        when(pdfManagementService.generateAndUpload(any(CallbackRequest.class), eq(INTESTACY_GRANT)))
+                .thenReturn(Document.builder().documentType(INTESTACY_GRANT_DRAFT).build());
+
+        when(pdfManagementService.generateAndUpload(any(CallbackRequest.class), eq(EDGE_CASE)))
+                .thenReturn(Document.builder().documentType(EDGE_CASE).build());
     }
 
     @Test
@@ -106,6 +124,48 @@ public class NotificationControllerTest {
     public void solicitorGrantIssuedShouldReturnDataPayloadOkResponseCode() throws Exception {
 
         String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadNotifications.json");
+
+        mockMvc.perform(post("/document/generate-grant")
+                .content(solicitorPayload)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("data")));
+
+        verify(documentService).expire(any(CallbackRequest.class), eq(DIGITAL_GRANT_DRAFT));
+    }
+
+    @Test
+    public void solicitorAdmonWillGrantIssuedShouldReturnDataPayloadOkResponseCode() throws Exception {
+
+        String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadNotificationsAdmonWill.json");
+
+        mockMvc.perform(post("/document/generate-grant")
+                .content(solicitorPayload)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("data")));
+
+        verify(documentService).expire(any(CallbackRequest.class), eq(DIGITAL_GRANT_DRAFT));
+    }
+
+    @Test
+    public void solicitorIntestacyGrantIssuedShouldReturnDataPayloadOkResponseCode() throws Exception {
+
+        String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadNotificationsIntestacy.json");
+
+        mockMvc.perform(post("/document/generate-grant")
+                .content(solicitorPayload)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("data")));
+
+        verify(documentService).expire(any(CallbackRequest.class), eq(DIGITAL_GRANT_DRAFT));
+    }
+
+    @Test
+    public void solicitorEdgeCaseGrantIssuedShouldReturnDataPayloadOkResponseCode() throws Exception {
+
+        String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadNotificationsEdgeCase.json");
 
         mockMvc.perform(post("/document/generate-grant")
                 .content(solicitorPayload)

@@ -10,5 +10,5 @@ public class StandingSearchCallbackRequest {
 
     @Valid
     @JsonProperty(value = "case_details", required = true)
-    private final StandingSearchDetails standingSearchDetails;
+    private final StandingSearchDetails caseDetails;
 }
