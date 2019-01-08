@@ -1,0 +1,8 @@
+description: A Helm chart for the HMCTS probate back office service
+name: probate-back-offices
+home: https://github.com/hmcts/probate-back-offices
+version: 0.1.1
+maintainers:
+  - name: HMCTS Probate Team
+    email: probate-action-group@HMCTS.NET
+    
