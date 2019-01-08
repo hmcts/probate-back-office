@@ -1,0 +1,44 @@
+java:
+  applicationPort: 4104
+  environment:
+    REFORM_TEAM: probate
+    REFORM_SERVICE_NAME: back-office
+    LOG_LEVEL: DEBUG
+    APPINSIGHTS_INSTRUMENTATIONKEY: dummy
+    AUTH_PROVIDER_SERVICE_CLIENT_KEY: ${S2S_AUTH_TOTP_SECRET}
+    NOTIFICATIONS_GOVNOTIFYAPIKEY: ${PROBATE_BO_NOTIFY_KEY}
+    PDF_SERVICE_GRANTSIGNATUREBASE64: ${BO_GRANT_SIG_FIRST}${BO_GRANT_SIG_LAST}
+  # Don't modify below here.
+  image: ${IMAGE_NAME}
+  ingressHost: ${SERVICE_FQDN}
+
+ccd:
+  ingressHost: ${SERVICE_FQDN}
+  ingressIP: ${INGRESS_IP}
+  consulIP: ${CONSUL_LB_IP}
+
+  apiGateway:
+    s2sKey: ${API_GATEWAY_S2S_KEY}
+    idamClientSecret: ${API_GATEWAY_IDAM_SECRET}
+
+  dataStoreApi:
+    s2sKey: ${DATA_STORE_S2S_KEY}
+
+  definitionStoreApi:
+    s2sKey: ${DEFINITION_STORE_S2S_KEY}
+
+  caseManagementWeb:
+    enabled: true
+
+  importer:
+    definitions:
+      - https://github.com/hmcts/Probate-CCD-Import-Spreadsheets/raw/master/spreadsheet/back-office/CCD_Probate_V04.32.01-Hlm.xlsx
+      - https://github.com/hmcts/Probate-CCD-Import-Spreadsheets/blob/master/spreadsheet/legacy-cases/CCD_Probate_Legacy_V00.01-Dev.xlsx
+    #      - https://github.com/hmcts/Probate-CCD-Import-Spreadsheets/raw/master/spreadsheet/CCD_Probate_V21.02-Dev.xlsx
+    userRoles:
+      - caseworker-probate
+      - caseworker-probate-issuer
+      - caseworker-probate-solicitor
+      - citizen
+      - caseworker-probate-examiner
+
