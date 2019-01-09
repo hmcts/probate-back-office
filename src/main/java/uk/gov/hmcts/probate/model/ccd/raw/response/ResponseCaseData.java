@@ -42,7 +42,7 @@ public class ResponseCaseData {
     private final String deceasedForenames;
     private final String deceasedSurname;
     private final String solsSolicitorFirmName;
-    private final String solsSolicitorFirmPostcode;
+    private final SolsAddress solsSolicitorAddress;
     private final String solsSolicitorEmail;
     private final String solsSolicitorPhoneNumber;
     private final String solsSOTName;

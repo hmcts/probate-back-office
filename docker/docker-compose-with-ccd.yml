@@ -310,7 +310,6 @@ services:
       - CCD_GW_LOGOUT_URL=http://localhost:8000/logout
       - CCD_GATEWAY_BASE_URL=http://localhost:3453
       - DM_GATEWAY_BASE_URL=https://api-gateway.dev.dm.reform.hmcts.net
-      - DM_URL_REMOTE=http://dm-store:8080/documents
       - OAUTH2_CLIENT_ID=ccd_gateway
     ports:
       - 3451:3451

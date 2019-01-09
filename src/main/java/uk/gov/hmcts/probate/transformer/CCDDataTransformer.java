@@ -53,7 +53,7 @@ public class CCDDataTransformer {
     private Solicitor buildSolicitorDetails(CaseData caseData) {
         return Solicitor.builder()
                 .firmName(caseData.getSolsSolicitorFirmName())
-                .firmPostcode(caseData.getSolsSolicitorFirmPostcode())
+                .firmAddress(caseData.getSolsSolicitorAddress())
                 .fullname(caseData.getSolsSOTName())
                 .jobRole(caseData.getSolsSOTJobTitle())
                 .build();

@@ -85,7 +85,15 @@
       },
       "extraCopiesOfGrant": null,
       "solsPaymentMethods": "fee account",
-      "solsSolicitorFirmPostcode": "KT10 0LA",
+      "solsSolicitorAddress": {
+        "AddressLine1": "SolAddLn1",
+        "AddressLine2": "SolAddLn2",
+        "AddressLine3": "SolAddLn3",
+        "PostTown": "SolAddPT",
+        "County": "SolAddCounty",
+        "PostCode": "KT10 0LA",
+        "Country": "SolAddCo"
+      },
       "deceasedForenames": "Deceased First Name",
       "primaryApplicantIsApplying": "Yes",
       "primaryApplicantHasAlias": "No",
@@ -143,7 +151,15 @@
       "solsLegalStatementDocument": "PUBLIC",
       "extraCopiesOfGrant": "PUBLIC",
       "solsPaymentMethods": "PUBLIC",
-      "solsSolicitorFirmPostcode": "PUBLIC",
+      "solsSolicitorAddress": {
+        "AddressLine1": "PUBLIC",
+        "AddressLine2": "PUBLIC",
+        "AddressLine3": "PUBLIC",
+        "PostTown": "PUBLIC",
+        "County": "PUBLIC",
+        "PostCode": "PUBLIC",
+        "Country": "PUBLIC"
+      },
       "deceasedForenames": "PUBLIC",
       "primaryApplicantIsApplying": "PUBLIC",
       "primaryApplicantHasAlias": "PUBLIC",
@@ -204,7 +220,15 @@
       "solsLegalStatementDocument": "PUBLIC",
       "extraCopiesOfGrant": "PUBLIC",
       "solsPaymentMethods": "PUBLIC",
-      "solsSolicitorFirmPostcode": "PUBLIC",
+      "solsSolicitorAddress": {
+        "AddressLine1": "PUBLIC",
+        "AddressLine2": "PUBLIC",
+        "AddressLine3": "PUBLIC",
+        "PostTown": "PUBLIC",
+        "County": "PUBLIC",
+        "PostCode": "PUBLIC",
+        "Country": "PUBLIC"
+      },
       "deceasedForenames": "PUBLIC",
       "primaryApplicantIsApplying": "PUBLIC",
       "primaryApplicantHasAlias": "PUBLIC",
@@ -281,7 +305,7 @@
         "document_filename": "legal_statement.pdf",
         "document_binary_url": "http://localhost:8080/documents/e1f4f972-1514-4247-bdb1-964998ef3710/binary"
       },
-      "solsSolicitorFirmPostcode": "KT10 0LA",
+
       "deceasedForenames": "Deceased First Name",
       "primaryApplicantIsApplying": "Yes",
       "primaryApplicantHasAlias": "No",
@@ -332,7 +356,15 @@
       "ihtNetValue": "PUBLIC",
       "deceasedSurname": "PUBLIC",
       "solsLegalStatementDocument": "PUBLIC",
-      "solsSolicitorFirmPostcode": "PUBLIC",
+      "solsSolicitorAddress": {
+        "AddressLine1": "PUBLIC",
+        "AddressLine2": "PUBLIC",
+        "AddressLine3": "PUBLIC",
+        "PostTown": "PUBLIC",
+        "County": "PUBLIC",
+        "PostCode": "PUBLIC",
+        "Country": "PUBLIC"
+      },
       "deceasedForenames": "PUBLIC",
       "primaryApplicantIsApplying": "PUBLIC",
       "primaryApplicantHasAlias": "PUBLIC",
@@ -386,7 +418,15 @@
       "ihtNetValue": "PUBLIC",
       "deceasedSurname": "PUBLIC",
       "solsLegalStatementDocument": "PUBLIC",
-      "solsSolicitorFirmPostcode": "PUBLIC",
+      "solsSolicitorAddress": {
+        "AddressLine1": "PUBLIC",
+        "AddressLine2": "PUBLIC",
+        "AddressLine3": "PUBLIC",
+        "PostTown": "PUBLIC",
+        "County": "PUBLIC",
+        "PostCode": "PUBLIC",
+        "Country": "PUBLIC"
+      },
       "deceasedForenames": "PUBLIC",
       "primaryApplicantIsApplying": "PUBLIC",
       "primaryApplicantHasAlias": "PUBLIC",

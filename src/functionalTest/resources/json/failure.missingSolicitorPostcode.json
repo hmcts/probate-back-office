@@ -110,7 +110,6 @@
         "AddressLine3": "SolAddLn3",
         "PostTown": "SolAddPT",
         "County": "SolAddCounty",
-        "PostCode": "firmpc",
         "Country": "SolAddCo"
       },
       "deceasedForenames": "deceasedFirstName",

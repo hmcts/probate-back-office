@@ -2,7 +2,15 @@
   "case_details":{
     "case_data":{
       "solsSolicitorFirmName":"FirmName",
-      "solsSolicitorFirmPostcode":"postcode",
+      "solsSolicitorAddress": {
+        "AddressLine1": "SolAddLn1",
+        "AddressLine2": "SolAddLn2",
+        "AddressLine3": "SolAddLn3",
+        "PostTown": "SolAddPT",
+        "County": "SolAddCounty",
+        "PostCode": "KT10 0LA",
+        "Country": "SolAddCo"
+      },
       "solsSolicitorAppReference":"firmReference",
       "solsSolicitorEmail":"rebecca.baker@hmcts.net",
       "solsSolicitorPhoneNumber":null,

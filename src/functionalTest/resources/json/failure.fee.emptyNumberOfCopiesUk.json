@@ -8,7 +8,15 @@
     "security_classification": "PUBLIC",
     "case_data": {
       "deceasedDateOfDeath": "2017-09-11",
-      "solicitorFirmPostcode": "A11 1AA",
+      "solsSolicitorAddress": {
+        "AddressLine1": "SolAddLn1",
+        "AddressLine2": "SolAddLn2",
+        "AddressLine3": "SolAddLn3",
+        "PostTown": "SolAddPT",
+        "County": "SolAddCounty",
+        "PostCode": "A11 1AA",
+        "Country": "SolAddCo"
+      },
       "solicitorAppReference": "Eiusmod atque quae incididunt sint aut dicta consectetur et autem aut ducimus id",
       "deceasedDateOfBirth": "2007-11-07",
       "deceasedForenames": "Amet",
