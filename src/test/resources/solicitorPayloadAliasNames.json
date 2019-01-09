@@ -160,7 +160,8 @@
       "grantIssuedEmailNotificationRequested": true,
       "boExaminationChecklistQ1": "No",
       "boExaminationChecklistQ2": "yes",
-      "boExaminationChecklistRequestQA" : "no"
+      "boExaminationChecklistRequestQA" : "no",
+      "scannedDocuments": []
     },
     "last_modified": [
       "2018",

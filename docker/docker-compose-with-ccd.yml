@@ -14,6 +14,9 @@ services:
       - MICROSERVICEKEYS_CCD_DEFINITION=AAAAAAAAAAAAAAAA
       - MICROSERVICEKEYS_CCD_GW=AAAAAAAAAAAAAAAA
       - MICROSERVICEKEYS_CCD_PS=AAAAAAAAAAAAAAAA
+      - MICROSERVICEKEYS_BULK_SCAN_PROCESSOR=AAAAAAAAAAAAAAAA
+      - MICROSERVICEKEYS_BULK_SCAN_PROCESSOR_TESTS=AAAAAAAAAAAAAAAA
+      - MICROSERVICEKEYS_BULK_SCAN_ORCHESTRATOR=AAAAAAAAAAAAAAAA
       - TESTING_SUPPORT_ENABLED=true
       - MICROSERVICEKEYS_PROBATE_BACKEND=AAAAAAAAAAAAAAAA
     ports:
@@ -67,6 +70,12 @@ services:
       - IDAM_API_OAUTH2_CLIENT_CLIENT_SECRETS_PROBATE=123456
       - IDAM_API_OAUTH2_CLIENT_CLIENT_ID_PROBATE=123456
       - IDAM_PROBATE_WHITELIST=http://localhost:3451/oauth2redirect
+      - IDAM_BSP_SYSTEMUPDATE_USER=bulkscanorchestrator+systemupdate@gmail.com
+      - IDAM_BSP_SYSTEMUPDATE_PASSWORD=Password12
+      - IDAM_USERS_PROBATE_USERNAME=bulkscan+ccd@gmail.com
+      - IDAM_USERS_PROBATE_PASSWORD=password
+      - IDAM_API_OAUTH2_CLIENT_CLIENT_SECRETS_BSP=123456
+      - IDAM_BSP_WHITELIST=https://localhost/receiver
       - http_proxy
       - https_proxy
       - no_proxy
@@ -99,6 +108,7 @@ services:
     environment:
      - IDAM_API_URL=http://idam-api:8080
      - IDAM_CONTINUE_URL_VALIDATOR_ENFORCE_TLS=false
+     - IDAM_API_OAUTH2_CLIENT_CLIENT_SECRETS_BULK_SCAN_ORCHESTRATOR=123456
      - IDAM_API_OAUTH2_CLIENT_CLIENT_SECRETS_CMC_LEGAL=123456
      - IDAM_API_OAUTH2_CLIENT_CLIENT_SECRETS_CCD_GATEWAY=123456
     ports:
@@ -113,15 +123,16 @@ services:
       context: ../docker/database
     image: docker.artifactory.reform.hmcts.net/evidence/document-management-store-database:latest
 
-  document-management-store:
-    image: docker.artifactory.reform.hmcts.net/evidence/document-management-store:latest
+  dm-store:
+    image: hmcts/dm-store:latest
     command: --wait-for-database 30
     environment:
       - SERVER_PORT=8080
-      - S2S_NAMES_WHITELIST=ccd_gw,ccd_data,ccd_ps,probate_backend
+      - S2S_NAMES_WHITELIST=ccd_gw,ccd_data,ccd_ps,probate_backend,probate_frontend,bulk_scan_orchestrator,bulk_scan_processor
       - IDAM_SUPERUSER_EMAIL
       - IDAM_SECRET_KEY=AAAAAAAAAAAAAAAA
       - GOV_NOTIFY_API_KEY
+      - GOV_PAY_AUTH_KEY_PROBATE_FRONTEND=238mpukgl3uonfrqpt7ndqvr82ok75i3t8v66156q470k474iai66ukhdf
       - SPRING_DATASOURCE_URL=jdbc:postgresql://document-management-store-database:5432/evidence
       - SPRING_DATASOURCE_USERNAME=evidence
       - SPRING_DATASOURCE_PASSWORD=evidence
@@ -135,12 +146,27 @@ services:
       - http_proxy=
       - https_proxy=
       - no_proxy=
+      - ENABLE_DELETE=true
+      - ENABLE_IDAM_HEALTH_CHECK=false
+      - ENABLE_METADATA_SEARCH=true
+      - ENABLE_DOCUMENT_AND_METADATA_UPLOAD=false
+      - ENABLE_FOLDER_API=true
+      - ENABLE_TTL=true
+      - ENABLE_THUMBNAIL=true
+      - DM_MULTIPART_WHITELIST=image/jpeg,application/pdf,image/tiff,image/png,image/bmp,text/plain,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.openxmlformats-officedocument.wordprocessingml.template,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.openxmlformats-officedocument.spreadsheetml.template,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation,application/vnd.openxmlformats-officedocument.presentationml.template,application/vnd.openxmlformats-officedocument.presentationml.slideshow
+      - DM_MULTIPART_WHITELIST_EXT=.jpg,.jpeg,.bmp,.tif,.tiff,.png,.pdf,.txt,.doc,.dot,.docx,.dotx,.xls,.xlt,.xla,.xlsx,.xltx,.xlsb,.ppt,.pot,.pps,.ppa,.pptx,.potx,.ppsx
+      - MAX_FILE_SIZE=500MB
+      - MAX_ACTIVE_DB_CONNECTIONS=10
+      - ENDPOINTS_HEALTH_SENSITIVE=false
+      - ENDPOINTS_INFO_SENSITIVE=false
+      - CASE_WORKER_ROLES=caseworker-probate
        # these environment variables are used by java-logging library
       - ROOT_APPENDER=JSON_CONSOLE
       - JSON_CONSOLE_PRETTY_PRINT=false
       - REFORM_SERVICE_TYPE=java
-      - REFORM_SERVICE_NAME=document-management-store-app
-      - REFORM_TEAM=cc
+     # - REFORM_SERVICE_NAME=document-management-store-app
+      - REFORM_SERVICE_NAME=dm-store
+      - REFORM_TEAM=evidence
       - REFORM_ENVIRONMENT=docker
 #      healthcheck env vars
       - PACKAGES_ENVIRONMENT=docker
@@ -218,7 +244,7 @@ services:
       - DEFINITION_STORE_DB_USERNAME
       - DEFINITION_STORE_DB_PASSWORD
       - DEFINITION_STORE_IDAM_KEY=AAAAAAAAAAAAAAAA
-      - DEFINITION_STORE_S2S_AUTHORISED_SERVICES=ccd_data,ccd_gw,probate_backend
+      - DEFINITION_STORE_S2S_AUTHORISED_SERVICES=ccd_data,ccd_gw,probate_backend,probate_frontend,bulk_scan_orchestrator
       - DEFINITION_STORE_DB_USE_SSL=false
       - USER_PROFILE_HOST=http://ccd-user-profile-api:4453
       - IDAM_USER_URL=http://idam-api:8080
@@ -227,8 +253,8 @@ services:
       - REFORM_TEAM=ccd
       - REFORM_ENVIRONMENT=local
       - APPINSIGHTS_INSTRUMENTATIONKEY=fake-key
-      - ELASTIC_SEARCH_ENABLED=false
-      - ELASTIC_SEARCH_FAIL_ON_IMPORT=false
+      - ELASTIC_SEARCH_ENABLED=true
+      - ELASTIC_SEARCH_FAIL_ON_IMPORT=true
       - ELASTIC_SEARCH_HOST=elasticsearch
     ports:
       - 4451:4451
@@ -251,7 +277,7 @@ services:
         - DATA_STORE_DB_PASSWORD
         - DATA_STORE_IDAM_KEY=AAAAAAAAAAAAAAAA
         - DATA_STORE_TOKEN_SECRET=iuasbcuasdcbasdgcasdgcuysachjsacyasdgjcgasdj
-        - DATA_STORE_S2S_AUTHORISED_SERVICES=ccd_gw,ccd_data,ccd_ps,probate_backend
+        - DATA_STORE_S2S_AUTHORISED_SERVICES=ccd_gw,ccd_data,ccd_ps,probate_backend,probate_frontend,bulk_scan_orchestrator
         - DATA_STORE_DB_USE_SSL=false
         - DEFINITION_STORE_HOST=http://ccd-definition-store-api:4451
         - USER_PROFILE_HOST=http://ccd-user-profile-api:4453
@@ -261,7 +287,7 @@ services:
         - REFORM_TEAM=ccd
         - REFORM_ENVIRONMENT=local
         - APPINSIGHTS_INSTRUMENTATIONKEY=fake-key
-        - CCD_DM_DOMAIN=http://localhost:8080
+        - CCD_DM_DOMAIN=http://dm-store:8080
         - CCD_DEFAULTPRINTURL=http://localhost:3100/jurisdictions/:jid/case-types/:ctid/cases/:cid
         - ELASTIC_SEARCH_HOSTS=http://elasticsearch:9200
         - ELASTIC_SEARCH_DATA_NODES_HOSTS=http://elasticsearch:9200
@@ -311,8 +337,8 @@ services:
       - PROXY_DEFINITION_DATA=http://ccd-definition-store-api:4451/api/data
       - PROXY_DEFINITION_DISPLAY=http://ccd-definition-store-api:4451/api/display
       # this NEEDS to be your local ip address
-      - PROXY_PRINT_SERVICE=http://172.16.10.216:3100
-      - PROXY_DOCUMENT_MANAGEMENT=http://document-management-store:8080
+      - PROXY_PRINT_SERVICE=http://docker.for.mac.localhost:3100
+      - PROXY_DOCUMENT_MANAGEMENT=http://dm-store:8080
     ports:
       - 3453:3453
     depends_on:

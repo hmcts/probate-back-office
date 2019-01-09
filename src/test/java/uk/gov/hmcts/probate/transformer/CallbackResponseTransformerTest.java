@@ -24,6 +24,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.EstateItem;
 import uk.gov.hmcts.probate.model.ccd.raw.Payment;
 import uk.gov.hmcts.probate.model.ccd.raw.ProbateAliasName;
+import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.StopReason;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
@@ -31,12 +32,12 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
-import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 import uk.gov.hmcts.probate.model.fee.FeeServiceResponse;
 import uk.gov.hmcts.probate.service.StateChangeService;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -150,8 +151,9 @@ public class CallbackResponseTransformerTest {
     private static final String ADMIN_CLAUSE_LIMITATION = "Admin Clause Limitation";
     private static final String TOTAL_FEE = "6600";
 
+    private static final LocalDateTime scannedDate = LocalDateTime.parse("2018-01-01T12:34:56.123");
     private static final List<CollectionMember<Payment>> PAYMENTS_LIST = Arrays.asList(
-            new CollectionMember("id",
+            new CollectionMember<Payment>("id",
                     Payment.builder()
                             .amount("100")
                             .date("20/09/2018")
@@ -162,6 +164,22 @@ public class CallbackResponseTransformerTest {
                             .transactionId("TransactionId-123")
                             .build()));
 
+    private static final DocumentLink SCANNED_DOCUMENT_URL = DocumentLink.builder()
+            .documentBinaryUrl("http://somedoc")
+            .documentFilename("somedoc.pdf")
+            .documentUrl("http://somedoc/location")
+            .build();
+    
+    private static final List<CollectionMember<ScannedDocument>> SCANNED_DOCUMENTS_LIST = Arrays.asList(
+            new CollectionMember<ScannedDocument>("id",
+                    ScannedDocument.builder()
+                            .fileName("scanneddocument.pdf")
+                            .controlNumber("1234")
+                            .scannedDate(scannedDate)
+                            .type("other")
+                            .url(SCANNED_DOCUMENT_URL)
+                            .build()));
+    
     @InjectMocks
     private CallbackResponseTransformer underTest;
 
@@ -245,7 +263,8 @@ public class CallbackResponseTransformerTest {
                 .payments(PAYMENTS_LIST)
                 .boExaminationChecklistQ1(YES)
                 .boExaminationChecklistQ2(YES)
-                .boExaminationChecklistRequestQA(YES);
+                .boExaminationChecklistRequestQA(YES)
+                .scannedDocuments(SCANNED_DOCUMENTS_LIST);
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
@@ -803,9 +822,7 @@ public class CallbackResponseTransformerTest {
 
     @Test
     public void shouldGetPaperApplication() {
-        caseDataBuilder.applicationType(ApplicationType.SOLICITOR);
-        List<CollectionMember<ScannedDocument>> documents = new ArrayList<>();
-        documents.add(createScannedDocuments("0"));
+        caseDataBuilder.applicationType(ApplicationType.SOLICITOR);        
         List<CollectionMember<EstateItem>> estate = new ArrayList<>();
         estate.add(createEstateItems("0"));
         List<CollectionMember<AttorneyApplyingOnBehalfOf>> attorneyList = new ArrayList<>();
@@ -831,7 +848,6 @@ public class CallbackResponseTransformerTest {
                 .epaOrLpa(NO)
                 .epaRegistered(NO)
                 .domicilityCountry("Spain")
-                .scannedDocuments(documents)
                 .ukEstateItems(estate)
                 .attorneyOnBehalfOfNameAndAddress(attorneyList)
                 .adopted(YES)
@@ -899,6 +915,7 @@ public class CallbackResponseTransformerTest {
                 .applicationFeePaperForm("0")
                 .feeForCopiesPaperForm("0")
                 .totalFeePaperForm("0")
+                .scannedDocuments(SCANNED_DOCUMENTS_LIST)
                 .paperPaymentMethod("debitOrCredit")
                 .paymentReferenceNumberPaperform(IHT_REFERENCE)
                 .paperForm(YES);
@@ -938,18 +955,6 @@ public class CallbackResponseTransformerTest {
                 .comment("comment")
                 .documentLink(docLink)
                 .documentType(DocumentType.IHT).build();
-        return new CollectionMember<>(id, doc);
-    }
-
-    private CollectionMember<ScannedDocument> createScannedDocuments(String id) {
-        ScannedDocument doc = ScannedDocument.builder()
-                .controlNumber("")
-                .fileName("")
-                .scannedDate("")
-                .exceptionRecordReference("")
-                .type("")
-                .url("")
-                .build();
         return new CollectionMember<>(id, doc);
     }
 
@@ -1107,6 +1112,8 @@ public class CallbackResponseTransformerTest {
         assertEquals(YES, callbackResponse.getData().getBoExaminationChecklistQ1());
         assertEquals(YES, callbackResponse.getData().getBoExaminationChecklistQ2());
         assertEquals(YES, callbackResponse.getData().getBoExaminationChecklistRequestQA());
+        
+        assertEquals(SCANNED_DOCUMENTS_LIST, callbackResponse.getData().getScannedDocuments());
     }
 
     private void assertApplicationType(CallbackResponse callbackResponse, ApplicationType applicationType) {

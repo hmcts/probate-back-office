@@ -42,6 +42,10 @@ public class CaseMatchingService {
         String jsonQuery = getQueryTemplate()
                 .replace(":deceasedForenames", criteria.getDeceasedForenames())
                 .replace(":deceasedSurname", criteria.getDeceasedSurname())
+                .replace(":deceasedAliasForenames", criteria.getDeceasedForenames())
+                .replace(":deceasedAliasSurname", criteria.getDeceasedSurname())
+                .replace(":solsDeceasedAliases", criteria.getDeceasedAliases())
+                .replace(":legacyDeceasedAliases", criteria.getDeceasedAliases())
                 .replace(":deceasedDateOfBirth", criteria.getDeceasedDateOfBirth())
                 .replace(":deceasedDateOfDeath", criteria.getDeceasedDateOfDeath());
 

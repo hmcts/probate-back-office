@@ -68,6 +68,7 @@ public class CaseMatchingServiceTest {
 
         when(caseMatchingCriteria.getDeceasedForenames()).thenReturn("names");
         when(caseMatchingCriteria.getDeceasedSurname()).thenReturn("surname");
+        when(caseMatchingCriteria.getDeceasedAliases()).thenReturn("name surname");
         when(caseMatchingCriteria.getDeceasedDateOfBirth()).thenReturn("1900-01-01");
         when(caseMatchingCriteria.getDeceasedDateOfDeath()).thenReturn("2000-01-01");
 
