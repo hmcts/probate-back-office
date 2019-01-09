@@ -82,6 +82,7 @@
         "AddressLine2": "",
         "AddressLine3": ""
       },
+      "caseType": "gop",
       "deceasedAnyOtherNames": "No",
       "solsFeeAccountNumber": "1234",
       "willHasCodicils": "No",

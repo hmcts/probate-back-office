@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;
 import lombok.Data;
 import uk.gov.hmcts.probate.model.ApplicationType;
+import uk.gov.hmcts.probate.model.ccd.CaseMatch;
 import uk.gov.hmcts.probate.model.ccd.ProbateAddress;
 import uk.gov.hmcts.probate.model.ccd.ProbateFullAliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
@@ -31,6 +32,8 @@ public class ResponseStandingSearchData {
     private final String applicantSurname;
     private final String applicantEmailAddress;
     private final ProbateAddress applicantAddress;
+
+    private final List<CollectionMember<CaseMatch>> caseMatches;
 
     private final String numberOfCopies;
     private final String expiryDate;

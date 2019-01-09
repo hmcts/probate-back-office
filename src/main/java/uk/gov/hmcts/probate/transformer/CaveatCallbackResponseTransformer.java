@@ -3,6 +3,7 @@ package uk.gov.hmcts.probate.transformer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.model.ApplicationType;
+import uk.gov.hmcts.probate.model.ccd.CaseMatch;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatCallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
@@ -14,6 +15,9 @@ import uk.gov.hmcts.probate.model.ccd.raw.Document;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static java.util.Optional.ofNullable;
 import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
@@ -29,7 +33,7 @@ public class CaveatCallbackResponseTransformer {
     private static final String DEFAULT_REGISTRY_LOCATION = "Leeds";
 
     public CaveatCallbackResponse caveatRaised(CaveatCallbackRequest caveatCallbackRequest) {
-        CaveatDetails caveatDetails = caveatCallbackRequest.getCaveatDetails();
+        CaveatDetails caveatDetails = caveatCallbackRequest.getCaseDetails();
 
         ResponseCaveatData responseCaveatData = getResponseCaveatData(caveatDetails)
                 .expiryDate(dateTimeFormatter.format(LocalDate.now().plusMonths(CAVEAT_LIFESPAN)))
@@ -39,9 +43,9 @@ public class CaveatCallbackResponseTransformer {
     }
 
     public CaveatCallbackResponse generalMessage(CaveatCallbackRequest caveatCallbackRequest, Document document) {
-        CaveatDetails caveatDetails = caveatCallbackRequest.getCaveatDetails();
+        CaveatDetails caveatDetails = caveatCallbackRequest.getCaseDetails();
 
-        caveatDetails.getCaveatData().getDocumentsGenerated().add(new CollectionMember<>(null, document));
+        caveatDetails.getData().getDocumentsGenerated().add(new CollectionMember<>(null, document));
 
         ResponseCaveatData responseCaveatData = getResponseCaveatData(caveatDetails)
                 .messageContent("")
@@ -51,10 +55,26 @@ public class CaveatCallbackResponseTransformer {
     }
 
     public CaveatCallbackResponse transform(CaveatCallbackRequest callbackRequest) {
-        ResponseCaveatData responseCaveatData = getResponseCaveatData(callbackRequest.getCaveatDetails())
+        ResponseCaveatData responseCaveatData = getResponseCaveatData(callbackRequest.getCaseDetails())
                 .build();
 
         return transformResponse(responseCaveatData);
+    }
+
+    public CaveatCallbackResponse addMatches(CaveatCallbackRequest request, List<CaseMatch> newMatches) {
+        List<CollectionMember<CaseMatch>> storedMatches = request.getCaseDetails().getData().getCaseMatches();
+
+        // Removing case matches that have been already added
+        storedMatches.stream()
+                .map(CollectionMember::getValue).forEach(newMatches::remove);
+
+        storedMatches.addAll(newMatches.stream().map(CollectionMember::new).collect(Collectors.toList()));
+
+        storedMatches.sort(Comparator.comparingInt(m -> ofNullable(m.getValue().getValid()).orElse("").length()));
+
+        ResponseCaveatData.ResponseCaveatDataBuilder responseCaseDataBuilder = getResponseCaveatData(request.getCaseDetails());
+
+        return transformResponse(responseCaseDataBuilder.build());
     }
 
     private CaveatCallbackResponse transformResponse(ResponseCaveatData responseCaveatData) {
@@ -62,7 +82,7 @@ public class CaveatCallbackResponseTransformer {
     }
 
     private ResponseCaveatDataBuilder getResponseCaveatData(CaveatDetails caveatDetails) {
-        CaveatData caveatData = caveatDetails.getCaveatData();
+        CaveatData caveatData = caveatDetails.getData();
 
         return ResponseCaveatData.builder()
 
@@ -80,6 +100,8 @@ public class CaveatCallbackResponseTransformer {
                 .caveatorSurname(caveatData.getCaveatorSurname())
                 .caveatorEmailAddress(caveatData.getCaveatorEmailAddress())
                 .caveatorAddress(caveatData.getCaveatorAddress())
+
+                .caseMatches(caveatData.getCaseMatches())
 
                 .expiryDate(transformToString(caveatData.getExpiryDate()))
                 .messageContent(caveatData.getMessageContent())

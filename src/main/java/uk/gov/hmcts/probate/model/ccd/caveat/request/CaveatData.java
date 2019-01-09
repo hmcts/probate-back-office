@@ -3,6 +3,7 @@ package uk.gov.hmcts.probate.model.ccd.caveat.request;
 import lombok.Builder;
 import lombok.Data;
 import uk.gov.hmcts.probate.model.ApplicationType;
+import uk.gov.hmcts.probate.model.ccd.CaseMatch;
 import uk.gov.hmcts.probate.model.ccd.ProbateAddress;
 import uk.gov.hmcts.probate.model.ccd.ProbateFullAliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
@@ -57,6 +58,8 @@ public class CaveatData {
     // EVENT = cavUploadDocument
 
     private final List<CollectionMember<UploadDocument>> documentsUploaded;
+
+    private final List<CollectionMember<CaseMatch>> caseMatches = new ArrayList<>();
 
     // EVENT = misc
 
