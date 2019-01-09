@@ -62,7 +62,15 @@
           "id": "366406fe-e6c3-4bdf-8709-121f8f64c1f7"
         }
       ],
-      "solsSolicitorFirmPostcode": "firmpc",
+      "solsSolicitorAddress": {
+        "AddressLine1": "SolAddLn1",
+        "AddressLine2": "SolAddLn2",
+        "AddressLine3": "SolAddLn3",
+        "PostTown": "SolAddPT",
+        "County": "SolAddCounty",
+        "PostCode": "firmpc",
+        "Country": "SolAddCo"
+      },
       "deceasedForenames": "decfn",
       "willNumberOfCodicils": "1",
       "primaryApplicantIsApplying": "No",
@@ -76,7 +84,15 @@
     },
     "data_classification": {
       "deceasedDateOfDeath": "PUBLIC",
-      "solsSolicitorFirmPostcode": "PUBLIC",
+      "solsSolicitorAddress": {
+        "AddressLine1": "PUBLIC",
+        "AddressLine2": "PUBLIC",
+        "AddressLine3": "PUBLIC",
+        "PostTown": "PUBLIC",
+        "County": "PUBLIC",
+        "PostCode": "PUBLIC",
+        "Country": "PUBLIC"
+      },
       "solsSolicitorAppReference": "PUBLIC",
       "deceasedDateOfBirth": "PUBLIC",
       "deceasedForenames": "PUBLIC",
@@ -88,7 +104,15 @@
     "callback_response_status": null,
     "security_classifications": {
       "deceasedDateOfDeath": "PUBLIC",
-      "solsSolicitorFirmPostcode": "PUBLIC",
+      "solsSolicitorAddress": {
+        "AddressLine1": "PUBLIC",
+        "AddressLine2": "PUBLIC",
+        "AddressLine3": "PUBLIC",
+        "PostTown": "PUBLIC",
+        "County": "PUBLIC",
+        "PostCode": "PUBLIC",
+        "Country": "PUBLIC"
+      },
       "solsSolicitorAppReference": "PUBLIC",
       "deceasedDateOfBirth": "PUBLIC",
       "deceasedForenames": "PUBLIC",

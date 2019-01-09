@@ -40,25 +40,31 @@
 <body>
 <table>
     <tbody class="table-content">
-
-    {% if case_details.case_data.applcationType == "pa" %}
+    {% if case_details.case_data.applicationType == "Personal" %}
     <tr>
         <td colspan="1" class="legal-subheader">
-            {{case_details.case_data.primaryApplicantFullName}}<br/>
+            {% if case_details.case_data.primaryApplicantFullName != null %}{{ case_details.case_data.primaryApplicantFullName }}<br/> {% endif %}
+            {% if case_details.case_data.primaryApplicantForenames != null %}{{ case_details.case_data.primaryApplicantForenames }}{% endif %}
+            {% if case_details.case_data.primaryApplicantSurname != null %}{{ case_details.case_data.primaryApplicantSurname }}<br/> {% endif %}
             <p class=".ow">{{case_details.case_data.primaryApplicantAddress.addressLine1}}<br/>
+                {{case_details.case_data.primaryApplicantAddress.addressLine2}}<br/>
+                {{case_details.case_data.primaryApplicantAddress.postTown}}<br/>
+                {{case_details.case_data.primaryApplicantAddress.postCode}}<br/>
+                {{case_details.case_data.primaryApplicantAddress.country}}<br/>
             </p>
         </td>
     </tr>
     {% endif %}
-    {% if case_details.case_data.applcationType == "sol" %}
+    {% if case_details.case_data.applicationType == "Solicitor" %}
     <tr>
         <td colspan="1" class="legal-subheader">
-            {{case_details.case_data.primaryApplicantFullName}}<br/>
-            {{case_details.case_data.primaryApplicantAddress.addressLine1}}<br/>
-            {{case_details.case_data.primaryApplicantAddress.addressLine2}}<br/>
-            {{case_details.case_data.primaryApplicantAddress.postTown}}<br/>
-            {{case_details.case_data.primaryApplicantAddress.postCode}}<br/>
-            {{case_details.case_data.primaryApplicantAddress.country}}<br/>
+            {{case_details.case_data.solsSOTName}}<br/>
+            {{case_details.case_data.solsSolicitorFirmName}}<br/>
+            {{case_details.case_data.solsSolicitorAddress.addressLine1}}<br/>
+            {{case_details.case_data.solsSolicitorAddress.addressLine2}}<br/>
+            {{case_details.case_data.solsSolicitorAddress.postTown}}<br/>
+            {{case_details.case_data.solsSolicitorAddress.postCode}}<br/>
+            {{case_details.case_data.solsSolicitorAddress.country}}<br/>
         </td>
     </tr>
     {% endif %}

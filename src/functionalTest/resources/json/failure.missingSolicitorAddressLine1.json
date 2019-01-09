@@ -105,7 +105,6 @@
         }
       ],
       "solsSolicitorAddress": {
-        "AddressLine1": "SolAddLn1",
         "AddressLine2": "SolAddLn2",
         "AddressLine3": "SolAddLn3",
         "PostTown": "SolAddPT",

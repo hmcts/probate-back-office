@@ -103,10 +103,12 @@ public class FunctionalTestUtils {
         } catch (Exception e) {
             e.printStackTrace();
             try {
-                if (cosDoc != null)
+                if (cosDoc != null) {
                     cosDoc.close();
-                if (pdDoc != null)
+                }
+                if (pdDoc != null) {
                     pdDoc.close();
+                }
             } catch (Exception e1) {
                 e.printStackTrace();
             }
