@@ -1,6 +1,7 @@
 package uk.gov.hmcts.probate.model.ccd.raw;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.Assert;
 import org.junit.Test;

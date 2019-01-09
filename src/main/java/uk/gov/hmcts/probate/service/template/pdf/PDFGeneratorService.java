@@ -56,7 +56,6 @@ public class PDFGeneratorService {
     }
 
     private Map<String, Object> asMap(String placeholderValues) throws IOException {
-        return objectMapper.readValue(placeholderValues, new TypeReference<HashMap<String, Object>>() {
-        });
+        return objectMapper.readValue(placeholderValues, new TypeReference<HashMap<String, Object>>() {});
     }
 }

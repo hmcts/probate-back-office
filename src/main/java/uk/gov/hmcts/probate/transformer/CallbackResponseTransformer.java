@@ -159,7 +159,7 @@ public class CallbackResponseTransformer {
     public CallbackResponse transformCase(CallbackRequest callbackRequest) {
 
         boolean transform = callbackRequest.getCaseDetails().getData().getApplicationType() == ApplicationType.SOLICITOR;
-        
+
         ResponseCaseData responseCaseData = getResponseCaseData(callbackRequest.getCaseDetails(), transform)
                 .build();
 
@@ -171,7 +171,7 @@ public class CallbackResponseTransformer {
         ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), false);
         responseCaseDataBuilder.paperForm(ANSWER_YES);
         getCaseCreatorResponseCaseBuilder(callbackRequest.getCaseDetails().getData(), responseCaseDataBuilder);
-        
+
         return transformResponse(responseCaseDataBuilder.build());
     }
 

@@ -146,17 +146,17 @@ public class BusinessValidationController {
     public ResponseEntity<CallbackResponse> transformCaseDetails(
             @RequestBody CallbackRequest callbackRequest,
             BindingResult bindingResult) {
- 
+
         if (bindingResult.hasErrors()) {
             log.error(DEFAULT_LOG_ERROR, callbackRequest.getCaseDetails().getId(), bindingResult);
             throw new BadRequestException(INVALID_PAYLOAD, bindingResult);
         }
 
         CallbackResponse response = callbackResponseTransformer.transformCase(callbackRequest);
-        
+
         return ResponseEntity.ok(response);
     }
-    
+
     @PostMapping(path = "/paperForm", consumes = APPLICATION_JSON_UTF8_VALUE, produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> paperFormCaseDetails(
             @RequestBody CallbackRequest callbackRequest,
@@ -193,5 +193,3 @@ public class BusinessValidationController {
         }
     }
 }
-
-
