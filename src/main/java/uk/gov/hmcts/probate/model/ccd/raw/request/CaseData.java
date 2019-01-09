@@ -25,10 +25,10 @@ import uk.gov.hmcts.probate.model.ccd.raw.EstateItem;
 import uk.gov.hmcts.probate.model.ccd.raw.LegalStatement;
 import uk.gov.hmcts.probate.model.ccd.raw.Payment;
 import uk.gov.hmcts.probate.model.ccd.raw.ProbateAliasName;
+import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.StopReason;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
-import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotBlank;

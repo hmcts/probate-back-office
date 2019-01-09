@@ -15,6 +15,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import uk.gov.hmcts.probate.insights.AppInsights;
+import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
+import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
+import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
@@ -25,7 +28,11 @@ import uk.gov.hmcts.probate.util.TestUtils;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.List;
 
+import static org.hamcrest.Matchers.containsString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -82,6 +89,23 @@ public class BusinessValidationControllerTest {
     private static final String CASE_TRANSFORM_URL = "/case/transformCase";
     private static final String CASE_CHCEKLIST_URL = "/case/validateCheckListDetails";
     private static final String PAPER_FORM_URL = "/case/paperForm";
+    
+    private static final DocumentLink SCANNED_DOCUMENT_URL = DocumentLink.builder()
+            .documentBinaryUrl("http://somedoc")
+            .documentFilename("somedoc.pdf")
+            .documentUrl("http://somedoc/location")
+            .build();
+
+    private static final LocalDateTime scannedDate = LocalDateTime.parse("2018-01-01T12:34:56.123");
+    private static final List<CollectionMember<ScannedDocument>> SCANNED_DOCUMENTS_LIST = Arrays.asList(
+            new CollectionMember("id",
+                    ScannedDocument.builder()
+                            .fileName("scanneddocument.pdf")
+                            .controlNumber("1234")
+                            .scannedDate(scannedDate)
+                            .type("other")
+                            .url(SCANNED_DOCUMENT_URL)
+                            .build()));
 
     @Autowired
     private WebApplicationContext webApplicationContext;
@@ -137,7 +161,8 @@ public class BusinessValidationControllerTest {
                 .feeForNonUkCopies(FEE_FOR_NON_UK_COPIES)
                 .extraCopiesOfGrant(EXTRA_UK)
                 .outsideUKGrantCopies(EXTRA_OUTSIDE_UK)
-                .totalFee(TOTAL_FEE);
+                .totalFee(TOTAL_FEE)
+                .scannedDocuments(SCANNED_DOCUMENTS_LIST);
     }
 
     @Test
@@ -167,6 +192,7 @@ public class BusinessValidationControllerTest {
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
 
         String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
+        
         mockMvc.perform(post(CASE_VALIDATE_URL).content(json).contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(status().isBadRequest())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -333,6 +359,16 @@ public class BusinessValidationControllerTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
     }
 
+    @Test
+    public void shouldReturnScannedDocuments() throws Exception {
+        String scannedDocumentsJson = testUtils.getStringFromFile("scannedDocuments.json");
+
+        mockMvc.perform(post(CASE_TRANSFORM_URL).content(scannedDocumentsJson).contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(content().string(containsString("controlNumber\":\"1234")))
+                .andExpect(content().string(containsString("fileName\":\"scanneddocument.pdf")));
+    }
 
 }
 

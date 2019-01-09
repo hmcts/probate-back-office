@@ -1,9 +1,15 @@
 package uk.gov.hmcts.probate.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -12,6 +18,12 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import uk.gov.hmcts.probate.controller.validation.AmendCaseDetailsGroup;
 import uk.gov.hmcts.probate.controller.validation.ApplicationCreatedGroup;
 import uk.gov.hmcts.probate.controller.validation.ApplicationUpdatedGroup;
@@ -31,15 +43,6 @@ import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.validator.CaseworkerAmendValidationRule;
 import uk.gov.hmcts.probate.validator.CheckListAmendCaseValidationRule;
 import uk.gov.hmcts.probate.validator.ValidationRule;
-
-import javax.servlet.http.HttpServletRequest;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
-import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
-import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
-import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT;
 
 @Slf4j
 @Controller
@@ -151,7 +154,6 @@ public class BusinessValidationController {
 
         CallbackResponse response = callbackResponseTransformer.transformCase(callbackRequest);
 
-
         return ResponseEntity.ok(response);
     }
 
@@ -167,10 +169,8 @@ public class BusinessValidationController {
 
         CallbackResponse response = callbackResponseTransformer.paperForm(callbackRequest);
 
-
         return ResponseEntity.ok(response);
     }
-
 
     private CallbackResponse validateRequest(CallbackRequest callbackRequest,
                                              List<? extends ValidationRule> rules) {

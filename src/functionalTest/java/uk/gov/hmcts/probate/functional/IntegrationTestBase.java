@@ -17,8 +17,8 @@ public abstract class IntegrationTestBase {
     @Autowired
     protected SolCCDServiceAuthTokenGenerator serviceAuthTokenGenerator;
 
-    @Autowired
-    protected FunctionalTestUtils utils;
+    @Rule
+    public SpringIntegrationMethodRule springIntegration;
 
     private String solCcdServiceUrl;
     public static String evidenceManagementUrl;
@@ -38,9 +38,8 @@ public abstract class IntegrationTestBase {
     public static void setEvidenceManagementUrlAsBaseUri() {
         RestAssured.baseURI = evidenceManagementUrl;
     }
-
-    @Rule
-    public SpringIntegrationMethodRule springIntegration;
+    @Autowired
+    protected FunctionalTestUtils utils;
 
     public IntegrationTestBase() {
         this.springIntegration = new SpringIntegrationMethodRule();
