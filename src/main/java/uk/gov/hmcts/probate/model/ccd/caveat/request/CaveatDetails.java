@@ -11,7 +11,7 @@ public class CaveatDetails {
 
     @Valid
     @JsonProperty(value = "case_data")
-    private final CaveatData caveatData;
+    private final CaveatData data;
 
     @JsonProperty(value = "last_modified")
     private final String[] lastModified;

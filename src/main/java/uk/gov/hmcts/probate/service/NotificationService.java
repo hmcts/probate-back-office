@@ -63,7 +63,7 @@ public class NotificationService {
     public Document sendCaveatEmail(State state, CaveatDetails caveatDetails)
         throws NotificationClientException {
 
-        CaveatData caveatData = caveatDetails.getCaveatData();
+        CaveatData caveatData = caveatDetails.getData();
         Registry registry = registriesProperties.getRegistries().get(caveatData.getRegistryLocation().toLowerCase());
 
         String templateId = getTemplateId(state, caveatData.getApplicationType());
@@ -107,7 +107,7 @@ public class NotificationService {
     }
 
     private Map<String, String> getCaveatPersonalisation(CaveatDetails caveatDetails, Registry registry) {
-        CaveatData caveatData = caveatDetails.getCaveatData();
+        CaveatData caveatData = caveatDetails.getData();
 
         HashMap<String, String> personalisation = new HashMap<>();
 

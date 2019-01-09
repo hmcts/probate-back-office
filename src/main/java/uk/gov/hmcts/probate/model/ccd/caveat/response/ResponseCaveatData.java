@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;
 import lombok.Data;
 import uk.gov.hmcts.probate.model.ApplicationType;
+import uk.gov.hmcts.probate.model.ccd.CaseMatch;
 import uk.gov.hmcts.probate.model.ccd.ProbateAddress;
 import uk.gov.hmcts.probate.model.ccd.ProbateFullAliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
@@ -32,6 +33,8 @@ public class ResponseCaveatData {
     private final String caveatorSurname;
     private final String caveatorEmailAddress;
     private final ProbateAddress caveatorAddress;
+
+    private final List<CollectionMember<CaseMatch>> caseMatches;
 
     private final String expiryDate;
     private final String messageContent;

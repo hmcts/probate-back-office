@@ -15,7 +15,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.casematching.Case;
 import uk.gov.hmcts.probate.model.ccd.raw.casematching.MatchedCases;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
-import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
+import uk.gov.hmcts.probate.model.criterion.CaseMatchingCriteria;
 import uk.gov.hmcts.probate.service.evidencemanagement.header.HttpHeadersFactory;
 
 import java.net.URI;
@@ -38,7 +38,7 @@ public class CaseMatchingServiceTest {
     private CaseMatchingService caseMatchingService;
 
     @Mock
-    private CaseDetails caseDetails;
+    private CaseMatchingCriteria caseMatchingCriteria;
 
     @Mock
     private FileSystemResourceService fileSystemResourceService;
@@ -66,7 +66,11 @@ public class CaseMatchingServiceTest {
                 .deceasedAddress(SolsAddress.builder().postCode("SW12 0FA").build())
                 .build();
 
-        when(caseDetails.getData()).thenReturn(caseData);
+        when(caseMatchingCriteria.getDeceasedForenames()).thenReturn("names");
+        when(caseMatchingCriteria.getDeceasedSurname()).thenReturn("surname");
+        when(caseMatchingCriteria.getDeceasedAliases()).thenReturn("name surname");
+        when(caseMatchingCriteria.getDeceasedDateOfBirth()).thenReturn("1900-01-01");
+        when(caseMatchingCriteria.getDeceasedDateOfDeath()).thenReturn("2000-01-01");
 
         when(ccdGatewayConfiguration.getHost()).thenReturn("http://localhost");
         when(ccdGatewayConfiguration.getCaseMatchingPath()).thenReturn("/path");
@@ -85,7 +89,7 @@ public class CaseMatchingServiceTest {
 
     @Test
     public void findMatches() {
-        List<CaseMatch> caseMatches = caseMatchingService.findMatches(GRANT_OF_REPRESENTATION, caseDetails);
+        List<CaseMatch> caseMatches = caseMatchingService.findMatches(GRANT_OF_REPRESENTATION, caseMatchingCriteria);
 
         assertEquals(1, caseMatches.size());
         assertEquals("1", caseMatches.get(0).getCaseLink().getCaseReference());
