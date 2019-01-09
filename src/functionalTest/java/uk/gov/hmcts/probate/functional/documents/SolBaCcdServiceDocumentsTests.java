@@ -14,8 +14,9 @@ import static org.junit.Assert.assertTrue;
 @RunWith(SerenityRunner.class)
 public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
-    private static final String SOLICITOR_INFO1 = "Extracted by Solicitor Firm Name (Ref: 1231-3984-3949-0300) SolAddLn1, SolAddLn2, SolAddLn3, ";
-    private static final String SOLICITOR_INFO2 = "SolAddPT, SolAddCounty, KT10 0LA, SolAddCo";
+    private static final String SOLICITOR_INFO1 = "Extracted by Solicitor Firm Name (Ref: 1231-3984-3949-\n" +
+            "0300) SolAddLn1, SolAddLn2, SolAddLn3, SolAddPT,";
+    private static final String SOLICITOR_INFO2 = "SolAddCounty, KT10 0LA, SolAddCo";
     private static final String PA = "Extracted personally";
     private static final String PRIMARY_APPLICANT = "Executor Name 1 Executor Last Name 1";
     private static final String WILL_MESSAGE = "With A Codicil";
@@ -64,9 +65,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     public void verifySolicitorGenerateAdmonWillGrantDraftShouldReturnOkResponseCode() {
         validatePostSuccess("solicitorPayloadNotificationsAdmonWill.json", "/document/generate-grant-draft");
     }
-
-
-
+    
 
     @Test
     public void verifyPersonalApplicantGenerateGrantShouldReturnOkResponseCode() {
