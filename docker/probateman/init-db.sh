@@ -13,6 +13,7 @@ EOSQL
 psql -U probate_man -d probate_man  <<-EOSQL
   CREATE TABLE STANDING_SEARCHES_FLAT
   (
+   ID	bigint	,
    SS_NUMBER   	varchar(11)	,
    PROBATE_NUMBER   	varchar(11)	,
    PROBATE_VERSION 	int	,
@@ -22,7 +23,6 @@ psql -U probate_man -d probate_man  <<-EOSQL
    DATE_OF_BIRTH	date	,
    DATE_OF_DEATH1	date	,
    CCD_CASE_NO	varchar(20)	,
-   ID	bigint	,
    DECEASED_ADDRESS     	varchar(500)	,
    APPLICANT_ADDRESS	varchar(500)	,
    REGISTRY_REG_LOCATION_CODE	int	,
@@ -41,6 +41,7 @@ psql -U probate_man -d probate_man  <<-EOSQL
 
    CREATE TABLE WILLS_FLAT
    (
+    ID	bigint	,
     RK_NUMBER   	varchar(11)	,
     PROBATE_NUMBER   	varchar(11)	,
     PROBATE_VERSION 	int	,
@@ -52,12 +53,12 @@ psql -U probate_man -d probate_man  <<-EOSQL
     ALIAS_NAMES	varchar(32000)	,
     RECORD_KEEPERS_TEXT	varchar(32000)	,
     CCD_CASE_NO	varchar(20)	,
-    ID	bigint	,
     DNM_IND	varchar(1)
     );
 
     CREATE TABLE CAVEATS_FLAT
     (
+    ID	bigint	,
     CAVEAT_NUMBER   	varchar(11)	,
     PROBATE_NUMBER   	varchar(11)	,
     PROBATE_VERSION 	int	,
@@ -68,7 +69,6 @@ psql -U probate_man -d probate_man  <<-EOSQL
     DATE_OF_DEATH1	date	,
     ALIAS_NAMES	varchar(32000)	,
     CCD_CASE_NO	varchar(20)	,
-    ID	bigint	,
     CAVEAT_TYPE          	varchar(20)     ,
     CAVEAT_DATE_OF_ENTRY       	date  	,
     CAV_DATE_LAST_EXTENDED     	date 	,
@@ -89,6 +89,7 @@ psql -U probate_man -d probate_man  <<-EOSQL
 
     CREATE TABLE GRANT_APPLICATIONS_FLAT
     (
+    ID	bigint	,
     PROBATE_NUMBER   	varchar(11)	,
     PROBATE_VERSION 	int	,
     DECEASED_ID          	bigint,
@@ -106,7 +107,6 @@ psql -U probate_man -d probate_man  <<-EOSQL
     OTHER_INFORMATION_TEXT 	varchar(32000)	,
     LINKED_DECEASED_IDS	varchar(32000)	,
     CCD_CASE_NO	varchar(20)	,
-    ID	bigint	,
     DNM_IND	varchar(1)	,
     DECEASED_AGE_AT_DEATH	int	,
     DECEASED_DEATH_TYPE	varchar(40)	,
@@ -175,6 +175,7 @@ psql -U probate_man -d probate_man  <<-EOSQL
 
     CREATE TABLE GRANT_APPLICATIONS_DERIVED_FLAT
     (
+    ID	bigint	,
     PROBATE_NUMBER   	varchar(11)	,
     PROBATE_VERSION 	int	,
     DECEASED_ID          	bigint,
@@ -192,7 +193,6 @@ psql -U probate_man -d probate_man  <<-EOSQL
     OTHER_INFORMATION_TEXT 	varchar(32000)	,
     LINKED_DECEASED_IDS	varchar(32000)	,
     CCD_CASE_NO	varchar(20)	,
-    ID	bigint	,
     DNM_IND	varchar(1)	,
     DECEASED_AGE_AT_DEATH	int	,
     DECEASED_DEATH_TYPE	varchar(40)	,
@@ -261,6 +261,7 @@ psql -U probate_man -d probate_man  <<-EOSQL
 
 
 INSERT INTO GRANT_APPLICATIONS_FLAT(
+ID,
 PROBATE_NUMBER,
 PROBATE_VERSION,
 DECEASED_ID,
@@ -344,6 +345,7 @@ RESEAL_DATE,
 SOLICITOR_REFERENCE
 )
 VALUES (
+1,
 'Pro1',
 1,
 1,
@@ -429,6 +431,7 @@ false,
 
 INSERT INTO CAVEATS_FLAT
 (
+ID,
 CAVEAT_NUMBER,
 PROBATE_NUMBER,
 PROBATE_VERSION,
@@ -457,6 +460,7 @@ CAVEAT_EVENT_TEXT,
 DNM_IND
 )
 VALUES (
+2,
 'CAV_01',
 'PRO_01',
 1,
@@ -487,12 +491,12 @@ VALUES (
 
 INSERT INTO STANDING_SEARCHES_FLAT
 (
-SS_NUMBER, PROBATE_NUMBER, PROBATE_VERSION, DECEASED_ID, DECEASED_FORENAMES, DECEASED_SURNAME, DATE_OF_BIRTH, DATE_OF_DEATH1, CCD_CASE_NO,
+ID, SS_NUMBER, PROBATE_NUMBER, PROBATE_VERSION, DECEASED_ID, DECEASED_FORENAMES, DECEASED_SURNAME, DATE_OF_BIRTH, DATE_OF_DEATH1, CCD_CASE_NO,
 DECEASED_ADDRESS, APPLICANT_ADDRESS,
 REGISTRY_REG_LOCATION_CODE, SS_APPLICANT_FORENAME, SS_APPLICANT_SURNAME, SS_APPLICANT_HONOURS, SS_APPLICANT_TITLE, SS_DATE_LAST_EXTENDED, SS_DATE_OF_ENTRY, SS_DATE_OF_EXPIRY, SS_WITHDRAWN_DATE, STANDING_SEARCH_TEXT, DNM_IND, ALIAS_NAMES
 )
 VALUES (
-'SS-01','PRO-01', 1, 1, 'DeadFN1 DeadFN2', 'DeadSN', '01/01/1900', '01/01/2018', '1111222233334444',
+3,'SS-01','PRO-01', 1, 1, 'DeadFN1 DeadFN2', 'DeadSN', '01/01/1900', '01/01/2018', '1111222233334444',
 'DeadAddL1, DeadAddL2, DeadAddL3, DeadCity, DeadCountry, DeadPC','AppAddL1, AppAddL2, AppAddL3, AppCity, AppCountry, AppPC',
 1, 'SSFN', 'SSSN', 'Sir', 'Mr','01/01/2018', '01/01/2018', '01/01/2018', '01/01/2018', 'SS-Text', 'Y', 'SSAN1 SSAN2 SSAN3'
 );
@@ -500,10 +504,10 @@ VALUES (
 
 INSERT INTO WILLS_FLAT
 (
-RK_NUMBER, PROBATE_NUMBER, PROBATE_VERSION, DECEASED_ID, DECEASED_FORENAMES, DECEASED_SURNAME, DATE_OF_BIRTH, DATE_OF_DEATH1, ALIAS_NAMES,
+ID, RK_NUMBER, PROBATE_NUMBER, PROBATE_VERSION, DECEASED_ID, DECEASED_FORENAMES, DECEASED_SURNAME, DATE_OF_BIRTH, DATE_OF_DEATH1, ALIAS_NAMES,
 RECORD_KEEPERS_TEXT, CCD_CASE_NO, DNM_IND
 )VALUES (
-'RK-1', 'PRO-01', 1, 1, 'DeadFN1 DeadFN2', 'DeadSN', '01/01/1900', '01/01/2018', 'DeadAN1 DeadAN2',
+4,'RK-1', 'PRO-01', 1, 1, 'DeadFN1 DeadFN2', 'DeadSN', '01/01/1900', '01/01/2018', 'DeadAN1 DeadAN2',
 'RK-Text', '1111222233334444', 'Y'
 );
 

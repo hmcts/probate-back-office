@@ -10,6 +10,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import uk.gov.hmcts.probate.model.probateman.ProbateManType;
+import uk.gov.hmcts.probate.service.CaseMatchingService;
 import uk.gov.hmcts.probate.service.ProbateManService;
 import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
 
@@ -35,6 +36,9 @@ public class ProbateManControllerTest {
 
     @MockBean
     private ProbateManService probateManService;
+
+    @MockBean
+    private CaseMatchingService caseMatchingService;
 
     @Autowired
     private MockMvc mockMvc;

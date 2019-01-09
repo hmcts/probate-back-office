@@ -30,7 +30,7 @@ public class ProbateManFunctionalTests extends IntegrationTestBase {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private static final String EMAIL_PLACEHOLDER = "XXXXXXXXXX";
-    private static final String PASSWORD = "Probate123";
+    private static final String PROBATEMAN_DB_PASS = "Probate123";
     private static final String USER_GROUP_NAME = "caseworker-probate-issuer";
 
     private ObjectMapper objectMapper;
@@ -53,7 +53,7 @@ public class ProbateManFunctionalTests extends IntegrationTestBase {
             .email(email)
             .forename(forename)
             .surname(surname)
-            .password(PASSWORD)
+            .password(PROBATEMAN_DB_PASS)
             .roles(Arrays.asList(Role.builder().code("caseworker-probate").build()))
             .build();
 
@@ -67,12 +67,12 @@ public class ProbateManFunctionalTests extends IntegrationTestBase {
             .then()
             .statusCode(204);
 
-        headers = utils.getHeaders(email, PASSWORD);
+        headers = utils.getHeaders(email, PROBATEMAN_DB_PASS);
     }
 
     @Test
     @Sql(scripts = "/scripts/grant_application_insert.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/grant_application_clean_up.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    //@Sql(scripts = "/scripts/grant_application_clean_up.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void shouldCreateCcdCaseForGrantApplication() {
         SerenityRest.given()
             .relaxedHTTPSValidation()

@@ -19,6 +19,7 @@ import static uk.gov.hmcts.probate.model.CaseType.LEGACY;
 @Data
 @Builder
 public class CaseMatch implements Serializable {
+    //    private final String id;
     private final String fullName;
     private final String aliases;
     private final String dod;
@@ -27,6 +28,7 @@ public class CaseMatch implements Serializable {
     private final String comment;
     private final String type;
     private final CaseLink caseLink;
+    //    private final String doImport;
 
     private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ISO_DATE;
 

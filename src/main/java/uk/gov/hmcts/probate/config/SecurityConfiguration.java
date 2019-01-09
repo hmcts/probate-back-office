@@ -35,7 +35,7 @@ public class SecurityConfiguration {
         protected void configure(HttpSecurity http) throws Exception {
             http
                 .requestMatchers()
-                .antMatchers("/probateManTypes/**")
+                .antMatchers("/legacy/**")
                 .and()
                 .addFilter(filter)
                 .csrf().disable()

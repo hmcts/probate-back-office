@@ -219,5 +219,5 @@ public class ResponseCaseData {
     private final String wholeBloodCousinsSurvivedOverEighteen;
     private final String wholeBloodCousinsSurvivedUnderEighteen;
 
-
+    private final List<CollectionMember<CaseMatch>> legacySearchResultRows;
 }

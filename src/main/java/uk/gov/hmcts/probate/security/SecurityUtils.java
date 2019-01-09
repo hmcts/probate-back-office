@@ -36,9 +36,9 @@ public class SecurityUtils {
         if (SecurityContextHolder.getContext() == null) {
             throw new NoSecurityContextException();
         }
-        return "Bearer " + SecurityContextHolder.getContext()
+        return SecurityContextHolder.getContext()
             .getAuthentication()
-            .getCredentials();
+            .getCredentials().toString();
     }
 
     public String getUserId() {
