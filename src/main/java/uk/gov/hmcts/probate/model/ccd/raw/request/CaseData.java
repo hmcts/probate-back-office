@@ -211,6 +211,8 @@ public class CaseData {
 
     private final String ihtFormCompletedOnline;
 
+    private final String localPrint;
+
 
     //next steps
     @NotNull(groups = {NextStepsConfirmationGroup.class}, message = "{applicationFeeIsNull}")
@@ -424,6 +426,10 @@ public class CaseData {
 
     public boolean isDocsReceivedEmailNotificationRequested() {
         return YES.equals(getBoEmailDocsReceivedNotification());
+    }
+
+    public boolean isGrantForLocalPrinting() {
+        return YES.equals(localPrint);
     }
 
     public boolean isGrantIssuedEmailNotificationRequested() {
