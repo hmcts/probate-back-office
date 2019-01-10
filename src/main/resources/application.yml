@@ -60,6 +60,8 @@ spring:
   application:
     name: probate-sol-ccd
 
+spring.document.retriever.service.api.baseurl: localhost:8080
+
 spring.jackson.serialization.write_dates_as_timestamps: false
 
 ####Evidence management Service URL's
@@ -184,8 +186,22 @@ registries:
     emailReplyToId: "cdb5b02c-c6b6-490b-9367-8af3a3ae80b1"
     addressline1: Manchester Civil Justice Centre Ground Floor
     addressline2: 1 Bridge Street West PO Box 4240
-    town:  Manchester
+    town: Manchester
     postcode: M60 1WJ
+
+document:
+  retriever:
+    service:
+      api:
+        baseurl: localhost:8080
+
+idam:
+  s2s-auth:
+    url: ""
+send-letter:
+  url: ${SEND_LETTER_SERIVCE_BASEURL:http://localhost:8485}
+
+
 
 
 
