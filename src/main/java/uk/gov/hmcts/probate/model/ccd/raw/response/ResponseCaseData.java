@@ -219,4 +219,8 @@ public class ResponseCaseData {
     private final String wholeBloodCousinsSurvivedUnderEighteen;
     private final String grantSentToPrint;
     private final String letterId;
+
+    private final String boSendToBulkPrint;
+    private final String boSendToBulkPrintRequested;
+
 }

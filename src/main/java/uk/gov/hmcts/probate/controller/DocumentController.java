@@ -115,7 +115,7 @@ public class DocumentController {
                 break;
         }
 
-        if (!caseData.isGrantForLocalPrinting() && !caseData.getCaseType().equals(EDGE_CASE)) {
+        if (caseData.isSendForBulkPrintingRequested() && !caseData.getCaseType().equals(EDGE_CASE)) {
             SendLetterResponse response = bulkPrintService.sendToBulkPrint(callbackRequest, digitalGrantDocument);
             String letterId = response != null
                     ? response.letterId.toString()

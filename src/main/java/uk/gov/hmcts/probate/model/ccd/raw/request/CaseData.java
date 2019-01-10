@@ -172,6 +172,11 @@ public class CaseData {
     @Getter(lazy = true)
     private final String boEmailGrantIssuedNotification = YES;
 
+    @Getter(lazy = true)
+    private final String boSendToBulkPrint = YES;
+
+    private final String boSendToBulkPrintRequested;
+
     //EVENT = review
     private final DocumentLink solsLegalStatementDocument;
 
@@ -210,8 +215,6 @@ public class CaseData {
     private final String ihtReferenceNumber;
 
     private final String ihtFormCompletedOnline;
-
-    private final String localPrint;
 
 
     //next steps
@@ -428,8 +431,8 @@ public class CaseData {
         return YES.equals(getBoEmailDocsReceivedNotification());
     }
 
-    public boolean isGrantForLocalPrinting() {
-        return YES.equals(localPrint);
+    public boolean isSendForBulkPrintingRequested() {
+        return YES.equals(getBoSendToBulkPrint());
     }
 
     public boolean isGrantIssuedEmailNotificationRequested() {
