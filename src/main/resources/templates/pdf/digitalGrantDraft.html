@@ -131,9 +131,8 @@
             {{case_details.registryTown}}<br />
             {{case_details.registryPostcode}}<br />
             {{case_details.registryTelephone}}
-            {% endif %}
 
-            {% if case_details.case_data.registryLocation == "london" %}
+            {% elseif case_details.case_data.registryLocation == "london" %}
             High Court of Justice England and Wales<br />
             {{case_details.registryAddressLine1}}<br />
             {{case_details.registryAddressLine2}}<br />
