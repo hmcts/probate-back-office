@@ -57,10 +57,11 @@ public class DocumentController {
 
     @PostMapping(path = "/generate-grant-draft", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<CallbackResponse> generateGrantDraft(@RequestBody CallbackRequest callbackRequest) {
-        CaseData caseData = callbackRequest.getCaseDetails().getData();
+        CaseDetails caseDetails = callbackRequest.getCaseDetails();
+        CaseData caseData = caseDetails.getData();
         Document document;
         DocumentType template;
-        getRegistryDetails(callbackRequest);
+        getRegistryDetails(caseDetails);
 
         switch (caseData.getCaseType()) {
             case INTESTACY:
@@ -98,7 +99,7 @@ public class DocumentController {
         @Valid CaseData caseData = caseDetails.getData();
         DocumentType template;
         Document digitalGrantDocument;
-        getRegistryDetails(callbackRequest);
+        getRegistryDetails(caseDetails);
 
         switch (caseData.getCaseType()) {
             case EDGE_CASE:
@@ -141,19 +142,19 @@ public class DocumentController {
         return ResponseEntity.ok(callbackResponseTransformer.addDocuments(callbackRequest, documents));
     }
 
-    private CallbackRequest getRegistryDetails(CallbackRequest callbackRequest) {
+    private CaseDetails getRegistryDetails(CaseDetails caseDetails) {
         Registry registry = registriesProperties.getRegistries().get(
-                callbackRequest.getCaseDetails().getData().getRegistryLocation().toLowerCase());
-        callbackRequest.getCaseDetails().setRegistryTelephone(registry.getPhone());
-        callbackRequest.getCaseDetails().setRegistryAddressLine1(registry.getAddressLine1());
-        callbackRequest.getCaseDetails().setRegistryAddressLine2(registry.getAddressLine2());
-        callbackRequest.getCaseDetails().setRegistryPostcode(registry.getPostcode());
-        callbackRequest.getCaseDetails().setRegistryTown(registry.getTown());
+                caseDetails.getData().getRegistryLocation().toLowerCase());
+        caseDetails.setRegistryTelephone(registry.getPhone());
+        caseDetails.setRegistryAddressLine1(registry.getAddressLine1());
+        caseDetails.setRegistryAddressLine2(registry.getAddressLine2());
+        caseDetails.setRegistryPostcode(registry.getPostcode());
+        caseDetails.setRegistryTown(registry.getTown());
 
         Registry ctscRegistry = registriesProperties.getRegistries().get("ctsc");
-        callbackRequest.getCaseDetails().setCtscTelephone(ctscRegistry.getPhone());
+        caseDetails.setCtscTelephone(ctscRegistry.getPhone());
 
-        return callbackRequest;
+        return caseDetails;
     }
 
 }
