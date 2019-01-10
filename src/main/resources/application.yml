@@ -102,39 +102,90 @@ registries:
     name: Oxford Probate Registry
     phone: 0300 303 0648
     emailReplyToId: "3c2df3ad-6eaf-4395-b85c-1ef5c5c89d4f"
+    addressline1: Combined Court Building
+    addressline2: St Aldates
+    town: Oxford
+    postcode: OX1 1LY
   birmingham:
     name: Birmingham Probate Registry
     phone: 0121 681 3401
     emailReplyToId: "e3511bc5-98d8-457c-b49b-5b0c0ba4892a"
+    addressline1: The Priory Courts
+    addressline2: 33 Bull Street
+    town: Birmingham
+    postcode: B4 6DU
   manchester:
     name: Manchester Probate Registry
     phone: 0161 240 5701 / 0161 240 5702
     emailReplyToId: "cdb5b02c-c6b6-490b-9367-8af3a3ae80b1"
+    addressline1: Manchester Civil Justice Centre Ground Floor
+    addressline2: 1 Bridge Street West PO Box 4240
+    town:  Manchester
+    postcode: M60 1WJ
   leeds:
     name: Leeds Probate Registry
     phone: 0113 389 6133
     emailReplyToId: "1c5cc757-b7a7-4eaf-a69c-ce5bb34b63cf"
+    addressline1: York House
+    addressline2: York Place
+    town: Leeds
+    postcode: LS1 2BA
   liverpool:
     name: Liverpool Probate Registry
     phone: 0151 236 8264
     emailReplyToId: "102affef-13f1-4c9b-856d-ed183e71bd6f"
+    addressline1: The Queen Elizabeth II Law Courts
+    addressline2: Derby Square
+    town: Liverpool
+    postcode: L2 1XA
   brighton:
     name: Brighton Probate Registry
     phone: 01273 573510
     emailReplyToId: "2aebc9bd-6192-43af-a774-f2f17e69f14e"
+    addressline1: William Street
+    addressline2:
+    town: Brighton
+    postcode: BN2 0RF
   london:
     name: London Probate Department
     phone: 020 7421 8509
     emailReplyToId: "4b8b7c3f-6d7f-45c0-9a10-544a52c04e23"
+    addressline1: Principal Registry of the Family Division First Avenue House
+    addressline2: 42-49 High Holborn
+    town: London
+    postcode: WC1V 6NP
   cardiff:
     name: Probate Registry of Wales
     phone: 02920 474373
     emailReplyToId: "6d98cad6-adb4-4446-b37e-5c3f0441a0c8"
+    addressline1: 3rd Floor, Cardiff Magistrates’ Court Fitzalan Place
+    addressline2: Cardiff
+    town: South Wales
+    postcode: CF24 0RZ
   newcastle:
     name: Newcastle-Upon-Tyne Probate Registry
     phone: 0191 211 2170
     emailReplyToId: "21106760-70e7-4b61-adb8-7df6f653f8db"
+    addressline1: Newcastle DPR
+    addressline2: No 1 Waterloo Square
+    town: Newcastle-Upon-Tyne
+    postcode: NE1 4DR
   winchester:
     name: Winchester Probate Registry
     phone: 01962 814100
     emailReplyToId: "de5b8f8d-fb9c-4fd7-aa3a-3732a86a2e5d"
+    addressline1: 1st Floor
+    addressline2: Southside Offices The Law Courts
+    town: Winchester Hampshire
+    postcode: S023 9EL
+  ctsc:
+    name: CTSC
+    phone: 0300 303 0648
+    emailReplyToId: "cdb5b02c-c6b6-490b-9367-8af3a3ae80b1"
+    addressline1: Manchester Civil Justice Centre Ground Floor
+    addressline2: 1 Bridge Street West PO Box 4240
+    town:  Manchester
+    postcode: M60 1WJ
+
+
+

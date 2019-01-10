@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import uk.gov.hmcts.probate.config.properties.registries.RegistriesProperties;
+import uk.gov.hmcts.probate.config.properties.registries.Registry;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
@@ -42,6 +44,7 @@ public class DocumentController {
     private final CallbackResponseTransformer callbackResponseTransformer;
     private final DocumentService documentService;
     private final NotificationService notificationService;
+    private final RegistriesProperties registriesProperties;
     private static final String GRANT_OF_PROBATE = "gop";
     private static final String ADMON_WILL = "admonWill";
     private static final String INTESTACY = "intestacy";
@@ -52,6 +55,16 @@ public class DocumentController {
         CaseData caseData = callbackRequest.getCaseDetails().getData();
         Document document;
         DocumentType template;
+
+        Registry registry = registriesProperties.getRegistries().get(callbackRequest.getCaseDetails().getData().getRegistryLocation().toLowerCase());
+        callbackRequest.getCaseDetails().setRegistryTelephone(registry.getPhone());
+        callbackRequest.getCaseDetails().setRegistryAddressLine1(registry.getAddressLine1());
+        callbackRequest.getCaseDetails().setRegistryAddressLine2(registry.getAddressLine2());
+        callbackRequest.getCaseDetails().setRegistryPostcode(registry.getTown());
+        callbackRequest.getCaseDetails().setRegistryTown(registry.getPostcode());
+
+        Registry ctscRegistry = registriesProperties.getRegistries().get("ctsc");
+        callbackRequest.getCaseDetails().setCtscTelephone(ctscRegistry.getPhone());
 
         switch (caseData.getCaseType()) {
             case INTESTACY:
@@ -90,6 +103,16 @@ public class DocumentController {
         List<Document> documents = new ArrayList<>();
         DocumentType template;
         Document digitalGrantDocument;
+
+        Registry registry = registriesProperties.getRegistries().get(callbackRequest.getCaseDetails().getData().getRegistryLocation().toLowerCase());
+        callbackRequest.getCaseDetails().setRegistryTelephone(registry.getPhone());
+        callbackRequest.getCaseDetails().setRegistryAddressLine1(registry.getAddressLine1());
+        callbackRequest.getCaseDetails().setRegistryAddressLine2(registry.getAddressLine2());
+        callbackRequest.getCaseDetails().setRegistryPostcode(registry.getTown());
+        callbackRequest.getCaseDetails().setRegistryTown(registry.getPostcode());
+
+        Registry ctscRegistry = registriesProperties.getRegistries().get("ctsc");
+        callbackRequest.getCaseDetails().setCtscTelephone(ctscRegistry.getPhone());
 
         switch (caseData.getCaseType()) {
             case EDGE_CASE:
