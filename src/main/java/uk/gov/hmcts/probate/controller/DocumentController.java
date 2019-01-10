@@ -94,12 +94,10 @@ public class DocumentController {
     public ResponseEntity<CallbackResponse> generateGrant(@RequestBody CallbackRequest callbackRequest)
             throws NotificationClientException {
 
-        List<Document> documents = new ArrayList<>();
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
         @Valid CaseData caseData = caseDetails.getData();
         DocumentType template;
         Document digitalGrantDocument;
-
         getRegistryDetails(callbackRequest);
 
         switch (caseData.getCaseType()) {
@@ -129,6 +127,7 @@ public class DocumentController {
             callbackResponseTransformer.transformWithBulkPrintComplete(callbackRequest, letterId);
         }
 
+        List<Document> documents = new ArrayList<>();
         documents.add(digitalGrantDocument);
 
         DocumentType[] documentTypes = {DIGITAL_GRANT_DRAFT, INTESTACY_GRANT_DRAFT, ADMON_WILL_GRANT_DRAFT};
@@ -142,8 +141,9 @@ public class DocumentController {
         return ResponseEntity.ok(callbackResponseTransformer.addDocuments(callbackRequest, documents));
     }
 
-    private CallbackRequest getRegistryDetails (CallbackRequest callbackRequest) {
-        Registry registry = registriesProperties.getRegistries().get(callbackRequest.getCaseDetails().getData().getRegistryLocation().toLowerCase());
+    private CallbackRequest getRegistryDetails(CallbackRequest callbackRequest) {
+        Registry registry = registriesProperties.getRegistries().get(
+                callbackRequest.getCaseDetails().getData().getRegistryLocation().toLowerCase());
         callbackRequest.getCaseDetails().setRegistryTelephone(registry.getPhone());
         callbackRequest.getCaseDetails().setRegistryAddressLine1(registry.getAddressLine1());
         callbackRequest.getCaseDetails().setRegistryAddressLine2(registry.getAddressLine2());
