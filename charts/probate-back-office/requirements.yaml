@@ -1,0 +1,8 @@
+dependencies:
+  - name: java
+    version: 0.0.9
+    repository: '@hmcts'
+  - name: ccd
+    version: '0.2.1'
+    repository: '@hmcts'
+    
