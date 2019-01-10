@@ -188,13 +188,13 @@
             {% endif %} made an application to this Court for a grant of administration (with will) and declared the following information.
             <p>
                 {% if case_details.case_data.boDeceasedTitle != null and case_details.case_data.boDeceasedTitle != "" %}{{ case_details.case_data.boDeceasedTitle }}{% endif %}<strong>{{case_details.case_data.deceasedForenames}} {{case_details.case_data.deceasedSurname}}</strong> {% if case_details.case_data.boDeceasedHonours != null and case_details.case_data.boDeceasedHonours != "" %}{{ case_details.case_data.boDeceasedHonours }}{% endif %}
-                of {% if case_details.case_data.deceasedAddress.AddressLine1 != null and case_details.case_data.deceasedAddress.AddressLine1 != "" %}{{ case_details.case_data.deceasedAddress.AddressLine1}}{% endif %}
+                of <strong>{% if case_details.case_data.deceasedAddress.AddressLine1 != null and case_details.case_data.deceasedAddress.AddressLine1 != "" %}{{ case_details.case_data.deceasedAddress.AddressLine1}}{% endif %}
                 {% if case_details.case_data.deceasedAddress.AddressLine2 != null and case_details.case_data.deceasedAddress.AddressLine2 != "" %} {{case_details.case_data.deceasedAddress.AddressLine2}}{% endif %}
                 {% if case_details.case_data.deceasedAddress.AddressLine3 != null and case_details.case_data.deceasedAddress.AddressLine3 != "" %} {{case_details.case_data.deceasedAddress.AddressLine3}}{% endif %}
                 {% if case_details.case_data.deceasedAddress.PostTown != null and case_details.case_data.deceasedAddress.PostTown != "" %} {{case_details.case_data.deceasedAddress.PostTown}}{% endif %}
                 {% if case_details.case_data.deceasedAddress.County != null and case_details.case_data.deceasedAddress.County != "" %} {{case_details.case_data.deceasedAddress.County}}{% endif %}
                 {% if case_details.case_data.deceasedAddress.PostCode != null and case_details.case_data.deceasedAddress.PostCode != ""%} {{case_details.case_data.deceasedAddress.PostCode}}{% endif %}
-                {% if case_details.case_data.deceasedAddress.Country != null and case_details.case_data.deceasedAddress.Country != ""%} {{case_details.case_data.deceasedAddress.Country}}{% endif %}
+                {% if case_details.case_data.deceasedAddress.Country != null and case_details.case_data.deceasedAddress.Country != ""%} {{case_details.case_data.deceasedAddress.Country}}{% endif %}</strong>
                 <br />
                 {% if case_details.case_data.solsDeceasedAliasNamesList != null and case_details.case_data.solsDeceasedAliasNamesList != "" %}{% for alias in case_details.case_data.solsDeceasedAliasNamesList %}{% if loop.first %}Otherwise {{alias.value.SolsAliasname}}{% else %}, {{alias.value.SolsAliasname}}{% endif %}{% endfor %}{% endif %}
                 <br/>

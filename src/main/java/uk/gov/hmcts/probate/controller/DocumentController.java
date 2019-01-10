@@ -55,16 +55,7 @@ public class DocumentController {
         CaseData caseData = callbackRequest.getCaseDetails().getData();
         Document document;
         DocumentType template;
-
-        Registry registry = registriesProperties.getRegistries().get(callbackRequest.getCaseDetails().getData().getRegistryLocation().toLowerCase());
-        callbackRequest.getCaseDetails().setRegistryTelephone(registry.getPhone());
-        callbackRequest.getCaseDetails().setRegistryAddressLine1(registry.getAddressLine1());
-        callbackRequest.getCaseDetails().setRegistryAddressLine2(registry.getAddressLine2());
-        callbackRequest.getCaseDetails().setRegistryPostcode(registry.getTown());
-        callbackRequest.getCaseDetails().setRegistryTown(registry.getPostcode());
-
-        Registry ctscRegistry = registriesProperties.getRegistries().get("ctsc");
-        callbackRequest.getCaseDetails().setCtscTelephone(ctscRegistry.getPhone());
+        getRegistryDetails(callbackRequest);
 
         switch (caseData.getCaseType()) {
             case INTESTACY:
@@ -104,15 +95,7 @@ public class DocumentController {
         DocumentType template;
         Document digitalGrantDocument;
 
-        Registry registry = registriesProperties.getRegistries().get(callbackRequest.getCaseDetails().getData().getRegistryLocation().toLowerCase());
-        callbackRequest.getCaseDetails().setRegistryTelephone(registry.getPhone());
-        callbackRequest.getCaseDetails().setRegistryAddressLine1(registry.getAddressLine1());
-        callbackRequest.getCaseDetails().setRegistryAddressLine2(registry.getAddressLine2());
-        callbackRequest.getCaseDetails().setRegistryPostcode(registry.getTown());
-        callbackRequest.getCaseDetails().setRegistryTown(registry.getPostcode());
-
-        Registry ctscRegistry = registriesProperties.getRegistries().get("ctsc");
-        callbackRequest.getCaseDetails().setCtscTelephone(ctscRegistry.getPhone());
+        getRegistryDetails(callbackRequest);
 
         switch (caseData.getCaseType()) {
             case EDGE_CASE:
@@ -146,6 +129,20 @@ public class DocumentController {
         }
 
         return ResponseEntity.ok(callbackResponseTransformer.addDocuments(callbackRequest, documents));
+    }
+
+    private CallbackRequest getRegistryDetails (CallbackRequest callbackRequest) {
+        Registry registry = registriesProperties.getRegistries().get(callbackRequest.getCaseDetails().getData().getRegistryLocation().toLowerCase());
+        callbackRequest.getCaseDetails().setRegistryTelephone(registry.getPhone());
+        callbackRequest.getCaseDetails().setRegistryAddressLine1(registry.getAddressLine1());
+        callbackRequest.getCaseDetails().setRegistryAddressLine2(registry.getAddressLine2());
+        callbackRequest.getCaseDetails().setRegistryPostcode(registry.getPostcode());
+        callbackRequest.getCaseDetails().setRegistryTown(registry.getTown());
+
+        Registry ctscRegistry = registriesProperties.getRegistries().get("ctsc");
+        callbackRequest.getCaseDetails().setCtscTelephone(ctscRegistry.getPhone());
+
+        return callbackRequest;
     }
 
 }

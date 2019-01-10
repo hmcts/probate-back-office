@@ -98,7 +98,7 @@ registries:
     emailReplyToId: "manchester-emailReplyToId"
     addressline1: Manchester Civil Justice Centre Ground Floor
     addressline2: 1 Bridge Street West PO Box 4240
-    town:  Manchester
+    town: Manchester
     postcode: M60 1WJ
   leeds:
     name: Leeds Probate Registry
