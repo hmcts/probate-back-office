@@ -5,28 +5,17 @@
 String product = "probate"
 String component = "back-office"
 
-
-
-def secrets = [
-        'probate-${env}'      : [
-                secret('serviceAuthProviderBaseUrl', 'SERVICE_AUTH_PROVIDER_BASE_URL'),
-                secret('userAuthProviderOauth2Url', 'USER_AUTH_PROVIDER_OAUTH2_URL'),
-                secret('evidenceManagementUrl', 'EVIDENCE_MANAGEMENT_URL'),
-                secret('idamUserId', 'IDAM_USER_ID'),
-                secret('s2sAuthTotpSecret', 'S2S_AUTH_TOTP_SECRET'),
-                secret('probate-bo-govNotifyApiKey', 'PROBATE_BO_NOTIFY_KEY'),
-                secret('pdf-service-grantSignatureBase64-first', 'BO_GRANT_SIG_FIRST'),
-                secret('pdf-service-grantSignatureBase64-last','BO_GRANT_SIG_LAST'),
-                secret('ccd-gateway-host','CCD_GATEWAY_HOST')
-        ],
-        's2s-${env}'      : [
-                secret('microservicekey-ccd-data', 'DATA_STORE_S2S_KEY'),
-                secret('microservicekey-ccd-definition', 'DEFINITION_STORE_S2S_KEY'),
-                secret('microservicekey-ccd-gw', 'API_GATEWAY_S2S_KEY')
-        ],
-        'ccd-${env}'      : [
-                secret('ccd-api-gateway-oauth2-client-secret', 'API_GATEWAY_IDAM_SECRET')
-        ]
+List<LinkedHashMap<String, Object>> secrets = [
+ 
+    secret('serviceAuthProviderBaseUrl', 'SERVICE_AUTH_PROVIDER_BASE_URL'),
+    secret('userAuthProviderOauth2Url', 'USER_AUTH_PROVIDER_OAUTH2_URL'),
+    secret('evidenceManagementUrl', 'EVIDENCE_MANAGEMENT_URL'),
+    secret('idamUserId', 'IDAM_USER_ID'),
+    secret('s2sAuthTotpSecret', 'S2S_AUTH_TOTP_SECRET'),
+    secret('probate-bo-govNotifyApiKey', 'PROBATE_BO_NOTIFY_KEY'),
+    secret('pdf-service-grantSignatureBase64-first', 'BO_GRANT_SIG_FIRST'),
+    secret('pdf-service-grantSignatureBase64-last','BO_GRANT_SIG_LAST'),
+    secret('ccd-gateway-host','CCD_GATEWAY_HOST')
 ]
 
 static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
@@ -40,12 +29,10 @@ static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
 
 withPipeline("java", product, component) {
   env.APPINSIGHTS_INSTRUMENTATIONKEY=false
-  //setVaultName('probate')
-  loadVaultSecrets(secrets)
+  setVaultName('probate')
   enableDockerBuild()
-  //enableDeployToAKS()
-  installCharts()
-
+  enableDeployToAKS()
+  loadVaultSecrets(secrets)
 
   enableSlackNotifications('#probate-jenkins')
     before('buildinfra:prod') {
@@ -111,4 +98,5 @@ withPipeline("java", product, component) {
     ]
   }
 }
+
 
