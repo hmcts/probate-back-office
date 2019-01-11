@@ -11,6 +11,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class WillLodgementMapperTest {
 
     public static final String RK_NUMBER = "234342";
+    public static final String FORENAMES = "WLFN1 WLFN2";
+    public static final String SURNAME = "WLSN";
     private WillLodgementMapper willLodgementMapper;
 
     @Before
@@ -22,10 +24,14 @@ public class WillLodgementMapperTest {
     public void shouldMapToCcdData() {
         WillLodgement willLodgement = new WillLodgement();
         willLodgement.setRkNumber(RK_NUMBER);
+        willLodgement.setDeceasedForenames(FORENAMES);
+        willLodgement.setDeceasedSurname(SURNAME);
 
         WillLodgementData expectedWillLodgementData = WillLodgementData.builder()
-            .wlApplicantReferenceNumber(RK_NUMBER)
-            .build();
+                .wlApplicantReferenceNumber(RK_NUMBER)
+                .wlApplicantForenames(FORENAMES)
+                .wlApplicantSurname(SURNAME)
+                .build();
 
         WillLodgementData willLodgementData = willLodgementMapper.toCcdData(willLodgement);
 
