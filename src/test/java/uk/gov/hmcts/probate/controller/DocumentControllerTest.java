@@ -159,6 +159,21 @@ public class DocumentControllerTest {
     }
 
     @Test
+    public void shouldNotPrintDigitalGrantIfBulkPrint() throws Exception {
+
+        String solicitorPayload = testUtils.getStringFromFile("payloadWithEdgeCase.json");
+
+        mockMvc.perform(post("/document/generate-grant")
+                .content(solicitorPayload)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("data")));
+
+        doNothing().when(documentService).expire(any(CallbackRequest.class), eq(DIGITAL_GRANT_DRAFT));
+        verify(documentService).expire(any(CallbackRequest.class), eq(DIGITAL_GRANT_DRAFT));
+    }
+
+    @Test
     public void generateGrantDraftIntestacy() throws Exception {
 
         String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadNotificationsIntestacy.json");
