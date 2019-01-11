@@ -172,6 +172,7 @@ public class CaseData {
     @Getter(lazy = true)
     private final String boEmailGrantIssuedNotification = YES;
 
+    @SuppressWarnings("squid:S1170")
     @Getter(lazy = true)
     private final String boSendToBulkPrint = YES;
 
