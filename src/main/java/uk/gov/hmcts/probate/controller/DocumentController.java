@@ -35,6 +35,7 @@ import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_DRAFT;
+import static uk.gov.hmcts.probate.model.DocumentType.WILL_LODGEMENT_DEPOSIT_RECEIPT;
 import static uk.gov.hmcts.probate.model.State.GRANT_ISSUED;
 
 @RequiredArgsConstructor
@@ -134,5 +135,15 @@ public class DocumentController {
             documents.add(grantIssuedSentEmail);
         }
         return ResponseEntity.ok(callbackResponseTransformer.addDocuments(callbackRequest, documents));
+    }
+
+    @PostMapping(path = "/generate-deposit-receipt", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<CallbackResponse> generateDepositReceipt(@RequestBody CallbackRequest callbackRequest) {
+        Document document;
+        DocumentType template = WILL_LODGEMENT_DEPOSIT_RECEIPT;
+        document = pdfManagementService.generateAndUpload(callbackRequest, template);
+
+        return ResponseEntity.ok(callbackResponseTransformer.addDocuments(callbackRequest,
+                Arrays.asList(document)));
     }
 }

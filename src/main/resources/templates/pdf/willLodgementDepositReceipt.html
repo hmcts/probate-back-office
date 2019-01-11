@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <title th:remove="all" th:text="${title}">Grant of Probate</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <style type="text/css">
+
+        body {
+            font-family: "Times New Roman", sans-serif;
+        }
+
+        .table-content {
+            display: block;
+            padding-top: 8px;
+        }
+
+        .legal-header {
+            font-size: 1.5em;
+            text-align: center;
+        }
+
+        .legal-subheader {
+            font-size: 1.2em;
+            text-align: center;
+        }
+
+        .legal-msg {
+            font-size: 0.8em;
+            text-align: center;
+        }
+
+        .legal-body {
+            font-size: 0.9em;
+            text-align: left;
+        }
+
+        .camelCase {
+            text-transform: capitalize;
+        }
+
+        .upperCase {
+            text-transform: uppercase;
+        }
+
+        .circle {
+            border-radius: 50%;
+            border: 1px solid black;
+            height: 200px;
+            width: 200px;
+            float: right;
+        }
+
+        .indent {
+            padding-left: 55px;
+        }
+
+        .andGap {
+            margin-left: -55px;
+            margin-right: 27px;
+        }
+
+        #watermark {
+            height: 600px;
+            width: 600px;
+            background-position: center;
+            z-index: -1;
+            position: absolute;
+            overflow: hidden;
+            top: 30%;
+            text-align: center;
+            color: #ff8080;
+            margin-left: 100px;
+        }
+
+        .center {
+            display: block;
+            margin: 0 auto;
+            height: 140px;
+            width: 200px;
+        }
+
+    </style>
+</head>
+<body>
+<table>
+    <tbody class="table-content">
+
+    <tr>
+        <td colspan="2" class="legal-header">
+            <Strong>IN THE HIGH COURT OF JUSTICE</Strong><br/>
+            <Strong>FAMILY DIVISION</Strong><br/>
+            <Strong>(PROBATE)</Strong>
+        </td>
+
+    </tr>
+    <tr/>
+    <tr>
+        <td colspan="2" class="legal-subheader">
+            <strong><u>CERTIFICATE OF DEPOSIT WILL</u></strong><br/>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2" class="legal-body">
+            <p> It is herby certified that the Will dated XXXXX</p> <br />
+            <p> of XXXX</p>
+            <p> of </p>
+            <p> in which XXXXX</p>
+            <p>of XXXX </p>
+            <p>are appointed executors has been lodged at XXXX District Probate Registry for deposit in then Principle Registry of the Family Division, 7th Floor First Avenue House 42-49 High Holborn London WC1V 6NP for safe custody pursuant to section 126 of the Senior Court Act 1981.</p>
+            <p>Except by leave of theDistrict Judge of the Principle Registry the will may not be given out during the lifetime of the testator </p>
+        </td>
+    </tr>
+
+    <tr>
+        <td> Dated this XXXX</td>
+
+    </tr>
+
+    <tr>
+        <td style="text-align: right"> SIGNATURE</td>
+    </tr>
+    <tr>
+        <td style="text-align: right"><p>REGISTRAR/DISTRICT JUDGE</p></td>
+
+    </tr>
+    <tr>
+        <td>
+        <P><U>NOTE TO TESTATOR:</U></P>
+        <p>It is important to retain this Certificate of Deposit: It will be necessary to produce it to the Registry on any application being made by the Testator to withdraw the depsoited will.</p>
+        </td>
+    </tr>
+
+    <tr>
+        <td><p>Record Keep Reference - </p></td>
+
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
