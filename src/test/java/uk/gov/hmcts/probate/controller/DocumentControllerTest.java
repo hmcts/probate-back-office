@@ -48,6 +48,7 @@ import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.EDGE_CASE;
 import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_DRAFT;
+import static uk.gov.hmcts.probate.model.DocumentType.WILL_LODGEMENT_DEPOSIT_RECEIPT;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -104,6 +105,8 @@ public class DocumentControllerTest {
                 .thenReturn(Document.builder().documentType(ADMON_WILL_GRANT).build());
         when(pdfManagementService.generateAndUpload(any(CallbackRequest.class), eq(EDGE_CASE)))
                 .thenReturn(Document.builder().documentType(EDGE_CASE).build());
+        when(pdfManagementService.generateAndUpload(any(CallbackRequest.class), eq(WILL_LODGEMENT_DEPOSIT_RECEIPT)))
+                .thenReturn(Document.builder().documentType(WILL_LODGEMENT_DEPOSIT_RECEIPT).build());
 
         when(notificationService.sendEmail(any(State.class), any(CaseDetails.class))).thenReturn(document);
     }
@@ -236,6 +239,21 @@ public class DocumentControllerTest {
         verify(documentService).expire(ArgumentMatchers.any(CallbackRequest.class), eq(ADMON_WILL_GRANT_DRAFT));
         verify(documentService).expire(ArgumentMatchers.any(CallbackRequest.class), eq(DIGITAL_GRANT_DRAFT));
         verify(documentService).expire(ArgumentMatchers.any(CallbackRequest.class), eq(INTESTACY_GRANT_DRAFT));
+    }
+
+    @Test
+    public void generateWillLodgementReceipt() throws Exception {
+
+        String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadNotifications.json");
+
+        mockMvc.perform(post("/document/generate-deposit-receipt")
+                .content(solicitorPayload)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("data")));
+
+        verify(pdfManagementService).generateAndUpload(any(CallbackRequest.class), eq(WILL_LODGEMENT_DEPOSIT_RECEIPT));
+
     }
 
 }

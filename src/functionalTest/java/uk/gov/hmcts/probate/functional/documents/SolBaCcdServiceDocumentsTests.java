@@ -35,6 +35,22 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     private static final String IHT_GROSS = "10,000";
     private static final String GOP = "Grant of Probate";
 
+    private static final String WL_APPLICANT_NAME = "Grant of Probate";
+    private static final String WL_APPLICANT_ADDRESS = "Grant of Probate";
+    private static final String WL_EX1_NAME = "Grant of Probate";
+    private static final String WL_EX1_ADDRESS = "Grant of Probate";
+    private static final String WL_EX2_NAME = "Grant of Probate";
+    private static final String WL_EX2_ADDRESS = "Grant of Probate";
+    private static final String WL_EX3_NAME = "Grant of Probate";
+    private static final String WL_EX3_ADDRESS = "Grant of Probate";
+    private static final String WL_EX4_NAME = "Grant of Probate";
+    private static final String WL_EX4_ADDRESS = "Grant of Probate";
+    private static final String WL_WILL_DATE = "Grant of Probate";
+    private static final String WL_CURRENT_DATE = "Grant of Probate";
+    private static final String WL_CCD_DATE = "Grant of Probate";
+    private static final String WL_REGISTRY_LOCATION = "Grant of Probate";
+    private static final String WL_LONDON_LOCATION = "Grant of Probate";
+
     @Test
     public void verifySolicitorGenerateGrantShouldReturnOkResponseCode() {
         validatePostSuccess("solicitorPayloadNotifications.json", "/document/generate-grant");
@@ -461,5 +477,30 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     }
 
+    @Test
+    public void verifyWillLodgementDepositReceiptShouldReturnOkResponseCode() {
+        validatePostSuccess("solicitorPayloadNotificationsAdmonWill.json", "/document/generate-deposit-receipt");
+    }
+
+    @Test
+    public void verifyWillLodgementDepositReceiptFourExecutors() {
+        String response = generateDocument("solicitorPayloadNotificationsAdmonWill.json", "/document/generate-deposit-receipt");
+
+        assertTrue(response.contains(WL_APPLICANT_NAME));
+        assertTrue(response.contains(WL_APPLICANT_ADDRESS));
+        assertTrue(response.contains(WL_EX1_NAME));
+        assertTrue(response.contains(WL_EX1_ADDRESS));
+        assertTrue(response.contains(WL_EX2_NAME));
+        assertTrue(response.contains(WL_EX2_ADDRESS));
+        assertTrue(response.contains(WL_EX3_NAME));
+        assertTrue(response.contains(WL_EX3_ADDRESS));
+        assertTrue(response.contains(WL_EX4_NAME));
+        assertTrue(response.contains(WL_EX4_ADDRESS));
+        assertTrue(response.contains(WL_WILL_DATE));
+        assertTrue(response.contains(WL_CURRENT_DATE));
+        assertTrue(response.contains(WL_CCD_DATE));
+        assertTrue(response.contains(WL_REGISTRY_LOCATION));
+        assertTrue(response.contains(WL_LONDON_LOCATION));
+    }
 
 }

@@ -15,22 +15,17 @@
         }
 
         .legal-header {
-            font-size: 1.5em;
+            font-size: 13pt;
             text-align: center;
         }
 
         .legal-subheader {
-            font-size: 1.2em;
-            text-align: center;
-        }
-
-        .legal-msg {
-            font-size: 0.8em;
+            font-size: 12pt;
             text-align: center;
         }
 
         .legal-body {
-            font-size: 0.9em;
+            font-size: 11pt;
             text-align: left;
         }
 
@@ -54,31 +49,6 @@
             padding-left: 55px;
         }
 
-        .andGap {
-            margin-left: -55px;
-            margin-right: 27px;
-        }
-
-        #watermark {
-            height: 600px;
-            width: 600px;
-            background-position: center;
-            z-index: -1;
-            position: absolute;
-            overflow: hidden;
-            top: 30%;
-            text-align: center;
-            color: #ff8080;
-            margin-left: 100px;
-        }
-
-        .center {
-            display: block;
-            margin: 0 auto;
-            height: 140px;
-            width: 200px;
-        }
-
     </style>
 </head>
 <body>
@@ -87,52 +57,81 @@
 
     <tr>
         <td colspan="2" class="legal-header">
-            <Strong>IN THE HIGH COURT OF JUSTICE</Strong><br/>
-            <Strong>FAMILY DIVISION</Strong><br/>
-            <Strong>(PROBATE)</Strong>
+            <p>
+                <Strong>IN THE HIGH COURT OF JUSTICE<br/>
+                FAMILY DIVISION<br/>
+                    <span style="font-size: 11pt;">(PROBATE)</span></Strong>
+            </p>
         </td>
-
     </tr>
     <tr/>
     <tr>
         <td colspan="2" class="legal-subheader">
-            <strong><u>CERTIFICATE OF DEPOSIT WILL</u></strong><br/>
+            <p><strong><u>CERTIFICATE OF DEPOSIT WILL</u></strong></p><br/>
         </td>
     </tr>
     <tr>
         <td colspan="2" class="legal-body">
-            <p> It is herby certified that the Will dated XXXXX</p> <br />
-            <p> of XXXX</p>
-            <p> of </p>
-            <p> in which XXXXX</p>
-            <p>of XXXX </p>
-            <p>are appointed executors has been lodged at XXXX District Probate Registry for deposit in then Principle Registry of the Family Division, 7th Floor First Avenue House 42-49 High Holborn London WC1V 6NP for safe custody pursuant to section 126 of the Senior Court Act 1981.</p>
+            <p>It is herby certified that the Will dated {{case_details.case_data.willDateFormatted}}<br />
+            of {{case_details.case_data.applicantFirstName}} {{case_details.case_data.applicantSurname}}<br />
+            <span class="indent">of {% if case_details.case_data.applicantAddress.AddressLine1 != null and case_details.case_data.applicantAddress.AddressLine1 != "" %}{{ case_details.case_data.applicantAddress.AddressLine1}}{% endif %}
+                {% if case_details.case_data.applicantAddress.AddressLine2 != null and case_details.case_data.applicantAddress.AddressLine2 != "" %} {{case_details.case_data.applicantAddress.AddressLine2}}{% endif %}
+                {% if case_details.case_data.applicantAddress.AddressLine3 != null and case_details.case_data.applicantAddress.AddressLine3 != "" %} {{case_details.case_data.applicantAddress.AddressLine3}}{% endif %}
+                {% if case_details.case_data.applicantAddress.PostTown != null and case_details.case_data.applicantAddress.PostTown != "" %} {{case_details.case_data.applicantAddress.PostTown}}{% endif %}
+                {% if case_details.case_data.applicantAddress.County != null and case_details.case_data.applicantAddress.County != "" %} {{case_details.case_data.applicantAddress.County}}{% endif %}
+                {% if case_details.case_data.applicantAddress.PostCode != null and case_details.case_data.applicantAddress.PostCode != ""%} {{case_details.case_data.applicantAddress.PostCode}}{% endif %}
+                {% if case_details.case_data.applicantAddress.Country != null and case_details.case_data.applicantAddress.Country != ""%} {{case_details.case_data.applicantAddress.Country}}{% endif %}</span>
+            <br/>in which
+            {% for executor in case_details.case_data.executorsApplying %}
+                {% if loop.first %}
+                    {% if executor.value.applyingExecutorName != null and executor.value.applyingExecutorName != ""%}{{executor.value.applyingExecutorName}}{% endif %}<br />
+                <span class="indent"> of {% if executor.value.applyingExecutorAddress.AddressLine1 != null and executor.value.applyingExecutorAddress.AddressLine1 != "" %}{{ executor.value.applyingExecutorAddress.AddressLine1 }}{% endif %}
+                {% if executor.value.applyingExecutorAddress.AddressLine2 != null and executor.value.applyingExecutorAddress.AddressLine2 != "" %}{{ executor.value.applyingExecutorAddress.AddressLine2 }}{% endif %}
+                {% if executor.value.applyingExecutorAddress.AddressLine3 != null and executor.value.applyingExecutorAddress.AddressLine3 != "" %}{{ executor.value.applyingExecutorAddress.AddressLine3 }}{% endif %}
+                {% if executor.value.applyingExecutorAddress.PostTown != null and executor.value.applyingExecutorAddress.PostTown != "" %}{{ executor.value.applyingExecutorAddress.PostTown }}{% endif %}
+                {% if executor.value.applyingExecutorAddress.County != null and executor.value.applyingExecutorAddress.County != "" %}{{ executor.value.applyingExecutorAddress.County }}{% endif %}
+                {% if executor.value.applyingExecutorAddress.PostCode != null and executor.value.applyingExecutorAddress.PostCode != ""%}{{ executor.value.applyingExecutorAddress.PostCode }}{% endif %}
+                {% if executor.value.applyingExecutorAddress.Country != null and executor.value.applyingExecutorAddress.Country != ""%}{{ executor.value.applyingExecutorAddress.Country }}{% endif %}
+                </span>
+                    {% else %}
+                <br />
+                and {% if executor.value.applyingExecutorName != null and executor.value.applyingExecutorName != ""%}{{executor.value.applyingExecutorName}}{% endif %}<br />
+                <span class="indent"> of
+                {% if executor.value.applyingExecutorAddress.AddressLine1 != null and executor.value.applyingExecutorAddress.AddressLine1 != "" %}{{ executor.value.applyingExecutorAddress.AddressLine1 }}{% endif %}
+                {% if executor.value.applyingExecutorAddress.AddressLine2 != null and executor.value.applyingExecutorAddress.AddressLine2 != "" %}{{ executor.value.applyingExecutorAddress.AddressLine2 }}{% endif %}
+                {% if executor.value.applyingExecutorAddress.AddressLine3 != null and executor.value.applyingExecutorAddress.AddressLine3 != "" %}{{ executor.value.applyingExecutorAddress.AddressLine3 }}{% endif %}
+                {% if executor.value.applyingExecutorAddress.PostTown != null and executor.value.applyingExecutorAddress.PostTown != "" %}{{ executor.value.applyingExecutorAddress.PostTown }}{% endif %}
+                {% if executor.value.applyingExecutorAddress.County != null and executor.value.applyingExecutorAddress.County != "" %}{{ executor.value.applyingExecutorAddress.County }}{% endif %}
+                {% if executor.value.applyingExecutorAddress.PostCode != null and executor.value.applyingExecutorAddress.PostCode != ""%}{{ executor.value.applyingExecutorAddress.PostCode }}{% endif %}
+                {% if executor.value.applyingExecutorAddress.Country != null and executor.value.applyingExecutorAddress.Country != ""%}{{ executor.value.applyingExecutorAddress.Country }}{% endif %}
+                </span>
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+            </p>
+            <p>are appointed executors has been lodged at {{case_details.case_data.registryLocation}} District Probate Registry for deposit in then Principle Registry of the Family Division, 7th Floor First Avenue House 42-49 High Holborn London WC1V 6NP for safe custody pursuant to section 126 of the Senior Court Act 1981.</p>
             <p>Except by leave of theDistrict Judge of the Principle Registry the will may not be given out during the lifetime of the testator </p>
         </td>
     </tr>
-
     <tr>
-        <td> Dated this XXXX</td>
-
+        <td> Dated {{case_details.case_data.currentDateFormatted}}</td>
     </tr>
-
     <tr>
         <td style="text-align: right"> SIGNATURE</td>
     </tr>
     <tr>
         <td style="text-align: right"><p>REGISTRAR/DISTRICT JUDGE</p></td>
-
     </tr>
     <tr>
         <td>
-        <P><U>NOTE TO TESTATOR:</U></P>
-        <p>It is important to retain this Certificate of Deposit: It will be necessary to produce it to the Registry on any application being made by the Testator to withdraw the depsoited will.</p>
+            <P><U>NOTE TO TESTATOR:</U></P>
+            <p>It is important to retain this Certificate of Deposit: It will be necessary to produce it to the Registry on any application being made by the Testator to withdraw the deposited will.</p>
         </td>
     </tr>
-
     <tr>
-        <td><p>Record Keep Reference - </p></td>
-
+        <td>
+            <p>Record Keep Reference - {{case_details.id}}</p>
+        </td>
     </tr>
     </tbody>
 </table>
