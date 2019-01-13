@@ -20,7 +20,6 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData.CaseDataBuilder;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
-import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -43,6 +42,7 @@ public class NextStepsControllerTest {
     private static final String SURANME = "Michael";
     private static final String SOLICITOR_APP_REFERENCE = "Reff";
     private static final String SOLICITOR_FIRM_NAME = "Legal Service Ltd";
+    private static final String SOLICITOR_FIRM_LINE1 = "Sols Add Line1";
     private static final String SOLICITOR_FIRM_POSTCODE = "SW1E 6EA";
     private static final String IHT_FORM = "IHT207";
     private static final String SOLICITOR_NAME = "Peter Crouch";
@@ -57,11 +57,11 @@ public class NextStepsControllerTest {
     private static final String DECEASED_ADDRESS_L1 = "DECL1";
     private static final String DECEASED_ADDRESS_PC = "DECPC";
     private static final SolsAddress DECEASED_ADDRESS = SolsAddress.builder().addressLine1(DECEASED_ADDRESS_L1)
-        .postCode(DECEASED_ADDRESS_PC).build();
+            .postCode(DECEASED_ADDRESS_PC).build();
     private static final String PRIMARY_ADDRESS_L1 = "PRML1";
     private static final String PRIMARY_ADDRESS_PC = "PRMPC";
     private static final SolsAddress PRIMARY_ADDRESS = SolsAddress.builder().addressLine1(PRIMARY_ADDRESS_L1)
-        .postCode(PRIMARY_ADDRESS_PC).build();
+            .postCode(PRIMARY_ADDRESS_PC).build();
     private static final String PRIMARY_APPLICANT_APPLYING = "Yes";
     private static final String PRIMARY_APPLICANT_HAS_ALIAS = "No";
     private static final String OTHER_EXEC_EXISTS = "No";
@@ -93,50 +93,51 @@ public class NextStepsControllerTest {
     @MockBean
     AppInsights appInsights;
 
-    @MockBean
-    private CoreCaseDataApi coreCaseDataApi;
-
     @Before
     public void setup() {
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
 
         OBJECT_MAPPER.registerModule(new JavaTimeModule());
+        SolsAddress solsAddress = SolsAddress.builder()
+                .addressLine1(SOLICITOR_FIRM_LINE1)
+                .postCode(SOLICITOR_FIRM_POSTCODE)
+                .build();
 
         caseDataBuilder = CaseData.builder()
-            .solsSolicitorFirmName(SOLICITOR_FIRM_NAME)
-            .solsSolicitorFirmPostcode(SOLICITOR_FIRM_POSTCODE)
-            .solsSolicitorAppReference(SOLICITOR_APP_REFERENCE)
-            .deceasedDateOfBirth(DOB)
-            .deceasedDateOfDeath(DOD)
-            .deceasedForenames(FORNAME)
-            .deceasedSurname(SURANME)
-            .deceasedAddress(DECEASED_ADDRESS)
-            .deceasedAnyOtherNames(DECEASED_OTHER_NAMES)
-            .deceasedDomicileInEngWales(DECEASED_DOM_UK)
-            .primaryApplicantForenames(PRIMARY_FORENAMES)
-            .primaryApplicantSurname(PRIMARY_SURNAME)
-            .primaryApplicantAddress(PRIMARY_ADDRESS)
-            .primaryApplicantIsApplying(PRIMARY_APPLICANT_APPLYING)
-            .primaryApplicantHasAlias(PRIMARY_APPLICANT_HAS_ALIAS)
-            .otherExecutorExists(OTHER_EXEC_EXISTS)
-            .willExists(WILL_EXISTS)
-            .willAccessOriginal(WILL_ACCESS_ORIGINAL)
-            .ihtNetValue(NET)
-            .ihtGrossValue(GROSS)
-            .solsSOTNeedToUpdate(SOT_NEED_TO_UPDATE)
-            .willHasCodicils(WILL_HAS_CODICLIS)
-            .willNumberOfCodicils(NUMBER_OF_CODICLIS)
-            .ihtFormId(IHT_FORM)
-            .solsSOTNeedToUpdate(NEED_TO_UPDATE)
-            .solsSOTName(SOLICITOR_NAME)
-            .solsSOTJobTitle(SOLICITOR_JOB_TITLE)
-            .solsPaymentMethods(PAYMENT_METHOD)
-            .applicationFee(APPLICATION_FEE)
-            .feeForUkCopies(FEE_FOR_UK_COPIES)
-            .feeForNonUkCopies(FEE_FOR_NON_UK_COPIES)
-            .extraCopiesOfGrant(EXTRA_UK)
-            .outsideUKGrantCopies(EXTRA_OUTSIDE_UK)
-            .totalFee(TOTAL_FEE);
+                .solsSolicitorFirmName(SOLICITOR_FIRM_NAME)
+                .solsSolicitorAddress(solsAddress)
+                .solsSolicitorAppReference(SOLICITOR_APP_REFERENCE)
+                .deceasedDateOfBirth(DOB)
+                .deceasedDateOfDeath(DOD)
+                .deceasedForenames(FORNAME)
+                .deceasedSurname(SURANME)
+                .deceasedAddress(DECEASED_ADDRESS)
+                .deceasedAnyOtherNames(DECEASED_OTHER_NAMES)
+                .deceasedDomicileInEngWales(DECEASED_DOM_UK)
+                .primaryApplicantForenames(PRIMARY_FORENAMES)
+                .primaryApplicantSurname(PRIMARY_SURNAME)
+                .primaryApplicantAddress(PRIMARY_ADDRESS)
+                .primaryApplicantIsApplying(PRIMARY_APPLICANT_APPLYING)
+                .primaryApplicantHasAlias(PRIMARY_APPLICANT_HAS_ALIAS)
+                .otherExecutorExists(OTHER_EXEC_EXISTS)
+                .willExists(WILL_EXISTS)
+                .willAccessOriginal(WILL_ACCESS_ORIGINAL)
+                .ihtNetValue(NET)
+                .ihtGrossValue(GROSS)
+                .solsSOTNeedToUpdate(SOT_NEED_TO_UPDATE)
+                .willHasCodicils(WILL_HAS_CODICLIS)
+                .willNumberOfCodicils(NUMBER_OF_CODICLIS)
+                .ihtFormId(IHT_FORM)
+                .solsSOTNeedToUpdate(NEED_TO_UPDATE)
+                .solsSOTName(SOLICITOR_NAME)
+                .solsSOTJobTitle(SOLICITOR_JOB_TITLE)
+                .solsPaymentMethods(PAYMENT_METHOD)
+                .applicationFee(APPLICATION_FEE)
+                .feeForUkCopies(FEE_FOR_UK_COPIES)
+                .feeForNonUkCopies(FEE_FOR_NON_UK_COPIES)
+                .extraCopiesOfGrant(EXTRA_UK)
+                .outsideUKGrantCopies(EXTRA_OUTSIDE_UK)
+                .totalFee(TOTAL_FEE);
     }
 
     @Test
@@ -146,8 +147,8 @@ public class NextStepsControllerTest {
 
         String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
         mockMvc.perform(post(NEXTSTEPS_CONFIRMATION_URL).content(json).contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
     }
 
     @Test
@@ -158,28 +159,28 @@ public class NextStepsControllerTest {
 
         String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
         mockMvc.perform(post(NEXTSTEPS_CONFIRMATION_URL).content(json).contentType(MediaType.APPLICATION_JSON_UTF8))
-            .andExpect(status().isBadRequest())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-            .andExpect(jsonPath("$.fieldErrors[0].param").value("callbackRequest"))
-            .andExpect(jsonPath("$.fieldErrors[0].field").value("caseDetails.data.solsSolicitorFirmName"))
-            .andExpect(jsonPath("$.fieldErrors[0].code").value("NotBlank"))
-            .andExpect(jsonPath("$.fieldErrors[0].message").value("Solicitor firm name cannot be empty"));
+                .andExpect(status().isBadRequest())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.fieldErrors[0].param").value("callbackRequest"))
+                .andExpect(jsonPath("$.fieldErrors[0].field").value("caseDetails.data.solsSolicitorFirmName"))
+                .andExpect(jsonPath("$.fieldErrors[0].code").value("NotBlank"))
+                .andExpect(jsonPath("$.fieldErrors[0].message").value("Solicitor firm name cannot be empty"));
     }
 
     @Test
     public void shouldConfirmNextStepsWithSolsSolicitorFirmPostcodeIsNullError() throws Exception {
-        caseDataBuilder.solsSolicitorFirmPostcode(null);
+        caseDataBuilder.solsSolicitorAddress(SolsAddress.builder().addressLine1(SOLICITOR_FIRM_LINE1).build());
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
 
         String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
         mockMvc.perform(post(NEXTSTEPS_CONFIRMATION_URL).content(json).contentType(MediaType.APPLICATION_JSON_UTF8))
-            .andExpect(status().isBadRequest())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-            .andExpect(jsonPath("$.fieldErrors[0].param").value("callbackRequest"))
-            .andExpect(jsonPath("$.fieldErrors[0].field").value("caseDetails.data.solsSolicitorFirmPostcode"))
-            .andExpect(jsonPath("$.fieldErrors[0].code").value("NotBlank"))
-            .andExpect(jsonPath("$.fieldErrors[0].message").value("Solicitor firm postcode cannot be empty"));
+                .andExpect(status().isBadRequest())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.fieldErrors[0].param").value("callbackRequest"))
+                .andExpect(jsonPath("$.fieldErrors[0].field").value("caseDetails.data.solsSolicitorAddress.postCode"))
+                .andExpect(jsonPath("$.fieldErrors[0].code").value("NotNull"))
+                .andExpect(jsonPath("$.fieldErrors[0].message").value("The deceased postcode cannot be empty"));
     }
 
     @Test
@@ -190,12 +191,12 @@ public class NextStepsControllerTest {
 
         String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
         mockMvc.perform(post(NEXTSTEPS_CONFIRMATION_URL).content(json).contentType(MediaType.APPLICATION_JSON_UTF8))
-            .andExpect(status().isBadRequest())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-            .andExpect(jsonPath("$.fieldErrors[0].param").value("callbackRequest"))
-            .andExpect(jsonPath("$.fieldErrors[0].field").value("caseDetails.data.solsSOTName"))
-            .andExpect(jsonPath("$.fieldErrors[0].code").value("NotBlank"))
-            .andExpect(jsonPath("$.fieldErrors[0].message").value("Solicitor SOT name cannot be empty"));
+                .andExpect(status().isBadRequest())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.fieldErrors[0].param").value("callbackRequest"))
+                .andExpect(jsonPath("$.fieldErrors[0].field").value("caseDetails.data.solsSOTName"))
+                .andExpect(jsonPath("$.fieldErrors[0].code").value("NotBlank"))
+                .andExpect(jsonPath("$.fieldErrors[0].message").value("Solicitor SOT name cannot be empty"));
     }
 
     @Test
@@ -206,12 +207,12 @@ public class NextStepsControllerTest {
 
         String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
         mockMvc.perform(post(NEXTSTEPS_CONFIRMATION_URL).content(json).contentType(MediaType.APPLICATION_JSON_UTF8))
-            .andExpect(status().isBadRequest())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-            .andExpect(jsonPath("$.fieldErrors[0].param").value("callbackRequest"))
-            .andExpect(jsonPath("$.fieldErrors[0].field").value("caseDetails.data.solsSOTJobTitle"))
-            .andExpect(jsonPath("$.fieldErrors[0].code").value("NotBlank"))
-            .andExpect(jsonPath("$.fieldErrors[0].message").value("Solicitor SOT job title cannot be empty"));
+                .andExpect(status().isBadRequest())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.fieldErrors[0].param").value("callbackRequest"))
+                .andExpect(jsonPath("$.fieldErrors[0].field").value("caseDetails.data.solsSOTJobTitle"))
+                .andExpect(jsonPath("$.fieldErrors[0].code").value("NotBlank"))
+                .andExpect(jsonPath("$.fieldErrors[0].message").value("Solicitor SOT job title cannot be empty"));
     }
 
     @Test
@@ -222,13 +223,13 @@ public class NextStepsControllerTest {
 
         String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
         mockMvc.perform(post(NEXTSTEPS_CONFIRMATION_URL).content(json).contentType(MediaType.APPLICATION_JSON_UTF8))
-            .andExpect(status().isBadRequest())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-            .andExpect(jsonPath("$.fieldErrors[0].param").value("callbackRequest"))
-            .andExpect(jsonPath("$.fieldErrors[0].field").value("caseDetails.data.solsPaymentMethods"))
-            .andExpect(jsonPath("$.fieldErrors[0].code").value("NotNull"))
-            .andExpect(jsonPath("$.fieldErrors[0].message")
-                .value("Payment method cannot be empty. It must be one of fee account or cheque"));
+                .andExpect(status().isBadRequest())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.fieldErrors[0].param").value("callbackRequest"))
+                .andExpect(jsonPath("$.fieldErrors[0].field").value("caseDetails.data.solsPaymentMethods"))
+                .andExpect(jsonPath("$.fieldErrors[0].code").value("NotNull"))
+                .andExpect(jsonPath("$.fieldErrors[0].message")
+                        .value("Payment method cannot be empty. It must be one of fee account or cheque"));
     }
 
     @Test
@@ -240,13 +241,13 @@ public class NextStepsControllerTest {
 
         String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
         mockMvc.perform(post(NEXTSTEPS_CONFIRMATION_URL).content(json).contentType(MediaType.APPLICATION_JSON_UTF8))
-            .andExpect(status().isBadRequest())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-            .andExpect(jsonPath("$.fieldErrors[0].param").value("callbackRequest"))
-            .andExpect(jsonPath("$.fieldErrors[0].field").value("caseDetails.data.applicationFee"))
-            .andExpect(jsonPath("$.fieldErrors[0].code").value("NotNull"))
-            .andExpect(jsonPath("$.fieldErrors[0].message")
-                .value("Application Fee cannot be null"));
+                .andExpect(status().isBadRequest())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.fieldErrors[0].param").value("callbackRequest"))
+                .andExpect(jsonPath("$.fieldErrors[0].field").value("caseDetails.data.applicationFee"))
+                .andExpect(jsonPath("$.fieldErrors[0].code").value("NotNull"))
+                .andExpect(jsonPath("$.fieldErrors[0].message")
+                        .value("Application Fee cannot be null"));
     }
 
     @Test
@@ -258,13 +259,13 @@ public class NextStepsControllerTest {
 
         String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
         mockMvc.perform(post(NEXTSTEPS_CONFIRMATION_URL).content(json).contentType(MediaType.APPLICATION_JSON_UTF8))
-            .andExpect(status().isBadRequest())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-            .andExpect(jsonPath("$.fieldErrors[0].param").value("callbackRequest"))
-            .andExpect(jsonPath("$.fieldErrors[0].field").value("caseDetails.data.totalFee"))
-            .andExpect(jsonPath("$.fieldErrors[0].code").value("NotNull"))
-            .andExpect(jsonPath("$.fieldErrors[0].message")
-                .value("Fee payment amount cannot be null"));
+                .andExpect(status().isBadRequest())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.fieldErrors[0].param").value("callbackRequest"))
+                .andExpect(jsonPath("$.fieldErrors[0].field").value("caseDetails.data.totalFee"))
+                .andExpect(jsonPath("$.fieldErrors[0].code").value("NotNull"))
+                .andExpect(jsonPath("$.fieldErrors[0].message")
+                        .value("Fee payment amount cannot be null"));
     }
 
     @Test
@@ -276,13 +277,13 @@ public class NextStepsControllerTest {
 
         String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
         mockMvc.perform(post(NEXTSTEPS_CONFIRMATION_URL).content(json).contentType(MediaType.APPLICATION_JSON_UTF8))
-            .andExpect(status().isBadRequest())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-            .andExpect(jsonPath("$.fieldErrors[0].param").value("callbackRequest"))
-            .andExpect(jsonPath("$.fieldErrors[0].field").value("caseDetails.data.feeForUkCopies"))
-            .andExpect(jsonPath("$.fieldErrors[0].code").value("NotNull"))
-            .andExpect(jsonPath("$.fieldErrors[0].message")
-                .value("Fee for UK Copies cannot be null"));
+                .andExpect(status().isBadRequest())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.fieldErrors[0].param").value("callbackRequest"))
+                .andExpect(jsonPath("$.fieldErrors[0].field").value("caseDetails.data.feeForUkCopies"))
+                .andExpect(jsonPath("$.fieldErrors[0].code").value("NotNull"))
+                .andExpect(jsonPath("$.fieldErrors[0].message")
+                        .value("Fee for UK Copies cannot be null"));
     }
 
     @Test
@@ -294,13 +295,13 @@ public class NextStepsControllerTest {
 
         String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
         mockMvc.perform(post(NEXTSTEPS_CONFIRMATION_URL).content(json).contentType(MediaType.APPLICATION_JSON_UTF8))
-            .andExpect(status().isBadRequest())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-            .andExpect(jsonPath("$.fieldErrors[0].param").value("callbackRequest"))
-            .andExpect(jsonPath("$.fieldErrors[0].field").value("caseDetails.data.feeForNonUkCopies"))
-            .andExpect(jsonPath("$.fieldErrors[0].code").value("NotNull"))
-            .andExpect(jsonPath("$.fieldErrors[0].message")
-                .value("Fee for non UK Copies cannot be null"));
+                .andExpect(status().isBadRequest())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.fieldErrors[0].param").value("callbackRequest"))
+                .andExpect(jsonPath("$.fieldErrors[0].field").value("caseDetails.data.feeForNonUkCopies"))
+                .andExpect(jsonPath("$.fieldErrors[0].code").value("NotNull"))
+                .andExpect(jsonPath("$.fieldErrors[0].message")
+                        .value("Fee for non UK Copies cannot be null"));
     }
 
     @Test
@@ -311,8 +312,8 @@ public class NextStepsControllerTest {
 
         String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
         mockMvc.perform(post(NEXTSTEPS_CONFIRMATION_URL).content(json).contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk())
-            .andExpect(content().string("{\"confirmation_header\":null,\"confirmation_body\":null}"))
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
+                .andExpect(status().isOk())
+                .andExpect(content().string("{\"confirmation_header\":null,\"confirmation_body\":null}"))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
     }
 }

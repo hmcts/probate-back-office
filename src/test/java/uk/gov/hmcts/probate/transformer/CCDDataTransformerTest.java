@@ -8,6 +8,7 @@ import org.mockito.MockitoAnnotations;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
+import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
@@ -30,6 +31,7 @@ public class CCDDataTransformerTest {
 
     private static final String[] LAST_MODIFIED_STR = {"2018", "1", "2", "0", "0", "0", "0"};
     private static final String SOLICITOR_FIRM_NAME = "Sol Firm Name";
+    private static final String SOLICITOR_FIRM_LINE1 = "Sol Add Line1";
     private static final String SOLICITOR_FIRM_POSTCODE = "SW13 6EA";
     private static final String SOLICITOR_SOT_NAME = "Andy Test";
     private static final String SOLICITOR_SOT_JOB_TITLE = "Lawyer";
@@ -71,8 +73,13 @@ public class CCDDataTransformerTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
 
+        SolsAddress solsAddress = SolsAddress.builder()
+                .addressLine1(SOLICITOR_FIRM_LINE1)
+                .postCode(SOLICITOR_FIRM_POSTCODE)
+                .build();
+
         when(caseDataMock.getSolsSolicitorFirmName()).thenReturn(SOLICITOR_FIRM_NAME);
-        when(caseDataMock.getSolsSolicitorFirmPostcode()).thenReturn(SOLICITOR_FIRM_POSTCODE);
+        when(caseDataMock.getSolsSolicitorAddress()).thenReturn(solsAddress);
         when(caseDataMock.getSolsSOTName()).thenReturn(SOLICITOR_SOT_NAME);
         when(caseDataMock.getSolsSOTJobTitle()).thenReturn(SOLICITOR_SOT_JOB_TITLE);
 
@@ -255,7 +262,8 @@ public class CCDDataTransformerTest {
 
     private void assertBasic(CCDData ccdData) {
         assertEquals(SOLICITOR_FIRM_NAME, ccdData.getSolicitor().getFirmName());
-        assertEquals(SOLICITOR_FIRM_POSTCODE, ccdData.getSolicitor().getFirmPostcode());
+        assertEquals(SOLICITOR_FIRM_LINE1, ccdData.getSolicitor().getFirmAddress().getAddressLine1());
+        assertEquals(SOLICITOR_FIRM_POSTCODE, ccdData.getSolicitor().getFirmAddress().getPostCode());
         assertEquals(SOLICITOR_SOT_NAME, ccdData.getSolicitor().getFullname());
         assertEquals(SOLICITOR_SOT_JOB_TITLE, ccdData.getSolicitor().getJobRole());
         assertEquals(DECEASED_FIRSTNAME, ccdData.getDeceased().getFirstname());

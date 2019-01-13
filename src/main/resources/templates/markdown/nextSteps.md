@@ -1,7 +1,7 @@
 This probate application has now been submitted
 -------------------------------------------------
 
-{{solsSolicitorFirmName}}, {{solsSolicitorFirmPostcode}}
+{{solsSolicitorFirmName}}, {{solsSolicitorAddress}}
 
 {{solicitorName}}, {{solicitorJobRole}}
 
