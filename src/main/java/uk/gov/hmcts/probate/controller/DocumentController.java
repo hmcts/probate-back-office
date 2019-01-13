@@ -140,8 +140,21 @@ public class DocumentController {
     @PostMapping(path = "/generate-deposit-receipt", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<CallbackResponse> generateDepositReceipt(@RequestBody CallbackRequest callbackRequest) {
         Document document;
+        CaseData caseData = callbackRequest.getCaseDetails().getData();
         DocumentType template = WILL_LODGEMENT_DEPOSIT_RECEIPT;
         document = pdfManagementService.generateAndUpload(callbackRequest, template);
+
+        if (!caseData.isGrantForLocalPrinting() && !caseData.getCaseType().equals(EDGE_CASE)) {
+            SendLetterResponse response = bulkPrintService.sendToBulkPrint(callbackRequest, document);
+            String letterId = response != null
+                    ? response.letterId.toString()
+                    : StringUtils.EMPTY;
+            callbackResponseTransformer.transformWithBulkPrintComplete(callbackRequest, letterId);
+        }
+
+        List<Document> documents = new ArrayList<>();
+        documents.add(document);
+        documentService.expire(callbackRequest, WILL_LODGEMENT_DEPOSIT_RECEIPT);
 
         return ResponseEntity.ok(callbackResponseTransformer.addDocuments(callbackRequest,
                 Arrays.asList(document)));

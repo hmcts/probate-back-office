@@ -244,7 +244,7 @@ public class DocumentControllerTest {
     @Test
     public void generateWillLodgementReceipt() throws Exception {
 
-        String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadNotifications.json");
+        String solicitorPayload = testUtils.getStringFromFile("willLodgementPayloadNotifications.json");
 
         mockMvc.perform(post("/document/generate-deposit-receipt")
                 .content(solicitorPayload)
@@ -253,6 +253,16 @@ public class DocumentControllerTest {
                 .andExpect(content().string(containsString("data")));
 
         verify(pdfManagementService).generateAndUpload(any(CallbackRequest.class), eq(WILL_LODGEMENT_DEPOSIT_RECEIPT));
+
+
+        SendLetterResponse sendLetterResponse = new SendLetterResponse(UUID.randomUUID());
+        when(bulkPrintService.sendToBulkPrint(any(CallbackRequest.class), any(Document.class))).thenReturn(sendLetterResponse);
+        verify(bulkPrintService).sendToBulkPrint(any(CallbackRequest.class), any(Document.class));
+
+        doNothing().when(documentService).expire(any(CallbackRequest.class), eq(WILL_LODGEMENT_DEPOSIT_RECEIPT));
+        verify(documentService).expire(any(CallbackRequest.class), eq(WILL_LODGEMENT_DEPOSIT_RECEIPT));
+
+
 
     }
 
