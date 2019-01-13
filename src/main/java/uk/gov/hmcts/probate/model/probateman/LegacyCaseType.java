@@ -25,6 +25,9 @@ public enum LegacyCaseType {
         if (WILL_LODGEMENT.getName().equals(legacyCaseTypeName)) {
             return WILL_LODGEMENT;
         }
+        if (CAVEAT.getName().equals(legacyCaseTypeName)) {
+            return CAVEAT;
+        }
         if (GRANT_OF_REPRESENTATION_DERIVED.getName().equals(legacyCaseTypeName)) {
             return GRANT_OF_REPRESENTATION_DERIVED;
         }

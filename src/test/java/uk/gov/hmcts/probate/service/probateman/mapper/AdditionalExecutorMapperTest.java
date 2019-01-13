@@ -4,7 +4,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
+import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.probateman.GrantApplication;
 import uk.gov.hmcts.reform.probate.model.cases.Address;
 import uk.gov.hmcts.reform.probate.model.cases.CollectionMember;
@@ -34,6 +36,9 @@ public class AdditionalExecutorMapperTest {
 
     @Autowired
     private AdditionalExecutorMapper additionalExecutorMapper;
+
+    @MockBean
+    AppInsights appInsights;
 
     @Test
     public void shouldMapToAdditionalExecutorApplyingList() {

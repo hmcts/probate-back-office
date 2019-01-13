@@ -4,11 +4,13 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
+import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.probateman.GrantApplication;
 import uk.gov.hmcts.reform.probate.model.cases.Address;
 import uk.gov.hmcts.reform.probate.model.cases.ApplicationType;
-import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentation;
+import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType;
 
 import java.time.LocalDate;
@@ -34,11 +36,14 @@ public class GrantApplicationMapperTest {
     @Autowired
     private GrantApplicationMapper grantApplicationMapper;
 
+    @MockBean
+    AppInsights appInsights;
+
     @Test
     public void shouldMapToCcdDataForPersonalApplication() {
         GrantApplication grantApplication = buildBasicApplication();
 
-        GrantOfRepresentation grantApplicationData = grantApplicationMapper.toCcdData(grantApplication);
+        GrantOfRepresentationData grantApplicationData = grantApplicationMapper.toCcdData(grantApplication);
 
         assertBasicApplication(grantApplicationData);
         assertThat(grantApplicationData.getApplicationType()).isEqualTo(ApplicationType.PERSONAL);
@@ -50,14 +55,14 @@ public class GrantApplicationMapperTest {
         GrantApplication grantApplication = buildBasicApplication();
         grantApplication.setSolicitorReference(SOLICITOR_REFERENCE);
 
-        GrantOfRepresentation grantApplicationData = grantApplicationMapper.toCcdData(grantApplication);
+        GrantOfRepresentationData grantApplicationData = grantApplicationMapper.toCcdData(grantApplication);
 
         assertBasicApplication(grantApplicationData);
         assertThat(grantApplicationData.getApplicationType()).isEqualTo(ApplicationType.SOLICITORS);
 
     }
 
-    private void assertBasicApplication(GrantOfRepresentation grantApplicationData) {
+    private void assertBasicApplication(GrantOfRepresentationData grantApplicationData) {
         Address expectedDeceasedAddress = buildAddress(DECEASED_ADDRESS);
         Address expectedPrimaryAddress = buildAddress(PRIMARY_APPLICANT_ADDRESS);
         assertThat(grantApplicationData.getPrimaryApplicantForenames()).isEqualTo(PRIMARY_APPLICANT_FORENAMES);

@@ -81,8 +81,8 @@ public class ProbateManController {
         List<CollectionMember<CaseMatch>> rows = data.getLegacySearchResultRows();
 
         rows.stream().map(CollectionMember::getValue)
-                //.filter(row -> "YES".equalsIgnoreCase(row.getDoImport()))
-                .filter(row -> LegacyCaseType.GRANT_OF_REPRESENTATION.getName().equalsIgnoreCase(row.getType()))
+                .filter(row -> "YES".equalsIgnoreCase(row.getDoImport()))
+                //.filter(row -> LegacyCaseType.GRANT_OF_REPRESENTATION.getName().equalsIgnoreCase(row.getType()))
                 .forEach(row -> importRow(row));
         ResponseCaseData responseCaseData = ResponseCaseData.builder()
                 .legacySearchResultRows(rows)
@@ -97,10 +97,10 @@ public class ProbateManController {
     private void importRow(CaseMatch row) {
         String legacyCaseTypeName = row.getType();
         LegacyCaseType legacyCaseType = LegacyCaseType.getByLegacyCaseTypeName(legacyCaseTypeName);
-        //todo need to get the id off the row when cce fixes RDM-3653
-        String id = "1";
-        log.info("Importing legacy case to ccd with id=" + id);
-        probateManService.saveToCcd(Long.parseLong(id), ProbateManType.getByLegacyCaseType(legacyCaseType));
+        String id = row.getId();
+        log.info("Importing legacy case into ccd for legacyCaseType=" + legacyCaseTypeName + ", with id=" + id);
+        ProbateManType probateManType = ProbateManType.getByLegacyCaseType(legacyCaseType);
+        probateManService.saveToCcd(Long.parseLong(id), probateManType);
 
     }
 }

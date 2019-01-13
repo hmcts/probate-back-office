@@ -30,6 +30,9 @@ public enum ProbateManType {
         if (LegacyCaseType.WILL_LODGEMENT.getName().equals(legacyCaseType.getName())) {
             return ProbateManType.WILL_LODGEMENT;
         }
+        if (LegacyCaseType.CAVEAT.getName().equals(legacyCaseType.getName())) {
+            return ProbateManType.CAVEAT;
+        }
         if (LegacyCaseType.GRANT_OF_REPRESENTATION_DERIVED.getName().equals(legacyCaseType.getName())) {
             return ProbateManType.GRANT_APPLICATION;
         }

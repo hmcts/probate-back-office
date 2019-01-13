@@ -5,12 +5,14 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
-import uk.gov.hmcts.probate.model.ccd.ProbateAddress;
-import uk.gov.hmcts.probate.model.ccd.ProbateFullAliasName;
-import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
-import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
+import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.probateman.Caveat;
+import uk.gov.hmcts.reform.probate.model.cases.Address;
+import uk.gov.hmcts.reform.probate.model.cases.CollectionMember;
+import uk.gov.hmcts.reform.probate.model.cases.FullAliasName;
+import uk.gov.hmcts.reform.probate.model.cases.caveat.CaveatData;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -32,6 +34,9 @@ public class CaveatMapperTest {
     @Autowired
     private CaveatMapper caveatMapper;
 
+    @MockBean
+    AppInsights appInsights;
+
     @Test
     public void shouldMapToCcdData() {
         Caveat caveat = new Caveat();
@@ -45,8 +50,8 @@ public class CaveatMapperTest {
         caveat.setAliasNames(DECEASED_ALIAS_NAMES);
         caveat.setCavExpiryDate(CAVEATOR_EXPIRY_DATE);
 
-        ProbateAddress deceasedAddress = ProbateAddress.builder()
-                .proAddressLine1(CAVEATOR_ADDRESS)
+        Address deceasedAddress = Address.builder()
+                .addressLine1(CAVEATOR_ADDRESS)
                 .build();
         CaveatData expectedCaveatData = CaveatData.builder()
                 .deceasedForenames(DECEASED_FORENAMES)
@@ -74,12 +79,12 @@ public class CaveatMapperTest {
                 "deceasedDateOfDeath");
     }
 
-    private List<CollectionMember<ProbateFullAliasName>> buildFullAliasNames() {
-        ProbateFullAliasName aliasName = ProbateFullAliasName.builder()
+    private List<CollectionMember<FullAliasName>> buildFullAliasNames() {
+        FullAliasName aliasName = FullAliasName.builder()
                 .fullAliasName(DECEASED_ALIAS_NAMES)
                 .build();
-        List<CollectionMember<ProbateFullAliasName>> aliasNamesCollections = new ArrayList<CollectionMember<ProbateFullAliasName>>();
-        CollectionMember<ProbateFullAliasName> aliasNamesCollection = new CollectionMember(null, aliasName);
+        List<CollectionMember<FullAliasName>> aliasNamesCollections = new ArrayList<CollectionMember<FullAliasName>>();
+        CollectionMember<FullAliasName> aliasNamesCollection = new CollectionMember(null, aliasName);
         aliasNamesCollections.add(aliasNamesCollection);
 
         return aliasNamesCollections;

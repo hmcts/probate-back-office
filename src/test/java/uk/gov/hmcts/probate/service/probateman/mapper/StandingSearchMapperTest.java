@@ -5,12 +5,14 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
-import uk.gov.hmcts.probate.model.ccd.ProbateAddress;
-import uk.gov.hmcts.probate.model.ccd.ProbateFullAliasName;
-import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
-import uk.gov.hmcts.probate.model.ccd.standingsearch.request.StandingSearchData;
+import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.probateman.StandingSearch;
+import uk.gov.hmcts.reform.probate.model.cases.Address;
+import uk.gov.hmcts.reform.probate.model.cases.CollectionMember;
+import uk.gov.hmcts.reform.probate.model.cases.FullAliasName;
+import uk.gov.hmcts.reform.probate.model.cases.standingsearch.StandingSearchData;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -33,6 +35,9 @@ public class StandingSearchMapperTest {
     @Autowired
     private StandingSearchMapper standingSearchMapper;
 
+    @MockBean
+    AppInsights appInsights;
+
     @Test
     public void shouldMapToCcdData() {
         StandingSearch standingSearch = new StandingSearch();
@@ -53,10 +58,10 @@ public class StandingSearchMapperTest {
                 .deceasedDateOfBirth(DATE_OF_BIRTH)
                 .deceasedDateOfDeath(DATE_OF_DEATH)
                 .deceasedFullAliasNameList(buildFullAliasNames())
-                .deceasedAddress(ProbateAddress.builder().proAddressLine1(DECEASED_ADRESS).build())
+                .deceasedAddress(Address.builder().addressLine1(DECEASED_ADRESS).build())
                 .applicantForenames(APPLICANT_FORENAMES)
                 .applicantSurname(APPLICANT_SURNAME)
-                .applicantAddress(ProbateAddress.builder().proAddressLine1(APPLICANT_ADRESS).build())
+                .applicantAddress(Address.builder().addressLine1(APPLICANT_ADRESS).build())
                 .expiryDate(DATE_OF_EXPIRY)
                 .build();
 
@@ -65,12 +70,12 @@ public class StandingSearchMapperTest {
         Assertions.assertThat(standingSearchData).isEqualToComparingFieldByFieldRecursively(expectedStandingSearchData);
     }
 
-    private List<CollectionMember<ProbateFullAliasName>> buildFullAliasNames() {
-        ProbateFullAliasName aliasName = ProbateFullAliasName.builder()
+    private List<CollectionMember<FullAliasName>> buildFullAliasNames() {
+        FullAliasName aliasName = FullAliasName.builder()
                 .fullAliasName(DECEASED_ALIAS_NAMES)
                 .build();
-        List<CollectionMember<ProbateFullAliasName>> aliasNamesCollections = new ArrayList<CollectionMember<ProbateFullAliasName>>();
-        CollectionMember<ProbateFullAliasName> aliasNamesCollection = new CollectionMember(null, aliasName);
+        List<CollectionMember<FullAliasName>> aliasNamesCollections = new ArrayList<CollectionMember<FullAliasName>>();
+        CollectionMember<FullAliasName> aliasNamesCollection = new CollectionMember(null, aliasName);
         aliasNamesCollections.add(aliasNamesCollection);
 
         return aliasNamesCollections;
