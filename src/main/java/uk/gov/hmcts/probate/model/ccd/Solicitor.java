@@ -2,6 +2,7 @@ package uk.gov.hmcts.probate.model.ccd;
 
 import lombok.Builder;
 import lombok.Data;
+import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 
 import java.io.Serializable;
 
@@ -9,7 +10,7 @@ import java.io.Serializable;
 @Builder
 public class Solicitor implements Serializable {
     private final String firmName;
-    private final String firmPostcode;
+    private final SolsAddress firmAddress;
     private final String fullname;
     private final String jobRole;
 }

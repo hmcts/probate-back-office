@@ -1,10 +1,14 @@
 package uk.gov.hmcts.probate.model.ccd.raw;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 @Data
 @Builder
+@AllArgsConstructor
 public class ScannedDocument {
 
     private final String controlNumber;
@@ -13,9 +17,9 @@ public class ScannedDocument {
 
     private final String type;
 
-    private final String scannedDate;
+    private final LocalDateTime scannedDate;
 
-    private final String url;
-
+    private final DocumentLink url;
+    
     private final String exceptionRecordReference;
 }

@@ -7,7 +7,6 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.data.jpa.repository.JpaRepository;
-import uk.gov.hmcts.probate.model.ccd.grantapplication.request.GrantApplicationData;
 import uk.gov.hmcts.probate.model.probateman.Caveat;
 import uk.gov.hmcts.probate.model.probateman.GrantApplication;
 import uk.gov.hmcts.probate.model.probateman.ProbateManModel;
@@ -20,6 +19,7 @@ import uk.gov.hmcts.probate.service.CoreCaseDataService;
 import uk.gov.hmcts.probate.service.probateman.mapper.GrantApplicationMapper;
 import uk.gov.hmcts.probate.service.probateman.mapper.ProbateManMapper;
 import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
+import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData;
 
 import java.util.Map;
 import java.util.Optional;
@@ -76,15 +76,15 @@ public class ProbateManServiceImplTest {
     public void shouldSaveToCcd() {
         SecurityDTO securityDTO = SecurityDTO.builder().build();
         GrantApplication grantApplication = new GrantApplication();
-        GrantApplicationData caseData = GrantApplicationData.builder().build();
+        GrantOfRepresentationData grantOfRepresentationData = GrantOfRepresentationData.builder().build();
         CaseDetails caseDetails = CaseDetails.builder().build();
 
         when(securityUtils.getSecurityDTO()).thenReturn(securityDTO);
         when(grantApplicationRepository.findById(ID)).thenReturn(Optional.of(grantApplication));
-        when(grantApplicationMapper.toCcdData(grantApplication)).thenReturn(caseData);
+        when(grantApplicationMapper.toCcdData(grantApplication)).thenReturn(grantOfRepresentationData);
 
         when(coreCaseDataService.createCase(
-            caseData,
+            grantOfRepresentationData,
             GRANT_OF_REPRESENTATION,
             APPLY_FOR_GRANT,
             securityDTO
@@ -97,7 +97,8 @@ public class ProbateManServiceImplTest {
         verify(securityUtils, times(1)).getSecurityDTO();
         verify(grantApplicationRepository, times(1)).findById(ID);
         verify(grantApplicationMapper, times(1)).toCcdData(grantApplication);
-        verify(coreCaseDataService, times(1)).createCase(caseData, GRANT_OF_REPRESENTATION, APPLY_FOR_GRANT, securityDTO);
+        verify(coreCaseDataService, times(1)).createCase(grantOfRepresentationData,
+                GRANT_OF_REPRESENTATION, APPLY_FOR_GRANT, securityDTO);
     }
 
     @Test(expected = IllegalArgumentException.class)

@@ -1,6 +1,7 @@
 package uk.gov.hmcts.probate.service.probateman;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.model.probateman.ProbateManModel;
@@ -14,6 +15,7 @@ import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
 import java.util.Map;
 import java.util.Optional;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class ProbateManServiceImpl implements ProbateManService {
@@ -42,6 +44,7 @@ public class ProbateManServiceImpl implements ProbateManService {
     }
 
     public CaseDetails saveToCcd(Long id, ProbateManType probateManType) {
+        log.info("Saving legacy case to CCD");
         ProbateManModel probateManModel = retrieveProbateManModel(id, probateManType);
         ProbateManMapper probateManMapper = Optional.ofNullable(mappers.get(probateManType))
             .orElseThrow(() ->

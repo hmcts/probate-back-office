@@ -43,13 +43,13 @@ public class GrantApplication extends ProbateManModel {
     private String deceasedAddress; //varchar(500),
 
     @Column(name = "DECEASED_TEXT")
-    private String deceasedText; //varchar(32000),
+    private String deceasedText; //varchar(32000),//comment on case with type = deceased
 
     @Column(name = "ALIAS_NAMES")
     private String aliasNames; //varchar(32000),
 
     @Column(name = "GRANT_APPLICATION_TEXT")
-    private String grantApplicationText; //varchar(32000),
+    private String grantApplicationText; //varchar(32000), as above
 
     @Column(name = "APPLICATION_EVENT_TEXT")
     private String applicationEventText; //varchar(32000),
@@ -70,7 +70,7 @@ public class GrantApplication extends ProbateManModel {
     private String ccdCaseNo; //varchar(20),
 
     @Column(name = "DNM_IND")
-    private String dnmInd; //varchar(1),
+    private String dnmInd; //varchar(1), DO NOT MATCH flag
 
     @Column(name = "DECEASED_AGE_AT_DEATH")
     private Long deceasedAgeAtDeath; //int,
@@ -79,7 +79,7 @@ public class GrantApplication extends ProbateManModel {
     private String deceasedDeathType; //varchar(40),
 
     @Column(name = "DECEASED_DOMICILE")
-    private String deceasedDomicile; //varchar(60),
+    private String deceasedDomicile; //varchar(60), UnitedKingdom etc?
 
     @Column(name = "DECEASED_DOMICILE_IN_WELSH")
     private String deceasedDomicileInWelsh; //varchar(10),
@@ -103,22 +103,22 @@ public class GrantApplication extends ProbateManModel {
     private String appAdminClauseLimitnWelsh; //varchar(100),
 
     @Column(name = "APP_CASE_TYPE")
-    private String appCaseType; //varchar(20),
+    private String appCaseType; //varchar(20), Personal/Solicitor
 
     @Column(name = "APP_EXECUTOR_LIMITATION")
-    private String appExecutorLimitation; //varchar(100),
+    private String appExecutorLimitation; //varchar(100), Rebbeca
 
     @Column(name = "APP_EXECUTOR_LIMITATION_WELSH")
     private String appExecutorLimitationWelsh; //varchar(100),
 
     @Column(name = "APP_RECEIVED_DATE")
-    private LocalDate appReceivedDate; //date,
+    private LocalDate appReceivedDate; //date, submissiondate
 
     @Column(name = "APPLICANT_ADDRESS")
     private String applicantAddress; //varchar(500),
 
     @Column(name = "APPLICANT_DX_EXCHANGE")
-    private String applicantDxExchange; //varchar(25),
+    private String applicantDxExchange; //varchar(25), Solicitor box number
 
     @Column(name = "APPLICANT_DX_NUMBER")
     private String applicantDxNumber; //varchar(10),

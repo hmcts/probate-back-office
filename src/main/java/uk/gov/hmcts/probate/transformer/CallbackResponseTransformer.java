@@ -156,6 +156,13 @@ public class CallbackResponseTransformer {
         return transformResponse(responseCaseData);
     }
 
+    public CallbackResponse transformWithBulkPrintComplete(CallbackRequest callbackRequest, String letterId) {
+        ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), false);
+        responseCaseDataBuilder.grantSentToPrint("Yes")
+                .letterId(letterId);
+        return transformResponse(responseCaseDataBuilder.build());
+    }
+
     public CallbackResponse transformCase(CallbackRequest callbackRequest) {
 
         boolean transform = callbackRequest.getCaseDetails().getData().getApplicationType() == ApplicationType.SOLICITOR;
@@ -187,7 +194,7 @@ public class CallbackResponseTransformer {
                 .applicationType(ofNullable(caseData.getApplicationType()).orElse(DEFAULT_APPLICATION_TYPE))
                 .registryLocation(ofNullable(caseData.getRegistryLocation()).orElse(DEFAULT_REGISTRY_LOCATION))
                 .solsSolicitorFirmName(caseData.getSolsSolicitorFirmName())
-                .solsSolicitorFirmPostcode(caseData.getSolsSolicitorFirmPostcode())
+                .solsSolicitorAddress(caseData.getSolsSolicitorAddress())
                 .solsSolicitorEmail(caseData.getSolsSolicitorEmail())
                 .solsSolicitorPhoneNumber(caseData.getSolsSolicitorPhoneNumber())
                 .solsSOTName(caseData.getSolsSOTName())

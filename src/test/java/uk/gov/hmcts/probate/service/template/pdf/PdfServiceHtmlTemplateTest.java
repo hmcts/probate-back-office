@@ -38,6 +38,7 @@ public class PdfServiceHtmlTemplateTest {
     private static final String SURNAME = "Michael";
     private static final String SOLICITOR_APP_REFERENCE = "Reference";
     private static final String SOLICITOR_FIRM_NAME = "Legal Service Ltd";
+    private static final String SOLICITOR_FIRM_ADD_LINE1 = "Sols Add Line1";
     private static final String SOLICITOR_FIRM_POSTCODE = "SW1E 6EA";
     private static final String IHT_FORM = "IHT207";
     private static final String SOLICITOR_NAME = "Peter Crouch";
@@ -61,6 +62,8 @@ public class PdfServiceHtmlTemplateTest {
     private static final String EX_ADD_PC = "ExPC";
     private static final SolsAddress PRIMARY_ADDRESS = SolsAddress.builder().addressLine1(EX_ADD_LINE1)
             .postCode(EX_ADD_PC).build();
+    private static final SolsAddress SOLICITOR_ADDRESS = SolsAddress.builder().addressLine1(SOLICITOR_FIRM_ADD_LINE1)
+            .postCode(SOLICITOR_FIRM_POSTCODE).build();
     private static final String PRIMARY_APPLICANT_APPLYING = "Yes";
     private static final String PRIMARY_APPLICANT_HAS_ALIAS = "No";
     private static final String OTHER_EXEC_EXISTS = "No";
@@ -106,7 +109,7 @@ public class PdfServiceHtmlTemplateTest {
                 .willHasCodicils(WILL_HAS_CODICILS)
                 .willNumberOfCodicils(NUMBER_OF_CODICILS)
                 .solsSolicitorFirmName(SOLICITOR_FIRM_NAME)
-                .solsSolicitorFirmPostcode(SOLICITOR_FIRM_POSTCODE)
+                .solsSolicitorAddress(SOLICITOR_ADDRESS)
                 .ihtFormId(IHT_FORM)
                 .solsSOTName(SOLICITOR_NAME)
                 .solsSOTJobTitle(SOLICITOR_JOB_TITLE)

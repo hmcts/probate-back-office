@@ -1,4 +1,13 @@
 <!DOCTYPE html>
+{% macro address(address)%}
+{% if address.AddressLine1 != null %}{{ address.AddressLine1 }}, {% endif %}
+{% if address.AddressLine2 != null %}{{ address.AddressLine2 }}, {% endif %}
+{% if address.AddressLine3 != null %}{{ address.AddressLine3 }}, {% endif %}
+{% if address.PostTown != null %}{{ address.PostTown }}, {% endif %}
+{% if address.County != null %}{{ address.County }}, {% endif %}
+{% if address.PostCode != null %}{{ address.PostCode }}, {% endif %}
+{% if address.Country != null %}{{ address.Country }}{% endif %}
+{% endmacro %}
 <html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
     <title th:remove="all" th:text="${title}">Grant of Probate</title>
@@ -308,7 +317,7 @@
                 case_details.case_data.applicationType != "Personal"%}
                 by {{case_details.case_data.solsSolicitorFirmName}} (Ref:
                 {{case_details.case_data.solsSolicitorAppReference}})
-                {{case_details.case_data.solsSolicitorFirmPostcode}} {% else %}personally{% endif %}</p>
+                {{address(case_details.case_data.solsSolicitorAddress)}} {% else %}personally{% endif %}</p>
         </td>
         <td colspan="1">
             <br />

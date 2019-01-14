@@ -17,6 +17,7 @@ import uk.gov.hmcts.probate.model.ccd.Executor;
 import uk.gov.hmcts.probate.model.ccd.Fee;
 import uk.gov.hmcts.probate.model.ccd.InheritanceTax;
 import uk.gov.hmcts.probate.model.ccd.Solicitor;
+import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
@@ -73,6 +74,8 @@ public class ConfirmationResponseServiceTest {
     private Executor deadBeforeExecutorMock;
     @Mock
     private Executor deadAfterExecutorMock;
+    @Mock
+    private SolsAddress solsAddressMock;
 
     @Before
     public void setup() {
@@ -320,6 +323,8 @@ public class ConfirmationResponseServiceTest {
         executorsList.add(deadBeforeExecutorMock);
         executorsList.add(deadAfterExecutorMock);
         when(ccdDataMock.getExecutors()).thenReturn(executorsList);
+        when(ccdDataMock.getSolicitor().getFirmAddress()).thenReturn(solsAddressMock);
+
         return ccdDataMock;
     }
 

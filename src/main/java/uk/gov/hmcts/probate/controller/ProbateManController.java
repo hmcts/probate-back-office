@@ -50,6 +50,7 @@ public class ProbateManController {
     @PostMapping(path = "/legacy/search", consumes = APPLICATION_JSON_UTF8_VALUE, produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> legacySearch(@RequestBody CallbackRequest callbackRequest,
                                                          HttpServletRequest request) {
+        log.info("Performing legacy case search");
 
         CaseMatchingCriteria caseMatchingCriteria = CaseMatchingCriteria.of(callbackRequest.getCaseDetails());
 
@@ -59,7 +60,6 @@ public class ProbateManController {
         List<CollectionMember<CaseMatch>> caseMatchesList = new ArrayList();
 
         caseMatches.forEach(match -> caseMatchesList.add(new CollectionMember<CaseMatch>(null, match)));
-
 
         ResponseCaseData responseCaseData = ResponseCaseData.builder()
                 .legacySearchResultRows(caseMatchesList)
@@ -75,13 +75,13 @@ public class ProbateManController {
     public ResponseEntity<CallbackResponse> doImport(@RequestBody CallbackRequest callbackRequest,
                                                      HttpServletRequest request) {
 
-
+        log.info("Performing legacy case import");
         CaseData data = callbackRequest.getCaseDetails().getData();
         List<CollectionMember<CaseMatch>> rows = data.getLegacySearchResultRows();
 
         rows.stream().map(CollectionMember::getValue)
-                //.filter(row -> "YES".equalsIgnoreCase(row.getDoImport()))
-                .filter(row -> "Legacy LEGACY APPLICATION".equalsIgnoreCase(row.getType()))
+                .filter(row -> "YES".equalsIgnoreCase(row.getDoImport()))
+                //.filter(row -> LegacyCaseType.GRANT_OF_REPRESENTATION.getName().equalsIgnoreCase(row.getType()))
                 .forEach(row -> importRow(row));
         ResponseCaseData responseCaseData = ResponseCaseData.builder()
                 .legacySearchResultRows(rows)
@@ -96,7 +96,10 @@ public class ProbateManController {
     private void importRow(CaseMatch row) {
         String legacyCaseTypeName = row.getType();
         LegacyCaseType legacyCaseType = LegacyCaseType.getByLegacyCaseTypeName(legacyCaseTypeName);
-        probateManService.saveToCcd(Long.parseLong("1"), ProbateManType.getByLegacyCaseType(legacyCaseType));
+        String id = row.getId();
+        log.info("Importing legacy case into ccd for legacyCaseType=" + legacyCaseTypeName + ", with id=" + id);
+        ProbateManType probateManType = ProbateManType.getByLegacyCaseType(legacyCaseType);
+        probateManService.saveToCcd(Long.parseLong(id), probateManType);
 
     }
 }

@@ -220,6 +220,29 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     }
 
     @Test
+    public void shouldTransformCaseWithScannedDocuments() {
+        String response = transformCase("success.scannedDocuments.json", TRANSFORM_URL);
+
+        JsonPath jsonPath = JsonPath.from(response);
+        String controlNumber = jsonPath.get("data.scannedDocuments[0].value.controlNumber");
+        String fileName = jsonPath.get("data.scannedDocuments[0].value.fileName");
+        String type = jsonPath.get("data.scannedDocuments[0].value.type");
+        String documentUrl = jsonPath.get("data.scannedDocuments[0].value.url.document_url");
+        String documentBinaryUrl = jsonPath.get("data.scannedDocuments[0].value.url.document_binary_url");
+        String documentFilename = jsonPath.get("data.scannedDocuments[0].value.url.document_filename");
+        String exceptionRecordReference = jsonPath.get("data.scannedDocuments[0].value.exceptionRecordReference");
+
+        assertEquals("1234", controlNumber);
+        assertEquals("scanneddocument.pdf", fileName);
+        assertEquals("other", type);
+        assertEquals("http://somedoc", documentUrl);
+        assertEquals("http://somedoc.pdf/binary", documentBinaryUrl);
+        assertEquals("somedoc.pdf", documentFilename);
+        assertEquals("EX-REF-REC-001", exceptionRecordReference);
+
+    }
+
+    @Test
     public void shouldTransformCaseSOLSAdditionalExec() {
         String response = transformCase("solicitorPayloadNotificationsAddExecs.json", TRANSFORM_URL);
 

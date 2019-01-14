@@ -1,10 +1,12 @@
 buildscript {
+  ext {
+    springBootVersion = '2.0.6.RELEASE'
+  }
   repositories {
-    mavenLocal()
-    maven { url "http://repo1.maven.org/maven2/" }
-    maven { url "https://plugins.gradle.org/m2/" }
+    jcenter()
   }
   dependencies {
+    classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
     classpath group: 'org.sonarsource.scanner.gradle', name: 'sonarqube-gradle-plugin', version: '2.6.2'
     classpath("net.serenity-bdd:serenity-gradle-plugin:2.0.11")
   }
@@ -170,13 +172,14 @@ gitProperties {
 
 def versions = [
         springCloudStarterNetflixHystrix: '2.0.2.RELEASE',
-        serenitySpring: '1.0.26',
-        applicationinsights: '2.1.2',
-        springBootVersion: '2.0.6.RELEASE',
-        reformsJavaLoggingVersion: '3.0.2',
-        springSecurityVersion : '5.1.1.RELEASE',
-        ccdClient: '4.4.1',
-        mapStruct: '1.2.0.Final'
+        serenitySpring                  : '1.0.26',
+        applicationinsights             : '2.1.2',
+        springBootVersion               : '2.0.6.RELEASE',
+        reformsJavaLoggingVersion       : '3.0.2',
+        springSecurityVersion           : '5.1.1.RELEASE',
+        probateCommonsVersion           : '0.0.9',
+        ccdClient                       : '4.4.1',
+        mapStruct                       : '1.2.0.Final'
 ]
 
 jacocoTestReport {
@@ -210,6 +213,7 @@ dependencies {
   compile group: 'org.springframework.boot', name: 'spring-boot-starter-aop', version: versions.springBootVersion
   compile group: 'org.springframework.boot', name: 'spring-boot-configuration-processor', version: versions.springBootVersion
   compile group: 'org.springframework.retry', name: 'spring-retry', version: '1.2.2.RELEASE'
+  compile group: 'uk.gov.hmcts.reform.probate', name: 'probate-commons', version: versions.probateCommonsVersion
 
   compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: versions.springCloudStarterNetflixHystrix
   compile ('io.github.openfeign.form:feign-form-spring:3.4.1') {
@@ -225,6 +229,7 @@ dependencies {
   compile group: 'uk.gov.service.notify', name: 'notifications-java-client', version: '3.9.2-RELEASE'
   compile group: 'uk.gov.hmcts.reform', name: 'service-auth-provider-client', version: '1.0.4'
   compile group: 'uk.gov.hmcts.reform', name: 'pdf-service-client', version: '6.0.0'
+  compile group: 'uk.gov.hmcts.reform', name: 'send-letter-client', version: '2.1.2'
 
   compile group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: '2.9.2'
   compile group: 'commons-io', name: 'commons-io', version: '2.6'
@@ -247,6 +252,7 @@ dependencies {
   compile group: 'org.mapstruct', name: 'mapstruct-jdk8', version: versions.mapStruct
   compileOnly group: 'org.mapstruct', name: 'mapstruct-processor', version: versions.mapStruct
 
+  testCompile group: 'uk.gov.hmcts.reform.probate', name: 'probate-commons', version: versions.probateCommonsVersion
   testCompile("org.springframework.boot:spring-boot-starter-test:$versions.springBootVersion") {
     exclude group: 'com.vaadin.external.google', module:'android-json'
   }

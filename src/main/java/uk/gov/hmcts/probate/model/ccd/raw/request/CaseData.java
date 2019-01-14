@@ -30,6 +30,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.StopReason;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 
+import javax.validation.Valid;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -53,12 +54,11 @@ public class CaseData {
 
     // EVENT = solicitorCreateApplication
     @NotBlank(groups = {ApplicationCreatedGroup.class},
-        message = "{solsSolicitorFirmNameIsNull}")
+            message = "{solsSolicitorFirmNameIsNull}")
     private final String solsSolicitorFirmName;
 
-    @NotBlank(groups = {ApplicationCreatedGroup.class},
-        message = "{solsSolicitorFirmPostcodeIsNull}")
-    private final String solsSolicitorFirmPostcode;
+    @Valid
+    private final SolsAddress solsSolicitorAddress;
 
     @NotBlank(groups = {ApplicationCreatedGroup.class}, message = "{solsSolicitorAppReferenceIsNull}")
     private final String solsSolicitorAppReference;
@@ -210,6 +210,8 @@ public class CaseData {
     private final String ihtReferenceNumber;
 
     private final String ihtFormCompletedOnline;
+
+    private final String localPrint;
 
 
     //next steps
@@ -365,6 +367,8 @@ public class CaseData {
     private final String totalFeePaperForm;
     private final String paperPaymentMethod;
     private final String paymentReferenceNumberPaperform;
+
+    private final String legacyId;
     private final List<CollectionMember<CaseMatch>> legacySearchResultRows;
 
 
@@ -385,16 +389,16 @@ public class CaseData {
     private List<CollectionMember<AdditionalExecutor>> getAllExecutors(boolean applying) {
         List<CollectionMember<AdditionalExecutor>> totalExecutors = new ArrayList<>();
         if ((applying && isPrimaryApplicantApplying())
-            || (!applying && isPrimaryApplicantNotApplying())) {
+                || (!applying && isPrimaryApplicantNotApplying())) {
             AdditionalExecutor primaryExecutor = AdditionalExecutor.builder()
-                .additionalExecForenames(getPrimaryApplicantForenames())
-                .additionalExecLastname(getPrimaryApplicantSurname())
-                .additionalApplying(getPrimaryApplicantIsApplying())
-                .additionalExecAddress(getPrimaryApplicantAddress())
-                .additionalExecNameOnWill(getPrimaryApplicantHasAlias())
-                .additionalExecAliasNameOnWill(getSolsExecutorAliasNames())
-                .additionalExecReasonNotApplying(getSolsPrimaryExecutorNotApplyingReason())
-                .build();
+                    .additionalExecForenames(getPrimaryApplicantForenames())
+                    .additionalExecLastname(getPrimaryApplicantSurname())
+                    .additionalApplying(getPrimaryApplicantIsApplying())
+                    .additionalExecAddress(getPrimaryApplicantAddress())
+                    .additionalExecNameOnWill(getPrimaryApplicantHasAlias())
+                    .additionalExecAliasNameOnWill(getSolsExecutorAliasNames())
+                    .additionalExecReasonNotApplying(getSolsPrimaryExecutorNotApplyingReason())
+                    .build();
 
             CollectionMember<AdditionalExecutor> primaryAdditionalExecutors = new CollectionMember<>(null, primaryExecutor);
             totalExecutors.add(primaryAdditionalExecutors);
@@ -425,6 +429,10 @@ public class CaseData {
 
     public boolean isDocsReceivedEmailNotificationRequested() {
         return YES.equals(getBoEmailDocsReceivedNotification());
+    }
+
+    public boolean isGrantForLocalPrinting() {
+        return YES.equals(localPrint);
     }
 
     public boolean isGrantIssuedEmailNotificationRequested() {

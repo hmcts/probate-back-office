@@ -56,7 +56,7 @@ public class CaseMatchingCriteria {
 
     private static String getDateFormatted(LocalDate date) {
         if (date == null) {
-            return "";
+            return LocalDate.now().plusYears(1L).format(dateTimeFormatter);
         }
 
         return date.format(dateTimeFormatter);
