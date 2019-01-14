@@ -164,13 +164,13 @@ public class CaseData {
 
     @SuppressWarnings("squid:S1170")
     @Getter(lazy = true)
-    private final String boEmailDocsReceivedNotification = YES;
+    private final String boEmailDocsReceivedNotification = getDefaultValueForEmailNotifications();
 
     private final String boEmailGrantIssuedNotificationRequested;
 
     @SuppressWarnings("squid:S1170")
     @Getter(lazy = true)
-    private final String boEmailGrantIssuedNotification = YES;
+    private final String boEmailGrantIssuedNotification = getDefaultValueForEmailNotifications();
 
     @SuppressWarnings("squid:S1170")
     @Getter(lazy = true)
@@ -426,6 +426,10 @@ public class CaseData {
 
     public String getPrimaryApplicantFullName() {
         return String.join(" ", primaryApplicantForenames, primaryApplicantSurname);
+    }
+
+    public String getDefaultValueForEmailNotifications() {
+        return primaryApplicantEmailAddress == null && solsSolicitorEmail == null ? NO : YES;
     }
 
     public boolean isDocsReceivedEmailNotificationRequested() {
