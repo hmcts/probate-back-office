@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,10 +18,10 @@ import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
 import uk.gov.hmcts.probate.model.criterion.CaseMatchingCriteria;
 import uk.gov.hmcts.probate.model.probateman.LegacyCaseType;
+import uk.gov.hmcts.probate.model.probateman.ProbateManModel;
 import uk.gov.hmcts.probate.model.probateman.ProbateManType;
 import uk.gov.hmcts.probate.service.CaseMatchingService;
 import uk.gov.hmcts.probate.service.ProbateManService;
-import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -40,11 +41,10 @@ public class ProbateManController {
     private static final List<CaseType> GRANT_MATCH_TYPES = Arrays.asList(LEGACY);
     private final CaseMatchingService caseMatchingService;
 
-    @PostMapping(path = "/probateManTypes/{probateManType}/cases/{id}", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
-        produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<CaseDetails> saveGrantApplicationToCcd(@PathVariable("probateManType") ProbateManType probateManType,
-                                                                 @PathVariable("id") String id) {
-        return ResponseEntity.ok(probateManService.saveToCcd(Long.parseLong(id), probateManType));
+    @GetMapping(path = "/probateManTypes/{probateManType}/cases/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<ProbateManModel> saveGrantApplicationToCcd(@PathVariable("probateManType") ProbateManType probateManType,
+                                                                     @PathVariable("id") String id) {
+        return ResponseEntity.ok(probateManService.getProbateManModel(Long.parseLong(id), probateManType));
     }
 
     @PostMapping(path = "/legacy/search", consumes = APPLICATION_JSON_UTF8_VALUE, produces = {APPLICATION_JSON_VALUE})

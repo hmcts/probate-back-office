@@ -26,14 +26,23 @@ public class ProbateManServiceImpl implements ProbateManService {
 
     private final CoreCaseDataService coreCaseDataService;
 
-    public CaseDetails saveToCcd(Long id, ProbateManType probateManType) {
+    @Override
+    public ProbateManModel getProbateManModel(Long id, ProbateManType probateManType) {
+        return retrieveProbateManModel(id, probateManType);
+    }
+
+    private ProbateManModel retrieveProbateManModel(Long id, ProbateManType probateManType) {
         JpaRepository repository = Optional.ofNullable(repositories.get(probateManType))
             .orElseThrow(() ->
                 new IllegalArgumentException("Cannot find repository for: " + probateManType.name()));
         Optional<ProbateManModel> probateManModelOptional = repository.findById(id);
-        ProbateManModel probateManModel = probateManModelOptional
+        return probateManModelOptional
             .orElseThrow(() -> new IllegalArgumentException("Cannot find " + probateManType.name()
                 + " with id: " + id));
+    }
+
+    public CaseDetails saveToCcd(Long id, ProbateManType probateManType) {
+        ProbateManModel probateManModel = retrieveProbateManModel(id, probateManType);
         ProbateManMapper probateManMapper = Optional.ofNullable(mappers.get(probateManType))
             .orElseThrow(() ->
                 new IllegalArgumentException("Cannot find mapper for: " + probateManType.name()));

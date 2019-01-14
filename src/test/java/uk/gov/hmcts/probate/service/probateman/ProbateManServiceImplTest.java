@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import uk.gov.hmcts.probate.model.ccd.grantapplication.request.GrantApplicationData;
 import uk.gov.hmcts.probate.model.probateman.Caveat;
 import uk.gov.hmcts.probate.model.probateman.GrantApplication;
+import uk.gov.hmcts.probate.model.probateman.ProbateManModel;
 import uk.gov.hmcts.probate.model.probateman.ProbateManType;
 import uk.gov.hmcts.probate.repositories.CaveatRepository;
 import uk.gov.hmcts.probate.repositories.GrantApplicationRepository;
@@ -117,5 +118,16 @@ public class ProbateManServiceImplTest {
         when(caveatRepository.findById(ID)).thenReturn(Optional.of(caveat));
 
         probateManService.saveToCcd(ID, ProbateManType.CAVEAT);
+    }
+
+    @Test
+    public void shouldGetProbateManModel() {
+        GrantApplication grantApplication = new GrantApplication();
+        when(grantApplicationRepository.findById(ID)).thenReturn(Optional.of(grantApplication));
+
+        ProbateManModel probateManModel = probateManService.getProbateManModel(ID, ProbateManType.GRANT_APPLICATION);
+
+        assertThat(probateManModel, equalTo(grantApplication));
+        verify(grantApplicationRepository, times(1)).findById(ID);
     }
 }
