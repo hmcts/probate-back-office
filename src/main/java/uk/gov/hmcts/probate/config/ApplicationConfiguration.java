@@ -1,7 +1,8 @@
 package uk.gov.hmcts.probate.config;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.module.SimpleModule;
+import java.math.BigDecimal;
+import java.time.format.DateTimeFormatter;
+
 import org.commonmark.parser.Parser;
 import org.commonmark.renderer.html.HtmlRenderer;
 import org.springframework.context.annotation.Bean;
@@ -9,12 +10,18 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.web.client.RestTemplate;
-import uk.gov.hmcts.probate.model.ccd.raw.BigDecimalSerializer;
 
-import java.math.BigDecimal;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
+
+import uk.gov.hmcts.probate.model.ccd.raw.BigDecimalSerializer;
 
 @Configuration
 public class ApplicationConfiguration {
+
+    static final String LOCALDATETIME_ISO8601_FORMAT_STRING = "yyyy-MM-dd'T'HH:mm:ss'Z'";
 
     @Bean
     public ResourceBundleMessageSource validationMessageSource() {
@@ -30,7 +37,6 @@ public class ApplicationConfiguration {
         return source;
     }
 
-
     @Bean
     public RestTemplate restTemplate() {
         return new RestTemplate();
@@ -42,6 +48,9 @@ public class ApplicationConfiguration {
         SimpleModule module = new SimpleModule();
         module.addSerializer(BigDecimal.class, new BigDecimalSerializer());
         objectMapper.registerModule(module);
+        JavaTimeModule javaTimeModule = new JavaTimeModule();
+        javaTimeModule.addSerializer(new LocalDateTimeSerializer(DateTimeFormatter.ofPattern(LOCALDATETIME_ISO8601_FORMAT_STRING)));
+        objectMapper.registerModule(javaTimeModule);        
         return objectMapper;
     }
 

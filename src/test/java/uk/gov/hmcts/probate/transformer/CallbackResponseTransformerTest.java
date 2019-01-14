@@ -38,6 +38,7 @@ import uk.gov.hmcts.probate.service.StateChangeService;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -931,6 +932,19 @@ public class CallbackResponseTransformerTest {
 
         assertCommonDetails(callbackResponse);
         assertCommonPaperForm(callbackResponse);
+    }
+
+    @Test
+    public void shouldTransoformCaseWithScannedDocuments() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL);
+        caseDataBuilder.scannedDocuments(SCANNED_DOCUMENTS_LIST);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+        assertEquals(1, callbackResponse.getData().getScannedDocuments().size());
+        assertEquals(SCANNED_DOCUMENTS_LIST, callbackResponse.getData().getScannedDocuments());
     }
 
     @Test
