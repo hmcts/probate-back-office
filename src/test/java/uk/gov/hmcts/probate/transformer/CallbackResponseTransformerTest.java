@@ -130,6 +130,7 @@ public class CallbackResponseTransformerTest {
     private static final String EXEC_APPEAR = YES;
     private static final String EXEC_NOTIFIED = YES;
 
+    private static final String BO_BULK_PRINT = YES;
     private static final String BO_EMAIL_GRANT_ISSUED = YES;
     private static final String BO_DOCS_RECEIVED = YES;
     private static final String CASE_PRINT = YES;
@@ -246,6 +247,7 @@ public class CallbackResponseTransformerTest {
                 .solsAdditionalInfo(ADDITIONAL_INFO)
                 .boEmailGrantIssuedNotificationRequested(BO_EMAIL_GRANT_ISSUED)
                 .boEmailDocsReceivedNotificationRequested(BO_DOCS_RECEIVED)
+                .boSendToBulkPrintRequested(BO_BULK_PRINT)
                 .casePrinted(CASE_PRINT)
                 .boCaseStopReasonList(STOP_REASONS_LIST)
                 .boStopDetails(STOP_DETAILS)
@@ -932,6 +934,20 @@ public class CallbackResponseTransformerTest {
         assertCommonDetails(callbackResponse);
         assertCommonPaperForm(callbackResponse);
     }
+
+    @Test
+    public void shouldDefualtYesToBulkPrint() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.paperForm(callbackRequestMock);
+
+        assertEquals("Yes", callbackResponse.getData().getBoSendToBulkPrintRequested());
+        assertEquals("Yes", callbackResponse.getData().getBoSendToBulkPrint());
+    }
+
 
     @Test
     public void shouldTransformWithBulkPrintComplete() {
