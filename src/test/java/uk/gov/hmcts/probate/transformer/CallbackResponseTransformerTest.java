@@ -421,6 +421,15 @@ public class CallbackResponseTransformerTest {
         assertEquals(1, response.getData().getCaseMatches().size());
         assertEquals(caseMatch, response.getData().getCaseMatches().get(0).getValue());
     }
+    
+    @Test
+    public void shouldSelectForQA() {
+        CallbackResponse response = underTest.selectForQA(callbackRequestMock);
+
+        assertCommon(response);
+        
+        assertEquals(CallbackResponseTransformer.QA_CASE_STATE, response.getData().getState());
+    }
 
     @Test
     public void shouldConvertRequestToDataBeanWithStopDetailsChange() {
@@ -936,6 +945,19 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
+    public void shouldTransoformCaseWithScannedDocuments() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL);
+        caseDataBuilder.scannedDocuments(SCANNED_DOCUMENTS_LIST);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+        assertEquals(1, callbackResponse.getData().getScannedDocuments().size());
+        assertEquals(SCANNED_DOCUMENTS_LIST, callbackResponse.getData().getScannedDocuments());
+    }
+
+    @Test
     public void shouldDefualtYesToBulkPrint() {
         caseDataBuilder.applicationType(ApplicationType.PERSONAL);
 
@@ -943,11 +965,9 @@ public class CallbackResponseTransformerTest {
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
         CallbackResponse callbackResponse = underTest.paperForm(callbackRequestMock);
-
         assertEquals("Yes", callbackResponse.getData().getBoSendToBulkPrintRequested());
         assertEquals("Yes", callbackResponse.getData().getBoSendToBulkPrint());
     }
-
 
     @Test
     public void shouldTransformWithBulkPrintComplete() {
