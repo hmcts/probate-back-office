@@ -185,7 +185,7 @@
             <span class="camelCase">
                     <strong>{{case_details.case_data.primaryApplicantForenames}} {{case_details.case_data.primaryApplicantSurname}}</strong>
                 </span>
-            {% endif %} made an application to this Court for a Grant of Administration (with will) and declared the following information.
+            {% endif %} made an application to this Court for a Grant of Letters of Administration (with will annexed) and declared the following information.
             <p>
                 {% if case_details.case_data.boDeceasedTitle != null and case_details.case_data.boDeceasedTitle != "" %}{{ case_details.case_data.boDeceasedTitle }}{% endif %} <strong>{{case_details.case_data.deceasedForenames}} {{case_details.case_data.deceasedSurname}}</strong> {% if case_details.case_data.boDeceasedHonours != null and case_details.case_data.boDeceasedHonours != "" %}{{ case_details.case_data.boDeceasedHonours }}{% endif %}
                 of  <strong>{% if case_details.case_data.deceasedAddress.AddressLine1 != null and case_details.case_data.deceasedAddress.AddressLine1 != "" %}{{ case_details.case_data.deceasedAddress.AddressLine1}}{% endif %}
@@ -204,7 +204,9 @@
             <p>The Last Will and Testament <strong><span class="camelCase">
                 {% if case_details.case_data.boWillMessage != null and case_details.case_data.boWillMessage != ""%}{{ case_details.case_data.boWillMessage }}{% endif %}
                 </span></strong> of <strong>{{case_details.case_data.deceasedForenames}} {{case_details.case_data.deceasedSurname}}</strong> (An official copy of which is available from the Court) was proved and registered before the High Court of Justice.
-                The Administration of <strong>{{case_details.case_data.deceasedForenames}} {{case_details.case_data.deceasedSurname}}</strong>'s estate is granted by this court to the following
+                The Administration of <strong>{{case_details.case_data.deceasedForenames}} {{case_details.case_data.deceasedSurname}}</strong>'s estate is granted by this court to the following administrator{% set applyingExecCounter = 0 %}{% for executor
+                in case_details.case_data.executorsApplying %}{% set applyingExecCounter = applyingExecCounter + 1 %}{%
+                endfor %}{% if applyingExecCounter > 0 %}s{% endif %}
             </p>
             {% if case_details.case_data.primaryApplicantIsApplying == "No" %}
             <p>{% for executor in case_details.case_data.executorsApplying %}
@@ -276,25 +278,6 @@
     <tr>
         <td colspan="3">
             <p>
-                {% set powerReservedCounter = 0 %}
-                {% if case_details.case_data.executorsNotApplying != null %}
-                {% for executor in case_details.case_data.executorsNotApplying %}
-                {% if executor.value.notApplyingExecutorReason == "PowerReserved" %}
-                {% set powerReservedCounter = powerReservedCounter + 1 %}
-                {% endif %}
-                {% endfor %}
-                {% endif %}
-
-                {% if case_details.case_data.primaryApplicantIsApplying == "No" %}
-                {% if case_details.case_data.solsPrimaryExecutorNotApplyingReason == "PowerReserved" %}
-                {% set powerReservedCounter = powerReservedCounter + 1 %}
-                {% endif %}
-                {% endif %}
-
-                {% if powerReservedCounter == 0 %}{% endif %}
-                {% if powerReservedCounter == 1 %}Power reserved to another Executor{% endif %}
-                {% if powerReservedCounter > 1 %}Power reserved to other Executors{% endif %}
-                <br/>
                 {% if case_details.case_data.boExecutorLimitation != null and
                 case_details.case_data.boExecutorLimitation != ""%}
                 {{ case_details.case_data.boExecutorLimitation }}{%endif %}

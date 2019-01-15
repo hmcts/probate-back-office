@@ -185,7 +185,7 @@
             <span class="camelCase">
                     <strong>{{case_details.case_data.primaryApplicantForenames}} {{case_details.case_data.primaryApplicantSurname}}</strong>
                 </span>
-            {% endif %} made an application to this Court for a Grant of Administration and declared the following information.
+            {% endif %} made an application to this Court for a Grant of Letters of Administration and declared the following information.
             <p>
                 {% if case_details.case_data.boDeceasedTitle != null and case_details.case_data.boDeceasedTitle != "" %}{{ case_details.case_data.boDeceasedTitle }}{% endif %} <strong>{{case_details.case_data.deceasedForenames}} {{case_details.case_data.deceasedSurname}}</strong> {% if case_details.case_data.boDeceasedHonours != null and case_details.case_data.boDeceasedHonours != "" %}{{ case_details.case_data.boDeceasedHonours }}{% endif %}
                 of  <strong>{% if case_details.case_data.deceasedAddress.AddressLine1 != null and case_details.case_data.deceasedAddress.AddressLine1 != "" %}{{ case_details.case_data.deceasedAddress.AddressLine1}}{% endif %}
@@ -201,7 +201,7 @@
                 <br />
                 Died on <strong>{{case_details.case_data.deceasedDateOfDeathFormatted}}</strong> domiciled in <strong>England and Wales</strong>
             </p>
-            <p>The Administration of <strong>{{case_details.case_data.deceasedForenames}} {{case_details.case_data.deceasedSurname}}</strong>'s is granted by the High Court of Justice on this date to the following Executor{% set applyingExecCounter = 0 %}{% for executor
+            <p>The Administration of <strong>{{case_details.case_data.deceasedForenames}} {{case_details.case_data.deceasedSurname}}</strong>'s estate is granted by the High Court of Justice on this date to the following administrator{% set applyingExecCounter = 0 %}{% for executor
                 in case_details.case_data.executorsApplying %}{% set applyingExecCounter = applyingExecCounter + 1 %}{%
                 endfor %}{% if applyingExecCounter > 0 %}s{% endif %}
             </p>
@@ -275,25 +275,6 @@
     <tr>
         <td colspan="3">
             <p>
-                {% set powerReservedCounter = 0 %}
-                {% if case_details.case_data.executorsNotApplying != null %}
-                {% for executor in case_details.case_data.executorsNotApplying %}
-                {% if executor.value.notApplyingExecutorReason == "PowerReserved" %}
-                {% set powerReservedCounter = powerReservedCounter + 1 %}
-                {% endif %}
-                {% endfor %}
-                {% endif %}
-
-                {% if case_details.case_data.primaryApplicantIsApplying == "No" %}
-                {% if case_details.case_data.solsPrimaryExecutorNotApplyingReason == "PowerReserved" %}
-                {% set powerReservedCounter = powerReservedCounter + 1 %}
-                {% endif %}
-                {% endif %}
-
-                {% if powerReservedCounter == 0 %}{% endif %}
-                {% if powerReservedCounter == 1 %}Power reserved to another Executor{% endif %}
-                {% if powerReservedCounter > 1 %}Power reserved to other Executors{% endif %}
-                <br/>
                 {% if case_details.case_data.boExecutorLimitation != null and
                 case_details.case_data.boExecutorLimitation != ""%}
                 {{ case_details.case_data.boExecutorLimitation }}{%endif %}
