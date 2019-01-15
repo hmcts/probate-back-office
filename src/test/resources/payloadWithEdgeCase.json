@@ -36,6 +36,7 @@
         "AddressLine2": "",
         "AddressLine3": ""
       },
+      "caseType" : "gop",
       "deceasedAnyOtherNames": "No",
       "solsFeeAccountNumber": "1234",
       "willHasCodicils": "No",
@@ -43,7 +44,7 @@
       "willAccessOriginal": "Yes",
       "willExists": "Yes",
       "edgeCase": "Yes",
-      "localPrint": "No",
+      "boSendToBulkPrint": "No",
       "solsSolicitorFirmName": "Solicitor Firm Name",
       "deceasedDateOfDeath": "2000-01-01",
       "solsSOTNeedToUpdate": "No",

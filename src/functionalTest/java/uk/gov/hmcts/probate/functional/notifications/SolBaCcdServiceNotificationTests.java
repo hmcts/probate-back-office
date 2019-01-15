@@ -45,7 +45,7 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
 
     @Test
     public void verifySolicitorApplicantDocumentReceivedContentIsOk() {
-        String document = sendEmail("solicitorPayloadNotifications.json", DOCUMENTS_RECEIVED, EMAIL_NOTIFICATION_URL);
+        String document = sendEmail("solicitorPayloadNotificationsBirmingham.json", DOCUMENTS_RECEIVED, EMAIL_NOTIFICATION_URL);
         verifySolsEmailNotificationReceived(document);
     }
 
@@ -67,7 +67,7 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
 
     @Test
     public void verifySolicitorApplicantGrantIssuedContentIsOk() {
-        String document = sendEmail("solicitorPayloadNotifications.json", GRANT_ISSUED, EMAIL_NOTIFICATION_URL);
+        String document = sendEmail("solicitorPayloadNotificationsBirmingham.json", GRANT_ISSUED, EMAIL_NOTIFICATION_URL);
         verifySolsEmailNotificationReceived(document);
     }
 
@@ -91,7 +91,7 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
 
     @Test
     public void verifySolicitorCaseStoppedContentIsOkay() {
-        String document = sendEmail("solicitorPayloadNotifications.json", CASE_STOPPED, STOP_URL);
+        String document = sendEmail("solicitorPayloadNotificationsBirmingham.json", CASE_STOPPED, STOP_URL);
         verifySolsEmailCaseStopped(document);
     }
 
