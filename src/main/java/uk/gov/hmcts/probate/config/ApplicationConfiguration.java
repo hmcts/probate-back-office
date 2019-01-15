@@ -1,7 +1,6 @@
 package uk.gov.hmcts.probate.config;
 
 import java.math.BigDecimal;
-import java.time.format.DateTimeFormatter;
 
 import org.commonmark.parser.Parser;
 import org.commonmark.renderer.html.HtmlRenderer;
