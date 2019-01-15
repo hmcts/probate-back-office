@@ -38,7 +38,6 @@ import uk.gov.hmcts.probate.service.StateChangeService;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -421,6 +420,15 @@ public class CallbackResponseTransformerTest {
 
         assertEquals(1, response.getData().getCaseMatches().size());
         assertEquals(caseMatch, response.getData().getCaseMatches().get(0).getValue());
+    }
+    
+    @Test
+    public void shouldSelectForQA() {
+        CallbackResponse response = underTest.selectForQA(callbackRequestMock);
+
+        assertCommon(response);
+        
+        assertEquals(CallbackResponseTransformer.QA_CASE_STATE, response.getData().getState());
     }
 
     @Test

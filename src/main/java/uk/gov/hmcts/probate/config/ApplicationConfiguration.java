@@ -47,7 +47,6 @@ public class ApplicationConfiguration {
         module.addSerializer(BigDecimal.class, new BigDecimalSerializer());
         objectMapper.registerModule(module);
         JavaTimeModule javaTimeModule = new JavaTimeModule();
-        //javaTimeModule.addSerializer(new LocalDateTimeSerializer(DateTimeFormatter.ofPattern(LOCALDATETIME_ISO8601_FORMAT_STRING)));
         javaTimeModule.addSerializer(new LocalDateTimeSerializer());
         objectMapper.registerModule(javaTimeModule);        
         return objectMapper;
