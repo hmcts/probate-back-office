@@ -14,14 +14,12 @@ import org.springframework.web.client.RestTemplate;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 
 import uk.gov.hmcts.probate.model.ccd.raw.BigDecimalSerializer;
+import uk.gov.hmcts.probate.model.ccd.raw.LocalDateTimeSerializer;
 
 @Configuration
 public class ApplicationConfiguration {
-
-    static final String LOCALDATETIME_ISO8601_FORMAT_STRING = "yyyy-MM-dd'T'HH:mm:ss'Z'";
 
     @Bean
     public ResourceBundleMessageSource validationMessageSource() {
@@ -49,7 +47,8 @@ public class ApplicationConfiguration {
         module.addSerializer(BigDecimal.class, new BigDecimalSerializer());
         objectMapper.registerModule(module);
         JavaTimeModule javaTimeModule = new JavaTimeModule();
-        javaTimeModule.addSerializer(new LocalDateTimeSerializer(DateTimeFormatter.ofPattern(LOCALDATETIME_ISO8601_FORMAT_STRING)));
+        //javaTimeModule.addSerializer(new LocalDateTimeSerializer(DateTimeFormatter.ofPattern(LOCALDATETIME_ISO8601_FORMAT_STRING)));
+        javaTimeModule.addSerializer(new LocalDateTimeSerializer());
         objectMapper.registerModule(javaTimeModule);        
         return objectMapper;
     }
