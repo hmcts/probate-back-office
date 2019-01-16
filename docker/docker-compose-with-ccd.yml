@@ -3,13 +3,7 @@ networks:
   default: {}
 services:
   send-letter-service:
-    build:
-      context: bulk-print/.
-      args:
-      - http_proxy
-      - https_proxy
-      - no_proxy
-    image: hmcts/send-letter-service
+    image: hmcts.azurecr.io/hmcts/rpe-send-letter-service:latest
     container_name: send-letter-service
     environment:
     - APPINSIGHTS_INSTRUMENTATIONKEY=DUMMY
@@ -46,14 +40,20 @@ services:
         condition: service_healthy
 
   send-letter-database:
-    build:
-      context: bulk-print/database
-    image: hmcts/send-letter-database
+    image: postgres:9.6-alpine
     container_name: send-letter-database
     environment:
     - LETTER_TRACKING_DB_PASSWORD=password
     ports:
     - 5432:5432
+    healthcheck:
+      test: psql -c 'select 1' -d postgres -U postgres
+      retries: 2
+    mem_limit: 160m
+    memswap_limit: 0
+    volumes:
+    - ./bulk-print/init-db.sh:/docker-entrypoint-initdb.d/init-db.sh
+
   flyway:
     image: boxfuse/flyway:5.2.1
     command: -url=jdbc:postgresql://send-letter-database:5432/letter_tracking -user=letterservice -password=password -connectRetries=60 migrate

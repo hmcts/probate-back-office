@@ -2,12 +2,6 @@
 
 set -e
 
-# Claim Store database
-if [ -z "$LETTER_TRACKING_DB_PASSWORD" ]; then
-  echo "ERROR: Missing environment variables. Set value for 'LETTER_TRACKING_DB_PASSWORD'."
-  exit 1
-fi
-
 psql -v ON_ERROR_STOP=1 --username postgres --set USERNAME=letterservice --set PASSWORD=password <<-EOSQL
   CREATE USER :USERNAME WITH PASSWORD ':PASSWORD';
 
