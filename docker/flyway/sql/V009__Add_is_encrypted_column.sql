@@ -1,0 +1,2 @@
+ALTER TABLE letters
+ADD COLUMN is_encrypted BOOLEAN DEFAULT FALSE;

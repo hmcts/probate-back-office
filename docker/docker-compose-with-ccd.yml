@@ -4,32 +4,31 @@ networks:
 services:
   send-letter-service:
     build:
-      context: .
+      context: bulk-print/.
       args:
       - http_proxy
       - https_proxy
       - no_proxy
-    image: docker.artifactory.reform.hmcts.net/reform/send-letter-service
+    image: hmcts/send-letter-service
     container_name: send-letter-service
     environment:
-    - JAVA_OPTS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=8003
     - APPINSIGHTS_INSTRUMENTATIONKEY=DUMMY
     - SERVER_PORT=8485
-    - FTP_FINGERPRINT="fingerprint"
-    - FTP_HOSTNAME="hostname"
+    - FTP_FINGERPRINT=fingerprint
+    - FTP_HOSTNAME=hostname
     - FTP_PORT=22
-    - FTP_PRIVATE_KEY="private"
-    - FTP_PUBLIC_KEY="public"
-    - FTP_REPORTS_FOLDER="/reports/"
-    - FTP_TARGET_FOLDER="/target/"
-    - FTP_USER="user"
+    - FTP_PRIVATE_KEY=private
+    - FTP_PUBLIC_KEY=public
+    - FTP_REPORTS_FOLDER=/reports/
+    - FTP_TARGET_FOLDER=/target/
+    - FTP_USER=user
     - LETTER_TRACKING_DB_PASSWORD=password
-    - S2S_URL="false"
+    - LETTER_TRACKING_DB_USER=letterservice
+    - S2S_URL=false
     - SCHEDULING_ENABLED
     - SPRING_FLYWAY_ENABLED=false
     - ENCRYPTION_ENABLED
     - ENCRYPTION_PUBLIC_KEY
-    - LETTER_TRACKING_DB_HOST=localhost
     # these environment variables are used by java-logging library
     - ROOT_APPENDER
     - JSON_CONSOLE_PRETTY_PRINT
@@ -37,26 +36,31 @@ services:
     - REFORM_SERVICE_NAME
     - REFORM_TEAM
     - REFORM_ENVIRONMENT
+    - LETTER_TRACKING_DB_HOST=send-letter-database
     ports:
-    - 8003:8003
     - 8485:8485
     links:
     - send-letter-database
     depends_on:
-    - send-letter-database
+      send-letter-database:
+        condition: service_healthy
 
   send-letter-database:
-    image: docker.artifactory.reform.hmcts.net/reform/send-letter-database
+    build:
+      context: bulk-print/database
+    image: hmcts/send-letter-database
     container_name: send-letter-database
     environment:
     - LETTER_TRACKING_DB_PASSWORD=password
     ports:
     - 5432:5432
-    healthcheck:
-      test: psql -c 'select 1' -d letter_tracking -U letterservice
-      retries: 2
+  flyway:
+    image: boxfuse/flyway:5.2.1
+    command: -url=jdbc:postgresql://send-letter-database:5432/letter_tracking -user=letterservice -password=password -connectRetries=60 migrate
     volumes:
-    - ./bulk-print/init-db.sh:/docker-entrypoint-initdb.d/init-db.sh
+    - ./flyway/sql/:/flyway/sql
+    depends_on:
+    - send-letter-database
 
   service-auth-provider-api:
     image: hmcts/service-auth-provider-app

@@ -1,0 +1,2 @@
+ALTER TABLE letters
+ALTER COLUMN is_failed SET DEFAULT FALSE;
