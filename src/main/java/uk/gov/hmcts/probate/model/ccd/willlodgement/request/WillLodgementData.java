@@ -22,7 +22,7 @@ public class WillLodgementData {
 
     // EVENT = createWillLodgment - general details
 
-    // ... lodgementType
+    private final String lodgementType;
 
     private final LocalDate lodgedDate;
 
@@ -40,7 +40,7 @@ public class WillLodgementData {
 
     private final String deceasedSurname;
 
-    // ... deceasedGender
+    private final String deceasedGender;
 
     private final LocalDate deceasedDateOfBirth;
 
@@ -72,9 +72,9 @@ public class WillLodgementData {
 
     // EVENT = misc
 
-    // ... wlWithdrawReason
+    private final String withdrawalReason;
 
-    private final List<CollectionMember<Document>> wlDocumentsGenerated = new ArrayList<>();
+    private final List<CollectionMember<Document>> documentsGenerated = new ArrayList<>();
 
     private final List<CollectionMember<UploadDocument>> documentsUploaded;
 

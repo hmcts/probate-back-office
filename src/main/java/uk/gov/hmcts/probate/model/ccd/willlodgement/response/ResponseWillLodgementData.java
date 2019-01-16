@@ -20,7 +20,7 @@ public class ResponseWillLodgementData {
     private final ApplicationType applicationType;
     private final String registryLocation;
 
-    // ... lodgementType
+    private final String lodgementType;
     private final String lodgedDate;
     private final String willDate;
     private final String codicilDate;
@@ -29,7 +29,7 @@ public class ResponseWillLodgementData {
 
     private final String deceasedForenames;
     private final String deceasedSurname;
-    // ... deceasedGender
+    private final String deceasedGender;
     private final String deceasedDateOfBirth;
     private final String deceasedDateOfDeath;
     private final String deceasedTypeOfDeath;
@@ -45,7 +45,7 @@ public class ResponseWillLodgementData {
     private final String executorEmailAddress;
     // ... additionalExecutorList
 
-    // ... wlWithdrawReason
-    private final List<CollectionMember<Document>> wlDocumentsGenerated;
+    private final String withdrawalReason;
+    private final List<CollectionMember<Document>> documentsGenerated;
     private final List<CollectionMember<UploadDocument>> documentsUploaded;
 }
