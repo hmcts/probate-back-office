@@ -178,6 +178,7 @@ public class CallbackResponseTransformerTest {
                             .controlNumber("1234")
                             .scannedDate(scannedDate)
                             .type("other")
+                            .subtype("other")
                             .url(SCANNED_DOCUMENT_URL)
                             .build()));
     

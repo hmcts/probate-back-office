@@ -79,6 +79,7 @@
             "controlNumber": "1234",
             "fileName": "scanneddocument.pdf",
             "type": "other",
+            "subtype": "will",
             "scannedDate": "2018-01-01T12:34:56.123",
             "url": {
               "document_url": "http://somedoc",
