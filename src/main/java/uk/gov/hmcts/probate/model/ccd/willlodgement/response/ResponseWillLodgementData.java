@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.ccd.ProbateAddress;
+import uk.gov.hmcts.probate.model.ccd.ProbateExecutor;
 import uk.gov.hmcts.probate.model.ccd.ProbateFullAliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
@@ -43,7 +44,7 @@ public class ResponseWillLodgementData {
     private final String executorSurname;
     private final ProbateAddress executorAddress;
     private final String executorEmailAddress;
-    // ... additionalExecutorList
+    private final List<CollectionMember<ProbateExecutor>> additionalExecutorList;
 
     private final String withdrawalReason;
     private final List<CollectionMember<Document>> documentsGenerated;

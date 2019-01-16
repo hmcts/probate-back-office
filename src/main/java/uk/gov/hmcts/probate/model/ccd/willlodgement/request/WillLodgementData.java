@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Data;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.ccd.ProbateAddress;
+import uk.gov.hmcts.probate.model.ccd.ProbateExecutor;
 import uk.gov.hmcts.probate.model.ccd.ProbateFullAliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
@@ -68,7 +69,7 @@ public class WillLodgementData {
 
     private final String executorEmailAddress;
 
-    // ... additionalExecutorList
+    private final List<CollectionMember<ProbateExecutor>> additionalExecutorList;
 
     // EVENT = misc
 
