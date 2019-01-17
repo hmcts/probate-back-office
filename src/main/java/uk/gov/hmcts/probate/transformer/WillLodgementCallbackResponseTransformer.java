@@ -7,6 +7,7 @@ import uk.gov.hmcts.probate.model.ccd.willlodgement.request.WillLodgementCallbac
 import uk.gov.hmcts.probate.model.ccd.willlodgement.request.WillLodgementData;
 import uk.gov.hmcts.probate.model.ccd.willlodgement.request.WillLodgementDetails;
 import uk.gov.hmcts.probate.model.ccd.willlodgement.response.ResponseWillLodgementData;
+import uk.gov.hmcts.probate.model.ccd.willlodgement.response.ResponseWillLodgementData.ResponseWillLodgementDataBuilder;
 import uk.gov.hmcts.probate.model.ccd.willlodgement.response.WillLodgementCallbackResponse;
 
 import java.time.LocalDate;
@@ -35,7 +36,7 @@ public class WillLodgementCallbackResponseTransformer {
         return WillLodgementCallbackResponse.builder().responseWillLodgementData(responseWillLodgementData).build();
     }
 
-    private ResponseWillLodgementData.ResponseWillLodgementDataBuilder getResponseWillLodgementData(WillLodgementDetails willLodgementDetails) {
+    private ResponseWillLodgementDataBuilder getResponseWillLodgementData(WillLodgementDetails willLodgementDetails) {
         WillLodgementData willLodgementData = willLodgementDetails.getData();
 
         return ResponseWillLodgementData.builder()
