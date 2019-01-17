@@ -16,12 +16,11 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
-import uk.gov.hmcts.probate.model.criterion.CaseMatchingCriteria;
-import uk.gov.hmcts.probate.model.probateman.LegacyCaseType;
 import uk.gov.hmcts.probate.model.probateman.ProbateManModel;
 import uk.gov.hmcts.probate.model.probateman.ProbateManType;
-import uk.gov.hmcts.probate.service.CaseMatchingService;
+import uk.gov.hmcts.probate.service.LegacySearchService;
 import uk.gov.hmcts.probate.service.ProbateManService;
+import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -38,8 +37,7 @@ import static uk.gov.hmcts.probate.model.CaseType.LEGACY;
 public class ProbateManController {
 
     private final ProbateManService probateManService;
-    private static final List<CaseType> GRANT_MATCH_TYPES = Arrays.asList(LEGACY);
-    private final CaseMatchingService caseMatchingService;
+    private final LegacySearchService legacySearchService;
 
     @GetMapping(path = "/probateManTypes/{probateManType}/cases/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<ProbateManModel> saveGrantApplicationToCcd(@PathVariable("probateManType") ProbateManType probateManType,
@@ -47,19 +45,11 @@ public class ProbateManController {
         return ResponseEntity.ok(probateManService.getProbateManModel(Long.parseLong(id), probateManType));
     }
 
-    @PostMapping(path = "/legacy/search", consumes = APPLICATION_JSON_UTF8_VALUE, produces = {APPLICATION_JSON_VALUE})
+    @GetMapping(path = "/legacy/search", consumes = APPLICATION_JSON_UTF8_VALUE, produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> legacySearch(@RequestBody CallbackRequest callbackRequest,
                                                          HttpServletRequest request) {
         log.info("Performing legacy case search");
-
-        CaseMatchingCriteria caseMatchingCriteria = CaseMatchingCriteria.of(callbackRequest.getCaseDetails());
-
-        List<CaseMatch> caseMatches = new ArrayList<>();
-        caseMatches.addAll(caseMatchingService.findCrossMatches(GRANT_MATCH_TYPES, caseMatchingCriteria));
-
-        List<CollectionMember<CaseMatch>> caseMatchesList = new ArrayList();
-
-        caseMatches.forEach(match -> caseMatchesList.add(new CollectionMember<CaseMatch>(null, match)));
+        List<CollectionMember<CaseMatch>> caseMatchesList = legacySearchService.findLegacyCaseMatches(callbackRequest.getCaseDetails());
 
         ResponseCaseData responseCaseData = ResponseCaseData.builder()
                 .legacySearchResultRows(caseMatchesList)
@@ -76,13 +66,8 @@ public class ProbateManController {
                                                      HttpServletRequest request) {
 
         log.info("Performing legacy case import");
-        CaseData data = callbackRequest.getCaseDetails().getData();
-        List<CollectionMember<CaseMatch>> rows = data.getLegacySearchResultRows();
+        List<CollectionMember<CaseMatch>> rows = legacySearchService.importLegacyRows(callbackRequest.getCaseDetails().getData());
 
-        rows.stream().map(CollectionMember::getValue)
-                .filter(row -> "YES".equalsIgnoreCase(row.getDoImport()))
-                //.filter(row -> LegacyCaseType.GRANT_OF_REPRESENTATION.getName().equalsIgnoreCase(row.getType()))
-                .forEach(row -> importRow(row));
         ResponseCaseData responseCaseData = ResponseCaseData.builder()
                 .legacySearchResultRows(rows)
                 .build();
@@ -93,13 +78,4 @@ public class ProbateManController {
         return ResponseEntity.ok(callbackResponse);
     }
 
-    private void importRow(CaseMatch row) {
-        String legacyCaseTypeName = row.getType();
-        LegacyCaseType legacyCaseType = LegacyCaseType.getByLegacyCaseTypeName(legacyCaseTypeName);
-        String id = row.getId();
-        log.info("Importing legacy case into ccd for legacyCaseType=" + legacyCaseTypeName + ", with id=" + id);
-        ProbateManType probateManType = ProbateManType.getByLegacyCaseType(legacyCaseType);
-        probateManService.saveToCcd(Long.parseLong(id), probateManType);
-
-    }
 }

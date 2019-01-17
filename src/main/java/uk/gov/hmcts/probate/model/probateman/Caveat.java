@@ -92,7 +92,4 @@ public class Caveat extends ProbateManModel {
 
     @Column(name = "CAVEAT_EVENT_TEXT")
     private String caveatEventText;
-
-    @Column(name = "DNM_IND")
-    private String dnmInd;
 }

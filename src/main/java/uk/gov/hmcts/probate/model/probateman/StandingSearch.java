@@ -81,9 +81,6 @@ public class StandingSearch extends ProbateManModel {
     @Column(name = "STANDING_SEARCH_TEXT")
     private String standingSearchText; //varchar(32000),
 
-    @Column(name = "DNM_IND")
-    private String dnmInd; //varchar(1),
-
     @Column(name = "ALIAS_NAMES")
     private String aliasNames; //varchar(32000)
 

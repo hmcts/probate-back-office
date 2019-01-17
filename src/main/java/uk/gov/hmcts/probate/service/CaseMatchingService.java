@@ -66,7 +66,6 @@ public class CaseMatchingService {
 
         appInsights.trackEvent(REQUEST_SENT, uri.toString());
 
-        //todo need to remove the id null check here once ccd have fixed RDM-3653
         return matchedCases.getCases().stream()
                 .filter(c -> criteria == null || c.getId() == null || !criteria.getId().equals(c.getId()))
                 .map(c -> CaseMatch.buildCaseMatch(c, caseType))

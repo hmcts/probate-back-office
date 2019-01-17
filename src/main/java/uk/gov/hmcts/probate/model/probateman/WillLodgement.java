@@ -2,12 +2,13 @@ package uk.gov.hmcts.probate.model.probateman;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.joda.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
+import java.time.LocalDate;
 
 @Entity
 @Data
@@ -50,7 +51,4 @@ public class WillLodgement extends ProbateManModel {
 
     @Column(name = "CCD_CASE_NO")
     private String ccdCaseNo;// varchar(20)
-
-    @Column(name = "DNM_IND")
-    private String dnmInd;// varchar(1)
 }
