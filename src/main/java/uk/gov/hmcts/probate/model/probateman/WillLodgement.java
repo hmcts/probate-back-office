@@ -1,14 +1,16 @@
 package uk.gov.hmcts.probate.model.probateman;
 
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.joda.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.time.LocalDate;
 
+@JsonNaming(RegularCaseNamingStrategy.class)
 @Entity
 @Data
 @Table(name = "WILLS_FLAT")

@@ -19,6 +19,7 @@ public class PrintService {
 
     private static final String TEMPLATE_CASE_DETAILS_SOL = "caseDetailsSOL.html";
     private static final String TEMPLATE_CASE_DETAILS_PA = "caseDetailsPA.html";
+    private static final String TEMPLATE_PROBATE_MAN_LEGACY_CASE = "probateManLegacyCase.html";
 
     private static final String DOCUMENT_NAME = "Print Case Details";
     private static final String DOCUMENT_TYPE = "HTML";
@@ -42,6 +43,10 @@ public class PrintService {
 
     public String getPACaseDetailsTemplateForPrintService() {
         return getFileAsString(TEMPLATE_CASE_DETAILS_PA);
+    }
+
+    public String getProbateManLegacyCase() {
+        return getFileAsString(TEMPLATE_PROBATE_MAN_LEGACY_CASE);
     }
 
     private String getFileAsString(String fileName) {

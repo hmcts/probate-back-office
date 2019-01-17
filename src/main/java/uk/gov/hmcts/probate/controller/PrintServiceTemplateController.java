@@ -58,4 +58,11 @@ public class PrintServiceTemplateController {
         String callbackResponse = printService.getPACaseDetailsTemplateForPrintService();
         return ResponseEntity.ok(callbackResponse);
     }
+
+    @GetMapping(path = "/probateManLegacyCase", consumes = APPLICATION_JSON_UTF8_VALUE, produces = {TEXT_HTML_VALUE})
+    public ResponseEntity<String> getProbateManLegacyCase() {
+
+        String callbackResponse = printService.getProbateManLegacyCase();
+        return ResponseEntity.ok(callbackResponse);
+    }
 }

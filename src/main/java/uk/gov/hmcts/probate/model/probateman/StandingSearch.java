@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.model.probateman;
 
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -9,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import java.time.LocalDate;
 
+@JsonNaming(RegularCaseNamingStrategy.class)
 @Entity
 @Data
 @Table(name = "STANDING_SEARCHES_FLAT")
