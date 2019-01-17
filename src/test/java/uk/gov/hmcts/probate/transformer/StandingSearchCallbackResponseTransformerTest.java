@@ -97,7 +97,7 @@ public class StandingSearchCallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldTransformCaseForCaveatWithDeceasedAliasNames() {
+    public void shouldTransformCaseForStandingSearchWithDeceasedAliasNames() {
         List<CollectionMember<ProbateFullAliasName>> deceasedFullAliasNameList = new ArrayList<>();
 
         ProbateFullAliasName an11 = ProbateFullAliasName.builder().fullAliasName(SS_DECEASED_FULL_ALIAS_NAME).build();
