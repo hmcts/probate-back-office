@@ -1,3 +1,0 @@
-ALTER TABLE letters
-ADD COLUMN is_failed BOOLEAN;
-
