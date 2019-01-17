@@ -18,8 +18,16 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ResponseWillLodgementData {
 
+    private final String executorSurname;
+    private final String executorForenames;
+    private final String executorTitle;
+
     private final ApplicationType applicationType;
     private final String registryLocation;
+
+    private final List<CollectionMember<ProbateExecutor>> additionalExecutorList;
+    private final String executorEmailAddress;
+    private final ProbateAddress executorAddress;
 
     private final String lodgementType;
     private final String lodgedDate;
@@ -36,17 +44,11 @@ public class ResponseWillLodgementData {
     private final String deceasedTypeOfDeath;
     private final String deceasedAnyOtherNames;
     private final List<CollectionMember<ProbateFullAliasName>> deceasedFullAliasNameList;
-    private final ProbateAddress deceasedAddress;
-    private final String deceasedEmailAddress;
-
-    private final String executorTitle;
-    private final String executorForenames;
-    private final String executorSurname;
-    private final ProbateAddress executorAddress;
-    private final String executorEmailAddress;
-    private final List<CollectionMember<ProbateExecutor>> additionalExecutorList;
 
     private final String withdrawalReason;
     private final List<CollectionMember<Document>> documentsGenerated;
     private final List<CollectionMember<UploadDocument>> documentsUploaded;
+
+    private final String deceasedEmailAddress;
+    private final ProbateAddress deceasedAddress;
 }
