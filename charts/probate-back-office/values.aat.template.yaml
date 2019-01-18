@@ -2,8 +2,8 @@ java:
   environment:
     AUTH_PROVIDER_SERVICE_CLIENT_BASEURL: http://rpe-service-auth-provider-aat.service.core-compute-aat.internal
     PDF_SERVICE_URL: http://cmc-pdf-service-aat.service.core-compute-aat.internal
-    PRINTSERVICE_HOST: https://return-case-doc-ccd.nonprod.platform.hmcts.net
-    PRINTSERVICE_INTERNAL_HOST: http://ccd-case-print-service-aat.service.core-compute-aat.internal
+    PRINTSERVICE_HOST: http://${SERVICE_NAME}-print-api
+    PRINTSERVICE_INTERNAL_HOST: http://${SERVICE_NAME}-print-api
     IDAM_SERVICE_HOST: http://rpe-service-auth-provider-aat.service.core-compute-aat.internal
     FEE_API_URL: http://fees-register-api-aat.service.core-compute-aat.internal
     EVIDENCE_MANAGEMENT_HOST: http://dm-store-aat.service.core-compute-aat.internal
