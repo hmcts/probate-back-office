@@ -3,6 +3,6 @@ dependencies:
     version: 0.0.9
     repository: '@hmcts'
   - name: ccd
-    version: '0.4.0'
+    version: 0.4.0
     repository: '@hmcts'
     
