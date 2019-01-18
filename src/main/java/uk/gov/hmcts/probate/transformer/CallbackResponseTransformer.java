@@ -390,7 +390,9 @@ public class CallbackResponseTransformer {
                 .feeForCopiesPaperForm(caseData.getFeeForCopiesPaperForm())
                 .totalFeePaperForm(caseData.getTotalFeePaperForm())
                 .paperPaymentMethod(caseData.getPaperPaymentMethod())
-                .paymentReferenceNumberPaperform(caseData.getPaymentReferenceNumberPaperform());
+                .paymentReferenceNumberPaperform(caseData.getPaymentReferenceNumberPaperform())
+                .boSendToBulkPrint(caseData.getBoSendToBulkPrint())
+                .boSendToBulkPrintRequested(caseData.getBoSendToBulkPrintRequested());
 
         return builder;
     }

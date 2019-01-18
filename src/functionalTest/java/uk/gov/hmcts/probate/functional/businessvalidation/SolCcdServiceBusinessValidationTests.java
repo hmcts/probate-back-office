@@ -227,6 +227,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         String controlNumber = jsonPath.get("data.scannedDocuments[0].value.controlNumber");
         String fileName = jsonPath.get("data.scannedDocuments[0].value.fileName");
         String type = jsonPath.get("data.scannedDocuments[0].value.type");
+        String subtype = jsonPath.get("data.scannedDocuments[0].value.subtype");
         String documentUrl = jsonPath.get("data.scannedDocuments[0].value.url.document_url");
         String documentBinaryUrl = jsonPath.get("data.scannedDocuments[0].value.url.document_binary_url");
         String documentFilename = jsonPath.get("data.scannedDocuments[0].value.url.document_filename");
@@ -235,6 +236,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         assertEquals("1234", controlNumber);
         assertEquals("scanneddocument.pdf", fileName);
         assertEquals("other", type);
+        assertEquals("will", subtype);
         assertEquals("http://somedoc", documentUrl);
         assertEquals("http://somedoc.pdf/binary", documentBinaryUrl);
         assertEquals("somedoc.pdf", documentFilename);

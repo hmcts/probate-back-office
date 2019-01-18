@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import uk.gov.hmcts.probate.config.properties.registries.RegistriesProperties;
+import uk.gov.hmcts.probate.config.properties.registries.Registry;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
@@ -47,6 +49,7 @@ public class DocumentController {
     private final CallbackResponseTransformer callbackResponseTransformer;
     private final DocumentService documentService;
     private final NotificationService notificationService;
+    private final RegistriesProperties registriesProperties;
     private static final String GRANT_OF_PROBATE = "gop";
     private static final String ADMON_WILL = "admonWill";
     private static final String INTESTACY = "intestacy";
@@ -55,9 +58,11 @@ public class DocumentController {
 
     @PostMapping(path = "/generate-grant-draft", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<CallbackResponse> generateGrantDraft(@RequestBody CallbackRequest callbackRequest) {
-        CaseData caseData = callbackRequest.getCaseDetails().getData();
+        CaseDetails caseDetails = callbackRequest.getCaseDetails();
+        CaseData caseData = caseDetails.getData();
         Document document;
         DocumentType template;
+        getRegistryDetails(caseDetails);
 
         switch (caseData.getCaseType()) {
             case INTESTACY:
@@ -91,11 +96,11 @@ public class DocumentController {
     public ResponseEntity<CallbackResponse> generateGrant(@RequestBody CallbackRequest callbackRequest)
             throws NotificationClientException {
 
-        List<Document> documents = new ArrayList<>();
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
         @Valid CaseData caseData = caseDetails.getData();
         DocumentType template;
         Document digitalGrantDocument;
+        getRegistryDetails(caseDetails);
 
         switch (caseData.getCaseType()) {
             case EDGE_CASE:
@@ -116,7 +121,7 @@ public class DocumentController {
                 break;
         }
 
-        if (!caseData.isGrantForLocalPrinting() && !caseData.getCaseType().equals(EDGE_CASE)) {
+        if (caseData.isSendForBulkPrintingRequested() && !caseData.getCaseType().equals(EDGE_CASE)) {
             SendLetterResponse response = bulkPrintService.sendToBulkPrint(callbackRequest, digitalGrantDocument);
             String letterId = response != null
                     ? response.letterId.toString()
@@ -124,6 +129,7 @@ public class DocumentController {
             callbackResponseTransformer.transformWithBulkPrintComplete(callbackRequest, letterId);
         }
 
+        List<Document> documents = new ArrayList<>();
         documents.add(digitalGrantDocument);
 
         DocumentType[] documentTypes = {DIGITAL_GRANT_DRAFT, INTESTACY_GRANT_DRAFT, ADMON_WILL_GRANT_DRAFT};
@@ -136,6 +142,22 @@ public class DocumentController {
         }
         return ResponseEntity.ok(callbackResponseTransformer.addDocuments(callbackRequest, documents));
     }
+
+    private CaseDetails getRegistryDetails(CaseDetails caseDetails) {
+        Registry registry = registriesProperties.getRegistries().get(
+                caseDetails.getData().getRegistryLocation().toLowerCase());
+        caseDetails.setRegistryTelephone(registry.getPhone());
+        caseDetails.setRegistryAddressLine1(registry.getAddressLine1());
+        caseDetails.setRegistryAddressLine2(registry.getAddressLine2());
+        caseDetails.setRegistryPostcode(registry.getPostcode());
+        caseDetails.setRegistryTown(registry.getTown());
+
+        Registry ctscRegistry = registriesProperties.getRegistries().get("ctsc");
+        caseDetails.setCtscTelephone(ctscRegistry.getPhone());
+
+        return caseDetails;
+    }
+
 
     @PostMapping(path = "/generate-deposit-receipt", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<CallbackResponse> generateDepositReceipt(@RequestBody CallbackRequest callbackRequest) {

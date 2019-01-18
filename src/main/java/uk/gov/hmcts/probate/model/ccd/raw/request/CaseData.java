@@ -164,13 +164,19 @@ public class CaseData {
 
     @SuppressWarnings("squid:S1170")
     @Getter(lazy = true)
-    private final String boEmailDocsReceivedNotification = YES;
+    private final String boEmailDocsReceivedNotification = getDefaultValueForEmailNotifications();
 
     private final String boEmailGrantIssuedNotificationRequested;
 
     @SuppressWarnings("squid:S1170")
     @Getter(lazy = true)
-    private final String boEmailGrantIssuedNotification = YES;
+    private final String boEmailGrantIssuedNotification = getDefaultValueForEmailNotifications();
+
+    @SuppressWarnings("squid:S1170")
+    @Getter(lazy = true)
+    private final String boSendToBulkPrint = YES;
+
+    private final String boSendToBulkPrintRequested;
 
     //EVENT = review
     private final DocumentLink solsLegalStatementDocument;
@@ -210,8 +216,6 @@ public class CaseData {
     private final String ihtReferenceNumber;
 
     private final String ihtFormCompletedOnline;
-
-    private final String localPrint;
 
 
     //next steps
@@ -424,12 +428,16 @@ public class CaseData {
         return String.join(" ", primaryApplicantForenames, primaryApplicantSurname);
     }
 
+    public String getDefaultValueForEmailNotifications() {
+        return primaryApplicantEmailAddress == null && solsSolicitorEmail == null ? NO : YES;
+    }
+
     public boolean isDocsReceivedEmailNotificationRequested() {
         return YES.equals(getBoEmailDocsReceivedNotification());
     }
 
-    public boolean isGrantForLocalPrinting() {
-        return YES.equals(localPrint);
+    public boolean isSendForBulkPrintingRequested() {
+        return YES.equals(getBoSendToBulkPrint());
     }
 
     public boolean isGrantIssuedEmailNotificationRequested() {
