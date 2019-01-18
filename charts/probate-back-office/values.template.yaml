@@ -30,7 +30,7 @@ ccd:
   caseManagementWeb:
     enabled: true
 
-   printApi:
+  printApi:
     enabled: true # if you need access to the case print service then enable this
     s2sKey: ${PRINT_S2S_KEY}
     probateTemplateUrl: http://${SERVICE_NAME}-probate-back-office
