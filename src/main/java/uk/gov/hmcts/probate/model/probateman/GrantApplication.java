@@ -66,9 +66,6 @@ public class GrantApplication extends ProbateManModel {
     @Column(name = "LINKED_DECEASED_IDS")
     private String linkedDeceasedIds; //varchar(32000),
 
-    @Column(name = "CCD_CASE_NO")
-    private String ccdCaseNo; //varchar(20),
-
     @Column(name = "DECEASED_AGE_AT_DEATH")
     private Long deceasedAgeAtDeath; //int,
 

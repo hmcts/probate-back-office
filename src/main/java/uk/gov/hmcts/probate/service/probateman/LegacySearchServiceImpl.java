@@ -17,6 +17,7 @@ import uk.gov.hmcts.probate.service.CaseMatchingService;
 import uk.gov.hmcts.probate.service.LegacySearchService;
 import uk.gov.hmcts.probate.service.ProbateManService;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -51,6 +52,7 @@ public class LegacySearchServiceImpl implements LegacySearchService {
 
 
     @Override
+    @Transactional
     public List<CollectionMember<CaseMatch>> importLegacyRows(CaseData data) {
         List<CollectionMember<CaseMatch>> rows = data.getLegacySearchResultRows();
 
@@ -67,13 +69,18 @@ public class LegacySearchServiceImpl implements LegacySearchService {
         log.info("Importing legacy case into ccd for legacyCaseType=" + legacyCaseTypeName + ", with id=" + id);
         ProbateManType probateManType = ProbateManType.getByLegacyCaseType(legacyCaseType);
         Long legacyId = Long.parseLong(id);
-        probateManService.saveToCcd(legacyId, probateManType);
+        uk.gov.hmcts.reform.ccd.client.model.CaseDetails caseDetails = probateManService.saveToCcd(legacyId, probateManType);
+        String ccdCaseId = caseDetails.getId().toString();
+        log.info("Imported legacy case as CCD case, id=" + ccdCaseId);
         JpaRepository repository = repositories.get(probateManType);
-        Optional<ProbateManModel> probateManModel = repository.findById(legacyId);
-        if (probateManModel.isPresent()) {
-            probateManModel.get().setDnmInd("Y");
+        Optional<ProbateManModel> probateManModelOptional = repository.findById(legacyId);
+        if (probateManModelOptional.isPresent()) {
+            ProbateManModel probateManModel = probateManModelOptional.get();
+            probateManModel.setDnmInd("Y");
+            probateManModel.setCcdCaseNo(ccdCaseId);
             log.info("Updating legacy case id=" + id + " for probateManType=" + probateManType);
-            repository.save(probateManModel.get());
+            ProbateManModel savedProbateManModel = (ProbateManModel) repository.saveAndFlush(probateManModel);
+            log.info("Updated legacy case");
         } else {
             log.info("Case cannot be found when updating legacy case id=" + id + " for probateManType=" + probateManType);
         }

@@ -113,7 +113,7 @@ public class ProbateManControllerTest {
     }
 
     @Test
-    public void shouldGetLegacySearch() throws Exception {
+    public void shouldPostLegacySearch() throws Exception {
         CaseData.CaseDataBuilder caseDataBuilder = CaseData.builder();
         CaseData caseData = caseDataBuilder.build();
         CaseDetails caseDetails = new CaseDetails(caseData, null, null);
@@ -126,7 +126,7 @@ public class ProbateManControllerTest {
 
         when(legacySearchService.findLegacyCaseMatches(caseDetails)).thenReturn(caseMatchesList);
 
-        mockMvc.perform(get(LEGACY_SEARCH_URL)
+        mockMvc.perform(post(LEGACY_SEARCH_URL)
                 .content(json)
                 .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(status().isOk());

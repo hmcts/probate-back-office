@@ -42,9 +42,6 @@ public class StandingSearch extends ProbateManModel {
     @Column(name = "DATE_OF_DEATH1")
     private LocalDate dateOfDeath1; //date,
 
-    @Column(name = "CCD_CASE_NO")
-    private String ccdCaseNo; //varchar(20),
-
     @Column(name = "DECEASED_ADDRESS")
     private String deceasedAddress; //varchar(500),
 

@@ -45,9 +45,6 @@ public class Caveat extends ProbateManModel {
     @Column(name = "ALIAS_NAMES")
     private String aliasNames;
 
-    @Column(name = "CCD_CASE_NO")
-    private String ccdCaseNo;
-
     @Column(name = "CAVEAT_TYPE")
     private String caveatType;
 
