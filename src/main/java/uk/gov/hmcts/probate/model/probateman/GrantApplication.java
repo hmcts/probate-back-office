@@ -1,6 +1,11 @@
 package uk.gov.hmcts.probate.model.probateman;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -35,9 +40,15 @@ public class GrantApplication extends ProbateManModel {
     @Column(name = "DECEASED_SURNAME")                          
     private String deceasedSurname; //varchar(50),
 
+    @JsonDeserialize(using = LocalDateDeserializer.class)
+    @JsonSerialize(using = LocalDateSerializer.class)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DATE_FORMAT)
     @Column(name = "DATE_OF_BIRTH")
     private LocalDate dateOfBirth; //date,
 
+    @JsonDeserialize(using = LocalDateDeserializer.class)
+    @JsonSerialize(using = LocalDateSerializer.class)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DATE_FORMAT)
     @Column(name = "DATE_OF_DEATH1")
     private LocalDate dateOfDeath1; //date,
 
@@ -113,6 +124,9 @@ public class GrantApplication extends ProbateManModel {
     @Column(name = "APP_EXECUTOR_LIMITATION_WELSH")
     private String appExecutorLimitationWelsh; //varchar(100),
 
+    @JsonDeserialize(using = LocalDateDeserializer.class)
+    @JsonSerialize(using = LocalDateSerializer.class)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DATE_FORMAT)
     @Column(name = "APP_RECEIVED_DATE")
     private LocalDate appReceivedDate; //date, submissiondate
 
@@ -155,9 +169,15 @@ public class GrantApplication extends ProbateManModel {
     @Column(name = "GRANT_APPLICANT_TYPE")
     private String grantApplicantType; //varchar(1),
 
+    @JsonDeserialize(using = LocalDateDeserializer.class)
+    @JsonSerialize(using = LocalDateSerializer.class)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DATE_FORMAT)
     @Column(name = "GRANT_CONFIRMED_DATE")
     private LocalDate grantConfirmedDate; //date,
 
+    @JsonDeserialize(using = LocalDateDeserializer.class)
+    @JsonSerialize(using = LocalDateSerializer.class)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DATE_FORMAT)
     @Column(name = "GRANT_ISSUED_DATE")
     private LocalDate grantIssuedDate; //date,
 
@@ -179,6 +199,9 @@ public class GrantApplication extends ProbateManModel {
     @Column(name = "GRANT_TYPE")
     private String grantType; //varchar(3),
 
+    @JsonDeserialize(using = LocalDateDeserializer.class)
+    @JsonSerialize(using = LocalDateSerializer.class)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DATE_FORMAT)
     @Column(name = "GRANT_VERSION_DATE")
     private LocalDate grantVersionDate; //date,
 
@@ -257,6 +280,9 @@ public class GrantApplication extends ProbateManModel {
     @Column(name = "POWER_RESERVED_WELSH")
     private String powerReservedWelsh; //varchar(1),
 
+    @JsonDeserialize(using = LocalDateDeserializer.class)
+    @JsonSerialize(using = LocalDateSerializer.class)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DATE_FORMAT)
     @Column(name = "RESEAL_DATE")
     private LocalDate resealDate; //date,
 

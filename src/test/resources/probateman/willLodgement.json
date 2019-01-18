@@ -1,16 +1,18 @@
 {
-  "type": "Will Lodgement",
-  "Id": 3454,
-  "Rk Number": "wlRkNumber",
-  "Probate Number": "wlProbateNumber",
-  "Probate Version": 23432,
-  "Deceased Id": 1232,
-  "Deceased Forenames": "wlDeceasedForenames",
-  "Deceased Surname": "wlDeceasedSurnames",
-  "Date Of Birth": "1999-01-01",
-  "Date Of Death 1": "2019-01-01",
-  "Alias Names": "wlAliasNames",
-  "Record Keepers Text": "wlRecordKeepersText",
-  "Ccd Case No": "wlCcdCaseNo",
-  "Dnm Ind": "N"
+  "probateManCase": {
+    "type": "Will Lodgement",
+    "Id": 3454,
+    "Rk Number": "wlRkNumber",
+    "Probate Number": "wlProbateNumber",
+    "Probate Version": 23432,
+    "Deceased Id": 1232,
+    "Deceased Forenames": "wlDeceasedForenames",
+    "Deceased Surname": "wlDeceasedSurnames",
+    "Date Of Birth": "1999-01-01",
+    "Date Of Death 1": "2019-01-01",
+    "Alias Names": "wlAliasNames",
+    "Record Keepers Text": "wlRecordKeepersText",
+    "Ccd Case No": "wlCcdCaseNo",
+    "Dnm Ind": "N"
+  }
 }

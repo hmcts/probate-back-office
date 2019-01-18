@@ -18,6 +18,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
 import uk.gov.hmcts.probate.model.criterion.CaseMatchingCriteria;
 import uk.gov.hmcts.probate.model.probateman.LegacyCaseType;
+import uk.gov.hmcts.probate.model.probateman.ProbateManCaseResponse;
 import uk.gov.hmcts.probate.model.probateman.ProbateManModel;
 import uk.gov.hmcts.probate.model.probateman.ProbateManType;
 import uk.gov.hmcts.probate.service.CaseMatchingService;
@@ -42,9 +43,10 @@ public class ProbateManController {
     private final CaseMatchingService caseMatchingService;
 
     @GetMapping(path = "/probateManTypes/{probateManType}/cases/{id}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<ProbateManModel> saveGrantApplicationToCcd(@PathVariable("probateManType") ProbateManType probateManType,
+    public ResponseEntity<ProbateManCaseResponse> saveGrantApplicationToCcd(@PathVariable("probateManType") ProbateManType probateManType,
                                                                      @PathVariable("id") String id) {
-        return ResponseEntity.ok(probateManService.getProbateManModel(Long.parseLong(id), probateManType));
+        ProbateManModel probateManModel = probateManService.getProbateManModel(Long.parseLong(id), probateManType);
+        return ResponseEntity.ok(ProbateManCaseResponse.builder().probateManCase(probateManModel).build());
     }
 
     @PostMapping(path = "/legacy/search", consumes = APPLICATION_JSON_UTF8_VALUE, produces = {APPLICATION_JSON_VALUE})

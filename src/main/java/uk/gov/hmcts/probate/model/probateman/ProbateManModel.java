@@ -11,4 +11,6 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
     @JsonSubTypes.Type(value = WillLodgement.class, name = "Will Lodgement")
 })
 public abstract class ProbateManModel {
+
+    protected static final String DATE_FORMAT = "yyyy-MM-dd";
 }
