@@ -220,5 +220,8 @@ public class ResponseCaseData {
     private final String grantSentToPrint;
     private final String letterId;
 
+    private final String boSendToBulkPrint;
+    private final String boSendToBulkPrintRequested;
+
     private final List<CollectionMember<CaseMatch>> legacySearchResultRows;
 }

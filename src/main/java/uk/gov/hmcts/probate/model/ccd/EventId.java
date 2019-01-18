@@ -9,7 +9,7 @@ public enum EventId {
     APPLY_FOR_GRANT("applyForGrant"),
     RAISE_CAVEAT("cavRaiseCaveat"),
     CREATE_STANDING_SEARCH("createStandingSearch"),
-    CREATE_WILL_LODGEMENT("wlCreateWillLodgment");
+    CREATE_WILL_LODGEMENT("createWillLodgment");
 
     @Getter
     private final String name;

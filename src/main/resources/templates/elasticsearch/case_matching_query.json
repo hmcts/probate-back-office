@@ -28,12 +28,13 @@
             ]
           }
         },
+        :optionalAliasesToNameQuery
         {
           "bool": {
             "must": [
               {
                 "multi_match": {
-                  "query": ":deceasedAliasForenames",
+                  "query": ":deceasedForenames",
                   "fuzziness": 2,
                   "prefix_length": 0,
                   "fields": [
@@ -43,7 +44,7 @@
               },
               {
                 "multi_match": {
-                  "query": ":deceasedAliasSurname",
+                  "query": ":deceasedSurname",
                   "fuzziness": 2,
                   "prefix_length": 0,
                   "fields": [
@@ -56,7 +57,7 @@
         },
         {
           "multi_match": {
-            "query": ":solsDeceasedAliases",
+            "query": ":deceasedFullName",
             "operator": "and",
             "fuzziness": 2,
             "prefix_length": 0,
@@ -65,9 +66,10 @@
             ]
           }
         },
+        :optionalAliasesToAliasesQuery
         {
           "multi_match": {
-            "query": ":legacyDeceasedAliases",
+            "query": ":deceasedFullName",
             "operator": "and",
             "fuzziness": 2,
             "prefix_length": 0,

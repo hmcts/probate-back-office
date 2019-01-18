@@ -13,11 +13,13 @@ public class MapperConfiguration {
     @Bean
     public Map<ProbateManType, ProbateManMapper> mappers(CaveatMapper caveatMapper,
                                                          GrantApplicationMapper grantApplicationMapper,
-                                                         StandingSearchMapper standingSearchMapper) {
+                                                         StandingSearchMapper standingSearchMapper,
+                                                         WillLodgementMapper willLodgementMapper) {
         return ImmutableMap.<ProbateManType, ProbateManMapper>builder()
             .put(ProbateManType.GRANT_APPLICATION, grantApplicationMapper)
             .put(ProbateManType.CAVEAT, caveatMapper)
             .put(ProbateManType.STANDING_SEARCH, standingSearchMapper)
+            .put(ProbateManType.WILL_LODGEMENT, willLodgementMapper)
             .build();
     }
 }

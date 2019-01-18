@@ -106,6 +106,7 @@ public class BusinessValidationControllerTest {
                             .controlNumber("1234")
                             .scannedDate(scannedDate)
                             .type("other")
+                            .subtype("will")
                             .url(SCANNED_DOCUMENT_URL)
                             .build()));
 

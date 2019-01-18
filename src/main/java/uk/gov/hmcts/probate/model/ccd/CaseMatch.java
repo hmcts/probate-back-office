@@ -22,6 +22,7 @@ public class CaseMatch implements Serializable {
     private final String id;
     private final String fullName;
     private final String aliases;
+    private final String dob;
     private final String dod;
     private final String postcode;
     private final String valid;
@@ -35,6 +36,9 @@ public class CaseMatch implements Serializable {
     public static CaseMatch buildCaseMatch(Case c, CaseType caseType) {
         CaseMatch.CaseMatchBuilder caseMatchBuilder = CaseMatch.builder();
         caseMatchBuilder.fullName(c.getData().getDeceasedFullName());
+        if (c.getData().getDeceasedDateOfBirth() != null) {
+            caseMatchBuilder.dob(c.getData().getDeceasedDateOfBirth().format(dateTimeFormatter));
+        }
         if (c.getData().getDeceasedDateOfDeath() != null) {
             caseMatchBuilder.dod(c.getData().getDeceasedDateOfDeath().format(dateTimeFormatter));
         }

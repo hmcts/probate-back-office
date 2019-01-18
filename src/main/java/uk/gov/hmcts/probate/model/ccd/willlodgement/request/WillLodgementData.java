@@ -1,33 +1,89 @@
 package uk.gov.hmcts.probate.model.ccd.willlodgement.request;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
+import uk.gov.hmcts.probate.model.ApplicationType;
+import uk.gov.hmcts.probate.model.ccd.ProbateAddress;
+import uk.gov.hmcts.probate.model.ccd.ProbateExecutor;
+import uk.gov.hmcts.probate.model.ccd.ProbateFullAliasName;
+import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
+import uk.gov.hmcts.probate.model.ccd.raw.Document;
+import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 
-@JsonDeserialize(builder = WillLodgementData.WillLodgementDataBuilder.class)
-@NoArgsConstructor
-@AllArgsConstructor
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
 @Builder
 @Data
 public class WillLodgementData {
 
-    private String wlApplicantNameSection;
+    private final ApplicationType applicationType;
+    private final String registryLocation;
 
-    private String wlApplicantForenames;
+    // EVENT = createWillLodgment - general details
 
-    private String wlApplicantSurname;
+    private final String lodgementType;
 
-    private SolsAddress wlApplicantAddress;
+    private final LocalDate lodgedDate;
 
-    private String wlApplicantEmailAddress;
+    private final LocalDate willDate;
 
-    private String wlApplicantReferenceNumber;
+    private final LocalDate codicilDate;
 
-    @JsonPOJOBuilder(withPrefix = "")
-    public static final class WillLodgementDataBuilder {
+    private final long numberOfCodicils;
+
+    private final String jointWill;
+
+    // EVENT = createStandingSearch - deceased data
+
+    private final String deceasedForenames;
+
+    private final String deceasedSurname;
+
+    private final String deceasedGender;
+
+    private final LocalDate deceasedDateOfBirth;
+
+    private final LocalDate deceasedDateOfDeath;
+
+    private final String deceasedTypeOfDeath;
+
+    private final String deceasedAnyOtherNames;
+
+    private final List<CollectionMember<ProbateFullAliasName>> deceasedFullAliasNameList;
+
+    private final ProbateAddress deceasedAddress;
+
+    private final String deceasedEmailAddress;
+
+    // EVENT = createStandingSearch - executor data
+
+    private final String executorTitle;
+
+    private final String executorForenames;
+
+    private final String executorSurname;
+
+    private final ProbateAddress executorAddress;
+
+    private final String executorEmailAddress;
+
+    private final List<CollectionMember<ProbateExecutor>> additionalExecutorList;
+
+    // EVENT = misc
+
+    private final String withdrawalReason;
+
+    private final List<CollectionMember<Document>> documentsGenerated = new ArrayList<>();
+
+    private final List<CollectionMember<UploadDocument>> documentsUploaded;
+
+    public String getDeceasedFullName() {
+        return String.join(" ", deceasedForenames, deceasedSurname);
+    }
+
+    public String getExecutorFullName() {
+        return String.join(" ", executorForenames, executorSurname);
     }
 }

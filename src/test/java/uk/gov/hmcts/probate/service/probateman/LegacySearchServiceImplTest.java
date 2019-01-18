@@ -31,6 +31,10 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class LegacySearchServiceImplTest {
 
+    private static final String DO_IMPORT_YES = "Yes";
+    private static final Long LEGACY_ID = 1L;
+    private static final Long CCD_CASE_ID = 1111222233334444L;
+
     @Mock
     private CaseMatchingService caseMatchingService;
 
@@ -67,8 +71,8 @@ public class LegacySearchServiceImplTest {
     public void shouldImportLegacyCasesWhenLegacyCaseFound() {
         CaseMatch caseMatch = Mockito.mock(CaseMatch.class);
         when(caseMatch.getType()).thenReturn(LegacyCaseType.GRANT_OF_REPRESENTATION.getName());
-        when(caseMatch.getDoImport()).thenReturn("Yes");
-        when(caseMatch.getId()).thenReturn("1");
+        when(caseMatch.getDoImport()).thenReturn(DO_IMPORT_YES);
+        when(caseMatch.getId()).thenReturn(LEGACY_ID.toString());
         CollectionMember<CaseMatch> memberRow = new CollectionMember<>(caseMatch);
         List<CollectionMember<CaseMatch>> legacyRows = new ArrayList<>();
         legacyRows.add(memberRow);
@@ -76,14 +80,14 @@ public class LegacySearchServiceImplTest {
 
         uk.gov.hmcts.reform.ccd.client.model.CaseDetails caseDetailsSaved =
                 Mockito.mock(uk.gov.hmcts.reform.ccd.client.model.CaseDetails.class);
-        when(caseDetailsSaved.getId()).thenReturn(1111222233334444L);
-        when(probateManService.saveToCcd(1L, ProbateManType.GRANT_APPLICATION)).thenReturn(caseDetailsSaved);
+        when(caseDetailsSaved.getId()).thenReturn(CCD_CASE_ID);
+        when(probateManService.saveToCcd(LEGACY_ID, ProbateManType.GRANT_APPLICATION)).thenReturn(caseDetailsSaved);
 
         GrantApplicationRepository grantApplicationRepositoryMock = Mockito.mock(GrantApplicationRepository.class);
         when(repositories.get(ProbateManType.GRANT_APPLICATION)).thenReturn(grantApplicationRepositoryMock);
         GrantApplication grantApplicationMock = Mockito.mock(GrantApplication.class);
         Optional<GrantApplication> grantApplicationOptional = Optional.of(grantApplicationMock);
-        when(grantApplicationRepositoryMock.findById(1L)).thenReturn(grantApplicationOptional);
+        when(grantApplicationRepositoryMock.findById(LEGACY_ID)).thenReturn(grantApplicationOptional);
 
         List<CollectionMember<CaseMatch>> expectedCaseMatches = new ArrayList<>();
         CaseMatch expectedCaseMatch = CaseMatch.builder().build();
@@ -101,8 +105,8 @@ public class LegacySearchServiceImplTest {
     public void shouldImportLegacyCasesWhenLegacyNotCaseFound() {
         CaseMatch caseMatch = Mockito.mock(CaseMatch.class);
         when(caseMatch.getType()).thenReturn(LegacyCaseType.GRANT_OF_REPRESENTATION.getName());
-        when(caseMatch.getDoImport()).thenReturn("Yes");
-        when(caseMatch.getId()).thenReturn("1");
+        when(caseMatch.getDoImport()).thenReturn(DO_IMPORT_YES);
+        when(caseMatch.getId()).thenReturn(LEGACY_ID.toString());
         CollectionMember<CaseMatch> memberRow = new CollectionMember<>(caseMatch);
         List<CollectionMember<CaseMatch>> legacyRows = new ArrayList<>();
         legacyRows.add(memberRow);
@@ -110,14 +114,14 @@ public class LegacySearchServiceImplTest {
 
         uk.gov.hmcts.reform.ccd.client.model.CaseDetails caseDetailsSaved =
                 Mockito.mock(uk.gov.hmcts.reform.ccd.client.model.CaseDetails.class);
-        when(caseDetailsSaved.getId()).thenReturn(1111222233334444L);
-        when(probateManService.saveToCcd(1L, ProbateManType.GRANT_APPLICATION)).thenReturn(caseDetailsSaved);
+        when(caseDetailsSaved.getId()).thenReturn(CCD_CASE_ID);
+        when(probateManService.saveToCcd(LEGACY_ID, ProbateManType.GRANT_APPLICATION)).thenReturn(caseDetailsSaved);
 
         GrantApplicationRepository grantApplicationRepositoryMock = Mockito.mock(GrantApplicationRepository.class);
         when(repositories.get(ProbateManType.GRANT_APPLICATION)).thenReturn(grantApplicationRepositoryMock);
         GrantApplication grantApplicationMock = Mockito.mock(GrantApplication.class);
         Optional<GrantApplication> grantApplicationOptional = Optional.of(grantApplicationMock);
-        when(grantApplicationRepositoryMock.findById(1L)).thenReturn(Optional.empty());
+        when(grantApplicationRepositoryMock.findById(LEGACY_ID)).thenReturn(Optional.empty());
 
         List<CollectionMember<CaseMatch>> expectedCaseMatches = new ArrayList<>();
 

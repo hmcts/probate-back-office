@@ -17,7 +17,6 @@ import uk.gov.hmcts.probate.service.CaseMatchingService;
 import uk.gov.hmcts.probate.service.LegacySearchService;
 import uk.gov.hmcts.probate.service.ProbateManService;
 
-import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -32,6 +31,9 @@ import static uk.gov.hmcts.probate.model.CaseType.LEGACY;
 public class LegacySearchServiceImpl implements LegacySearchService {
 
     private static final List<CaseType> GRANT_MATCH_TYPES = Arrays.asList(LEGACY);
+    private static final String DO_IMPORT_YES = "YES";
+    public static final String DNM_IND_YES = "Y";
+
     private final CaseMatchingService caseMatchingService;
     private final ProbateManService probateManService;
     private final Map<ProbateManType, JpaRepository> repositories;
@@ -50,14 +52,12 @@ public class LegacySearchServiceImpl implements LegacySearchService {
         return caseMatchesList;
     }
 
-
     @Override
-    @Transactional
     public List<CollectionMember<CaseMatch>> importLegacyRows(CaseData data) {
         List<CollectionMember<CaseMatch>> rows = data.getLegacySearchResultRows();
 
         rows.stream().map(CollectionMember::getValue)
-                .filter(row -> "YES".equalsIgnoreCase(row.getDoImport()))
+                .filter(row -> DO_IMPORT_YES.equalsIgnoreCase(row.getDoImport()))
                 .forEach(row -> importRow(row));
         return rows;
     }
@@ -76,7 +76,7 @@ public class LegacySearchServiceImpl implements LegacySearchService {
         Optional<ProbateManModel> probateManModelOptional = repository.findById(legacyId);
         if (probateManModelOptional.isPresent()) {
             ProbateManModel probateManModel = probateManModelOptional.get();
-            probateManModel.setDnmInd("Y");
+            probateManModel.setDnmInd(DNM_IND_YES);
             probateManModel.setCcdCaseNo(ccdCaseId);
             log.info("Updating legacy case id=" + id + " for probateManType=" + probateManType);
             ProbateManModel savedProbateManModel = (ProbateManModel) repository.saveAndFlush(probateManModel);
