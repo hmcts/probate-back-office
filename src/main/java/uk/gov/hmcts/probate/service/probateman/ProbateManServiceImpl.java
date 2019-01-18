@@ -35,25 +35,25 @@ public class ProbateManServiceImpl implements ProbateManService {
 
     private ProbateManModel retrieveProbateManModel(Long id, ProbateManType probateManType) {
         JpaRepository repository = Optional.ofNullable(repositories.get(probateManType))
-            .orElseThrow(() ->
-                new IllegalArgumentException("Cannot find repository for: " + probateManType.name()));
+                .orElseThrow(() ->
+                        new IllegalArgumentException("Cannot find repository for: " + probateManType.name()));
         Optional<ProbateManModel> probateManModelOptional = repository.findById(id);
         return probateManModelOptional
-            .orElseThrow(() -> new IllegalArgumentException("Cannot find " + probateManType.name()
-                + " with id: " + id));
+                .orElseThrow(() -> new IllegalArgumentException("Cannot find " + probateManType.name()
+                        + " with id: " + id));
     }
 
     public CaseDetails saveToCcd(Long id, ProbateManType probateManType) {
-        log.info("Saving legacy case to CCD");
+        log.info("Saving legacy case to CCD for probateManType=" + probateManType.name() + " id=" + id.toString());
         ProbateManModel probateManModel = retrieveProbateManModel(id, probateManType);
         ProbateManMapper probateManMapper = Optional.ofNullable(mappers.get(probateManType))
-            .orElseThrow(() ->
-                new IllegalArgumentException("Cannot find mapper for: " + probateManType.name()));
+                .orElseThrow(() ->
+                        new IllegalArgumentException("Cannot find mapper for: " + probateManType.name()));
         return coreCaseDataService.createCase(
-            probateManMapper.toCcdData(probateManModel),
-            probateManType.getCcdCaseType(),
-            probateManType.getCaseCreationEventId(),
-            securityUtils.getSecurityDTO()
+                probateManMapper.toCcdData(probateManModel),
+                probateManType.getCcdCaseType(),
+                probateManType.getCaseCreationEventId(),
+                securityUtils.getSecurityDTO()
         );
     }
 }

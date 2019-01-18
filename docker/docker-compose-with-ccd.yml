@@ -1,62 +1,62 @@
 version: '2.1'
-networks:
-  default: {}
+#networks:
+#  default: {}
 services:
-  send-letter-service:
-    build:
-      context: .
-      args:
-      - http_proxy
-      - https_proxy
-      - no_proxy
-    image: docker.artifactory.reform.hmcts.net/reform/send-letter-service
-    container_name: send-letter-service
-    environment:
-    - JAVA_OPTS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=8003
-    - APPINSIGHTS_INSTRUMENTATIONKEY=DUMMY
-    - SERVER_PORT=8485
-    - FTP_FINGERPRINT="fingerprint"
-    - FTP_HOSTNAME="hostname"
-    - FTP_PORT=22
-    - FTP_PRIVATE_KEY="private"
-    - FTP_PUBLIC_KEY="public"
-    - FTP_REPORTS_FOLDER="/reports/"
-    - FTP_TARGET_FOLDER="/target/"
-    - FTP_USER="user"
-    - LETTER_TRACKING_DB_PASSWORD=password
-    - S2S_URL="false"
-    - SCHEDULING_ENABLED
-    - SPRING_FLYWAY_ENABLED=false
-    - ENCRYPTION_ENABLED
-    - ENCRYPTION_PUBLIC_KEY
-    - LETTER_TRACKING_DB_HOST=localhost
-    # these environment variables are used by java-logging library
-    - ROOT_APPENDER
-    - JSON_CONSOLE_PRETTY_PRINT
-    - ROOT_LOGGING_LEVEL
-    - REFORM_SERVICE_NAME
-    - REFORM_TEAM
-    - REFORM_ENVIRONMENT
-    ports:
-    - 8003:8003
-    - 8485:8485
-    links:
-    - send-letter-database
-    depends_on:
-    - send-letter-database
-
-  send-letter-database:
-    image: docker.artifactory.reform.hmcts.net/reform/send-letter-database
-    container_name: send-letter-database
-    environment:
-    - LETTER_TRACKING_DB_PASSWORD=password
-    ports:
-    - 5432:5432
-    healthcheck:
-      test: psql -c 'select 1' -d letter_tracking -U letterservice
-      retries: 2
-    volumes:
-    - ./bulk-print/init-db.sh:/docker-entrypoint-initdb.d/init-db.sh
+#  send-letter-service:
+#    build:
+#      context: .
+#      args:
+#      - http_proxy
+#      - https_proxy
+#      - no_proxy
+#    image: docker.artifactory.reform.hmcts.net/reform/send-letter-service
+#    container_name: send-letter-service
+#    environment:
+#    - JAVA_OPTS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=8003
+#    - APPINSIGHTS_INSTRUMENTATIONKEY=DUMMY
+#    - SERVER_PORT=8485
+#    - FTP_FINGERPRINT="fingerprint"
+#    - FTP_HOSTNAME="hostname"
+#    - FTP_PORT=22
+#    - FTP_PRIVATE_KEY="private"
+#    - FTP_PUBLIC_KEY="public"
+#    - FTP_REPORTS_FOLDER="/reports/"
+#    - FTP_TARGET_FOLDER="/target/"
+#    - FTP_USER="user"
+#    - LETTER_TRACKING_DB_PASSWORD=password
+#    - S2S_URL="false"
+#    - SCHEDULING_ENABLED
+#    - SPRING_FLYWAY_ENABLED=false
+#    - ENCRYPTION_ENABLED
+#    - ENCRYPTION_PUBLIC_KEY
+#    - LETTER_TRACKING_DB_HOST=localhost
+#    # these environment variables are used by java-logging library
+#    - ROOT_APPENDER
+#    - JSON_CONSOLE_PRETTY_PRINT
+#    - ROOT_LOGGING_LEVEL
+#    - REFORM_SERVICE_NAME
+#    - REFORM_TEAM
+#    - REFORM_ENVIRONMENT
+#    ports:
+#    - 8003:8003
+#    - 8485:8485
+#    links:
+#    - send-letter-database
+#    depends_on:
+#    - send-letter-database
+#
+#  send-letter-database:
+#    image: docker.artifactory.reform.hmcts.net/reform/send-letter-database
+#    container_name: send-letter-database
+#    environment:
+#    - LETTER_TRACKING_DB_PASSWORD=password
+#    ports:
+#    - 5432:5432
+#    healthcheck:
+#      test: psql -c 'select 1' -d letter_tracking -U letterservice
+#      retries: 2
+#    volumes:
+#    - ./bulk-print/init-db.sh:/docker-entrypoint-initdb.d/init-db.sh
 
   service-auth-provider-api:
     image: hmcts/service-auth-provider-app
@@ -393,7 +393,7 @@ services:
       - PROXY_DEFINITION_DATA=http://ccd-definition-store-api:4451/api/data
       - PROXY_DEFINITION_DISPLAY=http://ccd-definition-store-api:4451/api/display
       # this NEEDS to be your local ip address
-      - PROXY_PRINT_SERVICE=http://172.16.10.82:3100
+      - PROXY_PRINT_SERVICE=http://10.99.3.117:3100
       - PROXY_DOCUMENT_MANAGEMENT=http://dm-store:8080
     ports:
       - 3453:3453

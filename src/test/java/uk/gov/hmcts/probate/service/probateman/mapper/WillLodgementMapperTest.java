@@ -1,40 +1,70 @@
 package uk.gov.hmcts.probate.service.probateman.mapper;
 
-import org.junit.Before;
 import org.junit.Test;
-import org.mapstruct.factory.Mappers;
-import uk.gov.hmcts.probate.model.ccd.willlodgement.request.WillLodgementData;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.junit4.SpringRunner;
+import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.probateman.WillLodgement;
+import uk.gov.hmcts.reform.probate.model.cases.CollectionMember;
+import uk.gov.hmcts.reform.probate.model.cases.FullAliasName;
+import uk.gov.hmcts.reform.probate.model.cases.willlodgement.WillLodgementData;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@RunWith(SpringRunner.class)
+@SpringBootTest
 public class WillLodgementMapperTest {
 
-    public static final String RK_NUMBER = "234342";
+    private static final String DECEASED_ALIAS_NAMES = "DeadAN1 DeadAN2";
     public static final String FORENAMES = "WLFN1 WLFN2";
     public static final String SURNAME = "WLSN";
+    private static final LocalDate DATE_OF_BIRTH = LocalDate.of(1999, 1, 1);
+    private static final LocalDate DATE_OF_DEATH = LocalDate.of(2018, 1, 1);
+
+    @Autowired
     private WillLodgementMapper willLodgementMapper;
 
-    @Before
-    public void willLodgementMapper() {
-        willLodgementMapper = Mappers.getMapper(WillLodgementMapper.class);
-    }
+    @MockBean
+    AppInsights appInsights;
 
     @Test
     public void shouldMapToCcdData() {
         WillLodgement willLodgement = new WillLodgement();
-        willLodgement.setRkNumber(RK_NUMBER);
+        willLodgement.setAliasNames(DECEASED_ALIAS_NAMES);
         willLodgement.setDeceasedForenames(FORENAMES);
         willLodgement.setDeceasedSurname(SURNAME);
+        willLodgement.setDateOfBirth(DATE_OF_BIRTH);
+        willLodgement.setDateOfDeath1(DATE_OF_DEATH);
 
         WillLodgementData expectedWillLodgementData = WillLodgementData.builder()
-                .wlApplicantReferenceNumber(RK_NUMBER)
-                .wlApplicantForenames(FORENAMES)
-                .wlApplicantSurname(SURNAME)
+                .deceasedFullAliasNameList(buildFullAliasNames())
+                .deceasedForenames(FORENAMES)
+                .deceasedSurname(SURNAME)
+                .deceasedDateOfBirth(DATE_OF_BIRTH)
+                .deceasedDateOfDeath(DATE_OF_DEATH)
                 .build();
 
         WillLodgementData willLodgementData = willLodgementMapper.toCcdData(willLodgement);
 
         assertThat(willLodgementData).isEqualToComparingFieldByFieldRecursively(expectedWillLodgementData);
     }
+
+    private List<CollectionMember<FullAliasName>> buildFullAliasNames() {
+        FullAliasName aliasName = FullAliasName.builder()
+                .fullAliasName(DECEASED_ALIAS_NAMES)
+                .build();
+        List<CollectionMember<FullAliasName>> aliasNamesCollections = new ArrayList<CollectionMember<FullAliasName>>();
+        CollectionMember<FullAliasName> aliasNamesCollection = new CollectionMember(null, aliasName);
+        aliasNamesCollections.add(aliasNamesCollection);
+
+        return aliasNamesCollections;
+    }
+
 }

@@ -61,9 +61,4 @@ public class WillLodgement extends ProbateManModel {
     @Column(name = "RECORD_KEEPERS_TEXT")
     private String recordKeepersText;// varchar(32000)
 
-    @Column(name = "CCD_CASE_NO")
-    private String ccdCaseNo;// varchar(20)
-
-    @Column(name = "DNM_IND")
-    private String dnmInd;// varchar(1)
 }
