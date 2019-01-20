@@ -15,7 +15,7 @@ import uk.gov.hmcts.probate.model.probateman.GrantApplication;
 import uk.gov.hmcts.probate.model.probateman.LegacyCaseType;
 import uk.gov.hmcts.probate.model.probateman.ProbateManType;
 import uk.gov.hmcts.probate.repositories.GrantApplicationRepository;
-import uk.gov.hmcts.probate.service.CaseMatchingService;
+import uk.gov.hmcts.probate.service.LegacyCaseMatchingService;
 import uk.gov.hmcts.probate.service.ProbateManService;
 
 import java.util.ArrayList;
@@ -36,7 +36,7 @@ public class LegacySearchServiceImplTest {
     private static final Long CCD_CASE_ID = 1111222233334444L;
 
     @Mock
-    private CaseMatchingService caseMatchingService;
+    private LegacyCaseMatchingService legacyCaseMatchingService;
 
     @Mock
     private ProbateManService probateManService;
@@ -54,7 +54,7 @@ public class LegacySearchServiceImplTest {
 
     @Before
     public void setUp() {
-        legacySearchService = new LegacySearchServiceImpl(caseMatchingService, probateManService, repositories);
+        legacySearchService = new LegacySearchServiceImpl(legacyCaseMatchingService, probateManService, repositories);
 
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
     }

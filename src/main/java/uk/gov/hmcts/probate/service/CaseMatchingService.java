@@ -10,6 +10,7 @@ import uk.gov.hmcts.probate.config.CCDGatewayConfiguration;
 import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.CaseType;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
+import uk.gov.hmcts.probate.model.ccd.raw.casematching.Case;
 import uk.gov.hmcts.probate.model.ccd.raw.casematching.MatchedCases;
 import uk.gov.hmcts.probate.model.criterion.CaseMatchingCriteria;
 import uk.gov.hmcts.probate.service.evidencemanagement.header.HttpHeadersFactory;
@@ -77,7 +78,7 @@ public class CaseMatchingService {
 
         return matchedCases.getCases().stream()
                 .filter(c -> criteria == null || c.getId() == null || !criteria.getId().equals(c.getId()))
-                .map(c -> CaseMatch.buildCaseMatch(c, caseType))
+                .map(c -> buildCaseMatch(c, caseType))
                 .collect(Collectors.toList());
     }
 
@@ -86,6 +87,10 @@ public class CaseMatchingService {
                 .map(caseType -> findMatches(caseType, criteria))
                 .flatMap(Collection::stream)
                 .collect(Collectors.toList());
+    }
+
+    public CaseMatch buildCaseMatch(Case c, CaseType caseType) {
+        return CaseMatch.buildCaseMatch(c, caseType);
     }
 
     private String getQueryTemplate() {

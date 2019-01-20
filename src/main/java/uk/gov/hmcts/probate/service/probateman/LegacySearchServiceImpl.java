@@ -13,7 +13,7 @@ import uk.gov.hmcts.probate.model.criterion.CaseMatchingCriteria;
 import uk.gov.hmcts.probate.model.probateman.LegacyCaseType;
 import uk.gov.hmcts.probate.model.probateman.ProbateManModel;
 import uk.gov.hmcts.probate.model.probateman.ProbateManType;
-import uk.gov.hmcts.probate.service.CaseMatchingService;
+import uk.gov.hmcts.probate.service.LegacyCaseMatchingService;
 import uk.gov.hmcts.probate.service.LegacySearchService;
 import uk.gov.hmcts.probate.service.ProbateManService;
 
@@ -34,7 +34,7 @@ public class LegacySearchServiceImpl implements LegacySearchService {
     private static final String DO_IMPORT_YES = "YES";
     public static final String DNM_IND_YES = "Y";
 
-    private final CaseMatchingService caseMatchingService;
+    private final LegacyCaseMatchingService legacyCaseMatchingService;
     private final ProbateManService probateManService;
     private final Map<ProbateManType, JpaRepository> repositories;
 
@@ -43,7 +43,7 @@ public class LegacySearchServiceImpl implements LegacySearchService {
         CaseMatchingCriteria caseMatchingCriteria = CaseMatchingCriteria.of(caseDetails);
 
         List<CaseMatch> caseMatches = new ArrayList<>();
-        caseMatches.addAll(caseMatchingService.findCrossMatches(GRANT_MATCH_TYPES, caseMatchingCriteria));
+        caseMatches.addAll(legacyCaseMatchingService.findCrossMatches(GRANT_MATCH_TYPES, caseMatchingCriteria));
 
         List<CollectionMember<CaseMatch>> caseMatchesList = new ArrayList();
 

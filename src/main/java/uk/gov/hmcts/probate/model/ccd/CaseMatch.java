@@ -29,12 +29,18 @@ public class CaseMatch implements Serializable {
     private final String comment;
     private final String type;
     private final CaseLink caseLink;
+    private final String legacyCaseViewUrl;
     private final String doImport;
 
     private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ISO_DATE;
 
     public static CaseMatch buildCaseMatch(Case c, CaseType caseType) {
-        CaseMatch.CaseMatchBuilder caseMatchBuilder = CaseMatch.builder();
+        CaseMatch.CaseMatchBuilder caseMatchBuilder = getCaseMatchBuilder(c, caseType);
+        return caseMatchBuilder.build();
+    }
+
+    public static CaseMatchBuilder getCaseMatchBuilder(Case c, CaseType caseType) {
+        CaseMatchBuilder caseMatchBuilder = CaseMatch.builder();
         caseMatchBuilder.fullName(c.getData().getDeceasedFullName());
         if (c.getData().getDeceasedDateOfBirth() != null) {
             caseMatchBuilder.dob(c.getData().getDeceasedDateOfBirth().format(dateTimeFormatter));
@@ -50,10 +56,7 @@ public class CaseMatch implements Serializable {
         }
         if (caseType.equals(LEGACY)) {
             caseMatchBuilder.type(caseType.getName() + " " + c.getData().getLegacyCaseType());
-        } else {
-            caseMatchBuilder.type(caseType.getName());
         }
-
         if (caseType.equals(LEGACY)) {
             caseMatchBuilder.id(c.getData().getLegacyId());
         }
@@ -65,7 +68,6 @@ public class CaseMatch implements Serializable {
                     .collect(Collectors.joining(", "));
             caseMatchBuilder.aliases(aliases);
         }
-
-        return caseMatchBuilder.build();
+        return caseMatchBuilder;
     }
 }
