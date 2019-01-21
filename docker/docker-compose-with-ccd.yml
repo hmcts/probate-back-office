@@ -309,8 +309,8 @@ services:
       - REFORM_TEAM=ccd
       - REFORM_ENVIRONMENT=local
       - APPINSIGHTS_INSTRUMENTATIONKEY=fake-key
-      - ELASTIC_SEARCH_ENABLED=true
-      - ELASTIC_SEARCH_FAIL_ON_IMPORT=true
+      - ELASTIC_SEARCH_ENABLED=false
+      - ELASTIC_SEARCH_FAIL_ON_IMPORT=false
       - ELASTIC_SEARCH_HOST=elasticsearch
     ports:
       - 4451:4451
@@ -393,7 +393,7 @@ services:
       - PROXY_DEFINITION_DATA=http://ccd-definition-store-api:4451/api/data
       - PROXY_DEFINITION_DISPLAY=http://ccd-definition-store-api:4451/api/display
       # this NEEDS to be your local ip address
-      - PROXY_PRINT_SERVICE=http://10.99.2.39:3100
+      - PROXY_PRINT_SERVICE=http://docker.for.mac.localhost:3100
       - PROXY_DOCUMENT_MANAGEMENT=http://dm-store:8080
     ports:
       - 3453:3453
