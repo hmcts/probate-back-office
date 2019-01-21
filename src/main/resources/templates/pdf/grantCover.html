@@ -18,10 +18,9 @@
             margin: 0 auto;
             max-width: 340px;
             max-height: 170px;
-            padding: 75px;
         }
 
-        .ow {
+         .ow {
             overflow-wrap: break-word;
             word-wrap: break-word;
             hyphens: auto;
@@ -46,7 +45,7 @@
             {% if case_details.case_data.primaryApplicantFullName != null %}{{ case_details.case_data.primaryApplicantFullName }}<br/> {% endif %}
             {% if case_details.case_data.primaryApplicantForenames != null %}{{ case_details.case_data.primaryApplicantForenames }}{% endif %}
             {% if case_details.case_data.primaryApplicantSurname != null %}{{ case_details.case_data.primaryApplicantSurname }}<br/> {% endif %}
-            <p class=".ow">{{case_details.case_data.primaryApplicantAddress.addressLine1}}<br/>
+            <p class="ow">{{case_details.case_data.primaryApplicantAddress.addressLine1}}<br/>
                 {{case_details.case_data.primaryApplicantAddress.addressLine2}}<br/>
                 {{case_details.case_data.primaryApplicantAddress.postTown}}<br/>
                 {{case_details.case_data.primaryApplicantAddress.postCode}}<br/>
