@@ -89,7 +89,7 @@ public class WillLodgementCallbackResponseTransformer {
 
         storedMatches.sort(Comparator.comparingInt(m -> ofNullable(m.getValue().getValid()).orElse("").length()));
 
-        ResponseWillLodgementData.ResponseWillLodgementDataBuilder responseCaseDataBuilder = getResponseWillLodgementData(request.getCaseDetails());
+        ResponseWillLodgementDataBuilder responseCaseDataBuilder = getResponseWillLodgementData(request.getCaseDetails());
 
         return transformResponse(responseCaseDataBuilder.build());
     }
