@@ -3,6 +3,8 @@ package uk.gov.hmcts.probate.transformer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.model.ApplicationType;
+import uk.gov.hmcts.probate.model.ccd.CaseMatch;
+import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.willlodgement.request.WillLodgementCallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.willlodgement.request.WillLodgementData;
 import uk.gov.hmcts.probate.model.ccd.willlodgement.request.WillLodgementDetails;
@@ -11,7 +13,9 @@ import uk.gov.hmcts.probate.model.ccd.willlodgement.response.ResponseWillLodgeme
 import uk.gov.hmcts.probate.model.ccd.willlodgement.response.WillLodgementCallbackResponse;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static java.util.Optional.ofNullable;
 import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
@@ -19,8 +23,6 @@ import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
 @Component
 @RequiredArgsConstructor
 public class WillLodgementCallbackResponseTransformer {
-
-    private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     private static final ApplicationType DEFAULT_APPLICATION_TYPE = PERSONAL;
     private static final String DEFAULT_REGISTRY_LOCATION = "Leeds";
@@ -45,8 +47,8 @@ public class WillLodgementCallbackResponseTransformer {
                 .registryLocation(ofNullable(willLodgementData.getRegistryLocation()).orElse(DEFAULT_REGISTRY_LOCATION))
 
                 .lodgementType(willLodgementData.getLodgementType())
-                .lodgedDate(dateTimeFormatter.format(willLodgementData.getLodgedDate()))
-                .willDate(dateTimeFormatter.format(willLodgementData.getWillDate()))
+                .lodgedDate(transformToString(willLodgementData.getLodgedDate()))
+                .willDate(transformToString(willLodgementData.getWillDate()))
                 .codicilDate(transformToString(willLodgementData.getCodicilDate()))
                 .numberOfCodicils(transformToString(willLodgementData.getNumberOfCodicils()))
                 .jointWill(willLodgementData.getJointWill())
@@ -55,7 +57,7 @@ public class WillLodgementCallbackResponseTransformer {
                 .deceasedSurname(willLodgementData.getDeceasedSurname())
                 .deceasedGender(willLodgementData.getDeceasedGender())
                 .deceasedDateOfBirth(transformToString(willLodgementData.getDeceasedDateOfBirth()))
-                .deceasedDateOfDeath(dateTimeFormatter.format(willLodgementData.getDeceasedDateOfDeath()))
+                .deceasedDateOfDeath(transformToString(willLodgementData.getDeceasedDateOfDeath()))
                 .deceasedTypeOfDeath(willLodgementData.getDeceasedTypeOfDeath())
                 .deceasedAnyOtherNames(willLodgementData.getDeceasedAnyOtherNames())
                 .deceasedFullAliasNameList(willLodgementData.getDeceasedFullAliasNameList())
@@ -69,9 +71,27 @@ public class WillLodgementCallbackResponseTransformer {
                 .executorEmailAddress(willLodgementData.getExecutorEmailAddress())
                 .additionalExecutorList(willLodgementData.getAdditionalExecutorList())
 
+                .caseMatches(willLodgementData.getCaseMatches())
+
                 .withdrawalReason(willLodgementData.getWithdrawalReason())
                 .documentsGenerated(willLodgementData.getDocumentsGenerated())
                 .documentsUploaded(willLodgementData.getDocumentsUploaded());
+    }
+
+    public WillLodgementCallbackResponse addMatches(WillLodgementCallbackRequest request, List<CaseMatch> newMatches) {
+        List<CollectionMember<CaseMatch>> storedMatches = request.getCaseDetails().getData().getCaseMatches();
+
+        // Removing case matches that have been already added
+        storedMatches.stream()
+                .map(CollectionMember::getValue).forEach(newMatches::remove);
+
+        storedMatches.addAll(newMatches.stream().map(CollectionMember::new).collect(Collectors.toList()));
+
+        storedMatches.sort(Comparator.comparingInt(m -> ofNullable(m.getValue().getValid()).orElse("").length()));
+
+        ResponseWillLodgementData.ResponseWillLodgementDataBuilder responseCaseDataBuilder = getResponseWillLodgementData(request.getCaseDetails());
+
+        return transformResponse(responseCaseDataBuilder.build());
     }
 
     private String transformToString(Long longValue) {
