@@ -61,12 +61,16 @@ public class CaseMatch implements Serializable {
             caseMatchBuilder.id(c.getData().getLegacyId());
         }
 
-        if (c.getData().getSolsDeceasedAliasNamesList() != null) {
-            String aliases = c.getData().getSolsDeceasedAliasNamesList().stream()
-                    .map(CollectionMember::getValue)
-                    .map(AliasName::getSolsAliasname)
-                    .collect(Collectors.joining(", "));
-            caseMatchBuilder.aliases(aliases);
+        if (caseType.equals(LEGACY)) {
+            caseMatchBuilder.aliases(c.getData().getLegacySearchAliasNames());
+        } else {
+            if (c.getData().getSolsDeceasedAliasNamesList() != null) {
+                String aliases = c.getData().getSolsDeceasedAliasNamesList().stream()
+                        .map(CollectionMember::getValue)
+                        .map(AliasName::getSolsAliasname)
+                        .collect(Collectors.joining(", "));
+                caseMatchBuilder.aliases(aliases);
+            }
         }
         return caseMatchBuilder;
     }

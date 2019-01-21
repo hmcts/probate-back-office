@@ -214,3 +214,6 @@ idam:
 send-letter:
   url: ${SEND_LETTER_SERIVCE_BASEURL:http://localhost:8485}
 
+auth.idam.client.baseUrl: http://localhost:4501
+
+core_case_data.api.url: http://localhost:4452

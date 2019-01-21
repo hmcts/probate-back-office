@@ -69,11 +69,11 @@ public class CaseData {
 
     // EVENT = solicitorUpdateApplication
     @NotBlank(groups = {ApplicationUpdatedGroup.class, AmendCaseDetailsGroup.class},
-        message = "{deceasedForenameIsNull}")
+            message = "{deceasedForenameIsNull}")
     private final String deceasedForenames;
 
     @NotBlank(groups = {ApplicationUpdatedGroup.class, AmendCaseDetailsGroup.class},
-        message = "{deceasedSurnameIsNull}")
+            message = "{deceasedSurnameIsNull}")
     private final String deceasedSurname;
 
     @JsonProperty("legacy_case_type")
@@ -374,7 +374,8 @@ public class CaseData {
 
     private final String legacyId;
     private final List<CollectionMember<CaseMatch>> legacySearchResultRows;
-
+    @JsonProperty(value = "alias_names")
+    private final String legacySearchAliasNames;
 
     @Getter(lazy = true)
     private final List<CollectionMember<AdditionalExecutor>> executorsApplyingForLegalStatement = getAllExecutors(true);
