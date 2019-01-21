@@ -3,6 +3,7 @@ package uk.gov.hmcts.probate.transformer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.model.ApplicationType;
+import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.willlodgement.request.WillLodgementCallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.willlodgement.request.WillLodgementData;
 import uk.gov.hmcts.probate.model.ccd.willlodgement.request.WillLodgementDetails;
@@ -12,6 +13,7 @@ import uk.gov.hmcts.probate.model.ccd.willlodgement.response.WillLodgementCallba
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 import static java.util.Optional.ofNullable;
 import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
@@ -20,6 +22,7 @@ import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
 @RequiredArgsConstructor
 public class WillLodgementCallbackResponseTransformer {
 
+    private final DocumentTransformer documentTransformer;
     private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     private static final ApplicationType DEFAULT_APPLICATION_TYPE = PERSONAL;
@@ -72,6 +75,13 @@ public class WillLodgementCallbackResponseTransformer {
                 .withdrawalReason(willLodgementData.getWithdrawalReason())
                 .documentsGenerated(willLodgementData.getDocumentsGenerated())
                 .documentsUploaded(willLodgementData.getDocumentsUploaded());
+    }
+
+    public WillLodgementCallbackResponse addDocuments(WillLodgementCallbackRequest callbackRequest, List<Document> documents) {
+        documents.forEach(document -> documentTransformer.addDocument(callbackRequest, document));
+
+        ResponseWillLodgementData.ResponseWillLodgementDataBuilder responseWillLodgementData = getResponseWillLodgementData(callbackRequest.getCaseDetails());
+        return transformResponse(responseWillLodgementData.build());
     }
 
     private String transformToString(Long longValue) {

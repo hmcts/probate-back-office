@@ -6,6 +6,7 @@ import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
+import uk.gov.hmcts.probate.model.ccd.willlodgement.request.WillLodgementCallbackRequest;
 
 import java.util.List;
 
@@ -35,6 +36,16 @@ public class DocumentTransformer {
                         .add(new CollectionMember<>(null, document));
                 break;
             case EDGE_CASE:
+                break;
+            default:
+        }
+    }
+
+    public void addDocument(WillLodgementCallbackRequest callbackRequest, Document document) {
+        switch (document.getDocumentType()) {
+            case WILL_LODGEMENT_DEPOSIT_RECEIPT:
+                callbackRequest.getCaseDetails().getData().getDocumentsGenerated()
+                        .add(new CollectionMember<>(null, document));
                 break;
             default:
         }

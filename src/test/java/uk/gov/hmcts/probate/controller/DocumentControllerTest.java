@@ -21,6 +21,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
+import uk.gov.hmcts.probate.model.ccd.willlodgement.request.WillLodgementCallbackRequest;
 import uk.gov.hmcts.probate.service.BulkPrintService;
 import uk.gov.hmcts.probate.service.DocumentService;
 import uk.gov.hmcts.probate.service.NotificationService;
@@ -105,7 +106,7 @@ public class DocumentControllerTest {
                 .thenReturn(Document.builder().documentType(ADMON_WILL_GRANT).build());
         when(pdfManagementService.generateAndUpload(any(CallbackRequest.class), eq(EDGE_CASE)))
                 .thenReturn(Document.builder().documentType(EDGE_CASE).build());
-        when(pdfManagementService.generateAndUpload(any(CallbackRequest.class), eq(WILL_LODGEMENT_DEPOSIT_RECEIPT)))
+        when(pdfManagementService.generateAndUpload(any(WillLodgementCallbackRequest.class), eq(WILL_LODGEMENT_DEPOSIT_RECEIPT)))
                 .thenReturn(Document.builder().documentType(WILL_LODGEMENT_DEPOSIT_RECEIPT).build());
 
         when(notificationService.sendEmail(any(State.class), any(CaseDetails.class))).thenReturn(document);
@@ -267,15 +268,10 @@ public class DocumentControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("data")));
 
-        verify(pdfManagementService).generateAndUpload(any(CallbackRequest.class), eq(WILL_LODGEMENT_DEPOSIT_RECEIPT));
+        verify(pdfManagementService).generateAndUpload(any(WillLodgementCallbackRequest.class), eq(WILL_LODGEMENT_DEPOSIT_RECEIPT));
 
-
-        SendLetterResponse sendLetterResponse = new SendLetterResponse(UUID.randomUUID());
-        when(bulkPrintService.sendToBulkPrint(any(CallbackRequest.class), any(Document.class))).thenReturn(sendLetterResponse);
-        verify(bulkPrintService).sendToBulkPrint(any(CallbackRequest.class), any(Document.class));
-
-        doNothing().when(documentService).expire(any(CallbackRequest.class), eq(WILL_LODGEMENT_DEPOSIT_RECEIPT));
-        verify(documentService).expire(any(CallbackRequest.class), eq(WILL_LODGEMENT_DEPOSIT_RECEIPT));
+        doNothing().when(documentService).expire(any(WillLodgementCallbackRequest.class), eq(WILL_LODGEMENT_DEPOSIT_RECEIPT));
+        verify(documentService).expire(any(WillLodgementCallbackRequest.class), eq(WILL_LODGEMENT_DEPOSIT_RECEIPT));
 
 
 

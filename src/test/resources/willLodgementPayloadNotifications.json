@@ -40,11 +40,6 @@
         "PostCode": "postcode",
         "Country": "country"
       },
-      "deceasedFullAliasNameList" : {
-        "value" : {
-          "wlProbateFullAliasName" : "Alias name"
-        }
-      },
       "deceasedEmailAddress" : "email@email.com",
       "executorTitle" : "Professor",
       "executorForenames" : "Ex1 First Name",
@@ -58,27 +53,29 @@
         "PostCode": "postcode",
         "Country": "country"
       },
-      "executorEmailAddress" : "ex1@email.com",
-      "additionalExecutorList" : {
-        "value" : {
-          "executorTitle" : "Professor",
-          "executorForenames" : "ex2 first name",
-          "executorSurname" : "ex2 last name",
-          "executorAddress": {
-            "AddressLine1": "address line one",
-            "AddressLine2": "address line two",
-            "AddressLine3": "address line three",
-            "County": "county",
-            "PostTown": "town",
-            "PostCode": "postcode",
-            "Country": "country"
+     "executorEmailAddress" : "ex1@email.com",
+      "additionalExecutorList" : [
+        {
+          "value": {
+            "executorTitle": "Professor",
+            "executorForenames": "ex2 first name",
+            "executorSurname": "ex2 last name",
+            "executorAddress": {
+              "AddressLine1": "address line one",
+              "AddressLine2": "address line two",
+              "AddressLine3": "address line three",
+              "County": "county",
+              "PostTown": "town",
+              "PostCode": "postcode",
+              "Country": "country"
+            },
+            "executorEmailAddress": "ex2@email.com"
           },
-          "executorEmailAddress" : "ex2@email.com",
           "id": "366406fe-e6c3-4bdf-8709-121f8f64c1f7"
         }
-      },
-      "wlWithdrawReason" : "Test",
-      "wlDocumentsGenerated": [
+      ],
+      "withdrawReason" : "Test",
+      "documentsGenerated": [
         {
           "id": "161186cd-24ee-4e37-8793-b388ebc94443",
           "value": {
@@ -122,11 +119,6 @@
         "PostCode": "PUBLIC",
         "Country": "PUBLIC"
       },
-      "deceasedFullAliasNameList" : {
-        "value" : {
-          "wlProbateFullAliasName" : "PUBLIC"
-        }
-      },
       "deceasedEmailAddress" : "PUBLIC",
       "executorTitle" : "PUBLIC",
       "executorForenames" : "PUBLIC",
@@ -158,7 +150,7 @@
           "executorEmailAddress" : "PUBLIC"
         }
       },
-      "wlWithdrawReason" : "PUBLIC"
+      "withdrawReason" : "PUBLIC"
     },
 
 
@@ -192,11 +184,6 @@
         "PostCode": "PUBLIC",
         "Country": "PUBLIC"
       },
-      "deceasedFullAliasNameList" : {
-        "value" : {
-          "wlProbateFullAliasName" : "PUBLIC"
-        }
-      },
       "deceasedEmailAddress" : "PUBLIC",
       "executorTitle" : "PUBLIC",
       "executorForenames" : "PUBLIC",
@@ -229,7 +216,7 @@
 
         }
       },
-      "wlWithdrawReason" : "PUBLIC"
+      "withdrawReason" : "PUBLIC"
     }
   }
 }

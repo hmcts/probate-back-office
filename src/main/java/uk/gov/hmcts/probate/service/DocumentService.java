@@ -7,6 +7,7 @@ import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
+import uk.gov.hmcts.probate.model.ccd.willlodgement.request.WillLodgementCallbackRequest;
 import uk.gov.hmcts.probate.service.evidencemanagement.upload.UploadService;
 
 import java.util.ArrayList;
@@ -37,6 +38,27 @@ public class DocumentService {
             try {
                 uploadService.expire(collectionMember.getValue());
                 callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated().remove(collectionMember);
+            } catch (Exception e) {
+                log.warn("Unable to expiry document: {}", collectionMember.getValue().getDocumentLink());
+            }
+        });
+    }
+
+    public void expire(WillLodgementCallbackRequest callbackRequest, DocumentType documentType) {
+
+        List<CollectionMember<Document>> documentsToExpire = new ArrayList<>();
+
+        if (DIGITAL_GRANT_DRAFT.equals(documentType)) {
+            documentsToExpire.addAll(callbackRequest.getCaseDetails().getData()
+                    .getDocumentsGenerated().stream()
+                    .filter(collectionMember -> collectionMember.getValue().getDocumentType().equals(DIGITAL_GRANT_DRAFT))
+                    .collect(Collectors.toList()));
+        }
+
+        documentsToExpire.forEach(collectionMember -> {
+            try {
+                uploadService.expire(collectionMember.getValue());
+                callbackRequest.getCaseDetails().getData().getDocumentsGenerated().remove(collectionMember);
             } catch (Exception e) {
                 log.warn("Unable to expiry document: {}", collectionMember.getValue().getDocumentLink());
             }

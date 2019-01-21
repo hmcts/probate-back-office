@@ -16,11 +16,14 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
+import uk.gov.hmcts.probate.model.ccd.willlodgement.request.WillLodgementCallbackRequest;
+import uk.gov.hmcts.probate.model.ccd.willlodgement.response.WillLodgementCallbackResponse;
 import uk.gov.hmcts.probate.service.BulkPrintService;
 import uk.gov.hmcts.probate.service.DocumentService;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
+import uk.gov.hmcts.probate.transformer.WillLodgementCallbackResponseTransformer;
 import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
 import uk.gov.service.notify.NotificationClientException;
 
@@ -47,6 +50,7 @@ public class DocumentController {
 
     private final PDFManagementService pdfManagementService;
     private final CallbackResponseTransformer callbackResponseTransformer;
+    private final WillLodgementCallbackResponseTransformer willLodgementCallbackResponseTransformer;
     private final DocumentService documentService;
     private final NotificationService notificationService;
     private final RegistriesProperties registriesProperties;
@@ -160,25 +164,15 @@ public class DocumentController {
 
 
     @PostMapping(path = "/generate-deposit-receipt", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<CallbackResponse> generateDepositReceipt(@RequestBody CallbackRequest callbackRequest) {
+    public ResponseEntity<WillLodgementCallbackResponse> generateDepositReceipt(@RequestBody WillLodgementCallbackRequest callbackRequest) {
         Document document;
-        CaseData caseData = callbackRequest.getCaseDetails().getData();
         DocumentType template = WILL_LODGEMENT_DEPOSIT_RECEIPT;
         document = pdfManagementService.generateAndUpload(callbackRequest, template);
-
-        if (!caseData.isGrantForLocalPrinting() && !caseData.getCaseType().equals(EDGE_CASE)) {
-            SendLetterResponse response = bulkPrintService.sendToBulkPrint(callbackRequest, document);
-            String letterId = response != null
-                    ? response.letterId.toString()
-                    : StringUtils.EMPTY;
-            callbackResponseTransformer.transformWithBulkPrintComplete(callbackRequest, letterId);
-        }
 
         List<Document> documents = new ArrayList<>();
         documents.add(document);
         documentService.expire(callbackRequest, WILL_LODGEMENT_DEPOSIT_RECEIPT);
 
-        return ResponseEntity.ok(callbackResponseTransformer.addDocuments(callbackRequest,
-                Arrays.asList(document)));
+        return ResponseEntity.ok(willLodgementCallbackResponseTransformer.addDocuments(callbackRequest, Arrays.asList(document)));
     }
 }
