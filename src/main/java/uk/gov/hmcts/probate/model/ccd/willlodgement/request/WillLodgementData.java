@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 import uk.gov.hmcts.probate.model.ApplicationType;
+import uk.gov.hmcts.probate.model.ccd.CaseMatch;
 import uk.gov.hmcts.probate.model.ccd.ProbateAddress;
 import uk.gov.hmcts.probate.model.ccd.ProbateExecutor;
 import uk.gov.hmcts.probate.model.ccd.ProbateFullAliasName;
@@ -84,6 +85,8 @@ public class WillLodgementData {
     private final List<CollectionMember<Document>> documentsGenerated = new ArrayList<>();
 
     private final List<CollectionMember<UploadDocument>> documentsUploaded;
+
+    private final List<CollectionMember<CaseMatch>> caseMatches = new ArrayList<>();
 
     public String getDeceasedFullName() {
         return String.join(" ", deceasedForenames, deceasedSurname);
