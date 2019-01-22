@@ -82,34 +82,56 @@
       "minimum_should_match": 1,
       "filter": {
         "bool": {
-          "should": [
+          "must": [
+            {
+              "bool": {
+                "should": [
+                  {
+                    "bool": {
+                      "must_not": {
+                        "exists": {
+                          "field": "data.deceasedDateOfDeath"
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "range": {
+                      "data.deceasedDateOfBirth": {
+                        "gte": ":deceasedDateOfBirth||-3d",
+                        "lte": ":deceasedDateOfBirth||+3d"
+                      }
+                    }
+                  },
+                  {
+                    "range": {
+                      "data.deceasedDateOfDeath": {
+                        "gte": ":deceasedDateOfDeath||-3d",
+                        "lte": ":deceasedDateOfDeath||+3d"
+                      }
+                    }
+                  }
+                ],
+                "minimum_should_match": 1
+              }
+            },
             {
               "bool": {
                 "must_not": {
                   "exists": {
-                    "field": "data.deceasedDateOfDeath"
+                    "field": "data.imported_to_ccd"
                   }
                 }
               }
             },
             {
-              "range": {
-                "data.deceasedDateOfBirth": {
-                  "gte": ":deceasedDateOfBirth||-3d",
-                  "lte": ":deceasedDateOfBirth||+3d"
-                }
-              }
-            },
-            {
-              "range": {
-                "data.deceasedDateOfDeath": {
-                  "gte": ":deceasedDateOfDeath||-3d",
-                  "lte": ":deceasedDateOfDeath||+3d"
+              "match": {
+                "data.imported_to_ccd": {
+                  "query": "N"
                 }
               }
             }
-          ],
-          "minimum_should_match": 1
+          ]
         }
       }
     }
