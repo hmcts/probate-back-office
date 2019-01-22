@@ -90,7 +90,7 @@
                 {% if case_details.case_data.executorAddress.County != null and case_details.case_data.executorAddress.County != "" %} {{case_details.case_data.executorAddress.County}}{% endif %}
                 {% if case_details.case_data.executorAddress.PostCode != null and case_details.case_data.executorAddress.PostCode != ""%} {{case_details.case_data.executorAddress.PostCode}}{% endif %}
                 {% if case_details.case_data.executorAddress.Country != null and case_details.case_data.executorAddress.Country != ""%} {{case_details.case_data.executorAddress.Country}}{% endif %}</span>
-                </span>
+
                 {% for executor in case_details.case_data.additionalExecutorList %}
                 <br />
                 and {% if executor.value.executorForenames != null and executor.value.executorForenames != ""%}{{executor.value.executorForenames}}{% endif %} {% if executor.value.executorSurname != null and executor.value.executorSurname != ""%}{{executor.value.executorSurname}}{% endif %}<br />
@@ -101,13 +101,12 @@
                 {% if executor.value.executorAddress.PostTown != null and executor.value.executorAddress.PostTown != "" %}{{ executor.value.executorAddress.PostTown }}{% endif %}
                 {% if executor.value.executorAddress.County != null and executor.value.executorAddress.County != "" %}{{ executor.value.executorAddress.County }}{% endif %}
                 {% if executor.value.executorAddress.PostCode != null and executor.value.executorAddress.PostCode != ""%}{{ executor.value.executorAddress.PostCode }}{% endif %}
-                {% if executor.value.executorAddress.Country != null and executor.value.executorAddress.Country != ""%}{{ executor.value.executorAddress.Country }}{% endif %}
-                </span>
-                {% endif %}
-            {% endfor %}
+                {% if executor.value.executorAddress.Country != null and executor.value.executorAddress.Country != ""%}{{ executor.value.executorAddress.Country }}{% endif %}</span>
+
+                {% endfor %}
             </p>
             <p>are appointed executors has been lodged at {{case_details.case_data.registryLocation}} District Probate Registry for deposit in then Principle Registry of the Family Division, 7th Floor First Avenue House 42-49 High Holborn London WC1V 6NP for safe custody pursuant to section 126 of the Senior Court Act 1981.</p>
-            <p>Except by leave of theDistrict Judge of the Principle Registry the will may not be given out during the lifetime of the testator </p>
+            <p>Except by leave of the District Judge of the Principle Registry the will may not be given out during the lifetime of the testator </p>
         </td>
     </tr>
     <tr>
@@ -121,7 +120,7 @@
     </tr>
     <tr>
         <td>
-            <P><U>NOTE TO TESTATOR:</U></P>
+            <p><U>NOTE TO TESTATOR:</U></p>
             <p>It is important to retain this Certificate of Deposit: It will be necessary to produce it to the Registry on any application being made by the Testator to withdraw the deposited will.</p>
         </td>
     </tr>

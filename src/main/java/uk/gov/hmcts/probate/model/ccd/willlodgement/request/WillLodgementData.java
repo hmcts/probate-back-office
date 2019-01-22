@@ -114,19 +114,16 @@ public class WillLodgementData {
             String formattedDate = targetFormat.format(date);
             int day = Integer.parseInt(formattedDate.substring(0, 2));
             switch (day) {
+                case 3:
+                case 23:
+                    return day + "rd " + formattedDate.substring(3);
+                case 2:
+                case 22:
+                    return day + "nd " + formattedDate.substring(3);
                 case 1:
                 case 21:
                 case 31:
                     return day + "st " + formattedDate.substring(3);
-
-                case 2:
-                case 22:
-                    return day + "nd " + formattedDate.substring(3);
-
-                case 3:
-                case 23:
-                    return day + "rd " + formattedDate.substring(3);
-
                 default:
                     return day + "th " + formattedDate.substring(3);
             }
