@@ -167,6 +167,12 @@ public class DocumentController {
     public ResponseEntity<WillLodgementCallbackResponse> generateDepositReceipt(@RequestBody WillLodgementCallbackRequest callbackRequest) {
         Document document;
         DocumentType template = WILL_LODGEMENT_DEPOSIT_RECEIPT;
+
+        Registry registry = registriesProperties.getRegistries().get("london");
+        callbackRequest.getCaseDetails().setLondonRegistryAddress(String.join(" ",
+                registry.getAddressLine1(), registry.getAddressLine2(),
+                registry.getTown(), registry.getPostcode()));
+
         document = pdfManagementService.generateAndUpload(callbackRequest, template);
 
         List<Document> documents = new ArrayList<>();
