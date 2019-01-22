@@ -21,6 +21,7 @@ import uk.gov.hmcts.probate.model.probateman.ProbateManModel;
 import uk.gov.hmcts.probate.model.probateman.ProbateManType;
 import uk.gov.hmcts.probate.model.probateman.StandingSearchCreator;
 import uk.gov.hmcts.probate.model.probateman.WillLodgementCreator;
+import uk.gov.hmcts.probate.service.BusinessValidationMessageService;
 import uk.gov.hmcts.probate.service.LegacySearchService;
 import uk.gov.hmcts.probate.service.ProbateManService;
 import uk.gov.hmcts.probate.util.FileUtils;
@@ -59,6 +60,9 @@ public class ProbateManControllerTest {
 
     @MockBean
     private LegacySearchService legacySearchService;
+
+    @MockBean
+    private BusinessValidationMessageService businessValidationMessageService;
 
     @Autowired
     private MockMvc mockMvc;

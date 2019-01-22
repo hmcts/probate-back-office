@@ -19,7 +19,7 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "GRANT_APPLICATIONS_FLAT")
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = true)
 public class GrantApplication extends ProbateManModel {
 
     @Id

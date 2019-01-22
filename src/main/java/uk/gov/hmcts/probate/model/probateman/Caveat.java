@@ -19,7 +19,7 @@ import java.time.LocalDate;
 @Entity
 @Data
 @Table(name = "CAVEATS_FLAT")
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = true)
 public class Caveat extends ProbateManModel {
 
     @Id

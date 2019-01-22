@@ -153,7 +153,7 @@ services:
     memswap_limit: 0
     volumes:
       - ./init-db.sh:/docker-entrypoint-initdb.d/init-db.sh
-      
+
   smtp-server:
     container_name: smtp-server
     image: mailhog/mailhog
@@ -393,7 +393,7 @@ services:
       - PROXY_DEFINITION_DATA=http://ccd-definition-store-api:4451/api/data
       - PROXY_DEFINITION_DISPLAY=http://ccd-definition-store-api:4451/api/display
       # this NEEDS to be your local ip address
-      - PROXY_PRINT_SERVICE=http://10.99.2.241:3100
+      - PROXY_PRINT_SERVICE=http://10.99.3.187:3100
       - PROXY_DOCUMENT_MANAGEMENT=http://dm-store:8080
     ports:
       - 3453:3453

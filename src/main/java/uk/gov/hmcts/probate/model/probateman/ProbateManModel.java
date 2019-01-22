@@ -8,6 +8,8 @@ import javax.persistence.Column;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
+import java.time.LocalDateTime;
+
 @Data
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
 @JsonSubTypes({
@@ -26,4 +28,7 @@ public abstract class ProbateManModel {
 
     @Column(name = "CCD_CASE_NO")
     private String ccdCaseNo; //varchar(20),
+
+    @Column(name = "LAST_MODIFIED")
+    private LocalDateTime lastModified; //timestamptz
 }

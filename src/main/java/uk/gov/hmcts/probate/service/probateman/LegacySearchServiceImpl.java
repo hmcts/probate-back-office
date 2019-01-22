@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import uk.gov.hmcts.probate.model.CaseType;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
@@ -17,6 +18,7 @@ import uk.gov.hmcts.probate.service.LegacyCaseMatchingService;
 import uk.gov.hmcts.probate.service.LegacySearchService;
 import uk.gov.hmcts.probate.service.ProbateManService;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -75,15 +77,24 @@ public class LegacySearchServiceImpl implements LegacySearchService {
         JpaRepository repository = repositories.get(probateManType);
         Optional<ProbateManModel> probateManModelOptional = repository.findById(legacyId);
         if (probateManModelOptional.isPresent()) {
-            ProbateManModel probateManModel = probateManModelOptional.get();
-            probateManModel.setDnmInd(DNM_IND_YES);
-            probateManModel.setCcdCaseNo(ccdCaseId);
-            log.info("Updating legacy case id=" + id + " for probateManType=" + probateManType);
-            ProbateManModel savedProbateManModel = (ProbateManModel) repository.saveAndFlush(probateManModel);
-            log.info("Updated legacy case");
+            updateLegacyModel(id, probateManType, ccdCaseId, repository, probateManModelOptional);
         } else {
             log.info("Case cannot be found when updating legacy case id=" + id + " for probateManType=" + probateManType);
         }
+    }
+
+    @Transactional
+    private void updateLegacyModel(String id, ProbateManType probateManType, String ccdCaseId, JpaRepository repository,
+                                   Optional<ProbateManModel> probateManModelOptional) {
+        ProbateManModel probateManModel = probateManModelOptional.get();
+        probateManModel.setDnmInd(DNM_IND_YES);
+        probateManModel.setCcdCaseNo(ccdCaseId);
+        probateManModel.setLastModified(LocalDateTime.now());
+        log.info("Updating legacy case id=" + id + " for probateManType=" + probateManType);
+        repository.saveAndFlush(probateManModel);
+        ProbateManModel savedProbateManModel = (ProbateManModel) repository.findById(Long.valueOf(id)).get();
+        log.info("savedProbateManModel.dnmInd=" + savedProbateManModel.getDnmInd());
+        log.info("Updated legacy case");
     }
 
 }

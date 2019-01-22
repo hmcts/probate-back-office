@@ -19,7 +19,7 @@ import java.time.LocalDate;
 @Entity
 @Data
 @Table(name = "WILLS_FLAT")
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = true)
 public class WillLodgement extends ProbateManModel {
 
     @Id
