@@ -18,12 +18,12 @@ ccd-elasticsearch:
     ingressIP: ${INGRESS_IP}
     consulIP: ${CONSUL_LB_IP}
 
-  apiGateway:
-    s2sKey: ${API_GATEWAY_S2S_KEY}
-    idamClientSecret: ${API_GATEWAY_IDAM_SECRET}
+    apiGateway:
+      s2sKey: ${API_GATEWAY_S2S_KEY}
+      idamClientSecret: ${API_GATEWAY_IDAM_SECRET}
 
-  dataStoreApi:
-    s2sKey: ${DATA_STORE_S2S_KEY}
+    dataStoreApi:
+      s2sKey: ${DATA_STORE_S2S_KEY}
 
   definitionStoreApi:
     s2sKey: ${DEFINITION_STORE_S2S_KEY}
