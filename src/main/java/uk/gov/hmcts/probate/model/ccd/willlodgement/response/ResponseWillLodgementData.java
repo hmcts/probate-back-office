@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;
 import lombok.Data;
 import uk.gov.hmcts.probate.model.ApplicationType;
+import uk.gov.hmcts.probate.model.ccd.CaseMatch;
 import uk.gov.hmcts.probate.model.ccd.ProbateAddress;
 import uk.gov.hmcts.probate.model.ccd.ProbateExecutor;
 import uk.gov.hmcts.probate.model.ccd.ProbateFullAliasName;
@@ -51,4 +52,6 @@ public class ResponseWillLodgementData {
 
     private final String deceasedEmailAddress;
     private final ProbateAddress deceasedAddress;
+
+    private final List<CollectionMember<CaseMatch>> caseMatches;
 }

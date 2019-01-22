@@ -7,7 +7,8 @@ public enum CaseType {
     GRANT_OF_REPRESENTATION("GrantOfRepresentation", "Grant of Representation"),
     CAVEAT("Caveat", "Caveat"),
     STANDING_SEARCH("StandingSearch", "Standing Search"),
-    LEGACY("Legacy", "Legacy");
+    LEGACY("Legacy", "Legacy"),
+    WILL_LODGEMENT("WillLodgement", "Will Lodgement");
 
     private final String code;
     private final String name;
@@ -26,6 +27,6 @@ public enum CaseType {
     }
 
     public static List<CaseType> getAll() {
-        return Arrays.asList(GRANT_OF_REPRESENTATION, CAVEAT, STANDING_SEARCH, LEGACY);
+        return Arrays.asList(CaseType.values());
     }
 }
