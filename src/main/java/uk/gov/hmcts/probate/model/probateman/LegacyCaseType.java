@@ -3,36 +3,27 @@ package uk.gov.hmcts.probate.model.probateman;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+import java.util.Arrays;
+
 @RequiredArgsConstructor
 public enum LegacyCaseType {
 
-    CAVEAT("Legacy CAVEAT"),
-    GRANT_OF_REPRESENTATION("Legacy LEGACY APPLICATION"),
-    GRANT_OF_REPRESENTATION_DERIVED("Legacy LEGACY GRANT"),
-    STANDING_SEARCH("Legacy STANDING SEARCH"),
-    WILL_LODGEMENT("Legacy WILL");
+    CAVEAT("Legacy CAVEAT", ProbateManType.CAVEAT),
+    GRANT_OF_REPRESENTATION("Legacy LEGACY APPLICATION", ProbateManType.GRANT_APPLICATION),
+    GRANT_OF_REPRESENTATION_DERIVED("Legacy LEGACY GRANT", ProbateManType.GRANT_APPLICATION),
+    STANDING_SEARCH("Legacy STANDING SEARCH", ProbateManType.STANDING_SEARCH),
+    WILL_LODGEMENT("Legacy WILL", ProbateManType.WILL_LODGEMENT);
 
     @Getter
     private final String name;
 
+    @Getter
+    private final ProbateManType probateManType;
+
     public static final LegacyCaseType getByLegacyCaseTypeName(String legacyCaseTypeName) {
-        if (GRANT_OF_REPRESENTATION.getName().equals(legacyCaseTypeName)) {
-            return GRANT_OF_REPRESENTATION;
-        }
-        if (STANDING_SEARCH.getName().equals(legacyCaseTypeName)) {
-            return STANDING_SEARCH;
-        }
-        if (WILL_LODGEMENT.getName().equals(legacyCaseTypeName)) {
-            return WILL_LODGEMENT;
-        }
-        if (CAVEAT.getName().equals(legacyCaseTypeName)) {
-            return CAVEAT;
-        }
-        if (GRANT_OF_REPRESENTATION_DERIVED.getName().equals(legacyCaseTypeName)) {
-            return GRANT_OF_REPRESENTATION_DERIVED;
-        }
-
-        return null;
+        return Arrays.stream(LegacyCaseType.values())
+            .filter(legacyCaseType -> legacyCaseType.getName().equals(legacyCaseTypeName))
+            .findFirst()
+            .orElseThrow(IllegalArgumentException::new);
     }
-
 }

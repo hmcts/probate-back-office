@@ -2,7 +2,6 @@ package uk.gov.hmcts.probate.model.probateman;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import uk.gov.hmcts.probate.model.CaseType;
 import uk.gov.hmcts.probate.model.ccd.CcdCaseType;
 import uk.gov.hmcts.probate.model.ccd.EventId;
 
@@ -19,24 +18,4 @@ public enum ProbateManType {
 
     @Getter
     private final EventId caseCreationEventId;
-
-    public static final ProbateManType getByLegacyCaseType(LegacyCaseType legacyCaseType) {
-        if (LegacyCaseType.GRANT_OF_REPRESENTATION.getName().equals(legacyCaseType.getName())) {
-            return ProbateManType.GRANT_APPLICATION;
-        }
-        if (LegacyCaseType.STANDING_SEARCH.getName().equals(legacyCaseType.getName())) {
-            return ProbateManType.STANDING_SEARCH;
-        }
-        if (LegacyCaseType.WILL_LODGEMENT.getName().equals(legacyCaseType.getName())) {
-            return ProbateManType.WILL_LODGEMENT;
-        }
-        if (LegacyCaseType.CAVEAT.getName().equals(legacyCaseType.getName())) {
-            return ProbateManType.CAVEAT;
-        }
-        if (LegacyCaseType.GRANT_OF_REPRESENTATION_DERIVED.getName().equals(legacyCaseType.getName())) {
-            return ProbateManType.GRANT_APPLICATION;
-        }
-
-        return null;
-    }
 }

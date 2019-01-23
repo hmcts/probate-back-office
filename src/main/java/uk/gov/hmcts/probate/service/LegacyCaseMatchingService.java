@@ -9,7 +9,6 @@ import uk.gov.hmcts.probate.model.CaseType;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
 import uk.gov.hmcts.probate.model.ccd.raw.casematching.Case;
 import uk.gov.hmcts.probate.model.probateman.LegacyCaseType;
-import uk.gov.hmcts.probate.model.probateman.ProbateManType;
 import uk.gov.hmcts.probate.service.evidencemanagement.header.HttpHeadersFactory;
 
 import static uk.gov.hmcts.probate.model.CaseType.LEGACY;
@@ -44,10 +43,9 @@ public class LegacyCaseMatchingService extends CaseMatchingService {
         String id = c.getData().getLegacyId();
         String legacyCaseTypeName = caseType.getName() + " " + c.getData().getLegacyCaseType();
         LegacyCaseType legacyCaseType = LegacyCaseType.getByLegacyCaseTypeName(legacyCaseTypeName);
-        ProbateManType probateManType = ProbateManType.getByLegacyCaseType(legacyCaseType);
 
         String urlTemplate = printServiceHost + printServiceLegacyPath;
-        String url = String.format(urlTemplate, probateManType.toString(), id);
+        String url = String.format(urlTemplate, legacyCaseType.getProbateManType().toString(), id);
 
         return url;
     }

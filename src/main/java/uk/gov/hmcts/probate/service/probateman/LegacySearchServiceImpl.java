@@ -24,6 +24,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static uk.gov.hmcts.probate.model.CaseType.LEGACY;
 
@@ -43,24 +44,18 @@ public class LegacySearchServiceImpl implements LegacySearchService {
     @Override
     public List<CollectionMember<CaseMatch>> findLegacyCaseMatches(CaseDetails caseDetails) {
         CaseMatchingCriteria caseMatchingCriteria = CaseMatchingCriteria.of(caseDetails);
-
-        List<CaseMatch> caseMatches = new ArrayList<>();
-        caseMatches.addAll(legacyCaseMatchingService.findCrossMatches(GRANT_MATCH_TYPES, caseMatchingCriteria));
-
-        List<CollectionMember<CaseMatch>> caseMatchesList = new ArrayList();
-
-        caseMatches.forEach(match -> caseMatchesList.add(new CollectionMember<CaseMatch>(null, match)));
-
-        return caseMatchesList;
+        return legacyCaseMatchingService.findCrossMatches(GRANT_MATCH_TYPES, caseMatchingCriteria)
+            .stream()
+            .map(match -> new CollectionMember<>(null, match))
+            .collect(Collectors.toList());
     }
 
     @Override
     public List<CollectionMember<CaseMatch>> importLegacyRows(CaseData data) {
         List<CollectionMember<CaseMatch>> rows = data.getLegacySearchResultRows();
-
         rows.stream().map(CollectionMember::getValue)
                 .filter(row -> DO_IMPORT_YES.equalsIgnoreCase(row.getDoImport()))
-                .forEach(row -> importRow(row));
+                .forEach(this::importRow);
         return rows;
     }
 
@@ -69,7 +64,7 @@ public class LegacySearchServiceImpl implements LegacySearchService {
         LegacyCaseType legacyCaseType = LegacyCaseType.getByLegacyCaseTypeName(legacyCaseTypeName);
         String id = row.getId();
         log.info("Importing legacy case into ccd for legacyCaseType=" + legacyCaseTypeName + ", with id=" + id);
-        ProbateManType probateManType = ProbateManType.getByLegacyCaseType(legacyCaseType);
+        ProbateManType probateManType = legacyCaseType.getProbateManType();
         Long legacyId = Long.parseLong(id);
         uk.gov.hmcts.reform.ccd.client.model.CaseDetails caseDetails = probateManService.saveToCcd(legacyId, probateManType);
         String ccdCaseId = caseDetails.getId().toString();
