@@ -48,13 +48,6 @@ public class DocumentService {
 
         List<CollectionMember<Document>> documentsToExpire = new ArrayList<>();
 
-        if (DIGITAL_GRANT_DRAFT.equals(documentType)) {
-            documentsToExpire.addAll(callbackRequest.getCaseDetails().getData()
-                    .getDocumentsGenerated().stream()
-                    .filter(collectionMember -> collectionMember.getValue().getDocumentType().equals(DIGITAL_GRANT_DRAFT))
-                    .collect(Collectors.toList()));
-        }
-
         documentsToExpire.forEach(collectionMember -> {
             try {
                 uploadService.expire(collectionMember.getValue());
