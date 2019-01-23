@@ -65,6 +65,9 @@ public class CallbackResponseTransformerTest {
     private static final String NO = "No";
     private static final String WILL_MESSAGE = "Will message";
     private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    
+    private static final String CASE_TYPE_GRANT_OF_PROBATE = "gop";
+    private static final String CASE_TYPE_INTESTACY = "intestacy";
 
     private static final ApplicationType APPLICATION_TYPE = SOLICITOR;
     private static final String REGISTRY_LOCATION = "Birmingham";
@@ -790,7 +793,7 @@ public class CallbackResponseTransformerTest {
         caseDataBuilder.applicationType(ApplicationType.PERSONAL);
         caseDataBuilder.ihtFormCompletedOnline(NO);
         caseDataBuilder.ihtReferenceNumber(IHT_REFERENCE);
-        caseDataBuilder.caseType("gop");
+        caseDataBuilder.caseType(CASE_TYPE_GRANT_OF_PROBATE);
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
@@ -798,6 +801,7 @@ public class CallbackResponseTransformerTest {
         CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
 
         assertEquals(null, callbackResponse.getData().getIhtReferenceNumber());
+        assertEquals(CASE_TYPE_GRANT_OF_PROBATE, callbackResponse.getData().getCaseType());
     }
 
     @Test
@@ -831,7 +835,7 @@ public class CallbackResponseTransformerTest {
         assertApplicationType(callbackResponse, ApplicationType.SOLICITOR);
         assertEquals(1, callbackResponse.getData().getBoDocumentsUploaded().size());
     }
-
+    
     @Test
     public void shouldGetPaperApplication() {
         caseDataBuilder.applicationType(ApplicationType.SOLICITOR);        
@@ -870,8 +874,7 @@ public class CallbackResponseTransformerTest {
                 .notifiedApplicants(YES)
                 .foreignAsset(YES)
                 .foreignAssetEstateValue("123")
-                .caseType("intestacy")
-
+                .caseType(CASE_TYPE_INTESTACY)
                 .spouseOrPartner(NO)
                 .childrenSurvived(YES)
                 .childrenOverEighteenSurvived(NUM_CODICILS)
@@ -1262,8 +1265,7 @@ public class CallbackResponseTransformerTest {
         assertEquals(YES, callbackResponse.getData().getNotifiedApplicants());
         assertEquals(YES, callbackResponse.getData().getForeignAsset());
         assertEquals("123", callbackResponse.getData().getForeignAssetEstateValue());
-        assertEquals("intestacy", callbackResponse.getData().getCaseType());
-
+        assertEquals(CASE_TYPE_INTESTACY, callbackResponse.getData().getCaseType());
     }
 
 }
