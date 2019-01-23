@@ -15,7 +15,6 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import java.time.LocalDate;
 
-@SuppressWarnings("squid:ModifiersOrderCheck")
 @JsonNaming(RegularCaseNamingStrategy.class)
 @Entity
 @Table(name = "GRANT_APPLICATIONS_FLAT")
@@ -35,12 +34,6 @@ public class GrantApplication extends ProbateManModel {
     @Column(name = "DECEASED_ID")
     private Long deceasedId; //bigint,
 
-    @Column(name = "DECEASED_FORENAMES")
-    private String deceasedForenames; //varchar(50),
-
-    @Column(name = "DECEASED_SURNAME")                          
-    private String deceasedSurname; //varchar(50),
-
     @JsonDeserialize(using = LocalDateDeserializer.class)
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DATE_FORMAT)
@@ -52,6 +45,12 @@ public class GrantApplication extends ProbateManModel {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DATE_FORMAT)
     @Column(name = "DATE_OF_DEATH1")
     private LocalDate dateOfDeath1; //date,
+
+    @Column(name = "DECEASED_SURNAME")
+    private String deceasedSurname; //varchar(50),
+
+    @Column(name = "DECEASED_FORENAMES")
+    private String deceasedForenames; //varchar(50),
 
     @Column(name = "DECEASED_ADDRESS")
     private String deceasedAddress; //varchar(500),

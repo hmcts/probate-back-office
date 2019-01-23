@@ -15,7 +15,6 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import java.time.LocalDate;
 
-@SuppressWarnings("squid:ModifiersOrderCheck")
 @JsonNaming(RegularCaseNamingStrategy.class)
 @Entity
 @Data
@@ -32,17 +31,17 @@ public class Caveat extends ProbateManModel {
     @Column(name = "PROBATE_NUMBER")
     private String probateNumber;
 
-    @Column(name = "PROBATE_VERSION")
-    private Long probateVersion;
-
     @Column(name = "DECEASED_ID")
     private Long deceasedId;
+
+    @Column(name = "DECEASED_SURNAME")
+    private String deceasedSurname;
 
     @Column(name = "DECEASED_FORENAMES")
     private String deceasedForenames;
 
-    @Column(name = "DECEASED_SURNAME")
-    private String deceasedSurname;
+    @Column(name = "PROBATE_VERSION")
+    private Long probateVersion;
 
     @JsonDeserialize(using = LocalDateDeserializer.class)
     @JsonSerialize(using = LocalDateSerializer.class)
