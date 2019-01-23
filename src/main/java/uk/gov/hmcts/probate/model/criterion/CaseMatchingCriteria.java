@@ -11,6 +11,8 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.standingsearch.request.StandingSearchData;
 import uk.gov.hmcts.probate.model.ccd.standingsearch.request.StandingSearchDetails;
+import uk.gov.hmcts.probate.model.ccd.willlodgement.request.WillLodgementData;
+import uk.gov.hmcts.probate.model.ccd.willlodgement.request.WillLodgementDetails;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -72,6 +74,23 @@ public class CaseMatchingCriteria {
 
         return CaseMatchingCriteria.builder()
                 .id(standingSearchDetails.getId())
+                .deceasedForenames(data.getDeceasedForenames())
+                .deceasedSurname(data.getDeceasedSurname())
+                .deceasedFullName(data.getDeceasedFullName())
+                .deceasedAliases(Optional.ofNullable(data.getDeceasedFullAliasNameList()).orElse(emptyList()).stream()
+                        .map(CollectionMember::getValue)
+                        .map(ProbateFullAliasName::getFullAliasName)
+                        .collect(Collectors.toList()))
+                .deceasedDateOfBirth(getDateFormatted(data.getDeceasedDateOfBirth()))
+                .deceasedDateOfDeath(getDateFormatted(data.getDeceasedDateOfDeath()))
+                .build();
+    }
+
+    public static CaseMatchingCriteria of(WillLodgementDetails willLodgementDetails) {
+        WillLodgementData data = willLodgementDetails.getData();
+
+        return CaseMatchingCriteria.builder()
+                .id(willLodgementDetails.getId())
                 .deceasedForenames(data.getDeceasedForenames())
                 .deceasedSurname(data.getDeceasedSurname())
                 .deceasedFullName(data.getDeceasedFullName())

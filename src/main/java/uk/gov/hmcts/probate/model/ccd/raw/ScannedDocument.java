@@ -16,6 +16,8 @@ public class ScannedDocument {
     private final String fileName;
 
     private final String type;
+    
+    private final String subtype;
 
     private final LocalDateTime scannedDate;
 

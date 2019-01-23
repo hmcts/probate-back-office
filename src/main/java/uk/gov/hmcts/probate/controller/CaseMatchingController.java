@@ -14,11 +14,14 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.standingsearch.request.StandingSearchCallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.standingsearch.response.StandingSearchCallbackResponse;
+import uk.gov.hmcts.probate.model.ccd.willlodgement.request.WillLodgementCallbackRequest;
+import uk.gov.hmcts.probate.model.ccd.willlodgement.response.WillLodgementCallbackResponse;
 import uk.gov.hmcts.probate.model.criterion.CaseMatchingCriteria;
 import uk.gov.hmcts.probate.service.CaseMatchingService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.CaveatCallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.StandingSearchCallbackResponseTransformer;
+import uk.gov.hmcts.probate.transformer.WillLodgementCallbackResponseTransformer;
 
 import java.util.List;
 
@@ -33,6 +36,7 @@ public class CaseMatchingController {
     private final CallbackResponseTransformer callbackResponseTransformer;
     private final CaveatCallbackResponseTransformer caveatCallbackResponseTransformer;
     private final StandingSearchCallbackResponseTransformer standingSearchCallbackResponseTransformer;
+    private final WillLodgementCallbackResponseTransformer willLodgementCallbackResponseTransformer;
     private final CaseMatchingService caseMatchingService;
 
     @PostMapping(path = "/search-from-grant-flow")
@@ -61,5 +65,15 @@ public class CaseMatchingController {
         List<CaseMatch> caseMatches = caseMatchingService.findCrossMatches(CaseType.getAll(), caseMatchingCriteria);
 
         return ResponseEntity.ok(standingSearchCallbackResponseTransformer.addMatches(request, caseMatches));
+    }
+
+    @PostMapping(path = "/search-from-will-lodgement-flow")
+    public ResponseEntity<WillLodgementCallbackResponse> searchFromWillLodgementFlow(
+            @RequestBody WillLodgementCallbackRequest request) {
+        CaseMatchingCriteria caseMatchingCriteria = CaseMatchingCriteria.of(request.getCaseDetails());
+
+        List<CaseMatch> caseMatches = caseMatchingService.findCrossMatches(CaseType.getAll(), caseMatchingCriteria);
+
+        return ResponseEntity.ok(willLodgementCallbackResponseTransformer.addMatches(request, caseMatches));
     }
 }
