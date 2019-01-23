@@ -31,6 +31,7 @@ import java.util.stream.LongStream;
 @AllArgsConstructor
 public class BulkPrintService {
     private static final String XEROX_TYPE_PARAMETER = "PRO001";
+    private static final String BEARER = "Bearer ";
     private final SendLetterApi sendLetterApi;
     private final DocumentStoreClient documentStoreClient;
     private final ObjectMapper objectMapper;
@@ -49,7 +50,7 @@ public class BulkPrintService {
 
             List<String> pdfs = arrangePdfDocumentsForBulkPrinting(callbackRequest, document, authHeaderValue);
 
-            sendLetterResponse = sendLetterApi.sendLetter(authHeaderValue,
+            sendLetterResponse = sendLetterApi.sendLetter(BEARER + authHeaderValue,
                     new LetterWithPdfsRequest(pdfs, XEROX_TYPE_PARAMETER, additionalData));
             log.info("Letter service produced the following letter Id {} for a pdf size {}",
                     sendLetterResponse.letterId, pdfs.size());
