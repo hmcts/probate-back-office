@@ -27,6 +27,8 @@ ccd-elasticsearch:
 
     dataStoreApi:
       s2sKey: ${DATA_STORE_S2S_KEY}
+      environment:
+        JAVA_OPTS: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005"
 
     caseManagementWeb:
       enabled: true
