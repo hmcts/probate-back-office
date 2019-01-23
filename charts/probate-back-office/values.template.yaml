@@ -27,8 +27,7 @@ ccd-elasticsearch:
 
     dataStoreApi:
       s2sKey: ${DATA_STORE_S2S_KEY}
-      environment:
-        JAVA_OPTS: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005"
+      image: "hmcts.azurecr.io/hmcts/ccd-data-store-api:tim-debug"
 
     caseManagementWeb:
       enabled: true
