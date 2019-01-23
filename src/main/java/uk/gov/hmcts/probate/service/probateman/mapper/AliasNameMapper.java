@@ -13,6 +13,7 @@ import java.util.List;
 @Component
 public class AliasNameMapper {
 
+    @SuppressWarnings("squid:S1168")
     @ToAliasNameMember
     public List<CollectionMember<AliasName>> toCollectionMember(String aliasNames) {
         log.info("Adding aliasNames to collection for legacy case mapping");
@@ -20,8 +21,8 @@ public class AliasNameMapper {
             return null;
         }
         List<CollectionMember<AliasName>> collectionMemberArrayList = new ArrayList<CollectionMember<AliasName>>();
-        String lastName = aliasNames.substring(aliasNames.lastIndexOf(" ") + 1);
-        String forenames = aliasNames.substring(0, aliasNames.lastIndexOf(" "));
+        String lastName = aliasNames.substring(aliasNames.lastIndexOf(' ') + 1);
+        String forenames = aliasNames.substring(0, aliasNames.lastIndexOf(' '));
         AliasName aliasName = AliasName.builder()
                 .forenames(forenames)
                 .lastName(lastName)

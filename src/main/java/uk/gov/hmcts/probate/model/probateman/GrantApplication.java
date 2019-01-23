@@ -15,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import java.time.LocalDate;
 
+@SuppressWarnings("squid:ModifiersOrderCheck")
 @JsonNaming(RegularCaseNamingStrategy.class)
 @Entity
 @Table(name = "GRANT_APPLICATIONS_FLAT")

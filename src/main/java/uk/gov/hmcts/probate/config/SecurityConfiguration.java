@@ -32,6 +32,7 @@ public class SecurityConfiguration {
             filter.setAuthenticationManager(authenticationManager);
         }
 
+        @Override
         protected void configure(HttpSecurity http) throws Exception {
             http
                 .requestMatchers()

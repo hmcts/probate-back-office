@@ -72,24 +72,19 @@ public class LegacySearchServiceImpl implements LegacySearchService {
         JpaRepository repository = repositories.get(probateManType);
         Optional<ProbateManModel> probateManModelOptional = repository.findById(legacyId);
         if (probateManModelOptional.isPresent()) {
-            updateLegacyModel(id, probateManType, ccdCaseId, repository, probateManModelOptional);
+            updateLegacyModel(id, probateManType, ccdCaseId, repository, probateManModelOptional.get());
         } else {
             log.info("Case cannot be found when updating legacy case id=" + id + " for probateManType=" + probateManType);
         }
     }
 
-    @Transactional
     private void updateLegacyModel(String id, ProbateManType probateManType, String ccdCaseId, JpaRepository repository,
-                                   Optional<ProbateManModel> probateManModelOptional) {
-        ProbateManModel probateManModel = probateManModelOptional.get();
+                                   ProbateManModel probateManModel) {
         probateManModel.setDnmInd(DNM_IND_YES);
         probateManModel.setCcdCaseNo(ccdCaseId);
         probateManModel.setLastModified(LocalDateTime.now());
         log.info("Updating legacy case id=" + id + " for probateManType=" + probateManType);
         repository.saveAndFlush(probateManModel);
-        ProbateManModel savedProbateManModel = (ProbateManModel) repository.findById(Long.valueOf(id)).get();
-        log.info("savedProbateManModel.dnmInd=" + savedProbateManModel.getDnmInd());
         log.info("Updated legacy case");
     }
-
 }

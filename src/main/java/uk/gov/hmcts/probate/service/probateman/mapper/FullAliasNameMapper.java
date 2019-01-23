@@ -14,25 +14,26 @@ import java.util.List;
 @Component
 public class FullAliasNameMapper {
 
+    @SuppressWarnings("squid:S1168")
     @ToFullAliasNameMember
     public List<CollectionMember<FullAliasName>> toFullAliasNameMember(String aliasNames) {
         log.info("Adding FullAliasNames to collection for legacy case mapping");
         if (aliasNames == null) {
             return null;
         }
-        List<CollectionMember<FullAliasName>> collectionMemberArrayList = new ArrayList<CollectionMember<FullAliasName>>();
+        List<CollectionMember<FullAliasName>> collectionMemberArrayList = new ArrayList<>();
         String[] names = StringUtils.split(aliasNames, ",");
         for (String name : names) {
-            collectionMemberArrayList.add(buildAliasName(name, collectionMemberArrayList));
+            collectionMemberArrayList.add(buildAliasName(name));
         }
 
         return collectionMemberArrayList;
     }
 
-    private CollectionMember buildAliasName(String aliasNames, List<CollectionMember<FullAliasName>> collectionMemberArrayList) {
+    private CollectionMember buildAliasName(String aliasNames) {
         FullAliasName aliasName = FullAliasName.builder()
-                .fullAliasName(aliasNames)
-                .build();
+            .fullAliasName(aliasNames)
+            .build();
         return new CollectionMember(null, aliasName);
     }
 

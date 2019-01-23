@@ -30,6 +30,7 @@ public class LegacyCaseMatchingService extends CaseMatchingService {
     @Value("${printservice.legacyPath}")
     private String printServiceLegacyPath;
 
+    @Override
     public CaseMatch buildCaseMatch(Case c, CaseType caseType) {
         CaseMatch.CaseMatchBuilder caseMatchBuilder = CaseMatch.getCaseMatchBuilder(c, caseType);
         if (caseType.equals(LEGACY)) {
