@@ -34,7 +34,7 @@ public class CcdClientApi implements CoreCaseDataService {
         );
         CaseDataContent caseDataContent = createCaseDataContent(object, eventId, startEventResponse);
         log.info("Submit case for create case");
-        CaseDetails caseDetails = coreCaseDataApi.submitForCaseworker(
+        return coreCaseDataApi.submitForCaseworker(
                 securityDTO.getAuthorisation(),
                 securityDTO.getServiceAuthorisation(),
                 securityDTO.getUserId(),
@@ -43,7 +43,6 @@ public class CcdClientApi implements CoreCaseDataService {
                 false,
                 caseDataContent
         );
-        return caseDetails;
     }
 
     private CaseDataContent createCaseDataContent(Object object, EventId eventId, StartEventResponse startEventResponse) {

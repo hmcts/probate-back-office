@@ -20,7 +20,7 @@ public class AliasNameMapper {
         if (aliasNames == null) {
             return null;
         }
-        List<CollectionMember<AliasName>> collectionMemberArrayList = new ArrayList<CollectionMember<AliasName>>();
+        List<CollectionMember<AliasName>> collectionMemberArrayList = new ArrayList<>();
         String lastName = aliasNames.substring(aliasNames.lastIndexOf(' ') + 1);
         String forenames = aliasNames.substring(0, aliasNames.lastIndexOf(' '));
         AliasName aliasName = AliasName.builder()

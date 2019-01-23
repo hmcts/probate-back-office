@@ -16,14 +16,14 @@ public class AuthCheckerConfiguration {
 
     @Bean
     public Function<HttpServletRequest, Collection<String>> authorizedRolesExtractor() {
-        return (any) -> Collections.emptyList();
+        return any -> Collections.emptyList();
     }
 
     @Bean
     public Function<HttpServletRequest, Optional<String>> userIdExtractor() {
         Pattern pattern = Pattern.compile("^/users/([^/]+)/.+$");
 
-        return (request) -> {
+        return request -> {
             Matcher matcher = pattern.matcher(request.getRequestURI());
             boolean matched = matcher.find();
             return Optional.ofNullable(matched ? matcher.group(1) : null);

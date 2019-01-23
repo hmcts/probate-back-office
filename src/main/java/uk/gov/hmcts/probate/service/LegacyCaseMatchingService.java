@@ -46,9 +46,7 @@ public class LegacyCaseMatchingService extends CaseMatchingService {
         LegacyCaseType legacyCaseType = LegacyCaseType.getByLegacyCaseTypeName(legacyCaseTypeName);
 
         String urlTemplate = printServiceHost + printServiceLegacyPath;
-        String url = String.format(urlTemplate, legacyCaseType.getProbateManType().toString(), id);
-
-        return url;
+        return String.format(urlTemplate, legacyCaseType.getProbateManType().toString(), id);
     }
 
 

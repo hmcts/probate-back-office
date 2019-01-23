@@ -25,23 +25,23 @@ public class GrantApplication extends ProbateManModel {
     @Id
     private Long id; //bigint,
 
-    @Column(name = "PROBATE_NUMBER")
-    private String probateNumber; //varchar(11),
-
-    @Column(name = "PROBATE_VERSION")
-    private Long probateVersion; //int,
-
-    @Column(name = "DECEASED_ID")
-    private Long deceasedId; //bigint,
-
     @JsonDeserialize(using = LocalDateDeserializer.class)
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DATE_FORMAT)
     @Column(name = "DATE_OF_BIRTH")
     private LocalDate dateOfBirth; //date,
 
+    @Column(name = "DECEASED_ID")
+    private Long deceasedId; //bigint,
+
+    @Column(name = "PROBATE_VERSION")
+    private Long probateVersion; //int,
+
     @Column(name = "DECEASED_SURNAME")
     private String deceasedSurname; //varchar(50),
+
+    @Column(name = "PROBATE_NUMBER")
+    private String probateNumber; //varchar(11),
 
     @Column(name = "DECEASED_ADDRESS")
     private String deceasedAddress; //varchar(500),
