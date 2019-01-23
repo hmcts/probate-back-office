@@ -11,18 +11,12 @@
         }
 
         body {
-            font-family: "Times New Roman", sans-serif;
+            font-family: "Arial";
         }
 
         .table-content {
             display: block;
             padding-top: 8px;
-        }
-
-        p {
-            margin: 0 auto;
-            max-width: 340px;
-            max-height: 170px;
         }
 
          .ow {
@@ -32,10 +26,10 @@
         }
 
         .legal-subheader {
-            font-size: 20px;
-            text-align: center;
-            padding-left: 75px;
-            padding-top: 215px;
+            font-size: 11pt;
+            text-align: left;
+            padding-left: 20mm;
+            padding-top: 56mm;
             border: 0px;
         }
 
@@ -50,12 +44,12 @@
             {% if case_details.case_data.primaryApplicantFullName != null %}{{ case_details.case_data.primaryApplicantFullName }}<br/> {% endif %}
             {% if case_details.case_data.primaryApplicantForenames != null %}{{ case_details.case_data.primaryApplicantForenames }}{% endif %}
             {% if case_details.case_data.primaryApplicantSurname != null %}{{ case_details.case_data.primaryApplicantSurname }}<br/> {% endif %}
-            <p class="ow">{{case_details.case_data.primaryApplicantAddress.addressLine1}}<br/>
+            <span class="ow">{{case_details.case_data.primaryApplicantAddress.addressLine1}}<br/>
                 {{case_details.case_data.primaryApplicantAddress.addressLine2}}<br/>
                 {{case_details.case_data.primaryApplicantAddress.postTown}}<br/>
                 {{case_details.case_data.primaryApplicantAddress.postCode}}<br/>
                 {{case_details.case_data.primaryApplicantAddress.country}}<br/>
-            </p>
+            </span>
         </td>
     </tr>
     {% endif %}
