@@ -18,12 +18,12 @@ import uk.gov.hmcts.reform.sendletter.api.SendLetterApi;
 import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
 
 import java.io.IOException;
+import java.util.Base64;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
-import java.util.Base64;
 import java.util.stream.LongStream;
 
 @Service
@@ -54,12 +54,15 @@ public class BulkPrintService {
             log.info("Letter service produced the following letter Id {} for a pdf size {}",
                     sendLetterResponse.letterId, pdfs.size());
         } catch (HttpClientErrorException ex) {
-            log.error(ex.getResponseBodyAsString() + ' ' + ex.getLocalizedMessage() + ' ' + ex.getStatusCode());
+            log.error("Error with Http Connection to Bulk Print with response body {} and message {} and code {}",
+                    ex.getResponseBodyAsString(),
+                    ex.getLocalizedMessage(),
+                    ex.getStatusCode());
         } catch (IOException ioe) {
             log.error("Error retrieving document from store with url {}",
-                    ioe);
+                    document.getDocumentLink().getDocumentUrl(), ioe);
         } catch (Exception e) {
-            log.error(e.getMessage());
+            log.error("Error sending pdfs to bulk print {}", e.getMessage());
         }
         return sendLetterResponse;
     }
@@ -93,7 +96,7 @@ public class BulkPrintService {
         try {
             return objectMapper.writeValueAsString(data);
         } catch (JsonProcessingException e) {
-            log.error(e.getMessage(), e);
+            log.error("Error converting Json data to string {} ", e.getMessage(), e);
             throw new BadRequestException(e.getMessage(), null);
         }
     }
