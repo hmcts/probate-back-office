@@ -17,6 +17,7 @@ ccd-elasticsearch:
     ingressHost: ${SERVICE_FQDN}
     ingressIP: ${INGRESS_IP}
     consulIP: ${CONSUL_LB_IP}
+
     definitionStoreApi:
       s2sKey: ${DEFINITION_STORE_S2S_KEY}
 
