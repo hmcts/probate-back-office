@@ -9,6 +9,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.DocumentType;
+import uk.gov.hmcts.probate.model.ccd.CaseMatch;
 import uk.gov.hmcts.probate.model.ccd.ProbateAddress;
 import uk.gov.hmcts.probate.model.ccd.ProbateFullAliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
@@ -63,7 +64,7 @@ public class WillLodgementCallbackResponseTransformerTest {
     private static final ProbateAddress WL_EXECUTOR_ADDRESS = Mockito.mock(ProbateAddress.class);
     private static final String WL_EXECUTOR_EMAIL_ADDRESS = "executor@email.com";
 
-    private static final String WL_WITHDRAWL_REASON = "cancelled";
+    private static final String WL_WITHDRAWAL_REASON = "cancelled";
 
     @InjectMocks
     private WillLodgementCallbackResponseTransformer underTest;
@@ -100,7 +101,7 @@ public class WillLodgementCallbackResponseTransformerTest {
                 .executorSurname(WL_EXECUTOR_SURNAME)
                 .executorAddress(WL_EXECUTOR_ADDRESS)
                 .executorEmailAddress(WL_EXECUTOR_EMAIL_ADDRESS)
-                .withdrawalReason(WL_WITHDRAWL_REASON);
+                .withdrawalReason(WL_WITHDRAWAL_REASON);
 
         when(willLodgementCallbackRequestMock.getCaseDetails()).thenReturn(willLodgementDetailsMock);
         when(willLodgementDetailsMock.getData()).thenReturn(willLodgementDataBuilder.build());
@@ -146,6 +147,18 @@ public class WillLodgementCallbackResponseTransformerTest {
         assertEquals(1, willLodgementCallbackResponse.getResponseWillLodgementData().getDocumentsUploaded().size());
     }
 
+    @Test
+    public void shouldAddMatches() {
+        List<CaseMatch> matches = new ArrayList<>();
+        matches.add(CaseMatch.builder().fullName("Name One").build());
+        matches.add(CaseMatch.builder().fullName("Name Two").build());
+
+        WillLodgementCallbackResponse response = underTest.addMatches(willLodgementCallbackRequestMock, matches);
+
+        assertCommonDetails(response);
+        assertEquals(2, response.getResponseWillLodgementData().getCaseMatches().size());
+    }
+
     private void assertCommon(WillLodgementCallbackResponse willLodgementCallbackResponse) {
         assertCommonDetails(willLodgementCallbackResponse);
         assertApplicationType(willLodgementCallbackResponse, WL_APPLICATION_TYPE);
@@ -175,7 +188,7 @@ public class WillLodgementCallbackResponseTransformerTest {
         assertEquals(WL_EXECUTOR_ADDRESS, willLodgementCallbackResponse.getResponseWillLodgementData().getExecutorAddress());
         assertEquals(WL_EXECUTOR_EMAIL_ADDRESS, willLodgementCallbackResponse.getResponseWillLodgementData().getExecutorEmailAddress());
 
-        assertEquals(WL_WITHDRAWL_REASON, willLodgementCallbackResponse.getResponseWillLodgementData().getWithdrawalReason());
+        assertEquals(WL_WITHDRAWAL_REASON, willLodgementCallbackResponse.getResponseWillLodgementData().getWithdrawalReason());
     }
 
     private void assertApplicationType(WillLodgementCallbackResponse willLodgementCallbackResponse, ApplicationType wlApplicationType) {
