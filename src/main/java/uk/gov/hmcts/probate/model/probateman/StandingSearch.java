@@ -49,12 +49,6 @@ public class StandingSearch extends ProbateManModel {
     @Column(name = "DATE_OF_BIRTH")
     private LocalDate dateOfBirth; //date,
 
-    @JsonDeserialize(using = LocalDateDeserializer.class)
-    @JsonSerialize(using = LocalDateSerializer.class)
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DATE_FORMAT)
-    @Column(name = "DATE_OF_DEATH1")
-    private LocalDate dateOfDeath1; //date,
-
     @Column(name = "DECEASED_ADDRESS")
     private String deceasedAddress; //varchar(500),
 
@@ -75,6 +69,12 @@ public class StandingSearch extends ProbateManModel {
 
     @Column(name = "SS_APPLICANT_TITLE")
     private String ssApplicantTitle; //varchar(35),
+
+    @JsonDeserialize(using = LocalDateDeserializer.class)
+    @JsonSerialize(using = LocalDateSerializer.class)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DATE_FORMAT)
+    @Column(name = "DATE_OF_DEATH1")
+    private LocalDate dateOfDeath1; //date,
 
     @JsonDeserialize(using = LocalDateDeserializer.class)
     @JsonSerialize(using = LocalDateSerializer.class)

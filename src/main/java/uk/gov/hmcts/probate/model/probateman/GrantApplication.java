@@ -40,17 +40,8 @@ public class GrantApplication extends ProbateManModel {
     @Column(name = "DATE_OF_BIRTH")
     private LocalDate dateOfBirth; //date,
 
-    @JsonDeserialize(using = LocalDateDeserializer.class)
-    @JsonSerialize(using = LocalDateSerializer.class)
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DATE_FORMAT)
-    @Column(name = "DATE_OF_DEATH1")
-    private LocalDate dateOfDeath1; //date,
-
     @Column(name = "DECEASED_SURNAME")
     private String deceasedSurname; //varchar(50),
-
-    @Column(name = "DECEASED_FORENAMES")
-    private String deceasedForenames; //varchar(50),
 
     @Column(name = "DECEASED_ADDRESS")
     private String deceasedAddress; //varchar(500),
@@ -60,6 +51,9 @@ public class GrantApplication extends ProbateManModel {
 
     @Column(name = "ALIAS_NAMES")
     private String aliasNames; //varchar(32000),
+
+    @Column(name = "DECEASED_FORENAMES")
+    private String deceasedForenames; //varchar(50),
 
     @Column(name = "GRANT_APPLICATION_TEXT")
     private String grantApplicationText; //varchar(32000), as above
@@ -87,6 +81,12 @@ public class GrantApplication extends ProbateManModel {
 
     @Column(name = "DECEASED_DOMICILE")
     private String deceasedDomicile; //varchar(60), UnitedKingdom etc?
+
+    @JsonDeserialize(using = LocalDateDeserializer.class)
+    @JsonSerialize(using = LocalDateSerializer.class)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DATE_FORMAT)
+    @Column(name = "DATE_OF_DEATH1")
+    private LocalDate dateOfDeath1; //date,
 
     @Column(name = "DECEASED_DOMICILE_IN_WELSH")
     private String deceasedDomicileInWelsh; //varchar(10),
