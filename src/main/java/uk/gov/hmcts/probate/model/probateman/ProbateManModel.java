@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.Column;
+import javax.persistence.MappedSuperclass;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -18,6 +19,7 @@ import java.time.LocalDateTime;
     @JsonSubTypes.Type(value = StandingSearch.class, name = "Standing Search"),
     @JsonSubTypes.Type(value = WillLodgement.class, name = "Will Lodgement")
 })
+@MappedSuperclass
 public abstract class ProbateManModel {
 
     @JsonIgnore

@@ -117,7 +117,7 @@
             },
             {
               "bool": {
-                "must_not": {
+                "must": {
                   "exists": {
                     "field": "data.imported_to_ccd"
                   }
