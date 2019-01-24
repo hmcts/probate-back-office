@@ -15,6 +15,7 @@ List<LinkedHashMap<String, Object>> secrets = [
     secret('probate-bo-govNotifyApiKey', 'PROBATE_BO_NOTIFY_KEY'),
     secret('pdf-service-grantSignatureBase64-first', 'BO_GRANT_SIG_FIRST'),
     secret('pdf-service-grantSignatureBase64-last','BO_GRANT_SIG_LAST'),
+    secret('probateCcdDataStoreApi', 'CCD_DATA_STORE_API_URL'),
     secret('ccd-gateway-host','CCD_GATEWAY_HOST')
 ]
 
