@@ -32,6 +32,16 @@ spec:
               value: ${PROBATE_BO_NOTIFY_KEY}
             - name: PDF_SERVICE_GRANTSIGNATUREBASE64
               value: ${BO_GRANT_SIG_FIRST}${BO_GRANT_SIG_LAST}
+            - name: PROBATE_POSTGRESQL_USER
+              value: ${PROBATE_POSTGRESQL_USER}
+            - name: PROBATE_POSTGRESQL_PASSWORD
+              value: ${PROBATE_POSTGRESQL_PASSWORD}
+            - name: PROBATE_POSTGRESQL_DATABASE
+              value: ${PROBATE_POSTGRESQL_DATABASE}
+            - name: PROBATE_POSTGRESQL_HOSTNAME
+              value: ${PROBATE_POSTGRESQL_HOSTNAME}
+            - name: PROBATE_POSTGRESQL_PORT
+              value: ${PROBATE_POSTGRESQL_PORT}
           envFrom:
             - configMapRef:
                 name: ${SERVICE_NAME}-config
