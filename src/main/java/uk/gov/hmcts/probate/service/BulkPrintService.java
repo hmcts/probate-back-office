@@ -18,12 +18,12 @@ import uk.gov.hmcts.reform.sendletter.api.SendLetterApi;
 import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
 
 import java.io.IOException;
+import java.util.Base64;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
-import java.util.Base64;
 import java.util.stream.LongStream;
 
 @Service
@@ -31,6 +31,7 @@ import java.util.stream.LongStream;
 @AllArgsConstructor
 public class BulkPrintService {
     private static final String XEROX_TYPE_PARAMETER = "PRO001";
+    private static final String BEARER = "Bearer ";
     private final SendLetterApi sendLetterApi;
     private final DocumentStoreClient documentStoreClient;
     private final ObjectMapper objectMapper;
@@ -49,17 +50,20 @@ public class BulkPrintService {
 
             List<String> pdfs = arrangePdfDocumentsForBulkPrinting(callbackRequest, document, authHeaderValue);
 
-            sendLetterResponse = sendLetterApi.sendLetter(authHeaderValue,
+            sendLetterResponse = sendLetterApi.sendLetter(BEARER + authHeaderValue,
                     new LetterWithPdfsRequest(pdfs, XEROX_TYPE_PARAMETER, additionalData));
             log.info("Letter service produced the following letter Id {} for a pdf size {}",
                     sendLetterResponse.letterId, pdfs.size());
         } catch (HttpClientErrorException ex) {
-            log.error(ex.getResponseBodyAsString() + ' ' + ex.getLocalizedMessage() + ' ' + ex.getStatusCode());
+            log.error("Error with Http Connection to Bulk Print with response body {} and message {} and code {}",
+                    ex.getResponseBodyAsString(),
+                    ex.getLocalizedMessage(),
+                    ex.getStatusCode());
         } catch (IOException ioe) {
             log.error("Error retrieving document from store with url {}",
-                    ioe);
+                    document.getDocumentLink().getDocumentUrl(), ioe);
         } catch (Exception e) {
-            log.error(e.getMessage());
+            log.error("Error sending pdfs to bulk print {}", e.getMessage());
         }
         return sendLetterResponse;
     }
@@ -93,7 +97,7 @@ public class BulkPrintService {
         try {
             return objectMapper.writeValueAsString(data);
         } catch (JsonProcessingException e) {
-            log.error(e.getMessage(), e);
+            log.error("Error converting Json data to string {} ", e.getMessage(), e);
             throw new BadRequestException(e.getMessage(), null);
         }
     }

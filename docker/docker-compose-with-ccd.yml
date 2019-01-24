@@ -18,7 +18,7 @@ services:
     - FTP_USER=user
     - LETTER_TRACKING_DB_PASSWORD=letter_tracking
     - LETTER_TRACKING_DB_USER_NAME=letter_tracking
-    - S2S_URL=false
+    - S2S_URL=http://service-auth-provider-api:8080
     - SCHEDULING_ENABLED
     - SPRING_FLYWAY_ENABLED=false
     - ENCRYPTION_ENABLED

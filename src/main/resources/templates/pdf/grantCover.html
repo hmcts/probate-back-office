@@ -19,10 +19,12 @@
             padding-top: 8px;
         }
 
-         .ow {
-            overflow-wrap: break-word;
-            word-wrap: break-word;
-            hyphens: auto;
+         .word-wrap {
+             display:block;
+             width: 90mm;
+             overflow-wrap: break-word;
+             word-wrap: break-word;
+             hyphens: auto;
         }
 
         .legal-subheader {
@@ -44,7 +46,7 @@
             {% if case_details.case_data.primaryApplicantFullName != null %}{{ case_details.case_data.primaryApplicantFullName }}<br/> {% endif %}
             {% if case_details.case_data.primaryApplicantForenames != null %}{{ case_details.case_data.primaryApplicantForenames }}{% endif %}
             {% if case_details.case_data.primaryApplicantSurname != null %}{{ case_details.case_data.primaryApplicantSurname }}<br/> {% endif %}
-            <span class="ow">{% if case_details.case_data.primaryApplicantAddress.addressLine1 != null %}{{ case_details.case_data.primaryApplicantAddress.addressLine1}}<br/>{% endif %}
+            <span class="word-wrap">{% if case_details.case_data.primaryApplicantAddress.addressLine1 != null %}{{ case_details.case_data.primaryApplicantAddress.addressLine1}}<br/>{% endif %}
                 {% if case_details.case_data.primaryApplicantAddress.addressLine2 != null %}{{ case_details.case_data.primaryApplicantAddress.addressLine2}}<br/>{% endif %}
                 {% if case_details.case_data.primaryApplicantAddress.addressLine3 != null %}{{ case_details.case_data.primaryApplicantAddress.addressLine3}}<br/>{% endif %}
                 {% if case_details.case_data.primaryApplicantAddress.postTown != null %}{{ case_details.case_data.primaryApplicantAddress.postTown}}<br/>{% endif %}
