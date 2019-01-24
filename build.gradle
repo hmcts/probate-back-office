@@ -230,6 +230,7 @@ dependencies {
   compile group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: '2.9.2'
   compile group: 'commons-io', name: 'commons-io', version: '2.6'
 
+  compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.9.8'
   compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.6.0'
   compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.6.0'
   compile group: 'org.springframework.hateoas', name: 'spring-hateoas', version: '0.23.0.RELEASE'
