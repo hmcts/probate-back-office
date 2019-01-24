@@ -19,6 +19,7 @@ pdf_service_api_url = "http://cmc-pdf-service-prod.service.core-compute-prod.int
 printservice_internal_host = "http://ccd-case-print-service-prod.service.core-compute-prod.internal"
 printservice_host = "https://return-case-doc.ccd.platform.hmcts.net"
 ccd_gateway_host = "https://gateway.ccd.platform.hmcts.net"
+ccd_baseUrl = "http://ccd-data-store-api-prod.service.core-compute-prod.internal"
 fee_api_url = "https://fees-register-api.platform.hmcts.net"
 evidence_management_host = "http://dm-store-prod.service.core-compute-prod.internal"
 send_letter_base_url = "http://rpe-send-letter-service-prod.service.core-compute-prod.internal"

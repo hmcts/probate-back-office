@@ -81,6 +81,9 @@ variable "ccd_gateway_host" {
   type = "string"
 }
 
+variable "ccd_baseUrl" {
+  default = "/"
+}
 
 variable "send_letter_base_url" {
   type = "string"

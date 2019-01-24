@@ -15,13 +15,19 @@ List<LinkedHashMap<String, Object>> secrets = [
     secret('probate-bo-govNotifyApiKey', 'PROBATE_BO_NOTIFY_KEY'),
     secret('pdf-service-grantSignatureBase64-first', 'BO_GRANT_SIG_FIRST'),
     secret('pdf-service-grantSignatureBase64-last','BO_GRANT_SIG_LAST'),
-    secret('ccd-gateway-host', 'CCD_GATEWAY_HOST'),
+<<<<<<< HEAD
+    secret('probateCcdDataStoreApi', 'CCD_DATA_STORE_API_URL'),
+    secret('ccd-gateway-host','CCD_GATEWAY_HOST')
     secret('probatemandb-POSTGRES-USER', 'PROBATE_POSTGRESQL_USER'),
     secret('probatemandb-POSTGRES-PASS', 'PROBATE_POSTGRESQL_PASSWORD'),
     secret('probatemandb-POSTGRES-HOST', 'PROBATE_POSTGRESQL_HOSTNAME'),
     secret('probatemandb-POSTGRES-PORT', 'PROBATE_POSTGRESQL_PORT'),
     secret('probatemandb-POSTGRES-DATABASE', 'PROBATE_POSTGRESQL_DATABASE')
 
+=======
+    
+    
+>>>>>>> a77aeb78201a62cdc182598eced0f5a6efd2afc8
 ]
 
 
