@@ -69,8 +69,8 @@ public class BulkPrintService {
     }
 
     private String getPdfAsBase64EncodedString(Document caseDocument, String authHeaderValue) throws IOException {
-       String response = Base64.getEncoder().encodeToString(documentStoreClient.retrieveDocument(caseDocument, authHeaderValue));
-       log.info("dm store document string: " + response);
+        String response = Base64.getEncoder().encodeToString(documentStoreClient.retrieveDocument(caseDocument, authHeaderValue));
+        log.info("dm store document string: " + response);
         return response;
     }
 
@@ -88,12 +88,12 @@ public class BulkPrintService {
             extraCopiesOfGrant = callbackRequest.getCaseDetails().getData().getExtraCopiesOfGrant();
         }
         LongStream.range(1, extraCopiesOfGrant + 1)
-            .forEach(i -> documents.add(encodedGrantDocument));
+                .forEach(i -> documents.add(encodedGrantDocument));
         log.info("number of documents is: " + documents.size());
         return documents;
     }
 
-    private String base64EncodeToString(byte[]  data) {
+    private String base64EncodeToString(byte[] data) {
         String response = Base64.getEncoder().encodeToString(data);
         log.info("cover sheet document string: " + response);
         return response;
