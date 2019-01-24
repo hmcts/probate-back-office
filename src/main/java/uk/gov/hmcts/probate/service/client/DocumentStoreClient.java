@@ -22,8 +22,9 @@ public class DocumentStoreClient {
 
         byte[] bytes = null;
         try {
-            HttpGet request = new HttpGet(document.getDocumentLink().getDocumentUrl());
+            HttpGet request = new HttpGet(document.getDocumentLink().getDocumentBinaryUrl());
             request.setHeader(SERVICE_AUTHORIZATION, authHeaderValue);
+            log.info("About to retrieve document from dm-store with binary url: " + document.getDocumentLink().getDocumentBinaryUrl());
             CloseableHttpResponse closeableHttpResponse = closeableHttpClient.execute(request);
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
             closeableHttpResponse.getEntity().writeTo(byteArrayOutputStream);
