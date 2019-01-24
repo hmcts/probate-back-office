@@ -1,6 +1,7 @@
 package uk.gov.hmcts.probate.controller;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -39,6 +40,7 @@ import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_DRAFT;
 import static uk.gov.hmcts.probate.model.State.GRANT_ISSUED;
 
+@Slf4j
 @RequiredArgsConstructor
 @RequestMapping(value = "/document", consumes = APPLICATION_JSON_UTF8_VALUE, produces = APPLICATION_JSON_VALUE)
 @RestController
@@ -108,15 +110,21 @@ public class DocumentController {
             case INTESTACY:
                 template = INTESTACY_GRANT;
                 digitalGrantDocument = pdfManagementService.generateAndUpload(callbackRequest, template);
+                log.info("Generated and Uploaded Intestacy grant document with template {}",
+                        template.getTemplateName());
                 break;
             case ADMON_WILL:
                 template = ADMON_WILL_GRANT;
                 digitalGrantDocument = pdfManagementService.generateAndUpload(callbackRequest, template);
+                log.info("Generated and Uploaded Admon Will grant document with template {}",
+                        template.getTemplateName());
                 break;
             case GRANT_OF_PROBATE:
             default:
                 template = DIGITAL_GRANT;
                 digitalGrantDocument = pdfManagementService.generateAndUpload(callbackRequest, template);
+                log.info("Generated and Uploaded Grant of Probate document with template {}",
+                        template.getTemplateName());
                 break;
         }
 

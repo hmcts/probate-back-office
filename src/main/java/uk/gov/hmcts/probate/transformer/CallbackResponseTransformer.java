@@ -281,7 +281,8 @@ public class CallbackResponseTransformer {
                 .scannedDocuments(caseData.getScannedDocuments())
                 .evidenceHandled(caseData.getEvidenceHandled())
 
-                .paperForm(caseData.getPaperForm());
+                .paperForm(caseData.getPaperForm())
+                .caseType(caseData.getCaseType());
 
         if (transform) {
             updateCaseBuilderForTransformCase(caseData, builder);
