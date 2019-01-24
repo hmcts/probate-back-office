@@ -63,6 +63,32 @@ data "azurerm_key_vault_secret" "s2s_key" {
   vault_uri = "https://s2s-${local.localenv}.vault.azure.net/"
 }
 
+
+resource "azurerm_key_vault_secret" "POSTGRES-USER" {
+  name = "probatemandb-POSTGRES-USER"
+  vault_uri = "${data.azurerm_key_vault.probate_key_vault.vault_uri}"
+}
+
+resource "azurerm_key_vault_secret" "POSTGRES-PASS" {
+  name = "probatemandb-POSTGRES-PASS"
+  vault_uri = "${data.azurerm_key_vault.probate_key_vault.vault_uri}"
+}
+
+resource "azurerm_key_vault_secret" "POSTGRES_HOST" {
+  name = "probatemandb-POSTGRES-HOST"
+  vault_uri = "${data.azurerm_key_vault.probate_key_vault.vault_uri}"
+}
+
+resource "azurerm_key_vault_secret" "POSTGRES_PORT" {
+  name = "probatemandb-POSTGRES-PORT"
+  vault_uri = "${data.azurerm_key_vault.probate_key_vault.vault_uri}"
+}
+
+resource "azurerm_key_vault_secret" "POSTGRES_DATABASE" {
+  name = "probatemandb-POSTGRES-DATABASE"
+  vault_uri = "${data.azurerm_key_vault.probate_key_vault.vault_uri}"
+}
+
 module "probate-back-office" {
   source = "git@github.com:hmcts/moj-module-webapp.git?ref=master"
   product = "${var.product}-${var.microservice}"
@@ -90,6 +116,12 @@ module "probate-back-office" {
     //AUTH_PROVIDER_SERVICE_CLIENT_KEY = "${data.vault_generic_secret.idam_backend_service_key.data["value"]}"
     //PDF_SERVICE_GRANTSIGNATUREBASE64 = "${data.vault_generic_secret.pdf_service_grantSignatureBase64.data["value"]}"
     PDF_SERVICE_GRANTSIGNATUREBASE64 = "${local.pdf_service_grantSignatureBase64}"
+
+    PROBATE_POSTGRESQL_USER = "${module.azurerm_key_vault_secret.POSTGRES-USER.value}"
+    PROBATE_POSTGRESQL_PASSWORD = "${module.azurerm_key_vault_secret.POSTGRES-PASS.value}"
+    PROBATE_POSTGRESQL_DATABASE = "${module.azurerm_key_vault_secret.POSTGRES_DATABASE.value}?ssl=true&amp;sslfactory=org.postgresql.ssl.NonValidatingFactory"
+    PROBATE_POSTGRESQL_HOSTNAME =  "${module.azurerm_key_vault_secret.POSTGRES_HOST.value}"
+    PROBATE_POSTGRESQL_PORT = "${module.azurerm_key_vault_secret.POSTGRES_PORT.value}"
 
     AUTH_PROVIDER_SERVICE_CLIENT_BASEURL = "${var.idam_service_api}"
     PDF_SERVICE_URL = "${var.pdf_service_api_url}"
