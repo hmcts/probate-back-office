@@ -33,6 +33,9 @@ public class HealthConfiguration {
     @Value("${ccd.gateway.host}")
     private String ccdGatewayHost;
 
+    @Value("${core_case_data.api.url}")
+    private String ccdApiUrl;
+
     @Bean
     public SolsHealthIndicator pdfServiceHealthIndicator() {
         return new SolsHealthIndicator(pdfServiceConfiguration.getUrl(), restTemplate, HEALTH_ENDPOINT);
@@ -66,5 +69,10 @@ public class HealthConfiguration {
     @Bean
     public SolsHealthIndicator notificationHealthIndicator() {
         return new SolsHealthIndicator(notificationClient.getBaseUrl(), restTemplate, STATUS_ENDPOINT);
+    }
+
+    @Bean
+    public SolsHealthIndicator ccdApiHealthIndicator() {
+        return new SolsHealthIndicator(ccdApiUrl, restTemplate, HEALTH_ENDPOINT);
     }
 }

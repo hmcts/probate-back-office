@@ -53,7 +53,7 @@ public class DocumentStoreClientTest {
         when(closeableHttpClientMock.execute(any(HttpGet.class))).thenReturn(closeableHttpResponseMock);
 
         DocumentLink documentLink = DocumentLink.builder()
-                .documentUrl("http://localhost")
+                .documentBinaryUrl("http://localhost")
                 .build();
         Document document = Document.builder()
                 .documentFileName("test.pdf")
@@ -71,7 +71,7 @@ public class DocumentStoreClientTest {
 
         doThrow(new IOException()).when(closeableHttpClientMock).execute(any(HttpGet.class));
         DocumentLink documentLink = DocumentLink.builder()
-                .documentUrl("http://localhost")
+                .documentBinaryUrl("http://localhost")
                 .build();
         Document document = Document.builder()
                 .documentFileName("test.pdf")

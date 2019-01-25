@@ -64,27 +64,27 @@ data "azurerm_key_vault_secret" "s2s_key" {
 }
 
 
-resource "azurerm_key_vault_secret" "POSTGRES-USER" {
+data "azurerm_key_vault_secret" "POSTGRES-USER" {
   name = "probatemandb-POSTGRES-USER"
   vault_uri = "${data.azurerm_key_vault.probate_key_vault.vault_uri}"
 }
 
-resource "azurerm_key_vault_secret" "POSTGRES-PASS" {
+data "azurerm_key_vault_secret" "POSTGRES-PASS" {
   name = "probatemandb-POSTGRES-PASS"
   vault_uri = "${data.azurerm_key_vault.probate_key_vault.vault_uri}"
 }
 
-resource "azurerm_key_vault_secret" "POSTGRES_HOST" {
+data "azurerm_key_vault_secret" "POSTGRES_HOST" {
   name = "probatemandb-POSTGRES-HOST"
   vault_uri = "${data.azurerm_key_vault.probate_key_vault.vault_uri}"
 }
 
-resource "azurerm_key_vault_secret" "POSTGRES_PORT" {
+data "azurerm_key_vault_secret" "POSTGRES_PORT" {
   name = "probatemandb-POSTGRES-PORT"
   vault_uri = "${data.azurerm_key_vault.probate_key_vault.vault_uri}"
 }
 
-resource "azurerm_key_vault_secret" "POSTGRES_DATABASE" {
+data "azurerm_key_vault_secret" "POSTGRES_DATABASE" {
   name = "probatemandb-POSTGRES-DATABASE"
   vault_uri = "${data.azurerm_key_vault.probate_key_vault.vault_uri}"
 }
@@ -117,11 +117,11 @@ module "probate-back-office" {
     //PDF_SERVICE_GRANTSIGNATUREBASE64 = "${data.vault_generic_secret.pdf_service_grantSignatureBase64.data["value"]}"
     PDF_SERVICE_GRANTSIGNATUREBASE64 = "${local.pdf_service_grantSignatureBase64}"
 
-    PROBATE_POSTGRESQL_USER = "${module.azurerm_key_vault_secret.POSTGRES-USER.value}"
-    PROBATE_POSTGRESQL_PASSWORD = "${module.azurerm_key_vault_secret.POSTGRES-PASS.value}"
-    PROBATE_POSTGRESQL_DATABASE = "${module.azurerm_key_vault_secret.POSTGRES_DATABASE.value}?ssl=true&amp;sslfactory=org.postgresql.ssl.NonValidatingFactory"
-    PROBATE_POSTGRESQL_HOSTNAME =  "${module.azurerm_key_vault_secret.POSTGRES_HOST.value}"
-    PROBATE_POSTGRESQL_PORT = "${module.azurerm_key_vault_secret.POSTGRES_PORT.value}"
+    PROBATE_POSTGRESQL_USER = "${data.azurerm_key_vault_secret.POSTGRES-USER.value}"
+    PROBATE_POSTGRESQL_PASSWORD = "${data.azurerm_key_vault_secret.POSTGRES-PASS.value}"
+    PROBATE_POSTGRESQL_DATABASE = "${data.azurerm_key_vault_secret.POSTGRES_DATABASE.value}?ssl=true&amp;sslfactory=org.postgresql.ssl.NonValidatingFactory"
+    PROBATE_POSTGRESQL_HOSTNAME =  "${data.azurerm_key_vault_secret.POSTGRES_HOST.value}"
+    PROBATE_POSTGRESQL_PORT = "${data.azurerm_key_vault_secret.POSTGRES_PORT.value}"
 
     AUTH_PROVIDER_SERVICE_CLIENT_BASEURL = "${var.idam_service_api}"
     PDF_SERVICE_URL = "${var.pdf_service_api_url}"

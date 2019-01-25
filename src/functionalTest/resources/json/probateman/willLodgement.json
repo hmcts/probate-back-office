@@ -1,0 +1,19 @@
+{
+  "probateManCase": {
+    "Probate Number": "PRO-01",
+    "Last Modified": null,
+    "Date Of Birth": "1900-01-01",
+    "Record Keepers Text": "RK-Text",
+    "Alias Names": "DeadAN1 DeadAN2",
+    "type": "Will Lodgement",
+    "Dnm Ind": "Y",
+    "Date Of Death 1": "2018-01-01",
+    "Deceased Forenames": "DeadFN1 DeadFN2",
+    "Ccd Case No": "1111222233334444",
+    "Deceased Id": 1,
+    "Id": 999,
+    "Deceased Surname": "DeadSN",
+    "Probate Version": 1,
+    "Rk Number": "RK-1"
+  }
+}
