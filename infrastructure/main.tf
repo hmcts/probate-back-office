@@ -117,11 +117,11 @@ module "probate-back-office" {
     //PDF_SERVICE_GRANTSIGNATUREBASE64 = "${data.vault_generic_secret.pdf_service_grantSignatureBase64.data["value"]}"
     PDF_SERVICE_GRANTSIGNATUREBASE64 = "${local.pdf_service_grantSignatureBase64}"
 
-    PROBATE_POSTGRESQL_USER = "${module.azurerm_key_vault_secret.POSTGRES-USER.value}"
-    PROBATE_POSTGRESQL_PASSWORD = "${module.azurerm_key_vault_secret.POSTGRES-PASS.value}"
-    PROBATE_POSTGRESQL_DATABASE = "${module.azurerm_key_vault_secret.POSTGRES_DATABASE.value}?ssl=true&amp;sslfactory=org.postgresql.ssl.NonValidatingFactory"
-    PROBATE_POSTGRESQL_HOSTNAME =  "${module.azurerm_key_vault_secret.POSTGRES_HOST.value}"
-    PROBATE_POSTGRESQL_PORT = "${module.azurerm_key_vault_secret.POSTGRES_PORT.value}"
+    PROBATE_POSTGRESQL_USER = "${data.azurerm_key_vault_secret.POSTGRES-USER.value}"
+    PROBATE_POSTGRESQL_PASSWORD = "${data.azurerm_key_vault_secret.POSTGRES-PASS.value}"
+    PROBATE_POSTGRESQL_DATABASE = "${data.azurerm_key_vault_secret.POSTGRES_DATABASE.value}?ssl=true&amp;sslfactory=org.postgresql.ssl.NonValidatingFactory"
+    PROBATE_POSTGRESQL_HOSTNAME =  "${data.azurerm_key_vault_secret.POSTGRES_HOST.value}"
+    PROBATE_POSTGRESQL_PORT = "${data.azurerm_key_vault_secret.POSTGRES_PORT.value}"
 
     AUTH_PROVIDER_SERVICE_CLIENT_BASEURL = "${var.idam_service_api}"
     PDF_SERVICE_URL = "${var.pdf_service_api_url}"
