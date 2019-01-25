@@ -31,7 +31,7 @@ spec:
             - name: PROBATE_POSTGRESQL_PASSWORD
               value: '${PROBATE_POSTGRESQL_PASSWORD_VAL}'
             - name: PROBATE_POSTGRESQL_DATABASE
-              value: '${PROBATE_POSTGRESQL_DATABASE_VAL}'
+              value: '${PROBATE_POSTGRESQL_DATABASE_VAL}?ssl=true&amp;sslfactory=org.postgresql.ssl.NonValidatingFactory'
             - name: PROBATE_POSTGRESQL_HOSTNAME
               value: '${PROBATE_POSTGRESQL_HOSTNAME_VAL}'
             - name: PROBATE_POSTGRESQL_PORT
