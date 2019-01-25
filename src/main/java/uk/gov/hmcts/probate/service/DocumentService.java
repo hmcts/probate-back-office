@@ -35,16 +35,26 @@ public class DocumentService {
                         .getProbateDocumentsGenerated().stream()
                         .filter(collectionMember -> collectionMember.getValue().getDocumentType().equals(DIGITAL_GRANT_DRAFT))
                         .collect(Collectors.toList()));
+                break;
             case ADMON_WILL_GRANT_DRAFT:
                 documentsToExpire.addAll(callbackRequest.getCaseDetails().getData()
                         .getProbateDocumentsGenerated().stream()
                         .filter(collectionMember -> collectionMember.getValue().getDocumentType().equals(ADMON_WILL_GRANT_DRAFT))
                         .collect(Collectors.toList()));
+                break;
             case INTESTACY_GRANT_DRAFT:
                 documentsToExpire.addAll(callbackRequest.getCaseDetails().getData()
                         .getProbateDocumentsGenerated().stream()
                         .filter(collectionMember -> collectionMember.getValue().getDocumentType().equals(INTESTACY_GRANT_DRAFT))
                          .collect(Collectors.toList()));
+                break;
+            default:
+                documentsToExpire.addAll(callbackRequest.getCaseDetails().getData()
+                        .getProbateDocumentsGenerated().stream()
+                        .filter(collectionMember -> collectionMember.getValue().getDocumentType().equals(DIGITAL_GRANT_DRAFT))
+                        .collect(Collectors.toList()));
+                break;
+
         }
 
         documentsToExpire.forEach(collectionMember -> {
