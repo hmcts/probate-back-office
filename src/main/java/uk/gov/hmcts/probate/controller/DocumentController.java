@@ -177,7 +177,6 @@ public class DocumentController {
 
         List<Document> documents = new ArrayList<>();
         documents.add(document);
-        documentService.expire(callbackRequest, WILL_LODGEMENT_DEPOSIT_RECEIPT);
 
         return ResponseEntity.ok(willLodgementCallbackResponseTransformer.addDocuments(callbackRequest, Arrays.asList(document)));
     }

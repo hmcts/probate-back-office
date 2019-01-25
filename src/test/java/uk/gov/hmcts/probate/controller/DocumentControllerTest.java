@@ -269,12 +269,6 @@ public class DocumentControllerTest {
                 .andExpect(content().string(containsString("data")));
 
         verify(pdfManagementService).generateAndUpload(any(WillLodgementCallbackRequest.class), eq(WILL_LODGEMENT_DEPOSIT_RECEIPT));
-
-        doNothing().when(documentService).expire(any(WillLodgementCallbackRequest.class), eq(WILL_LODGEMENT_DEPOSIT_RECEIPT));
-        verify(documentService).expire(any(WillLodgementCallbackRequest.class), eq(WILL_LODGEMENT_DEPOSIT_RECEIPT));
-
-
-
     }
 
 }
