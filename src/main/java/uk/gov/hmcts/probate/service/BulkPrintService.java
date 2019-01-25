@@ -69,7 +69,9 @@ public class BulkPrintService {
     }
 
     private String getPdfAsBase64EncodedString(Document caseDocument, String authHeaderValue) throws IOException {
-        return Base64.getEncoder().encodeToString(documentStoreClient.retrieveDocument(caseDocument, authHeaderValue));
+        String response = Base64.getEncoder().encodeToString(documentStoreClient.retrieveDocument(caseDocument, authHeaderValue));
+        log.debug("dm store document string: " + response);
+        return response;
     }
 
     private List<String> arrangePdfDocumentsForBulkPrinting(CallbackRequest callbackRequest,
@@ -78,19 +80,23 @@ public class BulkPrintService {
         List<String> documents = new LinkedList<>();
         String encodedGrantDocument = getPdfAsBase64EncodedString(caseDocument, authHeaderValue);
         //Layer documents as cover letter first, grant, and extra copies of grant to PA.
-        documents.add(encodeToString(pdfGeneratorService.generatePdf(DocumentType.GRANT_COVER, toJson(callbackRequest)).getBytes()));
+
+        documents.add(base64EncodeToString(pdfGeneratorService.generatePdf(DocumentType.GRANT_COVER, toJson(callbackRequest)).getBytes()));
         documents.add(encodedGrantDocument);
         Long extraCopiesOfGrant = 0L;
         if (callbackRequest.getCaseDetails().getData().getExtraCopiesOfGrant() != null) {
             extraCopiesOfGrant = callbackRequest.getCaseDetails().getData().getExtraCopiesOfGrant();
         }
         LongStream.range(1, extraCopiesOfGrant + 1)
-            .forEach(i -> documents.add(encodedGrantDocument));
+                .forEach(i -> documents.add(encodedGrantDocument));
+        log.info("number of documents is: " + documents.size());
         return documents;
     }
 
-    private String encodeToString(byte[]  data) {
-        return Base64.getEncoder().encodeToString(data);
+    private String base64EncodeToString(byte[] data) {
+        String response = Base64.getEncoder().encodeToString(data);
+        log.debug("cover sheet document string: " + response);
+        return response;
     }
 
     private String toJson(Object data) {
