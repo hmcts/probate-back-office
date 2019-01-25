@@ -10,6 +10,8 @@ import uk.gov.hmcts.probate.model.ccd.willlodgement.request.WillLodgementCallbac
 
 import java.util.List;
 
+import static uk.gov.hmcts.probate.model.DocumentType.WILL_LODGEMENT_DEPOSIT_RECEIPT;
+
 @Slf4j
 @Component
 public class DocumentTransformer {
@@ -42,12 +44,9 @@ public class DocumentTransformer {
     }
 
     public void addDocument(WillLodgementCallbackRequest callbackRequest, Document document) {
-        switch (document.getDocumentType()) {
-            case WILL_LODGEMENT_DEPOSIT_RECEIPT:
-                callbackRequest.getCaseDetails().getData().getDocumentsGenerated()
-                        .add(new CollectionMember<>(null, document));
-                break;
-            default:
+        if (document.getDocumentType().equals(WILL_LODGEMENT_DEPOSIT_RECEIPT)) {
+            callbackRequest.getCaseDetails().getData().getDocumentsGenerated()
+                    .add(new CollectionMember<>(null, document));
         }
     }
 

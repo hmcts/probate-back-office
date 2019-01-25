@@ -103,15 +103,16 @@ public class WillLodgementData {
     @Getter(lazy = true)
     private final String willDateFormatted = convertDate(willDate);
 
-    private String convertDate(LocalDate dateToConvert) {
-        if (dateToConvert == null) {
+    private String convertDate(LocalDate date) {
+        DateFormat orgFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+        DateFormat newFormat = new SimpleDateFormat("dd MMMMM yyyy");
+        if (date == null) {
             return null;
         }
-        DateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-        DateFormat targetFormat = new SimpleDateFormat("dd MMMMM yyyy");
+
         try {
-            Date date = originalFormat.parse(dateToConvert.toString());
-            String formattedDate = targetFormat.format(date);
+            Date dateConverted = orgFormat.parse(date.toString());
+            String formattedDate = newFormat.format(dateConverted);
             int day = Integer.parseInt(formattedDate.substring(0, 2));
             switch (day) {
                 case 3:

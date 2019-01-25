@@ -7,7 +7,6 @@ import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
-import uk.gov.hmcts.probate.model.ccd.willlodgement.request.WillLodgementCallbackRequest;
 import uk.gov.hmcts.probate.service.evidencemanagement.upload.UploadService;
 
 import java.util.ArrayList;
@@ -46,7 +45,7 @@ public class DocumentService {
                 documentsToExpire.addAll(callbackRequest.getCaseDetails().getData()
                         .getProbateDocumentsGenerated().stream()
                         .filter(collectionMember -> collectionMember.getValue().getDocumentType().equals(INTESTACY_GRANT_DRAFT))
-                         .collect(Collectors.toList()));
+                        .collect(Collectors.toList()));
                 break;
             default:
                 documentsToExpire.addAll(callbackRequest.getCaseDetails().getData()
@@ -61,20 +60,6 @@ public class DocumentService {
             try {
                 uploadService.expire(collectionMember.getValue());
                 callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated().remove(collectionMember);
-            } catch (Exception e) {
-                log.warn("Unable to expiry document: {}", collectionMember.getValue().getDocumentLink());
-            }
-        });
-    }
-
-    public void expire(WillLodgementCallbackRequest callbackRequest, DocumentType documentType) {
-
-        List<CollectionMember<Document>> documentsToExpire = new ArrayList<>();
-
-        documentsToExpire.forEach(collectionMember -> {
-            try {
-                uploadService.expire(collectionMember.getValue());
-                callbackRequest.getCaseDetails().getData().getDocumentsGenerated().remove(collectionMember);
             } catch (Exception e) {
                 log.warn("Unable to expiry document: {}", collectionMember.getValue().getDocumentLink());
             }
