@@ -117,18 +117,25 @@
             },
             {
               "bool": {
-                "must": {
-                  "exists": {
-                    "field": "data.imported_to_ccd"
+                "should": [
+                  {
+                    "bool": {
+                      "must_not": {
+                        "exists": {
+                          "field": "data.imported_to_ccd"
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "match": {
+                      "data.imported_to_ccd": {
+                        "query": "N"
+                      }
+                    }
                   }
-                }
-              }
-            },
-            {
-              "match": {
-                "data.imported_to_ccd": {
-                  "query": "N"
-                }
+                ],
+                "minimum_should_match": 1
               }
             }
           ]
