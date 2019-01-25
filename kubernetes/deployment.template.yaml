@@ -27,15 +27,15 @@ spec:
             - name: APPINSIGHTS_INSTRUMENTATIONKEY
               value: 'test'
             - name: PROBATE_POSTGRESQL_USER
-              value: ${PROBATE_POSTGRESQL_USER_VAL}
+              value: '${PROBATE_POSTGRESQL_USER_VAL}'
             - name: PROBATE_POSTGRESQL_PASSWORD
-              value: ${PROBATE_POSTGRESQL_PASSWORD_VAL}
+              value: '${PROBATE_POSTGRESQL_PASSWORD_VAL}'
             - name: PROBATE_POSTGRESQL_DATABASE
-              value: ${PROBATE_POSTGRESQL_DATABASE_VAL}
+              value: '${PROBATE_POSTGRESQL_DATABASE_VAL}'
             - name: PROBATE_POSTGRESQL_HOSTNAME
-              value: ${PROBATE_POSTGRESQL_HOSTNAME_VAL}
+              value: '${PROBATE_POSTGRESQL_HOSTNAME_VAL}'
             - name: PROBATE_POSTGRESQL_PORT
-              value: ${PROBATE_POSTGRESQL_PORT_VAL}
+              value: '${PROBATE_POSTGRESQL_PORT_VAL}'
             - name: AUTH_PROVIDER_SERVICE_CLIENT_KEY
               value: ${S2S_AUTH_TOTP_SECRET}
             - name: NOTIFICATIONS_GOVNOTIFYAPIKEY
