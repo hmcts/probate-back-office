@@ -229,7 +229,8 @@ public class WillLodgementCallbackResponseTransformerTest {
         when(willLodgementCallbackRequestMock.getCaseDetails()).thenReturn(willLodgementDetailsMock);
         when(willLodgementDetailsMock.getData()).thenReturn(willLodgementDataBuilder.build());
 
-        WillLodgementCallbackResponse willLodgementCallbackResponse = underTest.addDocuments(willLodgementCallbackRequestMock, Arrays.asList(document));
+        WillLodgementCallbackResponse willLodgementCallbackResponse
+                = underTest.addDocuments(willLodgementCallbackRequestMock, Arrays.asList(document));
 
         assertCommonDetails(willLodgementCallbackResponse);
         assertEquals(1, willLodgementCallbackResponse.getResponseWillLodgementData().getDocumentsGenerated().size());
