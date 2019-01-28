@@ -114,7 +114,7 @@ public class SolCCDServiceAuthTokenGenerator {
         String code = generateClientCode(userName, password);
         String token = RestAssured.given().post(baseServiceOauth2Url + "/oauth2/token?code=" + code +
             "&client_secret=" + probateClientSecret +
-            "&client_id=" + probateClientId +
+            "&client_id=probate" +
             "&redirect_uri=" + redirectUri +
             "&grant_type=authorization_code")
             .body().path("access_token");
