@@ -43,15 +43,19 @@
     {% if case_details.case_data.applicationType == "Personal" %}
     <tr>
         <td colspan="1" class="legal-subheader">
-            {% if case_details.case_data.primaryApplicantForenames != null %}{{ case_details.case_data.primaryApplicantForenames }}{% endif %}
-            {% if case_details.case_data.primaryApplicantSurname != null %}{{ case_details.case_data.primaryApplicantSurname }}<br/> {% endif %}
-            <span class="word-wrap">{% if case_details.case_data.primaryApplicantAddress.AddressLine1 != null %}{{ case_details.case_data.primaryApplicantAddress.AddressLine1}}<br/>{% endif %}
-                {% if case_details.case_data.primaryApplicantAddress.AddressLine2 != null %}{{ case_details.case_data.primaryApplicantAddress.AddressLine2}}<br/>{% endif %}
-                {% if case_details.case_data.primaryApplicantAddress.AddressLine3 != null %}{{ case_details.case_data.primaryApplicantAddress.AddressLine3}}<br/>{% endif %}
-                {% if case_details.case_data.primaryApplicantAddress.PostTown != null %}{{ case_details.case_data.primaryApplicantAddress.PostTown}}<br/>{% endif %}
-                {% if case_details.case_data.primaryApplicantAddress.County != null %}{{ case_details.case_data.primaryApplicantAddress.County}}<br/>{% endif %}
-                {% if case_details.case_data.primaryApplicantAddress.PostCode != null %}{{ case_details.case_data.primaryApplicantAddress.PostCode}}<br/>{% endif %}
-                {% if case_details.case_data.primaryApplicantAddress.Country != null %}{{ case_details.case_data.primaryApplicantAddress.Country}}<br/>{% endif %}
+            {% if case_details.case_data.primaryApplicantForenames != null %}{{case_details.case_data.primaryApplicantForenames}}{% endif %}
+            {% if case_details.case_data.primaryApplicantSurname != null %}{{case_details.case_data.primaryApplicantSurname}}<br/> {% endif %}
+            <span class="word-wrap">{% if case_details.case_data.primaryApplicantAddress.AddressLine1 != null and case_details.case_data.primaryApplicantAddress.AddressLine1 != "" %}{{case_details.case_data.primaryApplicantAddress.AddressLine1}}<br/>{% endif %}
+                {% if case_details.case_data.primaryApplicantAddress.AddressLine2 != null and case_details.case_data.primaryApplicantAddress.AddressLine2 != "" %}{{case_details.case_data.primaryApplicantAddress.AddressLine2}}<br/>{% endif %}
+                {% if case_details.case_data.primaryApplicantAddress.AddressLine3 != null and case_details.case_data.primaryApplicantAddress.AddressLine3 != "" %}{{case_details.case_data.primaryApplicantAddress.AddressLine3}}<br/>{% endif %}
+                {% if case_details.case_data.primaryApplicantAddress.PostTown != null and case_details.case_data.primaryApplicantAddress.PostTown != "" %}{{case_details.case_data.primaryApplicantAddress.PostTown}}<br/>{% endif %}
+                {% if case_details.case_data.primaryApplicantAddress.County != null and case_details.case_data.primaryApplicantAddress.County != "" %}{{case_details.case_data.primaryApplicantAddress.County}}<br/>{% endif %}
+                {% if case_details.case_data.primaryApplicantAddress.PostCode != null and case_details.case_data.primaryApplicantAddress.PostCode != "" %}{{case_details.case_data.primaryApplicantAddress.PostCode}}<br/>{% endif %}
+                {% if case_details.case_data.primaryApplicantAddress.Country != null and case_details.case_data.primaryApplicantAddress.Country != "" %}
+                    {% if case_details.case_data.primaryApplicantAddress.Country|lower != "united kingdom" %}
+                    {{case_details.case_data.primaryApplicantAddress.Country}}<br/>
+                    {% endif %}
+                {% endif %}
             </span>
         </td>
     </tr>
@@ -59,15 +63,19 @@
     {% if case_details.case_data.applicationType == "Solicitor" %}
     <tr>
         <td colspan="1" class="legal-subheader">
-            {% if case_details.case_data.solsSOTName != null %}{{ case_details.case_data.solsSOTName}}<br/>{% endif %}
-            {% if case_details.case_data.solsSolicitorFirmName != null %}{{ case_details.case_data.solsSolicitorFirmName}}<br/>{% endif %}
-            {% if case_details.case_data.solsSolicitorAddress.AddressLine1 != null %}{{ case_details.case_data.solsSolicitorAddress.AddressLine1}}<br/>{% endif %}
-            {% if case_details.case_data.solsSolicitorAddress.AddressLine2 != null %}{{ case_details.case_data.solsSolicitorAddress.AddressLine2}}<br/>{% endif %}
-            {% if case_details.case_data.solsSolicitorAddress.AddressLine3 != null %}{{ case_details.case_data.solsSolicitorAddress.AddressLine3}}<br/>{% endif %}
-            {% if case_details.case_data.solsSolicitorAddress.PostTown != null %}{{ case_details.case_data.solsSolicitorAddress.PostTown}}<br/>{% endif %}
-            {% if case_details.case_data.solsSolicitorAddress.County != null %}{{ case_details.case_data.solsSolicitorAddress.County}}<br/>{% endif %}
-            {% if case_details.case_data.solsSolicitorAddress.PostCode != null %}{{ case_details.case_data.solsSolicitorAddress.PostCode}}<br/>{% endif %}
-            {% if case_details.case_data.solsSolicitorAddress.Country != null %}{{ case_details.case_data.solsSolicitorAddress.Country}}<br/>{% endif %}
+            {% if case_details.case_data.solsSOTName != null %}{{case_details.case_data.solsSOTName}}<br/>{% endif %}
+            {% if case_details.case_data.solsSolicitorFirmName != null %}{{case_details.case_data.solsSolicitorFirmName}}<br/>{% endif %}
+            {% if case_details.case_data.solsSolicitorAddress.AddressLine1 != null and case_details.case_data.solsSolicitorAddress.AddressLine1 != "" %}{{case_details.case_data.solsSolicitorAddress.AddressLine1}}<br/>{% endif %}
+            {% if case_details.case_data.solsSolicitorAddress.AddressLine2 != null and case_details.case_data.solsSolicitorAddress.AddressLine2 != "" %}{{case_details.case_data.solsSolicitorAddress.AddressLine2}}<br/>{% endif %}
+            {% if case_details.case_data.solsSolicitorAddress.AddressLine3 != null and case_details.case_data.solsSolicitorAddress.AddressLine3 != "" %}{{case_details.case_data.solsSolicitorAddress.AddressLine3}}<br/>{% endif %}
+            {% if case_details.case_data.solsSolicitorAddress.PostTown != null and case_details.case_data.solsSolicitorAddress.PostTown != "" %}{{case_details.case_data.solsSolicitorAddress.PostTown}}<br/>{% endif %}
+            {% if case_details.case_data.solsSolicitorAddress.County != null and case_details.case_data.solsSolicitorAddress.County != "" %}{{case_details.case_data.solsSolicitorAddress.County}}<br/>{% endif %}
+            {% if case_details.case_data.solsSolicitorAddress.PostCode != null and case_details.case_data.solsSolicitorAddress.PostCode != "" %}{{case_details.case_data.solsSolicitorAddress.PostCode}}<br/>{% endif %}
+            {% if case_details.case_data.solsSolicitorAddress.Country != null and case_details.case_data.solsSolicitorAddress.Country != "" %}
+                {% if case_details.case_data.primaryApplicantAddress.Country|lower != "united kingdom" %}
+                {{case_details.case_data.solsSolicitorAddress.Country}}<br/>
+                {% endif %}
+            {% endif %}
         </td>
     </tr>
     {% endif %}
