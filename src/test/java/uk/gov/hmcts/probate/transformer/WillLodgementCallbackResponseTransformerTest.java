@@ -6,6 +6,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.Spy;
 import org.mockito.junit.MockitoJUnitRunner;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.DocumentType;
@@ -13,6 +14,7 @@ import uk.gov.hmcts.probate.model.ccd.CaseMatch;
 import uk.gov.hmcts.probate.model.ccd.ProbateAddress;
 import uk.gov.hmcts.probate.model.ccd.ProbateFullAliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
+import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 import uk.gov.hmcts.probate.model.ccd.willlodgement.request.WillLodgementCallbackRequest;
@@ -23,6 +25,7 @@ import uk.gov.hmcts.probate.model.ccd.willlodgement.response.WillLodgementCallba
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static java.util.Collections.emptyList;
@@ -65,6 +68,7 @@ public class WillLodgementCallbackResponseTransformerTest {
     private static final String WL_EXECUTOR_EMAIL_ADDRESS = "executor@email.com";
 
     private static final String WL_WITHDRAWAL_REASON = "cancelled";
+    private static final String WILL_LODGEMENT_RECEIPT = "willLodgementDepositReceipt";
 
     @InjectMocks
     private WillLodgementCallbackResponseTransformer underTest;
@@ -74,6 +78,12 @@ public class WillLodgementCallbackResponseTransformerTest {
 
     @Mock
     private WillLodgementDetails willLodgementDetailsMock;
+
+    @Mock
+    private DocumentLink documentLinkMock;
+
+    @Spy
+    private DocumentTransformer documentTransformer;
 
     private WillLodgementData.WillLodgementDataBuilder willLodgementDataBuilder;
 
@@ -208,4 +218,22 @@ public class WillLodgementCallbackResponseTransformerTest {
                 .documentType(DocumentType.OTHER).build();
         return new CollectionMember<>(id, doc);
     }
+
+    @Test
+    public void shouldGetWillLodgementGeneratedDocuments() {
+        Document document = Document.builder()
+                .documentLink(documentLinkMock)
+                .documentType(DocumentType.WILL_LODGEMENT_DEPOSIT_RECEIPT)
+                .build();
+
+        when(willLodgementCallbackRequestMock.getCaseDetails()).thenReturn(willLodgementDetailsMock);
+        when(willLodgementDetailsMock.getData()).thenReturn(willLodgementDataBuilder.build());
+
+        WillLodgementCallbackResponse willLodgementCallbackResponse = underTest.addDocuments(willLodgementCallbackRequestMock, Arrays.asList(document));
+
+        assertCommonDetails(willLodgementCallbackResponse);
+        assertEquals(1, willLodgementCallbackResponse.getResponseWillLodgementData().getDocumentsGenerated().size());
+    }
+
+
 }

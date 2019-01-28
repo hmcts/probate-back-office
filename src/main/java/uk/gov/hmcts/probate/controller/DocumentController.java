@@ -34,6 +34,8 @@ import java.util.List;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static uk.gov.hmcts.probate.model.Constants.CTSC;
+import static uk.gov.hmcts.probate.model.Constants.LONDON;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
@@ -156,7 +158,7 @@ public class DocumentController {
         caseDetails.setRegistryPostcode(registry.getPostcode());
         caseDetails.setRegistryTown(registry.getTown());
 
-        Registry ctscRegistry = registriesProperties.getRegistries().get("ctsc");
+        Registry ctscRegistry = registriesProperties.getRegistries().get(CTSC);
         caseDetails.setCtscTelephone(ctscRegistry.getPhone());
 
         return caseDetails;
@@ -168,7 +170,7 @@ public class DocumentController {
         Document document;
         DocumentType template = WILL_LODGEMENT_DEPOSIT_RECEIPT;
 
-        Registry registry = registriesProperties.getRegistries().get("london");
+        Registry registry = registriesProperties.getRegistries().get(LONDON);
         callbackRequest.getCaseDetails().setLondonRegistryAddress(String.join(" ",
                 registry.getAddressLine1(), registry.getAddressLine2(),
                 registry.getTown(), registry.getPostcode()));
