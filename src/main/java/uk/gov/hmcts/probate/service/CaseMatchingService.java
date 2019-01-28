@@ -28,10 +28,10 @@ import static uk.gov.hmcts.probate.insights.AppInsightsEvent.REST_CLIENT_EXCEPTI
 @RequiredArgsConstructor
 public class CaseMatchingService {
 
-    private static final String TEMPLATE_DIRECTORY = "templates/elasticsearch/";
-    private static final String ES_QUERY = "case_matching_query.json";
-    private static final String ES_ALIASES_SUB_QUERY = "case_matching_aliases_sub_query.json";
-    private static final String ES_ALIASES_TO_ALIASES_SUB_QUERY = "case_matching_aliases_to_aliases_sub_query.json";
+    private static final String TEMPLATE_DIRECTORY = "templates/elasticsearch/caseMatching";
+    private static final String ES_QUERY = "main_query.json";
+    private static final String ES_ALIASES_SUB_QUERY = "aliases_sub_query.json";
+    private static final String ES_ALIASES_TO_ALIASES_SUB_QUERY = "aliases_to_aliases_sub_query.json";
     private static final String CASE_TYPE_ID = "ctid";
 
     private final CCDGatewayConfiguration ccdGatewayConfiguration;
@@ -77,7 +77,7 @@ public class CaseMatchingService {
         appInsights.trackEvent(REQUEST_SENT, uri.toString());
 
         return matchedCases.getCases().stream()
-                .filter(c -> criteria == null || c.getId() == null || !criteria.getId().equals(c.getId()))
+                .filter(c -> c.getId() == null || !criteria.getId().equals(c.getId()))
                 .map(c -> buildCaseMatch(c, caseType))
                 .collect(Collectors.toList());
     }
