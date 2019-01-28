@@ -60,7 +60,7 @@ public class SolCCDServiceAuthTokenGenerator {
         return claims.get("id", String.class);
     }
 
-    private String generateClientToken() {
+    public String generateClientToken() {
         String code = generateClientCode();
         String token = "";
 
