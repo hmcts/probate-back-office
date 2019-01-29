@@ -18,4 +18,6 @@ public class WillLodgementDetails {
 
     @NotNull
     private final Long id;
+
+    private String londonRegistryAddress;
 }

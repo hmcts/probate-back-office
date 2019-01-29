@@ -20,6 +20,9 @@ public enum DocumentType {
     @JsonProperty("digitalGrantDraft")
     DIGITAL_GRANT_DRAFT("digitalGrantDraft"),
 
+    @JsonProperty("willLodgementDepositReceipt")
+    WILL_LODGEMENT_DEPOSIT_RECEIPT("willLodgementDepositReceipt"),
+
     @JsonProperty("intestacyGrant")
     INTESTACY_GRANT("intestacyGrant"),
 

@@ -485,5 +485,8 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     }
 
-
+    @Test
+    public void verifyWillLodgementDepositReceiptShouldReturnOkResponseCode() {
+        validatePostSuccess("willLodgementPayload.json", "/document/generate-deposit-receipt");
+    }
 }

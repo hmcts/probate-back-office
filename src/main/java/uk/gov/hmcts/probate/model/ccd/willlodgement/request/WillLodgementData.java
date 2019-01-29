@@ -2,6 +2,7 @@ package uk.gov.hmcts.probate.model.ccd.willlodgement.request;
 
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
 import uk.gov.hmcts.probate.model.ccd.ProbateAddress;
@@ -11,9 +12,14 @@ import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 @Builder
 @Data
@@ -88,5 +94,43 @@ public class WillLodgementData {
 
     public String getExecutorFullName() {
         return String.join(" ", executorForenames, executorSurname);
+    }
+
+    private final LocalDate currentDate = LocalDate.now();
+
+    private final String currentDateFormatted = convertDate(currentDate);
+
+    @Getter(lazy = true)
+    private final String willDateFormatted = convertDate(willDate);
+
+    private String convertDate(LocalDate date) {
+        DateFormat orgFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+        DateFormat newFormat = new SimpleDateFormat("dd MMMMM yyyy");
+        if (date == null) {
+            return null;
+        }
+
+        try {
+            Date dateConverted = orgFormat.parse(date.toString());
+            String formattedDate = newFormat.format(dateConverted);
+            int day = Integer.parseInt(formattedDate.substring(0, 2));
+            switch (day) {
+                case 3:
+                case 23:
+                    return day + "rd " + formattedDate.substring(3);
+                case 2:
+                case 22:
+                    return day + "nd " + formattedDate.substring(3);
+                case 1:
+                case 21:
+                case 31:
+                    return day + "st " + formattedDate.substring(3);
+                default:
+                    return day + "th " + formattedDate.substring(3);
+            }
+        } catch (ParseException ex) {
+            ex.getMessage();
+            return null;
+        }
     }
 }

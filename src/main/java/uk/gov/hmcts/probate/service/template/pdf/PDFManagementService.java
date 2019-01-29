@@ -16,6 +16,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.BigDecimalNumberSerializer;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
+import uk.gov.hmcts.probate.model.ccd.willlodgement.request.WillLodgementCallbackRequest;
 import uk.gov.hmcts.probate.model.evidencemanagement.EvidenceManagementFile;
 import uk.gov.hmcts.probate.model.evidencemanagement.EvidenceManagementFileUpload;
 import uk.gov.hmcts.probate.service.evidencemanagement.upload.UploadService;
@@ -59,6 +60,11 @@ public class PDFManagementService {
         if (DIGITAL_GRANT.equals(documentType)) {
             callbackRequest.getCaseDetails().setGrantSignatureBase64(pdfServiceConfiguration.getGrantSignatureBase64());
         }
+
+        return generateAndUpload(toJson(callbackRequest), documentType);
+    }
+
+    public Document generateAndUpload(WillLodgementCallbackRequest callbackRequest, DocumentType documentType) {
 
         return generateAndUpload(toJson(callbackRequest), documentType);
     }
