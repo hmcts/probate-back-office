@@ -4,11 +4,14 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import uk.gov.hmcts.probate.model.CaseType;
+import uk.gov.hmcts.probate.model.ccd.raw.AliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.CaseLink;
+import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.casematching.Case;
 
 import java.io.Serializable;
 import java.time.format.DateTimeFormatter;
+import java.util.stream.Collectors;
 
 import static uk.gov.hmcts.probate.model.CaseType.LEGACY;
 
@@ -17,6 +20,8 @@ import static uk.gov.hmcts.probate.model.CaseType.LEGACY;
 @Builder
 public class CaseMatch implements Serializable {
     private final String fullName;
+    private final String aliases;
+    private final String dob;
     private final String dod;
     private final String postcode;
     private final String valid;
@@ -29,6 +34,9 @@ public class CaseMatch implements Serializable {
     public static CaseMatch buildCaseMatch(Case c, CaseType caseType) {
         CaseMatch.CaseMatchBuilder caseMatchBuilder = CaseMatch.builder();
         caseMatchBuilder.fullName(c.getData().getDeceasedFullName());
+        if (c.getData().getDeceasedDateOfBirth() != null) {
+            caseMatchBuilder.dob(c.getData().getDeceasedDateOfBirth().format(dateTimeFormatter));
+        }
         if (c.getData().getDeceasedDateOfDeath() != null) {
             caseMatchBuilder.dod(c.getData().getDeceasedDateOfDeath().format(dateTimeFormatter));
         }
@@ -42,6 +50,14 @@ public class CaseMatch implements Serializable {
             caseMatchBuilder.type(caseType.getName() + " " + c.getData().getLegacyCaseType());
         } else {
             caseMatchBuilder.type(caseType.getName());
+        }
+
+        if (c.getData().getSolsDeceasedAliasNamesList() != null) {
+            String aliases = c.getData().getSolsDeceasedAliasNamesList().stream()
+                    .map(CollectionMember::getValue)
+                    .map(AliasName::getSolsAliasname)
+                    .collect(Collectors.joining(", "));
+            caseMatchBuilder.aliases(aliases);
         }
 
         return caseMatchBuilder.build();

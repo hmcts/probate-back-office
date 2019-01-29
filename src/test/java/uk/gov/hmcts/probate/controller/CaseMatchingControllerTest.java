@@ -31,6 +31,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static uk.gov.hmcts.probate.model.CaseType.CAVEAT;
 import static uk.gov.hmcts.probate.model.CaseType.GRANT_OF_REPRESENTATION;
 import static uk.gov.hmcts.probate.model.CaseType.LEGACY;
+import static uk.gov.hmcts.probate.model.CaseType.STANDING_SEARCH;
+import static uk.gov.hmcts.probate.model.CaseType.WILL_LODGEMENT;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -64,7 +66,7 @@ public class CaseMatchingControllerTest {
 
         String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadNotifications.json");
 
-        mockMvc.perform(post("/case-matching/search")
+        mockMvc.perform(post("/case-matching/search-from-grant-flow")
                 .content(solicitorPayload)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -73,6 +75,8 @@ public class CaseMatchingControllerTest {
         verify(caseMatchingService).findMatches(eq(GRANT_OF_REPRESENTATION), any(CaseMatchingCriteria.class));
         verify(caseMatchingService).findMatches(eq(CAVEAT), any(CaseMatchingCriteria.class));
         verify(caseMatchingService).findMatches(eq(LEGACY), any(CaseMatchingCriteria.class));
+        verify(caseMatchingService).findMatches(eq(STANDING_SEARCH), any(CaseMatchingCriteria.class));
+        verify(caseMatchingService).findMatches(eq(WILL_LODGEMENT), any(CaseMatchingCriteria.class));
     }
 
     @Test
@@ -89,5 +93,43 @@ public class CaseMatchingControllerTest {
         verify(caseMatchingService).findMatches(eq(GRANT_OF_REPRESENTATION), any(CaseMatchingCriteria.class));
         verify(caseMatchingService).findMatches(eq(CAVEAT), any(CaseMatchingCriteria.class));
         verify(caseMatchingService).findMatches(eq(LEGACY), any(CaseMatchingCriteria.class));
+        verify(caseMatchingService).findMatches(eq(STANDING_SEARCH), any(CaseMatchingCriteria.class));
+        verify(caseMatchingService).findMatches(eq(WILL_LODGEMENT), any(CaseMatchingCriteria.class));
+    }
+
+    @Test
+    public void caseMatchingSearchFromStandingSearchFlow() throws Exception {
+
+        String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadNotifications.json");
+
+        mockMvc.perform(post("/case-matching/search-from-standing-search-flow")
+                .content(solicitorPayload)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("data")));
+
+        verify(caseMatchingService).findMatches(eq(GRANT_OF_REPRESENTATION), any(CaseMatchingCriteria.class));
+        verify(caseMatchingService).findMatches(eq(CAVEAT), any(CaseMatchingCriteria.class));
+        verify(caseMatchingService).findMatches(eq(LEGACY), any(CaseMatchingCriteria.class));
+        verify(caseMatchingService).findMatches(eq(STANDING_SEARCH), any(CaseMatchingCriteria.class));
+        verify(caseMatchingService).findMatches(eq(WILL_LODGEMENT), any(CaseMatchingCriteria.class));
+    }
+
+    @Test
+    public void caseMatchingSearchFromWillLodgementFlow() throws Exception {
+
+        String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadNotifications.json");
+
+        mockMvc.perform(post("/case-matching/search-from-will-lodgement-flow")
+                .content(solicitorPayload)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("data")));
+
+        verify(caseMatchingService).findMatches(eq(GRANT_OF_REPRESENTATION), any(CaseMatchingCriteria.class));
+        verify(caseMatchingService).findMatches(eq(CAVEAT), any(CaseMatchingCriteria.class));
+        verify(caseMatchingService).findMatches(eq(LEGACY), any(CaseMatchingCriteria.class));
+        verify(caseMatchingService).findMatches(eq(STANDING_SEARCH), any(CaseMatchingCriteria.class));
+        verify(caseMatchingService).findMatches(eq(WILL_LODGEMENT), any(CaseMatchingCriteria.class));
     }
 }

@@ -113,8 +113,8 @@
       <td>{% if case_data.solsSolicitorFirmName %}{{ case_data.solsSolicitorFirmName }}{% endif %}</td>
     </tr>
     <tr>
-      <td colspan="2">Solicitor firm postcode:</td>
-      <td>{% if case_data.solsSolicitorFirmPostcode %}{{ case_data.solsSolicitorFirmPostcode }}{% endif %}</td>
+      <td colspan="2">Solicitor firm address:</td>
+      <td>{% if case_data.solsSolicitorAddress %}{{address(case_data.solsSolicitorAddress)}}{% endif %}</td>
     </tr>
     <tr>
       <td colspan="2">Solicitor firm email:</td>

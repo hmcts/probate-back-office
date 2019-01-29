@@ -15,7 +15,6 @@ import uk.gov.hmcts.probate.model.criterion.CaseMatchingCriteria;
 import uk.gov.hmcts.probate.service.evidencemanagement.header.HttpHeadersFactory;
 
 import java.net.URI;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -30,6 +29,8 @@ public class CaseMatchingService {
 
     private static final String TEMPLATE_DIRECTORY = "templates/elasticsearch/";
     private static final String ES_QUERY = "case_matching_query.json";
+    private static final String ES_ALIASES_SUB_QUERY = "case_matching_aliases_sub_query.json";
+    private static final String ES_ALIASES_TO_ALIASES_SUB_QUERY = "case_matching_aliases_to_aliases_sub_query.json";
     private static final String CASE_TYPE_ID = "ctid";
 
     private final CCDGatewayConfiguration ccdGatewayConfiguration;
@@ -38,14 +39,24 @@ public class CaseMatchingService {
     private final HttpHeadersFactory headers;
     private final FileSystemResourceService fileSystemResourceService;
 
-    private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ISO_DATE;
-
     public List<CaseMatch> findMatches(CaseType caseType, CaseMatchingCriteria criteria) {
+
+        String optionalAliasesToNameQuery = criteria.getDeceasedAliases().stream()
+                .map(alias -> getAliasesToNameSubQueryTemplate().replace(":deceasedAliases", alias))
+                .collect(Collectors.joining());
+
+        String optionalAliasesToAliasesQuery = criteria.getDeceasedAliases().stream()
+                .map(alias -> getAliasesToAliasesSubQueryTemplate().replace(":deceasedAliases", alias))
+                .collect(Collectors.joining());
 
         String jsonQuery = getQueryTemplate()
                 .replace(":deceasedForenames", criteria.getDeceasedForenames())
                 .replace(":deceasedSurname", criteria.getDeceasedSurname())
-                .replace(":deceasedDateOfDeath", criteria.getDeceasedDateOfDeath().format(dateTimeFormatter));
+                .replace(":deceasedFullName", criteria.getDeceasedFullName())
+                .replace(":deceasedDateOfBirth", criteria.getDeceasedDateOfBirth())
+                .replace(":deceasedDateOfDeath", criteria.getDeceasedDateOfDeath())
+                .replace(":optionalAliasesToNameQuery", optionalAliasesToNameQuery)
+                .replace(":optionalAliasesToAliasesQuery", optionalAliasesToAliasesQuery);
 
         URI uri = UriComponentsBuilder
                 .fromHttpUrl(ccdGatewayConfiguration.getHost() + ccdGatewayConfiguration.getCaseMatchingPath())
@@ -79,5 +90,15 @@ public class CaseMatchingService {
 
     private String getQueryTemplate() {
         return fileSystemResourceService.getFileFromResourceAsString(TEMPLATE_DIRECTORY + ES_QUERY);
+    }
+
+    private String getAliasesToNameSubQueryTemplate() {
+        return fileSystemResourceService.getFileFromResourceAsString(TEMPLATE_DIRECTORY
+                + ES_ALIASES_SUB_QUERY);
+    }
+
+    private String getAliasesToAliasesSubQueryTemplate() {
+        return fileSystemResourceService.getFileFromResourceAsString(TEMPLATE_DIRECTORY
+                + ES_ALIASES_TO_ALIASES_SUB_QUERY);
     }
 }

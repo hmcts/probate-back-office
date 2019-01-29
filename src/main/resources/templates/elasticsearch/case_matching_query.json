@@ -1,28 +1,85 @@
 {
   "query": {
     "bool": {
-      "must": [
+      "should": [
         {
-          "multi_match": {
-            "query": ":deceasedForenames",
-            "fuzziness": 2,
-            "prefix_length": 0,
-            "fields": [
-              "data.deceasedForenames"
+          "bool": {
+            "must": [
+              {
+                "multi_match": {
+                  "query": ":deceasedForenames",
+                  "fuzziness": 2,
+                  "prefix_length": 0,
+                  "fields": [
+                    "data.deceasedForenames"
+                  ]
+                }
+              },
+              {
+                "multi_match": {
+                  "query": ":deceasedSurname",
+                  "fuzziness": 2,
+                  "prefix_length": 0,
+                  "fields": [
+                    "data.deceasedSurname"
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        :optionalAliasesToNameQuery
+        {
+          "bool": {
+            "must": [
+              {
+                "multi_match": {
+                  "query": ":deceasedForenames",
+                  "fuzziness": 2,
+                  "prefix_length": 0,
+                  "fields": [
+                    "data.deceasedAliasNameList.*.Forenames"
+                  ]
+                }
+              },
+              {
+                "multi_match": {
+                  "query": ":deceasedSurname",
+                  "fuzziness": 2,
+                  "prefix_length": 0,
+                  "fields": [
+                    "data.deceasedAliasNameList.*.LastName"
+                  ]
+                }
+              }
             ]
           }
         },
         {
           "multi_match": {
-            "query": ":deceasedSurname",
+            "query": ":deceasedFullName",
+            "operator": "and",
             "fuzziness": 2,
             "prefix_length": 0,
             "fields": [
-              "data.deceasedSurname"
+              "data.solsDeceasedAliasNamesList.*"
+            ]
+          }
+        },
+        :optionalAliasesToAliasesQuery
+        {
+          "multi_match": {
+            "query": ":deceasedFullName",
+            "operator": "and",
+            "fuzziness": 2,
+            "prefix_length": 0,
+            "fields": [
+              "data.alias_names"
             ]
           }
         }
       ],
+      "minimum_should_match": 1,
       "filter": {
         "bool": {
           "should": [
@@ -37,15 +94,25 @@
             },
             {
               "range": {
+                "data.deceasedDateOfBirth": {
+                  "gte": ":deceasedDateOfBirth||-3d",
+                  "lte": ":deceasedDateOfBirth||+3d"
+                }
+              }
+            },
+            {
+              "range": {
                 "data.deceasedDateOfDeath": {
                   "gte": ":deceasedDateOfDeath||-3d",
                   "lte": ":deceasedDateOfDeath||+3d"
                 }
               }
             }
-          ]
+          ],
+          "minimum_should_match": 1
         }
       }
     }
-  }
+  },
+  "size": 25
 }

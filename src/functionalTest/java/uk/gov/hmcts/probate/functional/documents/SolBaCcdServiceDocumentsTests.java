@@ -14,16 +14,20 @@ import static org.junit.Assert.assertTrue;
 @RunWith(SerenityRunner.class)
 public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
-    private static final String SOLICITOR_INFO = "Extracted by Solicitor Firm Name (Ref: 1231-3984-3949-0300) KT10 0LA";
+    private static final String SOLICITOR_INFO1 = "Extracted by Solicitor Firm Name (Ref: 1231-3984-3949-0300) SolAddLn1, SolAddLn2, SolAddLn3, ";
+    private static final String SOLICITOR_INFO2 = "SolAddPT, SolAddCounty, KT10 0LA, SolAddCo";
+    private static final String REGISTRY_ADDRESS = "High Court of Justice England and Wales Birmingham District Probate Registry The Priory Courts33 Bull StreetBirminghamB4 6DU0121 681 3401";
+    private static final String LONDON_REGISTRY_ADDRESS = "High Court of Justice England and Wales London District Probate Registry Principal Registry of the Family Division First Avenue House42-49 High HolbornLondonWC1V 6NP020 7421 8509";
+    private static final String CTSC_REGISTRY_ADDRESS = "High Court of Justice England and Wales Principal Registry of the Family Division Manchester Civil Justice Centre Ground Floor1 Bridge Street West PO Box 4240ManchesterM60 1WJ0300 303 0648";
     private static final String PA = "Extracted personally";
-    private static final String PRIMARY_APPLICANT = "EXECUTOR NAME 1 EXECUTOR LAST NAME 1";
-    private static final String WILL_MESSAGE = "With A Codicil";
+    private static final String PRIMARY_APPLICANT = "Executor Name 1 Executor Last Name 1";
+    private static final String WILL_MESSAGE = "with a codicil";
     private static final String ADMIN_MESSAGE = "admin clause limitation message";
     private static final String LIMITATION_MESSAGE = "limitation message";
     private static final String EXECUTOR_LIMITATION_MESSAGE = "executor limitation message";
     private static final String POWER_RESERVED = "Power reserved to other Executors";
     private static final String POWER_RESERVED_SINGLE = "Power reserved to another Executor";
-    private static final String TITLE = "CAPTAIN";
+    private static final String TITLE = "Captain";
     private static final String HONOURS = "OBE";
     private static final String ADD_EXEC_ONE = "and ADD EX FIRST NAME 1 ADD EX LAST NAME 1";
     private static final String ADD_EXEC_ONE_PRIMARY_APPLICANT = "ADD EX FIRST NAME 1 ADD EX LAST NAME 1";
@@ -31,6 +35,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     private static final String DOD = "1st January 2000";
     private static final String IHT_NET = "8,000";
     private static final String IHT_GROSS = "10,000";
+    private static final String GOP = "Grant of Probate";
 
     @Test
     public void verifySolicitorGenerateGrantShouldReturnOkResponseCode() {
@@ -41,6 +46,28 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     public void verifySolicitorGenerateGrantDraftShouldReturnOkResponseCode() {
         validatePostSuccess("solicitorPayloadNotifications.json", "/document/generate-grant-draft");
     }
+
+    @Test
+    public void verifySolicitorGenerateIntestacyGrantShouldReturnOkResponseCode() {
+        validatePostSuccess("solicitorPayloadNotificationsIntestacy.json", "/document/generate-grant");
+    }
+
+    @Test
+    public void verifySolicitorGenerateIntestacyGrantDraftShouldReturnOkResponseCode() {
+        validatePostSuccess("solicitorPayloadNotificationsIntestacy.json", "/document/generate-grant-draft");
+    }
+
+
+    @Test
+    public void verifySolicitorGenerateAdmonWillGrantShouldReturnOkResponseCode() {
+        validatePostSuccess("solicitorPayloadNotificationsAdmonWill.json", "/document/generate-grant");
+    }
+
+    @Test
+    public void verifySolicitorGenerateAdmonWillGrantDraftShouldReturnOkResponseCode() {
+        validatePostSuccess("solicitorPayloadNotificationsAdmonWill.json", "/document/generate-grant-draft");
+    }
+    
 
     @Test
     public void verifyPersonalApplicantGenerateGrantShouldReturnOkResponseCode() {
@@ -71,15 +98,19 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
         JsonPath jsonPath = JsonPath.from(jsonResponse.getBody().asString());
         String documentUrl = jsonPath.get("data.probateDocumentsGenerated[0].value.DocumentLink.document_binary_url");
-
-        return utils.downloadPdfAndParseToString(documentUrl);
+        String response = utils.downloadPdfAndParseToString(documentUrl);
+        response = response.replace("\n", "").replace("\r", "");
+        return response;
     }
 
     @Test
     public void verifySuccessForGetDigitalGrantWithSingleExecutorSols() {
         String response = generateDocument("solicitorPayloadNotifications.json", "/document/generate-grant");
 
-        assertTrue(response.contains(SOLICITOR_INFO));
+        assertTrue(response.contains(CTSC_REGISTRY_ADDRESS));
+        assertTrue(response.contains(SOLICITOR_INFO1));
+        assertTrue(response.contains(SOLICITOR_INFO2));
+        assertTrue(response.contains(GOP));
         assertTrue(response.contains(PRIMARY_APPLICANT));
 
         assertTrue(!response.contains(PA));
@@ -97,6 +128,8 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     public void verifySuccessForGetDigitalGrantWithSingleExecutorPA() {
         String response = generateDocument("personalPayloadNotifications.json", "/document/generate-grant");
 
+        assertTrue(response.contains(REGISTRY_ADDRESS));
+        assertTrue(response.contains(GOP));
         assertTrue(response.contains(PA));
         assertTrue(response.contains(PRIMARY_APPLICANT));
 
@@ -115,9 +148,12 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     public void verifySuccessForGetDigitalGrantWithMultipleExecutorsSOls() {
         String response = generateDocument("solicitorPayloadNotificationsMultipleExecutors.json", "/document/generate-grant");
 
+        assertTrue(response.contains(REGISTRY_ADDRESS));
+        assertTrue(response.contains(GOP));
         assertTrue(response.contains(ADD_EXEC_ONE));
         assertTrue(response.contains(ADD_EXEC_TWO));
-        assertTrue(response.contains(SOLICITOR_INFO));
+        assertTrue(response.contains(SOLICITOR_INFO1));
+        assertTrue(response.contains(SOLICITOR_INFO2));
 
         assertTrue(!response.contains(WILL_MESSAGE));
         assertTrue(!response.contains(ADMIN_MESSAGE));
@@ -135,8 +171,11 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     public void verifySuccessForGetDigitalGrantWithPowerReservedMultipleSOls() {
         String response = generateDocument("solicitorPayloadNotificationsPowerReservedMultiple.json", "/document/generate-grant");
 
+        assertTrue(response.contains(REGISTRY_ADDRESS));
+        assertTrue(response.contains(GOP));
         assertTrue(response.contains(POWER_RESERVED));
-        assertTrue(response.contains(SOLICITOR_INFO));
+        assertTrue(response.contains(SOLICITOR_INFO1));
+        assertTrue(response.contains(SOLICITOR_INFO2));
 
         assertTrue(!response.contains(WILL_MESSAGE));
         assertTrue(!response.contains(ADMIN_MESSAGE));
@@ -151,8 +190,11 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     public void verifySuccessForGetDigitalGrantWithPowerReservedSingleSOls() {
         String response = generateDocument("solicitorPayloadNotificationsPowerReserved.json", "/document/generate-grant");
 
+        assertTrue(response.contains(REGISTRY_ADDRESS));
+        assertTrue(response.contains(GOP));
         assertTrue(response.contains(POWER_RESERVED_SINGLE));
-        assertTrue(response.contains(SOLICITOR_INFO));
+        assertTrue(response.contains(SOLICITOR_INFO1));
+        assertTrue(response.contains(SOLICITOR_INFO2));
 
         assertTrue(!response.contains(WILL_MESSAGE));
         assertTrue(!response.contains(ADMIN_MESSAGE));
@@ -168,11 +210,14 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     public void verifySuccessForGetDigitalGrantWithGrantInfoSOls() {
         String response = generateDocument("solicitorPayloadNotificationsGrantInfo.json", "/document/generate-grant");
 
+        assertTrue(response.contains(REGISTRY_ADDRESS));
+        assertTrue(response.contains(GOP));
         assertTrue(response.contains(WILL_MESSAGE));
         assertTrue(response.contains(ADMIN_MESSAGE));
         assertTrue(response.contains(LIMITATION_MESSAGE));
         assertTrue(response.contains(EXECUTOR_LIMITATION_MESSAGE));
-        assertTrue(response.contains(SOLICITOR_INFO));
+        assertTrue(response.contains(SOLICITOR_INFO1));
+        assertTrue(response.contains(SOLICITOR_INFO2));
         assertTrue(response.contains(PRIMARY_APPLICANT));
         assertTrue(response.contains(TITLE));
         assertTrue(response.contains(HONOURS));
@@ -187,7 +232,10 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     public void verifySuccessForGetDigitalGrantDraftWithSingleExecutorSols() {
         String response = generateDocument("solicitorPayloadNotifications.json", "/document/generate-grant-draft");
 
-        assertTrue(response.contains(SOLICITOR_INFO));
+        assertTrue(response.contains(CTSC_REGISTRY_ADDRESS));
+        assertTrue(response.contains(GOP));
+        assertTrue(response.contains(SOLICITOR_INFO1));
+        assertTrue(response.contains(SOLICITOR_INFO2));
         assertTrue(response.contains(PRIMARY_APPLICANT));
 
         assertTrue(!response.contains(WILL_MESSAGE));
@@ -204,6 +252,8 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     public void verifySuccessForGetDigitalGrantDraftWithSingleExecutorPA() {
         String response = generateDocument("personalPayloadNotifications.json", "/document/generate-grant-draft");
 
+        assertTrue(response.contains(REGISTRY_ADDRESS));
+        assertTrue(response.contains(GOP));
         assertTrue(response.contains(PA));
         assertTrue(response.contains(PRIMARY_APPLICANT));
 
@@ -222,10 +272,13 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     public void verifySuccessForGetDigitalGrantDraftWithMultipleExecutorsSOls() {
         String response = generateDocument("solicitorPayloadNotificationsMultipleExecutors.json", "/document/generate-grant-draft");
 
+        assertTrue(response.contains(REGISTRY_ADDRESS));
+        assertTrue(response.contains(GOP));
         assertTrue(response.contains(PRIMARY_APPLICANT));
         assertTrue(response.contains(ADD_EXEC_ONE));
         assertTrue(response.contains(ADD_EXEC_TWO));
-        assertTrue(response.contains(SOLICITOR_INFO));
+        assertTrue(response.contains(SOLICITOR_INFO1));
+        assertTrue(response.contains(SOLICITOR_INFO2));
 
         assertTrue(!response.contains(WILL_MESSAGE));
         assertTrue(!response.contains(ADMIN_MESSAGE));
@@ -243,8 +296,11 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     public void verifySuccessForGetDigitalGrantDraftWithPowerReservedMultipleSOls() {
         String response = generateDocument("solicitorPayloadNotificationsPowerReservedMultiple.json", "/document/generate-grant-draft");
 
+        assertTrue(response.contains(REGISTRY_ADDRESS));
+        assertTrue(response.contains(GOP));
         assertTrue(response.contains(POWER_RESERVED));
-        assertTrue(response.contains(SOLICITOR_INFO));
+        assertTrue(response.contains(SOLICITOR_INFO1));
+        assertTrue(response.contains(SOLICITOR_INFO2));
 
         assertTrue(!response.contains(WILL_MESSAGE));
         assertTrue(!response.contains(ADMIN_MESSAGE));
@@ -259,8 +315,11 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     public void verifySuccessForGetDigitalGrantDraftWithPowerReservedSingleSOls() {
         String response = generateDocument("solicitorPayloadNotificationsPowerReserved.json", "/document/generate-grant-draft");
 
+        assertTrue(response.contains(REGISTRY_ADDRESS));
+        assertTrue(response.contains(GOP));
         assertTrue(response.contains(POWER_RESERVED_SINGLE));
-        assertTrue(response.contains(SOLICITOR_INFO));
+        assertTrue(response.contains(SOLICITOR_INFO1));
+        assertTrue(response.contains(SOLICITOR_INFO2));
 
         assertTrue(!response.contains(WILL_MESSAGE));
         assertTrue(!response.contains(ADMIN_MESSAGE));
@@ -276,11 +335,14 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     public void verifySuccessForGetDigitalGrantDraftWithGrantInfoSOls() {
         String response = generateDocument("solicitorPayloadNotificationsGrantInfo.json", "/document/generate-grant-draft");
 
+        assertTrue(response.contains(REGISTRY_ADDRESS));
+        assertTrue(response.contains(GOP));
         assertTrue(response.contains(WILL_MESSAGE));
         assertTrue(response.contains(ADMIN_MESSAGE));
         assertTrue(response.contains(LIMITATION_MESSAGE));
         assertTrue(response.contains(EXECUTOR_LIMITATION_MESSAGE));
-        assertTrue(response.contains(SOLICITOR_INFO));
+        assertTrue(response.contains(SOLICITOR_INFO1));
+        assertTrue(response.contains(SOLICITOR_INFO2));
         assertTrue(response.contains(PRIMARY_APPLICANT));
         assertTrue(response.contains(TITLE));
         assertTrue(response.contains(HONOURS));
@@ -296,6 +358,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         String response = generateDocument("solicitorPayloadNotifications.json", "/document/generate-grant-draft");
 
         assertTrue(response.contains(DOD));
+        assertTrue(response.contains(GOP));
 
     }
 
@@ -304,6 +367,8 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         String response = generateDocument("solicitorPayloadNotifications.json", "/document/generate-grant");
 
         assertTrue(response.contains(DOD));
+        assertTrue(response.contains(CTSC_REGISTRY_ADDRESS));
+        assertTrue(response.contains(GOP));
     }
 
     @Test
@@ -311,7 +376,9 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         String response = generateDocument("solicitorPayloadNotifications.json", "/document/generate-grant-draft");
 
         assertTrue(response.contains(IHT_GROSS));
+        assertTrue(response.contains(CTSC_REGISTRY_ADDRESS));
         assertTrue(response.contains(IHT_NET));
+        assertTrue(response.contains(GOP));
 
     }
 
@@ -321,6 +388,8 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
         assertTrue(response.contains(IHT_GROSS));
         assertTrue(response.contains(IHT_NET));
+        assertTrue(response.contains(GOP));
+        assertTrue(response.contains(CTSC_REGISTRY_ADDRESS));
 
     }
 
@@ -333,6 +402,8 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
         assertTrue(response.contains(ADD_EXEC_ONE_PRIMARY_APPLICANT));
         assertTrue(response.contains(ADD_EXEC_TWO));
+        assertTrue(response.contains(GOP));
+        assertTrue(response.contains(REGISTRY_ADDRESS));
 
     }
 
@@ -345,6 +416,8 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
         assertTrue(response.contains(ADD_EXEC_ONE_PRIMARY_APPLICANT));
         assertTrue(response.contains(ADD_EXEC_TWO));
+        assertTrue(response.contains(GOP));
+        assertTrue(response.contains(REGISTRY_ADDRESS));
 
     }
 
@@ -359,6 +432,8 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         assertTrue(response.contains(ADD_EXEC_ONE_PRIMARY_APPLICANT));
         assertTrue(response.contains(ADD_EXEC_TWO));
         assertTrue(response.contains(POWER_RESERVED_SINGLE));
+        assertTrue(response.contains(GOP));
+        assertTrue(response.contains(REGISTRY_ADDRESS));
 
     }
 
@@ -373,6 +448,8 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         assertTrue(response.contains(ADD_EXEC_ONE_PRIMARY_APPLICANT));
         assertTrue(response.contains(ADD_EXEC_TWO));
         assertTrue(response.contains(POWER_RESERVED_SINGLE));
+        assertTrue(response.contains(GOP));
+        assertTrue(response.contains(REGISTRY_ADDRESS));
 
     }
 
@@ -387,6 +464,8 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         assertTrue(response.contains(ADD_EXEC_ONE_PRIMARY_APPLICANT));
         assertTrue(response.contains(ADD_EXEC_TWO));
         assertTrue(response.contains(POWER_RESERVED));
+        assertTrue(response.contains(GOP));
+        assertTrue(response.contains(LONDON_REGISTRY_ADDRESS));
 
     }
 
@@ -401,6 +480,8 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         assertTrue(response.contains(ADD_EXEC_ONE_PRIMARY_APPLICANT));
         assertTrue(response.contains(ADD_EXEC_TWO));
         assertTrue(response.contains(POWER_RESERVED));
+        assertTrue(response.contains(GOP));
+        assertTrue(response.contains(LONDON_REGISTRY_ADDRESS));
 
     }
 

@@ -24,6 +24,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.EstateItem;
 import uk.gov.hmcts.probate.model.ccd.raw.Payment;
 import uk.gov.hmcts.probate.model.ccd.raw.ProbateAliasName;
+import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.StopReason;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
@@ -31,12 +32,12 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
-import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 import uk.gov.hmcts.probate.model.fee.FeeServiceResponse;
 import uk.gov.hmcts.probate.service.StateChangeService;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -64,11 +65,15 @@ public class CallbackResponseTransformerTest {
     private static final String NO = "No";
     private static final String WILL_MESSAGE = "Will message";
     private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    
+    private static final String CASE_TYPE_GRANT_OF_PROBATE = "gop";
+    private static final String CASE_TYPE_INTESTACY = "intestacy";
 
     private static final ApplicationType APPLICATION_TYPE = SOLICITOR;
     private static final String REGISTRY_LOCATION = "Birmingham";
 
     private static final String SOLICITOR_FIRM_NAME = "Sol Firm Name";
+    private static final String SOLICITOR_FIRM_LINE1 = "Sols Add Line 1";
     private static final String SOLICITOR_FIRM_POSTCODE = "SW13 6EA";
     private static final String SOLICITOR_FIRM_EMAIL = "sol@email.com";
     private static final String SOLICITOR_FIRM_PHONE = "0123456789";
@@ -128,6 +133,7 @@ public class CallbackResponseTransformerTest {
     private static final String EXEC_APPEAR = YES;
     private static final String EXEC_NOTIFIED = YES;
 
+    private static final String BO_BULK_PRINT = YES;
     private static final String BO_EMAIL_GRANT_ISSUED = YES;
     private static final String BO_DOCS_RECEIVED = YES;
     private static final String CASE_PRINT = YES;
@@ -149,8 +155,9 @@ public class CallbackResponseTransformerTest {
     private static final String ADMIN_CLAUSE_LIMITATION = "Admin Clause Limitation";
     private static final String TOTAL_FEE = "6600";
 
+    private static final LocalDateTime scannedDate = LocalDateTime.parse("2018-01-01T12:34:56.123");
     private static final List<CollectionMember<Payment>> PAYMENTS_LIST = Arrays.asList(
-            new CollectionMember("id",
+            new CollectionMember<Payment>("id",
                     Payment.builder()
                             .amount("100")
                             .date("20/09/2018")
@@ -161,6 +168,23 @@ public class CallbackResponseTransformerTest {
                             .transactionId("TransactionId-123")
                             .build()));
 
+    private static final DocumentLink SCANNED_DOCUMENT_URL = DocumentLink.builder()
+            .documentBinaryUrl("http://somedoc")
+            .documentFilename("somedoc.pdf")
+            .documentUrl("http://somedoc/location")
+            .build();
+    
+    private static final List<CollectionMember<ScannedDocument>> SCANNED_DOCUMENTS_LIST = Arrays.asList(
+            new CollectionMember<ScannedDocument>("id",
+                    ScannedDocument.builder()
+                            .fileName("scanneddocument.pdf")
+                            .controlNumber("1234")
+                            .scannedDate(scannedDate)
+                            .type("other")
+                            .subtype("will")
+                            .url(SCANNED_DOCUMENT_URL)
+                            .build()));
+    
     @InjectMocks
     private CallbackResponseTransformer underTest;
 
@@ -196,7 +220,7 @@ public class CallbackResponseTransformerTest {
 
         caseDataBuilder = CaseData.builder()
                 .solsSolicitorFirmName(SOLICITOR_FIRM_NAME)
-                .solsSolicitorFirmPostcode(SOLICITOR_FIRM_POSTCODE)
+                .solsSolicitorAddress(SolsAddress.builder().addressLine1(SOLICITOR_FIRM_LINE1).postCode(SOLICITOR_FIRM_POSTCODE).build())
                 .solsSolicitorEmail(SOLICITOR_FIRM_EMAIL)
                 .solsSolicitorPhoneNumber(SOLICITOR_FIRM_PHONE)
                 .solsSOTName(SOLICITOR_SOT_NAME)
@@ -227,6 +251,7 @@ public class CallbackResponseTransformerTest {
                 .solsAdditionalInfo(ADDITIONAL_INFO)
                 .boEmailGrantIssuedNotificationRequested(BO_EMAIL_GRANT_ISSUED)
                 .boEmailDocsReceivedNotificationRequested(BO_DOCS_RECEIVED)
+                .boSendToBulkPrintRequested(BO_BULK_PRINT)
                 .casePrinted(CASE_PRINT)
                 .boCaseStopReasonList(STOP_REASONS_LIST)
                 .boStopDetails(STOP_DETAILS)
@@ -244,7 +269,8 @@ public class CallbackResponseTransformerTest {
                 .payments(PAYMENTS_LIST)
                 .boExaminationChecklistQ1(YES)
                 .boExaminationChecklistQ2(YES)
-                .boExaminationChecklistRequestQA(YES);
+                .boExaminationChecklistRequestQA(YES)
+                .scannedDocuments(SCANNED_DOCUMENTS_LIST);
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
@@ -398,6 +424,15 @@ public class CallbackResponseTransformerTest {
 
         assertEquals(1, response.getData().getCaseMatches().size());
         assertEquals(caseMatch, response.getData().getCaseMatches().get(0).getValue());
+    }
+    
+    @Test
+    public void shouldSelectForQA() {
+        CallbackResponse response = underTest.selectForQA(callbackRequestMock);
+
+        assertCommon(response);
+        
+        assertEquals(CallbackResponseTransformer.QA_CASE_STATE, response.getData().getState());
     }
 
     @Test
@@ -758,7 +793,7 @@ public class CallbackResponseTransformerTest {
         caseDataBuilder.applicationType(ApplicationType.PERSONAL);
         caseDataBuilder.ihtFormCompletedOnline(NO);
         caseDataBuilder.ihtReferenceNumber(IHT_REFERENCE);
-        caseDataBuilder.caseType("gop");
+        caseDataBuilder.caseType(CASE_TYPE_GRANT_OF_PROBATE);
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
@@ -766,6 +801,7 @@ public class CallbackResponseTransformerTest {
         CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
 
         assertEquals(null, callbackResponse.getData().getIhtReferenceNumber());
+        assertEquals(CASE_TYPE_GRANT_OF_PROBATE, callbackResponse.getData().getCaseType());
     }
 
     @Test
@@ -799,12 +835,10 @@ public class CallbackResponseTransformerTest {
         assertApplicationType(callbackResponse, ApplicationType.SOLICITOR);
         assertEquals(1, callbackResponse.getData().getBoDocumentsUploaded().size());
     }
-
+    
     @Test
     public void shouldGetPaperApplication() {
-        caseDataBuilder.applicationType(ApplicationType.SOLICITOR);
-        List<CollectionMember<ScannedDocument>> documents = new ArrayList<>();
-        documents.add(createScannedDocuments("0"));
+        caseDataBuilder.applicationType(ApplicationType.SOLICITOR);        
         List<CollectionMember<EstateItem>> estate = new ArrayList<>();
         estate.add(createEstateItems("0"));
         List<CollectionMember<AttorneyApplyingOnBehalfOf>> attorneyList = new ArrayList<>();
@@ -830,7 +864,6 @@ public class CallbackResponseTransformerTest {
                 .epaOrLpa(NO)
                 .epaRegistered(NO)
                 .domicilityCountry("Spain")
-                .scannedDocuments(documents)
                 .ukEstateItems(estate)
                 .attorneyOnBehalfOfNameAndAddress(attorneyList)
                 .adopted(YES)
@@ -841,8 +874,7 @@ public class CallbackResponseTransformerTest {
                 .notifiedApplicants(YES)
                 .foreignAsset(YES)
                 .foreignAssetEstateValue("123")
-                .caseType("intestacy")
-
+                .caseType(CASE_TYPE_INTESTACY)
                 .spouseOrPartner(NO)
                 .childrenSurvived(YES)
                 .childrenOverEighteenSurvived(NUM_CODICILS)
@@ -898,6 +930,7 @@ public class CallbackResponseTransformerTest {
                 .applicationFeePaperForm("0")
                 .feeForCopiesPaperForm("0")
                 .totalFeePaperForm("0")
+                .scannedDocuments(SCANNED_DOCUMENTS_LIST)
                 .paperPaymentMethod("debitOrCredit")
                 .paymentReferenceNumberPaperform(IHT_REFERENCE)
                 .paperForm(YES);
@@ -915,7 +948,44 @@ public class CallbackResponseTransformerTest {
         assertCommonPaperForm(callbackResponse);
     }
 
+    @Test
+    public void shouldTransoformCaseWithScannedDocuments() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL);
+        caseDataBuilder.scannedDocuments(SCANNED_DOCUMENTS_LIST);
 
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+        assertEquals(1, callbackResponse.getData().getScannedDocuments().size());
+        assertEquals(SCANNED_DOCUMENTS_LIST, callbackResponse.getData().getScannedDocuments());
+    }
+
+    @Test
+    public void shouldDefualtYesToBulkPrint() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.paperForm(callbackRequestMock);
+        assertEquals("Yes", callbackResponse.getData().getBoSendToBulkPrintRequested());
+        assertEquals("Yes", callbackResponse.getData().getBoSendToBulkPrint());
+    }
+
+    @Test
+    public void shouldTransformWithBulkPrintComplete() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL);
+        caseDataBuilder.caseType(null);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.transformWithBulkPrintComplete(callbackRequestMock, "random");
+
+        assertEquals("random", callbackResponse.getData().getLetterId());
+        assertEquals("Yes", callbackResponse.getData().getGrantSentToPrint());
+    }
 
     private CollectionMember<ProbateAliasName> createdDeceasedAliasName(String id, String forename, String lastname, String onGrant) {
         ProbateAliasName pan = ProbateAliasName.builder()
@@ -937,18 +1007,6 @@ public class CallbackResponseTransformerTest {
                 .comment("comment")
                 .documentLink(docLink)
                 .documentType(DocumentType.IHT).build();
-        return new CollectionMember<>(id, doc);
-    }
-
-    private CollectionMember<ScannedDocument> createScannedDocuments(String id) {
-        ScannedDocument doc = ScannedDocument.builder()
-                .controlNumber("")
-                .fileName("")
-                .scannedDate("")
-                .exceptionRecordReference("")
-                .type("")
-                .url("")
-                .build();
         return new CollectionMember<>(id, doc);
     }
 
@@ -1058,7 +1116,8 @@ public class CallbackResponseTransformerTest {
         assertEquals(REGISTRY_LOCATION, callbackResponse.getData().getRegistryLocation());
 
         assertEquals(SOLICITOR_FIRM_NAME, callbackResponse.getData().getSolsSolicitorFirmName());
-        assertEquals(SOLICITOR_FIRM_POSTCODE, callbackResponse.getData().getSolsSolicitorFirmPostcode());
+        assertEquals(SOLICITOR_FIRM_LINE1, callbackResponse.getData().getSolsSolicitorAddress().getAddressLine1());
+        assertEquals(SOLICITOR_FIRM_POSTCODE, callbackResponse.getData().getSolsSolicitorAddress().getPostCode());
         assertEquals(SOLICITOR_FIRM_EMAIL, callbackResponse.getData().getSolsSolicitorEmail());
         assertEquals(SOLICITOR_FIRM_PHONE, callbackResponse.getData().getSolsSolicitorPhoneNumber());
         assertEquals(SOLICITOR_SOT_NAME, callbackResponse.getData().getSolsSOTName());
@@ -1105,6 +1164,8 @@ public class CallbackResponseTransformerTest {
         assertEquals(YES, callbackResponse.getData().getBoExaminationChecklistQ1());
         assertEquals(YES, callbackResponse.getData().getBoExaminationChecklistQ2());
         assertEquals(YES, callbackResponse.getData().getBoExaminationChecklistRequestQA());
+        
+        assertEquals(SCANNED_DOCUMENTS_LIST, callbackResponse.getData().getScannedDocuments());
     }
 
     private void assertApplicationType(CallbackResponse callbackResponse, ApplicationType applicationType) {
@@ -1204,8 +1265,7 @@ public class CallbackResponseTransformerTest {
         assertEquals(YES, callbackResponse.getData().getNotifiedApplicants());
         assertEquals(YES, callbackResponse.getData().getForeignAsset());
         assertEquals("123", callbackResponse.getData().getForeignAssetEstateValue());
-        assertEquals("intestacy", callbackResponse.getData().getCaseType());
-
+        assertEquals(CASE_TYPE_INTESTACY, callbackResponse.getData().getCaseType());
     }
 
 }
