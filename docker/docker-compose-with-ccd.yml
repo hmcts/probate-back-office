@@ -334,7 +334,7 @@ services:
         - REFORM_TEAM=ccd
         - REFORM_ENVIRONMENT=local
         - APPINSIGHTS_INSTRUMENTATIONKEY=fake-key
-        - CCD_DM_DOMAIN=http://dm-store:8080
+        - CCD_DM_DOMAIN=http://localhost:8080
         - CCD_DEFAULTPRINTURL=http://localhost:3100/jurisdictions/:jid/case-types/:ctid/cases/:cid
         - ELASTIC_SEARCH_HOSTS=http://elasticsearch:9200
         - ELASTIC_SEARCH_DATA_NODES_HOSTS=http://elasticsearch:9200
@@ -385,7 +385,7 @@ services:
       - PROXY_DEFINITION_DISPLAY=http://ccd-definition-store-api:4451/api/display
       # this NEEDS to be your local ip address
       - PROXY_PRINT_SERVICE=http://docker.for.mac.localhost:3100
-      - PROXY_DOCUMENT_MANAGEMENT=http://dm-store:8080
+      - PROXY_DOCUMENT_MANAGEMENT=http://localhost:8080
     ports:
       - 3453:3453
     depends_on:

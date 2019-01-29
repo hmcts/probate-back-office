@@ -31,6 +31,8 @@ public class CaseMatchingCriteria {
     private final String deceasedFullName;
     private final String deceasedDateOfBirth;
     private final String deceasedDateOfDeath;
+    private final LocalDate deceasedDateOfDeathRaw;
+    private final LocalDate deceasedDateOfBirthRaw;
     private final List<String> deceasedAliases;
 
     private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ISO_DATE;
@@ -48,7 +50,9 @@ public class CaseMatchingCriteria {
                         .map(AliasName::getSolsAliasname)
                         .collect(Collectors.toList()))
                 .deceasedDateOfBirth(getDateFormatted(data.getDeceasedDateOfBirth()))
+                .deceasedDateOfBirthRaw(data.getDeceasedDateOfBirth())
                 .deceasedDateOfDeath(getDateFormatted(data.getDeceasedDateOfDeath()))
+                .deceasedDateOfDeathRaw(data.getDeceasedDateOfDeath())
                 .build();
     }
 
@@ -65,7 +69,9 @@ public class CaseMatchingCriteria {
                         .map(ProbateFullAliasName::getFullAliasName)
                         .collect(Collectors.toList()))
                 .deceasedDateOfBirth(getDateFormatted(data.getDeceasedDateOfBirth()))
+                .deceasedDateOfBirthRaw(data.getDeceasedDateOfBirth())
                 .deceasedDateOfDeath(getDateFormatted(data.getDeceasedDateOfDeath()))
+                .deceasedDateOfDeathRaw(data.getDeceasedDateOfDeath())
                 .build();
     }
 
@@ -82,7 +88,9 @@ public class CaseMatchingCriteria {
                         .map(ProbateFullAliasName::getFullAliasName)
                         .collect(Collectors.toList()))
                 .deceasedDateOfBirth(getDateFormatted(data.getDeceasedDateOfBirth()))
+                .deceasedDateOfBirthRaw(data.getDeceasedDateOfBirth())
                 .deceasedDateOfDeath(getDateFormatted(data.getDeceasedDateOfDeath()))
+                .deceasedDateOfDeathRaw(data.getDeceasedDateOfDeath())
                 .build();
     }
 
@@ -99,7 +107,9 @@ public class CaseMatchingCriteria {
                         .map(ProbateFullAliasName::getFullAliasName)
                         .collect(Collectors.toList()))
                 .deceasedDateOfBirth(getDateFormatted(data.getDeceasedDateOfBirth()))
+                .deceasedDateOfBirthRaw(data.getDeceasedDateOfBirth())
                 .deceasedDateOfDeath(getDateFormatted(data.getDeceasedDateOfDeath()))
+                .deceasedDateOfDeathRaw(data.getDeceasedDateOfDeath())
                 .build();
     }
 

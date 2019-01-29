@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Component;
-import uk.gov.hmcts.probate.model.CaseType;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
@@ -18,7 +17,6 @@ import uk.gov.hmcts.probate.service.LegacySearchService;
 import uk.gov.hmcts.probate.service.ProbateManService;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -31,9 +29,8 @@ import static uk.gov.hmcts.probate.model.CaseType.LEGACY;
 @RequiredArgsConstructor
 public class LegacySearchServiceImpl implements LegacySearchService {
 
-    private static final List<CaseType> GRANT_MATCH_TYPES = Arrays.asList(LEGACY);
     private static final String DO_IMPORT_YES = "YES";
-    public static final String DNM_IND_YES = "Y";
+    private static final String DNM_IND_YES = "Y";
 
     private final LegacyCaseMatchingService legacyCaseMatchingService;
     private final ProbateManService probateManService;
@@ -42,18 +39,18 @@ public class LegacySearchServiceImpl implements LegacySearchService {
     @Override
     public List<CollectionMember<CaseMatch>> findLegacyCaseMatches(CaseDetails caseDetails) {
         CaseMatchingCriteria caseMatchingCriteria = CaseMatchingCriteria.of(caseDetails);
-        return legacyCaseMatchingService.findCrossMatches(GRANT_MATCH_TYPES, caseMatchingCriteria)
-            .stream()
-            .map(match -> new CollectionMember<>(null, match))
-            .collect(Collectors.toList());
+        return legacyCaseMatchingService.findCases(LEGACY, caseMatchingCriteria)
+                .stream()
+                .map(match -> new CollectionMember<>(null, match))
+                .collect(Collectors.toList());
     }
 
     @Override
     public List<CollectionMember<CaseMatch>> importLegacyRows(CaseData data) {
         List<CollectionMember<CaseMatch>> rows = data.getLegacySearchResultRows();
         rows.stream().map(CollectionMember::getValue)
-            .filter(row -> DO_IMPORT_YES.equalsIgnoreCase(row.getDoImport()))
-            .forEach(this::importRow);
+                .filter(row -> DO_IMPORT_YES.equalsIgnoreCase(row.getDoImport()))
+                .forEach(this::importRow);
         return rows;
     }
 

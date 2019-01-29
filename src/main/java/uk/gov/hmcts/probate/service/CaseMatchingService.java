@@ -1,6 +1,8 @@
 package uk.gov.hmcts.probate.service;
 
 import lombok.RequiredArgsConstructor;
+import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.springframework.http.HttpEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
@@ -21,6 +23,11 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static java.util.Optional.ofNullable;
+import static org.elasticsearch.index.query.Operator.AND;
+import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
+import static org.elasticsearch.index.query.QueryBuilders.multiMatchQuery;
+import static org.elasticsearch.index.query.QueryBuilders.rangeQuery;
 import static uk.gov.hmcts.probate.insights.AppInsightsEvent.REQUEST_SENT;
 import static uk.gov.hmcts.probate.insights.AppInsightsEvent.REST_CLIENT_EXCEPTION;
 
@@ -28,11 +35,17 @@ import static uk.gov.hmcts.probate.insights.AppInsightsEvent.REST_CLIENT_EXCEPTI
 @RequiredArgsConstructor
 public class CaseMatchingService {
 
-    private static final String TEMPLATE_DIRECTORY = "templates/elasticsearch/caseMatching";
+    private static final String TEMPLATE_DIRECTORY = "templates/elasticsearch/caseSearch/";
     private static final String ES_QUERY = "main_query.json";
     private static final String ES_ALIASES_SUB_QUERY = "aliases_sub_query.json";
     private static final String ES_ALIASES_TO_ALIASES_SUB_QUERY = "aliases_to_aliases_sub_query.json";
     private static final String CASE_TYPE_ID = "ctid";
+
+    private static final String DECEASED_FORENAMES = "data.deceasedForenames";
+    private static final String DECEASED_SURNAME = "data.deceasedSurname";
+    private static final String DECEASED_ALIAS_NAME_LIST = "data.solsDeceasedAliasNamesList.*";
+    private static final String DECEASED_DOB = "data.deceasedDateOfBirth";
+    private static final String DECEASED_DOD = "data.deceasedDateOfDeath";
 
     private final CCDGatewayConfiguration ccdGatewayConfiguration;
     private final RestTemplate restTemplate;
@@ -59,6 +72,56 @@ public class CaseMatchingService {
                 .replace(":optionalAliasesToNameQuery", optionalAliasesToNameQuery)
                 .replace(":optionalAliasesToAliasesQuery", optionalAliasesToAliasesQuery);
 
+        return runQuery(caseType, criteria, jsonQuery);
+    }
+
+    public List<CaseMatch> findCases(CaseType caseType, CaseMatchingCriteria criteria) {
+        BoolQueryBuilder query = boolQuery();
+        BoolQueryBuilder filter = boolQuery();
+
+        ofNullable(criteria.getDeceasedForenames())
+                .filter(s -> !s.isEmpty())
+                .ifPresent(s -> query.must(multiMatchQuery(s, DECEASED_FORENAMES).fuzziness(2).operator(AND)));
+
+        ofNullable(criteria.getDeceasedSurname())
+                .filter(s -> !s.isEmpty())
+                .ifPresent(s -> query.must(multiMatchQuery(s, DECEASED_SURNAME).fuzziness(2).operator(AND)));
+
+        criteria.getDeceasedAliases().stream()
+                .map(s -> boolQuery()
+                        .should(multiMatchQuery(s, DECEASED_FORENAMES).fuzziness(2))
+                        .should(multiMatchQuery(s, DECEASED_SURNAME).fuzziness(2)))
+                .forEach(query::must);
+
+        criteria.getDeceasedAliases().stream()
+                .map(s -> boolQuery().should(multiMatchQuery(s, DECEASED_ALIAS_NAME_LIST).fuzziness(2).operator(AND)))
+                .forEach(query::must);
+
+        ofNullable(criteria.getDeceasedDateOfBirthRaw())
+                .ifPresent(date -> filter.must(rangeQuery(DECEASED_DOB).gte(date.minusDays(3)).lte(date.plusDays(3))));
+
+        ofNullable(criteria.getDeceasedDateOfDeathRaw())
+                .ifPresent(date -> filter.must(rangeQuery(DECEASED_DOD).gte(date.minusDays(3)).lte(date.plusDays(3))));
+
+        query.filter(filter);
+
+        String jsonQuery = new SearchSourceBuilder().query(query).toString();
+
+        return runQuery(caseType, criteria, jsonQuery);
+    }
+
+    public List<CaseMatch> findCrossMatches(List<CaseType> caseTypes, CaseMatchingCriteria criteria) {
+        return caseTypes.stream()
+                .map(caseType -> findMatches(caseType, criteria))
+                .flatMap(Collection::stream)
+                .collect(Collectors.toList());
+    }
+
+    public CaseMatch buildCaseMatch(Case c, CaseType caseType) {
+        return CaseMatch.buildCaseMatch(c, caseType);
+    }
+
+    private List<CaseMatch> runQuery(CaseType caseType, CaseMatchingCriteria criteria, String jsonQuery) {
         URI uri = UriComponentsBuilder
                 .fromHttpUrl(ccdGatewayConfiguration.getHost() + ccdGatewayConfiguration.getCaseMatchingPath())
                 .queryParam(CASE_TYPE_ID, caseType.getCode())
@@ -80,17 +143,7 @@ public class CaseMatchingService {
                 .filter(c -> c.getId() == null || !criteria.getId().equals(c.getId()))
                 .map(c -> buildCaseMatch(c, caseType))
                 .collect(Collectors.toList());
-    }
 
-    public List<CaseMatch> findCrossMatches(List<CaseType> caseTypes, CaseMatchingCriteria criteria) {
-        return caseTypes.stream()
-                .map(caseType -> findMatches(caseType, criteria))
-                .flatMap(Collection::stream)
-                .collect(Collectors.toList());
-    }
-
-    public CaseMatch buildCaseMatch(Case c, CaseType caseType) {
-        return CaseMatch.buildCaseMatch(c, caseType);
     }
 
     private String getQueryTemplate() {
