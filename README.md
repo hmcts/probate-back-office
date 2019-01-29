@@ -143,6 +143,12 @@ launch the all the containers
 ```bash
 docker-compose -f docker/docker-compose-with-ccd.yml up
 ```
+to pull the latest send-letter-service container
+```bash
+az login
+az acr login --name hmcts
+docker pull hmcts.azurecr.io/hmcts/rpe-send-letter-service:latest
+```
 
 ### Roles
 upload needed roles
