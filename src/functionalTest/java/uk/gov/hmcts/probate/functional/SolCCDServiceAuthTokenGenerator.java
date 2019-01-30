@@ -60,7 +60,7 @@ public class SolCCDServiceAuthTokenGenerator {
         return claims.get("id", String.class);
     }
 
-    private String generateClientToken() {
+    public String generateClientToken() {
         String code = generateClientCode();
         String token = "";
 
@@ -113,8 +113,8 @@ public class SolCCDServiceAuthTokenGenerator {
     public String generateClientToken(String userName, String password) {
         String code = generateClientCode(userName, password);
         String token = RestAssured.given().post(baseServiceOauth2Url + "/oauth2/token?code=" + code +
-            "&client_secret=" + probateClientSecret +
-            "&client_id=" + probateClientId +
+            "&client_secret=" + clientSecret +
+            "&client_id=" + clientId +
             "&redirect_uri=" + redirectUri +
             "&grant_type=authorization_code")
             .body().path("access_token");

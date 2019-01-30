@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
+import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.willlodgement.request.WillLodgementCallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.willlodgement.request.WillLodgementData;
 import uk.gov.hmcts.probate.model.ccd.willlodgement.request.WillLodgementDetails;
@@ -13,6 +14,7 @@ import uk.gov.hmcts.probate.model.ccd.willlodgement.response.ResponseWillLodgeme
 import uk.gov.hmcts.probate.model.ccd.willlodgement.response.WillLodgementCallbackResponse;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,6 +25,9 @@ import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
 @Component
 @RequiredArgsConstructor
 public class WillLodgementCallbackResponseTransformer {
+
+    private final DocumentTransformer documentTransformer;
+    private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     private static final ApplicationType DEFAULT_APPLICATION_TYPE = PERSONAL;
     private static final String DEFAULT_REGISTRY_LOCATION = "Leeds";
@@ -92,6 +97,14 @@ public class WillLodgementCallbackResponseTransformer {
         ResponseWillLodgementDataBuilder responseCaseDataBuilder = getResponseWillLodgementData(request.getCaseDetails());
 
         return transformResponse(responseCaseDataBuilder.build());
+    }
+
+    public WillLodgementCallbackResponse addDocuments(WillLodgementCallbackRequest callbackRequest, List<Document> documents) {
+        documents.forEach(document -> documentTransformer.addDocument(callbackRequest, document));
+
+        ResponseWillLodgementData.ResponseWillLodgementDataBuilder responseWillLodgementData =
+                getResponseWillLodgementData(callbackRequest.getCaseDetails());
+        return transformResponse(responseWillLodgementData.build());
     }
 
     private String transformToString(Long longValue) {
