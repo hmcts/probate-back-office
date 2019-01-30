@@ -10,6 +10,7 @@ import org.springframework.web.client.RestTemplate;
 import uk.gov.hmcts.probate.config.CCDGatewayConfiguration;
 import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
+import uk.gov.hmcts.probate.model.ccd.raw.CaseLink;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.casematching.Case;
 import uk.gov.hmcts.probate.model.ccd.raw.casematching.MatchedCases;
@@ -19,6 +20,7 @@ import uk.gov.hmcts.probate.service.evidencemanagement.header.HttpHeadersFactory
 
 import java.net.URI;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -37,6 +39,9 @@ public class CaseMatchingServiceTest {
     private CaseMatchingService caseMatchingService;
 
     @Mock
+    private CaseMatchBuilderService caseMatchBuilderService;
+
+    @Mock
     private CaseMatchingCriteria caseMatchingCriteria;
 
     @Mock
@@ -53,6 +58,9 @@ public class CaseMatchingServiceTest {
 
     @Mock
     private AppInsights appInsights;
+
+    @Mock
+    private Case caseMock;
 
     @Before
     public void setUp() {
@@ -78,8 +86,10 @@ public class CaseMatchingServiceTest {
         when(headers.getAuthorizationHeaders())
                 .thenReturn(new HttpHeaders());
 
+        when(caseMock.getData()).thenReturn(caseData);
+        when(caseMock.getId()).thenReturn(1L);
         when(restTemplate.postForObject(any(URI.class), any(), eq(MatchedCases.class)))
-                .thenReturn(new MatchedCases(Collections.singletonList(new Case(caseData, 1L))));
+                .thenReturn(new MatchedCases(Collections.singletonList(caseMock)));
 
         when(fileSystemResourceService.getFileFromResourceAsString(anyString()))
                 .thenReturn("template");
@@ -89,6 +99,17 @@ public class CaseMatchingServiceTest {
 
     @Test
     public void findMatches() {
+        List<CaseMatch> expectedMatches = new ArrayList<>();
+        CaseMatch caseMatch = CaseMatch.builder()
+                .caseLink(CaseLink.builder().caseReference("1").build())
+                .fullName("names surname")
+                .dod("2000-01-01")
+                .postcode("SW12 0FA")
+                .build();
+        expectedMatches.add(caseMatch);
+
+        when(caseMatchBuilderService.buildCaseMatch(caseMock, GRANT_OF_REPRESENTATION)).thenReturn(caseMatch);
+
         List<CaseMatch> caseMatches = caseMatchingService.findMatches(GRANT_OF_REPRESENTATION, caseMatchingCriteria);
 
         assertEquals(1, caseMatches.size());
@@ -102,6 +123,15 @@ public class CaseMatchingServiceTest {
 
     @Test
     public void findCases() {
+        CaseMatch caseMatch = CaseMatch.builder()
+                .caseLink(CaseLink.builder().caseReference("1").build())
+                .fullName("names surname")
+                .dod("2000-01-01")
+                .postcode("SW12 0FA")
+                .build();
+
+        when(caseMatchBuilderService.buildCaseMatch(caseMock, GRANT_OF_REPRESENTATION)).thenReturn(caseMatch);
+
         List<CaseMatch> cases = caseMatchingService.findCases(GRANT_OF_REPRESENTATION, caseMatchingCriteria);
 
         assertEquals(1, cases.size());

@@ -3,6 +3,8 @@ package uk.gov.hmcts.probate.controller;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -14,14 +16,19 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import uk.gov.hmcts.probate.insights.AppInsights;
+import uk.gov.hmcts.probate.model.ccd.CaseMatch;
+import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.criterion.CaseMatchingCriteria;
 import uk.gov.hmcts.probate.service.CaseMatchingService;
+import uk.gov.hmcts.probate.service.LegacyImportService;
 import uk.gov.hmcts.probate.util.TestUtils;
 import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.hamcrest.CoreMatchers.containsString;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doReturn;
@@ -57,6 +64,12 @@ public class CaseMatchingControllerTest {
 
     @MockBean
     private CoreCaseDataApi coreCaseDataApi;
+
+    @MockBean
+    private LegacyImportService legacyImportService;
+
+    @Captor
+    private ArgumentCaptor<List<CollectionMember<CaseMatch>>> caseMatchListCaptor;
 
     @Before
     public void setUp() {
@@ -135,5 +148,35 @@ public class CaseMatchingControllerTest {
         verify(caseMatchingService).findMatches(eq(LEGACY), any(CaseMatchingCriteria.class));
         verify(caseMatchingService).findMatches(eq(STANDING_SEARCH), any(CaseMatchingCriteria.class));
         verify(caseMatchingService).findMatches(eq(WILL_LODGEMENT), any(CaseMatchingCriteria.class));
+    }
+
+    @Test
+    public void caseMatchingImportFromGrantFlow() throws Exception {
+
+        String solicitorPayload = testUtils.getStringFromFile("payloadWithCaseMatches.json");
+
+        mockMvc.perform(post("/case-matching/import-legacy-from-grant-flow")
+                .content(solicitorPayload)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("data")));
+
+
+        verify(legacyImportService).importLegacyRows(caseMatchListCaptor.capture());
+        assertEquals(caseMatchListCaptor.getValue().size(), 1);
+        CaseMatch caseMatchFound = caseMatchListCaptor.getValue().get(0).getValue();
+        assertEquals("1", caseMatchFound.getId());
+        assertEquals("DecAN1 DecAN2", caseMatchFound.getAliases());
+        assertEquals("1111222233334444", caseMatchFound.getCaseLink().getCaseReference());
+        assertEquals("1111222233334444", caseMatchFound.getCcdCaseId());
+        assertEquals("Some comment", caseMatchFound.getComment());
+        assertEquals("1999-01-01", caseMatchFound.getDob());
+        assertEquals("2018-01-01", caseMatchFound.getDod());
+        assertEquals("Y", caseMatchFound.getDoImport());
+        assertEquals("DecFN DecSN", caseMatchFound.getFullName());
+        assertEquals("http://localhost/print/probateManType/Grant/cases/1", caseMatchFound.getLegacyCaseViewUrl());
+        assertEquals("HP5 2PN", caseMatchFound.getPostcode());
+        assertEquals("Legacy Grant", caseMatchFound.getType());
+        assertEquals("N", caseMatchFound.getValid());
     }
 }

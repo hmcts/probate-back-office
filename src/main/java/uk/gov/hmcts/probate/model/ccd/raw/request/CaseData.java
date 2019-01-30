@@ -376,6 +376,7 @@ public class CaseData {
     private final List<CollectionMember<CaseMatch>> legacySearchResultRows;
     @JsonProperty(value = "alias_names")
     private final String legacySearchAliasNames;
+    private final String ccdCaseId;
 
     @Getter(lazy = true)
     private final List<CollectionMember<AdditionalExecutor>> executorsApplyingForLegalStatement = getAllExecutors(true);

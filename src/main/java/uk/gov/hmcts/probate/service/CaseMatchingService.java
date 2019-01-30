@@ -3,6 +3,7 @@ package uk.gov.hmcts.probate.service;
 import lombok.RequiredArgsConstructor;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
@@ -12,12 +13,12 @@ import uk.gov.hmcts.probate.config.CCDGatewayConfiguration;
 import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.CaseType;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
-import uk.gov.hmcts.probate.model.ccd.raw.casematching.Case;
 import uk.gov.hmcts.probate.model.ccd.raw.casematching.MatchedCases;
 import uk.gov.hmcts.probate.model.criterion.CaseMatchingCriteria;
 import uk.gov.hmcts.probate.service.evidencemanagement.header.HttpHeadersFactory;
 
 import java.net.URI;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -40,6 +41,13 @@ public class CaseMatchingService {
     private static final String ES_ALIASES_SUB_QUERY = "aliases_sub_query.json";
     private static final String ES_ALIASES_TO_ALIASES_SUB_QUERY = "aliases_to_aliases_sub_query.json";
     private static final String CASE_TYPE_ID = "ctid";
+    private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ISO_DATE;
+
+    @Value("${printservice.host}")
+    private String printServiceHost;
+
+    @Value("${printservice.legacyPath}")
+    private String printServiceLegacyPath;
 
     private static final String DECEASED_FORENAMES = "data.deceasedForenames";
     private static final String DECEASED_SURNAME = "data.deceasedSurname";
@@ -52,6 +60,7 @@ public class CaseMatchingService {
     private final AppInsights appInsights;
     private final HttpHeadersFactory headers;
     private final FileSystemResourceService fileSystemResourceService;
+    private final CaseMatchBuilderService caseMatchBuilderService;
 
     public List<CaseMatch> findMatches(CaseType caseType, CaseMatchingCriteria criteria) {
 
@@ -117,10 +126,6 @@ public class CaseMatchingService {
                 .collect(Collectors.toList());
     }
 
-    public CaseMatch buildCaseMatch(Case c, CaseType caseType) {
-        return CaseMatch.buildCaseMatch(c, caseType);
-    }
-
     private List<CaseMatch> runQuery(CaseType caseType, CaseMatchingCriteria criteria, String jsonQuery) {
         URI uri = UriComponentsBuilder
                 .fromHttpUrl(ccdGatewayConfiguration.getHost() + ccdGatewayConfiguration.getCaseMatchingPath())
@@ -141,7 +146,7 @@ public class CaseMatchingService {
 
         return matchedCases.getCases().stream()
                 .filter(c -> c.getId() == null || !criteria.getId().equals(c.getId()))
-                .map(c -> buildCaseMatch(c, caseType))
+                .map(c -> caseMatchBuilderService.buildCaseMatch(c, caseType))
                 .collect(Collectors.toList());
 
     }

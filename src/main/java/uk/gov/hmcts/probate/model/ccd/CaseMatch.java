@@ -3,23 +3,16 @@ package uk.gov.hmcts.probate.model.ccd;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import uk.gov.hmcts.probate.model.CaseType;
-import uk.gov.hmcts.probate.model.ccd.raw.AliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.CaseLink;
-import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
-import uk.gov.hmcts.probate.model.ccd.raw.casematching.Case;
 
 import java.io.Serializable;
-import java.time.format.DateTimeFormatter;
-import java.util.stream.Collectors;
 
-import static uk.gov.hmcts.probate.model.CaseType.LEGACY;
-
-@EqualsAndHashCode(of = "caseLink")
+@EqualsAndHashCode(of = {"id"})
 @Data
 @Builder
 public class CaseMatch implements Serializable {
     private final String id;
+    private final String ccdCaseId;
     private final String fullName;
     private final String aliases;
     private final String dob;
@@ -28,50 +21,8 @@ public class CaseMatch implements Serializable {
     private final String valid;
     private final String comment;
     private final String type;
-    private final CaseLink caseLink;
+    private CaseLink caseLink;
     private final String legacyCaseViewUrl;
     private final String doImport;
 
-    private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ISO_DATE;
-
-    public static CaseMatch buildCaseMatch(Case c, CaseType caseType) {
-        CaseMatch.CaseMatchBuilder caseMatchBuilder = getCaseMatchBuilder(c, caseType);
-        return caseMatchBuilder.build();
-    }
-
-    public static CaseMatchBuilder getCaseMatchBuilder(Case c, CaseType caseType) {
-        CaseMatchBuilder caseMatchBuilder = CaseMatch.builder();
-        caseMatchBuilder.fullName(c.getData().getDeceasedFullName());
-        if (c.getData().getDeceasedDateOfBirth() != null) {
-            caseMatchBuilder.dob(c.getData().getDeceasedDateOfBirth().format(dateTimeFormatter));
-        }
-        if (c.getData().getDeceasedDateOfDeath() != null) {
-            caseMatchBuilder.dod(c.getData().getDeceasedDateOfDeath().format(dateTimeFormatter));
-        }
-        if (c.getData().getDeceasedAddress() != null) {
-            caseMatchBuilder.postcode(c.getData().getDeceasedAddress().getPostCode());
-        }
-        if (!caseType.equals(LEGACY)) {
-            caseMatchBuilder.caseLink(CaseLink.builder().caseReference(c.getId().toString()).build());
-        }
-        if (caseType.equals(LEGACY)) {
-            caseMatchBuilder.type(caseType.getName() + " " + c.getData().getLegacyCaseType());
-        }
-        if (caseType.equals(LEGACY)) {
-            caseMatchBuilder.id(c.getData().getLegacyId());
-        }
-
-        if (caseType.equals(LEGACY)) {
-            caseMatchBuilder.aliases(c.getData().getLegacySearchAliasNames());
-        } else {
-            if (c.getData().getSolsDeceasedAliasNamesList() != null) {
-                String aliases = c.getData().getSolsDeceasedAliasNamesList().stream()
-                        .map(CollectionMember::getValue)
-                        .map(AliasName::getSolsAliasname)
-                        .collect(Collectors.joining(", "));
-                caseMatchBuilder.aliases(aliases);
-            }
-        }
-        return caseMatchBuilder;
-    }
 }
