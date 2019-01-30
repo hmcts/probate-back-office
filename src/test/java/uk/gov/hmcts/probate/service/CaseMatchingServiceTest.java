@@ -99,4 +99,17 @@ public class CaseMatchingServiceTest {
         assertNull(caseMatches.get(0).getValid());
         assertNull(caseMatches.get(0).getComment());
     }
+
+    @Test
+    public void findCases() {
+        List<CaseMatch> cases = caseMatchingService.findCases(GRANT_OF_REPRESENTATION, caseMatchingCriteria);
+
+        assertEquals(1, cases.size());
+        assertEquals("1", cases.get(0).getCaseLink().getCaseReference());
+        assertEquals("names surname", cases.get(0).getFullName());
+        assertEquals("2000-01-01", cases.get(0).getDod());
+        assertEquals("SW12 0FA", cases.get(0).getPostcode());
+        assertNull(cases.get(0).getValid());
+        assertNull(cases.get(0).getComment());
+    }
 }
