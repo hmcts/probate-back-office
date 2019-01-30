@@ -121,7 +121,7 @@ public class FunctionalTestUtils {
         return Headers.headers(
             new Header("ServiceAuthorization", serviceAuthTokenGenerator.generateServiceToken()),
             new Header("Content-Type", ContentType.JSON.toString()),
-            new Header("Authorization", serviceAuthTokenGenerator.generateClientToken(userName, password)));
+            new Header("Authorization", serviceAuthTokenGenerator.generateClientToken()));
     }
 
 }
