@@ -35,7 +35,7 @@ import static uk.gov.hmcts.probate.insights.AppInsightsEvent.REST_CLIENT_EXCEPTI
 @RequiredArgsConstructor
 public class CaseMatchingService {
 
-    private static final String TEMPLATE_DIRECTORY = "templates/elasticsearch/caseSearch/";
+    private static final String TEMPLATE_DIRECTORY = "templates/elasticsearch/caseMatching/";
     private static final String ES_QUERY = "main_query.json";
     private static final String ES_ALIASES_SUB_QUERY = "aliases_sub_query.json";
     private static final String ES_ALIASES_TO_ALIASES_SUB_QUERY = "aliases_to_aliases_sub_query.json";
