@@ -99,14 +99,12 @@ public class CaseMatchingServiceTest {
 
     @Test
     public void findMatches() {
-        List<CaseMatch> expectedMatches = new ArrayList<>();
         CaseMatch caseMatch = CaseMatch.builder()
                 .caseLink(CaseLink.builder().caseReference("1").build())
                 .fullName("names surname")
                 .dod("2000-01-01")
                 .postcode("SW12 0FA")
                 .build();
-        expectedMatches.add(caseMatch);
 
         when(caseMatchBuilderService.buildCaseMatch(caseMock, GRANT_OF_REPRESENTATION)).thenReturn(caseMatch);
 
