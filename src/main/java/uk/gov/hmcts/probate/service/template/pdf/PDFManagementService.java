@@ -28,7 +28,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 
-import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.WILL_LODGEMENT_DEPOSIT_RECEIPT;
 
 @Slf4j
 @Service
@@ -57,15 +57,27 @@ public class PDFManagementService {
     }
 
     public Document generateAndUpload(CallbackRequest callbackRequest, DocumentType documentType) {
-        if (DIGITAL_GRANT.equals(documentType)) {
-            callbackRequest.getCaseDetails().setGrantSignatureBase64(pdfServiceConfiguration.getGrantSignatureBase64());
+        switch (documentType) {
+            case DIGITAL_GRANT: 
+                callbackRequest.getCaseDetails().setGrantSignatureBase64(pdfServiceConfiguration.getGrantSignatureBase64());
+                break;
+            case ADMON_WILL_GRANT:
+                callbackRequest.getCaseDetails().setGrantSignatureBase64(pdfServiceConfiguration.getGrantSignatureBase64());
+                break;
+            case INTESTACY_GRANT:
+                callbackRequest.getCaseDetails().setGrantSignatureBase64(pdfServiceConfiguration.getGrantSignatureBase64());
+                break;
+            default:
+                break;
         }
 
         return generateAndUpload(toJson(callbackRequest), documentType);
     }
 
     public Document generateAndUpload(WillLodgementCallbackRequest callbackRequest, DocumentType documentType) {
-
+        if (WILL_LODGEMENT_DEPOSIT_RECEIPT.equals(documentType)) {
+            callbackRequest.getCaseDetails().setGrantSignatureBase64(pdfServiceConfiguration.getGrantSignatureBase64());
+        }
         return generateAndUpload(toJson(callbackRequest), documentType);
     }
 

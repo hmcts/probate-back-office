@@ -15,6 +15,8 @@ import uk.gov.hmcts.probate.model.SentEmail;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
+import uk.gov.hmcts.probate.model.ccd.willlodgement.request.WillLodgementCallbackRequest;
+import uk.gov.hmcts.probate.model.ccd.willlodgement.request.WillLodgementDetails;
 import uk.gov.hmcts.probate.model.evidencemanagement.EvidenceManagementFile;
 import uk.gov.hmcts.probate.model.evidencemanagement.EvidenceManagementFileUpload;
 import uk.gov.hmcts.probate.service.evidencemanagement.upload.UploadService;
@@ -25,9 +27,12 @@ import java.io.IOException;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.when;
+import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT;
 import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
+import static uk.gov.hmcts.probate.model.DocumentType.WILL_LODGEMENT_DEPOSIT_RECEIPT;
 
 @RunWith(MockitoJUnitRunner.class)
 public class PDFManagementServiceTest {
@@ -48,6 +53,8 @@ public class PDFManagementServiceTest {
     @Mock
     private CallbackRequest callbackRequestMock;
     @Mock
+    private WillLodgementCallbackRequest willLodgementCallbackRequestMock;    
+    @Mock
     private SentEmail sentEmailMock;
     @Mock
     private JsonProcessingException jsonProcessingException;
@@ -57,13 +64,16 @@ public class PDFManagementServiceTest {
     private PDFServiceConfiguration pdfServiceConfiguration;
     @Mock
     private CaseDetails caseDetails;
-
+    @Mock
+    private WillLodgementDetails willLodgementDetails;
+    
     private PDFManagementService underTest;
 
     @Before
     public void setUp() {
         when(objectMapperMock.copy()).thenReturn(objectMapperMock);
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetails);
+        when(willLodgementCallbackRequestMock.getCaseDetails()).thenReturn(willLodgementDetails);
         when(pdfServiceConfiguration.getGrantSignatureBase64()).thenReturn("qwertyui");
         underTest = new PDFManagementService(pdfGeneratorServiceMock, uploadServiceMock,
                 objectMapperMock, httpServletRequest, pdfServiceConfiguration);
@@ -105,6 +115,69 @@ public class PDFManagementServiceTest {
         Document response = underTest.generateAndUpload(callbackRequestMock, DIGITAL_GRANT);
 
         String fileName = "digitalGrant.pdf";
+        assertNotNull(response);
+        assertEquals(fileName, response.getDocumentLink().getDocumentFilename());
+        assertEquals(href, response.getDocumentLink().getDocumentBinaryUrl());
+        assertEquals(href, response.getDocumentLink().getDocumentUrl());
+    }
+    
+    @Test
+    public void shouldGenerateAndUploadIntestacyGrant() throws IOException {
+        String json = "{}";
+        when(objectMapperMock.writeValueAsString(callbackRequestMock)).thenReturn(json);
+        when(pdfGeneratorServiceMock.generatePdf(INTESTACY_GRANT, json)).thenReturn(evidenceManagementFileUpload);
+        when(uploadServiceMock.store(evidenceManagementFileUpload)).thenReturn(evidenceManagementFile);
+        when(evidenceManagementFile.getLink(Link.REL_SELF)).thenReturn(link);
+        when(evidenceManagementFile.getLink("binary")).thenReturn(link);
+
+        String href = "href";
+        when(link.getHref()).thenReturn(href);
+
+        Document response = underTest.generateAndUpload(callbackRequestMock, INTESTACY_GRANT);
+
+        String fileName = "intestacyGrant.pdf";
+        assertNotNull(response);
+        assertEquals(fileName, response.getDocumentLink().getDocumentFilename());
+        assertEquals(href, response.getDocumentLink().getDocumentBinaryUrl());
+        assertEquals(href, response.getDocumentLink().getDocumentUrl());
+    }
+
+    @Test
+    public void shouldGenerateAndUploadAdmonWillGrant() throws IOException {
+        String json = "{}";
+        when(objectMapperMock.writeValueAsString(callbackRequestMock)).thenReturn(json);
+        when(pdfGeneratorServiceMock.generatePdf(ADMON_WILL_GRANT, json)).thenReturn(evidenceManagementFileUpload);
+        when(uploadServiceMock.store(evidenceManagementFileUpload)).thenReturn(evidenceManagementFile);
+        when(evidenceManagementFile.getLink(Link.REL_SELF)).thenReturn(link);
+        when(evidenceManagementFile.getLink("binary")).thenReturn(link);
+
+        String href = "href";
+        when(link.getHref()).thenReturn(href);
+
+        Document response = underTest.generateAndUpload(callbackRequestMock, ADMON_WILL_GRANT);
+
+        String fileName = "admonWillGrant.pdf";
+        assertNotNull(response);
+        assertEquals(fileName, response.getDocumentLink().getDocumentFilename());
+        assertEquals(href, response.getDocumentLink().getDocumentBinaryUrl());
+        assertEquals(href, response.getDocumentLink().getDocumentUrl());
+    }
+
+    @Test
+    public void shouldGenerateAndUploadWillLodgementDepositReceipt() throws IOException {
+        String json = "{}";
+        when(objectMapperMock.writeValueAsString(willLodgementCallbackRequestMock)).thenReturn(json);
+        when(pdfGeneratorServiceMock.generatePdf(WILL_LODGEMENT_DEPOSIT_RECEIPT, json)).thenReturn(evidenceManagementFileUpload);
+        when(uploadServiceMock.store(evidenceManagementFileUpload)).thenReturn(evidenceManagementFile);
+        when(evidenceManagementFile.getLink(Link.REL_SELF)).thenReturn(link);
+        when(evidenceManagementFile.getLink("binary")).thenReturn(link);
+
+        String href = "href";
+        when(link.getHref()).thenReturn(href);
+
+        Document response = underTest.generateAndUpload(willLodgementCallbackRequestMock, WILL_LODGEMENT_DEPOSIT_RECEIPT);
+
+        String fileName = "willLodgementDepositReceipt.pdf";
         assertNotNull(response);
         assertEquals(fileName, response.getDocumentLink().getDocumentFilename());
         assertEquals(href, response.getDocumentLink().getDocumentBinaryUrl());
