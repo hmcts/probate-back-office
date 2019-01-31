@@ -3,8 +3,8 @@ package uk.gov.hmcts.probate.model.ccd;
 import org.junit.Test;
 import uk.gov.hmcts.probate.model.ccd.raw.CaseLink;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 
 public class CaseMatchTest {
 
@@ -21,7 +21,7 @@ public class CaseMatchTest {
                 .caseLink(CaseLink.builder().caseReference("SomeRef2").build())
                 .build();
 
-        assertTrue(caseMatch1.equals(caseMatch2));
+        assertEquals(caseMatch1, caseMatch2);
     }
 
     @Test
@@ -35,7 +35,7 @@ public class CaseMatchTest {
                 .id("11111")
                 .build();
 
-        assertTrue(caseMatch1.equals(caseMatch2));
+        assertEquals(caseMatch1, caseMatch2);
     }
 
     @Test
@@ -51,7 +51,7 @@ public class CaseMatchTest {
                 .caseLink(CaseLink.builder().caseReference("SomeRef1").build())
                 .build();
 
-        assertTrue(caseMatch1.equals(caseMatch2));
+        assertEquals(caseMatch1, caseMatch2);
     }
 
     @Test
@@ -65,7 +65,7 @@ public class CaseMatchTest {
                 .id("11111")
                 .build();
 
-        assertFalse(caseMatch1.equals(caseMatch2));
+        assertNotEquals(caseMatch1, caseMatch2);
     }
 
     @Test
@@ -79,7 +79,7 @@ public class CaseMatchTest {
                 .caseLink(CaseLink.builder().caseReference("SomeRef2").build())
                 .build();
 
-        assertFalse(caseMatch1.equals(caseMatch2));
+        assertNotEquals(caseMatch1, caseMatch2);
     }
 
 }
