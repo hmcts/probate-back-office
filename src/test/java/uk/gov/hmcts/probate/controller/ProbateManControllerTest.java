@@ -22,6 +22,7 @@ import uk.gov.hmcts.probate.model.probateman.ProbateManType;
 import uk.gov.hmcts.probate.model.probateman.StandingSearchCreator;
 import uk.gov.hmcts.probate.model.probateman.WillLodgementCreator;
 import uk.gov.hmcts.probate.service.BusinessValidationMessageService;
+import uk.gov.hmcts.probate.service.LegacyImportService;
 import uk.gov.hmcts.probate.service.LegacySearchService;
 import uk.gov.hmcts.probate.service.ProbateManService;
 import uk.gov.hmcts.probate.util.FileUtils;
@@ -62,6 +63,9 @@ public class ProbateManControllerTest {
     private LegacySearchService legacySearchService;
 
     @MockBean
+    private LegacyImportService legacyImportService;
+
+    @MockBean
     private BusinessValidationMessageService businessValidationMessageService;
 
     @Autowired
@@ -71,12 +75,12 @@ public class ProbateManControllerTest {
     public void shouldGetGrantApplication() throws Exception {
         ProbateManModel grantApplication = GrantApplicationCreator.create();
         when(probateManService.getProbateManModel(1234567L, ProbateManType.GRANT_APPLICATION))
-            .thenReturn(grantApplication);
+                .thenReturn(grantApplication);
 
         mockMvc.perform(get(GRANT_APPLICATION_URL + ID)
-            .contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk())
-            .andExpect(content().json(FileUtils.getStringFromFile("probateman/grantApplication.json")));
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().json(FileUtils.getStringFromFile("probateman/grantApplication.json")));
 
         verify(probateManService, times(1)).getProbateManModel(1234567L, ProbateManType.GRANT_APPLICATION);
     }
@@ -85,11 +89,11 @@ public class ProbateManControllerTest {
     public void shouldGetWillLodgement() throws Exception {
         ProbateManModel willLodgement = WillLodgementCreator.create();
         when(probateManService.getProbateManModel(1234567L, ProbateManType.WILL_LODGEMENT))
-            .thenReturn(willLodgement);
+                .thenReturn(willLodgement);
         mockMvc.perform(get(WILL_LODGEMENT_URL + ID)
-            .contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk())
-            .andExpect(content().json(FileUtils.getStringFromFile("probateman/willLodgement.json")));
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().json(FileUtils.getStringFromFile("probateman/willLodgement.json")));
 
         verify(probateManService, times(1)).getProbateManModel(1234567L, ProbateManType.WILL_LODGEMENT);
     }
@@ -98,12 +102,12 @@ public class ProbateManControllerTest {
     public void shouldGetCaveat() throws Exception {
         ProbateManModel caveat = CaveatCreator.create();
         when(probateManService.getProbateManModel(1234567L, ProbateManType.CAVEAT))
-            .thenReturn(caveat);
+                .thenReturn(caveat);
 
         mockMvc.perform(get(CAVEAT_URL + ID)
-            .contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk())
-            .andExpect(content().json(FileUtils.getStringFromFile("probateman/caveat.json")));
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().json(FileUtils.getStringFromFile("probateman/caveat.json")));
 
         verify(probateManService, times(1)).getProbateManModel(1234567L, ProbateManType.CAVEAT);
     }
@@ -112,12 +116,12 @@ public class ProbateManControllerTest {
     public void shouldGetStandingSearch() throws Exception {
         ProbateManModel standingSearch = StandingSearchCreator.create();
         when(probateManService.getProbateManModel(1234567L, ProbateManType.STANDING_SEARCH))
-            .thenReturn(standingSearch);
+                .thenReturn(standingSearch);
 
         mockMvc.perform(get(STANDING_SEARCH_URL + ID)
-            .contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk())
-            .andExpect(content().json(FileUtils.getStringFromFile("probateman/standingSearch.json")));
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().json(FileUtils.getStringFromFile("probateman/standingSearch.json")));
 
         verify(probateManService, times(1)).getProbateManModel(1234567L, ProbateManType.STANDING_SEARCH);
     }
@@ -153,9 +157,9 @@ public class ProbateManControllerTest {
         objectMapper.registerModule(new JavaTimeModule());
         String json = objectMapper.writeValueAsString(callbackRequest);
 
-        List<CollectionMember<CaseMatch>> caseMatchesList = new ArrayList<>();
+        List<CaseMatch> caseMatchesList = new ArrayList<>();
 
-        when(legacySearchService.importLegacyRows(caseData)).thenReturn(caseMatchesList);
+        when(legacyImportService.importLegacyRows(caseData.getLegacySearchResultRows())).thenReturn(caseMatchesList);
 
         mockMvc.perform(post(LEGACY_IMPORT_URL)
                 .content(json)

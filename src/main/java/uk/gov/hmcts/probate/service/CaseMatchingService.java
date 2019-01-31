@@ -12,7 +12,6 @@ import uk.gov.hmcts.probate.config.CCDGatewayConfiguration;
 import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.CaseType;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
-import uk.gov.hmcts.probate.model.ccd.raw.casematching.Case;
 import uk.gov.hmcts.probate.model.ccd.raw.casematching.MatchedCases;
 import uk.gov.hmcts.probate.model.criterion.CaseMatchingCriteria;
 import uk.gov.hmcts.probate.service.evidencemanagement.header.HttpHeadersFactory;
@@ -52,6 +51,7 @@ public class CaseMatchingService {
     private final AppInsights appInsights;
     private final HttpHeadersFactory headers;
     private final FileSystemResourceService fileSystemResourceService;
+    private final CaseMatchBuilderService caseMatchBuilderService;
 
     public List<CaseMatch> findMatches(CaseType caseType, CaseMatchingCriteria criteria) {
 
@@ -72,7 +72,8 @@ public class CaseMatchingService {
                 .replace(":optionalAliasesToNameQuery", optionalAliasesToNameQuery)
                 .replace(":optionalAliasesToAliasesQuery", optionalAliasesToAliasesQuery);
 
-        return runQuery(caseType, criteria, jsonQuery);
+        List<CaseMatch> matched = runQuery(caseType, criteria, jsonQuery);
+        return matched;
     }
 
     public List<CaseMatch> findCases(CaseType caseType, CaseMatchingCriteria criteria) {
@@ -117,10 +118,6 @@ public class CaseMatchingService {
                 .collect(Collectors.toList());
     }
 
-    public CaseMatch buildCaseMatch(Case c, CaseType caseType) {
-        return CaseMatch.buildCaseMatch(c, caseType);
-    }
-
     private List<CaseMatch> runQuery(CaseType caseType, CaseMatchingCriteria criteria, String jsonQuery) {
         URI uri = UriComponentsBuilder
                 .fromHttpUrl(ccdGatewayConfiguration.getHost() + ccdGatewayConfiguration.getCaseMatchingPath())
@@ -141,7 +138,7 @@ public class CaseMatchingService {
 
         return matchedCases.getCases().stream()
                 .filter(c -> c.getId() == null || !criteria.getId().equals(c.getId()))
-                .map(c -> buildCaseMatch(c, caseType))
+                .map(c -> caseMatchBuilderService.buildCaseMatch(c, caseType))
                 .collect(Collectors.toList());
 
     }
