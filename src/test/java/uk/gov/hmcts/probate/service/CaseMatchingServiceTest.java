@@ -7,7 +7,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.client.RestTemplate;
-import uk.gov.hmcts.probate.config.CCDGatewayConfiguration;
+import uk.gov.hmcts.probate.config.CCDDataStoreAPIConfiguration;
 import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
 import uk.gov.hmcts.probate.model.ccd.raw.CaseLink;
@@ -48,7 +48,7 @@ public class CaseMatchingServiceTest {
     private FileSystemResourceService fileSystemResourceService;
 
     @Mock
-    private CCDGatewayConfiguration ccdGatewayConfiguration;
+    private CCDDataStoreAPIConfiguration ccdDataStoreAPIConfiguration;
 
     @Mock
     private HttpHeadersFactory headers;
@@ -80,8 +80,8 @@ public class CaseMatchingServiceTest {
         when(caseMatchingCriteria.getDeceasedDateOfBirth()).thenReturn("1900-01-01");
         when(caseMatchingCriteria.getDeceasedDateOfDeath()).thenReturn("2000-01-01");
 
-        when(ccdGatewayConfiguration.getHost()).thenReturn("http://localhost");
-        when(ccdGatewayConfiguration.getCaseMatchingPath()).thenReturn("/path");
+        when(ccdDataStoreAPIConfiguration.getHost()).thenReturn("http://localhost");
+        when(ccdDataStoreAPIConfiguration.getCaseMatchingPath()).thenReturn("/path");
 
         when(headers.getAuthorizationHeaders())
                 .thenReturn(new HttpHeaders());

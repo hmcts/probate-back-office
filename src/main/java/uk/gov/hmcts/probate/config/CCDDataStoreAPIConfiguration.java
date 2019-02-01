@@ -6,8 +6,8 @@ import org.springframework.stereotype.Component;
 
 @Data
 @Component
-@ConfigurationProperties("ccd.gateway")
-public class CCDGatewayConfiguration {
+@ConfigurationProperties("ccd.data.store.api")
+public class CCDDataStoreAPIConfiguration {
 
     private String host;
     private String caseMatchingPath;

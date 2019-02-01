@@ -5,10 +5,11 @@ import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.springframework.http.HttpEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestClientException;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
-import uk.gov.hmcts.probate.config.CCDGatewayConfiguration;
+import uk.gov.hmcts.probate.config.CCDDataStoreAPIConfiguration;
+import uk.gov.hmcts.probate.exception.CaseMatchingException;
 import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.CaseType;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
@@ -17,7 +18,6 @@ import uk.gov.hmcts.probate.model.criterion.CaseMatchingCriteria;
 import uk.gov.hmcts.probate.service.evidencemanagement.header.HttpHeadersFactory;
 
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -46,7 +46,7 @@ public class CaseMatchingService {
     private static final String DECEASED_DOB = "data.deceasedDateOfBirth";
     private static final String DECEASED_DOD = "data.deceasedDateOfDeath";
 
-    private final CCDGatewayConfiguration ccdGatewayConfiguration;
+    private final CCDDataStoreAPIConfiguration ccdDataStoreAPIConfiguration;
     private final RestTemplate restTemplate;
     private final AppInsights appInsights;
     private final HttpHeadersFactory headers;
@@ -72,8 +72,7 @@ public class CaseMatchingService {
                 .replace(":optionalAliasesToNameQuery", optionalAliasesToNameQuery)
                 .replace(":optionalAliasesToAliasesQuery", optionalAliasesToAliasesQuery);
 
-        List<CaseMatch> matched = runQuery(caseType, criteria, jsonQuery);
-        return matched;
+        return runQuery(caseType, criteria, jsonQuery);
     }
 
     public List<CaseMatch> findCases(CaseType caseType, CaseMatchingCriteria criteria) {
@@ -120,7 +119,7 @@ public class CaseMatchingService {
 
     private List<CaseMatch> runQuery(CaseType caseType, CaseMatchingCriteria criteria, String jsonQuery) {
         URI uri = UriComponentsBuilder
-                .fromHttpUrl(ccdGatewayConfiguration.getHost() + ccdGatewayConfiguration.getCaseMatchingPath())
+                .fromHttpUrl(ccdDataStoreAPIConfiguration.getHost() + ccdDataStoreAPIConfiguration.getCaseMatchingPath())
                 .queryParam(CASE_TYPE_ID, caseType.getCode())
                 .build().encode().toUri();
 
@@ -129,9 +128,9 @@ public class CaseMatchingService {
         MatchedCases matchedCases;
         try {
             matchedCases = restTemplate.postForObject(uri, entity, MatchedCases.class);
-        } catch (RestClientException e) {
+        } catch (HttpClientErrorException e) {
             appInsights.trackEvent(REST_CLIENT_EXCEPTION, e.getMessage());
-            return new ArrayList<>();
+            throw new CaseMatchingException(e.getStatusCode(), e.getMessage());
         }
 
         appInsights.trackEvent(REQUEST_SENT, uri.toString());
@@ -140,7 +139,6 @@ public class CaseMatchingService {
                 .filter(c -> c.getId() == null || !criteria.getId().equals(c.getId()))
                 .map(c -> caseMatchBuilderService.buildCaseMatch(c, caseType))
                 .collect(Collectors.toList());
-
     }
 
     private String getQueryTemplate() {
