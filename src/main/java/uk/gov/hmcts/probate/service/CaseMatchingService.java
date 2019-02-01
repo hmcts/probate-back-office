@@ -72,8 +72,7 @@ public class CaseMatchingService {
                 .replace(":optionalAliasesToNameQuery", optionalAliasesToNameQuery)
                 .replace(":optionalAliasesToAliasesQuery", optionalAliasesToAliasesQuery);
 
-        List<CaseMatch> matched = runQuery(caseType, criteria, jsonQuery);
-        return matched;
+        return runQuery(caseType, criteria, jsonQuery);
     }
 
     public List<CaseMatch> findCases(CaseType caseType, CaseMatchingCriteria criteria) {
