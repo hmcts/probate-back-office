@@ -19,5 +19,6 @@ ccd_baseUrl = "http://ccd-data-store-api-sprod.service.core-compute-sprod.intern
 fee_api_url = "http://fees-register-api-sprod.service.core-compute-sprod.internal"
 evidence_management_host = "http://dm-store-sprod.service.core-compute-sprod.internal"
 send_letter_base_url = "http://rpe-send-letter-service-sprod.service.core-compute-sprod.internal"
+ccd_data_store_api = "http://ccd-data-store-api-sprod.service.core-compute-sprod.internal"
 asp_name = "probate-sprod"
 asp_rg = "probate-sprod"

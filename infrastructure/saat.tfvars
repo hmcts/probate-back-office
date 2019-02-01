@@ -19,5 +19,6 @@ ccd_baseUrl = "http://ccd-data-store-api-saat.service.core-compute-saat.internal
 fee_api_url = "http://fees-register-api-saat.service.core-compute-saat.internal"
 evidence_management_host = "http://dm-store-saat.service.core-compute-saat.internal"
 send_letter_base_url = "http://rpe-send-letter-service-saat.service.core-compute-saat.internal"
+ccd_data_store_api = "http://ccd-data-store-api-saat.service.core-compute-saat.internal"
 asp_name = "probate-saat"
 asp_rg = "probate-saat"
