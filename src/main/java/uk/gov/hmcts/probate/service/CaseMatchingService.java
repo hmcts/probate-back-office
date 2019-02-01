@@ -18,6 +18,7 @@ import uk.gov.hmcts.probate.model.criterion.CaseMatchingCriteria;
 import uk.gov.hmcts.probate.service.evidencemanagement.header.HttpHeadersFactory;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -130,7 +131,7 @@ public class CaseMatchingService {
             matchedCases = restTemplate.postForObject(uri, entity, MatchedCases.class);
         } catch (HttpClientErrorException e) {
             appInsights.trackEvent(REST_CLIENT_EXCEPTION, e.getMessage());
-            throw new CaseMatchingException(e.getStatusCode(), e.getMessage());
+            return new ArrayList<>();
         }
 
         appInsights.trackEvent(REQUEST_SENT, uri.toString());
