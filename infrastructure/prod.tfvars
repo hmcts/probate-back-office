@@ -23,5 +23,6 @@ ccd_baseUrl = "http://ccd-data-store-api-prod.service.core-compute-prod.internal
 fee_api_url = "https://fees-register-api.platform.hmcts.net"
 evidence_management_host = "http://dm-store-prod.service.core-compute-prod.internal"
 send_letter_base_url = "http://rpe-send-letter-service-prod.service.core-compute-prod.internal"
+ccd_data_store_api = "http://ccd-data-store-api-prod.service.core-compute-prod.internal"
 asp_name = "probate-prod-asp-prod-asp"
 asp_rg = "mgmt-asp-prod"
