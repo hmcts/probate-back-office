@@ -35,13 +35,14 @@ public class SecurityConfiguration {
         @Override
         protected void configure(HttpSecurity http) throws Exception {
             http
-                .requestMatchers()
-                .antMatchers("/legacy/**")
-                .and()
-                .addFilter(filter)
-                .csrf().disable()
-                .authorizeRequests()
-                .anyRequest().authenticated();
+                    .requestMatchers()
+                    .antMatchers("/legacy/**")
+                    .antMatchers("/case-matching/**")
+                    .and()
+                    .addFilter(filter)
+                    .csrf().disable()
+                    .authorizeRequests()
+                    .anyRequest().authenticated();
         }
     }
 
@@ -69,20 +70,20 @@ public class SecurityConfiguration {
             filter.setAuthenticationManager(authenticationManager());
 
             http.exceptionHandling()
-                .authenticationEntryPoint(authenticationExceptionHandler);
+                    .authenticationEntryPoint(authenticationExceptionHandler);
 
             http.addFilter(filter)
-                .csrf().disable()
-                .formLogin().disable()
-                .logout().disable()
-                .authorizeRequests()
-                .antMatchers("/swagger-ui.html").permitAll()
-                .antMatchers("/swagger-resources/**").permitAll()
-                .antMatchers("/webjars/springfox-swagger-ui/**").permitAll()
-                .antMatchers("/v2/api-docs").permitAll()
-                .antMatchers("/health").permitAll()
-                .antMatchers("/info").permitAll()
-                .anyRequest().authenticated();
+                    .csrf().disable()
+                    .formLogin().disable()
+                    .logout().disable()
+                    .authorizeRequests()
+                    .antMatchers("/swagger-ui.html").permitAll()
+                    .antMatchers("/swagger-resources/**").permitAll()
+                    .antMatchers("/webjars/springfox-swagger-ui/**").permitAll()
+                    .antMatchers("/v2/api-docs").permitAll()
+                    .antMatchers("/health").permitAll()
+                    .antMatchers("/info").permitAll()
+                    .anyRequest().authenticated();
         }
     }
 }
