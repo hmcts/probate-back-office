@@ -1,0 +1,5 @@
+{
+  "waitForText" : "Case List",
+  "pageUrl": "/list/case",
+  "locator": "a[href=\"\/create\/case\"]"
+}

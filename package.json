@@ -1,0 +1,48 @@
+{
+  "name": "BackOffice",
+  "description": "End to End test for Probate Back Office",
+  "version": "1.0.0",
+  "private": true,
+  "engines": {
+    "node": ">=8.9"
+  },
+  "scripts": {
+    "test-e2e": "NODE_PATH=. node ./node_modules/codeceptjs/bin/codecept.js run -c ./src/test/end-to-end/ --steps",
+    "test-crossbrowser-e2e": "NODE_PATH=. codeceptjs run -c test/end-to-end/saucelabs.conf.js --steps",
+    "test:fullfunctional": "NODE_PATH=. node ./node_modules/codeceptjs/bin/codecept.js run-multiple parallel -c ./test/end-to-end/ --steps --reporter mochawesome"
+  },
+  "dependencies": {
+    "require-directory": "^2.1.1"
+  },
+  "devDependencies": {
+    "chai": "^4.1.0",
+    "chai-string": "^1.5.0",
+    "chai-http": "^4.0.0",
+    "codeceptjs": "^1.4.6",
+    "eslint": "4.1.1 ",
+    "eslint-plugin-mocha": "^4.8.0",
+    "istanbul": "^0.4.5",
+    "mocha": "^2.5.3",
+    "mocha-jenkins-reporter": "^0.3.8",
+    "mochawesome": "^2.0.0",
+    "nock": "^9.3.0",
+    "nodemon": "^1.11.0",
+    "nsp": "^2.6.2",
+    "pa11y": "^4.13.2",
+    "phantomjs-prebuilt": "^2.1.13",
+    "proxyquire": "^1.7.11",
+    "puppeteer": "^1.4.0",
+    "rewire": "^4.0.1",
+    "selenium-standalone": "^5.7.2",
+    "sinon": "^1.17.5",
+    "sinon-chai": "^2.8.0",
+    "sonar-scanner": "^1.0.1",
+    "sonarqube-scanner": "^1.1.0",
+    "superagent-proxy": "^1.0.2",
+    "supertest": "^2.0.1",
+    "unirest": "^0.5.1",
+    "uuid": "^3.1.0",
+    "watch": "^1.0.1",
+    "when": "^3.7.7"
+  }
+}

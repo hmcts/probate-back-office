@@ -1,0 +1,15 @@
+{
+  "waitForText" : "Create Case",
+  "pageUrl": "/create/case",
+  "lists": { "list1":  {"id": "#cc-jurisdiction",
+                        "text": "Manage probate applications"
+                       },
+             "list2":  {"id": "#cc-case-type",
+                        "text": "Will lodgement"
+                       },
+             "list3":  {"id": "#cc-event",
+                        "text": "Create a will lodgement"
+                       }
+  },
+  "locator": ".button"
+}
