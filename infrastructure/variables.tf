@@ -93,6 +93,10 @@ variable "fee_api_url" {
   type = "string"
 }
 
+variable "ccd_data_store_api" {
+  type = "string"
+}
+
 variable "log_level" {
   type = "string"
 }
