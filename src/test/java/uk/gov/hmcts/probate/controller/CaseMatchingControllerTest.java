@@ -73,8 +73,7 @@ public class CaseMatchingControllerTest {
 
     @Before
     public void setUp() {
-        doReturn(new ArrayList<>()).when(caseMatchingService).findMatches(eq(GRANT_OF_REPRESENTATION), any(CaseMatchingCriteria.class));
-        doReturn(new ArrayList<>()).when(caseMatchingService).findMatches(eq(CAVEAT), any(CaseMatchingCriteria.class));
+        doReturn(new ArrayList<>()).when(caseMatchingService).findMatches(any(), any(CaseMatchingCriteria.class));
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
     }
 

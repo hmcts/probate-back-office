@@ -27,6 +27,7 @@ import static org.elasticsearch.index.query.Operator.AND;
 import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
 import static org.elasticsearch.index.query.QueryBuilders.multiMatchQuery;
 import static org.elasticsearch.index.query.QueryBuilders.rangeQuery;
+import static org.elasticsearch.index.query.QueryBuilders.termQuery;
 import static uk.gov.hmcts.probate.insights.AppInsightsEvent.REQUEST_SENT;
 import static uk.gov.hmcts.probate.insights.AppInsightsEvent.REST_CLIENT_EXCEPTION;
 
@@ -98,7 +99,7 @@ public class CaseMatchingService {
                 .forEach(query::must);
 
         ofNullable(criteria.getDeceasedDateOfBirthRaw())
-                .ifPresent(date -> filter.must(rangeQuery(DECEASED_DOB).gte(date.minusDays(3)).lte(date.plusDays(3))));
+                .ifPresent(date -> filter.must(termQuery(DECEASED_DOB, date)));
 
         ofNullable(criteria.getDeceasedDateOfDeathRaw())
                 .ifPresent(date -> filter.must(rangeQuery(DECEASED_DOD).gte(date.minusDays(3)).lte(date.plusDays(3))));

@@ -96,10 +96,9 @@
                     }
                   },
                   {
-                    "range": {
+                    "term": {
                       "data.deceasedDateOfBirth": {
-                        "gte": ":deceasedDateOfBirth||-3d",
-                        "lte": ":deceasedDateOfBirth||+3d"
+                        "value": ":deceasedDateOfBirth"
                       }
                     }
                   },
