@@ -1,6 +1,7 @@
 {
   "common": {
-    "locator": "div.form-group.form-group-related > button[type=\"submit\"]"
+    "locator": "div.form-group.form-group-related > button[type=\"submit\"]",
+    "enterUKpostcodeLink": ".manual-link"
   },
   "page1": {
     "waitForText": "General details",
@@ -64,9 +65,6 @@
           "2": "deceased_alias_name2"
         }
       },
-      "UKpostcode": {
-        "link": ".manual-link"
-      },
       "address": {
         "line1": "1",
         "line2": "Buckingham Palace",
@@ -78,6 +76,36 @@
       },
       "email": "test@test.com"
     }
+  },
+  "page3": {
+    "common": {
+      "address": {
+        "line1": "1",
+        "line2": "Buckingham Palace",
+        "line3": "The place to be",
+        "town": "London",
+        "county": "London",
+        "country": "United Kingdom",
+        "postcode": "SW1A 1AA"
+      },
+      "addAnotherExecutor": "#additionalExecutorList div button[type=\"button\"]"
+    },
+    "waitForText": "Executor's details",
+    "url": "create/case/PROBATE/WillLodgement/createWillLodgment/createWillLodgmentcreateWillLodgmentPage3",
+    "executorList": [
+      {
+        "title": "Mr",
+        "firstnames": "executor1_fn",
+        "lastnames": "executor1_ln",
+        "email": "executor1@test.com"
+      },
+      {
+        "title": "Dr",
+        "firstnames": "executor2_fn",
+        "lastnames": "executor2_ln",
+        "email": "executor2@test.com"
+      }
+    ]
   }
 }
 

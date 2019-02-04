@@ -1,0 +1,5 @@
+{
+  "waitForText" : "Manage probate application",
+  "pageUrl": "case/PROBATE/WillLodgement",
+  "locator": "div.form-group.form-group-related > button[type=\"submit\"]"
+}

@@ -2,6 +2,7 @@
 
 //const taskListContent = require('app/resources/en/translation/tasklist');
 const TestConfigurator = new (require('src/test/end-to-end/helpers/TestConfigurator'))();
+const createCaseConfig = require('src/test/end-to-end/pages/createCase/createCaseConfig.json');
 
 Feature('Back Office - Will Lodgement for a Personal Applicant').retry(TestConfigurator.getRetryFeatures());
 
@@ -26,9 +27,12 @@ Scenario(TestConfigurator.idamInUseText('Multiple Executors'), function* (I) {
     // IdAM
    I.authenticateWithIdamIfAvailable();
    I.selectNewCase();
-   I.selectCaseTypeOptions();
+   I.selectCaseTypeOptions(createCaseConfig.lists.list1.text, createCaseConfig.lists.list2.text, createCaseConfig.lists.list3.text);
    I.enterWillLodgementPage1();
    I.enterWillLodgementPage2();
+   I.enterWillLodgementPage3();
+   I.checkMyAnswers();
+   I.willLodgementSummary();
    /*
         I.enterGrossAndNet('205', '600000', '300000');
     } else {

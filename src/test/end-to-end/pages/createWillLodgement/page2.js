@@ -28,13 +28,14 @@ module.exports = function () {
 
     I.click(`#deceasedAnyOtherNames-${createWillLodgementConfig.page2.testator.alias.hasAlias}`);
 
-     forEach(createWillLodgementConfig.page2.testator.alias.names,function(value,key) {
-         I.click(createWillLodgementConfig.page2.testator.alias.addAliasButton);
-         I.fillField('#deceasedFullAliasNameList_' + (parseInt(key)-1) + '_FullAliasName', value);
-     });
+    forEach(createWillLodgementConfig.page2.testator.alias.names,function(value,key) {
+        let index = parseInt(key) - 1;
+        I.click(createWillLodgementConfig.page2.testator.alias.addAliasButton);
+        I.fillField(`#deceasedFullAliasNameList_${index}_FullAliasName`, value);
+    });
 
 
-    I.click(createWillLodgementConfig.page2.testator.UKpostcode.link);
+    I.click(createWillLodgementConfig.common.enterUKpostcodeLink);
     I.fillField('#AddressLine1', createWillLodgementConfig.page2.testator.address.line1);
     I.fillField('#AddressLine2', createWillLodgementConfig.page2.testator.address.line2);
     I.fillField('#AddressLine3', createWillLodgementConfig.page2.testator.address.line3);
