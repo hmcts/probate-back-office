@@ -18,8 +18,9 @@ public class IdamData {
 
     private String password;
 
-    @JsonProperty("user_group_name")
-    private String userGroupName;
+    private int levelOfAccess;
+
+    private UserGroup userGroup;
 
     private List<Role> roles;
 }
