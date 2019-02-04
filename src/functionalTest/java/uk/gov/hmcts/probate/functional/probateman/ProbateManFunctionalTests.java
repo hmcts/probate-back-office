@@ -7,24 +7,26 @@ import io.restassured.http.ContentType;
 import io.restassured.http.Header;
 import io.restassured.http.Headers;
 import io.restassured.path.json.JsonPath;
-import net.serenitybdd.junit.runners.SerenityRunner;
+import net.serenitybdd.junit.runners.SerenityParameterizedRunner;
 import net.serenitybdd.rest.SerenityRest;
+import net.thucydides.junit.annotations.TestData;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.awaitility.Awaitility;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.skyscreamer.jsonassert.JSONAssert;
+import org.skyscreamer.jsonassert.JSONCompareMode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.test.context.jdbc.Sql;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 
 import javax.sql.DataSource;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -40,7 +42,7 @@ import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
-@RunWith(SerenityRunner.class)
+@RunWith(SerenityParameterizedRunner.class)
 public class ProbateManFunctionalTests extends IntegrationTestBase {
 
     @Value("${user.auth.provider.oauth2.url}")
@@ -56,6 +58,16 @@ public class ProbateManFunctionalTests extends IntegrationTestBase {
 
     private static final String ALIAS_REPLACE = "[ALIAS_REPLACE]";
 
+    private static final String ID_REPLACE = "[ID_REPLACE]";
+
+    private final String caseType;
+
+    private final String caseTypeFilename;
+
+    private final String legacyType;
+
+    private final String jsonFileName;
+
     private ObjectMapper objectMapper;
 
     private String email;
@@ -70,6 +82,29 @@ public class ProbateManFunctionalTests extends IntegrationTestBase {
     private List<Map> legacySearchResultRows;
 
     private Map<String, Object> requestMap;
+
+    private String deceasedForename;
+
+    private String deceasedSurname;
+
+    private String deceasedAlias;
+
+    public ProbateManFunctionalTests(String caseType, String caseTypeFilename, String legacyType, String jsonFileName) {
+        this.caseType = caseType;
+        this.caseTypeFilename = caseTypeFilename;
+        this.legacyType = legacyType;
+        this.jsonFileName = jsonFileName;
+    }
+
+    @TestData
+    public static Collection<Object[]> testData(){
+        return Arrays.asList(new Object[][]{
+            {"CAVEAT", "caveat", "CAVEAT", "expectedCaveat"},
+            {"GRANT_APPLICATION", "grant_application", "LEGACY APPLICATION", "expectedGrantApplicant"},
+            {"WILL_LODGEMENT", "wills", "WILL", "expectedWillLodgement"},
+            {"STANDING_SEARCH", "standing_search", "STANDING SEARCH", "expectedStandingSearch"}
+        });
+    }
 
     @Before
     public void setUp() throws JsonProcessingException {
@@ -110,90 +145,48 @@ public class ProbateManFunctionalTests extends IntegrationTestBase {
             .statusCode(204);
 
         headers = utils.getHeaders(email, PROBATEMAN_DB_PASS);
+
+        deceasedForename = RandomStringUtils.randomAlphanumeric(10) + "_FN";
+        deceasedSurname = RandomStringUtils.randomAlphanumeric(10) + "_SN";
+        deceasedAlias = RandomStringUtils.randomAlphanumeric(10) + "_ALIAS" + " " + RandomStringUtils.randomAlphanumeric(10);
     }
 
     @Test
-    @Sql(scripts = "/scripts/grant_application_insert.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/grant_application_clean_up.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
-    public void shouldGetGrantApplicationFromProbateMan() {
+    public void shouldViewProbateManCase() {
+        generateSqlAndExecute(deceasedForename, deceasedSurname, deceasedAlias, "/scripts/legacy_search_" + caseTypeFilename + "_insert.sql");
+
+        Map<String, Object> dbResultsMap = retrieveRecordFromDb(deceasedForename, deceasedSurname, deceasedAlias, "/scripts/legacy_search_" + caseTypeFilename + "_query.sql");
+        Long id = (Long) dbResultsMap.get("id");
+
+        String expectedJSON = addVariablesToScript(deceasedForename, deceasedSurname, deceasedAlias, "/json/probateman/" + jsonFileName + ".json");
+
         String actualJson = SerenityRest.given()
             .relaxedHTTPSValidation()
             .headers(headers)
             .when()
-            .get("/probateManTypes/GRANT_APPLICATION/cases/999")
-            .then()
-            .assertThat()
-            .statusCode(200)
-            .extract().body().asString();
-        JSONAssert.assertEquals(utils.getJsonFromFile("/probateman/grantApplicant.json"), actualJson, true);
-    }
-
-    @Test
-    @Sql(scripts = "/scripts/caveat_insert.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/caveat_clean_up.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
-    public void shouldGetCaveatFromProbateMan() {
-        String actualJson = SerenityRest.given()
-            .relaxedHTTPSValidation()
-            .headers(headers)
-            .when()
-            .get("/probateManTypes/CAVEAT/cases/999")
-            .then()
-            .assertThat()
-            .statusCode(200)
-            .extract().body().asString();
-        JSONAssert.assertEquals(utils.getJsonFromFile("/probateman/caveat.json"), actualJson, true);
-    }
-
-    @Test
-    @Sql(scripts = "/scripts/standing_search_insert.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/standing_search_clean_up.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
-    public void shouldGetStandingSearchFromProbateMan() {
-        String actualJson = SerenityRest.given()
-            .relaxedHTTPSValidation()
-            .headers(headers)
-            .when()
-            .get("/probateManTypes/STANDING_SEARCH/cases/999")
-            .then()
-            .assertThat()
-            .statusCode(200).extract().jsonPath().prettyPrint();
-        JSONAssert.assertEquals(utils.getJsonFromFile("/probateman/standingSearch.json"), actualJson, true);
-    }
-
-    @Test
-    @Sql(scripts = "/scripts/wills_insert.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "/scripts/wills_clean_up.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
-    public void shouldGetWillLodgementFromProbateman() {
-        String actualJson = SerenityRest.given()
-            .relaxedHTTPSValidation()
-            .headers(headers)
-            .when()
-            .get("/probateManTypes/WILL_LODGEMENT/cases/999")
+            .get("/probateManTypes/" + caseType + "/cases/" + id.toString())
             .then()
             .assertThat()
             .statusCode(200).extract().body().asString();
-        JSONAssert.assertEquals(utils.getJsonFromFile("/probateman/willLodgement.json"), actualJson, true);
+        JSONAssert.assertEquals(expectedJSON, actualJson, JSONCompareMode.LENIENT);
     }
 
     @Test
     public void shouldDoLegacySearch() throws Exception {
-        String forename = RandomStringUtils.randomAlphanumeric(10) + "_FN";
-        String surname = RandomStringUtils.randomAlphanumeric(10) + "_SN";
-        String alias = RandomStringUtils.randomAlphanumeric(10) + "_ALIAS";
+        generateSqlAndExecute(deceasedForename, deceasedSurname, deceasedAlias, "/scripts/legacy_search_" + caseTypeFilename + "_insert.sql");
 
-        generateSqlAndExecute(forename, surname, alias, "/scripts/legacy_search_caveat_insert.sql");
+        final String legacySearchQuery = getRequestJson(deceasedForename, deceasedSurname);
 
-        final String legacySearchQuery = getRequestJson(forename, surname);
-        
         await().until(() -> getLegacySearchRows(legacySearchQuery));
         assertThat(legacySearchResultRows, hasSize(1));
         Map<String, Object> legacySearchResultRow = ((Map<String, Object>) legacySearchResultRows.get(0).get("value"));
 
         String id = (String) legacySearchResultRow.get("id");
         assertThat(legacySearchResultRow.get("id"), notNullValue());
-        assertThat(legacySearchResultRow.get("aliases"), equalTo(alias));
-        assertThat(legacySearchResultRow.get("fullName"), equalTo(forename + " " + surname));
-        assertThat(legacySearchResultRow.get("type"), equalTo("Legacy CAVEAT"));
-        assertThat((String) legacySearchResultRow.get("legacyCaseViewUrl"), containsString("/print/probateManTypes/CAVEAT/cases/" + id));
+        assertThat(legacySearchResultRow.get("aliases"), equalTo(deceasedAlias));
+        assertThat(legacySearchResultRow.get("fullName"), equalTo(deceasedForename + " " + deceasedSurname));
+        assertThat(legacySearchResultRow.get("type"), equalTo("Legacy " + legacyType));
+        assertThat((String) legacySearchResultRow.get("legacyCaseViewUrl"), containsString("/print/probateManTypes/" + caseType + "/cases/" + id));
         assertThat(legacySearchResultRow.get("dob"), equalTo("1900-01-01"));
         assertThat(legacySearchResultRow.get("dod"), equalTo("2018-01-01"));
 
@@ -214,12 +207,20 @@ public class ProbateManFunctionalTests extends IntegrationTestBase {
             .jsonPath();
         jsonPath.prettyPrint();
 
-        Map<String, Object> dbResultsMap = jdbcTemplate.queryForMap("SELECT * FROM CAVEATS_FLAT WHERE ID=" + id);
+        checkDbRecordIsUpdated(deceasedForename, deceasedSurname, deceasedAlias, "/scripts/legacy_search_" + caseTypeFilename + "_query.sql");
+        generateSqlAndExecute(deceasedForename, deceasedSurname, deceasedAlias, "/scripts/legacy_search_" + caseTypeFilename + "_clean_up.sql");
+    }
+
+    private void checkDbRecordIsUpdated(String forename, String surname, String alias, String sqlFile) {
+        Map<String, Object> dbResultsMap = retrieveRecordFromDb(forename, surname, alias, sqlFile);
         String ccdCaseNo = (String) dbResultsMap.get("ccd_case_no");
         assertThat(ccdCaseNo, not(isEmptyOrNullString()));
         assertThat(dbResultsMap.get("dnm_ind"), equalTo("Y"));
+    }
 
-        generateSqlAndExecute(forename, surname, alias, "/scripts/legacy_search_caveat_clean_up.sql");
+    private Map<String, Object> retrieveRecordFromDb(String forename, String surname, String alias, String sqlFile) {
+        String sql = addVariablesToScript(forename, surname, alias, sqlFile);
+        return jdbcTemplate.queryForMap(sql);
     }
 
     private String getRequestJson(String forename, String surname) {
@@ -229,11 +230,16 @@ public class ProbateManFunctionalTests extends IntegrationTestBase {
     }
 
     private void generateSqlAndExecute(String forename, String surname, String alias, String sqlFile) {
+        String sql = addVariablesToScript(forename, surname, alias, sqlFile);
+        jdbcTemplate.execute(sql);
+    }
+
+    private String addVariablesToScript(String forename, String surname, String alias, String sqlFile) {
         String sql = utils.getStringFromFile(sqlFile);
         sql = sql.replace(FORENAME_REPLACE, forename);
         sql = sql.replace(SURNAME_REPLACE, surname);
         sql = sql.replace(ALIAS_REPLACE, alias);
-        jdbcTemplate.execute(sql);
+        return sql;
     }
 
     private boolean getLegacySearchRows(String legacySearchQuery) {
