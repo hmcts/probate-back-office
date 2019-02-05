@@ -162,7 +162,7 @@ public class CaseMatchingControllerTest {
 
 
         verify(legacyImportService).importLegacyRows(caseMatchListCaptor.capture());
-        assertEquals(caseMatchListCaptor.getValue().size(), 1);
+        assertEquals(1,caseMatchListCaptor.getValue().size());
         CaseMatch caseMatchFound = caseMatchListCaptor.getValue().get(0).getValue();
         assertEquals("1", caseMatchFound.getId());
         assertEquals("DecAN1 DecAN2", caseMatchFound.getAliases());
