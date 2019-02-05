@@ -1,7 +1,8 @@
 'use strict';
 
 const testConfig = require('src/test/config.js');
-const createWillLodgementConfig = require('./createWillLodgementConfig.json');
+//const createWillLodgementConfig = require('./createWillLodgementConfig.json');
+const createWillLodgementConfig = require('./createWillLodgementFastConfig.json');
 const {forEach} = require('lodash');
 
 module.exports = function () {

@@ -1,0 +1,27 @@
+{
+  "waitForText" : "Manage probate application",
+  "pageUrl": "case/PROBATE/WillLodgement",
+  "tabsList": [
+    {
+      "tabName": "History",
+      "fields": [
+        "Date",
+        "Author",
+        "End state",
+        "Event",
+        "Summary",
+        "Comment"
+      ]
+    },
+    {
+      "tabName": "General details"
+    },
+    {
+      "tabName": "Testator's details"
+    },
+    {
+      "tabName": "Executor's details"
+    }
+  ],
+  "locator": "div.form-group.form-group-related > button[type=\"submit\"]"
+}

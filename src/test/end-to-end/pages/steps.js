@@ -15,6 +15,6 @@ module.exports = function () {
         enterWillLodgementPage2: steps.createWillLodgement.page2,
         enterWillLodgementPage3: steps.createWillLodgement.page3,
         checkMyAnswers: steps.checkYourAnswers.checkYourAnswers,
-        willLodgementSummary: steps.summaryWillLodgement.summaryWillLodgement
+        seeCaseDetails: steps.caseDetails.caseDetails
     });
 };

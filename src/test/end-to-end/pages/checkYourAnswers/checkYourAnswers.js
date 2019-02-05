@@ -9,7 +9,7 @@ module.exports = function () {
         I.waitForText(checkYourAnswersConfig.waitForText, testConfig.TestTimeToWaitForText);
 
         I.fillField('#field-trigger-summary', checkYourAnswersConfig.eventSummary);
-        I.fillField('#field-trigger-description', checkYourAnswersConfig.eventdescription);
+        I.fillField('#field-trigger-description', checkYourAnswersConfig.eventDescription);
 
         I.waitForNavigationToComplete(checkYourAnswersConfig.locator);
 };

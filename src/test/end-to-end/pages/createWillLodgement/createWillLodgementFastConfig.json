@@ -1,0 +1,105 @@
+{
+  "common": {
+    "locator": "div.form-group.form-group-related > button[type=\"submit\"]",
+    "enterUKpostcodeLink": ".manual-link"
+  },
+  "page1": {
+    "waitForText": "General details",
+    "url": "create/case/PROBATE/WillLodgement/createWillLodgment/createWillLodgmentcreateWillLodgmentPage1",
+    "lists": {
+      "list1": {
+        "id": "#registryLocation",
+        "text": "Liverpool"
+      },
+      "list2": {
+        "id": "#lodgementType",
+        "text": "Safe custody"
+      }
+    },
+    "lodgedDate": {
+      "day": "03",
+      "month": "03",
+      "year": "1970"
+    },
+    "willDate": {
+      "day": "01",
+      "month": "01",
+      "year": "1950"
+    },
+    "codicils": {
+      "codicilDate": {
+        "day": "02",
+        "month": "02",
+        "year": "1962"
+      },
+      "numberOfCodicils": "3"
+    },
+    "jointWill": "Yes"
+  },
+  "page2": {
+    "waitForText": "Testator's details",
+    "url": "create/case/PROBATE/WillLodgement/createWillLodgment/createWillLodgmentcreateWillLodgmentPage2",
+    "testator": {
+      "firstnames": "testator_fn",
+      "lastnames": "testator_ln",
+      "genderList": {
+        "id": "#deceasedGender",
+        "text": "Male"
+      },
+      "dateOfBirth": {
+        "day": "01",
+        "month": "01",
+        "year": "1930"
+      },
+      "dateOfDeath": {
+        "day": "01",
+        "month": "01",
+        "year": "2017"
+      },
+      "typeOfDeath": "sleeping",
+      "alias": {
+        "hasAlias": "Yes",
+        "addAliasButton": "#deceasedFullAliasNameList div button[type=\"button\"]",
+        "names": {
+          "1": "deceased_alias_name1",
+          "2": "deceased_alias_name2"
+        }
+      },
+      "address": {
+        "line1": "1",
+        "line2": "Buckingham Palace",
+        "line3": "The place to be",
+        "town": "London",
+        "county": "London",
+        "country": "United Kingdom",
+        "postcode": "SW1A 1AA"
+      },
+      "email": "test@test.com"
+    }
+  },
+  "page3": {
+    "common": {
+      "address": {
+        "line1": "1",
+        "line2": "Buckingham Palace",
+        "line3": "The place to be",
+        "town": "London",
+        "county": "London",
+        "country": "United Kingdom",
+        "postcode": "SW1A 1AA"
+      },
+      "addAnotherExecutor": "#additionalExecutorList div button[type=\"button\"]"
+    },
+    "waitForText": "Executor's details",
+    "url": "create/case/PROBATE/WillLodgement/createWillLodgment/createWillLodgmentcreateWillLodgmentPage3",
+    "executorList": [
+      {
+        "title": "Mr",
+        "firstnames": "executor1_fn",
+        "lastnames": "executor1_ln",
+        "email": "executor1@test.com"
+      }
+    ]
+  }
+}
+
