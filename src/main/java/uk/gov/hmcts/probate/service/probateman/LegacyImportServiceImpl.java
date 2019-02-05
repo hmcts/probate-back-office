@@ -35,7 +35,7 @@ public class LegacyImportServiceImpl implements LegacyImportService {
     @Override
     public List<CaseMatch> importLegacyRows(List<CollectionMember<CaseMatch>> rows) {
         List<CaseMatch> importableRows = rows.stream().map(CollectionMember::getValue)
-                .filter(row -> canImportRow(row))
+                .filter(this::canImportRow)
                 .collect(Collectors.toList());
 
         List<CaseMatch> updatedRows = new ArrayList<>();
