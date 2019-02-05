@@ -139,9 +139,9 @@ public class NotificationService {
     private String getEmail(CaseData caseData) {
         switch (caseData.getApplicationType()) {
             case SOLICITOR:
-                return caseData.getSolsSolicitorEmail();
+                return caseData.getSolsSolicitorEmail().toLowerCase();
             case PERSONAL:
-                return caseData.getPrimaryApplicantEmailAddress();
+                return caseData.getPrimaryApplicantEmailAddress().toLowerCase();
             default:
                 throw new BadRequestException("Unsupported application type", null);
         }

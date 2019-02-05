@@ -45,10 +45,7 @@ public class CaseMatch implements Serializable {
 
         final Object thisId = this.getId();
         final Object otherId = other.getId();
-        if ((thisId != null && otherId != null && thisId.equals(otherId))) {
-            return true;
-        }
-        return false;
+        return (thisId != null && otherId != null && thisId.equals(otherId));
     }
 
     protected boolean canEqual(final Object other) {
@@ -58,8 +55,8 @@ public class CaseMatch implements Serializable {
     public int hashCode() {
         final int prime = 59;
         int result = 1;
-        final Object $id = this.getId();
-        result = result * prime + ($id == null ? 43 : $id.hashCode());
+        final Object id1 = this.getId();
+        result = result * prime + (id1 == null ? 43 : id1.hashCode());
         return result;
     }
 }

@@ -80,11 +80,20 @@ public class CallbackResponseTransformer {
 
     public CallbackResponse addDocuments(CallbackRequest callbackRequest, List<Document> documents) {
         documents.forEach(document -> documentTransformer.addDocument(callbackRequest, document));
-
         ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), false);
+
+        if (documents.isEmpty()) {
+            responseCaseDataBuilder.boEmailDocsReceivedNotificationRequested(
+                    callbackRequest.getCaseDetails().getData().getBoEmailDocsReceivedNotification());
+
+        }
         if (documentTransformer.hasDocumentWithType(documents, DIGITAL_GRANT)) {
-            responseCaseDataBuilder.boEmailGrantIssuedNotificationRequested(
-                    callbackRequest.getCaseDetails().getData().getBoEmailGrantIssuedNotification());
+            responseCaseDataBuilder
+                    .boEmailGrantIssuedNotificationRequested(
+                            callbackRequest.getCaseDetails().getData().getBoEmailGrantIssuedNotification())
+                    .boSendToBulkPrintRequested(
+                            callbackRequest.getCaseDetails().getData().getBoSendToBulkPrint());
+
         }
         if (documentTransformer.hasDocumentWithType(documents, SENT_EMAIL)) {
             responseCaseDataBuilder.boEmailDocsReceivedNotificationRequested(
@@ -292,9 +301,7 @@ public class CallbackResponseTransformer {
             updateCaseBuilder(caseData, builder);
         }
 
-        if (isPaperForm(caseData)) {
-            builder = getCaseCreatorResponseCaseBuilder(caseData, builder);
-        }
+        builder = getCaseCreatorResponseCaseBuilder(caseData, builder);
 
 
         return builder;

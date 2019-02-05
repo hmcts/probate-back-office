@@ -73,7 +73,7 @@ public class ProbateManController {
         List<CaseMatch> rows = legacyImportService.importLegacyRows(callbackRequest.getCaseDetails().getData().getLegacySearchResultRows());
 
         ResponseCaseData responseCaseData = ResponseCaseData.builder()
-                .legacySearchResultRows(rows.stream().map(row -> new CollectionMember<CaseMatch>(row)).collect(Collectors.toList()))
+                .legacySearchResultRows(rows.stream().map(CollectionMember::new).collect(Collectors.toList()))
                 .build();
 
         CallbackResponse callbackResponse = CallbackResponse.builder()
