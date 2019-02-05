@@ -22,7 +22,8 @@ After(() => {
 });
 */
 
-Scenario(TestConfigurator.idamInUseText('Multiple Executors'), function* (I) {
+
+Scenario(TestConfigurator.idamInUseText('Multiple Executors'), async function (I) {
 
     // IdAM
    I.authenticateWithIdamIfAvailable();
@@ -32,7 +33,10 @@ Scenario(TestConfigurator.idamInUseText('Multiple Executors'), function* (I) {
    I.enterWillLodgementPage2();
    I.enterWillLodgementPage3();
    I.checkMyAnswers();
-   I.willLodgementSummary();
+
+   let url = await I.grabCurrentUrl();
+   const caseRef = url.split('/').pop().match(/.{4}/g).join('-');
+   I.seeCaseDetails(caseRef);
    /*
         I.enterGrossAndNet('205', '600000', '300000');
     } else {
