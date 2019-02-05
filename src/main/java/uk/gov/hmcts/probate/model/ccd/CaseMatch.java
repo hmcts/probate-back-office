@@ -45,7 +45,7 @@ public class CaseMatch implements Serializable {
 
         final Object thisId = this.getId();
         final Object otherId = other.getId();
-        return (thisId != null && otherId != null && thisId.equals(otherId)) ? true : false;
+        return (thisId != null && otherId != null && thisId.equals(otherId));
     }
 
     protected boolean canEqual(final Object other) {
