@@ -19,5 +19,6 @@ ccd_baseUrl = "http://ccd-data-store-api-demo.service.core-compute-demo.internal
 fee_api_url = "http://fees-register-api-demo.service.core-compute-demo.internal"
 evidence_management_host = "http://dm-store-demo.service.core-compute-demo.internal"
 send_letter_base_url = "http://rpe-send-letter-service-demo.service.core-compute-demo.internal"
+ccd_data_store_api = "http://ccd-data-store-api-demo.service.core-compute-demo.internal"
 asp_name = "probate-demo"
 asp_rg = "probate-demo"

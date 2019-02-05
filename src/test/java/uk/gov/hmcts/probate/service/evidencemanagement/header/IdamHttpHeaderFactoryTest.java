@@ -48,13 +48,6 @@ public class IdamHttpHeaderFactoryTest {
     }
 
     @Test
-    public void getHttpHeader() {
-        HttpHeaders httpHeaders = underTest.getHttpHeader();
-
-        assertTrue(httpHeaders.containsKey("Authorization"));
-    }
-
-    @Test
     public void getAuthorizationHeaders() {
         HttpHeaders httpHeaders = underTest.getAuthorizationHeaders();
 
