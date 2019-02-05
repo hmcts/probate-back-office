@@ -59,7 +59,8 @@ public class StandingSearchData {
 
     private LocalDate expiryDate;
 
-    private final List<CollectionMember<CaseMatch>> caseMatches = new ArrayList<>();
+    @Builder.Default
+    private List<CollectionMember<CaseMatch>> caseMatches = new ArrayList<>();
 
     // EVENT = uploadDocument
 

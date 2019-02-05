@@ -84,7 +84,7 @@ public class CaseMatchingController {
     }
 
     @PostMapping(path = "/import-legacy-from-grant-flow", consumes = APPLICATION_JSON_UTF8_VALUE, produces = {APPLICATION_JSON_VALUE})
-    public ResponseEntity<CallbackResponse> doImport(@RequestBody CallbackRequest callbackRequest,
+    public ResponseEntity<CallbackResponse> doImportFromGrant(@RequestBody CallbackRequest callbackRequest,
                                                      HttpServletRequest request) {
 
         log.info("Performing import-legacy-from-grant-flow");
@@ -92,5 +92,40 @@ public class CaseMatchingController {
                 .importLegacyRows(callbackRequest.getCaseDetails().getData().getCaseMatches());
 
         return ResponseEntity.ok(callbackResponseTransformer.addMatches(callbackRequest, rows));
+    }
+
+    @PostMapping(path = "/import-legacy-from-caveat-flow", consumes = APPLICATION_JSON_UTF8_VALUE, produces = {APPLICATION_JSON_VALUE})
+    public ResponseEntity<CaveatCallbackResponse> doImportFromCaveat(@RequestBody CaveatCallbackRequest callbackRequest,
+                                                     HttpServletRequest request) {
+
+        log.info("import-legacy-from-caveat-flow");
+        List<CaseMatch> rows = legacyImportService
+                .importLegacyRows(callbackRequest.getCaseDetails().getData().getCaseMatches());
+
+        return ResponseEntity.ok(caveatCallbackResponseTransformer.addMatches(callbackRequest, rows));
+    }
+
+    @PostMapping(path = "/import-legacy-from-standing-search-flow",
+            consumes = APPLICATION_JSON_UTF8_VALUE, produces = {APPLICATION_JSON_VALUE})
+    public ResponseEntity<StandingSearchCallbackResponse> doImportFromStandingSearch(
+            @RequestBody StandingSearchCallbackRequest callbackRequest, HttpServletRequest request) {
+
+        log.info("import-legacy-from-standing-search-flow");
+        List<CaseMatch> rows = legacyImportService
+                .importLegacyRows(callbackRequest.getCaseDetails().getData().getCaseMatches());
+
+        return ResponseEntity.ok(standingSearchCallbackResponseTransformer.addMatches(callbackRequest, rows));
+    }
+
+    @PostMapping(path = "/import-legacy-from-will-lodgement-flow",
+            consumes = APPLICATION_JSON_UTF8_VALUE, produces = {APPLICATION_JSON_VALUE})
+    public ResponseEntity<WillLodgementCallbackResponse> doImportFromWillLodgement(
+            @RequestBody WillLodgementCallbackRequest callbackRequest, HttpServletRequest request) {
+
+        log.info("import-legacy-from-will-lodgement-flow");
+        List<CaseMatch> rows = legacyImportService
+                .importLegacyRows(callbackRequest.getCaseDetails().getData().getCaseMatches());
+
+        return ResponseEntity.ok(willLodgementCallbackResponseTransformer.addMatches(callbackRequest, rows));
     }
 }
