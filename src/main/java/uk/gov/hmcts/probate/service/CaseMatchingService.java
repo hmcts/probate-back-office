@@ -121,7 +121,7 @@ public class CaseMatchingService {
     }
 
     private List<CaseMatch> runQuery(CaseType caseType, CaseMatchingCriteria criteria, String jsonQuery) {
-        log.debug("CaseMatchingService runQuery: " + jsonQuery);
+        log.info("CaseMatchingService runQuery: " + jsonQuery);
         URI uri = UriComponentsBuilder
                 .fromHttpUrl(ccdDataStoreAPIConfiguration.getHost() + ccdDataStoreAPIConfiguration.getCaseMatchingPath())
                 .queryParam(CASE_TYPE_ID, caseType.getCode())
