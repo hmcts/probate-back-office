@@ -9,10 +9,10 @@ module.exports = function (jurisdiction, caseType, event) {
         I.waitForText(createCaseConfig.waitForText, testConfig.TestTimeToWaitForText);
       //  I.amOnPage(createCaseConfig.pageUrl);
 
-        I.selectOption(createCaseConfig.lists.list1.id, jurisdiction);
         I.wait(10);
-        I.selectOption(createCaseConfig.lists.list2.id, caseType);
-        I.selectOption(createCaseConfig.lists.list3.id, event);
+        I.selectOption(createCaseConfig.list1_id, jurisdiction);
+        I.selectOption(createCaseConfig.list2_id, caseType);
+        I.selectOption(createCaseConfig.list3_id, event);
 
         I.waitForNavigationToComplete(createCaseConfig.locator);
 };

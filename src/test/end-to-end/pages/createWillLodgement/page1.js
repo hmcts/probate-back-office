@@ -1,35 +1,35 @@
 'use strict';
 
-const testConfig = require('src/test/config.js');
-const createWillLodgementConfig = require('./createWillLodgementConfig.json');
+const testConfig = require('src/test/config');
+const createWillLodgementConfig2 = require('./createWillLodgementFastConfig2');
 
 module.exports = function () {
 
     const I = this;
 
-    I.waitForText(createWillLodgementConfig.page1.waitForText, testConfig.TestTimeToWaitForText);
-  //  I.amOnPage(createWillLodgementConfig.pageUrl);
+    I.waitForText(createWillLodgementConfig2.page1_waitForText, testConfig.TestTimeToWaitForText);
+    //  I.amOnPage(createWillLodgementConfig2.pageUrl);
 
-    I.selectOption(createWillLodgementConfig.page1.lists.list1.id, createWillLodgementConfig.page1.lists.list1.text);
-    I.selectOption(createWillLodgementConfig.page1.lists.list2.id, createWillLodgementConfig.page1.lists.list2.text);
+    I.selectOption('#registryLocation', createWillLodgementConfig2.page1_list1_registry_location);
+    I.selectOption('#lodgementType', createWillLodgementConfig2.page1_list2_lodgement_type);
 
-    I.fillField('#lodgedDate-day',createWillLodgementConfig.page1.lodgedDate.day);
-    I.fillField('#lodgedDate-month',createWillLodgementConfig.page1.lodgedDate.month);
-    I.fillField('#lodgedDate-year',createWillLodgementConfig.page1.lodgedDate.year);
+    I.fillField('#lodgedDate-day', createWillLodgementConfig2.page1_lodgedDate_day);
+    I.fillField('#lodgedDate-month', createWillLodgementConfig2.page1_lodgedDate_month);
+    I.fillField('#lodgedDate-year', createWillLodgementConfig2.page1_lodgedDate_year);
 
-    I.fillField('#willDate-day',createWillLodgementConfig.page1.willDate.day);
-    I.fillField('#willDate-month',createWillLodgementConfig.page1.willDate.month);
-    I.fillField('#willDate-year',createWillLodgementConfig.page1.willDate.year);
+    I.fillField('#willDate-day', createWillLodgementConfig2.page1_willDate_day);
+    I.fillField('#willDate-month', createWillLodgementConfig2.page1_willDate_month);
+    I.fillField('#willDate-year', createWillLodgementConfig2.page1_willDate_year);
 
-    I.fillField('#codicilDate-day',createWillLodgementConfig.page1.codicils.codicilDate.day);
-    I.fillField('#codicilDate-month',createWillLodgementConfig.page1.codicils.codicilDate.month);
-    I.fillField('#codicilDate-year',createWillLodgementConfig.page1.codicils.codicilDate.year);
+    I.fillField('#codicilDate-day', createWillLodgementConfig2.page1_codicilDate_day);
+    I.fillField('#codicilDate-month', createWillLodgementConfig2.page1_codicilDate_month);
+    I.fillField('#codicilDate-year', createWillLodgementConfig2.page1_codicilDate_year);
 
-    I.fillField('#numberOfCodicils', createWillLodgementConfig.page1.codicils.numberOfCodicils);
+    I.fillField('#numberOfCodicils', createWillLodgementConfig2.page1_numberOfCodicils);
 
-    I.click(`#jointWill-${createWillLodgementConfig.page1.jointWill}`);
+    I.click(`#jointWill-${createWillLodgementConfig2.page1_jointWill}`);
 
-    //I.waitForEnabled(createWillLodgementConfig.page1.locator, testConfig.TestTimeToWaitForText);
+    //I.waitForEnabled(createWillLodgementConfig2.page1.locator, testConfig.TestTimeToWaitForText);
 
-    I.click(createWillLodgementConfig.common.locator);
+    I.click(createWillLodgementConfig2.continueButton);
 };

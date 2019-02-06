@@ -1,49 +1,51 @@
 'use strict';
 
-const testConfig = require('src/test/config.js');
-const createWillLodgementConfig = require('./createWillLodgementConfig.json');
-const {forEach} = require('lodash');
+const testConfig = require('src/test/config');
+const createWillLodgementConfig2 = require('./createWillLodgementFastConfig2');
 
 module.exports = function () {
 
     const I = this;
 
-    I.waitForText(createWillLodgementConfig.page2.waitForText, testConfig.TestTimeToWaitForText);
-  //  I.amOnPage(createWillLodgementConfig.pageUrl);
+    I.waitForText(createWillLodgementConfig2.page2_waitForText, testConfig.TestTimeToWaitForText);
+    //  I.amOnPage(createWillLodgementConfig2.pageUrl);
 
-    I.fillField('#deceasedForenames',createWillLodgementConfig.page2.testator.firstnames);
-    I.fillField('#deceasedSurname',createWillLodgementConfig.page2.testator.lastnames);
+    I.fillField('#deceasedForenames', createWillLodgementConfig2.page2_firstnames);
+    I.fillField('#deceasedSurname', createWillLodgementConfig2.page2_lastnames);
 
-    I.selectOption(createWillLodgementConfig.page2.testator.genderList.id, createWillLodgementConfig.page2.testator.genderList.text);
+    I.selectOption('#deceasedGender', createWillLodgementConfig2.page2_gender);
 
-    I.fillField('#deceasedDateOfBirth-day', createWillLodgementConfig.page2.testator.dateOfBirth.day);
-    I.fillField('#deceasedDateOfBirth-month', createWillLodgementConfig.page2.testator.dateOfBirth.month);
-    I.fillField('#deceasedDateOfBirth-year', createWillLodgementConfig.page2.testator.dateOfBirth.year);
+    I.fillField('#deceasedDateOfBirth-day', createWillLodgementConfig2.page2_dateOfBirth_day);
+    I.fillField('#deceasedDateOfBirth-month', createWillLodgementConfig2.page2_dateOfBirth_month);
+    I.fillField('#deceasedDateOfBirth-year', createWillLodgementConfig2.page2_dateOfBirth_year);
 
-    I.fillField('#deceasedDateOfDeath-day', createWillLodgementConfig.page2.testator.dateOfDeath.day);
-    I.fillField('#deceasedDateOfDeath-month', createWillLodgementConfig.page2.testator.dateOfDeath.month);
-    I.fillField('#deceasedDateOfDeath-year', createWillLodgementConfig.page2.testator.dateOfDeath.year);
+    I.fillField('#deceasedDateOfDeath-day', createWillLodgementConfig2.page2_dateOfDeath_day);
+    I.fillField('#deceasedDateOfDeath-month', createWillLodgementConfig2.page2_dateOfDeath_month);
+    I.fillField('#deceasedDateOfDeath-year', createWillLodgementConfig2.page2_dateOfDeath_year);
 
-    I.fillField('#deceasedTypeOfDeath', createWillLodgementConfig.page2.testator.typeOfDeath);
+    I.fillField('#deceasedTypeOfDeath', createWillLodgementConfig2.page2_typeOfDeath);
 
-    I.click(`#deceasedAnyOtherNames-${createWillLodgementConfig.page2.testator.alias.hasAlias}`);
+    I.click(`#deceasedAnyOtherNames-${createWillLodgementConfig2.page2_hasAliasYes}`);
 
-    forEach(createWillLodgementConfig.page2.testator.alias.names,function(value,key) {
-        let index = parseInt(key) - 1;
-        I.click(createWillLodgementConfig.page2.testator.alias.addAliasButton);
-        I.fillField(`#deceasedFullAliasNameList_${index}_FullAliasName`, value);
+    let counter = 0;
+
+    Object.keys(createWillLodgementConfig2).forEach(function (value) {
+        if (value.includes('page2_alias_')) {
+            I.click(createWillLodgementConfig2.page2_addAliasButton);
+            I.fillField(`#deceasedFullAliasNameList_${counter}_FullAliasName`, createWillLodgementConfig2[value]);
+            counter += 1;
+        }
     });
 
+    I.click(createWillLodgementConfig2.UKpostcodeLink);
+    I.fillField('#AddressLine1', createWillLodgementConfig2.address_line1);
+    I.fillField('#AddressLine2', createWillLodgementConfig2.address_line2);
+    I.fillField('#AddressLine3', createWillLodgementConfig2.address_line3);
+    I.fillField('#PostTown', createWillLodgementConfig2.address_town);
+    I.fillField('#County', createWillLodgementConfig2.address_county);
+    I.fillField('#PostCode', createWillLodgementConfig2.address_postcode);
+    I.fillField('#Country', createWillLodgementConfig2.address_country);
+    I.fillField('#deceasedEmailAddress', createWillLodgementConfig2.page2_email);
 
-    I.click(createWillLodgementConfig.common.enterUKpostcodeLink);
-    I.fillField('#AddressLine1', createWillLodgementConfig.page2.testator.address.line1);
-    I.fillField('#AddressLine2', createWillLodgementConfig.page2.testator.address.line2);
-    I.fillField('#AddressLine3', createWillLodgementConfig.page2.testator.address.line3);
-    I.fillField('#PostTown', createWillLodgementConfig.page2.testator.address.town);
-    I.fillField('#County', createWillLodgementConfig.page2.testator.address.county);
-    I.fillField('#PostCode', createWillLodgementConfig.page2.testator.address.postcode);
-    I.fillField('#Country', createWillLodgementConfig.page2.testator.address.country);
-    I.fillField('#deceasedEmailAddress', createWillLodgementConfig.page2.testator.email);
-
-    I.click(createWillLodgementConfig.common.locator);
+    I.click(createWillLodgementConfig2.continueButton);
 };

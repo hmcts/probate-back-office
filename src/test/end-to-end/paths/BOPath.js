@@ -28,7 +28,7 @@ Scenario(TestConfigurator.idamInUseText('Multiple Executors'), async function (I
     // IdAM
    I.authenticateWithIdamIfAvailable();
    I.selectNewCase();
-   I.selectCaseTypeOptions(createCaseConfig.lists.list1.text, createCaseConfig.lists.list2.text, createCaseConfig.lists.list3.text);
+   I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text, createCaseConfig.list3_text);
    I.enterWillLodgementPage1();
    I.enterWillLodgementPage2();
    I.enterWillLodgementPage3();

@@ -1,7 +1,7 @@
 {
   "waitForText" : "Check your answers",
   "pageUrl": "/create/case/PROBATE/WillLodgement/createWillLodgment/submit",
-  "eventSummary": "event_summary_purpose_text",
-  "eventDescription": "event_decription_text",
+  "summary": "event_summary_purpose_text",
+  "comment": "event_description_text",
   "locator": "div.form-group.form-group-related > button[type=\"submit\"]"
 }

@@ -1,8 +1,8 @@
 module.exports = {
 
     TestIdamBaseUrl: process.env.IDAM_API_URL || 'http://localhost:8484',
-    TestFrontendUrl: process.env.TEST_URL || 'https://ccd-case-management-web-aat.service.core-compute-aat.internal',
-    TestE2EFrontendUrl: process.env.TEST_E2E_URL || 'https://ccd-case-management-web-aat.service.core-compute-aat.internal',
+    TestFrontendUrl: process.env.TEST_URL || 'https://www-ccd.aat.platform.hmcts.net',
+    TestE2EFrontendUrl: process.env.TEST_E2E_URL || 'https://www-ccd.aat.platform.hmcts.net',
     TestUseIdam: process.env.USE_IDAM || 'true',
     TestUseSidam: process.env.USE_SIDAM || 'false',
     TestIdamLoginUrl: process.env.IDAM_LOGIN_URL || 'https://idam.preprod.ccidam.reform.hmcts.net/login',

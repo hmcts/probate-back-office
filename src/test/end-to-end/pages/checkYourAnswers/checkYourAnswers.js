@@ -8,8 +8,8 @@ module.exports = function () {
         const I = this;
         I.waitForText(checkYourAnswersConfig.waitForText, testConfig.TestTimeToWaitForText);
 
-        I.fillField('#field-trigger-summary', checkYourAnswersConfig.eventSummary);
-        I.fillField('#field-trigger-description', checkYourAnswersConfig.eventDescription);
+        I.fillField('#field-trigger-summary', checkYourAnswersConfig.summary);
+        I.fillField('#field-trigger-description', checkYourAnswersConfig.comment);
 
         I.waitForNavigationToComplete(checkYourAnswersConfig.locator);
 };

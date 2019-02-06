@@ -21,20 +21,9 @@ module.exports = function (caseRef) {
         value.fields.forEach(function (fieldsValue, fieldsKey) {
             console.log('fieldsKey>>>', fieldsKey);
             console.log('fieldsValue>>>', fieldsValue);
-            I.see(fieldsValue);
+             I.see(fieldsValue);  // <----- Need to add the field data somehow.....
         });
 
         pause();
     });
-
-            /*  caseDetailsConfig.HistoryTabFieldsList.forEach(function (key, value) {
-                      I.see(value);
-              });
-
-              I.see(checkYourAnswersConfig.eventSummary);
-              I.see(checkYourAnswersConfig.eventDescription);*/
-            console.log('here');
-
-      //  I.click()
-    //    I.waitForNavigationToComplete(caseDetailsConfig.locator);
 };

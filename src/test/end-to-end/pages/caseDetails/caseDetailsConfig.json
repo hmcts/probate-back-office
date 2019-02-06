@@ -14,10 +14,35 @@
       ]
     },
     {
-      "tabName": "General details"
+      "tabName": "General details",
+      "fields": [
+        "Registry location",
+        "Lodgement type",
+        "Lodged date",
+        "Date of will",
+        "Date of (last) codicil",
+        "Number of codicils",
+        "Joint will"
+      ]
     },
     {
-      "tabName": "Testator's details"
+      "tabName": "Testator's details",
+      "fields": [
+        "Forename(s)",
+        "Surname(s)",
+        "Gender",
+        "Date of birth",
+        "Date of death",
+        "Type of death",
+        "Alias name?",
+        "Alias names",
+        "Building and Street",
+        "Town or City",
+        "County",
+        "Postcode/Zipcode",
+        "Country",
+        "Email address"
+      ]
     },
     {
       "tabName": "Executor's details"
