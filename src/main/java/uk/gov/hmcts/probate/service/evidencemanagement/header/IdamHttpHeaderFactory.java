@@ -36,15 +36,9 @@ class IdamHttpHeaderFactory implements HttpHeadersFactory {
     }
 
     @Override
-    public HttpHeaders getHttpHeader() {
-        HttpHeaders headers = new HttpHeaders();
-        headers.add(AUTHORIZATION, httpServletRequest.getHeader(AUTHORIZATION));
-        return headers;
-    }
-
-    @Override
     public HttpHeaders getAuthorizationHeaders() {
         HttpHeaders headers = new HttpHeaders();
+        headers.add(SERVICE_AUTH, httpServletRequest.getHeader(SERVICE_AUTH));
         headers.add(AUTHORIZATION, httpServletRequest.getHeader(AUTHORIZATION));
         headers.setContentType(MediaType.APPLICATION_JSON);
         return headers;

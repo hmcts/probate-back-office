@@ -50,7 +50,10 @@ printservice:
 
 ccd.gateway:
   host: http://localhost:3453
-  caseMatchingPath: /data/searchCases
+
+ccd.data.store.api:
+  host: http://localhost:4452
+  caseMatchingPath: /searchCases
 
 spring:
   jackson:

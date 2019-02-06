@@ -134,6 +134,7 @@ module "probate-back-office" {
     FEE_API_URL = "${var.fee_api_url}"
     EVIDENCE_MANAGEMENT_HOST = "${var.evidence_management_host}"
     NOTIFICATIONS_GOVNOTIFYAPIKEY = "${data.azurerm_key_vault_secret.govNotifyApiKey.value}"
+    CCD_DATA_STORE_API_HOST = "${var.ccd_data_store_api}"
     java_app_name = "${var.microservice}"
     SEND_LETTER_SERIVCE_BASEURL = "${var.send_letter_base_url}"
     LOG_LEVEL = "${var.log_level}"
