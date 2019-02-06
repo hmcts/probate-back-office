@@ -161,8 +161,57 @@ public class CaseMatchingControllerTest {
                 .andExpect(content().string(containsString("data")));
 
 
+        verifyAllForImport();
+    }
+
+    @Test
+    public void caseMatchingImportFromCaveatFlow() throws Exception {
+
+        String solicitorPayload = testUtils.getStringFromFile("payloadWithCaseMatches.json");
+
+        mockMvc.perform(post("/case-matching/import-legacy-from-caveat-flow")
+                .content(solicitorPayload)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("data")));
+
+
+        verifyAllForImport();
+    }
+
+    @Test
+    public void caseMatchingImportFromStandingSearchFlow() throws Exception {
+
+        String solicitorPayload = testUtils.getStringFromFile("payloadWithCaseMatches.json");
+
+        mockMvc.perform(post("/case-matching/import-legacy-from-standing-search-flow")
+                .content(solicitorPayload)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("data")));
+
+
+        verifyAllForImport();
+    }
+
+    @Test
+    public void caseMatchingImportFromWillLodgementFlow() throws Exception {
+
+        String solicitorPayload = testUtils.getStringFromFile("payloadWithCaseMatches.json");
+
+        mockMvc.perform(post("/case-matching/import-legacy-from-will-lodgement-flow")
+                .content(solicitorPayload)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("data")));
+
+
+        verifyAllForImport();
+    }
+
+    private void verifyAllForImport() {
         verify(legacyImportService).importLegacyRows(caseMatchListCaptor.capture());
-        assertEquals(1,caseMatchListCaptor.getValue().size());
+        assertEquals(1, caseMatchListCaptor.getValue().size());
         CaseMatch caseMatchFound = caseMatchListCaptor.getValue().get(0).getValue();
         assertEquals("1", caseMatchFound.getId());
         assertEquals("DecAN1 DecAN2", caseMatchFound.getAliases());

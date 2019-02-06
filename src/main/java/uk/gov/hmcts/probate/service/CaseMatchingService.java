@@ -1,6 +1,7 @@
 package uk.gov.hmcts.probate.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.springframework.http.HttpEntity;
@@ -33,6 +34,7 @@ import static uk.gov.hmcts.probate.insights.AppInsightsEvent.REST_CLIENT_EXCEPTI
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class CaseMatchingService {
 
     private static final String TEMPLATE_DIRECTORY = "templates/elasticsearch/caseMatching/";
@@ -119,6 +121,7 @@ public class CaseMatchingService {
     }
 
     private List<CaseMatch> runQuery(CaseType caseType, CaseMatchingCriteria criteria, String jsonQuery) {
+        log.info("CaseMatchingService runQuery: " + jsonQuery);
         URI uri = UriComponentsBuilder
                 .fromHttpUrl(ccdDataStoreAPIConfiguration.getHost() + ccdDataStoreAPIConfiguration.getCaseMatchingPath())
                 .queryParam(CASE_TYPE_ID, caseType.getCode())

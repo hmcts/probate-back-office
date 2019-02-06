@@ -24,7 +24,8 @@ pdf.service:
   pdfApi: /api/v2/pdf-generator/html
   templatesDirectory: templates/pdf/
   defaultDisplayFilename: generated.pdf
-  grantSignatureBase64: dummy_hash
+  grantSignatureSecretKey: signaturetestkey
+  grantSignatureEncryptedFile: signatures/grantSignature-test.png.enc
 
 fee.api:
   url: http://localhost:4411

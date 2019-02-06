@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 public enum EventId {
 
     APPLY_FOR_GRANT("applyForGrant"),
-    RAISE_CAVEAT("cavRaiseCaveat"),
+    RAISE_CAVEAT("raiseCaveat"),
     CREATE_STANDING_SEARCH("createStandingSearch"),
     CREATE_WILL_LODGEMENT("createWillLodgment");
 
