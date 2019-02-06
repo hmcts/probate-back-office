@@ -19,6 +19,7 @@ import uk.gov.hmcts.probate.model.ccd.willlodgement.request.WillLodgementCallbac
 import uk.gov.hmcts.probate.model.ccd.willlodgement.request.WillLodgementDetails;
 import uk.gov.hmcts.probate.model.evidencemanagement.EvidenceManagementFile;
 import uk.gov.hmcts.probate.model.evidencemanagement.EvidenceManagementFileUpload;
+import uk.gov.hmcts.probate.service.FileSystemResourceService;
 import uk.gov.hmcts.probate.service.evidencemanagement.upload.UploadService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -27,6 +28,7 @@ import java.io.IOException;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.any;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT;
@@ -66,6 +68,8 @@ public class PDFManagementServiceTest {
     private CaseDetails caseDetails;
     @Mock
     private WillLodgementDetails willLodgementDetails;
+    @Mock
+    private FileSystemResourceService fileSystemResourceServiceMock;
     
     private PDFManagementService underTest;
 
@@ -74,11 +78,14 @@ public class PDFManagementServiceTest {
         when(objectMapperMock.copy()).thenReturn(objectMapperMock);
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetails);
         when(willLodgementCallbackRequestMock.getCaseDetails()).thenReturn(willLodgementDetails);
-        when(pdfServiceConfiguration.getGrantSignatureBase64()).thenReturn("qwertyui");
+        when(pdfServiceConfiguration.getGrantSignatureEncryptedFile()).thenReturn("image.png");
+        when(pdfServiceConfiguration.getGrantSignatureSecretKey()).thenReturn("testkey123456789");
+        when(fileSystemResourceServiceMock.getFileFromResourceAsString(any(String.class)))
+            .thenReturn("1kbCfLrFBFTQpS2PnDDYW2r11jfRBVFbjhdLYDEMCR8=");
         underTest = new PDFManagementService(pdfGeneratorServiceMock, uploadServiceMock,
-                objectMapperMock, httpServletRequest, pdfServiceConfiguration);
+                objectMapperMock, httpServletRequest, pdfServiceConfiguration, fileSystemResourceServiceMock);
     }
-
+    
     @Test
     public void shouldGenerateAndUploadLegalStatement() throws IOException {
         String json = "{}";
