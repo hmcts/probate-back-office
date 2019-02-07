@@ -18,35 +18,6 @@ import uk.gov.hmcts.reform.auth.checker.spring.serviceonly.AuthCheckerServiceOnl
 @EnableWebSecurity
 public class SecurityConfiguration {
 
-    @Order(1)
-    @Configuration
-    @ConditionalOnProperty(name = "s2s.enabled", havingValue = "true", matchIfMissing = true)
-    public class ServiceAndUserConfigurerAdapter extends WebSecurityConfigurerAdapter {
-
-        private final AuthCheckerServiceAndUserFilter filter;
-
-        public ServiceAndUserConfigurerAdapter(RequestAuthorizer<Service> serviceRequestAuthorizer,
-                                               AuthenticationManager authenticationManager,
-                                               RequestAuthorizer<User> userRequestAuthorizer) {
-            filter = new AuthCheckerServiceAndUserFilter(serviceRequestAuthorizer, userRequestAuthorizer);
-            filter.setAuthenticationManager(authenticationManager);
-        }
-
-        @Override
-        protected void configure(HttpSecurity http) throws Exception {
-            http
-                    .requestMatchers()
-                    .antMatchers("/legacy/**")
-                    .antMatchers("/case-matching/**")
-                    .and()
-                    .addFilter(filter)
-                    .csrf().disable()
-                    .authorizeRequests()
-                    .anyRequest().authenticated();
-        }
-    }
-
-    @Order(2)
     @Configuration
     @ConditionalOnProperty(name = "s2s.enabled", havingValue = "true", matchIfMissing = true)
     public class ServiceOnlySecurityConfigurationAdapter extends WebSecurityConfigurerAdapter {
