@@ -22,7 +22,7 @@ public class CaseMatchBuilderService {
 
     private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ISO_DATE;
 
-    @Value("${printservice.host}")
+    @Value("${ccd.gateway.host}")
     private String printServiceHost;
 
     @Value("${printservice.legacyPath}")
