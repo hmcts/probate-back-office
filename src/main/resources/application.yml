@@ -70,7 +70,7 @@ spring:
     hibernate.ddl-auto: none
 
   datasource:
-    url: jdbc:postgresql://${probate.postgresql.hostname}:${probate.postgresql.port}/${probate.postgresql.database}
+    url: jdbc:postgresql://${probate.postgresql.hostname}:${probate.postgresql.port}/${probate.postgresql.database}?ssl=true
     username:  ${probate.postgresql.user}
     password:  ${probate.postgresql.password}
 
