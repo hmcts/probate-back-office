@@ -70,7 +70,7 @@ public class BulkPrintService {
 
     private String getPdfAsBase64EncodedString(Document caseDocument, String authHeaderValue) throws IOException {
         String response = Base64.getEncoder().encodeToString(documentStoreClient.retrieveDocument(caseDocument, authHeaderValue));
-        log.debug("dm store document string: " + response);
+        log.info("dm store document string: " + response);
         return response;
     }
 
@@ -95,7 +95,7 @@ public class BulkPrintService {
 
     private String base64EncodeToString(byte[] data) {
         String response = Base64.getEncoder().encodeToString(data);
-        log.debug("cover sheet document string: " + response);
+        log.info("cover sheet document string: " + response);
         return response;
     }
 
