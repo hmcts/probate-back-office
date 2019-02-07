@@ -1,54 +1,29 @@
 package uk.gov.hmcts.probate.security;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.security.core.context.SecurityContextHolder;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import uk.gov.hmcts.probate.exception.NoSecurityContextException;
-import uk.gov.hmcts.reform.auth.checker.spring.serviceanduser.ServiceAndUserDetails;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 
+import javax.servlet.http.HttpServletRequest;
+
 @Component
+@RequiredArgsConstructor
 public class SecurityUtils {
 
     private final AuthTokenGenerator authTokenGenerator;
 
-    @Autowired
-    public SecurityUtils(final AuthTokenGenerator authTokenGenerator) {
-        this.authTokenGenerator = authTokenGenerator;
-    }
+    private final HttpServletRequest httpServletRequest;
 
-    public HttpHeaders authorizationHeaders() {
-        final HttpHeaders headers = new HttpHeaders();
-        headers.add("ServiceAuthorization", authTokenGenerator.generate());
-        return headers;
-    }
+    private static final String USER_ID = "user-id";
+
+    private static final String AUTHORIZATION = "Authorization";
 
     public SecurityDTO getSecurityDTO() {
         return SecurityDTO.builder()
-            .authorisation(getUserToken())
-            .userId(getUserId())
+            .authorisation(httpServletRequest.getHeader(AUTHORIZATION))
+            .userId(httpServletRequest.getHeader(USER_ID))
             .serviceAuthorisation(generateServiceToken())
             .build();
-    }
-
-    public String getUserToken() {
-        if (SecurityContextHolder.getContext() == null) {
-            throw new NoSecurityContextException();
-        }
-        return SecurityContextHolder.getContext()
-            .getAuthentication()
-            .getCredentials().toString();
-    }
-
-    public String getUserId() {
-        if (SecurityContextHolder.getContext() == null) {
-            throw new NoSecurityContextException();
-        }
-        return ((ServiceAndUserDetails) SecurityContextHolder.getContext()
-            .getAuthentication()
-            .getPrincipal())
-            .getUsername();
     }
 
     public String generateServiceToken() {
