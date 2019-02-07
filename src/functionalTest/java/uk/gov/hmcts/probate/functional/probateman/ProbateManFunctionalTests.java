@@ -89,6 +89,8 @@ public class ProbateManFunctionalTests extends IntegrationTestBase {
 
     private String deceasedAlias;
 
+    private Integer id;
+
     public ProbateManFunctionalTests(String caseType, String caseTypeFilename, String legacyType, String jsonFileName) {
         this.caseType = caseType;
         this.caseTypeFilename = caseTypeFilename;
@@ -97,8 +99,8 @@ public class ProbateManFunctionalTests extends IntegrationTestBase {
     }
 
     @TestData
-    public static Collection<Object[]> testData(){
-        return Arrays.asList(new Object[][]{
+    public static Collection<Object[]> testData() {
+        return Arrays.asList(new Object[][] {
             {"CAVEAT", "caveat", "CAVEAT", "expectedCaveat"},
             {"GRANT_APPLICATION", "grant_application", "LEGACY APPLICATION", "expectedGrantApplicant"},
             {"WILL_LODGEMENT", "wills", "WILL", "expectedWillLodgement"},
@@ -144,7 +146,18 @@ public class ProbateManFunctionalTests extends IntegrationTestBase {
             .then()
             .statusCode(204);
 
-        headers = utils.getHeaders(email, PROBATEMAN_DB_PASS);
+
+        this.id = SerenityRest.given()
+            .relaxedHTTPSValidation()
+            .headers(Headers.headers(new Header("Content-Type", ContentType.JSON.toString())))
+            .baseUri(idamUrl)
+            .body(objectMapper.writeValueAsString(idamData))
+            .when()
+            .get("/testing-support/accounts/" + email)
+            .then()
+            .extract().body().jsonPath().get("id");
+
+        headers = utils.getHeaders(email, PROBATEMAN_DB_PASS, id);
 
         deceasedForename = RandomStringUtils.randomAlphanumeric(10) + "_FN";
         deceasedSurname = RandomStringUtils.randomAlphanumeric(10) + "_SN";
