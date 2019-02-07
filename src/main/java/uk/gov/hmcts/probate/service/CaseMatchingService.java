@@ -109,7 +109,7 @@ public class CaseMatchingService {
         ofNullable(criteria.getDeceasedDateOfDeathRaw())
                 .ifPresent(date -> filter.must(rangeQuery(DECEASED_DOD).gte(date.minusDays(3)).lte(date.plusDays(3))));
 
-        ofNullable(query.filter(filter.mustNot(matchQuery(IMPORTED_TO_CCD, IMPORTED_TO_CCD_Y))));
+        ofNullable(filter.mustNot(matchQuery(IMPORTED_TO_CCD, IMPORTED_TO_CCD_Y)));
 
         query.filter(filter);
 
