@@ -45,7 +45,7 @@ printservice:
   host: http://localhost:3453
   internal:
     host: http://localhost:3453
-  path: /jurisdictions/PROBATE/case-types/GrantOfRepresentation/cases/%s/probate/
+  path: /print/jurisdictions/PROBATE/case-types/GrantOfRepresentation/cases/%s/probate/
   legacyPath: /print/probateManTypes/%s/cases/%s
 
 ccd.gateway:
@@ -70,7 +70,7 @@ spring:
     hibernate.ddl-auto: none
 
   datasource:
-    url: jdbc:postgresql://${probate.postgresql.hostname}:${probate.postgresql.port}/${probate.postgresql.database}
+    url: jdbc:postgresql://${probate.postgresql.hostname}:${probate.postgresql.port}/${probate.postgresql.database}?ssl=true
     username:  ${probate.postgresql.user}
     password:  ${probate.postgresql.password}
 
