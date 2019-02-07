@@ -32,7 +32,7 @@ printservice:
   host: http://localhost:3453
   internal:
       host: http://localhost:3453
-  path: /jurisdictions/PROBATE/case-types/GrantOfRepresentation/cases/%s/probate/
+  path: /print/jurisdictions/PROBATE/case-types/GrantOfRepresentation/cases/%s/probate/
   legacyPath: /print/probateManTypes/%s/cases/%s
 
 ccd.gateway:
