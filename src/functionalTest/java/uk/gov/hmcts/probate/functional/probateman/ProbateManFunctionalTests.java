@@ -144,10 +144,10 @@ public class ProbateManFunctionalTests extends IntegrationTestBase {
             .when()
             .post("/testing-support/accounts")
             .then()
-            .statusCode(204);
+            .statusCode(204).extract().jsonPath().prettyPrint();
 
 
-        this.id = SerenityRest.given()
+        JsonPath jp = SerenityRest.given()
             .relaxedHTTPSValidation()
             .headers(Headers.headers(new Header("Content-Type", ContentType.JSON.toString())))
             .baseUri(idamUrl)
@@ -155,7 +155,10 @@ public class ProbateManFunctionalTests extends IntegrationTestBase {
             .when()
             .get("/testing-support/accounts/" + email)
             .then()
-            .extract().body().jsonPath().get("id");
+            .extract().body().jsonPath();
+
+        jp.prettyPrint();
+        this.id = jp.get("id");
 
         headers = utils.getHeaders(email, PROBATEMAN_DB_PASS, id);
 
