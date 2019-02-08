@@ -415,6 +415,22 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
+    public void shouldAddNoDocumentButSetNotificationRequested() {
+        List<Document> documents = new ArrayList<>();
+
+        CaseData caseData = caseDataBuilder
+                .solsSolicitorEmail(null)
+                .primaryApplicantEmailAddress(null)
+                .boEmailDocsReceivedNotificationRequested(NO)
+                .build();
+        when(caseDetailsMock.getData()).thenReturn(caseData);
+
+        CallbackResponse callbackResponse = underTest.addDocuments(callbackRequestMock, documents);
+
+        assertEquals("No", callbackResponse.getData().getBoEmailDocsReceivedNotification());
+    }
+
+    @Test
     public void shouldAddMatches() {
         CaseMatch caseMatch = CaseMatch.builder().build();
 

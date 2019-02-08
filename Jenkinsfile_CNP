@@ -15,8 +15,16 @@ List<LinkedHashMap<String, Object>> secrets = [
     secret('probate-bo-govNotifyApiKey', 'PROBATE_BO_NOTIFY_KEY'),
     secret('pdf-service-grantSignatureBase64-first', 'BO_GRANT_SIG_FIRST'),
     secret('pdf-service-grantSignatureBase64-last','BO_GRANT_SIG_LAST'),
-    secret('ccd-gateway-host','CCD_GATEWAY_HOST')
+    secret('probateCcdDataStoreApi', 'CCD_DATA_STORE_API_URL'),
+    secret('ccd-gateway-host','CCD_GATEWAY_HOST'),
+    secret('probatemandb-POSTGRES-USER', 'PROBATE_POSTGRESQL_USER_VAL'),
+    secret('probatemandb-POSTGRES-PASS', 'PROBATE_POSTGRESQL_PASSWORD_VAL'),
+    secret('probatemandb-POSTGRES-HOST', 'PROBATE_POSTGRESQL_HOSTNAME_VAL'),
+    secret('probatemandb-POSTGRES-PORT', 'PROBATE_POSTGRESQL_PORT_VAL'),
+    secret('probatemandb-POSTGRES-DATABASE', 'PROBATE_POSTGRESQL_DATABASE_VAL')
 ]
+
+
 
 static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
   [ $class: 'AzureKeyVaultSecret',
@@ -35,6 +43,13 @@ withPipeline("java", product, component) {
   loadVaultSecrets(secrets)
 
   enableSlackNotifications('#probate-jenkins')
+    before('buildinfra:prod') {
+    error 'Deliberately breaking pipeline to prevent prod deployment'
+    }
+
+  before('buildinfra:prod') {
+    error 'Deliberately breaking pipeline to prevent prod deployment'
+  }
 
     after('test') {
     try {

@@ -18,4 +18,8 @@ public class WillLodgementDetails {
 
     @NotNull
     private final Long id;
+    
+    private String grantSignatureBase64;
+
+    private String londonRegistryAddress;
 }
