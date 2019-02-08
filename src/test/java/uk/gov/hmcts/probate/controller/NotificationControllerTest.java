@@ -32,6 +32,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_DRAFT;
@@ -68,6 +69,8 @@ public class NotificationControllerTest {
 
     @SpyBean
     private DocumentService documentService;
+
+    private static final String DOC_RECEIVED_URL = "/notify/documents-received";
 
     @Before
     public void setUp() throws NotificationClientException, BadRequestException {
@@ -213,4 +216,45 @@ public class NotificationControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("data")));
     }
+
+    @Test
+    public void shouldReturnEmailSOLValidateSuccessful() throws Exception {
+        String solicitorPayload = testUtils.getStringFromFile("solicitorAdditionalExecutors.json");
+
+        mockMvc.perform(post(DOC_RECEIVED_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
+    }
+
+    @Test
+    public void shouldReturnEmailSOLSValidateUnSuccessful() throws Exception {
+        String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadNoEmail.json");
+
+        mockMvc.perform(post(DOC_RECEIVED_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.errors[0]").value("Please provide an email address for the solicitor firm, if you wish to send an email"))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
+
+    }
+
+    @Test
+    public void shouldReturnEmailPAValidateSuccessful() throws Exception {
+        String personalPayload = testUtils.getStringFromFile("personalPayloadNotifications.json");
+
+        mockMvc.perform(post(DOC_RECEIVED_URL).content(personalPayload).contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
+    }
+
+    @Test
+    public void shouldReturnEmailPAValidateUnSuccessful() throws Exception {
+        String personalPayload = testUtils.getStringFromFile("personalPayloadNotificationsNoEmail.json");
+
+        mockMvc.perform(post(DOC_RECEIVED_URL).content(personalPayload).contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.errors[0]").value("Please provide an email address for the primary applicant, if you wish to send an email"))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
+
+    }
+
 }

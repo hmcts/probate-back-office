@@ -5,13 +5,18 @@ import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
+import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatCallbackRequest;
+import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
+import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
+
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -58,10 +63,19 @@ public class CCDDataTransformerTest {
     private CallbackRequest callbackRequestMock;
 
     @Mock
+    private CaveatCallbackRequest caveatCallbackRequestMock;
+
+    @Mock
+    private CaveatDetails caveatDetailsMock;
+
+    @Mock
     private CaseDetails caseDetailsMock;
 
     @Mock
     private CaseData caseDataMock;
+
+    @Mock
+    private CaveatData caveatDataMock;
 
     @InjectMocks
     private CCDDataTransformer underTest;
@@ -72,6 +86,8 @@ public class CCDDataTransformerTest {
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        when(caveatCallbackRequestMock.getCaseDetails()).thenReturn(caveatDetailsMock);
+        when(caveatDetailsMock.getData()).thenReturn(caveatDataMock);
 
         SolsAddress solsAddress = SolsAddress.builder()
                 .addressLine1(SOLICITOR_FIRM_LINE1)
@@ -95,6 +111,7 @@ public class CCDDataTransformerTest {
         when(caseDataMock.getFeeForNonUkCopies()).thenReturn(FEE_NON_UK_COPIES);
         when(caseDataMock.getTotalFee()).thenReturn(TOTAL_FEE);
         when(caseDataMock.getApplicationFee()).thenReturn(APPLICATION_FEE);
+        when(caseDataMock.getApplicationType()).thenReturn(ApplicationType.SOLICITOR);
 
         when(caseDetailsMock.getLastModified()).thenReturn(LAST_MODIFIED_STR);
 

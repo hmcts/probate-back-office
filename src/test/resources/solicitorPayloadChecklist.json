@@ -149,7 +149,7 @@
         }
       ],
       "executorsNotApplying": [],
-      "applicationType": null,
+      "applicationType": "Solicitor",
       "registryLocation": null,
       "boEmailDocsReceivedNotification": "Yes",
       "boEmailGrantIssuedNotification": "Yes",
