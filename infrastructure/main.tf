@@ -35,7 +35,7 @@ locals {
   nonPreviewVaultName = "${var.raw_product}-${var.env}"
   vaultName = "${(var.env == "preview" || var.env == "spreview") ? local.previewVaultName : local.nonPreviewVaultName}"
   localenv = "${(var.env == "preview" || var.env == "spreview") ? local.previewEnv : local.nonPreviewEnv}"
-  pdf_service_grantSignatureBase64 = "${data.azurerm_key_vault_secret.pdf_service_grantSignatureBase64_first.value}${data.azurerm_key_vault_secret.pdf_service_grantSignatureBase64_last.value}"
+  # pdf_service_grantSignatureBase64 = "${data.azurerm_key_vault_secret.pdf_service_grantSignatureBase64_first.value}${data.azurerm_key_vault_secret.pdf_service_grantSignatureBase64_last.value}"
 }
 
 data "azurerm_key_vault" "probate_key_vault" {
@@ -48,15 +48,26 @@ data "azurerm_key_vault_secret" "govNotifyApiKey" {
   vault_uri = "${data.azurerm_key_vault.probate_key_vault.vault_uri}"
 }
 
-data "azurerm_key_vault_secret" "pdf_service_grantSignatureBase64_first" {
-  name = "pdf-service-grantSignatureBase64-first"
+# data "azurerm_key_vault_secret" "pdf_service_grantSignatureBase64_first" {
+#   name = "pdf-service-grantSignatureBase64-first"
+#   vault_uri = "${data.azurerm_key_vault.probate_key_vault.vault_uri}"
+# }
+
+# data "azurerm_key_vault_secret" "pdf_service_grantSignatureBase64_last" {
+#   name = "pdf-service-grantSignatureBase64-last"
+#   vault_uri = "${data.azurerm_key_vault.probate_key_vault.vault_uri}"
+# }
+
+data "azurerm_key_vault_secret" "pdf_service_grantSignatureKey" {
+  name = "probate-bo-grantSignatureKey"
   vault_uri = "${data.azurerm_key_vault.probate_key_vault.vault_uri}"
 }
 
-data "azurerm_key_vault_secret" "pdf_service_grantSignatureBase64_last" {
-  name = "pdf-service-grantSignatureBase64-last"
+data "azurerm_key_vault_secret" "pdf_service_grantSignatureFile" {
+  name = "probate-bo-grantSignatureFile"
   vault_uri = "${data.azurerm_key_vault.probate_key_vault.vault_uri}"
 }
+
 
 data "azurerm_key_vault_secret" "s2s_key" {
   name      = "microservicekey-probate-backend"
@@ -113,10 +124,10 @@ module "probate-back-office" {
     DEPLOYMENT_ENV= "${var.deployment_env}"
 
     AUTH_PROVIDER_SERVICE_CLIENT_KEY = "${data.azurerm_key_vault_secret.s2s_key.value}"
-    //AUTH_PROVIDER_SERVICE_CLIENT_KEY = "${data.vault_generic_secret.idam_backend_service_key.data["value"]}"
-    //PDF_SERVICE_GRANTSIGNATUREBASE64 = "${data.vault_generic_secret.pdf_service_grantSignatureBase64.data["value"]}"
-    PDF_SERVICE_GRANTSIGNATUREBASE64 = "${local.pdf_service_grantSignatureBase64}"
-
+    # PDF_SERVICE_GRANTSIGNATUREBASE64 = "${local.pdf_service_grantSignatureBase64}"
+    PDF_SERVICE_GRANTSIGNATURESECRETKEY = "${data.azurerm_key_vault_secret.pdf_service_grantSignatureKey.value}"
+    PDF_SERVICE_GRANTSIGNATUREENCRYPTEDFILE = "${data.azurerm_key_vault_secret.pdf_service_grantSignatureFile.value}"
+ 
     PROBATE_POSTGRESQL_USER = "${data.azurerm_key_vault_secret.POSTGRES-USER.value}"
     PROBATE_POSTGRESQL_PASSWORD = "${data.azurerm_key_vault_secret.POSTGRES-PASS.value}"
     //PROBATE_POSTGRESQL_DATABASE = "${data.azurerm_key_vault_secret.POSTGRES_DATABASE.value}?ssl=true&amp;sslfactory=org.postgresql.ssl.NonValidatingFactory"
