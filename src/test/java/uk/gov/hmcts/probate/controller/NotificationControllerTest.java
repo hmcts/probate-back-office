@@ -257,4 +257,17 @@ public class NotificationControllerTest {
 
     }
 
+    @Test
+    public void shouldReturnGrantPAValidateUnSuccessfulCaseStopped() throws Exception {
+        String personalPayload = testUtils.getStringFromFile("personalPayloadNotificationsNoEmail.json");
+
+        mockMvc.perform(post("/notify/documents-received")
+                .content(personalPayload)
+                .contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.errors[0]").value("Please provide an email address for the primary applicant, if you wish to send an email"))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
+
+    }
+
 }

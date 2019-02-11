@@ -29,6 +29,7 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
 
@@ -92,5 +93,18 @@ public class CaveatControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("data")));
+    }
+
+    @Test
+    public void personalGeneralCaveatMessageNoEmailShouldReturnDataPayloadOkResponseCode() throws Exception {
+        String personalPayload = testUtils.getStringFromFile("caveatPayloadNotificationsNoEmail.json");
+
+        mockMvc.perform(post("/caveat/general-message")
+                .content(personalPayload)
+                .contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.errors[0]").value("Please provide an email address for the caveator, if you wish to send an email"))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
+
     }
 }

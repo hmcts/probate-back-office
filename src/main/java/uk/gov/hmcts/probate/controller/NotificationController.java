@@ -66,11 +66,16 @@ public class NotificationController {
             @Validated({EmailAddressNotificationValidationRule.class})
             @RequestBody CallbackRequest callbackRequest)
             throws NotificationClientException {
+        CallbackResponse response;
+        Document document;
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
 
-        Document document = notificationService.sendEmail(CASE_STOPPED, caseDetails);
-
-        return ResponseEntity.ok(callbackResponseTransformer.caseStopped(callbackRequest, document));
+        response = eventValidationService.validateRequest(callbackRequest, emailAddressNotificationValidationRules);
+        if (response.getErrors().isEmpty()) {
+            document = notificationService.sendEmail(CASE_STOPPED, caseDetails);
+            response = callbackResponseTransformer.caseStopped(callbackRequest, document);
+        }
+        return ResponseEntity.ok(response);
     }
 
 

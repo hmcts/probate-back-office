@@ -13,7 +13,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.service.EventValidationService;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.transformer.CaveatCallbackResponseTransformer;
-import uk.gov.hmcts.probate.validator.CheckListAmendCaseValidationRule;
+import uk.gov.hmcts.probate.validator.ValidationRuleCaveats;
 import uk.gov.service.notify.NotificationClientException;
 
 import java.util.List;
@@ -29,7 +29,7 @@ public class CaveatController {
 
     private final EventValidationService eventValidationService;
     private final NotificationService notificationService;
-    private final List<CheckListAmendCaseValidationRule> checkListAmendCaseValidationRules;
+    private final List<ValidationRuleCaveats> validationRuleCaveats;
     private final CaveatCallbackResponseTransformer caveatCallbackResponseTransformer;
 
     @PostMapping(path = "/raise")
@@ -44,8 +44,8 @@ public class CaveatController {
     public ResponseEntity<CaveatCallbackResponse> sendGeneralMessageNotification(@RequestBody CaveatCallbackRequest caveatCallbackRequest)
             throws NotificationClientException {
         CaveatDetails caveatDetails = caveatCallbackRequest.getCaseDetails();
-       // CaveatCallbackResponse response = eventValidationService.validateRequest(caveatCallbackRequest, checkListAmendCaseValidationRules);
-        CaveatCallbackResponse response = null;
+
+        CaveatCallbackResponse response = eventValidationService.validateCaveatRequest(caveatCallbackRequest, validationRuleCaveats);
         if (response.getErrors().isEmpty()) {
             Document document = notificationService.sendCaveatEmail(GENERAL_CAVEAT_MESSAGE, caveatDetails);
             response = caveatCallbackResponseTransformer.generalMessage(caveatCallbackRequest, document);
