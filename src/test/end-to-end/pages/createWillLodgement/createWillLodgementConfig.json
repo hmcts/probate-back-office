@@ -1,111 +1,63 @@
 {
-  "common": {
-    "locator": "div.form-group.form-group-related > button[type=\"submit\"]",
-    "enterUKpostcodeLink": ".manual-link"
-  },
-  "page1": {
-    "waitForText": "General details",
-    "url": "create/case/PROBATE/WillLodgement/createWillLodgment/createWillLodgmentcreateWillLodgmentPage1",
-    "lists": {
-      "list1": {
-        "id": "#registryLocation",
-        "text": "Liverpool"
-      },
-      "list2": {
-        "id": "#lodgementType",
-        "text": "Safe custody"
-      }
-    },
-    "lodgedDate": {
-      "day": "03",
-      "month": "03",
-      "year": "1970"
-    },
-    "willDate": {
-      "day": "01",
-      "month": "01",
-      "year": "1950"
-    },
-    "codicils": {
-      "codicilDate": {
-        "day": "02",
-        "month": "02",
-        "year": "1962"
-      },
-      "numberOfCodicils": "3"
-    },
-    "jointWill": "Yes"
-  },
-  "page2": {
-    "waitForText": "Testator's details",
-    "url": "create/case/PROBATE/WillLodgement/createWillLodgment/createWillLodgmentcreateWillLodgmentPage2",
-    "testator": {
-      "firstnames": "testator_fn",
-      "lastnames": "testator_ln",
-      "genderList": {
-        "id": "#deceasedGender",
-        "text": "Male"
-      },
-      "dateOfBirth": {
-        "day": "01",
-        "month": "01",
-        "year": "1930"
-      },
-      "dateOfDeath": {
-        "day": "01",
-        "month": "01",
-        "year": "2017"
-      },
-      "typeOfDeath": "sleeping",
-      "alias": {
-        "hasAlias": "Yes",
-        "addAliasButton": "#deceasedFullAliasNameList div button[type=\"button\"]",
-        "names": {
-          "1": "deceased_alias_name1",
-          "2": "deceased_alias_name2"
-        }
-      },
-      "address": {
-        "line1": "1",
-        "line2": "Buckingham Palace",
-        "line3": "The place to be",
-        "town": "London",
-        "county": "London",
-        "country": "United Kingdom",
-        "postcode": "SW1A 1AA"
-      },
-      "email": "test@test.com"
-    }
-  },
-  "page3": {
-    "common": {
-      "address": {
-        "line1": "1",
-        "line2": "Buckingham Palace",
-        "line3": "The place to be",
-        "town": "London",
-        "county": "London",
-        "country": "United Kingdom",
-        "postcode": "SW1A 1AA"
-      },
-      "addAnotherExecutor": "#additionalExecutorList div button[type=\"button\"]"
-    },
-    "waitForText": "Executor's details",
-    "url": "create/case/PROBATE/WillLodgement/createWillLodgment/createWillLodgmentcreateWillLodgmentPage3",
-    "executorList": [
-      {
-        "title": "Mr",
-        "firstnames": "executor1_fn",
-        "lastnames": "executor1_ln",
-        "email": "executor1@test.com"
-      },
-      {
-        "title": "Dr",
-        "firstnames": "executor2_fn",
-        "lastnames": "executor2_ln",
-        "email": "executor2@test.com"
-      }
-    ]
-  }
+  "page1_waitForText": "General details",
+  "page1_url": "create/case/PROBATE/WillLodgement/createWillLodgment/createWillLodgmentcreateWillLodgmentPage1",
+  "page1_list1_registry_location": "Liverpool",
+  "page1_list2_lodgement_type": "Safe custody",
+  "page1_lodgedDate_day": "03",
+  "page1_lodgedDate_month": "03",
+  "page1_lodgedDate_year": "1970",
+  "page1_lodgedDate_long": "3 Mar 1970",
+  "page1_willDate_day": "01",
+  "page1_willDate_month": "01",
+  "page1_willDate_year": "1950",
+  "page1_willDate_long": "1 Jan 1950",
+  "page1_codicilDate_day": "02",
+  "page1_codicilDate_month": "02",
+  "page1_codicilDate_year": "1962",
+  "page1_codicilDate_long": "2 Feb 1962",
+  "page1_numberOfCodicils": "3",
+  "page1_jointWill": "Yes",
+  "page2_waitForText": "Testator's details",
+  "page2_url": "create/case/PROBATE/WillLodgement/createWillLodgment/createWillLodgmentcreateWillLodgmentPage2",
+  "page2_firstnames": "testator_fn",
+  "page2_lastnames": "testator_ln",
+  "page2_gender": "Male",
+  "page2_dateOfBirth_day": "01",
+  "page2_dateOfBirth_month": "01",
+  "page2_dateOfBirth_year": "1930",
+  "page2_dateOfBirth_long": "1 Jan 1930",
+  "page2_dateOfDeath_day": "01",
+  "page2_dateOfDeath_month": "01",
+  "page2_dateOfDeath_year": "1930",
+  "page2_dateOfDeath_long": "1 Jan 1930",
+  "page2_typeOfDeath": "sleeping",
+  "page2_hasAliasYes": "Yes",
+  "page2_addAliasButton": "#deceasedFullAliasNameList div button[type=\"button\"]",
+  "page2_alias_1": "deceased_alias_name1",
+  "page2_alias_2": "deceased_alias_name2",
+  "page2_email": "test@test.com",
+
+  "page3_waitForText": "Executor's details",
+  "page3_url": "create/case/PROBATE/WillLodgement/createWillLodgment/createWillLodgmentcreateWillLodgmentPage3",
+  "page3_addExecutorButton": "#additionalExecutorList div button[type=\"button\"]",
+  "page3_executor0_title": "Mr",
+  "page3_executor0_firstnames": "executor1_fn",
+  "page3_executor0_lastnames": "executor1_ln",
+  "page3_executor0_email": "executor1@test.com",
+  "page3_additional_executor0_title": "Dr",
+  "page3_additional_executor0_firstnames": "executor2_fn",
+  "page3_additional_executor0_lastnames": "executor2_ln",
+  "page3_additional_executor0_email": "executor2@test.com",
+
+  "address_line1": "1",
+  "address_line2": "Buckingham Palace",
+  "address_line3": "The place to be",
+  "address_town": "London",
+  "address_county": "London",
+  "address_country": "United Kingdom",
+  "address_postcode": "SW1A 1AA",
+
+  "UKpostcodeLink": ".manual-link",
+  "continueButton": "div.form-group.form-group-related > button[type=\"submit\"]"
 }
 

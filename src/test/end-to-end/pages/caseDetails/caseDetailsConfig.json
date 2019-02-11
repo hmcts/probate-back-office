@@ -4,6 +4,7 @@
   "tabsList": [
     {
       "tabName": "History",
+      "group": "1",
       "fields": [
         "Date",
         "Author",
@@ -11,10 +12,15 @@
         "Event",
         "Summary",
         "Comment"
+      ],
+      "dataKeys": [
+        "summary",
+        "comment"
       ]
     },
     {
       "tabName": "General details",
+      "group": "1",
       "fields": [
         "Registry location",
         "Lodgement type",
@@ -23,10 +29,20 @@
         "Date of (last) codicil",
         "Number of codicils",
         "Joint will"
+      ],
+      "dataKeys": [
+        "page1_list1_registry_location",
+        "page1_list2_lodgement_type",
+        "page1_lodgedDate_long",
+        "page1_willDate_long",
+        "page1_codicilDate_long",
+        "page1_numberOfCodicils",
+        "page1_jointWill"
       ]
     },
     {
       "tabName": "Testator's details",
+      "group": "1",
       "fields": [
         "Forename(s)",
         "Surname(s)",
@@ -36,17 +52,84 @@
         "Type of death",
         "Alias name?",
         "Alias names",
+        "Full alias name",
         "Building and Street",
         "Town or City",
         "County",
         "Postcode/Zipcode",
         "Country",
         "Email address"
+      ],
+      "dataKeys": [
+        "page2_firstnames",
+        "page2_lastnames",
+        "page2_gender",
+        "page2_dateOfBirth_long",
+        "page2_dateOfDeath_long",
+        "page2_typeOfDeath",
+        "page2_hasAliasYes",
+        "page2_alias_1",
+        "page2_alias_2",
+        "address_line1",
+        "address_line2",
+        "address_line3",
+        "address_town",
+        "address_county",
+        "address_country",
+        "address_postcode",
+        "page2_email"
       ]
     },
     {
-      "tabName": "Executor's details"
+      "tabName": "Executor's details",
+      "group": "1",
+      "fields": [
+        "Title",
+        "Forename(s)",
+        "Surname(s)",
+        "Building and Street",
+        "Town or City",
+        "County",
+        "Postcode/Zipcode",
+        "Country",
+        "Email address",
+        "Additional executor",
+        "Additional executor 1"
+      ],
+      "dataKeys": [
+        "page3_executor0_title",
+        "page3_executor0_firstnames",
+        "page3_executor0_lastnames",
+        "page3_executor0_email",
+        "page3_additional_executor0_title",
+        "page3_additional_executor0_firstnames",
+        "page3_additional_executor0_lastnames",
+        "page3_additional_executor0_email",
+        "address_line1",
+        "address_line2",
+        "address_line3",
+        "address_town",
+        "address_county",
+        "address_country",
+        "address_postcode"
+      ]
+    },
+    {
+      "tabName": "Documents",
+      "group": "2",
+      "fields": [
+        "Type",
+        "Document Url",
+        "Comment"
+      ],
+      "dataKeys": [
+        "documentType",
+        "filename",
+        "comment"
+      ]
     }
   ],
-  "locator": "div.form-group.form-group-related > button[type=\"submit\"]"
+  "step1": "Upload document",
+  "step2": "Amend will lodgement",
+  "goButton": "form button[type=\"submit\"]"
 }

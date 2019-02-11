@@ -5,14 +5,14 @@ const createCaseConfig = require('./createCaseConfig.json');
 
 module.exports = function (jurisdiction, caseType, event) {
 
-        const I = this;
-        I.waitForText(createCaseConfig.waitForText, testConfig.TestTimeToWaitForText);
-      //  I.amOnPage(createCaseConfig.pageUrl);
+    const I = this;
+    I.waitForText(createCaseConfig.waitForText, testConfig.TestTimeToWaitForText);
+    //  I.amOnPage(createCaseConfig.pageUrl)
 
-        I.wait(10);
-        I.selectOption(createCaseConfig.list1_id, jurisdiction);
-        I.selectOption(createCaseConfig.list2_id, caseType);
-        I.selectOption(createCaseConfig.list3_id, event);
+    I.wait(10);
+    I.selectOption('#cc-jurisdiction', jurisdiction);
+    I.selectOption('#cc-case-type', caseType);
+    I.selectOption('#cc-event', event);
 
-        I.waitForNavigationToComplete(createCaseConfig.locator);
+    I.waitForNavigationToComplete(createCaseConfig.locator);
 };
