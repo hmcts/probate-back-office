@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.restassured.RestAssured;
+import io.restassured.response.ResponseBody;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -123,10 +124,13 @@ public class SolCCDServiceAuthTokenGenerator {
 
     private String generateClientCode(String userName, String password) {
         final String encoded = Base64.getEncoder().encodeToString((userName + ":" + password).getBytes());
-        return RestAssured.given().relaxedHTTPSValidation().baseUri(baseServiceOauth2Url)
+        ResponseBody authorization = given().relaxedHTTPSValidation().baseUri(baseServiceOauth2Url)
             .header("Authorization", "Basic " + encoded)
             .post("/oauth2/authorize?response_type=code&client_id=" + probateClientId + "&redirect_uri=" + redirectUri)
-            .body().path("code");
+            .body();
+        authorization.prettyPrint();
+        return authorization.jsonPath().get("code");
 
     }
+
 }
