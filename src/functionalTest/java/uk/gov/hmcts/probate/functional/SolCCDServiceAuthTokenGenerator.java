@@ -112,7 +112,7 @@ public class SolCCDServiceAuthTokenGenerator {
 
     public String generateClientToken(String userName, String password) {
         String code = generateClientCode(userName, password);
-        String token = RestAssured.given().post(baseServiceOauth2Url + "/oauth2/token?code=" + code +
+        String token = RestAssured.given().relaxedHTTPSValidation().post(baseServiceOauth2Url + "/oauth2/token?code=" + code +
             "&client_secret=" + probateClientSecret +
             "&client_id=" + probateClientId +
             "&redirect_uri=" + redirectUri +
@@ -123,7 +123,7 @@ public class SolCCDServiceAuthTokenGenerator {
 
     private String generateClientCode(String userName, String password) {
         final String encoded = Base64.getEncoder().encodeToString((userName + ":" + password).getBytes());
-        return RestAssured.given().baseUri(baseServiceOauth2Url)
+        return RestAssured.given().relaxedHTTPSValidation().baseUri(baseServiceOauth2Url)
             .header("Authorization", "Basic " + encoded)
             .post("/oauth2/authorize?response_type=code&client_id=" + probateClientId + "&redirect_uri=" + redirectUri)
             .body().path("code");
