@@ -78,7 +78,6 @@ public class BusinessValidationController {
                 response = callbackResponseTransformer.transform(callbackRequest, document);
             }
         }
-
         return ResponseEntity.ok(response);
     }
 
@@ -96,11 +95,9 @@ public class BusinessValidationController {
         }
 
         CallbackResponse response = eventValidationService.validateRequest(callbackRequest, allCaseworkerAmendValidationRules);
-
         if (response.getErrors().isEmpty()) {
             response = callbackResponseTransformer.transform(callbackRequest);
         }
-
         return ResponseEntity.ok(response);
     }
 

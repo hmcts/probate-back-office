@@ -16,6 +16,7 @@ import uk.gov.hmcts.probate.service.EventValidationService;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.validator.EmailAddressNotificationValidationRule;
+import uk.gov.hmcts.probate.validator.EmailAddressNotifyValidationRule;
 import uk.gov.service.notify.NotificationClientException;
 
 import java.util.ArrayList;
@@ -35,6 +36,7 @@ public class NotificationController {
     private final CallbackResponseTransformer callbackResponseTransformer;
     private final EventValidationService eventValidationService;
     private final List<EmailAddressNotificationValidationRule> emailAddressNotificationValidationRules;
+    private final List<EmailAddressNotifyValidationRule> emailAddressNotifyValidationRules;
 
     @PostMapping(path = "/documents-received")
     public ResponseEntity<CallbackResponse> sendDocumentReceivedNotification(
@@ -63,7 +65,7 @@ public class NotificationController {
 
     @PostMapping(path = "/case-stopped")
     public ResponseEntity<CallbackResponse> sendCaseStoppedNotification(
-            @Validated({EmailAddressNotificationValidationRule.class})
+            @Validated({EmailAddressNotifyValidationRule.class})
             @RequestBody CallbackRequest callbackRequest)
             throws NotificationClientException {
         CallbackResponse response;

@@ -37,6 +37,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -86,6 +87,7 @@ public class BusinessValidationUnitTest {
     private AfterSubmitCallbackResponse afterSubmitCallbackResponseMock;
     @Mock
     private StateChangeService stateChangeServiceMock;
+
     private FieldErrorResponse businessValidationErrorMock;
     @Mock
     private PDFManagementService pdfManagementServiceMock;
@@ -117,8 +119,6 @@ public class BusinessValidationUnitTest {
         when(bindingResultMock.hasErrors()).thenReturn(false);
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
-        when(ccdBeanTransformer.transform(callbackRequestMock)).thenReturn(ccdDataMock);
-        when(eventValidationServiceMock.validate(ccdDataMock, validationRules)).thenReturn(Collections.emptyList());
         when(eventValidationServiceMock.validateRequest(callbackRequestMock, validationRules)).thenReturn(callbackResponseMock);
         when(stateChangeServiceMock.getChangedStateForCaseUpdate(caseDataMock)).thenReturn(Optional.empty());
         when(pdfManagementServiceMock.generateAndUpload(callbackRequestMock, LEGAL_STATEMENT))
@@ -138,8 +138,6 @@ public class BusinessValidationUnitTest {
         when(bindingResultMock.hasErrors()).thenReturn(false);
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
-        when(ccdBeanTransformer.transform(callbackRequestMock)).thenReturn(ccdDataMock);
-        when(eventValidationServiceMock.validate(ccdDataMock, validationRules)).thenReturn(Collections.emptyList());
         when(eventValidationServiceMock.validateRequest(callbackRequestMock, validationRules)).thenReturn(callbackResponseMock);
         Optional<String> changedState = Optional.of("changedState");
         when(stateChangeServiceMock.getChangedStateForCaseUpdate(caseDataMock)).thenReturn(changedState);
@@ -161,8 +159,6 @@ public class BusinessValidationUnitTest {
         when(bindingResultMock.hasErrors()).thenReturn(false);
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
-        when(ccdBeanTransformer.transform(callbackRequestMock)).thenReturn(ccdDataMock);
-        when(eventValidationServiceMock.validate(ccdDataMock, validationRules)).thenReturn(Collections.emptyList());
         when(eventValidationServiceMock.validateRequest(callbackRequestMock, validationRules)).thenReturn(callbackResponseMock);
         when(stateChangeServiceMock.getChangedStateForCaseUpdate(caseDataMock)).thenReturn(Optional.empty());
 
@@ -189,9 +185,10 @@ public class BusinessValidationUnitTest {
     public void shouldValidateWithBusinessErrors() {
         when(bindingResultMock.hasErrors()).thenReturn(false);
         List<FieldErrorResponse> businessErrors = Collections.singletonList(businessValidationErrorMock);
-        when(eventValidationServiceMock.validate(ccdDataMock, validationRules)).thenReturn(businessErrors);
+        when(eventValidationServiceMock.validateRequest(callbackRequestMock, validationRules))
+                .thenReturn( callbackResponseMock);
+        when(callbackResponseMock.getErrors()).thenReturn((businessErrors.stream().map(FieldErrorResponse::getMessage).collect(Collectors.toList())));
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
-        when(ccdBeanTransformer.transform(callbackRequestMock)).thenReturn(ccdDataMock);
 
         ResponseEntity<CallbackResponse> response = underTest.validate(callbackRequestMock,
                 bindingResultMock, httpServletRequest);
@@ -203,11 +200,12 @@ public class BusinessValidationUnitTest {
     @Test
     public void shouldValidateAmendCaseWithNoErrors() {
         when(bindingResultMock.hasErrors()).thenReturn(false);
-        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
-        when(ccdBeanTransformer.transform(callbackRequestMock)).thenReturn(ccdDataMock);
-        when(eventValidationServiceMock.validate(ccdDataMock, caseworkerAmendValidationRules)).thenReturn(Collections.emptyList());
-        when(eventValidationServiceMock.validateRequest(callbackRequestMock, validationRules)).thenReturn(callbackResponseMock);
+        when(eventValidationServiceMock.validateRequest(callbackRequestMock, caseworkerAmendValidationRules))
+                .thenReturn(callbackResponseMock);
         when(callbackResponseMock.getErrors()).thenReturn(Collections.emptyList());
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+
         when(callbackResponseTransformerMock.transform(callbackRequestMock))
                 .thenReturn(callbackResponseMock);
 
@@ -236,10 +234,10 @@ public class BusinessValidationUnitTest {
     public void shouldValidateAmendCaseWithBusinessErrors() {
         when(bindingResultMock.hasErrors()).thenReturn(false);
         List<FieldErrorResponse> businessErrors = Collections.singletonList(businessValidationErrorMock);
-        when(eventValidationServiceMock.validate(ccdDataMock, caseworkerAmendValidationRules)).thenReturn(businessErrors);
-        when(eventValidationServiceMock.validateRequest(callbackRequestMock, validationRules)).thenReturn(callbackResponseMock);
+        when(eventValidationServiceMock.validateRequest(callbackRequestMock, caseworkerAmendValidationRules))
+                .thenReturn( callbackResponseMock);
+        when(callbackResponseMock.getErrors()).thenReturn((businessErrors.stream().map(FieldErrorResponse::getMessage).collect(Collectors.toList())));
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
-        when(ccdBeanTransformer.transform(callbackRequestMock)).thenReturn(ccdDataMock);
 
         ResponseEntity<CallbackResponse> response = underTest.validateCaseDetails(callbackRequestMock,
                 bindingResultMock, httpServletRequest);
