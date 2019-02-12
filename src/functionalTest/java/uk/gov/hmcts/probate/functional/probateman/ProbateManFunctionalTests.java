@@ -3,6 +3,8 @@ package uk.gov.hmcts.probate.functional.probateman;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableMap;
+import io.restassured.http.ContentType;
+import io.restassured.http.Header;
 import io.restassured.http.Headers;
 import io.restassured.path.json.JsonPath;
 import net.serenitybdd.junit.runners.SerenityParameterizedRunner;
@@ -116,45 +118,45 @@ public class ProbateManFunctionalTests extends IntegrationTestBase {
 
         jdbcTemplate = new JdbcTemplate(dataSource);
         objectMapper = new ObjectMapper();
-//        String forename = RandomStringUtils.randomAlphanumeric(5);
-//        String surname = RandomStringUtils.randomAlphanumeric(5);
-//        email = forename + "." + surname + "@email.com";
-//        logger.info("Generate user name: {}", email);
-//
-//        IdamData idamData = IdamData.builder()
-//            .email(email)
-//            .forename(forename)
-//            .surname(surname)
-//            .password(PROBATEMAN_DB_PASS)
-//            .roles(Arrays.asList(
-//                Role.builder().code("caseworker-probate").build(),
-//                Role.builder().code("caseworker-probate-issuer").build()
-//            ))
-//            .userGroup(UserGroup.builder().code("caseworker").build())
-//            .build();
-//
-//        SerenityRest.given()
-//            .relaxedHTTPSValidation()
-//            .headers(Headers.headers(new Header("Content-Type", ContentType.JSON.toString())))
-//            .baseUri(idamUrl)
-//            .body(objectMapper.writeValueAsString(idamData))
-//            .when()
-//            .post("/testing-support/accounts")
-//            .then()
-//            .statusCode(204).extract().jsonPath().prettyPrint();
-//
-//
-//        JsonPath jp = SerenityRest.given()
-//            .relaxedHTTPSValidation()
-//            .headers(Headers.headers(new Header("Content-Type", ContentType.JSON.toString())))
-//            .baseUri(idamUrl)
-//            .body(objectMapper.writeValueAsString(idamData))
-//            .when()
-//            .get("/testing-support/accounts/" + email)
-//            .then()
-//            .extract().body().jsonPath();
-        email = "woods01@test.com";
-        headers = utils.getHeaders(email, PROBATEMAN_DB_PASS, 673679);
+        String forename = RandomStringUtils.randomAlphanumeric(5);
+        String surname = RandomStringUtils.randomAlphanumeric(5);
+        email = forename + "." + surname + "@email.com";
+        logger.info("Generate user name: {}", email);
+
+        IdamData idamData = IdamData.builder()
+            .email(email)
+            .forename(forename)
+            .surname(surname)
+            .password(PROBATEMAN_DB_PASS)
+            .roles(Arrays.asList(
+                Role.builder().code("caseworker-probate").build(),
+                Role.builder().code("caseworker-probate-issuer").build()
+            ))
+            .userGroup(UserGroup.builder().code("caseworker").build())
+            .build();
+
+        SerenityRest.given()
+            .relaxedHTTPSValidation()
+            .headers(Headers.headers(new Header("Content-Type", ContentType.JSON.toString())))
+            .baseUri(idamUrl)
+            .body(objectMapper.writeValueAsString(idamData))
+            .when()
+            .post("/testing-support/accounts")
+            .then()
+            .statusCode(204).extract().jsonPath().prettyPrint();
+
+
+        Integer id = SerenityRest.given()
+            .relaxedHTTPSValidation()
+            .headers(Headers.headers(new Header("Content-Type", ContentType.JSON.toString())))
+            .baseUri(idamUrl)
+            .body(objectMapper.writeValueAsString(idamData))
+            .when()
+            .get("/testing-support/accounts/" + email)
+            .then()
+            .extract().body().jsonPath().get("id");
+
+        headers = utils.getHeaders(email, PROBATEMAN_DB_PASS, id);
 
         deceasedForename = RandomStringUtils.randomAlphanumeric(10) + "_FN";
         deceasedSurname = RandomStringUtils.randomAlphanumeric(10) + "_SN";
