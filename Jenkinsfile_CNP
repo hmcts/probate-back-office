@@ -17,6 +17,7 @@ List<LinkedHashMap<String, Object>> secrets = [
     secret('pdf-service-grantSignatureBase64-last','BO_GRANT_SIG_LAST'),
     secret('probateCcdDataStoreApi', 'CCD_DATA_STORE_API_URL'),
     secret('ccd-gateway-host','CCD_GATEWAY_HOST'),
+    secret('idamRedirectUrl', 'IDAM_REDIRECT_URL'),
     secret('probatemandb-POSTGRES-USER', 'PROBATE_POSTGRESQL_USER_VAL'),
     secret('probatemandb-POSTGRES-PASS', 'PROBATE_POSTGRESQL_PASSWORD_VAL'),
     secret('probatemandb-POSTGRES-HOST', 'PROBATE_POSTGRESQL_HOSTNAME_VAL'),
