@@ -218,7 +218,7 @@ public class NotificationControllerTest {
     }
 
     @Test
-    public void shouldReturnEmailSOLValidateSuccessful() throws Exception {
+    public void shouldReturnEmailSolsValidateSuccessful() throws Exception {
         String solicitorPayload = testUtils.getStringFromFile("solicitorAdditionalExecutors.json");
 
         mockMvc.perform(post(DOC_RECEIVED_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON_UTF8))
@@ -227,12 +227,13 @@ public class NotificationControllerTest {
     }
 
     @Test
-    public void shouldReturnEmailSOLSValidateUnSuccessful() throws Exception {
+    public void shouldReturnEmailSolsValidateUnSuccessful() throws Exception {
         String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadNoEmail.json");
 
         mockMvc.perform(post(DOC_RECEIVED_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.errors[0]").value("There is no email address for this solicitor. Add an email address or contact them by post."))
+                .andExpect(jsonPath("$.errors[0]")
+                        .value("There is no email address for this solicitor. Add an email address or contact them by post."))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
 
     }
@@ -252,7 +253,8 @@ public class NotificationControllerTest {
 
         mockMvc.perform(post(DOC_RECEIVED_URL).content(personalPayload).contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.errors[0]").value("There is no email address for this applicant . Add an email address or contact them by post."))
+                .andExpect(jsonPath("$.errors[0]")
+                        .value("There is no email address for this applicant . Add an email address or contact them by post."))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
 
     }
@@ -265,7 +267,8 @@ public class NotificationControllerTest {
                 .content(personalPayload)
                 .contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.errors[0]").value("There is no email address for this applicant . Add an email address or contact them by post."))
+                .andExpect(jsonPath("$.errors[0]")
+                        .value("There is no email address for this applicant . Add an email address or contact them by post."))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
 
     }

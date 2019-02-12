@@ -113,11 +113,11 @@ public class CCDDataTransformer {
         return applicationType == null ? "" : applicationType;
     }
 
-    private String getPrimaryApplicantEmailAddress (String primaryApplicantEmailAddress) {
+    private String getPrimaryApplicantEmailAddress(String primaryApplicantEmailAddress) {
         return primaryApplicantEmailAddress == null ? "" : primaryApplicantEmailAddress;
     }
 
-    private String getSolsSolicitorEmail (String solsSolicitorEmail) {
+    private String getSolsSolicitorEmail(String solsSolicitorEmail) {
         return solsSolicitorEmail == null ? "" : solsSolicitorEmail;
     }
 
@@ -162,12 +162,12 @@ public class CCDDataTransformer {
         }
     }
 
-    public CaveatData transform(CaveatCallbackRequest callbackRequest) {
+    public CaveatData transformCaveats(CaveatCallbackRequest callbackRequest) {
 
-        return buildCCDData(callbackRequest);
+        return buildCCDDataCaveats(callbackRequest);
     }
 
-    private CaveatData buildCCDData(CaveatCallbackRequest callbackRequest) {
+    private CaveatData buildCCDDataCaveats(CaveatCallbackRequest callbackRequest) {
         CaveatData caseData = callbackRequest.getCaseDetails().getData();
 
         return CaveatData.builder()
@@ -175,7 +175,7 @@ public class CCDDataTransformer {
                 .build();
     }
 
-    private String getCaveatorEmailAddress (String caveatorEmailAddress) {
+    private String getCaveatorEmailAddress(String caveatorEmailAddress) {
         return caveatorEmailAddress == null ? "" : caveatorEmailAddress;
     }
 }

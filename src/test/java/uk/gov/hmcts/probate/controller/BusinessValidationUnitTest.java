@@ -186,8 +186,9 @@ public class BusinessValidationUnitTest {
         when(bindingResultMock.hasErrors()).thenReturn(false);
         List<FieldErrorResponse> businessErrors = Collections.singletonList(businessValidationErrorMock);
         when(eventValidationServiceMock.validateRequest(callbackRequestMock, validationRules))
-                .thenReturn( callbackResponseMock);
-        when(callbackResponseMock.getErrors()).thenReturn((businessErrors.stream().map(FieldErrorResponse::getMessage).collect(Collectors.toList())));
+                .thenReturn(callbackResponseMock);
+        when(callbackResponseMock.getErrors())
+                .thenReturn((businessErrors.stream().map(FieldErrorResponse::getMessage).collect(Collectors.toList())));
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
 
         ResponseEntity<CallbackResponse> response = underTest.validate(callbackRequestMock,
@@ -235,8 +236,9 @@ public class BusinessValidationUnitTest {
         when(bindingResultMock.hasErrors()).thenReturn(false);
         List<FieldErrorResponse> businessErrors = Collections.singletonList(businessValidationErrorMock);
         when(eventValidationServiceMock.validateRequest(callbackRequestMock, caseworkerAmendValidationRules))
-                .thenReturn( callbackResponseMock);
-        when(callbackResponseMock.getErrors()).thenReturn((businessErrors.stream().map(FieldErrorResponse::getMessage).collect(Collectors.toList())));
+                .thenReturn(callbackResponseMock);
+        when(callbackResponseMock.getErrors())
+                .thenReturn((businessErrors.stream().map(FieldErrorResponse::getMessage).collect(Collectors.toList())));
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
 
         ResponseEntity<CallbackResponse> response = underTest.validateCaseDetails(callbackRequestMock,

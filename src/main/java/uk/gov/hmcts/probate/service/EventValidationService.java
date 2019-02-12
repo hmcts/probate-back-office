@@ -46,7 +46,7 @@ public class EventValidationService {
     public CaveatCallbackResponse validateCaveatRequest(CaveatCallbackRequest callbackRequest,
                                                   List<? extends ValidationRuleCaveats> rules) {
 
-        CaveatData caveatData = ccdBeanTransformer.transform(callbackRequest);
+        CaveatData caveatData = ccdBeanTransformer.transformCaveats(callbackRequest);
 
         List<FieldErrorResponse> businessErrors = validateCaveat(caveatData, rules);
 

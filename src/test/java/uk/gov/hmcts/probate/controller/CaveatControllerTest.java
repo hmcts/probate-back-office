@@ -103,7 +103,8 @@ public class CaveatControllerTest {
                 .content(personalPayload)
                 .contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.errors[0]").value("There is no email address for this caveator. Add an email address or contact them by post."))
+                .andExpect(jsonPath("$.errors[0]")
+                        .value("There is no email address for this caveator. Add an email address or contact them by post."))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
 
     }

@@ -25,7 +25,8 @@ class EmailAddressNotificationDefaultValidationRule implements EmailAddressNotif
     public List<FieldErrorResponse> validate(CCDData ccdData) {
         Set<FieldErrorResponse> errors = new HashSet<>();
 
-        if (ccdData.getApplicationType().equalsIgnoreCase(String.valueOf(PERSONAL)) && ccdData.getPrimaryApplicantEmailAddress().isEmpty()) {
+        if (ccdData.getApplicationType().equalsIgnoreCase(String.valueOf(PERSONAL))
+                && ccdData.getPrimaryApplicantEmailAddress().isEmpty()) {
             errors.add(businessValidationMessageService.generateError(BUSINESS_ERROR, "emailNotProvidedPA"));
         } else if (ccdData.getApplicationType().equalsIgnoreCase(String.valueOf(SOLICITOR)) && ccdData.getSolsSolicitorEmail().isEmpty()) {
             errors.add(businessValidationMessageService.generateError(BUSINESS_ERROR, "emailNotProvidedSOLS"));
