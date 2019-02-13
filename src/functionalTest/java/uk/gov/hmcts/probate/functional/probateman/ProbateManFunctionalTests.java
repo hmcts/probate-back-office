@@ -48,7 +48,7 @@ public class ProbateManFunctionalTests extends IntegrationTestBase {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    private static final String PROBATEMAN_DB_PASS = "Probate123";
+    private static final String PROBATEMAN_DB_PASS = "Monday01";
 
     private static final String FORENAME_REPLACE = "[FORENAME_REPLACE]";
 
@@ -115,8 +115,8 @@ public class ProbateManFunctionalTests extends IntegrationTestBase {
         jdbcTemplate = new JdbcTemplate(dataSource);
         objectMapper = new ObjectMapper();
         
-        email = "woods01@test.com";
-        id = 673679;
+        email = "probatecaseworker@gmail.com";
+        id = 5927;
         logger.info("Generate user name: {}", email);
 
 
