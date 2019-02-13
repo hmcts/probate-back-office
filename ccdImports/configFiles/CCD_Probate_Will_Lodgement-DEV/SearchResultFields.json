@@ -1,0 +1,8 @@
+[
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "WillLodgement", "CaseFieldID": "[CASE_REFERENCE]", "Label": "Case reference", "DisplayOrder": 1},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "WillLodgement", "CaseFieldID": "deceasedForenames", "Label": "Testator's forename(s)", "DisplayOrder": 2},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "WillLodgement", "CaseFieldID": "deceasedSurname", "Label": "Testator's surname(s)", "DisplayOrder": 3},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "WillLodgement", "CaseFieldID": "deceasedDateOfBirth", "Label": "Testator's date of birth", "DisplayOrder": 4},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "WillLodgement", "CaseFieldID": "deceasedDateOfDeath", "Label": "Testator's date of death", "DisplayOrder": 5},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "WillLodgement", "CaseFieldID": "[STATE]", "Label": "State", "DisplayOrder": 6}
+]

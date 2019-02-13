@@ -1,0 +1,5 @@
+[
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "WillLodgement", "ID": "WillLodgementCreated", "Name": "Will lodgement created", "Description": "Will lodgement created", "DisplayOrder": 1},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "WillLodgement", "ID": "WillLodged", "Name": "Will lodged", "Description": "Will lodged", "DisplayOrder": 2},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "WillLodgement", "ID": "WillWithdrawn", "Name": "Will withdrawn", "Description": "Will withdrawn", "DisplayOrder": 3}
+]
