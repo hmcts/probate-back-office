@@ -43,9 +43,9 @@ public class CaveatController {
     }
 
     @PostMapping(path = "/general-message")
-    public ResponseEntity<CaveatCallbackResponse> sendGeneralMessageNotification
-            (@Validated({EmailAddressNotifyValidationRule.class})
-                    @RequestBody CaveatCallbackRequest caveatCallbackRequest)
+    public ResponseEntity<CaveatCallbackResponse> sendGeneralMessageNotification(
+            @Validated({EmailAddressNotifyValidationRule.class})
+             @RequestBody CaveatCallbackRequest caveatCallbackRequest)
             throws NotificationClientException {
         CaveatDetails caveatDetails = caveatCallbackRequest.getCaseDetails();
 

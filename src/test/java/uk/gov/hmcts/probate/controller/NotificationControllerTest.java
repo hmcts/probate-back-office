@@ -234,7 +234,8 @@ public class NotificationControllerTest {
         mockMvc.perform(post(DOC_RECEIVED_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.errors[0]")
-                        .value("There is no email address for this solicitor. To continue the application, go back and select no to sending an email."))
+                        .value("There is no email address for this solicitor. "
+                                + "To continue the application, go back and select no to sending an email."))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
 
     }
@@ -255,7 +256,8 @@ public class NotificationControllerTest {
         mockMvc.perform(post(DOC_RECEIVED_URL).content(personalPayload).contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.errors[0]")
-                        .value("There is no email address for this applicant. To continue the application, go back and select no to sending an email."))
+                        .value("There is no email address for this applicant. "
+                                + "To continue the application, go back and select no to sending an email."))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
 
     }
@@ -269,7 +271,8 @@ public class NotificationControllerTest {
                 .contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.errors[0]")
-                        .value("There is no email address for this applicant. To continue the application, go back and select no to sending an email."))
+                        .value("There is no email address for this applicant. "
+                                + "To continue the application, go back and select no to sending an email."))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
 
     }
