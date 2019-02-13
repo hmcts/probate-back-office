@@ -159,7 +159,7 @@ public class DocumentController {
             documentService.expire(callbackRequest, documentType);
         }
         if (caseData.isGrantIssuedEmailNotificationRequested()) {
-            callbackResponse = eventValidationService.validateRequest(callbackRequest, emailAddressNotificationValidationRules);
+            callbackResponse = eventValidationService.validateEmailRequest(callbackRequest, emailAddressNotificationValidationRules);
             if (callbackResponse.getErrors().isEmpty()) {
                 Document grantIssuedSentEmail = notificationService.sendEmail(GRANT_ISSUED, caseDetails);
                 documents.add(grantIssuedSentEmail);

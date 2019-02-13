@@ -43,6 +43,18 @@ public class EventValidationService {
                 .build();
     }
 
+    public CallbackResponse validateEmailRequest(CallbackRequest callbackRequest,
+                                            List<? extends ValidationRule> rules) {
+
+        CCDData ccdData = ccdBeanTransformer.transformEmail(callbackRequest);
+
+        List<FieldErrorResponse> businessErrors = validate(ccdData, rules);
+
+        return CallbackResponse.builder()
+                .errors(businessErrors.stream().map(FieldErrorResponse::getMessage).collect(Collectors.toList()))
+                .build();
+    }
+
     public CaveatCallbackResponse validateCaveatRequest(CaveatCallbackRequest callbackRequest,
                                                   List<? extends ValidationRuleCaveats> rules) {
 

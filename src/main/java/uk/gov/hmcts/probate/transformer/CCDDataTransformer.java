@@ -50,6 +50,18 @@ public class CCDDataTransformer {
                 .boExaminationChecklistQ1(getBoExaminationCheckList(caseData.getBoExaminationChecklistQ1()))
                 .boExaminationChecklistQ2(getBoExaminationCheckList(caseData.getBoExaminationChecklistQ2()))
 
+                .build();
+    }
+
+    public CCDData transformEmail(CallbackRequest callbackRequest) {
+
+        return buildEmailCCDData(callbackRequest);
+    }
+
+    private CCDData buildEmailCCDData(CallbackRequest callbackRequest) {
+        CaseData caseData = callbackRequest.getCaseDetails().getData();
+
+        return CCDData.builder()
                 .solsSolicitorEmail(getSolsSolicitorEmail(caseData.getSolsSolicitorEmail()))
                 .primaryApplicantEmailAddress(getPrimaryApplicantEmailAddress(caseData.getPrimaryApplicantEmailAddress()))
                 .applicationType(getApplicationType(caseData.getApplicationType().toString()))

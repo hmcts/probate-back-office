@@ -50,7 +50,7 @@ public class NotificationController {
 
         List<Document> documents = new ArrayList<>();
         if (caseData.isDocsReceivedEmailNotificationRequested()) {
-            response = eventValidationService.validateRequest(callbackRequest, emailAddressNotificationValidationRules);
+            response = eventValidationService.validateEmailRequest(callbackRequest, emailAddressNotificationValidationRules);
             if (response.getErrors().isEmpty()) {
                 Document documentsReceivedSentEmail = notificationService.sendEmail(DOCUMENTS_RECEIVED, caseDetails);
                 documents.add(documentsReceivedSentEmail);
@@ -72,7 +72,7 @@ public class NotificationController {
         Document document;
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
 
-        response = eventValidationService.validateRequest(callbackRequest, emailAddressNotifyValidationRules);
+        response = eventValidationService.validateEmailRequest(callbackRequest, emailAddressNotifyValidationRules);
         if (response.getErrors().isEmpty()) {
             document = notificationService.sendEmail(CASE_STOPPED, caseDetails);
             response = callbackResponseTransformer.caseStopped(callbackRequest, document);
