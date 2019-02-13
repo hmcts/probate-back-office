@@ -72,7 +72,7 @@ public class NotificationController {
         Document document;
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
 
-        response = eventValidationService.validateRequest(callbackRequest, emailAddressNotificationValidationRules);
+        response = eventValidationService.validateRequest(callbackRequest, emailAddressNotifyValidationRules);
         if (response.getErrors().isEmpty()) {
             document = notificationService.sendEmail(CASE_STOPPED, caseDetails);
             response = callbackResponseTransformer.caseStopped(callbackRequest, document);

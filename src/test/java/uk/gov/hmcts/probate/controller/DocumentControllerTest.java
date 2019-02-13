@@ -286,7 +286,7 @@ public class DocumentControllerTest {
                 .contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.errors[0]")
-                        .value("There is no email address for this applicant . Add an email address or contact them by post."))
+                        .value("There is no email address for this applicant. To continue the application, go back and select no to sending an email."))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
 
     }
