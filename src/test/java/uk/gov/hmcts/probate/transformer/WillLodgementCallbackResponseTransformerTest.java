@@ -70,6 +70,10 @@ public class WillLodgementCallbackResponseTransformerTest {
     private static final String WL_WITHDRAWAL_REASON = "cancelled";
     private static final String WILL_LODGEMENT_RECEIPT = "willLodgementDepositReceipt";
 
+    private static final String WL_LEGACY_ID = "12345";
+    private static final String WL_LEGACY_CASE_URL = "someUrl";
+    private static final String WL_LEGACY_CASE_TYPE = "someCaseType";
+
     @InjectMocks
     private WillLodgementCallbackResponseTransformer underTest;
 
@@ -111,7 +115,10 @@ public class WillLodgementCallbackResponseTransformerTest {
                 .executorSurname(WL_EXECUTOR_SURNAME)
                 .executorAddress(WL_EXECUTOR_ADDRESS)
                 .executorEmailAddress(WL_EXECUTOR_EMAIL_ADDRESS)
-                .withdrawalReason(WL_WITHDRAWAL_REASON);
+                .withdrawalReason(WL_WITHDRAWAL_REASON)
+                .legacyId(WL_LEGACY_ID)
+                .legacyCaseViewUrl(WL_LEGACY_CASE_URL)
+                .legacyType(WL_LEGACY_CASE_TYPE);
 
         when(willLodgementCallbackRequestMock.getCaseDetails()).thenReturn(willLodgementDetailsMock);
         when(willLodgementDetailsMock.getData()).thenReturn(willLodgementDataBuilder.build());
@@ -199,6 +206,10 @@ public class WillLodgementCallbackResponseTransformerTest {
         assertEquals(WL_EXECUTOR_EMAIL_ADDRESS, willLodgementCallbackResponse.getResponseWillLodgementData().getExecutorEmailAddress());
 
         assertEquals(WL_WITHDRAWAL_REASON, willLodgementCallbackResponse.getResponseWillLodgementData().getWithdrawalReason());
+
+        assertEquals(WL_LEGACY_ID, willLodgementCallbackResponse.getResponseWillLodgementData().getLegacyId());
+        assertEquals(WL_LEGACY_CASE_TYPE, willLodgementCallbackResponse.getResponseWillLodgementData().getLegacyType());
+        assertEquals(WL_LEGACY_CASE_URL, willLodgementCallbackResponse.getResponseWillLodgementData().getLegacyCaseViewUrl());
     }
 
     private void assertApplicationType(WillLodgementCallbackResponse willLodgementCallbackResponse, ApplicationType wlApplicationType) {
