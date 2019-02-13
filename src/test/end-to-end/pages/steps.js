@@ -8,7 +8,6 @@ module.exports = function () {
 
         // Login
         authenticateWithIdamIfAvailable: steps.IDAM.signIn,
-
         selectNewCase: steps.newCase.newCase,
         selectCaseTypeOptions: steps.createCase.createCase,
         enterWillLodgementPage1: steps.createWillLodgement.page1,
@@ -17,6 +16,10 @@ module.exports = function () {
         checkMyAnswers: steps.checkYourAnswers.checkYourAnswers,
         seeCaseDetails: steps.caseDetails.caseDetails,
         uploadDocument: steps.documentUpload.documentUpload,
-        enterEventSummary: steps.eventSummary.eventSummary
+        enterEventSummary: steps.eventSummary.eventSummary,
+        enterComment: steps.comment.comment,
+        generateDepositReceipt: steps.generateDepositReceipt.generateDepositReceipt,
+        selectMatchedCases: steps.caseMatches.caseMatches,
+        enterMatchedCasesComment: steps.caseMatches.caseMatchesComment
     });
 };

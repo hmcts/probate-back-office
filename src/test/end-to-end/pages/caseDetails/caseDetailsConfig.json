@@ -127,9 +127,156 @@
         "filename",
         "comment"
       ]
+    },
+    {
+      "tabName": "General details",
+      "group": "3",
+      "fields": [
+        "Registry location",
+        "Lodgement type",
+        "Lodged date",
+        "Date of will",
+        "Date of (last) codicil",
+        "Number of codicils",
+        "Joint will"
+      ],
+      "dataKeys": [
+        "page1_list1_registry_location",
+        "page1_list2_lodgement_type",
+        "page1_lodgedDate_long_update",
+        "page1_willDate_long",
+        "page1_codicilDate_long",
+        "page1_numberOfCodicils_update",
+        "page1_jointWill"
+      ]
+    },
+    {
+      "tabName": "Testator's details",
+      "group": "3",
+      "fields": [
+        "Forename(s)",
+        "Surname(s)",
+        "Gender",
+        "Date of birth",
+        "Date of death",
+        "Type of death",
+        "Alias name?",
+        "Alias names",
+        "Full alias name",
+        "Building and Street",
+        "Town or City",
+        "County",
+        "Postcode/Zipcode",
+        "Country",
+        "Email address"
+      ],
+      "dataKeys": [
+        "page2_firstnames_update",
+        "page2_lastnames_update",
+        "page2_gender",
+        "page2_dateOfBirth_long_update",
+        "page2_dateOfDeath_long",
+        "page2_typeOfDeath",
+        "page2_hasAliasYes",
+        "page2_alias_1",
+        "page2_alias_2",
+        "address_line1",
+        "address_line2",
+        "address_line3",
+        "address_town",
+        "address_county",
+        "address_country",
+        "address_postcode",
+        "page2_email"
+      ]
+    },
+    {
+      "tabName": "Executor's details",
+      "group": "3",
+      "fields": [
+        "Title",
+        "Forename(s)",
+        "Surname(s)",
+        "Building and Street",
+        "Town or City",
+        "County",
+        "Postcode/Zipcode",
+        "Country",
+        "Email address",
+        "Additional executor",
+        "Additional executor 1"
+      ],
+      "dataKeys": [
+        "page3_executor0_title_update",
+        "page3_executor0_firstnames_update",
+        "page3_executor0_lastnames_update",
+        "page3_executor0_email_update",
+        "page3_additional_executor0_title",
+        "page3_additional_executor0_firstnames",
+        "page3_additional_executor0_lastnames",
+        "page3_additional_executor0_email",
+        "address_line1",
+        "address_line2",
+        "address_line3",
+        "address_town",
+        "address_county",
+        "address_country",
+        "address_postcode"
+      ]
+    },
+    {
+      "tabName": "History",
+      "group": "4",
+      "fields": [
+        "Date",
+        "Author",
+        "End state",
+        "Event",
+        "Summary",
+        "Comment"
+      ],
+      "dataKeys": [
+        "summary",
+        "comment"
+      ]
+    },
+    {
+      "tabName": "History",
+      "group": "5",
+      "fields": [
+        "Date",
+        "Author",
+        "End state",
+        "Event",
+        "Summary",
+        "Comment"
+      ],
+      "dataKeys": [
+        "summary",
+        "comment"
+      ]
+    },
+    {
+      "tabName": "Case matches",
+      "group": "6",
+      "fields": [
+        "Full name",
+        "Date of birth",
+        "Date of death",
+        "Postcode"
+      ],
+      "dataKeys": [
+        "fullname",
+        "dob",
+        "dod",
+        "postcode"
+      ]
     }
   ],
   "step1": "Upload document",
   "step2": "Amend will lodgement",
+  "step3": "Add comment",
+  "step4": "Generate deposit receipt",
+  "step5": "Match application",
   "goButton": "form button[type=\"submit\"]"
 }

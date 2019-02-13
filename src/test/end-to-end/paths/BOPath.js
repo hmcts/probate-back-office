@@ -27,11 +27,12 @@ Scenario(TestConfigurator.idamInUseText('Multiple Executors'), async function (I
 
     // IdAM
     I.authenticateWithIdamIfAvailable();
+
     I.selectNewCase();
     I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text, createCaseConfig.list3_text);
-    I.enterWillLodgementPage1();
-    I.enterWillLodgementPage2();
-    I.enterWillLodgementPage3();
+    I.enterWillLodgementPage1('create');
+    I.enterWillLodgementPage2('create');
+    I.enterWillLodgementPage3('create');
     I.checkMyAnswers();
 
     const url = await I.grabCurrentUrl();
@@ -41,5 +42,21 @@ Scenario(TestConfigurator.idamInUseText('Multiple Executors'), async function (I
     I.uploadDocument(caseRef);
     I.enterEventSummary(caseRef);
     I.seeCaseDetails(caseRef, '2');
+
+    I.enterWillLodgementPage1('update');
+    I.enterWillLodgementPage2('update');
+    I.enterWillLodgementPage3('update');
+    I.checkMyAnswers();
+    I.seeCaseDetails(caseRef, '3');
+
+    I.enterComment(caseRef);
+    I.seeCaseDetails(caseRef, '4');
+
+    I.generateDepositReceipt(caseRef, '5');
+    I.seeCaseDetails(caseRef, '5');
+
+    I.selectMatchedCases(caseRef);
+    I.enterMatchedCasesComment(caseRef);
+    I.seeCaseDetails(caseRef, '6');
 
 });
