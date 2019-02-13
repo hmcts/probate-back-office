@@ -47,6 +47,8 @@
             ],
             "willAccessOriginal": "Yes",
             "willExists": "Yes",
+            "solsSolicitorEmail":"email@test.com",
+            "applicationType":"Solicitor",
             "solsSolicitorFirmName": "SolicitorFirmName",
             "deceasedDateOfDeath": "2018-01-01",
             "solsCYAStateTransition": "SolLegalStatementReviewed",

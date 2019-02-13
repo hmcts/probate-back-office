@@ -18,6 +18,8 @@
         "Country": "1"
       },
       "deceasedAnyOtherNames": "Yes",
+      "solsSolicitorEmail": "contact@lonGenArt.com",
+      "applicationType":"Solicitor",
       "solsSolicitorPhoneNumber": "07958995330",
       "solsAdditionalInfo": "Additional Info",
       "deceasedDateOfBirth": "1987-01-01",
@@ -44,7 +46,6 @@
         "PostCode": "2",
         "Country": "2"
       },
-      "solsSolicitorEmail": "contact@lonGenArt.com",
       "solsSolicitorPhoneNumber": "0208 863 98688",
       "deceasedDomicileInEngWales": "Yes",
       "ihtNetValue": "90009",
