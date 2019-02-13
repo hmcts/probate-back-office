@@ -2,6 +2,16 @@
   "multi_match": {
     "query": ":deceasedAliases",
     "operator": "and",
+    "boost": 2,
+    "fields": [
+      "data.solsDeceasedAliasNamesList.*"
+    ]
+  }
+},
+{
+  "multi_match": {
+    "query": ":deceasedAliases",
+    "operator": "and",
     "fuzziness": 2,
     "prefix_length": 0,
     "fields": [
