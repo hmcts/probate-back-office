@@ -17,7 +17,6 @@ List<LinkedHashMap<String, Object>> secrets = [
     secret('pdf-service-grantSignatureBase64-last','BO_GRANT_SIG_LAST'),
     secret('probateCcdDataStoreApi', 'CCD_DATA_STORE_API_URL'),
     secret('ccd-gateway-host','CCD_GATEWAY_HOST'),
-    secret('probateIdamSecret', 'IDAM_SECRET'),
     secret('probatemandb-POSTGRES-USER', 'PROBATE_POSTGRESQL_USER_VAL'),
     secret('probatemandb-POSTGRES-PASS', 'PROBATE_POSTGRESQL_PASSWORD_VAL'),
     secret('probatemandb-POSTGRES-HOST', 'PROBATE_POSTGRESQL_HOSTNAME_VAL'),
@@ -44,9 +43,11 @@ withPipeline("java", product, component) {
   loadVaultSecrets(secrets)
 
   enableSlackNotifications('#probate-jenkins')
+
   before('buildinfra:prod') {
     error 'Deliberately breaking pipeline to prevent prod deployment'
   }
+
     after('test') {
     try {
       //sh './gradlew pitest'

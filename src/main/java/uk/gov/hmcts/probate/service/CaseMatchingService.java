@@ -26,6 +26,7 @@ import java.util.stream.Collectors;
 import static java.util.Optional.ofNullable;
 import static org.elasticsearch.index.query.Operator.AND;
 import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
+import static org.elasticsearch.index.query.QueryBuilders.matchQuery;
 import static org.elasticsearch.index.query.QueryBuilders.multiMatchQuery;
 import static org.elasticsearch.index.query.QueryBuilders.rangeQuery;
 import static org.elasticsearch.index.query.QueryBuilders.termQuery;
@@ -48,6 +49,8 @@ public class CaseMatchingService {
     private static final String DECEASED_ALIAS_NAME_LIST = "data.solsDeceasedAliasNamesList.*";
     private static final String DECEASED_DOB = "data.deceasedDateOfBirth";
     private static final String DECEASED_DOD = "data.deceasedDateOfDeath";
+    private static final String IMPORTED_TO_CCD = "data.imported_to_ccd";
+    private static final String IMPORTED_TO_CCD_Y = "Y";
 
     private final CCDDataStoreAPIConfiguration ccdDataStoreAPIConfiguration;
     private final RestTemplate restTemplate;
@@ -105,6 +108,8 @@ public class CaseMatchingService {
 
         ofNullable(criteria.getDeceasedDateOfDeathRaw())
                 .ifPresent(date -> filter.must(rangeQuery(DECEASED_DOD).gte(date.minusDays(3)).lte(date.plusDays(3))));
+
+        filter.mustNot(matchQuery(IMPORTED_TO_CCD, IMPORTED_TO_CCD_Y));
 
         query.filter(filter);
 
