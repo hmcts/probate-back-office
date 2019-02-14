@@ -2,5 +2,6 @@
   {"UserIDAMId": "ProbateSolCW1@gmail.com", "WorkBasketDefaultJurisdiction": "PROBATE", "WorkBasketDefaultCaseType": "WillLodgement", "WorkBasketDefaultState": "WillLodgementCreated"},
   {"UserIDAMId": "ProbateSolCW2@gmail.com ", "WorkBasketDefaultJurisdiction": "PROBATE", "WorkBasketDefaultCaseType": "WillLodgement", "WorkBasketDefaultState": "WillLodgementCreated"},
   {"UserIDAMId": "ProbateCaseAdmin@gmail.com ", "WorkBasketDefaultJurisdiction": "PROBATE", "WorkBasketDefaultCaseType": "WillLodgement", "WorkBasketDefaultState": "WillLodgementCreated"},
-  {"UserIDAMId": "ProbateCaseOfficer@gmail.com", "WorkBasketDefaultJurisdiction": "PROBATE", "WorkBasketDefaultCaseType": "WillLodgement", "WorkBasketDefaultState": "WillLodgementCreated"}
+  {"UserIDAMId": "ProbateCaseOfficer@gmail.com", "WorkBasketDefaultJurisdiction": "PROBATE", "WorkBasketDefaultCaseType": "WillLodgement", "WorkBasketDefaultState": "WillLodgementCreated"},
+  {"UserIDAMId": "ProbateRegistrar@gmail.com", "WorkBasketDefaultJurisdiction": "PROBATE", "WorkBasketDefaultCaseType": "WillLodgement", "WorkBasketDefaultState": "WillLodgementCreated"}
 ]
