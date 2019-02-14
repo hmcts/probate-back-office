@@ -82,7 +82,6 @@ public class CaseMatchingService {
     }
 
     public List<CaseMatch> findCases(CaseType caseType, CaseMatchingCriteria criteria) {
-        BoolQueryBuilder wrapper = boolQuery();
         BoolQueryBuilder fuzzy = boolQuery();
         BoolQueryBuilder strict = boolQuery();
         BoolQueryBuilder filter = boolQuery();
@@ -90,18 +89,16 @@ public class CaseMatchingService {
         ofNullable(criteria.getDeceasedForenames())
                 .filter(s -> !s.isEmpty())
                 .ifPresent(s -> {
-                            fuzzy.must(multiMatchQuery(s, DECEASED_FORENAMES).fuzziness(2).operator(AND));
-                            strict.must(multiMatchQuery(s, DECEASED_FORENAMES).fuzziness(0).boost(2).operator(AND));
-                        }
-                );
+                    fuzzy.must(multiMatchQuery(s, DECEASED_FORENAMES).fuzziness(2).operator(AND));
+                    strict.must(multiMatchQuery(s, DECEASED_FORENAMES).fuzziness(0).boost(2).operator(AND));
+                });
 
         ofNullable(criteria.getDeceasedSurname())
                 .filter(s -> !s.isEmpty())
                 .ifPresent(s -> {
-                            fuzzy.must(multiMatchQuery(s, DECEASED_SURNAME).fuzziness(2).operator(AND));
-                            strict.must(multiMatchQuery(s, DECEASED_SURNAME).fuzziness(0).boost(2).operator(AND));
-                        }
-                );
+                    fuzzy.must(multiMatchQuery(s, DECEASED_SURNAME).fuzziness(2).operator(AND));
+                    strict.must(multiMatchQuery(s, DECEASED_SURNAME).fuzziness(0).boost(2).operator(AND));
+                });
 
         ofNullable(criteria.getDeceasedFullName())
                 .filter(s -> !s.isEmpty())
@@ -118,7 +115,7 @@ public class CaseMatchingService {
 
         filter.mustNot(matchQuery(IMPORTED_TO_CCD, IMPORTED_TO_CCD_Y));
 
-        wrapper.should(fuzzy).should(strict).filter(filter);
+        BoolQueryBuilder wrapper = boolQuery().should(fuzzy).should(strict).filter(filter);
 
         String jsonQuery = new SearchSourceBuilder().query(wrapper).size(100).toString();
 
