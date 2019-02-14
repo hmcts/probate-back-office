@@ -35,8 +35,6 @@
                 "AddressLine3": "Test AddressLine3"
             },
             "deceasedAnyOtherNames": "Yes",
-            "solsSolicitorEmail":"email@test.com",
-            "applicationType":"Solicitor",
             "willHasCodicils": "Yes",
             "deceasedDateOfBirth": "1987-01-01",
             "solsDeceasedAliasNamesList": [

@@ -11,6 +11,7 @@ import uk.gov.hmcts.probate.model.ccd.caveat.response.CaveatCallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.transformer.CCDDataTransformer;
+import uk.gov.hmcts.probate.validator.EmailValidationRule;
 import uk.gov.hmcts.probate.validator.ValidationRule;
 import uk.gov.hmcts.probate.validator.ValidationRuleCaveats;
 
@@ -43,12 +44,19 @@ public class EventValidationService {
                 .build();
     }
 
+    public List<FieldErrorResponse> validateEmail(CCDData form, List<? extends EmailValidationRule> rules) {
+        return rules.stream()
+                .map(rule -> rule.validate(form))
+                .flatMap(List::stream)
+                .collect(Collectors.toList());
+    }
+
     public CallbackResponse validateEmailRequest(CallbackRequest callbackRequest,
-                                            List<? extends ValidationRule> rules) {
+                                            List<? extends EmailValidationRule> rules) {
 
         CCDData ccdData = ccdBeanTransformer.transformEmail(callbackRequest);
 
-        List<FieldErrorResponse> businessErrors = validate(ccdData, rules);
+        List<FieldErrorResponse> businessErrors = validateEmail(ccdData, rules);
 
         return CallbackResponse.builder()
                 .errors(businessErrors.stream().map(FieldErrorResponse::getMessage).collect(Collectors.toList()))

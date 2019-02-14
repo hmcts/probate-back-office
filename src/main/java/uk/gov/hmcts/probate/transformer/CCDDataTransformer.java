@@ -49,7 +49,6 @@ public class CCDDataTransformer {
                 .executors(getAllExecutors(caseData))
                 .boExaminationChecklistQ1(getBoExaminationCheckList(caseData.getBoExaminationChecklistQ1()))
                 .boExaminationChecklistQ2(getBoExaminationCheckList(caseData.getBoExaminationChecklistQ2()))
-
                 .build();
     }
 

@@ -47,9 +47,7 @@
         "PostCode": "2",
         "Country": "2"
       },
-      "applicationType":"Solicitor",
       "solsSolicitorEmail": "contact@lonGenArt.com",
-      "primaryApplicantEmailAddress": "contact@lonGenArt.com",
       "solsSolicitorPhoneNumber": "0208 863 98688",
       "deceasedDomicileInEngWales": "Yes",
       "ihtNetValue": "1000000",

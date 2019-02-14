@@ -36,8 +36,6 @@
             },
             "deceasedAnyOtherNames": "Yes",
             "willHasCodicils": "Yes",
-            "solsSolicitorEmail":"email@test.com",
-            "applicationType":"Solicitor",
             "deceasedDateOfBirth": "1987-01-01",
             "solsDeceasedAliasNamesList": [
                 {
