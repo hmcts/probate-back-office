@@ -146,7 +146,7 @@ public class CaseMatchingServiceTest {
     }
 
     @Test
-    public void test() throws IOException {
+    public void findCasesWithDatedDocument() throws IOException {
         CaseData caseData = CaseData.builder()
                 .deceasedSurname("Smith")
                 .build();
@@ -155,7 +155,8 @@ public class CaseMatchingServiceTest {
 
         when(restTemplate.postForObject(any(), any(), any())).thenReturn(matchedCases);
 
-        List<Case> cases = caseMatchingService.findCasesWithDatedDocument(GRANT_OF_REPRESENTATION, "Test");
+        List<Case> cases = caseMatchingService.findCasesWithDatedDocument(GRANT_OF_REPRESENTATION, "Test",
+                "testDate");
 
         assertEquals(1, cases.size());
         assertThat(cases.get(0).getId(), is(1L));

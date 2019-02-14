@@ -126,15 +126,13 @@ public class CaseMatchingService {
         return runQuery(caseType, criteria, jsonQuery);
     }
 
-    public List<Case> findCasesWithDatedDocument(CaseType caseType, String documentTypeGenerated) {
+    public List<Case> findCasesWithDatedDocument(CaseType caseType, String documentTypeGenerated, String queryDate) {
         BoolQueryBuilder query = boolQuery();
 
         query.must(matchQuery(DOCUMENT_TYPE, documentTypeGenerated));
-        query.must(rangeQuery(DOCUMENT_DATE).gte("now-1d/d").lt("now/d"));
+        query.must(matchQuery(DOCUMENT_DATE, queryDate));
 
         String jsonQuery = new SearchSourceBuilder().query(query).toString();
-
-        System.out.println("jsonQuery = " + jsonQuery);
 
         return runQuery(caseType, jsonQuery);
     }
@@ -147,23 +145,7 @@ public class CaseMatchingService {
     }
 
     private List<CaseMatch> runQuery(CaseType caseType, CaseMatchingCriteria criteria, String jsonQuery) {
-        log.info("CaseMatchingService runQuery: " + jsonQuery);
-        URI uri = UriComponentsBuilder
-                .fromHttpUrl(ccdDataStoreAPIConfiguration.getHost() + ccdDataStoreAPIConfiguration.getCaseMatchingPath())
-                .queryParam(CASE_TYPE_ID, caseType.getCode())
-                .build().encode().toUri();
-
-        HttpEntity<String> entity = new HttpEntity<>(jsonQuery, headers.getAuthorizationHeaders());
-
-        MatchedCases matchedCases;
-        try {
-            matchedCases = restTemplate.postForObject(uri, entity, MatchedCases.class);
-        } catch (HttpClientErrorException e) {
-            appInsights.trackEvent(REST_CLIENT_EXCEPTION, e.getMessage());
-            throw new CaseMatchingException(e.getStatusCode(), e.getMessage());
-        }
-
-        appInsights.trackEvent(REQUEST_SENT, uri.toString());
+        MatchedCases matchedCases = getMatchedCases(caseType, jsonQuery);
 
         return matchedCases.getCases().stream()
                 .filter(c -> c.getId() == null || !criteria.getId().equals(c.getId()))
@@ -172,23 +154,7 @@ public class CaseMatchingService {
     }
 
     private List<Case> runQuery(CaseType caseType, String jsonQuery) {
-        log.info("CaseMatchingService runQuery: " + jsonQuery);
-        URI uri = UriComponentsBuilder
-                .fromHttpUrl(ccdDataStoreAPIConfiguration.getHost() + ccdDataStoreAPIConfiguration.getCaseMatchingPath())
-                .queryParam(CASE_TYPE_ID, caseType.getCode())
-                .build().encode().toUri();
-
-        HttpEntity<String> entity = new HttpEntity<>(jsonQuery, headers.getAuthorizationHeaders());
-
-        MatchedCases matchedCases;
-        try {
-            matchedCases = restTemplate.postForObject(uri, entity, MatchedCases.class);
-        } catch (HttpClientErrorException e) {
-            appInsights.trackEvent(REST_CLIENT_EXCEPTION, e.getMessage());
-            throw new CaseMatchingException(e.getStatusCode(), e.getMessage());
-        }
-
-        appInsights.trackEvent(REQUEST_SENT, uri.toString());
+        MatchedCases matchedCases = getMatchedCases(caseType, jsonQuery);
 
         return matchedCases.getCases();
     }
@@ -205,5 +171,26 @@ public class CaseMatchingService {
     private String getAliasesToAliasesSubQueryTemplate() {
         return fileSystemResourceService.getFileFromResourceAsString(TEMPLATE_DIRECTORY
                 + ES_ALIASES_TO_ALIASES_SUB_QUERY);
+    }
+
+    private MatchedCases getMatchedCases(CaseType caseType, String jsonQuery) {
+        log.info("CaseMatchingService runQuery: " + jsonQuery);
+        URI uri = UriComponentsBuilder
+                .fromHttpUrl(ccdDataStoreAPIConfiguration.getHost() + ccdDataStoreAPIConfiguration.getCaseMatchingPath())
+                .queryParam(CASE_TYPE_ID, caseType.getCode())
+                .build().encode().toUri();
+
+        HttpEntity<String> entity = new HttpEntity<>(jsonQuery, headers.getAuthorizationHeaders());
+
+        MatchedCases matchedCases;
+        try {
+            matchedCases = restTemplate.postForObject(uri, entity, MatchedCases.class);
+        } catch (HttpClientErrorException e) {
+            appInsights.trackEvent(REST_CLIENT_EXCEPTION, e.getMessage());
+            throw new CaseMatchingException(e.getStatusCode(), e.getMessage());
+        }
+
+        appInsights.trackEvent(REQUEST_SENT, uri.toString());
+        return matchedCases;
     }
 }
