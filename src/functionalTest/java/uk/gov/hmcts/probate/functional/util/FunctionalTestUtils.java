@@ -128,11 +128,17 @@ public class FunctionalTestUtils {
     }
 
     public Headers getHeaders(String userName, String password, Integer id) {
-        String token = serviceAuthTokenGenerator.generateClientToken(userName, password);
+        String authorizationToken = serviceAuthTokenGenerator.generateClientToken(userName, password);
+        String serviceToken = serviceAuthTokenGenerator.generateServiceToken();
+
+        System.out.println("******************* authorizationToken: " + authorizationToken + " **************************** ");
+        System.out.println("******************* serviceToken: " + serviceToken + " **************************** ");
+        System.out.println("******************* user-id: " +  id.toString() + " **************************** ");
+
         return Headers.headers(
-            new Header("ServiceAuthorization", serviceAuthTokenGenerator.generateServiceToken()),
+            new Header("ServiceAuthorization", serviceToken),
             new Header("Content-Type", ContentType.JSON.toString()),
-            new Header("Authorization", token),
+            new Header("Authorization", "Bearer " + authorizationToken),
             new Header("user-id", id.toString()));
     }
 
