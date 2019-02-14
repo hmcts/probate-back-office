@@ -11,6 +11,7 @@ List<LinkedHashMap<String, Object>> secrets = [
     secret('userAuthProviderOauth2Url', 'USER_AUTH_PROVIDER_OAUTH2_URL'),
     secret('evidenceManagementUrl', 'EVIDENCE_MANAGEMENT_URL'),
     secret('idamUserId', 'IDAM_USER_ID'),
+    secret('probateIdamSecret', 'IDAM_SECRET'),
     secret('s2sAuthTotpSecret', 'S2S_AUTH_TOTP_SECRET'),
     secret('probate-bo-govNotifyApiKey', 'PROBATE_BO_NOTIFY_KEY'),
     secret('pdf-service-grantSignatureBase64-first', 'BO_GRANT_SIG_FIRST'),
