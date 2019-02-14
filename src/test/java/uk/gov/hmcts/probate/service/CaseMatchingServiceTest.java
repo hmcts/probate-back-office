@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.service;
 
+import com.google.common.collect.ImmutableList;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -13,19 +14,22 @@ import uk.gov.hmcts.probate.model.ccd.CaseMatch;
 import uk.gov.hmcts.probate.model.ccd.raw.CaseLink;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.casematching.Case;
-import uk.gov.hmcts.probate.model.ccd.raw.casematching.MatchedCases;
 import uk.gov.hmcts.probate.model.ccd.raw.casematching.CaseData;
+import uk.gov.hmcts.probate.model.ccd.raw.casematching.MatchedCases;
 import uk.gov.hmcts.probate.model.criterion.CaseMatchingCriteria;
 import uk.gov.hmcts.probate.service.evidencemanagement.header.HttpHeadersFactory;
 
+import java.io.IOException;
 import java.net.URI;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
@@ -139,5 +143,22 @@ public class CaseMatchingServiceTest {
         assertEquals("SW12 0FA", cases.get(0).getPostcode());
         assertNull(cases.get(0).getValid());
         assertNull(cases.get(0).getComment());
+    }
+
+    @Test
+    public void test() throws IOException {
+        CaseData caseData = CaseData.builder()
+                .deceasedSurname("Smith")
+                .build();
+        List<Case> caseList = new ImmutableList.Builder<Case>().add(new Case(caseData, 1L)).build();
+        MatchedCases matchedCases = new MatchedCases(caseList);
+
+        when(restTemplate.postForObject(any(), any(), any())).thenReturn(matchedCases);
+
+        List<Case> cases = caseMatchingService.findCasesWithDatedDocument(GRANT_OF_REPRESENTATION, "Test");
+
+        assertEquals(1, cases.size());
+        assertThat(cases.get(0).getId(), is(1L));
+        assertEquals("Smith", cases.get(0).getData().getDeceasedSurname());
     }
 }

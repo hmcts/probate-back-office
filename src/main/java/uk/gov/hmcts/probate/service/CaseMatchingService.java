@@ -14,6 +14,7 @@ import uk.gov.hmcts.probate.exception.CaseMatchingException;
 import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.CaseType;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
+import uk.gov.hmcts.probate.model.ccd.raw.casematching.Case;
 import uk.gov.hmcts.probate.model.ccd.raw.casematching.MatchedCases;
 import uk.gov.hmcts.probate.model.criterion.CaseMatchingCriteria;
 import uk.gov.hmcts.probate.service.evidencemanagement.header.HttpHeadersFactory;
@@ -51,6 +52,9 @@ public class CaseMatchingService {
     private static final String DECEASED_DOD = "data.deceasedDateOfDeath";
     private static final String IMPORTED_TO_CCD = "data.imported_to_ccd";
     private static final String IMPORTED_TO_CCD_Y = "Y";
+
+    private static final String DOCUMENT_TYPE = "data.probateDocumentsGenerated.value.DocumentType";
+    private static final String DOCUMENT_DATE = "data.probateDocumentsGenerated.value.DocumentDateAdded";
 
     private final CCDDataStoreAPIConfiguration ccdDataStoreAPIConfiguration;
     private final RestTemplate restTemplate;
@@ -118,6 +122,19 @@ public class CaseMatchingService {
         return runQuery(caseType, criteria, jsonQuery);
     }
 
+    public List<Case> findCasesWithDatedDocument(CaseType caseType, String documentTypeGenerated) {
+        BoolQueryBuilder query = boolQuery();
+
+        query.must(matchQuery(DOCUMENT_TYPE, documentTypeGenerated));
+        query.must(rangeQuery(DOCUMENT_DATE).gte("now-1d/d").lt("now/d"));
+
+        String jsonQuery = new SearchSourceBuilder().query(query).toString();
+
+        System.out.println("jsonQuery = " + jsonQuery);
+
+        return runQuery(caseType, jsonQuery);
+    }
+
     public List<CaseMatch> findCrossMatches(List<CaseType> caseTypes, CaseMatchingCriteria criteria) {
         return caseTypes.stream()
                 .map(caseType -> findMatches(caseType, criteria))
@@ -148,6 +165,28 @@ public class CaseMatchingService {
                 .filter(c -> c.getId() == null || !criteria.getId().equals(c.getId()))
                 .map(c -> caseMatchBuilderService.buildCaseMatch(c, caseType))
                 .collect(Collectors.toList());
+    }
+
+    private List<Case> runQuery(CaseType caseType, String jsonQuery) {
+        log.info("CaseMatchingService runQuery: " + jsonQuery);
+        URI uri = UriComponentsBuilder
+                .fromHttpUrl(ccdDataStoreAPIConfiguration.getHost() + ccdDataStoreAPIConfiguration.getCaseMatchingPath())
+                .queryParam(CASE_TYPE_ID, caseType.getCode())
+                .build().encode().toUri();
+
+        HttpEntity<String> entity = new HttpEntity<>(jsonQuery, headers.getAuthorizationHeaders());
+
+        MatchedCases matchedCases;
+        try {
+            matchedCases = restTemplate.postForObject(uri, entity, MatchedCases.class);
+        } catch (HttpClientErrorException e) {
+            appInsights.trackEvent(REST_CLIENT_EXCEPTION, e.getMessage());
+            throw new CaseMatchingException(e.getStatusCode(), e.getMessage());
+        }
+
+        appInsights.trackEvent(REQUEST_SENT, uri.toString());
+
+        return matchedCases.getCases();
     }
 
     private String getQueryTemplate() {
