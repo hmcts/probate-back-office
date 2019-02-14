@@ -1,6 +1,5 @@
 package uk.gov.hmcts.probate.functional.probateman;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableMap;
 import io.restassured.http.Headers;
@@ -114,7 +113,7 @@ public class ProbateManFunctionalTests extends IntegrationTestBase {
 
         jdbcTemplate = new JdbcTemplate(dataSource);
         objectMapper = new ObjectMapper();
-        
+
         email = "probatecaseworker@gmail.com";
         id = 5927;
         logger.info("Generate user name: {}", email);
