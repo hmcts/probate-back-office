@@ -82,26 +82,33 @@ public class CaseMatchingService {
     }
 
     public List<CaseMatch> findCases(CaseType caseType, CaseMatchingCriteria criteria) {
-        BoolQueryBuilder query = boolQuery();
+        BoolQueryBuilder wrapper = boolQuery();
+        BoolQueryBuilder fuzzy = boolQuery();
+        BoolQueryBuilder strict = boolQuery();
         BoolQueryBuilder filter = boolQuery();
 
         ofNullable(criteria.getDeceasedForenames())
                 .filter(s -> !s.isEmpty())
-                .ifPresent(s -> query.must(multiMatchQuery(s, DECEASED_FORENAMES).fuzziness(2).operator(AND)));
+                .ifPresent(s -> {
+                            fuzzy.must(multiMatchQuery(s, DECEASED_FORENAMES).fuzziness(2).operator(AND));
+                            strict.must(multiMatchQuery(s, DECEASED_FORENAMES).fuzziness(0).boost(2).operator(AND));
+                        }
+                );
 
         ofNullable(criteria.getDeceasedSurname())
                 .filter(s -> !s.isEmpty())
-                .ifPresent(s -> query.must(multiMatchQuery(s, DECEASED_SURNAME).fuzziness(2).operator(AND)));
+                .ifPresent(s -> {
+                            fuzzy.must(multiMatchQuery(s, DECEASED_SURNAME).fuzziness(2).operator(AND));
+                            strict.must(multiMatchQuery(s, DECEASED_SURNAME).fuzziness(0).boost(2).operator(AND));
+                        }
+                );
 
-        criteria.getDeceasedAliases().stream()
-                .map(s -> boolQuery()
-                        .should(multiMatchQuery(s, DECEASED_FORENAMES).fuzziness(2))
-                        .should(multiMatchQuery(s, DECEASED_SURNAME).fuzziness(2)))
-                .forEach(query::must);
-
-        criteria.getDeceasedAliases().stream()
-                .map(s -> boolQuery().should(multiMatchQuery(s, DECEASED_ALIAS_NAME_LIST).fuzziness(2).operator(AND)))
-                .forEach(query::must);
+        ofNullable(criteria.getDeceasedFullName())
+                .filter(s -> !s.isEmpty())
+                .ifPresent(s -> {
+                    fuzzy.should(multiMatchQuery(s, DECEASED_ALIAS_NAME_LIST).fuzziness(2).operator(AND));
+                    strict.should(multiMatchQuery(s, DECEASED_ALIAS_NAME_LIST).fuzziness(0).boost(2).operator(AND));
+                });
 
         ofNullable(criteria.getDeceasedDateOfBirthRaw())
                 .ifPresent(date -> filter.must(termQuery(DECEASED_DOB, date)));
@@ -111,9 +118,9 @@ public class CaseMatchingService {
 
         filter.mustNot(matchQuery(IMPORTED_TO_CCD, IMPORTED_TO_CCD_Y));
 
-        query.filter(filter);
+        wrapper.should(fuzzy).should(strict).filter(filter);
 
-        String jsonQuery = new SearchSourceBuilder().query(query).toString();
+        String jsonQuery = new SearchSourceBuilder().query(wrapper).size(100).toString();
 
         return runQuery(caseType, criteria, jsonQuery);
     }
