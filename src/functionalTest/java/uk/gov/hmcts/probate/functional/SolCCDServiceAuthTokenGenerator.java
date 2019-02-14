@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.restassured.RestAssured;
+import io.restassured.path.json.JsonPath;
 import io.restassured.response.ResponseBody;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -114,13 +115,15 @@ public class SolCCDServiceAuthTokenGenerator {
     public String generateClientToken(String userName, String password) {
         String code = generateClientCode(userName, password);
         System.out.println("******************* code: " + code + " **************************** ");
-        String token = RestAssured.given().relaxedHTTPSValidation().post(idamUrl + "/oauth2/token?" +
+        JsonPath jp = RestAssured.given().relaxedHTTPSValidation().post(idamUrl + "/oauth2/token?" +
             "code=" + code +
             "&client_secret=" + probateClientSecret +
             "&client_id=" + probateClientId +
             "&redirect_uri=" + redirectUri +
             "&grant_type=authorization_code")
-            .body().path("access_token");
+            .body().jsonPath();
+        jp.prettyPrint();
+        String token = jp.get("access_token");
         System.out.println("******************* token: " + token + " **************************** ");
 
         return token;
