@@ -1,14 +1,17 @@
 package uk.gov.hmcts.probate.service;
 
 import com.google.common.collect.ImmutableList;
+import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpHeaders;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import uk.gov.hmcts.probate.config.CCDDataStoreAPIConfiguration;
+import uk.gov.hmcts.probate.exception.CaseMatchingException;
 import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
 import uk.gov.hmcts.probate.model.ccd.raw.CaseLink;
@@ -161,5 +164,14 @@ public class CaseMatchingServiceTest {
         assertEquals(1, cases.size());
         assertThat(cases.get(0).getId(), is(1L));
         assertEquals("Smith", cases.get(0).getData().getDeceasedSurname());
+    }
+
+    @Test
+    public void testHttpExceptionCaughtWithBadPost() {
+        when(restTemplate.postForObject(any(), any(), any())).thenThrow(HttpClientErrorException.class);
+
+        Assertions.assertThatThrownBy(() -> caseMatchingService.findCasesWithDatedDocument(GRANT_OF_REPRESENTATION,
+                "test", "testDate"))
+                .isInstanceOf(CaseMatchingException.class);
     }
 }
