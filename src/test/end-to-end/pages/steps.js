@@ -17,7 +17,6 @@ module.exports = function () {
         seeCaseDetails: steps.caseDetails.drCaseDetails,
         uploadDocument: steps.documentUpload.documentUpload,
         enterEventSummary: steps.eventSummary.eventSummary,
-        enterComment: steps.comment.comment,
         generateDepositReceipt: steps.generateDepositReceipt.generateDepositReceipt,
         selectMatchedCases: steps.caseMatches.caseMatches,
         enterMatchedCasesComment: steps.caseMatches.caseMatchesComment

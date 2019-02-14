@@ -4,7 +4,7 @@ const testConfig = require('src/test/config');
 const caseDetailsConfig = require('./caseDetailsConfig');
 
 
-module.exports = function (caseRef, tabConfigFile, dataConfigFile) {
+module.exports = function (caseRef, tabConfigFile, dataConfigFile, nextStep) {
 
     const I = this;
 
@@ -30,8 +30,9 @@ module.exports = function (caseRef, tabConfigFile, dataConfigFile) {
         I.see(dataConfigFile[dataKey]);
     });
 
-    if (tabConfigFile.nextStep) {
-        I.selectOption('#next-step', tabConfigFile.nextStep);
+    const step = tabConfigFile.nextStep || nextStep;
+    if (step) {
+        I.selectOption('#next-step', step);
         I.waitForNavigationToComplete(caseDetailsConfig.goButton);
     }
 };

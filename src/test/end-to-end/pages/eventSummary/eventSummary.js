@@ -1,18 +1,17 @@
 'use strict';
 
 const testConfig = require('src/test/config.js');
-const eventSummaryConfig = require('./eventSummaryConfig.json');
 
-module.exports = function (caseRef) {
+module.exports = function (caseRef, configFile) {
 
     const I = this;
-    I.waitForText(eventSummaryConfig.waitForText, testConfig.TestTimeToWaitForText);
+    I.waitForText(configFile.waitForText, testConfig.TestTimeToWaitForText);
 
     I.see(caseRef);
 
-    I.fillField('#field-trigger-summary', eventSummaryConfig.summary);
-    I.fillField('#field-trigger-description', eventSummaryConfig.comment);
+    I.fillField('#field-trigger-summary', configFile.summary);
+    I.fillField('#field-trigger-description', configFile.comment);
 
-    I.waitForNavigationToComplete(eventSummaryConfig.locator);
+    I.waitForNavigationToComplete(configFile.locator);
 
 };
