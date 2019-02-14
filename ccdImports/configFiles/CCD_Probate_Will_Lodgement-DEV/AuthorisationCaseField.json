@@ -26,5 +26,9 @@
   {"CaseTypeID": "WillLodgement", "CaseFieldID": "withdrawalReason", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
   {"CaseTypeID": "WillLodgement", "CaseFieldID": "documentsGenerated", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
   {"CaseTypeID": "WillLodgement", "CaseFieldID": "documentsUploaded", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
-  {"CaseTypeID": "WillLodgement", "CaseFieldID": "caseMatches", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"}
+  {"CaseTypeID": "WillLodgement", "CaseFieldID": "caseMatches", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
+  {"CaseTypeID": "WillLodgement", "CaseFieldID": "legacyId", "UserRole": "caseworker-probate-issuer", "CRUD": "CR"},
+  {"CaseTypeID": "WillLodgement", "CaseFieldID": "legacyType", "UserRole": "caseworker-probate-issuer", "CRUD": "CR"},
+  {"CaseTypeID": "WillLodgement", "CaseFieldID": "legacyCaseViewUrl", "UserRole": "caseworker-probate-issuer", "CRUD": "CR"},
+  {"CaseTypeID": "WillLodgement", "CaseFieldID": "legacyCaseViewUrlLink", "UserRole": "caseworker-probate-issuer", "CRUD": "R"}
 ]

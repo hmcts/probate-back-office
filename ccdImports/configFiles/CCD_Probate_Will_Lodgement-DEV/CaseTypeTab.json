@@ -25,5 +25,9 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "WillLodgement", "Channel": "CaseWorker", "TabID": "willWithdrawlTab", "TabLabel": "Will withdrawl details", "TabDisplayOrder": 4, "CaseFieldID": "withdrawalReason", "TabFieldDisplayOrder": 1},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "WillLodgement", "Channel": "CaseWorker", "TabID": "documentsTab", "TabLabel": "Documents", "TabDisplayOrder": 5, "CaseFieldID": "documentsGenerated", "TabFieldDisplayOrder": 1},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "WillLodgement", "Channel": "CaseWorker", "TabID": "documentsTab", "TabLabel": "Documents", "TabDisplayOrder": 5, "CaseFieldID": "documentsUploaded", "TabFieldDisplayOrder": 2},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "WillLodgement", "Channel": "CaseWorker", "TabID": "caseMatchesTab", "TabLabel": "Case matches", "TabDisplayOrder": 6, "CaseFieldID": "caseMatches", "TabFieldDisplayOrder": 1}
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "WillLodgement", "Channel": "CaseWorker", "TabID": "caseMatchesTab", "TabLabel": "Case matches", "TabDisplayOrder": 6, "CaseFieldID": "caseMatches", "TabFieldDisplayOrder": 1},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "WillLodgement", "Channel": "CaseWorker", "TabID": "legacyCaseTab", "TabLabel": "Legacy details", "TabDisplayOrder": 9, "CaseFieldID": "legacyId", "TabFieldDisplayOrder": 1, "TabShowCondition": "legacyId=\"*\""},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "WillLodgement", "Channel": "CaseWorker", "TabID": "legacyCaseTab", "TabLabel": "Legacy details", "TabDisplayOrder": 9, "CaseFieldID": "legacyType", "TabFieldDisplayOrder": 2},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "WillLodgement", "Channel": "CaseWorker", "TabID": "legacyCaseTab", "TabLabel": "Legacy details", "TabDisplayOrder": 9, "CaseFieldID": "legacyCaseViewUrlLink", "TabFieldDisplayOrder": 3},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "WillLodgement", "Channel": "CaseWorker", "TabID": "legacyCaseTab", "TabLabel": "Legacy details", "TabDisplayOrder": 9, "CaseFieldID": "legacyCaseViewUrl", "TabFieldDisplayOrder": 4}
 ]

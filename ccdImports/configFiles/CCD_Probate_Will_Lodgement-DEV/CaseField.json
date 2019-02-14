@@ -26,5 +26,9 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "WillLodgement", "ID": "withdrawalReason", "Label": "Reason for withdrawl", "FieldType": "FixedList", "FieldTypeParameter": "wlWithdrawReasons", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "WillLodgement", "ID": "documentsGenerated", "Label": "Documents generated", "FieldType": "Collection", "FieldTypeParameter": "wlDocument", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "WillLodgement", "ID": "documentsUploaded", "Label": "Documents uploaded", "FieldType": "Collection", "FieldTypeParameter": "wlDocumentUpload", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "WillLodgement", "ID": "caseMatches", "Label": "Possible case matches", "FieldType": "Collection", "FieldTypeParameter": "CaseMatch", "SecurityClassification": "Public"}
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "WillLodgement", "ID": "caseMatches", "Label": "Possible case matches", "FieldType": "Collection", "FieldTypeParameter": "CaseMatch", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "WillLodgement", "ID": "legacyId", "Label": "Legacy id", "FieldType": "Text", "Min": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "WillLodgement", "ID": "legacyType", "Label": "Legacy case type", "FieldType": "Text", "Min": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "WillLodgement", "ID": "legacyCaseViewUrl", "Label": "Legacy case link", "FieldType": "Text", "Min": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "WillLodgement", "ID": "legacyCaseViewUrlLink", "Label": "(${legacyCaseViewUrl})", "FieldType": "Label", "Min": "Public"}
 ]
