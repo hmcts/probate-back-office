@@ -420,6 +420,14 @@ services:
     depends_on:
       - elasticsearch
 
+  kibana:
+    image: docker.elastic.co/kibana/kibana:6.3.0
+    container_name: kibana
+    ports:
+      - 5601:5601
+    depends_on:
+      - elasticsearch
+
   probate-man-database:
     build:
       context: ../docker/probateman
