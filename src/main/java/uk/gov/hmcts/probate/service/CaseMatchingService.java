@@ -115,7 +115,7 @@ public class CaseMatchingService {
 
         filter.mustNot(matchQuery(IMPORTED_TO_CCD, IMPORTED_TO_CCD_Y));
 
-        BoolQueryBuilder wrapper = boolQuery().should(fuzzy).should(strict).filter(filter);
+        BoolQueryBuilder wrapper = boolQuery().should(fuzzy).should(strict).minimumShouldMatch(1).filter(filter);
 
         String jsonQuery = new SearchSourceBuilder().query(wrapper).size(100).toString();
 
