@@ -128,7 +128,8 @@ public class PDFManagementService {
         String decryptedString = null;
         try {
             IvParameterSpec iv = new IvParameterSpec(SIGNATURE_DECRYPTION_IV.getBytes(StandardCharsets.UTF_8));
-            SecretKeySpec secretKey = new SecretKeySpec(pdfServiceConfiguration.getGrantSignatureSecretKey().getBytes(StandardCharsets.UTF_8), "AES");
+            SecretKeySpec secretKey = new SecretKeySpec(pdfServiceConfiguration
+                    .getGrantSignatureSecretKey().getBytes(StandardCharsets.UTF_8), "AES");
             Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING");
             cipher.init(Cipher.DECRYPT_MODE, secretKey, iv);
             decryptedString = Base64.getEncoder().encodeToString(cipher
