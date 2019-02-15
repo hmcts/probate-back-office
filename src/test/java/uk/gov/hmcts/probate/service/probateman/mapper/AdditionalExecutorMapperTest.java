@@ -69,6 +69,28 @@ public class AdditionalExecutorMapperTest {
 
     }
 
+    @Test
+    public void shouldMapToLimitedAdditionalExecutorApplyingList() {
+
+        GrantApplication grantApplication = new GrantApplication();
+        grantApplication.setGrantee1Forenames(GRANTEE1_FORENAMES);
+        grantApplication.setGrantee1Surname(GRANTEE1_SURNAME);
+        grantApplication.setGrantee1Address(GRANTEE1_ADDRESS);
+        grantApplication.setGrantee3Forenames(GRANTEE3_FORENAMES);
+        grantApplication.setGrantee3Surname(GRANTEE3_SURNAME);
+        grantApplication.setGrantee3Address(GRANTEE3_ADDRESS);
+
+        List<CollectionMember<AdditionalExecutorApplying>> expectedApplyingExecutors = buildExecutorApplying(grantApplication);
+
+        List<CollectionMember<AdditionalExecutorApplying>> additionalCollection =
+                additionalExecutorMapper.toAdditionalCollectionMember(grantApplication);
+
+        assertThat(additionalCollection.size()).isEqualTo(2);
+        assertThat(additionalCollection.get(0)).isEqualToComparingFieldByFieldRecursively(expectedApplyingExecutors.get(0));
+        assertThat(additionalCollection.get(1)).isEqualToComparingFieldByFieldRecursively(expectedApplyingExecutors.get(2));
+
+    }
+
     private List<CollectionMember<AdditionalExecutorApplying>> buildExecutorApplying(GrantApplication grantApplication) {
         List<CollectionMember<AdditionalExecutorApplying>> applyingList = new ArrayList<>();
         CollectionMember<AdditionalExecutorApplying> applying1 = buildExecutor(grantApplication.getGrantee1Forenames(),
