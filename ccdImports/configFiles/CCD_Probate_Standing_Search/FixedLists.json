@@ -1,0 +1,19 @@
+[
+  {"LiveFrom": "01/01/2017", "ID": "ssApplicationTypes", "ListElementCode": "Personal", "ListElement": "Personal"},
+  {"LiveFrom": "01/01/2017", "ID": "ssApplicationTypes", "ListElementCode": "Solicitor", "ListElement": "Solicitor"},
+  {"LiveFrom": "01/01/2017", "ID": "ssRegistryLocations", "ListElementCode": "Oxford", "ListElement": "Oxford"},
+  {"LiveFrom": "01/01/2017", "ID": "ssRegistryLocations", "ListElementCode": "Birmingham", "ListElement": "Birmingham"},
+  {"LiveFrom": "01/01/2017", "ID": "ssRegistryLocations", "ListElementCode": "Manchester", "ListElement": "Manchester"},
+  {"LiveFrom": "01/01/2017", "ID": "ssRegistryLocations", "ListElementCode": "Leeds", "ListElement": "Leeds"},
+  {"LiveFrom": "01/01/2017", "ID": "ssRegistryLocations", "ListElementCode": "Liverpool", "ListElement": "Liverpool"},
+  {"LiveFrom": "01/01/2017", "ID": "ssRegistryLocations", "ListElementCode": "Brighton", "ListElement": "Brighton"},
+  {"LiveFrom": "01/01/2017", "ID": "ssRegistryLocations", "ListElementCode": "London", "ListElement": "London"},
+  {"LiveFrom": "01/01/2017", "ID": "ssRegistryLocations", "ListElementCode": "Cardiff", "ListElement": "Cardiff"},
+  {"LiveFrom": "01/01/2017", "ID": "ssRegistryLocations", "ListElementCode": "Newcastle", "ListElement": "Newcastle"},
+  {"LiveFrom": "01/01/2017", "ID": "ssRegistryLocations", "ListElementCode": "Winchester", "ListElement": "Winchester"},
+  {"LiveFrom": "01/01/2017", "ID": "ssDocumentUploadTypeEnum", "ListElementCode": "email", "ListElement": "Email"},
+  {"LiveFrom": "01/01/2017", "ID": "ssDocumentUploadTypeEnum", "ListElementCode": "correspondence", "ListElement": "Correspondence"},
+  {"LiveFrom": "01/01/2017", "ID": "ssDocumentUploadTypeEnum", "ListElementCode": "IHT", "ListElement": "Codicil"},
+  {"LiveFrom": "01/01/2017", "ID": "ssDocumentUploadTypeEnum", "ListElementCode": "deathCertificate", "ListElement": "Death Certificate"},
+  {"LiveFrom": "01/01/2017", "ID": "ssDocumentUploadTypeEnum", "ListElementCode": "other", "ListElement": "Other"}
+]
