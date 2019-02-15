@@ -48,8 +48,6 @@ public class ProbateManFunctionalTests extends IntegrationTestBase {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    private static final String PROBATEMAN_DB_PASS = "Monday01";
-
     private static final String FORENAME_REPLACE = "[FORENAME_REPLACE]";
 
     private static final String SURNAME_REPLACE = "[SURNAME_REPLACE]";
@@ -66,7 +64,11 @@ public class ProbateManFunctionalTests extends IntegrationTestBase {
 
     private ObjectMapper objectMapper;
 
-    private String email;
+    private String probatemanDbPass = "Probate123";
+
+    private Integer id = 673679;
+
+    private String email = "woods01@test.com";
 
     private Headers headers;
 
@@ -84,8 +86,6 @@ public class ProbateManFunctionalTests extends IntegrationTestBase {
     private String deceasedSurname;
 
     private String deceasedAlias;
-
-    private Integer id;
 
     public ProbateManFunctionalTests(String caseType, String caseTypeFilename, String legacyType, String jsonFileName) {
         this.caseType = caseType;
@@ -115,12 +115,7 @@ public class ProbateManFunctionalTests extends IntegrationTestBase {
         jdbcTemplate = new JdbcTemplate(dataSource);
         objectMapper = new ObjectMapper();
 
-        email = "probatecaseworker@gmail.com";
-        id = 5927;
-        logger.info("Generate user name: {}", email);
-
-
-        headers = utils.getHeaders(email, PROBATEMAN_DB_PASS, id);
+        headers = utils.getHeaders(email, probatemanDbPass, id);
 
         deceasedForename = RandomStringUtils.randomAlphanumeric(10) + "_FN";
         deceasedSurname = RandomStringUtils.randomAlphanumeric(10) + "_SN";

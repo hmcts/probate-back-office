@@ -114,7 +114,6 @@ public class SolCCDServiceAuthTokenGenerator {
 
     public String generateClientToken(String userName, String password) {
         String code = generateClientCode(userName, password);
-        System.out.println("******************* code: " + code + " **************************** ");
         JsonPath jp = RestAssured.given().relaxedHTTPSValidation().post(idamUrl + "/oauth2/token?" +
             "code=" + code +
             "&client_secret=" + probateClientSecret +
@@ -124,17 +123,11 @@ public class SolCCDServiceAuthTokenGenerator {
             .body().jsonPath();
         jp.prettyPrint();
         String token = jp.get("access_token");
-        System.out.println("******************* token: " + token + " **************************** ");
 
         return token;
     }
 
     private String generateClientCode(String userName, String password) {
-        System.out.println("******************* idamUrl: " + idamUrl + " **************************** ");
-        System.out.println("******************* redirectUri: " + redirectUri + " **************************** ");
-        System.out.println("******************* probateClientId: " + probateClientId + " **************************** ");
-        System.out.println("******************* userName: " + userName + " **************************** ");
-        System.out.println("******************* password: " + password + " **************************** ");
         final String encoded = Base64.getEncoder().encodeToString((userName + ":" + password).getBytes());
         ResponseBody authorization = given().relaxedHTTPSValidation().baseUri(idamUrl)
             .header("Authorization", "Basic " + encoded)
