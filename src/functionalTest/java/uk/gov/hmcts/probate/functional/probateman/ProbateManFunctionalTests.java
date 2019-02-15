@@ -9,6 +9,7 @@ import net.serenitybdd.rest.SerenityRest;
 import net.thucydides.junit.annotations.TestData;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.awaitility.Awaitility;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -124,12 +125,17 @@ public class ProbateManFunctionalTests extends IntegrationTestBase {
         deceasedForename = RandomStringUtils.randomAlphanumeric(10) + "_FN";
         deceasedSurname = RandomStringUtils.randomAlphanumeric(10) + "_SN";
         deceasedAlias = RandomStringUtils.randomAlphanumeric(10) + "_ALIAS" + " " + RandomStringUtils.randomAlphanumeric(10);
+
+        generateSqlAndExecute(deceasedForename, deceasedSurname, deceasedAlias, "/scripts/legacy_search_" + caseTypeFilename + "_insert.sql");
+    }
+
+    @After
+    public void cleanUp(){
+        generateSqlAndExecute(deceasedForename, deceasedSurname, deceasedAlias, "/scripts/legacy_search_" + caseTypeFilename + "_clean_up.sql");
     }
 
     @Test
     public void shouldViewProbateManCase() {
-        generateSqlAndExecute(deceasedForename, deceasedSurname, deceasedAlias, "/scripts/legacy_search_" + caseTypeFilename + "_insert.sql");
-
         Map<String, Object> dbResultsMap = retrieveRecordFromDb(deceasedForename, deceasedSurname, deceasedAlias, "/scripts/legacy_search_" + caseTypeFilename + "_query.sql");
         Long id = (Long) dbResultsMap.get("id");
 
@@ -148,8 +154,6 @@ public class ProbateManFunctionalTests extends IntegrationTestBase {
 
     @Test
     public void shouldDoLegacySearch() throws Exception {
-        generateSqlAndExecute(deceasedForename, deceasedSurname, deceasedAlias, "/scripts/legacy_search_" + caseTypeFilename + "_insert.sql");
-
         final String legacySearchQuery = getRequestJson(deceasedForename, deceasedSurname);
 
         await().until(() -> getLegacySearchRows(legacySearchQuery));
@@ -183,7 +187,6 @@ public class ProbateManFunctionalTests extends IntegrationTestBase {
         jsonPath.prettyPrint();
 
         checkDbRecordIsUpdated(deceasedForename, deceasedSurname, deceasedAlias, "/scripts/legacy_search_" + caseTypeFilename + "_query.sql");
-        generateSqlAndExecute(deceasedForename, deceasedSurname, deceasedAlias, "/scripts/legacy_search_" + caseTypeFilename + "_clean_up.sql");
     }
 
     private void checkDbRecordIsUpdated(String forename, String surname, String alias, String sqlFile) {
