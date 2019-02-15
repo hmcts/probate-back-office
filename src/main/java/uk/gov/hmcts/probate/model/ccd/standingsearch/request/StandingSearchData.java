@@ -66,6 +66,10 @@ public class StandingSearchData {
 
     private List<CollectionMember<UploadDocument>> documentsUploaded;
 
+    private String legacyId;
+    private String legacyType;
+    private String legacyCaseViewUrl;
+
     // EVENT = misc
 
     public String getDeceasedFullName() {

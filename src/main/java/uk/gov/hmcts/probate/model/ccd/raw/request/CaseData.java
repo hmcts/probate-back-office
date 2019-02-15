@@ -371,6 +371,10 @@ public class CaseData {
 
     private final List<CollectionMember<CaseMatch>> legacySearchResultRows;
 
+    private final String legacyId;
+    private final String legacyType;
+    private final String legacyCaseViewUrl;
+
     @Getter(lazy = true)
     private final List<CollectionMember<AdditionalExecutor>> executorsApplyingForLegalStatement = getAllExecutors(true);
 
