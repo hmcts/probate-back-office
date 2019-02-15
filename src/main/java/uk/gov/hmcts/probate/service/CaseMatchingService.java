@@ -26,6 +26,7 @@ import java.util.stream.Collectors;
 import static java.util.Optional.ofNullable;
 import static org.elasticsearch.index.query.Operator.AND;
 import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
+import static org.elasticsearch.index.query.QueryBuilders.matchQuery;
 import static org.elasticsearch.index.query.QueryBuilders.multiMatchQuery;
 import static org.elasticsearch.index.query.QueryBuilders.rangeQuery;
 import static org.elasticsearch.index.query.QueryBuilders.termQuery;
@@ -48,6 +49,8 @@ public class CaseMatchingService {
     private static final String DECEASED_ALIAS_NAME_LIST = "data.solsDeceasedAliasNamesList.*";
     private static final String DECEASED_DOB = "data.deceasedDateOfBirth";
     private static final String DECEASED_DOD = "data.deceasedDateOfDeath";
+    private static final String IMPORTED_TO_CCD = "data.imported_to_ccd";
+    private static final String IMPORTED_TO_CCD_Y = "Y";
 
     private final CCDDataStoreAPIConfiguration ccdDataStoreAPIConfiguration;
     private final RestTemplate restTemplate;
@@ -79,26 +82,30 @@ public class CaseMatchingService {
     }
 
     public List<CaseMatch> findCases(CaseType caseType, CaseMatchingCriteria criteria) {
-        BoolQueryBuilder query = boolQuery();
+        BoolQueryBuilder fuzzy = boolQuery();
+        BoolQueryBuilder strict = boolQuery();
         BoolQueryBuilder filter = boolQuery();
 
         ofNullable(criteria.getDeceasedForenames())
                 .filter(s -> !s.isEmpty())
-                .ifPresent(s -> query.must(multiMatchQuery(s, DECEASED_FORENAMES).fuzziness(2).operator(AND)));
+                .ifPresent(s -> {
+                    fuzzy.must(multiMatchQuery(s, DECEASED_FORENAMES).fuzziness(2).operator(AND));
+                    strict.must(multiMatchQuery(s, DECEASED_FORENAMES).fuzziness(0).boost(2).operator(AND));
+                });
 
         ofNullable(criteria.getDeceasedSurname())
                 .filter(s -> !s.isEmpty())
-                .ifPresent(s -> query.must(multiMatchQuery(s, DECEASED_SURNAME).fuzziness(2).operator(AND)));
+                .ifPresent(s -> {
+                    fuzzy.must(multiMatchQuery(s, DECEASED_SURNAME).fuzziness(2).operator(AND));
+                    strict.must(multiMatchQuery(s, DECEASED_SURNAME).fuzziness(0).boost(2).operator(AND));
+                });
 
-        criteria.getDeceasedAliases().stream()
-                .map(s -> boolQuery()
-                        .should(multiMatchQuery(s, DECEASED_FORENAMES).fuzziness(2))
-                        .should(multiMatchQuery(s, DECEASED_SURNAME).fuzziness(2)))
-                .forEach(query::must);
-
-        criteria.getDeceasedAliases().stream()
-                .map(s -> boolQuery().should(multiMatchQuery(s, DECEASED_ALIAS_NAME_LIST).fuzziness(2).operator(AND)))
-                .forEach(query::must);
+        ofNullable(criteria.getDeceasedFullName())
+                .filter(s -> !s.isEmpty())
+                .ifPresent(s -> {
+                    fuzzy.should(multiMatchQuery(s, DECEASED_ALIAS_NAME_LIST).fuzziness(2).operator(AND));
+                    strict.should(multiMatchQuery(s, DECEASED_ALIAS_NAME_LIST).fuzziness(0).boost(2).operator(AND));
+                });
 
         ofNullable(criteria.getDeceasedDateOfBirthRaw())
                 .ifPresent(date -> filter.must(termQuery(DECEASED_DOB, date)));
@@ -106,9 +113,11 @@ public class CaseMatchingService {
         ofNullable(criteria.getDeceasedDateOfDeathRaw())
                 .ifPresent(date -> filter.must(rangeQuery(DECEASED_DOD).gte(date.minusDays(3)).lte(date.plusDays(3))));
 
-        query.filter(filter);
+        filter.mustNot(matchQuery(IMPORTED_TO_CCD, IMPORTED_TO_CCD_Y));
 
-        String jsonQuery = new SearchSourceBuilder().query(query).toString();
+        BoolQueryBuilder wrapper = boolQuery().should(fuzzy).should(strict).minimumShouldMatch(1).filter(filter);
+
+        String jsonQuery = new SearchSourceBuilder().query(wrapper).size(100).toString();
 
         return runQuery(caseType, criteria, jsonQuery);
     }
