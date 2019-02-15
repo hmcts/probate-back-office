@@ -96,10 +96,10 @@ public class ProbateManFunctionalTests extends IntegrationTestBase {
     @TestData
     public static Collection<Object[]> testData() {
         return Arrays.asList(new Object[][] {
-            {"CAVEAT", "caveat", "CAVEAT", "expectedCaveat"},
+            //{"CAVEAT", "caveat", "CAVEAT", "expectedCaveat"},
             {"GRANT_APPLICATION", "grant_application", "LEGACY APPLICATION", "expectedGrantApplicant"},
-            {"WILL_LODGEMENT", "wills", "WILL", "expectedWillLodgement"},
-            {"STANDING_SEARCH", "standing_search", "STANDING SEARCH", "expectedStandingSearch"}
+            //{"WILL_LODGEMENT", "wills", "WILL", "expectedWillLodgement"},
+            //{"STANDING_SEARCH", "standing_search", "STANDING SEARCH", "expectedStandingSearch"}
         });
     }
 
@@ -126,25 +126,25 @@ public class ProbateManFunctionalTests extends IntegrationTestBase {
         deceasedAlias = RandomStringUtils.randomAlphanumeric(10) + "_ALIAS" + " " + RandomStringUtils.randomAlphanumeric(10);
     }
 
-    @Test
-    public void shouldViewProbateManCase() {
-        generateSqlAndExecute(deceasedForename, deceasedSurname, deceasedAlias, "/scripts/legacy_search_" + caseTypeFilename + "_insert.sql");
-
-        Map<String, Object> dbResultsMap = retrieveRecordFromDb(deceasedForename, deceasedSurname, deceasedAlias, "/scripts/legacy_search_" + caseTypeFilename + "_query.sql");
-        Long id = (Long) dbResultsMap.get("id");
-
-        String expectedJSON = addVariablesToScript(deceasedForename, deceasedSurname, deceasedAlias, "/json/probateman/" + jsonFileName + ".json");
-
-        String actualJson = SerenityRest.given()
-            .relaxedHTTPSValidation()
-            .headers(headers)
-            .when()
-            .get("/probateManTypes/" + caseType + "/cases/" + id.toString())
-            .then()
-            .assertThat()
-            .statusCode(200).extract().body().asString();
-        JSONAssert.assertEquals(expectedJSON, actualJson, JSONCompareMode.LENIENT);
-    }
+//    @Test
+//    public void shouldViewProbateManCase() {
+//        generateSqlAndExecute(deceasedForename, deceasedSurname, deceasedAlias, "/scripts/legacy_search_" + caseTypeFilename + "_insert.sql");
+//
+//        Map<String, Object> dbResultsMap = retrieveRecordFromDb(deceasedForename, deceasedSurname, deceasedAlias, "/scripts/legacy_search_" + caseTypeFilename + "_query.sql");
+//        Long id = (Long) dbResultsMap.get("id");
+//
+//        String expectedJSON = addVariablesToScript(deceasedForename, deceasedSurname, deceasedAlias, "/json/probateman/" + jsonFileName + ".json");
+//
+//        String actualJson = SerenityRest.given()
+//            .relaxedHTTPSValidation()
+//            .headers(headers)
+//            .when()
+//            .get("/probateManTypes/" + caseType + "/cases/" + id.toString())
+//            .then()
+//            .assertThat()
+//            .statusCode(200).extract().body().asString();
+//        JSONAssert.assertEquals(expectedJSON, actualJson, JSONCompareMode.LENIENT);
+//    }
 
     @Test
     public void shouldDoLegacySearch() throws Exception {
