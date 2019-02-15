@@ -54,6 +54,6 @@ nextval('CAVEATS_FLAT_SEQ'),
 'DX-EX-1',
 'Caveat Text',
 'Caveat Event Text',
-'Y',
+'N',
 NOW()
 );
