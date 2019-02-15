@@ -98,4 +98,12 @@ public class CaseMatchBuilderServiceTest {
         assertTrue(caseMatch.getType().contains("CAVEAT"));
     }
 
+    @Test
+    public void shouldContainCaseType() {
+
+        CaseMatch caseMatch = caseMatchBuilderService.buildCaseMatch(caseMock, CaseType.CAVEAT);
+
+        assertTrue(caseMatch.getType().contains("CAVEAT"));
+    }
+
 }
