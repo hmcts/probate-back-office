@@ -150,6 +150,19 @@ public class ProbateManFunctionalTests extends IntegrationTestBase {
     public void shouldDoLegacySearch() throws Exception {
         generateSqlAndExecute(deceasedForename, deceasedSurname, deceasedAlias, "/scripts/legacy_search_" + caseTypeFilename + "_insert.sql");
 
+        Map<String, Object> dbResultsMap = retrieveRecordFromDb(deceasedForename, deceasedSurname, deceasedAlias, "/scripts/legacy_search_" + caseTypeFilename + "_query.sql");
+        Long dbId = (Long) dbResultsMap.get("id");
+        System.out.println("******************* dbId: " + dbId + " **************************** ");
+
+        SerenityRest.given()
+            .relaxedHTTPSValidation()
+            .headers(headers)
+            .when()
+            .get("/probateManTypes/" + caseType + "/cases/" + dbId.toString())
+            .then()
+            .assertThat()
+            .statusCode(200).extract().body().jsonPath().prettyPrint();
+
         final String legacySearchQuery = getRequestJson(deceasedForename, deceasedSurname);
 
         await().until(() -> getLegacySearchRows(legacySearchQuery));
