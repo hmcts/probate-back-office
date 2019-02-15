@@ -30,7 +30,6 @@
     "address_county",
     "address_country",
     "address_postcode"
-  ],
-  "nextStep": "Upload document"
+  ]
 }
 

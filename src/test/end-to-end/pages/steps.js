@@ -14,11 +14,14 @@ module.exports = function () {
         enterWillLodgementPage2: steps.createWillLodgement.page2,
         enterWillLodgementPage3: steps.createWillLodgement.page3,
         checkMyAnswers: steps.checkYourAnswers.checkYourAnswers,
-        seeCaseDetails: steps.caseDetails.drCaseDetails,
+        seeCaseDetails: steps.caseDetails.caseDetails,
         uploadDocument: steps.documentUpload.documentUpload,
         enterEventSummary: steps.eventSummary.eventSummary,
-        generateDepositReceipt: steps.generateDepositReceipt.generateDepositReceipt,
-        selectMatchedCases: steps.caseMatches.caseMatches,
-        enterMatchedCasesComment: steps.caseMatches.caseMatchesComment
+        enterComment: steps.eventSummary.eventSummary,
+        generateDepositReceipt: steps.eventSummary.eventSummary,
+        selectCaseMatches: steps.caseMatches.caseMatches,
+        enterCaseMatchesComment: steps.eventSummary.eventSummary,
+        selectWithdrawalReason: steps.withdrawal.withdrawal,
+        enterWithdrawalSummary: steps.eventSummary.eventSummary
     });
 };

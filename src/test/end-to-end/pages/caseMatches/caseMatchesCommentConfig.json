@@ -1,7 +1,0 @@
-{
-  "waitForText" : "Match application",
-  "pageUrl": "/create/case",
-  "summary": "match_application_event_summary",
-  "comment": "match_application_event_description_text",
-  "continueButton": "div.form-group.form-group-related > button[type=\"submit\"]"
-}

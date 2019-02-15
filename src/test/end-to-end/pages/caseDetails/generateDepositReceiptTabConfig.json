@@ -1,0 +1,16 @@
+{
+  "tabName": "History",
+  "group": "5",
+  "fields": [
+    "Date",
+    "Author",
+    "End state",
+    "Event",
+    "Summary",
+    "Comment"
+  ],
+  "dataKeys": [
+    "summary",
+    "comment"
+  ]
+}

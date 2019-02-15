@@ -1,7 +1,7 @@
 'use strict';
 
 const testConfig = require('src/test/config.js');
-const caseMatchesConfig = require('./caseMatchesConfig.json');
+const caseMatchesConfig = require('../caseMatches/caseMatchesConfig.json');
 
 module.exports = function (caseRef) {
 

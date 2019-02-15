@@ -1,0 +1,6 @@
+{
+  "waitForText" : "Will withdrawl",
+  "pageUrl": "/create/case",
+  "list1_text": "Cancelled",
+  "continueButton": "div.form-group.form-group-related > button[type=\"submit\"]"
+}

@@ -1,7 +1,7 @@
 'use strict';
 
 const testConfig = require('src/test/config.js');
-const generateDepositReceiptConfig = require('./generateDepositReceiptConfig.json');
+const generateDepositReceiptConfig = require('../eventSummary/generateDepositReceiptSummaryConfig.json');
 
 module.exports = function (caseRef) {
 
