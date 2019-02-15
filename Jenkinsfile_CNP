@@ -43,9 +43,11 @@ withPipeline("java", product, component) {
   loadVaultSecrets(secrets)
 
   enableSlackNotifications('#probate-jenkins')
+
   before('buildinfra:prod') {
     error 'Deliberately breaking pipeline to prevent prod deployment'
   }
+
     after('test') {
     try {
       //sh './gradlew pitest'
