@@ -131,10 +131,6 @@ public class FunctionalTestUtils {
         String authorizationToken = serviceAuthTokenGenerator.generateClientToken(userName, password);
         String serviceToken = serviceAuthTokenGenerator.generateServiceToken();
 
-        System.out.println("******************* authorizationToken: " + authorizationToken + " **************************** ");
-        System.out.println("******************* serviceToken: " + serviceToken + " **************************** ");
-        System.out.println("******************* user-id: " +  id.toString() + " **************************** ");
-
         return Headers.headers(
             new Header("ServiceAuthorization", serviceToken),
             new Header("Content-Type", ContentType.JSON.toString()),
