@@ -17,5 +17,9 @@
   {"CaseTypeID": "StandingSearch", "CaseFieldID": "numberOfCopies", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
   {"CaseTypeID": "StandingSearch", "CaseFieldID": "expiryDate", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
   {"CaseTypeID": "StandingSearch", "CaseFieldID": "documentsUploaded", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
-  {"CaseTypeID": "StandingSearch", "CaseFieldID": "caseMatches", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"}
+  {"CaseTypeID": "StandingSearch", "CaseFieldID": "caseMatches", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
+  {"CaseTypeID": "StandingSearch", "CaseFieldID": "legacyId", "UserRole": "caseworker-probate-issuer", "CRUD": "CR"},
+  {"CaseTypeID": "StandingSearch", "CaseFieldID": "legacyType", "UserRole": "caseworker-probate-issuer", "CRUD": "CR"},
+  {"CaseTypeID": "StandingSearch", "CaseFieldID": "legacyCaseViewUrl", "UserRole": "caseworker-probate-issuer", "CRUD": "CR"},
+  {"CaseTypeID": "StandingSearch", "CaseFieldID": "legacyCaseViewUrlLink", "UserRole": "caseworker-probate-issuer", "CRUD": "R"}
 ]

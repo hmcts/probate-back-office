@@ -18,5 +18,9 @@
   {"CaseTypeID": "Caveat", "CaseFieldID": "messageContent", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "documentsUploaded", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "documentsGenerated", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
-  {"CaseTypeID": "Caveat", "CaseFieldID": "caseMatches", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"}
+  {"CaseTypeID": "Caveat", "CaseFieldID": "caseMatches", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
+  {"CaseTypeID": "Caveat", "CaseFieldID": "legacyId", "UserRole": "caseworker-probate-issuer", "CRUD": "CR"},
+  {"CaseTypeID": "Caveat", "CaseFieldID": "legacyType", "UserRole": "caseworker-probate-issuer", "CRUD": "CR"},
+  {"CaseTypeID": "Caveat", "CaseFieldID": "legacyCaseViewUrl", "UserRole": "caseworker-probate-issuer", "CRUD": "CR"},
+  {"CaseTypeID": "Caveat", "CaseFieldID": "legacyCaseViewUrlLink", "UserRole": "caseworker-probate-issuer", "CRUD": "R"}
 ]

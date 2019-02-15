@@ -18,5 +18,9 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "messageContent", "Label": "Message content", "FieldType": "TextArea", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "documentsUploaded", "Label": "Documents uploaded", "FieldType": "Collection", "FieldTypeParameter": "cavDocumentUpload", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "documentsGenerated", "Label": "Documents generated", "FieldType": "Collection", "FieldTypeParameter": "cavProbateDocument", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "caseMatches", "Label": "Possible case matches", "FieldType": "Collection", "FieldTypeParameter": "CaseMatch", "SecurityClassification": "Public"}
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "caseMatches", "Label": "Possible case matches", "FieldType": "Collection", "FieldTypeParameter": "CaseMatch", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "legacyId", "Label": "Legacy id", "FieldType": "Text", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "legacyType", "Label": "Legacy case type", "FieldType": "Text", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "legacyCaseViewUrl", "Label": "Legacy case link", "FieldType": "Text", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "legacyCaseViewUrlLink", "Label": "[Click here to open legacy case](${legacyCaseViewUrl})", "FieldType": "Label", "SecurityClassification": "Public"}
 ]
