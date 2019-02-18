@@ -38,4 +38,8 @@ will change all references to the hardcoded ip and port `(10.99.2.255:4104)` in 
 
 ### Convert ALL json to Excel files
 run from root of probate-backoffice with the correct URL...
-```./ccdImports/conversionScripts/createAllXLS.sh <10.99.3.29:4104>```
+#### To create all XLS files and put into the /jsonToXLS folder
+```./ccdImports/conversionScripts/createAllXLS.sh <IPorBaseCallbackURL>```
+
+#### To import all XLS files from the /jsonToXLS folder
+```./ccdImports/conversionScripts/importAllXLS.sh```
