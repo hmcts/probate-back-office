@@ -17,5 +17,9 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "StandingSearch", "ID": "numberOfCopies", "Label": "How many extra copies have been requested by the applicant?", "FieldType": "Text", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "StandingSearch", "ID": "expiryDate", "Label": "Standing search expiry date", "FieldType": "Date", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "StandingSearch", "ID": "documentsUploaded", "Label": "Documents uploaded", "FieldType": "Collection", "FieldTypeParameter": "ssDocumentUpload", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "StandingSearch", "ID": "caseMatches", "Label": "Possible case matches", "FieldType": "Collection", "FieldTypeParameter": "CaseMatch", "SecurityClassification": "Public"}
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "StandingSearch", "ID": "caseMatches", "Label": "Possible case matches", "FieldType": "Collection", "FieldTypeParameter": "CaseMatch", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "StandingSearch", "ID": "legacyId", "Label": "Legacy id", "FieldType": "Text", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "StandingSearch", "ID": "legacyType", "Label": "Legacy case type", "FieldType": "Text", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "StandingSearch", "ID": "legacyCaseViewUrl", "Label": "Legacy case link", "FieldType": "Text", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "StandingSearch", "ID": "legacyCaseViewUrlLink", "Label": "[Click here to open legacy case](${legacyCaseViewUrl})", "FieldType": "Label", "SecurityClassification": "Public"}
 ]
