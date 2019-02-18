@@ -109,7 +109,7 @@ public class ProbateManFunctionalTests extends IntegrationTestBase {
         Awaitility.reset();
         Awaitility.setDefaultPollDelay(100, MILLISECONDS);
         Awaitility.setDefaultPollInterval(1, SECONDS);
-        Awaitility.setDefaultTimeout(20, SECONDS);
+        Awaitility.setDefaultTimeout(10, SECONDS);
         legacySearchResultRows = Collections.emptyList();
 
         jdbcTemplate = new JdbcTemplate(dataSource);
@@ -121,12 +121,16 @@ public class ProbateManFunctionalTests extends IntegrationTestBase {
         deceasedSurname = RandomStringUtils.randomAlphanumeric(10) + "_SN";
         deceasedAlias = RandomStringUtils.randomAlphanumeric(10) + "_ALIAS" + " " + RandomStringUtils.randomAlphanumeric(10);
 
+        System.out.println("******************** deceasedForename: " + deceasedForename);
+        System.out.println("******************** deceasedSurname: " + deceasedSurname);
+        System.out.println("******************** deceasedAlias: " + deceasedAlias);
+
         generateSqlAndExecute(deceasedForename, deceasedSurname, deceasedAlias, "/scripts/legacy_search_" + caseTypeFilename + "_insert.sql");
     }
 
     @After
     public void cleanUp(){
-        generateSqlAndExecute(deceasedForename, deceasedSurname, deceasedAlias, "/scripts/legacy_search_" + caseTypeFilename + "_clean_up.sql");
+        //generateSqlAndExecute(deceasedForename, deceasedSurname, deceasedAlias, "/scripts/legacy_search_" + caseTypeFilename + "_clean_up.sql");
     }
 
     @Test
