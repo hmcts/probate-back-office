@@ -64,11 +64,11 @@ public class ProbateManFunctionalTests extends IntegrationTestBase {
 
     private ObjectMapper objectMapper;
 
-    private String probatemanDbPass = "Probate123";
+    private String probatemanDbPass = "Monday01";
 
-    private Integer id = 673679;
+    private Integer id = 5927;
 
-    private String email = "woods01@test.com";
+    private String email = "probatecaseworker@gmail.com";
 
     private Headers headers;
 
