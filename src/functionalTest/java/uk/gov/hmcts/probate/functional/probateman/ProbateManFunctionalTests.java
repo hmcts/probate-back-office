@@ -109,7 +109,7 @@ public class ProbateManFunctionalTests extends IntegrationTestBase {
         Awaitility.reset();
         Awaitility.setDefaultPollDelay(100, MILLISECONDS);
         Awaitility.setDefaultPollInterval(1, SECONDS);
-        Awaitility.setDefaultTimeout(10, SECONDS);
+        Awaitility.setDefaultTimeout(20, SECONDS);
         legacySearchResultRows = Collections.emptyList();
 
         jdbcTemplate = new JdbcTemplate(dataSource);
