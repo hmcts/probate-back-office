@@ -1,6 +1,5 @@
 {
   "tabName": "Testator's details",
-  "group": "1",
   "fields": [
     "Forename(s)",
     "Surname(s)",
@@ -19,10 +18,10 @@
     "Email address"
   ],
   "dataKeys": [
-    "page2_firstnames",
-    "page2_lastnames",
+    "page2_firstnames_update",
+    "page2_lastnames_update",
     "page2_gender",
-    "page2_dateOfBirth_long",
+    "page2_dateOfBirth_long_update",
     "page2_dateOfDeath_long",
     "page2_typeOfDeath",
     "page2_hasAliasYes",

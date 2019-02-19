@@ -1,8 +1,7 @@
 'use strict';
 
 const testConfig = require('src/test/config');
-const caseDetailsConfig = require('./caseDetailsConfig');
-
+const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
 
 module.exports = function (caseRef, tabConfigFile, dataConfigFile, nextStep) {
 
@@ -33,6 +32,6 @@ module.exports = function (caseRef, tabConfigFile, dataConfigFile, nextStep) {
     const step = tabConfigFile.nextStep || nextStep;
     if (step) {
         I.selectOption('#next-step', step);
-        I.waitForNavigationToComplete(caseDetailsConfig.goButton);
+        I.waitForNavigationToComplete(commonConfig.goButton);
     }
 };

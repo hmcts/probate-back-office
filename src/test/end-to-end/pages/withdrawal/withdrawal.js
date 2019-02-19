@@ -2,14 +2,14 @@
 
 const testConfig = require('src/test/config.js');
 const withdrawalConfig = require('./withdrawalConfig.json');
+const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
 
 module.exports = function () {
 
     const I = this;
     I.waitForText(withdrawalConfig.waitForText, testConfig.TestTimeToWaitForText);
-    //  I.amOnPage(createCaseConfig.pageUrl)
 
     I.selectOption('#withdrawalReason', withdrawalConfig.list1_text);
 
-    I.waitForNavigationToComplete(withdrawalConfig.continueButton);
+    I.waitForNavigationToComplete(commonConfig.continueButton);
 };

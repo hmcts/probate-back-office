@@ -1,50 +1,32 @@
 'use strict';
 
-//const taskListContent = require('app/resources/en/translation/tasklist');
 const TestConfigurator = new (require('src/test/end-to-end/helpers/TestConfigurator'))();
 const createCaseConfig = require('src/test/end-to-end/pages/createCase/createCaseConfig.json');
 
 const checkYourAnswersConfig = require('src/test/end-to-end/pages/checkYourAnswers/checkYourAnswersConfig');
 const createWillLodgementConfig = require('src/test/end-to-end/pages/createWillLodgement/createWillLodgementConfig');
 const documentUploadConfig = require('src/test/end-to-end/pages/documentUpload/documentUploadConfig');
-const documentUploadSummaryConfig = require('src/test/end-to-end/pages/eventSummary/documentUploadSummaryConfig');
-const commentSummaryConfig = require('src/test/end-to-end/pages/eventSummary/commentSummaryConfig');
-const generateDepositReceiptSummaryConfig = require('src/test/end-to-end/pages/eventSummary/generateDepositReceiptSummaryConfig');
+const documentUploadSummaryConfig = require('src/test/end-to-end/pages/eventSummary/willLodgement/documentUploadSummaryConfig');
+const commentSummaryConfig = require('src/test/end-to-end/pages/eventSummary/willLodgement/commentSummaryConfig');
+const generateDepositReceiptSummaryConfig = require('src/test/end-to-end/pages/eventSummary/willLodgement/generateDepositReceiptSummaryConfig');
 const caseMatchesConfig = require('src/test/end-to-end/pages/caseMatches/caseMatchesConfig');
-const caseMatchesCommentSummaryConfig = require('src/test/end-to-end/pages/eventSummary/caseMatchesCommentSummaryConfig');
-const withdrawalSummaryConfig = require('src/test/end-to-end/pages/eventSummary/withdrawalSummaryConfig');
+const caseMatchesCommentSummaryConfig = require('src/test/end-to-end/pages/eventSummary/willLodgement/caseMatchesCommentSummaryConfig');
+const withdrawalSummaryConfig = require('src/test/end-to-end/pages/eventSummary/willLodgement/withdrawalSummaryConfig');
 
-const historyTabConfig = require('src/test/end-to-end/pages/caseDetails/historyTabConfig');
-const generalDetailsTabConfig = require('src/test/end-to-end/pages/caseDetails/generalDetailsTabConfig');
-const testatorTabConfig = require('src/test/end-to-end/pages/caseDetails/testatorTabConfig');
-const executorTabConfig = require('src/test/end-to-end/pages/caseDetails/executorTabConfig');
-const documentUploadTabConfig = require('src/test/end-to-end/pages/caseDetails/documentUploadTabConfig');
-const generalDetailsUpdateTabConfig = require('src/test/end-to-end/pages/caseDetails/generalDetailsUpdateTabConfig');
-const testatorUpdateTabConfig = require('src/test/end-to-end/pages/caseDetails/testatorUpdateTabConfig');
-const executorUpdateTabConfig = require('src/test/end-to-end/pages/caseDetails/executorUpdateTabConfig');
-const generateDepositReceiptTabConfig = require('src/test/end-to-end/pages/caseDetails/generateDepositReceiptTabConfig');
-const caseMatchesTabConfig = require('src/test/end-to-end/pages/caseDetails/caseMatchesTabConfig');
+const historyTabConfig = require('src/test/end-to-end/pages/caseDetails/willLodgement/historyTabConfig');
+const generalDetailsTabConfig = require('src/test/end-to-end/pages/caseDetails/willLodgement/generalDetailsTabConfig');
+const testatorTabConfig = require('src/test/end-to-end/pages/caseDetails/willLodgement/testatorTabConfig');
+const executorTabConfig = require('src/test/end-to-end/pages/caseDetails/willLodgement/executorTabConfig');
+const documentUploadTabConfig = require('src/test/end-to-end/pages/caseDetails/willLodgement/documentUploadTabConfig');
+const generalDetailsUpdateTabConfig = require('src/test/end-to-end/pages/caseDetails/willLodgement/generalDetailsUpdateTabConfig');
+const testatorUpdateTabConfig = require('src/test/end-to-end/pages/caseDetails/willLodgement/testatorUpdateTabConfig');
+const executorUpdateTabConfig = require('src/test/end-to-end/pages/caseDetails/willLodgement/executorUpdateTabConfig');
+const generateDepositReceiptTabConfig = require('src/test/end-to-end/pages/caseDetails/willLodgement/generateDepositReceiptTabConfig');
+const caseMatchesTabConfig = require('src/test/end-to-end/pages/caseDetails/willLodgement/caseMatchesTabConfig');
 
-Feature('Back Office - Will Lodgement for a Personal Applicant').retry(TestConfigurator.getRetryFeatures());
+Feature('Back Office').retry(TestConfigurator.getRetryFeatures());
 
-// eslint complains that the Before/After are not used but they are by codeceptjs
-// so we have to tell eslint to not validate these
-// eslint-disable-next-line no-undef
-/*
-Before(() => {
-    TestConfigurator.getBefore();
-});
-*/
-
-// eslint-disable-next-line no-undef
-/*
-After(() => {
-    TestConfigurator.getAfter();
-});
-*/
-
-
-Scenario(TestConfigurator.idamInUseText('Multiple Executors'), async function (I) {
+Scenario(TestConfigurator.idamInUseText('Will Lodgement for a Personal Applicant'), async function (I) {
     let nextStep = 'Upload document';
     // IdAM
     I.authenticateWithIdamIfAvailable();

@@ -2,6 +2,7 @@
 
 const testConfig = require('src/test/config.js');
 const documentUploadConfig = require('./documentUploadConfig.json');
+const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
 
 module.exports = function (caseRef) {
 
@@ -22,6 +23,6 @@ module.exports = function (caseRef) {
     I.attachFile('#documentsUploaded_1_DocumentLink', documentUploadConfig.fileToUploadUrl);
     I.fillField('#documentsUploaded_1_Comment', documentUploadConfig.comment);
 
-    I.waitForNavigationToComplete(documentUploadConfig.continueButton);
+    I.waitForNavigationToComplete(commonConfig.continueButton);
 
 };

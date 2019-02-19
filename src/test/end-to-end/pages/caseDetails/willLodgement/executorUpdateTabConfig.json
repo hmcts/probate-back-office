@@ -1,6 +1,5 @@
 {
   "tabName": "Executor's details",
-  "group": "1",
   "fields": [
     "Title",
     "Forename(s)",
@@ -15,10 +14,10 @@
     "Additional executor 1"
   ],
   "dataKeys": [
-    "page3_executor0_title",
-    "page3_executor0_firstnames",
-    "page3_executor0_lastnames",
-    "page3_executor0_email",
+    "page3_executor0_title_update",
+    "page3_executor0_firstnames_update",
+    "page3_executor0_lastnames_update",
+    "page3_executor0_email_update",
     "page3_additional_executor0_title",
     "page3_additional_executor0_firstnames",
     "page3_additional_executor0_lastnames",
@@ -32,4 +31,3 @@
     "address_postcode"
   ]
 }
-

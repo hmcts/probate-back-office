@@ -1,8 +1,7 @@
 {
   "waitForText" : "Create Case",
-  "pageUrl": "/create/case",
   "list1_text": "Manage probate applications",
   "list2_text": "Will lodgement",
   "list3_text": "Create a will lodgement",
-  "locator": ".button"
+  "startButton": ".button"
 }

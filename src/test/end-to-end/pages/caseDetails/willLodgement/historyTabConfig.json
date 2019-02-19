@@ -1,8 +1,6 @@
 {
   "waitForText" : "Manage probate application",
-  "pageUrl": "case/PROBATE/WillLodgement",
   "tabName": "History",
-  "group": "1",
   "fields": [
     "Date",
     "Author",

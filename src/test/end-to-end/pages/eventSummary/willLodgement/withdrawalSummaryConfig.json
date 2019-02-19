@@ -1,0 +1,5 @@
+{
+  "waitForText" : "Withdraw will",
+  "summary": "withdrawal_event_summary_purpose_text",
+  "comment": "withdrawal_event_description_text"
+}

@@ -1,7 +1,0 @@
-{
-  "waitForText" : "Generate deposit receipt",
-  "pageUrl": "/create/case",
-  "summary": "deposit_receipt_event_summary_purpose_text",
-  "comment": "deposit_receipt_event_description_text",
-  "locator": "div.form-group.form-group-related > button[type=\"submit\"]"
-}

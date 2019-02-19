@@ -2,6 +2,7 @@
 
 const testConfig = require('src/test/config');
 const createWillLodgementConfig = require('./createWillLodgementConfig');
+const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
 
 module.exports = function (crud) {
 
@@ -68,5 +69,5 @@ module.exports = function (crud) {
         I.fillField('#executorEmailAddress', createWillLodgementConfig[executorFieldList[executorFieldList.indexOf(`page3_executor${index}_email_update`)]]);
     }
 
-    I.click(createWillLodgementConfig.continueButton);
+    I.click(commonConfig.continueButton);
 };

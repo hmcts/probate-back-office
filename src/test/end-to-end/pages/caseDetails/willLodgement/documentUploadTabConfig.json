@@ -1,6 +1,5 @@
 {
   "tabName": "Documents",
-  "group": "2",
   "fields": [
     "Type",
     "Document Url",

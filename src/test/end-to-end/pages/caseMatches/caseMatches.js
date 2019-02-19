@@ -2,6 +2,7 @@
 
 const testConfig = require('src/test/config.js');
 const caseMatchesConfig = require('../caseMatches/caseMatchesConfig.json');
+const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
 
 module.exports = function (caseRef) {
 
@@ -16,6 +17,6 @@ module.exports = function (caseRef) {
 
     I.click('#caseMatches_0_valid-Yes');
 
-    I.waitForNavigationToComplete(caseMatchesConfig.continueButton);
+    I.waitForNavigationToComplete(commonConfig.continueButton);
 
 };

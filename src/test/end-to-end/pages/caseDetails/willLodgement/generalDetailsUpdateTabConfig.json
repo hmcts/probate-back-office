@@ -1,6 +1,5 @@
 {
   "tabName": "General details",
-  "group": "1",
   "fields": [
     "Registry location",
     "Lodgement type",
@@ -13,10 +12,10 @@
   "dataKeys": [
     "page1_list1_registry_location",
     "page1_list2_lodgement_type",
-    "page1_lodgedDate_long",
+    "page1_lodgedDate_long_update",
     "page1_willDate_long",
     "page1_codicilDate_long",
-    "page1_numberOfCodicils",
+    "page1_numberOfCodicils_update",
     "page1_jointWill"
   ]
 }

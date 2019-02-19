@@ -1,7 +1,8 @@
 'use strict';
 
 const testConfig = require('src/test/config.js');
-const generateDepositReceiptConfig = require('../eventSummary/generateDepositReceiptSummaryConfig.json');
+const generateDepositReceiptConfig = require('../eventSummary/willLodgement/generateDepositReceiptSummaryConfig.json');
+const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
 
 module.exports = function (caseRef) {
 
@@ -13,6 +14,6 @@ module.exports = function (caseRef) {
     I.fillField('#field-trigger-summary', generateDepositReceiptConfig.summary);
     I.fillField('#field-trigger-description', generateDepositReceiptConfig.comment);
 
-    I.waitForNavigationToComplete(generateDepositReceiptConfig.continueButton);
+    I.waitForNavigationToComplete(commonConfig.continueButton);
 
 };

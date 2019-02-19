@@ -1,7 +1,0 @@
-{
-  "waitForText" : "Add comment",
-  "pageUrl": "/create/case",
-  "summary": "comment_event_summary_purpose_text",
-  "comment": "comment_event_description_text",
-  "locator": "div.form-group.form-group-related > button[type=\"submit\"]"
-}

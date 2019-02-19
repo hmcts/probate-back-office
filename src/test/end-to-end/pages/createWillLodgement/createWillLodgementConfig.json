@@ -72,7 +72,6 @@
   "address_country": "United Kingdom",
   "address_postcode": "SW1A 1AA",
 
-  "UKpostcodeLink": ".manual-link",
-  "continueButton": "div.form-group.form-group-related > button[type=\"submit\"]"
+  "UKpostcodeLink": ".manual-link"
 }
 
