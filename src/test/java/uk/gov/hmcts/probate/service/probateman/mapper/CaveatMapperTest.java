@@ -4,11 +4,13 @@ import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.probateman.Caveat;
+import uk.gov.hmcts.probate.model.probateman.ProbateManType;
 import uk.gov.hmcts.reform.probate.model.cases.Address;
 import uk.gov.hmcts.reform.probate.model.cases.CollectionMember;
 import uk.gov.hmcts.reform.probate.model.cases.FullAliasName;
@@ -21,6 +23,15 @@ import java.util.List;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class CaveatMapperTest {
+
+    @Value("${ccd.gateway.host}")
+    private String printServiceHost;
+
+    @Value("${printservice.legacyPath}")
+    private String printServiceLegacyPath;
+
+    private static final String ID = "12345";
+    private static final String LEGACY_TYPE = "Legacy CAVEAT";
     private static final String DECEASED_FORENAMES = "DeadFN1 DeadFN2";
     private static final String DECEASED_SURNAME = "DeadSN";
     private static final String DECEASED_ALIAS_NAMES = "DeadAN1 DeadAN2";
@@ -49,10 +60,12 @@ public class CaveatMapperTest {
         caveat.setCavServiceAddress(CAVEATOR_ADDRESS);
         caveat.setAliasNames(DECEASED_ALIAS_NAMES);
         caveat.setCavExpiryDate(CAVEATOR_EXPIRY_DATE);
+        caveat.setId(Long.valueOf(ID));
 
         Address deceasedAddress = Address.builder()
                 .addressLine1(CAVEATOR_ADDRESS)
                 .build();
+        String legacyCaseViewUrl = String.format(printServiceHost + printServiceLegacyPath, ProbateManType.CAVEAT, ID);
         CaveatData expectedCaveatData = CaveatData.builder()
                 .deceasedForenames(DECEASED_FORENAMES)
                 .deceasedSurname(DECEASED_SURNAME)
@@ -63,6 +76,9 @@ public class CaveatMapperTest {
                 .deceasedAddress(deceasedAddress)
                 .expiryDate(CAVEATOR_EXPIRY_DATE)
                 .deceasedFullAliasNameList(buildFullAliasNames())
+                .legacyId(ID)
+                .legacyType(LEGACY_TYPE)
+                .legacyCaseViewUrl(legacyCaseViewUrl)
                 .build();
 
         CaveatData caveatData = caveatMapper.toCcdData(caveat);
@@ -76,7 +92,11 @@ public class CaveatMapperTest {
                 "deceasedAddress",
                 "expiryDate",
                 "deceasedDateOfBirth",
-                "deceasedDateOfDeath");
+                "deceasedDateOfDeath",
+                "legacyId",
+                "legacyType",
+                "legacyCaseViewUrl"
+        );
     }
 
     private List<CollectionMember<FullAliasName>> buildFullAliasNames() {

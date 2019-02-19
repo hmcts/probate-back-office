@@ -95,7 +95,11 @@ public class StandingSearchCallbackResponseTransformer {
 
                 .expiryDate(transformToString(standingSearchData.getExpiryDate()))
 
-                .documentsUploaded(standingSearchData.getDocumentsUploaded());
+                .documentsUploaded(standingSearchData.getDocumentsUploaded())
+
+                .legacyId(standingSearchData.getLegacyId())
+                .legacyCaseViewUrl(standingSearchData.getLegacyCaseViewUrl())
+                .legacyType(standingSearchData.getLegacyType());
     }
 
     private String transformToString(Long longValue) {

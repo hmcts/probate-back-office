@@ -224,4 +224,9 @@ public class ResponseCaseData {
     private final String boSendToBulkPrintRequested;
 
     private final List<CollectionMember<CaseMatch>> legacySearchResultRows;
+
+    private final String legacyId;
+    private final String legacyType;
+    private final String legacyCaseViewUrl;
+
 }

@@ -27,6 +27,10 @@
   {"CaseTypeID": "WillLodgement", "CaseFieldID": "documentsGenerated", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
   {"CaseTypeID": "WillLodgement", "CaseFieldID": "documentsUploaded", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
   {"CaseTypeID": "WillLodgement", "CaseFieldID": "caseMatches", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
+  {"CaseTypeID": "WillLodgement", "CaseFieldID": "legacyId", "UserRole": "caseworker-probate-issuer", "CRUD": "CR"},
+  {"CaseTypeID": "WillLodgement", "CaseFieldID": "legacyType", "UserRole": "caseworker-probate-issuer", "CRUD": "CR"},
+  {"CaseTypeID": "WillLodgement", "CaseFieldID": "legacyCaseViewUrl", "UserRole": "caseworker-probate-issuer", "CRUD": "CR"},
+  {"CaseTypeID": "WillLodgement", "CaseFieldID": "legacyCaseViewUrlLink", "UserRole": "caseworker-probate-issuer", "CRUD": "R"},
   {"CaseTypeID": "WillLodgement", "CaseFieldID": "applicationType", "UserRole": "caseworker-probate-caseadmin", "CRUD": "CRUD"},
   {"CaseTypeID": "WillLodgement", "CaseFieldID": "registryLocation", "UserRole": "caseworker-probate-caseadmin", "CRUD": "CRUD"},
   {"CaseTypeID": "WillLodgement", "CaseFieldID": "lodgementType", "UserRole": "caseworker-probate-caseadmin", "CRUD": "CRUD"},
@@ -54,5 +58,9 @@
   {"CaseTypeID": "WillLodgement", "CaseFieldID": "withdrawalReason", "UserRole": "caseworker-probate-caseadmin", "CRUD": "CRUD"},
   {"CaseTypeID": "WillLodgement", "CaseFieldID": "documentsGenerated", "UserRole": "caseworker-probate-caseadmin", "CRUD": "CRUD"},
   {"CaseTypeID": "WillLodgement", "CaseFieldID": "documentsUploaded", "UserRole": "caseworker-probate-caseadmin", "CRUD": "CRUD"},
-  {"CaseTypeID": "WillLodgement", "CaseFieldID": "caseMatches", "UserRole": "caseworker-probate-caseadmin", "CRUD": "CRUD"}
+  {"CaseTypeID": "WillLodgement", "CaseFieldID": "caseMatches", "UserRole": "caseworker-probate-caseadmin", "CRUD": "CRUD"},
+  {"CaseTypeID": "WillLodgement", "CaseFieldID": "legacyId", "UserRole": "caseworker-probate-caseadmin", "CRUD": "CR"},
+  {"CaseTypeID": "WillLodgement", "CaseFieldID": "legacyType", "UserRole": "caseworker-probate-caseadmin", "CRUD": "CR"},
+  {"CaseTypeID": "WillLodgement", "CaseFieldID": "legacyCaseViewUrl", "UserRole": "caseworker-probate-caseadmin", "CRUD": "CR"},
+  {"CaseTypeID": "WillLodgement", "CaseFieldID": "legacyCaseViewUrlLink", "UserRole": "caseworker-probate-caseadmin", "CRUD": "R"}
 ]

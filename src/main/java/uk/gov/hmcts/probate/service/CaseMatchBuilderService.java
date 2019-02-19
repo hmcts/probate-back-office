@@ -70,6 +70,10 @@ public class CaseMatchBuilderService {
     private String buildLegacyCaseViewUrl(Case c, CaseType caseType) {
         String id = c.getData().getLegacyId();
         String legacyCaseTypeName = caseType.getName() + " " + c.getData().getLegacyCaseType();
+        return buildLegacyCaseUrl(id, legacyCaseTypeName);
+    }
+
+    public String buildLegacyCaseUrl(String id, String legacyCaseTypeName) {
         LegacyCaseType legacyCaseType = LegacyCaseType.getByLegacyCaseTypeName(legacyCaseTypeName);
 
         String urlTemplate = printServiceHost + printServiceLegacyPath;
