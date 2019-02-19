@@ -26,7 +26,7 @@ List<LinkedHashMap<String, Object>> secrets = [
     secret('probatemandb-POSTGRES-DATABASE', 'PROBATE_POSTGRESQL_DATABASE_VAL'),
     secret('cwUserId', 'CW_USER_ID'),
     secret('cwUserEmail', 'CW_USER_EMAIL'),
-    secret('cwUserPassword', 'CW_USER_PASSWORD')
+    secret('cwUserPass', 'CW_USER_PASSWORD')
 ]
 
 
