@@ -80,7 +80,12 @@ public class WillLodgementCallbackResponseTransformer {
 
                 .withdrawalReason(willLodgementData.getWithdrawalReason())
                 .documentsGenerated(willLodgementData.getDocumentsGenerated())
-                .documentsUploaded(willLodgementData.getDocumentsUploaded());
+                .documentsUploaded(willLodgementData.getDocumentsUploaded())
+
+                .legacyId(willLodgementData.getLegacyId())
+                .legacyCaseViewUrl(willLodgementData.getLegacyCaseViewUrl())
+                .legacyType(willLodgementData.getLegacyType());
+
     }
 
     public WillLodgementCallbackResponse addMatches(WillLodgementCallbackRequest request, List<CaseMatch> newMatches) {

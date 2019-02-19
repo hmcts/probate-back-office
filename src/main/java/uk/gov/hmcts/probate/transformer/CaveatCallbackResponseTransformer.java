@@ -107,7 +107,10 @@ public class CaveatCallbackResponseTransformer {
                 .messageContent(caveatData.getMessageContent())
 
                 .documentsUploaded(caveatData.getDocumentsUploaded())
-                .documentsGenerated(caveatData.getDocumentsGenerated());
+                .documentsGenerated(caveatData.getDocumentsGenerated())
+                .legacyId(caveatData.getLegacyId())
+                .legacyCaseViewUrl(caveatData.getLegacyCaseViewUrl())
+                .legacyType(caveatData.getLegacyType());
     }
 
     private String transformToString(LocalDate dateValue) {

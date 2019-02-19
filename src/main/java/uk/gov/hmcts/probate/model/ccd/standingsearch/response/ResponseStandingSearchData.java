@@ -39,4 +39,9 @@ public class ResponseStandingSearchData {
     private final String expiryDate;
 
     private final List<CollectionMember<UploadDocument>> documentsUploaded;
+
+    private final String legacyId;
+    private final String legacyType;
+    private final String legacyCaseViewUrl;
+
 }
