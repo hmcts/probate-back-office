@@ -35,3 +35,11 @@ For example, the following command
 ```./setupIP.sh ./xlsToJson/CCD_Probate_V05.03-Dev 10.99.2.255:4104```
 
 will change all references to the hardcoded ip and port `(10.99.2.255:4104)` in the json output files, to that of the variable substitution format `${CCD_DEF_CASE_SERVICE_BASE_URL}`. These json files can then be fed to the `./convertJsonToXLS.sh` script, for conversion back to excel with the appropriate URL
+
+### Convert ALL json to Excel files
+run from root of probate-backoffice with the correct URL...
+#### To create all XLS files and put into the /jsonToXLS folder
+```./ccdImports/conversionScripts/createAllXLS.sh <IPorBaseCallbackURL>```
+
+#### To import all XLS files from the /jsonToXLS folder
+```./ccdImports/conversionScripts/importAllXLS.sh```

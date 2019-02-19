@@ -57,6 +57,10 @@ public class StandingSearchCallbackResponseTransformerTest {
     private static final LocalDate SS_EXPIRY_DATE = LocalDate.now().plusMonths(STANDING_SEARCH_LIFESPAN);
     private static final String SS_FORMATTED_EXPIRY_DATE = dateTimeFormatter.format(SS_EXPIRY_DATE);
 
+    private static final String SS_LEGACY_ID = "12345";
+    private static final String SS_LEGACY_CASE_URL = "someUrl";
+    private static final String SS_LEGACY_CASE_TYPE = "someCaseType";
+
     @InjectMocks
     private StandingSearchCallbackResponseTransformer underTest;
 
@@ -83,7 +87,11 @@ public class StandingSearchCallbackResponseTransformerTest {
                 .applicantSurname(SS_APPLICANT_SURNAME)
                 .applicantEmailAddress(SS_APPLICANT_EMAIL_ADDRESS)
                 .applicantAddress(SS_APPLICANT_ADDRESS)
-                .expiryDate(SS_EXPIRY_DATE);
+                .expiryDate(SS_EXPIRY_DATE)
+                .legacyId(SS_LEGACY_ID)
+                .legacyCaseViewUrl(SS_LEGACY_CASE_URL)
+                .legacyType(SS_LEGACY_CASE_TYPE);
+        ;
 
         when(standingSearchCallbackRequestMock.getCaseDetails()).thenReturn(standingSearchDetailsMock);
         when(standingSearchDetailsMock.getData()).thenReturn(standingSearchDataBuilder.build());
@@ -159,6 +167,11 @@ public class StandingSearchCallbackResponseTransformerTest {
         assertEquals(SS_APPLICANT_ADDRESS, standingSearchCallbackResponse.getResponseStandingSearchData().getApplicantAddress());
 
         assertEquals(SS_FORMATTED_EXPIRY_DATE, standingSearchCallbackResponse.getResponseStandingSearchData().getExpiryDate());
+
+        assertEquals(SS_LEGACY_ID, standingSearchCallbackResponse.getResponseStandingSearchData().getLegacyId());
+        assertEquals(SS_LEGACY_CASE_TYPE, standingSearchCallbackResponse.getResponseStandingSearchData().getLegacyType());
+        assertEquals(SS_LEGACY_CASE_URL, standingSearchCallbackResponse.getResponseStandingSearchData().getLegacyCaseViewUrl());
+
     }
 
     private void assertApplicationType(StandingSearchCallbackResponse standingSearchCallbackResponse, ApplicationType ssApplicationType) {
