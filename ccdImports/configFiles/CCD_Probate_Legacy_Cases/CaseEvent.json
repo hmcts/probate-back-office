@@ -1,0 +1,1 @@
+[{"LiveFrom": "01/01/2017", "CaseTypeID": "Legacy", "ID": "cavRaiseCaveat", "Name": "Raise a caveat", "Description": "Raise a caveat against grant application", "DisplayOrder": 1, "PostConditionState": "ReadOnly", "SecurityClassification": "Public", "ShowSummary": "Y", "EndButtonLabel": "Save and continue"}]

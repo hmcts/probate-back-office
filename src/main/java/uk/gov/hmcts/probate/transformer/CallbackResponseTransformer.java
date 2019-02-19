@@ -291,7 +291,11 @@ public class CallbackResponseTransformer {
                 .evidenceHandled(caseData.getEvidenceHandled())
 
                 .paperForm(caseData.getPaperForm())
-                .caseType(caseData.getCaseType());
+                .caseType(caseData.getCaseType())
+
+                .legacyId(caseData.getLegacyId())
+                .legacyType(caseData.getLegacyType())
+                .legacyCaseViewUrl(caseData.getLegacyCaseViewUrl());
 
         if (transform) {
             updateCaseBuilderForTransformCase(caseData, builder);
