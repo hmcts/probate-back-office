@@ -14,7 +14,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.service.EventValidationService;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.transformer.CaveatCallbackResponseTransformer;
-import uk.gov.hmcts.probate.validator.EmailAddressNotifyValidationRule;
+import uk.gov.hmcts.probate.validator.CaveatsEmailAddressNotificationValidationRule;
 import uk.gov.hmcts.probate.validator.ValidationRuleCaveats;
 import uk.gov.service.notify.NotificationClientException;
 
@@ -44,7 +44,7 @@ public class CaveatController {
 
     @PostMapping(path = "/general-message")
     public ResponseEntity<CaveatCallbackResponse> sendGeneralMessageNotification(
-            @Validated({EmailAddressNotifyValidationRule.class})
+            @Validated({CaveatsEmailAddressNotificationValidationRule.class})
              @RequestBody CaveatCallbackRequest caveatCallbackRequest)
             throws NotificationClientException {
         CaveatDetails caveatDetails = caveatCallbackRequest.getCaseDetails();
