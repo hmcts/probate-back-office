@@ -16,7 +16,7 @@
 
         @page {
             size: 21cm 29.7cm;
-            margin: 20mm 20mm 50mm 20mm;
+            margin: 10mm 20mm 50mm 20mm;
         }
 
         body {
@@ -129,28 +129,34 @@
             {% if case_details.case_data.registryLocation == "ctsc" %}
             High Court of Justice England and Wales <br />
             Principal Registry of the Family Division <br />
-            {{case_details.registryAddressLine1}}<br />
-            {{case_details.registryAddressLine2}}<br />
-            {{case_details.registryTown}}<br />
-            {{case_details.registryPostcode}}<br />
-            {{case_details.registryTelephone}}
+            {% if case_details.registryAddressLine1 != null and case_details.registryAddressLine1 != "" %}{{case_details.registryAddressLine1}}<br />{% endif %}
+            {% if case_details.registryAddressLine2 != null and case_details.registryAddressLine2 != "" %}{{case_details.registryAddressLine2}}<br />{% endif %}
+            {% if case_details.registryAddressLine3 != null and case_details.registryAddressLine3 != "" %}{{case_details.registryAddressLine3}}<br />{% endif %}
+            {% if case_details.registryAddressLine4 != null and case_details.registryAddressLine4 != "" %}{{case_details.registryAddressLine4}}<br />{% endif %}
+            {% if case_details.registryTown != null and case_details.registryTown != "" %}{{case_details.registryTown}}<br />{% endif %}
+            {% if case_details.registryPostcode != null and case_details.registryPostcode != "" %}{{case_details.registryPostcode}}<br />{% endif %}
+            {% if case_details.registryTelephone != null and case_details.registryTelephone != "" %}{{case_details.registryTelephone}}{% endif %}
 
             {% elseif case_details.case_data.registryLocation == "London" %}
             High Court of Justice England and Wales<br />
-            {{case_details.registryAddressLine1}}<br />
-            {{case_details.registryAddressLine2}}<br />
-            {{case_details.registryTown}}<br />
-            {{case_details.registryPostcode}}<br />
-            {{case_details.registryTelephone}}
+            {% if case_details.registryAddressLine1 != null and case_details.registryAddressLine1 != "" %}{{case_details.registryAddressLine1}}<br />{% endif %}
+            {% if case_details.registryAddressLine2 != null and case_details.registryAddressLine2 != "" %}{{case_details.registryAddressLine2}}<br />{% endif %}
+            {% if case_details.registryAddressLine3 != null and case_details.registryAddressLine3 != "" %}{{case_details.registryAddressLine3}}<br />{% endif %}
+            {% if case_details.registryAddressLine4 != null and case_details.registryAddressLine4 != "" %}{{case_details.registryAddressLine4}}<br />{% endif %}
+            {% if case_details.registryTown != null and case_details.registryTown != "" %}{{case_details.registryTown}}<br />{% endif %}
+            {% if case_details.registryPostcode != null and case_details.registryPostcode != "" %}{{case_details.registryPostcode}}<br />{% endif %}
+            {% if case_details.registryTelephone != null and case_details.registryTelephone != "" %}{{case_details.registryTelephone}}{% endif %}
 
             {% else %}
             High Court of Justice England and Wales <br />
             {{case_details.case_data.registryLocation}} District Probate Registry <br />
-            {{case_details.registryAddressLine1}}<br />
-            {{case_details.registryAddressLine2}}<br />
-            {{case_details.registryTown}}<br />
-            {{case_details.registryPostcode}}<br />
-            {{case_details.registryTelephone}}
+            {% if case_details.registryAddressLine1 != null and case_details.registryAddressLine1 != "" %}{{case_details.registryAddressLine1}}<br />{% endif %}
+            {% if case_details.registryAddressLine2 != null and case_details.registryAddressLine2 != "" %}{{case_details.registryAddressLine2}}<br />{% endif %}
+            {% if case_details.registryAddressLine3 != null and case_details.registryAddressLine3 != "" %}{{case_details.registryAddressLine3}}<br />{% endif %}
+            {% if case_details.registryAddressLine4 != null and case_details.registryAddressLine4 != "" %}{{case_details.registryAddressLine4}}<br />{% endif %}
+            {% if case_details.registryTown != null and case_details.registryTown != "" %}{{case_details.registryTown}}<br />{% endif %}
+            {% if case_details.registryPostcode != null and case_details.registryPostcode != "" %}{{case_details.registryPostcode}}<br />{% endif %}
+            {% if case_details.registryTelephone != null and case_details.registryTelephone != "" %}{{case_details.registryTelephone}}{% endif %}
             {% endif %}
         </td>
     </tr>

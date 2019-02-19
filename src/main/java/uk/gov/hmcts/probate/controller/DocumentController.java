@@ -163,6 +163,8 @@ public class DocumentController {
         caseDetails.setRegistryTelephone(registry.getPhone());
         caseDetails.setRegistryAddressLine1(registry.getAddressLine1());
         caseDetails.setRegistryAddressLine2(registry.getAddressLine2());
+        caseDetails.setRegistryAddressLine3(registry.getAddressLine3());
+        caseDetails.setRegistryAddressLine4(registry.getAddressLine4());
         caseDetails.setRegistryPostcode(registry.getPostcode());
         caseDetails.setRegistryTown(registry.getTown());
 
