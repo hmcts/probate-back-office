@@ -15,8 +15,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.skyscreamer.jsonassert.JSONCompareMode;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -46,8 +44,6 @@ public class ProbateManFunctionalTests extends IntegrationTestBase {
     @Value("${user.auth.provider.oauth2.url}")
     private String idamUrl;
 
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
-
     private static final String FORENAME_REPLACE = "[FORENAME_REPLACE]";
 
     private static final String SURNAME_REPLACE = "[SURNAME_REPLACE]";
@@ -64,11 +60,14 @@ public class ProbateManFunctionalTests extends IntegrationTestBase {
 
     private ObjectMapper objectMapper;
 
-    private String probatemanDbPass = "Probate123";
+    @Value("${probate.caseworker.password}")
+    private String password;
 
-    private Integer id = 726469;
+    @Value("${probate.caseworker.id}")
+    private Integer id;
 
-    private String email = "probatebackoffice.functional+cw1@gmail.com";
+    @Value("${probate.caseworker.email}")
+    private String email;
 
     private Headers headers;
 
@@ -115,22 +114,18 @@ public class ProbateManFunctionalTests extends IntegrationTestBase {
         jdbcTemplate = new JdbcTemplate(dataSource);
         objectMapper = new ObjectMapper();
 
-        headers = utils.getHeaders(email, probatemanDbPass, id);
+        headers = utils.getHeaders(email, password, id);
 
         deceasedForename = RandomStringUtils.randomAlphanumeric(10) + "_FN";
         deceasedSurname = RandomStringUtils.randomAlphanumeric(10) + "_SN";
         deceasedAlias = RandomStringUtils.randomAlphanumeric(10) + "_ALIAS" + " " + RandomStringUtils.randomAlphanumeric(10);
-
-        System.out.println("******************** deceasedForename: " + deceasedForename);
-        System.out.println("******************** deceasedSurname: " + deceasedSurname);
-        System.out.println("******************** deceasedAlias: " + deceasedAlias);
 
         generateSqlAndExecute(deceasedForename, deceasedSurname, deceasedAlias, "/scripts/legacy_search_" + caseTypeFilename + "_insert.sql");
     }
 
     @After
     public void cleanUp(){
-        //generateSqlAndExecute(deceasedForename, deceasedSurname, deceasedAlias, "/scripts/legacy_search_" + caseTypeFilename + "_clean_up.sql");
+        generateSqlAndExecute(deceasedForename, deceasedSurname, deceasedAlias, "/scripts/legacy_search_" + caseTypeFilename + "_clean_up.sql");
     }
 
     @Test
