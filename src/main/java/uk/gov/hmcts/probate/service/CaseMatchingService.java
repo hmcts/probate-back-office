@@ -14,7 +14,6 @@ import uk.gov.hmcts.probate.exception.CaseMatchingException;
 import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.CaseType;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
-import uk.gov.hmcts.probate.model.ccd.raw.casematching.Case;
 import uk.gov.hmcts.probate.model.ccd.raw.casematching.MatchedCases;
 import uk.gov.hmcts.probate.model.criterion.CaseMatchingCriteria;
 import uk.gov.hmcts.probate.service.evidencemanagement.header.HttpHeadersFactory;
@@ -52,9 +51,6 @@ public class CaseMatchingService {
     private static final String DECEASED_DOD = "data.deceasedDateOfDeath";
     private static final String IMPORTED_TO_CCD = "data.imported_to_ccd";
     private static final String IMPORTED_TO_CCD_Y = "Y";
-
-    private static final String DOCUMENT_TYPE = "data.probateDocumentsGenerated.value.DocumentType";
-    private static final String DOCUMENT_DATE = "data.probateDocumentsGenerated.value.DocumentDateAdded";
 
     private final CCDDataStoreAPIConfiguration ccdDataStoreAPIConfiguration;
     private final RestTemplate restTemplate;
@@ -126,17 +122,6 @@ public class CaseMatchingService {
         return runQuery(caseType, criteria, jsonQuery);
     }
 
-    public List<Case> findCasesWithDatedDocument(CaseType caseType, String documentTypeGenerated, String queryDate) {
-        BoolQueryBuilder query = boolQuery();
-
-        query.must(matchQuery(DOCUMENT_TYPE, documentTypeGenerated));
-        query.must(matchQuery(DOCUMENT_DATE, queryDate));
-
-        String jsonQuery = new SearchSourceBuilder().query(query).toString();
-
-        return runQuery(caseType, jsonQuery);
-    }
-
     public List<CaseMatch> findCrossMatches(List<CaseType> caseTypes, CaseMatchingCriteria criteria) {
         return caseTypes.stream()
                 .map(caseType -> findMatches(caseType, criteria))
@@ -145,35 +130,6 @@ public class CaseMatchingService {
     }
 
     private List<CaseMatch> runQuery(CaseType caseType, CaseMatchingCriteria criteria, String jsonQuery) {
-        MatchedCases matchedCases = getMatchedCases(caseType, jsonQuery);
-
-        return matchedCases.getCases().stream()
-                .filter(c -> c.getId() == null || !criteria.getId().equals(c.getId()))
-                .map(c -> caseMatchBuilderService.buildCaseMatch(c, caseType))
-                .collect(Collectors.toList());
-    }
-
-    private List<Case> runQuery(CaseType caseType, String jsonQuery) {
-        MatchedCases matchedCases = getMatchedCases(caseType, jsonQuery);
-
-        return matchedCases.getCases();
-    }
-
-    private String getQueryTemplate() {
-        return fileSystemResourceService.getFileFromResourceAsString(TEMPLATE_DIRECTORY + ES_QUERY);
-    }
-
-    private String getAliasesToNameSubQueryTemplate() {
-        return fileSystemResourceService.getFileFromResourceAsString(TEMPLATE_DIRECTORY
-                + ES_ALIASES_SUB_QUERY);
-    }
-
-    private String getAliasesToAliasesSubQueryTemplate() {
-        return fileSystemResourceService.getFileFromResourceAsString(TEMPLATE_DIRECTORY
-                + ES_ALIASES_TO_ALIASES_SUB_QUERY);
-    }
-
-    private MatchedCases getMatchedCases(CaseType caseType, String jsonQuery) {
         log.info("CaseMatchingService runQuery: " + jsonQuery);
         URI uri = UriComponentsBuilder
                 .fromHttpUrl(ccdDataStoreAPIConfiguration.getHost() + ccdDataStoreAPIConfiguration.getCaseMatchingPath())
@@ -191,6 +147,24 @@ public class CaseMatchingService {
         }
 
         appInsights.trackEvent(REQUEST_SENT, uri.toString());
-        return matchedCases;
+
+        return matchedCases.getCases().stream()
+                .filter(c -> c.getId() == null || !criteria.getId().equals(c.getId()))
+                .map(c -> caseMatchBuilderService.buildCaseMatch(c, caseType))
+                .collect(Collectors.toList());
+    }
+
+    private String getQueryTemplate() {
+        return fileSystemResourceService.getFileFromResourceAsString(TEMPLATE_DIRECTORY + ES_QUERY);
+    }
+
+    private String getAliasesToNameSubQueryTemplate() {
+        return fileSystemResourceService.getFileFromResourceAsString(TEMPLATE_DIRECTORY
+                + ES_ALIASES_SUB_QUERY);
+    }
+
+    private String getAliasesToAliasesSubQueryTemplate() {
+        return fileSystemResourceService.getFileFromResourceAsString(TEMPLATE_DIRECTORY
+                + ES_ALIASES_TO_ALIASES_SUB_QUERY);
     }
 }
