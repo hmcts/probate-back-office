@@ -189,7 +189,7 @@ registries:
   ctsc:
     name: CTSC
     phone: 0300 303 0648
-    emailReplyToId:
+    emailReplyToId: "ctsc-emailReplyToId"
     addressline1: Manchester Civil Justice Centre
     addressline2: Ground Floor
     addressline3: 1 Bridge Street West
