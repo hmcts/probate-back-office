@@ -60,14 +60,14 @@ public class ProbateManFunctionalTests extends IntegrationTestBase {
 
     private ObjectMapper objectMapper;
 
-    @Value("${probate.caseworker.password}")
-    private String password;
+    //@Value("${probate.caseworker.password}")
+    private String password = "Probate123";
 
-    @Value("${probate.caseworker.id}")
-    private Integer id;
+    //@Value("${probate.caseworker.id}")
+    private Integer id = 726469;
 
-    @Value("${probate.caseworker.email}")
-    private String email;
+    //@Value("${probate.caseworker.email}")
+    private String email = "probatebackoffice.functional+cw1@gmail.com";
 
     private Headers headers;
 
