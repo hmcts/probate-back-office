@@ -1,4 +1,4 @@
-package uk.gov.hmcts.probate.service.FileBuilderService;
+package uk.gov.hmcts.probate.service.filebuilder;
 
 import org.junit.Before;
 import org.junit.Test;

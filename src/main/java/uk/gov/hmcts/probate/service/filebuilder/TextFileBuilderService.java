@@ -1,4 +1,4 @@
-package uk.gov.hmcts.probate.service.FileBuilderService;
+package uk.gov.hmcts.probate.service.filebuilder;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

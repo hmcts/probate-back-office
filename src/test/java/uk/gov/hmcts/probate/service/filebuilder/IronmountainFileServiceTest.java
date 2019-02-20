@@ -1,4 +1,4 @@
-package uk.gov.hmcts.probate.service.FileBuilderService;
+package uk.gov.hmcts.probate.service.filebuilder;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -40,12 +40,12 @@ public class IronmountainFileServiceTest {
                 .builder().documentDateAdded(LocalDate.of(2019, 02, 18)).documentType(DocumentType.DIGITAL_GRANT)
                 .build());
 
-        CollectionMember<AdditionalExecutorApplying> additionalExecutor = new CollectionMember<>
-                (AdditionalExecutorApplying.builder().applyingExecutorName("Bob Smith")
-                        .applyingExecutorAddress(SolsAddress.builder().addressLine1("123 Fake street")
-                                .addressLine3("North West East Field")
-                                .postCode("AB2 3CD")
-                                .build()).build());
+        CollectionMember<AdditionalExecutorApplying> additionalExecutor =
+                new CollectionMember<>(AdditionalExecutorApplying.builder().applyingExecutorName("Bob Smith")
+                .applyingExecutorAddress(SolsAddress.builder().addressLine1("123 Fake street")
+                        .addressLine3("North West East Field")
+                        .postCode("AB2 3CD")
+                        .build()).build());
         List<CollectionMember<AdditionalExecutorApplying>> additionalExecutors = new ArrayList<>(1);
         additionalExecutors.add(additionalExecutor);
 
@@ -54,8 +54,8 @@ public class IronmountainFileServiceTest {
                 .deceasedSurname("Deadsoul")
                 .deceasedDateOfDeath(LocalDate.of(1990, 01, 01))
                 .deceasedDateOfBirth(LocalDate.of(2015, 01, 01))
-                .deceasedAddress(SolsAddress.builder().addressLine1("123 Dead street").addressLine3("The lane").postCode
-                        ("AB5 6CD").build())
+                .deceasedAddress(SolsAddress.builder().addressLine1("123 Dead street").addressLine3("The lane")
+                        .postCode("AB5 6CD").build())
                 .boDeceasedTitle("Mr")
                 .primaryApplicantIsApplying("Yes")
                 .primaryApplicantForenames("Tim")
@@ -83,8 +83,8 @@ public class IronmountainFileServiceTest {
 
     @Test
     public void testFileIsBuildWithEmptyOptionalValues() throws IOException {
-        CollectionMember<AdditionalExecutorApplying> additionalExecutor = new CollectionMember<>
-                (AdditionalExecutorApplying.builder().applyingExecutorName("Bob Smith")
+        CollectionMember<AdditionalExecutorApplying> additionalExecutor =
+                new CollectionMember<>(AdditionalExecutorApplying.builder().applyingExecutorName("Bob Smith")
                         .applyingExecutorAddress(SolsAddress.builder().build()).build());
         List<CollectionMember<AdditionalExecutorApplying>> additionalExecutors = new ArrayList<>(1);
         additionalExecutors.add(additionalExecutor);

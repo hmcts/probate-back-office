@@ -1,4 +1,4 @@
-package uk.gov.hmcts.probate.service.FileBuilderService;
+package uk.gov.hmcts.probate.service.filebuilder;
 
 import com.google.common.collect.ImmutableList;
 import joptsimple.internal.Strings;
@@ -40,7 +40,7 @@ public class IronMountainFileService {
     private List<String> prepareData(CaseData data) {
         ImmutableList.Builder<String> fileData = ImmutableList.builder();
 
-        List<String> deceasedAddress = addressManager(data.getDeceasedAddress());
+        final List<String> deceasedAddress = addressManager(data.getDeceasedAddress());
         grantees(data);
         List<String> applicantAddress = addressManager(data.getApplicationType().equals(ApplicationType.PERSONAL) ? data
                 .getPrimaryApplicantAddress() : data.getSolsSolicitorAddress());
@@ -159,8 +159,8 @@ public class IronMountainFileService {
                         .getAdditionalExecutorsApplying().get(0).getValue().getApplyingExecutorAddress() : emptyAddress))
                 .build();
         grantee2 = Grantee.builder()
-                .firstName(data.getPrimaryApplicantIsApplying().equals("Yes") ? data.getAdditionalExecutorsApplying().size() >= 1 ?
-                        data.getAdditionalExecutorsApplying().get(0).getValue().getApplyingExecutorName() : "" : data
+                .firstName(data.getPrimaryApplicantIsApplying().equals("Yes") ? data.getAdditionalExecutorsApplying().size()
+                        >= 1 ? data.getAdditionalExecutorsApplying().get(0).getValue().getApplyingExecutorName() : "" : data
                         .getAdditionalExecutorsApplying().size() >= 2 ? data.getAdditionalExecutorsApplying().get(1).getValue()
                         .getApplyingExecutorName() : "")
                 .lastName("")
@@ -171,8 +171,8 @@ public class IronMountainFileService {
                 .build();
 
         grantee3 = Grantee.builder()
-                .firstName(data.getPrimaryApplicantIsApplying().equals("Yes") ? data.getAdditionalExecutorsApplying().size() >=
-                        2 ? data.getAdditionalExecutorsApplying().get(1).getValue().getApplyingExecutorName() : "" : data
+                .firstName(data.getPrimaryApplicantIsApplying().equals("Yes") ? data.getAdditionalExecutorsApplying().size()
+                        >= 2 ? data.getAdditionalExecutorsApplying().get(1).getValue().getApplyingExecutorName() : "" : data
                         .getAdditionalExecutorsApplying().size() >= 3 ? data.getAdditionalExecutorsApplying().get(2).getValue()
                         .getApplyingExecutorName() : "")
                 .lastName("")
@@ -183,8 +183,8 @@ public class IronMountainFileService {
                 .build();
 
         grantee4 = Grantee.builder()
-                .firstName(data.getPrimaryApplicantIsApplying().equals("Yes") ? data.getAdditionalExecutorsApplying().size() >=
-                        3 ? data.getAdditionalExecutorsApplying().get(2).getValue().getApplyingExecutorName() : "" : data
+                .firstName(data.getPrimaryApplicantIsApplying().equals("Yes") ? data.getAdditionalExecutorsApplying().size()
+                        >= 3 ? data.getAdditionalExecutorsApplying().get(2).getValue().getApplyingExecutorName() : "" : data
                         .getAdditionalExecutorsApplying().size() >= 4 ? data.getAdditionalExecutorsApplying().get(3).getValue()
                         .getApplyingExecutorName() : "")
                 .lastName("")
