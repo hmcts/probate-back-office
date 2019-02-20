@@ -26,6 +26,7 @@ import static java.util.Collections.emptyList;
 @Data
 public class CaseMatchingCriteria {
     private final Long id;
+    private final String legacyId;
     private final String deceasedForenames;
     private final String deceasedSurname;
     private final String deceasedFullName;
@@ -42,6 +43,7 @@ public class CaseMatchingCriteria {
 
         return CaseMatchingCriteria.builder()
                 .id(caseDetails.getId())
+                .legacyId(data.getLegacyId())
                 .deceasedForenames(data.getDeceasedForenames())
                 .deceasedSurname(data.getDeceasedSurname())
                 .deceasedFullName(data.getDeceasedFullName())
@@ -61,6 +63,7 @@ public class CaseMatchingCriteria {
 
         return CaseMatchingCriteria.builder()
                 .id(caveatDetails.getId())
+                .legacyId(data.getLegacyId())
                 .deceasedForenames(data.getDeceasedForenames())
                 .deceasedSurname(data.getDeceasedSurname())
                 .deceasedFullName(data.getDeceasedFullName())
@@ -80,6 +83,7 @@ public class CaseMatchingCriteria {
 
         return CaseMatchingCriteria.builder()
                 .id(standingSearchDetails.getId())
+                .legacyId(data.getLegacyId())
                 .deceasedForenames(data.getDeceasedForenames())
                 .deceasedSurname(data.getDeceasedSurname())
                 .deceasedFullName(data.getDeceasedFullName())
@@ -99,6 +103,7 @@ public class CaseMatchingCriteria {
 
         return CaseMatchingCriteria.builder()
                 .id(willLodgementDetails.getId())
+                .legacyId(data.getLegacyId())
                 .deceasedForenames(data.getDeceasedForenames())
                 .deceasedSurname(data.getDeceasedSurname())
                 .deceasedFullName(data.getDeceasedFullName())
