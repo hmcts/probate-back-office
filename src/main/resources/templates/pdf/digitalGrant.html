@@ -82,6 +82,7 @@
             margin: 0 auto;
             height: 140px;
             width: 200px;
+            page-break-inside: avoid;
         }
 
         .line-top{
@@ -208,8 +209,8 @@
                 {% if case_details.case_data.deceasedAddress.County != null and case_details.case_data.deceasedAddress.County != "" %} {{case_details.case_data.deceasedAddress.County}}{% endif %}
                 {% if case_details.case_data.deceasedAddress.PostCode != null and case_details.case_data.deceasedAddress.PostCode != ""%} {{case_details.case_data.deceasedAddress.PostCode}}{% endif %}
                 {% if case_details.case_data.deceasedAddress.Country != null and case_details.case_data.deceasedAddress.Country != ""%} {{case_details.case_data.deceasedAddress.Country}}{% endif %}</strong>
-                {% if case_details.case_data.solsDeceasedAliasNamesList != null and case_details.case_data.solsDeceasedAliasNamesList != "" %}{% for alias in case_details.case_data.solsDeceasedAliasNamesList %}{% if loop.first %}<br />Otherwise {{alias.value.SolsAliasname}}{% else %}, {{alias.value.SolsAliasname}}{% endif %}{% endfor %} <br />{% endif %}
-                Died on <strong>{{case_details.case_data.deceasedDateOfDeathFormatted}}</strong> domiciled in <strong>England and Wales</strong>
+                {% if case_details.case_data.solsDeceasedAliasNamesList != null and case_details.case_data.solsDeceasedAliasNamesList != "" %}{% for alias in case_details.case_data.solsDeceasedAliasNamesList %}{% if loop.first %}<br />Otherwise {{alias.value.SolsAliasname}}{% else %}, {{alias.value.SolsAliasname}}{% endif %}{% endfor %}{% endif %}
+                <br />Died on <strong>{{case_details.case_data.deceasedDateOfDeathFormatted}}</strong> domiciled in <strong>England and Wales</strong>
             </p>
             <p>The Last Will and Testament <strong>
                 {% if case_details.case_data.boWillMessage != null and case_details.case_data.boWillMessage != ""%}{{ case_details.case_data.boWillMessage }}{% endif %}</strong> of <strong>{{case_details.case_data.deceasedForenames}} {{case_details.case_data.deceasedSurname}}</strong> (An official copy of which is available from the Court) was proved and registered before the High Court of Justice.
@@ -340,7 +341,7 @@
                 {{address(case_details.case_data.solsSolicitorAddress)}} {% else %}personally{% endif %}<br />
                 If you wish to validate the information contained within this document please call {{case_details.ctscTelephone}}</p>
         </td>
-    </tr>a
+    </tr>
     </tbody>
 </table>
 </body>

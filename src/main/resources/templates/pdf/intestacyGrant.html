@@ -82,6 +82,7 @@
             margin: 0 auto;
             height: 140px;
             width: 200px;
+            page-break-inside: avoid;
         }
 
         .line-top{
@@ -209,8 +210,8 @@
                 {% if case_details.case_data.deceasedAddress.PostCode != null and case_details.case_data.deceasedAddress.PostCode != ""%} {{case_details.case_data.deceasedAddress.PostCode}}{% endif %}
                 {% if case_details.case_data.deceasedAddress.Country != null and case_details.case_data.deceasedAddress.Country != ""%} {{case_details.case_data.deceasedAddress.Country}}{% endif %}</strong>
 
-                {% if case_details.case_data.solsDeceasedAliasNamesList != null and case_details.case_data.solsDeceasedAliasNamesList != "" %}{% for alias in case_details.case_data.solsDeceasedAliasNamesList %}{% if loop.first %}<br />Otherwise {{alias.value.SolsAliasname}}{% else %}, {{alias.value.SolsAliasname}}{% endif %}{% endfor %} <br />{% endif %}
-                Died on <strong>{{case_details.case_data.deceasedDateOfDeathFormatted}}</strong> domiciled in <strong>England and Wales</strong>
+                {% if case_details.case_data.solsDeceasedAliasNamesList != null and case_details.case_data.solsDeceasedAliasNamesList != "" %}{% for alias in case_details.case_data.solsDeceasedAliasNamesList %}{% if loop.first %}<br />Otherwise {{alias.value.SolsAliasname}}{% else %}, {{alias.value.SolsAliasname}}{% endif %}{% endfor %}{% endif %}
+                <br />Died on <strong>{{case_details.case_data.deceasedDateOfDeathFormatted}}</strong> domiciled in <strong>England and Wales</strong>
             </p>
             <p>The Administration of <strong>{{case_details.case_data.deceasedForenames}} {{case_details.case_data.deceasedSurname}}</strong>'s estate is granted by the High Court of Justice on this date to the following administrator{% set applyingExecCounter = 0 %}{% for executor
                 in case_details.case_data.executorsApplying %}{% set applyingExecCounter = applyingExecCounter + 1 %}{%
