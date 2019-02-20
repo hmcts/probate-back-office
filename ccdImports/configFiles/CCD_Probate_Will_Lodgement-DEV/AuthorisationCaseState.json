@@ -1,5 +1,0 @@
-[
-  {"LiveFrom": "01/01/2017", "LiveTo": "01/01/2020", "CaseTypeID": "WillLodgement", "CaseStateID": "WillLodgementCreated", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
-  {"LiveFrom": "01/01/2017", "LiveTo": "01/01/2020", "CaseTypeID": "WillLodgement", "CaseStateID": "WillLodged", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
-  {"LiveFrom": "01/01/2017", "LiveTo": "01/01/2020", "CaseTypeID": "WillLodgement", "CaseStateID": "WillWithdrawn", "UserRole": "caseworker-probate-issuer", "CRUD": "CrUD"}
-]
