@@ -103,7 +103,7 @@ public class CaseMatchBuilderServiceTest {
 
         CaseMatch caseMatch = caseMatchBuilderService.buildCaseMatch(caseMock, CaseType.CAVEAT);
 
-        assertTrue(caseMatch.getType().contains("CAVEAT"));
+        assertTrue(caseMatch.getType().contains(CaseType.CAVEAT.getName()));
     }
 
 }
