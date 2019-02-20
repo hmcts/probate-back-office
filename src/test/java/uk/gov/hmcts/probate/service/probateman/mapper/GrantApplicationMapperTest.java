@@ -3,11 +3,13 @@ package uk.gov.hmcts.probate.service.probateman.mapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.probateman.GrantApplication;
+import uk.gov.hmcts.probate.model.probateman.ProbateManType;
 import uk.gov.hmcts.reform.probate.model.cases.Address;
 import uk.gov.hmcts.reform.probate.model.cases.ApplicationType;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData;
@@ -21,6 +23,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest
 public class GrantApplicationMapperTest {
 
+    @Value("${ccd.gateway.host}")
+    private String printServiceHost;
+
+    @Value("${printservice.legacyPath}")
+    private String printServiceLegacyPath;
+
+    private static final String ID = "12345";
+    private static final String LEGACY_TYPE = "Legacy LEGACY APPLICATION";
     private static final String PRIMARY_APPLICANT_ADDRESS = "PaAddL1, PaAddL2, PaAddPC";
     private static final String PRIMARY_APPLICANT_FORENAMES = "PrimAppFN1 PrimAppFN2";
     private static final String PRIMARY_APPLICANT_SURNAME = "PrimAppSN";
@@ -63,6 +73,8 @@ public class GrantApplicationMapperTest {
     }
 
     private void assertBasicApplication(GrantOfRepresentationData grantApplicationData) {
+        String legacyCaseViewUrl = String.format(printServiceHost + printServiceLegacyPath, ProbateManType.GRANT_APPLICATION, ID);
+
         Address expectedDeceasedAddress = buildAddress(DECEASED_ADDRESS);
         Address expectedPrimaryAddress = buildAddress(PRIMARY_APPLICANT_ADDRESS);
         assertThat(grantApplicationData.getPrimaryApplicantForenames()).isEqualTo(PRIMARY_APPLICANT_FORENAMES);
@@ -75,7 +87,10 @@ public class GrantApplicationMapperTest {
         assertThat(grantApplicationData.getPrimaryApplicantAddress()).isEqualToComparingFieldByFieldRecursively(expectedPrimaryAddress);
         assertThat(grantApplicationData.getIhtGrossValue()).isEqualTo(GROSS_ESTATE);
         assertThat(grantApplicationData.getIhtNetValue()).isEqualTo(NET_ESTATE);
-        assertThat(grantApplicationData.getCaseType()).isEqualTo(GrantType.GRANT_OF_PROBATE);
+        assertThat(grantApplicationData.getGrantType()).isEqualTo(GrantType.GRANT_OF_PROBATE);
+        assertThat(grantApplicationData.getLegacyId()).isEqualTo(ID);
+        assertThat(grantApplicationData.getLegacyType()).isEqualTo(LEGACY_TYPE);
+        assertThat(grantApplicationData.getLegacyCaseViewUrl()).contains(legacyCaseViewUrl);
     }
 
     private GrantApplication buildBasicApplication() {
@@ -90,6 +105,7 @@ public class GrantApplicationMapperTest {
         grantApplication.setApplicantAddress(PRIMARY_APPLICANT_ADDRESS);
         grantApplication.setGrossEstateValue(GROSS_ESTATE);
         grantApplication.setNetEstateValue(NET_ESTATE);
+        grantApplication.setId(Long.valueOf(ID));
         return grantApplication;
     }
 

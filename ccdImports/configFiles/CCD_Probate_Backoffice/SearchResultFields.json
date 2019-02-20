@@ -1,0 +1,11 @@
+[
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "[CASE_REFERENCE]", "Label": "Case reference", "DisplayOrder": 1},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "solsSolicitorAppReference", "Label": "Your reference", "DisplayOrder": 2},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "deceasedForenames", "Label": "First name(s) of deceased", "DisplayOrder": 3},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "deceasedSurname", "Label": "Last name(s) of deceased", "DisplayOrder": 4},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "deceasedDateOfDeath", "Label": "Date of death", "DisplayOrder": 5},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "casePrinted", "Label": "Case printed", "DisplayOrder": 6},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "[STATE]", "Label": "State", "DisplayOrder": 7},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "applicationSubmittedDate", "Label": "Application completed date", "DisplayOrder": 8},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "evidenceHandled", "Label": "Supplementary evidence handled", "DisplayOrder": 9}
+]
