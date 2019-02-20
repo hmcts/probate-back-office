@@ -30,8 +30,10 @@ import static org.elasticsearch.index.query.QueryBuilders.matchQuery;
 import static org.elasticsearch.index.query.QueryBuilders.multiMatchQuery;
 import static org.elasticsearch.index.query.QueryBuilders.rangeQuery;
 import static org.elasticsearch.index.query.QueryBuilders.termQuery;
+import static org.springframework.util.StringUtils.isEmpty;
 import static uk.gov.hmcts.probate.insights.AppInsightsEvent.REQUEST_SENT;
 import static uk.gov.hmcts.probate.insights.AppInsightsEvent.REST_CLIENT_EXCEPTION;
+import static uk.gov.hmcts.probate.model.CaseType.LEGACY;
 
 @Service
 @RequiredArgsConstructor
@@ -44,6 +46,7 @@ public class CaseMatchingService {
     private static final String ES_ALIASES_TO_ALIASES_SUB_QUERY = "aliases_to_aliases_sub_query.json";
     private static final String CASE_TYPE_ID = "ctid";
 
+    private static final String LEGACY_ID = "data.legacyId";
     private static final String DECEASED_FORENAMES = "data.deceasedForenames";
     private static final String DECEASED_SURNAME = "data.deceasedSurname";
     private static final String DECEASED_ALIAS_NAME_LIST = "data.solsDeceasedAliasNamesList.*";
@@ -82,6 +85,11 @@ public class CaseMatchingService {
     }
 
     public List<CaseMatch> findCases(CaseType caseType, CaseMatchingCriteria criteria) {
+
+        if (!isEmpty(criteria.getLegacyId())) {
+            return findByLegacyId(criteria);
+        }
+
         BoolQueryBuilder fuzzy = boolQuery();
         BoolQueryBuilder strict = boolQuery();
         BoolQueryBuilder filter = boolQuery();
@@ -127,6 +135,14 @@ public class CaseMatchingService {
                 .map(caseType -> findMatches(caseType, criteria))
                 .flatMap(Collection::stream)
                 .collect(Collectors.toList());
+    }
+
+    private List<CaseMatch> findByLegacyId(CaseMatchingCriteria criteria) {
+        String jsonQuery = new SearchSourceBuilder()
+                .query(boolQuery().must(termQuery(LEGACY_ID, criteria.getLegacyId())))
+                .toString();
+
+        return runQuery(LEGACY, criteria, jsonQuery);
     }
 
     private List<CaseMatch> runQuery(CaseType caseType, CaseMatchingCriteria criteria, String jsonQuery) {
