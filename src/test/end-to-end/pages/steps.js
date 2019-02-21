@@ -15,6 +15,7 @@ module.exports = function () {
         enterWillLodgementPage3: steps.createWillLodgement.page3,
         checkMyAnswers: steps.checkYourAnswers.checkYourAnswers,
         seeCaseDetails: steps.caseDetails.caseDetails,
+        chooseNextStep: steps.nextStep.nextStep,
         uploadDocument: steps.documentUpload.documentUpload,
         enterEventSummary: steps.eventSummary.eventSummary,
         enterComment: steps.eventSummary.eventSummary,

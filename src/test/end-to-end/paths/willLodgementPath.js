@@ -1,6 +1,6 @@
 'use strict';
 
-const TestConfigurator = new (require('src/test/end-to-end/helpers/TestConfigurator'))();
+const testConfig = require('src/test/config');
 const createCaseConfig = require('src/test/end-to-end/pages/createCase/createCaseConfig.json');
 
 const checkYourAnswersConfig = require('src/test/end-to-end/pages/checkYourAnswers/checkYourAnswersConfig');
@@ -24,10 +24,10 @@ const executorUpdateTabConfig = require('src/test/end-to-end/pages/caseDetails/w
 const generateDepositReceiptTabConfig = require('src/test/end-to-end/pages/caseDetails/willLodgement/generateDepositReceiptTabConfig');
 const caseMatchesTabConfig = require('src/test/end-to-end/pages/caseDetails/willLodgement/caseMatchesTabConfig');
 
-Feature('Back Office').retry(TestConfigurator.getRetryFeatures());
+Feature('Back Office').retry(testConfig.TestRetryFeatures);
 
-Scenario(TestConfigurator.idamInUseText('Will Lodgement for a Personal Applicant'), async function (I) {
-    let nextStep = 'Upload document';
+Scenario('Will Lodgement for a Personal Applicant', async function (I) {
+
     // IdAM
     I.authenticateWithIdamIfAvailable();
 
@@ -44,39 +44,38 @@ Scenario(TestConfigurator.idamInUseText('Will Lodgement for a Personal Applicant
     I.seeCaseDetails(caseRef, historyTabConfig, checkYourAnswersConfig);
     I.seeCaseDetails(caseRef, generalDetailsTabConfig, createWillLodgementConfig);
     I.seeCaseDetails(caseRef, testatorTabConfig, createWillLodgementConfig);
-    I.seeCaseDetails(caseRef, executorTabConfig, createWillLodgementConfig, nextStep);
+    I.seeCaseDetails(caseRef, executorTabConfig, createWillLodgementConfig);
 
+    I.chooseNextStep('Upload document');
     I.uploadDocument(caseRef);
     I.enterEventSummary(caseRef, documentUploadSummaryConfig);
-    nextStep = 'Amend will lodgement';
-    I.seeCaseDetails(caseRef, documentUploadTabConfig, documentUploadConfig, nextStep);
+    I.seeCaseDetails(caseRef, documentUploadTabConfig, documentUploadConfig);
 
+    I.chooseNextStep('Amend will lodgement');
     I.enterWillLodgementPage1('update');
     I.enterWillLodgementPage2('update');
     I.enterWillLodgementPage3('update');
     I.checkMyAnswers();
-
     I.seeCaseDetails(caseRef, generalDetailsUpdateTabConfig, createWillLodgementConfig);
     I.seeCaseDetails(caseRef, testatorUpdateTabConfig, createWillLodgementConfig);
-    nextStep='Add comment';
-    I.seeCaseDetails(caseRef, executorUpdateTabConfig, createWillLodgementConfig, nextStep);
+    I.seeCaseDetails(caseRef, executorUpdateTabConfig, createWillLodgementConfig);
 
+    I.chooseNextStep('Add comment');
     I.enterComment(caseRef, commentSummaryConfig);
+    I.seeCaseDetails(caseRef, historyTabConfig, commentSummaryConfig);
 
-    nextStep = 'Generate deposit receipt';
-    I.seeCaseDetails(caseRef, historyTabConfig, commentSummaryConfig, nextStep);
-
+    I.chooseNextStep('Generate deposit receipt');
     I.generateDepositReceipt(caseRef, generateDepositReceiptSummaryConfig);
-    nextStep = 'Match application';
-    I.seeCaseDetails(caseRef, generateDepositReceiptTabConfig, generateDepositReceiptSummaryConfig, nextStep);
+    I.seeCaseDetails(caseRef, generateDepositReceiptTabConfig, generateDepositReceiptSummaryConfig);
 
+    I.chooseNextStep('Match application');
     I.selectCaseMatches(caseRef, caseMatchesConfig);
     I.enterCaseMatchesComment(caseRef, caseMatchesCommentSummaryConfig);
-    nextStep = 'Withdraw will';
-    I.seeCaseDetails(caseRef, caseMatchesTabConfig, caseMatchesConfig, nextStep);
+    I.seeCaseDetails(caseRef, caseMatchesTabConfig, caseMatchesConfig);
 
+    I.chooseNextStep('Withdraw will');
     I.selectWithdrawalReason(caseRef);
     I.enterWithdrawalSummary(caseRef, withdrawalSummaryConfig);
     I.seeCaseDetails(caseRef, historyTabConfig, withdrawalSummaryConfig);
 
-});
+}).retry(testConfig.TestRetryScenarios);
