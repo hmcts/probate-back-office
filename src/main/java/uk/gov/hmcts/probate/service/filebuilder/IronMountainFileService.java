@@ -34,7 +34,7 @@ public class IronMountainFileService {
 
     public File createIronMountainFile(Case ccdCase, String fileName) throws IOException {
         this.id = ccdCase.getId();
-        return textFileBuilderService.createFile(prepareData(ccdCase.getData()), DELIMITER, fileName);
+        return textFileBuilderService.createFile(prepareData(ccdCase.getData()), DELIMITER, fileName, false);
     }
 
     private List<String> prepareData(CaseData data) {
@@ -103,7 +103,6 @@ public class IronMountainFileService {
         fileData.add(data.getIhtNetValue().toString());
         fileData.add(caseTypeMapping(data.getCaseType()));
         fileData.add(data.getRegistryLocation());
-
 
         return fileData.build();
     }
