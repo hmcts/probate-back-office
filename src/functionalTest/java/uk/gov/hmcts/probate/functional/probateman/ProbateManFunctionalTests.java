@@ -105,6 +105,11 @@ public class ProbateManFunctionalTests extends IntegrationTestBase {
 
     @Before
     public void setUp() {
+        System.out.println("************* userId: " + id);
+        System.out.println("************* email: " + email);
+        System.out.println("************* password: " + password);
+
+
         Awaitility.reset();
         Awaitility.setDefaultPollDelay(100, MILLISECONDS);
         Awaitility.setDefaultPollInterval(1, SECONDS);
