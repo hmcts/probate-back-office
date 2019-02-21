@@ -413,7 +413,8 @@ public class CallbackResponseTransformerTest {
     public void shouldAddDocumentToProbateNotificationsGenerated() {
         Document documentsReceivedSentEmail = Document.builder().documentType(SENT_EMAIL).build();
 
-        CallbackResponse callbackResponse = underTest.addDocuments(callbackRequestMock, Arrays.asList(documentsReceivedSentEmail), null, null);
+        CallbackResponse callbackResponse = underTest.addDocuments(callbackRequestMock,
+                Arrays.asList(documentsReceivedSentEmail), null, null);
 
         assertCommon(callbackResponse);
 

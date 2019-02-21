@@ -89,9 +89,9 @@ public class CallbackResponseTransformer {
                     callbackRequest.getCaseDetails().getData().getBoEmailDocsReceivedNotification());
 
         }
-        if (documentTransformer.hasDocumentWithType(documents, DIGITAL_GRANT) ||
-                documentTransformer.hasDocumentWithType(documents, ADMON_WILL_GRANT) ||
-                documentTransformer.hasDocumentWithType(documents, INTESTACY_GRANT)) {
+        if (documentTransformer.hasDocumentWithType(documents, DIGITAL_GRANT)
+                || documentTransformer.hasDocumentWithType(documents, ADMON_WILL_GRANT)
+                || documentTransformer.hasDocumentWithType(documents, INTESTACY_GRANT)) {
             responseCaseDataBuilder
                     .boEmailGrantIssuedNotificationRequested(
                             callbackRequest.getCaseDetails().getData().getBoEmailGrantIssuedNotification())
