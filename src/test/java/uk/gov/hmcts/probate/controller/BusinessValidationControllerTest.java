@@ -379,6 +379,5 @@ public class BusinessValidationControllerTest {
                 .andExpect(content().string(containsString("controlNumber\":\"1234")))
                 .andExpect(content().string(containsString("fileName\":\"scanneddocument.pdf")));
     }
-
 }
 

@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,10 +22,12 @@ import uk.gov.hmcts.probate.model.ccd.willlodgement.request.WillLodgementCallbac
 import uk.gov.hmcts.probate.model.ccd.willlodgement.response.WillLodgementCallbackResponse;
 import uk.gov.hmcts.probate.service.BulkPrintService;
 import uk.gov.hmcts.probate.service.DocumentService;
+import uk.gov.hmcts.probate.service.EventValidationService;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.WillLodgementCallbackResponseTransformer;
+import uk.gov.hmcts.probate.validator.EmailAddressNotificationValidationRule;
 import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
 import uk.gov.service.notify.NotificationClientException;
 
@@ -63,6 +66,8 @@ public class DocumentController {
     private static final String INTESTACY = "intestacy";
     private static final String EDGE_CASE = "edgeCase";
     private final BulkPrintService bulkPrintService;
+    private final EventValidationService eventValidationService;
+    private final List<EmailAddressNotificationValidationRule> emailAddressNotificationValidationRules;
 
     @PostMapping(path = "/generate-grant-draft", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<CallbackResponse> generateGrantDraft(@RequestBody CallbackRequest callbackRequest) {
@@ -101,7 +106,9 @@ public class DocumentController {
     }
 
     @PostMapping(path = "/generate-grant", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<CallbackResponse> generateGrant(@RequestBody CallbackRequest callbackRequest)
+    public ResponseEntity<CallbackResponse> generateGrant(
+            @Validated({EmailAddressNotificationValidationRule.class})
+            @RequestBody CallbackRequest callbackRequest)
             throws NotificationClientException {
 
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
@@ -109,6 +116,7 @@ public class DocumentController {
         DocumentType template;
         Document digitalGrantDocument;
         getRegistryDetails(caseDetails);
+        CallbackResponse callbackResponse;
 
         switch (caseData.getCaseType()) {
             case EDGE_CASE:
@@ -151,10 +159,17 @@ public class DocumentController {
             documentService.expire(callbackRequest, documentType);
         }
         if (caseData.isGrantIssuedEmailNotificationRequested()) {
-            Document grantIssuedSentEmail = notificationService.sendEmail(GRANT_ISSUED, caseDetails);
-            documents.add(grantIssuedSentEmail);
+            callbackResponse = eventValidationService.validateEmailRequest(callbackRequest, emailAddressNotificationValidationRules);
+            if (callbackResponse.getErrors().isEmpty()) {
+                Document grantIssuedSentEmail = notificationService.sendEmail(GRANT_ISSUED, caseDetails);
+                documents.add(grantIssuedSentEmail);
+                callbackResponse = callbackResponseTransformer.addDocuments(callbackRequest, documents);
+            }
+        } else {
+            callbackResponse = callbackResponseTransformer.addDocuments(callbackRequest, documents);
         }
-        return ResponseEntity.ok(callbackResponseTransformer.addDocuments(callbackRequest, documents));
+
+        return ResponseEntity.ok(callbackResponse);
     }
 
     private CaseDetails getRegistryDetails(CaseDetails caseDetails) {
