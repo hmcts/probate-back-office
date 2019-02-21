@@ -26,20 +26,22 @@ public class DocumentStoreClient {
             HttpGet request = new HttpGet(document.getDocumentLink().getDocumentBinaryUrl());
             request.setHeader(SERVICE_AUTHORIZATION, authHeaderValue);
             request.setHeader(USER_ID, document.getDocumentGeneratedBy());
-            log.info("About to retrieve document from dm-store with binary url: " + document.getDocumentLink().getDocumentBinaryUrl());
+            log.info("About to retrieve " + document + " from dm-store with binary url: " + document.getDocumentLink().getDocumentBinaryUrl());
             CloseableHttpResponse closeableHttpResponse = closeableHttpClient.execute(request);
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
             closeableHttpResponse.getEntity().writeTo(byteArrayOutputStream);
             bytes = byteArrayOutputStream.toByteArray();
+            log.info("Successfully retrieved " + document + " from dm-store with binary url: " + document.getDocumentLink().getDocumentBinaryUrl());
+
 
         } catch (IOException e) {
 
             log.error("Failed to get bytes from document store for document {} in case Id {}",
                     document.getDocumentLink().getDocumentBinaryUrl());
-            throw new IOException("Failed to get bytes from document store for document"
+            throw new IOException("Failed to get bytes from document store for "
                     + document.getDocumentFileName() + "with url "
                     + document.getDocumentLink().getDocumentBinaryUrl());
         }
-        return bytes;
+         return bytes;
     }
 }

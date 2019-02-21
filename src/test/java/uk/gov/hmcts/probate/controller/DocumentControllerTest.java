@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentMatchers;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -48,6 +49,7 @@ import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.EDGE_CASE;
+import static uk.gov.hmcts.probate.model.DocumentType.GRANT_COVER;
 import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.WILL_LODGEMENT_DEPOSIT_RECEIPT;
@@ -81,6 +83,9 @@ public class DocumentControllerTest {
     @MockBean
     private AppInsights appInsights;
 
+    @Mock
+    private SendLetterResponse sendLetterResponseMock;
+
     @Before
     public void setUp() throws NotificationClientException {
         final Document document = Document.builder()
@@ -107,6 +112,9 @@ public class DocumentControllerTest {
                 .thenReturn(Document.builder().documentType(ADMON_WILL_GRANT).build());
         when(pdfManagementService.generateAndUpload(any(CallbackRequest.class), eq(EDGE_CASE)))
                 .thenReturn(Document.builder().documentType(EDGE_CASE).build());
+        when(pdfManagementService.generateAndUpload(any(CallbackRequest.class), eq(GRANT_COVER)))
+                .thenReturn(Document.builder().documentType(GRANT_COVER).build());
+
         when(pdfManagementService.generateAndUpload(any(WillLodgementCallbackRequest.class), eq(WILL_LODGEMENT_DEPOSIT_RECEIPT)))
                 .thenReturn(Document.builder().documentType(WILL_LODGEMENT_DEPOSIT_RECEIPT).build());
 
@@ -141,8 +149,8 @@ public class DocumentControllerTest {
                 .andExpect(content().string(containsString("data")));
 
         SendLetterResponse sendLetterResponse = new SendLetterResponse(UUID.randomUUID());
-        when(bulkPrintService.sendToBulkPrint(any(CallbackRequest.class), any(Document.class))).thenReturn(sendLetterResponse);
-        verify(bulkPrintService).sendToBulkPrint(any(CallbackRequest.class), any(Document.class));
+        when(bulkPrintService.sendToBulkPrint(any(CallbackRequest.class), any(Document.class), any(Document.class))).thenReturn(sendLetterResponse);
+        verify(bulkPrintService).sendToBulkPrint(any(CallbackRequest.class), any(Document.class), any(Document.class));
 
         doNothing().when(documentService).expire(any(CallbackRequest.class), eq(DIGITAL_GRANT_DRAFT));
         verify(documentService).expire(any(CallbackRequest.class), eq(DIGITAL_GRANT_DRAFT));
@@ -305,5 +313,4 @@ public class DocumentControllerTest {
         doNothing().when(documentService).expire(any(CallbackRequest.class), eq(DIGITAL_GRANT_DRAFT));
         verify(documentService).expire(any(CallbackRequest.class), eq(DIGITAL_GRANT_DRAFT));
     }
-
 }

@@ -202,8 +202,12 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "legacyType", "UserRole": "caseworker-probate-issuer", "CRUD": "CR"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "legacyCaseViewUrl", "UserRole": "caseworker-probate-issuer", "CRUD": "CR"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "legacyCaseViewUrlLink", "UserRole": "caseworker-probate-issuer", "CRUD": "R"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "bulkPrintSendLetterId", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "bulkPrintPdfSize", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
+
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "evidenceHandled", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRU"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "scannedDocuments", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRUD"},
+
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "applicationType", "UserRole": "caseworker-probate-solicitor", "CRUD": "C"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "registryLocation", "UserRole": "caseworker-probate-solicitor", "CRUD": "C"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "solsSolicitorFirmName", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"},
@@ -266,6 +270,7 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "casePrinted", "UserRole": "caseworker-probate-solicitor", "CRUD": "R"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "payments", "UserRole": "caseworker-probate-solicitor", "CRUD": "R"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "applicationSubmittedDate", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"},
+
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "applicationID", "UserRole": "citizen", "CRUD": "CR"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "applicationSubmittedDate", "UserRole": "citizen", "CRUD": "CRU"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "applicationType", "UserRole": "citizen", "CRUD": "CR"},

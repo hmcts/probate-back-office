@@ -342,7 +342,7 @@ public class CallbackResponseTransformerTest {
                 .documentType(DIGITAL_GRANT_DRAFT)
                 .build();
 
-        CallbackResponse callbackResponse = underTest.addDocuments(callbackRequestMock, Arrays.asList(document));
+        CallbackResponse callbackResponse = underTest.addDocuments(callbackRequestMock, Arrays.asList(document), null, null);
 
         assertCommon(callbackResponse);
 
@@ -398,7 +398,7 @@ public class CallbackResponseTransformerTest {
         Document grantIssuedSentEmail = Document.builder().documentType(SENT_EMAIL).build();
 
         CallbackResponse callbackResponse = underTest.addDocuments(callbackRequestMock,
-                Arrays.asList(grantDocument, grantIssuedSentEmail));
+                Arrays.asList(grantDocument, grantIssuedSentEmail), null, null);
 
         assertCommon(callbackResponse);
 
@@ -413,7 +413,7 @@ public class CallbackResponseTransformerTest {
     public void shouldAddDocumentToProbateNotificationsGenerated() {
         Document documentsReceivedSentEmail = Document.builder().documentType(SENT_EMAIL).build();
 
-        CallbackResponse callbackResponse = underTest.addDocuments(callbackRequestMock, Arrays.asList(documentsReceivedSentEmail));
+        CallbackResponse callbackResponse = underTest.addDocuments(callbackRequestMock, Arrays.asList(documentsReceivedSentEmail), null, null);
 
         assertCommon(callbackResponse);
 
@@ -432,7 +432,7 @@ public class CallbackResponseTransformerTest {
                 .build();
         when(caseDetailsMock.getData()).thenReturn(caseData);
 
-        CallbackResponse callbackResponse = underTest.addDocuments(callbackRequestMock, documents);
+        CallbackResponse callbackResponse = underTest.addDocuments(callbackRequestMock, documents, null, null);
 
         assertEquals("No", callbackResponse.getData().getBoEmailDocsReceivedNotification());
     }
@@ -994,20 +994,6 @@ public class CallbackResponseTransformerTest {
         CallbackResponse callbackResponse = underTest.paperForm(callbackRequestMock);
         assertEquals("Yes", callbackResponse.getData().getBoSendToBulkPrintRequested());
         assertEquals("Yes", callbackResponse.getData().getBoSendToBulkPrint());
-    }
-
-    @Test
-    public void shouldTransformWithBulkPrintComplete() {
-        caseDataBuilder.applicationType(ApplicationType.PERSONAL);
-        caseDataBuilder.caseType(null);
-
-        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
-        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-
-        CallbackResponse callbackResponse = underTest.transformWithBulkPrintComplete(callbackRequestMock, "random");
-
-        assertEquals("random", callbackResponse.getData().getLetterId());
-        assertEquals("Yes", callbackResponse.getData().getGrantSentToPrint());
     }
 
     private CollectionMember<ProbateAliasName> createdDeceasedAliasName(String id, String forename, String lastname, String onGrant) {

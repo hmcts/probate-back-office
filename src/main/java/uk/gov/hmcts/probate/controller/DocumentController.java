@@ -2,7 +2,6 @@ package uk.gov.hmcts.probate.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -81,10 +80,14 @@ public class DocumentController {
             case INTESTACY:
                 template = INTESTACY_GRANT_DRAFT;
                 document = pdfManagementService.generateAndUpload(callbackRequest, template);
+                log.info("Generated and Uploaded Intestacy grant preview document with template {}",
+                        template.getTemplateName());
                 break;
             case ADMON_WILL:
                 template = ADMON_WILL_GRANT_DRAFT;
                 document = pdfManagementService.generateAndUpload(callbackRequest, template);
+                log.info("Generated and Uploaded Admon Will grant preview document with template {}",
+                        template.getTemplateName());
                 break;
             case EDGE_CASE:
                 document = Document.builder().documentType(DocumentType.EDGE_CASE).build();
@@ -93,6 +96,8 @@ public class DocumentController {
             default:
                 template = DIGITAL_GRANT_DRAFT;
                 document = pdfManagementService.generateAndUpload(callbackRequest, template);
+                log.info("Generated and Uploaded Grant of Probate preview document with template {}",
+                        template.getTemplateName());
                 break;
         }
 
@@ -102,7 +107,7 @@ public class DocumentController {
         }
 
         return ResponseEntity.ok(callbackResponseTransformer.addDocuments(callbackRequest,
-                Arrays.asList(document)));
+                Arrays.asList(document), null, null));
     }
 
     @PostMapping(path = "/generate-grant", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -143,16 +148,21 @@ public class DocumentController {
                 break;
         }
 
+        Document coverSheet = pdfManagementService.generateAndUpload(callbackRequest, DocumentType.GRANT_COVER);
+
+        String pdfSize = null;
+        String letterId = null;
         if (caseData.isSendForBulkPrintingRequested() && !caseData.getCaseType().equals(EDGE_CASE)) {
-            SendLetterResponse response = bulkPrintService.sendToBulkPrint(callbackRequest, digitalGrantDocument);
-            String letterId = response != null
+            SendLetterResponse response = bulkPrintService.sendToBulkPrint(callbackRequest, digitalGrantDocument, coverSheet);
+            pdfSize = "test";
+            letterId = response != null
                     ? response.letterId.toString()
-                    : StringUtils.EMPTY;
-            callbackResponseTransformer.transformWithBulkPrintComplete(callbackRequest, letterId);
+                    : "ERROR: please contact service desk quoting the case reference number";
         }
 
         List<Document> documents = new ArrayList<>();
         documents.add(digitalGrantDocument);
+        documents.add(coverSheet);
 
         DocumentType[] documentTypes = {DIGITAL_GRANT_DRAFT, INTESTACY_GRANT_DRAFT, ADMON_WILL_GRANT_DRAFT};
         for (DocumentType documentType : documentTypes) {
@@ -163,10 +173,10 @@ public class DocumentController {
             if (callbackResponse.getErrors().isEmpty()) {
                 Document grantIssuedSentEmail = notificationService.sendEmail(GRANT_ISSUED, caseDetails);
                 documents.add(grantIssuedSentEmail);
-                callbackResponse = callbackResponseTransformer.addDocuments(callbackRequest, documents);
+                callbackResponse = callbackResponseTransformer.addDocuments(callbackRequest, documents, letterId, pdfSize);
             }
         } else {
-            callbackResponse = callbackResponseTransformer.addDocuments(callbackRequest, documents);
+            callbackResponse = callbackResponseTransformer.addDocuments(callbackRequest, documents, letterId, pdfSize);
         }
 
         return ResponseEntity.ok(callbackResponse);
