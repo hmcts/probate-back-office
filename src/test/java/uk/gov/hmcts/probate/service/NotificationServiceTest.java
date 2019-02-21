@@ -66,6 +66,7 @@ public class NotificationServiceTest {
     private CaseDetails personalCaseDataBirmingham;
     private CaseDetails solicitorCaseDataBirmingham;
     private CaseDetails personalCaseDataManchester;
+    private CaseDetails personalCaseDataCtsc;
     private CaseDetails solicitorCaseDataManchester;
 
     private CaveatDetails personalCaveatDataOxford;
@@ -123,6 +124,13 @@ public class NotificationServiceTest {
         personalCaseDataManchester = new CaseDetails(CaseData.builder()
                 .applicationType(PERSONAL)
                 .registryLocation("Manchester")
+                .primaryApplicantEmailAddress("personal@test.com")
+                .deceasedDateOfDeath(LocalDate.of(2000, 12, 12))
+                .build(), LAST_MODIFIED, ID);
+
+        personalCaseDataCtsc = new CaseDetails(CaseData.builder()
+                .applicationType(PERSONAL)
+                .registryLocation("ctsc")
                 .primaryApplicantEmailAddress("personal@test.com")
                 .deceasedDateOfDeath(LocalDate.of(2000, 12, 12))
                 .build(), LAST_MODIFIED, ID);
@@ -363,6 +371,22 @@ public class NotificationServiceTest {
     }
 
     @Test
+    public void sendCaseStoppedEmailToPersonalApplicantFromCtsc()
+            throws NotificationClientException, BadRequestException {
+
+        notificationService.sendEmail(CASE_STOPPED, personalCaseDataCtsc);
+
+        verify(notificationClient).sendEmail(
+                eq("pa-case-stopped"),
+                eq("personal@test.com"),
+                any(),
+                isNull(),
+                eq("ctsc-emailReplyToId"));
+
+        verify(pdfManagementService).generateAndUpload(any(SentEmail.class), eq(SENT_EMAIL));
+    }
+
+    @Test
     public void sendGeneralCaveatEmailToPersonalApplicantFromOxford()
             throws NotificationClientException, BadRequestException {
 
@@ -511,4 +535,6 @@ public class NotificationServiceTest {
 
         verify(pdfManagementService).generateAndUpload(any(SentEmail.class), eq(SENT_EMAIL));
     }
+
+
 }
