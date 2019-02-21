@@ -23,6 +23,8 @@ public class CaseDetails {
 
     private String registryAddressLine1;
     private String registryAddressLine2;
+    private String registryAddressLine3;
+    private String registryAddressLine4;
     private String registryTown;
     private String registryPostcode;
     private String registryTelephone;

@@ -9,7 +9,6 @@ echo binFolder = $binFolder
 echo xlsToJsonFolder = $xlsToJsonFolder
 
 ${binFolder}/ccd-add-all-roles.sh
-echo ...
 
 echo CCD_Probate_Backoffice ....................
 ${binFolder}/ccd-import-definition.sh "${xlsToJsonFolder}/CCD_Probate_Backoffice.xlsx"
