@@ -39,13 +39,13 @@ module.exports = function (crud) {
         });
 
         I.click(createWillLodgementConfig.UKpostcodeLink);
-        I.fillField('#AddressLine1', createWillLodgementConfig.address_line1);
-        I.fillField('#AddressLine2', createWillLodgementConfig.address_line2);
-        I.fillField('#AddressLine3', createWillLodgementConfig.address_line3);
-        I.fillField('#PostTown', createWillLodgementConfig.address_town);
-        I.fillField('#County', createWillLodgementConfig.address_county);
-        I.fillField('#PostCode', createWillLodgementConfig.address_postcode);
-        I.fillField('#Country', createWillLodgementConfig.address_country);
+        I.fillField('#deceasedAddress_AddressLine1', createWillLodgementConfig.address_line1);
+        I.fillField('#deceasedAddress_AddressLine2', createWillLodgementConfig.address_line2);
+        I.fillField('#deceasedAddress_AddressLine3', createWillLodgementConfig.address_line3);
+        I.fillField('#deceasedAddress_PostTown', createWillLodgementConfig.address_town);
+        I.fillField('#deceasedAddress_County', createWillLodgementConfig.address_county);
+        I.fillField('#deceasedAddress_PostCode', createWillLodgementConfig.address_postcode);
+        I.fillField('#deceasedAddress_Country', createWillLodgementConfig.address_country);
         I.fillField('#deceasedEmailAddress', createWillLodgementConfig.page2_email);
     }
 
