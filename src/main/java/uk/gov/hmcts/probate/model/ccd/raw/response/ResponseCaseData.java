@@ -115,7 +115,6 @@ public class ResponseCaseData {
     private final LegalStatement legalStatement;
     private final Declaration declaration;
     private final String deceasedMarriedAfterWillOrCodicilDate;
-    //Todo remove PA specific attr
     private final String primaryApplicantPhoneNumber;
 
     private final String boExaminationChecklistQ2;
@@ -224,4 +223,9 @@ public class ResponseCaseData {
     private final String boSendToBulkPrintRequested;
 
     private final List<CollectionMember<CaseMatch>> legacySearchResultRows;
+
+    private final String legacyId;
+    private final String legacyType;
+    private final String legacyCaseViewUrl;
+
 }

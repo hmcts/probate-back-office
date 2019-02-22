@@ -103,6 +103,10 @@ public class WillLodgementData {
     @Getter(lazy = true)
     private final String willDateFormatted = convertDate(willDate);
 
+    private final String legacyId;
+    private final String legacyType;
+    private final String legacyCaseViewUrl;
+
     private String convertDate(LocalDate date) {
         DateFormat orgFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
         DateFormat newFormat = new SimpleDateFormat("dd MMMMM yyyy");

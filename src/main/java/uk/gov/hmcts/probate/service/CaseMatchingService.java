@@ -30,8 +30,10 @@ import static org.elasticsearch.index.query.QueryBuilders.matchQuery;
 import static org.elasticsearch.index.query.QueryBuilders.multiMatchQuery;
 import static org.elasticsearch.index.query.QueryBuilders.rangeQuery;
 import static org.elasticsearch.index.query.QueryBuilders.termQuery;
+import static org.springframework.util.StringUtils.isEmpty;
 import static uk.gov.hmcts.probate.insights.AppInsightsEvent.REQUEST_SENT;
 import static uk.gov.hmcts.probate.insights.AppInsightsEvent.REST_CLIENT_EXCEPTION;
+import static uk.gov.hmcts.probate.model.CaseType.LEGACY;
 
 @Service
 @RequiredArgsConstructor
@@ -44,6 +46,7 @@ public class CaseMatchingService {
     private static final String ES_ALIASES_TO_ALIASES_SUB_QUERY = "aliases_to_aliases_sub_query.json";
     private static final String CASE_TYPE_ID = "ctid";
 
+    private static final String LEGACY_ID = "data.legacyId";
     private static final String DECEASED_FORENAMES = "data.deceasedForenames";
     private static final String DECEASED_SURNAME = "data.deceasedSurname";
     private static final String DECEASED_ALIAS_NAME_LIST = "data.solsDeceasedAliasNamesList.*";
@@ -82,26 +85,35 @@ public class CaseMatchingService {
     }
 
     public List<CaseMatch> findCases(CaseType caseType, CaseMatchingCriteria criteria) {
-        BoolQueryBuilder query = boolQuery();
+
+        if (!isEmpty(criteria.getLegacyId())) {
+            return findByLegacyId(criteria);
+        }
+
+        BoolQueryBuilder fuzzy = boolQuery();
+        BoolQueryBuilder strict = boolQuery();
         BoolQueryBuilder filter = boolQuery();
 
         ofNullable(criteria.getDeceasedForenames())
                 .filter(s -> !s.isEmpty())
-                .ifPresent(s -> query.must(multiMatchQuery(s, DECEASED_FORENAMES).fuzziness(2).operator(AND)));
+                .ifPresent(s -> {
+                    fuzzy.must(multiMatchQuery(s, DECEASED_FORENAMES).fuzziness(2).operator(AND));
+                    strict.must(multiMatchQuery(s, DECEASED_FORENAMES).fuzziness(0).boost(2).operator(AND));
+                });
 
         ofNullable(criteria.getDeceasedSurname())
                 .filter(s -> !s.isEmpty())
-                .ifPresent(s -> query.must(multiMatchQuery(s, DECEASED_SURNAME).fuzziness(2).operator(AND)));
+                .ifPresent(s -> {
+                    fuzzy.must(multiMatchQuery(s, DECEASED_SURNAME).fuzziness(2).operator(AND));
+                    strict.must(multiMatchQuery(s, DECEASED_SURNAME).fuzziness(0).boost(2).operator(AND));
+                });
 
-        criteria.getDeceasedAliases().stream()
-                .map(s -> boolQuery()
-                        .should(multiMatchQuery(s, DECEASED_FORENAMES).fuzziness(2))
-                        .should(multiMatchQuery(s, DECEASED_SURNAME).fuzziness(2)))
-                .forEach(query::must);
-
-        criteria.getDeceasedAliases().stream()
-                .map(s -> boolQuery().should(multiMatchQuery(s, DECEASED_ALIAS_NAME_LIST).fuzziness(2).operator(AND)))
-                .forEach(query::must);
+        ofNullable(criteria.getDeceasedFullName())
+                .filter(s -> !s.isEmpty())
+                .ifPresent(s -> {
+                    fuzzy.should(multiMatchQuery(s, DECEASED_ALIAS_NAME_LIST).fuzziness(2).operator(AND));
+                    strict.should(multiMatchQuery(s, DECEASED_ALIAS_NAME_LIST).fuzziness(0).boost(2).operator(AND));
+                });
 
         ofNullable(criteria.getDeceasedDateOfBirthRaw())
                 .ifPresent(date -> filter.must(termQuery(DECEASED_DOB, date)));
@@ -111,9 +123,9 @@ public class CaseMatchingService {
 
         filter.mustNot(matchQuery(IMPORTED_TO_CCD, IMPORTED_TO_CCD_Y));
 
-        query.filter(filter);
+        BoolQueryBuilder wrapper = boolQuery().should(fuzzy).should(strict).minimumShouldMatch(1).filter(filter);
 
-        String jsonQuery = new SearchSourceBuilder().query(query).toString();
+        String jsonQuery = new SearchSourceBuilder().query(wrapper).size(100).toString();
 
         return runQuery(caseType, criteria, jsonQuery);
     }
@@ -123,6 +135,14 @@ public class CaseMatchingService {
                 .map(caseType -> findMatches(caseType, criteria))
                 .flatMap(Collection::stream)
                 .collect(Collectors.toList());
+    }
+
+    private List<CaseMatch> findByLegacyId(CaseMatchingCriteria criteria) {
+        String jsonQuery = new SearchSourceBuilder()
+                .query(boolQuery().must(termQuery(LEGACY_ID, criteria.getLegacyId())))
+                .toString();
+
+        return runQuery(LEGACY, criteria, jsonQuery);
     }
 
     private List<CaseMatch> runQuery(CaseType caseType, CaseMatchingCriteria criteria, String jsonQuery) {

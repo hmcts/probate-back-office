@@ -155,6 +155,10 @@ public class CallbackResponseTransformerTest {
     private static final String ADMIN_CLAUSE_LIMITATION = "Admin Clause Limitation";
     private static final String TOTAL_FEE = "6600";
 
+    private static final String LEGACY_ID = "12345";
+    private static final String LEGACY_CASE_URL = "someUrl";
+    private static final String LEGACY_CASE_TYPE = "someCaseType";
+
     private static final LocalDateTime scannedDate = LocalDateTime.parse("2018-01-01T12:34:56.123");
     private static final List<CollectionMember<Payment>> PAYMENTS_LIST = Arrays.asList(
             new CollectionMember<Payment>("id",
@@ -270,7 +274,10 @@ public class CallbackResponseTransformerTest {
                 .boExaminationChecklistQ1(YES)
                 .boExaminationChecklistQ2(YES)
                 .boExaminationChecklistRequestQA(YES)
-                .scannedDocuments(SCANNED_DOCUMENTS_LIST);
+                .scannedDocuments(SCANNED_DOCUMENTS_LIST)
+                .legacyId(LEGACY_ID)
+                .legacyType(LEGACY_CASE_TYPE)
+                .legacyCaseViewUrl(LEGACY_CASE_URL);
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
@@ -1182,6 +1189,10 @@ public class CallbackResponseTransformerTest {
         assertEquals(YES, callbackResponse.getData().getBoExaminationChecklistRequestQA());
         
         assertEquals(SCANNED_DOCUMENTS_LIST, callbackResponse.getData().getScannedDocuments());
+
+        assertEquals(LEGACY_ID, callbackResponse.getData().getLegacyId());
+        assertEquals(LEGACY_CASE_TYPE, callbackResponse.getData().getLegacyType());
+        assertEquals(LEGACY_CASE_URL, callbackResponse.getData().getLegacyCaseViewUrl());
     }
 
     private void assertApplicationType(CallbackResponse callbackResponse, ApplicationType applicationType) {

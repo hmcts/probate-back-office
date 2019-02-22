@@ -23,21 +23,15 @@ import uk.gov.hmcts.probate.service.FileSystemResourceService;
 import uk.gov.hmcts.probate.service.evidencemanagement.upload.UploadService;
 
 import javax.crypto.Cipher;
-import javax.crypto.SecretKey;
-import javax.crypto.SecretKeyFactory;
-import javax.crypto.spec.GCMParameterSpec;
 import javax.crypto.spec.IvParameterSpec;
-import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.nio.ByteBuffer;
-import java.security.spec.KeySpec;
+import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.Arrays;
 import java.util.Base64;
 
 import static uk.gov.hmcts.probate.model.DocumentType.WILL_LODGEMENT_DEPOSIT_RECEIPT;
@@ -133,8 +127,9 @@ public class PDFManagementService {
         log.info("Decrypting file: " + fileResource);
         String decryptedString = null;
         try {
-            IvParameterSpec iv = new IvParameterSpec(SIGNATURE_DECRYPTION_IV.getBytes("UTF-8"));
-            SecretKeySpec secretKey = new SecretKeySpec(pdfServiceConfiguration.getGrantSignatureSecretKey().getBytes("UTF-8"), "AES");
+            IvParameterSpec iv = new IvParameterSpec(SIGNATURE_DECRYPTION_IV.getBytes(StandardCharsets.UTF_8));
+            SecretKeySpec secretKey = new SecretKeySpec(pdfServiceConfiguration
+                    .getGrantSignatureSecretKey().getBytes(StandardCharsets.UTF_8), "AES");
             Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING");
             cipher.init(Cipher.DECRYPT_MODE, secretKey, iv);
             decryptedString = Base64.getEncoder().encodeToString(cipher
