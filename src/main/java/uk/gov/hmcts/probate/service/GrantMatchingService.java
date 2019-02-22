@@ -22,6 +22,7 @@ import java.util.List;
 
 import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
 import static org.elasticsearch.index.query.QueryBuilders.matchQuery;
+import static org.elasticsearch.index.query.QueryBuilders.rangeQuery;
 import static uk.gov.hmcts.probate.insights.AppInsightsEvent.REQUEST_SENT;
 import static uk.gov.hmcts.probate.insights.AppInsightsEvent.REST_CLIENT_EXCEPTION;
 
@@ -32,6 +33,8 @@ public class GrantMatchingService {
 
     private static final String DOCUMENT_TYPE = "data.probateDocumentsGenerated.value.DocumentType";
     private static final String DOCUMENT_DATE = "data.probateDocumentsGenerated.value.DocumentDateAdded";
+    private static final String STATE = "state";
+    private static final String STATE_MATCH = "BOGrantIssued";
     private static final String CASE_TYPE_ID = "ctid";
     private final RestTemplate restTemplate;
     private final AppInsights appInsights;
@@ -41,8 +44,22 @@ public class GrantMatchingService {
     public List<Case> findCasesWithDatedDocument(CaseType caseType, String documentTypeGenerated, String queryDate) {
         BoolQueryBuilder query = boolQuery();
 
+        query.must(matchQuery(STATE, STATE_MATCH));
         query.must(matchQuery(DOCUMENT_TYPE, documentTypeGenerated));
         query.must(matchQuery(DOCUMENT_DATE, queryDate));
+
+        String jsonQuery = new SearchSourceBuilder().query(query).toString();
+
+        return runQuery(caseType, jsonQuery);
+    }
+
+    public List<Case> findCaseStateWithinTimeFrame(CaseType caseType, String documentTypeGenerated,
+                                                   String startDate, String endDate) {
+        BoolQueryBuilder query = boolQuery();
+
+        query.must(matchQuery(STATE, STATE_MATCH));
+        query.must(matchQuery(DOCUMENT_TYPE, documentTypeGenerated));
+        query.must(rangeQuery(DOCUMENT_DATE).gt(startDate).lt(endDate));
 
         String jsonQuery = new SearchSourceBuilder().query(query).toString();
 

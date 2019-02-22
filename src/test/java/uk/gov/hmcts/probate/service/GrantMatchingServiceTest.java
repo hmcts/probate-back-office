@@ -57,11 +57,6 @@ public class GrantMatchingServiceTest {
         when(ccdDataStoreAPIConfiguration.getHost()).thenReturn("http://localhost");
         when(ccdDataStoreAPIConfiguration.getCaseMatchingPath()).thenReturn("/path");
 
-        doNothing().when(appInsights).trackEvent(any(), anyString());
-    }
-
-    @Test
-    public void findCasesWithDatedDocument() throws IOException {
         CaseData caseData = CaseData.builder()
                 .deceasedSurname("Smith")
                 .build();
@@ -70,8 +65,23 @@ public class GrantMatchingServiceTest {
 
         when(restTemplate.postForObject(any(), any(), any())).thenReturn(returnedCases);
 
+        doNothing().when(appInsights).trackEvent(any(), anyString());
+    }
+
+    @Test
+    public void findCasesWithDatedDocumentReturnsCaseList() throws IOException {
         List<Case> cases = grantMatchingService.findCasesWithDatedDocument(GRANT_OF_REPRESENTATION, "Test",
                 "testDate");
+
+        assertEquals(1, cases.size());
+        assertThat(cases.get(0).getId(), is(1L));
+        assertEquals("Smith", cases.get(0).getData().getDeceasedSurname());
+    }
+
+    @Test
+    public void findCasesWithDateRangeReturnsCaseList() {
+        List<Case> cases = grantMatchingService.findCaseStateWithinTimeFrame(GRANT_OF_REPRESENTATION, "digitalGrant",
+                "2019-02-05", "2019-02-22");
 
         assertEquals(1, cases.size());
         assertThat(cases.get(0).getId(), is(1L));
