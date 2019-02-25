@@ -345,7 +345,6 @@ public class CallbackResponseTransformer {
                 .foreignAssetEstateValue(caseData.getForeignAssetEstateValue())
                 .adopted(caseData.getAdopted())
                 .adoptiveRelatives(caseData.getAdoptiveRelatives())
-                .caseType(caseData.getCaseType())
                 .spouseOrPartner(caseData.getSpouseOrPartner())
                 .childrenSurvived(caseData.getChildrenSurvived())
                 .childrenOverEighteenSurvived(caseData.getChildrenOverEighteenSurvived())
