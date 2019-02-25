@@ -11,7 +11,7 @@ import uk.gov.hmcts.probate.service.probateman.mapper.qualifiers.ToLegacyCaseVie
 import uk.gov.hmcts.reform.probate.model.cases.caveat.CaveatData;
 
 @Mapper(componentModel = "spring",
-        uses = {FullAliasNameMapper.class, LegacyCaseiewUrlMapper.class},
+        uses = {FullAliasNameMapper.class, LegacyCaseViewUrlMapper.class},
         imports = {LegacyCaseType.class},
         unmappedTargetPolicy = ReportingPolicy.IGNORE, nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS)
 public interface CaveatMapper extends ProbateManMapper<Caveat, CaveatData> {

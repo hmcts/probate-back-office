@@ -13,7 +13,7 @@ import uk.gov.hmcts.probate.service.probateman.mapper.qualifiers.ToLegacyCaseVie
 
 @Slf4j
 @Component
-public class LegacyCaseiewUrlMapper {
+public class LegacyCaseViewUrlMapper {
 
     @Autowired
     private CaseMatchBuilderService caseMatchBuilderService;
