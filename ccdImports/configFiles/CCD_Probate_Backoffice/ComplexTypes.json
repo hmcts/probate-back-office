@@ -99,6 +99,7 @@
   {"LiveFrom": "01/01/2017", "ID": "CaseMatch", "ListElementCode": "postcode", "FieldType": "Text", "ElementLabel": "Postcode", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "CaseMatch", "ListElementCode": "comment", "FieldType": "Text", "ElementLabel": "Comment", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "CaseMatch", "ListElementCode": "caseLink", "FieldType": "CaseLink", "ElementLabel": "Reference", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "CaseMatch", "ListElementCode": "recordId", "FieldType": "Text", "ElementLabel": "ProbateMan Id", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "CaseMatch", "ListElementCode": "id", "FieldType": "Text", "ElementLabel": "Id", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "CaseMatch", "ListElementCode": "legacyCaseViewUrl", "FieldType": "Text", "ElementLabel": "Case Url", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "CaseMatch", "ListElementCode": "valid", "FieldType": "YesOrNo", "ElementLabel": "Is match valid?", "SecurityClassification": "Public"},

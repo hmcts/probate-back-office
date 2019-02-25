@@ -293,7 +293,7 @@ public class CallbackResponseTransformer {
                 .paperForm(caseData.getPaperForm())
                 .caseType(caseData.getCaseType())
 
-                .legacyId(caseData.getLegacyId())
+                .recordId(caseData.getRecordId())
                 .legacyType(caseData.getLegacyType())
                 .legacyCaseViewUrl(caseData.getLegacyCaseViewUrl());
 

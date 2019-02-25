@@ -29,7 +29,7 @@ public class CaseSearchService {
 
     private static final int ES_RESULTS_LIMIT = 100;
 
-    private static final String LEGACY_ID = "data.legacyId";
+    private static final String RECORD_ID = "data.record_id";
     private static final String DECEASED_FORENAMES = "data.deceasedForenames";
     private static final String DECEASED_SURNAME = "data.deceasedSurname";
     private static final String DECEASED_ALIAS_NAME_LIST = "data.solsDeceasedAliasNamesList.*";
@@ -45,7 +45,7 @@ public class CaseSearchService {
 
         String jsonQuery;
 
-        if (isEmpty(criteria.getLegacyId())) {
+        if (isEmpty(criteria.getRecordId())) {
             jsonQuery = getSearchQuery(criteria);
         } else {
             jsonQuery = getSearchByIdQuery(criteria);
@@ -99,7 +99,7 @@ public class CaseSearchService {
 
     private String getSearchByIdQuery(CaseMatchingCriteria criteria) {
         return new SearchSourceBuilder()
-                .query(boolQuery().must(termQuery(LEGACY_ID, criteria.getLegacyId())))
+                .query(boolQuery().must(termQuery(RECORD_ID, criteria.getRecordId())))
                 .toString();
     }
 }

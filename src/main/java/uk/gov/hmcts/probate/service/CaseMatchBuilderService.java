@@ -58,6 +58,7 @@ public class CaseMatchBuilderService {
         } else {
             caseMatchBuilder.type(LEGACY.getName() + " " + c.getData().getLegacyCaseType());
             caseMatchBuilder.id(c.getData().getLegacyId());
+            caseMatchBuilder.recordId((c.getData().getRecordId()));
             caseMatchBuilder.legacyCaseViewUrl(buildLegacyCaseViewUrl(c));
             caseMatchBuilder.aliases(c.getData().getLegacySearchAliasNames());
             if (c.getData().getCcdCaseId() != null) {
