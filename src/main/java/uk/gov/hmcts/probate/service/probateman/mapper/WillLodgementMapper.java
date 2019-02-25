@@ -11,7 +11,7 @@ import uk.gov.hmcts.probate.service.probateman.mapper.qualifiers.ToLegacyCaseVie
 import uk.gov.hmcts.reform.probate.model.cases.willlodgement.WillLodgementData;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE,
-        uses = {FullAliasNameMapper.class, LegacyCaseiewUrlMapper.class},
+        uses = {FullAliasNameMapper.class, LegacyCaseViewUrlMapper.class},
         imports = {LegacyCaseType.class},
         nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS)
 public interface WillLodgementMapper extends ProbateManMapper<WillLodgement, WillLodgementData> {

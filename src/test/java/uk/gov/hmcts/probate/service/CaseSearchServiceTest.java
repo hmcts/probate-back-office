@@ -25,10 +25,10 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.CaseType.GRANT_OF_REPRESENTATION;
 
-public class CaseMatchingServiceTest {
+public class CaseSearchServiceTest {
 
     @InjectMocks
-    private CaseMatchingService caseMatchingService;
+    private CaseSearchService caseSearchService;
 
     @Mock
     private ElasticSearchService elasticSearchService;
@@ -38,9 +38,6 @@ public class CaseMatchingServiceTest {
 
     @Mock
     private CaseMatchingCriteria caseMatchingCriteria;
-
-    @Mock
-    private FileSystemResourceService fileSystemResourceService;
 
     @Mock
     private Case caseMock;
@@ -67,13 +64,10 @@ public class CaseMatchingServiceTest {
         when(caseMock.getId()).thenReturn(1L);
         when(elasticSearchService.runQuery(any(CaseType.class), anyString()))
                 .thenReturn(new MatchedCases(Collections.singletonList(caseMock)));
-
-        when(fileSystemResourceService.getFileFromResourceAsString(anyString()))
-                .thenReturn("template");
     }
 
     @Test
-    public void findMatches() {
+    public void findCases() {
         CaseMatch caseMatch = CaseMatch.builder()
                 .caseLink(CaseLink.builder().caseReference("1").build())
                 .fullName("names surname")
@@ -83,14 +77,38 @@ public class CaseMatchingServiceTest {
 
         when(caseMatchBuilderService.buildCaseMatch(caseMock)).thenReturn(caseMatch);
 
-        List<CaseMatch> caseMatches = caseMatchingService.findMatches(GRANT_OF_REPRESENTATION, caseMatchingCriteria);
+        List<CaseMatch> cases = caseSearchService.findCases(GRANT_OF_REPRESENTATION, caseMatchingCriteria);
 
-        assertEquals(1, caseMatches.size());
-        assertEquals("1", caseMatches.get(0).getCaseLink().getCaseReference());
-        assertEquals("names surname", caseMatches.get(0).getFullName());
-        assertEquals("2000-01-01", caseMatches.get(0).getDod());
-        assertEquals("SW12 0FA", caseMatches.get(0).getPostcode());
-        assertNull(caseMatches.get(0).getValid());
-        assertNull(caseMatches.get(0).getComment());
+        assertEquals(1, cases.size());
+        assertEquals("1", cases.get(0).getCaseLink().getCaseReference());
+        assertEquals("names surname", cases.get(0).getFullName());
+        assertEquals("2000-01-01", cases.get(0).getDod());
+        assertEquals("SW12 0FA", cases.get(0).getPostcode());
+        assertNull(cases.get(0).getValid());
+        assertNull(cases.get(0).getComment());
+    }
+
+    @Test
+    public void findCaseByLegacyId() {
+        when(caseMatchingCriteria.getLegacyId()).thenReturn("1234");
+
+        CaseMatch caseMatch = CaseMatch.builder()
+                .caseLink(CaseLink.builder().caseReference("1").build())
+                .fullName("names surname")
+                .dod("2000-01-01")
+                .postcode("SW12 0FA")
+                .build();
+
+        when(caseMatchBuilderService.buildCaseMatch(caseMock)).thenReturn(caseMatch);
+
+        List<CaseMatch> cases = caseSearchService.findCases(GRANT_OF_REPRESENTATION, caseMatchingCriteria);
+
+        assertEquals(1, cases.size());
+        assertEquals("1", cases.get(0).getCaseLink().getCaseReference());
+        assertEquals("names surname", cases.get(0).getFullName());
+        assertEquals("2000-01-01", cases.get(0).getDod());
+        assertEquals("SW12 0FA", cases.get(0).getPostcode());
+        assertNull(cases.get(0).getValid());
+        assertNull(cases.get(0).getComment());
     }
 }
