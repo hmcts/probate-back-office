@@ -70,7 +70,7 @@ public class GrantMatchingServiceTest {
 
     @Test
     public void findCasesWithDatedDocumentReturnsCaseList() throws IOException {
-        List<Case> cases = grantMatchingService.findCasesWithDatedDocument(GRANT_OF_REPRESENTATION, "Test",
+        List<Case> cases = grantMatchingService.findCasesWithDatedDocument("Test",
                 "testDate");
 
         assertEquals(1, cases.size());
@@ -80,7 +80,7 @@ public class GrantMatchingServiceTest {
 
     @Test
     public void findCasesWithDateRangeReturnsCaseList() {
-        List<Case> cases = grantMatchingService.findCaseStateWithinTimeFrame(GRANT_OF_REPRESENTATION, "digitalGrant",
+        List<Case> cases = grantMatchingService.findCaseStateWithinTimeFrame("digitalGrant",
                 "2019-02-05", "2019-02-22");
 
         assertEquals(1, cases.size());
@@ -92,8 +92,7 @@ public class GrantMatchingServiceTest {
     public void testHttpExceptionCaughtWithBadPost() {
         when(restTemplate.postForObject(any(), any(), any())).thenThrow(HttpClientErrorException.class);
 
-        Assertions.assertThatThrownBy(() -> grantMatchingService.findCasesWithDatedDocument(GRANT_OF_REPRESENTATION,
-                "test", "testDate"))
+        Assertions.assertThatThrownBy(() -> grantMatchingService.findCasesWithDatedDocument("test", "testDate"))
                 .isInstanceOf(CaseMatchingException.class);
     }
 }

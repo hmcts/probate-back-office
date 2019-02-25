@@ -36,12 +36,13 @@ public class GrantMatchingService {
     private static final String STATE = "state";
     private static final String STATE_MATCH = "BOGrantIssued";
     private static final String CASE_TYPE_ID = "ctid";
+    private static final CaseType CASE_TYPE = CaseType.GRANT_OF_REPRESENTATION;
     private final RestTemplate restTemplate;
     private final AppInsights appInsights;
     private final HttpHeadersFactory headers;
     private final CCDDataStoreAPIConfiguration ccdDataStoreAPIConfiguration;
 
-    public List<Case> findCasesWithDatedDocument(CaseType caseType, String documentTypeGenerated, String queryDate) {
+    public List<Case> findCasesWithDatedDocument(String documentTypeGenerated, String queryDate) {
         BoolQueryBuilder query = boolQuery();
 
         query.must(matchQuery(STATE, STATE_MATCH));
@@ -50,10 +51,10 @@ public class GrantMatchingService {
 
         String jsonQuery = new SearchSourceBuilder().query(query).toString();
 
-        return runQuery(caseType, jsonQuery);
+        return runQuery(jsonQuery);
     }
 
-    public List<Case> findCaseStateWithinTimeFrame(CaseType caseType, String documentTypeGenerated,
+    public List<Case> findCaseStateWithinTimeFrame(String documentTypeGenerated,
                                                    String startDate, String endDate) {
         BoolQueryBuilder query = boolQuery();
 
@@ -63,14 +64,14 @@ public class GrantMatchingService {
 
         String jsonQuery = new SearchSourceBuilder().query(query).toString();
 
-        return runQuery(caseType, jsonQuery);
+        return runQuery(jsonQuery);
     }
 
-    private List<Case> runQuery(CaseType caseType, String jsonQuery) {
+    private List<Case> runQuery(String jsonQuery) {
         log.info("GrantMatchingService runQuery: " + jsonQuery);
         URI uri = UriComponentsBuilder
                 .fromHttpUrl(ccdDataStoreAPIConfiguration.getHost() + ccdDataStoreAPIConfiguration.getCaseMatchingPath())
-                .queryParam(CASE_TYPE_ID, caseType.getCode())
+                .queryParam(CASE_TYPE_ID, CASE_TYPE.getCode())
                 .build().encode().toUri();
 
         HttpEntity<String> entity = new HttpEntity<>(jsonQuery, headers.getAuthorizationHeaders());
