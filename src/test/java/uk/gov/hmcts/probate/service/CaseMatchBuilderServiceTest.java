@@ -5,7 +5,6 @@ import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import uk.gov.hmcts.probate.model.CaseType;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.casematching.Case;
@@ -44,14 +43,14 @@ public class CaseMatchBuilderServiceTest {
     @Test
     public void buildCaseMatchWithDoD() {
         when(caseDataMock.getDeceasedDateOfDeath()).thenReturn(LocalDate.of(2000, 1, 1));
-        CaseMatch caseMatch = caseMatchBuilderService.buildCaseMatch(caseMock, CaseType.LEGACY);
+        CaseMatch caseMatch = caseMatchBuilderService.buildCaseMatch(caseMock);
 
         assertEquals("2000-01-01", caseMatch.getDod());
     }
 
     @Test
     public void buildCaseMatchWithoutDoD() {
-        CaseMatch caseMatch = caseMatchBuilderService.buildCaseMatch(caseMock, CaseType.LEGACY);
+        CaseMatch caseMatch = caseMatchBuilderService.buildCaseMatch(caseMock);
 
         assertNull(caseMatch.getDod());
     }
@@ -59,23 +58,24 @@ public class CaseMatchBuilderServiceTest {
     @Test
     public void buildCaseMatchWithAddress() {
         when(caseDataMock.getDeceasedAddress()).thenReturn(SolsAddress.builder().postCode("SW1 0ZZ").build());
-        CaseMatch caseMatch = caseMatchBuilderService.buildCaseMatch(caseMock, CaseType.LEGACY);
+        CaseMatch caseMatch = caseMatchBuilderService.buildCaseMatch(caseMock);
 
         assertEquals("SW1 0ZZ", caseMatch.getPostcode());
     }
 
     @Test
     public void buildCaseMatchWithoutAddress() {
-        CaseMatch caseMatch = caseMatchBuilderService.buildCaseMatch(caseMock, CaseType.LEGACY);
+        CaseMatch caseMatch = caseMatchBuilderService.buildCaseMatch(caseMock);
 
         assertNull(caseMatch.getPostcode());
     }
 
     @Test
     public void shouldNotHaveCaseLinkForLegacyCase() {
+        when(caseMock.getData().getLegacyId()).thenReturn("1234");
         when(caseMock.getId()).thenReturn(1234L);
 
-        CaseMatch caseMatch = caseMatchBuilderService.buildCaseMatch(caseMock, CaseType.LEGACY);
+        CaseMatch caseMatch = caseMatchBuilderService.buildCaseMatch(caseMock);
 
         assertNull(caseMatch.getCaseLink());
     }
@@ -84,16 +84,17 @@ public class CaseMatchBuilderServiceTest {
     public void shouldHaveCaseLinkForCCDCase() {
         when(caseMock.getId()).thenReturn(1234L);
 
-        CaseMatch caseMatch = caseMatchBuilderService.buildCaseMatch(caseMock, CaseType.GRANT_OF_REPRESENTATION);
+        CaseMatch caseMatch = caseMatchBuilderService.buildCaseMatch(caseMock);
 
         assertNotNull(caseMatch.getCaseLink());
     }
 
     @Test
     public void shouldContainLegacyCaseType() {
+        when(caseDataMock.getLegacyId()).thenReturn("1234");
         when(caseDataMock.getLegacyCaseType()).thenReturn("CAVEAT");
 
-        CaseMatch caseMatch = caseMatchBuilderService.buildCaseMatch(caseMock, CaseType.LEGACY);
+        CaseMatch caseMatch = caseMatchBuilderService.buildCaseMatch(caseMock);
 
         assertTrue(caseMatch.getType().contains("CAVEAT"));
     }
