@@ -29,7 +29,7 @@ import static uk.gov.hmcts.probate.insights.AppInsightsEvent.REST_CLIENT_EXCEPTI
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class GrantMatchingService {
+public class CaseQueryService {
 
     private static final String DOCUMENT_TYPE = "data.probateDocumentsGenerated.value.DocumentType";
     private static final String DOCUMENT_DATE = "data.probateDocumentsGenerated.value.DocumentDateAdded";

@@ -28,9 +28,8 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
-import static uk.gov.hmcts.probate.model.CaseType.GRANT_OF_REPRESENTATION;
 
-public class GrantMatchingServiceTest {
+public class CaseQueryServiceTest {
 
     @Mock
     private RestTemplate restTemplate;
@@ -45,7 +44,7 @@ public class GrantMatchingServiceTest {
     private CCDDataStoreAPIConfiguration ccdDataStoreAPIConfiguration;
 
     @InjectMocks
-    private GrantMatchingService grantMatchingService;
+    private CaseQueryService caseQueryService;
 
     @Before
     public void setUp() {
@@ -70,7 +69,7 @@ public class GrantMatchingServiceTest {
 
     @Test
     public void findCasesWithDatedDocumentReturnsCaseList() throws IOException {
-        List<Case> cases = grantMatchingService.findCasesWithDatedDocument("Test",
+        List<Case> cases = caseQueryService.findCasesWithDatedDocument("Test",
                 "testDate");
 
         assertEquals(1, cases.size());
@@ -80,7 +79,7 @@ public class GrantMatchingServiceTest {
 
     @Test
     public void findCasesWithDateRangeReturnsCaseList() {
-        List<Case> cases = grantMatchingService.findCaseStateWithinTimeFrame("digitalGrant",
+        List<Case> cases = caseQueryService.findCaseStateWithinTimeFrame("digitalGrant",
                 "2019-02-05", "2019-02-22");
 
         assertEquals(1, cases.size());
@@ -92,7 +91,7 @@ public class GrantMatchingServiceTest {
     public void testHttpExceptionCaughtWithBadPost() {
         when(restTemplate.postForObject(any(), any(), any())).thenThrow(HttpClientErrorException.class);
 
-        Assertions.assertThatThrownBy(() -> grantMatchingService.findCasesWithDatedDocument("test", "testDate"))
+        Assertions.assertThatThrownBy(() -> caseQueryService.findCasesWithDatedDocument("test", "testDate"))
                 .isInstanceOf(CaseMatchingException.class);
     }
 }
