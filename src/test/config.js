@@ -4,6 +4,6 @@ module.exports = {
     TestRetryScenarios: process.env.RETRY_SCENARIOS || 3,
     TestDocumentToUpload: 'uploadDocuments/test_file_for_document_upload.png',
     TestTimeToWaitForText: 60,
-    TestEnvUser: process.env.TEST_EMAIL_ADDRESS || 'dummy',
-    TestEnvPassword: process.env.TEST_PASSWORD || 'dummy'
+    TestEnvUser: process.env.BO_TEST_EMAIL_ADDRESS || 'dummy',
+    TestEnvPassword: process.env.BO_TEST_PASSWORD || 'dummy'
 };
