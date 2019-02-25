@@ -12,7 +12,7 @@ import uk.gov.hmcts.reform.probate.model.cases.ApplicationType;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType;
 
-@Mapper(componentModel = "spring", uses = {AliasNameMapper.class, AdditionalExecutorMapper.class, LegacyCaseiewUrlMapper.class},
+@Mapper(componentModel = "spring", uses = {AliasNameMapper.class, AdditionalExecutorMapper.class, LegacyCaseViewUrlMapper.class},
         imports = {GrantType.class, ApplicationType.class, LegacyCaseType.class},
         unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface GrantApplicationMapper extends ProbateManMapper<GrantApplication, GrantOfRepresentationData> {

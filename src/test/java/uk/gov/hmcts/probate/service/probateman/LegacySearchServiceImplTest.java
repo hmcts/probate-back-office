@@ -10,6 +10,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.service.CaseMatchingService;
+import uk.gov.hmcts.probate.service.CaseSearchService;
 import uk.gov.hmcts.probate.service.LegacySearchService;
 
 import java.util.ArrayList;
@@ -25,7 +26,7 @@ public class LegacySearchServiceImplTest {
     private LegacySearchService legacySearchService;
 
     @Mock
-    private CaseMatchingService caseMatchingService;
+    private CaseSearchService caseSearchService;
 
     @Mock
     private CaseDetails caseDetailsMock;
@@ -35,7 +36,7 @@ public class LegacySearchServiceImplTest {
 
     @Before
     public void setUp() {
-        legacySearchService = new LegacySearchServiceImpl(caseMatchingService);
+        legacySearchService = new LegacySearchServiceImpl(caseSearchService);
 
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
     }

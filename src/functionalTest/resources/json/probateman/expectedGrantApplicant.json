@@ -1,7 +1,7 @@
 {
   "probateManCase": {
     "type": "Grant Application",
-    "Dnm Ind": "Y",
+    "Dnm Ind": "N",
     "Date Of Birth": "1900-01-01",
     "Deceased Id": 1,
     "Probate Version": 1,

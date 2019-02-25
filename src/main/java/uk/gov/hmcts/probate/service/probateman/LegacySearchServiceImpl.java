@@ -7,7 +7,7 @@ import uk.gov.hmcts.probate.model.ccd.CaseMatch;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.criterion.CaseMatchingCriteria;
-import uk.gov.hmcts.probate.service.CaseMatchingService;
+import uk.gov.hmcts.probate.service.CaseSearchService;
 import uk.gov.hmcts.probate.service.LegacySearchService;
 
 import java.util.List;
@@ -20,12 +20,12 @@ import static uk.gov.hmcts.probate.model.CaseType.LEGACY;
 @RequiredArgsConstructor
 public class LegacySearchServiceImpl implements LegacySearchService {
 
-    private final CaseMatchingService caseMatchingService;
+    private final CaseSearchService caseSearchService;
 
     @Override
     public List<CollectionMember<CaseMatch>> findLegacyCaseMatches(CaseDetails caseDetails) {
         CaseMatchingCriteria caseMatchingCriteria = CaseMatchingCriteria.of(caseDetails);
-        return caseMatchingService.findCases(LEGACY, caseMatchingCriteria)
+        return caseSearchService.findCases(LEGACY, caseMatchingCriteria)
                 .stream()
                 .map(match -> new CollectionMember<>(null, match))
                 .collect(Collectors.toList());

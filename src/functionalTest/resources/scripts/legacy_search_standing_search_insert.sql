@@ -8,5 +8,5 @@ LAST_MODIFIED
 VALUES (
 nextval('STANDING_SEARCHES_FLAT_SEQ'), 'SS-01','PRO-01', 1, 1, '[FORENAME_REPLACE]', '[SURNAME_REPLACE]', '01/01/1900', '01/01/2018', null,
 'DeadAddL1, DeadAddL2, DeadAddL3, DeadCity, DeadCountry, DeadPC','AppAddL1, AppAddL2, AppAddL3, AppCity, AppCountry, AppPC',
-1, 'SSFN', 'SSSN', 'Sir', 'Mr','01/01/2018', '01/01/2018', '01/01/2018', '01/01/2018', 'SS-Text', 'Y', '[ALIAS_REPLACE]', NOW()
+1, 'SSFN', 'SSSN', 'Sir', 'Mr','01/01/2018', '01/01/2018', '01/01/2018', '01/01/2018', 'SS-Text', 'N', '[ALIAS_REPLACE]', NOW()
 );
