@@ -15,7 +15,7 @@ class PuppeteerHelper extends Helper {
         const page = this.helpers[helperName].page;
 
         await Promise.all([
-            page.waitForNavigation(), // The promise resolves after navigation has finished
+            page.waitForNavigation({waitUntil: ['domcontentloaded', 'networkidle0']}), // The promise resolves after navigation has finished
             page.click(locator) // Clicking the link will indirectly cause a navigation
         ]);
 
