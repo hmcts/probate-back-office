@@ -5,7 +5,6 @@
   {"CaseTypeID": "LegacySearch", "CaseFieldID": "deceasedSurname", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
   {"CaseTypeID": "LegacySearch", "CaseFieldID": "deceasedDateOfBirth", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
   {"CaseTypeID": "LegacySearch", "CaseFieldID": "deceasedDateOfDeath", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
-  {"CaseTypeID": "LegacySearch", "CaseFieldID": "deceasedAliases", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
   {"CaseTypeID": "LegacySearch", "CaseFieldID": "legacySearchResultRows", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
   {"CaseTypeID": "LegacySearch", "CaseFieldID": "doNotSaveCase", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"}
 ]

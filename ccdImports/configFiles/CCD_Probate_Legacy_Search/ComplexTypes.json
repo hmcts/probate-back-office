@@ -2,7 +2,6 @@
   {"LiveFrom": "01/01/2017", "ID": "CaseMatch", "ListElementCode": "type", "FieldType": "Text", "ElementLabel": "Type", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "CaseMatch", "ListElementCode": "id", "FieldType": "Text", "ElementLabel": "Id", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "CaseMatch", "ListElementCode": "fullName", "FieldType": "Text", "ElementLabel": "Full names", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "ID": "CaseMatch", "ListElementCode": "aliases", "FieldType": "Text", "ElementLabel": "Aliases", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "CaseMatch", "ListElementCode": "dob", "FieldType": "Text", "ElementLabel": "DOB", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "CaseMatch", "ListElementCode": "dod", "FieldType": "Text", "ElementLabel": "DOD", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "CaseMatch", "ListElementCode": "postcode", "FieldType": "Text", "ElementLabel": "Postcode", "SecurityClassification": "Public"},

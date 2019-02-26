@@ -17,7 +17,6 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "LegacySearch", "CaseEventID": "legacySearch", "CaseFieldID": "deceasedSurname", "PageFieldDisplayOrder": 3, "DisplayContext": "OPTIONAL", "PageID": "legacySearchCriteria", "PageLabel": "Search for legacy case", "PageDisplayOrder": 1, "ShowSummaryChangeOption": "n"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "LegacySearch", "CaseEventID": "legacySearch", "CaseFieldID": "deceasedDateOfBirth", "PageFieldDisplayOrder": 4, "DisplayContext": "OPTIONAL", "PageID": "legacySearchCriteria", "PageLabel": "Search for legacy case", "PageDisplayOrder": 1, "ShowSummaryChangeOption": "n"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "LegacySearch", "CaseEventID": "legacySearch", "CaseFieldID": "deceasedDateOfDeath", "PageFieldDisplayOrder": 5, "DisplayContext": "OPTIONAL", "PageID": "legacySearchCriteria", "PageLabel": "Search for legacy case", "PageDisplayOrder": 1, "ShowSummaryChangeOption": "n"},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "LegacySearch", "CaseEventID": "legacySearch", "CaseFieldID": "deceasedAliases", "PageFieldDisplayOrder": 6, "DisplayContext": "OPTIONAL", "PageID": "legacySearchCriteria", "PageLabel": "Search for legacy case", "PageDisplayOrder": 1, "ShowSummaryChangeOption": "n"},
   {
     "LiveFrom": "01/01/2017",
     "CaseTypeID": "LegacySearch",
