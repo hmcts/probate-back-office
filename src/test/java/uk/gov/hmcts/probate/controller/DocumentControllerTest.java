@@ -148,13 +148,25 @@ public class DocumentControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("data")));
 
+        doNothing().when(documentService).expire(any(CallbackRequest.class), eq(DIGITAL_GRANT_DRAFT));
+        verify(documentService).expire(any(CallbackRequest.class), eq(DIGITAL_GRANT_DRAFT));
+    }
+
+    @Test
+    public void generateDigitalGrantBulkPrint() throws Exception {
+
+        String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadNotificationsBulkPrint.json");
+
+        mockMvc.perform(post("/document/generate-grant")
+                .content(solicitorPayload)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("data")));
+
         SendLetterResponse sendLetterResponse = new SendLetterResponse(UUID.randomUUID());
         when(bulkPrintService.sendToBulkPrint(any(CallbackRequest.class), any(Document.class),
                 any(Document.class))).thenReturn(sendLetterResponse);
         verify(bulkPrintService).sendToBulkPrint(any(CallbackRequest.class), any(Document.class), any(Document.class));
-
-        doNothing().when(documentService).expire(any(CallbackRequest.class), eq(DIGITAL_GRANT_DRAFT));
-        verify(documentService).expire(any(CallbackRequest.class), eq(DIGITAL_GRANT_DRAFT));
     }
 
     @Test

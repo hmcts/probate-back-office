@@ -1,6 +1,14 @@
 [
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "applicationID", "Label": "Application ID", "FieldType": "Number", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "applicationSubmittedDate", "Label": "Date application was submitted", "HintText": "This should be today's date", "FieldType": "Date", "SecurityClassification": "Public"},
+  {
+    "LiveFrom": "01/01/2017",
+    "CaseTypeID": "GrantOfRepresentation",
+    "ID": "applicationSubmittedDate",
+    "Label": "Date application was submitted",
+    "HintText": "This is the date that the application is received by the Registry either via post or digital",
+    "FieldType": "Date",
+    "SecurityClassification": "Public"
+  },
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "primaryApplicantIsApplying", "Label": "Are they applying?", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "primaryApplicantForenames", "Label": "First name(s)", "HintText": "Include all middle names", "FieldType": "Text", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "primaryApplicantSurname", "Label": "Last name(s)", "FieldType": "Text", "SecurityClassification": "Public"},

@@ -26,6 +26,7 @@ import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.WillLodgementCallbackResponseTransformer;
+import uk.gov.hmcts.probate.validator.BulkPrintValidationRule;
 import uk.gov.hmcts.probate.validator.EmailAddressNotificationValidationRule;
 import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
 import uk.gov.service.notify.NotificationClientException;
@@ -67,6 +68,7 @@ public class DocumentController {
     private final BulkPrintService bulkPrintService;
     private final EventValidationService eventValidationService;
     private final List<EmailAddressNotificationValidationRule> emailAddressNotificationValidationRules;
+    private final List<BulkPrintValidationRule> bulkPrintValidationRules;
 
     @PostMapping(path = "/generate-grant-draft", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<CallbackResponse> generateGrantDraft(@RequestBody CallbackRequest callbackRequest) {
@@ -107,12 +109,12 @@ public class DocumentController {
         }
 
         return ResponseEntity.ok(callbackResponseTransformer.addDocuments(callbackRequest,
-                Arrays.asList(document), null, null));
+                Arrays.asList(document), null));
     }
 
     @PostMapping(path = "/generate-grant", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<CallbackResponse> generateGrant(
-            @Validated({EmailAddressNotificationValidationRule.class})
+            @Validated({EmailAddressNotificationValidationRule.class, BulkPrintValidationRule.class})
             @RequestBody CallbackRequest callbackRequest)
             throws NotificationClientException {
 
@@ -121,7 +123,7 @@ public class DocumentController {
         DocumentType template;
         Document digitalGrantDocument;
         getRegistryDetails(caseDetails);
-        CallbackResponse callbackResponse;
+        CallbackResponse callbackResponse = CallbackResponse.builder().errors(new ArrayList<>()).build();
 
         switch (caseData.getCaseType()) {
             case EDGE_CASE:
@@ -150,14 +152,18 @@ public class DocumentController {
 
         Document coverSheet = pdfManagementService.generateAndUpload(callbackRequest, DocumentType.GRANT_COVER);
 
-        String pdfSize = null;
         String letterId = null;
         if (caseData.isSendForBulkPrintingRequested() && !caseData.getCaseType().equals(EDGE_CASE)) {
             SendLetterResponse response = bulkPrintService.sendToBulkPrint(callbackRequest, digitalGrantDocument, coverSheet);
-            pdfSize = "test";
             letterId = response != null
                     ? response.letterId.toString()
-                    : "ERROR: please contact service desk quoting the case reference number";
+                    : null;
+            caseData = CaseData.builder().bulkPrintSendLetterId(letterId).build();
+            callbackResponse = eventValidationService.validateBulkPrintResponse(caseData, bulkPrintValidationRules);
+
+        }
+        if (!callbackResponse.getErrors().isEmpty()) {
+            return ResponseEntity.ok(callbackResponse);
         }
 
         List<Document> documents = new ArrayList<>();
@@ -173,10 +179,10 @@ public class DocumentController {
             if (callbackResponse.getErrors().isEmpty()) {
                 Document grantIssuedSentEmail = notificationService.sendEmail(GRANT_ISSUED, caseDetails);
                 documents.add(grantIssuedSentEmail);
-                callbackResponse = callbackResponseTransformer.addDocuments(callbackRequest, documents, letterId, pdfSize);
+                callbackResponse = callbackResponseTransformer.addDocuments(callbackRequest, documents, letterId);
             }
         } else {
-            callbackResponse = callbackResponseTransformer.addDocuments(callbackRequest, documents, letterId, pdfSize);
+            callbackResponse = callbackResponseTransformer.addDocuments(callbackRequest, documents, letterId);
         }
 
         return ResponseEntity.ok(callbackResponse);

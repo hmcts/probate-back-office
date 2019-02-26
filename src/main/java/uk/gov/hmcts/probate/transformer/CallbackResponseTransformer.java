@@ -80,7 +80,7 @@ public class CallbackResponseTransformer {
         return transformResponse(responseCaseData);
     }
 
-    public CallbackResponse addDocuments(CallbackRequest callbackRequest, List<Document> documents, String letterId, String pdfSize) {
+    public CallbackResponse addDocuments(CallbackRequest callbackRequest, List<Document> documents, String letterId) {
         documents.forEach(document -> documentTransformer.addDocument(callbackRequest, document));
         ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), false);
 
@@ -97,8 +97,7 @@ public class CallbackResponseTransformer {
                             callbackRequest.getCaseDetails().getData().getBoEmailGrantIssuedNotification())
                     .boSendToBulkPrintRequested(
                             callbackRequest.getCaseDetails().getData().getBoSendToBulkPrint())
-                    .bulkPrintSendLetterId(letterId)
-                    .bulkPrintPdfSize(pdfSize);
+                    .bulkPrintSendLetterId(letterId);
 
         }
         if (documentTransformer.hasDocumentWithType(documents, SENT_EMAIL)) {
@@ -170,7 +169,6 @@ public class CallbackResponseTransformer {
 
         return transformResponse(responseCaseData);
     }
-
 
     public CallbackResponse transformCase(CallbackRequest callbackRequest) {
 
