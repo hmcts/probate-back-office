@@ -54,7 +54,7 @@ public class CaseSearchService {
         MatchedCases matchedCases = elasticSearchService.runQuery(caseType, jsonQuery);
 
         return matchedCases.getCases().stream()
-                .map(c -> caseMatchBuilderService.buildCaseMatch(c, caseType))
+                .map(caseMatchBuilderService::buildCaseMatch)
                 .collect(Collectors.toList());
     }
 

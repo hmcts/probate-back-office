@@ -81,7 +81,7 @@ public class CaseMatchingServiceTest {
                 .postcode("SW12 0FA")
                 .build();
 
-        when(caseMatchBuilderService.buildCaseMatch(caseMock, CaseType.CAVEAT)).thenReturn(caseMatch);
+        when(caseMatchBuilderService.buildCaseMatch(caseMock)).thenReturn(caseMatch);
 
         List<CaseMatch> caseMatches = caseMatchingService.findMatches(GRANT_OF_REPRESENTATION, caseMatchingCriteria);
 

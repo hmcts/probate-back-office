@@ -3,7 +3,6 @@ package uk.gov.hmcts.probate.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import uk.gov.hmcts.probate.model.CaseType;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
 import uk.gov.hmcts.probate.model.ccd.raw.AliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.CaseLink;
@@ -29,12 +28,12 @@ public class CaseMatchBuilderService {
     @Value("${printservice.legacyPath}")
     private String printServiceLegacyPath;
 
-    public CaseMatch buildCaseMatch(Case c, CaseType caseType) {
-        CaseMatch.CaseMatchBuilder caseMatchBuilder = getCaseMatchBuilder(c, caseType);
+    public CaseMatch buildCaseMatch(Case c) {
+        CaseMatch.CaseMatchBuilder caseMatchBuilder = getCaseMatchBuilder(c);
         return caseMatchBuilder.build();
     }
 
-    private CaseMatch.CaseMatchBuilder getCaseMatchBuilder(Case c, CaseType caseType) {
+    private CaseMatch.CaseMatchBuilder getCaseMatchBuilder(Case c) {
         CaseMatch.CaseMatchBuilder caseMatchBuilder = CaseMatch.builder();
         caseMatchBuilder.fullName(c.getData().getDeceasedFullName());
         if (c.getData().getDeceasedDateOfBirth() != null) {
