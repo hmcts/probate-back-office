@@ -73,5 +73,7 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "createCase", "UserRole": "citizen", "CRUD": "CRU"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "createCasePaymentFailed", "UserRole": "citizen", "CRUD": "CRU"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "createCasePaymentSuccess", "UserRole": "citizen", "CRUD": "CRU"},
-  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "createCasePaymentFailedMultiple", "UserRole": "citizen", "CRUD": "CRU"}
+  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "createCasePaymentFailedMultiple", "UserRole": "citizen", "CRUD": "CRU"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "boImportGrant", "UserRole": "caseworker-probate-issuer", "CRUD": "CR"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "boAmendCaseDetailsForImport", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"}
 ]
