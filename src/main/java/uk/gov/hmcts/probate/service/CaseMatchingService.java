@@ -49,7 +49,7 @@ public class CaseMatchingService {
 
         return matchedCases.getCases().stream()
                 .filter(c -> c.getId() == null || !criteria.getId().equals(c.getId()))
-                .map(caseMatchBuilderService::buildCaseMatch)
+                .map(c -> caseMatchBuilderService.buildCaseMatch(c, caseType))
                 .collect(Collectors.toList());
     }
 

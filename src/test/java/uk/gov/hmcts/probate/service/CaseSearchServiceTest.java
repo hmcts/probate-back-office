@@ -75,7 +75,7 @@ public class CaseSearchServiceTest {
                 .postcode("SW12 0FA")
                 .build();
 
-        when(caseMatchBuilderService.buildCaseMatch(caseMock)).thenReturn(caseMatch);
+        when(caseMatchBuilderService.buildCaseMatch(caseMock, CaseType.CAVEAT)).thenReturn(caseMatch);
 
         List<CaseMatch> cases = caseSearchService.findCases(GRANT_OF_REPRESENTATION, caseMatchingCriteria);
 
@@ -99,7 +99,7 @@ public class CaseSearchServiceTest {
                 .postcode("SW12 0FA")
                 .build();
 
-        when(caseMatchBuilderService.buildCaseMatch(caseMock)).thenReturn(caseMatch);
+        when(caseMatchBuilderService.buildCaseMatch(caseMock, CaseType.CAVEAT)).thenReturn(caseMatch);
 
         List<CaseMatch> cases = caseSearchService.findCases(GRANT_OF_REPRESENTATION, caseMatchingCriteria);
 
