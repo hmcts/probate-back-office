@@ -49,7 +49,7 @@ public class LegacyImportServiceImpl implements LegacyImportService {
     private CaseMatch importRow(CaseMatch row) {
         String legacyCaseTypeName = row.getType();
         LegacyCaseType legacyCaseType = LegacyCaseType.getByLegacyCaseTypeName(legacyCaseTypeName);
-        String id = row.getId();
+        String id = getLegacyTableId(row.getLegacyCaseViewUrl());
         log.info("Importing legacy case into ccd for legacyCaseType=" + legacyCaseTypeName + ", with id=" + id);
         ProbateManType probateManType = legacyCaseType.getProbateManType();
         Long legacyId = Long.parseLong(id);
@@ -84,13 +84,17 @@ public class LegacyImportServiceImpl implements LegacyImportService {
     private boolean canImportRow(CaseMatch caseMatch) {
         return DO_IMPORT_YES.equalsIgnoreCase(caseMatch.getDoImport())
                 && hasCaseReference(caseMatch)
-                && !StringUtils.isEmpty(caseMatch.getId());
+                && !StringUtils.isEmpty(caseMatch.getLegacyCaseViewUrl());
     }
 
     private boolean hasCaseReference(CaseMatch row) {
         return row.getCaseLink() == null
                 || row.getCaseLink().getCaseReference() == null
                 || row.getCaseLink().getCaseReference().equals("");
+    }
+
+    private String getLegacyTableId(String legacyCaseViewUrl) {
+        return legacyCaseViewUrl.substring(legacyCaseViewUrl.lastIndexOf("/") + 1);
     }
 
 }

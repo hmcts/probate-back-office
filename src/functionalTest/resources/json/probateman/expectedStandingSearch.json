@@ -1,7 +1,7 @@
 {
   "probateManCase": {
     "type": "Standing Search",
-    "Dnm Ind": "Y",
+    "Dnm Ind": "N",
     "Ss Number": "SS-01",
     "Probate Number": "PRO-01",
     "Probate Version": 1,

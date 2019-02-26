@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.restassured.RestAssured;
+import io.restassured.path.json.JsonPath;
+import io.restassured.response.ResponseBody;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -42,7 +44,7 @@ public class SolCCDServiceAuthTokenGenerator {
     private String baseServiceAuthUrl;
 
     @Value("${user.auth.provider.oauth2.url}")
-    private String baseServiceOauth2Url;
+    private String idamUrl;
 
     @Autowired
     private ServiceAuthTokenGenerator tokenGenerator;
@@ -64,7 +66,7 @@ public class SolCCDServiceAuthTokenGenerator {
         String code = generateClientCode();
         String token = "";
 
-        String jsonResponse = post(baseServiceOauth2Url + "/oauth2/token?code=" + code +
+        String jsonResponse = post(idamUrl + "/oauth2/token?code=" + code +
             "&client_secret=" + clientSecret +
             "&client_id=" + clientId +
             "&redirect_uri=" + redirectUri +
@@ -87,7 +89,7 @@ public class SolCCDServiceAuthTokenGenerator {
         String jsonResponse = given()
             .relaxedHTTPSValidation()
             .header("Authorization", "Basic dGVzdEBURVNULkNPTToxMjM=")
-            .post(baseServiceOauth2Url + "/oauth2/authorize?response_type=code" +
+            .post(idamUrl + "/oauth2/authorize?response_type=code" +
                 "&client_id=" + clientId +
                 "&redirect_uri=" + redirectUri)
             .asString();
@@ -107,26 +109,33 @@ public class SolCCDServiceAuthTokenGenerator {
         given().headers("Content-type", "application/json")
             .relaxedHTTPSValidation()
             .body("{ \"email\":\"test@TEST.COM\", \"forename\":\"test@TEST.COM\",\"surname\":\"test@TEST.COM\",\"password\":\"123\",\"continue-url\":\"test\"}")
-            .post(baseServiceOauth2Url + "/testing-support/accounts");
+            .post(idamUrl + "/testing-support/accounts");
     }
 
     public String generateClientToken(String userName, String password) {
         String code = generateClientCode(userName, password);
-        String token = RestAssured.given().post(baseServiceOauth2Url + "/oauth2/token?code=" + code +
+        JsonPath jp = RestAssured.given().relaxedHTTPSValidation().post(idamUrl + "/oauth2/token?" +
+            "code=" + code +
             "&client_secret=" + probateClientSecret +
             "&client_id=" + probateClientId +
             "&redirect_uri=" + redirectUri +
             "&grant_type=authorization_code")
-            .body().path("access_token");
+            .body().jsonPath();
+        jp.prettyPrint();
+        String token = jp.get("access_token");
+
         return token;
     }
 
     private String generateClientCode(String userName, String password) {
         final String encoded = Base64.getEncoder().encodeToString((userName + ":" + password).getBytes());
-        return RestAssured.given().baseUri(baseServiceOauth2Url)
+        ResponseBody authorization = given().relaxedHTTPSValidation().baseUri(idamUrl)
             .header("Authorization", "Basic " + encoded)
             .post("/oauth2/authorize?response_type=code&client_id=" + probateClientId + "&redirect_uri=" + redirectUri)
-            .body().path("code");
+            .body();
+        authorization.prettyPrint();
+        return authorization.jsonPath().get("code");
 
     }
+
 }

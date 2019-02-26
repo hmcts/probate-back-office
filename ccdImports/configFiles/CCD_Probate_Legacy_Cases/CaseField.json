@@ -9,5 +9,5 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Legacy", "ID": "record_id", "Label": "Record Number", "FieldType": "Text", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Legacy", "ID": "imported_to_ccd", "Label": "Imported", "FieldType": "Text", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Legacy", "ID": "ccdCaseId", "Label": "CCD Case No", "FieldType": "Text", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "Legacy", "ID": "legacyId", "Label": "Legacy Id", "FieldType": "Text", "SecurityClassification": "Public"}
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "Legacy", "ID": "legacyId", "Label": "id", "FieldType": "Text", "SecurityClassification": "Public"}
 ]

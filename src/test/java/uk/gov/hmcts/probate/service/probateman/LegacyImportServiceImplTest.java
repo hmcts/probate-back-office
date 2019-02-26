@@ -30,7 +30,8 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class LegacyImportServiceImplTest {
     private static final String DO_IMPORT_YES = "Yes";
-    private static final Long LEGACY_ID = 1L;
+    private static final Long LEGACY_ID = 20001L;
+    private static final String LEGACY_CASE_URL = "http://localhost:3453/print/probateManTypes/STANDING_SEARCH/cases/20001";
     private static final Long CCD_CASE_ID = 1111222233334444L;
 
     private LegacyImportService legacyImportService;
@@ -54,7 +55,7 @@ public class LegacyImportServiceImplTest {
         CaseMatch caseMatch = Mockito.mock(CaseMatch.class);
         when(caseMatch.getType()).thenReturn(LegacyCaseType.GRANT_OF_REPRESENTATION.getName());
         when(caseMatch.getDoImport()).thenReturn(DO_IMPORT_YES);
-        when(caseMatch.getId()).thenReturn(LEGACY_ID.toString());
+        when(caseMatch.getLegacyCaseViewUrl()).thenReturn(LEGACY_CASE_URL);
         CollectionMember<CaseMatch> memberRow = new CollectionMember<>(caseMatch);
         List<CollectionMember<CaseMatch>> legacyRows = new ArrayList<>();
         legacyRows.add(memberRow);
