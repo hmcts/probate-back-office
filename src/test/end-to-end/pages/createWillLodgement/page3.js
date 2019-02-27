@@ -11,6 +11,8 @@ module.exports = function (crud) {
     I.waitForText(createWillLodgementConfig.page3_waitForText, testConfig.TestTimeToWaitForText);
 
     const index = 0;
+
+    /* eslint prefer-const: 0 */
     let executorFieldList = [];
     let additionalExecutorFieldList = [];
 
