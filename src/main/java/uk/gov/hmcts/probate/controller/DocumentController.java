@@ -158,8 +158,7 @@ public class DocumentController {
             letterId = response != null
                     ? response.letterId.toString()
                     : null;
-            caseData = CaseData.builder().bulkPrintSendLetterId(letterId).build();
-            callbackResponse = eventValidationService.validateBulkPrintResponse(caseData, bulkPrintValidationRules);
+            callbackResponse = eventValidationService.validateBulkPrintResponse(letterId, bulkPrintValidationRules);
 
         }
         if (!callbackResponse.getErrors().isEmpty()) {

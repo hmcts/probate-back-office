@@ -190,14 +190,14 @@ public class CCDDataTransformer {
         return caveatorEmailAddress == null ? "" : caveatorEmailAddress;
     }
 
-    public CCDData transformBulkPrint(CaseData callbackRequest) {
+    public CCDData transformBulkPrint(String letterId) {
 
-        return buildCCDDataBulkPrint(callbackRequest);
+        return buildCCDDataBulkPrint(letterId);
     }
 
-    private CCDData buildCCDDataBulkPrint(CaseData callbackRequest) {
+    private CCDData buildCCDDataBulkPrint(String letterId) {
 
-        return CCDData.builder().sendLetterId(getSendLetterId(callbackRequest.getBulkPrintSendLetterId()))
+        return CCDData.builder().sendLetterId(getSendLetterId(letterId))
                 .build();
     }
 
