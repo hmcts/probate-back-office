@@ -80,7 +80,7 @@ public class CallbackResponseTransformer {
         return transformResponse(responseCaseData);
     }
 
-    public CallbackResponse addDocuments(CallbackRequest callbackRequest, List<Document> documents, String letterId) {
+    public CallbackResponse addDocuments(CallbackRequest callbackRequest, List<Document> documents, String letterId, String pdfSize) {
         documents.forEach(document -> documentTransformer.addDocument(callbackRequest, document));
         ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), false);
 
@@ -97,7 +97,8 @@ public class CallbackResponseTransformer {
                             callbackRequest.getCaseDetails().getData().getBoEmailGrantIssuedNotification())
                     .boSendToBulkPrintRequested(
                             callbackRequest.getCaseDetails().getData().getBoSendToBulkPrint())
-                    .bulkPrintSendLetterId(letterId);
+                    .bulkPrintSendLetterId(letterId)
+                    .bulkPrintPdfSize(String.valueOf(pdfSize));
 
         }
         if (documentTransformer.hasDocumentWithType(documents, SENT_EMAIL)) {
@@ -343,7 +344,6 @@ public class CallbackResponseTransformer {
                 .foreignAssetEstateValue(caseData.getForeignAssetEstateValue())
                 .adopted(caseData.getAdopted())
                 .adoptiveRelatives(caseData.getAdoptiveRelatives())
-                .caseType(caseData.getCaseType())
                 .spouseOrPartner(caseData.getSpouseOrPartner())
                 .childrenSurvived(caseData.getChildrenSurvived())
                 .childrenOverEighteenSurvived(caseData.getChildrenOverEighteenSurvived())

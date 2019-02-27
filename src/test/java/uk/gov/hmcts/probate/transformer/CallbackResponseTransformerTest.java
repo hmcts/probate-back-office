@@ -342,7 +342,7 @@ public class CallbackResponseTransformerTest {
                 .documentType(DIGITAL_GRANT_DRAFT)
                 .build();
 
-        CallbackResponse callbackResponse = underTest.addDocuments(callbackRequestMock, Arrays.asList(document), null);
+        CallbackResponse callbackResponse = underTest.addDocuments(callbackRequestMock, Arrays.asList(document), null, null);
 
         assertCommon(callbackResponse);
 
@@ -398,7 +398,7 @@ public class CallbackResponseTransformerTest {
         Document grantIssuedSentEmail = Document.builder().documentType(SENT_EMAIL).build();
 
         CallbackResponse callbackResponse = underTest.addDocuments(callbackRequestMock,
-                Arrays.asList(grantDocument, grantIssuedSentEmail), null);
+                Arrays.asList(grantDocument, grantIssuedSentEmail), null, null);
 
         assertCommon(callbackResponse);
 
@@ -414,7 +414,7 @@ public class CallbackResponseTransformerTest {
         Document documentsReceivedSentEmail = Document.builder().documentType(SENT_EMAIL).build();
 
         CallbackResponse callbackResponse = underTest.addDocuments(callbackRequestMock,
-                Arrays.asList(documentsReceivedSentEmail), null);
+                Arrays.asList(documentsReceivedSentEmail), null, null);
 
         assertCommon(callbackResponse);
 
@@ -433,7 +433,7 @@ public class CallbackResponseTransformerTest {
                 .build();
         when(caseDetailsMock.getData()).thenReturn(caseData);
 
-        CallbackResponse callbackResponse = underTest.addDocuments(callbackRequestMock, documents, null);
+        CallbackResponse callbackResponse = underTest.addDocuments(callbackRequestMock, documents, null, null);
 
         assertEquals("No", callbackResponse.getData().getBoEmailDocsReceivedNotification());
     }

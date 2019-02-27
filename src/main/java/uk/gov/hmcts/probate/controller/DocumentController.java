@@ -109,7 +109,7 @@ public class DocumentController {
         }
 
         return ResponseEntity.ok(callbackResponseTransformer.addDocuments(callbackRequest,
-                Arrays.asList(document), null));
+                Arrays.asList(document), null, null));
     }
 
     @PostMapping(path = "/generate-grant", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -153,12 +153,17 @@ public class DocumentController {
         Document coverSheet = pdfManagementService.generateAndUpload(callbackRequest, DocumentType.GRANT_COVER);
 
         String letterId = null;
+        String pdfSize = null;
         if (caseData.isSendForBulkPrintingRequested() && !caseData.getCaseType().equals(EDGE_CASE)) {
             SendLetterResponse response = bulkPrintService.sendToBulkPrint(callbackRequest, digitalGrantDocument, coverSheet);
             letterId = response != null
                     ? response.letterId.toString()
                     : null;
             callbackResponse = eventValidationService.validateBulkPrintResponse(letterId, bulkPrintValidationRules);
+
+            if (caseData.getExtraCopiesOfGrant() != null) {
+                pdfSize = String.valueOf(caseData.getExtraCopiesOfGrant() + 2);
+            }
 
         }
         if (!callbackResponse.getErrors().isEmpty()) {
@@ -173,15 +178,16 @@ public class DocumentController {
         for (DocumentType documentType : documentTypes) {
             documentService.expire(callbackRequest, documentType);
         }
+
         if (caseData.isGrantIssuedEmailNotificationRequested()) {
             callbackResponse = eventValidationService.validateEmailRequest(callbackRequest, emailAddressNotificationValidationRules);
             if (callbackResponse.getErrors().isEmpty()) {
                 Document grantIssuedSentEmail = notificationService.sendEmail(GRANT_ISSUED, caseDetails);
                 documents.add(grantIssuedSentEmail);
-                callbackResponse = callbackResponseTransformer.addDocuments(callbackRequest, documents, letterId);
+                callbackResponse = callbackResponseTransformer.addDocuments(callbackRequest, documents, letterId, pdfSize);
             }
         } else {
-            callbackResponse = callbackResponseTransformer.addDocuments(callbackRequest, documents, letterId);
+            callbackResponse = callbackResponseTransformer.addDocuments(callbackRequest, documents, letterId, pdfSize);
         }
 
         return ResponseEntity.ok(callbackResponse);
