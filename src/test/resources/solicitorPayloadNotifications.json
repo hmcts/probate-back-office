@@ -97,6 +97,7 @@
       "deceasedForenames": "Deceased First Name",
       "primaryApplicantIsApplying": "Yes",
       "primaryApplicantHasAlias": "No",
+      "boSendToBulkPrint": "No",
       "solsPaymentReferenceNumber": "Cheque (payable to ‘HM Courts & Tribunals Service’)",
       "solsSOTName": "name",
       "ihtGrossValue": "1000000",

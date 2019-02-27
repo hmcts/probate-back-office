@@ -30,6 +30,7 @@ public class DocumentTransformer {
             case INTESTACY_GRANT:
             case ADMON_WILL_GRANT_DRAFT:
             case ADMON_WILL_GRANT:
+            case GRANT_COVER:
                 callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated()
                         .add(new CollectionMember<>(null, document));
                 break;
