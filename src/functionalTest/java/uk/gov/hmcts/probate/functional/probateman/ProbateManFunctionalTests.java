@@ -9,6 +9,7 @@ import net.serenitybdd.rest.SerenityRest;
 import net.thucydides.junit.annotations.TestData;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.awaitility.Awaitility;
+import org.hamcrest.Matchers;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -153,7 +154,7 @@ public class ProbateManFunctionalTests extends IntegrationTestBase {
     public void shouldDoLegacySearch() throws Exception {
         final String legacySearchQuery = getRequestJson(deceasedForename, deceasedSurname);
 
-        await().until(() -> getLegacySearchRows(legacySearchQuery));
+        await().atMost(10, SECONDS).until(() -> !getLegacySearchRows(legacySearchQuery).isEmpty());
         assertThat(legacySearchResultRows, hasSize(1));
         Map<String, Object> legacySearchResultRow = ((Map<String, Object>) legacySearchResultRows.get(0).get("value"));
 
@@ -217,7 +218,7 @@ public class ProbateManFunctionalTests extends IntegrationTestBase {
         return sql;
     }
 
-    private boolean getLegacySearchRows(String legacySearchQuery) {
+    private List<Object> getLegacySearchRows(String legacySearchQuery) {
         JsonPath jsonPath = SerenityRest.given()
             .relaxedHTTPSValidation()
             .headers(headers)
@@ -230,8 +231,6 @@ public class ProbateManFunctionalTests extends IntegrationTestBase {
             .jsonPath();
         jsonPath.prettyPrint();
         requestMap = jsonPath.getMap("");
-        legacySearchResultRows = jsonPath.getList("data.legacySearchResultRows");
-        System.out.println("Search Result Count: " + legacySearchResultRows.size());
-        return legacySearchResultRows.size() > 0;
+        return jsonPath.getList("data.legacySearchResultRows");
     }
 }
