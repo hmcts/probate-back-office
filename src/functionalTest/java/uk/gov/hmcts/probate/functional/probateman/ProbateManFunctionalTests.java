@@ -231,6 +231,7 @@ public class ProbateManFunctionalTests extends IntegrationTestBase {
         jsonPath.prettyPrint();
         requestMap = jsonPath.getMap("");
         legacySearchResultRows = jsonPath.getList("data.legacySearchResultRows");
+        System.out.println("Search Result Count: " + legacySearchResultRows.size());
         return legacySearchResultRows.size() > 0;
     }
 }
