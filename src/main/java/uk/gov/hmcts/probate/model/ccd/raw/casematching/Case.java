@@ -10,4 +10,7 @@ public class Case {
     private final CaseData data;
 
     private final Long id;
+
+    @JsonProperty(value = "case_type_id")
+    private final String caseTypeId;
 }
