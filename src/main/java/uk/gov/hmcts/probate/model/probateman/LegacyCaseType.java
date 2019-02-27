@@ -20,10 +20,10 @@ public enum LegacyCaseType {
     @Getter
     private final ProbateManType probateManType;
 
-    public static final LegacyCaseType getByLegacyCaseTypeName(String legacyCaseTypeName) {
+    public static LegacyCaseType getByLegacyCaseTypeName(String legacyCaseTypeName) {
         return Arrays.stream(LegacyCaseType.values())
             .filter(legacyCaseType -> legacyCaseType.getName().equals(legacyCaseTypeName))
             .findFirst()
-            .orElseThrow(IllegalArgumentException::new);
+            .orElseThrow(() -> new IllegalArgumentException(legacyCaseTypeName + " not found"));
     }
 }
