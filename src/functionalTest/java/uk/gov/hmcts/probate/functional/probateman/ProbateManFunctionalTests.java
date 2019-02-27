@@ -120,6 +120,9 @@ public class ProbateManFunctionalTests extends IntegrationTestBase {
         deceasedSurname = RandomStringUtils.randomAlphanumeric(10) + "_SN";
         deceasedAlias = RandomStringUtils.randomAlphanumeric(10) + "_ALIAS" + " " + RandomStringUtils.randomAlphanumeric(10);
 
+        System.out.println("DECEASED FORENAME: " + deceasedForename);
+        System.out.println("DECEASED SURNAME: " + deceasedSurname);
+
         generateSqlAndExecute(deceasedForename, deceasedSurname, deceasedAlias, "/scripts/legacy_search_" + caseTypeFilename + "_insert.sql");
     }
 
