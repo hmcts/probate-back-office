@@ -39,6 +39,7 @@ import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.EDGE_CASE;
+import static uk.gov.hmcts.probate.model.DocumentType.GRANT_COVER;
 import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_DRAFT;
 
@@ -94,7 +95,10 @@ public class NotificationControllerTest {
         when(pdfManagementService.generateAndUpload(any(CallbackRequest.class), eq(INTESTACY_GRANT_DRAFT)))
                 .thenReturn(Document.builder().documentType(INTESTACY_GRANT_DRAFT).build());
         when(pdfManagementService.generateAndUpload(any(CallbackRequest.class), eq(INTESTACY_GRANT)))
-                .thenReturn(Document.builder().documentType(INTESTACY_GRANT_DRAFT).build());
+                .thenReturn(Document.builder().documentType(INTESTACY_GRANT).build());
+
+        when(pdfManagementService.generateAndUpload(any(CallbackRequest.class), eq(GRANT_COVER)))
+                .thenReturn(Document.builder().documentType(GRANT_COVER).build());
 
         when(pdfManagementService.generateAndUpload(any(CallbackRequest.class), eq(EDGE_CASE)))
                 .thenReturn(Document.builder().documentType(EDGE_CASE).build());

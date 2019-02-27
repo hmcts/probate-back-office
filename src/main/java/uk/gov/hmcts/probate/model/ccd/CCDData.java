@@ -24,4 +24,5 @@ public class CCDData implements Serializable {
     private final String applicationType;
     private final String primaryApplicantEmailAddress;
     private final String solsSolicitorEmail;
+    private final String sendLetterId;
 }
