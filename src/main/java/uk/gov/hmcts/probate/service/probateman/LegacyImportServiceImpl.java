@@ -94,7 +94,7 @@ public class LegacyImportServiceImpl implements LegacyImportService {
     }
 
     private String getLegacyTableId(String legacyCaseViewUrl) {
-        return legacyCaseViewUrl.substring(legacyCaseViewUrl.lastIndexOf("/") + 1);
+        return legacyCaseViewUrl.substring(legacyCaseViewUrl.lastIndexOf('/') + 1);
     }
 
 }
