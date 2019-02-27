@@ -39,7 +39,9 @@ Scenario('Will Lodgement for a Personal Applicant', async function (I) {
     I.checkMyAnswers();
 
     const url = await I.grabCurrentUrl();
-    const caseRef = url.split('/').pop().match(/.{4}/g).join('-');
+    const caseRef = url.split('/').pop()
+        .match(/.{4}/g)
+        .join('-');
 
     I.seeCaseDetails(caseRef, historyTabConfig, checkYourAnswersConfig);
     I.seeCaseDetails(caseRef, generalDetailsTabConfig, createWillLodgementConfig);
