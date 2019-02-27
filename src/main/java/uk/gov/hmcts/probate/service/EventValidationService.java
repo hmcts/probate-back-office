@@ -11,6 +11,7 @@ import uk.gov.hmcts.probate.model.ccd.caveat.response.CaveatCallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.transformer.CCDDataTransformer;
+import uk.gov.hmcts.probate.validator.BulkPrintValidationRule;
 import uk.gov.hmcts.probate.validator.EmailValidationRule;
 import uk.gov.hmcts.probate.validator.ValidationRule;
 import uk.gov.hmcts.probate.validator.ValidationRuleCaveats;
@@ -80,5 +81,22 @@ public class EventValidationService {
                 .map(rule -> (rule).validate(form))
                 .flatMap(List::stream)
                 .collect(Collectors.toList());
+    }
+
+    public List<FieldErrorResponse> validateBulkPrint(CCDData form, List<? extends BulkPrintValidationRule> rules) {
+        return rules.stream()
+                .map(rule -> rule.validate(form))
+                .flatMap(List::stream)
+                .collect(Collectors.toList());
+    }
+
+    public CallbackResponse validateBulkPrintResponse(String letterId,
+                                                      List<? extends BulkPrintValidationRule> rules) {
+
+        CCDData ccdData = ccdBeanTransformer.transformBulkPrint(letterId);
+        List<FieldErrorResponse> businessErrors = validateBulkPrint(ccdData, rules);
+        return CallbackResponse.builder()
+                .errors(businessErrors.stream().map(FieldErrorResponse::getMessage).collect(Collectors.toList()))
+                .build();
     }
 }

@@ -3,6 +3,9 @@ package uk.gov.hmcts.probate.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import uk.gov.hmcts.probate.insights.AppInsights;
+import uk.gov.hmcts.probate.insights.AppInsightsEvent;
+import uk.gov.hmcts.probate.model.CaseType;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
 import uk.gov.hmcts.probate.model.ccd.raw.AliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.CaseLink;
@@ -28,7 +31,9 @@ public class CaseMatchBuilderService {
     @Value("${printservice.legacyPath}")
     private String printServiceLegacyPath;
 
-    public CaseMatch buildCaseMatch(Case c) {
+    private final AppInsights appInsights;
+
+    CaseMatch buildCaseMatch(Case c) {
         CaseMatch.CaseMatchBuilder caseMatchBuilder = getCaseMatchBuilder(c);
         return caseMatchBuilder.build();
     }
@@ -47,6 +52,8 @@ public class CaseMatchBuilderService {
         }
 
         if (isEmpty(c.getData().getLegacyId())) {
+            CaseType.fromCode(c.getCaseTypeId())
+                    .ifPresent(caseType -> caseMatchBuilder.type(caseType.getName()));
             caseMatchBuilder.caseLink(CaseLink.builder().caseReference(c.getId().toString()).build());
             if (c.getData().getSolsDeceasedAliasNamesList() != null) {
                 String aliases = c.getData().getSolsDeceasedAliasNamesList().stream()
@@ -75,7 +82,13 @@ public class CaseMatchBuilderService {
     }
 
     public String buildLegacyCaseUrl(String id, String legacyCaseTypeName) {
-        LegacyCaseType legacyCaseType = LegacyCaseType.getByLegacyCaseTypeName(legacyCaseTypeName);
+        LegacyCaseType legacyCaseType;
+        try {
+            legacyCaseType = LegacyCaseType.getByLegacyCaseTypeName(legacyCaseTypeName);
+        } catch (IllegalArgumentException e) {
+            appInsights.trackEvent(AppInsightsEvent.ILLEGAL_ARGUMENT_EXCEPTION, legacyCaseTypeName);
+            throw e;
+        }
 
         String urlTemplate = printServiceHost + printServiceLegacyPath;
         return String.format(urlTemplate, legacyCaseType.getProbateManType().toString(), id);

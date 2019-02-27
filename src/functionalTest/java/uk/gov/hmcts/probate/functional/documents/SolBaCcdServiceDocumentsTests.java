@@ -67,7 +67,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     public void verifySolicitorGenerateAdmonWillGrantDraftShouldReturnOkResponseCode() {
         validatePostSuccess("solicitorPayloadNotificationsAdmonWill.json", "/document/generate-grant-draft");
     }
-    
+
 
     @Test
     public void verifyPersonalApplicantGenerateGrantShouldReturnOkResponseCode() {
