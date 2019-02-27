@@ -77,7 +77,7 @@ public class ProbateManFunctionalTests extends IntegrationTestBase {
 
     private JdbcTemplate jdbcTemplate;
 
-    private List<Map> legacySearchResultRows;
+    private List<Object> legacySearchResultRows;
 
     private Map<String, Object> requestMap;
 
@@ -156,7 +156,7 @@ public class ProbateManFunctionalTests extends IntegrationTestBase {
 
         await().atMost(10, SECONDS).until(() -> !getLegacySearchRows(legacySearchQuery).isEmpty());
         assertThat(legacySearchResultRows, hasSize(1));
-        Map<String, Object> legacySearchResultRow = ((Map<String, Object>) legacySearchResultRows.get(0).get("value"));
+        Map<String, Object> legacySearchResultRow = (Map<String, Object>) ((Map<String, Object>) legacySearchResultRows.get(0)).get("value");
 
         String id = (String) legacySearchResultRow.get("id");
         assertThat(legacySearchResultRow.get("id"), notNullValue());
@@ -231,6 +231,7 @@ public class ProbateManFunctionalTests extends IntegrationTestBase {
             .jsonPath();
         jsonPath.prettyPrint();
         requestMap = jsonPath.getMap("");
-        return jsonPath.getList("data.legacySearchResultRows");
+        legacySearchResultRows = jsonPath.getList("data.legacySearchResultRows");
+        return legacySearchResultRows;
     }
 }
