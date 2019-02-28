@@ -108,7 +108,7 @@ public class CaveatCallbackResponseTransformer {
 
                 .documentsUploaded(caveatData.getDocumentsUploaded())
                 .documentsGenerated(caveatData.getDocumentsGenerated())
-                .legacyId(caveatData.getLegacyId())
+                .recordId(caveatData.getRecordId())
                 .legacyCaseViewUrl(caveatData.getLegacyCaseViewUrl())
                 .legacyType(caveatData.getLegacyType());
     }

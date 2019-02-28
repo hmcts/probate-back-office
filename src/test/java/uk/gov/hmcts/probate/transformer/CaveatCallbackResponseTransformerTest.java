@@ -61,7 +61,7 @@ public class CaveatCallbackResponseTransformerTest {
 
     private static final String CAV_MESSAGE_CONTENT = "";
 
-    private static final String CAV_LEGACY_ID = "12345";
+    private static final String CAV_RECORD_ID = "12345";
     private static final String CAV_LEGACY_CASE_URL = "someUrl";
     private static final String CAV_LEGACY_CASE_TYPE = "someCaseType";
 
@@ -96,7 +96,7 @@ public class CaveatCallbackResponseTransformerTest {
                 .caveatorAddress(CAV_CAVEATOR_ADDRESS)
                 .expiryDate(CAV_EXPIRY_DATE)
                 .messageContent(CAV_MESSAGE_CONTENT)
-                .legacyId(CAV_LEGACY_ID)
+                .recordId(CAV_RECORD_ID)
                 .legacyCaseViewUrl(CAV_LEGACY_CASE_URL)
                 .legacyType(CAV_LEGACY_CASE_TYPE);
 
@@ -185,7 +185,7 @@ public class CaveatCallbackResponseTransformerTest {
         assertEquals(CAV_FORMATTED_EXPIRY_DATE, caveatCallbackResponse.getCaveatData().getExpiryDate());
         assertEquals(CAV_MESSAGE_CONTENT, caveatCallbackResponse.getCaveatData().getMessageContent());
 
-        assertEquals(CAV_LEGACY_ID, caveatCallbackResponse.getCaveatData().getLegacyId());
+        assertEquals(CAV_RECORD_ID, caveatCallbackResponse.getCaveatData().getRecordId());
         assertEquals(CAV_LEGACY_CASE_TYPE, caveatCallbackResponse.getCaveatData().getLegacyType());
         assertEquals(CAV_LEGACY_CASE_URL, caveatCallbackResponse.getCaveatData().getLegacyCaseViewUrl());
     }

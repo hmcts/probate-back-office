@@ -74,7 +74,7 @@ public class CaveatData {
     @Builder.Default
     private List<CollectionMember<Document>> documentsGenerated = new ArrayList<>();
 
-    private String legacyId;
+    private String recordId;
     private String legacyType;
     private String legacyCaseViewUrl;
 

@@ -63,6 +63,7 @@ public class CaseMatchBuilderService {
             LegacyCaseType legacyCaseType = getLegacyCaseType(c.getData());
             caseMatchBuilder.type(LEGACY.getName() + " " + legacyCaseType.getName());
             caseMatchBuilder.id(c.getData().getLegacyId());
+            caseMatchBuilder.recordId((c.getData().getRecordId()));
             caseMatchBuilder.legacyCaseViewUrl(buildLegacyCaseUrl(c.getData().getLegacyId(), legacyCaseType));
             caseMatchBuilder.aliases(c.getData().getLegacySearchAliasNames());
             if (c.getData().getCcdCaseId() != null) {

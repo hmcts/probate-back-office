@@ -21,6 +21,7 @@ public interface WillLodgementMapper extends ProbateManMapper<WillLodgement, Wil
     @Mapping(target = "deceasedDateOfBirth", source = "dateOfBirth")
     @Mapping(target = "deceasedDateOfDeath", source = "dateOfDeath1")
     @Mapping(target = "deceasedFullAliasNameList", source = "aliasNames", qualifiedBy = {ToFullAliasNameMember.class})
+    @Mapping(target = "recordId", source = "rkNumber")
     @Mapping(target = "legacyId", source = "id")
     @Mapping(target = "legacyType", expression = "java(LegacyCaseType.WILL_LODGEMENT.getName())")
     @Mapping(target = "legacyCaseViewUrl", source = "willLodgement", qualifiedBy = {ToLegacyCaseViewUrl.class})

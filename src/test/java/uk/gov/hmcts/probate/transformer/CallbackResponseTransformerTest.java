@@ -155,7 +155,7 @@ public class CallbackResponseTransformerTest {
     private static final String ADMIN_CLAUSE_LIMITATION = "Admin Clause Limitation";
     private static final String TOTAL_FEE = "6600";
 
-    private static final String LEGACY_ID = "12345";
+    private static final String RECORD_ID = "12345";
     private static final String LEGACY_CASE_URL = "someUrl";
     private static final String LEGACY_CASE_TYPE = "someCaseType";
 
@@ -275,7 +275,7 @@ public class CallbackResponseTransformerTest {
                 .boExaminationChecklistQ2(YES)
                 .boExaminationChecklistRequestQA(YES)
                 .scannedDocuments(SCANNED_DOCUMENTS_LIST)
-                .legacyId(LEGACY_ID)
+                .recordId(RECORD_ID)
                 .legacyType(LEGACY_CASE_TYPE)
                 .legacyCaseViewUrl(LEGACY_CASE_URL);
 
@@ -1177,7 +1177,7 @@ public class CallbackResponseTransformerTest {
         
         assertEquals(SCANNED_DOCUMENTS_LIST, callbackResponse.getData().getScannedDocuments());
 
-        assertEquals(LEGACY_ID, callbackResponse.getData().getLegacyId());
+        assertEquals(RECORD_ID, callbackResponse.getData().getRecordId());
         assertEquals(LEGACY_CASE_TYPE, callbackResponse.getData().getLegacyType());
         assertEquals(LEGACY_CASE_URL, callbackResponse.getData().getLegacyCaseViewUrl());
     }
