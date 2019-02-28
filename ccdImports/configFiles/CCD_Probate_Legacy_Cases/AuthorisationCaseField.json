@@ -8,6 +8,5 @@
   {"CaseTypeID": "Legacy", "CaseFieldID": "legacy_case_type", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
   {"CaseTypeID": "Legacy", "CaseFieldID": "record_id", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
   {"CaseTypeID": "Legacy", "CaseFieldID": "imported_to_ccd", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
-  {"CaseTypeID": "Legacy", "CaseFieldID": "legacyId", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
-  {"CaseTypeID": "Legacy", "CaseFieldID": "ccdCaseId", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"}
+  {"CaseTypeID": "Legacy", "CaseFieldID": "legacyId", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"}
 ]
