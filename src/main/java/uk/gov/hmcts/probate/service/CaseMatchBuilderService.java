@@ -3,11 +3,13 @@ package uk.gov.hmcts.probate.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import uk.gov.hmcts.probate.model.CaseType;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
 import uk.gov.hmcts.probate.model.ccd.raw.AliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.CaseLink;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.casematching.Case;
+import uk.gov.hmcts.probate.model.ccd.raw.casematching.CaseData;
 import uk.gov.hmcts.probate.model.probateman.LegacyCaseType;
 
 import java.time.format.DateTimeFormatter;
@@ -28,7 +30,7 @@ public class CaseMatchBuilderService {
     @Value("${printservice.legacyPath}")
     private String printServiceLegacyPath;
 
-    public CaseMatch buildCaseMatch(Case c) {
+    CaseMatch buildCaseMatch(Case c) {
         CaseMatch.CaseMatchBuilder caseMatchBuilder = getCaseMatchBuilder(c);
         return caseMatchBuilder.build();
     }
@@ -47,6 +49,8 @@ public class CaseMatchBuilderService {
         }
 
         if (isEmpty(c.getData().getLegacyId())) {
+            CaseType.fromCode(c.getCaseTypeId())
+                    .ifPresent(caseType -> caseMatchBuilder.type(caseType.getName()));
             caseMatchBuilder.caseLink(CaseLink.builder().caseReference(c.getId().toString()).build());
             if (c.getData().getSolsDeceasedAliasNamesList() != null) {
                 String aliases = c.getData().getSolsDeceasedAliasNamesList().stream()
@@ -56,9 +60,10 @@ public class CaseMatchBuilderService {
                 caseMatchBuilder.aliases(aliases);
             }
         } else {
-            caseMatchBuilder.type(LEGACY.getName() + " " + c.getData().getLegacyCaseType());
+            LegacyCaseType legacyCaseType = getLegacyCaseType(c.getData());
+            caseMatchBuilder.type(LEGACY.getName() + " " + legacyCaseType.getName());
             caseMatchBuilder.id(c.getData().getLegacyId());
-            caseMatchBuilder.legacyCaseViewUrl(buildLegacyCaseViewUrl(c));
+            caseMatchBuilder.legacyCaseViewUrl(buildLegacyCaseUrl(c.getData().getLegacyId(), legacyCaseType));
             caseMatchBuilder.aliases(c.getData().getLegacySearchAliasNames());
             if (c.getData().getCcdCaseId() != null) {
                 caseMatchBuilder.caseLink(CaseLink.builder().caseReference(c.getData().getCcdCaseId()).build());
@@ -68,16 +73,16 @@ public class CaseMatchBuilderService {
         return caseMatchBuilder;
     }
 
-    private String buildLegacyCaseViewUrl(Case c) {
-        String id = c.getData().getLegacyId();
-        String legacyCaseTypeName = LEGACY.getName() + " " + c.getData().getLegacyCaseType();
-        return buildLegacyCaseUrl(id, legacyCaseTypeName);
-    }
-
-    public String buildLegacyCaseUrl(String id, String legacyCaseTypeName) {
-        LegacyCaseType legacyCaseType = LegacyCaseType.getByLegacyCaseTypeName(legacyCaseTypeName);
-
+    public String buildLegacyCaseUrl(String id, LegacyCaseType legacyCaseType) {
         String urlTemplate = printServiceHost + printServiceLegacyPath;
         return String.format(urlTemplate, legacyCaseType.getProbateManType().toString(), id);
+    }
+
+    private LegacyCaseType getLegacyCaseType(CaseData caseData) {
+        try {
+            return LegacyCaseType.getByLegacyCaseTypeName(caseData.getLegacyType());
+        } catch (IllegalArgumentException e) {
+            return LegacyCaseType.getByLegacyCaseTypeName(LEGACY.getName() + " " + caseData.getLegacyCaseType());
+        }
     }
 }

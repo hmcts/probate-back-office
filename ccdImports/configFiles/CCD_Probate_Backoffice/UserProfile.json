@@ -26,5 +26,6 @@
   {"UserIDAMId": "preprodsolsithc1@gmail.com", "WorkBasketDefaultJurisdiction": "PROBATE", "WorkBasketDefaultCaseType": "GrantOfRepresentation", "WorkBasketDefaultState": "CaseCreated"},
   {"UserIDAMId": "preprodsolsithc2@gmail.com", "WorkBasketDefaultJurisdiction": "PROBATE", "WorkBasketDefaultCaseType": "GrantOfRepresentation", "WorkBasketDefaultState": "CaseCreated"},
   {"UserIDAMId": "preprodcaseworkerithc1@gmail.com", "WorkBasketDefaultJurisdiction": "PROBATE", "WorkBasketDefaultCaseType": "GrantOfRepresentation", "WorkBasketDefaultState": "CaseCreated"},
-  {"UserIDAMId": "preprodcaseworkerithc2@gmail.com", "WorkBasketDefaultJurisdiction": "PROBATE", "WorkBasketDefaultCaseType": "GrantOfRepresentation", "WorkBasketDefaultState": "CaseCreated"}
+  {"UserIDAMId": "preprodcaseworkerithc2@gmail.com", "WorkBasketDefaultJurisdiction": "PROBATE", "WorkBasketDefaultCaseType": "GrantOfRepresentation", "WorkBasketDefaultState": "CaseCreated"},
+  {"UserIDAMId": "ProbateCaseAdmin@gmail.com", "WorkBasketDefaultJurisdiction": "PROBATE", "WorkBasketDefaultCaseType": "GrantOfRepresentation", "WorkBasketDefaultState": "CaseCreated"}
 ]

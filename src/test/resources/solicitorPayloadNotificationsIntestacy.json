@@ -37,6 +37,7 @@
         "AddressLine3": ""
       },
       "caseType": "intestacy",
+      "boSendToBulkPrint": "No",
       "deceasedAnyOtherNames": "No",
       "solsFeeAccountNumber": "1234",
       "willHasCodicils": "No",

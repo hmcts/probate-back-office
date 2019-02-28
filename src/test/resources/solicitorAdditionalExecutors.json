@@ -22,6 +22,7 @@
       "willAccessOriginal":"Yes",
       "willHasCodicils":"No",
       "willNumberOfCodicils":null,
+      "boSendToBulkPrint": "No",
       "deceasedDomicileInEngWales":"Yes",
       "deceasedAddress":{
         "AddressLine1":"1",

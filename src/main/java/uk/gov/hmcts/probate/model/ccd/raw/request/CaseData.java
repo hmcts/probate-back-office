@@ -368,6 +368,8 @@ public class CaseData {
     private final String totalFeePaperForm;
     private final String paperPaymentMethod;
     private final String paymentReferenceNumberPaperform;
+    private final String bulkPrintSendLetterId;
+    private final String bulkPrintPdfSize;
 
     private final List<CollectionMember<CaseMatch>> legacySearchResultRows;
 

@@ -14,6 +14,7 @@
   {"LiveFrom": "01/01/2017", "ID": "wlDocumentUpload", "ListElementCode": "DocumentLink", "FieldType": "Document", "ElementLabel": "Document Url", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "wlDocumentUpload", "ListElementCode": "Comment", "FieldType": "TextArea", "ElementLabel": "Comment", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "CaseMatch", "ListElementCode": "type", "FieldType": "Text", "ElementLabel": "Type", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "CaseMatch", "ListElementCode": "ccdCaseId", "FieldType": "Text", "ElementLabel": "CCD Case No", "FieldShowCondition": "id=\"NeverShowThisField\"", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "CaseMatch", "ListElementCode": "fullName", "FieldType": "Text", "ElementLabel": "Full name", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "CaseMatch", "ListElementCode": "dob", "FieldType": "Text", "ElementLabel": "Date of birth", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "CaseMatch", "ListElementCode": "dod", "FieldType": "Text", "ElementLabel": "Date of death", "SecurityClassification": "Public"},
