@@ -23,28 +23,28 @@ public class LegacyCaseViewUrlMapper {
     public String toLegacyCaseViewUrl(GrantApplication grantApplication) {
         log.info("Adding GrantApplication case view url imported case");
         return caseMatchBuilderService.buildLegacyCaseUrl(grantApplication.getId().toString(),
-                LegacyCaseType.GRANT_OF_REPRESENTATION.getName());
+                LegacyCaseType.GRANT_OF_REPRESENTATION);
     }
 
     @ToLegacyCaseViewUrl
     public String toLegacyCaseViewUrl(StandingSearch standingSearch) {
         log.info("Adding StandingSearch case view url imported case");
         return caseMatchBuilderService.buildLegacyCaseUrl(standingSearch.getId().toString(),
-                LegacyCaseType.STANDING_SEARCH.getName());
+                LegacyCaseType.STANDING_SEARCH);
     }
 
     @ToLegacyCaseViewUrl
     public String toLegacyCaseViewUrl(WillLodgement willLodgement) {
         log.info("Adding WillLodgement case view url imported case");
         return caseMatchBuilderService.buildLegacyCaseUrl(willLodgement.getId().toString(),
-                LegacyCaseType.WILL_LODGEMENT.getName());
+                LegacyCaseType.WILL_LODGEMENT);
     }
 
     @ToLegacyCaseViewUrl
     public String toLegacyCaseViewUrl(Caveat caveat) {
         log.info("Adding Caveat case view url imported case");
         return caseMatchBuilderService.buildLegacyCaseUrl(caveat.getId().toString(),
-                LegacyCaseType.CAVEAT.getName());
+                LegacyCaseType.CAVEAT);
     }
 
 }
