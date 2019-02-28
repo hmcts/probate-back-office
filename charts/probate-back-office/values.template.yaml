@@ -57,7 +57,7 @@ ccd-elasticsearch:
 postgresql:
   postgresqlUsername: probateman
   postgresqlPassword: probateman
-  postgresqlDatabase: user-profile
+  postgresqlDatabase: probateman
   nameOverride: postgres
   initdbScripts:
     init.sql: |-
