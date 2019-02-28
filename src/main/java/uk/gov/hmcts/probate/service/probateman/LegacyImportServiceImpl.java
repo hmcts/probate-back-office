@@ -5,6 +5,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Component;
+import uk.gov.hmcts.probate.exception.ClientException;
+import uk.gov.hmcts.probate.exception.ConnectionException;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
 import uk.gov.hmcts.probate.model.ccd.raw.CaseLink;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
@@ -13,6 +15,7 @@ import uk.gov.hmcts.probate.model.probateman.ProbateManModel;
 import uk.gov.hmcts.probate.model.probateman.ProbateManType;
 import uk.gov.hmcts.probate.service.LegacyImportService;
 import uk.gov.hmcts.probate.service.ProbateManService;
+import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -53,7 +56,7 @@ public class LegacyImportServiceImpl implements LegacyImportService {
         log.info("Importing legacy case into ccd for legacyCaseType=" + legacyCaseTypeName + ", with id=" + id);
         ProbateManType probateManType = legacyCaseType.getProbateManType();
         Long legacyId = Long.parseLong(id);
-        uk.gov.hmcts.reform.ccd.client.model.CaseDetails caseDetails = probateManService.saveToCcd(legacyId, probateManType);
+        uk.gov.hmcts.reform.ccd.client.model.CaseDetails caseDetails = saveToCcd(legacyId, probateManType);
         String ccdCaseId = caseDetails.getId().toString();
         log.info("Imported legacy case as CCD case, id=" + ccdCaseId);
         JpaRepository repository = repositories.get(probateManType);
@@ -65,6 +68,16 @@ public class LegacyImportServiceImpl implements LegacyImportService {
             log.info("Case cannot be found when updating legacy case id=" + id + " for probateManType=" + probateManType);
         }
         return row;
+    }
+
+    private CaseDetails saveToCcd(Long legacyId, ProbateManType probateManType) {
+        try {
+            return probateManService.saveToCcd(legacyId, probateManType);
+        } catch (Exception e) {
+            log.info("There was a problem saving the case for legacyId=" + legacyId + ": " + e.getMessage());
+            return probateManService.retrieveCCDCase(probateManType.getCcdCaseType().getName(), legacyId)
+                    .orElseThrow(() -> new RuntimeException(e));
+        }
     }
 
     private void updateCaseMatch(CaseMatch row, ProbateManModel probateManModel) {
