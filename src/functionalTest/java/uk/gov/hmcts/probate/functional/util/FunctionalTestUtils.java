@@ -55,6 +55,16 @@ public class FunctionalTestUtils {
         }
     }
 
+    public String getStringFromFile(String fileName) {
+        try {
+            File file = ResourceUtils.getFile(this.getClass().getResource(fileName));
+            return new String(Files.readAllBytes(file.toPath()));
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public Headers getHeaders() {
         return getHeaders(serviceToken);
     }
@@ -103,16 +113,29 @@ public class FunctionalTestUtils {
         } catch (Exception e) {
             e.printStackTrace();
             try {
-                if (cosDoc != null)
+                if (cosDoc != null) {
                     cosDoc.close();
-                if (pdDoc != null)
+                }
+                if (pdDoc != null) {
                     pdDoc.close();
+                }
             } catch (Exception e1) {
                 e.printStackTrace();
             }
 
         }
         return parsedText;
+    }
+
+    public Headers getHeaders(String userName, String password, Integer id) {
+        String authorizationToken = serviceAuthTokenGenerator.generateClientToken(userName, password);
+        String serviceToken = serviceAuthTokenGenerator.generateServiceToken();
+
+        return Headers.headers(
+            new Header("ServiceAuthorization", serviceToken),
+            new Header("Content-Type", ContentType.JSON.toString()),
+            new Header("Authorization", "Bearer " + authorizationToken),
+            new Header("user-id", id.toString()));
     }
 
 }

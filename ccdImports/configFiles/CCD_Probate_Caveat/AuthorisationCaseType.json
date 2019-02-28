@@ -1,0 +1,4 @@
+[
+  {"CaseTypeID": "Caveat", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
+  {"CaseTypeID": "Caveat", "UserRole": "caseworker-probate-caseadmin", "CRUD": "CRUD"}
+]

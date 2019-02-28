@@ -15,6 +15,7 @@ List<LinkedHashMap<String, Object>> secrets = [
         secret('evidenceManagementUrl', 'EVIDENCE_MANAGEMENT_URL'),
         secret('idamUserId', 'IDAM_USER_ID'),
         secret('s2sAuthTotpSecret', 'S2S_AUTH_TOTP_SECRET'),
+        secret('probateCcdDataStoreApi', 'CCD_DATA_STORE_API_URL'),
         secret('probate-bo-govNotifyApiKey', 'PROBATE_BO_NOTIFY_KEY'),
         secret('pdf-service-grantSignatureBase64-first', 'BO_GRANT_SIG_FIRST'),
         secret('pdf-service-grantSignatureBase64-last','BO_GRANT_SIG_LAST')
@@ -31,21 +32,20 @@ static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
 
 withParameterizedPipeline('java', 'probate', 'back-office', params.ENVIRONMENT, 'sandbox') {
     loadVaultSecrets(secrets)
- 
-    after('build') {
-        try {
-           sh './gradlew pitest'
-        } finally {
-           steps.archiveArtifacts "build/reports/pitest/**/*.*"
-        }
-     }
+//     after('build') {
+//         try {
+//            sh './gradlew pitest'
+//         } finally {
+//            steps.archiveArtifacts "build/reports/pitest/**/*.*"
+//         }
+//      }
 
-    after('functionalTest:saat') {
-        publishHTML target: [
-                reportDir            : "target/site/serenity/",
-                reportFiles          : "index.html",
-                reportName           : "SAAT Functional Tests",
-                alwaysLinkToLastBuild: true
-        ]
-    }
+//     after('functionalTest:saat') {
+//         publishHTML target: [
+//                 reportDir            : "target/site/serenity/",
+//                 reportFiles          : "index.html",
+//                 reportName           : "SAAT Functional Tests",
+//                 alwaysLinkToLastBuild: true
+//         ]
+//     }
 }

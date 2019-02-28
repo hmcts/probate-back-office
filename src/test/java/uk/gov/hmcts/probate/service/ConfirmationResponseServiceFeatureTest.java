@@ -14,8 +14,10 @@ import uk.gov.hmcts.probate.model.ccd.Executor;
 import uk.gov.hmcts.probate.model.ccd.Fee;
 import uk.gov.hmcts.probate.model.ccd.InheritanceTax;
 import uk.gov.hmcts.probate.model.ccd.Solicitor;
+import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.response.AfterSubmitCallbackResponse;
 import uk.gov.hmcts.probate.util.TestUtils;
+import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -41,6 +43,7 @@ public class ConfirmationResponseServiceFeatureTest {
     private static final String FORENAME = "Andy";
     private static final String SURNAME = "Michael";
     private static final String SOLICITOR_FIRM_NAME = "Legal Service Ltd";
+    private static final String SOLICITOR_FIRM_LINE1 = "Sols Add Line 1";
     private static final String SOLICITOR_FIRM_POSTCODE = "SW1E 6EA";
     private static final String IHT_FORM = "IHT207";
     private static final String SOLICITOR_NAME = "Peter Crouch";
@@ -62,6 +65,9 @@ public class ConfirmationResponseServiceFeatureTest {
 
     @MockBean
     private AppInsights appInsights;
+
+    @MockBean
+    private CoreCaseDataApi coreCaseDataApi;
 
     @Test
     public void shouldGenerateCorrectConfirmationBodyWithNoAdditionalOptions() throws Exception {
@@ -202,9 +208,12 @@ public class ConfirmationResponseServiceFeatureTest {
     }
 
     private Solicitor createSolicitor() {
+        SolsAddress solsAddress = SolsAddress.builder().addressLine1(SOLICITOR_FIRM_LINE1)
+                .postCode(SOLICITOR_FIRM_POSTCODE)
+                .build();
         return Solicitor.builder()
                 .firmName(SOLICITOR_FIRM_NAME)
-                .firmPostcode(SOLICITOR_FIRM_POSTCODE)
+                .firmAddress(solsAddress)
                 .fullname(SOLICITOR_NAME)
                 .jobRole(SOLICITOR_JOB_TITLE)
                 .build();

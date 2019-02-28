@@ -5,9 +5,14 @@ import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
+import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatCallbackRequest;
+import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
+import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
+import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
@@ -30,6 +35,7 @@ public class CCDDataTransformerTest {
 
     private static final String[] LAST_MODIFIED_STR = {"2018", "1", "2", "0", "0", "0", "0"};
     private static final String SOLICITOR_FIRM_NAME = "Sol Firm Name";
+    private static final String SOLICITOR_FIRM_LINE1 = "Sol Add Line1";
     private static final String SOLICITOR_FIRM_POSTCODE = "SW13 6EA";
     private static final String SOLICITOR_SOT_NAME = "Andy Test";
     private static final String SOLICITOR_SOT_JOB_TITLE = "Lawyer";
@@ -56,10 +62,19 @@ public class CCDDataTransformerTest {
     private CallbackRequest callbackRequestMock;
 
     @Mock
+    private CaveatCallbackRequest caveatCallbackRequestMock;
+
+    @Mock
+    private CaveatDetails caveatDetailsMock;
+
+    @Mock
     private CaseDetails caseDetailsMock;
 
     @Mock
     private CaseData caseDataMock;
+
+    @Mock
+    private CaveatData caveatDataMock;
 
     @InjectMocks
     private CCDDataTransformer underTest;
@@ -70,9 +85,16 @@ public class CCDDataTransformerTest {
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        when(caveatCallbackRequestMock.getCaseDetails()).thenReturn(caveatDetailsMock);
+        when(caveatDetailsMock.getData()).thenReturn(caveatDataMock);
+
+        SolsAddress solsAddress = SolsAddress.builder()
+                .addressLine1(SOLICITOR_FIRM_LINE1)
+                .postCode(SOLICITOR_FIRM_POSTCODE)
+                .build();
 
         when(caseDataMock.getSolsSolicitorFirmName()).thenReturn(SOLICITOR_FIRM_NAME);
-        when(caseDataMock.getSolsSolicitorFirmPostcode()).thenReturn(SOLICITOR_FIRM_POSTCODE);
+        when(caseDataMock.getSolsSolicitorAddress()).thenReturn(solsAddress);
         when(caseDataMock.getSolsSOTName()).thenReturn(SOLICITOR_SOT_NAME);
         when(caseDataMock.getSolsSOTJobTitle()).thenReturn(SOLICITOR_SOT_JOB_TITLE);
 
@@ -88,6 +110,7 @@ public class CCDDataTransformerTest {
         when(caseDataMock.getFeeForNonUkCopies()).thenReturn(FEE_NON_UK_COPIES);
         when(caseDataMock.getTotalFee()).thenReturn(TOTAL_FEE);
         when(caseDataMock.getApplicationFee()).thenReturn(APPLICATION_FEE);
+        when(caseDataMock.getApplicationType()).thenReturn(ApplicationType.SOLICITOR);
 
         when(caseDetailsMock.getLastModified()).thenReturn(LAST_MODIFIED_STR);
 
@@ -255,7 +278,8 @@ public class CCDDataTransformerTest {
 
     private void assertBasic(CCDData ccdData) {
         assertEquals(SOLICITOR_FIRM_NAME, ccdData.getSolicitor().getFirmName());
-        assertEquals(SOLICITOR_FIRM_POSTCODE, ccdData.getSolicitor().getFirmPostcode());
+        assertEquals(SOLICITOR_FIRM_LINE1, ccdData.getSolicitor().getFirmAddress().getAddressLine1());
+        assertEquals(SOLICITOR_FIRM_POSTCODE, ccdData.getSolicitor().getFirmAddress().getPostCode());
         assertEquals(SOLICITOR_SOT_NAME, ccdData.getSolicitor().getFullname());
         assertEquals(SOLICITOR_SOT_JOB_TITLE, ccdData.getSolicitor().getJobRole());
         assertEquals(DECEASED_FIRSTNAME, ccdData.getDeceased().getFirstname());

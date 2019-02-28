@@ -25,11 +25,12 @@ import uk.gov.hmcts.probate.model.ccd.raw.EstateItem;
 import uk.gov.hmcts.probate.model.ccd.raw.LegalStatement;
 import uk.gov.hmcts.probate.model.ccd.raw.Payment;
 import uk.gov.hmcts.probate.model.ccd.raw.ProbateAliasName;
+import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.StopReason;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
-import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 
+import javax.validation.Valid;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -56,9 +57,8 @@ public class CaseData {
             message = "{solsSolicitorFirmNameIsNull}")
     private final String solsSolicitorFirmName;
 
-    @NotBlank(groups = {ApplicationCreatedGroup.class},
-            message = "{solsSolicitorFirmPostcodeIsNull}")
-    private final String solsSolicitorFirmPostcode;
+    @Valid
+    private final SolsAddress solsSolicitorAddress;
 
     @NotBlank(groups = {ApplicationCreatedGroup.class}, message = "{solsSolicitorAppReferenceIsNull}")
     private final String solsSolicitorAppReference;
@@ -75,9 +75,6 @@ public class CaseData {
     @NotBlank(groups = {ApplicationUpdatedGroup.class, AmendCaseDetailsGroup.class},
             message = "{deceasedSurnameIsNull}")
     private final String deceasedSurname;
-
-    @JsonProperty("legacy_case_type")
-    private final String legacyCaseType;
 
     @NotNull(groups = {ApplicationUpdatedGroup.class, AmendCaseDetailsGroup.class}, message = "{dodIsNull}")
     private final LocalDate deceasedDateOfDeath;
@@ -164,13 +161,19 @@ public class CaseData {
 
     @SuppressWarnings("squid:S1170")
     @Getter(lazy = true)
-    private final String boEmailDocsReceivedNotification = YES;
+    private final String boEmailDocsReceivedNotification = getDefaultValueForEmailNotifications();
 
     private final String boEmailGrantIssuedNotificationRequested;
 
     @SuppressWarnings("squid:S1170")
     @Getter(lazy = true)
-    private final String boEmailGrantIssuedNotification = YES;
+    private final String boEmailGrantIssuedNotification = getDefaultValueForEmailNotifications();
+
+    @SuppressWarnings("squid:S1170")
+    @Getter(lazy = true)
+    private final String boSendToBulkPrint = YES;
+
+    private final String boSendToBulkPrintRequested;
 
     //EVENT = review
     private final DocumentLink solsLegalStatementDocument;
@@ -365,7 +368,14 @@ public class CaseData {
     private final String totalFeePaperForm;
     private final String paperPaymentMethod;
     private final String paymentReferenceNumberPaperform;
+    private final String bulkPrintSendLetterId;
+    private final String bulkPrintPdfSize;
 
+    private final List<CollectionMember<CaseMatch>> legacySearchResultRows;
+
+    private final String legacyId;
+    private final String legacyType;
+    private final String legacyCaseViewUrl;
 
     @Getter(lazy = true)
     private final List<CollectionMember<AdditionalExecutor>> executorsApplyingForLegalStatement = getAllExecutors(true);
@@ -422,8 +432,16 @@ public class CaseData {
         return String.join(" ", primaryApplicantForenames, primaryApplicantSurname);
     }
 
+    public String getDefaultValueForEmailNotifications() {
+        return primaryApplicantEmailAddress == null && solsSolicitorEmail == null ? NO : YES;
+    }
+
     public boolean isDocsReceivedEmailNotificationRequested() {
         return YES.equals(getBoEmailDocsReceivedNotification());
+    }
+
+    public boolean isSendForBulkPrintingRequested() {
+        return YES.equals(getBoSendToBulkPrint());
     }
 
     public boolean isGrantIssuedEmailNotificationRequested() {

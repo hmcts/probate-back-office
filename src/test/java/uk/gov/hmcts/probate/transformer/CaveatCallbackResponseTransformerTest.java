@@ -61,6 +61,10 @@ public class CaveatCallbackResponseTransformerTest {
 
     private static final String CAV_MESSAGE_CONTENT = "";
 
+    private static final String CAV_LEGACY_ID = "12345";
+    private static final String CAV_LEGACY_CASE_URL = "someUrl";
+    private static final String CAV_LEGACY_CASE_TYPE = "someCaseType";
+
     @InjectMocks
     private CaveatCallbackResponseTransformer underTest;
 
@@ -91,10 +95,13 @@ public class CaveatCallbackResponseTransformerTest {
                 .caveatorEmailAddress(CAV_CAVEATOR_EMAIL_ADDRESS)
                 .caveatorAddress(CAV_CAVEATOR_ADDRESS)
                 .expiryDate(CAV_EXPIRY_DATE)
-                .messageContent(CAV_MESSAGE_CONTENT);
+                .messageContent(CAV_MESSAGE_CONTENT)
+                .legacyId(CAV_LEGACY_ID)
+                .legacyCaseViewUrl(CAV_LEGACY_CASE_URL)
+                .legacyType(CAV_LEGACY_CASE_TYPE);
 
-        when(caveatCallbackRequestMock.getCaveatDetails()).thenReturn(caveatDetailsMock);
-        when(caveatDetailsMock.getCaveatData()).thenReturn(caveatDataBuilder.build());
+        when(caveatCallbackRequestMock.getCaseDetails()).thenReturn(caveatDetailsMock);
+        when(caveatDetailsMock.getData()).thenReturn(caveatDataBuilder.build());
     }
 
     @Test
@@ -113,8 +120,8 @@ public class CaveatCallbackResponseTransformerTest {
         deceasedFullAliasNameList.add(an1);
         caveatDataBuilder.deceasedFullAliasNameList(deceasedFullAliasNameList);
 
-        when(caveatCallbackRequestMock.getCaveatDetails()).thenReturn(caveatDetailsMock);
-        when(caveatDetailsMock.getCaveatData()).thenReturn(caveatDataBuilder.build());
+        when(caveatCallbackRequestMock.getCaseDetails()).thenReturn(caveatDetailsMock);
+        when(caveatDetailsMock.getData()).thenReturn(caveatDataBuilder.build());
 
         CaveatCallbackResponse caveatCallbackResponse = underTest.transform(caveatCallbackRequestMock);
 
@@ -128,8 +135,8 @@ public class CaveatCallbackResponseTransformerTest {
         documents.add(createUploadDocuments("0"));
         caveatDataBuilder.documentsUploaded(documents);
 
-        when(caveatCallbackRequestMock.getCaveatDetails()).thenReturn(caveatDetailsMock);
-        when(caveatDetailsMock.getCaveatData()).thenReturn(caveatDataBuilder.build());
+        when(caveatCallbackRequestMock.getCaseDetails()).thenReturn(caveatDetailsMock);
+        when(caveatDetailsMock.getData()).thenReturn(caveatDataBuilder.build());
 
         CaveatCallbackResponse caveatCallbackResponse = underTest.transform(caveatCallbackRequestMock);
 
@@ -177,6 +184,10 @@ public class CaveatCallbackResponseTransformerTest {
 
         assertEquals(CAV_FORMATTED_EXPIRY_DATE, caveatCallbackResponse.getCaveatData().getExpiryDate());
         assertEquals(CAV_MESSAGE_CONTENT, caveatCallbackResponse.getCaveatData().getMessageContent());
+
+        assertEquals(CAV_LEGACY_ID, caveatCallbackResponse.getCaveatData().getLegacyId());
+        assertEquals(CAV_LEGACY_CASE_TYPE, caveatCallbackResponse.getCaveatData().getLegacyType());
+        assertEquals(CAV_LEGACY_CASE_URL, caveatCallbackResponse.getCaveatData().getLegacyCaseViewUrl());
     }
 
     private void assertApplicationType(CaveatCallbackResponse caveatCallbackResponse, ApplicationType cavApplicationType) {

@@ -109,5 +109,19 @@
    ]]></notes>
         <cve>CVE-2018-8088</cve>
     </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: postgresql-42.2.5.jar
+   ]]></notes>
+        <gav regex="true">^org\.postgresql:postgresql:.*$</gav>
+        <cve>CVE-2016-7048</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: postgresql-42.2.5.jar
+   ]]></notes>
+        <gav regex="true">^org\.postgresql:postgresql:.*$</gav>
+        <cve>CVE-2018-1115</cve>
+    </suppress>
 
 </suppressions>

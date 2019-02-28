@@ -2,6 +2,7 @@ package uk.gov.hmcts.probate.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,8 +12,11 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
+import uk.gov.hmcts.probate.service.EventValidationService;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
+import uk.gov.hmcts.probate.validator.EmailAddressNotificationValidationRule;
+import uk.gov.hmcts.probate.validator.EmailAddressNotifyValidationRule;
 import uk.gov.service.notify.NotificationClientException;
 
 import java.util.ArrayList;
@@ -30,30 +34,51 @@ public class NotificationController {
 
     private final NotificationService notificationService;
     private final CallbackResponseTransformer callbackResponseTransformer;
+    private final EventValidationService eventValidationService;
+    private final List<EmailAddressNotificationValidationRule> emailAddressNotificationValidationRules;
+    private final List<EmailAddressNotifyValidationRule> emailAddressNotifyValidationRules;
 
     @PostMapping(path = "/documents-received")
-    public ResponseEntity<CallbackResponse> sendDocumentReceivedNotification(@RequestBody CallbackRequest callbackRequest)
+    public ResponseEntity<CallbackResponse> sendDocumentReceivedNotification(
+            @Validated({EmailAddressNotificationValidationRule.class})
+            @RequestBody CallbackRequest callbackRequest)
             throws NotificationClientException {
+
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
         CaseData caseData = callbackRequest.getCaseDetails().getData();
+        CallbackResponse response;
 
         List<Document> documents = new ArrayList<>();
-
         if (caseData.isDocsReceivedEmailNotificationRequested()) {
-            Document documentsReceivedSentEmail = notificationService.sendEmail(DOCUMENTS_RECEIVED, caseDetails);
-            documents.add(documentsReceivedSentEmail);
-        }
+            response = eventValidationService.validateEmailRequest(callbackRequest, emailAddressNotificationValidationRules);
+            if (response.getErrors().isEmpty()) {
+                Document documentsReceivedSentEmail = notificationService.sendEmail(DOCUMENTS_RECEIVED, caseDetails);
+                documents.add(documentsReceivedSentEmail);
+                response = callbackResponseTransformer.addDocuments(callbackRequest, documents, null, null);
+            }
+        } else {
+            response = callbackResponseTransformer.addDocuments(callbackRequest, documents, null, null);
 
-        return ResponseEntity.ok(callbackResponseTransformer.addDocuments(callbackRequest, documents));
+        }
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping(path = "/case-stopped")
-    public ResponseEntity<CallbackResponse> sendCaseStoppedNotification(@RequestBody CallbackRequest callbackRequest)
+    public ResponseEntity<CallbackResponse> sendCaseStoppedNotification(
+            @Validated({EmailAddressNotifyValidationRule.class})
+            @RequestBody CallbackRequest callbackRequest)
             throws NotificationClientException {
+        CallbackResponse response;
+        Document document;
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
 
-        Document document = notificationService.sendEmail(CASE_STOPPED, caseDetails);
-
-        return ResponseEntity.ok(callbackResponseTransformer.caseStopped(callbackRequest, document));
+        response = eventValidationService.validateEmailRequest(callbackRequest, emailAddressNotifyValidationRules);
+        if (response.getErrors().isEmpty()) {
+            document = notificationService.sendEmail(CASE_STOPPED, caseDetails);
+            response = callbackResponseTransformer.caseStopped(callbackRequest, document);
+        }
+        return ResponseEntity.ok(response);
     }
+
+
 }

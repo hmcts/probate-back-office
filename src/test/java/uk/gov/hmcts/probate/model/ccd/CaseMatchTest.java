@@ -1,92 +1,85 @@
 package uk.gov.hmcts.probate.model.ccd;
 
-import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import uk.gov.hmcts.probate.model.CaseType;
-import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
-import uk.gov.hmcts.probate.model.ccd.raw.casematching.Case;
-import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
-
-import java.time.LocalDate;
+import uk.gov.hmcts.probate.model.ccd.raw.CaseLink;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.when;
+import static org.junit.Assert.assertNotEquals;
 
 public class CaseMatchTest {
 
-    @Mock
-    private Case caseMock;
+    @Test
+    public void shouldMatchByIdForDifferentRefs() {
 
-    @Mock
-    private CaseData caseData;
+        CaseMatch caseMatch1 = CaseMatch.builder()
+                .id("11111")
+                .caseLink(CaseLink.builder().caseReference("SomeRef1").build())
+                .build();
 
-    @Before
-    public void setUp() {
-        MockitoAnnotations.initMocks(this);
-        when(caseData.getDeceasedFullName()).thenReturn("Name");
+        CaseMatch caseMatch2 = CaseMatch.builder()
+                .id("11111")
+                .caseLink(CaseLink.builder().caseReference("SomeRef2").build())
+                .build();
 
-        when(caseMock.getData()).thenReturn(caseData);
+        assertEquals(caseMatch1, caseMatch2);
     }
 
     @Test
-    public void buildCaseMatchWithDoD() {
-        when(caseData.getDeceasedDateOfDeath()).thenReturn(LocalDate.of(2000, 1, 1));
-        CaseMatch caseMatch = CaseMatch.buildCaseMatch(caseMock, CaseType.LEGACY);
+    public void shouldMatchByIdForNullRefs() {
 
-        assertEquals("2000-01-01", caseMatch.getDod());
+        CaseMatch caseMatch1 = CaseMatch.builder()
+                .id("11111")
+                .build();
+
+        CaseMatch caseMatch2 = CaseMatch.builder()
+                .id("11111")
+                .build();
+
+        assertEquals(caseMatch1, caseMatch2);
     }
 
     @Test
-    public void buildCaseMatchWithoutDoD() {
-        CaseMatch caseMatch = CaseMatch.buildCaseMatch(caseMock, CaseType.LEGACY);
+    public void shouldMatchOnlyByCaseLinkRef() {
 
-        assertNull(caseMatch.getDod());
+        CaseMatch caseMatch1 = CaseMatch.builder()
+                .id("11111")
+                .caseLink(CaseLink.builder().caseReference("SomeRef1").build())
+                .build();
+
+        CaseMatch caseMatch2 = CaseMatch.builder()
+                .id("22222")
+                .caseLink(CaseLink.builder().caseReference("SomeRef1").build())
+                .build();
+
+        assertEquals(caseMatch1, caseMatch2);
     }
 
     @Test
-    public void buildCaseMatchWithAddress() {
-        when(caseData.getDeceasedAddress()).thenReturn(SolsAddress.builder().postCode("SW1 0ZZ").build());
-        CaseMatch caseMatch = CaseMatch.buildCaseMatch(caseMock, CaseType.LEGACY);
+    public void shouldNotMatchByIdOnly() {
 
-        assertEquals("SW1 0ZZ", caseMatch.getPostcode());
+        CaseMatch caseMatch1 = CaseMatch.builder()
+                .id("22222")
+                .build();
+
+        CaseMatch caseMatch2 = CaseMatch.builder()
+                .id("11111")
+                .build();
+
+        assertNotEquals(caseMatch1, caseMatch2);
     }
 
     @Test
-    public void buildCaseMatchWithoutAddress() {
-        CaseMatch caseMatch = CaseMatch.buildCaseMatch(caseMock, CaseType.LEGACY);
+    public void shouldNotMatchByCaseLinkRefOnly() {
 
-        assertNull(caseMatch.getPostcode());
+        CaseMatch caseMatch1 = CaseMatch.builder()
+                .caseLink(CaseLink.builder().caseReference("SomeRef1").build())
+                .build();
+
+        CaseMatch caseMatch2 = CaseMatch.builder()
+                .caseLink(CaseLink.builder().caseReference("SomeRef2").build())
+                .build();
+
+        assertNotEquals(caseMatch1, caseMatch2);
     }
 
-    @Test
-    public void legacyCaseDoesNotHaveCaseLink() {
-        when(caseMock.getId()).thenReturn(1234L);
-
-        CaseMatch caseMatch = CaseMatch.buildCaseMatch(caseMock, CaseType.LEGACY);
-
-        assertNull(caseMatch.getCaseLink());
-    }
-
-    @Test
-    public void notLegacyCaseHasCaseLink() {
-        when(caseMock.getId()).thenReturn(1234L);
-
-        CaseMatch caseMatch = CaseMatch.buildCaseMatch(caseMock, CaseType.GRANT_OF_REPRESENTATION);
-
-        assertNotNull(caseMatch.getCaseLink());
-    }
-
-    @Test
-    public void legacyCaseContainsLegacyCaseType() {
-        when(caseData.getLegacyCaseType()).thenReturn("CAVEAT");
-
-        CaseMatch caseMatch = CaseMatch.buildCaseMatch(caseMock, CaseType.LEGACY);
-
-        assertTrue(caseMatch.getType().contains("CAVEAT"));
-    }
 }

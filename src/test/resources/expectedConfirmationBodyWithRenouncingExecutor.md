@@ -1,7 +1,7 @@
 This probate application has now been submitted
 -------------------------------------------------
 
-Legal Service Ltd, SW1E 6EA
+Legal Service Ltd, Sols Add Line 1, SW1E 6EA, 
 
 Peter Crouch, Lawyer
 

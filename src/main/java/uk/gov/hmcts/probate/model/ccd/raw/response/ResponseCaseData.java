@@ -20,10 +20,10 @@ import uk.gov.hmcts.probate.model.ccd.raw.EstateItem;
 import uk.gov.hmcts.probate.model.ccd.raw.LegalStatement;
 import uk.gov.hmcts.probate.model.ccd.raw.Payment;
 import uk.gov.hmcts.probate.model.ccd.raw.ProbateAliasName;
+import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.StopReason;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
-import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -42,7 +42,7 @@ public class ResponseCaseData {
     private final String deceasedForenames;
     private final String deceasedSurname;
     private final String solsSolicitorFirmName;
-    private final String solsSolicitorFirmPostcode;
+    private final SolsAddress solsSolicitorAddress;
     private final String solsSolicitorEmail;
     private final String solsSolicitorPhoneNumber;
     private final String solsSOTName;
@@ -115,7 +115,6 @@ public class ResponseCaseData {
     private final LegalStatement legalStatement;
     private final Declaration declaration;
     private final String deceasedMarriedAfterWillOrCodicilDate;
-    //Todo remove PA specific attr
     private final String primaryApplicantPhoneNumber;
 
     private final String boExaminationChecklistQ2;
@@ -127,7 +126,6 @@ public class ResponseCaseData {
     private final String applicationSubmittedDate;
     private final List<CollectionMember<ScannedDocument>> scannedDocuments;
     private final String evidenceHandled;
-
 
     private final String caseType;
     private final String paperForm;
@@ -219,5 +217,16 @@ public class ResponseCaseData {
     private final String wholeBloodCousinsSurvivedOverEighteen;
     private final String wholeBloodCousinsSurvivedUnderEighteen;
 
+    private final String boSendToBulkPrint;
+    private final String boSendToBulkPrintRequested;
+
+    private final List<CollectionMember<CaseMatch>> legacySearchResultRows;
+
+    private final String legacyId;
+    private final String legacyType;
+    private final String legacyCaseViewUrl;
+
+    private final String bulkPrintSendLetterId;
+    private final String bulkPrintPdfSize;
 
 }
