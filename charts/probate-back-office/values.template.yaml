@@ -8,6 +8,11 @@ java:
     AUTH_PROVIDER_SERVICE_CLIENT_KEY: ${S2S_AUTH_TOTP_SECRET}
     NOTIFICATIONS_GOVNOTIFYAPIKEY: ${PROBATE_BO_NOTIFY_KEY}
     PDF_SERVICE_GRANTSIGNATUREBASE64: ${BO_GRANT_SIG_FIRST}${BO_GRANT_SIG_LAST}
+    PROBATE_POSTGRESQL_USER_VAL: probateman
+    PROBATE_POSTGRESQL_PASSWORD_VAL: probateman
+    PROBATE_POSTGRESQL_HOSTNAME_VAL: ${SERVICE_NAME}-postgres
+    PROBATE_POSTGRESQL_PORT_VAL: 5432
+    PROBATE_POSTGRESQL_DATABASE_VAL: probateman
   # Don't modify below here.
   image: ${IMAGE_NAME}
   ingressHost: ${SERVICE_FQDN}
@@ -50,13 +55,13 @@ ccd-elasticsearch:
         - caseworker-probate-examiner
 
 postgresql:
-  postgresqlUsername: probate
-  postgresqlPassword: probate
+  postgresqlUsername: probateman
+  postgresqlPassword: probateman
   postgresqlDatabase: user-profile
   nameOverride: postgres
   initdbScripts:
     init.sql: |-
-      CREATE DATABASE "probate" WITH OWNER = probate ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
+      CREATE DATABASE "probateman" WITH OWNER = probate ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
 
   persistence:
     enabled: false
