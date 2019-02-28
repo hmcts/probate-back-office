@@ -198,6 +198,7 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "caseMatches", "UserRole": "caseworker-probate-issuer", "CRUD": "RU"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "boSendToBulkPrint", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "boSendToBulkPrintRequested", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "recordId", "UserRole": "caseworker-probate-issuer", "CRUD": "CR"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "legacyId", "UserRole": "caseworker-probate-issuer", "CRUD": "CR"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "legacyType", "UserRole": "caseworker-probate-issuer", "CRUD": "CR"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "legacyCaseViewUrl", "UserRole": "caseworker-probate-issuer", "CRUD": "CR"},

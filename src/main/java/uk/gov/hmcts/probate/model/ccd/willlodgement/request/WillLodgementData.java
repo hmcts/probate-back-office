@@ -103,7 +103,7 @@ public class WillLodgementData {
     @Getter(lazy = true)
     private final String willDateFormatted = convertDate(willDate);
 
-    private final String legacyId;
+    private final String recordId;
     private final String legacyType;
     private final String legacyCaseViewUrl;
 

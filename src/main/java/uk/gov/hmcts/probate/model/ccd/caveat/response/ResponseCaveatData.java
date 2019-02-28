@@ -42,7 +42,7 @@ public class ResponseCaveatData {
     private final List<CollectionMember<UploadDocument>> documentsUploaded;
     private final List<CollectionMember<Document>> documentsGenerated;
 
-    private String legacyId;
+    private String recordId;
     private String legacyType;
     private String legacyCaseViewUrl;
 

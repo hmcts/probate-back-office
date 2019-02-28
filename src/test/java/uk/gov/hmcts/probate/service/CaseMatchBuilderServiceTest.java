@@ -93,9 +93,11 @@ public class CaseMatchBuilderServiceTest {
     public void shouldContainLegacyCaseType() {
         when(caseDataMock.getLegacyId()).thenReturn("1234");
         when(caseDataMock.getLegacyCaseType()).thenReturn("CAVEAT");
+        when(caseDataMock.getRecordId()).thenReturn("9876");
 
         CaseMatch caseMatch = caseMatchBuilderService.buildCaseMatch(caseMock);
 
         assertTrue(caseMatch.getType().contains("CAVEAT"));
+        assertEquals("9876", caseMatch.getRecordId());
     }
 }

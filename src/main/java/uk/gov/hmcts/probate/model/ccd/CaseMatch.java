@@ -10,6 +10,8 @@ import java.io.Serializable;
 @Builder
 public class CaseMatch implements Serializable {
     private final String id;
+    private final String recordId;
+    private final String ccdCaseId;
     private final String fullName;
     private final String aliases;
     private final String dob;
