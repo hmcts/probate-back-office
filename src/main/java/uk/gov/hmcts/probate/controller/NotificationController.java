@@ -54,10 +54,10 @@ public class NotificationController {
             if (response.getErrors().isEmpty()) {
                 Document documentsReceivedSentEmail = notificationService.sendEmail(DOCUMENTS_RECEIVED, caseDetails);
                 documents.add(documentsReceivedSentEmail);
-                response = callbackResponseTransformer.addDocuments(callbackRequest, documents);
+                response = callbackResponseTransformer.addDocuments(callbackRequest, documents, null, null);
             }
         } else {
-            response = callbackResponseTransformer.addDocuments(callbackRequest, documents);
+            response = callbackResponseTransformer.addDocuments(callbackRequest, documents, null, null);
 
         }
         return ResponseEntity.ok(response);

@@ -17,6 +17,7 @@ public class CaseData {
     private final String recordId;
     private final String legacyId;
     private final String ccdCaseId;
+    private final String legacyType;
     private final String deceasedForenames;
     private final String deceasedSurname;
     private final LocalDate deceasedDateOfDeath;

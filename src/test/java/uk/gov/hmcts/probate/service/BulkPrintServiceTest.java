@@ -1,6 +1,5 @@
 package uk.gov.hmcts.probate.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -10,18 +9,14 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.web.client.HttpClientErrorException;
-import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
-import uk.gov.hmcts.probate.model.evidencemanagement.EvidenceManagementFileUpload;
 import uk.gov.hmcts.probate.service.client.DocumentStoreClient;
-import uk.gov.hmcts.probate.service.template.pdf.PDFGeneratorService;
 import uk.gov.hmcts.reform.authorisation.generators.ServiceAuthTokenGenerator;
 import uk.gov.hmcts.reform.sendletter.api.LetterWithPdfsRequest;
 import uk.gov.hmcts.reform.sendletter.api.SendLetterApi;
@@ -59,19 +54,11 @@ public class BulkPrintServiceTest {
     @Mock
     private DocumentStoreClient documentStoreClientMock;
 
-    @Mock
-    private PDFGeneratorService pdfGeneratorServiceMock;
-
-    @Mock
-    private ObjectMapper objectMapperMock;
 
     @Before
     public void setUp() throws Exception {
         when(authTokenGeneratorMock.generate()).thenReturn("authToken");
         when(documentStoreClientMock.retrieveDocument(any(Document.class), anyString())).thenReturn(new byte[256]);
-        when(pdfGeneratorServiceMock.generatePdf(any(DocumentType.class), anyString()))
-                .thenReturn(new EvidenceManagementFileUpload(MediaType.APPLICATION_PDF, new byte[256]));
-        when(objectMapperMock.writeValueAsString(any(Object.class))).thenReturn("");
     }
 
     @Test
@@ -91,7 +78,13 @@ public class BulkPrintServiceTest {
         DocumentLink documentLink = DocumentLink.builder()
                 .documentUrl("http://localhost")
                 .build();
-        Document document = Document.builder()
+        Document grant = Document.builder()
+                .documentFileName("test.pdf")
+                .documentGeneratedBy("test")
+                .documentDateAdded(LocalDate.now())
+                .documentLink(documentLink)
+                .build();
+        Document coverSheet = Document.builder()
                 .documentFileName("test.pdf")
                 .documentGeneratedBy("test")
                 .documentDateAdded(LocalDate.now())
@@ -100,7 +93,7 @@ public class BulkPrintServiceTest {
         UUID uuid = UUID.randomUUID();
         SendLetterResponse sendLetterResponse = new SendLetterResponse(uuid);
         when(sendLetterApiMock.sendLetter(anyString(), any(LetterWithPdfsRequest.class))).thenReturn(sendLetterResponse);
-        SendLetterResponse response =  bulkPrintService.sendToBulkPrint(callbackRequest, document);
+        SendLetterResponse response =  bulkPrintService.sendToBulkPrint(callbackRequest, grant, coverSheet);
 
         verify(sendLetterApiMock).sendLetter(anyString(), any(LetterWithPdfsRequest.class));
 
@@ -133,11 +126,17 @@ public class BulkPrintServiceTest {
                 .documentDateAdded(LocalDate.now())
                 .documentLink(documentLink)
                 .build();
+        Document coverSheet = Document.builder()
+                .documentFileName("test.pdf")
+                .documentGeneratedBy("test")
+                .documentDateAdded(LocalDate.now())
+                .documentLink(documentLink)
+                .build();
         UUID uuid = UUID.randomUUID();
         SendLetterResponse sendLetterResponse = new SendLetterResponse(uuid);
         when(sendLetterApiMock.sendLetter(anyString(), any(LetterWithPdfsRequest.class))).thenReturn(sendLetterResponse);
 
-        SendLetterResponse response = bulkPrintService.sendToBulkPrint(callbackRequest, document);
+        SendLetterResponse response = bulkPrintService.sendToBulkPrint(callbackRequest, document, coverSheet);
 
         verify(sendLetterApiMock).sendLetter(anyString(), any(LetterWithPdfsRequest.class));
 
@@ -169,10 +168,16 @@ public class BulkPrintServiceTest {
                 .documentDateAdded(LocalDate.now())
                 .documentLink(documentLink)
                 .build();
+        Document coverSheet = Document.builder()
+                .documentFileName("test.pdf")
+                .documentGeneratedBy("test")
+                .documentDateAdded(LocalDate.now())
+                .documentLink(documentLink)
+                .build();
 
         doThrow(new HttpClientErrorException(HttpStatus.BAD_REQUEST)).when(sendLetterApiMock)
                 .sendLetter(anyString(), any(LetterWithPdfsRequest.class));
-        SendLetterResponse response = bulkPrintService.sendToBulkPrint(callbackRequest, document);
+        SendLetterResponse response = bulkPrintService.sendToBulkPrint(callbackRequest, document, coverSheet);
 
         assertNull(response);
     }
@@ -201,11 +206,17 @@ public class BulkPrintServiceTest {
                 .documentDateAdded(LocalDate.now())
                 .documentLink(documentLink)
                 .build();
+        Document coverSheet = Document.builder()
+                .documentFileName("test.pdf")
+                .documentGeneratedBy("test")
+                .documentDateAdded(LocalDate.now())
+                .documentLink(documentLink)
+                .build();
 
         doThrow(new IOException("Error retrieving document from store with url"))
                 .when(documentStoreClientMock).retrieveDocument(any(Document.class), anyString());
 
-        SendLetterResponse response = bulkPrintService.sendToBulkPrint(callbackRequest, document);
+        SendLetterResponse response = bulkPrintService.sendToBulkPrint(callbackRequest, document, coverSheet);
 
         verify(documentStoreClientMock).retrieveDocument(any(Document.class), anyString());
     }

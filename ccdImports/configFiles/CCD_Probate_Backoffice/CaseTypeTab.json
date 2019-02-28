@@ -154,7 +154,36 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "notificationsTab", "TabLabel": "Notifications", "TabDisplayOrder": 8, "CaseFieldID": "boEmailDocsReceivedNotificationRequested", "TabFieldDisplayOrder": 1},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "notificationsTab", "TabLabel": "Notifications", "TabDisplayOrder": 8, "CaseFieldID": "boEmailGrantIssuedNotificationRequested", "TabFieldDisplayOrder": 2},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "notificationsTab", "TabLabel": "Notifications", "TabDisplayOrder": 8, "CaseFieldID": "boSendToBulkPrintRequested", "TabFieldDisplayOrder": 3},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "notificationsTab", "TabLabel": "Notifications", "TabDisplayOrder": 8, "CaseFieldID": "probateNotificationsGenerated", "TabFieldDisplayOrder": 4},
+  {
+    "LiveFrom": "01/01/2017",
+    "CaseTypeID": "GrantOfRepresentation",
+    "Channel": "CaseWorker",
+    "TabID": "notificationsTab",
+    "TabLabel": "Notifications",
+    "TabDisplayOrder": 8,
+    "CaseFieldID": "bulkPrintSendLetterId",
+    "TabFieldDisplayOrder": 4
+  },
+  {
+    "LiveFrom": "01/01/2017",
+    "CaseTypeID": "GrantOfRepresentation",
+    "Channel": "CaseWorker",
+    "TabID": "notificationsTab",
+    "TabLabel": "Notifications",
+    "TabDisplayOrder": 8,
+    "CaseFieldID": "bulkPrintPdfSize",
+    "TabFieldDisplayOrder": 5
+  },
+  {
+    "LiveFrom": "01/01/2017",
+    "CaseTypeID": "GrantOfRepresentation",
+    "Channel": "CaseWorker",
+    "TabID": "notificationsTab",
+    "TabLabel": "Notifications",
+    "TabDisplayOrder": 8,
+    "CaseFieldID": "probateNotificationsGenerated",
+    "TabFieldDisplayOrder": 6
+  },
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "caseMatchesTab", "TabLabel": "Case matches", "TabDisplayOrder": 9, "CaseFieldID": "caseMatches", "TabFieldDisplayOrder": 1},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "legacyCaseTab", "TabLabel": "Legacy details", "TabDisplayOrder": 10, "CaseFieldID": "recordId", "TabFieldDisplayOrder": 1, "TabShowCondition":  "recordId=\"*\""},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "legacyCaseTab", "TabLabel": "Legacy details", "TabDisplayOrder": 10, "CaseFieldID": "legacyType", "TabFieldDisplayOrder": 2},
