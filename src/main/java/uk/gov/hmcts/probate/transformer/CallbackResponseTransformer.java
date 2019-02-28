@@ -33,7 +33,9 @@ import java.util.stream.Collectors;
 import static java.util.Collections.EMPTY_LIST;
 import static java.util.Optional.ofNullable;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
+import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT;
 import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
 
@@ -78,13 +80,26 @@ public class CallbackResponseTransformer {
         return transformResponse(responseCaseData);
     }
 
-    public CallbackResponse addDocuments(CallbackRequest callbackRequest, List<Document> documents) {
+    public CallbackResponse addDocuments(CallbackRequest callbackRequest, List<Document> documents, String letterId, String pdfSize) {
         documents.forEach(document -> documentTransformer.addDocument(callbackRequest, document));
-
         ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), false);
-        if (documentTransformer.hasDocumentWithType(documents, DIGITAL_GRANT)) {
-            responseCaseDataBuilder.boEmailGrantIssuedNotificationRequested(
-                    callbackRequest.getCaseDetails().getData().getBoEmailGrantIssuedNotification());
+
+        if (documents.isEmpty()) {
+            responseCaseDataBuilder.boEmailDocsReceivedNotificationRequested(
+                    callbackRequest.getCaseDetails().getData().getBoEmailDocsReceivedNotification());
+
+        }
+        if (documentTransformer.hasDocumentWithType(documents, DIGITAL_GRANT)
+                || documentTransformer.hasDocumentWithType(documents, ADMON_WILL_GRANT)
+                || documentTransformer.hasDocumentWithType(documents, INTESTACY_GRANT)) {
+            responseCaseDataBuilder
+                    .boEmailGrantIssuedNotificationRequested(
+                            callbackRequest.getCaseDetails().getData().getBoEmailGrantIssuedNotification())
+                    .boSendToBulkPrintRequested(
+                            callbackRequest.getCaseDetails().getData().getBoSendToBulkPrint())
+                    .bulkPrintSendLetterId(letterId)
+                    .bulkPrintPdfSize(String.valueOf(pdfSize));
+
         }
         if (documentTransformer.hasDocumentWithType(documents, SENT_EMAIL)) {
             responseCaseDataBuilder.boEmailDocsReceivedNotificationRequested(
@@ -154,13 +169,6 @@ public class CallbackResponseTransformer {
                 .build();
 
         return transformResponse(responseCaseData);
-    }
-
-    public CallbackResponse transformWithBulkPrintComplete(CallbackRequest callbackRequest, String letterId) {
-        ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), false);
-        responseCaseDataBuilder.grantSentToPrint("Yes")
-                .letterId(letterId);
-        return transformResponse(responseCaseDataBuilder.build());
     }
 
     public CallbackResponse transformCase(CallbackRequest callbackRequest) {
@@ -282,7 +290,11 @@ public class CallbackResponseTransformer {
                 .evidenceHandled(caseData.getEvidenceHandled())
 
                 .paperForm(caseData.getPaperForm())
-                .caseType(caseData.getCaseType());
+                .caseType(caseData.getCaseType())
+
+                .legacyId(caseData.getLegacyId())
+                .legacyType(caseData.getLegacyType())
+                .legacyCaseViewUrl(caseData.getLegacyCaseViewUrl());
 
         if (transform) {
             updateCaseBuilderForTransformCase(caseData, builder);
@@ -292,9 +304,7 @@ public class CallbackResponseTransformer {
             updateCaseBuilder(caseData, builder);
         }
 
-        if (isPaperForm(caseData)) {
-            builder = getCaseCreatorResponseCaseBuilder(caseData, builder);
-        }
+        builder = getCaseCreatorResponseCaseBuilder(caseData, builder);
 
 
         return builder;
@@ -334,7 +344,6 @@ public class CallbackResponseTransformer {
                 .foreignAssetEstateValue(caseData.getForeignAssetEstateValue())
                 .adopted(caseData.getAdopted())
                 .adoptiveRelatives(caseData.getAdoptiveRelatives())
-                .caseType(caseData.getCaseType())
                 .spouseOrPartner(caseData.getSpouseOrPartner())
                 .childrenSurvived(caseData.getChildrenSurvived())
                 .childrenOverEighteenSurvived(caseData.getChildrenOverEighteenSurvived())
@@ -393,7 +402,10 @@ public class CallbackResponseTransformer {
                 .paperPaymentMethod(caseData.getPaperPaymentMethod())
                 .paymentReferenceNumberPaperform(caseData.getPaymentReferenceNumberPaperform())
                 .boSendToBulkPrint(caseData.getBoSendToBulkPrint())
-                .boSendToBulkPrintRequested(caseData.getBoSendToBulkPrintRequested());
+                .boSendToBulkPrintRequested(caseData.getBoSendToBulkPrintRequested())
+
+                .bulkPrintPdfSize(caseData.getBulkPrintPdfSize())
+                .bulkPrintSendLetterId(caseData.getBulkPrintSendLetterId());
 
         return builder;
     }

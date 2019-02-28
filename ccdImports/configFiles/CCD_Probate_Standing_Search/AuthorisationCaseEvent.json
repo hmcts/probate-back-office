@@ -1,0 +1,18 @@
+[
+  {"CaseTypeID": "StandingSearch", "CaseEventID": "createStandingSearch", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
+  {"CaseTypeID": "StandingSearch", "CaseEventID": "matchApplication", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
+  {"CaseTypeID": "StandingSearch", "CaseEventID": "noMatch", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
+  {"CaseTypeID": "StandingSearch", "CaseEventID": "matchApplicationForNoMatch", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
+  {"CaseTypeID": "StandingSearch", "CaseEventID": "grantAlreadyIssuedForNoMatch", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
+  {"CaseTypeID": "StandingSearch", "CaseEventID": "probateAppInProgressForNoMatch", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
+  {"CaseTypeID": "StandingSearch", "CaseEventID": "closeStandingSearchForNoMatch", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
+  {"CaseTypeID": "StandingSearch", "CaseEventID": "grantAlreadyIssuedForMatched", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
+  {"CaseTypeID": "StandingSearch", "CaseEventID": "probateAppInProgressForMatched", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
+  {"CaseTypeID": "StandingSearch", "CaseEventID": "matchApplicationForAwaitingProbateGrant", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
+  {"CaseTypeID": "StandingSearch", "CaseEventID": "grantAlreadyIssuedForAwaitingProbateGrant", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
+  {"CaseTypeID": "StandingSearch", "CaseEventID": "closeStandingSearchForAwaitingProbateGrant", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
+  {"CaseTypeID": "StandingSearch", "CaseEventID": "completeStandingSearch", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
+  {"CaseTypeID": "StandingSearch", "CaseEventID": "amendStandingSearch", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
+  {"CaseTypeID": "StandingSearch", "CaseEventID": "uploadDocument", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
+  {"CaseTypeID": "StandingSearch", "CaseEventID": "addComment", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"}
+]

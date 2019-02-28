@@ -76,9 +76,6 @@ public class CaseData {
             message = "{deceasedSurnameIsNull}")
     private final String deceasedSurname;
 
-    @JsonProperty("legacy_case_type")
-    private final String legacyCaseType;
-
     @NotNull(groups = {ApplicationUpdatedGroup.class, AmendCaseDetailsGroup.class}, message = "{dodIsNull}")
     private final LocalDate deceasedDateOfDeath;
 
@@ -371,7 +368,14 @@ public class CaseData {
     private final String totalFeePaperForm;
     private final String paperPaymentMethod;
     private final String paymentReferenceNumberPaperform;
+    private final String bulkPrintSendLetterId;
+    private final String bulkPrintPdfSize;
 
+    private final List<CollectionMember<CaseMatch>> legacySearchResultRows;
+
+    private final String legacyId;
+    private final String legacyType;
+    private final String legacyCaseViewUrl;
 
     @Getter(lazy = true)
     private final List<CollectionMember<AdditionalExecutor>> executorsApplyingForLegalStatement = getAllExecutors(true);

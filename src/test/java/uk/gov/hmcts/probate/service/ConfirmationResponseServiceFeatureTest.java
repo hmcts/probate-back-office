@@ -17,6 +17,7 @@ import uk.gov.hmcts.probate.model.ccd.Solicitor;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.response.AfterSubmitCallbackResponse;
 import uk.gov.hmcts.probate.util.TestUtils;
+import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -64,6 +65,9 @@ public class ConfirmationResponseServiceFeatureTest {
 
     @MockBean
     private AppInsights appInsights;
+
+    @MockBean
+    private CoreCaseDataApi coreCaseDataApi;
 
     @Test
     public void shouldGenerateCorrectConfirmationBodyWithNoAdditionalOptions() throws Exception {

@@ -9,6 +9,8 @@ public class Registry {
     private String emailReplyToId;
     private String addressLine1;
     private String addressLine2;
+    private String addressLine3;
+    private String addressLine4;
     private String town;
     private String postcode;
 }

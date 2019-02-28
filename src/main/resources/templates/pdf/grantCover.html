@@ -63,7 +63,6 @@
     {% if case_details.case_data.applicationType == "Solicitor" %}
     <tr>
         <td colspan="1" class="legal-subheader">
-            {% if case_details.case_data.solsSOTName != null %}{{case_details.case_data.solsSOTName}}<br/>{% endif %}
             {% if case_details.case_data.solsSolicitorFirmName != null %}{{case_details.case_data.solsSolicitorFirmName}}<br/>{% endif %}
             {% if case_details.case_data.solsSolicitorAddress.AddressLine1 != null and case_details.case_data.solsSolicitorAddress.AddressLine1 != "" %}{{case_details.case_data.solsSolicitorAddress.AddressLine1}}<br/>{% endif %}
             {% if case_details.case_data.solsSolicitorAddress.AddressLine2 != null and case_details.case_data.solsSolicitorAddress.AddressLine2 != "" %}{{case_details.case_data.solsSolicitorAddress.AddressLine2}}<br/>{% endif %}

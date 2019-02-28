@@ -1,53 +1,53 @@
 version: '2.1'
-networks:
-  default: {}
+#networks:
+#  default: {}
 services:
-  send-letter-service:
-    image: hmcts.azurecr.io/hmcts/rpe-send-letter-service:latest
-    container_name: send-letter-service
-    environment:
-    - APPINSIGHTS_INSTRUMENTATIONKEY=DUMMY
-    - SERVER_PORT=8485
-    - FTP_FINGERPRINT=fingerprint
-    - FTP_HOSTNAME=hostname
-    - FTP_PORT=22
-    - FTP_PRIVATE_KEY=private
-    - FTP_PUBLIC_KEY=public
-    - FTP_REPORTS_FOLDER=/reports/
-    - FTP_TARGET_FOLDER=/target/
-    - FTP_USER=user
-    - LETTER_TRACKING_DB_PASSWORD=letter_tracking
-    - LETTER_TRACKING_DB_USER_NAME=letter_tracking
-    - S2S_URL=http://service-auth-provider-api:8080
-    - SCHEDULING_ENABLED
-    - SPRING_FLYWAY_ENABLED=false
-    - ENCRYPTION_ENABLED
-    - ENCRYPTION_PUBLIC_KEY=DUMMY
-    # these environment variables are used by java-logging library
-    - ROOT_APPENDER
-    - JSON_CONSOLE_PRETTY_PRINT
-    - ROOT_LOGGING_LEVEL
-    - REFORM_SERVICE_NAME
-    - REFORM_TEAM
-    - REFORM_ENVIRONMENT
-    - LETTER_TRACKING_DB_HOST=shared-database
-    - LETTER_TRACKING_DB_NAME=letter_tracking
-    - LETTER_TRACKING_DB_PORT=5432
-    ports:
-    - 8485:8485
-    links:
-    - shared-database
-    depends_on:
-      shared-database:
-        condition: service_healthy
-
-  flyway:
-    image: boxfuse/flyway:5.2.1
-    command: -url=jdbc:postgresql://shared-database:5432/letter_tracking -user=letter_tracking -password=letter_tracking -connectRetries=60 migrate
-    volumes:
-    - ./flyway/sql/:/flyway/sql
-    depends_on:
-    - shared-database
+#  send-letter-service:
+#    image: hmcts.azurecr.io/hmcts/rpe-send-letter-service:latest
+#    container_name: send-letter-service
+#    environment:
+#    - APPINSIGHTS_INSTRUMENTATIONKEY=DUMMY
+#    - SERVER_PORT=8485
+#    - FTP_FINGERPRINT=fingerprint
+#    - FTP_HOSTNAME=hostname
+#    - FTP_PORT=22
+#    - FTP_PRIVATE_KEY=private
+#    - FTP_PUBLIC_KEY=public
+#    - FTP_REPORTS_FOLDER=/reports/
+#    - FTP_TARGET_FOLDER=/target/
+#    - FTP_USER=user
+#    - LETTER_TRACKING_DB_PASSWORD=letter_tracking
+#    - LETTER_TRACKING_DB_USER_NAME=letter_tracking
+#    - S2S_URL=http://service-auth-provider-api:8080
+#    - SCHEDULING_ENABLED
+#    - SPRING_FLYWAY_ENABLED=false
+#    - ENCRYPTION_ENABLED
+#    - ENCRYPTION_PUBLIC_KEY=DUMMY
+#    # these environment variables are used by java-logging library
+#    - ROOT_APPENDER
+#    - JSON_CONSOLE_PRETTY_PRINT
+#    - ROOT_LOGGING_LEVEL
+#    - REFORM_SERVICE_NAME
+#    - REFORM_TEAM
+#    - REFORM_ENVIRONMENT
+#    - LETTER_TRACKING_DB_HOST=shared-database
+#    - LETTER_TRACKING_DB_NAME=letter_tracking
+#    - LETTER_TRACKING_DB_PORT=5432
+#    ports:
+#    - 8485:8485
+#    links:
+#    - shared-database
+#    depends_on:
+#      shared-database:
+#        condition: service_healthy
+#
+#  flyway:
+#    image: boxfuse/flyway:5.2.1
+#    command: -url=jdbc:postgresql://shared-database:5432/letter_tracking -user=letter_tracking -password=letter_tracking -connectRetries=60 migrate
+#    volumes:
+#    - ./flyway/sql/:/flyway/sql
+#    depends_on:
+#    - shared-database
 
   service-auth-provider-api:
     image: hmcts/service-auth-provider-app
@@ -300,8 +300,8 @@ services:
       - REFORM_TEAM=ccd
       - REFORM_ENVIRONMENT=local
       - APPINSIGHTS_INSTRUMENTATIONKEY=fake-key
-      - ELASTIC_SEARCH_ENABLED=false
-      - ELASTIC_SEARCH_FAIL_ON_IMPORT=false
+      - ELASTIC_SEARCH_ENABLED=true
+      - ELASTIC_SEARCH_FAIL_ON_IMPORT=true
       - ELASTIC_SEARCH_HOST=elasticsearch
     ports:
       - 4451:4451
@@ -334,7 +334,7 @@ services:
         - REFORM_TEAM=ccd
         - REFORM_ENVIRONMENT=local
         - APPINSIGHTS_INSTRUMENTATIONKEY=fake-key
-        - CCD_DM_DOMAIN=http://dm-store:8080
+        - CCD_DM_DOMAIN=http://localhost:8080
         - CCD_DEFAULTPRINTURL=http://localhost:3100/jurisdictions/:jid/case-types/:ctid/cases/:cid
         - ELASTIC_SEARCH_HOSTS=http://elasticsearch:9200
         - ELASTIC_SEARCH_DATA_NODES_HOSTS=http://elasticsearch:9200
@@ -384,8 +384,8 @@ services:
       - PROXY_DEFINITION_DATA=http://ccd-definition-store-api:4451/api/data
       - PROXY_DEFINITION_DISPLAY=http://ccd-definition-store-api:4451/api/display
       # this NEEDS to be your local ip address
-      - PROXY_PRINT_SERVICE=http://docker.for.mac.localhost:3100
-      - PROXY_DOCUMENT_MANAGEMENT=http://dm-store:8080
+      - PROXY_PRINT_SERVICE=http://10.99.3.29:3100
+      - PROXY_DOCUMENT_MANAGEMENT=http://localhost:8080
     ports:
       - 3453:3453
     depends_on:
@@ -403,6 +403,8 @@ services:
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:6.3.0
     container_name: elasticsearch
+    environment:
+      ES_JAVA_OPTS: "-Xms256m -Xmx256m"
     ports:
       - 9200:9200
       - 9300:9300
@@ -417,6 +419,25 @@ services:
       LS_JAVA_OPTS: "-Xmx256m -Xms256m"
     depends_on:
       - elasticsearch
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:6.3.0
+    container_name: kibana
+    ports:
+      - 5601:5601
+    depends_on:
+      - elasticsearch
+
+  probate-man-database:
+    build:
+      context: ../docker/probateman
+    ports:
+      - 5344:5432
+    healthcheck:
+      test: psql -c 'select 1' -d postgres -U postgres
+      retries: 2
+    mem_limit: 160m
+    memswap_limit: 0
 
 volumes:
   shared-database-data:

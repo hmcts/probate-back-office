@@ -17,8 +17,8 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     private static final String SOLICITOR_INFO1 = "Extracted by Solicitor Firm Name (Ref: 1231-3984-3949-0300) SolAddLn1, SolAddLn2, SolAddLn3, ";
     private static final String SOLICITOR_INFO2 = "SolAddPT, SolAddCounty, KT10 0LA, SolAddCo";
     private static final String REGISTRY_ADDRESS = "High Court of Justice England and Wales Birmingham District Probate Registry The Priory Courts33 Bull StreetBirminghamB4 6DU0121 681 3401";
-    private static final String LONDON_REGISTRY_ADDRESS = "High Court of Justice England and Wales London District Probate Registry Principal Registry of the Family Division First Avenue House42-49 High HolbornLondonWC1V 6NP020 7421 8509";
-    private static final String CTSC_REGISTRY_ADDRESS = "High Court of Justice England and Wales Principal Registry of the Family Division Manchester Civil Justice Centre Ground Floor1 Bridge Street West PO Box 4240ManchesterM60 1WJ0300 303 0648";
+    private static final String LONDON_REGISTRY_ADDRESS = "High Court of Justice England and WalesPrincipal Registry of the Family DivisionFirst Avenue House42-49 High HolbornLondonWC1V 6NP020 7421 8509 ";
+    private static final String CTSC_REGISTRY_ADDRESS = "High Court of Justice England and Wales Principal Registry of the Family Division Manchester Civil Justice CentreGround Floor1 Bridge Street WestPO Box 4240ManchesterM60 1WJ0300 303 0648";
     private static final String PA = "Extracted personally";
     private static final String PRIMARY_APPLICANT = "Executor Name 1 Executor Last Name 1";
     private static final String WILL_MESSAGE = "with a codicil";
@@ -29,9 +29,9 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     private static final String POWER_RESERVED_SINGLE = "Power reserved to another Executor";
     private static final String TITLE = "Captain";
     private static final String HONOURS = "OBE";
-    private static final String ADD_EXEC_ONE = "and ADD EX FIRST NAME 1 ADD EX LAST NAME 1";
-    private static final String ADD_EXEC_ONE_PRIMARY_APPLICANT = "ADD EX FIRST NAME 1 ADD EX LAST NAME 1";
-    private static final String ADD_EXEC_TWO = "and ADD EX FIRST NAME 2 ADD EX LAST NAME 2";
+    private static final String ADD_EXEC_ONE = "and Add Ex First Name 1 Add Ex Last Name 1";
+    private static final String ADD_EXEC_ONE_PRIMARY_APPLICANT = "Add Ex First Name 1 Add Ex Last Name 1";
+    private static final String ADD_EXEC_TWO = "and Add Ex First Name 2 Add Ex Last Name 2";
     private static final String DOD = "1st January 2000";
     private static final String IHT_NET = "8,000";
     private static final String IHT_GROSS = "10,000";
@@ -67,7 +67,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     public void verifySolicitorGenerateAdmonWillGrantDraftShouldReturnOkResponseCode() {
         validatePostSuccess("solicitorPayloadNotificationsAdmonWill.json", "/document/generate-grant-draft");
     }
-    
+
 
     @Test
     public void verifyPersonalApplicantGenerateGrantShouldReturnOkResponseCode() {
@@ -485,5 +485,8 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     }
 
-
+    @Test
+    public void verifyWillLodgementDepositReceiptShouldReturnOkResponseCode() {
+        validatePostSuccess("willLodgementPayload.json", "/document/generate-deposit-receipt");
+    }
 }

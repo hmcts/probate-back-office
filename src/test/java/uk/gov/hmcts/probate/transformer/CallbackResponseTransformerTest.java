@@ -155,6 +155,10 @@ public class CallbackResponseTransformerTest {
     private static final String ADMIN_CLAUSE_LIMITATION = "Admin Clause Limitation";
     private static final String TOTAL_FEE = "6600";
 
+    private static final String LEGACY_ID = "12345";
+    private static final String LEGACY_CASE_URL = "someUrl";
+    private static final String LEGACY_CASE_TYPE = "someCaseType";
+
     private static final LocalDateTime scannedDate = LocalDateTime.parse("2018-01-01T12:34:56.123");
     private static final List<CollectionMember<Payment>> PAYMENTS_LIST = Arrays.asList(
             new CollectionMember<Payment>("id",
@@ -270,7 +274,10 @@ public class CallbackResponseTransformerTest {
                 .boExaminationChecklistQ1(YES)
                 .boExaminationChecklistQ2(YES)
                 .boExaminationChecklistRequestQA(YES)
-                .scannedDocuments(SCANNED_DOCUMENTS_LIST);
+                .scannedDocuments(SCANNED_DOCUMENTS_LIST)
+                .legacyId(LEGACY_ID)
+                .legacyType(LEGACY_CASE_TYPE)
+                .legacyCaseViewUrl(LEGACY_CASE_URL);
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
@@ -335,7 +342,7 @@ public class CallbackResponseTransformerTest {
                 .documentType(DIGITAL_GRANT_DRAFT)
                 .build();
 
-        CallbackResponse callbackResponse = underTest.addDocuments(callbackRequestMock, Arrays.asList(document));
+        CallbackResponse callbackResponse = underTest.addDocuments(callbackRequestMock, Arrays.asList(document), null, null);
 
         assertCommon(callbackResponse);
 
@@ -391,7 +398,7 @@ public class CallbackResponseTransformerTest {
         Document grantIssuedSentEmail = Document.builder().documentType(SENT_EMAIL).build();
 
         CallbackResponse callbackResponse = underTest.addDocuments(callbackRequestMock,
-                Arrays.asList(grantDocument, grantIssuedSentEmail));
+                Arrays.asList(grantDocument, grantIssuedSentEmail), null, null);
 
         assertCommon(callbackResponse);
 
@@ -406,12 +413,29 @@ public class CallbackResponseTransformerTest {
     public void shouldAddDocumentToProbateNotificationsGenerated() {
         Document documentsReceivedSentEmail = Document.builder().documentType(SENT_EMAIL).build();
 
-        CallbackResponse callbackResponse = underTest.addDocuments(callbackRequestMock, Arrays.asList(documentsReceivedSentEmail));
+        CallbackResponse callbackResponse = underTest.addDocuments(callbackRequestMock,
+                Arrays.asList(documentsReceivedSentEmail), null, null);
 
         assertCommon(callbackResponse);
 
         assertEquals(1, callbackResponse.getData().getProbateNotificationsGenerated().size());
         assertEquals(documentsReceivedSentEmail, callbackResponse.getData().getProbateNotificationsGenerated().get(0).getValue());
+    }
+
+    @Test
+    public void shouldAddNoDocumentButSetNotificationRequested() {
+        List<Document> documents = new ArrayList<>();
+
+        CaseData caseData = caseDataBuilder
+                .solsSolicitorEmail(null)
+                .primaryApplicantEmailAddress(null)
+                .boEmailDocsReceivedNotificationRequested(NO)
+                .build();
+        when(caseDetailsMock.getData()).thenReturn(caseData);
+
+        CallbackResponse callbackResponse = underTest.addDocuments(callbackRequestMock, documents, null, null);
+
+        assertEquals("No", callbackResponse.getData().getBoEmailDocsReceivedNotification());
     }
 
     @Test
@@ -973,20 +997,6 @@ public class CallbackResponseTransformerTest {
         assertEquals("Yes", callbackResponse.getData().getBoSendToBulkPrint());
     }
 
-    @Test
-    public void shouldTransformWithBulkPrintComplete() {
-        caseDataBuilder.applicationType(ApplicationType.PERSONAL);
-        caseDataBuilder.caseType(null);
-
-        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
-        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-
-        CallbackResponse callbackResponse = underTest.transformWithBulkPrintComplete(callbackRequestMock, "random");
-
-        assertEquals("random", callbackResponse.getData().getLetterId());
-        assertEquals("Yes", callbackResponse.getData().getGrantSentToPrint());
-    }
-
     private CollectionMember<ProbateAliasName> createdDeceasedAliasName(String id, String forename, String lastname, String onGrant) {
         ProbateAliasName pan = ProbateAliasName.builder()
                 .appearOnGrant(onGrant)
@@ -1166,6 +1176,10 @@ public class CallbackResponseTransformerTest {
         assertEquals(YES, callbackResponse.getData().getBoExaminationChecklistRequestQA());
         
         assertEquals(SCANNED_DOCUMENTS_LIST, callbackResponse.getData().getScannedDocuments());
+
+        assertEquals(LEGACY_ID, callbackResponse.getData().getLegacyId());
+        assertEquals(LEGACY_CASE_TYPE, callbackResponse.getData().getLegacyType());
+        assertEquals(LEGACY_CASE_URL, callbackResponse.getData().getLegacyCaseViewUrl());
     }
 
     private void assertApplicationType(CallbackResponse callbackResponse, ApplicationType applicationType) {

@@ -1,0 +1,30 @@
+{
+  "probateManCase": {
+    "type": "Caveat",
+    "Dnm Ind": "N",
+    "Caveat Number": "CAV_01",
+    "Probate Number": "PRO_01",
+    "Deceased Id": 1,
+    "Deceased Surname": "[SURNAME_REPLACE]",
+    "Deceased Forenames": "[FORENAME_REPLACE]",
+    "Probate Version": 1,
+    "Date Of Birth": "1900-01-01",
+    "Date Of Death": "2018-01-01",
+    "Alias Names": "[ALIAS_REPLACE]",
+    "Caveat Type": "CAV_TYPE_1",
+    "Caveat Date Of Entry": "2018-01-01",
+    "Cav Date Last Extended": "2018-01-01",
+    "Cav Expiry Date": "2019-01-01",
+    "Cav With Drawn Date": "2018-02-01",
+    "Caveator Title": "Mr",
+    "Caveator Honours": "Sir",
+    "Caveator Forenames": "CavFN1 CavFN2",
+    "Caveator Surname": "CavSN",
+    "Cav Solicitor Name": "CavSolName",
+    "Cav Service Address": "CavServiceAddress",
+    "Cav Dx Number": "DX-1",
+    "Cav Dx Exchange": "DX-EX-1",
+    "Caveat Text": "Caveat Text",
+    "Caveat Event Text": "Caveat Event Text"
+  }
+}

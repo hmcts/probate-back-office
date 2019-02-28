@@ -54,4 +54,9 @@ public class ResponseWillLodgementData {
     private final ProbateAddress deceasedAddress;
 
     private final List<CollectionMember<CaseMatch>> caseMatches;
+
+    private final String legacyId;
+    private final String legacyType;
+    private final String legacyCaseViewUrl;
+
 }

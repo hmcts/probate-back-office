@@ -1,0 +1,27 @@
+{
+  "probateManCase": {
+    "type": "Standing Search",
+    "Dnm Ind": "N",
+    "Ss Number": "SS-01",
+    "Probate Number": "PRO-01",
+    "Probate Version": 1,
+    "Deceased Id": 1,
+    "Deceased Forenames": "[FORENAME_REPLACE]",
+    "Deceased Surname": "[SURNAME_REPLACE]",
+    "Date Of Birth": "1900-01-01",
+    "Deceased Address": "DeadAddL1, DeadAddL2, DeadAddL3, DeadCity, DeadCountry, DeadPC",
+    "Applicant Address": "AppAddL1, AppAddL2, AppAddL3, AppCity, AppCountry, AppPC",
+    "Registry Reg Location Code": 1,
+    "Ss Applicant Forename": "SSFN",
+    "Ss Applicant Surname": "SSSN",
+    "Ss Applicant Honours": "Sir",
+    "Ss Applicant Title": "Mr",
+    "Date Of Death 1": "2018-01-01",
+    "Ss Date Last Extended": "2018-01-01",
+    "Ss Date Of Entry": "2018-01-01",
+    "Ss Date Of Expiry": "2018-01-01",
+    "Ss Withdrawn Date": "2018-01-01",
+    "Standing Search Text": "SS-Text",
+    "Alias Names": "[ALIAS_REPLACE]"
+  }
+}
