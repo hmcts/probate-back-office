@@ -100,5 +100,4 @@ public class CaseMatchBuilderServiceTest {
         assertTrue(caseMatch.getType().contains("CAVEAT"));
         assertEquals("9876", caseMatch.getRecordId());
     }
-
 }
