@@ -49,3 +49,14 @@ ccd-elasticsearch:
         - citizen
         - caseworker-probate-examiner
 
+postgresql:
+  postgresqlUsername: probate
+  postgresqlPassword: probate
+  postgresqlDatabase: user-profile
+  nameOverride: postgres
+  initdbScripts:
+    init.sql: |-
+      CREATE DATABASE "probate" WITH OWNER = probate ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
+
+  persistence:
+    enabled: false
