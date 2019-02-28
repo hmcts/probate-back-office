@@ -8,6 +8,8 @@
   {"CaseTypeID": "Caveat", "CaseEventID": "createCasePaymentFailedMultiple", "UserRole": "caseworker-probate-issuer", "CRUD": "R"},
   {"CaseTypeID": "Caveat", "CaseEventID": "createCasePaymentSuccess", "UserRole": "caseworker-probate-issuer", "CRUD": "R"},
   {"CaseTypeID": "Caveat", "CaseEventID": "raiseCaveat", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
+  {"CaseTypeID": "Caveat", "CaseEventID": "importCaveat", "UserRole": "caseworker-probate-issuer", "CRUD": "CR"},
+  {"CaseTypeID": "Caveat", "CaseEventID": "amendCaveatForImport", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
   {"CaseTypeID": "Caveat", "CaseEventID": "emailCaveatorForCaveatRaised", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
   {"CaseTypeID": "Caveat", "CaseEventID": "caveatMatch", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
   {"CaseTypeID": "Caveat", "CaseEventID": "emailCaveatorForCaveatMatching", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
