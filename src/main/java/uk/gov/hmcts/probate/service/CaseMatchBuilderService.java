@@ -3,8 +3,6 @@ package uk.gov.hmcts.probate.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import uk.gov.hmcts.probate.insights.AppInsights;
-import uk.gov.hmcts.probate.insights.AppInsightsEvent;
 import uk.gov.hmcts.probate.model.CaseType;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
 import uk.gov.hmcts.probate.model.ccd.raw.AliasName;
@@ -30,8 +28,6 @@ public class CaseMatchBuilderService {
 
     @Value("${printservice.legacyPath}")
     private String printServiceLegacyPath;
-
-    private final AppInsights appInsights;
 
     CaseMatch buildCaseMatch(Case c) {
         CaseMatch.CaseMatchBuilder caseMatchBuilder = getCaseMatchBuilder(c);
@@ -63,9 +59,16 @@ public class CaseMatchBuilderService {
                 caseMatchBuilder.aliases(aliases);
             }
         } else {
-            caseMatchBuilder.type(LEGACY.getName() + " " + c.getData().getLegacyCaseType());
+            LegacyCaseType legacyCaseType;
+            try {
+                legacyCaseType = LegacyCaseType.getByLegacyCaseTypeName(c.getData().getLegacyType());
+            } catch (IllegalArgumentException e) {
+                legacyCaseType = LegacyCaseType.getByLegacyCaseTypeName(LEGACY.getName() + " " + c.getData().getLegacyCaseType());
+            }
+
+            caseMatchBuilder.type(LEGACY.getName() + " " + legacyCaseType.getName());
             caseMatchBuilder.id(c.getData().getLegacyId());
-            caseMatchBuilder.legacyCaseViewUrl(buildLegacyCaseViewUrl(c));
+            caseMatchBuilder.legacyCaseViewUrl(buildLegacyCaseUrl(c.getData().getLegacyId(), legacyCaseType));
             caseMatchBuilder.aliases(c.getData().getLegacySearchAliasNames());
             if (c.getData().getCcdCaseId() != null) {
                 caseMatchBuilder.caseLink(CaseLink.builder().caseReference(c.getData().getCcdCaseId()).build());
@@ -75,21 +78,7 @@ public class CaseMatchBuilderService {
         return caseMatchBuilder;
     }
 
-    private String buildLegacyCaseViewUrl(Case c) {
-        String id = c.getData().getLegacyId();
-        String legacyCaseTypeName = LEGACY.getName() + " " + c.getData().getLegacyCaseType();
-        return buildLegacyCaseUrl(id, legacyCaseTypeName);
-    }
-
-    public String buildLegacyCaseUrl(String id, String legacyCaseTypeName) {
-        LegacyCaseType legacyCaseType;
-        try {
-            legacyCaseType = LegacyCaseType.getByLegacyCaseTypeName(legacyCaseTypeName);
-        } catch (IllegalArgumentException e) {
-            appInsights.trackEvent(AppInsightsEvent.ILLEGAL_ARGUMENT_EXCEPTION, legacyCaseTypeName);
-            throw e;
-        }
-
+    public String buildLegacyCaseUrl(String id, LegacyCaseType legacyCaseType) {
         String urlTemplate = printServiceHost + printServiceLegacyPath;
         return String.format(urlTemplate, legacyCaseType.getProbateManType().toString(), id);
     }
