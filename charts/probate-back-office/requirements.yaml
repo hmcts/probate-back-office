@@ -5,4 +5,6 @@ dependencies:
   - name: ccd-elasticsearch
     version: 0.4.1
     repository: '@hmcts'
-    
+  - name: postgresql
+    version: ~2.6.5
+    repository: '@stable'
