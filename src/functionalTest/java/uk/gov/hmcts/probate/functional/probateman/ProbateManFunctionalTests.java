@@ -76,7 +76,7 @@ public class ProbateManFunctionalTests extends IntegrationTestBase {
 
     private JdbcTemplate jdbcTemplate;
 
-    private List<Map> legacySearchResultRows;
+    private List<Object> legacySearchResultRows;
 
     private Map<String, Object> requestMap;
 
@@ -120,6 +120,9 @@ public class ProbateManFunctionalTests extends IntegrationTestBase {
         deceasedSurname = RandomStringUtils.randomAlphanumeric(10) + "_SN";
         deceasedAlias = RandomStringUtils.randomAlphanumeric(10) + "_ALIAS" + " " + RandomStringUtils.randomAlphanumeric(10);
 
+        System.out.println("DECEASED FORENAME: " + deceasedForename);
+        System.out.println("DECEASED SURNAME: " + deceasedSurname);
+
         generateSqlAndExecute(deceasedForename, deceasedSurname, deceasedAlias, "/scripts/legacy_search_" + caseTypeFilename + "_insert.sql");
     }
 
@@ -150,9 +153,9 @@ public class ProbateManFunctionalTests extends IntegrationTestBase {
     public void shouldDoLegacySearch() throws Exception {
         final String legacySearchQuery = getRequestJson(deceasedForename, deceasedSurname);
 
-        await().until(() -> getLegacySearchRows(legacySearchQuery));
+        await().atMost(10, SECONDS).until(() -> !getLegacySearchRows(legacySearchQuery).isEmpty());
         assertThat(legacySearchResultRows, hasSize(1));
-        Map<String, Object> legacySearchResultRow = ((Map<String, Object>) legacySearchResultRows.get(0).get("value"));
+        Map<String, Object> legacySearchResultRow = (Map<String, Object>) ((Map<String, Object>) legacySearchResultRows.get(0)).get("value");
 
         String id = (String) legacySearchResultRow.get("id");
         assertThat(legacySearchResultRow.get("id"), notNullValue());
@@ -214,7 +217,7 @@ public class ProbateManFunctionalTests extends IntegrationTestBase {
         return sql;
     }
 
-    private boolean getLegacySearchRows(String legacySearchQuery) {
+    private List<Object> getLegacySearchRows(String legacySearchQuery) {
         JsonPath jsonPath = SerenityRest.given()
             .relaxedHTTPSValidation()
             .headers(headers)
@@ -228,6 +231,6 @@ public class ProbateManFunctionalTests extends IntegrationTestBase {
         jsonPath.prettyPrint();
         requestMap = jsonPath.getMap("");
         legacySearchResultRows = jsonPath.getList("data.legacySearchResultRows");
-        return legacySearchResultRows.size() > 0;
+        return legacySearchResultRows;
     }
 }
