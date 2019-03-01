@@ -61,7 +61,7 @@ public class CaseMatchBuilderService {
             }
         } else {
             LegacyCaseType legacyCaseType = getLegacyCaseType(c.getData());
-            caseMatchBuilder.type(LEGACY.getName() + " " + legacyCaseType.getName());
+            caseMatchBuilder.type(legacyCaseType.getName());
             caseMatchBuilder.id(c.getData().getLegacyId());
             caseMatchBuilder.recordId((c.getData().getRecordId()));
             caseMatchBuilder.legacyCaseViewUrl(buildLegacyCaseUrl(c.getData().getLegacyId(), legacyCaseType));
