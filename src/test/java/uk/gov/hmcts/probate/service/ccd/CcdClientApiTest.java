@@ -45,7 +45,7 @@ public class CcdClientApiTest {
     public void shouldCreateCase() {
         CcdCaseType ccdCaseType = CcdCaseType.GRANT_OF_REPRESENTATION;
         CaseData caseData = CaseData.builder().build();
-        EventId eventId = EventId.APPLY_FOR_GRANT;
+        EventId eventId = EventId.IMPORT_GOR_CASE;
         SecurityDTO securityDTO = SecurityDTO.builder()
             .authorisation(AUTHORISATION)
             .serviceAuthorisation(SERVICE_AUTHORISATION)

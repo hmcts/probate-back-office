@@ -1,6 +1,6 @@
 [
   {"CaseTypeID": "LegacySearch", "CaseFieldID": "createDummyCaseText", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
-  {"CaseTypeID": "LegacySearch", "CaseFieldID": "legacyId", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
+  {"CaseTypeID": "LegacySearch", "CaseFieldID": "recordId", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
   {"CaseTypeID": "LegacySearch", "CaseFieldID": "deceasedForenames", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
   {"CaseTypeID": "LegacySearch", "CaseFieldID": "deceasedSurname", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
   {"CaseTypeID": "LegacySearch", "CaseFieldID": "deceasedDateOfBirth", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},

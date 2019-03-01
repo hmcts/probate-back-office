@@ -26,6 +26,7 @@ public interface StandingSearchMapper extends ProbateManMapper<StandingSearch, S
     @Mapping(target = "applicantSurname", source = "ssApplicantSurname")
     @Mapping(target = "applicantAddress.addressLine1", source = "applicantAddress")
     @Mapping(target = "expiryDate", source = "ssDateOfExpiry")
+    @Mapping(target = "recordId", source = "ssNumber")
     @Mapping(target = "legacyId", source = "id")
     @Mapping(target = "legacyType", expression = "java(LegacyCaseType.STANDING_SEARCH.getName())")
     @Mapping(target = "legacyCaseViewUrl", source = "standingSearch", qualifiedBy = {ToLegacyCaseViewUrl.class})
