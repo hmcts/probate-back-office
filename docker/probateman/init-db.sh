@@ -13,7 +13,7 @@ EOSQL
 psql -U probate_man -d probate_man  <<-EOSQL
 CREATE TABLE STANDING_SEARCHES_FLAT
 (
-ID	bigint	,Pra
+ID	bigint	,
 SS_NUMBER   	varchar(11)	,
 PROBATE_NUMBER   	varchar(11)	,
 PROBATE_VERSION 	int	,
