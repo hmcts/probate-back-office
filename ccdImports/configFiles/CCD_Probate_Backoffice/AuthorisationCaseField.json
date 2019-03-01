@@ -195,7 +195,7 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "notApplicableForThisCaseType2", "UserRole": "caseworker-probate-issuer", "CRUD": "R"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "notApplicableForThisCaseType3", "UserRole": "caseworker-probate-issuer", "CRUD": "R"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "caseType", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
-  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "caseMatches", "UserRole": "caseworker-probate-issuer", "CRUD": "RU"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "caseMatches", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "boSendToBulkPrint", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "boSendToBulkPrintRequested", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "recordId", "UserRole": "caseworker-probate-issuer", "CRUD": "CR"},
