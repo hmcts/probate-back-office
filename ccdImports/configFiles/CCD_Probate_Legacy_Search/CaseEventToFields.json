@@ -1,6 +1,6 @@
 [
   {"LiveFrom": "01/01/2017", "CaseTypeID": "LegacySearch", "CaseEventID": "createDummy", "CaseFieldID": "createDummyCaseText", "PageFieldDisplayOrder": 1, "DisplayContext": "READONLY", "PageID": "createDummyCasePage1", "PageLabel": "Create Dummy Case", "PageDisplayOrder": 1, "ShowSummaryChangeOption": "n"},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "LegacySearch", "CaseEventID": "legacySearch", "CaseFieldID": "legacyId", "PageFieldDisplayOrder": 2, "DisplayContext": "OPTIONAL", "PageID": "legacySearchCriteria", "PageLabel": "Search for legacy case", "PageDisplayOrder": 1, "ShowSummaryChangeOption": "n","CallBackURLMidEvent": "http://${CCD_DEF_CASE_SERVICE_BASE_URL}/legacy/search",
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "LegacySearch", "CaseEventID": "legacySearch", "CaseFieldID": "recordId", "PageFieldDisplayOrder": 2, "DisplayContext": "OPTIONAL", "PageID": "legacySearchCriteria", "PageLabel": "Search for legacy case", "PageDisplayOrder": 1, "ShowSummaryChangeOption": "n","CallBackURLMidEvent": "http://${CCD_DEF_CASE_SERVICE_BASE_URL}/legacy/search",
     "__EMPTY": "http:///legacy/search"},
   {
     "LiveFrom": "01/01/2017",
@@ -29,7 +29,7 @@
     "PageDisplayOrder": 2,
     "ShowSummaryChangeOption": "n",
     "CallBackURLMidEvent": "http://${CCD_DEF_CASE_SERVICE_BASE_URL}/legacy/doImport",
-    "__EMPTY": "http:///legacy/doImport"
+    "RetriesTimeoutURLMidEvent": 1
   },
   {"LiveFrom": "01/01/2017", "CaseTypeID": "LegacySearch", "CaseEventID": "legacySearch", "CaseFieldID": "doNotSaveCase", "PageFieldDisplayOrder": 2, "DisplayContext": "READONLY", "PageID": "legacySearchResultsPage2", "PageLabel": "Search results", "PageDisplayOrder": 3, "ShowSummaryChangeOption": "n"}
 ]

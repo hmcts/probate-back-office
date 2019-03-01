@@ -1,15 +1,16 @@
 [
   {"LiveFrom": "01/01/2017", "ID": "CaseMatch", "ListElementCode": "type", "FieldType": "Text", "ElementLabel": "Type", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "ID": "CaseMatch", "ListElementCode": "id", "FieldType": "Text", "ElementLabel": "Id", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "CaseMatch", "ListElementCode": "recordId", "FieldType": "Text", "ElementLabel": "ProbateMan Id", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "CaseMatch", "ListElementCode": "fullName", "FieldType": "Text", "ElementLabel": "Full names", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "CaseMatch", "ListElementCode": "aliases", "FieldType": "Text", "ElementLabel": "Aliases", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "CaseMatch", "ListElementCode": "dob", "FieldType": "Text", "ElementLabel": "DOB", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "CaseMatch", "ListElementCode": "dod", "FieldType": "Text", "ElementLabel": "DOD", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "CaseMatch", "ListElementCode": "postcode", "FieldType": "Text", "ElementLabel": "Postcode", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "ID": "CaseMatch", "ListElementCode": "valid", "FieldType": "Text", "ElementLabel": "valid", "FieldShowCondition": "id=\"NeverShowThisFIled\"", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "ID": "CaseMatch", "ListElementCode": "comment", "FieldType": "Text", "ElementLabel": "Comment", "FieldShowCondition": "id=\"NeverShowThisFIled\"", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "ID": "CaseMatch", "ListElementCode": "ccdCaseId", "FieldType": "Text", "ElementLabel": "CCD Case No", "FieldShowCondition": "id=\"NeverShowThisFIled\"", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "ID": "CaseMatch", "ListElementCode": "caseLink", "FieldType": "CaseLink", "ElementLabel": "Case Link", "FieldShowCondition": "id=\"NeverShowThisFIled\"", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "ID": "CaseMatch", "ListElementCode": "legacyCaseViewUrl", "FieldType": "Text", "ElementLabel": "Case Url", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "CaseMatch", "ListElementCode": "valid", "FieldType": "Text", "ElementLabel": "valid", "FieldShowCondition": "id=\"NeverShowThisField\"", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "CaseMatch", "ListElementCode": "comment", "FieldType": "Text", "ElementLabel": "Comment", "FieldShowCondition": "id=\"NeverShowThisField\"", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "CaseMatch", "ListElementCode": "ccdCaseId", "FieldType": "Text", "ElementLabel": "CCD Case No", "FieldShowCondition": "id=\"NeverShowThisField\"", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "CaseMatch", "ListElementCode": "caseLink", "FieldType": "CaseLink", "ElementLabel": "Case Link", "FieldShowCondition": "id=\"NeverShowThisField\"", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "CaseMatch", "ListElementCode": "id", "FieldType": "Text", "ElementLabel": "Legacy Id", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "CaseMatch", "ListElementCode": "legacyCaseViewUrl", "FieldType": "Text", "ElementLabel": "Legacy Case Url", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "CaseMatch", "ListElementCode": "doImport", "FieldType": "YesOrNo", "ElementLabel": "Do import?", "SecurityClassification": "Public"}
 ]

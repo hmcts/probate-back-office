@@ -5,6 +5,8 @@
   {"CaseTypeID": "WillLodgement", "CaseEventID": "amendWilLodgement", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
   {"CaseTypeID": "WillLodgement", "CaseEventID": "uploadDocument", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
   {"CaseTypeID": "WillLodgement", "CaseEventID": "addComment", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
+  {"CaseTypeID": "WillLodgement", "CaseEventID": "importWill", "UserRole": "caseworker-probate-issuer", "CRUD": "CR"},
+  {"CaseTypeID": "WillLodgement", "CaseEventID": "amendWilForImport", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
   {"CaseTypeID": "WillLodgement", "CaseEventID": "generateDepositReceipt", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
   {"CaseTypeID": "WillLodgement", "CaseEventID": "createWillLodgment", "UserRole": "caseworker-probate-caseadmin", "CRUD": "CRUD"},
   {"CaseTypeID": "WillLodgement", "CaseEventID": "matchApplication", "UserRole": "caseworker-probate-caseadmin", "CRUD": "CRUD"},

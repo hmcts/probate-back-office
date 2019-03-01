@@ -82,7 +82,7 @@ public class WillLodgementCallbackResponseTransformer {
                 .documentsGenerated(willLodgementData.getDocumentsGenerated())
                 .documentsUploaded(willLodgementData.getDocumentsUploaded())
 
-                .legacyId(willLodgementData.getLegacyId())
+                .recordId(willLodgementData.getRecordId())
                 .legacyCaseViewUrl(willLodgementData.getLegacyCaseViewUrl())
                 .legacyType(willLodgementData.getLegacyType());
 

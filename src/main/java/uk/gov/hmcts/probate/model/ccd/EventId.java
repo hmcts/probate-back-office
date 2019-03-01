@@ -6,10 +6,10 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum EventId {
 
-    APPLY_FOR_GRANT("applyForGrant"),
-    RAISE_CAVEAT("raiseCaveat"),
-    CREATE_STANDING_SEARCH("createStandingSearch"),
-    CREATE_WILL_LODGEMENT("createWillLodgment");
+    IMPORT_GOR_CASE("boImportGrant"),
+    IMPORT_CAVEAT("importCaveat"),
+    IMPORT_STANDING_SEARCH("importSS"),
+    IMPORT_WILL_LODGEMENT("importWill");
 
     @Getter
     private final String name;
