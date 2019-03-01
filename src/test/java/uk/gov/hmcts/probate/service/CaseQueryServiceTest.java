@@ -13,8 +13,8 @@ import org.springframework.web.client.RestTemplate;
 import uk.gov.hmcts.probate.config.CCDDataStoreAPIConfiguration;
 import uk.gov.hmcts.probate.exception.CaseMatchingException;
 import uk.gov.hmcts.probate.insights.AppInsights;
-import uk.gov.hmcts.probate.model.ccd.raw.request.Case;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCases;
 import uk.gov.hmcts.probate.service.evidencemanagement.header.HttpHeadersFactory;
 
@@ -30,6 +30,8 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
 public class CaseQueryServiceTest {
+
+    private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
 
     @Mock
     private RestTemplate restTemplate;
@@ -59,7 +61,9 @@ public class CaseQueryServiceTest {
         CaseData caseData = CaseData.builder()
                 .deceasedSurname("Smith")
                 .build();
-        List<Case> caseList = new ImmutableList.Builder<Case>().add(new Case(caseData, 1L)).build();
+        List<CaseDetails> caseList = new ImmutableList.Builder<CaseDetails>().add(new CaseDetails(caseData,
+                LAST_MODIFIED, 1L))
+                .build();
         ReturnedCases returnedCases = new ReturnedCases(caseList);
 
         when(restTemplate.postForObject(any(), any(), any())).thenReturn(returnedCases);
@@ -69,7 +73,7 @@ public class CaseQueryServiceTest {
 
     @Test
     public void findCasesWithDatedDocumentReturnsCaseList() throws IOException {
-        List<Case> cases = caseQueryService.findCasesWithDatedDocument("Test",
+        List<CaseDetails> cases = caseQueryService.findCasesWithDatedDocument("Test",
                 "testDate");
 
         assertEquals(1, cases.size());
@@ -79,7 +83,7 @@ public class CaseQueryServiceTest {
 
     @Test
     public void findCasesWithDateRangeReturnsCaseList() {
-        List<Case> cases = caseQueryService.findCaseStateWithinTimeFrame("digitalGrant",
+        List<CaseDetails> cases = caseQueryService.findCaseStateWithinTimeFrame("digitalGrant",
                 "2019-02-05", "2019-02-22");
 
         assertEquals(1, cases.size());

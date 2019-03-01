@@ -8,5 +8,5 @@ import java.util.List;
 public class ReturnedCases {
 
     @JsonProperty(value = "cases")
-    private final List<Case> cases;
+    private final List<CaseDetails> cases;
 }
