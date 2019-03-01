@@ -384,7 +384,7 @@ services:
       - PROXY_DEFINITION_DATA=http://ccd-definition-store-api:4451/api/data
       - PROXY_DEFINITION_DISPLAY=http://ccd-definition-store-api:4451/api/display
       # this NEEDS to be your local ip address
-      - PROXY_PRINT_SERVICE=http://10.99.3.91:3100
+      - PROXY_PRINT_SERVICE=http://10.99.2.139:3100
       - PROXY_DOCUMENT_MANAGEMENT=http://localhost:8080
     ports:
       - 3453:3453
@@ -438,6 +438,27 @@ services:
       retries: 2
     mem_limit: 160m
     memswap_limit: 0
+
+#  logstash-probateman:
+#    build: logstash-probateman/.
+#    container_name: logstash-probateman
+#    command: bash -c "bin/logstash-plugin install logstash-filter-json_encode  && docker-entrypoint -e"
+#    volumes:
+#      - ./logstash-probateman/config/logstash.yml:/usr/share/logstash/config/logstash.yml:ro
+#      - ./../logstash:/usr/share/logstash/pipeline:ro
+#    environment:
+#      - DB_URL=jdbc:postgresql://probate-man-database:5432/probate_man
+#      - DB_USER=probate_man
+#      - DB_PWD=probate_man
+#      - ES_DATA_NODES_URL=elasticsearch
+#    depends_on:
+#      - elasticsearch
+#      - probate-man-database
+#      - ccd-api-gateway
+#      - ccd-definition-store-api
+#      - ccd-case-management-web
+#      - ccd-user-profile-api
+#      - ccd-data-store-api
 
 volumes:
   shared-database-data:
