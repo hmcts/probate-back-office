@@ -59,6 +59,9 @@ postgresql:
   postgresqlPassword: probateman
   postgresqlDatabase: probateman
   nameOverride: postgres
+  resources:
+    requests:
+      cpu: 25m
   initdbScripts:
     init.sql: |-
       CREATE DATABASE "probateman" WITH OWNER = probate ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
