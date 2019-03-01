@@ -11,6 +11,7 @@
         "PostCode": "KT10 0LA",
         "Country": "SolAddCo"
       },
+      "recordId": null,
       "solsSolicitorAppReference": "firmReference",
       "solsSolicitorEmail": "",
       "solsSolicitorPhoneNumber": null,
