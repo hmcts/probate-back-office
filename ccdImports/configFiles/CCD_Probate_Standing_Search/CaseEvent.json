@@ -1,17 +1,5 @@
 [
-  {
-    "LiveFrom": "01/01/2017",
-    "CaseTypeID": "StandingSearch",
-    "ID": "createStandingSearch",
-    "Name": "Create a standing search",
-    "Description": "Create a standing search",
-    "DisplayOrder": 1,
-    "PostConditionState": "StandingSearchCreated",
-    "CallBackURLAboutToSubmitEvent": "http://${CCD_DEF_CASE_SERVICE_BASE_URL}/standing-search/create",
-    "SecurityClassification": "Public",
-    "ShowSummary": "Y",
-    "EndButtonLabel": "Submit application"
-  },
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "StandingSearch", "ID": "createStandingSearch", "Name": "Create a standing search", "Description": "Create a standing search", "DisplayOrder": 1, "PostConditionState": "StandingSearchCreated", "CallBackURLAboutToSubmitEvent": "http://${CCD_DEF_CASE_SERVICE_BASE_URL}/standing-search/create", "SecurityClassification": "Public", "ShowSummary": "Y", "EndButtonLabel": "Submit application"},
   {
     "LiveFrom": "01/01/2017",
     "CaseTypeID": "StandingSearch",
@@ -65,5 +53,7 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "StandingSearch", "ID": "completeStandingSearch", "Name": "Complete standing search", "Description": "Complete standing search", "DisplayOrder": 13, "PreConditionState(s)": "ProcessingStandingSearch", "PostConditionState": "StandingSearchCompleted", "SecurityClassification": "Public", "ShowSummary": "N"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "StandingSearch", "ID": "amendStandingSearch", "Name": "Amend standing search", "Description": "Amend standing search", "DisplayOrder": 14, "PreConditionState(s)": "*", "PostConditionState": "*", "SecurityClassification": "Public", "ShowSummary": "Y"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "StandingSearch", "ID": "uploadDocument", "Name": "Upload document", "Description": "Upload document", "DisplayOrder": 15, "PreConditionState(s)": "*", "PostConditionState": "*", "SecurityClassification": "Public", "ShowSummary": "N"},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "StandingSearch", "ID": "addComment", "Name": "Add comment", "Description": "Add comment", "DisplayOrder": 16, "PreConditionState(s)": "*", "PostConditionState": "*", "SecurityClassification": "Public", "ShowSummary": "N"}
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "StandingSearch", "ID": "addComment", "Name": "Add comment", "Description": "Add comment", "DisplayOrder": 16, "PreConditionState(s)": "*", "PostConditionState": "*", "SecurityClassification": "Public", "ShowSummary": "N"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "StandingSearch", "ID": "importSS", "Name": "Import a case", "Description": "Import a case", "DisplayOrder": 17, "PostConditionState": "StandingSearchImported", "SecurityClassification": "Public", "ShowSummary": "N"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "StandingSearch", "ID": "amendStandingSearchForImport", "Name": "Amend Standing Search import", "Description": "Amend Standing Search import", "DisplayOrder": 18, "PreConditionState(s)": "StandingSearchImported", "PostConditionState": "StandingSearchCreated", "SecurityClassification": "Public", "ShowSummary": "N"}
 ]

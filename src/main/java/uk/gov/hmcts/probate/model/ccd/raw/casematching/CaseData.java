@@ -13,8 +13,11 @@ import java.util.List;
 @Builder
 @Data
 public class CaseData {
+    @JsonProperty("record_id")
+    private final String recordId;
     private final String legacyId;
     private final String ccdCaseId;
+    private final String legacyType;
     private final String deceasedForenames;
     private final String deceasedSurname;
     private final LocalDate deceasedDateOfDeath;

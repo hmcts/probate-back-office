@@ -40,7 +40,7 @@ public class ResponseStandingSearchData {
 
     private final List<CollectionMember<UploadDocument>> documentsUploaded;
 
-    private final String legacyId;
+    private final String recordId;
     private final String legacyType;
     private final String legacyCaseViewUrl;
 

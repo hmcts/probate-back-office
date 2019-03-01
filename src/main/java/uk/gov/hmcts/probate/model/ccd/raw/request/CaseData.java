@@ -374,6 +374,7 @@ public class CaseData {
 
     private final List<CollectionMember<CaseMatch>> legacySearchResultRows;
 
+    private final String recordId;
     private final String legacyId;
     private final String legacyType;
     private final String legacyCaseViewUrl;
