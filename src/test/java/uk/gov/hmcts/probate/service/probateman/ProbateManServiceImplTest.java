@@ -7,6 +7,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.data.jpa.repository.JpaRepository;
+import uk.gov.hmcts.probate.model.ccd.CcdCaseType;
 import uk.gov.hmcts.probate.model.probateman.Caveat;
 import uk.gov.hmcts.probate.model.probateman.GrantApplication;
 import uk.gov.hmcts.probate.model.probateman.ProbateManModel;
@@ -130,5 +131,16 @@ public class ProbateManServiceImplTest {
 
         assertThat(probateManModel, equalTo(grantApplication));
         verify(grantApplicationRepository, times(1)).findById(ID);
+    }
+
+    @Test
+    public void shouldRetrieveCCdCase() {
+        String caseType = GRANT_OF_REPRESENTATION.name();
+        Long legacyId = 1L;
+        Optional<CaseDetails> caseDetails = Optional.empty();
+        when(coreCaseDataService.retrieveCaseByLegacyId(caseType, legacyId, securityUtils.getSecurityDTO()))
+                .thenReturn(caseDetails);
+        assertThat(caseDetails, equalTo(probateManService.retrieveCCDCase(caseType, legacyId)));
+
     }
 }

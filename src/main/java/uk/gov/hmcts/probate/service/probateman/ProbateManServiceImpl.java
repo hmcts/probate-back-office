@@ -56,4 +56,10 @@ public class ProbateManServiceImpl implements ProbateManService {
                 securityUtils.getSecurityDTO()
         );
     }
+
+    @Override
+    public Optional<CaseDetails> retrieveCCDCase(String caseType, Long legacyId) {
+        return coreCaseDataService.retrieveCaseByLegacyId(caseType, legacyId, securityUtils.getSecurityDTO());
+
+    }
 }

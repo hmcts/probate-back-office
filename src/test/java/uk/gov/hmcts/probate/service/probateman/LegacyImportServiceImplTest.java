@@ -17,6 +17,7 @@ import uk.gov.hmcts.probate.repositories.GrantApplicationRepository;
 import uk.gov.hmcts.probate.service.LegacyImportService;
 import uk.gov.hmcts.probate.service.ProbateManService;
 
+import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -83,5 +84,54 @@ public class LegacyImportServiceImplTest {
         verify(grantApplicationMock).setCcdCaseNo("1111222233334444");
     }
 
+    @Test(expected = RuntimeException.class)
+    public void shouldThrowExceptionImportingLegacyCasesAndNoneFound() {
+        CaseMatch caseMatch = Mockito.mock(CaseMatch.class);
+        when(caseMatch.getType()).thenReturn(LegacyCaseType.GRANT_OF_REPRESENTATION.getName());
+        when(caseMatch.getDoImport()).thenReturn(DO_IMPORT_YES);
+        when(caseMatch.getLegacyCaseViewUrl()).thenReturn(LEGACY_CASE_URL);
+        CollectionMember<CaseMatch> memberRow = new CollectionMember<>(caseMatch);
+        List<CollectionMember<CaseMatch>> legacyRows = new ArrayList<>();
+        legacyRows.add(memberRow);
 
+        RuntimeException ste = Mockito.mock(RuntimeException.class);
+        when(probateManService.saveToCcd(LEGACY_ID, ProbateManType.GRANT_APPLICATION)).thenThrow(ste);
+
+        legacyImportService.importLegacyRows(legacyRows);
+    }
+
+    @Test
+    public void shouldFindCaseWShenImportingLegacyCasesForException() {
+        CaseMatch caseMatch = Mockito.mock(CaseMatch.class);
+        when(caseMatch.getType()).thenReturn(LegacyCaseType.GRANT_OF_REPRESENTATION.getName());
+        when(caseMatch.getDoImport()).thenReturn(DO_IMPORT_YES);
+        when(caseMatch.getLegacyCaseViewUrl()).thenReturn(LEGACY_CASE_URL);
+        CollectionMember<CaseMatch> memberRow = new CollectionMember<>(caseMatch);
+        List<CollectionMember<CaseMatch>> legacyRows = new ArrayList<>();
+        legacyRows.add(memberRow);
+
+        uk.gov.hmcts.reform.ccd.client.model.CaseDetails caseDetailsSaved =
+                Mockito.mock(uk.gov.hmcts.reform.ccd.client.model.CaseDetails.class);
+        when(caseDetailsSaved.getId()).thenReturn(CCD_CASE_ID);
+        RuntimeException ste = Mockito.mock(RuntimeException.class);
+        when(probateManService.saveToCcd(LEGACY_ID, ProbateManType.GRANT_APPLICATION)).thenThrow(ste);
+
+        when(probateManService.retrieveCCDCase(ProbateManType.GRANT_APPLICATION.getCcdCaseType().getName(), LEGACY_ID))
+                .thenReturn(Optional.of(caseDetailsSaved));
+
+        GrantApplicationRepository grantApplicationRepositoryMock = Mockito.mock(GrantApplicationRepository.class);
+        when(repositories.get(ProbateManType.GRANT_APPLICATION)).thenReturn(grantApplicationRepositoryMock);
+        GrantApplication grantApplicationMock = Mockito.mock(GrantApplication.class);
+        Optional<GrantApplication> grantApplicationOptional = Optional.of(grantApplicationMock);
+        when(grantApplicationRepositoryMock.findById(LEGACY_ID)).thenReturn(grantApplicationOptional);
+
+        List<CollectionMember<CaseMatch>> expectedCaseMatches = new ArrayList<>();
+        CaseMatch expectedCaseMatch = CaseMatch.builder().build();
+        expectedCaseMatches.add(new CollectionMember<CaseMatch>(null, expectedCaseMatch));
+
+        List<CaseMatch> legacyCaseMatches = legacyImportService.importLegacyRows(legacyRows);
+        assertThat(legacyCaseMatches.size(), equalTo(1));
+        verify(grantApplicationMock).setDnmInd("Y");
+        verify(grantApplicationMock).setCcdCaseNo("1111222233334444");
+    }
 }

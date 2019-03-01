@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.service.ccd;
 
+import com.google.common.collect.ImmutableMap;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -14,6 +15,9 @@ import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
 import uk.gov.hmcts.reform.ccd.client.model.CaseDataContent;
 import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
 import uk.gov.hmcts.reform.ccd.client.model.StartEventResponse;
+
+import java.util.Arrays;
+import java.util.Optional;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertThat;
@@ -91,4 +95,32 @@ public class CcdClientApiTest {
             eq(false),
             any(CaseDataContent.class));
     }
+
+    @Test
+    public void shouldRetrieveCase() {
+        CcdCaseType ccdCaseType = CcdCaseType.GRANT_OF_REPRESENTATION;
+        Long legacyId = 1L;
+        CaseDetails caseDetails = CaseDetails.builder().build();
+
+        when(coreCaseDataApi.searchForCaseworker(
+                any(String.class),
+                any(String.class),
+                any(String.class),
+                any(String.class),
+                any(String.class),
+                any(ImmutableMap.class))).thenReturn(Arrays.asList(caseDetails));
+
+        SecurityDTO securityDTO = SecurityDTO.builder()
+                .authorisation(AUTHORISATION)
+                .serviceAuthorisation(SERVICE_AUTHORISATION)
+                .userId(USER_ID)
+                .build();
+
+        Optional<CaseDetails> actualCaseDetails = ccdClientApi.retrieveCaseByLegacyId(ccdCaseType.getName(), legacyId, securityDTO);
+
+        assertThat(actualCaseDetails.get(), equalTo(caseDetails));
+
+
+    }
+
 }
