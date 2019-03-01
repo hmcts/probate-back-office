@@ -36,6 +36,7 @@
         "AddressLine2": "",
         "AddressLine3": ""
       },
+      "paperForm": "no",
       "deceasedAnyOtherNames": "No",
       "solsFeeAccountNumber": "1234",
       "willHasCodicils": "No",

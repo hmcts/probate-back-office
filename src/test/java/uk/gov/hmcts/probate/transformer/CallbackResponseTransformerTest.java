@@ -622,6 +622,7 @@ public class CallbackResponseTransformerTest {
     public void shouldTransformCaseForSolicitorWithSolsExecsExists() {
         caseDataBuilder.applicationType(ApplicationType.SOLICITOR);
         caseDataBuilder.recordId(null);
+        caseDataBuilder.paperForm("No");
 
         List<CollectionMember<AdditionalExecutor>> additionalExecsList = new ArrayList<>();
         additionalExecsList.add(createSolsAdditionalExecutor("0", NO, STOP_REASON));
