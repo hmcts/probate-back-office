@@ -11,6 +11,7 @@
     "PostConditionState": "WillLodged",
     "CallBackURLAboutToStartEvent": "http://${CCD_DEF_CASE_SERVICE_BASE_URL}/case-matching/search-from-will-lodgement-flow",
     "CallBackURLAboutToSubmitEvent": "http://${CCD_DEF_CASE_SERVICE_BASE_URL}/case-matching/import-legacy-from-will-lodgement-flow",
+    "RetriesTimeoutURLAboutToSubmitEvent": "1",
     "SecurityClassification": "Public",
     "ShowSummary": "Y"
   },
