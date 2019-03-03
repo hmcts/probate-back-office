@@ -69,6 +69,7 @@
     "PostConditionState": "BOCaseMatchingExamining",
     "CallBackURLAboutToStartEvent": "http://${CCD_DEF_CASE_SERVICE_BASE_URL}/case-matching/search-from-grant-flow",
     "CallBackURLAboutToSubmitEvent": "http://${CCD_DEF_CASE_SERVICE_BASE_URL}/case-matching/import-legacy-from-grant-flow",
+    "RetriesTimeoutURLAboutToSubmitEvent": "1",
     "SecurityClassification": "Public",
     "ShowSummary": "N"
   },
@@ -130,6 +131,7 @@
     "PostConditionState": "BOCaseMatchingIssueGrant",
     "CallBackURLAboutToStartEvent": "http://${CCD_DEF_CASE_SERVICE_BASE_URL}/case-matching/search-from-grant-flow",
     "CallBackURLAboutToSubmitEvent": "http://${CCD_DEF_CASE_SERVICE_BASE_URL}/case-matching/import-legacy-from-grant-flow",
+    "RetriesTimeoutURLAboutToSubmitEvent": "1",
     "SecurityClassification": "Public",
     "ShowSummary": "N"
   },
@@ -162,6 +164,7 @@
     "PostConditionState": "BOCaseMatchingIssueGrant",
     "CallBackURLAboutToStartEvent": "http://${CCD_DEF_CASE_SERVICE_BASE_URL}/case-matching/search-from-grant-flow",
     "CallBackURLAboutToSubmitEvent": "http://${CCD_DEF_CASE_SERVICE_BASE_URL}/case-matching/import-legacy-from-grant-flow",
+    "RetriesTimeoutURLAboutToSubmitEvent": "1",
     "SecurityClassification": "Public",
     "ShowSummary": "N"
   },
@@ -210,6 +213,7 @@
     "PostConditionState": "BOExamining",
     "CallBackURLAboutToStartEvent": "http://${CCD_DEF_CASE_SERVICE_BASE_URL}/case-matching/search-from-grant-flow",
     "CallBackURLAboutToSubmitEvent": "http://${CCD_DEF_CASE_SERVICE_BASE_URL}/case-matching/import-legacy-from-grant-flow",
+    "RetriesTimeoutURLAboutToSubmitEvent": "1",
     "SecurityClassification": "Public",
     "ShowSummary": "N"
   },
@@ -224,6 +228,7 @@
     "PostConditionState": "BOCaseStopped",
     "CallBackURLAboutToStartEvent": "http://${CCD_DEF_CASE_SERVICE_BASE_URL}/case-matching/search-from-grant-flow",
     "CallBackURLAboutToSubmitEvent": "http://${CCD_DEF_CASE_SERVICE_BASE_URL}/case-matching/import-legacy-from-grant-flow",
+    "RetriesTimeoutURLAboutToSubmitEvent": "1",
     "SecurityClassification": "Public",
     "ShowSummary": "N"
   },
@@ -238,6 +243,7 @@
     "PostConditionState": "BOCaseMatchingIssueGrant",
     "CallBackURLAboutToStartEvent": "http://${CCD_DEF_CASE_SERVICE_BASE_URL}/case-matching/search-from-grant-flow",
     "CallBackURLAboutToSubmitEvent": "http://${CCD_DEF_CASE_SERVICE_BASE_URL}/case-matching/import-legacy-from-grant-flow",
+    "RetriesTimeoutURLAboutToSubmitEvent": "1",
     "SecurityClassification": "Public",
     "ShowSummary": "N"
   },
