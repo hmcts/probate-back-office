@@ -24,10 +24,55 @@ public class HealthConfiguration {
     @Value("${idam.service.host}")
     private String idamServiceHost;
 
+    @Value("${evidence.management.host}")
+    private String evidenceManagementHost;
+
+    @Value("${printservice.internal.host}")
+    private String printServiceInternalHost;
+
+    @Value("${ccd.gateway.host}")
+    private String ccdGatewayHost;
+
+    @Value("${core_case_data.api.url}")
+    private String ccdApiUrl;
+
+    @Bean
+    public SolsHealthIndicator pdfServiceHealthIndicator() {
+        return new SolsHealthIndicator(pdfServiceConfiguration.getUrl(), restTemplate, HEALTH_ENDPOINT);
+    }
+
+    @Bean
+    public SolsHealthIndicator feeServiceHealthIndicator() {
+        return new SolsHealthIndicator(feeServiceConfiguration.getUrl(), restTemplate, HEALTH_ENDPOINT);
+    }
 
     @Bean
     public SolsHealthIndicator idamServiceHealthIndicator() {
         return new SolsHealthIndicator(idamServiceHost, restTemplate, HEALTH_ENDPOINT);
     }
 
+    @Bean
+    public SolsHealthIndicator evidenceManagementHealthIndicator() {
+        return new SolsHealthIndicator(evidenceManagementHost, restTemplate, HEALTH_ENDPOINT);
+    }
+
+    @Bean
+    public SolsHealthIndicator printServiceHealthIndicator() {
+        return new SolsHealthIndicator(printServiceInternalHost, restTemplate, HEALTH_ENDPOINT);
+    }
+
+    @Bean
+    public SolsHealthIndicator ccdGatewayHealthIndicator() {
+        return new SolsHealthIndicator(ccdGatewayHost, restTemplate, HEALTH_ENDPOINT);
+    }
+
+    @Bean
+    public SolsHealthIndicator notificationHealthIndicator() {
+        return new SolsHealthIndicator(notificationClient.getBaseUrl(), restTemplate, STATUS_ENDPOINT);
+    }
+
+    @Bean
+    public SolsHealthIndicator ccdApiHealthIndicator() {
+        return new SolsHealthIndicator(ccdApiUrl, restTemplate, HEALTH_ENDPOINT);
+    }
 }
