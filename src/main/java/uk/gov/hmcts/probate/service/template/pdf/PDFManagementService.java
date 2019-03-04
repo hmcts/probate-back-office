@@ -136,7 +136,7 @@ public class PDFManagementService {
                     .doFinal(Base64.getDecoder().decode(cipherMessage.getBytes())));
         } catch (Exception e) {
             log.error("Error while retrieving file resource " + fileResource + ": " + e.getMessage(), e);
-            throw new BadRequestException(e.getMessage(), null);
+            throw new BadRequestException(e.getMessage());
         }
         return decryptedString;     
     }
@@ -146,7 +146,7 @@ public class PDFManagementService {
             return objectMapper.writeValueAsString(data);
         } catch (JsonProcessingException e) {
             log.error(e.getMessage(), e);
-            throw new BadRequestException(e.getMessage(), null);
+            throw new BadRequestException(e.getMessage());
         }
     }
 }
