@@ -1,32 +1,9 @@
-provider "vault" {
-  //  # It is strongly recommended to configure this provider through the
-  //  # environment variables described above, so that each user can have
-  //  # separate credentials set in the environment.
-  //  #
-  //  # This will default to using $VAULT_ADDR
-  //  # But can be set explicitly
-  address = "https://vault.reform.hmcts.net:6200"
-}
-
-
-// data "vault_generic_secret" "idam_backend_service_key" {
-//   path = "secret/${var.vault_section}/ccidam/service-auth-provider/api/microservice-keys/probate-backend"
-// }
-
-// data "vault_generic_secret" "govNotifyApiKey" {
-//   path = "secret/${var.vault_section}/probate/probate_bo_govNotifyApiKey"
-// }
-
-# data "vault_generic_secret" "pdf_service_grantSignatureBase64" {
-#   path = "secret/${var.vault_section}/probate/pdf_service_grantSignatureBase64"
-# }
-
 provider "azurerm" {
-  version = "1.19.0"
+  version = "1.22.1"
 }
 
 locals {
-  aseName = "${data.terraform_remote_state.core_apps_compute.ase_name[0]}"
+  aseName = "core-compute-${var.env}"
     
   //probate_frontend_hostname = "probate-frontend-aat.service.core-compute-aat.internal"
   previewVaultName = "${var.raw_product}-aat"
@@ -35,7 +12,6 @@ locals {
   nonPreviewVaultName = "${var.raw_product}-${var.env}"
   vaultName = "${(var.env == "preview" || var.env == "spreview") ? local.previewVaultName : local.nonPreviewVaultName}"
   localenv = "${(var.env == "preview" || var.env == "spreview") ? local.previewEnv : local.nonPreviewEnv}"
-  # pdf_service_grantSignatureBase64 = "${data.azurerm_key_vault_secret.pdf_service_grantSignatureBase64_first.value}${data.azurerm_key_vault_secret.pdf_service_grantSignatureBase64_last.value}"
 }
 
 data "azurerm_key_vault" "probate_key_vault" {
@@ -47,16 +23,6 @@ data "azurerm_key_vault_secret" "govNotifyApiKey" {
   name = "probate-bo-govNotifyApiKey"
   vault_uri = "${data.azurerm_key_vault.probate_key_vault.vault_uri}"
 }
-
-# data "azurerm_key_vault_secret" "pdf_service_grantSignatureBase64_first" {
-#   name = "pdf-service-grantSignatureBase64-first"
-#   vault_uri = "${data.azurerm_key_vault.probate_key_vault.vault_uri}"
-# }
-
-# data "azurerm_key_vault_secret" "pdf_service_grantSignatureBase64_last" {
-#   name = "pdf-service-grantSignatureBase64-last"
-#   vault_uri = "${data.azurerm_key_vault.probate_key_vault.vault_uri}"
-# }
 
 data "azurerm_key_vault_secret" "pdf_service_grantSignatureKey" {
   name = "probate-bo-grantSignatureKey"
@@ -124,13 +90,11 @@ module "probate-back-office" {
     DEPLOYMENT_ENV= "${var.deployment_env}"
 
     AUTH_PROVIDER_SERVICE_CLIENT_KEY = "${data.azurerm_key_vault_secret.s2s_key.value}"
-    # PDF_SERVICE_GRANTSIGNATUREBASE64 = "${local.pdf_service_grantSignatureBase64}"
     PDF_SERVICE_GRANTSIGNATURESECRETKEY = "${data.azurerm_key_vault_secret.pdf_service_grantSignatureKey.value}"
     PDF_SERVICE_GRANTSIGNATUREENCRYPTEDFILE = "${data.azurerm_key_vault_secret.pdf_service_grantSignatureFile.value}"
  
     PROBATE_POSTGRESQL_USER = "${data.azurerm_key_vault_secret.POSTGRES-USER.value}"
     PROBATE_POSTGRESQL_PASSWORD = "${data.azurerm_key_vault_secret.POSTGRES-PASS.value}"
-    //PROBATE_POSTGRESQL_DATABASE = "${data.azurerm_key_vault_secret.POSTGRES_DATABASE.value}?ssl=true&amp;sslfactory=org.postgresql.ssl.NonValidatingFactory"
     PROBATE_POSTGRESQL_DATABASE = "${data.azurerm_key_vault_secret.POSTGRES_DATABASE.value}"	  
     PROBATE_POSTGRESQL_HOSTNAME =  "${data.azurerm_key_vault_secret.POSTGRES_HOST.value}"
     PROBATE_POSTGRESQL_PORT = "${data.azurerm_key_vault_secret.POSTGRES_PORT.value}"
@@ -149,8 +113,6 @@ module "probate-back-office" {
     java_app_name = "${var.microservice}"
     SEND_LETTER_SERIVCE_BASEURL = "${var.send_letter_base_url}"
     LOG_LEVEL = "${var.log_level}"
-    TESTING = "${var.log_level}"
-    //ROOT_APPENDER = "JSON_CONSOLE" //Remove json logging
   }
 }
 
