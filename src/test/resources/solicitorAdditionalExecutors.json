@@ -2,7 +2,15 @@
   "case_details":{
     "case_data":{
       "solsSolicitorFirmName":"FirmName",
-      "solsSolicitorFirmPostcode":"postcode",
+      "solsSolicitorAddress": {
+        "AddressLine1": "SolAddLn1",
+        "AddressLine2": "SolAddLn2",
+        "AddressLine3": "SolAddLn3",
+        "PostTown": "SolAddPT",
+        "County": "SolAddCounty",
+        "PostCode": "KT10 0LA",
+        "Country": "SolAddCo"
+      },
       "solsSolicitorAppReference":"firmReference",
       "solsSolicitorEmail":"rebecca.baker@hmcts.net",
       "solsSolicitorPhoneNumber":null,
@@ -14,6 +22,7 @@
       "willAccessOriginal":"Yes",
       "willHasCodicils":"No",
       "willNumberOfCodicils":null,
+      "boSendToBulkPrint": "No",
       "deceasedDomicileInEngWales":"Yes",
       "deceasedAddress":{
         "AddressLine1":"1",
@@ -81,7 +90,8 @@
       ],
       "solsAdditionalInfo":null,
       "boEmailDocsReceivedNotification":"No",
-      "boEmailGrantIssuedNotification":null,
+      "boEmailGrantIssuedNotification":"No",
+      "boEmailGrantIssuedNotificationRequested":"No",
       "solsLegalStatementDocument":{
         "document_url":"http://localhost:8080/documents/c22c7fa3-2b6c-4a66-9d90-0269a90b57e9",
         "document_binary_url":"http://localhost:8080/documents/c22c7fa3-2b6c-4a66-9d90-0269a90b57e9/binary",
@@ -112,13 +122,15 @@
       "applicationType":"Solicitor",
       "registryLocation":"Birmingham",
       "docsReceivedEmailNotificationRequested":false,
-      "grantIssuedEmailNotificationRequested":false,
+      "grantIssuedEmailNotificationRequested":"No",
       "primaryApplicantApplying":true,
       "primaryApplicantFullName":"exfn exln",
       "deceasedFullName":"firstName lastName",
       "boExaminationChecklistQ1": "yes",
       "boExaminationChecklistQ2": "yes",
-      "boExaminationChecklistRequestQA" : "yes"
+      "boExaminationChecklistRequestQA" : "yes",
+      "caseType" : "gop",
+      "scannedDocuments": []
     },
     "last_modified":[
       "2018",

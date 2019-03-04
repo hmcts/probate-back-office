@@ -6,18 +6,28 @@ String product = "probate"
 String component = "back-office"
 
 
-
 def secrets = [
         'probate-${env}'      : [
                 secret('serviceAuthProviderBaseUrl', 'SERVICE_AUTH_PROVIDER_BASE_URL'),
                 secret('userAuthProviderOauth2Url', 'USER_AUTH_PROVIDER_OAUTH2_URL'),
                 secret('evidenceManagementUrl', 'EVIDENCE_MANAGEMENT_URL'),
                 secret('idamUserId', 'IDAM_USER_ID'),
+                secret('probateIdamSecret', 'IDAM_SECRET'),
                 secret('s2sAuthTotpSecret', 'S2S_AUTH_TOTP_SECRET'),
                 secret('probate-bo-govNotifyApiKey', 'PROBATE_BO_NOTIFY_KEY'),
                 secret('pdf-service-grantSignatureBase64-first', 'BO_GRANT_SIG_FIRST'),
                 secret('pdf-service-grantSignatureBase64-last','BO_GRANT_SIG_LAST'),
-                secret('ccd-gateway-host','CCD_GATEWAY_HOST')
+                secret('probateCcdDataStoreApi', 'CCD_DATA_STORE_API_URL'),
+                secret('ccd-gateway-host','CCD_GATEWAY_HOST'),
+                secret('idamRedirectUrl', 'IDAM_REDIRECT_URL'),
+                secret('probatemandb-POSTGRES-USER', 'PROBATE_POSTGRESQL_USER_VAL'),
+                secret('probatemandb-POSTGRES-PASS', 'PROBATE_POSTGRESQL_PASSWORD_VAL'),
+                secret('probatemandb-POSTGRES-HOST', 'PROBATE_POSTGRESQL_HOSTNAME_VAL'),
+                secret('probatemandb-POSTGRES-PORT', 'PROBATE_POSTGRESQL_PORT_VAL'),
+                secret('probatemandb-POSTGRES-DATABASE', 'PROBATE_POSTGRESQL_DATABASE_VAL'),
+                secret('cwUserId', 'CW_USER_ID'),
+                secret('cwUserEmail', 'CW_USER_EMAIL'),
+                secret('cwUserPass', 'CW_USER_PASSWORD')
         ],
         's2s-${env}'      : [
                 secret('microservicekey-ccd-data', 'DATA_STORE_S2S_KEY'),
@@ -29,6 +39,8 @@ def secrets = [
                 secret('ccd-api-gateway-oauth2-client-secret', 'API_GATEWAY_IDAM_SECRET')
         ]
 ]
+
+
 
 static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
   [ $class: 'AzureKeyVaultSecret',
@@ -49,7 +61,9 @@ withPipeline("java", product, component) {
 
 
   enableSlackNotifications('#probate-jenkins')
-
+//  before('buildinfra:prod') {
+//    error 'Deliberately breaking pipeline to prevent prod deployment'
+//  }
 
     after('test') {
     try {

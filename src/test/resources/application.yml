@@ -33,10 +33,14 @@ printservice:
   internal:
       host: http://localhost:3453
   path: /jurisdictions/PROBATE/case-types/GrantOfRepresentation/cases/%s/probate/
+  legacyPath: /print/probateManTypes/%s/cases/%s
 
 ccd.gateway:
   host: http://localhost:3453
-  caseMatchingPath: /data/searchCases
+
+ccd.data.store.api:
+  host: http://localhost:4452
+  caseMatchingPath: /searchCases
 
 spring:
   jackson:
@@ -47,6 +51,12 @@ spring:
       unwrap_root_value: false
   application:
     name: probate-sol-ccd
+  datasource:
+    url: jdbc:postgresql://${probate.postgresql.hostname}:${probate.postgresql.port}/${probate.postgresql.database}
+    username:  ${probate.postgresql.user}
+    password:  ${probate.postgresql.password}
+
+  database.driverClassName: org.postgresql.Driver
 
 spring.jackson.serialization.write_dates_as_timestamps: false
 
@@ -77,42 +87,134 @@ notifications:
 
 registries:
   oxford:
-    name: Oxford Registry
-    phone: 0123456789
+    name: Oxford Probate Registry
+    phone: 0186 579 3055
     emailReplyToId: "oxford-emailReplyToId"
+    addressline1: Combined Court Building
+    addressline2: St Aldates
+    addressline3:
+    addressline4:
+    town: Oxford
+    postcode: OX1 1LY
   birmingham:
-    name: Birmingham Registry
-    phone: 1234567890
+    name: Birmingham Probate Registry
+    phone: 0121 681 3401
     emailReplyToId: "birmingham-emailReplyToId"
+    addressline1: The Priory Courts
+    addressline2: 33 Bull Street
+    addressline3:
+    addressline4:
+    town: Birmingham
+    postcode: B4 6DU
   manchester:
     name: Manchester Probate Registry
     phone: 0161 240 5701 / 0161 240 5702
     emailReplyToId: "manchester-emailReplyToId"
+    addressline1: Manchester Civil Justice Centre
+    addressline2: Ground Floor
+    addressline3: 1 Bridge Street West
+    addressline4: PO Box 4240
+    town: Manchester
+    postcode: M60 1WJ
   leeds:
     name: Leeds Probate Registry
     phone: 0113 389 6133
     emailReplyToId: "leeds-emailReplyToId"
+    addressline1: York House
+    addressline2: York Place
+    addressline3:
+    addressline4:
+    town: Leeds
+    postcode: LS1 2BA
   liverpool:
     name: Liverpool Probate Registry
     phone: 0151 236 8264
     emailReplyToId: "liverpool-emailReplyToId"
+    addressline1: The Queen Elizabeth II Law Courts
+    addressline2: Derby Square
+    addressline3:
+    addressline4:
+    town: Liverpool
+    postcode: L2 1XA
   brighton:
     name: Brighton Probate Registry
     phone: 01273 573510
     emailReplyToId: "brighton-emailReplyToId"
+    addressline1: William Street
+    addressline2:
+    addressline3:
+    addressline4:
+    town: Brighton
+    postcode: BN2 0RF
   london:
     name: London Probate Department
     phone: 020 7421 8509
     emailReplyToId: "london-emailReplyToId"
+    addressline1: Principal Registry of the Family Division
+    addressline2: First Avenue House
+    addressline3: 42-49 High Holborn
+    addressline4:
+    town: London
+    postcode: WC1V 6NP
   cardiff:
     name: Probate Registry of Wales
     phone: 02920 474373
     emailReplyToId: "cardiff-emailReplyToId"
+    addressline1: 3rd Floor, Cardiff Magistrates’ Court
+    addressline2: Fitzalan Place
+    addressline3: Cardiff
+    addressline4:
+    town: South Wales
+    postcode: CF24 0RZ
   newcastle:
     name: Newcastle-Upon-Tyne Probate Registry
     phone: 0191 211 2170
     emailReplyToId: "newcastle-emailReplyToId"
+    addressline1: Newcastle DPR
+    addressline2: No 1 Waterloo Square
+    addressline3:
+    addressline4:
+    town: Newcastle-Upon-Tyne
+    postcode: NE1 4DR
   winchester:
     name: Winchester Probate Registry
     phone: 01962 814100
     emailReplyToId: "winchester-emailReplyToId"
+    addressline1: 1st Floor
+    addressline2: Southside Offices
+    addressline3: The Law Courts
+    addressline4: Winchester
+    town: Hampshire
+    postcode: S023 9EL
+  ctsc:
+    name: CTSC
+    phone: 0300 303 0648
+    emailReplyToId: "ctsc-emailReplyToId"
+    addressline1: Manchester Civil Justice Centre
+    addressline2: Ground Floor
+    addressline3: 1 Bridge Street West
+    addressline4: PO Box 4240
+    town: Manchester
+    postcode: M60 1WJ
+
+auth.idam.client.baseUrl: http://localhost:4501
+
+core_case_data.api.url: http://localhost:4452
+
+document:
+  retriever:
+    service:
+      api:
+        baseurl: localhost:8080
+
+idam:
+  s2s-auth:
+    url: ""
+
+send-letter:
+  url: ${SEND_LETTER_SERIVCE_BASEURL:http://localhost:8485}
+
+idam-s2s-auth:
+  ribbon:
+    eureka:
+      enabled: false

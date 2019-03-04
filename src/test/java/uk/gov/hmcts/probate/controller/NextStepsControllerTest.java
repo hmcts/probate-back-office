@@ -15,6 +15,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import uk.gov.hmcts.probate.insights.AppInsights;
+import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
@@ -42,6 +43,7 @@ public class NextStepsControllerTest {
     private static final String SURANME = "Michael";
     private static final String SOLICITOR_APP_REFERENCE = "Reff";
     private static final String SOLICITOR_FIRM_NAME = "Legal Service Ltd";
+    private static final String SOLICITOR_FIRM_LINE1 = "Sols Add Line1";
     private static final String SOLICITOR_FIRM_POSTCODE = "SW1E 6EA";
     private static final String IHT_FORM = "IHT207";
     private static final String SOLICITOR_NAME = "Peter Crouch";
@@ -97,10 +99,14 @@ public class NextStepsControllerTest {
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
 
         OBJECT_MAPPER.registerModule(new JavaTimeModule());
+        SolsAddress solsAddress = SolsAddress.builder()
+                .addressLine1(SOLICITOR_FIRM_LINE1)
+                .postCode(SOLICITOR_FIRM_POSTCODE)
+                .build();
 
         caseDataBuilder = CaseData.builder()
                 .solsSolicitorFirmName(SOLICITOR_FIRM_NAME)
-                .solsSolicitorFirmPostcode(SOLICITOR_FIRM_POSTCODE)
+                .solsSolicitorAddress(solsAddress)
                 .solsSolicitorAppReference(SOLICITOR_APP_REFERENCE)
                 .deceasedDateOfBirth(DOB)
                 .deceasedDateOfDeath(DOD)
@@ -137,6 +143,7 @@ public class NextStepsControllerTest {
 
     @Test
     public void shouldConfirmNextStepsWithNoErrors() throws Exception {
+        caseDataBuilder.applicationType(ApplicationType.SOLICITOR).build();
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
 
@@ -164,7 +171,7 @@ public class NextStepsControllerTest {
 
     @Test
     public void shouldConfirmNextStepsWithSolsSolicitorFirmPostcodeIsNullError() throws Exception {
-        caseDataBuilder.solsSolicitorFirmPostcode(null);
+        caseDataBuilder.solsSolicitorAddress(SolsAddress.builder().addressLine1(SOLICITOR_FIRM_LINE1).build());
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
 
@@ -173,9 +180,9 @@ public class NextStepsControllerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.fieldErrors[0].param").value("callbackRequest"))
-                .andExpect(jsonPath("$.fieldErrors[0].field").value("caseDetails.data.solsSolicitorFirmPostcode"))
-                .andExpect(jsonPath("$.fieldErrors[0].code").value("NotBlank"))
-                .andExpect(jsonPath("$.fieldErrors[0].message").value("Solicitor firm postcode cannot be empty"));
+                .andExpect(jsonPath("$.fieldErrors[0].field").value("caseDetails.data.solsSolicitorAddress.postCode"))
+                .andExpect(jsonPath("$.fieldErrors[0].code").value("NotNull"))
+                .andExpect(jsonPath("$.fieldErrors[0].message").value("The deceased postcode cannot be empty"));
     }
 
     @Test

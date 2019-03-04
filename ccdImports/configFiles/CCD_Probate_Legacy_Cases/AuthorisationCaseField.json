@@ -1,0 +1,12 @@
+[
+  {"CaseTypeID": "Legacy", "CaseFieldID": "probate_number", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
+  {"CaseTypeID": "Legacy", "CaseFieldID": "deceasedForenames", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
+  {"CaseTypeID": "Legacy", "CaseFieldID": "deceasedSurname", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
+  {"CaseTypeID": "Legacy", "CaseFieldID": "deceasedDateOfDeath", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
+  {"CaseTypeID": "Legacy", "CaseFieldID": "deceasedDateOfBirth", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
+  {"CaseTypeID": "Legacy", "CaseFieldID": "alias_names", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
+  {"CaseTypeID": "Legacy", "CaseFieldID": "legacy_case_type", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
+  {"CaseTypeID": "Legacy", "CaseFieldID": "record_id", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
+  {"CaseTypeID": "Legacy", "CaseFieldID": "imported_to_ccd", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
+  {"CaseTypeID": "Legacy", "CaseFieldID": "legacyId", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"}
+]

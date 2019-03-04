@@ -1,0 +1,22 @@
+[
+  {"CaseTypeID": "GrantOfRepresentation", "ID": "PAAppCreated", "Name": "PA application created", "Description": "PA application created", "DisplayOrder": 1},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "SolAppCreated", "Name": "Application created", "Description": "Application created (Solicitor)", "DisplayOrder": 2},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "SolAppUpdated", "Name": "Application updated", "Description": "Application updated (Solicitor)", "DisplayOrder": 3},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "CaseCreated", "Name": "Case created", "Description": "Case created", "DisplayOrder": 4},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "CasePaymentFailed", "Name": "Case payment failed", "Description": "Case created with payment failed", "DisplayOrder": 5},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "Stopped", "Name": "Stopped", "Description": "Stopped", "DisplayOrder": 6},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "CasePrinted", "Name": "Awaiting documentation", "Description": "Awaiting documentation", "DisplayOrder": 7},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "BOReadyForExamination", "Name": "Ready for examination", "Description": "Ready for examination", "DisplayOrder": 8},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "BOExamining", "Name": "Examining", "Description": "Examining", "DisplayOrder": 9},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "BOCaseStopped", "Name": "Case stopped", "Description": "Case stopped", "DisplayOrder": 10},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "BOCaveatPermenant", "Name": "Caveat permenant", "Description": "Caveat permenant", "DisplayOrder": 11},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "BORegistrarEscalation", "Name": "Registrar escalation", "Description": "Registrar escalation", "DisplayOrder": 12},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "BOReadyToIssue", "Name": "Ready to issue", "Description": "Ready to issue", "DisplayOrder": 13},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "BOCaseQA", "Name": "Case selected for QA", "Description": "Case selected for QA", "DisplayOrder": 14},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "BOCaseMatchingIssueGrant", "Name": "Case Matching (Issue grant)", "Description": "Case Matching (Issue grant)", "DisplayOrder": 15},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "BOCaseMatchingExamining", "Name": "Case Matching (Examining)", "Description": "Case Matching (Examining)", "DisplayOrder": 16},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "BOGrantIssued", "Name": "Grant issued", "Description": "Grant issued", "DisplayOrder": 17},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "BOCaseClosed", "Name": "Case closed", "Description": "Case closed", "DisplayOrder": 17},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "applyforGrantPaperApplication", "Name": "PA1P/PA1A/Solicitors", "Description": "Create case", "DisplayOrder": 18},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "BOCaseImported", "Name": "Case imported", "Description": "Case Imported", "DisplayOrder": 19}
+]

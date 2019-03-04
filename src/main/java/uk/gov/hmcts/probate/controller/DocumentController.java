@@ -1,33 +1,55 @@
 package uk.gov.hmcts.probate.controller;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import uk.gov.hmcts.probate.config.properties.registries.RegistriesProperties;
+import uk.gov.hmcts.probate.config.properties.registries.Registry;
+import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
+import uk.gov.hmcts.probate.model.ccd.willlodgement.request.WillLodgementCallbackRequest;
+import uk.gov.hmcts.probate.model.ccd.willlodgement.response.WillLodgementCallbackResponse;
+import uk.gov.hmcts.probate.service.BulkPrintService;
 import uk.gov.hmcts.probate.service.DocumentService;
+import uk.gov.hmcts.probate.service.EventValidationService;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
+import uk.gov.hmcts.probate.transformer.WillLodgementCallbackResponseTransformer;
+import uk.gov.hmcts.probate.validator.BulkPrintValidationRule;
+import uk.gov.hmcts.probate.validator.EmailAddressNotificationValidationRule;
+import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
 import uk.gov.service.notify.NotificationClientException;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static uk.gov.hmcts.probate.model.Constants.CTSC;
+import static uk.gov.hmcts.probate.model.Constants.LONDON;
+import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_DRAFT;
+import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_DRAFT;
+import static uk.gov.hmcts.probate.model.DocumentType.WILL_LODGEMENT_DEPOSIT_RECEIPT;
 import static uk.gov.hmcts.probate.model.State.GRANT_ISSUED;
 
+@Slf4j
 @RequiredArgsConstructor
 @RequestMapping(value = "/document", consumes = APPLICATION_JSON_UTF8_VALUE, produces = APPLICATION_JSON_VALUE)
 @RestController
@@ -35,39 +57,175 @@ public class DocumentController {
 
     private final PDFManagementService pdfManagementService;
     private final CallbackResponseTransformer callbackResponseTransformer;
+    private final WillLodgementCallbackResponseTransformer willLodgementCallbackResponseTransformer;
     private final DocumentService documentService;
     private final NotificationService notificationService;
+    private final RegistriesProperties registriesProperties;
+    private static final String GRANT_OF_PROBATE = "gop";
+    private static final String ADMON_WILL = "admonWill";
+    private static final String INTESTACY = "intestacy";
+    private static final String EDGE_CASE = "edgeCase";
+    private final BulkPrintService bulkPrintService;
+    private final EventValidationService eventValidationService;
+    private final List<EmailAddressNotificationValidationRule> emailAddressNotificationValidationRules;
+    private final List<BulkPrintValidationRule> bulkPrintValidationRules;
 
     @PostMapping(path = "/generate-grant-draft", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<CallbackResponse> generateGrantDraft(@RequestBody CallbackRequest callbackRequest) {
+        CaseDetails caseDetails = callbackRequest.getCaseDetails();
+        CaseData caseData = caseDetails.getData();
+        Document document;
+        DocumentType template;
+        getRegistryDetails(caseDetails);
 
-        Document document = pdfManagementService.generateAndUpload(callbackRequest, DIGITAL_GRANT_DRAFT);
+        switch (caseData.getCaseType()) {
+            case INTESTACY:
+                template = INTESTACY_GRANT_DRAFT;
+                document = pdfManagementService.generateAndUpload(callbackRequest, template);
+                log.info("Generated and Uploaded Intestacy grant preview document with template {}",
+                        template.getTemplateName());
+                break;
+            case ADMON_WILL:
+                template = ADMON_WILL_GRANT_DRAFT;
+                document = pdfManagementService.generateAndUpload(callbackRequest, template);
+                log.info("Generated and Uploaded Admon Will grant preview document with template {}",
+                        template.getTemplateName());
+                break;
+            case EDGE_CASE:
+                document = Document.builder().documentType(DocumentType.EDGE_CASE).build();
+                break;
+            case GRANT_OF_PROBATE:
+            default:
+                template = DIGITAL_GRANT_DRAFT;
+                document = pdfManagementService.generateAndUpload(callbackRequest, template);
+                log.info("Generated and Uploaded Grant of Probate preview document with template {}",
+                        template.getTemplateName());
+                break;
+        }
 
-        documentService.expire(callbackRequest, DIGITAL_GRANT_DRAFT);
+        DocumentType[] documentTypes = {DIGITAL_GRANT_DRAFT, INTESTACY_GRANT_DRAFT, ADMON_WILL_GRANT_DRAFT};
+        for (DocumentType documentType : documentTypes) {
+            documentService.expire(callbackRequest, documentType);
+        }
 
         return ResponseEntity.ok(callbackResponseTransformer.addDocuments(callbackRequest,
-                Arrays.asList(document)));
+                Arrays.asList(document), null, null));
     }
 
     @PostMapping(path = "/generate-grant", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<CallbackResponse> generateGrant(@RequestBody CallbackRequest callbackRequest)
+    public ResponseEntity<CallbackResponse> generateGrant(
+            @Validated({EmailAddressNotificationValidationRule.class, BulkPrintValidationRule.class})
+            @RequestBody CallbackRequest callbackRequest)
             throws NotificationClientException {
 
-        List<Document> documents = new ArrayList<>();
-
-        Document digitalGrantDocument = pdfManagementService.generateAndUpload(callbackRequest, DIGITAL_GRANT);
-        documents.add(digitalGrantDocument);
-
-        documentService.expire(callbackRequest, DIGITAL_GRANT_DRAFT);
-
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
-        CaseData caseData = callbackRequest.getCaseDetails().getData();
+        @Valid CaseData caseData = caseDetails.getData();
+        DocumentType template;
+        Document digitalGrantDocument;
+        getRegistryDetails(caseDetails);
+        CallbackResponse callbackResponse = CallbackResponse.builder().errors(new ArrayList<>()).build();
 
-        if (caseData.isGrantIssuedEmailNotificationRequested()) {
-            Document grantIssuedSentEmail = notificationService.sendEmail(GRANT_ISSUED, caseDetails);
-            documents.add(grantIssuedSentEmail);
+        switch (caseData.getCaseType()) {
+            case EDGE_CASE:
+                digitalGrantDocument = Document.builder().documentType(DocumentType.EDGE_CASE).build();
+                break;
+            case INTESTACY:
+                template = INTESTACY_GRANT;
+                digitalGrantDocument = pdfManagementService.generateAndUpload(callbackRequest, template);
+                log.info("Generated and Uploaded Intestacy grant document with template {}",
+                        template.getTemplateName());
+                break;
+            case ADMON_WILL:
+                template = ADMON_WILL_GRANT;
+                digitalGrantDocument = pdfManagementService.generateAndUpload(callbackRequest, template);
+                log.info("Generated and Uploaded Admon Will grant document with template {}",
+                        template.getTemplateName());
+                break;
+            case GRANT_OF_PROBATE:
+            default:
+                template = DIGITAL_GRANT;
+                digitalGrantDocument = pdfManagementService.generateAndUpload(callbackRequest, template);
+                log.info("Generated and Uploaded Grant of Probate document with template {}",
+                        template.getTemplateName());
+                break;
         }
 
-        return ResponseEntity.ok(callbackResponseTransformer.addDocuments(callbackRequest, documents));
+        Document coverSheet = pdfManagementService.generateAndUpload(callbackRequest, DocumentType.GRANT_COVER);
+
+        String letterId = null;
+        String pdfSize = null;
+        if (caseData.isSendForBulkPrintingRequested() && !caseData.getCaseType().equals(EDGE_CASE)) {
+            SendLetterResponse response = bulkPrintService.sendToBulkPrint(callbackRequest, digitalGrantDocument, coverSheet);
+            letterId = response != null
+                    ? response.letterId.toString()
+                    : null;
+            callbackResponse = eventValidationService.validateBulkPrintResponse(letterId, bulkPrintValidationRules);
+
+            if (caseData.getExtraCopiesOfGrant() != null) {
+                pdfSize = String.valueOf(caseData.getExtraCopiesOfGrant() + 2);
+            }
+
+        }
+        if (!callbackResponse.getErrors().isEmpty()) {
+            return ResponseEntity.ok(callbackResponse);
+        }
+
+        List<Document> documents = new ArrayList<>();
+        documents.add(digitalGrantDocument);
+        documents.add(coverSheet);
+
+        DocumentType[] documentTypes = {DIGITAL_GRANT_DRAFT, INTESTACY_GRANT_DRAFT, ADMON_WILL_GRANT_DRAFT};
+        for (DocumentType documentType : documentTypes) {
+            documentService.expire(callbackRequest, documentType);
+        }
+
+        if (caseData.isGrantIssuedEmailNotificationRequested()) {
+            callbackResponse = eventValidationService.validateEmailRequest(callbackRequest, emailAddressNotificationValidationRules);
+            if (callbackResponse.getErrors().isEmpty()) {
+                Document grantIssuedSentEmail = notificationService.sendEmail(GRANT_ISSUED, caseDetails);
+                documents.add(grantIssuedSentEmail);
+                callbackResponse = callbackResponseTransformer.addDocuments(callbackRequest, documents, letterId, pdfSize);
+            }
+        } else {
+            callbackResponse = callbackResponseTransformer.addDocuments(callbackRequest, documents, letterId, pdfSize);
+        }
+
+        return ResponseEntity.ok(callbackResponse);
+    }
+
+    private CaseDetails getRegistryDetails(CaseDetails caseDetails) {
+        Registry registry = registriesProperties.getRegistries().get(
+                caseDetails.getData().getRegistryLocation().toLowerCase());
+        caseDetails.setRegistryTelephone(registry.getPhone());
+        caseDetails.setRegistryAddressLine1(registry.getAddressLine1());
+        caseDetails.setRegistryAddressLine2(registry.getAddressLine2());
+        caseDetails.setRegistryAddressLine3(registry.getAddressLine3());
+        caseDetails.setRegistryAddressLine4(registry.getAddressLine4());
+        caseDetails.setRegistryPostcode(registry.getPostcode());
+        caseDetails.setRegistryTown(registry.getTown());
+
+        Registry ctscRegistry = registriesProperties.getRegistries().get(CTSC);
+        caseDetails.setCtscTelephone(ctscRegistry.getPhone());
+
+        return caseDetails;
+    }
+
+
+    @PostMapping(path = "/generate-deposit-receipt", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<WillLodgementCallbackResponse> generateDepositReceipt(@RequestBody WillLodgementCallbackRequest callbackRequest) {
+        Document document;
+        DocumentType template = WILL_LODGEMENT_DEPOSIT_RECEIPT;
+
+        Registry registry = registriesProperties.getRegistries().get(LONDON);
+        callbackRequest.getCaseDetails().setLondonRegistryAddress(String.join(" ",
+                registry.getAddressLine1(), registry.getAddressLine2(),
+                registry.getTown(), registry.getPostcode()));
+
+        document = pdfManagementService.generateAndUpload(callbackRequest, template);
+
+        List<Document> documents = new ArrayList<>();
+        documents.add(document);
+
+        return ResponseEntity.ok(willLodgementCallbackResponseTransformer.addDocuments(callbackRequest, Arrays.asList(document)));
     }
 }

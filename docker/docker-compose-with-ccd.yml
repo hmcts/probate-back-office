@@ -1,6 +1,53 @@
 version: '2.1'
-
+#networks:
+#  default: {}
 services:
+#  send-letter-service:
+#    image: hmcts.azurecr.io/hmcts/rpe-send-letter-service:latest
+#    container_name: send-letter-service
+#    environment:
+#    - APPINSIGHTS_INSTRUMENTATIONKEY=DUMMY
+#    - SERVER_PORT=8485
+#    - FTP_FINGERPRINT=fingerprint
+#    - FTP_HOSTNAME=hostname
+#    - FTP_PORT=22
+#    - FTP_PRIVATE_KEY=private
+#    - FTP_PUBLIC_KEY=public
+#    - FTP_REPORTS_FOLDER=/reports/
+#    - FTP_TARGET_FOLDER=/target/
+#    - FTP_USER=user
+#    - LETTER_TRACKING_DB_PASSWORD=letter_tracking
+#    - LETTER_TRACKING_DB_USER_NAME=letter_tracking
+#    - S2S_URL=http://service-auth-provider-api:8080
+#    - SCHEDULING_ENABLED
+#    - SPRING_FLYWAY_ENABLED=false
+#    - ENCRYPTION_ENABLED
+#    - ENCRYPTION_PUBLIC_KEY=DUMMY
+#    # these environment variables are used by java-logging library
+#    - ROOT_APPENDER
+#    - JSON_CONSOLE_PRETTY_PRINT
+#    - ROOT_LOGGING_LEVEL
+#    - REFORM_SERVICE_NAME
+#    - REFORM_TEAM
+#    - REFORM_ENVIRONMENT
+#    - LETTER_TRACKING_DB_HOST=shared-database
+#    - LETTER_TRACKING_DB_NAME=letter_tracking
+#    - LETTER_TRACKING_DB_PORT=5432
+#    ports:
+#    - 8485:8485
+#    links:
+#    - shared-database
+#    depends_on:
+#      shared-database:
+#        condition: service_healthy
+#
+#  flyway:
+#    image: boxfuse/flyway:5.2.1
+#    command: -url=jdbc:postgresql://shared-database:5432/letter_tracking -user=letter_tracking -password=letter_tracking -connectRetries=60 migrate
+#    volumes:
+#    - ./flyway/sql/:/flyway/sql
+#    depends_on:
+#    - shared-database
 
   service-auth-provider-api:
     image: hmcts/service-auth-provider-app
@@ -9,13 +56,16 @@ services:
       - SERVER_PORT=8080
       - JAVA_OPTS=-Xms8m -Xmx256m -Djava.security.egd=file:/dev/./urandom -XX:MaxMetaspaceSize=128m
       - JWT_KEY=wThK0f0/lh3FlxFcL4xUWDMI5C1J9KyQBgXV4wseh1e5J1uYJIjvTvArHxQDrYoHJ23xFxjHkOnvNbR5dXRoxA==
-      - MICROSERVICE_KEYS_EM_GW=AAAAAAAAAAAAAAAA
-      - MICROSERVICE_KEYS_CCD_DATA=AAAAAAAAAAAAAAAA
-      - MICROSERVICE_KEYS_CCD_DEFINITION=AAAAAAAAAAAAAAAA
-      - MICROSERVICE_KEYS_CCD_GW=AAAAAAAAAAAAAAAA
-      - MICROSERVICE_KEYS_CCD_PS=AAAAAAAAAAAAAAAA
+      - MICROSERVICEKEYS_EM_GW=AAAAAAAAAAAAAAAA
+      - MICROSERVICEKEYS_CCD_DATA=AAAAAAAAAAAAAAAA
+      - MICROSERVICEKEYS_CCD_DEFINITION=AAAAAAAAAAAAAAAA
+      - MICROSERVICEKEYS_CCD_GW=AAAAAAAAAAAAAAAA
+      - MICROSERVICEKEYS_CCD_PS=AAAAAAAAAAAAAAAA
+      - MICROSERVICEKEYS_BULK_SCAN_PROCESSOR=AAAAAAAAAAAAAAAA
+      - MICROSERVICEKEYS_BULK_SCAN_PROCESSOR_TESTS=AAAAAAAAAAAAAAAA
+      - MICROSERVICEKEYS_BULK_SCAN_ORCHESTRATOR=AAAAAAAAAAAAAAAA
       - TESTING_SUPPORT_ENABLED=true
-      - MICROSERVICE_KEYS_PROBATE_BACKEND=AAAAAAAAAAAAAAAA
+      - MICROSERVICEKEYS_PROBATE_BACKEND=AAAAAAAAAAAAAAAA
     ports:
       - 4502:8080
 
@@ -67,6 +117,12 @@ services:
       - IDAM_API_OAUTH2_CLIENT_CLIENT_SECRETS_PROBATE=123456
       - IDAM_API_OAUTH2_CLIENT_CLIENT_ID_PROBATE=123456
       - IDAM_PROBATE_WHITELIST=http://localhost:3451/oauth2redirect
+      - IDAM_BSP_SYSTEMUPDATE_USER=bulkscanorchestrator+systemupdate@gmail.com
+      - IDAM_BSP_SYSTEMUPDATE_PASSWORD=Password12
+      - IDAM_USERS_PROBATE_USERNAME=bulkscan+ccd@gmail.com
+      - IDAM_USERS_PROBATE_PASSWORD=password
+      - IDAM_API_OAUTH2_CLIENT_CLIENT_SECRETS_BSP=123456
+      - IDAM_BSP_WHITELIST=https://localhost/receiver
       - http_proxy
       - https_proxy
       - no_proxy
@@ -99,6 +155,7 @@ services:
     environment:
      - IDAM_API_URL=http://idam-api:8080
      - IDAM_CONTINUE_URL_VALIDATOR_ENFORCE_TLS=false
+     - IDAM_API_OAUTH2_CLIENT_CLIENT_SECRETS_BULK_SCAN_ORCHESTRATOR=123456
      - IDAM_API_OAUTH2_CLIENT_CLIENT_SECRETS_CMC_LEGAL=123456
      - IDAM_API_OAUTH2_CLIENT_CLIENT_SECRETS_CCD_GATEWAY=123456
     ports:
@@ -113,15 +170,16 @@ services:
       context: ../docker/database
     image: docker.artifactory.reform.hmcts.net/evidence/document-management-store-database:latest
 
-  document-management-store:
-    image: docker.artifactory.reform.hmcts.net/evidence/document-management-store:latest
+  dm-store:
+    image: hmcts/dm-store:latest
     command: --wait-for-database 30
     environment:
       - SERVER_PORT=8080
-      - S2S_NAMES_WHITELIST=ccd_gw,ccd_data,ccd_ps,probate_backend
+      - S2S_NAMES_WHITELIST=ccd_gw,ccd_data,ccd_ps,probate_backend,probate_frontend,bulk_scan_orchestrator,bulk_scan_processor
       - IDAM_SUPERUSER_EMAIL
       - IDAM_SECRET_KEY=AAAAAAAAAAAAAAAA
       - GOV_NOTIFY_API_KEY
+      - GOV_PAY_AUTH_KEY_PROBATE_FRONTEND=238mpukgl3uonfrqpt7ndqvr82ok75i3t8v66156q470k474iai66ukhdf
       - SPRING_DATASOURCE_URL=jdbc:postgresql://document-management-store-database:5432/evidence
       - SPRING_DATASOURCE_USERNAME=evidence
       - SPRING_DATASOURCE_PASSWORD=evidence
@@ -135,12 +193,27 @@ services:
       - http_proxy=
       - https_proxy=
       - no_proxy=
+      - ENABLE_DELETE=true
+      - ENABLE_IDAM_HEALTH_CHECK=false
+      - ENABLE_METADATA_SEARCH=true
+      - ENABLE_DOCUMENT_AND_METADATA_UPLOAD=false
+      - ENABLE_FOLDER_API=true
+      - ENABLE_TTL=true
+      - ENABLE_THUMBNAIL=true
+      - DM_MULTIPART_WHITELIST=image/jpeg,application/pdf,image/tiff,image/png,image/bmp,text/plain,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.openxmlformats-officedocument.wordprocessingml.template,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.openxmlformats-officedocument.spreadsheetml.template,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation,application/vnd.openxmlformats-officedocument.presentationml.template,application/vnd.openxmlformats-officedocument.presentationml.slideshow
+      - DM_MULTIPART_WHITELIST_EXT=.jpg,.jpeg,.bmp,.tif,.tiff,.png,.pdf,.txt,.doc,.dot,.docx,.dotx,.xls,.xlt,.xla,.xlsx,.xltx,.xlsb,.ppt,.pot,.pps,.ppa,.pptx,.potx,.ppsx
+      - MAX_FILE_SIZE=500MB
+      - MAX_ACTIVE_DB_CONNECTIONS=10
+      - ENDPOINTS_HEALTH_SENSITIVE=false
+      - ENDPOINTS_INFO_SENSITIVE=false
+      - CASE_WORKER_ROLES=caseworker-probate
        # these environment variables are used by java-logging library
       - ROOT_APPENDER=JSON_CONSOLE
       - JSON_CONSOLE_PRETTY_PRINT=false
       - REFORM_SERVICE_TYPE=java
-      - REFORM_SERVICE_NAME=document-management-store-app
-      - REFORM_TEAM=cc
+     # - REFORM_SERVICE_NAME=document-management-store-app
+      - REFORM_SERVICE_NAME=dm-store
+      - REFORM_TEAM=evidence
       - REFORM_ENVIRONMENT=docker
 #      healthcheck env vars
       - PACKAGES_ENVIRONMENT=docker
@@ -218,7 +291,7 @@ services:
       - DEFINITION_STORE_DB_USERNAME
       - DEFINITION_STORE_DB_PASSWORD
       - DEFINITION_STORE_IDAM_KEY=AAAAAAAAAAAAAAAA
-      - DEFINITION_STORE_S2S_AUTHORISED_SERVICES=ccd_data,ccd_gw,probate_backend
+      - DEFINITION_STORE_S2S_AUTHORISED_SERVICES=ccd_data,ccd_gw,probate_backend,probate_frontend,bulk_scan_orchestrator
       - DEFINITION_STORE_DB_USE_SSL=false
       - USER_PROFILE_HOST=http://ccd-user-profile-api:4453
       - IDAM_USER_URL=http://idam-api:8080
@@ -251,7 +324,7 @@ services:
         - DATA_STORE_DB_PASSWORD
         - DATA_STORE_IDAM_KEY=AAAAAAAAAAAAAAAA
         - DATA_STORE_TOKEN_SECRET=iuasbcuasdcbasdgcasdgcuysachjsacyasdgjcgasdj
-        - DATA_STORE_S2S_AUTHORISED_SERVICES=ccd_gw,ccd_data,ccd_ps,probate_backend
+        - DATA_STORE_S2S_AUTHORISED_SERVICES=ccd_gw,ccd_data,ccd_ps,probate_backend,probate_frontend,bulk_scan_orchestrator
         - DATA_STORE_DB_USE_SSL=false
         - DEFINITION_STORE_HOST=http://ccd-definition-store-api:4451
         - USER_PROFILE_HOST=http://ccd-user-profile-api:4453
@@ -311,8 +384,8 @@ services:
       - PROXY_DEFINITION_DATA=http://ccd-definition-store-api:4451/api/data
       - PROXY_DEFINITION_DISPLAY=http://ccd-definition-store-api:4451/api/display
       # this NEEDS to be your local ip address
-      - PROXY_PRINT_SERVICE=http://172.16.10.56:3100
-      - PROXY_DOCUMENT_MANAGEMENT=http://document-management-store:8080
+      - PROXY_PRINT_SERVICE=http://10.99.2.139:3100
+      - PROXY_DOCUMENT_MANAGEMENT=http://localhost:8080
     ports:
       - 3453:3453
     depends_on:
@@ -330,6 +403,8 @@ services:
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:6.3.0
     container_name: elasticsearch
+    environment:
+      ES_JAVA_OPTS: "-Xms256m -Xmx256m"
     ports:
       - 9200:9200
       - 9300:9300
@@ -344,6 +419,46 @@ services:
       LS_JAVA_OPTS: "-Xmx256m -Xms256m"
     depends_on:
       - elasticsearch
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:6.3.0
+    container_name: kibana
+    ports:
+      - 5601:5601
+    depends_on:
+      - elasticsearch
+
+  probate-man-database:
+    build:
+      context: ../docker/probateman
+    ports:
+      - 5344:5432
+    healthcheck:
+      test: psql -c 'select 1' -d postgres -U postgres
+      retries: 2
+    mem_limit: 160m
+    memswap_limit: 0
+
+#  logstash-probateman:
+#    build: logstash-probateman/.
+#    container_name: logstash-probateman
+#    command: bash -c "bin/logstash-plugin install logstash-filter-json_encode  && docker-entrypoint -e"
+#    volumes:
+#      - ./logstash-probateman/config/logstash.yml:/usr/share/logstash/config/logstash.yml:ro
+#      - ./../logstash:/usr/share/logstash/pipeline:ro
+#    environment:
+#      - DB_URL=jdbc:postgresql://probate-man-database:5432/probate_man
+#      - DB_USER=probate_man
+#      - DB_PWD=probate_man
+#      - ES_DATA_NODES_URL=elasticsearch
+#    depends_on:
+#      - elasticsearch
+#      - probate-man-database
+#      - ccd-api-gateway
+#      - ccd-definition-store-api
+#      - ccd-case-management-web
+#      - ccd-user-profile-api
+#      - ccd-data-store-api
 
 volumes:
   shared-database-data:

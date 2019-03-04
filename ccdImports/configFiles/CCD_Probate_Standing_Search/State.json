@@ -1,0 +1,10 @@
+[
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "StandingSearch", "ID": "StandingSearchCreated", "Name": "Standing search created", "Description": "Standing search created", "DisplayOrder": 1},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "StandingSearch", "ID": "StandingSearchMatching", "Name": "Standing search matching", "Description": "Standing search matching", "DisplayOrder": 2},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "StandingSearch", "ID": "StandingSearchNotMatched", "Name": "Standing search not matched", "Description": "Standing search not matched", "DisplayOrder": 3},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "StandingSearch", "ID": "AwaitingProbateGrant", "Name": "Awaiting probate grant", "Description": "Awaiting probate grant", "DisplayOrder": 4},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "StandingSearch", "ID": "StandingSearchClosed", "Name": "Standing search closed", "Description": "Standing search closed", "DisplayOrder": 5},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "StandingSearch", "ID": "ProcessingStandingSearch", "Name": "Processing standing search", "Description": "Processing standing search", "DisplayOrder": 6},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "StandingSearch", "ID": "StandingSearchCompleted", "Name": "Standing search completed", "Description": "Standing search completed", "DisplayOrder": 7},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "StandingSearch", "ID": "StandingSearchImported", "Name": "Standing search imported", "Description": "Standing search imported", "DisplayOrder": 8}
+]

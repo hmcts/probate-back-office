@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <title th:remove="all" th:text="${title}">Will Lodgement Deposit Receipt</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <style type="text/css">
+
+        body {
+            font-family: "Times New Roman", sans-serif;
+        }
+
+        .table-content {
+            display: block;
+            padding-top: 8px;
+        }
+
+        .legal-header {
+            font-size: 13pt;
+            text-align: center;
+        }
+
+        .legal-subheader {
+            font-size: 12pt;
+            text-align: center;
+        }
+
+        .legal-body {
+            font-size: 11pt;
+            text-align: left;
+        }
+
+        .camelCase {
+            text-transform: capitalize;
+        }
+
+        .upperCase {
+            text-transform: uppercase;
+        }
+
+        .circle {
+            border-radius: 50%;
+            border: 1px solid black;
+            height: 200px;
+            width: 200px;
+            float: right;
+        }
+
+        .indent {
+            padding-left: 55px;
+        }
+
+    </style>
+</head>
+<body>
+<table>
+    <tbody class="table-content">
+
+    <tr>
+        <td colspan="2" class="legal-header">
+            <p>
+                <Strong>IN THE HIGH COURT OF JUSTICE<br/>
+                FAMILY DIVISION<br/>
+                    <span style="font-size: 11pt;">(PROBATE)</span></Strong>
+            </p>
+        </td>
+    </tr>
+    <tr/>
+    <tr>
+        <td colspan="2" class="legal-subheader">
+            <p><strong><u>CERTIFICATE OF DEPOSIT OF WILL</u></strong></p><br/>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2" class="legal-body">
+            <p>It is herby certified that the Will dated {{case_details.case_data.willDateFormatted}}<br />
+            of {{case_details.case_data.deceasedForenames}} {{case_details.case_data.deceasedSurname}}<br />
+            <span class="indent">of {% if case_details.case_data.deceasedAddress.AddressLine1 != null and case_details.case_data.deceasedAddress.AddressLine1 != "" %}{{ case_details.case_data.deceasedAddress.AddressLine1}}{% endif %}
+                {% if case_details.case_data.deceasedAddress.AddressLine2 != null and case_details.case_data.deceasedAddress.AddressLine2 != "" %} {{case_details.case_data.deceasedAddress.AddressLine2}}{% endif %}
+                {% if case_details.case_data.deceasedAddress.AddressLine3 != null and case_details.case_data.deceasedAddress.AddressLine3 != "" %} {{case_details.case_data.deceasedAddress.AddressLine3}}{% endif %}
+                {% if case_details.case_data.deceasedAddress.PostTown != null and case_details.case_data.deceasedAddress.PostTown != "" %} {{case_details.case_data.deceasedAddress.PostTown}}{% endif %}
+                {% if case_details.case_data.deceasedAddress.County != null and case_details.case_data.deceasedAddress.County != "" %} {{case_details.case_data.deceasedAddress.County}}{% endif %}
+                {% if case_details.case_data.deceasedAddress.PostCode != null and case_details.case_data.deceasedAddress.PostCode != ""%} {{case_details.case_data.deceasedAddress.PostCode}}{% endif %}
+                {% if case_details.case_data.deceasedAddress.Country != null and case_details.case_data.deceasedAddress.Country != ""%} {{case_details.case_data.deceasedAddress.Country}}{% endif %}</span>
+            <br/>in which
+                    {% if case_details.case_data.executorForenames != null and case_details.case_data.executorForenames != ""%}{{case_details.case_data.executorForenames}}{% endif %} {% if case_details.case_data.executorSurname != null and case_details.case_data.executorSurname != ""%}{{case_details.case_data.executorSurname}}{% endif %}<br />
+                <span class="indent"> of {% if case_details.case_data.executorAddress.AddressLine1 != null and case_details.case_data.executorAddress.AddressLine1 != "" %}{{ case_details.case_data.executorAddress.AddressLine1}}{% endif %}
+                {% if case_details.case_data.executorAddress.AddressLine2 != null and case_details.case_data.executorAddress.AddressLine2 != "" %} {{case_details.case_data.executorAddress.AddressLine2}}{% endif %}
+                {% if case_details.case_data.executorAddress.AddressLine3 != null and case_details.case_data.executorAddress.AddressLine3 != "" %} {{case_details.case_data.executorAddress.AddressLine3}}{% endif %}
+                {% if case_details.case_data.executorAddress.PostTown != null and case_details.case_data.executorAddress.PostTown != "" %} {{case_details.case_data.executorAddress.PostTown}}{% endif %}
+                {% if case_details.case_data.executorAddress.County != null and case_details.case_data.executorAddress.County != "" %} {{case_details.case_data.executorAddress.County}}{% endif %}
+                {% if case_details.case_data.executorAddress.PostCode != null and case_details.case_data.executorAddress.PostCode != ""%} {{case_details.case_data.executorAddress.PostCode}}{% endif %}
+                {% if case_details.case_data.executorAddress.Country != null and case_details.case_data.executorAddress.Country != ""%} {{case_details.case_data.executorAddress.Country}}{% endif %}</span>
+
+                {% for executor in case_details.case_data.additionalExecutorList %}
+                <br />
+                and {% if executor.value.executorForenames != null and executor.value.executorForenames != ""%}{{executor.value.executorForenames}}{% endif %} {% if executor.value.executorSurname != null and executor.value.executorSurname != ""%}{{executor.value.executorSurname}}{% endif %}<br />
+                <span class="indent"> of
+                {% if executor.value.executorAddress.AddressLine1 != null and executor.value.executorAddress.AddressLine1 != "" %}{{ executor.value.executorAddress.AddressLine1 }}{% endif %}
+                {% if executor.value.executorAddress.AddressLine2 != null and executor.value.executorAddress.AddressLine2 != "" %}{{ executor.value.executorAddress.AddressLine2 }}{% endif %}
+                {% if executor.value.executorAddress.AddressLine3 != null and executor.value.executorAddress.AddressLine3 != "" %}{{ executor.value.executorAddress.AddressLine3 }}{% endif %}
+                {% if executor.value.executorAddress.PostTown != null and executor.value.executorAddress.PostTown != "" %}{{ executor.value.executorAddress.PostTown }}{% endif %}
+                {% if executor.value.executorAddress.County != null and executor.value.executorAddress.County != "" %}{{ executor.value.executorAddress.County }}{% endif %}
+                {% if executor.value.executorAddress.PostCode != null and executor.value.executorAddress.PostCode != ""%}{{ executor.value.executorAddress.PostCode }}{% endif %}
+                {% if executor.value.executorAddress.Country != null and executor.value.executorAddress.Country != ""%}{{ executor.value.executorAddress.Country }}{% endif %}</span>
+
+                {% endfor %}
+            </p>
+            <p>are appointed executors has been lodged at {{case_details.case_data.registryLocation}} District Probate Registry for deposit in the Principle Registry of the Family Division, {{case_details.londonRegistryAddress}} for safe custody pursuant to section 126 of the Senior Court Act 1981.</p>
+            <p>Except by leave of the District Judge of the Principle Registry the will may not be given out during the lifetime of the testator </p>
+        </td>
+    </tr>
+    <tr>
+        <td> Dated {{case_details.case_data.currentDateFormatted}}</td>
+    </tr>
+    <tr>
+        <img src="data:image/png;base64,{{case_details.grantSignatureBase64}}" align="right"/>
+    </tr>
+    <tr>
+        <td style="text-align: right"><p>REGISTRAR/DISTRICT JUDGE</p></td>
+    </tr>
+    <tr>
+        <td>
+            <p><U>NOTE TO TESTATOR:</U></p>
+            <p>It is important to retain this Certificate of Deposit: It will be necessary to produce it to the Registry on any application being made by the Testator to withdraw the deposited will.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p>Record Keep Reference - {{case_details.id}}</p>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

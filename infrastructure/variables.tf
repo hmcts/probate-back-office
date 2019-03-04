@@ -81,7 +81,19 @@ variable "ccd_gateway_host" {
   type = "string"
 }
 
+variable "ccd_baseUrl" {
+  default = "/"
+}
+
+variable "send_letter_base_url" {
+  type = "string"
+}
+
 variable "fee_api_url" {
+  type = "string"
+}
+
+variable "ccd_data_store_api" {
   type = "string"
 }
 

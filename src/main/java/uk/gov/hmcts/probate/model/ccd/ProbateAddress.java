@@ -1,33 +1,37 @@
 package uk.gov.hmcts.probate.model.ccd;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
+@NoArgsConstructor
+@AllArgsConstructor
 @Data
 @Builder
 public class ProbateAddress implements Serializable {
 
     @JsonProperty(value = "AddressLine1")
-    private final String proAddressLine1;
+    private String proAddressLine1;
 
     @JsonProperty(value = "AddressLine2")
-    private final String proAddressLine2;
+    private String proAddressLine2;
 
     @JsonProperty(value = "AddressLine3")
-    private final String proAddressLine3;
+    private String proAddressLine3;
 
     @JsonProperty(value = "County")
-    private final String proCounty;
+    private String proCounty;
 
     @JsonProperty(value = "PostTown")
-    private final String proPostTown;
+    private String proPostTown;
 
     @JsonProperty(value = "PostCode")
-    private final String proPostCode;
+    private String proPostCode;
 
     @JsonProperty(value = "Country")
-    private final String proCountry;
+    private String proCountry;
 }

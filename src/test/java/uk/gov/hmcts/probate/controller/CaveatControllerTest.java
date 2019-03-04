@@ -19,6 +19,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.util.TestUtils;
+import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
 import uk.gov.service.notify.NotificationClientException;
 
 import static org.hamcrest.CoreMatchers.containsString;
@@ -28,6 +29,7 @@ import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
 
@@ -50,6 +52,9 @@ public class CaveatControllerTest {
 
     @MockBean
     private PDFManagementService pdfManagementService;
+
+    @MockBean
+    private CoreCaseDataApi coreCaseDataApi;
 
     @Autowired
     private WebApplicationContext webApplicationContext;
@@ -88,5 +93,19 @@ public class CaveatControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("data")));
+    }
+
+    @Test
+    public void personalGeneralCaveatMessageNoEmailShouldReturnDataPayloadOkResponseCode() throws Exception {
+        String personalPayload = testUtils.getStringFromFile("caveatPayloadNotificationsNoEmail.json");
+
+        mockMvc.perform(post("/caveat/general-message")
+                .content(personalPayload)
+                .contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.errors[0]")
+                        .value("There is no email address for this caveator. Add an email address or contact them by post."))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
+
     }
 }

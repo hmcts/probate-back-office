@@ -13,7 +13,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_DRAFT;
+import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_DRAFT;
 
 @Slf4j
 @AllArgsConstructor
@@ -26,11 +28,32 @@ public class DocumentService {
 
         List<CollectionMember<Document>> documentsToExpire = new ArrayList<>();
 
-        if (DIGITAL_GRANT_DRAFT.equals(documentType)) {
-            documentsToExpire.addAll(callbackRequest.getCaseDetails().getData()
-                    .getProbateDocumentsGenerated().stream()
-                    .filter(collectionMember -> collectionMember.getValue().getDocumentType().equals(DIGITAL_GRANT_DRAFT))
-                    .collect(Collectors.toList()));
+        switch (documentType) {
+            case DIGITAL_GRANT_DRAFT:
+                documentsToExpire.addAll(callbackRequest.getCaseDetails().getData()
+                        .getProbateDocumentsGenerated().stream()
+                        .filter(collectionMember -> collectionMember.getValue().getDocumentType().equals(DIGITAL_GRANT_DRAFT))
+                        .collect(Collectors.toList()));
+                break;
+            case ADMON_WILL_GRANT_DRAFT:
+                documentsToExpire.addAll(callbackRequest.getCaseDetails().getData()
+                        .getProbateDocumentsGenerated().stream()
+                        .filter(collectionMember -> collectionMember.getValue().getDocumentType().equals(ADMON_WILL_GRANT_DRAFT))
+                        .collect(Collectors.toList()));
+                break;
+            case INTESTACY_GRANT_DRAFT:
+                documentsToExpire.addAll(callbackRequest.getCaseDetails().getData()
+                        .getProbateDocumentsGenerated().stream()
+                        .filter(collectionMember -> collectionMember.getValue().getDocumentType().equals(INTESTACY_GRANT_DRAFT))
+                        .collect(Collectors.toList()));
+                break;
+            default:
+                documentsToExpire.addAll(callbackRequest.getCaseDetails().getData()
+                        .getProbateDocumentsGenerated().stream()
+                        .filter(collectionMember -> collectionMember.getValue().getDocumentType().equals(DIGITAL_GRANT_DRAFT))
+                        .collect(Collectors.toList()));
+                break;
+
         }
 
         documentsToExpire.forEach(collectionMember -> {

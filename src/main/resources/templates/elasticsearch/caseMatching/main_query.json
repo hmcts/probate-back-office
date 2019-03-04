@@ -1,0 +1,214 @@
+{
+  "query": {
+    "bool": {
+      "should": [
+        {
+          "bool": {
+            "must": [
+              {
+                "multi_match": {
+                  "query": ":deceasedForenames",
+                  "boost": 2,
+                  "fields": [
+                    "data.deceasedForenames"
+                  ]
+                }
+              },
+              {
+                "multi_match": {
+                  "query": ":deceasedSurname",
+                  "boost": 2,
+                  "fields": [
+                    "data.deceasedSurname"
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "bool": {
+            "must": [
+              {
+                "multi_match": {
+                  "query": ":deceasedForenames",
+                  "fuzziness": 2,
+                  "prefix_length": 0,
+                  "fields": [
+                    "data.deceasedForenames"
+                  ]
+                }
+              },
+              {
+                "multi_match": {
+                  "query": ":deceasedSurname",
+                  "fuzziness": 2,
+                  "prefix_length": 0,
+                  "fields": [
+                    "data.deceasedSurname"
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        :optionalAliasesToNameQuery
+        {
+          "bool": {
+            "must": [
+              {
+                "multi_match": {
+                  "query": ":deceasedForenames",
+                  "boost": 2,
+                  "fields": [
+                    "data.deceasedAliasNameList.*.Forenames"
+                  ]
+                }
+              },
+              {
+                "multi_match": {
+                  "query": ":deceasedSurname",
+                  "boost": 2,
+                  "fields": [
+                    "data.deceasedAliasNameList.*.LastName"
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "bool": {
+            "must": [
+              {
+                "multi_match": {
+                  "query": ":deceasedForenames",
+                  "fuzziness": 2,
+                  "prefix_length": 0,
+                  "fields": [
+                    "data.deceasedAliasNameList.*.Forenames"
+                  ]
+                }
+              },
+              {
+                "multi_match": {
+                  "query": ":deceasedSurname",
+                  "fuzziness": 2,
+                  "prefix_length": 0,
+                  "fields": [
+                    "data.deceasedAliasNameList.*.LastName"
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "multi_match": {
+            "query": ":deceasedFullName",
+            "operator": "and",
+            "boost": 2,
+            "fields": [
+              "data.solsDeceasedAliasNamesList.*"
+            ]
+          }
+        },
+        {
+          "multi_match": {
+            "query": ":deceasedFullName",
+            "operator": "and",
+            "fuzziness": 2,
+            "prefix_length": 0,
+            "fields": [
+              "data.solsDeceasedAliasNamesList.*"
+            ]
+          }
+        },
+        :optionalAliasesToAliasesQuery
+        {
+          "multi_match": {
+            "query": ":deceasedFullName",
+            "operator": "and",
+            "boost": 2,
+            "fields": [
+              "data.alias_names"
+            ]
+          }
+        },
+        {
+          "multi_match": {
+            "query": ":deceasedFullName",
+            "operator": "and",
+            "fuzziness": 2,
+            "prefix_length": 0,
+            "fields": [
+              "data.alias_names"
+            ]
+          }
+        }
+      ],
+      "minimum_should_match": 1,
+      "filter": {
+        "bool": {
+          "must": [
+            {
+              "bool": {
+                "should": [
+                  {
+                    "bool": {
+                      "must_not": {
+                        "exists": {
+                          "field": "data.deceasedDateOfDeath"
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "term": {
+                      "data.deceasedDateOfBirth": {
+                        "value": ":deceasedDateOfBirth"
+                      }
+                    }
+                  },
+                  {
+                    "range": {
+                      "data.deceasedDateOfDeath": {
+                        "gte": ":deceasedDateOfDeath||-3d",
+                        "lte": ":deceasedDateOfDeath||+3d"
+                      }
+                    }
+                  }
+                ],
+                "minimum_should_match": 1
+              }
+            },
+            {
+              "bool": {
+                "should": [
+                  {
+                    "bool": {
+                      "must_not": {
+                        "exists": {
+                          "field": "data.imported_to_ccd"
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "match": {
+                      "data.imported_to_ccd": {
+                        "query": "N"
+                      }
+                    }
+                  }
+                ],
+                "minimum_should_match": 1
+              }
+            }
+          ]
+        }
+      }
+    }
+  },
+  "size": 100
+}

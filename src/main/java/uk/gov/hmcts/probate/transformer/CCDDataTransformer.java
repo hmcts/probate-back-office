@@ -8,6 +8,8 @@ import uk.gov.hmcts.probate.model.ccd.Executor;
 import uk.gov.hmcts.probate.model.ccd.Fee;
 import uk.gov.hmcts.probate.model.ccd.InheritanceTax;
 import uk.gov.hmcts.probate.model.ccd.Solicitor;
+import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatCallbackRequest;
+import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
@@ -50,10 +52,26 @@ public class CCDDataTransformer {
                 .build();
     }
 
+    public CCDData transformEmail(CallbackRequest callbackRequest) {
+
+        return buildEmailCCDData(callbackRequest);
+    }
+
+    private CCDData buildEmailCCDData(CallbackRequest callbackRequest) {
+        CaseData caseData = callbackRequest.getCaseDetails().getData();
+
+        return CCDData.builder()
+                .solsSolicitorEmail(getSolsSolicitorEmail(caseData.getSolsSolicitorEmail()))
+                .primaryApplicantEmailAddress(getPrimaryApplicantEmailAddress(caseData.getPrimaryApplicantEmailAddress()))
+                .applicationType(getApplicationType(caseData.getApplicationType().toString()))
+
+                .build();
+    }
+
     private Solicitor buildSolicitorDetails(CaseData caseData) {
         return Solicitor.builder()
                 .firmName(caseData.getSolsSolicitorFirmName())
-                .firmPostcode(caseData.getSolsSolicitorFirmPostcode())
+                .firmAddress(caseData.getSolsSolicitorAddress())
                 .fullname(caseData.getSolsSOTName())
                 .jobRole(caseData.getSolsSOTJobTitle())
                 .build();
@@ -102,6 +120,18 @@ public class CCDDataTransformer {
         return solsSolicitorAppReference == null ? "" : solsSolicitorAppReference;
     }
 
+    private String getApplicationType(String applicationType) {
+        return applicationType == null ? "" : applicationType;
+    }
+
+    private String getPrimaryApplicantEmailAddress(String primaryApplicantEmailAddress) {
+        return primaryApplicantEmailAddress == null ? "" : primaryApplicantEmailAddress;
+    }
+
+    private String getSolsSolicitorEmail(String solsSolicitorEmail) {
+        return solsSolicitorEmail == null ? "" : solsSolicitorEmail;
+    }
+
     private String getBoExaminationCheckList(String boExaminationCheckList) {
         return boExaminationCheckList == null ? "" : boExaminationCheckList;
     }
@@ -141,5 +171,37 @@ public class CCDDataTransformer {
             log.warn(e.getMessage(), e);
             return null;
         }
+    }
+
+    public CaveatData transformCaveats(CaveatCallbackRequest callbackRequest) {
+
+        return buildCCDDataCaveats(callbackRequest);
+    }
+
+    private CaveatData buildCCDDataCaveats(CaveatCallbackRequest callbackRequest) {
+        CaveatData caseData = callbackRequest.getCaseDetails().getData();
+
+        return CaveatData.builder()
+                .caveatorEmailAddress(getCaveatorEmailAddress(caseData.getCaveatorEmailAddress()))
+                .build();
+    }
+
+    private String getCaveatorEmailAddress(String caveatorEmailAddress) {
+        return caveatorEmailAddress == null ? "" : caveatorEmailAddress;
+    }
+
+    public CCDData transformBulkPrint(String letterId) {
+
+        return buildCCDDataBulkPrint(letterId);
+    }
+
+    private CCDData buildCCDDataBulkPrint(String letterId) {
+
+        return CCDData.builder().sendLetterId(getSendLetterId(letterId))
+                .build();
+    }
+
+    private String getSendLetterId(String sendLetterId) {
+        return sendLetterId == null ? "" : sendLetterId;
     }
 }

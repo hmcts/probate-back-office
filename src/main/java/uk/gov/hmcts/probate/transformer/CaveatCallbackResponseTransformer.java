@@ -33,7 +33,7 @@ public class CaveatCallbackResponseTransformer {
     private static final String DEFAULT_REGISTRY_LOCATION = "Leeds";
 
     public CaveatCallbackResponse caveatRaised(CaveatCallbackRequest caveatCallbackRequest) {
-        CaveatDetails caveatDetails = caveatCallbackRequest.getCaveatDetails();
+        CaveatDetails caveatDetails = caveatCallbackRequest.getCaseDetails();
 
         ResponseCaveatData responseCaveatData = getResponseCaveatData(caveatDetails)
                 .expiryDate(dateTimeFormatter.format(LocalDate.now().plusMonths(CAVEAT_LIFESPAN)))
@@ -43,9 +43,9 @@ public class CaveatCallbackResponseTransformer {
     }
 
     public CaveatCallbackResponse generalMessage(CaveatCallbackRequest caveatCallbackRequest, Document document) {
-        CaveatDetails caveatDetails = caveatCallbackRequest.getCaveatDetails();
+        CaveatDetails caveatDetails = caveatCallbackRequest.getCaseDetails();
 
-        caveatDetails.getCaveatData().getDocumentsGenerated().add(new CollectionMember<>(null, document));
+        caveatDetails.getData().getDocumentsGenerated().add(new CollectionMember<>(null, document));
 
         ResponseCaveatData responseCaveatData = getResponseCaveatData(caveatDetails)
                 .messageContent("")
@@ -55,14 +55,14 @@ public class CaveatCallbackResponseTransformer {
     }
 
     public CaveatCallbackResponse transform(CaveatCallbackRequest callbackRequest) {
-        ResponseCaveatData responseCaveatData = getResponseCaveatData(callbackRequest.getCaveatDetails())
+        ResponseCaveatData responseCaveatData = getResponseCaveatData(callbackRequest.getCaseDetails())
                 .build();
 
         return transformResponse(responseCaveatData);
     }
 
     public CaveatCallbackResponse addMatches(CaveatCallbackRequest request, List<CaseMatch> newMatches) {
-        List<CollectionMember<CaseMatch>> storedMatches = request.getCaveatDetails().getCaveatData().getCaseMatches();
+        List<CollectionMember<CaseMatch>> storedMatches = request.getCaseDetails().getData().getCaseMatches();
 
         // Removing case matches that have been already added
         storedMatches.stream()
@@ -72,7 +72,7 @@ public class CaveatCallbackResponseTransformer {
 
         storedMatches.sort(Comparator.comparingInt(m -> ofNullable(m.getValue().getValid()).orElse("").length()));
 
-        ResponseCaveatData.ResponseCaveatDataBuilder responseCaseDataBuilder = getResponseCaveatData(request.getCaveatDetails());
+        ResponseCaveatData.ResponseCaveatDataBuilder responseCaseDataBuilder = getResponseCaveatData(request.getCaseDetails());
 
         return transformResponse(responseCaseDataBuilder.build());
     }
@@ -82,7 +82,7 @@ public class CaveatCallbackResponseTransformer {
     }
 
     private ResponseCaveatDataBuilder getResponseCaveatData(CaveatDetails caveatDetails) {
-        CaveatData caveatData = caveatDetails.getCaveatData();
+        CaveatData caveatData = caveatDetails.getData();
 
         return ResponseCaveatData.builder()
 
@@ -107,7 +107,10 @@ public class CaveatCallbackResponseTransformer {
                 .messageContent(caveatData.getMessageContent())
 
                 .documentsUploaded(caveatData.getDocumentsUploaded())
-                .documentsGenerated(caveatData.getDocumentsGenerated());
+                .documentsGenerated(caveatData.getDocumentsGenerated())
+                .recordId(caveatData.getRecordId())
+                .legacyCaseViewUrl(caveatData.getLegacyCaseViewUrl())
+                .legacyType(caveatData.getLegacyType());
     }
 
     private String transformToString(LocalDate dateValue) {

@@ -57,6 +57,10 @@ public class StandingSearchCallbackResponseTransformerTest {
     private static final LocalDate SS_EXPIRY_DATE = LocalDate.now().plusMonths(STANDING_SEARCH_LIFESPAN);
     private static final String SS_FORMATTED_EXPIRY_DATE = dateTimeFormatter.format(SS_EXPIRY_DATE);
 
+    private static final String SS_RECORD_ID = "12345";
+    private static final String SS_LEGACY_CASE_URL = "someUrl";
+    private static final String SS_LEGACY_CASE_TYPE = "someCaseType";
+
     @InjectMocks
     private StandingSearchCallbackResponseTransformer underTest;
 
@@ -83,10 +87,14 @@ public class StandingSearchCallbackResponseTransformerTest {
                 .applicantSurname(SS_APPLICANT_SURNAME)
                 .applicantEmailAddress(SS_APPLICANT_EMAIL_ADDRESS)
                 .applicantAddress(SS_APPLICANT_ADDRESS)
-                .expiryDate(SS_EXPIRY_DATE);
+                .expiryDate(SS_EXPIRY_DATE)
+                .recordId(SS_RECORD_ID)
+                .legacyCaseViewUrl(SS_LEGACY_CASE_URL)
+                .legacyType(SS_LEGACY_CASE_TYPE);
+        ;
 
-        when(standingSearchCallbackRequestMock.getStandingSearchDetails()).thenReturn(standingSearchDetailsMock);
-        when(standingSearchDetailsMock.getStandingSearchData()).thenReturn(standingSearchDataBuilder.build());
+        when(standingSearchCallbackRequestMock.getCaseDetails()).thenReturn(standingSearchDetailsMock);
+        when(standingSearchDetailsMock.getData()).thenReturn(standingSearchDataBuilder.build());
     }
 
     @Test
@@ -97,7 +105,7 @@ public class StandingSearchCallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldTransformCaseForCaveatWithDeceasedAliasNames() {
+    public void shouldTransformCaseForStandingSearchWithDeceasedAliasNames() {
         List<CollectionMember<ProbateFullAliasName>> deceasedFullAliasNameList = new ArrayList<>();
 
         ProbateFullAliasName an11 = ProbateFullAliasName.builder().fullAliasName(SS_DECEASED_FULL_ALIAS_NAME).build();
@@ -105,8 +113,8 @@ public class StandingSearchCallbackResponseTransformerTest {
         deceasedFullAliasNameList.add(an1);
         standingSearchDataBuilder.deceasedFullAliasNameList(deceasedFullAliasNameList);
 
-        when(standingSearchCallbackRequestMock.getStandingSearchDetails()).thenReturn(standingSearchDetailsMock);
-        when(standingSearchDetailsMock.getStandingSearchData()).thenReturn(standingSearchDataBuilder.build());
+        when(standingSearchCallbackRequestMock.getCaseDetails()).thenReturn(standingSearchDetailsMock);
+        when(standingSearchDetailsMock.getData()).thenReturn(standingSearchDataBuilder.build());
 
         StandingSearchCallbackResponse standingSearchCallbackResponse = underTest.transform(standingSearchCallbackRequestMock);
 
@@ -120,8 +128,8 @@ public class StandingSearchCallbackResponseTransformerTest {
         documents.add(createUploadDocuments("0"));
         standingSearchDataBuilder.documentsUploaded(documents);
 
-        when(standingSearchCallbackRequestMock.getStandingSearchDetails()).thenReturn(standingSearchDetailsMock);
-        when(standingSearchDetailsMock.getStandingSearchData()).thenReturn(standingSearchDataBuilder.build());
+        when(standingSearchCallbackRequestMock.getCaseDetails()).thenReturn(standingSearchDetailsMock);
+        when(standingSearchDetailsMock.getData()).thenReturn(standingSearchDataBuilder.build());
 
         StandingSearchCallbackResponse standingSearchCallbackResponse = underTest.transform(standingSearchCallbackRequestMock);
 
@@ -159,6 +167,11 @@ public class StandingSearchCallbackResponseTransformerTest {
         assertEquals(SS_APPLICANT_ADDRESS, standingSearchCallbackResponse.getResponseStandingSearchData().getApplicantAddress());
 
         assertEquals(SS_FORMATTED_EXPIRY_DATE, standingSearchCallbackResponse.getResponseStandingSearchData().getExpiryDate());
+
+        assertEquals(SS_RECORD_ID, standingSearchCallbackResponse.getResponseStandingSearchData().getRecordId());
+        assertEquals(SS_LEGACY_CASE_TYPE, standingSearchCallbackResponse.getResponseStandingSearchData().getLegacyType());
+        assertEquals(SS_LEGACY_CASE_URL, standingSearchCallbackResponse.getResponseStandingSearchData().getLegacyCaseViewUrl());
+
     }
 
     private void assertApplicationType(StandingSearchCallbackResponse standingSearchCallbackResponse, ApplicationType ssApplicationType) {

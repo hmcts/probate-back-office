@@ -1,58 +1,74 @@
 package uk.gov.hmcts.probate.model.ccd.standingsearch.request;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import uk.gov.hmcts.probate.model.ApplicationType;
+import uk.gov.hmcts.probate.model.ccd.CaseMatch;
 import uk.gov.hmcts.probate.model.ccd.ProbateAddress;
 import uk.gov.hmcts.probate.model.ccd.ProbateFullAliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
+@JsonDeserialize(builder = StandingSearchData.StandingSearchDataBuilder.class)
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
 @Data
 public class StandingSearchData {
 
-    private final ApplicationType applicationType;
-    private final String registryLocation;
+    private ApplicationType applicationType;
+    private String registryLocation;
 
     // EVENT = createStandingSearch - deceased data
 
-    private final String deceasedForenames;
+    private String deceasedForenames;
 
-    private final String deceasedSurname;
+    private String deceasedSurname;
 
-    private final LocalDate deceasedDateOfDeath;
+    private LocalDate deceasedDateOfDeath;
 
-    private final LocalDate deceasedDateOfBirth;
+    private LocalDate deceasedDateOfBirth;
 
-    private final String deceasedAnyOtherNames;
+    private String deceasedAnyOtherNames;
 
-    private final List<CollectionMember<ProbateFullAliasName>> deceasedFullAliasNameList;
+    private List<CollectionMember<ProbateFullAliasName>> deceasedFullAliasNameList;
 
-    private final ProbateAddress deceasedAddress;
+    private ProbateAddress deceasedAddress;
 
     // EVENT = createStandingSearch - applicant data
 
-    private final String applicantForenames;
+    private String applicantForenames;
 
-    private final String applicantSurname;
+    private String applicantSurname;
 
-    private final String applicantEmailAddress;
+    private String applicantEmailAddress;
 
-    private final ProbateAddress applicantAddress;
+    private ProbateAddress applicantAddress;
 
     // EVENT = createStandingSearch - standing search details
 
-    private final long numberOfCopies;
+    private long numberOfCopies;
 
     private LocalDate expiryDate;
 
+    @Builder.Default
+    private List<CollectionMember<CaseMatch>> caseMatches = new ArrayList<>();
+
     // EVENT = uploadDocument
 
-    private final List<CollectionMember<UploadDocument>> documentsUploaded;
+    private List<CollectionMember<UploadDocument>> documentsUploaded;
+
+    private String recordId;
+    private String legacyType;
+    private String legacyCaseViewUrl;
 
     // EVENT = misc
 
@@ -62,6 +78,10 @@ public class StandingSearchData {
 
     public String getApplicantFullName() {
         return String.join(" ", applicantForenames, applicantSurname);
+    }
+
+    @JsonPOJOBuilder(withPrefix = "")
+    public static final class StandingSearchDataBuilder {
     }
 
 }

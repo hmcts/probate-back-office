@@ -91,8 +91,23 @@ public class SolCcdServiceNextStepsTests extends IntegrationTestBase {
     }
 
     @Test
+    public void verifyEmptySolicitorFirmAddressLine1ReturnsError() {
+        given().relaxedHTTPSValidation()
+                .headers(utils.getHeaders())
+                .body(utils.getJsonFromFile("failure.missingSolicitorAddressLine1.json"))
+                .post("/nextsteps/validate").then().statusCode(400)
+                .and().body("fieldErrors[0].field", equalToIgnoringCase("caseDetails.data.solsSolicitorAddress.addressLine1"))
+                .and().body("message", equalToIgnoringCase("Invalid payload"));
+    }
+
+    @Test
     public void verifyEmptySolicitorFirmPostcodeReturnsError() {
-        validatePostRequestFailureForLegalStatement("\"solsSolicitorFirmPostcode\": \"firmpc\"", "\"solsSolicitorFirmPostcode\": \"\"", "caseDetails.data.solsSolicitorFirmPostcode");
+        given().relaxedHTTPSValidation()
+                .headers(utils.getHeaders())
+                .body(utils.getJsonFromFile("failure.missingSolicitorPostcode.json"))
+                .post("/nextsteps/validate").then().statusCode(400)
+                .and().body("fieldErrors[0].field", equalToIgnoringCase("caseDetails.data.solsSolicitorAddress.postCode"))
+                .and().body("message", equalToIgnoringCase("Invalid payload"));
     }
 
     private void validatePostRequestSuccessForLegalStatement(String validationString) {
