@@ -132,7 +132,7 @@ public class NotificationService {
             case GENERAL_CAVEAT_MESSAGE:
                 return notificationTemplates.getEmail().get(applicationType).getGeneralCaveatMessage();
             default:
-                throw new BadRequestException("Unsupported state", null);
+                throw new BadRequestException("Unsupported state");
         }
     }
 
@@ -143,7 +143,7 @@ public class NotificationService {
             case PERSONAL:
                 return caseData.getPrimaryApplicantEmailAddress().toLowerCase();
             default:
-                throw new BadRequestException("Unsupported application type", null);
+                throw new BadRequestException("Unsupported application type");
         }
     }
 }
