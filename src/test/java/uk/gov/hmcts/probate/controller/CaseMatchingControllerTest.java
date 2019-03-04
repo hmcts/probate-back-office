@@ -33,7 +33,6 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -154,7 +153,6 @@ public class CaseMatchingControllerTest {
     public void caseMatchingImportFromGrantFlow() throws Exception {
 
         String solicitorPayload = testUtils.getStringFromFile("payloadWithCaseMatches.json");
-        when(legacyImportService.areLegacyRowsValidToImport(any(List.class))).thenReturn(true);
 
         mockMvc.perform(post("/case-matching/import-legacy-from-grant-flow")
                 .content(solicitorPayload)
@@ -164,26 +162,12 @@ public class CaseMatchingControllerTest {
 
 
         verifyAllForImport();
-    }
-
-    @Test
-    public void caseMatchingImportFromGrantFlowWithInvalidRowSelection() throws Exception {
-
-        String solicitorPayload = testUtils.getStringFromFile("payloadWithCaseMatches.json");
-        when(legacyImportService.areLegacyRowsValidToImport(any(List.class))).thenReturn(false);
-
-        mockMvc.perform(post("/case-matching/import-legacy-from-grant-flow")
-                .content(solicitorPayload)
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().string(containsString("errors")));
     }
 
     @Test
     public void caseMatchingImportFromCaveatFlow() throws Exception {
 
         String solicitorPayload = testUtils.getStringFromFile("payloadWithCaseMatches.json");
-        when(legacyImportService.areLegacyRowsValidToImport(any(List.class))).thenReturn(true);
 
         mockMvc.perform(post("/case-matching/import-legacy-from-caveat-flow")
                 .content(solicitorPayload)
@@ -193,26 +177,12 @@ public class CaseMatchingControllerTest {
 
 
         verifyAllForImport();
-    }
-
-    @Test
-    public void caseMatchingImportFromCaveatFlowWithInvalidRowSelection() throws Exception {
-
-        String solicitorPayload = testUtils.getStringFromFile("payloadWithCaseMatches.json");
-        when(legacyImportService.areLegacyRowsValidToImport(any(List.class))).thenReturn(false);
-
-        mockMvc.perform(post("/case-matching/import-legacy-from-caveat-flow")
-                .content(solicitorPayload)
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().string(containsString("data")));
     }
 
     @Test
     public void caseMatchingImportFromStandingSearchFlow() throws Exception {
 
         String solicitorPayload = testUtils.getStringFromFile("payloadWithCaseMatches.json");
-        when(legacyImportService.areLegacyRowsValidToImport(any(List.class))).thenReturn(true);
 
         mockMvc.perform(post("/case-matching/import-legacy-from-standing-search-flow")
                 .content(solicitorPayload)
@@ -222,25 +192,12 @@ public class CaseMatchingControllerTest {
 
 
         verifyAllForImport();
-    }
-
-    public void caseMatchingImportFromStandingSearchFlowWithInvalidRowSelection() throws Exception {
-
-        String solicitorPayload = testUtils.getStringFromFile("payloadWithCaseMatches.json");
-
-        when(legacyImportService.areLegacyRowsValidToImport(any(List.class))).thenReturn(false);
-        mockMvc.perform(post("/case-matching/import-legacy-from-standing-search-flow")
-                .content(solicitorPayload)
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().string(containsString("errors")));
     }
 
     @Test
     public void caseMatchingImportFromWillLodgementFlow() throws Exception {
 
         String solicitorPayload = testUtils.getStringFromFile("payloadWithCaseMatches.json");
-        when(legacyImportService.areLegacyRowsValidToImport(any(List.class))).thenReturn(true);
 
         mockMvc.perform(post("/case-matching/import-legacy-from-will-lodgement-flow")
                 .content(solicitorPayload)
@@ -250,18 +207,6 @@ public class CaseMatchingControllerTest {
 
 
         verifyAllForImport();
-    }
-
-    public void caseMatchingImportFromWillLodgementFlowWithInvalidRowSelection() throws Exception {
-
-        String solicitorPayload = testUtils.getStringFromFile("payloadWithCaseMatches.json");
-
-        when(legacyImportService.areLegacyRowsValidToImport(any(List.class))).thenReturn(false);
-        mockMvc.perform(post("/case-matching/import-legacy-from-will-lodgement-flow")
-                .content(solicitorPayload)
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().string(containsString("error")));
     }
 
     private void verifyAllForImport() {

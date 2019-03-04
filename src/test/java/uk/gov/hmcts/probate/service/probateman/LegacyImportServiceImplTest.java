@@ -134,42 +134,4 @@ public class LegacyImportServiceImplTest {
         verify(grantApplicationMock).setDnmInd("Y");
         verify(grantApplicationMock).setCcdCaseNo("1111222233334444");
     }
-
-    @Test
-    public void shouldBeValidRowsToImport() {
-        CaseMatch caseMatch = Mockito.mock(CaseMatch.class);
-        when(caseMatch.getDoImport()).thenReturn(DO_IMPORT_YES);
-        when(caseMatch.getLegacyCaseViewUrl()).thenReturn(LEGACY_CASE_URL);
-        CollectionMember<CaseMatch> memberRow = new CollectionMember<>(caseMatch);
-
-        CaseMatch caseMatch2 = Mockito.mock(CaseMatch.class);
-        CollectionMember<CaseMatch> memberRow2 = new CollectionMember<>(caseMatch2);
-
-        List<CollectionMember<CaseMatch>> legacyRows = new ArrayList<>();
-        legacyRows.add(memberRow);
-        legacyRows.add(memberRow2);
-
-        boolean actual = legacyImportService.areLegacyRowsValidToImport(legacyRows);
-        assertThat(actual, equalTo(true));
-    }
-
-    @Test
-    public void shouldNotBeValidRowsToImport() {
-        CaseMatch caseMatch1 = Mockito.mock(CaseMatch.class);
-        when(caseMatch1.getDoImport()).thenReturn(DO_IMPORT_YES);
-        when(caseMatch1.getLegacyCaseViewUrl()).thenReturn(LEGACY_CASE_URL);
-        CollectionMember<CaseMatch> memberRow1 = new CollectionMember<>(caseMatch1);
-
-        CaseMatch caseMatch2 = Mockito.mock(CaseMatch.class);
-        when(caseMatch2.getDoImport()).thenReturn(DO_IMPORT_YES);
-        when(caseMatch2.getLegacyCaseViewUrl()).thenReturn(LEGACY_CASE_URL);
-        CollectionMember<CaseMatch> memberRow2 = new CollectionMember<>(caseMatch2);
-
-        List<CollectionMember<CaseMatch>> legacyRows = new ArrayList<>();
-        legacyRows.add(memberRow1);
-        legacyRows.add(memberRow2);
-
-        boolean actual = legacyImportService.areLegacyRowsValidToImport(legacyRows);
-        assertThat(actual, equalTo(false));
-    }
 }
