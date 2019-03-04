@@ -7,7 +7,5 @@ import java.util.List;
 
 public interface LegacyImportService {
 
-    boolean areLegacyRowsValidToImport(List<CollectionMember<CaseMatch>> rows);
-
     List<CaseMatch> importLegacyRows(List<CollectionMember<CaseMatch>> rows);
 }

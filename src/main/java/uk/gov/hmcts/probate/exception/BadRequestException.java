@@ -25,14 +25,4 @@ public class BadRequestException extends RuntimeException {
                 .map(FieldErrorResponse::of)
                 .collect(Collectors.toList());
     }
-
-    public BadRequestException(final String message, final List<FieldErrorResponse> errors) {
-        super(message);
-        this.errors = errors;
-    }
-
-    public BadRequestException(final String message) {
-        super(message);
-        this.errors = null;
-    }
 }
