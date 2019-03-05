@@ -31,53 +31,71 @@ Scenario('Will Lodgement for a Personal Applicant', async function (I) {
     // IdAM
     I.authenticateWithIdamIfAvailable();
 
+    const nextStepName = 'Create a will lodgement';
     I.selectNewCase();
     I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text, createCaseConfig.list3_text);
     I.enterWillLodgementPage1('create');
     I.enterWillLodgementPage2('create');
     I.enterWillLodgementPage3('create');
     I.checkMyAnswers();
+    const endState = 'Will lodgement created';
 
     const url = await I.grabCurrentUrl();
     const caseRef = url.split('/').pop()
         .match(/.{4}/g)
         .join('-');
 
-    I.seeCaseDetails(caseRef, historyTabConfig, checkYourAnswersConfig);
+    I.seeCaseDetails(caseRef, historyTabConfig, checkYourAnswersConfig, nextStepName, endState);
     I.seeCaseDetails(caseRef, generalDetailsTabConfig, createWillLodgementConfig);
     I.seeCaseDetails(caseRef, testatorTabConfig, createWillLodgementConfig);
     I.seeCaseDetails(caseRef, executorTabConfig, createWillLodgementConfig);
 
-    I.chooseNextStep('Upload document');
+    nextStepName = 'Upload document';
+    I.chooseNextStep(nextStepName);
     I.uploadDocument(caseRef);
     I.enterEventSummary(caseRef, documentUploadSummaryConfig);
+    // Note that End State does not change when uploading documents.
+    I.seeCaseDetails(caseRef, historyTabConfig, checkYourAnswersConfig, nextStepName, endState);
     I.seeCaseDetails(caseRef, documentUploadTabConfig, documentUploadConfig);
 
-    I.chooseNextStep('Amend will lodgement');
+    nextStepName = 'Amend will lodgement';
+    I.chooseNextStep(nextStepName);
     I.enterWillLodgementPage1('update');
     I.enterWillLodgementPage2('update');
     I.enterWillLodgementPage3('update');
     I.checkMyAnswers();
+    // Note that End State does not change when amending a Will Lodgement.
+    I.seeCaseDetails(caseRef, historyTabConfig, checkYourAnswersConfig, nextStepName, endState);
     I.seeCaseDetails(caseRef, generalDetailsUpdateTabConfig, createWillLodgementConfig);
     I.seeCaseDetails(caseRef, testatorUpdateTabConfig, createWillLodgementConfig);
     I.seeCaseDetails(caseRef, executorUpdateTabConfig, createWillLodgementConfig);
 
-    I.chooseNextStep('Add comment');
+    nextStepName = 'Add comment';
+    I.chooseNextStep(nextStepName);
     I.enterComment(caseRef, commentSummaryConfig);
-    I.seeCaseDetails(caseRef, historyTabConfig, commentSummaryConfig);
+    // Note that End State does not change when adding a comment.
+    I.seeCaseDetails(caseRef, historyTabConfig, commentSummaryConfig, nextStepName, endState);
 
-    I.chooseNextStep('Generate deposit receipt');
+    nextStepName = 'Generate deposit receipt';
+    I.chooseNextStep(nextStepName);
     I.generateDepositReceipt(caseRef, generateDepositReceiptSummaryConfig);
+    // Note that End State does not change when generating a deposit receipt.
+    I.seeCaseDetails(caseRef, historyTabConfig, checkYourAnswersConfig, nextStepName, endState);
     I.seeCaseDetails(caseRef, generateDepositReceiptTabConfig, generateDepositReceiptSummaryConfig);
 
-    I.chooseNextStep('Match application');
+    nextStepName = 'Match application';
+    I.chooseNextStep(nextStepName);
     I.selectCaseMatches(caseRef, caseMatchesConfig);
     I.enterCaseMatchesComment(caseRef, caseMatchesCommentSummaryConfig);
+    endState = 'Will lodged';
+    I.seeCaseDetails(caseRef, historyTabConfig, checkYourAnswersConfig, nextStepName, endState);
     I.seeCaseDetails(caseRef, caseMatchesTabConfig, caseMatchesConfig);
 
-    I.chooseNextStep('Withdraw will');
+    nextStepName = 'Withdraw will';
+    I.chooseNextStep(nextStepName);
     I.selectWithdrawalReason(caseRef);
     I.enterWithdrawalSummary(caseRef, withdrawalSummaryConfig);
-    I.seeCaseDetails(caseRef, historyTabConfig, withdrawalSummaryConfig);
+    endState = 'Will withdrawn';
+    I.seeCaseDetails(caseRef, historyTabConfig, withdrawalSummaryConfig, nextStepName, endState);
 
 }).retry(testConfig.TestRetryScenarios);
