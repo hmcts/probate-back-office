@@ -8,5 +8,5 @@ java:
     FEE_API_URL: http://fees-register-api-aat.service.core-compute-aat.internal
     EVIDENCE_MANAGEMENT_HOST: http://dm-store-aat.service.core-compute-aat.internal
     CCD_GATEWAY_HOST: http://${SERVICE_NAME}-api-gateway
-#    SERVICES_CORECASEDATA_BASEURL : http://${SERVICE_NAME}-data-store-api
+    SERVICES_CORECASEDATA_BASEURL : http://${SERVICE_NAME}-data-store-api
     SEND_LETTER_SERIVCE_BASEURL: http://rpe-send-letter-service-aat.service.core-compute-aat.internal
