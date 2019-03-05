@@ -25,3 +25,5 @@
 git.properties
 
 node_modules/
+
+yarn\.lock
