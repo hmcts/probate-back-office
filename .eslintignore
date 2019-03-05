@@ -1,0 +1,5 @@
+node_modules/*
+govuk/*
+public/*
+app/assets/javascripts/*.js
+coverage

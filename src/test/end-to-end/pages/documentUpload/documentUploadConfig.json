@@ -1,0 +1,8 @@
+{
+  "waitForText" : "Document upload",
+  "addNewButton": " #documentsUploaded > div > button",
+  "documentType": "Email",
+  "fileToUploadUrl":"uploadDocuments/test_file_for_document_upload.png",
+  "filename": "test_file_for_document_upload.png",
+  "comment": "test file to upload"
+}

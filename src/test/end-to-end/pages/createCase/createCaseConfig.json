@@ -1,0 +1,7 @@
+{
+  "waitForText" : "Create Case",
+  "list1_text": "Manage probate applications",
+  "list2_text": "Will lodgement",
+  "list3_text": "Create a will lodgement",
+  "startButton": ".button"
+}
