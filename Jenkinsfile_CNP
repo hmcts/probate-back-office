@@ -53,7 +53,7 @@ static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
 
 withPipeline("java", product, component) {
   env.APPINSIGHTS_INSTRUMENTATIONKEY=false
-  setVaultName('probate')
+//  setVaultName('probate')
   enableDockerBuild()
   installCharts()
   loadVaultSecrets(secrets)
