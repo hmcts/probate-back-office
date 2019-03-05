@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.service.ccd;
 
+import com.google.common.collect.ImmutableMap;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -13,6 +14,9 @@ import uk.gov.hmcts.reform.ccd.client.model.CaseDataContent;
 import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
 import uk.gov.hmcts.reform.ccd.client.model.Event;
 import uk.gov.hmcts.reform.ccd.client.model.StartEventResponse;
+
+import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Component
@@ -43,6 +47,25 @@ public class CcdClientApi implements CoreCaseDataService {
                 false,
                 caseDataContent
         );
+    }
+
+    @Override
+    public Optional<CaseDetails> retrieveCaseByLegacyId(String caseType, Long legacyId, SecurityDTO securityDTO) {
+        log.info("Search for imported legacy case in CCD by legacyId: {}", legacyId);
+        List<CaseDetails> caseDetails = coreCaseDataApi.searchForCaseworker(
+                securityDTO.getAuthorisation(),
+                securityDTO.getServiceAuthorisation(),
+                securityDTO.getUserId(),
+                JurisdictionId.PROBATE.name(),
+                caseType,
+                ImmutableMap.of("case.legacyId", legacyId.toString()));
+        if (caseDetails == null) {
+            return Optional.empty();
+        }
+        if (caseDetails.size() > 1) {
+            throw new IllegalStateException("Multiple cases exist with legacyId provided!");
+        }
+        return Optional.of(caseDetails.get(0));
     }
 
     private CaseDataContent createCaseDataContent(Object object, EventId eventId, StartEventResponse startEventResponse) {

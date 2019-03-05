@@ -216,16 +216,17 @@ public class ResponseCaseData {
     private final String wholeBloodCousinsSurvived;
     private final String wholeBloodCousinsSurvivedOverEighteen;
     private final String wholeBloodCousinsSurvivedUnderEighteen;
-    private final String grantSentToPrint;
-    private final String letterId;
 
     private final String boSendToBulkPrint;
     private final String boSendToBulkPrintRequested;
 
     private final List<CollectionMember<CaseMatch>> legacySearchResultRows;
 
-    private final String legacyId;
+    private final String recordId;
     private final String legacyType;
     private final String legacyCaseViewUrl;
+
+    private final String bulkPrintSendLetterId;
+    private final String bulkPrintPdfSize;
 
 }

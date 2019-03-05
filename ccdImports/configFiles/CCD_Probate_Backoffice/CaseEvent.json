@@ -69,9 +69,11 @@
     "PostConditionState": "BOCaseMatchingExamining",
     "CallBackURLAboutToStartEvent": "http://${CCD_DEF_CASE_SERVICE_BASE_URL}/case-matching/search-from-grant-flow",
     "CallBackURLAboutToSubmitEvent": "http://${CCD_DEF_CASE_SERVICE_BASE_URL}/case-matching/import-legacy-from-grant-flow",
+    "RetriesTimeoutURLAboutToSubmitEvent": "5",
     "SecurityClassification": "Public",
     "ShowSummary": "N"
   },
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "boAmendCaseDetails", "Name": "Amend case details", "Description": "Amend case details", "DisplayOrder": 19, "PreConditionState(s)": "*", "PostConditionState": "*", "CallBackURLAboutToSubmitEvent": "http://${CCD_DEF_CASE_SERVICE_BASE_URL}/case/validateCaseDetails", "SecurityClassification": "Public", "ShowSummary": "Y"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "boAddCommentExamine", "Name": "Add Comment", "Description": "Add Comment", "DisplayOrder": 20, "PreConditionState(s)": "BOExamining", "PostConditionState": "BOExamining", "SecurityClassification": "Public", "ShowSummary": "N"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "boUploadDocumentsExamine", "Name": "Upload Documents", "Description": "Upload Documents", "DisplayOrder": 21, "PreConditionState(s)": "BOExamining", "PostConditionState": "BOExamining", "SecurityClassification": "Public", "ShowSummary": "N"},
   {
@@ -129,6 +131,7 @@
     "PostConditionState": "BOCaseMatchingIssueGrant",
     "CallBackURLAboutToStartEvent": "http://${CCD_DEF_CASE_SERVICE_BASE_URL}/case-matching/search-from-grant-flow",
     "CallBackURLAboutToSubmitEvent": "http://${CCD_DEF_CASE_SERVICE_BASE_URL}/case-matching/import-legacy-from-grant-flow",
+    "RetriesTimeoutURLAboutToSubmitEvent": "5",
     "SecurityClassification": "Public",
     "ShowSummary": "N"
   },
@@ -161,6 +164,7 @@
     "PostConditionState": "BOCaseMatchingIssueGrant",
     "CallBackURLAboutToStartEvent": "http://${CCD_DEF_CASE_SERVICE_BASE_URL}/case-matching/search-from-grant-flow",
     "CallBackURLAboutToSubmitEvent": "http://${CCD_DEF_CASE_SERVICE_BASE_URL}/case-matching/import-legacy-from-grant-flow",
+    "RetriesTimeoutURLAboutToSubmitEvent": "5",
     "SecurityClassification": "Public",
     "ShowSummary": "N"
   },
@@ -209,6 +213,7 @@
     "PostConditionState": "BOExamining",
     "CallBackURLAboutToStartEvent": "http://${CCD_DEF_CASE_SERVICE_BASE_URL}/case-matching/search-from-grant-flow",
     "CallBackURLAboutToSubmitEvent": "http://${CCD_DEF_CASE_SERVICE_BASE_URL}/case-matching/import-legacy-from-grant-flow",
+    "RetriesTimeoutURLAboutToSubmitEvent": "5",
     "SecurityClassification": "Public",
     "ShowSummary": "N"
   },
@@ -223,6 +228,7 @@
     "PostConditionState": "BOCaseStopped",
     "CallBackURLAboutToStartEvent": "http://${CCD_DEF_CASE_SERVICE_BASE_URL}/case-matching/search-from-grant-flow",
     "CallBackURLAboutToSubmitEvent": "http://${CCD_DEF_CASE_SERVICE_BASE_URL}/case-matching/import-legacy-from-grant-flow",
+    "RetriesTimeoutURLAboutToSubmitEvent": "5",
     "SecurityClassification": "Public",
     "ShowSummary": "N"
   },
@@ -237,6 +243,7 @@
     "PostConditionState": "BOCaseMatchingIssueGrant",
     "CallBackURLAboutToStartEvent": "http://${CCD_DEF_CASE_SERVICE_BASE_URL}/case-matching/search-from-grant-flow",
     "CallBackURLAboutToSubmitEvent": "http://${CCD_DEF_CASE_SERVICE_BASE_URL}/case-matching/import-legacy-from-grant-flow",
+    "RetriesTimeoutURLAboutToSubmitEvent": "5",
     "SecurityClassification": "Public",
     "ShowSummary": "N"
   },
@@ -263,7 +270,6 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "boWithdrawApplicationForReadyToIssue", "Name": "Withdraw application", "Description": "Withdraw application", "DisplayOrder": 58, "PreConditionState(s)": "BOReadyToIssue", "PostConditionState": "BOCaseClosed", "SecurityClassification": "public", "ShowSummary": "N"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "boWithdrawApplicationForCaseQA", "Name": "Withdraw application", "Description": "Withdraw application", "DisplayOrder": 59, "PreConditionState(s)": "BOCaseQA", "PostConditionState": "BOCaseClosed", "SecurityClassification": "public", "ShowSummary": "N"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "boWithdrawApplicationForCaseMatchingIssueGrant", "Name": "Withdraw application", "Description": "Withdraw application", "DisplayOrder": 60, "PreConditionState(s)": "BOCaseMatchingIssueGrant", "PostConditionState": "BOCaseClosed", "SecurityClassification": "public", "ShowSummary": "N"},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "boWithdrawApplicationForCaseMatchingExamining", "Name": "Withdraw application", "Description": "Withdraw application", "DisplayOrder": 61, "PreConditionState(s)": "BOCaseMatchingExamining", "PostConditionState": "BOCaseClosed", "SecurityClassification": "public", "ShowSummary": "N"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "boAmendCaseDetailsForCaseCreated", "Name": "Amend case details", "Description": "Amend case details", "DisplayOrder": 62, "PreConditionState(s)": "CaseCreated", "PostConditionState": "CaseCreated", "CallBackURLAboutToSubmitEvent": "http://${CCD_DEF_CASE_SERVICE_BASE_URL}/case/validateCaseDetails", "SecurityClassification": "Public", "ShowSummary": "Y"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "boAmendCaseDetailsForAwaitingDocumentation", "Name": "Amend case details", "Description": "Amend case details", "DisplayOrder": 63, "PreConditionState(s)": "CasePrinted", "PostConditionState": "CasePrinted", "CallBackURLAboutToSubmitEvent": "http://${CCD_DEF_CASE_SERVICE_BASE_URL}/case/validateCaseDetails", "SecurityClassification": "Public", "ShowSummary": "Y"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "boAmendCaseDetailsForReadyForExamination", "Name": "Amend case details", "Description": "Amend case details", "DisplayOrder": 64, "PreConditionState(s)": "BOReadyForExamination", "PostConditionState": "BOReadyForExamination", "CallBackURLAboutToSubmitEvent": "http://${CCD_DEF_CASE_SERVICE_BASE_URL}/case/validateCaseDetails", "SecurityClassification": "Public", "ShowSummary": "Y"},
@@ -276,5 +282,20 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "boAmendCaseDetailsForCaseMatchingIssueGrant", "Name": "Amend case details", "Description": "Amend case details", "DisplayOrder": 71, "PreConditionState(s)": "BOCaseMatchingIssueGrant", "PostConditionState": "BOCaseMatchingIssueGrant", "CallBackURLAboutToSubmitEvent": "http://${CCD_DEF_CASE_SERVICE_BASE_URL}/case/validateCaseDetails", "SecurityClassification": "Public", "ShowSummary": "Y"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "boAmendCaseDetailsForGrantIssued", "Name": "Amend case details", "Description": "Amend case details", "DisplayOrder": 72, "PreConditionState(s)": "BOGrantIssued", "PostConditionState": "BOGrantIssued", "CallBackURLAboutToSubmitEvent": "http://${CCD_DEF_CASE_SERVICE_BASE_URL}/case/validateCaseDetails", "SecurityClassification": "Public", "ShowSummary": "Y"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "boAmendCaseDetailsForCaseClosed", "Name": "Amend case details", "Description": "Amend case details", "DisplayOrder": 73, "PreConditionState(s)": "BOCaseClosed", "PostConditionState": "BOCaseClosed", "CallBackURLAboutToSubmitEvent": "http://${CCD_DEF_CASE_SERVICE_BASE_URL}/case/validateCaseDetails", "SecurityClassification": "Public", "ShowSummary": "Y"},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "boAmendCaseDetailsForRegistrarEscalation", "Name": "Amend case details", "Description": "Amend case details", "DisplayOrder": 74, "PreConditionState(s)": "BORegistrarEscalation", "PostConditionState": "BORegistrarEscalation", "CallBackURLAboutToSubmitEvent": "http://${CCD_DEF_CASE_SERVICE_BASE_URL}/case/validateCaseDetails", "SecurityClassification": "Public", "ShowSummary": "Y"}
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "boAmendCaseDetailsForRegistrarEscalation", "Name": "Amend case details", "Description": "Amend case details", "DisplayOrder": 74, "PreConditionState(s)": "BORegistrarEscalation", "PostConditionState": "BORegistrarEscalation", "CallBackURLAboutToSubmitEvent": "http://${CCD_DEF_CASE_SERVICE_BASE_URL}/case/validateCaseDetails", "SecurityClassification": "Public", "ShowSummary": "Y"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "boWithdrawApplicationForCaseMatchingExamining", "Name": "Withdraw application", "Description": "Withdraw application", "DisplayOrder": 61, "PreConditionState(s)": "BOCaseMatchingExamining", "PostConditionState": "BOCaseClosed", "SecurityClassification": "public", "ShowSummary": "N"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "boImportGrant", "Name": "Import a case", "Description": "Import a case", "DisplayOrder": 62, "PostConditionState": "BOCaseImported", "SecurityClassification": "Public", "ShowSummary": "N"},
+  {
+    "LiveFrom": "01/01/2017",
+    "CaseTypeID": "GrantOfRepresentation",
+    "ID": "boAmendCaseDetailsForImport",
+    "Name": "Amend case details for import",
+    "Description": "Amend case details for import",
+    "DisplayOrder": 62,
+    "PreConditionState(s)": "BOCaseImported",
+    "PostConditionState": "CaseCreated",
+    "CallBackURLAboutToSubmitEvent": "http://${CCD_DEF_CASE_SERVICE_BASE_URL}/case/validateCaseDetails",
+    "SecurityClassification": "Public",
+    "ShowSummary": "N"
+  }
 ]

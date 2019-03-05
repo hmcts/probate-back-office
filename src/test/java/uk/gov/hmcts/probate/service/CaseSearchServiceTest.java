@@ -89,10 +89,11 @@ public class CaseSearchServiceTest {
     }
 
     @Test
-    public void findCaseByLegacyId() {
-        when(caseMatchingCriteria.getLegacyId()).thenReturn("1234");
+    public void findCaseByRecordId() {
+        when(caseMatchingCriteria.getRecordId()).thenReturn("1234");
 
         CaseMatch caseMatch = CaseMatch.builder()
+                .recordId("record1")
                 .caseLink(CaseLink.builder().caseReference("1").build())
                 .fullName("names surname")
                 .dod("2000-01-01")
@@ -108,6 +109,7 @@ public class CaseSearchServiceTest {
         assertEquals("names surname", cases.get(0).getFullName());
         assertEquals("2000-01-01", cases.get(0).getDod());
         assertEquals("SW12 0FA", cases.get(0).getPostcode());
+        assertEquals("record1", cases.get(0).getRecordId());
         assertNull(cases.get(0).getValid());
         assertNull(cases.get(0).getComment());
     }

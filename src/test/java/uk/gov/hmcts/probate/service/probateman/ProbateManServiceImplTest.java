@@ -7,6 +7,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.data.jpa.repository.JpaRepository;
+import uk.gov.hmcts.probate.model.ccd.CcdCaseType;
 import uk.gov.hmcts.probate.model.probateman.Caveat;
 import uk.gov.hmcts.probate.model.probateman.GrantApplication;
 import uk.gov.hmcts.probate.model.probateman.ProbateManModel;
@@ -30,7 +31,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.ccd.CcdCaseType.GRANT_OF_REPRESENTATION;
-import static uk.gov.hmcts.probate.model.ccd.EventId.APPLY_FOR_GRANT;
+import static uk.gov.hmcts.probate.model.ccd.EventId.IMPORT_GOR_CASE;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ProbateManServiceImplTest {
@@ -86,7 +87,7 @@ public class ProbateManServiceImplTest {
         when(coreCaseDataService.createCase(
             grantOfRepresentationData,
             GRANT_OF_REPRESENTATION,
-            APPLY_FOR_GRANT,
+            IMPORT_GOR_CASE,
             securityDTO
         )).thenReturn(caseDetails);
 
@@ -98,7 +99,7 @@ public class ProbateManServiceImplTest {
         verify(grantApplicationRepository, times(1)).findById(ID);
         verify(grantApplicationMapper, times(1)).toCcdData(grantApplication);
         verify(coreCaseDataService, times(1)).createCase(grantOfRepresentationData,
-                GRANT_OF_REPRESENTATION, APPLY_FOR_GRANT, securityDTO);
+                GRANT_OF_REPRESENTATION, IMPORT_GOR_CASE, securityDTO);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -130,5 +131,16 @@ public class ProbateManServiceImplTest {
 
         assertThat(probateManModel, equalTo(grantApplication));
         verify(grantApplicationRepository, times(1)).findById(ID);
+    }
+
+    @Test
+    public void shouldRetrieveCCdCase() {
+        String caseType = GRANT_OF_REPRESENTATION.name();
+        Long legacyId = 1L;
+        Optional<CaseDetails> caseDetails = Optional.empty();
+        when(coreCaseDataService.retrieveCaseByLegacyId(caseType, legacyId, securityUtils.getSecurityDTO()))
+                .thenReturn(caseDetails);
+        assertThat(caseDetails, equalTo(probateManService.retrieveCCDCase(caseType, legacyId)));
+
     }
 }

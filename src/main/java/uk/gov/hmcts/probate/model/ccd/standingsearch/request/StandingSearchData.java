@@ -66,7 +66,7 @@ public class StandingSearchData {
 
     private List<CollectionMember<UploadDocument>> documentsUploaded;
 
-    private String legacyId;
+    private String recordId;
     private String legacyType;
     private String legacyCaseViewUrl;
 

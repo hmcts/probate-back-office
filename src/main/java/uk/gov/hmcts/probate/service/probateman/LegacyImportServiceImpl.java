@@ -13,6 +13,7 @@ import uk.gov.hmcts.probate.model.probateman.ProbateManModel;
 import uk.gov.hmcts.probate.model.probateman.ProbateManType;
 import uk.gov.hmcts.probate.service.LegacyImportService;
 import uk.gov.hmcts.probate.service.ProbateManService;
+import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -33,6 +34,15 @@ public class LegacyImportServiceImpl implements LegacyImportService {
     private final Map<ProbateManType, JpaRepository> repositories;
 
     @Override
+    public boolean areLegacyRowsValidToImport(List<CollectionMember<CaseMatch>> rows) {
+        List<CaseMatch> importableRows = rows.stream().map(CollectionMember::getValue)
+                .filter(this::canImportRow)
+                .collect(Collectors.toList());
+
+        return importableRows.size() < 2;
+    }
+
+    @Override
     public List<CaseMatch> importLegacyRows(List<CollectionMember<CaseMatch>> rows) {
         List<CaseMatch> importableRows = rows.stream().map(CollectionMember::getValue)
                 .filter(this::canImportRow)
@@ -49,11 +59,11 @@ public class LegacyImportServiceImpl implements LegacyImportService {
     private CaseMatch importRow(CaseMatch row) {
         String legacyCaseTypeName = row.getType();
         LegacyCaseType legacyCaseType = LegacyCaseType.getByLegacyCaseTypeName(legacyCaseTypeName);
-        String id = row.getId();
+        String id = getLegacyTableId(row.getLegacyCaseViewUrl());
         log.info("Importing legacy case into ccd for legacyCaseType=" + legacyCaseTypeName + ", with id=" + id);
         ProbateManType probateManType = legacyCaseType.getProbateManType();
         Long legacyId = Long.parseLong(id);
-        uk.gov.hmcts.reform.ccd.client.model.CaseDetails caseDetails = probateManService.saveToCcd(legacyId, probateManType);
+        uk.gov.hmcts.reform.ccd.client.model.CaseDetails caseDetails = saveToCcd(legacyId, probateManType);
         String ccdCaseId = caseDetails.getId().toString();
         log.info("Imported legacy case as CCD case, id=" + ccdCaseId);
         JpaRepository repository = repositories.get(probateManType);
@@ -65,6 +75,16 @@ public class LegacyImportServiceImpl implements LegacyImportService {
             log.info("Case cannot be found when updating legacy case id=" + id + " for probateManType=" + probateManType);
         }
         return row;
+    }
+
+    private CaseDetails saveToCcd(Long legacyId, ProbateManType probateManType) {
+        try {
+            return probateManService.saveToCcd(legacyId, probateManType);
+        } catch (Exception e) {
+            log.info("There was a problem saving the case for legacyId=" + legacyId + ": " + e.getMessage());
+            return probateManService.retrieveCCDCase(probateManType.getCcdCaseType().getName(), legacyId)
+                    .orElseThrow(() -> new RuntimeException(e));
+        }
     }
 
     private void updateCaseMatch(CaseMatch row, ProbateManModel probateManModel) {
@@ -84,13 +104,17 @@ public class LegacyImportServiceImpl implements LegacyImportService {
     private boolean canImportRow(CaseMatch caseMatch) {
         return DO_IMPORT_YES.equalsIgnoreCase(caseMatch.getDoImport())
                 && hasCaseReference(caseMatch)
-                && !StringUtils.isEmpty(caseMatch.getId());
+                && !StringUtils.isEmpty(caseMatch.getLegacyCaseViewUrl());
     }
 
     private boolean hasCaseReference(CaseMatch row) {
         return row.getCaseLink() == null
                 || row.getCaseLink().getCaseReference() == null
                 || row.getCaseLink().getCaseReference().equals("");
+    }
+
+    private String getLegacyTableId(String legacyCaseViewUrl) {
+        return legacyCaseViewUrl.substring(legacyCaseViewUrl.lastIndexOf('/') + 1);
     }
 
 }
