@@ -27,8 +27,8 @@ public interface GrantApplicationMapper extends ProbateManMapper<GrantApplicatio
     @Mapping(target = "deceasedAddress.addressLine1", source = "deceasedAddress")
     @Mapping(target = "deceasedAliasNameList", source = "aliasNames", qualifiedBy = {ToAliasNameMember.class})
 
-    //@Mapping(target = "solsSolicitorFirmName", expression = "java(grantApplication.getSolicitorReference() == null ? "
-    //       + "null : grantApplication.getApplicantForenames + ' ' + grantApplication.getApplicantSurname)" )
+    @Mapping(target = "solsSolicitorFirmName", expression = "java(grantApplication.getSolicitorReference() == null ? "
+            + "null : grantApplication.getApplicantForenames() + ' ' + grantApplication.getApplicantSurname())")
     @Mapping(target = "solsSolicitorAddress.addressLine1", expression = "java(grantApplication.getSolicitorReference() == null ? "
             + "null : grantApplication.getApplicantAddress())")
     @Mapping(target = "solsSolicitorAppReference", expression = "java(grantApplication.getSolicitorReference() == null ? "

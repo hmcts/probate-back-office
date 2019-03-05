@@ -85,8 +85,8 @@ public class GrantApplicationMapperTest {
         Address expectedPrimaryAddress = buildAddress(PRIMARY_APPLICANT_ADDRESS);
         assertThat(grantApplicationData.getSolsSolicitorAppReference()).isEqualTo(SOLICITOR_REFERENCE);
         assertThat(grantApplicationData.getSolsSolicitorAddress()).isEqualToComparingFieldByFieldRecursively(expectedPrimaryAddress);
-        //assertThat(grantApplicationData.getSolsSolicitorFirmName())
-        // .isEqualTo(PRIMARY_APPLICANT_FORENAMES + " " + PRIMARY_APPLICANT_SURNAME);
+        assertThat(grantApplicationData.getSolsSolicitorFirmName())
+                .isEqualTo(PRIMARY_APPLICANT_FORENAMES + " " + PRIMARY_APPLICANT_SURNAME);
     }
 
     private void assertBasicApplication(GrantOfRepresentationData grantApplicationData) {
