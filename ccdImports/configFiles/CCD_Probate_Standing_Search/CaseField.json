@@ -13,7 +13,7 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "StandingSearch", "ID": "applicantForenames", "Label": "Forename(s)", "HintText": "Include all middle names", "FieldType": "Text", "SecurityClassification": "Public", "Min": 1, "Max": 30},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "StandingSearch", "ID": "applicantSurname", "Label": "Surname(s)", "FieldType": "Text", "SecurityClassification": "Public", "Min": 1, "Max": 50},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "StandingSearch", "ID": "applicantEmailAddress", "Label": "Email address", "HintText": "If applying through a solicitor, provide the solicitor's email instead", "FieldType": "Text", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "StandingSearch", "ID": "applicantAddress", "Label": "Address", "FieldType": "AddressUK", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "StandingSearch", "ID": "applicantAddress", "Label": "Address - (If applying through a solicitor, provide the solicitor's firm name and address instead)", "FieldType": "AddressUK", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "StandingSearch", "ID": "numberOfCopies", "Label": "How many extra copies have been requested by the applicant?", "FieldType": "Text", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "StandingSearch", "ID": "expiryDate", "Label": "Standing search expiry date", "FieldType": "Date", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "StandingSearch", "ID": "documentsUploaded", "Label": "Documents uploaded", "FieldType": "Collection", "FieldTypeParameter": "ssDocumentUpload", "SecurityClassification": "Public"},
