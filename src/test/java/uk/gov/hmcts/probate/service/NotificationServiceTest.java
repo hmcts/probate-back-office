@@ -13,6 +13,8 @@ import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.SentEmail;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
+import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
+import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
@@ -22,6 +24,8 @@ import uk.gov.service.notify.NotificationClientException;
 import uk.gov.service.notify.SendEmailResponse;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -68,6 +72,7 @@ public class NotificationServiceTest {
     private CaseDetails personalCaseDataManchester;
     private CaseDetails personalCaseDataCtsc;
     private CaseDetails solicitorCaseDataManchester;
+    private CaseDetails excelaCaseData;
 
     private CaveatDetails personalCaveatDataOxford;
     private CaveatDetails personalCaveatDataBirmingham;
@@ -90,6 +95,11 @@ public class NotificationServiceTest {
 
         doReturn(sendEmailResponse).when(notificationClient).sendEmail(anyString(), anyString(), any(), isNull());
         doReturn(sendEmailResponse).when(notificationClient).sendEmail(any(), any(), any(), any(), any());
+
+        CollectionMember<ScannedDocument> scannedDocument = new CollectionMember<>(ScannedDocument
+                .builder().subtype("will").controlNumber("123456").build());
+        List<CollectionMember<ScannedDocument>> scannedDocuments = new ArrayList<>(1);
+        scannedDocuments.add(scannedDocument);
 
         personalCaseDataOxford = new CaseDetails(CaseData.builder()
                 .applicationType(PERSONAL)
@@ -141,6 +151,12 @@ public class NotificationServiceTest {
                 .solsSolicitorEmail("solicitor@test.com")
                 .solsSolicitorAppReference("1234-5678-9012")
                 .deceasedDateOfDeath(LocalDate.of(2000, 12, 12))
+                .build(), LAST_MODIFIED, ID);
+
+        excelaCaseData = new CaseDetails(CaseData.builder()
+                .applicationType(PERSONAL)
+                .deceasedSurname("Michelson")
+                .scannedDocuments(scannedDocuments)
                 .build(), LAST_MODIFIED, ID);
 
         personalCaveatDataOxford = new CaveatDetails(CaveatData.builder()
@@ -536,5 +552,16 @@ public class NotificationServiceTest {
         verify(pdfManagementService).generateAndUpload(any(SentEmail.class), eq(SENT_EMAIL));
     }
 
+    @Test
+    public void sendExcelaEmail() throws NotificationClientException {
+        notificationService.sendExcelaEmail(excelaCaseData);
 
+        verify(notificationClient).sendEmail(
+                eq("pa-excela-data"),
+                eq("probatetest@gmail.com"),
+                any(),
+                anyString());
+
+        verify(pdfManagementService).generateAndUpload(any(SentEmail.class), eq(SENT_EMAIL));
+    }
 }

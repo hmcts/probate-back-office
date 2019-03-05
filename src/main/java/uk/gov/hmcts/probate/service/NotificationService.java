@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.service;
 
+import joptsimple.internal.Strings;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.config.notifications.NotificationTemplates;
@@ -11,7 +12,9 @@ import uk.gov.hmcts.probate.model.SentEmail;
 import uk.gov.hmcts.probate.model.State;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
+import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
+import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
@@ -34,8 +37,11 @@ public class NotificationService {
     private final NotificationClient notificationClient;
     private final MarkdownTransformationService markdownTransformationService;
     private final PDFManagementService pdfManagementService;
+    private static final String DOC_SUBTYPE = "will";
+    private static final String EXCELA_EMAIL = "probatetest@gmail.com";
 
     private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMM Y HH:mm");
+    private static final DateTimeFormatter EXCELA_DATE = DateTimeFormatter.ofPattern("yyyyMMdd");
 
     public Document sendEmail(State state, CaseDetails caseDetails)
             throws NotificationClientException {
@@ -76,6 +82,20 @@ public class NotificationService {
         response = notificationClient.sendEmail(templateId, emailAddress, personalisation, reference);
 
         return getGeneratedSentEmailDocument(response, emailAddress);
+    }
+
+    public Document sendExcelaEmail(CaseDetails caseDetails) throws
+            NotificationClientException {
+        String templateId = notificationTemplates.getEmail().get(caseDetails.getData().getApplicationType())
+                .getExcelaData();
+        Map<String, String> personalisation = getExcelaPersonalisation(caseDetails.getId(), caseDetails.getData());
+        String reference = caseDetails.getId().toString();
+
+        SendEmailResponse response;
+
+        response = notificationClient.sendEmail(templateId, EXCELA_EMAIL, personalisation, reference);
+
+        return getGeneratedSentEmailDocument(response, EXCELA_EMAIL);
     }
 
     private Document getGeneratedSentEmailDocument(SendEmailResponse response, String emailAddress) {
@@ -121,6 +141,17 @@ public class NotificationService {
         return personalisation;
     }
 
+    private Map<String, String> getExcelaPersonalisation(Long id, CaseData caseData) {
+        HashMap<String, String> personalisation = new HashMap<>();
+
+        personalisation.put("excelaName", LocalDateTime.now().format(EXCELA_DATE) + "will");
+        personalisation.put("ccdId", id.toString());
+        personalisation.put("deceasedSurname", caseData.getDeceasedSurname());
+        personalisation.put("willReferenceNumber", getWillReferenceNumber(caseData));
+
+        return personalisation;
+    }
+
     private String getTemplateId(State state, ApplicationType applicationType) {
         switch (state) {
             case DOCUMENTS_RECEIVED:
@@ -145,5 +176,14 @@ public class NotificationService {
             default:
                 throw new BadRequestException("Unsupported application type", null);
         }
+    }
+
+    private String getWillReferenceNumber(CaseData data) {
+        for (CollectionMember<ScannedDocument> document : data.getScannedDocuments()) {
+            if (document.getValue().getSubtype().equals(DOC_SUBTYPE)) {
+                return document.getValue().getControlNumber();
+            }
+        }
+        return Strings.EMPTY;
     }
 }
