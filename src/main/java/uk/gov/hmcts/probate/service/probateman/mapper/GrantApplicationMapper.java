@@ -22,13 +22,26 @@ public interface GrantApplicationMapper extends ProbateManMapper<GrantApplicatio
     @Mapping(target = "grantType", expression = "java(GrantType.GRANT_OF_PROBATE)")
     @Mapping(target = "deceasedForenames", source = "deceasedForenames")
     @Mapping(target = "deceasedSurname", source = "deceasedSurname")
-    @Mapping(target = "primaryApplicantForenames", source = "applicantForenames")
-    @Mapping(target = "primaryApplicantSurname", source = "applicantSurname")
     @Mapping(target = "deceasedDateOfBirth", source = "dateOfBirth")
     @Mapping(target = "deceasedDateOfDeath", source = "dateOfDeath1")
     @Mapping(target = "deceasedAddress.addressLine1", source = "deceasedAddress")
     @Mapping(target = "deceasedAliasNameList", source = "aliasNames", qualifiedBy = {ToAliasNameMember.class})
-    @Mapping(target = "primaryApplicantAddress.addressLine1", source = "applicantAddress")
+
+    //@Mapping(target = "solsSolicitorFirmName", expression = "java(grantApplication.getSolicitorReference() == null ? "
+    //       + "null : grantApplication.getApplicantForenames + ' ' + grantApplication.getApplicantSurname)" )
+    @Mapping(target = "solsSolicitorAddress.addressLine1", expression = "java(grantApplication.getSolicitorReference() == null ? "
+            + "null : grantApplication.getApplicantAddress())")
+    @Mapping(target = "solsSolicitorAppReference", expression = "java(grantApplication.getSolicitorReference() == null ? "
+            + "null : grantApplication.getSolicitorReference())")
+
+    @Mapping(target = "primaryApplicantForenames", expression = "java(grantApplication.getSolicitorReference() == null ? "
+            + "grantApplication.getApplicantForenames() : grantApplication.getGrantee1Forenames())")
+    @Mapping(target = "primaryApplicantSurname", expression = "java(grantApplication.getSolicitorReference() == null ? "
+            + "grantApplication.getApplicantSurname() : grantApplication.getGrantee1Surname())")
+    @Mapping(target = "primaryApplicantAddress.addressLine1",
+            expression = "java(grantApplication.getSolicitorReference() == null ? "
+                    + "grantApplication.getApplicantAddress() :  grantApplication.getGrantee1Address())")
+
     @Mapping(target = "additionalExecutorsApplying", source = "grantApplication",
             qualifiedBy = {ToAdditionalExecutorApplyingMember.class})
     @Mapping(target = "ihtNetValue", source = "netEstateValue")

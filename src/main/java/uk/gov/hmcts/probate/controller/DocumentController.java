@@ -163,8 +163,9 @@ public class DocumentController {
 
             if (caseData.getExtraCopiesOfGrant() != null) {
                 pdfSize = String.valueOf(caseData.getExtraCopiesOfGrant() + 2);
+            } else {
+                pdfSize = String.valueOf(2);
             }
-
         }
         if (!callbackResponse.getErrors().isEmpty()) {
             return ResponseEntity.ok(callbackResponse);
