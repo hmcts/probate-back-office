@@ -26,6 +26,4 @@ git.properties
 
 node_modules/
 
-yarn\.lock
-
 src/test/end-to-end/output/
