@@ -15,7 +15,7 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "WillLodgement", "ID": "deceasedTypeOfDeath", "Label": "Type of death", "FieldType": "Text", "SecurityClassification": "Public", "Max": 60},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "WillLodgement", "ID": "deceasedAnyOtherNames", "Label": "Alias name?", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "WillLodgement", "ID": "deceasedFullAliasNameList", "Label": "Alias names", "FieldType": "Collection", "FieldTypeParameter": "wlProbateFullAliasName", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "WillLodgement", "ID": "deceasedAddress", "Label": "Address", "FieldType": "AddressUK", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "WillLodgement", "ID": "deceasedAddress", "Label": "Address - (If applying through a solicitor, provide the solicitor's firm name and address instead)", "FieldType": "AddressUK", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "WillLodgement", "ID": "deceasedEmailAddress", "Label": "Email address", "FieldType": "Text", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "WillLodgement", "ID": "executorTitle", "Label": "Title", "FieldType": "Text", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "WillLodgement", "ID": "executorForenames", "Label": "Forename(s)", "HintText": "Include all middle names", "FieldType": "Text", "SecurityClassification": "Public", "Min": 1, "Max": 30},
