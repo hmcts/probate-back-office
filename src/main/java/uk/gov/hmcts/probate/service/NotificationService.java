@@ -27,6 +27,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 
+import static uk.gov.hmcts.probate.model.Constants.DOC_SUBTYPE_WILL;
+import static uk.gov.hmcts.probate.model.Constants.EXCELA_EMAIL;
 import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
 
 @RequiredArgsConstructor
@@ -37,8 +39,6 @@ public class NotificationService {
     private final NotificationClient notificationClient;
     private final MarkdownTransformationService markdownTransformationService;
     private final PDFManagementService pdfManagementService;
-    private static final String DOC_SUBTYPE = "will";
-    private static final String EXCELA_EMAIL = "probatetest@gmail.com";
 
     private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMM Y HH:mm");
     private static final DateTimeFormatter EXCELA_DATE = DateTimeFormatter.ofPattern("yyyyMMdd");
@@ -180,7 +180,7 @@ public class NotificationService {
 
     private String getWillReferenceNumber(CaseData data) {
         for (CollectionMember<ScannedDocument> document : data.getScannedDocuments()) {
-            if (document.getValue().getSubtype().equals(DOC_SUBTYPE)) {
+            if (document.getValue().getSubtype().equals(DOC_SUBTYPE_WILL)) {
                 return document.getValue().getControlNumber();
             }
         }
