@@ -63,5 +63,7 @@
   {"CaseTypeID": "WillLodgement", "CaseEventID": "uploadDocumentForLodged", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"},
   {"CaseTypeID": "WillLodgement", "CaseEventID": "uploadDocumentForWithdrawn", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"},
   {"CaseTypeID": "WillLodgement", "CaseEventID": "addComment", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"},
-  {"CaseTypeID": "WillLodgement", "CaseEventID": "generateDepositReceipt", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"}
+  {"CaseTypeID": "WillLodgement", "CaseEventID": "generateDepositReceipt", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"},
+  {"CaseTypeID": "WillLodgement", "CaseEventID": "generateDepositReceiptForLodged", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"},
+  {"CaseTypeID": "WillLodgement", "CaseEventID": "generateDepositReceiptForWithdrawn", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"}
 ]
