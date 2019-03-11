@@ -11,6 +11,7 @@
     "PostConditionState": "StandingSearchMatching",
     "CallBackURLAboutToStartEvent": "http://${CCD_DEF_CASE_SERVICE_BASE_URL}/case-matching/search-from-standing-search-flow",
     "CallBackURLAboutToSubmitEvent": "http://${CCD_DEF_CASE_SERVICE_BASE_URL}/case-matching/import-legacy-from-standing-search-flow",
+    "RetriesTimeoutURLAboutToSubmitEvent": "5",
     "SecurityClassification": "Public",
     "ShowSummary": "N"
   },
@@ -26,6 +27,7 @@
     "PostConditionState": "StandingSearchMatching",
     "CallBackURLAboutToStartEvent": "http://${CCD_DEF_CASE_SERVICE_BASE_URL}/case-matching/search-from-standing-search-flow",
     "CallBackURLAboutToSubmitEvent": "http://${CCD_DEF_CASE_SERVICE_BASE_URL}/case-matching/import-legacy-from-standing-search-flow",
+    "RetriesTimeoutURLAboutToSubmitEvent": "5",
     "SecurityClassification": "Public",
     "ShowSummary": "N"
   },
@@ -45,6 +47,7 @@
     "PostConditionState": "StandingSearchMatching",
     "CallBackURLAboutToStartEvent": "http://${CCD_DEF_CASE_SERVICE_BASE_URL}/case-matching/search-from-standing-search-flow",
     "CallBackURLAboutToSubmitEvent": "http://${CCD_DEF_CASE_SERVICE_BASE_URL}/case-matching/import-legacy-from-standing-search-flow",
+    "RetriesTimeoutURLAboutToSubmitEvent": "5",
     "SecurityClassification": "Public",
     "ShowSummary": "N"
   },

@@ -5,7 +5,6 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "LegacySearch", "ID": "deceasedSurname", "Label": "Last name(s)", "FieldType": "Text", "SecurityClassification": "Public", "Min": 1, "Max": 50},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "LegacySearch", "ID": "deceasedDateOfBirth", "Label": "Date of birth", "FieldType": "Date", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "LegacySearch", "ID": "deceasedDateOfDeath", "Label": "Date of death", "FieldType": "Date", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "LegacySearch", "ID": "deceasedAliases", "Label": "Aliases", "FieldType": "Text", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "LegacySearch", "ID": "legacySearchResultRows", "Label": "Results", "FieldType": "Collection", "FieldTypeParameter": "CaseMatch", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "LegacySearch", "ID": "doNotSaveCase", "Label": "### Your legacy cases have been imported\r\n### Only one dummy case needs to be created for the purpose of searching legacy data\r\n### DO NOT continue and save this case", "FieldType": "Label", "SecurityClassification": "Public"}
 ]
