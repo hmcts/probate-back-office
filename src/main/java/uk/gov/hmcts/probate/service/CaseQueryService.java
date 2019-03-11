@@ -32,7 +32,7 @@ import static uk.gov.hmcts.probate.insights.AppInsightsEvent.REST_CLIENT_EXCEPTI
 public class CaseQueryService {
 
     private static final String DOCUMENT_TYPE = "data.probateDocumentsGenerated.value.DocumentType";
-    private static final String DOCUMENT_DATE = "data.probateDocumentsGenerated.value.DocumentDateAdded";
+    private static final String DOCUMENT_DATE = "data.grantIssuedDate";
     private static final String STATE = "state";
     private static final String STATE_MATCH = "BOGrantIssued";
     private static final String CASE_TYPE_ID = "ctid";
