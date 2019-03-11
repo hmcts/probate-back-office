@@ -36,12 +36,15 @@ import uk.gov.hmcts.probate.model.fee.FeeServiceResponse;
 import uk.gov.hmcts.probate.service.StateChangeService;
 
 import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -65,6 +68,7 @@ public class CallbackResponseTransformerTest {
     private static final String NO = "No";
     private static final String WILL_MESSAGE = "Will message";
     private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    private static final String DATE_FORMAT = "yyyy-MM-dd";
     
     private static final String CASE_TYPE_GRANT_OF_PROBATE = "gop";
     private static final String CASE_TYPE_INTESTACY = "intestacy";
@@ -1014,6 +1018,22 @@ public class CallbackResponseTransformerTest {
         CallbackResponse callbackResponse = underTest.paperForm(callbackRequestMock);
         assertEquals("Yes", callbackResponse.getData().getBoSendToBulkPrintRequested());
         assertEquals("Yes", callbackResponse.getData().getBoSendToBulkPrint());
+    }
+
+    @Test
+    public void shouldSetGrantIssuedDate() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL);
+        Document document = Document.builder()
+                .documentLink(documentLinkMock)
+                .documentType(DIGITAL_GRANT)
+                .build();
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        DateFormat targetFormat = new SimpleDateFormat(DATE_FORMAT);
+        String grantIssuedDate = targetFormat.format(new Date());
+        CallbackResponse callbackResponse = underTest.addDocuments(callbackRequestMock, Arrays.asList(document), null, null);
+        assertEquals(grantIssuedDate, callbackResponse.getData().getGrantIssuedDate());
     }
 
     private CollectionMember<ProbateAliasName> createdDeceasedAliasName(String id, String forename, String lastname, String onGrant) {

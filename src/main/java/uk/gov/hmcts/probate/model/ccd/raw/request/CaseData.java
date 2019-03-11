@@ -370,6 +370,7 @@ public class CaseData {
     private final String paymentReferenceNumberPaperform;
     private final String bulkPrintSendLetterId;
     private final String bulkPrintPdfSize;
+    private final String grantIssuedDate;
 
     private final List<CollectionMember<CaseMatch>> legacySearchResultRows;
 
