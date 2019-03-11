@@ -177,7 +177,10 @@ public class CallbackResponseTransformer {
 
     public CallbackResponse transformCase(CallbackRequest callbackRequest) {
 
-        boolean transform = callbackRequest.getCaseDetails().getData().getApplicationType() == ApplicationType.SOLICITOR;
+
+        boolean transform = callbackRequest.getCaseDetails().getData().getApplicationType() == ApplicationType.SOLICITOR
+                && callbackRequest.getCaseDetails().getData().getRecordId() == null
+                && !callbackRequest.getCaseDetails().getData().getPaperForm().equalsIgnoreCase(ANSWER_YES);
 
         ResponseCaseData responseCaseData = getResponseCaseData(callbackRequest.getCaseDetails(), transform)
                 .build();
