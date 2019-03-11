@@ -205,6 +205,12 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "legacyCaseViewUrlLink", "UserRole": "caseworker-probate-issuer", "CRUD": "R"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "bulkPrintSendLetterId", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "bulkPrintPdfSize", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
+  {
+    "CaseTypeID": "GrantOfRepresentation",
+    "CaseFieldID": "grantIssuedDate",
+    "UserRole": "caseworker-probate-issuer",
+    "CRUD": "CRUD"
+  },
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "applicationID", "UserRole": "caseworker-probate-caseadmin", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "applicationSubmittedDate", "UserRole": "caseworker-probate-caseadmin", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "applicationType", "UserRole": "caseworker-probate-caseadmin", "CRUD": "CRUD"},
@@ -411,6 +417,12 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "legacyCaseViewUrlLink", "UserRole": "caseworker-probate-caseadmin", "CRUD": "R"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "bulkPrintSendLetterId", "UserRole": "caseworker-probate-caseadmin", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "bulkPrintPdfSize", "UserRole": "caseworker-probate-caseadmin", "CRUD": "CRUD"},
+  {
+    "CaseTypeID": "GrantOfRepresentation",
+    "CaseFieldID": "grantIssuedDate",
+    "UserRole": "caseworker-probate-caseadmin",
+    "CRUD": "CRUD"
+  },
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "applicationID", "UserRole": "caseworker-probate-caseofficer", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "applicationSubmittedDate", "UserRole": "caseworker-probate-caseofficer", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "applicationType", "UserRole": "caseworker-probate-caseofficer", "CRUD": "CRUD"},
@@ -617,6 +629,12 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "legacyCaseViewUrlLink", "UserRole": "caseworker-probate-caseofficer", "CRUD": "R"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "bulkPrintSendLetterId", "UserRole": "caseworker-probate-caseofficer", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "bulkPrintPdfSize", "UserRole": "caseworker-probate-caseofficer", "CRUD": "CRUD"},
+  {
+    "CaseTypeID": "GrantOfRepresentation",
+    "CaseFieldID": "grantIssuedDate",
+    "UserRole": "caseworker-probate-caseofficer",
+    "CRUD": "CRUD"
+  },
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "applicationID", "UserRole": "caseworker-probate-registrar", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "applicationSubmittedDate", "UserRole": "caseworker-probate-registrar", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "applicationType", "UserRole": "caseworker-probate-registrar", "CRUD": "CRUD"},
@@ -823,6 +841,12 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "legacyCaseViewUrlLink", "UserRole": "caseworker-probate-registrar", "CRUD": "R"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "bulkPrintSendLetterId", "UserRole": "caseworker-probate-registrar", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "bulkPrintPdfSize", "UserRole": "caseworker-probate-registrar", "CRUD": "CRUD"},
+  {
+    "CaseTypeID": "GrantOfRepresentation",
+    "CaseFieldID": "grantIssuedDate",
+    "UserRole": "caseworker-probate-registrar",
+    "CRUD": "CRUD"
+  },
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "applicationID", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "applicationSubmittedDate", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "applicationType", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"},
@@ -1028,6 +1052,12 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "legacyCaseViewUrl", "UserRole": "caseworker-probate-superuser", "CRUD": "CR"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "legacyCaseViewUrlLink", "UserRole": "caseworker-probate-superuser", "CRUD": "R"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "bulkPrintSendLetterId", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"},
+  {
+    "CaseTypeID": "GrantOfRepresentation",
+    "CaseFieldID": "grantIssuedDate",
+    "UserRole": "caseworker-probate-superuser",
+    "CRUD": "CRUD"
+  },
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "bulkPrintPdfSize", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "evidenceHandled", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRU"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "scannedDocuments", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRUD"},
