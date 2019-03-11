@@ -21,5 +21,13 @@
   {"LiveFrom": "01/01/2017", "ID": "CaseMatch", "ListElementCode": "id", "FieldType": "Text", "ElementLabel": "Id", "FieldShowCondition": "legacyCaseViewUrl=\"NeverShowThisField\"", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "CaseMatch", "ListElementCode": "legacyCaseViewUrl", "FieldType": "Text", "ElementLabel": "Legacy Case Url", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "CaseMatch", "ListElementCode": "valid", "FieldType": "YesOrNo", "ElementLabel": "Is match valid?", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "ID": "CaseMatch", "ListElementCode": "doImport", "FieldType": "YesOrNo", "ElementLabel": "Do import?", "SecurityClassification": "Public"}
+  {"LiveFrom": "01/01/2017", "ID": "CaseMatch", "ListElementCode": "doImport", "FieldType": "YesOrNo", "ElementLabel": "Do import?", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "Payment", "ListElementCode": "method", "FieldType": "FixedList", "FieldTypeParameter": "paymentMethodEnum", "ElementLabel": "Payment method", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "Payment", "ListElementCode": "transactionId", "FieldType": "Text", "ElementLabel": "Payment transaction ID", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "Payment", "ListElementCode": "reference", "FieldType": "Text", "ElementLabel": "Payment reference", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "Payment", "ListElementCode": "date", "FieldType": "Date", "ElementLabel": "Payment date", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "Payment", "ListElementCode": "amount", "FieldType": "MoneyGBP", "ElementLabel": "Payment amount", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "Payment", "ListElementCode": "status", "FieldType": "FixedList", "FieldTypeParameter": "paymentStatusEnum", "ElementLabel": "Payment status", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "Payment", "ListElementCode": "feeId", "FieldType": "Text", "ElementLabel": "Payment fee ID", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "Payment", "ListElementCode": "siteId", "FieldType": "Text", "ElementLabel": "Payment site ID ", "SecurityClassification": "Public"}
 ]
