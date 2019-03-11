@@ -99,7 +99,7 @@ public class CaseSearchService {
     }
 
     private String getSearchByRecordIdQuery(CaseMatchingCriteria criteria) {
-        BoolQueryBuilder query = boolQuery().must(termQuery(RECORD_ID+ ES_KEYWORD_SUFFIX, criteria.getRecordId()));
+        BoolQueryBuilder query = boolQuery().must(termQuery(RECORD_ID + ES_KEYWORD_SUFFIX, criteria.getRecordId()));
         BoolQueryBuilder filter = boolQuery().mustNot(matchQuery(IMPORTED_TO_CCD, IMPORTED_TO_CCD_Y));
 
         return new SearchSourceBuilder().query(query.filter(filter)).toString();
