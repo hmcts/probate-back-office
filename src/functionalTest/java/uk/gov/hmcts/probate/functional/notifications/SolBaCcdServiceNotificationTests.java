@@ -95,6 +95,13 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
         verifySolsEmailCaseStopped(document);
     }
 
+    @Test
+    public void verifySpecialCharacterEncodingIsOk() {
+        String document = sendEmail("personalPayloadNotificationsSpecialCharacters.json", CASE_STOPPED, STOP_URL);
+        verifyPAEmailCaseStopped(document);
+        assertTrue(document.contains("!@£$%^&*()[]{}<>,.:;~"));
+    }
+
 
     private String sendEmail(String fileName, String url, String jsonDocumentUrl) {
         ResponseBody body = validatePostSuccess(fileName, url);
