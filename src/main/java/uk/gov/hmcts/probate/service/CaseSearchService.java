@@ -37,6 +37,7 @@ public class CaseSearchService {
     private static final String DECEASED_DOD = "data.deceasedDateOfDeath";
     private static final String IMPORTED_TO_CCD = "data.imported_to_ccd";
     private static final String IMPORTED_TO_CCD_Y = "Y";
+    private static final String ES_KEYWORD_SUFFIX = ".keyword";
 
     private final ElasticSearchService elasticSearchService;
     private final CaseMatchBuilderService caseMatchBuilderService;
@@ -98,7 +99,7 @@ public class CaseSearchService {
     }
 
     private String getSearchByRecordIdQuery(CaseMatchingCriteria criteria) {
-        BoolQueryBuilder query = boolQuery().must(termQuery(RECORD_ID, criteria.getRecordId()));
+        BoolQueryBuilder query = boolQuery().must(termQuery(RECORD_ID + ES_KEYWORD_SUFFIX, criteria.getRecordId()));
         BoolQueryBuilder filter = boolQuery().mustNot(matchQuery(IMPORTED_TO_CCD, IMPORTED_TO_CCD_Y));
 
         return new SearchSourceBuilder().query(query.filter(filter)).toString();
