@@ -152,6 +152,13 @@
         "bool": {
           "must": [
             {
+              "term": {
+                "data.deceasedDateOfBirth": {
+                  "value": ":deceasedDateOfBirth"
+                }
+              }
+            },
+            {
               "bool": {
                 "should": [
                   {
@@ -164,19 +171,12 @@
                     }
                   },
                   {
-                    "term": {
-                      "data.deceasedDateOfBirth": {
-                        "value": ":deceasedDateOfBirth"
-                      }
-                    }
-                  },
-                  {
                     "range": {
                       "data.deceasedDateOfDeath": {
                         "gte": ":deceasedDateOfDeath||-3d",
                         "lte": ":deceasedDateOfDeath||+3d"
                       }
-                    }
+                   }
                   }
                 ],
                 "minimum_should_match": 1
