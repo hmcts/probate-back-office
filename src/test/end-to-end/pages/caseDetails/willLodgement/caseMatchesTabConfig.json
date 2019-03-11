@@ -1,0 +1,15 @@
+{
+  "tabName": "Case matches",
+  "fields": [
+    "Full name",
+    "Date of birth",
+    "Date of death",
+    "Postcode"
+  ],
+  "dataKeys": [
+    "fullname",
+    "dob",
+    "dod",
+    "postcode"
+  ]
+}

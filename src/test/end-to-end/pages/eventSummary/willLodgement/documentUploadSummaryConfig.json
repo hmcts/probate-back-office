@@ -1,0 +1,5 @@
+{
+  "waitForText" : "Upload document",
+  "summary": "upload_document_event_summary_purpose_text",
+  "comment": "upload_document_event_description_text"
+}

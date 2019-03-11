@@ -1,4 +1,8 @@
 [
   {"UserIDAMId": "ProbateSolCW1@gmail.com", "WorkBasketDefaultJurisdiction": "PROBATE", "WorkBasketDefaultCaseType": "StandingSearch", "WorkBasketDefaultState": "StandingSearchCreated"},
-  {"UserIDAMId": "ProbateSolCW2@gmail.com ", "WorkBasketDefaultJurisdiction": "PROBATE", "WorkBasketDefaultCaseType": "StandingSearch", "WorkBasketDefaultState": "StandingSearchCreated"}
+  {"UserIDAMId": "ProbateSolCW2@gmail.com", "WorkBasketDefaultJurisdiction": "PROBATE", "WorkBasketDefaultCaseType": "StandingSearch", "WorkBasketDefaultState": "StandingSearchCreated"},
+  {"UserIDAMId": "ProbateCaseAdmin@gmail.com", "WorkBasketDefaultJurisdiction": "PROBATE", "WorkBasketDefaultCaseType": "StandingSearch", "WorkBasketDefaultState": "StandingSearchCreated"},
+  {"UserIDAMId": "ProbateCaseOfficer@gmail.com", "WorkBasketDefaultJurisdiction": "PROBATE", "WorkBasketDefaultCaseType": "StandingSearch", "WorkBasketDefaultState": "StandingSearchCreated"},
+  {"UserIDAMId": "ProbateRegistrar@gmail.com", "WorkBasketDefaultJurisdiction": "PROBATE", "WorkBasketDefaultCaseType": "StandingSearch", "WorkBasketDefaultState": "StandingSearchCreated"},
+  {"UserIDAMId": "ProbateSuperuser@gmail.com", "WorkBasketDefaultJurisdiction": "PROBATE", "WorkBasketDefaultCaseType": "StandingSearch", "WorkBasketDefaultState": "StandingSearchCreated"}
 ]

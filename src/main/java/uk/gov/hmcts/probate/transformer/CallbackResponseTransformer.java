@@ -92,13 +92,17 @@ public class CallbackResponseTransformer {
         if (documentTransformer.hasDocumentWithType(documents, DIGITAL_GRANT)
                 || documentTransformer.hasDocumentWithType(documents, ADMON_WILL_GRANT)
                 || documentTransformer.hasDocumentWithType(documents, INTESTACY_GRANT)) {
+
+            DateFormat targetFormat = new SimpleDateFormat(DATE_FORMAT);
+            String grantIssuedDate = targetFormat.format(new Date());
             responseCaseDataBuilder
                     .boEmailGrantIssuedNotificationRequested(
                             callbackRequest.getCaseDetails().getData().getBoEmailGrantIssuedNotification())
                     .boSendToBulkPrintRequested(
                             callbackRequest.getCaseDetails().getData().getBoSendToBulkPrint())
                     .bulkPrintSendLetterId(letterId)
-                    .bulkPrintPdfSize(String.valueOf(pdfSize));
+                    .bulkPrintPdfSize(String.valueOf(pdfSize))
+                    .grantIssuedDate(grantIssuedDate);
 
         }
         if (documentTransformer.hasDocumentWithType(documents, SENT_EMAIL)) {
@@ -173,7 +177,10 @@ public class CallbackResponseTransformer {
 
     public CallbackResponse transformCase(CallbackRequest callbackRequest) {
 
-        boolean transform = callbackRequest.getCaseDetails().getData().getApplicationType() == ApplicationType.SOLICITOR;
+
+        boolean transform = callbackRequest.getCaseDetails().getData().getApplicationType() == ApplicationType.SOLICITOR
+                && callbackRequest.getCaseDetails().getData().getRecordId() == null
+                && !callbackRequest.getCaseDetails().getData().getPaperForm().equalsIgnoreCase(ANSWER_YES);
 
         ResponseCaseData responseCaseData = getResponseCaseData(callbackRequest.getCaseDetails(), transform)
                 .build();
@@ -294,7 +301,8 @@ public class CallbackResponseTransformer {
 
                 .recordId(caseData.getRecordId())
                 .legacyType(caseData.getLegacyType())
-                .legacyCaseViewUrl(caseData.getLegacyCaseViewUrl());
+                .legacyCaseViewUrl(caseData.getLegacyCaseViewUrl())
+                .grantIssuedDate(caseData.getGrantIssuedDate());
 
         if (transform) {
             updateCaseBuilderForTransformCase(caseData, builder);

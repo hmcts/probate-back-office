@@ -55,6 +55,12 @@ public class Caveat extends ProbateManModel {
     @Column(name = "DATE_OF_DEATH1")
     private LocalDate dateOfDeath;
 
+    @JsonDeserialize(using = LocalDateDeserializer.class)
+    @JsonSerialize(using = LocalDateSerializer.class)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DATE_FORMAT)
+    @Column(name = "DATE_OF_DEATH2")
+    private LocalDate dateOfDeath2;
+
     @Column(name = "ALIAS_NAMES")
     private String aliasNames;
 

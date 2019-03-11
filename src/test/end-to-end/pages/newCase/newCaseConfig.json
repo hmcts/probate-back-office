@@ -1,0 +1,4 @@
+{
+  "waitForText" : "Case List",
+  "locator": "a[href=\"\/create\/case\"]"
+}
