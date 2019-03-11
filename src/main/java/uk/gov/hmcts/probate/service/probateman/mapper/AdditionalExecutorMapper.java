@@ -21,22 +21,37 @@ public class AdditionalExecutorMapper {
         log.info("Adding additionalExecutorApplying to collection for legacy case mapping");
         List<CollectionMember<AdditionalExecutorApplying>> collectionMemberArrayList = new ArrayList();
 
-        addAdditionalExecutor(grantApplication.getGrantee1Forenames(),
-                grantApplication.getGrantee1Surname(),
-                grantApplication.getGrantee1Address(),
-                collectionMemberArrayList);
-        addAdditionalExecutor(grantApplication.getGrantee2Forenames(),
-                grantApplication.getGrantee2Surname(),
-                grantApplication.getGrantee2Address(),
-                collectionMemberArrayList);
-        addAdditionalExecutor(grantApplication.getGrantee3Forenames(),
-                grantApplication.getGrantee3Surname(),
-                grantApplication.getGrantee3Address(),
-                collectionMemberArrayList);
-        addAdditionalExecutor(grantApplication.getGrantee4Forenames(),
-                grantApplication.getGrantee4Surname(),
-                grantApplication.getGrantee4Address(),
-                collectionMemberArrayList);
+        if (grantApplication.getSolicitorReference() == null) {
+            addAdditionalExecutor(grantApplication.getGrantee1Forenames(),
+                    grantApplication.getGrantee1Surname(),
+                    grantApplication.getGrantee1Address(),
+                    collectionMemberArrayList);
+            addAdditionalExecutor(grantApplication.getGrantee2Forenames(),
+                    grantApplication.getGrantee2Surname(),
+                    grantApplication.getGrantee2Address(),
+                    collectionMemberArrayList);
+            addAdditionalExecutor(grantApplication.getGrantee3Forenames(),
+                    grantApplication.getGrantee3Surname(),
+                    grantApplication.getGrantee3Address(),
+                    collectionMemberArrayList);
+            addAdditionalExecutor(grantApplication.getGrantee4Forenames(),
+                    grantApplication.getGrantee4Surname(),
+                    grantApplication.getGrantee4Address(),
+                    collectionMemberArrayList);
+        } else {
+            addAdditionalExecutor(grantApplication.getGrantee2Forenames(),
+                    grantApplication.getGrantee2Surname(),
+                    grantApplication.getGrantee2Address(),
+                    collectionMemberArrayList);
+            addAdditionalExecutor(grantApplication.getGrantee3Forenames(),
+                    grantApplication.getGrantee3Surname(),
+                    grantApplication.getGrantee3Address(),
+                    collectionMemberArrayList);
+            addAdditionalExecutor(grantApplication.getGrantee4Forenames(),
+                    grantApplication.getGrantee4Surname(),
+                    grantApplication.getGrantee4Address(),
+                    collectionMemberArrayList);
+        }
 
         return collectionMemberArrayList;
     }
