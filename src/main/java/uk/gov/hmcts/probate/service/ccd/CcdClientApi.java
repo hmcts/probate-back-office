@@ -59,7 +59,7 @@ public class CcdClientApi implements CoreCaseDataService {
                 JurisdictionId.PROBATE.name(),
                 caseType,
                 ImmutableMap.of("case.legacyId", legacyId.toString()));
-        if (caseDetails == null) {
+        if (caseDetails == null || caseDetails.isEmpty()) {
             return Optional.empty();
         }
         if (caseDetails.size() > 1) {
