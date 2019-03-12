@@ -13,7 +13,7 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "caveatorForenames", "Label": "Forename(s)", "HintText": "Include all middle names", "FieldType": "Text", "SecurityClassification": "Public", "Min": 1, "Max": 30},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "caveatorSurname", "Label": "Surname(s)", "FieldType": "Text", "SecurityClassification": "Public", "Min": 1, "Max": 50},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "caveatorEmailAddress", "Label": "Email address", "HintText": "If applying through a solicitor, provide the solicitor's email instead", "FieldType": "Text", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "caveatorAddress", "Label": "Address", "FieldType": "AddressUK", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "caveatorAddress", "Label": "Address - (If applying through a solicitor, provide the solicitor's firm name and address instead)", "FieldType": "AddressUK", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "expiryDate", "Label": "Caveat expiry date", "FieldType": "Date", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "messageContent", "Label": "Message content", "FieldType": "TextArea", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "documentsUploaded", "Label": "Documents uploaded", "FieldType": "Collection", "FieldTypeParameter": "cavDocumentUpload", "SecurityClassification": "Public"},
