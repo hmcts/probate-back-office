@@ -89,6 +89,34 @@ public class CaseSearchServiceTest {
     }
 
     @Test
+    public void findCasesWithMissingNameData() {
+        when(caseMatchingCriteria.getDeceasedForenames()).thenReturn(null);
+        when(caseMatchingCriteria.getDeceasedSurname()).thenReturn(null);
+        when(caseMatchingCriteria.getDeceasedFullName()).thenReturn(null);
+        when(caseMatchingCriteria.getDeceasedDateOfBirth()).thenReturn(null);
+        when(caseMatchingCriteria.getDeceasedDateOfDeath()).thenReturn(null);
+
+        CaseMatch caseMatch = CaseMatch.builder()
+                .caseLink(CaseLink.builder().caseReference("1").build())
+                .fullName("names surname")
+                .dod("2000-01-01")
+                .postcode("SW12 0FA")
+                .build();
+
+        when(caseMatchBuilderService.buildCaseMatch(caseMock)).thenReturn(caseMatch);
+
+        List<CaseMatch> cases = caseSearchService.findCases(GRANT_OF_REPRESENTATION, caseMatchingCriteria);
+
+        assertEquals(1, cases.size());
+        assertEquals("1", cases.get(0).getCaseLink().getCaseReference());
+        assertEquals("names surname", cases.get(0).getFullName());
+        assertEquals("2000-01-01", cases.get(0).getDod());
+        assertEquals("SW12 0FA", cases.get(0).getPostcode());
+        assertNull(cases.get(0).getValid());
+        assertNull(cases.get(0).getComment());
+    }
+
+    @Test
     public void findCaseByRecordId() {
         when(caseMatchingCriteria.getRecordId()).thenReturn("1234");
 
