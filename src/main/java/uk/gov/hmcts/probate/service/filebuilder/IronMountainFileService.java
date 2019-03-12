@@ -3,12 +3,8 @@ package uk.gov.hmcts.probate.service.filebuilder;
 import com.google.common.collect.ImmutableList;
 import joptsimple.internal.Strings;
 import lombok.RequiredArgsConstructor;
-import org.hamcrest.core.IsNull;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.model.ApplicationType;
-import uk.gov.hmcts.probate.model.DocumentType;
-import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
-import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.Grantee;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
@@ -130,19 +126,17 @@ public class IronMountainFileService {
     }
 
     private SolsAddress getAdditionalExecutorAddress(CaseData caseData, int index) {
-        if (caseData.getAdditionalExecutorsApplying() != null) {
-            if (caseData.getAdditionalExecutorsApplying().size() >= (index + 1)) {
-                return caseData.getAdditionalExecutorsApplying().get(index).getValue().getApplyingExecutorAddress();
-            }
+        if (caseData.getAdditionalExecutorsApplying() != null
+                && caseData.getAdditionalExecutorsApplying().size() >= (index + 1)) {
+            return caseData.getAdditionalExecutorsApplying().get(index).getValue().getApplyingExecutorAddress();
         }
         return EMPTY_ADDRESS;
     }
 
     private String getApplyingExecutorName(CaseData caseData, int index) {
-        if (caseData.getAdditionalExecutorsApplying() != null) {
-            if (caseData.getAdditionalExecutorsApplying().size() >= (index + 1)) {
-                return caseData.getAdditionalExecutorsApplying().get(index).getValue().getApplyingExecutorName();
-            }
+        if (caseData.getAdditionalExecutorsApplying() != null
+                && caseData.getAdditionalExecutorsApplying().size() >= (index + 1)) {
+            return caseData.getAdditionalExecutorsApplying().get(index).getValue().getApplyingExecutorName();
         }
         return Strings.EMPTY;
     }
