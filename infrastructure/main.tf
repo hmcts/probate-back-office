@@ -65,7 +65,7 @@ data "azurerm_key_vault_secret" "POSTGRES_DATABASE" {
 }
 
 data "azurerm_key_vault_secret" "excelaEmail" {
-  name = "excela_email"
+  name = "excelaEmail"
   vault_uri = "${data.azurerm_key_vault.probate_key_vault.vault_uri}"
 }
 
