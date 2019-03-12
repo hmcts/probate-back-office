@@ -2,7 +2,9 @@ package uk.gov.hmcts.probate.service;
 
 import joptsimple.internal.Strings;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import uk.gov.hmcts.probate.config.notifications.EmailAddresses;
 import uk.gov.hmcts.probate.config.notifications.NotificationTemplates;
 import uk.gov.hmcts.probate.config.properties.registries.RegistriesProperties;
 import uk.gov.hmcts.probate.config.properties.registries.Registry;
@@ -28,12 +30,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static uk.gov.hmcts.probate.model.Constants.DOC_SUBTYPE_WILL;
-import static uk.gov.hmcts.probate.model.Constants.EXCELA_EMAIL;
 import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
 
 @RequiredArgsConstructor
 @Component
 public class NotificationService {
+    @Autowired
+    private final EmailAddresses emailAddresses;
     private final NotificationTemplates notificationTemplates;
     private final RegistriesProperties registriesProperties;
     private final NotificationClient notificationClient;
@@ -67,7 +70,7 @@ public class NotificationService {
     }
 
     public Document sendCaveatEmail(State state, CaveatDetails caveatDetails)
-        throws NotificationClientException {
+            throws NotificationClientException {
 
         CaveatData caveatData = caveatDetails.getData();
         Registry registry = registriesProperties.getRegistries().get(caveatData.getRegistryLocation().toLowerCase());
@@ -93,9 +96,9 @@ public class NotificationService {
 
         SendEmailResponse response;
 
-        response = notificationClient.sendEmail(templateId, EXCELA_EMAIL, personalisation, reference);
+        response = notificationClient.sendEmail(templateId, emailAddresses.getExcelaEmail(), personalisation, reference);
 
-        return getGeneratedSentEmailDocument(response, EXCELA_EMAIL);
+        return getGeneratedSentEmailDocument(response, emailAddresses.getExcelaEmail());
     }
 
     private Document getGeneratedSentEmailDocument(SendEmailResponse response, String emailAddress) {

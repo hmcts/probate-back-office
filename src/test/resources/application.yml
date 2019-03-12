@@ -220,3 +220,5 @@ idam-s2s-auth:
   ribbon:
     eureka:
       enabled: false
+
+excelaEmail: probatetest@gmail.com

@@ -34,12 +34,10 @@ data "azurerm_key_vault_secret" "pdf_service_grantSignatureFile" {
   vault_uri = "${data.azurerm_key_vault.probate_key_vault.vault_uri}"
 }
 
-
 data "azurerm_key_vault_secret" "s2s_key" {
   name      = "microservicekey-probate-backend"
   vault_uri = "https://s2s-${local.localenv}.vault.azure.net/"
 }
-
 
 data "azurerm_key_vault_secret" "POSTGRES-USER" {
   name = "probatemandb-POSTGRES-USER"
@@ -63,6 +61,11 @@ data "azurerm_key_vault_secret" "POSTGRES_PORT" {
 
 data "azurerm_key_vault_secret" "POSTGRES_DATABASE" {
   name = "probatemandb-POSTGRES-DATABASE"
+  vault_uri = "${data.azurerm_key_vault.probate_key_vault.vault_uri}"
+}
+
+data "azurerm_key_vault_secret" "excelaEmail" {
+  name = "excela_email"
   vault_uri = "${data.azurerm_key_vault.probate_key_vault.vault_uri}"
 }
 
@@ -113,6 +116,7 @@ module "probate-back-office" {
     java_app_name = "${var.microservice}"
     SEND_LETTER_SERIVCE_BASEURL = "${var.send_letter_base_url}"
     LOG_LEVEL = "${var.log_level}"
+    EXCELA_EMAIL = "${data.azurerm_key_vault_secret.excelaEmail.value}"
   }
 }
 
