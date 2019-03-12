@@ -5,9 +5,6 @@ import joptsimple.internal.Strings;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.model.ApplicationType;
-import uk.gov.hmcts.probate.model.DocumentType;
-import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
-import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.Grantee;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
@@ -56,7 +53,7 @@ public class IronMountainFileService {
         fileData.add(String.valueOf(ageCalculator(data)));
         addDeceasedAddress(fileData, deceasedAddress);
         fileData.add(id.toString());
-        fileData.add(getGrantIssueDate(data));
+        fileData.add(data.getGrantIssuedDate());
         addGranteeDetails(fileData, createGrantee(data, 1));
         addGranteeDetails(fileData, createGrantee(data, 2));
         addGranteeDetails(fileData, createGrantee(data, 3));
@@ -105,15 +102,6 @@ public class IronMountainFileService {
         return formattedAddress;
     }
 
-    private String getGrantIssueDate(CaseData data) {
-        for (CollectionMember<Document> documentInfo : data.getProbateDocumentsGenerated()) {
-            if (documentInfo.getValue().getDocumentType().equals(DocumentType.DIGITAL_GRANT)) {
-                return documentInfo.getValue().getDocumentDateAdded().toString();
-            }
-        }
-        return Strings.EMPTY;
-    }
-
     private Grantee createGrantee(CaseData data, int i) {
         return Grantee.builder()
                 .fullName(getFirstName(data, i))
@@ -138,14 +126,16 @@ public class IronMountainFileService {
     }
 
     private SolsAddress getAdditionalExecutorAddress(CaseData caseData, int index) {
-        if (caseData.getAdditionalExecutorsApplying().size() >= (index + 1)) {
+        if (caseData.getAdditionalExecutorsApplying() != null
+                && caseData.getAdditionalExecutorsApplying().size() >= (index + 1)) {
             return caseData.getAdditionalExecutorsApplying().get(index).getValue().getApplyingExecutorAddress();
         }
         return EMPTY_ADDRESS;
     }
 
     private String getApplyingExecutorName(CaseData caseData, int index) {
-        if (caseData.getAdditionalExecutorsApplying().size() >= (index + 1)) {
+        if (caseData.getAdditionalExecutorsApplying() != null
+                && caseData.getAdditionalExecutorsApplying().size() >= (index + 1)) {
             return caseData.getAdditionalExecutorsApplying().get(index).getValue().getApplyingExecutorName();
         }
         return Strings.EMPTY;
