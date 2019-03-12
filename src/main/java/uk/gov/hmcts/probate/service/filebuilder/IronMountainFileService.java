@@ -39,8 +39,7 @@ public class IronMountainFileService {
     private static final String DELIMITER = "|";
 
     public File createIronMountainFile(CaseDetails ccdCase, String fileName) throws IOException {
-        return textFileBuilderService.createFile(prepareData(ccdCase.getId(), ccdCase.getData()), DELIMITER,
-                fileName, false);
+        return textFileBuilderService.createFile(prepareData(ccdCase.getId(), ccdCase.getData()), DELIMITER, fileName);
     }
 
     private List<String> prepareData(Long id, CaseData data) {

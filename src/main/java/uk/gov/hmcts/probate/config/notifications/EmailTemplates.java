@@ -8,4 +8,5 @@ public class EmailTemplates {
     private String caseStopped;
     private String grantIssued;
     private String generalCaveatMessage;
+    private String excelaData;
 }

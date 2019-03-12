@@ -27,23 +27,20 @@ public class TextFileBuilderService {
         return fileName.replaceAll("/", "");
     }
 
-    private void writeDataToFile(String data, String delimiter, boolean trim) {
+    private void writeDataToFile(String data, String delimiter) {
         try {
             writer.write(data);
-            if (!trim) {
-                writer.write(delimiter);
-            }
+            writer.write(delimiter);
         } catch (Exception e) {
             log.error("Failed writing {} to file", data, e.getMessage());
         }
     }
 
-    public File createFile(List<String> data, String delimiter, String fileName, boolean trimDelimiter) throws
+    public File createFile(List<String> data, String delimiter, String fileName) throws
             IOException {
         openWriter(fileName);
         for (String item : data) {
-            boolean trim = (data.indexOf(item) == data.size() - 1 && trimDelimiter);
-            writeDataToFile(item, delimiter, trim);
+            writeDataToFile(item, delimiter);
         }
         writer.close();
 
