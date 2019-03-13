@@ -71,6 +71,7 @@ public class StandingSearchMapperTest {
                 .deceasedSurname(DECEASED_SURNAME)
                 .deceasedDateOfBirth(DATE_OF_BIRTH)
                 .deceasedDateOfDeath(DATE_OF_DEATH)
+                .deceasedAnyOtherNames(true)
                 .deceasedFullAliasNameList(buildFullAliasNames())
                 .deceasedAddress(Address.builder().addressLine1(DECEASED_ADRESS).build())
                 .applicantForenames(APPLICANT_FORENAMES)

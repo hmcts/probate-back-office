@@ -178,7 +178,7 @@ def versions = [
         springBootVersion               : '2.0.6.RELEASE',
         reformsJavaLoggingVersion       : '3.0.2',
         springSecurityVersion           : '5.1.1.RELEASE',
-        probateCommonsVersion           : '0.0.23',
+        probateCommonsVersion           : '0.0.24',
         ccdClient                       : '4.4.1',
         mapStruct                       : '1.2.0.Final'
 ]

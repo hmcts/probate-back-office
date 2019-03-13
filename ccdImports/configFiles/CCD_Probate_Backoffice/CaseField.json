@@ -20,8 +20,25 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "primaryApplicantPhoneNumber", "Label": "Applicant phone number", "FieldType": "Text", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "primaryApplicantEmailAddress", "Label": "Applicant email address", "FieldType": "Text", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "deceasedNameSection", "Label": "### What's the full name of the deceased? \nUse the name on the death certificate", "HintText": "Use the name on the death certificate", "FieldType": "Label", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "deceasedForenames", "Label": "First name(s)", "HintText": "Include all middle names", "FieldType": "Text", "SecurityClassification": "Public", "Min": 1, "Max": 30},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "deceasedSurname", "Label": "Last name(s)", "FieldType": "Text", "SecurityClassification": "Public", "Min": 1, "Max": 50},
+  {
+    "LiveFrom": "01/01/2017",
+    "CaseTypeID": "GrantOfRepresentation",
+    "ID": "deceasedForenames",
+    "Label": "First name(s)",
+    "HintText": "Include all middle names",
+    "FieldType": "Text",
+    "SecurityClassification": "Public",
+    "Min": 1
+  },
+  {
+    "LiveFrom": "01/01/2017",
+    "CaseTypeID": "GrantOfRepresentation",
+    "ID": "deceasedSurname",
+    "Label": "Last name(s)",
+    "FieldType": "Text",
+    "SecurityClassification": "Public",
+    "Min": 1
+  },
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "deceasedAnyOtherNames", "Label": "Did the deceased have assets in any other names?", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "deceasedAliasNameList", "Label": "Deceased Alias Names", "FieldType": "Collection", "FieldTypeParameter": "ProbateAliasName", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "deceasedDomicileInEngWales", "Label": "Was the deceased domiciled in England or Wales at the time of their death?", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
