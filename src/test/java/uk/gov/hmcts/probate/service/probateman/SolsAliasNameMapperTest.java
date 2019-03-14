@@ -42,11 +42,16 @@ public class SolsAliasNameMapperTest {
 
     private List<CollectionMember<SolsAliasName>> buildAliasNames() {
         SolsAliasName aliasName1 = SolsAliasName.builder()
-                .solsAliasname(DECEASED_ALIAS_NAMES)
+                .solsAliasname(DECEASED_ALIAS_NAME1)
+                .build();
+        SolsAliasName aliasName2 = SolsAliasName.builder()
+                .solsAliasname(DECEASED_ALIAS_NAME2)
                 .build();
         List<CollectionMember<SolsAliasName>> aliasNamesCollections = new ArrayList<CollectionMember<SolsAliasName>>();
         CollectionMember<SolsAliasName> aliasNamesCollection1 = new CollectionMember(null, aliasName1);
         aliasNamesCollections.add(aliasNamesCollection1);
+        CollectionMember<SolsAliasName> aliasNamesCollection2 = new CollectionMember(null, aliasName2);
+        aliasNamesCollections.add(aliasNamesCollection2);
         return aliasNamesCollections;
     }
 }

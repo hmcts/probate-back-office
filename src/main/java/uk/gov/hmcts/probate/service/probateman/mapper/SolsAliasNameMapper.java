@@ -1,6 +1,7 @@
 package uk.gov.hmcts.probate.service.probateman.mapper;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.service.probateman.mapper.qualifiers.ToSolsAliasNameMember;
 import uk.gov.hmcts.reform.probate.model.cases.CollectionMember;
@@ -20,13 +21,20 @@ public class SolsAliasNameMapper {
         if (aliasNames == null) {
             Collections.emptyList();
         }
+
         List<CollectionMember<SolsAliasName>> collectionMemberArrayList = new ArrayList<>();
+        String[] names = StringUtils.split(aliasNames, ",");
+        for (String name : names) {
+            collectionMemberArrayList.add(buildAliasName(name));
+        }
+        return collectionMemberArrayList;
+    }
+
+    private CollectionMember buildAliasName(String aliasNames) {
         SolsAliasName aliasName = SolsAliasName.builder()
                 .solsAliasname(aliasNames)
                 .build();
-        CollectionMember<SolsAliasName> collectionMember = new CollectionMember(null, aliasName);
-        collectionMemberArrayList.add(collectionMember);
-        return collectionMemberArrayList;
+        return new CollectionMember(null, aliasName);
     }
 
 }
