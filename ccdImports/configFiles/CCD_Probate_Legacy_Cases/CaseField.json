@@ -3,6 +3,7 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Legacy", "ID": "deceasedForenames", "Label": "First name(s)", "FieldType": "Text", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Legacy", "ID": "deceasedSurname", "Label": "Last name", "FieldType": "Text", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Legacy", "ID": "deceasedDateOfDeath", "Label": "Deceased Date Of Death", "FieldType": "Date", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "Legacy", "ID": "deceasedDateOfDeath2", "Label": "Deceased Date Of Death 2", "FieldType": "Date", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Legacy", "ID": "deceasedDateOfBirth", "Label": "Deceased Date Of Birth", "FieldType": "Date", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Legacy", "ID": "alias_names", "Label": "Aliases", "FieldType": "Text", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Legacy", "ID": "legacy_case_type", "Label": "Legace Case Type", "FieldType": "Text", "SecurityClassification": "Public"},
