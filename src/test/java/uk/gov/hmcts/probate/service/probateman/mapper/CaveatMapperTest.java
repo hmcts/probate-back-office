@@ -75,6 +75,7 @@ public class CaveatMapperTest {
                 .deceasedDateOfDeath(DECEASED_DOD)
                 .deceasedAddress(deceasedAddress)
                 .expiryDate(CAVEATOR_EXPIRY_DATE)
+                .deceasedAnyOtherNames(true)
                 .deceasedFullAliasNameList(buildFullAliasNames())
                 .legacyId(ID)
                 .legacyType(LEGACY_TYPE)
