@@ -19,7 +19,7 @@ public class SolsAliasNameMapper {
     public List<CollectionMember<SolsAliasName>> toCollectionMember(String aliasNames) {
         log.info("Adding aliasNames to collection for legacy case mapping");
         if (aliasNames == null) {
-            Collections.emptyList();
+            return Collections.emptyList();
         }
 
         List<CollectionMember<SolsAliasName>> collectionMemberArrayList = new ArrayList<>();
