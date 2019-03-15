@@ -16,9 +16,6 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.time.LocalDate;
 import java.util.Arrays;
-import java.util.List;
-
-import static java.util.Collections.singletonList;
 
 @EnableSwagger2
 @Configuration
