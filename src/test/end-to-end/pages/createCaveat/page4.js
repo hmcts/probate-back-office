@@ -16,5 +16,5 @@ module.exports = function (crud) {
         I.fillField('#expiryDate-year', createCaveatConfig.page4_caveatExpiryDate_year_update);
     }
 
-    I.click(commonConfig.continueButton);
+    I.waitForNavigationToComplete(commonConfig.continueButton);
 };

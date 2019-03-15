@@ -1,7 +1,7 @@
 const testConfig = require('src/test/config.js');
 
 exports.config = {
-    'tests': './paths/**/*.js',
+    'tests': './paths/**/caveatPath.js',
     'output': './output',
     'helpers': {
         'Puppeteer': {
@@ -9,7 +9,7 @@ exports.config = {
             'waitForTimeout': 60000,
             'getPageTimeout': 60000,
             'waitForAction': 1500,
-            'show': false,
+            'show': true,
             'chrome': {
                 'ignoreHTTPSErrors': true,
                 'ignore-certificate-errors': true,

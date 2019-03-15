@@ -13,5 +13,5 @@ module.exports = function (caseRef) {
 
     I.fillField('#messageContent', emailCaveatorConfig.email_message_content);
 
-    I.click(commonConfig.continueButton);
+    I.waitForNavigationToComplete(commonConfig.continueButton);
 };

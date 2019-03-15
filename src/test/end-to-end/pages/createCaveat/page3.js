@@ -31,5 +31,5 @@ module.exports = function (crud) {
         I.fillField('#caveatorSurname', createCaveatConfig.page3_caveator_surname_update);
     }
 
-    I.click(commonConfig.continueButton);
+    I.waitForNavigationToComplete(commonConfig.continueButton);
 };

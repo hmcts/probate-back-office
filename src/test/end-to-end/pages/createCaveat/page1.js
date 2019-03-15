@@ -19,5 +19,5 @@ module.exports = function (crud) {
         I.selectOption('#registryLocation', createCaveatConfig.page1_list2_registry_location_update);
     }
 
-    I.click(commonConfig.continueButton);
+    I.waitForNavigationToComplete(commonConfig.continueButton);
 };

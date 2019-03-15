@@ -61,9 +61,9 @@ Scenario('Caveat Workflow - E2E test 01 - Caveat for a Personal Applicant - Rais
     I.emailCaveator(caseRef);
     I.enterEventSummary(caseRef, emailCaveatorSummaryConfig);
     // Note that End State does not change when emailing the caveator.
-    I.seeCaseDetails(caseRef, historyTabConfig, checkYourAnswersConfig, nextStepName, endState);
+    I.seeCaseDetails(caseRef, historyTabConfig, emailCaveatorSummaryConfig, nextStepName, endState);
     // When emailing the caveator, the Date added for the email document is set to today
-    emailCaveatorConfig.dateAdded = dateFns.format(new Date(),'DD MMM YYYY');
+    emailCaveatorConfig.dateAdded = dateFns.format(new Date(), 'DD MMM YYYY');
     I.seeCaseDetails(caseRef, documentsTabEmailCaveatorConfig, emailCaveatorConfig);
 
     nextStepName = 'Caveat match';
@@ -71,7 +71,7 @@ Scenario('Caveat Workflow - E2E test 01 - Caveat for a Personal Applicant - Rais
     I.selectCaseMatchesForCaveat(caseRef, caseMatchesConfig);
     I.enterCaseMatchesComment(caseRef, caseMatchesCommentSummaryConfig);
     endState = 'Caveat matching';
-    I.seeCaseDetails(caseRef, historyTabConfig, checkYourAnswersConfig, nextStepName, endState);
+    I.seeCaseDetails(caseRef, historyTabConfig, caseMatchesCommentSummaryConfig, nextStepName, endState);
     I.seeCaseDetails(caseRef, caseMatchesTabConfig, caseMatchesConfig);
 
     nextStepName = 'Caveat not matched';
