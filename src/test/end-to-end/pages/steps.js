@@ -16,6 +16,8 @@ module.exports = function () {
         enterCaveatPage1: steps.createCaveat.page1,
         enterCaveatPage2: steps.createCaveat.page2,
         enterCaveatPage3: steps.createCaveat.page3,
+        enterCaveatPage4: steps.createCaveat.page4,
+        emailCaveator: steps.emailNotifications.caveat.emailCaveator,
         checkMyAnswers: steps.checkYourAnswers.checkYourAnswers,
         seeCaseDetails: steps.caseDetails.caseDetails,
         chooseNextStep: steps.nextStep.nextStep,
@@ -24,6 +26,7 @@ module.exports = function () {
         enterComment: steps.eventSummary.eventSummary,
         generateDepositReceipt: steps.eventSummary.eventSummary,
         selectCaseMatches: steps.caseMatches.caseMatches,
+        selectCaseMatchesForCaveat: steps.caseMatches.caveat.caseMatches,
         enterCaseMatchesComment: steps.eventSummary.eventSummary,
         selectWithdrawalReason: steps.withdrawal.withdrawal,
         enterWithdrawalSummary: steps.eventSummary.eventSummary

@@ -1,6 +1,12 @@
 {
-  "page1_waitForText": "Email caveator",
-  "page1_url_part1": "case/PROBATE/Caveat/",
-  "page1_url_part2": "/trigger/emailCaveatorForCaveatRaised/emailCaveatorForCaveatRaisedemailCaveatorPage1",
-  "page1_message_content": "This is the message content for the email sent to the Caveator."
+  "waitForText": "Email caveator",
+  "url_part1": "case/PROBATE/Caveat/",
+  "url_part2": "/trigger/emailCaveatorForCaveatRaised/emailCaveatorForCaveatRaisedemailCaveatorPage1",
+
+  "email_message_content": "email_caveator_email_message_content_text",
+
+  "documentType": "Sent Email",
+  "filename": "sentEmail.pdf",
+  "dateAdded": "XX XXX XXXX",
+  "generatedBy": "694957"
 }

@@ -1,0 +1,5 @@
+{
+  "waitForText" : "Issue caveat warning",
+  "summary": "issue_caveat_warning_event_summary_text",
+  "comment": "issue_caveat_warning_event_description_text"
+}

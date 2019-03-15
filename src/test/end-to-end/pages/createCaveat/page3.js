@@ -27,12 +27,8 @@ module.exports = function (crud) {
     }
 
     if (crud === 'update') {
-//        I.fillField('#deceasedForenames', createCaveatConfig.page2_firstnames_update);
-//        I.fillField('#deceasedSurname', createCaveatConfig.page2_lastnames_update);
-
-//        I.fillField('#deceasedDateOfBirth-day', createCaveatConfig.page2_dateOfBirth_day_update);
-//        I.fillField('#deceasedDateOfBirth-month', createCaveatConfig.page2_dateOfBirth_month_update);
-//        I.fillField('#deceasedDateOfBirth-year', createCaveatConfig.page2_dateOfBirth_year_update);
+        I.fillField('#caveatorForenames', createCaveatConfig.page3_caveator_forenames_update);
+        I.fillField('#caveatorSurname', createCaveatConfig.page3_caveator_surname_update);
     }
 
     I.click(commonConfig.continueButton);

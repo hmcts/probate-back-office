@@ -9,6 +9,7 @@ module.exports = function (caseRef, configFile) {
     I.waitForText(configFile.waitForText, testConfig.TestTimeToWaitForText);
 
     I.see(caseRef);
+    I.wait(5);
 
     I.fillField('#field-trigger-summary', configFile.summary);
     I.fillField('#field-trigger-description', configFile.comment);
