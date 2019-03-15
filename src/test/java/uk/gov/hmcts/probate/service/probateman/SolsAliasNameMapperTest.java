@@ -12,9 +12,11 @@ import uk.gov.hmcts.reform.probate.model.cases.CollectionMember;
 import uk.gov.hmcts.reform.probate.model.cases.SolsAliasName;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -38,6 +40,25 @@ public class SolsAliasNameMapperTest {
 
         aliasCollection.forEach(alias -> assertThat(expectedAliasNames).contains(alias));
 
+    }
+
+    @Test
+    public void shouldMapEmptyNamesToEmptyCollection() {
+
+        List<CollectionMember<SolsAliasName>> expectedAliasNames = Collections.emptyList();
+        List<CollectionMember<SolsAliasName>> aliasCollection = aliasNameMapper.toCollectionMember(null);
+
+        assertEquals(expectedAliasNames, aliasCollection);
+
+    }
+
+    @Test
+    public void shouldMapToCollectionOneAliasOnly() {
+
+        List<CollectionMember<SolsAliasName>> aliasCollection = aliasNameMapper.toCollectionMember(DECEASED_ALIAS_NAME1);
+
+        assertEquals(DECEASED_ALIAS_NAME1, aliasCollection.get(0).getValue().getSolsAliasname());
+        assertEquals(1, aliasCollection.size());
     }
 
     private List<CollectionMember<SolsAliasName>> buildAliasNames() {

@@ -176,7 +176,7 @@
     "HintText": "Please state whether they were adopted into the family of the person who has died, or ‘adopted out’ (became part of someone else’s family). ",
     "FieldType": "Collection",
     "FieldTypeParameter": "adopted",
-    "SecurityClassification": "Public",
+    "SecurityClassification": "Public"
   },
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "caseType", "Label": "What case type is this?", "FieldType": "FixedList", "FieldTypeParameter": "caseTypeFixedList", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "parentsExistSurvived", "Label": "Were there any parents of the person who has died survived them?", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
