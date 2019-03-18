@@ -19,6 +19,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
+import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.service.notify.NotificationClient;
 import uk.gov.service.notify.NotificationClientException;
@@ -87,7 +88,7 @@ public class NotificationService {
         return getGeneratedSentEmailDocument(response, emailAddress);
     }
 
-    public Document sendExcelaEmail(CaseDetails caseDetails) throws
+    public Document sendExcelaEmail(ReturnedCaseDetails caseDetails) throws
             NotificationClientException {
         String templateId = notificationTemplates.getEmail().get(caseDetails.getData().getApplicationType())
                 .getExcelaData();
