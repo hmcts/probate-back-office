@@ -7,6 +7,7 @@ import uk.gov.hmcts.reform.probate.model.cases.AliasName;
 import uk.gov.hmcts.reform.probate.model.cases.CollectionMember;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Slf4j
@@ -18,7 +19,7 @@ public class AliasNameMapper {
     public List<CollectionMember<AliasName>> toCollectionMember(String aliasNames) {
         log.info("Adding aliasNames to collection for legacy case mapping");
         if (aliasNames == null) {
-            return null;
+            return Collections.emptyList();
         }
         List<CollectionMember<AliasName>> collectionMemberArrayList = new ArrayList<>();
         String lastName = aliasNames.substring(aliasNames.lastIndexOf(' ') + 1);

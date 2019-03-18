@@ -8,6 +8,7 @@ import uk.gov.hmcts.reform.probate.model.cases.CollectionMember;
 import uk.gov.hmcts.reform.probate.model.cases.FullAliasName;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Slf4j
@@ -19,10 +20,10 @@ public class FullAliasNameMapper {
     public List<CollectionMember<FullAliasName>> toFullAliasNameMember(String aliasNames) {
         log.info("Adding FullAliasNames to collection for legacy case mapping");
         if (aliasNames == null) {
-            return null;
+            return Collections.emptyList();
         }
         List<CollectionMember<FullAliasName>> collectionMemberArrayList = new ArrayList<>();
-        String[] names = StringUtils.split(aliasNames, ",");
+        String[] names = StringUtils.split(aliasNames, "|");
         for (String name : names) {
             collectionMemberArrayList.add(buildAliasName(name));
         }
