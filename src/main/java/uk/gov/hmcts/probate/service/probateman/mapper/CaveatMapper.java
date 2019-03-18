@@ -22,6 +22,7 @@ public interface CaveatMapper extends ProbateManMapper<Caveat, CaveatData> {
     @Mapping(target = "deceasedSurname", source = "deceasedSurname")
     @Mapping(target = "caveatorForenames", source = "caveatorForenames")
     @Mapping(target = "caveatorSurname", source = "caveatorSurname")
+    @Mapping(target = "deceasedAnyOtherNames", expression = "java(caveat.getAliasNames() == null ? false : true )")
     @Mapping(target = "deceasedFullAliasNameList", source = "aliasNames", qualifiedBy = {ToFullAliasNameMember.class})
     @Mapping(target = "deceasedAddress.addressLine1", source = "cavServiceAddress")
     @Mapping(target = "expiryDate", source = "cavExpiryDate")

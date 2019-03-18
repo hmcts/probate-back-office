@@ -4,5 +4,8 @@
   {"CaseTypeID": "GrantOfRepresentation", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "UserRole": "citizen", "CRUD": "CRUD"},
-  {"CaseTypeID": "GrantOfRepresentation", "UserRole": "caseworker-probate-caseadmin", "CRUD": "CRUD"}
+  {"CaseTypeID": "GrantOfRepresentation", "UserRole": "caseworker-probate-caseadmin", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "UserRole": "caseworker-probate-caseofficer", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "UserRole": "caseworker-probate-registrar", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"}
 ]

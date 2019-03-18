@@ -20,6 +20,7 @@ public interface StandingSearchMapper extends ProbateManMapper<StandingSearch, S
     @Mapping(target = "deceasedSurname", source = "deceasedSurname")
     @Mapping(target = "deceasedDateOfBirth", source = "dateOfBirth")
     @Mapping(target = "deceasedDateOfDeath", source = "dateOfDeath1")
+    @Mapping(target = "deceasedAnyOtherNames", expression = "java(standingSearch.getAliasNames() == null ? false : true )")
     @Mapping(target = "deceasedFullAliasNameList", source = "aliasNames", qualifiedBy = {ToFullAliasNameMember.class})
     @Mapping(target = "deceasedAddress.addressLine1", source = "deceasedAddress")
     @Mapping(target = "applicantForenames", source = "ssApplicantForename")

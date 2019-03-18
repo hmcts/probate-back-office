@@ -57,6 +57,7 @@ public class WillLodgementMapperTest {
         String legacyCaseViewUrl = String.format(printServiceHost + printServiceLegacyPath, ProbateManType.WILL_LODGEMENT, ID);
         WillLodgementData expectedWillLodgementData = WillLodgementData.builder()
                 .deceasedFullAliasNameList(buildFullAliasNames())
+                .deceasedAnyOtherNames(true)
                 .deceasedForenames(FORENAMES)
                 .deceasedSurname(SURNAME)
                 .deceasedDateOfBirth(DATE_OF_BIRTH)

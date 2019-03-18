@@ -13,7 +13,7 @@ import uk.gov.hmcts.probate.config.CCDDataStoreAPIConfiguration;
 import uk.gov.hmcts.probate.exception.CaseMatchingException;
 import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.CaseType;
-import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
+import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCases;
 import uk.gov.hmcts.probate.service.evidencemanagement.header.HttpHeadersFactory;
 
@@ -32,7 +32,7 @@ import static uk.gov.hmcts.probate.insights.AppInsightsEvent.REST_CLIENT_EXCEPTI
 public class CaseQueryService {
 
     private static final String DOCUMENT_TYPE = "data.probateDocumentsGenerated.value.DocumentType";
-    private static final String DOCUMENT_DATE = "data.probateDocumentsGenerated.value.DocumentDateAdded";
+    private static final String DOCUMENT_DATE = "data.grantIssuedDate";
     private static final String STATE = "state";
     private static final String STATE_MATCH = "BOGrantIssued";
     private static final String CASE_TYPE_ID = "ctid";
@@ -42,7 +42,7 @@ public class CaseQueryService {
     private final HttpHeadersFactory headers;
     private final CCDDataStoreAPIConfiguration ccdDataStoreAPIConfiguration;
 
-    public List<CaseDetails> findCasesWithDatedDocument(String documentTypeGenerated, String queryDate) {
+    public List<ReturnedCaseDetails> findCasesWithDatedDocument(String documentTypeGenerated, String queryDate) {
         BoolQueryBuilder query = boolQuery();
 
         query.must(matchQuery(STATE, STATE_MATCH));
@@ -54,8 +54,8 @@ public class CaseQueryService {
         return runQuery(jsonQuery);
     }
 
-    public List<CaseDetails> findCaseStateWithinTimeFrame(String documentTypeGenerated,
-                                                          String startDate, String endDate) {
+    public List<ReturnedCaseDetails> findCaseStateWithinTimeFrame(String documentTypeGenerated,
+                                                                  String startDate, String endDate) {
         BoolQueryBuilder query = boolQuery();
 
         query.must(matchQuery(STATE, STATE_MATCH));
@@ -67,7 +67,7 @@ public class CaseQueryService {
         return runQuery(jsonQuery);
     }
 
-    private List<CaseDetails> runQuery(String jsonQuery) {
+    private List<ReturnedCaseDetails> runQuery(String jsonQuery) {
         log.info("GrantMatchingService runQuery: " + jsonQuery);
         URI uri = UriComponentsBuilder
                 .fromHttpUrl(ccdDataStoreAPIConfiguration.getHost() + ccdDataStoreAPIConfiguration.getCaseMatchingPath())

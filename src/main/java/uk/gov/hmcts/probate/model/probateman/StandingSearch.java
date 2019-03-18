@@ -79,6 +79,12 @@ public class StandingSearch extends ProbateManModel {
     @JsonDeserialize(using = LocalDateDeserializer.class)
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DATE_FORMAT)
+    @Column(name = "DATE_OF_DEATH2")
+    private LocalDate dateOfDeath2; //date,
+
+    @JsonDeserialize(using = LocalDateDeserializer.class)
+    @JsonSerialize(using = LocalDateSerializer.class)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DATE_FORMAT)
     @Column(name = "SS_DATE_LAST_EXTENDED")
     private LocalDate ssDateLastExtended; //date,
 

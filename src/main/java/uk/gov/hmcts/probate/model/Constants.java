@@ -9,6 +9,7 @@ public final class Constants {
     public static final String BUSINESS_ERROR = "businessError";
     public static final String LONDON = "london";
     public static final String CTSC = "ctsc";
+    public static final String DOC_SUBTYPE_WILL = "will";
 
 
     private Constants() {

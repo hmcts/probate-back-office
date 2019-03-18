@@ -10,6 +10,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
+import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 import uk.gov.hmcts.probate.util.FileUtils;
 
 import java.io.BufferedReader;
@@ -30,18 +31,13 @@ public class IronMountainFileServiceTest {
 
     private IronMountainFileService ironmountainFileService = new IronMountainFileService(new TextFileBuilderService());
     private CaseData.CaseDataBuilder caseData;
-    private CaseDetails createdCase;
+    private ReturnedCaseDetails createdCase;
     private CaseData builtData;
-    private CollectionMember<Document> document;
     private static final String FILE_NAME = "testFile.txt";
     private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
 
     @Before
     public void setup() {
-        document = new CollectionMember<>(Document
-                .builder().documentDateAdded(LocalDate.of(2019, 02, 18)).documentType(DocumentType.DIGITAL_GRANT)
-                .build());
-
         CollectionMember<AdditionalExecutorApplying> additionalExecutor =
                 new CollectionMember<>(AdditionalExecutorApplying.builder().applyingExecutorName("Bob Smith")
                         .applyingExecutorAddress(SolsAddress.builder().addressLine1("123 Fake street")
@@ -54,8 +50,8 @@ public class IronMountainFileServiceTest {
         caseData = CaseData.builder()
                 .deceasedForenames("Nigel")
                 .deceasedSurname("Deadsoul")
-                .deceasedDateOfDeath(LocalDate.of(1990, 01, 01))
-                .deceasedDateOfBirth(LocalDate.of(2015, 01, 01))
+                .deceasedDateOfDeath(LocalDate.of(2015, 01, 01))
+                .deceasedDateOfBirth(LocalDate.of(1990, 01, 01))
                 .deceasedAddress(SolsAddress.builder().addressLine1("123 Dead street").addressLine3("The lane")
                         .postCode("AB5 6CD").build())
                 .boDeceasedTitle("Mr")
@@ -71,14 +67,14 @@ public class IronMountainFileServiceTest {
                 .ihtNetValue(new BigDecimal(new BigInteger("77"), 0))
                 .caseType("gop")
                 .registryLocation("Oxford")
+                .grantIssuedDate("2019-02-18")
                 .applicationType(ApplicationType.PERSONAL);
     }
 
     @Test
     public void testIronMountainFileBuilt() throws IOException {
         builtData = caseData.build();
-        builtData.getProbateDocumentsGenerated().add(document);
-        createdCase = new CaseDetails(builtData, LAST_MODIFIED, 1234567890876L);
+        createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, 1234567890876L);
         assertThat(createFile(ironmountainFileService.createIronMountainFile(createdCase, FILE_NAME)).readLine(),
                 is(FileUtils.getStringFromFile("expectedGeneratedFiles/ironMountainFilePopulated.txt")));
     }
@@ -98,8 +94,7 @@ public class IronMountainFileServiceTest {
                 .primaryApplicantAddress(SolsAddress.builder().build())
                 .additionalExecutorsApplying(additionalExecutors);
         builtData = caseData.build();
-        builtData.getProbateDocumentsGenerated().add(document);
-        createdCase = new CaseDetails(builtData, LAST_MODIFIED, 1234567890876L);
+        createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, 1234567890876L);
         assertThat(createFile(ironmountainFileService.createIronMountainFile(createdCase, FILE_NAME)).readLine(),
                 is(FileUtils.getStringFromFile("expectedGeneratedFiles/ironMountainFileEmptyOptionals.txt")));
     }
@@ -108,8 +103,7 @@ public class IronMountainFileServiceTest {
     public void testPrimaryApplicantAsNoChangesGrantee() throws IOException {
         caseData.primaryApplicantIsApplying("No");
         builtData = caseData.build();
-        builtData.getProbateDocumentsGenerated().add(document);
-        createdCase = new CaseDetails(builtData, LAST_MODIFIED, 1234567890876L);
+        createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, 1234567890876L);
         assertThat(createFile(ironmountainFileService.createIronMountainFile(createdCase, FILE_NAME)).readLine(),
                 is(FileUtils.getStringFromFile("expectedGeneratedFiles/ironMountainPrimaryApplicantNo.txt")));
     }
@@ -118,8 +112,7 @@ public class IronMountainFileServiceTest {
     public void testSolicitorApplicationTypeDisplaysSolicitorInformation() throws IOException {
         caseData.applicationType(ApplicationType.SOLICITOR);
         builtData = caseData.build();
-        builtData.getProbateDocumentsGenerated().add(document);
-        createdCase = new CaseDetails(builtData, LAST_MODIFIED, 1234567890876L);
+        createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, 1234567890876L);
         assertThat(createFile(ironmountainFileService.createIronMountainFile(createdCase, FILE_NAME)).readLine(),
                 is(FileUtils.getStringFromFile("expectedGeneratedFiles/ironMountainSolicitor.txt")));
     }

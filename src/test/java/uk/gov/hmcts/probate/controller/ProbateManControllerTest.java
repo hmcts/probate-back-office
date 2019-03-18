@@ -4,12 +4,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.validation.FieldError;
+import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
@@ -30,6 +33,7 @@ import uk.gov.hmcts.probate.util.FileUtils;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -55,6 +59,8 @@ public class ProbateManControllerTest {
     private static final String LEGACY_SEARCH_URL = "/legacy/search/";
 
     private static final String LEGACY_IMPORT_URL = "/legacy/doImport/";
+
+    private static final String LEGACY_RESET_SEARCH_URL = "/legacy/resetSearch/";
 
     @MockBean
     private ProbateManService probateManService;
@@ -162,6 +168,30 @@ public class ProbateManControllerTest {
         when(legacyImportService.importLegacyRows(caseData.getLegacySearchResultRows())).thenReturn(caseMatchesList);
 
         mockMvc.perform(post(LEGACY_IMPORT_URL)
+                .content(json)
+                .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void shouldResetSearch() throws Exception {
+        CaseData.CaseDataBuilder caseDataBuilder = CaseData.builder();
+        CaseData caseData = caseDataBuilder.build();
+        CaseDetails caseDetails = new CaseDetails(caseData, null, null);
+        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        String json = objectMapper.writeValueAsString(callbackRequest);
+
+        List<CaseMatch> caseMatchesList = new ArrayList<>();
+
+        FieldErrorResponse errorResponse = FieldErrorResponse.builder().message("someMessage").build();
+        when(legacyImportService.importLegacyRows(caseData.getLegacySearchResultRows())).thenReturn(caseMatchesList);
+        when(businessValidationMessageService
+                .generateError(anyString(), anyString())).thenReturn(errorResponse);
+
+        mockMvc.perform(post(LEGACY_RESET_SEARCH_URL)
                 .content(json)
                 .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(status().isOk());

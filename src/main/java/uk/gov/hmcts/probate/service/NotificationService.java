@@ -1,7 +1,10 @@
 package uk.gov.hmcts.probate.service;
 
+import joptsimple.internal.Strings;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import uk.gov.hmcts.probate.config.notifications.EmailAddresses;
 import uk.gov.hmcts.probate.config.notifications.NotificationTemplates;
 import uk.gov.hmcts.probate.config.properties.registries.RegistriesProperties;
 import uk.gov.hmcts.probate.config.properties.registries.Registry;
@@ -11,9 +14,12 @@ import uk.gov.hmcts.probate.model.SentEmail;
 import uk.gov.hmcts.probate.model.State;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
+import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
+import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
+import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.service.notify.NotificationClient;
 import uk.gov.service.notify.NotificationClientException;
@@ -24,11 +30,14 @@ import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 
+import static uk.gov.hmcts.probate.model.Constants.DOC_SUBTYPE_WILL;
 import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
 
 @RequiredArgsConstructor
 @Component
 public class NotificationService {
+    @Autowired
+    private final EmailAddresses emailAddresses;
     private final NotificationTemplates notificationTemplates;
     private final RegistriesProperties registriesProperties;
     private final NotificationClient notificationClient;
@@ -36,6 +45,7 @@ public class NotificationService {
     private final PDFManagementService pdfManagementService;
 
     private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMM Y HH:mm");
+    private static final DateTimeFormatter EXCELA_DATE = DateTimeFormatter.ofPattern("yyyyMMdd");
 
     public Document sendEmail(State state, CaseDetails caseDetails)
             throws NotificationClientException {
@@ -61,7 +71,7 @@ public class NotificationService {
     }
 
     public Document sendCaveatEmail(State state, CaveatDetails caveatDetails)
-        throws NotificationClientException {
+            throws NotificationClientException {
 
         CaveatData caveatData = caveatDetails.getData();
         Registry registry = registriesProperties.getRegistries().get(caveatData.getRegistryLocation().toLowerCase());
@@ -76,6 +86,20 @@ public class NotificationService {
         response = notificationClient.sendEmail(templateId, emailAddress, personalisation, reference);
 
         return getGeneratedSentEmailDocument(response, emailAddress);
+    }
+
+    public Document sendExcelaEmail(ReturnedCaseDetails caseDetails) throws
+            NotificationClientException {
+        String templateId = notificationTemplates.getEmail().get(caseDetails.getData().getApplicationType())
+                .getExcelaData();
+        Map<String, String> personalisation = getExcelaPersonalisation(caseDetails.getId(), caseDetails.getData());
+        String reference = caseDetails.getId().toString();
+
+        SendEmailResponse response;
+
+        response = notificationClient.sendEmail(templateId, emailAddresses.getExcelaEmail(), personalisation, reference);
+
+        return getGeneratedSentEmailDocument(response, emailAddresses.getExcelaEmail());
     }
 
     private Document getGeneratedSentEmailDocument(SendEmailResponse response, String emailAddress) {
@@ -121,6 +145,17 @@ public class NotificationService {
         return personalisation;
     }
 
+    private Map<String, String> getExcelaPersonalisation(Long id, CaseData caseData) {
+        HashMap<String, String> personalisation = new HashMap<>();
+
+        personalisation.put("excelaName", LocalDateTime.now().format(EXCELA_DATE) + "will");
+        personalisation.put("ccdId", id.toString());
+        personalisation.put("deceasedSurname", caseData.getDeceasedSurname());
+        personalisation.put("willReferenceNumber", getWillReferenceNumber(caseData));
+
+        return personalisation;
+    }
+
     private String getTemplateId(State state, ApplicationType applicationType) {
         switch (state) {
             case DOCUMENTS_RECEIVED:
@@ -145,5 +180,14 @@ public class NotificationService {
             default:
                 throw new BadRequestException("Unsupported application type");
         }
+    }
+
+    private String getWillReferenceNumber(CaseData data) {
+        for (CollectionMember<ScannedDocument> document : data.getScannedDocuments()) {
+            if (document.getValue().getSubtype().equals(DOC_SUBTYPE_WILL)) {
+                return document.getValue().getControlNumber();
+            }
+        }
+        return Strings.EMPTY;
     }
 }

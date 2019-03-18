@@ -17,6 +17,7 @@ import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
 import uk.gov.hmcts.reform.ccd.client.model.StartEventResponse;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Optional;
 
 import static org.hamcrest.Matchers.equalTo;
@@ -123,4 +124,54 @@ public class CcdClientApiTest {
 
     }
 
+    @Test
+    public void shouldNotFindCase() {
+        CcdCaseType ccdCaseType = CcdCaseType.GRANT_OF_REPRESENTATION;
+        Long legacyId = 1L;
+
+        when(coreCaseDataApi.searchForCaseworker(
+                any(String.class),
+                any(String.class),
+                any(String.class),
+                any(String.class),
+                any(String.class),
+                any(ImmutableMap.class))).thenReturn(Collections.EMPTY_LIST);
+
+        SecurityDTO securityDTO = SecurityDTO.builder()
+                .authorisation(AUTHORISATION)
+                .serviceAuthorisation(SERVICE_AUTHORISATION)
+                .userId(USER_ID)
+                .build();
+
+        Optional<CaseDetails> actualCaseDetails = ccdClientApi.retrieveCaseByLegacyId(ccdCaseType.getName(), legacyId, securityDTO);
+
+        assertThat(actualCaseDetails.isPresent(), equalTo(false));
+
+
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void shouldThrowExceptionWhenMorethan1CaseFoundForRetrieveCase() {
+        CcdCaseType ccdCaseType = CcdCaseType.GRANT_OF_REPRESENTATION;
+        Long legacyId = 1L;
+        CaseDetails caseDetails1 = CaseDetails.builder().build();
+        CaseDetails caseDetails2 = CaseDetails.builder().build();
+
+        when(coreCaseDataApi.searchForCaseworker(
+                any(String.class),
+                any(String.class),
+                any(String.class),
+                any(String.class),
+                any(String.class),
+                any(ImmutableMap.class))).thenReturn(Arrays.asList(caseDetails1, caseDetails2));
+
+        SecurityDTO securityDTO = SecurityDTO.builder()
+                .authorisation(AUTHORISATION)
+                .serviceAuthorisation(SERVICE_AUTHORISATION)
+                .userId(USER_ID)
+                .build();
+
+        Optional<CaseDetails> actualCaseDetails = ccdClientApi.retrieveCaseByLegacyId(ccdCaseType.getName(), legacyId, securityDTO);
+
+    }
 }
