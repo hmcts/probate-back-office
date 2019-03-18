@@ -17,6 +17,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
+import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
 import uk.gov.service.notify.NotificationClient;
@@ -72,7 +73,7 @@ public class NotificationServiceTest {
     private CaseDetails personalCaseDataManchester;
     private CaseDetails personalCaseDataCtsc;
     private CaseDetails solicitorCaseDataManchester;
-    private CaseDetails excelaCaseData;
+    private ReturnedCaseDetails excelaCaseData;
 
     private CaveatDetails personalCaveatDataOxford;
     private CaveatDetails personalCaveatDataBirmingham;
@@ -153,7 +154,7 @@ public class NotificationServiceTest {
                 .deceasedDateOfDeath(LocalDate.of(2000, 12, 12))
                 .build(), LAST_MODIFIED, ID);
 
-        excelaCaseData = new CaseDetails(CaseData.builder()
+        excelaCaseData = new ReturnedCaseDetails(CaseData.builder()
                 .applicationType(PERSONAL)
                 .deceasedSurname("Michelson")
                 .scannedDocuments(scannedDocuments)
