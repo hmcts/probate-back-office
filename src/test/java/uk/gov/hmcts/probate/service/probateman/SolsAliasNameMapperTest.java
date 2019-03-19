@@ -24,7 +24,7 @@ public class SolsAliasNameMapperTest {
 
     private static final String DECEASED_ALIAS_NAME1 = "DeadANF1";
     private static final String DECEASED_ALIAS_NAME2 = "DeadANF2";
-    private static final String DECEASED_ALIAS_NAMES = DECEASED_ALIAS_NAME1 + "," + DECEASED_ALIAS_NAME2;
+    private static final String DECEASED_ALIAS_NAMES = DECEASED_ALIAS_NAME1 + "|" + DECEASED_ALIAS_NAME2;
 
     @Autowired
     private SolsAliasNameMapper aliasNameMapper;

@@ -8,7 +8,7 @@ import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.ccd.raw.Grantee;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
-import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
+import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 
 import java.io.File;
 import java.io.IOException;
@@ -34,7 +34,7 @@ public class IronMountainFileService {
     private final TextFileBuilderService textFileBuilderService;
     private static final String DELIMITER = "|";
 
-    public File createIronMountainFile(CaseDetails ccdCase, String fileName) throws IOException {
+    public File createIronMountainFile(ReturnedCaseDetails ccdCase, String fileName) throws IOException {
         return textFileBuilderService.createFile(prepareData(ccdCase.getId(), ccdCase.getData()), DELIMITER, fileName);
     }
 

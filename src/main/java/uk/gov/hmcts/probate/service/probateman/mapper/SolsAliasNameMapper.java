@@ -23,7 +23,7 @@ public class SolsAliasNameMapper {
         }
 
         List<CollectionMember<SolsAliasName>> collectionMemberArrayList = new ArrayList<>();
-        String[] names = StringUtils.split(aliasNames, ",");
+        String[] names = StringUtils.split(aliasNames, "|");
         for (String name : names) {
             collectionMemberArrayList.add(buildAliasName(name));
         }
