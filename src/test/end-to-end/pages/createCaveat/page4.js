@@ -8,9 +8,9 @@ module.exports = function (crud) {
 
     const I = this;
 
-    I.waitForText(createCaveatConfig.page4_waitForText, testConfig.TestTimeToWaitForText);
-
     if (crud === 'update') {
+        I.waitForText(createCaveatConfig.page4_amend_waitForText, testConfig.TestTimeToWaitForText);
+
         I.fillField('#expiryDate-day', createCaveatConfig.page4_caveatExpiryDate_day_update);
         I.fillField('#expiryDate-month', createCaveatConfig.page4_caveatExpiryDate_month_update);
         I.fillField('#expiryDate-year', createCaveatConfig.page4_caveatExpiryDate_year_update);

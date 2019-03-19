@@ -8,9 +8,9 @@ module.exports = function (crud) {
 
     const I = this;
 
-    I.waitForText(createCaveatConfig.page2_waitForText, testConfig.TestTimeToWaitForText);
-
     if (crud === 'create') {
+        I.waitForText(createCaveatConfig.page2_waitForText, testConfig.TestTimeToWaitForText);
+
         I.fillField('#deceasedForenames', createCaveatConfig.page2_forenames);
         I.fillField('#deceasedSurname', createCaveatConfig.page2_surname);
 
@@ -45,8 +45,10 @@ module.exports = function (crud) {
     }
 
     if (crud === 'update') {
-        I.fillField('#deceasedForenames', createCaveatConfig.page2_firstnames_update);
-        I.fillField('#deceasedSurname', createCaveatConfig.page2_lastnames_update);
+        I.waitForText(createCaveatConfig.page2_amend_waitForText, testConfig.TestTimeToWaitForText);
+
+        I.fillField('#deceasedForenames', createCaveatConfig.page2_forenames_update);
+        I.fillField('#deceasedSurname', createCaveatConfig.page2_surname_update);
         I.fillField('#deceasedDateOfBirth-day', createCaveatConfig.page2_dateOfBirth_day_update);
         I.fillField('#deceasedDateOfBirth-month', createCaveatConfig.page2_dateOfBirth_month_update);
         I.fillField('#deceasedDateOfBirth-year', createCaveatConfig.page2_dateOfBirth_year_update);

@@ -7,7 +7,11 @@ module.exports = function (caseRef, tabConfigFile, dataConfigFile, nextStep, end
     const I = this;
 
     if (tabConfigFile.TestTimeToWaitForText) {
-        I.waitForText(tabConfigFile.waitForText, testConfig.TestTimeToWaitForText);
+        I.waitForText(tabConfigFile.waitForText, tabConfigFile.TestTimeToWaitForText);
+    }
+
+    if (tabConfigFile.testTimeToWaitForTab) {
+        I.waitForText(tabConfigFile.tabName, tabConfigFile.testTimeToWaitForTab);
     }
 
     I.see(caseRef);

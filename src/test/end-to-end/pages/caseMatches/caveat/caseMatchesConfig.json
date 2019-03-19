@@ -1,6 +1,6 @@
 {
   "waitForText" : "Caveat match",
-  "fullname": "E2E_test1_deceased_forenames E2E_test1_deceased_surname",
+  "fullname": "E2E_deceased_forenames E2E_deceased_surname",
   "dob": "1930-01-01",
   "dod": "2017-01-01",
   "postcode": "SW1A 1AA"

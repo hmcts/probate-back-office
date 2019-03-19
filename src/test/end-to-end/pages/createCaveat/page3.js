@@ -8,9 +8,9 @@ module.exports = function (crud) {
 
     const I = this;
 
-    I.waitForText(createCaveatConfig.page3_waitForText, testConfig.TestTimeToWaitForText);
-
     if (crud === 'create') {
+        I.waitForText(createCaveatConfig.page3_waitForText, testConfig.TestTimeToWaitForText);
+
         I.fillField('#caveatorForenames', createCaveatConfig.page3_caveator_forenames);
         I.fillField('#caveatorSurname', createCaveatConfig.page3_caveator_surname);
 
@@ -27,6 +27,8 @@ module.exports = function (crud) {
     }
 
     if (crud === 'update') {
+        I.waitForText(createCaveatConfig.page3_amend_waitForText, testConfig.TestTimeToWaitForText);
+
         I.fillField('#caveatorForenames', createCaveatConfig.page3_caveator_forenames_update);
         I.fillField('#caveatorSurname', createCaveatConfig.page3_caveator_surname_update);
     }

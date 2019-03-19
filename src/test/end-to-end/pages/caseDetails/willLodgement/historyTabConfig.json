@@ -1,6 +1,7 @@
 {
   "waitForText" : "Manage probate application",
   "tabName": "History",
+  "testTimeToWaitForTab": 5,
   "fields": [
     "Date",
     "Author",

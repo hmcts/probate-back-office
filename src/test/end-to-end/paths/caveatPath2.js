@@ -7,7 +7,6 @@ const createCaseConfig = require('src/test/end-to-end/pages/createCase/createCas
 const checkYourAnswersConfig = require('src/test/end-to-end/pages/checkYourAnswers/checkYourAnswersConfig');
 
 const createCaveatConfig = require('src/test/end-to-end/pages/createCaveat/createCaveatConfig');
-
 const emailCaveatorConfig = require('src/test/end-to-end/pages/emailNotifications/caveat/emailCaveatorConfig');
 const emailCaveatorSummaryConfig = require('src/test/end-to-end/pages/eventSummary/caveat/emailCaveatorSummaryConfig');
 const caseMatchesConfig = require('src/test/end-to-end/pages/caseMatches/caveat/caseMatchesConfig');
@@ -19,7 +18,7 @@ const addCommentSummaryConfig = require('src/test/end-to-end/pages/eventSummary/
 const awaitCaveatResolutionSummaryConfig = require('src/test/end-to-end/pages/eventSummary/caveat/awaitCaveatResolutionSummaryConfig');
 const warningRequestedSummaryConfig = require('src/test/end-to-end/pages/eventSummary/caveat/warningRequestedSummaryConfig');
 const issueCaveatWarningSummaryConfig = require('src/test/end-to-end/pages/eventSummary/caveat/issueCaveatWarningSummaryConfig');
-const orderSummonsSummaryConfig = require('src/test/end-to-end/pages/eventSummary/caveat/orderSummonsSummaryConfig');
+const requestAppearanceSummaryConfig = require('src/test/end-to-end/pages/eventSummary/caveat/requestAppearanceSummaryConfig');
 const amendCaveatDetailsSummaryConfig = require('src/test/end-to-end/pages/eventSummary/caveat/amendCaveatDetailsSummaryConfig');
 
 const historyTabConfig = require('src/test/end-to-end/pages/caseDetails/caveat/historyTabConfig');
@@ -40,7 +39,7 @@ const documentsTabUploadDocumentConfig = require('src/test/end-to-end/pages/case
 
 Feature('Back Office').retry(testConfig.TestRetryFeatures);
 
-Scenario('Caveat Workflow - E2E Test 01 - Caveat for a Personal Applicant - Raise a caveat -> Order summons', async function (I) {
+Scenario('Caveat Workflow - E2E Test 02 - Caveat for a Personal Applicant - Raise a caveat -> Request appearance', async function (I) {
 
     // IdAM
     I.authenticateWithIdamIfAvailable();
@@ -120,11 +119,11 @@ Scenario('Caveat Workflow - E2E Test 01 - Caveat for a Personal Applicant - Rais
     endState = 'Awaiting warning response';
     I.seeCaseDetails(caseRef, historyTabConfig, issueCaveatWarningSummaryConfig, nextStepName, endState);
 
-    nextStepName = 'Order summons';
+    nextStepName = 'Request appearance';
     I.chooseNextStep(nextStepName);
-    I.enterEventSummary(caseRef, orderSummonsSummaryConfig);
-    endState = 'Summons ordered';
-    I.seeCaseDetails(caseRef, historyTabConfig, orderSummonsSummaryConfig, nextStepName, endState);
+    I.enterEventSummary(caseRef, requestAppearanceSummaryConfig);
+    endState = 'Review appearance';
+    I.seeCaseDetails(caseRef, historyTabConfig, requestAppearanceSummaryConfig, nextStepName, endState);
 
     nextStepName = 'Amend caveat details';
     I.chooseNextStep(nextStepName);

@@ -8,14 +8,16 @@ module.exports = function (crud) {
 
     const I = this;
 
-    I.waitForText(createCaveatConfig.page1_waitForText, testConfig.TestTimeToWaitForText);
-
     if (crud === 'create') {
+        I.waitForText(createCaveatConfig.page1_waitForText, testConfig.TestTimeToWaitForText);
+
         I.selectOption('#applicationType', createCaveatConfig.page1_list1_application_type);
         I.selectOption('#registryLocation', createCaveatConfig.page1_list2_registry_location);
     }
 
     if (crud === 'update') {
+        I.waitForText(createCaveatConfig.page1_amend_waitForText, testConfig.TestTimeToWaitForText);
+
         I.selectOption('#registryLocation', createCaveatConfig.page1_list2_registry_location_update);
     }
 
