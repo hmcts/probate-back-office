@@ -10,6 +10,7 @@ import uk.gov.hmcts.probate.model.criterion.CaseMatchingCriteria;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -21,6 +22,7 @@ public class CaseMatchingService {
     private static final String ES_QUERY = "main_query.json";
     private static final String ES_ALIASES_SUB_QUERY = "aliases_sub_query.json";
     private static final String ES_ALIASES_TO_ALIASES_SUB_QUERY = "aliases_to_aliases_sub_query.json";
+    private static final String ES_DECEASED_DOB_SUB_QUERY = "deceased_dob_sub_query.json";
 
     private final FileSystemResourceService fileSystemResourceService;
     private final ElasticSearchService elasticSearchService;
@@ -36,12 +38,17 @@ public class CaseMatchingService {
                 .map(alias -> getAliasesToAliasesSubQueryTemplate().replace(":deceasedAliases", alias))
                 .collect(Collectors.joining());
 
+        String optionalDeceasedDateOfBirth = Optional.ofNullable(criteria.getDeceasedDateOfBirthRaw())
+                .map(data -> getDoBTemplate().replace(":deceasedDateOfBirth", criteria.getDeceasedDateOfBirth()))
+                .orElse("");
+
         String jsonQuery = getQueryTemplate()
                 .replace(":deceasedForenames", criteria.getDeceasedForenames())
                 .replace(":deceasedSurname", criteria.getDeceasedSurname())
                 .replace(":deceasedFullName", criteria.getDeceasedFullName())
                 .replace(":deceasedDateOfBirth", criteria.getDeceasedDateOfBirth())
                 .replace(":deceasedDateOfDeath", criteria.getDeceasedDateOfDeath())
+                .replace(":optionalDeceasedDateOfBirth", optionalDeceasedDateOfBirth)
                 .replace(":optionalAliasesToNameQuery", optionalAliasesToNameQuery)
                 .replace(":optionalAliasesToAliasesQuery", optionalAliasesToAliasesQuery);
 
@@ -72,5 +79,10 @@ public class CaseMatchingService {
     private String getAliasesToAliasesSubQueryTemplate() {
         return fileSystemResourceService.getFileFromResourceAsString(TEMPLATE_DIRECTORY
                 + ES_ALIASES_TO_ALIASES_SUB_QUERY);
+    }
+
+    private String getDoBTemplate() {
+        return fileSystemResourceService.getFileFromResourceAsString(TEMPLATE_DIRECTORY
+                + ES_DECEASED_DOB_SUB_QUERY);
     }
 }
