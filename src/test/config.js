@@ -7,6 +7,6 @@ module.exports = {
     TestOutputDir: process.env.E2E_OUTPUT_DIR || './output',
     TestDocumentToUpload: 'uploadDocuments/test_file_for_document_upload.png',
     TestTimeToWaitForText: 60,
-    TestEnvUser: process.env.CW_USER_EMAIL || 'dummy',
-    TestEnvPassword: process.env.CW_USER_PASSWORD || 'dummy'
+    TestEnvUser: process.env.CW_USER_EMAIL || 'probatecaseworker@gmail.com',
+    TestEnvPassword: process.env.CW_USER_PASSWORD || 'Monday01'
 };

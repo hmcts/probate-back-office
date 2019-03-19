@@ -1,0 +1,7 @@
+{
+  "waitForText" : "Create Case",
+  "list1_text": "Manage probate applications",
+  "list2_text": "Grant of representation",
+  "list3_text": "PA1P/PA1A/Solicitors",
+  "startButton": ".button"
+}

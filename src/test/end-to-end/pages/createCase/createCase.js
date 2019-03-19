@@ -1,7 +1,7 @@
 'use strict';
 
 const testConfig = require('src/test/config.js');
-const createCaseConfig = require('./createCaseConfig.json');
+const createCaseConfig = require('./applyForGrantOfProbate/createCaseConfig');
 
 module.exports = function (jurisdiction, caseType, event) {
 
