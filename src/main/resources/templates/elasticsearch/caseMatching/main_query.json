@@ -151,13 +151,7 @@
       "filter": {
         "bool": {
           "must": [
-            {
-              "term": {
-                "data.deceasedDateOfBirth": {
-                  "value": ":deceasedDateOfBirth"
-                }
-              }
-            },
+            :optionalDeceasedDateOfBirth
             {
               "bool": {
                 "should": [
