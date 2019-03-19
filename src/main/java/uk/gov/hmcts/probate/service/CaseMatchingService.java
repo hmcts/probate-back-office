@@ -1,6 +1,5 @@
 package uk.gov.hmcts.probate.service;
 
-import joptsimple.internal.Strings;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
