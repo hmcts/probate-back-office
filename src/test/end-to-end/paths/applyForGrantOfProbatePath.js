@@ -14,11 +14,11 @@ const caseMatchesCommentSummaryConfig = require('src/test/end-to-end/pages/event
 const withdrawalSummaryConfig = require('src/test/end-to-end/pages/eventSummary/applyForGrantOfProbate/withdrawalSummaryConfig');
 
 const historyTabConfig = require('src/test/end-to-end/pages/caseDetails/applyForGrantOfProbate/historyTabConfig');
-const generalDetailsTabConfig = require('src/test/end-to-end/pages/caseDetails/applyForGrantOfProbate/generalDetailsTabConfig');
+const caseDetailsTabConfig = require('src/test/end-to-end/pages/caseDetails/applyForGrantOfProbate/caseDetailsTabConfig');
 const testatorTabConfig = require('src/test/end-to-end/pages/caseDetails/applyForGrantOfProbate/testatorTabConfig');
 const executorTabConfig = require('src/test/end-to-end/pages/caseDetails/applyForGrantOfProbate/executorTabConfig');
 const documentUploadTabConfig = require('src/test/end-to-end/pages/caseDetails/applyForGrantOfProbate/documentUploadTabConfig');
-const generalDetailsUpdateTabConfig = require('src/test/end-to-end/pages/caseDetails/applyForGrantOfProbate/generalDetailsUpdateTabConfig');
+const caseDetailsUpdateTabConfig = require('src/test/end-to-end/pages/caseDetails/applyForGrantOfProbate/caseDetailsUpdateTabConfig');
 const testatorUpdateTabConfig = require('src/test/end-to-end/pages/caseDetails/applyForGrantOfProbate/testatorUpdateTabConfig');
 const executorUpdateTabConfig = require('src/test/end-to-end/pages/caseDetails/applyForGrantOfProbate/executorUpdateTabConfig');
 const generateDepositReceiptTabConfig = require('src/test/end-to-end/pages/caseDetails/applyForGrantOfProbate/generateDepositReceiptTabConfig');
@@ -50,7 +50,7 @@ Scenario('Grant of Probate for a Personal Applicant', async function (I) {
         .join('-');
 
     I.seeCaseDetails(caseRef, historyTabConfig, checkYourAnswersConfig);
-    I.seeCaseDetails(caseRef, generalDetailsTabConfig, applyForGrantOfProbateConfig);
+    I.seeCaseDetails(caseRef, caseDetailsTabConfig, applyForGrantOfProbateConfig);
     I.seeCaseDetails(caseRef, testatorTabConfig, applyForGrantOfProbateConfig);
     I.seeCaseDetails(caseRef, executorTabConfig, applyForGrantOfProbateConfig);
 
@@ -64,7 +64,7 @@ Scenario('Grant of Probate for a Personal Applicant', async function (I) {
     I.enterWillLodgementPage2('update');
     I.enterWillLodgementPage3('update');
     I.checkMyAnswers();
-    I.seeCaseDetails(caseRef, generalDetailsUpdateTabConfig, applyForGrantOfProbateConfig);
+    I.seeCaseDetails(caseRef, caseDetailsUpdateTabConfig, applyForGrantOfProbateConfig);
     I.seeCaseDetails(caseRef, testatorUpdateTabConfig, applyForGrantOfProbateConfig);
     I.seeCaseDetails(caseRef, executorUpdateTabConfig, applyForGrantOfProbateConfig);
 

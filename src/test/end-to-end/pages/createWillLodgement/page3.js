@@ -72,5 +72,5 @@ module.exports = function (crud) {
         I.fillField('#executorEmailAddress', createWillLodgementConfig[executorFieldList[executorFieldList.indexOf(`page3_executor${index}_email_update`)]]);
     }
 
-    I.waitForNavigationToComplete(commonConfig.continueButton);
+    I.click(commonConfig.continueButton);
 };
