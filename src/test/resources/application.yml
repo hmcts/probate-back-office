@@ -222,3 +222,6 @@ idam-s2s-auth:
       enabled: false
 
 excelaEmail: probatetest@gmail.com
+
+cron:
+  data_extract: "0 0 2 * * *"
