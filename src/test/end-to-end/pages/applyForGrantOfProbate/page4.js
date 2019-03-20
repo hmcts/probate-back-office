@@ -51,5 +51,5 @@ module.exports = function (crud) {
 
     }
 
-    I.waitForNavigationToComplete(commonConfig.continueButton);
+    I.click(commonConfig.continueButton);
 };

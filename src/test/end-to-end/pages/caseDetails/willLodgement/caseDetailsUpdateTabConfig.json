@@ -1,0 +1,23 @@
+{
+  "tabName": "Case details",
+  "fields": [
+    "Application type",
+    "Registry location",
+    "Lodgement type",
+    "Lodged date",
+    "Date of will",
+    "Date of (last) codicil",
+    "Number of codicils",
+    "Joint will"
+  ],
+  "dataKeys": [
+    "page1_list1_application_type", 
+    "page1_list2_registry_location",
+    "page1_list3_lodgement_type",
+    "page1_lodgedDate_long_update",
+    "page1_willDate_long",
+    "page1_codicilDate_long",
+    "page1_numberOfCodicils_update",
+    "page1_jointWill"
+  ]
+}

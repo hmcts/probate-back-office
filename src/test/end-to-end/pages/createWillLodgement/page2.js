@@ -60,5 +60,5 @@ module.exports = function (crud) {
         I.fillField('#deceasedDateOfBirth-year', createWillLodgementConfig.page2_dateOfBirth_year_update);
     }
 
-    I.waitForNavigationToComplete(commonConfig.continueButton);
+    I.click(commonConfig.continueButton);
 };
