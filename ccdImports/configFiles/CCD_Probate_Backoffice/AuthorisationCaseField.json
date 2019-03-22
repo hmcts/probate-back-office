@@ -1136,7 +1136,7 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "deceasedNameSection", "UserRole": "citizen", "CRUD": "CRU"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "deceasedForenames", "UserRole": "citizen", "CRUD": "CRU"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "deceasedSurname", "UserRole": "citizen", "CRUD": "CRU"},
-  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "deceasedAliasNameList", "UserRole": "citizen", "CRUD": "CRU"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "deceasedAliasNameList", "UserRole": "citizen", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "deceasedDomicileInEngWales", "UserRole": "citizen", "CRUD": "CRU"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "deceasedAddress", "UserRole": "citizen", "CRUD": "CRU"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "deceasedDateOfBirth", "UserRole": "citizen", "CRUD": "CRU"},
@@ -1203,5 +1203,6 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "primaryApplicantAlias", "UserRole": "citizen", "CRUD": "CRU"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "primaryApplicantAliasReason", "UserRole": "citizen", "CRUD": "CRU"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "primaryApplicantOtherReason", "UserRole": "citizen", "CRUD": "CRU"},
-  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "boDocumentsUploaded", "UserRole": "citizen", "CRUD": "CR"}
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "boDocumentsUploaded", "UserRole": "citizen", "CRUD": "CR"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "caseType", "UserRole": "citizen", "CRUD": "CRU"}
 ]
