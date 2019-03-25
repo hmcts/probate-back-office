@@ -1,5 +1,6 @@
 [
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "stopDetailsTab", "TabLabel": "Stop details", "TabDisplayOrder": 1, "CaseFieldID": "boCaseStopReasonList", "TabFieldDisplayOrder": 1},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "eventHistoryTab", "TabLabel": "Event History", "TabDisplayOrder": 1, "CaseFieldID": "customHistoryViewer", "TabFieldDisplayOrder": 1},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "stopDetailsTab", "TabLabel": "Stop details", "TabDisplayOrder": 2, "CaseFieldID": "boCaseStopReasonList", "TabFieldDisplayOrder": 1},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "documentsTab", "TabLabel": "Documents", "TabDisplayOrder": 2, "CaseFieldID": "solsLegalStatementDocument", "TabFieldDisplayOrder": 1},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "documentsTab", "TabLabel": "Documents", "TabDisplayOrder": 2, "CaseFieldID": "probateDocumentsGenerated", "TabFieldDisplayOrder": 2},
   {"LiveFrom": "02/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "documentsTab", "TabLabel": "Documents", "TabDisplayOrder": 2, "CaseFieldID": "boDocumentsUploaded", "TabFieldDisplayOrder": 3},
