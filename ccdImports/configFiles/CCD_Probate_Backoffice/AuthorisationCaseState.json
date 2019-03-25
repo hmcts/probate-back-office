@@ -14,6 +14,8 @@
   {"LiveFrom": "01/01/2017", "LiveTo": "01/01/2020", "CaseTypeID": "GrantOfRepresentation", "CaseStateID": "BOCaseMatchingExamining", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
   {"LiveFrom": "01/01/2017", "LiveTo": "01/01/2020", "CaseTypeID": "GrantOfRepresentation", "CaseStateID": "BOGrantIssued", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
   {"LiveFrom": "01/01/2017", "LiveTo": "01/01/2020", "CaseTypeID": "GrantOfRepresentation", "CaseStateID": "BOCaseClosed", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
+  {"LiveFrom": "01/01/2017", "LiveTo": "01/01/2020", "CaseTypeID": "GrantOfRepresentation", "CaseStateID": "CasePaymentFailed", "UserRole": "caseworker-probate-caseadmin", "CRUD": "CRUD"},
+  {"LiveFrom": "01/01/2017", "LiveTo": "01/01/2020", "CaseTypeID": "GrantOfRepresentation", "CaseStateID": "PAAppCreated", "UserRole": "caseworker-probate-caseadmin", "CRUD": "CRUD"},
   {"LiveFrom": "01/01/2017", "LiveTo": "01/01/2020", "CaseTypeID": "GrantOfRepresentation", "CaseStateID": "BOCaseImported", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
   {"LiveFrom": "01/01/2017", "LiveTo": "01/01/2020", "CaseTypeID": "GrantOfRepresentation", "CaseStateID": "CaseCreated", "UserRole": "caseworker-probate-caseadmin", "CRUD": "CRUD"},
   {"LiveFrom": "01/01/2017", "LiveTo": "01/01/2020", "CaseTypeID": "GrantOfRepresentation", "CaseStateID": "CasePrinted", "UserRole": "caseworker-probate-caseadmin", "CRUD": "CRUD"},
