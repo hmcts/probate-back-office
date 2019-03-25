@@ -1,4 +1,5 @@
 [
+  {"CaseTypeID": "LegacySearch", "CaseFieldID": "customHistoryViewer", "UserRole": "caseworker-probate-issuer", "CRUD": "R"},
   {"CaseTypeID": "LegacySearch", "CaseFieldID": "createDummyCaseText", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
   {"CaseTypeID": "LegacySearch", "CaseFieldID": "recordId", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
   {"CaseTypeID": "LegacySearch", "CaseFieldID": "deceasedForenames", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
