@@ -53,6 +53,13 @@
   {"CaseTypeID": "Caveat", "CaseEventID": "emailCaveatorForReviewAppearance", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
   {"CaseTypeID": "Caveat", "CaseEventID": "addCommentForReviewAppearance", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
   {"CaseTypeID": "Caveat", "CaseEventID": "emailCaveatorForCavCaveatClosed", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
+  {"CaseTypeID": "Caveat", "CaseEventID":  "findMatchedCaseForAwaitingCaveatResolution", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
+  {"CaseTypeID": "Caveat", "CaseEventID":  "findMatchedCaseForWarningValidation", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
+  {"CaseTypeID": "Caveat", "CaseEventID": "findMatchedCaseForAwaitingWarningResponse", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
+  {"CaseTypeID": "Caveat", "CaseEventID": "findMatchedCaseForSummonsOrdered", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
+  {"CaseTypeID": "Caveat", "CaseEventID": "findMatchedCaseForReviewAppearance", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
+  {"CaseTypeID": "Caveat", "CaseEventID": "findMatchedCaseForImport", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
+
   {"CaseTypeID": "Caveat", "CaseEventID": "applyForCaveat", "UserRole": "caseworker-probate-caseadmin", "CRUD": "R"},
   {"CaseTypeID": "Caveat", "CaseEventID": "createCase", "UserRole": "caseworker-probate-caseadmin", "CRUD": "R"},
   {"CaseTypeID": "Caveat", "CaseEventID": "paymentSuccessApp", "UserRole": "caseworker-probate-caseadmin", "CRUD": "CRUD"},
@@ -105,6 +112,9 @@
   {"CaseTypeID": "Caveat", "CaseEventID": "emailCaveatorForReviewAppearance", "UserRole": "caseworker-probate-caseadmin", "CRUD": "CRUD"},
   {"CaseTypeID": "Caveat", "CaseEventID": "addCommentForReviewAppearance", "UserRole": "caseworker-probate-caseadmin", "CRUD": "CRUD"},
   {"CaseTypeID": "Caveat", "CaseEventID": "emailCaveatorForCavCaveatClosed", "UserRole": "caseworker-probate-caseadmin", "CRUD": "CRUD"},
+
+  {"CaseTypeID": "Caveat", "CaseEventID": "findMatchedCaseForImport", "UserRole": "caseworker-probate-caseadmin", "CRUD": "CRUD"},
+
   {"CaseTypeID": "Caveat", "CaseEventID": "applyForCaveat", "UserRole": "caseworker-probate-caseofficer", "CRUD": "R"},
   {"CaseTypeID": "Caveat", "CaseEventID": "createCase", "UserRole": "caseworker-probate-caseofficer", "CRUD": "R"},
   {"CaseTypeID": "Caveat", "CaseEventID": "paymentSuccessApp", "UserRole": "caseworker-probate-caseofficer", "CRUD": "CRUD"},
