@@ -40,7 +40,7 @@ const documentsTabUploadDocumentConfig = require('src/test/end-to-end/pages/case
 
 Feature('Back Office').retry(testConfig.TestRetryFeatures);
 
-Scenario('Caveat Workflow - E2E Test 01 - Caveat for a Personal Applicant - Raise a caveat -> Order summons', async function (I) {
+Scenario('Caveat Workflow - E2E Test 01 - Caveat for a Personal Applicant - Raise a caveat -> Caveat not matched -> Order summons', async function (I) {
 
     // IdAM
     I.authenticateWithIdamIfAvailable();
@@ -64,7 +64,7 @@ Scenario('Caveat Workflow - E2E Test 01 - Caveat for a Personal Applicant - Rais
     createCaveatConfig.caveat_expiry_date = dateFns.format(dateFns.addMonths(new Date(),6),'DD MMM YYYY');
     I.seeCaseDetails(caseRef, caveatDetailsTabConfig, createCaveatConfig);
 
-    nextStepName = 'Email caveator';
+    nextStepName = 'Email caveator';   // When in state 'Caveat raised'
     I.chooseNextStep(nextStepName);
     I.emailCaveator(caseRef);
     I.enterEventSummary(caseRef, emailCaveatorSummaryConfig);

@@ -15,11 +15,7 @@ const caveatNotMatchedSummaryConfig = require('src/test/end-to-end/pages/eventSu
 const documentUploadConfig = require('src/test/end-to-end/pages/documentUpload/documentUploadConfig');
 const documentUploadSummaryConfig = require('src/test/end-to-end/pages/eventSummary/documentUploadSummaryConfig');
 const addCommentSummaryConfig = require('src/test/end-to-end/pages/eventSummary/addCommentSummaryConfig');
-const awaitCaveatResolutionSummaryConfig = require('src/test/end-to-end/pages/eventSummary/caveat/awaitCaveatResolutionSummaryConfig');
-const warningRequestedSummaryConfig = require('src/test/end-to-end/pages/eventSummary/caveat/warningRequestedSummaryConfig');
-const issueCaveatWarningSummaryConfig = require('src/test/end-to-end/pages/eventSummary/caveat/issueCaveatWarningSummaryConfig');
-const requestAppearanceSummaryConfig = require('src/test/end-to-end/pages/eventSummary/caveat/requestAppearanceSummaryConfig');
-const amendCaveatDetailsSummaryConfig = require('src/test/end-to-end/pages/eventSummary/caveat/amendCaveatDetailsSummaryConfig');
+const withdrawCaveatSummaryConfig = require('src/test/end-to-end/pages/eventSummary/caveat/withdrawCaveatSummaryConfig');
 
 const historyTabConfig = require('src/test/end-to-end/pages/caseDetails/caveat/historyTabConfig');
 
@@ -28,18 +24,13 @@ const deceasedDetailsTabConfig = require('src/test/end-to-end/pages/caseDetails/
 const caveatorDetailsTabConfig = require('src/test/end-to-end/pages/caseDetails/caveat/caveatorDetailsTabConfig');
 const caveatDetailsTabConfig = require('src/test/end-to-end/pages/caseDetails/caveat/caveatDetailsTabConfig');
 
-const caseDetailsTabUpdateConfig = require('src/test/end-to-end/pages/caseDetails/caveat/caseDetailsTabUpdateConfig');
-const deceasedDetailsTabUpdateConfig = require('src/test/end-to-end/pages/caseDetails/caveat/deceasedDetailsTabUpdateConfig');
-const caveatorDetailsTabUpdateConfig = require('src/test/end-to-end/pages/caseDetails/caveat/caveatorDetailsTabUpdateConfig');
-const caveatDetailsTabUpdateConfig = require('src/test/end-to-end/pages/caseDetails/caveat/caveatDetailsTabUpdateConfig');
-
 const documentsTabEmailCaveatorConfig = require('src/test/end-to-end/pages/caseDetails/caveat/documentsTabEmailCaveatorConfig');
 const caseMatchesTabConfig = require('src/test/end-to-end/pages/caseDetails/caveat/caseMatchesTabConfig');
 const documentsTabUploadDocumentConfig = require('src/test/end-to-end/pages/caseDetails/caveat/documentsTabUploadDocumentConfig');
 
 Feature('Back Office').retry(testConfig.TestRetryFeatures);
 
-Scenario('Caveat Workflow - E2E Test 02 - Caveat for a Personal Applicant - Raise a caveat -> Caveat not matched -> Request appearance', async function (I) {
+Scenario('Caveat Workflow - E2E Test 04 - Caveat for a Personal Applicant - Raise a caveat -> Caveat not matched -> Withdraw caveat', async function (I) {
 
     // IdAM
     I.authenticateWithIdamIfAvailable();
@@ -71,16 +62,6 @@ Scenario('Caveat Workflow - E2E Test 02 - Caveat for a Personal Applicant - Rais
     I.seeCaseDetails(caseRef, historyTabConfig, caseMatchesCommentSummaryConfig, nextStepName, endState);
     I.seeCaseDetails(caseRef, caseMatchesTabConfig, caseMatchesConfig);
 
-    nextStepName = 'Email caveator';   // When in state 'Caveat matching'
-    I.chooseNextStep(nextStepName);
-    I.emailCaveator(caseRef);
-    I.enterEventSummary(caseRef, emailCaveatorSummaryConfig);
-    // Note that End State does not change when emailing the caveator.
-    I.seeCaseDetails(caseRef, historyTabConfig, emailCaveatorSummaryConfig, nextStepName, endState);
-    // When emailing the caveator, the Date added for the email document is set to today
-    emailCaveatorConfig.dateAdded = dateFns.format(new Date(), 'DD MMM YYYY');
-    I.seeCaseDetails(caseRef, documentsTabEmailCaveatorConfig, emailCaveatorConfig);
-
     nextStepName = 'Caveat not matched';
     I.chooseNextStep(nextStepName);
     I.enterEventSummary(caseRef, caveatNotMatchedSummaryConfig);
@@ -101,43 +82,21 @@ Scenario('Caveat Workflow - E2E Test 02 - Caveat for a Personal Applicant - Rais
     // Note that End State does not change when adding a comment.
     I.seeCaseDetails(caseRef, historyTabConfig, addCommentSummaryConfig, nextStepName, endState);
 
-    nextStepName = 'Await caveat resolution';
+    nextStepName = 'Withdraw caveat';
     I.chooseNextStep(nextStepName);
-    I.enterEventSummary(caseRef, awaitCaveatResolutionSummaryConfig);
-    endState = 'Awaiting caveat resolution';
-    I.seeCaseDetails(caseRef, historyTabConfig, awaitCaveatResolutionSummaryConfig, nextStepName, endState);
+    I.enterEventSummary(caseRef, withdrawCaveatSummaryConfig);
+    endState = 'Caveat closed';
+    I.seeCaseDetails(caseRef, historyTabConfig, withdrawCaveatSummaryConfig, nextStepName, endState);
 
-    nextStepName = 'Warning requested';
+    nextStepName = 'Email caveator';   // When in state 'Caveat closed'
     I.chooseNextStep(nextStepName);
-    I.enterEventSummary(caseRef, warningRequestedSummaryConfig);
-    endState = 'Warning validation';
-    I.seeCaseDetails(caseRef, historyTabConfig, warningRequestedSummaryConfig, nextStepName, endState);
-
-    nextStepName = 'Issue caveat warning';
-    I.chooseNextStep(nextStepName);
-    I.enterEventSummary(caseRef, issueCaveatWarningSummaryConfig);
-    endState = 'Awaiting warning response';
-    I.seeCaseDetails(caseRef, historyTabConfig, issueCaveatWarningSummaryConfig, nextStepName, endState);
-
-    nextStepName = 'Request appearance';
-    I.chooseNextStep(nextStepName);
-    I.enterEventSummary(caseRef, requestAppearanceSummaryConfig);
-    endState = 'Review appearance';
-    I.seeCaseDetails(caseRef, historyTabConfig, requestAppearanceSummaryConfig, nextStepName, endState);
-
-    nextStepName = 'Amend caveat details';
-    I.chooseNextStep(nextStepName);
-    I.enterCaveatPage1('update');
-    I.enterCaveatPage2('update');
-    I.enterCaveatPage3('update');
-    I.enterCaveatPage4('update');
-    I.enterEventSummary(caseRef, amendCaveatDetailsSummaryConfig);
-    // Note that End State does not change when amending the caveat details.
-    I.seeCaseDetails(caseRef, historyTabConfig, amendCaveatDetailsSummaryConfig, nextStepName, endState);
-    I.seeCaseDetails(caseRef, caseDetailsTabUpdateConfig, createCaveatConfig);
-    I.seeCaseDetails(caseRef, deceasedDetailsTabUpdateConfig, createCaveatConfig);
-    I.seeCaseDetails(caseRef, caveatorDetailsTabUpdateConfig, createCaveatConfig);
-    I.seeCaseDetails(caseRef, caveatDetailsTabUpdateConfig, createCaveatConfig);
+    I.emailCaveator(caseRef);
+    I.enterEventSummary(caseRef, emailCaveatorSummaryConfig);
+    // Note that End State does not change when emailing the caveator.
+    I.seeCaseDetails(caseRef, historyTabConfig, emailCaveatorSummaryConfig, nextStepName, endState);
+    // When emailing the caveator, the Date added for the email document is set to today
+    emailCaveatorConfig.dateAdded = dateFns.format(new Date(), 'DD MMM YYYY');
+    I.seeCaseDetails(caseRef, documentsTabEmailCaveatorConfig, emailCaveatorConfig);
 
     I.click('#sign-out');
 
