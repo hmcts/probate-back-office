@@ -1,4 +1,5 @@
 [
   {"UserIDAMId": "ProbateSolCW1@gmail.com", "WorkBasketDefaultJurisdiction": "PROBATE", "WorkBasketDefaultCaseType": "LegacySearch", "WorkBasketDefaultState": "dummyCaseCreated"},
-  {"UserIDAMId": "ProbateSolCW2@gmail.com ", "WorkBasketDefaultJurisdiction": "PROBATE", "WorkBasketDefaultCaseType": "LegacySearch", "WorkBasketDefaultState": "dummyCaseCreated"}
+  {"UserIDAMId": "ProbateSolCW2@gmail.com", "WorkBasketDefaultJurisdiction": "PROBATE", "WorkBasketDefaultCaseType": "LegacySearch", "WorkBasketDefaultState": "dummyCaseCreated"},
+  {"UserIDAMId": "ProbateCaseAdmin@gmail.com", "WorkBasketDefaultJurisdiction": "PROBATE", "WorkBasketDefaultCaseType": "LegacySearch", "WorkBasketDefaultState": "dummyCaseCreated"}
 ]
