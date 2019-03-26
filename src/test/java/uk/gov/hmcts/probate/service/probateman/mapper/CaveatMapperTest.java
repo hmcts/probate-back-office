@@ -73,7 +73,7 @@ public class CaveatMapperTest {
                 .caveatorSurname(CAVEATOR_SURNAME)
                 .deceasedDateOfBirth(DECEASED_DOB)
                 .deceasedDateOfDeath(DECEASED_DOD)
-                .deceasedAddress(deceasedAddress)
+                .caveatorAddress(deceasedAddress)
                 .expiryDate(CAVEATOR_EXPIRY_DATE)
                 .deceasedAnyOtherNames(true)
                 .deceasedFullAliasNameList(buildFullAliasNames())
@@ -90,7 +90,7 @@ public class CaveatMapperTest {
                 "deceasedFullAliasNameList",
                 "caveatorForenames",
                 "caveatorSurname",
-                "deceasedAddress",
+                "caveatorAddress",
                 "expiryDate",
                 "deceasedDateOfBirth",
                 "deceasedDateOfDeath",
