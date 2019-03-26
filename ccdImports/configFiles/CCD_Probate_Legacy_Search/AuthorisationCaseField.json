@@ -6,5 +6,13 @@
   {"CaseTypeID": "LegacySearch", "CaseFieldID": "deceasedDateOfBirth", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
   {"CaseTypeID": "LegacySearch", "CaseFieldID": "deceasedDateOfDeath", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
   {"CaseTypeID": "LegacySearch", "CaseFieldID": "legacySearchResultRows", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
-  {"CaseTypeID": "LegacySearch", "CaseFieldID": "doNotSaveCase", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"}
+  {"CaseTypeID": "LegacySearch", "CaseFieldID": "doNotSaveCase", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
+  {"CaseTypeID": "LegacySearch", "CaseFieldID": "createDummyCaseText", "UserRole": "caseworker-probate-caseadmin", "CRUD": "CRUD"},
+  {"CaseTypeID": "LegacySearch", "CaseFieldID": "recordId", "UserRole": "caseworker-probate-caseadmin", "CRUD": "CRUD"},
+  {"CaseTypeID": "LegacySearch", "CaseFieldID": "deceasedForenames", "UserRole": "caseworker-probate-caseadmin", "CRUD": "CRUD"},
+  {"CaseTypeID": "LegacySearch", "CaseFieldID": "deceasedSurname", "UserRole": "caseworker-probate-caseadmin", "CRUD": "CRUD"},
+  {"CaseTypeID": "LegacySearch", "CaseFieldID": "deceasedDateOfBirth", "UserRole": "caseworker-probate-caseadmin", "CRUD": "CRUD"},
+  {"CaseTypeID": "LegacySearch", "CaseFieldID": "deceasedDateOfDeath", "UserRole": "caseworker-probate-caseadmin", "CRUD": "CRUD"},
+  {"CaseTypeID": "LegacySearch", "CaseFieldID": "legacySearchResultRows", "UserRole": "caseworker-probate-caseadmin", "CRUD": "CRUD"},
+  {"CaseTypeID": "LegacySearch", "CaseFieldID": "doNotSaveCase", "UserRole": "caseworker-probate-caseadmin", "CRUD": "CRUD"}
 ]
