@@ -101,5 +101,7 @@
   {"LiveFrom": "06/01/2017", "ID": "caseTypeFixedList", "ListElementCode": "admonWill", "ListElement": "Admon Will"},
   {"LiveFrom": "06/01/2017", "ID": "caseTypeFixedList", "ListElementCode": "edgeCase", "ListElement": "Edge Case"},
   {"LiveFrom": "06/01/2017", "ID": "paperPaymentMethodFixedList", "ListElementCode": "debitOrCredit", "ListElement": "Debit or Credit card"},
-  {"LiveFrom": "06/01/2017", "ID": "paperPaymentMethodFixedList", "ListElementCode": "cheque", "ListElement": "Cheque"}
+  {"LiveFrom": "06/01/2017", "ID": "paperPaymentMethodFixedList", "ListElementCode": "cheque", "ListElement": "Cheque or Postal order"},
+  {"LiveFrom": "06/01/2017", "ID": "paperPaymentMethodFixedList", "ListElementCode": "cash", "ListElement": "Cash"},
+  {"LiveFrom": "06/01/2017", "ID": "paperPaymentMethodFixedList", "ListElementCode": "feeAccount", "ListElement": "Fee account"}
 ]
