@@ -1,15 +1,15 @@
 const testConfig = require('src/test/config.js');
 
 exports.config = {
-    'tests': './paths/**/caveatPath.js',
-    'output': './output',
+    'tests': testConfig.TestPathToRun || './paths/**/*.js',
+    'output': testConfig.TestOutputDir || './output',
     'helpers': {
         'Puppeteer': {
-            'url': testConfig.TestE2EFrontendUrl || 'http://localhost:3000',
+            'url': testConfig.TestFrontendUrl || 'http://localhost:3000',
             'waitForTimeout': 60000,
             'getPageTimeout': 60000,
             'waitForAction': 1500,
-            'show': true,
+            'show': testConfig.TestShowBrowserWindow || false,
             'chrome': {
                 'ignoreHTTPSErrors': true,
                 'ignore-certificate-errors': true,
@@ -45,7 +45,7 @@ exports.config = {
     },
     'mocha': {
         'reporterOptions': {
-            'reportDir': process.env.E2E_OUTPUT_DIR || './output',
+            'reportDir': testConfig.TestOutputDir || './output',
             'reportName': 'index',
             'inlineAssets': true
         }
