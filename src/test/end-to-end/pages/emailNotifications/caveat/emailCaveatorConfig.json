@@ -1,7 +1,5 @@
 {
   "waitForText": "Email caveator",
-  "url_part1": "case/PROBATE/Caveat/",
-  "url_part2": "/trigger/emailCaveatorForCaveatRaised/emailCaveatorForCaveatRaisedemailCaveatorPage1",
 
   "email_message_content": "email_caveator_email_message_content_text",
 
