@@ -1,0 +1,5 @@
+{
+  "waitForText" : "Warning requested",
+  "summary": "warning_requested_event_summary_text",
+  "comment": "warning_requested_event_description_text"
+}

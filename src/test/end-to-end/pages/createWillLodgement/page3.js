@@ -8,8 +8,6 @@ module.exports = function (crud) {
 
     const I = this;
 
-    I.waitForText(createWillLodgementConfig.page3_waitForText, testConfig.TestTimeToWaitForText);
-
     const index = 0;
     /* eslint prefer-const: 0 */
     let executorFieldList = [];
@@ -23,9 +21,11 @@ module.exports = function (crud) {
     });
 
     if (crud === 'create') {
+        I.waitForText(createWillLodgementConfig.page3_waitForText, testConfig.TestTimeToWaitForText);
+
         I.fillField('#executorTitle', createWillLodgementConfig[executorFieldList[executorFieldList.indexOf(`page3_executor${index}_title`)]]);
-        I.fillField('#executorForenames', createWillLodgementConfig[executorFieldList[executorFieldList.indexOf(`page3_executor${index}_firstnames`)]]);
-        I.fillField('#executorSurname', createWillLodgementConfig[executorFieldList[executorFieldList.indexOf(`page3_executor${index}_lastnames`)]]);
+        I.fillField('#executorForenames', createWillLodgementConfig[executorFieldList[executorFieldList.indexOf(`page3_executor${index}_forenames`)]]);
+        I.fillField('#executorSurname', createWillLodgementConfig[executorFieldList[executorFieldList.indexOf(`page3_executor${index}_surname`)]]);
         I.fillField('#executorEmailAddress', createWillLodgementConfig[executorFieldList[executorFieldList.indexOf(`page3_executor${index}_email`)]]);
 
         I.click(createWillLodgementConfig.UKpostcodeLink);
@@ -47,8 +47,8 @@ module.exports = function (crud) {
         I.click(createWillLodgementConfig.page3_addExecutorButton);
 
         I.fillField(`#additionalExecutorList_${index}_executorTitle`, createWillLodgementConfig[additionalExecutorFieldList[additionalExecutorFieldList.indexOf(`page3_additional_executor${index}_title`)]]);
-        I.fillField(`#additionalExecutorList_${index}_executorForenames`, createWillLodgementConfig[additionalExecutorFieldList[additionalExecutorFieldList.indexOf(`page3_additional_executor${index}_firstnames`)]]);
-        I.fillField(`#additionalExecutorList_${index}_executorSurname`, createWillLodgementConfig[additionalExecutorFieldList[additionalExecutorFieldList.indexOf(`page3_additional_executor${index}_lastnames`)]]);
+        I.fillField(`#additionalExecutorList_${index}_executorForenames`, createWillLodgementConfig[additionalExecutorFieldList[additionalExecutorFieldList.indexOf(`page3_additional_executor${index}_forenames`)]]);
+        I.fillField(`#additionalExecutorList_${index}_executorSurname`, createWillLodgementConfig[additionalExecutorFieldList[additionalExecutorFieldList.indexOf(`page3_additional_executor${index}_surname`)]]);
 
         I.click(createWillLodgementConfig.UKpostcodeLink);
 
@@ -61,13 +61,14 @@ module.exports = function (crud) {
         I.fillField(`#additionalExecutorList_${index}_executorAddress_Country`, createWillLodgementConfig.address_country);
 
         I.fillField(`#additionalExecutorList_${index}_executorEmailAddress`, createWillLodgementConfig[additionalExecutorFieldList[additionalExecutorFieldList.indexOf(`page3_additional_executor${index}_email`)]]);
-
     }
 
     if (crud === 'update') {
+        I.waitForText(createWillLodgementConfig.page3_amend_waitForText, testConfig.TestTimeToWaitForText);
+
         I.fillField('#executorTitle', createWillLodgementConfig[executorFieldList[executorFieldList.indexOf(`page3_executor${index}_title_update`)]]);
-        I.fillField('#executorForenames', createWillLodgementConfig[executorFieldList[executorFieldList.indexOf(`page3_executor${index}_firstnames_update`)]]);
-        I.fillField('#executorSurname', createWillLodgementConfig[executorFieldList[executorFieldList.indexOf(`page3_executor${index}_lastnames_update`)]]);
+        I.fillField('#executorForenames', createWillLodgementConfig[executorFieldList[executorFieldList.indexOf(`page3_executor${index}_forenames_update`)]]);
+        I.fillField('#executorSurname', createWillLodgementConfig[executorFieldList[executorFieldList.indexOf(`page3_executor${index}_surname_update`)]]);
         I.fillField('#executorEmailAddress', createWillLodgementConfig[executorFieldList[executorFieldList.indexOf(`page3_executor${index}_email_update`)]]);
     }
 
