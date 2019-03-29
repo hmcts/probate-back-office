@@ -8,9 +8,8 @@ module.exports = function (crud) {
 
     const I = this;
 
-    I.waitForText(applyForGrantOfProbateConfig.page7_waitForText, testConfig.TestTimeToWaitForText);
-
     if (crud === 'create') {
+        I.waitForText(applyForGrantOfProbateConfig.page7_waitForText, testConfig.TestTimeToWaitForText);
         I.click(`#applyingAsAnAttorney-${applyForGrantOfProbateConfig.page7_applyingAsAttorneyYes}`);
         I.click('#attorneyOnBehalfOfNameAndAddress > div > button');
         I.fillField('#attorneyOnBehalfOfNameAndAddress_0_name', applyForGrantOfProbateConfig.page7_representativeOfName);
@@ -31,11 +30,9 @@ module.exports = function (crud) {
     }
 
     if (crud === 'update') {
-        I.fillField('#lodgedDate-day', applyForGrantOfProbateConfig.page1_lodgedDate_day_update);
-        I.fillField('#lodgedDate-month', applyForGrantOfProbateConfig.page1_lodgedDate_month_update);
-        I.fillField('#lodgedDate-year', applyForGrantOfProbateConfig.page1_lodgedDate_year_update);
-
-        I.fillField('#numberOfCodicils', applyForGrantOfProbateConfig.page1_numberOfCodicils_update);
+        I.selectOption('#selectionList', applyForGrantOfProbateConfig.page7_list1_update_option);
+        I.click(commonConfig.continueButton);
+        I.fillField('#attorneyOnBehalfOfNameAndAddress_0_name', applyForGrantOfProbateConfig.page7_representativeOfName_update);
 
     }
 

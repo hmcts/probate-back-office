@@ -8,9 +8,8 @@ module.exports = function (crud) {
 
     const I = this;
 
-    I.waitForText(applyForGrantOfProbateConfig.page8_waitForText, testConfig.TestTimeToWaitForText);
-
     if (crud === 'create') {
+        I.waitForText(applyForGrantOfProbateConfig.page8_waitForText, testConfig.TestTimeToWaitForText);
         I.click(`#deceasedDomicileInEngWales-${applyForGrantOfProbateConfig.page8_deceasedDomicileInEngWalesYes}`);
         I.fillField('#domicilityCountry', applyForGrantOfProbateConfig.page8_domicilityCountry);
         I.click('#ukEstate > div > button:nth-child(2)');
@@ -21,11 +20,10 @@ module.exports = function (crud) {
     }
 
     if (crud === 'update') {
-        I.fillField('#lodgedDate-day', applyForGrantOfProbateConfig.page1_lodgedDate_day_update);
-        I.fillField('#lodgedDate-month', applyForGrantOfProbateConfig.page1_lodgedDate_month_update);
-        I.fillField('#lodgedDate-year', applyForGrantOfProbateConfig.page1_lodgedDate_year_update);
+        I.selectOption('#selectionList', applyForGrantOfProbateConfig.page8_list1_update_option);
+        I.click(commonConfig.continueButton);
 
-        I.fillField('#numberOfCodicils', applyForGrantOfProbateConfig.page1_numberOfCodicils_update);
+        I.click(`#deceasedDomicileInEngWales-${applyForGrantOfProbateConfig.page8_deceasedDomicileInEngWalesNo}`);
 
     }
 

@@ -8,9 +8,8 @@ module.exports = function (crud) {
 
     const I = this;
 
-    I.waitForText(applyForGrantOfProbateConfig.page2_waitForText, testConfig.TestTimeToWaitForText);
-
     if (crud === 'create') {
+        I.waitForText(applyForGrantOfProbateConfig.page2_waitForText, testConfig.TestTimeToWaitForText);
         I.fillField('#primaryApplicantForenames', applyForGrantOfProbateConfig.page2_firstnames);
         I.fillField('#primaryApplicantSurname', applyForGrantOfProbateConfig.page2_lastnames);
 
@@ -37,11 +36,10 @@ module.exports = function (crud) {
     }
 
     if (crud === 'update') {
-        I.fillField('#lodgedDate-day', applyForGrantOfProbateConfig.page1_lodgedDate_day_update);
-        I.fillField('#lodgedDate-month', applyForGrantOfProbateConfig.page1_lodgedDate_month_update);
-        I.fillField('#lodgedDate-year', applyForGrantOfProbateConfig.page1_lodgedDate_year_update);
-
-        I.fillField('#numberOfCodicils', applyForGrantOfProbateConfig.page1_numberOfCodicils_update);
+        I.selectOption('#selectionList', applyForGrantOfProbateConfig.page3_list1_update_option);
+        I.click(commonConfig.continueButton);
+        I.fillField('#primaryApplicantForenames', applyForGrantOfProbateConfig.page2_firstnames_update);
+        I.fillField('#primaryApplicantSurname', applyForGrantOfProbateConfig.page2_lastnames_update);
 
     }
 
