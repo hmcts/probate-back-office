@@ -123,5 +123,9 @@
         <gav regex="true">^org\.postgresql:postgresql:.*$</gav>
         <cve>CVE-2018-1115</cve>
     </suppress>
+    <suppress>
+        <notes><![CDATA[No fix is available]]></notes>
+        <cve>CVE-2018-1258</cve>
+    </suppress>
 
 </suppressions>
