@@ -1,0 +1,5 @@
+{
+  "waitForText" : "Await caveat resolution",
+  "summary": "await_caveat_resolution_event_summary_text",
+  "comment": "await_caveat_resolution_event_description_text"
+}

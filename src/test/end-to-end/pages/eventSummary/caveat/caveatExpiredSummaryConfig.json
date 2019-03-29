@@ -1,0 +1,5 @@
+{
+  "waitForText" : "Caveat expired",
+  "summary": "caveat_expired_event_summary_text",
+  "comment": "caveat_expired_event_description_text"
+}

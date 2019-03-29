@@ -1,0 +1,5 @@
+{
+  "waitForText" : "Withdraw caveat",
+  "summary": "withdraw_caveat_event_summary_text",
+  "comment": "withdraw_caveat_event_description_text"
+}

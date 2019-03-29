@@ -1,6 +1,7 @@
 {
-  "tabName": "General details",
+  "tabName": "Case details",
   "fields": [
+    "Application type",
     "Registry location",
     "Lodgement type",
     "Lodged date",
@@ -10,8 +11,9 @@
     "Joint will"
   ],
   "dataKeys": [
-    "page1_list1_registry_location",
-    "page1_list2_lodgement_type",
+    "page1_list1_application_type",
+    "page1_list2_registry_location",
+    "page1_list3_lodgement_type",
     "page1_lodgedDate_long",
     "page1_willDate_long",
     "page1_codicilDate_long",

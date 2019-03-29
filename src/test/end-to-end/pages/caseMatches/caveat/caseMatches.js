@@ -1,10 +1,9 @@
 'use strict';
 
 const testConfig = require('src/test/config.js');
-const caseMatchesConfig = require('../caseMatches/caseMatchesConfig.json');
 const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
 
-module.exports = function (caseRef) {
+module.exports = function (caseRef, caseMatchesConfig) {
 
     const I = this;
     I.waitForText(caseMatchesConfig.waitForText, testConfig.TestTimeToWaitForText);
