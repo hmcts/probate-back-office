@@ -8,9 +8,8 @@ module.exports = function (crud) {
 
     const I = this;
 
-    I.waitForText(applyForGrantOfProbateConfig.page4_waitForText, testConfig.TestTimeToWaitForText);
-
     if (crud === 'create') {
+        I.waitForText(applyForGrantOfProbateConfig.page4_waitForText, testConfig.TestTimeToWaitForText);
         I.fillField('#boDeceasedTitle', applyForGrantOfProbateConfig.page4_bo_deceasedTitle);
         I.fillField('#deceasedForenames', applyForGrantOfProbateConfig.page4_deceasedForenames);
         I.fillField('#deceasedSurname', applyForGrantOfProbateConfig.page4_deceasedSurname);
@@ -43,11 +42,12 @@ module.exports = function (crud) {
     }
 
     if (crud === 'update') {
-        I.fillField('#lodgedDate-day', applyForGrantOfProbateConfig.page1_lodgedDate_day_update);
-        I.fillField('#lodgedDate-month', applyForGrantOfProbateConfig.page1_lodgedDate_month_update);
-        I.fillField('#lodgedDate-year', applyForGrantOfProbateConfig.page1_lodgedDate_year_update);
+        I.selectOption('#selectionList', applyForGrantOfProbateConfig.page4_list1_update_option);
+        I.click(commonConfig.continueButton);
 
-        I.fillField('#numberOfCodicils', applyForGrantOfProbateConfig.page1_numberOfCodicils_update);
+        I.fillField('#deceasedDateOfDeath-day', applyForGrantOfProbateConfig.page4_deceasedDod_day_update);
+        I.fillField('#deceasedDateOfDeath-month', applyForGrantOfProbateConfig.page4_deceasedDod_month_update);
+        I.fillField('#deceasedDateOfDeath-year', applyForGrantOfProbateConfig.page4_deceasedDod_year_update);
 
     }
 

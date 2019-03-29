@@ -8,9 +8,8 @@ module.exports = function (crud) {
 
     const I = this;
 
-    I.waitForText(applyForGrantOfProbateConfig.page5_waitForText, testConfig.TestTimeToWaitForText);
-
     if (crud === 'create') {
+        I.waitForText(applyForGrantOfProbateConfig.page5_waitForText, testConfig.TestTimeToWaitForText);
         I.click(`#willExists-${applyForGrantOfProbateConfig.page5_willExistsYes}`);
         I.click(`#willDatedBeforeApril-${applyForGrantOfProbateConfig.page5_willDatedBeforeAprilYes}`);
         I.click(`#willAccessOriginal-${applyForGrantOfProbateConfig.page5_willAccessOriginalYes}`);
@@ -33,11 +32,10 @@ module.exports = function (crud) {
     }
 
     if (crud === 'update') {
-        I.fillField('#lodgedDate-day', applyForGrantOfProbateConfig.page1_lodgedDate_day_update);
-        I.fillField('#lodgedDate-month', applyForGrantOfProbateConfig.page1_lodgedDate_month_update);
-        I.fillField('#lodgedDate-year', applyForGrantOfProbateConfig.page1_lodgedDate_year_update);
+        I.selectOption('#selectionList', applyForGrantOfProbateConfig.page5_list1_update_option);
+        I.click(commonConfig.continueButton);
 
-        I.fillField('#numberOfCodicils', applyForGrantOfProbateConfig.page1_numberOfCodicils_update);
+        I.fillField('#willNumberOfCodicils', applyForGrantOfProbateConfig.page5_willNumberOfCodicils_update);
 
     }
 

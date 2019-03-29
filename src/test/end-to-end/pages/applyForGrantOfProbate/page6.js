@@ -8,9 +8,8 @@ module.exports = function (crud) {
 
     const I = this;
 
-    I.waitForText(applyForGrantOfProbateConfig.page6_waitForText, testConfig.TestTimeToWaitForText);
-
     if (crud === 'create') {
+        I.waitForText(applyForGrantOfProbateConfig.page6_waitForText, testConfig.TestTimeToWaitForText);
         I.click(`#spouseOrPartner-${applyForGrantOfProbateConfig.page6_spouseOrPartnerNo}`);
         I.click(`#childrenSurvived-${applyForGrantOfProbateConfig.page6_childrenSurvivedYes}`);
         I.fillField('#childrenOverEighteenSurvived', applyForGrantOfProbateConfig.page6_childrenOverEighteenSurvived);
@@ -25,11 +24,9 @@ module.exports = function (crud) {
     }
 
     if (crud === 'update') {
-        I.fillField('#lodgedDate-day', applyForGrantOfProbateConfig.page1_lodgedDate_day_update);
-        I.fillField('#lodgedDate-month', applyForGrantOfProbateConfig.page1_lodgedDate_month_update);
-        I.fillField('#lodgedDate-year', applyForGrantOfProbateConfig.page1_lodgedDate_year_update);
-
-        I.fillField('#numberOfCodicils', applyForGrantOfProbateConfig.page1_numberOfCodicils_update);
+        I.selectOption('#selectionList', applyForGrantOfProbateConfig.page6_list1_update_option);
+        I.click(commonConfig.continueButton);
+        I.click(`#childrenDied-${applyForGrantOfProbateConfig.page6_childrenDiedNo}`);
 
     }
 
