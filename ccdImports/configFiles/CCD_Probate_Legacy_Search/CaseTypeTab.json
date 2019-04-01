@@ -1,1 +1,4 @@
-[{"LiveFrom": "01/01/2017", "CaseTypeID": "LegacySearch", "Channel": "CaseWorker", "TabID": "generalDetailsTab", "TabLabel": "General details", "TabDisplayOrder": 1, "CaseFieldID": "createDummyCaseText", "TabFieldDisplayOrder": 1}]
+[
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "LegacySearch", "Channel": "CaseWorker", "TabID": "eventHistoryTab", "TabLabel": "Event History", "TabDisplayOrder": 1, "CaseFieldID": "customHistoryViewer", "TabFieldDisplayOrder": 1},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "LegacySearch", "Channel": "CaseWorker", "TabID": "generalDetailsTab", "TabLabel": "General details", "TabDisplayOrder": 2, "CaseFieldID": "createDummyCaseText", "TabFieldDisplayOrder": 1}
+]

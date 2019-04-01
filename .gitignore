@@ -4,6 +4,7 @@
 /out/**
 /docker/test/
 /target/
+/jsonToXLS/
 
 ### STS ###
 .apt_generated

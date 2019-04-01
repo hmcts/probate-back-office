@@ -151,37 +151,8 @@
       "filter": {
         "bool": {
           "must": [
-            {
-              "bool": {
-                "should": [
-                  {
-                    "bool": {
-                      "must_not": {
-                        "exists": {
-                          "field": "data.deceasedDateOfDeath"
-                        }
-                      }
-                    }
-                  },
-                  {
-                    "term": {
-                      "data.deceasedDateOfBirth": {
-                        "value": ":deceasedDateOfBirth"
-                      }
-                    }
-                  },
-                  {
-                    "range": {
-                      "data.deceasedDateOfDeath": {
-                        "gte": ":deceasedDateOfDeath||-3d",
-                        "lte": ":deceasedDateOfDeath||+3d"
-                      }
-                    }
-                  }
-                ],
-                "minimum_should_match": 1
-              }
-            },
+            :optionalDeceasedDateOfBirth
+            :optionalDeceasedDateOfDeath
             {
               "bool": {
                 "should": [

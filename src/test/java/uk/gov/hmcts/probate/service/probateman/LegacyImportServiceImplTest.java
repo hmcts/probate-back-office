@@ -8,6 +8,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.data.jpa.repository.JpaRepository;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
+import uk.gov.hmcts.probate.model.ccd.raw.CaseLink;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.probateman.GrantApplication;
@@ -84,6 +85,37 @@ public class LegacyImportServiceImplTest {
         verify(grantApplicationMock).setCcdCaseNo("1111222233334444");
     }
 
+    @Test
+    public void shouldImportLegacyCasesWhenLegacyCaseFoundButNotFoundWhenUpdating() {
+        CaseMatch caseMatch = Mockito.mock(CaseMatch.class);
+        when(caseMatch.getType()).thenReturn(LegacyCaseType.GRANT_OF_REPRESENTATION.getName());
+        when(caseMatch.getDoImport()).thenReturn(DO_IMPORT_YES);
+        when(caseMatch.getLegacyCaseViewUrl()).thenReturn(LEGACY_CASE_URL);
+        CollectionMember<CaseMatch> memberRow = new CollectionMember<>(caseMatch);
+        List<CollectionMember<CaseMatch>> legacyRows = new ArrayList<>();
+        legacyRows.add(memberRow);
+
+        uk.gov.hmcts.reform.ccd.client.model.CaseDetails caseDetailsSaved =
+                Mockito.mock(uk.gov.hmcts.reform.ccd.client.model.CaseDetails.class);
+        when(caseDetailsSaved.getId()).thenReturn(CCD_CASE_ID);
+        when(probateManService.saveToCcd(LEGACY_ID, ProbateManType.GRANT_APPLICATION)).thenReturn(caseDetailsSaved);
+
+        GrantApplicationRepository grantApplicationRepositoryMock = Mockito.mock(GrantApplicationRepository.class);
+        when(repositories.get(ProbateManType.GRANT_APPLICATION)).thenReturn(grantApplicationRepositoryMock);
+        GrantApplication grantApplicationMock = Mockito.mock(GrantApplication.class);
+        Optional<GrantApplication> grantApplicationOptional = Optional.empty();
+        when(grantApplicationRepositoryMock.findById(LEGACY_ID)).thenReturn(grantApplicationOptional);
+
+        List<CollectionMember<CaseMatch>> expectedCaseMatches = new ArrayList<>();
+        CaseMatch expectedCaseMatch = CaseMatch.builder().build();
+        expectedCaseMatches.add(new CollectionMember<CaseMatch>(null, expectedCaseMatch));
+
+        List<CaseMatch> legacyCaseMatches = legacyImportService.importLegacyRows(legacyRows);
+
+
+        assertThat(legacyCaseMatches.size(), equalTo(1));
+    }
+
     @Test(expected = RuntimeException.class)
     public void shouldThrowExceptionImportingLegacyCasesAndNoneFound() {
         CaseMatch caseMatch = Mockito.mock(CaseMatch.class);
@@ -101,7 +133,7 @@ public class LegacyImportServiceImplTest {
     }
 
     @Test
-    public void shouldFindCaseWShenImportingLegacyCasesForException() {
+    public void shouldFindCaseWhenImportingLegacyCasesForException() {
         CaseMatch caseMatch = Mockito.mock(CaseMatch.class);
         when(caseMatch.getType()).thenReturn(LegacyCaseType.GRANT_OF_REPRESENTATION.getName());
         when(caseMatch.getDoImport()).thenReturn(DO_IMPORT_YES);
@@ -139,7 +171,8 @@ public class LegacyImportServiceImplTest {
     public void shouldBeValidRowsToImport() {
         CaseMatch caseMatch = Mockito.mock(CaseMatch.class);
         when(caseMatch.getDoImport()).thenReturn(DO_IMPORT_YES);
-        when(caseMatch.getLegacyCaseViewUrl()).thenReturn(LEGACY_CASE_URL);
+        CaseLink caseLink = CaseLink.builder().caseReference("someCaseReference").build();
+        when(caseMatch.getCaseLink()).thenReturn(caseLink);
         CollectionMember<CaseMatch> memberRow = new CollectionMember<>(caseMatch);
 
         CaseMatch caseMatch2 = Mockito.mock(CaseMatch.class);
@@ -158,6 +191,8 @@ public class LegacyImportServiceImplTest {
         CaseMatch caseMatch1 = Mockito.mock(CaseMatch.class);
         when(caseMatch1.getDoImport()).thenReturn(DO_IMPORT_YES);
         when(caseMatch1.getLegacyCaseViewUrl()).thenReturn(LEGACY_CASE_URL);
+        CaseLink caseLink = CaseLink.builder().build();
+        when(caseMatch1.getCaseLink()).thenReturn(caseLink);
         CollectionMember<CaseMatch> memberRow1 = new CollectionMember<>(caseMatch1);
 
         CaseMatch caseMatch2 = Mockito.mock(CaseMatch.class);

@@ -11,6 +11,7 @@
   {"LiveFrom": "01/01/2017", "ID": "cavRegistryLocations", "ListElementCode": "Cardiff", "ListElement": "Cardiff"},
   {"LiveFrom": "01/01/2017", "ID": "cavRegistryLocations", "ListElementCode": "Newcastle", "ListElement": "Newcastle"},
   {"LiveFrom": "01/01/2017", "ID": "cavRegistryLocations", "ListElementCode": "Winchester", "ListElement": "Winchester"},
+  {"LiveFrom": "02/01/2017", "ID": "cavRegistryLocations", "ListElementCode": "ctsc", "ListElement": "CTSC"},
   {"LiveFrom": "01/01/2017", "ID": "cavDocumentUploadTypeEnum", "ListElementCode": "email", "ListElement": "Email"},
   {"LiveFrom": "01/01/2017", "ID": "cavDocumentUploadTypeEnum", "ListElementCode": "correspondence", "ListElement": "Correspondence"},
   {"LiveFrom": "01/01/2017", "ID": "cavDocumentUploadTypeEnum", "ListElementCode": "IHT", "ListElement": "Codicil"},
@@ -20,5 +21,12 @@
   {"LiveFrom": "01/01/2017", "ID": "cavDocumentTypeEnum", "ListElementCode": "digitalGrant", "ListElement": "Digital Grant"},
   {"LiveFrom": "01/01/2017", "ID": "cavDocumentTypeEnum", "ListElementCode": "digitalGrantDraft", "ListElement": "Digital Grant Draft"},
   {"LiveFrom": "01/01/2017", "ID": "cavDocumentTypeEnum", "ListElementCode": "legalStatement", "ListElement": "Legal Statement"},
-  {"LiveFrom": "01/01/2017", "ID": "cavDocumentTypeEnum", "ListElementCode": "sentEmail", "ListElement": "Sent Email"}
+  {"LiveFrom": "01/01/2017", "ID": "cavDocumentTypeEnum", "ListElementCode": "sentEmail", "ListElement": "Sent Email"},
+  {"LiveFrom": "01/01/2017", "ID": "paymentMethodEnum", "ListElementCode": "cheque", "ListElement": "Cheque"},
+  {"LiveFrom": "01/01/2017", "ID": "paymentMethodEnum", "ListElementCode": "online", "ListElement": "Online"},
+  {"LiveFrom": "01/01/2017", "ID": "paymentMethodEnum", "ListElementCode": "card", "ListElement": "Credit/debit card"},
+  {"LiveFrom": "01/01/2017", "ID": "paymentStatusEnum", "ListElementCode": "Success", "ListElement": "Success"},
+  {"LiveFrom": "01/01/2017", "ID": "paymentStatusEnum", "ListElementCode": "Initiated", "ListElement": "Initiated"},
+  {"LiveFrom": "01/01/2017", "ID": "paymentStatusEnum", "ListElementCode": "Failed", "ListElement": "Failed"},
+  {"LiveFrom": "01/01/2017", "ID": "paymentStatusEnum", "ListElementCode": "Pending", "ListElement": "Pending"}
 ]

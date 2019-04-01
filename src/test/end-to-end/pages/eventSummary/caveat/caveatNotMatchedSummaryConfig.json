@@ -1,0 +1,5 @@
+{
+  "waitForText" : "Caveat not matched",
+  "summary": "caveat_not_matched_event_summary_text",
+  "comment": "caveat_not_matched_event_description_text"
+}

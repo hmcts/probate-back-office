@@ -29,7 +29,7 @@ public class TextFileBuilderServiceTest {
 
     @Test
     public void testFileContentsMatch() throws IOException {
-        assertThat(createFile("testFile.txt", false).readLine(), is("Bob|Smith|"));
+        assertThat(createFile("testFile.txt").readLine(), is("Bob|Smith|"));
     }
 
     @Test
@@ -37,21 +37,16 @@ public class TextFileBuilderServiceTest {
         data.add("");
         data.add("");
 
-        assertThat(createFile("testFile.txt", false).readLine(), is("Bob|Smith|||"));
+        assertThat(createFile("testFile.txt").readLine(), is("Bob|Smith|||"));
     }
 
     @Test
     public void testFileNameIsSanitised() throws IOException {
-        assertThat(createFile("te/st/F/il///e.//tx/t", false).readLine(), is("Bob|Smith|"));
+        assertThat(createFile("te/st/F/il///e.//tx/t").readLine(), is("Bob|Smith|"));
     }
 
-    @Test
-    public void testFileIsTrimmed() throws IOException {
-        assertThat(createFile("testFile.txt", true).readLine(), is("Bob|Smith"));
-    }
-
-    private BufferedReader createFile(String fileName, boolean trim) throws IOException {
-        File file = textFileBuilderService.createFile(data, "|", fileName, trim);
+    private BufferedReader createFile(String fileName) throws IOException {
+        File file = textFileBuilderService.createFile(data, "|", fileName);
         file.deleteOnExit();
         FileReader reader = new FileReader(file);
         return new BufferedReader(reader);

@@ -1,4 +1,5 @@
 [
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "WillLodgement", "ID": "customHistoryViewer", "Label": "Custom History Viewer", "FieldType": "CaseHistoryViewer", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "WillLodgement", "ID": "applicationType", "Label": "Application type", "FieldType": "FixedList", "FieldTypeParameter": "wlApplicationTypes", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "WillLodgement", "ID": "registryLocation", "Label": "Registry location", "FieldType": "FixedList", "FieldTypeParameter": "wlRegistryLocations", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "WillLodgement", "ID": "lodgementType", "Label": "Lodgement type", "FieldType": "FixedList", "FieldTypeParameter": "wlLodgementTypes", "SecurityClassification": "Public"},
@@ -15,8 +16,8 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "WillLodgement", "ID": "deceasedTypeOfDeath", "Label": "Type of death", "FieldType": "Text", "SecurityClassification": "Public", "Max": 60},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "WillLodgement", "ID": "deceasedAnyOtherNames", "Label": "Alias name?", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "WillLodgement", "ID": "deceasedFullAliasNameList", "Label": "Alias names", "FieldType": "Collection", "FieldTypeParameter": "wlProbateFullAliasName", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "WillLodgement", "ID": "deceasedAddress", "Label": "Address", "FieldType": "AddressUK", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "WillLodgement", "ID": "deceasedEmailAddress", "Label": "Email address", "FieldType": "Text", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "WillLodgement", "ID": "deceasedAddress", "Label": "Address - (If applying through a solicitor, provide the solicitor's firm name and address instead)", "FieldType": "AddressUK", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "WillLodgement", "ID": "deceasedEmailAddress", "Label": "Email address", "HintText": "If applying through a solicitor, provide the solicitor's email address instead", "FieldType": "Text", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "WillLodgement", "ID": "executorTitle", "Label": "Title", "FieldType": "Text", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "WillLodgement", "ID": "executorForenames", "Label": "Forename(s)", "HintText": "Include all middle names", "FieldType": "Text", "SecurityClassification": "Public", "Min": 1, "Max": 30},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "WillLodgement", "ID": "executorSurname", "Label": "Surname(s)", "FieldType": "Text", "SecurityClassification": "Public", "Min": 1, "Max": 50},

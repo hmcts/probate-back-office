@@ -224,6 +224,7 @@ public class CaseMatchingControllerTest {
         verifyAllForImport();
     }
 
+    @Test
     public void caseMatchingImportFromStandingSearchFlowWithInvalidRowSelection() throws Exception {
 
         String solicitorPayload = testUtils.getStringFromFile("payloadWithCaseMatches.json");
@@ -252,6 +253,7 @@ public class CaseMatchingControllerTest {
         verifyAllForImport();
     }
 
+    @Test
     public void caseMatchingImportFromWillLodgementFlowWithInvalidRowSelection() throws Exception {
 
         String solicitorPayload = testUtils.getStringFromFile("payloadWithCaseMatches.json");

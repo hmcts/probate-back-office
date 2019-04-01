@@ -1,0 +1,39 @@
+{
+  "tabName": "Testator's details",
+  "fields": [
+    "Forename(s)",
+    "Surname(s)",
+    "Gender",
+    "Date of birth",
+    "Date of death",
+    "Type of death",
+    "Alias name?",
+    "Alias names",
+    "Full alias name",
+    "Building and Street",
+    "Town or City",
+    "County",
+    "Postcode/Zipcode",
+    "Country",
+    "Email address"
+  ],
+  "dataKeys": [
+    "page2_forenames_update",
+    "page2_surname_update",
+    "page2_gender",
+    "page2_dateOfBirth_long_update",
+    "page2_dateOfDeath_long",
+    "page2_typeOfDeath",
+    "page2_hasAliasYes",
+    "page2_alias_1",
+    "page2_alias_2",
+    "address_line1",
+    "address_line2",
+    "address_line3",
+    "address_town",
+    "address_county",
+    "address_country",
+    "address_postcode",
+    "page2_email"
+  ]
+}
