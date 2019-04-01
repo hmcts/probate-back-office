@@ -16,7 +16,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import uk.gov.hmcts.probate.exception.ClientException;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -70,6 +69,7 @@ public class ClientTokenGenerator {
             log.error("Error executing post: " + e.getMessage());
             throw new ClientException(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage());
         }
+
         StringBuilder result = getResponse(response);
 
         JSONObject jsonObject = new JSONObject(result.toString());
@@ -91,12 +91,6 @@ public class ClientTokenGenerator {
             log.error("Error executing post: " + e.getMessage());
             throw new ClientException(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage());
         }
-
-        StringBuilder result = getResponse(response);
-
-        JSONObject jsonObject = new JSONObject(result.toString());
-
-        return jsonObject.get("code").toString();
     }
 
     private StringBuilder getResponse(HttpResponse response) {

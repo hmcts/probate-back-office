@@ -7,6 +7,8 @@ auth.provider.service.client:
   baseUrl: http://localhost:4502
   microservice: probate_backend
   tokenTimeToLiveInSeconds: 900
+  email: ${AUTH_TOKEN_EMAIL:probatesolcw1@gmail.com}
+  password: ${AUTH_TOKEN_PASSWORD:password}
 
 auth.provider.client:
   user: http://localhost:4501

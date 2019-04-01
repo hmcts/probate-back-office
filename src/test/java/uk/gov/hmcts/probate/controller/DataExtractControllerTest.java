@@ -22,6 +22,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 import uk.gov.hmcts.probate.service.CaseQueryService;
 import uk.gov.hmcts.probate.service.NotificationService;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -62,7 +63,7 @@ public class DataExtractControllerTest {
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     @Before
-    public void setup() {
+    public void setup() throws IOException {
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
         CollectionMember<ScannedDocument> scannedDocument = new CollectionMember<>(new ScannedDocument("1",
                 "test", "other", "will", LocalDateTime.now(), DocumentLink.builder().build(),
