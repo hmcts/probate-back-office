@@ -44,8 +44,8 @@ public interface GrantApplicationMapper extends ProbateManMapper<GrantApplicatio
 
     @Mapping(target = "additionalExecutorsApplying", source = "grantApplication",
             qualifiedBy = {ToAdditionalExecutorApplyingMember.class})
-    @Mapping(target = "ihtNetValue", source = "netEstateValue")
-    @Mapping(target = "ihtGrossValue", source = "grossEstateValue")
+    @Mapping(target = "ihtNetValue", expression = "java(grantApplication.getNetEstateValue() * 100)")
+    @Mapping(target = "ihtGrossValue", expression = "java(grantApplication.getGrossEstateValue() * 100)")
     @Mapping(target = "recordId", source = "probateNumber")
     @Mapping(target = "legacyId", source = "id")
     @Mapping(target = "legacyType", expression = "java(LegacyCaseType.GRANT_OF_REPRESENTATION.getName())")
