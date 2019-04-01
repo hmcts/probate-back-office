@@ -1,7 +1,6 @@
 'use strict';
 
 const testConfig = require('src/test/config');
-const createCaseConfig = require('src/test/end-to-end/pages/createCase/createCaseConfig.json');
 const filterCaseConfig = require('src/test/end-to-end/pages/filterCase/filterCaseConfig');
 
 Feature('Back Office').retry(testConfig.TestRetryFeatures);
