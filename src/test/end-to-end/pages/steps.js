@@ -39,9 +39,17 @@ module.exports = function () {
         markForExamination: steps.markForExamination.markForExamination,
         markForIssue: steps.markForIssue.markForIssue,
         issueGrant: steps.issueGrant.issueGrant,
+        generateDepositReceipt: steps.generateDepositReceipt.generateDepositReceipt,
         selectCaseMatchesForWillLodgement: steps.caseMatches.willLodgement.caseMatches,
         selectCaseMatchesForGrantOfProbate: steps.caseMatches.grantOfProbate.caseMatches,
         selectCaseMatchesForCaveat: steps.caseMatches.caveat.caseMatches,
-        selectWithdrawalReason: steps.withdrawal.withdrawal
+        enterCaseMatchesComment: steps.eventSummary.eventSummary,
+        selectWithdrawalReason: steps.withdrawal.withdrawal,
+        enterWithdrawalSummary: steps.eventSummary.eventSummary,
+        filterCase: steps.filterCase.filterCase,
+        selectCase: steps.selectCase.selectCase,
+        legacyCaseSearch: steps.search.legacyCaseSearch,
+        legacyCaseSearch2: steps.search.legacyCaseSearch2,
+        legacyCaseSearch3: steps.search.legacyCaseSearch3
     });
 };

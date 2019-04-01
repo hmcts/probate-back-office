@@ -10,6 +10,7 @@
     "lint": "NODE_PATH=. eslint .",
     "eslint": "NODE_PATH=. eslint .",
     "test-e2e": "NODE_PATH=. node ./node_modules/codeceptjs/bin/codecept.js run -c ./src/test/end-to-end/ --steps",
+    "test-e2e-win": "set NODE_PATH=.&& node ./node_modules/codeceptjs/bin/codecept.js run -c ./src/test/end-to-end/ --steps",
     "test-crossbrowser-e2e": "NODE_PATH=. codeceptjs run -c src/test/end-to-end/saucelabs.conf.js --steps",
     "test:fullfunctional": "NODE_PATH=. node ./node_modules/codeceptjs/bin/codecept.js run-multiple parallel -c ./src/test/end-to-end/ --steps --reporter mochawesome"
   },

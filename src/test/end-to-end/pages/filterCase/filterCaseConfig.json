@@ -1,0 +1,10 @@
+{
+  "waitForText": "Filters",
+  "list1_text": "Manage probate application",
+  "list2_text": "Legacy Case Search",
+  "list3_text": "Create dummy case",
+  "jurisdictionSelection": "#wb-jurisdiction",
+  "caseTypeSelection": "#wb-case-type",
+  "caseStateSelection": "#wb-case-state",
+  "applyButton": ".button"
+}

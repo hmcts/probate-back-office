@@ -1,0 +1,13 @@
+{
+  "waitForText": "Search for legacy cases",
+  "probateManId": "#recordId",
+  "forename": "#deceasedForenames",
+  "surname": "#deceasedSurname",
+  "continueBtn": "button.button:nth-child(2)",
+  "deceasedDayOB": "deceasedDateOfBirth-day",
+  "deceasedMonthOB": "deceasedDateOfBirth-month",
+  "deceasedYearOB": "deceasedDateOfBirth-year",
+  "deceasedDayOD": "deceasedDateOfDeath-day",
+  "deceasedMonthOD": "deceasedDateOfDeath-month",
+  "deceasedYearOD": "deceasedDateOfDeath-year"
+}
