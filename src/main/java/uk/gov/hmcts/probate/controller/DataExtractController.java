@@ -21,6 +21,7 @@ import uk.gov.hmcts.probate.service.CaseQueryService;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.service.notify.NotificationClientException;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -42,14 +43,14 @@ public class DataExtractController {
     @Scheduled(cron = "${cron.data_extract}")
     @ApiOperation(value = "Initiate IronMountain data extract", notes = "Will find cases for yesterdays date")
     @PostMapping(path = "/iron-mountain")
-    public ResponseEntity initiateIronMountainExtract() {
+    public ResponseEntity initiateIronMountainExtract() throws IOException {
         return initiateIronMountainExtract(DATE_FORMAT.format(LocalDate.now().minusDays(1L)));
     }
 
     @ApiOperation(value = "Initiate IronMountain data extract with date", notes = "Date MUST be in format 'yyyy-MM-dd'")
     @PostMapping(path = "/iron-mountain/{date}")
     public ResponseEntity initiateIronMountainExtract(@ApiParam(value = "Date to find cases against", required = true)
-                                                      @PathVariable("date") String date) {
+                                                      @PathVariable("date") String date) throws IOException {
         dateValidator(date);
 
         List<ReturnedCaseDetails> cases = caseQueryService.findCasesWithDatedDocument("digitalGrant", date);
@@ -60,14 +61,14 @@ public class DataExtractController {
     @Scheduled(cron = "${cron.data_extract}")
     @ApiOperation(value = "Initiate Excela data extract", notes = "Will find cases for yesterdays date")
     @PostMapping(path = "/excela")
-    public ResponseEntity initiateExcelaExtract() throws NotificationClientException {
+    public ResponseEntity initiateExcelaExtract() throws NotificationClientException, IOException {
         return initiateExcelaExtract(DATE_FORMAT.format(LocalDate.now().minusDays(1L)));
     }
 
     @ApiOperation(value = "Initiate Excela data extract", notes = " Date MUST be in format 'yyyy-MM-dd'")
     @PostMapping(path = "/excela/{date}")
     public ResponseEntity initiateExcelaExtract(@ApiParam(value = "Date to find cases against", required = true)
-                                                @PathVariable("date") String date) throws NotificationClientException {
+                                                @PathVariable("date") String date) throws NotificationClientException, IOException {
         dateValidator(date);
 
         List<ReturnedCaseDetails> cases = caseQueryService.findCasesWithDatedDocument("digitalGrant", date);
