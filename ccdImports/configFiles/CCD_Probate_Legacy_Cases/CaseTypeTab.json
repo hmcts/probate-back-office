@@ -1,4 +1,5 @@
 [
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "Legacy", "Channel": "CaseWorker", "TabID": "deceasedTab", "TabLabel": "Deceased details", "TabDisplayOrder": 1, "CaseFieldID": "deceasedForenames", "TabFieldDisplayOrder": 1},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "Legacy", "Channel": "CaseWorker", "TabID": "deceasedTab", "TabLabel": "Deceased details", "TabDisplayOrder": 1, "CaseFieldID": "deceasedSurname", "TabFieldDisplayOrder": 2}
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "Legacy", "Channel": "CaseWorker", "TabID": "eventHistoryTab", "TabLabel": "Event History", "TabDisplayOrder": 1, "CaseFieldID": "customHistoryViewer", "TabFieldDisplayOrder": 1},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "Legacy", "Channel": "CaseWorker", "TabID": "deceasedTab", "TabLabel": "Deceased details", "TabDisplayOrder": 2, "CaseFieldID": "deceasedForenames", "TabFieldDisplayOrder": 1},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "Legacy", "Channel": "CaseWorker", "TabID": "deceasedTab", "TabLabel": "Deceased details", "TabDisplayOrder": 2, "CaseFieldID": "deceasedSurname", "TabFieldDisplayOrder": 2}
 ]
