@@ -1,0 +1,4 @@
+{
+  "waitForText": "Case List",
+  "caseLink": "#search-result > ccd-search-result:nth-child(2) > table:nth-child(1) > tbody:nth-child(3) > tr:nth-child(1) > td:nth-child(1) > a:nth-child(1)"
+}

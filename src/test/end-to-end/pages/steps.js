@@ -29,6 +29,11 @@ module.exports = function () {
         selectCaseMatchesForCaveat: steps.caseMatches.caveat.caseMatches,
         enterCaseMatchesComment: steps.eventSummary.eventSummary,
         selectWithdrawalReason: steps.withdrawal.withdrawal,
-        enterWithdrawalSummary: steps.eventSummary.eventSummary
+        enterWithdrawalSummary: steps.eventSummary.eventSummary,
+        filterCase: steps.filterCase.filterCase,
+        selectCase: steps.selectCase.selectCase,
+        legacyCaseSearch: steps.search.legacyCaseSearch,
+        legacyCaseSearch2: steps.search.legacyCaseSearch2,
+        legacyCaseSearch3: steps.search.legacyCaseSearch3
     });
 };
