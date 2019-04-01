@@ -1,0 +1,15 @@
+{
+  "waitForText": "Search for legacy cases",
+  "legacyCaseType": "#legacySearchResultRows_0_type",
+  "probateManId": "#legacySearchResultRows_0_recordId",
+  "fullName": "#legacySearchResultRows_0_fullName",
+  "alias": "#legacySearchResultRows_0_aliases",
+  "dob": "#legacySearchResultRows_0_dob",
+  "dod": "#legacySearchResultRows_0_dod",
+  "postCode": "#legacySearchResultRows_0_postcode",
+  "legacyCaseId": "#legacySearchResultRows_0_id",
+  "legacyCaseUrl": "#legacySearchResultRows_0_legacyCaseViewUrl",
+  "yesOption": "#legacySearchResultRows_0_doImport-Yes",
+  "continueBtn": ".form-group-related > button:nth-child(2)",
+  "previousBtn": "button.button:nth-child(1)"
+}

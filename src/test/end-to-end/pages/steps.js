@@ -27,6 +27,14 @@ module.exports = function () {
         enterComment: steps.eventSummary.eventSummary,
         selectCaseMatchesForWillLodgement: steps.caseMatches.willLodgement.caseMatches,
         selectCaseMatchesForCaveat: steps.caseMatches.caveat.caseMatches,
-        selectWithdrawalReason: steps.withdrawal.withdrawal
+        selectWithdrawalReason: steps.withdrawal.withdrawal,
+        generateDepositReceipt: steps.generateDepositReceipt.generateDepositReceipt,
+        enterCaseMatchesComment: steps.eventSummary.eventSummary,
+        enterWithdrawalSummary: steps.eventSummary.eventSummary,
+        filterCase: steps.filterCase.filterCase,
+        selectCase: steps.selectCase.selectCase,
+        legacyCaseSearch: steps.search.legacyCaseSearch,
+        legacyCaseSearch2: steps.search.legacyCaseSearch2,
+        legacyCaseSearch3: steps.search.legacyCaseSearch3
     });
 };
