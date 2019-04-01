@@ -33,7 +33,7 @@ Scenario('Caveat Workflow - E2E Test 03 - Caveat for a Personal Applicant - Rais
 
     let nextStepName = 'Raise a caveat';
     I.selectNewCase();
-    I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_caveat, createCaseConfig.list3_text_raise_caveat);
+    I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_caveat, createCaseConfig.list3_text_caveat);
     I.enterCaveatPage1('create');
     I.enterCaveatPage2('create');
     I.enterCaveatPage3('create');

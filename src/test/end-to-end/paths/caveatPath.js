@@ -3,7 +3,7 @@
 const dateFns = require('date-fns');
 
 const testConfig = require('src/test/config');
-const createCaseConfig = require('src/test/end-to-end/pages/createCase/createCaseConfig.json');
+const createCaseConfig = require('src/test/end-to-end/pages/createCase/createCaseConfig');
 const eventSummaryConfig = require('src/test/end-to-end/pages/eventSummary/eventSummaryConfig');
 
 const createCaveatConfig = require('src/test/end-to-end/pages/createCaveat/createCaveatConfig');
@@ -36,7 +36,7 @@ Scenario('Caveat Workflow - E2E Test 01 - Caveat for a Personal Applicant - Rais
 
     let nextStepName = 'Raise a caveat';
     I.selectNewCase();
-    I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_caveat, createCaseConfig.list3_text_raise_caveat);
+    I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_caveat, createCaseConfig.list3_text_caveat);
     I.enterCaveatPage1('create');
     I.enterCaveatPage2('create');
     I.enterCaveatPage3('create');

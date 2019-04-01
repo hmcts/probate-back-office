@@ -36,7 +36,7 @@ Scenario('Will Lodgement Workflow - E2E test 01 - Will Lodgement for a Personal 
 
     let nextStepName = 'Create a will lodgement';
     I.selectNewCase();
-    I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text, createCaseConfig.list3_text);
+    I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_will, createCaseConfig.list3_text_will);
     I.enterWillLodgementPage1('create');
     I.enterWillLodgementPage2('create');
     I.enterWillLodgementPage3('create');
