@@ -27,5 +27,10 @@ module.exports = function () {
         selectCaseMatchesForWillLodgement: steps.caseMatches.willLodgement.caseMatches,
         selectCaseMatchesForCaveat: steps.caseMatches.caveat.caseMatches,
         selectWithdrawalReason: steps.withdrawal.withdrawal
+        filterCase: steps.filterCase.filterCase,
+        selectCase: steps.selectCase.selectCase,
+        legacyCaseSearch: steps.search.legacyCaseSearch,
+        legacyCaseSearch2: steps.search.legacyCaseSearch2,
+        legacyCaseSearch3: steps.search.legacyCaseSearch3
     });
 };
