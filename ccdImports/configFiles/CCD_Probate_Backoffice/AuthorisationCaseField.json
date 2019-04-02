@@ -1208,5 +1208,9 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "deceasedAddressFound", "UserRole": "citizen", "CRUD": "CRU"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "deceasedAddresses", "UserRole": "citizen", "CRUD": "CRU"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "primaryApplicantAddressFound", "UserRole": "citizen", "CRUD": "CRU"},
-  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "primaryApplicantAddresses", "UserRole": "citizen", "CRUD": "CRU"}
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "primaryApplicantAddresses", "UserRole": "citizen", "CRUD": "CRU"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "otherExecutorsApplying", "UserRole": "citizen", "CRUD": "CRU"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "executorsAllAlive", "UserRole": "citizen", "CRUD": "CRU"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "executorsHaveAlias", "UserRole": "citizen", "CRUD": "CRU"}
+
 ]
