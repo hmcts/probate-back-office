@@ -1056,6 +1056,23 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
+    public void shouldDefualtSolicitorsInfoToNull() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.paperForm(callbackRequestMock);
+        assertEquals(null, callbackResponse.getData().getSolsSolicitorAppReference());
+        assertEquals(null, callbackResponse.getData().getSolsSolicitorEmail());
+        assertEquals(null, callbackResponse.getData().getSolsSOTJobTitle());
+        assertEquals(null, callbackResponse.getData().getSolsSOTName());
+        assertEquals(null, callbackResponse.getData().getSolsSolicitorAddress());
+        assertEquals(null, callbackResponse.getData().getSolsSolicitorFirmName());
+        assertEquals(null, callbackResponse.getData().getSolsSolicitorPhoneNumber());
+    }
+
+    @Test
     public void shouldSetGrantIssuedDate() {
         caseDataBuilder.applicationType(ApplicationType.PERSONAL);
         Document document = Document.builder()
