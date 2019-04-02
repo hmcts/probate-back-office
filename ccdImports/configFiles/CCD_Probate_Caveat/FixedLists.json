@@ -12,6 +12,7 @@
   {"LiveFrom": "01/01/2017", "ID": "cavRegistryLocations", "ListElementCode": "Newcastle", "ListElement": "Newcastle"},
   {"LiveFrom": "01/01/2017", "ID": "cavRegistryLocations", "ListElementCode": "Winchester", "ListElement": "Winchester"},
   {"LiveFrom": "02/01/2017", "ID": "cavRegistryLocations", "ListElementCode": "ctsc", "ListElement": "CTSC"},
+  {"LiveFrom": "02/01/2017", "ID": "cavRegistryLocations", "ListElementCode": "Bristol", "ListElement": "Bristol"},
   {"LiveFrom": "01/01/2017", "ID": "cavDocumentUploadTypeEnum", "ListElementCode": "email", "ListElement": "Email"},
   {"LiveFrom": "01/01/2017", "ID": "cavDocumentUploadTypeEnum", "ListElementCode": "correspondence", "ListElement": "Correspondence"},
   {"LiveFrom": "01/01/2017", "ID": "cavDocumentUploadTypeEnum", "ListElementCode": "IHT", "ListElement": "Codicil"},
