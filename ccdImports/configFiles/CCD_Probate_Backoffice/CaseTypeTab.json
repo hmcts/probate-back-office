@@ -1,5 +1,5 @@
 [
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "eventHistoryTab", "TabLabel": "Event History", "TabDisplayOrder": 1, "CaseFieldID": "customHistoryViewer", "TabFieldDisplayOrder": 1},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "eventHistoryTab", "TabLabel": "Event History", "TabDisplayOrder": 1, "CaseFieldID": "customHistoryViewer", "TabFieldDisplayOrder": 1, "TabShowCondition":  "applicationType=\"false\""},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "stopDetailsTab", "TabLabel": "Stop details", "TabDisplayOrder": 2, "CaseFieldID": "boCaseStopReasonList", "TabFieldDisplayOrder": 1},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "documentsTab", "TabLabel": "Documents", "TabDisplayOrder": 3, "CaseFieldID": "solsLegalStatementDocument", "TabFieldDisplayOrder": 1},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "documentsTab", "TabLabel": "Documents", "TabDisplayOrder": 3, "CaseFieldID": "probateDocumentsGenerated", "TabFieldDisplayOrder": 2},

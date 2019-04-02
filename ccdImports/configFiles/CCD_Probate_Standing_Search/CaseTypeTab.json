@@ -1,5 +1,5 @@
 [
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "StandingSearch", "Channel": "CaseWorker", "TabID": "eventHistoryTab", "TabLabel": "Event History", "TabDisplayOrder": 1, "CaseFieldID": "customHistoryViewer", "TabFieldDisplayOrder": 1},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "StandingSearch", "Channel": "CaseWorker", "TabID": "eventHistoryTab", "TabLabel": "Event History", "TabDisplayOrder": 1, "CaseFieldID": "customHistoryViewer", "TabFieldDisplayOrder": 1, "TabShowCondition":  "applicationType=\"false\""},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "StandingSearch", "Channel": "CaseWorker", "TabID": "standingSearchTab", "TabLabel": "Case details", "TabDisplayOrder": 2, "CaseFieldID": "applicationType", "TabFieldDisplayOrder": 1},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "StandingSearch", "Channel": "CaseWorker", "TabID": "standingSearchTab", "TabLabel": "Case details", "TabDisplayOrder": 2, "CaseFieldID": "registryLocation", "TabFieldDisplayOrder": 2},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "StandingSearch", "Channel": "CaseWorker", "TabID": "standingSearchTab", "TabLabel": "Case details", "TabDisplayOrder": 2, "CaseFieldID": "expiryDate", "TabFieldDisplayOrder": 3},
