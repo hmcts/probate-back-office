@@ -85,7 +85,7 @@ services:
       - 5500:5500
 
   idam-api:
-    image: hmcts.azurecr.io/hmcts/tidam-api:latest
+    image: docker.artifactory.reform.hmcts.net/auth/idam-api:latest
     container_name: idam-api
     command: --wait-for-database 60
     environment:
@@ -235,7 +235,7 @@ services:
      - 8080:8080
 
   fees-api:
-    image: hmcts.azurecr.io/hmcts/fees-register-api:${FEES_API_DOCKER_VERSION:-latest}
+    image: docker.artifactory.reform.hmcts.net/fees-register/fees-api:${FEES_API_DOCKER_VERSION:-latest}
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://shared-database:5432/fees_register
       - SPRING_DATASOURCE_USERNAME=fees_register
@@ -311,7 +311,7 @@ services:
       - service-auth-provider-api
 
   ccd-data-store-api:
-      image: PRO-4927ccd-data-store-api:latest
+      image: hmcts.azurecr.io/hmcts/ccd-data-store-api:latest
       container_name: ccd-data-store-api
       environment:
         - JAVA_OPTS=-Xms8m -Xmx256m -Djava.security.egd=file:/dev/./urandom -XX:MaxMetaspaceSize=128m
