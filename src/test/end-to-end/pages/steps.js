@@ -36,7 +36,9 @@ module.exports = function () {
         enterEventSummary: steps.eventSummary.eventSummary,
         uploadDocument: steps.documentUpload.documentUpload,
         enterComment: steps.eventSummary.eventSummary,
+        markAsReadyForExamination: steps.markAsReady.markAsReady,
         selectCaseMatchesForWillLodgement: steps.caseMatches.willLodgement.caseMatches,
+        selectCaseMatchesForGrantOfProbate: steps.caseMatches.grantOfProbate.caseMatches,
         selectCaseMatchesForCaveat: steps.caseMatches.caveat.caseMatches,
         selectWithdrawalReason: steps.withdrawal.withdrawal
     });

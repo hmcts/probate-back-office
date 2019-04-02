@@ -45,7 +45,7 @@ module.exports = function (crud) {
     }
 
     if (crud === 'update') {
-        I.waitForText(createGrantOfProbateConfig.page3_waitForText, testConfig.TestTimeToWaitForText);
+        I.waitForText(createGrantOfProbateConfig.page3_amend_waitForText, testConfig.TestTimeToWaitForText);
         I.selectOption('#selectionList', createGrantOfProbateConfig.page3_list1_update_option);
         I.click(commonConfig.continueButton);
         I.fillField('#executorsApplying_0_applyingExecutorOtherNames', createGrantOfProbateConfig.page3_executor0_alias_update);

@@ -9,7 +9,11 @@ const addCommentSummaryConfig = require('src/test/end-to-end/pages/eventSummary/
 const documentUploadConfig = require('src/test/end-to-end/pages/documentUpload/grantOfProbate/documentUploadConfig');
 const documentUploadSummaryConfig = require('src/test/end-to-end/pages/eventSummary/grantOfProbate/documentUploadSummaryConfig');
 const withdrawalSummaryConfig = require('src/test/end-to-end/pages/eventSummary/grantOfProbate/withdrawalSummaryConfig');
+// const caseMatchesConfig = require('src/test/end-to-end/pages/caseMatches/grantOfProbate/caseMatchesConfig');
+// const caseMatchesCommentSummaryConfig = require('src/test/end-to-end/pages/eventSummary/grantOfProbate/caseMatchesCommentSummaryConfig');
+const markAsReadySummaryConfig = require('src/test/end-to-end/pages/eventSummary/grantOfProbate/markAsReadySummaryConfig');
 
+// const caseMatchesTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/caseMatchesTabConfig');
 const applicantDetailsTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/applicantDetailsTabConfig');
 const applicantDetailsUpdateTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/applicantDetailsUpdateTabConfig');
 const deceasedTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/deceasedTabConfig');
@@ -60,30 +64,30 @@ Scenario('Grant of Probate for a Personal Applicant', async function (I) {
     I.enterGrantOfProbatePage1('update');
     I.checkMyAnswers();
     I.chooseNextStep('Amend case details');
-    I.entergrantOfProbatePage2('update');
+    I.enterGrantOfProbatePage2('update');
     I.checkMyAnswers();
     I.chooseNextStep('Amend case details');
-    I.entergrantOfProbatePage3('update');
+    I.enterGrantOfProbatePage3('update');
     I.checkMyAnswers();
     I.chooseNextStep('Amend case details');
-    I.entergrantOfProbatePage4('update');
+    I.enterGrantOfProbatePage4('update');
     I.checkMyAnswers();
     I.chooseNextStep('Amend case details');
-    I.entergrantOfProbatePage5('update');
+    I.enterGrantOfProbatePage5('update');
     I.checkMyAnswers();
     I.chooseNextStep('Amend case details');
-    I.entergrantOfProbatePage6('update');
+    I.enterGrantOfProbatePage6('update');
     I.checkMyAnswers();
     I.chooseNextStep('Amend case details');
-    I.entergrantOfProbatePage7('update');
+    I.enterGrantOfProbatePage7('update');
     I.checkMyAnswers();
     I.chooseNextStep('Amend case details');
-    I.entergrantOfProbatePage8('update');
+    I.enterGrantOfProbatePage8('update');
     I.checkMyAnswers();
+
     // I.chooseNextStep('Amend case details');
-    // I.entergrantOfProbatePage9('update');
+    // I.enterGrantOfProbatePage9('update');
     // I.checkMyAnswers();
-    pause();
 
     I.seeCaseDetails(caseRef, deceasedUpdateTabConfig, createGrantOfProbateConfig);
     I.seeCaseDetails(caseRef, caseDetailsUpdateTabConfig, createGrantOfProbateConfig);
@@ -101,6 +105,17 @@ Scenario('Grant of Probate for a Personal Applicant', async function (I) {
     I.uploadDocument(caseRef, documentUploadConfig);
     I.enterEventSummary(caseRef, documentUploadSummaryConfig);
     I.seeCaseDetails(caseRef, documentUploadTabConfig, documentUploadConfig);
+
+    I.chooseNextStep('Mark as ready for examination');
+    I.markAsReadyForExamination(caseRef);
+    I.enterEventSummary(caseRef, markAsReadySummaryConfig);
+    I.seeCaseDetails(caseRef, historyTabConfig, markAsReadySummaryConfig);
+
+    // I.chooseNextStep('Find matches (Examining)');
+    // I.selectCaseMatchesForGrantOfProbate(caseRef, caseMatchesConfig);
+    // I.enterCaseMatchesComment(caseRef, caseMatchesCommentSummaryConfig);
+    // I.seeCaseDetails(caseRef, historyTabConfig, caseMatchesCommentSummaryConfig);
+    // I.seeCaseDetails(caseRef, caseMatchesTabConfig, caseMatchesConfig);
 
     I.chooseNextStep('Withdraw application');
     I.enterWithdrawalSummary(caseRef, withdrawalSummaryConfig);

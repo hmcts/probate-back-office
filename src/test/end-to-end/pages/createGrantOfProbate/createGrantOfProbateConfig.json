@@ -33,6 +33,7 @@
     "page2_hasAliasYes": "Yes",
     "page2_alias": "applicant_alias_name",
     "page2_applyingYes": "Yes",
+    "page2_list1_update_option": "Applicant Details",
 
     "page3_waitForText": "About the applicant(s)",
     "page3_amend_waitForText": "Amend case details",

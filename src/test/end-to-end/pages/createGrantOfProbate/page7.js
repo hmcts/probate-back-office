@@ -30,7 +30,7 @@ module.exports = function (crud) {
     }
 
     if (crud === 'update') {
-        I.waitForText(createGrantOfProbateConfig.page7_waitForText, testConfig.TestTimeToWaitForText);
+        I.waitForText(createGrantOfProbateConfig.page7_amend_waitForText, testConfig.TestTimeToWaitForText);
         I.selectOption('#selectionList', createGrantOfProbateConfig.page7_list1_update_option);
         I.click(commonConfig.continueButton);
         I.fillField('#attorneyOnBehalfOfNameAndAddress_0_name', createGrantOfProbateConfig.page7_representativeOfName_update);

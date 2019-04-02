@@ -32,7 +32,7 @@ module.exports = function (crud) {
     }
 
     if (crud === 'update') {
-        I.waitForText(createGrantOfProbateConfig.page5_waitForText, testConfig.TestTimeToWaitForText);
+        I.waitForText(createGrantOfProbateConfig.page5_amend_waitForText, testConfig.TestTimeToWaitForText);
         I.selectOption('#selectionList', createGrantOfProbateConfig.page5_list1_update_option);
         I.click(commonConfig.continueButton);
 
