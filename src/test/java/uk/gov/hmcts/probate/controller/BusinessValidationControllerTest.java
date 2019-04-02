@@ -14,6 +14,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+import uk.gov.hmcts.probate.config.ClientTokenGenerator;
 import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
@@ -122,6 +123,9 @@ public class BusinessValidationControllerTest {
 
     @MockBean
     private AppInsights appInsights;
+
+    @MockBean
+    private ClientTokenGenerator clientTokenGenerator;
 
     @MockBean
     private PDFManagementService pdfManagementService;

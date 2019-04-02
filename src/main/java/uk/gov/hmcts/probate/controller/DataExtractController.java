@@ -77,8 +77,10 @@ public class DataExtractController {
         for (ReturnedCaseDetails returnedCase : cases) {
             if (returnedCase.getData().getScannedDocuments() != null) {
                 for (CollectionMember<ScannedDocument> document : returnedCase.getData().getScannedDocuments()) {
-                    if (document.getValue().getSubtype().equals(DOC_SUBTYPE_WILL)) {
+                    if (document.getValue().getSubtype() != null
+                            && document.getValue().getSubtype().equalsIgnoreCase(DOC_SUBTYPE_WILL)) {
                         filteredCases.add(returnedCase);
+                        break;
                     }
                 }
             }

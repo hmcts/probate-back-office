@@ -68,8 +68,12 @@ public class DataExtractControllerTest {
         CollectionMember<ScannedDocument> scannedDocument = new CollectionMember<>(new ScannedDocument("1",
                 "test", "other", "will", LocalDateTime.now(), DocumentLink.builder().build(),
                 "test"));
+        CollectionMember<ScannedDocument> scannedDocumentNullSubType = new CollectionMember<>(new ScannedDocument("1",
+                "test", "other", null, LocalDateTime.now(), DocumentLink.builder().build(),
+                "test"));
         List<CollectionMember<ScannedDocument>> scannedDocuments = new ArrayList<>();
         scannedDocuments.add(scannedDocument);
+        scannedDocuments.add(scannedDocumentNullSubType);
 
         CaseData caseData = CaseData.builder()
                 .deceasedSurname("smith")

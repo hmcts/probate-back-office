@@ -72,8 +72,8 @@ public class ClientTokenGenerator {
 
     private String generateClientCode() throws IOException {
         final String encoded = Base64.getEncoder().encodeToString((email + ":" + password).getBytes());
-        HttpPost post = new HttpPost(idamUrl + "/oauth2/authorize?response_type=code&client_id=" + id +
-                "&redirect_uri=" + redirect);
+        HttpPost post = new HttpPost(idamUrl + "/oauth2/authorize?response_type=code&client_id="
+                + id + "&redirect_uri=" + redirect);
         post.setHeader("Authorization", "Basic " + encoded);
 
         HttpResponse response = client.execute(post);
