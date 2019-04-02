@@ -1,0 +1,5 @@
+{
+  "waitForText" : "Match application",
+  "summary": "match_application_event_summary_text",
+  "comment": "match_application_event_description_text"
+}
