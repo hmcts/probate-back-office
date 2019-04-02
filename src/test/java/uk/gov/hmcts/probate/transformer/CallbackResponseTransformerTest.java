@@ -639,6 +639,7 @@ public class CallbackResponseTransformerTest {
         assertCommonDetails(callbackResponse);
         assertLegacyInfo(callbackResponse);
         assertEquals(1, callbackResponse.getData().getSolsDeceasedAliasNamesList().size());
+        assertSolsDetails(callbackResponse);
     }
 
     @Test
@@ -662,6 +663,7 @@ public class CallbackResponseTransformerTest {
         assertEquals(2, callbackResponse.getData().getAdditionalExecutorsApplying().size());
         assertApplyingExecutorDetailsFromSols(callbackResponse.getData().getAdditionalExecutorsApplying().get(0).getValue());
         assertEquals(1, callbackResponse.getData().getAdditionalExecutorsNotApplying().size());
+        assertSolsDetails(callbackResponse);
     }
 
     @Test
@@ -678,6 +680,7 @@ public class CallbackResponseTransformerTest {
         assertLegacyInfo(callbackResponse);
         assertEquals(0, callbackResponse.getData().getAdditionalExecutorsApplying().size());
         assertEquals(0, callbackResponse.getData().getAdditionalExecutorsNotApplying().size());
+        assertSolsDetails(callbackResponse);
     }
 
     @Test
@@ -695,6 +698,7 @@ public class CallbackResponseTransformerTest {
         assertLegacyInfo(callbackResponse);
         assertEquals(0, callbackResponse.getData().getAdditionalExecutorsApplying().size());
         assertEquals(0, callbackResponse.getData().getAdditionalExecutorsNotApplying().size());
+        assertSolsDetails(callbackResponse);
     }
 
     @Test
@@ -712,6 +716,7 @@ public class CallbackResponseTransformerTest {
         assertLegacyInfo(callbackResponse);
         assertEquals(0, callbackResponse.getData().getAdditionalExecutorsApplying().size());
         assertEquals(0, callbackResponse.getData().getAdditionalExecutorsNotApplying().size());
+        assertSolsDetails(callbackResponse);
     }
 
     @Test
@@ -729,6 +734,7 @@ public class CallbackResponseTransformerTest {
         assertLegacyInfo(callbackResponse);
         assertEquals(0, callbackResponse.getData().getAdditionalExecutorsApplying().size());
         assertEquals(0, callbackResponse.getData().getAdditionalExecutorsNotApplying().size());
+        assertSolsDetails(callbackResponse);
     }
 
     @Test
@@ -746,6 +752,7 @@ public class CallbackResponseTransformerTest {
         assertLegacyInfo(callbackResponse);
         assertEquals(0, callbackResponse.getData().getAdditionalExecutorsApplying().size());
         assertEquals(0, callbackResponse.getData().getAdditionalExecutorsNotApplying().size());
+        assertSolsDetails(callbackResponse);
     }
 
 
@@ -906,6 +913,7 @@ public class CallbackResponseTransformerTest {
         assertApplicationType(callbackResponse, ApplicationType.SOLICITOR);
         assertLegacyInfo(callbackResponse);
         assertEquals(1, callbackResponse.getData().getBoDocumentsUploaded().size());
+        assertSolsDetails(callbackResponse);
     }
     
     @Test
@@ -1019,6 +1027,7 @@ public class CallbackResponseTransformerTest {
         assertCommonDetails(callbackResponse);
         assertLegacyInfo(callbackResponse);
         assertCommonPaperForm(callbackResponse);
+        assertSolsDetails(callbackResponse);
     }
 
     @Test
@@ -1188,9 +1197,7 @@ public class CallbackResponseTransformerTest {
         assertEquals(OTHER_EXECS_EXIST, callbackResponse.getData().getOtherExecutorExists());
     }
 
-    private void assertCommonDetails(CallbackResponse callbackResponse) {
-        assertEquals(REGISTRY_LOCATION, callbackResponse.getData().getRegistryLocation());
-
+    private void assertSolsDetails(CallbackResponse callbackResponse) {
         assertEquals(SOLICITOR_FIRM_NAME, callbackResponse.getData().getSolsSolicitorFirmName());
         assertEquals(SOLICITOR_FIRM_LINE1, callbackResponse.getData().getSolsSolicitorAddress().getAddressLine1());
         assertEquals(SOLICITOR_FIRM_POSTCODE, callbackResponse.getData().getSolsSolicitorAddress().getPostCode());
@@ -1198,6 +1205,12 @@ public class CallbackResponseTransformerTest {
         assertEquals(SOLICITOR_FIRM_PHONE, callbackResponse.getData().getSolsSolicitorPhoneNumber());
         assertEquals(SOLICITOR_SOT_NAME, callbackResponse.getData().getSolsSOTName());
         assertEquals(SOLICITOR_SOT_JOB_TITLE, callbackResponse.getData().getSolsSOTJobTitle());
+        assertEquals(APP_REF, callbackResponse.getData().getSolsSolicitorAppReference());
+
+    }
+
+    private void assertCommonDetails(CallbackResponse callbackResponse) {
+        assertEquals(REGISTRY_LOCATION, callbackResponse.getData().getRegistryLocation());
 
         assertEquals(DECEASED_FIRSTNAME, callbackResponse.getData().getDeceasedForenames());
         assertEquals(DECEASED_LASTNAME, callbackResponse.getData().getDeceasedSurname());
@@ -1216,7 +1229,6 @@ public class CallbackResponseTransformerTest {
         assertEquals(PRIMARY_EXEC_ALIAS_NAMES, callbackResponse.getData().getPrimaryApplicantAlias());
         assertEquals(DECEASED_ADDRESS, callbackResponse.getData().getDeceasedAddress());
         assertEquals(EXEC_ADDRESS, callbackResponse.getData().getPrimaryApplicantAddress());
-        assertEquals(APP_REF, callbackResponse.getData().getSolsSolicitorAppReference());
         assertEquals(ADDITIONAL_INFO, callbackResponse.getData().getSolsAdditionalInfo());
 
         assertEquals(BO_DOCS_RECEIVED, callbackResponse.getData().getBoEmailDocsReceivedNotificationRequested());
