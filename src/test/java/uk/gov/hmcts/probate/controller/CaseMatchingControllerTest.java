@@ -15,6 +15,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+import uk.gov.hmcts.probate.config.ClientTokenGenerator;
 import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
@@ -59,6 +60,9 @@ public class CaseMatchingControllerTest {
 
     @MockBean
     private AppInsights appInsights;
+
+    @MockBean
+    private ClientTokenGenerator clientTokenGenerator;
 
     @Autowired
     private WebApplicationContext webApplicationContext;
