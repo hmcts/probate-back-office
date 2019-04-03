@@ -50,7 +50,7 @@ services:
 #    - shared-database
 
   service-auth-provider-api:
-    image: hmcts/service-auth-provider-app
+    image: hmcts.azurecr.io/hmcts/rpe-service-auth-provider
     container_name: service-auth-provider-api
     environment:
       - SERVER_PORT=8080
@@ -70,7 +70,7 @@ services:
       - 4502:8080
 
   pdf-service-api:
-    image: docker.artifactory.reform.hmcts.net/reform/pdf-service-api:latest
+    image: hmcts.azurecr.io/hmcts/cmc-pdf-service:latest
     container_name: pdf-service-api
     environment:
       - JAVA_OPTS=-Xms8m -Xmx256m -Djava.security.egd=file:/dev/./urandom -XX:MaxMetaspaceSize=128m
@@ -150,7 +150,7 @@ services:
     image: mailhog/mailhog
 
   authentication-web:
-    image: docker.artifactory.reform.hmcts.net/auth/authentication-web:latest
+    image: hmcts.azurecr.io/hmcts/tidam-authentication-web:latest
     container_name: authentication-web
     environment:
      - IDAM_API_URL=http://idam-api:8080
@@ -236,29 +236,25 @@ services:
   fees-api:
     image: docker.artifactory.reform.hmcts.net/fees-register/fees-api:${FEES_API_DOCKER_VERSION:-latest}
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://fees-database:5432/fees_register
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://shared-database:5432/fees_register
       - SPRING_DATASOURCE_USERNAME=fees_register
       - SPRING_DATASOURCE_PASSWORD=fees_register
       - SPRING_PROFILES_ACTIVE=embedded
       - AUTH_IDAM_CLIENT_BASEURL=http://idam-api:8080
       - ROOT_APPENDER=JSON_CONSOLE
+      - ENABLE_FEE_LOADER=true
+      - SPRING_LIQUIBASE_ENABLED=true
     ports:
       - 4411:8080
     links:
       - idam-api
-      - fees-database
+      - shared-database
     depends_on:
       - idam-api
-      - fees-database
-
-  fees-database:
-    image: docker.artifactory.reform.hmcts.net/fees-register/fees-database:${FEES_DATABASE_DOCKER_VERSION:-latest}
-    environment:
-      - FEES_REGISTER_DB_USERNAME=fees_register
-      - FEES_REGISTER_DB_PASSWORD=fees_register
+      - shared-database
 
   ccd-user-profile-api:
-    image: hmcts/ccd-user-profile-api:latest
+    image: hmcts.azurecr.io/hmcts/ccd-user-profile-api:latest
     container_name: ccd-user-profile-api
     environment:
       - JAVA_OPTS=-Xms8m -Xmx256m -Djava.security.egd=file:/dev/./urandom -XX:MaxMetaspaceSize=128m
@@ -314,7 +310,7 @@ services:
       - service-auth-provider-api
 
   ccd-data-store-api:
-      image: hmcts/ccd-data-store-api:latest
+      image: hmcts.azurecr.io/hmcts/ccd-data-store-api:latest
       container_name: ccd-data-store-api
       environment:
         - JAVA_OPTS=-Xms8m -Xmx256m -Djava.security.egd=file:/dev/./urandom -XX:MaxMetaspaceSize=128m
@@ -350,7 +346,7 @@ services:
         - service-auth-provider-api
 
   ccd-case-management-web:
-    image: hmcts/ccd-case-management-web:latest
+    image: hmcts.azurecr.io/hmcts/ccd-case-management-web:latest
     container_name: ccd-case-management-web
     environment:
       - IDAM_LOGIN_URL=https://localhost:8000/login
@@ -367,7 +363,7 @@ services:
         condition: service_started
 
   ccd-api-gateway:
-    image: hmcts/ccd-api-gateway:latest
+    image: hmcts.azurecr.io/hmcts/ccd-api-gateway/base:latest
     container_name: ccd-api-gateway
     environment:
       - IDAM_BASE_URL=http://idam-api:8080
