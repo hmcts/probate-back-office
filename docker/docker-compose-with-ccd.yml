@@ -282,7 +282,7 @@ services:
       - service-auth-provider-api
 
   ccd-definition-store-api:
-    image: hmcts/ccd-definition-store-api:latest
+    image: hmcts.azurecr.io/hmcts/ccd-definition-store-api:latest
     container_name: ccd-definition-store-api
     environment:
       - JAVA_OPTS=-Xms8m -Xmx256m -Djava.security.egd=file:/dev/./urandom -XX:MaxMetaspaceSize=128m

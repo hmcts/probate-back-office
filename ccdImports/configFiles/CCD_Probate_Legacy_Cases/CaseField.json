@@ -1,4 +1,5 @@
 [
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "Legacy", "ID": "customHistoryViewer", "Label": "Custom History Viewer", "FieldType": "CaseHistoryViewer", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Legacy", "ID": "probate_number", "Label": "Probate Number", "FieldType": "Text", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Legacy", "ID": "deceasedForenames", "Label": "First name(s)", "FieldType": "Text", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Legacy", "ID": "deceasedSurname", "Label": "Last name", "FieldType": "Text", "SecurityClassification": "Public"},
