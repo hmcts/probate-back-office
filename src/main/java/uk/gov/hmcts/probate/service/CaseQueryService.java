@@ -21,7 +21,6 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCases;
 import uk.gov.hmcts.probate.service.evidencemanagement.header.HttpHeadersFactory;
 import uk.gov.hmcts.reform.authorisation.generators.ServiceAuthTokenGenerator;
 
-import java.io.IOException;
 import java.net.URI;
 import java.util.List;
 
@@ -51,7 +50,7 @@ public class CaseQueryService {
     private final ServiceAuthTokenGenerator serviceAuthTokenGenerator;
     private final ClientTokenGenerator clientTokenGenerator;
 
-    public List<ReturnedCaseDetails> findCasesWithDatedDocument(String documentTypeGenerated, String queryDate) throws IOException {
+    public List<ReturnedCaseDetails> findCasesWithDatedDocument(String documentTypeGenerated, String queryDate) {
         BoolQueryBuilder query = boolQuery();
 
         query.must(matchQuery(STATE, STATE_MATCH));
@@ -64,7 +63,7 @@ public class CaseQueryService {
     }
 
     public List<ReturnedCaseDetails> findCaseStateWithinTimeFrame(String documentTypeGenerated,
-                                                                  String startDate, String endDate) throws IOException {
+                                                                  String startDate, String endDate) {
         BoolQueryBuilder query = boolQuery();
 
         query.must(matchQuery(STATE, STATE_MATCH));
@@ -76,7 +75,7 @@ public class CaseQueryService {
         return runQuery(jsonQuery);
     }
 
-    private List<ReturnedCaseDetails> runQuery(String jsonQuery) throws IOException {
+    private List<ReturnedCaseDetails> runQuery(String jsonQuery) {
         log.info("GrantMatchingService runQuery: " + jsonQuery);
         URI uri = UriComponentsBuilder
                 .fromHttpUrl(ccdDataStoreAPIConfiguration.getHost() + ccdDataStoreAPIConfiguration.getCaseMatchingPath())
