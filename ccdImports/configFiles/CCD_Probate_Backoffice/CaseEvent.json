@@ -86,6 +86,7 @@
     "PreConditionState(s)": "BOExamining",
     "PostConditionState": "BOExamining",
     "CallBackURLAboutToSubmitEvent": "http://${CCD_DEF_CASE_SERVICE_BASE_URL}/document/generate-grant-draft",
+    "RetriesTimeoutURLAboutToSubmitEvent": "60",
     "SecurityClassification": "Public",
     "ShowSummary": "N"
   },
@@ -116,6 +117,7 @@
     "PreConditionState(s)": "BOCaseStopped",
     "PostConditionState": "BOCaseStopped",
     "CallBackURLAboutToSubmitEvent": "http://${CCD_DEF_CASE_SERVICE_BASE_URL}/document/generate-grant-draft",
+    "RetriesTimeoutURLAboutToSubmitEvent": "60",
     "SecurityClassification": "Public",
     "ShowSummary": "N"
   },
@@ -149,6 +151,7 @@
     "PreConditionState(s)": "BORegistrarEscalation",
     "PostConditionState": "BORegistrarEscalation",
     "CallBackURLAboutToSubmitEvent": "http://${CCD_DEF_CASE_SERVICE_BASE_URL}/document/generate-grant-draft",
+    "RetriesTimeoutURLAboutToSubmitEvent": "60",
     "SecurityClassification": "Public",
     "ShowSummary": "N"
   },
@@ -179,6 +182,7 @@
     "PreConditionState(s)": "BOReadyToIssue",
     "PostConditionState": "BOReadyToIssue",
     "CallBackURLAboutToSubmitEvent": "http://${CCD_DEF_CASE_SERVICE_BASE_URL}/document/generate-grant-draft",
+    "RetriesTimeoutURLAboutToSubmitEvent": "60",
     "SecurityClassification": "Public",
     "ShowSummary": "N"
   },
@@ -195,6 +199,7 @@
     "PreConditionState(s)": "BOCaseQA",
     "PostConditionState": "BOCaseQA",
     "CallBackURLAboutToSubmitEvent": "http://${CCD_DEF_CASE_SERVICE_BASE_URL}/document/generate-grant-draft",
+    "RetriesTimeoutURLAboutToSubmitEvent": "60",
     "SecurityClassification": "Public",
     "ShowSummary": "N"
   },
