@@ -172,7 +172,6 @@ services:
 
   dm-store:
     image: hmcts/dm-store:latest
-    #image: hmcts.azurecr.io/hmcts/dm-store:latest
     command: --wait-for-database 30
     environment:
       - SERVER_PORT=8080
