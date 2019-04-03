@@ -91,6 +91,12 @@ public class ClientTokenGenerator {
             log.error("Error executing post: " + e.getMessage());
             throw new ClientException(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage());
         }
+
+        StringBuilder result = getResponse(response);
+
+        JSONObject jsonObject = new JSONObject(result.toString());
+
+        return jsonObject.get("code").toString();
     }
 
     private StringBuilder getResponse(HttpResponse response) {

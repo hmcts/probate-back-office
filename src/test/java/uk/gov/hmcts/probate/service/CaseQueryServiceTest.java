@@ -56,7 +56,7 @@ public class CaseQueryServiceTest {
     private CaseQueryService caseQueryService;
 
     @Before
-    public void setUp() throws IOException {
+    public void setUp() {
         MockitoAnnotations.initMocks(this);
 
         when(serviceAuthTokenGenerator.generate()).thenReturn("Bearer 321");
@@ -101,18 +101,7 @@ public class CaseQueryServiceTest {
     }
 
     @Test
-    public void findCasesInitiatedBySchedulerReturnsCaseList() throws IOException {
-        when(headers.getAuthorizationHeaders()).thenThrow(NullPointerException.class);
-        List<ReturnedCaseDetails> cases = caseQueryService.findCasesWithDatedDocument("Test",
-                "testDate");
-
-        assertEquals(1, cases.size());
-        assertThat(cases.get(0).getId(), is(1L));
-        assertEquals("Smith", cases.get(0).getData().getDeceasedSurname());
-    }
-
-    @Test
-    public void findCasesWithDateRangeReturnsCaseList() throws IOException {
+    public void findCasesWithDateRangeReturnsCaseList() {
         List<ReturnedCaseDetails> cases = caseQueryService.findCaseStateWithinTimeFrame("digitalGrant",
                 "2019-02-05", "2019-02-22");
 
