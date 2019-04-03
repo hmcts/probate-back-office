@@ -20,7 +20,6 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCases;
 import uk.gov.hmcts.probate.service.evidencemanagement.header.HttpHeadersFactory;
 import uk.gov.hmcts.reform.authorisation.generators.ServiceAuthTokenGenerator;
 
-import java.io.IOException;
 import java.util.List;
 
 import static org.hamcrest.core.Is.is;
@@ -57,7 +56,7 @@ public class CaseQueryServiceTest {
     private CaseQueryService caseQueryService;
 
     @Before
-    public void setUp() throws IOException {
+    public void setUp() {
         MockitoAnnotations.initMocks(this);
 
         when(serviceAuthTokenGenerator.generate()).thenReturn("Bearer 321");
@@ -81,7 +80,7 @@ public class CaseQueryServiceTest {
     }
 
     @Test
-    public void findCasesWithDatedDocumentReturnsCaseList() throws IOException {
+    public void findCasesWithDatedDocumentReturnsCaseList() {
         List<ReturnedCaseDetails> cases = caseQueryService.findCasesWithDatedDocument("Test",
                 "testDate");
 
@@ -91,7 +90,7 @@ public class CaseQueryServiceTest {
     }
 
     @Test
-    public void findCasesInitiatedBySchedulerReturnsCaseList() throws IOException {
+    public void findCasesInitiatedBySchedulerReturnsCaseList() {
         when(headers.getAuthorizationHeaders()).thenThrow(NullPointerException.class);
         List<ReturnedCaseDetails> cases = caseQueryService.findCasesWithDatedDocument("Test",
                 "testDate");
@@ -102,7 +101,7 @@ public class CaseQueryServiceTest {
     }
 
     @Test
-    public void findCasesWithDateRangeReturnsCaseList() throws IOException {
+    public void findCasesWithDateRangeReturnsCaseList() {
         List<ReturnedCaseDetails> cases = caseQueryService.findCaseStateWithinTimeFrame("digitalGrant",
                 "2019-02-05", "2019-02-22");
 
