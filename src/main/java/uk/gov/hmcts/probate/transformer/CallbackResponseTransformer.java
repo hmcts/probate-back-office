@@ -208,12 +208,6 @@ public class CallbackResponseTransformer {
         ResponseCaseDataBuilder builder = ResponseCaseData.builder()
                 .applicationType(ofNullable(caseData.getApplicationType()).orElse(DEFAULT_APPLICATION_TYPE))
                 .registryLocation(ofNullable(caseData.getRegistryLocation()).orElse(DEFAULT_REGISTRY_LOCATION))
-                .solsSolicitorFirmName(caseData.getSolsSolicitorFirmName())
-                .solsSolicitorAddress(caseData.getSolsSolicitorAddress())
-                .solsSolicitorEmail(caseData.getSolsSolicitorEmail())
-                .solsSolicitorPhoneNumber(caseData.getSolsSolicitorPhoneNumber())
-                .solsSOTName(caseData.getSolsSOTName())
-                .solsSOTJobTitle(caseData.getSolsSOTJobTitle())
                 .deceasedForenames(caseData.getDeceasedForenames())
                 .deceasedSurname(caseData.getDeceasedSurname())
                 .deceasedDateOfBirth(ofNullable(caseData.getDeceasedDateOfBirth())
@@ -237,7 +231,6 @@ public class CallbackResponseTransformer {
                 .deceasedAddress(caseData.getDeceasedAddress())
                 .deceasedAnyOtherNames(caseData.getDeceasedAnyOtherNames())
                 .primaryApplicantAddress(caseData.getPrimaryApplicantAddress())
-                .solsSolicitorAppReference(caseData.getSolsSolicitorAppReference())
                 .solsAdditionalInfo(caseData.getSolsAdditionalInfo())
                 .caseMatches(caseData.getCaseMatches())
 
@@ -430,6 +423,18 @@ public class CallbackResponseTransformer {
             }
         }
 
+        if (caseData.getApplicationType() == ApplicationType.SOLICITOR) {
+            builder
+                    .solsSOTName(caseData.getSolsSOTName())
+                    .solsSOTJobTitle(caseData.getSolsSOTJobTitle())
+                    .solsSolicitorAppReference(caseData.getSolsSolicitorAppReference())
+                    .solsSolicitorFirmName(caseData.getSolsSolicitorFirmName())
+                    .solsSolicitorEmail(caseData.getSolsSolicitorEmail())
+                    .solsSolicitorPhoneNumber(caseData.getSolsSolicitorPhoneNumber())
+                    .solsSolicitorAddress(caseData.getSolsSolicitorAddress());
+
+        }
+
         if (!isPaperForm(caseData)) {
             builder
                     .paperForm(ANSWER_NO);
@@ -480,6 +485,19 @@ public class CallbackResponseTransformer {
         builder
                 .ihtReferenceNumber(caseData.getIhtReferenceNumber())
                 .solsDeceasedAliasNamesList(caseData.getSolsDeceasedAliasNamesList());
+
+        if (caseData.getApplicationType() == ApplicationType.SOLICITOR) {
+            builder
+                    .solsSOTName(caseData.getSolsSOTName())
+                    .solsSOTJobTitle(caseData.getSolsSOTJobTitle())
+                    .solsSolicitorAppReference(caseData.getSolsSolicitorAppReference())
+                    .solsSolicitorFirmName(caseData.getSolsSolicitorFirmName())
+                    .solsSolicitorEmail(caseData.getSolsSolicitorEmail())
+                    .solsSolicitorPhoneNumber(caseData.getSolsSolicitorPhoneNumber())
+                    .solsSolicitorAddress(caseData.getSolsSolicitorAddress());
+        }
+
+
 
         if (!isPaperForm(caseData)) {
             builder
