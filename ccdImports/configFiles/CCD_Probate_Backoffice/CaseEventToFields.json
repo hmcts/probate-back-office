@@ -4609,5 +4609,16 @@
     "PageDisplayOrder": 10,
     "FieldShowCondition": "caseType=\"intestacy\" AND halfBloodCousinsSurvived=\"Yes\"",
     "ShowSummaryChangeOption": "y"
-  }
+  },
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "CaseEventID": "boUploadDocumentsForCaseCreated", "CaseFieldID": "boDocumentsUploaded", "PageFieldDisplayOrder": 1, "DisplayContext": "MANDATORY", "PageID": "boUploadDocumentPage1", "PageDisplayOrder": 1, "ShowSummaryChangeOption": "n"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "CaseEventID": "boUploadDocumentsForCasePaymentFailed", "CaseFieldID": "boDocumentsUploaded", "PageFieldDisplayOrder": 1, "DisplayContext": "MANDATORY", "PageID": "boUploadDocumentPage1", "PageDisplayOrder": 1, "ShowSummaryChangeOption": "n"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "CaseEventID": "boUploadDocumentsForReadyForExamination", "CaseFieldID": "boDocumentsUploaded", "PageFieldDisplayOrder": 1, "DisplayContext": "MANDATORY", "PageID": "boUploadDocumentPage1", "PageDisplayOrder": 1, "ShowSummaryChangeOption": "n"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "CaseEventID": "boUploadDocumentsForCaveatPermenant", "CaseFieldID": "boDocumentsUploaded", "PageFieldDisplayOrder": 1, "DisplayContext": "MANDATORY", "PageID": "boUploadDocumentPage1", "PageDisplayOrder": 1, "ShowSummaryChangeOption": "n"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "CaseEventID": "boUploadDocumentsForReadyToIssue", "CaseFieldID": "boDocumentsUploaded", "PageFieldDisplayOrder": 1, "DisplayContext": "MANDATORY", "PageID": "boUploadDocumentPage1", "PageDisplayOrder": 1, "ShowSummaryChangeOption": "n"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "CaseEventID": "boUploadDocumentsForCaseQa", "CaseFieldID": "boDocumentsUploaded", "PageFieldDisplayOrder": 1, "DisplayContext": "MANDATORY", "PageID": "boUploadDocumentPage1", "PageDisplayOrder": 1, "ShowSummaryChangeOption": "n"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "CaseEventID": "boUploadDocumentsForCaseMatchingIssueGrant", "CaseFieldID": "boDocumentsUploaded", "PageFieldDisplayOrder": 1, "DisplayContext": "MANDATORY", "PageID": "boUploadDocumentPage1", "PageDisplayOrder": 1, "ShowSummaryChangeOption": "n"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "CaseEventID": "boUploadDocumentsForCaseMatchingExamining", "CaseFieldID": "boDocumentsUploaded", "PageFieldDisplayOrder": 1, "DisplayContext": "MANDATORY", "PageID": "boUploadDocumentPage1", "PageDisplayOrder": 1, "ShowSummaryChangeOption": "n"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "CaseEventID": "boUploadDocumentsForGrantIssued", "CaseFieldID": "boDocumentsUploaded", "PageFieldDisplayOrder": 1, "DisplayContext": "MANDATORY", "PageID": "boUploadDocumentPage1", "PageDisplayOrder": 1, "ShowSummaryChangeOption": "n"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "CaseEventID": "boUploadDocumentsForCaseClosed", "CaseFieldID": "boDocumentsUploaded", "PageFieldDisplayOrder": 1, "DisplayContext": "MANDATORY", "PageID": "boUploadDocumentPage1", "PageDisplayOrder": 1, "ShowSummaryChangeOption": "n"}
+
 ]
