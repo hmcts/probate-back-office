@@ -8,6 +8,14 @@ auth.provider.service.client:
   microservice: probate_backend
   tokenTimeToLiveInSeconds: 900
 
+auth.provider.client:
+  user: http://localhost:4501
+  secret: 123456
+  id: probate
+  redirect: http://localhost:3451/oauth2redirect
+  email: probatesolcw1@gmail.com
+  password: password
+
 pdf.service:
   url: http://localhost:5500
   pdfApi: /api/v1/pdf-generator/html
