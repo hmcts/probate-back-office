@@ -11,7 +11,9 @@ module.exports = function (crud) {
     if (crud === 'create') {
         I.waitForText(createGrantOfProbateConfig.page3_waitForText, testConfig.TestTimeToWaitForText);
         I.click(`#otherExecutorExists-${createGrantOfProbateConfig.page3_otherExecutorExistsYes}`);
+        I.waitForText(createGrantOfProbateConfig.page3_waitForText2, testConfig.TestTimeToWaitForText);
         I.click({type: 'button'}, '#executorsApplying>div');
+        I.waitForText(createGrantOfProbateConfig.page3_waitForText3, testConfig.TestTimeToWaitForText);
         I.fillField('#executorsApplying_0_applyingExecutorName', createGrantOfProbateConfig.page3_executor0_name);
         I.fillField('#executorsApplying_0_applyingExecutorPhoneNumber', createGrantOfProbateConfig.page3_phone_number);
         I.fillField('#executorsApplying_0_applyingExecutorEmail', createGrantOfProbateConfig.page3_applying_executor_email);

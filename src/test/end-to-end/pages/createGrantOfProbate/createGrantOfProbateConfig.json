@@ -36,6 +36,8 @@
     "page2_list1_update_option": "Applicant Details",
 
     "page3_waitForText": "About the applicant(s)",
+    "page3_waitForText2": "Executors that are applying",
+    "page3_waitForText3": "Executor address",
     "page3_amend_waitForText": "Amend case details",
     "page3_url": "create/case/PROBATE/GrantOfRepresentation/applyforGrantPaperApplication/applyforGrantPaperApplicationapplyforGrantPaperApplicationPage3",
     "page3_otherExecutorExistsYes": "Yes",

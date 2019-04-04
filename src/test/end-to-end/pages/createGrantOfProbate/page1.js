@@ -34,6 +34,7 @@ module.exports = function (crud) {
         I.waitForText(createGrantOfProbateConfig.page1_amend_waitForText, testConfig.TestTimeToWaitForText);
         I.selectOption('#selectionList', createGrantOfProbateConfig.page1_list5_update_option);
         I.click(commonConfig.continueButton);
+        I.seeElement('#boWillMessage');
         I.fillField('#boWillMessage', createGrantOfProbateConfig.page1_boWillMessage);
 
     }
