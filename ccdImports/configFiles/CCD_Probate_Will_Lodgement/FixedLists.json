@@ -11,6 +11,8 @@
   {"LiveFrom": "01/01/2017", "ID": "wlRegistryLocations", "ListElementCode": "Cardiff", "ListElement": "Cardiff"},
   {"LiveFrom": "01/01/2017", "ID": "wlRegistryLocations", "ListElementCode": "Newcastle", "ListElement": "Newcastle"},
   {"LiveFrom": "01/01/2017", "ID": "wlRegistryLocations", "ListElementCode": "Winchester", "ListElement": "Winchester"},
+  {"LiveFrom": "02/01/2017", "ID": "wlRegistryLocations", "ListElementCode": "Bristol", "ListElement": "Bristol"},
+  {"LiveFrom": "02/01/2017", "ID": "wlRegistryLocations", "ListElementCode": "ctsc", "ListElement": "CTSC"},
   {"LiveFrom": "01/01/2017", "ID": "wlLodgementTypes", "ListElementCode": "safeCustody", "ListElement": "Safe custody"},
   {"LiveFrom": "01/01/2017", "ID": "wlLodgementTypes", "ListElementCode": "renunciation", "ListElement": "Will filed on renunciation"},
   {"LiveFrom": "01/01/2017", "ID": "wlGender", "ListElementCode": "male", "ListElement": "Male"},

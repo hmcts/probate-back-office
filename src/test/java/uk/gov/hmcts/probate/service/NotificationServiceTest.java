@@ -72,6 +72,7 @@ public class NotificationServiceTest {
     private CaseDetails solicitorCaseDataBirmingham;
     private CaseDetails personalCaseDataManchester;
     private CaseDetails personalCaseDataCtsc;
+    private CaseDetails personalCaseDataBristol;
     private CaseDetails solicitorCaseDataManchester;
     private ReturnedCaseDetails excelaCaseData;
 
@@ -85,6 +86,7 @@ public class NotificationServiceTest {
     private CaveatDetails personalCaveatDataCardiff;
     private CaveatDetails personalCaveatDataNewcastle;
     private CaveatDetails personalCaveatDataWinchester;
+    private CaveatDetails personalCaveatDataBristol;
 
     private static final Long ID = 1L;
     private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
@@ -145,6 +147,14 @@ public class NotificationServiceTest {
                 .primaryApplicantEmailAddress("personal@test.com")
                 .deceasedDateOfDeath(LocalDate.of(2000, 12, 12))
                 .build(), LAST_MODIFIED, ID);
+
+        personalCaseDataBristol = new CaseDetails(CaseData.builder()
+                .applicationType(PERSONAL)
+                .registryLocation("Bristol")
+                .primaryApplicantEmailAddress("personal@test.com")
+                .deceasedDateOfDeath(LocalDate.of(2000, 12, 12))
+                .build(), LAST_MODIFIED, ID);
+
 
         solicitorCaseDataManchester = new CaseDetails(CaseData.builder()
                 .applicationType(SOLICITOR)
@@ -229,6 +239,14 @@ public class NotificationServiceTest {
                 .caveatorEmailAddress("personal@test.com")
                 .deceasedDateOfDeath(LocalDate.of(2000, 12, 12))
                 .build(), LAST_MODIFIED, ID);
+
+        personalCaveatDataBristol = new CaveatDetails(CaveatData.builder()
+                .applicationType(PERSONAL)
+                .registryLocation("Bristol")
+                .caveatorEmailAddress("personal@test.com")
+                .deceasedDateOfDeath(LocalDate.of(2000, 12, 12))
+                .build(), LAST_MODIFIED, ID);
+
     }
 
     @Test
@@ -404,6 +422,22 @@ public class NotificationServiceTest {
     }
 
     @Test
+    public void sendCaseStoppedEmailToPersonalApplicantFromBristol()
+            throws NotificationClientException, BadRequestException {
+
+        notificationService.sendEmail(CASE_STOPPED, personalCaseDataBristol);
+
+        verify(notificationClient).sendEmail(
+                eq("pa-case-stopped"),
+                eq("personal@test.com"),
+                any(),
+                isNull(),
+                eq("bristol-emailReplyToId"));
+
+        verify(pdfManagementService).generateAndUpload(any(SentEmail.class), eq(SENT_EMAIL));
+    }
+
+    @Test
     public void sendGeneralCaveatEmailToPersonalApplicantFromOxford()
             throws NotificationClientException, BadRequestException {
 
@@ -483,6 +517,21 @@ public class NotificationServiceTest {
             throws NotificationClientException, BadRequestException {
 
         notificationService.sendCaveatEmail(GENERAL_CAVEAT_MESSAGE, personalCaveatDataBrighton);
+
+        verify(notificationClient).sendEmail(
+                eq("pa-general-caveat-message"),
+                eq("personal@test.com"),
+                any(),
+                anyString());
+
+        verify(pdfManagementService).generateAndUpload(any(SentEmail.class), eq(SENT_EMAIL));
+    }
+
+    @Test
+    public void sendGeneralCaveatEmailToPersonalApplicantFromBristol()
+            throws NotificationClientException, BadRequestException {
+
+        notificationService.sendCaveatEmail(GENERAL_CAVEAT_MESSAGE, personalCaveatDataBristol);
 
         verify(notificationClient).sendEmail(
                 eq("pa-general-caveat-message"),
