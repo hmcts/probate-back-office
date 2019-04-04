@@ -111,7 +111,7 @@ public class ClientTokenGenerator {
             }
             return result;
         } catch (IOException e) {
-            log.error("Error reading respoonse: " + e.getMessage());
+            log.error("Error reading response: " + e.getMessage());
             throw new ClientException(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage());
         }
     }
