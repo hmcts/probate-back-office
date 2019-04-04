@@ -17,6 +17,7 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "Channel": "CaseWorker", "TabID": "documentsTab", "TabLabel": "Documents", "TabDisplayOrder": 6, "CaseFieldID": "documentsUploaded", "TabFieldDisplayOrder": 1},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "Channel": "CaseWorker", "TabID": "documentsTab", "TabLabel": "Documents", "TabDisplayOrder": 6, "CaseFieldID": "documentsGenerated", "TabFieldDisplayOrder": 2},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "Channel": "CaseWorker", "TabID": "caseMatchesTab", "TabLabel": "Case matches", "TabDisplayOrder": 7, "CaseFieldID": "caseMatches", "TabFieldDisplayOrder": 1},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "Channel": "CaseWorker", "TabID": "paymentHistoryTab", "TabLabel": "Payment History", "TabDisplayOrder": 8, "CaseFieldID": "customPaymentHistoryViewer", "TabFieldDisplayOrder": 1},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "Channel": "CaseWorker", "TabID": "legacyCaseTab", "TabLabel": "Legacy details", "TabDisplayOrder": 10, "CaseFieldID": "recordId", "TabFieldDisplayOrder": 1, "TabShowCondition":  "recordId=\"*\""},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "Channel": "CaseWorker", "TabID": "legacyCaseTab", "TabLabel": "Legacy details", "TabDisplayOrder": 10, "CaseFieldID": "legacyType", "TabFieldDisplayOrder": 2},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "Channel": "CaseWorker", "TabID": "legacyCaseTab", "TabLabel": "Legacy details", "TabDisplayOrder": 10, "CaseFieldID": "legacyCaseViewUrlLink", "TabFieldDisplayOrder": 3},

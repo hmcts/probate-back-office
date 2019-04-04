@@ -1,5 +1,6 @@
 [
   {"LiveFrom": "01/01/2017", "CaseTypeID": "WillLodgement", "ID": "customHistoryViewer", "Label": "Custom History Viewer", "FieldType": "CaseHistoryViewer", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "WillLodgement", "ID": "customPaymentHistoryViewer", "Label": "Custom Payment History Viewer", "FieldType": "CasePaymentHistoryViewer", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "WillLodgement", "ID": "applicationType", "Label": "Application type", "FieldType": "FixedList", "FieldTypeParameter": "wlApplicationTypes", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "WillLodgement", "ID": "registryLocation", "Label": "Registry location", "FieldType": "FixedList", "FieldTypeParameter": "wlRegistryLocations", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "WillLodgement", "ID": "lodgementType", "Label": "Lodgement type", "FieldType": "FixedList", "FieldTypeParameter": "wlLodgementTypes", "SecurityClassification": "Public"},
