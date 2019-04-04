@@ -262,7 +262,7 @@
     "PreConditionState(s)": "BOCaseMatchingIssueGrant",
     "PostConditionState": "BOGrantIssued",
     "CallBackURLAboutToSubmitEvent": "http://${CCD_DEF_CASE_SERVICE_BASE_URL}/document/generate-grant",
-    "RetriesTimeoutURLSubmittedEvent": "5",
+    "RetriesTimeoutURLSubmittedEvent": "60",
     "SecurityClassification": "Public",
     "ShowSummary": "N"
   },
