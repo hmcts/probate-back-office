@@ -1,15 +1,15 @@
 const testConfig = require('src/test/config.js');
 
 exports.config = {
-    'tests': './paths/**/*.js',
-    'output': './output',
+    'tests': testConfig.TestPathToRun,
+    'output': testConfig.TestOutputDir,
     'helpers': {
         'Puppeteer': {
-            'url': testConfig.TestE2EFrontendUrl || 'http://localhost:3000',
+            'url': testConfig.TestFrontendUrl,
             'waitForTimeout': 60000,
             'getPageTimeout': 60000,
             'waitForAction': 1500,
-            'show': false,
+            'show': testConfig.TestShowBrowserWindow,
             'chrome': {
                 'ignoreHTTPSErrors': true,
                 'ignore-certificate-errors': true,
@@ -45,7 +45,7 @@ exports.config = {
     },
     'mocha': {
         'reporterOptions': {
-            'reportDir': process.env.E2E_OUTPUT_DIR || './output',
+            'reportDir': testConfig.TestOutputDir,
             'reportName': 'index',
             'inlineAssets': true
         }

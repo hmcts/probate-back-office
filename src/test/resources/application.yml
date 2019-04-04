@@ -198,6 +198,16 @@ registries:
     addressline4: PO Box 4240
     town: Manchester
     postcode: M60 1WJ
+  bristol:
+    name: Bristol District Probate Registry
+    phone: 02920 474373
+    emailReplyToId: "bristol-emailReplyToId"
+    addressline1: The Probate Registry of Wales
+    addressline2: Cardiff Magistrates' Court
+    addressline3: Fitzalan Place
+    addressline4:
+    town: Cardiff
+    postcode: CF24 0RZ
 
 auth.idam.client.baseUrl: http://localhost:4501
 

@@ -1,4 +1,6 @@
 [
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "customHistoryViewer", "Label": "Custom History Viewer", "FieldType": "CaseHistoryViewer", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "customPaymentHistoryViewer", "Label": "Custom Payment History Viewer", "FieldType": "CasePaymentHistoryViewer", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "applicationId", "Label": "Application id", "FieldType": "Text", "SecurityClassification": "Public", "Min": 1, "Max": 50},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "applicationType", "Label": "Application type", "FieldType": "FixedList", "FieldTypeParameter": "cavApplicationTypes", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "registryLocation", "Label": "Registry location", "FieldType": "FixedList", "FieldTypeParameter": "cavRegistryLocations", "SecurityClassification": "Public"},

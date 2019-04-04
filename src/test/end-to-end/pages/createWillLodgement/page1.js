@@ -8,11 +8,12 @@ module.exports = function (crud) {
 
     const I = this;
 
-    I.waitForText(createWillLodgementConfig.page1_waitForText, testConfig.TestTimeToWaitForText);
-
     if (crud === 'create') {
-        I.selectOption('#registryLocation', createWillLodgementConfig.page1_list1_registry_location);
-        I.selectOption('#lodgementType', createWillLodgementConfig.page1_list2_lodgement_type);
+        I.waitForText(createWillLodgementConfig.page1_waitForText, testConfig.TestTimeToWaitForText);
+
+        I.selectOption('#applicationType', createWillLodgementConfig.page1_list1_application_type);
+        I.selectOption('#registryLocation', createWillLodgementConfig.page1_list2_registry_location);
+        I.selectOption('#lodgementType', createWillLodgementConfig.page1_list3_lodgement_type);
 
         I.fillField('#lodgedDate-day', createWillLodgementConfig.page1_lodgedDate_day);
         I.fillField('#lodgedDate-month', createWillLodgementConfig.page1_lodgedDate_month);
@@ -32,13 +33,17 @@ module.exports = function (crud) {
     }
 
     if (crud === 'update') {
+        I.waitForText(createWillLodgementConfig.page1_amend_waitForText, testConfig.TestTimeToWaitForText);
+
+        I.selectOption('#registryLocation', createWillLodgementConfig.page1_list2_registry_location_update);
+        I.selectOption('#lodgementType', createWillLodgementConfig.page1_list3_lodgement_type_update);
+
         I.fillField('#lodgedDate-day', createWillLodgementConfig.page1_lodgedDate_day_update);
         I.fillField('#lodgedDate-month', createWillLodgementConfig.page1_lodgedDate_month_update);
         I.fillField('#lodgedDate-year', createWillLodgementConfig.page1_lodgedDate_year_update);
 
         I.fillField('#numberOfCodicils', createWillLodgementConfig.page1_numberOfCodicils_update);
-
     }
 
-    I.click(commonConfig.continueButton);
+    I.waitForNavigationToComplete(commonConfig.continueButton);
 };

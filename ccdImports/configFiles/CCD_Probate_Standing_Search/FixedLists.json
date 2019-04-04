@@ -11,6 +11,8 @@
   {"LiveFrom": "01/01/2017", "ID": "ssRegistryLocations", "ListElementCode": "Cardiff", "ListElement": "Cardiff"},
   {"LiveFrom": "01/01/2017", "ID": "ssRegistryLocations", "ListElementCode": "Newcastle", "ListElement": "Newcastle"},
   {"LiveFrom": "01/01/2017", "ID": "ssRegistryLocations", "ListElementCode": "Winchester", "ListElement": "Winchester"},
+  {"LiveFrom": "02/01/2017", "ID": "ssRegistryLocations", "ListElementCode": "Bristol", "ListElement": "Bristol"},
+  {"LiveFrom": "02/01/2017", "ID": "ssRegistryLocations", "ListElementCode": "ctsc", "ListElement": "CTSC"},
   {"LiveFrom": "01/01/2017", "ID": "ssDocumentUploadTypeEnum", "ListElementCode": "email", "ListElement": "Email"},
   {"LiveFrom": "01/01/2017", "ID": "ssDocumentUploadTypeEnum", "ListElementCode": "correspondence", "ListElement": "Correspondence"},
   {"LiveFrom": "01/01/2017", "ID": "ssDocumentUploadTypeEnum", "ListElementCode": "IHT", "ListElement": "Codicil"},

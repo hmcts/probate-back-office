@@ -40,7 +40,9 @@ public class GrantApplicationMapperTest {
     private static final LocalDate DATE_OF_DEATH = LocalDate.of(2018, 1, 1);
     private static final String DECEASED_ADDRESS = "DecAddL1, DeacAddPC";
     private static final Long GROSS_ESTATE = 10000L;
+    private static final Long GROSS_ESTATE_TRANSFORMED = 1000000L;
     private static final Long NET_ESTATE = 9000L;
+    private static final Long NET_ESTATE_TRANSFORMED = 900000L;
     private static final String SOLICITOR_REFERENCE = "SolRef1";
 
     @Autowired
@@ -98,8 +100,8 @@ public class GrantApplicationMapperTest {
         assertThat(grantApplicationData.getDeceasedDateOfBirth()).isEqualTo(DATE_OF_BIRTH);
         assertThat(grantApplicationData.getDeceasedDateOfDeath()).isEqualTo(DATE_OF_DEATH);
         assertThat(grantApplicationData.getDeceasedAddress()).isEqualToComparingFieldByFieldRecursively(expectedDeceasedAddress);
-        assertThat(grantApplicationData.getIhtGrossValue()).isEqualTo(GROSS_ESTATE);
-        assertThat(grantApplicationData.getIhtNetValue()).isEqualTo(NET_ESTATE);
+        assertThat(grantApplicationData.getIhtGrossValue()).isEqualTo(GROSS_ESTATE_TRANSFORMED);
+        assertThat(grantApplicationData.getIhtNetValue()).isEqualTo(NET_ESTATE_TRANSFORMED);
         assertThat(grantApplicationData.getGrantType()).isEqualTo(GrantType.GRANT_OF_PROBATE);
         assertThat(grantApplicationData.getLegacyId()).isEqualTo(ID);
         assertThat(grantApplicationData.getLegacyType()).isEqualTo(LEGACY_TYPE);

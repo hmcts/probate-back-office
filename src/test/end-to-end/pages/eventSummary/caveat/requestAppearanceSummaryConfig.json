@@ -1,0 +1,5 @@
+{
+  "waitForText" : "Request appearance",
+  "summary": "request_appearance_event_summary_text",
+  "comment": "request_appearance_event_description_text"
+}

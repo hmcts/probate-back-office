@@ -1,4 +1,6 @@
 [
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "StandingSearch", "ID": "customHistoryViewer", "Label": "Custom History Viewer", "FieldType": "CaseHistoryViewer", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "StandingSearch", "ID": "customPaymentHistoryViewer", "Label": "Custom Payment History Viewer", "FieldType": "CasePaymentHistoryViewer", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "StandingSearch", "ID": "applicationType", "Label": "Application type", "FieldType": "FixedList", "FieldTypeParameter": "ssApplicationTypes", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "StandingSearch", "ID": "registryLocation", "Label": "Registry location", "FieldType": "FixedList", "FieldTypeParameter": "ssRegistryLocations", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "StandingSearch", "ID": "deceasedNameSection", "Label": "### What's the full name of the deceased? \r\nUse the name on the death certificate", "FieldType": "Label", "SecurityClassification": "Public"},

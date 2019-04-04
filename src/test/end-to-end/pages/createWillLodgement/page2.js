@@ -8,11 +8,11 @@ module.exports = function (crud) {
 
     const I = this;
 
-    I.waitForText(createWillLodgementConfig.page2_waitForText, testConfig.TestTimeToWaitForText);
-
     if (crud === 'create') {
-        I.fillField('#deceasedForenames', createWillLodgementConfig.page2_firstnames);
-        I.fillField('#deceasedSurname', createWillLodgementConfig.page2_lastnames);
+        I.waitForText(createWillLodgementConfig.page2_waitForText, testConfig.TestTimeToWaitForText);
+
+        I.fillField('#deceasedForenames', createWillLodgementConfig.page2_forenames);
+        I.fillField('#deceasedSurname', createWillLodgementConfig.page2_surname);
 
         I.selectOption('#deceasedGender', createWillLodgementConfig.page2_gender);
 
@@ -50,14 +50,15 @@ module.exports = function (crud) {
     }
 
     if (crud === 'update') {
-        I.fillField('#deceasedForenames', createWillLodgementConfig.page2_firstnames_update);
-        I.fillField('#deceasedSurname', createWillLodgementConfig.page2_lastnames_update);
+        I.waitForText(createWillLodgementConfig.page2_amend_waitForText, testConfig.TestTimeToWaitForText);
+
+        I.fillField('#deceasedForenames', createWillLodgementConfig.page2_forenames_update);
+        I.fillField('#deceasedSurname', createWillLodgementConfig.page2_surname_update);
 
         I.fillField('#deceasedDateOfBirth-day', createWillLodgementConfig.page2_dateOfBirth_day_update);
         I.fillField('#deceasedDateOfBirth-month', createWillLodgementConfig.page2_dateOfBirth_month_update);
         I.fillField('#deceasedDateOfBirth-year', createWillLodgementConfig.page2_dateOfBirth_year_update);
-
     }
 
-    I.click(commonConfig.continueButton);
+    I.waitForNavigationToComplete(commonConfig.continueButton);
 };

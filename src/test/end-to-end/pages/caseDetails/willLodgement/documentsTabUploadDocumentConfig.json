@@ -1,0 +1,13 @@
+{
+  "tabName": "Documents",
+  "fields": [
+    "Type",
+    "Document Url",
+    "Comment"
+  ],
+  "dataKeys": [
+    "documentType",
+    "filename",
+    "comment"
+  ]
+}
