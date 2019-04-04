@@ -1,7 +1,5 @@
 'use strict';
 
-const dateFns = require('date-fns');
-
 const testConfig = require('src/test/config');
 const createCaseConfig = require('src/test/end-to-end/pages/createCase/createCaseConfig');
 
