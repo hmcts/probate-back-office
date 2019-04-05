@@ -46,6 +46,8 @@ public class ClientTokenGenerator {
     @Value("${auth.provider.client.password}")
     private String password;
 
+    private static final String BASIC_TOKEN = "Basic ";
+
     private HttpClient client = HttpClients.createDefault();
 
     @Bean
@@ -82,7 +84,7 @@ public class ClientTokenGenerator {
         final String encoded = Base64.getEncoder().encodeToString((email + ":" + password).getBytes());
         HttpPost post = new HttpPost(idamUrl + "/oauth2/authorize?response_type=code&client_id="
                 + id + "&redirect_uri=" + redirect);
-        post.setHeader("Authorization", "Basic " + encoded);
+        post.setHeader("Authorization", BASIC_TOKEN + encoded);
 
         HttpResponse response;
         try {
