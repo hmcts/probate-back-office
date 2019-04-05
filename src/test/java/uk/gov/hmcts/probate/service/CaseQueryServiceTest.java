@@ -11,14 +11,15 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import uk.gov.hmcts.probate.config.CCDDataStoreAPIConfiguration;
+import uk.gov.hmcts.probate.config.ClientTokenGenerator;
 import uk.gov.hmcts.probate.exception.CaseMatchingException;
 import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCases;
 import uk.gov.hmcts.probate.service.evidencemanagement.header.HttpHeadersFactory;
+import uk.gov.hmcts.reform.authorisation.generators.ServiceAuthTokenGenerator;
 
-import java.io.IOException;
 import java.util.List;
 
 import static org.hamcrest.core.Is.is;
@@ -45,6 +46,12 @@ public class CaseQueryServiceTest {
     @Mock
     private CCDDataStoreAPIConfiguration ccdDataStoreAPIConfiguration;
 
+    @Mock
+    private ClientTokenGenerator clientTokenGenerator;
+
+    @Mock
+    private ServiceAuthTokenGenerator serviceAuthTokenGenerator;
+
     @InjectMocks
     private CaseQueryService caseQueryService;
 
@@ -52,8 +59,9 @@ public class CaseQueryServiceTest {
     public void setUp() {
         MockitoAnnotations.initMocks(this);
 
-        when(headers.getAuthorizationHeaders())
-                .thenReturn(new HttpHeaders());
+        when(serviceAuthTokenGenerator.generate()).thenReturn("Bearer 321");
+        when(clientTokenGenerator.generateClientToken()).thenReturn("Bearer 123");
+        when(headers.getAuthorizationHeaders()).thenReturn(new HttpHeaders());
 
         when(ccdDataStoreAPIConfiguration.getHost()).thenReturn("http://localhost");
         when(ccdDataStoreAPIConfiguration.getCaseMatchingPath()).thenReturn("/path");
@@ -72,7 +80,18 @@ public class CaseQueryServiceTest {
     }
 
     @Test
-    public void findCasesWithDatedDocumentReturnsCaseList() throws IOException {
+    public void findCasesWithDatedDocumentReturnsCaseList() {
+        List<ReturnedCaseDetails> cases = caseQueryService.findCasesWithDatedDocument("Test",
+                "testDate");
+
+        assertEquals(1, cases.size());
+        assertThat(cases.get(0).getId(), is(1L));
+        assertEquals("Smith", cases.get(0).getData().getDeceasedSurname());
+    }
+
+    @Test
+    public void findCasesInitiatedBySchedulerReturnsCaseList() {
+        when(headers.getAuthorizationHeaders()).thenThrow(NullPointerException.class);
         List<ReturnedCaseDetails> cases = caseQueryService.findCasesWithDatedDocument("Test",
                 "testDate");
 
