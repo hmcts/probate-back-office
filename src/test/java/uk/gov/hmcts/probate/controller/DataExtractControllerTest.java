@@ -12,6 +12,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+import uk.gov.hmcts.probate.config.ClientTokenGenerator;
 import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
@@ -49,6 +50,9 @@ public class DataExtractControllerTest {
     @MockBean
     private AppInsights appInsights;
 
+    @MockBean
+    private ClientTokenGenerator clientTokenGenerator;
+
     @Autowired
     private MockMvc mockMvc;
 
@@ -63,8 +67,12 @@ public class DataExtractControllerTest {
         CollectionMember<ScannedDocument> scannedDocument = new CollectionMember<>(new ScannedDocument("1",
                 "test", "other", "will", LocalDateTime.now(), DocumentLink.builder().build(),
                 "test"));
+        CollectionMember<ScannedDocument> scannedDocumentNullSubType = new CollectionMember<>(new ScannedDocument("1",
+                "test", "other", null, LocalDateTime.now(), DocumentLink.builder().build(),
+                "test"));
         List<CollectionMember<ScannedDocument>> scannedDocuments = new ArrayList<>();
         scannedDocuments.add(scannedDocument);
+        scannedDocuments.add(scannedDocumentNullSubType);
 
         CaseData caseData = CaseData.builder()
                 .deceasedSurname("smith")

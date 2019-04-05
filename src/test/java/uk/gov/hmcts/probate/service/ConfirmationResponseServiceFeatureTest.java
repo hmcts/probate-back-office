@@ -7,6 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
+import uk.gov.hmcts.probate.config.ClientTokenGenerator;
 import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
 import uk.gov.hmcts.probate.model.ccd.Deceased;
@@ -65,6 +66,9 @@ public class ConfirmationResponseServiceFeatureTest {
 
     @MockBean
     private AppInsights appInsights;
+
+    @MockBean
+    private ClientTokenGenerator clientTokenGenerator;
 
     @MockBean
     private CoreCaseDataApi coreCaseDataApi;
