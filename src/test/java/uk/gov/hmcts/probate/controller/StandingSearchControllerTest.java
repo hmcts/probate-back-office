@@ -12,7 +12,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-import uk.gov.hmcts.probate.config.ClientTokenGenerator;
 import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.util.TestUtils;
 import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
@@ -41,9 +40,6 @@ public class StandingSearchControllerTest {
 
     @Autowired
     private WebApplicationContext webApplicationContext;
-
-    @MockBean
-    private ClientTokenGenerator clientTokenGenerator;
 
     @Before
     public void setup() {
