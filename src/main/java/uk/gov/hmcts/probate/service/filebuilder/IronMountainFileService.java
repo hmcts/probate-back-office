@@ -1,6 +1,7 @@
 package uk.gov.hmcts.probate.service.filebuilder;
 
 import com.google.common.collect.ImmutableList;
+import joptsimple.internal.Strings;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.model.ApplicationType;
@@ -137,7 +138,7 @@ public class IronMountainFileService {
                 && caseData.getAdditionalExecutorsApplying().size() >= (index + 1)) {
             return caseData.getAdditionalExecutorsApplying().get(index).getValue().getApplyingExecutorName();
         }
-        return "";
+        return Strings.EMPTY;
     }
 
     private enum CaseTypeMapping {

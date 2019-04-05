@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.service;
 
+import joptsimple.internal.Strings;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -187,6 +188,6 @@ public class NotificationService {
                 return document.getValue().getControlNumber();
             }
         }
-        return "";
+        return Strings.EMPTY;
     }
 }
