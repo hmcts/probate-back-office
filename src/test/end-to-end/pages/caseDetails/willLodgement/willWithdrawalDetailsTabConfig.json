@@ -1,0 +1,9 @@
+{
+  "tabName": "Will withdrawl details",
+  "fields": [
+    "Reason for withdrawl"
+  ],
+  "dataKeys": [
+    "list1_text"
+  ]
+}
