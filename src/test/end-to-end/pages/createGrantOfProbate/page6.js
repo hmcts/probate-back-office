@@ -27,6 +27,8 @@ module.exports = function (crud) {
         I.waitForText(createGrantOfProbateConfig.page6_amend_waitForText, testConfig.TestTimeToWaitForText);
         I.selectOption('#selectionList', createGrantOfProbateConfig.page6_list1_update_option);
         I.click(commonConfig.continueButton);
+        I.seeElement('#childrenDied-No');
+        I.seeElement('#childrenDied-Yes');
         I.click(`#childrenDied-${createGrantOfProbateConfig.page6_childrenDiedNo}`);
 
     }

@@ -9,7 +9,7 @@ const eventSummaryConfig = require('src/test/end-to-end/pages/eventSummary/event
 const createCaveatConfig = require('src/test/end-to-end/pages/createCaveat/createCaveatConfig');
 const emailCaveatorConfig = require('src/test/end-to-end/pages/emailNotifications/caveat/emailCaveatorConfig');
 const caseMatchesConfig = require('src/test/end-to-end/pages/caseMatches/caveat/caseMatchesConfig');
-const documentUploadConfig = require('src/test/end-to-end/pages/documentUpload/documentUploadConfig');
+const documentUploadConfig = require('src/test/end-to-end/pages/documentUpload/caveat/documentUploadConfig');
 
 const historyTabConfig = require('src/test/end-to-end/pages/caseDetails/caveat/historyTabConfig');
 
@@ -82,7 +82,7 @@ Scenario('Caveat Workflow - E2E Test 02 - Caveat for a Personal Applicant - Rais
 
     nextStepName = 'Upload document';
     I.chooseNextStep(nextStepName);
-    I.uploadDocument(caseRef);
+    I.uploadDocument(caseRef, documentUploadConfig);
     I.enterEventSummary(caseRef, nextStepName);
     // Note that End State does not change when uploading a document.
     I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
