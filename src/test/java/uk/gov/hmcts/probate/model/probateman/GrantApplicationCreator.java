@@ -9,6 +9,9 @@ public class GrantApplicationCreator {
         grantApplication.setId(1234L);
         grantApplication.setProbateNumber("gaProbateNumber");
         grantApplication.setProbateVersion(99999L);
+        grantApplication.setRegistryName("Oxford");
+        grantApplication.setSubregistryName("Carlisle");
+        grantApplication.setRegistryCode(999L);
         grantApplication.setDeceasedId(66L);
         grantApplication.setDeceasedForenames("gaDeceasedForenames");
         grantApplication.setDeceasedSurname("gaDeceasedSurname");

@@ -43,6 +43,15 @@ public class GrantApplication extends ProbateManModel {
     @Column(name = "PROBATE_NUMBER")
     private String probateNumber; //varchar(11),
 
+    @Column(name = "REGISTRY_NAME")
+    private String registryName;
+
+    @Column(name = "SUBREGISTRY_NAME")
+    private String subregistryName;
+
+    @Column(name = "REGISTRY_CODE")
+    private Long registryCode;
+
     @Column(name = "DECEASED_ADDRESS")
     private String deceasedAddress; //varchar(500),
 
