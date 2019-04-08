@@ -70,7 +70,7 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
 
     @Test
     public void verifyDeclarationAcceptInTheReturnedPDF() {
-        validatePostRequestSuccessForLegalStatement("We authorise SolicitorFirmName, as our appointed firm, to mark the will with their signature and submit " +
+        validatePostRequestSuccessForLegalStatement("We authorise SolicitorFirmName, as our appointed firm, to submit " +
                 "\nthis application on our behalf.");
     }
 
