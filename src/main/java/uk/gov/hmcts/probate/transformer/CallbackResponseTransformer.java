@@ -296,7 +296,8 @@ public class CallbackResponseTransformer {
                 .recordId(caseData.getRecordId())
                 .legacyType(caseData.getLegacyType())
                 .legacyCaseViewUrl(caseData.getLegacyCaseViewUrl())
-                .grantIssuedDate(caseData.getGrantIssuedDate());
+                .grantIssuedDate(caseData.getGrantIssuedDate())
+                .dateOfDeathType(caseData.getDateOfDeathType());
 
         if (transform) {
             updateCaseBuilderForTransformCase(caseData, builder);

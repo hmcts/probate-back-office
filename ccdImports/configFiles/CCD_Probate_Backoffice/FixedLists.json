@@ -104,5 +104,10 @@
   {"LiveFrom": "06/01/2017", "ID": "paperPaymentMethodFixedList", "ListElementCode": "debitOrCredit", "ListElement": "Debit or Credit card"},
   {"LiveFrom": "06/01/2017", "ID": "paperPaymentMethodFixedList", "ListElementCode": "cheque", "ListElement": "Cheque or Postal order"},
   {"LiveFrom": "06/01/2017", "ID": "paperPaymentMethodFixedList", "ListElementCode": "cash", "ListElement": "Cash"},
-  {"LiveFrom": "06/01/2017", "ID": "paperPaymentMethodFixedList", "ListElementCode": "feeAccount", "ListElement": "Fee account"}
+  {"LiveFrom": "06/01/2017", "ID": "paperPaymentMethodFixedList", "ListElementCode": "feeAccount", "ListElement": "Fee account"},
+  {"LiveFrom": "06/01/2017", "ID": "dateOfDeathTypeFixedList", "ListElementCode": "diedOn", "ListElement": "Died on"},
+  {"LiveFrom": "06/01/2017", "ID": "dateOfDeathTypeFixedList", "ListElementCode": "diedOnOrSince", "ListElement": "Died on or since"},
+  {"LiveFrom": "06/01/2017", "ID": "dateOfDeathTypeFixedList", "ListElementCode": "diedOnOrBefore", "ListElement": "Died on or before"},
+  {"LiveFrom": "06/01/2017", "ID": "dateOfDeathTypeFixedList", "ListElementCode": "diedOnOrAbout", "ListElement": "Died on or about"},
+  {"LiveFrom": "06/01/2017", "ID": "dateOfDeathTypeFixedList", "ListElementCode": "presumedDiedOn", "ListElement": "Presumed died on"}
 ]

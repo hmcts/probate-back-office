@@ -86,6 +86,7 @@ public class CallbackResponseTransformerTest {
 
     private static final String DECEASED_FIRSTNAME = "Firstname";
     private static final String DECEASED_LASTNAME = "Lastname";
+    private static final String DECEASED_DATE_OF_DEATH_TYPE = "diedOnOrSince";
     private static final LocalDate DOB = LocalDate.parse("2016-12-31", dateTimeFormatter);
     private static final LocalDate DOD = LocalDate.parse("2017-12-31", dateTimeFormatter);
     private static final String NUM_CODICILS = "9";
@@ -1013,7 +1014,8 @@ public class CallbackResponseTransformerTest {
                 .scannedDocuments(SCANNED_DOCUMENTS_LIST)
                 .paperPaymentMethod("debitOrCredit")
                 .paymentReferenceNumberPaperform(IHT_REFERENCE)
-                .paperForm(YES);
+                .paperForm(YES)
+                .dateOfDeathType(DECEASED_DATE_OF_DEATH_TYPE);
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
@@ -1377,6 +1379,7 @@ public class CallbackResponseTransformerTest {
         assertEquals(YES, callbackResponse.getData().getForeignAsset());
         assertEquals("123", callbackResponse.getData().getForeignAssetEstateValue());
         assertEquals(CASE_TYPE_INTESTACY, callbackResponse.getData().getCaseType());
+        assertEquals(DECEASED_DATE_OF_DEATH_TYPE, callbackResponse.getData().getDateOfDeathType());
     }
 
 }
