@@ -29,6 +29,10 @@ module.exports = function () {
         enterGrantOfProbatePage7: steps.createGrantOfProbate.page7,
         enterGrantOfProbatePage8: steps.createGrantOfProbate.page8,
         enterGrantOfProbatePage9: steps.createGrantOfProbate.page9,
+        enterStandingSearchPage1: steps.createStandingSearch.page1,
+        enterStandingSearchPage2: steps.createStandingSearch.page2,
+        enterStandingSearchPage3: steps.createStandingSearch.page3,
+        enterStandingSearchPage4: steps.createStandingSearch.page4,
         checkMyAnswers: steps.checkYourAnswers.checkYourAnswers,
         seeCaseDetails: steps.caseDetails.caseDetails,
         chooseNextStep: steps.nextStep.nextStep,
@@ -42,6 +46,7 @@ module.exports = function () {
         selectCaseMatchesForWillLodgement: steps.caseMatches.willLodgement.caseMatches,
         selectCaseMatchesForGrantOfProbate: steps.caseMatches.grantOfProbate.caseMatches,
         selectCaseMatchesForCaveat: steps.caseMatches.caveat.caseMatches,
+        selectCaseMatchesForStandingSearch: steps.caseMatches.standingSearch.caseMatches,
         selectWithdrawalReason: steps.withdrawal.withdrawal
     });
 };

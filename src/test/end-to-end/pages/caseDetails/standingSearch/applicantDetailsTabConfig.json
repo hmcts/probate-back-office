@@ -1,0 +1,26 @@
+{
+  "tabName": "Applicant details",
+  "fields": [
+    "Forename(s)",
+    "Surname(s)",
+    "Email address",
+    "Building and Street",
+    "Town or City",
+    "County",
+    "Postcode/Zipcode",
+    "Country"
+  ],
+  "dataKeys": [
+    "page3_applicantForenames",
+    "page3_applicantSurname",
+    "page3_email",
+    "address_line1",
+    "address_line2",
+    "address_line3",
+    "address_town",
+    "address_county",
+    "address_country",
+    "address_postcode"
+  ]
+}
+  
