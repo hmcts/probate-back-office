@@ -446,6 +446,11 @@ public class CallbackResponseTransformer {
                     .caseType("gop");
         }
 
+        if (caseData.getDateOfDeathType() == null) {
+            builder
+                    .dateOfDeathType("diedOn");
+        }
+
         if (caseData.getPrimaryApplicantAliasReason() != null) {
             if (caseData.getPrimaryApplicantAliasReason().equalsIgnoreCase(OTHER)) {
                 builder
@@ -508,6 +513,11 @@ public class CallbackResponseTransformer {
         if (caseData.getCaseType() == null) {
             builder
                     .caseType("gop");
+        }
+
+        if (caseData.getDateOfDeathType() == null) {
+            builder
+                    .dateOfDeathType("diedOn");
         }
 
         if (caseData.getSolsExecutorAliasNames() != null) {

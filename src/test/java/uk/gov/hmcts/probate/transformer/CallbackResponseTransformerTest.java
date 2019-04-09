@@ -1090,6 +1090,16 @@ public class CallbackResponseTransformerTest {
         assertEquals(grantIssuedDate, callbackResponse.getData().getGrantIssuedDate());
     }
 
+    @Test
+    public void shouldSetDateOfDeathType() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        CallbackResponse callbackResponse = underTest.paperForm(callbackRequestMock);
+        assertEquals("diedOn", callbackResponse.getData().getDateOfDeathType());
+    }
+
     private CollectionMember<ProbateAliasName> createdDeceasedAliasName(String id, String forename, String lastname, String onGrant) {
         ProbateAliasName pan = ProbateAliasName.builder()
                 .appearOnGrant(onGrant)
