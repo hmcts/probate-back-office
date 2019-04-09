@@ -34,11 +34,11 @@ public class WillLodgement extends ProbateManModel {
     @Column(name = "PROBATE_VERSION")
     private Long probateVersion;// int
 
-    @Column(name = "REGISTRY_NAME")
-    private String registryName;
-
     @Column(name = "REGISTRY_CODE")
     private Long registryCode;
+
+    @Column(name = "REGISTRY_NAME")
+    private String registryName;
 
     @Column(name = "DECEASED_ID")
     private Long deceasedId;// bigint,

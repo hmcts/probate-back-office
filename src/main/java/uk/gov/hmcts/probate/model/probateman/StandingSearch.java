@@ -20,7 +20,6 @@ import java.time.LocalDate;
 @Data
 @Table(name = "STANDING_SEARCHES_FLAT")
 @EqualsAndHashCode(callSuper = true)
-@SuppressWarnings("all")
 public class StandingSearch extends ProbateManModel {
 
     @Id
