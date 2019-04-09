@@ -6,25 +6,24 @@ const testConfig = require('src/test/config');
 const createCaseConfig = require('src/test/end-to-end/pages/createCase/createCaseConfig');
 const eventSummaryConfig = require('src/test/end-to-end/pages/eventSummary/eventSummaryConfig');
 
-// const caseMatchesConfig = require('src/test/end-to-end/pages/caseMatches/standingSearch/caseMatchesConfig');
+const caseMatchesConfig = require('src/test/end-to-end/pages/caseMatches/standingSearch/caseMatchesConfig');
 const createStandingSearchConfig = require('src/test/end-to-end/pages/createStandingSearch/createStandingSearchConfig');
-// const documentUploadConfig = require('src/test/end-to-end/pages/documentUpload/standingSearch/documentUploadConfig');
+const documentUploadConfig = require('src/test/end-to-end/pages/documentUpload/standingSearch/documentUploadConfig');
 
 const applicantDetailsTabConfig = require('src/test/end-to-end/pages/caseDetails/standingSearch/applicantDetailsTabConfig');
 const caseDetailsTabConfig = require('src/test/end-to-end/pages/caseDetails/standingSearch/caseDetailsTabConfig');
-// const caseMatchesTabConfig = require('src/test/end-to-end/pages/caseDetails/standingSearch/caseMatchesTabConfig');
+const caseMatchesTabConfig = require('src/test/end-to-end/pages/caseDetails/standingSearch/caseMatchesTabConfig');
 const deceasedTabConfig = require('src/test/end-to-end/pages/caseDetails/standingSearch/deceasedTabConfig');
-// const documentUploadTabConfig = require('src/test/end-to-end/pages/caseDetails/standingSearch/documentUploadTabConfig');
+const documentUploadTabConfig = require('src/test/end-to-end/pages/caseDetails/standingSearch/documentUploadTabConfig');
 const historyTabConfig = require('src/test/end-to-end/pages/caseDetails/standingSearch/historyTabConfig');
 
 const applicantDetailsUpdateTabConfig = require('src/test/end-to-end/pages/caseDetails/standingSearch/applicantDetailsUpdateTabConfig');
 const caseDetailsUpdateTabConfig = require('src/test/end-to-end/pages/caseDetails/standingSearch/caseDetailsUpdateTabConfig');
 const deceasedUpdateTabConfig = require('src/test/end-to-end/pages/caseDetails/standingSearch/deceasedUpdateTabConfig');
 
-Feature('Back Office');
-// .retry(testConfig.TestRetryFeatures);
+Feature('Back Office').retry(testConfig.TestRetryFeatures);
 
-Scenario('Standing Search Workflow - E2E test 01 - Standing Search for a Personal Applicant - Create a standing search -> Complete standing search', async function (I) {
+Scenario('Standing Search Workflow - E2E test 01 - Standing Search for a Personal Applicant - Create standing search -> Grant already issued -> Complete standing search', async function (I) {
 
     // IdAM
     I.authenticateWithIdamIfAvailable();
@@ -36,7 +35,7 @@ Scenario('Standing Search Workflow - E2E test 01 - Standing Search for a Persona
     I.enterStandingSearchPage2('create');
     I.enterStandingSearchPage3('create');
     I.enterStandingSearchPage4('create');
-    I.checkMyAnswers();
+    I.checkMyAnswers(nextStepName);
     let endState = 'Standing search created';
 
     const url = await I.grabCurrentUrl();
@@ -57,25 +56,44 @@ Scenario('Standing Search Workflow - E2E test 01 - Standing Search for a Persona
     I.enterStandingSearchPage2('update');
     I.enterStandingSearchPage3('update');
     I.enterStandingSearchPage4('update');
-    I.checkMyAnswers();
+    I.checkMyAnswers(nextStepName);
     endState = 'Standing search created';
 
-    pause();
     I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
-    pause();
     I.seeCaseDetails(caseRef, caseDetailsUpdateTabConfig, createStandingSearchConfig);
-    pause();
     I.seeCaseDetails(caseRef, deceasedUpdateTabConfig, createStandingSearchConfig);
-    pause();
     I.seeCaseDetails(caseRef, applicantDetailsUpdateTabConfig, createStandingSearchConfig);
 
-    // nextStepName = 'Match application';
-    // I.chooseNextStep(nextStepName);
-    // I.selectCaseMatchesForStandingSearch(caseRef, caseMatchesConfig);
-    // I.enterCaseMatchesComment(caseRef, eventSummaryConfig);
-    // endState = 'Standing search matching';
-    // I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
-    // I.seeCaseDetails(caseRef, caseMatchesTabConfig, caseMatchesConfig);
+    nextStepName = 'Upload document';
+    I.chooseNextStep(nextStepName);
+    I.uploadDocument(caseRef, documentUploadConfig);
+    I.enterEventSummary(caseRef, nextStepName);
+    I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+    I.seeCaseDetails(caseRef, documentUploadTabConfig, documentUploadConfig);
 
-});
-// .retry(testConfig.TestRetryScenarios);
+    nextStepName = 'Add comment';
+    I.chooseNextStep(nextStepName);
+    I.enterComment(caseRef, nextStepName);
+    I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+
+    nextStepName = 'Match application';
+    I.chooseNextStep(nextStepName);
+    I.selectCaseMatchesForStandingSearch(caseRef, caseMatchesConfig);
+    I.enterEventSummary(caseRef, nextStepName);
+    endState = 'Standing search matching';
+    I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+    I.seeCaseDetails(caseRef, caseMatchesTabConfig, caseMatchesConfig);
+
+    nextStepName = 'Grant already issued';
+    I.chooseNextStep(nextStepName);
+    I.selectGrantAlreadyIssued(caseRef, nextStepName);
+    endState = 'Processing standing search';
+    I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+
+    nextStepName = 'Complete standing search';
+    I.chooseNextStep(nextStepName);
+    I.completeStandingSearch(caseRef, nextStepName);
+    endState = 'Standing search completed';
+    I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+
+}).retry(testConfig.TestRetryScenarios);

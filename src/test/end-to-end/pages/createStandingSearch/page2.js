@@ -25,7 +25,10 @@ module.exports = function (crud) {
         I.waitForText(createStandingSearchConfig.page2_waitForText2, testConfig.TestTimeToWaitForText);
         I.click({type: 'button'}, '#deceasedFullAliasNameList>div');
         I.waitForText(createStandingSearchConfig.page2_waitForText3, testConfig.TestTimeToWaitForText);
-        I.fillField('#deceasedFullAliasNameList_0_FullAliasName', createStandingSearchConfig.page2_deceasedAlias);
+        I.fillField('#deceasedFullAliasNameList_0_FullAliasName', createStandingSearchConfig.page2_deceasedAlias1);
+        I.click({type: 'button'}, '#deceasedFullAliasNameList>div');
+        I.seeElement('#deceasedFullAliasNameList_1_FullAliasName');
+        I.fillField('#deceasedFullAliasNameList_1_FullAliasName', createStandingSearchConfig.page2_deceasedAlias2);
 
         I.click(createStandingSearchConfig.UKpostcodeLink);
         I.fillField('#deceasedAddress_AddressLine1', createStandingSearchConfig.address_line1);

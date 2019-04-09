@@ -3,9 +3,11 @@
   "list1_text": "Manage probate applications",
   "list2_text_will": "Will lodgement",
   "list2_text_caveat": "Caveat",
+  "list2_text_ss": "Standing search",
   "list2_text_gor": "Grant of representation",
   "list3_text_will": "Create a will lodgement",
   "list3_text_caveat": "Raise a caveat",
   "list3_text_gor": "PA1P/PA1A/Solicitors",
+  "list3_text_ss": "Create a standing search",
   "startButton": ".button"
 }

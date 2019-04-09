@@ -37,6 +37,8 @@ module.exports = function () {
         seeCaseDetails: steps.caseDetails.caseDetails,
         chooseNextStep: steps.nextStep.nextStep,
         printCase: steps.printCase.printCase,
+        selectGrantAlreadyIssued: steps.eventSummary.eventSummary,
+        completeStandingSearch: steps.eventSummary.eventSummary,
         enterEventSummary: steps.eventSummary.eventSummary,
         uploadDocument: steps.documentUpload.documentUpload,
         enterComment: steps.eventSummary.eventSummary,

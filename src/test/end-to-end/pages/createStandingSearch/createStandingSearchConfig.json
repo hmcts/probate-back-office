@@ -23,7 +23,8 @@
   "page2_deceasedDob_year": "1970",
   "page2_deceasedDob_long": "3 Mar 1970",
   "page2_deceasedAnyOtherNamesYes": "Yes",
-  "page2_deceasedAlias": "deceased_alias",
+  "page2_deceasedAlias1": "deceased_alias_1",
+  "page2_deceasedAlias2": "deceased_alias_2",
 
   "page3_waitForText": "Applicant details",
   "page3_amend_waitForText": "",
