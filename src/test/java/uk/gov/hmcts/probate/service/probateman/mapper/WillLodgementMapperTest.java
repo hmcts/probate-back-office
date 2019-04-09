@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
-import uk.gov.hmcts.probate.config.ClientTokenGenerator;
 import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.probateman.ProbateManType;
 import uk.gov.hmcts.probate.model.probateman.WillLodgement;
@@ -44,9 +43,6 @@ public class WillLodgementMapperTest {
 
     @MockBean
     AppInsights appInsights;
-
-    @MockBean
-    private ClientTokenGenerator clientTokenGenerator;
 
     @Test
     public void shouldMapToCcdData() {

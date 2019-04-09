@@ -1,21 +1,23 @@
 package uk.gov.hmcts.probate.config;
 
-import java.math.BigDecimal;
-
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import org.apache.http.client.config.RequestConfig;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.commonmark.parser.Parser;
 import org.commonmark.renderer.html.HtmlRenderer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.support.ResourceBundleMessageSource;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.module.SimpleModule;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-
 import uk.gov.hmcts.probate.model.ccd.raw.BigDecimalSerializer;
 import uk.gov.hmcts.probate.model.ccd.raw.LocalDateTimeSerializer;
+
+import java.math.BigDecimal;
 
 @Configuration
 public class ApplicationConfiguration {
@@ -36,7 +38,9 @@ public class ApplicationConfiguration {
 
     @Bean
     public RestTemplate restTemplate() {
-        return new RestTemplate();
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory(getHttpClient()));
+        return restTemplate;
     }
 
     @Primary
@@ -47,7 +51,7 @@ public class ApplicationConfiguration {
         objectMapper.registerModule(module);
         JavaTimeModule javaTimeModule = new JavaTimeModule();
         javaTimeModule.addSerializer(new LocalDateTimeSerializer());
-        objectMapper.registerModule(javaTimeModule);        
+        objectMapper.registerModule(javaTimeModule);
         return objectMapper;
     }
 
@@ -59,5 +63,20 @@ public class ApplicationConfiguration {
     @Bean
     public HtmlRenderer htmlRenderer() {
         return HtmlRenderer.builder().build();
+    }
+
+    private CloseableHttpClient getHttpClient() {
+        int timeout = 10000;
+        RequestConfig config = RequestConfig.custom()
+                .setConnectTimeout(timeout)
+                .setConnectionRequestTimeout(timeout)
+                .setSocketTimeout(timeout)
+                .build();
+
+        return HttpClientBuilder
+                .create()
+                .useSystemProperties()
+                .setDefaultRequestConfig(config)
+                .build();
     }
 }

@@ -12,7 +12,6 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 import uk.gov.hmcts.probate.config.CCDDataStoreAPIConfiguration;
-import uk.gov.hmcts.probate.config.ClientTokenGenerator;
 import uk.gov.hmcts.probate.exception.CaseMatchingException;
 import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.CaseType;
@@ -48,7 +47,7 @@ public class CaseQueryService {
     private final HttpHeadersFactory headers;
     private final CCDDataStoreAPIConfiguration ccdDataStoreAPIConfiguration;
     private final ServiceAuthTokenGenerator serviceAuthTokenGenerator;
-    private final ClientTokenGenerator clientTokenGenerator;
+    private final UserService userService;
 
     public List<ReturnedCaseDetails> findCasesWithDatedDocument(String documentTypeGenerated, String queryDate) {
         BoolQueryBuilder query = boolQuery();
@@ -89,7 +88,7 @@ public class CaseQueryService {
         } catch (Exception e) {
             tokenHeaders = new HttpHeaders();
             tokenHeaders.add(SERVICE_AUTH, "Bearer " + serviceAuthTokenGenerator.generate());
-            tokenHeaders.add(AUTHORIZATION, "Bearer " + clientTokenGenerator.generateClientToken());
+            tokenHeaders.add(AUTHORIZATION, userService.getIdamOauth2Token());
             tokenHeaders.setContentType(MediaType.APPLICATION_JSON);
         } finally {
             entity = new HttpEntity<>(jsonQuery, tokenHeaders);

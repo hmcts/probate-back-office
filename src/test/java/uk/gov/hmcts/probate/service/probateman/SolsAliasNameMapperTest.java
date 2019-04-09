@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
-import uk.gov.hmcts.probate.config.ClientTokenGenerator;
 import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.service.probateman.mapper.SolsAliasNameMapper;
 import uk.gov.hmcts.reform.probate.model.cases.CollectionMember;
@@ -32,9 +31,6 @@ public class SolsAliasNameMapperTest {
 
     @MockBean
     AppInsights appInsights;
-
-    @MockBean
-    private ClientTokenGenerator clientTokenGenerator;
 
     @Test
     public void shouldMapToCollection() {
