@@ -3,7 +3,7 @@
   "page1_amend_waitForText": "Case details",
   "page1_list1_application_type": "Personal",
   "page1_list2_registry_location": "Liverpool",
-  "page1_list2_registry_location_update": "Manchester",
+  "page1_list2_registry_location_update": "X",
   "standing_search_expiry_date": "X XXX XXXX",
 
   "page2_waitForText": "Deceased details",
@@ -12,8 +12,8 @@
   "page2_amend_waitForText": "Deceased details",
   "page2_firstnames": "deceased_fn",
   "page2_lastnames": "deceased_ln",
-  "page2_firstnames_update": "deceased_fn_update",
-  "page2_lastnames_update": "deceased_ln_update",
+  "page2_firstnames_update": "X",
+  "page2_lastnames_update": "X",
   "page2_deceasedDod_day": "03",
   "page2_deceasedDod_month": "03",
   "page2_deceasedDod_year": "2018",
@@ -27,17 +27,18 @@
   "page2_deceasedAlias2": "deceased_alias_2",
 
   "page3_waitForText": "Applicant details",
-  "page3_amend_waitForText": "",
+  "page3_amend_waitForText": "Applicant details",
   "page3_applicantForenames": "applicant_fn",
   "page3_applicantSurname": "applicant_sn",
-  "page3_applicantForenames_update": "applicant_fn_update",
-  "page3_applicantSurname_update": "applicant_sn_update",
+  "page3_applicantForenames_update": "X",
+  "page3_applicantSurname_update": "X",
   "page3_email": "test@test.com",
 
   "page4_waitForText": "Standing search details",
   "page4_amend_waitForText": "Standing search details",
   "page4_numberOfCopies": "1",
-  "page4_numberOfCopies_update": "2",
+  "page4_numberOfCopies_update": "X",
+
 
   "address_line1": "1",
   "address_line2": "Buckingham Palace",

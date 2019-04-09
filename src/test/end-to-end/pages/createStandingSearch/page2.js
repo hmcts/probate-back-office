@@ -41,7 +41,40 @@ module.exports = function (crud) {
 
     }
 
-    if (crud === 'update') {
+    if (crud === 'update1') {
+        createStandingSearchConfig.page2_firstnames_update = `${createStandingSearchConfig.page2_firstnames}_${crud}`;
+        createStandingSearchConfig.page2_lastnames_update = `${createStandingSearchConfig.page2_lastnames}_${crud}`;
+
+        I.waitForText(createStandingSearchConfig.page2_amend_waitForText, testConfig.TestTimeToWaitForText);
+        I.fillField('#deceasedForenames', createStandingSearchConfig.page2_firstnames_update);
+        I.fillField('#deceasedSurname', createStandingSearchConfig.page2_lastnames_update);
+
+    }
+
+    if (crud === 'update2') {
+        createStandingSearchConfig.page2_firstnames_update = `${createStandingSearchConfig.page2_firstnames}_${crud}`;
+        createStandingSearchConfig.page2_lastnames_update = `${createStandingSearchConfig.page2_lastnames}_${crud}`;
+
+        I.waitForText(createStandingSearchConfig.page2_amend_waitForText, testConfig.TestTimeToWaitForText);
+        I.fillField('#deceasedForenames', createStandingSearchConfig.page2_firstnames_update);
+        I.fillField('#deceasedSurname', createStandingSearchConfig.page2_lastnames_update);
+
+    }
+
+    if (crud === 'update3') {
+        createStandingSearchConfig.page2_firstnames_update = `${createStandingSearchConfig.page2_firstnames}_${crud}`;
+        createStandingSearchConfig.page2_lastnames_update = `${createStandingSearchConfig.page2_lastnames}_${crud}`;
+
+        I.waitForText(createStandingSearchConfig.page2_amend_waitForText, testConfig.TestTimeToWaitForText);
+        I.fillField('#deceasedForenames', createStandingSearchConfig.page2_firstnames_update);
+        I.fillField('#deceasedSurname', createStandingSearchConfig.page2_lastnames_update);
+
+    }
+
+    if (crud === 'update4') {
+        createStandingSearchConfig.page2_firstnames_update = `${createStandingSearchConfig.page2_firstnames}_${crud}`;
+        createStandingSearchConfig.page2_lastnames_update = `${createStandingSearchConfig.page2_lastnames}_${crud}`;
+
         I.waitForText(createStandingSearchConfig.page2_amend_waitForText, testConfig.TestTimeToWaitForText);
         I.fillField('#deceasedForenames', createStandingSearchConfig.page2_firstnames_update);
         I.fillField('#deceasedSurname', createStandingSearchConfig.page2_lastnames_update);

@@ -25,7 +25,40 @@ module.exports = function (crud) {
 
     }
 
-    if (crud === 'update') {
+    if (crud === 'update1') {
+        createStandingSearchConfig.page3_applicantForenames_update = `${createStandingSearchConfig.page3_applicantForenames}_${crud}`;
+        createStandingSearchConfig.page3_applicantSurname_update = `${createStandingSearchConfig.page3_applicantSurname}_${crud}`;
+
+        I.waitForText(createStandingSearchConfig.page3_amend_waitForText, testConfig.TestTimeToWaitForText);
+        I.fillField('#applicantForenames', createStandingSearchConfig.page3_applicantForenames_update);
+        I.fillField('#applicantSurname', createStandingSearchConfig.page3_applicantSurname_update);
+
+    }
+
+    if (crud === 'update2') {
+        createStandingSearchConfig.page3_applicantForenames_update = `${createStandingSearchConfig.page3_applicantForenames}_${crud}`;
+        createStandingSearchConfig.page3_applicantSurname_update = `${createStandingSearchConfig.page3_applicantSurname}_${crud}`;
+
+        I.waitForText(createStandingSearchConfig.page3_amend_waitForText, testConfig.TestTimeToWaitForText);
+        I.fillField('#applicantForenames', createStandingSearchConfig.page3_applicantForenames_update);
+        I.fillField('#applicantSurname', createStandingSearchConfig.page3_applicantSurname_update);
+
+    }
+
+    if (crud === 'update3') {
+        createStandingSearchConfig.page3_applicantForenames_update = `${createStandingSearchConfig.page3_applicantForenames}_${crud}`;
+        createStandingSearchConfig.page3_applicantSurname_update = `${createStandingSearchConfig.page3_applicantSurname}_${crud}`;
+
+        I.waitForText(createStandingSearchConfig.page3_amend_waitForText, testConfig.TestTimeToWaitForText);
+        I.fillField('#applicantForenames', createStandingSearchConfig.page3_applicantForenames_update);
+        I.fillField('#applicantSurname', createStandingSearchConfig.page3_applicantSurname_update);
+
+    }
+
+    if (crud === 'update4') {
+        createStandingSearchConfig.page3_applicantForenames_update = `${createStandingSearchConfig.page3_applicantForenames}_${crud}`;
+        createStandingSearchConfig.page3_applicantSurname_update = `${createStandingSearchConfig.page3_applicantSurname}_${crud}`;
+
         I.waitForText(createStandingSearchConfig.page3_amend_waitForText, testConfig.TestTimeToWaitForText);
         I.fillField('#applicantForenames', createStandingSearchConfig.page3_applicantForenames_update);
         I.fillField('#applicantSurname', createStandingSearchConfig.page3_applicantSurname_update);

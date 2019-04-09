@@ -15,7 +15,26 @@ module.exports = function (crud) {
         I.selectOption('#registryLocation', createStandingSearchConfig.page1_list2_registry_location);
     }
 
-    if (crud === 'update') {
+    if (crud === 'update1') {
+        createStandingSearchConfig.page1_list2_registry_location_update = 'Manchester';
+        I.waitForText(createStandingSearchConfig.page1_amend_waitForText, testConfig.TestTimeToWaitForText);
+        I.selectOption('#registryLocation', createStandingSearchConfig.page1_list2_registry_location_update);
+    }
+
+    if (crud === 'update2') {
+        createStandingSearchConfig.page1_list2_registry_location_update = 'Leeds';
+        I.waitForText(createStandingSearchConfig.page1_amend_waitForText, testConfig.TestTimeToWaitForText);
+        I.selectOption('#registryLocation', createStandingSearchConfig.page1_list2_registry_location_update);
+    }
+
+    if (crud === 'update3') {
+        createStandingSearchConfig.page1_list2_registry_location_update = 'Birmingham';
+        I.waitForText(createStandingSearchConfig.page1_amend_waitForText, testConfig.TestTimeToWaitForText);
+        I.selectOption('#registryLocation', createStandingSearchConfig.page1_list2_registry_location_update);
+    }
+
+    if (crud === 'update4') {
+        createStandingSearchConfig.page1_list2_registry_location_update = 'Oxford';
         I.waitForText(createStandingSearchConfig.page1_amend_waitForText, testConfig.TestTimeToWaitForText);
         I.selectOption('#registryLocation', createStandingSearchConfig.page1_list2_registry_location_update);
     }

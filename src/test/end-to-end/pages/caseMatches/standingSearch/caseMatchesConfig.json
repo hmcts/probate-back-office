@@ -1,6 +1,6 @@
 {
   "waitForText" : "Match application",
-  "fullname": "deceased_fn_update deceased_ln_update",
+  "fullname": "deceased_fn deceased_sn",
   "dob": "1970-03-03",
   "dod": "2018-03-03",
   "postcode": "SW1A 1AA"

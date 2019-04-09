@@ -52,12 +52,11 @@ Scenario('Standing Search Workflow - E2E test 01 - Standing Search for a Persona
 
     nextStepName = 'Amend standing search';
     I.chooseNextStep(nextStepName);
-    I.enterStandingSearchPage1('update');
-    I.enterStandingSearchPage2('update');
-    I.enterStandingSearchPage3('update');
-    I.enterStandingSearchPage4('update');
+    I.enterStandingSearchPage1('update1');
+    I.enterStandingSearchPage2('update1');
+    I.enterStandingSearchPage3('update1');
+    I.enterStandingSearchPage4('update1');
     I.checkMyAnswers(nextStepName);
-    endState = 'Standing search created';
 
     I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
     I.seeCaseDetails(caseRef, caseDetailsUpdateTabConfig, createStandingSearchConfig);
@@ -66,7 +65,7 @@ Scenario('Standing Search Workflow - E2E test 01 - Standing Search for a Persona
 
     nextStepName = 'Upload document';
     I.chooseNextStep(nextStepName);
-    I.uploadDocument(caseRef, documentUploadConfig);
+    I.uploadDocument(caseRef, documentUploadConfig, 1);
     I.enterEventSummary(caseRef, nextStepName);
     I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
     I.seeCaseDetails(caseRef, documentUploadTabConfig, documentUploadConfig);
@@ -84,16 +83,91 @@ Scenario('Standing Search Workflow - E2E test 01 - Standing Search for a Persona
     I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
     I.seeCaseDetails(caseRef, caseMatchesTabConfig, caseMatchesConfig);
 
+    nextStepName = 'Amend standing search';
+    I.chooseNextStep(nextStepName);
+    I.enterStandingSearchPage1('update2');
+    I.enterStandingSearchPage2('update2');
+    I.enterStandingSearchPage3('update2');
+    I.enterStandingSearchPage4('update2');
+    I.checkMyAnswers(nextStepName);
+
+    I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+    I.seeCaseDetails(caseRef, caseDetailsUpdateTabConfig, createStandingSearchConfig);
+    I.seeCaseDetails(caseRef, deceasedUpdateTabConfig, createStandingSearchConfig);
+    I.seeCaseDetails(caseRef, applicantDetailsUpdateTabConfig, createStandingSearchConfig);
+
+    nextStepName = 'Upload document';
+    I.chooseNextStep(nextStepName);
+    I.uploadDocument(caseRef, documentUploadConfig, 3);
+    I.enterEventSummary(caseRef, nextStepName);
+    I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+    I.seeCaseDetails(caseRef, documentUploadTabConfig, documentUploadConfig);
+
+    nextStepName = 'Add comment';
+    I.chooseNextStep(nextStepName);
+    I.enterComment(caseRef, nextStepName);
+    I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+
     nextStepName = 'Grant already issued';
     I.chooseNextStep(nextStepName);
     I.selectGrantAlreadyIssued(caseRef, nextStepName);
     endState = 'Processing standing search';
     I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
 
+    nextStepName = 'Amend standing search';
+    I.chooseNextStep(nextStepName);
+    I.enterStandingSearchPage1('update3');
+    I.enterStandingSearchPage2('update3');
+    I.enterStandingSearchPage3('update3');
+    I.enterStandingSearchPage4('update3');
+    I.checkMyAnswers(nextStepName);
+
+    I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+    I.seeCaseDetails(caseRef, caseDetailsUpdateTabConfig, createStandingSearchConfig);
+    I.seeCaseDetails(caseRef, deceasedUpdateTabConfig, createStandingSearchConfig);
+    I.seeCaseDetails(caseRef, applicantDetailsUpdateTabConfig, createStandingSearchConfig);
+
+    nextStepName = 'Upload document';
+    I.chooseNextStep(nextStepName);
+    I.uploadDocument(caseRef, documentUploadConfig, 5);
+    I.enterEventSummary(caseRef, nextStepName);
+    I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+    I.seeCaseDetails(caseRef, documentUploadTabConfig, documentUploadConfig);
+
+    nextStepName = 'Add comment';
+    I.chooseNextStep(nextStepName);
+    I.enterComment(caseRef, nextStepName);
+    I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+
     nextStepName = 'Complete standing search';
     I.chooseNextStep(nextStepName);
     I.completeStandingSearch(caseRef, nextStepName);
     endState = 'Standing search completed';
+    I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+
+    nextStepName = 'Amend standing search';
+    I.chooseNextStep(nextStepName);
+    I.enterStandingSearchPage1('update4');
+    I.enterStandingSearchPage2('update4');
+    I.enterStandingSearchPage3('update4');
+    I.enterStandingSearchPage4('update4');
+    I.checkMyAnswers(nextStepName);
+
+    I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+    I.seeCaseDetails(caseRef, caseDetailsUpdateTabConfig, createStandingSearchConfig);
+    I.seeCaseDetails(caseRef, deceasedUpdateTabConfig, createStandingSearchConfig);
+    I.seeCaseDetails(caseRef, applicantDetailsUpdateTabConfig, createStandingSearchConfig);
+
+    nextStepName = 'Upload document';
+    I.chooseNextStep(nextStepName);
+    I.uploadDocument(caseRef, documentUploadConfig, 7);
+    I.enterEventSummary(caseRef, nextStepName);
+    I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+    I.seeCaseDetails(caseRef, documentUploadTabConfig, documentUploadConfig);
+
+    nextStepName = 'Add comment';
+    I.chooseNextStep(nextStepName);
+    I.enterComment(caseRef, nextStepName);
     I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
 
 }).retry(testConfig.TestRetryScenarios);
