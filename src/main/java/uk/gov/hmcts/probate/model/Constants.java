@@ -10,7 +10,7 @@ public final class Constants {
     public static final String LONDON = "london";
     public static final String CTSC = "ctsc";
     public static final String DOC_SUBTYPE_WILL = "will";
-
+    public static final String DATE_OF_DEATH_TYPE_DEFAULT = "diedOn";
 
     private Constants() {
     }
