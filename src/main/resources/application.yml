@@ -1,6 +1,9 @@
 server:
   port: ${probate.sol.ccd.port}
 
+closeable_http_client:
+  timeout: 10000
+
 management:
   endpoints:
     web:

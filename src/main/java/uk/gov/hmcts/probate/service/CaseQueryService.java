@@ -47,7 +47,7 @@ public class CaseQueryService {
     private final HttpHeadersFactory headers;
     private final CCDDataStoreAPIConfiguration ccdDataStoreAPIConfiguration;
     private final ServiceAuthTokenGenerator serviceAuthTokenGenerator;
-    private final UserService userService;
+    private final IdamAuthenticateUserService idamAuthenticateUserService;
 
     public List<ReturnedCaseDetails> findCasesWithDatedDocument(String documentTypeGenerated, String queryDate) {
         BoolQueryBuilder query = boolQuery();
@@ -88,7 +88,7 @@ public class CaseQueryService {
         } catch (Exception e) {
             tokenHeaders = new HttpHeaders();
             tokenHeaders.add(SERVICE_AUTH, "Bearer " + serviceAuthTokenGenerator.generate());
-            tokenHeaders.add(AUTHORIZATION, userService.getIdamOauth2Token());
+            tokenHeaders.add(AUTHORIZATION, idamAuthenticateUserService.getIdamOauth2Token());
             tokenHeaders.setContentType(MediaType.APPLICATION_JSON);
         } finally {
             entity = new HttpEntity<>(jsonQuery, tokenHeaders);

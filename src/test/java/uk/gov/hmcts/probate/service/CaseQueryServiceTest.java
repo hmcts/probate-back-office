@@ -46,7 +46,7 @@ public class CaseQueryServiceTest {
     private CCDDataStoreAPIConfiguration ccdDataStoreAPIConfiguration;
 
     @Mock
-    private UserService userService;
+    private IdamAuthenticateUserService idamAuthenticateUserService;
 
     @Mock
     private ServiceAuthTokenGenerator serviceAuthTokenGenerator;
@@ -59,7 +59,7 @@ public class CaseQueryServiceTest {
         MockitoAnnotations.initMocks(this);
 
         when(serviceAuthTokenGenerator.generate()).thenReturn("Bearer 321");
-        when(userService.getIdamOauth2Token()).thenReturn("Bearer 123");
+        when(idamAuthenticateUserService.getIdamOauth2Token()).thenReturn("Bearer 123");
         when(headers.getAuthorizationHeaders()).thenReturn(new HttpHeaders());
 
         when(ccdDataStoreAPIConfiguration.getHost()).thenReturn("http://localhost");

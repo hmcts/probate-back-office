@@ -8,6 +8,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.commonmark.parser.Parser;
 import org.commonmark.renderer.html.HtmlRenderer;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -21,6 +22,9 @@ import java.math.BigDecimal;
 
 @Configuration
 public class ApplicationConfiguration {
+
+    @Value("closeable_http_client.timeout")
+    private int timeout;
 
     @Bean
     public ResourceBundleMessageSource validationMessageSource() {
@@ -66,7 +70,6 @@ public class ApplicationConfiguration {
     }
 
     private CloseableHttpClient getHttpClient() {
-        int timeout = 10000;
         RequestConfig config = RequestConfig.custom()
                 .setConnectTimeout(timeout)
                 .setConnectionRequestTimeout(timeout)

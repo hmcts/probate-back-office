@@ -9,7 +9,7 @@ import uk.gov.hmcts.probate.model.TokenExchangeResponse;
 import java.util.Base64;
 
 @Component
-public class UserService {
+public class IdamAuthenticateUserService {
 
     private static final String BEARER = "Bearer ";
     private static final String AUTHORIZATION_CODE = "authorization_code";
@@ -34,7 +34,7 @@ public class UserService {
     private final IdamApi idamApi;
 
     @Autowired
-    public UserService(
+    public IdamAuthenticateUserService(
             IdamApi idamApi
     ) {
         this.idamApi = idamApi;
