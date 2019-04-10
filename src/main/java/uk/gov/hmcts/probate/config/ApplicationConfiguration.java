@@ -3,6 +3,7 @@ package uk.gov.hmcts.probate.config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import io.swagger.models.auth.In;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
@@ -22,9 +23,6 @@ import java.math.BigDecimal;
 
 @Configuration
 public class ApplicationConfiguration {
-
-    @Value("closeable_http_client.timeout")
-    private int timeout;
 
     @Bean
     public ResourceBundleMessageSource validationMessageSource() {
@@ -70,6 +68,7 @@ public class ApplicationConfiguration {
     }
 
     private CloseableHttpClient getHttpClient() {
+        int timeout = 10000;
         RequestConfig config = RequestConfig.custom()
                 .setConnectTimeout(timeout)
                 .setConnectionRequestTimeout(timeout)

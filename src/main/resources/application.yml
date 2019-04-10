@@ -1,9 +1,6 @@
 server:
   port: ${probate.sol.ccd.port}
 
-closeable_http_client:
-  timeout: 10000
-
 management:
   endpoints:
     web:
@@ -94,7 +91,7 @@ spring.jackson.serialization.write_dates_as_timestamps: false
 
 ####Evidence management Service URL's
 #hard coded to point to docker container ccd-data-store-api CCD_DM_DOMAIN value
-evidence.management.host: http://localhost:8080
+evidence.management.host: http://172.16.203.152:8080
 evidence.management.upload.file.url: /documents
 
 http.connect.timeout: 60000
