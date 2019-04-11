@@ -3,6 +3,7 @@ package uk.gov.hmcts.probate.service.probateman;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
@@ -24,8 +25,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import static org.hamcrest.Matchers.any;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertThat;
+import static org.mockito.ArgumentMatchers.anyShort;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -83,6 +87,8 @@ public class LegacyImportServiceImplTest {
         assertThat(legacyCaseMatches.size(), equalTo(1));
         verify(grantApplicationMock).setDnmInd("Y");
         verify(grantApplicationMock).setCcdCaseNo("1111222233334444");
+        verify(grantApplicationRepositoryMock).save(grantApplicationMock);
+        verify(caseMatch).setCaseLink(ArgumentMatchers.any(CaseLink.class));
     }
 
     @Test
@@ -165,6 +171,8 @@ public class LegacyImportServiceImplTest {
         assertThat(legacyCaseMatches.size(), equalTo(1));
         verify(grantApplicationMock).setDnmInd("Y");
         verify(grantApplicationMock).setCcdCaseNo("1111222233334444");
+        verify(grantApplicationRepositoryMock).save(grantApplicationMock);
+        verify(caseMatch).setCaseLink(ArgumentMatchers.any(CaseLink.class));
     }
 
     @Test
