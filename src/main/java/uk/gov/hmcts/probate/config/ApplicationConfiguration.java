@@ -3,18 +3,12 @@ package uk.gov.hmcts.probate.config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import io.swagger.models.auth.In;
-import org.apache.http.client.config.RequestConfig;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClientBuilder;
 import org.commonmark.parser.Parser;
 import org.commonmark.renderer.html.HtmlRenderer;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.support.ResourceBundleMessageSource;
-import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 import uk.gov.hmcts.probate.model.ccd.raw.BigDecimalSerializer;
 import uk.gov.hmcts.probate.model.ccd.raw.LocalDateTimeSerializer;
@@ -40,9 +34,7 @@ public class ApplicationConfiguration {
 
     @Bean
     public RestTemplate restTemplate() {
-        RestTemplate restTemplate = new RestTemplate();
-        restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory(getHttpClient()));
-        return restTemplate;
+        return new RestTemplate();
     }
 
     @Primary
@@ -65,20 +57,5 @@ public class ApplicationConfiguration {
     @Bean
     public HtmlRenderer htmlRenderer() {
         return HtmlRenderer.builder().build();
-    }
-
-    private CloseableHttpClient getHttpClient() {
-        int timeout = 10000;
-        RequestConfig config = RequestConfig.custom()
-                .setConnectTimeout(timeout)
-                .setConnectionRequestTimeout(timeout)
-                .setSocketTimeout(timeout)
-                .build();
-
-        return HttpClientBuilder
-                .create()
-                .useSystemProperties()
-                .setDefaultRequestConfig(config)
-                .build();
     }
 }

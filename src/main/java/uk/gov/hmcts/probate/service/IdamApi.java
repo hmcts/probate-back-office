@@ -7,10 +7,11 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import uk.gov.hmcts.probate.config.FeignClientConfiguration;
 import uk.gov.hmcts.probate.model.AuthenticateUserResponse;
 import uk.gov.hmcts.probate.model.TokenExchangeResponse;
 
-@FeignClient(name = "idam-api", url = "${auth.provider.client.user}")
+@FeignClient(name = "idam-api", url = "${auth.provider.client.user}", configuration = FeignClientConfiguration.class)
 public interface IdamApi {
     @RequestMapping(
             method = RequestMethod.POST,
