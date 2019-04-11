@@ -26,7 +26,7 @@ module.exports = function () {
         enterComment: steps.eventSummary.eventSummary,
         selectCaseMatchesForWillLodgement: steps.caseMatches.willLodgement.caseMatches,
         selectCaseMatchesForCaveat: steps.caseMatches.caveat.caseMatches,
-        selectWithdrawalReason: steps.withdrawal.withdrawal
+        selectWithdrawalReason: steps.withdrawal.withdrawal,
         filterCase: steps.filterCase.filterCase,
         selectCase: steps.selectCase.selectCase,
         legacyCaseSearch: steps.search.legacyCaseSearch,
