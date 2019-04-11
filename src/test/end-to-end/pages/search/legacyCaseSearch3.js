@@ -3,7 +3,7 @@
 const testConfig = require('src/test/config.js');
 const legacyCaseSearch3Config = require('./legacyCaseSearch3Config.json');
 
-module.exports = function (jurisdiction, caseType, event) {
+module.exports = function () {
 
     const I = this;
     I.waitForText(legacyCaseSearch3Config.waitForText, testConfig.TestTimeToWaitForText);
