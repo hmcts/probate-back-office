@@ -97,7 +97,7 @@ public class LegacyImportServiceImpl implements LegacyImportService {
         probateManModel.setCcdCaseNo(ccdCaseId);
         probateManModel.setLastModified(LocalDateTime.now());
         log.info("Updating legacy case id=" + id + " for probateManType=" + probateManType);
-        repository.saveAndFlush(probateManModel);
+        repository.save(probateManModel);
         log.info("Updated legacy case");
     }
 

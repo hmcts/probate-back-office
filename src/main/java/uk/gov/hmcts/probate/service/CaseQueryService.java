@@ -5,8 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
@@ -18,7 +16,6 @@ import uk.gov.hmcts.probate.model.CaseType;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCases;
 import uk.gov.hmcts.probate.service.evidencemanagement.header.HttpHeadersFactory;
-import uk.gov.hmcts.reform.authorisation.generators.ServiceAuthTokenGenerator;
 
 import java.net.URI;
 import java.util.List;
@@ -38,8 +35,6 @@ public class CaseQueryService {
     private static final String DOCUMENT_DATE = "data.grantIssuedDate";
     private static final String STATE = "state";
     private static final String STATE_MATCH = "BOGrantIssued";
-    private static final String SERVICE_AUTH = "ServiceAuthorization";
-    private static final String AUTHORIZATION = "Authorization";
     private static final String CASE_TYPE_ID = "ctid";
     private static final CaseType CASE_TYPE = CaseType.GRANT_OF_REPRESENTATION;
     private final RestTemplate restTemplate;

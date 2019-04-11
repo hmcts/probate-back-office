@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,7 +38,6 @@ public class DataExtractController {
     private final CaseQueryService caseQueryService;
     private final NotificationService notificationService;
 
-    @Scheduled(cron = "${cron.data_extract}")
     @ApiOperation(value = "Initiate IronMountain data extract", notes = "Will find cases for yesterdays date")
     @PostMapping(path = "/iron-mountain")
     public ResponseEntity initiateIronMountainExtract() {
@@ -57,7 +55,6 @@ public class DataExtractController {
         return ResponseEntity.ok(cases.size() + " cases successfully found for date: " + date);
     }
 
-    @Scheduled(cron = "${cron.data_extract}")
     @ApiOperation(value = "Initiate Excela data extract", notes = "Will find cases for yesterdays date")
     @PostMapping(path = "/excela")
     public ResponseEntity initiateExcelaExtract() throws NotificationClientException {
@@ -76,10 +73,8 @@ public class DataExtractController {
         for (ReturnedCaseDetails returnedCase : cases) {
             if (returnedCase.getData().getScannedDocuments() != null) {
                 for (CollectionMember<ScannedDocument> document : returnedCase.getData().getScannedDocuments()) {
-                    if (document.getValue().getSubtype() != null
-                            && document.getValue().getSubtype().equalsIgnoreCase(DOC_SUBTYPE_WILL)) {
+                    if (document.getValue().getSubtype().equals(DOC_SUBTYPE_WILL)) {
                         filteredCases.add(returnedCase);
-                        break;
                     }
                 }
             }

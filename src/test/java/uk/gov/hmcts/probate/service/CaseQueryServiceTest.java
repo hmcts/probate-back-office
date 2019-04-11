@@ -17,8 +17,8 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCases;
 import uk.gov.hmcts.probate.service.evidencemanagement.header.HttpHeadersFactory;
-import uk.gov.hmcts.reform.authorisation.generators.ServiceAuthTokenGenerator;
 
+import java.io.IOException;
 import java.util.List;
 
 import static org.hamcrest.core.Is.is;
@@ -44,7 +44,7 @@ public class CaseQueryServiceTest {
 
     @Mock
     private CCDDataStoreAPIConfiguration ccdDataStoreAPIConfiguration;
-
+  
     @Mock
     private IdamAuthenticateUserService idamAuthenticateUserService;
 
@@ -79,18 +79,7 @@ public class CaseQueryServiceTest {
     }
 
     @Test
-    public void findCasesWithDatedDocumentReturnsCaseList() {
-        List<ReturnedCaseDetails> cases = caseQueryService.findCasesWithDatedDocument("Test",
-                "testDate");
-
-        assertEquals(1, cases.size());
-        assertThat(cases.get(0).getId(), is(1L));
-        assertEquals("Smith", cases.get(0).getData().getDeceasedSurname());
-    }
-
-    @Test
-    public void findCasesInitiatedBySchedulerReturnsCaseList() {
-        when(headers.getAuthorizationHeaders()).thenThrow(NullPointerException.class);
+    public void findCasesWithDatedDocumentReturnsCaseList() throws IOException {
         List<ReturnedCaseDetails> cases = caseQueryService.findCasesWithDatedDocument("Test",
                 "testDate");
 
