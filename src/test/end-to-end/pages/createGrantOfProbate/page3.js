@@ -10,6 +10,8 @@ module.exports = function (crud) {
 
     if (crud === 'create') {
         I.waitForText(createGrantOfProbateConfig.page3_waitForText, testConfig.TestTimeToWaitForText);
+        I.seeElement('#otherExecutorExists-Yes');
+        I.seeElement('#otherExecutorExists-No');
         I.click(`#otherExecutorExists-${createGrantOfProbateConfig.page3_otherExecutorExistsYes}`);
         I.waitForText(createGrantOfProbateConfig.page3_waitForText2, testConfig.TestTimeToWaitForText);
         I.click({type: 'button'}, '#executorsApplying>div');
@@ -49,10 +51,10 @@ module.exports = function (crud) {
     if (crud === 'update') {
         I.waitForText(createGrantOfProbateConfig.page3_amend_waitForText, testConfig.TestTimeToWaitForText);
         I.selectOption('#selectionList', createGrantOfProbateConfig.page3_list1_update_option);
-        I.click(commonConfig.continueButton);
+        I.waitForNavigationToComplete(commonConfig.continueButton);
         I.fillField('#executorsApplying_0_applyingExecutorOtherNames', createGrantOfProbateConfig.page3_executor0_alias_update);
 
     }
 
-    I.click(commonConfig.continueButton);
+    I.waitForNavigationToComplete(commonConfig.continueButton);
 };

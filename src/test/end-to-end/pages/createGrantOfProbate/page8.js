@@ -22,11 +22,11 @@ module.exports = function (crud) {
     if (crud === 'update') {
         I.waitForText(createGrantOfProbateConfig.page8_amend_waitForText, testConfig.TestTimeToWaitForText);
         I.selectOption('#selectionList', createGrantOfProbateConfig.page8_list1_update_option);
-        I.click(commonConfig.continueButton);
+        I.waitForNavigationToComplete(commonConfig.continueButton);
 
         I.click(`#deceasedDomicileInEngWales-${createGrantOfProbateConfig.page8_deceasedDomicileInEngWalesNo}`);
 
     }
 
-    I.click(commonConfig.continueButton);
+    I.waitForNavigationToComplete(commonConfig.continueButton);
 };

@@ -44,7 +44,7 @@ module.exports = function (crud) {
     if (crud === 'update') {
         I.waitForText(createGrantOfProbateConfig.page4_amend_waitForText, testConfig.TestTimeToWaitForText);
         I.selectOption('#selectionList', createGrantOfProbateConfig.page4_list1_update_option);
-        I.click(commonConfig.continueButton);
+        I.waitForNavigationToComplete(commonConfig.continueButton);
 
         I.fillField('#deceasedDateOfDeath-day', createGrantOfProbateConfig.page4_deceasedDod_day_update);
         I.fillField('#deceasedDateOfDeath-month', createGrantOfProbateConfig.page4_deceasedDod_month_update);
@@ -52,5 +52,5 @@ module.exports = function (crud) {
 
     }
 
-    I.click(commonConfig.continueButton);
+    I.waitForNavigationToComplete(commonConfig.continueButton);
 };

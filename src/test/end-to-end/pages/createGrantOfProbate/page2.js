@@ -38,11 +38,11 @@ module.exports = function (crud) {
     if (crud === 'update') {
         I.waitForText(createGrantOfProbateConfig.page2_amend_waitForText, testConfig.TestTimeToWaitForText);
         I.selectOption('#selectionList', createGrantOfProbateConfig.page2_list1_update_option);
-        I.click(commonConfig.continueButton);
+        I.waitForNavigationToComplete(commonConfig.continueButton);
         I.fillField('#primaryApplicantForenames', createGrantOfProbateConfig.page2_firstnames_update);
         I.fillField('#primaryApplicantSurname', createGrantOfProbateConfig.page2_lastnames_update);
 
     }
 
-    I.click(commonConfig.continueButton);
+    I.waitForNavigationToComplete(commonConfig.continueButton);
 };

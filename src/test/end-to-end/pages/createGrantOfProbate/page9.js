@@ -20,10 +20,10 @@ module.exports = function (crud) {
     if (crud === 'update') {
         I.waitForText(createGrantOfProbateConfig.page9_amend_waitForText, testConfig.TestTimeToWaitForText);
         I.selectOption('#selectionList', createGrantOfProbateConfig.page9_list1_update_option);
-        I.click(commonConfig.continueButton);
+        I.waitForNavigationToComplete(commonConfig.continueButton);
 
         I.fillField('#ihtReferenceNumber', createGrantOfProbateConfig.page9_ihtReferenceNumber_update);
     }
 
-    I.click(commonConfig.continueButton);
+    I.waitForNavigationToComplete(commonConfig.continueButton);
 };

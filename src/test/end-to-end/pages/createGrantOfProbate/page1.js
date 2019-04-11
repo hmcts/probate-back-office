@@ -33,11 +33,10 @@ module.exports = function (crud) {
     if (crud === 'update') {
         I.waitForText(createGrantOfProbateConfig.page1_amend_waitForText, testConfig.TestTimeToWaitForText);
         I.selectOption('#selectionList', createGrantOfProbateConfig.page1_list5_update_option);
-        I.click(commonConfig.continueButton);
-        I.seeElement('#boWillMessage');
+        I.waitForNavigationToComplete(commonConfig.continueButton);
         I.fillField('#boWillMessage', createGrantOfProbateConfig.page1_boWillMessage);
 
     }
 
-    I.click(commonConfig.continueButton);
+    I.waitForNavigationToComplete(commonConfig.continueButton);
 };
