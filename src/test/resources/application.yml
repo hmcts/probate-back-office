@@ -1,6 +1,10 @@
 server:
   port: ${probate.sol.ccd.port}
 
+resttemplate:
+  httpclient:
+    timeout:10000
+
 authorised.services: probate_backend,ccd_data,ccd-datamgmt-api,ccd_ps,ccd
 auth.provider.service.client:
   key: AAAAAAAAAAAAAAAA
