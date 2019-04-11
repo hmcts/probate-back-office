@@ -1,12 +1,24 @@
 server:
   port: ${probate.sol.ccd.port}
 
+resttemplate:
+  httpclient:
+    timeout:10000
+
 authorised.services: probate_backend,ccd_data,ccd-datamgmt-api,ccd_ps,ccd
 auth.provider.service.client:
   key: AAAAAAAAAAAAAAAA
   baseUrl: http://localhost:4502
   microservice: probate_backend
   tokenTimeToLiveInSeconds: 900
+
+auth.provider.client:
+  user: http://localhost:4501
+  secret: 123456
+  id: probate
+  redirect: http://localhost:3451/oauth2redirect
+  email: probatesolcw1@gmail.com
+  password: password
 
 pdf.service:
   url: http://localhost:5500
