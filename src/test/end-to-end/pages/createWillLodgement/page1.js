@@ -45,5 +45,5 @@ module.exports = function (crud) {
         I.fillField('#numberOfCodicils', createWillLodgementConfig.page1_numberOfCodicils_update);
     }
 
-    I.click(commonConfig.continueButton);
+    I.waitForNavigationToComplete(commonConfig.continueButton);
 };
