@@ -66,9 +66,6 @@ public class SecurityConfigurationTest {
     @MockBean
     private CoreCaseDataApi coreCaseDataApi;
 
-    @MockBean
-    private ClientTokenGenerator clientTokenGenerator;
-
     private Service service;
 
     @Before

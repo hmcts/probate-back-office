@@ -4,23 +4,12 @@ const dateFns = require('date-fns');
 
 const testConfig = require('src/test/config');
 const createCaseConfig = require('src/test/end-to-end/pages/createCase/createCaseConfig.json');
-const checkYourAnswersConfig = require('src/test/end-to-end/pages/checkYourAnswers/checkYourAnswersConfig');
+const eventSummaryConfig = require('src/test/end-to-end/pages/eventSummary/eventSummaryConfig');
 
 const createCaveatConfig = require('src/test/end-to-end/pages/createCaveat/createCaveatConfig');
-
 const emailCaveatorConfig = require('src/test/end-to-end/pages/emailNotifications/caveat/emailCaveatorConfig');
-const emailCaveatorSummaryConfig = require('src/test/end-to-end/pages/eventSummary/caveat/emailCaveatorSummaryConfig');
 const caseMatchesConfig = require('src/test/end-to-end/pages/caseMatches/caveat/caseMatchesConfig');
-const caseMatchesCommentSummaryConfig = require('src/test/end-to-end/pages/eventSummary/caveat/caseMatchesCommentSummaryConfig');
-const caveatNotMatchedSummaryConfig = require('src/test/end-to-end/pages/eventSummary/caveat/caveatNotMatchedSummaryConfig');
 const documentUploadConfig = require('src/test/end-to-end/pages/documentUpload/documentUploadConfig');
-const documentUploadSummaryConfig = require('src/test/end-to-end/pages/eventSummary/documentUploadSummaryConfig');
-const addCommentSummaryConfig = require('src/test/end-to-end/pages/eventSummary/addCommentSummaryConfig');
-const awaitCaveatResolutionSummaryConfig = require('src/test/end-to-end/pages/eventSummary/caveat/awaitCaveatResolutionSummaryConfig');
-const warningRequestedSummaryConfig = require('src/test/end-to-end/pages/eventSummary/caveat/warningRequestedSummaryConfig');
-const issueCaveatWarningSummaryConfig = require('src/test/end-to-end/pages/eventSummary/caveat/issueCaveatWarningSummaryConfig');
-const orderSummonsSummaryConfig = require('src/test/end-to-end/pages/eventSummary/caveat/orderSummonsSummaryConfig');
-const amendCaveatDetailsSummaryConfig = require('src/test/end-to-end/pages/eventSummary/caveat/amendCaveatDetailsSummaryConfig');
 
 const historyTabConfig = require('src/test/end-to-end/pages/caseDetails/caveat/historyTabConfig');
 
@@ -51,80 +40,80 @@ Scenario('Caveat Workflow - E2E Test 01 - Caveat for a Personal Applicant - Rais
     I.enterCaveatPage1('create');
     I.enterCaveatPage2('create');
     I.enterCaveatPage3('create');
-    I.checkMyAnswers();
+    I.checkMyAnswers(nextStepName);
     let endState = 'Caveat raised';
     const url = await I.grabCurrentUrl();
     const caseRef = url.split('/').pop().match(/.{4}/g).join('-');
 
-    I.seeCaseDetails(caseRef, historyTabConfig, checkYourAnswersConfig, nextStepName, endState);
+    I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
     I.seeCaseDetails(caseRef, caseDetailsTabConfig, createCaveatConfig);
     I.seeCaseDetails(caseRef, deceasedDetailsTabConfig, createCaveatConfig);
     I.seeCaseDetails(caseRef, caveatorDetailsTabConfig, createCaveatConfig);
     // When raising a caveat, Caveat Expiry Date is automatically set to today + 6 months
-    createCaveatConfig.caveat_expiry_date = dateFns.format(dateFns.addMonths(new Date(),6),'DD MMM YYYY');
+    createCaveatConfig.caveat_expiry_date = dateFns.format(dateFns.addMonths(new Date(),6),'D MMM YYYY');
     I.seeCaseDetails(caseRef, caveatDetailsTabConfig, createCaveatConfig);
 
     nextStepName = 'Email caveator';   // When in state 'Caveat raised'
     I.chooseNextStep(nextStepName);
     I.emailCaveator(caseRef);
-    I.enterEventSummary(caseRef, emailCaveatorSummaryConfig);
+    I.enterEventSummary(caseRef, nextStepName);
     // Note that End State does not change when emailing the caveator.
-    I.seeCaseDetails(caseRef, historyTabConfig, emailCaveatorSummaryConfig, nextStepName, endState);
+    I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
     // When emailing the caveator, the Date added for the email document is set to today
-    emailCaveatorConfig.dateAdded = dateFns.format(new Date(), 'DD MMM YYYY');
+    emailCaveatorConfig.dateAdded = dateFns.format(new Date(), 'D MMM YYYY');
     I.seeCaseDetails(caseRef, documentsTabEmailCaveatorConfig, emailCaveatorConfig);
 
     nextStepName = 'Caveat match';
     I.chooseNextStep(nextStepName);
     I.selectCaseMatchesForCaveat(caseRef, caseMatchesConfig);
-    I.enterCaseMatchesComment(caseRef, caseMatchesCommentSummaryConfig);
+    I.enterEventSummary(caseRef, nextStepName);
     endState = 'Caveat matching';
-    I.seeCaseDetails(caseRef, historyTabConfig, caseMatchesCommentSummaryConfig, nextStepName, endState);
+    I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
     I.seeCaseDetails(caseRef, caseMatchesTabConfig, caseMatchesConfig);
 
     nextStepName = 'Caveat not matched';
     I.chooseNextStep(nextStepName);
-    I.enterEventSummary(caseRef, caveatNotMatchedSummaryConfig);
+    I.enterEventSummary(caseRef, nextStepName);
     endState = 'Caveat not matched';
-    I.seeCaseDetails(caseRef, historyTabConfig, caveatNotMatchedSummaryConfig, nextStepName, endState);
+    I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
 
     nextStepName = 'Upload document';
     I.chooseNextStep(nextStepName);
     I.uploadDocument(caseRef);
-    I.enterEventSummary(caseRef, documentUploadSummaryConfig);
+    I.enterEventSummary(caseRef, nextStepName);
     // Note that End State does not change when uploading a document.
-    I.seeCaseDetails(caseRef, historyTabConfig, documentUploadSummaryConfig, nextStepName, endState);
+    I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
     I.seeCaseDetails(caseRef, documentsTabUploadDocumentConfig, documentUploadConfig);
 
     nextStepName = 'Add comment';
     I.chooseNextStep(nextStepName);
-    I.enterComment(caseRef, addCommentSummaryConfig);
+    I.enterComment(caseRef, nextStepName);
     // Note that End State does not change when adding a comment.
-    I.seeCaseDetails(caseRef, historyTabConfig, addCommentSummaryConfig, nextStepName, endState);
+    I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
 
     nextStepName = 'Await caveat resolution';
     I.chooseNextStep(nextStepName);
-    I.enterEventSummary(caseRef, awaitCaveatResolutionSummaryConfig);
+    I.enterEventSummary(caseRef, nextStepName);
     endState = 'Awaiting caveat resolution';
-    I.seeCaseDetails(caseRef, historyTabConfig, awaitCaveatResolutionSummaryConfig, nextStepName, endState);
+    I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
 
     nextStepName = 'Warning requested';
     I.chooseNextStep(nextStepName);
-    I.enterEventSummary(caseRef, warningRequestedSummaryConfig);
+    I.enterEventSummary(caseRef, nextStepName);
     endState = 'Warning validation';
-    I.seeCaseDetails(caseRef, historyTabConfig, warningRequestedSummaryConfig, nextStepName, endState);
+    I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
 
     nextStepName = 'Issue caveat warning';
     I.chooseNextStep(nextStepName);
-    I.enterEventSummary(caseRef, issueCaveatWarningSummaryConfig);
+    I.enterEventSummary(caseRef, nextStepName);
     endState = 'Awaiting warning response';
-    I.seeCaseDetails(caseRef, historyTabConfig, issueCaveatWarningSummaryConfig, nextStepName, endState);
+    I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
 
     nextStepName = 'Order summons';
     I.chooseNextStep(nextStepName);
-    I.enterEventSummary(caseRef, orderSummonsSummaryConfig);
+    I.enterEventSummary(caseRef, nextStepName);
     endState = 'Summons ordered';
-    I.seeCaseDetails(caseRef, historyTabConfig, orderSummonsSummaryConfig, nextStepName, endState);
+    I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
 
     nextStepName = 'Amend caveat details';
     I.chooseNextStep(nextStepName);
@@ -132,9 +121,9 @@ Scenario('Caveat Workflow - E2E Test 01 - Caveat for a Personal Applicant - Rais
     I.enterCaveatPage2('update');
     I.enterCaveatPage3('update');
     I.enterCaveatPage4('update');
-    I.enterEventSummary(caseRef, amendCaveatDetailsSummaryConfig);
+    I.enterEventSummary(caseRef, nextStepName);
     // Note that End State does not change when amending the caveat details.
-    I.seeCaseDetails(caseRef, historyTabConfig, amendCaveatDetailsSummaryConfig, nextStepName, endState);
+    I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
     I.seeCaseDetails(caseRef, caseDetailsTabUpdateConfig, createCaveatConfig);
     I.seeCaseDetails(caseRef, deceasedDetailsTabUpdateConfig, createCaveatConfig);
     I.seeCaseDetails(caseRef, caveatorDetailsTabUpdateConfig, createCaveatConfig);
