@@ -169,4 +169,10 @@
    ]]></notes>
         <cve>CVE-2019-3795</cve>
     </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: springfox-core-2.9.2.jar
+   ]]></notes>
+        <cve>CVE-2019-11065</cve>
+    </suppress>
 </suppressions>
