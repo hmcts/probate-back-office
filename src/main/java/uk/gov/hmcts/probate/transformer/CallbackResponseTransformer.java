@@ -214,7 +214,8 @@ public class CallbackResponseTransformer {
                 .deceasedSurname(caseData.getDeceasedSurname())
                 .deceasedDateOfBirth(ofNullable(caseData.getDeceasedDateOfBirth())
                         .map(dateTimeFormatter::format).orElse(null))
-                .deceasedDateOfDeath(dateTimeFormatter.format(caseData.getDeceasedDateOfDeath()))
+                .deceasedDateOfDeath(ofNullable(caseData.getDeceasedDateOfDeath())
+                        .map(dateTimeFormatter::format).orElse(null))
                 .willExists(caseData.getWillExists())
                 .willAccessOriginal((caseData.getWillAccessOriginal()))
                 .willHasCodicils(caseData.getWillHasCodicils())
@@ -426,7 +427,7 @@ public class CallbackResponseTransformer {
             }
         }
 
-        if (caseData.getApplicationType() == ApplicationType.SOLICITOR) {
+        if (caseData.getApplicationType() != ApplicationType.PERSONAL) {
             builder
                     .solsSOTName(caseData.getSolsSOTName())
                     .solsSOTJobTitle(caseData.getSolsSOTJobTitle())
@@ -494,7 +495,7 @@ public class CallbackResponseTransformer {
                 .ihtReferenceNumber(caseData.getIhtReferenceNumber())
                 .solsDeceasedAliasNamesList(caseData.getSolsDeceasedAliasNamesList());
 
-        if (caseData.getApplicationType() == ApplicationType.SOLICITOR) {
+        if (caseData.getApplicationType() != ApplicationType.PERSONAL) {
             builder
                     .solsSOTName(caseData.getSolsSOTName())
                     .solsSOTJobTitle(caseData.getSolsSOTJobTitle())
@@ -504,8 +505,6 @@ public class CallbackResponseTransformer {
                     .solsSolicitorPhoneNumber(caseData.getSolsSolicitorPhoneNumber())
                     .solsSolicitorAddress(caseData.getSolsSolicitorAddress());
         }
-
-
 
         if (!isPaperForm(caseData)) {
             builder

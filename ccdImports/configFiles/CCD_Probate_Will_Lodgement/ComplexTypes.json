@@ -1,8 +1,8 @@
 [
   {"LiveFrom": "01/01/2017", "ID": "wlProbateFullAliasName", "ListElementCode": "FullAliasName", "FieldType": "Text", "ElementLabel": "Full alias name", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "wlAdditionalExecutor", "ListElementCode": "executorTitle", "FieldType": "Text", "ElementLabel": "Title", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "ID": "wlAdditionalExecutor", "ListElementCode": "executorForenames", "FieldType": "Text", "ElementLabel": "Forename(s)", "SecurityClassification": "Public", "Max": 30},
-  {"LiveFrom": "01/01/2017", "ID": "wlAdditionalExecutor", "ListElementCode": "executorSurname", "FieldType": "Text", "ElementLabel": "Surname(s)", "SecurityClassification": "Public", "Max": 50},
+  {"LiveFrom": "01/01/2017", "ID": "wlAdditionalExecutor", "ListElementCode": "executorForenames", "FieldType": "Text", "ElementLabel": "Forename(s)", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "wlAdditionalExecutor", "ListElementCode": "executorSurname", "FieldType": "Text", "ElementLabel": "Surname(s)", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "wlAdditionalExecutor", "ListElementCode": "executorAddress", "FieldType": "AddressUK", "ElementLabel": "Address", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "wlAdditionalExecutor", "ListElementCode": "executorEmailAddress", "FieldType": "Text", "ElementLabel": "Email", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "wlDocument", "ListElementCode": "DocumentType", "FieldType": "FixedList", "FieldTypeParameter": "wlDocumentTypeEnum", "ElementLabel": "Type", "SecurityClassification": "Public"},

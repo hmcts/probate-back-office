@@ -17,19 +17,25 @@ module.exports = function (caseRef, tabConfigFile, dataConfigFile, nextStep, end
     I.see(caseRef);
     I.click(tabConfigFile.tabName);
 
-    if (nextStep) {
-        I.see(nextStep);
-    }
-
-    if (endState) {
-        I.see(endState);
-    }
-
     tabConfigFile.fields.forEach(function (fieldName) {
         I.see(fieldName);
     });
 
-    tabConfigFile.dataKeys.forEach(function (dataKey) {
-        I.see(dataConfigFile[dataKey]);
-    });
+    // If 'History' tab, then check Next Step (Event), End State, Summary and Comment
+    if (tabConfigFile.tabName === 'History') {
+
+        let eventSummaryPrefix = nextStep;
+
+        eventSummaryPrefix = eventSummaryPrefix.replace(/\s+/g, '_').toLowerCase() + '_';
+
+        I.see(nextStep);
+        I.see(endState);
+        I.see(eventSummaryPrefix + dataConfigFile.summary);
+        I.see(eventSummaryPrefix + dataConfigFile.comment);
+
+    } else {
+        tabConfigFile.dataKeys.forEach(function (dataKey) {
+            I.see(dataConfigFile[dataKey]);
+        });
+    }
 };

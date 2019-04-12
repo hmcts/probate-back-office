@@ -1,6 +1,10 @@
 server:
   port: ${probate.sol.ccd.port}
 
+resttemplate:
+  httpclient:
+    timeout:10000
+
 management:
   endpoints:
     web:
@@ -18,6 +22,14 @@ auth.provider.service.client:
   baseUrl: http://localhost:4502
   microservice: probate_backend
   tokenTimeToLiveInSeconds: 900
+
+auth.provider.client:
+  user: ${USER_AUTH_PROVIDER_OAUTH2_URL:http://localhost:4501}
+  secret: ${IDAM_SECRET:123456}
+  id: probate
+  redirect: ${IDAM_REDIRECT_URL:http://localhost:3451/oauth2redirect}
+  email: ${AUTH_TOKEN_EMAIL:probatesolcw1@gmail.com}
+  password: ${AUTH_TOKEN_PASSWORD:password}
 
 pdf.service:
   url: http://localhost:5500
