@@ -1211,6 +1211,10 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "primaryApplicantAddresses", "UserRole": "citizen", "CRUD": "CRU"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "otherExecutorsApplying", "UserRole": "citizen", "CRUD": "CRU"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "executorsAllAlive", "UserRole": "citizen", "CRUD": "CRU"},
-  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "executorsHaveAlias", "UserRole": "citizen", "CRUD": "CRU"}
-
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "executorsHaveAlias", "UserRole": "citizen", "CRUD": "CRU"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "declarationCheckbox", "UserRole": "citizen", "CRUD": "CRU"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "legalDeclaration", "UserRole": "citizen", "CRUD": "CRU"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "checkAnswersSummary", "UserRole": "citizen", "CRUD": "CRU"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "paymentPending", "UserRole": "citizen", "CRUD": "CRU"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "creatingPayment", "UserRole": "citizen", "CRUD": "CRU"}
 ]

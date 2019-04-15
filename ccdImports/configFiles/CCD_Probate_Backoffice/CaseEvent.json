@@ -321,5 +321,29 @@
     "PostConditionState": "Draft",
     "SecurityClassification": "Public",
     "ShowSummary": "N"
+  },
+  {
+    "LiveFrom": "01/01/2017",
+    "CaseTypeID": "GrantOfRepresentation",
+    "ID": "createApplication",
+    "Name": "Create Application",
+    "Description": "Create Application",
+    "DisplayOrder": 65,
+    "PreConditionState(s)": "Draft",
+    "PostConditionState": "PAAppCreated",
+    "SecurityClassification": "Public",
+    "ShowSummary": "N"
+  },
+  {
+    "LiveFrom": "01/01/2017",
+    "CaseTypeID": "GrantOfRepresentation",
+    "ID": "updateApplication",
+    "Name": "Update Application",
+    "Description": "Update Application",
+    "DisplayOrder": 66,
+    "PreConditionState(s)": "PAAppCreated",
+    "PostConditionState": "PAAppCreated",
+    "SecurityClassification": "Public",
+    "ShowSummary": "N"
   }
 ]
