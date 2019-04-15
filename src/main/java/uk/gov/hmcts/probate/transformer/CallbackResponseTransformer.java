@@ -33,6 +33,8 @@ import java.util.stream.Collectors;
 import static java.util.Collections.EMPTY_LIST;
 import static java.util.Optional.ofNullable;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
+import static uk.gov.hmcts.probate.model.Constants.CASE_TYPE_DEFAULT;
+import static uk.gov.hmcts.probate.model.Constants.DATE_OF_DEATH_TYPE_DEFAULT;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT;
@@ -212,7 +214,8 @@ public class CallbackResponseTransformer {
                 .deceasedSurname(caseData.getDeceasedSurname())
                 .deceasedDateOfBirth(ofNullable(caseData.getDeceasedDateOfBirth())
                         .map(dateTimeFormatter::format).orElse(null))
-                .deceasedDateOfDeath(dateTimeFormatter.format(caseData.getDeceasedDateOfDeath()))
+                .deceasedDateOfDeath(ofNullable(caseData.getDeceasedDateOfDeath())
+                        .map(dateTimeFormatter::format).orElse(null))
                 .willExists(caseData.getWillExists())
                 .willAccessOriginal((caseData.getWillAccessOriginal()))
                 .willHasCodicils(caseData.getWillHasCodicils())
@@ -296,7 +299,8 @@ public class CallbackResponseTransformer {
                 .recordId(caseData.getRecordId())
                 .legacyType(caseData.getLegacyType())
                 .legacyCaseViewUrl(caseData.getLegacyCaseViewUrl())
-                .grantIssuedDate(caseData.getGrantIssuedDate());
+                .grantIssuedDate(caseData.getGrantIssuedDate())
+                .dateOfDeathType(caseData.getDateOfDeathType());
 
         if (transform) {
             updateCaseBuilderForTransformCase(caseData, builder);
@@ -423,7 +427,7 @@ public class CallbackResponseTransformer {
             }
         }
 
-        if (caseData.getApplicationType() == ApplicationType.SOLICITOR) {
+        if (caseData.getApplicationType() != ApplicationType.PERSONAL) {
             builder
                     .solsSOTName(caseData.getSolsSOTName())
                     .solsSOTJobTitle(caseData.getSolsSOTJobTitle())
@@ -442,7 +446,12 @@ public class CallbackResponseTransformer {
 
         if (caseData.getCaseType() == null) {
             builder
-                    .caseType("gop");
+                    .caseType(CASE_TYPE_DEFAULT);
+        }
+
+        if (caseData.getDateOfDeathType() == null) {
+            builder
+                    .dateOfDeathType(DATE_OF_DEATH_TYPE_DEFAULT);
         }
 
         if (caseData.getPrimaryApplicantAliasReason() != null) {
@@ -486,7 +495,7 @@ public class CallbackResponseTransformer {
                 .ihtReferenceNumber(caseData.getIhtReferenceNumber())
                 .solsDeceasedAliasNamesList(caseData.getSolsDeceasedAliasNamesList());
 
-        if (caseData.getApplicationType() == ApplicationType.SOLICITOR) {
+        if (caseData.getApplicationType() != ApplicationType.PERSONAL) {
             builder
                     .solsSOTName(caseData.getSolsSOTName())
                     .solsSOTJobTitle(caseData.getSolsSOTJobTitle())
@@ -497,8 +506,6 @@ public class CallbackResponseTransformer {
                     .solsSolicitorAddress(caseData.getSolsSolicitorAddress());
         }
 
-
-
         if (!isPaperForm(caseData)) {
             builder
                     .paperForm(ANSWER_NO);
@@ -506,7 +513,12 @@ public class CallbackResponseTransformer {
 
         if (caseData.getCaseType() == null) {
             builder
-                    .caseType("gop");
+                    .caseType(CASE_TYPE_DEFAULT);
+        }
+
+        if (caseData.getDateOfDeathType() == null) {
+            builder
+                    .dateOfDeathType(DATE_OF_DEATH_TYPE_DEFAULT);
         }
 
         if (caseData.getSolsExecutorAliasNames() != null) {

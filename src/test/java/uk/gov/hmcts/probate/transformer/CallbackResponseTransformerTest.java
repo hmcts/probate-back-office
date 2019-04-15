@@ -69,7 +69,7 @@ public class CallbackResponseTransformerTest {
     private static final String WILL_MESSAGE = "Will message";
     private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private static final String DATE_FORMAT = "yyyy-MM-dd";
-    
+
     private static final String CASE_TYPE_GRANT_OF_PROBATE = "gop";
     private static final String CASE_TYPE_INTESTACY = "intestacy";
 
@@ -86,6 +86,7 @@ public class CallbackResponseTransformerTest {
 
     private static final String DECEASED_FIRSTNAME = "Firstname";
     private static final String DECEASED_LASTNAME = "Lastname";
+    private static final String DECEASED_DATE_OF_DEATH_TYPE = "diedOnOrSince";
     private static final LocalDate DOB = LocalDate.parse("2016-12-31", dateTimeFormatter);
     private static final LocalDate DOD = LocalDate.parse("2017-12-31", dateTimeFormatter);
     private static final String NUM_CODICILS = "9";
@@ -181,7 +182,7 @@ public class CallbackResponseTransformerTest {
             .documentFilename("somedoc.pdf")
             .documentUrl("http://somedoc/location")
             .build();
-    
+
     private static final List<CollectionMember<ScannedDocument>> SCANNED_DOCUMENTS_LIST = Arrays.asList(
             new CollectionMember<ScannedDocument>("id",
                     ScannedDocument.builder()
@@ -192,7 +193,7 @@ public class CallbackResponseTransformerTest {
                             .subtype("will")
                             .url(SCANNED_DOCUMENT_URL)
                             .build()));
-    
+
     @InjectMocks
     private CallbackResponseTransformer underTest;
 
@@ -382,6 +383,28 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
+    public void shouldTestForNullDOB() {
+        CaseData caseData = caseDataBuilder.deceasedDateOfBirth(null)
+                .build();
+        when(caseDetailsMock.getData()).thenReturn(caseData);
+
+        CallbackResponse callbackResponse = underTest.transformForSolicitorComplete(callbackRequestMock, feeServiceResponseMock);
+
+        assertEquals(null, callbackResponse.getData().getDeceasedDateOfBirth());
+    }
+
+    @Test
+    public void shouldTestForNullDOD() {
+        CaseData caseData = caseDataBuilder.deceasedDateOfDeath(null)
+                .build();
+        when(caseDetailsMock.getData()).thenReturn(caseData);
+
+        CallbackResponse callbackResponse = underTest.transformForSolicitorComplete(callbackRequestMock, feeServiceResponseMock);
+
+        assertEquals(null, callbackResponse.getData().getDeceasedDateOfDeath());
+    }
+
+    @Test
     public void shouldConvertRequestToDataBeanForPaymentWithCheque() {
         CaseData caseData = caseDataBuilder.solsPaymentMethods(SOL_PAY_METHODS_CHEQUE)
                 .build();
@@ -482,7 +505,7 @@ public class CallbackResponseTransformerTest {
         assertEquals(1, response.getData().getCaseMatches().size());
         assertEquals(caseMatch, response.getData().getCaseMatches().get(0).getValue());
     }
-    
+
     @Test
     public void shouldSelectForQA() {
         CallbackResponse response = underTest.selectForQA(callbackRequestMock);
@@ -915,10 +938,10 @@ public class CallbackResponseTransformerTest {
         assertEquals(1, callbackResponse.getData().getBoDocumentsUploaded().size());
         assertSolsDetails(callbackResponse);
     }
-    
+
     @Test
     public void shouldGetPaperApplication() {
-        caseDataBuilder.applicationType(ApplicationType.SOLICITOR);        
+        caseDataBuilder.applicationType(ApplicationType.SOLICITOR);
         List<CollectionMember<EstateItem>> estate = new ArrayList<>();
         estate.add(createEstateItems("0"));
         List<CollectionMember<AttorneyApplyingOnBehalfOf>> attorneyList = new ArrayList<>();
@@ -1013,7 +1036,8 @@ public class CallbackResponseTransformerTest {
                 .scannedDocuments(SCANNED_DOCUMENTS_LIST)
                 .paperPaymentMethod("debitOrCredit")
                 .paymentReferenceNumberPaperform(IHT_REFERENCE)
-                .paperForm(YES);
+                .paperForm(YES)
+                .dateOfDeathType(DECEASED_DATE_OF_DEATH_TYPE);
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
@@ -1073,6 +1097,17 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
+    public void shouldSetSolicitorsInfoWhenApplicationTypeIsNull() {
+        caseDataBuilder.applicationType(null);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.paperForm(callbackRequestMock);
+        assertSolsDetails(callbackResponse);
+    }
+
+    @Test
     public void shouldSetGrantIssuedDate() {
         caseDataBuilder.applicationType(ApplicationType.PERSONAL);
         Document document = Document.builder()
@@ -1086,6 +1121,16 @@ public class CallbackResponseTransformerTest {
         String grantIssuedDate = targetFormat.format(new Date());
         CallbackResponse callbackResponse = underTest.addDocuments(callbackRequestMock, Arrays.asList(document), null, null);
         assertEquals(grantIssuedDate, callbackResponse.getData().getGrantIssuedDate());
+    }
+
+    @Test
+    public void shouldSetDateOfDeathType() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        CallbackResponse callbackResponse = underTest.paperForm(callbackRequestMock);
+        assertEquals("diedOn", callbackResponse.getData().getDateOfDeathType());
     }
 
     private CollectionMember<ProbateAliasName> createdDeceasedAliasName(String id, String forename, String lastname, String onGrant) {
@@ -1377,6 +1422,7 @@ public class CallbackResponseTransformerTest {
         assertEquals(YES, callbackResponse.getData().getForeignAsset());
         assertEquals("123", callbackResponse.getData().getForeignAssetEstateValue());
         assertEquals(CASE_TYPE_INTESTACY, callbackResponse.getData().getCaseType());
+        assertEquals(DECEASED_DATE_OF_DEATH_TYPE, callbackResponse.getData().getDateOfDeathType());
     }
 
 }

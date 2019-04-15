@@ -21,14 +21,11 @@ module.exports = function () {
         checkMyAnswers: steps.checkYourAnswers.checkYourAnswers,
         seeCaseDetails: steps.caseDetails.caseDetails,
         chooseNextStep: steps.nextStep.nextStep,
-        uploadDocument: steps.documentUpload.documentUpload,
         enterEventSummary: steps.eventSummary.eventSummary,
+        uploadDocument: steps.documentUpload.documentUpload,
         enterComment: steps.eventSummary.eventSummary,
-        generateDepositReceipt: steps.generateDepositReceipt.generateDepositReceipt,
         selectCaseMatchesForWillLodgement: steps.caseMatches.willLodgement.caseMatches,
         selectCaseMatchesForCaveat: steps.caseMatches.caveat.caseMatches,
-        enterCaseMatchesComment: steps.eventSummary.eventSummary,
-        selectWithdrawalReason: steps.withdrawal.withdrawal,
-        enterWithdrawalSummary: steps.eventSummary.eventSummary
+        selectWithdrawalReason: steps.withdrawal.withdrawal
     });
 };
