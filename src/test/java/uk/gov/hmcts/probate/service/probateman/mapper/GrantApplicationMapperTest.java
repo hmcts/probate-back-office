@@ -58,6 +58,7 @@ public class GrantApplicationMapperTest {
         GrantOfRepresentationData grantApplicationData = grantApplicationMapper.toCcdData(grantApplication);
 
         assertBasicApplication(grantApplicationData);
+        assertIHTValuesApplication(grantApplicationData);
         assertPaSpecificDetails(grantApplicationData);
         assertThat(grantApplicationData.getApplicationType()).isEqualTo(ApplicationType.PERSONAL);
 
@@ -71,8 +72,26 @@ public class GrantApplicationMapperTest {
         GrantOfRepresentationData grantApplicationData = grantApplicationMapper.toCcdData(grantApplication);
 
         assertBasicApplication(grantApplicationData);
+        assertIHTValuesApplication(grantApplicationData);
         assertSolsSpecificDetails(grantApplicationData);
         assertThat(grantApplicationData.getApplicationType()).isEqualTo(ApplicationType.SOLICITORS);
+
+    }
+
+    @Test
+    public void shouldMapToCcdDataForPersonalApplicationWithNullIHTValues() {
+        GrantApplication grantApplication = buildBasicApplication();
+        grantApplication.setNetEstateValue(null);
+        grantApplication.setGrossEstateValue(null);
+
+        GrantOfRepresentationData grantApplicationData = grantApplicationMapper.toCcdData(grantApplication);
+
+        assertBasicApplication(grantApplicationData);
+
+        assertPaSpecificDetails(grantApplicationData);
+        assertThat(grantApplicationData.getApplicationType()).isEqualTo(ApplicationType.PERSONAL);
+        assertThat(grantApplicationData.getIhtGrossValue()).isEqualTo(null);
+        assertThat(grantApplicationData.getIhtNetValue()).isEqualTo(null);
 
     }
 
@@ -100,12 +119,15 @@ public class GrantApplicationMapperTest {
         assertThat(grantApplicationData.getDeceasedDateOfBirth()).isEqualTo(DATE_OF_BIRTH);
         assertThat(grantApplicationData.getDeceasedDateOfDeath()).isEqualTo(DATE_OF_DEATH);
         assertThat(grantApplicationData.getDeceasedAddress()).isEqualToComparingFieldByFieldRecursively(expectedDeceasedAddress);
-        assertThat(grantApplicationData.getIhtGrossValue()).isEqualTo(GROSS_ESTATE_TRANSFORMED);
-        assertThat(grantApplicationData.getIhtNetValue()).isEqualTo(NET_ESTATE_TRANSFORMED);
         assertThat(grantApplicationData.getGrantType()).isEqualTo(GrantType.GRANT_OF_PROBATE);
         assertThat(grantApplicationData.getLegacyId()).isEqualTo(ID);
         assertThat(grantApplicationData.getLegacyType()).isEqualTo(LEGACY_TYPE);
         assertThat(grantApplicationData.getLegacyCaseViewUrl()).contains(legacyCaseViewUrl);
+    }
+
+    private void assertIHTValuesApplication(GrantOfRepresentationData grantApplicationData) {
+        assertThat(grantApplicationData.getIhtGrossValue()).isEqualTo(GROSS_ESTATE_TRANSFORMED);
+        assertThat(grantApplicationData.getIhtNetValue()).isEqualTo(NET_ESTATE_TRANSFORMED);
     }
 
     private GrantApplication buildBasicApplication() {
