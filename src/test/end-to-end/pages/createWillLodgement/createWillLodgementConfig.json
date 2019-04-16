@@ -45,7 +45,7 @@
   "page2_dateOfDeath_month": "01",
   "page2_dateOfDeath_year": "2017",
   "page2_dateOfDeath_long": "1 Jan 2017",
-  "page2_typeOfDeath": "Sleeping",
+  "page2_typeOfDeath": "Died on",
   "page2_hasAliasYes": "Yes",
   "page2_addAliasButton": "#deceasedFullAliasNameList div button[type=\"button\"]",
   "page2_alias_1": "deceased_alias_name1",
