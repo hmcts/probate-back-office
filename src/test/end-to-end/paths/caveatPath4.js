@@ -92,6 +92,13 @@ Scenario('Caveat Workflow - E2E Test 04 - Caveat for a Personal Applicant - Rais
     emailCaveatorConfig.dateAdded = dateFns.format(new Date(), 'D MMM YYYY');
     I.seeCaseDetails(caseRef, documentsTabEmailCaveatorConfig, emailCaveatorConfig);
 
+    nextStepName = 'Reopen caveat';   // When in state 'Caveat closed'
+    I.chooseNextStep(nextStepName);
+    I.reopenCaveat(caseRef);
+    I.enterEventSummary(caseRef, nextStepName);
+    endState = 'Caveat raised';
+    I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+
     I.click('#sign-out');
 
 }).retry(testConfig.TestRetryScenarios);
