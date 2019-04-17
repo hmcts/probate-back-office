@@ -105,6 +105,7 @@ public class CaveatCallbackResponseTransformer {
 
                 .expiryDate(transformToString(caveatData.getExpiryDate()))
                 .messageContent(caveatData.getMessageContent())
+                .caveatReopenReason(caveatData.getCaveatReopenReason())
 
                 .documentsUploaded(caveatData.getDocumentsUploaded())
                 .documentsGenerated(caveatData.getDocumentsGenerated())
