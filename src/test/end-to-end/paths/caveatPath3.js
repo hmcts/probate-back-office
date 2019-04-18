@@ -8,6 +8,7 @@ const eventSummaryConfig = require('src/test/end-to-end/pages/eventSummary/event
 
 const createCaveatConfig = require('src/test/end-to-end/pages/createCaveat/createCaveatConfig');
 const emailCaveatorConfig = require('src/test/end-to-end/pages/emailNotifications/caveat/emailCaveatorConfig');
+const reopenCaveatConfig = require('src/test/end-to-end/pages/reopenningCases/caveat/reopenCaveatConfig');
 const caseMatchesConfig = require('src/test/end-to-end/pages/caseMatches/caveat/caseMatchesConfig');
 const documentUploadConfig = require('src/test/end-to-end/pages/documentUpload/documentUploadConfig');
 
@@ -17,6 +18,7 @@ const caseDetailsTabConfig = require('src/test/end-to-end/pages/caseDetails/cave
 const deceasedDetailsTabConfig = require('src/test/end-to-end/pages/caseDetails/caveat/deceasedDetailsTabConfig');
 const caveatorDetailsTabConfig = require('src/test/end-to-end/pages/caseDetails/caveat/caveatorDetailsTabConfig');
 const caveatDetailsTabConfig = require('src/test/end-to-end/pages/caseDetails/caveat/caveatDetailsTabConfig');
+const caveatDetailsTabReopenConfig = require('src/test/end-to-end/pages/caseDetails/caveat/caveatDetailsTabReopenConfig');
 
 const documentsTabEmailCaveatorConfig = require('src/test/end-to-end/pages/caseDetails/caveat/documentsTabEmailCaveatorConfig');
 const caseMatchesTabConfig = require('src/test/end-to-end/pages/caseDetails/caveat/caseMatchesTabConfig');
@@ -98,6 +100,7 @@ Scenario('Caveat Workflow - E2E Test 03 - Caveat for a Personal Applicant - Rais
     I.enterEventSummary(caseRef, nextStepName);
     endState = 'Caveat raised';
     I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+    I.seeCaseDetails(caseRef, caveatDetailsTabReopenConfig, reopenCaveatConfig);
 
     I.click('#sign-out');
 
