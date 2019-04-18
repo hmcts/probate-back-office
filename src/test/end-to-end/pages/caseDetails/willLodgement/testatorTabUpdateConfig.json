@@ -6,7 +6,7 @@
     "Gender",
     "Date of birth",
     "Date of death",
-    "Type of death",
+    "What type of date of death is?",
     "Alias name?",
     "Alias names",
     "Full alias name",
@@ -18,8 +18,8 @@
     "Email address"
   ],
   "dataKeys": [
-    "page2_firstnames_update",
-    "page2_lastnames_update",
+    "page2_forenames_update",
+    "page2_surname_update",
     "page2_gender",
     "page2_dateOfBirth_long_update",
     "page2_dateOfDeath_long",

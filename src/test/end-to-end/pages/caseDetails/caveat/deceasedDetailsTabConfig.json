@@ -1,0 +1,27 @@
+{
+  "tabName": "Deceased details",
+  "fields": [
+    "Forename(s)",
+    "Surname(s)",
+    "What was their date of death?",
+    "What was their date of birth?",
+    "Building and Street",
+    "Town or City",
+    "County",
+    "Postcode/Zipcode",
+    "Country"
+  ],
+  "dataKeys": [
+    "page2_forenames",
+    "page2_surname",
+    "page2_dateOfDeath_long",
+    "page2_dateOfBirth_long",
+    "address_line1",
+    "address_line2",
+    "address_line3",
+    "address_town",
+    "address_county",
+    "address_country",
+    "address_postcode"
+  ]
+}

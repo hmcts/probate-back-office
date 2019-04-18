@@ -220,6 +220,7 @@ public class ResponseCaseData {
     private final String boSendToBulkPrint;
     private final String boSendToBulkPrintRequested;
     private final String grantIssuedDate;
+    private final String dateOfDeathType;
 
     private final List<CollectionMember<CaseMatch>> legacySearchResultRows;
 
