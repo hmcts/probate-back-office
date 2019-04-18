@@ -43,7 +43,7 @@ mainClassName = 'uk.gov.hmcts.probate.BusinessRulesValidationApplication'
 
 ext['selenium.version']='3.8.1'
 
-check.dependsOn dependencyCheckAnalyze
+// check.dependsOn dependencyCheckAnalyze
 // make build fail on Checkstyle issues (https://github.com/gradle/gradle/issues/881)
 tasks.withType(Checkstyle).each { checkstyleTask ->
   checkstyleTask.doLast {
