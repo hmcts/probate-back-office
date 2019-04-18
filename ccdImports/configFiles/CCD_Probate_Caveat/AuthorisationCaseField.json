@@ -49,6 +49,7 @@
   {"CaseTypeID": "Caveat", "CaseFieldID": "caveatorAddress", "UserRole": "caseworker-probate-caseadmin", "CRUD": "CRUD"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "expiryDate", "UserRole": "caseworker-probate-caseadmin", "CRUD": "CRUD"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "messageContent", "UserRole": "caseworker-probate-caseadmin", "CRUD": "CRUD"},
+  {"CaseTypeID": "Caveat", "CaseFieldID": "caveatReopenReason", "UserRole": "caseworker-probate-caseadmin", "CRUD": "R"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "documentsUploaded", "UserRole": "caseworker-probate-caseadmin", "CRUD": "CRUD"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "documentsGenerated", "UserRole": "caseworker-probate-caseadmin", "CRUD": "CRUD"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "caseMatches", "UserRole": "caseworker-probate-caseadmin", "CRUD": "CRUD"},
