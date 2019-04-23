@@ -36,6 +36,11 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     private static final String IHT_NET = "8,000";
     private static final String IHT_GROSS = "10,000";
     private static final String GOP = "Grant of Probate";
+    private static final String DIED_ON = "Died on";
+    private static final String DIED_ON_OR_SINCE = "Died on or since";
+    private static final String DIED_ON_OR_ABOUT = "Died on or about";
+    private static final String DIED_ON_OR_BEFORE = "Died on or before";
+    private static final String PRESUMED_DIED_ON = "Presumed died on";
 
     @Test
     public void verifySolicitorGenerateGrantShouldReturnOkResponseCode() {
@@ -112,6 +117,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         assertTrue(response.contains(SOLICITOR_INFO2));
         assertTrue(response.contains(GOP));
         assertTrue(response.contains(PRIMARY_APPLICANT));
+        assertTrue(response.contains(DIED_ON_OR_SINCE));
 
         assertTrue(!response.contains(PA));
         assertTrue(!response.contains(WILL_MESSAGE));
@@ -132,6 +138,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         assertTrue(response.contains(GOP));
         assertTrue(response.contains(PA));
         assertTrue(response.contains(PRIMARY_APPLICANT));
+        assertTrue(response.contains(PRESUMED_DIED_ON));
 
         assertTrue(!response.contains(WILL_MESSAGE));
         assertTrue(!response.contains(ADMIN_MESSAGE));
@@ -154,6 +161,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         assertTrue(response.contains(ADD_EXEC_TWO));
         assertTrue(response.contains(SOLICITOR_INFO1));
         assertTrue(response.contains(SOLICITOR_INFO2));
+        assertTrue(response.contains(DIED_ON_OR_ABOUT));
 
         assertTrue(!response.contains(WILL_MESSAGE));
         assertTrue(!response.contains(ADMIN_MESSAGE));
@@ -176,6 +184,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         assertTrue(response.contains(POWER_RESERVED));
         assertTrue(response.contains(SOLICITOR_INFO1));
         assertTrue(response.contains(SOLICITOR_INFO2));
+        assertTrue(response.contains(DIED_ON));
 
         assertTrue(!response.contains(WILL_MESSAGE));
         assertTrue(!response.contains(ADMIN_MESSAGE));
@@ -195,6 +204,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         assertTrue(response.contains(POWER_RESERVED_SINGLE));
         assertTrue(response.contains(SOLICITOR_INFO1));
         assertTrue(response.contains(SOLICITOR_INFO2));
+        assertTrue(response.contains(DIED_ON));
 
         assertTrue(!response.contains(WILL_MESSAGE));
         assertTrue(!response.contains(ADMIN_MESSAGE));
@@ -221,6 +231,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         assertTrue(response.contains(PRIMARY_APPLICANT));
         assertTrue(response.contains(TITLE));
         assertTrue(response.contains(HONOURS));
+        assertTrue(response.contains(DIED_ON));
 
         assertTrue(!response.contains(POWER_RESERVED));
         assertTrue(!response.contains(POWER_RESERVED_SINGLE));
@@ -237,6 +248,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         assertTrue(response.contains(SOLICITOR_INFO1));
         assertTrue(response.contains(SOLICITOR_INFO2));
         assertTrue(response.contains(PRIMARY_APPLICANT));
+        assertTrue(response.contains(DIED_ON_OR_SINCE));
 
         assertTrue(!response.contains(WILL_MESSAGE));
         assertTrue(!response.contains(ADMIN_MESSAGE));
@@ -256,6 +268,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         assertTrue(response.contains(GOP));
         assertTrue(response.contains(PA));
         assertTrue(response.contains(PRIMARY_APPLICANT));
+        assertTrue(response.contains(PRESUMED_DIED_ON));
 
         assertTrue(!response.contains(WILL_MESSAGE));
         assertTrue(!response.contains(ADMIN_MESSAGE));
@@ -279,6 +292,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         assertTrue(response.contains(ADD_EXEC_TWO));
         assertTrue(response.contains(SOLICITOR_INFO1));
         assertTrue(response.contains(SOLICITOR_INFO2));
+        assertTrue(response.contains(DIED_ON_OR_ABOUT));
 
         assertTrue(!response.contains(WILL_MESSAGE));
         assertTrue(!response.contains(ADMIN_MESSAGE));
@@ -301,6 +315,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         assertTrue(response.contains(POWER_RESERVED));
         assertTrue(response.contains(SOLICITOR_INFO1));
         assertTrue(response.contains(SOLICITOR_INFO2));
+        assertTrue(response.contains(DIED_ON));
 
         assertTrue(!response.contains(WILL_MESSAGE));
         assertTrue(!response.contains(ADMIN_MESSAGE));
@@ -320,6 +335,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         assertTrue(response.contains(POWER_RESERVED_SINGLE));
         assertTrue(response.contains(SOLICITOR_INFO1));
         assertTrue(response.contains(SOLICITOR_INFO2));
+        assertTrue(response.contains(DIED_ON));
 
         assertTrue(!response.contains(WILL_MESSAGE));
         assertTrue(!response.contains(ADMIN_MESSAGE));
@@ -346,6 +362,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         assertTrue(response.contains(PRIMARY_APPLICANT));
         assertTrue(response.contains(TITLE));
         assertTrue(response.contains(HONOURS));
+        assertTrue(response.contains(DIED_ON));
 
         assertTrue(!response.contains(POWER_RESERVED));
         assertTrue(!response.contains(POWER_RESERVED_SINGLE));
@@ -400,6 +417,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         assertTrue(!response.contains(PRIMARY_APPLICANT));
         assertTrue(!response.contains(ADD_EXEC_ONE));
 
+        assertTrue(response.contains(DIED_ON_OR_BEFORE));
         assertTrue(response.contains(ADD_EXEC_ONE_PRIMARY_APPLICANT));
         assertTrue(response.contains(ADD_EXEC_TWO));
         assertTrue(response.contains(GOP));
