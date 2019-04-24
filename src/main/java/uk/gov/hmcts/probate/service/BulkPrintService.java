@@ -42,12 +42,12 @@ public class BulkPrintService {
             additionalData = Collections.unmodifiableMap(additionalData);
 
             List<String> pdfs = arrangePdfDocumentsForBulkPrinting(callbackRequest, grantDocument, coverSheet, authHeaderValue);
-            getDocumentSize(pdfs);
+            getDocumentSize(pdfs, callbackRequest);
 
             sendLetterResponse = sendLetterApi.sendLetter(BEARER + authHeaderValue,
                     new LetterWithPdfsRequest(pdfs, XEROX_TYPE_PARAMETER, additionalData));
-            log.info("Letter service produced the following letter Id {} for a pdf size {}",
-                    sendLetterResponse.letterId, pdfs.size());
+            log.info("Letter service produced the following letter Id {} for a pdf size {} for the case id {}",
+                    sendLetterResponse.letterId, pdfs.size(), callbackRequest.getCaseDetails().getId());
 
         } catch (HttpClientErrorException ex) {
             log.error("Error with Http Connection to Bulk Print with response body {} and message {} and code {}",
@@ -62,9 +62,13 @@ public class BulkPrintService {
         return sendLetterResponse;
     }
 
-    private String getPdfAsBase64EncodedString(Document document, String authHeaderValue) throws IOException {
+    private String getPdfAsBase64EncodedString(Document document,
+                                               String authHeaderValue,
+                                               CallbackRequest callbackRequest) throws IOException {
+
         String response = Base64.getEncoder().encodeToString(documentStoreClient.retrieveDocument(document, authHeaderValue));
-        log.info("dm store" + document.getDocumentFileName() + " string: " + response);
+        log.info("case id " + callbackRequest.getCaseDetails().getId().toString()
+                + "dm store" + document.getDocumentFileName() + " string: " + response);
         return response;
     }
 
@@ -73,8 +77,8 @@ public class BulkPrintService {
                                                             Document coverSheetDocument,
                                                             String authHeaderValue) throws IOException {
         List<String> documents = new LinkedList<>();
-        String encodedCoverSheet = getPdfAsBase64EncodedString(coverSheetDocument, authHeaderValue);
-        String encodedGrantDocument = getPdfAsBase64EncodedString(grantDocument, authHeaderValue);
+        String encodedCoverSheet = getPdfAsBase64EncodedString(coverSheetDocument, authHeaderValue, callbackRequest);
+        String encodedGrantDocument = getPdfAsBase64EncodedString(grantDocument, authHeaderValue, callbackRequest);
 
         //Layer documents as cover letter first, grant, and extra copies of grant to PA.
         documents.add(encodedCoverSheet);
@@ -89,8 +93,8 @@ public class BulkPrintService {
         return documents;
     }
 
-    private List<String> getDocumentSize(List<String> documents) throws IOException {
-        log.info("number of documents is: " + documents.size());
+    private List<String> getDocumentSize(List<String> documents, CallbackRequest callbackRequest) throws IOException {
+        log.info("case id " + callbackRequest.getCaseDetails().getId().toString() + "number of documents is: " + documents.size());
         return documents;
     }
 }
