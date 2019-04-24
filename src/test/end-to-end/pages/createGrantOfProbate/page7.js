@@ -15,13 +15,13 @@ module.exports = function (crud) {
         I.fillField('#attorneyOnBehalfOfNameAndAddress_0_name', createGrantOfProbateConfig.page7_representativeOfName);
 
         I.click(createGrantOfProbateConfig.UKpostcodeLink);
-        I.fillField('#attorneyOnBehalfOfNameAndAddress_0_address_AddressLine1', createGrantOfProbateConfig.address_line1);
-        I.fillField('#attorneyOnBehalfOfNameAndAddress_0_address_AddressLine2', createGrantOfProbateConfig.address_line2);
-        I.fillField('#attorneyOnBehalfOfNameAndAddress_0_address_AddressLine3', createGrantOfProbateConfig.address_line3);
-        I.fillField('#attorneyOnBehalfOfNameAndAddress_0_address_PostTown', createGrantOfProbateConfig.address_town);
-        I.fillField('#attorneyOnBehalfOfNameAndAddress_0_address_County', createGrantOfProbateConfig.address_county);
-        I.fillField('#attorneyOnBehalfOfNameAndAddress_0_address_PostCode', createGrantOfProbateConfig.address_postcode);
-        I.fillField('#attorneyOnBehalfOfNameAndAddress_0_address_Country', createGrantOfProbateConfig.address_country);
+        I.fillField('#attorneyOnBehalfOfNameAndAddress_0_address__AddressLine1', createGrantOfProbateConfig.address_line1);
+        I.fillField('#attorneyOnBehalfOfNameAndAddress_0_address__AddressLine2', createGrantOfProbateConfig.address_line2);
+        I.fillField('#attorneyOnBehalfOfNameAndAddress_0_address__AddressLine3', createGrantOfProbateConfig.address_line3);
+        I.fillField('#attorneyOnBehalfOfNameAndAddress_0_address__PostTown', createGrantOfProbateConfig.address_town);
+        I.fillField('#attorneyOnBehalfOfNameAndAddress_0_address__County', createGrantOfProbateConfig.address_county);
+        I.fillField('#attorneyOnBehalfOfNameAndAddress_0_address__PostCode', createGrantOfProbateConfig.address_postcode);
+        I.fillField('#attorneyOnBehalfOfNameAndAddress_0_address__Country', createGrantOfProbateConfig.address_country);
 
         I.click(`#mentalCapacity-${createGrantOfProbateConfig.page7_mentalCapacityYes}`);
         I.click(`#courtOfProtection-${createGrantOfProbateConfig.page7_courtOfProtectionYes}`);

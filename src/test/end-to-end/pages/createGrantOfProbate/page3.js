@@ -23,13 +23,13 @@ module.exports = function (crud) {
         I.selectOption('#executorsApplying_0_applyingExecutorOtherNamesReason', createGrantOfProbateConfig.page3_executor0_alias_reason);
 
         I.click(createGrantOfProbateConfig.UKpostcodeLink);
-        I.fillField('#executorsApplying_0_applyingExecutorAddress_AddressLine1', createGrantOfProbateConfig.address_line1);
-        I.fillField('#executorsApplying_0_applyingExecutorAddress_AddressLine2', createGrantOfProbateConfig.address_line2);
-        I.fillField('#executorsApplying_0_applyingExecutorAddress_AddressLine3', createGrantOfProbateConfig.address_line3);
-        I.fillField('#executorsApplying_0_applyingExecutorAddress_PostTown', createGrantOfProbateConfig.address_town);
-        I.fillField('#executorsApplying_0_applyingExecutorAddress_County', createGrantOfProbateConfig.address_county);
-        I.fillField('#executorsApplying_0_applyingExecutorAddress_PostCode', createGrantOfProbateConfig.address_postcode);
-        I.fillField('#executorsApplying_0_applyingExecutorAddress_Country', createGrantOfProbateConfig.address_country);
+        I.fillField('#executorsApplying_0_applyingExecutorAddress__AddressLine1', createGrantOfProbateConfig.address_line1);
+        I.fillField('#executorsApplying_0_applyingExecutorAddress__AddressLine2', createGrantOfProbateConfig.address_line2);
+        I.fillField('#executorsApplying_0_applyingExecutorAddress__AddressLine3', createGrantOfProbateConfig.address_line3);
+        I.fillField('#executorsApplying_0_applyingExecutorAddress__PostTown', createGrantOfProbateConfig.address_town);
+        I.fillField('#executorsApplying_0_applyingExecutorAddress__County', createGrantOfProbateConfig.address_county);
+        I.fillField('#executorsApplying_0_applyingExecutorAddress__PostCode', createGrantOfProbateConfig.address_postcode);
+        I.fillField('#executorsApplying_0_applyingExecutorAddress__Country', createGrantOfProbateConfig.address_country);
 
         I.click({type: 'button'}, '#executorsNotApplying>div');
         I.fillField('#executorsNotApplying_0_notApplyingExecutorName', createGrantOfProbateConfig.page3_executor1_name);

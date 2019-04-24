@@ -16,13 +16,13 @@ module.exports = function (crud) {
         I.fillField('#boDeceasedHonours', createGrantOfProbateConfig.page4_bo_deceasedHonours);
 
         I.click(createGrantOfProbateConfig.UKpostcodeLink);
-        I.fillField('#deceasedAddress_AddressLine1', createGrantOfProbateConfig.address_line1);
-        I.fillField('#deceasedAddress_AddressLine2', createGrantOfProbateConfig.address_line2);
-        I.fillField('#deceasedAddress_AddressLine3', createGrantOfProbateConfig.address_line3);
-        I.fillField('#deceasedAddress_PostTown', createGrantOfProbateConfig.address_town);
-        I.fillField('#deceasedAddress_County', createGrantOfProbateConfig.address_county);
-        I.fillField('#deceasedAddress_PostCode', createGrantOfProbateConfig.address_postcode);
-        I.fillField('#deceasedAddress_Country', createGrantOfProbateConfig.address_country);
+        I.fillField('#deceasedAddress__AddressLine1', createGrantOfProbateConfig.address_line1);
+        I.fillField('#deceasedAddress__AddressLine2', createGrantOfProbateConfig.address_line2);
+        I.fillField('#deceasedAddress__AddressLine3', createGrantOfProbateConfig.address_line3);
+        I.fillField('#deceasedAddress__PostTown', createGrantOfProbateConfig.address_town);
+        I.fillField('#deceasedAddress__County', createGrantOfProbateConfig.address_county);
+        I.fillField('#deceasedAddress__PostCode', createGrantOfProbateConfig.address_postcode);
+        I.fillField('#deceasedAddress__Country', createGrantOfProbateConfig.address_country);
 
         I.fillField('#deceasedDateOfBirth-day', createGrantOfProbateConfig.page4_deceasedDob_day);
         I.fillField('#deceasedDateOfBirth-month', createGrantOfProbateConfig.page4_deceasedDob_month);

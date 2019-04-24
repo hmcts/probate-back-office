@@ -18,13 +18,13 @@ module.exports = function (crud) {
         I.fillField('#primaryApplicantEmailAddress', createGrantOfProbateConfig.page2_email);
 
         I.click(createGrantOfProbateConfig.UKpostcodeLink);
-        I.fillField('#primaryApplicantAddress_AddressLine1', createGrantOfProbateConfig.address_line1);
-        I.fillField('#primaryApplicantAddress_AddressLine2', createGrantOfProbateConfig.address_line2);
-        I.fillField('#primaryApplicantAddress_AddressLine3', createGrantOfProbateConfig.address_line3);
-        I.fillField('#primaryApplicantAddress_PostTown', createGrantOfProbateConfig.address_town);
-        I.fillField('#primaryApplicantAddress_County', createGrantOfProbateConfig.address_county);
-        I.fillField('#primaryApplicantAddress_PostCode', createGrantOfProbateConfig.address_postcode);
-        I.fillField('#primaryApplicantAddress_Country', createGrantOfProbateConfig.address_country);
+        I.fillField('#primaryApplicantAddress__AddressLine1', createGrantOfProbateConfig.address_line1);
+        I.fillField('#primaryApplicantAddress__AddressLine2', createGrantOfProbateConfig.address_line2);
+        I.fillField('#primaryApplicantAddress__AddressLine3', createGrantOfProbateConfig.address_line3);
+        I.fillField('#primaryApplicantAddress__PostTown', createGrantOfProbateConfig.address_town);
+        I.fillField('#primaryApplicantAddress__County', createGrantOfProbateConfig.address_county);
+        I.fillField('#primaryApplicantAddress__PostCode', createGrantOfProbateConfig.address_postcode);
+        I.fillField('#primaryApplicantAddress__Country', createGrantOfProbateConfig.address_country);
 
         I.selectOption('#primaryApplicantRelationshipToDeceased', createGrantOfProbateConfig.page2_relationshipToDeceased);
 
