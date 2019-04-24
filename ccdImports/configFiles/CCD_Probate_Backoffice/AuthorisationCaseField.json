@@ -1051,6 +1051,7 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "bulkPrintPdfSize", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "evidenceHandled", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRU"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "scannedDocuments", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "customHistoryViewer", "UserRole": "caseworker-probate-solicitor", "CRUD": "R"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "applicationType", "UserRole": "caseworker-probate-solicitor", "CRUD": "C"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "registryLocation", "UserRole": "caseworker-probate-solicitor", "CRUD": "C"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "solsSolicitorFirmName", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"},
