@@ -8,6 +8,7 @@ const eventSummaryConfig = require('src/test/end-to-end/pages/eventSummary/event
 
 const caseMatchesConfig = require('src/test/end-to-end/pages/caseMatches/standingSearch/caseMatchesConfig');
 const createStandingSearchConfig = require('src/test/end-to-end/pages/createStandingSearch/createStandingSearchConfig');
+const documentRemoveConfig = require('src/test/end-to-end/pages/documentRemove/documentRemoveConfig');
 const documentUploadConfig = require('src/test/end-to-end/pages/documentUpload/standingSearch/documentUploadConfig');
 
 const applicantDetailsTabConfig = require('src/test/end-to-end/pages/caseDetails/standingSearch/applicantDetailsTabConfig');
@@ -77,9 +78,10 @@ Scenario('Standing Search Workflow - E2E test 03 - Standing Search for a Persona
     I.seeCaseDetails(caseRef, deceasedUpdateTabConfig, createStandingSearchConfig);
     I.seeCaseDetails(caseRef, applicantDetailsUpdateTabConfig, createStandingSearchConfig);
 
+    const uploadNumber = 1;
     nextStepName = 'Upload document';
     I.chooseNextStep(nextStepName);
-    I.uploadDocument(caseRef, documentUploadConfig, 1);
+    I.uploadDocument(caseRef, documentUploadConfig, uploadNumber);
     I.enterEventSummary(caseRef, nextStepName);
     I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
     I.seeCaseDetails(caseRef, documentUploadTabConfig, documentUploadConfig);
@@ -130,10 +132,10 @@ Scenario('Standing Search Workflow - E2E test 03 - Standing Search for a Persona
 
     nextStepName = 'Upload document';
     I.chooseNextStep(nextStepName);
-    I.uploadDocument(caseRef, documentUploadConfig, 3);
+    I.removeDocuments(caseRef, documentRemoveConfig, uploadNumber);
     I.enterEventSummary(caseRef, nextStepName);
     I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
-    I.seeCaseDetails(caseRef, documentUploadTabConfig, documentUploadConfig);
+    I.seeCaseDetails(caseRef, documentUploadTabConfig, documentRemoveConfig);
 
     nextStepName = 'Add comment';
     I.chooseNextStep(nextStepName);

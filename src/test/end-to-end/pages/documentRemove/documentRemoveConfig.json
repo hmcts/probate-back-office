@@ -1,0 +1,9 @@
+{
+  "waitForText" : "Document upload",
+  "waitForText2" : "Are you sure you want to remove the item",
+  "documentType": "Email",
+  "filename": "test_file_for_document_upload.png",
+  "comment": "test file to upload",
+  "id": "#documentsUploaded"
+}
+  

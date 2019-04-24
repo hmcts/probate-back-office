@@ -4,14 +4,18 @@ const testConfig = require('src/test/config');
 const createStandingSearchConfig = require('./createStandingSearchConfig');
 const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
 
-module.exports = function (crud) {
+module.exports = function (crud, sol=false) {
 
     const I = this;
 
     if (crud === 'create') {
         I.waitForText(createStandingSearchConfig.page1_waitForText, testConfig.TestTimeToWaitForText);
 
-        I.selectOption('#applicationType', createStandingSearchConfig.page1_list1_application_type);
+        if (sol) {
+            I.selectOption('#applicationType', createStandingSearchConfig.page1_list1_application_type_sol);
+        } else {
+            I.selectOption('#applicationType', createStandingSearchConfig.page1_list1_application_type);
+        }
         I.selectOption('#registryLocation', createStandingSearchConfig.page1_list2_registry_location);
     }
 

@@ -41,6 +41,7 @@ module.exports = function () {
         completeStandingSearch: steps.eventSummary.eventSummary,
         enterEventSummary: steps.eventSummary.eventSummary,
         uploadDocument: steps.documentUpload.documentUpload,
+        removeDocuments: steps.documentRemove.documentRemove,
         enterComment: steps.eventSummary.eventSummary,
         markForExamination: steps.markForExamination.markForExamination,
         markForIssue: steps.markForIssue.markForIssue,

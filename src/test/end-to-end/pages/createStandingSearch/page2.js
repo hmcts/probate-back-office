@@ -31,13 +31,14 @@ module.exports = function (crud) {
         I.fillField('#deceasedFullAliasNameList_1_FullAliasName', createStandingSearchConfig.page2_deceasedAlias2);
 
         I.click(createStandingSearchConfig.UKpostcodeLink);
-        I.fillField('#deceasedAddress_AddressLine1', createStandingSearchConfig.address_line1);
-        I.fillField('#deceasedAddress_AddressLine2', createStandingSearchConfig.address_line2);
-        I.fillField('#deceasedAddress_AddressLine3', createStandingSearchConfig.address_line3);
-        I.fillField('#deceasedAddress_PostTown', createStandingSearchConfig.address_town);
-        I.fillField('#deceasedAddress_County', createStandingSearchConfig.address_county);
-        I.fillField('#deceasedAddress_PostCode', createStandingSearchConfig.address_postcode);
-        I.fillField('#deceasedAddress_Country', createStandingSearchConfig.address_country);
+
+        I.fillField('#deceasedAddress__AddressLine1', createStandingSearchConfig.address_line1);
+        I.fillField('#deceasedAddress__AddressLine2', createStandingSearchConfig.address_line2);
+        I.fillField('#deceasedAddress__AddressLine3', createStandingSearchConfig.address_line3);
+        I.fillField('#deceasedAddress__PostTown', createStandingSearchConfig.address_town);
+        I.fillField('#deceasedAddress__County', createStandingSearchConfig.address_county);
+        I.fillField('#deceasedAddress__PostCode', createStandingSearchConfig.address_postcode);
+        I.fillField('#deceasedAddress__Country', createStandingSearchConfig.address_country);
 
     }
 

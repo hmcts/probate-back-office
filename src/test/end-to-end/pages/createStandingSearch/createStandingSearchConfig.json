@@ -2,6 +2,7 @@
   "page1_waitForText": "Create a standing search",
   "page1_amend_waitForText": "Case details",
   "page1_list1_application_type": "Personal",
+  "page1_list1_application_type_sol": "Solicitor",
   "page1_list2_registry_location": "Liverpool",
   "page1_list2_registry_location_update": "X",
   "standing_search_expiry_date": "X XXX XXXX",
@@ -32,6 +33,10 @@
   "page3_applicantSurname": "applicant_sn",
   "page3_applicantForenames_update": "X",
   "page3_applicantSurname_update": "X",
+  "page3_solForenames": "sol_fn",
+  "page3_solSurname": "sol_sn",
+  "page3_solForenames_update": "X",
+  "page3_solSurname_update": "X",
   "page3_email": "test@test.com",
 
   "page4_waitForText": "Standing search details",
@@ -47,6 +52,14 @@
   "address_county": "London",
   "address_country": "United Kingdom",
   "address_postcode": "SW1A 1AA",
+
+  "sol_address_line1": "666",
+  "sol_address_line2": "Law Firm St",
+  "sol_address_line3": "The place to be",
+  "sol_address_town": "London",
+  "sol_address_county": "London",
+  "sol_address_country": "United Kingdom",
+  "sol_address_postcode": "SL1A 1AA",
 
   "UKpostcodeLink": ".manual-link"
 }

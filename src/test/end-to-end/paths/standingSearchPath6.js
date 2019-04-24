@@ -11,31 +11,31 @@ const createStandingSearchConfig = require('src/test/end-to-end/pages/createStan
 const documentRemoveConfig = require('src/test/end-to-end/pages/documentRemove/documentRemoveConfig');
 const documentUploadConfig = require('src/test/end-to-end/pages/documentUpload/standingSearch/documentUploadConfig');
 
-const applicantDetailsTabConfig = require('src/test/end-to-end/pages/caseDetails/standingSearch/applicantDetailsTabConfig');
-const caseDetailsTabConfig = require('src/test/end-to-end/pages/caseDetails/standingSearch/caseDetailsTabConfig');
+const caseDetailsSolTabConfig = require('src/test/end-to-end/pages/caseDetails/standingSearch/caseDetailsSolTabConfig');
 const caseMatchesTabConfig = require('src/test/end-to-end/pages/caseDetails/standingSearch/caseMatchesTabConfig');
 const deceasedTabConfig = require('src/test/end-to-end/pages/caseDetails/standingSearch/deceasedTabConfig');
 const documentUploadTabConfig = require('src/test/end-to-end/pages/caseDetails/standingSearch/documentUploadTabConfig');
 const historyTabConfig = require('src/test/end-to-end/pages/caseDetails/standingSearch/historyTabConfig');
+const solDetailsTabConfig = require();
 
-const applicantDetailsUpdateTabConfig = require('src/test/end-to-end/pages/caseDetails/standingSearch/applicantDetailsUpdateTabConfig');
-const caseDetailsUpdateTabConfig = require('src/test/end-to-end/pages/caseDetails/standingSearch/caseDetailsUpdateTabConfig');
+const caseDetailsSolUpdateTabConfig = require('src/test/end-to-end/pages/caseDetails/standingSearch/caseDetailsSolUpdateTabConfig');
 const deceasedUpdateTabConfig = require('src/test/end-to-end/pages/caseDetails/standingSearch/deceasedUpdateTabConfig');
+const solDetailsUpdateTabConfig = require('src/test/end-to-end/pages/caseDetails/standingSearch/solDetailsUpdateTabConfig');
 
-Feature('Back Office');
-// .retry(testConfig.TestRetryFeatures);
+Feature('Back Office').retry(testConfig.TestRetryFeatures);
 
-Scenario('Standing Search Workflow - E2E test 01 - Standing Search for a Personal Applicant - Create standing search -> Grant already issued -> Complete standing search', async function (I) {
+Scenario('Standing Search Workflow - E2E test 06 - Standing Search for a Solicitor - Create standing search (for Sol) -> Grant already issued -> Complete standing search', async function (I) {
 
     // IdAM
     I.authenticateWithIdamIfAvailable();
 
+    const sol = true;
     let nextStepName = 'Create a standing search';
     I.selectNewCase();
     I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_ss, createCaseConfig.list3_text_ss);
-    I.enterStandingSearchPage1('create');
+    I.enterStandingSearchPage1('create', sol);
     I.enterStandingSearchPage2('create');
-    I.enterStandingSearchPage3('create');
+    I.enterStandingSearchPage3('create', sol);
     I.enterStandingSearchPage4('create');
     I.checkMyAnswers(nextStepName);
     let endState = 'Standing search created';
@@ -48,9 +48,9 @@ Scenario('Standing Search Workflow - E2E test 01 - Standing Search for a Persona
     // When creating a standing search, Standing Search Expiry Date is automatically set to today + 6 months
     createStandingSearchConfig.standing_search_expiry_date = dateFns.format(dateFns.addMonths(new Date(), 6), 'D MMM YYYY');
     I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
-    I.seeCaseDetails(caseRef, caseDetailsTabConfig, createStandingSearchConfig);
+    I.seeCaseDetails(caseRef, caseDetailsSolTabConfig, createStandingSearchConfig);
     I.seeCaseDetails(caseRef, deceasedTabConfig, createStandingSearchConfig);
-    I.seeCaseDetails(caseRef, applicantDetailsTabConfig, createStandingSearchConfig);
+    I.seeCaseDetails(caseRef, solDetailsTabConfig, createStandingSearchConfig);
 
     nextStepName = 'Amend standing search';
     I.chooseNextStep(nextStepName);
@@ -61,9 +61,9 @@ Scenario('Standing Search Workflow - E2E test 01 - Standing Search for a Persona
     I.checkMyAnswers(nextStepName);
 
     I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
-    I.seeCaseDetails(caseRef, caseDetailsUpdateTabConfig, createStandingSearchConfig);
+    I.seeCaseDetails(caseRef, caseDetailsSolUpdateTabConfig, createStandingSearchConfig);
     I.seeCaseDetails(caseRef, deceasedUpdateTabConfig, createStandingSearchConfig);
-    I.seeCaseDetails(caseRef, applicantDetailsUpdateTabConfig, createStandingSearchConfig);
+    I.seeCaseDetails(caseRef, solDetailsUpdateTabConfig, createStandingSearchConfig);
 
     let uploadNumber = 1;
     nextStepName = 'Upload document';
@@ -95,9 +95,9 @@ Scenario('Standing Search Workflow - E2E test 01 - Standing Search for a Persona
     I.checkMyAnswers(nextStepName);
 
     I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
-    I.seeCaseDetails(caseRef, caseDetailsUpdateTabConfig, createStandingSearchConfig);
+    I.seeCaseDetails(caseRef, caseDetailsSolUpdateTabConfig, createStandingSearchConfig);
     I.seeCaseDetails(caseRef, deceasedUpdateTabConfig, createStandingSearchConfig);
-    I.seeCaseDetails(caseRef, applicantDetailsUpdateTabConfig, createStandingSearchConfig);
+    I.seeCaseDetails(caseRef, solDetailsUpdateTabConfig, createStandingSearchConfig);
 
     uploadNumber = 3;
     nextStepName = 'Upload document';
@@ -127,9 +127,9 @@ Scenario('Standing Search Workflow - E2E test 01 - Standing Search for a Persona
     I.checkMyAnswers(nextStepName);
 
     I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
-    I.seeCaseDetails(caseRef, caseDetailsUpdateTabConfig, createStandingSearchConfig);
+    I.seeCaseDetails(caseRef, caseDetailsSolUpdateTabConfig, createStandingSearchConfig);
     I.seeCaseDetails(caseRef, deceasedUpdateTabConfig, createStandingSearchConfig);
-    I.seeCaseDetails(caseRef, applicantDetailsUpdateTabConfig, createStandingSearchConfig);
+    I.seeCaseDetails(caseRef, solDetailsUpdateTabConfig, createStandingSearchConfig);
 
     uploadNumber = 5;
     nextStepName = 'Upload document';
@@ -159,9 +159,9 @@ Scenario('Standing Search Workflow - E2E test 01 - Standing Search for a Persona
     I.checkMyAnswers(nextStepName);
 
     I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
-    I.seeCaseDetails(caseRef, caseDetailsUpdateTabConfig, createStandingSearchConfig);
+    I.seeCaseDetails(caseRef, caseDetailsSolUpdateTabConfig, createStandingSearchConfig);
     I.seeCaseDetails(caseRef, deceasedUpdateTabConfig, createStandingSearchConfig);
-    I.seeCaseDetails(caseRef, applicantDetailsUpdateTabConfig, createStandingSearchConfig);
+    I.seeCaseDetails(caseRef, solDetailsUpdateTabConfig, createStandingSearchConfig);
 
     nextStepName = 'Upload document';
     I.chooseNextStep(nextStepName);
@@ -175,5 +175,4 @@ Scenario('Standing Search Workflow - E2E test 01 - Standing Search for a Persona
     I.enterComment(caseRef, nextStepName);
     I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
 
-});
-// .retry(testConfig.TestRetryScenarios);
+}).retry(testConfig.TestRetryScenarios);
