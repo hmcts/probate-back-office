@@ -185,13 +185,14 @@
     "SecurityClassification": "Public",
     "ShowSummary": "N"
   },
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "reopenCaveat", "Name": "Reopen caveat", "Description": "Reopen caveat", "DisplayOrder": 65, "PreConditionState(s)": "CaveatClosed", "PostConditionState": "CaveatRaised", "SecurityClassification": "Public", "ShowSummary": "N"},
   {
     "LiveFrom": "01/01/2017",
     "CaseTypeID": "Caveat",
     "ID": "findMatchedCaseForImport",
     "Name": "Caveat match",
     "Description": "Caveat match against existing probate cases",
-    "DisplayOrder": 65,
+    "DisplayOrder": 66,
     "PreConditionState(s)": "CaveatImported",
     "PostConditionState": "CaveatImported",
     "CallBackURLAboutToStartEvent": "http://${CCD_DEF_CASE_SERVICE_BASE_URL}/case-matching/search-from-caveat-flow",
@@ -200,5 +201,5 @@
     "SecurityClassification": "Public",
     "ShowSummary": "N"
   },
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "addCommentForCaveatMatching", "Name": "Add comment", "Description": "Add comment", "DisplayOrder": 66, "PreConditionState(s)": "CaveatMatching", "PostConditionState": "CaveatMatching", "SecurityClassification": "Public", "ShowSummary": "N"}
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "addCommentForCaveatMatching", "Name": "Add comment", "Description": "Add comment", "DisplayOrder": 67, "PreConditionState(s)": "CaveatMatching", "PostConditionState": "CaveatMatching", "SecurityClassification": "Public", "ShowSummary": "N"}
 ]

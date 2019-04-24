@@ -38,6 +38,7 @@ public class ResponseCaveatData {
 
     private final String expiryDate;
     private final String messageContent;
+    private final String caveatReopenReason;
 
     private final List<CollectionMember<UploadDocument>> documentsUploaded;
     private final List<CollectionMember<Document>> documentsGenerated;
