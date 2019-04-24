@@ -42,46 +42,54 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     private static final String DIED_ON_OR_BEFORE = "Died on or before";
     private static final String PRESUMED_DIED_ON = "Presumed died on";
 
+    private static final String GENERATE_GRANT = "/document/generate-grant";
+    private static final String GENERATE_GRANT_DRAFT = "/document/generate-grant-draft";
+    private static final String GENERATE_DEPOSIT_RECEIPT= "/document/generate-deposit-receipt";
+
+    private static final String DEFAULT_SOLS_PAYLOAD= "solicitorPayloadNotifications.json";
+    private static final String DEFAULT_PA_PAYLOAD= "personalPayloadNotifications.json";
+    private static final String DEFAULT_WILL_PAYLOAD= "willLodgementPayload.json";
+
     @Test
     public void verifySolicitorGenerateGrantShouldReturnOkResponseCode() {
-        validatePostSuccess("solicitorPayloadNotifications.json", "/document/generate-grant");
+        validatePostSuccess(DEFAULT_SOLS_PAYLOAD, GENERATE_GRANT);
     }
 
     @Test
     public void verifySolicitorGenerateGrantDraftShouldReturnOkResponseCode() {
-        validatePostSuccess("solicitorPayloadNotifications.json", "/document/generate-grant-draft");
+        validatePostSuccess(DEFAULT_SOLS_PAYLOAD, GENERATE_GRANT_DRAFT);
     }
 
     @Test
     public void verifySolicitorGenerateIntestacyGrantShouldReturnOkResponseCode() {
-        validatePostSuccess("solicitorPayloadNotificationsIntestacy.json", "/document/generate-grant");
+        validatePostSuccess("solicitorPayloadNotificationsIntestacy.json", GENERATE_GRANT);
     }
 
     @Test
     public void verifySolicitorGenerateIntestacyGrantDraftShouldReturnOkResponseCode() {
-        validatePostSuccess("solicitorPayloadNotificationsIntestacy.json", "/document/generate-grant-draft");
+        validatePostSuccess("solicitorPayloadNotificationsIntestacy.json", GENERATE_GRANT_DRAFT);
     }
 
 
     @Test
     public void verifySolicitorGenerateAdmonWillGrantShouldReturnOkResponseCode() {
-        validatePostSuccess("solicitorPayloadNotificationsAdmonWill.json", "/document/generate-grant");
+        validatePostSuccess("solicitorPayloadNotificationsAdmonWill.json", GENERATE_GRANT);
     }
 
     @Test
     public void verifySolicitorGenerateAdmonWillGrantDraftShouldReturnOkResponseCode() {
-        validatePostSuccess("solicitorPayloadNotificationsAdmonWill.json", "/document/generate-grant-draft");
+        validatePostSuccess("solicitorPayloadNotificationsAdmonWill.json", GENERATE_GRANT_DRAFT);
     }
 
 
     @Test
     public void verifyPersonalApplicantGenerateGrantShouldReturnOkResponseCode() {
-        validatePostSuccess("personalPayloadNotifications.json", "/document/generate-grant");
+        validatePostSuccess(DEFAULT_PA_PAYLOAD, GENERATE_GRANT);
     }
 
     @Test
     public void verifyPersonalApplicantGenerateGrantDraftShouldReturnOkResponseCode() {
-        validatePostSuccess("personalPayloadNotifications.json", "/document/generate-grant-draft");
+        validatePostSuccess(DEFAULT_PA_PAYLOAD, GENERATE_GRANT_DRAFT);
     }
 
     private void validatePostSuccess(String jsonFileName, String path) {
@@ -110,7 +118,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     @Test
     public void verifySuccessForGetDigitalGrantWithSingleExecutorSols() {
-        String response = generateDocument("solicitorPayloadNotifications.json", "/document/generate-grant");
+        String response = generateDocument(DEFAULT_SOLS_PAYLOAD, GENERATE_GRANT);
 
         assertTrue(response.contains(CTSC_REGISTRY_ADDRESS));
         assertTrue(response.contains(SOLICITOR_INFO1));
@@ -132,7 +140,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     @Test
     public void verifySuccessForGetDigitalGrantWithSingleExecutorPA() {
-        String response = generateDocument("personalPayloadNotifications.json", "/document/generate-grant");
+        String response = generateDocument(DEFAULT_PA_PAYLOAD, GENERATE_GRANT);
 
         assertTrue(response.contains(REGISTRY_ADDRESS));
         assertTrue(response.contains(GOP));
@@ -153,7 +161,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     @Test
     public void verifySuccessForGetDigitalGrantWithMultipleExecutorsSOls() {
-        String response = generateDocument("solicitorPayloadNotificationsMultipleExecutors.json", "/document/generate-grant");
+        String response = generateDocument("solicitorPayloadNotificationsMultipleExecutors.json", GENERATE_GRANT);
 
         assertTrue(response.contains(REGISTRY_ADDRESS));
         assertTrue(response.contains(GOP));
@@ -177,7 +185,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     @Test
     public void verifySuccessForGetDigitalGrantWithPowerReservedMultipleSOls() {
-        String response = generateDocument("solicitorPayloadNotificationsPowerReservedMultiple.json", "/document/generate-grant");
+        String response = generateDocument("solicitorPayloadNotificationsPowerReservedMultiple.json", GENERATE_GRANT);
 
         assertTrue(response.contains(REGISTRY_ADDRESS));
         assertTrue(response.contains(GOP));
@@ -197,7 +205,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     @Test
     public void verifySuccessForGetDigitalGrantWithPowerReservedSingleSOls() {
-        String response = generateDocument("solicitorPayloadNotificationsPowerReserved.json", "/document/generate-grant");
+        String response = generateDocument("solicitorPayloadNotificationsPowerReserved.json", GENERATE_GRANT);
 
         assertTrue(response.contains(REGISTRY_ADDRESS));
         assertTrue(response.contains(GOP));
@@ -218,7 +226,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     @Test
     public void verifySuccessForGetDigitalGrantWithGrantInfoSOls() {
-        String response = generateDocument("solicitorPayloadNotificationsGrantInfo.json", "/document/generate-grant");
+        String response = generateDocument("solicitorPayloadNotificationsGrantInfo.json", GENERATE_GRANT);
 
         assertTrue(response.contains(REGISTRY_ADDRESS));
         assertTrue(response.contains(GOP));
@@ -241,7 +249,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     @Test
     public void verifySuccessForGetDigitalGrantDraftWithSingleExecutorSols() {
-        String response = generateDocument("solicitorPayloadNotifications.json", "/document/generate-grant-draft");
+        String response = generateDocument(DEFAULT_SOLS_PAYLOAD, GENERATE_GRANT_DRAFT);
 
         assertTrue(response.contains(CTSC_REGISTRY_ADDRESS));
         assertTrue(response.contains(GOP));
@@ -262,7 +270,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     @Test
     public void verifySuccessForGetDigitalGrantDraftWithSingleExecutorPA() {
-        String response = generateDocument("personalPayloadNotifications.json", "/document/generate-grant-draft");
+        String response = generateDocument(DEFAULT_PA_PAYLOAD, GENERATE_GRANT_DRAFT);
 
         assertTrue(response.contains(REGISTRY_ADDRESS));
         assertTrue(response.contains(GOP));
@@ -283,7 +291,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     @Test
     public void verifySuccessForGetDigitalGrantDraftWithMultipleExecutorsSOls() {
-        String response = generateDocument("solicitorPayloadNotificationsMultipleExecutors.json", "/document/generate-grant-draft");
+        String response = generateDocument("solicitorPayloadNotificationsMultipleExecutors.json", GENERATE_GRANT_DRAFT);
 
         assertTrue(response.contains(REGISTRY_ADDRESS));
         assertTrue(response.contains(GOP));
@@ -308,7 +316,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     @Test
     public void verifySuccessForGetDigitalGrantDraftWithPowerReservedMultipleSOls() {
-        String response = generateDocument("solicitorPayloadNotificationsPowerReservedMultiple.json", "/document/generate-grant-draft");
+        String response = generateDocument("solicitorPayloadNotificationsPowerReservedMultiple.json", GENERATE_GRANT_DRAFT);
 
         assertTrue(response.contains(REGISTRY_ADDRESS));
         assertTrue(response.contains(GOP));
@@ -328,7 +336,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     @Test
     public void verifySuccessForGetDigitalGrantDraftWithPowerReservedSingleSOls() {
-        String response = generateDocument("solicitorPayloadNotificationsPowerReserved.json", "/document/generate-grant-draft");
+        String response = generateDocument("solicitorPayloadNotificationsPowerReserved.json", GENERATE_GRANT_DRAFT);
 
         assertTrue(response.contains(REGISTRY_ADDRESS));
         assertTrue(response.contains(GOP));
@@ -349,7 +357,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     @Test
     public void verifySuccessForGetDigitalGrantDraftWithGrantInfoSOls() {
-        String response = generateDocument("solicitorPayloadNotificationsGrantInfo.json", "/document/generate-grant-draft");
+        String response = generateDocument("solicitorPayloadNotificationsGrantInfo.json", GENERATE_GRANT_DRAFT);
 
         assertTrue(response.contains(REGISTRY_ADDRESS));
         assertTrue(response.contains(GOP));
@@ -372,7 +380,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     @Test
     public void verifySuccessForGetDigitalGrantDraftDateFormat() {
-        String response = generateDocument("solicitorPayloadNotifications.json", "/document/generate-grant-draft");
+        String response = generateDocument(DEFAULT_SOLS_PAYLOAD, GENERATE_GRANT_DRAFT);
 
         assertTrue(response.contains(DOD));
         assertTrue(response.contains(GOP));
@@ -381,7 +389,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     @Test
     public void verifySuccessForGetDigitalGrantDateFormat() {
-        String response = generateDocument("solicitorPayloadNotifications.json", "/document/generate-grant");
+        String response = generateDocument(DEFAULT_SOLS_PAYLOAD, GENERATE_GRANT);
 
         assertTrue(response.contains(DOD));
         assertTrue(response.contains(CTSC_REGISTRY_ADDRESS));
@@ -390,7 +398,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     @Test
     public void verifySuccessForGetDigitalGrantDraftMoneyFormat() {
-        String response = generateDocument("solicitorPayloadNotifications.json", "/document/generate-grant-draft");
+        String response = generateDocument(DEFAULT_SOLS_PAYLOAD, GENERATE_GRANT_DRAFT);
 
         assertTrue(response.contains(IHT_GROSS));
         assertTrue(response.contains(CTSC_REGISTRY_ADDRESS));
@@ -401,7 +409,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     @Test
     public void verifySuccessForGetDigitalGrantMoneyFormat() {
-        String response = generateDocument("solicitorPayloadNotifications.json", "/document/generate-grant");
+        String response = generateDocument(DEFAULT_SOLS_PAYLOAD, GENERATE_GRANT);
 
         assertTrue(response.contains(IHT_GROSS));
         assertTrue(response.contains(IHT_NET));
@@ -412,7 +420,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     @Test
     public void verifySuccessForGetDigitalGrantDraftPrimaryApplicantNotApplying() {
-        String response = generateDocument("solicitorPayloadNotificationsMultipleExsPANotApplying.json", "/document/generate-grant-draft");
+        String response = generateDocument("solicitorPayloadNotificationsMultipleExsPANotApplying.json", GENERATE_GRANT_DRAFT);
 
         assertTrue(!response.contains(PRIMARY_APPLICANT));
         assertTrue(!response.contains(ADD_EXEC_ONE));
@@ -427,7 +435,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     @Test
     public void verifySuccessForGetDigitalGrantPrimaryApplicantNotApplying() {
-        String response = generateDocument("solicitorPayloadNotificationsMultipleExsPANotApplying.json", "/document/generate-grant");
+        String response = generateDocument("solicitorPayloadNotificationsMultipleExsPANotApplying.json", GENERATE_GRANT);
 
         assertTrue(!response.contains(PRIMARY_APPLICANT));
         assertTrue(!response.contains(ADD_EXEC_ONE));
@@ -441,7 +449,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     @Test
     public void verifySuccessForGetDigitalGrantDraftPrimaryApplicantNotApplyingPowerReserved() {
-        String response = generateDocument("solicitorPayloadNotificationsMultipleExsPANotApplyingPowerReserved.json", "/document/generate-grant-draft");
+        String response = generateDocument("solicitorPayloadNotificationsMultipleExsPANotApplyingPowerReserved.json", GENERATE_GRANT_DRAFT);
 
         assertTrue(!response.contains(PRIMARY_APPLICANT));
         assertTrue(!response.contains(ADD_EXEC_ONE));
@@ -457,7 +465,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     @Test
     public void verifySuccessForGetDigitalGrantPrimaryApplicantNotApplyingPowerReserved() {
-        String response = generateDocument("solicitorPayloadNotificationsMultipleExsPANotApplyingPowerReserved.json", "/document/generate-grant");
+        String response = generateDocument("solicitorPayloadNotificationsMultipleExsPANotApplyingPowerReserved.json", GENERATE_GRANT);
 
         assertTrue(!response.contains(PRIMARY_APPLICANT));
         assertTrue(!response.contains(ADD_EXEC_ONE));
@@ -473,7 +481,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     @Test
     public void verifySuccessForGetDigitalGrantDraftPrimaryApplicantNotApplyingPowerReservedMultiple() {
-        String response = generateDocument("solicitorPayloadNotificationsPANotApplyingPowerReservedMultiple.json", "/document/generate-grant-draft");
+        String response = generateDocument("solicitorPayloadNotificationsPANotApplyingPowerReservedMultiple.json", GENERATE_GRANT_DRAFT);
 
         assertTrue(!response.contains(PRIMARY_APPLICANT));
         assertTrue(!response.contains(ADD_EXEC_ONE));
@@ -489,7 +497,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     @Test
     public void verifySuccessForGetDigitalGrantPrimaryApplicantNotApplyingPowerReservedMultiple() {
-        String response = generateDocument("solicitorPayloadNotificationsPANotApplyingPowerReservedMultiple.json", "/document/generate-grant");
+        String response = generateDocument("solicitorPayloadNotificationsPANotApplyingPowerReservedMultiple.json", GENERATE_GRANT);
 
         assertTrue(!response.contains(PRIMARY_APPLICANT));
         assertTrue(!response.contains(ADD_EXEC_ONE));
@@ -505,6 +513,6 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     @Test
     public void verifyWillLodgementDepositReceiptShouldReturnOkResponseCode() {
-        validatePostSuccess("willLodgementPayload.json", "/document/generate-deposit-receipt");
+        validatePostSuccess(DEFAULT_WILL_PAYLOAD, GENERATE_DEPOSIT_RECEIPT);
     }
 }
