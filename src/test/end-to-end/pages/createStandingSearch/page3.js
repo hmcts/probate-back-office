@@ -98,14 +98,14 @@ module.exports = function (crud, sol=false) {
         if (sol) {
             createStandingSearchConfig.page3_solForenames_update = `${createStandingSearchConfig.page3_solForenames}_${crud}`;
             createStandingSearchConfig.page3_solSurname_update = `${createStandingSearchConfig.page3_solSurname}_${crud}`;
-    
+
             I.waitForText(createStandingSearchConfig.page3_amend_waitForText, testConfig.TestTimeToWaitForText);
             I.fillField('#applicantForenames', createStandingSearchConfig.page3_solForenames_update);
             I.fillField('#applicantSurname', createStandingSearchConfig.page3_solSurname_update);
         } else {
             createStandingSearchConfig.page3_applicantForenames_update = `${createStandingSearchConfig.page3_applicantForenames}_${crud}`;
             createStandingSearchConfig.page3_applicantSurname_update = `${createStandingSearchConfig.page3_applicantSurname}_${crud}`;
-    
+
             I.waitForText(createStandingSearchConfig.page3_amend_waitForText, testConfig.TestTimeToWaitForText);
             I.fillField('#applicantForenames', createStandingSearchConfig.page3_applicantForenames_update);
             I.fillField('#applicantSurname', createStandingSearchConfig.page3_applicantSurname_update);

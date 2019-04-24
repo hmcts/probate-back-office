@@ -22,8 +22,7 @@ const applicantDetailsUpdateTabConfig = require('src/test/end-to-end/pages/caseD
 const caseDetailsUpdateTabConfig = require('src/test/end-to-end/pages/caseDetails/standingSearch/caseDetailsUpdateTabConfig');
 const deceasedUpdateTabConfig = require('src/test/end-to-end/pages/caseDetails/standingSearch/deceasedUpdateTabConfig');
 
-Feature('Back Office');
-// .retry(testConfig.TestRetryFeatures);
+Feature('Back Office').retry(testConfig.TestRetryFeatures);
 
 Scenario('Standing Search Workflow - E2E test 01 - Standing Search for a Personal Applicant - Create standing search -> Grant already issued -> Complete standing search', async function (I) {
 
@@ -175,5 +174,4 @@ Scenario('Standing Search Workflow - E2E test 01 - Standing Search for a Persona
     I.enterComment(caseRef, nextStepName);
     I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
 
-});
-// .retry(testConfig.TestRetryScenarios);
+}).retry(testConfig.TestRetryScenarios);
