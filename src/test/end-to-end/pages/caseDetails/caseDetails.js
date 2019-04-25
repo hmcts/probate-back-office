@@ -1,7 +1,5 @@
 'use strict';
 
-const testConfig = require('src/test/config');
-
 module.exports = function (caseRef, tabConfigFile, dataConfigFile, nextStep, endState) {
 
     const I = this;
