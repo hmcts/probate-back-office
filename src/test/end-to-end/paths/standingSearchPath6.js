@@ -16,7 +16,7 @@ const caseMatchesTabConfig = require('src/test/end-to-end/pages/caseDetails/stan
 const deceasedTabConfig = require('src/test/end-to-end/pages/caseDetails/standingSearch/deceasedTabConfig');
 const documentUploadTabConfig = require('src/test/end-to-end/pages/caseDetails/standingSearch/documentUploadTabConfig');
 const historyTabConfig = require('src/test/end-to-end/pages/caseDetails/standingSearch/historyTabConfig');
-const solDetailsTabConfig = require();
+const solDetailsTabConfig = require('src/test/end-to-end/pages/caseDetails/standingSearch/solDetailsTabConfig');
 
 const caseDetailsSolUpdateTabConfig = require('src/test/end-to-end/pages/caseDetails/standingSearch/caseDetailsSolUpdateTabConfig');
 const deceasedUpdateTabConfig = require('src/test/end-to-end/pages/caseDetails/standingSearch/deceasedUpdateTabConfig');
@@ -54,9 +54,9 @@ Scenario('Standing Search Workflow - E2E test 06 - Standing Search for a Solicit
 
     nextStepName = 'Amend standing search';
     I.chooseNextStep(nextStepName);
-    I.enterStandingSearchPage1('update1');
+    I.enterStandingSearchPage1('update1', sol);
     I.enterStandingSearchPage2('update1');
-    I.enterStandingSearchPage3('update1');
+    I.enterStandingSearchPage3('update1', sol);
     I.enterStandingSearchPage4('update1');
     I.checkMyAnswers(nextStepName);
 
@@ -88,9 +88,9 @@ Scenario('Standing Search Workflow - E2E test 06 - Standing Search for a Solicit
 
     nextStepName = 'Amend standing search';
     I.chooseNextStep(nextStepName);
-    I.enterStandingSearchPage1('update2');
+    I.enterStandingSearchPage1('update2', sol);
     I.enterStandingSearchPage2('update2');
-    I.enterStandingSearchPage3('update2');
+    I.enterStandingSearchPage3('update2', sol);
     I.enterStandingSearchPage4('update2');
     I.checkMyAnswers(nextStepName);
 
@@ -120,9 +120,9 @@ Scenario('Standing Search Workflow - E2E test 06 - Standing Search for a Solicit
 
     nextStepName = 'Amend standing search';
     I.chooseNextStep(nextStepName);
-    I.enterStandingSearchPage1('update3');
+    I.enterStandingSearchPage1('update3', sol);
     I.enterStandingSearchPage2('update3');
-    I.enterStandingSearchPage3('update3');
+    I.enterStandingSearchPage3('update3', sol);
     I.enterStandingSearchPage4('update3');
     I.checkMyAnswers(nextStepName);
 
@@ -152,9 +152,9 @@ Scenario('Standing Search Workflow - E2E test 06 - Standing Search for a Solicit
 
     nextStepName = 'Amend standing search';
     I.chooseNextStep(nextStepName);
-    I.enterStandingSearchPage1('update4');
+    I.enterStandingSearchPage1('update4', sol);
     I.enterStandingSearchPage2('update4');
-    I.enterStandingSearchPage3('update4');
+    I.enterStandingSearchPage3('update4', sol);
     I.enterStandingSearchPage4('update4');
     I.checkMyAnswers(nextStepName);
 
