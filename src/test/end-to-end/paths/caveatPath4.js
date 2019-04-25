@@ -38,7 +38,10 @@ Scenario('Caveat Workflow - E2E Test 04 - Caveat for a Personal Applicant - Rais
     I.checkMyAnswers(nextStepName);
     let endState = 'Caveat raised';
     const url = await I.grabCurrentUrl();
-    const caseRef = url.split('/').pop().match(/.{4}/g).join('-');
+    const caseRef = url.split('/')
+        .pop()
+        .match(/.{4}/g)
+        .join('-');
 
     I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
     I.seeCaseDetails(caseRef, caseDetailsTabConfig, createCaveatConfig);
@@ -82,7 +85,7 @@ Scenario('Caveat Workflow - E2E Test 04 - Caveat for a Personal Applicant - Rais
     endState = 'Caveat closed';
     I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
 
-    nextStepName = 'Email caveator';   // When in state 'Caveat closed'
+    nextStepName = 'Email caveator'; // When in state 'Caveat closed'
     I.chooseNextStep(nextStepName);
     I.emailCaveator(caseRef);
     I.enterEventSummary(caseRef, nextStepName);
