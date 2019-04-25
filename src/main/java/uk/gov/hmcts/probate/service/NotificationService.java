@@ -27,6 +27,7 @@ import uk.gov.service.notify.SendEmailResponse;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static uk.gov.hmcts.probate.model.Constants.DOC_SUBTYPE_WILL;
@@ -87,12 +88,12 @@ public class NotificationService {
         return getGeneratedSentEmailDocument(response, emailAddress);
     }
 
-    public Document sendExcelaEmail(ReturnedCaseDetails caseDetails) throws
+    public Document sendExcelaEmail(List<ReturnedCaseDetails> caseDetails) throws
             NotificationClientException {
-        String templateId = notificationTemplates.getEmail().get(caseDetails.getData().getApplicationType())
+        String templateId = notificationTemplates.getEmail().get(caseDetails.get(0).getData().getApplicationType())
                 .getExcelaData();
-        Map<String, String> personalisation = getExcelaPersonalisation(caseDetails.getId(), caseDetails.getData());
-        String reference = caseDetails.getId().toString();
+        Map<String, String> personalisation = getExcelaPersonalisation(caseDetails);
+        String reference = LocalDateTime.now().format(EXCELA_DATE);
 
         SendEmailResponse response;
 
@@ -144,13 +145,13 @@ public class NotificationService {
         return personalisation;
     }
 
-    private Map<String, String> getExcelaPersonalisation(Long id, CaseData caseData) {
+    private Map<String, String> getExcelaPersonalisation(List<ReturnedCaseDetails> cases) {
         HashMap<String, String> personalisation = new HashMap<>();
 
+        StringBuilder data = getBuiltData(cases);
+
         personalisation.put("excelaName", LocalDateTime.now().format(EXCELA_DATE) + "will");
-        personalisation.put("ccdId", id.toString());
-        personalisation.put("deceasedSurname", caseData.getDeceasedSurname());
-        personalisation.put("willReferenceNumber", getWillReferenceNumber(caseData));
+        personalisation.put("caseData", data.toString());
 
         return personalisation;
     }
@@ -183,10 +184,24 @@ public class NotificationService {
 
     private String getWillReferenceNumber(CaseData data) {
         for (CollectionMember<ScannedDocument> document : data.getScannedDocuments()) {
-            if (document.getValue().getSubtype().equals(DOC_SUBTYPE_WILL)) {
+            if (document.getValue().getSubtype() != null && document.getValue().getSubtype().equals(DOC_SUBTYPE_WILL)) {
                 return document.getValue().getControlNumber();
             }
         }
         return "";
+    }
+
+    private StringBuilder getBuiltData(List<ReturnedCaseDetails> cases) {
+        StringBuilder data = new StringBuilder();
+
+        for (ReturnedCaseDetails currentCase : cases) {
+            data.append(currentCase.getId().toString());
+            data.append(", ");
+            data.append(currentCase.getData().getDeceasedSurname());
+            data.append(", ");
+            data.append(getWillReferenceNumber(currentCase.getData()));
+            data.append("\n");
+        }
+        return data;
     }
 }

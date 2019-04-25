@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.service;
 
+import com.google.common.collect.ImmutableList;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -74,7 +75,7 @@ public class NotificationServiceTest {
     private CaseDetails personalCaseDataCtsc;
     private CaseDetails personalCaseDataBristol;
     private CaseDetails solicitorCaseDataManchester;
-    private ReturnedCaseDetails excelaCaseData;
+    private ImmutableList.Builder<ReturnedCaseDetails> excelaCaseData = new ImmutableList.Builder<>();
 
     private CaveatDetails personalCaveatDataOxford;
     private CaveatDetails personalCaveatDataBirmingham;
@@ -164,11 +165,12 @@ public class NotificationServiceTest {
                 .deceasedDateOfDeath(LocalDate.of(2000, 12, 12))
                 .build(), LAST_MODIFIED, ID);
 
-        excelaCaseData = new ReturnedCaseDetails(CaseData.builder()
+        excelaCaseData.add(
+                new ReturnedCaseDetails(CaseData.builder()
                 .applicationType(PERSONAL)
                 .deceasedSurname("Michelson")
                 .scannedDocuments(scannedDocuments)
-                .build(), LAST_MODIFIED, ID);
+                .build(), LAST_MODIFIED, ID));
 
         personalCaveatDataOxford = new CaveatDetails(CaveatData.builder()
                 .applicationType(PERSONAL)
@@ -604,7 +606,7 @@ public class NotificationServiceTest {
 
     @Test
     public void sendExcelaEmail() throws NotificationClientException {
-        notificationService.sendExcelaEmail(excelaCaseData);
+        notificationService.sendExcelaEmail(excelaCaseData.build());
 
         verify(notificationClient).sendEmail(
                 eq("pa-excela-data"),

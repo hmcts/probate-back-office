@@ -3,7 +3,12 @@ server:
 
 resttemplate:
   httpclient:
-    timeout:10000
+    timeout: 10000
+
+ftp.client:
+  url: https://green.blob.core.windows.net
+  environment: ${FTP_ENV:test}
+  signature: ${FTP_SIGNATURE:fakeValue}
 
 management:
   endpoints:
