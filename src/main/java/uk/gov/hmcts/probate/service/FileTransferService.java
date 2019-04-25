@@ -33,7 +33,7 @@ public class FileTransferService {
         this.fileTransferApi = fileTransferApi;
     }
 
-    public String uploadFile(File file) {
+    public int uploadFile(File file) {
         Response response;
         try {
             response = fileTransferApi.sendFile(
@@ -54,6 +54,6 @@ public class FileTransferService {
             log.error("Error handling file: " + e.getMessage());
             throw new BadRequestException("Failed to initiate file transfer request: " + e.getMessage());
         }
-        return response.toString();
+        return response.status();
     }
 }

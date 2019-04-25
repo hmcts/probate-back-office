@@ -59,8 +59,13 @@ public class DataExtractController {
         List<ReturnedCaseDetails> cases = caseQueryService.findCasesWithDatedDocument("digitalGrant", date);
 
         if (!cases.isEmpty()) {
-            fileTransferService.uploadFile(ironMountainFileService.
-                    createIronMountainFile(cases, date.replace("-", "") + "grant.txt"));
+            int response = fileTransferService.uploadFile(ironMountainFileService.createIronMountainFile(
+                    cases, date.replace("-", "") + "grant.txt"));
+
+            if (response != 201) {
+                log.error("Failed to upload file for: " + date);
+                throw new ClientException(HttpStatus.SERVICE_UNAVAILABLE.value(), "Failed to upload file for date: " + date);
+            }
         }
         return ResponseEntity.ok(cases.size() + " cases successfully found for date: " + date);
     }

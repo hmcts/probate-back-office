@@ -91,6 +91,9 @@ public class IronMountainFileService {
     }
 
     private List<String> addressManager(SolsAddress address) {
+        if (address == null) {
+            address = EMPTY_ADDRESS;
+        }
         String[] addressArray = {Optional.ofNullable(address.getAddressLine1()).orElse(""),
                 Optional.ofNullable(address.getAddressLine2()).orElse(""),
                 Optional.ofNullable(address.getAddressLine3()).orElse(""),
