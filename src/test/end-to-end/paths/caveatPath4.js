@@ -48,7 +48,7 @@ Scenario('Caveat Workflow - E2E Test 04 - Caveat for a Personal Applicant - Rais
     I.seeCaseDetails(caseRef, deceasedDetailsTabConfig, createCaveatConfig);
     I.seeCaseDetails(caseRef, caveatorDetailsTabConfig, createCaveatConfig);
     // When raising a caveat, Caveat Expiry Date is automatically set to today + 6 months
-    createCaveatConfig.caveat_expiry_date = dateFns.format(dateFns.addMonths(new Date(),6),'D MMM YYYY');
+    createCaveatConfig.caveat_expiry_date = dateFns.format(dateFns.addMonths(new Date(), 6), 'D MMM YYYY');
     I.seeCaseDetails(caseRef, caveatDetailsTabConfig, createCaveatConfig);
 
     nextStepName = 'Caveat match';
