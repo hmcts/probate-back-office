@@ -151,6 +151,8 @@ public class DocumentController {
         }
 
         Document coverSheet = pdfManagementService.generateAndUpload(callbackRequest, DocumentType.GRANT_COVER);
+        log.info("Generated and Uploaded cover document with template {} for the case id {}",
+                DocumentType.GRANT_COVER.getTemplateName(), callbackRequest.getCaseDetails().getId().toString());
 
         String letterId = null;
         String pdfSize = null;

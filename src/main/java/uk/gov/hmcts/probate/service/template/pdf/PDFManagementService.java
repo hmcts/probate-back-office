@@ -102,7 +102,9 @@ public class PDFManagementService {
 
     private Document generateAndUpload(String json, DocumentType documentType) {
         try {
+            log.info("Generating pdf for template {}", documentType.getTemplateName());
             EvidenceManagementFileUpload fileUpload = pdfGeneratorService.generatePdf(documentType, json);
+            log.info("Uploading pdf for template {}", documentType.getTemplateName());
             EvidenceManagementFile store = uploadService.store(fileUpload);
             DocumentLink documentLink = DocumentLink.builder()
                     .documentBinaryUrl(store.getLink("binary").getHref())
