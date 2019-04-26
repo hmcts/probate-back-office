@@ -345,5 +345,17 @@
     "PostConditionState": "PAAppCreated",
     "SecurityClassification": "Public",
     "ShowSummary": "N"
+  },
+  {
+    "LiveFrom": "01/01/2017",
+    "CaseTypeID": "GrantOfRepresentation",
+    "ID": "updateCasePaymentFailed",
+    "Name": "Update Case Payment Failed",
+    "Description": "Update Case Payment Failed",
+    "DisplayOrder": 67,
+    "PreConditionState(s)": "CasePaymentFailed",
+    "PostConditionState": "CasePaymentFailed",
+    "SecurityClassification": "Public",
+    "ShowSummary": "N"
   }
 ]

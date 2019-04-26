@@ -387,5 +387,6 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "boImportGrant", "UserRole": "caseworker-probate-issuer", "CRUD": "CR"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "boAmendCaseDetailsForImport", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "createApplication", "UserRole": "citizen", "CRUD": "CRU"},
-  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "updateApplication", "UserRole": "citizen", "CRUD": "CRU"}
+  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "updateApplication", "UserRole": "citizen", "CRUD": "CRU"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "updateCasePaymentFailed", "UserRole": "citizen", "CRUD": "CRU"}
 ]
