@@ -82,14 +82,14 @@ public class DocumentController {
             case INTESTACY:
                 template = INTESTACY_GRANT_DRAFT;
                 document = pdfManagementService.generateAndUpload(callbackRequest, template);
-                log.info("Generated and Uploaded Intestacy grant preview document with template {}",
-                        template.getTemplateName());
+                log.info("Generated and Uploaded Intestacy grant preview document with template {} for the case id {}",
+                        template.getTemplateName(), callbackRequest.getCaseDetails().getId().toString());
                 break;
             case ADMON_WILL:
                 template = ADMON_WILL_GRANT_DRAFT;
                 document = pdfManagementService.generateAndUpload(callbackRequest, template);
-                log.info("Generated and Uploaded Admon Will grant preview document with template {}",
-                        template.getTemplateName());
+                log.info("Generated and Uploaded Admon Will grant preview document with template {} for the case id {}",
+                        template.getTemplateName(), callbackRequest.getCaseDetails().getId().toString());
                 break;
             case EDGE_CASE:
                 document = Document.builder().documentType(DocumentType.EDGE_CASE).build();
@@ -98,8 +98,8 @@ public class DocumentController {
             default:
                 template = DIGITAL_GRANT_DRAFT;
                 document = pdfManagementService.generateAndUpload(callbackRequest, template);
-                log.info("Generated and Uploaded Grant of Probate preview document with template {}",
-                        template.getTemplateName());
+                log.info("Generated and Uploaded Grant of Probate preview document with template {} for the case id {}",
+                        template.getTemplateName(), callbackRequest.getCaseDetails().getId().toString());
                 break;
         }
 
@@ -132,25 +132,27 @@ public class DocumentController {
             case INTESTACY:
                 template = INTESTACY_GRANT;
                 digitalGrantDocument = pdfManagementService.generateAndUpload(callbackRequest, template);
-                log.info("Generated and Uploaded Intestacy grant document with template {}",
-                        template.getTemplateName());
+                log.info("Generated and Uploaded Intestacy grant document with template {} for the case id {}",
+                        template.getTemplateName(), callbackRequest.getCaseDetails().getId().toString());
                 break;
             case ADMON_WILL:
                 template = ADMON_WILL_GRANT;
                 digitalGrantDocument = pdfManagementService.generateAndUpload(callbackRequest, template);
-                log.info("Generated and Uploaded Admon Will grant document with template {}",
-                        template.getTemplateName());
+                log.info("Generated and Uploaded Admon Will grant document with template {} for the case id {}",
+                        template.getTemplateName(), callbackRequest.getCaseDetails().getId().toString());
                 break;
             case GRANT_OF_PROBATE:
             default:
                 template = DIGITAL_GRANT;
                 digitalGrantDocument = pdfManagementService.generateAndUpload(callbackRequest, template);
-                log.info("Generated and Uploaded Grant of Probate document with template {}",
-                        template.getTemplateName());
+                log.info("Generated and Uploaded Grant of Probate document with template {} for the case id {}",
+                        template.getTemplateName(), callbackRequest.getCaseDetails().getId().toString());
                 break;
         }
 
         Document coverSheet = pdfManagementService.generateAndUpload(callbackRequest, DocumentType.GRANT_COVER);
+        log.info("Generated and Uploaded cover document with template {} for the case id {}",
+                DocumentType.GRANT_COVER.getTemplateName(), callbackRequest.getCaseDetails().getId().toString());
 
         String letterId = null;
         String pdfSize = null;

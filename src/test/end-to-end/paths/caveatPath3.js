@@ -38,14 +38,17 @@ Scenario('Caveat Workflow - E2E Test 03 - Caveat for a Personal Applicant - Rais
     I.checkMyAnswers(nextStepName);
     let endState = 'Caveat raised';
     const url = await I.grabCurrentUrl();
-    const caseRef = url.split('/').pop().match(/.{4}/g).join('-');
+    const caseRef = url.split('/')
+        .pop()
+        .match(/.{4}/g)
+        .join('-');
 
     I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
     I.seeCaseDetails(caseRef, caseDetailsTabConfig, createCaveatConfig);
     I.seeCaseDetails(caseRef, deceasedDetailsTabConfig, createCaveatConfig);
     I.seeCaseDetails(caseRef, caveatorDetailsTabConfig, createCaveatConfig);
     // When raising a caveat, Caveat Expiry Date is automatically set to today + 6 months
-    createCaveatConfig.caveat_expiry_date = dateFns.format(dateFns.addMonths(new Date(),6),'D MMM YYYY');
+    createCaveatConfig.caveat_expiry_date = dateFns.format(dateFns.addMonths(new Date(), 6), 'D MMM YYYY');
     I.seeCaseDetails(caseRef, caveatDetailsTabConfig, createCaveatConfig);
 
     nextStepName = 'Caveat match';
@@ -82,7 +85,7 @@ Scenario('Caveat Workflow - E2E Test 03 - Caveat for a Personal Applicant - Rais
     endState = 'Caveat closed';
     I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
 
-    nextStepName = 'Email caveator';   // When in state 'Caveat closed'
+    nextStepName = 'Email caveator'; // When in state 'Caveat closed'
     I.chooseNextStep(nextStepName);
     I.emailCaveator(caseRef);
     I.enterEventSummary(caseRef, nextStepName);

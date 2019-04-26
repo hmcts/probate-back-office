@@ -163,4 +163,36 @@
    ]]></notes>
         <cve>CVE-2018-1000539</cve>
     </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: spring-security-core-5.1.4.RELEASE.jar
+   ]]></notes>
+        <cve>CVE-2019-3795</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: springfox-core-2.9.2.jar
+   ]]></notes>
+        <cve>CVE-2019-11065</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: mimepull-1.9.11.jar
+   ]]></notes>
+        <gav regex="true">^org\.jvnet\.mimepull:mimepull:.*$</gav>
+        <cpe>cpe:/a:eclipse:eclipse_ide</cpe>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: spring-security-rsa-1.0.7.RELEASE.jar
+   ]]></notes>
+        <gav regex="true">^org\.springframework\.security:spring-security-rsa:.*$</gav>
+        <cpe>cpe:/a:vmware:springsource_spring_security</cpe>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: spring-security-rsa-1.0.7.RELEASE.jar
+   ]]></notes>
+        <cve>CVE-2018-1260</cve>
+    </suppress>
 </suppressions>

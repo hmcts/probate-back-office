@@ -1095,6 +1095,17 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
+    public void shouldSetSolicitorsInfoWhenApplicationTypeIsNull() {
+        caseDataBuilder.applicationType(null);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.paperForm(callbackRequestMock);
+        assertSolsDetails(callbackResponse);
+    }
+
+    @Test
     public void shouldSetGrantIssuedDate() {
         caseDataBuilder.applicationType(ApplicationType.PERSONAL);
         Document document = Document.builder()
