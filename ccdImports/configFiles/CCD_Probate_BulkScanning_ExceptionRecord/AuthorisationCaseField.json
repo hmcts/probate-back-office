@@ -16,5 +16,14 @@
   {"LiveFrom": "01/01/2018", "CaseTypeID": "PROBATE_ExceptionRecord", "CaseFieldID": "openingDate", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
   {"LiveFrom": "01/01/2018", "CaseTypeID": "PROBATE_ExceptionRecord", "CaseFieldID": "scannedDocuments", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
   {"LiveFrom": "01/01/2018", "CaseTypeID": "PROBATE_ExceptionRecord", "CaseFieldID": "scanOCRData", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
-  {"LiveFrom": "01/01/2018", "CaseTypeID": "PROBATE_ExceptionRecord", "CaseFieldID": "attachToCaseReference", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"}
+  {"LiveFrom": "01/01/2018", "CaseTypeID": "PROBATE_ExceptionRecord", "CaseFieldID": "attachToCaseReference", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
+  {"LiveFrom": "01/01/2018", "CaseTypeID": "PROBATE_ExceptionRecord", "CaseFieldID": "envelopeLabel", "UserRole": "caseworker-probate-caseadmin", "CRUD": "CRUD"},
+  {"LiveFrom": "01/01/2018", "CaseTypeID": "PROBATE_ExceptionRecord", "CaseFieldID": "journeyClassification", "UserRole": "caseworker-probate-caseadmin", "CRUD": "CRUD"},
+  {"LiveFrom": "01/01/2018", "CaseTypeID": "PROBATE_ExceptionRecord", "CaseFieldID": "poBox", "UserRole": "caseworker-probate-caseadmin", "CRUD": "CRUD"},
+  {"LiveFrom": "01/01/2018", "CaseTypeID": "PROBATE_ExceptionRecord", "CaseFieldID": "poBoxJurisdiction", "UserRole": "caseworker-probate-caseadmin", "CRUD": "CRUD"},
+  {"LiveFrom": "01/01/2018", "CaseTypeID": "PROBATE_ExceptionRecord", "CaseFieldID": "deliveryDate", "UserRole": "caseworker-probate-caseadmin", "CRUD": "CRUD"},
+  {"LiveFrom": "01/01/2018", "CaseTypeID": "PROBATE_ExceptionRecord", "CaseFieldID": "openingDate", "UserRole": "caseworker-probate-caseadmin", "CRUD": "CRUD"},
+  {"LiveFrom": "01/01/2018", "CaseTypeID": "PROBATE_ExceptionRecord", "CaseFieldID": "scannedDocuments", "UserRole": "caseworker-probate-caseadmin", "CRUD": "CRUD"},
+  {"LiveFrom": "01/01/2018", "CaseTypeID": "PROBATE_ExceptionRecord", "CaseFieldID": "scanOCRData", "UserRole": "caseworker-probate-caseadmin", "CRUD": "CRUD"},
+  {"LiveFrom": "01/01/2018", "CaseTypeID": "PROBATE_ExceptionRecord", "CaseFieldID": "attachToCaseReference", "UserRole": "caseworker-probate-caseadmin", "CRUD": "CRUD"}
 ]

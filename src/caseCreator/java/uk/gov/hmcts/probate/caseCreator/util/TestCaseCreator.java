@@ -36,6 +36,14 @@ public class TestCaseCreator {
         System.setProperty("socksProxyPort", "9090");
     }
 
+    private static final String EVENT_NAME_GOR_PA = "applyForGrant";
+
+    private static final String EVENT_NAME_CAVEAT_PA = "applyForCaveat";
+
+    private static final String GOR = "GrantOfRepresentation";
+
+    private static final String CAVEAT = "Caveat";
+
     private String clientToken;
 
     private String userId;
@@ -88,26 +96,32 @@ public class TestCaseCreator {
     @Test
     public void createPaCase() throws Exception {
         idamUsername = idamPaUsername;
-        createCase("create.pa.ccd.json", "citizens", "applyForGrant");
+        createCase("create.pa.ccd.json", "citizens", EVENT_NAME_GOR_PA, GOR);
+    }
+
+    @Test
+    public void createPaCaseCaveats() throws Exception {
+        idamUsername = idamPaUsername;
+        createCase("create.caveat.pa.ccd.json", "citizens", EVENT_NAME_CAVEAT_PA, CAVEAT);
     }
 
     @Test
     public void createSolsCase() throws Exception {
         idamUsername = idamSolUsername;
-        createCase("create.sols.ccd.json", "caseworkers", "solicitorCreateApplication");
+        createCase("create.sols.ccd.json", "caseworkers", "solicitorCreateApplication", GOR);
     }
 
     @Ignore
     @Test
     public void createBOSolsCase() throws Exception {
         idamUsername = idamBoUsername;
-        createCase("create.bo.sols.ccd.json", "caseworkers", "boPrintCase");
+        createCase("create.bo.sols.ccd.json", "caseworkers", "boPrintCase", GOR);
     }
 
-    private void createCase(String fileName, String role, String eventName) throws Exception {
+    private void createCase(String fileName, String role, String eventName, String caseType) throws Exception {
         Headers headersWithUserId = getHeadersWithUserId();
         userId = getUserId(clientToken);
-        String token = generateEventToken(role, eventName, headersWithUserId);
+        String token = generateEventToken(role, eventName, headersWithUserId, caseType);
         String rep = getJsonFromFile(fileName).replace("\"event_token\": \"sampletoken\"", "\"event_token\":\"" + token + "\"");
 
 
@@ -116,7 +130,7 @@ public class TestCaseCreator {
                 .headers(headersWithUserId)
                 .baseUri(solCcdServiceUrl)
                 .body(rep)
-                .when().post("/" + role + "/" + userId + "/jurisdictions/PROBATE/case-types/GrantOfRepresentation/cases").
+                .when().post("/" + role + "/" + userId + "/jurisdictions/PROBATE/case-types/"+ caseType +"/cases").
                         then()
                 .statusCode(201);
     }
@@ -140,13 +154,13 @@ public class TestCaseCreator {
                 new Header("Authorization", generateUserTokenWithNoRoles()));
     }
 
-    private String generateEventToken(String role, String eventName, Headers headersWithUserId) {
+    private String generateEventToken(String role, String eventName, Headers headersWithUserId, String caseType) {
         log.info("User Id: {}", userId);
         RestAssured.baseURI = solCcdServiceUrl;
         return SerenityRest.given()
                 .relaxedHTTPSValidation()
                 .headers(headersWithUserId)
-                .when().get("/" + role + "/" + userId + "/jurisdictions/PROBATE/case-types/GrantOfRepresentation/event-triggers/" + eventName + "/token")
+                .when().get("/" + role + "/" + userId + "/jurisdictions/PROBATE/case-types/"+ caseType +"/event-triggers/" + eventName + "/token")
                 .then().assertThat().statusCode(200).extract().path("token");
     }
 

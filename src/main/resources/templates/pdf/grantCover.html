@@ -71,7 +71,7 @@
             {% if case_details.case_data.solsSolicitorAddress.County != null and case_details.case_data.solsSolicitorAddress.County != "" %}{{case_details.case_data.solsSolicitorAddress.County}}<br/>{% endif %}
             {% if case_details.case_data.solsSolicitorAddress.PostCode != null and case_details.case_data.solsSolicitorAddress.PostCode != "" %}{{case_details.case_data.solsSolicitorAddress.PostCode}}<br/>{% endif %}
             {% if case_details.case_data.solsSolicitorAddress.Country != null and case_details.case_data.solsSolicitorAddress.Country != "" %}
-                {% if case_details.case_data.primaryApplicantAddress.Country|lower != "united kingdom" %}
+                {% if case_details.case_data.solsSolicitorAddress.Country|lower != "united kingdom" %}
                 {{case_details.case_data.solsSolicitorAddress.Country}}<br/>
                 {% endif %}
             {% endif %}

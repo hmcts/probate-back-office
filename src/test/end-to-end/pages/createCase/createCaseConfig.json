@@ -2,6 +2,8 @@
   "waitForText" : "Create Case",
   "list1_text": "Manage probate applications",
   "list2_text": "Will lodgement",
+  "list2_text_caveat": "Caveat",
   "list3_text": "Create a will lodgement",
+  "list3_text_raise_caveat": "Raise a caveat",
   "startButton": ".button"
 }

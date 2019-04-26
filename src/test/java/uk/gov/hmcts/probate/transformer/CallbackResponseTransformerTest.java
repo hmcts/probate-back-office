@@ -69,7 +69,7 @@ public class CallbackResponseTransformerTest {
     private static final String WILL_MESSAGE = "Will message";
     private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private static final String DATE_FORMAT = "yyyy-MM-dd";
-    
+
     private static final String CASE_TYPE_GRANT_OF_PROBATE = "gop";
     private static final String CASE_TYPE_INTESTACY = "intestacy";
 
@@ -181,7 +181,7 @@ public class CallbackResponseTransformerTest {
             .documentFilename("somedoc.pdf")
             .documentUrl("http://somedoc/location")
             .build();
-    
+
     private static final List<CollectionMember<ScannedDocument>> SCANNED_DOCUMENTS_LIST = Arrays.asList(
             new CollectionMember<ScannedDocument>("id",
                     ScannedDocument.builder()
@@ -192,7 +192,7 @@ public class CallbackResponseTransformerTest {
                             .subtype("will")
                             .url(SCANNED_DOCUMENT_URL)
                             .build()));
-    
+
     @InjectMocks
     private CallbackResponseTransformer underTest;
 
@@ -382,6 +382,28 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
+    public void shouldTestForNullDOB() {
+        CaseData caseData = caseDataBuilder.deceasedDateOfBirth(null)
+                .build();
+        when(caseDetailsMock.getData()).thenReturn(caseData);
+
+        CallbackResponse callbackResponse = underTest.transformForSolicitorComplete(callbackRequestMock, feeServiceResponseMock);
+
+        assertEquals(null, callbackResponse.getData().getDeceasedDateOfBirth());
+    }
+
+    @Test
+    public void shouldTestForNullDOD() {
+        CaseData caseData = caseDataBuilder.deceasedDateOfDeath(null)
+                .build();
+        when(caseDetailsMock.getData()).thenReturn(caseData);
+
+        CallbackResponse callbackResponse = underTest.transformForSolicitorComplete(callbackRequestMock, feeServiceResponseMock);
+
+        assertEquals(null, callbackResponse.getData().getDeceasedDateOfDeath());
+    }
+
+    @Test
     public void shouldConvertRequestToDataBeanForPaymentWithCheque() {
         CaseData caseData = caseDataBuilder.solsPaymentMethods(SOL_PAY_METHODS_CHEQUE)
                 .build();
@@ -482,7 +504,7 @@ public class CallbackResponseTransformerTest {
         assertEquals(1, response.getData().getCaseMatches().size());
         assertEquals(caseMatch, response.getData().getCaseMatches().get(0).getValue());
     }
-    
+
     @Test
     public void shouldSelectForQA() {
         CallbackResponse response = underTest.selectForQA(callbackRequestMock);
@@ -639,6 +661,7 @@ public class CallbackResponseTransformerTest {
         assertCommonDetails(callbackResponse);
         assertLegacyInfo(callbackResponse);
         assertEquals(1, callbackResponse.getData().getSolsDeceasedAliasNamesList().size());
+        assertSolsDetails(callbackResponse);
     }
 
     @Test
@@ -662,6 +685,7 @@ public class CallbackResponseTransformerTest {
         assertEquals(2, callbackResponse.getData().getAdditionalExecutorsApplying().size());
         assertApplyingExecutorDetailsFromSols(callbackResponse.getData().getAdditionalExecutorsApplying().get(0).getValue());
         assertEquals(1, callbackResponse.getData().getAdditionalExecutorsNotApplying().size());
+        assertSolsDetails(callbackResponse);
     }
 
     @Test
@@ -678,6 +702,7 @@ public class CallbackResponseTransformerTest {
         assertLegacyInfo(callbackResponse);
         assertEquals(0, callbackResponse.getData().getAdditionalExecutorsApplying().size());
         assertEquals(0, callbackResponse.getData().getAdditionalExecutorsNotApplying().size());
+        assertSolsDetails(callbackResponse);
     }
 
     @Test
@@ -695,6 +720,7 @@ public class CallbackResponseTransformerTest {
         assertLegacyInfo(callbackResponse);
         assertEquals(0, callbackResponse.getData().getAdditionalExecutorsApplying().size());
         assertEquals(0, callbackResponse.getData().getAdditionalExecutorsNotApplying().size());
+        assertSolsDetails(callbackResponse);
     }
 
     @Test
@@ -712,6 +738,7 @@ public class CallbackResponseTransformerTest {
         assertLegacyInfo(callbackResponse);
         assertEquals(0, callbackResponse.getData().getAdditionalExecutorsApplying().size());
         assertEquals(0, callbackResponse.getData().getAdditionalExecutorsNotApplying().size());
+        assertSolsDetails(callbackResponse);
     }
 
     @Test
@@ -729,6 +756,7 @@ public class CallbackResponseTransformerTest {
         assertLegacyInfo(callbackResponse);
         assertEquals(0, callbackResponse.getData().getAdditionalExecutorsApplying().size());
         assertEquals(0, callbackResponse.getData().getAdditionalExecutorsNotApplying().size());
+        assertSolsDetails(callbackResponse);
     }
 
     @Test
@@ -746,6 +774,7 @@ public class CallbackResponseTransformerTest {
         assertLegacyInfo(callbackResponse);
         assertEquals(0, callbackResponse.getData().getAdditionalExecutorsApplying().size());
         assertEquals(0, callbackResponse.getData().getAdditionalExecutorsNotApplying().size());
+        assertSolsDetails(callbackResponse);
     }
 
 
@@ -906,11 +935,12 @@ public class CallbackResponseTransformerTest {
         assertApplicationType(callbackResponse, ApplicationType.SOLICITOR);
         assertLegacyInfo(callbackResponse);
         assertEquals(1, callbackResponse.getData().getBoDocumentsUploaded().size());
+        assertSolsDetails(callbackResponse);
     }
-    
+
     @Test
     public void shouldGetPaperApplication() {
-        caseDataBuilder.applicationType(ApplicationType.SOLICITOR);        
+        caseDataBuilder.applicationType(ApplicationType.SOLICITOR);
         List<CollectionMember<EstateItem>> estate = new ArrayList<>();
         estate.add(createEstateItems("0"));
         List<CollectionMember<AttorneyApplyingOnBehalfOf>> attorneyList = new ArrayList<>();
@@ -1019,6 +1049,7 @@ public class CallbackResponseTransformerTest {
         assertCommonDetails(callbackResponse);
         assertLegacyInfo(callbackResponse);
         assertCommonPaperForm(callbackResponse);
+        assertSolsDetails(callbackResponse);
     }
 
     @Test
@@ -1044,6 +1075,34 @@ public class CallbackResponseTransformerTest {
         CallbackResponse callbackResponse = underTest.paperForm(callbackRequestMock);
         assertEquals("Yes", callbackResponse.getData().getBoSendToBulkPrintRequested());
         assertEquals("Yes", callbackResponse.getData().getBoSendToBulkPrint());
+    }
+
+    @Test
+    public void shouldDefualtSolicitorsInfoToNull() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.paperForm(callbackRequestMock);
+        assertEquals(null, callbackResponse.getData().getSolsSolicitorAppReference());
+        assertEquals(null, callbackResponse.getData().getSolsSolicitorEmail());
+        assertEquals(null, callbackResponse.getData().getSolsSOTJobTitle());
+        assertEquals(null, callbackResponse.getData().getSolsSOTName());
+        assertEquals(null, callbackResponse.getData().getSolsSolicitorAddress());
+        assertEquals(null, callbackResponse.getData().getSolsSolicitorFirmName());
+        assertEquals(null, callbackResponse.getData().getSolsSolicitorPhoneNumber());
+    }
+
+    @Test
+    public void shouldSetSolicitorsInfoWhenApplicationTypeIsNull() {
+        caseDataBuilder.applicationType(null);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.paperForm(callbackRequestMock);
+        assertSolsDetails(callbackResponse);
     }
 
     @Test
@@ -1188,9 +1247,7 @@ public class CallbackResponseTransformerTest {
         assertEquals(OTHER_EXECS_EXIST, callbackResponse.getData().getOtherExecutorExists());
     }
 
-    private void assertCommonDetails(CallbackResponse callbackResponse) {
-        assertEquals(REGISTRY_LOCATION, callbackResponse.getData().getRegistryLocation());
-
+    private void assertSolsDetails(CallbackResponse callbackResponse) {
         assertEquals(SOLICITOR_FIRM_NAME, callbackResponse.getData().getSolsSolicitorFirmName());
         assertEquals(SOLICITOR_FIRM_LINE1, callbackResponse.getData().getSolsSolicitorAddress().getAddressLine1());
         assertEquals(SOLICITOR_FIRM_POSTCODE, callbackResponse.getData().getSolsSolicitorAddress().getPostCode());
@@ -1198,6 +1255,12 @@ public class CallbackResponseTransformerTest {
         assertEquals(SOLICITOR_FIRM_PHONE, callbackResponse.getData().getSolsSolicitorPhoneNumber());
         assertEquals(SOLICITOR_SOT_NAME, callbackResponse.getData().getSolsSOTName());
         assertEquals(SOLICITOR_SOT_JOB_TITLE, callbackResponse.getData().getSolsSOTJobTitle());
+        assertEquals(APP_REF, callbackResponse.getData().getSolsSolicitorAppReference());
+
+    }
+
+    private void assertCommonDetails(CallbackResponse callbackResponse) {
+        assertEquals(REGISTRY_LOCATION, callbackResponse.getData().getRegistryLocation());
 
         assertEquals(DECEASED_FIRSTNAME, callbackResponse.getData().getDeceasedForenames());
         assertEquals(DECEASED_LASTNAME, callbackResponse.getData().getDeceasedSurname());
@@ -1216,7 +1279,6 @@ public class CallbackResponseTransformerTest {
         assertEquals(PRIMARY_EXEC_ALIAS_NAMES, callbackResponse.getData().getPrimaryApplicantAlias());
         assertEquals(DECEASED_ADDRESS, callbackResponse.getData().getDeceasedAddress());
         assertEquals(EXEC_ADDRESS, callbackResponse.getData().getPrimaryApplicantAddress());
-        assertEquals(APP_REF, callbackResponse.getData().getSolsSolicitorAppReference());
         assertEquals(ADDITIONAL_INFO, callbackResponse.getData().getSolsAdditionalInfo());
 
         assertEquals(BO_DOCS_RECEIVED, callbackResponse.getData().getBoEmailDocsReceivedNotificationRequested());

@@ -14,7 +14,7 @@ import uk.gov.hmcts.probate.config.CCDDataStoreAPIConfiguration;
 import uk.gov.hmcts.probate.exception.CaseMatchingException;
 import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
-import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
+import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCases;
 import uk.gov.hmcts.probate.service.evidencemanagement.header.HttpHeadersFactory;
 
@@ -61,7 +61,7 @@ public class CaseQueryServiceTest {
         CaseData caseData = CaseData.builder()
                 .deceasedSurname("Smith")
                 .build();
-        List<CaseDetails> caseList = new ImmutableList.Builder<CaseDetails>().add(new CaseDetails(caseData,
+        List<ReturnedCaseDetails> caseList = new ImmutableList.Builder<ReturnedCaseDetails>().add(new ReturnedCaseDetails(caseData,
                 LAST_MODIFIED, 1L))
                 .build();
         ReturnedCases returnedCases = new ReturnedCases(caseList);
@@ -73,7 +73,7 @@ public class CaseQueryServiceTest {
 
     @Test
     public void findCasesWithDatedDocumentReturnsCaseList() throws IOException {
-        List<CaseDetails> cases = caseQueryService.findCasesWithDatedDocument("Test",
+        List<ReturnedCaseDetails> cases = caseQueryService.findCasesWithDatedDocument("Test",
                 "testDate");
 
         assertEquals(1, cases.size());
@@ -83,7 +83,7 @@ public class CaseQueryServiceTest {
 
     @Test
     public void findCasesWithDateRangeReturnsCaseList() {
-        List<CaseDetails> cases = caseQueryService.findCaseStateWithinTimeFrame("digitalGrant",
+        List<ReturnedCaseDetails> cases = caseQueryService.findCaseStateWithinTimeFrame("digitalGrant",
                 "2019-02-05", "2019-02-22");
 
         assertEquals(1, cases.size());

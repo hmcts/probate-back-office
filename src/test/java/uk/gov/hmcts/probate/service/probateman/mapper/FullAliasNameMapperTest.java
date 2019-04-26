@@ -11,9 +11,11 @@ import uk.gov.hmcts.reform.probate.model.cases.CollectionMember;
 import uk.gov.hmcts.reform.probate.model.cases.FullAliasName;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -21,7 +23,7 @@ public class FullAliasNameMapperTest {
 
     private static final String DECEASED_ALIAS_NAME1 = "DeadANF1";
     private static final String DECEASED_ALIAS_NAME2 = "DeadANF2";
-    private static final String DECEASED_ALIAS_NAMES = DECEASED_ALIAS_NAME1 + "," + DECEASED_ALIAS_NAME2;
+    private static final String DECEASED_ALIAS_NAMES = DECEASED_ALIAS_NAME1 + "|" + DECEASED_ALIAS_NAME2;
 
     @Autowired
     private FullAliasNameMapper aliasNameMapper;
@@ -37,6 +39,25 @@ public class FullAliasNameMapperTest {
 
         aliasCollection.forEach(alias -> assertThat(expectedAliasNames).contains(alias));
 
+    }
+
+    @Test
+    public void shouldMapEmptyNamesToEmptyCollection() {
+
+        List<CollectionMember<FullAliasName>> expectedAliasNames = Collections.emptyList();
+        List<CollectionMember<FullAliasName>> aliasCollection = aliasNameMapper.toFullAliasNameMember(null);
+
+        assertEquals(expectedAliasNames, aliasCollection);
+
+    }
+
+    @Test
+    public void shouldMapToCollectionOneAliasOnly() {
+
+        List<CollectionMember<FullAliasName>> aliasCollection = aliasNameMapper.toFullAliasNameMember(DECEASED_ALIAS_NAME1);
+
+        assertEquals(DECEASED_ALIAS_NAME1, aliasCollection.get(0).getValue().getFullAliasName());
+        assertEquals(1, aliasCollection.size());
     }
 
     private List<CollectionMember<FullAliasName>> buildAliasNames() {

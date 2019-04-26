@@ -49,7 +49,7 @@ withPipeline("java", product, component) {
 
   enableSlackNotifications('#probate-jenkins')
   before('buildinfra:prod') {
-    error 'Deliberately breaking pipeline to prevent prod deployment'
+     error 'Deliberately breaking pipeline to prevent prod deployment'
   }
 
     after('test') {

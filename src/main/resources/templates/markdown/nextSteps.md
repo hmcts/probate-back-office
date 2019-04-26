@@ -38,8 +38,7 @@ Print a copy of this page for your records.
  
 You now need to send us:
 
-*   the original will - you must mark with your signature the top right corner of the front of the will
-    (not on any cover sheet if there is one)
+*   the original will
 *   2 unstapled photocopies of the signed will - these must be on plain A4 paper
 *   fee payment: your {{paymentMethod}} for £{{paymentAmount}} (grant and copies)
 *   the printed version of this page which will be used as your cover letter to us
