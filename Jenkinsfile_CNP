@@ -29,7 +29,7 @@ def secrets = [
                 secret('cwUserPass', 'CW_USER_PASSWORD')
         ],
         's2s-${env}'      : [
-                secret('microservicekey-ccd-data', 'DATA_STORE_S2S_KEY'),
+          //      secret('microservicekey-ccd-data', 'DATA_STORE_S2S_KEY'),
                 secret('microservicekey-ccd-definition', 'DEFINITION_STORE_S2S_KEY'),
                 secret('microservicekey-ccd-gw', 'API_GATEWAY_S2S_KEY'),
                 secret('microservicekey-ccd-ps', 'PRINT_S2S_KEY')
