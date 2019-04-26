@@ -1,4 +1,4 @@
-description: A Helm chart for the HMCTS probate back office service
+description: A Helm chart for the HMCTS probate back office service Without CCD
 name: probate-back-office
 home: https://github.com/hmcts/probate-back-office
 version: 0.1.1
