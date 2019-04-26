@@ -79,7 +79,7 @@
     "LiveFrom": "01/01/2017",
     "CaseTypeID": "GrantOfRepresentation",
     "ID": "solsStartPage",
-    "Label": "## Check you can use this service\n\nYou can only use this service if:\n* the application is for a grant of probate only\n* up to 4 lay executors are applying\n* none of the executors are partners in your firm\n* none of the executors are mentally incapacitated or represented by an attorney\n* you have access to the original will and any codicils\n* the will has been signed, dated and witnessed\n* the deceased was domiciled in England or Wales\n* an IHT form has been prepared and estate values are available\n* the application is paid for by either fee account or cheque\n\n## Saving your application\n\nYou’ll be able to save each section of your application after checking your answers. No information will be saved  automatically.\n\n## If you can’t use this service\n\nYou may be able to use it in the future, check back soon.\nIn the meantime you need to follow your existing process for applying for probate on behalf of a client.\n\n",
+    "Label": "## Check you can use this service\n\nYou can only use this service if:\n* the application is for a grant of probate only\n* up to 4 lay executors are applying\n* none of the executors are partners in your firm\n* none of the executors are mentally incapacitated or represented by an attorney\n* you have access to the original will and any codicils\n* the deceased was domiciled in England or Wales\n* an IHT form has been prepared and estate values are available\n* the application is paid for by either fee account or cheque\n\n## Saving your application\n\nYou’ll be able to save each section of your application after checking your answers. No information will be saved  automatically.\n\n## If you can’t use this service\n\nYou may be able to use it in the future, check back soon.\nIn the meantime you need to follow your existing process for applying for probate on behalf of a client.\n\n",
     "FieldType": "Label",
     "SecurityClassification": "Public"
   },
@@ -243,6 +243,6 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "legacyCaseViewUrlLink", "Label": "[Click here to open legacy case](${legacyCaseViewUrl})", "FieldType": "Label", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "bulkPrintSendLetterId", "Label": "Send letter ID is:", "FieldType": "Text", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "bulkPrintPdfSize", "Label": "Bulk Print PDF size is:", "FieldType": "Text", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "grantIssuedDate", "Label": "Grant issued date", "FieldType": "Date", "SecurityClassification": "Public"}
-
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "grantIssuedDate", "Label": "Grant issued date", "FieldType": "Date", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "dateOfDeathType", "Label": "What type of date of death is?", "HintText": "Use this to indicate if the exact date of death is not known", "FieldType": "FixedList", "FieldTypeParameter": "dateOfDeathTypeFixedList", "SecurityClassification": "Public"}
 ]

@@ -212,7 +212,19 @@
                 {% if case_details.case_data.deceasedAddress.PostCode != null and case_details.case_data.deceasedAddress.PostCode != ""%} {{case_details.case_data.deceasedAddress.PostCode}}{% endif %}
                 {% if case_details.case_data.deceasedAddress.Country != null and case_details.case_data.deceasedAddress.Country != ""%} {{case_details.case_data.deceasedAddress.Country}}{% endif %}</strong>
                 {% if case_details.case_data.solsDeceasedAliasNamesList != null and case_details.case_data.solsDeceasedAliasNamesList != "" %}{% for alias in case_details.case_data.solsDeceasedAliasNamesList %}{% if loop.first %}<br />Otherwise {{alias.value.SolsAliasname}}{% else %}, {{alias.value.SolsAliasname}}{% endif %}{% endfor %}{% endif %}
-                <br />Died on <strong>{{case_details.case_data.deceasedDateOfDeathFormatted}}</strong> domiciled in <strong>England and Wales</strong>
+                <br />{% if case_details.case_data.dateOfDeathType == null %}
+                Died on
+                {% elseif case_details.case_data.dateOfDeathType == "diedOnOrAbout" %}
+                Died on or about
+                {% elseif case_details.case_data.dateOfDeathType == "presumedDiedOn" %}
+                Presumed died on
+                {% elseif case_details.case_data.dateOfDeathType == "diedOnOrBefore" %}
+                Died on or before
+                {% elseif case_details.case_data.dateOfDeathType == "diedOnOrSince" %}
+                Died on or since
+                {% elseif case_details.case_data.dateOfDeathType == "diedOn" %}
+                Died on
+                {% endif %} <strong>{{case_details.case_data.deceasedDateOfDeathFormatted}}</strong> domiciled in <strong>England and Wales</strong>
             </p>
             <p>The Last Will and Testament <strong>
                 {% if case_details.case_data.boWillMessage != null and case_details.case_data.boWillMessage != ""%}{{ case_details.case_data.boWillMessage }}{% endif %}</strong> of <strong>{{case_details.case_data.deceasedForenames}} {{case_details.case_data.deceasedSurname}}</strong> (An official copy of which is available from the Court) was proved and registered before the High Court of Justice.

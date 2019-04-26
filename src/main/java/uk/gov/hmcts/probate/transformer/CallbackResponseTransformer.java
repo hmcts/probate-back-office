@@ -33,6 +33,8 @@ import java.util.stream.Collectors;
 import static java.util.Collections.EMPTY_LIST;
 import static java.util.Optional.ofNullable;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
+import static uk.gov.hmcts.probate.model.Constants.CASE_TYPE_DEFAULT;
+import static uk.gov.hmcts.probate.model.Constants.DATE_OF_DEATH_TYPE_DEFAULT;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT;
@@ -297,7 +299,8 @@ public class CallbackResponseTransformer {
                 .recordId(caseData.getRecordId())
                 .legacyType(caseData.getLegacyType())
                 .legacyCaseViewUrl(caseData.getLegacyCaseViewUrl())
-                .grantIssuedDate(caseData.getGrantIssuedDate());
+                .grantIssuedDate(caseData.getGrantIssuedDate())
+                .dateOfDeathType(caseData.getDateOfDeathType());
 
         if (transform) {
             updateCaseBuilderForTransformCase(caseData, builder);
@@ -443,7 +446,12 @@ public class CallbackResponseTransformer {
 
         if (caseData.getCaseType() == null) {
             builder
-                    .caseType("gop");
+                    .caseType(CASE_TYPE_DEFAULT);
+        }
+
+        if (caseData.getDateOfDeathType() == null) {
+            builder
+                    .dateOfDeathType(DATE_OF_DEATH_TYPE_DEFAULT);
         }
 
         if (caseData.getPrimaryApplicantAliasReason() != null) {
@@ -505,7 +513,12 @@ public class CallbackResponseTransformer {
 
         if (caseData.getCaseType() == null) {
             builder
-                    .caseType("gop");
+                    .caseType(CASE_TYPE_DEFAULT);
+        }
+
+        if (caseData.getDateOfDeathType() == null) {
+            builder
+                    .dateOfDeathType(DATE_OF_DEATH_TYPE_DEFAULT);
         }
 
         if (caseData.getSolsExecutorAliasNames() != null) {

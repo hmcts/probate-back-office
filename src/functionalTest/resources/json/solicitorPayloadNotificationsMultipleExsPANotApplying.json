@@ -24,6 +24,7 @@
     ],
     "security_classification": "PUBLIC",
     "case_data": {
+      "dateOfDeathType" : "diedOnOrBefore",
       "otherExecutorExists": "No",
       "boSendToBulkPrint": "No",
       "outsideUKGrantCopies": null,

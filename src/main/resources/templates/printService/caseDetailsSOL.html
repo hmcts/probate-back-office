@@ -163,6 +163,10 @@
       <td>{% if case_data.deceasedDateOfDeath %}{{ case_data.deceasedDateOfDeath|date("DD/MM/YYYY", existingFormat="yyyy-MM-dd") }}{% endif %}</td>
     </tr>
     <tr>
+      <td colspan="2">Date of death type:</td>
+      <td>{% if case_data.dateOfDeathType %}{{ case_data.dateOfDeathType }}{% endif %}</td>
+    </tr>
+    <tr>
       <td colspan="2">Deceased was domiciled in England or Wales:</td>
       <td>{% if case_data.deceasedDomicileInEngWales %}{{ case_data.deceasedDomicileInEngWales }}{% endif %}</td>
     </tr>
