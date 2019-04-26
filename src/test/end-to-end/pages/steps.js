@@ -18,6 +18,7 @@ module.exports = function () {
         enterCaveatPage3: steps.createCaveat.page3,
         enterCaveatPage4: steps.createCaveat.page4,
         emailCaveator: steps.emailNotifications.caveat.emailCaveator,
+        reopenCaveat: steps.reopenningCases.caveat.reopenCaveat,
         checkMyAnswers: steps.checkYourAnswers.checkYourAnswers,
         seeCaseDetails: steps.caseDetails.caseDetails,
         chooseNextStep: steps.nextStep.nextStep,
