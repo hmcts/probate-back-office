@@ -47,6 +47,19 @@ public class NotificationService {
     private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMM Y HH:mm");
     private static final DateTimeFormatter EXCELA_DATE = DateTimeFormatter.ofPattern("yyyyMMdd");
 
+    private static final String PERSONALISATION_APPLICANT_NAME = "applicant_name";
+    private static final String PERSONALISATION_DECEASED_NAME = "deceased_name";
+    private static final String PERSONALISATION_SOLICITOR_NAME = "solicitor_name";
+    private static final String PERSONALISATION_SOLICITOR_REFERENCE = "solicitor_reference";
+    private static final String PERSONALISATION_REGISTRY_NAME = "registry_name";
+    private static final String PERSONALISATION_REGISTRY_PHONE = "registry_phone";
+    private static final String PERSONALISATION_CASE_STOP_DETAILS = "case-stop-details";
+    private static final String PERSONALISATION_DECEASED_DOD = "deceased_dod";
+    private static final String PERSONALISATION_CCD_REFERENCE = "ccd_reference";
+    private static final String PERSONALISATION_MESSAGE_CONTENT = "message_content";
+    private static final String PERSONALISATION_EXCELA_NAME = "excelaName";
+    private static final String PERSONALISATION_CASE_DATA = "caseData";
+
     public Document sendEmail(State state, CaseDetails caseDetails)
             throws NotificationClientException {
 
@@ -117,15 +130,15 @@ public class NotificationService {
     private Map<String, String> getPersonalisation(CaseDetails caseDetails, Registry registry) {
         CaseData caseData = caseDetails.getData();
         HashMap<String, String> personalisation = new HashMap<>();
-        personalisation.put("applicant_name", caseData.getPrimaryApplicantFullName());
-        personalisation.put("deceased_name", caseData.getDeceasedFullName());
-        personalisation.put("solicitor_name", caseData.getSolsSOTName());
-        personalisation.put("solicitor_reference", caseData.getSolsSolicitorAppReference());
-        personalisation.put("registry_name", registry.getName());
-        personalisation.put("registry_phone", registry.getPhone());
-        personalisation.put("case-stop-details", caseData.getBoStopDetails());
-        personalisation.put("deceased_dod", caseData.getDeceasedDateOfDeathFormatted());
-        personalisation.put("ccd_reference", caseDetails.getId().toString());
+        personalisation.put(PERSONALISATION_APPLICANT_NAME, caseData.getPrimaryApplicantFullName());
+        personalisation.put(PERSONALISATION_DECEASED_NAME, caseData.getDeceasedFullName());
+        personalisation.put(PERSONALISATION_SOLICITOR_NAME, caseData.getSolsSOTName());
+        personalisation.put(PERSONALISATION_SOLICITOR_REFERENCE, caseData.getSolsSolicitorAppReference());
+        personalisation.put(PERSONALISATION_REGISTRY_NAME, registry.getName());
+        personalisation.put(PERSONALISATION_REGISTRY_PHONE, registry.getPhone());
+        personalisation.put(PERSONALISATION_CASE_STOP_DETAILS, caseData.getBoStopDetails());
+        personalisation.put(PERSONALISATION_DECEASED_DOD, caseData.getDeceasedDateOfDeathFormatted());
+        personalisation.put(PERSONALISATION_CCD_REFERENCE, caseDetails.getId().toString());
 
         return personalisation;
     }
@@ -135,12 +148,12 @@ public class NotificationService {
 
         HashMap<String, String> personalisation = new HashMap<>();
 
-        personalisation.put("applicant_name", caveatData.getCaveatorFullName());
-        personalisation.put("deceased_name", caveatData.getDeceasedFullName());
-        personalisation.put("ccd_reference", caveatDetails.getId().toString());
-        personalisation.put("message_content", caveatData.getMessageContent());
-        personalisation.put("registry_name", registry.getName());
-        personalisation.put("registry_phone", registry.getPhone());
+        personalisation.put(PERSONALISATION_APPLICANT_NAME, caveatData.getCaveatorFullName());
+        personalisation.put(PERSONALISATION_DECEASED_NAME, caveatData.getDeceasedFullName());
+        personalisation.put(PERSONALISATION_CCD_REFERENCE, caveatDetails.getId().toString());
+        personalisation.put(PERSONALISATION_MESSAGE_CONTENT, caveatData.getMessageContent());
+        personalisation.put(PERSONALISATION_REGISTRY_NAME, registry.getName());
+        personalisation.put(PERSONALISATION_REGISTRY_PHONE, registry.getPhone());
 
         return personalisation;
     }
@@ -150,8 +163,8 @@ public class NotificationService {
 
         StringBuilder data = getBuiltData(cases);
 
-        personalisation.put("excelaName", LocalDateTime.now().format(EXCELA_DATE) + "will");
-        personalisation.put("caseData", data.toString());
+        personalisation.put(PERSONALISATION_EXCELA_NAME, LocalDateTime.now().format(EXCELA_DATE) + "will");
+        personalisation.put(PERSONALISATION_CASE_DATA, data.toString());
 
         return personalisation;
     }
