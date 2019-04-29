@@ -44,7 +44,10 @@ Scenario('Will Lodgement Workflow - E2E test 01 - Will Lodgement for a Personal 
     let endState = 'Will lodgement created';
 
     const url = await I.grabCurrentUrl();
-    const caseRef = url.split('/').pop().match(/.{4}/g).join('-');
+    const caseRef = url.split('/')
+        .pop()
+        .match(/.{4}/g)
+        .join('-');
 
     I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
     I.seeCaseDetails(caseRef, caseDetailsTabConfig, createWillLodgementConfig);
