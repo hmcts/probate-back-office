@@ -5,7 +5,7 @@
 String product = "probate"
 String component = "back-office"
 
-//def secrets = [
+////def secrets = [
 //        'probate-${env}'      : [
 //                secret('serviceAuthProviderBaseUrl', 'SERVICE_AUTH_PROVIDER_BASE_URL'),
 //                secret('userAuthProviderOauth2Url', 'USER_AUTH_PROVIDER_OAUTH2_URL'),
