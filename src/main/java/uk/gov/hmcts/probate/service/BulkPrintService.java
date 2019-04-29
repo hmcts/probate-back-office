@@ -27,6 +27,7 @@ import java.util.stream.LongStream;
 public class BulkPrintService {
     private static final String XEROX_TYPE_PARAMETER = "PRO001";
     private static final String BEARER = "Bearer ";
+    private static final String ADDITIONAL_DATA_CASE_REFERENCE = "caseReference";
     private final SendLetterApi sendLetterApi;
     private final DocumentStoreClient documentStoreClient;
     private final ServiceAuthTokenGenerator tokenGenerator;
@@ -37,7 +38,7 @@ public class BulkPrintService {
             String authHeaderValue = tokenGenerator.generate();
 
             Map<String, Object> additionalData = new HashMap<>();
-            additionalData.put("caseData", callbackRequest.getCaseDetails().getData());
+            additionalData.put(ADDITIONAL_DATA_CASE_REFERENCE, callbackRequest.getCaseDetails().getId());
 
             additionalData = Collections.unmodifiableMap(additionalData);
 
