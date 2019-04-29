@@ -2,6 +2,34 @@
 <suppressions xmlns="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.1.xsd">
     <suppress>
         <notes><![CDATA[
+   file name: tomcat-embed-websocket-9.0.16.jar
+   ]]></notes>
+        <gav regex="true">^org\.apache\.tomcat\.embed:tomcat-embed-websocket:.*$</gav>
+        <cve>CVE-2019-0232</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: tomcat-embed-websocket-9.0.16.jar
+   ]]></notes>
+        <gav regex="true">^org\.apache\.tomcat\.embed:tomcat-embed-websocket:.*$</gav>
+        <cpe>cpe:/a:apache:tomcat</cpe>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: tomcat-embed-core-9.0.16.jar
+   ]]></notes>
+        <gav regex="true">^org\.apache\.tomcat\.embed:tomcat-embed-core:.*$</gav>
+        <cpe>cpe:/a:apache:tomcat</cpe>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: tomcat-embed-core-9.0.16.jar
+   ]]></notes>
+        <gav regex="true">^org\.apache\.tomcat\.embed:tomcat-embed-core:.*$</gav>
+        <cve>CVE-2019-0232</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
    file name: AppleJavaExtensions-1.4.jar
    ]]></notes>
         <gav regex="true">^com\.apple:AppleJavaExtensions:.*$</gav>
