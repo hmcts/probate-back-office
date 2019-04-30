@@ -54,7 +54,7 @@ public class WillLodgementCallbackResponseTransformerTest {
     private static final String WL_DECEASDED_GENDER = "male";
     private static final LocalDate WL_DECEASED_DOB = LocalDate.parse("2016-12-31", dateTimeFormatter);
     private static final LocalDate WL_DECEASED_DOD = LocalDate.parse("2017-12-31", dateTimeFormatter);
-    private static final String WL_DECEASED_TYPE_OF_DEATH = "unknown";
+    private static final String WL_DECEASED_TYPE_OF_DEATH = "diedOnOrSince";
     private static final String WL_DECEASED_HAS_ALIAS = YES;
     private static final String WL_DECEASED_FULL_ALIAS_NAME = "AliasFN AliasSN";
     private static final List<CollectionMember<ProbateFullAliasName>> WL_DECEASED_FULL_ALIAS_NAME_LIST = emptyList();

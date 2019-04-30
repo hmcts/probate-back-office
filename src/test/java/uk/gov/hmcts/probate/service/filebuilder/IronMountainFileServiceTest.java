@@ -1,15 +1,13 @@
 package uk.gov.hmcts.probate.service.filebuilder;
 
+import com.google.common.collect.ImmutableList;
 import org.junit.Before;
 import org.junit.Test;
 import uk.gov.hmcts.probate.model.ApplicationType;
-import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
-import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
-import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 import uk.gov.hmcts.probate.util.FileUtils;
 
@@ -30,6 +28,7 @@ import static org.junit.Assert.assertThat;
 public class IronMountainFileServiceTest {
 
     private IronMountainFileService ironmountainFileService = new IronMountainFileService(new TextFileBuilderService());
+    private ImmutableList.Builder<ReturnedCaseDetails> caseList = new ImmutableList.Builder<>();
     private CaseData.CaseDataBuilder caseData;
     private ReturnedCaseDetails createdCase;
     private CaseData builtData;
@@ -69,13 +68,15 @@ public class IronMountainFileServiceTest {
                 .registryLocation("Oxford")
                 .grantIssuedDate("2019-02-18")
                 .applicationType(ApplicationType.PERSONAL);
+
     }
 
     @Test
     public void testIronMountainFileBuilt() throws IOException {
         builtData = caseData.build();
         createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, 1234567890876L);
-        assertThat(createFile(ironmountainFileService.createIronMountainFile(createdCase, FILE_NAME)).readLine(),
+        caseList.add(createdCase);
+        assertThat(createFile(ironmountainFileService.createIronMountainFile(caseList.build(), FILE_NAME)).readLine(),
                 is(FileUtils.getStringFromFile("expectedGeneratedFiles/ironMountainFilePopulated.txt")));
     }
 
@@ -95,7 +96,8 @@ public class IronMountainFileServiceTest {
                 .additionalExecutorsApplying(additionalExecutors);
         builtData = caseData.build();
         createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, 1234567890876L);
-        assertThat(createFile(ironmountainFileService.createIronMountainFile(createdCase, FILE_NAME)).readLine(),
+        caseList.add(createdCase);
+        assertThat(createFile(ironmountainFileService.createIronMountainFile(caseList.build(), FILE_NAME)).readLine(),
                 is(FileUtils.getStringFromFile("expectedGeneratedFiles/ironMountainFileEmptyOptionals.txt")));
     }
 
@@ -104,7 +106,8 @@ public class IronMountainFileServiceTest {
         caseData.primaryApplicantIsApplying("No");
         builtData = caseData.build();
         createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, 1234567890876L);
-        assertThat(createFile(ironmountainFileService.createIronMountainFile(createdCase, FILE_NAME)).readLine(),
+        caseList.add(createdCase);
+        assertThat(createFile(ironmountainFileService.createIronMountainFile(caseList.build(), FILE_NAME)).readLine(),
                 is(FileUtils.getStringFromFile("expectedGeneratedFiles/ironMountainPrimaryApplicantNo.txt")));
     }
 
@@ -113,7 +116,8 @@ public class IronMountainFileServiceTest {
         caseData.applicationType(ApplicationType.SOLICITOR);
         builtData = caseData.build();
         createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, 1234567890876L);
-        assertThat(createFile(ironmountainFileService.createIronMountainFile(createdCase, FILE_NAME)).readLine(),
+        caseList.add(createdCase);
+        assertThat(createFile(ironmountainFileService.createIronMountainFile(caseList.build(), FILE_NAME)).readLine(),
                 is(FileUtils.getStringFromFile("expectedGeneratedFiles/ironMountainSolicitor.txt")));
     }
 

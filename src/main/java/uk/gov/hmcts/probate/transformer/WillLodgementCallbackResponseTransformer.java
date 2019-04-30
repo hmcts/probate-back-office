@@ -21,6 +21,7 @@ import java.util.stream.Collectors;
 
 import static java.util.Optional.ofNullable;
 import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
+import static uk.gov.hmcts.probate.model.Constants.DATE_OF_DEATH_TYPE_DEFAULT;
 
 @Component
 @RequiredArgsConstructor
@@ -63,7 +64,7 @@ public class WillLodgementCallbackResponseTransformer {
                 .deceasedGender(willLodgementData.getDeceasedGender())
                 .deceasedDateOfBirth(transformToString(willLodgementData.getDeceasedDateOfBirth()))
                 .deceasedDateOfDeath(transformToString(willLodgementData.getDeceasedDateOfDeath()))
-                .deceasedTypeOfDeath(willLodgementData.getDeceasedTypeOfDeath())
+                .deceasedTypeOfDeath(ofNullable(willLodgementData.getDeceasedTypeOfDeath()).orElse(DATE_OF_DEATH_TYPE_DEFAULT))
                 .deceasedAnyOtherNames(willLodgementData.getDeceasedAnyOtherNames())
                 .deceasedFullAliasNameList(willLodgementData.getDeceasedFullAliasNameList())
                 .deceasedAddress(willLodgementData.getDeceasedAddress())

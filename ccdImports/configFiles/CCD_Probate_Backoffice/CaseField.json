@@ -243,6 +243,6 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "legacyCaseViewUrlLink", "Label": "[Click here to open legacy case](${legacyCaseViewUrl})", "FieldType": "Label", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "bulkPrintSendLetterId", "Label": "Send letter ID is:", "FieldType": "Text", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "bulkPrintPdfSize", "Label": "Bulk Print PDF size is:", "FieldType": "Text", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "grantIssuedDate", "Label": "Grant issued date", "FieldType": "Date", "SecurityClassification": "Public"}
-
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "grantIssuedDate", "Label": "Grant issued date", "FieldType": "Date", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "dateOfDeathType", "Label": "What type of date of death is?", "HintText": "Use this to indicate if the exact date of death is not known", "FieldType": "FixedList", "FieldTypeParameter": "dateOfDeathTypeFixedList", "SecurityClassification": "Public"}
 ]

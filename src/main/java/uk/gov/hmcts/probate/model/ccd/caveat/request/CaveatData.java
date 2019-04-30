@@ -71,6 +71,8 @@ public class CaveatData {
 
     // EVENT = misc
 
+    private String caveatReopenReason;
+
     @Builder.Default
     private List<CollectionMember<Document>> documentsGenerated = new ArrayList<>();
 

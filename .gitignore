@@ -5,6 +5,7 @@
 /docker/test/
 /target/
 /jsonToXLS/
+/node_modules/**
 
 ### STS ###
 .apt_generated

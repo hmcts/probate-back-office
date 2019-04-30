@@ -132,6 +132,12 @@ Scenario('Caveat Workflow - E2E Test 02 - Caveat for a Personal Applicant - Rais
     I.seeCaseDetails(caseRef, caveatorDetailsTabUpdateConfig, createCaveatConfig);
     I.seeCaseDetails(caseRef, caveatDetailsTabUpdateConfig, createCaveatConfig);
 
+    nextStepName = 'Withdraw caveat';
+    I.chooseNextStep(nextStepName);
+    I.enterEventSummary(caseRef, nextStepName);
+    endState = 'Caveat closed';
+    I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+
     I.click('#sign-out');
 
 }).retry(testConfig.TestRetryScenarios);
