@@ -18,7 +18,9 @@ import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 import uk.gov.hmcts.probate.service.CaseQueryService;
+import uk.gov.hmcts.probate.service.FileTransferService;
 import uk.gov.hmcts.probate.service.NotificationService;
+import uk.gov.hmcts.probate.service.filebuilder.IronMountainFileService;
 import uk.gov.service.notify.NotificationClientException;
 
 import java.time.LocalDate;
@@ -38,6 +40,8 @@ public class DataExtractController {
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private final CaseQueryService caseQueryService;
     private final NotificationService notificationService;
+    private final FileTransferService fileTransferService;
+    private final IronMountainFileService ironMountainFileService;
 
     @Scheduled(cron = "${cron.data_extract}")
     @ApiOperation(value = "Initiate IronMountain data extract", notes = "Will find cases for yesterdays date")
@@ -54,6 +58,15 @@ public class DataExtractController {
 
         List<ReturnedCaseDetails> cases = caseQueryService.findCasesWithDatedDocument("digitalGrant", date);
 
+        if (!cases.isEmpty()) {
+            int response = fileTransferService.uploadFile(ironMountainFileService.createIronMountainFile(
+                    cases, date.replace("-", "") + "grant.txt"));
+
+            if (response != 201) {
+                log.error("Failed to upload file for: " + date);
+                throw new ClientException(HttpStatus.SERVICE_UNAVAILABLE.value(), "Failed to upload file for date: " + date);
+            }
+        }
         return ResponseEntity.ok(cases.size() + " cases successfully found for date: " + date);
     }
 
@@ -86,9 +99,7 @@ public class DataExtractController {
         }
 
         if (!filteredCases.build().isEmpty()) {
-            for (ReturnedCaseDetails excelaCase : filteredCases.build()) {
-                notificationService.sendExcelaEmail(excelaCase);
-            }
+            notificationService.sendExcelaEmail(filteredCases.build());
         }
 
         return ResponseEntity.ok(filteredCases.build().size() + " cases found and emailed for date: " + date);

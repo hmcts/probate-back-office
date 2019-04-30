@@ -30,19 +30,24 @@ public class TextFileBuilderService {
     private void writeDataToFile(String data, String delimiter) {
         try {
             writer.write(data);
-            writer.write(delimiter);
+            if (!data.equals("\n")) {
+                writer.write(delimiter);
+            }
         } catch (Exception e) {
             log.error("Failed writing {} to file", data, e.getMessage());
         }
     }
 
-    public File createFile(List<String> data, String delimiter, String fileName) throws
-            IOException {
+    public File createFile(List<String> data, String delimiter, String fileName) {
         openWriter(fileName);
         for (String item : data) {
             writeDataToFile(item, delimiter);
         }
-        writer.close();
+        try {
+            writer.close();
+        } catch (IOException e) {
+            log.error("Unable to close writer. " + e.getMessage());
+        }
 
         return new File(sanitiseFilePath(fileName));
     }

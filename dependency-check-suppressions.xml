@@ -223,4 +223,10 @@
    ]]></notes>
         <cve>CVE-2018-1260</cve>
     </suppress>
+  <suppress>
+        <notes><![CDATA[
+   file name: tomcat-embed-core-9.0.16.jar
+   ]]></notes>
+        <cve>CVE-2019-0232</cve>
+    </suppress>
 </suppressions>

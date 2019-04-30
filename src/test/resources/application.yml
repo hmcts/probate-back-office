@@ -3,7 +3,12 @@ server:
 
 resttemplate:
   httpclient:
-    timeout:10000
+    timeout: 10000
+
+ftp.client:
+  url: https://green.blob.core.windows.net
+  environment: test
+  signature: ${FTP_SIGNATURE:test}
 
 authorised.services: probate_backend,ccd_data,ccd-datamgmt-api,ccd_ps,ccd
 auth.provider.service.client:
@@ -244,3 +249,6 @@ idam-s2s-auth:
       enabled: false
 
 excelaEmail: probatetest@gmail.com
+
+cron:
+  data_extract: "0 0 2 * * *"

@@ -1,6 +1,7 @@
 package uk.gov.hmcts.probate.controller;
 
 import com.google.common.collect.ImmutableList;
+import feign.Response;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -8,19 +9,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import uk.gov.hmcts.probate.insights.AppInsights;
+import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 import uk.gov.hmcts.probate.service.CaseQueryService;
+import uk.gov.hmcts.probate.service.FileTransferService;
 import uk.gov.hmcts.probate.service.NotificationService;
+import uk.gov.hmcts.probate.service.filebuilder.IronMountainFileService;
 
+import java.io.File;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -42,6 +48,12 @@ public class DataExtractControllerTest {
 
     @MockBean
     private CaseQueryService caseQueryService;
+
+    @MockBean
+    private IronMountainFileService ironMountainFileService;
+
+    @MockBean
+    private FileTransferService fileTransferService;
 
     @MockBean
     private NotificationService notificationService;
@@ -78,6 +90,7 @@ public class DataExtractControllerTest {
                 ReturnedCaseDetails(caseData, LAST_MODIFIED, 1L)).build();
 
         when(caseQueryService.findCasesWithDatedDocument(any(), any())).thenReturn(returnedCases);
+        when(fileTransferService.uploadFile(any())).thenReturn(HttpStatus.CREATED.value());
     }
 
     @Test
@@ -114,5 +127,12 @@ public class DataExtractControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string("1 cases found and emailed for date: " + DATE_FORMAT.format(LocalDate
                         .now().minusDays(1L))));
+    }
+
+    @Test
+    public void ironMountainShouldThrowExceptionOnStatusNotCreated() throws Exception {
+        when(fileTransferService.uploadFile(any())).thenReturn(HttpStatus.SERVICE_UNAVAILABLE.value());
+        mockMvc.perform(post("/data-extract/iron-mountain/2019-03-13"))
+                .andExpect(status().is5xxServerError());
     }
 }

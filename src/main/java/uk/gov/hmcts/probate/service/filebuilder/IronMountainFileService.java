@@ -10,7 +10,6 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 
 import java.io.File;
-import java.io.IOException;
 import java.time.Period;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -32,13 +31,17 @@ public class IronMountainFileService {
             .build();
     private final TextFileBuilderService textFileBuilderService;
     private static final String DELIMITER = "|";
+    private ImmutableList.Builder<String> fileData = ImmutableList.builder();
 
-    public File createIronMountainFile(ReturnedCaseDetails ccdCase, String fileName) throws IOException {
-        return textFileBuilderService.createFile(prepareData(ccdCase.getId(), ccdCase.getData()), DELIMITER, fileName);
+    public File createIronMountainFile(List<ReturnedCaseDetails> ccdCases, String fileName) {
+        for (ReturnedCaseDetails ccdCase : ccdCases) {
+            prepareData(ccdCase.getId(), ccdCase.getData());
+        }
+        return textFileBuilderService.createFile(fileData.build(), DELIMITER, fileName);
     }
 
-    private List<String> prepareData(Long id, CaseData data) {
-        ImmutableList.Builder<String> fileData = ImmutableList.builder();
+    private void prepareData(Long id, CaseData data) {
+
         final List<String> deceasedAddress = addressManager(data.getDeceasedAddress());
         final List<String> applicantAddress = addressManager(data.getApplicationType().equals(ApplicationType
                 .PERSONAL) ? data.getPrimaryApplicantAddress() : data.getSolsSolicitorAddress());
@@ -65,7 +68,7 @@ public class IronMountainFileService {
         fileData.add(data.getIhtNetValue().toString());
         fileData.add(CaseTypeMapping.valueOf(data.getCaseType()).getCaseTypeMapped());
         fileData.add(data.getRegistryLocation());
-        return fileData.build();
+        fileData.add("\n");
     }
 
     private void addDeceasedAddress(ImmutableList.Builder<String> fileData, List<String> deceasedAddress) {
@@ -88,6 +91,9 @@ public class IronMountainFileService {
     }
 
     private List<String> addressManager(SolsAddress address) {
+        if (address == null) {
+            address = EMPTY_ADDRESS;
+        }
         String[] addressArray = {Optional.ofNullable(address.getAddressLine1()).orElse(""),
                 Optional.ofNullable(address.getAddressLine2()).orElse(""),
                 Optional.ofNullable(address.getAddressLine3()).orElse(""),
