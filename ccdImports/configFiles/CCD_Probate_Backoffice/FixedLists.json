@@ -78,6 +78,8 @@
   {"LiveFrom": "07/01/2017", "ID": "selectionFixedList", "ListElementCode": "solicitor", "ListElement": "Solicitor Details"},
   {"LiveFrom": "06/01/2017", "ID": "selectionFixedList", "ListElementCode": "deceasedFamily", "ListElement": "Deceased Family Details"},
   {"LiveFrom": "06/01/2017", "ID": "ScannedDocumentType", "ListElementCode": "cherished", "ListElement": "Cherished"},
+  {"LiveFrom": "06/01/2017", "ID": "ScannedDocumentType", "ListElementCode": "coversheet", "ListElement": "Coversheet"},
+  {"LiveFrom": "06/01/2017", "ID": "ScannedDocumentType", "ListElementCode": "form", "ListElement": "Form"},
   {"LiveFrom": "06/01/2017", "ID": "ScannedDocumentType", "ListElementCode": "other", "ListElement": "Other"},
   {"LiveFrom": "06/01/2017", "ID": "relationshipToDeceasedFixedList", "ListElementCode": "partner", "ListElement": "Spouse"},
   {"LiveFrom": "06/01/2017", "ID": "relationshipToDeceasedFixedList", "ListElementCode": "child", "ListElement": "Child"},
