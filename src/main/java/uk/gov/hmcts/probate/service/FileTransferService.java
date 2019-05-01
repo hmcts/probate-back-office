@@ -34,6 +34,7 @@ public class FileTransferService {
     }
 
     public int uploadFile(File file) {
+        log.info("Starting file upload to ftp.");
         Response response;
         try {
             response = fileTransferApi.sendFile(
