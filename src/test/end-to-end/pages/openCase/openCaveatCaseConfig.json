@@ -1,0 +1,4 @@
+{
+  "waitForText": "Search result",
+  "firstCaseInList": "#search-result > ccd-search-result > table > tbody > tr:nth-child(1) > td:nth-child(1) > a"
+}

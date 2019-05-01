@@ -54,5 +54,9 @@ module.exports = function (crud) {
         I.fillField('#deceasedDateOfBirth-year', createCaveatConfig.page2_dateOfBirth_year_update);
     }
 
+    if (crud === 'import') {
+        I.waitForText(createCaveatConfig.page2_amend_waitForText, testConfig.TestTimeToWaitForText);
+    }
+
     I.waitForNavigationToComplete(commonConfig.continueButton);
 };

@@ -33,5 +33,9 @@ module.exports = function (crud) {
         I.fillField('#caveatorSurname', createCaveatConfig.page3_caveator_surname_update);
     }
 
+    if (crud === 'import') {
+        I.waitForText(createCaveatConfig.page3_amend_waitForText, testConfig.TestTimeToWaitForText);
+    }
+
     I.waitForNavigationToComplete(commonConfig.continueButton);
 };

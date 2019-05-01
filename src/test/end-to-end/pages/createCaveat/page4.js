@@ -16,5 +16,9 @@ module.exports = function (crud) {
         I.fillField('#expiryDate-year', createCaveatConfig.page4_caveatExpiryDate_year_update);
     }
 
+    if (crud === 'import') {
+        I.waitForText(createCaveatConfig.page4_amend_waitForText, testConfig.TestTimeToWaitForText);
+    }
+
     I.waitForNavigationToComplete(commonConfig.continueButton);
 };
