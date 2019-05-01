@@ -47,6 +47,7 @@ public class DataExtractController {
     @ApiOperation(value = "Initiate IronMountain data extract", notes = "Will find cases for yesterdays date")
     @PostMapping(path = "/iron-mountain")
     public ResponseEntity initiateIronMountainExtract() {
+        log.info("Extract initiated for Iron Mountain");
         return initiateIronMountainExtract(DATE_FORMAT.format(LocalDate.now().minusDays(1L)));
     }
 
@@ -74,6 +75,7 @@ public class DataExtractController {
     @ApiOperation(value = "Initiate Excela data extract", notes = "Will find cases for yesterdays date")
     @PostMapping(path = "/excela")
     public ResponseEntity initiateExcelaExtract() throws NotificationClientException {
+        log.info("Extract initiated for Excela");
         return initiateExcelaExtract(DATE_FORMAT.format(LocalDate.now().minusDays(1L)));
     }
 
@@ -99,6 +101,7 @@ public class DataExtractController {
         }
 
         if (!filteredCases.build().isEmpty()) {
+            log.info("Sending email to Excela");
             notificationService.sendExcelaEmail(filteredCases.build());
         }
 
