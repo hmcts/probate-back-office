@@ -1,0 +1,9 @@
+{
+  "tabName": "Deceased details",
+  "fields": [
+    "Forename(s)",
+    "Surname(s)",
+    "What was their date of death?"
+  ],
+  "dataKeys": []
+}

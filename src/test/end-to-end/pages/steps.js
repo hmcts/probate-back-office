@@ -18,6 +18,7 @@ module.exports = function () {
         enterCaveatPage2: steps.createCaveat.page2,
         enterCaveatPage3: steps.createCaveat.page3,
         enterCaveatPage4: steps.createCaveat.page4,
+        enterCaveatPage5: steps.createCaveat.page5,
         emailCaveator: steps.emailNotifications.caveat.emailCaveator,
         reopenCaveat: steps.reopenningCases.caveat.reopenCaveat,
         enterGrantOfProbatePage1: steps.createGrantOfProbate.page1,
@@ -50,6 +51,8 @@ module.exports = function () {
         selectCase: steps.selectCase.selectCase,
         legacyCaseSearch: steps.search.legacyCaseSearch,
         legacyCaseSearch2: steps.search.legacyCaseSearch2,
-        legacyCaseSearch3: steps.search.legacyCaseSearch3
+        legacyCaseSearch3: steps.search.legacyCaseSearch3,
+        caseSearch: steps.search.caseSearch,
+        openCaveatCase: steps.openCase.openCaveatCase
     });
 };

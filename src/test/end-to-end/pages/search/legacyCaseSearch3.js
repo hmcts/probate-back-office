@@ -7,9 +7,9 @@ module.exports = function () {
 
     const I = this;
     I.waitForText(legacyCaseSearch3Config.waitForText, testConfig.TestTimeToWaitForText);
-    I.seeInField(legacyCaseSearch3Config.legacyCaseType, "Legacy WILL");
-    I.seeInField(legacyCaseSearch3Config.probateManId, "89849");
-    I.seeInField(legacyCaseSearch3Config.fullName, "ALBERT LOWERY");
+//    I.seeInField(legacyCaseSearch3Config.legacyCaseType, "Legacy LEGACY APPLICATION");
+    I.seeInField(legacyCaseSearch3Config.legacyCaseType, "Legacy CAVEAT");
+    I.seeInField(legacyCaseSearch3Config.fullName, "ROBERT SMITH WILIE");
     I.click(legacyCaseSearch3Config.yesOption);
     I.wait(20);
 

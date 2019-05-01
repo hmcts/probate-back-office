@@ -7,9 +7,9 @@ module.exports = function () {
 
     const I = this;
     I.waitForText(legacyCaseSearch2Config.waitForText, testConfig.TestTimeToWaitForText);
-//    I.fillField(legacyCaseSearch2Config.probateManId, "Albert");
-    I.fillField(legacyCaseSearch2Config.forename, "Albert");
-//    I.fillField(legacyCaseSearch2Config.surname, "Surname");
+//    I.fillField(legacyCaseSearch2Config.probateManId, "1234");
+    I.fillField(legacyCaseSearch2Config.forename, "ROBERT SMITH");
+    I.fillField(legacyCaseSearch2Config.surname, "WILIE");
 //    I.fillField(legacyCaseSearch2Config.deceasedDayOB, "01");
 //    I.fillField(legacyCaseSearch2Config.deceasedMonthOB, "01");
 //    I.fillField(legacyCaseSearch2Config.deceasedYearOB, "1930");

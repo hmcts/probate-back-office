@@ -1,10 +1,10 @@
 {
   "page1_waitForText": "Raise a caveat",
   "page1_amend_waitForText": "Amend caveat details",
+  "page1_amend_import_waitForText": "Case details",
   "page1_list1_application_type": "Personal",
   "page1_list2_registry_location": "Liverpool",
   "page1_list2_registry_location_update": "Birmingham",
-
   "page2_waitForText": "Deceased details",
   "page2_amend_waitForText": "Deceased details",
   "page2_forenames": "E2E_deceased_forenames",
@@ -27,7 +27,6 @@
   "page2_addAliasButton": "#deceasedFullAliasNameList div button[type=\"button\"]",
   "page2_alias_1": "deceased_alias_name1",
   "page2_alias_2": "deceased_alias_name2",
-
   "page3_waitForText": "Caveator details",
   "page3_amend_waitForText": "Caveator details",
   "page3_caveator_forenames": "caveator_forenames",
@@ -35,14 +34,12 @@
   "page3_caveator_forenames_update": "caveator_forenames_UPDATED",
   "page3_caveator_surname_update": "caveator_surname_UPDATED",
   "page3_caveator_email": "test.probate.inbox@gmail.com",
-
   "page4_amend_waitForText": "Caveat details",
   "caveat_expiry_date": "XX XXX XXXX",
   "page4_caveatExpiryDate_day_update": "21",
   "page4_caveatExpiryDate_month_update": "04",
   "page4_caveatExpiryDate_year_update": "2020",
   "page4_caveatExpiryDate_long_update": "21 Apr 2020",
-
   "address_line1": "1",
   "address_line2": "Buckingham Palace",
   "address_line3": "The place to be",
@@ -50,6 +47,6 @@
   "address_county": "London",
   "address_country": "United Kingdom",
   "address_postcode": "SW1A 1AA",
-
-  "UKpostcodeLink": ".manual-link"
+  "UKpostcodeLink": ".manual-link",
+  "page5_amend_waitForText": "Amend case details for import"
 }

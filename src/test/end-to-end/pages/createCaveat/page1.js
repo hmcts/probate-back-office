@@ -21,5 +21,11 @@ module.exports = function (crud) {
         I.selectOption('#registryLocation', createCaveatConfig.page1_list2_registry_location_update);
     }
 
+    if (crud === 'import') {
+        I.waitForText(createCaveatConfig.page1_amend_import_waitForText, testConfig.TestTimeToWaitForText);
+        I.selectOption('#applicationType', createCaveatConfig.page1_list1_application_type);
+        I.selectOption('#registryLocation', createCaveatConfig.page1_list2_registry_location);
+    }
+
     I.waitForNavigationToComplete(commonConfig.continueButton);
 };

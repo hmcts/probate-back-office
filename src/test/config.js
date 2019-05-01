@@ -1,6 +1,6 @@
 module.exports = {
-    TestFrontendUrl: process.env.TEST_E2E_URL || 'localhost:3000',
-    TestShowBrowserWindow: process.env.SHOW_BROWSER_WINDOW || false,
+    TestFrontendUrl: process.env.TEST_E2E_URL || 'https://www-ccd.aat.platform.hmcts.net',
+    TestShowBrowserWindow: process.env.SHOW_BROWSER_WINDOW || true,
     TestRetryFeatures: process.env.RETRY_FEATURES || 0,
     TestRetryScenarios: process.env.RETRY_SCENARIOS || 3,
     TestPathToRun: './paths/**/*.js',
