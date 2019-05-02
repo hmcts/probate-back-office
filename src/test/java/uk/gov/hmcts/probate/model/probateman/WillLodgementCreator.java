@@ -10,6 +10,8 @@ public class WillLodgementCreator {
         willLodgement.setRkNumber("wlRkNumber");
         willLodgement.setProbateNumber("wlProbateNumber");
         willLodgement.setProbateVersion(23432L);
+        willLodgement.setRegistryName("Oxford");
+        willLodgement.setRegistryCode(999L);
         willLodgement.setDeceasedId(1232L);
         willLodgement.setDeceasedForenames("wlDeceasedForenames");
         willLodgement.setDeceasedSurname("wlDeceasedSurnames");

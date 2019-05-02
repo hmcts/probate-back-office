@@ -11,6 +11,8 @@ public class StandingSearchCreator {
         standingSearch.setSsNumber("ssNumber");
         standingSearch.setProbateNumber("ssProbateNumber");
         standingSearch.setProbateVersion(3454L);
+        standingSearch.setRegistryName("Oxford");
+        standingSearch.setRegistryCode(999L);
         standingSearch.setDeceasedId(74646L);
         standingSearch.setDeceasedForenames("ssDeceasedForenames");
         standingSearch.setDeceasedSurname("ssDeceasedSurname");
