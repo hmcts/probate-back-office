@@ -34,6 +34,7 @@ public class FileTransferService {
     }
 
     public int uploadFile(File file) {
+        log.info("Starting file upload to ftp.");
         Response response;
         try {
             response = fileTransferApi.sendFile(
@@ -49,6 +50,7 @@ public class FileTransferService {
                     SPR,
                     signature);
 
+            log.info("completed request, it was: " + response.status());
             Files.delete(file.toPath());
         } catch (IOException e) {
             log.error("Error handling file: " + e.getMessage());
