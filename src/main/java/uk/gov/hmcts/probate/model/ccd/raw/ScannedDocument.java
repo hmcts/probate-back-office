@@ -24,4 +24,6 @@ public class ScannedDocument {
     private final DocumentLink url;
     
     private final String exceptionRecordReference;
+
+    private final LocalDateTime deliveryDate;
 }
