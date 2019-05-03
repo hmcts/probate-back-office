@@ -6,6 +6,8 @@
 /target/
 /jsonToXLS/
 /node_modules/**
+/src/test/end-to-end/output/**
+output/
 
 ### STS ###
 .apt_generated
