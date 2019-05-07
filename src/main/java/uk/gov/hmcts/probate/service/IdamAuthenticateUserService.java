@@ -43,15 +43,9 @@ public class IdamAuthenticateUserService {
     }
 
     public String getIdamOauth2Token() {
-        log.info("inside the getIdamOauth2Token");
-        log.info("id being used is: " + id);
         log.info("secret being used is: " + secret);
-        log.info("redirect being used is: " + redirect);
-        log.info("email being used is: " + email);
-        log.info("password being used is: " + password);
         String authorisation = email + ":" + password;
         String base64Authorisation = Base64.getEncoder().encodeToString(authorisation.getBytes());
-        log.info("encoded value of email and password is: " + base64Authorisation);
 
         AuthenticateUserResponse authenticateUserResponse = idamApi.authenticateUser(
                 BASIC + base64Authorisation,
