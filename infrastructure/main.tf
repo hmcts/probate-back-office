@@ -95,7 +95,7 @@ data "azurerm_key_vault_secret" "ftpEnv" {
 }
 
 data "azurerm_key_vault_secret" "idamSecretProbate" {
-  name = "idamSecretProbate"
+  name = "idam-secret-probate"
   vault_uri = "${data.azurerm_key_vault.probate_key_vault.vault_uri}"
 }
 
