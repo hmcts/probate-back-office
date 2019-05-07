@@ -94,8 +94,8 @@ data "azurerm_key_vault_secret" "ftpEnv" {
   vault_uri = "${data.azurerm_key_vault.probate_key_vault.vault_uri}"
 }
 
-data "azurerm_key_vault_secret" "idam-secret-probate" {
-  name = "idam-secret-probate"
+data "azurerm_key_vault_secret" "idamSecretProbate" {
+  name = "idamSecretProbate"
   vault_uri = "${data.azurerm_key_vault.probate_key_vault.vault_uri}"
 }
 
@@ -152,7 +152,7 @@ module "probate-back-office" {
     IDAM_REDIRECT_URL = "${data.azurerm_key_vault_secret.idamRedirectUrl.value}"
     FTP_SIGNATURE = "${data.azurerm_key_vault_secret.ftpSignature.value}"
     FTP_ENV = "${data.azurerm_key_vault_secret.ftpEnv.value}"
-    IDAM_SECRET = "${data.azurerm_key_vault_secret.idam-secret-probate}"
+    IDAM_SECRET = "${data.azurerm_key_vault_secret.idamSecretProbate.value}"
   }
 }
 
