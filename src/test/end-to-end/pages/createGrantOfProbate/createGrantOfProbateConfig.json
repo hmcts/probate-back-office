@@ -70,6 +70,7 @@
     "page4_deceasedDob_month": "03",
     "page4_deceasedDob_year": "1970",
     "page4_deceasedDob_long": "3 Mar 1970",
+    "page4_dateOfDeathType": "Died on",
     "page4_deceasedDod_day": "03",
     "page4_deceasedDod_month": "03",
     "page4_deceasedDod_year": "2018",
@@ -83,7 +84,7 @@
     "page4_deceasedMartialStatus": "Never married",
     "page4_foreignAssetYes": "Yes",
     "page4_foreignAssetEstateValue": "500",
-    "page4_list1_update_option": "Deceased Details",
+    "page4_list1_update_option": "Deceased, IHT and Estate Details",
 
     "page5_waitForText": "The will and any codicils",
     "page5_amend_waitForText": "Amend case details",
@@ -155,7 +156,6 @@
     "page9_ihtReferenceNumber_update": "AAAAA1001",
     "page9_ihtGrossValue": "500",
     "page9_ihtNetValue": "400",
-    "page9_list1_update_option": "IHT and Estate Details",
 
     "address_line1": "1",
     "address_line2": "Buckingham Palace",

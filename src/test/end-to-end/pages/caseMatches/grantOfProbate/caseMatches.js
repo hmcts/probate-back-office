@@ -10,11 +10,11 @@ module.exports = function (caseRef, caseMatchesConfig, nextStepName) {
     I.waitForText(caseMatchesConfig.waitForText, testConfig.TestTimeToWaitForText);
 
     I.see(caseRef);
-    I.seeInField('#caseMatches_0_fullName', caseMatchesConfig.fullname);
-    I.seeInField('#caseMatches_0_dob', caseMatchesConfig.dob);
-    I.seeInField('#caseMatches_0_postcode', caseMatchesConfig.postcode);
+    I.seeInField('#caseMatches_1_fullName', caseMatchesConfig.fullname);
+    I.seeInField('#caseMatches_1_dob', caseMatchesConfig.dob);
+    I.seeInField('#caseMatches_1_postcode', caseMatchesConfig.postcode);
 
-    I.click('#caseMatches_0_valid-Yes');
+    I.click('#caseMatches_1_valid-Yes');
 
     I.waitForNavigationToComplete(commonConfig.continueButton);
 

@@ -3,6 +3,7 @@
     "fields": [
       "Was the deceased domiciled in England or Wales at the time of their death?",
       "What was the country where the person who died either lived permanently at the date of death or intended to return to live permanently?",
+      "What type of date of death is?",
       "What was their date of death?",
       "What was their date of birth?",
       "Title",
@@ -23,6 +24,7 @@
       "page4_bo_deceasedHonours",
       "page4_deceasedDob_long",
       "page4_deceasedDod_long_update",
+      "page4_dateOfDeathType",
       "page4_deceasedAlias",
       "page8_deceasedDomicileInEngWalesNo",
       "page8_domicilityCountry",

@@ -24,6 +24,7 @@ module.exports = function (crud) {
         I.fillField('#deceasedAddress__PostCode', createGrantOfProbateConfig.address_postcode);
         I.fillField('#deceasedAddress__Country', createGrantOfProbateConfig.address_country);
 
+        I.selectOption('#dateOfDeathType', createGrantOfProbateConfig.page4_dateOfDeathType);
         I.fillField('#deceasedDateOfBirth-day', createGrantOfProbateConfig.page4_deceasedDob_day);
         I.fillField('#deceasedDateOfBirth-month', createGrantOfProbateConfig.page4_deceasedDob_month);
         I.fillField('#deceasedDateOfBirth-year', createGrantOfProbateConfig.page4_deceasedDob_year);
@@ -43,12 +44,15 @@ module.exports = function (crud) {
 
     if (crud === 'update') {
         I.waitForText(createGrantOfProbateConfig.page4_amend_waitForText, testConfig.TestTimeToWaitForText);
+
         I.selectOption('#selectionList', createGrantOfProbateConfig.page4_list1_update_option);
         I.waitForNavigationToComplete(commonConfig.continueButton);
 
         I.fillField('#deceasedDateOfDeath-day', createGrantOfProbateConfig.page4_deceasedDod_day_update);
         I.fillField('#deceasedDateOfDeath-month', createGrantOfProbateConfig.page4_deceasedDod_month_update);
         I.fillField('#deceasedDateOfDeath-year', createGrantOfProbateConfig.page4_deceasedDod_year_update);
+
+        I.fillField('#ihtReferenceNumber', createGrantOfProbateConfig.page9_ihtReferenceNumber_update);
 
     }
 

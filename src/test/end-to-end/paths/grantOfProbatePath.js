@@ -26,7 +26,7 @@ const paymentDetailsTabConfig = require('src/test/end-to-end/pages/caseDetails/g
 
 const applicantDetailsUpdateTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/applicantDetailsUpdateTabConfig');
 const caseDetailsUpdateTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/caseDetailsUpdateTabConfig');
-const deceasedUpdateTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/deceasedUpdateTabConfig');
+// const deceasedUpdateTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/deceasedUpdateTabConfig');
 
 Feature('Back Office').retry(testConfig.TestRetryFeatures);
 
@@ -46,7 +46,7 @@ Scenario('Grant of Probate Workflow - E2E test 01 - Grant of Representation for 
     I.enterGrantOfProbatePage6('create');
     I.enterGrantOfProbatePage7('create');
     I.enterGrantOfProbatePage8('create');
-    I.enterGrantOfProbatePage9('create');
+    I.enterGrantOfProbatePage9();
     I.checkMyAnswers(nextStepName);
     let endState = 'Case created';
 
@@ -56,6 +56,7 @@ Scenario('Grant of Probate Workflow - E2E test 01 - Grant of Representation for 
         .join('-');
 
     I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+
     I.seeCaseDetails(caseRef, deceasedTabConfig, createGrantOfProbateConfig);
     I.seeCaseDetails(caseRef, caseDetailsTabConfig, createGrantOfProbateConfig);
     I.seeCaseDetails(caseRef, applicantDetailsTabConfig, createGrantOfProbateConfig);
@@ -78,9 +79,9 @@ Scenario('Grant of Probate Workflow - E2E test 01 - Grant of Representation for 
     I.chooseNextStep(nextStepName);
     I.enterGrantOfProbatePage3('update');
     I.checkMyAnswers(nextStepName);
-    I.chooseNextStep(nextStepName);
-    I.enterGrantOfProbatePage4('update');
-    I.checkMyAnswers(nextStepName);
+    // I.chooseNextStep(nextStepName);
+    // I.enterGrantOfProbatePage4('update');
+    // I.checkMyAnswers(nextStepName);
     I.chooseNextStep(nextStepName);
     I.enterGrantOfProbatePage5('update');
     I.checkMyAnswers(nextStepName);
@@ -94,12 +95,8 @@ Scenario('Grant of Probate Workflow - E2E test 01 - Grant of Representation for 
     I.enterGrantOfProbatePage8('update');
     I.checkMyAnswers(nextStepName);
 
-    // I.chooseNextStep(nextStepName);
-    // I.enterGrantOfProbatePage9('update');
-    // I.checkMyAnswers(nextStepName);
-
     I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
-    I.seeCaseDetails(caseRef, deceasedUpdateTabConfig, createGrantOfProbateConfig);
+    // I.seeCaseDetails(caseRef, deceasedUpdateTabConfig, createGrantOfProbateConfig);
     I.seeCaseDetails(caseRef, caseDetailsUpdateTabConfig, createGrantOfProbateConfig);
     I.seeCaseDetails(caseRef, applicantDetailsUpdateTabConfig, createGrantOfProbateConfig);
 
