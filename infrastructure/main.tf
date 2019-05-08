@@ -138,7 +138,7 @@ module "probate-back-office" {
     PRINTSERVICE_INTERNAL_HOST = "${var.printservice_internal_host}"
     CCD_GATEWAY_HOST = "${var.ccd_gateway_host}"
     SERVICES_CORECASEDATA_BASEURL = "${var.ccd_baseUrl}"
-    IDAM_SERVICE_HOST = "${var.idam_service_api}"
+    IDAM_SERVICE_HOST = "https://idam-api.aat.platform.hmcts.net"
     FEE_API_URL = "${var.fee_api_url}"
     EVIDENCE_MANAGEMENT_HOST = "${var.evidence_management_host}"
     NOTIFICATIONS_GOVNOTIFYAPIKEY = "${data.azurerm_key_vault_secret.govNotifyApiKey.value}"
