@@ -33,6 +33,9 @@ public class IdamAuthenticateUserService {
     @Value("${auth.provider.client.password}")
     private String password;
 
+    @Value("${auth.provider.client.user}")
+    private String urlUsed;
+
     private final IdamApi idamApi;
 
     @Autowired
@@ -44,6 +47,7 @@ public class IdamAuthenticateUserService {
 
     public String getIdamOauth2Token() {
         log.info("secret being used is: " + secret);
+        log.info("host url being used should be: " + urlUsed);
         String authorisation = email + ":" + password;
         String base64Authorisation = Base64.getEncoder().encodeToString(authorisation.getBytes());
 
