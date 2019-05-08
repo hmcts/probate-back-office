@@ -1,5 +1,7 @@
 package uk.gov.hmcts.probate.config;
 
+import feign.Client;
+import feign.httpclient.ApacheHttpClient;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import lombok.Getter;
 import lombok.Setter;
@@ -23,11 +25,13 @@ public class FeignClientConfiguration {
     private int timeout;
 
     @Bean
+    public Client getFeignHttpClient() {
+        return new ApacheHttpClient(getHttpClient());
+    }
+
+    @Bean
     public RestTemplate restTemplate() {
         RestTemplate restTemplate = new RestTemplate();
-        MappingJackson2HttpMessageConverter jsonHttpMessageConverter = new MappingJackson2HttpMessageConverter();
-        jsonHttpMessageConverter.getObjectMapper().configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
-        restTemplate.getMessageConverters().add(jsonHttpMessageConverter);
         restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory(getHttpClient()));
         return restTemplate;
     }
