@@ -4,7 +4,7 @@ provider "azurerm" {
 
 locals {
   aseName = "core-compute-${var.env}"
-    
+
   //probate_frontend_hostname = "probate-frontend-aat.service.core-compute-aat.internal"
   previewVaultName = "${var.raw_product}-aat"
   previewEnv= "aat"
@@ -89,6 +89,16 @@ data "azurerm_key_vault_secret" "ftpEnv" {
   vault_uri = "${data.azurerm_key_vault.probate_key_vault.vault_uri}"
 }
 
+data "azurerm_key_vault_secret" "idamRedirectUrl" {
+  name = "idamRedirectUrl"
+  vault_uri = "${data.azurerm_key_vault.probate_key_vault.vault_uri}"
+}
+
+data "azurerm_key_vault_secret" "idamSecretProbate" {
+  name = "idam-secret-probate"
+  vault_uri = "${data.azurerm_key_vault.probate_key_vault.vault_uri}"
+}
+
 module "probate-back-office" {
   source = "git@github.com:hmcts/moj-module-webapp.git?ref=master"
   product = "${var.product}-${var.microservice}"
@@ -108,17 +118,17 @@ module "probate-back-office" {
 	  // Logging vars
     REFORM_TEAM = "${var.product}"
     REFORM_SERVICE_NAME = "${var.microservice}"
-    REFORM_ENVIRONMENT = "${var.env}"  
+    REFORM_ENVIRONMENT = "${var.env}"
 
     DEPLOYMENT_ENV= "${var.deployment_env}"
 
     AUTH_PROVIDER_SERVICE_CLIENT_KEY = "${data.azurerm_key_vault_secret.s2s_key.value}"
     PDF_SERVICE_GRANTSIGNATURESECRETKEY = "${data.azurerm_key_vault_secret.pdf_service_grantSignatureKey.value}"
     PDF_SERVICE_GRANTSIGNATUREENCRYPTEDFILE = "${data.azurerm_key_vault_secret.pdf_service_grantSignatureFile.value}"
- 
+
     PROBATE_POSTGRESQL_USER = "${data.azurerm_key_vault_secret.POSTGRES-USER.value}"
     PROBATE_POSTGRESQL_PASSWORD = "${data.azurerm_key_vault_secret.POSTGRES-PASS.value}"
-    PROBATE_POSTGRESQL_DATABASE = "${data.azurerm_key_vault_secret.POSTGRES_DATABASE.value}"	  
+    PROBATE_POSTGRESQL_DATABASE = "${data.azurerm_key_vault_secret.POSTGRES_DATABASE.value}"
     PROBATE_POSTGRESQL_HOSTNAME =  "${data.azurerm_key_vault_secret.POSTGRES_HOST.value}"
     PROBATE_POSTGRESQL_PORT = "${data.azurerm_key_vault_secret.POSTGRES_PORT.value}"
 
@@ -141,6 +151,8 @@ module "probate-back-office" {
     AUTH_TOKEN_PASSWORD = "${data.azurerm_key_vault_secret.authTokenPassword.value}"
     FTP_SIGNATURE = "${data.azurerm_key_vault_secret.ftpSignature.value}"
     FTP_ENV = "${data.azurerm_key_vault_secret.ftpEnv.value}"
+    IDAM_REDIRECT_URL = "${data.azurerm_key_vault_secret.idamRedirectUrl.value}"
+    IDAM_SECRET = "${data.azurerm_key_vault_secret.idamSecretProbate.value}"
   }
 }
 
