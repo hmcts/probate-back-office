@@ -9,7 +9,6 @@ import uk.gov.hmcts.probate.model.TokenExchangeResponse;
 
 import java.util.Base64;
 
-@Slf4j
 @Component
 public class IdamAuthenticateUserService {
 
@@ -43,15 +42,8 @@ public class IdamAuthenticateUserService {
     }
 
     public String getIdamOauth2Token() {
-        log.info("inside the getIdamOauth2Token");
-        log.info("id being used is: " + id);
-        log.info("secret being used is: " + secret);
-        log.info("redirect being used is: " + redirect);
-        log.info("email being used is: " + email);
-        log.info("password being used is: " + password);
         String authorisation = email + ":" + password;
         String base64Authorisation = Base64.getEncoder().encodeToString(authorisation.getBytes());
-        log.info("encoded value of email and password is: " + base64Authorisation);
 
         AuthenticateUserResponse authenticateUserResponse = idamApi.authenticateUser(
                 BASIC + base64Authorisation,
@@ -59,7 +51,6 @@ public class IdamAuthenticateUserService {
                 id,
                 redirect
         );
-        log.info("authenticate user response code is: " + authenticateUserResponse.getCode());
 
         TokenExchangeResponse tokenExchangeResponse = idamApi.exchangeCode(
                 authenticateUserResponse.getCode(),
@@ -68,7 +59,6 @@ public class IdamAuthenticateUserService {
                 id,
                 secret
         );
-        log.info("auth token received is: " + tokenExchangeResponse.getAccessToken());
 
         return BEARER + tokenExchangeResponse.getAccessToken();
     }
