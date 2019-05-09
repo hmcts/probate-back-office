@@ -40,6 +40,14 @@ public class ResponseCaveatData {
     private final String messageContent;
     private final String caveatReopenReason;
 
+    private final String bulkPrintSendLetterId;
+
+    private final String caveatRaisedEmailNotificationRequested;
+    private final String caveatRaisedEmailNotificationDefaultValue;
+
+    private final String sendToBulkPrintDefaultValue;
+    private final String sendToBulkPrint;
+
     private final List<CollectionMember<UploadDocument>> documentsUploaded;
     private final List<CollectionMember<Document>> documentsGenerated;
 

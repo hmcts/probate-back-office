@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
@@ -17,6 +18,9 @@ import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+
+import static uk.gov.hmcts.probate.model.Constants.NO;
+import static uk.gov.hmcts.probate.model.Constants.YES;
 
 @JsonDeserialize(builder = CaveatData.CaveatDataBuilder.class)
 @NoArgsConstructor
@@ -55,6 +59,28 @@ public class CaveatData {
     private ProbateAddress caveatorAddress;
 
     // EVENT = cavRaiseCaveat - caveat details
+
+    private String bulkPrintSendLetterId;
+
+    @Getter(lazy = true)
+    private final String caveatRaisedEmailNotificationDefaultValue = getDefaultValueForEmailNotifications();
+
+    private String caveatRaisedEmailNotificationRequested;
+
+
+    @Getter(lazy = true)
+    private final String sendToBulkPrintDefaultValue = YES;
+
+    private String sendToBulkPrint;
+
+    public boolean isSendForBulkPrintingRequested() {
+        return YES.equals(getSendToBulkPrintDefaultValue());
+    }
+
+    public String getDefaultValueForEmailNotifications() {
+        return caveatorEmailAddress == null || caveatorEmailAddress.isEmpty() ? NO : YES;
+    }
+
 
     private LocalDate expiryDate;
 

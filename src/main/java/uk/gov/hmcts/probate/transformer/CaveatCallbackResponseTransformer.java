@@ -42,6 +42,16 @@ public class CaveatCallbackResponseTransformer {
         return transformResponse(responseCaveatData);
     }
 
+    public CaveatCallbackResponse defaultCaveatValues(CaveatCallbackRequest caveatCallbackRequest) {
+        CaveatDetails caveatDetails = caveatCallbackRequest.getCaseDetails();
+
+        ResponseCaveatData responseCaveatData = getResponseCaveatData(caveatDetails)
+                .caveatRaisedEmailNotificationRequested(caveatCallbackRequest.getCaseDetails().getData().getCaveatRaisedEmailNotificationDefaultValue())
+                .build();
+
+        return transformResponse(responseCaveatData);
+    }
+
     public CaveatCallbackResponse generalMessage(CaveatCallbackRequest caveatCallbackRequest, Document document) {
         CaveatDetails caveatDetails = caveatCallbackRequest.getCaseDetails();
 
@@ -111,7 +121,13 @@ public class CaveatCallbackResponseTransformer {
                 .documentsGenerated(caveatData.getDocumentsGenerated())
                 .recordId(caveatData.getRecordId())
                 .legacyCaseViewUrl(caveatData.getLegacyCaseViewUrl())
-                .legacyType(caveatData.getLegacyType());
+                .legacyType(caveatData.getLegacyType())
+
+                .caveatRaisedEmailNotificationRequested(caveatData.getCaveatRaisedEmailNotificationRequested())
+                .caveatRaisedEmailNotificationDefaultValue(caveatData.getCaveatRaisedEmailNotificationDefaultValue())
+                .bulkPrintSendLetterId(caveatData.getBulkPrintSendLetterId())
+                .sendToBulkPrint(caveatData.getSendToBulkPrint())
+                .sendToBulkPrintDefaultValue(caveatData.getSendToBulkPrintDefaultValue());
     }
 
     private String transformToString(LocalDate dateValue) {

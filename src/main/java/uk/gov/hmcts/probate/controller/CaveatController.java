@@ -42,6 +42,14 @@ public class CaveatController {
         return ResponseEntity.ok(caveatCallbackResponse);
     }
 
+    @PostMapping(path = "/defaultValues")
+    public ResponseEntity<CaveatCallbackResponse> defaultCaveatValues (@RequestBody CaveatCallbackRequest caveatCallbackRequest) {
+
+        CaveatCallbackResponse caveatCallbackResponse = caveatCallbackResponseTransformer.defaultCaveatValues(caveatCallbackRequest);
+
+        return ResponseEntity.ok(caveatCallbackResponse);
+    }
+
     @PostMapping(path = "/general-message")
     public ResponseEntity<CaveatCallbackResponse> sendGeneralMessageNotification(
             @Validated({CaveatsEmailAddressNotificationValidationRule.class})
