@@ -1,9 +1,11 @@
 {
   "waitForText" : "Create Case",
   "list1_text": "Manage probate applications",
-  "list2_text": "Will lodgement",
+  "list2_text_will": "Will lodgement",
   "list2_text_caveat": "Caveat",
-  "list3_text": "Create a will lodgement",
-  "list3_text_raise_caveat": "Raise a caveat",
+  "list2_text_gor": "Grant of representation",
+  "list3_text_will": "Create a will lodgement",
+  "list3_text_caveat": "Raise a caveat",
+  "list3_text_gor": "PA1P/PA1A/Solicitors",
   "startButton": ".button"
 }
