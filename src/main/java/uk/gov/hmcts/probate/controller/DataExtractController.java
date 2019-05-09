@@ -58,10 +58,13 @@ public class DataExtractController {
         dateValidator(date);
 
         List<ReturnedCaseDetails> cases = caseQueryService.findCasesWithDatedDocument("digitalGrant", date);
+        log.info("Number of cases found: " + cases.size());
 
         if (!cases.isEmpty()) {
+            log.info("Got into empty check");
             int response = fileTransferService.uploadFile(ironMountainFileService.createIronMountainFile(
                     cases, date.replace("-", "") + "grant.txt"));
+            log.info("back into the if with response: " + response);
 
             if (response != 201) {
                 log.error("Failed to upload file for: " + date);
