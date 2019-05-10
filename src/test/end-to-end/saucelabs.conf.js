@@ -4,7 +4,7 @@ const browser = process.env.SAUCELABS_BROWSER || 'chrome';
 const tunnelName = process.env.TUNNEL_IDENTIFIER || '';
 
 const setupConfig = {
-    'tests': './paths/*.js',
+    'tests': './paths/legacySearchPath.js',
     'output': './output',
     'timeout': 20000,
     'helpers': {
