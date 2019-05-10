@@ -57,7 +57,7 @@ public class CaveatController {
         String letterId = null;
         CaveatDetails caveatDetails = caveatCallbackRequest.getCaseDetails();
 
-        if (caveatCallbackRequest.getCaseDetails().getData().getCaveatRaisedEmailNotificationDefaultValue() == YES) {
+        if (caveatCallbackRequest.getCaseDetails().getData().getCaveatRaisedEmailNotification() == YES) {
             //send email notification
             //save pdf to dm store
             caveatCallbackResponse = eventValidationService.validateCaveatRequest(caveatCallbackRequest, validationRuleCaveats);
@@ -65,7 +65,7 @@ public class CaveatController {
                 document = notificationService.sendCaveatEmail(CAVEAT_RAISED, caveatDetails);
                 documents.add(document);
             }
-        } else if (caveatCallbackRequest.getCaseDetails().getData().getCaveatRaisedEmailNotificationDefaultValue() == NO) {
+        } else if (caveatCallbackRequest.getCaseDetails().getData().getCaveatRaisedEmailNotification() == NO) {
             //generate and upload top dm store
             //1. generate coversheet
             Document coverSheet = pdfManagementService.generateAndUpload(caveatCallbackRequest, DocumentType.GRANT_COVER);

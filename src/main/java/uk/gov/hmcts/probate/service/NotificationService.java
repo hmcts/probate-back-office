@@ -32,7 +32,7 @@ import java.util.List;
 import java.util.Map;
 
 import static uk.gov.hmcts.probate.model.Constants.DOC_SUBTYPE_WILL;
-import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT_RAISED_EMAIL;
+import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT_RAISED;
 import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
 
 @RequiredArgsConstructor
@@ -106,7 +106,7 @@ public class NotificationService {
                 documentType = SENT_EMAIL;
                 break;
             case CAVEAT_RAISED:
-                documentType = CAVEAT_RAISED_EMAIL;
+                documentType = CAVEAT_RAISED;
                 break;
             default:
                 documentType = SENT_EMAIL;

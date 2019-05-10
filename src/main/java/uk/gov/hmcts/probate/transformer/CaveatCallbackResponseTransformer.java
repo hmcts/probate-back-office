@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 import static java.util.Optional.ofNullable;
 import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
 import static uk.gov.hmcts.probate.model.Constants.CAVEAT_LIFESPAN;
-import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT_RAISED_DOC;
+import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT_RAISED;
 
 @Component
 @RequiredArgsConstructor
@@ -41,9 +41,9 @@ public class CaveatCallbackResponseTransformer {
         documents.forEach(document -> documentTransformer.addDocument(caveatCallbackRequest, document));
         ResponseCaveatDataBuilder responseCaveatDataBuilder = getResponseCaveatData(caveatDetails);
 
-        if (documentTransformer.hasDocumentWithType(documents, CAVEAT_RAISED_DOC)) {
+        if (documentTransformer.hasDocumentWithType(documents, CAVEAT_RAISED)) {
             responseCaveatDataBuilder
-                    .sendToBulkPrint(caveatCallbackRequest.getCaseDetails().getData().getSendToBulkPrintDefaultValue())
+                    .sendToBulkPrintRequested(caveatCallbackRequest.getCaseDetails().getData().getSendToBulkPrint())
                     .bulkPrintSendLetterId(letterId)
                     .build();
 
@@ -51,7 +51,7 @@ public class CaveatCallbackResponseTransformer {
         responseCaveatDataBuilder
                 .expiryDate(dateTimeFormatter.format(LocalDate.now().plusMonths(CAVEAT_LIFESPAN)))
                 .caveatRaisedEmailNotificationRequested(
-                        caveatCallbackRequest.getCaseDetails().getData().getCaveatRaisedEmailNotificationDefaultValue())
+                        caveatCallbackRequest.getCaseDetails().getData().getCaveatRaisedEmailNotification())
                 .build();
 
         return transformResponse(responseCaveatDataBuilder.build());
@@ -61,7 +61,7 @@ public class CaveatCallbackResponseTransformer {
         CaveatDetails caveatDetails = caveatCallbackRequest.getCaseDetails();
 
         ResponseCaveatData responseCaveatData = getResponseCaveatData(caveatDetails)
-                .caveatRaisedEmailNotificationRequested(caveatCallbackRequest.getCaseDetails().getData().getCaveatRaisedEmailNotificationDefaultValue())
+                .caveatRaisedEmailNotificationRequested(caveatCallbackRequest.getCaseDetails().getData().getCaveatRaisedEmailNotification())
                 .build();
 
         return transformResponse(responseCaveatData);
@@ -138,8 +138,8 @@ public class CaveatCallbackResponseTransformer {
                 .legacyCaseViewUrl(caveatData.getLegacyCaseViewUrl())
                 .legacyType(caveatData.getLegacyType())
 
-                .caveatRaisedEmailNotificationDefaultValue(caveatData.getCaveatRaisedEmailNotificationDefaultValue())
-               .sendToBulkPrintDefaultValue(caveatData.getSendToBulkPrintDefaultValue());
+                .caveatRaisedEmailNotification(caveatData.getCaveatRaisedEmailNotification())
+                .sendToBulkPrint(caveatData.getSendToBulkPrint());
     }
 
     private String transformToString(LocalDate dateValue) {

@@ -63,15 +63,15 @@ public class CaveatData {
     private String bulkPrintSendLetterId;
 
     @Getter(lazy = true)
-    private final String caveatRaisedEmailNotificationDefaultValue = getDefaultValueForEmailNotifications();
+    private final String caveatRaisedEmailNotification = getDefaultValueForEmailNotifications();
 
     private String caveatRaisedEmailNotificationRequested;
 
 
     @Getter(lazy = true)
-    private final String sendToBulkPrintDefaultValue = YES;
+    private final String sendToBulkPrint = YES;
 
-    private String sendToBulkPrint;
+    private String sendToBulkPrintRequested;
 
     public String getDefaultValueForEmailNotifications() {
         return caveatorEmailAddress == null || caveatorEmailAddress.isEmpty() ? NO : YES;
