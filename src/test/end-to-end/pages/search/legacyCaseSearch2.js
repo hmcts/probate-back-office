@@ -17,8 +17,5 @@ module.exports = function () {
 //    I.fillField(legacyCaseSearch2Config.deceasedMonthOD, "01");
 //    I.fillField(legacyCaseSearch2Config.deceasedYearOD, "2017");
 
-    I.wait(20);
-
     I.waitForNavigationToComplete(legacyCaseSearch2Config.continueBtn);
-    I.wait(20);
 };

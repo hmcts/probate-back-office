@@ -11,10 +11,8 @@ module.exports = function () {
     I.seeInField(legacyCaseSearch3Config.legacyCaseType, "Legacy CAVEAT");
     I.seeInField(legacyCaseSearch3Config.fullName, "ROBERT SMITH WILIE");
     I.click(legacyCaseSearch3Config.yesOption);
-    I.wait(20);
 
     I.waitForNavigationToComplete(legacyCaseSearch3Config.continueBtn);
-    I.wait(5);
     I.waitForText(legacyCaseSearch3Config.waitForText, testConfig.TestTimeToWaitForText);
     I.waitForNavigationToComplete(legacyCaseSearch3Config.previousBtn);
 };

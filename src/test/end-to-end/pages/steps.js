@@ -40,7 +40,6 @@ module.exports = function () {
         markForExamination: steps.markForExamination.markForExamination,
         markForIssue: steps.markForIssue.markForIssue,
         issueGrant: steps.issueGrant.issueGrant,
-        generateDepositReceipt: steps.generateDepositReceipt.generateDepositReceipt,
         selectCaseMatchesForWillLodgement: steps.caseMatches.willLodgement.caseMatches,
         selectCaseMatchesForGrantOfProbate: steps.caseMatches.grantOfProbate.caseMatches,
         selectCaseMatchesForCaveat: steps.caseMatches.caveat.caseMatches,
