@@ -16,6 +16,7 @@
     "DisplayOrder": 9,
     "PostConditionState": "CaveatRaised",
     "CallBackURLAboutToSubmitEvent": "http://docker.for.mac.localhost:4104/caveat/raise",
+    "RetriesTimeoutURLAboutToSubmitEvent": "30",
     "SecurityClassification": "Public",
     "ShowSummary": "Y",
     "EndButtonLabel": "Submit application"
