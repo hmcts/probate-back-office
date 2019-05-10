@@ -73,10 +73,6 @@ public class CaveatData {
 
     private String sendToBulkPrint;
 
-    public boolean isSendForBulkPrintingRequested() {
-        return YES.equals(getSendToBulkPrintDefaultValue());
-    }
-
     public String getDefaultValueForEmailNotifications() {
         return caveatorEmailAddress == null || caveatorEmailAddress.isEmpty() ? NO : YES;
     }

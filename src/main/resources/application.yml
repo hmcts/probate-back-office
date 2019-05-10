@@ -128,12 +128,14 @@ notifications:
         grantIssued: "9344693b-9ea3-487d-bec1-68201214fd27"
         generalCaveatMessage: "afadf00e-c224-4da0-a6dc-fb47a2e5db67"
         excelaData: "fd474506-a272-4caa-ad61-6086cee0639a"
+        caveatRaised: "0f1a9727-c636-4cae-8630-8220eb0bf657"
       solicitor:
         documentReceived: "7f8ff32d-8297-4702-9867-312047f81492"
         caseStopped: "77041301-77a5-4382-a3a7-0bada17518b0"
         grantIssued: "95aa541b-e55e-4d7c-a6f5-810b5f03adba"
         generalCaveatMessage: "afadf00e-c224-4da0-a6dc-fb47a2e5db67"
         excelaData: "fd474506-a272-4caa-ad61-6086cee0639a"
+        caveatRaised: "0f1a9727-c636-4cae-8630-8220eb0bf657"
 
 registries:
   oxford:

@@ -12,6 +12,7 @@ import uk.gov.hmcts.probate.exception.BadRequestException;
 import uk.gov.hmcts.probate.exception.ConnectionException;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.SentEmail;
+import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatCallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.BigDecimalNumberSerializer;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
@@ -93,6 +94,10 @@ public class PDFManagementService {
             callbackRequest.getCaseDetails().setGrantSignatureBase64(decryptedFileAsBase64String(pdfServiceConfiguration
                     .getGrantSignatureEncryptedFile()));
         }
+        return generateAndUpload(toJson(callbackRequest), documentType);
+    }
+
+    public Document generateAndUpload(CaveatCallbackRequest callbackRequest, DocumentType documentType) {
         return generateAndUpload(toJson(callbackRequest), documentType);
     }
 
