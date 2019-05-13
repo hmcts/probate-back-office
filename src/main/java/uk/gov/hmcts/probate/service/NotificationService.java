@@ -208,11 +208,17 @@ public class NotificationService {
         StringBuilder data = new StringBuilder();
 
         for (ReturnedCaseDetails currentCase : cases) {
-            data.append(currentCase.getId().toString());
+            data.append(getWillReferenceNumber(currentCase.getData()));
             data.append(", ");
+            data.append(currentCase.getData().getDeceasedForenames());
+            data.append(" ");
             data.append(currentCase.getData().getDeceasedSurname());
             data.append(", ");
-            data.append(getWillReferenceNumber(currentCase.getData()));
+            data.append(currentCase.getData().getDeceasedDateOfBirth());
+            data.append(", ");
+            data.append(currentCase.getData().getGrantIssuedDate());
+            data.append(", ");
+            data.append(currentCase.getId().toString());
             data.append("\n");
         }
         return data;
