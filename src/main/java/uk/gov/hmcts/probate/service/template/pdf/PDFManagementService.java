@@ -34,6 +34,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Base64;
+import java.util.Map;
 
 import static uk.gov.hmcts.probate.model.DocumentType.WILL_LODGEMENT_DEPOSIT_RECEIPT;
 
@@ -101,14 +102,26 @@ public class PDFManagementService {
         return generateAndUpload(toJson(callbackRequest), documentType);
     }
 
+    public Document generateDocmosisDocumentAndUpload(Map<String, Object> placeholders, DocumentType documentType) {
+
+        log.info("Generating pdf to docmosis for template {}", documentType.getTemplateName());
+        EvidenceManagementFileUpload fileUpload = pdfGeneratorService.generateDocmosisDocumentFrom(documentType.getTemplateName(),
+                placeholders);
+        return uploadDocument(documentType, fileUpload);
+    }
+
     public Document generateAndUpload(SentEmail sentEmail, DocumentType documentType) {
         return generateAndUpload(toJson(sentEmail), documentType);
     }
 
     private Document generateAndUpload(String json, DocumentType documentType) {
+        log.info("Generating pdf for template {}", documentType.getTemplateName());
+        EvidenceManagementFileUpload fileUpload = pdfGeneratorService.generatePdf(documentType, json);
+        return uploadDocument(documentType, fileUpload);
+    }
+
+    private Document uploadDocument(DocumentType documentType, EvidenceManagementFileUpload fileUpload) {
         try {
-            log.info("Generating pdf for template {}", documentType.getTemplateName());
-            EvidenceManagementFileUpload fileUpload = pdfGeneratorService.generatePdf(documentType, json);
             log.info("Uploading pdf for template {}", documentType.getTemplateName());
             EvidenceManagementFile store = uploadService.store(fileUpload);
             DocumentLink documentLink = DocumentLink.builder()

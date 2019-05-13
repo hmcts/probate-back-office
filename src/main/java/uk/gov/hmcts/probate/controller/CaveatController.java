@@ -16,6 +16,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.service.BulkPrintService;
 import uk.gov.hmcts.probate.service.EventValidationService;
 import uk.gov.hmcts.probate.service.NotificationService;
+import uk.gov.hmcts.probate.service.docmosis.CaveatDocmosisService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CaveatCallbackResponseTransformer;
 import uk.gov.hmcts.probate.validator.BulkPrintValidationRule;
@@ -25,10 +26,10 @@ import uk.gov.service.notify.NotificationClientException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
-import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.State.CAVEAT_RAISED;
 import static uk.gov.hmcts.probate.model.State.GENERAL_CAVEAT_MESSAGE;
@@ -46,9 +47,12 @@ public class CaveatController {
     private final PDFManagementService pdfManagementService;
     private final BulkPrintService bulkPrintService;
     private final List<BulkPrintValidationRule> bulkPrintValidationRules;
+    private final CaveatDocmosisService caveatDocmosisService;
 
     @PostMapping(path = "/raise")
-    public ResponseEntity<CaveatCallbackResponse> raiseCaveat(@RequestBody CaveatCallbackRequest caveatCallbackRequest)
+    public ResponseEntity<CaveatCallbackResponse> raiseCaveat(
+            @Validated({CaveatsEmailAddressNotificationValidationRule.class})
+            @RequestBody CaveatCallbackRequest caveatCallbackRequest)
             throws NotificationClientException {
 
         CaveatCallbackResponse caveatCallbackResponse = CaveatCallbackResponse.builder().errors(new ArrayList<>()).build();
@@ -57,7 +61,7 @@ public class CaveatController {
         String letterId = null;
         CaveatDetails caveatDetails = caveatCallbackRequest.getCaseDetails();
 
-        if (caveatCallbackRequest.getCaseDetails().getData().getCaveatRaisedEmailNotification() == YES) {
+        if (caveatDetails.getData().isCaveatRaisedEmailNotificationRequested()) {
             //send email notification
             //save pdf to dm store
             caveatCallbackResponse = eventValidationService.validateCaveatRequest(caveatCallbackRequest, validationRuleCaveats);
@@ -65,16 +69,18 @@ public class CaveatController {
                 document = notificationService.sendCaveatEmail(CAVEAT_RAISED, caveatDetails);
                 documents.add(document);
             }
-        } else if (caveatCallbackRequest.getCaseDetails().getData().getCaveatRaisedEmailNotification() == NO) {
+        } else {
             //generate and upload top dm store
             //1. generate coversheet
-            Document coverSheet = pdfManagementService.generateAndUpload(caveatCallbackRequest, DocumentType.GRANT_COVER);
-            log.info("Generated and Uploaded cover document with template {} for the case id {}",
-                    DocumentType.GRANT_COVER.getTemplateName(), caveatCallbackRequest.getCaseDetails().getId().toString());
-            documents.add(coverSheet);
+//            Document coverSheet = pdfManagementService.generateAndUpload(caveatCallbackRequest, DocumentType.COVERSHEET);
+//            log.info("Generated and Uploaded cover document with template {} for the case id {}",
+//                    DocumentType.COVERSHEET.getTemplateName(), caveatCallbackRequest.getCaseDetails().getId().toString());
+//            documents.add(coverSheet);
 
             //1. generate caveat raised doc
-            documents.add(document);
+            Map<String, Object> placeholders = caveatDocmosisService.caseDataAsPlaceholders(caveatCallbackRequest.getCaseDetails());
+            Document caveatRaisedDoc = pdfManagementService.generateDocmosisDocumentAndUpload(placeholders, DocumentType.CAVEAT);
+            documents.add(caveatRaisedDoc);
 
             if (caveatCallbackRequest.getCaseDetails().getData().getSendToBulkPrint() == YES) {
                 // send to bulk print
@@ -83,7 +89,7 @@ public class CaveatController {
 //                letterId = response != null
 //                        ? response.letterId.toString()
 //                        : null;
-                caveatCallbackResponse = eventValidationService.validateCaveatBulkPrintResponse(letterId, bulkPrintValidationRules);
+//                caveatCallbackResponse = eventValidationService.validateCaveatBulkPrintResponse(letterId, bulkPrintValidationRules);
             }
         }
 

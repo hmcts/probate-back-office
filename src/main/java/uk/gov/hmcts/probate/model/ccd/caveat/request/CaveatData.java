@@ -67,16 +67,10 @@ public class CaveatData {
 
     private String caveatRaisedEmailNotificationRequested;
 
-
     @Getter(lazy = true)
     private final String sendToBulkPrint = YES;
 
     private String sendToBulkPrintRequested;
-
-    public String getDefaultValueForEmailNotifications() {
-        return caveatorEmailAddress == null || caveatorEmailAddress.isEmpty() ? NO : YES;
-    }
-
 
     private LocalDate expiryDate;
 
@@ -109,6 +103,15 @@ public class CaveatData {
     public String getCaveatorFullName() {
         return String.join(" ", caveatorForenames, caveatorSurname);
     }
+
+    public String getDefaultValueForEmailNotifications() {
+        return caveatorEmailAddress == null || caveatorEmailAddress.isEmpty() ? NO : YES;
+    }
+
+    public boolean isSendForBulkPrintingRequested() { return YES.equals(getSendToBulkPrint()); }
+
+    public boolean isCaveatRaisedEmailNotificationRequested() { return YES.equals(getCaveatRaisedEmailNotification()); }
+
 
     @JsonPOJOBuilder(withPrefix = "")
     public static final class CaveatDataBuilder {

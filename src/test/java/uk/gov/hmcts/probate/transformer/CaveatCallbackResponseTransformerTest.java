@@ -6,6 +6,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.Spy;
 import org.mockito.junit.MockitoJUnitRunner;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.DocumentType;
@@ -76,7 +77,13 @@ public class CaveatCallbackResponseTransformerTest {
     private Document document;
 
     @Mock
+    private DocumentLink documentLinkMock;
+
+    @Mock
     private CaveatDetails caveatDetailsMock;
+
+    @Spy
+    private DocumentTransformer documentTransformer;
 
     private CaveatData.CaveatDataBuilder caveatDataBuilder;
 
@@ -148,7 +155,14 @@ public class CaveatCallbackResponseTransformerTest {
 
     @Test
     public void shouldConvertRequestToDataBeanWithCaveatExpiryDateChange() {
-        CaveatCallbackResponse caveatCallbackResponse = underTest.caveatRaised(caveatCallbackRequestMock);
+        List<Document> documents = new ArrayList<>();
+        Document document = Document.builder()
+                .documentLink(documentLinkMock)
+                .documentType(DocumentType.CAVEAT)
+                .build();
+        documents.add(0, document);
+        String letterId = null;
+        CaveatCallbackResponse caveatCallbackResponse = underTest.caveatRaised(caveatCallbackRequestMock, documents, letterId);
 
         assertCommon(caveatCallbackResponse);
 

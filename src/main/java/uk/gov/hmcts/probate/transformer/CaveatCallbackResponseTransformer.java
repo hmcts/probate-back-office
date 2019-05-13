@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 import static java.util.Optional.ofNullable;
 import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
 import static uk.gov.hmcts.probate.model.Constants.CAVEAT_LIFESPAN;
-import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT_RAISED;
+import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT;
 
 @Component
 @RequiredArgsConstructor
@@ -41,7 +41,7 @@ public class CaveatCallbackResponseTransformer {
         documents.forEach(document -> documentTransformer.addDocument(caveatCallbackRequest, document));
         ResponseCaveatDataBuilder responseCaveatDataBuilder = getResponseCaveatData(caveatDetails);
 
-        if (documentTransformer.hasDocumentWithType(documents, CAVEAT_RAISED)) {
+        if (documentTransformer.hasDocumentWithType(documents, CAVEAT)) {
             responseCaveatDataBuilder
                     .sendToBulkPrintRequested(caveatCallbackRequest.getCaseDetails().getData().getSendToBulkPrint())
                     .bulkPrintSendLetterId(letterId)
