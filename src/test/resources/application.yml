@@ -111,12 +111,14 @@ notifications:
         grantIssued: "pa-grant-issued"
         generalCaveatMessage: "pa-general-caveat-message"
         excelaData: "pa-excela-data"
+        caveatRaised: "pa-caveat-raised"
       solicitor:
         documentReceived: "sol-document-received"
         caseStopped: "sol-case-stopped"
         grantIssued: "sol-grant-issued"
         generalCaveatMessage: "sol-general-caveat-message"
         excelaData: "pa-excela-data"
+        caveatRaised: "sols-caveat-raised"
 
 registries:
   oxford:

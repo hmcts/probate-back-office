@@ -12,6 +12,7 @@ import uk.gov.hmcts.probate.config.PDFServiceConfiguration;
 import uk.gov.hmcts.probate.exception.BadRequestException;
 import uk.gov.hmcts.probate.exception.ConnectionException;
 import uk.gov.hmcts.probate.model.SentEmail;
+import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatCallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
@@ -20,18 +21,20 @@ import uk.gov.hmcts.probate.model.ccd.willlodgement.request.WillLodgementDetails
 import uk.gov.hmcts.probate.model.evidencemanagement.EvidenceManagementFile;
 import uk.gov.hmcts.probate.model.evidencemanagement.EvidenceManagementFileUpload;
 import uk.gov.hmcts.probate.service.FileSystemResourceService;
+import uk.gov.hmcts.probate.service.docmosis.CaveatDocmosisService;
 import uk.gov.hmcts.probate.service.evidencemanagement.upload.UploadService;
 
 import javax.crypto.BadPaddingException;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
+import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT;
@@ -57,7 +60,11 @@ public class PDFManagementServiceTest {
     @Mock
     private CallbackRequest callbackRequestMock;
     @Mock
-    private WillLodgementCallbackRequest willLodgementCallbackRequestMock;    
+    private WillLodgementCallbackRequest willLodgementCallbackRequestMock;
+    @Mock
+    private CaveatCallbackRequest caveatCallbackRequestMock;
+    @Mock
+    private CaveatDocmosisService caveatDocmosisServiceMock;
     @Mock
     private SentEmail sentEmailMock;
     @Mock
@@ -74,6 +81,8 @@ public class PDFManagementServiceTest {
     private WillLodgementDetails willLodgementDetails;
     @Mock
     private FileSystemResourceService fileSystemResourceServiceMock;
+    @Mock
+    private Map<String, Object> placeholdersMock;
     
     private PDFManagementService underTest;
 
@@ -211,6 +220,49 @@ public class PDFManagementServiceTest {
         Document response = underTest.generateAndUpload(sentEmailMock, SENT_EMAIL);
 
         String fileName = "sentEmail.pdf";
+        assertNotNull(response);
+        assertEquals(fileName, response.getDocumentLink().getDocumentFilename());
+        assertEquals(href, response.getDocumentLink().getDocumentBinaryUrl());
+        assertEquals(href, response.getDocumentLink().getDocumentUrl());
+    }
+
+    @Test
+    public void shouldGenerateAndUploadCaveatRaised() throws IOException {
+        String json = "{}";
+
+        when(objectMapperMock.writeValueAsString(caveatCallbackRequestMock)).thenReturn(json);
+        when(pdfGeneratorServiceMock.generatePdf(CAVEAT, json)).thenReturn(evidenceManagementFileUpload);
+        when(uploadServiceMock.store(evidenceManagementFileUpload)).thenReturn(evidenceManagementFile);
+        when(evidenceManagementFile.getLink(Link.REL_SELF)).thenReturn(link);
+        when(evidenceManagementFile.getLink("binary")).thenReturn(link);
+
+        String href = "href";
+        when(link.getHref()).thenReturn(href);
+
+        Document response = underTest.generateAndUpload(caveatCallbackRequestMock, CAVEAT);
+
+        String fileName = "caveat.pdf";
+        assertNotNull(response);
+        assertEquals(fileName, response.getDocumentLink().getDocumentFilename());
+        assertEquals(href, response.getDocumentLink().getDocumentBinaryUrl());
+        assertEquals(href, response.getDocumentLink().getDocumentUrl());
+    }
+
+    @Test
+    public void shouldGenerateAndUploadDocmosisDocument() throws IOException {
+        String json = "{}";
+
+        when(pdfGeneratorServiceMock.generateDocmosisDocumentFrom(CAVEAT.getTemplateName(), placeholdersMock)).thenReturn(evidenceManagementFileUpload);
+        when(uploadServiceMock.store(evidenceManagementFileUpload)).thenReturn(evidenceManagementFile);
+        when(evidenceManagementFile.getLink(Link.REL_SELF)).thenReturn(link);
+        when(evidenceManagementFile.getLink("binary")).thenReturn(link);
+
+        String href = "href";
+        when(link.getHref()).thenReturn(href);
+
+        Document response = underTest.generateDocmosisDocumentAndUpload(placeholdersMock, CAVEAT);
+
+        String fileName = "caveat.pdf";
         assertNotNull(response);
         assertEquals(fileName, response.getDocumentLink().getDocumentFilename());
         assertEquals(href, response.getDocumentLink().getDocumentBinaryUrl());

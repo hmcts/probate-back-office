@@ -9,6 +9,7 @@ import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.MockitoJUnitRunner;
 import uk.gov.hmcts.probate.model.ApplicationType;
+import uk.gov.hmcts.probate.model.Constants;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ccd.ProbateAddress;
 import uk.gov.hmcts.probate.model.ccd.ProbateFullAliasName;
@@ -32,6 +33,7 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
 import static uk.gov.hmcts.probate.model.Constants.CAVEAT_LIFESPAN;
+import static uk.gov.hmcts.probate.model.Constants.NO;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CaveatCallbackResponseTransformerTest {
@@ -177,6 +179,36 @@ public class CaveatCallbackResponseTransformerTest {
 
         assertTrue(caveatCallbackResponse.getCaveatData().getMessageContent().isEmpty());
     }
+
+    @Test
+    public void shouldDefaultValuesCaveatRaisedEmailNotification() {
+        CaveatCallbackResponse caveatCallbackResponse = underTest.defaultCaveatValues(caveatCallbackRequestMock);
+
+        assertCommon(caveatCallbackResponse);
+
+        assertEquals(Constants.YES, caveatCallbackResponse.getCaveatData().getCaveatRaisedEmailNotification());
+    }
+
+    @Test
+    public void shouldDefaultValuesCaveatRaisedEmailNotificationWhenNoEmail() {
+        CaveatData caseData = caveatDataBuilder.caveatorEmailAddress(null)
+                .build();
+        when(caveatDetailsMock.getData()).thenReturn(caseData);
+
+        CaveatCallbackResponse caveatCallbackResponse = underTest.defaultCaveatValues(caveatCallbackRequestMock);
+
+        assertEquals(NO, caveatCallbackResponse.getCaveatData().getCaveatRaisedEmailNotification());
+    }
+
+    @Test
+    public void shouldDefaultValuesBulkPrintlNotification() {
+        CaveatCallbackResponse caveatCallbackResponse = underTest.defaultCaveatValues(caveatCallbackRequestMock);
+
+        assertCommon(caveatCallbackResponse);
+
+        assertEquals(Constants.YES, caveatCallbackResponse.getCaveatData().getSendToBulkPrint());
+    }
+
 
     private void assertCommon(CaveatCallbackResponse caveatCallbackResponse) {
         assertCommonDetails(caveatCallbackResponse);

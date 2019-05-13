@@ -108,8 +108,7 @@ public class NotificationService {
                 documentType = SENT_EMAIL;
                 break;
             default:
-                documentType = SENT_EMAIL;
-                break;
+                throw new BadRequestException("Unsupported State");
         }
 
         return getGeneratedSentEmailDocument(response, emailAddress, documentType);

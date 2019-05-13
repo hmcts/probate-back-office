@@ -115,7 +115,7 @@ public class DocumentController {
     @PostMapping(path = "/generate-grant", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<CallbackResponse> generateGrant(
             @Validated({EmailAddressNotificationValidationRule.class, BulkPrintValidationRule.class})
-            @RequestBody CallbackRequest callbackRequest)
+    @RequestBody CallbackRequest callbackRequest)
             throws NotificationClientException {
 
         CaseDetails caseDetails = callbackRequest.getCaseDetails();

@@ -15,10 +15,13 @@ import uk.gov.hmcts.probate.exception.ClientException;
 import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.evidencemanagement.EvidenceManagementFileUpload;
 import uk.gov.hmcts.probate.service.FileSystemResourceService;
+import uk.gov.hmcts.probate.service.docmosis.DocmosisPdfGenerationService;
 import uk.gov.hmcts.reform.pdf.service.client.PDFServiceClient;
 import uk.gov.hmcts.reform.pdf.service.client.exception.PDFServiceClientException;
 
 import java.lang.reflect.Field;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.Matchers.greaterThan;
@@ -26,6 +29,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyMap;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
+import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -46,6 +50,9 @@ public class PDFGeneratorServiceTest {
     @Mock
     private PDFServiceClient pdfServiceClient;
 
+    @Mock
+    private DocmosisPdfGenerationService docmosisPdfGenerationServiceMock;
+
     @InjectMocks
     private PDFGeneratorService underTest;
 
@@ -57,6 +64,7 @@ public class PDFGeneratorServiceTest {
 
         when(pdfServiceClientExceptionMock.getMessage()).thenReturn("blah");
         when(pdfServiceClient.generateFromHtml(any(), any())).thenReturn("MockedBytes".getBytes());
+        when(docmosisPdfGenerationServiceMock.generateDocFrom(any(), anyMap())).thenReturn("MockedBytes".getBytes());
         when(fileSystemResourceServiceMock.getFileFromResourceAsString(anyString()))
                 .thenReturn("<htmlTemplate>");
     }
@@ -64,6 +72,32 @@ public class PDFGeneratorServiceTest {
     @Test
     public void shouldGeneratePDFWithBytesAndPDFContentType() {
         EvidenceManagementFileUpload result = underTest.generatePdf(LEGAL_STATEMENT, "{\"data\":\"value\"}");
+        Assert.assertThat(result.getContentType(), equalTo(MediaType.APPLICATION_PDF));
+        Assert.assertThat(result.getBytes().length, greaterThan(0));
+    }
+
+    @Test
+    public void shouldGeneratePDFFromDocmosisWithBytesAndPDFContentType() {
+
+        Map<String, Object> registry =  new HashMap<>();
+        registry.put("name", "Bristol District Probate Registry");
+        registry.put("phone", "02920 474373");
+        registry.put("emailReplyToId", "6d98cad6-adb4-4446-b37e-5c3f0441a0c8");
+        registry.put("addressLine1", "3rd Floor, Cardiff Magistrates’ Court");
+        registry.put("addressLine2", "Fitzalan Place");
+        registry.put("addressLine3", "Cardiff");
+        registry.put("addressLine4", "");
+        registry.put("town", "South Wales");
+        registry.put("postcode", "CF24 0RZ");
+
+        Map<String, Object> placeholders =  new HashMap<>();
+        placeholders.put("caseReference", "1111-2222-3333-4444");
+        placeholders.put("generatedDate", "13052019");
+        placeholders.put("registry", registry);
+        placeholders.put("PA8AURL", "www.citizensadvice.org.uk|https://www.citizensadvice.org.uk/");
+        placeholders.put("hmctsfamily", "image:base64:" + null);
+
+        EvidenceManagementFileUpload result = underTest.generateDocmosisDocumentFrom(CAVEAT.getTemplateName(), placeholders);
         Assert.assertThat(result.getContentType(), equalTo(MediaType.APPLICATION_PDF));
         Assert.assertThat(result.getBytes().length, greaterThan(0));
     }
@@ -78,5 +112,30 @@ public class PDFGeneratorServiceTest {
     public void shouldThrowPDFConnectionException() {
         when(pdfServiceClient.generateFromHtml(any(), any())).thenThrow(pdfServiceClientExceptionMock);
         underTest.generatePdf(LEGAL_STATEMENT, "{\"data\":\"value\"}");
+    }
+
+    @Test(expected = ClientException.class)
+    public void shouldThrowDocmosisPDFConnectionException() {
+
+        Map<String, Object> registry =  new HashMap<>();
+        registry.put("name", "Bristol District Probate Registry");
+        registry.put("phone", "02920 474373");
+        registry.put("emailReplyToId", "6d98cad6-adb4-4446-b37e-5c3f0441a0c8");
+        registry.put("addressLine1", "3rd Floor, Cardiff Magistrates’ Court");
+        registry.put("addressLine2", "Fitzalan Place");
+        registry.put("addressLine3", "Cardiff");
+        registry.put("addressLine4", "");
+        registry.put("town", "South Wales");
+        registry.put("postcode", "CF24 0RZ");
+
+        Map<String, Object> placeholders =  new HashMap<>();
+        placeholders.put("caseReference", "1111-2222-3333-4444");
+        placeholders.put("generatedDate", "13052019");
+        placeholders.put("registry", registry);
+        placeholders.put("PA8AURL", "www.citizensadvice.org.uk|https://www.citizensadvice.org.uk/");
+        placeholders.put("hmctsfamily", "image:base64:" + null);
+
+        when(docmosisPdfGenerationServiceMock.generateDocFrom(any(), any())).thenThrow(pdfServiceClientExceptionMock);
+        underTest.generateDocmosisDocumentFrom(CAVEAT.getTemplateName(), placeholders);
     }
 }
