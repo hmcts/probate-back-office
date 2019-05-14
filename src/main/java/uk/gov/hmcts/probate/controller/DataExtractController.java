@@ -57,6 +57,7 @@ public class DataExtractController {
         List<ReturnedCaseDetails> cases = caseQueryService.findCasesWithDatedDocument("digitalGrant", date);
 
         if (!cases.isEmpty()) {
+            log.info("preparing for file upload");
             int response = fileTransferService.uploadFile(ironMountainFileService.createIronMountainFile(
                     cases, date.replace("-", "") + "grant.txt"));
 
