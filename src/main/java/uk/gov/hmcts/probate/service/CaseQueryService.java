@@ -85,23 +85,29 @@ public class CaseQueryService {
         HttpEntity<String> entity;
         try {
             tokenHeaders = headers.getAuthorizationHeaders();
+            log.info("in the headers try, should go to catch");
         } catch (Exception e) {
+            log.info("made it to catch of headers");
             tokenHeaders = new HttpHeaders();
             tokenHeaders.add(SERVICE_AUTH, "Bearer " + serviceAuthTokenGenerator.generate());
             tokenHeaders.add(AUTHORIZATION, idamAuthenticateUserService.getIdamOauth2Token());
             tokenHeaders.setContentType(MediaType.APPLICATION_JSON);
+            log.info("tokens here: " + tokenHeaders.toString());
         } finally {
             entity = new HttpEntity<>(jsonQuery, tokenHeaders);
             log.info("Data extract Elastic search entity: " + entity);
         }
 
+
         ReturnedCases returnedCases;
         try {
+            log.info("trying ES query");
             returnedCases = restTemplate.postForObject(uri, entity, ReturnedCases.class);
         } catch (HttpClientErrorException e) {
             appInsights.trackEvent(REST_CLIENT_EXCEPTION, e.getMessage());
             throw new CaseMatchingException(e.getStatusCode(), e.getMessage());
         }
+        log.info("Returned cases here: " + returnedCases.toString());
 
         appInsights.trackEvent(REQUEST_SENT, uri.toString());
 
