@@ -39,7 +39,7 @@ public class IronMountainFileService {
         for (ReturnedCaseDetails ccdCase : ccdCases) {
             prepareData(ccdCase.getId(), ccdCase.getData());
         }
-        log.info("File date built and here: " + fileData.build().toString());
+        log.info("Creating IronMountain file.");
         return textFileBuilderService.createFile(fileData.build(), DELIMITER, fileName);
     }
 

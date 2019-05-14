@@ -95,7 +95,7 @@ public class CaseQueryService {
             log.info("tokens here: " + tokenHeaders.toString());
         } finally {
             entity = new HttpEntity<>(jsonQuery, tokenHeaders);
-            log.info("Entity here: " + entity);
+            log.info("Data extract Elastic search entity: " + entity);
         }
 
 

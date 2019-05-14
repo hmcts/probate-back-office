@@ -1,7 +1,6 @@
 package uk.gov.hmcts.probate.controller;
 
 import com.google.common.collect.ImmutableList;
-import feign.Response;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,7 +14,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import uk.gov.hmcts.probate.insights.AppInsights;
-import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
@@ -26,7 +24,6 @@ import uk.gov.hmcts.probate.service.FileTransferService;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.filebuilder.IronMountainFileService;
 
-import java.io.File;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -74,10 +71,10 @@ public class DataExtractControllerTest {
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
         CollectionMember<ScannedDocument> scannedDocument = new CollectionMember<>(new ScannedDocument("1",
                 "test", "other", "will", LocalDateTime.now(), DocumentLink.builder().build(),
-                "test"));
+                "test", LocalDateTime.now()));
         CollectionMember<ScannedDocument> scannedDocumentNullSubType = new CollectionMember<>(new ScannedDocument("1",
                 "test", "other", null, LocalDateTime.now(), DocumentLink.builder().build(),
-                "test"));
+                "test", LocalDateTime.now()));
         List<CollectionMember<ScannedDocument>> scannedDocuments = new ArrayList<>();
         scannedDocuments.add(scannedDocument);
         scannedDocuments.add(scannedDocumentNullSubType);
