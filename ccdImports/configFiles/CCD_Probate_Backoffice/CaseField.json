@@ -253,5 +253,6 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "executorsHaveAlias", "Label": "Executors have alias", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "declarationCheckbox", "Label": "Declaration Checkbox", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "legalDeclaration", "Label": "Legal Declaration", "FieldType": "TextArea", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "checkAnswersSummary", "Label": "Check Answers Summary", "FieldType": "TextArea", "SecurityClassification": "Public"}
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "checkAnswersSummary", "Label": "Check Answers Summary", "FieldType": "TextArea", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "fees", "Label": "Fees", "FieldType": "Fees", "SecurityClassification": "Public"}
 ]

@@ -1225,5 +1225,6 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "executorsHaveAlias", "UserRole": "citizen", "CRUD": "CRU"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "declarationCheckbox", "UserRole": "citizen", "CRUD": "CRU"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "legalDeclaration", "UserRole": "citizen", "CRUD": "CRU"},
-  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "checkAnswersSummary", "UserRole": "citizen", "CRUD": "CRU"}
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "checkAnswersSummary", "UserRole": "citizen", "CRUD": "CRU"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "fees", "UserRole": "citizen", "CRUD": "CRUD"}
 ]

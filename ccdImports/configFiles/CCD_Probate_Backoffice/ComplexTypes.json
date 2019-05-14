@@ -103,5 +103,15 @@
   {"LiveFrom": "01/01/2017", "ID": "CaseMatch", "ListElementCode": "id", "FieldType": "Text", "ElementLabel": "Id", "FieldShowCondition": "legacyCaseViewUrl=\"NeverShowThisField\"", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "CaseMatch", "ListElementCode": "legacyCaseViewUrl", "FieldType": "Text", "ElementLabel": "Case Url", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "CaseMatch", "ListElementCode": "valid", "FieldType": "YesOrNo", "ElementLabel": "Is match valid?", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "ID": "CaseMatch", "ListElementCode": "doImport", "FieldType": "YesOrNo", "ElementLabel": "Do import?", "SecurityClassification": "Public"}
+  {"LiveFrom": "01/01/2017", "ID": "CaseMatch", "ListElementCode": "doImport", "FieldType": "YesOrNo", "ElementLabel": "Do import?", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "Fees", "ListElementCode": "applicationFee", "FieldType": "MoneyGBP", "ElementLabel": "Application Fee", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "Fees", "ListElementCode": "applicationFeeCode", "FieldType": "Text", "ElementLabel": "Application Fee Code", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "Fees", "ListElementCode": "applicationFeeVersion", "FieldType": "Text", "ElementLabel": "Application Fee Version", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "Fees", "ListElementCode": "ukCopiesFee", "FieldType": "MoneyGBP", "ElementLabel": "UK copies Fee", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "Fees", "ListElementCode": "ukCopiesFeeCode", "FieldType": "Text", "ElementLabel": "UK copies Fee Code", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "Fees", "ListElementCode": "ukCopiesFeeVersion", "FieldType": "Text", "ElementLabel": "UK copies Fee Version", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "Fees", "ListElementCode": "overseasCopiesFee", "FieldType": "MoneyGBP", "ElementLabel": "Overseas copies Fee", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "Fees", "ListElementCode": "overseasCopiesFeeCode", "FieldType": "Text", "ElementLabel": "Overseas Fee Code", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "Fees", "ListElementCode": "overseasCopiesFeeVersion", "FieldType": "Text", "ElementLabel": "Overseas Fee Version", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "Fees", "ListElementCode": "total", "FieldType": "MoneyGBP", "ElementLabel": "Total Fees", "SecurityClassification": "Public"}
 ]
