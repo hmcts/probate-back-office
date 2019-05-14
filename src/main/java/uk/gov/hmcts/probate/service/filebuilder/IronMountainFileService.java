@@ -2,6 +2,7 @@ package uk.gov.hmcts.probate.service.filebuilder;
 
 import com.google.common.collect.ImmutableList;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.ccd.raw.Grantee;
@@ -17,6 +18,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class IronMountainFileService {
@@ -31,12 +33,14 @@ public class IronMountainFileService {
             .build();
     private final TextFileBuilderService textFileBuilderService;
     private static final String DELIMITER = "|";
-    private ImmutableList.Builder<String> fileData = ImmutableList.builder();
+    private ImmutableList.Builder<String> fileData;
 
     public File createIronMountainFile(List<ReturnedCaseDetails> ccdCases, String fileName) {
+        fileData = new ImmutableList.Builder<>();
         for (ReturnedCaseDetails ccdCase : ccdCases) {
             prepareData(ccdCase.getId(), ccdCase.getData());
         }
+        log.info("Creating IronMountain file.");
         return textFileBuilderService.createFile(fileData.build(), DELIMITER, fileName);
     }
 

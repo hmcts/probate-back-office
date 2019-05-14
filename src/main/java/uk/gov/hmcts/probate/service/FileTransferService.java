@@ -50,6 +50,7 @@ public class FileTransferService {
                     SPR,
                     signature);
 
+            log.info("File transfer response code: " + response.status());
             Files.delete(file.toPath());
         } catch (IOException e) {
             log.error("Error handling file: " + e.getMessage());
