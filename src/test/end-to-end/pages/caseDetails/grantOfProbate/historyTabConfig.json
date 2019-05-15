@@ -1,5 +1,5 @@
 {
-  "waitForText" : "Manage probate applications",
+  "waitForText" : "Manage probate application",
   "tabName": "History",
   "fields": [
     "Date",
