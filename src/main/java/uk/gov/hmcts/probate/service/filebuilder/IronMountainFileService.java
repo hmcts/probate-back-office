@@ -11,7 +11,10 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 
 import java.io.File;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.Period;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -22,6 +25,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class IronMountainFileService {
+    private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd-MMM-yyyy");
     private static final SolsAddress EMPTY_ADDRESS = SolsAddress.builder()
             .addressLine1("")
             .addressLine2("")
@@ -37,6 +41,7 @@ public class IronMountainFileService {
 
     public File createIronMountainFile(List<ReturnedCaseDetails> ccdCases, String fileName) {
         fileData = new ImmutableList.Builder<>();
+        fileData.add("\n");
         for (ReturnedCaseDetails ccdCase : ccdCases) {
             prepareData(ccdCase.getId(), ccdCase.getData());
         }
@@ -53,13 +58,13 @@ public class IronMountainFileService {
         fileData.add(Optional.ofNullable(data.getBoDeceasedTitle()).orElse(""));
         fileData.add(data.getDeceasedForenames());
         fileData.add(data.getDeceasedSurname());
-        fileData.add(data.getDeceasedDateOfDeath().toString());
+        fileData.add(DATE_FORMAT.format(data.getDeceasedDateOfDeath()));
         fileData.add("");
-        fileData.add(data.getDeceasedDateOfBirth().toString());
+        fileData.add(DATE_FORMAT.format(data.getDeceasedDateOfBirth()));
         fileData.add(String.valueOf(ageCalculator(data)));
         addDeceasedAddress(fileData, deceasedAddress);
         fileData.add(id.toString());
-        fileData.add(data.getGrantIssuedDate());
+        fileData.add(DATE_FORMAT.format(LocalDate.parse(data.getGrantIssuedDate())));
         addGranteeDetails(fileData, createGrantee(data, 1));
         addGranteeDetails(fileData, createGrantee(data, 2));
         addGranteeDetails(fileData, createGrantee(data, 3));
@@ -98,7 +103,7 @@ public class IronMountainFileService {
         if (address == null) {
             address = EMPTY_ADDRESS;
         }
-        String[] addressArray = {Optional.ofNullable(address.getAddressLine1()).orElse(""),
+        String[] addressArray = {(Optional.ofNullable(address.getAddressLine1()).orElse("")).replace("\n", " "),
                 Optional.ofNullable(address.getAddressLine2()).orElse(""),
                 Optional.ofNullable(address.getAddressLine3()).orElse(""),
                 Optional.ofNullable(address.getPostTown()).orElse(""),
