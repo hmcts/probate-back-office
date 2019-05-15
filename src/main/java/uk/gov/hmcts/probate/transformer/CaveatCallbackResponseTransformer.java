@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 import static java.util.Optional.ofNullable;
 import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
 import static uk.gov.hmcts.probate.model.Constants.CAVEAT_LIFESPAN;
-import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT;
+import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT_RAISED;
 
 @Component
 @RequiredArgsConstructor
@@ -41,17 +41,14 @@ public class CaveatCallbackResponseTransformer {
         documents.forEach(document -> documentTransformer.addDocument(caveatCallbackRequest, document));
         ResponseCaveatDataBuilder responseCaveatDataBuilder = getResponseCaveatData(caveatDetails);
 
-        if (documentTransformer.hasDocumentWithType(documents, CAVEAT)) {
+        if (documentTransformer.hasDocumentWithType(documents, CAVEAT_RAISED)) {
             responseCaveatDataBuilder
-                    .sendToBulkPrintRequested(caveatCallbackRequest.getCaseDetails().getData().getSendToBulkPrint())
                     .bulkPrintSendLetterId(letterId)
                     .build();
 
         }
         responseCaveatDataBuilder
                 .expiryDate(dateTimeFormatter.format(LocalDate.now().plusMonths(CAVEAT_LIFESPAN)))
-                .caveatRaisedEmailNotificationRequested(
-                        caveatCallbackRequest.getCaseDetails().getData().getCaveatRaisedEmailNotification())
                 .build();
 
         return transformResponse(responseCaveatDataBuilder.build());
@@ -62,6 +59,7 @@ public class CaveatCallbackResponseTransformer {
 
         ResponseCaveatData responseCaveatData = getResponseCaveatData(caveatDetails)
                 .caveatRaisedEmailNotificationRequested(caveatCallbackRequest.getCaseDetails().getData().getCaveatRaisedEmailNotification())
+                .sendToBulkPrintRequested(caveatCallbackRequest.getCaseDetails().getData().getSendToBulkPrint())
                 .build();
 
         return transformResponse(responseCaveatData);
@@ -134,12 +132,13 @@ public class CaveatCallbackResponseTransformer {
 
                 .documentsUploaded(caveatData.getDocumentsUploaded())
                 .documentsGenerated(caveatData.getDocumentsGenerated())
+                .notificationsGenerated(caveatData.getNotificationsGenerated())
                 .recordId(caveatData.getRecordId())
                 .legacyCaseViewUrl(caveatData.getLegacyCaseViewUrl())
                 .legacyType(caveatData.getLegacyType())
-
-                .caveatRaisedEmailNotification(caveatData.getCaveatRaisedEmailNotification())
-                .sendToBulkPrint(caveatData.getSendToBulkPrint());
+                .sendToBulkPrintRequested(caveatData.getSendToBulkPrintRequested())
+                .caveatRaisedEmailNotificationRequested(caveatData.getCaveatRaisedEmailNotificationRequested())
+                .bulkPrintSendLetterId(caveatData.getBulkPrintSendLetterId());
     }
 
     private String transformToString(LocalDate dateValue) {

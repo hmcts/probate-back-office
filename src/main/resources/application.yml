@@ -51,7 +51,9 @@ docmosis:
     accessKey: ${PDF_SERVICE_ACCESS_KEY:ZDYxMTkzZTQtMGY2Mi00NDM1LWIyN2ItNGRkNzdjOTczMjAwOjQ1NTE0ODQ}
     health.uri: ${PDF_SERVICE_HEALTH_URL:https://docmosis-development.platform.hmcts.net}
   templates:
-    caveat:
+    caveatRaised:
+      templateName: FL-PRB-GNO-ENG-00011.docx
+    caveatCoversheet:
       templateName: FL-PRB-GNO-ENG-00011.docx
     grant:
       templateName: FL-FRM-HNO-00003.docx

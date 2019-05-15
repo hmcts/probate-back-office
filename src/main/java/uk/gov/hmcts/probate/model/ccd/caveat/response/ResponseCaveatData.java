@@ -50,6 +50,7 @@ public class ResponseCaveatData {
 
     private final List<CollectionMember<UploadDocument>> documentsUploaded;
     private final List<CollectionMember<Document>> documentsGenerated;
+    private final List<CollectionMember<Document>> notificationsGenerated;
 
     private String recordId;
     private String legacyType;

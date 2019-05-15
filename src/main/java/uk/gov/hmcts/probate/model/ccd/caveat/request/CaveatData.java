@@ -85,6 +85,9 @@ public class CaveatData {
     @Builder.Default
     private List<CollectionMember<CaseMatch>> caseMatches = new ArrayList<>();
 
+    @Builder.Default
+    private List<CollectionMember<Document>> notificationsGenerated = new ArrayList<>();
+
     // EVENT = misc
 
     private String caveatReopenReason;
@@ -108,9 +111,9 @@ public class CaveatData {
         return caveatorEmailAddress == null || caveatorEmailAddress.isEmpty() ? NO : YES;
     }
 
-    public boolean isSendForBulkPrintingRequested() { return YES.equals(getSendToBulkPrint()); }
+    public boolean isSendForBulkPrintingRequested() { return YES.equals(getSendToBulkPrintRequested()); }
 
-    public boolean isCaveatRaisedEmailNotificationRequested() { return YES.equals(getCaveatRaisedEmailNotification()); }
+    public boolean isCaveatRaisedEmailNotificationRequested() { return YES.equals(getCaveatRaisedEmailNotificationRequested()); }
 
 
     @JsonPOJOBuilder(withPrefix = "")

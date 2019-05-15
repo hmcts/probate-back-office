@@ -56,14 +56,11 @@ public enum DocumentType {
     @JsonProperty("correspondence")
     CORRESPONDENCE("correspondence"),
 
-    @JsonProperty("coversheet")
-    COVERSHEET("coversheet"),
+    @JsonProperty("caveatCoversheet")
+    CAVEAT_COVERSHEET("caveatCoversheet"),
 
     @JsonProperty("caveatRaised")
-    CAVEAT_RAISED("caveatRaised"),
-
-    @JsonProperty("caveat")
-    CAVEAT("caveat");
+    CAVEAT_RAISED("caveatRaised");
 
     private final String templateName;
 

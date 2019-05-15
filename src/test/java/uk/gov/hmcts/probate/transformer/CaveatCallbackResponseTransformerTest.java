@@ -160,7 +160,7 @@ public class CaveatCallbackResponseTransformerTest {
         List<Document> documents = new ArrayList<>();
         Document document = Document.builder()
                 .documentLink(documentLinkMock)
-                .documentType(DocumentType.CAVEAT)
+                .documentType(DocumentType.CAVEAT_RAISED)
                 .build();
         documents.add(0, document);
         String letterId = null;
@@ -186,7 +186,7 @@ public class CaveatCallbackResponseTransformerTest {
 
         assertCommon(caveatCallbackResponse);
 
-        assertEquals(Constants.YES, caveatCallbackResponse.getCaveatData().getCaveatRaisedEmailNotification());
+        assertEquals(Constants.YES, caveatCallbackResponse.getCaveatData().getCaveatRaisedEmailNotificationRequested());
     }
 
     @Test
@@ -197,7 +197,7 @@ public class CaveatCallbackResponseTransformerTest {
 
         CaveatCallbackResponse caveatCallbackResponse = underTest.defaultCaveatValues(caveatCallbackRequestMock);
 
-        assertEquals(NO, caveatCallbackResponse.getCaveatData().getCaveatRaisedEmailNotification());
+        assertEquals(NO, caveatCallbackResponse.getCaveatData().getCaveatRaisedEmailNotificationRequested());
     }
 
     @Test
@@ -206,7 +206,7 @@ public class CaveatCallbackResponseTransformerTest {
 
         assertCommon(caveatCallbackResponse);
 
-        assertEquals(Constants.YES, caveatCallbackResponse.getCaveatData().getSendToBulkPrint());
+        assertEquals(Constants.YES, caveatCallbackResponse.getCaveatData().getSendToBulkPrintRequested());
     }
 
 

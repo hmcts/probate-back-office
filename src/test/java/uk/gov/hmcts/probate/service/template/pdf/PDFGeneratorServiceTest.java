@@ -29,7 +29,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyMap;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
-import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT;
+import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT_RAISED;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -97,7 +97,7 @@ public class PDFGeneratorServiceTest {
         placeholders.put("PA8AURL", "www.citizensadvice.org.uk|https://www.citizensadvice.org.uk/");
         placeholders.put("hmctsfamily", "image:base64:" + null);
 
-        EvidenceManagementFileUpload result = underTest.generateDocmosisDocumentFrom(CAVEAT.getTemplateName(), placeholders);
+        EvidenceManagementFileUpload result = underTest.generateDocmosisDocumentFrom(CAVEAT_RAISED.getTemplateName(), placeholders);
         Assert.assertThat(result.getContentType(), equalTo(MediaType.APPLICATION_PDF));
         Assert.assertThat(result.getBytes().length, greaterThan(0));
     }
@@ -136,6 +136,6 @@ public class PDFGeneratorServiceTest {
         placeholders.put("hmctsfamily", "image:base64:" + null);
 
         when(docmosisPdfGenerationServiceMock.generateDocFrom(any(), any())).thenThrow(pdfServiceClientExceptionMock);
-        underTest.generateDocmosisDocumentFrom(CAVEAT.getTemplateName(), placeholders);
+        underTest.generateDocmosisDocumentFrom(CAVEAT_RAISED.getTemplateName(), placeholders);
     }
 }

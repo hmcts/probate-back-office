@@ -34,7 +34,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT;
-import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT;
+import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT_RAISED;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT;
@@ -231,7 +231,7 @@ public class PDFManagementServiceTest {
         String json = "{}";
 
         when(objectMapperMock.writeValueAsString(caveatCallbackRequestMock)).thenReturn(json);
-        when(pdfGeneratorServiceMock.generatePdf(CAVEAT, json)).thenReturn(evidenceManagementFileUpload);
+        when(pdfGeneratorServiceMock.generatePdf(CAVEAT_RAISED, json)).thenReturn(evidenceManagementFileUpload);
         when(uploadServiceMock.store(evidenceManagementFileUpload)).thenReturn(evidenceManagementFile);
         when(evidenceManagementFile.getLink(Link.REL_SELF)).thenReturn(link);
         when(evidenceManagementFile.getLink("binary")).thenReturn(link);
@@ -239,9 +239,9 @@ public class PDFManagementServiceTest {
         String href = "href";
         when(link.getHref()).thenReturn(href);
 
-        Document response = underTest.generateAndUpload(caveatCallbackRequestMock, CAVEAT);
+        Document response = underTest.generateAndUpload(caveatCallbackRequestMock, CAVEAT_RAISED);
 
-        String fileName = "caveat.pdf";
+        String fileName = "caveatRaised.pdf";
         assertNotNull(response);
         assertEquals(fileName, response.getDocumentLink().getDocumentFilename());
         assertEquals(href, response.getDocumentLink().getDocumentBinaryUrl());
@@ -252,7 +252,7 @@ public class PDFManagementServiceTest {
     public void shouldGenerateAndUploadDocmosisDocument() throws IOException {
         String json = "{}";
 
-        when(pdfGeneratorServiceMock.generateDocmosisDocumentFrom(CAVEAT.getTemplateName(), placeholdersMock)).thenReturn(evidenceManagementFileUpload);
+        when(pdfGeneratorServiceMock.generateDocmosisDocumentFrom(CAVEAT_RAISED.getTemplateName(), placeholdersMock)).thenReturn(evidenceManagementFileUpload);
         when(uploadServiceMock.store(evidenceManagementFileUpload)).thenReturn(evidenceManagementFile);
         when(evidenceManagementFile.getLink(Link.REL_SELF)).thenReturn(link);
         when(evidenceManagementFile.getLink("binary")).thenReturn(link);
@@ -260,9 +260,9 @@ public class PDFManagementServiceTest {
         String href = "href";
         when(link.getHref()).thenReturn(href);
 
-        Document response = underTest.generateDocmosisDocumentAndUpload(placeholdersMock, CAVEAT);
+        Document response = underTest.generateDocmosisDocumentAndUpload(placeholdersMock, CAVEAT_RAISED);
 
-        String fileName = "caveat.pdf";
+        String fileName = "caveatRaised.pdf";
         assertNotNull(response);
         assertEquals(fileName, response.getDocumentLink().getDocumentFilename());
         assertEquals(href, response.getDocumentLink().getDocumentBinaryUrl());

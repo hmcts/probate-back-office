@@ -31,7 +31,6 @@ import java.util.Map;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
-import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.State.CAVEAT_RAISED;
 import static uk.gov.hmcts.probate.model.State.GENERAL_CAVEAT_MESSAGE;
 
@@ -73,20 +72,18 @@ public class CaveatController {
         } else {
             //generate and upload top dm store
             //1. generate coversheet
-            Document coverSheet = pdfManagementService.generateAndUpload(caveatCallbackRequest, DocumentType.COVERSHEET);
-            log.info("Generated and Uploaded cover document with template {} for the case id {}",
-                    DocumentType.COVERSHEET.getTemplateName(), caveatCallbackRequest.getCaseDetails().getId().toString());
-            documents.add(coverSheet);
+            Map<String, Object> placeholders = caveatDocmosisService.caseDataAsPlaceholders(caveatCallbackRequest.getCaseDetails());
+            Document coversheet = pdfManagementService.generateDocmosisDocumentAndUpload(placeholders, DocumentType.CAVEAT_RAISED);
+            documents.add(coversheet);
 
             //1. generate caveat raised doc
-            Map<String, Object> placeholders = caveatDocmosisService.caseDataAsPlaceholders(caveatCallbackRequest.getCaseDetails());
-            Document caveatRaisedDoc = pdfManagementService.generateDocmosisDocumentAndUpload(placeholders, DocumentType.CAVEAT);
+            Document caveatRaisedDoc = pdfManagementService.generateDocmosisDocumentAndUpload(placeholders, DocumentType.CAVEAT_COVERSHEET);
             documents.add(caveatRaisedDoc);
 
-            if (caveatCallbackRequest.getCaseDetails().getData().getSendToBulkPrint() == YES) {
+            if (caveatCallbackRequest.getCaseDetails().getData().isSendForBulkPrintingRequested()) {
                 // send to bulk print
 
-                SendLetterResponse response = bulkPrintService.sendToBulkPrint(caveatCallbackRequest, document, coverSheet);
+                SendLetterResponse response = bulkPrintService.sendToBulkPrint(caveatCallbackRequest, caveatRaisedDoc, coversheet);
                 letterId = response != null
                         ? response.letterId.toString()
                         : null;

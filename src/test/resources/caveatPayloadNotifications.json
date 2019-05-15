@@ -18,6 +18,8 @@
     "case_data": {
       "applicationType": "Personal",
       "registryLocation": "Leeds",
+      "caveatRaisedEmailNotificationRequested": "Yes",
+      "sendToBulkPrintRequested": "No",
       "deceasedSurname": "dl name 2",
       "deceasedDateOfDeath": "2017-12-31",
       "deceasedDateOfBirth": "2016-12-31",
