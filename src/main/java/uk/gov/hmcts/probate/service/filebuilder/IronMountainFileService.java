@@ -33,9 +33,10 @@ public class IronMountainFileService {
             .build();
     private final TextFileBuilderService textFileBuilderService;
     private static final String DELIMITER = "|";
-    private ImmutableList.Builder<String> fileData = ImmutableList.builder();
+    private ImmutableList.Builder<String> fileData;
 
     public File createIronMountainFile(List<ReturnedCaseDetails> ccdCases, String fileName) {
+        fileData = new ImmutableList.Builder<>();
         for (ReturnedCaseDetails ccdCase : ccdCases) {
             prepareData(ccdCase.getId(), ccdCase.getData());
         }
