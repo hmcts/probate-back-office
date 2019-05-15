@@ -43,7 +43,7 @@ docmosis:
     caveatRaised:
       templateName: FL-PRB-GNO-ENG-00011.docx
     caveatCoversheet:
-      templateName: FL-PRB-GNO-ENG-00011.docx
+      templateName: FL-PRB-GNO-ENG-00018.docx
     grant:
       templateName: FL-FRM-HNO-00003.docx
 
@@ -95,7 +95,7 @@ spring.jackson.serialization.write_dates_as_timestamps: false
 
 ####Evidence management Service URL's
 #hard coded to point to docker container ccd-data-store-api CCD_DM_DOMAIN value
-evidence.management.host: http://localhost:8080
+evidence.management.host: http://loaclhost:8080
 evidence.management.upload.file.url: /documents
 
 http.connect.timeout: 60000

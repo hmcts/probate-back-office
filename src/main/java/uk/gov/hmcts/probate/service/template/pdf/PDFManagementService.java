@@ -48,13 +48,13 @@ public class PDFManagementService {
     private final HttpServletRequest httpServletRequest;
     private final PDFServiceConfiguration pdfServiceConfiguration;
     private final FileSystemResourceService fileSystemResourceService;
-    
+
     static final String SIGNATURE_DECRYPTION_IV = "P3oba73En3yp7ion";
 
     @Autowired
     public PDFManagementService(PDFGeneratorService pdfGeneratorService, UploadService uploadService,
                                 ObjectMapper objectMapper, HttpServletRequest httpServletRequest,
-                                PDFServiceConfiguration pdfServiceConfiguration, 
+                                PDFServiceConfiguration pdfServiceConfiguration,
                                 FileSystemResourceService fileSystemResourceService) {
         this.pdfGeneratorService = pdfGeneratorService;
         this.uploadService = uploadService;
@@ -71,7 +71,7 @@ public class PDFManagementService {
 
     public Document generateAndUpload(CallbackRequest callbackRequest, DocumentType documentType) {
         switch (documentType) {
-            case DIGITAL_GRANT: 
+            case DIGITAL_GRANT:
                 callbackRequest.getCaseDetails().setGrantSignatureBase64(decryptedFileAsBase64String(pdfServiceConfiguration
                         .getGrantSignatureEncryptedFile()));
                 break;
@@ -158,7 +158,7 @@ public class PDFManagementService {
             log.error("Error while retrieving file resource " + fileResource + ": " + e.getMessage(), e);
             throw new BadRequestException(e.getMessage());
         }
-        return decryptedString;     
+        return decryptedString;
     }
 
     private String toJson(Object data) {

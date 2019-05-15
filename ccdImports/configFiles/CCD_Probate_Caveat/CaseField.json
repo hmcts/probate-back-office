@@ -34,5 +34,7 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "caveatRaisedEmailNotification", "Label": "Do you wish to send an email notification?", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "sendToBulkPrint", "Label": "Do you wish to send via bulk print?", "HintText": "note if you select no, the notification will need to printed locally and dealt with within the registry", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "sendToBulkPrintRequested", "Label": "Do you wish to send via bulk print?", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "notificationsGenerated", "Label": "Notifications generated", "FieldType": "Collection", "FieldTypeParameter": "cavProbateDocument", "SecurityClassification": "Public"}
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "notificationsGenerated", "Label": "Notifications generated", "FieldType": "Collection", "FieldTypeParameter": "cavProbateDocument", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "bulkPrintId", "Label": "Bulk print send letter Ids", "FieldType": "Collection", "FieldTypeParameter": "BulkPrint", "SecurityClassification": "Public"}
+
 ]

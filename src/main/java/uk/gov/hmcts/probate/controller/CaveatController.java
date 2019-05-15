@@ -14,6 +14,7 @@ import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
 import uk.gov.hmcts.probate.model.ccd.caveat.response.CaveatCallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.service.BulkPrintService;
+import uk.gov.hmcts.probate.service.CaveatNotificationService;
 import uk.gov.hmcts.probate.service.EventValidationService;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.docmosis.CaveatDocmosisService;
@@ -48,6 +49,7 @@ public class CaveatController {
     private final BulkPrintService bulkPrintService;
     private final List<BulkPrintValidationRule> bulkPrintValidationRules;
     private final CaveatDocmosisService caveatDocmosisService;
+    private final CaveatNotificationService caveatNotificationService;
 
     @PostMapping(path = "/raise")
     public ResponseEntity<CaveatCallbackResponse> raiseCaveat(
@@ -60,7 +62,7 @@ public class CaveatController {
         List<Document> documents = new ArrayList<>();
         String letterId = null;
         CaveatDetails caveatDetails = caveatCallbackRequest.getCaseDetails();
-
+        caveatCallbackResponse = caveatNotificationService.caveatRaise(caveatCallbackRequest);
         if (caveatDetails.getData().isCaveatRaisedEmailNotificationRequested()) {
             //send email notification
             //save pdf to dm store
@@ -77,7 +79,7 @@ public class CaveatController {
             documents.add(coversheet);
 
             //1. generate caveat raised doc
-            Document caveatRaisedDoc = pdfManagementService.generateDocmosisDocumentAndUpload(placeholders, DocumentType.CAVEAT_COVERSHEET);
+            Document caveatRaisedDoc = pdfManagementService.generateDocmosisDocumentAndUpload(placeholders, DocumentType.CAVEAT_RAISED);
             documents.add(caveatRaisedDoc);
 
             if (caveatCallbackRequest.getCaseDetails().getData().isSendForBulkPrintingRequested()) {

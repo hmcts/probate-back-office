@@ -7,6 +7,7 @@ import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
 import uk.gov.hmcts.probate.model.ccd.ProbateAddress;
 import uk.gov.hmcts.probate.model.ccd.ProbateFullAliasName;
+import uk.gov.hmcts.probate.model.ccd.raw.BulkPrint;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
@@ -40,8 +41,6 @@ public class ResponseCaveatData {
     private final String messageContent;
     private final String caveatReopenReason;
 
-    private final String bulkPrintSendLetterId;
-
     private final String caveatRaisedEmailNotificationRequested;
     private final String caveatRaisedEmailNotification;
 
@@ -51,6 +50,7 @@ public class ResponseCaveatData {
     private final List<CollectionMember<UploadDocument>> documentsUploaded;
     private final List<CollectionMember<Document>> documentsGenerated;
     private final List<CollectionMember<Document>> notificationsGenerated;
+    private final List<CollectionMember<BulkPrint>> bulkPrintId;
 
     private String recordId;
     private String legacyType;

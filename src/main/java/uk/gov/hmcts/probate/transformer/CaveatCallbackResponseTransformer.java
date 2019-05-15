@@ -10,6 +10,7 @@ import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
 import uk.gov.hmcts.probate.model.ccd.caveat.response.CaveatCallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.caveat.response.ResponseCaveatData;
 import uk.gov.hmcts.probate.model.ccd.caveat.response.ResponseCaveatData.ResponseCaveatDataBuilder;
+import uk.gov.hmcts.probate.model.ccd.raw.BulkPrint;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 
@@ -37,16 +38,19 @@ public class CaveatCallbackResponseTransformer {
 
     public CaveatCallbackResponse caveatRaised(CaveatCallbackRequest caveatCallbackRequest, List<Document> documents, String letterId) {
         CaveatDetails caveatDetails = caveatCallbackRequest.getCaseDetails();
-
+        CaveatData caveatData = caveatDetails.getData();
         documents.forEach(document -> documentTransformer.addDocument(caveatCallbackRequest, document));
         ResponseCaveatDataBuilder responseCaveatDataBuilder = getResponseCaveatData(caveatDetails);
 
         if (documentTransformer.hasDocumentWithType(documents, CAVEAT_RAISED)) {
-            responseCaveatDataBuilder
-                    .bulkPrintSendLetterId(letterId)
-                    .build();
+            CollectionMember<BulkPrint> bulkPrint = buildBulkPrint(letterId, CAVEAT_RAISED.getTemplateName());
+            caveatData.getBulkPrintId().add(bulkPrint);
 
+            responseCaveatDataBuilder
+                    .bulkPrintId(caveatData.getBulkPrintId())
+                    .build();
         }
+
         responseCaveatDataBuilder
                 .expiryDate(dateTimeFormatter.format(LocalDate.now().plusMonths(CAVEAT_LIFESPAN)))
                 .build();
@@ -138,12 +142,19 @@ public class CaveatCallbackResponseTransformer {
                 .legacyType(caveatData.getLegacyType())
                 .sendToBulkPrintRequested(caveatData.getSendToBulkPrintRequested())
                 .caveatRaisedEmailNotificationRequested(caveatData.getCaveatRaisedEmailNotificationRequested())
-                .bulkPrintSendLetterId(caveatData.getBulkPrintSendLetterId());
+                .bulkPrintId(caveatData.getBulkPrintId());
     }
 
     private String transformToString(LocalDate dateValue) {
         return ofNullable(dateValue)
                 .map(String::valueOf)
                 .orElse(null);
+    }
+
+    private CollectionMember<BulkPrint> buildBulkPrint(String letterId, String templateName) {
+        return new CollectionMember<>(null, BulkPrint.builder()
+                .sendLetterId(letterId)
+                .templateName(templateName)
+                .build());
     }
 }

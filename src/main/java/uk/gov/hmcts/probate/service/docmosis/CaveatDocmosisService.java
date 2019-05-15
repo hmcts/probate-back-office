@@ -34,7 +34,8 @@ public class CaveatDocmosisService {
         Map<String, Object> registryPlaceholders = mapper.convertValue(registry, Map.class);
 
         DateFormat generatedDateFormat = new SimpleDateFormat(DATE_INPUT_FORMAT);
-        String hmctsFamilyB64Image = fileSystemResourceService.getFileFromResourceAsString(pdfServiceConfiguration.getHmctsFamilyLogoBase64File());
+        String hmctsFamilyB64Image = fileSystemResourceService
+                .getFileFromResourceAsString(pdfServiceConfiguration.getHmctsFamilyLogoBase64File());
 
         placeholders.put("caseReference", getFormattedCaseReference(caveatDetails.getId().toString()));
         placeholders.put("generatedDate", generatedDateFormat.format(new Date()));
@@ -45,10 +46,10 @@ public class CaveatDocmosisService {
     }
 
     private String getFormattedCaseReference(String caseId) {
-        return "#" + caseId.substring(0, 4) + "-" +
-                caseId.substring(4, 8) + "-" +
-                caseId.substring(8, 12) + "-" +
-                caseId.substring(12, 16);
+        return "#" + caseId.substring(0, 4) + "-"
+                + caseId.substring(4, 8) + "-"
+                + caseId.substring(8, 12) + "-"
+                + caseId.substring(12, 16);
     }
 
 }

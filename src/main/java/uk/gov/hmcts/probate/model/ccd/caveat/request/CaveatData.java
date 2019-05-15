@@ -11,6 +11,7 @@ import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
 import uk.gov.hmcts.probate.model.ccd.ProbateAddress;
 import uk.gov.hmcts.probate.model.ccd.ProbateFullAliasName;
+import uk.gov.hmcts.probate.model.ccd.raw.BulkPrint;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
@@ -60,8 +61,6 @@ public class CaveatData {
 
     // EVENT = cavRaiseCaveat - caveat details
 
-    private String bulkPrintSendLetterId;
-
     @Getter(lazy = true)
     private final String caveatRaisedEmailNotification = getDefaultValueForEmailNotifications();
 
@@ -88,6 +87,9 @@ public class CaveatData {
     @Builder.Default
     private List<CollectionMember<Document>> notificationsGenerated = new ArrayList<>();
 
+    @Builder.Default
+    private List<CollectionMember<BulkPrint>> bulkPrintId = new ArrayList<>();
+
     // EVENT = misc
 
     private String caveatReopenReason;
@@ -111,9 +113,13 @@ public class CaveatData {
         return caveatorEmailAddress == null || caveatorEmailAddress.isEmpty() ? NO : YES;
     }
 
-    public boolean isSendForBulkPrintingRequested() { return YES.equals(getSendToBulkPrintRequested()); }
+    public boolean isSendForBulkPrintingRequested() {
+        return YES.equals(getSendToBulkPrintRequested());
+    }
 
-    public boolean isCaveatRaisedEmailNotificationRequested() { return YES.equals(getCaveatRaisedEmailNotificationRequested()); }
+    public boolean isCaveatRaisedEmailNotificationRequested() {
+        return YES.equals(getCaveatRaisedEmailNotificationRequested());
+    }
 
 
     @JsonPOJOBuilder(withPrefix = "")
