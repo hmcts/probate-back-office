@@ -76,7 +76,7 @@ public class IronMountainFileService {
         fileData.add(data.getIhtGrossValue().toString());
         fileData.add(data.getIhtNetValue().toString());
         fileData.add(CaseTypeMapping.valueOf(data.getCaseType()).getCaseTypeMapped());
-        fileData.add(data.getRegistryLocation());
+        fileData.add(registryLocationCheck(data.getRegistryLocation()));
         fileData.add("\n");
     }
 
@@ -169,6 +169,10 @@ public class IronMountainFileService {
         private String getCaseTypeMapped() {
             return caseTypeItem;
         }
+    }
+
+    private String registryLocationCheck(String registry) {
+        return registry.equalsIgnoreCase("ctsc") ? "Principal Registry" : registry;
     }
 
     private Boolean isYes(String yesNoValue) {
