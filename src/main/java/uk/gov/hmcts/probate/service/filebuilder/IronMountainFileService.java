@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.model.ApplicationType;
+import uk.gov.hmcts.probate.model.DataExtractGrantType;
 import uk.gov.hmcts.probate.model.ccd.raw.Grantee;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
@@ -12,7 +13,6 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 
 import java.io.File;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -20,6 +20,10 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+
+import static uk.gov.hmcts.probate.model.Constants.CTSC;
+import static uk.gov.hmcts.probate.model.Constants.PRINCIPAL_REGISTRY;
+import static uk.gov.hmcts.probate.model.Constants.YES;
 
 @Slf4j
 @Service
@@ -75,8 +79,8 @@ public class IronMountainFileService {
         addDeceasedAddress(fileData, applicantAddress);
         fileData.add(data.getIhtGrossValue().toString());
         fileData.add(data.getIhtNetValue().toString());
-        fileData.add(CaseTypeMapping.valueOf(data.getCaseType()).getCaseTypeMapped());
-        fileData.add(data.getRegistryLocation());
+        fileData.add(DataExtractGrantType.valueOf(data.getCaseType()).getCaseTypeMapped());
+        fileData.add(registryLocationCheck(data.getRegistryLocation()));
         fileData.add("\n");
     }
 
@@ -155,23 +159,11 @@ public class IronMountainFileService {
         return "";
     }
 
-    private enum CaseTypeMapping {
-        gop("PROBATE"),
-        intestacy("ADMINISTRATION"),
-        admonWill("ADMON/WILL");
-
-        private String caseTypeItem;
-
-        CaseTypeMapping(String caseType) {
-            this.caseTypeItem = caseType;
-        }
-
-        private String getCaseTypeMapped() {
-            return caseTypeItem;
-        }
+    private String registryLocationCheck(String registry) {
+        return registry.equalsIgnoreCase(CTSC) ? PRINCIPAL_REGISTRY : registry;
     }
 
     private Boolean isYes(String yesNoValue) {
-        return yesNoValue.equals("Yes");
+        return yesNoValue.equals(YES);
     }
 }

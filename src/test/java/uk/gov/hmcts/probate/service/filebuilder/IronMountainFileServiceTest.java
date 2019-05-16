@@ -156,6 +156,16 @@ public class IronMountainFileServiceTest {
                 is(FileUtils.getStringFromFile("expectedGeneratedFiles/ironMountainOneAddressLine.txt")));
     }
 
+    @Test
+    public void testRegistryLocationCtscMapped() throws IOException {
+        caseData.registryLocation("ctsc");
+        builtData = caseData.build();
+        createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, 1234567890876L);
+        caseList.add(createdCase);
+        assertThat(createFile(ironmountainFileService.createIronMountainFile(caseList.build(), FILE_NAME)),
+                is(FileUtils.getStringFromFile("expectedGeneratedFiles/ironMountainFileCtsc.txt")));
+    }
+
     private String createFile(File file) throws IOException {
         file.deleteOnExit();
         return new String(Files.readAllBytes(Paths.get(file.getName())), StandardCharsets.UTF_8);
