@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.model.ApplicationType;
-import uk.gov.hmcts.probate.model.DataExtractCaseType;
+import uk.gov.hmcts.probate.model.DataExtractGrantType;
 import uk.gov.hmcts.probate.model.ccd.raw.Grantee;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
@@ -79,7 +79,7 @@ public class IronMountainFileService {
         addDeceasedAddress(fileData, applicantAddress);
         fileData.add(data.getIhtGrossValue().toString());
         fileData.add(data.getIhtNetValue().toString());
-        fileData.add(DataExtractCaseType.valueOf(data.getCaseType()).getCaseTypeMapped());
+        fileData.add(DataExtractGrantType.valueOf(data.getCaseType()).getCaseTypeMapped());
         fileData.add(registryLocationCheck(data.getRegistryLocation()));
         fileData.add("\n");
     }

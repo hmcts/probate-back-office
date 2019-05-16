@@ -4,14 +4,14 @@ import static uk.gov.hmcts.probate.model.Constants.ADMINISTRATION;
 import static uk.gov.hmcts.probate.model.Constants.ADMON_WILL;
 import static uk.gov.hmcts.probate.model.Constants.PROBATE;
 
-public enum DataExtractCaseType {
+public enum DataExtractGrantType {
     gop(PROBATE),
     intestacy(ADMINISTRATION),
     admonWill(ADMON_WILL);
 
     private String caseTypeItem;
 
-    DataExtractCaseType(String caseType) {
+    DataExtractGrantType(String caseType) {
         this.caseTypeItem = caseType;
     }
 
