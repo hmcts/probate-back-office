@@ -21,6 +21,7 @@ import static com.google.common.base.Strings.isNullOrEmpty;
 public class DocmosisPdfGenerationService {
 
     private static final String PDF_DOCUMENT_OUTPUT_NAME = "result.pdf";
+    private static final String PDF_DOCUMENT_OUTPUT_FORMAT = "pdf";
 
     @Autowired
     private RestTemplate restTemplate;
@@ -58,6 +59,7 @@ public class DocmosisPdfGenerationService {
         return PdfDocumentRequest.builder()
                 .accessKey(pdfServiceAccessKey)
                 .templateName(docmosisTemplateName)
+                .outputFormat(PDF_DOCUMENT_OUTPUT_FORMAT)
                 .outputName(PDF_DOCUMENT_OUTPUT_NAME)
                 .data(placeholders).build();
     }

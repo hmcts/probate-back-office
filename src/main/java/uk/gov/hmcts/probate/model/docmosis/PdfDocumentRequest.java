@@ -16,6 +16,9 @@ public class PdfDocumentRequest {
     @JsonProperty(value = "templateName", required = true)
     @NotBlank
     private final String templateName;
+    @JsonProperty(value = "outputFormat", required = true)
+    @NotBlank
+    private final String outputFormat;
     @JsonProperty(value = "outputName", required = true)
     @NotBlank
     private final String outputName;

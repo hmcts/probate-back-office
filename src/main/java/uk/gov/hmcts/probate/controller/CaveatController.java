@@ -62,29 +62,23 @@ public class CaveatController {
         List<Document> documents = new ArrayList<>();
         String letterId = null;
         CaveatDetails caveatDetails = caveatCallbackRequest.getCaseDetails();
-        caveatCallbackResponse = caveatNotificationService.caveatRaise(caveatCallbackRequest);
+      //  caveatCallbackResponse = caveatNotificationService.caveatRaise(caveatCallbackRequest);
         if (caveatDetails.getData().isCaveatRaisedEmailNotificationRequested()) {
-            //send email notification
-            //save pdf to dm store
             caveatCallbackResponse = eventValidationService.validateCaveatRequest(caveatCallbackRequest, validationRuleCaveats);
             if (caveatCallbackResponse.getErrors().isEmpty()) {
                 document = notificationService.sendCaveatEmail(CAVEAT_RAISED, caveatDetails);
                 documents.add(document);
             }
         } else {
-            //generate and upload top dm store
-            //1. generate coversheet
-            Map<String, Object> placeholders = caveatDocmosisService.caseDataAsPlaceholders(caveatCallbackRequest.getCaseDetails());
-            Document coversheet = pdfManagementService.generateDocmosisDocumentAndUpload(placeholders, DocumentType.CAVEAT_RAISED);
+           Map<String, Object> placeholdersCoversheet = caveatDocmosisService.caseDataAsPlaceholdersCoversheet(caveatCallbackRequest.getCaseDetails());
+            Document coversheet = pdfManagementService.generateDocmosisDocumentAndUpload(placeholdersCoversheet, DocumentType.CAVEAT_COVERSHEET);
             documents.add(coversheet);
-
-            //1. generate caveat raised doc
+//            Document coversheet = null;
+            Map<String, Object> placeholders = caveatDocmosisService.caseDataAsPlaceholders(caveatCallbackRequest.getCaseDetails());
             Document caveatRaisedDoc = pdfManagementService.generateDocmosisDocumentAndUpload(placeholders, DocumentType.CAVEAT_RAISED);
             documents.add(caveatRaisedDoc);
 
             if (caveatCallbackRequest.getCaseDetails().getData().isSendForBulkPrintingRequested()) {
-                // send to bulk print
-
                 SendLetterResponse response = bulkPrintService.sendToBulkPrint(caveatCallbackRequest, caveatRaisedDoc, coversheet);
                 letterId = response != null
                         ? response.letterId.toString()
