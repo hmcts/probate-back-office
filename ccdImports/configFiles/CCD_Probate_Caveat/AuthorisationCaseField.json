@@ -28,7 +28,7 @@
   {"CaseTypeID": "Caveat", "CaseFieldID": "legacyType", "UserRole": "caseworker-probate-issuer", "CRUD": "CR"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "legacyCaseViewUrl", "UserRole": "caseworker-probate-issuer", "CRUD": "CR"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "legacyCaseViewUrlLink", "UserRole": "caseworker-probate-issuer", "CRUD": "R"},
-  {"CaseTypeID": "Caveat", "CaseFieldID": "payments", "UserRole": "caseworker-probate-issuer", "CRUD": "R"},
+  {"CaseTypeID": "Caveat", "CaseFieldID": "payments", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "customHistoryViewer", "UserRole": "caseworker-probate-caseadmin", "CRUD": "R"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "customPaymentHistoryViewer", "UserRole": "caseworker-probate-caseadmin", "CRUD": "R"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "applicationId", "UserRole": "caseworker-probate-caseadmin", "CRUD": "CRUD"},

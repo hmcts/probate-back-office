@@ -1,9 +1,9 @@
 [
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "applyForGrant", "UserRole": "caseworker-probate-issuer", "CRUD": "CR"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "createCase", "UserRole": "caseworker-probate-issuer", "CRUD": "R"},
-  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "createCasePaymentFailed", "UserRole": "caseworker-probate-issuer", "CRUD": "R"},
-  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "createCasePaymentSuccess", "UserRole": "caseworker-probate-issuer", "CRUD": "R"},
-  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "createCasePaymentFailedMultiple", "UserRole": "caseworker-probate-issuer", "CRUD": "R"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "createCasePaymentFailed", "UserRole": "caseworker-probate-issuer", "CRUD": "CRU"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "createCasePaymentSuccess", "UserRole": "caseworker-probate-issuer", "CRUD": "CRU"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "createCasePaymentFailedMultiple", "UserRole": "caseworker-probate-issuer", "CRUD": "CRU"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "solicitorReviewAndConfirm", "UserRole": "caseworker-probate-issuer", "CRUD": "R"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "boPrintCase", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "boMarkAsReadyForExamination", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
