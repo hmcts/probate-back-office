@@ -100,6 +100,7 @@ public class CaveatCallbackResponseTransformerTest {
                 .caveatReopenReason(CAV_REOPEN_REASON)
                 .recordId(CAV_RECORD_ID)
                 .legacyCaseViewUrl(CAV_LEGACY_CASE_URL)
+                .paperForm(YES)
                 .legacyType(CAV_LEGACY_CASE_TYPE);
 
         when(caveatCallbackRequestMock.getCaseDetails()).thenReturn(caveatDetailsMock);
@@ -191,6 +192,7 @@ public class CaveatCallbackResponseTransformerTest {
         assertEquals(CAV_RECORD_ID, caveatCallbackResponse.getCaveatData().getRecordId());
         assertEquals(CAV_LEGACY_CASE_TYPE, caveatCallbackResponse.getCaveatData().getLegacyType());
         assertEquals(CAV_LEGACY_CASE_URL, caveatCallbackResponse.getCaveatData().getLegacyCaseViewUrl());
+        assertEquals(YES, caveatCallbackResponse.getCaveatData().getPaperForm());
     }
 
     private void assertApplicationType(CaveatCallbackResponse caveatCallbackResponse, ApplicationType cavApplicationType) {

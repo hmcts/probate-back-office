@@ -29,6 +29,7 @@
   {"CaseTypeID": "Caveat", "CaseFieldID": "legacyCaseViewUrl", "UserRole": "caseworker-probate-issuer", "CRUD": "CR"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "legacyCaseViewUrlLink", "UserRole": "caseworker-probate-issuer", "CRUD": "R"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "payments", "UserRole": "caseworker-probate-issuer", "CRUD": "R"},
+  {"CaseTypeID": "Caveat", "CaseFieldID": "paperForm", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "customHistoryViewer", "UserRole": "caseworker-probate-caseadmin", "CRUD": "R"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "customPaymentHistoryViewer", "UserRole": "caseworker-probate-caseadmin", "CRUD": "R"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "applicationId", "UserRole": "caseworker-probate-caseadmin", "CRUD": "CRUD"},
@@ -59,6 +60,7 @@
   {"CaseTypeID": "Caveat", "CaseFieldID": "legacyCaseViewUrl", "UserRole": "caseworker-probate-caseadmin", "CRUD": "CR"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "legacyCaseViewUrlLink", "UserRole": "caseworker-probate-caseadmin", "CRUD": "R"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "payments", "UserRole": "caseworker-probate-caseadmin", "CRUD": "R"},
+  {"CaseTypeID": "Caveat", "CaseFieldID": "paperForm", "UserRole": "caseworker-probate-caseadmin", "CRUD": "CRUD"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "customHistoryViewer", "UserRole": "caseworker-probate-caseofficer", "CRUD": "R"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "customPaymentHistoryViewer", "UserRole": "caseworker-probate-caseofficer", "CRUD": "R"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "applicationId", "UserRole": "caseworker-probate-caseofficer", "CRUD": "CRUD"},
@@ -88,6 +90,7 @@
   {"CaseTypeID": "Caveat", "CaseFieldID": "legacyCaseViewUrl", "UserRole": "caseworker-probate-caseofficer", "CRUD": "CR"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "legacyCaseViewUrlLink", "UserRole": "caseworker-probate-caseofficer", "CRUD": "R"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "payments", "UserRole": "caseworker-probate-caseofficer", "CRUD": "R"},
+  {"CaseTypeID": "Caveat", "CaseFieldID": "paperForm", "UserRole": "caseworker-probate-caseofficer", "CRUD": "CRUD"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "customHistoryViewer", "UserRole": "caseworker-probate-registrar", "CRUD": "R"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "customPaymentHistoryViewer", "UserRole": "caseworker-probate-registrar", "CRUD": "R"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "applicationId", "UserRole": "caseworker-probate-registrar", "CRUD": "CRUD"},
@@ -117,6 +120,7 @@
   {"CaseTypeID": "Caveat", "CaseFieldID": "legacyCaseViewUrl", "UserRole": "caseworker-probate-registrar", "CRUD": "CR"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "legacyCaseViewUrlLink", "UserRole": "caseworker-probate-registrar", "CRUD": "R"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "payments", "UserRole": "caseworker-probate-registrar", "CRUD": "R"},
+  {"CaseTypeID": "Caveat", "CaseFieldID": "paperForm", "UserRole": "caseworker-probate-registrar", "CRUD": "CRUD"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "customHistoryViewer", "UserRole": "caseworker-probate-superuser", "CRUD": "R"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "customPaymentHistoryViewer", "UserRole": "caseworker-probate-superuser", "CRUD": "R"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "applicationId", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"},
@@ -146,6 +150,7 @@
   {"CaseTypeID": "Caveat", "CaseFieldID": "legacyCaseViewUrl", "UserRole": "caseworker-probate-superuser", "CRUD": "CR"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "legacyCaseViewUrlLink", "UserRole": "caseworker-probate-superuser", "CRUD": "R"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "payments", "UserRole": "caseworker-probate-superuser", "CRUD": "R"},
+  {"CaseTypeID": "Caveat", "CaseFieldID": "paperForm", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "applicationId", "UserRole": "citizen", "CRUD": "CRU"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "applicationType", "UserRole": "citizen", "CRUD": "CRU"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "registryLocation", "UserRole": "citizen", "CRUD": "CRU"},
@@ -171,5 +176,6 @@
   {"CaseTypeID": "Caveat", "CaseFieldID": "legacyType", "UserRole": "citizen", "CRUD": "CR"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "legacyCaseViewUrl", "UserRole": "citizen", "CRUD": "CR"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "legacyCaseViewUrlLink", "UserRole": "citizen", "CRUD": "R"},
-  {"CaseTypeID": "Caveat", "CaseFieldID": "payments", "UserRole": "citizen", "CRUD": "CRUD"}
+  {"CaseTypeID": "Caveat", "CaseFieldID": "payments", "UserRole": "citizen", "CRUD": "CRUD"},
+  {"CaseTypeID": "Caveat", "CaseFieldID": "paperForm", "UserRole": "citizen", "CRUD": "CR"}
 ]

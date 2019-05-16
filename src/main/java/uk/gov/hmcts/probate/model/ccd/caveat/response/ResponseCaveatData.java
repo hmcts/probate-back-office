@@ -46,5 +46,5 @@ public class ResponseCaveatData {
     private String recordId;
     private String legacyType;
     private String legacyCaseViewUrl;
-
+    private String paperForm;
 }
