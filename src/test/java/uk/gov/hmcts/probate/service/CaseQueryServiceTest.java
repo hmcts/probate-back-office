@@ -80,8 +80,7 @@ public class CaseQueryServiceTest {
 
     @Test
     public void findCasesWithDatedDocumentReturnsCaseList() {
-        List<ReturnedCaseDetails> cases = caseQueryService.findCasesWithDatedDocument("Test",
-                "testDate");
+        List<ReturnedCaseDetails> cases = caseQueryService.findCasesWithDatedDocument("testDate");
 
         assertEquals(1, cases.size());
         assertThat(cases.get(0).getId(), is(1L));
@@ -91,8 +90,7 @@ public class CaseQueryServiceTest {
     @Test
     public void findCasesInitiatedBySchedulerReturnsCaseList() {
         when(headers.getAuthorizationHeaders()).thenThrow(NullPointerException.class);
-        List<ReturnedCaseDetails> cases = caseQueryService.findCasesWithDatedDocument("Test",
-                "testDate");
+        List<ReturnedCaseDetails> cases = caseQueryService.findCasesWithDatedDocument("testDate");
 
         assertEquals(1, cases.size());
         assertThat(cases.get(0).getId(), is(1L));
@@ -101,8 +99,7 @@ public class CaseQueryServiceTest {
 
     @Test
     public void findCasesWithDateRangeReturnsCaseList() {
-        List<ReturnedCaseDetails> cases = caseQueryService.findCaseStateWithinTimeFrame("digitalGrant",
-                "2019-02-05", "2019-02-22");
+        List<ReturnedCaseDetails> cases = caseQueryService.findCaseStateWithinTimeFrame("2019-02-05", "2019-02-22");
 
         assertEquals(1, cases.size());
         assertThat(cases.get(0).getId(), is(1L));
@@ -113,7 +110,7 @@ public class CaseQueryServiceTest {
     public void testHttpExceptionCaughtWithBadPost() {
         when(restTemplate.postForObject(any(), any(), any())).thenThrow(HttpClientErrorException.class);
 
-        Assertions.assertThatThrownBy(() -> caseQueryService.findCasesWithDatedDocument("test", "testDate"))
+        Assertions.assertThatThrownBy(() -> caseQueryService.findCasesWithDatedDocument("testDate"))
                 .isInstanceOf(CaseMatchingException.class);
     }
 }

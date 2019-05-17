@@ -27,6 +27,7 @@ public class ExcelaCriteriaServiceTest {
     private ReturnedCaseDetails case1;
     private ReturnedCaseDetails case2;
     private ReturnedCaseDetails case3;
+    private ReturnedCaseDetails case4;
 
     private ExcelaCriteriaService excelaCriteriaService = new ExcelaCriteriaService();
 
@@ -47,7 +48,12 @@ public class ExcelaCriteriaServiceTest {
                         "test", LocalDateTime.now()));
         final CollectionMember<ScannedDocument> scannedDocumentNullSubType = new CollectionMember<>(new ScannedDocument(
                 "4",
-                "test", "other", null, LocalDateTime.now(), DocumentLink.builder().build(),
+                "test", "other", "", LocalDateTime.now(), DocumentLink.builder().build(),
+                "test", LocalDateTime.now()));
+
+        final CollectionMember<ScannedDocument> scannedDocumentCherished = new CollectionMember<>(new ScannedDocument(
+                "5",
+                "test", "Cherished", null, LocalDateTime.now(), DocumentLink.builder().build(),
                 "test", LocalDateTime.now()));
 
         List<CollectionMember<ScannedDocument>> scannedDocumentsCase1 = new ArrayList<>();
@@ -62,24 +68,35 @@ public class ExcelaCriteriaServiceTest {
         scannedDocumentsCase3.add(scannedDocumentBelowBoundary);
         scannedDocumentsCase3.add(scannedDocumentNullSubType);
 
-        CaseData caseData1 = CaseData.builder()
+        List<CollectionMember<ScannedDocument>> scannedDocumentsCase4 = new ArrayList<>();
+        scannedDocumentsCase4.add(scannedDocumentNullSubType);
+        scannedDocumentsCase4.add(scannedDocumentCherished);
+        scannedDocumentsCase4.add(scannedDocument);
+
+        final CaseData caseData1 = CaseData.builder()
                 .scannedDocuments(scannedDocumentsCase1)
                 .deceasedSurname("Smith")
                 .build();
 
-        CaseData caseData2 = CaseData.builder()
+        final CaseData caseData2 = CaseData.builder()
                 .scannedDocuments(scannedDocumentsCase2)
                 .deceasedSurname("Johnson")
                 .build();
 
-        CaseData caseData3 = CaseData.builder()
+        final CaseData caseData3 = CaseData.builder()
                 .scannedDocuments(scannedDocumentsCase3)
                 .deceasedSurname("Wrongun")
+                .build();
+
+        final CaseData caseData4 = CaseData.builder()
+                .scannedDocuments(scannedDocumentsCase4)
+                .deceasedSurname("Orderson")
                 .build();
 
         case1 = new ReturnedCaseDetails(caseData1, LAST_MODIFIED, 1L);
         case2 = new ReturnedCaseDetails(caseData2, LAST_MODIFIED, 2L);
         case3 = new ReturnedCaseDetails(caseData3, LAST_MODIFIED, 3L);
+        case4 = new ReturnedCaseDetails(caseData4, LAST_MODIFIED, 3L);
     }
 
     @Test
@@ -98,5 +115,11 @@ public class ExcelaCriteriaServiceTest {
     public void testInvalidDocumentsShouldNotReturnCase() {
         cases.add(case3);
         assertThat(excelaCriteriaService.getFilteredCases(cases.build()).size(), is(0));
+    }
+
+    @Test
+    public void testEmptySubtypePrecedingValidSubtypeShouldReturnCase() {
+        cases.add(case4);
+        assertThat(excelaCriteriaService.getFilteredCases(cases.build()).size(), is(1));
     }
 }
