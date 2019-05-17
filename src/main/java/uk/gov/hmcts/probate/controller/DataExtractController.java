@@ -54,7 +54,7 @@ public class DataExtractController {
                                                       @PathVariable("date") String date) {
         dateValidator(date);
 
-        List<ReturnedCaseDetails> cases = caseQueryService.findCasesWithDatedDocument("digitalGrant", date);
+        List<ReturnedCaseDetails> cases = caseQueryService.findCasesWithDatedDocument(date);
 
         if (!cases.isEmpty()) {
             log.info("preparing for file upload");
@@ -83,7 +83,7 @@ public class DataExtractController {
                                                 @PathVariable("date") String date) throws NotificationClientException {
         dateValidator(date);
 
-        List<ReturnedCaseDetails> cases = caseQueryService.findCasesWithDatedDocument("digitalGrant", date);
+        List<ReturnedCaseDetails> cases = caseQueryService.findCasesWithDatedDocument(date);
         List<ReturnedCaseDetails> filteredCases = excelaCriteriaService.getFilteredCases(cases);
 
         if (!filteredCases.isEmpty()) {
