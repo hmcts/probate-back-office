@@ -73,22 +73,22 @@ public class ExcelaCriteriaServiceTest {
         scannedDocumentsCase4.add(scannedDocumentCherished);
         scannedDocumentsCase4.add(scannedDocument);
 
-        CaseData caseData1 = CaseData.builder()
+        final CaseData caseData1 = CaseData.builder()
                 .scannedDocuments(scannedDocumentsCase1)
                 .deceasedSurname("Smith")
                 .build();
 
-        CaseData caseData2 = CaseData.builder()
+        final CaseData caseData2 = CaseData.builder()
                 .scannedDocuments(scannedDocumentsCase2)
                 .deceasedSurname("Johnson")
                 .build();
 
-        CaseData caseData3 = CaseData.builder()
+        final CaseData caseData3 = CaseData.builder()
                 .scannedDocuments(scannedDocumentsCase3)
                 .deceasedSurname("Wrongun")
                 .build();
 
-        CaseData caseData4 = CaseData.builder()
+        final CaseData caseData4 = CaseData.builder()
                 .scannedDocuments(scannedDocumentsCase4)
                 .deceasedSurname("Orderson")
                 .build();
