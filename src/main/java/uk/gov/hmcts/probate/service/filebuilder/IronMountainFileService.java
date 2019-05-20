@@ -122,15 +122,19 @@ public class IronMountainFileService {
 
     private Grantee createGrantee(CaseData data, int i) {
         return Grantee.builder()
-                .fullName(getFirstName(data, i))
+                .fullName(getName(data, i))
                 .address(addressManager(getAddress(data, i)))
                 .build();
     }
 
-    private String getFirstName(CaseData caseData, int granteeNumber) {
+    private String getName(CaseData caseData, int granteeNumber) {
         if (isYes(caseData.getPrimaryApplicantIsApplying())) {
             return granteeNumber == 1 ? caseData.getPrimaryApplicantForenames() + " " + caseData
                     .getPrimaryApplicantSurname() : getApplyingExecutorName(caseData, granteeNumber - 2);
+        }
+        if (granteeNumber == 1 && caseData.getAdditionalExecutorsApplying() == null && caseData.getApplicationType()
+                .equals(ApplicationType.SOLICITOR)) {
+            return caseData.getSolsSOTName();
         }
         return getApplyingExecutorName(caseData, granteeNumber - 1);
     }
@@ -139,6 +143,10 @@ public class IronMountainFileService {
         if (isYes(caseData.getPrimaryApplicantIsApplying())) {
             return granteeNumber == 1 ? caseData.getPrimaryApplicantAddress() : getAdditionalExecutorAddress(caseData,
                     granteeNumber - 2);
+        }
+        if (granteeNumber == 1 && caseData.getAdditionalExecutorsApplying() == null && caseData.getApplicationType()
+                .equals(ApplicationType.SOLICITOR)) {
+            return caseData.getSolsSolicitorAddress();
         }
         return getAdditionalExecutorAddress(caseData, granteeNumber - 1);
     }

@@ -53,8 +53,8 @@ public class IronMountainFileServiceTest {
         caseData = CaseData.builder()
                 .deceasedForenames("Nigel")
                 .deceasedSurname("Deadsoul")
-                .deceasedDateOfDeath(LocalDate.of(2015, 01, 01))
-                .deceasedDateOfBirth(LocalDate.of(1990, 01, 01))
+                .deceasedDateOfDeath(LocalDate.of(2015, 1, 1))
+                .deceasedDateOfBirth(LocalDate.of(1990, 1, 1))
                 .deceasedAddress(SolsAddress.builder().addressLine1("123 Dead street").addressLine3("The lane")
                         .postCode("AB5 6CD").build())
                 .boDeceasedTitle("Mr")
@@ -71,13 +71,14 @@ public class IronMountainFileServiceTest {
                 .caseType("gop")
                 .registryLocation("Oxford")
                 .grantIssuedDate("2019-02-18")
+                .solsSOTName("John Thesolicitor")
                 .applicationType(ApplicationType.PERSONAL);
 
         caseData2 = CaseData.builder()
                 .deceasedForenames("Nigel")
                 .deceasedSurname("Deadsoul")
-                .deceasedDateOfDeath(LocalDate.of(2015, 01, 01))
-                .deceasedDateOfBirth(LocalDate.of(1990, 01, 01))
+                .deceasedDateOfDeath(LocalDate.of(2015, 1, 1))
+                .deceasedDateOfBirth(LocalDate.of(1990, 1, 1))
                 .deceasedAddress(SolsAddress.builder().addressLine1("123 Dead street\nThe lane").build())
                 .boDeceasedTitle("Mr")
                 .primaryApplicantIsApplying("Yes")
@@ -164,6 +165,18 @@ public class IronMountainFileServiceTest {
         caseList.add(createdCase);
         assertThat(createFile(ironmountainFileService.createIronMountainFile(caseList.build(), FILE_NAME)),
                 is(FileUtils.getStringFromFile("expectedGeneratedFiles/ironMountainFileCtsc.txt")));
+    }
+
+    @Test
+    public void testSolicitorAsGranteeWhenNoExecutorsAndPrimaryApplicantNotApplying() throws IOException {
+        caseData.applicationType(ApplicationType.SOLICITOR);
+        caseData.primaryApplicantIsApplying("No");
+        caseData.additionalExecutorsApplying(null);
+        builtData = caseData.build();
+        createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, 1234567890876L);
+        caseList.add(createdCase);
+        assertThat(createFile(ironmountainFileService.createIronMountainFile(caseList.build(), FILE_NAME)),
+                is(FileUtils.getStringFromFile("expectedGeneratedFiles/ironMountainSolAsPrimary.txt")));
     }
 
     private String createFile(File file) throws IOException {
