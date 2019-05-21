@@ -12,6 +12,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 
 import java.io.File;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
@@ -77,8 +78,8 @@ public class IronMountainFileService {
         fileData.add(data.getApplicationType().equals(ApplicationType.PERSONAL) ? data.getPrimaryApplicantSurname() :
                 data.getSolsSolicitorFirmName());
         addDeceasedAddress(fileData, applicantAddress);
-        fileData.add(data.getIhtGrossValue().toString());
-        fileData.add(data.getIhtNetValue().toString());
+        fileData.add(data.getIhtGrossValue().setScale(0, BigDecimal.ROUND_DOWN).toString());
+        fileData.add(data.getIhtNetValue().setScale(0, BigDecimal.ROUND_DOWN).toString());
         fileData.add(DataExtractGrantType.valueOf(data.getCaseType()).getCaseTypeMapped());
         fileData.add(registryLocationCheck(data.getRegistryLocation()));
         fileData.add("\n");
