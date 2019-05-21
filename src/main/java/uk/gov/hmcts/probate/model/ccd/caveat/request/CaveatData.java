@@ -66,8 +66,9 @@ public class CaveatData {
 
     private String caveatRaisedEmailNotificationRequested;
 
+    @SuppressWarnings("squid:S1170")
     @Getter(lazy = true)
-    private static final String sendToBulkPrint = YES;
+    private final String sendToBulkPrint = YES;
 
     private String sendToBulkPrintRequested;
 
