@@ -49,6 +49,32 @@ services:
 #    depends_on:
 #    - shared-database
 
+  ethos-repl-docmosis-service:
+    image: "hmcts/ethos-repl-docmosis-service:latest"
+    container_name: ethos-repl-docmosis-service
+    ports:
+    - 8083:8081
+    environment:
+      TORNADO_URL: "http://tornado:8082/rs/render"
+      TORNADO_ACCESS_KEY: ""
+      IDAM_API_URL: "http://idam-api:8080"
+      CCD_DATA_STORE_API_URL: "http://ccd-data-store-api:4452"
+      DOCUMENT_MANAGEMENT_URL: "http://dm-store:8080"
+      DOCUMENT_MANAGEMENT_CASEWORKERROLE: "caseworker-ethos"
+      SERVICE_AUTH_PROVIDER_URL: "http://service-auth-provider-api:8080"
+      CCD_GATEWAY_BASE_URL: "http://127.0.0.1:3453"
+      APPINSIGHTS_INSTRUMENTATIONKEY: "key"
+      ETHOS_S2S_SECRET: "AAAAAAAAAAAAAAAC"
+      MICRO_SERVICE: "ccd_gw"
+
+  tornado:
+    image: "hmcts/tornado:latest"
+    ports:
+    - 8082:8082
+    environment:
+      DOCMOSIS_KEY: "0OAD-KLTH-JALO-MLIA-DBBH-1ELH-XBKQ-GS91-23ED-8-2358"
+      DOCMOSIS_SITE: "Free Trial License"
+
   service-auth-provider-api:
     image: hmcts.azurecr.io/hmcts/rpe-service-auth-provider
     container_name: service-auth-provider-api
@@ -144,7 +170,7 @@ services:
     memswap_limit: 0
     volumes:
       - ./init-db.sh:/docker-entrypoint-initdb.d/init-db.sh
-      
+
   smtp-server:
     container_name: smtp-server
     image: mailhog/mailhog

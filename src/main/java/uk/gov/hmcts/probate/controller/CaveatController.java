@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatCallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
 import uk.gov.hmcts.probate.model.ccd.caveat.response.CaveatCallbackResponse;
@@ -23,16 +22,12 @@ import uk.gov.hmcts.probate.transformer.CaveatCallbackResponseTransformer;
 import uk.gov.hmcts.probate.validator.BulkPrintValidationRule;
 import uk.gov.hmcts.probate.validator.CaveatsEmailAddressNotificationValidationRule;
 import uk.gov.hmcts.probate.validator.ValidationRuleCaveats;
-import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
 import uk.gov.service.notify.NotificationClientException;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
-import static uk.gov.hmcts.probate.model.State.CAVEAT_RAISED;
 import static uk.gov.hmcts.probate.model.State.GENERAL_CAVEAT_MESSAGE;
 
 @Slf4j
@@ -57,39 +52,7 @@ public class CaveatController {
             @RequestBody CaveatCallbackRequest caveatCallbackRequest)
             throws NotificationClientException {
 
-        CaveatCallbackResponse caveatCallbackResponse = CaveatCallbackResponse.builder().errors(new ArrayList<>()).build();
-        Document document = null;
-        List<Document> documents = new ArrayList<>();
-        String letterId = null;
-        CaveatDetails caveatDetails = caveatCallbackRequest.getCaseDetails();
-      //  caveatCallbackResponse = caveatNotificationService.caveatRaise(caveatCallbackRequest);
-        if (caveatDetails.getData().isCaveatRaisedEmailNotificationRequested()) {
-            caveatCallbackResponse = eventValidationService.validateCaveatRequest(caveatCallbackRequest, validationRuleCaveats);
-            if (caveatCallbackResponse.getErrors().isEmpty()) {
-                document = notificationService.sendCaveatEmail(CAVEAT_RAISED, caveatDetails);
-                documents.add(document);
-            }
-        } else {
-           Map<String, Object> placeholdersCoversheet = caveatDocmosisService.caseDataAsPlaceholdersCoversheet(caveatCallbackRequest.getCaseDetails());
-            Document coversheet = pdfManagementService.generateDocmosisDocumentAndUpload(placeholdersCoversheet, DocumentType.CAVEAT_COVERSHEET);
-            documents.add(coversheet);
-//            Document coversheet = null;
-            Map<String, Object> placeholders = caveatDocmosisService.caseDataAsPlaceholders(caveatCallbackRequest.getCaseDetails());
-            Document caveatRaisedDoc = pdfManagementService.generateDocmosisDocumentAndUpload(placeholders, DocumentType.CAVEAT_RAISED);
-            documents.add(caveatRaisedDoc);
-
-            if (caveatCallbackRequest.getCaseDetails().getData().isSendForBulkPrintingRequested()) {
-                SendLetterResponse response = bulkPrintService.sendToBulkPrint(caveatCallbackRequest, caveatRaisedDoc, coversheet);
-                letterId = response != null
-                        ? response.letterId.toString()
-                        : null;
-                caveatCallbackResponse = eventValidationService.validateCaveatBulkPrintResponse(letterId, bulkPrintValidationRules);
-            }
-        }
-
-        if (caveatCallbackResponse.getErrors().isEmpty()) {
-            caveatCallbackResponse = caveatCallbackResponseTransformer.caveatRaised(caveatCallbackRequest, documents, letterId);
-        }
+        CaveatCallbackResponse caveatCallbackResponse = caveatNotificationService.caveatRaise(caveatCallbackRequest);
 
         return ResponseEntity.ok(caveatCallbackResponse);
     }

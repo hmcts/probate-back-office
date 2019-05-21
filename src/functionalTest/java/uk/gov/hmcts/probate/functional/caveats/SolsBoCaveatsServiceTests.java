@@ -3,6 +3,7 @@ package uk.gov.hmcts.probate.functional.caveats;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import net.serenitybdd.rest.SerenityRest;
+import org.junit.Ignore;
 import org.junit.Test;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 
@@ -69,17 +70,20 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
 
     @Test
     public void verifySuccessForCaveatRaisedEmail() {
-        String response = generateDocument(DEFAULT_PAYLOAD, CAVEAT_RAISED);
+        String response = generateDocument(DEFAULT_PAYLOAD, CAVEAT_RAISED, 0);
 
         assertCommons(response);
 
     }
 
+    @Ignore
     @Test
-    public void verifySuccessForCaveatRaisedDocument() {
-        String response = generateDocument(DEFAULT_PAYLOAD_NO_EMAIL, CAVEAT_RAISED);
+    public void verifySuccessForCaveatRaisedDocumentAndCoversheet() {
+        String coversheet = generateDocument(DEFAULT_PAYLOAD_NO_EMAIL, CAVEAT_RAISED, 0);
+        String response = generateDocument(DEFAULT_PAYLOAD_NO_EMAIL, CAVEAT_RAISED, 1);
 
         assertCommons(response);
+        assertAddress(coversheet);
 
     }
 
@@ -93,6 +97,17 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
         assertTrue(response.contains("0113 389 6133"));
     }
 
+    private void assertAddress(String response) {
+        assertTrue(response.contains("cf name 2 cl name 2"));
+        assertTrue(response.contains("addressLine1"));
+        assertTrue(response.contains("addressLine2"));
+        assertTrue(response.contains("addressLine3"));
+        assertTrue(response.contains("posttown"));
+        assertTrue(response.contains("postcode"));
+        assertTrue(response.contains("county"));
+        assertTrue(response.contains("country"));
+    }
+
     private void validatePostSuccess(String jsonFileName, String path) {
         SerenityRest.given()
                 .relaxedHTTPSValidation()
@@ -102,7 +117,7 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
                 .then().assertThat().statusCode(200);
     }
 
-    private String generateDocument(String jsonFileName, String path) {
+    private String generateDocument(String jsonFileName, String path, int placeholder) {
 
         Response jsonResponse = SerenityRest.given()
                 .relaxedHTTPSValidation()
@@ -111,7 +126,9 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
                 .when().post(path).andReturn();
 
         JsonPath jsonPath = JsonPath.from(jsonResponse.getBody().asString());
-        String documentUrl = jsonPath.get("data.notificationsGenerated[0].value.DocumentLink.document_binary_url");
+        String documentUrl = jsonPath.get("data.notificationsGenerated["
+                + placeholder
+                + "].value.DocumentLink.document_binary_url");
         String response = utils.downloadPdfAndParseToString(documentUrl);
         response = response.replace("\n", "").replace("\r", "");
         return response;
