@@ -78,8 +78,8 @@ public class IronMountainFileService {
         fileData.add(data.getApplicationType().equals(ApplicationType.PERSONAL) ? data.getPrimaryApplicantSurname() :
                 data.getSolsSolicitorFirmName());
         addDeceasedAddress(fileData, applicantAddress);
-        fileData.add(data.getIhtGrossValue().setScale(0, BigDecimal.ROUND_DOWN).toString());
-        fileData.add(data.getIhtNetValue().setScale(0, BigDecimal.ROUND_DOWN).toString());
+        fileData.add(data.getIhtGrossValue().toString().substring(0, data.getIhtGrossValue().toString().length() - 2));
+        fileData.add(data.getIhtNetValue().toString().substring(0, data.getIhtNetValue().toString().length() - 2));
         fileData.add(DataExtractGrantType.valueOf(data.getCaseType()).getCaseTypeMapped());
         fileData.add(registryLocationCheck(data.getRegistryLocation()));
         fileData.add("\n");
