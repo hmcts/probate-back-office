@@ -102,14 +102,6 @@ public class PDFManagementService {
         return generateAndUpload(toJson(callbackRequest), documentType);
     }
 
-    public Document generateDocmosisDocumentAndUpload(Map<String, Object> placeholders, DocumentType documentType) {
-
-        log.info("Generating pdf to docmosis for template {}", documentType.getTemplateName());
-        EvidenceManagementFileUpload fileUpload = pdfGeneratorService.generateDocmosisDocumentFrom(documentType.getTemplateName(),
-                placeholders);
-        return uploadDocument(documentType, fileUpload);
-    }
-
     public Document generateAndUpload(SentEmail sentEmail, DocumentType documentType) {
         return generateAndUpload(toJson(sentEmail), documentType);
     }
@@ -117,6 +109,14 @@ public class PDFManagementService {
     private Document generateAndUpload(String json, DocumentType documentType) {
         log.info("Generating pdf for template {}", documentType.getTemplateName());
         EvidenceManagementFileUpload fileUpload = pdfGeneratorService.generatePdf(documentType, json);
+        return uploadDocument(documentType, fileUpload);
+    }
+
+    public Document generateDocmosisDocumentAndUpload(Map<String, Object> placeholders, DocumentType documentType) {
+
+        log.info("Generating pdf to docmosis for template {}", documentType.getTemplateName());
+        EvidenceManagementFileUpload fileUpload = pdfGeneratorService.generateDocmosisDocumentFrom(documentType.getTemplateName(),
+                placeholders);
         return uploadDocument(documentType, fileUpload);
     }
 

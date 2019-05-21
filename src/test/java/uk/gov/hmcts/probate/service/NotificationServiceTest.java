@@ -653,11 +653,6 @@ public class NotificationServiceTest {
                 eq(personalisation),
                 eq("1"));
 
-//        null,
-//                "personal@test.com",
-//                {"ccd_reference" = "1", "message_content" = null, "registry_phone" = "0186 579 3055", "deceased_name" = "null null", "registry_name" = "Oxford Probate Registry", "applicant_name" = "null null"},
-//                "1"
-
         verify(pdfManagementService).generateAndUpload(any(SentEmail.class), eq(SENT_EMAIL));
     }
 

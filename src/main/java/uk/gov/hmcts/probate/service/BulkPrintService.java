@@ -29,6 +29,7 @@ public class BulkPrintService {
     private static final String XEROX_TYPE_PARAMETER = "PRO001";
     private static final String BEARER = "Bearer ";
     private static final String ADDITIONAL_DATA_CASE_REFERENCE = "caseReference";
+    private static final String CASE_ID = "case id ";
     private final SendLetterApi sendLetterApi;
     private final DocumentStoreClient documentStoreClient;
     private final ServiceAuthTokenGenerator tokenGenerator;
@@ -99,7 +100,7 @@ public class BulkPrintService {
                                                CallbackRequest callbackRequest) throws IOException {
 
         String response = Base64.getEncoder().encodeToString(documentStoreClient.retrieveDocument(document, authHeaderValue));
-        log.info("case id " + callbackRequest.getCaseDetails().getId().toString()
+        log.info(CASE_ID + callbackRequest.getCaseDetails().getId().toString()
                 + "dm store" + document.getDocumentFileName() + " string: " + response);
         return response;
     }
@@ -109,7 +110,7 @@ public class BulkPrintService {
                                                CaveatCallbackRequest caveatCallbackRequest) throws IOException {
 
         String response = Base64.getEncoder().encodeToString(documentStoreClient.retrieveDocument(document, authHeaderValue));
-        log.info("case id " + caveatCallbackRequest.getCaseDetails().getId().toString()
+        log.info(CASE_ID + caveatCallbackRequest.getCaseDetails().getId().toString()
                 + "dm store" + document.getDocumentFileName() + " string: " + response);
         return response;
     }
@@ -150,7 +151,7 @@ public class BulkPrintService {
     }
 
     private List<String> getDocumentSize(List<String> documents, CallbackRequest callbackRequest) throws IOException {
-        log.info("case id " + callbackRequest.getCaseDetails().getId().toString() + "number of documents is: " + documents.size());
+        log.info(CASE_ID + callbackRequest.getCaseDetails().getId().toString() + "number of documents is: " + documents.size());
         return documents;
     }
 }

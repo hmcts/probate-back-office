@@ -52,17 +52,9 @@ public class CaveatDocmosisService {
 
         Registry registry = registriesProperties.getRegistries().get(
                 caveatDetails.getData().getRegistryLocation().toLowerCase());
-        Map<String, Object> registryPlaceholders = mapper.convertValue(registry, Map.class);
 
         DateFormat generatedDateFormat = new SimpleDateFormat(DATE_INPUT_FORMAT);
-//        String hmctsFamilyB64Image = fileSystemResourceService
-//                .getFileFromResourceAsString(pdfServiceConfiguration.getHmctsFamilyLogoBase64File());
-
-//        placeholders.put("caseReference", getFormattedCaseReference(caveatDetails.getId().toString()));
         placeholders.put("generatedDate", generatedDateFormat.format(new Date()));
-//        placeholders.put("registry", registryPlaceholders);
-//        placeholders.put("PA8AURL", "www.citizensadvice.org.uk|https://www.citizensadvice.org.uk/");
-//        placeholders.put("hmctsfamily", "image:base64:" + hmctsFamilyB64Image);
         return placeholders;
     }
 

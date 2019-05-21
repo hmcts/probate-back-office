@@ -67,7 +67,7 @@ public class CaveatData {
     private String caveatRaisedEmailNotificationRequested;
 
     @Getter(lazy = true)
-    private final String sendToBulkPrint = YES;
+    private static final String sendToBulkPrint = YES;
 
     private String sendToBulkPrintRequested;
 
