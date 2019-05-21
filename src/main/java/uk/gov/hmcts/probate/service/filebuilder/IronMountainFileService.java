@@ -12,6 +12,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 
 import java.io.File;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
@@ -77,8 +78,8 @@ public class IronMountainFileService {
         fileData.add(data.getApplicationType().equals(ApplicationType.PERSONAL) ? data.getPrimaryApplicantSurname() :
                 data.getSolsSolicitorFirmName());
         addDeceasedAddress(fileData, applicantAddress);
-        fileData.add(data.getIhtGrossValue().toString());
-        fileData.add(data.getIhtNetValue().toString());
+        fileData.add(data.getIhtGrossValue().setScale(0, BigDecimal.ROUND_DOWN).toString());
+        fileData.add(data.getIhtNetValue().setScale(0, BigDecimal.ROUND_DOWN).toString());
         fileData.add(DataExtractGrantType.valueOf(data.getCaseType()).getCaseTypeMapped());
         fileData.add(registryLocationCheck(data.getRegistryLocation()));
         fileData.add("\n");
@@ -122,15 +123,19 @@ public class IronMountainFileService {
 
     private Grantee createGrantee(CaseData data, int i) {
         return Grantee.builder()
-                .fullName(getFirstName(data, i))
+                .fullName(getName(data, i))
                 .address(addressManager(getAddress(data, i)))
                 .build();
     }
 
-    private String getFirstName(CaseData caseData, int granteeNumber) {
+    private String getName(CaseData caseData, int granteeNumber) {
         if (isYes(caseData.getPrimaryApplicantIsApplying())) {
             return granteeNumber == 1 ? caseData.getPrimaryApplicantForenames() + " " + caseData
                     .getPrimaryApplicantSurname() : getApplyingExecutorName(caseData, granteeNumber - 2);
+        }
+        if (granteeNumber == 1 && caseData.getAdditionalExecutorsApplying() == null && caseData.getApplicationType()
+                .equals(ApplicationType.SOLICITOR)) {
+            return caseData.getSolsSOTName();
         }
         return getApplyingExecutorName(caseData, granteeNumber - 1);
     }
@@ -139,6 +144,10 @@ public class IronMountainFileService {
         if (isYes(caseData.getPrimaryApplicantIsApplying())) {
             return granteeNumber == 1 ? caseData.getPrimaryApplicantAddress() : getAdditionalExecutorAddress(caseData,
                     granteeNumber - 2);
+        }
+        if (granteeNumber == 1 && caseData.getAdditionalExecutorsApplying() == null && caseData.getApplicationType()
+                .equals(ApplicationType.SOLICITOR)) {
+            return caseData.getSolsSolicitorAddress();
         }
         return getAdditionalExecutorAddress(caseData, granteeNumber - 1);
     }
