@@ -140,6 +140,28 @@ public class CallbackResponseTransformer {
         return transformResponse(responseCaseDataBuilder.build());
     }
 
+    public CallbackResponse resolveStop(CallbackRequest callbackRequest) {
+        ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), false);
+        switch (callbackRequest.getCaseDetails().getData().getResolveStopState()) {
+            case "CaseCreated":
+                responseCaseDataBuilder.state("CaseCreated");
+                break;
+            case "CasePrinted":
+                responseCaseDataBuilder.state("CasePrinted");
+                break;
+            case "BOReadyForExamination":
+                responseCaseDataBuilder.state("BOReadyForExamination");
+                break;
+            default:
+                responseCaseDataBuilder.state("BOExamining");
+                break;
+        }
+        return transformResponse(responseCaseDataBuilder.build());
+    }
+
+
+
+
     public CallbackResponse transformForSolicitorComplete(CallbackRequest callbackRequest, FeeServiceResponse feeServiceResponse) {
         String feeForNonUkCopies = transformMoneyGBPToString(feeServiceResponse.getFeeForNonUkCopies());
         String feeForUkCopies = transformMoneyGBPToString(feeServiceResponse.getFeeForUkCopies());
