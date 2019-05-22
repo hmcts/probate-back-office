@@ -42,7 +42,7 @@ public class CaveatCallbackResponseTransformer {
         documents.forEach(document -> documentTransformer.addDocument(caveatCallbackRequest, document));
         ResponseCaveatDataBuilder responseCaveatDataBuilder = getResponseCaveatData(caveatDetails);
 
-        if (documentTransformer.hasDocumentWithType(documents, CAVEAT_RAISED)) {
+        if (documentTransformer.hasDocumentWithType(documents, CAVEAT_RAISED) && letterId != null ) {
             CollectionMember<BulkPrint> bulkPrint = buildBulkPrint(letterId, CAVEAT_RAISED.getTemplateName());
             caveatData.getBulkPrintId().add(bulkPrint);
 

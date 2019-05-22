@@ -3,7 +3,6 @@ package uk.gov.hmcts.probate.functional.caveats;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import net.serenitybdd.rest.SerenityRest;
-import org.junit.Ignore;
 import org.junit.Test;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 
@@ -73,37 +72,39 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
         String response = generateDocument(DEFAULT_PAYLOAD, CAVEAT_RAISED, 0);
 
         assertCommons(response);
-
+        assertTrue(response.contains("1542274092932452"));
+        assertTrue(response.contains("personal@hmcts-test.com"));
+        assertTrue(response.contains("0113 3896 133"));
     }
 
-    @Ignore
     @Test
     public void verifySuccessForCaveatRaisedDocumentAndCoversheet() {
         String coversheet = generateDocument(DEFAULT_PAYLOAD_NO_EMAIL, CAVEAT_RAISED, 0);
         String response = generateDocument(DEFAULT_PAYLOAD_NO_EMAIL, CAVEAT_RAISED, 1);
 
         assertCommons(response);
+        assertTrue(response.contains("#1542-2740-9293-2452"));
+        assertTrue(response.contains("0113 389 6133"));
         assertAddress(coversheet);
 
     }
 
 
     private void assertCommons(String response) {
-        assertTrue(response.contains("1542274092932452"));
-        assertTrue(response.contains("personal@hmcts-test.com"));
+
         assertTrue(response.contains("cf name 2 cl name 2"));
         assertTrue(response.contains("df name 2 dl name 2"));
         assertTrue(response.contains("Leeds"));
-        assertTrue(response.contains("0113 389 6133"));
+
     }
 
     private void assertAddress(String response) {
         assertTrue(response.contains("cf name 2 cl name 2"));
-        assertTrue(response.contains("addressLine1"));
-        assertTrue(response.contains("addressLine2"));
-        assertTrue(response.contains("addressLine3"));
+        assertTrue(response.contains("addressline1"));
+        assertTrue(response.contains("addressline2"));
+        assertTrue(response.contains("addressline3"));
         assertTrue(response.contains("posttown"));
-        assertTrue(response.contains("postcode"));
+       // assertTrue(response.contains("postcode"));
         assertTrue(response.contains("county"));
         assertTrue(response.contains("country"));
     }

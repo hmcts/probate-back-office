@@ -45,19 +45,6 @@ public class CaveatDocmosisService {
         return placeholders;
     }
 
-    public Map<String, Object> caseDataAsPlaceholdersCoversheet(CaveatDetails caveatDetails) {
-
-        ObjectMapper mapper = new ObjectMapper();
-        Map<String, Object> placeholders = mapper.convertValue(caveatDetails.getData(), Map.class);
-
-        Registry registry = registriesProperties.getRegistries().get(
-                caveatDetails.getData().getRegistryLocation().toLowerCase());
-
-        DateFormat generatedDateFormat = new SimpleDateFormat(DATE_INPUT_FORMAT);
-        placeholders.put("generatedDate", generatedDateFormat.format(new Date()));
-        return placeholders;
-    }
-
     private String getFormattedCaseReference(String caseId) {
         return "#" + caseId.substring(0, 4) + "-"
                 + caseId.substring(4, 8) + "-"

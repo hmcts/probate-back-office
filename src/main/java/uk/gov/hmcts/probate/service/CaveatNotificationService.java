@@ -52,7 +52,7 @@ public class CaveatNotificationService {
             }
         } else {
             Map<String, Object> placeholdersCoversheet =
-                    caveatDocmosisService.caseDataAsPlaceholdersCoversheet(caveatCallbackRequest.getCaseDetails());
+                    caveatDocmosisService.caseDataAsPlaceholders(caveatCallbackRequest.getCaseDetails());
             Document coversheet = pdfManagementService
                     .generateDocmosisDocumentAndUpload(placeholdersCoversheet, DocumentType.CAVEAT_COVERSHEET);
             documents.add(coversheet);

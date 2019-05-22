@@ -71,7 +71,7 @@ public class CaveatDocmosisServiceTest {
                 .build();
         CaveatDetails caveatDetails = new CaveatDetails(caveatData, LAST_MODIFIED, ID);
         DateFormat generatedDateFormat = new SimpleDateFormat(DATE_INPUT_FORMAT);
-        Map<String, Object> placeholders = caveatDocmosisService.caseDataAsPlaceholdersCoversheet(caveatDetails);
+        Map<String, Object> placeholders = caveatDocmosisService.caseDataAsPlaceholders(caveatDetails);
 
         assertEquals(placeholders.get("generatedDate"), generatedDateFormat.format(new Date()));
     }
