@@ -57,11 +57,11 @@ public class CaveatDocmosisServiceTest {
         DateFormat generatedDateFormat = new SimpleDateFormat(DATE_INPUT_FORMAT);
         Map<String, Object> placeholders = caveatDocmosisService.caseDataAsPlaceholders(caveatDetails);
 
-        assertEquals( placeholders.get("registryLocation"), "leeds");
-        assertEquals( placeholders.get("PA8AURL"), "www.citizensadvice.org.uk|https://www.citizensadvice.org.uk/");
-        assertEquals( placeholders.get("hmctsfamily"), "image:base64:" + "image");
-        assertEquals( placeholders.get("caseReference"), CASE_REFERENCE);
-        assertEquals( placeholders.get("generatedDate"),  generatedDateFormat.format(new Date()));
+        assertEquals(placeholders.get("generatedDate"), generatedDateFormat.format(new Date()));
+        assertEquals(placeholders.get("registryLocation"), "leeds");
+        assertEquals(placeholders.get("PA8AURL"), "www.citizensadvice.org.uk|https://www.citizensadvice.org.uk/");
+        assertEquals(placeholders.get("hmctsfamily"), "image:base64:" + "image");
+        assertEquals(placeholders.get("caseReference"), CASE_REFERENCE);
     }
 
     @Test
@@ -73,6 +73,6 @@ public class CaveatDocmosisServiceTest {
         DateFormat generatedDateFormat = new SimpleDateFormat(DATE_INPUT_FORMAT);
         Map<String, Object> placeholders = caveatDocmosisService.caseDataAsPlaceholdersCoversheet(caveatDetails);
 
-        assertEquals( placeholders.get("generatedDate"),  generatedDateFormat.format(new Date()));
+        assertEquals(placeholders.get("generatedDate"), generatedDateFormat.format(new Date()));
     }
 }

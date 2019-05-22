@@ -252,7 +252,9 @@ public class PDFManagementServiceTest {
     public void shouldGenerateAndUploadDocmosisDocument() throws IOException {
         String json = "{}";
 
-        when(pdfGeneratorServiceMock.generateDocmosisDocumentFrom(CAVEAT_RAISED.getTemplateName(), placeholdersMock)).thenReturn(evidenceManagementFileUpload);
+        when(pdfGeneratorServiceMock
+                .generateDocmosisDocumentFrom(CAVEAT_RAISED.getTemplateName(), placeholdersMock))
+                .thenReturn(evidenceManagementFileUpload);
         when(uploadServiceMock.store(evidenceManagementFileUpload)).thenReturn(evidenceManagementFile);
         when(evidenceManagementFile.getLink(Link.REL_SELF)).thenReturn(link);
         when(evidenceManagementFile.getLink("binary")).thenReturn(link);
