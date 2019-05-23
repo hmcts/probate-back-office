@@ -380,6 +380,19 @@ public class CaseData {
     private final String legacyType;
     private final String legacyCaseViewUrl;
 
+    private final String boCaveatStopNotificationRequested;
+
+    @SuppressWarnings("squid:S1170")
+    @Getter(lazy = true)
+    private final String boCaveatStopNotification = getDefaultValueForCaveatStopNotification();
+
+    private final String boCaseStopCaveatId;
+
+    private final String boCaveatStopEmailNotificationRequested;
+    private final String boCaveatStopEmailNotification = YES;
+    private final String boCaveatStopSendToBulkPrintRequested;
+    private final String boCaveatStopSendToBulkPrint = YES;
+
     @Getter(lazy = true)
     private final List<CollectionMember<AdditionalExecutor>> executorsApplyingForLegalStatement = getAllExecutors(true);
 
@@ -439,6 +452,10 @@ public class CaseData {
         return primaryApplicantEmailAddress == null && solsSolicitorEmail == null ? NO : YES;
     }
 
+    public String getDefaultValueForCaveatStopNotification() {
+        return primaryApplicantEmailAddress == null || primaryApplicantEmailAddress.isEmpty() ? NO : YES;
+    }
+
     public boolean isDocsReceivedEmailNotificationRequested() {
         return YES.equals(getBoEmailDocsReceivedNotification());
     }
@@ -449,6 +466,18 @@ public class CaseData {
 
     public boolean isGrantIssuedEmailNotificationRequested() {
         return YES.equals(getBoEmailGrantIssuedNotification());
+    }
+
+    public boolean isCaveatStopNotificationRequested() {
+        return YES.equals(getBoCaveatStopNotification());
+    }
+
+    public boolean boCaveatStopEmailNotificationRequested() {
+        return YES.equals(getBoCaveatStopEmailNotification());
+    }
+
+    public boolean boCaveatStopSendToBulkPrintRequested() {
+        return YES.equals(getBoCaveatStopSendToBulkPrint());
     }
 
     private String convertDate(LocalDate dateToConvert) {
