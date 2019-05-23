@@ -56,6 +56,7 @@ public class NotificationService {
     private static final String PERSONALISATION_REGISTRY_NAME = "registry_name";
     private static final String PERSONALISATION_REGISTRY_PHONE = "registry_phone";
     private static final String PERSONALISATION_CASE_STOP_DETAILS = "case-stop-details";
+    private static final String PERSONALISATION_CAVEAT_CASE_ID = "caveat_case_id";
     private static final String PERSONALISATION_DECEASED_DOD = "deceased_dod";
     private static final String PERSONALISATION_CCD_REFERENCE = "ccd_reference";
     private static final String PERSONALISATION_MESSAGE_CONTENT = "message_content";
@@ -76,7 +77,7 @@ public class NotificationService {
 
         SendEmailResponse response;
 
-        if (state == State.CASE_STOPPED) {
+        if (state == State.CASE_STOPPED || state == State.CASE_STOPPED_CAVEAT) {
             response = notificationClient.sendEmail(templateId, emailAddress, personalisation, reference, emailReplyToId);
         } else {
             response = notificationClient.sendEmail(templateId, emailAddress, personalisation, reference);
@@ -151,6 +152,7 @@ public class NotificationService {
         personalisation.put(PERSONALISATION_REGISTRY_NAME, registry.getName());
         personalisation.put(PERSONALISATION_REGISTRY_PHONE, registry.getPhone());
         personalisation.put(PERSONALISATION_CASE_STOP_DETAILS, caseData.getBoStopDetails());
+        personalisation.put(PERSONALISATION_CAVEAT_CASE_ID, caseData.getBoCaseStopCaveatId());
         personalisation.put(PERSONALISATION_DECEASED_DOD, caseData.getDeceasedDateOfDeathFormatted());
         personalisation.put(PERSONALISATION_CCD_REFERENCE, caseDetails.getId().toString());
 
@@ -189,6 +191,8 @@ public class NotificationService {
                 return notificationTemplates.getEmail().get(applicationType).getDocumentReceived();
             case CASE_STOPPED:
                 return notificationTemplates.getEmail().get(applicationType).getCaseStopped();
+            case CASE_STOPPED_CAVEAT:
+                return notificationTemplates.getEmail().get(applicationType).getCaseStoppedCaveat();
             case GRANT_ISSUED:
                 return notificationTemplates.getEmail().get(applicationType).getGrantIssued();
             case GENERAL_CAVEAT_MESSAGE:

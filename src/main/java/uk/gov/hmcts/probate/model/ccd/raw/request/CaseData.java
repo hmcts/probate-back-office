@@ -381,17 +381,17 @@ public class CaseData {
     private final String legacyCaseViewUrl;
 
     private final String boCaveatStopNotificationRequested;
-
-    @SuppressWarnings("squid:S1170")
-    @Getter(lazy = true)
-    private final String boCaveatStopNotification = getDefaultValueForCaveatStopNotification();
+    private final String boCaveatStopNotification;
 
     private final String boCaseStopCaveatId;
 
     private final String boCaveatStopEmailNotificationRequested;
-    private final String boCaveatStopEmailNotification = YES;
+    @SuppressWarnings("squid:S1170")
+    @Getter(lazy = true)
+    private final String boCaveatStopEmailNotification = getDefaultValueForCaveatStopEmailNotification();
+
     private final String boCaveatStopSendToBulkPrintRequested;
-    private final String boCaveatStopSendToBulkPrint = YES;
+    private final String boCaveatStopSendToBulkPrint;
 
     @Getter(lazy = true)
     private final List<CollectionMember<AdditionalExecutor>> executorsApplyingForLegalStatement = getAllExecutors(true);
@@ -452,7 +452,7 @@ public class CaseData {
         return primaryApplicantEmailAddress == null && solsSolicitorEmail == null ? NO : YES;
     }
 
-    public String getDefaultValueForCaveatStopNotification() {
+    public String getDefaultValueForCaveatStopEmailNotification() {
         return primaryApplicantEmailAddress == null || primaryApplicantEmailAddress.isEmpty() ? NO : YES;
     }
 
@@ -472,11 +472,11 @@ public class CaseData {
         return YES.equals(getBoCaveatStopNotification());
     }
 
-    public boolean boCaveatStopEmailNotificationRequested() {
+    public boolean isCaveatStopEmailNotificationRequested() {
         return YES.equals(getBoCaveatStopEmailNotification());
     }
 
-    public boolean boCaveatStopSendToBulkPrintRequested() {
+    public boolean isCaveatStopSendToBulkPrintRequested() {
         return YES.equals(getBoCaveatStopSendToBulkPrint());
     }
 
