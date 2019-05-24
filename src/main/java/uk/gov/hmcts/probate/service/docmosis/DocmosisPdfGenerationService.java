@@ -61,6 +61,7 @@ public class DocmosisPdfGenerationService {
                 .templateName(docmosisTemplateName)
                 .outputFormat(PDF_DOCUMENT_OUTPUT_FORMAT)
                 .outputName(PDF_DOCUMENT_OUTPUT_NAME)
+                .pdfArchiveMode(true)
                 .data(placeholders).build();
     }
 

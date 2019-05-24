@@ -17,7 +17,6 @@ import java.util.Date;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.when;
 
 public class CaveatDocmosisServiceTest {
 
@@ -41,11 +40,6 @@ public class CaveatDocmosisServiceTest {
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-
-        when(fileSystemResourceServiceMock
-                .getFileFromResourceAsString(pdfServiceConfigurationMock
-                        .getHmctsFamilyLogoBase64File())).thenReturn("image");
-
     }
 
     @Test
@@ -60,7 +54,6 @@ public class CaveatDocmosisServiceTest {
         assertEquals(placeholders.get("generatedDate"), generatedDateFormat.format(new Date()));
         assertEquals(placeholders.get("registryLocation"), "leeds");
         assertEquals(placeholders.get("PA8AURL"), "www.citizensadvice.org.uk|https://www.citizensadvice.org.uk/");
-        assertEquals(placeholders.get("hmctsfamily"), "image:base64:" + "image");
         assertEquals(placeholders.get("caseReference"), CASE_REFERENCE);
     }
 

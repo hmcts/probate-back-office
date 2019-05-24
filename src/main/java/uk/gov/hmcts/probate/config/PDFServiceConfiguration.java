@@ -24,7 +24,6 @@ public class PDFServiceConfiguration {
     private String defaultDisplayFilename;
     private String grantSignatureSecretKey;
     private String grantSignatureEncryptedFile;
-    private String hmctsFamilyLogoBase64File;
     
     @Bean
     public PDFServiceClient pdfServiceClient(
