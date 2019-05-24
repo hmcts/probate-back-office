@@ -59,14 +59,11 @@ You should:
 
 If using recorded delivery, send to:
 
-High Court of Justice England and Wales,
-Principal Registry of the Family Division,
-Manchester Civil Justice Centre,
-Ground Floor,
-1 Bridge Street West,
-PO Box 4240,
-Manchester,
-M60 1WJ
+Principal Registry of the Family Division (PRFD),
+HMCTS Probate,
+PO Box 12625,
+Harlow,
+CM20 9QE
 
 Or by DX to: 701990
 What happens next
