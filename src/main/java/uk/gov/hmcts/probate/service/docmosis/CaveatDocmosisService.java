@@ -39,6 +39,7 @@ public class CaveatDocmosisService {
         placeholders.put("generatedDate", generatedDateFormat.format(new Date()));
         placeholders.put("registry", registryPlaceholders);
         placeholders.put("PA8AURL", "www.citizensadvice.org.uk|https://www.citizensadvice.org.uk/");
+        placeholders.put("PA8BURL", "www.gov.uk|https://www.gov.uk/wills-probate-inheritance/stopping-a-grant-of-representation");
         return placeholders;
     }
 

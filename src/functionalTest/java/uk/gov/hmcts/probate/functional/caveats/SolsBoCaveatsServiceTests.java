@@ -17,7 +17,7 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
 
     private static final String DEFAULT_PAYLOAD= "caveatPayloadNotifications.json";
     private static final String DEFAULT_PAYLOAD_NO_EMAIL= "caveatPayloadNotificationsNoEmail.json";
-    private static final String DEFAULT_PAYLOAD_BULK_PRINT = "caveatPayloadNotificationsBulkPrint.json";
+    private static final String DEFAULT_PAYLOAD_CTSC= "caveatPayloadNotificationsNoEmailCTSC.json";
 
     private static final String YES = "Yes";
     private static final String NO = "No";
@@ -74,7 +74,7 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
         assertCommons(response);
         assertTrue(response.contains("1542274092932452"));
         assertTrue(response.contains("personal@hmcts-test.com"));
-        assertTrue(response.contains("0113 3896 133"));
+
     }
 
     @Test
@@ -84,7 +84,20 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
 
         assertCommons(response);
         assertTrue(response.contains("#1542-2740-9293-2452"));
-        assertTrue(response.contains("0113 389 6133"));
+        assertAddress(coversheet);
+
+        assertTrue(!response.contains("send an email to contactprobate@justice.gov.uk headed Caveat Withdraw"));
+
+    }
+
+    @Test
+    public void verifySuccessForCaveatRaisedDocumentAndCoversheetCTSC() {
+        String coversheet = generateDocument(DEFAULT_PAYLOAD_CTSC, CAVEAT_RAISED, 0);
+        String response = generateDocument(DEFAULT_PAYLOAD_CTSC, CAVEAT_RAISED, 1);
+
+        assertCommons(response);
+        assertTrue(response.contains("#1542-2740-9293-2452"));
+        assertTrue(response.contains("send an email to contactprobate@justice.gov.uk headed Caveat Withdraw"));
         assertAddress(coversheet);
 
     }
@@ -95,6 +108,7 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
         assertTrue(response.contains("cf name 2 cl name 2"));
         assertTrue(response.contains("df name 2 dl name 2"));
         assertTrue(response.contains("Leeds"));
+        assertTrue(response.contains("0113 389 6133"));
 
     }
 
