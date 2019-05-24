@@ -74,7 +74,7 @@ public class CallbackResponseTransformerTest {
     private static final String CASE_TYPE_INTESTACY = "intestacy";
 
     private static final ApplicationType APPLICATION_TYPE = SOLICITOR;
-    private static final String REGISTRY_LOCATION = "Birmingham";
+    private static final String REGISTRY_LOCATION = "ctsc";
 
     private static final String SOLICITOR_FIRM_NAME = "Sol Firm Name";
     private static final String SOLICITOR_FIRM_LINE1 = "Sols Add Line 1";

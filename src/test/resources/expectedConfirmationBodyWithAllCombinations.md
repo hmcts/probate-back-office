@@ -57,12 +57,14 @@ You should:
 
 If using recorded delivery, send to:
 
-Birmingham Probate Registry,
-The Priory Courts,
-33 Bull Street,
-Birmingham,
-West Midlands,
-B4 6DU
+High Court of Justice England and Wales,
+Principal Registry of the Family Division,
+Manchester Civil Justice Centre,
+Ground Floor,
+1 Bridge Street West,
+PO Box 4240,
+Manchester,
+M60 1WJ
 
 Or by DX to: 701990
 What happens next

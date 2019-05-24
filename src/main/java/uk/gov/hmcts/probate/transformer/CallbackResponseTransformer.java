@@ -52,7 +52,7 @@ public class CallbackResponseTransformer {
     static final String PAYMENT_REFERENCE_CHEQUE = "Cheque (payable to ‘HM Courts & Tribunals Service’)";
 
     private static final ApplicationType DEFAULT_APPLICATION_TYPE = SOLICITOR;
-    private static final String DEFAULT_REGISTRY_LOCATION = "Birmingham";
+    private static final String DEFAULT_REGISTRY_LOCATION = "ctsc";
 
     public static final String ANSWER_YES = "Yes";
     public static final String ANSWER_NO = "No";
