@@ -118,7 +118,7 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
         assertTrue(response.contains("addressline2"));
         assertTrue(response.contains("addressline3"));
         assertTrue(response.contains("posttown"));
-       // assertTrue(response.contains("postcode"));
+        assertTrue(response.contains("postCode"));
         assertTrue(response.contains("county"));
         assertTrue(response.contains("country"));
     }
