@@ -9,6 +9,7 @@ import uk.gov.hmcts.probate.config.properties.registries.RegistriesProperties;
 import uk.gov.hmcts.probate.config.properties.registries.Registry;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
 import uk.gov.hmcts.probate.service.FileSystemResourceService;
+import uk.gov.hmcts.probate.service.ccd.CcdReferenceFormatterService;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -23,6 +24,7 @@ public class CaveatDocmosisService {
     private final RegistriesProperties registriesProperties;
     private final PDFServiceConfiguration pdfServiceConfiguration;
     private final FileSystemResourceService fileSystemResourceService;
+    private final CcdReferenceFormatterService ccdReferenceFormatterService;
 
     public Map<String, Object> caseDataAsPlaceholders(CaveatDetails caveatDetails) {
 
@@ -35,18 +37,12 @@ public class CaveatDocmosisService {
 
         DateFormat generatedDateFormat = new SimpleDateFormat(DATE_INPUT_FORMAT);
 
-        placeholders.put("caseReference", getFormattedCaseReference(caveatDetails.getId().toString()));
+        placeholders.put("caseReference", ccdReferenceFormatterService.getFormattedCaseReference(caveatDetails.getId().toString()));
         placeholders.put("generatedDate", generatedDateFormat.format(new Date()));
         placeholders.put("registry", registryPlaceholders);
         placeholders.put("PA8AURL", "www.citizensadvice.org.uk|https://www.citizensadvice.org.uk/");
         return placeholders;
     }
 
-    private String getFormattedCaseReference(String caseId) {
-        return "#" + caseId.substring(0, 4) + "-"
-                + caseId.substring(4, 8) + "-"
-                + caseId.substring(8, 12) + "-"
-                + caseId.substring(12, 16);
-    }
 
 }

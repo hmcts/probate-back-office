@@ -10,6 +10,7 @@ import uk.gov.hmcts.probate.config.properties.registries.RegistriesProperties;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
 import uk.gov.hmcts.probate.service.FileSystemResourceService;
+import uk.gov.hmcts.probate.service.ccd.CcdReferenceFormatterService;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -32,9 +33,11 @@ public class CaveatDocmosisServiceTest {
     @Mock
     private FileSystemResourceService fileSystemResourceServiceMock;
 
+    @Mock
+    private CcdReferenceFormatterService ccdReferenceFormatterServiceMock;
+
     private static final String DATE_INPUT_FORMAT = "ddMMyyyy";
     private static final long ID = 1234567891234567L;
-    private static final String CASE_REFERENCE = "#1234-5678-9123-4567";
     private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
 
     @Before
@@ -54,7 +57,7 @@ public class CaveatDocmosisServiceTest {
         assertEquals(placeholders.get("generatedDate"), generatedDateFormat.format(new Date()));
         assertEquals(placeholders.get("registryLocation"), "leeds");
         assertEquals(placeholders.get("PA8AURL"), "www.citizensadvice.org.uk|https://www.citizensadvice.org.uk/");
-        assertEquals(placeholders.get("caseReference"), CASE_REFERENCE);
+        assertEquals(placeholders.get("caseReference"), ccdReferenceFormatterServiceMock.getFormattedCaseReference("1234567891234567"));
     }
 
     @Test
