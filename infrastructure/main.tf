@@ -4,7 +4,7 @@ provider "azurerm" {
 
 locals {
   aseName = "core-compute-${var.env}"
-    
+
   //probate_frontend_hostname = "probate-frontend-aat.service.core-compute-aat.internal"
   previewVaultName = "${var.raw_product}-aat"
   previewEnv= "aat"
@@ -104,6 +104,17 @@ data "azurerm_key_vault_secret" "pdfServiceHealthUrl" {
   vault_uri = "${data.azurerm_key_vault.probate_key_vault.vault_uri}"
 }
 
+data "azurerm_key_vault_secret" "idamRedirectUrl" {
+  name = "idamRedirectUrl"
+  vault_uri = "${data.azurerm_key_vault.probate_key_vault.vault_uri}"
+}
+
+data "azurerm_key_vault_secret" "idamSecretProbate" {
+  name = "idam-secret-probate"
+  vault_uri = "${data.azurerm_key_vault.probate_key_vault.vault_uri}"
+}
+
+
 module "probate-back-office" {
   source = "git@github.com:hmcts/moj-module-webapp.git?ref=master"
   product = "${var.product}-${var.microservice}"
@@ -123,27 +134,27 @@ module "probate-back-office" {
 	  // Logging vars
     REFORM_TEAM = "${var.product}"
     REFORM_SERVICE_NAME = "${var.microservice}"
-    REFORM_ENVIRONMENT = "${var.env}"  
+    REFORM_ENVIRONMENT = "${var.env}"
 
     DEPLOYMENT_ENV= "${var.deployment_env}"
 
     AUTH_PROVIDER_SERVICE_CLIENT_KEY = "${data.azurerm_key_vault_secret.s2s_key.value}"
     PDF_SERVICE_GRANTSIGNATURESECRETKEY = "${data.azurerm_key_vault_secret.pdf_service_grantSignatureKey.value}"
     PDF_SERVICE_GRANTSIGNATUREENCRYPTEDFILE = "${data.azurerm_key_vault_secret.pdf_service_grantSignatureFile.value}"
- 
+
     PROBATE_POSTGRESQL_USER = "${data.azurerm_key_vault_secret.POSTGRES-USER.value}"
     PROBATE_POSTGRESQL_PASSWORD = "${data.azurerm_key_vault_secret.POSTGRES-PASS.value}"
-    PROBATE_POSTGRESQL_DATABASE = "${data.azurerm_key_vault_secret.POSTGRES_DATABASE.value}"	  
+    PROBATE_POSTGRESQL_DATABASE = "${data.azurerm_key_vault_secret.POSTGRES_DATABASE.value}"
     PROBATE_POSTGRESQL_HOSTNAME =  "${data.azurerm_key_vault_secret.POSTGRES_HOST.value}"
     PROBATE_POSTGRESQL_PORT = "${data.azurerm_key_vault_secret.POSTGRES_PORT.value}"
 
-    AUTH_PROVIDER_SERVICE_CLIENT_BASEURL = "${var.idam_service_api}"
+    AUTH_PROVIDER_SERVICE_CLIENT_BASEURL = "${var.auth_service_url}"
     PDF_SERVICE_URL = "${var.pdf_service_api_url}"
     PRINTSERVICE_HOST = "${var.printservice_host}"
     PRINTSERVICE_INTERNAL_HOST = "${var.printservice_internal_host}"
     CCD_GATEWAY_HOST = "${var.ccd_gateway_host}"
     SERVICES_CORECASEDATA_BASEURL = "${var.ccd_baseUrl}"
-    IDAM_SERVICE_HOST = "${var.idam_service_api}"
+    IDAM_SERVICE_HOST = "${var.idam_service_host}"
     FEE_API_URL = "${var.fee_api_url}"
     EVIDENCE_MANAGEMENT_HOST = "${var.evidence_management_host}"
     NOTIFICATIONS_GOVNOTIFYAPIKEY = "${data.azurerm_key_vault_secret.govNotifyApiKey.value}"
@@ -159,7 +170,8 @@ module "probate-back-office" {
     PDF_SERVICE_BASEURL = "${data.azurerm_key_vault_secret.pdfServiceBaseUrl.value}"
     PDF_SERVICE_ACCESS_KEY = "${data.azurerm_key_vault_secret.pdfServiceAccessKey.value}"
     PDF_SERVICE_HEALTH_URL = "${data.azurerm_key_vault_secret.pdfServiceHealthUrl.value}"
-
+    IDAM_REDIRECT_URL = "${data.azurerm_key_vault_secret.idamRedirectUrl.value}"
+    IDAM_SECRET = "${data.azurerm_key_vault_secret.idamSecretProbate.value}"
   }
 }
 
