@@ -1,0 +1,14 @@
+{
+  "tabName": "Examination checklist",
+  "fields": [
+      "Does all information in the application and SOT match the Will and Death Certificate?",
+      "Have all key checks been completed?",
+      "Does this case require a review by QA?"
+  ],
+  "dataKeys": [
+      "list1_text",
+      "list2_text",
+      "list3_text"
+  ]
+}
+  

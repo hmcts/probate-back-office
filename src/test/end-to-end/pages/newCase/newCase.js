@@ -1,7 +1,7 @@
 'use strict';
 
 const testConfig = require('src/test/config');
-const newCaseConfig = require('./newCaseConfig.json');
+const newCaseConfig = require('./newCaseConfig');
 
 module.exports = function () {
 

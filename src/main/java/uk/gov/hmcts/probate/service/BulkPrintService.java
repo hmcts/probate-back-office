@@ -95,13 +95,14 @@ public class BulkPrintService {
         return sendLetterResponse;
     }
 
+
     private String getPdfAsBase64EncodedString(Document document,
                                                String authHeaderValue,
                                                CallbackRequest callbackRequest) throws IOException {
 
         String response = Base64.getEncoder().encodeToString(documentStoreClient.retrieveDocument(document, authHeaderValue));
         log.info(CASE_ID + callbackRequest.getCaseDetails().getId().toString()
-                + "dm store" + document.getDocumentFileName() + " string: " + response);
+                + "dm store" + document.getDocumentFileName());
         return response;
     }
 
@@ -111,7 +112,7 @@ public class BulkPrintService {
 
         String response = Base64.getEncoder().encodeToString(documentStoreClient.retrieveDocument(document, authHeaderValue));
         log.info(CASE_ID + caveatCallbackRequest.getCaseDetails().getId().toString()
-                + "dm store" + document.getDocumentFileName() + " string: " + response);
+                + "dm store" + document.getDocumentFileName());
         return response;
     }
 

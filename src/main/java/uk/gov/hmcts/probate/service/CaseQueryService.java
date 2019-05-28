@@ -92,6 +92,7 @@ public class CaseQueryService {
             tokenHeaders.setContentType(MediaType.APPLICATION_JSON);
         } finally {
             entity = new HttpEntity<>(jsonQuery, tokenHeaders);
+            log.info("Data extract Elastic search entity: " + entity);
         }
 
         ReturnedCases returnedCases;
