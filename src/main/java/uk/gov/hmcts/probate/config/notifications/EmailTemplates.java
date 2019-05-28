@@ -9,4 +9,5 @@ public class EmailTemplates {
     private String grantIssued;
     private String generalCaveatMessage;
     private String excelaData;
+    private String caveatRaised;
 }

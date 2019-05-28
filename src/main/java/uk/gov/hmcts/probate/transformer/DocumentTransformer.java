@@ -3,6 +3,7 @@ package uk.gov.hmcts.probate.transformer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.model.DocumentType;
+import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatCallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
@@ -39,6 +40,18 @@ public class DocumentTransformer {
                         .add(new CollectionMember<>(null, document));
                 break;
             case EDGE_CASE:
+                break;
+            default:
+        }
+    }
+
+    public void addDocument(CaveatCallbackRequest caveatCallbackRequest, Document document) {
+        switch (document.getDocumentType()) {
+            case CAVEAT_COVERSHEET:
+            case CAVEAT_RAISED:
+            case SENT_EMAIL:
+                caveatCallbackRequest.getCaseDetails().getData().getNotificationsGenerated()
+                        .add(new CollectionMember<>(null, document));
                 break;
             default:
         }

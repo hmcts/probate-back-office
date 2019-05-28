@@ -9,6 +9,7 @@ import uk.gov.hmcts.probate.config.properties.registries.RegistriesProperties;
 import uk.gov.hmcts.probate.config.properties.registries.Registry;
 import uk.gov.hmcts.probate.exception.BadRequestException;
 import uk.gov.hmcts.probate.model.ApplicationType;
+import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.SentEmail;
 import uk.gov.hmcts.probate.model.State;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
@@ -80,7 +81,7 @@ public class NotificationService {
             response = notificationClient.sendEmail(templateId, emailAddress, personalisation, reference);
         }
 
-        return getGeneratedSentEmailDocument(response, emailAddress);
+        return getGeneratedSentEmailDocument(response, emailAddress, SENT_EMAIL);
     }
 
     public Document sendCaveatEmail(State state, CaveatDetails caveatDetails)
@@ -98,7 +99,19 @@ public class NotificationService {
 
         response = notificationClient.sendEmail(templateId, emailAddress, personalisation, reference);
 
-        return getGeneratedSentEmailDocument(response, emailAddress);
+        DocumentType documentType;
+        switch (state) {
+            case GENERAL_CAVEAT_MESSAGE:
+                documentType = SENT_EMAIL;
+                break;
+            case CAVEAT_RAISED:
+                documentType = SENT_EMAIL;
+                break;
+            default:
+                throw new BadRequestException("Unsupported State");
+        }
+
+        return getGeneratedSentEmailDocument(response, emailAddress, documentType);
     }
 
     public Document sendExcelaEmail(List<ReturnedCaseDetails> caseDetails) throws
@@ -112,10 +125,10 @@ public class NotificationService {
 
         response = notificationClient.sendEmail(templateId, emailAddresses.getExcelaEmail(), personalisation, reference);
 
-        return getGeneratedSentEmailDocument(response, emailAddresses.getExcelaEmail());
+        return getGeneratedSentEmailDocument(response, emailAddresses.getExcelaEmail(), SENT_EMAIL);
     }
 
-    private Document getGeneratedSentEmailDocument(SendEmailResponse response, String emailAddress) {
+    private Document getGeneratedSentEmailDocument(SendEmailResponse response, String emailAddress, DocumentType docType) {
         SentEmail sentEmail = SentEmail.builder()
                 .sentOn(LocalDateTime.now().format(formatter))
                 .from(response.getFromEmail().orElse(""))
@@ -124,7 +137,7 @@ public class NotificationService {
                 .body(markdownTransformationService.toHtml(response.getBody()))
                 .build();
 
-        return pdfManagementService.generateAndUpload(sentEmail, SENT_EMAIL);
+        return pdfManagementService.generateAndUpload(sentEmail, docType);
     }
 
     private Map<String, String> getPersonalisation(CaseDetails caseDetails, Registry registry) {
@@ -179,6 +192,8 @@ public class NotificationService {
                 return notificationTemplates.getEmail().get(applicationType).getGrantIssued();
             case GENERAL_CAVEAT_MESSAGE:
                 return notificationTemplates.getEmail().get(applicationType).getGeneralCaveatMessage();
+            case CAVEAT_RAISED:
+                return notificationTemplates.getEmail().get(applicationType).getCaveatRaised();
             default:
                 throw new BadRequestException("Unsupported state");
         }

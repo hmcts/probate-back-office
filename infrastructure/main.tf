@@ -89,6 +89,21 @@ data "azurerm_key_vault_secret" "ftpEnv" {
   vault_uri = "${data.azurerm_key_vault.probate_key_vault.vault_uri}"
 }
 
+data "azurerm_key_vault_secret" "pdfServiceBaseUrl" {
+  name = "pdfServiceBaseUrl"
+  vault_uri = "${data.azurerm_key_vault.probate_key_vault.vault_uri}"
+}
+
+data "azurerm_key_vault_secret" "pdfServiceAccessKey" {
+  name = "pdfServiceAccessKey"
+  vault_uri = "${data.azurerm_key_vault.probate_key_vault.vault_uri}"
+}
+
+data "azurerm_key_vault_secret" "pdfServiceHealthUrl" {
+  name = "pdfServiceHealthUrl"
+  vault_uri = "${data.azurerm_key_vault.probate_key_vault.vault_uri}"
+}
+
 data "azurerm_key_vault_secret" "idamRedirectUrl" {
   name = "idamRedirectUrl"
   vault_uri = "${data.azurerm_key_vault.probate_key_vault.vault_uri}"
@@ -98,6 +113,7 @@ data "azurerm_key_vault_secret" "idamSecretProbate" {
   name = "idam-secret-probate"
   vault_uri = "${data.azurerm_key_vault.probate_key_vault.vault_uri}"
 }
+
 
 module "probate-back-office" {
   source = "git@github.com:hmcts/moj-module-webapp.git?ref=master"
@@ -151,6 +167,9 @@ module "probate-back-office" {
     AUTH_TOKEN_PASSWORD = "${data.azurerm_key_vault_secret.authTokenPassword.value}"
     FTP_SIGNATURE = "${data.azurerm_key_vault_secret.ftpSignature.value}"
     FTP_ENV = "${data.azurerm_key_vault_secret.ftpEnv.value}"
+    PDF_SERVICE_BASEURL = "${data.azurerm_key_vault_secret.pdfServiceBaseUrl.value}"
+    PDF_SERVICE_ACCESS_KEY = "${data.azurerm_key_vault_secret.pdfServiceAccessKey.value}"
+    PDF_SERVICE_HEALTH_URL = "${data.azurerm_key_vault_secret.pdfServiceHealthUrl.value}"
     IDAM_REDIRECT_URL = "${data.azurerm_key_vault_secret.idamRedirectUrl.value}"
     IDAM_SECRET = "${data.azurerm_key_vault_secret.idamSecretProbate.value}"
   }

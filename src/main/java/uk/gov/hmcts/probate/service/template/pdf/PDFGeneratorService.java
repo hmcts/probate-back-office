@@ -13,6 +13,7 @@ import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.evidencemanagement.EvidenceManagementFileUpload;
 import uk.gov.hmcts.probate.service.FileSystemResourceService;
+import uk.gov.hmcts.probate.service.docmosis.DocmosisPdfGenerationService;
 import uk.gov.hmcts.reform.pdf.service.client.PDFServiceClient;
 import uk.gov.hmcts.reform.pdf.service.client.exception.PDFServiceClientException;
 
@@ -33,6 +34,7 @@ public class PDFGeneratorService {
 
     private final ObjectMapper objectMapper;
     private final PDFServiceClient pdfServiceClient;
+    private final DocmosisPdfGenerationService docmosisPdfGenerationService;
 
     public EvidenceManagementFileUpload generatePdf(DocumentType documentType, String pdfGenerationData) {
         byte[] postResult;
@@ -44,6 +46,18 @@ public class PDFGeneratorService {
         }
         return new EvidenceManagementFileUpload(MediaType.APPLICATION_PDF, postResult);
     }
+
+    public EvidenceManagementFileUpload generateDocmosisDocumentFrom(String templateName, Map<String, Object> placeholders) {
+        byte[] postResult;
+        try {
+            postResult = docmosisPdfGenerationService.generateDocFrom(templateName, placeholders);
+        } catch (PDFServiceClientException e) {
+            log.error(e.getMessage(), e);
+            throw new ClientException(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage());
+        }
+        return new EvidenceManagementFileUpload(MediaType.APPLICATION_PDF, postResult);
+    }
+
 
     private byte[] generateFromHtml(String templateName, String pdfGenerationData) throws IOException {
         String templatePath = pdfServiceConfiguration.getTemplatesDirectory() + templateName + TEMPLATE_EXTENSION;
