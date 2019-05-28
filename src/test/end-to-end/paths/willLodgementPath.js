@@ -7,7 +7,7 @@ const createCaseConfig = require('src/test/end-to-end/pages/createCase/createCas
 const eventSummaryConfig = require('src/test/end-to-end/pages/eventSummary/eventSummaryConfig');
 
 const createWillLodgementConfig = require('src/test/end-to-end/pages/createWillLodgement/createWillLodgementConfig');
-const documentUploadConfig = require('src/test/end-to-end/pages/documentUpload/documentUploadConfig');
+const documentUploadConfig = require('src/test/end-to-end/pages/documentUpload/willLodgement/documentUploadConfig');
 const generateDepositReceiptConfig = require('src/test/end-to-end/pages/generateDepositReceipt/generateDepositReceiptConfig');
 const caseMatchesConfig = require('src/test/end-to-end/pages/caseMatches/willLodgement/caseMatchesConfig');
 const withdrawWillConfig = require('src/test/end-to-end/pages/withdrawal/willLodgement/withdrawalConfig');
@@ -36,7 +36,7 @@ Scenario('Will Lodgement Workflow - E2E test 01 - Will Lodgement for a Personal 
 
     let nextStepName = 'Create a will lodgement';
     I.selectNewCase();
-    I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text, createCaseConfig.list3_text);
+    I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_will, createCaseConfig.list3_text_will);
     I.enterWillLodgementPage1('create');
     I.enterWillLodgementPage2('create');
     I.enterWillLodgementPage3('create');
@@ -56,7 +56,7 @@ Scenario('Will Lodgement Workflow - E2E test 01 - Will Lodgement for a Personal 
 
     nextStepName = 'Upload document';
     I.chooseNextStep(nextStepName);
-    I.uploadDocument(caseRef);
+    I.uploadDocument(caseRef, documentUploadConfig);
     I.enterEventSummary(caseRef, nextStepName);
     // Note that End State does not change when uploading a document.
     I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
