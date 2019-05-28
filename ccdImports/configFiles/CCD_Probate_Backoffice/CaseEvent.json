@@ -384,5 +384,17 @@
     "PostConditionState": "CasePaymentFailed",
     "SecurityClassification": "Public",
     "ShowSummary": "N"
+  },
+  {
+    "LiveFrom": "01/01/2017",
+    "CaseTypeID": "GrantOfRepresentation",
+    "ID": "createCaseWithoutPayment",
+    "Name": "Create case without payment",
+    "Description": "Create case without payment",
+    "DisplayOrder": 79,
+    "PreConditionState(s)": "Draft",
+    "PostConditionState": "CaseCreated",
+    "SecurityClassification": "Public",
+    "ShowSummary": "N"
   }
 ]
