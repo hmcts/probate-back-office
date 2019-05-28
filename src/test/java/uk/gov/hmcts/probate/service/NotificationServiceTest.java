@@ -93,6 +93,7 @@ public class NotificationServiceTest {
     private CaveatDetails personalCaveatDataWinchester;
     private CaveatDetails personalCaveatDataBristol;
     private CaveatDetails caveatRaisedCaseData;
+    private CaveatDetails caveatRaisedCtscCaseData;
 
     @Mock
     private RegistriesProperties registriesPropertiesMock;
@@ -196,6 +197,13 @@ public class NotificationServiceTest {
         caveatRaisedCaseData = new CaveatDetails(CaveatData.builder()
                 .applicationType(PERSONAL)
                 .registryLocation("Oxford")
+                .caveatorEmailAddress("personal@test.com")
+                .deceasedDateOfDeath(LocalDate.of(2000, 12, 12))
+                .build(), LAST_MODIFIED, ID);
+
+        caveatRaisedCtscCaseData = new CaveatDetails(CaveatData.builder()
+                .applicationType(PERSONAL)
+                .registryLocation("ctsc")
                 .caveatorEmailAddress("personal@test.com")
                 .deceasedDateOfDeath(LocalDate.of(2000, 12, 12))
                 .build(), LAST_MODIFIED, ID);
@@ -649,6 +657,30 @@ public class NotificationServiceTest {
 
         verify(notificationClient).sendEmail(
                 eq("pa-caveat-raised"),
+                eq("personal@test.com"),
+                eq(personalisation),
+                eq("1"));
+
+        verify(pdfManagementService).generateAndUpload(any(SentEmail.class), eq(SENT_EMAIL));
+    }
+
+    @Test
+    public void sendGeneralCaveatRaisedCtscEmail()
+            throws NotificationClientException, BadRequestException {
+
+        HashMap<String, String> personalisation = new HashMap<>();
+
+        personalisation.put(PERSONALISATION_APPLICANT_NAME, caveatRaisedCtscCaseData.getData().getCaveatorFullName());
+        personalisation.put(PERSONALISATION_DECEASED_NAME, caveatRaisedCtscCaseData.getData().getDeceasedFullName());
+        personalisation.put(PERSONALISATION_CCD_REFERENCE, caveatRaisedCtscCaseData.getId().toString());
+        personalisation.put(PERSONALISATION_MESSAGE_CONTENT, caveatRaisedCtscCaseData.getData().getMessageContent());
+        personalisation.put(PERSONALISATION_REGISTRY_NAME, "CTSC");
+        personalisation.put(PERSONALISATION_REGISTRY_PHONE, "0300 303 0648");
+
+        notificationService.sendCaveatEmail(CAVEAT_RAISED, caveatRaisedCtscCaseData);
+
+        verify(notificationClient).sendEmail(
+                eq("pa-ctsc-caveat-raised"),
                 eq("personal@test.com"),
                 eq(personalisation),
                 eq("1"));

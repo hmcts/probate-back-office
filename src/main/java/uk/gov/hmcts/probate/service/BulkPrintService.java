@@ -95,6 +95,7 @@ public class BulkPrintService {
         return sendLetterResponse;
     }
 
+
     private String getPdfAsBase64EncodedString(Document document,
                                                String authHeaderValue,
                                                CallbackRequest callbackRequest) throws IOException {

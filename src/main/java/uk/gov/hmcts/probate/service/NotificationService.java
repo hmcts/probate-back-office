@@ -31,6 +31,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static uk.gov.hmcts.probate.model.Constants.CTSC;
 import static uk.gov.hmcts.probate.model.Constants.DOC_SUBTYPE_WILL;
 import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
 
@@ -67,7 +68,7 @@ public class NotificationService {
         CaseData caseData = caseDetails.getData();
         Registry registry = registriesProperties.getRegistries().get(caseData.getRegistryLocation().toLowerCase());
 
-        String templateId = getTemplateId(state, caseData.getApplicationType());
+        String templateId = getTemplateId(state, caseData.getApplicationType(), caseData.getRegistryLocation());
         String emailReplyToId = registry.getEmailReplyToId();
         String emailAddress = getEmail(caseData);
         Map<String, String> personalisation = getPersonalisation(caseDetails, registry);
@@ -90,7 +91,7 @@ public class NotificationService {
         CaveatData caveatData = caveatDetails.getData();
         Registry registry = registriesProperties.getRegistries().get(caveatData.getRegistryLocation().toLowerCase());
 
-        String templateId = getTemplateId(state, caveatData.getApplicationType());
+        String templateId = getTemplateId(state, caveatData.getApplicationType(), caveatData.getRegistryLocation());
         String emailAddress = caveatData.getCaveatorEmailAddress();
         Map<String, String> personalisation = getCaveatPersonalisation(caveatDetails, registry);
         String reference = caveatDetails.getId().toString();
@@ -182,7 +183,7 @@ public class NotificationService {
         return personalisation;
     }
 
-    private String getTemplateId(State state, ApplicationType applicationType) {
+    private String getTemplateId(State state, ApplicationType applicationType, String registryLocation) {
         switch (state) {
             case DOCUMENTS_RECEIVED:
                 return notificationTemplates.getEmail().get(applicationType).getDocumentReceived();
@@ -193,7 +194,11 @@ public class NotificationService {
             case GENERAL_CAVEAT_MESSAGE:
                 return notificationTemplates.getEmail().get(applicationType).getGeneralCaveatMessage();
             case CAVEAT_RAISED:
-                return notificationTemplates.getEmail().get(applicationType).getCaveatRaised();
+                if (registryLocation.equalsIgnoreCase(CTSC)) {
+                    return notificationTemplates.getEmail().get(applicationType).getCaveatRaisedCtsc();
+                } else {
+                    return notificationTemplates.getEmail().get(applicationType).getCaveatRaised();
+                }
             default:
                 throw new BadRequestException("Unsupported state");
         }
