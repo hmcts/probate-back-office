@@ -38,6 +38,7 @@ public class GrantApplicationMapperTest {
     private static final String DECEASED_SURNAME = "DeadSN";
     private static final LocalDate DATE_OF_BIRTH = LocalDate.of(1999, 1, 1);
     private static final LocalDate DATE_OF_DEATH = LocalDate.of(2018, 1, 1);
+    private static final LocalDate DATE_OF_ENTRY = LocalDate.of(2018, 1, 2);
     private static final String DECEASED_ADDRESS = "DecAddL1, DeacAddPC";
     private static final Long GROSS_ESTATE = 10000L;
     private static final Long GROSS_ESTATE_TRANSFORMED = 1000000L;
@@ -123,6 +124,7 @@ public class GrantApplicationMapperTest {
         assertThat(grantApplicationData.getLegacyId()).isEqualTo(ID);
         assertThat(grantApplicationData.getLegacyType()).isEqualTo(LEGACY_TYPE);
         assertThat(grantApplicationData.getLegacyCaseViewUrl()).contains(legacyCaseViewUrl);
+        assertThat(grantApplicationData.getApplicationSubmittedDate()).isEqualTo(DATE_OF_ENTRY);
     }
 
     private void assertIHTValuesApplication(GrantOfRepresentationData grantApplicationData) {
@@ -143,6 +145,7 @@ public class GrantApplicationMapperTest {
         grantApplication.setGrossEstateValue(GROSS_ESTATE);
         grantApplication.setNetEstateValue(NET_ESTATE);
         grantApplication.setId(Long.valueOf(ID));
+        grantApplication.setAppReceivedDate(DATE_OF_ENTRY);
         return grantApplication;
     }
 

@@ -142,7 +142,8 @@ public class CaveatCallbackResponseTransformer {
                 .legacyType(caveatData.getLegacyType())
                 .sendToBulkPrintRequested(caveatData.getSendToBulkPrintRequested())
                 .caveatRaisedEmailNotificationRequested(caveatData.getCaveatRaisedEmailNotificationRequested())
-                .bulkPrintId(caveatData.getBulkPrintId());
+                .bulkPrintId(caveatData.getBulkPrintId())
+                .applicationSubmittedDate(caveatData.getApplicationSubmittedDate());
     }
 
     private String transformToString(LocalDate dateValue) {
