@@ -24,9 +24,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+<<<<<<< HEAD
 
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
+=======
+>>>>>>> date and address formatting for notify template
 
 @JsonDeserialize(builder = CaveatData.CaveatDataBuilder.class)
 @NoArgsConstructor
@@ -146,7 +149,6 @@ public class CaveatData {
 
     private String formatAddress(ProbateAddress address) {
         String fullAddress = "";
-
         if (address != null) {
             fullAddress += address.getProAddressLine1().isEmpty() ? "" : address.getProAddressLine1() ;
             fullAddress += address.getProAddressLine2().isEmpty() ? "" : ", " + address.getProAddressLine2();

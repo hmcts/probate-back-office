@@ -9,10 +9,7 @@ import uk.gov.hmcts.probate.config.properties.registries.RegistriesProperties;
 import uk.gov.hmcts.probate.config.properties.registries.Registry;
 import uk.gov.hmcts.probate.exception.BadRequestException;
 import uk.gov.hmcts.probate.model.ApplicationType;
-<<<<<<< HEAD
 import uk.gov.hmcts.probate.model.DocumentType;
-=======
->>>>>>> added additional personalistion fields for caveat stop email - working progress ...
 import uk.gov.hmcts.probate.model.CaseType;
 import uk.gov.hmcts.probate.model.SentEmail;
 import uk.gov.hmcts.probate.model.State;
