@@ -141,12 +141,12 @@ public class CaveatData {
     private String formatAddress(ProbateAddress address) {
         String fullAddress = "";
 
-        fullAddress+= address.getProAddressLine1() == null? "" : address.getProAddressLine1() ;
-        fullAddress+= address.getProAddressLine2() == null? "" : ", " + address.getProAddressLine2();
-        fullAddress+= address.getProAddressLine3() == null? "" : ", " + address.getProAddressLine3();
-        fullAddress+= address.getProCounty() == null? "" : ", " + address.getProCounty();
-        fullAddress+= address.getProPostCode() == null? "" : ", " + address.getProPostCode();
-        fullAddress+= address.getProCountry() == null? "" : ", " + address.getProCountry();
+        fullAddress += address.getProAddressLine1() == null ? "" : address.getProAddressLine1() ;
+        fullAddress += address.getProAddressLine2() == null ? "" : ", " + address.getProAddressLine2();
+        fullAddress += address.getProAddressLine3() == null ? "" : ", " + address.getProAddressLine3();
+        fullAddress += address.getProCounty() == null ? "" : ", " + address.getProCounty();
+        fullAddress += address.getProPostCode() == null ? "" : ", " + address.getProPostCode();
+        fullAddress += address.getProCountry() == null ? "" : ", " + address.getProCountry();
 
         return fullAddress;
     }
