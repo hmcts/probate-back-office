@@ -24,5 +24,6 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "StandingSearch", "ID": "legacyId", "Label": "id", "FieldType": "Text", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "StandingSearch", "ID": "legacyType", "Label": "Legacy case type", "FieldType": "Text", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "StandingSearch", "ID": "legacyCaseViewUrl", "Label": "Legacy case link", "FieldType": "Text", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "StandingSearch", "ID": "legacyCaseViewUrlLink", "Label": "[Click here to open legacy case](${legacyCaseViewUrl})", "FieldType": "Label", "SecurityClassification": "Public"}
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "StandingSearch", "ID": "legacyCaseViewUrlLink", "Label": "[Click here to open legacy case](${legacyCaseViewUrl})", "FieldType": "Label", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "StandingSearch", "ID": "applicationSubmittedDate","Label": "Date application was submitted","HintText": "This is the date that the application is received by the Registry either via post or digital","FieldType": "Date","SecurityClassification": "Public"}
 ]

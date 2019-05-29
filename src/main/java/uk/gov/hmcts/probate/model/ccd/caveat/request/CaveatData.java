@@ -95,6 +95,8 @@ public class CaveatData {
 
     private String caveatReopenReason;
 
+    private String applicationSubmittedDate;
+
     @Builder.Default
     private List<CollectionMember<Document>> documentsGenerated = new ArrayList<>();
 
