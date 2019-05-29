@@ -79,6 +79,11 @@ data "azurerm_key_vault_secret" "authTokenPassword" {
   vault_uri = "${data.azurerm_key_vault.probate_key_vault.vault_uri}"
 }
 
+data "azurerm_key_vault_secret" "idamRedirectUrl" {
+  name = "idamRedirectUrl"
+  vault_uri = "${data.azurerm_key_vault.probate_key_vault.vault_uri}"
+}
+
 data "azurerm_key_vault_secret" "ftpSignature" {
   name = "ftpSignature"
   vault_uri = "${data.azurerm_key_vault.probate_key_vault.vault_uri}"
@@ -165,6 +170,7 @@ module "probate-back-office" {
     EXCELA_EMAIL = "${data.azurerm_key_vault_secret.excelaEmail.value}"
     AUTH_TOKEN_EMAIL = "${data.azurerm_key_vault_secret.authTokenEmail.value}"
     AUTH_TOKEN_PASSWORD = "${data.azurerm_key_vault_secret.authTokenPassword.value}"
+    IDAM_REDIRECT_URL = "${data.azurerm_key_vault_secret.idamRedirectUrl.value}"
     FTP_SIGNATURE = "${data.azurerm_key_vault_secret.ftpSignature.value}"
     FTP_ENV = "${data.azurerm_key_vault_secret.ftpEnv.value}"
     PDF_SERVICE_BASEURL = "${data.azurerm_key_vault_secret.pdfServiceBaseUrl.value}"
