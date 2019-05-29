@@ -76,6 +76,9 @@ public class Caveat extends ProbateManModel {
     @Column(name = "CAVEAT_TYPE")
     private String caveatType;
 
+    @Column(name = "OTHER_INFORMATION_TEXT")
+    private String otherInformationText; //varchar(32000),
+
     @JsonDeserialize(using = LocalDateDeserializer.class)
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DATE_FORMAT)
