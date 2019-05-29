@@ -16,9 +16,14 @@ import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
@@ -59,6 +64,9 @@ public class CaveatData {
 
     private ProbateAddress caveatorAddress;
 
+    @Getter(lazy = true)
+    private final String caveatorAddressFormatted = formatAddress(caveatorAddress);
+
     // EVENT = cavRaiseCaveat - caveat details
 
     @Getter(lazy = true)
@@ -73,6 +81,9 @@ public class CaveatData {
     private String sendToBulkPrintRequested;
 
     private LocalDate expiryDate;
+
+    @Getter(lazy = true)
+    private final String expiryDateFormatted = formatDate(expiryDate);
 
     // EVENT = cavEmailCaveator
 
@@ -125,5 +136,48 @@ public class CaveatData {
 
     @JsonPOJOBuilder(withPrefix = "")
     public static final class CaveatDataBuilder {
+    }
+
+    private String formatAddress(ProbateAddress address) {
+        String fullAddress = "";
+
+        fullAddress+= address.getProAddressLine1() == null? "" : address.getProAddressLine1() ;
+        fullAddress+= address.getProAddressLine2() == null? "" : ", " + address.getProAddressLine2();
+        fullAddress+= address.getProAddressLine3() == null? "" : ", " + address.getProAddressLine3();
+        fullAddress+= address.getProCounty() == null? "" : ", " + address.getProCounty();
+        fullAddress+= address.getProPostCode() == null? "" : ", " + address.getProPostCode();
+        fullAddress+= address.getProCountry() == null? "" : ", " + address.getProCountry();
+
+        return fullAddress;
+    }
+
+    private String formatDate(LocalDate dateToConvert) {
+        if (dateToConvert == null) {
+            return null;
+        }
+        DateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+        DateFormat targetFormat = new SimpleDateFormat("dd MMMMM yyyy");
+        try {
+            Date date = originalFormat.parse(dateToConvert.toString());
+            String formattedDate = targetFormat.format(date);
+            int day = Integer.parseInt(formattedDate.substring(0, 2));
+            switch (day) {
+                case 3:
+                case 23:
+                    return day + "rd " + formattedDate.substring(3);
+                case 1:
+                case 21:
+                case 31:
+                    return day + "st " + formattedDate.substring(3);
+                case 2:
+                case 22:
+                    return day + "nd " + formattedDate.substring(3);
+                default:
+                    return day + "th " + formattedDate.substring(3);
+            }
+        } catch (ParseException ex) {
+            ex.getMessage();
+            return null;
+        }
     }
 }
