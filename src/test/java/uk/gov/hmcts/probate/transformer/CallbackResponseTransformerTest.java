@@ -274,7 +274,6 @@ public class CallbackResponseTransformerTest {
                 .boCaveatStopEmailNotificationRequested(CAVEAT_STOP_EMAIL_NOTIFICATION)
                 .boCaveatStopSendToBulkPrintRequested(CAVEAT_STOP_SEND_TO_BULKP_PRINT)
                 .boCaveatStopSendToBulkPrint(CAVEAT_STOP_SEND_TO_BULKP_PRINT)
-                .boCaseStopReasonList(STOP_REASONS_LIST)
                 .boStopDetails(STOP_DETAILS)
                 .willExists(YES)
                 .additionalExecutorsApplying(ADDITIONAL_EXEC_LIST_APP)
@@ -1314,7 +1313,6 @@ public class CallbackResponseTransformerTest {
         assertEquals(CAVEAT_STOP_EMAIL_NOTIFICATION, callbackResponse.getData().getBoCaveatStopEmailNotificationRequested());
         assertEquals(CAVEAT_STOP_SEND_TO_BULKP_PRINT, callbackResponse.getData().getBoCaveatStopSendToBulkPrintRequested());
         assertEquals(CAVEAT_STOP_SEND_TO_BULKP_PRINT, callbackResponse.getData().getBoCaveatStopSendToBulkPrint());
-
         assertEquals(STOP_REASONS_LIST, callbackResponse.getData().getBoCaseStopReasonList());
         assertEquals(STOP_DETAILS, callbackResponse.getData().getBoStopDetails());
 
