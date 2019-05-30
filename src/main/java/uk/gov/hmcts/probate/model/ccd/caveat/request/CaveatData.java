@@ -72,7 +72,6 @@ public class CaveatData {
 
     // EVENT = cavRaiseCaveat - caveat details
 
-
     @Getter(lazy = true)
     private final String caveatRaisedEmailNotification = getDefaultValueForEmailNotifications();
 
