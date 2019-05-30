@@ -173,7 +173,7 @@ public class NotificationService {
         CaveatData caveatData = caveatQueryService.findCaveatById(CaseType.CAVEAT, caseData.getBoCaseStopCaveatId());
 
         if (caveatData != null) {
-            personalisation.put(PERSONALISATION_DATE_CAVEAT_ENTERED, caveatData.getExpiryDateFormatted());
+            personalisation.put(PERSONALISATION_DATE_CAVEAT_ENTERED, caveatData.getEntryDateFormatted());
             personalisation.put(PERSONALISATION_CAVEATOR_NAME, caveatData.getCaveatorFullName());
             personalisation.put(PERSONALISATION_CAVEATOR_ADDRESS, caveatData.getCaveatorAddressFormatted());
         }

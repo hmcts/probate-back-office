@@ -23,7 +23,6 @@ import java.util.stream.Collectors;
 import static java.util.Optional.ofNullable;
 import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
 import static uk.gov.hmcts.probate.model.Constants.CAVEAT_LIFESPAN;
-import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT_RAISED;
 
 @Component
 @RequiredArgsConstructor
@@ -52,6 +51,7 @@ public class CaveatCallbackResponseTransformer {
         }
 
         responseCaveatDataBuilder
+                .entryDate(dateTimeFormatter.format(LocalDate.now()))
                 .expiryDate(dateTimeFormatter.format(LocalDate.now().plusMonths(CAVEAT_LIFESPAN)))
                 .build();
 
@@ -130,6 +130,7 @@ public class CaveatCallbackResponseTransformer {
 
                 .caseMatches(caveatData.getCaseMatches())
 
+                .entryDate(transformToString(caveatData.getEntryDate()))
                 .expiryDate(transformToString(caveatData.getExpiryDate()))
                 .messageContent(caveatData.getMessageContent())
                 .caveatReopenReason(caveatData.getCaveatReopenReason())

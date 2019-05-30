@@ -69,6 +69,8 @@ public class CaveatData {
 
     // EVENT = cavRaiseCaveat - caveat details
 
+    private LocalDate entryDate;
+
     @Getter(lazy = true)
     private final String caveatRaisedEmailNotification = getDefaultValueForEmailNotifications();
 
@@ -81,6 +83,9 @@ public class CaveatData {
     private String sendToBulkPrintRequested;
 
     private LocalDate expiryDate;
+
+    @Getter(lazy = true)
+    private final String entryDateFormatted = formatDate(entryDate);
 
     @Getter(lazy = true)
     private final String expiryDateFormatted = formatDate(expiryDate);
