@@ -69,8 +69,8 @@ public class CaveatQueryServiceTest {
         CaveatData caveatData = CaveatData.builder()
                 .deceasedSurname("Smith")
                 .build();
-        List<ReturnedCaveatDetails> caveatList = new ImmutableList.Builder<ReturnedCaveatDetails>().add(new ReturnedCaveatDetails(caveatData,
-                LAST_MODIFIED, 1L))
+        List<ReturnedCaveatDetails> caveatList = new ImmutableList.Builder<ReturnedCaveatDetails>().add(
+                new ReturnedCaveatDetails(caveatData, LAST_MODIFIED, 1L))
                 .build();
         ReturnedCaveats returnedCaveats = new ReturnedCaveats(caveatList);
 
