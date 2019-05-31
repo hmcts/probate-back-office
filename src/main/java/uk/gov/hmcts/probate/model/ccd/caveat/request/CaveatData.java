@@ -82,6 +82,8 @@ public class CaveatData {
 
     private List<CollectionMember<UploadDocument>> documentsUploaded;
 
+    private String paperForm;
+
     @Builder.Default
     private List<CollectionMember<CaseMatch>> caseMatches = new ArrayList<>();
 
