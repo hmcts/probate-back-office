@@ -34,6 +34,7 @@ import static java.util.Collections.EMPTY_LIST;
 import static java.util.Optional.ofNullable;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
 import static uk.gov.hmcts.probate.model.Constants.CASE_TYPE_DEFAULT;
+import static uk.gov.hmcts.probate.model.Constants.CTSC;
 import static uk.gov.hmcts.probate.model.Constants.DATE_OF_DEATH_TYPE_DEFAULT;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
@@ -52,7 +53,7 @@ public class CallbackResponseTransformer {
     static final String PAYMENT_REFERENCE_CHEQUE = "Cheque (payable to ‘HM Courts & Tribunals Service’)";
 
     private static final ApplicationType DEFAULT_APPLICATION_TYPE = SOLICITOR;
-    private static final String DEFAULT_REGISTRY_LOCATION = "Birmingham";
+    private static final String DEFAULT_REGISTRY_LOCATION = CTSC;
     private static final String CASE_CREATED = "CaseCreated";
     private static final String CASE_PRINTED = "CasePrinted";
     private static final String READY_FOR_EXAMINATION = "BOReadyForExamination";

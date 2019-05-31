@@ -55,12 +55,11 @@ You should:
 
 If using recorded delivery, send to:
 
-Birmingham Probate Registry,
-The Priory Courts,
-33 Bull Street,
-Birmingham,
-West Midlands,
-B4 6DU
+Principal Registry of the Family Division (PRFD),
+HMCTS Probate,
+PO Box 12625,
+Harlow,
+CM20 9QE
 
 Or by DX to: 701990
 What happens next
