@@ -53,6 +53,10 @@ public class CallbackResponseTransformer {
 
     private static final ApplicationType DEFAULT_APPLICATION_TYPE = SOLICITOR;
     private static final String DEFAULT_REGISTRY_LOCATION = "Birmingham";
+    private static final String CASE_CREATED = "CaseCreated";
+    private static final String CASE_PRINTED = "CasePrinted";
+    private static final String READY_FOR_EXAMINATION = "BOReadyForExamination";
+    private static final String EXAMINING = "BOExamining";
 
     public static final String ANSWER_YES = "Yes";
     public static final String ANSWER_NO = "No";
@@ -139,6 +143,28 @@ public class CallbackResponseTransformer {
         }
         return transformResponse(responseCaseDataBuilder.build());
     }
+
+    public CallbackResponse resolveStop(CallbackRequest callbackRequest) {
+        ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), false);
+        switch (callbackRequest.getCaseDetails().getData().getResolveStopState()) {
+            case CASE_CREATED:
+                responseCaseDataBuilder.state(CASE_CREATED);
+                break;
+            case CASE_PRINTED:
+                responseCaseDataBuilder.state(CASE_PRINTED);
+                break;
+            case READY_FOR_EXAMINATION:
+                responseCaseDataBuilder.state(READY_FOR_EXAMINATION);
+                break;
+            default:
+                responseCaseDataBuilder.state(EXAMINING);
+                break;
+        }
+        return transformResponse(responseCaseDataBuilder.build());
+    }
+
+
+
 
     public CallbackResponse transformForSolicitorComplete(CallbackRequest callbackRequest, FeeServiceResponse feeServiceResponse) {
         String feeForNonUkCopies = transformMoneyGBPToString(feeServiceResponse.getFeeForNonUkCopies());
