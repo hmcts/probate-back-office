@@ -10,6 +10,10 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.client.HttpClientErrorException;
+import uk.gov.hmcts.probate.model.ccd.ProbateAddress;
+import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatCallbackRequest;
+import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
+import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
@@ -183,7 +187,7 @@ public class BulkPrintServiceTest {
     }
 
     @Test
-    public void shouldThrowgIOException() throws IOException {
+    public void shouldThrowIOException() throws IOException {
         SolsAddress address = SolsAddress.builder().addressLine1("Address 1")
                 .addressLine2("Address 2")
                 .postCode("EC2")
@@ -220,4 +224,125 @@ public class BulkPrintServiceTest {
 
         verify(documentStoreClientMock).retrieveDocument(any(Document.class), anyString());
     }
+
+    @Test
+    public void shouldThrowCaveatsIOException() throws IOException {
+
+        ProbateAddress address = ProbateAddress.builder().proAddressLine1("Address 1")
+                .proAddressLine2("Address 2")
+                .proPostCode("EC2")
+                .proCountry("UK")
+                .build();
+        CaveatData caseData = CaveatData.builder()
+                .caveatorEmailAddress("email@email.com")
+                .caveatorForenames("firstname")
+                .caveatorSurname("surname")
+                .caveatorAddress(address)
+                .build();
+        CaveatCallbackRequest callbackRequest = new CaveatCallbackRequest(new CaveatDetails(caseData, null, 0L));
+
+        DocumentLink documentLink = DocumentLink.builder()
+                .documentUrl("http://localhost")
+                .build();
+        Document document = Document.builder()
+                .documentFileName("test.pdf")
+                .documentGeneratedBy("test")
+                .documentDateAdded(LocalDate.now())
+                .documentLink(documentLink)
+                .build();
+        Document coverSheet = Document.builder()
+                .documentFileName("test.pdf")
+                .documentGeneratedBy("test")
+                .documentDateAdded(LocalDate.now())
+                .documentLink(documentLink)
+                .build();
+
+        doThrow(new IOException("Error retrieving document from store with url"))
+                .when(documentStoreClientMock).retrieveDocument(any(Document.class), anyString());
+
+        SendLetterResponse response = bulkPrintService.sendToBulkPrint(callbackRequest, document, coverSheet);
+
+        verify(documentStoreClientMock).retrieveDocument(any(Document.class), anyString());
+    }
+
+    @Test
+    public void testHttpClientExceptionCaveats() {
+        ProbateAddress address = ProbateAddress.builder().proAddressLine1("Address 1")
+                .proAddressLine2("Address 2")
+                .proPostCode("EC2")
+                .proCountry("UK")
+                .build();
+        CaveatData caseData = CaveatData.builder()
+                .caveatorEmailAddress("email@email.com")
+                .caveatorForenames("firstname")
+                .caveatorSurname("surname")
+                .caveatorAddress(address)
+                .build();
+        CaveatCallbackRequest callbackRequest = new CaveatCallbackRequest(new CaveatDetails(caseData, null, 0L));
+
+        DocumentLink documentLink = DocumentLink.builder()
+                .documentUrl("http://localhost")
+                .build();
+        Document document = Document.builder()
+                .documentFileName("test.pdf")
+                .documentGeneratedBy("test")
+                .documentDateAdded(LocalDate.now())
+                .documentLink(documentLink)
+                .build();
+        Document coverSheet = Document.builder()
+                .documentFileName("test.pdf")
+                .documentGeneratedBy("test")
+                .documentDateAdded(LocalDate.now())
+                .documentLink(documentLink)
+                .build();
+
+        doThrow(new HttpClientErrorException(HttpStatus.BAD_REQUEST)).when(sendLetterApiMock)
+                .sendLetter(anyString(), any(LetterWithPdfsRequest.class));
+        SendLetterResponse response = bulkPrintService.sendToBulkPrint(callbackRequest, document, coverSheet);
+
+        assertNull(response);
+    }
+
+    @Test
+    public void testSuccessfulSendToBulkPrintForCaveats() {
+
+        ProbateAddress address = ProbateAddress.builder().proAddressLine1("Address 1")
+                .proAddressLine2("Address 2")
+                .proPostCode("EC2")
+                .proCountry("UK")
+                .build();
+        CaveatData caseData = CaveatData.builder()
+                .caveatorEmailAddress("email@email.com")
+                .caveatorForenames("firstname")
+                .caveatorSurname("surname")
+                .caveatorAddress(address)
+                .build();
+        CaveatCallbackRequest callbackRequest = new CaveatCallbackRequest(new CaveatDetails(caseData, null, 0L));
+
+        DocumentLink documentLink = DocumentLink.builder()
+                .documentUrl("http://localhost")
+                .build();
+        Document document = Document.builder()
+                .documentFileName("test.pdf")
+                .documentGeneratedBy("test")
+                .documentDateAdded(LocalDate.now())
+                .documentLink(documentLink)
+                .build();
+        Document coverSheet = Document.builder()
+                .documentFileName("test.pdf")
+                .documentGeneratedBy("test")
+                .documentDateAdded(LocalDate.now())
+                .documentLink(documentLink)
+                .build();
+        UUID uuid = UUID.randomUUID();
+        SendLetterResponse sendLetterResponse = new SendLetterResponse(uuid);
+        when(sendLetterApiMock.sendLetter(anyString(), any(LetterWithPdfsRequest.class))).thenReturn(sendLetterResponse);
+        SendLetterResponse response =  bulkPrintService.sendToBulkPrint(callbackRequest, document, coverSheet);
+
+        verify(sendLetterApiMock).sendLetter(anyString(), any(LetterWithPdfsRequest.class));
+
+        assertNotNull(response);
+        assertThat(response.letterId, is(uuid));
+    }
+
 }

@@ -1,27 +1,26 @@
 'use strict';
 
 const testConfig = require('src/test/config.js');
-const documentUploadConfig = require('./documentUploadConfig.json');
 const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
 
-module.exports = function (caseRef) {
+module.exports = function (caseRef, documentUploadConfig) {
 
     const I = this;
     I.waitForText(documentUploadConfig.waitForText, testConfig.TestTimeToWaitForText);
 
     I.see(caseRef);
 
-    I.click(documentUploadConfig.addNewButton);
+    I.click({type: 'button'}, `${documentUploadConfig.id}>div`);
 
-    I.selectOption('#documentsUploaded_0_DocumentType', documentUploadConfig.documentType);
-    I.attachFile('#documentsUploaded_0_DocumentLink', documentUploadConfig.fileToUploadUrl);
-    I.fillField('#documentsUploaded_0_Comment', documentUploadConfig.comment);
+    I.selectOption(`${documentUploadConfig.id}_0_DocumentType`, documentUploadConfig.documentType);
+    I.attachFile(`${documentUploadConfig.id}_0_DocumentLink`, documentUploadConfig.fileToUploadUrl);
+    I.fillField(`${documentUploadConfig.id}_0_Comment`, documentUploadConfig.comment);
 
-    I.click(documentUploadConfig.addNewButton);
+    I.click({type: 'button'}, `${documentUploadConfig.id}>div`);
 
-    I.selectOption('#documentsUploaded_1_DocumentType', documentUploadConfig.documentType);
-    I.attachFile('#documentsUploaded_1_DocumentLink', documentUploadConfig.fileToUploadUrl);
-    I.fillField('#documentsUploaded_1_Comment', documentUploadConfig.comment);
+    I.selectOption(`${documentUploadConfig.id}_1_DocumentType`, documentUploadConfig.documentType);
+    I.attachFile(`${documentUploadConfig.id}_1_DocumentLink`, documentUploadConfig.fileToUploadUrl);
+    I.fillField(`${documentUploadConfig.id}_1_Comment`, documentUploadConfig.comment);
 
     I.waitForNavigationToComplete(commonConfig.continueButton);
 

@@ -17,6 +17,8 @@
     "security_classification": "PUBLIC",
     "case_data": {
       "applicationType": "Personal",
+      "caveatRaisedEmailNotificationRequested": "Yes",
+      "sendToBulkPrintRequested": "No",
       "registryLocation": "Leeds",
       "deceasedSurname": "dl name 2",
       "deceasedDateOfDeath": "2017-12-31",

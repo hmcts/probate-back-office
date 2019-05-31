@@ -12,6 +12,7 @@ import uk.gov.hmcts.probate.exception.BadRequestException;
 import uk.gov.hmcts.probate.exception.ConnectionException;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.SentEmail;
+import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatCallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.BigDecimalNumberSerializer;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
@@ -33,6 +34,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Base64;
+import java.util.Map;
 
 import static uk.gov.hmcts.probate.model.DocumentType.WILL_LODGEMENT_DEPOSIT_RECEIPT;
 
@@ -46,13 +48,13 @@ public class PDFManagementService {
     private final HttpServletRequest httpServletRequest;
     private final PDFServiceConfiguration pdfServiceConfiguration;
     private final FileSystemResourceService fileSystemResourceService;
-    
+
     static final String SIGNATURE_DECRYPTION_IV = "P3oba73En3yp7ion";
 
     @Autowired
     public PDFManagementService(PDFGeneratorService pdfGeneratorService, UploadService uploadService,
                                 ObjectMapper objectMapper, HttpServletRequest httpServletRequest,
-                                PDFServiceConfiguration pdfServiceConfiguration, 
+                                PDFServiceConfiguration pdfServiceConfiguration,
                                 FileSystemResourceService fileSystemResourceService) {
         this.pdfGeneratorService = pdfGeneratorService;
         this.uploadService = uploadService;
@@ -69,7 +71,7 @@ public class PDFManagementService {
 
     public Document generateAndUpload(CallbackRequest callbackRequest, DocumentType documentType) {
         switch (documentType) {
-            case DIGITAL_GRANT: 
+            case DIGITAL_GRANT:
                 callbackRequest.getCaseDetails().setGrantSignatureBase64(decryptedFileAsBase64String(pdfServiceConfiguration
                         .getGrantSignatureEncryptedFile()));
                 break;
@@ -96,14 +98,30 @@ public class PDFManagementService {
         return generateAndUpload(toJson(callbackRequest), documentType);
     }
 
+    public Document generateAndUpload(CaveatCallbackRequest callbackRequest, DocumentType documentType) {
+        return generateAndUpload(toJson(callbackRequest), documentType);
+    }
+
     public Document generateAndUpload(SentEmail sentEmail, DocumentType documentType) {
         return generateAndUpload(toJson(sentEmail), documentType);
     }
 
     private Document generateAndUpload(String json, DocumentType documentType) {
+        log.info("Generating pdf for template {}", documentType.getTemplateName());
+        EvidenceManagementFileUpload fileUpload = pdfGeneratorService.generatePdf(documentType, json);
+        return uploadDocument(documentType, fileUpload);
+    }
+
+    public Document generateDocmosisDocumentAndUpload(Map<String, Object> placeholders, DocumentType documentType) {
+
+        log.info("Generating pdf to docmosis for template {}", documentType.getTemplateName());
+        EvidenceManagementFileUpload fileUpload = pdfGeneratorService.generateDocmosisDocumentFrom(documentType.getTemplateName(),
+                placeholders);
+        return uploadDocument(documentType, fileUpload);
+    }
+
+    private Document uploadDocument(DocumentType documentType, EvidenceManagementFileUpload fileUpload) {
         try {
-            log.info("Generating pdf for template {}", documentType.getTemplateName());
-            EvidenceManagementFileUpload fileUpload = pdfGeneratorService.generatePdf(documentType, json);
             log.info("Uploading pdf for template {}", documentType.getTemplateName());
             EvidenceManagementFile store = uploadService.store(fileUpload);
             DocumentLink documentLink = DocumentLink.builder()
@@ -140,7 +158,7 @@ public class PDFManagementService {
             log.error("Error while retrieving file resource " + fileResource + ": " + e.getMessage(), e);
             throw new BadRequestException(e.getMessage());
         }
-        return decryptedString;     
+        return decryptedString;
     }
 
     private String toJson(Object data) {
