@@ -17,9 +17,9 @@
     "security_classification": "PUBLIC",
     "case_data": {
       "applicationType": "Personal",
-      "caveatRaisedEmailNotificationRequested": "Yes",
+      "caveatRaisedEmailNotificationRequested": "No",
       "sendToBulkPrintRequested": "No",
-      "registryLocation": "Leeds",
+      "registryLocation": "ctsc",
       "deceasedSurname": "dl name 2",
       "deceasedDateOfDeath": "2017-12-31",
       "deceasedDateOfBirth": "2016-12-31",
@@ -42,13 +42,13 @@
       "deceasedForenames": "df name 2",
       "caveatorSurname": "cl name 2",
       "caveatorAddress": {
-        "AddressLine1": "2",
-        "AddressLine2": "",
-        "AddressLine3": "",
-        "County": "",
-        "PostTown": "",
-        "PostCode": "2",
-        "Country": ""
+        "AddressLine1": "addressline1",
+        "AddressLine2": "addressline2",
+        "AddressLine3": "addressline3",
+        "County": "county",
+        "PostTown": "posttown",
+        "PostCode": "postcode",
+        "Country": "country"
       }
     },
     "data_classification": {

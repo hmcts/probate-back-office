@@ -5,11 +5,13 @@ import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
 import uk.gov.hmcts.probate.model.ccd.ProbateAddress;
 import uk.gov.hmcts.probate.model.ccd.ProbateFullAliasName;
+import uk.gov.hmcts.probate.model.ccd.raw.BulkPrint;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
@@ -17,6 +19,9 @@ import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+
+import static uk.gov.hmcts.probate.model.Constants.NO;
+import static uk.gov.hmcts.probate.model.Constants.YES;
 
 @JsonDeserialize(builder = CaveatData.CaveatDataBuilder.class)
 @NoArgsConstructor
@@ -56,6 +61,17 @@ public class CaveatData {
 
     // EVENT = cavRaiseCaveat - caveat details
 
+    @Getter(lazy = true)
+    private final String caveatRaisedEmailNotification = getDefaultValueForEmailNotifications();
+
+    private String caveatRaisedEmailNotificationRequested;
+
+    @SuppressWarnings("squid:S1170")
+    @Getter(lazy = true)
+    private final String sendToBulkPrint = YES;
+
+    private String sendToBulkPrintRequested;
+
     private LocalDate expiryDate;
 
     // EVENT = cavEmailCaveator
@@ -68,6 +84,12 @@ public class CaveatData {
 
     @Builder.Default
     private List<CollectionMember<CaseMatch>> caseMatches = new ArrayList<>();
+
+    @Builder.Default
+    private List<CollectionMember<Document>> notificationsGenerated = new ArrayList<>();
+
+    @Builder.Default
+    private List<CollectionMember<BulkPrint>> bulkPrintId = new ArrayList<>();
 
     // EVENT = misc
 
@@ -87,6 +109,19 @@ public class CaveatData {
     public String getCaveatorFullName() {
         return String.join(" ", caveatorForenames, caveatorSurname);
     }
+
+    public String getDefaultValueForEmailNotifications() {
+        return caveatorEmailAddress == null || caveatorEmailAddress.isEmpty() ? NO : YES;
+    }
+
+    public boolean isSendForBulkPrintingRequested() {
+        return YES.equals(getSendToBulkPrintRequested());
+    }
+
+    public boolean isCaveatRaisedEmailNotificationRequested() {
+        return YES.equals(getCaveatRaisedEmailNotificationRequested());
+    }
+
 
     @JsonPOJOBuilder(withPrefix = "")
     public static final class CaveatDataBuilder {
