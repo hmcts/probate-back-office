@@ -7,7 +7,7 @@ import uk.gov.hmcts.probate.model.probateman.GrantApplication;
 import uk.gov.hmcts.probate.service.probateman.mapper.qualifiers.ToAdditionalExecutorApplyingMember;
 import uk.gov.hmcts.reform.probate.model.cases.Address;
 import uk.gov.hmcts.reform.probate.model.cases.CollectionMember;
-import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.AdditionalExecutorApplying;
+import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.ExecutorApplying;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,9 +17,9 @@ import java.util.List;
 public class AdditionalExecutorMapper {
 
     @ToAdditionalExecutorApplyingMember
-    public List<CollectionMember<AdditionalExecutorApplying>> toAdditionalCollectionMember(GrantApplication grantApplication) {
+    public List<CollectionMember<ExecutorApplying>> toAdditionalCollectionMember(GrantApplication grantApplication) {
         log.info("Adding additionalExecutorApplying to collection for legacy case mapping");
-        List<CollectionMember<AdditionalExecutorApplying>> collectionMemberArrayList = new ArrayList();
+        List<CollectionMember<ExecutorApplying>> collectionMemberArrayList = new ArrayList();
 
         if (grantApplication.getSolicitorReference() == null) {
             addAdditionalExecutor(grantApplication.getGrantee1Forenames(),
@@ -57,7 +57,7 @@ public class AdditionalExecutorMapper {
     }
 
     private void addAdditionalExecutor(String granteeForenames, String granteeSurname, String granteeAddress,
-                                       List<CollectionMember<AdditionalExecutorApplying>> collectionMemberArrayList) {
+                                       List<CollectionMember<ExecutorApplying>> collectionMemberArrayList) {
         if (StringUtils.isNotBlank(granteeForenames)
                 || StringUtils.isNotBlank(granteeSurname)
                 || StringUtils.isNotBlank(granteeAddress)) {
@@ -65,9 +65,9 @@ public class AdditionalExecutorMapper {
         }
     }
 
-    private CollectionMember<AdditionalExecutorApplying> buildExecutor(String granteeForenames,
+    private CollectionMember<ExecutorApplying> buildExecutor(String granteeForenames,
                                                                        String granteeSurname, String granteeAddress) {
-        AdditionalExecutorApplying applying = AdditionalExecutorApplying.builder()
+        ExecutorApplying applying = ExecutorApplying.builder()
                 .applyingExecutorName(granteeForenames + " " + granteeSurname)
                 .applyingExecutorAddress(buildAddress(granteeAddress))
                 .build();
