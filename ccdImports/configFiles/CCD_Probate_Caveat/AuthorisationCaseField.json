@@ -36,7 +36,6 @@
   {"CaseTypeID": "Caveat", "CaseFieldID": "sendToBulkPrintRequested", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "notificationsGenerated", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "bulkPrintId", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
-  {"CaseTypeID": "Caveat", "CaseFieldID": "customHistoryViewer", "UserRole": " caseworker-probate-caseadmin", "CRUD": "R"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "paperForm", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "customHistoryViewer", "UserRole": "caseworker-probate-caseadmin", "CRUD": "R"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "customPaymentHistoryViewer", "UserRole": "caseworker-probate-caseadmin", "CRUD": "R"},
