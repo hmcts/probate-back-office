@@ -218,5 +218,5 @@
   {"CaseTypeID": "Caveat", "CaseFieldID": "sendToBulkPrint", "UserRole": "citizen", "CRUD": "CRUD"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "sendToBulkPrintRequested", "UserRole": "citizen", "CRUD": "CRUD"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "notificationsGenerated", "UserRole": "citizen", "CRUD": "CRUD"},
-  {"CaseTypeID": "Caveat", "CaseFieldID": "paperForm", "UserRole": "citizen", "CRUD": "CR"}
+  {"CaseTypeID": "Caveat", "CaseFieldID": "paperForm", "UserRole": "citizen", "CRUD": "CRU"}
 ]
