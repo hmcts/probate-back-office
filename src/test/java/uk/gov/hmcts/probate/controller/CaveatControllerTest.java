@@ -84,6 +84,34 @@ public class CaveatControllerTest {
     }
 
     @Test
+    public void personalCaveatRaisedNoEmailShouldReturnDataPayloadOkResponseCode() throws Exception {
+        String personalPayload = testUtils.getStringFromFile("caveatPayloadNotificationsNoEmail.json");
+
+        mockMvc.perform(post("/caveat/raise")
+                .content(personalPayload)
+                .contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.errors[0]")
+                        .value("There is no email address for this caveator. Add an email address or contact them by post."))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
+
+    }
+
+    @Test
+    public void personalCaveatRaisedNoValidResponseFromBulkPrintReturnDataPayloadOkResponseCode() throws Exception {
+        String personalPayload = testUtils.getStringFromFile("caveatPayloadNotificationsBulkPrint.json");
+
+        mockMvc.perform(post("/caveat/raise")
+                .content(personalPayload)
+                .contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.errors[0]")
+                        .value("Bulk Print is currently unavailable please contact support desk."))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
+
+    }
+
+    @Test
     public void personalGeneralCaveatMessageShouldReturnDataPayloadOkResponseCode() throws Exception {
 
         String caveatPayload = testUtils.getStringFromFile("caveatPayloadNotifications.json");
@@ -107,5 +135,17 @@ public class CaveatControllerTest {
                         .value("There is no email address for this caveator. Add an email address or contact them by post."))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
 
+    }
+
+    @Test
+    public void caveatDefaultValuesShouldReturnDataPayloadOkResponseCode() throws Exception {
+
+        String caveatPayload = testUtils.getStringFromFile("caveatPayloadNotifications.json");
+
+        mockMvc.perform(post("/caveat/defaultValues")
+                .content(caveatPayload)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("data")));
     }
 }

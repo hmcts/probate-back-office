@@ -9,6 +9,7 @@ import uk.gov.hmcts.probate.config.properties.registries.RegistriesProperties;
 import uk.gov.hmcts.probate.config.properties.registries.Registry;
 import uk.gov.hmcts.probate.exception.BadRequestException;
 import uk.gov.hmcts.probate.model.ApplicationType;
+import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.SentEmail;
 import uk.gov.hmcts.probate.model.State;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
@@ -24,12 +25,14 @@ import uk.gov.service.notify.NotificationClient;
 import uk.gov.service.notify.NotificationClientException;
 import uk.gov.service.notify.SendEmailResponse;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static uk.gov.hmcts.probate.model.Constants.CTSC;
 import static uk.gov.hmcts.probate.model.Constants.DOC_SUBTYPE_WILL;
 import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
 
@@ -46,6 +49,7 @@ public class NotificationService {
 
     private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMM Y HH:mm");
     private static final DateTimeFormatter EXCELA_DATE = DateTimeFormatter.ofPattern("yyyyMMdd");
+    private static final DateTimeFormatter EXCELA_CONTENT_DATE = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     private static final String PERSONALISATION_APPLICANT_NAME = "applicant_name";
     private static final String PERSONALISATION_DECEASED_NAME = "deceased_name";
@@ -66,7 +70,7 @@ public class NotificationService {
         CaseData caseData = caseDetails.getData();
         Registry registry = registriesProperties.getRegistries().get(caseData.getRegistryLocation().toLowerCase());
 
-        String templateId = getTemplateId(state, caseData.getApplicationType());
+        String templateId = getTemplateId(state, caseData.getApplicationType(), caseData.getRegistryLocation());
         String emailReplyToId = registry.getEmailReplyToId();
         String emailAddress = getEmail(caseData);
         Map<String, String> personalisation = getPersonalisation(caseDetails, registry);
@@ -80,7 +84,7 @@ public class NotificationService {
             response = notificationClient.sendEmail(templateId, emailAddress, personalisation, reference);
         }
 
-        return getGeneratedSentEmailDocument(response, emailAddress);
+        return getGeneratedSentEmailDocument(response, emailAddress, SENT_EMAIL);
     }
 
     public Document sendCaveatEmail(State state, CaveatDetails caveatDetails)
@@ -89,7 +93,7 @@ public class NotificationService {
         CaveatData caveatData = caveatDetails.getData();
         Registry registry = registriesProperties.getRegistries().get(caveatData.getRegistryLocation().toLowerCase());
 
-        String templateId = getTemplateId(state, caveatData.getApplicationType());
+        String templateId = getTemplateId(state, caveatData.getApplicationType(), caveatData.getRegistryLocation());
         String emailAddress = caveatData.getCaveatorEmailAddress();
         Map<String, String> personalisation = getCaveatPersonalisation(caveatDetails, registry);
         String reference = caveatDetails.getId().toString();
@@ -98,7 +102,19 @@ public class NotificationService {
 
         response = notificationClient.sendEmail(templateId, emailAddress, personalisation, reference);
 
-        return getGeneratedSentEmailDocument(response, emailAddress);
+        DocumentType documentType;
+        switch (state) {
+            case GENERAL_CAVEAT_MESSAGE:
+                documentType = SENT_EMAIL;
+                break;
+            case CAVEAT_RAISED:
+                documentType = SENT_EMAIL;
+                break;
+            default:
+                throw new BadRequestException("Unsupported State");
+        }
+
+        return getGeneratedSentEmailDocument(response, emailAddress, documentType);
     }
 
     public Document sendExcelaEmail(List<ReturnedCaseDetails> caseDetails) throws
@@ -112,10 +128,10 @@ public class NotificationService {
 
         response = notificationClient.sendEmail(templateId, emailAddresses.getExcelaEmail(), personalisation, reference);
 
-        return getGeneratedSentEmailDocument(response, emailAddresses.getExcelaEmail());
+        return getGeneratedSentEmailDocument(response, emailAddresses.getExcelaEmail(), SENT_EMAIL);
     }
 
-    private Document getGeneratedSentEmailDocument(SendEmailResponse response, String emailAddress) {
+    private Document getGeneratedSentEmailDocument(SendEmailResponse response, String emailAddress, DocumentType docType) {
         SentEmail sentEmail = SentEmail.builder()
                 .sentOn(LocalDateTime.now().format(formatter))
                 .from(response.getFromEmail().orElse(""))
@@ -124,7 +140,7 @@ public class NotificationService {
                 .body(markdownTransformationService.toHtml(response.getBody()))
                 .build();
 
-        return pdfManagementService.generateAndUpload(sentEmail, SENT_EMAIL);
+        return pdfManagementService.generateAndUpload(sentEmail, docType);
     }
 
     private Map<String, String> getPersonalisation(CaseDetails caseDetails, Registry registry) {
@@ -169,7 +185,7 @@ public class NotificationService {
         return personalisation;
     }
 
-    private String getTemplateId(State state, ApplicationType applicationType) {
+    private String getTemplateId(State state, ApplicationType applicationType, String registryLocation) {
         switch (state) {
             case DOCUMENTS_RECEIVED:
                 return notificationTemplates.getEmail().get(applicationType).getDocumentReceived();
@@ -179,6 +195,12 @@ public class NotificationService {
                 return notificationTemplates.getEmail().get(applicationType).getGrantIssued();
             case GENERAL_CAVEAT_MESSAGE:
                 return notificationTemplates.getEmail().get(applicationType).getGeneralCaveatMessage();
+            case CAVEAT_RAISED:
+                if (registryLocation.equalsIgnoreCase(CTSC)) {
+                    return notificationTemplates.getEmail().get(applicationType).getCaveatRaisedCtsc();
+                } else {
+                    return notificationTemplates.getEmail().get(applicationType).getCaveatRaised();
+                }
             default:
                 throw new BadRequestException("Unsupported state");
         }
@@ -214,9 +236,9 @@ public class NotificationService {
             data.append(" ");
             data.append(currentCase.getData().getDeceasedSurname());
             data.append(", ");
-            data.append(currentCase.getData().getDeceasedDateOfBirth());
+            data.append(EXCELA_CONTENT_DATE.format(currentCase.getData().getDeceasedDateOfBirth()));
             data.append(", ");
-            data.append(currentCase.getData().getGrantIssuedDate());
+            data.append(EXCELA_CONTENT_DATE.format(LocalDate.parse(currentCase.getData().getGrantIssuedDate())));
             data.append(", ");
             data.append(currentCase.getId().toString());
             data.append("\n");

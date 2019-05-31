@@ -1,6 +1,7 @@
 package uk.gov.hmcts.probate.service;
 
 import com.google.common.collect.ImmutableList;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
@@ -11,6 +12,7 @@ import java.util.List;
 
 import static uk.gov.hmcts.probate.model.Constants.DOC_SUBTYPE_WILL;
 
+@Slf4j
 @Service
 public class ExcelaCriteriaService {
 
@@ -18,12 +20,14 @@ public class ExcelaCriteriaService {
     private static final LocalDateTime EARLIEST_DATE = LocalDateTime.parse("2019-03-31T23:59:59");
 
     public List<ReturnedCaseDetails> getFilteredCases(List<ReturnedCaseDetails> cases) {
+        log.info("filtering {} cases", cases.size());
         filteredCases = new ImmutableList.Builder<>();
         for (ReturnedCaseDetails caseItem : cases) {
             if (caseItem.getData().getScannedDocuments() != null) {
                 scannedDocumentsFilter(caseItem);
             }
         }
+        log.info(filteredCases.build().size() + " cases filtered");
         return filteredCases.build();
     }
 
