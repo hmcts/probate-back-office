@@ -35,13 +35,13 @@ module.exports = function (crud) {
         });
 
         I.click(createCaveatConfig.UKpostcodeLink);
-        I.fillField('#deceasedAddress_AddressLine1', createCaveatConfig.address_line1);
-        I.fillField('#deceasedAddress_AddressLine2', createCaveatConfig.address_line2);
-        I.fillField('#deceasedAddress_AddressLine3', createCaveatConfig.address_line3);
-        I.fillField('#deceasedAddress_PostTown', createCaveatConfig.address_town);
-        I.fillField('#deceasedAddress_County', createCaveatConfig.address_county);
-        I.fillField('#deceasedAddress_PostCode', createCaveatConfig.address_postcode);
-        I.fillField('#deceasedAddress_Country', createCaveatConfig.address_country);
+        I.fillField('#deceasedAddress__AddressLine1', createCaveatConfig.address_line1);
+        I.fillField('#deceasedAddress__AddressLine2', createCaveatConfig.address_line2);
+        I.fillField('#deceasedAddress__AddressLine3', createCaveatConfig.address_line3);
+        I.fillField('#deceasedAddress__PostTown', createCaveatConfig.address_town);
+        I.fillField('#deceasedAddress__County', createCaveatConfig.address_county);
+        I.fillField('#deceasedAddress__PostCode', createCaveatConfig.address_postcode);
+        I.fillField('#deceasedAddress__Country', createCaveatConfig.address_country);
     }
 
     if (crud === 'update') {

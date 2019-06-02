@@ -5,7 +5,6 @@ import org.junit.Test;
 import org.mockito.InjectMocks;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.MockitoAnnotations.initMocks;
 
 public class CaveatDataTest {
 
@@ -13,6 +12,7 @@ public class CaveatDataTest {
     private static final String CAV_DECEASED_SURNAME = "Surname";
     private static final String CAV_CAVEATOR_FORENAMES = "fName";
     private static final String CAV_CAVEATOR_SURNAME = "sName";
+    private static final String CAV_CAVEATOR_EMAIL = "caveator@test.com";
 
     @InjectMocks
     private CaveatData underTest;
@@ -46,5 +46,14 @@ public class CaveatDataTest {
                 .build();
 
         assertEquals(CAV_CAVEATOR_FORENAMES + " " + CAV_CAVEATOR_SURNAME, caveatData.getCaveatorFullName());
+    }
+
+    @Test
+    public void shouldReturnDefaultEmailNotificationCaveat() {
+        final CaveatData caveatData = CaveatData.builder()
+                .caveatorEmailAddress(CAV_CAVEATOR_EMAIL)
+                .build();
+
+        assertEquals("Yes", caveatData.getDefaultValueForEmailNotifications());
     }
 }

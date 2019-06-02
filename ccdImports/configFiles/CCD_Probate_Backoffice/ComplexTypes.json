@@ -83,6 +83,7 @@
   {"LiveFrom": "01/01/2017", "ID": "ScannedDocument", "ListElementCode": "scannedDate", "FieldType": "DateTime", "ElementLabel": "Scanned date", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "ScannedDocument", "ListElementCode": "url", "FieldType": "Document", "ElementLabel": "Document Url", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "ScannedDocument", "ListElementCode": "exceptionRecordReference", "FieldType": "Text", "ElementLabel": "Exception record reference", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "ScannedDocument", "ListElementCode": "deliveryDate", "FieldType": "DateTime", "ElementLabel": "Delivery date", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "AttorneyNamesAndAddress", "ListElementCode": "name", "FieldType": "Text", "ElementLabel": "Name", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "AttorneyNamesAndAddress", "ListElementCode": "address", "FieldType": "AddressUK", "FieldTypeParameter": "Address", "ElementLabel": "Address", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "estateItems", "ListElementCode": "item", "FieldType": "Text", "ElementLabel": "Item", "SecurityClassification": "Public"},

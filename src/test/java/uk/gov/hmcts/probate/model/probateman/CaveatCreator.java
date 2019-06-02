@@ -10,6 +10,9 @@ public class CaveatCreator {
         caveat.setCaveatNumber("cavCaveatNumber");
         caveat.setProbateNumber("cavProbateNumber");
         caveat.setProbateVersion(77L);
+        caveat.setRegistryName("Oxford");
+        caveat.setSubregistryName("Carlisle");
+        caveat.setRegistryCode(999L);
         caveat.setDeceasedId(44L);
         caveat.setDeceasedForenames("cavDeceasedForenames");
         caveat.setDeceasedSurname("cavDeceasedSurnames");

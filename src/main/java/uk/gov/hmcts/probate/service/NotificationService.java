@@ -1,6 +1,5 @@
 package uk.gov.hmcts.probate.service;
 
-import joptsimple.internal.Strings;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -10,6 +9,7 @@ import uk.gov.hmcts.probate.config.properties.registries.RegistriesProperties;
 import uk.gov.hmcts.probate.config.properties.registries.Registry;
 import uk.gov.hmcts.probate.exception.BadRequestException;
 import uk.gov.hmcts.probate.model.ApplicationType;
+import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.SentEmail;
 import uk.gov.hmcts.probate.model.State;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
@@ -28,8 +28,10 @@ import uk.gov.service.notify.SendEmailResponse;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import static uk.gov.hmcts.probate.model.Constants.CTSC;
 import static uk.gov.hmcts.probate.model.Constants.DOC_SUBTYPE_WILL;
 import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
 
@@ -47,13 +49,26 @@ public class NotificationService {
     private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMM Y HH:mm");
     private static final DateTimeFormatter EXCELA_DATE = DateTimeFormatter.ofPattern("yyyyMMdd");
 
+    private static final String PERSONALISATION_APPLICANT_NAME = "applicant_name";
+    private static final String PERSONALISATION_DECEASED_NAME = "deceased_name";
+    private static final String PERSONALISATION_SOLICITOR_NAME = "solicitor_name";
+    private static final String PERSONALISATION_SOLICITOR_REFERENCE = "solicitor_reference";
+    private static final String PERSONALISATION_REGISTRY_NAME = "registry_name";
+    private static final String PERSONALISATION_REGISTRY_PHONE = "registry_phone";
+    private static final String PERSONALISATION_CASE_STOP_DETAILS = "case-stop-details";
+    private static final String PERSONALISATION_DECEASED_DOD = "deceased_dod";
+    private static final String PERSONALISATION_CCD_REFERENCE = "ccd_reference";
+    private static final String PERSONALISATION_MESSAGE_CONTENT = "message_content";
+    private static final String PERSONALISATION_EXCELA_NAME = "excelaName";
+    private static final String PERSONALISATION_CASE_DATA = "caseData";
+
     public Document sendEmail(State state, CaseDetails caseDetails)
             throws NotificationClientException {
 
         CaseData caseData = caseDetails.getData();
         Registry registry = registriesProperties.getRegistries().get(caseData.getRegistryLocation().toLowerCase());
 
-        String templateId = getTemplateId(state, caseData.getApplicationType());
+        String templateId = getTemplateId(state, caseData.getApplicationType(), caseData.getRegistryLocation());
         String emailReplyToId = registry.getEmailReplyToId();
         String emailAddress = getEmail(caseData);
         Map<String, String> personalisation = getPersonalisation(caseDetails, registry);
@@ -67,7 +82,7 @@ public class NotificationService {
             response = notificationClient.sendEmail(templateId, emailAddress, personalisation, reference);
         }
 
-        return getGeneratedSentEmailDocument(response, emailAddress);
+        return getGeneratedSentEmailDocument(response, emailAddress, SENT_EMAIL);
     }
 
     public Document sendCaveatEmail(State state, CaveatDetails caveatDetails)
@@ -76,7 +91,7 @@ public class NotificationService {
         CaveatData caveatData = caveatDetails.getData();
         Registry registry = registriesProperties.getRegistries().get(caveatData.getRegistryLocation().toLowerCase());
 
-        String templateId = getTemplateId(state, caveatData.getApplicationType());
+        String templateId = getTemplateId(state, caveatData.getApplicationType(), caveatData.getRegistryLocation());
         String emailAddress = caveatData.getCaveatorEmailAddress();
         Map<String, String> personalisation = getCaveatPersonalisation(caveatDetails, registry);
         String reference = caveatDetails.getId().toString();
@@ -85,24 +100,36 @@ public class NotificationService {
 
         response = notificationClient.sendEmail(templateId, emailAddress, personalisation, reference);
 
-        return getGeneratedSentEmailDocument(response, emailAddress);
+        DocumentType documentType;
+        switch (state) {
+            case GENERAL_CAVEAT_MESSAGE:
+                documentType = SENT_EMAIL;
+                break;
+            case CAVEAT_RAISED:
+                documentType = SENT_EMAIL;
+                break;
+            default:
+                throw new BadRequestException("Unsupported State");
+        }
+
+        return getGeneratedSentEmailDocument(response, emailAddress, documentType);
     }
 
-    public Document sendExcelaEmail(ReturnedCaseDetails caseDetails) throws
+    public Document sendExcelaEmail(List<ReturnedCaseDetails> caseDetails) throws
             NotificationClientException {
-        String templateId = notificationTemplates.getEmail().get(caseDetails.getData().getApplicationType())
+        String templateId = notificationTemplates.getEmail().get(caseDetails.get(0).getData().getApplicationType())
                 .getExcelaData();
-        Map<String, String> personalisation = getExcelaPersonalisation(caseDetails.getId(), caseDetails.getData());
-        String reference = caseDetails.getId().toString();
+        Map<String, String> personalisation = getExcelaPersonalisation(caseDetails);
+        String reference = LocalDateTime.now().format(EXCELA_DATE);
 
         SendEmailResponse response;
 
         response = notificationClient.sendEmail(templateId, emailAddresses.getExcelaEmail(), personalisation, reference);
 
-        return getGeneratedSentEmailDocument(response, emailAddresses.getExcelaEmail());
+        return getGeneratedSentEmailDocument(response, emailAddresses.getExcelaEmail(), SENT_EMAIL);
     }
 
-    private Document getGeneratedSentEmailDocument(SendEmailResponse response, String emailAddress) {
+    private Document getGeneratedSentEmailDocument(SendEmailResponse response, String emailAddress, DocumentType docType) {
         SentEmail sentEmail = SentEmail.builder()
                 .sentOn(LocalDateTime.now().format(formatter))
                 .from(response.getFromEmail().orElse(""))
@@ -111,21 +138,21 @@ public class NotificationService {
                 .body(markdownTransformationService.toHtml(response.getBody()))
                 .build();
 
-        return pdfManagementService.generateAndUpload(sentEmail, SENT_EMAIL);
+        return pdfManagementService.generateAndUpload(sentEmail, docType);
     }
 
     private Map<String, String> getPersonalisation(CaseDetails caseDetails, Registry registry) {
         CaseData caseData = caseDetails.getData();
         HashMap<String, String> personalisation = new HashMap<>();
-        personalisation.put("applicant_name", caseData.getPrimaryApplicantFullName());
-        personalisation.put("deceased_name", caseData.getDeceasedFullName());
-        personalisation.put("solicitor_name", caseData.getSolsSOTName());
-        personalisation.put("solicitor_reference", caseData.getSolsSolicitorAppReference());
-        personalisation.put("registry_name", registry.getName());
-        personalisation.put("registry_phone", registry.getPhone());
-        personalisation.put("case-stop-details", caseData.getBoStopDetails());
-        personalisation.put("deceased_dod", caseData.getDeceasedDateOfDeathFormatted());
-        personalisation.put("ccd_reference", caseDetails.getId().toString());
+        personalisation.put(PERSONALISATION_APPLICANT_NAME, caseData.getPrimaryApplicantFullName());
+        personalisation.put(PERSONALISATION_DECEASED_NAME, caseData.getDeceasedFullName());
+        personalisation.put(PERSONALISATION_SOLICITOR_NAME, caseData.getSolsSOTName());
+        personalisation.put(PERSONALISATION_SOLICITOR_REFERENCE, caseData.getSolsSolicitorAppReference());
+        personalisation.put(PERSONALISATION_REGISTRY_NAME, registry.getName());
+        personalisation.put(PERSONALISATION_REGISTRY_PHONE, registry.getPhone());
+        personalisation.put(PERSONALISATION_CASE_STOP_DETAILS, caseData.getBoStopDetails());
+        personalisation.put(PERSONALISATION_DECEASED_DOD, caseData.getDeceasedDateOfDeathFormatted());
+        personalisation.put(PERSONALISATION_CCD_REFERENCE, caseDetails.getId().toString());
 
         return personalisation;
     }
@@ -135,28 +162,28 @@ public class NotificationService {
 
         HashMap<String, String> personalisation = new HashMap<>();
 
-        personalisation.put("applicant_name", caveatData.getCaveatorFullName());
-        personalisation.put("deceased_name", caveatData.getDeceasedFullName());
-        personalisation.put("ccd_reference", caveatDetails.getId().toString());
-        personalisation.put("message_content", caveatData.getMessageContent());
-        personalisation.put("registry_name", registry.getName());
-        personalisation.put("registry_phone", registry.getPhone());
+        personalisation.put(PERSONALISATION_APPLICANT_NAME, caveatData.getCaveatorFullName());
+        personalisation.put(PERSONALISATION_DECEASED_NAME, caveatData.getDeceasedFullName());
+        personalisation.put(PERSONALISATION_CCD_REFERENCE, caveatDetails.getId().toString());
+        personalisation.put(PERSONALISATION_MESSAGE_CONTENT, caveatData.getMessageContent());
+        personalisation.put(PERSONALISATION_REGISTRY_NAME, registry.getName());
+        personalisation.put(PERSONALISATION_REGISTRY_PHONE, registry.getPhone());
 
         return personalisation;
     }
 
-    private Map<String, String> getExcelaPersonalisation(Long id, CaseData caseData) {
+    private Map<String, String> getExcelaPersonalisation(List<ReturnedCaseDetails> cases) {
         HashMap<String, String> personalisation = new HashMap<>();
 
-        personalisation.put("excelaName", LocalDateTime.now().format(EXCELA_DATE) + "will");
-        personalisation.put("ccdId", id.toString());
-        personalisation.put("deceasedSurname", caseData.getDeceasedSurname());
-        personalisation.put("willReferenceNumber", getWillReferenceNumber(caseData));
+        StringBuilder data = getBuiltData(cases);
+
+        personalisation.put(PERSONALISATION_EXCELA_NAME, LocalDateTime.now().format(EXCELA_DATE) + "will");
+        personalisation.put(PERSONALISATION_CASE_DATA, data.toString());
 
         return personalisation;
     }
 
-    private String getTemplateId(State state, ApplicationType applicationType) {
+    private String getTemplateId(State state, ApplicationType applicationType, String registryLocation) {
         switch (state) {
             case DOCUMENTS_RECEIVED:
                 return notificationTemplates.getEmail().get(applicationType).getDocumentReceived();
@@ -166,6 +193,12 @@ public class NotificationService {
                 return notificationTemplates.getEmail().get(applicationType).getGrantIssued();
             case GENERAL_CAVEAT_MESSAGE:
                 return notificationTemplates.getEmail().get(applicationType).getGeneralCaveatMessage();
+            case CAVEAT_RAISED:
+                if (registryLocation.equalsIgnoreCase(CTSC)) {
+                    return notificationTemplates.getEmail().get(applicationType).getCaveatRaisedCtsc();
+                } else {
+                    return notificationTemplates.getEmail().get(applicationType).getCaveatRaised();
+                }
             default:
                 throw new BadRequestException("Unsupported state");
         }
@@ -184,10 +217,24 @@ public class NotificationService {
 
     private String getWillReferenceNumber(CaseData data) {
         for (CollectionMember<ScannedDocument> document : data.getScannedDocuments()) {
-            if (document.getValue().getSubtype().equals(DOC_SUBTYPE_WILL)) {
+            if (document.getValue().getSubtype() != null && document.getValue().getSubtype().equals(DOC_SUBTYPE_WILL)) {
                 return document.getValue().getControlNumber();
             }
         }
-        return Strings.EMPTY;
+        return "";
+    }
+
+    private StringBuilder getBuiltData(List<ReturnedCaseDetails> cases) {
+        StringBuilder data = new StringBuilder();
+
+        for (ReturnedCaseDetails currentCase : cases) {
+            data.append(currentCase.getId().toString());
+            data.append(", ");
+            data.append(currentCase.getData().getDeceasedSurname());
+            data.append(", ");
+            data.append(getWillReferenceNumber(currentCase.getData()));
+            data.append("\n");
+        }
+        return data;
     }
 }

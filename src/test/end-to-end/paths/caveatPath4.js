@@ -8,8 +8,9 @@ const eventSummaryConfig = require('src/test/end-to-end/pages/eventSummary/event
 
 const createCaveatConfig = require('src/test/end-to-end/pages/createCaveat/createCaveatConfig');
 const emailCaveatorConfig = require('src/test/end-to-end/pages/emailNotifications/caveat/emailCaveatorConfig');
+const reopenCaveatConfig = require('src/test/end-to-end/pages/reopenningCases/caveat/reopenCaveatConfig');
 const caseMatchesConfig = require('src/test/end-to-end/pages/caseMatches/caveat/caseMatchesConfig');
-const documentUploadConfig = require('src/test/end-to-end/pages/documentUpload/documentUploadConfig');
+const documentUploadConfig = require('src/test/end-to-end/pages/documentUpload/caveat/documentUploadConfig');
 
 const historyTabConfig = require('src/test/end-to-end/pages/caseDetails/caveat/historyTabConfig');
 
@@ -17,6 +18,7 @@ const caseDetailsTabConfig = require('src/test/end-to-end/pages/caseDetails/cave
 const deceasedDetailsTabConfig = require('src/test/end-to-end/pages/caseDetails/caveat/deceasedDetailsTabConfig');
 const caveatorDetailsTabConfig = require('src/test/end-to-end/pages/caseDetails/caveat/caveatorDetailsTabConfig');
 const caveatDetailsTabConfig = require('src/test/end-to-end/pages/caseDetails/caveat/caveatDetailsTabConfig');
+const caveatDetailsTabReopenConfig = require('src/test/end-to-end/pages/caseDetails/caveat/caveatDetailsTabReopenConfig');
 
 const documentsTabEmailCaveatorConfig = require('src/test/end-to-end/pages/caseDetails/caveat/documentsTabEmailCaveatorConfig');
 const caseMatchesTabConfig = require('src/test/end-to-end/pages/caseDetails/caveat/caseMatchesTabConfig');
@@ -31,7 +33,7 @@ Scenario('Caveat Workflow - E2E Test 04 - Caveat for a Personal Applicant - Rais
 
     let nextStepName = 'Raise a caveat';
     I.selectNewCase();
-    I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_caveat, createCaseConfig.list3_text_raise_caveat);
+    I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_caveat, createCaseConfig.list3_text_caveat);
     I.enterCaveatPage1('create');
     I.enterCaveatPage2('create');
     I.enterCaveatPage3('create');
@@ -67,7 +69,7 @@ Scenario('Caveat Workflow - E2E Test 04 - Caveat for a Personal Applicant - Rais
 
     nextStepName = 'Upload document';
     I.chooseNextStep(nextStepName);
-    I.uploadDocument(caseRef);
+    I.uploadDocument(caseRef, documentUploadConfig);
     I.enterEventSummary(caseRef, nextStepName);
     // Note that End State does not change when uploading a document.
     I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
@@ -94,6 +96,14 @@ Scenario('Caveat Workflow - E2E Test 04 - Caveat for a Personal Applicant - Rais
     // When emailing the caveator, the Date added for the email document is set to today
     emailCaveatorConfig.dateAdded = dateFns.format(new Date(), 'D MMM YYYY');
     I.seeCaseDetails(caseRef, documentsTabEmailCaveatorConfig, emailCaveatorConfig);
+
+    nextStepName = 'Reopen caveat'; // When in state 'Caveat closed'
+    I.chooseNextStep(nextStepName);
+    I.reopenCaveat(caseRef);
+    I.enterEventSummary(caseRef, nextStepName);
+    endState = 'Caveat raised';
+    I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+    I.seeCaseDetails(caseRef, caveatDetailsTabReopenConfig, reopenCaveatConfig);
 
     I.click('#sign-out');
 

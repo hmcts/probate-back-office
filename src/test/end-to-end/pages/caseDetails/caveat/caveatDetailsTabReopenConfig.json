@@ -1,0 +1,9 @@
+{
+  "tabName": "Caveat details",
+  "fields": [
+    "What is the reason for re-opening this Caveat?"
+  ],
+  "dataKeys": [
+    "reopen_caveat_reason"
+  ]
+}

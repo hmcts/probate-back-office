@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
+import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatCallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.service.client.DocumentStoreClient;
@@ -27,6 +28,8 @@ import java.util.stream.LongStream;
 public class BulkPrintService {
     private static final String XEROX_TYPE_PARAMETER = "PRO001";
     private static final String BEARER = "Bearer ";
+    private static final String ADDITIONAL_DATA_CASE_REFERENCE = "caseReference";
+    private static final String CASE_ID = "case id ";
     private final SendLetterApi sendLetterApi;
     private final DocumentStoreClient documentStoreClient;
     private final ServiceAuthTokenGenerator tokenGenerator;
@@ -37,7 +40,7 @@ public class BulkPrintService {
             String authHeaderValue = tokenGenerator.generate();
 
             Map<String, Object> additionalData = new HashMap<>();
-            additionalData.put("caseData", callbackRequest.getCaseDetails().getData());
+            additionalData.put(ADDITIONAL_DATA_CASE_REFERENCE, callbackRequest.getCaseDetails().getId());
 
             additionalData = Collections.unmodifiableMap(additionalData);
 
@@ -62,13 +65,54 @@ public class BulkPrintService {
         return sendLetterResponse;
     }
 
+    public SendLetterResponse sendToBulkPrint(CaveatCallbackRequest caveatCallbackRequest, Document grantDocument, Document coverSheet) {
+        SendLetterResponse sendLetterResponse = null;
+        try {
+            String authHeaderValue = tokenGenerator.generate();
+
+            Map<String, Object> additionalData = new HashMap<>();
+            additionalData.put(ADDITIONAL_DATA_CASE_REFERENCE, caveatCallbackRequest.getCaseDetails().getId());
+
+            additionalData = Collections.unmodifiableMap(additionalData);
+
+            List<String> pdfs = arrangePdfDocumentsForBulkPrinting(caveatCallbackRequest, grantDocument, coverSheet, authHeaderValue);
+
+            sendLetterResponse = sendLetterApi.sendLetter(BEARER + authHeaderValue,
+                    new LetterWithPdfsRequest(pdfs, XEROX_TYPE_PARAMETER, additionalData));
+            log.info("Letter service produced the following letter Id {} for a pdf size {} for the case id {}",
+                    sendLetterResponse.letterId, pdfs.size(), caveatCallbackRequest.getCaseDetails().getId());
+
+        } catch (HttpClientErrorException ex) {
+            log.error("Error with Http Connection to Bulk Print with response body {} and message {} and code {}",
+                    ex.getResponseBodyAsString(),
+                    ex.getLocalizedMessage(),
+                    ex.getStatusCode());
+        } catch (IOException ioe) {
+            log.error("Error retrieving document from store with url {}", ioe);
+        } catch (Exception e) {
+            log.error("Error sending pdfs to bulk print {}", e.getMessage());
+        }
+        return sendLetterResponse;
+    }
+
+
     private String getPdfAsBase64EncodedString(Document document,
                                                String authHeaderValue,
                                                CallbackRequest callbackRequest) throws IOException {
 
         String response = Base64.getEncoder().encodeToString(documentStoreClient.retrieveDocument(document, authHeaderValue));
-        log.info("case id " + callbackRequest.getCaseDetails().getId().toString()
-                + "dm store" + document.getDocumentFileName() + " string: " + response);
+        log.info(CASE_ID + callbackRequest.getCaseDetails().getId().toString()
+                + "dm store" + document.getDocumentFileName());
+        return response;
+    }
+
+    private String getPdfAsBase64EncodedString(Document document,
+                                               String authHeaderValue,
+                                               CaveatCallbackRequest caveatCallbackRequest) throws IOException {
+
+        String response = Base64.getEncoder().encodeToString(documentStoreClient.retrieveDocument(document, authHeaderValue));
+        log.info(CASE_ID + caveatCallbackRequest.getCaseDetails().getId().toString()
+                + "dm store" + document.getDocumentFileName());
         return response;
     }
 
@@ -93,8 +137,22 @@ public class BulkPrintService {
         return documents;
     }
 
+    private List<String> arrangePdfDocumentsForBulkPrinting(CaveatCallbackRequest caveatCallbackRequest,
+                                                            Document grantDocument,
+                                                            Document coverSheetDocument,
+                                                            String authHeaderValue) throws IOException {
+        List<String> documents = new LinkedList<>();
+        String encodedCoverSheet = getPdfAsBase64EncodedString(coverSheetDocument, authHeaderValue, caveatCallbackRequest);
+        String encodedGrantDocument = getPdfAsBase64EncodedString(grantDocument, authHeaderValue, caveatCallbackRequest);
+
+        //Layer documents as cover letter first, grant, and extra copies of grant to PA.
+        documents.add(encodedCoverSheet);
+        documents.add(encodedGrantDocument);
+        return documents;
+    }
+
     private List<String> getDocumentSize(List<String> documents, CallbackRequest callbackRequest) throws IOException {
-        log.info("case id " + callbackRequest.getCaseDetails().getId().toString() + "number of documents is: " + documents.size());
+        log.info(CASE_ID + callbackRequest.getCaseDetails().getId().toString() + "number of documents is: " + documents.size());
         return documents;
     }
 }
