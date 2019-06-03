@@ -9,6 +9,7 @@ import uk.gov.hmcts.probate.model.TokenExchangeResponse;
 
 import java.util.Base64;
 
+@Slf4j
 @Component
 public class IdamAuthenticateUserService {
 
@@ -31,6 +32,9 @@ public class IdamAuthenticateUserService {
 
     @Value("${auth.provider.client.password}")
     private String password;
+
+    @Value("${auth.provider.client.user}")
+    private String urlUsed;
 
     private final IdamApi idamApi;
 

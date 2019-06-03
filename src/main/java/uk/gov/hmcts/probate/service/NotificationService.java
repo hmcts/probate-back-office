@@ -25,6 +25,7 @@ import uk.gov.service.notify.NotificationClient;
 import uk.gov.service.notify.NotificationClientException;
 import uk.gov.service.notify.SendEmailResponse;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
@@ -48,6 +49,7 @@ public class NotificationService {
 
     private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMM Y HH:mm");
     private static final DateTimeFormatter EXCELA_DATE = DateTimeFormatter.ofPattern("yyyyMMdd");
+    private static final DateTimeFormatter EXCELA_CONTENT_DATE = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     private static final String PERSONALISATION_APPLICANT_NAME = "applicant_name";
     private static final String PERSONALISATION_DECEASED_NAME = "deceased_name";
@@ -228,11 +230,17 @@ public class NotificationService {
         StringBuilder data = new StringBuilder();
 
         for (ReturnedCaseDetails currentCase : cases) {
-            data.append(currentCase.getId().toString());
+            data.append(getWillReferenceNumber(currentCase.getData()));
             data.append(", ");
+            data.append(currentCase.getData().getDeceasedForenames());
+            data.append(" ");
             data.append(currentCase.getData().getDeceasedSurname());
             data.append(", ");
-            data.append(getWillReferenceNumber(currentCase.getData()));
+            data.append(EXCELA_CONTENT_DATE.format(currentCase.getData().getDeceasedDateOfBirth()));
+            data.append(", ");
+            data.append(EXCELA_CONTENT_DATE.format(LocalDate.parse(currentCase.getData().getGrantIssuedDate())));
+            data.append(", ");
+            data.append(currentCase.getId().toString());
             data.append("\n");
         }
         return data;

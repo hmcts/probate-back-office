@@ -24,6 +24,7 @@ import static java.util.Optional.ofNullable;
 import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
 import static uk.gov.hmcts.probate.model.Constants.CAVEAT_LIFESPAN;
 import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT_RAISED;
+import static uk.gov.hmcts.probate.model.Constants.YES;
 
 @Component
 @RequiredArgsConstructor
@@ -53,6 +54,7 @@ public class CaveatCallbackResponseTransformer {
 
         responseCaveatDataBuilder
                 .expiryDate(dateTimeFormatter.format(LocalDate.now().plusMonths(CAVEAT_LIFESPAN)))
+                .paperForm(YES)
                 .build();
 
         return transformResponse(responseCaveatDataBuilder.build());
@@ -138,11 +140,13 @@ public class CaveatCallbackResponseTransformer {
                 .documentsGenerated(caveatData.getDocumentsGenerated())
                 .notificationsGenerated(caveatData.getNotificationsGenerated())
                 .recordId(caveatData.getRecordId())
+                .paperForm(caveatData.getPaperForm())
                 .legacyCaseViewUrl(caveatData.getLegacyCaseViewUrl())
                 .legacyType(caveatData.getLegacyType())
                 .sendToBulkPrintRequested(caveatData.getSendToBulkPrintRequested())
                 .caveatRaisedEmailNotificationRequested(caveatData.getCaveatRaisedEmailNotificationRequested())
-                .bulkPrintId(caveatData.getBulkPrintId());
+                .bulkPrintId(caveatData.getBulkPrintId())
+                .applicationSubmittedDate(caveatData.getApplicationSubmittedDate());
     }
 
     private String transformToString(LocalDate dateValue) {

@@ -82,6 +82,8 @@ public class CaveatData {
 
     private List<CollectionMember<UploadDocument>> documentsUploaded;
 
+    private String paperForm;
+
     @Builder.Default
     private List<CollectionMember<CaseMatch>> caseMatches = new ArrayList<>();
 
@@ -94,6 +96,8 @@ public class CaveatData {
     // EVENT = misc
 
     private String caveatReopenReason;
+
+    private String applicationSubmittedDate;
 
     @Builder.Default
     private List<CollectionMember<Document>> documentsGenerated = new ArrayList<>();
