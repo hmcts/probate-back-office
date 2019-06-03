@@ -59,9 +59,9 @@ public class CaveatCallbackResponseTransformerTest {
     private static final String CAV_CAVEATOR_EMAIL_ADDRESS = "cav@email.com";
     private static final ProbateAddress CAV_CAVEATOR_ADDRESS = Mockito.mock(ProbateAddress.class);
 
-    private static final LocalDate CAV_ENTRY_DATE = LocalDate.now();
+    private static final LocalDate CAV_SUBMISSION_DATE = LocalDate.now();
+    private static final String CAV_FORMATTED_SUBMISSION_DATE = dateTimeFormatter.format(CAV_SUBMISSION_DATE);
     private static final LocalDate CAV_EXPIRY_DATE = LocalDate.now().plusMonths(CAVEAT_LIFESPAN);
-    private static final String CAV_FORMATTED_ENTRY_DATE = dateTimeFormatter.format(CAV_ENTRY_DATE);
     private static final String CAV_FORMATTED_EXPIRY_DATE = dateTimeFormatter.format(CAV_EXPIRY_DATE);
 
     private static final String CAV_MESSAGE_CONTENT = "";
@@ -106,12 +106,12 @@ public class CaveatCallbackResponseTransformerTest {
                 .caveatorSurname(CAV_CAVEATOR_SURNAME)
                 .caveatorEmailAddress(CAV_CAVEATOR_EMAIL_ADDRESS)
                 .caveatorAddress(CAV_CAVEATOR_ADDRESS)
-                .entryDate(CAV_ENTRY_DATE)
                 .expiryDate(CAV_EXPIRY_DATE)
                 .messageContent(CAV_MESSAGE_CONTENT)
                 .caveatReopenReason(CAV_REOPEN_REASON)
                 .recordId(CAV_RECORD_ID)
                 .legacyCaseViewUrl(CAV_LEGACY_CASE_URL)
+                .applicationSubmittedDate(CAV_SUBMISSION_DATE)
                 .legacyType(CAV_LEGACY_CASE_TYPE);
 
         when(caveatCallbackRequestMock.getCaseDetails()).thenReturn(caveatDetailsMock);
@@ -164,7 +164,7 @@ public class CaveatCallbackResponseTransformerTest {
 
         assertCommon(caveatCallbackResponse);
 
-        assertEquals(CAV_FORMATTED_ENTRY_DATE, caveatCallbackResponse.getCaveatData().getEntryDate());
+        assertEquals(CAV_FORMATTED_SUBMISSION_DATE, caveatCallbackResponse.getCaveatData().getEntryDate());
     }
 
     @Test
@@ -180,6 +180,7 @@ public class CaveatCallbackResponseTransformerTest {
 
         assertCommon(caveatCallbackResponse);
 
+        assertEquals(CAV_FORMATTED_SUBMISSION_DATE, caveatCallbackResponse.getCaveatData().getApplicationSubmittedDate());
         assertEquals(CAV_FORMATTED_EXPIRY_DATE, caveatCallbackResponse.getCaveatData().getExpiryDate());
     }
 

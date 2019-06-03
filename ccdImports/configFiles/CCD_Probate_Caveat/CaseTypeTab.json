@@ -13,7 +13,7 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "Channel": "CaseWorker", "TabID": "caveatorTab", "TabLabel": "Caveator details", "TabDisplayOrder": 4, "CaseFieldID": "caveatorSurname", "TabFieldDisplayOrder": 2},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "Channel": "CaseWorker", "TabID": "caveatorTab", "TabLabel": "Caveator details", "TabDisplayOrder": 4, "CaseFieldID": "caveatorEmailAddress", "TabFieldDisplayOrder": 3},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "Channel": "CaseWorker", "TabID": "caveatorTab", "TabLabel": "Caveator details", "TabDisplayOrder": 4, "CaseFieldID": "caveatorAddress", "TabFieldDisplayOrder": 4},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "Channel": "CaseWorker", "TabID": "caveatTab", "TabLabel": "Caveat details", "TabDisplayOrder": 5, "CaseFieldID": "entryDate", "TabFieldDisplayOrder": 1},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "Channel": "CaseWorker", "TabID": "caveatTab", "TabLabel": "Caveat details", "TabDisplayOrder": 5, "CaseFieldID": "applicationSubmittedDate", "TabFieldDisplayOrder": 1},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "Channel": "CaseWorker", "TabID": "caveatTab", "TabLabel": "Caveat details", "TabDisplayOrder": 5, "CaseFieldID": "expiryDate", "TabFieldDisplayOrder": 2},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "Channel": "CaseWorker", "TabID": "caveatTab", "TabLabel": "Caveat details", "TabDisplayOrder": 5, "CaseFieldID": "caveatReopenReason", "TabFieldDisplayOrder": 3},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "Channel": "CaseWorker", "TabID": "documentsTab", "TabLabel": "Documents", "TabDisplayOrder": 6, "CaseFieldID": "documentsUploaded", "TabFieldDisplayOrder": 1},
