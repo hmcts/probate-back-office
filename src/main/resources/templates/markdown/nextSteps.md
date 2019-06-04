@@ -39,7 +39,6 @@ Print a copy of this page for your records.
 You now need to send us:
 
 *   the original will
-*   2 unstapled photocopies of the signed will - these must be on plain A4 paper
 *   fee payment: your {{paymentMethod}} for £{{paymentAmount}} (grant and copies)
 *   the printed version of this page which will be used as your cover letter to us
 *   completed inheritance tax form {{ihtForm}}
@@ -54,14 +53,12 @@ You should:
 
 If using recorded delivery, send to:
 
-Birmingham Probate Registry,
-The Priory Courts,
-33 Bull Street,
-Birmingham,
-West Midlands,
-B4 6DU
+Principal Registry of the Family Division (PRFD),
+HMCTS Probate,
+PO Box 12625,
+Harlow,
+CM20 9QE
 
-Or by DX to: 701990
 What happens next
 =================
 
