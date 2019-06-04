@@ -160,11 +160,18 @@ public class CaveatCallbackResponseTransformerTest {
 
     @Test
     public void shouldConvertRequestToDataBeanWithCaveatEntryDateChange() {
-        CaveatCallbackResponse caveatCallbackResponse = underTest.caveatRaised(caveatCallbackRequestMock);
+        List<Document> documents = new ArrayList<>();
+        Document document = Document.builder()
+                .documentLink(documentLinkMock)
+                .documentType(DocumentType.CAVEAT_RAISED)
+                .build();
+        documents.add(0, document);
+        String letterId = "123-456";
+        CaveatCallbackResponse caveatCallbackResponse = underTest.caveatRaised(caveatCallbackRequestMock, documents, letterId);
 
         assertCommon(caveatCallbackResponse);
 
-        assertEquals(CAV_FORMATTED_SUBMISSION_DATE, caveatCallbackResponse.getCaveatData().getEntryDate());
+        assertEquals(CAV_FORMATTED_SUBMISSION_DATE, caveatCallbackResponse.getCaveatData().getApplicationSubmittedDate());
     }
 
     @Test

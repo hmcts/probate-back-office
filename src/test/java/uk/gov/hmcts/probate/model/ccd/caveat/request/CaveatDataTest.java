@@ -68,8 +68,6 @@ public class CaveatDataTest {
         assertEquals("Yes", caveatData.getDefaultValueForEmailNotifications());
     }
 
-    // ...
-
     @Test
     public void shouldReturnSubmissionDateFormattedWithST() {
         final CaveatData caveatData = CaveatData.builder()
