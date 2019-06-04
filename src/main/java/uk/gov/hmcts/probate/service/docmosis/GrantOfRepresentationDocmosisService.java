@@ -37,7 +37,7 @@ public class GrantOfRepresentationDocmosisService {
     private static final String PERSONALISATION_GENERATED_DATE = "generatedDate";
     private static final String PERSONALISATION_REGISTRY = "registry";
     private static final String PERSONALISATION_PA8AURL = "PA8AURL";
-    private static final String PERSONALISATION_PA8BURL = "PA8AURL";
+    private static final String PERSONALISATION_PA8BURL = "PA8BURL";
 
     public Map<String, Object> caseDataAsPlaceholders(CaseDetails caseDetails) {
 
@@ -55,9 +55,9 @@ public class GrantOfRepresentationDocmosisService {
         placeholders.put(PERSONALISATION_CASE_REFERENCE, ccdReferenceFormatterService.getFormattedCaseReference(caseDetails.getData().getBoCaseStopCaveatId()));
         placeholders.put(PERSONALISATION_GENERATED_DATE, generatedDateFormat.format(new Date()));
         placeholders.put(PERSONALISATION_REGISTRY, registryPlaceholders);
-        placeholders.put(PERSONALISATION_PA8AURL, "www.citizensadvice.org.uk|https://www.citizensadvice.org.uk/");
+        placeholders.put(PERSONALISATION_PA8AURL, "www.gov.uk|https://www.gov.uk/inherits-someone-dies-without-will");
         placeholders.put(PERSONALISATION_PA8BURL, "www.citizensadvice.org.uk|https://www.citizensadvice.org.uk/");
-        placeholders.put(PERSONALISATION_DATE_CAVEAT_ENTERED, caveatData.getApplicationSubmittedDate());
+        placeholders.put(PERSONALISATION_DATE_CAVEAT_ENTERED, caveatData.getApplicationSubmittedDateFormatted());
         placeholders.put(PERSONALISATION_CAVEATOR_NAME, caveatData.getCaveatorFullName());
         placeholders.put(PERSONALISATION_CAVEATOR_ADDRESS, caveatData.getCaveatorAddressFormatted());
         return placeholders;
