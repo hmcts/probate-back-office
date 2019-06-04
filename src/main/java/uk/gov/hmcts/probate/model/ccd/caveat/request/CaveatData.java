@@ -151,6 +151,7 @@ public class CaveatData {
             fullAddress += address.getProAddressLine1().isEmpty() ? "" : address.getProAddressLine1() ;
             fullAddress += address.getProAddressLine2().isEmpty() ? "" : ", " + address.getProAddressLine2();
             fullAddress += address.getProAddressLine3().isEmpty() ? "" : ", " + address.getProAddressLine3();
+            fullAddress += address.getProPostTown().isEmpty() ? "" : ", " + address.getProPostTown();
             fullAddress += address.getProCounty().isEmpty() ? "" : ", " + address.getProCounty();
             fullAddress += address.getProPostCode().isEmpty() ? "" : ", " + address.getProPostCode();
             fullAddress += address.getProCountry().isEmpty() ? "" : ", " + address.getProCountry();
