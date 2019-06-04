@@ -51,10 +51,10 @@ Where to send us your documents
 
 You should:
 
-*   use recorded delivery or Document Exchange (DX)
+*   use recorded delivery
 *   keep copies of all documents
 
-If using recorded delivery, send to:
+Send all documents to:
 
 Principal Registry of the Family Division (PRFD),
 HMCTS Probate,
