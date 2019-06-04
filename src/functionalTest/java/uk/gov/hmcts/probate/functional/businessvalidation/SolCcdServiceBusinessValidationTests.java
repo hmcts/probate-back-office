@@ -24,7 +24,6 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     private static final String TRANSFORM_URL = "/case/transformCase";
     private static final String CHECKLIST_URL = "/case/validateCheckListDetails";
     private static final String PAPER_FORM_URL = "/case/paperForm";
-    private static final String RESOLVE_STOP_URL = "/case/resolveStop";
 
 
     @Test
@@ -207,11 +206,6 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     @Test
     public void verifyRequestWithoutExecutorAddressWhileNotApplyingReturnsNoErrorTransformCase() {
         validatePostSuccess("success.missingExecutorAddressWhileNotApplying.json", TRANSFORM_URL);
-    }
-
-    @Test
-    public void verifyRequestSuccessForResolveStop() {
-        validatePostSuccess("solicitorPayloadResolveStop.json", RESOLVE_STOP_URL);
     }
 
     @Test

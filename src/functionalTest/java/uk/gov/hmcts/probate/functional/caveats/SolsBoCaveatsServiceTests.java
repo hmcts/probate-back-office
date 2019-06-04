@@ -51,17 +51,6 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
         assertEquals(NO, bulkPrintRequested);
 
     }
-    @Test
-    public void verifySuccessForCaveatDefaultValuesWithPaperForm() {
-        String response = validatePostSuccessReturnPayload(DEFAULT_PAYLOAD, CAVEAT_RAISED);
-
-        JsonPath jsonPath = JsonPath.from(response);
-        String paperForm = jsonPath.get("data.paperForm");
-
-        assertEquals(YES, paperForm);
-
-    }
-
 
 
     @Test

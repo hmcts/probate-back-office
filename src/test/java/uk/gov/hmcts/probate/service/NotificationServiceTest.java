@@ -187,12 +187,10 @@ public class NotificationServiceTest {
                 .deceasedDateOfDeath(LocalDate.of(2000, 12, 12))
                 .build(), LAST_MODIFIED, ID);
 
-        excelaCaseData.add(new ReturnedCaseDetails(CaseData.builder()
+        excelaCaseData.add(
+                new ReturnedCaseDetails(CaseData.builder()
                 .applicationType(PERSONAL)
-                .deceasedForenames("Jack")
                 .deceasedSurname("Michelson")
-                .grantIssuedDate("2019-05-01")
-                .deceasedDateOfBirth(LocalDate.of(2019, 1, 1))
                 .scannedDocuments(scannedDocuments)
                 .build(), LAST_MODIFIED, ID));
 

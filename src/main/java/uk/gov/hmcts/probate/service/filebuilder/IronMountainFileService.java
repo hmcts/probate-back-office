@@ -2,35 +2,24 @@ package uk.gov.hmcts.probate.service.filebuilder;
 
 import com.google.common.collect.ImmutableList;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.model.ApplicationType;
-import uk.gov.hmcts.probate.model.DataExtractGrantType;
 import uk.gov.hmcts.probate.model.ccd.raw.Grantee;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 
 import java.io.File;
-import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.Period;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
-import static uk.gov.hmcts.probate.model.Constants.CTSC;
-import static uk.gov.hmcts.probate.model.Constants.PRINCIPAL_REGISTRY;
-import static uk.gov.hmcts.probate.model.Constants.YES;
-
-@Slf4j
 @Service
 @RequiredArgsConstructor
 public class IronMountainFileService {
-    private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd-MMM-yyyy");
     private static final SolsAddress EMPTY_ADDRESS = SolsAddress.builder()
             .addressLine1("")
             .addressLine2("")
@@ -42,15 +31,12 @@ public class IronMountainFileService {
             .build();
     private final TextFileBuilderService textFileBuilderService;
     private static final String DELIMITER = "|";
-    private ImmutableList.Builder<String> fileData;
+    private ImmutableList.Builder<String> fileData = ImmutableList.builder();
 
     public File createIronMountainFile(List<ReturnedCaseDetails> ccdCases, String fileName) {
-        fileData = new ImmutableList.Builder<>();
-        fileData.add("\n");
         for (ReturnedCaseDetails ccdCase : ccdCases) {
             prepareData(ccdCase.getId(), ccdCase.getData());
         }
-        log.info("Creating IronMountain file.");
         return textFileBuilderService.createFile(fileData.build(), DELIMITER, fileName);
     }
 
@@ -63,13 +49,13 @@ public class IronMountainFileService {
         fileData.add(Optional.ofNullable(data.getBoDeceasedTitle()).orElse(""));
         fileData.add(data.getDeceasedForenames());
         fileData.add(data.getDeceasedSurname());
-        fileData.add(DATE_FORMAT.format(data.getDeceasedDateOfDeath()));
+        fileData.add(data.getDeceasedDateOfDeath().toString());
         fileData.add("");
-        fileData.add(DATE_FORMAT.format(data.getDeceasedDateOfBirth()));
+        fileData.add(data.getDeceasedDateOfBirth().toString());
         fileData.add(String.valueOf(ageCalculator(data)));
         addDeceasedAddress(fileData, deceasedAddress);
         fileData.add(id.toString());
-        fileData.add(DATE_FORMAT.format(LocalDate.parse(data.getGrantIssuedDate())));
+        fileData.add(data.getGrantIssuedDate());
         addGranteeDetails(fileData, createGrantee(data, 1));
         addGranteeDetails(fileData, createGrantee(data, 2));
         addGranteeDetails(fileData, createGrantee(data, 3));
@@ -78,10 +64,10 @@ public class IronMountainFileService {
         fileData.add(data.getApplicationType().equals(ApplicationType.PERSONAL) ? data.getPrimaryApplicantSurname() :
                 data.getSolsSolicitorFirmName());
         addDeceasedAddress(fileData, applicantAddress);
-        fileData.add(data.getIhtGrossValue().toString().substring(0, data.getIhtGrossValue().toString().length() - 2));
-        fileData.add(data.getIhtNetValue().toString().substring(0, data.getIhtNetValue().toString().length() - 2));
-        fileData.add(DataExtractGrantType.valueOf(data.getCaseType()).getCaseTypeMapped());
-        fileData.add(registryLocationCheck(data.getRegistryLocation()));
+        fileData.add(data.getIhtGrossValue().toString());
+        fileData.add(data.getIhtNetValue().toString());
+        fileData.add(CaseTypeMapping.valueOf(data.getCaseType()).getCaseTypeMapped());
+        fileData.add(data.getRegistryLocation());
         fileData.add("\n");
     }
 
@@ -108,7 +94,7 @@ public class IronMountainFileService {
         if (address == null) {
             address = EMPTY_ADDRESS;
         }
-        String[] addressArray = {(Optional.ofNullable(address.getAddressLine1()).orElse("")).replace("\n", " "),
+        String[] addressArray = {Optional.ofNullable(address.getAddressLine1()).orElse(""),
                 Optional.ofNullable(address.getAddressLine2()).orElse(""),
                 Optional.ofNullable(address.getAddressLine3()).orElse(""),
                 Optional.ofNullable(address.getPostTown()).orElse(""),
@@ -123,19 +109,15 @@ public class IronMountainFileService {
 
     private Grantee createGrantee(CaseData data, int i) {
         return Grantee.builder()
-                .fullName(getName(data, i))
+                .fullName(getFirstName(data, i))
                 .address(addressManager(getAddress(data, i)))
                 .build();
     }
 
-    private String getName(CaseData caseData, int granteeNumber) {
+    private String getFirstName(CaseData caseData, int granteeNumber) {
         if (isYes(caseData.getPrimaryApplicantIsApplying())) {
             return granteeNumber == 1 ? caseData.getPrimaryApplicantForenames() + " " + caseData
                     .getPrimaryApplicantSurname() : getApplyingExecutorName(caseData, granteeNumber - 2);
-        }
-        if (granteeNumber == 1 && caseData.getAdditionalExecutorsApplying() == null && caseData.getApplicationType()
-                .equals(ApplicationType.SOLICITOR)) {
-            return caseData.getSolsSOTName();
         }
         return getApplyingExecutorName(caseData, granteeNumber - 1);
     }
@@ -144,10 +126,6 @@ public class IronMountainFileService {
         if (isYes(caseData.getPrimaryApplicantIsApplying())) {
             return granteeNumber == 1 ? caseData.getPrimaryApplicantAddress() : getAdditionalExecutorAddress(caseData,
                     granteeNumber - 2);
-        }
-        if (granteeNumber == 1 && caseData.getAdditionalExecutorsApplying() == null && caseData.getApplicationType()
-                .equals(ApplicationType.SOLICITOR)) {
-            return caseData.getSolsSolicitorAddress();
         }
         return getAdditionalExecutorAddress(caseData, granteeNumber - 1);
     }
@@ -168,11 +146,23 @@ public class IronMountainFileService {
         return "";
     }
 
-    private String registryLocationCheck(String registry) {
-        return registry.equalsIgnoreCase(CTSC) ? PRINCIPAL_REGISTRY : registry;
+    private enum CaseTypeMapping {
+        gop("PROBATE"),
+        intestacy("ADMINISTRATION"),
+        admonWill("ADMON/WILL");
+
+        private String caseTypeItem;
+
+        CaseTypeMapping(String caseType) {
+            this.caseTypeItem = caseType;
+        }
+
+        private String getCaseTypeMapped() {
+            return caseTypeItem;
+        }
     }
 
     private Boolean isYes(String yesNoValue) {
-        return yesNoValue.equals(YES);
+        return yesNoValue.equals("Yes");
     }
 }
