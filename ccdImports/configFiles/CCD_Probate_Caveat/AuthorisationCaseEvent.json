@@ -1,6 +1,6 @@
 [
   {"CaseTypeID": "Caveat", "CaseEventID": "applyForCaveat", "UserRole": "caseworker-probate-issuer", "CRUD": "R"},
-  {"CaseTypeID": "Caveat", "CaseEventID": "createCase", "UserRole": "caseworker-probate-issuer", "CRUD": "R"},
+  {"CaseTypeID": "Caveat", "CaseEventID": "createCase", "UserRole": "caseworker-probate-issuer", "CRUD": "CRU"},
   {"CaseTypeID": "Caveat", "CaseEventID": "paymentSuccessApp", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
   {"CaseTypeID": "Caveat", "CaseEventID": "paymentFailedApp", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
   {"CaseTypeID": "Caveat", "CaseEventID": "paymentSuccessCase", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
