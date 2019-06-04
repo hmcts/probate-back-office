@@ -36,7 +36,6 @@ public class StandingSearchMapperTest {
     private static final String DECEASED_SURNAME = "DeadSN";
     private static final LocalDate DATE_OF_BIRTH = LocalDate.of(1999, 1, 1);
     private static final LocalDate DATE_OF_DEATH = LocalDate.of(2018, 1, 1);
-    private static final LocalDate DATE_OF_ENTRY = LocalDate.of(2018, 1, 2);
     private static final String DECEASED_ALIAS_NAMES = "DeadAN1 DeadAN2";
     private static final String DECEASED_ADRESS = "DeadAddLN1 DeadAddPC";
     private static final String APPLICANT_FORENAMES = "AppFN1 AppFN2";
@@ -64,7 +63,6 @@ public class StandingSearchMapperTest {
         standingSearch.setApplicantAddress(APPLICANT_ADRESS);
         standingSearch.setSsDateOfExpiry(DATE_OF_EXPIRY);
         standingSearch.setId(Long.valueOf(ID));
-        standingSearch.setSsDateOfEntry(DATE_OF_ENTRY);
 
         String legacyCaseViewUrl = String.format(printServiceHost + printServiceLegacyPath, ProbateManType.STANDING_SEARCH, ID);
 
@@ -83,7 +81,6 @@ public class StandingSearchMapperTest {
                 .legacyId(ID)
                 .legacyType(LEGACY_TYPE)
                 .legacyCaseViewUrl(legacyCaseViewUrl)
-                .applicationSubmittedDate(DATE_OF_ENTRY)
                 .build();
 
         StandingSearchData standingSearchData = standingSearchMapper.toCcdData(standingSearch);

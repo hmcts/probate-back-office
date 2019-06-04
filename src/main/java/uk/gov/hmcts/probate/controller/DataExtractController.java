@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.controller;
 
+import com.google.common.collect.ImmutableList;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -13,9 +14,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import uk.gov.hmcts.probate.exception.ClientException;
+import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
+import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 import uk.gov.hmcts.probate.service.CaseQueryService;
-import uk.gov.hmcts.probate.service.ExcelaCriteriaService;
 import uk.gov.hmcts.probate.service.FileTransferService;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.filebuilder.IronMountainFileService;
@@ -25,6 +27,8 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.List;
+
+import static uk.gov.hmcts.probate.model.Constants.DOC_SUBTYPE_WILL;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -38,7 +42,6 @@ public class DataExtractController {
     private final NotificationService notificationService;
     private final FileTransferService fileTransferService;
     private final IronMountainFileService ironMountainFileService;
-    private final ExcelaCriteriaService excelaCriteriaService;
 
     @Scheduled(cron = "${cron.data_extract}")
     @ApiOperation(value = "Initiate IronMountain data extract", notes = "Will find cases for yesterdays date")
@@ -54,10 +57,9 @@ public class DataExtractController {
                                                       @PathVariable("date") String date) {
         dateValidator(date);
 
-        List<ReturnedCaseDetails> cases = caseQueryService.findCasesWithDatedDocument(date);
+        List<ReturnedCaseDetails> cases = caseQueryService.findCasesWithDatedDocument("digitalGrant", date);
 
         if (!cases.isEmpty()) {
-            log.info("preparing for file upload");
             int response = fileTransferService.uploadFile(ironMountainFileService.createIronMountainFile(
                     cases, date.replace("-", "") + "grant.txt"));
 
@@ -83,15 +85,27 @@ public class DataExtractController {
                                                 @PathVariable("date") String date) throws NotificationClientException {
         dateValidator(date);
 
-        List<ReturnedCaseDetails> cases = caseQueryService.findCasesWithDatedDocument(date);
-        List<ReturnedCaseDetails> filteredCases = excelaCriteriaService.getFilteredCases(cases);
+        List<ReturnedCaseDetails> cases = caseQueryService.findCasesWithDatedDocument("digitalGrant", date);
+        ImmutableList.Builder<ReturnedCaseDetails> filteredCases = ImmutableList.builder();
 
-        if (!filteredCases.isEmpty()) {
-            log.info("Sending email to Excela");
-            notificationService.sendExcelaEmail(filteredCases);
+        for (ReturnedCaseDetails returnedCase : cases) {
+            if (returnedCase.getData().getScannedDocuments() != null) {
+                for (CollectionMember<ScannedDocument> document : returnedCase.getData().getScannedDocuments()) {
+                    if (document.getValue().getSubtype() != null
+                            && document.getValue().getSubtype().equalsIgnoreCase(DOC_SUBTYPE_WILL)) {
+                        filteredCases.add(returnedCase);
+                        break;
+                    }
+                }
+            }
         }
 
-        return ResponseEntity.ok(filteredCases.size() + " cases found and emailed for date: " + date);
+        if (!filteredCases.build().isEmpty()) {
+            log.info("Sending email to Excela");
+            notificationService.sendExcelaEmail(filteredCases.build());
+        }
+
+        return ResponseEntity.ok(filteredCases.build().size() + " cases found and emailed for date: " + date);
     }
 
     private void dateValidator(String date) {

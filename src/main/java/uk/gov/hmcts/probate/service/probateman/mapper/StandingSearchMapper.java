@@ -29,7 +29,6 @@ public interface StandingSearchMapper extends ProbateManMapper<StandingSearch, S
     @Mapping(target = "expiryDate", source = "ssDateOfExpiry")
     @Mapping(target = "recordId", source = "ssNumber")
     @Mapping(target = "legacyId", source = "id")
-    @Mapping(target = "applicationSubmittedDate", source = "ssDateOfEntry")
     @Mapping(target = "legacyType", expression = "java(LegacyCaseType.STANDING_SEARCH.getName())")
     @Mapping(target = "legacyCaseViewUrl", source = "standingSearch", qualifiedBy = {ToLegacyCaseViewUrl.class})
     StandingSearchData toCcdData(StandingSearch standingSearch);

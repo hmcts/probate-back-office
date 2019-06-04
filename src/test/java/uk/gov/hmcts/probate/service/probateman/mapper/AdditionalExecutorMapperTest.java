@@ -10,7 +10,7 @@ import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.probateman.GrantApplication;
 import uk.gov.hmcts.reform.probate.model.cases.Address;
 import uk.gov.hmcts.reform.probate.model.cases.CollectionMember;
-import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.ExecutorApplying;
+import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.AdditionalExecutorApplying;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +41,7 @@ public class AdditionalExecutorMapperTest {
     AppInsights appInsights;
 
     @Test
-    public void shouldMapToExecutorApplyingList() {
+    public void shouldMapToAdditionalExecutorApplyingList() {
 
         GrantApplication grantApplication = new GrantApplication();
         grantApplication.setGrantee1Forenames(GRANTEE1_FORENAMES);
@@ -57,9 +57,9 @@ public class AdditionalExecutorMapperTest {
         grantApplication.setGrantee4Surname(GRANTEE4_SURNAME);
         grantApplication.setGrantee4Address(GRANTEE4_ADDRESS);
 
-        List<CollectionMember<ExecutorApplying>> expectedApplyingExecutors = buildExecutorApplying(grantApplication);
+        List<CollectionMember<AdditionalExecutorApplying>> expectedApplyingExecutors = buildExecutorApplying(grantApplication);
 
-        List<CollectionMember<ExecutorApplying>> additionalCollection =
+        List<CollectionMember<AdditionalExecutorApplying>> additionalCollection =
                 additionalExecutorMapper.toAdditionalCollectionMember(grantApplication);
 
         assertThat(additionalCollection.get(0)).isEqualToComparingFieldByFieldRecursively(expectedApplyingExecutors.get(0));
@@ -70,7 +70,7 @@ public class AdditionalExecutorMapperTest {
     }
 
     @Test
-    public void shouldMapToLimitedExecutorApplyingList() {
+    public void shouldMapToLimitedAdditionalExecutorApplyingList() {
 
         GrantApplication grantApplication = new GrantApplication();
         grantApplication.setGrantee1Forenames(GRANTEE1_FORENAMES);
@@ -80,9 +80,9 @@ public class AdditionalExecutorMapperTest {
         grantApplication.setGrantee3Surname(GRANTEE3_SURNAME);
         grantApplication.setGrantee3Address(GRANTEE3_ADDRESS);
 
-        List<CollectionMember<ExecutorApplying>> expectedApplyingExecutors = buildExecutorApplying(grantApplication);
+        List<CollectionMember<AdditionalExecutorApplying>> expectedApplyingExecutors = buildExecutorApplying(grantApplication);
 
-        List<CollectionMember<ExecutorApplying>> additionalCollection =
+        List<CollectionMember<AdditionalExecutorApplying>> additionalCollection =
                 additionalExecutorMapper.toAdditionalCollectionMember(grantApplication);
 
         assertThat(additionalCollection.size()).isEqualTo(2);
@@ -91,21 +91,21 @@ public class AdditionalExecutorMapperTest {
 
     }
 
-    private List<CollectionMember<ExecutorApplying>> buildExecutorApplying(GrantApplication grantApplication) {
-        List<CollectionMember<ExecutorApplying>> applyingList = new ArrayList<>();
-        CollectionMember<ExecutorApplying> applying1 = buildExecutor(grantApplication.getGrantee1Forenames(),
+    private List<CollectionMember<AdditionalExecutorApplying>> buildExecutorApplying(GrantApplication grantApplication) {
+        List<CollectionMember<AdditionalExecutorApplying>> applyingList = new ArrayList<>();
+        CollectionMember<AdditionalExecutorApplying> applying1 = buildExecutor(grantApplication.getGrantee1Forenames(),
                 grantApplication.getGrantee1Surname(),
                 grantApplication.getGrantee1Address());
 
-        CollectionMember<ExecutorApplying> applying2 = buildExecutor(grantApplication.getGrantee2Forenames(),
+        CollectionMember<AdditionalExecutorApplying> applying2 = buildExecutor(grantApplication.getGrantee2Forenames(),
                 grantApplication.getGrantee2Surname(),
                 grantApplication.getGrantee2Address());
 
-        CollectionMember<ExecutorApplying> applying3 = buildExecutor(grantApplication.getGrantee3Forenames(),
+        CollectionMember<AdditionalExecutorApplying> applying3 = buildExecutor(grantApplication.getGrantee3Forenames(),
                 grantApplication.getGrantee3Surname(),
                 grantApplication.getGrantee3Address());
 
-        CollectionMember<ExecutorApplying> applying4 = buildExecutor(grantApplication.getGrantee4Forenames(),
+        CollectionMember<AdditionalExecutorApplying> applying4 = buildExecutor(grantApplication.getGrantee4Forenames(),
                 grantApplication.getGrantee4Surname(),
                 grantApplication.getGrantee4Address());
 
@@ -116,9 +116,9 @@ public class AdditionalExecutorMapperTest {
         return applyingList;
     }
 
-    private CollectionMember<ExecutorApplying> buildExecutor(String granteeForenames,
+    private CollectionMember<AdditionalExecutorApplying> buildExecutor(String granteeForenames,
                                                                        String granteeSurname, String granteeAddress) {
-        ExecutorApplying applying = ExecutorApplying.builder()
+        AdditionalExecutorApplying applying = AdditionalExecutorApplying.builder()
                 .applyingExecutorName(granteeForenames + " " + granteeSurname)
                 .applyingExecutorAddress(buildAddress(granteeAddress))
                 .build();

@@ -97,8 +97,6 @@ public class StandingSearchCallbackResponseTransformer {
 
                 .documentsUploaded(standingSearchData.getDocumentsUploaded())
 
-                .applicationSubmittedDate(standingSearchData.getApplicationSubmittedDate())
-
                 .recordId(standingSearchData.getRecordId())
                 .legacyCaseViewUrl(standingSearchData.getLegacyCaseViewUrl())
                 .legacyType(standingSearchData.getLegacyType());

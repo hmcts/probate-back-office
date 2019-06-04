@@ -34,6 +34,7 @@ import static uk.gov.hmcts.probate.insights.AppInsightsEvent.REST_CLIENT_EXCEPTI
 @Slf4j
 public class CaseQueryService {
 
+    private static final String DOCUMENT_TYPE = "data.probateDocumentsGenerated.value.DocumentType";
     private static final String DOCUMENT_DATE = "data.grantIssuedDate";
     private static final String STATE = "state";
     private static final String STATE_MATCH = "BOGrantIssued";
@@ -48,10 +49,11 @@ public class CaseQueryService {
     private final ServiceAuthTokenGenerator serviceAuthTokenGenerator;
     private final IdamAuthenticateUserService idamAuthenticateUserService;
 
-    public List<ReturnedCaseDetails> findCasesWithDatedDocument(String queryDate) {
+    public List<ReturnedCaseDetails> findCasesWithDatedDocument(String documentTypeGenerated, String queryDate) {
         BoolQueryBuilder query = boolQuery();
 
         query.must(matchQuery(STATE, STATE_MATCH));
+        query.must(matchQuery(DOCUMENT_TYPE, documentTypeGenerated));
         query.must(matchQuery(DOCUMENT_DATE, queryDate));
 
         String jsonQuery = new SearchSourceBuilder().query(query).toString();
@@ -59,10 +61,12 @@ public class CaseQueryService {
         return runQuery(jsonQuery);
     }
 
-    public List<ReturnedCaseDetails> findCaseStateWithinTimeFrame(String startDate, String endDate) {
+    public List<ReturnedCaseDetails> findCaseStateWithinTimeFrame(String documentTypeGenerated,
+                                                                  String startDate, String endDate) {
         BoolQueryBuilder query = boolQuery();
 
         query.must(matchQuery(STATE, STATE_MATCH));
+        query.must(matchQuery(DOCUMENT_TYPE, documentTypeGenerated));
         query.must(rangeQuery(DOCUMENT_DATE).gt(startDate).lt(endDate));
 
         String jsonQuery = new SearchSourceBuilder().query(query).toString();

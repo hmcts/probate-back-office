@@ -53,8 +53,6 @@ public class StandingSearchData {
 
     private ProbateAddress applicantAddress;
 
-    private String applicationSubmittedDate;
-
     // EVENT = createStandingSearch - standing search details
 
     private long numberOfCopies;
