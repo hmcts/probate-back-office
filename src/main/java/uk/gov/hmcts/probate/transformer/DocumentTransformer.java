@@ -36,6 +36,8 @@ public class DocumentTransformer {
                         .add(new CollectionMember<>(null, document));
                 break;
             case SENT_EMAIL:
+            case CAVEAT_STOPPED:
+            case GRANT_COVERSHEET:
                 callbackRequest.getCaseDetails().getData().getProbateNotificationsGenerated()
                         .add(new CollectionMember<>(null, document));
                 break;

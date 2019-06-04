@@ -529,7 +529,10 @@ public class CallbackResponseTransformerTest {
 
     @Test
     public void shouldConvertRequestToDataBeanWithStopDetailsChange() {
-        CallbackResponse callbackResponse = underTest.caseStopped(callbackRequestMock, document);
+        List<Document> documents = new ArrayList<>();
+        documents.add(document);
+
+        CallbackResponse callbackResponse = underTest.caseStopped(callbackRequestMock, documents, "123");
 
         assertCommon(callbackResponse);
         assertLegacyInfo(callbackResponse);

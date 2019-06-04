@@ -17,6 +17,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.AdoptedRelative;
 import uk.gov.hmcts.probate.model.ccd.raw.AliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.AttorneyApplyingOnBehalfOf;
+import uk.gov.hmcts.probate.model.ccd.raw.BulkPrint;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Declaration;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
@@ -391,7 +392,13 @@ public class CaseData {
     private final String boCaveatStopEmailNotification = getDefaultValueForCaveatStopEmailNotification();
 
     private final String boCaveatStopSendToBulkPrintRequested;
-    private final String boCaveatStopSendToBulkPrint;
+
+    @SuppressWarnings("squid:S1170")
+    @Getter(lazy = true)
+    private final String boCaveatStopSendToBulkPrint = YES;
+
+    @Builder.Default
+    private List<CollectionMember<BulkPrint>> bulkPrintId = new ArrayList<>();
 
     @Getter(lazy = true)
     private final List<CollectionMember<AdditionalExecutor>> executorsApplyingForLegalStatement = getAllExecutors(true);
@@ -476,9 +483,7 @@ public class CaseData {
         return YES.equals(getBoCaveatStopEmailNotification());
     }
 
-    public boolean isCaveatStopSendToBulkPrintRequested() {
-        return YES.equals(getBoCaveatStopSendToBulkPrint());
-    }
+    public boolean isCaveatStopSendToBulkPrintRequested() { return YES.equals(getBoCaveatStopSendToBulkPrint()); }
 
     private String convertDate(LocalDate dateToConvert) {
         if (dateToConvert == null) {
