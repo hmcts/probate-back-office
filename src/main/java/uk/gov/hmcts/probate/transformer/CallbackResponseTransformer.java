@@ -86,10 +86,11 @@ public class CallbackResponseTransformer {
 
             responseCaseDataBuilder
                     .bulkPrintId(caseData.getBulkPrintId())
+                    .boCaveatStopSendToBulkPrintRequested(caseData.getBoCaveatStopSendToBulkPrint())
                     .build();
         }
         responseCaseDataBuilder
-                .boCaveatStopSendToBulkPrintRequested(caseData.getBoCaveatStopSendToBulkPrint())
+                .boCaveatStopEmailNotificationRequested(caseData.getBoCaveatStopEmailNotification())
                 .boStopDetails("")
                 .build();
 
