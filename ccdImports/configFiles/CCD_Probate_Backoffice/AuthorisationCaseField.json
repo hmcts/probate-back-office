@@ -1181,6 +1181,7 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "applicationID", "UserRole": "citizen", "CRUD": "CR"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "applicationSubmittedDate", "UserRole": "citizen", "CRUD": "CRU"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "applicationType", "UserRole": "citizen", "CRUD": "CR"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "caseType", "UserRole": "citizen", "CRUD": "CRU"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "registryLocation", "UserRole": "citizen", "CRUD": "CRU"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "primaryApplicantIsApplying", "UserRole": "citizen", "CRUD": "CRU"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "primaryApplicantForenames", "UserRole": "citizen", "CRUD": "CRU"},
