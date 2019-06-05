@@ -47,6 +47,7 @@ public class NotificationService {
     private final MarkdownTransformationService markdownTransformationService;
     private final PDFManagementService pdfManagementService;
     private final CaveatQueryService caveatQueryService;
+    private final FormatterService formatterService;
 
     private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMM Y HH:mm");
     private static final DateTimeFormatter EXCELA_DATE = DateTimeFormatter.ofPattern("yyyyMMdd");
@@ -173,9 +174,9 @@ public class NotificationService {
         CaveatData caveatData = caveatQueryService.findCaveatById(CaseType.CAVEAT, caseData.getBoCaseStopCaveatId());
 
         if (caveatData != null) {
-            personalisation.put(PERSONALISATION_DATE_CAVEAT_ENTERED, caveatData.getApplicationSubmittedDateFormatted());
+            personalisation.put(PERSONALISATION_DATE_CAVEAT_ENTERED, formatterService.formatDate(caveatData.getApplicationSubmittedDate()));
             personalisation.put(PERSONALISATION_CAVEATOR_NAME, caveatData.getCaveatorFullName());
-            personalisation.put(PERSONALISATION_CAVEATOR_ADDRESS, caveatData.getCaveatorAddressFormatted());
+            personalisation.put(PERSONALISATION_CAVEATOR_ADDRESS, formatterService.formatAddress(caveatData.getCaveatorAddress()));
         }
 
         return personalisation;
