@@ -12,22 +12,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
-import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
-import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
-import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
-import uk.gov.hmcts.probate.model.ccd.raw.AdoptedRelative;
-import uk.gov.hmcts.probate.model.ccd.raw.AliasName;
-import uk.gov.hmcts.probate.model.ccd.raw.AttorneyApplyingOnBehalfOf;
-import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
-import uk.gov.hmcts.probate.model.ccd.raw.Document;
-import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
-import uk.gov.hmcts.probate.model.ccd.raw.EstateItem;
-import uk.gov.hmcts.probate.model.ccd.raw.Payment;
-import uk.gov.hmcts.probate.model.ccd.raw.ProbateAliasName;
-import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
-import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
-import uk.gov.hmcts.probate.model.ccd.raw.StopReason;
-import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
+import uk.gov.hmcts.probate.model.ccd.raw.*;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
@@ -51,12 +36,15 @@ import java.util.Optional;
 import static java.util.Collections.EMPTY_LIST;
 import static java.util.Collections.emptyList;
 import static org.hamcrest.Matchers.comparesEqualTo;
+import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
 import static uk.gov.hmcts.probate.model.Constants.CTSC;
+import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT_STOPPED;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT;
@@ -146,7 +134,7 @@ public class CallbackResponseTransformerTest {
     private static final String CAVEAT_STOP_NOTIFICATION = YES;
     private static final String CASE_STOP_CAVEAT_ID = "1234567812345678";
     private static final String CAVEAT_STOP_EMAIL_NOTIFICATION = YES;
-    private static final String CAVEAT_STOP_SEND_TO_BULKP_PRINT = NO;
+    private static final String CAVEAT_STOP_SEND_TO_BULK_PRINT = YES;
 
     private static final List<CollectionMember<StopReason>> STOP_REASONS_LIST = emptyList();
     private static final String STOP_REASON = "Some reason";
@@ -212,9 +200,6 @@ public class CallbackResponseTransformerTest {
     @Mock
     private CaseDetails caseDetailsMock;
 
-    @Mock
-    private Document document;
-
     private CaseData.CaseDataBuilder caseDataBuilder;
 
 
@@ -272,8 +257,7 @@ public class CallbackResponseTransformerTest {
                 .boCaveatStopNotification(CAVEAT_STOP_NOTIFICATION)
                 .boCaseStopCaveatId(CASE_STOP_CAVEAT_ID)
                 .boCaveatStopEmailNotificationRequested(CAVEAT_STOP_EMAIL_NOTIFICATION)
-                .boCaveatStopSendToBulkPrintRequested(CAVEAT_STOP_SEND_TO_BULKP_PRINT)
-                .boCaveatStopSendToBulkPrint(CAVEAT_STOP_SEND_TO_BULKP_PRINT)
+                .boCaveatStopSendToBulkPrintRequested(CAVEAT_STOP_SEND_TO_BULK_PRINT)
                 .boStopDetails(STOP_DETAILS)
                 .willExists(YES)
                 .additionalExecutorsApplying(ADDITIONAL_EXEC_LIST_APP)
@@ -530,7 +514,7 @@ public class CallbackResponseTransformerTest {
     @Test
     public void shouldConvertRequestToDataBeanWithStopDetailsChange() {
         List<Document> documents = new ArrayList<>();
-        documents.add(document);
+        documents.add(Document.builder().documentType(CAVEAT_STOPPED).build());
 
         CallbackResponse callbackResponse = underTest.caseStopped(callbackRequestMock, documents, "123");
 
@@ -538,6 +522,16 @@ public class CallbackResponseTransformerTest {
         assertLegacyInfo(callbackResponse);
 
         assertTrue(callbackResponse.getData().getBoStopDetails().isEmpty());
+    }
+
+    @Test
+    public void shouldNotIncludeBulkPrintIdWithOtherDocType() {
+        List<Document> documents = new ArrayList<>();
+        documents.add(Document.builder().documentType(DIGITAL_GRANT).build());
+
+        CallbackResponse callbackResponse = underTest.caseStopped(callbackRequestMock, documents, "123");
+
+        assertThat(callbackResponse.getData().getBulkPrintId(), is(EMPTY_LIST));
     }
 
     @Test
@@ -1314,8 +1308,7 @@ public class CallbackResponseTransformerTest {
         assertEquals(CAVEAT_STOP_NOTIFICATION, callbackResponse.getData().getBoCaveatStopEmailNotification());
         assertEquals(CASE_STOP_CAVEAT_ID, callbackResponse.getData().getBoCaseStopCaveatId());
         assertEquals(CAVEAT_STOP_EMAIL_NOTIFICATION, callbackResponse.getData().getBoCaveatStopEmailNotificationRequested());
-        assertEquals(CAVEAT_STOP_SEND_TO_BULKP_PRINT, callbackResponse.getData().getBoCaveatStopSendToBulkPrintRequested());
-        assertEquals(CAVEAT_STOP_SEND_TO_BULKP_PRINT, callbackResponse.getData().getBoCaveatStopSendToBulkPrint());
+        assertEquals(CAVEAT_STOP_SEND_TO_BULK_PRINT, callbackResponse.getData().getBoCaveatStopSendToBulkPrintRequested());
         assertEquals(STOP_REASONS_LIST, callbackResponse.getData().getBoCaseStopReasonList());
         assertEquals(STOP_DETAILS, callbackResponse.getData().getBoStopDetails());
 
