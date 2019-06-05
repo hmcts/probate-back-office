@@ -50,7 +50,7 @@ public class NotificationController {
     private final PDFManagementService pdfManagementService;
     private final BulkPrintService bulkPrintService;
     private final List<BulkPrintValidationRule> bulkPrintValidationRules;
-    private final GrantOfRepresentationDocmosisService GoRDocmosisService;
+    private final GrantOfRepresentationDocmosisService gorDocmosisService;
 
 
     @PostMapping(path = "/documents-received")
@@ -103,11 +103,11 @@ public class NotificationController {
                 log.info("Successful response for caveat email for case id {} ",
                         callbackRequest.getCaseDetails().getId());
 
-            } else if (caseData.isCaveatStopNotificationRequested() && !caseData.isCaveatStopEmailNotificationRequested()){
+            } else if (caseData.isCaveatStopNotificationRequested() && !caseData.isCaveatStopEmailNotificationRequested()) {
                 log.info("Initiate call to generate coversheet for case id {} ",
                         callbackRequest.getCaseDetails().getId());
                 Map<String, Object> placeholdersCoversheet =
-                        GoRDocmosisService.caseDataAsPlaceholders(callbackRequest.getCaseDetails());
+                        gorDocmosisService.caseDataAsPlaceholders(callbackRequest.getCaseDetails());
                 Document coversheet = pdfManagementService
                         .generateDocmosisDocumentAndUpload(placeholdersCoversheet, DocumentType.GRANT_COVERSHEET);
                 documents.add(coversheet);
@@ -116,8 +116,9 @@ public class NotificationController {
 
                 log.info("Initiate call to generate Caveat stopped document for case id {} ",
                         callbackRequest.getCaseDetails().getId());
-                Map<String, Object> placeholders = GoRDocmosisService.caseDataAsPlaceholders(callbackRequest.getCaseDetails());
-                Document caveatRaisedDoc = pdfManagementService.generateDocmosisDocumentAndUpload(placeholders, DocumentType.CAVEAT_STOPPED);
+                Map<String, Object> placeholders = gorDocmosisService.caseDataAsPlaceholders(callbackRequest.getCaseDetails());
+                Document caveatRaisedDoc =
+                        pdfManagementService.generateDocmosisDocumentAndUpload(placeholders, DocumentType.CAVEAT_STOPPED);
                 documents.add(caveatRaisedDoc);
                 log.info("Successful response for caveat stopped document for case id {} ",
                         callbackRequest.getCaseDetails().getId());
@@ -125,7 +126,8 @@ public class NotificationController {
                 if (caseData.isCaveatStopSendToBulkPrintRequested()) {
                     log.info("Initiate call to bulk print for Caveat stopped document and coversheet for case id {} ",
                             callbackRequest.getCaseDetails().getId());
-                    SendLetterResponse sendLetterResponse = bulkPrintService.sendToBulkPrint(callbackRequest, caveatRaisedDoc, coversheet);
+                    SendLetterResponse sendLetterResponse =
+                            bulkPrintService.sendToBulkPrint(callbackRequest, caveatRaisedDoc, coversheet);
                     letterId = sendLetterResponse != null
                             ? sendLetterResponse.letterId.toString()
                             : null;

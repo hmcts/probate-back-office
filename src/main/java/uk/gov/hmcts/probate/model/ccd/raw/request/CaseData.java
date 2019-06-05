@@ -483,7 +483,9 @@ public class CaseData {
         return YES.equals(getBoCaveatStopEmailNotification());
     }
 
-    public boolean isCaveatStopSendToBulkPrintRequested() { return YES.equals(getBoCaveatStopSendToBulkPrint()); }
+    public boolean isCaveatStopSendToBulkPrintRequested() {
+        return YES.equals(getBoCaveatStopSendToBulkPrint());
+    }
 
     private String convertDate(LocalDate dateToConvert) {
         if (dateToConvert == null) {

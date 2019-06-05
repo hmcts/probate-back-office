@@ -132,15 +132,21 @@ public class GrantOfRepresentationDocmosisServiceTest {
 
         Map<String, Object> placeholders = grantOfRepresentationDocmosisService.caseDataAsPlaceholders(caseDetails);
 
-        assertEquals(ccdReferenceFormatterServiceMock.getFormattedCaseReference("1234567891234567"), placeholders.get(PERSONALISATION_CASE_REFERENCE));
+        assertEquals(ccdReferenceFormatterServiceMock.getFormattedCaseReference("1234567891234567"),
+                placeholders.get(PERSONALISATION_CASE_REFERENCE));
         assertEquals(generatedDateFormat.format(new Date()), placeholders.get(PERSONALISATION_GENERATED_DATE));
         assertEquals(registries.get(
-                caseDetails.getData().getRegistryLocation().toLowerCase()), placeholders.get(PERSONALISATION_REGISTRY));
-        assertEquals("www.gov.uk|https://www.gov.uk/inherits-someone-dies-without-will", placeholders.get(PERSONALISATION_PA8AURL));
-        assertEquals("www.citizensadvice.org.uk|https://www.citizensadvice.org.uk/", placeholders.get(PERSONALISATION_PA8BURL));
-        assertEquals(formatterServiceMock.formatDate(caveatData.getApplicationSubmittedDate()), placeholders.get(PERSONALISATION_DATE_CAVEAT_ENTERED));
+                caseDetails.getData().getRegistryLocation().toLowerCase()),
+                placeholders.get(PERSONALISATION_REGISTRY));
+        assertEquals("www.gov.uk|https://www.gov.uk/inherits-someone-dies-without-will",
+                placeholders.get(PERSONALISATION_PA8AURL));
+        assertEquals("www.citizensadvice.org.uk|https://www.citizensadvice.org.uk/",
+                placeholders.get(PERSONALISATION_PA8BURL));
+        assertEquals(formatterServiceMock.formatDate(caveatData.getApplicationSubmittedDate()),
+                placeholders.get(PERSONALISATION_DATE_CAVEAT_ENTERED));
         assertEquals("fred jones", placeholders.get(PERSONALISATION_CAVEATOR_NAME));
-        assertEquals(formatterServiceMock.formatAddress(caveatData.getCaveatorAddress()), placeholders.get(PERSONALISATION_CAVEATOR_ADDRESS));
+        assertEquals(formatterServiceMock.formatAddress(caveatData.getCaveatorAddress()),
+                placeholders.get(PERSONALISATION_CAVEATOR_ADDRESS));
 
     }
 }

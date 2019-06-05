@@ -54,7 +54,8 @@ public class GrantOfRepresentationDocmosisService {
 
         CaveatData caveatData = caveatQueryService.findCaveatById(CaseType.CAVEAT, caseDetails.getData().getBoCaseStopCaveatId());
 
-        placeholders.put(PERSONALISATION_CASE_REFERENCE, ccdReferenceFormatterService.getFormattedCaseReference(caseDetails.getData().getBoCaseStopCaveatId()));
+        placeholders.put(PERSONALISATION_CASE_REFERENCE,
+                ccdReferenceFormatterService.getFormattedCaseReference(caseDetails.getData().getBoCaseStopCaveatId()));
         placeholders.put(PERSONALISATION_GENERATED_DATE, generatedDateFormat.format(new Date()));
         placeholders.put(PERSONALISATION_REGISTRY, registryPlaceholders);
         placeholders.put(PERSONALISATION_PA8AURL, "www.gov.uk|https://www.gov.uk/inherits-someone-dies-without-will");

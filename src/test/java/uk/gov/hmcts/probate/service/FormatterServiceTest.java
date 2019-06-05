@@ -19,27 +19,27 @@ public class FormatterServiceTest {
 
     @Test
     public void shouldReturnDateFormattedWithStSuffix() {
-        assertEquals("1st January 2000", formatterService.formatDate(LocalDate.of(2000,01,01)));
+        assertEquals("1st January 2000", formatterService.formatDate(LocalDate.of(2000, 01, 01)));
     }
 
     @Test
     public void shouldReturnDateFormattedWithNdSuffix() {
-        assertEquals("2nd January 2000", formatterService.formatDate(LocalDate.of(2000,01,02)));
+        assertEquals("2nd January 2000", formatterService.formatDate(LocalDate.of(2000, 01, 02)));
     }
 
     @Test
     public void shouldReturnDateFormattedWithRdSuffix() {
-        assertEquals("3rd January 2000", formatterService.formatDate(LocalDate.of(2000,01,03)));
+        assertEquals("3rd January 2000", formatterService.formatDate(LocalDate.of(2000, 01, 03)));
     }
 
     @Test
     public void shouldReturnDateFormattedWithThSuffix() {
-         assertEquals("4th January 2000", formatterService.formatDate(LocalDate.of(2000,01,04)));
+        assertEquals("4th January 2000", formatterService.formatDate(LocalDate.of(2000, 01, 04)));
     }
 
     @Test
     public void shouldThrowParseException() {
-        assertEquals(null, formatterService.formatDate(LocalDate.of(30000,01,01)));
+        assertEquals(null, formatterService.formatDate(LocalDate.of(30000, 01, 01)));
     }
 
     @Test
