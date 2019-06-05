@@ -1200,5 +1200,5 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "primaryApplicantAliasReason", "UserRole": "citizen", "CRUD": "CRU"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "primaryApplicantOtherReason", "UserRole": "citizen", "CRUD": "CRU"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "boDocumentsUploaded", "UserRole": "citizen", "CRUD": "CR"},
-  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "paperForm", "UserRole": "citizen", "CRUD": "CRU"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "paperForm", "UserRole": "citizen", "CRUD": "CRU"}
 ]
