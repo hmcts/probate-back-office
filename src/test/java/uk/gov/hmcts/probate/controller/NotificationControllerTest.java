@@ -323,4 +323,13 @@ public class NotificationControllerTest {
 
     }
 
+    @Test
+    public void shouldReturnEmailPAValidateSuccessfulCaveatCaseStopped() throws Exception {
+        String personalPayload = testUtils.getStringFromFile("personalPayloadNotificationsCaveatStopped.json");
+
+        mockMvc.perform(post(CASE_STOPPED_URL).content(personalPayload).contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
+
+    }
 }
