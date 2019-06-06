@@ -112,5 +112,9 @@
   {"LiveFrom": "06/01/2017", "ID": "dateOfDeathTypeFixedList", "ListElementCode": "diedOnOrSince", "ListElement": "Died on or since"},
   {"LiveFrom": "06/01/2017", "ID": "dateOfDeathTypeFixedList", "ListElementCode": "diedOnOrBefore", "ListElement": "Died on or before"},
   {"LiveFrom": "06/01/2017", "ID": "dateOfDeathTypeFixedList", "ListElementCode": "diedOnOrAbout", "ListElement": "Died on or about"},
-  {"LiveFrom": "06/01/2017", "ID": "dateOfDeathTypeFixedList", "ListElementCode": "presumedDiedOn", "ListElement": "Presumed died on"}
+  {"LiveFrom": "06/01/2017", "ID": "dateOfDeathTypeFixedList", "ListElementCode": "presumedDiedOn", "ListElement": "Presumed died on"},
+  {"LiveFrom": "06/01/2017", "ID": "resolveStopStateFixedList", "ListElementCode": "CaseCreated", "ListElement": "Case created"},
+  {"LiveFrom": "06/01/2017", "ID": "resolveStopStateFixedList", "ListElementCode": "CasePrinted", "ListElement": "Awaiting documentation"},
+  {"LiveFrom": "06/01/2017", "ID": "resolveStopStateFixedList", "ListElementCode": "BOReadyForExamination", "ListElement": "Ready for examination"},
+  {"LiveFrom": "06/01/2017", "ID": "resolveStopStateFixedList", "ListElementCode": "BOExamining", "ListElement": "Examining"}
 ]
