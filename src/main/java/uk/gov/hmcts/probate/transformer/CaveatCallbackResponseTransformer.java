@@ -41,7 +41,6 @@ public class CaveatCallbackResponseTransformer {
         CaveatData caveatData = caveatDetails.getData();
         documents.forEach(document -> documentTransformer.addDocument(caveatCallbackRequest, document));
         ResponseCaveatDataBuilder responseCaveatDataBuilder = getResponseCaveatData(caveatDetails);
-
         if (documentTransformer.hasDocumentWithType(documents, CAVEAT_RAISED) && letterId != null) {
             CollectionMember<BulkPrint> bulkPrint = buildBulkPrint(letterId, CAVEAT_RAISED.getTemplateName());
             caveatData.getBulkPrintId().add(bulkPrint);
@@ -130,7 +129,6 @@ public class CaveatCallbackResponseTransformer {
                 .caveatorAddress(caveatData.getCaveatorAddress())
 
                 .caseMatches(caveatData.getCaseMatches())
-
                 .applicationSubmittedDate(transformToString(caveatData.getApplicationSubmittedDate()))
                 .expiryDate(transformToString(caveatData.getExpiryDate()))
                 .messageContent(caveatData.getMessageContent())

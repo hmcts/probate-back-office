@@ -11,6 +11,7 @@ binFolder=$(dirname "$0")
 (${binFolder}/idam-create-caseworker.sh caseworker-probate,caseworker-probate-caseadmin ProbateCaseAdmin@gmail.com)
 (${binFolder}/idam-create-caseworker.sh caseworker-probate,caseworker-probate-registrar ProbateRegistrar@gmail.com)
 (${binFolder}/idam-create-caseworker.sh caseworker-probate,caseworker-probate-superuser ProbateSuperuser@gmail.com)
+(${binFolder}/idam-create-caseworker.sh citizen testusername@test.com)
 
 (${binFolder}/ccd-add-role.sh payment)
 (${binFolder}/ccd-add-role.sh citizen)

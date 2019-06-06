@@ -55,8 +55,10 @@ docmosis:
       templateName: FL-PRB-GNO-ENG-00011.doc
     caveatCoversheet:
       templateName: FL-PRB-GNO-ENG-00018.docx
-    grant:
-      templateName: FL-FRM-HNO-00003.docx
+    caveatStopped:
+      templateName: FL-PRB-GNO-ENG-00025.docx
+    grantCoversheet:
+      templateName: FL-PRB-GNO-ENG-00024.docx
 
 fee.api:
   url: http://localhost:4411

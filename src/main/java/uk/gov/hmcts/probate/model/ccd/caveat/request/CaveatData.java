@@ -16,14 +16,9 @@ import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
@@ -64,11 +59,8 @@ public class CaveatData {
 
     private ProbateAddress caveatorAddress;
 
-    @Getter(lazy = true)
-    private final String caveatorAddressFormatted = formatAddress(caveatorAddress);
 
     // EVENT = cavRaiseCaveat - caveat details
-
 
     @Getter(lazy = true)
     private final String caveatRaisedEmailNotification = getDefaultValueForEmailNotifications();
@@ -83,13 +75,7 @@ public class CaveatData {
 
     private LocalDate applicationSubmittedDate;
 
-    @Getter(lazy = true)
-    private final String applicationSubmittedDateFormatted = formatDate(applicationSubmittedDate);
-
     private LocalDate expiryDate;
-
-    @Getter(lazy = true)
-    private final String expiryDateFormatted = formatDate(expiryDate);
 
     // EVENT = cavEmailCaveator
 
@@ -139,54 +125,7 @@ public class CaveatData {
         return YES.equals(getCaveatRaisedEmailNotificationRequested());
     }
 
-
     @JsonPOJOBuilder(withPrefix = "")
     public static final class CaveatDataBuilder {
-    }
-
-    private String formatAddress(ProbateAddress address) {
-        String fullAddress = "";
-
-        if (address != null) {
-            fullAddress += address.getProAddressLine1().isEmpty() ? "" : address.getProAddressLine1() ;
-            fullAddress += address.getProAddressLine2().isEmpty() ? "" : ", " + address.getProAddressLine2();
-            fullAddress += address.getProAddressLine3().isEmpty() ? "" : ", " + address.getProAddressLine3();
-            fullAddress += address.getProPostTown().isEmpty() ? "" : ", " + address.getProPostTown();
-            fullAddress += address.getProCounty().isEmpty() ? "" : ", " + address.getProCounty();
-            fullAddress += address.getProPostCode().isEmpty() ? "" : ", " + address.getProPostCode();
-            fullAddress += address.getProCountry().isEmpty() ? "" : ", " + address.getProCountry();
-        }
-
-        return fullAddress;
-    }
-
-    private String formatDate(LocalDate dateToConvert) {
-        if (dateToConvert == null) {
-            return null;
-        }
-        DateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-        DateFormat targetFormat = new SimpleDateFormat("dd MMMMM yyyy");
-        try {
-            Date date = originalFormat.parse(dateToConvert.toString());
-            String formattedDate = targetFormat.format(date);
-            int day = Integer.parseInt(formattedDate.substring(0, 2));
-            switch (day) {
-                case 3:
-                case 23:
-                    return day + "rd " + formattedDate.substring(3);
-                case 1:
-                case 21:
-                case 31:
-                    return day + "st " + formattedDate.substring(3);
-                case 2:
-                case 22:
-                    return day + "nd " + formattedDate.substring(3);
-                default:
-                    return day + "th " + formattedDate.substring(3);
-            }
-        } catch (ParseException ex) {
-            ex.getMessage();
-            return null;
-        }
     }
 }

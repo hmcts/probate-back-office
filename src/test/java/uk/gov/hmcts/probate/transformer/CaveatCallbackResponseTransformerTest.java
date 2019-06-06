@@ -62,6 +62,7 @@ public class CaveatCallbackResponseTransformerTest {
     private static final LocalDate CAV_SUBMISSION_DATE = LocalDate.now();
     private static final String CAV_FORMATTED_SUBMISSION_DATE = dateTimeFormatter.format(CAV_SUBMISSION_DATE);
     private static final LocalDate CAV_EXPIRY_DATE = LocalDate.now().plusMonths(CAVEAT_LIFESPAN);
+
     private static final String CAV_FORMATTED_EXPIRY_DATE = dateTimeFormatter.format(CAV_EXPIRY_DATE);
 
     private static final String CAV_MESSAGE_CONTENT = "";
@@ -172,6 +173,7 @@ public class CaveatCallbackResponseTransformerTest {
         assertCommon(caveatCallbackResponse);
 
         assertEquals(CAV_FORMATTED_SUBMISSION_DATE, caveatCallbackResponse.getCaveatData().getApplicationSubmittedDate());
+
     }
 
     @Test
