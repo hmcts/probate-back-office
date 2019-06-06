@@ -19,8 +19,8 @@ module.exports = function (caseRef, tabConfigFile, dataConfigFile, nextStep, end
         I.see(fieldName);
     });
 
-    // If 'History' tab, then check Next Step (Event), End State, Summary and Comment
-    if (tabConfigFile.tabName === 'History') {
+    // If 'Event History' tab, then check Next Step (Event), End State, Summary and Comment
+    if (tabConfigFile.tabName === 'Event History') {
 
         let eventSummaryPrefix = nextStep;
 

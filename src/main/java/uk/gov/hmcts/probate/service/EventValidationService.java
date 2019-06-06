@@ -99,4 +99,14 @@ public class EventValidationService {
                 .errors(businessErrors.stream().map(FieldErrorResponse::getMessage).collect(Collectors.toList()))
                 .build();
     }
+
+    public CaveatCallbackResponse validateCaveatBulkPrintResponse(String letterId,
+                                                      List<? extends BulkPrintValidationRule> rules) {
+
+        CCDData ccdData = ccdBeanTransformer.transformBulkPrint(letterId);
+        List<FieldErrorResponse> businessErrors = validateBulkPrint(ccdData, rules);
+        return CaveatCallbackResponse.builder()
+                .errors(businessErrors.stream().map(FieldErrorResponse::getMessage).collect(Collectors.toList()))
+                .build();
+    }
 }

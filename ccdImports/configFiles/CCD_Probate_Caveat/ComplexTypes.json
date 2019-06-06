@@ -29,5 +29,8 @@
   {"LiveFrom": "01/01/2017", "ID": "Payment", "ListElementCode": "amount", "FieldType": "MoneyGBP", "ElementLabel": "Payment amount", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "Payment", "ListElementCode": "status", "FieldType": "FixedList", "FieldTypeParameter": "paymentStatusEnum", "ElementLabel": "Payment status", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "Payment", "ListElementCode": "feeId", "FieldType": "Text", "ElementLabel": "Payment fee ID", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "ID": "Payment", "ListElementCode": "siteId", "FieldType": "Text", "ElementLabel": "Payment site ID ", "SecurityClassification": "Public"}
+  {"LiveFrom": "01/01/2017", "ID": "Payment", "ListElementCode": "siteId", "FieldType": "Text", "ElementLabel": "Payment site ID ", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "BulkPrint", "ListElementCode": "templateName", "FieldType": "FixedList", "FieldTypeParameter": "cavDocumentTypeEnum", "ElementLabel": "Document sent to bulk print", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "BulkPrint", "ListElementCode": "sendLetterId", "FieldType": "Text", "ElementLabel": "Send Letter Id", "SecurityClassification": "Public"}
+
 ]

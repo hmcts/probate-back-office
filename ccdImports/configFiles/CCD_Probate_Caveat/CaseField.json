@@ -19,6 +19,7 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "caveatorAddress", "Label": "Address - (If applying through a solicitor, provide the solicitor's firm name and address instead)", "FieldType": "AddressUK", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "expiryDate", "Label": "Caveat expiry date", "FieldType": "Date", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "messageContent", "Label": "Message content", "FieldType": "TextArea", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "caveatReopenReason", "Label": "What is the reason for re-opening this Caveat?", "FieldType": "TextArea", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "documentsUploaded", "Label": "Documents uploaded", "FieldType": "Collection", "FieldTypeParameter": "cavDocumentUpload", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "documentsGenerated", "Label": "Documents generated", "FieldType": "Collection", "FieldTypeParameter": "cavProbateDocument", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "caseMatches", "Label": "Possible case matches", "FieldType": "Collection", "FieldTypeParameter": "CaseMatch", "SecurityClassification": "Public"},
@@ -27,5 +28,13 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "legacyType", "Label": "Legacy case type", "FieldType": "Text", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "legacyCaseViewUrl", "Label": "Legacy case link", "FieldType": "Text", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "legacyCaseViewUrlLink", "Label": "[Click here to open legacy case](${legacyCaseViewUrl})", "FieldType": "Label", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "payments", "Label": "Online payments received", "FieldType": "Collection", "FieldTypeParameter": "Payment", "SecurityClassification": "Public"}
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "payments", "Label": "Online payments received", "FieldType": "Collection", "FieldTypeParameter": "Payment", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "bulkPrintSendLetterId", "Label": "Send letter ID is:", "FieldType": "Text", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "caveatRaisedEmailNotificationRequested", "Label": "Do you wish to send an email notification?", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "caveatRaisedEmailNotification", "Label": "Do you wish to send an email notification?", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "sendToBulkPrint", "Label": "Do you wish to send via bulk print?", "HintText": "note if you select no, the notification will need to printed locally and dealt with within the registry", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "sendToBulkPrintRequested", "Label": "Do you wish to send via bulk print?", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "notificationsGenerated", "Label": "Notifications generated", "FieldType": "Collection", "FieldTypeParameter": "cavProbateDocument", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "bulkPrintId", "Label": "Bulk print send letter Ids", "FieldType": "Collection", "FieldTypeParameter": "BulkPrint", "SecurityClassification": "Public"}
+
 ]

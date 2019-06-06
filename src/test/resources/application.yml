@@ -1,6 +1,15 @@
 server:
   port: ${probate.sol.ccd.port}
 
+resttemplate:
+  httpclient:
+    timeout: 10000
+
+ftp.client:
+  url: https://green.blob.core.windows.net
+  environment: test
+  signature: ${FTP_SIGNATURE:test}
+
 authorised.services: probate_backend,ccd_data,ccd-datamgmt-api,ccd_ps,ccd
 auth.provider.service.client:
   key: AAAAAAAAAAAAAAAA
@@ -8,11 +17,35 @@ auth.provider.service.client:
   microservice: probate_backend
   tokenTimeToLiveInSeconds: 900
 
+auth.provider.client:
+  user: http://localhost:4501
+  secret: 123456
+  id: probate
+  redirect: http://localhost:3451/oauth2redirect
+  email: probatesolcw1@gmail.com
+  password: password
+
 pdf.service:
   url: http://localhost:5500
-  pdfApi: /api/v1/pdf-generator/html
+  pdfApi: /api/v2/pdf-generator/html
   templatesDirectory: templates/pdf/
-  defaultDisplayFilename: legal_statement.pdf
+  defaultDisplayFilename: generated.pdf
+  grantSignatureSecretKey: signaturetestkey
+  grantSignatureEncryptedFile: signatures/grantSignature-test.png.enc
+  hmctsFamilyLogoBase64File: signatures/hmctsFamilyLogo.png.b64
+
+docmosis:
+  service:
+    uri: ${PDF_SERVICE_BASEURL:https://docmosis-development.platform.hmcts.net}
+    accessKey: ${PDF_SERVICE_ACCESS_KEY:ZDYxMTkzZTQtMGY2Mi00NDM1LWIyN2ItNGRkNzdjOTczMjAwOjQ1NTE0ODQ}
+    health.uri: ${PDF_SERVICE_HEALTH_URL:https://docmosis-development.platform.hmcts.net}
+  templates:
+    caveatRaised:
+      templateName: FL-PRB-GNO-ENG-00011.docx
+    caveatCoversheet:
+      templateName: FL-PRB-GNO-ENG-00018.docx
+    grant:
+      templateName: FL-FRM-HNO-00003.docx
 
 fee.api:
   url: http://localhost:4411
@@ -80,12 +113,16 @@ notifications:
         grantIssued: "pa-grant-issued"
         generalCaveatMessage: "pa-general-caveat-message"
         excelaData: "pa-excela-data"
+        caveatRaised: "pa-caveat-raised"
+        caveatRaisedCtsc: "pa-ctsc-caveat-raised"
       solicitor:
         documentReceived: "sol-document-received"
         caseStopped: "sol-case-stopped"
         grantIssued: "sol-grant-issued"
         generalCaveatMessage: "sol-general-caveat-message"
         excelaData: "pa-excela-data"
+        caveatRaised: "sols-caveat-raised"
+        caveatRaisedCtsc: "sols-ctsc-caveat-raised"
 
 registries:
   oxford:
@@ -232,3 +269,6 @@ idam-s2s-auth:
       enabled: false
 
 excelaEmail: probatetest@gmail.com
+
+cron:
+  data_extract: "0 0 2 * * *"

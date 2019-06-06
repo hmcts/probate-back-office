@@ -99,7 +99,7 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "boExaminationChecklistQ1", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "boExaminationChecklistQ2", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "boExaminationChecklistRequestQA", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
-  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "payments", "UserRole": "caseworker-probate-issuer", "CRUD": "R"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "payments", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "primaryApplicantSameWillName", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "primaryApplicantAlias", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "primaryApplicantAliasReason", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
@@ -207,12 +207,8 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "legacyCaseViewUrlLink", "UserRole": "caseworker-probate-issuer", "CRUD": "R"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "bulkPrintSendLetterId", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "bulkPrintPdfSize", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
-  {
-    "CaseTypeID": "GrantOfRepresentation",
-    "CaseFieldID": "grantIssuedDate",
-    "UserRole": "caseworker-probate-issuer",
-    "CRUD": "CRUD"
-  },
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "dateOfDeathType", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "grantIssuedDate", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "customHistoryViewer", "UserRole": "caseworker-probate-caseadmin", "CRUD": "R"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "customPaymentHistoryViewer", "UserRole": "caseworker-probate-caseadmin", "CRUD": "R"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "applicationID", "UserRole": "caseworker-probate-caseadmin", "CRUD": "CRUD"},
@@ -421,12 +417,8 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "legacyCaseViewUrlLink", "UserRole": "caseworker-probate-caseadmin", "CRUD": "R"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "bulkPrintSendLetterId", "UserRole": "caseworker-probate-caseadmin", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "bulkPrintPdfSize", "UserRole": "caseworker-probate-caseadmin", "CRUD": "CRUD"},
-  {
-    "CaseTypeID": "GrantOfRepresentation",
-    "CaseFieldID": "grantIssuedDate",
-    "UserRole": "caseworker-probate-caseadmin",
-    "CRUD": "CRUD"
-  },
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "dateOfDeathType", "UserRole": "caseworker-probate-caseadmin", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "grantIssuedDate", "UserRole": "caseworker-probate-caseadmin", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "customHistoryViewer", "UserRole": "caseworker-probate-caseofficer", "CRUD": "R"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "customPaymentHistoryViewer", "UserRole": "caseworker-probate-caseofficer", "CRUD": "R"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "applicationID", "UserRole": "caseworker-probate-caseofficer", "CRUD": "CRUD"},
@@ -635,12 +627,8 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "legacyCaseViewUrlLink", "UserRole": "caseworker-probate-caseofficer", "CRUD": "R"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "bulkPrintSendLetterId", "UserRole": "caseworker-probate-caseofficer", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "bulkPrintPdfSize", "UserRole": "caseworker-probate-caseofficer", "CRUD": "CRUD"},
-  {
-    "CaseTypeID": "GrantOfRepresentation",
-    "CaseFieldID": "grantIssuedDate",
-    "UserRole": "caseworker-probate-caseofficer",
-    "CRUD": "CRUD"
-  },
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "dateOfDeathType", "UserRole": "caseworker-probate-caseofficer", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "grantIssuedDate", "UserRole": "caseworker-probate-caseofficer", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "customHistoryViewer", "UserRole": "caseworker-probate-registrar", "CRUD": "R"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "customPaymentHistoryViewer", "UserRole": "caseworker-probate-registrar", "CRUD": "R"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "applicationID", "UserRole": "caseworker-probate-registrar", "CRUD": "CRUD"},
@@ -849,12 +837,8 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "legacyCaseViewUrlLink", "UserRole": "caseworker-probate-registrar", "CRUD": "R"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "bulkPrintSendLetterId", "UserRole": "caseworker-probate-registrar", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "bulkPrintPdfSize", "UserRole": "caseworker-probate-registrar", "CRUD": "CRUD"},
-  {
-    "CaseTypeID": "GrantOfRepresentation",
-    "CaseFieldID": "grantIssuedDate",
-    "UserRole": "caseworker-probate-registrar",
-    "CRUD": "CRUD"
-  },
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "dateOfDeathType", "UserRole": "caseworker-probate-registrar", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "grantIssuedDate", "UserRole": "caseworker-probate-registrar", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "customHistoryViewer", "UserRole": "caseworker-probate-superuser", "CRUD": "R"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "customPaymentHistoryViewer", "UserRole": "caseworker-probate-superuser", "CRUD": "R"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "applicationID", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"},
@@ -1062,12 +1046,8 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "legacyCaseViewUrl", "UserRole": "caseworker-probate-superuser", "CRUD": "CR"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "legacyCaseViewUrlLink", "UserRole": "caseworker-probate-superuser", "CRUD": "R"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "bulkPrintSendLetterId", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"},
-  {
-    "CaseTypeID": "GrantOfRepresentation",
-    "CaseFieldID": "grantIssuedDate",
-    "UserRole": "caseworker-probate-superuser",
-    "CRUD": "CRUD"
-  },
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "dateOfDeathType", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "grantIssuedDate", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "bulkPrintPdfSize", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "evidenceHandled", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRU"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "scannedDocuments", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRUD"},
@@ -1225,5 +1205,10 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "executorsHaveAlias", "UserRole": "citizen", "CRUD": "CRU"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "declarationCheckbox", "UserRole": "citizen", "CRUD": "CRU"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "legalDeclaration", "UserRole": "citizen", "CRUD": "CRU"},
-  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "checkAnswersSummary", "UserRole": "citizen", "CRUD": "CRU"}
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "checkAnswersSummary", "UserRole": "citizen", "CRUD": "CRU"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "fees", "UserRole": "citizen", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "deceasedPostCode", "UserRole": "citizen", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "primaryApplicantPostCode", "UserRole": "citizen", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "ihtGrossValueField", "UserRole": "citizen", "CRUD": "CRU"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "ihtNetValueField", "UserRole": "citizen", "CRUD": "CRU"}
 ]

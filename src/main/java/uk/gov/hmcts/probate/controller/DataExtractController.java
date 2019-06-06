@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,7 +18,9 @@ import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 import uk.gov.hmcts.probate.service.CaseQueryService;
+import uk.gov.hmcts.probate.service.FileTransferService;
 import uk.gov.hmcts.probate.service.NotificationService;
+import uk.gov.hmcts.probate.service.filebuilder.IronMountainFileService;
 import uk.gov.service.notify.NotificationClientException;
 
 import java.time.LocalDate;
@@ -37,10 +40,14 @@ public class DataExtractController {
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private final CaseQueryService caseQueryService;
     private final NotificationService notificationService;
+    private final FileTransferService fileTransferService;
+    private final IronMountainFileService ironMountainFileService;
 
+    @Scheduled(cron = "${cron.data_extract}")
     @ApiOperation(value = "Initiate IronMountain data extract", notes = "Will find cases for yesterdays date")
     @PostMapping(path = "/iron-mountain")
     public ResponseEntity initiateIronMountainExtract() {
+        log.info("Extract initiated for Iron Mountain");
         return initiateIronMountainExtract(DATE_FORMAT.format(LocalDate.now().minusDays(1L)));
     }
 
@@ -52,12 +59,23 @@ public class DataExtractController {
 
         List<ReturnedCaseDetails> cases = caseQueryService.findCasesWithDatedDocument("digitalGrant", date);
 
+        if (!cases.isEmpty()) {
+            int response = fileTransferService.uploadFile(ironMountainFileService.createIronMountainFile(
+                    cases, date.replace("-", "") + "grant.txt"));
+
+            if (response != 201) {
+                log.error("Failed to upload file for: " + date);
+                throw new ClientException(HttpStatus.SERVICE_UNAVAILABLE.value(), "Failed to upload file for date: " + date);
+            }
+        }
         return ResponseEntity.ok(cases.size() + " cases successfully found for date: " + date);
     }
 
+    @Scheduled(cron = "${cron.data_extract}")
     @ApiOperation(value = "Initiate Excela data extract", notes = "Will find cases for yesterdays date")
     @PostMapping(path = "/excela")
     public ResponseEntity initiateExcelaExtract() throws NotificationClientException {
+        log.info("Extract initiated for Excela");
         return initiateExcelaExtract(DATE_FORMAT.format(LocalDate.now().minusDays(1L)));
     }
 
@@ -73,17 +91,18 @@ public class DataExtractController {
         for (ReturnedCaseDetails returnedCase : cases) {
             if (returnedCase.getData().getScannedDocuments() != null) {
                 for (CollectionMember<ScannedDocument> document : returnedCase.getData().getScannedDocuments()) {
-                    if (document.getValue().getSubtype().equals(DOC_SUBTYPE_WILL)) {
+                    if (document.getValue().getSubtype() != null
+                            && document.getValue().getSubtype().equalsIgnoreCase(DOC_SUBTYPE_WILL)) {
                         filteredCases.add(returnedCase);
+                        break;
                     }
                 }
             }
         }
 
         if (!filteredCases.build().isEmpty()) {
-            for (ReturnedCaseDetails excelaCase : filteredCases.build()) {
-                notificationService.sendExcelaEmail(excelaCase);
-            }
+            log.info("Sending email to Excela");
+            notificationService.sendExcelaEmail(filteredCases.build());
         }
 
         return ResponseEntity.ok(filteredCases.build().size() + " cases found and emailed for date: " + date);

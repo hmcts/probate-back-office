@@ -244,6 +244,7 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "bulkPrintSendLetterId", "Label": "Send letter ID is:", "FieldType": "Text", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "bulkPrintPdfSize", "Label": "Bulk Print PDF size is:", "FieldType": "Text", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "grantIssuedDate", "Label": "Grant issued date", "FieldType": "Date", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "dateOfDeathType", "Label": "What type of date of death is?", "HintText": "Use this to indicate if the exact date of death is not known", "FieldType": "FixedList", "FieldTypeParameter": "dateOfDeathTypeFixedList", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "deceasedAddressFound", "Label": "Deceased Address Found", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "deceasedAddresses", "Label": "Deceased Addresses", "FieldType": "Text", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "primaryApplicantAddressFound", "Label": "Primary Applicant Address Found", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
@@ -253,5 +254,10 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "executorsHaveAlias", "Label": "Executors have alias", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "declarationCheckbox", "Label": "Declaration Checkbox", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "legalDeclaration", "Label": "Legal Declaration", "FieldType": "TextArea", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "checkAnswersSummary", "Label": "Check Answers Summary", "FieldType": "TextArea", "SecurityClassification": "Public"}
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "checkAnswersSummary", "Label": "Check Answers Summary", "FieldType": "TextArea", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "fees", "Label": "Fees", "FieldType": "Fees", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "deceasedPostCode", "Label": "Deceased search postcode", "FieldType": "Text", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "primaryApplicantPostCode", "Label": "Applicant search postcode", "FieldType": "Text", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "ihtGrossValueField", "Label": "IHT gross value field as entered by the user", "FieldType": "Text", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "ihtNetValueField", "Label": "IHT net value field as entered by the user", "FieldType": "Text", "SecurityClassification": "Public"}
 ]

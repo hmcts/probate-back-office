@@ -1,6 +1,5 @@
 package uk.gov.hmcts.probate.model.ccd.raw;
 
-import joptsimple.internal.Strings;
 import lombok.Builder;
 import lombok.Data;
 
@@ -24,6 +23,6 @@ public class Grantee {
         if (fullName.trim().split("\\w+").length > 1) {
             return fullName.substring(fullName.lastIndexOf(' ') + 1);
         }
-        return Strings.EMPTY;
+        return "";
     }
 }
