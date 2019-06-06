@@ -10,6 +10,7 @@ import uk.gov.hmcts.probate.config.properties.registries.Registry;
 import uk.gov.hmcts.probate.exception.BadRequestException;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.DocumentType;
+import uk.gov.hmcts.probate.model.CaseType;
 import uk.gov.hmcts.probate.model.SentEmail;
 import uk.gov.hmcts.probate.model.State;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
@@ -45,6 +46,7 @@ public class NotificationService {
     private final NotificationClient notificationClient;
     private final MarkdownTransformationService markdownTransformationService;
     private final PDFManagementService pdfManagementService;
+    private final CaveatQueryService caveatQueryService;
 
     private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMM Y HH:mm");
     private static final DateTimeFormatter EXCELA_DATE = DateTimeFormatter.ofPattern("yyyyMMdd");
@@ -56,11 +58,15 @@ public class NotificationService {
     private static final String PERSONALISATION_REGISTRY_NAME = "registry_name";
     private static final String PERSONALISATION_REGISTRY_PHONE = "registry_phone";
     private static final String PERSONALISATION_CASE_STOP_DETAILS = "case-stop-details";
+    private static final String PERSONALISATION_CAVEAT_CASE_ID = "caveat_case_id";
     private static final String PERSONALISATION_DECEASED_DOD = "deceased_dod";
     private static final String PERSONALISATION_CCD_REFERENCE = "ccd_reference";
     private static final String PERSONALISATION_MESSAGE_CONTENT = "message_content";
     private static final String PERSONALISATION_EXCELA_NAME = "excelaName";
     private static final String PERSONALISATION_CASE_DATA = "caseData";
+    private static final String PERSONALISATION_DATE_CAVEAT_ENTERED = "date_caveat_entered";
+    private static final String PERSONALISATION_CAVEATOR_NAME = "caveator_name";
+    private static final String PERSONALISATION_CAVEATOR_ADDRESS = "caveator_address";
 
     public Document sendEmail(State state, CaseDetails caseDetails)
             throws NotificationClientException {
@@ -74,9 +80,13 @@ public class NotificationService {
         Map<String, String> personalisation = getPersonalisation(caseDetails, registry);
         String reference = caseData.getSolsSolicitorAppReference();
 
+        if (state == state.CASE_STOPPED_CAVEAT) {
+            personalisation = getCaveatStopPersonalisation(personalisation, caseData);
+        }
+
         SendEmailResponse response;
 
-        if (state == State.CASE_STOPPED) {
+        if (state == State.CASE_STOPPED || state == State.CASE_STOPPED_CAVEAT) {
             response = notificationClient.sendEmail(templateId, emailAddress, personalisation, reference, emailReplyToId);
         } else {
             response = notificationClient.sendEmail(templateId, emailAddress, personalisation, reference);
@@ -151,8 +161,22 @@ public class NotificationService {
         personalisation.put(PERSONALISATION_REGISTRY_NAME, registry.getName());
         personalisation.put(PERSONALISATION_REGISTRY_PHONE, registry.getPhone());
         personalisation.put(PERSONALISATION_CASE_STOP_DETAILS, caseData.getBoStopDetails());
+        personalisation.put(PERSONALISATION_CAVEAT_CASE_ID, caseData.getBoCaseStopCaveatId());
         personalisation.put(PERSONALISATION_DECEASED_DOD, caseData.getDeceasedDateOfDeathFormatted());
         personalisation.put(PERSONALISATION_CCD_REFERENCE, caseDetails.getId().toString());
+
+        return personalisation;
+    }
+
+    private Map<String, String> getCaveatStopPersonalisation(Map<String, String> personalisation, CaseData caseData) {
+
+        CaveatData caveatData = caveatQueryService.findCaveatById(CaseType.CAVEAT, caseData.getBoCaseStopCaveatId());
+
+        if (caveatData != null) {
+            personalisation.put(PERSONALISATION_DATE_CAVEAT_ENTERED, caveatData.getApplicationSubmittedDateFormatted());
+            personalisation.put(PERSONALISATION_CAVEATOR_NAME, caveatData.getCaveatorFullName());
+            personalisation.put(PERSONALISATION_CAVEATOR_ADDRESS, caveatData.getCaveatorAddressFormatted());
+        }
 
         return personalisation;
     }
@@ -189,6 +213,8 @@ public class NotificationService {
                 return notificationTemplates.getEmail().get(applicationType).getDocumentReceived();
             case CASE_STOPPED:
                 return notificationTemplates.getEmail().get(applicationType).getCaseStopped();
+            case CASE_STOPPED_CAVEAT:
+                return notificationTemplates.getEmail().get(applicationType).getCaseStoppedCaveat();
             case GRANT_ISSUED:
                 return notificationTemplates.getEmail().get(applicationType).getGrantIssued();
             case GENERAL_CAVEAT_MESSAGE:

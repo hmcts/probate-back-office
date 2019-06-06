@@ -143,6 +143,11 @@ public class CallbackResponseTransformerTest {
     private static final String BO_EMAIL_GRANT_ISSUED = YES;
     private static final String BO_DOCS_RECEIVED = YES;
     private static final String CASE_PRINT = YES;
+    private static final String CAVEAT_STOP_NOTIFICATION = YES;
+    private static final String CASE_STOP_CAVEAT_ID = "1234567812345678";
+    private static final String CAVEAT_STOP_EMAIL_NOTIFICATION = YES;
+    private static final String CAVEAT_STOP_SEND_TO_BULKP_PRINT = NO;
+
     private static final List<CollectionMember<StopReason>> STOP_REASONS_LIST = emptyList();
     private static final String STOP_REASON = "Some reason";
     private static final String ALIAS_FORENAME = "AliasFN";
@@ -263,6 +268,12 @@ public class CallbackResponseTransformerTest {
                 .boEmailDocsReceivedNotificationRequested(BO_DOCS_RECEIVED)
                 .boSendToBulkPrintRequested(BO_BULK_PRINT)
                 .casePrinted(CASE_PRINT)
+                .boCaveatStopNotificationRequested(CAVEAT_STOP_NOTIFICATION)
+                .boCaveatStopNotification(CAVEAT_STOP_NOTIFICATION)
+                .boCaseStopCaveatId(CASE_STOP_CAVEAT_ID)
+                .boCaveatStopEmailNotificationRequested(CAVEAT_STOP_EMAIL_NOTIFICATION)
+                .boCaveatStopSendToBulkPrintRequested(CAVEAT_STOP_SEND_TO_BULKP_PRINT)
+                .boCaveatStopSendToBulkPrint(CAVEAT_STOP_SEND_TO_BULKP_PRINT)
                 .boCaseStopReasonList(STOP_REASONS_LIST)
                 .boStopDetails(STOP_DETAILS)
                 .willExists(YES)
@@ -1297,6 +1308,13 @@ public class CallbackResponseTransformerTest {
         assertEquals(BO_DOCS_RECEIVED, callbackResponse.getData().getBoEmailDocsReceivedNotificationRequested());
         assertEquals(BO_EMAIL_GRANT_ISSUED, callbackResponse.getData().getBoEmailGrantIssuedNotificationRequested());
         assertEquals(CASE_PRINT, callbackResponse.getData().getCasePrinted());
+        assertEquals(CAVEAT_STOP_NOTIFICATION, callbackResponse.getData().getBoCaveatStopNotificationRequested());
+        assertEquals(CAVEAT_STOP_NOTIFICATION, callbackResponse.getData().getBoCaveatStopEmailNotification());
+        assertEquals(CASE_STOP_CAVEAT_ID, callbackResponse.getData().getBoCaseStopCaveatId());
+        assertEquals(CAVEAT_STOP_EMAIL_NOTIFICATION, callbackResponse.getData().getBoCaveatStopEmailNotificationRequested());
+        assertEquals(CAVEAT_STOP_SEND_TO_BULKP_PRINT, callbackResponse.getData().getBoCaveatStopSendToBulkPrintRequested());
+        assertEquals(CAVEAT_STOP_SEND_TO_BULKP_PRINT, callbackResponse.getData().getBoCaveatStopSendToBulkPrint());
+
         assertEquals(STOP_REASONS_LIST, callbackResponse.getData().getBoCaseStopReasonList());
         assertEquals(STOP_DETAILS, callbackResponse.getData().getBoStopDetails());
 

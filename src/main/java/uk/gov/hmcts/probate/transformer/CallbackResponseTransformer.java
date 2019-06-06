@@ -297,6 +297,16 @@ public class CallbackResponseTransformer {
                 .paperForm(caseData.getPaperForm())
                 .caseType(caseData.getCaseType())
 
+                .boCaveatStopNotificationRequested(caseData.getBoCaveatStopNotificationRequested())
+                .boCaveatStopNotification(caseData.getBoCaveatStopNotification())
+
+                .boCaseStopCaveatId(caseData.getBoCaseStopCaveatId())
+
+                .boCaveatStopEmailNotificationRequested(caseData.getBoCaveatStopEmailNotificationRequested())
+                .boCaveatStopEmailNotification(caseData.getBoCaveatStopEmailNotification())
+                .boCaveatStopSendToBulkPrintRequested(caseData.getBoCaveatStopSendToBulkPrintRequested())
+                .boCaveatStopSendToBulkPrint(caseData.getBoCaveatStopSendToBulkPrint())
+
                 .recordId(caseData.getRecordId())
                 .legacyType(caseData.getLegacyType())
                 .legacyCaseViewUrl(caseData.getLegacyCaseViewUrl())

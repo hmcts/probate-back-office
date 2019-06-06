@@ -25,6 +25,7 @@ import java.util.List;
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static uk.gov.hmcts.probate.model.State.CASE_STOPPED;
+import static uk.gov.hmcts.probate.model.State.CASE_STOPPED_CAVEAT;
 import static uk.gov.hmcts.probate.model.State.DOCUMENTS_RECEIVED;
 
 @RequiredArgsConstructor
@@ -68,17 +69,25 @@ public class NotificationController {
             @Validated({EmailAddressNotifyValidationRule.class})
             @RequestBody CallbackRequest callbackRequest)
             throws NotificationClientException {
-        CallbackResponse response;
-        Document document;
+
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
+        CaseData caseData = caseDetails.getData();
+        CallbackResponse response;
+
+        Document document;
 
         response = eventValidationService.validateEmailRequest(callbackRequest, emailAddressNotifyValidationRules);
         if (response.getErrors().isEmpty()) {
-            document = notificationService.sendEmail(CASE_STOPPED, caseDetails);
+
+            if (caseData.isCaveatStopNotificationRequested() && caseData.isCaveatStopEmailNotificationRequested()) {
+                document = notificationService.sendEmail(CASE_STOPPED_CAVEAT, caseDetails);
+            } else {
+                document = notificationService.sendEmail(CASE_STOPPED, caseDetails);
+            }
+
             response = callbackResponseTransformer.caseStopped(callbackRequest, document);
         }
         return ResponseEntity.ok(response);
     }
-
 
 }

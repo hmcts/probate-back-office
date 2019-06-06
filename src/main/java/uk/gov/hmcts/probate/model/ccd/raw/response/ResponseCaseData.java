@@ -231,4 +231,11 @@ public class ResponseCaseData {
     private final String bulkPrintSendLetterId;
     private final String bulkPrintPdfSize;
 
+    private final String boCaveatStopNotificationRequested;
+    private final String boCaveatStopNotification;
+    private final String boCaseStopCaveatId;
+    private final String boCaveatStopEmailNotificationRequested;
+    private final String boCaveatStopEmailNotification;
+    private final String boCaveatStopSendToBulkPrintRequested;
+    private final String boCaveatStopSendToBulkPrint;
 }

@@ -59,6 +59,8 @@ public class CaveatCallbackResponseTransformerTest {
     private static final String CAV_CAVEATOR_EMAIL_ADDRESS = "cav@email.com";
     private static final ProbateAddress CAV_CAVEATOR_ADDRESS = Mockito.mock(ProbateAddress.class);
 
+    private static final LocalDate CAV_SUBMISSION_DATE = LocalDate.now();
+    private static final String CAV_FORMATTED_SUBMISSION_DATE = dateTimeFormatter.format(CAV_SUBMISSION_DATE);
     private static final LocalDate CAV_EXPIRY_DATE = LocalDate.now().plusMonths(CAVEAT_LIFESPAN);
     private static final String CAV_FORMATTED_EXPIRY_DATE = dateTimeFormatter.format(CAV_EXPIRY_DATE);
 
@@ -109,6 +111,7 @@ public class CaveatCallbackResponseTransformerTest {
                 .caveatReopenReason(CAV_REOPEN_REASON)
                 .recordId(CAV_RECORD_ID)
                 .legacyCaseViewUrl(CAV_LEGACY_CASE_URL)
+                .applicationSubmittedDate(CAV_SUBMISSION_DATE)
                 .legacyType(CAV_LEGACY_CASE_TYPE);
 
         when(caveatCallbackRequestMock.getCaseDetails()).thenReturn(caveatDetailsMock);
@@ -156,6 +159,22 @@ public class CaveatCallbackResponseTransformerTest {
     }
 
     @Test
+    public void shouldConvertRequestToDataBeanWithCaveatEntryDateChange() {
+        List<Document> documents = new ArrayList<>();
+        Document document = Document.builder()
+                .documentLink(documentLinkMock)
+                .documentType(DocumentType.CAVEAT_RAISED)
+                .build();
+        documents.add(0, document);
+        String letterId = "123-456";
+        CaveatCallbackResponse caveatCallbackResponse = underTest.caveatRaised(caveatCallbackRequestMock, documents, letterId);
+
+        assertCommon(caveatCallbackResponse);
+
+        assertEquals(CAV_FORMATTED_SUBMISSION_DATE, caveatCallbackResponse.getCaveatData().getApplicationSubmittedDate());
+    }
+
+    @Test
     public void shouldConvertRequestToDataBeanWithCaveatExpiryDateChange() {
         List<Document> documents = new ArrayList<>();
         Document document = Document.builder()
@@ -168,6 +187,7 @@ public class CaveatCallbackResponseTransformerTest {
 
         assertCommon(caveatCallbackResponse);
 
+        assertEquals(CAV_FORMATTED_SUBMISSION_DATE, caveatCallbackResponse.getCaveatData().getApplicationSubmittedDate());
         assertEquals(CAV_FORMATTED_EXPIRY_DATE, caveatCallbackResponse.getCaveatData().getExpiryDate());
     }
 

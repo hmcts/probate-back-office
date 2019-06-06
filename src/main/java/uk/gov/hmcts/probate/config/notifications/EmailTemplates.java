@@ -6,6 +6,7 @@ import lombok.Data;
 public class EmailTemplates {
     private String documentReceived;
     private String caseStopped;
+    private String caseStoppedCaveat;
     private String grantIssued;
     private String generalCaveatMessage;
     private String excelaData;
