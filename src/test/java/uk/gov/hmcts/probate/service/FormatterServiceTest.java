@@ -58,7 +58,8 @@ public class FormatterServiceTest {
                 .proCounty("county")
                 .proCountry("country")
                 .build();
-        assertEquals("addressLine1, addressLine2, addressLine3, county, postcode, country", formatterService.formatAddress(probateAddress));
+        assertEquals("addressLine1, addressLine2, addressLine3, posttown, county, postcode, country",
+                formatterService.formatAddress(probateAddress));
     }
 
     @Test

@@ -4,12 +4,15 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import uk.gov.hmcts.probate.model.ccd.ProbateAddress;
+import uk.gov.hmcts.probate.service.FormatterService;
 
 import java.time.LocalDate;
 
 import static org.junit.Assert.assertEquals;
 
 public class CaveatDataTest {
+
+    private FormatterService formatterService = new FormatterService();
 
     private static final String CAV_DECEASED_FORENAMES = "Forenames";
     private static final String CAV_DECEASED_SURNAME = "Surname";
@@ -74,7 +77,7 @@ public class CaveatDataTest {
                 .applicationSubmittedDate(LOCAL_DATE)
                 .build();
 
-        assertEquals("1st January 2000", caveatData.getApplicationSubmittedDateFormatted());
+        assertEquals("1st January 2000", formatterService.formatDate(caveatData.getApplicationSubmittedDate()));
     }
 
     @Test
@@ -83,7 +86,7 @@ public class CaveatDataTest {
                 .applicationSubmittedDate(LocalDate.of(2000,01,02))
                 .build();
 
-        assertEquals("2nd January 2000", caveatData.getApplicationSubmittedDateFormatted());
+        assertEquals("2nd January 2000", formatterService.formatDate(caveatData.getApplicationSubmittedDate()));
     }
 
     @Test
@@ -92,7 +95,7 @@ public class CaveatDataTest {
                 .applicationSubmittedDate(LocalDate.of(2000,01,03))
                 .build();
 
-        assertEquals("3rd January 2000", caveatData.getApplicationSubmittedDateFormatted());
+        assertEquals("3rd January 2000", formatterService.formatDate(caveatData.getApplicationSubmittedDate()));
     }
 
     @Test
@@ -101,7 +104,7 @@ public class CaveatDataTest {
                 .applicationSubmittedDate(LocalDate.of(2000,01,04))
                 .build();
 
-        assertEquals("4th January 2000", caveatData.getApplicationSubmittedDateFormatted());
+        assertEquals("4th January 2000", formatterService.formatDate(caveatData.getApplicationSubmittedDate()));
     }
 
     @Test
@@ -110,7 +113,7 @@ public class CaveatDataTest {
                 .applicationSubmittedDate(LocalDate.of(300000, 01, 04))
                 .build();
 
-        assertEquals(null, caveatData.getApplicationSubmittedDateFormatted());
+        assertEquals(null, formatterService.formatDate(caveatData.getApplicationSubmittedDate()));
     }
 
     @Test
@@ -119,7 +122,7 @@ public class CaveatDataTest {
                 .expiryDate(LOCAL_DATE)
                 .build();
 
-        assertEquals("1st January 2000", caveatData.getExpiryDateFormatted());
+        assertEquals("1st January 2000", formatterService.formatDate(caveatData.getExpiryDate()));
     }
 
     @Test
@@ -128,7 +131,7 @@ public class CaveatDataTest {
                 .expiryDate(LocalDate.of(2000,01,02))
                 .build();
 
-        assertEquals("2nd January 2000", caveatData.getExpiryDateFormatted());
+        assertEquals("2nd January 2000", formatterService.formatDate(caveatData.getExpiryDate()));
     }
 
     @Test
@@ -137,7 +140,7 @@ public class CaveatDataTest {
                 .expiryDate(LocalDate.of(2000,01,03))
                 .build();
 
-        assertEquals("3rd January 2000", caveatData.getExpiryDateFormatted());
+        assertEquals("3rd January 2000", formatterService.formatDate(caveatData.getExpiryDate()));
     }
 
     @Test
@@ -146,7 +149,7 @@ public class CaveatDataTest {
                 .expiryDate(LocalDate.of(2000,01,04))
                 .build();
 
-        assertEquals("4th January 2000", caveatData.getExpiryDateFormatted());
+        assertEquals("4th January 2000", formatterService.formatDate(caveatData.getExpiryDate()));
     }
 
     @Test
@@ -167,7 +170,8 @@ public class CaveatDataTest {
                 .build();
 
         assertEquals(CAV_CAVEATOR_ADDRESS_1 + ", " + CAV_CAVEATOR_ADDRESS_2 + ", "
-                        + CAV_CAVEATOR_TOWN + ", " + CAV_CAVEATOR_POSTCODE, caveatData.getCaveatorAddressFormatted());
+                        + CAV_CAVEATOR_TOWN + ", " + CAV_CAVEATOR_POSTCODE,
+                formatterService.formatAddress(caveatorAddress));
     }
 
     @Test
@@ -187,7 +191,7 @@ public class CaveatDataTest {
                 .caveatorAddress(caveatorAddress)
                 .build();
 
-        assertEquals(CAV_CAVEATOR_ADDRESS_1 + ", " + CAV_CAVEATOR_POSTCODE, caveatData.getCaveatorAddressFormatted());
+        assertEquals(CAV_CAVEATOR_ADDRESS_1 + ", " + CAV_CAVEATOR_POSTCODE, formatterService.formatAddress(caveatorAddress));
     }
 
 }
