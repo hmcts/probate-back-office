@@ -24,7 +24,7 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
 
     private static final String BIRMINGHAM_NO = "0121 681 3401";
 
-    private static final String STOP_URL = "data.probateDocumentsGenerated[0].value.DocumentLink.document_binary_url";
+    private static final String STOP_URL = "data.probateNotificationsGenerated[0].value.DocumentLink.document_binary_url";
     private static final String EMAIL_NOTIFICATION_URL = "data.probateNotificationsGenerated[0].value.DocumentLink.document_binary_url";
 
     @Test

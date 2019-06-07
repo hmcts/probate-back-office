@@ -49,7 +49,7 @@ public class CaveatCallbackResponseTransformerTest {
     private static final String CAV_DECEASED_SURNAME = "Surname";
     private static final LocalDate CAV_DECEASED_DOD = LocalDate.parse("2017-12-31", dateTimeFormatter);
     private static final LocalDate CAV_DECEASED_DOB = LocalDate.parse("2016-12-31", dateTimeFormatter);
-    private static final String DATE_SUBMITTED = "2019-01-01";
+    private static final String DATE_SUBMITTED = dateTimeFormatter.format(LocalDate.now());
     private static final String CAV_DECEASED_HAS_ALIAS = YES;
     private static final String CAV_DECEASED_FULL_ALIAS_NAME = "AliasFN AliasSN";
     private static final List<CollectionMember<ProbateFullAliasName>> CAV_DECEASED_FULL_ALIAS_NAME_LIST = emptyList();
@@ -60,6 +60,8 @@ public class CaveatCallbackResponseTransformerTest {
     private static final String CAV_CAVEATOR_EMAIL_ADDRESS = "cav@email.com";
     private static final ProbateAddress CAV_CAVEATOR_ADDRESS = Mockito.mock(ProbateAddress.class);
 
+    private static final LocalDate CAV_SUBMISSION_DATE = LocalDate.now();
+    private static final String CAV_FORMATTED_SUBMISSION_DATE = dateTimeFormatter.format(CAV_SUBMISSION_DATE);
     private static final LocalDate CAV_EXPIRY_DATE = LocalDate.now().plusMonths(CAVEAT_LIFESPAN);
     private static final String CAV_FORMATTED_EXPIRY_DATE = dateTimeFormatter.format(CAV_EXPIRY_DATE);
 
@@ -110,7 +112,7 @@ public class CaveatCallbackResponseTransformerTest {
                 .caveatReopenReason(CAV_REOPEN_REASON)
                 .recordId(CAV_RECORD_ID)
                 .legacyCaseViewUrl(CAV_LEGACY_CASE_URL)
-                .applicationSubmittedDate(DATE_SUBMITTED)
+                .applicationSubmittedDate(CAV_SUBMISSION_DATE)
                 .paperForm(YES)
                 .legacyType(CAV_LEGACY_CASE_TYPE);
 
@@ -156,6 +158,22 @@ public class CaveatCallbackResponseTransformerTest {
 
         assertCommonDetails(caveatCallbackResponse);
         assertEquals(1, caveatCallbackResponse.getCaveatData().getDocumentsUploaded().size());
+    }
+
+    @Test
+    public void shouldConvertRequestToDataBeanWithCaveatEntryDateChange() {
+        List<Document> documents = new ArrayList<>();
+        Document document = Document.builder()
+                .documentLink(documentLinkMock)
+                .documentType(DocumentType.CAVEAT_RAISED)
+                .build();
+        documents.add(0, document);
+        String letterId = "123-456";
+        CaveatCallbackResponse caveatCallbackResponse = underTest.caveatRaised(caveatCallbackRequestMock, documents, letterId);
+
+        assertCommon(caveatCallbackResponse);
+
+        assertEquals(CAV_FORMATTED_SUBMISSION_DATE, caveatCallbackResponse.getCaveatData().getApplicationSubmittedDate());
     }
 
     @Test
