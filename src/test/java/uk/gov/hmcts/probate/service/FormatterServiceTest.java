@@ -63,6 +63,16 @@ public class FormatterServiceTest {
     }
 
     @Test
+    public void shouldReturnFormattedAddressWillNulls() {
+        ProbateAddress probateAddress = ProbateAddress.builder()
+                .proAddressLine1("addressLine1")
+                .proPostCode("postcode")
+                .build();
+        assertEquals("addressLine1, postcode",
+                formatterService.formatAddress(probateAddress));
+    }
+
+    @Test
     public void shouldReturnBlankStringFormattedAddress() {
         assertEquals(Strings.EMPTY, formatterService.formatAddress(null));
     }
