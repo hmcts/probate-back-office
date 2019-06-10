@@ -26,8 +26,12 @@ import uk.gov.service.notify.NotificationClient;
 import uk.gov.service.notify.NotificationClientException;
 import uk.gov.service.notify.SendEmailResponse;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Month;
+import java.time.Period;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAmount;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -174,7 +178,7 @@ public class NotificationService {
         CaveatData caveatData = caveatQueryService.findCaveatById(CaseType.CAVEAT, caseData.getBoCaseStopCaveatId());
 
         if (caveatData != null) {
-            personalisation.put(PERSONALISATION_DATE_CAVEAT_ENTERED, formatterService.formatDate(caveatData.getApplicationSubmittedDate()));
+            personalisation.put(PERSONALISATION_DATE_CAVEAT_ENTERED, formatterService.formatDate(getApplicationSubmittedDate(caveatData)));
             personalisation.put(PERSONALISATION_CAVEATOR_NAME, caveatData.getCaveatorFullName());
             personalisation.put(PERSONALISATION_CAVEATOR_ADDRESS, formatterService.formatAddress(caveatData.getCaveatorAddress()));
         }
@@ -264,4 +268,13 @@ public class NotificationService {
         }
         return data;
     }
+
+    private LocalDate getApplicationSubmittedDate(CaveatData caveatData) {
+        if (caveatData.getApplicationSubmittedDate() != null) {
+            return caveatData.getApplicationSubmittedDate();
+        } else {
+            return caveatData.getExpiryDate().minusMonths(6);
+        }
+    }
+
 }

@@ -13,7 +13,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 import uk.gov.hmcts.probate.config.properties.registries.RegistriesProperties;
 import uk.gov.hmcts.probate.exception.BadRequestException;
 import uk.gov.hmcts.probate.insights.AppInsights;
+import uk.gov.hmcts.probate.model.CaseType;
 import uk.gov.hmcts.probate.model.SentEmail;
+import uk.gov.hmcts.probate.model.State;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
@@ -34,6 +36,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyMap;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isNull;
@@ -67,6 +70,9 @@ public class NotificationServiceTest {
 
     @MockBean
     private CoreCaseDataApi coreCaseDataApi;
+
+    @MockBean
+    private CaveatQueryService caveatQueryService;
 
     @SpyBean
     private NotificationClient notificationClient;
@@ -189,10 +195,10 @@ public class NotificationServiceTest {
 
         excelaCaseData.add(
                 new ReturnedCaseDetails(CaseData.builder()
-                .applicationType(PERSONAL)
-                .deceasedSurname("Michelson")
-                .scannedDocuments(scannedDocuments)
-                .build(), LAST_MODIFIED, ID));
+                        .applicationType(PERSONAL)
+                        .deceasedSurname("Michelson")
+                        .scannedDocuments(scannedDocuments)
+                        .build(), LAST_MODIFIED, ID));
 
         caveatRaisedCaseData = new CaveatDetails(CaveatData.builder()
                 .applicationType(PERSONAL)
@@ -700,4 +706,43 @@ public class NotificationServiceTest {
 
         verify(pdfManagementService).generateAndUpload(any(SentEmail.class), eq(SENT_EMAIL));
     }
+
+    @Test
+    public void sendCaveatStoppedEmail()
+            throws NotificationClientException, BadRequestException {
+
+        CaveatData caveatData = CaveatData.builder().applicationSubmittedDate(LocalDate.now()).build();
+        when(caveatQueryService.findCaveatById(CaseType.CAVEAT, null)).thenReturn(caveatData);
+        notificationService.sendEmail(State.CASE_STOPPED_CAVEAT, personalCaseDataBirmingham);
+
+        verify(notificationClient).sendEmail(
+                eq(null),
+                eq("personal@test.com"),
+                any(),
+                isNull(),
+                eq("birmingham-emailReplyToId"));
+
+        verify(pdfManagementService).generateAndUpload(any(SentEmail.class), eq(SENT_EMAIL));
+    }
+
+    @Test
+    public void sendCaveatStoppedEmailWithNullApplicationSubmittedDate()
+            throws NotificationClientException, BadRequestException {
+
+        LocalDate now = LocalDate.now();
+        LocalDate sixMonthsBefore = now.minusMonths(6);
+        CaveatData caveatData = CaveatData.builder().expiryDate(sixMonthsBefore).build();
+        when(caveatQueryService.findCaveatById(CaseType.CAVEAT, null)).thenReturn(caveatData);
+        notificationService.sendEmail(State.CASE_STOPPED_CAVEAT, personalCaseDataBirmingham);
+
+        verify(notificationClient).sendEmail(
+                eq(null),
+                eq("personal@test.com"),
+                anyMap(),
+                isNull(),
+                eq("birmingham-emailReplyToId"));
+
+        verify(pdfManagementService).generateAndUpload(any(SentEmail.class), eq(SENT_EMAIL));
+    }
+
 }
