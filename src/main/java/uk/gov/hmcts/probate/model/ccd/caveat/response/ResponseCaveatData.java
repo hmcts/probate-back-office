@@ -37,6 +37,7 @@ public class ResponseCaveatData {
 
     private final List<CollectionMember<CaseMatch>> caseMatches;
 
+    private final String applicationSubmittedDate;
     private final String expiryDate;
     private final String messageContent;
     private final String caveatReopenReason;
@@ -51,8 +52,6 @@ public class ResponseCaveatData {
     private final List<CollectionMember<Document>> documentsGenerated;
     private final List<CollectionMember<Document>> notificationsGenerated;
     private final List<CollectionMember<BulkPrint>> bulkPrintId;
-
-    private final String applicationSubmittedDate;
 
     private String recordId;
     private String legacyType;

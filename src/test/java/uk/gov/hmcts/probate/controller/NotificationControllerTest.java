@@ -17,12 +17,21 @@ import uk.gov.hmcts.probate.exception.BadRequestException;
 import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
+import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
+import uk.gov.hmcts.probate.service.BulkPrintService;
 import uk.gov.hmcts.probate.service.DocumentService;
+import uk.gov.hmcts.probate.service.EventValidationService;
 import uk.gov.hmcts.probate.service.NotificationService;
+import uk.gov.hmcts.probate.service.docmosis.GrantOfRepresentationDocmosisService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.util.TestUtils;
 import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
 import uk.gov.service.notify.NotificationClientException;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.mockito.ArgumentMatchers.any;
@@ -36,6 +45,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_DRAFT;
+import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT_STOPPED;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.EDGE_CASE;
@@ -63,6 +73,14 @@ public class NotificationControllerTest {
     private PDFManagementService pdfManagementService;
 
     @MockBean
+    private GrantOfRepresentationDocmosisService grantOfRepresentationDocmosisService;
+
+    @MockBean
+    private BulkPrintService bulkPrintService;
+
+    private EventValidationService eventValidationService;
+
+    @MockBean
     private AppInsights appInsights;
 
     @MockBean
@@ -74,8 +92,16 @@ public class NotificationControllerTest {
     private static final String DOC_RECEIVED_URL = "/notify/documents-received";
     private static final String CASE_STOPPED_URL = "/notify/case-stopped";
 
+    private static final Map<String, Object> EMPTY_MAP = new HashMap();
+    private static final Document EMPTY_DOC = Document.builder().documentType(CAVEAT_STOPPED).build();
+
+    private List<String> errors = new ArrayList<>();
+    private CallbackResponse errorResponse;
+
     @Before
     public void setUp() throws NotificationClientException, BadRequestException {
+        errors.add("Bulk Print is currently unavailable please contact support desk.");
+        errorResponse = CallbackResponse.builder().errors(errors).build();
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
 
         Document document = Document.builder().documentType(DIGITAL_GRANT).build();
@@ -102,6 +128,11 @@ public class NotificationControllerTest {
 
         when(pdfManagementService.generateAndUpload(any(CallbackRequest.class), eq(EDGE_CASE)))
                 .thenReturn(Document.builder().documentType(EDGE_CASE).build());
+
+        when(grantOfRepresentationDocmosisService.caseDataAsPlaceholders(any())).thenReturn(EMPTY_MAP);
+
+        when(pdfManagementService.generateDocmosisDocumentAndUpload(any(), any())).thenReturn(EMPTY_DOC);
+
     }
 
     @Test
@@ -203,7 +234,7 @@ public class NotificationControllerTest {
 
         String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadNotifications.json");
 
-        mockMvc.perform(post("/notify/case-stopped")
+        mockMvc.perform(post(CASE_STOPPED_URL)
                 .content(solicitorPayload)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -215,11 +246,48 @@ public class NotificationControllerTest {
 
         String solicitorPayload = testUtils.getStringFromFile("personalPayloadNotifications.json");
 
-        mockMvc.perform(post("/notify/case-stopped")
+        mockMvc.perform(post(CASE_STOPPED_URL)
                 .content(solicitorPayload)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("data")));
+    }
+
+    @Test
+    public void caseStoppedWithNotificationsRequestedShouldReturnOk() throws Exception {
+        String solicitorPayload = testUtils.getStringFromFile("stopNotificationsRequestedPayload.json");
+
+        mockMvc.perform(post(CASE_STOPPED_URL)
+                .content(solicitorPayload)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("data")));
+    }
+
+    @Test
+    public void caseStoppedWithNoEmailNotificationAndNoBulkPrintRequestedShouldReturnOk() throws
+            Exception {
+        String solicitorPayload = testUtils.getStringFromFile("stopNotificationNoEmailRequestedAndNoBulkPrintPayload.json");
+
+        mockMvc.perform(post(CASE_STOPPED_URL)
+                .content(solicitorPayload)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("data")));
+    }
+
+    @Test
+    public void caseStoppedWithNoEmailNotificationRequestedShouldReturnBulkPrintError() throws Exception {
+        when(bulkPrintService.sendToBulkPrint(any(CallbackRequest.class), eq(Document.builder().build()), eq(Document
+                .builder().build()))).thenReturn(null);
+        String solicitorPayload = testUtils.getStringFromFile("stopNotificationNoEmailRequested.json");
+
+        mockMvc.perform(post(CASE_STOPPED_URL)
+                .content(solicitorPayload)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.errors[0]")
+                        .value("Bulk Print is currently unavailable please contact support desk."));
     }
 
     @Test
