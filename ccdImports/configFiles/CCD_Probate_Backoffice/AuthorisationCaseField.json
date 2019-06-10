@@ -1240,5 +1240,9 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "primaryApplicantAliasReason", "UserRole": "citizen", "CRUD": "CRU"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "primaryApplicantOtherReason", "UserRole": "citizen", "CRUD": "CRU"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "boDocumentsUploaded", "UserRole": "citizen", "CRUD": "CR"},
-  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "paperForm", "UserRole": "citizen", "CRUD": "CRU"}
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "paperForm", "UserRole": "citizen", "CRUD": "CRU"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "labelAboutApplicant", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "labelAboutPersonDied", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "labelForeigndomicile", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "labelInheTax", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"}
 ]
