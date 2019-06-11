@@ -178,6 +178,9 @@ public class NotificationService {
             personalisation.put(PERSONALISATION_CAVEATOR_ADDRESS, formatterService.formatAddress(caveatData.getCaveatorAddress()));
         }
 
+        if (caseData.getApplicationType().equals(ApplicationType.SOLICITOR)) {
+            personalisation.replace(PERSONALISATION_APPLICANT_NAME, caseData.getSolsSOTName());
+        }
         return personalisation;
     }
 
