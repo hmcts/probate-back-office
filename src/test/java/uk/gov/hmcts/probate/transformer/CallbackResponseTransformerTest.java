@@ -172,6 +172,8 @@ public class CallbackResponseTransformerTest {
     private static final String RECORD_ID = "12345";
     private static final String LEGACY_CASE_URL = "someUrl";
     private static final String LEGACY_CASE_TYPE = "someCaseType";
+    private static final String ORDER_NEEDED = YES;
+    private static final String REISSUE_REASON = "test reason";
 
     private static final LocalDateTime scannedDate = LocalDateTime.parse("2018-01-01T12:34:56.123");
     private static final List<CollectionMember<Payment>> PAYMENTS_LIST = Arrays.asList(
@@ -293,6 +295,8 @@ public class CallbackResponseTransformerTest {
                 .scannedDocuments(SCANNED_DOCUMENTS_LIST)
                 .recordId(RECORD_ID)
                 .legacyType(LEGACY_CASE_TYPE)
+                .orderNeeded(ORDER_NEEDED)
+                .reissueReason(REISSUE_REASON)
                 .legacyCaseViewUrl(LEGACY_CASE_URL);
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
@@ -1343,6 +1347,8 @@ public class CallbackResponseTransformerTest {
         assertEquals(YES, callbackResponse.getData().getBoExaminationChecklistQ1());
         assertEquals(YES, callbackResponse.getData().getBoExaminationChecklistQ2());
         assertEquals(YES, callbackResponse.getData().getBoExaminationChecklistRequestQA());
+        assertEquals(ORDER_NEEDED, callbackResponse.getData().getOrderNeeded());
+        assertEquals(REISSUE_REASON, callbackResponse.getData().getReissueReason());
 
         assertEquals(SCANNED_DOCUMENTS_LIST, callbackResponse.getData().getScannedDocuments());
     }
