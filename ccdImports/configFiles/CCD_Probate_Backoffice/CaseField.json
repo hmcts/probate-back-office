@@ -257,5 +257,8 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "labelAboutApplicant", "Label": "# About the applicant(s)", "FieldType": "Label", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "labelAboutPersonDied", "Label": "# About the person who has died", "FieldType": "Label", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "labelForeigndomicile", "Label": "# Foreign Domicile", "FieldType": "Label", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "labelInheTax", "Label": "# Inheritance tax", "FieldType": "Label", "SecurityClassification": "Public"}
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "labelInheTax", "Label": "# Inheritance tax", "FieldType": "Label", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "orderNeeded", "Label": "Is an order needed?", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "reissueReason", "Label": "Reason for reissuing the case", "FieldType": "Collection", "FieldTypeParameter": "ReissueExamineCase", "SecurityClassification": "Public"},
+  {"LiveFrom": "02/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "reissueSelectionList", "Label": "Please select the information you would like to amend", "FieldType": "FixedList", "FieldTypeParameter": "reissueSelectionFixedList", "SecurityClassification": "Public"}
 ]

@@ -116,5 +116,16 @@
   {"LiveFrom": "06/01/2017", "ID": "resolveStopStateFixedList", "ListElementCode": "CaseCreated", "ListElement": "Case created"},
   {"LiveFrom": "06/01/2017", "ID": "resolveStopStateFixedList", "ListElementCode": "CasePrinted", "ListElement": "Awaiting documentation"},
   {"LiveFrom": "06/01/2017", "ID": "resolveStopStateFixedList", "ListElementCode": "BOReadyForExamination", "ListElement": "Ready for examination"},
-  {"LiveFrom": "06/01/2017", "ID": "resolveStopStateFixedList", "ListElementCode": "BOExamining", "ListElement": "Examining"}
+  {"LiveFrom": "06/01/2017", "ID": "resolveStopStateFixedList", "ListElementCode": "BOExamining", "ListElement": "Examining"},
+  {"LiveFrom": "06/01/2017", "ID": "reissueReasonFixedList", "ListElementCode": "officialError", "ListElement": "Official error"},
+  {"LiveFrom": "06/01/2017", "ID": "reissueReasonFixedList", "ListElementCode": "customerError", "ListElement": "Customer error"},
+  {"LiveFrom": "06/01/2017", "ID": "reissueReasonFixedList", "ListElementCode": "duplicate", "ListElement": "Duplicate"},
+  {"LiveFrom": "06/01/2017", "ID": "reissueSelectionFixedList", "ListElementCode": "applicant", "ListElement": "Applicant Details"},
+  {"LiveFrom": "06/01/2017", "ID": "reissueSelectionFixedList", "ListElementCode": "grant", "ListElement": "Grant Details"},
+  {"LiveFrom": "06/01/2017", "ID": "reissueSelectionFixedList", "ListElementCode": "domicility", "ListElement": "Domicility and Assets"},
+  {"LiveFrom": "06/01/2017", "ID": "reissueSelectionFixedList", "ListElementCode": "attorney", "ListElement": "Attorney Info"},
+  {"LiveFrom": "06/01/2017", "ID": "reissueSelectionFixedList", "ListElementCode": "willAndCodicils", "ListElement": "Will and codicils"},
+  {"LiveFrom": "07/01/2017", "ID": "reissueSelectionFixedList", "ListElementCode": "solicitor", "ListElement": "Solicitor Details"},
+  {"LiveFrom": "06/01/2017", "ID": "reissueSelectionFixedList", "ListElementCode": "deceasedFamily", "ListElement": "Deceased Family Details"},
+  {"LiveFrom": "06/01/2017", "ID": "reissueSelectionFixedList", "ListElementCode": "reissueDetails", "ListElement": "Reissue details"}
 ]

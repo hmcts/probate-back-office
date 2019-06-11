@@ -167,5 +167,7 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "legacyCaseTab", "TabLabel": "Legacy details", "TabDisplayOrder": 12, "CaseFieldID": "recordId", "TabFieldDisplayOrder": 1, "TabShowCondition": "recordId=\"*\""},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "legacyCaseTab", "TabLabel": "Legacy details", "TabDisplayOrder": 12, "CaseFieldID": "legacyType", "TabFieldDisplayOrder": 2},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "legacyCaseTab", "TabLabel": "Legacy details", "TabDisplayOrder": 12, "CaseFieldID": "legacyCaseViewUrlLink", "TabFieldDisplayOrder": 3},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "legacyCaseTab", "TabLabel": "Legacy details", "TabDisplayOrder": 12, "CaseFieldID": "legacyCaseViewUrl", "TabFieldDisplayOrder": 4}
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "legacyCaseTab", "TabLabel": "Legacy details", "TabDisplayOrder": 12, "CaseFieldID": "legacyCaseViewUrl", "TabFieldDisplayOrder": 4},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "grantReissueTab", "TabLabel": "Grant Reissue", "TabDisplayOrder": 13, "CaseFieldID": "reissueReason", "TabFieldDisplayOrder": 1},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "grantReissueTab", "TabLabel": "Grant Reissue", "TabDisplayOrder": 13, "CaseFieldID": "orderNeeded", "TabFieldDisplayOrder": 2}
 ]
