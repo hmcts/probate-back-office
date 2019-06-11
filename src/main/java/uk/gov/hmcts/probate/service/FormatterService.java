@@ -13,8 +13,6 @@ import java.time.LocalDate;
 import java.util.Date;
 import java.util.Locale;
 
-import static org.apache.commons.lang.StringUtils.isEmpty;
-
 @Service
 @Slf4j
 @AllArgsConstructor
@@ -70,7 +68,7 @@ public class FormatterService {
         if (StringUtils.isEmpty(addressElement)) {
             return "";
         } else {
-            return (prependComma ? ", " : "" ) + addressElement;
+            return (prependComma ? ", " : "") + addressElement;
         }
     }
 }
