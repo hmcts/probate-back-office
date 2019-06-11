@@ -1304,6 +1304,7 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "deceasedAnyChildren", "UserRole": "citizen", "CRUD": "CRU"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "deceasedHasAssetsOutsideUK", "UserRole": "citizen", "CRUD": "CRU"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "deceasedMartialStatus", "UserRole": "citizen", "CRUD": "CRU"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "foreignAsset", "UserRole": "citizen", "CRUD": "CRU"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "foreignAssetEstateValue", "UserRole": "citizen", "CRUD": "CRU"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "primaryApplicantRelationshipToDeceased", "UserRole": "citizen", "CRUD": "CRU"}
 ]
