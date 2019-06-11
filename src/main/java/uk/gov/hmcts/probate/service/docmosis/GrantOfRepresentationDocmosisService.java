@@ -60,7 +60,6 @@ public class GrantOfRepresentationDocmosisService {
         placeholders.put(PERSONALISATION_REGISTRY, registryPlaceholders);
         placeholders.put(PERSONALISATION_PA8AURL, "https://www.gov.uk/inherits-someone-dies-without-will|https://www.gov.uk/inherits-someone-dies-without-will");
         placeholders.put(PERSONALISATION_PA8BURL, "https://www.citizensadvice.org.uk|https://www.citizensadvice.org.uk/");
-        placeholders.put(PERSONALISATION_DATE_CAVEAT_ENTERED, formatterService.formatDate(caveatData.getApplicationSubmittedDate()));
         placeholders.put(PERSONALISATION_CAVEATOR_NAME, caveatData.getCaveatorFullName());
         placeholders.put(PERSONALISATION_CAVEATOR_ADDRESS, formatterService.formatAddress(caveatData.getCaveatorAddress()));
         return placeholders;

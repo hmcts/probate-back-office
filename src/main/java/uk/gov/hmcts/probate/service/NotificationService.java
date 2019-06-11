@@ -9,8 +9,8 @@ import uk.gov.hmcts.probate.config.properties.registries.RegistriesProperties;
 import uk.gov.hmcts.probate.config.properties.registries.Registry;
 import uk.gov.hmcts.probate.exception.BadRequestException;
 import uk.gov.hmcts.probate.model.ApplicationType;
-import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.CaseType;
+import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.SentEmail;
 import uk.gov.hmcts.probate.model.State;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
@@ -174,7 +174,6 @@ public class NotificationService {
         CaveatData caveatData = caveatQueryService.findCaveatById(CaseType.CAVEAT, caseData.getBoCaseStopCaveatId());
 
         if (caveatData != null) {
-            personalisation.put(PERSONALISATION_DATE_CAVEAT_ENTERED, formatterService.formatDate(caveatData.getApplicationSubmittedDate()));
             personalisation.put(PERSONALISATION_CAVEATOR_NAME, caveatData.getCaveatorFullName());
             personalisation.put(PERSONALISATION_CAVEATOR_ADDRESS, formatterService.formatAddress(caveatData.getCaveatorAddress()));
         }
