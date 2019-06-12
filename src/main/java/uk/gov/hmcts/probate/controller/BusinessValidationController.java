@@ -60,7 +60,7 @@ public class BusinessValidationController {
             @Validated({ApplicationCreatedGroup.class, ApplicationUpdatedGroup.class}) @RequestBody CallbackRequest callbackRequest,
             BindingResult bindingResult,
             HttpServletRequest request) {
-
+//comment
         logRequest(request.getRequestURI(), callbackRequest);
 
         if (bindingResult.hasErrors()) {
