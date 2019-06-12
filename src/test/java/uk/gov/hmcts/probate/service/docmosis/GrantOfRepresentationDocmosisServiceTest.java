@@ -146,7 +146,8 @@ public class GrantOfRepresentationDocmosisServiceTest {
         assertEquals("fred jones", placeholders.get(PERSONALISATION_CAVEATOR_NAME));
         assertEquals(formatterServiceMock.formatAddress(caveatData.getCaveatorAddress()),
                 placeholders.get(PERSONALISATION_CAVEATOR_ADDRESS));
-        assertEquals(ccdReferenceFormatterServiceMock.getFormattedCaseReference("1234567891234567"),placeholders.get(PERSONALISATION_CAVEAT_REFERENCE));
+        assertEquals(ccdReferenceFormatterServiceMock.getFormattedCaseReference("1234567891234567"),
+                placeholders.get(PERSONALISATION_CAVEAT_REFERENCE));
     }
 }
 

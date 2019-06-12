@@ -63,7 +63,8 @@ public class GrantOfRepresentationDocmosisService {
         placeholders.put(PERSONALISATION_PA8BURL, "https://www.citizensadvice.org.uk|https://www.citizensadvice.org.uk/");
         placeholders.put(PERSONALISATION_CAVEATOR_NAME, caveatData.getCaveatorFullName());
         placeholders.put(PERSONALISATION_CAVEATOR_ADDRESS, formatterService.formatAddress(caveatData.getCaveatorAddress()));
-        placeholders.put(PERSONALISATION_CAVEAT_REFERENCE, ccdReferenceFormatterService.getFormattedCaseReference(caseDetails.getData().getBoCaseStopCaveatId()));
+        placeholders.put(PERSONALISATION_CAVEAT_REFERENCE,
+                ccdReferenceFormatterService.getFormattedCaseReference(caseDetails.getData().getBoCaseStopCaveatId()));
         return placeholders;
     }
 
