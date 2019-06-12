@@ -86,7 +86,7 @@ public class DataExtractControllerTest {
         List<ReturnedCaseDetails> returnedCases = new ImmutableList.Builder<ReturnedCaseDetails>().add(new
                 ReturnedCaseDetails(caseData, LAST_MODIFIED, 1L)).build();
 
-        when(caseQueryService.findCasesWithDatedDocument(any(), any())).thenReturn(returnedCases);
+        when(caseQueryService.findCasesWithDatedDocument(any())).thenReturn(returnedCases);
         when(fileTransferService.uploadFile(any())).thenReturn(HttpStatus.CREATED.value());
     }
 
