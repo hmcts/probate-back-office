@@ -73,6 +73,7 @@ public class GrantOfRepresentationDocmosisServiceTest {
     private static final String PERSONALISATION_REGISTRY = "registry";
     private static final String PERSONALISATION_PA8AURL = "PA8AURL";
     private static final String PERSONALISATION_PA8BURL = "PA8BURL";
+    private static final String PERSONALISATION_CAVEAT_REFERENCE = "caveatReference";
     private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     private CaveatData caveatData;
@@ -145,6 +146,8 @@ public class GrantOfRepresentationDocmosisServiceTest {
         assertEquals("fred jones", placeholders.get(PERSONALISATION_CAVEATOR_NAME));
         assertEquals(formatterServiceMock.formatAddress(caveatData.getCaveatorAddress()),
                 placeholders.get(PERSONALISATION_CAVEATOR_ADDRESS));
+        assertEquals(ccdReferenceFormatterServiceMock.getFormattedCaseReference("1234567891234567"),
+                placeholders.get(PERSONALISATION_CAVEAT_REFERENCE));
     }
 }
 
