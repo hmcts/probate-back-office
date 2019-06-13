@@ -22,6 +22,7 @@ public class DocmosisPdfGenerationService {
 
     private static final String PDF_DOCUMENT_OUTPUT_NAME = "result.pdf";
     private static final String PDF_DOCUMENT_OUTPUT_FORMAT = "pdf";
+    private static final String WATERMARK = "DRAFT COPY - NOT FOR CIRCULATION";
 
     @Autowired
     private RestTemplate restTemplate;
@@ -36,7 +37,7 @@ public class DocmosisPdfGenerationService {
     @Value("${docmosis.service.accessKey}")
     private String pdfServiceAccessKey;
 
-    public byte[] generateDocFrom(String templateName, Map<String, Object> placeholders) {
+    public byte[] generateDocFrom(String templateName, Map<String, Object> placeholders, boolean isWatermark) {
         checkArgument(!isNullOrEmpty(templateName), "document generation template cannot be empty");
         checkNotNull(placeholders, "placeholders map cannot be null");
 
@@ -47,14 +48,15 @@ public class DocmosisPdfGenerationService {
 
         try {
             ResponseEntity<byte[]> response =
-                    restTemplate.postForEntity(pdfServiceEndpoint, request(templateName, placeholders), byte[].class);
+                    restTemplate.postForEntity(pdfServiceEndpoint, request(templateName, placeholders, isWatermark), byte[]
+                            .class);
             return response.getBody();
         } catch (Exception e) {
             throw new PDFGenerationException("Failed to request PDF from REST endpoint " + e.getMessage(), e);
         }
     }
 
-    private PdfDocumentRequest request(String templateName, Map<String, Object> placeholders) {
+    private PdfDocumentRequest request(String templateName, Map<String, Object> placeholders, boolean isWatermark) {
         String docmosisTemplateName = templateProperties.getTemplates().get(templateName).getTemplateName();
         return PdfDocumentRequest.builder()
                 .accessKey(pdfServiceAccessKey)
@@ -62,6 +64,7 @@ public class DocmosisPdfGenerationService {
                 .outputFormat(PDF_DOCUMENT_OUTPUT_FORMAT)
                 .outputName(PDF_DOCUMENT_OUTPUT_NAME)
                 .pdfArchiveMode(true)
+                .pdfWatermark(isWatermark ? WATERMARK : "")
                 .data(placeholders).build();
     }
 

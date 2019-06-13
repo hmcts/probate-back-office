@@ -55,6 +55,7 @@
   {"LiveFrom": "01/01/2017", "ID": "probateDocumentTypeEnum", "ListElementCode": "caveatStopped", "ListElement": "caveat Stopped"},
   {"LiveFrom": "01/01/2017", "ID": "probateDocumentTypeEnum", "ListElementCode": "grantCoversheet", "ListElement": "Cover Sheet"},
   {"LiveFrom": "01/01/2017", "ID": "probateDocumentTypeEnum", "ListElementCode": "grantCover", "ListElement": "Grant Cover Sheet"},
+  {"LiveFrom": "01/01/2017", "ID": "probateDocumentTypeEnum", "ListElementCode": "digitalGrantDraftReissue", "ListElement": "Digital Grant Draft Reissue"},
   {"LiveFrom": "01/01/2017", "ID": "documentUploadTypeEnum", "ListElementCode": "email", "ListElement": "Email"},
   {"LiveFrom": "01/01/2017", "ID": "documentUploadTypeEnum", "ListElementCode": "correspondence", "ListElement": "Correspondence"},
   {"LiveFrom": "01/01/2017", "ID": "documentUploadTypeEnum", "ListElementCode": "IHT", "ListElement": "Codicil"},
@@ -127,5 +128,8 @@
   {"LiveFrom": "06/01/2017", "ID": "reissueSelectionFixedList", "ListElementCode": "willAndCodicils", "ListElement": "Will and codicils"},
   {"LiveFrom": "07/01/2017", "ID": "reissueSelectionFixedList", "ListElementCode": "solicitor", "ListElement": "Solicitor Details"},
   {"LiveFrom": "06/01/2017", "ID": "reissueSelectionFixedList", "ListElementCode": "deceasedFamily", "ListElement": "Deceased Family Details"},
-  {"LiveFrom": "06/01/2017", "ID": "reissueSelectionFixedList", "ListElementCode": "reissueDetails", "ListElement": "Reissue details"}
+  {"LiveFrom": "06/01/2017", "ID": "reissueSelectionFixedList", "ListElementCode": "reissueDetails", "ListElement": "Reissue details"},
+  {"LiveFrom": "06/01/2017", "ID": "reissueNotationFixedList", "ListElementCode": "duplicate", "ListElement": "Duplicate of original created on [date of creation]"},
+  {"LiveFrom": "06/01/2017", "ID": "reissueNotationFixedList", "ListElementCode": "registrarsOrder’", "ListElement": "Amended and re-issued pursuant to Registrar's order dated [date of order]"},
+  {"LiveFrom": "06/01/2017", "ID": "reissueNotationFixedList", "ListElementCode": "’registrarsDirection’", "ListElement": "Amended and re-issued [date of re-issue] pursuant to Registrar's Direction 004/17"}
 ]

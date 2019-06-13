@@ -22,7 +22,7 @@ import uk.gov.hmcts.probate.service.BulkPrintService;
 import uk.gov.hmcts.probate.service.DocumentService;
 import uk.gov.hmcts.probate.service.EventValidationService;
 import uk.gov.hmcts.probate.service.NotificationService;
-import uk.gov.hmcts.probate.service.docmosis.GrantOfRepresentationDocmosisService;
+import uk.gov.hmcts.probate.service.docmosis.GrantOfRepresentationDocmosisMapperService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.util.TestUtils;
 import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
@@ -73,7 +73,7 @@ public class NotificationControllerTest {
     private PDFManagementService pdfManagementService;
 
     @MockBean
-    private GrantOfRepresentationDocmosisService grantOfRepresentationDocmosisService;
+    private GrantOfRepresentationDocmosisMapperService grantOfRepresentationDocmosisMapperService;
 
     @MockBean
     private BulkPrintService bulkPrintService;
@@ -129,9 +129,9 @@ public class NotificationControllerTest {
         when(pdfManagementService.generateAndUpload(any(CallbackRequest.class), eq(EDGE_CASE)))
                 .thenReturn(Document.builder().documentType(EDGE_CASE).build());
 
-        when(grantOfRepresentationDocmosisService.caseDataAsPlaceholders(any())).thenReturn(EMPTY_MAP);
+        when(grantOfRepresentationDocmosisMapperService.caseDataForStoppedMatchedCaveat(any())).thenReturn(EMPTY_MAP);
 
-        when(pdfManagementService.generateDocmosisDocumentAndUpload(any(), any())).thenReturn(EMPTY_DOC);
+        when(pdfManagementService.generateDocmosisDocumentAndUpload(any(), any(), any())).thenReturn(EMPTY_DOC);
 
     }
 

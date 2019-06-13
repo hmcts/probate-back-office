@@ -260,5 +260,7 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "labelInheTax", "Label": "# Inheritance tax", "FieldType": "Label", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "orderNeeded", "Label": "Is an order needed?", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "reissueReason", "Label": "Reason for reissuing the case", "FieldType": "Collection", "FieldTypeParameter": "ReissueExamineCase", "SecurityClassification": "Public"},
-  {"LiveFrom": "02/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "reissueSelectionList", "Label": "Please select the information you would like to amend", "FieldType": "FixedList", "FieldTypeParameter": "reissueSelectionFixedList", "SecurityClassification": "Public"}
+  {"LiveFrom": "02/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "reissueSelectionList", "Label": "Please select the information you would like to amend", "FieldType": "FixedList", "FieldTypeParameter": "reissueSelectionFixedList", "SecurityClassification": "Public"},
+  {"LiveFrom": "02/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "reissueReasonNotation", "Label": "What notation should appear on the grant?", "HintText": "The notation will appear below the grant title", "FieldType": "FixedList", "FieldTypeParameter": "reissueNotationFixedList", "SecurityClassification": "Public"},
+  {"LiveFrom": "02/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "reissueDate", "Label": "What date should appear on the notation?", "FieldType": "Date", "SecurityClassification": "Public"}
 ]

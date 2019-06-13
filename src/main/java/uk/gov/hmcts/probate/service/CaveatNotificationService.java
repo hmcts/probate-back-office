@@ -54,10 +54,11 @@ public class CaveatNotificationService {
             Map<String, Object> placeholdersCoversheet =
                     caveatDocmosisService.caseDataAsPlaceholders(caveatCallbackRequest.getCaseDetails());
             Document coversheet = pdfManagementService
-                    .generateDocmosisDocumentAndUpload(placeholdersCoversheet, DocumentType.CAVEAT_COVERSHEET);
+                    .generateDocmosisDocumentAndUpload(placeholdersCoversheet, DocumentType.CAVEAT_COVERSHEET, false);
             documents.add(coversheet);
             Map<String, Object> placeholders = caveatDocmosisService.caseDataAsPlaceholders(caveatCallbackRequest.getCaseDetails());
-            Document caveatRaisedDoc = pdfManagementService.generateDocmosisDocumentAndUpload(placeholders, DocumentType.CAVEAT_RAISED);
+            Document caveatRaisedDoc = pdfManagementService.generateDocmosisDocumentAndUpload(placeholders,
+                    DocumentType.CAVEAT_RAISED, false);
             documents.add(caveatRaisedDoc);
 
             if (caveatCallbackRequest.getCaseDetails().getData().isSendForBulkPrintingRequested()) {

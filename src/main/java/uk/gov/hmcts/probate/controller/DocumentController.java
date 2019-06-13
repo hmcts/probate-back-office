@@ -2,6 +2,7 @@ package uk.gov.hmcts.probate.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -20,6 +21,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.willlodgement.request.WillLodgementCallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.willlodgement.response.WillLodgementCallbackResponse;
 import uk.gov.hmcts.probate.service.BulkPrintService;
+import uk.gov.hmcts.probate.service.DocumentGeneratorService;
 import uk.gov.hmcts.probate.service.DocumentService;
 import uk.gov.hmcts.probate.service.EventValidationService;
 import uk.gov.hmcts.probate.service.NotificationService;
@@ -55,6 +57,8 @@ import static uk.gov.hmcts.probate.model.State.GRANT_ISSUED;
 @RestController
 public class DocumentController {
 
+    @Autowired
+    private final DocumentGeneratorService documentGeneratorService;
     private final PDFManagementService pdfManagementService;
     private final CallbackResponseTransformer callbackResponseTransformer;
     private final WillLodgementCallbackResponseTransformer willLodgementCallbackResponseTransformer;
@@ -196,23 +200,6 @@ public class DocumentController {
         return ResponseEntity.ok(callbackResponse);
     }
 
-    private CaseDetails getRegistryDetails(CaseDetails caseDetails) {
-        Registry registry = registriesProperties.getRegistries().get(
-                caseDetails.getData().getRegistryLocation().toLowerCase());
-        caseDetails.setRegistryTelephone(registry.getPhone());
-        caseDetails.setRegistryAddressLine1(registry.getAddressLine1());
-        caseDetails.setRegistryAddressLine2(registry.getAddressLine2());
-        caseDetails.setRegistryAddressLine3(registry.getAddressLine3());
-        caseDetails.setRegistryAddressLine4(registry.getAddressLine4());
-        caseDetails.setRegistryPostcode(registry.getPostcode());
-        caseDetails.setRegistryTown(registry.getTown());
-
-        Registry ctscRegistry = registriesProperties.getRegistries().get(CTSC);
-        caseDetails.setCtscTelephone(ctscRegistry.getPhone());
-
-        return caseDetails;
-    }
-
 
     @PostMapping(path = "/generate-deposit-receipt", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<WillLodgementCallbackResponse> generateDepositReceipt(@RequestBody WillLodgementCallbackRequest callbackRequest) {
@@ -230,5 +217,31 @@ public class DocumentController {
         documents.add(document);
 
         return ResponseEntity.ok(willLodgementCallbackResponseTransformer.addDocuments(callbackRequest, Arrays.asList(document)));
+    }
+
+    @PostMapping(path = "/generate-grant-draft-reissue", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<CallbackResponse> generateGrantDraftReissue(@RequestBody CallbackRequest callbackRequest) {
+
+        Document document = documentGeneratorService.generateGrantReissueDraft(callbackRequest);
+
+        return ResponseEntity.ok(callbackResponseTransformer.addDocuments(callbackRequest,
+                Arrays.asList(document), null, null));
+    }
+
+    private CaseDetails getRegistryDetails(CaseDetails caseDetails) {
+        Registry registry = registriesProperties.getRegistries().get(
+                caseDetails.getData().getRegistryLocation().toLowerCase());
+        caseDetails.setRegistryTelephone(registry.getPhone());
+        caseDetails.setRegistryAddressLine1(registry.getAddressLine1());
+        caseDetails.setRegistryAddressLine2(registry.getAddressLine2());
+        caseDetails.setRegistryAddressLine3(registry.getAddressLine3());
+        caseDetails.setRegistryAddressLine4(registry.getAddressLine4());
+        caseDetails.setRegistryPostcode(registry.getPostcode());
+        caseDetails.setRegistryTown(registry.getTown());
+
+        Registry ctscRegistry = registriesProperties.getRegistries().get(CTSC);
+        caseDetails.setCtscTelephone(ctscRegistry.getPhone());
+
+        return caseDetails;
     }
 }

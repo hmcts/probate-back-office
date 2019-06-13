@@ -39,10 +39,10 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
 
-public class GrantOfRepresentationDocmosisServiceTest {
+public class GrantOfRepresentationDocmosisMapperServiceTest {
 
     @InjectMocks
-    private GrantOfRepresentationDocmosisService grantOfRepresentationDocmosisService;
+    private GrantOfRepresentationDocmosisMapperService grantOfRepresentationDocmosisMapperService;
 
     @Mock
     private RegistriesProperties registriesPropertiesMock;
@@ -130,7 +130,7 @@ public class GrantOfRepresentationDocmosisServiceTest {
     public void testCreateDataAsPlaceholders() {
         DateFormat generatedDateFormat = new SimpleDateFormat(DATE_INPUT_FORMAT);
 
-        Map<String, Object> placeholders = grantOfRepresentationDocmosisService.caseDataAsPlaceholders(caseDetails);
+        Map<String, Object> placeholders = grantOfRepresentationDocmosisMapperService.caseDataForStoppedMatchedCaveat(caseDetails);
 
         assertEquals(ccdReferenceFormatterServiceMock.getFormattedCaseReference("1234567891234567"),
                 placeholders.get(PERSONALISATION_CASE_REFERENCE));
