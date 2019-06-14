@@ -12,6 +12,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
+import uk.gov.hmcts.probate.model.ccd.ReissueReason;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
@@ -173,7 +174,7 @@ public class CallbackResponseTransformerTest {
     private static final String LEGACY_CASE_URL = "someUrl";
     private static final String LEGACY_CASE_TYPE = "someCaseType";
     private static final String ORDER_NEEDED = YES;
-    private static final String REISSUE_REASON = "test reason";
+    private static final List<CollectionMember<ReissueReason>> REISSUE_REASON = emptyList();
 
     private static final LocalDateTime scannedDate = LocalDateTime.parse("2018-01-01T12:34:56.123");
     private static final List<CollectionMember<Payment>> PAYMENTS_LIST = Arrays.asList(
