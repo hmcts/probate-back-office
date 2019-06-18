@@ -289,9 +289,8 @@ document:
 idam:
   s2s-auth:
     url: ${PROVIDER_SERVICE_CLIENT_URL:http://localhost:4502}
-# commented for ithc env
-#  send-letter:
-#  url: ${SEND_LETTER_SERIVCE_BASEURL:http://localhost:8485}
+send-letter:
+  url: ${SEND_LETTER_SERIVCE_BASEURL:http://localhost:8485}
 
 auth.idam.client.baseUrl: http://localhost:4501
 
