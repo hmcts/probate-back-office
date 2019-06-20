@@ -134,7 +134,7 @@
     "SecurityClassification": "Public",
     "ShowSummary": "N"
   },
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "boResolveStop", "Name": "Resolve stop", "Description": "Resolve the stop placed on the case", "DisplayOrder": 32, "PreConditionState(s)": "BOCaseStopped", "PostConditionState": "BOExamining", "SecurityClassification": "Public", "ShowSummary": "N"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "boResolveStop", "Name": "Resolve stop", "Description": "Resolve the stop placed on the case", "DisplayOrder": 30, "PreConditionState(s)": "BOCaseStopped", "PostConditionState": "BOExamining", "SecurityClassification": "Public", "ShowSummary": "N", "CallBackURLAboutToSubmitEvent": "http://${CCD_DEF_CASE_SERVICE_BASE_URL}/case/resolveStop"},
   {
     "LiveFrom": "01/01/2017",
     "CaseTypeID": "GrantOfRepresentation",
@@ -353,5 +353,9 @@
     "RetriesTimeoutURLAboutToSubmitEvent": "5",
     "SecurityClassification": "Public",
     "ShowSummary": "N"
-  }
+  },
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "boStopCaseForCaseCreated", "Name": "Stop case", "Description": "Mark the case as stopped", "DisplayOrder": 75, "PreConditionState(s)": "CaseCreated", "PostConditionState": "BOCaseStopped", "SecurityClassification": "Public", "ShowSummary": "N"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "boStopCaseForCasePrinted", "Name": "Stop case", "Description": "Mark the case as stopped", "DisplayOrder": 76, "PreConditionState(s)": "CasePrinted", "PostConditionState": "BOCaseStopped", "SecurityClassification": "Public", "ShowSummary": "N"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "boStopCaseForReadyForExamination", "Name": "Stop case", "Description": "Mark the case as stopped", "DisplayOrder": 77, "PreConditionState(s)": "BOReadyForExamination", "PostConditionState": "BOCaseStopped", "SecurityClassification": "Public", "ShowSummary": "N"}
+
 ]

@@ -49,6 +49,7 @@ public class CaveatCallbackResponseTransformerTest {
     private static final String CAV_DECEASED_SURNAME = "Surname";
     private static final LocalDate CAV_DECEASED_DOD = LocalDate.parse("2017-12-31", dateTimeFormatter);
     private static final LocalDate CAV_DECEASED_DOB = LocalDate.parse("2016-12-31", dateTimeFormatter);
+    private static final LocalDate DATE_SUBMITTED = LocalDate.now();
     private static final String CAV_DECEASED_HAS_ALIAS = YES;
     private static final String CAV_DECEASED_FULL_ALIAS_NAME = "AliasFN AliasSN";
     private static final List<CollectionMember<ProbateFullAliasName>> CAV_DECEASED_FULL_ALIAS_NAME_LIST = emptyList();
@@ -112,7 +113,8 @@ public class CaveatCallbackResponseTransformerTest {
                 .caveatReopenReason(CAV_REOPEN_REASON)
                 .recordId(CAV_RECORD_ID)
                 .legacyCaseViewUrl(CAV_LEGACY_CASE_URL)
-                .applicationSubmittedDate(CAV_SUBMISSION_DATE)
+                .applicationSubmittedDate(DATE_SUBMITTED)
+                .paperForm(YES)
                 .legacyType(CAV_LEGACY_CASE_TYPE);
 
         when(caveatCallbackRequestMock.getCaseDetails()).thenReturn(caveatDetailsMock);
@@ -267,6 +269,7 @@ public class CaveatCallbackResponseTransformerTest {
         assertEquals(CAV_CAVEATOR_SURNAME, caveatCallbackResponse.getCaveatData().getCaveatorSurname());
         assertEquals(CAV_CAVEATOR_EMAIL_ADDRESS, caveatCallbackResponse.getCaveatData().getCaveatorEmailAddress());
         assertEquals(CAV_CAVEATOR_ADDRESS, caveatCallbackResponse.getCaveatData().getCaveatorAddress());
+        assertEquals(DATE_SUBMITTED.toString(), caveatCallbackResponse.getCaveatData().getApplicationSubmittedDate());
 
         assertEquals(CAV_FORMATTED_EXPIRY_DATE, caveatCallbackResponse.getCaveatData().getExpiryDate());
         assertEquals(CAV_MESSAGE_CONTENT, caveatCallbackResponse.getCaveatData().getMessageContent());
@@ -275,6 +278,7 @@ public class CaveatCallbackResponseTransformerTest {
         assertEquals(CAV_RECORD_ID, caveatCallbackResponse.getCaveatData().getRecordId());
         assertEquals(CAV_LEGACY_CASE_TYPE, caveatCallbackResponse.getCaveatData().getLegacyType());
         assertEquals(CAV_LEGACY_CASE_URL, caveatCallbackResponse.getCaveatData().getLegacyCaseViewUrl());
+        assertEquals(YES, caveatCallbackResponse.getCaveatData().getPaperForm());
     }
 
     private void assertApplicationType(CaveatCallbackResponse caveatCallbackResponse, ApplicationType cavApplicationType) {

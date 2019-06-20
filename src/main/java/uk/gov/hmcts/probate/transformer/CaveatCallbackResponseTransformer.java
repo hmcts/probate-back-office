@@ -23,6 +23,7 @@ import java.util.stream.Collectors;
 import static java.util.Optional.ofNullable;
 import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
 import static uk.gov.hmcts.probate.model.Constants.CAVEAT_LIFESPAN;
+import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT_RAISED;
 
 @Component
@@ -41,6 +42,7 @@ public class CaveatCallbackResponseTransformer {
         CaveatData caveatData = caveatDetails.getData();
         documents.forEach(document -> documentTransformer.addDocument(caveatCallbackRequest, document));
         ResponseCaveatDataBuilder responseCaveatDataBuilder = getResponseCaveatData(caveatDetails);
+
         if (documentTransformer.hasDocumentWithType(documents, CAVEAT_RAISED) && letterId != null) {
             CollectionMember<BulkPrint> bulkPrint = buildBulkPrint(letterId, CAVEAT_RAISED.getTemplateName());
             caveatData.getBulkPrintId().add(bulkPrint);
@@ -53,6 +55,7 @@ public class CaveatCallbackResponseTransformer {
         responseCaveatDataBuilder
                 .applicationSubmittedDate(dateTimeFormatter.format(LocalDate.now()))
                 .expiryDate(dateTimeFormatter.format(LocalDate.now().plusMonths(CAVEAT_LIFESPAN)))
+                .paperForm(YES)
                 .build();
 
         return transformResponse(responseCaveatDataBuilder.build());
@@ -138,6 +141,7 @@ public class CaveatCallbackResponseTransformer {
                 .documentsGenerated(caveatData.getDocumentsGenerated())
                 .notificationsGenerated(caveatData.getNotificationsGenerated())
                 .recordId(caveatData.getRecordId())
+                .paperForm(caveatData.getPaperForm())
                 .legacyCaseViewUrl(caveatData.getLegacyCaseViewUrl())
                 .legacyType(caveatData.getLegacyType())
                 .sendToBulkPrintRequested(caveatData.getSendToBulkPrintRequested())

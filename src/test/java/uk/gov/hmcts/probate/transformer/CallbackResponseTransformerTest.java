@@ -214,6 +214,9 @@ public class CallbackResponseTransformerTest {
     @Mock
     private CaseDetails caseDetailsMock;
 
+    @Mock
+    private Document document;
+
     private CaseData.CaseDataBuilder caseDataBuilder;
 
 

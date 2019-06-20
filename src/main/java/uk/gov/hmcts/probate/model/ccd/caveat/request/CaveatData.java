@@ -59,7 +59,6 @@ public class CaveatData {
 
     private ProbateAddress caveatorAddress;
 
-
     // EVENT = cavRaiseCaveat - caveat details
 
     @Getter(lazy = true)
@@ -84,6 +83,8 @@ public class CaveatData {
     // EVENT = cavUploadDocument
 
     private List<CollectionMember<UploadDocument>> documentsUploaded;
+
+    private String paperForm;
 
     @Builder.Default
     private List<CollectionMember<CaseMatch>> caseMatches = new ArrayList<>();
