@@ -214,5 +214,6 @@
     "SecurityClassification": "Public",
     "ShowSummary": "N"
   },
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "addCommentForCaveatMatching", "Name": "Add comment", "Description": "Add comment", "DisplayOrder": 67, "PreConditionState(s)": "CaveatMatching", "PostConditionState": "CaveatMatching", "SecurityClassification": "Public", "ShowSummary": "N"}
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "addCommentForCaveatMatching", "Name": "Add comment", "Description": "Add comment", "DisplayOrder": 67, "PreConditionState(s)": "CaveatMatching", "PostConditionState": "CaveatMatching", "SecurityClassification": "Public", "ShowSummary": "N"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "boHistoryCorrection", "Name": "History Correction", "Description": "History Correction", "DisplayOrder": 68, "PreConditionState(s)": "*", "PostConditionState": "*", "SecurityClassification": "Public", "ShowSummary": "N"}
 ]
