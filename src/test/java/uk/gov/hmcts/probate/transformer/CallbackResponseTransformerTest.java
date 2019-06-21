@@ -299,6 +299,7 @@ public class CallbackResponseTransformerTest {
                 .legacyType(LEGACY_CASE_TYPE)
                 .orderNeeded(ORDER_NEEDED)
                 .reissueReason(REISSUE_REASON)
+                .reissueDate(REISSUE_DATE)
                 .legacyCaseViewUrl(LEGACY_CASE_URL);
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);

@@ -33,7 +33,7 @@ public class GenericMapperService {
     private static final String PERSONALISATION_REGISTRY = "registry";
     private static final String GRANT_OF_REPRESENTATION_CASE_ID = "gorCaseReference";
     private static final String DECEASED_DATE_OF_DEATH = "deceasedDateOfDeath";
-    private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern( "yyyy-MM-dd");
+    private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     public Map<String, Object> addCaseData(CaseData caseData) {
         mapper = new ObjectMapper();

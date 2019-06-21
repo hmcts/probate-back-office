@@ -35,6 +35,7 @@ import java.util.Map;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
@@ -48,10 +49,11 @@ import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT_STOPPED;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_DRAFT;
-import static uk.gov.hmcts.probate.model.DocumentType.EDGE_CASE;
 import static uk.gov.hmcts.probate.model.DocumentType.GRANT_COVER;
+import static uk.gov.hmcts.probate.model.DocumentType.GRANT_COVERSHEET;
 import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_DRAFT;
+import static uk.gov.hmcts.probate.model.DocumentType.EDGE_CASE;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -126,12 +128,15 @@ public class NotificationControllerTest {
         when(pdfManagementService.generateAndUpload(any(CallbackRequest.class), eq(GRANT_COVER)))
                 .thenReturn(Document.builder().documentType(GRANT_COVER).build());
 
+        when(pdfManagementService.generateDocmosisDocumentAndUpload(any(Map.class), eq(GRANT_COVERSHEET), anyBoolean()))
+                .thenReturn(Document.builder().documentType(GRANT_COVERSHEET).build());
+
         when(pdfManagementService.generateAndUpload(any(CallbackRequest.class), eq(EDGE_CASE)))
                 .thenReturn(Document.builder().documentType(EDGE_CASE).build());
 
         when(grantOfRepresentationDocmosisMapperService.caseDataForStoppedMatchedCaveat(any())).thenReturn(EMPTY_MAP);
 
-        when(pdfManagementService.generateDocmosisDocumentAndUpload(any(), any(), any())).thenReturn(EMPTY_DOC);
+        when(pdfManagementService.generateDocmosisDocumentAndUpload(any(), eq(CAVEAT_STOPPED), anyBoolean())).thenReturn(EMPTY_DOC);
 
     }
 

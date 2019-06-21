@@ -105,6 +105,7 @@ public class DocumentGeneratorServiceTest {
 
     @Test
     public void testGenerateReissueDraftProducesCorrectDocument() {
-        assertEquals(DIGITAL_GRANT_REISSUE_FILE_NAME, documentGeneratorService.generateGrantReissueDraft(callbackRequest).getDocumentFileName());
+        assertEquals(DIGITAL_GRANT_REISSUE_FILE_NAME,
+                documentGeneratorService.generateGrantReissueDraft(callbackRequest).getDocumentFileName());
     }
 }
