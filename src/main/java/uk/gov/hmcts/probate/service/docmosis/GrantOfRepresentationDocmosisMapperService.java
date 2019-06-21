@@ -35,7 +35,7 @@ public class GrantOfRepresentationDocmosisMapperService {
 
     public Map<String, Object> caseDataForStoppedMatchedCaveat(CaseDetails caseDetails) {
 
-        Map<String, Object> placeholders = gms.addCaseDataWithRegistryProperties(caseDetails.getData());
+        Map<String, Object> placeholders = gms.addCaseDataWithRegistryProperties(caseDetails);
 
         DateFormat generatedDateFormat = new SimpleDateFormat(DATE_INPUT_FORMAT);
 

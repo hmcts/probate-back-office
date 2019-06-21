@@ -60,6 +60,9 @@ public class GrantOfRepresentationDocmosisMapperServiceTest {
     private CcdReferenceFormatterService ccdReferenceFormatterServiceMock;
 
     @Mock
+    private GenericMapperService genericMapperService;
+
+    @Mock
     private FormatterService formatterServiceMock;
 
     private static final String DATE_INPUT_FORMAT = "ddMMyyyy";
@@ -93,6 +96,7 @@ public class GrantOfRepresentationDocmosisMapperServiceTest {
                 .registryLocation("leeds")
                 .build();
         caseDetails = new CaseDetails(caseData, LAST_MODIFIED, ID);
+        caseDetails.setRegistryTelephone("123456789");
 
         CollectionMember<CaseMatch> caseMatchMember = new CollectionMember<>(CaseMatch.builder().build());
         List<CollectionMember<CaseMatch>> caseMatch = new ArrayList<>();
@@ -122,7 +126,7 @@ public class GrantOfRepresentationDocmosisMapperServiceTest {
                 .build();
 
         when(caveatQueryServiceMock.findCaveatById(eq(CaseType.CAVEAT), any())).thenReturn(caveatData);
-        when(registriesPropertiesMock.getRegistries()).thenReturn(registries);
+        when(genericMapperService.addCaseDataWithRegistryProperties(caseDetails)).thenReturn(mapper.convertValue(caseDetails, Map.class));
 
     }
 

@@ -27,6 +27,7 @@ public class DocumentTransformer {
         switch (document.getDocumentType()) {
             case DIGITAL_GRANT_DRAFT:
             case DIGITAL_GRANT:
+            case DIGITAL_GRANT_DRAFT_REISSUE:
             case INTESTACY_GRANT_DRAFT:
             case INTESTACY_GRANT:
             case ADMON_WILL_GRANT_DRAFT:

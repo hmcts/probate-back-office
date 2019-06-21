@@ -7,6 +7,7 @@ import uk.gov.hmcts.probate.config.properties.registries.RegistriesProperties;
 import uk.gov.hmcts.probate.config.properties.registries.Registry;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
+import uk.gov.hmcts.probate.service.FileSystemResourceService;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,7 +15,7 @@ import java.util.Map;
 public class GenericMapperServiceTest {
     private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
     private static final long ID = 1234567891234567L;
-    private GenericMapperService genericMapperService = new GenericMapperService(new RegistriesProperties());
+    private GenericMapperService genericMapperService = new GenericMapperService(new RegistriesProperties(), new FileSystemResourceService());
     private CaseDetails caseDetails;
     private Map<String, Object> images = new HashMap<>();
     Registry registry = new Registry();

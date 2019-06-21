@@ -8,12 +8,16 @@ import uk.gov.hmcts.probate.config.properties.registries.RegistriesProperties;
 import uk.gov.hmcts.probate.config.properties.registries.Registry;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
+import uk.gov.hmcts.probate.service.FileSystemResourceService;
+import uk.gov.hmcts.probate.service.ccd.CcdReferenceFormatterService;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,46 +28,45 @@ public class GenericMapperService {
 
     private ObjectMapper mapper;
     private final RegistriesProperties registriesProperties;
+    private final FileSystemResourceService fileSystemResourceService;
 
     private static final String PERSONALISATION_REGISTRY = "registry";
+    private static final String GRANT_OF_REPRESENTATION_CASE_ID = "gorCaseReference";
+    private static final String DECEASED_DATE_OF_DEATH = "deceasedDateOfDeath";
+    private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern( "yyyy-MM-dd");
 
     public Map<String, Object> addCaseData(CaseData caseData) {
         mapper = new ObjectMapper();
-        return mapper.convertValue(caseData, Map.class);
+        Map<String, Object> placeholders = mapper.convertValue(caseData, Map.class);
+        placeholders.replace(DECEASED_DATE_OF_DEATH, DATE_FORMAT.format(caseData.getDeceasedDateOfDeath()));
+        return placeholders;
     }
 
-    public Map<String, Object> addCaseDataWithRegistryProperties(CaseData caseData) {
+    public Map<String, Object> addCaseDataWithRegistryProperties(CaseDetails caseDetails) {
+        CaseData caseData = caseDetails.getData();
         Registry registry = registriesProperties.getRegistries().get(
                 caseData.getRegistryLocation().toLowerCase());
         Map<String, Object> placeholders = addCaseData(caseData);
         Map<String, Object> registryPlaceholders = mapper.convertValue(registry, Map.class);
 
         placeholders.put(PERSONALISATION_REGISTRY, registryPlaceholders);
+        placeholders.put(GRANT_OF_REPRESENTATION_CASE_ID, caseDetails.getId().toString());
         return placeholders;
     }
 
     public Map<String, Object> caseDataWithImages(Map<String, Object> images, CaseDetails caseDetails) {
-        Map<String, Object> placeholders = addCaseDataWithRegistryProperties(caseDetails.getData());
+        Map<String, Object> placeholders = addCaseDataWithRegistryProperties(caseDetails);
         Map<String, Object> mappedImages = mappedBase64Images(images);
         placeholders.putAll(mappedImages);
         return placeholders;
     }
 
     private Map<String, Object> mappedBase64Images(Map<String, Object> files) {
-        BufferedReader br = null;
         Map<String, Object> mappedImages = new HashMap<>();
         for (Map.Entry entry : files.entrySet()) {
-            File file = new File(entry.getValue().toString());
-            try {
-                br = new BufferedReader(new FileReader(file));
-            } catch (FileNotFoundException e) {
-                log.error("Could not find file {}. {}", entry.getValue(), e.getMessage());
-            }
-            try {
-                mappedImages.put(entry.getKey().toString(), "image:base64:" + br.readLine());
-            } catch (IOException e) {
-                log.error("Could not read file. {}", e.getMessage());
-            }
+            mappedImages.put(entry.getKey().toString(),
+                    "image:base64:" + fileSystemResourceService.getFileFromResourceAsString(entry.getValue().toString()));
+
         }
         return mappedImages;
     }

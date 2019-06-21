@@ -10,6 +10,8 @@ import uk.gov.hmcts.probate.config.properties.docmosis.TemplateProperties;
 import uk.gov.hmcts.probate.exception.PDFGenerationException;
 import uk.gov.hmcts.probate.model.docmosis.PdfDocumentRequest;
 
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.util.Map;
 
 import static com.google.common.base.Preconditions.checkArgument;

@@ -354,6 +354,7 @@ public class CallbackResponseTransformer {
                 .dateOfDeathType(caseData.getDateOfDeathType())
                 .orderNeeded(caseData.getOrderNeeded())
                 .reissueReason(caseData.getReissueReason())
+                .reissueDate(caseData.getReissueDate())
                 .bulkPrintId(caseData.getBulkPrintId());
 
         if (transform) {
