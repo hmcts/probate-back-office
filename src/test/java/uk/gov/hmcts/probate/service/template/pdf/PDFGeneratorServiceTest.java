@@ -26,6 +26,7 @@ import java.util.Map;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyMap;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
@@ -64,7 +65,7 @@ public class PDFGeneratorServiceTest {
 
         when(pdfServiceClientExceptionMock.getMessage()).thenReturn("blah");
         when(pdfServiceClient.generateFromHtml(any(), any())).thenReturn("MockedBytes".getBytes());
-        when(docmosisPdfGenerationServiceMock.generateDocFrom(any(), anyMap(), false))
+        when(docmosisPdfGenerationServiceMock.generateDocFrom(any(), anyMap(), anyBoolean()))
                 .thenReturn("MockedBytes".getBytes());
         when(fileSystemResourceServiceMock.getFileFromResourceAsString(anyString()))
                 .thenReturn("<htmlTemplate>");
@@ -137,7 +138,7 @@ public class PDFGeneratorServiceTest {
         placeholders.put("PA8AURL", "www.citizensadvice.org.uk|https://www.citizensadvice.org.uk/");
         placeholders.put("hmctsfamily", "image:base64:" + null);
 
-        when(docmosisPdfGenerationServiceMock.generateDocFrom(any(), any(), false))
+        when(docmosisPdfGenerationServiceMock.generateDocFrom(any(), any(), anyBoolean()))
                 .thenThrow(pdfServiceClientExceptionMock);
         underTest.generateDocmosisDocumentFrom(CAVEAT_RAISED.getTemplateName(), placeholders, false);
     }
