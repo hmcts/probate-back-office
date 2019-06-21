@@ -9,6 +9,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.AliasName;
+import uk.gov.hmcts.probate.model.ccd.raw.BulkPrint;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.ProbateAliasName;
@@ -34,8 +35,10 @@ import static java.util.Collections.EMPTY_LIST;
 import static java.util.Optional.ofNullable;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
 import static uk.gov.hmcts.probate.model.Constants.CASE_TYPE_DEFAULT;
+import static uk.gov.hmcts.probate.model.Constants.CTSC;
 import static uk.gov.hmcts.probate.model.Constants.DATE_OF_DEATH_TYPE_DEFAULT;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT_STOPPED;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT;
@@ -52,7 +55,7 @@ public class CallbackResponseTransformer {
     static final String PAYMENT_REFERENCE_CHEQUE = "Cheque (payable to ‘HM Courts & Tribunals Service’)";
 
     private static final ApplicationType DEFAULT_APPLICATION_TYPE = SOLICITOR;
-    private static final String DEFAULT_REGISTRY_LOCATION = "Birmingham";
+    private static final String DEFAULT_REGISTRY_LOCATION = CTSC;
 
     public static final String ANSWER_YES = "Yes";
     public static final String ANSWER_NO = "No";
@@ -70,16 +73,28 @@ public class CallbackResponseTransformer {
         return transformResponse(responseCaseData);
     }
 
-    public CallbackResponse caseStopped(CallbackRequest callbackRequest, Document document) {
+    public CallbackResponse caseStopped(CallbackRequest callbackRequest, List<Document> documents, String letterId) {
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
+        CaseData caseData = caseDetails.getData();
+        documents.forEach(document -> documentTransformer.addDocument(callbackRequest, document));
 
-        caseDetails.getData().getProbateDocumentsGenerated().add(new CollectionMember<>(null, document));
+        ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), false);
 
-        ResponseCaseData responseCaseData = getResponseCaseData(caseDetails, false)
+        if (documentTransformer.hasDocumentWithType(documents, CAVEAT_STOPPED) && letterId != null) {
+            CollectionMember<BulkPrint> bulkPrint = buildBulkPrint(letterId, CAVEAT_STOPPED.getTemplateName());
+            caseData.getBulkPrintId().add(bulkPrint);
+
+            responseCaseDataBuilder
+                    .bulkPrintId(caseData.getBulkPrintId())
+                    .boCaveatStopSendToBulkPrintRequested(caseData.getBoCaveatStopSendToBulkPrint())
+                    .build();
+        }
+        responseCaseDataBuilder
+                .boCaveatStopEmailNotificationRequested(caseData.getBoCaveatStopEmailNotification())
                 .boStopDetails("")
                 .build();
 
-        return transformResponse(responseCaseData);
+        return transformResponse(responseCaseDataBuilder.build());
     }
 
     public CallbackResponse addDocuments(CallbackRequest callbackRequest, List<Document> documents, String letterId, String pdfSize) {
@@ -296,11 +311,22 @@ public class CallbackResponseTransformer {
                 .paperForm(caseData.getPaperForm())
                 .caseType(caseData.getCaseType())
 
+                .boCaveatStopNotificationRequested(caseData.getBoCaveatStopNotificationRequested())
+                .boCaveatStopNotification(caseData.getBoCaveatStopNotification())
+
+                .boCaseStopCaveatId(caseData.getBoCaseStopCaveatId())
+
+                .boCaveatStopEmailNotificationRequested(caseData.getBoCaveatStopEmailNotificationRequested())
+                .boCaveatStopEmailNotification(caseData.getBoCaveatStopEmailNotification())
+                .boCaveatStopSendToBulkPrintRequested(caseData.getBoCaveatStopSendToBulkPrintRequested())
+                .boCaveatStopSendToBulkPrint(caseData.getBoCaveatStopSendToBulkPrint())
+
                 .recordId(caseData.getRecordId())
                 .legacyType(caseData.getLegacyType())
                 .legacyCaseViewUrl(caseData.getLegacyCaseViewUrl())
                 .grantIssuedDate(caseData.getGrantIssuedDate())
-                .dateOfDeathType(caseData.getDateOfDeathType());
+                .dateOfDeathType(caseData.getDateOfDeathType())
+                .bulkPrintId(caseData.getBulkPrintId());
 
         if (transform) {
             updateCaseBuilderForTransformCase(caseData, builder);
@@ -635,5 +661,12 @@ public class CallbackResponseTransformer {
         return ofNullable(longValue)
                 .map(String::valueOf)
                 .orElse(null);
+    }
+
+    private CollectionMember<BulkPrint> buildBulkPrint(String letterId, String templateName) {
+        return new CollectionMember<>(null, BulkPrint.builder()
+                .sendLetterId(letterId)
+                .templateName(templateName)
+                .build());
     }
 }

@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.service.docmosis;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -7,6 +8,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import uk.gov.hmcts.probate.config.PDFServiceConfiguration;
 import uk.gov.hmcts.probate.config.properties.registries.RegistriesProperties;
+import uk.gov.hmcts.probate.config.properties.registries.Registry;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
 import uk.gov.hmcts.probate.service.FileSystemResourceService;
@@ -15,9 +17,11 @@ import uk.gov.hmcts.probate.service.ccd.CcdReferenceFormatterService;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.when;
 
 public class CaveatDocmosisServiceTest {
 
@@ -40,9 +44,18 @@ public class CaveatDocmosisServiceTest {
     private static final long ID = 1234567891234567L;
     private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
 
+    Registry registry = new Registry();
+    ObjectMapper mapper = new ObjectMapper();
+    Map<String, Registry> registries = new HashMap<>();
+
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
+        registry.setName("leeds");
+        registry.setPhone("123456789");
+        registries = mapper.convertValue(registry, Map.class);
+
+        when(registriesPropertiesMock.getRegistries()).thenReturn(registries);
     }
 
     @Test
@@ -55,7 +68,8 @@ public class CaveatDocmosisServiceTest {
         Map<String, Object> placeholders = caveatDocmosisService.caseDataAsPlaceholders(caveatDetails);
 
         assertEquals(placeholders.get("generatedDate"), generatedDateFormat.format(new Date()));
-        assertEquals(placeholders.get("registryLocation"), "leeds");
+        assertEquals(placeholders.get("registry"), registries.get(
+                caveatData.getRegistryLocation().toLowerCase()));
         assertEquals(placeholders.get("PA8AURL"), "www.citizensadvice.org.uk|https://www.citizensadvice.org.uk/");
         assertEquals(placeholders.get("caseReference"), ccdReferenceFormatterServiceMock.getFormattedCaseReference("1234567891234567"));
     }

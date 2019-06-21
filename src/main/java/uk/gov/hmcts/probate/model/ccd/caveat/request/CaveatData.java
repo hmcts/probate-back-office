@@ -59,6 +59,7 @@ public class CaveatData {
 
     private ProbateAddress caveatorAddress;
 
+
     // EVENT = cavRaiseCaveat - caveat details
 
     @Getter(lazy = true)
@@ -71,6 +72,8 @@ public class CaveatData {
     private final String sendToBulkPrint = YES;
 
     private String sendToBulkPrintRequested;
+
+    private LocalDate applicationSubmittedDate;
 
     private LocalDate expiryDate;
 
@@ -121,7 +124,6 @@ public class CaveatData {
     public boolean isCaveatRaisedEmailNotificationRequested() {
         return YES.equals(getCaveatRaisedEmailNotificationRequested());
     }
-
 
     @JsonPOJOBuilder(withPrefix = "")
     public static final class CaveatDataBuilder {

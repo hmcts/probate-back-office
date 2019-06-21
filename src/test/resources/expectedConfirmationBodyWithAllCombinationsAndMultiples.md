@@ -39,7 +39,6 @@ Print a copy of this page for your records.
 You now need to send us:
 
 *   the original will
-*   2 unstapled photocopies of the signed will - these must be on plain A4 paper
 *   fee payment: your Cheque for £0.10 (grant and copies)
 *   the printed version of this page which will be used as your cover letter to us
 *   completed inheritance tax form IHT400421
@@ -54,19 +53,17 @@ Where to send us your documents
 
 You should:
 
-*   use recorded delivery or Document Exchange (DX)
+*   use recorded delivery
 *   keep copies of all documents
 
-If using recorded delivery, send to:
+Send all documents to:
 
-Birmingham Probate Registry,
-The Priory Courts,
-33 Bull Street,
-Birmingham,
-West Midlands,
-B4 6DU
+Principal Registry of the Family Division (PRFD),
+HMCTS Probate,
+PO Box 12625,
+Harlow,
+CM20 9QE
 
-Or by DX to: 701990
 What happens next
 =================
 

@@ -60,7 +60,14 @@ public enum DocumentType {
     CAVEAT_COVERSHEET("caveatCoversheet"),
 
     @JsonProperty("caveatRaised")
-    CAVEAT_RAISED("caveatRaised");
+    CAVEAT_RAISED("caveatRaised"),
+
+    @JsonProperty("caveatStopped")
+    CAVEAT_STOPPED("caveatStopped"),
+
+    @JsonProperty("grantCoversheet")
+    GRANT_COVERSHEET("grantCoversheet");
+
 
     private final String templateName;
 

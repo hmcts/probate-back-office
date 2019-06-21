@@ -36,7 +36,7 @@ public class ResponseCaveatData {
     private final ProbateAddress caveatorAddress;
 
     private final List<CollectionMember<CaseMatch>> caseMatches;
-
+    private final String applicationSubmittedDate;
     private final String expiryDate;
     private final String messageContent;
     private final String caveatReopenReason;

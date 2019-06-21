@@ -123,5 +123,8 @@
   {"LiveFrom": "01/01/2017", "ID": "Fees", "ListElementCode": "overseasCopiesFee", "FieldType": "MoneyGBP", "ElementLabel": "Overseas copies Fee", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "Fees", "ListElementCode": "overseasCopiesFeeCode", "FieldType": "Text", "ElementLabel": "Overseas Fee Code", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "Fees", "ListElementCode": "overseasCopiesFeeVersion", "FieldType": "Text", "ElementLabel": "Overseas Fee Version", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "ID": "Fees", "ListElementCode": "total", "FieldType": "MoneyGBP", "ElementLabel": "Total Fees", "SecurityClassification": "Public"}
+  {"LiveFrom": "01/01/2017", "ID": "Fees", "ListElementCode": "total", "FieldType": "MoneyGBP", "ElementLabel": "Total Fees", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "BulkPrint", "ListElementCode": "templateName", "FieldType": "FixedList", "FieldTypeParameter": "probateDocumentTypeEnum", "ElementLabel": "Document sent to bulk print", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "BulkPrint", "ListElementCode": "sendLetterId", "FieldType": "Text", "ElementLabel": "Send Letter Id", "SecurityClassification": "Public"}
+
 ]
