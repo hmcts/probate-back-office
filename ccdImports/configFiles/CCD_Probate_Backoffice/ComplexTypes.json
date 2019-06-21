@@ -104,5 +104,8 @@
   {"LiveFrom": "01/01/2017", "ID": "CaseMatch", "ListElementCode": "id", "FieldType": "Text", "ElementLabel": "Id", "FieldShowCondition": "legacyCaseViewUrl=\"NeverShowThisField\"", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "CaseMatch", "ListElementCode": "legacyCaseViewUrl", "FieldType": "Text", "ElementLabel": "Case Url", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "CaseMatch", "ListElementCode": "valid", "FieldType": "YesOrNo", "ElementLabel": "Is match valid?", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "ID": "CaseMatch", "ListElementCode": "doImport", "FieldType": "YesOrNo", "ElementLabel": "Do import?", "SecurityClassification": "Public"}
+  {"LiveFrom": "01/01/2017", "ID": "CaseMatch", "ListElementCode": "doImport", "FieldType": "YesOrNo", "ElementLabel": "Do import?", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "BulkPrint", "ListElementCode": "templateName", "FieldType": "FixedList", "FieldTypeParameter": "probateDocumentTypeEnum", "ElementLabel": "Document sent to bulk print", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "BulkPrint", "ListElementCode": "sendLetterId", "FieldType": "Text", "ElementLabel": "Send Letter Id", "SecurityClassification": "Public"}
+
 ]
