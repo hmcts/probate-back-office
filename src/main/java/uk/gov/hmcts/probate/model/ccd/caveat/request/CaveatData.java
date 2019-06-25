@@ -59,7 +59,6 @@ public class CaveatData {
 
     private ProbateAddress caveatorAddress;
 
-
     // EVENT = cavRaiseCaveat - caveat details
 
     @Getter(lazy = true)

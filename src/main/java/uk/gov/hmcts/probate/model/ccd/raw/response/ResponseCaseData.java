@@ -240,7 +240,7 @@ public class ResponseCaseData {
     private final String boCaveatStopEmailNotificationRequested;
     private final String boCaveatStopEmailNotification;
     private final String boCaveatStopSendToBulkPrintRequested;
-    private final String boCaveatStopSendToBulkPrint
+    private final String boCaveatStopSendToBulkPrint;
     private final String orderNeeded;
     private final List<CollectionMember<ReissueReason>> reissueReason;
 }

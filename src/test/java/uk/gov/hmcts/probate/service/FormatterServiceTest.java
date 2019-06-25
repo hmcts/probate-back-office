@@ -76,9 +76,4 @@ public class FormatterServiceTest {
         assertEquals("addressLine1, postcode",
                 formatterService.formatAddress(probateAddress));
     }
-
-    @Test
-    public void shouldReturnBlankStringFormattedAddress() {
-        assertEquals(Strings.EMPTY, formatterService.formatAddress(null));
-    }
 }
