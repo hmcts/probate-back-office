@@ -77,4 +77,8 @@ public class FormatterServiceTest {
                 formatterService.formatAddress(probateAddress));
     }
 
+    @Test
+    public void shouldReturnBlankStringFormattedAddress() {
+        assertEquals(Strings.EMPTY, formatterService.formatAddress(null));
+    }
 }

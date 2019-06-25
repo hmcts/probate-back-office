@@ -2,6 +2,7 @@ package uk.gov.hmcts.probate.service;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.model.ccd.ProbateAddress;
 
@@ -11,8 +12,6 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.Locale;
-
-import static org.apache.commons.lang.StringUtils.isEmpty;
 
 @Service
 @Slf4j
@@ -53,15 +52,22 @@ public class FormatterService {
         String fullAddress = "";
 
         if (address != null) {
-            fullAddress += isEmpty(address.getProAddressLine1()) ? "" : address.getProAddressLine1() ;
-            fullAddress += isEmpty(address.getProAddressLine2()) ? "" : ", " + address.getProAddressLine2();
-            fullAddress += isEmpty(address.getProAddressLine3()) ? "" : ", " + address.getProAddressLine3();
-            fullAddress += isEmpty(address.getProPostTown()) ? "" : ", " + address.getProPostTown();
-            fullAddress += isEmpty(address.getProCounty()) ? "" : ", " + address.getProCounty();
-            fullAddress += isEmpty(address.getProPostCode()) ? "" : ", " + address.getProPostCode();
-            fullAddress += isEmpty(address.getProCountry()) ? "" : ", " + address.getProCountry();
+            fullAddress += checkEmpty(false, address.getProAddressLine1());
+            fullAddress += checkEmpty(true, address.getProAddressLine2());
+            fullAddress += checkEmpty(true, address.getProAddressLine3());
+            fullAddress += checkEmpty(true, address.getProPostTown());
+            fullAddress += checkEmpty(true, address.getProCounty());
+            fullAddress += checkEmpty(true, address.getProPostCode());
+            fullAddress += checkEmpty(true, address.getProCountry());
         }
-
         return fullAddress;
+    }
+
+    private String checkEmpty(boolean prependComma, String addressElement) {
+        if (StringUtils.isEmpty(addressElement)) {
+            return "";
+        } else {
+            return (prependComma ? ", " : "") + addressElement;
+        }
     }
 }
