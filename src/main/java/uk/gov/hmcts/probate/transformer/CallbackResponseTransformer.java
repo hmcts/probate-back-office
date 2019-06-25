@@ -352,6 +352,8 @@ public class CallbackResponseTransformer {
                 .legacyCaseViewUrl(caseData.getLegacyCaseViewUrl())
                 .grantIssuedDate(caseData.getGrantIssuedDate())
                 .dateOfDeathType(caseData.getDateOfDeathType())
+                .orderNeeded(caseData.getOrderNeeded())
+                .reissueReason(caseData.getReissueReason())
                 .bulkPrintId(caseData.getBulkPrintId());
 
         if (transform) {

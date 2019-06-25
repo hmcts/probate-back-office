@@ -13,10 +13,15 @@ import org.springframework.test.context.junit4.SpringRunner;
 import uk.gov.hmcts.probate.config.properties.registries.RegistriesProperties;
 import uk.gov.hmcts.probate.exception.BadRequestException;
 import uk.gov.hmcts.probate.insights.AppInsights;
+import uk.gov.hmcts.probate.model.CaseType;
 import uk.gov.hmcts.probate.model.SentEmail;
+import uk.gov.hmcts.probate.model.ccd.CaseMatch;
+import uk.gov.hmcts.probate.model.ccd.ProbateAddress;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
+import uk.gov.hmcts.probate.model.ccd.raw.BulkPrint;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
+import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
@@ -68,6 +73,9 @@ public class NotificationServiceTest {
     @MockBean
     private CoreCaseDataApi coreCaseDataApi;
 
+    @Mock
+    private CaveatQueryService caveatQueryServiceMock;
+
     @SpyBean
     private NotificationClient notificationClient;
 
@@ -94,6 +102,7 @@ public class NotificationServiceTest {
     private CaveatDetails personalCaveatDataBristol;
     private CaveatDetails caveatRaisedCaseData;
     private CaveatDetails caveatRaisedCtscCaseData;
+    private CaveatData caveatData;
 
     @Mock
     private RegistriesProperties registriesPropertiesMock;
@@ -286,6 +295,35 @@ public class NotificationServiceTest {
                 .caveatorEmailAddress("personal@test.com")
                 .deceasedDateOfDeath(LocalDate.of(2000, 12, 12))
                 .build(), LAST_MODIFIED, ID);
+
+        CollectionMember<CaseMatch> caseMatchMember = new CollectionMember<>(CaseMatch.builder().build());
+        List<CollectionMember<CaseMatch>> caseMatch = new ArrayList<>();
+        caseMatch.add(caseMatchMember);
+
+        CollectionMember<Document> documentMember = new CollectionMember<>(Document.builder().build());
+        List<CollectionMember<Document>> notificationGenerated = new ArrayList<>();
+        notificationGenerated.add(documentMember);
+
+        CollectionMember<BulkPrint> bulkPrintMember = new CollectionMember<>(BulkPrint.builder().build());
+        List<CollectionMember<BulkPrint>> bulkPrintId = new ArrayList<>();
+        bulkPrintId.add(bulkPrintMember);
+
+        List<CollectionMember<Document>> documentsGenerated = new ArrayList<>();
+        documentsGenerated.add(documentMember);
+
+        caveatData = CaveatData.builder()
+                .registryLocation("leeds")
+                .applicationSubmittedDate(LocalDate.now())
+                .caveatorForenames("fred")
+                .caveatorSurname("jones")
+                .caseMatches(caseMatch)
+                .notificationsGenerated(notificationGenerated)
+                .bulkPrintId(bulkPrintId)
+                .documentsGenerated(documentsGenerated)
+                .caveatorAddress(ProbateAddress.builder().proAddressLine1("addressLine1").build())
+                .build();
+
+        when(caveatQueryServiceMock.findCaveatById(eq(CaseType.CAVEAT), any())).thenReturn(caveatData);
 
     }
 

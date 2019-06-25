@@ -60,7 +60,6 @@ public class FormatterService {
             fullAddress += checkEmpty(true, address.getProPostCode());
             fullAddress += checkEmpty(true, address.getProCountry());
         }
-
         return fullAddress;
     }
 

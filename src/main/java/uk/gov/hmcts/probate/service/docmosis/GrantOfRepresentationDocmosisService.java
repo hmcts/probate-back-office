@@ -67,6 +67,4 @@ public class GrantOfRepresentationDocmosisService {
                 ccdReferenceFormatterService.getFormattedCaseReference(caseDetails.getData().getBoCaseStopCaveatId()));
         return placeholders;
     }
-
-
 }
