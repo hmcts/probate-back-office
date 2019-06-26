@@ -24,7 +24,7 @@ class BulkPrintResponseValidationRule implements BulkPrintValidationRule {
         Set<FieldErrorResponse> errors = new HashSet<>();
 
         if (ccdData.getSendLetterId().equalsIgnoreCase(null) || ccdData.getSendLetterId().isEmpty()) {
-            errors.add(businessValidationMessageService.generateError(BUSINESS_ERROR, "bulkPrintResponseNull"));
+            //errors.add(businessValidationMessageService.generateError(BUSINESS_ERROR, "bulkPrintResponseNull"));
         }
         return new ArrayList<>(errors);
     }
