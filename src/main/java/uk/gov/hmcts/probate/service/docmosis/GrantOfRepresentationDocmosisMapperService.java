@@ -27,6 +27,7 @@ public class GrantOfRepresentationDocmosisMapperService {
 
     private static final String PERSONALISATION_DATE_CAVEAT_ENTERED = "dateCaveatEntered";
     private static final String PERSONALISATION_CAVEATOR_NAME = "caveatorName";
+    private static final String PERSONALISATION_CAVEAT_REFERENCE = "caveatReference";
     private static final String PERSONALISATION_CAVEATOR_ADDRESS = "caveatorAddress";
     private static final String PERSONALISATION_CASE_REFERENCE = "caseReference";
     private static final String PERSONALISATION_GENERATED_DATE = "generatedDate";
@@ -42,14 +43,14 @@ public class GrantOfRepresentationDocmosisMapperService {
         CaveatData caveatData = caveatQueryService.findCaveatById(CaseType.CAVEAT, caseDetails.getData().getBoCaseStopCaveatId());
 
         placeholders.put(PERSONALISATION_CASE_REFERENCE,
-                ccdReferenceFormatterService.getFormattedCaseReference(caseDetails.getData().getBoCaseStopCaveatId()));
+                ccdReferenceFormatterService.getFormattedCaseReference(caseDetails.getId().toString()));
         placeholders.put(PERSONALISATION_GENERATED_DATE, generatedDateFormat.format(new Date()));
-        placeholders.put(PERSONALISATION_PA8AURL, "www.gov.uk|https://www.gov.uk/inherits-someone-dies-without-will");
-        placeholders.put(PERSONALISATION_PA8BURL, "www.citizensadvice.org.uk|https://www.citizensadvice.org.uk/");
-        placeholders.put(PERSONALISATION_DATE_CAVEAT_ENTERED, formatterService.formatDate(caveatData.getApplicationSubmittedDate()));
+        placeholders.put(PERSONALISATION_PA8AURL, "https://www.gov.uk/inherits-someone-dies-without-will|https://www.gov.uk/inherits-someone-dies-without-will");
+        placeholders.put(PERSONALISATION_PA8BURL, "https://www.citizensadvice.org.uk|https://www.citizensadvice.org.uk/");
         placeholders.put(PERSONALISATION_CAVEATOR_NAME, caveatData.getCaveatorFullName());
         placeholders.put(PERSONALISATION_CAVEATOR_ADDRESS, formatterService.formatAddress(caveatData.getCaveatorAddress()));
+        placeholders.put(PERSONALISATION_CAVEAT_REFERENCE,
+                ccdReferenceFormatterService.getFormattedCaseReference(caseDetails.getData().getBoCaseStopCaveatId()));
         return placeholders;
     }
-
 }

@@ -24,7 +24,10 @@
     ],
     "security_classification": "PUBLIC",
     "case_data": {
-      "boCaveatStopNotification": "Yes",
+      "boCaveatStopNotificationRequested" : "Yes",
+      "boCaveatStopEmailNotificationRequested" : "Yes",
+      "boCaveatStopNotification" : "Yes",
+      "boCaveatStopEmailNotification" : "Yes",
       "otherExecutorExists": "No",
       "outsideUKGrantCopies": null,
       "applicationType": "Personal",
@@ -48,8 +51,6 @@
       "deceasedDateOfDeath": "2000-01-01",
       "solsSOTNeedToUpdate": "No",
       "primaryApplicantEmailAddress": "solicitor@hmcts-test.net",
-      "boCaveatStopEmailNotification": "No",
-      "boCaveatStopSendToBulkPrint": "Yes",
       "primaryApplicantForenames": "Executor name 1",
       "primaryApplicantAddress": {
         "County": "",

@@ -76,5 +76,4 @@ public class FormatterServiceTest {
         assertEquals("addressLine1, postcode",
                 formatterService.formatAddress(probateAddress));
     }
-
 }

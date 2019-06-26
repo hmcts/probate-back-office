@@ -63,6 +63,7 @@ public class CaveatCallbackResponseTransformerTest {
     private static final LocalDate CAV_SUBMISSION_DATE = LocalDate.now();
     private static final String CAV_FORMATTED_SUBMISSION_DATE = dateTimeFormatter.format(CAV_SUBMISSION_DATE);
     private static final LocalDate CAV_EXPIRY_DATE = LocalDate.now().plusMonths(CAVEAT_LIFESPAN);
+
     private static final String CAV_FORMATTED_EXPIRY_DATE = dateTimeFormatter.format(CAV_EXPIRY_DATE);
 
     private static final String CAV_MESSAGE_CONTENT = "";
@@ -189,6 +190,7 @@ public class CaveatCallbackResponseTransformerTest {
 
         assertCommon(caveatCallbackResponse);
 
+        assertEquals(CAV_FORMATTED_SUBMISSION_DATE, caveatCallbackResponse.getCaveatData().getApplicationSubmittedDate());
         assertEquals(CAV_FORMATTED_EXPIRY_DATE, caveatCallbackResponse.getCaveatData().getExpiryDate());
     }
 
@@ -266,7 +268,7 @@ public class CaveatCallbackResponseTransformerTest {
         assertEquals(CAV_CAVEATOR_SURNAME, caveatCallbackResponse.getCaveatData().getCaveatorSurname());
         assertEquals(CAV_CAVEATOR_EMAIL_ADDRESS, caveatCallbackResponse.getCaveatData().getCaveatorEmailAddress());
         assertEquals(CAV_CAVEATOR_ADDRESS, caveatCallbackResponse.getCaveatData().getCaveatorAddress());
-        assertEquals(DATE_SUBMITTED, caveatCallbackResponse.getCaveatData().getApplicationSubmittedDate());
+        assertEquals(DATE_SUBMITTED.toString(), caveatCallbackResponse.getCaveatData().getApplicationSubmittedDate());
 
         assertEquals(CAV_FORMATTED_EXPIRY_DATE, caveatCallbackResponse.getCaveatData().getExpiryDate());
         assertEquals(CAV_MESSAGE_CONTENT, caveatCallbackResponse.getCaveatData().getMessageContent());
