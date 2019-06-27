@@ -43,7 +43,6 @@ public class DocumentGeneratorServiceTest {
     private static final String SEAL_FILE_PATH = "sealImage.txt";
     private static final String REGISTRY_LOCATION = "bristol";
     private static final String DIGITAL_GRANT_REISSUE_FILE_NAME = "digitalGrantDraftReissue.pdf";
-    private static final Document EMPTY_DOC = Document.builder().build();
     private CallbackRequest callbackRequest;
 
     @InjectMocks
@@ -56,7 +55,7 @@ public class DocumentGeneratorServiceTest {
     private GenericMapperService genericMapperService;
 
     @Mock
-    private RegistriesProperties registriesProperties;
+    private RegistryDetailsService registryDetailsService;
 
     @Mock
     private DocumentService documentService;
@@ -78,8 +77,6 @@ public class DocumentGeneratorServiceTest {
         registryMap.put(REGISTRY_LOCATION, registry);
         registryMap.put(CTSC, registry);
 
-        when(registriesProperties.getRegistries()).thenReturn(registryMap);
-
         CaseData caseData = CaseData.builder()
                 .caseType("gop")
                 .deceasedSurname("Smith")
@@ -89,12 +86,20 @@ public class DocumentGeneratorServiceTest {
         CaseDetails caseDetails = new CaseDetails(caseData, LAST_MODIFIED, CASE_ID);
         callbackRequest = new CallbackRequest(caseDetails);
 
+        CaseDetails returnedCaseDetails = caseDetails;
+        returnedCaseDetails.setRegistryTelephone("01010101010101");
+        returnedCaseDetails.setRegistryAddressLine1("addressLine1");
+        returnedCaseDetails.setRegistryAddressLine2("addressLine2");
+        returnedCaseDetails.setRegistryAddressLine3("addressLine3");
+        returnedCaseDetails.setRegistryAddressLine4("addressLine4");
+        returnedCaseDetails.setRegistryPostcode("postcode");
+        returnedCaseDetails.setRegistryTown("town");
+        returnedCaseDetails.setCtscTelephone("01010101010101");
+
         ObjectMapper mapper = new ObjectMapper();
         Map<String, Object> expectedMap = mapper.convertValue(caseData, Map.class);
 
-        Map<String, Object> images = new HashMap<>();
-        images.put(CREST_IMAGE, CREST_FILE_PATH);
-        images.put(SEAL_IMAGE, SEAL_FILE_PATH);
+        when(registryDetailsService.getRegistryDetails(caseDetails)).thenReturn(returnedCaseDetails);
 
         when(genericMapperService.caseDataWithImages(any(), any())).thenReturn(expectedMap);
         when(pdfManagementService.generateDocmosisDocumentAndUpload(expectedMap,

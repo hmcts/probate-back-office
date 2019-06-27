@@ -33,7 +33,7 @@ import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_DRAFT;
 @RequiredArgsConstructor
 public class DocumentGeneratorService {
 
-    private final RegistriesProperties registriesProperties;
+    private final RegistryDetailsService registryDetailsService;
     private final PDFManagementService pdfManagementService;
     private final DocumentService documentService;
     private final GenericMapperService genericMapperService;
@@ -52,7 +52,7 @@ public class DocumentGeneratorService {
         CaseData caseData = caseDetails.getData();
         Document document;
         DocumentType template;
-        getRegistryDetails(caseDetails);
+        registryDetailsService.getRegistryDetails(caseDetails);
 
         switch (caseData.getCaseType()) {
             case INTESTACY:
@@ -93,22 +93,5 @@ public class DocumentGeneratorService {
         for (DocumentType documentType : documentTypes) {
             documentService.expire(callbackRequest, documentType);
         }
-    }
-
-    private CaseDetails getRegistryDetails(CaseDetails caseDetails) {
-        Registry registry = registriesProperties.getRegistries().get(
-                caseDetails.getData().getRegistryLocation().toLowerCase());
-        caseDetails.setRegistryTelephone(registry.getPhone());
-        caseDetails.setRegistryAddressLine1(registry.getAddressLine1());
-        caseDetails.setRegistryAddressLine2(registry.getAddressLine2());
-        caseDetails.setRegistryAddressLine3(registry.getAddressLine3());
-        caseDetails.setRegistryAddressLine4(registry.getAddressLine4());
-        caseDetails.setRegistryPostcode(registry.getPostcode());
-        caseDetails.setRegistryTown(registry.getTown());
-
-        Registry ctscRegistry = registriesProperties.getRegistries().get(CTSC);
-        caseDetails.setCtscTelephone(ctscRegistry.getPhone());
-
-        return caseDetails;
     }
 }
