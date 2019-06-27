@@ -25,6 +25,7 @@ import uk.gov.hmcts.probate.service.DocumentGeneratorService;
 import uk.gov.hmcts.probate.service.DocumentService;
 import uk.gov.hmcts.probate.service.EventValidationService;
 import uk.gov.hmcts.probate.service.NotificationService;
+import uk.gov.hmcts.probate.service.RegistryDetailsService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.WillLodgementCallbackResponseTransformer;
@@ -40,7 +41,6 @@ import java.util.List;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
-import static uk.gov.hmcts.probate.model.Constants.CTSC;
 import static uk.gov.hmcts.probate.model.Constants.LONDON;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_DRAFT;
@@ -60,6 +60,7 @@ public class DocumentController {
 
     @Autowired
     private final DocumentGeneratorService documentGeneratorService;
+    private final RegistryDetailsService registryDetailsService;
     private final PDFManagementService pdfManagementService;
     private final CallbackResponseTransformer callbackResponseTransformer;
     private final WillLodgementCallbackResponseTransformer willLodgementCallbackResponseTransformer;
@@ -81,7 +82,7 @@ public class DocumentController {
         CaseData caseData = caseDetails.getData();
         Document document;
         DocumentType template;
-        getRegistryDetails(caseDetails);
+        registryDetailsService.getRegistryDetails(caseDetails);
 
         switch (caseData.getCaseType()) {
             case INTESTACY:
@@ -127,7 +128,7 @@ public class DocumentController {
         @Valid CaseData caseData = caseDetails.getData();
         DocumentType template;
         Document digitalGrantDocument;
-        getRegistryDetails(caseDetails);
+        registryDetailsService.getRegistryDetails(caseDetails);
         CallbackResponse callbackResponse = CallbackResponse.builder().errors(new ArrayList<>()).build();
 
         switch (caseData.getCaseType()) {
@@ -227,22 +228,5 @@ public class DocumentController {
 
         return ResponseEntity.ok(callbackResponseTransformer.addDocuments(callbackRequest,
                 Arrays.asList(document), null, null));
-    }
-
-    private CaseDetails getRegistryDetails(CaseDetails caseDetails) {
-        Registry registry = registriesProperties.getRegistries().get(
-                caseDetails.getData().getRegistryLocation().toLowerCase());
-        caseDetails.setRegistryTelephone(registry.getPhone());
-        caseDetails.setRegistryAddressLine1(registry.getAddressLine1());
-        caseDetails.setRegistryAddressLine2(registry.getAddressLine2());
-        caseDetails.setRegistryAddressLine3(registry.getAddressLine3());
-        caseDetails.setRegistryAddressLine4(registry.getAddressLine4());
-        caseDetails.setRegistryPostcode(registry.getPostcode());
-        caseDetails.setRegistryTown(registry.getTown());
-
-        Registry ctscRegistry = registriesProperties.getRegistries().get(CTSC);
-        caseDetails.setCtscTelephone(ctscRegistry.getPhone());
-
-        return caseDetails;
     }
 }
