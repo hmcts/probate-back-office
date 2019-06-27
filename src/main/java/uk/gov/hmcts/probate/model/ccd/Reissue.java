@@ -5,9 +5,8 @@ import lombok.Data;
 
 @Data
 @Builder
-public class ReissueReason {
+public class Reissue {
 
     private final String reissueReason;
-
     private final String reissueReasonDetails;
 }

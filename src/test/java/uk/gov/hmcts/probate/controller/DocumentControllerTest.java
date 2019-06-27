@@ -24,6 +24,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.willlodgement.request.WillLodgementCallbackRequest;
 import uk.gov.hmcts.probate.service.BulkPrintService;
+import uk.gov.hmcts.probate.service.DocumentGeneratorService;
 import uk.gov.hmcts.probate.service.DocumentService;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
@@ -81,6 +82,9 @@ public class DocumentControllerTest {
     private BulkPrintService bulkPrintService;
 
     @MockBean
+    private DocumentGeneratorService documentGeneratorService;
+
+    @MockBean
     private AppInsights appInsights;
 
     @Mock
@@ -119,6 +123,8 @@ public class DocumentControllerTest {
                 .thenReturn(Document.builder().documentType(WILL_LODGEMENT_DEPOSIT_RECEIPT).build());
 
         when(notificationService.sendEmail(any(State.class), any(CaseDetails.class))).thenReturn(document);
+
+        when(documentGeneratorService.generateGrantReissueDraft(any())).thenReturn(document);
     }
 
     @Test
@@ -325,5 +331,18 @@ public class DocumentControllerTest {
 
         doNothing().when(documentService).expire(any(CallbackRequest.class), eq(DIGITAL_GRANT_DRAFT));
         verify(documentService).expire(any(CallbackRequest.class), eq(DIGITAL_GRANT_DRAFT));
+    }
+
+    @Test
+    public void generateGrantDraftReissueGrantOfRepresentation() throws Exception {
+
+        String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadNotifications.json");
+
+        mockMvc.perform(post("/document/generate-grant-draft-reissue")
+                .content(solicitorPayload)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("data")));
+
     }
 }
