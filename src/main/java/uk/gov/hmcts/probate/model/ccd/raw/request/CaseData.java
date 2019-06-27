@@ -11,7 +11,7 @@ import uk.gov.hmcts.probate.controller.validation.ApplicationUpdatedGroup;
 import uk.gov.hmcts.probate.controller.validation.NextStepsConfirmationGroup;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
-import uk.gov.hmcts.probate.model.ccd.ReissueReason;
+import uk.gov.hmcts.probate.model.ccd.Reissue;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
@@ -376,7 +376,9 @@ public class CaseData {
     private final String dateOfDeathType;
     private final String resolveStopState;
     private final String orderNeeded;
-    private final List<CollectionMember<ReissueReason>> reissueReason;
+    private final List<CollectionMember<Reissue>> reissueReason;
+    private final String reissueDate;
+    private final String reissueReasonNotation;
 
     private final List<CollectionMember<CaseMatch>> legacySearchResultRows;
 

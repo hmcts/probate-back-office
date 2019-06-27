@@ -7,8 +7,8 @@ import lombok.Data;
 @Data
 @Builder
 @AllArgsConstructor
-public class ReissueReason {
+public class Reissue {
 
-    private final String reason;
-    private final String details;
+    private final String reissueReason;
+    private final String reissueReasonDetails;
 }

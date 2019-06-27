@@ -17,7 +17,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.service.BulkPrintService;
 import uk.gov.hmcts.probate.service.EventValidationService;
 import uk.gov.hmcts.probate.service.NotificationService;
-import uk.gov.hmcts.probate.service.docmosis.GrantOfRepresentationDocmosisService;
+import uk.gov.hmcts.probate.service.docmosis.GrantOfRepresentationDocmosisMapperService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.validator.BulkPrintValidationRule;
@@ -50,7 +50,7 @@ public class NotificationController {
     private final PDFManagementService pdfManagementService;
     private final BulkPrintService bulkPrintService;
     private final List<BulkPrintValidationRule> bulkPrintValidationRules;
-    private final GrantOfRepresentationDocmosisService gorDocmosisService;
+    private final GrantOfRepresentationDocmosisMapperService gorDocmosisService;
 
 
     @PostMapping(path = "/documents-received")
@@ -106,21 +106,21 @@ public class NotificationController {
             log.info("Initiate call to generate coversheet for case id {} ",
                     callbackRequest.getCaseDetails().getId());
             Map<String, Object> placeholdersCoversheet =
-                    gorDocmosisService.caseDataAsPlaceholders(callbackRequest.getCaseDetails());
+                    gorDocmosisService.caseDataForStoppedMatchedCaveat(callbackRequest.getCaseDetails());
             Document coversheet = pdfManagementService
-                    .generateDocmosisDocumentAndUpload(placeholdersCoversheet, DocumentType.GRANT_COVERSHEET);
+                    .generateDocmosisDocumentAndUpload(placeholdersCoversheet, DocumentType.GRANT_COVERSHEET, false);
             documents.add(coversheet);
             log.info("Successful response for coversheet for case id {} ",
                     callbackRequest.getCaseDetails().getId());
 
             log.info("Initiate call to generate Caveat stopped document for case id {} ",
                     callbackRequest.getCaseDetails().getId());
-            Map<String, Object> placeholders = gorDocmosisService.caseDataAsPlaceholders(callbackRequest.getCaseDetails());
+            Map<String, Object> placeholders = gorDocmosisService.caseDataForStoppedMatchedCaveat(callbackRequest.getCaseDetails());
             Document caveatRaisedDoc =
-                    pdfManagementService.generateDocmosisDocumentAndUpload(placeholders, DocumentType.CAVEAT_STOPPED);
+                    pdfManagementService.generateDocmosisDocumentAndUpload(placeholders, DocumentType
+                            .CAVEAT_STOPPED, false);
             documents.add(caveatRaisedDoc);
-            log.info("Successful response for caveat stopped document for case id {} ",
-                    callbackRequest.getCaseDetails().getId());
+            log.info("Successful response for caveat stopped document for case id {} ", callbackRequest.getCaseDetails().getId());
 
             if (caseData.isCaveatStopSendToBulkPrintRequested()) {
                 log.info("Initiate call to bulk print for Caveat stopped document and coversheet for case id {} ",
@@ -148,5 +148,4 @@ public class NotificationController {
         }
         return ResponseEntity.ok(response);
     }
-
 }

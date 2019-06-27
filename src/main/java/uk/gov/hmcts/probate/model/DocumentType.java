@@ -66,8 +66,10 @@ public enum DocumentType {
     CAVEAT_STOPPED("caveatStopped"),
 
     @JsonProperty("grantCoversheet")
-    GRANT_COVERSHEET("grantCoversheet");
+    GRANT_COVERSHEET("grantCoversheet"),
 
+    @JsonProperty("digitalGrantDraftReissue")
+    DIGITAL_GRANT_DRAFT_REISSUE("digitalGrantDraftReissue");
 
     private final String templateName;
 

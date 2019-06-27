@@ -39,10 +39,10 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
 
-public class GrantOfRepresentationDocmosisServiceTest {
+public class GrantOfRepresentationDocmosisMapperServiceTest {
 
     @InjectMocks
-    private GrantOfRepresentationDocmosisService grantOfRepresentationDocmosisService;
+    private GrantOfRepresentationDocmosisMapperService grantOfRepresentationDocmosisMapperService;
 
     @Mock
     private RegistriesProperties registriesPropertiesMock;
@@ -58,6 +58,9 @@ public class GrantOfRepresentationDocmosisServiceTest {
 
     @Mock
     private CcdReferenceFormatterService ccdReferenceFormatterServiceMock;
+
+    @Mock
+    private GenericMapperService genericMapperService;
 
     @Mock
     private FormatterService formatterServiceMock;
@@ -94,6 +97,7 @@ public class GrantOfRepresentationDocmosisServiceTest {
                 .registryLocation("leeds")
                 .build();
         caseDetails = new CaseDetails(caseData, LAST_MODIFIED, ID);
+        caseDetails.setRegistryTelephone("123456789");
 
         CollectionMember<CaseMatch> caseMatchMember = new CollectionMember<>(CaseMatch.builder().build());
         List<CollectionMember<CaseMatch>> caseMatch = new ArrayList<>();
@@ -123,7 +127,7 @@ public class GrantOfRepresentationDocmosisServiceTest {
                 .build();
 
         when(caveatQueryServiceMock.findCaveatById(eq(CaseType.CAVEAT), any())).thenReturn(caveatData);
-        when(registriesPropertiesMock.getRegistries()).thenReturn(registries);
+        when(genericMapperService.addCaseDataWithRegistryProperties(caseDetails)).thenReturn(mapper.convertValue(caseDetails, Map.class));
 
     }
 
@@ -131,7 +135,7 @@ public class GrantOfRepresentationDocmosisServiceTest {
     public void testCreateDataAsPlaceholders() {
         DateFormat generatedDateFormat = new SimpleDateFormat(DATE_INPUT_FORMAT);
 
-        Map<String, Object> placeholders = grantOfRepresentationDocmosisService.caseDataAsPlaceholders(caseDetails);
+        Map<String, Object> placeholders = grantOfRepresentationDocmosisMapperService.caseDataForStoppedMatchedCaveat(caseDetails);
 
         assertEquals(ccdReferenceFormatterServiceMock.getFormattedCaseReference("1234567891234567"),
                 placeholders.get(PERSONALISATION_CASE_REFERENCE));
