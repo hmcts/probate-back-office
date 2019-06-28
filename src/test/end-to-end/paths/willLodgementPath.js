@@ -89,21 +89,21 @@ Scenario('Will Lodgement Workflow - E2E test 01 - Will Lodgement for a Personal 
     generateDepositReceiptConfig.dateAdded = dateFns.format(new Date(), 'D MMM YYYY');
     I.seeCaseDetails(caseRef, documentsTabGenerateDepositReceiptConfig, generateDepositReceiptConfig);
 
-    nextStepName = 'Match application';
-    I.chooseNextStep(nextStepName);
-    I.selectCaseMatchesForWillLodgement(caseRef, caseMatchesConfig);
-    I.enterEventSummary(caseRef, nextStepName);
-    endState = 'Will lodged';
-    I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
-    I.seeCaseDetails(caseRef, caseMatchesTabConfig, caseMatchesConfig);
+   // nextStepName = 'Match application';
+   // I.chooseNextStep(nextStepName);
+   // I.selectCaseMatchesForWillLodgement(caseRef, caseMatchesConfig);
+   // I.enterEventSummary(caseRef, nextStepName);
+   // endState = 'Will lodged';
+   // I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+   // I.seeCaseDetails(caseRef, caseMatchesTabConfig, caseMatchesConfig);
 
-    nextStepName = 'Withdraw will';
-    I.chooseNextStep(nextStepName);
-    I.selectWithdrawalReason(caseRef, withdrawWillConfig);
-    I.enterEventSummary(caseRef, nextStepName);
-    endState = 'Will withdrawn';
-    I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
-    I.seeCaseDetails(caseRef, willWithdrawalDetailsTabConfig, withdrawWillConfig);
+   // nextStepName = 'Withdraw will';
+   // I.chooseNextStep(nextStepName);
+   // I.selectWithdrawalReason(caseRef, withdrawWillConfig);
+   // I.enterEventSummary(caseRef, nextStepName);
+   // endState = 'Will withdrawn';
+   // I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+   // I.seeCaseDetails(caseRef, willWithdrawalDetailsTabConfig, withdrawWillConfig);
 
     I.click('#sign-out');
 
