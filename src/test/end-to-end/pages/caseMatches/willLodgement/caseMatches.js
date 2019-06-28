@@ -10,13 +10,13 @@ module.exports = function (caseRef, caseMatchesConfig) {
 
     I.see(caseRef);
 
-/*
+    /*
     I.seeInField('#caseMatches_0_fullName', caseMatchesConfig.fullname);
     I.seeInField('#caseMatches_0_dob', caseMatchesConfig.dob);
     I.seeInField('#caseMatches_0_postcode', caseMatchesConfig.postcode);
 
     I.click('#caseMatches_0_valid-Yes');
-*/
+    */
 
     I.waitForNavigationToComplete(commonConfig.continueButton);
 
