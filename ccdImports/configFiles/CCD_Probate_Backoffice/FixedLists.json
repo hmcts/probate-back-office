@@ -56,6 +56,7 @@
   {"LiveFrom": "01/01/2017", "ID": "probateDocumentTypeEnum", "ListElementCode": "grantCoversheet", "ListElement": "Cover Sheet"},
   {"LiveFrom": "01/01/2017", "ID": "probateDocumentTypeEnum", "ListElementCode": "grantCover", "ListElement": "Grant Cover Sheet"},
   {"LiveFrom": "01/01/2017", "ID": "probateDocumentTypeEnum", "ListElementCode": "digitalGrantDraftReissue", "ListElement": "Digital Grant Draft Reissue"},
+  {"LiveFrom": "01/01/2017", "ID": "probateDocumentTypeEnum", "ListElementCode": "intestacyGrantDraftReissue", "ListElement": "Intestacy Grant Draft Reissue"},
   {"LiveFrom": "01/01/2017", "ID": "documentUploadTypeEnum", "ListElementCode": "email", "ListElement": "Email"},
   {"LiveFrom": "01/01/2017", "ID": "documentUploadTypeEnum", "ListElementCode": "correspondence", "ListElement": "Correspondence"},
   {"LiveFrom": "01/01/2017", "ID": "documentUploadTypeEnum", "ListElementCode": "IHT", "ListElement": "Codicil"},

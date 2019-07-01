@@ -17,6 +17,7 @@ import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_DRAFT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_DRAFT;
+import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_DRAFT_REISSUE;
 
 @Slf4j
 @AllArgsConstructor
@@ -52,6 +53,12 @@ public class DocumentService {
                 documentsToExpire.addAll(callbackRequest.getCaseDetails().getData()
                         .getProbateDocumentsGenerated().stream()
                         .filter(collectionMember -> collectionMember.getValue().getDocumentType().equals(DIGITAL_GRANT_DRAFT_REISSUE))
+                        .collect(Collectors.toList()));
+                break;
+            case INTESTACY_GRANT_DRAFT_REISSUE:
+                documentsToExpire.addAll(callbackRequest.getCaseDetails().getData()
+                        .getProbateDocumentsGenerated().stream()
+                        .filter(collectionMember -> collectionMember.getValue().getDocumentType().equals(INTESTACY_GRANT_DRAFT_REISSUE))
                         .collect(Collectors.toList()));
                 break;
             default:

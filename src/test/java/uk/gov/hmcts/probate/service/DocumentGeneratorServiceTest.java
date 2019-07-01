@@ -6,10 +6,6 @@ import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import uk.gov.hmcts.probate.config.properties.registries.RegistriesProperties;
 import uk.gov.hmcts.probate.config.properties.registries.Registry;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
@@ -18,32 +14,27 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.service.docmosis.GenericMapperService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
-import uk.gov.hmcts.reform.probate.model.cases.CaseType;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.Constants.CTSC;
-import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_DRAFT;
 
 public class DocumentGeneratorServiceTest {
 
     private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
     private static final Long CASE_ID = 12345678987654321L;
-    private static final String CREST_IMAGE = "GrantOfProbateCrest";
-    private static final String SEAL_IMAGE = "GrantOfProbateSeal";
-    private static final String CREST_FILE_PATH = "crestImage.txt";
-    private static final String SEAL_FILE_PATH = "sealImage.txt";
     private static final String REGISTRY_LOCATION = "bristol";
     private static final String DIGITAL_GRANT_REISSUE_FILE_NAME = "digitalGrantDraftReissue.pdf";
+    private static final String INTESTACY_REISSUE_FILE_NAME = "intestacyGrantDraftReissue.pdf";
     private CallbackRequest callbackRequest;
+    private Map<String, Object> expectedMap;
 
     @InjectMocks
     private DocumentGeneratorService documentGeneratorService;
@@ -77,13 +68,8 @@ public class DocumentGeneratorServiceTest {
         registryMap.put(REGISTRY_LOCATION, registry);
         registryMap.put(CTSC, registry);
 
-        CaseData caseData = CaseData.builder()
-                .caseType("gop")
-                .deceasedSurname("Smith")
-                .deceasedForenames("John")
-                .registryLocation("Bristol")
-                .build();
-        CaseDetails caseDetails = new CaseDetails(caseData, LAST_MODIFIED, CASE_ID);
+        CaseDetails caseDetails = new CaseDetails(CaseData.builder().caseType("gop").registryLocation("Bristol").build(),
+                LAST_MODIFIED, CASE_ID);
         callbackRequest = new CallbackRequest(caseDetails);
 
         CaseDetails returnedCaseDetails = caseDetails;
@@ -97,20 +83,37 @@ public class DocumentGeneratorServiceTest {
         returnedCaseDetails.setCtscTelephone("01010101010101");
 
         ObjectMapper mapper = new ObjectMapper();
-        Map<String, Object> expectedMap = mapper.convertValue(caseData, Map.class);
+        expectedMap = mapper.convertValue(CaseData.builder().caseType("gop").registryLocation("Bristol").build(), Map.class);
 
         when(registryDetailsService.getRegistryDetails(caseDetails)).thenReturn(returnedCaseDetails);
 
         when(genericMapperService.caseDataWithImages(any(), any())).thenReturn(expectedMap);
-        when(pdfManagementService.generateDocmosisDocumentAndUpload(expectedMap,
-                DocumentType.DIGITAL_GRANT_DRAFT_REISSUE, true))
-                .thenReturn(Document.builder().documentFileName(DIGITAL_GRANT_REISSUE_FILE_NAME).build());
+
+        when(pdfManagementService
+                .generateDocmosisDocumentAndUpload(eq(expectedMap), any(), anyBoolean())).thenReturn(Document.builder().build());
+
         doNothing().when(documentService).expire(any(CallbackRequest.class), any());
     }
 
     @Test
-    public void testGenerateReissueDraftProducesCorrectDocument() {
+    public void testGenerateReissueDraftProducesCorrectDocumentForGOP() {
+        when(pdfManagementService.generateDocmosisDocumentAndUpload(expectedMap,
+                DocumentType.DIGITAL_GRANT_DRAFT_REISSUE, true))
+                .thenReturn(Document.builder().documentFileName(DIGITAL_GRANT_REISSUE_FILE_NAME).build());
         assertEquals(DIGITAL_GRANT_REISSUE_FILE_NAME,
+                documentGeneratorService.generateGrantReissueDraft(callbackRequest).getDocumentFileName());
+    }
+
+    @Test
+    public void testGenerateReissueDraftProducesCorrectDocumentForIntestacy() {
+        CaseDetails caseDetails =
+                new CaseDetails(CaseData.builder().caseType("intestacy").registryLocation("Bristol").build(),
+                LAST_MODIFIED, CASE_ID);
+        callbackRequest = new CallbackRequest(caseDetails);
+        when(pdfManagementService.generateDocmosisDocumentAndUpload(expectedMap,
+                DocumentType.INTESTACY_GRANT_DRAFT_REISSUE, true))
+                .thenReturn(Document.builder().documentFileName(INTESTACY_REISSUE_FILE_NAME).build());
+        assertEquals(INTESTACY_REISSUE_FILE_NAME,
                 documentGeneratorService.generateGrantReissueDraft(callbackRequest).getDocumentFileName());
     }
 }
