@@ -77,4 +77,13 @@ public class FormatterServiceTest {
         assertEquals(Strings.EMPTY, formatterService.formatAddress(null));
     }
 
+    @Test
+    public void shouldReturnCavetExpiryDateFormatted() {
+        assertEquals("1st January 2019", formatterService.formatCaveatExpiryDate(LocalDate.of(2019, 01, 01)));
+        assertEquals("22nd February 2019", formatterService.formatCaveatExpiryDate(LocalDate.of(2019, 02, 22)));
+        assertEquals("13th March 2019", formatterService.formatCaveatExpiryDate(LocalDate.of(2019, 03, 13)));
+        assertEquals("23rd April 2019", formatterService.formatCaveatExpiryDate(LocalDate.of(2019, 04, 23)));
+    }
+
+
 }

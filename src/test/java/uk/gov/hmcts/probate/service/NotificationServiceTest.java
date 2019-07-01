@@ -68,6 +68,9 @@ public class NotificationServiceTest {
     @MockBean
     private CoreCaseDataApi coreCaseDataApi;
 
+    @MockBean
+    private FormatterService formatterService;
+
     @SpyBean
     private NotificationClient notificationClient;
 
@@ -291,6 +294,7 @@ public class NotificationServiceTest {
                 .deceasedDateOfDeath(LocalDate.of(2000, 12, 12))
                 .build(), LAST_MODIFIED, ID);
 
+        when(formatterService.formatCaveatExpiryDate(any())).thenReturn("1st January 2019");
     }
 
     @Test
@@ -658,7 +662,7 @@ public class NotificationServiceTest {
         personalisation.put(PERSONALISATION_MESSAGE_CONTENT, caveatRaisedCaseData.getData().getMessageContent());
         personalisation.put(PERSONALISATION_REGISTRY_NAME, "Oxford Probate Registry");
         personalisation.put(PERSONALISATION_REGISTRY_PHONE, "0186 579 3055");
-        personalisation.put(PERSONALISATION_CAVEAT_EXPIRY_DATE, "01 January 2019");
+        personalisation.put(PERSONALISATION_CAVEAT_EXPIRY_DATE, "1st January 2019");
 
         notificationService.sendCaveatEmail(CAVEAT_RAISED, caveatRaisedCaseData);
 
@@ -683,7 +687,7 @@ public class NotificationServiceTest {
         personalisation.put(PERSONALISATION_MESSAGE_CONTENT, caveatRaisedCtscCaseData.getData().getMessageContent());
         personalisation.put(PERSONALISATION_REGISTRY_NAME, "CTSC");
         personalisation.put(PERSONALISATION_REGISTRY_PHONE, "0300 303 0648");
-        personalisation.put(PERSONALISATION_CAVEAT_EXPIRY_DATE, "01 January 2019");
+        personalisation.put(PERSONALISATION_CAVEAT_EXPIRY_DATE, "1st January 2019");
 
         notificationService.sendCaveatEmail(CAVEAT_RAISED, caveatRaisedCtscCaseData);
 

@@ -51,7 +51,6 @@ public class NotificationService {
     private final FormatterService formatterService;
 
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMM Y HH:mm");
-    private static final DateTimeFormatter DATETIME_FORMATTER_CAVEAT_EXPIRY = DateTimeFormatter.ofPattern("dd MMMM yyyy");
     private static final DateTimeFormatter EXCELA_DATE = DateTimeFormatter.ofPattern("yyyyMMdd");
     private static final DateTimeFormatter EXCELA_CONTENT_DATE = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
@@ -180,7 +179,6 @@ public class NotificationService {
         if (caveatData != null) {
             personalisation.put(PERSONALISATION_CAVEATOR_NAME, caveatData.getCaveatorFullName());
             personalisation.put(PERSONALISATION_CAVEATOR_ADDRESS, formatterService.formatAddress(caveatData.getCaveatorAddress()));
-            personalisation.put(PERSONALISATION_CAVEAT_EXPIRY_DATE, caveatData.getExpiryDate().format(DATETIME_FORMATTER_CAVEAT_EXPIRY));
         }
 
         if (caseData.getApplicationType().equals(ApplicationType.SOLICITOR)) {
@@ -203,7 +201,7 @@ public class NotificationService {
         if (caveatData.getExpiryDate() == null) {
             caveatData.setExpiryDate(LocalDate.now());
         }
-        personalisation.put(PERSONALISATION_CAVEAT_EXPIRY_DATE, caveatData.getExpiryDate().format(DATETIME_FORMATTER_CAVEAT_EXPIRY));
+        personalisation.put(PERSONALISATION_CAVEAT_EXPIRY_DATE, formatterService.formatCaveatExpiryDate(caveatData.getExpiryDate()));
 
         return personalisation;
     }
