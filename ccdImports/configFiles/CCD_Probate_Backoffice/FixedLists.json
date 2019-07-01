@@ -57,6 +57,7 @@
   {"LiveFrom": "01/01/2017", "ID": "probateDocumentTypeEnum", "ListElementCode": "grantCover", "ListElement": "Grant Cover Sheet"},
   {"LiveFrom": "01/01/2017", "ID": "probateDocumentTypeEnum", "ListElementCode": "digitalGrantDraftReissue", "ListElement": "Digital Grant Draft Reissue"},
   {"LiveFrom": "01/01/2017", "ID": "probateDocumentTypeEnum", "ListElementCode": "intestacyGrantDraftReissue", "ListElement": "Intestacy Grant Draft Reissue"},
+  {"LiveFrom": "01/01/2017", "ID": "probateDocumentTypeEnum", "ListElementCode": "admonWillGrantDraftReissue", "ListElement": "Admon Will Grant Draft Reissue"},
   {"LiveFrom": "01/01/2017", "ID": "documentUploadTypeEnum", "ListElementCode": "email", "ListElement": "Email"},
   {"LiveFrom": "01/01/2017", "ID": "documentUploadTypeEnum", "ListElementCode": "correspondence", "ListElement": "Correspondence"},
   {"LiveFrom": "01/01/2017", "ID": "documentUploadTypeEnum", "ListElementCode": "IHT", "ListElement": "Codicil"},
@@ -133,8 +134,8 @@
   {"LiveFrom": "06/01/2017", "ID": "reissueSelectionFixedList", "ListElementCode": "deceasedFamily", "ListElement": "Deceased Family Details"},
   {"LiveFrom": "06/01/2017", "ID": "reissueSelectionFixedList", "ListElementCode": "reissueDetails", "ListElement": "Reissue details"},
   {"LiveFrom": "06/01/2017", "ID": "reissueNotationFixedList", "ListElementCode": "duplicate", "ListElement": "Duplicate of original created on [date of creation]"},
-  {"LiveFrom": "06/01/2017", "ID": "reissueNotationFixedList", "ListElementCode": "registrarsOrder’", "ListElement": "Amended and re-issued pursuant to Registrar's order dated [date of order]"},
-  {"LiveFrom": "06/01/2017", "ID": "reissueNotationFixedList", "ListElementCode": "’registrarsDirection’", "ListElement": "Amended and re-issued [date of re-issue] pursuant to Registrar's Direction 004/17"},
+  {"LiveFrom": "06/01/2017", "ID": "reissueNotationFixedList", "ListElementCode": "registrarsOrder", "ListElement": "Amended and re-issued pursuant to Registrar's order dated [date of order]"},
+  {"LiveFrom": "06/01/2017", "ID": "reissueNotationFixedList", "ListElementCode": "registrarsDirection", "ListElement": "Amended and re-issued [date of re-issue] pursuant to Registrar's Direction 004/17"},
   {"LiveFrom": "06/01/2017", "ID": "spouseNotApplyingReasonFixedList", "ListElementCode": "renunciated", "ListElement": "Renunciated"},
   {"LiveFrom": "06/01/2017", "ID": "spouseNotApplyingReasonFixedList", "ListElementCode": "mentallyIncapable", "ListElement": "Mentally incapable"},
   {"LiveFrom": "06/01/2017", "ID": "spouseNotApplyingReasonFixedList", "ListElementCode": "other", "ListElement": "Other"}

@@ -48,10 +48,10 @@ public class PDFGeneratorService {
     }
 
     public EvidenceManagementFileUpload generateDocmosisDocumentFrom(String templateName, Map<String, Object>
-            placeholders, boolean isWatermark) {
+            placeholders) {
         byte[] postResult;
         try {
-            postResult = docmosisPdfGenerationService.generateDocFrom(templateName, placeholders, isWatermark);
+            postResult = docmosisPdfGenerationService.generateDocFrom(templateName, placeholders);
         } catch (PDFServiceClientException e) {
             log.error(e.getMessage(), e);
             throw new ClientException(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage());

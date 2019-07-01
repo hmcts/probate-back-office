@@ -108,7 +108,7 @@ public class NotificationController {
             Map<String, Object> placeholdersCoversheet =
                     gorDocmosisService.caseDataForStoppedMatchedCaveat(callbackRequest.getCaseDetails());
             Document coversheet = pdfManagementService
-                    .generateDocmosisDocumentAndUpload(placeholdersCoversheet, DocumentType.GRANT_COVERSHEET, false);
+                    .generateDocmosisDocumentAndUpload(placeholdersCoversheet, DocumentType.GRANT_COVERSHEET);
             documents.add(coversheet);
             log.info("Successful response for coversheet for case id {} ",
                     callbackRequest.getCaseDetails().getId());
@@ -118,7 +118,7 @@ public class NotificationController {
             Map<String, Object> placeholders = gorDocmosisService.caseDataForStoppedMatchedCaveat(callbackRequest.getCaseDetails());
             Document caveatRaisedDoc =
                     pdfManagementService.generateDocmosisDocumentAndUpload(placeholders, DocumentType
-                            .CAVEAT_STOPPED, false);
+                            .CAVEAT_STOPPED);
             documents.add(caveatRaisedDoc);
             log.info("Successful response for caveat stopped document for case id {} ", callbackRequest.getCaseDetails().getId());
 

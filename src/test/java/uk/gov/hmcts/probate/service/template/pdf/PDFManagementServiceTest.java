@@ -253,7 +253,7 @@ public class PDFManagementServiceTest {
         String json = "{}";
 
         when(pdfGeneratorServiceMock
-                .generateDocmosisDocumentFrom(CAVEAT_RAISED.getTemplateName(), placeholdersMock, false))
+                .generateDocmosisDocumentFrom(CAVEAT_RAISED.getTemplateName(), placeholdersMock))
                 .thenReturn(evidenceManagementFileUpload);
         when(uploadServiceMock.store(evidenceManagementFileUpload)).thenReturn(evidenceManagementFile);
         when(evidenceManagementFile.getLink(Link.REL_SELF)).thenReturn(link);
@@ -262,7 +262,7 @@ public class PDFManagementServiceTest {
         String href = "href";
         when(link.getHref()).thenReturn(href);
 
-        Document response = underTest.generateDocmosisDocumentAndUpload(placeholdersMock, CAVEAT_RAISED, false);
+        Document response = underTest.generateDocmosisDocumentAndUpload(placeholdersMock, CAVEAT_RAISED);
 
         String fileName = "caveatRaised.pdf";
         assertNotNull(response);
