@@ -113,6 +113,8 @@ public class NotificationServiceTest {
     private static final String PERSONALISATION_MESSAGE_CONTENT = "message_content";
     private static final String PERSONALISATION_EXCELA_NAME = "excelaName";
     private static final String PERSONALISATION_CASE_DATA = "caseData";
+    private static final String PERSONALISATION_CAVEAT_EXPIRY_DATE = "caveat_expiry_date";
+
 
     @Before
     public void setUp() throws NotificationClientException {
@@ -201,6 +203,7 @@ public class NotificationServiceTest {
                 .registryLocation("Oxford")
                 .caveatorEmailAddress("personal@test.com")
                 .deceasedDateOfDeath(LocalDate.of(2000, 12, 12))
+                .expiryDate(LocalDate.of(2019, 01, 01))
                 .build(), LAST_MODIFIED, ID);
 
         caveatRaisedCtscCaseData = new CaveatDetails(CaveatData.builder()
@@ -208,6 +211,7 @@ public class NotificationServiceTest {
                 .registryLocation("ctsc")
                 .caveatorEmailAddress("personal@test.com")
                 .deceasedDateOfDeath(LocalDate.of(2000, 12, 12))
+                .expiryDate(LocalDate.of(2019, 01, 01))
                 .build(), LAST_MODIFIED, ID);
 
         personalCaveatDataOxford = new CaveatDetails(CaveatData.builder()
@@ -654,6 +658,7 @@ public class NotificationServiceTest {
         personalisation.put(PERSONALISATION_MESSAGE_CONTENT, caveatRaisedCaseData.getData().getMessageContent());
         personalisation.put(PERSONALISATION_REGISTRY_NAME, "Oxford Probate Registry");
         personalisation.put(PERSONALISATION_REGISTRY_PHONE, "0186 579 3055");
+        personalisation.put(PERSONALISATION_CAVEAT_EXPIRY_DATE, "01 January 2019");
 
         notificationService.sendCaveatEmail(CAVEAT_RAISED, caveatRaisedCaseData);
 
@@ -678,6 +683,7 @@ public class NotificationServiceTest {
         personalisation.put(PERSONALISATION_MESSAGE_CONTENT, caveatRaisedCtscCaseData.getData().getMessageContent());
         personalisation.put(PERSONALISATION_REGISTRY_NAME, "CTSC");
         personalisation.put(PERSONALISATION_REGISTRY_PHONE, "0300 303 0648");
+        personalisation.put(PERSONALISATION_CAVEAT_EXPIRY_DATE, "01 January 2019");
 
         notificationService.sendCaveatEmail(CAVEAT_RAISED, caveatRaisedCtscCaseData);
 
