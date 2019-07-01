@@ -257,5 +257,13 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "labelAboutApplicant", "Label": "# About the applicant(s)", "FieldType": "Label", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "labelAboutPersonDied", "Label": "# About the person who has died", "FieldType": "Label", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "labelForeigndomicile", "Label": "# Foreign Domicile", "FieldType": "Label", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "labelInheTax", "Label": "# Inheritance tax", "FieldType": "Label", "SecurityClassification": "Public"}
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "labelInheTax", "Label": "# Inheritance tax", "FieldType": "Label", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "deceasedDivorcedInEnglandOrWales", "Label": "Was the deceased divorced in England or Wales?", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "primaryApplicantAdoptionInEnglandOrWales", "Label": "Was the applicant adoption in England or Wales?", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "deceasedSpouseNotApplyingReason", "Label": "Why isn't the deceased's spouse applying?", "FieldType": "FixedList", "FieldTypeParameter": "spouseNotApplyingReasonFixedList", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "deceasedOtherChildren", "Label": "Did the deceased have any other children?", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "allDeceasedChildrenOverEighteen", "Label": "Are all of the deceased's children over eighteen?", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "anyDeceasedChildrenDieBeforeDeceased", "Label": "Did any of the deceased's children die before deceased?", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "anyDeceasedGrandChildrenUnderEighteen", "Label": "Are any of the deceased's grand children under eighteen?", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "deceasedAnyChildren", "Label": "Did the deceased have any children?", "FieldType": "YesOrNo", "SecurityClassification": "Public"}
 ]
