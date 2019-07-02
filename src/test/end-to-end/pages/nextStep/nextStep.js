@@ -7,6 +7,7 @@ module.exports = function (nextStep) {
     const I = this;
 
     I.selectOption('#next-step', nextStep);
+    I.wait(1);
     I.waitForNavigationToComplete(commonConfig.goButton);
 
 };
