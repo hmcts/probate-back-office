@@ -18,9 +18,10 @@ import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
+import uk.gov.hmcts.probate.service.AddressFormatterService;
 import uk.gov.hmcts.probate.service.CaveatQueryService;
+import uk.gov.hmcts.probate.service.DateFormatterService;
 import uk.gov.hmcts.probate.service.FileSystemResourceService;
-import uk.gov.hmcts.probate.service.FormatterService;
 import uk.gov.hmcts.probate.service.ccd.CcdReferenceFormatterService;
 
 import java.text.DateFormat;
@@ -60,7 +61,10 @@ public class GrantOfRepresentationDocmosisServiceTest {
     private CcdReferenceFormatterService ccdReferenceFormatterServiceMock;
 
     @Mock
-    private FormatterService formatterServiceMock;
+    private AddressFormatterService addressFormatterService;
+
+    @Mock
+    private DateFormatterService dateFormatterService;
 
     private static final String DATE_INPUT_FORMAT = "ddMMyyyy";
     private static final long ID = 1234567891234567L;
@@ -144,7 +148,7 @@ public class GrantOfRepresentationDocmosisServiceTest {
         assertEquals("https://www.citizensadvice.org.uk|https://www.citizensadvice.org.uk/",
                 placeholders.get(PERSONALISATION_PA8BURL));
         assertEquals("fred jones", placeholders.get(PERSONALISATION_CAVEATOR_NAME));
-        assertEquals(formatterServiceMock.formatAddress(caveatData.getCaveatorAddress()),
+        assertEquals(addressFormatterService.formatAddress(caveatData.getCaveatorAddress()),
                 placeholders.get(PERSONALISATION_CAVEATOR_ADDRESS));
         assertEquals(ccdReferenceFormatterServiceMock.getFormattedCaseReference("1234567891234567"),
                 placeholders.get(PERSONALISATION_CAVEAT_REFERENCE));

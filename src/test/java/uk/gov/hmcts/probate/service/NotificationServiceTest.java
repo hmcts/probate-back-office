@@ -69,7 +69,7 @@ public class NotificationServiceTest {
     private CoreCaseDataApi coreCaseDataApi;
 
     @MockBean
-    private FormatterService formatterService;
+    private DateFormatterService dateFormatterService;
 
     @SpyBean
     private NotificationClient notificationClient;
@@ -294,7 +294,7 @@ public class NotificationServiceTest {
                 .deceasedDateOfDeath(LocalDate.of(2000, 12, 12))
                 .build(), LAST_MODIFIED, ID);
 
-        when(formatterService.formatCaveatExpiryDate(any())).thenReturn("1st January 2019");
+        when(dateFormatterService.formatCaveatExpiryDate(any())).thenReturn("1st January 2019");
     }
 
     @Test

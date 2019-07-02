@@ -6,13 +6,11 @@ import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import uk.gov.hmcts.probate.config.PDFServiceConfiguration;
 import uk.gov.hmcts.probate.config.properties.registries.RegistriesProperties;
 import uk.gov.hmcts.probate.config.properties.registries.Registry;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
-import uk.gov.hmcts.probate.service.FileSystemResourceService;
-import uk.gov.hmcts.probate.service.FormatterService;
+import uk.gov.hmcts.probate.service.DateFormatterService;
 import uk.gov.hmcts.probate.service.ccd.CcdReferenceFormatterService;
 
 import java.text.DateFormat;
@@ -35,7 +33,7 @@ public class CaveatDocmosisServiceTest {
     private RegistriesProperties registriesPropertiesMock;
 
     @Mock
-    private FormatterService formatterService;
+    private DateFormatterService dateFormatterService;
 
     @Mock
     private CcdReferenceFormatterService ccdReferenceFormatterServiceMock;
@@ -57,7 +55,7 @@ public class CaveatDocmosisServiceTest {
         registries = mapper.convertValue(registry, Map.class);
 
         when(registriesPropertiesMock.getRegistries()).thenReturn(registries);
-        when(formatterService.formatCaveatExpiryDate(any())).thenReturn(CAV_EXPIRY_DATE);
+        when(dateFormatterService.formatCaveatExpiryDate(any())).thenReturn(CAV_EXPIRY_DATE);
     }
 
     @Test

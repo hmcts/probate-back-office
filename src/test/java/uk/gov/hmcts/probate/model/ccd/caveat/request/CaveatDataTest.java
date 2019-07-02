@@ -4,7 +4,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import uk.gov.hmcts.probate.model.ccd.ProbateAddress;
-import uk.gov.hmcts.probate.service.FormatterService;
+import uk.gov.hmcts.probate.service.AddressFormatterService;
+import uk.gov.hmcts.probate.service.DateFormatterService;
 
 import java.time.LocalDate;
 
@@ -12,7 +13,8 @@ import static org.junit.Assert.assertEquals;
 
 public class CaveatDataTest {
 
-    private FormatterService formatterService = new FormatterService();
+    private DateFormatterService dateFormatterService = new DateFormatterService();
+    private AddressFormatterService addressFormatterService = new AddressFormatterService();
 
     private static final String CAV_DECEASED_FORENAMES = "Forenames";
     private static final String CAV_DECEASED_SURNAME = "Surname";
@@ -26,7 +28,7 @@ public class CaveatDataTest {
     private static final String CAV_CAVEATOR_COUNTY = "";
     private static final String CAV_CAVEATOR_POSTCODE = "1AB 1CD";
     private static final String CAV_CAVEATOR_COUNTRY = "";
-    private static final LocalDate LOCAL_DATE = LocalDate.of(2000,01,01);
+    private static final LocalDate LOCAL_DATE = LocalDate.of(2000, 01, 01);
 
     @InjectMocks
     private CaveatData underTest;
@@ -77,34 +79,34 @@ public class CaveatDataTest {
                 .applicationSubmittedDate(LOCAL_DATE)
                 .build();
 
-        assertEquals("1st January 2000", formatterService.formatDate(caveatData.getApplicationSubmittedDate()));
+        assertEquals("1st January 2000", dateFormatterService.formatDate(caveatData.getApplicationSubmittedDate()));
     }
 
     @Test
     public void shouldReturnSubmissionDateFormattedWithND() {
         final CaveatData caveatData = CaveatData.builder()
-                .applicationSubmittedDate(LocalDate.of(2000,01,02))
+                .applicationSubmittedDate(LocalDate.of(2000, 01, 02))
                 .build();
 
-        assertEquals("2nd January 2000", formatterService.formatDate(caveatData.getApplicationSubmittedDate()));
+        assertEquals("2nd January 2000", dateFormatterService.formatDate(caveatData.getApplicationSubmittedDate()));
     }
 
     @Test
     public void shouldReturnSubmissionDateFormattedWithRD() {
         final CaveatData caveatData = CaveatData.builder()
-                .applicationSubmittedDate(LocalDate.of(2000,01,03))
+                .applicationSubmittedDate(LocalDate.of(2000, 01, 03))
                 .build();
 
-        assertEquals("3rd January 2000", formatterService.formatDate(caveatData.getApplicationSubmittedDate()));
+        assertEquals("3rd January 2000", dateFormatterService.formatDate(caveatData.getApplicationSubmittedDate()));
     }
 
     @Test
     public void shouldReturnSubmissionDateFormattedWithTH() {
         final CaveatData caveatData = CaveatData.builder()
-                .applicationSubmittedDate(LocalDate.of(2000,01,04))
+                .applicationSubmittedDate(LocalDate.of(2000, 01, 04))
                 .build();
 
-        assertEquals("4th January 2000", formatterService.formatDate(caveatData.getApplicationSubmittedDate()));
+        assertEquals("4th January 2000", dateFormatterService.formatDate(caveatData.getApplicationSubmittedDate()));
     }
 
     @Test
@@ -113,7 +115,7 @@ public class CaveatDataTest {
                 .applicationSubmittedDate(LocalDate.of(300000, 01, 04))
                 .build();
 
-        assertEquals(null, formatterService.formatDate(caveatData.getApplicationSubmittedDate()));
+        assertEquals(null, dateFormatterService.formatDate(caveatData.getApplicationSubmittedDate()));
     }
 
     @Test
@@ -122,34 +124,34 @@ public class CaveatDataTest {
                 .expiryDate(LOCAL_DATE)
                 .build();
 
-        assertEquals("1st January 2000", formatterService.formatDate(caveatData.getExpiryDate()));
+        assertEquals("1st January 2000", dateFormatterService.formatDate(caveatData.getExpiryDate()));
     }
 
     @Test
     public void shouldReturnExpiryDateFormattedWithND() {
         final CaveatData caveatData = CaveatData.builder()
-                .expiryDate(LocalDate.of(2000,01,02))
+                .expiryDate(LocalDate.of(2000, 01, 02))
                 .build();
 
-        assertEquals("2nd January 2000", formatterService.formatDate(caveatData.getExpiryDate()));
+        assertEquals("2nd January 2000", dateFormatterService.formatDate(caveatData.getExpiryDate()));
     }
 
     @Test
     public void shouldReturnExpiryDateFormattedWithRD() {
         final CaveatData caveatData = CaveatData.builder()
-                .expiryDate(LocalDate.of(2000,01,03))
+                .expiryDate(LocalDate.of(2000, 01, 03))
                 .build();
 
-        assertEquals("3rd January 2000", formatterService.formatDate(caveatData.getExpiryDate()));
+        assertEquals("3rd January 2000", dateFormatterService.formatDate(caveatData.getExpiryDate()));
     }
 
     @Test
     public void shouldReturnExpiryDateFormattedWithTH() {
         final CaveatData caveatData = CaveatData.builder()
-                .expiryDate(LocalDate.of(2000,01,04))
+                .expiryDate(LocalDate.of(2000, 01, 04))
                 .build();
 
-        assertEquals("4th January 2000", formatterService.formatDate(caveatData.getExpiryDate()));
+        assertEquals("4th January 2000", dateFormatterService.formatDate(caveatData.getExpiryDate()));
     }
 
     @Test
@@ -171,7 +173,7 @@ public class CaveatDataTest {
 
         assertEquals(CAV_CAVEATOR_ADDRESS_1 + ", " + CAV_CAVEATOR_ADDRESS_2 + ", "
                         + CAV_CAVEATOR_TOWN + ", " + CAV_CAVEATOR_POSTCODE,
-                formatterService.formatAddress(caveatorAddress));
+                addressFormatterService.formatAddress(caveatorAddress));
     }
 
     @Test
@@ -191,7 +193,7 @@ public class CaveatDataTest {
                 .caveatorAddress(caveatorAddress)
                 .build();
 
-        assertEquals(CAV_CAVEATOR_ADDRESS_1 + ", " + CAV_CAVEATOR_POSTCODE, formatterService.formatAddress(caveatorAddress));
+        assertEquals(CAV_CAVEATOR_ADDRESS_1 + ", " + CAV_CAVEATOR_POSTCODE, addressFormatterService.formatAddress(caveatorAddress));
     }
 
 }

@@ -12,39 +12,39 @@ import java.time.LocalDate;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(MockitoJUnitRunner.class)
-public class FormatterServiceTest {
+public class DateFormatterServiceTest {
 
     @InjectMocks
-    private FormatterService formatterService;
+    private DateFormatterService dateFormatterService;
 
     @Test
     public void shouldReturnDateFormattedWithStSuffix() {
-        assertEquals("1st January 2000", formatterService.formatDate(LocalDate.of(2000, 01, 01)));
+        assertEquals("1st January 2000", dateFormatterService.formatDate(LocalDate.of(2000, 01, 01)));
     }
 
     @Test
     public void shouldReturnDateFormattedWithNdSuffix() {
-        assertEquals("2nd January 2000", formatterService.formatDate(LocalDate.of(2000, 01, 02)));
+        assertEquals("2nd January 2000", dateFormatterService.formatDate(LocalDate.of(2000, 01, 02)));
     }
 
     @Test
     public void shouldReturnDateFormattedWithRdSuffix() {
-        assertEquals("3rd January 2000", formatterService.formatDate(LocalDate.of(2000, 01, 03)));
+        assertEquals("3rd January 2000", dateFormatterService.formatDate(LocalDate.of(2000, 01, 03)));
     }
 
     @Test
     public void shouldReturnDateFormattedWithThSuffix() {
-        assertEquals("4th January 2000", formatterService.formatDate(LocalDate.of(2000, 01, 04)));
+        assertEquals("4th January 2000", dateFormatterService.formatDate(LocalDate.of(2000, 01, 04)));
     }
 
     @Test
     public void shouldThrowParseException() {
-        assertEquals(null, formatterService.formatDate(LocalDate.of(30000, 01, 01)));
+        assertEquals(null, dateFormatterService.formatDate(LocalDate.of(30000, 01, 01)));
     }
 
     @Test
     public void shouldReturnNullFormatDate() {
-        assertEquals(null, formatterService.formatDate(null));
+        assertEquals(null, dateFormatterService.formatDate(null));
     }
 
     @Test
@@ -59,7 +59,7 @@ public class FormatterServiceTest {
                 .proCountry("country")
                 .build();
         assertEquals("addressLine1, addressLine2, addressLine3, posttown, county, postcode, country",
-                formatterService.formatAddress(probateAddress));
+                dateFormatterService.formatAddress(probateAddress));
     }
 
     @Test
@@ -69,20 +69,20 @@ public class FormatterServiceTest {
                 .proPostCode("postcode")
                 .build();
         assertEquals("addressLine1, postcode",
-                formatterService.formatAddress(probateAddress));
+                dateFormatterService.formatAddress(probateAddress));
     }
 
     @Test
     public void shouldReturnBlankStringFormattedAddress() {
-        assertEquals(Strings.EMPTY, formatterService.formatAddress(null));
+        assertEquals(Strings.EMPTY, dateFormatterService.formatAddress(null));
     }
 
     @Test
     public void shouldReturnCavetExpiryDateFormatted() {
-        assertEquals("1st January 2019", formatterService.formatCaveatExpiryDate(LocalDate.of(2019, 01, 01)));
-        assertEquals("22nd February 2019", formatterService.formatCaveatExpiryDate(LocalDate.of(2019, 02, 22)));
-        assertEquals("13th March 2019", formatterService.formatCaveatExpiryDate(LocalDate.of(2019, 03, 13)));
-        assertEquals("23rd April 2019", formatterService.formatCaveatExpiryDate(LocalDate.of(2019, 04, 23)));
+        assertEquals("1st January 2019", dateFormatterService.formatCaveatExpiryDate(LocalDate.of(2019, 01, 01)));
+        assertEquals("22nd February 2019", dateFormatterService.formatCaveatExpiryDate(LocalDate.of(2019, 02, 22)));
+        assertEquals("13th March 2019", dateFormatterService.formatCaveatExpiryDate(LocalDate.of(2019, 03, 13)));
+        assertEquals("23rd April 2019", dateFormatterService.formatCaveatExpiryDate(LocalDate.of(2019, 04, 23)));
     }
 
 

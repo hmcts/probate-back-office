@@ -17,7 +17,7 @@ import java.util.Locale;
 @Service
 @Slf4j
 @AllArgsConstructor
-public class FormatterService {
+public class DateFormatterService {
 
     public String formatCaveatExpiryDate(LocalDate caveatExpiryDate) {
         if (caveatExpiryDate == null) {
