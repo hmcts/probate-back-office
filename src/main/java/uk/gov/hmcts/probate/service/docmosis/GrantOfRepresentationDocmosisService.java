@@ -4,15 +4,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import uk.gov.hmcts.probate.config.PDFServiceConfiguration;
 import uk.gov.hmcts.probate.config.properties.registries.RegistriesProperties;
 import uk.gov.hmcts.probate.config.properties.registries.Registry;
 import uk.gov.hmcts.probate.model.CaseType;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
+import uk.gov.hmcts.probate.service.AddressFormatterService;
 import uk.gov.hmcts.probate.service.CaveatQueryService;
-import uk.gov.hmcts.probate.service.FileSystemResourceService;
-import uk.gov.hmcts.probate.service.DateFormatterService;
 import uk.gov.hmcts.probate.service.ccd.CcdReferenceFormatterService;
 
 import java.text.DateFormat;
@@ -26,11 +24,9 @@ import java.util.Map;
 public class GrantOfRepresentationDocmosisService {
     private static final String DATE_INPUT_FORMAT = "ddMMyyyy";
     private final RegistriesProperties registriesProperties;
-    private final PDFServiceConfiguration pdfServiceConfiguration;
-    private final FileSystemResourceService fileSystemResourceService;
     private final CcdReferenceFormatterService ccdReferenceFormatterService;
     private final CaveatQueryService caveatQueryService;
-    private final DateFormatterService dateFormatterService;
+    private final AddressFormatterService addressFormatterService;
 
     private static final String PERSONALISATION_DATE_CAVEAT_ENTERED = "dateCaveatEntered";
     private static final String PERSONALISATION_CAVEATOR_NAME = "caveatorName";
@@ -62,7 +58,7 @@ public class GrantOfRepresentationDocmosisService {
         placeholders.put(PERSONALISATION_PA8AURL, "https://www.gov.uk/inherits-someone-dies-without-will|https://www.gov.uk/inherits-someone-dies-without-will");
         placeholders.put(PERSONALISATION_PA8BURL, "https://www.citizensadvice.org.uk|https://www.citizensadvice.org.uk/");
         placeholders.put(PERSONALISATION_CAVEATOR_NAME, caveatData.getCaveatorFullName());
-        placeholders.put(PERSONALISATION_CAVEATOR_ADDRESS, dateFormatterService.formatAddress(caveatData.getCaveatorAddress()));
+        placeholders.put(PERSONALISATION_CAVEATOR_ADDRESS, addressFormatterService.formatAddress(caveatData.getCaveatorAddress()));
         placeholders.put(PERSONALISATION_CAVEAT_REFERENCE,
                 ccdReferenceFormatterService.getFormattedCaseReference(caseDetails.getData().getBoCaseStopCaveatId()));
         return placeholders;

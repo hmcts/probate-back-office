@@ -6,7 +6,6 @@ import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import uk.gov.hmcts.probate.config.PDFServiceConfiguration;
 import uk.gov.hmcts.probate.config.properties.registries.RegistriesProperties;
 import uk.gov.hmcts.probate.config.properties.registries.Registry;
 import uk.gov.hmcts.probate.model.CaseType;
@@ -20,8 +19,6 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.service.AddressFormatterService;
 import uk.gov.hmcts.probate.service.CaveatQueryService;
-import uk.gov.hmcts.probate.service.DateFormatterService;
-import uk.gov.hmcts.probate.service.FileSystemResourceService;
 import uk.gov.hmcts.probate.service.ccd.CcdReferenceFormatterService;
 
 import java.text.DateFormat;
@@ -49,12 +46,6 @@ public class GrantOfRepresentationDocmosisServiceTest {
     private RegistriesProperties registriesPropertiesMock;
 
     @Mock
-    private PDFServiceConfiguration pdfServiceConfigurationMock;
-
-    @Mock
-    private FileSystemResourceService fileSystemResourceServiceMock;
-
-    @Mock
     private CaveatQueryService caveatQueryServiceMock;
 
     @Mock
@@ -62,9 +53,6 @@ public class GrantOfRepresentationDocmosisServiceTest {
 
     @Mock
     private AddressFormatterService addressFormatterService;
-
-    @Mock
-    private DateFormatterService dateFormatterService;
 
     private static final String DATE_INPUT_FORMAT = "ddMMyyyy";
     private static final long ID = 1234567891234567L;

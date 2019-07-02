@@ -1,11 +1,9 @@
 package uk.gov.hmcts.probate.service;
 
-import org.apache.logging.log4j.util.Strings;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.junit.MockitoJUnitRunner;
-import uk.gov.hmcts.probate.model.ccd.ProbateAddress;
 
 import java.time.LocalDate;
 
@@ -45,36 +43,6 @@ public class DateFormatterServiceTest {
     @Test
     public void shouldReturnNullFormatDate() {
         assertEquals(null, dateFormatterService.formatDate(null));
-    }
-
-    @Test
-    public void shouldReturnFormattedAddress() {
-        ProbateAddress probateAddress = ProbateAddress.builder()
-                .proAddressLine1("addressLine1")
-                .proAddressLine2("addressLine2")
-                .proAddressLine3("addressLine3")
-                .proPostCode("postcode")
-                .proPostTown("posttown")
-                .proCounty("county")
-                .proCountry("country")
-                .build();
-        assertEquals("addressLine1, addressLine2, addressLine3, posttown, county, postcode, country",
-                dateFormatterService.formatAddress(probateAddress));
-    }
-
-    @Test
-    public void shouldReturnFormattedAddressWillNulls() {
-        ProbateAddress probateAddress = ProbateAddress.builder()
-                .proAddressLine1("addressLine1")
-                .proPostCode("postcode")
-                .build();
-        assertEquals("addressLine1, postcode",
-                dateFormatterService.formatAddress(probateAddress));
-    }
-
-    @Test
-    public void shouldReturnBlankStringFormattedAddress() {
-        assertEquals(Strings.EMPTY, dateFormatterService.formatAddress(null));
     }
 
     @Test

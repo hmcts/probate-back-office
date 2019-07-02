@@ -1,21 +1,11 @@
 package uk.gov.hmcts.probate.service;
 
 import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.model.ccd.ProbateAddress;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
-import java.util.Locale;
-
 @Service
-@Slf4j
 @AllArgsConstructor
 public class AddressFormatterService {
 
