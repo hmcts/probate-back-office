@@ -527,17 +527,18 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         validatePostSuccess(DEFAULT_WILL_PAYLOAD, GENERATE_DEPOSIT_RECEIPT);
     }
 
-    @Test
-    public void verifySuccessForDigitalGrantDraftReissueForDuplicateNotation() {
-        String response = generateDocument(DEFAULT_REISSUE_PAYLOAD, GENERATE_GRANT_DRAFT_REISSUE);
-
-        System.out.println(response);
-
-        assertTrue(response.contains(PRIMARY_APPLICANT));
-        assertTrue(response.contains(CASE_REFERENCE));
-        assertTrue(response.contains(DECEASED_DETAILS));
-        assertTrue(response.contains(DECEASED_DOD));
-        assertTrue(response.contains(PRIMARY_APPLICANT));
-        assertTrue(response.contains(WATERMARK));
-    }
+    //Commented out due to Docmosis not allowing screen readers as images overlay all text
+    //@Test
+    //public void verifySuccessForDigitalGrantDraftReissueForDuplicateNotation() {
+    //    String response = generateDocument(DEFAULT_REISSUE_PAYLOAD, GENERATE_GRANT_DRAFT_REISSUE);
+    //
+    //    System.out.println(response);
+    //
+    //    assertTrue(response.contains(PRIMARY_APPLICANT));
+    //    assertTrue(response.contains(CASE_REFERENCE));
+    //    assertTrue(response.contains(DECEASED_DETAILS));
+    //    assertTrue(response.contains(DECEASED_DOD));
+    //    assertTrue(response.contains(PRIMARY_APPLICANT));
+    //    assertTrue(response.contains(WATERMARK));
+    //}
 }
