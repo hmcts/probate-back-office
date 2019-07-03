@@ -2,23 +2,27 @@ package uk.gov.hmcts.probate.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import uk.gov.hmcts.probate.config.properties.registries.Registry;
+import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.DocumentType;
-import uk.gov.hmcts.probate.model.SentEmail;
+import uk.gov.hmcts.probate.model.State;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
+import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.service.docmosis.GenericMapperService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
+import uk.gov.hmcts.probate.validator.EmailAddressNotificationValidationRule;
 import uk.gov.service.notify.NotificationClientException;
 
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
@@ -28,7 +32,6 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.Constants.CTSC;
-import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
 
 public class DocumentGeneratorServiceTest {
 
@@ -40,6 +43,8 @@ public class DocumentGeneratorServiceTest {
     private static final String SENT_EMAIL_FILE_NAME = "sentEmail.pdf";
     private CallbackRequest callbackRequest;
     private Map<String, Object> expectedMap;
+    private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMM Y HH:mm");
+
 
     @InjectMocks
     private DocumentGeneratorService documentGeneratorService;
@@ -55,6 +60,15 @@ public class DocumentGeneratorServiceTest {
 
     @Mock
     private RegistryDetailsService registryDetailsService;
+
+    @Mock
+    private CallbackResponse callbackResponse;
+
+    @Mock
+    private EventValidationService eventValidationService;
+
+    @Mock
+    private List<EmailAddressNotificationValidationRule> emailAddressNotificationValidationRules;
 
     @Mock
     private DocumentService documentService;
@@ -100,6 +114,8 @@ public class DocumentGeneratorServiceTest {
         when(pdfManagementService
                 .generateDocmosisDocumentAndUpload(eq(expectedMap), any(), anyBoolean())).thenReturn(Document.builder().build());
 
+      //  when(pdfManagementService.generateAndUpload(any(SentEmail.class), SENT_EMAIL).getDocumentFileName());
+
         doNothing().when(documentService).expire(any(CallbackRequest.class), any());
     }
 
@@ -125,22 +141,21 @@ public class DocumentGeneratorServiceTest {
                 documentGeneratorService.generateGrantReissueDraft(callbackRequest).getDocumentFileName());
     }
 
-    @Ignore
     @Test
     public void testGenerateReissueGrantProducesEmailCorrectly() throws NotificationClientException {
         CaseDetails caseDetails =
                 new CaseDetails(CaseData.builder()
                         .caseType("gop")
+                        .applicationType(ApplicationType.PERSONAL)
+                        .primaryApplicantEmailAddress("test@test.com")
                         .registryLocation("Bristol")
                         .boEmailGrantReIssuedNotificationRequested("Yes")
                         .build(),
                         LAST_MODIFIED, CASE_ID);
         callbackRequest = new CallbackRequest(caseDetails);
-        when(pdfManagementService.generateAndUpload(any(SentEmail.class), SENT_EMAIL))
-                .thenReturn(Document.builder().documentFileName(SENT_EMAIL_FILE_NAME).build());
 
-
-        assertEquals(SENT_EMAIL_FILE_NAME,
-                documentGeneratorService.generateGrantReissue(callbackRequest).get(0).getDocumentFileName());
+        when(eventValidationService.validateEmailRequest(callbackRequest, emailAddressNotificationValidationRules)).thenReturn(callbackResponse);
+        when(notificationService.sendEmail(State.GRANT_REISSUED, caseDetails)).thenReturn(Document.builder().documentFileName(SENT_EMAIL_FILE_NAME).build());
+        assertEquals(SENT_EMAIL_FILE_NAME, documentGeneratorService.generateGrantReissue(callbackRequest).get(0).getDocumentFileName());
     }
 }

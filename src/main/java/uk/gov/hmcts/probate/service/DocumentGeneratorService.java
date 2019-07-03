@@ -106,8 +106,8 @@ public class DocumentGeneratorService {
         if (caseData.isGrantReissuedEmailNotificationRequested()) {
             callbackResponse = eventValidationService.validateEmailRequest(callbackRequest, emailAddressNotificationValidationRules);
             if (callbackResponse.getErrors().isEmpty()) {
-                Document grantIssuedSentEmail = notificationService.sendEmail(GRANT_REISSUED, caseDetails);
-                documents.add(grantIssuedSentEmail);
+                Document sentEmail = notificationService.sendEmail(GRANT_REISSUED, caseDetails);
+                documents.add(sentEmail);
             }
         }
 
