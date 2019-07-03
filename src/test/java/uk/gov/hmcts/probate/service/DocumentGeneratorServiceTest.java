@@ -20,7 +20,6 @@ import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
@@ -33,6 +32,7 @@ public class DocumentGeneratorServiceTest {
     private static final String REGISTRY_LOCATION = "bristol";
     private static final String DIGITAL_GRANT_REISSUE_FILE_NAME = "digitalGrantDraftReissue.pdf";
     private static final String INTESTACY_REISSUE_FILE_NAME = "intestacyGrantDraftReissue.pdf";
+    private static final String ADMON_WILL_REISSUE_FILE_NAME = "admonWillGrantDraftReissue.pdf";
     private CallbackRequest callbackRequest;
     private Map<String, Object> expectedMap;
 
@@ -87,10 +87,10 @@ public class DocumentGeneratorServiceTest {
 
         when(registryDetailsService.getRegistryDetails(caseDetails)).thenReturn(returnedCaseDetails);
 
-        when(genericMapperService.caseDataWithImages(any(), any())).thenReturn(expectedMap);
+        when(genericMapperService.addCaseDataWithImages(any(), any())).thenReturn(expectedMap);
 
         when(pdfManagementService
-                .generateDocmosisDocumentAndUpload(eq(expectedMap), any(), anyBoolean())).thenReturn(Document.builder().build());
+                .generateDocmosisDocumentAndUpload(eq(expectedMap), any())).thenReturn(Document.builder().build());
 
         doNothing().when(documentService).expire(any(CallbackRequest.class), any());
     }
@@ -98,7 +98,7 @@ public class DocumentGeneratorServiceTest {
     @Test
     public void testGenerateReissueDraftProducesCorrectDocumentForGOP() {
         when(pdfManagementService.generateDocmosisDocumentAndUpload(expectedMap,
-                DocumentType.DIGITAL_GRANT_DRAFT_REISSUE, true))
+                DocumentType.DIGITAL_GRANT_DRAFT_REISSUE))
                 .thenReturn(Document.builder().documentFileName(DIGITAL_GRANT_REISSUE_FILE_NAME).build());
         assertEquals(DIGITAL_GRANT_REISSUE_FILE_NAME,
                 documentGeneratorService.generateGrantReissueDraft(callbackRequest).getDocumentFileName());
@@ -111,9 +111,22 @@ public class DocumentGeneratorServiceTest {
                 LAST_MODIFIED, CASE_ID);
         callbackRequest = new CallbackRequest(caseDetails);
         when(pdfManagementService.generateDocmosisDocumentAndUpload(expectedMap,
-                DocumentType.INTESTACY_GRANT_DRAFT_REISSUE, true))
+                DocumentType.INTESTACY_GRANT_DRAFT_REISSUE))
                 .thenReturn(Document.builder().documentFileName(INTESTACY_REISSUE_FILE_NAME).build());
         assertEquals(INTESTACY_REISSUE_FILE_NAME,
+                documentGeneratorService.generateGrantReissueDraft(callbackRequest).getDocumentFileName());
+    }
+
+    @Test
+    public void testGenerateReissueDraftProducesCorrectDocumentForAdmonWill() {
+        CaseDetails caseDetails =
+                new CaseDetails(CaseData.builder().caseType("admonWill").registryLocation("Bristol").build(),
+                        LAST_MODIFIED, CASE_ID);
+        callbackRequest = new CallbackRequest(caseDetails);
+        when(pdfManagementService.generateDocmosisDocumentAndUpload(expectedMap,
+                DocumentType.ADMON_WILL_GRANT_DRAFT_REISSUE)).thenReturn(Document.builder()
+                .documentFileName(ADMON_WILL_REISSUE_FILE_NAME).build());
+        assertEquals(ADMON_WILL_REISSUE_FILE_NAME,
                 documentGeneratorService.generateGrantReissueDraft(callbackRequest).getDocumentFileName());
     }
 }

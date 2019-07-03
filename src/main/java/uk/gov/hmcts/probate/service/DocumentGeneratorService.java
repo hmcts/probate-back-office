@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_DRAFT;
+import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_DRAFT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_DRAFT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_DRAFT;
@@ -38,6 +39,8 @@ public class DocumentGeneratorService {
     private static final String SEAL_IMAGE = "GrantOfProbateSeal";
     private static final String CREST_FILE_PATH = "crestImage.txt";
     private static final String SEAL_FILE_PATH = "sealImage.txt";
+    private static final String WATERMARK = "draftbackground";
+    private static final String WATERMARK_FILE_PATH = "watermarkImage.txt";
 
     private Map<String, Object> images = new HashMap<>();
 
@@ -49,19 +52,20 @@ public class DocumentGeneratorService {
 
         images.put(CREST_IMAGE, CREST_FILE_PATH);
         images.put(SEAL_IMAGE, SEAL_FILE_PATH);
-        Map<String, Object> placeholders = genericMapperService.caseDataWithImages(images, caseDetails);
+        images.put(WATERMARK, WATERMARK_FILE_PATH);
+        Map<String, Object> placeholders = genericMapperService.addCaseDataWithImages(images, caseDetails);
         CaseData caseData = caseDetails.getData();
 
         switch (caseData.getCaseType()) {
             case INTESTACY:
                 template = INTESTACY_GRANT_DRAFT_REISSUE;
-                document = pdfManagementService.generateDocmosisDocumentAndUpload(placeholders, template, true);
+                document = pdfManagementService.generateDocmosisDocumentAndUpload(placeholders, template);
                 log.info("Generated and Uploaded Intestacy grant preview document with template {} for the case id {}",
                         template.getTemplateName(), callbackRequest.getCaseDetails().getId().toString());
                 break;
             case ADMON_WILL:
-                template = ADMON_WILL_GRANT_DRAFT;
-                document = pdfManagementService.generateAndUpload(callbackRequest, template);
+                template = ADMON_WILL_GRANT_DRAFT_REISSUE;
+                document = pdfManagementService.generateDocmosisDocumentAndUpload(placeholders, template);
                 log.info("Generated and Uploaded Admon Will grant preview document with template {} for the case id {}",
                         template.getTemplateName(), callbackRequest.getCaseDetails().getId().toString());
                 break;
@@ -71,7 +75,7 @@ public class DocumentGeneratorService {
             case GRANT_OF_PROBATE:
             default:
                 template = DIGITAL_GRANT_DRAFT_REISSUE;
-                document = pdfManagementService.generateDocmosisDocumentAndUpload(placeholders, template, true);
+                document = pdfManagementService.generateDocmosisDocumentAndUpload(placeholders, template);
                 log.info("Generated and Uploaded Grant of Probate preview document with template {} for the case id {}",
                         template.getTemplateName(), callbackRequest.getCaseDetails().getId().toString());
                 break;
@@ -84,7 +88,7 @@ public class DocumentGeneratorService {
 
     private void expireDrafts(CallbackRequest callbackRequest) {
         DocumentType[] documentTypes = {DIGITAL_GRANT_DRAFT, INTESTACY_GRANT_DRAFT, ADMON_WILL_GRANT_DRAFT,
-                                        DIGITAL_GRANT_DRAFT_REISSUE, INTESTACY_GRANT_DRAFT_REISSUE};
+                                        DIGITAL_GRANT_DRAFT_REISSUE, INTESTACY_GRANT_DRAFT_REISSUE, ADMON_WILL_GRANT_DRAFT_REISSUE};
         for (DocumentType documentType : documentTypes) {
             documentService.expire(callbackRequest, documentType);
         }

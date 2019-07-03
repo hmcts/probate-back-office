@@ -21,6 +21,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.Constants.CTSC;
 
@@ -84,6 +86,8 @@ public class GenericMapperServiceTest {
     private static final String SEAL_IMAGE = "GrantOfProbateSeal";
     private static final String CREST_FILE_PATH = "crestImage.txt";
     private static final String SEAL_FILE_PATH = "sealImage.txt";
+    private static final String WATERMARK = "draftbackground";
+    private static final String WATERMARK_FILE_PATH = "watermarkImage.txt";
     private CallbackRequest callbackRequest;
     private Map<String, Object> images = new HashMap<>();
     private Registry registry = new Registry();
@@ -144,9 +148,11 @@ public class GenericMapperServiceTest {
 
         images.put(CREST_IMAGE, CREST_FILE_PATH);
         images.put(SEAL_IMAGE, SEAL_FILE_PATH);
+        images.put(WATERMARK, WATERMARK_FILE_PATH);
 
         when(fileSystemResourceService.getFileFromResourceAsString(CREST_FILE_PATH)).thenReturn("Crest");
         when(fileSystemResourceService.getFileFromResourceAsString(SEAL_FILE_PATH)).thenReturn("Seal");
+        when(fileSystemResourceService.getFileFromResourceAsString(WATERMARK_FILE_PATH)).thenReturn("Watermark");
     }
 
     @Test
@@ -170,7 +176,7 @@ public class GenericMapperServiceTest {
 
     @Test
     public void testImagesMappedSuccessfully() {
-        Map<String, Object> returnedMap = genericMapperService.caseDataWithImages(images,
+        Map<String, Object> returnedMap = genericMapperService.addCaseDataWithImages(images,
                 callbackRequest.getCaseDetails());
         expectedImages().keySet().stream()
                 .forEach((key) -> {
@@ -182,6 +188,7 @@ public class GenericMapperServiceTest {
         Map<String, Object> expectedMap = new HashMap<>();
         expectedMap.put(SEAL_IMAGE, "image:base64:Seal");
         expectedMap.put(CREST_IMAGE, "image:base64:Crest");
+        expectedMap.put(WATERMARK, "image:base64:Watermark");
 
         return expectedMap;
     }

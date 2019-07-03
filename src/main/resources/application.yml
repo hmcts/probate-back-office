@@ -60,9 +60,11 @@ docmosis:
     grantCoversheet:
       templateName: FL-PRB-GNO-ENG-00024.docx
     digitalGrantDraftReissue:
-      templateName: FL-PRB-GNO-ENG-00061.docx
+      templateName: FL-PRB-GNO-ENG-00061.doc
     intestacyGrantDraftReissue:
-      templateName: FL-PRB-GNO-ENG-00061.docx
+      templateName: FL-PRB-GNO-ENG-00061.doc
+    admonWillGrantDraftReissue:
+      templateName: FL-PRB-GNO-ENG-00061.doc
 
 fee.api:
   url: http://localhost:4411

@@ -9,14 +9,7 @@ import uk.gov.hmcts.probate.config.properties.registries.Registry;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.service.FileSystemResourceService;
-import uk.gov.hmcts.probate.service.ccd.CcdReferenceFormatterService;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.text.DateFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
@@ -54,7 +47,7 @@ public class GenericMapperService {
         return placeholders;
     }
 
-    public Map<String, Object> caseDataWithImages(Map<String, Object> images, CaseDetails caseDetails) {
+    public Map<String, Object> addCaseDataWithImages(Map<String, Object> images, CaseDetails caseDetails) {
         Map<String, Object> placeholders = addCaseDataWithRegistryProperties(caseDetails);
         Map<String, Object> mappedImages = mappedBase64Images(images);
         placeholders.putAll(mappedImages);

@@ -65,7 +65,7 @@ public class PDFGeneratorServiceTest {
 
         when(pdfServiceClientExceptionMock.getMessage()).thenReturn("blah");
         when(pdfServiceClient.generateFromHtml(any(), any())).thenReturn("MockedBytes".getBytes());
-        when(docmosisPdfGenerationServiceMock.generateDocFrom(any(), anyMap(), anyBoolean()))
+        when(docmosisPdfGenerationServiceMock.generateDocFrom(any(), anyMap()))
                 .thenReturn("MockedBytes".getBytes());
         when(fileSystemResourceServiceMock.getFileFromResourceAsString(anyString()))
                 .thenReturn("<htmlTemplate>");
@@ -100,7 +100,7 @@ public class PDFGeneratorServiceTest {
         placeholders.put("hmctsfamily", "image:base64:" + null);
 
         EvidenceManagementFileUpload result = underTest.generateDocmosisDocumentFrom(CAVEAT_RAISED.getTemplateName(),
-                placeholders, false);
+                placeholders);
         Assert.assertThat(result.getContentType(), equalTo(MediaType.APPLICATION_PDF));
         Assert.assertThat(result.getBytes().length, greaterThan(0));
     }
@@ -138,8 +138,8 @@ public class PDFGeneratorServiceTest {
         placeholders.put("PA8AURL", "www.citizensadvice.org.uk|https://www.citizensadvice.org.uk/");
         placeholders.put("hmctsfamily", "image:base64:" + null);
 
-        when(docmosisPdfGenerationServiceMock.generateDocFrom(any(), any(), anyBoolean()))
+        when(docmosisPdfGenerationServiceMock.generateDocFrom(any(), any()))
                 .thenThrow(pdfServiceClientExceptionMock);
-        underTest.generateDocmosisDocumentFrom(CAVEAT_RAISED.getTemplateName(), placeholders, false);
+        underTest.generateDocmosisDocumentFrom(CAVEAT_RAISED.getTemplateName(), placeholders);
     }
 }

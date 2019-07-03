@@ -112,12 +112,11 @@ public class PDFManagementService {
         return uploadDocument(documentType, fileUpload);
     }
 
-    public Document generateDocmosisDocumentAndUpload(Map<String, Object> placeholders, DocumentType documentType,
-                                                      boolean isWatermark) {
+    public Document generateDocmosisDocumentAndUpload(Map<String, Object> placeholders, DocumentType documentType) {
 
         log.info("Generating pdf to docmosis for template {}", documentType.getTemplateName());
         EvidenceManagementFileUpload fileUpload = pdfGeneratorService.generateDocmosisDocumentFrom(documentType.getTemplateName(),
-                placeholders, isWatermark);
+                placeholders);
         return uploadDocument(documentType, fileUpload);
     }
 

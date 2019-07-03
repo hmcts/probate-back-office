@@ -128,7 +128,7 @@ public class NotificationControllerTest {
         when(pdfManagementService.generateAndUpload(any(CallbackRequest.class), eq(GRANT_COVER)))
                 .thenReturn(Document.builder().documentType(GRANT_COVER).build());
 
-        when(pdfManagementService.generateDocmosisDocumentAndUpload(any(Map.class), eq(GRANT_COVERSHEET), anyBoolean()))
+        when(pdfManagementService.generateDocmosisDocumentAndUpload(any(Map.class), eq(GRANT_COVERSHEET)))
                 .thenReturn(Document.builder().documentType(GRANT_COVERSHEET).build());
 
         when(pdfManagementService.generateAndUpload(any(CallbackRequest.class), eq(EDGE_CASE)))
@@ -136,7 +136,7 @@ public class NotificationControllerTest {
 
         when(grantOfRepresentationDocmosisMapperService.caseDataForStoppedMatchedCaveat(any())).thenReturn(EMPTY_MAP);
 
-        when(pdfManagementService.generateDocmosisDocumentAndUpload(any(), eq(CAVEAT_STOPPED), anyBoolean())).thenReturn(EMPTY_DOC);
+        when(pdfManagementService.generateDocmosisDocumentAndUpload(any(), eq(CAVEAT_STOPPED))).thenReturn(EMPTY_DOC);
 
     }
 
