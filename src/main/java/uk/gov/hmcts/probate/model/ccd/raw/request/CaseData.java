@@ -399,6 +399,12 @@ public class CaseData {
 
     private final String boCaveatStopSendToBulkPrintRequested;
 
+    private final String boEmailGrantReIssuedNotificationRequested;
+
+    @SuppressWarnings("squid:S1170")
+    @Getter(lazy = true)
+    private final String boEmailGrantReissuedNotification = getDefaultValueForEmailNotifications();
+
     @SuppressWarnings("squid:S1170")
     @Getter(lazy = true)
     private final String boCaveatStopSendToBulkPrint = YES;
@@ -480,6 +486,8 @@ public class CaseData {
     public boolean isGrantIssuedEmailNotificationRequested() {
         return YES.equals(getBoEmailGrantIssuedNotification());
     }
+
+    public boolean isGrantReissuedEmailNotificationRequested() { return YES.equals(getBoEmailGrantReissuedNotification()); }
 
     public boolean isCaveatStopNotificationRequested() {
         return YES.equals(getBoCaveatStopNotification());

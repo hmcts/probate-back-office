@@ -2,18 +2,21 @@ package uk.gov.hmcts.probate.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import uk.gov.hmcts.probate.config.properties.registries.Registry;
 import uk.gov.hmcts.probate.model.DocumentType;
+import uk.gov.hmcts.probate.model.SentEmail;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.service.docmosis.GenericMapperService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
+import uk.gov.service.notify.NotificationClientException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -25,6 +28,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.Constants.CTSC;
+import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
 
 public class DocumentGeneratorServiceTest {
 
@@ -33,6 +37,7 @@ public class DocumentGeneratorServiceTest {
     private static final String REGISTRY_LOCATION = "bristol";
     private static final String DIGITAL_GRANT_REISSUE_FILE_NAME = "digitalGrantDraftReissue.pdf";
     private static final String INTESTACY_REISSUE_FILE_NAME = "intestacyGrantDraftReissue.pdf";
+    private static final String SENT_EMAIL_FILE_NAME = "sentEmail.pdf";
     private CallbackRequest callbackRequest;
     private Map<String, Object> expectedMap;
 
@@ -41,6 +46,9 @@ public class DocumentGeneratorServiceTest {
 
     @Mock
     private PDFManagementService pdfManagementService;
+
+    @Mock
+    private NotificationService notificationService;
 
     @Mock
     private GenericMapperService genericMapperService;
@@ -115,5 +123,24 @@ public class DocumentGeneratorServiceTest {
                 .thenReturn(Document.builder().documentFileName(INTESTACY_REISSUE_FILE_NAME).build());
         assertEquals(INTESTACY_REISSUE_FILE_NAME,
                 documentGeneratorService.generateGrantReissueDraft(callbackRequest).getDocumentFileName());
+    }
+
+    @Ignore
+    @Test
+    public void testGenerateReissueGrantProducesEmailCorrectly() throws NotificationClientException {
+        CaseDetails caseDetails =
+                new CaseDetails(CaseData.builder()
+                        .caseType("gop")
+                        .registryLocation("Bristol")
+                        .boEmailGrantReIssuedNotificationRequested("Yes")
+                        .build(),
+                        LAST_MODIFIED, CASE_ID);
+        callbackRequest = new CallbackRequest(caseDetails);
+        when(pdfManagementService.generateAndUpload(any(SentEmail.class), SENT_EMAIL))
+                .thenReturn(Document.builder().documentFileName(SENT_EMAIL_FILE_NAME).build());
+
+
+        assertEquals(SENT_EMAIL_FILE_NAME,
+                documentGeneratorService.generateGrantReissue(callbackRequest).get(0).getDocumentFileName());
     }
 }

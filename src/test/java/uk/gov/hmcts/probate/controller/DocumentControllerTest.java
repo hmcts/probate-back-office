@@ -345,4 +345,17 @@ public class DocumentControllerTest {
                 .andExpect(content().string(containsString("data")));
 
     }
+
+    @Test
+    public void generateGrantReissueGrantOfRepresentation() throws Exception {
+
+        String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadNotifications.json");
+
+        mockMvc.perform(post("/document/generate-grant-reissue")
+                .content(solicitorPayload)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("data")));
+
+    }
 }

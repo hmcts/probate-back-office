@@ -222,6 +222,8 @@ public class NotificationService {
                 return notificationTemplates.getEmail().get(applicationType).getCaseStoppedCaveat();
             case GRANT_ISSUED:
                 return notificationTemplates.getEmail().get(applicationType).getGrantIssued();
+            case GRANT_REISSUED:
+                return notificationTemplates.getEmail().get(applicationType).getGrantReissued();
             case GENERAL_CAVEAT_MESSAGE:
                 return notificationTemplates.getEmail().get(applicationType).getGeneralCaveatMessage();
             case CAVEAT_RAISED:

@@ -53,6 +53,7 @@ import static uk.gov.hmcts.probate.model.State.CAVEAT_RAISED;
 import static uk.gov.hmcts.probate.model.State.DOCUMENTS_RECEIVED;
 import static uk.gov.hmcts.probate.model.State.GENERAL_CAVEAT_MESSAGE;
 import static uk.gov.hmcts.probate.model.State.GRANT_ISSUED;
+import static uk.gov.hmcts.probate.model.State.GRANT_REISSUED;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -380,6 +381,36 @@ public class NotificationServiceTest {
 
         verify(notificationClient).sendEmail(
                 eq("sol-grant-issued"),
+                eq("solicitor@test.com"),
+                any(),
+                eq("1234-5678-9012"));
+
+        verify(pdfManagementService).generateAndUpload(any(SentEmail.class), eq(SENT_EMAIL));
+    }
+
+    @Test
+    public void sendGrantReissuedEmailToPersonalApplicantFromBirmingham()
+            throws NotificationClientException, BadRequestException {
+
+        notificationService.sendEmail(GRANT_REISSUED, personalCaseDataBirmingham);
+
+        verify(notificationClient).sendEmail(
+                eq("pa-grant-reissued"),
+                eq("personal@test.com"),
+                any(),
+                isNull());
+
+        verify(pdfManagementService).generateAndUpload(any(SentEmail.class), eq(SENT_EMAIL));
+    }
+
+    @Test
+    public void sendGrantReissuedEmailToSolicitorFromBirmingham()
+            throws NotificationClientException, BadRequestException {
+
+        notificationService.sendEmail(GRANT_REISSUED, solicitorCaseDataBirmingham);
+
+        verify(notificationClient).sendEmail(
+                eq("sol-grant-reissued"),
                 eq("solicitor@test.com"),
                 any(),
                 eq("1234-5678-9012"));

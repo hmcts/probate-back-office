@@ -8,10 +8,18 @@ import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
+import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.service.docmosis.GenericMapperService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
+import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
+import uk.gov.hmcts.probate.validator.BulkPrintValidationRule;
+import uk.gov.hmcts.probate.validator.EmailAddressNotificationValidationRule;
+import uk.gov.service.notify.NotificationClientException;
 
+import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_DRAFT;
@@ -19,6 +27,7 @@ import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_DRAFT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_DRAFT_REISSUE;
+import static uk.gov.hmcts.probate.model.State.GRANT_REISSUED;
 
 @Slf4j
 @Service
@@ -29,6 +38,12 @@ public class DocumentGeneratorService {
     private final PDFManagementService pdfManagementService;
     private final DocumentService documentService;
     private final GenericMapperService genericMapperService;
+    private final BulkPrintService bulkPrintService;
+    private final EventValidationService eventValidationService;
+    private final List<EmailAddressNotificationValidationRule> emailAddressNotificationValidationRules;
+    private final List<BulkPrintValidationRule> bulkPrintValidationRules;
+    private final CallbackResponseTransformer callbackResponseTransformer;
+    private final NotificationService notificationService;
 
     private static final String GRANT_OF_PROBATE = "gop";
     private static final String ADMON_WILL = "admonWill";
@@ -80,6 +95,23 @@ public class DocumentGeneratorService {
         expireDrafts(callbackRequest);
 
         return document;
+    }
+
+    public List<Document> generateGrantReissue(CallbackRequest callbackRequest) throws NotificationClientException {
+        CaseDetails caseDetails = callbackRequest.getCaseDetails();
+        @Valid CaseData caseData = caseDetails.getData();
+        CallbackResponse callbackResponse = CallbackResponse.builder().errors(new ArrayList<>()).build();
+        List<Document> documents = new ArrayList<>();
+
+        if (caseData.isGrantReissuedEmailNotificationRequested()) {
+            callbackResponse = eventValidationService.validateEmailRequest(callbackRequest, emailAddressNotificationValidationRules);
+            if (callbackResponse.getErrors().isEmpty()) {
+                Document grantIssuedSentEmail = notificationService.sendEmail(GRANT_REISSUED, caseDetails);
+                documents.add(grantIssuedSentEmail);
+            }
+        }
+
+        return documents;
     }
 
     private void expireDrafts(CallbackRequest callbackRequest) {
