@@ -40,6 +40,7 @@ Scenario('Caveat Workflow - E2E Test 01 - Caveat for a Personal Applicant - Rais
     I.enterCaveatPage1('create');
     I.enterCaveatPage2('create');
     I.enterCaveatPage3('create');
+    I.enterCaveatPage4('create');
     I.checkMyAnswers(nextStepName);
     let endState = 'Caveat raised';
     const url = await I.grabCurrentUrl();
@@ -52,6 +53,7 @@ Scenario('Caveat Workflow - E2E Test 01 - Caveat for a Personal Applicant - Rais
     I.seeCaseDetails(caseRef, caseDetailsTabConfig, createCaveatConfig);
     I.seeCaseDetails(caseRef, deceasedDetailsTabConfig, createCaveatConfig);
     I.seeCaseDetails(caseRef, caveatorDetailsTabConfig, createCaveatConfig);
+
     // When raising a caveat, Caveat Expiry Date is automatically set to today + 6 months
     createCaveatConfig.caveat_expiry_date = dateFns.format(dateFns.addMonths(new Date(), 6), 'D MMM YYYY');
     I.seeCaseDetails(caseRef, caveatDetailsTabConfig, createCaveatConfig);
