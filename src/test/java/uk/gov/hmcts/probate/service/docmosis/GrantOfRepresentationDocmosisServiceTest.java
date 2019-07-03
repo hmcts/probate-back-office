@@ -19,6 +19,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.service.AddressFormatterService;
 import uk.gov.hmcts.probate.service.CaveatQueryService;
+import uk.gov.hmcts.probate.service.DateFormatterService;
 import uk.gov.hmcts.probate.service.ccd.CcdReferenceFormatterService;
 
 import java.text.DateFormat;
@@ -54,10 +55,14 @@ public class GrantOfRepresentationDocmosisServiceTest {
     @Mock
     private AddressFormatterService addressFormatterService;
 
+    @Mock
+    private DateFormatterService dateFormatterService;
+
     private static final String DATE_INPUT_FORMAT = "ddMMyyyy";
     private static final long ID = 1234567891234567L;
     private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
-    private static final String PERSONALISATION_DATE_CAVEAT_ENTERED = "dateCaveatEntered";
+    private static final LocalDate CAVEAT_EXPIRY_DATE = LocalDate.of(2019, 12, 31);
+    private static final String PERSONALISATION_CAVEAT_EXPIRY_DATE = "2019-12-31";
     private static final String PERSONALISATION_CAVEATOR_NAME = "caveatorName";
     private static final String PERSONALISATION_CAVEATOR_ADDRESS = "caveatorAddress";
     private static final String PERSONALISATION_CASE_REFERENCE = "caseReference";
@@ -112,10 +117,13 @@ public class GrantOfRepresentationDocmosisServiceTest {
                 .bulkPrintId(bulkPrintId)
                 .documentsGenerated(documentsGenerated)
                 .caveatorAddress(ProbateAddress.builder().proAddressLine1("addressLine1").build())
+                .expiryDate(CAVEAT_EXPIRY_DATE)
                 .build();
 
         when(caveatQueryServiceMock.findCaveatById(eq(CaseType.CAVEAT), any())).thenReturn(caveatData);
         when(registriesPropertiesMock.getRegistries()).thenReturn(registries);
+        when(addressFormatterService.formatAddress(any())).thenReturn(PERSONALISATION_CAVEATOR_ADDRESS);
+        when(dateFormatterService.formatCaveatExpiryDate(any())).thenReturn(PERSONALISATION_CAVEAT_EXPIRY_DATE);
 
     }
 
@@ -136,8 +144,10 @@ public class GrantOfRepresentationDocmosisServiceTest {
         assertEquals("https://www.citizensadvice.org.uk|https://www.citizensadvice.org.uk/",
                 placeholders.get(PERSONALISATION_PA8BURL));
         assertEquals("fred jones", placeholders.get(PERSONALISATION_CAVEATOR_NAME));
-        assertEquals(addressFormatterService.formatAddress(caveatData.getCaveatorAddress()),
+        assertEquals("caveatorAddress",
                 placeholders.get(PERSONALISATION_CAVEATOR_ADDRESS));
+        assertEquals(PERSONALISATION_CAVEAT_EXPIRY_DATE,
+                placeholders.get("caveatExpiryDate"));
         assertEquals(ccdReferenceFormatterServiceMock.getFormattedCaseReference("1234567891234567"),
                 placeholders.get(PERSONALISATION_CAVEAT_REFERENCE));
     }
