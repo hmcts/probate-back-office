@@ -199,9 +199,6 @@ public class NotificationService {
         personalisation.put(PERSONALISATION_MESSAGE_CONTENT, caveatData.getMessageContent());
         personalisation.put(PERSONALISATION_REGISTRY_NAME, registry.getName());
         personalisation.put(PERSONALISATION_REGISTRY_PHONE, registry.getPhone());
-        if (caveatData.getExpiryDate() == null) {
-            caveatData.setExpiryDate(LocalDate.now());
-        }
         personalisation.put(PERSONALISATION_CAVEAT_EXPIRY_DATE, dateFormatterService.formatCaveatExpiryDate(caveatData.getExpiryDate()));
 
         return personalisation;
