@@ -7,9 +7,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import uk.gov.hmcts.probate.config.properties.registries.Registry;
-import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.DocumentType;
-import uk.gov.hmcts.probate.model.State;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
@@ -18,7 +16,6 @@ import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.service.docmosis.GenericMapperService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.validator.EmailAddressNotificationValidationRule;
-import uk.gov.service.notify.NotificationClientException;
 
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
@@ -139,23 +136,5 @@ public class DocumentGeneratorServiceTest {
                 .thenReturn(Document.builder().documentFileName(INTESTACY_REISSUE_FILE_NAME).build());
         assertEquals(INTESTACY_REISSUE_FILE_NAME,
                 documentGeneratorService.generateGrantReissueDraft(callbackRequest).getDocumentFileName());
-    }
-
-    @Test
-    public void testGenerateReissueGrantProducesEmailCorrectly() throws NotificationClientException {
-        CaseDetails caseDetails =
-                new CaseDetails(CaseData.builder()
-                        .caseType("gop")
-                        .applicationType(ApplicationType.PERSONAL)
-                        .primaryApplicantEmailAddress("test@test.com")
-                        .registryLocation("Bristol")
-                        .boEmailGrantReIssuedNotificationRequested("Yes")
-                        .build(),
-                        LAST_MODIFIED, CASE_ID);
-        callbackRequest = new CallbackRequest(caseDetails);
-
-        when(eventValidationService.validateEmailRequest(callbackRequest, emailAddressNotificationValidationRules)).thenReturn(callbackResponse);
-        when(notificationService.sendEmail(State.GRANT_REISSUED, caseDetails)).thenReturn(Document.builder().documentFileName(SENT_EMAIL_FILE_NAME).build());
-        assertEquals(SENT_EMAIL_FILE_NAME, documentGeneratorService.generateGrantReissue(callbackRequest).get(0).getDocumentFileName());
     }
 }

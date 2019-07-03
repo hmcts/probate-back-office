@@ -8,16 +8,12 @@ import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
-import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.service.docmosis.GenericMapperService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.validator.BulkPrintValidationRule;
 import uk.gov.hmcts.probate.validator.EmailAddressNotificationValidationRule;
-import uk.gov.service.notify.NotificationClientException;
 
-import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,7 +23,6 @@ import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_DRAFT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_DRAFT_REISSUE;
-import static uk.gov.hmcts.probate.model.State.GRANT_REISSUED;
 
 @Slf4j
 @Service
@@ -95,23 +90,6 @@ public class DocumentGeneratorService {
         expireDrafts(callbackRequest);
 
         return document;
-    }
-
-    public List<Document> generateGrantReissue(CallbackRequest callbackRequest) throws NotificationClientException {
-        CaseDetails caseDetails = callbackRequest.getCaseDetails();
-        @Valid CaseData caseData = caseDetails.getData();
-        CallbackResponse callbackResponse = CallbackResponse.builder().errors(new ArrayList<>()).build();
-        List<Document> documents = new ArrayList<>();
-
-        if (caseData.isGrantReissuedEmailNotificationRequested()) {
-            callbackResponse = eventValidationService.validateEmailRequest(callbackRequest, emailAddressNotificationValidationRules);
-            if (callbackResponse.getErrors().isEmpty()) {
-                Document sentEmail = notificationService.sendEmail(GRANT_REISSUED, caseDetails);
-                documents.add(sentEmail);
-            }
-        }
-
-        return documents;
     }
 
     private void expireDrafts(CallbackRequest callbackRequest) {

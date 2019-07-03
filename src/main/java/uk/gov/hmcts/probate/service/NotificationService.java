@@ -18,17 +18,22 @@ import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
+import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
+import uk.gov.hmcts.probate.validator.EmailAddressNotificationValidationRule;
 import uk.gov.service.notify.NotificationClient;
 import uk.gov.service.notify.NotificationClientException;
 import uk.gov.service.notify.SendEmailResponse;
 
+import javax.validation.Valid;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,6 +41,7 @@ import java.util.Map;
 import static uk.gov.hmcts.probate.model.Constants.CTSC;
 import static uk.gov.hmcts.probate.model.Constants.DOC_SUBTYPE_WILL;
 import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
+import static uk.gov.hmcts.probate.model.State.GRANT_REISSUED;
 
 @RequiredArgsConstructor
 @Component
@@ -49,6 +55,8 @@ public class NotificationService {
     private final PDFManagementService pdfManagementService;
     private final CaveatQueryService caveatQueryService;
     private final FormatterService formatterService;
+    private final EventValidationService eventValidationService;
+    private final List<EmailAddressNotificationValidationRule> emailAddressNotificationValidationRules;
 
     private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMM Y HH:mm");
     private static final DateTimeFormatter EXCELA_DATE = DateTimeFormatter.ofPattern("yyyyMMdd");
@@ -140,6 +148,22 @@ public class NotificationService {
         response = notificationClient.sendEmail(templateId, emailAddresses.getExcelaEmail(), personalisation, reference);
 
         return getGeneratedSentEmailDocument(response, emailAddresses.getExcelaEmail(), SENT_EMAIL);
+    }
+
+    public Document generateGrantReissue(CallbackRequest callbackRequest) throws NotificationClientException {
+        CaseDetails caseDetails = callbackRequest.getCaseDetails();
+        @Valid CaseData caseData = caseDetails.getData();
+        CallbackResponse callbackResponse = CallbackResponse.builder().errors(new ArrayList<>()).build();
+        Document sentEmail = null;
+
+        if (caseData.isGrantReissuedEmailNotificationRequested()) {
+            callbackResponse = eventValidationService.validateEmailRequest(callbackRequest, emailAddressNotificationValidationRules);
+            if (callbackResponse.getErrors().isEmpty()) {
+                sentEmail = sendEmail(GRANT_REISSUED, caseDetails);
+            }
+        }
+
+        return sentEmail;
     }
 
     private Document getGeneratedSentEmailDocument(SendEmailResponse response, String emailAddress, DocumentType docType) {

@@ -13,8 +13,10 @@ import org.springframework.test.context.junit4.SpringRunner;
 import uk.gov.hmcts.probate.config.properties.registries.RegistriesProperties;
 import uk.gov.hmcts.probate.exception.BadRequestException;
 import uk.gov.hmcts.probate.insights.AppInsights;
+import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.CaseType;
 import uk.gov.hmcts.probate.model.SentEmail;
+import uk.gov.hmcts.probate.model.State;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
 import uk.gov.hmcts.probate.model.ccd.ProbateAddress;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
@@ -23,10 +25,13 @@ import uk.gov.hmcts.probate.model.ccd.raw.BulkPrint;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
+import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
+import uk.gov.hmcts.probate.validator.EmailAddressNotificationValidationRule;
 import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
 import uk.gov.service.notify.NotificationClient;
 import uk.gov.service.notify.NotificationClientException;
@@ -38,6 +43,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
+import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
@@ -77,6 +83,15 @@ public class NotificationServiceTest {
     @Mock
     private CaveatQueryService caveatQueryServiceMock;
 
+    @Mock
+    private EventValidationService eventValidationService;
+
+    @Mock
+    private List<EmailAddressNotificationValidationRule> emailAddressNotificationValidationRules;
+
+    @Mock
+    CallbackResponse callbackResponse;
+
     @SpyBean
     private NotificationClient notificationClient;
 
@@ -104,12 +119,15 @@ public class NotificationServiceTest {
     private CaveatDetails caveatRaisedCaseData;
     private CaveatDetails caveatRaisedCtscCaseData;
     private CaveatData caveatData;
+    private CallbackRequest callbackRequest;
 
     @Mock
     private RegistriesProperties registriesPropertiesMock;
 
     private static final Long ID = 1L;
     private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
+    private static final Long CASE_ID = 12345678987654321L;
+    private static final String SENT_EMAIL_FILE_NAME = "sentEmail.pdf";
 
     private static final String PERSONALISATION_APPLICANT_NAME = "applicant_name";
     private static final String PERSONALISATION_DECEASED_NAME = "deceased_name";
@@ -770,5 +788,23 @@ public class NotificationServiceTest {
                 anyString());
 
         verify(pdfManagementService).generateAndUpload(any(SentEmail.class), eq(SENT_EMAIL));
+    }
+
+    @Test
+    public void testGenerateReissueGrantProducesEmailCorrectly() throws NotificationClientException {
+        CaseDetails caseDetails =
+                new CaseDetails(CaseData.builder()
+                        .caseType("gop")
+                        .applicationType(ApplicationType.PERSONAL)
+                        .primaryApplicantEmailAddress("test@test.com")
+                        .registryLocation("Bristol")
+                        .boEmailGrantReIssuedNotificationRequested("Yes")
+                        .build(),
+                        LAST_MODIFIED, CASE_ID);
+        callbackRequest = new CallbackRequest(caseDetails);
+
+        when(eventValidationService.validateEmailRequest(callbackRequest, emailAddressNotificationValidationRules)).thenReturn(callbackResponse);
+        when(notificationService.sendEmail(State.GRANT_REISSUED, caseDetails)).thenReturn(Document.builder().documentFileName(SENT_EMAIL_FILE_NAME).build());
+        assertEquals(SENT_EMAIL_FILE_NAME, notificationService.generateGrantReissue(callbackRequest).getDocumentFileName());
     }
 }

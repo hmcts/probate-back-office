@@ -237,7 +237,11 @@ public class DocumentController {
     public ResponseEntity<CallbackResponse> generateGrantReissue(@RequestBody CallbackRequest callbackRequest)
             throws NotificationClientException {
 
-        List<Document> documents = documentGeneratorService.generateGrantReissue(callbackRequest);
+        List<Document> documents = new ArrayList<>();
+
+        Document email = notificationService.generateGrantReissue(callbackRequest);
+
+        documents.add(email);
 
         return ResponseEntity.ok(callbackResponseTransformer.addDocuments(callbackRequest,
                 documents, null, null));
