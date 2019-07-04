@@ -90,6 +90,10 @@ public class PDFManagementService {
         return generateAndUpload(toJson(callbackRequest), documentType);
     }
 
+    public String getDecodedSignature() {
+        return decryptedFileAsBase64String(pdfServiceConfiguration.getGrantSignatureEncryptedFile());
+    }
+
     public Document generateAndUpload(WillLodgementCallbackRequest callbackRequest, DocumentType documentType) {
         if (WILL_LODGEMENT_DEPOSIT_RECEIPT.equals(documentType)) {
             callbackRequest.getCaseDetails().setGrantSignatureBase64(decryptedFileAsBase64String(pdfServiceConfiguration

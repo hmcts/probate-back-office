@@ -18,10 +18,13 @@ import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
+import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
+import uk.gov.hmcts.probate.validator.EmailAddressNotificationValidationRule;
 import uk.gov.service.notify.NotificationClient;
 import uk.gov.service.notify.NotificationClientException;
 import uk.gov.service.notify.SendEmailResponse;
@@ -29,13 +32,17 @@ import uk.gov.service.notify.SendEmailResponse;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.validation.Valid;
+
 import static uk.gov.hmcts.probate.model.Constants.CTSC;
 import static uk.gov.hmcts.probate.model.Constants.DOC_SUBTYPE_WILL;
 import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
+import static uk.gov.hmcts.probate.model.State.GRANT_REISSUED;
 
 @RequiredArgsConstructor
 @Component
@@ -49,6 +56,8 @@ public class NotificationService {
     private final PDFManagementService pdfManagementService;
     private final CaveatQueryService caveatQueryService;
     private final FormatterService formatterService;
+    private final EventValidationService eventValidationService;
+    private final List<EmailAddressNotificationValidationRule> emailAddressNotificationValidationRules;
 
     private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMM Y HH:mm");
     private static final DateTimeFormatter EXCELA_DATE = DateTimeFormatter.ofPattern("yyyyMMdd");
@@ -222,6 +231,8 @@ public class NotificationService {
                 return notificationTemplates.getEmail().get(applicationType).getCaseStoppedCaveat();
             case GRANT_ISSUED:
                 return notificationTemplates.getEmail().get(applicationType).getGrantIssued();
+            case GRANT_REISSUED:
+                return notificationTemplates.getEmail().get(applicationType).getGrantReissued();
             case GENERAL_CAVEAT_MESSAGE:
                 return notificationTemplates.getEmail().get(applicationType).getGeneralCaveatMessage();
             case CAVEAT_RAISED:
@@ -273,5 +284,22 @@ public class NotificationService {
             data.append("\n");
         }
         return data;
+    }
+
+    public List<Document> generateGrantReissue(CallbackRequest callbackRequest) throws NotificationClientException {
+        CaseDetails caseDetails = callbackRequest.getCaseDetails();
+        @Valid CaseData caseData = caseDetails.getData();
+        CallbackResponse callbackResponse = CallbackResponse.builder().errors(new ArrayList<>()).build();
+        List<Document> documents = new ArrayList<>();
+
+        if (caseData.isGrantReissuedEmailNotificationRequested()) {
+            callbackResponse = eventValidationService.validateEmailRequest(callbackRequest, emailAddressNotificationValidationRules);
+            if (callbackResponse.getErrors().isEmpty()) {
+                Document sentEmail = sendEmail(GRANT_REISSUED, caseDetails);
+                documents.add(sentEmail);
+            }
+        }
+
+        return documents;
     }
 }

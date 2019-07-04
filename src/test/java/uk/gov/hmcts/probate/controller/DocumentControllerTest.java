@@ -124,7 +124,7 @@ public class DocumentControllerTest {
 
         when(notificationService.sendEmail(any(State.class), any(CaseDetails.class))).thenReturn(document);
 
-        when(documentGeneratorService.generateGrantReissueDraft(any())).thenReturn(document);
+        when(documentGeneratorService.generateGrantReissue(any(), eq("preview"))).thenReturn(document);
     }
 
     @Test
@@ -339,6 +339,19 @@ public class DocumentControllerTest {
         String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadNotifications.json");
 
         mockMvc.perform(post("/document/generate-grant-draft-reissue")
+                .content(solicitorPayload)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("data")));
+
+    }
+
+    @Test
+    public void generateGrantReissueGrantOfRepresentation() throws Exception {
+
+        String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadNotifications.json");
+
+        mockMvc.perform(post("/document/generate-grant-reissue")
                 .content(solicitorPayload)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())

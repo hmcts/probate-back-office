@@ -30,9 +30,12 @@ public class DocumentGeneratorServiceTest {
     private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
     private static final Long CASE_ID = 12345678987654321L;
     private static final String REGISTRY_LOCATION = "bristol";
-    private static final String DIGITAL_GRANT_REISSUE_FILE_NAME = "digitalGrantDraftReissue.pdf";
+    private static final String DIGITAL_GRANT_DRAFT_REISSUE_FILE_NAME = "digitalGrantDraftReissue.pdf";
     private static final String INTESTACY_REISSUE_FILE_NAME = "intestacyGrantDraftReissue.pdf";
     private static final String ADMON_WILL_REISSUE_FILE_NAME = "admonWillGrantDraftReissue.pdf";
+    private static final String DIGITAL_GRANT_REISSUE_FILE_NAME = "digitalGrantReissue.pdf";
+    private static final String DRAFT = "preview";
+    private static final String FINAL = "final";
     private CallbackRequest callbackRequest;
     private Map<String, Object> expectedMap;
 
@@ -92,6 +95,8 @@ public class DocumentGeneratorServiceTest {
         when(pdfManagementService
                 .generateDocmosisDocumentAndUpload(eq(expectedMap), any())).thenReturn(Document.builder().build());
 
+        when(pdfManagementService.getDecodedSignature()).thenReturn("decodedSignature");
+
         doNothing().when(documentService).expire(any(CallbackRequest.class), any());
     }
 
@@ -99,22 +104,22 @@ public class DocumentGeneratorServiceTest {
     public void testGenerateReissueDraftProducesCorrectDocumentForGOP() {
         when(pdfManagementService.generateDocmosisDocumentAndUpload(expectedMap,
                 DocumentType.DIGITAL_GRANT_DRAFT_REISSUE))
-                .thenReturn(Document.builder().documentFileName(DIGITAL_GRANT_REISSUE_FILE_NAME).build());
-        assertEquals(DIGITAL_GRANT_REISSUE_FILE_NAME,
-                documentGeneratorService.generateGrantReissueDraft(callbackRequest).getDocumentFileName());
+                .thenReturn(Document.builder().documentFileName(DIGITAL_GRANT_DRAFT_REISSUE_FILE_NAME).build());
+        assertEquals(DIGITAL_GRANT_DRAFT_REISSUE_FILE_NAME,
+                documentGeneratorService.generateGrantReissue(callbackRequest, DRAFT).getDocumentFileName());
     }
 
     @Test
     public void testGenerateReissueDraftProducesCorrectDocumentForIntestacy() {
         CaseDetails caseDetails =
                 new CaseDetails(CaseData.builder().caseType("intestacy").registryLocation("Bristol").build(),
-                LAST_MODIFIED, CASE_ID);
+                        LAST_MODIFIED, CASE_ID);
         callbackRequest = new CallbackRequest(caseDetails);
         when(pdfManagementService.generateDocmosisDocumentAndUpload(expectedMap,
                 DocumentType.INTESTACY_GRANT_DRAFT_REISSUE))
                 .thenReturn(Document.builder().documentFileName(INTESTACY_REISSUE_FILE_NAME).build());
         assertEquals(INTESTACY_REISSUE_FILE_NAME,
-                documentGeneratorService.generateGrantReissueDraft(callbackRequest).getDocumentFileName());
+                documentGeneratorService.generateGrantReissue(callbackRequest, DRAFT).getDocumentFileName());
     }
 
     @Test
@@ -127,6 +132,23 @@ public class DocumentGeneratorServiceTest {
                 DocumentType.ADMON_WILL_GRANT_DRAFT_REISSUE)).thenReturn(Document.builder()
                 .documentFileName(ADMON_WILL_REISSUE_FILE_NAME).build());
         assertEquals(ADMON_WILL_REISSUE_FILE_NAME,
-                documentGeneratorService.generateGrantReissueDraft(callbackRequest).getDocumentFileName());
+                documentGeneratorService.generateGrantReissue(callbackRequest, DRAFT).getDocumentFileName());
+    }
+
+    @Test
+    public void testGenerateReissueProducesFinalVersionForGOP() {
+        when(pdfManagementService.generateDocmosisDocumentAndUpload(expectedMap, DocumentType.DIGITAL_GRANT_REISSUE))
+                .thenReturn(Document.builder().documentFileName(DIGITAL_GRANT_REISSUE_FILE_NAME).build());
+        assertEquals(DIGITAL_GRANT_REISSUE_FILE_NAME, documentGeneratorService.generateGrantReissue(callbackRequest,
+                FINAL).getDocumentFileName());
+    }
+
+    @Test
+    public void testInvalidVersionDefaultsToDraftVersion() {
+        when(pdfManagementService.generateDocmosisDocumentAndUpload(expectedMap,
+                DocumentType.DIGITAL_GRANT_DRAFT_REISSUE))
+                .thenReturn(Document.builder().documentFileName(DIGITAL_GRANT_DRAFT_REISSUE_FILE_NAME).build());
+        assertEquals(DIGITAL_GRANT_DRAFT_REISSUE_FILE_NAME,
+                documentGeneratorService.generateGrantReissue(callbackRequest, "INVALID").getDocumentFileName());
     }
 }

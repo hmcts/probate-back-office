@@ -130,7 +130,12 @@ public class CallbackResponseTransformer {
             responseCaseDataBuilder.boEmailDocsReceivedNotificationRequested(
                     callbackRequest.getCaseDetails().getData().getBoEmailDocsReceivedNotification());
         }
-        responseCaseDataBuilder.solsSOTNeedToUpdate(null);
+
+        //logic required here to set boEmailGrantReissuedNotificationRequested when there is a digitalGrantReIssue
+        responseCaseDataBuilder
+                .solsSOTNeedToUpdate(null)
+                .boEmailGrantReissuedNotificationRequested(
+                        callbackRequest.getCaseDetails().getData().getBoEmailGrantReissuedNotification());
 
         return transformResponse(responseCaseDataBuilder.build());
     }
@@ -346,6 +351,8 @@ public class CallbackResponseTransformer {
                 .boCaveatStopEmailNotification(caseData.getBoCaveatStopEmailNotification())
                 .boCaveatStopSendToBulkPrintRequested(caseData.getBoCaveatStopSendToBulkPrintRequested())
                 .boCaveatStopSendToBulkPrint(caseData.getBoCaveatStopSendToBulkPrint())
+                .boEmailGrantReissuedNotification(caseData.getBoEmailGrantReissuedNotification())
+                .boEmailDocsReceivedNotificationRequested(caseData.getBoEmailDocsReceivedNotificationRequested())
 
                 .recordId(caseData.getRecordId())
                 .legacyType(caseData.getLegacyType())
