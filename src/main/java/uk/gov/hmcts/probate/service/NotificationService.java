@@ -29,6 +29,7 @@ import uk.gov.service.notify.NotificationClient;
 import uk.gov.service.notify.NotificationClientException;
 import uk.gov.service.notify.SendEmailResponse;
 
+import javax.validation.Valid;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -149,6 +150,22 @@ public class NotificationService {
         response = notificationClient.sendEmail(templateId, emailAddresses.getExcelaEmail(), personalisation, reference);
 
         return getGeneratedSentEmailDocument(response, emailAddresses.getExcelaEmail(), SENT_EMAIL);
+    }
+
+    public Document generateGrantReissue(CallbackRequest callbackRequest) throws NotificationClientException {
+        CaseDetails caseDetails = callbackRequest.getCaseDetails();
+        @Valid CaseData caseData = caseDetails.getData();
+        CallbackResponse callbackResponse = CallbackResponse.builder().errors(new ArrayList<>()).build();
+        Document sentEmail = null;
+
+        if (caseData.isGrantReissuedEmailNotificationRequested()) {
+            callbackResponse = eventValidationService.validateEmailRequest(callbackRequest, emailAddressNotificationValidationRules);
+            if (callbackResponse.getErrors().isEmpty()) {
+                sentEmail = sendEmail(GRANT_REISSUED, caseDetails);
+            }
+        }
+
+        return sentEmail;
     }
 
     private Document getGeneratedSentEmailDocument(SendEmailResponse response, String emailAddress, DocumentType docType) {
@@ -284,22 +301,5 @@ public class NotificationService {
             data.append("\n");
         }
         return data;
-    }
-
-    public List<Document> generateGrantReissue(CallbackRequest callbackRequest) throws NotificationClientException {
-        CaseDetails caseDetails = callbackRequest.getCaseDetails();
-        @Valid CaseData caseData = caseDetails.getData();
-        CallbackResponse callbackResponse = CallbackResponse.builder().errors(new ArrayList<>()).build();
-        List<Document> documents = new ArrayList<>();
-
-        if (caseData.isGrantReissuedEmailNotificationRequested()) {
-            callbackResponse = eventValidationService.validateEmailRequest(callbackRequest, emailAddressNotificationValidationRules);
-            if (callbackResponse.getErrors().isEmpty()) {
-                Document sentEmail = sendEmail(GRANT_REISSUED, caseDetails);
-                documents.add(sentEmail);
-            }
-        }
-
-        return documents;
     }
 }

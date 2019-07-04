@@ -12,10 +12,14 @@ import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
+import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.service.docmosis.GenericMapperService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
+import uk.gov.hmcts.probate.validator.EmailAddressNotificationValidationRule;
 
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
@@ -36,8 +40,11 @@ public class DocumentGeneratorServiceTest {
     private static final String DIGITAL_GRANT_REISSUE_FILE_NAME = "digitalGrantReissue.pdf";
     private static final String DRAFT = "preview";
     private static final String FINAL = "final";
+    private static final String SENT_EMAIL_FILE_NAME = "sentEmail.pdf";
     private CallbackRequest callbackRequest;
     private Map<String, Object> expectedMap;
+    private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMM Y HH:mm");
+
 
     @InjectMocks
     private DocumentGeneratorService documentGeneratorService;
@@ -46,10 +53,22 @@ public class DocumentGeneratorServiceTest {
     private PDFManagementService pdfManagementService;
 
     @Mock
+    private NotificationService notificationService;
+
+    @Mock
     private GenericMapperService genericMapperService;
 
     @Mock
     private RegistryDetailsService registryDetailsService;
+
+    @Mock
+    private CallbackResponse callbackResponse;
+
+    @Mock
+    private EventValidationService eventValidationService;
+
+    @Mock
+    private List<EmailAddressNotificationValidationRule> emailAddressNotificationValidationRules;
 
     @Mock
     private DocumentService documentService;
@@ -96,6 +115,8 @@ public class DocumentGeneratorServiceTest {
                 .generateDocmosisDocumentAndUpload(eq(expectedMap), any())).thenReturn(Document.builder().build());
 
         when(pdfManagementService.getDecodedSignature()).thenReturn("decodedSignature");
+
+      //  when(pdfManagementService.generateAndUpload(any(SentEmail.class), SENT_EMAIL).getDocumentFileName());
 
         doNothing().when(documentService).expire(any(CallbackRequest.class), any());
     }

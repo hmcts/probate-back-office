@@ -20,6 +20,7 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
 
     private static final String DOCUMENTS_RECEIVED = "/notify/documents-received";
     private static final String GRANT_ISSUED = "/document/generate-grant";
+    private static final String GRANT_REISSUED = "/document/generate-grant-reissue";
     private static final String CASE_STOPPED = "/notify/case-stopped";
 
     private static final String BIRMINGHAM_NO = "0121 681 3401";
@@ -57,6 +58,16 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     @Test
     public void verifyPersonalApplicantGrantIssuedShouldReturnOkResponseCode() {
         validatePostSuccess("personalPayloadNotifications.json", GRANT_ISSUED);
+    }
+
+    @Test
+    public void verifySolicitorGrantReissuedShouldReturnOkResponseCode() {
+        validatePostSuccess("solicitorPayloadNotifications.json", GRANT_REISSUED);
+    }
+
+    @Test
+    public void verifyPersonalApplicantGrantReissuedShouldReturnOkResponseCode() {
+        validatePostSuccess("personalPayloadNotifications.json", GRANT_REISSUED);
     }
 
     @Test
