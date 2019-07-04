@@ -2,12 +2,14 @@ package uk.gov.hmcts.probate.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.config.notifications.EmailAddresses;
 import uk.gov.hmcts.probate.config.notifications.NotificationTemplates;
 import uk.gov.hmcts.probate.config.properties.registries.RegistriesProperties;
 import uk.gov.hmcts.probate.config.properties.registries.Registry;
 import uk.gov.hmcts.probate.exception.BadRequestException;
+import uk.gov.hmcts.probate.exception.InvalidEmailException;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.CaseType;
 import uk.gov.hmcts.probate.model.DocumentType;
@@ -40,6 +42,7 @@ import java.util.Map;
 
 import javax.validation.Valid;
 
+import static uk.gov.hmcts.probate.model.Constants.BUSINESS_ERROR;
 import static uk.gov.hmcts.probate.model.Constants.CTSC;
 import static uk.gov.hmcts.probate.model.Constants.DOC_SUBTYPE_WILL;
 import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
@@ -59,6 +62,8 @@ public class NotificationService {
     private final FormatterService formatterService;
     private final EventValidationService eventValidationService;
     private final List<EmailAddressNotificationValidationRule> emailAddressNotificationValidationRules;
+    @Autowired
+    private BusinessValidationMessageService businessValidationMessageService;
 
     private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMM Y HH:mm");
     private static final DateTimeFormatter EXCELA_DATE = DateTimeFormatter.ofPattern("yyyyMMdd");
@@ -155,13 +160,21 @@ public class NotificationService {
     public Document generateGrantReissue(CallbackRequest callbackRequest) throws NotificationClientException {
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
         @Valid CaseData caseData = caseDetails.getData();
-        CallbackResponse callbackResponse = CallbackResponse.builder().errors(new ArrayList<>()).build();
+        CallbackResponse callbackResponse;
         Document sentEmail = null;
 
         if (caseData.isGrantReissuedEmailNotificationRequested()) {
             callbackResponse = eventValidationService.validateEmailRequest(callbackRequest, emailAddressNotificationValidationRules);
             if (callbackResponse.getErrors().isEmpty()) {
                 sentEmail = sendEmail(GRANT_REISSUED, caseDetails);
+            } else if (caseData.getApplicationType().equals(ApplicationType.SOLICITOR)) {
+                throw new InvalidEmailException(businessValidationMessageService.generateError(BUSINESS_ERROR,
+                        "emailNotProvidedSOLS").getMessage(),
+                        "No email address provided for application type SOLS: " + caseDetails.getId());
+            } else {
+                throw new InvalidEmailException(businessValidationMessageService.generateError(BUSINESS_ERROR,
+                        "emailNotProvidedPA").getMessage(),
+                        "No email address provided for application type PA: " + caseDetails.getId());
             }
         }
 
