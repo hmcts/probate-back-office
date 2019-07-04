@@ -11,6 +11,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import uk.gov.hmcts.probate.config.CCDDataStoreAPIConfiguration;
+import uk.gov.hmcts.probate.exception.BadRequestException;
+import uk.gov.hmcts.probate.exception.BusinessValidationException;
 import uk.gov.hmcts.probate.exception.CaseMatchingException;
 import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.CaseType;
@@ -28,6 +30,7 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class CaveatQueryServiceTest {
@@ -51,6 +54,9 @@ public class CaveatQueryServiceTest {
 
     @Mock
     private ServiceAuthTokenGenerator serviceAuthTokenGenerator;
+
+    @Mock
+    private BusinessValidationMessageRetriever businessValidationMessageRetrieverMock;
 
     @InjectMocks
     private CaveatQueryService caveatQueryService;
@@ -94,6 +100,19 @@ public class CaveatQueryServiceTest {
         CaveatData caveatData = caveatQueryService.findCaveatById(CaseType.CAVEAT,
                 "1234567812345678");
         assertEquals("Smith", caveatData.getDeceasedSurname());
+    }
+
+    @Test(expected = BusinessValidationException.class)
+    public void shouldNotFindCaveatWithCaveatIDMatch() {
+        List<ReturnedCaveatDetails> caveatList = new ImmutableList.Builder<ReturnedCaveatDetails>()
+                .build();
+        ReturnedCaveats returnedCaveats = new ReturnedCaveats(caveatList);
+
+        when(restTemplate.postForObject(any(), any(), any())).thenReturn(returnedCaveats);
+
+        caveatQueryService.findCaveatById(CaseType.CAVEAT,
+                "1234567812345678");
+        verify(businessValidationMessageRetrieverMock).getMessage(any(), any(), any());
     }
 
     @Test
