@@ -2,12 +2,16 @@ package uk.gov.hmcts.probate.service;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
+import uk.gov.hmcts.probate.exception.BulkPrintException;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatCallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
+import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.service.client.DocumentStoreClient;
+import uk.gov.hmcts.probate.validator.BulkPrintValidationRule;
 import uk.gov.hmcts.reform.authorisation.generators.ServiceAuthTokenGenerator;
 import uk.gov.hmcts.reform.sendletter.api.LetterWithPdfsRequest;
 import uk.gov.hmcts.reform.sendletter.api.SendLetterApi;
@@ -22,17 +26,24 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.LongStream;
 
+import static uk.gov.hmcts.probate.model.Constants.BUSINESS_ERROR;
+
 @Service
 @Slf4j
 @AllArgsConstructor
 public class BulkPrintService {
+
     private static final String XEROX_TYPE_PARAMETER = "PRO001";
     private static final String BEARER = "Bearer ";
     private static final String ADDITIONAL_DATA_CASE_REFERENCE = "caseReference";
     private static final String CASE_ID = "case id ";
+    @Autowired
+    private BusinessValidationMessageService businessValidationMessageService;
     private final SendLetterApi sendLetterApi;
     private final DocumentStoreClient documentStoreClient;
     private final ServiceAuthTokenGenerator tokenGenerator;
+    private final EventValidationService eventValidationService;
+    private final List<BulkPrintValidationRule> bulkPrintValidationRules;
 
     public SendLetterResponse sendToBulkPrint(CallbackRequest callbackRequest, Document grantDocument, Document coverSheet) {
         SendLetterResponse sendLetterResponse = null;
@@ -91,6 +102,26 @@ public class BulkPrintService {
             log.error("Error retrieving document from store with url {}", ioe);
         } catch (Exception e) {
             log.error("Error sending pdfs to bulk print {}", e.getMessage());
+        }
+        return sendLetterResponse;
+    }
+
+    public SendLetterResponse SendToBulkPrintGrantReissue (CallbackRequest callbackRequest, Document coversheet, Document document){
+        CallbackResponse response;
+        SendLetterResponse sendLetterResponse = null;
+        if (callbackRequest.getCaseDetails().getData().isSendForBulkPrintingRequested()) {
+            log.info("Initiate call to bulk print for Caveat stopped document and coversheet for case id {} ",
+                    callbackRequest.getCaseDetails().getId());
+            sendLetterResponse = sendToBulkPrint(callbackRequest, document, coversheet);
+            String letterId = sendLetterResponse != null
+                    ? sendLetterResponse.letterId.toString()
+                    : null;
+            response = eventValidationService.validateBulkPrintResponse(letterId, bulkPrintValidationRules);
+            if (!response.getErrors().isEmpty()){
+                throw new BulkPrintException(businessValidationMessageService.generateError(BUSINESS_ERROR,
+                        "bulkPrintResponseNull").getMessage(),
+                        "Bulk print send letter response is null for: " + callbackRequest.getCaseDetails().getId());
+            }
         }
         return sendLetterResponse;
     }

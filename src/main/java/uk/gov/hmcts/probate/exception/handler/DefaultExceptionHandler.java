@@ -12,7 +12,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import uk.gov.hmcts.probate.exception.BadRequestException;
 import uk.gov.hmcts.probate.exception.ClientException;
 import uk.gov.hmcts.probate.exception.ConnectionException;
-import uk.gov.hmcts.probate.exception.InvalidEmailException;
+import uk.gov.hmcts.probate.exception.GrantOfRepresentationException;
 import uk.gov.hmcts.probate.exception.model.ErrorResponse;
 import uk.gov.hmcts.reform.ccd.client.model.AboutToStartOrSubmitCallbackResponse;
 import uk.gov.service.notify.NotificationClientException;
@@ -20,7 +20,6 @@ import uk.gov.service.notify.NotificationClientException;
 import static net.logstash.logback.argument.StructuredArguments.keyValue;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.SERVICE_UNAVAILABLE;
-import static uk.gov.hmcts.probate.model.Constants.BUSINESS_ERROR;
 
 @Slf4j
 @ControllerAdvice
@@ -73,9 +72,9 @@ class DefaultExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(errorResponse, headers, SERVICE_UNAVAILABLE);
     }
 
-    @ExceptionHandler(value = InvalidEmailException.class)
-    public ResponseEntity<AboutToStartOrSubmitCallbackResponse> handle(InvalidEmailException exception) {
-        log.warn("Invalid email exception: " + exception.getMessage(), exception);
+    @ExceptionHandler(value = GrantOfRepresentationException.class)
+    public ResponseEntity<AboutToStartOrSubmitCallbackResponse> handle(GrantOfRepresentationException exception) {
+        log.warn(exception.getMessage(), exception);
         return ResponseEntity.ok(AboutToStartOrSubmitCallbackResponse.builder().errors(ImmutableList.<String>builder().add(exception.getUserMessage()).build()).build());
     }
 }

@@ -42,7 +42,17 @@ import java.util.List;
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static uk.gov.hmcts.probate.model.Constants.LONDON;
-import static uk.gov.hmcts.probate.model.DocumentType.*;
+import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_DRAFT;
+import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_DRAFT_REISSUE;
+import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_DRAFT;
+import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_DRAFT_REISSUE;
+import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_REISSUE;
+import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_DRAFT;
+import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_DRAFT_REISSUE;
+import static uk.gov.hmcts.probate.model.DocumentType.WILL_LODGEMENT_DEPOSIT_RECEIPT;
 import static uk.gov.hmcts.probate.model.State.GRANT_ISSUED;
 
 @Slf4j
@@ -166,11 +176,7 @@ public class DocumentController {
                     : null;
             callbackResponse = eventValidationService.validateBulkPrintResponse(letterId, bulkPrintValidationRules);
 
-            if (caseData.getExtraCopiesOfGrant() != null) {
-                pdfSize = String.valueOf(caseData.getExtraCopiesOfGrant() + 2);
-            } else {
-                pdfSize = String.valueOf(2);
-            }
+            pdfSize = getPdfSize(caseData);
         }
         if (!callbackResponse.getErrors().isEmpty()) {
             return ResponseEntity.ok(callbackResponse);
@@ -199,6 +205,16 @@ public class DocumentController {
         }
 
         return ResponseEntity.ok(callbackResponse);
+    }
+
+    private String getPdfSize(@Valid CaseData caseData) {
+        String pdfSize;
+        if (caseData.getExtraCopiesOfGrant() != null) {
+            pdfSize = String.valueOf(caseData.getExtraCopiesOfGrant() + 2);
+        } else {
+            pdfSize = String.valueOf(2);
+        }
+        return pdfSize;
     }
 
 
@@ -233,15 +249,21 @@ public class DocumentController {
     public ResponseEntity<CallbackResponse> generateGrantReissue(@RequestBody CallbackRequest callbackRequest)
             throws NotificationClientException {
 
-        Document grantDocument = documentGeneratorService.generateGrantReissue(callbackRequest, FINAL);
-
         List<Document> documents = new ArrayList<>();
+
+        Document grantDocument = documentGeneratorService.generateGrantReissue(callbackRequest, FINAL);
+        Document coversheet = documentGeneratorService.generateCoversheet(callbackRequest);
+
+        SendLetterResponse sendLetterResponse = bulkPrintService.SendToBulkPrintGrantReissue(callbackRequest, coversheet, grantDocument);
+        String pdfSize = getPdfSize(callbackRequest.getCaseDetails().getData());
 
         Document email = notificationService.generateGrantReissue(callbackRequest);
 
         documents.add(email);
+        documents.add(grantDocument);
+        documents.add(coversheet);
 
         return ResponseEntity.ok(callbackResponseTransformer.addDocuments(callbackRequest,
-                documents, null, null));
+                documents, sendLetterResponse.letterId.toString(), pdfSize));
     }
 }

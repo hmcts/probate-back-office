@@ -2,7 +2,6 @@ package uk.gov.hmcts.probate.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.config.notifications.EmailAddresses;
 import uk.gov.hmcts.probate.config.notifications.NotificationTemplates;
@@ -35,12 +34,9 @@ import javax.validation.Valid;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.validation.Valid;
 
 import static uk.gov.hmcts.probate.model.Constants.BUSINESS_ERROR;
 import static uk.gov.hmcts.probate.model.Constants.CTSC;
@@ -170,11 +166,11 @@ public class NotificationService {
             } else if (caseData.getApplicationType().equals(ApplicationType.SOLICITOR)) {
                 throw new InvalidEmailException(businessValidationMessageService.generateError(BUSINESS_ERROR,
                         "emailNotProvidedSOLS").getMessage(),
-                        "No email address provided for application type SOLS: " + caseDetails.getId());
+                        "Invalid email exception: No email address provided for application type SOLS: " + caseDetails.getId());
             } else {
                 throw new InvalidEmailException(businessValidationMessageService.generateError(BUSINESS_ERROR,
                         "emailNotProvidedPA").getMessage(),
-                        "No email address provided for application type PA: " + caseDetails.getId());
+                        "Invalid email exception: No email address provided for application type PA: " + caseDetails.getId());
             }
         }
 

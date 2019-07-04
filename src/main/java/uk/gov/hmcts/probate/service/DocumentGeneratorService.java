@@ -8,13 +8,10 @@ import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.service.docmosis.GenericMapperService;
+import uk.gov.hmcts.probate.service.docmosis.GrantOfRepresentationDocmosisMapperService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
-import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
-import uk.gov.hmcts.probate.validator.BulkPrintValidationRule;
-import uk.gov.hmcts.probate.validator.EmailAddressNotificationValidationRule;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_DRAFT;
@@ -33,6 +30,7 @@ public class DocumentGeneratorService {
     private final PDFManagementService pdfManagementService;
     private final DocumentService documentService;
     private final GenericMapperService genericMapperService;
+    private final GrantOfRepresentationDocmosisMapperService gorDocmosisService;
 
     private static final String GRANT_OF_PROBATE = "gop";
     private static final String ADMON_WILL = "admonWill";
@@ -69,6 +67,20 @@ public class DocumentGeneratorService {
         expireDrafts(callbackRequest);
 
         return document;
+    }
+
+
+    public Document generateCoversheet (CallbackRequest callbackRequest) {
+
+        log.info("Initiate call to generate coversheet for case id {} ",
+                callbackRequest.getCaseDetails().getId());
+        Map<String, Object> placeholders = genericMapperService.addCaseData(callbackRequest.getCaseDetails().getData());
+        Document coversheet = pdfManagementService
+                .generateDocmosisDocumentAndUpload(placeholders, DocumentType.GRANT_COVERSHEET);
+        log.info("Successful response for coversheet for case id {} ",
+                callbackRequest.getCaseDetails().getId());
+
+        return coversheet;
     }
 
     private void expireDrafts(CallbackRequest callbackRequest) {
