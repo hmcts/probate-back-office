@@ -180,6 +180,8 @@ public class NotificationService {
         if (caveatData != null) {
             personalisation.put(PERSONALISATION_CAVEATOR_NAME, caveatData.getCaveatorFullName());
             personalisation.put(PERSONALISATION_CAVEATOR_ADDRESS, addressFormatterService.formatAddress(caveatData.getCaveatorAddress()));
+            personalisation.put(PERSONALISATION_CAVEAT_EXPIRY_DATE,
+                    dateFormatterService.formatCaveatExpiryDate(caveatData.getExpiryDate()));
         }
 
         if (caseData.getApplicationType().equals(ApplicationType.SOLICITOR)) {
