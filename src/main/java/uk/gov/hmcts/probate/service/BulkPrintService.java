@@ -106,14 +106,15 @@ public class BulkPrintService {
         return sendLetterResponse;
     }
 
-    public SendLetterResponse sendToBulkPrintGrantReissue(CallbackRequest callbackRequest, Document coversheet, Document document) {
+    public String sendToBulkPrintGrantReissue(CallbackRequest callbackRequest, Document coversheet, Document document) {
         CallbackResponse response;
         SendLetterResponse sendLetterResponse = null;
+        String letterId = null;
         if (callbackRequest.getCaseDetails().getData().isSendForBulkPrintingRequested()) {
             log.info("Initiate call to bulk print for Caveat stopped document and coversheet for case id {} ",
                     callbackRequest.getCaseDetails().getId());
             sendLetterResponse = sendToBulkPrint(callbackRequest, document, coversheet);
-            String letterId = sendLetterResponse != null
+            letterId = sendLetterResponse != null
                     ? sendLetterResponse.letterId.toString()
                     : null;
             response = eventValidationService.validateBulkPrintResponse(letterId, bulkPrintValidationRules);
@@ -123,7 +124,7 @@ public class BulkPrintService {
                         "Bulk print send letter response is null for: " + callbackRequest.getCaseDetails().getId());
             }
         }
-        return sendLetterResponse;
+        return letterId;
     }
 
 

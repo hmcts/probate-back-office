@@ -259,7 +259,7 @@ public class DocumentController {
         if (coversheet != null) {
             documents.add(coversheet);
         }
-        SendLetterResponse sendLetterResponse = bulkPrintService.sendToBulkPrintGrantReissue(callbackRequest, coversheet, grantDocument);
+        String letterid = bulkPrintService.sendToBulkPrintGrantReissue(callbackRequest, coversheet, grantDocument);
         String pdfSize = getPdfSize(callbackRequest.getCaseDetails().getData());
         Document email = notificationService.generateGrantReissue(callbackRequest);
         if (email != null) {
@@ -267,6 +267,6 @@ public class DocumentController {
         }
 
         return ResponseEntity.ok(callbackResponseTransformer.addDocuments(callbackRequest,
-                documents, sendLetterResponse.letterId.toString(), pdfSize));
+                documents, letterid, pdfSize));
     }
 }

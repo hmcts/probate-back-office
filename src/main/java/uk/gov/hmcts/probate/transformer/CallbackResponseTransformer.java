@@ -83,7 +83,7 @@ public class CallbackResponseTransformer {
     public CallbackResponse caseStopped(CallbackRequest callbackRequest, List<Document> documents, String letterId) {
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
         CaseData caseData = caseDetails.getData();
-        documents.forEach(document -> documentTransformer.addDocument(callbackRequest, document));
+        documents.forEach(document -> documentTransformer.addDocument(callbackRequest, document, true));
 
         ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), false);
 
@@ -107,7 +107,7 @@ public class CallbackResponseTransformer {
     public CallbackResponse addDocuments(CallbackRequest callbackRequest, List<Document> documents, String letterId, String pdfSize) {
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
         CaseData caseData = caseDetails.getData();
-        documents.forEach(document -> documentTransformer.addDocument(callbackRequest, document));
+        documents.forEach(document -> documentTransformer.addDocument(callbackRequest, document, false));
         ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), false);
 
         if (documents.isEmpty()) {
