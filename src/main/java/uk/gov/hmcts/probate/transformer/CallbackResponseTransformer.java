@@ -40,10 +40,12 @@ import static uk.gov.hmcts.probate.model.Constants.CASE_TYPE_DEFAULT;
 import static uk.gov.hmcts.probate.model.Constants.CTSC;
 import static uk.gov.hmcts.probate.model.Constants.DATE_OF_DEATH_TYPE_DEFAULT;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT_STOPPED;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT;
 import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
 
@@ -137,10 +139,10 @@ public class CallbackResponseTransformer {
         }
 
         if (documentTransformer.hasDocumentWithType(documents, DIGITAL_GRANT_REISSUE)
-                || documentTransformer.hasDocumentWithType(documents, ADMON_WILL_GRANT)
-                || documentTransformer.hasDocumentWithType(documents, INTESTACY_GRANT)) {
+                || documentTransformer.hasDocumentWithType(documents, ADMON_WILL_GRANT_REISSUE)
+                || documentTransformer.hasDocumentWithType(documents, INTESTACY_GRANT_REISSUE)) {
             if (letterId != null) {
-                DocumentType[] documentTypes = {DIGITAL_GRANT_REISSUE, ADMON_WILL_GRANT, INTESTACY_GRANT};
+                DocumentType[] documentTypes = {DIGITAL_GRANT_REISSUE, ADMON_WILL_GRANT_REISSUE, INTESTACY_GRANT_REISSUE};
                 String templateName = getTemplateName(documents, documentTypes);
                 CollectionMember<BulkPrint> bulkPrint = buildBulkPrint(letterId, templateName);
                 appendToBulkPrintCollection(bulkPrint, caseData);

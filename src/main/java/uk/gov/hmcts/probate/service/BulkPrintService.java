@@ -111,7 +111,7 @@ public class BulkPrintService {
         SendLetterResponse sendLetterResponse = null;
         String letterId = null;
         if (callbackRequest.getCaseDetails().getData().isSendForBulkPrintingRequested()) {
-            log.info("Initiate call to bulk print for Caveat stopped document and coversheet for case id {} ",
+            log.info("Initiate call to bulk print for grant reissue and coversheet for case id {} ",
                     callbackRequest.getCaseDetails().getId());
             sendLetterResponse = sendToBulkPrint(callbackRequest, document, coversheet);
             letterId = sendLetterResponse != null
