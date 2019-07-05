@@ -8,7 +8,6 @@ import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.service.docmosis.GenericMapperService;
-import uk.gov.hmcts.probate.service.docmosis.GrantOfRepresentationDocmosisMapperService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 
 import java.util.HashMap;
@@ -16,11 +15,13 @@ import java.util.Map;
 
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_DRAFT_REISSUE;
+import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_DRAFT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_DRAFT_REISSUE;
+import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_REISSUE;
 
 @Slf4j
 @Service
@@ -30,7 +31,6 @@ public class DocumentGeneratorService {
     private final PDFManagementService pdfManagementService;
     private final DocumentService documentService;
     private final GenericMapperService genericMapperService;
-    private final GrantOfRepresentationDocmosisMapperService gorDocmosisService;
 
     private static final String GRANT_OF_PROBATE = "gop";
     private static final String ADMON_WILL = "admonWill";
@@ -70,7 +70,7 @@ public class DocumentGeneratorService {
     }
 
 
-    public Document generateCoversheet(CallbackRequest callbackRequest) {
+    public Document generateCoversheet (CallbackRequest callbackRequest) {
 
         log.info("Initiate call to generate coversheet for case id {} ",
                 callbackRequest.getCaseDetails().getId());
@@ -84,9 +84,9 @@ public class DocumentGeneratorService {
     }
 
     private void expireDrafts(CallbackRequest callbackRequest) {
-        DocumentType[] documentTypes = {DIGITAL_GRANT_DRAFT, INTESTACY_GRANT_DRAFT,
-                ADMON_WILL_GRANT_DRAFT, DIGITAL_GRANT_DRAFT_REISSUE,
-                INTESTACY_GRANT_DRAFT_REISSUE, ADMON_WILL_GRANT_DRAFT_REISSUE, DIGITAL_GRANT_REISSUE};
+        DocumentType[] documentTypes = {DIGITAL_GRANT_DRAFT, INTESTACY_GRANT_DRAFT, ADMON_WILL_GRANT_DRAFT,
+                                        DIGITAL_GRANT_DRAFT_REISSUE, INTESTACY_GRANT_DRAFT_REISSUE,
+                                        ADMON_WILL_GRANT_DRAFT_REISSUE};
         for (DocumentType documentType : documentTypes) {
             documentService.expire(callbackRequest, documentType);
         }
@@ -98,13 +98,13 @@ public class DocumentGeneratorService {
         DocumentType template;
         switch (caseDetails.getData().getCaseType()) {
             case INTESTACY:
-                template = INTESTACY_GRANT_DRAFT_REISSUE;
+                template = version.equals(FINAL) ? INTESTACY_GRANT_REISSUE : INTESTACY_GRANT_DRAFT_REISSUE;
                 document = pdfManagementService.generateDocmosisDocumentAndUpload(placeholders, template);
                 log.info("Generated and Uploaded Intestacy grant {} document with template {} for the case id {}",
                         version, template.getTemplateName(), caseDetails.getId().toString());
                 break;
             case ADMON_WILL:
-                template = ADMON_WILL_GRANT_DRAFT_REISSUE;
+                template = version.equals(FINAL) ? ADMON_WILL_GRANT_REISSUE : ADMON_WILL_GRANT_DRAFT_REISSUE;
                 document = pdfManagementService.generateDocmosisDocumentAndUpload(placeholders, template);
                 log.info("Generated and Uploaded Admon Will grant {} document with template {} for the case id {}",
                         version, template.getTemplateName(), caseDetails.getId().toString());

@@ -253,20 +253,19 @@ public class DocumentController {
 
         Document grantDocument = documentGeneratorService.generateGrantReissue(callbackRequest, FINAL);
         Document coversheet = documentGeneratorService.generateCoversheet(callbackRequest);
-        if (grantDocument != null) {
-            documents.add(grantDocument);
-        }
-        if (coversheet != null) {
-            documents.add(coversheet);
-        }
-        String letterid = bulkPrintService.sendToBulkPrintGrantReissue(callbackRequest, coversheet, grantDocument);
+
+        documents.add(grantDocument);
+        documents.add(coversheet);
+
+        String letterId = bulkPrintService.sendToBulkPrintGrantReissue(callbackRequest, coversheet,
+                grantDocument);
         String pdfSize = getPdfSize(callbackRequest.getCaseDetails().getData());
-        Document email = notificationService.generateGrantReissue(callbackRequest);
-        if (email != null) {
-            documents.add(email);
+
+        if (callbackRequest.getCaseDetails().getData().isGrantReissuedEmailNotificationRequested()) {
+            documents.add(notificationService.generateGrantReissue(callbackRequest));
         }
 
         return ResponseEntity.ok(callbackResponseTransformer.addDocuments(callbackRequest,
-                documents, letterid, pdfSize));
+                documents, letterId, pdfSize));
     }
 }

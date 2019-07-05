@@ -11,6 +11,7 @@ import uk.gov.hmcts.probate.model.ccd.willlodgement.request.WillLodgementCallbac
 
 import java.util.List;
 
+import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_DRAFT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.WILL_LODGEMENT_DEPOSIT_RECEIPT;
 
 @Slf4j
@@ -30,11 +31,13 @@ public class DocumentTransformer {
             case DIGITAL_GRANT_DRAFT_REISSUE:
             case DIGITAL_GRANT_REISSUE:
             case INTESTACY_GRANT_DRAFT:
-            case INTESTACY_GRANT_DRAFT_REISSUE:
             case INTESTACY_GRANT:
+            case INTESTACY_GRANT_DRAFT_REISSUE:
+            case INTESTACY_GRANT_REISSUE:
             case ADMON_WILL_GRANT_DRAFT:
             case ADMON_WILL_GRANT:
             case ADMON_WILL_GRANT_DRAFT_REISSUE:
+            case ADMON_WILL_GRANT_REISSUE:
             case GRANT_COVER:
                 callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated()
                         .add(new CollectionMember<>(null, document));

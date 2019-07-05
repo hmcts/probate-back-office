@@ -157,21 +157,19 @@ public class NotificationService {
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
         @Valid CaseData caseData = caseDetails.getData();
         CallbackResponse callbackResponse;
-        Document sentEmail = null;
+        Document sentEmail;
+        callbackResponse = eventValidationService.validateEmailRequest(callbackRequest, emailAddressNotificationValidationRules);
 
-        if (caseData.isGrantReissuedEmailNotificationRequested()) {
-            callbackResponse = eventValidationService.validateEmailRequest(callbackRequest, emailAddressNotificationValidationRules);
-            if (callbackResponse.getErrors().isEmpty()) {
-                sentEmail = sendEmail(GRANT_REISSUED, caseDetails);
-            } else if (caseData.getApplicationType().equals(ApplicationType.SOLICITOR)) {
-                throw new InvalidEmailException(businessValidationMessageService.generateError(BUSINESS_ERROR,
-                        "emailNotProvidedSOLS").getMessage(),
-                        "Invalid email exception: No email address provided for application type SOLS: " + caseDetails.getId());
-            } else {
-                throw new InvalidEmailException(businessValidationMessageService.generateError(BUSINESS_ERROR,
-                        "emailNotProvidedPA").getMessage(),
-                        "Invalid email exception: No email address provided for application type PA: " + caseDetails.getId());
-            }
+        if (callbackResponse.getErrors().isEmpty()) {
+            sentEmail = sendEmail(GRANT_REISSUED, caseDetails);
+        } else if (caseData.getApplicationType().equals(ApplicationType.SOLICITOR)) {
+            throw new InvalidEmailException(businessValidationMessageService.generateError(BUSINESS_ERROR,
+                    "emailNotProvidedSOLS").getMessage(),
+                    "Invalid email exception: No email address provided for application type SOLS: " + caseDetails.getId());
+        } else {
+            throw new InvalidEmailException(businessValidationMessageService.generateError(BUSINESS_ERROR,
+                    "emailNotProvidedPA").getMessage(),
+                    "Invalid email exception: No email address provided for application type PA: " + caseDetails.getId());
         }
 
         return sentEmail;
