@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 import uk.gov.hmcts.probate.model.ApplicationType;
+import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
@@ -25,6 +26,7 @@ import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
@@ -103,6 +105,8 @@ public class CallbackResponseTransformer {
     }
 
     public CallbackResponse addDocuments(CallbackRequest callbackRequest, List<Document> documents, String letterId, String pdfSize) {
+        CaseDetails caseDetails = callbackRequest.getCaseDetails();
+        CaseData caseData = caseDetails.getData();
         documents.forEach(document -> documentTransformer.addDocument(callbackRequest, document));
         ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), false);
 
@@ -131,10 +135,23 @@ public class CallbackResponseTransformer {
             responseCaseDataBuilder.boEmailDocsReceivedNotificationRequested(
                     callbackRequest.getCaseDetails().getData().getBoEmailDocsReceivedNotification());
         }
-        if (documentTransformer.hasDocumentWithType(documents, DIGITAL_GRANT_REISSUE)) {
+
+        if (documentTransformer.hasDocumentWithType(documents, DIGITAL_GRANT_REISSUE)
+                || documentTransformer.hasDocumentWithType(documents, ADMON_WILL_GRANT)
+                || documentTransformer.hasDocumentWithType(documents, INTESTACY_GRANT)) {
+            if (letterId != null) {
+                DocumentType[] documentTypes = {DIGITAL_GRANT_REISSUE, ADMON_WILL_GRANT, INTESTACY_GRANT};
+                String templateName = getTemplateName(documents, documentTypes);
+                CollectionMember<BulkPrint> bulkPrint = buildBulkPrint(letterId, templateName);
+                appendToBulkPrintCollection(bulkPrint, caseData);
+                responseCaseDataBuilder
+                        .bulkPrintId(caseData.getBulkPrintId());
+            }
             responseCaseDataBuilder
                     .boEmailGrantReissuedNotificationRequested(
-                            callbackRequest.getCaseDetails().getData().getBoEmailGrantReissuedNotification());
+                            callbackRequest.getCaseDetails().getData().getBoEmailGrantReissuedNotification())
+                    .boGrantReissueSendToBulkPrintRequested(
+                            callbackRequest.getCaseDetails().getData().getBoGrantReissueSendToBulkPrint());
         }
 
         responseCaseDataBuilder
@@ -185,8 +202,6 @@ public class CallbackResponseTransformer {
         }
         return transformResponse(responseCaseDataBuilder.build());
     }
-
-
 
 
     public CallbackResponse transformForSolicitorComplete(CallbackRequest callbackRequest, FeeServiceResponse feeServiceResponse) {
@@ -356,6 +371,8 @@ public class CallbackResponseTransformer {
                 .boCaveatStopSendToBulkPrint(caseData.getBoCaveatStopSendToBulkPrint())
                 .boEmailGrantReissuedNotification(caseData.getBoEmailGrantReissuedNotification())
                 .boEmailDocsReceivedNotificationRequested(caseData.getBoEmailDocsReceivedNotificationRequested())
+                .boGrantReissueSendToBulkPrint(caseData.getBoGrantReissueSendToBulkPrint())
+                .boGrantReissueSendToBulkPrintRequested(caseData.getBoGrantReissueSendToBulkPrintRequested())
 
                 .recordId(caseData.getRecordId())
                 .legacyType(caseData.getLegacyType())
@@ -707,5 +724,30 @@ public class CallbackResponseTransformer {
                 .sendLetterId(letterId)
                 .templateName(templateName)
                 .build());
+    }
+
+    private List<CollectionMember<BulkPrint>> appendToBulkPrintCollection(CollectionMember<BulkPrint> bulkPrintCollectionMember, CaseData caseData) {
+        if (caseData.getBulkPrintId() == null) {
+            caseData.setBulkPrintId(Arrays.asList(
+                    bulkPrintCollectionMember));
+
+        } else {
+            caseData.getBulkPrintId().add(bulkPrintCollectionMember);
+        }
+        return caseData.getBulkPrintId();
+    }
+
+    private String getTemplateName(List<Document> documents, DocumentType[] documentTypes) {
+        String templateName = null;
+
+        for (DocumentType documentType : documentTypes) {
+            for (int i = 0; i < documents.size(); i++) {
+                if (documents.get(i).getDocumentType().getTemplateName().equals(documentType.getTemplateName())) {
+                    templateName = documentType.getTemplateName();
+                    break;
+                }
+            }
+        }
+        return templateName;
     }
 }

@@ -170,8 +170,8 @@ public class CaveatNotificationServiceTest {
         caveatCallbackRequest = new CaveatCallbackRequest(caveatDetails);
 
         when(caveatDocmosisService.caseDataAsPlaceholders(caveatDetails)).thenReturn(placeholders);
-        when(pdfManagementService.generateDocmosisDocumentAndUpload(placeholders, CAVEAT_COVERSHEET, false)).thenReturn(coversheet);
-        when(pdfManagementService.generateDocmosisDocumentAndUpload(placeholders, CAVEAT_RAISED, false)).thenReturn(caveatRaised);
+        when(pdfManagementService.generateDocmosisDocumentAndUpload(placeholders, CAVEAT_COVERSHEET)).thenReturn(coversheet);
+        when(pdfManagementService.generateDocmosisDocumentAndUpload(placeholders, CAVEAT_RAISED)).thenReturn(caveatRaised);
         caveatCallbackResponse = CaveatCallbackResponse.builder().caveatData(responseCaveatData).build();
         when(caveatCallbackResponseTransformer.caveatRaised(caveatCallbackRequest, documents, null)).thenReturn(caveatCallbackResponse);
 
@@ -205,8 +205,8 @@ public class CaveatNotificationServiceTest {
         caveatCallbackRequest = new CaveatCallbackRequest(caveatDetails);
         SendLetterResponse sendLetterResponse = new SendLetterResponse(UUID.randomUUID());
         when(caveatDocmosisService.caseDataAsPlaceholders(caveatDetails)).thenReturn(placeholders);
-        when(pdfManagementService.generateDocmosisDocumentAndUpload(placeholders, CAVEAT_COVERSHEET, false)).thenReturn(coversheet);
-        when(pdfManagementService.generateDocmosisDocumentAndUpload(placeholders, CAVEAT_RAISED, false)).thenReturn(caveatRaised);
+        when(pdfManagementService.generateDocmosisDocumentAndUpload(placeholders, CAVEAT_COVERSHEET)).thenReturn(coversheet);
+        when(pdfManagementService.generateDocmosisDocumentAndUpload(placeholders, CAVEAT_RAISED)).thenReturn(caveatRaised);
         when(bulkPrintService.sendToBulkPrint(caveatCallbackRequest, caveatRaised, coversheet)).thenReturn(sendLetterResponse);
         when(eventValidationService.validateCaveatBulkPrintResponse(eq(sendLetterResponse.letterId.toString()), any(List.class)))
                 .thenReturn(caveatCallbackResponse.builder().errors(new ArrayList<>()).build());

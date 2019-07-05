@@ -14,7 +14,7 @@ import uk.gov.hmcts.probate.exception.ClientException;
 import uk.gov.hmcts.probate.exception.ConnectionException;
 import uk.gov.hmcts.probate.exception.GrantOfRepresentationException;
 import uk.gov.hmcts.probate.exception.model.ErrorResponse;
-import uk.gov.hmcts.reform.ccd.client.model.AboutToStartOrSubmitCallbackResponse;
+import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.service.notify.NotificationClientException;
 
 import static net.logstash.logback.argument.StructuredArguments.keyValue;
@@ -73,8 +73,8 @@ class DefaultExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(value = GrantOfRepresentationException.class)
-    public ResponseEntity<AboutToStartOrSubmitCallbackResponse> handle(GrantOfRepresentationException exception) {
+    public ResponseEntity<CallbackResponse> handle(GrantOfRepresentationException exception) {
         log.warn(exception.getMessage(), exception);
-        return ResponseEntity.ok(AboutToStartOrSubmitCallbackResponse.builder().errors(ImmutableList.<String>builder().add(exception.getUserMessage()).build()).build());
+        return ResponseEntity.ok(CallbackResponse.builder().errors(ImmutableList.<String>builder().add(exception.getUserMessage()).build()).build());
     }
 }

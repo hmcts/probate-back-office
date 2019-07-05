@@ -256,12 +256,11 @@ public class DocumentController {
 
         SendLetterResponse sendLetterResponse = bulkPrintService.SendToBulkPrintGrantReissue(callbackRequest, coversheet, grantDocument);
         String pdfSize = getPdfSize(callbackRequest.getCaseDetails().getData());
-
         Document email = notificationService.generateGrantReissue(callbackRequest);
 
-        documents.add(email);
-        documents.add(grantDocument);
-        documents.add(coversheet);
+        if(email != null) documents.add(email);
+        if(grantDocument != null) documents.add(grantDocument);
+        if(coversheet != null) documents.add(coversheet);
 
         return ResponseEntity.ok(callbackResponseTransformer.addDocuments(callbackRequest,
                 documents, sendLetterResponse.letterId.toString(), pdfSize));

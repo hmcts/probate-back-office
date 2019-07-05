@@ -409,6 +409,12 @@ public class CaseData {
     @Getter(lazy = true)
     private final String boCaveatStopSendToBulkPrint = YES;
 
+    @SuppressWarnings("squid:S1170")
+    @Getter(lazy = true)
+    private final String boGrantReissueSendToBulkPrint = YES;
+
+    private final String boGrantReissueSendToBulkPrintRequested;
+
     @Builder.Default
     private List<CollectionMember<BulkPrint>> bulkPrintId = new ArrayList<>();
 
