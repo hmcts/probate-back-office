@@ -115,8 +115,8 @@ public class DocumentController {
         }
 
         DocumentType[] documentTypes = {DIGITAL_GRANT_DRAFT, INTESTACY_GRANT_DRAFT, ADMON_WILL_GRANT_DRAFT,
-                                        DIGITAL_GRANT_DRAFT_REISSUE, INTESTACY_GRANT_DRAFT_REISSUE,
-                                        ADMON_WILL_GRANT_DRAFT_REISSUE, DIGITAL_GRANT_REISSUE};
+                DIGITAL_GRANT_DRAFT_REISSUE, INTESTACY_GRANT_DRAFT_REISSUE,
+                ADMON_WILL_GRANT_DRAFT_REISSUE, DIGITAL_GRANT_REISSUE};
         for (DocumentType documentType : documentTypes) {
             documentService.expire(callbackRequest, documentType);
         }
@@ -187,8 +187,8 @@ public class DocumentController {
         documents.add(coverSheet);
 
         DocumentType[] documentTypes = {DIGITAL_GRANT_DRAFT, INTESTACY_GRANT_DRAFT, ADMON_WILL_GRANT_DRAFT,
-                                        DIGITAL_GRANT_DRAFT_REISSUE, INTESTACY_GRANT_DRAFT_REISSUE,
-                                        ADMON_WILL_GRANT_DRAFT_REISSUE, DIGITAL_GRANT_REISSUE};
+                DIGITAL_GRANT_DRAFT_REISSUE, INTESTACY_GRANT_DRAFT_REISSUE,
+                ADMON_WILL_GRANT_DRAFT_REISSUE, DIGITAL_GRANT_REISSUE};
         for (DocumentType documentType : documentTypes) {
             documentService.expire(callbackRequest, documentType);
         }
@@ -253,14 +253,18 @@ public class DocumentController {
 
         Document grantDocument = documentGeneratorService.generateGrantReissue(callbackRequest, FINAL);
         Document coversheet = documentGeneratorService.generateCoversheet(callbackRequest);
-
-        SendLetterResponse sendLetterResponse = bulkPrintService.SendToBulkPrintGrantReissue(callbackRequest, coversheet, grantDocument);
+        if (grantDocument != null) {
+            documents.add(grantDocument);
+        }
+        if (coversheet != null) {
+            documents.add(coversheet);
+        }
+        SendLetterResponse sendLetterResponse = bulkPrintService.sendToBulkPrintGrantReissue(callbackRequest, coversheet, grantDocument);
         String pdfSize = getPdfSize(callbackRequest.getCaseDetails().getData());
         Document email = notificationService.generateGrantReissue(callbackRequest);
-
-        if(email != null) documents.add(email);
-        if(grantDocument != null) documents.add(grantDocument);
-        if(coversheet != null) documents.add(coversheet);
+        if (email != null) {
+            documents.add(email);
+        }
 
         return ResponseEntity.ok(callbackResponseTransformer.addDocuments(callbackRequest,
                 documents, sendLetterResponse.letterId.toString(), pdfSize));

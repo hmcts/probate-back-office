@@ -75,6 +75,9 @@ class DefaultExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(value = GrantOfRepresentationException.class)
     public ResponseEntity<CallbackResponse> handle(GrantOfRepresentationException exception) {
         log.warn(exception.getMessage(), exception);
-        return ResponseEntity.ok(CallbackResponse.builder().errors(ImmutableList.<String>builder().add(exception.getUserMessage()).build()).build());
+        return ResponseEntity.ok(CallbackResponse.builder()
+                .errors(ImmutableList.<String>builder()
+                        .add(exception.getUserMessage())
+                        .build()).build());
     }
 }

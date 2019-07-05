@@ -493,7 +493,9 @@ public class CaseData {
         return YES.equals(getBoEmailGrantIssuedNotification());
     }
 
-    public boolean isGrantReissuedEmailNotificationRequested() { return YES.equals(getBoEmailGrantReissuedNotification()); }
+    public boolean isGrantReissuedEmailNotificationRequested() {
+        return YES.equals(getBoEmailGrantReissuedNotification());
+    }
 
     public boolean isCaveatStopNotificationRequested() {
         return YES.equals(getBoCaveatStopNotification());

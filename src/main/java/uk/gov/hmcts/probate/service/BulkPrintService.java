@@ -106,7 +106,7 @@ public class BulkPrintService {
         return sendLetterResponse;
     }
 
-    public SendLetterResponse SendToBulkPrintGrantReissue (CallbackRequest callbackRequest, Document coversheet, Document document){
+    public SendLetterResponse sendToBulkPrintGrantReissue(CallbackRequest callbackRequest, Document coversheet, Document document) {
         CallbackResponse response;
         SendLetterResponse sendLetterResponse = null;
         if (callbackRequest.getCaseDetails().getData().isSendForBulkPrintingRequested()) {
@@ -117,7 +117,7 @@ public class BulkPrintService {
                     ? sendLetterResponse.letterId.toString()
                     : null;
             response = eventValidationService.validateBulkPrintResponse(letterId, bulkPrintValidationRules);
-            if (!response.getErrors().isEmpty()){
+            if (!response.getErrors().isEmpty()) {
                 throw new BulkPrintException(businessValidationMessageService.generateError(BUSINESS_ERROR,
                         "bulkPrintResponseNull").getMessage(),
                         "Bulk print send letter response is null for: " + callbackRequest.getCaseDetails().getId());

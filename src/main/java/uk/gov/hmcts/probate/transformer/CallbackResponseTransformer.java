@@ -726,7 +726,8 @@ public class CallbackResponseTransformer {
                 .build());
     }
 
-    private List<CollectionMember<BulkPrint>> appendToBulkPrintCollection(CollectionMember<BulkPrint> bulkPrintCollectionMember, CaseData caseData) {
+    private List<CollectionMember<BulkPrint>> appendToBulkPrintCollection(
+            CollectionMember<BulkPrint> bulkPrintCollectionMember, CaseData caseData) {
         if (caseData.getBulkPrintId() == null) {
             caseData.setBulkPrintId(Arrays.asList(
                     bulkPrintCollectionMember));

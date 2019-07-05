@@ -149,7 +149,7 @@ public class CaveatNotificationServiceTest {
 
         caveatNotificationService.caveatRaise(caveatCallbackRequest);
 
-        assertEquals(caveatCallbackResponse.getCaveatData().getNotificationsGenerated().size(), 1);
+        assertEquals(1, caveatCallbackResponse.getCaveatData().getNotificationsGenerated().size());
     }
 
     @Test
@@ -177,7 +177,7 @@ public class CaveatNotificationServiceTest {
 
         caveatNotificationService.caveatRaise(caveatCallbackRequest);
 
-        assertEquals(caveatCallbackResponse.getCaveatData().getNotificationsGenerated().size(), 2);
+        assertEquals(2, caveatCallbackResponse.getCaveatData().getNotificationsGenerated().size());
     }
 
     @Test
@@ -215,7 +215,7 @@ public class CaveatNotificationServiceTest {
 
         caveatNotificationService.caveatRaise(caveatCallbackRequest);
 
-        assertEquals(caveatCallbackResponse.getCaveatData().getNotificationsGenerated().size(), 2);
+        assertEquals(2, caveatCallbackResponse.getCaveatData().getNotificationsGenerated().size());
     }
 
 }

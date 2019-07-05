@@ -70,7 +70,7 @@ public class DocumentGeneratorService {
     }
 
 
-    public Document generateCoversheet (CallbackRequest callbackRequest) {
+    public Document generateCoversheet(CallbackRequest callbackRequest) {
 
         log.info("Initiate call to generate coversheet for case id {} ",
                 callbackRequest.getCaseDetails().getId());
@@ -84,9 +84,9 @@ public class DocumentGeneratorService {
     }
 
     private void expireDrafts(CallbackRequest callbackRequest) {
-        DocumentType[] documentTypes = {DIGITAL_GRANT_DRAFT, INTESTACY_GRANT_DRAFT, ADMON_WILL_GRANT_DRAFT,
-                                        DIGITAL_GRANT_DRAFT_REISSUE, INTESTACY_GRANT_DRAFT_REISSUE,
-                                        ADMON_WILL_GRANT_DRAFT_REISSUE, DIGITAL_GRANT_REISSUE};
+        DocumentType[] documentTypes = {DIGITAL_GRANT_DRAFT, INTESTACY_GRANT_DRAFT,
+                ADMON_WILL_GRANT_DRAFT, DIGITAL_GRANT_DRAFT_REISSUE,
+                INTESTACY_GRANT_DRAFT_REISSUE, ADMON_WILL_GRANT_DRAFT_REISSUE, DIGITAL_GRANT_REISSUE};
         for (DocumentType documentType : documentTypes) {
             documentService.expire(callbackRequest, documentType);
         }
