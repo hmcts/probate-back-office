@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatCallbackRequest;
+import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
 import uk.gov.hmcts.probate.model.ccd.caveat.response.CaveatCallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
@@ -16,10 +17,12 @@ import uk.gov.hmcts.probate.validator.ValidationRuleCaveats;
 import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
 import uk.gov.service.notify.NotificationClientException;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import static uk.gov.hmcts.probate.model.Constants.CAVEAT_LIFESPAN;
 import static uk.gov.hmcts.probate.model.State.CAVEAT_RAISED;
 
 @Service
@@ -43,6 +46,7 @@ public class CaveatNotificationService {
         List<Document> documents = new ArrayList<>();
         String letterId = null;
         CaveatDetails caveatDetails = caveatCallbackRequest.getCaseDetails();
+        setCaveatExpiryDate(caveatDetails.getData());
 
         if (caveatDetails.getData().isCaveatRaisedEmailNotificationRequested()) {
             caveatCallbackResponse = eventValidationService.validateCaveatRequest(caveatCallbackRequest, validationRuleCaveats);
@@ -51,12 +55,10 @@ public class CaveatNotificationService {
                 documents.add(document);
             }
         } else {
-            Map<String, Object> placeholdersCoversheet =
-                    caveatDocmosisService.caseDataAsPlaceholders(caveatCallbackRequest.getCaseDetails());
-            Document coversheet = pdfManagementService
-                    .generateDocmosisDocumentAndUpload(placeholdersCoversheet, DocumentType.CAVEAT_COVERSHEET);
-            documents.add(coversheet);
             Map<String, Object> placeholders = caveatDocmosisService.caseDataAsPlaceholders(caveatCallbackRequest.getCaseDetails());
+            Document coversheet = pdfManagementService
+                    .generateDocmosisDocumentAndUpload(placeholders, DocumentType.CAVEAT_COVERSHEET);
+            documents.add(coversheet);
             Document caveatRaisedDoc = pdfManagementService.generateDocmosisDocumentAndUpload(placeholders, DocumentType.CAVEAT_RAISED);
             documents.add(caveatRaisedDoc);
 
@@ -73,6 +75,10 @@ public class CaveatNotificationService {
             caveatCallbackResponse = caveatCallbackResponseTransformer.caveatRaised(caveatCallbackRequest, documents, letterId);
         }
         return caveatCallbackResponse;
+    }
+
+    private void setCaveatExpiryDate(CaveatData caveatData) {
+        caveatData.setExpiryDate(LocalDate.now().plusMonths(CAVEAT_LIFESPAN));
     }
 
 

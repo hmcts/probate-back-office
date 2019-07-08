@@ -7,45 +7,13 @@ import org.mockito.InjectMocks;
 import org.mockito.junit.MockitoJUnitRunner;
 import uk.gov.hmcts.probate.model.ccd.ProbateAddress;
 
-import java.time.LocalDate;
-
 import static org.junit.Assert.assertEquals;
 
 @RunWith(MockitoJUnitRunner.class)
-public class FormatterServiceTest {
+public class AddressFormatterServiceTest {
 
     @InjectMocks
-    private FormatterService formatterService;
-
-    @Test
-    public void shouldReturnDateFormattedWithStSuffix() {
-        assertEquals("1st January 2000", formatterService.formatDate(LocalDate.of(2000, 01, 01)));
-    }
-
-    @Test
-    public void shouldReturnDateFormattedWithNdSuffix() {
-        assertEquals("2nd January 2000", formatterService.formatDate(LocalDate.of(2000, 01, 02)));
-    }
-
-    @Test
-    public void shouldReturnDateFormattedWithRdSuffix() {
-        assertEquals("3rd January 2000", formatterService.formatDate(LocalDate.of(2000, 01, 03)));
-    }
-
-    @Test
-    public void shouldReturnDateFormattedWithThSuffix() {
-        assertEquals("4th January 2000", formatterService.formatDate(LocalDate.of(2000, 01, 04)));
-    }
-
-    @Test
-    public void shouldThrowParseException() {
-        assertEquals(null, formatterService.formatDate(LocalDate.of(30000, 01, 01)));
-    }
-
-    @Test
-    public void shouldReturnNullFormatDate() {
-        assertEquals(null, formatterService.formatDate(null));
-    }
+    private AddressFormatterService addressFormatterService;
 
     @Test
     public void shouldReturnFormattedAddress() {
@@ -59,7 +27,7 @@ public class FormatterServiceTest {
                 .proCountry("country")
                 .build();
         assertEquals("addressLine1, addressLine2, addressLine3, posttown, county, postcode, country",
-                formatterService.formatAddress(probateAddress));
+                addressFormatterService.formatAddress(probateAddress));
     }
 
     @Test
@@ -69,12 +37,12 @@ public class FormatterServiceTest {
                 .proPostCode("postcode")
                 .build();
         assertEquals("addressLine1, postcode",
-                formatterService.formatAddress(probateAddress));
+                addressFormatterService.formatAddress(probateAddress));
     }
 
     @Test
     public void shouldReturnBlankStringFormattedAddress() {
-        assertEquals(Strings.EMPTY, formatterService.formatAddress(null));
+        assertEquals(Strings.EMPTY, addressFormatterService.formatAddress(null));
     }
 
 }
