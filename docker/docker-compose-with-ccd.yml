@@ -89,6 +89,7 @@ services:
       - REFORM_SERVICE_NAME=pdf-service
       - REFORM_TEAM
       - REFORM_ENVIRONMENT
+      - AZURE_APPLICATIONINSIGHTS_INSTRUMENTATIONKEY=DUMMY
     ports:
       - 5500:5500
 
