@@ -41,7 +41,6 @@ public class DocumentGeneratorServiceTest {
     private static final String ADMON_WILL_REISSUE_FILE_NAME = "admonWillGrantReissue.pdf";
     private static final String DRAFT = "preview";
     private static final String FINAL = "final";
-    private static final String SENT_EMAIL_FILE_NAME = "sentEmail.pdf";
     private CallbackRequest callbackRequest;
     private Map<String, Object> expectedMap;
     private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMM Y HH:mm");
@@ -120,6 +119,7 @@ public class DocumentGeneratorServiceTest {
         doNothing().when(documentService).expire(any(CallbackRequest.class), any());
 
         when(genericMapperService.addCaseData(caseDetails.getData())).thenReturn(expectedMap);
+
     }
 
     @Test
@@ -222,7 +222,13 @@ public class DocumentGeneratorServiceTest {
 
     @Test
     public void testGenerateCoversheetReturnsCorrectDocumentType() {
-        when(pdfManagementService.generateDocmosisDocumentAndUpload(expectedMap, DocumentType.GRANT_COVERSHEET)).thenReturn(Document.builder().documentType(DocumentType.GRANT_COVERSHEET).build());
+        when(pdfManagementService.generateDocmosisDocumentAndUpload(expectedMap, DocumentType.GRANT_COVERSHEET))
+                .thenReturn(Document.builder().documentType(DocumentType.GRANT_COVERSHEET).build());
         assertEquals(DocumentType.GRANT_COVERSHEET, documentGeneratorService.generateCoversheet(callbackRequest).getDocumentType());
+    }
+
+    @Test
+    public void test() {
+
     }
 }

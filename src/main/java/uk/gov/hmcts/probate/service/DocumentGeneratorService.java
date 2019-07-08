@@ -70,7 +70,7 @@ public class DocumentGeneratorService {
     }
 
 
-    public Document generateCoversheet (CallbackRequest callbackRequest) {
+    public Document generateCoversheet(CallbackRequest callbackRequest) {
 
         log.info("Initiate call to generate coversheet for case id {} ",
                 callbackRequest.getCaseDetails().getId());

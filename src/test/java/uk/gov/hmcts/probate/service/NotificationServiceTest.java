@@ -12,11 +12,11 @@ import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.test.context.junit4.SpringRunner;
 import uk.gov.hmcts.probate.config.properties.registries.RegistriesProperties;
 import uk.gov.hmcts.probate.exception.BadRequestException;
+import uk.gov.hmcts.probate.exception.InvalidEmailException;
 import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.CaseType;
 import uk.gov.hmcts.probate.model.SentEmail;
-import uk.gov.hmcts.probate.model.State;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
 import uk.gov.hmcts.probate.model.ccd.ProbateAddress;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
@@ -43,6 +43,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -798,13 +799,60 @@ public class NotificationServiceTest {
                         .applicationType(ApplicationType.PERSONAL)
                         .primaryApplicantEmailAddress("test@test.com")
                         .registryLocation("Bristol")
-                        .boEmailGrantReIssuedNotificationRequested("Yes")
                         .build(),
                         LAST_MODIFIED, CASE_ID);
         callbackRequest = new CallbackRequest(caseDetails);
 
-        when(eventValidationService.validateEmailRequest(callbackRequest, emailAddressNotificationValidationRules)).thenReturn(callbackResponse);
-        when(notificationService.sendEmail(State.GRANT_REISSUED, caseDetails)).thenReturn(Document.builder().documentFileName(SENT_EMAIL_FILE_NAME).build());
+        when(eventValidationService.validateEmailRequest(callbackRequest, emailAddressNotificationValidationRules))
+                .thenReturn(callbackResponse);
+        when(pdfManagementService.generateAndUpload(any(SentEmail.class), any())).thenReturn(Document.builder()
+                .documentFileName(SENT_EMAIL_FILE_NAME).build());
         assertEquals(SENT_EMAIL_FILE_NAME, notificationService.generateGrantReissue(callbackRequest).getDocumentFileName());
+    }
+
+    @Test
+    public void testInvalidEmailExceptionThrownWhenNoEmailPresentForPersonalApplication() {
+        CaseDetails caseDetails =
+                new CaseDetails(CaseData.builder()
+                        .caseType("gop")
+                        .applicationType(ApplicationType.PERSONAL)
+                        .primaryApplicantEmailAddress("")
+                        .registryLocation("Bristol")
+                        .build(),
+                        LAST_MODIFIED, CASE_ID);
+        callbackRequest = new CallbackRequest(caseDetails);
+        List<String> errors = new ArrayList<>();
+        errors.add("test error");
+
+        when(eventValidationService.validateEmailRequest(callbackRequest,
+                emailAddressNotificationValidationRules)).thenReturn(CallbackResponse.builder().errors(errors).build());
+
+        assertThatThrownBy(() -> {
+            notificationService.generateGrantReissue(callbackRequest);
+        }).isInstanceOf(InvalidEmailException.class)
+                .hasMessage("Invalid email exception: No email address provided for application type PA: " + CASE_ID);
+    }
+
+    @Test
+    public void testInvalidEmailExceptionThrownWhenNoEmailPresentForSolicitorApplication() {
+        CaseDetails caseDetails =
+                new CaseDetails(CaseData.builder()
+                        .caseType("gop")
+                        .applicationType(SOLICITOR)
+                        .primaryApplicantEmailAddress("")
+                        .registryLocation("Bristol")
+                        .build(),
+                        LAST_MODIFIED, CASE_ID);
+        callbackRequest = new CallbackRequest(caseDetails);
+        List<String> errors = new ArrayList<>();
+        errors.add("test error");
+
+        when(eventValidationService.validateEmailRequest(callbackRequest,
+                emailAddressNotificationValidationRules)).thenReturn(CallbackResponse.builder().errors(errors).build());
+
+        assertThatThrownBy(() -> {
+            notificationService.generateGrantReissue(callbackRequest);
+        }).isInstanceOf(InvalidEmailException.class)
+                .hasMessage("Invalid email exception: No email address provided for application type SOLS: " + CASE_ID);
     }
 }

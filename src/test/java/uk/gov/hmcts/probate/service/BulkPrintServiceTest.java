@@ -1,15 +1,14 @@
 package uk.gov.hmcts.probate.service;
 
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.client.HttpClientErrorException;
 import uk.gov.hmcts.probate.exception.BulkPrintException;
+import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
 import uk.gov.hmcts.probate.model.ccd.ProbateAddress;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatCallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
@@ -23,7 +22,6 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
 import uk.gov.hmcts.probate.service.client.DocumentStoreClient;
-import uk.gov.hmcts.probate.validator.BulkPrintValidationRule;
 import uk.gov.hmcts.reform.authorisation.generators.ServiceAuthTokenGenerator;
 import uk.gov.hmcts.reform.sendletter.api.LetterWithPdfsRequest;
 import uk.gov.hmcts.reform.sendletter.api.SendLetterApi;
@@ -35,6 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -52,9 +51,6 @@ public class BulkPrintServiceTest {
     @InjectMocks
     private BulkPrintService bulkPrintService;
 
-    @Rule
-    public ExpectedException expectedException = ExpectedException.none();
-
     @Mock
     private SendLetterApi sendLetterApiMock;
 
@@ -68,13 +64,10 @@ public class BulkPrintServiceTest {
     private DocumentStoreClient documentStoreClientMock;
 
     @Mock
-    CallbackResponse callbackResponse;
-
-    @Mock
-    BusinessValidationMessageService businessValidationMessageService;
+    private BusinessValidationMessageService businessValidationMessageService;
 
     private ResponseCaseData responseCaseData;
-    private List<BulkPrintValidationRule> bulkPrintValidationRules;
+    private CallbackResponse callbackResponse;
 
     @Before
     public void setUp() throws Exception {
@@ -115,7 +108,7 @@ public class BulkPrintServiceTest {
         UUID uuid = UUID.randomUUID();
         SendLetterResponse sendLetterResponse = new SendLetterResponse(uuid);
         when(sendLetterApiMock.sendLetter(anyString(), any(LetterWithPdfsRequest.class))).thenReturn(sendLetterResponse);
-        SendLetterResponse response =  bulkPrintService.sendToBulkPrint(callbackRequest, grant, coverSheet);
+        SendLetterResponse response = bulkPrintService.sendToBulkPrint(callbackRequest, grant, coverSheet);
 
         verify(sendLetterApiMock).sendLetter(anyString(), any(LetterWithPdfsRequest.class));
 
@@ -238,7 +231,7 @@ public class BulkPrintServiceTest {
         doThrow(new IOException("Error retrieving document from store with url"))
                 .when(documentStoreClientMock).retrieveDocument(any(Document.class), anyString());
 
-        SendLetterResponse response = bulkPrintService.sendToBulkPrint(callbackRequest, document, coverSheet);
+        bulkPrintService.sendToBulkPrint(callbackRequest, document, coverSheet);
 
         verify(documentStoreClientMock).retrieveDocument(any(Document.class), anyString());
     }
@@ -278,7 +271,7 @@ public class BulkPrintServiceTest {
         doThrow(new IOException("Error retrieving document from store with url"))
                 .when(documentStoreClientMock).retrieveDocument(any(Document.class), anyString());
 
-        SendLetterResponse response = bulkPrintService.sendToBulkPrint(callbackRequest, document, coverSheet);
+        bulkPrintService.sendToBulkPrint(callbackRequest, document, coverSheet);
 
         verify(documentStoreClientMock).retrieveDocument(any(Document.class), anyString());
     }
@@ -355,7 +348,7 @@ public class BulkPrintServiceTest {
         UUID uuid = UUID.randomUUID();
         SendLetterResponse sendLetterResponse = new SendLetterResponse(uuid);
         when(sendLetterApiMock.sendLetter(anyString(), any(LetterWithPdfsRequest.class))).thenReturn(sendLetterResponse);
-        SendLetterResponse response =  bulkPrintService.sendToBulkPrint(callbackRequest, document, coverSheet);
+        SendLetterResponse response = bulkPrintService.sendToBulkPrint(callbackRequest, document, coverSheet);
 
         verify(sendLetterApiMock).sendLetter(anyString(), any(LetterWithPdfsRequest.class));
 
@@ -365,7 +358,6 @@ public class BulkPrintServiceTest {
 
     @Test
     public void testSuccessfulSendToBulkPrintGrantReissue() {
-
         SolsAddress address = SolsAddress.builder().addressLine1("Address 1")
                 .addressLine2("Address 2")
                 .postCode("EC2")
@@ -377,18 +369,18 @@ public class BulkPrintServiceTest {
                 .primaryApplicantSurname("surname")
                 .primaryApplicantAddress(address)
                 .build();
-        CallbackRequest callbackRequest = new CallbackRequest(new CaseDetails(caseData, null, 0L));
+        final CallbackRequest callbackRequest = new CallbackRequest(new CaseDetails(caseData, null, 0L));
 
         DocumentLink documentLink = DocumentLink.builder()
                 .documentUrl("http://localhost")
                 .build();
-        Document document = Document.builder()
+        final Document document = Document.builder()
                 .documentFileName("test.pdf")
                 .documentGeneratedBy("test")
                 .documentDateAdded(LocalDate.now())
                 .documentLink(documentLink)
                 .build();
-        Document coverSheet = Document.builder()
+        final Document coverSheet = Document.builder()
                 .documentFileName("test.pdf")
                 .documentGeneratedBy("test")
                 .documentDateAdded(LocalDate.now())
@@ -401,21 +393,19 @@ public class BulkPrintServiceTest {
                 .deceasedSurname("name")
                 .build();
 
-        callbackResponse =  callbackResponse.builder()
-               // .data(responseCaseData)
+        final CallbackResponse callbackResponse = CallbackResponse.builder()
                 .errors(new ArrayList<>())
+                .data(responseCaseData)
                 .build();
 
-//        callbackResponse = CallbackResponse.builder().errors(new ArrayList<>()).build();
         UUID uuid = UUID.randomUUID();
         SendLetterResponse sendLetterResponse = new SendLetterResponse(uuid);
         when(sendLetterApiMock.sendLetter(anyString(), any(LetterWithPdfsRequest.class))).thenReturn(sendLetterResponse);
-        String letterId =  bulkPrintService.sendToBulkPrintGrantReissue(callbackRequest, document, coverSheet);
+        when(eventValidationService.validateBulkPrintResponse(eq(uuid.toString()), any())).thenReturn(callbackResponse);
+
+        String letterId = bulkPrintService.sendToBulkPrintGrantReissue(callbackRequest, document, coverSheet);
 
         verify(sendLetterApiMock).sendLetter(anyString(), any(LetterWithPdfsRequest.class));
-
-        when(eventValidationService.validateBulkPrintResponse(eq(letterId), any(List.class)))
-                .thenReturn(callbackResponse);
 
         assertNotNull(letterId);
         assertThat(letterId, is(uuid.toString()));
@@ -435,18 +425,18 @@ public class BulkPrintServiceTest {
                 .primaryApplicantSurname("surname")
                 .primaryApplicantAddress(address)
                 .build();
-        CallbackRequest callbackRequest = new CallbackRequest(new CaseDetails(caseData, null, 0L));
+        final CallbackRequest callbackRequest = new CallbackRequest(new CaseDetails(caseData, null, 0L));
 
         DocumentLink documentLink = DocumentLink.builder()
                 .documentUrl("http://localhost")
                 .build();
-        Document document = Document.builder()
+        final Document document = Document.builder()
                 .documentFileName("test.pdf")
                 .documentGeneratedBy("test")
                 .documentDateAdded(LocalDate.now())
                 .documentLink(documentLink)
                 .build();
-        Document coverSheet = Document.builder()
+        final Document coverSheet = Document.builder()
                 .documentFileName("test.pdf")
                 .documentGeneratedBy("test")
                 .documentDateAdded(LocalDate.now())
@@ -454,26 +444,23 @@ public class BulkPrintServiceTest {
                 .build();
 
         List errors = new ArrayList();
-        errors.add("some error");
+        errors.add("test error");
 
-        callbackResponse =  callbackResponse.builder()
-                // .data(responseCaseData)
+        callbackResponse = callbackResponse.builder()
+                .data(responseCaseData)
                 .errors(errors)
                 .build();
 
         UUID uuid = UUID.randomUUID();
         SendLetterResponse sendLetterResponse = new SendLetterResponse(uuid);
         when(sendLetterApiMock.sendLetter(anyString(), any(LetterWithPdfsRequest.class))).thenReturn(sendLetterResponse);
-        String letterId =  bulkPrintService.sendToBulkPrintGrantReissue(callbackRequest, document, coverSheet);
-        when(eventValidationService.validateBulkPrintResponse(eq(letterId), any(List.class)))
-                .thenReturn(callbackResponse);
+        when(eventValidationService.validateBulkPrintResponse(eq(uuid.toString()), any())).thenReturn(callbackResponse);
+        when(businessValidationMessageService.generateError(any(), any())).thenReturn(FieldErrorResponse.builder().build());
 
-        verify(sendLetterApiMock).sendLetter(anyString(), any(LetterWithPdfsRequest.class));
-
-        assertNotNull(letterId);
-        assertThat(letterId, is(uuid));
+        assertThatThrownBy(() -> {
+            bulkPrintService.sendToBulkPrintGrantReissue(callbackRequest, coverSheet, document);
+        }).isInstanceOf(BulkPrintException.class).hasMessage("Bulk print send letter response is null for: 0");
     }
-
 
 
 }

@@ -142,7 +142,8 @@ public class CaveatNotificationServiceTest {
 
         when(eventValidationService.validateCaveatRequest(any(CaveatCallbackRequest.class), any(List.class)))
                 .thenReturn(caveatCallbackResponse.builder().errors(new ArrayList<>()).build());
-        when(notificationService.sendCaveatEmail(State.CAVEAT_RAISED, caveatDetails)).thenReturn(Document.builder().documentFileName(SENT_EMAIL_FILE_NAME).build());
+        when(notificationService.sendCaveatEmail(State.CAVEAT_RAISED, caveatDetails)).thenReturn(Document.builder()
+                .documentFileName(SENT_EMAIL_FILE_NAME).build());
 
         caveatCallbackResponse = CaveatCallbackResponse.builder().caveatData(responseCaveatData).build();
         when(caveatCallbackResponseTransformer.caveatRaised(caveatCallbackRequest, documents, null)).thenReturn(caveatCallbackResponse);
