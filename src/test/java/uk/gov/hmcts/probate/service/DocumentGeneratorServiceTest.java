@@ -226,9 +226,4 @@ public class DocumentGeneratorServiceTest {
                 .thenReturn(Document.builder().documentType(DocumentType.GRANT_COVERSHEET).build());
         assertEquals(DocumentType.GRANT_COVERSHEET, documentGeneratorService.generateCoversheet(callbackRequest).getDocumentType());
     }
-
-    @Test
-    public void test() {
-
-    }
 }
