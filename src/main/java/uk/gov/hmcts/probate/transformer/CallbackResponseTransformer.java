@@ -60,7 +60,6 @@ public class CallbackResponseTransformer {
     private static final String CASE_PRINTED = "CasePrinted";
     private static final String READY_FOR_EXAMINATION = "BOReadyForExamination";
     private static final String EXAMINING = "BOExamining";
-    public static final String APP_TYPE_WILL = "Left";
 
     public static final String ANSWER_YES = "Yes";
     public static final String ANSWER_NO = "No";
@@ -241,15 +240,6 @@ public class CallbackResponseTransformer {
         return transformResponse(responseCaseDataBuilder.build());
     }
 
-    public CallbackResponse willType(CallbackRequest callbackRequest) {
-
-        ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), false);
-        getCaseCreatorResponseCaseBuilder(callbackRequest.getCaseDetails().getData(), responseCaseDataBuilder);
-
-        return transformResponse(responseCaseDataBuilder.build());
-    }
-
-
     private CallbackResponse transformResponse(ResponseCaseData responseCaseData) {
         return CallbackResponse.builder().data(responseCaseData).build();
     }
@@ -382,10 +372,6 @@ public class CallbackResponseTransformer {
         return (caseData.getPaperForm() != null && caseData.getPaperForm().equals(ANSWER_YES));
     }
 
-    private boolean willExists(CaseData caseData) {
-        return (caseData.getSolsWillType() != null && caseData.getSolsWillType().contains(APP_TYPE_WILL));
-    }
-
     private ResponseCaseDataBuilder getCaseCreatorResponseCaseBuilder(CaseData caseData, ResponseCaseDataBuilder builder) {
 
         builder
@@ -510,14 +496,6 @@ public class CallbackResponseTransformer {
                     .paperForm(ANSWER_NO);
         }
 
-        if (willExists(caseData)) {
-            builder
-                    .willExists(ANSWER_YES);
-        } else {
-            builder
-                    .willExists(ANSWER_NO);
-        }
-
         if (caseData.getCaseType() == null) {
             builder
                     .caseType(CASE_TYPE_DEFAULT);
@@ -583,14 +561,6 @@ public class CallbackResponseTransformer {
         if (!isPaperForm(caseData)) {
             builder
                     .paperForm(ANSWER_NO);
-        }
-
-        if (willExists(caseData)) {
-            builder
-                    .willExists(ANSWER_YES);
-        } else {
-            builder
-                    .willExists(ANSWER_NO);
         }
 
         if (caseData.getCaseType() == null) {

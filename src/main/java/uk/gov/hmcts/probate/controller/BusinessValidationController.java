@@ -168,21 +168,6 @@ public class BusinessValidationController {
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping(path = "/will-type", consumes = APPLICATION_JSON_UTF8_VALUE, produces = {APPLICATION_JSON_VALUE})
-    public ResponseEntity<CallbackResponse> willTypeCaseDetails(
-            @RequestBody CallbackRequest callbackRequest,
-            BindingResult bindingResult) {
-
-        if (bindingResult.hasErrors()) {
-            log.error(DEFAULT_LOG_ERROR, callbackRequest.getCaseDetails().getId(), bindingResult);
-            throw new BadRequestException(INVALID_PAYLOAD, bindingResult);
-        }
-
-        CallbackResponse response = callbackResponseTransformer.willType(callbackRequest);
-
-        return ResponseEntity.ok(response);
-    }
-
     private void logRequest(String uri, CallbackRequest callbackRequest) {
         try {
             log.info("POST: {} Case Id: {} ", uri, callbackRequest.getCaseDetails().getId().toString());
