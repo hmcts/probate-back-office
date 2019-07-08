@@ -108,7 +108,6 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "solsNextStepsDocument", "Label": "Next Steps Document", "FieldType": "Document", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "solsPaymentReferenceNumber", "Label": "Payment Reference Number", "FieldType": "Text", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "solsWillType", "Label": "What kind of application are you making?", "FieldType": "FixedRadioList", "FieldTypeParameter": "solsWillTypes", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "solsApplicationType", "Label": "What kind of application are you making?", "FieldType": "FixedRadioList", "FieldTypeParameter": "solsApplicationTypes", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "solsApplicantNameSection", "Label": "## Applicant name", "FieldType": "Label", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "solsApplicantForenames", "Label": "First name(s)", "HintText": "Include all middle names", "FieldType": "Text", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "solsApplicantSurname", "Label": "Last name(s)", "FieldType": "Text", "SecurityClassification": "Public"},
