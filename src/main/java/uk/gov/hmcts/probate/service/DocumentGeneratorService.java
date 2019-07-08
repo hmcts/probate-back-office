@@ -55,6 +55,7 @@ public class DocumentGeneratorService {
 
         Document document;
         if (version.equals(FINAL)) {
+            log.info("Generating Grant document");
             Map<String, Object> placeholders = genericMapperService.addCaseDataWithImages(images, caseDetails);
             placeholders.put("Signature", "image:base64:" + pdfManagementService.getDecodedSignature());
             document = generateAppropriateDocument(caseDetails, placeholders, FINAL);
@@ -66,6 +67,7 @@ public class DocumentGeneratorService {
 
         expireDrafts(callbackRequest);
 
+        log.info("Grant generated: {}", document.getDocumentFileName());
         return document;
     }
 
@@ -84,6 +86,7 @@ public class DocumentGeneratorService {
     }
 
     private void expireDrafts(CallbackRequest callbackRequest) {
+        log.info("Expiring drafts");
         DocumentType[] documentTypes = {DIGITAL_GRANT_DRAFT, INTESTACY_GRANT_DRAFT, ADMON_WILL_GRANT_DRAFT,
                                         DIGITAL_GRANT_DRAFT_REISSUE, INTESTACY_GRANT_DRAFT_REISSUE,
                                         ADMON_WILL_GRANT_DRAFT_REISSUE};
