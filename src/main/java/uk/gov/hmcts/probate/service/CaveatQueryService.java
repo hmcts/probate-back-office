@@ -6,13 +6,17 @@ import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 import uk.gov.hmcts.probate.config.CCDDataStoreAPIConfiguration;
+import uk.gov.hmcts.probate.exception.BadRequestException;
+import uk.gov.hmcts.probate.exception.BusinessValidationException;
 import uk.gov.hmcts.probate.exception.CaseMatchingException;
+import uk.gov.hmcts.probate.exception.ClientException;
 import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.CaseType;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
@@ -23,6 +27,7 @@ import uk.gov.hmcts.reform.authorisation.generators.ServiceAuthTokenGenerator;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Locale;
 
 import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
 import static org.elasticsearch.index.query.QueryBuilders.matchQuery;
@@ -38,12 +43,14 @@ public class CaveatQueryService {
     private static final String AUTHORIZATION = "Authorization";
     private static final String CASE_TYPE_ID = "ctid";
     private static final String REFERENCE = "reference";
+    private static final String CAVEAT_NOT_FOUND_CODE = "caveatNotFound";
     private final RestTemplate restTemplate;
     private final AppInsights appInsights;
     private final HttpHeadersFactory headers;
     private final CCDDataStoreAPIConfiguration ccdDataStoreAPIConfiguration;
     private final ServiceAuthTokenGenerator serviceAuthTokenGenerator;
     private final IdamAuthenticateUserService idamAuthenticateUserService;
+    private final BusinessValidationMessageRetriever businessValidationMessageRetriever;
 
     public List<ReturnedCaveatDetails> findCaveatsById(CaseType caseType, String caveatId) {
         BoolQueryBuilder query = boolQuery();
@@ -62,7 +69,13 @@ public class CaveatQueryService {
 
         String jsonQuery = new SearchSourceBuilder().query(query).toString();
 
-        return runQuery(caseType, jsonQuery).get(0).getData();
+        List<ReturnedCaveatDetails> foundCaveats = runQuery(caseType, jsonQuery);
+        if (foundCaveats.size() != 1) {
+            String[] args = {caveatId};
+            String message = businessValidationMessageRetriever.getMessage(CAVEAT_NOT_FOUND_CODE, args, Locale.UK);
+            throw new BusinessValidationException(message);
+        }
+        return foundCaveats.get(0).getData();
     }
 
     private List<ReturnedCaveatDetails> runQuery(CaseType caseType, String jsonQuery) {
