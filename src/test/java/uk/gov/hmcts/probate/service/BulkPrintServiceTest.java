@@ -4,12 +4,12 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.client.HttpClientErrorException;
+import uk.gov.hmcts.probate.exception.BulkPrintException;
 import uk.gov.hmcts.probate.model.ccd.ProbateAddress;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatCallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
@@ -20,7 +20,10 @@ import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
+import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
+import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
 import uk.gov.hmcts.probate.service.client.DocumentStoreClient;
+import uk.gov.hmcts.probate.validator.BulkPrintValidationRule;
 import uk.gov.hmcts.reform.authorisation.generators.ServiceAuthTokenGenerator;
 import uk.gov.hmcts.reform.sendletter.api.LetterWithPdfsRequest;
 import uk.gov.hmcts.reform.sendletter.api.SendLetterApi;
@@ -28,6 +31,8 @@ import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import static org.hamcrest.Matchers.is;
@@ -36,11 +41,12 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
+//@RunWith(MockitoJUnitRunner.class)
 public class BulkPrintServiceTest {
 
     @InjectMocks
@@ -53,14 +59,26 @@ public class BulkPrintServiceTest {
     private SendLetterApi sendLetterApiMock;
 
     @Mock
+    private EventValidationService eventValidationService;
+
+    @Mock
     private ServiceAuthTokenGenerator authTokenGeneratorMock;
 
     @Mock
     private DocumentStoreClient documentStoreClientMock;
 
+    @Mock
+    CallbackResponse callbackResponse;
+
+    @Mock
+    BusinessValidationMessageService businessValidationMessageService;
+
+    private ResponseCaseData responseCaseData;
+    private List<BulkPrintValidationRule> bulkPrintValidationRules;
 
     @Before
     public void setUp() throws Exception {
+        MockitoAnnotations.initMocks(this);
         when(authTokenGeneratorMock.generate()).thenReturn("authToken");
         when(documentStoreClientMock.retrieveDocument(any(Document.class), anyString())).thenReturn(new byte[256]);
     }
@@ -344,5 +362,118 @@ public class BulkPrintServiceTest {
         assertNotNull(response);
         assertThat(response.letterId, is(uuid));
     }
+
+    @Test
+    public void testSuccessfulSendToBulkPrintGrantReissue() {
+
+        SolsAddress address = SolsAddress.builder().addressLine1("Address 1")
+                .addressLine2("Address 2")
+                .postCode("EC2")
+                .country("UK")
+                .build();
+        CaseData caseData = CaseData.builder()
+                .primaryApplicantEmailAddress("email@email.com")
+                .primaryApplicantForenames("firstname")
+                .primaryApplicantSurname("surname")
+                .primaryApplicantAddress(address)
+                .build();
+        CallbackRequest callbackRequest = new CallbackRequest(new CaseDetails(caseData, null, 0L));
+
+        DocumentLink documentLink = DocumentLink.builder()
+                .documentUrl("http://localhost")
+                .build();
+        Document document = Document.builder()
+                .documentFileName("test.pdf")
+                .documentGeneratedBy("test")
+                .documentDateAdded(LocalDate.now())
+                .documentLink(documentLink)
+                .build();
+        Document coverSheet = Document.builder()
+                .documentFileName("test.pdf")
+                .documentGeneratedBy("test")
+                .documentDateAdded(LocalDate.now())
+                .documentLink(documentLink)
+                .build();
+
+        responseCaseData = ResponseCaseData.builder()
+                .registryLocation("leeds")
+                .deceasedForenames("name")
+                .deceasedSurname("name")
+                .build();
+
+        callbackResponse =  callbackResponse.builder()
+               // .data(responseCaseData)
+                .errors(new ArrayList<>())
+                .build();
+
+//        callbackResponse = CallbackResponse.builder().errors(new ArrayList<>()).build();
+        UUID uuid = UUID.randomUUID();
+        SendLetterResponse sendLetterResponse = new SendLetterResponse(uuid);
+        when(sendLetterApiMock.sendLetter(anyString(), any(LetterWithPdfsRequest.class))).thenReturn(sendLetterResponse);
+        String letterId =  bulkPrintService.sendToBulkPrintGrantReissue(callbackRequest, document, coverSheet);
+
+        verify(sendLetterApiMock).sendLetter(anyString(), any(LetterWithPdfsRequest.class));
+
+        when(eventValidationService.validateBulkPrintResponse(eq(letterId), any(List.class)))
+                .thenReturn(callbackResponse);
+
+        assertNotNull(letterId);
+        assertThat(letterId, is(uuid.toString()));
+    }
+
+    @Test
+    public void testSuccessfulSendToBulkPrintGrantReissueThrowsError() throws BulkPrintException {
+
+        SolsAddress address = SolsAddress.builder().addressLine1("Address 1")
+                .addressLine2("Address 2")
+                .postCode("EC2")
+                .country("UK")
+                .build();
+        CaseData caseData = CaseData.builder()
+                .primaryApplicantEmailAddress("email@email.com")
+                .primaryApplicantForenames("firstname")
+                .primaryApplicantSurname("surname")
+                .primaryApplicantAddress(address)
+                .build();
+        CallbackRequest callbackRequest = new CallbackRequest(new CaseDetails(caseData, null, 0L));
+
+        DocumentLink documentLink = DocumentLink.builder()
+                .documentUrl("http://localhost")
+                .build();
+        Document document = Document.builder()
+                .documentFileName("test.pdf")
+                .documentGeneratedBy("test")
+                .documentDateAdded(LocalDate.now())
+                .documentLink(documentLink)
+                .build();
+        Document coverSheet = Document.builder()
+                .documentFileName("test.pdf")
+                .documentGeneratedBy("test")
+                .documentDateAdded(LocalDate.now())
+                .documentLink(documentLink)
+                .build();
+
+        List errors = new ArrayList();
+        errors.add("some error");
+
+        callbackResponse =  callbackResponse.builder()
+                // .data(responseCaseData)
+                .errors(errors)
+                .build();
+
+        UUID uuid = UUID.randomUUID();
+        SendLetterResponse sendLetterResponse = new SendLetterResponse(uuid);
+        when(sendLetterApiMock.sendLetter(anyString(), any(LetterWithPdfsRequest.class))).thenReturn(sendLetterResponse);
+        String letterId =  bulkPrintService.sendToBulkPrintGrantReissue(callbackRequest, document, coverSheet);
+        when(eventValidationService.validateBulkPrintResponse(eq(letterId), any(List.class)))
+                .thenReturn(callbackResponse);
+
+        verify(sendLetterApiMock).sendLetter(anyString(), any(LetterWithPdfsRequest.class));
+
+        assertNotNull(letterId);
+        assertThat(letterId, is(uuid));
+    }
+
+
 
 }
