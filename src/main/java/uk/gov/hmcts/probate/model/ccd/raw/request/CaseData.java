@@ -93,6 +93,9 @@ public class CaseData {
     @NotBlank(groups = {ApplicationUpdatedGroup.class}, message = "{willExistsIsNull}")
     private final String willExists;
 
+    @NotBlank(groups = {ApplicationUpdatedGroup.class}, message = "{solsWillTypeIsNull}")
+    private final String solsWillType;
+
     @NotBlank(groups = {ApplicationUpdatedGroup.class}, message = "{willAsOriginalIsNull}")
     private final String willAccessOriginal;
 
