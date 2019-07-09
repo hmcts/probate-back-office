@@ -831,7 +831,7 @@ public class NotificationServiceTest {
         notificationService.sendEmail(CASE_STOPPED_CAVEAT, personalCaseDataCtsc);
 
         verify(notificationClient).sendEmail(
-                eq(null),
+                eq("pa-case-stopped-caveat"),
                 eq("personal@test.com"),
                 eq(personalisation),
                 eq(null),
