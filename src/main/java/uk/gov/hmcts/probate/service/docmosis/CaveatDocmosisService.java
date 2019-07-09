@@ -4,11 +4,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import uk.gov.hmcts.probate.config.PDFServiceConfiguration;
 import uk.gov.hmcts.probate.config.properties.registries.RegistriesProperties;
 import uk.gov.hmcts.probate.config.properties.registries.Registry;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
-import uk.gov.hmcts.probate.service.FileSystemResourceService;
+import uk.gov.hmcts.probate.service.DateFormatterService;
 import uk.gov.hmcts.probate.service.ccd.CcdReferenceFormatterService;
 
 import java.text.DateFormat;
@@ -22,9 +21,8 @@ import java.util.Map;
 public class CaveatDocmosisService {
     private static final String DATE_INPUT_FORMAT = "ddMMyyyy";
     private final RegistriesProperties registriesProperties;
-    private final PDFServiceConfiguration pdfServiceConfiguration;
-    private final FileSystemResourceService fileSystemResourceService;
     private final CcdReferenceFormatterService ccdReferenceFormatterService;
+    private final DateFormatterService dateFormatterService;
 
     public Map<String, Object> caseDataAsPlaceholders(CaveatDetails caveatDetails) {
 
@@ -41,6 +39,7 @@ public class CaveatDocmosisService {
         placeholders.put("generatedDate", generatedDateFormat.format(new Date()));
         placeholders.put("registry", registryPlaceholders);
         placeholders.put("PA8AURL", "www.citizensadvice.org.uk|https://www.citizensadvice.org.uk/");
+        placeholders.put("caveatExpiryDate", dateFormatterService.formatCaveatExpiryDate(caveatDetails.getData().getExpiryDate()));
         return placeholders;
     }
 

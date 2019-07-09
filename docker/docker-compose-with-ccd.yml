@@ -89,6 +89,7 @@ services:
       - REFORM_SERVICE_NAME=pdf-service
       - REFORM_TEAM
       - REFORM_ENVIRONMENT
+      - AZURE_APPLICATIONINSIGHTS_INSTRUMENTATIONKEY=DUMMY
     ports:
       - 5500:5500
 
@@ -388,7 +389,7 @@ services:
       - PROXY_DEFINITION_DATA=http://ccd-definition-store-api:4451/api/data
       - PROXY_DEFINITION_DISPLAY=http://ccd-definition-store-api:4451/api/display
       # this NEEDS to be your local ip address
-      - PROXY_PRINT_SERVICE=http://10.99.3.89:3100
+      - PROXY_PRINT_SERVICE=http://10.99.2.9:3100
       - PROXY_DOCUMENT_MANAGEMENT=http://localhost:8080
     ports:
       - 3453:3453
