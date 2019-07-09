@@ -10,12 +10,15 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import uk.gov.hmcts.probate.exception.BadRequestException;
+import uk.gov.hmcts.probate.exception.BusinessValidationException;
 import uk.gov.hmcts.probate.exception.ClientException;
 import uk.gov.hmcts.probate.exception.ConnectionException;
 import uk.gov.hmcts.probate.exception.GrantOfRepresentationException;
 import uk.gov.hmcts.probate.exception.model.ErrorResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.service.notify.NotificationClientException;
+
+import java.util.Collections;
 
 import static net.logstash.logback.argument.StructuredArguments.keyValue;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
@@ -51,6 +54,17 @@ class DefaultExceptionHandler extends ResponseEntityExceptionHandler {
         headers.setContentType(MediaType.APPLICATION_JSON);
 
         return new ResponseEntity<>(errorResponse, headers, HttpStatus.valueOf(errorResponse.getCode()));
+    }
+
+    @ExceptionHandler(BusinessValidationException.class)
+    public ResponseEntity<CallbackResponse> handle(BusinessValidationException exception) {
+
+        log.warn("BusinessValidation exception", exception.getMessage());
+
+        CallbackResponse callbackResponse = CallbackResponse.builder()
+                .errors(Collections.singletonList(exception.getMessage()))
+                .build();
+        return ResponseEntity.ok(callbackResponse);
     }
 
     @ExceptionHandler(ConnectionException.class)

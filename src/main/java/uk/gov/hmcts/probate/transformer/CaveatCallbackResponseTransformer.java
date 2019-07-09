@@ -22,7 +22,6 @@ import java.util.stream.Collectors;
 
 import static java.util.Optional.ofNullable;
 import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
-import static uk.gov.hmcts.probate.model.Constants.CAVEAT_LIFESPAN;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT_RAISED;
 
@@ -54,7 +53,6 @@ public class CaveatCallbackResponseTransformer {
 
         responseCaveatDataBuilder
                 .applicationSubmittedDate(dateTimeFormatter.format(LocalDate.now()))
-                .expiryDate(dateTimeFormatter.format(LocalDate.now().plusMonths(CAVEAT_LIFESPAN)))
                 .paperForm(YES)
                 .build();
 

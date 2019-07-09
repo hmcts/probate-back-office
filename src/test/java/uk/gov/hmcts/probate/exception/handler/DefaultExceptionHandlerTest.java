@@ -7,6 +7,7 @@ import org.mockito.Mock;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import uk.gov.hmcts.probate.exception.BadRequestException;
+import uk.gov.hmcts.probate.exception.BusinessValidationException;
 import uk.gov.hmcts.probate.exception.ClientException;
 import uk.gov.hmcts.probate.exception.ConnectionException;
 import uk.gov.hmcts.probate.exception.GrantOfRepresentationException;
@@ -21,6 +22,7 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.http.HttpStatus.SERVICE_UNAVAILABLE;
 
 public class DefaultExceptionHandlerTest {
@@ -41,6 +43,9 @@ public class DefaultExceptionHandlerTest {
 
     @Mock
     private GrantOfRepresentationException grantOfRepresentationException;
+
+    @Mock
+    private BusinessValidationException businessValidationException;
 
     @InjectMocks
     private DefaultExceptionHandler underTest;
@@ -116,5 +121,15 @@ public class DefaultExceptionHandlerTest {
         ResponseEntity<CallbackResponse> response = underTest.handle(grantOfRepresentationException);
 
         assertEquals(HttpStatus.valueOf(200), response.getStatusCode());
+    }
+    
+    @Test
+    public void shouldReturnBusiessValidationException() {
+        when(businessValidationException.getMessage()).thenReturn(EXCEPTION_MESSAGE);
+
+        ResponseEntity<CallbackResponse> response = underTest.handle(businessValidationException);
+
+        assertEquals(OK, response.getStatusCode());
+        assertEquals(EXCEPTION_MESSAGE, response.getBody().getErrors().get(0));
     }
 }
