@@ -412,7 +412,7 @@ public class BulkPrintServiceTest {
     }
 
     @Test
-    public void testSuccessfulSendToBulkPrintGrantReissueThrowsError() throws BulkPrintException {
+    public void testUnSuccessfulValidateEmailThrowsError() throws BulkPrintException {
 
         SolsAddress address = SolsAddress.builder().addressLine1("Address 1")
                 .addressLine2("Address 2")
@@ -451,10 +451,8 @@ public class BulkPrintServiceTest {
                 .errors(errors)
                 .build();
 
-        UUID uuid = UUID.randomUUID();
-        SendLetterResponse sendLetterResponse = new SendLetterResponse(uuid);
-        when(sendLetterApiMock.sendLetter(anyString(), any(LetterWithPdfsRequest.class))).thenReturn(sendLetterResponse);
-        when(eventValidationService.validateBulkPrintResponse(eq(uuid.toString()), any())).thenReturn(callbackResponse);
+        when(sendLetterApiMock.sendLetter(anyString(), any(LetterWithPdfsRequest.class))).thenReturn(null);
+        when(eventValidationService.validateBulkPrintResponse(any(), any())).thenReturn(callbackResponse);
         when(businessValidationMessageService.generateError(any(), any())).thenReturn(FieldErrorResponse.builder().build());
 
         assertThatThrownBy(() -> {

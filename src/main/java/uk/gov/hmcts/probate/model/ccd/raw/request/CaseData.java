@@ -489,6 +489,10 @@ public class CaseData {
         return YES.equals(getBoSendToBulkPrint());
     }
 
+    public boolean isSendForBulkPrintingRequestedGrantReIssued() {
+        return YES.equals(getBoGrantReissueSendToBulkPrint());
+    }
+
     public boolean isGrantIssuedEmailNotificationRequested() {
         return YES.equals(getBoEmailGrantIssuedNotification());
     }
