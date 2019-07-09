@@ -461,6 +461,4 @@ public class BulkPrintServiceTest {
             bulkPrintService.sendToBulkPrintGrantReissue(callbackRequest, coverSheet, document);
         }).isInstanceOf(BulkPrintException.class).hasMessage("Bulk print send letter response is null for: 0");
     }
-
-
 }
