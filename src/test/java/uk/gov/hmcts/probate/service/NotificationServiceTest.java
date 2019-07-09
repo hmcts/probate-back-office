@@ -77,7 +77,7 @@ public class NotificationServiceTest {
     @MockBean
     private CaveatQueryService caveatQueryServiceMock;
 
-    @MockBean
+    @Mock
     private DateFormatterService dateFormatterService;
 
     @SpyBean
@@ -129,6 +129,7 @@ public class NotificationServiceTest {
     private static final String PERSONALISATION_EXCELA_NAME = "excelaName";
     private static final String PERSONALISATION_CASE_DATA = "caseData";
     private static final String PERSONALISATION_CAVEAT_EXPIRY_DATE = "caveat_expiry_date";
+    private static final String PERSONALISATION_CAVEAT_ENTERED = "date_caveat_entered";
     private static final String PERSONALISATION_CAVEATOR_NAME = "caveator_name";
     private static final String PERSONALISATION_CAVEATOR_ADDRESS = "caveator_address";
 
@@ -232,6 +233,7 @@ public class NotificationServiceTest {
                 .build(), LAST_MODIFIED, ID);
 
         caveatStoppedCtscCaseData = new CaveatDetails(CaveatData.builder()
+                .applicationSubmittedDate(LocalDate.of(2019, 01, 01))
                 .applicationType(PERSONAL)
                 .registryLocation("ctsc")
                 .caveatorEmailAddress("personal@test.com")
@@ -769,6 +771,7 @@ public class NotificationServiceTest {
         personalisation.put(PERSONALISATION_CCD_REFERENCE, personalCaseDataCtsc.getId().toString());
 
         personalisation.put(PERSONALISATION_CAVEATOR_NAME, caveatStoppedCtscCaseData.getData().getCaveatorFullName());
+        personalisation.put(PERSONALISATION_CAVEAT_ENTERED, "1st January 2019");
         personalisation.put(PERSONALISATION_CAVEATOR_ADDRESS, "");
         personalisation.put(PERSONALISATION_CAVEAT_EXPIRY_DATE, "1st January 2019");
 

@@ -2,17 +2,14 @@ package uk.gov.hmcts.probate.service.docmosis;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
-import uk.gov.hmcts.probate.config.properties.registries.RegistriesProperties;
-import uk.gov.hmcts.probate.config.properties.registries.Registry;
 import org.springframework.stereotype.Service;
+import uk.gov.hmcts.probate.config.properties.registries.RegistriesProperties;
 import uk.gov.hmcts.probate.model.CaseType;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.service.AddressFormatterService;
 import uk.gov.hmcts.probate.service.CaveatQueryService;
 import uk.gov.hmcts.probate.service.DateFormatterService;
-import uk.gov.hmcts.probate.service.FormatterService;
 import uk.gov.hmcts.probate.service.ccd.CcdReferenceFormatterService;
 
 import java.text.DateFormat;
@@ -28,7 +25,6 @@ public class GrantOfRepresentationDocmosisMapperService {
     private final RegistriesProperties registriesProperties;
     private final CcdReferenceFormatterService ccdReferenceFormatterService;
     private final CaveatQueryService caveatQueryService;
-    private final FormatterService formatterService;
     private final GenericMapperService gms;
     private final AddressFormatterService addressFormatterService;
     private final DateFormatterService dateFormatterService;
