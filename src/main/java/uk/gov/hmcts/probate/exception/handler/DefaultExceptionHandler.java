@@ -1,6 +1,5 @@
 package uk.gov.hmcts.probate.exception.handler;
 
-import com.google.common.collect.ImmutableList;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -13,7 +12,6 @@ import uk.gov.hmcts.probate.exception.BadRequestException;
 import uk.gov.hmcts.probate.exception.BusinessValidationException;
 import uk.gov.hmcts.probate.exception.ClientException;
 import uk.gov.hmcts.probate.exception.ConnectionException;
-import uk.gov.hmcts.probate.exception.GrantOfRepresentationException;
 import uk.gov.hmcts.probate.exception.model.ErrorResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.service.notify.NotificationClientException;
@@ -58,13 +56,10 @@ class DefaultExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(BusinessValidationException.class)
     public ResponseEntity<CallbackResponse> handle(BusinessValidationException exception) {
-
-        log.warn("BusinessValidation exception", exception.getMessage());
-
-        CallbackResponse callbackResponse = CallbackResponse.builder()
-                .errors(Collections.singletonList(exception.getMessage()))
-                .build();
-        return ResponseEntity.ok(callbackResponse);
+        log.warn(exception.getMessage());
+        return ResponseEntity.ok(CallbackResponse.builder()
+                .errors(Collections.singletonList(exception.getUserMessage()))
+                .build());
     }
 
     @ExceptionHandler(ConnectionException.class)
@@ -84,14 +79,5 @@ class DefaultExceptionHandler extends ResponseEntityExceptionHandler {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         return new ResponseEntity<>(errorResponse, headers, SERVICE_UNAVAILABLE);
-    }
-
-    @ExceptionHandler(value = GrantOfRepresentationException.class)
-    public ResponseEntity<CallbackResponse> handle(GrantOfRepresentationException exception) {
-        log.warn(exception.getMessage(), exception);
-        return ResponseEntity.ok(CallbackResponse.builder()
-                .errors(ImmutableList.<String>builder()
-                        .add(exception.getUserMessage())
-                        .build()).build());
     }
 }
