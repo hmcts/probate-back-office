@@ -45,9 +45,9 @@ public class DocumentGeneratorService {
     private static final String DRAFT = "preview";
     private static final String FINAL = "final";
 
-    private Map<String, Object> images;
-
     public Document generateGrantReissue(CallbackRequest callbackRequest, String version) {
+        Map<String, Object> images;
+
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
         images = new HashMap<>();
         images.put(CREST_IMAGE, CREST_FILE_PATH);

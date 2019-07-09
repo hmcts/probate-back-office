@@ -55,8 +55,8 @@ import static uk.gov.hmcts.probate.model.DocumentType.EDGE_CASE;
 import static uk.gov.hmcts.probate.model.DocumentType.GRANT_COVER;
 import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_DRAFT;
-import static uk.gov.hmcts.probate.model.DocumentType.WILL_LODGEMENT_DEPOSIT_RECEIPT;
 import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
+import static uk.gov.hmcts.probate.model.DocumentType.WILL_LODGEMENT_DEPOSIT_RECEIPT;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -376,6 +376,19 @@ public class DocumentControllerTest {
     public void generateGrantReissueGrantOfRepresentationWithNoEmail() throws Exception {
 
         String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadNotificationsNoReissueEmail.json");
+
+        mockMvc.perform(post("/document/generate-grant-reissue")
+                .content(solicitorPayload)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("data")))
+                .andExpect(content().string(doesNotContainString("sentEmail")));
+    }
+
+    @Test
+    public void generateGrantReissueGrantOfRepresentationWithNoEmailPdfSize3() throws Exception {
+
+        String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadNotificationspdfSizeThree.json");
 
         mockMvc.perform(post("/document/generate-grant-reissue")
                 .content(solicitorPayload)

@@ -4,12 +4,15 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import uk.gov.hmcts.probate.exception.BadRequestException;
 import uk.gov.hmcts.probate.exception.ClientException;
 import uk.gov.hmcts.probate.exception.ConnectionException;
+import uk.gov.hmcts.probate.exception.GrantOfRepresentationException;
 import uk.gov.hmcts.probate.exception.model.ErrorResponse;
 import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
+import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.service.notify.NotificationClientException;
 
 import java.util.Arrays;
@@ -35,6 +38,9 @@ public class DefaultExceptionHandlerTest {
 
     @Mock
     private NotificationClientException notificationClientException;
+
+    @Mock
+    private GrantOfRepresentationException grantOfRepresentationException;
 
     @InjectMocks
     private DefaultExceptionHandler underTest;
@@ -101,5 +107,14 @@ public class DefaultExceptionHandlerTest {
         assertEquals(SERVICE_UNAVAILABLE, response.getStatusCode());
         assertEquals(DefaultExceptionHandler.CLIENT_ERROR, response.getBody().getError());
         assertEquals(EXCEPTION_MESSAGE, response.getBody().getMessage());
+    }
+
+    @Test
+    public void shouldReturnGrantOfRepresentationClientException() {
+        when(grantOfRepresentationException.getUserMessage()).thenReturn(EXCEPTION_MESSAGE);
+
+        ResponseEntity<CallbackResponse> response = underTest.handle(grantOfRepresentationException);
+
+        assertEquals(HttpStatus.valueOf(200), response.getStatusCode());
     }
 }
