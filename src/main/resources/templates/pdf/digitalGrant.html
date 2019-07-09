@@ -187,21 +187,6 @@
     </tr>
     <tr>
         <td colspan="3" class="text-leftAligned">
-            {% if case_details.case_data.primaryApplicantIsApplying == "No" %}
-            {% for executor in case_details.case_data.executorsApplying %}
-            {% if loop.first %}
-            <span class="camelCase">
-                                 <strong>
-                                    {% if executor.value.applyingExecutorName != null and executor.value.applyingExecutorName != ""%}{{executor.value.applyingExecutorName}}{% endif %}
-                                </strong>
-                            </span>
-            {% endif %}
-            {% endfor %}
-            {% else %}
-            <span class="camelCase">
-                    <strong>{{case_details.case_data.primaryApplicantForenames}} {{case_details.case_data.primaryApplicantSurname}}</strong>
-                </span>
-            {% endif %} made an application to this Court for a Grant of Probate and declared the following information.
             <p>
                 {% if case_details.case_data.boDeceasedTitle != null and case_details.case_data.boDeceasedTitle != "" %}{{ case_details.case_data.boDeceasedTitle }}{% endif %} <strong>{{case_details.case_data.deceasedForenames}} {{case_details.case_data.deceasedSurname}}</strong> {% if case_details.case_data.boDeceasedHonours != null and case_details.case_data.boDeceasedHonours != "" %}{{ case_details.case_data.boDeceasedHonours }}{% endif %}
                 of  <strong>{% if case_details.case_data.deceasedAddress.AddressLine1 != null and case_details.case_data.deceasedAddress.AddressLine1 != "" %}{{ case_details.case_data.deceasedAddress.AddressLine1}}{% endif %}
