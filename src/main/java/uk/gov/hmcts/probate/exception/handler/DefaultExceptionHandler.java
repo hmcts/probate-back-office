@@ -57,9 +57,10 @@ class DefaultExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(BusinessValidationException.class)
     public ResponseEntity<CallbackResponse> handle(BusinessValidationException exception) {
         log.warn(exception.getMessage());
-        return ResponseEntity.ok(CallbackResponse.builder()
-                .errors(Collections.singletonList(exception.getUserMessage()))
-                .build());
+        CallbackResponse callbackResponse = CallbackResponse.builder()
+                .errors(Collections.singletonList(exception.getMessage()))
+                .build();
+        return ResponseEntity.ok(callbackResponse);
     }
 
     @ExceptionHandler(ConnectionException.class)
