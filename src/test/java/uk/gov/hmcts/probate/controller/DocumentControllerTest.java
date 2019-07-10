@@ -13,6 +13,7 @@ import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import uk.gov.hmcts.probate.insights.AppInsights;
@@ -89,6 +90,9 @@ public class DocumentControllerTest {
 
     @Mock
     private SendLetterResponse sendLetterResponseMock;
+
+    private static final String EXPECTED_ATTACH_SCAN_DOC_FROM_UI_ERROR =
+            "You can’t attach a document to a case using this event. Use Upload Documents instead.";
 
     @Before
     public void setUp() throws NotificationClientException {
@@ -343,6 +347,19 @@ public class DocumentControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("data")));
+
+    }
+
+    @Test
+    public void displayAttachScanDocErrorIfUsedFromUI() throws Exception {
+
+        String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadNotifications.json");
+
+        ResultActions resultActions = mockMvc.perform(post("/document/attach-scanned-docs-error")
+                .content(solicitorPayload)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString(EXPECTED_ATTACH_SCAN_DOC_FROM_UI_ERROR)));
 
     }
 }

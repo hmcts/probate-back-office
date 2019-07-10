@@ -73,6 +73,8 @@ public class DocumentController {
     private static final String ADMON_WILL = "admonWill";
     private static final String INTESTACY = "intestacy";
     private static final String EDGE_CASE = "edgeCase";
+    private static final String ATTACH_SCAN_DOC_FROM_UI_ERROR =
+            "You can’t attach a document to a case using this event. Use Upload Documents instead.";
     private final BulkPrintService bulkPrintService;
     private final EventValidationService eventValidationService;
     private final List<EmailAddressNotificationValidationRule> emailAddressNotificationValidationRules;
@@ -233,4 +235,18 @@ public class DocumentController {
         return ResponseEntity.ok(callbackResponseTransformer.addDocuments(callbackRequest,
                 Arrays.asList(document), null, null));
     }
+
+    @PostMapping(path = "/attach-scanned-docs-error", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<CallbackResponse> displayAttachScanDocErrorIfUsedFromUI(@RequestBody CallbackRequest callbackRequest) {
+        ArrayList<String> errorList = new ArrayList<String>() {
+            {
+                add(ATTACH_SCAN_DOC_FROM_UI_ERROR);
+            }
+        };
+
+        CallbackResponse callbackResponse = CallbackResponse.builder().errors(errorList).build();
+        return ResponseEntity.ok(callbackResponse);
+    }
+
+
 }
