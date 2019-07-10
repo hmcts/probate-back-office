@@ -45,4 +45,10 @@ public class StateChangeService {
         }
         return Optional.empty();
     }
+
+//    public Optional<String> getChangedStateForGrantType(CaseData caseData) {
+//        if () {
+//
+//        }
+//    }
 }
