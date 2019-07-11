@@ -51,6 +51,13 @@ public class ResponseCaseData {
     private final String solsSolicitorAppReference;
     private final String ihtFormId;
     private final String solsWillType;
+    private final String solsApplicantRelationshipToDeceased;
+    private final String solsSpouseOrCivilRenouncing;
+    private final String solsAdoptedEnglandOrWales;
+    private final String solsAdoptedCourt;
+    private final String solsAdoptedDate;
+    private final String solsMinorityInterest;
+    private final String solsMultipleClaims;
     private final String willExists;
     private final String willAccessOriginal;
     private final String willHasCodicils;

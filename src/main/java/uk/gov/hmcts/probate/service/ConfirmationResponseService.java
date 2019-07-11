@@ -9,7 +9,6 @@ import uk.gov.hmcts.probate.changerule.ChangeRule;
 import uk.gov.hmcts.probate.changerule.DomicilityRule;
 import uk.gov.hmcts.probate.changerule.ExecutorsRule;
 import uk.gov.hmcts.probate.changerule.NoOriginalWillRule;
-import uk.gov.hmcts.probate.changerule.NoWillRule;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
 import uk.gov.hmcts.probate.model.ccd.Executor;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
@@ -45,7 +44,6 @@ public class ConfirmationResponseService {
     private final MessageResourceService messageResourceService;
 
     private final MarkdownSubstitutionService markdownSubstitutionService;
-    private final NoWillRule noWillRule;
     private final NoOriginalWillRule noOriginalWillRule;
     private final DomicilityRule domicilityConfirmationResponseRule;
     private final ExecutorsRule executorsConfirmationResponseRule;
@@ -61,12 +59,7 @@ public class ConfirmationResponseService {
     }
 
     private TemplateResponse generateStopBodyMarkdown(CaseData caseData) {
-        Optional<TemplateResponse> response = getStopBodyMarkdown(caseData, noWillRule, STOP_BODY);
-        if (response.isPresent()) {
-            return response.get();
-        }
-
-        response = getStopBodyMarkdown(caseData, noOriginalWillRule, STOP_BODY);
+        Optional<TemplateResponse> response = getStopBodyMarkdown(caseData, noOriginalWillRule, STOP_BODY);
         if (response.isPresent()) {
             return response.get();
         }

@@ -17,17 +17,14 @@ public class StateChangeService {
     private static final String STATE_GRANT_TYPE_ADMON = "SolAdmonCreated";
 
 
-    private final NoWillRule noWillRule;
     private final NoOriginalWillRule noOriginalWillRule;
     private final DomicilityRule domicilityRule;
     private final ExecutorsRule executorsRule;
     private final UpdateApplicationRule updateApplicationRule;
     private final GrantTypeRule grantTypeRule;
+    private final MinorityRule minorityRule;
 
     public Optional<String> getChangedStateForCaseUpdate(CaseData caseData) {
-        if (noWillRule.isChangeNeeded(caseData)) {
-            return Optional.of(STATE_STOPPED);
-        }
         if (noOriginalWillRule.isChangeNeeded(caseData)) {
             return Optional.of(STATE_STOPPED);
         }
@@ -35,6 +32,40 @@ public class StateChangeService {
             return Optional.of(STATE_STOPPED);
         }
         if (executorsRule.isChangeNeeded(caseData)) {
+            return Optional.of(STATE_STOPPED);
+        }
+        return Optional.empty();
+    }
+
+    public Optional<String> getChangedStateForProbateUpdate(CaseData caseData) {
+        if (noOriginalWillRule.isChangeNeeded(caseData)) {
+            return Optional.of(STATE_STOPPED);
+        }
+        if (domicilityRule.isChangeNeeded(caseData)) {
+            return Optional.of(STATE_STOPPED);
+        }
+        if (executorsRule.isChangeNeeded(caseData)) {
+            return Optional.of(STATE_STOPPED);
+        }
+        return Optional.empty();
+    }
+
+    public Optional<String> getChangedStateForIntestacyUpdate(CaseData caseData) {
+        if (domicilityRule.isChangeNeeded(caseData)) {
+            return Optional.of(STATE_STOPPED);
+        }
+
+        if (minorityRule.isChangeNeeded(caseData)) {
+            return Optional.of(STATE_STOPPED);
+        }
+        return Optional.empty();
+    }
+
+    public Optional<String> getChangedStateForAdmonUpdate(CaseData caseData) {
+        if (noOriginalWillRule.isChangeNeeded(caseData)) {
+            return Optional.of(STATE_STOPPED);
+        }
+        if (domicilityRule.isChangeNeeded(caseData)) {
             return Optional.of(STATE_STOPPED);
         }
         return Optional.empty();
