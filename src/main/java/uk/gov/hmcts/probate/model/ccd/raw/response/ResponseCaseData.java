@@ -241,6 +241,10 @@ public class ResponseCaseData {
     private final String boCaveatStopEmailNotification;
     private final String boCaveatStopSendToBulkPrintRequested;
     private final String boCaveatStopSendToBulkPrint;
+    private final String boEmailGrantReissuedNotificationRequested;
+    private final String boEmailGrantReissuedNotification;
+    private final String boGrantReissueSendToBulkPrint;
+    private final String boGrantReissueSendToBulkPrintRequested;
     private final String orderNeeded;
     private final List<CollectionMember<Reissue>> reissueReason;
     private final String reissueDate;

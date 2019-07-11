@@ -30,6 +30,7 @@ class DefaultExceptionHandler extends ResponseEntityExceptionHandler {
     public static final String CLIENT_ERROR = "Client Error";
     public static final String CONNECTION_ERROR = "Connection error";
 
+
     @ExceptionHandler(BadRequestException.class)
     public ResponseEntity<ErrorResponse> handle(BadRequestException exception) {
 
@@ -55,9 +56,7 @@ class DefaultExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(BusinessValidationException.class)
     public ResponseEntity<CallbackResponse> handle(BusinessValidationException exception) {
-
-        log.warn("BusinessValidation exception", exception.getMessage());
-
+        log.warn(exception.getMessage());
         CallbackResponse callbackResponse = CallbackResponse.builder()
                 .errors(Collections.singletonList(exception.getMessage()))
                 .build();

@@ -75,7 +75,16 @@ public enum DocumentType {
     INTESTACY_GRANT_DRAFT_REISSUE("intestacyGrantDraftReissue"),
 
     @JsonProperty("admonWillGrantDraftReissue")
-    ADMON_WILL_GRANT_DRAFT_REISSUE("admonWillGrantDraftReissue");
+    ADMON_WILL_GRANT_DRAFT_REISSUE("admonWillGrantDraftReissue"),
+
+    @JsonProperty("digitalGrantReissue")
+    DIGITAL_GRANT_REISSUE("digitalGrantReissue"),
+
+    @JsonProperty("intestacyGrantReissue")
+    INTESTACY_GRANT_REISSUE("intestacyGrantReissue"),
+
+    @JsonProperty("admonWillGrantReissue")
+    ADMON_WILL_GRANT_REISSUE("admonWillGrantReissue");
 
     private final String templateName;
 

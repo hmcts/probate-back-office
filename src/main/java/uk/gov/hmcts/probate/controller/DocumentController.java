@@ -44,14 +44,15 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static uk.gov.hmcts.probate.model.Constants.LONDON;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_DRAFT;
+import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_DRAFT_REISSUE;
+import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_DRAFT_REISSUE;
+import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_DRAFT_REISSUE;
-import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_DRAFT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.WILL_LODGEMENT_DEPOSIT_RECEIPT;
-import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
 import static uk.gov.hmcts.probate.model.State.GRANT_ISSUED;
 
 @Slf4j
@@ -77,6 +78,8 @@ public class DocumentController {
     private final EventValidationService eventValidationService;
     private final List<EmailAddressNotificationValidationRule> emailAddressNotificationValidationRules;
     private final List<BulkPrintValidationRule> bulkPrintValidationRules;
+    private static final String DRAFT = "preview";
+    private static final String FINAL = "final";
 
     @PostMapping(path = "/generate-grant-draft", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<CallbackResponse> generateGrantDraft(@RequestBody CallbackRequest callbackRequest) {
@@ -112,7 +115,8 @@ public class DocumentController {
         }
 
         DocumentType[] documentTypes = {DIGITAL_GRANT_DRAFT, INTESTACY_GRANT_DRAFT, ADMON_WILL_GRANT_DRAFT,
-                                        DIGITAL_GRANT_DRAFT_REISSUE, INTESTACY_GRANT_DRAFT_REISSUE, ADMON_WILL_GRANT_DRAFT_REISSUE};
+                                        DIGITAL_GRANT_DRAFT_REISSUE, INTESTACY_GRANT_DRAFT_REISSUE,
+                                        ADMON_WILL_GRANT_DRAFT_REISSUE, DIGITAL_GRANT_REISSUE};
         for (DocumentType documentType : documentTypes) {
             documentService.expire(callbackRequest, documentType);
         }
@@ -172,11 +176,7 @@ public class DocumentController {
                     : null;
             callbackResponse = eventValidationService.validateBulkPrintResponse(letterId, bulkPrintValidationRules);
 
-            if (caseData.getExtraCopiesOfGrant() != null) {
-                pdfSize = String.valueOf(caseData.getExtraCopiesOfGrant() + 2);
-            } else {
-                pdfSize = String.valueOf(2);
-            }
+            pdfSize = getPdfSize(caseData);
         }
         if (!callbackResponse.getErrors().isEmpty()) {
             return ResponseEntity.ok(callbackResponse);
@@ -187,7 +187,8 @@ public class DocumentController {
         documents.add(coverSheet);
 
         DocumentType[] documentTypes = {DIGITAL_GRANT_DRAFT, INTESTACY_GRANT_DRAFT, ADMON_WILL_GRANT_DRAFT,
-                                        DIGITAL_GRANT_DRAFT_REISSUE, INTESTACY_GRANT_DRAFT_REISSUE, ADMON_WILL_GRANT_DRAFT_REISSUE};
+                                        DIGITAL_GRANT_DRAFT_REISSUE, INTESTACY_GRANT_DRAFT_REISSUE,
+                                        ADMON_WILL_GRANT_DRAFT_REISSUE, DIGITAL_GRANT_REISSUE};
         for (DocumentType documentType : documentTypes) {
             documentService.expire(callbackRequest, documentType);
         }
@@ -204,6 +205,16 @@ public class DocumentController {
         }
 
         return ResponseEntity.ok(callbackResponse);
+    }
+
+    private String getPdfSize(@Valid CaseData caseData) {
+        String pdfSize;
+        if (caseData.getExtraCopiesOfGrant() != null) {
+            pdfSize = String.valueOf(caseData.getExtraCopiesOfGrant() + 2);
+        } else {
+            pdfSize = String.valueOf(2);
+        }
+        return pdfSize;
     }
 
 
@@ -228,9 +239,33 @@ public class DocumentController {
     @PostMapping(path = "/generate-grant-draft-reissue", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<CallbackResponse> generateGrantDraftReissue(@RequestBody CallbackRequest callbackRequest) {
 
-        Document document = documentGeneratorService.generateGrantReissueDraft(callbackRequest);
+        Document document = documentGeneratorService.generateGrantReissue(callbackRequest, DRAFT);
 
         return ResponseEntity.ok(callbackResponseTransformer.addDocuments(callbackRequest,
                 Arrays.asList(document), null, null));
+    }
+
+    @PostMapping(path = "/generate-grant-reissue", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<CallbackResponse> generateGrantReissue(@RequestBody CallbackRequest callbackRequest)
+            throws NotificationClientException {
+
+        List<Document> documents = new ArrayList<>();
+
+        Document grantDocument = documentGeneratorService.generateGrantReissue(callbackRequest, FINAL);
+        Document coversheet = documentGeneratorService.generateCoversheet(callbackRequest);
+
+        documents.add(grantDocument);
+        documents.add(coversheet);
+
+        String letterId = bulkPrintService.sendToBulkPrintGrantReissue(callbackRequest, coversheet,
+                grantDocument);
+        String pdfSize = getPdfSize(callbackRequest.getCaseDetails().getData());
+
+        if (callbackRequest.getCaseDetails().getData().isGrantReissuedEmailNotificationRequested()) {
+            documents.add(notificationService.generateGrantReissue(callbackRequest));
+        }
+        log.info("{} documents generated: {}", documents.size(), documents);
+        return ResponseEntity.ok(callbackResponseTransformer.addDocuments(callbackRequest,
+                documents, letterId, pdfSize));
     }
 }
