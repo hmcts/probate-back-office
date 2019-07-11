@@ -8,6 +8,9 @@ import uk.gov.hmcts.probate.controller.validation.AmendCaseDetailsGroup;
 import uk.gov.hmcts.probate.controller.validation.ApplicationCreatedGroup;
 import uk.gov.hmcts.probate.controller.validation.ApplicationReviewedGroup;
 import uk.gov.hmcts.probate.controller.validation.ApplicationUpdatedGroup;
+import uk.gov.hmcts.probate.controller.validation.ApplicationProbateGroup;
+import uk.gov.hmcts.probate.controller.validation.ApplicationIntestacyGroup;
+import uk.gov.hmcts.probate.controller.validation.ApplicationAdmonGroup;
 import uk.gov.hmcts.probate.controller.validation.NextStepsConfirmationGroup;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
@@ -68,7 +71,7 @@ public class CaseData {
 
     private final String solsSolicitorPhoneNumber;
 
-    // EVENT = solicitorUpdateApplication
+    // EVENT = solicitorUpdateApplication, solicitorUpdateProbate, solicitorUpdateIntestacy, solicitorUpdateAdmon
     @NotBlank(groups = {ApplicationUpdatedGroup.class, AmendCaseDetailsGroup.class},
             message = "{deceasedForenameIsNull}")
     private final String deceasedForenames;
@@ -90,16 +93,16 @@ public class CaseData {
     @NotNull(groups = {ApplicationUpdatedGroup.class, AmendCaseDetailsGroup.class}, message = "{dobIsNull}")
     private final LocalDate deceasedDateOfBirth;
 
-    @NotBlank(groups = {ApplicationUpdatedGroup.class}, message = "{willExistsIsNull}")
+    @NotBlank(groups = {ApplicationProbateGroup.class, ApplicationAdmonGroup.class}, message = "{willExistsIsNull}")
     private final String willExists;
 
-    @NotBlank(groups = {ApplicationUpdatedGroup.class}, message = "{solsWillTypeIsNull}")
+    @NotBlank(groups = {ApplicationProbateGroup.class, ApplicationAdmonGroup.class}, message = "{solsWillTypeIsNull}")
     private final String solsWillType;
 
-    @NotBlank(groups = {ApplicationUpdatedGroup.class}, message = "{willAsOriginalIsNull}")
+    @NotBlank(groups = {ApplicationProbateGroup.class, ApplicationAdmonGroup.class}, message = "{willAsOriginalIsNull}")
     private final String willAccessOriginal;
 
-    @NotBlank(groups = {ApplicationUpdatedGroup.class}, message = "{willNumberOfCodicilsIsNull}")
+    @NotBlank(groups = {ApplicationProbateGroup.class, ApplicationAdmonGroup.class}, message = "{willNumberOfCodicilsIsNull}")
     private final String willHasCodicils;
 
     private final String willNumberOfCodicils;
@@ -126,15 +129,15 @@ public class CaseData {
     @DecimalMin(groups = {ApplicationUpdatedGroup.class}, value = "0.0", message = "{ihtGrossNegative}")
     private final BigDecimal ihtGrossValue;
 
-    @NotBlank(groups = {ApplicationUpdatedGroup.class}, message = "{primaryApplicantForenamesIsNull}")
+    @NotBlank(groups = {ApplicationProbateGroup.class, ApplicationIntestacyGroup.class, ApplicationAdmonGroup.class}, message = "{primaryApplicantForenamesIsNull}")
     private final String primaryApplicantForenames;
 
-    @NotBlank(groups = {ApplicationUpdatedGroup.class}, message = "{primaryApplicantSurnameIsNull}")
+    @NotBlank(groups = {ApplicationProbateGroup.class, ApplicationIntestacyGroup.class, ApplicationAdmonGroup.class}, message = "{primaryApplicantSurnameIsNull}")
     private final String primaryApplicantSurname;
 
     private final String primaryApplicantEmailAddress;
 
-    @NotBlank(groups = {ApplicationUpdatedGroup.class}, message = "{primaryApplicantHasAliasIsNull}")
+    @NotBlank(groups = {ApplicationProbateGroup.class}, message = "{primaryApplicantHasAliasIsNull}")
     private final String primaryApplicantHasAlias;
 
     private final String primaryApplicantAlias;
@@ -147,14 +150,14 @@ public class CaseData {
 
     private final String primaryApplicantSameWillName;
 
-    @NotBlank(groups = {ApplicationUpdatedGroup.class}, message = "{primaryApplicantIsApplyingIsNull}")
+    @NotBlank(groups = {ApplicationProbateGroup.class}, message = "{primaryApplicantIsApplyingIsNull}")
     private final String primaryApplicantIsApplying;
 
     private final String solsPrimaryExecutorNotApplyingReason;
 
     private final SolsAddress primaryApplicantAddress;
 
-    @NotBlank(groups = {ApplicationUpdatedGroup.class}, message = "{otherExecutorExistsIsNull}")
+    @NotBlank(groups = {ApplicationProbateGroup.class}, message = "{otherExecutorExistsIsNull}")
     private final String otherExecutorExists;
 
     private final List<CollectionMember<AdditionalExecutor>> solsAdditionalExecutorList;
