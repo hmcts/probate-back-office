@@ -80,6 +80,26 @@ public class BusinessValidationController {
         return ResponseEntity.ok(response);
     }
 
+    @PostMapping(path = "/sols-validate", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<CallbackResponse> solsValidate(
+            @Validated({ApplicationCreatedGroup.class, ApplicationUpdatedGroup.class}) @RequestBody CallbackRequest callbackRequest,
+            BindingResult bindingResult,
+            HttpServletRequest request) {
+        logRequest(request.getRequestURI(), callbackRequest);
+
+        if (bindingResult.hasErrors()) {
+            log.error(DEFAULT_LOG_ERROR, callbackRequest.getCaseDetails().getId(), bindingResult);
+            throw new BadRequestException(INVALID_PAYLOAD, bindingResult);
+        }
+
+        CallbackResponse response = eventValidationService.validateRequest(callbackRequest, allValidationRules);
+        if (response.getErrors().isEmpty()) {
+            Optional<String> newState = stateChangeService.getChangedStateForGrantType(callbackRequest.getCaseDetails().getData());
+            response = callbackResponseTransformer.transformWithConditionalStateChange(callbackRequest, newState);
+        }
+        return ResponseEntity.ok(response);
+    }
+
     @PostMapping(path = "/validateCaseDetails", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<CallbackResponse> validateCaseDetails(
             @Validated({AmendCaseDetailsGroup.class}) @RequestBody CallbackRequest callbackRequest,

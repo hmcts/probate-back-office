@@ -19,6 +19,7 @@
     "DisplayOrder": 12,
     "PreConditionState(s)": "SolAppCreated",
     "PostConditionState": "SolProbateCreated",
+    "CallBackURLAboutToSubmitEvent": "http://${CCD_DEF_CASE_SERVICE_BASE_URL}/case/sols-validate",
     "SecurityClassification": "Public",
     "ShowSummary": "Y",
     "EndButtonLabel": "Save and continue"
