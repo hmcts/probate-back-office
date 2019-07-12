@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 {% macro address(address)%}
 {% if address != null %}
-{% if address.AddressLine1 != null %}{{ address.AddressLine1 }}, {% endif %}
-{% if address.AddressLine2 != null %}{{ address.AddressLine2 }}, {% endif %}
-{% if address.AddressLine3 != null %}{{ address.AddressLine3 }}, {% endif %}
-{% if address.PostTown != null %}{{ address.PostTown }}, {% endif %}
-{% if address.County != null %}{{ address.County }}, {% endif %}
-{% if address.PostCode != null %}{{ address.PostCode }}, {% endif %}
-{% if address.Country != null %}{{ address.Country }}{% endif %}
+{% if address.AddressLine1 != null and address.AddressLine1 != "" %}{{ address.AddressLine1 }}, {% endif %}
+{% if address.AddressLine2 != null and address.AddressLine2 != "" %}{{ address.AddressLine2 }}, {% endif %}
+{% if address.AddressLine3 != null and address.AddressLine3 != "" %}{{ address.AddressLine3 }}, {% endif %}
+{% if address.PostTown != null and address.PostTown != "" %}{{ address.PostTown }}, {% endif %}
+{% if address.County != null and address.County != "" %}{{ address.County }}, {% endif %}
+{% if address.PostCode != null and address.PostCode != "" %}{{ address.PostCode }}, {% endif %}
+{% if address.Country != null and address.Country != "" %}{{ address.Country }}{% endif %}
 {% endif %}
 {% endmacro %}
 <html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
