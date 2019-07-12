@@ -241,15 +241,6 @@ public class CallbackResponseTransformer {
         return transformResponse(responseCaseDataBuilder.build());
     }
 
-//    public CallbackResponse transformWill(CallbackRequest callbackRequest) {
-//
-//        ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), false);
-//        responseCaseDataBuilder.willExists(ANSWER_YES);
-//        getCaseCreatorResponseCaseBuilder(callbackRequest.getCaseDetails().getData(), responseCaseDataBuilder);
-//
-//        return transformResponse(responseCaseDataBuilder.build());
-//    }
-
     private CallbackResponse transformResponse(ResponseCaseData responseCaseData) {
         return CallbackResponse.builder().data(responseCaseData).build();
     }

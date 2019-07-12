@@ -25,7 +25,6 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "willExists", "Label": "Did the deceased leave a will?", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "willAccessOriginal", "Label": "Do you have access to the original will?", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "willHasCodicils", "Label": "Were any codicils added to the will?", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "solsNoWill", "Label": "You need the will to use this service.", "FieldType": "Label", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "solsNoOriginalWill", "Label": "You need the original will to use this service.", "FieldType": "Label", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "willDate", "Label": "Date on the will", "FieldType": "Date", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "willSignedDate", "Label": "When was the original will signed and witnessed?", "HintText": "If there is more than one will, you need to give the date of the most recent one.For example, 30 06 2016", "FieldType": "Date", "SecurityClassification": "Public"},

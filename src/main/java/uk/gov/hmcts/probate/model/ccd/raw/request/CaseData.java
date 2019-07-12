@@ -115,7 +115,7 @@ public class CaseData {
     @DecimalMin(groups = {ApplicationUpdatedGroup.class}, value = "0.0", message = "{ihtGrossNegative}")
     private final BigDecimal ihtGrossValue;
 
-    @NotBlank(groups = {ApplicationUpdatedGroup.class}, message = "{solsWillTypeIsNull}")
+    @NotBlank(groups = {ApplicationUpdatedGroup.class, ApplicationProbateGroup.class, ApplicationIntestacyGroup.class, ApplicationAdmonGroup.class}, message = "{solsWillTypeIsNull}")
     private final String solsWillType;
 
     // EVENT = solicitorUpdateProbate and Admon
@@ -143,7 +143,7 @@ public class CaseData {
 
     private final String solsPrimaryExecutorNotApplyingReason;
 
-    @NotBlank(groups = {ApplicationProbateGroup.class, ApplicationAdmonGroup.class, ApplicationIntestacyGroup.class}, message = "{primaryApplicantAddressIsNull}")
+    @NotNull(groups = {ApplicationProbateGroup.class, ApplicationAdmonGroup.class, ApplicationIntestacyGroup.class}, message = "{primaryApplicantAddressIsNull}")
     private final SolsAddress primaryApplicantAddress;
 
     @NotBlank(groups = {ApplicationAdmonGroup.class, ApplicationIntestacyGroup.class}, message = "{primaryApplicantEmailAddressIsNull}")

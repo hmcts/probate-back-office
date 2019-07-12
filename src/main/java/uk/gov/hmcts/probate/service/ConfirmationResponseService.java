@@ -5,10 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import uk.gov.hmcts.probate.changerule.ChangeRule;
-import uk.gov.hmcts.probate.changerule.DomicilityRule;
-import uk.gov.hmcts.probate.changerule.ExecutorsRule;
-import uk.gov.hmcts.probate.changerule.NoOriginalWillRule;
+import uk.gov.hmcts.probate.changerule.*;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
 import uk.gov.hmcts.probate.model.ccd.Executor;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
@@ -37,6 +34,9 @@ public class ConfirmationResponseService {
     private static final String REASON_FOR_NOT_APPLYING_DIED_BEFORE = "DiedBefore";
     private static final String REASON_FOR_NOT_APPLYING_DIED_AFTER = "DiedAfter";
     private static final String IHT_400421 = "IHT400421";
+    private static final String GRANT_TYPE_PROBATE = "WillLeft";
+    private static final String GRANT_TYPE_INTESTACY = "NoWill";
+
 
     @Value("${markdown.templatesDirectory}")
     private String templatesDirectory;
@@ -47,6 +47,7 @@ public class ConfirmationResponseService {
     private final NoOriginalWillRule noOriginalWillRule;
     private final DomicilityRule domicilityConfirmationResponseRule;
     private final ExecutorsRule executorsConfirmationResponseRule;
+    private final MinorityRule minorityConfirmationResponseRule;
 
     private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
@@ -59,19 +60,32 @@ public class ConfirmationResponseService {
     }
 
     private TemplateResponse generateStopBodyMarkdown(CaseData caseData) {
-        Optional<TemplateResponse> response = getStopBodyMarkdown(caseData, noOriginalWillRule, STOP_BODY);
+
+        Optional<TemplateResponse> response = getStopBodyMarkdown(caseData, domicilityConfirmationResponseRule, STOP_BODY);
         if (response.isPresent()) {
             return response.get();
         }
 
-        response = getStopBodyMarkdown(caseData, domicilityConfirmationResponseRule, STOP_BODY);
-        if (response.isPresent()) {
-            return response.get();
+        if(caseData.getSolsWillType() != GRANT_TYPE_INTESTACY){
+            response = getStopBodyMarkdown(caseData, noOriginalWillRule, STOP_BODY);
+            if (response.isPresent()) {
+                return response.get();
+            }
         }
 
-        response = getStopBodyMarkdown(caseData, executorsConfirmationResponseRule, STOP_BODY);
-        if (response.isPresent()) {
-            return response.get();
+
+        if(caseData.getSolsWillType() == GRANT_TYPE_PROBATE) {
+            response = getStopBodyMarkdown(caseData, executorsConfirmationResponseRule, STOP_BODY);
+            if (response.isPresent()) {
+                return response.get();
+            }
+        }
+
+        if(caseData.getSolsWillType() == GRANT_TYPE_INTESTACY) {
+            response = getStopBodyMarkdown(caseData, minorityConfirmationResponseRule, STOP_BODY);
+            if (response.isPresent()) {
+                return response.get();
+            }
         }
 
         return response.orElseGet(() -> new TemplateResponse(null));

@@ -16,12 +16,14 @@ public class StateChangeService {
     private static final String STATE_GRANT_TYPE_INTESTACY = "SolIntestacyCreated";
     private static final String STATE_GRANT_TYPE_ADMON = "SolAdmonCreated";
 
+    private static final String GRANT_TYPE_PROBATE = "WillLeft";
+    private static final String GRANT_TYPE_INTESTACY = "NoWill";
+
 
     private final NoOriginalWillRule noOriginalWillRule;
     private final DomicilityRule domicilityRule;
     private final ExecutorsRule executorsRule;
     private final UpdateApplicationRule updateApplicationRule;
-    private final GrantTypeRule grantTypeRule;
     private final MinorityRule minorityRule;
 
     public Optional<String> getChangedStateForCaseUpdate(CaseData caseData) {
@@ -79,9 +81,9 @@ public class StateChangeService {
     }
 
     public Optional<String> getChangedStateForGrantType(CaseData caseData) {
-        if (!grantTypeRule.isChangeNeeded(caseData)) {
+        if (caseData.getSolsWillType() == GRANT_TYPE_PROBATE) {
             return Optional.of(STATE_GRANT_TYPE_PROBATE);
-        } else if(grantTypeRule.isIntestacy(caseData)) {
+        } else if(caseData.getSolsWillType() == GRANT_TYPE_INTESTACY) {
             return Optional.of(STATE_GRANT_TYPE_INTESTACY);
         }
         return Optional.of(STATE_GRANT_TYPE_ADMON);
