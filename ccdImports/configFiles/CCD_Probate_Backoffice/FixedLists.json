@@ -119,7 +119,7 @@
   {"LiveFrom": "06/01/2017", "ID": "resolveStopStateFixedList", "ListElementCode": "CasePrinted", "ListElement": "Awaiting documentation"},
   {"LiveFrom": "06/01/2017", "ID": "resolveStopStateFixedList", "ListElementCode": "BOReadyForExamination", "ListElement": "Ready for examination"},
   {"LiveFrom": "06/01/2017", "ID": "resolveStopStateFixedList", "ListElementCode": "BOExamining", "ListElement": "Examining"},
-  {"LiveFrom": "06/01/2017", "ID": "spouseNotApplyingReasonFixedList", "ListElementCode": "renunciated", "ListElement": "Renunciated"},
+  {"LiveFrom": "06/01/2017", "ID": "spouseNotApplyingReasonFixedList", "ListElementCode": "renunciated", "ListElement": "Renounced"},
   {"LiveFrom": "06/01/2017", "ID": "spouseNotApplyingReasonFixedList", "ListElementCode": "mentallyIncapable", "ListElement": "Mentally incapable"},
   {"LiveFrom": "06/01/2017", "ID": "spouseNotApplyingReasonFixedList", "ListElementCode": "other", "ListElement": "Other"}
 ]
