@@ -120,7 +120,12 @@ public class BusinessValidationController {
         CallbackResponse response = eventValidationService.validateRequest(callbackRequest, allValidationRules);
         if (response.getErrors().isEmpty()) {
             Optional<String> newState = stateChangeService.getChangedStateForProbateUpdate(callbackRequest.getCaseDetails().getData());
-            response = callbackResponseTransformer.transformWithConditionalStateChange(callbackRequest, newState);
+            if (newState.isPresent()) {
+                response = callbackResponseTransformer.transformWithConditionalStateChange(callbackRequest, newState);
+            } else {
+                Document document = pdfManagementService.generateAndUpload(callbackRequest, LEGAL_STATEMENT);
+                response = callbackResponseTransformer.transform(callbackRequest, document);
+            }
         }
         return ResponseEntity.ok(response);
     }
@@ -140,7 +145,12 @@ public class BusinessValidationController {
         CallbackResponse response = eventValidationService.validateRequest(callbackRequest, allValidationRules);
         if (response.getErrors().isEmpty()) {
             Optional<String> newState = stateChangeService.getChangedStateForIntestacyUpdate(callbackRequest.getCaseDetails().getData());
-            response = callbackResponseTransformer.transformWithConditionalStateChange(callbackRequest, newState);
+            if (newState.isPresent()) {
+                response = callbackResponseTransformer.transformWithConditionalStateChange(callbackRequest, newState);
+            } else {
+                Document document = pdfManagementService.generateAndUpload(callbackRequest, LEGAL_STATEMENT);
+                response = callbackResponseTransformer.transform(callbackRequest, document);
+            }
         }
         return ResponseEntity.ok(response);
     }
@@ -160,7 +170,12 @@ public class BusinessValidationController {
         CallbackResponse response = eventValidationService.validateRequest(callbackRequest, allValidationRules);
         if (response.getErrors().isEmpty()) {
             Optional<String> newState = stateChangeService.getChangedStateForAdmonUpdate(callbackRequest.getCaseDetails().getData());
-            response = callbackResponseTransformer.transformWithConditionalStateChange(callbackRequest, newState);
+            if (newState.isPresent()) {
+                response = callbackResponseTransformer.transformWithConditionalStateChange(callbackRequest, newState);
+            } else {
+                Document document = pdfManagementService.generateAndUpload(callbackRequest, LEGAL_STATEMENT);
+                response = callbackResponseTransformer.transform(callbackRequest, document);
+            }
         }
         return ResponseEntity.ok(response);
     }
