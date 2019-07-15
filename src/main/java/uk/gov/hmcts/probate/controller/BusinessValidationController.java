@@ -13,8 +13,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import uk.gov.hmcts.probate.controller.validation.AmendCaseDetailsGroup;
+import uk.gov.hmcts.probate.controller.validation.ApplicationAdmonGroup;
 import uk.gov.hmcts.probate.controller.validation.ApplicationCreatedGroup;
+import uk.gov.hmcts.probate.controller.validation.ApplicationIntestacyGroup;
+import uk.gov.hmcts.probate.controller.validation.ApplicationProbateGroup;
 import uk.gov.hmcts.probate.controller.validation.ApplicationUpdatedGroup;
+
 import uk.gov.hmcts.probate.exception.BadRequestException;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
@@ -95,6 +99,67 @@ public class BusinessValidationController {
         CallbackResponse response = eventValidationService.validateRequest(callbackRequest, allValidationRules);
         if (response.getErrors().isEmpty()) {
             Optional<String> newState = stateChangeService.getChangedStateForGrantType(callbackRequest.getCaseDetails().getData());
+            response = callbackResponseTransformer.transformWithConditionalStateChange(callbackRequest, newState);
+        }
+
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping(path = "/sols-validate-probate", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<CallbackResponse> solsValidateProbate(
+            @Validated({ApplicationProbateGroup.class}) @RequestBody CallbackRequest callbackRequest,
+            BindingResult bindingResult,
+            HttpServletRequest request) {
+        logRequest(request.getRequestURI(), callbackRequest);
+
+        if (bindingResult.hasErrors()) {
+            log.error(DEFAULT_LOG_ERROR, callbackRequest.getCaseDetails().getId(), bindingResult);
+            throw new BadRequestException(INVALID_PAYLOAD, bindingResult);
+        }
+
+        CallbackResponse response = eventValidationService.validateRequest(callbackRequest, allValidationRules);
+        if (response.getErrors().isEmpty()) {
+            Optional<String> newState = stateChangeService.getChangedStateForProbateUpdate(callbackRequest.getCaseDetails().getData());
+            response = callbackResponseTransformer.transformWithConditionalStateChange(callbackRequest, newState);
+        }
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping(path = "/sols-validate-intestacy", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<CallbackResponse> solsValidateIntestacy(
+            @Validated({ApplicationIntestacyGroup.class}) @RequestBody CallbackRequest callbackRequest,
+            BindingResult bindingResult,
+            HttpServletRequest request) {
+        logRequest(request.getRequestURI(), callbackRequest);
+
+        if (bindingResult.hasErrors()) {
+            log.error(DEFAULT_LOG_ERROR, callbackRequest.getCaseDetails().getId(), bindingResult);
+            throw new BadRequestException(INVALID_PAYLOAD, bindingResult);
+        }
+
+        CallbackResponse response = eventValidationService.validateRequest(callbackRequest, allValidationRules);
+        if (response.getErrors().isEmpty()) {
+            Optional<String> newState = stateChangeService.getChangedStateForIntestacyUpdate(callbackRequest.getCaseDetails().getData());
+            response = callbackResponseTransformer.transformWithConditionalStateChange(callbackRequest, newState);
+        }
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping(path = "/sols-validate-admon", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<CallbackResponse> solsValidateAdmon(
+            @Validated({ApplicationAdmonGroup.class}) @RequestBody CallbackRequest callbackRequest,
+            BindingResult bindingResult,
+            HttpServletRequest request) {
+        logRequest(request.getRequestURI(), callbackRequest);
+
+        if (bindingResult.hasErrors()) {
+            log.error(DEFAULT_LOG_ERROR, callbackRequest.getCaseDetails().getId(), bindingResult);
+            throw new BadRequestException(INVALID_PAYLOAD, bindingResult);
+        }
+
+        CallbackResponse response = eventValidationService.validateRequest(callbackRequest, allValidationRules);
+        if (response.getErrors().isEmpty()) {
+            Optional<String> newState = stateChangeService.getChangedStateForAdmonUpdate(callbackRequest.getCaseDetails().getData());
             response = callbackResponseTransformer.transformWithConditionalStateChange(callbackRequest, newState);
         }
         return ResponseEntity.ok(response);

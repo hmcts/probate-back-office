@@ -3,15 +3,15 @@ package uk.gov.hmcts.probate.changerule;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 
-import static uk.gov.hmcts.probate.model.Constants.NO;
+import static uk.gov.hmcts.probate.model.Constants.YES;
 
 @Component
-public class NoWillRule implements ChangeRule {
-    private static final String MESSAGE_KEY = "willStopBodyNoWill";
+public class MinorityRule implements ChangeRule {
+    private static final String MESSAGE_KEY = "stopBodyMinorityInterest";
 
     @Override
     public boolean isChangeNeeded(CaseData caseData) {
-        return NO.equals(caseData.getWillExists());
+        return YES.equals(caseData.getSolsMinorityInterest());
     }
 
     @Override

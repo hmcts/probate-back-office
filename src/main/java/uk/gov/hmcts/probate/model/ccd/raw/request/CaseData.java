@@ -71,7 +71,7 @@ public class CaseData {
 
     private final String solsSolicitorPhoneNumber;
 
-    // EVENT = solicitorUpdateApplication, solicitorUpdateProbate, solicitorUpdateIntestacy, solicitorUpdateAdmon
+    // EVENT = solicitorUpdateApplication
     @NotBlank(groups = {ApplicationUpdatedGroup.class, AmendCaseDetailsGroup.class},
             message = "{deceasedForenameIsNull}")
     private final String deceasedForenames;
@@ -92,20 +92,6 @@ public class CaseData {
 
     @NotNull(groups = {ApplicationUpdatedGroup.class, AmendCaseDetailsGroup.class}, message = "{dobIsNull}")
     private final LocalDate deceasedDateOfBirth;
-
-    @NotBlank(groups = {ApplicationProbateGroup.class, ApplicationAdmonGroup.class}, message = "{willExistsIsNull}")
-    private final String willExists;
-
-    @NotBlank(groups = {ApplicationProbateGroup.class, ApplicationAdmonGroup.class}, message = "{solsWillTypeIsNull}")
-    private final String solsWillType;
-
-    @NotBlank(groups = {ApplicationProbateGroup.class, ApplicationAdmonGroup.class}, message = "{willAsOriginalIsNull}")
-    private final String willAccessOriginal;
-
-    @NotBlank(groups = {ApplicationProbateGroup.class, ApplicationAdmonGroup.class}, message = "{willNumberOfCodicilsIsNull}")
-    private final String willHasCodicils;
-
-    private final String willNumberOfCodicils;
 
     @NotBlank(groups = {ApplicationUpdatedGroup.class}, message = "{deceasedDomicileInEngWalesIsNull}")
     private final String deceasedDomicileInEngWales;
@@ -129,33 +115,50 @@ public class CaseData {
     @DecimalMin(groups = {ApplicationUpdatedGroup.class}, value = "0.0", message = "{ihtGrossNegative}")
     private final BigDecimal ihtGrossValue;
 
-    @NotBlank(groups = {ApplicationProbateGroup.class, ApplicationIntestacyGroup.class, ApplicationAdmonGroup.class}, message = "{primaryApplicantForenamesIsNull}")
+    @NotBlank(groups = {ApplicationUpdatedGroup.class,
+                        ApplicationProbateGroup.class,
+                        ApplicationIntestacyGroup.class,
+                        ApplicationAdmonGroup.class}, message = "{solsWillTypeIsNull}")
+    private final String solsWillType;
+
+    // EVENT = solicitorUpdateProbate and Admon
+    @NotBlank(groups = {ApplicationProbateGroup.class, ApplicationAdmonGroup.class}, message = "{willAsOriginalIsNull}")
+    private final String willAccessOriginal;
+
+    @NotBlank(groups = {ApplicationProbateGroup.class,
+                        ApplicationAdmonGroup.class}, message = "{willNumberOfCodicilsIsNull}")
+    private final String willHasCodicils;
+
+    private final String willNumberOfCodicils;
+
+    @NotBlank(groups = {ApplicationProbateGroup.class,
+                        ApplicationIntestacyGroup.class,
+                        ApplicationAdmonGroup.class}, message = "{primaryApplicantForenamesIsNull}")
     private final String primaryApplicantForenames;
 
-    @NotBlank(groups = {ApplicationProbateGroup.class, ApplicationIntestacyGroup.class, ApplicationAdmonGroup.class}, message = "{primaryApplicantSurnameIsNull}")
+    @NotBlank(groups = {ApplicationProbateGroup.class,
+                        ApplicationIntestacyGroup.class,
+                        ApplicationAdmonGroup.class}, message = "{primaryApplicantSurnameIsNull}")
     private final String primaryApplicantSurname;
-
-    private final String primaryApplicantEmailAddress;
 
     @NotBlank(groups = {ApplicationProbateGroup.class}, message = "{primaryApplicantHasAliasIsNull}")
     private final String primaryApplicantHasAlias;
 
-    private final String primaryApplicantAlias;
-
-    private final String primaryApplicantAliasReason;
-
-    private final String primaryApplicantOtherReason;
-
     private final String solsExecutorAliasNames;
-
-    private final String primaryApplicantSameWillName;
 
     @NotBlank(groups = {ApplicationProbateGroup.class}, message = "{primaryApplicantIsApplyingIsNull}")
     private final String primaryApplicantIsApplying;
 
     private final String solsPrimaryExecutorNotApplyingReason;
 
+    @NotNull(groups = {ApplicationProbateGroup.class,
+                       ApplicationAdmonGroup.class,
+                       ApplicationIntestacyGroup.class}, message = "{primaryApplicantAddressIsNull}")
     private final SolsAddress primaryApplicantAddress;
+
+    @NotBlank(groups = {ApplicationAdmonGroup.class,
+                        ApplicationIntestacyGroup.class}, message = "{primaryApplicantEmailAddressIsNull}")
+    private final String primaryApplicantEmailAddress;
 
     @NotBlank(groups = {ApplicationProbateGroup.class}, message = "{otherExecutorExistsIsNull}")
     private final String otherExecutorExists;
@@ -164,23 +167,28 @@ public class CaseData {
 
     private final String solsAdditionalInfo;
 
-    private final String boEmailDocsReceivedNotificationRequested;
+    // EVENT = solicitorUpdateIntestacy
+    @NotBlank(groups = {ApplicationProbateGroup.class,
+                        ApplicationAdmonGroup.class,
+                        ApplicationIntestacyGroup.class}, message = "{willExistsIsNull}")
+    private final String willExists;
 
-    @SuppressWarnings("squid:S1170")
-    @Getter(lazy = true)
-    private final String boEmailDocsReceivedNotification = getDefaultValueForEmailNotifications();
+    @NotBlank(groups = {ApplicationIntestacyGroup.class}, message = "{solsApplicantRelationshipToDeceasedIsNull}")
+    private final String solsApplicantRelationshipToDeceased;
 
-    private final String boEmailGrantIssuedNotificationRequested;
+    private final String solsSpouseOrCivilRenouncing;
 
-    @SuppressWarnings("squid:S1170")
-    @Getter(lazy = true)
-    private final String boEmailGrantIssuedNotification = getDefaultValueForEmailNotifications();
+    private final String solsAdoptedEnglandOrWales;
 
-    @SuppressWarnings("squid:S1170")
-    @Getter(lazy = true)
-    private final String boSendToBulkPrint = YES;
+    private final String solsAdoptedCourt;
 
-    private final String boSendToBulkPrintRequested;
+    private final String solsAdoptedDate;
+
+    @NotBlank(groups = {ApplicationIntestacyGroup.class}, message = "{solsMinorityInterestIsNull}")
+    private final String solsMinorityInterest;
+
+    @NotBlank(groups = {ApplicationIntestacyGroup.class}, message = "{solsMultipleClaimsIsNull}")
+    private final String solsMultipleClaims;
 
     //EVENT = review
     private final DocumentLink solsLegalStatementDocument;
@@ -287,7 +295,35 @@ public class CaseData {
     private final String evidenceHandled;
 
     private final String caseType;
+
     private final String paperForm;
+
+    private final String primaryApplicantAlias;
+
+    private final String primaryApplicantAliasReason;
+
+    private final String primaryApplicantOtherReason;
+
+    private final String primaryApplicantSameWillName;
+
+    private final String boEmailDocsReceivedNotificationRequested;
+
+    @SuppressWarnings("squid:S1170")
+    @Getter(lazy = true)
+    private final String boEmailDocsReceivedNotification = getDefaultValueForEmailNotifications();
+
+    private final String boEmailGrantIssuedNotificationRequested;
+
+    @SuppressWarnings("squid:S1170")
+    @Getter(lazy = true)
+    private final String boEmailGrantIssuedNotification = getDefaultValueForEmailNotifications();
+
+    @SuppressWarnings("squid:S1170")
+    @Getter(lazy = true)
+    private final String boSendToBulkPrint = YES;
+
+    private final String boSendToBulkPrintRequested;
+
 
     //paper form case creator fields
     private final String primaryApplicantSecondPhoneNumber;

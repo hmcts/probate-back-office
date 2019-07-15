@@ -10,7 +10,6 @@ import org.springframework.test.util.ReflectionTestUtils;
 import uk.gov.hmcts.probate.changerule.DomicilityRule;
 import uk.gov.hmcts.probate.changerule.ExecutorsRule;
 import uk.gov.hmcts.probate.changerule.NoOriginalWillRule;
-import uk.gov.hmcts.probate.changerule.NoWillRule;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
 import uk.gov.hmcts.probate.model.ccd.Deceased;
 import uk.gov.hmcts.probate.model.ccd.Executor;
