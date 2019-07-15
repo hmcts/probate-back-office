@@ -233,5 +233,4 @@ public class DocumentController {
         return ResponseEntity.ok(callbackResponseTransformer.addDocuments(callbackRequest,
                 Arrays.asList(document), null, null));
     }
-
 }

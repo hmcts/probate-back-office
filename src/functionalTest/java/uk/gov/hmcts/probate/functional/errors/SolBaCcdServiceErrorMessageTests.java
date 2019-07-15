@@ -32,7 +32,7 @@ public class SolBaCcdServiceErrorMessageTests extends IntegrationTestBase {
                 .and().body("errors", hasSize(1))
                 .and().body("errors[0]", equalTo(containsText));
     }
-    
+
     @Test
     public void verifyAttachScannedDocsErrorMessage() {
         validatePostSuccess(BASIC_CASE_PAYLOAD, UI_ATTACH_SCANNED_DOCS_ERROR, ATTACH_SCAN_DOC_FROM_UI_ERROR);
