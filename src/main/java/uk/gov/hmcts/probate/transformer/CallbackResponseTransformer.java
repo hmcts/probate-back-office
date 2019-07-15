@@ -352,7 +352,16 @@ public class CallbackResponseTransformer {
                 .legacyCaseViewUrl(caseData.getLegacyCaseViewUrl())
                 .grantIssuedDate(caseData.getGrantIssuedDate())
                 .dateOfDeathType(caseData.getDateOfDeathType())
-                .bulkPrintId(caseData.getBulkPrintId());
+                .bulkPrintId(caseData.getBulkPrintId())
+
+                .deceasedDivorcedInEnglandOrWales(caseData.getDeceasedDivorcedInEnglandOrWales())
+                .primaryApplicantAdoptionInEnglandOrWales(caseData.getPrimaryApplicantAdoptionInEnglandOrWales())
+                .deceasedSpouseNotApplyingReason(caseData.getDeceasedSpouseNotApplyingReason())
+                .deceasedOtherChildren(caseData.getDeceasedOtherChildren())
+                .allDeceasedChildrenOverEighteen(caseData.getAllDeceasedChildrenOverEighteen())
+                .anyDeceasedChildrenDieBeforeDeceased(caseData.getAnyDeceasedChildrenDieBeforeDeceased())
+                .anyDeceasedGrandChildrenUnderEighteen(caseData.getAnyDeceasedGrandChildrenUnderEighteen())
+                .deceasedAnyChildren(caseData.getDeceasedAnyChildren());
 
         if (transform) {
             updateCaseBuilderForTransformCase(caseData, builder);

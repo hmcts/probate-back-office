@@ -172,6 +172,15 @@ public class CallbackResponseTransformerTest {
     private static final String LEGACY_CASE_URL = "someUrl";
     private static final String LEGACY_CASE_TYPE = "someCaseType";
 
+    private static final String DECEASED_DIVORCED_IN_ENGLAND_OR_WALES = YES;
+    private static final String PRIMARY_APPLICANT_ADOPTION_IN_ENGLAND_OR_WALES = NO;
+    private static final String DECEASED_SPOUSE_NOT_APPLYING_REASON = "notApplyingReason";
+    private static final String DECEASED_OTHER_CHILDREN = YES;
+    private static final String ALL_DECEASED_CHILDREN_OVER_EIGHTEEN = YES;
+    private static final String ANY_DECEASED_CHILDREN_DIE_BEFORE_DECEASED = NO;
+    private static final String ANY_DECEASED_GRANDCHILDREN_UNDER_EIGHTEEN = YES;
+    private static final String DECEASED_ANY_CHILDREN = NO;
+
     private static final LocalDateTime scannedDate = LocalDateTime.parse("2018-01-01T12:34:56.123");
     private static final List<CollectionMember<Payment>> PAYMENTS_LIST = Arrays.asList(
             new CollectionMember<Payment>("id",
@@ -294,7 +303,15 @@ public class CallbackResponseTransformerTest {
                 .scannedDocuments(SCANNED_DOCUMENTS_LIST)
                 .recordId(RECORD_ID)
                 .legacyType(LEGACY_CASE_TYPE)
-                .legacyCaseViewUrl(LEGACY_CASE_URL);
+                .legacyCaseViewUrl(LEGACY_CASE_URL)
+                .deceasedDivorcedInEnglandOrWales(DECEASED_DIVORCED_IN_ENGLAND_OR_WALES)
+                .primaryApplicantAdoptionInEnglandOrWales(PRIMARY_APPLICANT_ADOPTION_IN_ENGLAND_OR_WALES)
+                .deceasedSpouseNotApplyingReason(DECEASED_SPOUSE_NOT_APPLYING_REASON)
+                .deceasedOtherChildren(DECEASED_OTHER_CHILDREN)
+                .allDeceasedChildrenOverEighteen(ALL_DECEASED_CHILDREN_OVER_EIGHTEEN)
+                .anyDeceasedChildrenDieBeforeDeceased(ANY_DECEASED_CHILDREN_DIE_BEFORE_DECEASED)
+                .anyDeceasedGrandChildrenUnderEighteen(ANY_DECEASED_GRANDCHILDREN_UNDER_EIGHTEEN)
+                .deceasedAnyChildren(DECEASED_ANY_CHILDREN);
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
@@ -1452,6 +1469,19 @@ public class CallbackResponseTransformerTest {
         assertEquals("123", callbackResponse.getData().getForeignAssetEstateValue());
         assertEquals(CASE_TYPE_INTESTACY, callbackResponse.getData().getCaseType());
         assertEquals(DECEASED_DATE_OF_DEATH_TYPE, callbackResponse.getData().getDateOfDeathType());
+
+        assertEquals(DECEASED_DIVORCED_IN_ENGLAND_OR_WALES, callbackResponse.getData().getDeceasedDivorcedInEnglandOrWales());
+        assertEquals(PRIMARY_APPLICANT_ADOPTION_IN_ENGLAND_OR_WALES,
+                callbackResponse.getData().getPrimaryApplicantAdoptionInEnglandOrWales());
+        assertEquals(DECEASED_SPOUSE_NOT_APPLYING_REASON, callbackResponse.getData().getDeceasedSpouseNotApplyingReason());
+        assertEquals(DECEASED_OTHER_CHILDREN, callbackResponse.getData().getDeceasedOtherChildren());
+        assertEquals(ALL_DECEASED_CHILDREN_OVER_EIGHTEEN, callbackResponse.getData().getAllDeceasedChildrenOverEighteen());
+        assertEquals(ANY_DECEASED_GRANDCHILDREN_UNDER_EIGHTEEN,
+                callbackResponse.getData().getAnyDeceasedGrandChildrenUnderEighteen());
+        assertEquals(ANY_DECEASED_CHILDREN_DIE_BEFORE_DECEASED,
+                callbackResponse.getData().getAnyDeceasedChildrenDieBeforeDeceased());
+        assertEquals(DECEASED_ANY_CHILDREN, callbackResponse.getData().getDeceasedAnyChildren());
+
     }
 
 }
