@@ -42,6 +42,8 @@ public class ErrorControllerTest {
     private static final String EXPECTED_ATTACH_SCAN_DOC_FROM_UI_ERROR =
             "You can't attach a document to a case using this event. Use Upload Documents instead.";
 
+    private static final String BASIC_CASE_PAYLOAD = "{\"case_details\": {\"id\": 1528365719153338} }";
+
     @Before
     public void setUp() {
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
@@ -49,10 +51,8 @@ public class ErrorControllerTest {
 
     @Test
     public void displayAttachScanDocErrorIfUsedFromUI() throws Exception {
-        String simplePayload = "{\"case_details\": {\"id\": 1528365719153338} }";
-
-        ResultActions resultActions = mockMvc.perform(post("/error/attach-scanned-docs")
-                .content(simplePayload)
+        mockMvc.perform(post("/error/attach-scanned-docs")
+                .content(BASIC_CASE_PAYLOAD)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString(EXPECTED_ATTACH_SCAN_DOC_FROM_UI_ERROR)));
