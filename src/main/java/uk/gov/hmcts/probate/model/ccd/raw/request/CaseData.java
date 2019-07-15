@@ -115,22 +115,30 @@ public class CaseData {
     @DecimalMin(groups = {ApplicationUpdatedGroup.class}, value = "0.0", message = "{ihtGrossNegative}")
     private final BigDecimal ihtGrossValue;
 
-    @NotBlank(groups = {ApplicationUpdatedGroup.class, ApplicationProbateGroup.class, ApplicationIntestacyGroup.class, ApplicationAdmonGroup.class}, message = "{solsWillTypeIsNull}")
+    @NotBlank(groups = {ApplicationUpdatedGroup.class,
+                        ApplicationProbateGroup.class,
+                        ApplicationIntestacyGroup.class,
+                        ApplicationAdmonGroup.class}, message = "{solsWillTypeIsNull}")
     private final String solsWillType;
 
     // EVENT = solicitorUpdateProbate and Admon
     @NotBlank(groups = {ApplicationProbateGroup.class, ApplicationAdmonGroup.class}, message = "{willAsOriginalIsNull}")
     private final String willAccessOriginal;
 
-    @NotBlank(groups = {ApplicationProbateGroup.class, ApplicationAdmonGroup.class}, message = "{willNumberOfCodicilsIsNull}")
+    @NotBlank(groups = {ApplicationProbateGroup.class,
+                        ApplicationAdmonGroup.class}, message = "{willNumberOfCodicilsIsNull}")
     private final String willHasCodicils;
 
     private final String willNumberOfCodicils;
 
-    @NotBlank(groups = {ApplicationProbateGroup.class, ApplicationIntestacyGroup.class, ApplicationAdmonGroup.class}, message = "{primaryApplicantForenamesIsNull}")
+    @NotBlank(groups = {ApplicationProbateGroup.class,
+                        ApplicationIntestacyGroup.class,
+                        ApplicationAdmonGroup.class}, message = "{primaryApplicantForenamesIsNull}")
     private final String primaryApplicantForenames;
 
-    @NotBlank(groups = {ApplicationProbateGroup.class, ApplicationIntestacyGroup.class, ApplicationAdmonGroup.class}, message = "{primaryApplicantSurnameIsNull}")
+    @NotBlank(groups = {ApplicationProbateGroup.class,
+                        ApplicationIntestacyGroup.class,
+                        ApplicationAdmonGroup.class}, message = "{primaryApplicantSurnameIsNull}")
     private final String primaryApplicantSurname;
 
     @NotBlank(groups = {ApplicationProbateGroup.class}, message = "{primaryApplicantHasAliasIsNull}")
@@ -143,10 +151,13 @@ public class CaseData {
 
     private final String solsPrimaryExecutorNotApplyingReason;
 
-    @NotNull(groups = {ApplicationProbateGroup.class, ApplicationAdmonGroup.class, ApplicationIntestacyGroup.class}, message = "{primaryApplicantAddressIsNull}")
+    @NotNull(groups = {ApplicationProbateGroup.class,
+                       ApplicationAdmonGroup.class,
+                       ApplicationIntestacyGroup.class}, message = "{primaryApplicantAddressIsNull}")
     private final SolsAddress primaryApplicantAddress;
 
-    @NotBlank(groups = {ApplicationAdmonGroup.class, ApplicationIntestacyGroup.class}, message = "{primaryApplicantEmailAddressIsNull}")
+    @NotBlank(groups = {ApplicationAdmonGroup.class,
+                        ApplicationIntestacyGroup.class}, message = "{primaryApplicantEmailAddressIsNull}")
     private final String primaryApplicantEmailAddress;
 
     @NotBlank(groups = {ApplicationProbateGroup.class}, message = "{otherExecutorExistsIsNull}")
@@ -157,7 +168,9 @@ public class CaseData {
     private final String solsAdditionalInfo;
 
     // EVENT = solicitorUpdateIntestacy
-    @NotBlank(groups = {ApplicationProbateGroup.class, ApplicationAdmonGroup.class, ApplicationIntestacyGroup.class}, message = "{willExistsIsNull}")
+    @NotBlank(groups = {ApplicationProbateGroup.class,
+                        ApplicationAdmonGroup.class,
+                        ApplicationIntestacyGroup.class}, message = "{willExistsIsNull}")
     private final String willExists;
 
     @NotBlank(groups = {ApplicationIntestacyGroup.class}, message = "{solsApplicantRelationshipToDeceasedIsNull}")

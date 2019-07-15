@@ -5,7 +5,11 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import uk.gov.hmcts.probate.changerule.*;
+import uk.gov.hmcts.probate.changerule.DomicilityRule;
+import uk.gov.hmcts.probate.changerule.ExecutorsRule;
+import uk.gov.hmcts.probate.changerule.MinorityRule;
+import uk.gov.hmcts.probate.changerule.NoOriginalWillRule;
+import uk.gov.hmcts.probate.changerule.ChangeRule;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
 import uk.gov.hmcts.probate.model.ccd.Executor;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
@@ -66,7 +70,7 @@ public class ConfirmationResponseService {
             return response.get();
         }
 
-        if(caseData.getSolsWillType() != GRANT_TYPE_INTESTACY){
+        if (caseData.getSolsWillType() != GRANT_TYPE_INTESTACY) {
             response = getStopBodyMarkdown(caseData, noOriginalWillRule, STOP_BODY);
             if (response.isPresent()) {
                 return response.get();
@@ -74,14 +78,14 @@ public class ConfirmationResponseService {
         }
 
 
-        if(caseData.getSolsWillType() == GRANT_TYPE_PROBATE) {
+        if (caseData.getSolsWillType() == GRANT_TYPE_PROBATE) {
             response = getStopBodyMarkdown(caseData, executorsConfirmationResponseRule, STOP_BODY);
             if (response.isPresent()) {
                 return response.get();
             }
         }
 
-        if(caseData.getSolsWillType() == GRANT_TYPE_INTESTACY) {
+        if (caseData.getSolsWillType() == GRANT_TYPE_INTESTACY) {
             response = getStopBodyMarkdown(caseData, minorityConfirmationResponseRule, STOP_BODY);
             if (response.isPresent()) {
                 return response.get();

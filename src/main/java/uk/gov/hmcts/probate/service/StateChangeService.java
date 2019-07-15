@@ -2,7 +2,12 @@ package uk.gov.hmcts.probate.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import uk.gov.hmcts.probate.changerule.*;
+import uk.gov.hmcts.probate.changerule.DomicilityRule;
+import uk.gov.hmcts.probate.changerule.ExecutorsRule;
+import uk.gov.hmcts.probate.changerule.MinorityRule;
+import uk.gov.hmcts.probate.changerule.NoOriginalWillRule;
+import uk.gov.hmcts.probate.changerule.UpdateApplicationRule;
+
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 
 import java.util.Optional;
