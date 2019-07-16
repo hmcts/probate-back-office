@@ -235,7 +235,12 @@
    ]]></notes>
         <cve>CVE-2019-0221</cve>
     </suppress>
-
+    <suppress>
+        <notes><![CDATA[
+   file name: tomcat-embed-core-9.0.16.jar
+   ]]></notes>
+        <cve>CVE-2019-10072</cve>
+    </suppress>
     <suppress>
         <notes><![CDATA[
    file name: elasticsearch-6.4.3.jar
