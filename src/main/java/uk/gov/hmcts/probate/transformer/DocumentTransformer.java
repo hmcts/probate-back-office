@@ -11,7 +11,6 @@ import uk.gov.hmcts.probate.model.ccd.willlodgement.request.WillLodgementCallbac
 
 import java.util.List;
 
-import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_DRAFT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.WILL_LODGEMENT_DEPOSIT_RECEIPT;
 
 @Slf4j
@@ -48,7 +47,7 @@ public class DocumentTransformer {
                         .add(new CollectionMember<>(null, document));
                 break;
             case GRANT_COVERSHEET:
-                if (coversheetNotification == true) {
+                if (coversheetNotification) {
                     callbackRequest.getCaseDetails().getData().getProbateNotificationsGenerated()
                             .add(new CollectionMember<>(null, document));
                 } else {
