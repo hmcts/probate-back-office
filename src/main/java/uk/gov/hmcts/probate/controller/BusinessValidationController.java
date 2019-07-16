@@ -39,7 +39,9 @@ import java.util.Optional;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
-import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT;
+import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE;
+import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_ADMON;
+import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_INTESTACY;
 
 @Slf4j
 @Controller
@@ -76,9 +78,6 @@ public class BusinessValidationController {
             Optional<String> newState = stateChangeService.getChangedStateForCaseUpdate(callbackRequest.getCaseDetails().getData());
             if (newState.isPresent()) {
                 response = callbackResponseTransformer.transformWithConditionalStateChange(callbackRequest, newState);
-            } else {
-                Document document = pdfManagementService.generateAndUpload(callbackRequest, LEGAL_STATEMENT);
-                response = callbackResponseTransformer.transform(callbackRequest, document);
             }
         }
         return ResponseEntity.ok(response);
@@ -123,7 +122,7 @@ public class BusinessValidationController {
             if (newState.isPresent()) {
                 response = callbackResponseTransformer.transformWithConditionalStateChange(callbackRequest, newState);
             } else {
-                Document document = pdfManagementService.generateAndUpload(callbackRequest, LEGAL_STATEMENT);
+                Document document = pdfManagementService.generateAndUpload(callbackRequest, LEGAL_STATEMENT_PROBATE);
                 response = callbackResponseTransformer.transform(callbackRequest, document);
             }
         }
@@ -148,7 +147,7 @@ public class BusinessValidationController {
             if (newState.isPresent()) {
                 response = callbackResponseTransformer.transformWithConditionalStateChange(callbackRequest, newState);
             } else {
-                Document document = pdfManagementService.generateAndUpload(callbackRequest, LEGAL_STATEMENT);
+                Document document = pdfManagementService.generateAndUpload(callbackRequest, LEGAL_STATEMENT_INTESTACY);
                 response = callbackResponseTransformer.transform(callbackRequest, document);
             }
         }
@@ -173,7 +172,7 @@ public class BusinessValidationController {
             if (newState.isPresent()) {
                 response = callbackResponseTransformer.transformWithConditionalStateChange(callbackRequest, newState);
             } else {
-                Document document = pdfManagementService.generateAndUpload(callbackRequest, LEGAL_STATEMENT);
+                Document document = pdfManagementService.generateAndUpload(callbackRequest, LEGAL_STATEMENT_ADMON);
                 response = callbackResponseTransformer.transform(callbackRequest, document);
             }
         }

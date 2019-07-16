@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 import uk.gov.hmcts.probate.model.ApplicationType;
+import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
@@ -25,6 +26,7 @@ import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
@@ -37,11 +39,13 @@ import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
 import static uk.gov.hmcts.probate.model.Constants.CASE_TYPE_DEFAULT;
 import static uk.gov.hmcts.probate.model.Constants.CTSC;
 import static uk.gov.hmcts.probate.model.Constants.DATE_OF_DEATH_TYPE_DEFAULT;
-import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_INTESTACY;
+import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE;
+import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_ADMON;
 import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT_STOPPED;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT;
-import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT;
 import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
 
 @Component
@@ -49,6 +53,7 @@ import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
 public class CallbackResponseTransformer {
 
     private final DocumentTransformer documentTransformer;
+    private final DocumentType[] LEGAL_STATEMENTS = {LEGAL_STATEMENT_PROBATE, LEGAL_STATEMENT_INTESTACY, LEGAL_STATEMENT_ADMON};
 
     static final String PAYMENT_METHOD_VALUE_FEE_ACCOUNT = "fee account";
     static final String PAYMENT_REFERENCE_FEE_PREFIX = "Fee account PBA-";
@@ -205,7 +210,7 @@ public class CallbackResponseTransformer {
         ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), false);
         responseCaseDataBuilder.solsSOTNeedToUpdate(null);
 
-        if (LEGAL_STATEMENT.equals(document.getDocumentType())) {
+        if (Arrays.asList(LEGAL_STATEMENTS).contains(document.getDocumentType())) {
             responseCaseDataBuilder.solsLegalStatementDocument(document.getDocumentLink());
         }
 
