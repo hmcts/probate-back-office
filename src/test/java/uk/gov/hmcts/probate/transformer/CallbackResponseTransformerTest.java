@@ -180,6 +180,7 @@ public class CallbackResponseTransformerTest {
     private static final String ANY_DECEASED_CHILDREN_DIE_BEFORE_DECEASED = NO;
     private static final String ANY_DECEASED_GRANDCHILDREN_UNDER_EIGHTEEN = YES;
     private static final String DECEASED_ANY_CHILDREN = NO;
+    private static final String DECEASED_HAS_ASSETS_OUTSIDE_UK = YES;
 
     private static final LocalDateTime scannedDate = LocalDateTime.parse("2018-01-01T12:34:56.123");
     private static final List<CollectionMember<Payment>> PAYMENTS_LIST = Arrays.asList(
@@ -311,7 +312,8 @@ public class CallbackResponseTransformerTest {
                 .allDeceasedChildrenOverEighteen(ALL_DECEASED_CHILDREN_OVER_EIGHTEEN)
                 .anyDeceasedChildrenDieBeforeDeceased(ANY_DECEASED_CHILDREN_DIE_BEFORE_DECEASED)
                 .anyDeceasedGrandChildrenUnderEighteen(ANY_DECEASED_GRANDCHILDREN_UNDER_EIGHTEEN)
-                .deceasedAnyChildren(DECEASED_ANY_CHILDREN);
+                .deceasedAnyChildren(DECEASED_ANY_CHILDREN)
+                .deceasedHasAssetsOutsideUK(DECEASED_HAS_ASSETS_OUTSIDE_UK);
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
@@ -1481,6 +1483,7 @@ public class CallbackResponseTransformerTest {
         assertEquals(ANY_DECEASED_CHILDREN_DIE_BEFORE_DECEASED,
                 callbackResponse.getData().getAnyDeceasedChildrenDieBeforeDeceased());
         assertEquals(DECEASED_ANY_CHILDREN, callbackResponse.getData().getDeceasedAnyChildren());
+        assertEquals(DECEASED_HAS_ASSETS_OUTSIDE_UK, callbackResponse.getData().getDeceasedHasAssetsOutsideUK());
 
     }
 

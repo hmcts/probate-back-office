@@ -361,7 +361,8 @@ public class CallbackResponseTransformer {
                 .allDeceasedChildrenOverEighteen(caseData.getAllDeceasedChildrenOverEighteen())
                 .anyDeceasedChildrenDieBeforeDeceased(caseData.getAnyDeceasedChildrenDieBeforeDeceased())
                 .anyDeceasedGrandChildrenUnderEighteen(caseData.getAnyDeceasedGrandChildrenUnderEighteen())
-                .deceasedAnyChildren(caseData.getDeceasedAnyChildren());
+                .deceasedAnyChildren(caseData.getDeceasedAnyChildren())
+                .deceasedHasAssetsOutsideUK(caseData.getDeceasedHasAssetsOutsideUK());
 
         if (transform) {
             updateCaseBuilderForTransformCase(caseData, builder);

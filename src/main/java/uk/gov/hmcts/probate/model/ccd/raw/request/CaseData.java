@@ -409,6 +409,7 @@ public class CaseData {
     private final String anyDeceasedChildrenDieBeforeDeceased;
     private final String anyDeceasedGrandChildrenUnderEighteen;
     private final String deceasedAnyChildren;
+    private final String deceasedHasAssetsOutsideUK;
 
     @Getter(lazy = true)
     private final List<CollectionMember<AdditionalExecutor>> executorsApplyingForLegalStatement = getAllExecutors(true);
