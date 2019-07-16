@@ -8,6 +8,7 @@ import uk.gov.hmcts.probate.config.notifications.NotificationTemplates;
 import uk.gov.hmcts.probate.config.properties.registries.RegistriesProperties;
 import uk.gov.hmcts.probate.config.properties.registries.Registry;
 import uk.gov.hmcts.probate.exception.BadRequestException;
+import uk.gov.hmcts.probate.exception.InvalidEmailException;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.CaseType;
 import uk.gov.hmcts.probate.model.DocumentType;
@@ -18,14 +19,18 @@ import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
+import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
+import uk.gov.hmcts.probate.validator.EmailAddressNotificationValidationRule;
 import uk.gov.service.notify.NotificationClient;
 import uk.gov.service.notify.NotificationClientException;
 import uk.gov.service.notify.SendEmailResponse;
 
+import javax.validation.Valid;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -33,9 +38,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static uk.gov.hmcts.probate.model.Constants.BUSINESS_ERROR;
 import static uk.gov.hmcts.probate.model.Constants.CTSC;
 import static uk.gov.hmcts.probate.model.Constants.DOC_SUBTYPE_WILL;
 import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
+import static uk.gov.hmcts.probate.model.State.GRANT_REISSUED;
 
 @RequiredArgsConstructor
 @Component
@@ -48,6 +55,10 @@ public class NotificationService {
     private final MarkdownTransformationService markdownTransformationService;
     private final PDFManagementService pdfManagementService;
     private final CaveatQueryService caveatQueryService;
+    private final EventValidationService eventValidationService;
+    private final List<EmailAddressNotificationValidationRule> emailAddressNotificationValidationRules;
+    @Autowired
+    private BusinessValidationMessageService businessValidationMessageService;
     private final DateFormatterService dateFormatterService;
     private final AddressFormatterService addressFormatterService;
 
@@ -144,6 +155,28 @@ public class NotificationService {
         return getGeneratedSentEmailDocument(response, emailAddresses.getExcelaEmail(), SENT_EMAIL);
     }
 
+    public Document generateGrantReissue(CallbackRequest callbackRequest) throws NotificationClientException {
+        CaseDetails caseDetails = callbackRequest.getCaseDetails();
+        @Valid CaseData caseData = caseDetails.getData();
+        CallbackResponse callbackResponse;
+        Document sentEmail;
+        callbackResponse = eventValidationService.validateEmailRequest(callbackRequest, emailAddressNotificationValidationRules);
+
+        if (callbackResponse.getErrors().isEmpty()) {
+            sentEmail = sendEmail(GRANT_REISSUED, caseDetails);
+        } else if (caseData.getApplicationType().equals(ApplicationType.SOLICITOR)) {
+            throw new InvalidEmailException(businessValidationMessageService.generateError(BUSINESS_ERROR,
+                    "emailNotProvidedSOLS").getMessage(),
+                    "Invalid email exception: No email address provided for application type SOLS: " + caseDetails.getId());
+        } else {
+            throw new InvalidEmailException(businessValidationMessageService.generateError(BUSINESS_ERROR,
+                    "emailNotProvidedPA").getMessage(),
+                    "Invalid email exception: No email address provided for application type PA: " + caseDetails.getId());
+        }
+
+        return sentEmail;
+    }
+
     private Document getGeneratedSentEmailDocument(SendEmailResponse response, String emailAddress, DocumentType docType) {
         SentEmail sentEmail = SentEmail.builder()
                 .sentOn(LocalDateTime.now().format(formatter))
@@ -228,6 +261,8 @@ public class NotificationService {
                 return notificationTemplates.getEmail().get(applicationType).getCaseStoppedCaveat();
             case GRANT_ISSUED:
                 return notificationTemplates.getEmail().get(applicationType).getGrantIssued();
+            case GRANT_REISSUED:
+                return notificationTemplates.getEmail().get(applicationType).getGrantReissued();
             case GENERAL_CAVEAT_MESSAGE:
                 return notificationTemplates.getEmail().get(applicationType).getGeneralCaveatMessage();
             case CAVEAT_RAISED:

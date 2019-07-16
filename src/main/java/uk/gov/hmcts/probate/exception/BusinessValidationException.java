@@ -7,7 +7,14 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 public class BusinessValidationException extends RuntimeException {
 
-    public BusinessValidationException(final String message) {
+    private final String userMessage;
+
+    public BusinessValidationException(final String userMessage, final String message) {
         super(message);
+        this.userMessage = userMessage;
+    }
+
+    public String getUserMessage() {
+        return userMessage;
     }
 }

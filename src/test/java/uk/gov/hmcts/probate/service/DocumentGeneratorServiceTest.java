@@ -12,15 +12,18 @@ import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
+import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.service.docmosis.GenericMapperService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
+import uk.gov.hmcts.probate.validator.EmailAddressNotificationValidationRule;
 
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.Constants.CTSC;
@@ -30,11 +33,18 @@ public class DocumentGeneratorServiceTest {
     private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
     private static final Long CASE_ID = 12345678987654321L;
     private static final String REGISTRY_LOCATION = "bristol";
-    private static final String DIGITAL_GRANT_REISSUE_FILE_NAME = "digitalGrantDraftReissue.pdf";
-    private static final String INTESTACY_REISSUE_FILE_NAME = "intestacyGrantDraftReissue.pdf";
-    private static final String ADMON_WILL_REISSUE_FILE_NAME = "admonWillGrantDraftReissue.pdf";
+    private static final String DIGITAL_GRANT_DRAFT_REISSUE_FILE_NAME = "digitalGrantDraftReissue.pdf";
+    private static final String INTESTACY_DRAFT_REISSUE_FILE_NAME = "intestacyGrantDraftReissue.pdf";
+    private static final String ADMON_WILL_DRAFT_REISSUE_FILE_NAME = "admonWillGrantDraftReissue.pdf";
+    private static final String DIGITAL_GRANT_REISSUE_FILE_NAME = "digitalGrantReissue.pdf";
+    private static final String INTESTACY_REISSUE_FILE_NAME = "intestacyGrantReissue.pdf";
+    private static final String ADMON_WILL_REISSUE_FILE_NAME = "admonWillGrantReissue.pdf";
+    private static final String DRAFT = "preview";
+    private static final String FINAL = "final";
     private CallbackRequest callbackRequest;
     private Map<String, Object> expectedMap;
+    private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMM Y HH:mm");
+
 
     @InjectMocks
     private DocumentGeneratorService documentGeneratorService;
@@ -43,10 +53,22 @@ public class DocumentGeneratorServiceTest {
     private PDFManagementService pdfManagementService;
 
     @Mock
+    private NotificationService notificationService;
+
+    @Mock
     private GenericMapperService genericMapperService;
 
     @Mock
     private RegistryDetailsService registryDetailsService;
+
+    @Mock
+    private CallbackResponse callbackResponse;
+
+    @Mock
+    private EventValidationService eventValidationService;
+
+    @Mock
+    private List<EmailAddressNotificationValidationRule> emailAddressNotificationValidationRules;
 
     @Mock
     private DocumentService documentService;
@@ -90,31 +112,36 @@ public class DocumentGeneratorServiceTest {
         when(genericMapperService.addCaseDataWithImages(any(), any())).thenReturn(expectedMap);
 
         when(pdfManagementService
-                .generateDocmosisDocumentAndUpload(eq(expectedMap), any())).thenReturn(Document.builder().build());
+                .generateDocmosisDocumentAndUpload(any(), any())).thenReturn(Document.builder().build());
+
+        when(pdfManagementService.getDecodedSignature()).thenReturn("decodedSignature");
 
         doNothing().when(documentService).expire(any(CallbackRequest.class), any());
+
+        when(genericMapperService.addCaseData(caseDetails.getData())).thenReturn(expectedMap);
+
     }
 
     @Test
     public void testGenerateReissueDraftProducesCorrectDocumentForGOP() {
         when(pdfManagementService.generateDocmosisDocumentAndUpload(expectedMap,
                 DocumentType.DIGITAL_GRANT_DRAFT_REISSUE))
-                .thenReturn(Document.builder().documentFileName(DIGITAL_GRANT_REISSUE_FILE_NAME).build());
-        assertEquals(DIGITAL_GRANT_REISSUE_FILE_NAME,
-                documentGeneratorService.generateGrantReissueDraft(callbackRequest).getDocumentFileName());
+                .thenReturn(Document.builder().documentFileName(DIGITAL_GRANT_DRAFT_REISSUE_FILE_NAME).build());
+        assertEquals(DIGITAL_GRANT_DRAFT_REISSUE_FILE_NAME,
+                documentGeneratorService.generateGrantReissue(callbackRequest, DRAFT).getDocumentFileName());
     }
 
     @Test
     public void testGenerateReissueDraftProducesCorrectDocumentForIntestacy() {
         CaseDetails caseDetails =
                 new CaseDetails(CaseData.builder().caseType("intestacy").registryLocation("Bristol").build(),
-                LAST_MODIFIED, CASE_ID);
+                        LAST_MODIFIED, CASE_ID);
         callbackRequest = new CallbackRequest(caseDetails);
         when(pdfManagementService.generateDocmosisDocumentAndUpload(expectedMap,
                 DocumentType.INTESTACY_GRANT_DRAFT_REISSUE))
-                .thenReturn(Document.builder().documentFileName(INTESTACY_REISSUE_FILE_NAME).build());
-        assertEquals(INTESTACY_REISSUE_FILE_NAME,
-                documentGeneratorService.generateGrantReissueDraft(callbackRequest).getDocumentFileName());
+                .thenReturn(Document.builder().documentFileName(INTESTACY_DRAFT_REISSUE_FILE_NAME).build());
+        assertEquals(INTESTACY_DRAFT_REISSUE_FILE_NAME,
+                documentGeneratorService.generateGrantReissue(callbackRequest, DRAFT).getDocumentFileName());
     }
 
     @Test
@@ -125,8 +152,78 @@ public class DocumentGeneratorServiceTest {
         callbackRequest = new CallbackRequest(caseDetails);
         when(pdfManagementService.generateDocmosisDocumentAndUpload(expectedMap,
                 DocumentType.ADMON_WILL_GRANT_DRAFT_REISSUE)).thenReturn(Document.builder()
+                .documentFileName(ADMON_WILL_DRAFT_REISSUE_FILE_NAME).build());
+        assertEquals(ADMON_WILL_DRAFT_REISSUE_FILE_NAME,
+                documentGeneratorService.generateGrantReissue(callbackRequest, DRAFT).getDocumentFileName());
+    }
+
+    @Test
+    public void testGenerateReissueProducesFinalVersionForGOP() {
+        when(pdfManagementService.generateDocmosisDocumentAndUpload(expectedMap, DocumentType.DIGITAL_GRANT_REISSUE))
+                .thenReturn(Document.builder().documentFileName(DIGITAL_GRANT_REISSUE_FILE_NAME).build());
+        assertEquals(DIGITAL_GRANT_REISSUE_FILE_NAME, documentGeneratorService.generateGrantReissue(callbackRequest,
+                FINAL).getDocumentFileName());
+    }
+
+    @Test
+    public void testGenerateReissueProducesFinalVersionForIntestacy() {
+        CaseDetails caseDetails =
+                new CaseDetails(CaseData.builder().caseType("intestacy").registryLocation("Bristol").build(),
+                        LAST_MODIFIED, CASE_ID);
+        callbackRequest = new CallbackRequest(caseDetails);
+        when(pdfManagementService.generateDocmosisDocumentAndUpload(expectedMap,
+                DocumentType.INTESTACY_GRANT_REISSUE))
+                .thenReturn(Document.builder().documentFileName(INTESTACY_REISSUE_FILE_NAME).build());
+        assertEquals(INTESTACY_REISSUE_FILE_NAME,
+                documentGeneratorService.generateGrantReissue(callbackRequest, FINAL).getDocumentFileName());
+    }
+
+    @Test
+    public void testGenerateReissueProducesFinalVersionForAdmonWill() {
+        CaseDetails caseDetails =
+                new CaseDetails(CaseData.builder().caseType("admonWill").registryLocation("Bristol").build(),
+                        LAST_MODIFIED, CASE_ID);
+        callbackRequest = new CallbackRequest(caseDetails);
+        when(pdfManagementService.generateDocmosisDocumentAndUpload(expectedMap,
+                DocumentType.ADMON_WILL_GRANT_REISSUE)).thenReturn(Document.builder()
                 .documentFileName(ADMON_WILL_REISSUE_FILE_NAME).build());
         assertEquals(ADMON_WILL_REISSUE_FILE_NAME,
-                documentGeneratorService.generateGrantReissueDraft(callbackRequest).getDocumentFileName());
+                documentGeneratorService.generateGrantReissue(callbackRequest, FINAL).getDocumentFileName());
+    }
+
+    @Test
+    public void testGenerateReissueProducesNewEdgeCaseDocumentForDraft() {
+        CaseDetails caseDetails =
+                new CaseDetails(CaseData.builder().caseType("edgeCase").registryLocation("Bristol").build(),
+                        LAST_MODIFIED, CASE_ID);
+        callbackRequest = new CallbackRequest(caseDetails);
+        assertEquals(DocumentType.EDGE_CASE,
+                documentGeneratorService.generateGrantReissue(callbackRequest, DRAFT).getDocumentType());
+    }
+
+    @Test
+    public void testGenerateReissueProducesNewEdgeCaseDocumentForFinal() {
+        CaseDetails caseDetails =
+                new CaseDetails(CaseData.builder().caseType("edgeCase").registryLocation("Bristol").build(),
+                        LAST_MODIFIED, CASE_ID);
+        callbackRequest = new CallbackRequest(caseDetails);
+        assertEquals(DocumentType.EDGE_CASE,
+                documentGeneratorService.generateGrantReissue(callbackRequest, FINAL).getDocumentType());
+    }
+
+    @Test
+    public void testInvalidVersionDefaultsToDraftVersion() {
+        when(pdfManagementService.generateDocmosisDocumentAndUpload(expectedMap,
+                DocumentType.DIGITAL_GRANT_DRAFT_REISSUE))
+                .thenReturn(Document.builder().documentFileName(DIGITAL_GRANT_DRAFT_REISSUE_FILE_NAME).build());
+        assertEquals(DIGITAL_GRANT_DRAFT_REISSUE_FILE_NAME,
+                documentGeneratorService.generateGrantReissue(callbackRequest, "INVALID").getDocumentFileName());
+    }
+
+    @Test
+    public void testGenerateCoversheetReturnsCorrectDocumentType() {
+        when(pdfManagementService.generateDocmosisDocumentAndUpload(expectedMap, DocumentType.GRANT_COVERSHEET))
+                .thenReturn(Document.builder().documentType(DocumentType.GRANT_COVERSHEET).build());
+        assertEquals(DocumentType.GRANT_COVERSHEET, documentGeneratorService.generateCoversheet(callbackRequest).getDocumentType());
     }
 }

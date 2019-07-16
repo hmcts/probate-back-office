@@ -110,7 +110,7 @@ public class DefaultExceptionHandlerTest {
     }
 
     @Test
-    public void shouldReturnBusiessValidationException() {
+    public void shouldReturnBusinessValidationException() {
         when(businessValidationException.getMessage()).thenReturn(EXCEPTION_MESSAGE);
 
         ResponseEntity<CallbackResponse> response = underTest.handle(businessValidationException);
@@ -118,5 +118,4 @@ public class DefaultExceptionHandlerTest {
         assertEquals(OK, response.getStatusCode());
         assertEquals(EXCEPTION_MESSAGE, response.getBody().getErrors().get(0));
     }
-
 }

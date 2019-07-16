@@ -58,6 +58,9 @@
   {"LiveFrom": "01/01/2017", "ID": "probateDocumentTypeEnum", "ListElementCode": "digitalGrantDraftReissue", "ListElement": "Digital Grant Draft Reissue"},
   {"LiveFrom": "01/01/2017", "ID": "probateDocumentTypeEnum", "ListElementCode": "intestacyGrantDraftReissue", "ListElement": "Intestacy Grant Draft Reissue"},
   {"LiveFrom": "01/01/2017", "ID": "probateDocumentTypeEnum", "ListElementCode": "admonWillGrantDraftReissue", "ListElement": "Admon Will Grant Draft Reissue"},
+  {"LiveFrom": "01/01/2017", "ID": "probateDocumentTypeEnum", "ListElementCode": "digitalGrantReissue", "ListElement": "Digital Grant Reissue"},
+  {"LiveFrom": "01/01/2017", "ID": "probateDocumentTypeEnum", "ListElementCode": "intestacyGrantReissue", "ListElement": "Intestacy Grant Reissue"},
+  {"LiveFrom": "01/01/2017", "ID": "probateDocumentTypeEnum", "ListElementCode": "admonWillGrantReissue", "ListElement": "Admon Will Grant Reissue"},
   {"LiveFrom": "01/01/2017", "ID": "documentUploadTypeEnum", "ListElementCode": "email", "ListElement": "Email"},
   {"LiveFrom": "01/01/2017", "ID": "documentUploadTypeEnum", "ListElementCode": "correspondence", "ListElement": "Correspondence"},
   {"LiveFrom": "01/01/2017", "ID": "documentUploadTypeEnum", "ListElementCode": "IHT", "ListElement": "Codicil"},
@@ -138,5 +141,6 @@
   {"LiveFrom": "06/01/2017", "ID": "reissueNotationFixedList", "ListElementCode": "registrarsDirection", "ListElement": "Amended and re-issued [date of re-issue] pursuant to Registrar's Direction 004/17"},
   {"LiveFrom": "06/01/2017", "ID": "spouseNotApplyingReasonFixedList", "ListElementCode": "renunciated", "ListElement": "Renunciated"},
   {"LiveFrom": "06/01/2017", "ID": "spouseNotApplyingReasonFixedList", "ListElementCode": "mentallyIncapable", "ListElement": "Mentally incapable"},
-  {"LiveFrom": "06/01/2017", "ID": "spouseNotApplyingReasonFixedList", "ListElementCode": "other", "ListElement": "Other"}
+  {"LiveFrom": "06/01/2017", "ID": "spouseNotApplyingReasonFixedList", "ListElementCode": "other", "ListElement": "Other"},
+  {"LiveFrom": "06/01/2017", "ID": "resolveStopStateReissueFixedList", "ListElementCode": "BOExaminingReissue", "ListElement": "Examining case (reissue)"}
 ]

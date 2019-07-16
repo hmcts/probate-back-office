@@ -399,9 +399,21 @@ public class CaseData {
 
     private final String boCaveatStopSendToBulkPrintRequested;
 
+    private final String boEmailGrantReIssuedNotificationRequested;
+
+    @SuppressWarnings("squid:S1170")
+    @Getter(lazy = true)
+    private final String boEmailGrantReissuedNotification = getDefaultValueForEmailNotifications();
+
     @SuppressWarnings("squid:S1170")
     @Getter(lazy = true)
     private final String boCaveatStopSendToBulkPrint = YES;
+
+    @SuppressWarnings("squid:S1170")
+    @Getter(lazy = true)
+    private final String boGrantReissueSendToBulkPrint = YES;
+
+    private final String boGrantReissueSendToBulkPrintRequested;
 
     @Builder.Default
     private List<CollectionMember<BulkPrint>> bulkPrintId = new ArrayList<>();
@@ -477,8 +489,16 @@ public class CaseData {
         return YES.equals(getBoSendToBulkPrint());
     }
 
+    public boolean isSendForBulkPrintingRequestedGrantReIssued() {
+        return YES.equals(getBoGrantReissueSendToBulkPrint());
+    }
+
     public boolean isGrantIssuedEmailNotificationRequested() {
         return YES.equals(getBoEmailGrantIssuedNotification());
+    }
+
+    public boolean isGrantReissuedEmailNotificationRequested() {
+        return YES.equals(getBoEmailGrantReissuedNotification());
     }
 
     public boolean isCaveatStopNotificationRequested() {
