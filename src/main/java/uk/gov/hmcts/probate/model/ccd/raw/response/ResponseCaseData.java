@@ -249,4 +249,5 @@ public class ResponseCaseData {
     private final String anyDeceasedChildrenDieBeforeDeceased;
     private final String anyDeceasedGrandChildrenUnderEighteen;
     private final String deceasedAnyChildren;
+    private final String deceasedHasAssetsOutsideUK;
 }
