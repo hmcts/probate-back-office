@@ -22,7 +22,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RequiredArgsConstructor
 @RequestMapping(value = "/error", consumes = APPLICATION_JSON_UTF8_VALUE, produces = APPLICATION_JSON_VALUE)
 @RestController
-public class ErrorController {
+public class BulkScanningController {
 
     private final BusinessValidationMessageRetriever businessValidationMessageRetriever;
 

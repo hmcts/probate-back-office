@@ -14,7 +14,7 @@ import static org.junit.Assert.*;
 
 
 @RunWith(SerenityRunner.class)
-public class SolBaCcdServiceErrorMessageTests extends IntegrationTestBase {
+public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
 
     private static final String ATTACH_SCAN_DOC_FROM_UI_ERROR = "You can't attach a document to a case using this event. Use Upload Documents instead.";
 
