@@ -29,8 +29,9 @@ public class ErrorController {
     @PostMapping(path = "/attach-scanned-docs", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<CallbackResponse> displayAttachScanDocErrorIfUsedFromUI(@RequestBody CallbackRequest callbackRequest) {
         String[] args = {callbackRequest.getCaseDetails().getId().toString()};
-        String message = businessValidationMessageRetriever.getMessage("errorAttachScannedDocs", args, Locale.UK);
-        throw new BusinessValidationException(message);
+        String userMessage = businessValidationMessageRetriever.getMessage("errorAttachScannedDocs", args, Locale.UK);
+        throw new BusinessValidationException(userMessage,
+                "User should not call attach scanned docs for case: " + callbackRequest.getCaseDetails().getId());
     }
 
 }
