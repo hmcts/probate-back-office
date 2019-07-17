@@ -8,6 +8,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
+import uk.gov.hmcts.probate.model.ccd.raw.casematching.Case;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 
@@ -28,6 +29,9 @@ public class ExcelaCriteriaServiceTest {
     private ReturnedCaseDetails case2;
     private ReturnedCaseDetails case3;
     private ReturnedCaseDetails case4;
+    private ReturnedCaseDetails case5;
+    private ReturnedCaseDetails case6;
+    private ReturnedCaseDetails case7;
 
     private ExcelaCriteriaService excelaCriteriaService = new ExcelaCriteriaService();
 
@@ -93,10 +97,28 @@ public class ExcelaCriteriaServiceTest {
                 .deceasedSurname("Orderson")
                 .build();
 
+        final CaseData caseData5 = CaseData.builder()
+                .scannedDocuments(scannedDocumentsCase1)
+                .deceasedSurname("Alderson")
+                .build();
+
+        final CaseData caseData6 = CaseData.builder()
+                .scannedDocuments(scannedDocumentsCase1)
+                .deceasedSurname("Abson")
+                .build();
+
+        final CaseData caseData7 = CaseData.builder()
+                .scannedDocuments(scannedDocumentsCase1)
+                .deceasedSurname("addington")
+                .build();
+
         case1 = new ReturnedCaseDetails(caseData1, LAST_MODIFIED, 1L);
         case2 = new ReturnedCaseDetails(caseData2, LAST_MODIFIED, 2L);
         case3 = new ReturnedCaseDetails(caseData3, LAST_MODIFIED, 3L);
         case4 = new ReturnedCaseDetails(caseData4, LAST_MODIFIED, 3L);
+        case5 = new ReturnedCaseDetails(caseData5, LAST_MODIFIED, 3L);
+        case6 = new ReturnedCaseDetails(caseData6, LAST_MODIFIED, 3L);
+        case7 = new ReturnedCaseDetails(caseData7, LAST_MODIFIED, 3L);
     }
 
     @Test
@@ -121,5 +143,27 @@ public class ExcelaCriteriaServiceTest {
     public void testEmptySubtypePrecedingValidSubtypeShouldReturnCase() {
         cases.add(case4);
         assertThat(excelaCriteriaService.getFilteredCases(cases.build()).size(), is(1));
+    }
+
+    @Test
+    public void testSurnamesSortedAlphabetically() {
+        cases.add(case1);
+        cases.add(case5);
+        cases.add(case6);
+        List<ReturnedCaseDetails> returnedCaseDetails = excelaCriteriaService.getFilteredCases(cases.build());
+        assertThat(returnedCaseDetails.get(0).getData().getDeceasedSurname(), is("Abson"));
+        assertThat(returnedCaseDetails.get(1).getData().getDeceasedSurname(), is("Alderson"));
+        assertThat(returnedCaseDetails.get(2).getData().getDeceasedSurname(), is("Smith"));
+    }
+
+    @Test
+    public void testSurnameCaseDoesNotEffectOrder() {
+        cases.add(case1);
+        cases.add(case5);
+        cases.add(case6);
+        cases.add(case7);
+        List<ReturnedCaseDetails> returnedCaseDetails = excelaCriteriaService.getFilteredCases(cases.build());
+        assertThat(returnedCaseDetails.get(0).getData().getDeceasedSurname(), is("Abson"));
+        assertThat(returnedCaseDetails.get(1).getData().getDeceasedSurname(), is("addington"));
     }
 }
