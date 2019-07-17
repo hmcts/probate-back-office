@@ -51,7 +51,7 @@ public class BulkScanningControllerTest {
 
     @Test
     public void displayAttachScanDocErrorIfUsedFromUI() throws Exception {
-        mockMvc.perform(post("/error/attach-scanned-docs")
+        mockMvc.perform(post("/bulk-scan/attach-scanned-docs-error")
                 .content(BASIC_CASE_PAYLOAD)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())

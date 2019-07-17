@@ -18,7 +18,7 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
 
     private static final String ATTACH_SCAN_DOC_FROM_UI_ERROR = "You can't attach a document to a case using this event. Use Upload Documents instead.";
 
-    private static final String UI_ATTACH_SCANNED_DOCS_ERROR = "/error/attach-scanned-docs";
+    private static final String UI_ATTACH_SCANNED_DOCS_ERROR = "/bulk-scan/attach-scanned-docs-error";
 
     private static final String BASIC_CASE_PAYLOAD = "{\"case_details\": {\"id\": 1528365719153338} }";
 

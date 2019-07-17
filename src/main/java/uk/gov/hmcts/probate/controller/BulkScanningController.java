@@ -20,13 +20,13 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @Slf4j
 @RequiredArgsConstructor
-@RequestMapping(value = "/error", consumes = APPLICATION_JSON_UTF8_VALUE, produces = APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/bulk-scan", consumes = APPLICATION_JSON_UTF8_VALUE, produces = APPLICATION_JSON_VALUE)
 @RestController
 public class BulkScanningController {
 
     private final BusinessValidationMessageRetriever businessValidationMessageRetriever;
 
-    @PostMapping(path = "/attach-scanned-docs", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(path = "/attach-scanned-docs-error", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<CallbackResponse> displayAttachScanDocErrorIfUsedFromUI(@RequestBody CallbackRequest callbackRequest) {
         String[] args = {callbackRequest.getCaseDetails().getId().toString()};
         String userMessage = businessValidationMessageRetriever.getMessage("errorAttachScannedDocs", args, Locale.UK);
