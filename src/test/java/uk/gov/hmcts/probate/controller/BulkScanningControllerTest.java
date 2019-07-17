@@ -40,7 +40,7 @@ public class BulkScanningControllerTest {
     private TestUtils testUtils;
 
     private static final String EXPECTED_ATTACH_SCAN_DOC_FROM_UI_ERROR =
-            "You can't attach a document to a case using this event. Use Upload Documents instead.";
+            "You cannot attach a document to a case using this event. Please use Upload Documents instead.";
 
     private static final String BASIC_CASE_PAYLOAD = "{\"case_details\": {\"id\": 1528365719153338} }";
 
