@@ -384,7 +384,17 @@ public class CallbackResponseTransformer {
                 .orderNeeded(caseData.getOrderNeeded())
                 .reissueReason(caseData.getReissueReason())
                 .reissueDate(caseData.getReissueDate())
-                .bulkPrintId(caseData.getBulkPrintId());
+                .bulkPrintId(caseData.getBulkPrintId())
+
+                .deceasedDivorcedInEnglandOrWales(caseData.getDeceasedDivorcedInEnglandOrWales())
+                .primaryApplicantAdoptionInEnglandOrWales(caseData.getPrimaryApplicantAdoptionInEnglandOrWales())
+                .deceasedSpouseNotApplyingReason(caseData.getDeceasedSpouseNotApplyingReason())
+                .deceasedOtherChildren(caseData.getDeceasedOtherChildren())
+                .allDeceasedChildrenOverEighteen(caseData.getAllDeceasedChildrenOverEighteen())
+                .anyDeceasedChildrenDieBeforeDeceased(caseData.getAnyDeceasedChildrenDieBeforeDeceased())
+                .anyDeceasedGrandChildrenUnderEighteen(caseData.getAnyDeceasedGrandChildrenUnderEighteen())
+                .deceasedAnyChildren(caseData.getDeceasedAnyChildren())
+                .deceasedHasAssetsOutsideUK(caseData.getDeceasedHasAssetsOutsideUK());
 
         if (transform) {
             updateCaseBuilderForTransformCase(caseData, builder);

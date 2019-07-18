@@ -248,4 +248,14 @@ public class ResponseCaseData {
     private final String orderNeeded;
     private final List<CollectionMember<Reissue>> reissueReason;
     private final String reissueDate;
+
+    private final String deceasedDivorcedInEnglandOrWales;
+    private final String primaryApplicantAdoptionInEnglandOrWales;
+    private final String deceasedSpouseNotApplyingReason;
+    private final String deceasedOtherChildren;
+    private final String allDeceasedChildrenOverEighteen;
+    private final String anyDeceasedChildrenDieBeforeDeceased;
+    private final String anyDeceasedGrandChildrenUnderEighteen;
+    private final String deceasedAnyChildren;
+    private final String deceasedHasAssetsOutsideUK;
 }
