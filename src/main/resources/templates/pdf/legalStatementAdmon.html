@@ -149,7 +149,7 @@
             {% for executor in case_details.case_data.executorsApplyingForLegalStatement %}
             <p>
                 {{ executor.value.additionalExecForenames }} {{ executor.value.additionalExecLastname }},
-                an executor named in the will {% if case_details.case_data.willHasCodicils == "Yes" %}and codicil{% if case_details.case_data.willNumberOfCodicils != "" and case_details.case_data.willNumberOfCodicils != "0" and case_details.case_data.willNumberOfCodicils != "1" %}s{% endif %}{% endif %}{% if executor.value.additionalExecNameOnWill == "Yes" %} as {{ executor.value.additionalExecAliasNameOnWill }}{% endif %},
+                an executor named in the will{% if case_details.case_data.willHasCodicils == "Yes" %} and codicil{% if case_details.case_data.willNumberOfCodicils != "" and case_details.case_data.willNumberOfCodicils != "0" and case_details.case_data.willNumberOfCodicils != "1" %}s{% endif %}{% endif %}{% if executor.value.additionalExecNameOnWill == "Yes" %} as {{ executor.value.additionalExecAliasNameOnWill }}{% endif %},
                 is applying for probate.
             </p>
             {% endfor %}
