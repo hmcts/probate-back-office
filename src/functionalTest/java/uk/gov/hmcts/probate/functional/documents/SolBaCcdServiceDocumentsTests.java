@@ -16,6 +16,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     private static final String SOLICITOR_INFO1 = "Extracted by Solicitor Firm Name (Ref: 1231-3984-3949-0300) SolAddLn1, SolAddLn2, SolAddLn3, ";
     private static final String SOLICITOR_INFO2 = "SolAddPT, SolAddCounty, KT10 0LA, SolAddCo";
+    private static final String SOLICITOR_INFO3 = "Extracted by Solicitor Firm Name (Ref: 1231-3984-3949-0300) SolAddLn1, SolAddLn3, SolAddPT, KT10 0LA, SolAddCo";
     private static final String REGISTRY_ADDRESS = "High Court of Justice England and Wales Birmingham District Probate Registry The Priory Courts33 Bull StreetBirminghamB4 6DU0121 681 3401";
     private static final String LONDON_REGISTRY_ADDRESS = "High Court of Justice England and WalesPrincipal Registry of the Family DivisionFirst Avenue House42-49 High HolbornLondonWC1V 6NP020 7421 8509 ";
     private static final String CTSC_REGISTRY_ADDRESS = "High Court of Justice England and Wales Principal Registry of the Family Division Manchester Civil Justice CentreGround Floor1 Bridge Street WestPO Box 4240ManchesterM60 1WJ0300 303 0648";
@@ -44,11 +45,11 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     private static final String GENERATE_GRANT = "/document/generate-grant";
     private static final String GENERATE_GRANT_DRAFT = "/document/generate-grant-draft";
-    private static final String GENERATE_DEPOSIT_RECEIPT= "/document/generate-deposit-receipt";
+    private static final String GENERATE_DEPOSIT_RECEIPT = "/document/generate-deposit-receipt";
 
-    private static final String DEFAULT_SOLS_PAYLOAD= "solicitorPayloadNotifications.json";
-    private static final String DEFAULT_PA_PAYLOAD= "personalPayloadNotifications.json";
-    private static final String DEFAULT_WILL_PAYLOAD= "willLodgementPayload.json";
+    private static final String DEFAULT_SOLS_PAYLOAD = "solicitorPayloadNotifications.json";
+    private static final String DEFAULT_PA_PAYLOAD = "personalPayloadNotifications.json";
+    private static final String DEFAULT_WILL_PAYLOAD = "willLodgementPayload.json";
 
     @Test
     public void verifySolicitorGenerateGrantShouldReturnOkResponseCode() {
@@ -508,6 +509,28 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         assertTrue(response.contains(POWER_RESERVED));
         assertTrue(response.contains(GOP));
         assertTrue(response.contains(LONDON_REGISTRY_ADDRESS));
+
+    }
+
+    @Test
+    public void verifySuccessForGetDigitalGrantPartialSolsAddress() {
+        String response = generateDocument("solicitorPayloadNotificationsPartialAddress.json", GENERATE_GRANT);
+
+        assertTrue(response.contains(CTSC_REGISTRY_ADDRESS));
+        assertTrue(response.contains(SOLICITOR_INFO3));
+        assertTrue(response.contains(GOP));
+        assertTrue(response.contains(PRIMARY_APPLICANT));
+        assertTrue(response.contains(DIED_ON_OR_SINCE));
+
+        assertTrue(!response.contains(PA));
+        assertTrue(!response.contains(WILL_MESSAGE));
+        assertTrue(!response.contains(ADMIN_MESSAGE));
+        assertTrue(!response.contains(LIMITATION_MESSAGE));
+        assertTrue(!response.contains(EXECUTOR_LIMITATION_MESSAGE));
+        assertTrue(!response.contains(POWER_RESERVED));
+        assertTrue(!response.contains(POWER_RESERVED_SINGLE));
+        assertTrue(!response.contains(TITLE));
+        assertTrue(!response.contains(HONOURS));
 
     }
 

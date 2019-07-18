@@ -443,6 +443,16 @@ public class CaseData {
     @Builder.Default
     private List<CollectionMember<BulkPrint>> bulkPrintId = new ArrayList<>();
 
+    private final String deceasedDivorcedInEnglandOrWales;
+    private final String primaryApplicantAdoptionInEnglandOrWales;
+    private final String deceasedSpouseNotApplyingReason;
+    private final String deceasedOtherChildren;
+    private final String allDeceasedChildrenOverEighteen;
+    private final String anyDeceasedChildrenDieBeforeDeceased;
+    private final String anyDeceasedGrandChildrenUnderEighteen;
+    private final String deceasedAnyChildren;
+    private final String deceasedHasAssetsOutsideUK;
+
     @Getter(lazy = true)
     private final List<CollectionMember<AdditionalExecutor>> executorsApplyingForLegalStatement = getAllExecutors(true);
 

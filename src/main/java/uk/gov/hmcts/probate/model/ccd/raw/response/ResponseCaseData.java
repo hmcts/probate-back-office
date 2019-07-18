@@ -248,4 +248,14 @@ public class ResponseCaseData {
     private final String boCaveatStopEmailNotification;
     private final String boCaveatStopSendToBulkPrintRequested;
     private final String boCaveatStopSendToBulkPrint;
+
+    private final String deceasedDivorcedInEnglandOrWales;
+    private final String primaryApplicantAdoptionInEnglandOrWales;
+    private final String deceasedSpouseNotApplyingReason;
+    private final String deceasedOtherChildren;
+    private final String allDeceasedChildrenOverEighteen;
+    private final String anyDeceasedChildrenDieBeforeDeceased;
+    private final String anyDeceasedGrandChildrenUnderEighteen;
+    private final String deceasedAnyChildren;
+    private final String deceasedHasAssetsOutsideUK;
 }
