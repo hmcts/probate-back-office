@@ -34,10 +34,10 @@ import uk.gov.hmcts.probate.validator.EmailAddressNotificationValidationRule;
 import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
 import uk.gov.service.notify.NotificationClientException;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import javax.validation.Valid;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -229,9 +229,6 @@ public class DocumentController {
                 registry.getTown(), registry.getPostcode()));
 
         document = pdfManagementService.generateAndUpload(callbackRequest, template);
-
-        List<Document> documents = new ArrayList<>();
-        documents.add(document);
 
         return ResponseEntity.ok(willLodgementCallbackResponseTransformer.addDocuments(callbackRequest, Arrays.asList(document)));
     }

@@ -25,7 +25,7 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "WillLodgement", "ID": "executorAddress", "Label": "Address", "FieldType": "AddressUK", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "WillLodgement", "ID": "executorEmailAddress", "Label": "Email address", "FieldType": "Text", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "WillLodgement", "ID": "additionalExecutorList", "Label": "Additional executor", "FieldType": "Collection", "FieldTypeParameter": "wlAdditionalExecutor", "SecurityClassification": "Public", "Max": 3},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "WillLodgement", "ID": "withdrawalReason", "Label": "Reason for withdrawl", "FieldType": "FixedList", "FieldTypeParameter": "wlWithdrawReasons", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "WillLodgement", "ID": "withdrawalReason", "Label": "Reason for withdrawal", "FieldType": "FixedList", "FieldTypeParameter": "wlWithdrawReasons", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "WillLodgement", "ID": "documentsGenerated", "Label": "Documents generated", "FieldType": "Collection", "FieldTypeParameter": "wlDocument", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "WillLodgement", "ID": "documentsUploaded", "Label": "Documents uploaded", "FieldType": "Collection", "FieldTypeParameter": "wlDocumentUpload", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "WillLodgement", "ID": "caseMatches", "Label": "Possible case matches", "FieldType": "Collection", "FieldTypeParameter": "CaseMatch", "SecurityClassification": "Public"},
