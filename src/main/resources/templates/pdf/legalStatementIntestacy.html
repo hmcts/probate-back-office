@@ -92,8 +92,7 @@
     <tr>
         <td colspan="2">
             <p>
-                {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }}
-                {% if case_details.case_data.solsDeceasedAliasNamesList|length>0 %} also known as
+                {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }}{% if case_details.case_data.solsDeceasedAliasNamesList|length>0 %} also known as
                 {% for alias in case_details.case_data.solsDeceasedAliasNamesList %}
                 {{ alias.value.SolsAliasname }}{% if loop.length - loop.index > 2 %}, {% elseif loop.length - loop.index > 1 %} and{% endif %}{% endfor %}{% endif %}, of
                 {% if case_details.case_data.deceasedAddress.AddressLine1 != null and
