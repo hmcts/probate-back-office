@@ -88,7 +88,7 @@ public class StateChangeService {
     public Optional<String> getChangedStateForGrantType(CaseData caseData) {
         if (caseData.getSolsWillType().equals(GRANT_TYPE_PROBATE)) {
             return Optional.of(STATE_GRANT_TYPE_PROBATE);
-        } else if(caseData.getSolsWillType().equals(GRANT_TYPE_INTESTACY)) {
+        } else if (caseData.getSolsWillType().equals(GRANT_TYPE_INTESTACY)) {
             return Optional.of(STATE_GRANT_TYPE_INTESTACY);
         }
         return Optional.of(STATE_GRANT_TYPE_ADMON);
