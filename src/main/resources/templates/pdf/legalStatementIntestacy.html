@@ -119,7 +119,19 @@
                 was born on {{ case_details.case_data.deceasedDateOfBirth|date("dd/MM/yyyy", existingFormat="yyyy-MM-dd") }}
                 and died on {{ case_details.case_data.deceasedDateOfDeath|date("dd/MM/yyyy", existingFormat="yyyy-MM-dd") }} intestate.
             </p>
-            <p>They were domiciled in England and Wales.</p>
+            <p>They were
+                {% if case_details.case_data.deceasedMartialStatus == "neverMarried" %}
+                never married
+                {% elseif case_details.case_data.deceasedMartialStatus == "widowed" %}
+                widowed
+                {% elseif case_details.case_data.deceasedMartialStatus == "marriedCivilPartnership" %}
+                married or in a civil partnership,
+                {% elseif case_details.case_data.deceasedMartialStatus == "divorcedCivilPartnership" %}
+                divorced or their civil partnership was dissolved,
+                {% else %}
+                judicially separated
+                {% endif %}
+                and domiciled in England and Wales.</p>
             <p>No children under 18 are entitled to the estate.</p>
         </td>
     </tr>
