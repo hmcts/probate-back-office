@@ -80,7 +80,12 @@ public class StateChangeService {
 
     public Optional<String> getChangedStateForCaseReview(CaseData caseData) {
         if (updateApplicationRule.isChangeNeeded(caseData)) {
-            return Optional.of(STATE_UPDATE_APPLICATION);
+            if (caseData.getSolsWillType().equals(GRANT_TYPE_PROBATE)) {
+                return Optional.of(STATE_GRANT_TYPE_PROBATE);
+            } else if (caseData.getSolsWillType().equals(GRANT_TYPE_INTESTACY)) {
+                return Optional.of(STATE_GRANT_TYPE_INTESTACY);
+            }
+            return Optional.of(STATE_GRANT_TYPE_ADMON);
         }
         return Optional.empty();
     }
