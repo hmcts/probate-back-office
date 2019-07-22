@@ -173,6 +173,9 @@ public class CaseData {
                         ApplicationIntestacyGroup.class}, message = "{willExistsIsNull}")
     private final String willExists;
 
+    @NotNull(groups = {ApplicationIntestacyGroup.class}, message = "{deceasedMartialStatusIsNull}")
+    private final String deceasedMartialStatus;
+
     @NotBlank(groups = {ApplicationIntestacyGroup.class}, message = "{solsApplicantRelationshipToDeceasedIsNull}")
     private final String solsApplicantRelationshipToDeceased;
 
@@ -325,7 +328,6 @@ public class CaseData {
     private final String primaryApplicantSecondPhoneNumber;
     private final String primaryApplicantRelationshipToDeceased;
     private final String paRelationshipToDeceasedOther;
-    private final String deceasedMartialStatus;
     private final String willDatedBeforeApril;
     private final String deceasedEnterMarriageOrCP;
     private final String dateOfMarriageOrCP;
