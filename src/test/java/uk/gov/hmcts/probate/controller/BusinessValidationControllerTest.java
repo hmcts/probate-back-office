@@ -78,6 +78,7 @@ public class BusinessValidationControllerTest {
     private static final String PRIMARY_APPLICANT_HAS_ALIAS = "No";
     private static final String OTHER_EXEC_EXISTS = "No";
     private static final String WILL_EXISTS = "Yes";
+    private static final String WILL_TYPE = "WillLeft";
     private static final String WILL_ACCESS_ORIGINAL = "Yes";
     private static final String PRIMARY_FORENAMES = "ExFN";
     private static final String PRIMARY_SURNAME = "ExSN";
@@ -86,7 +87,7 @@ public class BusinessValidationControllerTest {
     private static final String ANSWER_NO = "No";
 
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
-    private static final String CASE_VALIDATE_URL = "/case/validate";
+    private static final String SOLS_VALIDATE_URL = "/case/sols-validate";
     private static final String CASE_VALIDATE_CASE_DETAILS_URL = "/case/validateCaseDetails";
     private static final String CASE_TRANSFORM_URL = "/case/transformCase";
     private static final String CASE_CHCEKLIST_URL = "/case/validateCheckListDetails";
@@ -154,6 +155,7 @@ public class BusinessValidationControllerTest {
                 .primaryApplicantIsApplying(PRIMARY_APPLICANT_APPLYING)
                 .primaryApplicantHasAlias(PRIMARY_APPLICANT_HAS_ALIAS)
                 .otherExecutorExists(OTHER_EXEC_EXISTS)
+                .solsWillType(WILL_TYPE)
                 .willExists(WILL_EXISTS)
                 .willAccessOriginal(WILL_ACCESS_ORIGINAL)
                 .ihtNetValue(NET)
@@ -178,22 +180,22 @@ public class BusinessValidationControllerTest {
 
     @Test
     public void shouldValidateWithDodIsNullError() throws Exception {
-        validateDodIsNullError(CASE_VALIDATE_URL);
+        validateDodIsNullError(SOLS_VALIDATE_URL);
     }
 
     @Test
     public void shouldValidateDobIsNullError() throws Exception {
-        validateDobIsNullError(CASE_VALIDATE_URL);
+        validateDobIsNullError(SOLS_VALIDATE_URL);
     }
 
     @Test
     public void shouldValidateWithForenameIsNullError() throws Exception {
-        validateForenameIsNullError(CASE_VALIDATE_URL);
+        validateForenameIsNullError(SOLS_VALIDATE_URL);
     }
 
     @Test
     public void shouldValidateWithSurnameIsNullError() throws Exception {
-        validateSurnameIsNullError(CASE_VALIDATE_URL);
+        validateSurnameIsNullError(SOLS_VALIDATE_URL);
     }
 
     @Test
@@ -204,7 +206,7 @@ public class BusinessValidationControllerTest {
 
         String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
         
-        mockMvc.perform(post(CASE_VALIDATE_URL).content(json).contentType(MediaType.APPLICATION_JSON_UTF8))
+        mockMvc.perform(post(SOLS_VALIDATE_URL).content(json).contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(status().isBadRequest())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.fieldErrors[0].param").value("callbackRequest"))

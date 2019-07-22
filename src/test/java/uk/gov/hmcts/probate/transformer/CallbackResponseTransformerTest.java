@@ -61,7 +61,7 @@ import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
 import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT_STOPPED;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_DRAFT;
-import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT;
+import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE;
 import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -348,7 +348,7 @@ public class CallbackResponseTransformerTest {
         when(documentLinkMock.getDocumentFilename()).thenReturn(DOC_NAME);
         Document document = Document.builder()
                 .documentLink(documentLinkMock)
-                .documentType(LEGAL_STATEMENT)
+                .documentType(LEGAL_STATEMENT_PROBATE)
                 .build();
 
         CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, document);

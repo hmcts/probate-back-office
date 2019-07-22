@@ -30,7 +30,7 @@ import static org.mockito.ArgumentMatchers.anyMap;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT_RAISED;
-import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT;
+import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE;
 
 @RunWith(MockitoJUnitRunner.class)
 public class PDFGeneratorServiceTest {
@@ -71,7 +71,7 @@ public class PDFGeneratorServiceTest {
 
     @Test
     public void shouldGeneratePDFWithBytesAndPDFContentType() {
-        EvidenceManagementFileUpload result = underTest.generatePdf(LEGAL_STATEMENT, "{\"data\":\"value\"}");
+        EvidenceManagementFileUpload result = underTest.generatePdf(LEGAL_STATEMENT_PROBATE, "{\"data\":\"value\"}");
         Assert.assertThat(result.getContentType(), equalTo(MediaType.APPLICATION_PDF));
         Assert.assertThat(result.getBytes().length, greaterThan(0));
     }
@@ -105,13 +105,13 @@ public class PDFGeneratorServiceTest {
     @Test(expected = ClientException.class)
     public void shouldThrowClientException() {
         when(pdfServiceClient.generateFromHtml(any(byte[].class), anyMap())).thenThrow(pdfServiceClientExceptionMock);
-        underTest.generatePdf(LEGAL_STATEMENT, "{\"data\":\"value\"}");
+        underTest.generatePdf(LEGAL_STATEMENT_PROBATE, "{\"data\":\"value\"}");
     }
 
     @Test(expected = ClientException.class)
     public void shouldThrowPDFConnectionException() {
         when(pdfServiceClient.generateFromHtml(any(), any())).thenThrow(pdfServiceClientExceptionMock);
-        underTest.generatePdf(LEGAL_STATEMENT, "{\"data\":\"value\"}");
+        underTest.generatePdf(LEGAL_STATEMENT_PROBATE, "{\"data\":\"value\"}");
     }
 
     @Test(expected = ClientException.class)
