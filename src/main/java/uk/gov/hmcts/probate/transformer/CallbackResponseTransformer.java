@@ -345,8 +345,6 @@ public class CallbackResponseTransformer {
                 .solsApplicantRelationshipToDeceased(caseData.getSolsApplicantRelationshipToDeceased())
                 .solsSpouseOrCivilRenouncing(caseData.getSolsSpouseOrCivilRenouncing())
                 .solsAdoptedEnglandOrWales(caseData.getSolsAdoptedEnglandOrWales())
-                .solsAdoptedCourt(caseData.getSolsAdoptedCourt())
-                .solsAdoptedDate(caseData.getSolsAdoptedDate())
                 .solsMinorityInterest(caseData.getSolsMinorityInterest())
                 .solsMultipleClaims(caseData.getSolsMultipleClaims())
 

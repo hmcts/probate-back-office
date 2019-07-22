@@ -54,8 +54,6 @@ public class ResponseCaseData {
     private final String solsApplicantRelationshipToDeceased;
     private final String solsSpouseOrCivilRenouncing;
     private final String solsAdoptedEnglandOrWales;
-    private final String solsAdoptedCourt;
-    private final String solsAdoptedDate;
     private final String solsMinorityInterest;
     private final String solsMultipleClaims;
     private final String willExists;

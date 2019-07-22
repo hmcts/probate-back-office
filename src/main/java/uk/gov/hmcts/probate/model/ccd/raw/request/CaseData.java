@@ -180,10 +180,6 @@ public class CaseData {
 
     private final String solsAdoptedEnglandOrWales;
 
-    private final String solsAdoptedCourt;
-
-    private final String solsAdoptedDate;
-
     @NotBlank(groups = {ApplicationIntestacyGroup.class}, message = "{solsMinorityInterestIsNull}")
     private final String solsMinorityInterest;
 
