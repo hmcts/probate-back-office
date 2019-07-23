@@ -48,7 +48,8 @@ public class StateChangeServiceTest {
     public void setup() {
         initMocks(this);
 
-        underTest = new StateChangeService(noOriginalWillRule, domicilityRule, executorsStateRule, updateApplicationRule, minorityInterestRule);
+        underTest = new StateChangeService(noOriginalWillRule, domicilityRule, executorsStateRule,
+                updateApplicationRule, minorityInterestRule);
     }
 
     @Test

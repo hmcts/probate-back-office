@@ -95,7 +95,7 @@ public class BusinessValidationUnitTest {
 
     private BusinessValidationController underTest;
 
-    private Optional<String> STATE_GRANT_TYPE_PROBATE;
+    private static Optional<String> STATE_GRANT_TYPE_PROBATE;
 
     @Before
     public void setUp() {
