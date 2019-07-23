@@ -40,7 +40,7 @@
   {"LiveFrom": "01/01/2017", "ID": "stopReasonFixedList", "ListElementCode": "DeceasedName", "ListElement": "Deceased Name"},
   {"LiveFrom": "01/01/2017", "ID": "stopReasonFixedList", "ListElementCode": "DeathCertIssue", "ListElement": "Death Cert (missing, not original, unreadable)"},
   {"LiveFrom": "01/01/2017", "ID": "stopReasonFixedList", "ListElementCode": "WillNotEnclosed", "ListElement": "Original will not enclosed"},
-  {"LiveFrom": "01/01/2017", "ID": "stopReasonFixedList", "ListElementCode": "DatesDiffer", "ListElement": "(Date's) will, Birth, Death differ"},
+  {"LiveFrom": "01/01/2017", "ID": "stopReasonFixedList", "ListElementCode": "DatesDiffer", "ListElement": "Dates differ (will, Birth, Death)"},
   {"LiveFrom": "01/01/2017", "ID": "stopReasonFixedList", "ListElementCode": "CaveatMatch", "ListElement": "Caveat match"},
   {"LiveFrom": "01/01/2017", "ID": "stopReasonFixedList", "ListElementCode": "Other", "ListElement": "Other"},
   {"LiveFrom": "01/01/2017", "ID": "stopReasonFixedList", "ListElementCode": "NotEligible", "ListElement": "Not eligible for digital process"},
