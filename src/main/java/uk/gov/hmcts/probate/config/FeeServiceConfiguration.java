@@ -16,4 +16,5 @@ public class FeeServiceConfiguration {
     private String jurisdiction2;
     private String channel;
     private String applicantType;
+    private String keyword;
 }
