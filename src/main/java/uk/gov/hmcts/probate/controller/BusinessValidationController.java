@@ -115,6 +115,14 @@ public class BusinessValidationController {
         return ResponseEntity.ok(response);
     }
 
+    @PostMapping(path = "/resolveStop", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<CallbackResponse> resolveStopState(@RequestBody CallbackRequest callbackRequest,
+                                                             HttpServletRequest request) {
+        logRequest(request.getRequestURI(), callbackRequest);
+
+        CallbackResponse response = callbackResponseTransformer.resolveStop(callbackRequest);
+        return ResponseEntity.ok(response);
+    }
 
     @PostMapping(path = "/stopConfirmation", consumes = APPLICATION_JSON_UTF8_VALUE, produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<AfterSubmitCallbackResponse> stopWithConfirmation(

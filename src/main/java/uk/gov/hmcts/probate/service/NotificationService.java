@@ -26,6 +26,7 @@ import uk.gov.service.notify.NotificationClient;
 import uk.gov.service.notify.NotificationClientException;
 import uk.gov.service.notify.SendEmailResponse;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
@@ -47,10 +48,12 @@ public class NotificationService {
     private final MarkdownTransformationService markdownTransformationService;
     private final PDFManagementService pdfManagementService;
     private final CaveatQueryService caveatQueryService;
-    private final FormatterService formatterService;
+    private final DateFormatterService dateFormatterService;
+    private final AddressFormatterService addressFormatterService;
 
-    private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMM Y HH:mm");
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMM Y HH:mm");
     private static final DateTimeFormatter EXCELA_DATE = DateTimeFormatter.ofPattern("yyyyMMdd");
+    private static final DateTimeFormatter EXCELA_CONTENT_DATE = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     private static final String PERSONALISATION_APPLICANT_NAME = "applicant_name";
     private static final String PERSONALISATION_DECEASED_NAME = "deceased_name";
@@ -62,6 +65,7 @@ public class NotificationService {
     private static final String PERSONALISATION_CAVEAT_CASE_ID = "caveat_case_id";
     private static final String PERSONALISATION_DECEASED_DOD = "deceased_dod";
     private static final String PERSONALISATION_CCD_REFERENCE = "ccd_reference";
+    private static final String PERSONALISATION_CAVEAT_EXPIRY_DATE = "caveat_expiry_date";
     private static final String PERSONALISATION_MESSAGE_CONTENT = "message_content";
     private static final String PERSONALISATION_EXCELA_NAME = "excelaName";
     private static final String PERSONALISATION_CASE_DATA = "caseData";
@@ -175,7 +179,9 @@ public class NotificationService {
 
         if (caveatData != null) {
             personalisation.put(PERSONALISATION_CAVEATOR_NAME, caveatData.getCaveatorFullName());
-            personalisation.put(PERSONALISATION_CAVEATOR_ADDRESS, formatterService.formatAddress(caveatData.getCaveatorAddress()));
+            personalisation.put(PERSONALISATION_CAVEATOR_ADDRESS, addressFormatterService.formatAddress(caveatData.getCaveatorAddress()));
+            personalisation.put(PERSONALISATION_CAVEAT_EXPIRY_DATE,
+                    dateFormatterService.formatCaveatExpiryDate(caveatData.getExpiryDate()));
         }
 
         if (caseData.getApplicationType().equals(ApplicationType.SOLICITOR)) {
@@ -195,6 +201,7 @@ public class NotificationService {
         personalisation.put(PERSONALISATION_MESSAGE_CONTENT, caveatData.getMessageContent());
         personalisation.put(PERSONALISATION_REGISTRY_NAME, registry.getName());
         personalisation.put(PERSONALISATION_REGISTRY_PHONE, registry.getPhone());
+        personalisation.put(PERSONALISATION_CAVEAT_EXPIRY_DATE, dateFormatterService.formatCaveatExpiryDate(caveatData.getExpiryDate()));
 
         return personalisation;
     }
@@ -257,11 +264,17 @@ public class NotificationService {
         StringBuilder data = new StringBuilder();
 
         for (ReturnedCaseDetails currentCase : cases) {
-            data.append(currentCase.getId().toString());
+            data.append(getWillReferenceNumber(currentCase.getData()));
             data.append(", ");
+            data.append(currentCase.getData().getDeceasedForenames());
+            data.append(" ");
             data.append(currentCase.getData().getDeceasedSurname());
             data.append(", ");
-            data.append(getWillReferenceNumber(currentCase.getData()));
+            data.append(EXCELA_CONTENT_DATE.format(currentCase.getData().getDeceasedDateOfBirth()));
+            data.append(", ");
+            data.append(EXCELA_CONTENT_DATE.format(LocalDate.parse(currentCase.getData().getGrantIssuedDate())));
+            data.append(", ");
+            data.append(currentCase.getId().toString());
             data.append("\n");
         }
         return data;
