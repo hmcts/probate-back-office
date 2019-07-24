@@ -87,6 +87,21 @@ public class FeeServiceTest {
     }
 
     @Test
+    public void copiesFeeEqualsNonZero() {
+
+        when(feeServiceConfiguration.getUrl()).thenReturn("http://test.test/lookupWithKeyword");
+        when(feeServiceConfiguration.getKeyword()).thenReturn("FeeKey");
+        when(restTemplate.getForEntity(eq("http://test.test/lookupWithKeywordnull?service&jurisdiction1&"
+                + "jurisdiction2&channel&applicant_type&event=copies&amount_or_volume=1&keyword=KeyFee"),
+                eq(Fee.class))).thenReturn(responseEntity);
+        when(responseEntity.getStatusCode()).thenReturn(HttpStatus.OK);
+        when(fee.getFeeAmount()).thenReturn(BigDecimal.ONE);
+        BigDecimal copiesFee = feeService.getCopiesFee(1L);
+
+        assertEquals(BigDecimal.ONE, copiesFee);
+    }
+
+    @Test
     public void getTotalFee() {
         when(responseEntity.getStatusCode()).thenReturn(HttpStatus.OK);
         when(fee.getFeeAmount()).thenReturn(BigDecimal.ONE);

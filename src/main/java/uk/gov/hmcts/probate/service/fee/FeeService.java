@@ -69,14 +69,19 @@ public class FeeService {
     }
 
     private URI buildUri(String event, String amount) {
-        return UriComponentsBuilder.fromHttpUrl(feeServiceConfiguration.getUrl() + feeServiceConfiguration.getApi())
+        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(feeServiceConfiguration.getUrl() + feeServiceConfiguration.getApi())
             .queryParam("service", feeServiceConfiguration.getService())
             .queryParam("jurisdiction1", feeServiceConfiguration.getJurisdiction1())
             .queryParam("jurisdiction2", feeServiceConfiguration.getJurisdiction2())
             .queryParam("channel", feeServiceConfiguration.getChannel())
             .queryParam("applicant_type", feeServiceConfiguration.getApplicantType())
             .queryParam("event", event)
-            .queryParam("amount_or_volume", amount)
-            .build().encode().toUri();
+            .queryParam("amount_or_volume", amount);
+
+        if (FEE_API_EVENT_TYPE_COPIES.equals(event)) {
+            builder.queryParam("keyword", feeServiceConfiguration.getKeyword());
+        }
+
+        return builder.build().encode().toUri();
     }
 }
