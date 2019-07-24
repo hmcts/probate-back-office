@@ -94,8 +94,8 @@
                 {% for executor in case_details.case_data.additionalExecutorList %}
                 <br />
                 and {% if executor.value.executorForenames != null and executor.value.executorForenames != ""%}{{executor.value.executorForenames}}{% endif %} {% if executor.value.executorSurname != null and executor.value.executorSurname != ""%}{{executor.value.executorSurname}}{% endif %}<br />
-                <span class="indent"> of
-                {% if executor.value.executorAddress.AddressLine1 != null and executor.value.executorAddress.AddressLine1 != "" %}{{ executor.value.executorAddress.AddressLine1 }}{% endif %}
+                <span class="indent">
+                {% if executor.value.executorAddress.AddressLine1 != null and executor.value.executorAddress.AddressLine1 != "" %}of {{ executor.value.executorAddress.AddressLine1 }}{% endif %}
                 {% if executor.value.executorAddress.AddressLine2 != null and executor.value.executorAddress.AddressLine2 != "" %}{{ executor.value.executorAddress.AddressLine2 }}{% endif %}
                 {% if executor.value.executorAddress.AddressLine3 != null and executor.value.executorAddress.AddressLine3 != "" %}{{ executor.value.executorAddress.AddressLine3 }}{% endif %}
                 {% if executor.value.executorAddress.PostTown != null and executor.value.executorAddress.PostTown != "" %}{{ executor.value.executorAddress.PostTown }}{% endif %}
