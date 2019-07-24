@@ -60,6 +60,7 @@
   {"LiveFrom": "01/01/2017", "ID": "documentUploadTypeEnum", "ListElementCode": "IHT", "ListElement": "Codicil"},
   {"LiveFrom": "01/01/2017", "ID": "documentUploadTypeEnum", "ListElementCode": "deathCertificate", "ListElement": "Death Certificate"},
   {"LiveFrom": "01/01/2017", "ID": "documentUploadTypeEnum", "ListElementCode": "other", "ListElement": "Other"},
+  {"LiveFrom": "01/01/2017", "ID": "documentUploadTypeEnum", "ListElementCode": "sot", "ListElement": "SOT"},
   {"LiveFrom": "01/01/2017", "ID": "paymentMethodEnum", "ListElementCode": "cheque", "ListElement": "Cheque"},
   {"LiveFrom": "01/01/2017", "ID": "paymentMethodEnum", "ListElementCode": "online", "ListElement": "Online"},
   {"LiveFrom": "01/01/2017", "ID": "paymentMethodEnum", "ListElementCode": "card", "ListElement": "Credit/debit card"},
