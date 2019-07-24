@@ -176,6 +176,7 @@ public class CallbackResponseTransformerTest {
     private static final String ORDER_NEEDED = YES;
     private static final List<CollectionMember<Reissue>> REISSUE_REASON = emptyList();
     private static final String REISSUE_DATE = "2019-01-01";
+    private static final String REISSUE_NOTATION = "duplicate";
 
     private static final String DECEASED_DIVORCED_IN_ENGLAND_OR_WALES = YES;
     private static final String PRIMARY_APPLICANT_ADOPTION_IN_ENGLAND_OR_WALES = NO;
@@ -310,6 +311,7 @@ public class CallbackResponseTransformerTest {
                 .orderNeeded(ORDER_NEEDED)
                 .reissueReason(REISSUE_REASON)
                 .reissueDate(REISSUE_DATE)
+                .reissueReasonNotation(REISSUE_NOTATION)
                 .legacyCaseViewUrl(LEGACY_CASE_URL)
                 .deceasedDivorcedInEnglandOrWales(DECEASED_DIVORCED_IN_ENGLAND_OR_WALES)
                 .primaryApplicantAdoptionInEnglandOrWales(PRIMARY_APPLICANT_ADOPTION_IN_ENGLAND_OR_WALES)
@@ -1372,6 +1374,7 @@ public class CallbackResponseTransformerTest {
         assertEquals(ORDER_NEEDED, callbackResponse.getData().getOrderNeeded());
         assertEquals(REISSUE_REASON, callbackResponse.getData().getReissueReason());
         assertEquals(REISSUE_DATE, callbackResponse.getData().getReissueDate());
+        assertEquals(REISSUE_NOTATION, callbackResponse.getData().getReissueReasonNotation());
 
         assertEquals(SCANNED_DOCUMENTS_LIST, callbackResponse.getData().getScannedDocuments());
     }
