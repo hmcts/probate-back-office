@@ -384,6 +384,7 @@ public class CallbackResponseTransformer {
                 .orderNeeded(caseData.getOrderNeeded())
                 .reissueReason(caseData.getReissueReason())
                 .reissueDate(caseData.getReissueDate())
+                .reissueReasonNotation(caseData.getReissueReasonNotation())
                 .bulkPrintId(caseData.getBulkPrintId())
 
                 .deceasedDivorcedInEnglandOrWales(caseData.getDeceasedDivorcedInEnglandOrWales())
