@@ -67,6 +67,7 @@ import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
 @RunWith(MockitoJUnitRunner.class)
 public class CallbackResponseTransformerTest {
 
+    private static final String[] LAST_MODIFIED_STR = {"2018", "1", "2", "0", "0", "0", "0"};
     private static final String YES = "Yes";
     private static final String NO = "No";
     private static final String WILL_MESSAGE = "Will message";
@@ -94,7 +95,7 @@ public class CallbackResponseTransformerTest {
     private static final LocalDate DOD = LocalDate.parse("2017-12-31", dateTimeFormatter);
     private static final String NUM_CODICILS = "9";
 
-    private static final String IHT_FORM_ID = "IHT207";
+    private static final String IHT_FORM_ID = "IHT205";
     private static final BigDecimal IHT_GROSS = BigDecimal.valueOf(10000f);
     private static final BigDecimal IHT_NET = BigDecimal.valueOf(9000f);
 
@@ -1149,6 +1150,41 @@ public class CallbackResponseTransformerTest {
 
         CallbackResponse callbackResponse = underTest.paperForm(callbackRequestMock);
         assertSolsDetails(callbackResponse);
+    }
+
+    @Test
+    public void shouldSetSolicitorsInfoWhenApplicationTypeIht() {
+        caseDataBuilder.ihtReferenceNumber("123456");
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.paperForm(callbackRequestMock);
+        assertEquals(IHT_FORM_ID, callbackResponse.getData().getIhtFormId());
+        assertSolsDetails(callbackResponse);
+    }
+
+    @Test
+    public void shouldSetSolicitorsInfoWhenApplicationTypeIhtIsNull() {
+        CaseData.CaseDataBuilder caseDataBuilder2;
+        caseDataBuilder2 = CaseData.builder().ihtReferenceNumber(null);
+
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder2.build(), LAST_MODIFIED_STR,  1L);
+        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
+        CallbackResponse callbackResponse = underTest.paperForm(callbackRequest);
+        assertNull(callbackResponse.getData().getIhtFormId());
+    }
+
+    @Test
+    public void shouldSetSolicitorsInfoWhenApplicationTypeIhtIsEmpty() {
+        CaseData.CaseDataBuilder caseDataBuilder2;
+        caseDataBuilder2 = CaseData.builder().ihtReferenceNumber("");
+
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder2.build(), LAST_MODIFIED_STR,  1L);
+        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
+
+        CallbackResponse callbackResponse = underTest.paperForm(callbackRequest);
+        assertNull(callbackResponse.getData().getIhtFormId());
     }
 
     @Test
