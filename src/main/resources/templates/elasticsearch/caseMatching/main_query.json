@@ -1,6 +1,11 @@
 {
   "query": {
     "bool": {
+      "must_not": {
+        "match": {
+          "state": "PAAppCreated"
+        }
+      },
       "should": [
         {
           "bool": {
