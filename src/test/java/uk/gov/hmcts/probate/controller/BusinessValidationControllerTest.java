@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.Before;
 import org.junit.Test;
+import static org.mockito.Mockito.when;
+
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -15,7 +17,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import uk.gov.hmcts.probate.insights.AppInsights;
+import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
+import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
@@ -33,6 +37,7 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.hamcrest.Matchers.any;
 import static org.hamcrest.Matchers.containsString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -78,7 +83,9 @@ public class BusinessValidationControllerTest {
     private static final String PRIMARY_APPLICANT_HAS_ALIAS = "No";
     private static final String OTHER_EXEC_EXISTS = "No";
     private static final String WILL_EXISTS = "Yes";
-    private static final String WILL_TYPE = "WillLeft";
+    private static final String WILL_TYPE_PROBATE = "WillLeft";
+    private static final String WILL_TYPE_INTESTACY = "NoWill";
+    private static final String WILL_TYPE_ADMON = "WillLeftAnnexed";
     private static final String WILL_ACCESS_ORIGINAL = "Yes";
     private static final String PRIMARY_FORENAMES = "ExFN";
     private static final String PRIMARY_SURNAME = "ExSN";
@@ -88,6 +95,9 @@ public class BusinessValidationControllerTest {
 
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private static final String SOLS_VALIDATE_URL = "/case/sols-validate";
+    private static final String SOLS_VALIDATE_PROBATE_URL = "/case/sols-validate-probate";
+    private static final String SOLS_VALIDATE_INTESTACY_URL = "/case/sols-validate-intestacy";
+    private static final String SOLS_VALIDATE_ADMON_URL = "/case/sols-validate-admon";
     private static final String CASE_VALIDATE_CASE_DETAILS_URL = "/case/validateCaseDetails";
     private static final String CASE_TRANSFORM_URL = "/case/transformCase";
     private static final String CASE_CHCEKLIST_URL = "/case/validateCheckListDetails";
@@ -125,7 +135,7 @@ public class BusinessValidationControllerTest {
     @MockBean
     private AppInsights appInsights;
 
-    @MockBean
+
     private PDFManagementService pdfManagementService;
 
     @MockBean
@@ -155,7 +165,7 @@ public class BusinessValidationControllerTest {
                 .primaryApplicantIsApplying(PRIMARY_APPLICANT_APPLYING)
                 .primaryApplicantHasAlias(PRIMARY_APPLICANT_HAS_ALIAS)
                 .otherExecutorExists(OTHER_EXEC_EXISTS)
-                .solsWillType(WILL_TYPE)
+                .solsWillType(WILL_TYPE_PROBATE)
                 .willExists(WILL_EXISTS)
                 .willAccessOriginal(WILL_ACCESS_ORIGINAL)
                 .ihtNetValue(NET)
@@ -213,6 +223,22 @@ public class BusinessValidationControllerTest {
                 .andExpect(jsonPath("$.fieldErrors[0].field").value("caseDetails.data.ihtFormId"))
                 .andExpect(jsonPath("$.fieldErrors[0].code").value("NotBlank"))
                 .andExpect(jsonPath("$.fieldErrors[0].message").value("Solicitor IHT Form cannot be empty"));
+    }
+
+
+    @Test
+    public void shouldReturnProbateSuccess() throws Exception {
+        caseDataBuilder.solsWillType(WILL_TYPE_PROBATE);
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
+        DocumentType doctype = DocumentType.LEGAL_STATEMENT_PROBATE;
+        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
+
+
+        when(pdfManagementService.generateAndUpload(callbackRequest, doctype)).thenReturn(Document.builder().build());
+        mockMvc.perform(post(SOLS_VALIDATE_PROBATE_URL).content(json).contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
     }
 
     @Test
