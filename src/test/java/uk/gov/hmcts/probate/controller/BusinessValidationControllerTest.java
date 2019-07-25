@@ -37,7 +37,7 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.hamcrest.Matchers.any;
+import static org.mockito.ArgumentMatchers.any;
 import static org.hamcrest.Matchers.containsString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -136,6 +136,7 @@ public class BusinessValidationControllerTest {
     private AppInsights appInsights;
 
 
+    @MockBean
     private PDFManagementService pdfManagementService;
 
     @MockBean
@@ -228,17 +229,19 @@ public class BusinessValidationControllerTest {
 
     @Test
     public void shouldReturnProbateSuccess() throws Exception {
-        caseDataBuilder.solsWillType(WILL_TYPE_PROBATE);
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
-        DocumentType doctype = DocumentType.LEGAL_STATEMENT_PROBATE;
         String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
 
-
-        when(pdfManagementService.generateAndUpload(callbackRequest, doctype)).thenReturn(Document.builder().build());
+        Document probateDocument = Document.builder().documentType(DocumentType.LEGAL_STATEMENT_PROBATE)
+                .documentLink(DocumentLink.builder().documentFilename("legalStatementProbate.pdf").build())
+                .build();
+        when(pdfManagementService.generateAndUpload(any(CallbackRequest.class), any(DocumentType.class)))
+                .thenReturn(probateDocument);
         mockMvc.perform(post(SOLS_VALIDATE_PROBATE_URL).content(json).contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(jsonPath("$.data.solsLegalStatementDocument.document_filename").value("legalStatementProbate.pdf"));
     }
 
     @Test
