@@ -14,12 +14,14 @@ import static org.hamcrest.Matchers.equalToIgnoringCase;
 @RunWith(SerenityRunner.class)
 public class SolCcdServiceWillUpdateHardStopTests extends IntegrationTestBase {
 
+    public static final String VALIDATE_URL = "/case/sols-validate";
+
     @Test
     public void validateWillUpdateWithoutHardStop() {
         given().relaxedHTTPSValidation()
                 .headers(utils.getHeadersWithUserId())
                 .body(utils.getJsonFromFile("success.willUpdate.json"))
-                .post("/case/validate").then().statusCode(200)
+                .post(VALIDATE_URL).then().statusCode(200)
                 .and().body("data.willExists", equalToIgnoringCase("Yes"))
                 .and().body("data.willAccessOriginal", equalToIgnoringCase("Yes"));
     }
@@ -29,7 +31,7 @@ public class SolCcdServiceWillUpdateHardStopTests extends IntegrationTestBase {
         given().relaxedHTTPSValidation()
                 .headers(utils.getHeadersWithUserId())
                 .body(utils.getJsonFromFile("hardStop.noWillNotExists.json"))
-                .post("/case/validate").then().statusCode(200)
+                .post(VALIDATE_URL).then().statusCode(200)
                 .and().body("data.state", equalToIgnoringCase("Stopped"))
                 .and().body("data.willExists", equalToIgnoringCase("No"))
                 .and().body("data.willAccessOriginal", equalToIgnoringCase("Yes"));
@@ -40,7 +42,7 @@ public class SolCcdServiceWillUpdateHardStopTests extends IntegrationTestBase {
         given().relaxedHTTPSValidation()
                 .headers(utils.getHeadersWithUserId())
                 .body(utils.getJsonFromFile("hardStop.noWillAccessOriginal.json"))
-                .post("/case/validate").then().statusCode(200)
+                .post(VALIDATE_URL).then().statusCode(200)
                 .and().body("data.state", equalToIgnoringCase("Stopped"))
                 .and().body("data.willExists", equalToIgnoringCase("Yes"))
                 .and().body("data.willAccessOriginal", equalToIgnoringCase("No"));
@@ -51,7 +53,7 @@ public class SolCcdServiceWillUpdateHardStopTests extends IntegrationTestBase {
         given().relaxedHTTPSValidation()
                 .headers(utils.getHeadersWithUserId())
                 .body(utils.getJsonFromFile("hardStop.noWillExists.noWillAccessOriginal.json"))
-                .post("/case/validate").then().statusCode(200)
+                .post(VALIDATE_URL).then().statusCode(200)
                 .and().body("data.state", equalToIgnoringCase("Stopped"))
                 .and().body("data.willExists", equalToIgnoringCase("No"))
                 .and().body("data.willAccessOriginal", equalToIgnoringCase("No"));

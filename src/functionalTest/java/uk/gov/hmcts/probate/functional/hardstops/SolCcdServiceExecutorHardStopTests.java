@@ -14,12 +14,14 @@ import static org.hamcrest.Matchers.equalToIgnoringCase;
 @RunWith(SerenityRunner.class)
 public class SolCcdServiceExecutorHardStopTests extends IntegrationTestBase {
 
+    public static final String VALIDATE_URL = "/case/sols-validate";
+
     @Test
     public void validateDeceasedDetailWithoutDomicileHardStop() {
         given().relaxedHTTPSValidation()
                 .headers(utils.getHeadersWithUserId())
                 .body(utils.getJsonFromFile("success.executorWithoutHardStop.json"))
-                .when().post("/case/validate").then().statusCode(200);
+                .when().post(VALIDATE_URL).then().statusCode(200);
     }
 
     @Test
@@ -27,7 +29,7 @@ public class SolCcdServiceExecutorHardStopTests extends IntegrationTestBase {
         given().relaxedHTTPSValidation()
                 .headers(utils.getHeadersWithUserId())
                 .body(utils.getJsonFromFile("hardStop.executor.json"))
-                .when().post("/case/validate").then().statusCode(200)
+                .when().post(VALIDATE_URL).then().statusCode(200)
                 .and().body("data.state", equalToIgnoringCase("Stopped"))
                 .and().body("data.otherExecutorExists", equalToIgnoringCase("No"))
                 .and().body("data.primaryApplicantIsApplying", equalToIgnoringCase("No"));

@@ -21,6 +21,8 @@ import static org.hamcrest.Matchers.equalToIgnoringCase;
 @RunWith(SerenityRunner.class)
 public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
 
+    private static final String VALIDATE_URL = "/case/sols-validate";
+
     @Test
     public void verifyFirstNameInTheReturnedPDF() {
         validatePostRequestSuccessForLegalStatement("TestPrimaryExecutorFirstName");
@@ -103,7 +105,7 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
 //         given().relaxedHTTPSValidation()
 //                 .headers(utils.getHeaders())
 //                 .body(utils.getJsonFromFile("incorrectInput.checkYourAnswersPayload.json")).
-//                 when().post("/case/validate").then().statusCode(400);
+//                 when().post("VALIDATE_URL").then().statusCode(400);
 //     }
 
     @Test
@@ -144,7 +146,7 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
                 .body(utils.getJsonFromFile("success.stateChange.checkYourAnswersPayload.json"))
                 .when().post("/nextsteps/validate")
                 .then().statusCode(200)
-                .and().body("data.state", equalToIgnoringCase("SolAppCreated"));
+                .and().body("data.state", equalToIgnoringCase("SolProbateCreated"));
     }
 
     @Test
@@ -175,7 +177,7 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
                 .relaxedHTTPSValidation()
                 .headers(utils.getHeadersWithUserId())
                 .body(utils.getJsonFromFile("success.beforeLegalStatement.checkYourAnswersPayload.json")).
-                        when().post("/case/validate");
+                        when().post(VALIDATE_URL);
         assertEquals(200, response.getStatusCode());
 
         downloadPdfAndVerifyString(extractDocumentId(response), validationString);
@@ -186,7 +188,7 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
         given().relaxedHTTPSValidation()
                 .headers(utils.getHeaders())
                 .body(replaceString(oldString, replacingString))
-                .when().post("/case/validate").then().statusCode(400)
+                .when().post(VALIDATE_URL).then().statusCode(400)
                 .and().body("fieldErrors[0].field", equalToIgnoringCase(errorMsg))
                 .and().body("message", equalToIgnoringCase("Invalid payload"));
     }
