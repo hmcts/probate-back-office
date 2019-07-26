@@ -61,6 +61,7 @@ public class CallbackResponseTransformer {
     private static final DocumentType[] LEGAL_STATEMENTS = {LEGAL_STATEMENT_PROBATE, LEGAL_STATEMENT_INTESTACY, LEGAL_STATEMENT_ADMON};
     private static final ApplicationType DEFAULT_APPLICATION_TYPE = SOLICITOR;
     private static final String DEFAULT_REGISTRY_LOCATION = CTSC;
+    private static final String DEFAULT_IHT_FORM_ID = "IHT205";
     private static final String CASE_CREATED = "CaseCreated";
     private static final String CASE_PRINTED = "CasePrinted";
     private static final String READY_FOR_EXAMINATION = "BOReadyForExamination";
@@ -241,6 +242,11 @@ public class CallbackResponseTransformer {
 
         ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), false);
         responseCaseDataBuilder.paperForm(ANSWER_YES);
+        if (callbackRequest.getCaseDetails().getData().getIhtReferenceNumber() != null) {
+            if (!callbackRequest.getCaseDetails().getData().getIhtReferenceNumber().isEmpty()) {
+                responseCaseDataBuilder.ihtFormId(DEFAULT_IHT_FORM_ID);
+            }
+        }
         getCaseCreatorResponseCaseBuilder(callbackRequest.getCaseDetails().getData(), responseCaseDataBuilder);
 
         return transformResponse(responseCaseDataBuilder.build());
