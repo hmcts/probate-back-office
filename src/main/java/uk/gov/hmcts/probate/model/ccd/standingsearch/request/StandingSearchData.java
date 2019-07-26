@@ -53,6 +53,8 @@ public class StandingSearchData {
 
     private ProbateAddress applicantAddress;
 
+    private String applicationSubmittedDate;
+
     // EVENT = createStandingSearch - standing search details
 
     private long numberOfCopies;
@@ -66,7 +68,7 @@ public class StandingSearchData {
 
     private List<CollectionMember<UploadDocument>> documentsUploaded;
 
-    private String legacyId;
+    private String recordId;
     private String legacyType;
     private String legacyCaseViewUrl;
 

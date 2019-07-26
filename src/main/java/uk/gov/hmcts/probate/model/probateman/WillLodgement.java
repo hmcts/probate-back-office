@@ -34,6 +34,12 @@ public class WillLodgement extends ProbateManModel {
     @Column(name = "PROBATE_VERSION")
     private Long probateVersion;// int
 
+    @Column(name = "REGISTRY_CODE")
+    private Long registryCode;
+
+    @Column(name = "REGISTRY_NAME")
+    private String registryName;
+
     @Column(name = "DECEASED_ID")
     private Long deceasedId;// bigint,
 
@@ -51,6 +57,12 @@ public class WillLodgement extends ProbateManModel {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DATE_FORMAT)
     @Column(name = "DATE_OF_DEATH1")
     private LocalDate dateOfDeath1;// date
+
+    @JsonDeserialize(using = LocalDateDeserializer.class)
+    @JsonSerialize(using = LocalDateSerializer.class)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DATE_FORMAT)
+    @Column(name = "DATE_OF_DEATH2")
+    private LocalDate dateOfDeath2;// date
 
     @Column(name = "DECEASED_SURNAME")
     private String deceasedSurname;// varchar(30)

@@ -53,6 +53,10 @@
     <td>{% if case_data.deceasedDateOfDeath %}{{ case_data.deceasedDateOfDeath | date("DD/MM/YYYY", existingFormat="yyyy-MM-dd") }}{% endif %}</td>
   </tr>
   <tr>
+    <td colspan="2">Date of death type:</td>
+    <td>{% if case_data.dateOfDeathType %}{{ case_data.dateOfDeathType }}{% endif %}</td>
+  </tr>
+  <tr>
     <td colspan="3">&nbsp;</td>
   </tr>
 

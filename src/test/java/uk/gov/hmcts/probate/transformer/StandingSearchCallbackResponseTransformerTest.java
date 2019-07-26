@@ -44,6 +44,7 @@ public class StandingSearchCallbackResponseTransformerTest {
     private static final String SS_DECEASED_SURNAME = "Surname";
     private static final LocalDate SS_DECEASED_DOD = LocalDate.parse("2017-12-31", dateTimeFormatter);
     private static final LocalDate SS_DECEASED_DOB = LocalDate.parse("2016-12-31", dateTimeFormatter);
+    private static final String DATE_SUBMITTED = "2019-01-01";
     private static final String SS_DECEASED_HAS_ALIAS = YES;
     private static final String SS_DECEASED_FULL_ALIAS_NAME = "AliasFN AliasSN";
     private static final List<CollectionMember<ProbateFullAliasName>> SS_DECEASED_FULL_ALIAS_NAME_LIST = emptyList();
@@ -57,7 +58,7 @@ public class StandingSearchCallbackResponseTransformerTest {
     private static final LocalDate SS_EXPIRY_DATE = LocalDate.now().plusMonths(STANDING_SEARCH_LIFESPAN);
     private static final String SS_FORMATTED_EXPIRY_DATE = dateTimeFormatter.format(SS_EXPIRY_DATE);
 
-    private static final String SS_LEGACY_ID = "12345";
+    private static final String SS_RECORD_ID = "12345";
     private static final String SS_LEGACY_CASE_URL = "someUrl";
     private static final String SS_LEGACY_CASE_TYPE = "someCaseType";
 
@@ -88,8 +89,9 @@ public class StandingSearchCallbackResponseTransformerTest {
                 .applicantEmailAddress(SS_APPLICANT_EMAIL_ADDRESS)
                 .applicantAddress(SS_APPLICANT_ADDRESS)
                 .expiryDate(SS_EXPIRY_DATE)
-                .legacyId(SS_LEGACY_ID)
+                .recordId(SS_RECORD_ID)
                 .legacyCaseViewUrl(SS_LEGACY_CASE_URL)
+                .applicationSubmittedDate(DATE_SUBMITTED)
                 .legacyType(SS_LEGACY_CASE_TYPE);
         ;
 
@@ -167,8 +169,9 @@ public class StandingSearchCallbackResponseTransformerTest {
         assertEquals(SS_APPLICANT_ADDRESS, standingSearchCallbackResponse.getResponseStandingSearchData().getApplicantAddress());
 
         assertEquals(SS_FORMATTED_EXPIRY_DATE, standingSearchCallbackResponse.getResponseStandingSearchData().getExpiryDate());
+        assertEquals(DATE_SUBMITTED, standingSearchCallbackResponse.getResponseStandingSearchData().getApplicationSubmittedDate());
 
-        assertEquals(SS_LEGACY_ID, standingSearchCallbackResponse.getResponseStandingSearchData().getLegacyId());
+        assertEquals(SS_RECORD_ID, standingSearchCallbackResponse.getResponseStandingSearchData().getRecordId());
         assertEquals(SS_LEGACY_CASE_TYPE, standingSearchCallbackResponse.getResponseStandingSearchData().getLegacyType());
         assertEquals(SS_LEGACY_CASE_URL, standingSearchCallbackResponse.getResponseStandingSearchData().getLegacyCaseViewUrl());
 

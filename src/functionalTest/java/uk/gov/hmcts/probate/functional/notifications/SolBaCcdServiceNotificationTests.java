@@ -24,7 +24,7 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
 
     private static final String BIRMINGHAM_NO = "0121 681 3401";
 
-    private static final String STOP_URL = "data.probateDocumentsGenerated[0].value.DocumentLink.document_binary_url";
+    private static final String STOP_URL = "data.probateNotificationsGenerated[0].value.DocumentLink.document_binary_url";
     private static final String EMAIL_NOTIFICATION_URL = "data.probateNotificationsGenerated[0].value.DocumentLink.document_binary_url";
 
     @Test
@@ -93,6 +93,13 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     public void verifySolicitorCaseStoppedContentIsOkay() {
         String document = sendEmail("solicitorPayloadNotificationsBirmingham.json", CASE_STOPPED, STOP_URL);
         verifySolsEmailCaseStopped(document);
+    }
+
+    @Test
+    public void verifySpecialCharacterEncodingIsOk() {
+        String document = sendEmail("personalPayloadNotificationsSpecialCharacters.json", CASE_STOPPED, STOP_URL);
+        verifyPAEmailCaseStopped(document);
+        assertTrue(document.contains("!@£$%^&*()[]{}<>,.:;~"));
     }
 
 

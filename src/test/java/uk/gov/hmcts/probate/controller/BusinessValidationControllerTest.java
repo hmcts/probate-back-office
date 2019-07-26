@@ -91,7 +91,8 @@ public class BusinessValidationControllerTest {
     private static final String CASE_TRANSFORM_URL = "/case/transformCase";
     private static final String CASE_CHCEKLIST_URL = "/case/validateCheckListDetails";
     private static final String PAPER_FORM_URL = "/case/paperForm";
-    
+    private static final String RESOLVE_STOP_URL = "/case/resolveStop";
+
     private static final DocumentLink SCANNED_DOCUMENT_URL = DocumentLink.builder()
             .documentBinaryUrl("http://somedoc")
             .documentFilename("somedoc.pdf")
@@ -378,6 +379,46 @@ public class BusinessValidationControllerTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(content().string(containsString("controlNumber\":\"1234")))
                 .andExpect(content().string(containsString("fileName\":\"scanneddocument.pdf")));
+    }
+
+    @Test
+    public void shouldSetStateToCaseCreatedAfterResolveStateChoice() throws Exception {
+        String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadResolveStopForCaseCreated.json");
+
+        mockMvc.perform(post(RESOLVE_STOP_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.state").value("CaseCreated"))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
+    }
+
+    @Test
+    public void shouldSetStateToCasePrintedAfterResolveStateChoice() throws Exception {
+        String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadResolveStopCasePrinted.json");
+
+        mockMvc.perform(post(RESOLVE_STOP_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.state").value("CasePrinted"))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
+    }
+
+    @Test
+    public void shouldSetStateToReaddyForExaminationAfterResolveStateChoice() throws Exception {
+        String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadResolveStopReadyForExamination.json");
+
+        mockMvc.perform(post(RESOLVE_STOP_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.state").value("BOReadyForExamination"))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
+    }
+
+    @Test
+    public void shouldSetStateToExaminingAfterResolveStateChoice() throws Exception {
+        String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadResolveStopForExamining.json");
+
+        mockMvc.perform(post(RESOLVE_STOP_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.state").value("BOExamining"))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
     }
 }
 

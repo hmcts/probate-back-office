@@ -1,0 +1,7 @@
+{
+  "waitForText": "Generate deposit receipt",
+
+  "documentType": "Deposit Receipt",
+  "filename": "willLodgementDepositReceipt.pdf",
+  "dateAdded": "XX XXX XXXX"
+}

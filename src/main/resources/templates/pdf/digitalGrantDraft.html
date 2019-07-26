@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 {% macro address(address)%}
 {% if address != null %}
-{% if address.AddressLine1 != null %}{{ address.AddressLine1 }}, {% endif %}
-{% if address.AddressLine2 != null %}{{ address.AddressLine2 }}, {% endif %}
-{% if address.AddressLine3 != null %}{{ address.AddressLine3 }}, {% endif %}
-{% if address.PostTown != null %}{{ address.PostTown }}, {% endif %}
-{% if address.County != null %}{{ address.County }}, {% endif %}
-{% if address.PostCode != null %}{{ address.PostCode }}, {% endif %}
-{% if address.Country != null %}{{ address.Country }}{% endif %}
+{% if address.AddressLine1 != null and address.AddressLine1 != "" %}{{ address.AddressLine1 }}, {% endif %}
+{% if address.AddressLine2 != null and address.AddressLine2 != "" %}{{ address.AddressLine2 }}, {% endif %}
+{% if address.AddressLine3 != null and address.AddressLine3 != "" %}{{ address.AddressLine3 }}, {% endif %}
+{% if address.PostTown != null and address.PostTown != "" %}{{ address.PostTown }}, {% endif %}
+{% if address.County != null and address.County != "" %}{{ address.County }}, {% endif %}
+{% if address.PostCode != null and address.PostCode != "" %}{{ address.PostCode }}, {% endif %}
+{% if address.Country != null and address.Country != "" %}{{ address.Country }}{% endif %}
 {% endif %}
 {% endmacro %}
 <html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
@@ -191,21 +191,6 @@
     </tr>
     <tr>
         <td colspan="3" class="text-leftAligned">
-            {% if case_details.case_data.primaryApplicantIsApplying == "No" %}
-                {% for executor in case_details.case_data.executorsApplying %}
-                    {% if loop.first %}
-                            <span class="camelCase">
-                                 <strong>
-                                    {% if executor.value.applyingExecutorName != null and executor.value.applyingExecutorName != ""%}{{executor.value.applyingExecutorName}}{% endif %}
-                                </strong>
-                            </span>
-                    {% endif %}
-                {% endfor %}
-            {% else %}
-                <span class="camelCase">
-                    <strong>{{case_details.case_data.primaryApplicantForenames}} {{case_details.case_data.primaryApplicantSurname}}</strong>
-                </span>
-            {% endif %} made an application to this Court for a Grant of Probate and declared the following information.
             <p>
                 {% if case_details.case_data.boDeceasedTitle != null and case_details.case_data.boDeceasedTitle != "" %}{{ case_details.case_data.boDeceasedTitle }}{% endif %} <strong>{{case_details.case_data.deceasedForenames}} {{case_details.case_data.deceasedSurname}}</strong> {% if case_details.case_data.boDeceasedHonours != null and case_details.case_data.boDeceasedHonours != "" %}{{ case_details.case_data.boDeceasedHonours }}{% endif %}
                 of  <strong>{% if case_details.case_data.deceasedAddress.AddressLine1 != null and case_details.case_data.deceasedAddress.AddressLine1 != "" %}{{ case_details.case_data.deceasedAddress.AddressLine1}}{% endif %}
@@ -216,7 +201,19 @@
                 {% if case_details.case_data.deceasedAddress.PostCode != null and case_details.case_data.deceasedAddress.PostCode != ""%} {{case_details.case_data.deceasedAddress.PostCode}}{% endif %}
                 {% if case_details.case_data.deceasedAddress.Country != null and case_details.case_data.deceasedAddress.Country != ""%} {{case_details.case_data.deceasedAddress.Country}}{% endif %}</strong>
                 {% if case_details.case_data.solsDeceasedAliasNamesList != null and case_details.case_data.solsDeceasedAliasNamesList != "" %}{% for alias in case_details.case_data.solsDeceasedAliasNamesList %}{% if loop.first %}<br />Otherwise {{alias.value.SolsAliasname}}{% else %}, {{alias.value.SolsAliasname}}{% endif %}{% endfor %}{% endif %}
-                <br /> Died on <strong>{{case_details.case_data.deceasedDateOfDeathFormatted}}</strong> domiciled in <strong>England and Wales</strong>
+                <br />{% if case_details.case_data.dateOfDeathType == null %}
+                Died on
+                {% elseif case_details.case_data.dateOfDeathType == "diedOnOrAbout" %}
+                Died on or about
+                {% elseif case_details.case_data.dateOfDeathType == "presumedDiedOn" %}
+                Presumed died on
+                {% elseif case_details.case_data.dateOfDeathType == "diedOnOrBefore" %}
+                Died on or before
+                {% elseif case_details.case_data.dateOfDeathType == "diedOnOrSince" %}
+                Died on or since
+                {% elseif case_details.case_data.dateOfDeathType == "diedOn" %}
+                Died on
+                {% endif %} <strong>{{case_details.case_data.deceasedDateOfDeathFormatted}}</strong> domiciled in <strong>England and Wales</strong>
             </p>
             <p>The Last Will and Testament <strong>
                 {% if case_details.case_data.boWillMessage != null and case_details.case_data.boWillMessage != ""%}{{ case_details.case_data.boWillMessage }}{% endif %}</strong> of <strong>{{case_details.case_data.deceasedForenames}} {{case_details.case_data.deceasedSurname}}</strong> (An official copy of which is available from the Court) was proved and registered before the High Court of Justice.

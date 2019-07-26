@@ -1,0 +1,24 @@
+{
+  "bool": {
+    "should": [
+      {
+        "term": {
+          "data.deceasedDateOfBirth": {
+            "value": ":deceasedDateOfBirth"
+          }
+        }
+      },
+      {
+        "bool": {
+          "must_not": {
+            "exists": {
+              "field": "data.deceasedDateOfBirth"
+            }
+          }
+        }
+      }
+    ],
+    "minimum_should_match": 1
+  }
+},
+

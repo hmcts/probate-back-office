@@ -12,6 +12,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.AdoptedRelative;
 import uk.gov.hmcts.probate.model.ccd.raw.AliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.AttorneyApplyingOnBehalfOf;
+import uk.gov.hmcts.probate.model.ccd.raw.BulkPrint;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Declaration;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
@@ -219,14 +220,34 @@ public class ResponseCaseData {
 
     private final String boSendToBulkPrint;
     private final String boSendToBulkPrintRequested;
+    private final String grantIssuedDate;
+    private final String dateOfDeathType;
 
     private final List<CollectionMember<CaseMatch>> legacySearchResultRows;
 
-    private final String legacyId;
+    private final String recordId;
     private final String legacyType;
     private final String legacyCaseViewUrl;
 
     private final String bulkPrintSendLetterId;
     private final String bulkPrintPdfSize;
+    private final List<CollectionMember<BulkPrint>> bulkPrintId;
 
+    private final String boCaveatStopNotificationRequested;
+    private final String boCaveatStopNotification;
+    private final String boCaseStopCaveatId;
+    private final String boCaveatStopEmailNotificationRequested;
+    private final String boCaveatStopEmailNotification;
+    private final String boCaveatStopSendToBulkPrintRequested;
+    private final String boCaveatStopSendToBulkPrint;
+
+    private final String deceasedDivorcedInEnglandOrWales;
+    private final String primaryApplicantAdoptionInEnglandOrWales;
+    private final String deceasedSpouseNotApplyingReason;
+    private final String deceasedOtherChildren;
+    private final String allDeceasedChildrenOverEighteen;
+    private final String anyDeceasedChildrenDieBeforeDeceased;
+    private final String anyDeceasedGrandChildrenUnderEighteen;
+    private final String deceasedAnyChildren;
+    private final String deceasedHasAssetsOutsideUK;
 }

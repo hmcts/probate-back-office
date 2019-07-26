@@ -38,9 +38,12 @@ public class GrantApplicationMapperTest {
     private static final String DECEASED_SURNAME = "DeadSN";
     private static final LocalDate DATE_OF_BIRTH = LocalDate.of(1999, 1, 1);
     private static final LocalDate DATE_OF_DEATH = LocalDate.of(2018, 1, 1);
+    private static final LocalDate DATE_OF_ENTRY = LocalDate.of(2018, 1, 2);
     private static final String DECEASED_ADDRESS = "DecAddL1, DeacAddPC";
     private static final Long GROSS_ESTATE = 10000L;
+    private static final Long GROSS_ESTATE_TRANSFORMED = 1000000L;
     private static final Long NET_ESTATE = 9000L;
+    private static final Long NET_ESTATE_TRANSFORMED = 900000L;
     private static final String SOLICITOR_REFERENCE = "SolRef1";
 
     @Autowired
@@ -56,6 +59,8 @@ public class GrantApplicationMapperTest {
         GrantOfRepresentationData grantApplicationData = grantApplicationMapper.toCcdData(grantApplication);
 
         assertBasicApplication(grantApplicationData);
+        assertIHTValuesApplication(grantApplicationData);
+        assertPaSpecificDetails(grantApplicationData);
         assertThat(grantApplicationData.getApplicationType()).isEqualTo(ApplicationType.PERSONAL);
 
     }
@@ -68,29 +73,63 @@ public class GrantApplicationMapperTest {
         GrantOfRepresentationData grantApplicationData = grantApplicationMapper.toCcdData(grantApplication);
 
         assertBasicApplication(grantApplicationData);
+        assertIHTValuesApplication(grantApplicationData);
+        assertSolsSpecificDetails(grantApplicationData);
         assertThat(grantApplicationData.getApplicationType()).isEqualTo(ApplicationType.SOLICITORS);
 
     }
 
-    private void assertBasicApplication(GrantOfRepresentationData grantApplicationData) {
-        String legacyCaseViewUrl = String.format(printServiceHost + printServiceLegacyPath, ProbateManType.GRANT_APPLICATION, ID);
+    @Test
+    public void shouldMapToCcdDataForPersonalApplicationWithNullIHTValues() {
+        GrantApplication grantApplication = buildBasicApplication();
+        grantApplication.setNetEstateValue(null);
+        grantApplication.setGrossEstateValue(null);
 
-        Address expectedDeceasedAddress = buildAddress(DECEASED_ADDRESS);
+        GrantOfRepresentationData grantApplicationData = grantApplicationMapper.toCcdData(grantApplication);
+
+        assertBasicApplication(grantApplicationData);
+
+        assertPaSpecificDetails(grantApplicationData);
+        assertThat(grantApplicationData.getApplicationType()).isEqualTo(ApplicationType.PERSONAL);
+        assertThat(grantApplicationData.getIhtGrossValue()).isEqualTo(null);
+        assertThat(grantApplicationData.getIhtNetValue()).isEqualTo(null);
+
+    }
+
+    private void assertPaSpecificDetails(GrantOfRepresentationData grantApplicationData) {
         Address expectedPrimaryAddress = buildAddress(PRIMARY_APPLICANT_ADDRESS);
+        assertThat(grantApplicationData.getPrimaryApplicantAddress()).isEqualToComparingFieldByFieldRecursively(expectedPrimaryAddress);
         assertThat(grantApplicationData.getPrimaryApplicantForenames()).isEqualTo(PRIMARY_APPLICANT_FORENAMES);
         assertThat(grantApplicationData.getPrimaryApplicantSurname()).isEqualTo(PRIMARY_APPLICANT_SURNAME);
+    }
+
+    private void assertSolsSpecificDetails(GrantOfRepresentationData grantApplicationData) {
+        Address expectedPrimaryAddress = buildAddress(PRIMARY_APPLICANT_ADDRESS);
+        assertThat(grantApplicationData.getSolsSolicitorAppReference()).isEqualTo(SOLICITOR_REFERENCE);
+        assertThat(grantApplicationData.getSolsSolicitorAddress()).isEqualToComparingFieldByFieldRecursively(expectedPrimaryAddress);
+        assertThat(grantApplicationData.getSolsSolicitorFirmName())
+                .isEqualTo(PRIMARY_APPLICANT_FORENAMES + " " + PRIMARY_APPLICANT_SURNAME);
+    }
+
+    private void assertBasicApplication(GrantOfRepresentationData grantApplicationData) {
+        String legacyCaseViewUrl = String.format(printServiceHost + printServiceLegacyPath, ProbateManType.GRANT_APPLICATION, ID);
+        Address expectedDeceasedAddress = buildAddress(DECEASED_ADDRESS);
+
         assertThat(grantApplicationData.getDeceasedForenames()).isEqualTo(DECEASED_FORENAMES);
         assertThat(grantApplicationData.getDeceasedSurname()).isEqualTo(DECEASED_SURNAME);
         assertThat(grantApplicationData.getDeceasedDateOfBirth()).isEqualTo(DATE_OF_BIRTH);
         assertThat(grantApplicationData.getDeceasedDateOfDeath()).isEqualTo(DATE_OF_DEATH);
         assertThat(grantApplicationData.getDeceasedAddress()).isEqualToComparingFieldByFieldRecursively(expectedDeceasedAddress);
-        assertThat(grantApplicationData.getPrimaryApplicantAddress()).isEqualToComparingFieldByFieldRecursively(expectedPrimaryAddress);
-        assertThat(grantApplicationData.getIhtGrossValue()).isEqualTo(GROSS_ESTATE);
-        assertThat(grantApplicationData.getIhtNetValue()).isEqualTo(NET_ESTATE);
         assertThat(grantApplicationData.getGrantType()).isEqualTo(GrantType.GRANT_OF_PROBATE);
         assertThat(grantApplicationData.getLegacyId()).isEqualTo(ID);
         assertThat(grantApplicationData.getLegacyType()).isEqualTo(LEGACY_TYPE);
         assertThat(grantApplicationData.getLegacyCaseViewUrl()).contains(legacyCaseViewUrl);
+        assertThat(grantApplicationData.getApplicationSubmittedDate()).isEqualTo(DATE_OF_ENTRY);
+    }
+
+    private void assertIHTValuesApplication(GrantOfRepresentationData grantApplicationData) {
+        assertThat(grantApplicationData.getIhtGrossValue()).isEqualTo(GROSS_ESTATE_TRANSFORMED);
+        assertThat(grantApplicationData.getIhtNetValue()).isEqualTo(NET_ESTATE_TRANSFORMED);
     }
 
     private GrantApplication buildBasicApplication() {
@@ -106,6 +145,7 @@ public class GrantApplicationMapperTest {
         grantApplication.setGrossEstateValue(GROSS_ESTATE);
         grantApplication.setNetEstateValue(NET_ESTATE);
         grantApplication.setId(Long.valueOf(ID));
+        grantApplication.setAppReceivedDate(DATE_OF_ENTRY);
         return grantApplication;
     }
 

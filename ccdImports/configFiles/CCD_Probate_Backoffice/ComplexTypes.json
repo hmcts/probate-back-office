@@ -30,8 +30,8 @@
   {"LiveFrom": "01/01/2017", "ID": "Executor", "ListElementCode": "executorAddress", "FieldType": "Address", "ElementLabel": "Executor Address", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "Executor", "ListElementCode": "executorNameOnWill", "FieldType": "Text", "ElementLabel": "Executor Name on Will", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "Executor", "ListElementCode": "executorNameDifferenceComment", "FieldType": "Text", "ElementLabel": "Reason for name difference", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "ID": "solAdditionalExecutor", "ListElementCode": "additionalExecForenames", "FieldType": "Text", "ElementLabel": "First name(s)", "SecurityClassification": "Public", "Max": 30},
-  {"LiveFrom": "01/01/2017", "ID": "solAdditionalExecutor", "ListElementCode": "additionalExecLastname", "FieldType": "Text", "ElementLabel": "Last name(s)", "SecurityClassification": "Public", "Max": 50},
+  {"LiveFrom": "01/01/2017", "ID": "solAdditionalExecutor", "ListElementCode": "additionalExecForenames", "FieldType": "Text", "ElementLabel": "First name(s)", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "solAdditionalExecutor", "ListElementCode": "additionalExecLastname", "FieldType": "Text", "ElementLabel": "Last name(s)", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "solAdditionalExecutor", "ListElementCode": "additionalExecNameOnWill", "FieldType": "YesOrNo", "ElementLabel": "Is this name different to how they are named on the will?", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "solAdditionalExecutor", "ListElementCode": "additionalExecAliasNameOnWill", "FieldType": "Text", "ElementLabel": "Enter their full name as it appears on the will", "FieldShowCondition": "additionalExecNameOnWill=\"Yes\"", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "solAdditionalExecutor", "ListElementCode": "additionalApplying", "FieldType": "YesOrNo", "ElementLabel": "Are they applying?", "SecurityClassification": "Public"},
@@ -83,6 +83,7 @@
   {"LiveFrom": "01/01/2017", "ID": "ScannedDocument", "ListElementCode": "scannedDate", "FieldType": "DateTime", "ElementLabel": "Scanned date", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "ScannedDocument", "ListElementCode": "url", "FieldType": "Document", "ElementLabel": "Document Url", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "ScannedDocument", "ListElementCode": "exceptionRecordReference", "FieldType": "Text", "ElementLabel": "Exception record reference", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "ScannedDocument", "ListElementCode": "deliveryDate", "FieldType": "DateTime", "ElementLabel": "Delivery date", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "AttorneyNamesAndAddress", "ListElementCode": "name", "FieldType": "Text", "ElementLabel": "Name", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "AttorneyNamesAndAddress", "ListElementCode": "address", "FieldType": "AddressUK", "FieldTypeParameter": "Address", "ElementLabel": "Address", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "estateItems", "ListElementCode": "item", "FieldType": "Text", "ElementLabel": "Item", "SecurityClassification": "Public"},
@@ -91,7 +92,7 @@
   {"LiveFrom": "01/01/2017", "ID": "adopted", "ListElementCode": "relationship", "FieldType": "Text", "ElementLabel": "Relationship ", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "adopted", "ListElementCode": "adoptedInOrOut", "FieldType": "FixedList", "FieldTypeParameter": "adoptedInOrOutFixedList", "ElementLabel": "Adopted In or Out", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "CaseMatch", "ListElementCode": "type", "FieldType": "Text", "ElementLabel": "Type", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "ID": "CaseMatch", "ListElementCode": "ccdCaseId", "FieldType": "Text", "ElementLabel": "CCD Case No", "FieldShowCondition": "id=\"NeverShowThisField\"", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "CaseMatch", "ListElementCode": "ccdCaseId", "FieldType": "Text", "ElementLabel": "CCD Case No", "FieldShowCondition": "legacyCaseViewUrl=\"NeverShowThisField\"", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "CaseMatch", "ListElementCode": "fullName", "FieldType": "Text", "ElementLabel": "Full name", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "CaseMatch", "ListElementCode": "dob", "FieldType": "Text", "ElementLabel": "Date of birth", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "CaseMatch", "ListElementCode": "dod", "FieldType": "Text", "ElementLabel": "Date of death", "SecurityClassification": "Public"},
@@ -99,8 +100,12 @@
   {"LiveFrom": "01/01/2017", "ID": "CaseMatch", "ListElementCode": "postcode", "FieldType": "Text", "ElementLabel": "Postcode", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "CaseMatch", "ListElementCode": "comment", "FieldType": "Text", "ElementLabel": "Comment", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "CaseMatch", "ListElementCode": "caseLink", "FieldType": "CaseLink", "ElementLabel": "Reference", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "ID": "CaseMatch", "ListElementCode": "id", "FieldType": "Text", "ElementLabel": "Legacy Id", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "ID": "CaseMatch", "ListElementCode": "legacyCaseViewUrl", "FieldType": "Text", "ElementLabel": "Legacy Case Url", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "CaseMatch", "ListElementCode": "recordId", "FieldType": "Text", "ElementLabel": "ProbateMan Id", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "CaseMatch", "ListElementCode": "id", "FieldType": "Text", "ElementLabel": "Id", "FieldShowCondition": "legacyCaseViewUrl=\"NeverShowThisField\"", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "CaseMatch", "ListElementCode": "legacyCaseViewUrl", "FieldType": "Text", "ElementLabel": "Case Url", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "CaseMatch", "ListElementCode": "valid", "FieldType": "YesOrNo", "ElementLabel": "Is match valid?", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "ID": "CaseMatch", "ListElementCode": "doImport", "FieldType": "YesOrNo", "ElementLabel": "Do import?", "SecurityClassification": "Public"}
+  {"LiveFrom": "01/01/2017", "ID": "CaseMatch", "ListElementCode": "doImport", "FieldType": "YesOrNo", "ElementLabel": "Do import?", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "BulkPrint", "ListElementCode": "templateName", "FieldType": "FixedList", "FieldTypeParameter": "probateDocumentTypeEnum", "ElementLabel": "Document sent to bulk print", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "BulkPrint", "ListElementCode": "sendLetterId", "FieldType": "Text", "ElementLabel": "Send Letter Id", "SecurityClassification": "Public"}
+
 ]

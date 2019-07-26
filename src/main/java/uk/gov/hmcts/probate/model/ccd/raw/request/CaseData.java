@@ -17,6 +17,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.AdoptedRelative;
 import uk.gov.hmcts.probate.model.ccd.raw.AliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.AttorneyApplyingOnBehalfOf;
+import uk.gov.hmcts.probate.model.ccd.raw.BulkPrint;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Declaration;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
@@ -370,12 +371,45 @@ public class CaseData {
     private final String paymentReferenceNumberPaperform;
     private final String bulkPrintSendLetterId;
     private final String bulkPrintPdfSize;
+    private final String grantIssuedDate;
+    private final String dateOfDeathType;
+    private final String resolveStopState;
 
     private final List<CollectionMember<CaseMatch>> legacySearchResultRows;
 
+    private final String recordId;
     private final String legacyId;
     private final String legacyType;
     private final String legacyCaseViewUrl;
+
+    private final String boCaveatStopNotificationRequested;
+    private final String boCaveatStopNotification;
+
+    private final String boCaseStopCaveatId;
+
+    private final String boCaveatStopEmailNotificationRequested;
+    @SuppressWarnings("squid:S1170")
+    @Getter(lazy = true)
+    private final String boCaveatStopEmailNotification = getDefaultValueForCaveatStopEmailNotification();
+
+    private final String boCaveatStopSendToBulkPrintRequested;
+
+    @SuppressWarnings("squid:S1170")
+    @Getter(lazy = true)
+    private final String boCaveatStopSendToBulkPrint = YES;
+
+    @Builder.Default
+    private List<CollectionMember<BulkPrint>> bulkPrintId = new ArrayList<>();
+
+    private final String deceasedDivorcedInEnglandOrWales;
+    private final String primaryApplicantAdoptionInEnglandOrWales;
+    private final String deceasedSpouseNotApplyingReason;
+    private final String deceasedOtherChildren;
+    private final String allDeceasedChildrenOverEighteen;
+    private final String anyDeceasedChildrenDieBeforeDeceased;
+    private final String anyDeceasedGrandChildrenUnderEighteen;
+    private final String deceasedAnyChildren;
+    private final String deceasedHasAssetsOutsideUK;
 
     @Getter(lazy = true)
     private final List<CollectionMember<AdditionalExecutor>> executorsApplyingForLegalStatement = getAllExecutors(true);
@@ -436,6 +470,10 @@ public class CaseData {
         return primaryApplicantEmailAddress == null && solsSolicitorEmail == null ? NO : YES;
     }
 
+    public String getDefaultValueForCaveatStopEmailNotification() {
+        return primaryApplicantEmailAddress == null || primaryApplicantEmailAddress.isEmpty() ? NO : YES;
+    }
+
     public boolean isDocsReceivedEmailNotificationRequested() {
         return YES.equals(getBoEmailDocsReceivedNotification());
     }
@@ -446,6 +484,18 @@ public class CaseData {
 
     public boolean isGrantIssuedEmailNotificationRequested() {
         return YES.equals(getBoEmailGrantIssuedNotification());
+    }
+
+    public boolean isCaveatStopNotificationRequested() {
+        return YES.equals(getBoCaveatStopNotification());
+    }
+
+    public boolean isCaveatStopEmailNotificationRequested() {
+        return YES.equals(getBoCaveatStopEmailNotification());
+    }
+
+    public boolean isCaveatStopSendToBulkPrintRequested() {
+        return YES.equals(getBoCaveatStopSendToBulkPrint());
     }
 
     private String convertDate(LocalDate dateToConvert) {

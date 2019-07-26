@@ -1,0 +1,17 @@
+{
+  "waitForText" : "Manage probate application",
+  "tabName": "Event History",
+  "testTimeToWaitForTab": 5,
+  "fields": [
+    "Date",
+    "Author",
+    "End state",
+    "Event",
+    "Summary",
+    "Comment"
+    ],
+   "dataKeys": [
+     "summary",
+     "comment"
+     ]
+}

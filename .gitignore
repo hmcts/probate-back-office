@@ -4,6 +4,10 @@
 /out/**
 /docker/test/
 /target/
+/jsonToXLS/
+/node_modules/**
+/src/test/end-to-end/output/**
+output/
 
 ### STS ###
 .apt_generated
@@ -22,3 +26,9 @@
 .DS_store
 
 git.properties
+
+node_modules/\.bin/
+
+node_modules/
+
+src/test/end-to-end/output/

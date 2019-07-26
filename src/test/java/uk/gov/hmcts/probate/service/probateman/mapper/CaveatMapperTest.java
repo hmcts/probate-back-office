@@ -39,6 +39,7 @@ public class CaveatMapperTest {
     private static final String CAVEATOR_SURNAME = "CavSN";
     private static final LocalDate DECEASED_DOB = LocalDate.of(1999, 1, 1);
     private static final LocalDate DECEASED_DOD = LocalDate.of(2018, 1, 1);
+    private static final LocalDate DATE_OF_ENTRY = LocalDate.of(2018, 1, 2);
     private static final String CAVEATOR_ADDRESS = "CavAddLn1 CavAddPC";
     private static final LocalDate CAVEATOR_EXPIRY_DATE = LocalDate.of(2020, 1, 1);
 
@@ -61,6 +62,7 @@ public class CaveatMapperTest {
         caveat.setAliasNames(DECEASED_ALIAS_NAMES);
         caveat.setCavExpiryDate(CAVEATOR_EXPIRY_DATE);
         caveat.setId(Long.valueOf(ID));
+        caveat.setCaveatDateOfEntry(DATE_OF_ENTRY);
 
         Address deceasedAddress = Address.builder()
                 .addressLine1(CAVEATOR_ADDRESS)
@@ -73,12 +75,14 @@ public class CaveatMapperTest {
                 .caveatorSurname(CAVEATOR_SURNAME)
                 .deceasedDateOfBirth(DECEASED_DOB)
                 .deceasedDateOfDeath(DECEASED_DOD)
-                .deceasedAddress(deceasedAddress)
+                .caveatorAddress(deceasedAddress)
                 .expiryDate(CAVEATOR_EXPIRY_DATE)
+                .deceasedAnyOtherNames(true)
                 .deceasedFullAliasNameList(buildFullAliasNames())
                 .legacyId(ID)
                 .legacyType(LEGACY_TYPE)
                 .legacyCaseViewUrl(legacyCaseViewUrl)
+                .applicationSubmittedDate(DATE_OF_ENTRY)
                 .build();
 
         CaveatData caveatData = caveatMapper.toCcdData(caveat);
@@ -89,7 +93,7 @@ public class CaveatMapperTest {
                 "deceasedFullAliasNameList",
                 "caveatorForenames",
                 "caveatorSurname",
-                "deceasedAddress",
+                "caveatorAddress",
                 "expiryDate",
                 "deceasedDateOfBirth",
                 "deceasedDateOfDeath",

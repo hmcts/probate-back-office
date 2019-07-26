@@ -6,8 +6,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import uk.gov.hmcts.probate.config.CCDDataStoreAPIConfiguration;
+import uk.gov.hmcts.probate.exception.CaseMatchingException;
 import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.CaseType;
 import uk.gov.hmcts.probate.model.ccd.raw.casematching.Case;
@@ -65,5 +68,13 @@ public class ElasticSearchServiceTest {
         assertEquals(1, matchedCases.getCases().size());
 
         verify(restTemplate).postForObject(any(), any(), eq(MatchedCases.class));
+    }
+
+    @Test(expected = CaseMatchingException.class)
+    public void shouldThrowExceptionRunningQuery() {
+        when(restTemplate.postForObject(any(URI.class), any(), eq(MatchedCases.class)))
+                .thenThrow(new HttpClientErrorException(HttpStatus.BAD_REQUEST));
+
+        MatchedCases matchedCases = elasticSearchService.runQuery(CaseType.LEGACY, "{}");
     }
 }

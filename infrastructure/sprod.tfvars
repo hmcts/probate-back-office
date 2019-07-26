@@ -10,7 +10,8 @@ outbound_proxy = ""
 
 log_level = "INFO"
 
-idam_service_api = "http://rpe-service-auth-provider-sprod.service.core-compute-sprod.internal"
+auth_service_url = "http://rpe-service-auth-provider-sprod.service.core-compute-sprod.internal"
+idam_service_host = "https://idam-api.sandbox.platform.hmcts.net"
 pdf_service_api_url = "http://cmc-pdf-service-sprod.service.core-compute-sprod.internal"
 printservice_internal_host = "http://ccd-case-print-service-sprod.service.core-compute-sprod.internal"
 printservice_host = "http://ccd-case-print-service-sprod.service.core-compute-sprod.internal"

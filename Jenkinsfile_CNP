@@ -40,8 +40,6 @@ def secrets = [
 
 ]
 
-
-
 static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
   [ $class: 'AzureKeyVaultSecret',
     secretType: 'Secret',
@@ -120,4 +118,5 @@ withPipeline("java", product, component) {
     ]
   }
 }
+
 

@@ -1,6 +1,15 @@
 server:
   port: ${probate.sol.ccd.port}
 
+resttemplate:
+  httpclient:
+    timeout: 10000
+
+ftp.client:
+  url: https://green.blob.core.windows.net
+  environment: ${FTP_ENV:test}
+  signature: ${FTP_SIGNATURE:fakeValue}
+
 management:
   endpoints:
     web:
@@ -19,6 +28,14 @@ auth.provider.service.client:
   microservice: probate_backend
   tokenTimeToLiveInSeconds: 900
 
+auth.provider.client:
+  user: ${IDAM_SERVICE_HOST:http://localhost:4501}
+  secret: ${IDAM_SECRET:123456}
+  id: probate
+  redirect: ${IDAM_REDIRECT_URL:http://localhost:3451/oauth2redirect}
+  email: ${AUTH_TOKEN_EMAIL:probatesolcw1@gmail.com}
+  password: ${AUTH_TOKEN_PASSWORD:password}
+
 pdf.service:
   url: http://localhost:5500
   pdfApi: /api/v2/pdf-generator/html
@@ -26,6 +43,22 @@ pdf.service:
   defaultDisplayFilename: generated.pdf
   grantSignatureSecretKey: signaturetestkey
   grantSignatureEncryptedFile: signatures/grantSignature-test.png.enc
+  hmctsFamilyLogoBase64File: signatures/hmctsFamilyLogo.png.b64
+
+docmosis:
+  service:
+    uri: ${PDF_SERVICE_BASEURL:https://docmosis-development.platform.hmcts.net}
+    accessKey: ${PDF_SERVICE_ACCESS_KEY:ZDYxMTkzZTQtMGY2Mi00NDM1LWIyN2ItNGRkNzdjOTczMjAwOjQ1NTE0ODQ}
+    health.uri: ${PDF_SERVICE_HEALTH_URL:https://docmosis-development.platform.hmcts.net}
+  templates:
+    caveatRaised:
+      templateName: FL-PRB-GNO-ENG-00011.doc
+    caveatCoversheet:
+      templateName: FL-PRB-GNO-ENG-00018.docx
+    caveatStopped:
+      templateName: FL-PRB-GNO-ENG-00025.docx
+    grantCoversheet:
+      templateName: FL-PRB-GNO-ENG-00024.docx
 
 fee.api:
   url: http://localhost:4411
@@ -35,6 +68,7 @@ fee.api:
   jurisdiction2: probate registry
   channel: default
   applicantType: all
+  keyword: NewFee
 
 markdown.templatesDirectory: templates/markdown/
 
@@ -108,13 +142,21 @@ notifications:
       personal:
         documentReceived: "04308c65-a0bb-40b4-a3f3-ba8869048520"
         caseStopped: "58aed5cb-0aab-44f5-842f-9f0a6a150f72"
+        caseStoppedCaveat: "937291a0-c0ae-40a4-a8cf-46a3452faff0"
         grantIssued: "9344693b-9ea3-487d-bec1-68201214fd27"
         generalCaveatMessage: "afadf00e-c224-4da0-a6dc-fb47a2e5db67"
+        excelaData: "fd474506-a272-4caa-ad61-6086cee0639a"
+        caveatRaised: "bf9dabd9-b22f-4cb6-b3aa-871ac8532209"
+        caveatRaisedCtsc: "ed01d79f-08f0-4703-8cec-f490e499fc33"
       solicitor:
         documentReceived: "7f8ff32d-8297-4702-9867-312047f81492"
         caseStopped: "77041301-77a5-4382-a3a7-0bada17518b0"
+        caseStoppedCaveat: "937291a0-c0ae-40a4-a8cf-46a3452faff0"
         grantIssued: "95aa541b-e55e-4d7c-a6f5-810b5f03adba"
         generalCaveatMessage: "afadf00e-c224-4da0-a6dc-fb47a2e5db67"
+        excelaData: "fd474506-a272-4caa-ad61-6086cee0639a"
+        caveatRaised: "bf9dabd9-b22f-4cb6-b3aa-871ac8532209"
+        caveatRaisedCtsc: "ed01d79f-08f0-4703-8cec-f490e499fc33"
 
 registries:
   oxford:
@@ -227,6 +269,17 @@ registries:
     addressline4: PO Box 4240
     town: Manchester
     postcode: M60 1WJ
+  bristol:
+    name: Bristol District Probate Registry
+    phone: 02920 474373
+    emailReplyToId: "6d98cad6-adb4-4446-b37e-5c3f0441a0c8"
+    addressline1: 3rd Floor, Cardiff Magistrates’ Court
+    addressline2: Fitzalan Place
+    addressline3: Cardiff
+    addressline4:
+    town: South Wales
+    postcode: CF24 0RZ
+
 
 document:
   retriever:
@@ -243,3 +296,8 @@ send-letter:
 auth.idam.client.baseUrl: http://localhost:4501
 
 core_case_data.api.url: ${services.coreCaseData.baseUrl:http://localhost:4452}
+
+excelaEmail: ${EXCELA_EMAIL:probatetest@gmail.com}
+
+cron:
+  data_extract: "0 0 2 * * *"

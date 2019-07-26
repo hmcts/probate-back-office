@@ -139,9 +139,25 @@ make a note of your local ip address using ifconfig (for me it was labelled tun0
 change the endpoint host on any sols callbacks to use this ip address in the definition
 
 ### Start up
+run the following to install the azure and kubernetes command-line tools
+```bash
+brew install azure-cli
+az acs kubernetes install-cli
+```
+login to azure
+```bash
+az login (will open a browser to login)
+az acr login --name hmcts
+```
 launch the all the containers
 ```bash
 docker-compose -f docker/docker-compose-with-ccd.yml up
+```
+to pull the latest send-letter-service container
+```bash
+az login
+az acr login --name hmcts
+docker pull hmcts.azurecr.io/hmcts/rpe-send-letter-service:latest
 ```
 
 ### Roles

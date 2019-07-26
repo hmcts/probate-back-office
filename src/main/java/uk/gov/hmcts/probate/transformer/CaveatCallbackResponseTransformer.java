@@ -10,6 +10,7 @@ import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
 import uk.gov.hmcts.probate.model.ccd.caveat.response.CaveatCallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.caveat.response.ResponseCaveatData;
 import uk.gov.hmcts.probate.model.ccd.caveat.response.ResponseCaveatData.ResponseCaveatDataBuilder;
+import uk.gov.hmcts.probate.model.ccd.raw.BulkPrint;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 
@@ -21,22 +22,49 @@ import java.util.stream.Collectors;
 
 import static java.util.Optional.ofNullable;
 import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
-import static uk.gov.hmcts.probate.model.Constants.CAVEAT_LIFESPAN;
+import static uk.gov.hmcts.probate.model.Constants.YES;
+import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT_RAISED;
 
 @Component
 @RequiredArgsConstructor
 public class CaveatCallbackResponseTransformer {
+
+    private final DocumentTransformer documentTransformer;
 
     private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     private static final ApplicationType DEFAULT_APPLICATION_TYPE = PERSONAL;
     private static final String DEFAULT_REGISTRY_LOCATION = "Leeds";
 
-    public CaveatCallbackResponse caveatRaised(CaveatCallbackRequest caveatCallbackRequest) {
+    public CaveatCallbackResponse caveatRaised(CaveatCallbackRequest caveatCallbackRequest, List<Document> documents, String letterId) {
+        CaveatDetails caveatDetails = caveatCallbackRequest.getCaseDetails();
+        CaveatData caveatData = caveatDetails.getData();
+        documents.forEach(document -> documentTransformer.addDocument(caveatCallbackRequest, document));
+        ResponseCaveatDataBuilder responseCaveatDataBuilder = getResponseCaveatData(caveatDetails);
+
+        if (documentTransformer.hasDocumentWithType(documents, CAVEAT_RAISED) && letterId != null) {
+            CollectionMember<BulkPrint> bulkPrint = buildBulkPrint(letterId, CAVEAT_RAISED.getTemplateName());
+            caveatData.getBulkPrintId().add(bulkPrint);
+
+            responseCaveatDataBuilder
+                    .bulkPrintId(caveatData.getBulkPrintId())
+                    .build();
+        }
+
+        responseCaveatDataBuilder
+                .applicationSubmittedDate(dateTimeFormatter.format(LocalDate.now()))
+                .paperForm(YES)
+                .build();
+
+        return transformResponse(responseCaveatDataBuilder.build());
+    }
+
+    public CaveatCallbackResponse defaultCaveatValues(CaveatCallbackRequest caveatCallbackRequest) {
         CaveatDetails caveatDetails = caveatCallbackRequest.getCaseDetails();
 
         ResponseCaveatData responseCaveatData = getResponseCaveatData(caveatDetails)
-                .expiryDate(dateTimeFormatter.format(LocalDate.now().plusMonths(CAVEAT_LIFESPAN)))
+                .caveatRaisedEmailNotificationRequested(caveatCallbackRequest.getCaseDetails().getData().getCaveatRaisedEmailNotification())
+                .sendToBulkPrintRequested(caveatCallbackRequest.getCaseDetails().getData().getSendToBulkPrint())
                 .build();
 
         return transformResponse(responseCaveatData);
@@ -102,20 +130,34 @@ public class CaveatCallbackResponseTransformer {
                 .caveatorAddress(caveatData.getCaveatorAddress())
 
                 .caseMatches(caveatData.getCaseMatches())
-
+                .applicationSubmittedDate(transformToString(caveatData.getApplicationSubmittedDate()))
                 .expiryDate(transformToString(caveatData.getExpiryDate()))
                 .messageContent(caveatData.getMessageContent())
+                .caveatReopenReason(caveatData.getCaveatReopenReason())
 
                 .documentsUploaded(caveatData.getDocumentsUploaded())
                 .documentsGenerated(caveatData.getDocumentsGenerated())
-                .legacyId(caveatData.getLegacyId())
+                .notificationsGenerated(caveatData.getNotificationsGenerated())
+                .recordId(caveatData.getRecordId())
+                .paperForm(caveatData.getPaperForm())
                 .legacyCaseViewUrl(caveatData.getLegacyCaseViewUrl())
-                .legacyType(caveatData.getLegacyType());
+                .legacyType(caveatData.getLegacyType())
+                .sendToBulkPrintRequested(caveatData.getSendToBulkPrintRequested())
+                .caveatRaisedEmailNotificationRequested(caveatData.getCaveatRaisedEmailNotificationRequested())
+                .bulkPrintId(caveatData.getBulkPrintId())
+                .applicationSubmittedDate(transformToString(caveatData.getApplicationSubmittedDate()));
     }
 
     private String transformToString(LocalDate dateValue) {
         return ofNullable(dateValue)
                 .map(String::valueOf)
                 .orElse(null);
+    }
+
+    private CollectionMember<BulkPrint> buildBulkPrint(String letterId, String templateName) {
+        return new CollectionMember<>(null, BulkPrint.builder()
+                .sendLetterId(letterId)
+                .templateName(templateName)
+                .build());
     }
 }

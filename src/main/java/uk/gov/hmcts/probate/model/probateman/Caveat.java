@@ -31,6 +31,15 @@ public class Caveat extends ProbateManModel {
     @Column(name = "PROBATE_NUMBER")
     private String probateNumber;
 
+    @Column(name = "REGISTRY_NAME")
+    private String registryName;
+
+    @Column(name = "SUBREGISTRY_NAME")
+    private String subregistryName;
+
+    @Column(name = "REGISTRY_CODE")
+    private Long registryCode;
+
     @Column(name = "DECEASED_ID")
     private Long deceasedId;
 
@@ -43,6 +52,9 @@ public class Caveat extends ProbateManModel {
     @Column(name = "PROBATE_VERSION")
     private Long probateVersion;
 
+    @Column(name = "OTHER_INFORMATION_TEXT")
+    private String otherInformationText; //varchar(32000),
+
     @JsonDeserialize(using = LocalDateDeserializer.class)
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DATE_FORMAT)
@@ -54,6 +66,12 @@ public class Caveat extends ProbateManModel {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DATE_FORMAT)
     @Column(name = "DATE_OF_DEATH1")
     private LocalDate dateOfDeath;
+
+    @JsonDeserialize(using = LocalDateDeserializer.class)
+    @JsonSerialize(using = LocalDateSerializer.class)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DATE_FORMAT)
+    @Column(name = "DATE_OF_DEATH2")
+    private LocalDate dateOfDeath2;
 
     @Column(name = "ALIAS_NAMES")
     private String aliasNames;

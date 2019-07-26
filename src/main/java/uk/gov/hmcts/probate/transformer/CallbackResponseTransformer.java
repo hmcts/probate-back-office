@@ -9,6 +9,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.AliasName;
+import uk.gov.hmcts.probate.model.ccd.raw.BulkPrint;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.ProbateAliasName;
@@ -33,7 +34,11 @@ import java.util.stream.Collectors;
 import static java.util.Collections.EMPTY_LIST;
 import static java.util.Optional.ofNullable;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
+import static uk.gov.hmcts.probate.model.Constants.CASE_TYPE_DEFAULT;
+import static uk.gov.hmcts.probate.model.Constants.CTSC;
+import static uk.gov.hmcts.probate.model.Constants.DATE_OF_DEATH_TYPE_DEFAULT;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT_STOPPED;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT;
@@ -50,7 +55,12 @@ public class CallbackResponseTransformer {
     static final String PAYMENT_REFERENCE_CHEQUE = "Cheque (payable to ‘HM Courts & Tribunals Service’)";
 
     private static final ApplicationType DEFAULT_APPLICATION_TYPE = SOLICITOR;
-    private static final String DEFAULT_REGISTRY_LOCATION = "Birmingham";
+    private static final String DEFAULT_REGISTRY_LOCATION = CTSC;
+    private static final String DEFAULT_IHT_FORM_ID = "IHT205";
+    private static final String CASE_CREATED = "CaseCreated";
+    private static final String CASE_PRINTED = "CasePrinted";
+    private static final String READY_FOR_EXAMINATION = "BOReadyForExamination";
+    private static final String EXAMINING = "BOExamining";
 
     public static final String ANSWER_YES = "Yes";
     public static final String ANSWER_NO = "No";
@@ -68,16 +78,28 @@ public class CallbackResponseTransformer {
         return transformResponse(responseCaseData);
     }
 
-    public CallbackResponse caseStopped(CallbackRequest callbackRequest, Document document) {
+    public CallbackResponse caseStopped(CallbackRequest callbackRequest, List<Document> documents, String letterId) {
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
+        CaseData caseData = caseDetails.getData();
+        documents.forEach(document -> documentTransformer.addDocument(callbackRequest, document));
 
-        caseDetails.getData().getProbateDocumentsGenerated().add(new CollectionMember<>(null, document));
+        ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), false);
 
-        ResponseCaseData responseCaseData = getResponseCaseData(caseDetails, false)
+        if (documentTransformer.hasDocumentWithType(documents, CAVEAT_STOPPED) && letterId != null) {
+            CollectionMember<BulkPrint> bulkPrint = buildBulkPrint(letterId, CAVEAT_STOPPED.getTemplateName());
+            caseData.getBulkPrintId().add(bulkPrint);
+
+            responseCaseDataBuilder
+                    .bulkPrintId(caseData.getBulkPrintId())
+                    .boCaveatStopSendToBulkPrintRequested(caseData.getBoCaveatStopSendToBulkPrint())
+                    .build();
+        }
+        responseCaseDataBuilder
+                .boCaveatStopEmailNotificationRequested(caseData.getBoCaveatStopEmailNotification())
                 .boStopDetails("")
                 .build();
 
-        return transformResponse(responseCaseData);
+        return transformResponse(responseCaseDataBuilder.build());
     }
 
     public CallbackResponse addDocuments(CallbackRequest callbackRequest, List<Document> documents, String letterId, String pdfSize) {
@@ -92,13 +114,17 @@ public class CallbackResponseTransformer {
         if (documentTransformer.hasDocumentWithType(documents, DIGITAL_GRANT)
                 || documentTransformer.hasDocumentWithType(documents, ADMON_WILL_GRANT)
                 || documentTransformer.hasDocumentWithType(documents, INTESTACY_GRANT)) {
+
+            DateFormat targetFormat = new SimpleDateFormat(DATE_FORMAT);
+            String grantIssuedDate = targetFormat.format(new Date());
             responseCaseDataBuilder
                     .boEmailGrantIssuedNotificationRequested(
                             callbackRequest.getCaseDetails().getData().getBoEmailGrantIssuedNotification())
                     .boSendToBulkPrintRequested(
                             callbackRequest.getCaseDetails().getData().getBoSendToBulkPrint())
                     .bulkPrintSendLetterId(letterId)
-                    .bulkPrintPdfSize(String.valueOf(pdfSize));
+                    .bulkPrintPdfSize(String.valueOf(pdfSize))
+                    .grantIssuedDate(grantIssuedDate);
 
         }
         if (documentTransformer.hasDocumentWithType(documents, SENT_EMAIL)) {
@@ -133,6 +159,28 @@ public class CallbackResponseTransformer {
         }
         return transformResponse(responseCaseDataBuilder.build());
     }
+
+    public CallbackResponse resolveStop(CallbackRequest callbackRequest) {
+        ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), false);
+        switch (callbackRequest.getCaseDetails().getData().getResolveStopState()) {
+            case CASE_CREATED:
+                responseCaseDataBuilder.state(CASE_CREATED);
+                break;
+            case CASE_PRINTED:
+                responseCaseDataBuilder.state(CASE_PRINTED);
+                break;
+            case READY_FOR_EXAMINATION:
+                responseCaseDataBuilder.state(READY_FOR_EXAMINATION);
+                break;
+            default:
+                responseCaseDataBuilder.state(EXAMINING);
+                break;
+        }
+        return transformResponse(responseCaseDataBuilder.build());
+    }
+
+
+
 
     public CallbackResponse transformForSolicitorComplete(CallbackRequest callbackRequest, FeeServiceResponse feeServiceResponse) {
         String feeForNonUkCopies = transformMoneyGBPToString(feeServiceResponse.getFeeForNonUkCopies());
@@ -173,7 +221,10 @@ public class CallbackResponseTransformer {
 
     public CallbackResponse transformCase(CallbackRequest callbackRequest) {
 
-        boolean transform = callbackRequest.getCaseDetails().getData().getApplicationType() == ApplicationType.SOLICITOR;
+
+        boolean transform = callbackRequest.getCaseDetails().getData().getApplicationType() == ApplicationType.SOLICITOR
+                && callbackRequest.getCaseDetails().getData().getRecordId() == null
+                && !callbackRequest.getCaseDetails().getData().getPaperForm().equalsIgnoreCase(ANSWER_YES);
 
         ResponseCaseData responseCaseData = getResponseCaseData(callbackRequest.getCaseDetails(), transform)
                 .build();
@@ -185,6 +236,11 @@ public class CallbackResponseTransformer {
 
         ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), false);
         responseCaseDataBuilder.paperForm(ANSWER_YES);
+        if (callbackRequest.getCaseDetails().getData().getIhtReferenceNumber() != null) {
+            if (!callbackRequest.getCaseDetails().getData().getIhtReferenceNumber().isEmpty()) {
+                responseCaseDataBuilder.ihtFormId(DEFAULT_IHT_FORM_ID);
+            }
+        }
         getCaseCreatorResponseCaseBuilder(callbackRequest.getCaseDetails().getData(), responseCaseDataBuilder);
 
         return transformResponse(responseCaseDataBuilder.build());
@@ -201,16 +257,12 @@ public class CallbackResponseTransformer {
         ResponseCaseDataBuilder builder = ResponseCaseData.builder()
                 .applicationType(ofNullable(caseData.getApplicationType()).orElse(DEFAULT_APPLICATION_TYPE))
                 .registryLocation(ofNullable(caseData.getRegistryLocation()).orElse(DEFAULT_REGISTRY_LOCATION))
-                .solsSolicitorFirmName(caseData.getSolsSolicitorFirmName())
-                .solsSolicitorAddress(caseData.getSolsSolicitorAddress())
-                .solsSolicitorEmail(caseData.getSolsSolicitorEmail())
-                .solsSolicitorPhoneNumber(caseData.getSolsSolicitorPhoneNumber())
-                .solsSOTName(caseData.getSolsSOTName())
-                .solsSOTJobTitle(caseData.getSolsSOTJobTitle())
                 .deceasedForenames(caseData.getDeceasedForenames())
                 .deceasedSurname(caseData.getDeceasedSurname())
-                .deceasedDateOfBirth(dateTimeFormatter.format(caseData.getDeceasedDateOfBirth()))
-                .deceasedDateOfDeath(dateTimeFormatter.format(caseData.getDeceasedDateOfDeath()))
+                .deceasedDateOfBirth(ofNullable(caseData.getDeceasedDateOfBirth())
+                        .map(dateTimeFormatter::format).orElse(null))
+                .deceasedDateOfDeath(ofNullable(caseData.getDeceasedDateOfDeath())
+                        .map(dateTimeFormatter::format).orElse(null))
                 .willExists(caseData.getWillExists())
                 .willAccessOriginal((caseData.getWillAccessOriginal()))
                 .willHasCodicils(caseData.getWillHasCodicils())
@@ -229,7 +281,6 @@ public class CallbackResponseTransformer {
                 .deceasedAddress(caseData.getDeceasedAddress())
                 .deceasedAnyOtherNames(caseData.getDeceasedAnyOtherNames())
                 .primaryApplicantAddress(caseData.getPrimaryApplicantAddress())
-                .solsSolicitorAppReference(caseData.getSolsSolicitorAppReference())
                 .solsAdditionalInfo(caseData.getSolsAdditionalInfo())
                 .caseMatches(caseData.getCaseMatches())
 
@@ -292,9 +343,32 @@ public class CallbackResponseTransformer {
                 .paperForm(caseData.getPaperForm())
                 .caseType(caseData.getCaseType())
 
-                .legacyId(caseData.getLegacyId())
+                .boCaveatStopNotificationRequested(caseData.getBoCaveatStopNotificationRequested())
+                .boCaveatStopNotification(caseData.getBoCaveatStopNotification())
+
+                .boCaseStopCaveatId(caseData.getBoCaseStopCaveatId())
+
+                .boCaveatStopEmailNotificationRequested(caseData.getBoCaveatStopEmailNotificationRequested())
+                .boCaveatStopEmailNotification(caseData.getBoCaveatStopEmailNotification())
+                .boCaveatStopSendToBulkPrintRequested(caseData.getBoCaveatStopSendToBulkPrintRequested())
+                .boCaveatStopSendToBulkPrint(caseData.getBoCaveatStopSendToBulkPrint())
+
+                .recordId(caseData.getRecordId())
                 .legacyType(caseData.getLegacyType())
-                .legacyCaseViewUrl(caseData.getLegacyCaseViewUrl());
+                .legacyCaseViewUrl(caseData.getLegacyCaseViewUrl())
+                .grantIssuedDate(caseData.getGrantIssuedDate())
+                .dateOfDeathType(caseData.getDateOfDeathType())
+                .bulkPrintId(caseData.getBulkPrintId())
+
+                .deceasedDivorcedInEnglandOrWales(caseData.getDeceasedDivorcedInEnglandOrWales())
+                .primaryApplicantAdoptionInEnglandOrWales(caseData.getPrimaryApplicantAdoptionInEnglandOrWales())
+                .deceasedSpouseNotApplyingReason(caseData.getDeceasedSpouseNotApplyingReason())
+                .deceasedOtherChildren(caseData.getDeceasedOtherChildren())
+                .allDeceasedChildrenOverEighteen(caseData.getAllDeceasedChildrenOverEighteen())
+                .anyDeceasedChildrenDieBeforeDeceased(caseData.getAnyDeceasedChildrenDieBeforeDeceased())
+                .anyDeceasedGrandChildrenUnderEighteen(caseData.getAnyDeceasedGrandChildrenUnderEighteen())
+                .deceasedAnyChildren(caseData.getDeceasedAnyChildren())
+                .deceasedHasAssetsOutsideUK(caseData.getDeceasedHasAssetsOutsideUK());
 
         if (transform) {
             updateCaseBuilderForTransformCase(caseData, builder);
@@ -421,6 +495,18 @@ public class CallbackResponseTransformer {
             }
         }
 
+        if (caseData.getApplicationType() != ApplicationType.PERSONAL) {
+            builder
+                    .solsSOTName(caseData.getSolsSOTName())
+                    .solsSOTJobTitle(caseData.getSolsSOTJobTitle())
+                    .solsSolicitorAppReference(caseData.getSolsSolicitorAppReference())
+                    .solsSolicitorFirmName(caseData.getSolsSolicitorFirmName())
+                    .solsSolicitorEmail(caseData.getSolsSolicitorEmail())
+                    .solsSolicitorPhoneNumber(caseData.getSolsSolicitorPhoneNumber())
+                    .solsSolicitorAddress(caseData.getSolsSolicitorAddress());
+
+        }
+
         if (!isPaperForm(caseData)) {
             builder
                     .paperForm(ANSWER_NO);
@@ -428,7 +514,12 @@ public class CallbackResponseTransformer {
 
         if (caseData.getCaseType() == null) {
             builder
-                    .caseType("gop");
+                    .caseType(CASE_TYPE_DEFAULT);
+        }
+
+        if (caseData.getDateOfDeathType() == null) {
+            builder
+                    .dateOfDeathType(DATE_OF_DEATH_TYPE_DEFAULT);
         }
 
         if (caseData.getPrimaryApplicantAliasReason() != null) {
@@ -472,6 +563,17 @@ public class CallbackResponseTransformer {
                 .ihtReferenceNumber(caseData.getIhtReferenceNumber())
                 .solsDeceasedAliasNamesList(caseData.getSolsDeceasedAliasNamesList());
 
+        if (caseData.getApplicationType() != ApplicationType.PERSONAL) {
+            builder
+                    .solsSOTName(caseData.getSolsSOTName())
+                    .solsSOTJobTitle(caseData.getSolsSOTJobTitle())
+                    .solsSolicitorAppReference(caseData.getSolsSolicitorAppReference())
+                    .solsSolicitorFirmName(caseData.getSolsSolicitorFirmName())
+                    .solsSolicitorEmail(caseData.getSolsSolicitorEmail())
+                    .solsSolicitorPhoneNumber(caseData.getSolsSolicitorPhoneNumber())
+                    .solsSolicitorAddress(caseData.getSolsSolicitorAddress());
+        }
+
         if (!isPaperForm(caseData)) {
             builder
                     .paperForm(ANSWER_NO);
@@ -479,7 +581,12 @@ public class CallbackResponseTransformer {
 
         if (caseData.getCaseType() == null) {
             builder
-                    .caseType("gop");
+                    .caseType(CASE_TYPE_DEFAULT);
+        }
+
+        if (caseData.getDateOfDeathType() == null) {
+            builder
+                    .dateOfDeathType(DATE_OF_DEATH_TYPE_DEFAULT);
         }
 
         if (caseData.getSolsExecutorAliasNames() != null) {
@@ -596,5 +703,12 @@ public class CallbackResponseTransformer {
         return ofNullable(longValue)
                 .map(String::valueOf)
                 .orElse(null);
+    }
+
+    private CollectionMember<BulkPrint> buildBulkPrint(String letterId, String templateName) {
+        return new CollectionMember<>(null, BulkPrint.builder()
+                .sendLetterId(letterId)
+                .templateName(templateName)
+                .build());
     }
 }
