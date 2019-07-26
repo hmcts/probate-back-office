@@ -55,6 +55,7 @@ public class BusinessValidationControllerTest {
     private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
     private static final String FORENAME = "Andy";
     private static final String SURNAME = "Michael";
+    private static final String MARITAL_STATUS = "Never married";
     private static final String SOLICITOR_APP_REFERENCE = "Reference";
     private static final String SOLICITOR_FIRM_NAME = "Legal Service Ltd";
     private static final String SOLICITOR_FIRM_LINE1 = "Aols Add Line1";
@@ -81,6 +82,7 @@ public class BusinessValidationControllerTest {
     private static final SolsAddress PRIMARY_ADDRESS = SolsAddress.builder().addressLine1(EX_ADD_LINE1).postCode(EX_ADD_PC).build();
     private static final String PRIMARY_APPLICANT_APPLYING = "Yes";
     private static final String PRIMARY_APPLICANT_HAS_ALIAS = "No";
+    private static final String PRIMARY_APPLICANT_EMAIL = "test@test.com";
     private static final String OTHER_EXEC_EXISTS = "No";
     private static final String WILL_EXISTS = "Yes";
     private static final String WILL_TYPE_PROBATE = "WillLeft";
@@ -91,6 +93,9 @@ public class BusinessValidationControllerTest {
     private static final String PRIMARY_SURNAME = "ExSN";
     private static final String DECEASED_OTHER_NAMES = "No";
     private static final String DECEASED_DOM_UK = "Yes";
+    private static final String RELATIONSHIP_TO_DECEASED = "SpouseOrCivil";
+    private static final String MINORITY_INTEREST = "No";
+    private static final String MULTIPLE_CLAIMS = "No";
     private static final String ANSWER_NO = "No";
 
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
@@ -242,6 +247,48 @@ public class BusinessValidationControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(jsonPath("$.data.solsLegalStatementDocument.document_filename").value("legalStatementProbate.pdf"));
+    }
+
+    @Test
+    public void shouldReturnIntestacySuccess() throws Exception {
+        caseDataBuilder.solsWillType(WILL_TYPE_INTESTACY);
+        caseDataBuilder.primaryApplicantEmailAddress(PRIMARY_APPLICANT_EMAIL);
+        caseDataBuilder.deceasedMartialStatus(MARITAL_STATUS);
+        caseDataBuilder.solsApplicantRelationshipToDeceased(RELATIONSHIP_TO_DECEASED);
+        caseDataBuilder.solsMinorityInterest(MINORITY_INTEREST);
+        caseDataBuilder.solsMultipleClaims(MULTIPLE_CLAIMS);
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
+        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
+
+        Document probateDocument = Document.builder().documentType(DocumentType.LEGAL_STATEMENT_INTESTACY)
+                .documentLink(DocumentLink.builder().documentFilename("legalStatementIntestacy.pdf").build())
+                .build();
+        when(pdfManagementService.generateAndUpload(any(CallbackRequest.class), any(DocumentType.class)))
+                .thenReturn(probateDocument);
+        mockMvc.perform(post(SOLS_VALIDATE_INTESTACY_URL).content(json).contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(jsonPath("$.data.solsLegalStatementDocument.document_filename").value("legalStatementIntestacy.pdf"));
+    }
+
+    @Test
+    public void shouldReturnAdmonSuccess() throws Exception {
+        caseDataBuilder.solsWillType(WILL_TYPE_ADMON);
+        caseDataBuilder.primaryApplicantEmailAddress(PRIMARY_APPLICANT_EMAIL);
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
+        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
+
+        Document probateDocument = Document.builder().documentType(DocumentType.LEGAL_STATEMENT_ADMON)
+                .documentLink(DocumentLink.builder().documentFilename("legalStatementAdmon.pdf").build())
+                .build();
+        when(pdfManagementService.generateAndUpload(any(CallbackRequest.class), any(DocumentType.class)))
+                .thenReturn(probateDocument);
+        mockMvc.perform(post(SOLS_VALIDATE_ADMON_URL).content(json).contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(jsonPath("$.data.solsLegalStatementDocument.document_filename").value("legalStatementAdmon.pdf"));
     }
 
     @Test

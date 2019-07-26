@@ -64,6 +64,8 @@ public class BusinessValidationUnitTest {
     @Mock
     private CaseData caseDataMock;
     @Mock
+    private Document documentMock;
+    @Mock
     private BindingResult bindingResultMock;
     @Mock
     private FieldError fieldErrorMock;
@@ -127,6 +129,7 @@ public class BusinessValidationUnitTest {
         ResponseEntity<CallbackResponse> response = underTest.solsValidate(callbackRequestMock,
                 bindingResultMock, httpServletRequest);
 
+        assertThat(response.getBody(), is(callbackResponseMock));
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(response.getBody().getErrors().isEmpty(), is(true));
     }
@@ -143,6 +146,120 @@ public class BusinessValidationUnitTest {
                 .thenReturn(callbackResponseMock);
 
         ResponseEntity<CallbackResponse> response = underTest.solsValidate(callbackRequestMock,
+                bindingResultMock, httpServletRequest);
+
+        assertThat(response.getBody(), is(callbackResponseMock));
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        assertThat(response.getBody().getErrors().isEmpty(), is(true));
+    }
+
+    @Test
+    public void shouldValidateProbateWithNoErrors() {
+        when(bindingResultMock.hasErrors()).thenReturn(false);
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        when(eventValidationServiceMock.validateRequest(callbackRequestMock, validationRules)).thenReturn(callbackResponseMock);
+        when(stateChangeServiceMock.getChangedStateForProbateUpdate(caseDataMock)).thenReturn(Optional.empty());
+        when(pdfManagementServiceMock.generateAndUpload(callbackRequestMock, LEGAL_STATEMENT_PROBATE))
+            .thenReturn(documentMock);
+        when(callbackResponseTransformerMock.transform(callbackRequestMock, documentMock)).thenReturn(callbackResponseMock);
+
+        ResponseEntity<CallbackResponse> response = underTest.solsValidateProbate(callbackRequestMock,
+                bindingResultMock, httpServletRequest);
+
+        assertThat(response.getBody(), is(callbackResponseMock));
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        assertThat(response.getBody().getErrors().isEmpty(), is(true));
+    }
+
+    @Test
+    public void shouldValidateProbateWithNoErrorsWithStateChange() {
+        when(bindingResultMock.hasErrors()).thenReturn(false);
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        when(eventValidationServiceMock.validateRequest(callbackRequestMock, validationRules)).thenReturn(callbackResponseMock);
+        Optional<String> changedState = Optional.of("changedState");
+        when(stateChangeServiceMock.getChangedStateForProbateUpdate(caseDataMock)).thenReturn(changedState);
+        when(callbackResponseTransformerMock.transformWithConditionalStateChange(callbackRequestMock, changedState))
+                .thenReturn(callbackResponseMock);
+
+        ResponseEntity<CallbackResponse> response = underTest.solsValidateProbate(callbackRequestMock,
+                bindingResultMock, httpServletRequest);
+
+        assertThat(response.getBody(), is(callbackResponseMock));
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        assertThat(response.getBody().getErrors().isEmpty(), is(true));
+    }
+
+    @Test
+    public void shouldValidateIntestacyWithNoErrors() {
+        when(bindingResultMock.hasErrors()).thenReturn(false);
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        when(eventValidationServiceMock.validateRequest(callbackRequestMock, validationRules)).thenReturn(callbackResponseMock);
+        when(stateChangeServiceMock.getChangedStateForIntestacyUpdate(caseDataMock)).thenReturn(Optional.empty());
+        when(pdfManagementServiceMock.generateAndUpload(callbackRequestMock, LEGAL_STATEMENT_INTESTACY))
+                .thenReturn(documentMock);
+        when(callbackResponseTransformerMock.transform(callbackRequestMock, documentMock)).thenReturn(callbackResponseMock);
+
+        ResponseEntity<CallbackResponse> response = underTest.solsValidateIntestacy(callbackRequestMock,
+                bindingResultMock, httpServletRequest);
+
+        assertThat(response.getBody(), is(callbackResponseMock));
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        assertThat(response.getBody().getErrors().isEmpty(), is(true));
+    }
+
+    @Test
+    public void shouldValidateIntestacyWithNoErrorsWithStateChange() {
+        when(bindingResultMock.hasErrors()).thenReturn(false);
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        when(eventValidationServiceMock.validateRequest(callbackRequestMock, validationRules)).thenReturn(callbackResponseMock);
+        Optional<String> changedState = Optional.of("changedState");
+        when(stateChangeServiceMock.getChangedStateForIntestacyUpdate(caseDataMock)).thenReturn(changedState);
+        when(callbackResponseTransformerMock.transformWithConditionalStateChange(callbackRequestMock, changedState))
+                .thenReturn(callbackResponseMock);
+
+        ResponseEntity<CallbackResponse> response = underTest.solsValidateIntestacy(callbackRequestMock,
+                bindingResultMock, httpServletRequest);
+
+        assertThat(response.getBody(), is(callbackResponseMock));
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        assertThat(response.getBody().getErrors().isEmpty(), is(true));
+    }
+
+    @Test
+    public void shouldValidateAdmonWithNoErrors() {
+        when(bindingResultMock.hasErrors()).thenReturn(false);
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        when(eventValidationServiceMock.validateRequest(callbackRequestMock, validationRules)).thenReturn(callbackResponseMock);
+        when(stateChangeServiceMock.getChangedStateForAdmonUpdate(caseDataMock)).thenReturn(Optional.empty());
+        when(pdfManagementServiceMock.generateAndUpload(callbackRequestMock, LEGAL_STATEMENT_ADMON))
+                .thenReturn(documentMock);
+        when(callbackResponseTransformerMock.transform(callbackRequestMock, documentMock)).thenReturn(callbackResponseMock);
+
+        ResponseEntity<CallbackResponse> response = underTest.solsValidateAdmon(callbackRequestMock,
+                bindingResultMock, httpServletRequest);
+
+        assertThat(response.getBody(), is(callbackResponseMock));
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        assertThat(response.getBody().getErrors().isEmpty(), is(true));
+    }
+
+    @Test
+    public void shouldValidateAdmonWithNoErrorsWithStateChange() {
+        when(bindingResultMock.hasErrors()).thenReturn(false);
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        when(eventValidationServiceMock.validateRequest(callbackRequestMock, validationRules)).thenReturn(callbackResponseMock);
+        Optional<String> changedState = Optional.of("changedState");
+        when(stateChangeServiceMock.getChangedStateForAdmonUpdate(caseDataMock)).thenReturn(changedState);
+        when(callbackResponseTransformerMock.transformWithConditionalStateChange(callbackRequestMock, changedState))
+                .thenReturn(callbackResponseMock);
+
+        ResponseEntity<CallbackResponse> response = underTest.solsValidateAdmon(callbackRequestMock,
                 bindingResultMock, httpServletRequest);
 
         assertThat(response.getBody(), is(callbackResponseMock));

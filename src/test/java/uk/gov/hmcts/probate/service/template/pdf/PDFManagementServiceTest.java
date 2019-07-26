@@ -37,6 +37,8 @@ import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT_RAISED;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_ADMON;
+import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_INTESTACY;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE;
 import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
 import static uk.gov.hmcts.probate.model.DocumentType.WILL_LODGEMENT_DEPOSIT_RECEIPT;
@@ -100,7 +102,7 @@ public class PDFManagementServiceTest {
     }
     
     @Test
-    public void shouldGenerateAndUploadLegalStatement() throws IOException {
+    public void shouldGenerateAndUploadProbateLegalStatement() throws IOException {
         String json = "{}";
         when(objectMapperMock.writeValueAsString(callbackRequestMock)).thenReturn(json);
         when(pdfGeneratorServiceMock.generatePdf(LEGAL_STATEMENT_PROBATE, json)).thenReturn(evidenceManagementFileUpload);
@@ -114,6 +116,48 @@ public class PDFManagementServiceTest {
         Document response = underTest.generateAndUpload(callbackRequestMock, LEGAL_STATEMENT_PROBATE);
 
         String fileName = "legalStatementProbate.pdf";
+        assertNotNull(response);
+        assertEquals(fileName, response.getDocumentLink().getDocumentFilename());
+        assertEquals(href, response.getDocumentLink().getDocumentBinaryUrl());
+        assertEquals(href, response.getDocumentLink().getDocumentUrl());
+    }
+
+    @Test
+    public void shouldGenerateAndUploadIntestacyLegalStatement() throws IOException {
+        String json = "{}";
+        when(objectMapperMock.writeValueAsString(callbackRequestMock)).thenReturn(json);
+        when(pdfGeneratorServiceMock.generatePdf(LEGAL_STATEMENT_INTESTACY, json)).thenReturn(evidenceManagementFileUpload);
+        when(uploadServiceMock.store(evidenceManagementFileUpload)).thenReturn(evidenceManagementFile);
+        when(evidenceManagementFile.getLink(Link.REL_SELF)).thenReturn(link);
+        when(evidenceManagementFile.getLink("binary")).thenReturn(link);
+
+        String href = "href";
+        when(link.getHref()).thenReturn(href);
+
+        Document response = underTest.generateAndUpload(callbackRequestMock, LEGAL_STATEMENT_INTESTACY);
+
+        String fileName = "legalStatementIntestacy.pdf";
+        assertNotNull(response);
+        assertEquals(fileName, response.getDocumentLink().getDocumentFilename());
+        assertEquals(href, response.getDocumentLink().getDocumentBinaryUrl());
+        assertEquals(href, response.getDocumentLink().getDocumentUrl());
+    }
+
+    @Test
+    public void shouldGenerateAndUploadAdmonLegalStatement() throws IOException {
+        String json = "{}";
+        when(objectMapperMock.writeValueAsString(callbackRequestMock)).thenReturn(json);
+        when(pdfGeneratorServiceMock.generatePdf(LEGAL_STATEMENT_ADMON, json)).thenReturn(evidenceManagementFileUpload);
+        when(uploadServiceMock.store(evidenceManagementFileUpload)).thenReturn(evidenceManagementFile);
+        when(evidenceManagementFile.getLink(Link.REL_SELF)).thenReturn(link);
+        when(evidenceManagementFile.getLink("binary")).thenReturn(link);
+
+        String href = "href";
+        when(link.getHref()).thenReturn(href);
+
+        Document response = underTest.generateAndUpload(callbackRequestMock, LEGAL_STATEMENT_ADMON);
+
+        String fileName = "legalStatementAdmon.pdf";
         assertNotNull(response);
         assertEquals(fileName, response.getDocumentLink().getDocumentFilename());
         assertEquals(href, response.getDocumentLink().getDocumentBinaryUrl());

@@ -41,8 +41,12 @@ public class StateChangeServiceTest {
     @Mock
     private CaseData caseDataMock;
 
-    private static final String WILL_TYPE = "WillLeft";
+    private static final String WILL_TYPE_PROBATE = "WillLeft";
+    private static final String WILL_TYPE_INTESTACY = "NoWill";
+    private static final String WILL_TYPE_ADMON = "WillLeftAnnexed";
     private static final String STATE_GRANT_TYPE_PROBATE = "SolProbateCreated";
+    private static final String STATE_GRANT_TYPE_INTESTACY = "SolIntestacyCreated";
+    private static final String STATE_GRANT_TYPE_ADMON = "SolAdmonCreated";
 
     @Before
     public void setup() {
@@ -143,14 +147,66 @@ public class StateChangeServiceTest {
     }
 
     @Test
-    public void shouldChangeStateForCaseReview() {
+    public void shouldChangeStateProbateForCaseReview() {
         when(updateApplicationRule.isChangeNeeded(caseDataMock)).thenReturn(true);
-        when(caseDataMock.getSolsWillType()).thenReturn(WILL_TYPE);
+        when(caseDataMock.getSolsWillType()).thenReturn(WILL_TYPE_PROBATE);
 
         Optional<String> newState = underTest.getChangedStateForCaseReview(caseDataMock);
 
         assertTrue(newState.isPresent());
         assertEquals(STATE_GRANT_TYPE_PROBATE, newState.get());
+    }
+
+    @Test
+    public void shouldChangeStateIntestacyForCaseReview() {
+        when(updateApplicationRule.isChangeNeeded(caseDataMock)).thenReturn(true);
+        when(caseDataMock.getSolsWillType()).thenReturn(WILL_TYPE_INTESTACY);
+
+        Optional<String> newState = underTest.getChangedStateForCaseReview(caseDataMock);
+
+        assertTrue(newState.isPresent());
+        assertEquals(STATE_GRANT_TYPE_INTESTACY, newState.get());
+    }
+
+    @Test
+    public void shouldChangeStateAdmonForCaseReview() {
+        when(updateApplicationRule.isChangeNeeded(caseDataMock)).thenReturn(true);
+        when(caseDataMock.getSolsWillType()).thenReturn(WILL_TYPE_ADMON);
+
+        Optional<String> newState = underTest.getChangedStateForCaseReview(caseDataMock);
+
+        assertTrue(newState.isPresent());
+        assertEquals(STATE_GRANT_TYPE_ADMON, newState.get());
+    }
+
+    @Test
+    public void shouldChangeStateForGrantTypeProbate() {
+        when(caseDataMock.getSolsWillType()).thenReturn(WILL_TYPE_PROBATE);
+
+        Optional<String> newState = underTest.getChangedStateForGrantType(caseDataMock);
+
+        assertTrue(newState.isPresent());
+        assertEquals(STATE_GRANT_TYPE_PROBATE, newState.get());
+    }
+
+    @Test
+    public void shouldChangeStateForGrantTypeIntestacy() {
+        when(caseDataMock.getSolsWillType()).thenReturn(WILL_TYPE_INTESTACY);
+
+        Optional<String> newState = underTest.getChangedStateForGrantType(caseDataMock);
+
+        assertTrue(newState.isPresent());
+        assertEquals(STATE_GRANT_TYPE_INTESTACY, newState.get());
+    }
+
+    @Test
+    public void shouldChangeStateForGrantTypeAdmon() {
+        when(caseDataMock.getSolsWillType()).thenReturn(WILL_TYPE_ADMON);
+
+        Optional<String> newState = underTest.getChangedStateForGrantType(caseDataMock);
+
+        assertTrue(newState.isPresent());
+        assertEquals(STATE_GRANT_TYPE_ADMON, newState.get());
     }
 
     @Test

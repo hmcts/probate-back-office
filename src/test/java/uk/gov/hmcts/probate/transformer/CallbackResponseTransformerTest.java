@@ -75,6 +75,9 @@ public class CallbackResponseTransformerTest {
 
     private static final String CASE_TYPE_GRANT_OF_PROBATE = "gop";
     private static final String CASE_TYPE_INTESTACY = "intestacy";
+    private static final String WILL_TYPE_PROBATE = "WillLeft";
+    private static final String WILL_TYPE_INTESTACY = "NoWill";
+    private static final String WILL_TYPE_ADMON = "WillLeftAnnexed";
 
     private static final ApplicationType APPLICATION_TYPE = SOLICITOR;
     private static final String REGISTRY_LOCATION = "ctsc";
@@ -286,6 +289,7 @@ public class CallbackResponseTransformerTest {
                 .boCaveatStopSendToBulkPrintRequested(CAVEAT_STOP_SEND_TO_BULK_PRINT)
                 .boCaseStopReasonList(STOP_REASONS_LIST)
                 .boStopDetails(STOP_DETAILS)
+                .solsWillType(WILL_TYPE_PROBATE)
                 .willExists(YES)
                 .additionalExecutorsApplying(ADDITIONAL_EXEC_LIST_APP)
                 .additionalExecutorsNotApplying(ADDITIONAL_EXEC_LIST_NOT_APP)
@@ -783,6 +787,54 @@ public class CallbackResponseTransformerTest {
         assertLegacyInfo(callbackResponse);
         assertEquals(0, callbackResponse.getData().getAdditionalExecutorsApplying().size());
         assertEquals(0, callbackResponse.getData().getAdditionalExecutorsNotApplying().size());
+        assertSolsDetails(callbackResponse);
+    }
+
+    @Test
+    public void shouldTransformCaseForSolicitorWithProbate() {
+        caseDataBuilder.applicationType(ApplicationType.SOLICITOR);
+        caseDataBuilder.solsWillType(WILL_TYPE_PROBATE);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+
+        assertCommonDetails(callbackResponse);
+        assertLegacyInfo(callbackResponse);
+        assertEquals(YES, callbackResponse.getData().getWillExists());
+        assertSolsDetails(callbackResponse);
+    }
+
+    @Test
+    public void shouldTransformCaseForSolicitorWithIntestacy() {
+        caseDataBuilder.applicationType(ApplicationType.SOLICITOR);
+        caseDataBuilder.solsWillType(WILL_TYPE_INTESTACY);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+
+        assertCommonDetails(callbackResponse);
+        assertLegacyInfo(callbackResponse);
+        assertEquals(NO, callbackResponse.getData().getWillExists());
+        assertSolsDetails(callbackResponse);
+    }
+
+    @Test
+    public void shouldTransformCaseForSolicitorWithAdmon() {
+        caseDataBuilder.applicationType(ApplicationType.SOLICITOR);
+        caseDataBuilder.solsWillType(WILL_TYPE_ADMON);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+
+        assertCommonDetails(callbackResponse);
+        assertLegacyInfo(callbackResponse);
+        assertEquals(YES, callbackResponse.getData().getWillExists());
         assertSolsDetails(callbackResponse);
     }
 

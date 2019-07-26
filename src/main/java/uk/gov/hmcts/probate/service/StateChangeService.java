@@ -16,7 +16,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class StateChangeService {
     private static final String STATE_STOPPED = "Stopped";
-    private static final String STATE_UPDATE_APPLICATION = "SolAppCreated";
     private static final String STATE_GRANT_TYPE_PROBATE = "SolProbateCreated";
     private static final String STATE_GRANT_TYPE_INTESTACY = "SolIntestacyCreated";
     private static final String STATE_GRANT_TYPE_ADMON = "SolAdmonCreated";
