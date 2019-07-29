@@ -21,7 +21,7 @@ import static org.hamcrest.Matchers.equalToIgnoringCase;
 @RunWith(SerenityRunner.class)
 public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
 
-    private static final String VALIDATE_URL = "/case/sols-validate";
+    private static final String VALIDATE_PROBATE_URL = "/case/sols-validate-probate";
 
     @Test
     public void verifyFirstNameInTheReturnedPDF() {
@@ -156,7 +156,7 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
                 .body(utils.getJsonFromFile("success.stateChange.beforeSOTcheckYourAnswersPayload.json"))
                 .when().post("/nextsteps/validate")
                 .then().statusCode(200)
-                .and().body("data.state", equalToIgnoringCase("SolAppCreated"));
+                .and().body("data.state", equalToIgnoringCase("SolProbateCreated"));
     }
 
     private String replaceString(String oldJson, String newJson) {
@@ -177,7 +177,7 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
                 .relaxedHTTPSValidation()
                 .headers(utils.getHeadersWithUserId())
                 .body(utils.getJsonFromFile("success.beforeLegalStatement.checkYourAnswersPayload.json")).
-                        when().post(VALIDATE_URL);
+                        when().post(VALIDATE_PROBATE_URL);
         assertEquals(200, response.getStatusCode());
 
         downloadPdfAndVerifyString(extractDocumentId(response), validationString);
@@ -188,7 +188,7 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
         given().relaxedHTTPSValidation()
                 .headers(utils.getHeaders())
                 .body(replaceString(oldString, replacingString))
-                .when().post(VALIDATE_URL).then().statusCode(400)
+                .when().post(VALIDATE_PROBATE_URL).then().statusCode(400)
                 .and().body("fieldErrors[0].field", equalToIgnoringCase(errorMsg))
                 .and().body("message", equalToIgnoringCase("Invalid payload"));
     }
