@@ -41,7 +41,7 @@ public class OCRToCCDMandatoryFieldTest {
     @Test
     public void testFieldNameIsAddedToMissingValueList() {
         addAllMandatoryFields();
-        ocrFields.remove(ocrFields.size() -1);
+        ocrFields.remove(ocrFields.size() - 1);
         assertEquals("Primary applicant Building & Street", ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrFields).get(0));
     }
 

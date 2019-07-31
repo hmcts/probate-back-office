@@ -55,8 +55,8 @@ public class BulkScanningController {
                 ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrMapper.ocrMapper(ocrRequest.getOcrFields()));
 
         ValidationResponse validationResponse =
-                ValidationResponse.builder().warnings(warnings).state(warnings.isEmpty() ?
-                        ValidationResponseState.SUCCESS : ValidationResponseState.WARNINGS).build();
+                ValidationResponse.builder().warnings(warnings)
+                        .state(warnings.isEmpty() ? ValidationResponseState.SUCCESS : ValidationResponseState.WARNINGS).build();
         return ResponseEntity.ok(validationResponse);
     }
 

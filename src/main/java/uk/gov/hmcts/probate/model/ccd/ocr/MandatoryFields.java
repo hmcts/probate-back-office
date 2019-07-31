@@ -6,8 +6,8 @@ public enum MandatoryFields {
     PRIMARY_APPLICANT_ADDRESS_LINE_1("primaryApplicantAddress_AddressLine1", "Primary applicant Building & Street"),
     DECEASED_FORENAMES("deceasedForenames", "Deceased First name(s)"),
     DECEASED_SURNAME("deceasedSurname", "Deceased last name(s)"),
-    DECEASED_ADDRESS("deceasedAddress_AddressLine1", "What was the permanent address of the deceased at the time of " +
-            "their death?"),
+    DECEASED_ADDRESS("deceasedAddress_AddressLine1",
+            "What was the permanent address of the deceased at the time of their death?"),
     DECEASED_DOB("deceasedDateOfBirth", "What was their date of birth?"),
     DECEASED_DOD("deceasedDateOfDeath", "What was their date of death?");
 
