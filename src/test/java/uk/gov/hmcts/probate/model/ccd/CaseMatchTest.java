@@ -82,4 +82,46 @@ public class CaseMatchTest {
         assertNotEquals(caseMatch1, caseMatch2);
     }
 
+    @Test
+    public void shouldNotMatchByCaseLinkWithNullRef() {
+
+        CaseMatch caseMatch1 = CaseMatch.builder()
+                .caseLink(CaseLink.builder().build())
+                .build();
+
+        CaseMatch caseMatch2 = CaseMatch.builder()
+                .caseLink(CaseLink.builder().caseReference("SomeRef2").build())
+                .build();
+
+        assertNotEquals(caseMatch1, caseMatch2);
+    }
+
+    @Test
+    public void shouldNotMatchByCaseLinkWithNullRefOnOther() {
+
+        CaseMatch caseMatch1 = CaseMatch.builder()
+                .caseLink(CaseLink.builder().caseReference("SomeRef1").build())
+                .build();
+
+        CaseMatch caseMatch2 = CaseMatch.builder()
+                .caseLink(CaseLink.builder().build())
+                .build();
+
+        assertNotEquals(caseMatch1, caseMatch2);
+    }
+
+    @Test
+    public void shouldNotMatchByCaseLinkWithNullRefOnBoth() {
+
+        CaseMatch caseMatch1 = CaseMatch.builder()
+                .caseLink(CaseLink.builder().build())
+                .build();
+
+        CaseMatch caseMatch2 = CaseMatch.builder()
+                .caseLink(CaseLink.builder().build())
+                .build();
+
+        assertNotEquals(caseMatch1, caseMatch2);
+    }
+
 }
