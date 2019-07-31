@@ -253,7 +253,7 @@ public class BusinessValidationControllerTest {
     public void shouldReturnIntestacySuccess() throws Exception {
         caseDataBuilder.solsWillType(WILL_TYPE_INTESTACY);
         caseDataBuilder.primaryApplicantEmailAddress(PRIMARY_APPLICANT_EMAIL);
-        caseDataBuilder.deceasedMartialStatus(MARITAL_STATUS);
+        caseDataBuilder.deceasedMaritalStatus(MARITAL_STATUS);
         caseDataBuilder.solsApplicantRelationshipToDeceased(RELATIONSHIP_TO_DECEASED);
         caseDataBuilder.solsMinorityInterest(MINORITY_INTEREST);
         caseDataBuilder.solsMultipleClaims(MULTIPLE_CLAIMS);

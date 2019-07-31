@@ -14,6 +14,8 @@ import static org.hamcrest.Matchers.equalToIgnoringCase;
 @RunWith(SerenityRunner.class)
 public class SolCcdServiceWillUpdateHardStopTests extends IntegrationTestBase {
 
+    public static final String VALIDATE_PROBATE_URL = "/case/sols-validate-probate";
+    public static final String VALIDATE_ADMON_URL = "/case/sols-validate-admon";
     public static final String VALIDATE_URL = "/case/sols-validate";
 
     @Test
@@ -31,7 +33,7 @@ public class SolCcdServiceWillUpdateHardStopTests extends IntegrationTestBase {
         given().relaxedHTTPSValidation()
                 .headers(utils.getHeadersWithUserId())
                 .body(utils.getJsonFromFile("hardStop.noWillNotExists.json"))
-                .post(VALIDATE_URL).then().statusCode(200)
+                .post(VALIDATE_ADMON_URL).then().statusCode(200)
                 .and().body("data.state", equalToIgnoringCase("Stopped"))
                 .and().body("data.willExists", equalToIgnoringCase("No"))
                 .and().body("data.willAccessOriginal", equalToIgnoringCase("Yes"));
@@ -42,7 +44,7 @@ public class SolCcdServiceWillUpdateHardStopTests extends IntegrationTestBase {
         given().relaxedHTTPSValidation()
                 .headers(utils.getHeadersWithUserId())
                 .body(utils.getJsonFromFile("hardStop.noWillAccessOriginal.json"))
-                .post(VALIDATE_URL).then().statusCode(200)
+                .post(VALIDATE_ADMON_URL).then().statusCode(200)
                 .and().body("data.state", equalToIgnoringCase("Stopped"))
                 .and().body("data.willExists", equalToIgnoringCase("Yes"))
                 .and().body("data.willAccessOriginal", equalToIgnoringCase("No"));
@@ -53,7 +55,7 @@ public class SolCcdServiceWillUpdateHardStopTests extends IntegrationTestBase {
         given().relaxedHTTPSValidation()
                 .headers(utils.getHeadersWithUserId())
                 .body(utils.getJsonFromFile("hardStop.noWillExists.noWillAccessOriginal.json"))
-                .post(VALIDATE_URL).then().statusCode(200)
+                .post(VALIDATE_ADMON_URL).then().statusCode(200)
                 .and().body("data.state", equalToIgnoringCase("Stopped"))
                 .and().body("data.willExists", equalToIgnoringCase("No"))
                 .and().body("data.willAccessOriginal", equalToIgnoringCase("No"));
@@ -64,7 +66,7 @@ public class SolCcdServiceWillUpdateHardStopTests extends IntegrationTestBase {
         Response response = given()
                 .relaxedHTTPSValidation()
                 .headers(utils.getHeadersWithUserId())
-                .body(utils.getJsonFromFile("hardStop.noWillNotExists.json"))
+                .body(utils.getJsonFromFile(""))
                 .post("/case/stopConfirmation");
         assertEquals(200, response.getStatusCode());
         assertTrue(response.getBody().asString().contains("You can't currently use this service if the person who died did not leave a will.\\n\\nFollow your existing process for applying for probate for this client.\\n"));

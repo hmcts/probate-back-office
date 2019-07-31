@@ -133,14 +133,12 @@ public class CaseData {
 
     private final String willNumberOfCodicils;
 
-    @NotBlank(groups = {ApplicationProbateGroup.class,
-                        ApplicationIntestacyGroup.class,
-                        ApplicationAdmonGroup.class}, message = "{primaryApplicantForenamesIsNull}")
+    @NotBlank(groups = {ApplicationProbateGroup.class, ApplicationIntestacyGroup.class, ApplicationAdmonGroup.class,
+                        ApplicationUpdatedGroup.class}, message = "{primaryApplicantForenamesIsNull}")
     private final String primaryApplicantForenames;
 
-    @NotBlank(groups = {ApplicationProbateGroup.class,
-                        ApplicationIntestacyGroup.class,
-                        ApplicationAdmonGroup.class}, message = "{primaryApplicantSurnameIsNull}")
+    @NotBlank(groups = {ApplicationProbateGroup.class, ApplicationIntestacyGroup.class, ApplicationAdmonGroup.class,
+                        ApplicationUpdatedGroup.class}, message = "{primaryApplicantSurnameIsNull}")
     private final String primaryApplicantSurname;
 
     @NotBlank(groups = {ApplicationProbateGroup.class}, message = "{primaryApplicantHasAliasIsNull}")
@@ -175,8 +173,8 @@ public class CaseData {
                         ApplicationIntestacyGroup.class}, message = "{willExistsIsNull}")
     private final String willExists;
 
-    @NotNull(groups = {ApplicationIntestacyGroup.class}, message = "{deceasedMartialStatusIsNull}")
-    private final String deceasedMartialStatus;
+    @NotNull(groups = {ApplicationIntestacyGroup.class}, message = "{deceasedMaritalStatusIsNull}")
+    private final String deceasedMaritalStatus;
 
     @NotBlank(groups = {ApplicationIntestacyGroup.class}, message = "{solsApplicantRelationshipToDeceasedIsNull}")
     private final String solsApplicantRelationshipToDeceased;

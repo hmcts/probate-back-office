@@ -21,7 +21,10 @@ import static org.hamcrest.Matchers.equalToIgnoringCase;
 @RunWith(SerenityRunner.class)
 public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
 
+    private static final String VALIDATE_URL = "/case/sols-validate";
     private static final String VALIDATE_PROBATE_URL = "/case/sols-validate-probate";
+    private static final String VALIDATE_INTESTACY_URL = "/case/sols-validate-intestacy";
+    private static final String VALIDATE_ADMON_URL = "/case/sols-validate-admon";
 
     @Test
     public void verifyFirstNameInTheReturnedPDF() {
@@ -188,7 +191,7 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
         given().relaxedHTTPSValidation()
                 .headers(utils.getHeaders())
                 .body(replaceString(oldString, replacingString))
-                .when().post(VALIDATE_PROBATE_URL).then().statusCode(400)
+                .when().post(VALIDATE_URL).then().statusCode(400)
                 .and().body("fieldErrors[0].field", equalToIgnoringCase(errorMsg))
                 .and().body("message", equalToIgnoringCase("Invalid payload"));
     }

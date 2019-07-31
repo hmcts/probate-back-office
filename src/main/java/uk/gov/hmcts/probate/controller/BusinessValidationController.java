@@ -20,6 +20,7 @@ import uk.gov.hmcts.probate.controller.validation.ApplicationProbateGroup;
 import uk.gov.hmcts.probate.controller.validation.ApplicationUpdatedGroup;
 
 import uk.gov.hmcts.probate.exception.BadRequestException;
+import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.response.AfterSubmitCallbackResponse;
@@ -68,10 +69,7 @@ public class BusinessValidationController {
             HttpServletRequest request) {
         logRequest(request.getRequestURI(), callbackRequest);
 
-        if (bindingResult.hasErrors()) {
-            log.error(DEFAULT_LOG_ERROR, callbackRequest.getCaseDetails().getId(), bindingResult);
-            throw new BadRequestException(INVALID_PAYLOAD, bindingResult);
-        }
+        validateForPayloadErrors(callbackRequest, bindingResult);
 
         CallbackResponse response = eventValidationService.validateRequest(callbackRequest, allValidationRules);
         if (response.getErrors().isEmpty()) {
@@ -89,20 +87,12 @@ public class BusinessValidationController {
             HttpServletRequest request) {
         logRequest(request.getRequestURI(), callbackRequest);
 
-        if (bindingResult.hasErrors()) {
-            log.error(DEFAULT_LOG_ERROR, callbackRequest.getCaseDetails().getId(), bindingResult);
-            throw new BadRequestException(INVALID_PAYLOAD, bindingResult);
-        }
+        validateForPayloadErrors(callbackRequest, bindingResult);
 
         CallbackResponse response = eventValidationService.validateRequest(callbackRequest, allValidationRules);
         if (response.getErrors().isEmpty()) {
             Optional<String> newState = stateChangeService.getChangedStateForProbateUpdate(callbackRequest.getCaseDetails().getData());
-            if (newState.isPresent()) {
-                response = callbackResponseTransformer.transformWithConditionalStateChange(callbackRequest, newState);
-            } else {
-                Document document = pdfManagementService.generateAndUpload(callbackRequest, LEGAL_STATEMENT_PROBATE);
-                response = callbackResponseTransformer.transform(callbackRequest, document);
-            }
+            response = getCallbackResponseForGenerateAndUpload(callbackRequest, newState, LEGAL_STATEMENT_PROBATE);
         }
         return ResponseEntity.ok(response);
     }
@@ -114,20 +104,12 @@ public class BusinessValidationController {
             HttpServletRequest request) {
         logRequest(request.getRequestURI(), callbackRequest);
 
-        if (bindingResult.hasErrors()) {
-            log.error(DEFAULT_LOG_ERROR, callbackRequest.getCaseDetails().getId(), bindingResult);
-            throw new BadRequestException(INVALID_PAYLOAD, bindingResult);
-        }
+        validateForPayloadErrors(callbackRequest, bindingResult);
 
         CallbackResponse response = eventValidationService.validateRequest(callbackRequest, allValidationRules);
         if (response.getErrors().isEmpty()) {
             Optional<String> newState = stateChangeService.getChangedStateForIntestacyUpdate(callbackRequest.getCaseDetails().getData());
-            if (newState.isPresent()) {
-                response = callbackResponseTransformer.transformWithConditionalStateChange(callbackRequest, newState);
-            } else {
-                Document document = pdfManagementService.generateAndUpload(callbackRequest, LEGAL_STATEMENT_INTESTACY);
-                response = callbackResponseTransformer.transform(callbackRequest, document);
-            }
+            response = getCallbackResponseForGenerateAndUpload(callbackRequest, newState, LEGAL_STATEMENT_INTESTACY);
         }
         return ResponseEntity.ok(response);
     }
@@ -139,20 +121,12 @@ public class BusinessValidationController {
             HttpServletRequest request) {
         logRequest(request.getRequestURI(), callbackRequest);
 
-        if (bindingResult.hasErrors()) {
-            log.error(DEFAULT_LOG_ERROR, callbackRequest.getCaseDetails().getId(), bindingResult);
-            throw new BadRequestException(INVALID_PAYLOAD, bindingResult);
-        }
+        validateForPayloadErrors(callbackRequest, bindingResult);
 
         CallbackResponse response = eventValidationService.validateRequest(callbackRequest, allValidationRules);
         if (response.getErrors().isEmpty()) {
             Optional<String> newState = stateChangeService.getChangedStateForAdmonUpdate(callbackRequest.getCaseDetails().getData());
-            if (newState.isPresent()) {
-                response = callbackResponseTransformer.transformWithConditionalStateChange(callbackRequest, newState);
-            } else {
-                Document document = pdfManagementService.generateAndUpload(callbackRequest, LEGAL_STATEMENT_ADMON);
-                response = callbackResponseTransformer.transform(callbackRequest, document);
-            }
+            response = getCallbackResponseForGenerateAndUpload(callbackRequest, newState, LEGAL_STATEMENT_ADMON);
         }
         return ResponseEntity.ok(response);
     }
@@ -165,10 +139,7 @@ public class BusinessValidationController {
 
         logRequest(request.getRequestURI(), callbackRequest);
 
-        if (bindingResult.hasErrors()) {
-            log.error(DEFAULT_LOG_ERROR, callbackRequest.getCaseDetails().getId(), bindingResult);
-            throw new BadRequestException(INVALID_PAYLOAD, bindingResult);
-        }
+        validateForPayloadErrors(callbackRequest, bindingResult);
 
         CallbackResponse response = eventValidationService.validateRequest(callbackRequest, allCaseworkerAmendValidationRules);
         if (response.getErrors().isEmpty()) {
@@ -206,10 +177,7 @@ public class BusinessValidationController {
             @Validated({ApplicationCreatedGroup.class, ApplicationUpdatedGroup.class}) @RequestBody CallbackRequest callbackRequest,
             BindingResult bindingResult) {
 
-        if (bindingResult.hasErrors()) {
-            log.error(DEFAULT_LOG_ERROR, callbackRequest.getCaseDetails().getId(), bindingResult);
-            throw new BadRequestException(INVALID_PAYLOAD, bindingResult);
-        }
+        validateForPayloadErrors(callbackRequest, bindingResult);
 
         AfterSubmitCallbackResponse afterSubmitCallbackResponse = confirmationResponseService.getStopConfirmation(callbackRequest);
         return ResponseEntity.ok(afterSubmitCallbackResponse);
@@ -220,10 +188,7 @@ public class BusinessValidationController {
             @RequestBody CallbackRequest callbackRequest,
             BindingResult bindingResult) {
 
-        if (bindingResult.hasErrors()) {
-            log.error(DEFAULT_LOG_ERROR, callbackRequest.getCaseDetails().getId(), bindingResult);
-            throw new BadRequestException(INVALID_PAYLOAD, bindingResult);
-        }
+        validateForPayloadErrors(callbackRequest, bindingResult);
 
         CallbackResponse response = callbackResponseTransformer.transformCase(callbackRequest);
 
@@ -235,14 +200,30 @@ public class BusinessValidationController {
             @RequestBody CallbackRequest callbackRequest,
             BindingResult bindingResult) {
 
-        if (bindingResult.hasErrors()) {
-            log.error(DEFAULT_LOG_ERROR, callbackRequest.getCaseDetails().getId(), bindingResult);
-            throw new BadRequestException(INVALID_PAYLOAD, bindingResult);
-        }
+        validateForPayloadErrors(callbackRequest, bindingResult);
 
         CallbackResponse response = callbackResponseTransformer.paperForm(callbackRequest);
 
         return ResponseEntity.ok(response);
+    }
+
+    private void validateForPayloadErrors(CallbackRequest callbackRequest, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            log.error(DEFAULT_LOG_ERROR, callbackRequest.getCaseDetails().getId(), bindingResult);
+            throw new BadRequestException(INVALID_PAYLOAD, bindingResult);
+        }
+    }
+
+    private CallbackResponse getCallbackResponseForGenerateAndUpload(CallbackRequest callbackRequest,
+                                                                     Optional<String> newState, DocumentType documentType) {
+        CallbackResponse response;
+        if (newState.isPresent()) {
+            response = callbackResponseTransformer.transformWithConditionalStateChange(callbackRequest, newState);
+        } else {
+            Document document = pdfManagementService.generateAndUpload(callbackRequest, documentType);
+            response = callbackResponseTransformer.transform(callbackRequest, document);
+        }
+        return response;
     }
 
     private void logRequest(String uri, CallbackRequest callbackRequest) {
