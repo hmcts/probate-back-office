@@ -3,7 +3,6 @@ package uk.gov.hmcts.probate.controller;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,7 +14,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.ocr.OCRField;
-import uk.gov.hmcts.probate.model.ocr.OCRRequest;
 import uk.gov.hmcts.probate.service.ocr.OCRMapper;
 import uk.gov.hmcts.probate.service.ocr.OCRToCCDMandatoryField;
 import uk.gov.hmcts.probate.util.TestUtils;
@@ -49,10 +47,10 @@ public class BulkScanningControllerTest {
     @Autowired
     private TestUtils testUtils;
 
-    @Mock
+    @MockBean
     private OCRMapper ocrMapper;
 
-    @Mock
+    @MockBean
     private OCRToCCDMandatoryField ocrToCCDMandatoryField;
 
     private static final String EXPECTED_ATTACH_SCAN_DOC_FROM_UI_ERROR =
@@ -61,7 +59,7 @@ public class BulkScanningControllerTest {
     private static final String BASIC_CASE_PAYLOAD = "{\"case_details\": {\"id\": 1528365719153338} }";
     private String ocrPayload;
     private List<OCRField> ocrFields = new ArrayList<>();
-    private List<String> warnings;
+    private List<String> warnings = new ArrayList<>();
 
     @Before
     public void setUp() throws IOException {
@@ -72,6 +70,7 @@ public class BulkScanningControllerTest {
                 .value("John")
                 .description("Deceased forename").build();
         ocrFields.add(field1);
+        warnings.add("test warning");
         when(ocrMapper.ocrMapper(any())).thenReturn(ocrFields);
         when(ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrFields)).thenReturn(EMPTY_LIST);
     }
@@ -86,11 +85,22 @@ public class BulkScanningControllerTest {
     }
 
     @Test
-    public void test() throws Exception { //doesnt work yet for some reason
+    public void testNoWarningsReturnOkResponseAndSuccessResponseState() throws Exception {
         mockMvc.perform(post("/bulk-scanning/PA1P/validate-ocr-data")
                 .content(ocrPayload)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("SUCCESS")));
+    }
+
+    @Test
+    public void testWarningsPopulateListAndReturnOkWithWarningsResponseState() throws Exception {
+        when(ocrToCCDMandatoryField.ocrToCCDMandatoryFields(any())).thenReturn(warnings);
+        mockMvc.perform(post("/bulk-scanning/PA1P/validate-ocr-data")
+                .content(ocrPayload)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("WARNINGS")))
+                .andExpect(content().string(containsString("test warning")));
     }
 }

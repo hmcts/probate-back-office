@@ -47,9 +47,10 @@ public class BulkScanningController {
     }
 
     @ApiOperation(value = "Pre-validate OCR data", notes = "Will return validation errors as warnings. ")
-    @PostMapping(path = "/{formType}/validate-ocr-data", consumes = APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<ValidationResponse> validateExceptionRecord(@PathVariable String formType,
+    @PostMapping(path = "/{form-type}/validate-ocr-data", consumes = APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<ValidationResponse> validateExceptionRecord(@PathVariable("form-type") String formType,
                                                                     @RequestBody OCRRequest ocrRequest) {
+        log.info("Validate ocr data for form type: {}", formType);
         List<String> warnings =
                 ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrMapper.ocrMapper(ocrRequest.getOcrFields()));
 
