@@ -56,6 +56,7 @@ public class CallbackResponseTransformer {
 
     private static final ApplicationType DEFAULT_APPLICATION_TYPE = SOLICITOR;
     private static final String DEFAULT_REGISTRY_LOCATION = CTSC;
+    private static final String DEFAULT_IHT_FORM_ID = "IHT205";
     private static final String CASE_CREATED = "CaseCreated";
     private static final String CASE_PRINTED = "CasePrinted";
     private static final String READY_FOR_EXAMINATION = "BOReadyForExamination";
@@ -235,6 +236,11 @@ public class CallbackResponseTransformer {
 
         ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), false);
         responseCaseDataBuilder.paperForm(ANSWER_YES);
+        if (callbackRequest.getCaseDetails().getData().getIhtReferenceNumber() != null) {
+            if (!callbackRequest.getCaseDetails().getData().getIhtReferenceNumber().isEmpty()) {
+                responseCaseDataBuilder.ihtFormId(DEFAULT_IHT_FORM_ID);
+            }
+        }
         getCaseCreatorResponseCaseBuilder(callbackRequest.getCaseDetails().getData(), responseCaseDataBuilder);
 
         return transformResponse(responseCaseDataBuilder.build());
@@ -352,7 +358,18 @@ public class CallbackResponseTransformer {
                 .legacyCaseViewUrl(caseData.getLegacyCaseViewUrl())
                 .grantIssuedDate(caseData.getGrantIssuedDate())
                 .dateOfDeathType(caseData.getDateOfDeathType())
-                .bulkPrintId(caseData.getBulkPrintId());
+                .bulkPrintId(caseData.getBulkPrintId())
+
+                .deceasedDivorcedInEnglandOrWales(caseData.getDeceasedDivorcedInEnglandOrWales())
+                .primaryApplicantAdoptionInEnglandOrWales(caseData.getPrimaryApplicantAdoptionInEnglandOrWales())
+                .deceasedSpouseNotApplyingReason(caseData.getDeceasedSpouseNotApplyingReason())
+                .deceasedOtherChildren(caseData.getDeceasedOtherChildren())
+                .allDeceasedChildrenOverEighteen(caseData.getAllDeceasedChildrenOverEighteen())
+                .anyDeceasedChildrenDieBeforeDeceased(caseData.getAnyDeceasedChildrenDieBeforeDeceased())
+                .anyDeceasedGrandChildrenUnderEighteen(caseData.getAnyDeceasedGrandChildrenUnderEighteen())
+                .deceasedAnyChildren(caseData.getDeceasedAnyChildren())
+                .deceasedHasAssetsOutsideUK(caseData.getDeceasedHasAssetsOutsideUK())
+                .statementOfTruthDocument(caseData.getStatementOfTruthDocument());
 
         if (transform) {
             updateCaseBuilderForTransformCase(caseData, builder);

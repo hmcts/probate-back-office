@@ -179,6 +179,8 @@ public class CaseData {
     //EVENT = review
     private final DocumentLink solsLegalStatementDocument;
 
+    private final DocumentLink statementOfTruthDocument;
+
     private final List<CollectionMember<Document>> probateDocumentsGenerated = new ArrayList<>();
 
     private final List<CollectionMember<Document>> probateNotificationsGenerated = new ArrayList<>();
@@ -400,6 +402,16 @@ public class CaseData {
 
     @Builder.Default
     private List<CollectionMember<BulkPrint>> bulkPrintId = new ArrayList<>();
+
+    private final String deceasedDivorcedInEnglandOrWales;
+    private final String primaryApplicantAdoptionInEnglandOrWales;
+    private final String deceasedSpouseNotApplyingReason;
+    private final String deceasedOtherChildren;
+    private final String allDeceasedChildrenOverEighteen;
+    private final String anyDeceasedChildrenDieBeforeDeceased;
+    private final String anyDeceasedGrandChildrenUnderEighteen;
+    private final String deceasedAnyChildren;
+    private final String deceasedHasAssetsOutsideUK;
 
     @Getter(lazy = true)
     private final List<CollectionMember<AdditionalExecutor>> executorsApplyingForLegalStatement = getAllExecutors(true);

@@ -67,6 +67,7 @@ import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
 @RunWith(MockitoJUnitRunner.class)
 public class CallbackResponseTransformerTest {
 
+    private static final String[] LAST_MODIFIED_STR = {"2018", "1", "2", "0", "0", "0", "0"};
     private static final String YES = "Yes";
     private static final String NO = "No";
     private static final String WILL_MESSAGE = "Will message";
@@ -94,7 +95,7 @@ public class CallbackResponseTransformerTest {
     private static final LocalDate DOD = LocalDate.parse("2017-12-31", dateTimeFormatter);
     private static final String NUM_CODICILS = "9";
 
-    private static final String IHT_FORM_ID = "IHT207";
+    private static final String IHT_FORM_ID = "IHT205";
     private static final BigDecimal IHT_GROSS = BigDecimal.valueOf(10000f);
     private static final BigDecimal IHT_NET = BigDecimal.valueOf(9000f);
 
@@ -171,6 +172,17 @@ public class CallbackResponseTransformerTest {
     private static final String RECORD_ID = "12345";
     private static final String LEGACY_CASE_URL = "someUrl";
     private static final String LEGACY_CASE_TYPE = "someCaseType";
+
+    private static final String DECEASED_DIVORCED_IN_ENGLAND_OR_WALES = YES;
+    private static final String PRIMARY_APPLICANT_ADOPTION_IN_ENGLAND_OR_WALES = NO;
+    private static final String DECEASED_SPOUSE_NOT_APPLYING_REASON = "notApplyingReason";
+    private static final String DECEASED_OTHER_CHILDREN = YES;
+    private static final String ALL_DECEASED_CHILDREN_OVER_EIGHTEEN = YES;
+    private static final String ANY_DECEASED_CHILDREN_DIE_BEFORE_DECEASED = NO;
+    private static final String ANY_DECEASED_GRANDCHILDREN_UNDER_EIGHTEEN = YES;
+    private static final String DECEASED_ANY_CHILDREN = NO;
+    private static final String DECEASED_HAS_ASSETS_OUTSIDE_UK = YES;
+    private static final DocumentLink SOT = DocumentLink.builder().documentFilename("SOT.pdf").build();
 
     private static final LocalDateTime scannedDate = LocalDateTime.parse("2018-01-01T12:34:56.123");
     private static final List<CollectionMember<Payment>> PAYMENTS_LIST = Arrays.asList(
@@ -294,7 +306,17 @@ public class CallbackResponseTransformerTest {
                 .scannedDocuments(SCANNED_DOCUMENTS_LIST)
                 .recordId(RECORD_ID)
                 .legacyType(LEGACY_CASE_TYPE)
-                .legacyCaseViewUrl(LEGACY_CASE_URL);
+                .legacyCaseViewUrl(LEGACY_CASE_URL)
+                .deceasedDivorcedInEnglandOrWales(DECEASED_DIVORCED_IN_ENGLAND_OR_WALES)
+                .primaryApplicantAdoptionInEnglandOrWales(PRIMARY_APPLICANT_ADOPTION_IN_ENGLAND_OR_WALES)
+                .deceasedSpouseNotApplyingReason(DECEASED_SPOUSE_NOT_APPLYING_REASON)
+                .deceasedOtherChildren(DECEASED_OTHER_CHILDREN)
+                .allDeceasedChildrenOverEighteen(ALL_DECEASED_CHILDREN_OVER_EIGHTEEN)
+                .anyDeceasedChildrenDieBeforeDeceased(ANY_DECEASED_CHILDREN_DIE_BEFORE_DECEASED)
+                .anyDeceasedGrandChildrenUnderEighteen(ANY_DECEASED_GRANDCHILDREN_UNDER_EIGHTEEN)
+                .deceasedAnyChildren(DECEASED_ANY_CHILDREN)
+                .deceasedHasAssetsOutsideUK(DECEASED_HAS_ASSETS_OUTSIDE_UK)
+                .statementOfTruthDocument(SOT);
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
@@ -1133,6 +1155,41 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
+    public void shouldSetSolicitorsInfoWhenApplicationTypeIht() {
+        caseDataBuilder.ihtReferenceNumber("123456");
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.paperForm(callbackRequestMock);
+        assertEquals(IHT_FORM_ID, callbackResponse.getData().getIhtFormId());
+        assertSolsDetails(callbackResponse);
+    }
+
+    @Test
+    public void shouldSetSolicitorsInfoWhenApplicationTypeIhtIsNull() {
+        CaseData.CaseDataBuilder caseDataBuilder2;
+        caseDataBuilder2 = CaseData.builder().ihtReferenceNumber(null);
+
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder2.build(), LAST_MODIFIED_STR, 1L);
+        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
+        CallbackResponse callbackResponse = underTest.paperForm(callbackRequest);
+        assertNull(callbackResponse.getData().getIhtFormId());
+    }
+
+    @Test
+    public void shouldSetSolicitorsInfoWhenApplicationTypeIhtIsEmpty() {
+        CaseData.CaseDataBuilder caseDataBuilder2;
+        caseDataBuilder2 = CaseData.builder().ihtReferenceNumber("");
+
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder2.build(), LAST_MODIFIED_STR, 1L);
+        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
+
+        CallbackResponse callbackResponse = underTest.paperForm(callbackRequest);
+        assertNull(callbackResponse.getData().getIhtFormId());
+    }
+
+    @Test
     public void shouldSetGrantIssuedDate() {
         caseDataBuilder.applicationType(ApplicationType.PERSONAL);
         Document document = Document.builder()
@@ -1156,6 +1213,16 @@ public class CallbackResponseTransformerTest {
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
         CallbackResponse callbackResponse = underTest.paperForm(callbackRequestMock);
         assertEquals("diedOn", callbackResponse.getData().getDateOfDeathType());
+    }
+
+    @Test
+    public void shouldSetSOT() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        CallbackResponse callbackResponse = underTest.paperForm(callbackRequestMock);
+        assertEquals("SOT.pdf", callbackResponse.getData().getStatementOfTruthDocument().getDocumentFilename());
     }
 
     private CollectionMember<ProbateAliasName> createdDeceasedAliasName(String id, String forename, String lastname, String onGrant) {
@@ -1452,6 +1519,20 @@ public class CallbackResponseTransformerTest {
         assertEquals("123", callbackResponse.getData().getForeignAssetEstateValue());
         assertEquals(CASE_TYPE_INTESTACY, callbackResponse.getData().getCaseType());
         assertEquals(DECEASED_DATE_OF_DEATH_TYPE, callbackResponse.getData().getDateOfDeathType());
+
+        assertEquals(DECEASED_DIVORCED_IN_ENGLAND_OR_WALES, callbackResponse.getData().getDeceasedDivorcedInEnglandOrWales());
+        assertEquals(PRIMARY_APPLICANT_ADOPTION_IN_ENGLAND_OR_WALES,
+                callbackResponse.getData().getPrimaryApplicantAdoptionInEnglandOrWales());
+        assertEquals(DECEASED_SPOUSE_NOT_APPLYING_REASON, callbackResponse.getData().getDeceasedSpouseNotApplyingReason());
+        assertEquals(DECEASED_OTHER_CHILDREN, callbackResponse.getData().getDeceasedOtherChildren());
+        assertEquals(ALL_DECEASED_CHILDREN_OVER_EIGHTEEN, callbackResponse.getData().getAllDeceasedChildrenOverEighteen());
+        assertEquals(ANY_DECEASED_GRANDCHILDREN_UNDER_EIGHTEEN,
+                callbackResponse.getData().getAnyDeceasedGrandChildrenUnderEighteen());
+        assertEquals(ANY_DECEASED_CHILDREN_DIE_BEFORE_DECEASED,
+                callbackResponse.getData().getAnyDeceasedChildrenDieBeforeDeceased());
+        assertEquals(DECEASED_ANY_CHILDREN, callbackResponse.getData().getDeceasedAnyChildren());
+        assertEquals(DECEASED_HAS_ASSETS_OUTSIDE_UK, callbackResponse.getData().getDeceasedHasAssetsOutsideUK());
+
     }
 
 }
