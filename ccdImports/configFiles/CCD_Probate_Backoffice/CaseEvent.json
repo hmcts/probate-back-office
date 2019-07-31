@@ -239,7 +239,7 @@
     "DisplayOrder": 49,
     "PreConditionState(s)": "*",
     "PostConditionState": "*",
-    "CallBackURLAboutToStartEvent": "http://${CCD_DEF_CASE_SERVICE_BASE_URL}/bulk-scan/attach-scanned-docs-error",
+    "CallBackURLAboutToStartEvent": "http://${CCD_DEF_CASE_SERVICE_BASE_URL}/bulk-scanning/attach-scanned-docs-error",
     "SecurityClassification": "Public",
     "ShowSummary": "N"
   },

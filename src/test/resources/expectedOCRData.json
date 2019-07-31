@@ -1,0 +1,16 @@
+{
+  "FormData": {
+    "ocr_data_fields": [
+      {
+        "name": "deceasedSurname",
+        "value": "Smith",
+        "description": "Deceased surname"
+      },
+      {
+        "name": "deceasedAddress_AddressLine1",
+        "value": "123 Alphabet Street",
+        "description": "Deceased address"
+      }
+    ]
+  }
+}
