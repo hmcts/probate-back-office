@@ -42,8 +42,8 @@ public class CaseMatch implements Serializable {
             return true;
         }
 
-        if (this.getLegacyCaseViewUrl() != null && other.getLegacyCaseViewUrl() != null &&
-            this.getLegacyCaseViewUrl().equals(other.getLegacyCaseViewUrl())) {
+        if (this.getLegacyCaseViewUrl() != null && other.getLegacyCaseViewUrl() != null
+                && this.getLegacyCaseViewUrl().equals(other.getLegacyCaseViewUrl())) {
             return true;
         }
 
