@@ -41,6 +41,12 @@
     "totalFee": "0",
     "ihtGrossValue": "222200",
     "ihtNetValue": "22200",
+    "statementOfTruthDocument":
+      {
+          "document_url": "http://localhost:8080/documents/b533ddf6-3695-45a8-8546-aab63ff16093",
+          "document_filename": "SOT.pdf",
+          "document_binary_url": "http://localhost:8080/documents/b533ddf6-3695-45a8-8546-aab63ff16093/binary"
+      },
     "deceasedAliasNameList": [
       {
         "value": {
@@ -91,5 +97,4 @@
       "AddressLine1": "ssssssssssssssssssssssssssssssssssssssss"
     }
   }
-
 }

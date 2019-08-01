@@ -1,40 +1,51 @@
 package uk.gov.hmcts.probate.functional.errors;
 
-import io.restassured.path.json.*;
-import io.restassured.response.*;
-import net.serenitybdd.junit.runners.*;
-import net.serenitybdd.rest.*;
-import org.junit.*;
-import org.junit.runner.*;
-import uk.gov.hmcts.probate.functional.*;
+import net.serenitybdd.junit.runners.SerenityRunner;
+import net.serenitybdd.rest.SerenityRest;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 
+import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
-import static org.junit.Assert.*;
 
 
 @RunWith(SerenityRunner.class)
 public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
 
-    private static final String ATTACH_SCAN_DOC_FROM_UI_ERROR = "You cannot attach a document to a case using this event. Please use Upload Documents instead.";
+    private static final String SUCCESS = "SUCCESS";
+    private static final String WARNINGS = "WARNINGS";
+    private static final String DOB_MISSING = "What was their date of birth?";
+    private static final String DOD_MISSING = "What was their date of death?";
 
-    private static final String UI_ATTACH_SCANNED_DOCS_ERROR = "/bulk-scanning/attach-scanned-docs-error";
+    private static final String VALIDATE_OCR_DATA = "/bulk-scanning/PA1P/validate-ocr-data";
 
-    private static final String BASIC_CASE_PAYLOAD = "{\"case_details\": {\"id\": 1528365719153338} }";
+    private String jsonFile;
 
-    private void validatePostSuccess(String bodyText, String path, String containsText) {
+    private void validatePostSuccess(String bodyText, String containsText,
+                                     String warningMessage, int warningSize, int warningItem) {
         SerenityRest.given()
                 .relaxedHTTPSValidation()
                 .headers(utils.getHeaders())
                 .body(bodyText)
-                .when().post(path)
+                .when().post(VALIDATE_OCR_DATA)
                 .then().assertThat().statusCode(200)
-                .and().body("errors", hasSize(1))
-                .and().body("errors[0]", equalTo(containsText));
+                .and().body("warnings", hasSize(warningSize))
+                .and().body("warnings[" + warningItem + "]", equalTo(warningMessage))
+                .and().content(containsString(containsText));
     }
 
     @Test
-    public void verifyAttachScannedDocsErrorMessage() {
-        validatePostSuccess(BASIC_CASE_PAYLOAD, UI_ATTACH_SCANNED_DOCS_ERROR, ATTACH_SCAN_DOC_FROM_UI_ERROR);
+    public void testAllMandatoryFieldsPresentReturnNoWarnings() {
+        jsonFile = utils.getJsonFromFile("expectedOCRDataAllMandatoryFields.json");
+        validatePostSuccess(jsonFile, SUCCESS, null, 0, 0);
+    }
+
+    @Test
+    public void testMissingMandatoryFieldsReturnWarnings() {
+        jsonFile = utils.getJsonFromFile("expectedOCRDataMissingMandatoryFields.json");
+        validatePostSuccess(jsonFile, WARNINGS, DOB_MISSING, 2, 0);
+        validatePostSuccess(jsonFile, WARNINGS, DOD_MISSING, 2, 1);
     }
 }

@@ -13,37 +13,6 @@ import java.util.stream.Stream;
 @Service
 public class OCRToCCDMandatoryField {
 
-    //private List<String> ccdMandatoryFields() {
-    //    List<String> MandatoryFields = new ArrayList<>();
-    //    MandatoryFields.add("primaryApplicantForenames");
-    //    MandatoryFields.add("primaryApplicantSurname");
-    //    MandatoryFields.add("primaryApplicantAddress.addressLine1");
-    //    MandatoryFields.add("deceasedForenames");
-    //    MandatoryFields.add("deceasedSurname");
-    //    MandatoryFields.add("deceasedAddress.addressLine1");
-    //    MandatoryFields.add("deceasedDateOfBirth");
-    //    MandatoryFields.add("deceasedDateOfDeath");
-    //
-    //    return MandatoryFields;
-    //}
-
-    //public List<String> ocrToCCDMandatoryFields(List<OCRField> ocrFields) {
-    //    List<String> missingFields = new ArrayList<>();
-    //    //List<String> ccdfields = ccdMandatoryFields();
-    //    List<String> ocrFieldNames = new ArrayList<>();
-    //    ocrFields.forEach(ocrField -> {
-    //        ocrFieldNames.add(ocrField.getName());
-    //    });
-    //    for (String field : ccdfields) {
-    //        log.info("Checking {} against ocr fields", field);
-    //        if (!ocrFieldNames.contains(field)) {
-    //            log.warn("{} was not found in ocr fields", field);
-    //            missingFields.add(field);
-    //        }
-    //    }
-    //    return missingFields;
-    //}
-
     public List<String> ocrToCCDMandatoryFields(List<OCRField> ocrFields) {
         List<String> descriptions = new ArrayList<>();
         List<String> ocrFieldNames = new ArrayList<>();

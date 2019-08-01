@@ -180,6 +180,8 @@ public class CaseData {
     //EVENT = review
     private final DocumentLink solsLegalStatementDocument;
 
+    private final DocumentLink statementOfTruthDocument;
+
     private final List<CollectionMember<Document>> probateDocumentsGenerated = new ArrayList<>();
 
     private final List<CollectionMember<Document>> probateNotificationsGenerated = new ArrayList<>();

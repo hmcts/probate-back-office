@@ -53,10 +53,6 @@ public class BulkScanningControllerTest {
     @MockBean
     private OCRToCCDMandatoryField ocrToCCDMandatoryField;
 
-    private static final String EXPECTED_ATTACH_SCAN_DOC_FROM_UI_ERROR =
-            "You cannot attach a document to a case using this event. Please use Upload Documents instead.";
-
-    private static final String BASIC_CASE_PAYLOAD = "{\"case_details\": {\"id\": 1528365719153338} }";
     private String ocrPayload;
     private List<OCRField> ocrFields = new ArrayList<>();
     private List<String> warnings = new ArrayList<>();
@@ -73,15 +69,6 @@ public class BulkScanningControllerTest {
         warnings.add("test warning");
         when(ocrMapper.ocrMapper(any())).thenReturn(ocrFields);
         when(ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrFields)).thenReturn(EMPTY_LIST);
-    }
-
-    @Test
-    public void displayAttachScanDocErrorIfUsedFromUI() throws Exception {
-        mockMvc.perform(post("/bulk-scanning/attach-scanned-docs-error")
-                .content(BASIC_CASE_PAYLOAD)
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().string(containsString(EXPECTED_ATTACH_SCAN_DOC_FROM_UI_ERROR)));
     }
 
     @Test

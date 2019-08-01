@@ -1,0 +1,44 @@
+{
+  "ocr_data_fields": [
+    {
+      "name": "deceasedSurname",
+      "value": "Smith",
+      "description": "Deceased surname"
+    },
+    {
+      "name": "deceasedAddress_AddressLine1",
+      "value": "123 Alphabet Street",
+      "description": "Deceased address"
+    },
+    {
+      "name": "primaryApplicantForenames",
+      "value": "John",
+      "description": "Primary applicant First name(s)"
+    },
+    {
+      "name": "primaryApplicantSurname",
+      "value": "Johnson",
+      "description": "Primary applicant last name(s)"
+    },
+    {
+      "name": "primaryApplicantAddress_AddressLine1",
+      "value": "321 the street",
+      "description": "Primary applicant Building & Street"
+    },
+    {
+      "name": "deceasedForenames",
+      "value": "Bob",
+      "description": "Deceased First name(s)"
+    },
+    {
+      "name": "deceasedDateOfBirth",
+      "value": "1900-01-01",
+      "description": "What was their date of birth?"
+    },
+    {
+      "name": "deceasedDateOfDeath",
+      "value": "2019-01-01",
+      "description": "What was their date of death?"
+    }
+  ]
+}
