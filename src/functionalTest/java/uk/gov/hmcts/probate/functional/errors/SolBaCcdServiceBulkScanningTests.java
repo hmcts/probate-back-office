@@ -19,7 +19,7 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
     private static final String DOB_MISSING = "What was their date of birth?";
     private static final String DOD_MISSING = "What was their date of death?";
 
-    private static final String VALIDATE_OCR_DATA = "/bulk-scanning/PA1P/validate-ocr-data";
+    private static final String VALIDATE_OCR_DATA = "/forms/PA1P/validate-ocr-data";
 
     private String jsonFile;
 

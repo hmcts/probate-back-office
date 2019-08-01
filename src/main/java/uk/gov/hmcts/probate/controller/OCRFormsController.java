@@ -23,10 +23,10 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @Slf4j
 @RequiredArgsConstructor
-@RequestMapping(value = "/bulk-scanning", consumes = APPLICATION_JSON_UTF8_VALUE, produces = APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/forms", consumes = APPLICATION_JSON_UTF8_VALUE, produces = APPLICATION_JSON_VALUE)
 @RestController
 @Api(tags = "Manage bulk scanning data")
-public class BulkScanningController {
+public class OCRFormsController {
 
     private final OCRMapper ocrMapper;
     private final OCRToCCDMandatoryField ocrToCCDMandatoryField;

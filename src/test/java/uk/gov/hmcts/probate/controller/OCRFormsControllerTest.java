@@ -33,7 +33,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-public class BulkScanningControllerTest {
+public class OCRFormsControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -73,7 +73,7 @@ public class BulkScanningControllerTest {
 
     @Test
     public void testNoWarningsReturnOkResponseAndSuccessResponseState() throws Exception {
-        mockMvc.perform(post("/bulk-scanning/PA1P/validate-ocr-data")
+        mockMvc.perform(post("/forms/PA1P/validate-ocr-data")
                 .content(ocrPayload)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -83,7 +83,7 @@ public class BulkScanningControllerTest {
     @Test
     public void testWarningsPopulateListAndReturnOkWithWarningsResponseState() throws Exception {
         when(ocrToCCDMandatoryField.ocrToCCDMandatoryFields(any())).thenReturn(warnings);
-        mockMvc.perform(post("/bulk-scanning/PA1P/validate-ocr-data")
+        mockMvc.perform(post("/forms/PA1P/validate-ocr-data")
                 .content(ocrPayload)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
