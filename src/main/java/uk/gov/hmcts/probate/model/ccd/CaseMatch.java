@@ -42,6 +42,11 @@ public class CaseMatch implements Serializable {
             return true;
         }
 
+        if (this.getLegacyCaseViewUrl() != null && other.getLegacyCaseViewUrl() != null
+                && this.getLegacyCaseViewUrl().equals(other.getLegacyCaseViewUrl())) {
+            return true;
+        }
+
         final Object thisId = this.getId();
         final Object otherId = other.getId();
         return (thisId != null && otherId != null && thisId.equals(otherId));
