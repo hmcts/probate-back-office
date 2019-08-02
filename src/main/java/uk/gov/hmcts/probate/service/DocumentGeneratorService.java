@@ -14,13 +14,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_DRAFT;
-import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_DRAFT_REISSUE;
+import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_REISSUE_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_DRAFT;
-import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_DRAFT_REISSUE;
+import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_REISSUE_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_DRAFT;
-import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_DRAFT_REISSUE;
+import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_REISSUE_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_REISSUE;
 
 @Slf4j
@@ -88,8 +88,8 @@ public class DocumentGeneratorService {
     private void expireDrafts(CallbackRequest callbackRequest) {
         log.info("Expiring drafts");
         DocumentType[] documentTypes = {DIGITAL_GRANT_DRAFT, INTESTACY_GRANT_DRAFT, ADMON_WILL_GRANT_DRAFT,
-                                        DIGITAL_GRANT_DRAFT_REISSUE, INTESTACY_GRANT_DRAFT_REISSUE,
-                                        ADMON_WILL_GRANT_DRAFT_REISSUE};
+                                        DIGITAL_GRANT_REISSUE_DRAFT, INTESTACY_GRANT_REISSUE_DRAFT,
+                                        ADMON_WILL_GRANT_REISSUE_DRAFT};
         for (DocumentType documentType : documentTypes) {
             documentService.expire(callbackRequest, documentType);
         }
@@ -101,13 +101,13 @@ public class DocumentGeneratorService {
         DocumentType template;
         switch (caseDetails.getData().getCaseType()) {
             case INTESTACY:
-                template = version.equals(FINAL) ? INTESTACY_GRANT_REISSUE : INTESTACY_GRANT_DRAFT_REISSUE;
+                template = version.equals(FINAL) ? INTESTACY_GRANT_REISSUE : INTESTACY_GRANT_REISSUE_DRAFT;
                 document = pdfManagementService.generateDocmosisDocumentAndUpload(placeholders, template);
                 log.info("Generated and Uploaded Intestacy grant {} document with template {} for the case id {}",
                         version, template.getTemplateName(), caseDetails.getId().toString());
                 break;
             case ADMON_WILL:
-                template = version.equals(FINAL) ? ADMON_WILL_GRANT_REISSUE : ADMON_WILL_GRANT_DRAFT_REISSUE;
+                template = version.equals(FINAL) ? ADMON_WILL_GRANT_REISSUE : ADMON_WILL_GRANT_REISSUE_DRAFT;
                 document = pdfManagementService.generateDocmosisDocumentAndUpload(placeholders, template);
                 log.info("Generated and Uploaded Admon Will grant {} document with template {} for the case id {}",
                         version, template.getTemplateName(), caseDetails.getId().toString());
@@ -117,7 +117,7 @@ public class DocumentGeneratorService {
                 break;
             case GRANT_OF_PROBATE:
             default:
-                template = version.equals(FINAL) ? DIGITAL_GRANT_REISSUE : DIGITAL_GRANT_DRAFT_REISSUE;
+                template = version.equals(FINAL) ? DIGITAL_GRANT_REISSUE : DIGITAL_GRANT_REISSUE_DRAFT;
                 document = pdfManagementService.generateDocmosisDocumentAndUpload(placeholders, template);
                 log.info("Generated and Uploaded Grant of Probate {} document with template {} for the case id {}",
                         version, template.getTemplateName(), caseDetails.getId().toString());

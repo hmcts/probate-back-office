@@ -68,14 +68,14 @@ public enum DocumentType {
     @JsonProperty("grantCoversheet")
     GRANT_COVERSHEET("grantCoversheet"),
 
-    @JsonProperty("digitalGrantDraftReissue")
-    DIGITAL_GRANT_DRAFT_REISSUE("digitalGrantDraftReissue"),
+    @JsonProperty("digitalGrantReissueDraft")
+    DIGITAL_GRANT_REISSUE_DRAFT("digitalGrantReissueDraft"),
 
-    @JsonProperty("intestacyGrantDraftReissue")
-    INTESTACY_GRANT_DRAFT_REISSUE("intestacyGrantDraftReissue"),
+    @JsonProperty("intestacyGrantReissueDraft")
+    INTESTACY_GRANT_REISSUE_DRAFT("intestacyGrantReissueDraft"),
 
-    @JsonProperty("admonWillGrantDraftReissue")
-    ADMON_WILL_GRANT_DRAFT_REISSUE("admonWillGrantDraftReissue"),
+    @JsonProperty("admonWillGrantReissueDraft")
+    ADMON_WILL_GRANT_REISSUE_DRAFT("admonWillGrantReissueDraft"),
 
     @JsonProperty("digitalGrantReissue")
     DIGITAL_GRANT_REISSUE("digitalGrantReissue"),
