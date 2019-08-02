@@ -30,17 +30,16 @@
           "id": "95d45c17-aba1-4441-8d98-aaaa2ec49668"
         }
       ],
-      "willAccessOriginal": "No",
+      "willAccessOriginal": "Yes",
       "solsSolicitorFirmName": "firmname",
       "willExists": "Yes",
-      "solsWillType": "WillLeft",
+      "solsWillType": "WillLeftAnnexed",
       "solsApplicantRelationshipToDeceased": null,
       "solsSpouseOrCivilRenouncing": null,
       "solsAdoptedEnglandOrWales": null,
       "solsMinorityInterest": null,
       "solsMultipleClaims": null,
       "deceasedDateOfDeath": "2018-01-01",
-      "primaryApplicantEmailAddress": "probBackosol@gmail.com",
       "primaryApplicantForenames": "Ex1fn",
       "primaryApplicantAddress": {
         "AddressLine1": "2",

@@ -80,7 +80,8 @@ public class CaseData {
             message = "{deceasedSurnameIsNull}")
     private final String deceasedSurname;
 
-    @NotNull(groups = {ApplicationUpdatedGroup.class, AmendCaseDetailsGroup.class}, message = "{dodIsNull}")
+    @NotNull(groups = {ApplicationProbateGroup.class, ApplicationIntestacyGroup.class, ApplicationAdmonGroup.class,
+            ApplicationUpdatedGroup.class, AmendCaseDetailsGroup.class}, message = "{dodIsNull}")
     private final LocalDate deceasedDateOfDeath;
 
     private final LocalDate currentDate = LocalDate.now();
@@ -90,7 +91,8 @@ public class CaseData {
     @Getter(lazy = true)
     private final String deceasedDateOfDeathFormatted = convertDate(deceasedDateOfDeath);
 
-    @NotNull(groups = {ApplicationUpdatedGroup.class, AmendCaseDetailsGroup.class}, message = "{dobIsNull}")
+    @NotNull(groups = {ApplicationProbateGroup.class, ApplicationIntestacyGroup.class, ApplicationAdmonGroup.class,
+            ApplicationUpdatedGroup.class, AmendCaseDetailsGroup.class}, message = "{dobIsNull}")
     private final LocalDate deceasedDateOfBirth;
 
     @NotBlank(groups = {ApplicationUpdatedGroup.class}, message = "{deceasedDomicileInEngWalesIsNull}")
@@ -131,14 +133,12 @@ public class CaseData {
 
     private final String willNumberOfCodicils;
 
-    @NotBlank(groups = {ApplicationProbateGroup.class,
-                        ApplicationIntestacyGroup.class,
-                        ApplicationAdmonGroup.class}, message = "{primaryApplicantForenamesIsNull}")
+    @NotBlank(groups = {ApplicationProbateGroup.class, ApplicationIntestacyGroup.class, ApplicationAdmonGroup.class,
+                        ApplicationUpdatedGroup.class}, message = "{primaryApplicantForenamesIsNull}")
     private final String primaryApplicantForenames;
 
-    @NotBlank(groups = {ApplicationProbateGroup.class,
-                        ApplicationIntestacyGroup.class,
-                        ApplicationAdmonGroup.class}, message = "{primaryApplicantSurnameIsNull}")
+    @NotBlank(groups = {ApplicationProbateGroup.class, ApplicationIntestacyGroup.class, ApplicationAdmonGroup.class,
+                        ApplicationUpdatedGroup.class}, message = "{primaryApplicantSurnameIsNull}")
     private final String primaryApplicantSurname;
 
     @NotBlank(groups = {ApplicationProbateGroup.class}, message = "{primaryApplicantHasAliasIsNull}")
@@ -173,8 +173,8 @@ public class CaseData {
                         ApplicationIntestacyGroup.class}, message = "{willExistsIsNull}")
     private final String willExists;
 
-    @NotNull(groups = {ApplicationIntestacyGroup.class}, message = "{deceasedMartialStatusIsNull}")
-    private final String deceasedMartialStatus;
+    @NotNull(groups = {ApplicationIntestacyGroup.class}, message = "{deceasedMaritalStatusIsNull}")
+    private final String deceasedMaritalStatus;
 
     @NotBlank(groups = {ApplicationIntestacyGroup.class}, message = "{solsApplicantRelationshipToDeceasedIsNull}")
     private final String solsApplicantRelationshipToDeceased;

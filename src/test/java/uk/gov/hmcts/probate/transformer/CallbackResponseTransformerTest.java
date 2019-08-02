@@ -1049,7 +1049,7 @@ public class CallbackResponseTransformerTest {
                 .primaryApplicantSecondPhoneNumber(EXEC_PHONE)
                 .primaryApplicantRelationshipToDeceased("other")
                 .paRelationshipToDeceasedOther("cousin")
-                .deceasedMartialStatus("neverMarried")
+                .deceasedMaritalStatus("neverMarried")
                 .willDatedBeforeApril(YES)
                 .deceasedEnterMarriageOrCP(NO)
                 .dateOfMarriageOrCP(null)

@@ -70,7 +70,7 @@ public class ConfirmationResponseService {
             return response.get();
         }
 
-        if (caseData.getSolsWillType() != GRANT_TYPE_INTESTACY) {
+        if (!GRANT_TYPE_INTESTACY.equals(caseData.getSolsWillType())) {
             response = getStopBodyMarkdown(caseData, noOriginalWillRule, STOP_BODY);
             if (response.isPresent()) {
                 return response.get();
@@ -78,14 +78,14 @@ public class ConfirmationResponseService {
         }
 
 
-        if (caseData.getSolsWillType() == GRANT_TYPE_PROBATE) {
+        if (GRANT_TYPE_PROBATE.equals(caseData.getSolsWillType())) {
             response = getStopBodyMarkdown(caseData, executorsConfirmationResponseRule, STOP_BODY);
             if (response.isPresent()) {
                 return response.get();
             }
         }
 
-        if (caseData.getSolsWillType() == GRANT_TYPE_INTESTACY) {
+        if (GRANT_TYPE_INTESTACY.equals(caseData.getSolsWillType())) {
             response = getStopBodyMarkdown(caseData, minorityConfirmationResponseRule, STOP_BODY);
             if (response.isPresent()) {
                 return response.get();

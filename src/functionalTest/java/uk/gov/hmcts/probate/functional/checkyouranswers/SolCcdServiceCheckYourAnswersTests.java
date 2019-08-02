@@ -22,6 +22,9 @@ import static org.hamcrest.Matchers.equalToIgnoringCase;
 public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
 
     private static final String VALIDATE_URL = "/case/sols-validate";
+    private static final String VALIDATE_PROBATE_URL = "/case/sols-validate-probate";
+    private static final String VALIDATE_INTESTACY_URL = "/case/sols-validate-intestacy";
+    private static final String VALIDATE_ADMON_URL = "/case/sols-validate-admon";
 
     @Test
     public void verifyFirstNameInTheReturnedPDF() {
@@ -156,7 +159,7 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
                 .body(utils.getJsonFromFile("success.stateChange.beforeSOTcheckYourAnswersPayload.json"))
                 .when().post("/nextsteps/validate")
                 .then().statusCode(200)
-                .and().body("data.state", equalToIgnoringCase("SolAppCreated"));
+                .and().body("data.state", equalToIgnoringCase("SolProbateCreated"));
     }
 
     private String replaceString(String oldJson, String newJson) {
@@ -177,7 +180,7 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
                 .relaxedHTTPSValidation()
                 .headers(utils.getHeadersWithUserId())
                 .body(utils.getJsonFromFile("success.beforeLegalStatement.checkYourAnswersPayload.json")).
-                        when().post(VALIDATE_URL);
+                        when().post(VALIDATE_PROBATE_URL);
         assertEquals(200, response.getStatusCode());
 
         downloadPdfAndVerifyString(extractDocumentId(response), validationString);

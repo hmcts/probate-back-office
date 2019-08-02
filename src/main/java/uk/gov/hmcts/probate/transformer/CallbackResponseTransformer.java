@@ -409,7 +409,7 @@ public class CallbackResponseTransformer {
                 .primaryApplicantSecondPhoneNumber(caseData.getPrimaryApplicantSecondPhoneNumber())
                 .primaryApplicantRelationshipToDeceased(caseData.getPrimaryApplicantRelationshipToDeceased())
                 .paRelationshipToDeceasedOther(caseData.getPaRelationshipToDeceasedOther())
-                .deceasedMartialStatus(caseData.getDeceasedMartialStatus())
+                .deceasedMartialStatus(caseData.getDeceasedMaritalStatus())
                 .willDatedBeforeApril(caseData.getWillDatedBeforeApril())
                 .deceasedEnterMarriageOrCP(caseData.getDeceasedEnterMarriageOrCP())
                 .dateOfMarriageOrCP(caseData.getDateOfMarriageOrCP())

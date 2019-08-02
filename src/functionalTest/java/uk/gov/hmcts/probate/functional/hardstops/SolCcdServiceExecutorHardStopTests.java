@@ -14,7 +14,7 @@ import static org.hamcrest.Matchers.equalToIgnoringCase;
 @RunWith(SerenityRunner.class)
 public class SolCcdServiceExecutorHardStopTests extends IntegrationTestBase {
 
-    public static final String VALIDATE_URL = "/case/sols-validate";
+    public static final String VALIDATE_URL = "/case/sols-validate-probate";
 
     @Test
     public void validateDeceasedDetailWithoutDomicileHardStop() {
