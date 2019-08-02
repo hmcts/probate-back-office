@@ -59,18 +59,18 @@ docmosis:
       templateName: FL-PRB-GNO-ENG-00025.docx
     grantCoversheet:
       templateName: FL-PRB-GNO-ENG-00024.docx
-    digitalGrantDraftReissue:
+    digitalGrantReissueDraft:
       templateName: FL-PRB-GNO-ENG-00061.doc
-    intestacyGrantDraftReissue:
+    intestacyGrantReissueDraft:
       templateName: FL-PRB-GNO-ENG-00061.doc
-    admonWillGrantDraftReissue:
+    admonWillGrantReissueDraft:
       templateName: FL-PRB-GNO-ENG-00061.doc
     digitalGrantReissue:
       templateName: FL-PRB-GNO-ENG-00061.doc
     intestacyGrantReissue:
       templateName: FL-PRB-GNO-ENG-00061.doc
     admonWillGrantReissue:
-        templateName: FL-PRB-GNO-ENG-00061.doc
+      templateName: FL-PRB-GNO-ENG-00061.doc
 
 fee.api:
   url: http://localhost:4411

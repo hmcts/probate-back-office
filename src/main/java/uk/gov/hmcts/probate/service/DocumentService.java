@@ -14,11 +14,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_DRAFT;
-import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_DRAFT_REISSUE;
+import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_REISSUE_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_DRAFT;
-import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_DRAFT_REISSUE;
+import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_REISSUE_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_DRAFT;
-import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_DRAFT_REISSUE;
+import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_REISSUE_DRAFT;
 
 @Slf4j
 @AllArgsConstructor
@@ -50,22 +50,22 @@ public class DocumentService {
                         .filter(collectionMember -> collectionMember.getValue().getDocumentType().equals(INTESTACY_GRANT_DRAFT))
                         .collect(Collectors.toList()));
                 break;
-            case DIGITAL_GRANT_DRAFT_REISSUE:
+            case DIGITAL_GRANT_REISSUE_DRAFT:
                 documentsToExpire.addAll(callbackRequest.getCaseDetails().getData()
                         .getProbateDocumentsGenerated().stream()
-                        .filter(collectionMember -> collectionMember.getValue().getDocumentType().equals(DIGITAL_GRANT_DRAFT_REISSUE))
+                        .filter(collectionMember -> collectionMember.getValue().getDocumentType().equals(DIGITAL_GRANT_REISSUE_DRAFT))
                         .collect(Collectors.toList()));
                 break;
-            case INTESTACY_GRANT_DRAFT_REISSUE:
+            case INTESTACY_GRANT_REISSUE_DRAFT:
                 documentsToExpire.addAll(callbackRequest.getCaseDetails().getData()
                         .getProbateDocumentsGenerated().stream()
-                        .filter(collectionMember -> collectionMember.getValue().getDocumentType().equals(INTESTACY_GRANT_DRAFT_REISSUE))
+                        .filter(collectionMember -> collectionMember.getValue().getDocumentType().equals(INTESTACY_GRANT_REISSUE_DRAFT))
                         .collect(Collectors.toList()));
                 break;
-            case ADMON_WILL_GRANT_DRAFT_REISSUE:
+            case ADMON_WILL_GRANT_REISSUE_DRAFT:
                 documentsToExpire.addAll(callbackRequest.getCaseDetails().getData()
                         .getProbateDocumentsGenerated().stream()
-                        .filter(collectionMember -> collectionMember.getValue().getDocumentType().equals(ADMON_WILL_GRANT_DRAFT_REISSUE))
+                        .filter(collectionMember -> collectionMember.getValue().getDocumentType().equals(ADMON_WILL_GRANT_REISSUE_DRAFT))
                         .collect(Collectors.toList()));
                 break;
             default:

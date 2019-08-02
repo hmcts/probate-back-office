@@ -125,7 +125,7 @@ public class DocumentGeneratorServiceTest {
     @Test
     public void testGenerateReissueDraftProducesCorrectDocumentForGOP() {
         when(pdfManagementService.generateDocmosisDocumentAndUpload(expectedMap,
-                DocumentType.DIGITAL_GRANT_DRAFT_REISSUE))
+                DocumentType.DIGITAL_GRANT_REISSUE_DRAFT))
                 .thenReturn(Document.builder().documentFileName(DIGITAL_GRANT_DRAFT_REISSUE_FILE_NAME).build());
         assertEquals(DIGITAL_GRANT_DRAFT_REISSUE_FILE_NAME,
                 documentGeneratorService.generateGrantReissue(callbackRequest, DRAFT).getDocumentFileName());
@@ -138,7 +138,7 @@ public class DocumentGeneratorServiceTest {
                         LAST_MODIFIED, CASE_ID);
         callbackRequest = new CallbackRequest(caseDetails);
         when(pdfManagementService.generateDocmosisDocumentAndUpload(expectedMap,
-                DocumentType.INTESTACY_GRANT_DRAFT_REISSUE))
+                DocumentType.INTESTACY_GRANT_REISSUE_DRAFT))
                 .thenReturn(Document.builder().documentFileName(INTESTACY_DRAFT_REISSUE_FILE_NAME).build());
         assertEquals(INTESTACY_DRAFT_REISSUE_FILE_NAME,
                 documentGeneratorService.generateGrantReissue(callbackRequest, DRAFT).getDocumentFileName());
@@ -151,7 +151,7 @@ public class DocumentGeneratorServiceTest {
                         LAST_MODIFIED, CASE_ID);
         callbackRequest = new CallbackRequest(caseDetails);
         when(pdfManagementService.generateDocmosisDocumentAndUpload(expectedMap,
-                DocumentType.ADMON_WILL_GRANT_DRAFT_REISSUE)).thenReturn(Document.builder()
+                DocumentType.ADMON_WILL_GRANT_REISSUE_DRAFT)).thenReturn(Document.builder()
                 .documentFileName(ADMON_WILL_DRAFT_REISSUE_FILE_NAME).build());
         assertEquals(ADMON_WILL_DRAFT_REISSUE_FILE_NAME,
                 documentGeneratorService.generateGrantReissue(callbackRequest, DRAFT).getDocumentFileName());
@@ -214,7 +214,7 @@ public class DocumentGeneratorServiceTest {
     @Test
     public void testInvalidVersionDefaultsToDraftVersion() {
         when(pdfManagementService.generateDocmosisDocumentAndUpload(expectedMap,
-                DocumentType.DIGITAL_GRANT_DRAFT_REISSUE))
+                DocumentType.DIGITAL_GRANT_REISSUE_DRAFT))
                 .thenReturn(Document.builder().documentFileName(DIGITAL_GRANT_DRAFT_REISSUE_FILE_NAME).build());
         assertEquals(DIGITAL_GRANT_DRAFT_REISSUE_FILE_NAME,
                 documentGeneratorService.generateGrantReissue(callbackRequest, "INVALID").getDocumentFileName());
