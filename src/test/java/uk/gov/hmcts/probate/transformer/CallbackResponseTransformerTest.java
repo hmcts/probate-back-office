@@ -1474,7 +1474,7 @@ public class CallbackResponseTransformerTest {
         assertEquals(EXEC_PHONE, callbackResponse.getData().getPrimaryApplicantSecondPhoneNumber());
         assertEquals("other", callbackResponse.getData().getPrimaryApplicantRelationshipToDeceased());
         assertEquals("cousin", callbackResponse.getData().getPaRelationshipToDeceasedOther());
-        assertEquals("neverMarried", callbackResponse.getData().getDeceasedMartialStatus());
+        assertEquals("neverMarried", callbackResponse.getData().getDeceasedMaritalStatus());
 
         assertEquals(YES, callbackResponse.getData().getWillDatedBeforeApril());
         assertEquals(NO, callbackResponse.getData().getDeceasedEnterMarriageOrCP());
