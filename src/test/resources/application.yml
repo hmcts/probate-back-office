@@ -112,7 +112,9 @@ notifications:
       personal:
         documentReceived: "pa-document-received"
         caseStopped: "pa-case-stopped"
+        caseStoppedCaveat: "pa-case-stopped-caveat"
         grantIssued: "pa-grant-issued"
+        grantReissued: "pa-grant-reissued"
         generalCaveatMessage: "pa-general-caveat-message"
         excelaData: "pa-excela-data"
         caveatRaised: "pa-caveat-raised"
@@ -120,7 +122,9 @@ notifications:
       solicitor:
         documentReceived: "sol-document-received"
         caseStopped: "sol-case-stopped"
+        caseStoppedCaveat: "sol-case-stopped-caveat"
         grantIssued: "sol-grant-issued"
+        grantReissued: "sol-grant-reissued"
         generalCaveatMessage: "sol-general-caveat-message"
         excelaData: "pa-excela-data"
         caveatRaised: "sols-caveat-raised"

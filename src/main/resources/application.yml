@@ -59,6 +59,18 @@ docmosis:
       templateName: FL-PRB-GNO-ENG-00025.docx
     grantCoversheet:
       templateName: FL-PRB-GNO-ENG-00024.docx
+    digitalGrantReissueDraft:
+      templateName: FL-PRB-GNO-ENG-00061.doc
+    intestacyGrantReissueDraft:
+      templateName: FL-PRB-GNO-ENG-00061.doc
+    admonWillGrantReissueDraft:
+      templateName: FL-PRB-GNO-ENG-00061.doc
+    digitalGrantReissue:
+      templateName: FL-PRB-GNO-ENG-00061.doc
+    intestacyGrantReissue:
+      templateName: FL-PRB-GNO-ENG-00061.doc
+    admonWillGrantReissue:
+      templateName: FL-PRB-GNO-ENG-00061.doc
 
 fee.api:
   url: http://localhost:4411
@@ -144,6 +156,7 @@ notifications:
         caseStopped: "58aed5cb-0aab-44f5-842f-9f0a6a150f72"
         caseStoppedCaveat: "937291a0-c0ae-40a4-a8cf-46a3452faff0"
         grantIssued: "9344693b-9ea3-487d-bec1-68201214fd27"
+        grantReissued: "1b094aae-1b4e-4161-9a61-f563a1a6ed6d"
         generalCaveatMessage: "afadf00e-c224-4da0-a6dc-fb47a2e5db67"
         excelaData: "fd474506-a272-4caa-ad61-6086cee0639a"
         caveatRaised: "bf9dabd9-b22f-4cb6-b3aa-871ac8532209"
@@ -153,6 +166,7 @@ notifications:
         caseStopped: "77041301-77a5-4382-a3a7-0bada17518b0"
         caseStoppedCaveat: "937291a0-c0ae-40a4-a8cf-46a3452faff0"
         grantIssued: "95aa541b-e55e-4d7c-a6f5-810b5f03adba"
+        grantReissued: "1e18751f-fd4e-4893-85bb-f59cc5330c38"
         generalCaveatMessage: "afadf00e-c224-4da0-a6dc-fb47a2e5db67"
         excelaData: "fd474506-a272-4caa-ad61-6086cee0639a"
         caveatRaised: "bf9dabd9-b22f-4cb6-b3aa-871ac8532209"

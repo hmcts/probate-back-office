@@ -1,5 +1,7 @@
 package uk.gov.hmcts.probate.controller;
 
+import org.hamcrest.CoreMatchers;
+import org.hamcrest.Matcher;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,6 +26,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.willlodgement.request.WillLodgementCallbackRequest;
 import uk.gov.hmcts.probate.service.BulkPrintService;
+import uk.gov.hmcts.probate.service.DocumentGeneratorService;
 import uk.gov.hmcts.probate.service.DocumentService;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
@@ -52,6 +55,7 @@ import static uk.gov.hmcts.probate.model.DocumentType.EDGE_CASE;
 import static uk.gov.hmcts.probate.model.DocumentType.GRANT_COVER;
 import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_DRAFT;
+import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
 import static uk.gov.hmcts.probate.model.DocumentType.WILL_LODGEMENT_DEPOSIT_RECEIPT;
 
 @RunWith(SpringRunner.class)
@@ -81,15 +85,20 @@ public class DocumentControllerTest {
     private BulkPrintService bulkPrintService;
 
     @MockBean
+    private DocumentGeneratorService documentGeneratorService;
+
+    @MockBean
     private AppInsights appInsights;
 
     @Mock
     private SendLetterResponse sendLetterResponseMock;
 
+    private static final String LETTER_UUID = "c387262a-c8a6-44eb-9aea-a740460f9302";
+
     @Before
     public void setUp() throws NotificationClientException {
         final Document document = Document.builder()
-                .documentType(DocumentType.DIGITAL_GRANT)
+                .documentType(DocumentType.DIGITAL_GRANT_REISSUE)
                 .documentDateAdded(LocalDate.now())
                 .documentFileName("test")
                 .documentGeneratedBy("test")
@@ -119,6 +128,16 @@ public class DocumentControllerTest {
                 .thenReturn(Document.builder().documentType(WILL_LODGEMENT_DEPOSIT_RECEIPT).build());
 
         when(notificationService.sendEmail(any(State.class), any(CaseDetails.class))).thenReturn(document);
+
+        when(documentGeneratorService.generateGrantReissue(any(), any())).thenReturn(document);
+        when(documentGeneratorService.generateCoversheet(any(CallbackRequest.class)))
+                .thenReturn(Document.builder().documentType(DocumentType.GRANT_COVERSHEET).build());
+
+        when(bulkPrintService.sendToBulkPrintGrantReissue(any(), any(),
+                any())).thenReturn(LETTER_UUID);
+
+        when(notificationService.generateGrantReissue(any(CallbackRequest.class)))
+                .thenReturn(Document.builder().documentType(SENT_EMAIL).build());
     }
 
     @Test
@@ -325,5 +344,61 @@ public class DocumentControllerTest {
 
         doNothing().when(documentService).expire(any(CallbackRequest.class), eq(DIGITAL_GRANT_DRAFT));
         verify(documentService).expire(any(CallbackRequest.class), eq(DIGITAL_GRANT_DRAFT));
+    }
+
+    @Test
+    public void generateGrantDraftReissueGrantOfRepresentation() throws Exception {
+
+        String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadNotifications.json");
+
+        mockMvc.perform(post("/document/generate-grant-draft-reissue")
+                .content(solicitorPayload)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("data")));
+
+    }
+
+    @Test
+    public void generateGrantReissueGrantOfRepresentation() throws Exception {
+
+        String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadNotifications.json");
+
+        mockMvc.perform(post("/document/generate-grant-reissue")
+                .content(solicitorPayload)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("data")))
+                .andExpect(content().string(containsString("sentEmail")));
+    }
+
+    @Test
+    public void generateGrantReissueGrantOfRepresentationWithNoEmail() throws Exception {
+
+        String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadNotificationsNoReissueEmail.json");
+
+        mockMvc.perform(post("/document/generate-grant-reissue")
+                .content(solicitorPayload)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("data")))
+                .andExpect(content().string(doesNotContainString("sentEmail")));
+    }
+
+    @Test
+    public void generateGrantReissueGrantOfRepresentationWithNoEmailPdfSize3() throws Exception {
+
+        String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadNotificationspdfSizeThree.json");
+
+        mockMvc.perform(post("/document/generate-grant-reissue")
+                .content(solicitorPayload)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("data")))
+                .andExpect(content().string(doesNotContainString("sentEmail")));
+    }
+
+    private Matcher<String> doesNotContainString(String s) {
+        return CoreMatchers.not(containsString(s));
     }
 }

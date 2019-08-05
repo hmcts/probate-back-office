@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
+import uk.gov.hmcts.probate.model.ccd.Reissue;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
@@ -241,6 +242,14 @@ public class ResponseCaseData {
     private final String boCaveatStopEmailNotification;
     private final String boCaveatStopSendToBulkPrintRequested;
     private final String boCaveatStopSendToBulkPrint;
+    private final String boEmailGrantReissuedNotificationRequested;
+    private final String boEmailGrantReissuedNotification;
+    private final String boGrantReissueSendToBulkPrint;
+    private final String boGrantReissueSendToBulkPrintRequested;
+    private final String orderNeeded;
+    private final List<CollectionMember<Reissue>> reissueReason;
+    private final String reissueDate;
+    private final String reissueReasonNotation;
 
     private final String deceasedDivorcedInEnglandOrWales;
     private final String primaryApplicantAdoptionInEnglandOrWales;

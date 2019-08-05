@@ -169,4 +169,8 @@ public class PDFManagementService {
             throw new BadRequestException(e.getMessage());
         }
     }
+
+    public String getDecodedSignature() {
+        return decryptedFileAsBase64String(pdfServiceConfiguration.getGrantSignatureEncryptedFile());
+    }
 }

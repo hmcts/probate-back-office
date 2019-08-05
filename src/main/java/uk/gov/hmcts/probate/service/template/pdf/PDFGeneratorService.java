@@ -47,7 +47,8 @@ public class PDFGeneratorService {
         return new EvidenceManagementFileUpload(MediaType.APPLICATION_PDF, postResult);
     }
 
-    public EvidenceManagementFileUpload generateDocmosisDocumentFrom(String templateName, Map<String, Object> placeholders) {
+    public EvidenceManagementFileUpload generateDocmosisDocumentFrom(String templateName, Map<String, Object>
+            placeholders) {
         byte[] postResult;
         try {
             postResult = docmosisPdfGenerationService.generateDocFrom(templateName, placeholders);

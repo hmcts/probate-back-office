@@ -49,7 +49,6 @@
       "solsSOTNeedToUpdate": "No",
       "primaryApplicantEmailAddress": "solicitor@hmcts-test.net",
       "boCaveatStopEmailNotification": "No",
-      "boCaveatStopNotification": "Yes",
       "boCaveatStopSendToBulkPrint": "Yes",
       "primaryApplicantForenames": "Executor name 1",
       "primaryApplicantAddress": {
