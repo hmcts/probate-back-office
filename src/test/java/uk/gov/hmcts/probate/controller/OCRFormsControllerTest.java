@@ -14,6 +14,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.ocr.OCRField;
+import uk.gov.hmcts.probate.service.ocr.FormType;
 import uk.gov.hmcts.probate.service.ocr.OCRMapper;
 import uk.gov.hmcts.probate.service.ocr.OCRToCCDMandatoryField;
 import uk.gov.hmcts.probate.util.TestUtils;
@@ -25,6 +26,7 @@ import java.util.List;
 import static java.util.Collections.EMPTY_LIST;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -72,7 +74,7 @@ public class OCRFormsControllerTest {
     }
 
     @Test
-    public void testNoWarningsReturnOkResponseAndSuccessResponseState() throws Exception {
+    public void testNoWarningsReturnOkResponseAndSuccessResponseStateForPA1P() throws Exception {
         mockMvc.perform(post("/forms/PA1P/validate-ocr-data")
                 .content(ocrPayload)
                 .contentType(MediaType.APPLICATION_JSON))
@@ -89,5 +91,32 @@ public class OCRFormsControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("WARNINGS")))
                 .andExpect(content().string(containsString("test warning")));
+    }
+
+    @Test
+    public void testNoWarningsReturnOkResponseAndSuccessResponseStateForPA1A() throws Exception {
+        mockMvc.perform(post("/forms/PA1A/validate-ocr-data")
+                .content(ocrPayload)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("SUCCESS")));
+    }
+
+    @Test
+    public void testNoWarningsReturnOkResponseAndSuccessResponseStateForPA8A() throws Exception {
+        mockMvc.perform(post("/forms/PA8A/validate-ocr-data")
+                .content(ocrPayload)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("SUCCESS")));
+    }
+
+    @Test
+    public void testInvalidFormTypeThrowsNotFound() throws Exception {
+        mockMvc.perform(post("/forms/test/validate-ocr-data")
+                .content(ocrPayload)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().is4xxClientError())
+                .andExpect(content().string(containsString("Form type 'test' not found")));
     }
 }

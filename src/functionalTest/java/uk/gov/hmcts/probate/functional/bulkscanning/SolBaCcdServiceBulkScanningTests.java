@@ -1,4 +1,4 @@
-package uk.gov.hmcts.probate.functional.errors;
+package uk.gov.hmcts.probate.functional.bulkscanning;
 
 import net.serenitybdd.junit.runners.SerenityRunner;
 import net.serenitybdd.rest.SerenityRest;
