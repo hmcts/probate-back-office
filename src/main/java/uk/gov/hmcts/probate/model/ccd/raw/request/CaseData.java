@@ -133,12 +133,12 @@ public class CaseData {
 
     private final String willNumberOfCodicils;
 
-    @NotBlank(groups = {ApplicationProbateGroup.class, ApplicationIntestacyGroup.class, ApplicationAdmonGroup.class,
-                        ApplicationUpdatedGroup.class}, message = "{primaryApplicantForenamesIsNull}")
+    @NotBlank(groups = {ApplicationProbateGroup.class, ApplicationIntestacyGroup.class, ApplicationAdmonGroup.class},
+            message = "{primaryApplicantForenamesIsNull}")
     private final String primaryApplicantForenames;
 
-    @NotBlank(groups = {ApplicationProbateGroup.class, ApplicationIntestacyGroup.class, ApplicationAdmonGroup.class,
-                        ApplicationUpdatedGroup.class}, message = "{primaryApplicantSurnameIsNull}")
+    @NotBlank(groups = {ApplicationProbateGroup.class, ApplicationIntestacyGroup.class, ApplicationAdmonGroup.class},
+            message = "{primaryApplicantSurnameIsNull}")
     private final String primaryApplicantSurname;
 
     @NotBlank(groups = {ApplicationProbateGroup.class}, message = "{primaryApplicantHasAliasIsNull}")

@@ -120,13 +120,13 @@
                 and died on {{ case_details.case_data.deceasedDateOfDeath|date("dd/MM/yyyy", existingFormat="yyyy-MM-dd") }} intestate.
             </p>
             <p>They were
-                {% if case_details.case_data.deceasedMartialStatus == "neverMarried" %}
+                {% if case_details.case_data.deceasedMaritalStatus == "neverMarried" %}
                 never married
-                {% elseif case_details.case_data.deceasedMartialStatus == "widowed" %}
+                {% elseif case_details.case_data.deceasedMaritalStatus == "widowed" %}
                 widowed
-                {% elseif case_details.case_data.deceasedMartialStatus == "marriedCivilPartnership" %}
+                {% elseif case_details.case_data.deceasedMaritalStatus == "marriedCivilPartnership" %}
                 married or in a civil partnership,
-                {% elseif case_details.case_data.deceasedMartialStatus == "divorcedCivilPartnership" %}
+                {% elseif case_details.case_data.deceasedMaritalStatus == "divorcedCivilPartnership" %}
                 divorced or their civil partnership was dissolved,
                 {% else %}
                 judicially separated

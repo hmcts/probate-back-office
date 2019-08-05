@@ -113,22 +113,22 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
 
     @Test
     public void verifyEmptyFirstNameReturnsError() {
-        validatePostRequestFailureForLegalStatement("\"primaryApplicantForenames\": \"TestPrimaryExecutorFirstName\"", "\"primaryApplicantForenames\": \"\"", "caseDetails.data.primaryApplicantForenames");
+        validatePostRequestFailureForLegalStatement("\"primaryApplicantForenames\": \"TestPrimaryExecutorFirstName\"", "\"primaryApplicantForenames\": \"\"", "caseDetails.data.primaryApplicantForenames", VALIDATE_PROBATE_URL);
     }
 
     @Test
     public void verifyEmptyLastNameReturnsError() {
-        validatePostRequestFailureForLegalStatement("\"primaryApplicantSurname\": \"TestPrimaryExecutorLastName\"", "\"primaryApplicantSurname\": \"\"", "caseDetails.data.primaryApplicantSurname");
+        validatePostRequestFailureForLegalStatement("\"primaryApplicantSurname\": \"TestPrimaryExecutorLastName\"", "\"primaryApplicantSurname\": \"\"", "caseDetails.data.primaryApplicantSurname", VALIDATE_PROBATE_URL);
     }
 
     @Test
     public void verifyMissingDeceasedDodReturnsError() {
-        validatePostRequestFailureForLegalStatement("\"deceasedDateOfDeath\": \"2018-01-01\"", "\"deceasedDateOfDeath\": \"\"", "caseDetails.data.deceasedDateOfDeath");
+        validatePostRequestFailureForLegalStatement("\"deceasedDateOfDeath\": \"2018-01-01\"", "\"deceasedDateOfDeath\": \"\"", "caseDetails.data.deceasedDateOfDeath", VALIDATE_URL);
     }
 
     @Test
     public void verifyMissingDeceasedDobReturnsError() {
-        validatePostRequestFailureForLegalStatement("\"deceasedDateOfBirth\": \"1987-01-01\"", "\"deceasedDateOfBirth\": \"\"", "caseDetails.data.deceasedDateOfBirth");
+        validatePostRequestFailureForLegalStatement("\"deceasedDateOfBirth\": \"1987-01-01\"", "\"deceasedDateOfBirth\": \"\"", "caseDetails.data.deceasedDateOfBirth", VALIDATE_URL);
     }
 
     @Test
@@ -187,11 +187,11 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
     }
 
 
-    private void validatePostRequestFailureForLegalStatement(String oldString, String replacingString, String errorMsg) {
+    private void validatePostRequestFailureForLegalStatement(String oldString, String replacingString, String errorMsg, String postURL) {
         given().relaxedHTTPSValidation()
                 .headers(utils.getHeaders())
                 .body(replaceString(oldString, replacingString))
-                .when().post(VALIDATE_URL).then().statusCode(400)
+                .when().post(postURL).then().statusCode(400)
                 .and().body("fieldErrors[0].field", equalToIgnoringCase(errorMsg))
                 .and().body("message", equalToIgnoringCase("Invalid payload"));
     }
