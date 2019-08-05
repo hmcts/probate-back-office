@@ -5,8 +5,6 @@
 String product = "probate"
 String component = "back-office"
 
-<<<<<<< HEAD
-=======
 //def secrets = [
 //        'probate-${env}'      : [
 //                secret('serviceAuthProviderBaseUrl', 'SERVICE_AUTH_PROVIDER_BASE_URL'),
@@ -40,7 +38,6 @@ String component = "back-office"
 //                secret('ccd-api-gateway-oauth2-client-secret', 'API_GATEWAY_IDAM_SECRET')
 //        ]
 //]
->>>>>>> b4135463... readd Jenkins file
 
 List<LinkedHashMap<String, Object>> secrets = [
 
