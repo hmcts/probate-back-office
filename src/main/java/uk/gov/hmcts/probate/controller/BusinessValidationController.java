@@ -209,7 +209,7 @@ public class BusinessValidationController {
 
     private void validateForPayloadErrors(CallbackRequest callbackRequest, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            log.error(DEFAULT_LOG_ERROR, callbackRequest.getCaseDetails().getId(), bindingResult);
+            log.info(DEFAULT_LOG_ERROR, callbackRequest.getCaseDetails().getId(), bindingResult);
             throw new BadRequestException(INVALID_PAYLOAD, bindingResult);
         }
     }
