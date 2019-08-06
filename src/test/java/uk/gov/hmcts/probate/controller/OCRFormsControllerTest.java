@@ -26,6 +26,7 @@ import java.util.List;
 import static java.util.Collections.EMPTY_LIST;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -70,7 +71,7 @@ public class OCRFormsControllerTest {
         ocrFields.add(field1);
         warnings.add("test warning");
         when(ocrMapper.ocrMapper(any())).thenReturn(ocrFields);
-        when(ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrFields)).thenReturn(EMPTY_LIST);
+        when(ocrToCCDMandatoryField.ocrToCCDMandatoryFields(eq(ocrFields), any())).thenReturn(EMPTY_LIST);
     }
 
     @Test
@@ -84,7 +85,7 @@ public class OCRFormsControllerTest {
 
     @Test
     public void testWarningsPopulateListAndReturnOkWithWarningsResponseState() throws Exception {
-        when(ocrToCCDMandatoryField.ocrToCCDMandatoryFields(any())).thenReturn(warnings);
+        when(ocrToCCDMandatoryField.ocrToCCDMandatoryFields(any(), any())).thenReturn(warnings);
         mockMvc.perform(post("/forms/PA1P/validate-ocr-data")
                 .content(ocrPayload)
                 .contentType(MediaType.APPLICATION_JSON))

@@ -1,6 +1,6 @@
 package uk.gov.hmcts.probate.model.ccd.ocr;
 
-public enum MandatoryFields {
+public enum GORMandatoryFields {
     PRIMARY_APPLICANT_FORENAMES("primaryApplicantForenames", "Primary applicant First name(s)"),
     PRIMARY_APPLICANT_SURNAME("primaryApplicantSurname", "Primary applicant last name(s)"),
     PRIMARY_APPLICANT_ADDRESS_LINE_1("primaryApplicantAddress_AddressLine1", "Primary applicant Building & Street"),
@@ -14,7 +14,7 @@ public enum MandatoryFields {
     private final String key;
     private final String value;
 
-    MandatoryFields(String key, String value) {
+    GORMandatoryFields(String key, String value) {
         this.key = key;
         this.value = value;
     }

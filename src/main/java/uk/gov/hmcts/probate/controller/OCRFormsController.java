@@ -19,6 +19,8 @@ import uk.gov.hmcts.probate.service.ocr.FormType;
 import uk.gov.hmcts.probate.service.ocr.OCRMapper;
 import uk.gov.hmcts.probate.service.ocr.OCRToCCDMandatoryField;
 
+import java.text.Normalizer;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
@@ -47,8 +49,9 @@ public class OCRFormsController {
                                                                       @RequestBody OCRRequest ocrRequest) {
         log.info("Validate ocr data for form type: {}", formType);
         FormType.isFormTypeValid(formType);
-        List<String> warnings =
-                ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrMapper.ocrMapper(ocrRequest.getOcrFields()));
+        List<String> warnings = ocrToCCDMandatoryField
+                        .ocrToCCDMandatoryFields(ocrMapper.ocrMapper(ocrRequest.getOcrFields()),
+                                FormType.valueOf(formType));
 
         ValidationResponse validationResponse =
                 ValidationResponse.builder().warnings(warnings)
