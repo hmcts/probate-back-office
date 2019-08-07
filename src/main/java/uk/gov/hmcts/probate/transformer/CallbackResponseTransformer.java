@@ -42,10 +42,13 @@ import static uk.gov.hmcts.probate.model.Constants.DATE_OF_DEATH_TYPE_DEFAULT;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_INTESTACY;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_ADMON;
+import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT_STOPPED;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
-import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
 
 @Component
@@ -87,7 +90,7 @@ public class CallbackResponseTransformer {
     public CallbackResponse caseStopped(CallbackRequest callbackRequest, List<Document> documents, String letterId) {
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
         CaseData caseData = caseDetails.getData();
-        documents.forEach(document -> documentTransformer.addDocument(callbackRequest, document));
+        documents.forEach(document -> documentTransformer.addDocument(callbackRequest, document, true));
 
         ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), false);
 
@@ -109,7 +112,9 @@ public class CallbackResponseTransformer {
     }
 
     public CallbackResponse addDocuments(CallbackRequest callbackRequest, List<Document> documents, String letterId, String pdfSize) {
-        documents.forEach(document -> documentTransformer.addDocument(callbackRequest, document));
+        CaseDetails caseDetails = callbackRequest.getCaseDetails();
+        CaseData caseData = caseDetails.getData();
+        documents.forEach(document -> documentTransformer.addDocument(callbackRequest, document, false));
         ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), false);
 
         if (documents.isEmpty()) {
@@ -137,7 +142,27 @@ public class CallbackResponseTransformer {
             responseCaseDataBuilder.boEmailDocsReceivedNotificationRequested(
                     callbackRequest.getCaseDetails().getData().getBoEmailDocsReceivedNotification());
         }
-        responseCaseDataBuilder.solsSOTNeedToUpdate(null);
+
+        if (documentTransformer.hasDocumentWithType(documents, DIGITAL_GRANT_REISSUE)
+                || documentTransformer.hasDocumentWithType(documents, ADMON_WILL_GRANT_REISSUE)
+                || documentTransformer.hasDocumentWithType(documents, INTESTACY_GRANT_REISSUE)) {
+            if (letterId != null) {
+                DocumentType[] documentTypes = {DIGITAL_GRANT_REISSUE, ADMON_WILL_GRANT_REISSUE, INTESTACY_GRANT_REISSUE};
+                String templateName = getTemplateName(documents, documentTypes);
+                CollectionMember<BulkPrint> bulkPrint = buildBulkPrint(letterId, templateName);
+                appendToBulkPrintCollection(bulkPrint, caseData);
+                responseCaseDataBuilder
+                        .bulkPrintId(caseData.getBulkPrintId());
+            }
+            responseCaseDataBuilder
+                    .boEmailGrantReissuedNotificationRequested(
+                            callbackRequest.getCaseDetails().getData().getBoEmailGrantReissuedNotification())
+                    .boGrantReissueSendToBulkPrintRequested(
+                            callbackRequest.getCaseDetails().getData().getBoGrantReissueSendToBulkPrint());
+        }
+
+        responseCaseDataBuilder
+                .solsSOTNeedToUpdate(null);
 
         return transformResponse(responseCaseDataBuilder.build());
     }
@@ -184,8 +209,6 @@ public class CallbackResponseTransformer {
         }
         return transformResponse(responseCaseDataBuilder.build());
     }
-
-
 
 
     public CallbackResponse transformForSolicitorComplete(CallbackRequest callbackRequest, FeeServiceResponse feeServiceResponse) {
@@ -363,12 +386,20 @@ public class CallbackResponseTransformer {
                 .boCaveatStopEmailNotification(caseData.getBoCaveatStopEmailNotification())
                 .boCaveatStopSendToBulkPrintRequested(caseData.getBoCaveatStopSendToBulkPrintRequested())
                 .boCaveatStopSendToBulkPrint(caseData.getBoCaveatStopSendToBulkPrint())
+                .boEmailGrantReissuedNotification(caseData.getBoEmailGrantReissuedNotification())
+                .boEmailDocsReceivedNotificationRequested(caseData.getBoEmailDocsReceivedNotificationRequested())
+                .boGrantReissueSendToBulkPrint(caseData.getBoGrantReissueSendToBulkPrint())
+                .boGrantReissueSendToBulkPrintRequested(caseData.getBoGrantReissueSendToBulkPrintRequested())
 
                 .recordId(caseData.getRecordId())
                 .legacyType(caseData.getLegacyType())
                 .legacyCaseViewUrl(caseData.getLegacyCaseViewUrl())
                 .grantIssuedDate(caseData.getGrantIssuedDate())
                 .dateOfDeathType(caseData.getDateOfDeathType())
+                .orderNeeded(caseData.getOrderNeeded())
+                .reissueReason(caseData.getReissueReason())
+                .reissueDate(caseData.getReissueDate())
+                .reissueReasonNotation(caseData.getReissueReasonNotation())
                 .bulkPrintId(caseData.getBulkPrintId())
 
                 .deceasedDivorcedInEnglandOrWales(caseData.getDeceasedDivorcedInEnglandOrWales())
@@ -379,7 +410,8 @@ public class CallbackResponseTransformer {
                 .anyDeceasedChildrenDieBeforeDeceased(caseData.getAnyDeceasedChildrenDieBeforeDeceased())
                 .anyDeceasedGrandChildrenUnderEighteen(caseData.getAnyDeceasedGrandChildrenUnderEighteen())
                 .deceasedAnyChildren(caseData.getDeceasedAnyChildren())
-                .deceasedHasAssetsOutsideUK(caseData.getDeceasedHasAssetsOutsideUK());
+                .deceasedHasAssetsOutsideUK(caseData.getDeceasedHasAssetsOutsideUK())
+                .statementOfTruthDocument(caseData.getStatementOfTruthDocument());
 
         if (transform) {
             updateCaseBuilderForTransformCase(caseData, builder);
@@ -741,5 +773,31 @@ public class CallbackResponseTransformer {
                 .sendLetterId(letterId)
                 .templateName(templateName)
                 .build());
+    }
+
+    private List<CollectionMember<BulkPrint>> appendToBulkPrintCollection(
+            CollectionMember<BulkPrint> bulkPrintCollectionMember, CaseData caseData) {
+        if (caseData.getBulkPrintId() == null) {
+            caseData.setBulkPrintId(Arrays.asList(
+                    bulkPrintCollectionMember));
+
+        } else {
+            caseData.getBulkPrintId().add(bulkPrintCollectionMember);
+        }
+        return caseData.getBulkPrintId();
+    }
+
+    private String getTemplateName(List<Document> documents, DocumentType[] documentTypes) {
+        String templateName = null;
+
+        for (DocumentType documentType : documentTypes) {
+            for (int i = 0; i < documents.size(); i++) {
+                if (documents.get(i).getDocumentType().getTemplateName().equals(documentType.getTemplateName())) {
+                    templateName = documentType.getTemplateName();
+                    break;
+                }
+            }
+        }
+        return templateName;
     }
 }

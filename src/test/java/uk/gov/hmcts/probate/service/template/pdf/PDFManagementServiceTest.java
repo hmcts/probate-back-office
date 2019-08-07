@@ -29,8 +29,11 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.Map;
 
+import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT;
@@ -348,5 +351,10 @@ public class PDFManagementServiceTest {
         when(uploadServiceMock.store(evidenceManagementFileUpload)).thenThrow(new IOException());
 
         underTest.generateAndUpload(callbackRequestMock, LEGAL_STATEMENT_PROBATE);
+    }
+
+    @Test
+    public void testGetDecodedSignatureReturnsBase64String() {
+        assertThat(underTest.getDecodedSignature(), is("dGhpcyBpcyBhIHRleHQgbWVzc2FnZS4K"));
     }
 }

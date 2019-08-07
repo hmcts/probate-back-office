@@ -14,6 +14,7 @@ import uk.gov.hmcts.probate.controller.validation.ApplicationAdmonGroup;
 import uk.gov.hmcts.probate.controller.validation.NextStepsConfirmationGroup;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
+import uk.gov.hmcts.probate.model.ccd.Reissue;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
@@ -191,6 +192,8 @@ public class CaseData {
 
     //EVENT = review
     private final DocumentLink solsLegalStatementDocument;
+
+    private final DocumentLink statementOfTruthDocument;
 
     private final List<CollectionMember<Document>> probateDocumentsGenerated = new ArrayList<>();
 
@@ -414,6 +417,10 @@ public class CaseData {
     private final String grantIssuedDate;
     private final String dateOfDeathType;
     private final String resolveStopState;
+    private final String orderNeeded;
+    private final List<CollectionMember<Reissue>> reissueReason;
+    private final String reissueDate;
+    private final String reissueReasonNotation;
 
     private final List<CollectionMember<CaseMatch>> legacySearchResultRows;
 
@@ -434,9 +441,21 @@ public class CaseData {
 
     private final String boCaveatStopSendToBulkPrintRequested;
 
+    private final String boEmailGrantReIssuedNotificationRequested;
+
+    @SuppressWarnings("squid:S1170")
+    @Getter(lazy = true)
+    private final String boEmailGrantReissuedNotification = getDefaultValueForEmailNotifications();
+
     @SuppressWarnings("squid:S1170")
     @Getter(lazy = true)
     private final String boCaveatStopSendToBulkPrint = YES;
+
+    @SuppressWarnings("squid:S1170")
+    @Getter(lazy = true)
+    private final String boGrantReissueSendToBulkPrint = YES;
+
+    private final String boGrantReissueSendToBulkPrintRequested;
 
     @Builder.Default
     private List<CollectionMember<BulkPrint>> bulkPrintId = new ArrayList<>();
@@ -522,8 +541,16 @@ public class CaseData {
         return YES.equals(getBoSendToBulkPrint());
     }
 
+    public boolean isSendForBulkPrintingRequestedGrantReIssued() {
+        return YES.equals(getBoGrantReissueSendToBulkPrint());
+    }
+
     public boolean isGrantIssuedEmailNotificationRequested() {
         return YES.equals(getBoEmailGrantIssuedNotification());
+    }
+
+    public boolean isGrantReissuedEmailNotificationRequested() {
+        return YES.equals(getBoEmailGrantReissuedNotification());
     }
 
     public boolean isCaveatStopNotificationRequested() {

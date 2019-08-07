@@ -36,11 +36,14 @@ public class CaseMatch implements Serializable {
             return false;
         }
 
-        final Object thisCaseLink = this.getCaseLink();
-        final Object thisCaseLinkCaseRef = thisCaseLink == null ? "1" : ((CaseLink) thisCaseLink).getCaseReference();
-        final Object otherCaseLink = other.getCaseLink();
-        final Object otherCaseLinkCaseRef = otherCaseLink == null ? "2" : ((CaseLink) otherCaseLink).getCaseReference();
+        final Object thisCaseLinkCaseRef = getThisCaseReference();
+        final Object otherCaseLinkCaseRef = getOtherCaseReference(other.getCaseLink());
         if (thisCaseLinkCaseRef.equals(otherCaseLinkCaseRef)) {
+            return true;
+        }
+
+        if (this.getLegacyCaseViewUrl() != null && other.getLegacyCaseViewUrl() != null
+                && this.getLegacyCaseViewUrl().equals(other.getLegacyCaseViewUrl())) {
             return true;
         }
 
@@ -59,5 +62,25 @@ public class CaseMatch implements Serializable {
         final Object id1 = this.getId();
         result = result * prime + (id1 == null ? 43 : id1.hashCode());
         return result;
+    }
+
+    private String getThisCaseReference() {
+        if (caseLink == null) {
+            return "1";
+        }
+        if (caseLink.getCaseReference() == null) {
+            return "3";
+        }
+        return caseLink.getCaseReference();
+    }
+
+    private String getOtherCaseReference(CaseLink otherCaseLink) {
+        if (otherCaseLink == null) {
+            return "2";
+        }
+        if (otherCaseLink.getCaseReference() == null) {
+            return "4";
+        }
+        return otherCaseLink.getCaseReference();
     }
 }

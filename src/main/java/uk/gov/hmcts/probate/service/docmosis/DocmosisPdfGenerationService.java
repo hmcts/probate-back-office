@@ -47,7 +47,8 @@ public class DocmosisPdfGenerationService {
 
         try {
             ResponseEntity<byte[]> response =
-                    restTemplate.postForEntity(pdfServiceEndpoint, request(templateName, placeholders), byte[].class);
+                    restTemplate.postForEntity(pdfServiceEndpoint, request(templateName, placeholders), byte[]
+                            .class);
             return response.getBody();
         } catch (Exception e) {
             throw new PDFGenerationException("Failed to request PDF from REST endpoint " + e.getMessage(), e);

@@ -23,23 +23,37 @@ public class DocumentTransformer {
                 .count() > 0;
     }
 
-    public void addDocument(CallbackRequest callbackRequest, Document document) {
+    public void addDocument(CallbackRequest callbackRequest, Document document, Boolean coversheetNotification) {
         switch (document.getDocumentType()) {
             case DIGITAL_GRANT_DRAFT:
             case DIGITAL_GRANT:
+            case DIGITAL_GRANT_REISSUE_DRAFT:
+            case DIGITAL_GRANT_REISSUE:
             case INTESTACY_GRANT_DRAFT:
             case INTESTACY_GRANT:
+            case INTESTACY_GRANT_REISSUE_DRAFT:
+            case INTESTACY_GRANT_REISSUE:
             case ADMON_WILL_GRANT_DRAFT:
             case ADMON_WILL_GRANT:
+            case ADMON_WILL_GRANT_REISSUE_DRAFT:
+            case ADMON_WILL_GRANT_REISSUE:
             case GRANT_COVER:
                 callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated()
                         .add(new CollectionMember<>(null, document));
                 break;
             case SENT_EMAIL:
             case CAVEAT_STOPPED:
-            case GRANT_COVERSHEET:
                 callbackRequest.getCaseDetails().getData().getProbateNotificationsGenerated()
                         .add(new CollectionMember<>(null, document));
+                break;
+            case GRANT_COVERSHEET:
+                if (coversheetNotification) {
+                    callbackRequest.getCaseDetails().getData().getProbateNotificationsGenerated()
+                            .add(new CollectionMember<>(null, document));
+                } else {
+                    callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated()
+                            .add(new CollectionMember<>(null, document));
+                }
                 break;
             case EDGE_CASE:
                 break;
