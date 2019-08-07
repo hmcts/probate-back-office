@@ -5,5 +5,5 @@ java:
     REFORM_SERVICE_NAME: back-office
     LOG_LEVEL: DEBUG
     APPINSIGHTS_INSTRUMENTATIONKEY: dummy
-
+  image: hmctspublic.azurecr.io/probate/back-office:latest
 
