@@ -39,6 +39,9 @@ import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
 import static uk.gov.hmcts.probate.model.Constants.CASE_TYPE_DEFAULT;
 import static uk.gov.hmcts.probate.model.Constants.CTSC;
 import static uk.gov.hmcts.probate.model.Constants.DATE_OF_DEATH_TYPE_DEFAULT;
+import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_INTESTACY;
+import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE;
+import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_ADMON;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT_STOPPED;
@@ -46,7 +49,6 @@ import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_REISSUE;
-import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT;
 import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
 
 @Component
@@ -59,6 +61,7 @@ public class CallbackResponseTransformer {
     static final String PAYMENT_REFERENCE_FEE_PREFIX = "Fee account PBA-";
     static final String PAYMENT_REFERENCE_CHEQUE = "Cheque (payable to ‘HM Courts & Tribunals Service’)";
 
+    private static final DocumentType[] LEGAL_STATEMENTS = {LEGAL_STATEMENT_PROBATE, LEGAL_STATEMENT_INTESTACY, LEGAL_STATEMENT_ADMON};
     private static final ApplicationType DEFAULT_APPLICATION_TYPE = SOLICITOR;
     private static final String DEFAULT_REGISTRY_LOCATION = CTSC;
     private static final String DEFAULT_IHT_FORM_ID = "IHT205";
@@ -66,6 +69,7 @@ public class CallbackResponseTransformer {
     private static final String CASE_PRINTED = "CasePrinted";
     private static final String READY_FOR_EXAMINATION = "BOReadyForExamination";
     private static final String EXAMINING = "BOExamining";
+    private static final String NO_WILL = "NoWill";
 
     public static final String ANSWER_YES = "Yes";
     public static final String ANSWER_NO = "No";
@@ -230,7 +234,7 @@ public class CallbackResponseTransformer {
         ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), false);
         responseCaseDataBuilder.solsSOTNeedToUpdate(null);
 
-        if (LEGAL_STATEMENT.equals(document.getDocumentType())) {
+        if (Arrays.asList(LEGAL_STATEMENTS).contains(document.getDocumentType())) {
             responseCaseDataBuilder.solsLegalStatementDocument(document.getDocumentLink());
         }
 
@@ -270,7 +274,6 @@ public class CallbackResponseTransformer {
 
         return transformResponse(responseCaseDataBuilder.build());
     }
-
 
     private CallbackResponse transformResponse(ResponseCaseData responseCaseData) {
         return CallbackResponse.builder().data(responseCaseData).build();
@@ -367,6 +370,12 @@ public class CallbackResponseTransformer {
 
                 .paperForm(caseData.getPaperForm())
                 .caseType(caseData.getCaseType())
+                .solsWillType(caseData.getSolsWillType())
+                .solsApplicantRelationshipToDeceased(caseData.getSolsApplicantRelationshipToDeceased())
+                .solsSpouseOrCivilRenouncing(caseData.getSolsSpouseOrCivilRenouncing())
+                .solsAdoptedEnglandOrWales(caseData.getSolsAdoptedEnglandOrWales())
+                .solsMinorityInterest(caseData.getSolsMinorityInterest())
+                .solsMultipleClaims(caseData.getSolsMultipleClaims())
 
                 .boCaveatStopNotificationRequested(caseData.getBoCaveatStopNotificationRequested())
                 .boCaveatStopNotification(caseData.getBoCaveatStopNotification())
@@ -422,13 +431,17 @@ public class CallbackResponseTransformer {
         return (caseData.getPaperForm() != null && caseData.getPaperForm().equals(ANSWER_YES));
     }
 
+    private boolean willExists(CaseData caseData) {
+        return !(caseData.getSolsWillType() != null && caseData.getSolsWillType().equals(NO_WILL));
+    }
+
     private ResponseCaseDataBuilder getCaseCreatorResponseCaseBuilder(CaseData caseData, ResponseCaseDataBuilder builder) {
 
         builder
                 .primaryApplicantSecondPhoneNumber(caseData.getPrimaryApplicantSecondPhoneNumber())
                 .primaryApplicantRelationshipToDeceased(caseData.getPrimaryApplicantRelationshipToDeceased())
                 .paRelationshipToDeceasedOther(caseData.getPaRelationshipToDeceasedOther())
-                .deceasedMartialStatus(caseData.getDeceasedMartialStatus())
+                .deceasedMaritalStatus(caseData.getDeceasedMaritalStatus())
                 .willDatedBeforeApril(caseData.getWillDatedBeforeApril())
                 .deceasedEnterMarriageOrCP(caseData.getDeceasedEnterMarriageOrCP())
                 .dateOfMarriageOrCP(caseData.getDateOfMarriageOrCP())
@@ -546,6 +559,14 @@ public class CallbackResponseTransformer {
                     .paperForm(ANSWER_NO);
         }
 
+        if (willExists(caseData)) {
+            builder
+                    .willExists(ANSWER_YES);
+        } else {
+            builder
+                    .willExists(ANSWER_NO);
+        }
+
         if (caseData.getCaseType() == null) {
             builder
                     .caseType(CASE_TYPE_DEFAULT);
@@ -611,6 +632,14 @@ public class CallbackResponseTransformer {
         if (!isPaperForm(caseData)) {
             builder
                     .paperForm(ANSWER_NO);
+        }
+
+        if (willExists(caseData)) {
+            builder
+                    .willExists(ANSWER_YES);
+        } else {
+            builder
+                    .willExists(ANSWER_NO);
         }
 
         if (caseData.getCaseType() == null) {

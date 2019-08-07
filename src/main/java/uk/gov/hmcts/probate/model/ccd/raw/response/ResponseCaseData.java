@@ -51,6 +51,12 @@ public class ResponseCaseData {
     private final String solsSOTJobTitle;
     private final String solsSolicitorAppReference;
     private final String ihtFormId;
+    private final String solsWillType;
+    private final String solsApplicantRelationshipToDeceased;
+    private final String solsSpouseOrCivilRenouncing;
+    private final String solsAdoptedEnglandOrWales;
+    private final String solsMinorityInterest;
+    private final String solsMultipleClaims;
     private final String willExists;
     private final String willAccessOriginal;
     private final String willHasCodicils;
@@ -158,7 +164,7 @@ public class ResponseCaseData {
     private final String domicilityIHTCert;
     private final String willDatedBeforeApril;
     private final String deceasedEnterMarriageOrCP;
-    private final String deceasedMartialStatus;
+    private final String deceasedMaritalStatus;
     private final String willsOutsideOfUK;
     private final String courtOfDecree;
     private final String dateOfMarriageOrCP;

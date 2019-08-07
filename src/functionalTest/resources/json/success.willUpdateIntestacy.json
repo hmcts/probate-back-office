@@ -18,6 +18,7 @@
         "Country": "1"
       },
       "deceasedAnyOtherNames": "Yes",
+      "solsSolicitorPhoneNumber": "07958995330",
       "solsAdditionalInfo": "Additional Info",
       "deceasedDateOfBirth": "1987-01-01",
       "willHasCodicils": "Yes",
@@ -32,7 +33,7 @@
       "willAccessOriginal": "Yes",
       "solsSolicitorFirmName": "firmname",
       "willExists": "Yes",
-      "solsWillType": "WillLeft",
+      "solsWillType": "NoWill",
       "solsApplicantRelationshipToDeceased": null,
       "solsSpouseOrCivilRenouncing": null,
       "solsAdoptedEnglandOrWales": null,

@@ -81,7 +81,7 @@
     "page4_deceasedDod_long_update": "1 Jan 2019",
     "page4_deceasedAnyOtherNamesYes": "Yes",
     "page4_deceasedAlias": "deceased_alias",
-    "page4_deceasedMartialStatus": "Never married",
+    "page4_deceasedMaritalStatus": "Never married",
     "page4_foreignAssetYes": "Yes",
     "page4_foreignAssetEstateValue": "500",
     "page4_list1_update_option": "Deceased, IHT and Estate Details",
@@ -167,5 +167,4 @@
   
     "UKpostcodeLink": ".manual-link"
 }
-  
   
