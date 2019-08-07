@@ -402,7 +402,8 @@ public class CallbackResponseTransformer {
                 .anyDeceasedGrandChildrenUnderEighteen(caseData.getAnyDeceasedGrandChildrenUnderEighteen())
                 .deceasedAnyChildren(caseData.getDeceasedAnyChildren())
                 .deceasedHasAssetsOutsideUK(caseData.getDeceasedHasAssetsOutsideUK())
-                .statementOfTruthDocument(caseData.getStatementOfTruthDocument());
+                .statementOfTruthDocument(caseData.getStatementOfTruthDocument())
+                .boStopDetailsDeclarationParagraph(caseData.getBoStopDetailsDeclarationParagraph());
 
         if (transform) {
             updateCaseBuilderForTransformCase(caseData, builder);

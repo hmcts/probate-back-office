@@ -260,4 +260,6 @@ public class ResponseCaseData {
     private final String anyDeceasedGrandChildrenUnderEighteen;
     private final String deceasedAnyChildren;
     private final String deceasedHasAssetsOutsideUK;
+
+    private final String boStopDetailsDeclarationParagraph;
 }

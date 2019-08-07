@@ -324,7 +324,8 @@ public class CallbackResponseTransformerTest {
                 .anyDeceasedGrandChildrenUnderEighteen(ANY_DECEASED_GRANDCHILDREN_UNDER_EIGHTEEN)
                 .deceasedAnyChildren(DECEASED_ANY_CHILDREN)
                 .deceasedHasAssetsOutsideUK(DECEASED_HAS_ASSETS_OUTSIDE_UK)
-                .statementOfTruthDocument(SOT);
+                .statementOfTruthDocument(SOT)
+        .boStopDetailsDeclarationParagraph(YES);
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
@@ -1425,6 +1426,7 @@ public class CallbackResponseTransformerTest {
         assertEquals(REISSUE_NOTATION, callbackResponse.getData().getReissueReasonNotation());
 
         assertEquals(SCANNED_DOCUMENTS_LIST, callbackResponse.getData().getScannedDocuments());
+        assertEquals(YES, callbackResponse.getData().getBoStopDetailsDeclarationParagraph());
     }
 
     private void assertLegacyInfo(CallbackResponse callbackResponse) {
