@@ -30,6 +30,8 @@ public class OCRToCCDMandatoryField {
                     }
                 });
                 break;
+            case PA1A:
+            case PA1P:
             default:
                 Stream.of(GORMandatoryFields.values()).forEach(field -> {
                     log.info("Checking {} against ocr fields", field.getKey());
