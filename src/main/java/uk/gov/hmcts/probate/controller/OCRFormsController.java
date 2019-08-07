@@ -47,8 +47,9 @@ public class OCRFormsController {
                                                                       @RequestBody OCRRequest ocrRequest) {
         log.info("Validate ocr data for form type: {}", formType);
         FormType.isFormTypeValid(formType);
-        List<String> warnings =
-                ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrMapper.ocrMapper(ocrRequest.getOcrFields()));
+        List<String> warnings = ocrToCCDMandatoryField
+                .ocrToCCDMandatoryFields(ocrMapper.ocrMapper(ocrRequest.getOcrFields()),
+                        FormType.valueOf(formType));
 
         ValidationResponse validationResponse =
                 ValidationResponse.builder().warnings(warnings)
