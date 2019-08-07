@@ -1,5 +1,9 @@
 java:
   applicationPort: 4104
+  readinessDelay: 180
+  livenessDelay: 180
+  readinessPeriod: 60
+  livenessPeriod: 60
   environment:
     REFORM_TEAM: probate
     REFORM_SERVICE_NAME: back-office
