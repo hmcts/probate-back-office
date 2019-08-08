@@ -17,7 +17,6 @@ java:
   image: ${IMAGE_NAME}
   ingressHost: ${SERVICE_FQDN}
 
-
 postgresql:
   postgresqlUsername: probate_man
   postgresqlPassword: probate_man
