@@ -43,6 +43,9 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_ADMON;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_INTESTACY;
+import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.Constants.ADMON_WILL_NAME;
+import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.Constants.GRANT_OF_PROBATE_NAME;
+import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.Constants.INTESTACY_NAME;
 
 @Slf4j
 @Controller
@@ -92,7 +95,7 @@ public class BusinessValidationController {
         CallbackResponse response = eventValidationService.validateRequest(callbackRequest, allValidationRules);
         if (response.getErrors().isEmpty()) {
             Optional<String> newState = stateChangeService.getChangedStateForProbateUpdate(callbackRequest.getCaseDetails().getData());
-            response = getCallbackResponseForGenerateAndUpload(callbackRequest, newState, LEGAL_STATEMENT_PROBATE);
+            response = getCallbackResponseForGenerateAndUpload(callbackRequest, newState, LEGAL_STATEMENT_PROBATE, GRANT_OF_PROBATE_NAME);
         }
         return ResponseEntity.ok(response);
     }
@@ -109,7 +112,7 @@ public class BusinessValidationController {
         CallbackResponse response = eventValidationService.validateRequest(callbackRequest, allValidationRules);
         if (response.getErrors().isEmpty()) {
             Optional<String> newState = stateChangeService.getChangedStateForIntestacyUpdate(callbackRequest.getCaseDetails().getData());
-            response = getCallbackResponseForGenerateAndUpload(callbackRequest, newState, LEGAL_STATEMENT_INTESTACY);
+            response = getCallbackResponseForGenerateAndUpload(callbackRequest, newState, LEGAL_STATEMENT_INTESTACY, INTESTACY_NAME);
         }
         return ResponseEntity.ok(response);
     }
@@ -126,7 +129,7 @@ public class BusinessValidationController {
         CallbackResponse response = eventValidationService.validateRequest(callbackRequest, allValidationRules);
         if (response.getErrors().isEmpty()) {
             Optional<String> newState = stateChangeService.getChangedStateForAdmonUpdate(callbackRequest.getCaseDetails().getData());
-            response = getCallbackResponseForGenerateAndUpload(callbackRequest, newState, LEGAL_STATEMENT_ADMON);
+            response = getCallbackResponseForGenerateAndUpload(callbackRequest, newState, LEGAL_STATEMENT_ADMON, ADMON_WILL_NAME);
         }
         return ResponseEntity.ok(response);
     }
@@ -214,14 +217,14 @@ public class BusinessValidationController {
         }
     }
 
-    private CallbackResponse getCallbackResponseForGenerateAndUpload(CallbackRequest callbackRequest,
-                                                                     Optional<String> newState, DocumentType documentType) {
+    private CallbackResponse getCallbackResponseForGenerateAndUpload(
+            CallbackRequest callbackRequest, Optional<String> newState, DocumentType documentType, String caseType) {
         CallbackResponse response;
         if (newState.isPresent()) {
             response = callbackResponseTransformer.transformWithConditionalStateChange(callbackRequest, newState);
         } else {
             Document document = pdfManagementService.generateAndUpload(callbackRequest, documentType);
-            response = callbackResponseTransformer.transform(callbackRequest, document);
+            response = callbackResponseTransformer.transform(callbackRequest, document, caseType);
         }
         return response;
     }

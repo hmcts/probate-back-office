@@ -36,12 +36,8 @@ import java.util.stream.Collectors;
 import static java.util.Collections.EMPTY_LIST;
 import static java.util.Optional.ofNullable;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
-import static uk.gov.hmcts.probate.model.Constants.CASE_TYPE_DEFAULT;
 import static uk.gov.hmcts.probate.model.Constants.CTSC;
 import static uk.gov.hmcts.probate.model.Constants.DATE_OF_DEATH_TYPE_DEFAULT;
-import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_INTESTACY;
-import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE;
-import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_ADMON;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT_STOPPED;
@@ -49,12 +45,17 @@ import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_REISSUE;
+import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_ADMON;
+import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_INTESTACY;
+import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE;
 import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
+import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.Constants.GRANT_OF_PROBATE_NAME;
 
 @Component
 @RequiredArgsConstructor
 public class CallbackResponseTransformer {
 
+    private static final String CASE_TYPE_DEFAULT = GRANT_OF_PROBATE_NAME;
     private final DocumentTransformer documentTransformer;
 
     static final String PAYMENT_METHOD_VALUE_FEE_ACCOUNT = "fee account";
@@ -230,12 +231,13 @@ public class CallbackResponseTransformer {
         return transformResponse(responseCaseData);
     }
 
-    public CallbackResponse transform(CallbackRequest callbackRequest, Document document) {
+    public CallbackResponse transform(CallbackRequest callbackRequest, Document document, String caseType) {
         ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), false);
         responseCaseDataBuilder.solsSOTNeedToUpdate(null);
 
         if (Arrays.asList(LEGAL_STATEMENTS).contains(document.getDocumentType())) {
             responseCaseDataBuilder.solsLegalStatementDocument(document.getDocumentLink());
+            responseCaseDataBuilder.caseType(caseType);
         }
 
         return transformResponse(responseCaseDataBuilder.build());

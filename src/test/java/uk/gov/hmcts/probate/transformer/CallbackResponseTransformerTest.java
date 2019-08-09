@@ -366,7 +366,7 @@ public class CallbackResponseTransformerTest {
                 .documentType(LEGAL_STATEMENT_PROBATE)
                 .build();
 
-        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, document);
+        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, document, "gop");
 
         assertCommon(callbackResponse);
         assertLegacyInfo(callbackResponse);
@@ -382,7 +382,7 @@ public class CallbackResponseTransformerTest {
         Document document = Document.builder()
                 .documentLink(documentLinkMock)
                 .build();
-        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, document);
+        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, document, null);
 
         assertCommon(callbackResponse);
         assertLegacyInfo(callbackResponse);

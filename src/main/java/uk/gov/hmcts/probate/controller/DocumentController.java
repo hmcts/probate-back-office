@@ -47,13 +47,17 @@ import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_REISSUE_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_DRAFT;
-import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_REISSUE_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_REISSUE;
+import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_REISSUE_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_REISSUE_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.WILL_LODGEMENT_DEPOSIT_RECEIPT;
 import static uk.gov.hmcts.probate.model.State.GRANT_ISSUED;
+import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.Constants.ADMON_WILL_NAME;
+import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.Constants.EDGE_CASE_NAME;
+import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.Constants.GRANT_OF_PROBATE_NAME;
+import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.Constants.INTESTACY_NAME;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -70,10 +74,6 @@ public class DocumentController {
     private final DocumentService documentService;
     private final NotificationService notificationService;
     private final RegistriesProperties registriesProperties;
-    private static final String GRANT_OF_PROBATE = "gop";
-    private static final String ADMON_WILL = "admonWill";
-    private static final String INTESTACY = "intestacy";
-    private static final String EDGE_CASE = "edgeCase";
     private final BulkPrintService bulkPrintService;
     private final EventValidationService eventValidationService;
     private final List<EmailAddressNotificationValidationRule> emailAddressNotificationValidationRules;
@@ -90,22 +90,22 @@ public class DocumentController {
         registryDetailsService.getRegistryDetails(caseDetails);
 
         switch (caseData.getCaseType()) {
-            case INTESTACY:
+            case INTESTACY_NAME:
                 template = INTESTACY_GRANT_DRAFT;
                 document = pdfManagementService.generateAndUpload(callbackRequest, template);
                 log.info("Generated and Uploaded Intestacy grant preview document with template {} for the case id {}",
                         template.getTemplateName(), callbackRequest.getCaseDetails().getId().toString());
                 break;
-            case ADMON_WILL:
+            case ADMON_WILL_NAME:
                 template = ADMON_WILL_GRANT_DRAFT;
                 document = pdfManagementService.generateAndUpload(callbackRequest, template);
                 log.info("Generated and Uploaded Admon Will grant preview document with template {} for the case id {}",
                         template.getTemplateName(), callbackRequest.getCaseDetails().getId().toString());
                 break;
-            case EDGE_CASE:
+            case EDGE_CASE_NAME:
                 document = Document.builder().documentType(DocumentType.EDGE_CASE).build();
                 break;
-            case GRANT_OF_PROBATE:
+            case GRANT_OF_PROBATE_NAME:
             default:
                 template = DIGITAL_GRANT_DRAFT;
                 document = pdfManagementService.generateAndUpload(callbackRequest, template);
@@ -139,22 +139,22 @@ public class DocumentController {
         CallbackResponse callbackResponse = CallbackResponse.builder().errors(new ArrayList<>()).build();
 
         switch (caseData.getCaseType()) {
-            case EDGE_CASE:
+            case EDGE_CASE_NAME:
                 digitalGrantDocument = Document.builder().documentType(DocumentType.EDGE_CASE).build();
                 break;
-            case INTESTACY:
+            case INTESTACY_NAME:
                 template = INTESTACY_GRANT;
                 digitalGrantDocument = pdfManagementService.generateAndUpload(callbackRequest, template);
                 log.info("Generated and Uploaded Intestacy grant document with template {} for the case id {}",
                         template.getTemplateName(), callbackRequest.getCaseDetails().getId().toString());
                 break;
-            case ADMON_WILL:
+            case ADMON_WILL_NAME:
                 template = ADMON_WILL_GRANT;
                 digitalGrantDocument = pdfManagementService.generateAndUpload(callbackRequest, template);
                 log.info("Generated and Uploaded Admon Will grant document with template {} for the case id {}",
                         template.getTemplateName(), callbackRequest.getCaseDetails().getId().toString());
                 break;
-            case GRANT_OF_PROBATE:
+            case GRANT_OF_PROBATE_NAME:
             default:
                 template = DIGITAL_GRANT;
                 digitalGrantDocument = pdfManagementService.generateAndUpload(callbackRequest, template);
@@ -169,7 +169,7 @@ public class DocumentController {
 
         String letterId = null;
         String pdfSize = null;
-        if (caseData.isSendForBulkPrintingRequested() && !caseData.getCaseType().equals(EDGE_CASE)) {
+        if (caseData.isSendForBulkPrintingRequested() && !caseData.getCaseType().equals(EDGE_CASE_NAME)) {
             SendLetterResponse response = bulkPrintService.sendToBulkPrint(callbackRequest, digitalGrantDocument, coverSheet);
             letterId = response != null
                     ? response.letterId.toString()
