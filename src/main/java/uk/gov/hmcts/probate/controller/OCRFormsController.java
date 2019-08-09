@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,6 +34,7 @@ public class OCRFormsController {
 
     private final OCRMapper ocrMapper;
     private final OCRToCCDMandatoryField ocrToCCDMandatoryField;
+    private ValidationResponse validationResponse;
 
     @ApiOperation(value = "Pre-validate OCR data", notes = "Will return validation errors as warnings. ")
     @ApiResponses({
@@ -51,9 +53,31 @@ public class OCRFormsController {
                 .ocrToCCDMandatoryFields(ocrMapper.ocrMapper(ocrRequest.getOcrFields()),
                         FormType.valueOf(formType));
 
-        ValidationResponse validationResponse =
-                ValidationResponse.builder().warnings(warnings)
-                        .state(warnings.isEmpty() ? ValidationResponseState.SUCCESS : ValidationResponseState.WARNINGS).build();
+        validationResponse = ValidationResponse.builder()
+                .warnings(warnings)
+                .state(warnings.isEmpty() ? ValidationResponseState.SUCCESS : ValidationResponseState.WARNINGS).build();
+        return ResponseEntity.ok(validationResponse);
+    }
+
+    @PostMapping(path = "/{form-type}/transform-exception-record", consumes = APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<ValidationResponse> transformExceptionRecord(@PathVariable("form-type") String formType,
+                                                                       @RequestBody OCRRequest ocrRequest) {
+        log.info("Validate ocr data for form type: {}", formType);
+        FormType.isFormTypeValid(formType);
+        List<String> errors = ocrToCCDMandatoryField
+                .ocrToCCDMandatoryFields(ocrMapper.ocrMapper(ocrRequest.getOcrFields()),
+                        FormType.valueOf(formType));
+
+        if (!errors.isEmpty()) {
+            validationResponse = ValidationResponse.builder()
+                    .errors(errors)
+                    .state(ValidationResponseState.ERRORS).build();
+            return ResponseEntity.badRequest().body(validationResponse);
+        }
+        //apply static fields to case data values
+        //Map fields into case data values
+        validationResponse = ValidationResponse.builder()
+                .state(ValidationResponseState.SUCCESS).build();
         return ResponseEntity.ok(validationResponse);
     }
 }
