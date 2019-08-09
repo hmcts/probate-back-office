@@ -53,8 +53,10 @@ public class DataExtractController {
     public ResponseEntity initiateIronMountainExtract(@ApiParam(value = "Date to find cases against", required = true)
                                                       @PathVariable("date") String date) {
         dateValidator(date);
+        log.info("Iron Mountain data extract initiated for date: {}", date);
 
         List<ReturnedCaseDetails> cases = caseQueryService.findCasesWithDatedDocument(date);
+        log.info("Cases found for Iron Mountain: {}", cases.size());
 
         if (!cases.isEmpty()) {
             log.info("preparing for file upload");
@@ -82,6 +84,7 @@ public class DataExtractController {
     public ResponseEntity initiateExcelaExtract(@ApiParam(value = "Date to find cases against", required = true)
                                                 @PathVariable("date") String date) throws NotificationClientException {
         dateValidator(date);
+        log.info("Excela data extract initiated for date: {}", date);
 
         List<ReturnedCaseDetails> cases = caseQueryService.findCasesWithDatedDocument(date);
         List<ReturnedCaseDetails> filteredCases = excelaCriteriaService.getFilteredCases(cases);

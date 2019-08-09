@@ -1,6 +1,7 @@
 package uk.gov.hmcts.probate.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.config.notifications.EmailAddresses;
@@ -44,6 +45,7 @@ import static uk.gov.hmcts.probate.model.Constants.DOC_SUBTYPE_WILL;
 import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
 import static uk.gov.hmcts.probate.model.State.GRANT_REISSUED;
 
+@Slf4j
 @RequiredArgsConstructor
 @Component
 public class NotificationService {
@@ -151,6 +153,7 @@ public class NotificationService {
         SendEmailResponse response;
 
         response = notificationClient.sendEmail(templateId, emailAddresses.getExcelaEmail(), personalisation, reference);
+        log.info("Excela email reference response: {}", response.getReference());
 
         return getGeneratedSentEmailDocument(response, emailAddresses.getExcelaEmail(), SENT_EMAIL);
     }
@@ -289,7 +292,7 @@ public class NotificationService {
 
     private String getWillReferenceNumber(CaseData data) {
         for (CollectionMember<ScannedDocument> document : data.getScannedDocuments()) {
-            if (document.getValue().getSubtype() != null && document.getValue().getSubtype().equals(DOC_SUBTYPE_WILL)) {
+            if (document.getValue().getSubtype() != null && document.getValue().getSubtype().equalsIgnoreCase(DOC_SUBTYPE_WILL)) {
                 return document.getValue().getControlNumber();
             }
         }
