@@ -9,9 +9,9 @@ import java.util.List;
 
 @Slf4j
 @Service
-public class OCRMapper {
+public class OCRPopulatedValueMapper {
 
-    public List<OCRField> ocrMapper(List<OCRField> fields) {
+    public List<OCRField> ocrPopulatedValueMapper(List<OCRField> fields) {
         List<OCRField> populatedValues = new ArrayList<>();
         for (OCRField field : fields) {
             log.info("Checking ocr field: {} for null or empty", field.getName());

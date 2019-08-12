@@ -6,7 +6,6 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,7 +16,7 @@ import uk.gov.hmcts.probate.model.ccd.ocr.ValidationResponse;
 import uk.gov.hmcts.probate.model.ccd.ocr.ValidationResponseState;
 import uk.gov.hmcts.probate.model.ocr.OCRRequest;
 import uk.gov.hmcts.probate.service.ocr.FormType;
-import uk.gov.hmcts.probate.service.ocr.OCRMapper;
+import uk.gov.hmcts.probate.service.ocr.OCRPopulatedValueMapper;
 import uk.gov.hmcts.probate.service.ocr.OCRToCCDMandatoryField;
 
 import java.util.List;
@@ -32,7 +31,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @Api(tags = "Manage bulk scanning data")
 public class OCRFormsController {
 
-    private final OCRMapper ocrMapper;
+    private final OCRPopulatedValueMapper ocrPopulatedValueMapper;
     private final OCRToCCDMandatoryField ocrToCCDMandatoryField;
     private ValidationResponse validationResponse;
 
@@ -50,7 +49,7 @@ public class OCRFormsController {
         log.info("Validate ocr data for form type: {}", formType);
         FormType.isFormTypeValid(formType);
         List<String> warnings = ocrToCCDMandatoryField
-                .ocrToCCDMandatoryFields(ocrMapper.ocrMapper(ocrRequest.getOcrFields()),
+                .ocrToCCDMandatoryFields(ocrPopulatedValueMapper.ocrPopulatedValueMapper(ocrRequest.getOcrFields()),
                         FormType.valueOf(formType));
 
         validationResponse = ValidationResponse.builder()
@@ -65,7 +64,7 @@ public class OCRFormsController {
         log.info("Validate ocr data for form type: {}", formType);
         FormType.isFormTypeValid(formType);
         List<String> errors = ocrToCCDMandatoryField
-                .ocrToCCDMandatoryFields(ocrMapper.ocrMapper(ocrRequest.getOcrFields()),
+                .ocrToCCDMandatoryFields(ocrPopulatedValueMapper.ocrPopulatedValueMapper(ocrRequest.getOcrFields()),
                         FormType.valueOf(formType));
 
         if (!errors.isEmpty()) {
