@@ -325,7 +325,9 @@ public class CallbackResponseTransformerTest {
                 .deceasedAnyChildren(DECEASED_ANY_CHILDREN)
                 .deceasedHasAssetsOutsideUK(DECEASED_HAS_ASSETS_OUTSIDE_UK)
                 .statementOfTruthDocument(SOT)
-        .boStopDetailsDeclarationParagraph(YES);
+                .boStopDetailsDeclarationParagraph(YES)
+                .boEmailRequestInfoNotificationRequested(YES)
+                .boRequestInfoSendToBulkPrintRequested(YES);
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
@@ -1427,6 +1429,10 @@ public class CallbackResponseTransformerTest {
 
         assertEquals(SCANNED_DOCUMENTS_LIST, callbackResponse.getData().getScannedDocuments());
         assertEquals(YES, callbackResponse.getData().getBoStopDetailsDeclarationParagraph());
+        assertEquals(YES, callbackResponse.getData().getBoEmailRequestInfoNotification());
+        assertEquals(YES, callbackResponse.getData().getBoEmailRequestInfoNotificationRequested());
+        assertEquals(YES, callbackResponse.getData().getBoRequestInfoSendToBulkPrint());
+        assertEquals(YES, callbackResponse.getData().getBoRequestInfoSendToBulkPrintRequested());
     }
 
     private void assertLegacyInfo(CallbackResponse callbackResponse) {

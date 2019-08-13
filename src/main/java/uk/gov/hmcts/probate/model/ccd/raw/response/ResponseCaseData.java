@@ -262,4 +262,8 @@ public class ResponseCaseData {
     private final String deceasedHasAssetsOutsideUK;
 
     private final String boStopDetailsDeclarationParagraph;
+    private final String boEmailRequestInfoNotificationRequested;
+    private final String boEmailRequestInfoNotification;
+    private final String boRequestInfoSendToBulkPrint;
+    private final String boRequestInfoSendToBulkPrintRequested;
 }

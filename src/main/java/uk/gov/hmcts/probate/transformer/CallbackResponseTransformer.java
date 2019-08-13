@@ -107,6 +107,16 @@ public class CallbackResponseTransformer {
         return transformResponse(responseCaseDataBuilder.build());
     }
 
+
+    public CallbackResponse defaultRequestInformationValues(CallbackRequest callbackRequest) {
+        CaseDetails caseDetails = callbackRequest.getCaseDetails();
+
+        ResponseCaseData responseCaseData = getResponseCaseData(caseDetails, false)
+                .build();
+
+        return transformResponse(responseCaseData);
+    }
+
     public CallbackResponse addDocuments(CallbackRequest callbackRequest, List<Document> documents, String letterId, String pdfSize) {
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
         CaseData caseData = caseDetails.getData();
@@ -403,7 +413,11 @@ public class CallbackResponseTransformer {
                 .deceasedAnyChildren(caseData.getDeceasedAnyChildren())
                 .deceasedHasAssetsOutsideUK(caseData.getDeceasedHasAssetsOutsideUK())
                 .statementOfTruthDocument(caseData.getStatementOfTruthDocument())
-                .boStopDetailsDeclarationParagraph(caseData.getBoStopDetailsDeclarationParagraph());
+                .boStopDetailsDeclarationParagraph(caseData.getBoStopDetailsDeclarationParagraph())
+                .boEmailRequestInfoNotification(caseData.getBoEmailRequestInfoNotification())
+                .boEmailRequestInfoNotificationRequested(caseData.getBoEmailRequestInfoNotificationRequested())
+                .boRequestInfoSendToBulkPrint(caseData.getBoRequestInfoSendToBulkPrint())
+                .boRequestInfoSendToBulkPrintRequested(caseData.getBoRequestInfoSendToBulkPrintRequested());
 
         if (transform) {
             updateCaseBuilderForTransformCase(caseData, builder);

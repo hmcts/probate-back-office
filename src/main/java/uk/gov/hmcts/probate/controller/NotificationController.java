@@ -146,4 +146,13 @@ public class NotificationController {
         }
         return ResponseEntity.ok(response);
     }
+
+    @PostMapping(path = "/request-information-default-values")
+    public ResponseEntity<CallbackResponse> requestInformationDefaultValues(
+            @RequestBody CallbackRequest callbackRequest) {
+
+        CallbackResponse callbackResponse = callbackResponseTransformer.defaultRequestInformationValues(callbackRequest);
+
+        return ResponseEntity.ok(callbackResponse);
+    }
 }

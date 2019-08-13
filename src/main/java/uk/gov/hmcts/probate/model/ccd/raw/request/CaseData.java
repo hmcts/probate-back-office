@@ -431,6 +431,15 @@ public class CaseData {
     private final String deceasedAnyChildren;
     private final String deceasedHasAssetsOutsideUK;
 
+    private final String boEmailRequestInfoNotificationRequested;
+    @SuppressWarnings("squid:S1170")
+    @Getter(lazy = true)
+    private final String boEmailRequestInfoNotification = getDefaultValueForEmailNotifications();
+
+    private final String boRequestInfoSendToBulkPrint = YES;
+
+    private final String boRequestInfoSendToBulkPrintRequested;
+
     @Getter(lazy = true)
     private final List<CollectionMember<AdditionalExecutor>> executorsApplyingForLegalStatement = getAllExecutors(true);
 
