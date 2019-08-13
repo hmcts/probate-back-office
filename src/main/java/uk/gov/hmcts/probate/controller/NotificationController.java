@@ -38,6 +38,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static uk.gov.hmcts.probate.model.State.CASE_STOPPED;
 import static uk.gov.hmcts.probate.model.State.CASE_STOPPED_CAVEAT;
 import static uk.gov.hmcts.probate.model.State.DOCUMENTS_RECEIVED;
+import static uk.gov.hmcts.probate.model.State.REQUEST_INFORMATION;
 
 @RequiredArgsConstructor
 @RequestMapping(value = "/notify", consumes = APPLICATION_JSON_UTF8_VALUE, produces = APPLICATION_JSON_VALUE)
@@ -171,7 +172,7 @@ public class NotificationController {
 
         System.out.println("blah = " + s);
 
-        Document doc = notificationService.sendHtmlEmail(callbackRequest.getCaseDetails(), s);
+        Document doc = notificationService.sendEmail(REQUEST_INFORMATION, callbackRequest.getCaseDetails());
 
         return ResponseEntity.ok(null);
     }

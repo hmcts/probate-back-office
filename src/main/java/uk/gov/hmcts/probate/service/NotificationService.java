@@ -43,7 +43,6 @@ import static uk.gov.hmcts.probate.model.Constants.CTSC;
 import static uk.gov.hmcts.probate.model.Constants.DOC_SUBTYPE_WILL;
 import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
 import static uk.gov.hmcts.probate.model.State.GRANT_REISSUED;
-import static uk.gov.hmcts.probate.model.State.REQUEST_INFORMATION;
 
 @RequiredArgsConstructor
 @Component
@@ -74,6 +73,7 @@ public class NotificationService {
     private static final String PERSONALISATION_REGISTRY_NAME = "registry_name";
     private static final String PERSONALISATION_REGISTRY_PHONE = "registry_phone";
     private static final String PERSONALISATION_CASE_STOP_DETAILS = "case-stop-details";
+    private static final String PERSONALISATION_CASE_STOP_DETAILS_DEC = "boStopDetailsDeclarationParagraph";
     private static final String PERSONALISATION_CAVEAT_CASE_ID = "caveat_case_id";
     private static final String PERSONALISATION_DECEASED_DOD = "deceased_dod";
     private static final String PERSONALISATION_CCD_REFERENCE = "ccd_reference";
@@ -106,34 +106,19 @@ public class NotificationService {
             personalisation = getCaveatStopPersonalisation(personalisation, caseData);
         }
 
+        if (caseData.getApplicationType().equals(ApplicationType.SOLICITOR)) {
+            personalisation.replace(PERSONALISATION_APPLICANT_NAME, caseData.getSolsSOTName());
+        }
+
         SendEmailResponse response;
 
-        if (state == State.CASE_STOPPED || state == State.CASE_STOPPED_CAVEAT) {
+        if (state == State.CASE_STOPPED || state == State.CASE_STOPPED_CAVEAT || state == State.REQUEST_INFORMATION) {
             response = notificationClient.sendEmail(templateId, emailAddress, personalisation, reference, emailReplyToId);
         } else {
             response = notificationClient.sendEmail(templateId, emailAddress, personalisation, reference);
         }
 
         return getGeneratedSentEmailDocument(response, emailAddress, SENT_EMAIL);
-    }
-
-    public Document sendHtmlEmail(CaseDetails caseDetails, String html)
-            throws NotificationClientException {
-
-        CaseData caseData = caseDetails.getData();
-        Registry registry = registriesProperties.getRegistries().get(caseData.getRegistryLocation().toLowerCase());
-
-        String templateId = getTemplateId(REQUEST_INFORMATION, caseData.getApplicationType(), caseData.getRegistryLocation());
-        String emailReplyToId = registry.getEmailReplyToId();
-        String emailAddress = getEmail(caseData);
-        Map<String, String> personalisation = getPersonalisation(caseDetails, registry);
-        String reference = caseData.getSolsSolicitorAppReference();
-        personalisation.put("body", html);
-
-
-        SendEmailResponse response = notificationClient.sendEmail(templateId, emailAddress, personalisation, reference, emailReplyToId);
-
-        return getGeneratedSentEmailDocmosisDocument(response, emailAddress, SENT_EMAIL);
     }
 
     public Document sendCaveatEmail(State state, CaveatDetails caveatDetails)
@@ -250,6 +235,7 @@ public class NotificationService {
         personalisation.put(PERSONALISATION_CAVEAT_CASE_ID, caseData.getBoCaseStopCaveatId());
         personalisation.put(PERSONALISATION_DECEASED_DOD, caseData.getDeceasedDateOfDeathFormatted());
         personalisation.put(PERSONALISATION_CCD_REFERENCE, caseDetails.getId().toString());
+        personalisation.put(PERSONALISATION_CASE_STOP_DETAILS_DEC, caseData.getBoStopDetailsDeclarationParagraph());
 
         return personalisation;
     }
