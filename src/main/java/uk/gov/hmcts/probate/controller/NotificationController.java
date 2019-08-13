@@ -18,6 +18,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.service.BulkPrintService;
 import uk.gov.hmcts.probate.service.DocumentGeneratorService;
 import uk.gov.hmcts.probate.service.EventValidationService;
+import uk.gov.hmcts.probate.service.InformationRequestService;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.docmosis.GrantOfRepresentationDocmosisMapperService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
@@ -55,6 +56,7 @@ public class NotificationController {
     private final BulkPrintService bulkPrintService;
     private final List<BulkPrintValidationRule> bulkPrintValidationRules;
     private final GrantOfRepresentationDocmosisMapperService gorDocmosisService;
+    private final InformationRequestService informationRequestService;
 
 
     @PostMapping(path = "/documents-received")
@@ -154,5 +156,15 @@ public class NotificationController {
         CallbackResponse callbackResponse = callbackResponseTransformer.defaultRequestInformationValues(callbackRequest);
 
         return ResponseEntity.ok(callbackResponse);
+    }
+
+
+    @PostMapping(path = "/stopped-information-request")
+    public ResponseEntity<CallbackResponse> informationRequest(@Validated({EmailAddressNotifyValidationRule.class})
+                                                               @RequestBody CallbackRequest callbackRequest) {
+        byte [] blah = informationRequestService.sotInformationRequest(callbackRequest.getCaseDetails(),
+                DocumentType.SENT_EMAIL);
+        System.out.println("blah = " + blah);
+        return ResponseEntity.ok(null);
     }
 }

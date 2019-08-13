@@ -20,8 +20,7 @@ import static com.google.common.base.Strings.isNullOrEmpty;
 @Slf4j
 public class DocmosisPdfGenerationService {
 
-    private static final String PDF_DOCUMENT_OUTPUT_NAME = "result.pdf";
-    private static final String PDF_DOCUMENT_OUTPUT_FORMAT = "pdf";
+    private static final String PDF_DOCUMENT_OUTPUT_NAME = "result.";
 
     @Autowired
     private RestTemplate restTemplate;
@@ -36,7 +35,7 @@ public class DocmosisPdfGenerationService {
     @Value("${docmosis.service.accessKey}")
     private String pdfServiceAccessKey;
 
-    public byte[] generateDocFrom(String templateName, Map<String, Object> placeholders) {
+    public byte[] generateDocFrom(String templateName, Map<String, Object> placeholders, String outputFormat) {
         checkArgument(!isNullOrEmpty(templateName), "document generation template cannot be empty");
         checkNotNull(placeholders, "placeholders map cannot be null");
 
@@ -47,7 +46,7 @@ public class DocmosisPdfGenerationService {
 
         try {
             ResponseEntity<byte[]> response =
-                    restTemplate.postForEntity(pdfServiceEndpoint, request(templateName, placeholders), byte[]
+                    restTemplate.postForEntity(pdfServiceEndpoint, request(templateName, placeholders, outputFormat), byte[]
                             .class);
             return response.getBody();
         } catch (Exception e) {
@@ -55,13 +54,13 @@ public class DocmosisPdfGenerationService {
         }
     }
 
-    private PdfDocumentRequest request(String templateName, Map<String, Object> placeholders) {
+    private PdfDocumentRequest request(String templateName, Map<String, Object> placeholders, String outputFormat) {
         String docmosisTemplateName = templateProperties.getTemplates().get(templateName).getTemplateName();
         return PdfDocumentRequest.builder()
                 .accessKey(pdfServiceAccessKey)
                 .templateName(docmosisTemplateName)
-                .outputFormat(PDF_DOCUMENT_OUTPUT_FORMAT)
-                .outputName(PDF_DOCUMENT_OUTPUT_NAME)
+                .outputFormat(outputFormat)
+                .outputName(PDF_DOCUMENT_OUTPUT_NAME + outputFormat)
                 .pdfArchiveMode(true)
                 .data(placeholders).build();
     }

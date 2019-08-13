@@ -71,6 +71,10 @@ docmosis:
       templateName: FL-PRB-GNO-ENG-00061.doc
     admonWillGrantReissue:
       templateName: FL-PRB-GNO-ENG-00061.doc
+    sotInformationRequest:
+      templateName: FL-PRB-GNO-ENG-00085.doc
+    sentEmail:
+      templateName: FL-PRB-EML-ENG-00086.doc
 
 fee.api:
   url: http://localhost:4411
