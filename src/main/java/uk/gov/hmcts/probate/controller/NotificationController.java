@@ -161,10 +161,18 @@ public class NotificationController {
 
     @PostMapping(path = "/stopped-information-request")
     public ResponseEntity<CallbackResponse> informationRequest(@Validated({EmailAddressNotifyValidationRule.class})
-                                                               @RequestBody CallbackRequest callbackRequest) {
+                                                               @RequestBody CallbackRequest callbackRequest)
+            throws NotificationClientException {
+
         byte [] blah = informationRequestService.sotInformationRequest(callbackRequest.getCaseDetails(),
-                DocumentType.SENT_EMAIL);
-        System.out.println("blah = " + blah);
+                DocumentType.SOT_INFORMATION_REQUEST);
+
+        String s = new String(blah);
+
+        System.out.println("blah = " + s);
+
+        Document doc = notificationService.sendHtmlEmail(callbackRequest.getCaseDetails(), s);
+
         return ResponseEntity.ok(null);
     }
 }

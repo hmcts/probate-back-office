@@ -43,6 +43,7 @@ import static uk.gov.hmcts.probate.model.Constants.CTSC;
 import static uk.gov.hmcts.probate.model.Constants.DOC_SUBTYPE_WILL;
 import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
 import static uk.gov.hmcts.probate.model.State.GRANT_REISSUED;
+import static uk.gov.hmcts.probate.model.State.REQUEST_INFORMATION;
 
 @RequiredArgsConstructor
 @Component
@@ -83,6 +84,11 @@ public class NotificationService {
     private static final String PERSONALISATION_DATE_CAVEAT_ENTERED = "date_caveat_entered";
     private static final String PERSONALISATION_CAVEATOR_NAME = "caveator_name";
     private static final String PERSONALISATION_CAVEATOR_ADDRESS = "caveator_address";
+    private static final String PERSONALISATION_SENT_EMAIL_BODY = "body";
+    private static final String PERSONALISATION_SENT_EMAIL_TO = "to";
+    private static final String PERSONALISATION_SENT_EMAIL_FROM = "from";
+    private static final String PERSONALISATION_SENT_EMAIL_SUBJECT = "subject";
+    private static final String PERSONALISATION_SENT_EMAIL_SENT_ON = "sentOn";
 
     public Document sendEmail(State state, CaseDetails caseDetails)
             throws NotificationClientException {
@@ -109,6 +115,25 @@ public class NotificationService {
         }
 
         return getGeneratedSentEmailDocument(response, emailAddress, SENT_EMAIL);
+    }
+
+    public Document sendHtmlEmail(CaseDetails caseDetails, String html)
+            throws NotificationClientException {
+
+        CaseData caseData = caseDetails.getData();
+        Registry registry = registriesProperties.getRegistries().get(caseData.getRegistryLocation().toLowerCase());
+
+        String templateId = getTemplateId(REQUEST_INFORMATION, caseData.getApplicationType(), caseData.getRegistryLocation());
+        String emailReplyToId = registry.getEmailReplyToId();
+        String emailAddress = getEmail(caseData);
+        Map<String, String> personalisation = getPersonalisation(caseDetails, registry);
+        String reference = caseData.getSolsSolicitorAppReference();
+        personalisation.put("body", html);
+
+
+        SendEmailResponse response = notificationClient.sendEmail(templateId, emailAddress, personalisation, reference, emailReplyToId);
+
+        return getGeneratedSentEmailDocmosisDocument(response, emailAddress, SENT_EMAIL);
     }
 
     public Document sendCaveatEmail(State state, CaveatDetails caveatDetails)
@@ -189,6 +214,29 @@ public class NotificationService {
         return pdfManagementService.generateAndUpload(sentEmail, docType);
     }
 
+    private Document getGeneratedSentEmailDocmosisDocument(SendEmailResponse response, String emailAddress, DocumentType docType) {
+        SentEmail sentEmail = SentEmail.builder()
+                .sentOn(LocalDateTime.now().format(formatter))
+                .from(response.getFromEmail().orElse(""))
+                .to(emailAddress)
+                .subject(response.getSubject())
+                .body(markdownTransformationService.toHtml(response.getBody()))
+                .build();
+        Map<String, Object> placeholders = getPersonalisation(sentEmail);
+        return pdfManagementService.generateDocmosisDocumentAndUpload(placeholders, SENT_EMAIL);
+    }
+
+    private Map<String, Object> getPersonalisation(SentEmail sentEmail) {
+        HashMap<String, Object> personalisation = new HashMap<>();
+        personalisation.put(PERSONALISATION_SENT_EMAIL_BODY, sentEmail.getBody());
+        personalisation.put(PERSONALISATION_SENT_EMAIL_FROM, sentEmail.getFrom());
+        personalisation.put(PERSONALISATION_SENT_EMAIL_TO, sentEmail.getTo());
+        personalisation.put(PERSONALISATION_SENT_EMAIL_SUBJECT, sentEmail.getSubject());
+        personalisation.put(PERSONALISATION_SENT_EMAIL_SENT_ON, sentEmail.getSentOn());
+
+        return personalisation;
+    }
+
     private Map<String, String> getPersonalisation(CaseDetails caseDetails, Registry registry) {
         CaseData caseData = caseDetails.getData();
         HashMap<String, String> personalisation = new HashMap<>();
@@ -265,6 +313,8 @@ public class NotificationService {
                 return notificationTemplates.getEmail().get(applicationType).getGrantReissued();
             case GENERAL_CAVEAT_MESSAGE:
                 return notificationTemplates.getEmail().get(applicationType).getGeneralCaveatMessage();
+            case REQUEST_INFORMATION:
+                return notificationTemplates.getEmail().get(applicationType).getRequestInformation();
             case CAVEAT_RAISED:
                 if (registryLocation.equalsIgnoreCase(CTSC)) {
                     return notificationTemplates.getEmail().get(applicationType).getCaveatRaisedCtsc();
