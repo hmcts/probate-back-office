@@ -1,35 +1,35 @@
 This probate application has now been submitted
 -------------------------------------------------
 
-{{solsSolicitorFirmName}}, {{solsSolicitorAddress}}
+Legal Service Ltd, Sols Add Line 1, SW1E 6EA, 
 
-{{solicitorName}}, {{solicitorJobRole}}
+Peter Crouch, Lawyer
 
 **Probate registry reference:**
-{{deceasedLastname}}, {{deceasedFirstname}}, died {{deceasedDateOfDeath}}
+Michael, Andy, died 04/04/2017
 
-**Your reference:** {{solicitorReference}}
+**Your reference:** SOL_REF_X12345
 
-**Submitted on:** {{caseSubmissionDate}}
+**Submitted on:** 01/01/2018
 
 Payment summary
 -------------------------------------------------
-**Application fee** &pound;{{applicationFee}}
+**Application fee** &pound;0.10
 
-**Fee for additional UK copies** &pound;{{feeForUkCopies}}
+**Fee for additional UK copies** &pound;1.00
 
-**Fee for certified copies** &pound;{{feeForNonUkCopies}}
+**Fee for certified copies** &pound;2.00
 
-**Fee amount** &pound;{{paymentAmount}}
+**Fee amount** &pound;0.10
 
-**Payment method** {{paymentMethod}}
+**Payment method** Cheque
 
-**Payment reference number** {{solsPaymentReferenceNumber}}
+**Payment reference number** XXXXX123456
 
 Notes for this application
 -------------------------------------------------
 
-{{additionalInfo}}
+ADDITIONAL INFO
 
 What you need to do now
 ==================================================
@@ -37,11 +37,11 @@ What you need to do now
 Print a copy of this page for your records. 
  
 You now need to send us:
-{{originalWill}}
-*   fee payment: your {{paymentMethod}} for &pound;{{paymentAmount}} (grant and copies)
+
+*   fee payment: your Cheque for &pound;0.10 (grant and copies)
 *   the printed version of this page which will be used as your cover letter to us
-*   completed inheritance tax form {{ihtForm}}
-{{iht400}}{{renouncingExecutors}}{{deadExecutors}}
+*   completed inheritance tax form IHT207
+
 Where to send us your documents
 -------------------------------
 

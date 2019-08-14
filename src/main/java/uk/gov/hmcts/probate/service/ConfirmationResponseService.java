@@ -146,6 +146,13 @@ public class ConfirmationResponseService {
         keyValue.put("{{feeForNonUkCopies}}", getOptionalAmountAsString(ccdData.getFee().getFeeForNonUkCopies()));
         keyValue.put("{{solsPaymentReferenceNumber}}", ccdData.getFee().getPaymentReferenceNumber());
 
+        String solsWillType = ccdData.getSolsWillType().toString();
+        String originalWill = "\n*   the original will";
+        if (solsWillType.equals(GRANT_TYPE_INTESTACY)) {
+            originalWill = "";
+        }
+        keyValue.put("{{originalWill}}", originalWill);
+
         String additionalInfo = ccdData.getSolsAdditionalInfo();
         if (Strings.isNullOrEmpty(additionalInfo)) {
             additionalInfo = "None provided";
