@@ -22,10 +22,10 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     private static final String GRANT_ISSUED = "/document/generate-grant";
     private static final String GRANT_REISSUED = "/document/generate-grant-reissue";
     private static final String CASE_STOPPED = "/notify/case-stopped";
+    private static final String INFORMATION_REQUEST = "/notify/stopped-information-request";
 
     private static final String BIRMINGHAM_NO = "0121 681 3401";
 
-    private static final String STOP_URL = "data.probateNotificationsGenerated[0].value.DocumentLink.document_binary_url";
     private static final String EMAIL_NOTIFICATION_URL = "data.probateNotificationsGenerated[0].value.DocumentLink.document_binary_url";
 
     @Test
@@ -84,33 +84,39 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
 
     @Test
     public void verifySolicitorCaseStoppedShouldReturnOkResponseCode() {
-        String document = sendEmail("solicitorPayloadNotifications.json", CASE_STOPPED, STOP_URL);
+        String document = sendEmail("solicitorPayloadNotifications.json", CASE_STOPPED, EMAIL_NOTIFICATION_URL);
         assertTrue(document.contains(SOLS_STOP_DETAILS));
     }
 
     @Test
     public void verifyPersonalApplicantCaseStoppedShouldReturnOkResponseCode() {
-        String document = sendEmail("personalPayloadNotifications.json", CASE_STOPPED, STOP_URL);
+        String document = sendEmail("personalPayloadNotifications.json", CASE_STOPPED, EMAIL_NOTIFICATION_URL);
         assertTrue(document.contains(PA_STOP_DETAILS));
     }
 
     @Test
     public void verifyPersonalApplicantCaseStoppedContentIsOk() {
-        String document = sendEmail("personalPayloadNotifications.json", CASE_STOPPED, STOP_URL);
+        String document = sendEmail("personalPayloadNotifications.json", CASE_STOPPED, EMAIL_NOTIFICATION_URL);
         verifyPAEmailCaseStopped(document);
     }
 
     @Test
     public void verifySolicitorCaseStoppedContentIsOkay() {
-        String document = sendEmail("solicitorPayloadNotificationsBirmingham.json", CASE_STOPPED, STOP_URL);
+        String document = sendEmail("solicitorPayloadNotificationsBirmingham.json", CASE_STOPPED, EMAIL_NOTIFICATION_URL);
         verifySolsEmailCaseStopped(document);
     }
 
     @Test
     public void verifySpecialCharacterEncodingIsOk() {
-        String document = sendEmail("personalPayloadNotificationsSpecialCharacters.json", CASE_STOPPED, STOP_URL);
+        String document = sendEmail("personalPayloadNotificationsSpecialCharacters.json", CASE_STOPPED, EMAIL_NOTIFICATION_URL);
         verifyPAEmailCaseStopped(document);
         assertTrue(document.contains("!@£$%^&*()[]{}<>,.:;~"));
+    }
+
+    @Test
+    public void test() {
+        String document = sendEmail("personalPayloadNotifications.json", INFORMATION_REQUEST, EMAIL_NOTIFICATION_URL);
+        verifyPAEmailCaseStopped(document);
     }
 
 

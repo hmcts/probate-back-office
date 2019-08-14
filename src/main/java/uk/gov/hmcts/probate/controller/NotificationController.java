@@ -159,32 +159,40 @@ public class NotificationController {
 
 
     @PostMapping(path = "/stopped-information-request")
-    public ResponseEntity<CallbackResponse> informationRequest(@Validated({EmailAddressNotifyValidationRule.class})
-                                                               @RequestBody CallbackRequest callbackRequest)
+    public ResponseEntity<CallbackResponse> informationRequest(@RequestBody CallbackRequest callbackRequest)
             throws NotificationClientException {
 
         List<Document> documents = new ArrayList<>();
+        CallbackResponse response = CallbackResponse.builder().errors(new ArrayList<>()).build();
 
         if (callbackRequest.getCaseDetails().getData().isBoEmailRequestInfoNotificationRequested()) {
-            log.info("Initiate call to send request for information email for case id {} ",
-                    callbackRequest.getCaseDetails().getId());
-            documents.add(notificationService.sendEmail(CASE_STOPPED_REQUEST_INFORMATION, callbackRequest.getCaseDetails()));
-            log.info("Successful response for request for information email for case id {} ",
-                    callbackRequest.getCaseDetails().getId());
-        }
-
-        if (!callbackRequest.getCaseDetails().getData().isBoEmailRequestInfoNotificationRequested()) {
-            //generate coversheet and docmosis pdf template for requestInformation
-            Document coversheet;
-            Document requestInformation;
-
-            if (callbackRequest.getCaseDetails().getData().isBoRequestInfoSendToBulkPrintRequested()) {
-                //send coversheet and docmosis pdf to bulk print
-
+            response = eventValidationService.validateEmailRequest(callbackRequest, emailAddressNotifyValidationRules);
+            if (response.getErrors().isEmpty()) {
+                log.info("Initiate call to send request for information email for case id {} ",
+                        callbackRequest.getCaseDetails().getId());
+                documents.add(notificationService.sendEmail(CASE_STOPPED_REQUEST_INFORMATION, callbackRequest.getCaseDetails()));
+                log.info("Successful response for request for information email for case id {} ",
+                        callbackRequest.getCaseDetails().getId());
             }
+
         }
 
-        return ResponseEntity.ok(callbackResponseTransformer.addInformationRequestDocuments(callbackRequest, documents));
+        //if (!callbackRequest.getCaseDetails().getData().isBoEmailRequestInfoNotificationRequested()) {
+        //    //generate coversheet and docmosis pdf template for requestInformation
+        //    Document coversheet;
+        //    Document requestInformation;
+        //
+        //    if (callbackRequest.getCaseDetails().getData().isBoRequestInfoSendToBulkPrintRequested()) {
+        //        //send coversheet and docmosis pdf to bulk print
+        //
+        //    }
+        //}
+
+        if (response.getErrors().isEmpty()) {
+            response = callbackResponseTransformer.addInformationRequestDocuments(callbackRequest, documents);
+        }
+
+        return ResponseEntity.ok(response);
     }
 
 }

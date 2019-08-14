@@ -39,6 +39,7 @@
         "AddressLine3": ""
       },
       "caseType": "gop",
+      "boEmailRequestInfoNotification": "Yes",
       "deceasedAnyOtherNames": "No",
       "solsFeeAccountNumber": "1234",
       "willHasCodicils": "No",

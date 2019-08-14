@@ -18,12 +18,15 @@ import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
+import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
 import uk.gov.hmcts.probate.service.BulkPrintService;
+import uk.gov.hmcts.probate.service.DocumentGeneratorService;
 import uk.gov.hmcts.probate.service.DocumentService;
 import uk.gov.hmcts.probate.service.EventValidationService;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.docmosis.GrantOfRepresentationDocmosisMapperService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
+import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.util.TestUtils;
 import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
 import uk.gov.service.notify.NotificationClientException;
@@ -87,24 +90,34 @@ public class NotificationControllerTest {
     @MockBean
     private CoreCaseDataApi coreCaseDataApi;
 
+    @MockBean
+    private CallbackResponseTransformer callbackResponseTransformer;
+
+    @MockBean
+    private DocumentGeneratorService documentGeneratorService;
+
     @SpyBean
     private DocumentService documentService;
 
     private static final String DOC_RECEIVED_URL = "/notify/documents-received";
     private static final String CASE_STOPPED_URL = "/notify/case-stopped";
-    private static final String REQUEST_INFO_URL = "/notify/request-information-default-values";
+    private static final String REQUEST_INFO_DEFAULT_URL = "/notify/request-information-default-values";
+    private static final String REQUEST_INFO_URL = "/notify/stopped-information-request";
 
     private static final Map<String, Object> EMPTY_MAP = new HashMap();
     private static final Document EMPTY_DOC = Document.builder().documentType(CAVEAT_STOPPED).build();
 
     private List<String> errors = new ArrayList<>();
     private CallbackResponse errorResponse;
+    private CallbackResponse successfulResponse;
 
     @Before
     public void setUp() throws NotificationClientException, BadRequestException {
         errors.add("Bulk Print is currently unavailable please contact support desk.");
         errorResponse = CallbackResponse.builder().errors(errors).build();
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+        successfulResponse =
+                CallbackResponse.builder().data(ResponseCaseData.builder().deceasedForenames("Bob").build()).build();
 
         Document document = Document.builder().documentType(DIGITAL_GRANT).build();
 
@@ -137,6 +150,13 @@ public class NotificationControllerTest {
         when(grantOfRepresentationDocmosisMapperService.caseDataForStoppedMatchedCaveat(any())).thenReturn(EMPTY_MAP);
 
         when(pdfManagementService.generateDocmosisDocumentAndUpload(any(), eq(CAVEAT_STOPPED))).thenReturn(EMPTY_DOC);
+
+        when(documentGeneratorService.generateCoversheet(any())).thenReturn(EMPTY_DOC);
+
+        when(callbackResponseTransformer.addDocuments(any(), any(), any(), any())).thenReturn(successfulResponse);
+        when(callbackResponseTransformer.caseStopped(any(), any(), any())).thenReturn(successfulResponse);
+        when(callbackResponseTransformer.defaultRequestInformationValues(any())).thenReturn(successfulResponse);
+        when(callbackResponseTransformer.addInformationRequestDocuments(any(), any())).thenReturn(successfulResponse);
 
     }
 
@@ -400,10 +420,42 @@ public class NotificationControllerTest {
     public void shouldReturnSuccessfulForRequestInformationDefaultValues() throws Exception {
         String personalPayload = testUtils.getStringFromFile("personalPayloadNotifications.json");
 
-        mockMvc.perform(post(REQUEST_INFO_URL).content(personalPayload).contentType(MediaType.APPLICATION_JSON_UTF8))
+        mockMvc.perform(post(REQUEST_INFO_DEFAULT_URL).content(personalPayload).contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
 
     }
 
+    @Test
+    public void shouldReturnSuccessfulResponseForInformationRequest() throws Exception {
+        String personalPayload = testUtils.getStringFromFile("personalPayloadNotifications.json");
+
+        mockMvc.perform(post(REQUEST_INFO_URL).content(personalPayload).contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(content().string(containsString("data")));
+
+    }
+
+    @Test
+    public void shouldReturnEmailPAValidateUnSuccessfulRequestInformation() throws Exception {
+        String personalPayload = testUtils.getStringFromFile("personalPayloadNotificationsNoEmail.json");
+
+        mockMvc.perform(post(REQUEST_INFO_URL).content(personalPayload).contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.errors[0]")
+                        .value("There is no email address for this applicant. Add an email address or contact them by post."))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
+
+    }
+
+    @Test
+    public void shouldReturnSuccessfulResponseForEmailNotRequested() throws Exception {
+        String personalPayload = testUtils.getStringFromFile("personalPayloadNotificationsEmailNotRequested.json");
+
+        mockMvc.perform(post(REQUEST_INFO_URL).content(personalPayload).contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(content().string(containsString("data")));
+    }
 }
