@@ -60,11 +60,15 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
 import static uk.gov.hmcts.probate.model.Constants.CTSC;
+import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT_STOPPED;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_DRAFT;
+import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_REISSUE;
+import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT;
 import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
+import static uk.gov.hmcts.probate.model.DocumentType.SOT_INFORMATION_REQUEST;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CallbackResponseTransformerTest {
@@ -189,6 +193,11 @@ public class CallbackResponseTransformerTest {
     private static final String DECEASED_ANY_CHILDREN = NO;
     private static final String DECEASED_HAS_ASSETS_OUTSIDE_UK = YES;
     private static final DocumentLink SOT = DocumentLink.builder().documentFilename("SOT.pdf").build();
+
+    private static final String CASE_CREATED = "CaseCreated";
+    private static final String CASE_PRINTED = "CasePrinted";
+    private static final String READY_FOR_EXAMINATION = "BOReadyForExamination";
+    private static final String EXAMINING = "BOExamining";
 
     private static final LocalDateTime scannedDate = LocalDateTime.parse("2018-01-01T12:34:56.123");
     private static final List<CollectionMember<Payment>> PAYMENTS_LIST = Arrays.asList(
@@ -505,6 +514,69 @@ public class CallbackResponseTransformerTest {
         assertEquals(grantDocument, callbackResponse.getData().getProbateDocumentsGenerated().get(0).getValue());
         assertEquals(1, callbackResponse.getData().getProbateNotificationsGenerated().size());
         assertEquals(grantIssuedSentEmail, callbackResponse.getData().getProbateNotificationsGenerated().get(0).getValue());
+
+    }
+
+    @Test
+    public void shouldSetSendLetterIdAndPdfSizeGrantReissue() {
+        Document grantDocument = Document.builder().documentType(DIGITAL_GRANT_REISSUE).build();
+        Document grantIssuedSentEmail = Document.builder().documentType(SENT_EMAIL).build();
+
+        CallbackResponse callbackResponse = underTest.addDocuments(callbackRequestMock,
+                Arrays.asList(grantDocument, grantIssuedSentEmail), "abc123", "2");
+
+        assertCommon(callbackResponse);
+
+        assertEquals("abc123", callbackResponse.getData().getBulkPrintId().get(0).getValue().getSendLetterId());
+        assertEquals(DIGITAL_GRANT_REISSUE.getTemplateName(), callbackResponse.getData().getBulkPrintId().get(0).getValue().getTemplateName());
+        assertEquals(1, callbackResponse.getData().getProbateDocumentsGenerated().size());
+        assertEquals(grantDocument, callbackResponse.getData().getProbateDocumentsGenerated().get(0).getValue());
+        assertEquals(1, callbackResponse.getData().getProbateNotificationsGenerated().size());
+        assertEquals(grantIssuedSentEmail, callbackResponse.getData().getProbateNotificationsGenerated().get(0).getValue());
+        assertEquals(YES, callbackResponse.getData().getBoEmailGrantReissuedNotificationRequested());
+        assertEquals(YES, callbackResponse.getData().getBoGrantReissueSendToBulkPrintRequested());
+
+    }
+
+    @Test
+    public void shouldSetSendLetterIdAndPdfSizeAdmonWillGrantReissue() {
+        Document grantDocument = Document.builder().documentType(ADMON_WILL_GRANT_REISSUE).build();
+        Document grantIssuedSentEmail = Document.builder().documentType(SENT_EMAIL).build();
+
+        CallbackResponse callbackResponse = underTest.addDocuments(callbackRequestMock,
+                Arrays.asList(grantDocument, grantIssuedSentEmail), "abc123", "2");
+
+        assertCommon(callbackResponse);
+
+        assertEquals("abc123", callbackResponse.getData().getBulkPrintId().get(0).getValue().getSendLetterId());
+        assertEquals(ADMON_WILL_GRANT_REISSUE.getTemplateName(), callbackResponse.getData().getBulkPrintId().get(0).getValue().getTemplateName());
+        assertEquals(1, callbackResponse.getData().getProbateDocumentsGenerated().size());
+        assertEquals(grantDocument, callbackResponse.getData().getProbateDocumentsGenerated().get(0).getValue());
+        assertEquals(1, callbackResponse.getData().getProbateNotificationsGenerated().size());
+        assertEquals(grantIssuedSentEmail, callbackResponse.getData().getProbateNotificationsGenerated().get(0).getValue());
+        assertEquals(YES, callbackResponse.getData().getBoEmailGrantReissuedNotificationRequested());
+        assertEquals(YES, callbackResponse.getData().getBoGrantReissueSendToBulkPrintRequested());
+
+    }
+
+    @Test
+    public void shouldSetSendLetterIdAndPdfSizeIntestacyGrantReissue() {
+        Document grantDocument = Document.builder().documentType(INTESTACY_GRANT_REISSUE).build();
+        Document grantIssuedSentEmail = Document.builder().documentType(SENT_EMAIL).build();
+
+        CallbackResponse callbackResponse = underTest.addDocuments(callbackRequestMock,
+                Arrays.asList(grantDocument, grantIssuedSentEmail), "abc123", "2");
+
+        assertCommon(callbackResponse);
+
+        assertEquals("abc123", callbackResponse.getData().getBulkPrintId().get(0).getValue().getSendLetterId());
+        assertEquals(INTESTACY_GRANT_REISSUE.getTemplateName(), callbackResponse.getData().getBulkPrintId().get(0).getValue().getTemplateName());
+        assertEquals(1, callbackResponse.getData().getProbateDocumentsGenerated().size());
+        assertEquals(grantDocument, callbackResponse.getData().getProbateDocumentsGenerated().get(0).getValue());
+        assertEquals(1, callbackResponse.getData().getProbateNotificationsGenerated().size());
+        assertEquals(grantIssuedSentEmail, callbackResponse.getData().getProbateNotificationsGenerated().get(0).getValue());
+        assertEquals(YES, callbackResponse.getData().getBoEmailGrantReissuedNotificationRequested());
+        assertEquals(YES, callbackResponse.getData().getBoGrantReissueSendToBulkPrintRequested());
 
     }
 
@@ -917,6 +989,38 @@ public class CallbackResponseTransformerTest {
         assertNull(callbackResponse.getData().getIhtReferenceNumber());
     }
 
+
+    @Test
+    public void shouldTransformCaseForSolsAddExecListEmpty() {
+        caseDataBuilder.applicationType(SOLICITOR);
+        caseDataBuilder.recordId(null);
+        caseDataBuilder.paperForm(NO);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+
+        assertEquals(EMPTY_LIST, callbackResponse.getData().getAdditionalExecutorsApplying());
+        assertEquals(EMPTY_LIST, callbackResponse.getData().getAdditionalExecutorsNotApplying());
+    }
+
+    @Test
+    public void shouldTransformCaseForSolsExecAliasIsNull() {
+        caseDataBuilder.applicationType(SOLICITOR);
+        caseDataBuilder.recordId(null);
+        caseDataBuilder.paperForm(NO);
+        caseDataBuilder.solsExecutorAliasNames(null);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+
+        assertEquals("Alias names", callbackResponse.getData().getPrimaryApplicantAlias());
+        assertEquals(null, callbackResponse.getData().getSolsExecutorAliasNames());
+    }
+
     @Test
     public void shouldTransformCaseForWhenPaperFormIsNO() {
         caseDataBuilder.applicationType(ApplicationType.PERSONAL);
@@ -1234,6 +1338,95 @@ public class CallbackResponseTransformerTest {
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
         CallbackResponse callbackResponse = underTest.paperForm(callbackRequestMock);
         assertEquals("SOT.pdf", callbackResponse.getData().getStatementOfTruthDocument().getDocumentFilename());
+    }
+
+    @Test
+    public void shouldDefaultRequestInformationValues() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        CallbackResponse callbackResponse = underTest.defaultRequestInformationValues(callbackRequestMock);
+        assertEquals("Yes", callbackResponse.getData().getBoEmailRequestInfoNotification());
+        assertEquals("Yes", callbackResponse.getData().getBoRequestInfoSendToBulkPrint());
+    }
+
+    @Test
+    public void shouldAddInformationRequestDocumentsSentEmail() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL);
+
+        Document document = Document.builder()
+                .documentLink(documentLinkMock)
+                .documentType(SENT_EMAIL)
+                .documentFileName(SENT_EMAIL.getTemplateName())
+                .build();
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        CallbackResponse callbackResponse = underTest.addInformationRequestDocuments(callbackRequestMock, Arrays.asList(document));
+        assertEquals(SENT_EMAIL.getTemplateName(), callbackResponse.getData().getProbateNotificationsGenerated().get(0).getValue().getDocumentFileName());
+        assertEquals("Yes", callbackResponse.getData().getBoEmailRequestInfoNotificationRequested());
+    }
+
+    @Test
+    public void shouldAddInformationRequestDocumentsSOT() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL);
+
+        Document document = Document.builder()
+                .documentLink(documentLinkMock)
+                .documentType(SOT_INFORMATION_REQUEST)
+                .documentFileName(SOT_INFORMATION_REQUEST.getTemplateName())
+                .build();
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        CallbackResponse callbackResponse = underTest.addInformationRequestDocuments(callbackRequestMock, Arrays.asList(document));
+        assertEquals(SOT_INFORMATION_REQUEST.getTemplateName(), callbackResponse.getData().getProbateDocumentsGenerated().get(0).getValue().getDocumentFileName());
+        assertEquals("Yes", callbackResponse.getData().getBoEmailRequestInfoNotificationRequested());
+    }
+
+    @Test
+    public void shouldResolveStopCaseCreated() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL)
+                .resolveStopState(CASE_CREATED);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        CallbackResponse callbackResponse = underTest.resolveStop(callbackRequestMock);
+        assertEquals(CASE_CREATED, callbackResponse.getData().getState());
+    }
+
+    @Test
+    public void shouldResolveStopCasePrinted() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL)
+                .resolveStopState(CASE_PRINTED);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        CallbackResponse callbackResponse = underTest.resolveStop(callbackRequestMock);
+        assertEquals(CASE_PRINTED, callbackResponse.getData().getState());
+    }
+
+    @Test
+    public void shouldResolveStopCaseReadyForExamining() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL)
+                .resolveStopState(READY_FOR_EXAMINATION);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        CallbackResponse callbackResponse = underTest.resolveStop(callbackRequestMock);
+        assertEquals(READY_FOR_EXAMINATION, callbackResponse.getData().getState());
+    }
+
+    @Test
+    public void shouldResolveStopCaseExamining() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL)
+                .resolveStopState(EXAMINING);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        CallbackResponse callbackResponse = underTest.resolveStop(callbackRequestMock);
+        assertEquals(EXAMINING, callbackResponse.getData().getState());
     }
 
     private CollectionMember<ProbateAliasName> createdDeceasedAliasName(String id, String forename, String lastname, String onGrant) {

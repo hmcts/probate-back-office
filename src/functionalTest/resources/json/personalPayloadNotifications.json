@@ -40,6 +40,7 @@
       },
       "caseType": "gop",
       "boEmailRequestInfoNotification": "Yes",
+      "boStopDetailsDeclarationParagraph": "Yes",
       "deceasedAnyOtherNames": "No",
       "solsFeeAccountNumber": "1234",
       "willHasCodicils": "No",
