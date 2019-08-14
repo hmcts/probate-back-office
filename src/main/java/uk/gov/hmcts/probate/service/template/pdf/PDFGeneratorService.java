@@ -59,17 +59,6 @@ public class PDFGeneratorService {
         return new EvidenceManagementFileUpload(MediaType.APPLICATION_PDF, postResult);
     }
 
-    public byte[] generateDocmosisHtml(String templateName, Map<String, Object>
-            placeholders) {
-        try {
-            return docmosisPdfGenerationService.generateDocFrom(templateName, placeholders);
-        } catch (PDFServiceClientException e) {
-            log.error(e.getMessage(), e);
-            throw new ClientException(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage());
-        }
-    }
-
-
     private byte[] generateFromHtml(String templateName, String pdfGenerationData) throws IOException {
         String templatePath = pdfServiceConfiguration.getTemplatesDirectory() + templateName + TEMPLATE_EXTENSION;
         String templateAsString = fileSystemResourceService.getFileFromResourceAsString(templatePath);

@@ -152,6 +152,7 @@ public class NotificationServiceTest {
     private static final String PERSONALISATION_CAVEAT_ENTERED = "date_caveat_entered";
     private static final String PERSONALISATION_CAVEATOR_NAME = "caveator_name";
     private static final String PERSONALISATION_CAVEATOR_ADDRESS = "caveator_address";
+    private static final String PERSONALISATION_CASE_STOP_DETAILS_DEC = "boStopDetailsDeclarationParagraph";
 
 
     @Before
@@ -815,6 +816,7 @@ public class NotificationServiceTest {
         personalisation.put(PERSONALISATION_SOLICITOR_REFERENCE, personalCaseDataCtsc.getData().getSolsSolicitorAppReference());
         personalisation.put(PERSONALISATION_REGISTRY_NAME, "CTSC");
         personalisation.put(PERSONALISATION_REGISTRY_PHONE, "0300 303 0648");
+        personalisation.put(PERSONALISATION_CASE_STOP_DETAILS_DEC, personalCaseDataCtsc.getData().getBoStopDetailsDeclarationParagraph());
         personalisation.put(PERSONALISATION_CASE_STOP_DETAILS, personalCaseDataCtsc.getData().getBoStopDetails());
         personalisation.put(PERSONALISATION_CAVEAT_CASE_ID, personalCaseDataCtsc.getData().getBoCaseStopCaveatId());
         personalisation.put(PERSONALISATION_DECEASED_DOD, personalCaseDataCtsc.getData().getDeceasedDateOfDeathFormatted());
