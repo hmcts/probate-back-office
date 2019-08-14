@@ -112,13 +112,20 @@ public class NotificationService {
 
         SendEmailResponse response;
 
-        if (state == State.CASE_STOPPED || state == State.CASE_STOPPED_CAVEAT || state == State.REQUEST_INFORMATION) {
-            response = notificationClient.sendEmail(templateId, emailAddress, personalisation, reference, emailReplyToId);
-        } else {
-            response = notificationClient.sendEmail(templateId, emailAddress, personalisation, reference);
+        switch (state) {
+            case CASE_STOPPED:
+            case CASE_STOPPED_CAVEAT:
+            case CASE_STOPPED_REQUEST_INFORMATION:
+                response = notificationClient.sendEmail(templateId, emailAddress, personalisation, reference, emailReplyToId);
+            default:
+                response = notificationClient.sendEmail(templateId, emailAddress, personalisation, reference);
         }
 
-        return getGeneratedSentEmailDocument(response, emailAddress, SENT_EMAIL);
+        if (state == State.CASE_STOPPED_REQUEST_INFORMATION) {
+            return getGeneratedSentEmailDocmosisDocument(response, emailAddress, SENT_EMAIL);
+        } else {
+            return getGeneratedSentEmailDocument(response, emailAddress, SENT_EMAIL);
+        }
     }
 
     public Document sendCaveatEmail(State state, CaveatDetails caveatDetails)
@@ -299,7 +306,7 @@ public class NotificationService {
                 return notificationTemplates.getEmail().get(applicationType).getGrantReissued();
             case GENERAL_CAVEAT_MESSAGE:
                 return notificationTemplates.getEmail().get(applicationType).getGeneralCaveatMessage();
-            case REQUEST_INFORMATION:
+            case CASE_STOPPED_REQUEST_INFORMATION:
                 return notificationTemplates.getEmail().get(applicationType).getRequestInformation();
             case CAVEAT_RAISED:
                 if (registryLocation.equalsIgnoreCase(CTSC)) {

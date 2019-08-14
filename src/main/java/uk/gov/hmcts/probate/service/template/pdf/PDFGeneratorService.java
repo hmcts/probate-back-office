@@ -22,8 +22,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static uk.gov.hmcts.probate.insights.AppInsightsEvent.REQUEST_SENT;
-import static uk.gov.hmcts.probate.model.Constants.DOCMOSIS_OUTPUT_HTML;
-import static uk.gov.hmcts.probate.model.Constants.DOCMOSIS_OUTPUT_PDF;
 
 @Slf4j
 @Component
@@ -53,7 +51,7 @@ public class PDFGeneratorService {
             placeholders) {
         byte[] postResult;
         try {
-            postResult = docmosisPdfGenerationService.generateDocFrom(templateName, placeholders, DOCMOSIS_OUTPUT_PDF);
+            postResult = docmosisPdfGenerationService.generateDocFrom(templateName, placeholders);
         } catch (PDFServiceClientException e) {
             log.error(e.getMessage(), e);
             throw new ClientException(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage());
@@ -64,7 +62,7 @@ public class PDFGeneratorService {
     public byte[] generateDocmosisHtml(String templateName, Map<String, Object>
             placeholders) {
         try {
-            return docmosisPdfGenerationService.generateDocFrom(templateName, placeholders, DOCMOSIS_OUTPUT_HTML);
+            return docmosisPdfGenerationService.generateDocFrom(templateName, placeholders);
         } catch (PDFServiceClientException e) {
             log.error(e.getMessage(), e);
             throw new ClientException(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage());

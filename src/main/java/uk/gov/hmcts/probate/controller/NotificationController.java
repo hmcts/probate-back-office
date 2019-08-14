@@ -37,8 +37,8 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static uk.gov.hmcts.probate.model.State.CASE_STOPPED;
 import static uk.gov.hmcts.probate.model.State.CASE_STOPPED_CAVEAT;
+import static uk.gov.hmcts.probate.model.State.CASE_STOPPED_REQUEST_INFORMATION;
 import static uk.gov.hmcts.probate.model.State.DOCUMENTS_RECEIVED;
-import static uk.gov.hmcts.probate.model.State.REQUEST_INFORMATION;
 
 @RequiredArgsConstructor
 @RequestMapping(value = "/notify", consumes = APPLICATION_JSON_UTF8_VALUE, produces = APPLICATION_JSON_VALUE)
@@ -165,15 +165,28 @@ public class NotificationController {
                                                                @RequestBody CallbackRequest callbackRequest)
             throws NotificationClientException {
 
-        byte [] blah = informationRequestService.sotInformationRequest(callbackRequest.getCaseDetails(),
-                DocumentType.SOT_INFORMATION_REQUEST);
+        List<Document> documents = new ArrayList<>();
 
-        String s = new String(blah);
+        if (callbackRequest.getCaseDetails().getData().isBoEmailRequestInfoNotificationRequested()) {
+//            log.info("Initiate call to send request for information email for case id {} ",
+//                    callbackRequest.getCaseDetails().getId());
+            documents.add(notificationService.sendEmail(CASE_STOPPED_REQUEST_INFORMATION, callbackRequest.getCaseDetails()));
+//            log.info("Successful response for request for information email for case id {} ",
+//                    callbackRequest.getCaseDetails().getId());
+        }
 
-        System.out.println("blah = " + s);
+        if (!callbackRequest.getCaseDetails().getData().isBoEmailRequestInfoNotificationRequested()) {
+            //generate coversheet and docmosis pdf template for requestInformation
+        Document coversheet;
+        Document requestInformation;
 
-        Document doc = notificationService.sendEmail(REQUEST_INFORMATION, callbackRequest.getCaseDetails());
+            if (callbackRequest.getCaseDetails().getData().isBoRequestInfoSendToBulkPrintRequested()) {
+                //send coversheet and docmosis pdf to bulk print
 
-        return ResponseEntity.ok(null);
+            }
+        }
+
+        return ResponseEntity.ok(callbackResponseTransformer.addDocuments(callbackRequest, documents, null, null));
     }
+
 }

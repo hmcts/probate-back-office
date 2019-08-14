@@ -48,6 +48,7 @@ import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT;
 import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
+import static uk.gov.hmcts.probate.model.DocumentType.SOT_INFORMATION_REQUEST;
 
 @Component
 @RequiredArgsConstructor
@@ -117,7 +118,28 @@ public class CallbackResponseTransformer {
         return transformResponse(responseCaseData);
     }
 
-    public CallbackResponse addDocuments(CallbackRequest callbackRequest, List<Document> documents, String letterId, String pdfSize) {
+    public CallbackResponse addRIDocuments(CallbackRequest callbackRequest, List<Document> documents, String letterId, String pdfSize) {
+        CaseDetails caseDetails = callbackRequest.getCaseDetails();
+        CaseData caseData = caseDetails.getData();
+        documents.forEach(document -> documentTransformer.addDocument(callbackRequest, document, false));
+        ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), false);
+
+        if (documentTransformer.hasDocumentWithType(documents, SENT_EMAIL)) {
+            responseCaseDataBuilder.boEmailRequestInfoNotificationRequested(
+                    callbackRequest.getCaseDetails().getData().getBoEmailRequestInfoNotification());
+        }
+
+        if (documentTransformer.hasDocumentWithType(documents, SOT_INFORMATION_REQUEST)) {
+            responseCaseDataBuilder.boRequestInfoSendToBulkPrintRequested(
+                    callbackRequest.getCaseDetails().getData().getBoRequestInfoSendToBulkPrint());
+        }
+
+        return transformResponse(responseCaseDataBuilder.build());
+
+    }
+
+
+        public CallbackResponse addDocuments(CallbackRequest callbackRequest, List<Document> documents, String letterId, String pdfSize) {
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
         CaseData caseData = caseDetails.getData();
         documents.forEach(document -> documentTransformer.addDocument(callbackRequest, document, false));

@@ -535,6 +535,14 @@ public class CaseData {
         return YES.equals(getBoCaveatStopSendToBulkPrint());
     }
 
+    public boolean isBoEmailRequestInfoNotificationRequested() {
+        return YES.equals(getBoEmailRequestInfoNotification());
+    }
+
+    public boolean isBoRequestInfoSendToBulkPrintRequested() {
+        return YES.equals(getBoRequestInfoSendToBulkPrint());
+    }
+
     private String convertDate(LocalDate dateToConvert) {
         if (dateToConvert == null) {
             return null;
