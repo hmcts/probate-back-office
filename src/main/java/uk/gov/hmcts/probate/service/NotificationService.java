@@ -117,6 +117,7 @@ public class NotificationService {
             case CASE_STOPPED_CAVEAT:
             case CASE_STOPPED_REQUEST_INFORMATION:
                 response = notificationClient.sendEmail(templateId, emailAddress, personalisation, reference, emailReplyToId);
+                break;
             default:
                 response = notificationClient.sendEmail(templateId, emailAddress, personalisation, reference);
         }
@@ -215,7 +216,7 @@ public class NotificationService {
                 .body(markdownTransformationService.toHtml(response.getBody()))
                 .build();
         Map<String, Object> placeholders = getPersonalisation(sentEmail);
-        return pdfManagementService.generateDocmosisDocumentAndUpload(placeholders, SENT_EMAIL);
+        return pdfManagementService.generateDocmosisDocumentAndUpload(placeholders, docType);
     }
 
     private Map<String, Object> getPersonalisation(SentEmail sentEmail) {

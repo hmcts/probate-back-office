@@ -118,9 +118,7 @@ public class CallbackResponseTransformer {
         return transformResponse(responseCaseData);
     }
 
-    public CallbackResponse addRIDocuments(CallbackRequest callbackRequest, List<Document> documents, String letterId, String pdfSize) {
-        CaseDetails caseDetails = callbackRequest.getCaseDetails();
-        CaseData caseData = caseDetails.getData();
+    public CallbackResponse addInformationRequestDocuments(CallbackRequest callbackRequest, List<Document> documents) {
         documents.forEach(document -> documentTransformer.addDocument(callbackRequest, document, false));
         ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), false);
 

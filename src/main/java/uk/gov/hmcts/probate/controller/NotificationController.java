@@ -18,7 +18,6 @@ import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.service.BulkPrintService;
 import uk.gov.hmcts.probate.service.DocumentGeneratorService;
 import uk.gov.hmcts.probate.service.EventValidationService;
-import uk.gov.hmcts.probate.service.InformationRequestService;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.docmosis.GrantOfRepresentationDocmosisMapperService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
@@ -57,7 +56,6 @@ public class NotificationController {
     private final BulkPrintService bulkPrintService;
     private final List<BulkPrintValidationRule> bulkPrintValidationRules;
     private final GrantOfRepresentationDocmosisMapperService gorDocmosisService;
-    private final InformationRequestService informationRequestService;
 
 
     @PostMapping(path = "/documents-received")
@@ -168,17 +166,17 @@ public class NotificationController {
         List<Document> documents = new ArrayList<>();
 
         if (callbackRequest.getCaseDetails().getData().isBoEmailRequestInfoNotificationRequested()) {
-//            log.info("Initiate call to send request for information email for case id {} ",
-//                    callbackRequest.getCaseDetails().getId());
+            log.info("Initiate call to send request for information email for case id {} ",
+                    callbackRequest.getCaseDetails().getId());
             documents.add(notificationService.sendEmail(CASE_STOPPED_REQUEST_INFORMATION, callbackRequest.getCaseDetails()));
-//            log.info("Successful response for request for information email for case id {} ",
-//                    callbackRequest.getCaseDetails().getId());
+            log.info("Successful response for request for information email for case id {} ",
+                    callbackRequest.getCaseDetails().getId());
         }
 
         if (!callbackRequest.getCaseDetails().getData().isBoEmailRequestInfoNotificationRequested()) {
             //generate coversheet and docmosis pdf template for requestInformation
-        Document coversheet;
-        Document requestInformation;
+            Document coversheet;
+            Document requestInformation;
 
             if (callbackRequest.getCaseDetails().getData().isBoRequestInfoSendToBulkPrintRequested()) {
                 //send coversheet and docmosis pdf to bulk print
@@ -186,7 +184,7 @@ public class NotificationController {
             }
         }
 
-        return ResponseEntity.ok(callbackResponseTransformer.addDocuments(callbackRequest, documents, null, null));
+        return ResponseEntity.ok(callbackResponseTransformer.addInformationRequestDocuments(callbackRequest, documents));
     }
 
 }
