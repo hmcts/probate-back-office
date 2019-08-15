@@ -23,13 +23,17 @@ public class EmailAddressExecutorsApplyingValidationRule {
     public void validateEmails(CaseDetails caseDetails) {
 
         CaseData caseData = caseDetails.getData();
+        String[] args = {caseDetails.getId().toString()};
+        String userMessage = businessValidationMessageRetriever.getMessage(EMAIL_NOT_FOUND_PA, args, Locale.UK);
 
         if (caseData.getApplicationType().equals(ApplicationType.PERSONAL)) {
             caseData.getExecutorsApplyingNotifications().forEach(executor -> {
-                if (executor.getValue().getNotification().equals(YES) && executor.getValue().getEmail().isEmpty()) {
-                    String[] args = {caseDetails.getId().toString()};
-                    String userMessage = businessValidationMessageRetriever.getMessage(EMAIL_NOT_FOUND_PA, args, Locale.UK);
-                    throw new BusinessValidationException(userMessage, "An applying exec email is empty for case id " + caseDetails.getId());
+                if (executor.getValue().getNotification().equals(YES) ) {
+                    if (executor.getValue().getEmail() == null) {
+                        throw new BusinessValidationException(userMessage, "An applying exec email is null for case id " + caseDetails.getId());
+                    } else if (executor.getValue().getEmail().isEmpty()) {
+                        throw new BusinessValidationException(userMessage, "An applying exec email is empty for case id " + caseDetails.getId());
+                    }
                 }
             });
         }
