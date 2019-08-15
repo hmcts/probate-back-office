@@ -149,6 +149,5 @@
   {"LiveFrom": "06/01/2017", "ID": "spouseNotApplyingReasonFixedList", "ListElementCode": "renunciated", "ListElement": "Renounced"},
   {"LiveFrom": "06/01/2017", "ID": "spouseNotApplyingReasonFixedList", "ListElementCode": "mentallyIncapable", "ListElement": "Mentally incapable"},
   {"LiveFrom": "06/01/2017", "ID": "spouseNotApplyingReasonFixedList", "ListElementCode": "other", "ListElement": "Other"},
-  {"LiveFrom": "06/01/2017", "ID": "resolveStopStateReissueFixedList", "ListElementCode": "BOExaminingReissue", "ListElement": "Examining case (reissue)"},
-  {"LiveFrom": "06/01/2017", "ID": "executorsApplyingNotificationFixedList", "ListElementCode": "${ExecutorsApplyingNotification.name}", "ListElement":"Examining case (reissue)"}
+  {"LiveFrom": "06/01/2017", "ID": "resolveStopStateReissueFixedList", "ListElementCode": "BOExaminingReissue", "ListElement": "Examining case (reissue)"}
 ]

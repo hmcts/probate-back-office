@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.model.ExecutorsApplyingNotification;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
+import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 
 import java.util.ArrayList;
@@ -16,10 +17,15 @@ import static uk.gov.hmcts.probate.model.Constants.YES;
 @Service
 public class ExecutorsApplyingNotificationService {
 
-    private List<ExecutorsApplyingNotification> executorList = new ArrayList<>();
+    private List<CollectionMember<ExecutorsApplyingNotification>> executorList;
 
-    public List<ExecutorsApplyingNotification> createExecutorList(CaseData caseData) {
-        caseData.getExecutorsApplyingNotifications().clear();
+    public List<CollectionMember<ExecutorsApplyingNotification>> createExecutorList(CaseData caseData) {
+        executorList = new ArrayList<>();
+        if (caseData.getExecutorsApplyingNotifications() != null) {
+            if (!caseData.getExecutorsApplyingNotifications().isEmpty()) {
+                caseData.getExecutorsApplyingNotifications().clear();
+            }
+        }
         addPrimaryApplicant(caseData);
         addAdditionalExecutors(caseData);
 
@@ -28,13 +34,22 @@ public class ExecutorsApplyingNotificationService {
 
     private void addAdditionalExecutors(CaseData caseData) {
         for (CollectionMember<AdditionalExecutorApplying> executorApplying : caseData.getAdditionalExecutorsApplying()) {
-            executorList.add(ExecutorsApplyingNotification.builder().name(executorApplying.getValue().getApplyingExecutorName()).email(executorApplying.getValue().getApplyingExecutorEmail()).build());
+            executorList.add(buildExecutorList(executorApplying.getValue().getApplyingExecutorName(), executorApplying.getValue().getApplyingExecutorEmail(), executorApplying.getValue().getApplyingExecutorAddress()));
+
         }
     }
 
     private void addPrimaryApplicant(CaseData caseData) {
         if (caseData.getPrimaryApplicantIsApplying().equals(YES)) {
-            executorList.add(ExecutorsApplyingNotification.builder().name(caseData.getPrimaryApplicantFullName()).email(caseData.getPrimaryApplicantEmailAddress()).build());
+            executorList.add(buildExecutorList(caseData.getPrimaryApplicantFullName(), caseData.getPrimaryApplicantEmailAddress(), caseData.getPrimaryApplicantAddress()));
         }
+    }
+
+    private CollectionMember<ExecutorsApplyingNotification> buildExecutorList(String name, String email, SolsAddress address) {
+        return new CollectionMember<>(null, ExecutorsApplyingNotification.builder()
+                .name(name)
+                .email(email)
+                .address(address)
+                .build());
     }
 }

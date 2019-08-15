@@ -274,5 +274,5 @@ public class ResponseCaseData {
     private final String boEmailRequestInfoNotification;
     private final String boRequestInfoSendToBulkPrint;
     private final String boRequestInfoSendToBulkPrintRequested;
-    private final List<ExecutorsApplyingNotification> executorsApplyingNotifications;
+    private final List<CollectionMember<ExecutorsApplyingNotification>> executorsApplyingNotifications;
 }

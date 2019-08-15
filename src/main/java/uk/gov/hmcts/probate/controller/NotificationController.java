@@ -18,6 +18,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.service.BulkPrintService;
 import uk.gov.hmcts.probate.service.DocumentGeneratorService;
 import uk.gov.hmcts.probate.service.EventValidationService;
+import uk.gov.hmcts.probate.service.InformationRequestService;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.docmosis.GrantOfRepresentationDocmosisMapperService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
@@ -36,7 +37,6 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static uk.gov.hmcts.probate.model.State.CASE_STOPPED;
 import static uk.gov.hmcts.probate.model.State.CASE_STOPPED_CAVEAT;
-import static uk.gov.hmcts.probate.model.State.CASE_STOPPED_REQUEST_INFORMATION;
 import static uk.gov.hmcts.probate.model.State.DOCUMENTS_RECEIVED;
 
 @RequiredArgsConstructor
@@ -56,6 +56,7 @@ public class NotificationController {
     private final BulkPrintService bulkPrintService;
     private final List<BulkPrintValidationRule> bulkPrintValidationRules;
     private final GrantOfRepresentationDocmosisMapperService gorDocmosisService;
+    private final InformationRequestService informationRequestService;
 
 
     @PostMapping(path = "/documents-received")
@@ -166,17 +167,12 @@ public class NotificationController {
         CallbackResponse response = CallbackResponse.builder().errors(new ArrayList<>()).build();
 
         if (callbackRequest.getCaseDetails().getData().isBoEmailRequestInfoNotificationRequested()) {
-            response = eventValidationService.validateEmailRequest(callbackRequest, emailAddressNotifyValidationRules);
-            if (response.getErrors().isEmpty()) {
-                log.info("Initiate call to send request for information email for case id {} ",
-                        callbackRequest.getCaseDetails().getId());
-                documents.add(notificationService.sendEmail(CASE_STOPPED_REQUEST_INFORMATION, callbackRequest.getCaseDetails()));
-                log.info("Successful response for request for information email for case id {} ",
-                        callbackRequest.getCaseDetails().getId());
-            }
-
+            documents = informationRequestService.emailInformationRequest(callbackRequest.getCaseDetails());
         }
 
+        // {
+        // bulk
+        // }
         if (response.getErrors().isEmpty()) {
             response = callbackResponseTransformer.addInformationRequestDocuments(callbackRequest, documents);
         }

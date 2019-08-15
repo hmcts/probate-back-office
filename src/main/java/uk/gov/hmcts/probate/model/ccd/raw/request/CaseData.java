@@ -422,7 +422,7 @@ public class CaseData {
     private final String reissueReasonNotation;
     private final String latestGrantReissueDate;
     private final String boStopDetailsDeclarationParagraph;
-    private final List<ExecutorsApplyingNotification> executorsApplyingNotifications;
+    private final List<CollectionMember<ExecutorsApplyingNotification>> executorsApplyingNotifications;
 
     private final List<CollectionMember<CaseMatch>> legacySearchResultRows;
 
