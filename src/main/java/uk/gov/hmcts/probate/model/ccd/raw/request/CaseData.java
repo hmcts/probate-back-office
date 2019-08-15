@@ -190,6 +190,9 @@ public class CaseData {
     @NotBlank(groups = {ApplicationIntestacyGroup.class}, message = "{solsMultipleClaimsIsNull}")
     private final String solsMultipleClaims;
 
+    @NotBlank(groups = {ApplicationIntestacyGroup.class}, message = "{solsApplicantSiblingsIsNull}")
+    private final String solsApplicantSiblings;
+
     //EVENT = review
     private final DocumentLink solsLegalStatementDocument;
 

@@ -153,7 +153,7 @@
         <td colspan="2">
             <p>
                 {% if case_details.case_data.solsApplicantRelationshipToDeceased == "SpouseOrCivil" %}I am the spouse or civil partner of {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }} and
-                {% if (case_details.case_data.solsMultipleClaims == "Yes") and (case_details.case_data.ihtNetValue/100 > 250000) %} one of the people now entitled to the estate along with the children and adopted children of {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }}.
+                {% if (case_details.case_data.solsApplicantSiblings == "Yes") and (case_details.case_data.ihtNetValue/100 > 250000) %} one of the people now entitled to the estate along with the children and adopted children of {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }}.
                 {% else %} the only person now entitled to the estate.
                 {% endif %}
                 {% else %}
@@ -162,12 +162,12 @@
                 {% if case_details.case_data.solsApplicantRelationshipToDeceased == "ChildAdopted" %} adopted {% endif %} child of {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }} and
                 {% if case_details.case_data.ihtNetValue/100 > 250000 %} one of the people entitled to the estate.
                 {% else %}
-                {% if case_details.case_data.solsMultipleClaims == "Yes" %} one of the people who may become entitled to the estate.
+                {% if case_details.case_data.solsApplicantSiblings == "Yes" %} one of the people who may become entitled to the estate.
                 {% else %} the only person who may become entitled to the estate.
                 {% endif %}
                 {% endif %}
                 {% else %} I am the
-                {% if case_details.case_data.solsMultipleClaims == "Yes" %}
+                {% if case_details.case_data.solsApplicantSiblings == "Yes" %}
                 {% if case_details.case_data.solsApplicantRelationshipToDeceased == "ChildAdopted" %} adopted {% endif %} child of {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }} and one of the people now entitled to the estate.
                 {% else %}
                 {% if case_details.case_data.solsApplicantRelationshipToDeceased == "ChildAdopted" %} adopted {% endif %} child of {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }} and the only person now entitled to the estate.
