@@ -247,4 +247,18 @@
    ]]></notes>
         <cve>CVE-2019-7611</cve>
     </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: elasticsearch-6.4.3.jar
+   ]]></notes>
+        <gav regex="true">^org\.elasticsearch:elasticsearch:.*$</gav>
+        <cpe>cpe:/a:elasticsearch:elasticsearch</cpe>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: elasticsearch-6.4.3.jar
+   ]]></notes>
+        <gav regex="true">^org\.elasticsearch:elasticsearch:.*$</gav>
+        <cve>CVE-2019-7614</cve>
+    </suppress>
 </suppressions>
