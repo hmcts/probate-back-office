@@ -160,24 +160,15 @@ public class NotificationController {
 
 
     @PostMapping(path = "/stopped-information-request")
-    public ResponseEntity<CallbackResponse> informationRequest(@RequestBody CallbackRequest callbackRequest)
-            throws NotificationClientException {
+    public ResponseEntity<CallbackResponse> informationRequest(@RequestBody CallbackRequest callbackRequest) {
 
         List<Document> documents = new ArrayList<>();
-        CallbackResponse response = CallbackResponse.builder().errors(new ArrayList<>()).build();
 
         if (callbackRequest.getCaseDetails().getData().isBoEmailRequestInfoNotificationRequested()) {
             documents = informationRequestService.emailInformationRequest(callbackRequest.getCaseDetails());
         }
 
-        // {
-        // bulk
-        // }
-        if (response.getErrors().isEmpty()) {
-            response = callbackResponseTransformer.addInformationRequestDocuments(callbackRequest, documents);
-        }
-
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(callbackResponseTransformer.addInformationRequestDocuments(callbackRequest, documents));
     }
 
 }

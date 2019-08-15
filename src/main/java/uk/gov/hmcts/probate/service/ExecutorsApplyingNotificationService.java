@@ -46,7 +46,7 @@ public class ExecutorsApplyingNotificationService {
     }
 
     private CollectionMember<ExecutorsApplyingNotification> buildExecutorList(String name, String email, SolsAddress address) {
-        return new CollectionMember<>(null, ExecutorsApplyingNotification.builder()
+        return new CollectionMember<>(String.valueOf(executorList.size() + 1), ExecutorsApplyingNotification.builder()
                 .name(name)
                 .email(email)
                 .address(address)

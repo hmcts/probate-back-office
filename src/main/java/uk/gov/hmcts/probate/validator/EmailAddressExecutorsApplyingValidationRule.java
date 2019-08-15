@@ -22,7 +22,7 @@ public class EmailAddressExecutorsApplyingValidationRule {
 
     public void validateEmails(CaseDetails caseDetails) {
 
-       CaseData caseData = caseDetails.getData();
+        CaseData caseData = caseDetails.getData();
 
         if (caseData.getApplicationType().equals(ApplicationType.PERSONAL)) {
             caseData.getExecutorsApplyingNotifications().forEach(executor -> {

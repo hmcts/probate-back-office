@@ -21,17 +21,20 @@ public class InformationRequestService {
     private final NotificationService notificationService;
     private final EmailAddressExecutorsApplyingValidationRule emailAddressExecutorsApplyingValidationRule;
 
-    public List<Document> emailInformationRequest(CaseDetails caseDetails)throws NotificationClientException {
+    public List<Document> emailInformationRequest(CaseDetails caseDetails) {
         List<Document> documents = new ArrayList<>();
-
         emailAddressExecutorsApplyingValidationRule.validateEmails(caseDetails);
 
         caseDetails.getData().getExecutorsApplyingNotifications().forEach(executor -> {
-            log.info("Initiate call to send request for information email for case id {} ",
-                    caseDetails.getId());
-            documents.add(notificationService.sendEmail(CASE_STOPPED_REQUEST_INFORMATION, caseDetails, executor));
-            log.info("Successful response for request for information email for case id {} ",
-                    caseDetails.getId());
+            log.info("Initiate call to send request for information email for case id {} and executor: {} ",
+                    caseDetails.getId(), executor.getId());
+            try {
+                documents.add(notificationService.sendEmail(CASE_STOPPED_REQUEST_INFORMATION, caseDetails, executor.getValue()));
+                log.info("Successful response for request for information email for case id {} ",
+                        caseDetails.getId());
+            } catch (NotificationClientException e) {
+                log.error(e.getMessage());
+            }
         });
 
         return documents;
