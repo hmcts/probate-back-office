@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Data;
 import uk.gov.hmcts.probate.model.ApplicationType;
+import uk.gov.hmcts.probate.model.ExecutorsApplyingNotification;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
 import uk.gov.hmcts.probate.model.ccd.Reissue;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
@@ -273,4 +274,5 @@ public class ResponseCaseData {
     private final String boEmailRequestInfoNotification;
     private final String boRequestInfoSendToBulkPrint;
     private final String boRequestInfoSendToBulkPrintRequested;
+    private final List<ExecutorsApplyingNotification> executorsApplyingNotifications;
 }

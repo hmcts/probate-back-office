@@ -21,6 +21,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData.ResponseCaseDataBuilder;
 import uk.gov.hmcts.probate.model.fee.FeeServiceResponse;
+import uk.gov.hmcts.probate.service.ExecutorsApplyingNotificationService;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -56,6 +57,7 @@ public class CallbackResponseTransformer {
 
     private static final String CASE_TYPE_DEFAULT = GRANT_OF_PROBATE_NAME;
     private final DocumentTransformer documentTransformer;
+    private final ExecutorsApplyingNotificationService executorsApplyingNotificationService;
 
     static final String PAYMENT_METHOD_VALUE_FEE_ACCOUNT = "fee account";
     static final String PAYMENT_REFERENCE_FEE_PREFIX = "Fee account PBA-";
@@ -115,6 +117,7 @@ public class CallbackResponseTransformer {
     public CallbackResponse defaultRequestInformationValues(CallbackRequest callbackRequest) {
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
 
+        executorsApplyingNotificationService.createExecutorList(caseDetails.getData());
         ResponseCaseData responseCaseData = getResponseCaseData(caseDetails, false)
                 .build();
 
@@ -444,6 +447,7 @@ public class CallbackResponseTransformer {
                 .deceasedHasAssetsOutsideUK(caseData.getDeceasedHasAssetsOutsideUK())
                 .statementOfTruthDocument(caseData.getStatementOfTruthDocument())
                 .boStopDetailsDeclarationParagraph(caseData.getBoStopDetailsDeclarationParagraph())
+                .executorsApplyingNotifications(caseData.getExecutorsApplyingNotifications())
                 .boEmailRequestInfoNotification(caseData.getBoEmailRequestInfoNotification())
                 .boEmailRequestInfoNotificationRequested(caseData.getBoEmailRequestInfoNotificationRequested())
                 .boRequestInfoSendToBulkPrint(caseData.getBoRequestInfoSendToBulkPrint())

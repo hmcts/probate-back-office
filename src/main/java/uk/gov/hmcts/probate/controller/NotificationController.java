@@ -177,17 +177,6 @@ public class NotificationController {
 
         }
 
-        //if (!callbackRequest.getCaseDetails().getData().isBoEmailRequestInfoNotificationRequested()) {
-        //    //generate coversheet and docmosis pdf template for requestInformation
-        //    Document coversheet;
-        //    Document requestInformation;
-        //
-        //    if (callbackRequest.getCaseDetails().getData().isBoRequestInfoSendToBulkPrintRequested()) {
-        //        //send coversheet and docmosis pdf to bulk print
-        //
-        //    }
-        //}
-
         if (response.getErrors().isEmpty()) {
             response = callbackResponseTransformer.addInformationRequestDocuments(callbackRequest, documents);
         }

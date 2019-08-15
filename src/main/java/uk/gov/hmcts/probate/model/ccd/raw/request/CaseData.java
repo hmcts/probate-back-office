@@ -13,6 +13,7 @@ import uk.gov.hmcts.probate.controller.validation.ApplicationReviewedGroup;
 import uk.gov.hmcts.probate.controller.validation.ApplicationUpdatedGroup;
 import uk.gov.hmcts.probate.controller.validation.NextStepsConfirmationGroup;
 import uk.gov.hmcts.probate.model.ApplicationType;
+import uk.gov.hmcts.probate.model.ExecutorsApplyingNotification;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
 import uk.gov.hmcts.probate.model.ccd.Reissue;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
@@ -421,6 +422,7 @@ public class CaseData {
     private final String reissueReasonNotation;
     private final String latestGrantReissueDate;
     private final String boStopDetailsDeclarationParagraph;
+    private final List<ExecutorsApplyingNotification> executorsApplyingNotifications;
 
     private final List<CollectionMember<CaseMatch>> legacySearchResultRows;
 
