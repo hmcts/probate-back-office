@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.changerule.DomicilityRule;
 import uk.gov.hmcts.probate.changerule.ExecutorsRule;
 import uk.gov.hmcts.probate.changerule.MinorityRule;
+import uk.gov.hmcts.probate.changerule.MultipleClaimsRule;
 import uk.gov.hmcts.probate.changerule.NoOriginalWillRule;
 import uk.gov.hmcts.probate.changerule.ChangeRule;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
@@ -52,6 +53,7 @@ public class ConfirmationResponseService {
     private final DomicilityRule domicilityConfirmationResponseRule;
     private final ExecutorsRule executorsConfirmationResponseRule;
     private final MinorityRule minorityConfirmationResponseRule;
+    private final MultipleClaimsRule multipleClaimsConfirmationResponseRule;
 
     private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
@@ -72,6 +74,11 @@ public class ConfirmationResponseService {
 
         if (!GRANT_TYPE_INTESTACY.equals(caseData.getSolsWillType())) {
             response = getStopBodyMarkdown(caseData, noOriginalWillRule, STOP_BODY);
+            if (response.isPresent()) {
+                return response.get();
+            }
+
+            response = getStopBodyMarkdown(caseData, multipleClaimsConfirmationResponseRule, STOP_BODY);
             if (response.isPresent()) {
                 return response.get();
             }
