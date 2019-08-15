@@ -256,6 +256,7 @@ public class ResponseCaseData {
     private final List<CollectionMember<Reissue>> reissueReason;
     private final String reissueDate;
     private final String reissueReasonNotation;
+    private final String latestGrantReissueDate;
 
     private final String deceasedDivorcedInEnglandOrWales;
     private final String primaryApplicantAdoptionInEnglandOrWales;

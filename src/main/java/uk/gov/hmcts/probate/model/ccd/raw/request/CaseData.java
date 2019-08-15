@@ -421,6 +421,7 @@ public class CaseData {
     private final List<CollectionMember<Reissue>> reissueReason;
     private final String reissueDate;
     private final String reissueReasonNotation;
+    private final String latestGrantReissueDate;
 
     private final List<CollectionMember<CaseMatch>> legacySearchResultRows;
 

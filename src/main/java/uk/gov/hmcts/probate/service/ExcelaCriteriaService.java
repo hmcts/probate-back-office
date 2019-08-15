@@ -29,7 +29,7 @@ public class ExcelaCriteriaService {
             }
         }
         filteredCases.sort(Comparator.comparing(o -> o.getData().getDeceasedSurname().toLowerCase()));
-        log.info(filteredCases.size() + " cases filtered");
+        log.info("Cases passed filtering: {}", filteredCases.size());
 
         return filteredCases;
     }
