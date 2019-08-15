@@ -5,12 +5,12 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 import uk.gov.hmcts.probate.controller.validation.AmendCaseDetailsGroup;
+import uk.gov.hmcts.probate.controller.validation.ApplicationAdmonGroup;
 import uk.gov.hmcts.probate.controller.validation.ApplicationCreatedGroup;
+import uk.gov.hmcts.probate.controller.validation.ApplicationIntestacyGroup;
+import uk.gov.hmcts.probate.controller.validation.ApplicationProbateGroup;
 import uk.gov.hmcts.probate.controller.validation.ApplicationReviewedGroup;
 import uk.gov.hmcts.probate.controller.validation.ApplicationUpdatedGroup;
-import uk.gov.hmcts.probate.controller.validation.ApplicationProbateGroup;
-import uk.gov.hmcts.probate.controller.validation.ApplicationIntestacyGroup;
-import uk.gov.hmcts.probate.controller.validation.ApplicationAdmonGroup;
 import uk.gov.hmcts.probate.controller.validation.NextStepsConfirmationGroup;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
@@ -324,25 +324,6 @@ public class CaseData {
     private final String primaryApplicantOtherReason;
 
     private final String primaryApplicantSameWillName;
-
-    private final String boEmailDocsReceivedNotificationRequested;
-
-    @SuppressWarnings("squid:S1170")
-    @Getter(lazy = true)
-    private final String boEmailDocsReceivedNotification = getDefaultValueForEmailNotifications();
-
-    private final String boEmailGrantIssuedNotificationRequested;
-
-    @SuppressWarnings("squid:S1170")
-    @Getter(lazy = true)
-    private final String boEmailGrantIssuedNotification = getDefaultValueForEmailNotifications();
-
-    @SuppressWarnings("squid:S1170")
-    @Getter(lazy = true)
-    private final String boSendToBulkPrint = YES;
-
-    private final String boSendToBulkPrintRequested;
-
 
     //paper form case creator fields
     private final String primaryApplicantSecondPhoneNumber;
