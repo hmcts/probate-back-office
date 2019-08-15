@@ -95,7 +95,7 @@ public class BusinessValidationControllerTest {
     private static final String DECEASED_DOM_UK = "Yes";
     private static final String RELATIONSHIP_TO_DECEASED = "SpouseOrCivil";
     private static final String MINORITY_INTEREST = "No";
-    private static final String MULTIPLE_CLAIMS = "No";
+    private static final String MULTIPLE_CLAIMS = "Yes";
     private static final String ANSWER_NO = "No";
 
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
