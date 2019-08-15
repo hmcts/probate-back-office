@@ -33,6 +33,12 @@
       "willAccessOriginal": "Yes",
       "solsSolicitorFirmName": "firmname",
       "willExists": "Yes",
+      "solsWillType": "WillLeft",
+      "solsApplicantRelationshipToDeceased": null,
+      "solsSpouseOrCivilRenouncing": null,
+      "solsAdoptedEnglandOrWales": null,
+      "solsMinorityInterest": null,
+      "solsMultipleClaims": null,
       "deceasedDateOfDeath": "2028-01-01",
       "primaryApplicantForenames": "Ex1fn",
       "primaryApplicantAddress": {

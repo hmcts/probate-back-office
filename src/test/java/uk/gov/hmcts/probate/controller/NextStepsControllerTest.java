@@ -67,6 +67,7 @@ public class NextStepsControllerTest {
     private static final String PRIMARY_APPLICANT_HAS_ALIAS = "No";
     private static final String OTHER_EXEC_EXISTS = "No";
     private static final String WILL_EXISTS = "Yes";
+    private static final String WILL_TYPE = "WillLeft";
     private static final String WILL_ACCESS_ORIGINAL = "Yes";
     private static final String PRIMARY_FORENAMES = "ExFN";
     private static final String PRIMARY_SURNAME = "ExSN";
@@ -121,6 +122,7 @@ public class NextStepsControllerTest {
                 .primaryApplicantIsApplying(PRIMARY_APPLICANT_APPLYING)
                 .primaryApplicantHasAlias(PRIMARY_APPLICANT_HAS_ALIAS)
                 .otherExecutorExists(OTHER_EXEC_EXISTS)
+                .solsWillType(WILL_TYPE)
                 .willExists(WILL_EXISTS)
                 .willAccessOriginal(WILL_ACCESS_ORIGINAL)
                 .ihtNetValue(NET)

@@ -35,7 +35,7 @@ module.exports = function (crud) {
         I.click(`#deceasedAnyOtherNames-${createGrantOfProbateConfig.page4_deceasedAnyOtherNamesYes}`);
         I.click('#solsDeceasedAliasNamesList > div > button');
         I.fillField('#solsDeceasedAliasNamesList_0_SolsAliasname', createGrantOfProbateConfig.page4_deceasedAlias);
-        I.selectOption('#deceasedMartialStatus', createGrantOfProbateConfig.page4_deceasedMartialStatus);
+        I.selectOption('#deceasedMaritalStatus', createGrantOfProbateConfig.page4_deceasedMaritalStatus);
 
         I.click(`#foreignAsset-${createGrantOfProbateConfig.page4_foreignAssetYes}`);
         I.fillField('#foreignAssetEstateValue', createGrantOfProbateConfig.page4_foreignAssetEstateValue);
