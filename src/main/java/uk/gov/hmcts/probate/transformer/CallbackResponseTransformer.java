@@ -23,12 +23,10 @@ import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData.ResponseCase
 import uk.gov.hmcts.probate.model.fee.FeeServiceResponse;
 
 import java.math.BigDecimal;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -126,8 +124,7 @@ public class CallbackResponseTransformer {
                 || documentTransformer.hasDocumentWithType(documents, ADMON_WILL_GRANT)
                 || documentTransformer.hasDocumentWithType(documents, INTESTACY_GRANT)) {
 
-            DateFormat targetFormat = new SimpleDateFormat(DATE_FORMAT);
-            String grantIssuedDate = targetFormat.format(new Date());
+            String grantIssuedDate = dateTimeFormatter.format(LocalDate.now());
             responseCaseDataBuilder
                     .boEmailGrantIssuedNotificationRequested(
                             callbackRequest.getCaseDetails().getData().getBoEmailGrantIssuedNotification())
@@ -154,7 +151,9 @@ public class CallbackResponseTransformer {
                 responseCaseDataBuilder
                         .bulkPrintId(caseData.getBulkPrintId());
             }
+            String grantReissuedDate = dateTimeFormatter.format(LocalDate.now());
             responseCaseDataBuilder
+                    .latestGrantReissueDate(grantReissuedDate)
                     .boEmailGrantReissuedNotificationRequested(
                             callbackRequest.getCaseDetails().getData().getBoEmailGrantReissuedNotification())
                     .boGrantReissueSendToBulkPrintRequested(
@@ -217,8 +216,7 @@ public class CallbackResponseTransformer {
         String applicationFee = transformMoneyGBPToString(feeServiceResponse.getApplicationFee());
         String totalFee = transformMoneyGBPToString(feeServiceResponse.getTotal());
 
-        DateFormat targetFormat = new SimpleDateFormat(DATE_FORMAT);
-        String applicationSubmittedDate = targetFormat.format(new Date());
+        String applicationSubmittedDate = dateTimeFormatter.format(LocalDate.now());
         ResponseCaseData responseCaseData = getResponseCaseData(callbackRequest.getCaseDetails(), false)
                 .feeForNonUkCopies(feeForNonUkCopies)
                 .feeForUkCopies(feeForUkCopies)
@@ -400,6 +398,7 @@ public class CallbackResponseTransformer {
                 .reissueReason(caseData.getReissueReason())
                 .reissueDate(caseData.getReissueDate())
                 .reissueReasonNotation(caseData.getReissueReasonNotation())
+                .latestGrantReissueDate(caseData.getLatestGrantReissueDate())
                 .bulkPrintId(caseData.getBulkPrintId())
 
                 .deceasedDivorcedInEnglandOrWales(caseData.getDeceasedDivorcedInEnglandOrWales())
