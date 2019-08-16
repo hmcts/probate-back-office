@@ -14,17 +14,13 @@ import static uk.gov.hmcts.probate.model.Constants.YES;
 
 @Component
 @RequiredArgsConstructor
-public abstract class EmailAddressExecutorsApplyingValidationRule implements CaseDetailsEmailValidationRule {
+public class EmailAddressExecutorsApplyingValidationRule implements CaseDetailsEmailValidationRule{
 
-    private BusinessValidationMessageRetriever businessValidationMessageRetriever;
+    private final BusinessValidationMessageRetriever businessValidationMessageRetriever;
 
     private static final String EMAIL_NOT_FOUND_PA = "multipleEmailsNotProvidedPA";
 
-    //EmailAddressExecutorsApplyingValidationRule(BusinessValidationMessageRetriever businessValidationMessageRetriever){
-    //    this.businessValidationMessageRetriever = businessValidationMessageRetriever;
-    //}
-
-     public void validateEmails(CaseDetails caseDetails) {
+    public void validateEmails(CaseDetails caseDetails) {
 
         CaseData caseData = caseDetails.getData();
         String[] args = {caseDetails.getId().toString()};
@@ -32,7 +28,7 @@ public abstract class EmailAddressExecutorsApplyingValidationRule implements Cas
 
         if (caseData.getApplicationType().equals(ApplicationType.PERSONAL)) {
             caseData.getExecutorsApplyingNotifications().forEach(executor -> {
-                if (executor.getValue().getNotification().equals(YES) ) {
+                if (executor.getValue().getNotification().equals(YES)) {
                     if (executor.getValue().getEmail() == null) {
                         throw new BusinessValidationException(userMessage, "An applying exec email is null for case id " + caseDetails.getId());
                     } else if (executor.getValue().getEmail().isEmpty()) {
