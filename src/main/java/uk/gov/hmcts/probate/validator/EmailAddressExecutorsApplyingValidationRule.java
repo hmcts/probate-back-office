@@ -20,9 +20,9 @@ public abstract class EmailAddressExecutorsApplyingValidationRule implements Cas
 
     private static final String EMAIL_NOT_FOUND_PA = "multipleEmailsNotProvidedPA";
 
-    EmailAddressExecutorsApplyingValidationRule(BusinessValidationMessageRetriever businessValidationMessageRetriever){
-        this.businessValidationMessageRetriever = businessValidationMessageRetriever;
-    }
+    //EmailAddressExecutorsApplyingValidationRule(BusinessValidationMessageRetriever businessValidationMessageRetriever){
+    //    this.businessValidationMessageRetriever = businessValidationMessageRetriever;
+    //}
 
      public void validateEmails(CaseDetails caseDetails) {
 
