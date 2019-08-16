@@ -335,6 +335,7 @@ public class ConfirmationResponseServiceTest {
         when(ccdDataMock.getFee().getFeeForUkCopies()).thenReturn(BigDecimal.valueOf(50));
         when(ccdDataMock.getFee().getFeeForNonUkCopies()).thenReturn(BigDecimal.valueOf(150));
         when(ccdDataMock.getSolsAdditionalInfo()).thenReturn("solsAdditionalInfo");
+        when(ccdDataMock.getSolsWillType()).thenReturn("NoWill");
         executorsList.add(executorMock);
         executorsList.add(renouncingExecutorMock);
         executorsList.add(deadBeforeExecutorMock);
