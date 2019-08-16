@@ -10,8 +10,12 @@ public class MultipleClaimsRule implements ChangeRule {
     private static final String MESSAGE_KEY = "stopBodyMultipleClaims";
 
     @Override
-    public boolean isChangeNeeded(CaseData caseData) { return YES.equals(caseData.getSolsMultipleClaims()); }
+    public boolean isChangeNeeded(CaseData caseData) {
+        return YES.equals(caseData.getSolsMultipleClaims());
+    }
 
     @Override
-    public String getConfirmationBodyMessageKey() { return MESSAGE_KEY; }
+    public String getConfirmationBodyMessageKey() {
+        return MESSAGE_KEY;
+    }
 }
