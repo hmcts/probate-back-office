@@ -17,6 +17,7 @@ import uk.gov.hmcts.probate.exception.InvalidEmailException;
 import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.CaseType;
+import uk.gov.hmcts.probate.model.ExecutorsApplyingNotification;
 import uk.gov.hmcts.probate.model.SentEmail;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
 import uk.gov.hmcts.probate.model.ccd.ProbateAddress;
@@ -26,6 +27,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.BulkPrint;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
+import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
@@ -874,7 +876,9 @@ public class NotificationServiceTest {
     public void sendGeneralCaveatRaisedCtscEmailThrowsUnsupportedState()
             throws BadRequestException {
 
-        Assertions.assertThatThrownBy(() -> {notificationService.sendCaveatEmail(DOCUMENTS_RECEIVED, caveatRaisedCtscCaseData);})
+        Assertions.assertThatThrownBy(() -> {
+            notificationService.sendCaveatEmail(DOCUMENTS_RECEIVED, caveatRaisedCtscCaseData);
+        })
                 .isInstanceOf(BadRequestException.class)
                 .hasMessage("Unsupported State");
     }
@@ -1078,9 +1082,16 @@ public class NotificationServiceTest {
         personalisation.put(PERSONALISATION_CCD_REFERENCE, personalCaseDataCtscRequestInformation.getId().toString());
 
         when(notificationClient.sendEmail(anyString(), anyString(), any(), any(), any())).thenReturn(sendEmailResponse);
-
-        notificationService.sendEmail(CASE_STOPPED_REQUEST_INFORMATION, personalCaseDataCtscRequestInformation);
-
+        ExecutorsApplyingNotification executorsApplyingNotification = ExecutorsApplyingNotification.builder()
+                .name(personalCaseDataCtscRequestInformation.getData().getPrimaryApplicantFullName())
+                .address(SolsAddress.builder()
+                        .addressLine1("Addressline1")
+                        .postCode("postcode")
+                        .postTown("posttown")
+                        .build())
+                .email("personal@test.com")
+                .notification("Yes").build();
+        notificationService.sendEmail(CASE_STOPPED_REQUEST_INFORMATION, personalCaseDataCtscRequestInformation, executorsApplyingNotification);
         verify(notificationClient).sendEmail(
                 eq("pa-request-information"),
                 eq("personal@test.com"),
@@ -1112,7 +1123,17 @@ public class NotificationServiceTest {
 
         when(notificationClient.sendEmail(anyString(), anyString(), any(), any(), any())).thenReturn(sendEmailResponse);
 
-        notificationService.sendEmail(CASE_STOPPED_REQUEST_INFORMATION, solsCaseDataCtscRequestInformation);
+        ExecutorsApplyingNotification executorsApplyingNotification = ExecutorsApplyingNotification.builder()
+                .name(solsCaseDataCtscRequestInformation.getData().getSolsSOTName())
+                .address(SolsAddress.builder()
+                        .addressLine1("Addressline1")
+                        .postCode("postcode")
+                        .postTown("posttown")
+                        .build())
+                .email("sols@test.com")
+                .notification("Yes").build();
+        notificationService.sendEmail(CASE_STOPPED_REQUEST_INFORMATION, solsCaseDataCtscRequestInformation,
+                executorsApplyingNotification);
 
         verify(notificationClient).sendEmail(
                 eq("sols-request-information"),
@@ -1124,5 +1145,6 @@ public class NotificationServiceTest {
         when(pdfManagementService.generateDocmosisDocumentAndUpload(any(Map.class), any())).thenReturn(Document.builder()
                 .documentFileName(SENT_EMAIL_FILE_NAME).build());
     }
+
 
 }

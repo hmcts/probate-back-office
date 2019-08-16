@@ -11,6 +11,7 @@ import org.mockito.Spy;
 import org.mockito.junit.MockitoJUnitRunner;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.DocumentType;
+import uk.gov.hmcts.probate.model.ExecutorsApplyingNotification;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
 import uk.gov.hmcts.probate.model.ccd.Reissue;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
@@ -34,6 +35,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.model.fee.FeeServiceResponse;
+import uk.gov.hmcts.probate.service.ExecutorsApplyingNotificationService;
 import uk.gov.hmcts.probate.service.StateChangeService;
 
 import java.math.BigDecimal;
@@ -232,6 +234,15 @@ public class CallbackResponseTransformerTest {
                             .url(SCANNED_DOCUMENT_URL)
                             .build()));
 
+    private static final List<CollectionMember<ExecutorsApplyingNotification>> EXECEUTORS_APPLYING_NOTIFICATION = Arrays.asList(
+            new CollectionMember<ExecutorsApplyingNotification>("id",
+                    ExecutorsApplyingNotification.builder()
+                            .name(EXEC_FIRST_NAME)
+                            .address(EXEC_ADDRESS)
+                            .email(EXEC_EMAIL)
+                            .notification(YES)
+                            .build()));
+
     @InjectMocks
     private CallbackResponseTransformer underTest;
 
@@ -240,6 +251,9 @@ public class CallbackResponseTransformerTest {
 
     @Mock
     private CallbackRequest callbackRequestMock;
+
+    @Mock
+    private ExecutorsApplyingNotificationService executorsApplyingNotificationService;
 
     @Mock
     private CaseDetails caseDetailsMock;
@@ -340,7 +354,8 @@ public class CallbackResponseTransformerTest {
                 .statementOfTruthDocument(SOT)
                 .boStopDetailsDeclarationParagraph(YES)
                 .boEmailRequestInfoNotificationRequested(YES)
-                .boRequestInfoSendToBulkPrintRequested(YES);
+                .boRequestInfoSendToBulkPrintRequested(YES)
+                .executorsApplyingNotifications(EXECEUTORS_APPLYING_NOTIFICATION);
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
@@ -1694,6 +1709,7 @@ public class CallbackResponseTransformerTest {
         assertEquals(YES, callbackResponse.getData().getBoEmailRequestInfoNotificationRequested());
         assertEquals(YES, callbackResponse.getData().getBoRequestInfoSendToBulkPrint());
         assertEquals(YES, callbackResponse.getData().getBoRequestInfoSendToBulkPrintRequested());
+        assertEquals(EXECEUTORS_APPLYING_NOTIFICATION, callbackResponse.getData().getExecutorsApplyingNotifications());
     }
 
     private void assertLegacyInfo(CallbackResponse callbackResponse) {
