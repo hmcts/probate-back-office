@@ -23,6 +23,7 @@ import uk.gov.hmcts.probate.service.BulkPrintService;
 import uk.gov.hmcts.probate.service.DocumentGeneratorService;
 import uk.gov.hmcts.probate.service.DocumentService;
 import uk.gov.hmcts.probate.service.EventValidationService;
+import uk.gov.hmcts.probate.service.InformationRequestService;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.docmosis.GrantOfRepresentationDocmosisMapperService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
@@ -96,6 +97,9 @@ public class NotificationControllerTest {
     @MockBean
     private DocumentGeneratorService documentGeneratorService;
 
+    @MockBean
+    private InformationRequestService informationRequestService;
+
     @SpyBean
     private DocumentService documentService;
 
@@ -118,6 +122,8 @@ public class NotificationControllerTest {
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
         successfulResponse =
                 CallbackResponse.builder().data(ResponseCaseData.builder().deceasedForenames("Bob").build()).build();
+        List<Document> docList = new ArrayList<>();
+        docList.add(EMPTY_DOC);
 
         Document document = Document.builder().documentType(DIGITAL_GRANT).build();
 
@@ -156,7 +162,10 @@ public class NotificationControllerTest {
         when(callbackResponseTransformer.addDocuments(any(), any(), any(), any())).thenReturn(successfulResponse);
         when(callbackResponseTransformer.caseStopped(any(), any(), any())).thenReturn(successfulResponse);
         when(callbackResponseTransformer.defaultRequestInformationValues(any())).thenReturn(successfulResponse);
-        when(callbackResponseTransformer.addInformationRequestDocuments(any(), any())).thenReturn(successfulResponse);
+        when(callbackResponseTransformer.addInformationRequestDocuments(any(), eq(docList))).thenReturn(successfulResponse);
+        when(callbackResponseTransformer.addInformationRequestDocuments(any(), eq(new ArrayList<>()))).thenReturn(successfulResponse);
+
+        when(informationRequestService.emailInformationRequest(any())).thenReturn(docList);
 
     }
 
@@ -434,18 +443,6 @@ public class NotificationControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(content().string(containsString("data")));
-
-    }
-
-    @Test
-    public void shouldReturnEmailPAValidateUnSuccessfulRequestInformation() throws Exception {
-        String personalPayload = testUtils.getStringFromFile("personalPayloadNotificationsNoEmail.json");
-
-        mockMvc.perform(post(REQUEST_INFO_URL).content(personalPayload).contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.errors[0]")
-                        .value("There is no email address for this applicant. Add an email address or contact them by post."))
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
 
     }
 

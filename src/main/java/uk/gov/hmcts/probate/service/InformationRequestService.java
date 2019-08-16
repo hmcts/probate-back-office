@@ -16,14 +16,13 @@ import static uk.gov.hmcts.probate.model.State.CASE_STOPPED_REQUEST_INFORMATION;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class InformationRequestService {
+public class InformationRequestService extends EmailAddressExecutorsApplyingValidationRule {
 
     private final NotificationService notificationService;
-    private final EmailAddressExecutorsApplyingValidationRule emailAddressExecutorsApplyingValidationRule;
 
     public List<Document> emailInformationRequest(CaseDetails caseDetails) {
         List<Document> documents = new ArrayList<>();
-        emailAddressExecutorsApplyingValidationRule.validateEmails(caseDetails);
+        validateEmails(caseDetails);
 
         caseDetails.getData().getExecutorsApplyingNotifications().forEach(executor -> {
             log.info("Initiate call to send request for information email for case id {} and executor: {} ",
@@ -38,7 +37,5 @@ public class InformationRequestService {
         });
 
         return documents;
-
-
     }
 }

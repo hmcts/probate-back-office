@@ -14,13 +14,17 @@ import static uk.gov.hmcts.probate.model.Constants.YES;
 
 @Component
 @RequiredArgsConstructor
-public class EmailAddressExecutorsApplyingValidationRule {
+public abstract class EmailAddressExecutorsApplyingValidationRule implements CaseDetailsEmailValidationRule{
 
-    private final BusinessValidationMessageRetriever businessValidationMessageRetriever;
+    private BusinessValidationMessageRetriever businessValidationMessageRetriever;
 
     private static final String EMAIL_NOT_FOUND_PA = "multipleEmailsNotProvidedPA";
 
-    public void validateEmails(CaseDetails caseDetails) {
+    EmailAddressExecutorsApplyingValidationRule(BusinessValidationMessageRetriever businessValidationMessageRetriever){
+        this.businessValidationMessageRetriever = businessValidationMessageRetriever;
+    }
+
+     public void validateEmails(CaseDetails caseDetails) {
 
         CaseData caseData = caseDetails.getData();
 
