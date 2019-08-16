@@ -245,6 +245,6 @@
         <notes><![CDATA[
    file name: elasticsearch-6.4.3.jar
    ]]></notes>
-        <cve>CVE-2019-7614</cve>
+        <cve>CVE-2019-7611</cve>
     </suppress>
 </suppressions>
