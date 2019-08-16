@@ -14,7 +14,7 @@ import static uk.gov.hmcts.probate.model.Constants.YES;
 
 @Component
 @RequiredArgsConstructor
-public abstract class EmailAddressExecutorsApplyingValidationRule implements CaseDetailsEmailValidationRule{
+public abstract class EmailAddressExecutorsApplyingValidationRule implements CaseDetailsEmailValidationRule {
 
     private BusinessValidationMessageRetriever businessValidationMessageRetriever;
 
