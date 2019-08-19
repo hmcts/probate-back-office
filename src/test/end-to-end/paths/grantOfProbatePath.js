@@ -32,8 +32,13 @@ Feature('Back Office').retry(testConfig.TestRetryFeatures);
 
 Scenario('Grant of Probate Workflow - E2E test 01 - Grant of Representation for a Personal Applicant - Apply for grant of representation -> Withdraw application', async function (I) {
 
+    const unique_deceased_user = Date.now();
+    console.log("unique deceased names will be generated with " + unique_deceased_user);
+
     // IdAM
     I.authenticateWithIdamIfAvailable();
+
+    // FIRST case is only needed for case-matching with SECOND one
 
     let nextStepName = 'PA1P/PA1A/Solicitors';
     I.selectNewCase();
@@ -41,7 +46,7 @@ Scenario('Grant of Probate Workflow - E2E test 01 - Grant of Representation for 
     I.enterGrantOfProbatePage1('create');
     I.enterGrantOfProbatePage2('create');
     I.enterGrantOfProbatePage3('create');
-    I.enterGrantOfProbatePage4('create');
+    I.enterGrantOfProbatePage4('create', unique_deceased_user);
     I.enterGrantOfProbatePage5('create');
     I.enterGrantOfProbatePage6('create');
     I.enterGrantOfProbatePage7('create');
@@ -49,6 +54,24 @@ Scenario('Grant of Probate Workflow - E2E test 01 - Grant of Representation for 
     I.enterGrantOfProbatePage9();
     I.checkMyAnswers(nextStepName);
     let endState = 'Case created';
+
+
+    // SECOND case - the main test case
+
+    nextStepName = 'PA1P/PA1A/Solicitors';
+    I.selectNewCase();
+    I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_gor, createCaseConfig.list3_text_gor);
+    I.enterGrantOfProbatePage1('create');
+    I.enterGrantOfProbatePage2('create');
+    I.enterGrantOfProbatePage3('create');
+    I.enterGrantOfProbatePage4('create', unique_deceased_user);
+    I.enterGrantOfProbatePage5('create');
+    I.enterGrantOfProbatePage6('create');
+    I.enterGrantOfProbatePage7('create');
+    I.enterGrantOfProbatePage8('create');
+    I.enterGrantOfProbatePage9();
+    I.checkMyAnswers(nextStepName);
+    endState = 'Case created';
 
     const url = await I.grabCurrentUrl();
     const caseRef = url.split('/').pop()
