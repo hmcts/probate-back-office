@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.changerule.DomicilityRule;
 import uk.gov.hmcts.probate.changerule.ExecutorsRule;
 import uk.gov.hmcts.probate.changerule.MinorityRule;
-import uk.gov.hmcts.probate.changerule.MultipleClaimsRule;
+import uk.gov.hmcts.probate.changerule.ApplicantSiblingsRule;
 import uk.gov.hmcts.probate.changerule.NoOriginalWillRule;
 import uk.gov.hmcts.probate.changerule.UpdateApplicationRule;
 
@@ -30,7 +30,7 @@ public class StateChangeService {
     private final ExecutorsRule executorsRule;
     private final UpdateApplicationRule updateApplicationRule;
     private final MinorityRule minorityRule;
-    private final MultipleClaimsRule multipleClaimsRule;
+    private final ApplicantSiblingsRule applicantSiblingsRule;
 
     public Optional<String> getChangedStateForCaseUpdate(CaseData caseData) {
         if (noOriginalWillRule.isChangeNeeded(caseData)) {
@@ -67,7 +67,7 @@ public class StateChangeService {
             return Optional.of(STATE_STOPPED);
         }
 
-        if (multipleClaimsRule.isChangeNeeded(caseData)) {
+        if (applicantSiblingsRule.isChangeNeeded(caseData)) {
             return Optional.of(STATE_STOPPED);
         }
         return Optional.empty();

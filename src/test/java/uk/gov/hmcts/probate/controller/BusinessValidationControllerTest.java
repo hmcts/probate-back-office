@@ -95,7 +95,7 @@ public class BusinessValidationControllerTest {
     private static final String DECEASED_DOM_UK = "Yes";
     private static final String RELATIONSHIP_TO_DECEASED = "SpouseOrCivil";
     private static final String MINORITY_INTEREST = "No";
-    private static final String MULTIPLE_CLAIMS = "No";
+    private static final String APPLICANT_SIBLINGS = "No";
     private static final String ANSWER_NO = "No";
 
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
@@ -256,7 +256,7 @@ public class BusinessValidationControllerTest {
         caseDataBuilder.deceasedMaritalStatus(MARITAL_STATUS);
         caseDataBuilder.solsApplicantRelationshipToDeceased(RELATIONSHIP_TO_DECEASED);
         caseDataBuilder.solsMinorityInterest(MINORITY_INTEREST);
-        caseDataBuilder.solsMultipleClaims(MULTIPLE_CLAIMS);
+        caseDataBuilder.solsApplicantSiblings(APPLICANT_SIBLINGS);
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
         String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
