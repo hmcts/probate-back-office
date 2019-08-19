@@ -118,7 +118,8 @@ public class CallbackResponseTransformer {
     public CallbackResponse defaultRequestInformationValues(CallbackRequest callbackRequest) {
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
 
-        List<CollectionMember<ExecutorsApplyingNotification>> exec = executorsApplyingNotificationService.createExecutorList(caseDetails.getData());
+        List<CollectionMember<ExecutorsApplyingNotification>> exec =
+                executorsApplyingNotificationService.createExecutorList(caseDetails.getData());
         ResponseCaseData responseCaseData = getResponseCaseData(caseDetails, false)
                 .executorsApplyingNotifications(exec)
                 .build();
@@ -145,7 +146,8 @@ public class CallbackResponseTransformer {
     }
 
 
-        public CallbackResponse addDocuments(CallbackRequest callbackRequest, List<Document> documents, String letterId, String pdfSize) {
+    public CallbackResponse addDocuments(CallbackRequest callbackRequest, List<Document> documents,
+                                         String letterId, String pdfSize) {
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
         CaseData caseData = caseDetails.getData();
         documents.forEach(document -> documentTransformer.addDocument(callbackRequest, document, false));

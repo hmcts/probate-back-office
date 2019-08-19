@@ -32,13 +32,13 @@ import uk.gov.service.notify.NotificationClient;
 import uk.gov.service.notify.NotificationClientException;
 import uk.gov.service.notify.SendEmailResponse;
 
-import javax.validation.Valid;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.validation.Valid;
 
 import static uk.gov.hmcts.probate.model.Constants.BUSINESS_ERROR;
 import static uk.gov.hmcts.probate.model.Constants.CTSC;
@@ -113,12 +113,14 @@ public class NotificationService {
             personalisation.replace(PERSONALISATION_APPLICANT_NAME, caseData.getSolsSOTName());
         }
 
-        SendEmailResponse response = getSendEmailResponse(state, templateId, emailReplyToId, emailAddress, personalisation, reference);
+        SendEmailResponse response =
+                getSendEmailResponse(state, templateId, emailReplyToId, emailAddress, personalisation, reference);
 
         return getSentEmailDocument(state, emailAddress, response);
     }
 
-    public Document sendEmail(State state, CaseDetails caseDetails, ExecutorsApplyingNotification executor) throws NotificationClientException {
+    public Document sendEmail(State state, CaseDetails caseDetails, ExecutorsApplyingNotification executor)
+            throws NotificationClientException {
         CaseData caseData = caseDetails.getData();
         Registry registry = registriesProperties.getRegistries().get(caseData.getRegistryLocation().toLowerCase());
 
@@ -130,7 +132,8 @@ public class NotificationService {
 
         personalisation.replace(PERSONALISATION_APPLICANT_NAME, executor.getName());
 
-        SendEmailResponse response = getSendEmailResponse(state, templateId, emailReplyToId, emailAddress, personalisation, reference);
+        SendEmailResponse response =
+                getSendEmailResponse(state, templateId, emailReplyToId, emailAddress, personalisation, reference);
 
         return getSentEmailDocument(state, emailAddress, response);
     }
@@ -214,7 +217,8 @@ public class NotificationService {
         return pdfManagementService.generateAndUpload(sentEmail, docType);
     }
 
-    private Document getGeneratedSentEmailDocmosisDocument(SendEmailResponse response, String emailAddress, DocumentType docType) {
+    private Document getGeneratedSentEmailDocmosisDocument(SendEmailResponse response,
+                                                           String emailAddress, DocumentType docType) {
         SentEmail sentEmail = SentEmail.builder()
                 .sentOn(LocalDateTime.now().format(formatter))
                 .from(response.getFromEmail().orElse(""))
@@ -226,17 +230,6 @@ public class NotificationService {
         return pdfManagementService.generateDocmosisDocumentAndUpload(placeholders, docType);
     }
 
-    private Map<String, Object> getPersonalisation(SentEmail sentEmail) {
-        HashMap<String, Object> personalisation = new HashMap<>();
-        personalisation.put(PERSONALISATION_SENT_EMAIL_BODY, sentEmail.getBody());
-        personalisation.put(PERSONALISATION_SENT_EMAIL_FROM, sentEmail.getFrom());
-        personalisation.put(PERSONALISATION_SENT_EMAIL_TO, sentEmail.getTo());
-        personalisation.put(PERSONALISATION_SENT_EMAIL_SUBJECT, sentEmail.getSubject());
-        personalisation.put(PERSONALISATION_SENT_EMAIL_SENT_ON, sentEmail.getSentOn());
-
-        return personalisation;
-    }
-
     private Document getSentEmailDocument(State state, String emailAddress, SendEmailResponse response) {
         if (state == State.CASE_STOPPED_REQUEST_INFORMATION) {
             return getGeneratedSentEmailDocmosisDocument(response, emailAddress, SENT_EMAIL);
@@ -245,7 +238,9 @@ public class NotificationService {
         }
     }
 
-    private SendEmailResponse getSendEmailResponse(State state, String templateId, String emailReplyToId, String emailAddress, Map<String, String> personalisation, String reference) throws NotificationClientException {
+    private SendEmailResponse getSendEmailResponse(State state, String templateId, String emailReplyToId,
+                                                   String emailAddress, Map<String, String> personalisation, String reference)
+            throws NotificationClientException {
         SendEmailResponse response;
 
         switch (state) {
@@ -258,6 +253,17 @@ public class NotificationService {
                 response = notificationClient.sendEmail(templateId, emailAddress, personalisation, reference);
         }
         return response;
+    }
+
+    private Map<String, Object> getPersonalisation(SentEmail sentEmail) {
+        HashMap<String, Object> personalisation = new HashMap<>();
+        personalisation.put(PERSONALISATION_SENT_EMAIL_BODY, sentEmail.getBody());
+        personalisation.put(PERSONALISATION_SENT_EMAIL_FROM, sentEmail.getFrom());
+        personalisation.put(PERSONALISATION_SENT_EMAIL_TO, sentEmail.getTo());
+        personalisation.put(PERSONALISATION_SENT_EMAIL_SUBJECT, sentEmail.getSubject());
+        personalisation.put(PERSONALISATION_SENT_EMAIL_SENT_ON, sentEmail.getSentOn());
+
+        return personalisation;
     }
 
     private Map<String, String> getPersonalisation(CaseDetails caseDetails, Registry registry) {
@@ -286,7 +292,8 @@ public class NotificationService {
             personalisation.put(PERSONALISATION_DATE_CAVEAT_ENTERED,
                     dateFormatterService.formatDate(caveatData.getApplicationSubmittedDate()));
             personalisation.put(PERSONALISATION_CAVEATOR_NAME, caveatData.getCaveatorFullName());
-            personalisation.put(PERSONALISATION_CAVEATOR_ADDRESS, addressFormatterService.formatAddress(caveatData.getCaveatorAddress()));
+            personalisation.put(PERSONALISATION_CAVEATOR_ADDRESS,
+                    addressFormatterService.formatAddress(caveatData.getCaveatorAddress()));
             personalisation.put(PERSONALISATION_CAVEAT_EXPIRY_DATE,
                     dateFormatterService.formatCaveatExpiryDate(caveatData.getExpiryDate()));
         }
@@ -307,7 +314,8 @@ public class NotificationService {
         personalisation.put(PERSONALISATION_MESSAGE_CONTENT, caveatData.getMessageContent());
         personalisation.put(PERSONALISATION_REGISTRY_NAME, registry.getName());
         personalisation.put(PERSONALISATION_REGISTRY_PHONE, registry.getPhone());
-        personalisation.put(PERSONALISATION_CAVEAT_EXPIRY_DATE, dateFormatterService.formatCaveatExpiryDate(caveatData.getExpiryDate()));
+        personalisation.put(PERSONALISATION_CAVEAT_EXPIRY_DATE,
+                dateFormatterService.formatCaveatExpiryDate(caveatData.getExpiryDate()));
 
         return personalisation;
     }

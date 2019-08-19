@@ -34,7 +34,7 @@ public class EmailAddressExecutorsApplyingValidationRuleTest {
     private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
     private static final Long CASE_ID = 12345678987654321L;
     private static final List<CollectionMember<ExecutorsApplyingNotification>> EXECEUTORS_APPLYING_NOTIFICATION_EMPTY = Arrays.asList(
-            new CollectionMember<ExecutorsApplyingNotification>("id",
+            new CollectionMember<>("id",
                     ExecutorsApplyingNotification.builder()
                             .name("Name")
                             .email("")
@@ -42,7 +42,7 @@ public class EmailAddressExecutorsApplyingValidationRuleTest {
                             .build()));
 
     private static final List<CollectionMember<ExecutorsApplyingNotification>> EXECEUTORS_APPLYING_NOTIFICATION_NULL = Arrays.asList(
-            new CollectionMember<ExecutorsApplyingNotification>("id",
+            new CollectionMember<>("id",
                     ExecutorsApplyingNotification.builder()
                             .name("Name")
                             .email(null)
@@ -50,7 +50,7 @@ public class EmailAddressExecutorsApplyingValidationRuleTest {
                             .build()));
 
     private static final List<CollectionMember<ExecutorsApplyingNotification>> EXECEUTORS_APPLYING_NOTIFICATION = Arrays.asList(
-            new CollectionMember<ExecutorsApplyingNotification>("id",
+            new CollectionMember<>("id",
                     ExecutorsApplyingNotification.builder()
                             .name("Name")
                             .email("test@test.com")
@@ -106,6 +106,6 @@ public class EmailAddressExecutorsApplyingValidationRuleTest {
         CaseDetails caseDetailsNotEmpty =
                 new CaseDetails(caseDataNotEmpty, LAST_MODIFIED, CASE_ID);
 
-      emailAddressExecutorsApplyingValidationRule.validateEmails(caseDetailsNotEmpty);
+        emailAddressExecutorsApplyingValidationRule.validateEmails(caseDetailsNotEmpty);
     }
 }

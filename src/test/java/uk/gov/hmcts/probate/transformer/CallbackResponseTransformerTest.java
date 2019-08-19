@@ -278,7 +278,8 @@ public class CallbackResponseTransformerTest {
 
         caseDataBuilder = CaseData.builder()
                 .solsSolicitorFirmName(SOLICITOR_FIRM_NAME)
-                .solsSolicitorAddress(SolsAddress.builder().addressLine1(SOLICITOR_FIRM_LINE1).postCode(SOLICITOR_FIRM_POSTCODE).build())
+                .solsSolicitorAddress(SolsAddress.builder().addressLine1(SOLICITOR_FIRM_LINE1)
+                        .postCode(SOLICITOR_FIRM_POSTCODE).build())
                 .solsSolicitorEmail(SOLICITOR_FIRM_EMAIL)
                 .solsSolicitorPhoneNumber(SOLICITOR_FIRM_PHONE)
                 .solsSOTName(SOLICITOR_SOT_NAME)
@@ -547,7 +548,8 @@ public class CallbackResponseTransformerTest {
         assertCommon(callbackResponse);
 
         assertEquals("abc123", callbackResponse.getData().getBulkPrintId().get(0).getValue().getSendLetterId());
-        assertEquals(DIGITAL_GRANT_REISSUE.getTemplateName(), callbackResponse.getData().getBulkPrintId().get(0).getValue().getTemplateName());
+        assertEquals(DIGITAL_GRANT_REISSUE.getTemplateName(),
+                callbackResponse.getData().getBulkPrintId().get(0).getValue().getTemplateName());
         assertEquals(1, callbackResponse.getData().getProbateDocumentsGenerated().size());
         assertEquals(grantDocument, callbackResponse.getData().getProbateDocumentsGenerated().get(0).getValue());
         assertEquals(1, callbackResponse.getData().getProbateNotificationsGenerated().size());
@@ -568,7 +570,8 @@ public class CallbackResponseTransformerTest {
         assertCommon(callbackResponse);
 
         assertEquals("abc123", callbackResponse.getData().getBulkPrintId().get(0).getValue().getSendLetterId());
-        assertEquals(ADMON_WILL_GRANT_REISSUE.getTemplateName(), callbackResponse.getData().getBulkPrintId().get(0).getValue().getTemplateName());
+        assertEquals(ADMON_WILL_GRANT_REISSUE.getTemplateName(),
+                callbackResponse.getData().getBulkPrintId().get(0).getValue().getTemplateName());
         assertEquals(1, callbackResponse.getData().getProbateDocumentsGenerated().size());
         assertEquals(grantDocument, callbackResponse.getData().getProbateDocumentsGenerated().get(0).getValue());
         assertEquals(1, callbackResponse.getData().getProbateNotificationsGenerated().size());
@@ -589,7 +592,8 @@ public class CallbackResponseTransformerTest {
         assertCommon(callbackResponse);
 
         assertEquals("abc123", callbackResponse.getData().getBulkPrintId().get(0).getValue().getSendLetterId());
-        assertEquals(INTESTACY_GRANT_REISSUE.getTemplateName(), callbackResponse.getData().getBulkPrintId().get(0).getValue().getTemplateName());
+        assertEquals(INTESTACY_GRANT_REISSUE.getTemplateName(),
+                callbackResponse.getData().getBulkPrintId().get(0).getValue().getTemplateName());
         assertEquals(1, callbackResponse.getData().getProbateDocumentsGenerated().size());
         assertEquals(grantDocument, callbackResponse.getData().getProbateDocumentsGenerated().get(0).getValue());
         assertEquals(1, callbackResponse.getData().getProbateNotificationsGenerated().size());
@@ -1383,7 +1387,8 @@ public class CallbackResponseTransformerTest {
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
         DateFormat targetFormat = new SimpleDateFormat(DATE_FORMAT);
         String grantIssuedDate = targetFormat.format(new Date());
-        CallbackResponse callbackResponse = underTest.addDocuments(callbackRequestMock, Arrays.asList(document), null, null);
+        CallbackResponse callbackResponse = underTest.addDocuments(callbackRequestMock,
+                Arrays.asList(document), null, null);
         assertEquals(grantIssuedDate, callbackResponse.getData().getGrantIssuedDate());
     }
 
@@ -1399,7 +1404,8 @@ public class CallbackResponseTransformerTest {
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
         DateFormat targetFormat = new SimpleDateFormat(DATE_FORMAT);
         String latestReissueDate = targetFormat.format(new Date());
-        CallbackResponse callbackResponse = underTest.addDocuments(callbackRequestMock, Arrays.asList(document), null, null);
+        CallbackResponse callbackResponse = underTest.addDocuments(callbackRequestMock,
+                Arrays.asList(document), null, null);
         assertEquals(latestReissueDate, callbackResponse.getData().getLatestGrantReissueDate());
     }
 
@@ -1446,8 +1452,10 @@ public class CallbackResponseTransformerTest {
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-        CallbackResponse callbackResponse = underTest.addInformationRequestDocuments(callbackRequestMock, Arrays.asList(document));
-        assertEquals(SENT_EMAIL.getTemplateName(), callbackResponse.getData().getProbateNotificationsGenerated().get(0).getValue().getDocumentFileName());
+        CallbackResponse callbackResponse = underTest.addInformationRequestDocuments(callbackRequestMock,
+                Arrays.asList(document));
+        assertEquals(SENT_EMAIL.getTemplateName(),
+                callbackResponse.getData().getProbateNotificationsGenerated().get(0).getValue().getDocumentFileName());
         assertEquals("Yes", callbackResponse.getData().getBoEmailRequestInfoNotificationRequested());
     }
 
@@ -1463,8 +1471,10 @@ public class CallbackResponseTransformerTest {
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-        CallbackResponse callbackResponse = underTest.addInformationRequestDocuments(callbackRequestMock, Arrays.asList(document));
-        assertEquals(SOT_INFORMATION_REQUEST.getTemplateName(), callbackResponse.getData().getProbateDocumentsGenerated().get(0).getValue().getDocumentFileName());
+        CallbackResponse callbackResponse = underTest.addInformationRequestDocuments(callbackRequestMock,
+                Arrays.asList(document));
+        assertEquals(SOT_INFORMATION_REQUEST.getTemplateName(),
+                callbackResponse.getData().getProbateDocumentsGenerated().get(0).getValue().getDocumentFileName());
         assertEquals("Yes", callbackResponse.getData().getBoEmailRequestInfoNotificationRequested());
     }
 

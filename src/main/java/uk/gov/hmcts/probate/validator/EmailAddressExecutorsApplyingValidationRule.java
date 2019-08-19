@@ -14,7 +14,7 @@ import static uk.gov.hmcts.probate.model.Constants.YES;
 
 @Component
 @RequiredArgsConstructor
-public class EmailAddressExecutorsApplyingValidationRule implements CaseDetailsEmailValidationRule{
+public class EmailAddressExecutorsApplyingValidationRule implements CaseDetailsEmailValidationRule {
 
     private final BusinessValidationMessageRetriever businessValidationMessageRetriever;
 
@@ -30,9 +30,11 @@ public class EmailAddressExecutorsApplyingValidationRule implements CaseDetailsE
             caseData.getExecutorsApplyingNotifications().forEach(executor -> {
                 if (executor.getValue().getNotification().equals(YES)) {
                     if (executor.getValue().getEmail() == null) {
-                        throw new BusinessValidationException(userMessage, "An applying exec email is null for case id " + caseDetails.getId());
+                        throw new BusinessValidationException(userMessage,
+                                "An applying exec email is null for case id " + caseDetails.getId());
                     } else if (executor.getValue().getEmail().isEmpty()) {
-                        throw new BusinessValidationException(userMessage, "An applying exec email is empty for case id " + caseDetails.getId());
+                        throw new BusinessValidationException(userMessage,
+                                "An applying exec email is empty for case id " + caseDetails.getId());
                     }
                 }
             });

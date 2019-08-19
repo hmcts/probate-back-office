@@ -895,7 +895,8 @@ public class NotificationServiceTest {
         personalisation.put(PERSONALISATION_SOLICITOR_REFERENCE, personalCaseDataCtsc.getData().getSolsSolicitorAppReference());
         personalisation.put(PERSONALISATION_REGISTRY_NAME, "CTSC");
         personalisation.put(PERSONALISATION_REGISTRY_PHONE, "0300 303 0648");
-        personalisation.put(PERSONALISATION_CASE_STOP_DETAILS_DEC, personalCaseDataCtsc.getData().getBoStopDetailsDeclarationParagraph());
+        personalisation.put(PERSONALISATION_CASE_STOP_DETAILS_DEC,
+                personalCaseDataCtsc.getData().getBoStopDetailsDeclarationParagraph());
         personalisation.put(PERSONALISATION_CASE_STOP_DETAILS, personalCaseDataCtsc.getData().getBoStopDetails());
         personalisation.put(PERSONALISATION_CAVEAT_CASE_ID, personalCaseDataCtsc.getData().getBoCaseStopCaveatId());
         personalisation.put(PERSONALISATION_DECEASED_DOD, personalCaseDataCtsc.getData().getDeceasedDateOfDeathFormatted());
@@ -933,7 +934,8 @@ public class NotificationServiceTest {
         personalisation.put(PERSONALISATION_SOLICITOR_REFERENCE, solsCaseDataCtsc.getData().getSolsSolicitorAppReference());
         personalisation.put(PERSONALISATION_REGISTRY_NAME, "CTSC");
         personalisation.put(PERSONALISATION_REGISTRY_PHONE, "0300 303 0648");
-        personalisation.put(PERSONALISATION_CASE_STOP_DETAILS_DEC, solsCaseDataCtsc.getData().getBoStopDetailsDeclarationParagraph());
+        personalisation.put(PERSONALISATION_CASE_STOP_DETAILS_DEC,
+                solsCaseDataCtsc.getData().getBoStopDetailsDeclarationParagraph());
         personalisation.put(PERSONALISATION_CASE_STOP_DETAILS, solsCaseDataCtsc.getData().getBoStopDetails());
         personalisation.put(PERSONALISATION_CAVEAT_CASE_ID, solsCaseDataCtsc.getData().getBoCaseStopCaveatId());
         personalisation.put(PERSONALISATION_DECEASED_DOD, solsCaseDataCtsc.getData().getDeceasedDateOfDeathFormatted());
@@ -1069,16 +1071,23 @@ public class NotificationServiceTest {
 
         HashMap<String, String> personalisation = new HashMap<>();
 
-        personalisation.put(PERSONALISATION_APPLICANT_NAME, personalCaseDataCtscRequestInformation.getData().getPrimaryApplicantFullName());
-        personalisation.put(PERSONALISATION_DECEASED_NAME, personalCaseDataCtscRequestInformation.getData().getDeceasedFullName());
+        personalisation.put(PERSONALISATION_APPLICANT_NAME,
+                personalCaseDataCtscRequestInformation.getData().getPrimaryApplicantFullName());
+        personalisation.put(PERSONALISATION_DECEASED_NAME,
+                personalCaseDataCtscRequestInformation.getData().getDeceasedFullName());
         personalisation.put(PERSONALISATION_SOLICITOR_NAME, personalCaseDataCtscRequestInformation.getData().getSolsSOTName());
-        personalisation.put(PERSONALISATION_SOLICITOR_REFERENCE, personalCaseDataCtscRequestInformation.getData().getSolsSolicitorAppReference());
+        personalisation.put(PERSONALISATION_SOLICITOR_REFERENCE,
+                personalCaseDataCtscRequestInformation.getData().getSolsSolicitorAppReference());
         personalisation.put(PERSONALISATION_REGISTRY_NAME, "CTSC");
         personalisation.put(PERSONALISATION_REGISTRY_PHONE, "0300 303 0648");
-        personalisation.put(PERSONALISATION_CASE_STOP_DETAILS_DEC, personalCaseDataCtscRequestInformation.getData().getBoStopDetailsDeclarationParagraph());
-        personalisation.put(PERSONALISATION_CASE_STOP_DETAILS, personalCaseDataCtscRequestInformation.getData().getBoStopDetails());
-        personalisation.put(PERSONALISATION_CAVEAT_CASE_ID, personalCaseDataCtscRequestInformation.getData().getBoCaseStopCaveatId());
-        personalisation.put(PERSONALISATION_DECEASED_DOD, personalCaseDataCtscRequestInformation.getData().getDeceasedDateOfDeathFormatted());
+        personalisation.put(PERSONALISATION_CASE_STOP_DETAILS_DEC,
+                personalCaseDataCtscRequestInformation.getData().getBoStopDetailsDeclarationParagraph());
+        personalisation.put(PERSONALISATION_CASE_STOP_DETAILS,
+                personalCaseDataCtscRequestInformation.getData().getBoStopDetails());
+        personalisation.put(PERSONALISATION_CAVEAT_CASE_ID,
+                personalCaseDataCtscRequestInformation.getData().getBoCaseStopCaveatId());
+        personalisation.put(PERSONALISATION_DECEASED_DOD,
+                personalCaseDataCtscRequestInformation.getData().getDeceasedDateOfDeathFormatted());
         personalisation.put(PERSONALISATION_CCD_REFERENCE, personalCaseDataCtscRequestInformation.getId().toString());
 
         when(notificationClient.sendEmail(anyString(), anyString(), any(), any(), any())).thenReturn(sendEmailResponse);
@@ -1091,7 +1100,8 @@ public class NotificationServiceTest {
                         .build())
                 .email("personal@test.com")
                 .notification("Yes").build();
-        notificationService.sendEmail(CASE_STOPPED_REQUEST_INFORMATION, personalCaseDataCtscRequestInformation, executorsApplyingNotification);
+        notificationService.sendEmail(CASE_STOPPED_REQUEST_INFORMATION, personalCaseDataCtscRequestInformation,
+                executorsApplyingNotification);
         verify(notificationClient).sendEmail(
                 eq("pa-request-information"),
                 eq("personal@test.com"),
@@ -1112,13 +1122,17 @@ public class NotificationServiceTest {
         personalisation.put(PERSONALISATION_APPLICANT_NAME, solsCaseDataCtscRequestInformation.getData().getSolsSOTName());
         personalisation.put(PERSONALISATION_DECEASED_NAME, solsCaseDataCtscRequestInformation.getData().getDeceasedFullName());
         personalisation.put(PERSONALISATION_SOLICITOR_NAME, solsCaseDataCtscRequestInformation.getData().getSolsSOTName());
-        personalisation.put(PERSONALISATION_SOLICITOR_REFERENCE, solsCaseDataCtscRequestInformation.getData().getSolsSolicitorAppReference());
+        personalisation.put(PERSONALISATION_SOLICITOR_REFERENCE,
+                solsCaseDataCtscRequestInformation.getData().getSolsSolicitorAppReference());
         personalisation.put(PERSONALISATION_REGISTRY_NAME, "CTSC");
         personalisation.put(PERSONALISATION_REGISTRY_PHONE, "0300 303 0648");
-        personalisation.put(PERSONALISATION_CASE_STOP_DETAILS_DEC, solsCaseDataCtscRequestInformation.getData().getBoStopDetailsDeclarationParagraph());
+        personalisation.put(PERSONALISATION_CASE_STOP_DETAILS_DEC,
+                solsCaseDataCtscRequestInformation.getData().getBoStopDetailsDeclarationParagraph());
         personalisation.put(PERSONALISATION_CASE_STOP_DETAILS, solsCaseDataCtscRequestInformation.getData().getBoStopDetails());
-        personalisation.put(PERSONALISATION_CAVEAT_CASE_ID, solsCaseDataCtscRequestInformation.getData().getBoCaseStopCaveatId());
-        personalisation.put(PERSONALISATION_DECEASED_DOD, solsCaseDataCtscRequestInformation.getData().getDeceasedDateOfDeathFormatted());
+        personalisation.put(PERSONALISATION_CAVEAT_CASE_ID,
+                solsCaseDataCtscRequestInformation.getData().getBoCaseStopCaveatId());
+        personalisation.put(PERSONALISATION_DECEASED_DOD,
+                solsCaseDataCtscRequestInformation.getData().getDeceasedDateOfDeathFormatted());
         personalisation.put(PERSONALISATION_CCD_REFERENCE, solsCaseDataCtscRequestInformation.getId().toString());
 
         when(notificationClient.sendEmail(anyString(), anyString(), any(), any(), any())).thenReturn(sendEmailResponse);

@@ -46,11 +46,22 @@ public class ExecutorsApplyingNotificationServiceTest {
 
     @Test
     public void testPaAndExecutorIsAddedToExecutorsApplyingNotificationList() {
-        CollectionMember<ExecutorsApplyingNotification> paApplying = buildExecNotification("Bob Smith", "PA@test.com"
-                , "1");
+        additionalExecutorApplyingList.add(buildExecApplying("Tommy Tank", "tommy@test.com"));
 
-        CollectionMember<ExecutorsApplyingNotification> execApplying = buildExecNotification("Tommy Tank", "tommy" +
-                "@test.com", "2");
+        caseData = CaseData.builder()
+                .primaryApplicantForenames("Bob")
+                .primaryApplicantSurname("Smith")
+                .primaryApplicantEmailAddress("PA@test.com")
+                .primaryApplicantAddress(ADDRESS)
+                .additionalExecutorsApplying(additionalExecutorApplyingList)
+                .primaryApplicantIsApplying("Yes")
+                .build();
+
+        CollectionMember<ExecutorsApplyingNotification> paApplying =
+                buildExecNotification("Bob Smith", "PA@test.com", "1");
+
+        CollectionMember<ExecutorsApplyingNotification> execApplying =
+                buildExecNotification("Tommy Tank", "tommy@test.com", "2");
 
         expectedResponse.add(paApplying);
         expectedResponse.add(execApplying);
@@ -71,8 +82,8 @@ public class ExecutorsApplyingNotificationServiceTest {
 
         additionalExecutorApplyingList.add(buildExecApplying("Tommy Tank", "tommy@test.com"));
 
-        CollectionMember<ExecutorsApplyingNotification> execApplying = buildExecNotification("Tommy Tank", "tommy" +
-                "@test.com", "1");
+        CollectionMember<ExecutorsApplyingNotification> execApplying =
+                buildExecNotification("Tommy Tank", "tommy@test.com", "1");
         expectedResponse.add(execApplying);
 
         assertEquals(expectedResponse, executorsApplyingNotificationService.createExecutorList(caseData));
@@ -181,10 +192,10 @@ public class ExecutorsApplyingNotificationServiceTest {
 
     private CollectionMember<AdditionalExecutorApplying> buildExecApplying(String name, String email) {
         return new CollectionMember<>(AdditionalExecutorApplying.builder()
-                        .applyingExecutorName(name)
-                        .applyingExecutorEmail(email)
-                        .applyingExecutorAddress(ADDRESS)
-                        .build());
+                .applyingExecutorName(name)
+                .applyingExecutorEmail(email)
+                .applyingExecutorAddress(ADDRESS)
+                .build());
     }
 
     private CollectionMember<ExecutorsApplyingNotification> buildExecNotification(String name, String email,

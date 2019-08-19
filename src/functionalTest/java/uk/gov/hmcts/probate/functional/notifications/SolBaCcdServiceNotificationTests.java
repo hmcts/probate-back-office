@@ -117,7 +117,7 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     @Test
     public void verifyPersonalApplicantRequestInformationContentIsOk() {
         String document = sendEmail("personalPayloadNotifications.json", INFORMATION_REQUEST, EMAIL_NOTIFICATION_URL);
-        verifyPAEmailCaseStopped(document);
+        verifyPAEmailInformationRequestRedec(document);
     }
 
     @Test
@@ -182,5 +182,13 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
         assertTrue(document.contains("1st January 2000"));
         assertTrue(document.contains("Deceased First Name Deceased Last Name"));
         assertTrue(document.contains(BIRMINGHAM_NO));
+    }
+
+    private void verifyPAEmailInformationRequestRedec(String document) {
+        assertTrue(document.contains("test@test.com"));
+        assertTrue(document.contains("Deceased First Name Deceased Last Name"));
+        assertTrue(document.contains("Birmingham"));
+        assertTrue(document.contains(BIRMINGHAM_NO));
+        assertTrue(document.contains("Declaration"));
     }
 }
