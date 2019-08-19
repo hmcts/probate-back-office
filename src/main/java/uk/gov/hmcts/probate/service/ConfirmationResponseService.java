@@ -145,7 +145,6 @@ public class ConfirmationResponseService {
         keyValue.put("{{deceasedFirstname}}", ccdData.getDeceased().getFirstname());
         keyValue.put("{{deceasedLastname}}", ccdData.getDeceased().getLastname());
         keyValue.put("{{deceasedDateOfDeath}}", ccdData.getDeceased().getDateOfDeath().format(formatter));
-        keyValue.put("{{ihtForm}}", ccdData.getIht().getFormName());
         keyValue.put("{{paymentMethod}}", ccdData.getFee().getPaymentMethod());
         keyValue.put("{{paymentAmount}}", getAmountAsString(ccdData.getFee().getAmount()));
         keyValue.put("{{applicationFee}}", getAmountAsString(ccdData.getFee().getApplicationFee()));
@@ -166,10 +165,20 @@ public class ConfirmationResponseService {
         }
 
         String ihtFormValue = ccdData.getIht().getFormName();
+        String ihtText = "";
+        String ihtForm = "";
+        if (!ihtFormValue.contentEquals(IHT_400421)) {
+            ihtText = "\n*   completed inheritance tax form ";
+            ihtForm = ccdData.getIht().getFormName();
+        }
+
         String iht400 = "";
         if (ihtFormValue.contentEquals(IHT_400421)) {
             iht400 = "*   the stamped (receipted) IHT 421 with this application\n";
         }
+
+        keyValue.put("{{ihtText}}", ihtText);
+        keyValue.put("{{ihtForm}}", ihtForm);
         keyValue.put("{{iht400}}", iht400);
         keyValue.put("{{additionalInfo}}", additionalInfo);
         keyValue.put("{{renouncingExecutors}}", getRenouncingExecutors(ccdData.getExecutors()));
