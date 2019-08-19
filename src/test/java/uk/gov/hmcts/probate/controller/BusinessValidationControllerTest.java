@@ -256,7 +256,7 @@ public class BusinessValidationControllerTest {
         caseDataBuilder.deceasedMaritalStatus(MARITAL_STATUS);
         caseDataBuilder.solsApplicantRelationshipToDeceased(RELATIONSHIP_TO_DECEASED);
         caseDataBuilder.solsMinorityInterest(MINORITY_INTEREST);
-        caseDataBuilder.solsMultipleClaims(MULTIPLE_CLAIMS);
+        caseDataBuilder.solsApplicantSiblings(MULTIPLE_CLAIMS);
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
         String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);

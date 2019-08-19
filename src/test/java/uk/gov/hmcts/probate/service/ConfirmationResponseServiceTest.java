@@ -10,7 +10,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 import uk.gov.hmcts.probate.changerule.DomicilityRule;
 import uk.gov.hmcts.probate.changerule.ExecutorsRule;
 import uk.gov.hmcts.probate.changerule.MinorityRule;
-import uk.gov.hmcts.probate.changerule.MultipleClaimsRule;
+import uk.gov.hmcts.probate.changerule.ApplicantSiblingsRule;
 import uk.gov.hmcts.probate.changerule.NoOriginalWillRule;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
 import uk.gov.hmcts.probate.model.ccd.Deceased;
@@ -55,7 +55,7 @@ public class ConfirmationResponseServiceTest {
     @Mock
     private MinorityRule minorityRuleMock;
     @Mock
-    private MultipleClaimsRule multipleClaimsRule;
+    private ApplicantSiblingsRule applicantSiblingsRule;
     @Mock
     private CallbackRequest callbackRequestMock;
     @Mock
@@ -89,7 +89,7 @@ public class ConfirmationResponseServiceTest {
         MockitoAnnotations.initMocks(this);
 
         underTest = new ConfirmationResponseService(messageResourceServiceMock, markdownSubstitutionServiceMock,
-                noOriginalWillRuleMock, domicilityRuleMock, executorsRuleMock, minorityRuleMock, multipleClaimsRule);
+                noOriginalWillRuleMock, domicilityRuleMock, executorsRuleMock, minorityRuleMock, applicantSiblingsRule);
         ReflectionTestUtils.setField(underTest, "templatesDirectory", "templates/markdown/");
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);

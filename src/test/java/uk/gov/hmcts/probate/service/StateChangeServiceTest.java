@@ -9,7 +9,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import uk.gov.hmcts.probate.changerule.DomicilityRule;
 import uk.gov.hmcts.probate.changerule.ExecutorsRule;
 import uk.gov.hmcts.probate.changerule.MinorityRule;
-import uk.gov.hmcts.probate.changerule.MultipleClaimsRule;
+import uk.gov.hmcts.probate.changerule.ApplicantSiblingsRule;
 import uk.gov.hmcts.probate.changerule.NoOriginalWillRule;
 import uk.gov.hmcts.probate.changerule.UpdateApplicationRule;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
@@ -31,7 +31,7 @@ public class StateChangeServiceTest {
     @Mock
     private MinorityRule minorityInterestRule;
     @Mock
-    private MultipleClaimsRule multipleClaimsRule;
+    private ApplicantSiblingsRule applicantSiblingsRule;
     @Mock
     private NoOriginalWillRule noOriginalWillRule;
     @Mock
@@ -56,7 +56,7 @@ public class StateChangeServiceTest {
         initMocks(this);
 
         underTest = new StateChangeService(noOriginalWillRule, domicilityRule, executorsStateRule,
-                updateApplicationRule, minorityInterestRule, multipleClaimsRule);
+                updateApplicationRule, minorityInterestRule, applicantSiblingsRule);
     }
 
     @Test
