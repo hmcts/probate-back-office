@@ -20,7 +20,7 @@ import static org.junit.Assert.assertEquals;
 public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
 
     private static final String VALIDATE_CASE_AMEND_URL = "/case/validateCaseDetails";
-    private static final String VALIDATE_URL = "/case/validate";
+    private static final String VALIDATE_URL = "/case/sols-validate";
     private static final String TRANSFORM_URL = "/case/transformCase";
     private static final String CHECKLIST_URL = "/case/validateCheckListDetails";
     private static final String PAPER_FORM_URL = "/case/paperForm";

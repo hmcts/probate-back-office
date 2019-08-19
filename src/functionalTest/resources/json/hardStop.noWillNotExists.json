@@ -2,7 +2,7 @@
   "case_details": {
     "id": 1512040945638398,
     "jurisdiction": "PROBATE",
-    "state": "SolDraftCase",
+    "state": "Stopped",
     "case_type_id": "GrantOfRepresentation",
     "last_modified": null,
     "security_classification": "PUBLIC",
@@ -30,10 +30,12 @@
           "id": "95d45c17-aba1-4441-8d98-aaaa2ec49668"
         }
       ],
-      "willAccessOriginal": "Yes",
+      "willAccessOriginal": "No",
       "solsSolicitorFirmName": "firmname",
-      "willExists": "No",
+      "willExists": "Yes",
+      "solsWillType": "Will",
       "deceasedDateOfDeath": "2018-01-01",
+      "primaryApplicantEmailAddress": "probBackosol@gmail.com",
       "primaryApplicantForenames": "Ex1fn",
       "primaryApplicantAddress": {
         "AddressLine1": "2",
