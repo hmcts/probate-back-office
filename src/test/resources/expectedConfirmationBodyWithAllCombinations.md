@@ -41,7 +41,6 @@ You now need to send us:
 *   the original will
 *   fee payment: your Cheque for &pound;0.10 (grant and copies)
 *   the printed version of this page which will be used as your cover letter to us
-*   completed inheritance tax form IHT400421
 *   the stamped (receipted) IHT 421 with this application
 *   renunciation form for Tim Smith
 *   death certificate for Bob Martin

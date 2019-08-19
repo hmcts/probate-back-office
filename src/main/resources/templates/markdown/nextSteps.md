@@ -39,8 +39,7 @@ Print a copy of this page for your records.
 You now need to send us:
 {{originalWill}}
 *   fee payment: your {{paymentMethod}} for &pound;{{paymentAmount}} (grant and copies)
-*   the printed version of this page which will be used as your cover letter to us
-*   completed inheritance tax form {{ihtForm}}
+*   the printed version of this page which will be used as your cover letter to us{{ihtText}}{{ihtForm}}
 {{iht400}}{{renouncingExecutors}}{{deadExecutors}}
 Where to send us your documents
 -------------------------------
