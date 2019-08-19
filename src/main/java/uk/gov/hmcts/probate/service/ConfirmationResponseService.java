@@ -77,11 +77,6 @@ public class ConfirmationResponseService {
             if (response.isPresent()) {
                 return response.get();
             }
-
-            response = getStopBodyMarkdown(caseData, applicantSiblingsConfirmationResponseRule, STOP_BODY);
-            if (response.isPresent()) {
-                return response.get();
-            }
         }
 
 
@@ -94,6 +89,11 @@ public class ConfirmationResponseService {
 
         if (GRANT_TYPE_INTESTACY.equals(caseData.getSolsWillType())) {
             response = getStopBodyMarkdown(caseData, minorityConfirmationResponseRule, STOP_BODY);
+            if (response.isPresent()) {
+                return response.get();
+            }
+
+            response = getStopBodyMarkdown(caseData, applicantSiblingsConfirmationResponseRule, STOP_BODY);
             if (response.isPresent()) {
                 return response.get();
             }
