@@ -4,15 +4,15 @@ const testConfig = require('src/test/config');
 const createGrantOfProbateConfig = require('./createGrantOfProbateConfig');
 const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
 
-module.exports = function (crud) {
+module.exports = function (crud, unique_deceased_user) {
 
     const I = this;
 
     if (crud === 'create') {
         I.waitForText(createGrantOfProbateConfig.page4_waitForText, testConfig.TestTimeToWaitForText);
         I.fillField('#boDeceasedTitle', createGrantOfProbateConfig.page4_bo_deceasedTitle);
-        I.fillField('#deceasedForenames', createGrantOfProbateConfig.page4_deceasedForenames);
-        I.fillField('#deceasedSurname', createGrantOfProbateConfig.page4_deceasedSurname);
+        I.fillField('#deceasedForenames', createGrantOfProbateConfig.page4_deceasedForenames+unique_deceased_user);
+        I.fillField('#deceasedSurname', createGrantOfProbateConfig.page4_deceasedSurname+unique_deceased_user);
         I.fillField('#boDeceasedHonours', createGrantOfProbateConfig.page4_bo_deceasedHonours);
 
         I.click(createGrantOfProbateConfig.UKpostcodeLink);
@@ -34,7 +34,7 @@ module.exports = function (crud) {
 
         I.click(`#deceasedAnyOtherNames-${createGrantOfProbateConfig.page4_deceasedAnyOtherNamesYes}`);
         I.click('#solsDeceasedAliasNamesList > div > button');
-        I.fillField('#solsDeceasedAliasNamesList_0_SolsAliasname', createGrantOfProbateConfig.page4_deceasedAlias);
+        I.fillField('#solsDeceasedAliasNamesList_0_SolsAliasname', createGrantOfProbateConfig.page4_deceasedAlias+unique_deceased_user);
         I.selectOption('#deceasedMaritalStatus', createGrantOfProbateConfig.page4_deceasedMaritalStatus);
 
         I.click(`#foreignAsset-${createGrantOfProbateConfig.page4_foreignAssetYes}`);
