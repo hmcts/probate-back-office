@@ -14,13 +14,13 @@ This probate application has now been submitted
 
 Payment summary
 -------------------------------------------------
-**Application fee** £{{applicationFee}}
+**Application fee** &pound;{{applicationFee}}
 
-**Fee for additional UK copies** £{{feeForUkCopies}}
+**Fee for additional UK copies** &pound;{{feeForUkCopies}}
 
-**Fee for certified copies** £{{feeForNonUkCopies}}
+**Fee for certified copies** &pound;{{feeForNonUkCopies}}
 
-**Fee amount** £{{paymentAmount}}
+**Fee amount** &pound;{{paymentAmount}}
 
 **Payment method** {{paymentMethod}}
 
@@ -37,11 +37,9 @@ What you need to do now
 Print a copy of this page for your records. 
  
 You now need to send us:
-
-*   the original will
-*   fee payment: your {{paymentMethod}} for £{{paymentAmount}} (grant and copies)
-*   the printed version of this page which will be used as your cover letter to us
-*   completed inheritance tax form {{ihtForm}}
+{{originalWill}}
+*   fee payment: your {{paymentMethod}} for &pound;{{paymentAmount}} (grant and copies)
+*   the printed version of this page which will be used as your cover letter to us{{ihtText}}{{ihtForm}}
 {{iht400}}{{renouncingExecutors}}{{deadExecutors}}
 Where to send us your documents
 -------------------------------
@@ -64,6 +62,6 @@ What happens next
 
 When we've received your documents we'll start to process your application.
 
-You will receive your grant of probate and a copy of the will, plus any extra copies you've ordered, within 20 working days of us receiving your documents.
+We will then review your application and issue your grant within 8 weeks.
 
 We'll email you if we need you to provide any more information.

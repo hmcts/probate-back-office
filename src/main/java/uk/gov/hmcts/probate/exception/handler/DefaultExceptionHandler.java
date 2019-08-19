@@ -9,13 +9,19 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import uk.gov.hmcts.probate.exception.BadRequestException;
+import uk.gov.hmcts.probate.exception.BusinessValidationException;
 import uk.gov.hmcts.probate.exception.ClientException;
 import uk.gov.hmcts.probate.exception.ConnectionException;
+import uk.gov.hmcts.probate.exception.NotFoundException;
 import uk.gov.hmcts.probate.exception.model.ErrorResponse;
+import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.service.notify.NotificationClientException;
+
+import java.util.Collections;
 
 import static net.logstash.logback.argument.StructuredArguments.keyValue;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.SERVICE_UNAVAILABLE;
 
 @Slf4j
@@ -25,6 +31,7 @@ class DefaultExceptionHandler extends ResponseEntityExceptionHandler {
     public static final String INVALID_REQUEST = "Invalid Request";
     public static final String CLIENT_ERROR = "Client Error";
     public static final String CONNECTION_ERROR = "Connection error";
+
 
     @ExceptionHandler(BadRequestException.class)
     public ResponseEntity<ErrorResponse> handle(BadRequestException exception) {
@@ -49,6 +56,15 @@ class DefaultExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(errorResponse, headers, HttpStatus.valueOf(errorResponse.getCode()));
     }
 
+    @ExceptionHandler(BusinessValidationException.class)
+    public ResponseEntity<CallbackResponse> handle(BusinessValidationException exception) {
+        log.warn(exception.getMessage());
+        CallbackResponse callbackResponse = CallbackResponse.builder()
+                .errors(Collections.singletonList(exception.getUserMessage()))
+                .build();
+        return ResponseEntity.ok(callbackResponse);
+    }
+
     @ExceptionHandler(ConnectionException.class)
     public ResponseEntity<ErrorResponse> handle(ConnectionException exception) {
         log.warn("Can't connect to service, response code: {}", exception.getMessage(), exception);
@@ -66,5 +82,14 @@ class DefaultExceptionHandler extends ResponseEntityExceptionHandler {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         return new ResponseEntity<>(errorResponse, headers, SERVICE_UNAVAILABLE);
+    }
+
+    @ExceptionHandler(value = NotFoundException.class)
+    public ResponseEntity<ErrorResponse> handle(NotFoundException exception) {
+        log.warn("Not found exception", exception);
+        ErrorResponse errorResponse = new ErrorResponse(NOT_FOUND.value(), CLIENT_ERROR, exception.getMessage());
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        return new ResponseEntity<>(errorResponse, headers, NOT_FOUND);
     }
 }

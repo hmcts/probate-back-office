@@ -137,7 +137,7 @@ public class PdfServiceHtmlTemplateTest {
     public void shouldGenerateCorrectHtml() throws Exception {
         Map<String, Object> valuesMap = objectMapper.readValue(jsonData, MapType.REFERENCE);
         String templateString = new String(Files.readAllBytes(Paths.get(getClass()
-                .getResource("/templates/pdf/legalStatement.html").toURI())));
+                .getResource("/templates/pdf/legalStatementProbate.html").toURI())));
         Writer writer = new StringWriter();
         PebbleTemplate pebbleTemplate = pebble.getTemplate(templateString);
         pebbleTemplate.evaluate(writer, valuesMap);

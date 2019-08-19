@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.Before;
 import org.junit.Test;
+import static org.mockito.Mockito.when;
+
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -15,7 +17,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import uk.gov.hmcts.probate.insights.AppInsights;
+import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
+import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
@@ -33,6 +37,7 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.hamcrest.Matchers.containsString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -50,6 +55,7 @@ public class BusinessValidationControllerTest {
     private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
     private static final String FORENAME = "Andy";
     private static final String SURNAME = "Michael";
+    private static final String MARITAL_STATUS = "Never married";
     private static final String SOLICITOR_APP_REFERENCE = "Reference";
     private static final String SOLICITOR_FIRM_NAME = "Legal Service Ltd";
     private static final String SOLICITOR_FIRM_LINE1 = "Aols Add Line1";
@@ -76,22 +82,33 @@ public class BusinessValidationControllerTest {
     private static final SolsAddress PRIMARY_ADDRESS = SolsAddress.builder().addressLine1(EX_ADD_LINE1).postCode(EX_ADD_PC).build();
     private static final String PRIMARY_APPLICANT_APPLYING = "Yes";
     private static final String PRIMARY_APPLICANT_HAS_ALIAS = "No";
+    private static final String PRIMARY_APPLICANT_EMAIL = "test@test.com";
     private static final String OTHER_EXEC_EXISTS = "No";
     private static final String WILL_EXISTS = "Yes";
+    private static final String WILL_TYPE_PROBATE = "WillLeft";
+    private static final String WILL_TYPE_INTESTACY = "NoWill";
+    private static final String WILL_TYPE_ADMON = "WillLeftAnnexed";
     private static final String WILL_ACCESS_ORIGINAL = "Yes";
     private static final String PRIMARY_FORENAMES = "ExFN";
     private static final String PRIMARY_SURNAME = "ExSN";
     private static final String DECEASED_OTHER_NAMES = "No";
     private static final String DECEASED_DOM_UK = "Yes";
+    private static final String RELATIONSHIP_TO_DECEASED = "SpouseOrCivil";
+    private static final String MINORITY_INTEREST = "No";
+    private static final String APPLICANT_SIBLINGS = "No";
     private static final String ANSWER_NO = "No";
 
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
-    private static final String CASE_VALIDATE_URL = "/case/validate";
+    private static final String SOLS_VALIDATE_URL = "/case/sols-validate";
+    private static final String SOLS_VALIDATE_PROBATE_URL = "/case/sols-validate-probate";
+    private static final String SOLS_VALIDATE_INTESTACY_URL = "/case/sols-validate-intestacy";
+    private static final String SOLS_VALIDATE_ADMON_URL = "/case/sols-validate-admon";
     private static final String CASE_VALIDATE_CASE_DETAILS_URL = "/case/validateCaseDetails";
     private static final String CASE_TRANSFORM_URL = "/case/transformCase";
     private static final String CASE_CHCEKLIST_URL = "/case/validateCheckListDetails";
     private static final String PAPER_FORM_URL = "/case/paperForm";
-    
+    private static final String RESOLVE_STOP_URL = "/case/resolveStop";
+
     private static final DocumentLink SCANNED_DOCUMENT_URL = DocumentLink.builder()
             .documentBinaryUrl("http://somedoc")
             .documentFilename("somedoc.pdf")
@@ -123,6 +140,7 @@ public class BusinessValidationControllerTest {
     @MockBean
     private AppInsights appInsights;
 
+
     @MockBean
     private PDFManagementService pdfManagementService;
 
@@ -153,6 +171,7 @@ public class BusinessValidationControllerTest {
                 .primaryApplicantIsApplying(PRIMARY_APPLICANT_APPLYING)
                 .primaryApplicantHasAlias(PRIMARY_APPLICANT_HAS_ALIAS)
                 .otherExecutorExists(OTHER_EXEC_EXISTS)
+                .solsWillType(WILL_TYPE_PROBATE)
                 .willExists(WILL_EXISTS)
                 .willAccessOriginal(WILL_ACCESS_ORIGINAL)
                 .ihtNetValue(NET)
@@ -177,22 +196,22 @@ public class BusinessValidationControllerTest {
 
     @Test
     public void shouldValidateWithDodIsNullError() throws Exception {
-        validateDodIsNullError(CASE_VALIDATE_URL);
+        validateDodIsNullError(SOLS_VALIDATE_URL);
     }
 
     @Test
     public void shouldValidateDobIsNullError() throws Exception {
-        validateDobIsNullError(CASE_VALIDATE_URL);
+        validateDobIsNullError(SOLS_VALIDATE_URL);
     }
 
     @Test
     public void shouldValidateWithForenameIsNullError() throws Exception {
-        validateForenameIsNullError(CASE_VALIDATE_URL);
+        validateForenameIsNullError(SOLS_VALIDATE_URL);
     }
 
     @Test
     public void shouldValidateWithSurnameIsNullError() throws Exception {
-        validateSurnameIsNullError(CASE_VALIDATE_URL);
+        validateSurnameIsNullError(SOLS_VALIDATE_URL);
     }
 
     @Test
@@ -203,13 +222,73 @@ public class BusinessValidationControllerTest {
 
         String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
         
-        mockMvc.perform(post(CASE_VALIDATE_URL).content(json).contentType(MediaType.APPLICATION_JSON_UTF8))
+        mockMvc.perform(post(SOLS_VALIDATE_URL).content(json).contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(status().isBadRequest())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.fieldErrors[0].param").value("callbackRequest"))
                 .andExpect(jsonPath("$.fieldErrors[0].field").value("caseDetails.data.ihtFormId"))
                 .andExpect(jsonPath("$.fieldErrors[0].code").value("NotBlank"))
                 .andExpect(jsonPath("$.fieldErrors[0].message").value("Solicitor IHT Form cannot be empty"));
+    }
+
+
+    @Test
+    public void shouldReturnProbateSuccess() throws Exception {
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
+        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
+
+        Document probateDocument = Document.builder().documentType(DocumentType.LEGAL_STATEMENT_PROBATE)
+                .documentLink(DocumentLink.builder().documentFilename("legalStatementProbate.pdf").build())
+                .build();
+        when(pdfManagementService.generateAndUpload(any(CallbackRequest.class), any(DocumentType.class)))
+                .thenReturn(probateDocument);
+        mockMvc.perform(post(SOLS_VALIDATE_PROBATE_URL).content(json).contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(jsonPath("$.data.solsLegalStatementDocument.document_filename").value("legalStatementProbate.pdf"));
+    }
+
+    @Test
+    public void shouldReturnIntestacySuccess() throws Exception {
+        caseDataBuilder.solsWillType(WILL_TYPE_INTESTACY);
+        caseDataBuilder.primaryApplicantEmailAddress(PRIMARY_APPLICANT_EMAIL);
+        caseDataBuilder.deceasedMaritalStatus(MARITAL_STATUS);
+        caseDataBuilder.solsApplicantRelationshipToDeceased(RELATIONSHIP_TO_DECEASED);
+        caseDataBuilder.solsMinorityInterest(MINORITY_INTEREST);
+        caseDataBuilder.solsApplicantSiblings(APPLICANT_SIBLINGS);
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
+        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
+
+        Document probateDocument = Document.builder().documentType(DocumentType.LEGAL_STATEMENT_INTESTACY)
+                .documentLink(DocumentLink.builder().documentFilename("legalStatementIntestacy.pdf").build())
+                .build();
+        when(pdfManagementService.generateAndUpload(any(CallbackRequest.class), any(DocumentType.class)))
+                .thenReturn(probateDocument);
+        mockMvc.perform(post(SOLS_VALIDATE_INTESTACY_URL).content(json).contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(jsonPath("$.data.solsLegalStatementDocument.document_filename").value("legalStatementIntestacy.pdf"));
+    }
+
+    @Test
+    public void shouldReturnAdmonSuccess() throws Exception {
+        caseDataBuilder.solsWillType(WILL_TYPE_ADMON);
+        caseDataBuilder.primaryApplicantEmailAddress(PRIMARY_APPLICANT_EMAIL);
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
+        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
+
+        Document probateDocument = Document.builder().documentType(DocumentType.LEGAL_STATEMENT_ADMON)
+                .documentLink(DocumentLink.builder().documentFilename("legalStatementAdmon.pdf").build())
+                .build();
+        when(pdfManagementService.generateAndUpload(any(CallbackRequest.class), any(DocumentType.class)))
+                .thenReturn(probateDocument);
+        mockMvc.perform(post(SOLS_VALIDATE_ADMON_URL).content(json).contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(jsonPath("$.data.solsLegalStatementDocument.document_filename").value("legalStatementAdmon.pdf"));
     }
 
     @Test
@@ -378,6 +457,46 @@ public class BusinessValidationControllerTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(content().string(containsString("controlNumber\":\"1234")))
                 .andExpect(content().string(containsString("fileName\":\"scanneddocument.pdf")));
+    }
+
+    @Test
+    public void shouldSetStateToCaseCreatedAfterResolveStateChoice() throws Exception {
+        String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadResolveStopForCaseCreated.json");
+
+        mockMvc.perform(post(RESOLVE_STOP_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.state").value("CaseCreated"))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
+    }
+
+    @Test
+    public void shouldSetStateToCasePrintedAfterResolveStateChoice() throws Exception {
+        String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadResolveStopCasePrinted.json");
+
+        mockMvc.perform(post(RESOLVE_STOP_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.state").value("CasePrinted"))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
+    }
+
+    @Test
+    public void shouldSetStateToReaddyForExaminationAfterResolveStateChoice() throws Exception {
+        String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadResolveStopReadyForExamination.json");
+
+        mockMvc.perform(post(RESOLVE_STOP_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.state").value("BOReadyForExamination"))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
+    }
+
+    @Test
+    public void shouldSetStateToExaminingAfterResolveStateChoice() throws Exception {
+        String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadResolveStopForExamining.json");
+
+        mockMvc.perform(post(RESOLVE_STOP_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.state").value("BOExamining"))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
     }
 }
 

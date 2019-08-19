@@ -21,7 +21,7 @@ management:
       show-details: always
       enabled: true
 
-authorised.services: probate_backend,ccd_data,ccd-datamgmt-api,ccd_ps,ccd
+authorised.services: probate_backend,ccd_data,ccd-datamgmt-api,ccd_ps,ccd,bulk_scan_processor
 auth.provider.service.client:
   key: AAAAAAAAAAAAAAAA
   baseUrl: http://localhost:4502
@@ -59,6 +59,18 @@ docmosis:
       templateName: FL-PRB-GNO-ENG-00025.docx
     grantCoversheet:
       templateName: FL-PRB-GNO-ENG-00024.docx
+    digitalGrantReissueDraft:
+      templateName: FL-PRB-GNO-ENG-00061.doc
+    intestacyGrantReissueDraft:
+      templateName: FL-PRB-GNO-ENG-00061.doc
+    admonWillGrantReissueDraft:
+      templateName: FL-PRB-GNO-ENG-00061.doc
+    digitalGrantReissue:
+      templateName: FL-PRB-GNO-ENG-00061.doc
+    intestacyGrantReissue:
+      templateName: FL-PRB-GNO-ENG-00061.doc
+    admonWillGrantReissue:
+      templateName: FL-PRB-GNO-ENG-00061.doc
 
 fee.api:
   url: http://localhost:4411
@@ -68,6 +80,7 @@ fee.api:
   jurisdiction2: probate registry
   channel: default
   applicantType: all
+  keyword: NewFee
 
 markdown.templatesDirectory: templates/markdown/
 
@@ -141,21 +154,23 @@ notifications:
       personal:
         documentReceived: "04308c65-a0bb-40b4-a3f3-ba8869048520"
         caseStopped: "58aed5cb-0aab-44f5-842f-9f0a6a150f72"
-        caseStoppedCaveat: "770cd2aa-a224-4d73-a787-1ba8bce7ba36"
+        caseStoppedCaveat: "937291a0-c0ae-40a4-a8cf-46a3452faff0"
         grantIssued: "9344693b-9ea3-487d-bec1-68201214fd27"
+        grantReissued: "1b094aae-1b4e-4161-9a61-f563a1a6ed6d"
         generalCaveatMessage: "afadf00e-c224-4da0-a6dc-fb47a2e5db67"
         excelaData: "fd474506-a272-4caa-ad61-6086cee0639a"
-        caveatRaised: "3000685b-344f-4c3e-9454-708f5c8fd342"
-        caveatRaisedCtsc: "0f1a9727-c636-4cae-8630-8220eb0bf657"
+        caveatRaised: "bf9dabd9-b22f-4cb6-b3aa-871ac8532209"
+        caveatRaisedCtsc: "ed01d79f-08f0-4703-8cec-f490e499fc33"
       solicitor:
         documentReceived: "7f8ff32d-8297-4702-9867-312047f81492"
         caseStopped: "77041301-77a5-4382-a3a7-0bada17518b0"
-        caseStoppedCaveat: "770cd2aa-a224-4d73-a787-1ba8bce7ba36"
+        caseStoppedCaveat: "937291a0-c0ae-40a4-a8cf-46a3452faff0"
         grantIssued: "95aa541b-e55e-4d7c-a6f5-810b5f03adba"
+        grantReissued: "1e18751f-fd4e-4893-85bb-f59cc5330c38"
         generalCaveatMessage: "afadf00e-c224-4da0-a6dc-fb47a2e5db67"
         excelaData: "fd474506-a272-4caa-ad61-6086cee0639a"
-        caveatRaised: "3000685b-344f-4c3e-9454-708f5c8fd342"
-        caveatRaisedCtsc: "0f1a9727-c636-4cae-8630-8220eb0bf657"
+        caveatRaised: "bf9dabd9-b22f-4cb6-b3aa-871ac8532209"
+        caveatRaisedCtsc: "ed01d79f-08f0-4703-8cec-f490e499fc33"
 
 registries:
   oxford:

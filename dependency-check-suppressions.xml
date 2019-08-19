@@ -199,6 +199,12 @@
     </suppress>
     <suppress>
         <notes><![CDATA[
+   file name: elasticsearch-6.4.3.jar
+   ]]></notes>
+        <cve>CVE-2019-7614</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
    file name: springfox-core-2.9.2.jar
    ]]></notes>
         <cve>CVE-2019-11065</cve>
@@ -228,5 +234,38 @@
    file name: tomcat-embed-core-9.0.16.jar
    ]]></notes>
         <cve>CVE-2019-0232</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: tomcat-embed-core-9.0.16.jar
+   ]]></notes>
+        <cve>CVE-2019-0221</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: tomcat-embed-core-9.0.16.jar
+   ]]></notes>
+        <cve>CVE-2019-10072</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: elasticsearch-6.4.3.jar
+   ]]></notes>
+        <gav regex="true">^org\.elasticsearch:elasticsearch:.*$</gav>
+        <cpe>cpe:/a:elasticsearch:elasticsearch</cpe>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: elasticsearch-6.4.3.jar
+   ]]></notes>
+        <gav regex="true">^org\.elasticsearch:elasticsearch:.*$</gav>
+        <cve>CVE-2019-7614</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: elasticsearch-6.4.3.jar
+   ]]></notes>
+        <gav regex="true">^org\.elasticsearch:elasticsearch:.*$</gav>
+        <cve>CVE-2019-7611</cve>
     </suppress>
 </suppressions>

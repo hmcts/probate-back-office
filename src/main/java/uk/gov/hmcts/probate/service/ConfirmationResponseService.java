@@ -5,11 +5,12 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import uk.gov.hmcts.probate.changerule.ChangeRule;
 import uk.gov.hmcts.probate.changerule.DomicilityRule;
 import uk.gov.hmcts.probate.changerule.ExecutorsRule;
+import uk.gov.hmcts.probate.changerule.MinorityRule;
+import uk.gov.hmcts.probate.changerule.ApplicantSiblingsRule;
 import uk.gov.hmcts.probate.changerule.NoOriginalWillRule;
-import uk.gov.hmcts.probate.changerule.NoWillRule;
+import uk.gov.hmcts.probate.changerule.ChangeRule;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
 import uk.gov.hmcts.probate.model.ccd.Executor;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
@@ -38,6 +39,9 @@ public class ConfirmationResponseService {
     private static final String REASON_FOR_NOT_APPLYING_DIED_BEFORE = "DiedBefore";
     private static final String REASON_FOR_NOT_APPLYING_DIED_AFTER = "DiedAfter";
     private static final String IHT_400421 = "IHT400421";
+    private static final String GRANT_TYPE_PROBATE = "WillLeft";
+    private static final String GRANT_TYPE_INTESTACY = "NoWill";
+
 
     @Value("${markdown.templatesDirectory}")
     private String templatesDirectory;
@@ -45,10 +49,11 @@ public class ConfirmationResponseService {
     private final MessageResourceService messageResourceService;
 
     private final MarkdownSubstitutionService markdownSubstitutionService;
-    private final NoWillRule noWillRule;
     private final NoOriginalWillRule noOriginalWillRule;
     private final DomicilityRule domicilityConfirmationResponseRule;
     private final ExecutorsRule executorsConfirmationResponseRule;
+    private final MinorityRule minorityConfirmationResponseRule;
+    private final ApplicantSiblingsRule applicantSiblingsConfirmationResponseRule;
 
     private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
@@ -61,24 +66,37 @@ public class ConfirmationResponseService {
     }
 
     private TemplateResponse generateStopBodyMarkdown(CaseData caseData) {
-        Optional<TemplateResponse> response = getStopBodyMarkdown(caseData, noWillRule, STOP_BODY);
+
+        Optional<TemplateResponse> response = getStopBodyMarkdown(caseData, domicilityConfirmationResponseRule, STOP_BODY);
         if (response.isPresent()) {
             return response.get();
         }
 
-        response = getStopBodyMarkdown(caseData, noOriginalWillRule, STOP_BODY);
-        if (response.isPresent()) {
-            return response.get();
+        if (!GRANT_TYPE_INTESTACY.equals(caseData.getSolsWillType())) {
+            response = getStopBodyMarkdown(caseData, noOriginalWillRule, STOP_BODY);
+            if (response.isPresent()) {
+                return response.get();
+            }
         }
 
-        response = getStopBodyMarkdown(caseData, domicilityConfirmationResponseRule, STOP_BODY);
-        if (response.isPresent()) {
-            return response.get();
+
+        if (GRANT_TYPE_PROBATE.equals(caseData.getSolsWillType())) {
+            response = getStopBodyMarkdown(caseData, executorsConfirmationResponseRule, STOP_BODY);
+            if (response.isPresent()) {
+                return response.get();
+            }
         }
 
-        response = getStopBodyMarkdown(caseData, executorsConfirmationResponseRule, STOP_BODY);
-        if (response.isPresent()) {
-            return response.get();
+        if (GRANT_TYPE_INTESTACY.equals(caseData.getSolsWillType())) {
+            response = getStopBodyMarkdown(caseData, minorityConfirmationResponseRule, STOP_BODY);
+            if (response.isPresent()) {
+                return response.get();
+            }
+
+            response = getStopBodyMarkdown(caseData, applicantSiblingsConfirmationResponseRule, STOP_BODY);
+            if (response.isPresent()) {
+                return response.get();
+            }
         }
 
         return response.orElseGet(() -> new TemplateResponse(null));
@@ -127,7 +145,6 @@ public class ConfirmationResponseService {
         keyValue.put("{{deceasedFirstname}}", ccdData.getDeceased().getFirstname());
         keyValue.put("{{deceasedLastname}}", ccdData.getDeceased().getLastname());
         keyValue.put("{{deceasedDateOfDeath}}", ccdData.getDeceased().getDateOfDeath().format(formatter));
-        keyValue.put("{{ihtForm}}", ccdData.getIht().getFormName());
         keyValue.put("{{paymentMethod}}", ccdData.getFee().getPaymentMethod());
         keyValue.put("{{paymentAmount}}", getAmountAsString(ccdData.getFee().getAmount()));
         keyValue.put("{{applicationFee}}", getAmountAsString(ccdData.getFee().getApplicationFee()));
@@ -135,16 +152,33 @@ public class ConfirmationResponseService {
         keyValue.put("{{feeForNonUkCopies}}", getOptionalAmountAsString(ccdData.getFee().getFeeForNonUkCopies()));
         keyValue.put("{{solsPaymentReferenceNumber}}", ccdData.getFee().getPaymentReferenceNumber());
 
+        String solsWillType = ccdData.getSolsWillType().toString();
+        String originalWill = "\n*   the original will";
+        if (solsWillType.equals(GRANT_TYPE_INTESTACY)) {
+            originalWill = "";
+        }
+        keyValue.put("{{originalWill}}", originalWill);
+
         String additionalInfo = ccdData.getSolsAdditionalInfo();
         if (Strings.isNullOrEmpty(additionalInfo)) {
             additionalInfo = "None provided";
         }
 
         String ihtFormValue = ccdData.getIht().getFormName();
+        String ihtText = "";
+        String ihtForm = "";
+        if (!ihtFormValue.contentEquals(IHT_400421)) {
+            ihtText = "\n*   completed inheritance tax form ";
+            ihtForm = ccdData.getIht().getFormName();
+        }
+
         String iht400 = "";
         if (ihtFormValue.contentEquals(IHT_400421)) {
             iht400 = "*   the stamped (receipted) IHT 421 with this application\n";
         }
+
+        keyValue.put("{{ihtText}}", ihtText);
+        keyValue.put("{{ihtForm}}", ihtForm);
         keyValue.put("{{iht400}}", iht400);
         keyValue.put("{{additionalInfo}}", additionalInfo);
         keyValue.put("{{renouncingExecutors}}", getRenouncingExecutors(ccdData.getExecutors()));

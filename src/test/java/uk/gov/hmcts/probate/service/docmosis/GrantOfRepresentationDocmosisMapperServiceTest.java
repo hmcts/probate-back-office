@@ -6,7 +6,6 @@ import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import uk.gov.hmcts.probate.config.PDFServiceConfiguration;
 import uk.gov.hmcts.probate.config.properties.registries.RegistriesProperties;
 import uk.gov.hmcts.probate.config.properties.registries.Registry;
 import uk.gov.hmcts.probate.model.CaseType;
@@ -18,9 +17,9 @@ import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
+import uk.gov.hmcts.probate.service.AddressFormatterService;
 import uk.gov.hmcts.probate.service.CaveatQueryService;
-import uk.gov.hmcts.probate.service.FileSystemResourceService;
-import uk.gov.hmcts.probate.service.FormatterService;
+import uk.gov.hmcts.probate.service.DateFormatterService;
 import uk.gov.hmcts.probate.service.ccd.CcdReferenceFormatterService;
 
 import java.text.DateFormat;
@@ -39,19 +38,13 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
 
-public class GrantOfRepresentationDocmosisServiceTest {
+public class GrantOfRepresentationDocmosisMapperServiceTest {
 
     @InjectMocks
-    private GrantOfRepresentationDocmosisService grantOfRepresentationDocmosisService;
+    private GrantOfRepresentationDocmosisMapperService grantOfRepresentationDocmosisMapperService;
 
     @Mock
     private RegistriesProperties registriesPropertiesMock;
-
-    @Mock
-    private PDFServiceConfiguration pdfServiceConfigurationMock;
-
-    @Mock
-    private FileSystemResourceService fileSystemResourceServiceMock;
 
     @Mock
     private CaveatQueryService caveatQueryServiceMock;
@@ -60,12 +53,19 @@ public class GrantOfRepresentationDocmosisServiceTest {
     private CcdReferenceFormatterService ccdReferenceFormatterServiceMock;
 
     @Mock
-    private FormatterService formatterServiceMock;
+    private GenericMapperService genericMapperService;
+
+    @Mock
+    private AddressFormatterService addressFormatterService;
+
+    @Mock
+    private DateFormatterService dateFormatterService;
 
     private static final String DATE_INPUT_FORMAT = "ddMMyyyy";
     private static final long ID = 1234567891234567L;
     private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
-    private static final String PERSONALISATION_DATE_CAVEAT_ENTERED = "dateCaveatEntered";
+    private static final LocalDate CAVEAT_EXPIRY_DATE = LocalDate.of(2019, 12, 31);
+    private static final String PERSONALISATION_CAVEAT_EXPIRY_DATE = "2019-12-31";
     private static final String PERSONALISATION_CAVEATOR_NAME = "caveatorName";
     private static final String PERSONALISATION_CAVEATOR_ADDRESS = "caveatorAddress";
     private static final String PERSONALISATION_CASE_REFERENCE = "caseReference";
@@ -73,6 +73,7 @@ public class GrantOfRepresentationDocmosisServiceTest {
     private static final String PERSONALISATION_REGISTRY = "registry";
     private static final String PERSONALISATION_PA8AURL = "PA8AURL";
     private static final String PERSONALISATION_PA8BURL = "PA8BURL";
+    private static final String PERSONALISATION_CAVEAT_REFERENCE = "caveatReference";
     private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     private CaveatData caveatData;
@@ -93,6 +94,7 @@ public class GrantOfRepresentationDocmosisServiceTest {
                 .registryLocation("leeds")
                 .build();
         caseDetails = new CaseDetails(caseData, LAST_MODIFIED, ID);
+        caseDetails.setRegistryTelephone("123456789");
 
         CollectionMember<CaseMatch> caseMatchMember = new CollectionMember<>(CaseMatch.builder().build());
         List<CollectionMember<CaseMatch>> caseMatch = new ArrayList<>();
@@ -119,10 +121,14 @@ public class GrantOfRepresentationDocmosisServiceTest {
                 .bulkPrintId(bulkPrintId)
                 .documentsGenerated(documentsGenerated)
                 .caveatorAddress(ProbateAddress.builder().proAddressLine1("addressLine1").build())
+                .expiryDate(CAVEAT_EXPIRY_DATE)
                 .build();
 
         when(caveatQueryServiceMock.findCaveatById(eq(CaseType.CAVEAT), any())).thenReturn(caveatData);
         when(registriesPropertiesMock.getRegistries()).thenReturn(registries);
+        when(addressFormatterService.formatAddress(any())).thenReturn(PERSONALISATION_CAVEATOR_ADDRESS);
+        when(dateFormatterService.formatCaveatExpiryDate(any())).thenReturn(PERSONALISATION_CAVEAT_EXPIRY_DATE);
+        when(genericMapperService.addCaseDataWithRegistryProperties(caseDetails)).thenReturn(mapper.convertValue(caseDetails, Map.class));
 
     }
 
@@ -130,7 +136,7 @@ public class GrantOfRepresentationDocmosisServiceTest {
     public void testCreateDataAsPlaceholders() {
         DateFormat generatedDateFormat = new SimpleDateFormat(DATE_INPUT_FORMAT);
 
-        Map<String, Object> placeholders = grantOfRepresentationDocmosisService.caseDataAsPlaceholders(caseDetails);
+        Map<String, Object> placeholders = grantOfRepresentationDocmosisMapperService.caseDataForStoppedMatchedCaveat(caseDetails);
 
         assertEquals(ccdReferenceFormatterServiceMock.getFormattedCaseReference("1234567891234567"),
                 placeholders.get(PERSONALISATION_CASE_REFERENCE));
@@ -138,16 +144,17 @@ public class GrantOfRepresentationDocmosisServiceTest {
         assertEquals(registries.get(
                 caseDetails.getData().getRegistryLocation().toLowerCase()),
                 placeholders.get(PERSONALISATION_REGISTRY));
-        assertEquals("www.gov.uk|https://www.gov.uk/inherits-someone-dies-without-will",
+        assertEquals("https://www.gov.uk/inherits-someone-dies-without-will|https://www.gov.uk/inherits-someone-dies-without-will",
                 placeholders.get(PERSONALISATION_PA8AURL));
-        assertEquals("www.citizensadvice.org.uk|https://www.citizensadvice.org.uk/",
+        assertEquals("https://www.citizensadvice.org.uk|https://www.citizensadvice.org.uk/",
                 placeholders.get(PERSONALISATION_PA8BURL));
-        assertEquals(formatterServiceMock.formatDate(caveatData.getApplicationSubmittedDate()),
-                placeholders.get(PERSONALISATION_DATE_CAVEAT_ENTERED));
         assertEquals("fred jones", placeholders.get(PERSONALISATION_CAVEATOR_NAME));
-        assertEquals(formatterServiceMock.formatAddress(caveatData.getCaveatorAddress()),
+        assertEquals("caveatorAddress",
                 placeholders.get(PERSONALISATION_CAVEATOR_ADDRESS));
-
+        assertEquals(PERSONALISATION_CAVEAT_EXPIRY_DATE,
+                placeholders.get("caveatExpiryDate"));
+        assertEquals(ccdReferenceFormatterServiceMock.getFormattedCaseReference("1234567891234567"),
+                placeholders.get(PERSONALISATION_CAVEAT_REFERENCE));
     }
 }
 

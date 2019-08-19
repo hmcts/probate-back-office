@@ -47,7 +47,8 @@ public class PDFGeneratorService {
         return new EvidenceManagementFileUpload(MediaType.APPLICATION_PDF, postResult);
     }
 
-    public EvidenceManagementFileUpload generateDocmosisDocumentFrom(String templateName, Map<String, Object> placeholders) {
+    public EvidenceManagementFileUpload generateDocmosisDocumentFrom(String templateName, Map<String, Object>
+            placeholders) {
         byte[] postResult;
         try {
             postResult = docmosisPdfGenerationService.generateDocFrom(templateName, placeholders);
@@ -57,7 +58,6 @@ public class PDFGeneratorService {
         }
         return new EvidenceManagementFileUpload(MediaType.APPLICATION_PDF, postResult);
     }
-
 
     private byte[] generateFromHtml(String templateName, String pdfGenerationData) throws IOException {
         String templatePath = pdfServiceConfiguration.getTemplatesDirectory() + templateName + TEMPLATE_EXTENSION;

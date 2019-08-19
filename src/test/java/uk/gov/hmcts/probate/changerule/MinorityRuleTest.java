@@ -12,10 +12,10 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
-public class NoWillRuleTest {
+public class MinorityRuleTest {
 
     @InjectMocks
-    private NoWillRule underTest;
+    private MinorityRule underTest;
 
     @Mock
     private CaseData caseDataMock;
@@ -26,23 +26,21 @@ public class NoWillRuleTest {
     }
 
     @Test
-    public void shouldChangeState() {
-        when(caseDataMock.getWillExists()).thenReturn("No");
+    public void shouldNeedChange() {
+        when(caseDataMock.getSolsMinorityInterest()).thenReturn("Yes");
 
         assertTrue(underTest.isChangeNeeded(caseDataMock));
     }
 
     @Test
-    public void shouldNotChangeState() {
-        when(caseDataMock.getWillExists()).thenReturn("Yes");
+    public void shouldNotNeedChange() {
+        when(caseDataMock.getSolsMinorityInterest()).thenReturn("No");
 
         assertFalse(underTest.isChangeNeeded(caseDataMock));
     }
 
     @Test
     public void shouldGetBodyMessageKey() {
-
-        assertEquals("willStopBodyNoWill", underTest.getConfirmationBodyMessageKey());
+        assertEquals("stopBodyMinorityInterest", underTest.getConfirmationBodyMessageKey());
     }
-
 }

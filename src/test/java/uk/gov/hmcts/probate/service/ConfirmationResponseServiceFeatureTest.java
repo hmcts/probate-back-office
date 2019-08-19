@@ -59,6 +59,8 @@ public class ConfirmationResponseServiceFeatureTest {
     private static final Long EXTRA_OUTSIDE_UK = 2L;
     private static final String PAYMENT_REFERENCE = "XXXXX123456";
     private static final String ADDITIONAL_INFO = "ADDITIONAL INFO";
+    private static final String WILL_TYPE_INTESTACY = "NoWill";
+    private static final String WILL_TYPE_PROBATE = "WillLeft";
 
     @Autowired
     private ConfirmationResponseService confirmationResponseService;
@@ -75,6 +77,16 @@ public class ConfirmationResponseServiceFeatureTest {
         AfterSubmitCallbackResponse stopConfirmation = confirmationResponseService.getNextStepsConfirmation(ccdData);
 
         String expectedConfirmationBody = testUtils.getStringFromFile("expectedConfirmationBody.md");
+
+        assertThat(stopConfirmation.getConfirmationBody(), is(expectedConfirmationBody));
+    }
+
+    @Test
+    public void shouldGenerateCorrectConfirmationBodyWithNoWill() throws Exception {
+        CCDData ccdData = createCCDataBuilder().solsWillType(WILL_TYPE_INTESTACY).build();
+        AfterSubmitCallbackResponse stopConfirmation = confirmationResponseService.getNextStepsConfirmation(ccdData);
+
+        String expectedConfirmationBody = testUtils.getStringFromFile("expectedConfirmationBodyWithNoWill.md");
 
         assertThat(stopConfirmation.getConfirmationBody(), is(expectedConfirmationBody));
     }
@@ -174,7 +186,8 @@ public class ConfirmationResponseServiceFeatureTest {
                 .iht(createInheritanceTax(IHT_FORM))
                 .fee(createFee())
                 .executors(new ArrayList<>())
-                .solsAdditionalInfo(ADDITIONAL_INFO);
+                .solsAdditionalInfo(ADDITIONAL_INFO)
+                .solsWillType(WILL_TYPE_PROBATE);
     }
 
     private Fee createFee() {

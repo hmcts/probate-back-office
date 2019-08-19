@@ -26,11 +26,12 @@ import java.util.Map;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyMap;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT_RAISED;
-import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT;
+import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE;
 
 @RunWith(MockitoJUnitRunner.class)
 public class PDFGeneratorServiceTest {
@@ -64,14 +65,15 @@ public class PDFGeneratorServiceTest {
 
         when(pdfServiceClientExceptionMock.getMessage()).thenReturn("blah");
         when(pdfServiceClient.generateFromHtml(any(), any())).thenReturn("MockedBytes".getBytes());
-        when(docmosisPdfGenerationServiceMock.generateDocFrom(any(), anyMap())).thenReturn("MockedBytes".getBytes());
+        when(docmosisPdfGenerationServiceMock.generateDocFrom(any(), anyMap()))
+                .thenReturn("MockedBytes".getBytes());
         when(fileSystemResourceServiceMock.getFileFromResourceAsString(anyString()))
                 .thenReturn("<htmlTemplate>");
     }
 
     @Test
     public void shouldGeneratePDFWithBytesAndPDFContentType() {
-        EvidenceManagementFileUpload result = underTest.generatePdf(LEGAL_STATEMENT, "{\"data\":\"value\"}");
+        EvidenceManagementFileUpload result = underTest.generatePdf(LEGAL_STATEMENT_PROBATE, "{\"data\":\"value\"}");
         Assert.assertThat(result.getContentType(), equalTo(MediaType.APPLICATION_PDF));
         Assert.assertThat(result.getBytes().length, greaterThan(0));
     }
@@ -97,7 +99,8 @@ public class PDFGeneratorServiceTest {
         placeholders.put("PA8AURL", "www.citizensadvice.org.uk|https://www.citizensadvice.org.uk/");
         placeholders.put("hmctsfamily", "image:base64:" + null);
 
-        EvidenceManagementFileUpload result = underTest.generateDocmosisDocumentFrom(CAVEAT_RAISED.getTemplateName(), placeholders);
+        EvidenceManagementFileUpload result = underTest.generateDocmosisDocumentFrom(CAVEAT_RAISED.getTemplateName(),
+                placeholders);
         Assert.assertThat(result.getContentType(), equalTo(MediaType.APPLICATION_PDF));
         Assert.assertThat(result.getBytes().length, greaterThan(0));
     }
@@ -105,13 +108,13 @@ public class PDFGeneratorServiceTest {
     @Test(expected = ClientException.class)
     public void shouldThrowClientException() {
         when(pdfServiceClient.generateFromHtml(any(byte[].class), anyMap())).thenThrow(pdfServiceClientExceptionMock);
-        underTest.generatePdf(LEGAL_STATEMENT, "{\"data\":\"value\"}");
+        underTest.generatePdf(LEGAL_STATEMENT_PROBATE, "{\"data\":\"value\"}");
     }
 
     @Test(expected = ClientException.class)
     public void shouldThrowPDFConnectionException() {
         when(pdfServiceClient.generateFromHtml(any(), any())).thenThrow(pdfServiceClientExceptionMock);
-        underTest.generatePdf(LEGAL_STATEMENT, "{\"data\":\"value\"}");
+        underTest.generatePdf(LEGAL_STATEMENT_PROBATE, "{\"data\":\"value\"}");
     }
 
     @Test(expected = ClientException.class)
@@ -135,7 +138,8 @@ public class PDFGeneratorServiceTest {
         placeholders.put("PA8AURL", "www.citizensadvice.org.uk|https://www.citizensadvice.org.uk/");
         placeholders.put("hmctsfamily", "image:base64:" + null);
 
-        when(docmosisPdfGenerationServiceMock.generateDocFrom(any(), any())).thenThrow(pdfServiceClientExceptionMock);
+        when(docmosisPdfGenerationServiceMock.generateDocFrom(any(), any()))
+                .thenThrow(pdfServiceClientExceptionMock);
         underTest.generateDocmosisDocumentFrom(CAVEAT_RAISED.getTemplateName(), placeholders);
     }
 }

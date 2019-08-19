@@ -37,6 +37,7 @@ Scenario('Caveat Workflow - E2E Test 04 - Caveat for a Personal Applicant - Rais
     I.enterCaveatPage1('create');
     I.enterCaveatPage2('create');
     I.enterCaveatPage3('create');
+    I.enterCaveatPage4('create');
     I.checkMyAnswers(nextStepName);
     let endState = 'Caveat raised';
     const url = await I.grabCurrentUrl();

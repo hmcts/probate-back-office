@@ -9,8 +9,8 @@ const eventSummaryConfig = require('src/test/end-to-end/pages/eventSummary/event
 const createWillLodgementConfig = require('src/test/end-to-end/pages/createWillLodgement/createWillLodgementConfig');
 const documentUploadConfig = require('src/test/end-to-end/pages/documentUpload/willLodgement/documentUploadConfig');
 const generateDepositReceiptConfig = require('src/test/end-to-end/pages/generateDepositReceipt/generateDepositReceiptConfig');
-const caseMatchesConfig = require('src/test/end-to-end/pages/caseMatches/willLodgement/caseMatchesConfig');
-const withdrawWillConfig = require('src/test/end-to-end/pages/withdrawal/willLodgement/withdrawalConfig');
+//const caseMatchesConfig = require('src/test/end-to-end/pages/caseMatches/willLodgement/caseMatchesConfig');
+//const withdrawWillConfig = require('src/test/end-to-end/pages/withdrawal/willLodgement/withdrawalConfig');
 
 const historyTabConfig = require('src/test/end-to-end/pages/caseDetails/willLodgement/historyTabConfig');
 
@@ -24,8 +24,8 @@ const executorTabUpdateConfig = require('src/test/end-to-end/pages/caseDetails/w
 
 const documentsTabUploadDocumentConfig = require('src/test/end-to-end/pages/caseDetails/willLodgement/documentsTabUploadDocumentConfig');
 const documentsTabGenerateDepositReceiptConfig = require('src/test/end-to-end/pages/caseDetails/willLodgement/documentsTabGenerateDepositReceiptConfig');
-const caseMatchesTabConfig = require('src/test/end-to-end/pages/caseDetails/willLodgement/caseMatchesTabConfig');
-const willWithdrawalDetailsTabConfig = require('src/test/end-to-end/pages/caseDetails/willLodgement/willWithdrawalDetailsTabConfig');
+//const caseMatchesTabConfig = require('src/test/end-to-end/pages/caseDetails/willLodgement/caseMatchesTabConfig');
+//const willWithdrawalDetailsTabConfig = require('src/test/end-to-end/pages/caseDetails/willLodgement/willWithdrawalDetailsTabConfig');
 
 Feature('Back Office').retry(testConfig.TestRetryFeatures);
 
@@ -41,7 +41,7 @@ Scenario('Will Lodgement Workflow - E2E test 01 - Will Lodgement for a Personal 
     I.enterWillLodgementPage2('create');
     I.enterWillLodgementPage3('create');
     I.checkMyAnswers(nextStepName);
-    let endState = 'Will lodgement created';
+    const endState = 'Will lodgement created';
 
     const url = await I.grabCurrentUrl();
     const caseRef = url.split('/')
@@ -89,21 +89,21 @@ Scenario('Will Lodgement Workflow - E2E test 01 - Will Lodgement for a Personal 
     generateDepositReceiptConfig.dateAdded = dateFns.format(new Date(), 'D MMM YYYY');
     I.seeCaseDetails(caseRef, documentsTabGenerateDepositReceiptConfig, generateDepositReceiptConfig);
 
-    nextStepName = 'Match application';
-    I.chooseNextStep(nextStepName);
-    I.selectCaseMatchesForWillLodgement(caseRef, caseMatchesConfig);
-    I.enterEventSummary(caseRef, nextStepName);
-    endState = 'Will lodged';
-    I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
-    I.seeCaseDetails(caseRef, caseMatchesTabConfig, caseMatchesConfig);
+    // nextStepName = 'Match application';
+    // I.chooseNextStep(nextStepName);
+    // I.selectCaseMatchesForWillLodgement(caseRef, caseMatchesConfig);
+    // I.enterEventSummary(caseRef, nextStepName);
+    // endState = 'Will lodged';
+    // I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+    // I.seeCaseDetails(caseRef, caseMatchesTabConfig, caseMatchesConfig);
 
-    nextStepName = 'Withdraw will';
-    I.chooseNextStep(nextStepName);
-    I.selectWithdrawalReason(caseRef, withdrawWillConfig);
-    I.enterEventSummary(caseRef, nextStepName);
-    endState = 'Will withdrawn';
-    I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
-    I.seeCaseDetails(caseRef, willWithdrawalDetailsTabConfig, withdrawWillConfig);
+    // nextStepName = 'Withdraw will';
+    // I.chooseNextStep(nextStepName);
+    // I.selectWithdrawalReason(caseRef, withdrawWillConfig);
+    // I.enterEventSummary(caseRef, nextStepName);
+    // endState = 'Will withdrawn';
+    // I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+    // I.seeCaseDetails(caseRef, willWithdrawalDetailsTabConfig, withdrawWillConfig);
 
     I.click('#sign-out');
 
