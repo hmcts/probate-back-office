@@ -85,6 +85,16 @@ public class DocumentGeneratorService {
         return coversheet;
     }
 
+    public Document generateRequestForInformation(CaseDetails caseDetails) {
+        log.info("Initiate call to generate information request letter for case id {}", caseDetails.getId());
+        Map<String, Object> placeholders = genericMapperService.addCaseDataWithRegistryProperties(caseDetails);
+        Document letter = pdfManagementService.generateDocmosisDocumentAndUpload(placeholders,
+                DocumentType.SOT_INFORMATION_REQUEST);
+        log.info("Successful response for letter for case id {}", caseDetails.getId());
+
+        return letter;
+    }
+
     private void expireDrafts(CallbackRequest callbackRequest) {
         log.info("Expiring drafts");
         DocumentType[] documentTypes = {DIGITAL_GRANT_DRAFT, INTESTACY_GRANT_DRAFT, ADMON_WILL_GRANT_DRAFT,

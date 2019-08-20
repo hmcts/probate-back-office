@@ -127,7 +127,8 @@ public class CallbackResponseTransformer {
         return transformResponse(responseCaseData);
     }
 
-    public CallbackResponse addInformationRequestDocuments(CallbackRequest callbackRequest, List<Document> documents) {
+    public CallbackResponse addInformationRequestDocuments(CallbackRequest callbackRequest, List<Document> documents,
+                                                           List<String> letterIds) {
         documents.forEach(document -> documentTransformer.addDocument(callbackRequest, document, false));
         ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), false);
 
@@ -136,9 +137,13 @@ public class CallbackResponseTransformer {
                     callbackRequest.getCaseDetails().getData().getBoEmailRequestInfoNotification());
         }
 
-        if (documentTransformer.hasDocumentWithType(documents, SOT_INFORMATION_REQUEST)) {
-            responseCaseDataBuilder.boRequestInfoSendToBulkPrintRequested(
-                    callbackRequest.getCaseDetails().getData().getBoRequestInfoSendToBulkPrint());
+        if (documentTransformer.hasDocumentWithType(documents, SOT_INFORMATION_REQUEST) && !letterIds.isEmpty()) {
+            CollectionMember<BulkPrint> bulkPrint = buildBulkPrint(letterIds.get(0), SOT_INFORMATION_REQUEST.getTemplateName());
+            appendToBulkPrintCollection(bulkPrint, callbackRequest.getCaseDetails().getData());
+            responseCaseDataBuilder
+                    .boRequestInfoSendToBulkPrintRequested(
+                            callbackRequest.getCaseDetails().getData().getBoRequestInfoSendToBulkPrint())
+                    .bulkPrintId(callbackRequest.getCaseDetails().getData().getBulkPrintId());
         }
 
         return transformResponse(responseCaseDataBuilder.build());

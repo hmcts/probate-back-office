@@ -477,6 +477,7 @@ public class CaseData {
     @Getter(lazy = true)
     private final String boEmailRequestInfoNotification = getDefaultValueForEmailNotifications();
 
+    @Getter(lazy = true)
     private final String boRequestInfoSendToBulkPrint = YES;
 
     private final String boRequestInfoSendToBulkPrintRequested;

@@ -30,6 +30,7 @@ import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
 import uk.gov.service.notify.NotificationClientException;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -162,13 +163,18 @@ public class NotificationController {
     @PostMapping(path = "/stopped-information-request")
     public ResponseEntity<CallbackResponse> informationRequest(@RequestBody CallbackRequest callbackRequest) {
 
-        List<Document> documents = new ArrayList<>();
+        List<Document> documents = new LinkedList<>();
+        List<String> letterIds = new ArrayList<>();
 
         if (callbackRequest.getCaseDetails().getData().isBoEmailRequestInfoNotificationRequested()) {
             documents = informationRequestService.emailInformationRequest(callbackRequest.getCaseDetails());
+        } else {
+            documents = informationRequestService.generateLetterWithCoversheet(callbackRequest);
+            letterIds = informationRequestService.getLetterId(documents, callbackRequest);
         }
 
-        return ResponseEntity.ok(callbackResponseTransformer.addInformationRequestDocuments(callbackRequest, documents));
+        return ResponseEntity.ok(callbackResponseTransformer.addInformationRequestDocuments(callbackRequest,
+                documents, letterIds));
     }
 
 }

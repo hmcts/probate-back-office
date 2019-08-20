@@ -1,14 +1,16 @@
 package uk.gov.hmcts.probate.service;
 
-import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ExecutorsApplyingNotification;
+import uk.gov.hmcts.probate.model.State;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
+import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
@@ -16,13 +18,13 @@ import uk.gov.hmcts.probate.validator.EmailAddressExecutorsApplyingValidationRul
 import uk.gov.service.notify.NotificationClientException;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
+import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
-@Slf4j
 public class InformationRequestServiceTest {
 
     @InjectMocks
@@ -32,74 +34,70 @@ public class InformationRequestServiceTest {
     private NotificationService notificationService;
 
     @Mock
-    private CallbackRequest callbackRequest;
-
-    @Mock
-    private CaseData caseData;
-
-    @Mock
-    private CaseDetails caseDetails;
-
-    @Mock
-    private Document document;
+    private DocumentGeneratorService documentGeneratorService;
 
     @Mock
     private EmailAddressExecutorsApplyingValidationRule emailAddressExecutorsApplyingValidationRule;
 
-    private Document sentEmail;
-    private List<Document> documents = new ArrayList<>();
+    @Mock
+    private BulkPrintService bulkPrintService;
 
-    private static final long ID = 1234567891234567L;
-    private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
-    private static final String SENT_EMAIL_FILE_NAME = "sentEmail.pdf";
+    private CaseDetails caseDetails;
+    private CaseData caseData;
+    private CallbackRequest callbackRequest;
+    private List<Document> documents;
 
-    private static final List<CollectionMember<ExecutorsApplyingNotification>> EXECUTORS_APPLYING = Arrays.asList(
-            new CollectionMember("id",
-                    ExecutorsApplyingNotification.builder()
-                            .name("fred")
-                            .email("test@test.com")
-                            .notification("yes")
-                            .build()));
+    private static final String[] LAST_MODIFIED = {"2018", "1", "2", "0", "0", "0", "0"};
+    private static final Long ID = 123456789L;
+    private static final SolsAddress ADDRESS =
+            SolsAddress.builder().addressLine1("Address line 1").postCode("AB1 2CD").build();
+    private static final Document GENERIC_DOCUMENT =
+            Document.builder().documentType(DocumentType.SOT_INFORMATION_REQUEST).build();
+    private static final Document COVERSHEET = Document.builder().documentType(DocumentType.GRANT_COVER).build();
 
     @Before
-    public void setUp() {
+    public void setup() throws NotificationClientException {
+        documents = new ArrayList<>();
         MockitoAnnotations.initMocks(this);
+        CollectionMember<ExecutorsApplyingNotification> execApplying = new CollectionMember<>("1",
+                ExecutorsApplyingNotification.builder()
+                        .email("test@test.com")
+                        .address(ADDRESS)
+                        .name("Fred Smith")
+                        .notification("Yes").build());
 
+        List<CollectionMember<ExecutorsApplyingNotification>> executorsApplying = new ArrayList<>();
+        executorsApplying.add(execApplying);
         caseData = CaseData.builder()
-                .registryLocation("leeds")
-                .deceasedForenames("name")
-                .deceasedSurname("name")
-                .executorsApplyingNotifications(EXECUTORS_APPLYING)
-                .build();
+                .executorsApplyingNotifications(executorsApplying)
+                .boRequestInfoSendToBulkPrintRequested("Yes").build();
+        caseDetails = new CaseDetails(caseData, LAST_MODIFIED, ID);
+        callbackRequest = new CallbackRequest(caseDetails);
+        documents.add(COVERSHEET);
+        documents.add(GENERIC_DOCUMENT);
 
-        sentEmail = Document.builder().documentFileName(SENT_EMAIL_FILE_NAME).build();
-
-
-        when(caseDetails.getData()).thenReturn(caseData);
-        when(callbackRequest.getCaseDetails()).thenReturn(caseDetails);
-
+        when(notificationService.sendEmail(eq(State.CASE_STOPPED_REQUEST_INFORMATION), eq(caseDetails), any()))
+                .thenReturn(GENERIC_DOCUMENT);
+        when(documentGeneratorService.generateCoversheet(callbackRequest)).thenReturn(COVERSHEET);
+        when(documentGeneratorService.generateRequestForInformation(caseDetails)).thenReturn(GENERIC_DOCUMENT);
+        when(bulkPrintService.sendToBulkPrint(callbackRequest, COVERSHEET, GENERIC_DOCUMENT, true))
+                .thenReturn("123");
     }
 
     @Test
-    public void shouldEmailInformationRequestSuccessful() throws NotificationClientException {
-
-        caseDetails = new CaseDetails(caseData, LAST_MODIFIED, ID);
-
-        when(notificationService.sendEmail(any(), any(), any())).thenReturn(sentEmail);
-
-        informationRequestService.emailInformationRequest(caseDetails);
-
+    public void testEmailInformationRequestSuccessful() {
+        assertEquals(GENERIC_DOCUMENT,
+                informationRequestService.emailInformationRequest(caseDetails).get(0));
     }
 
     @Test
-    public void shouldThrowNotificationClientExceptionEmailInformationRequest() throws NotificationClientException {
+    public void testGenerateLetterWithCoversheetReturnsSuccessful() {
+        assertEquals(documents, informationRequestService.generateLetterWithCoversheet(callbackRequest));
+    }
 
-        caseDetails = new CaseDetails(caseData, LAST_MODIFIED, ID);
-
-        when(notificationService.sendEmail(any(), any(), any())).thenReturn(sentEmail).thenThrow(NotificationClientException.class);
-
-        informationRequestService.emailInformationRequest(caseDetails);
-
+    @Test
+    public void testGetLetterIdReturnsSuccessful() {
+        assertEquals("123", informationRequestService.getLetterId(documents, callbackRequest).get(0));
     }
 
 }

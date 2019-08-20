@@ -1453,7 +1453,7 @@ public class CallbackResponseTransformerTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
         CallbackResponse callbackResponse = underTest.addInformationRequestDocuments(callbackRequestMock,
-                Arrays.asList(document));
+                Arrays.asList(document), Arrays.asList("123"));
         assertEquals(SENT_EMAIL.getTemplateName(),
                 callbackResponse.getData().getProbateNotificationsGenerated().get(0).getValue().getDocumentFileName());
         assertEquals("Yes", callbackResponse.getData().getBoEmailRequestInfoNotificationRequested());
@@ -1472,7 +1472,7 @@ public class CallbackResponseTransformerTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
         CallbackResponse callbackResponse = underTest.addInformationRequestDocuments(callbackRequestMock,
-                Arrays.asList(document));
+                Arrays.asList(document), Arrays.asList("123"));
         assertEquals(SOT_INFORMATION_REQUEST.getTemplateName(),
                 callbackResponse.getData().getProbateDocumentsGenerated().get(0).getValue().getDocumentFileName());
         assertEquals("Yes", callbackResponse.getData().getBoEmailRequestInfoNotificationRequested());

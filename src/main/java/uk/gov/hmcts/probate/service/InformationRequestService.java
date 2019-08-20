@@ -4,11 +4,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.validator.EmailAddressExecutorsApplyingValidationRule;
 import uk.gov.service.notify.NotificationClientException;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import static uk.gov.hmcts.probate.model.State.CASE_STOPPED_REQUEST_INFORMATION;
@@ -20,9 +22,12 @@ public class InformationRequestService {
 
     private final NotificationService notificationService;
     private final EmailAddressExecutorsApplyingValidationRule emailAddressExecutorsApplyingValidationRule;
+    private final DocumentGeneratorService documentGeneratorService;
+    private final BulkPrintService bulkPrintService;
+    private List<Document> documents;
 
     public List<Document> emailInformationRequest(CaseDetails caseDetails) {
-        List<Document> documents = new ArrayList<>();
+        documents = new ArrayList<>();
         emailAddressExecutorsApplyingValidationRule.validateEmails(caseDetails);
 
         caseDetails.getData().getExecutorsApplyingNotifications().forEach(executor -> {
@@ -38,5 +43,22 @@ public class InformationRequestService {
         });
 
         return documents;
+    }
+
+    public List<Document> generateLetterWithCoversheet(CallbackRequest callbackRequest) {
+        documents = new LinkedList<>();
+        documents.add(documentGeneratorService.generateCoversheet(callbackRequest));
+        documents.add(documentGeneratorService.generateRequestForInformation(callbackRequest.getCaseDetails()));
+
+        return documents;
+    }
+
+    public List<String> getLetterId(List<Document> documents, CallbackRequest callbackRequest) {
+        List<String> letterIds = new ArrayList<>();
+        String letterId = bulkPrintService.sendToBulkPrint(callbackRequest, documents.get(0), documents.get(1),
+                callbackRequest.getCaseDetails().getData().isBoRequestInfoSendToBulkPrintRequested());
+
+        letterIds.add(letterId);
+        return letterIds;
     }
 }

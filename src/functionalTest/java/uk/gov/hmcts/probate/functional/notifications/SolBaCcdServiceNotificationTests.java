@@ -125,6 +125,15 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
         validatePostSuccess("personalPayloadNotifications.json", INFORMATION_REQUEST_DEFAULT_VALUES);
     }
 
+    @Test
+    public void test() {
+        String document = generateDocument("personalPayloadNotificationsNoEmailRequested.json", INFORMATION_REQUEST,
+                0);
+        String document1 = generateDocument("personalPayloadNotificationsNoEmailRequested.json", INFORMATION_REQUEST,
+                1);
+        verifyPAEmailInformationRequestRedec(document1);
+    }
+
 
     private String sendEmail(String fileName, String url, String jsonDocumentUrl) {
         ResponseBody body = validatePostSuccess(fileName, url);
@@ -190,5 +199,22 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
         assertTrue(document.contains("Birmingham"));
         assertTrue(document.contains(BIRMINGHAM_NO));
         assertTrue(document.contains("Declaration"));
+    }
+
+    private String generateDocument(String jsonFileName, String path, int placeholder) {
+
+        Response jsonResponse = SerenityRest.given()
+                .relaxedHTTPSValidation()
+                .headers(utils.getHeadersWithUserId())
+                .body(utils.getJsonFromFile(jsonFileName))
+                .when().post(path).andReturn();
+
+        JsonPath jsonPath = JsonPath.from(jsonResponse.getBody().asString());
+        String documentUrl = jsonPath.get("data.probateDocumentsGenerated["
+                + placeholder
+                + "].value.DocumentLink.document_binary_url");
+        String response = utils.downloadPdfAndParseToString(documentUrl);
+        response = response.replace("\n", "").replace("\r", "");
+        return response;
     }
 }
