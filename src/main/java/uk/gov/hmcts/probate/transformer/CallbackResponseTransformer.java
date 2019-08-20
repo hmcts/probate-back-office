@@ -436,6 +436,10 @@ public class CallbackResponseTransformer {
         return !(caseData.getSolsWillType() != null && caseData.getSolsWillType().equals(NO_WILL));
     }
 
+    private boolean isIntestacy(CaseData caseData) {
+        return caseData.getSolsWillType() != null && caseData.getSolsWillType().equals(NO_WILL);
+    }
+
     private ResponseCaseDataBuilder getCaseCreatorResponseCaseBuilder(CaseData caseData, ResponseCaseDataBuilder builder) {
 
         builder
@@ -568,6 +572,11 @@ public class CallbackResponseTransformer {
                     .willExists(ANSWER_NO);
         }
 
+        if (isIntestacy(caseData)) {
+            builder
+                    .primaryApplicantIsApplying(ANSWER_YES);
+        }
+
         if (caseData.getCaseType() == null) {
             builder
                     .caseType(CASE_TYPE_DEFAULT);
@@ -641,6 +650,11 @@ public class CallbackResponseTransformer {
         } else {
             builder
                     .willExists(ANSWER_NO);
+        }
+
+        if (isIntestacy(caseData)) {
+            builder
+                    .primaryApplicantIsApplying(ANSWER_YES);
         }
 
         if (caseData.getCaseType() == null) {
