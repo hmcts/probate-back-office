@@ -12,6 +12,7 @@ import uk.gov.hmcts.probate.exception.BadRequestException;
 import uk.gov.hmcts.probate.exception.BusinessValidationException;
 import uk.gov.hmcts.probate.exception.ClientException;
 import uk.gov.hmcts.probate.exception.ConnectionException;
+import uk.gov.hmcts.probate.exception.NotFoundException;
 import uk.gov.hmcts.probate.exception.model.ErrorResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.service.notify.NotificationClientException;
@@ -20,6 +21,7 @@ import java.util.Collections;
 
 import static net.logstash.logback.argument.StructuredArguments.keyValue;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.SERVICE_UNAVAILABLE;
 
 @Slf4j
@@ -80,5 +82,14 @@ class DefaultExceptionHandler extends ResponseEntityExceptionHandler {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         return new ResponseEntity<>(errorResponse, headers, SERVICE_UNAVAILABLE);
+    }
+
+    @ExceptionHandler(value = NotFoundException.class)
+    public ResponseEntity<ErrorResponse> handle(NotFoundException exception) {
+        log.warn("Not found exception", exception);
+        ErrorResponse errorResponse = new ErrorResponse(NOT_FOUND.value(), CLIENT_ERROR, exception.getMessage());
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        return new ResponseEntity<>(errorResponse, headers, NOT_FOUND);
     }
 }

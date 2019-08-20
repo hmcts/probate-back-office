@@ -64,6 +64,6 @@ What happens next
 
 When we've received your documents we'll start to process your application.
 
-You will receive your grant of probate, plus any extra copies you've ordered, within 20 working days of us receiving your documents.
+We will then review your application and issue your grant within 8 weeks.
 
 We'll email you if we need you to provide any more information.
