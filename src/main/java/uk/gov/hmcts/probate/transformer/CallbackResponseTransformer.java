@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 import uk.gov.hmcts.probate.model.ApplicationType;
+import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
@@ -22,11 +23,10 @@ import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData.ResponseCase
 import uk.gov.hmcts.probate.model.fee.FeeServiceResponse;
 
 import java.math.BigDecimal;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -34,26 +34,33 @@ import java.util.stream.Collectors;
 import static java.util.Collections.EMPTY_LIST;
 import static java.util.Optional.ofNullable;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
-import static uk.gov.hmcts.probate.model.Constants.CASE_TYPE_DEFAULT;
 import static uk.gov.hmcts.probate.model.Constants.CTSC;
 import static uk.gov.hmcts.probate.model.Constants.DATE_OF_DEATH_TYPE_DEFAULT;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT_STOPPED;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT;
-import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT;
+import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_REISSUE;
+import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_ADMON;
+import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_INTESTACY;
+import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE;
 import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
+import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.Constants.GRANT_OF_PROBATE_NAME;
 
 @Component
 @RequiredArgsConstructor
 public class CallbackResponseTransformer {
 
+    private static final String CASE_TYPE_DEFAULT = GRANT_OF_PROBATE_NAME;
     private final DocumentTransformer documentTransformer;
 
     static final String PAYMENT_METHOD_VALUE_FEE_ACCOUNT = "fee account";
     static final String PAYMENT_REFERENCE_FEE_PREFIX = "Fee account PBA-";
     static final String PAYMENT_REFERENCE_CHEQUE = "Cheque (payable to ‘HM Courts & Tribunals Service’)";
 
+    private static final DocumentType[] LEGAL_STATEMENTS = {LEGAL_STATEMENT_PROBATE, LEGAL_STATEMENT_INTESTACY, LEGAL_STATEMENT_ADMON};
     private static final ApplicationType DEFAULT_APPLICATION_TYPE = SOLICITOR;
     private static final String DEFAULT_REGISTRY_LOCATION = CTSC;
     private static final String DEFAULT_IHT_FORM_ID = "IHT205";
@@ -61,6 +68,7 @@ public class CallbackResponseTransformer {
     private static final String CASE_PRINTED = "CasePrinted";
     private static final String READY_FOR_EXAMINATION = "BOReadyForExamination";
     private static final String EXAMINING = "BOExamining";
+    private static final String NO_WILL = "NoWill";
 
     public static final String ANSWER_YES = "Yes";
     public static final String ANSWER_NO = "No";
@@ -81,7 +89,7 @@ public class CallbackResponseTransformer {
     public CallbackResponse caseStopped(CallbackRequest callbackRequest, List<Document> documents, String letterId) {
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
         CaseData caseData = caseDetails.getData();
-        documents.forEach(document -> documentTransformer.addDocument(callbackRequest, document));
+        documents.forEach(document -> documentTransformer.addDocument(callbackRequest, document, true));
 
         ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), false);
 
@@ -103,7 +111,9 @@ public class CallbackResponseTransformer {
     }
 
     public CallbackResponse addDocuments(CallbackRequest callbackRequest, List<Document> documents, String letterId, String pdfSize) {
-        documents.forEach(document -> documentTransformer.addDocument(callbackRequest, document));
+        CaseDetails caseDetails = callbackRequest.getCaseDetails();
+        CaseData caseData = caseDetails.getData();
+        documents.forEach(document -> documentTransformer.addDocument(callbackRequest, document, false));
         ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), false);
 
         if (documents.isEmpty()) {
@@ -115,8 +125,7 @@ public class CallbackResponseTransformer {
                 || documentTransformer.hasDocumentWithType(documents, ADMON_WILL_GRANT)
                 || documentTransformer.hasDocumentWithType(documents, INTESTACY_GRANT)) {
 
-            DateFormat targetFormat = new SimpleDateFormat(DATE_FORMAT);
-            String grantIssuedDate = targetFormat.format(new Date());
+            String grantIssuedDate = dateTimeFormatter.format(LocalDate.now());
             responseCaseDataBuilder
                     .boEmailGrantIssuedNotificationRequested(
                             callbackRequest.getCaseDetails().getData().getBoEmailGrantIssuedNotification())
@@ -131,7 +140,29 @@ public class CallbackResponseTransformer {
             responseCaseDataBuilder.boEmailDocsReceivedNotificationRequested(
                     callbackRequest.getCaseDetails().getData().getBoEmailDocsReceivedNotification());
         }
-        responseCaseDataBuilder.solsSOTNeedToUpdate(null);
+
+        if (documentTransformer.hasDocumentWithType(documents, DIGITAL_GRANT_REISSUE)
+                || documentTransformer.hasDocumentWithType(documents, ADMON_WILL_GRANT_REISSUE)
+                || documentTransformer.hasDocumentWithType(documents, INTESTACY_GRANT_REISSUE)) {
+            if (letterId != null) {
+                DocumentType[] documentTypes = {DIGITAL_GRANT_REISSUE, ADMON_WILL_GRANT_REISSUE, INTESTACY_GRANT_REISSUE};
+                String templateName = getTemplateName(documents, documentTypes);
+                CollectionMember<BulkPrint> bulkPrint = buildBulkPrint(letterId, templateName);
+                appendToBulkPrintCollection(bulkPrint, caseData);
+                responseCaseDataBuilder
+                        .bulkPrintId(caseData.getBulkPrintId());
+            }
+            String grantReissuedDate = dateTimeFormatter.format(LocalDate.now());
+            responseCaseDataBuilder
+                    .latestGrantReissueDate(grantReissuedDate)
+                    .boEmailGrantReissuedNotificationRequested(
+                            callbackRequest.getCaseDetails().getData().getBoEmailGrantReissuedNotification())
+                    .boGrantReissueSendToBulkPrintRequested(
+                            callbackRequest.getCaseDetails().getData().getBoGrantReissueSendToBulkPrint());
+        }
+
+        responseCaseDataBuilder
+                .solsSOTNeedToUpdate(null);
 
         return transformResponse(responseCaseDataBuilder.build());
     }
@@ -180,16 +211,13 @@ public class CallbackResponseTransformer {
     }
 
 
-
-
     public CallbackResponse transformForSolicitorComplete(CallbackRequest callbackRequest, FeeServiceResponse feeServiceResponse) {
         String feeForNonUkCopies = transformMoneyGBPToString(feeServiceResponse.getFeeForNonUkCopies());
         String feeForUkCopies = transformMoneyGBPToString(feeServiceResponse.getFeeForUkCopies());
         String applicationFee = transformMoneyGBPToString(feeServiceResponse.getApplicationFee());
         String totalFee = transformMoneyGBPToString(feeServiceResponse.getTotal());
 
-        DateFormat targetFormat = new SimpleDateFormat(DATE_FORMAT);
-        String applicationSubmittedDate = targetFormat.format(new Date());
+        String applicationSubmittedDate = dateTimeFormatter.format(LocalDate.now());
         ResponseCaseData responseCaseData = getResponseCaseData(callbackRequest.getCaseDetails(), false)
                 .feeForNonUkCopies(feeForNonUkCopies)
                 .feeForUkCopies(feeForUkCopies)
@@ -201,12 +229,13 @@ public class CallbackResponseTransformer {
         return transformResponse(responseCaseData);
     }
 
-    public CallbackResponse transform(CallbackRequest callbackRequest, Document document) {
+    public CallbackResponse transform(CallbackRequest callbackRequest, Document document, String caseType) {
         ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), false);
         responseCaseDataBuilder.solsSOTNeedToUpdate(null);
 
-        if (LEGAL_STATEMENT.equals(document.getDocumentType())) {
+        if (Arrays.asList(LEGAL_STATEMENTS).contains(document.getDocumentType())) {
             responseCaseDataBuilder.solsLegalStatementDocument(document.getDocumentLink());
+            responseCaseDataBuilder.caseType(caseType);
         }
 
         return transformResponse(responseCaseDataBuilder.build());
@@ -245,7 +274,6 @@ public class CallbackResponseTransformer {
 
         return transformResponse(responseCaseDataBuilder.build());
     }
-
 
     private CallbackResponse transformResponse(ResponseCaseData responseCaseData) {
         return CallbackResponse.builder().data(responseCaseData).build();
@@ -342,6 +370,12 @@ public class CallbackResponseTransformer {
 
                 .paperForm(caseData.getPaperForm())
                 .caseType(caseData.getCaseType())
+                .solsWillType(caseData.getSolsWillType())
+                .solsApplicantRelationshipToDeceased(caseData.getSolsApplicantRelationshipToDeceased())
+                .solsSpouseOrCivilRenouncing(caseData.getSolsSpouseOrCivilRenouncing())
+                .solsAdoptedEnglandOrWales(caseData.getSolsAdoptedEnglandOrWales())
+                .solsMinorityInterest(caseData.getSolsMinorityInterest())
+                .solsApplicantSiblings(caseData.getSolsApplicantSiblings())
 
                 .boCaveatStopNotificationRequested(caseData.getBoCaveatStopNotificationRequested())
                 .boCaveatStopNotification(caseData.getBoCaveatStopNotification())
@@ -352,12 +386,21 @@ public class CallbackResponseTransformer {
                 .boCaveatStopEmailNotification(caseData.getBoCaveatStopEmailNotification())
                 .boCaveatStopSendToBulkPrintRequested(caseData.getBoCaveatStopSendToBulkPrintRequested())
                 .boCaveatStopSendToBulkPrint(caseData.getBoCaveatStopSendToBulkPrint())
+                .boEmailGrantReissuedNotification(caseData.getBoEmailGrantReissuedNotification())
+                .boEmailDocsReceivedNotificationRequested(caseData.getBoEmailDocsReceivedNotificationRequested())
+                .boGrantReissueSendToBulkPrint(caseData.getBoGrantReissueSendToBulkPrint())
+                .boGrantReissueSendToBulkPrintRequested(caseData.getBoGrantReissueSendToBulkPrintRequested())
 
                 .recordId(caseData.getRecordId())
                 .legacyType(caseData.getLegacyType())
                 .legacyCaseViewUrl(caseData.getLegacyCaseViewUrl())
                 .grantIssuedDate(caseData.getGrantIssuedDate())
                 .dateOfDeathType(caseData.getDateOfDeathType())
+                .orderNeeded(caseData.getOrderNeeded())
+                .reissueReason(caseData.getReissueReason())
+                .reissueDate(caseData.getReissueDate())
+                .reissueReasonNotation(caseData.getReissueReasonNotation())
+                .latestGrantReissueDate(caseData.getLatestGrantReissueDate())
                 .bulkPrintId(caseData.getBulkPrintId())
 
                 .deceasedDivorcedInEnglandOrWales(caseData.getDeceasedDivorcedInEnglandOrWales())
@@ -386,7 +429,15 @@ public class CallbackResponseTransformer {
     }
 
     private boolean isPaperForm(CaseData caseData) {
-        return (caseData.getPaperForm() != null && caseData.getPaperForm().equals(ANSWER_YES));
+        return ANSWER_YES.equals(caseData.getPaperForm());
+    }
+
+    private boolean willExists(CaseData caseData) {
+        return !(NO_WILL.equals(caseData.getSolsWillType()));
+    }
+
+    private boolean isIntestacy(CaseData caseData) {
+        return NO_WILL.equals(caseData.getSolsWillType());
     }
 
     private ResponseCaseDataBuilder getCaseCreatorResponseCaseBuilder(CaseData caseData, ResponseCaseDataBuilder builder) {
@@ -395,7 +446,7 @@ public class CallbackResponseTransformer {
                 .primaryApplicantSecondPhoneNumber(caseData.getPrimaryApplicantSecondPhoneNumber())
                 .primaryApplicantRelationshipToDeceased(caseData.getPrimaryApplicantRelationshipToDeceased())
                 .paRelationshipToDeceasedOther(caseData.getPaRelationshipToDeceasedOther())
-                .deceasedMartialStatus(caseData.getDeceasedMartialStatus())
+                .deceasedMaritalStatus(caseData.getDeceasedMaritalStatus())
                 .willDatedBeforeApril(caseData.getWillDatedBeforeApril())
                 .deceasedEnterMarriageOrCP(caseData.getDeceasedEnterMarriageOrCP())
                 .dateOfMarriageOrCP(caseData.getDateOfMarriageOrCP())
@@ -513,6 +564,19 @@ public class CallbackResponseTransformer {
                     .paperForm(ANSWER_NO);
         }
 
+        if (willExists(caseData)) {
+            builder
+                    .willExists(ANSWER_YES);
+        } else {
+            builder
+                    .willExists(ANSWER_NO);
+        }
+
+        if (isIntestacy(caseData)) {
+            builder
+                    .primaryApplicantIsApplying(ANSWER_YES);
+        }
+
         if (caseData.getCaseType() == null) {
             builder
                     .caseType(CASE_TYPE_DEFAULT);
@@ -578,6 +642,19 @@ public class CallbackResponseTransformer {
         if (!isPaperForm(caseData)) {
             builder
                     .paperForm(ANSWER_NO);
+        }
+
+        if (willExists(caseData)) {
+            builder
+                    .willExists(ANSWER_YES);
+        } else {
+            builder
+                    .willExists(ANSWER_NO);
+        }
+
+        if (isIntestacy(caseData)) {
+            builder
+                    .primaryApplicantIsApplying(ANSWER_YES);
         }
 
         if (caseData.getCaseType() == null) {
@@ -711,5 +788,31 @@ public class CallbackResponseTransformer {
                 .sendLetterId(letterId)
                 .templateName(templateName)
                 .build());
+    }
+
+    private List<CollectionMember<BulkPrint>> appendToBulkPrintCollection(
+            CollectionMember<BulkPrint> bulkPrintCollectionMember, CaseData caseData) {
+        if (caseData.getBulkPrintId() == null) {
+            caseData.setBulkPrintId(Arrays.asList(
+                    bulkPrintCollectionMember));
+
+        } else {
+            caseData.getBulkPrintId().add(bulkPrintCollectionMember);
+        }
+        return caseData.getBulkPrintId();
+    }
+
+    private String getTemplateName(List<Document> documents, DocumentType[] documentTypes) {
+        String templateName = null;
+
+        for (DocumentType documentType : documentTypes) {
+            for (int i = 0; i < documents.size(); i++) {
+                if (documents.get(i).getDocumentType().getTemplateName().equals(documentType.getTemplateName())) {
+                    templateName = documentType.getTemplateName();
+                    break;
+                }
+            }
+        }
+        return templateName;
     }
 }

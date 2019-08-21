@@ -6,17 +6,14 @@ import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 import uk.gov.hmcts.probate.config.CCDDataStoreAPIConfiguration;
-import uk.gov.hmcts.probate.exception.BadRequestException;
 import uk.gov.hmcts.probate.exception.BusinessValidationException;
 import uk.gov.hmcts.probate.exception.CaseMatchingException;
-import uk.gov.hmcts.probate.exception.ClientException;
 import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.CaseType;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
@@ -43,7 +40,10 @@ public class CaveatQueryService {
     private static final String AUTHORIZATION = "Authorization";
     private static final String CASE_TYPE_ID = "ctid";
     private static final String REFERENCE = "reference";
+    private static final String PA_APP_CREATED = "PAAppCreated";
+    private static final String STATE = "state";
     private static final String CAVEAT_NOT_FOUND_CODE = "caveatNotFound";
+
     private final RestTemplate restTemplate;
     private final AppInsights appInsights;
     private final HttpHeadersFactory headers;
@@ -66,14 +66,16 @@ public class CaveatQueryService {
         BoolQueryBuilder query = boolQuery();
 
         query.must(matchQuery(REFERENCE, caveatId));
+        query.mustNot(matchQuery(STATE, PA_APP_CREATED));
 
         String jsonQuery = new SearchSourceBuilder().query(query).toString();
 
         List<ReturnedCaveatDetails> foundCaveats = runQuery(caseType, jsonQuery);
         if (foundCaveats.size() != 1) {
             String[] args = {caveatId};
-            String message = businessValidationMessageRetriever.getMessage(CAVEAT_NOT_FOUND_CODE, args, Locale.UK);
-            throw new BusinessValidationException(message);
+            String userMessage = businessValidationMessageRetriever.getMessage(CAVEAT_NOT_FOUND_CODE, args, Locale.UK);
+            throw new BusinessValidationException(userMessage,
+                    "Could not find any caveats for the entered caveat id: " + caveatId);
         }
         return foundCaveats.get(0).getData();
     }

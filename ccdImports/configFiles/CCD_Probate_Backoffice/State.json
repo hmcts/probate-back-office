@@ -2,6 +2,9 @@
   {"CaseTypeID": "GrantOfRepresentation", "ID": "PAAppCreated", "Name": "PA application created", "Description": "PA application created", "DisplayOrder": 1},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "SolAppCreated", "Name": "Application created", "Description": "Application created (Solicitor)", "DisplayOrder": 2},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "SolAppUpdated", "Name": "Application updated", "Description": "Application updated (Solicitor)", "DisplayOrder": 3},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "SolProbateCreated", "Name": "Grant of probate created", "Description": "Grant of probate created (Solicitor)", "DisplayOrder": 4},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "SolIntestacyCreated", "Name": "Intestacy grant created", "Description": "Intestacy grant created (Solicitor)", "DisplayOrder": 5},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "SolAdmonCreated", "Name": "Admon will grant created", "Description": "Admon will grant created (Solicitor)", "DisplayOrder": 6},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "CaseCreated", "Name": "Case created", "Description": "Case created", "DisplayOrder": 4},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "CasePaymentFailed", "Name": "Case payment failed", "Description": "Case created with payment failed", "DisplayOrder": 5},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "Stopped", "Name": "Stopped", "Description": "Stopped", "DisplayOrder": 6},
@@ -19,6 +22,8 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "BOCaseClosed", "Name": "Case closed", "Description": "Case closed", "DisplayOrder": 17},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "applyforGrantPaperApplication", "Name": "PA1P/PA1A/Solicitors", "Description": "Create case", "DisplayOrder": 18},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "BOCaseImported", "Name": "Case imported", "Description": "Case Imported", "DisplayOrder": 19},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "BOExaminingReissue", "Name": "Examining (reissue)", "Description": "Case Imported", "DisplayOrder": 20},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "BOCaseMatchingReissue", "Name": "Case Matching (Reissue grant)", "Description": "Case Matching (Reissue grant)", "DisplayOrder": 21},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "BOCaseStoppedReissue", "Name": "Case stopped", "Description": "Case stopped", "DisplayOrder": 23},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "Draft", "Name": "Draft", "Description": "Draft", "DisplayOrder": 20}
-
 ]

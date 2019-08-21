@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
+import uk.gov.hmcts.probate.model.ccd.Reissue;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
@@ -50,6 +51,12 @@ public class ResponseCaseData {
     private final String solsSOTJobTitle;
     private final String solsSolicitorAppReference;
     private final String ihtFormId;
+    private final String solsWillType;
+    private final String solsApplicantRelationshipToDeceased;
+    private final String solsSpouseOrCivilRenouncing;
+    private final String solsAdoptedEnglandOrWales;
+    private final String solsMinorityInterest;
+    private final String solsApplicantSiblings;
     private final String willExists;
     private final String willAccessOriginal;
     private final String willHasCodicils;
@@ -157,7 +164,7 @@ public class ResponseCaseData {
     private final String domicilityIHTCert;
     private final String willDatedBeforeApril;
     private final String deceasedEnterMarriageOrCP;
-    private final String deceasedMartialStatus;
+    private final String deceasedMaritalStatus;
     private final String willsOutsideOfUK;
     private final String courtOfDecree;
     private final String dateOfMarriageOrCP;
@@ -241,6 +248,15 @@ public class ResponseCaseData {
     private final String boCaveatStopEmailNotification;
     private final String boCaveatStopSendToBulkPrintRequested;
     private final String boCaveatStopSendToBulkPrint;
+    private final String boEmailGrantReissuedNotificationRequested;
+    private final String boEmailGrantReissuedNotification;
+    private final String boGrantReissueSendToBulkPrint;
+    private final String boGrantReissueSendToBulkPrintRequested;
+    private final String orderNeeded;
+    private final List<CollectionMember<Reissue>> reissueReason;
+    private final String reissueDate;
+    private final String reissueReasonNotation;
+    private final String latestGrantReissueDate;
 
     private final String deceasedDivorcedInEnglandOrWales;
     private final String primaryApplicantAdoptionInEnglandOrWales;

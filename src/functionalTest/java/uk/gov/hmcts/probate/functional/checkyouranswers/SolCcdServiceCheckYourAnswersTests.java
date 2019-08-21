@@ -21,6 +21,11 @@ import static org.hamcrest.Matchers.equalToIgnoringCase;
 @RunWith(SerenityRunner.class)
 public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
 
+    private static final String VALIDATE_URL = "/case/sols-validate";
+    private static final String VALIDATE_PROBATE_URL = "/case/sols-validate-probate";
+    private static final String VALIDATE_INTESTACY_URL = "/case/sols-validate-intestacy";
+    private static final String VALIDATE_ADMON_URL = "/case/sols-validate-admon";
+
     @Test
     public void verifyFirstNameInTheReturnedPDF() {
         validatePostRequestSuccessForLegalStatement("TestPrimaryExecutorFirstName");
@@ -103,27 +108,27 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
 //         given().relaxedHTTPSValidation()
 //                 .headers(utils.getHeaders())
 //                 .body(utils.getJsonFromFile("incorrectInput.checkYourAnswersPayload.json")).
-//                 when().post("/case/validate").then().statusCode(400);
+//                 when().post("VALIDATE_URL").then().statusCode(400);
 //     }
 
     @Test
     public void verifyEmptyFirstNameReturnsError() {
-        validatePostRequestFailureForLegalStatement("\"primaryApplicantForenames\": \"TestPrimaryExecutorFirstName\"", "\"primaryApplicantForenames\": \"\"", "caseDetails.data.primaryApplicantForenames");
+        validatePostRequestFailureForLegalStatement("\"primaryApplicantForenames\": \"TestPrimaryExecutorFirstName\"", "\"primaryApplicantForenames\": \"\"", "caseDetails.data.primaryApplicantForenames", VALIDATE_PROBATE_URL);
     }
 
     @Test
     public void verifyEmptyLastNameReturnsError() {
-        validatePostRequestFailureForLegalStatement("\"primaryApplicantSurname\": \"TestPrimaryExecutorLastName\"", "\"primaryApplicantSurname\": \"\"", "caseDetails.data.primaryApplicantSurname");
+        validatePostRequestFailureForLegalStatement("\"primaryApplicantSurname\": \"TestPrimaryExecutorLastName\"", "\"primaryApplicantSurname\": \"\"", "caseDetails.data.primaryApplicantSurname", VALIDATE_PROBATE_URL);
     }
 
     @Test
     public void verifyMissingDeceasedDodReturnsError() {
-        validatePostRequestFailureForLegalStatement("\"deceasedDateOfDeath\": \"2018-01-01\"", "\"deceasedDateOfDeath\": \"\"", "caseDetails.data.deceasedDateOfDeath");
+        validatePostRequestFailureForLegalStatement("\"deceasedDateOfDeath\": \"2018-01-01\"", "\"deceasedDateOfDeath\": \"\"", "caseDetails.data.deceasedDateOfDeath", VALIDATE_URL);
     }
 
     @Test
     public void verifyMissingDeceasedDobReturnsError() {
-        validatePostRequestFailureForLegalStatement("\"deceasedDateOfBirth\": \"1987-01-01\"", "\"deceasedDateOfBirth\": \"\"", "caseDetails.data.deceasedDateOfBirth");
+        validatePostRequestFailureForLegalStatement("\"deceasedDateOfBirth\": \"1987-01-01\"", "\"deceasedDateOfBirth\": \"\"", "caseDetails.data.deceasedDateOfBirth", VALIDATE_URL);
     }
 
     @Test
@@ -144,7 +149,7 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
                 .body(utils.getJsonFromFile("success.stateChange.checkYourAnswersPayload.json"))
                 .when().post("/nextsteps/validate")
                 .then().statusCode(200)
-                .and().body("data.state", equalToIgnoringCase("SolAppCreated"));
+                .and().body("data.state", equalToIgnoringCase("SolProbateCreated"));
     }
 
     @Test
@@ -154,7 +159,7 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
                 .body(utils.getJsonFromFile("success.stateChange.beforeSOTcheckYourAnswersPayload.json"))
                 .when().post("/nextsteps/validate")
                 .then().statusCode(200)
-                .and().body("data.state", equalToIgnoringCase("SolAppCreated"));
+                .and().body("data.state", equalToIgnoringCase("SolProbateCreated"));
     }
 
     private String replaceString(String oldJson, String newJson) {
@@ -175,18 +180,18 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
                 .relaxedHTTPSValidation()
                 .headers(utils.getHeadersWithUserId())
                 .body(utils.getJsonFromFile("success.beforeLegalStatement.checkYourAnswersPayload.json")).
-                        when().post("/case/validate");
+                        when().post(VALIDATE_PROBATE_URL);
         assertEquals(200, response.getStatusCode());
 
         downloadPdfAndVerifyString(extractDocumentId(response), validationString);
     }
 
 
-    private void validatePostRequestFailureForLegalStatement(String oldString, String replacingString, String errorMsg) {
+    private void validatePostRequestFailureForLegalStatement(String oldString, String replacingString, String errorMsg, String postURL) {
         given().relaxedHTTPSValidation()
                 .headers(utils.getHeaders())
                 .body(replaceString(oldString, replacingString))
-                .when().post("/case/validate").then().statusCode(400)
+                .when().post(postURL).then().statusCode(400)
                 .and().body("fieldErrors[0].field", equalToIgnoringCase(errorMsg))
                 .and().body("message", equalToIgnoringCase("Invalid payload"));
     }

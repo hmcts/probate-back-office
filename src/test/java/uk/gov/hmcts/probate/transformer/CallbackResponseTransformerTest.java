@@ -12,6 +12,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
+import uk.gov.hmcts.probate.model.ccd.Reissue;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
@@ -58,10 +59,12 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
+import static uk.gov.hmcts.probate.model.Constants.CTSC;
 import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT_STOPPED;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_DRAFT;
-import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT;
+import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_REISSUE;
+import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE;
 import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -76,9 +79,13 @@ public class CallbackResponseTransformerTest {
 
     private static final String CASE_TYPE_GRANT_OF_PROBATE = "gop";
     private static final String CASE_TYPE_INTESTACY = "intestacy";
+    private static final String WILL_TYPE_PROBATE = "WillLeft";
+    private static final String WILL_TYPE_INTESTACY = "NoWill";
+    private static final String WILL_TYPE_ADMON = "WillLeftAnnexed";
+    private static final String APPLICANT_SIBLINGS = "No";
 
     private static final ApplicationType APPLICATION_TYPE = SOLICITOR;
-    private static final String REGISTRY_LOCATION = "ctsc";
+    private static final String REGISTRY_LOCATION = CTSC;
 
     private static final String SOLICITOR_FIRM_NAME = "Sol Firm Name";
     private static final String SOLICITOR_FIRM_LINE1 = "Sols Add Line 1";
@@ -172,6 +179,10 @@ public class CallbackResponseTransformerTest {
     private static final String RECORD_ID = "12345";
     private static final String LEGACY_CASE_URL = "someUrl";
     private static final String LEGACY_CASE_TYPE = "someCaseType";
+    private static final String ORDER_NEEDED = YES;
+    private static final List<CollectionMember<Reissue>> REISSUE_REASON = emptyList();
+    private static final String REISSUE_DATE = "2019-01-01";
+    private static final String REISSUE_NOTATION = "duplicate";
 
     private static final String DECEASED_DIVORCED_IN_ENGLAND_OR_WALES = YES;
     private static final String PRIMARY_APPLICANT_ADOPTION_IN_ENGLAND_OR_WALES = NO;
@@ -225,9 +236,6 @@ public class CallbackResponseTransformerTest {
 
     @Mock
     private CaseDetails caseDetailsMock;
-
-    @Mock
-    private Document document;
 
     private CaseData.CaseDataBuilder caseDataBuilder;
 
@@ -283,11 +291,14 @@ public class CallbackResponseTransformerTest {
                 .boSendToBulkPrintRequested(BO_BULK_PRINT)
                 .casePrinted(CASE_PRINT)
                 .boCaveatStopNotificationRequested(CAVEAT_STOP_NOTIFICATION)
+                .boCaveatStopNotification(CAVEAT_STOP_NOTIFICATION)
                 .boCaseStopCaveatId(CASE_STOP_CAVEAT_ID)
                 .boCaveatStopEmailNotificationRequested(CAVEAT_STOP_EMAIL_NOTIFICATION)
                 .boCaveatStopSendToBulkPrintRequested(CAVEAT_STOP_SEND_TO_BULK_PRINT)
                 .boCaseStopReasonList(STOP_REASONS_LIST)
                 .boStopDetails(STOP_DETAILS)
+                .solsWillType(WILL_TYPE_PROBATE)
+                .solsApplicantSiblings(APPLICANT_SIBLINGS)
                 .willExists(YES)
                 .additionalExecutorsApplying(ADDITIONAL_EXEC_LIST_APP)
                 .additionalExecutorsNotApplying(ADDITIONAL_EXEC_LIST_NOT_APP)
@@ -306,6 +317,10 @@ public class CallbackResponseTransformerTest {
                 .scannedDocuments(SCANNED_DOCUMENTS_LIST)
                 .recordId(RECORD_ID)
                 .legacyType(LEGACY_CASE_TYPE)
+                .orderNeeded(ORDER_NEEDED)
+                .reissueReason(REISSUE_REASON)
+                .reissueDate(REISSUE_DATE)
+                .reissueReasonNotation(REISSUE_NOTATION)
                 .legacyCaseViewUrl(LEGACY_CASE_URL)
                 .deceasedDivorcedInEnglandOrWales(DECEASED_DIVORCED_IN_ENGLAND_OR_WALES)
                 .primaryApplicantAdoptionInEnglandOrWales(PRIMARY_APPLICANT_ADOPTION_IN_ENGLAND_OR_WALES)
@@ -351,10 +366,10 @@ public class CallbackResponseTransformerTest {
         when(documentLinkMock.getDocumentFilename()).thenReturn(DOC_NAME);
         Document document = Document.builder()
                 .documentLink(documentLinkMock)
-                .documentType(LEGAL_STATEMENT)
+                .documentType(LEGAL_STATEMENT_PROBATE)
                 .build();
 
-        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, document);
+        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, document, "gop");
 
         assertCommon(callbackResponse);
         assertLegacyInfo(callbackResponse);
@@ -370,7 +385,7 @@ public class CallbackResponseTransformerTest {
         Document document = Document.builder()
                 .documentLink(documentLinkMock)
                 .build();
-        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, document);
+        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock, document, null);
 
         assertCommon(callbackResponse);
         assertLegacyInfo(callbackResponse);
@@ -790,6 +805,54 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
+    public void shouldTransformCaseForSolicitorWithProbate() {
+        caseDataBuilder.applicationType(ApplicationType.SOLICITOR);
+        caseDataBuilder.solsWillType(WILL_TYPE_PROBATE);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+
+        assertCommonDetails(callbackResponse);
+        assertLegacyInfo(callbackResponse);
+        assertEquals(YES, callbackResponse.getData().getWillExists());
+        assertSolsDetails(callbackResponse);
+    }
+
+    @Test
+    public void shouldTransformCaseForSolicitorWithIntestacy() {
+        caseDataBuilder.applicationType(ApplicationType.SOLICITOR);
+        caseDataBuilder.solsWillType(WILL_TYPE_INTESTACY);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+
+        assertCommonDetails(callbackResponse);
+        assertLegacyInfo(callbackResponse);
+        assertEquals(NO, callbackResponse.getData().getWillExists());
+        assertSolsDetails(callbackResponse);
+    }
+
+    @Test
+    public void shouldTransformCaseForSolicitorWithAdmon() {
+        caseDataBuilder.applicationType(ApplicationType.SOLICITOR);
+        caseDataBuilder.solsWillType(WILL_TYPE_ADMON);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+
+        assertCommonDetails(callbackResponse);
+        assertLegacyInfo(callbackResponse);
+        assertEquals(YES, callbackResponse.getData().getWillExists());
+        assertSolsDetails(callbackResponse);
+    }
+
+    @Test
     public void shouldTransformCaseForSolicitorWithCaseTypeIsGOP() {
         caseDataBuilder.applicationType(ApplicationType.SOLICITOR);
         caseDataBuilder.solsAdditionalExecutorList(EMPTY_LIST);
@@ -999,7 +1062,7 @@ public class CallbackResponseTransformerTest {
                 .primaryApplicantSecondPhoneNumber(EXEC_PHONE)
                 .primaryApplicantRelationshipToDeceased("other")
                 .paRelationshipToDeceasedOther("cousin")
-                .deceasedMartialStatus("neverMarried")
+                .deceasedMaritalStatus("neverMarried")
                 .willDatedBeforeApril(YES)
                 .deceasedEnterMarriageOrCP(NO)
                 .dateOfMarriageOrCP(null)
@@ -1206,6 +1269,22 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
+    public void shouldSetGrantReissuedDateAtReissue() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL);
+        Document document = Document.builder()
+                .documentLink(documentLinkMock)
+                .documentType(DIGITAL_GRANT_REISSUE)
+                .build();
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        DateFormat targetFormat = new SimpleDateFormat(DATE_FORMAT);
+        String latestReissueDate = targetFormat.format(new Date());
+        CallbackResponse callbackResponse = underTest.addDocuments(callbackRequestMock, Arrays.asList(document), null, null);
+        assertEquals(latestReissueDate, callbackResponse.getData().getLatestGrantReissueDate());
+    }
+
+    @Test
     public void shouldSetDateOfDeathType() {
         caseDataBuilder.applicationType(ApplicationType.PERSONAL);
 
@@ -1389,6 +1468,7 @@ public class CallbackResponseTransformerTest {
         assertEquals(BO_EMAIL_GRANT_ISSUED, callbackResponse.getData().getBoEmailGrantIssuedNotificationRequested());
         assertEquals(CASE_PRINT, callbackResponse.getData().getCasePrinted());
         assertEquals(CAVEAT_STOP_NOTIFICATION, callbackResponse.getData().getBoCaveatStopNotificationRequested());
+        assertEquals(CAVEAT_STOP_NOTIFICATION, callbackResponse.getData().getBoCaveatStopEmailNotification());
         assertEquals(CASE_STOP_CAVEAT_ID, callbackResponse.getData().getBoCaseStopCaveatId());
         assertEquals(CAVEAT_STOP_EMAIL_NOTIFICATION, callbackResponse.getData().getBoCaveatStopEmailNotificationRequested());
         assertEquals(CAVEAT_STOP_SEND_TO_BULK_PRINT, callbackResponse.getData().getBoCaveatStopSendToBulkPrintRequested());
@@ -1410,8 +1490,13 @@ public class CallbackResponseTransformerTest {
         assertEquals(YES, callbackResponse.getData().getBoExaminationChecklistQ1());
         assertEquals(YES, callbackResponse.getData().getBoExaminationChecklistQ2());
         assertEquals(YES, callbackResponse.getData().getBoExaminationChecklistRequestQA());
+        assertEquals(ORDER_NEEDED, callbackResponse.getData().getOrderNeeded());
+        assertEquals(REISSUE_REASON, callbackResponse.getData().getReissueReason());
+        assertEquals(REISSUE_DATE, callbackResponse.getData().getReissueDate());
+        assertEquals(REISSUE_NOTATION, callbackResponse.getData().getReissueReasonNotation());
 
         assertEquals(SCANNED_DOCUMENTS_LIST, callbackResponse.getData().getScannedDocuments());
+        assertEquals(APPLICANT_SIBLINGS, callbackResponse.getData().getSolsApplicantSiblings());
     }
 
     private void assertLegacyInfo(CallbackResponse callbackResponse) {
@@ -1434,7 +1519,7 @@ public class CallbackResponseTransformerTest {
         assertEquals(EXEC_PHONE, callbackResponse.getData().getPrimaryApplicantSecondPhoneNumber());
         assertEquals("other", callbackResponse.getData().getPrimaryApplicantRelationshipToDeceased());
         assertEquals("cousin", callbackResponse.getData().getPaRelationshipToDeceasedOther());
-        assertEquals("neverMarried", callbackResponse.getData().getDeceasedMartialStatus());
+        assertEquals("neverMarried", callbackResponse.getData().getDeceasedMaritalStatus());
 
         assertEquals(YES, callbackResponse.getData().getWillDatedBeforeApril());
         assertEquals(NO, callbackResponse.getData().getDeceasedEnterMarriageOrCP());

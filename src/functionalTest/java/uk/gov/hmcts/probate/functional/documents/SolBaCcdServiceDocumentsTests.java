@@ -42,14 +42,20 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     private static final String DIED_ON_OR_ABOUT = "Died on or about";
     private static final String DIED_ON_OR_BEFORE = "Died on or before";
     private static final String PRESUMED_DIED_ON = "Presumed died on";
+    private static final String CASE_REFERENCE = "Case Reference: 1528365719153338";
+    private static final String DECEASED_DETAILS = "Deceased First Name Deceased Last Name of 1 2";
+    private static final String DECEASED_DOD = "Died on 1st January 2000";
+    private static final String WATERMARK = "DRAFT COPY - NOT FOR CIRCULATION";
 
     private static final String GENERATE_GRANT = "/document/generate-grant";
     private static final String GENERATE_GRANT_DRAFT = "/document/generate-grant-draft";
-    private static final String GENERATE_DEPOSIT_RECEIPT = "/document/generate-deposit-receipt";
+    private static final String GENERATE_DEPOSIT_RECEIPT= "/document/generate-deposit-receipt";
+    private static final String GENERATE_GRANT_DRAFT_REISSUE= "/document/generate-grant-draft-reissue";
 
-    private static final String DEFAULT_SOLS_PAYLOAD = "solicitorPayloadNotifications.json";
-    private static final String DEFAULT_PA_PAYLOAD = "personalPayloadNotifications.json";
-    private static final String DEFAULT_WILL_PAYLOAD = "willLodgementPayload.json";
+    private static final String DEFAULT_SOLS_PAYLOAD= "solicitorPayloadNotifications.json";
+    private static final String DEFAULT_PA_PAYLOAD= "personalPayloadNotifications.json";
+    private static final String DEFAULT_WILL_PAYLOAD= "willLodgementPayload.json";
+    private static final String DEFAULT_REISSUE_PAYLOAD = "personalPayloadReissueDuplicate.json";
 
     @Test
     public void verifySolicitorGenerateGrantShouldReturnOkResponseCode() {
@@ -91,6 +97,11 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     @Test
     public void verifyPersonalApplicantGenerateGrantDraftShouldReturnOkResponseCode() {
         validatePostSuccess(DEFAULT_PA_PAYLOAD, GENERATE_GRANT_DRAFT);
+    }
+
+    @Test
+    public void verifyGenerateGrantDraftReissueShouldReturnOkResponseCode() {
+        validatePostSuccess(DEFAULT_REISSUE_PAYLOAD, GENERATE_GRANT_DRAFT_REISSUE);
     }
 
     private void validatePostSuccess(String jsonFileName, String path) {
@@ -538,4 +549,19 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     public void verifyWillLodgementDepositReceiptShouldReturnOkResponseCode() {
         validatePostSuccess(DEFAULT_WILL_PAYLOAD, GENERATE_DEPOSIT_RECEIPT);
     }
+
+    //Commented out due to Docmosis not allowing screen readers as images overlay all text
+    //@Test
+    //public void verifySuccessForDigitalGrantDraftReissueForDuplicateNotation() {
+    //    String response = generateDocument(DEFAULT_REISSUE_PAYLOAD, GENERATE_GRANT_DRAFT_REISSUE);
+    //
+    //    System.out.println(response);
+    //
+    //    assertTrue(response.contains(PRIMARY_APPLICANT));
+    //    assertTrue(response.contains(CASE_REFERENCE));
+    //    assertTrue(response.contains(DECEASED_DETAILS));
+    //    assertTrue(response.contains(DECEASED_DOD));
+    //    assertTrue(response.contains(PRIMARY_APPLICANT));
+    //    assertTrue(response.contains(WATERMARK));
+    //}
 }

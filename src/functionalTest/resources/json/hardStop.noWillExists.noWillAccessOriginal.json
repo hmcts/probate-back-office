@@ -33,7 +33,9 @@
       "willAccessOriginal": "No",
       "solsSolicitorFirmName": "firmname",
       "willExists": "No",
+      "solsWillType": "NoWill",
       "deceasedDateOfDeath": "2018-01-01",
+      "primaryApplicantEmailAddress": "probBackosol@gmail.com",
       "primaryApplicantForenames": "Ex1fn",
       "primaryApplicantAddress": {
         "AddressLine1": "2",

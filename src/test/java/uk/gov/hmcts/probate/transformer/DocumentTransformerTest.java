@@ -83,7 +83,7 @@ public class DocumentTransformerTest {
     public void shouldAddDigitalGrantToGeneratedDocuments() {
         assertTrue(callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated().isEmpty());
 
-        documentTransformer.addDocument(callbackRequest, digitalGrant);
+        documentTransformer.addDocument(callbackRequest, digitalGrant, false);
 
         assertEquals(1, callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated().size());
     }
@@ -92,7 +92,7 @@ public class DocumentTransformerTest {
     public void shouldAddSentEmailToGeneratedNotification() {
         assertTrue(callbackRequest.getCaseDetails().getData().getProbateNotificationsGenerated().isEmpty());
 
-        documentTransformer.addDocument(callbackRequest, sentEmail);
+        documentTransformer.addDocument(callbackRequest, sentEmail, false);
 
         assertEquals(1, callbackRequest.getCaseDetails().getData().getProbateNotificationsGenerated().size());
     }
