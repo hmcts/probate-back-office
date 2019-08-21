@@ -572,5 +572,11 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "createCase", "UserRole": "citizen", "CRUD": "CRU"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "createCasePaymentFailed", "UserRole": "citizen", "CRUD": "CRU"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "createCasePaymentSuccess", "UserRole": "citizen", "CRUD": "CRU"},
-  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "createCasePaymentFailedMultiple", "UserRole": "citizen", "CRUD": "CRU"}
+  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "createCasePaymentFailedMultiple", "UserRole": "citizen", "CRUD": "CRU"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "createDraft", "UserRole": "citizen", "CRUD": "CRU"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "updateDraft", "UserRole": "citizen", "CRUD": "CRU"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "createApplication", "UserRole": "citizen", "CRUD": "CRU"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "updateApplication", "UserRole": "citizen", "CRUD": "CRU"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "updateCasePaymentFailed", "UserRole": "citizen", "CRUD": "CRU"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "createCaseWithoutPayment", "UserRole": "citizen", "CRUD": "CRU"}
 ]
