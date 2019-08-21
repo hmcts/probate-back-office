@@ -92,8 +92,11 @@ public class DocumentGeneratorService {
         Map<String, Object> placeholders = genericMapperService.addCaseDataWithRegistryProperties(caseDetails);
         placeholders.put("fullRedec", NO);
         String appName = null;
-        if (caseDetails.getData().getApplicationType() == ApplicationType.SOLICITOR) {appName=caseDetails.getData().getSolsSOTName();}
-        else {appName=caseDetails.getData().getPrimaryApplicantForenames();}
+        if (caseDetails.getData().getApplicationType() == ApplicationType.SOLICITOR) {
+            appName = caseDetails.getData().getSolsSOTName();
+        } else {
+            appName = caseDetails.getData().getPrimaryApplicantForenames();
+        }
         placeholders.put("applicantName", appName);
         placeholders.put("caseReference", caseDetails.getId());
 
