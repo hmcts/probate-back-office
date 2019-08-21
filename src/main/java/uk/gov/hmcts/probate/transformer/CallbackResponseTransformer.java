@@ -429,15 +429,15 @@ public class CallbackResponseTransformer {
     }
 
     private boolean isPaperForm(CaseData caseData) {
-        return (caseData.getPaperForm() != null && caseData.getPaperForm().equals(ANSWER_YES));
+        return (caseData.getPaperForm() != null && ANSWER_YES.equals(caseData.getPaperForm()));
     }
 
     private boolean willExists(CaseData caseData) {
-        return !(caseData.getSolsWillType() != null && caseData.getSolsWillType().equals(NO_WILL));
+        return !(caseData.getSolsWillType() != null && NO_WILL.equals(caseData.getSolsWillType()));
     }
 
     private boolean isIntestacy(CaseData caseData) {
-        return caseData.getSolsWillType() != null && caseData.getSolsWillType().equals(NO_WILL);
+        return caseData.getSolsWillType() != null && NO_WILL.equals(caseData.getSolsWillType());
     }
 
     private ResponseCaseDataBuilder getCaseCreatorResponseCaseBuilder(CaseData caseData, ResponseCaseDataBuilder builder) {
