@@ -33,7 +33,6 @@ Feature('Back Office').retry(testConfig.TestRetryFeatures);
 Scenario('Grant of Probate Workflow - E2E test 01 - Grant of Representation for a Personal Applicant - Apply for grant of representation -> Withdraw application', async function (I) {
 
     const unique_deceased_user = Date.now();
-    console.log("unique deceased names will be generated with " + unique_deceased_user);
 
     // IdAM
     I.authenticateWithIdamIfAvailable();
@@ -54,7 +53,6 @@ Scenario('Grant of Probate Workflow - E2E test 01 - Grant of Representation for 
     I.enterGrantOfProbatePage9();
     I.checkMyAnswers(nextStepName);
     let endState = 'Case created';
-
 
     // SECOND case - the main test case
 
@@ -79,7 +77,6 @@ Scenario('Grant of Probate Workflow - E2E test 01 - Grant of Representation for 
         .join('-');
 
     I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
-
     I.seeCaseDetails(caseRef, deceasedTabConfig, createGrantOfProbateConfig);
     I.seeCaseDetails(caseRef, caseDetailsTabConfig, createGrantOfProbateConfig);
     I.seeCaseDetails(caseRef, applicantDetailsTabConfig, createGrantOfProbateConfig);

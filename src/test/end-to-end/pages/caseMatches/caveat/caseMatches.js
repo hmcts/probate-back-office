@@ -11,11 +11,13 @@ module.exports = function (caseRef, caseMatchesConfig, nextStepName) {
 
     I.see(caseRef);
     I.seeElement('#caseMatches_0_0');
+
     /*
     I.seeInField('#caseMatches_0_fullName', caseMatchesConfig.fullname);
     I.seeInField('#caseMatches_0_dob', caseMatchesConfig.dob);
     I.seeInField('#caseMatches_0_postcode', caseMatchesConfig.postcode);
     */
+
     I.click('#caseMatches_0_valid-Yes');
     I.click('#caseMatches_0_doImport-No');
 
