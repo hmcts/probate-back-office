@@ -115,7 +115,7 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyPersonalApplicantRequestInformationContentIsOk() {
+    public void verifyPersonalApplicantRequestInformationEmailContentIsOk() {
         String document = sendEmail("personalPayloadNotifications.json", INFORMATION_REQUEST, EMAIL_NOTIFICATION_URL);
         verifyPAEmailInformationRequestRedec(document);
     }
@@ -126,12 +126,12 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void test() {
-        String document = generateDocument("personalPayloadNotificationsNoEmailRequested.json", INFORMATION_REQUEST,
+    public void verifyPersonalApplicantRequestInformationLetterContentIsOk() {
+        String coversheet = generateDocument("personalPayloadNotificationsNoEmailRequested.json", INFORMATION_REQUEST,
                 0);
-        String document1 = generateDocument("personalPayloadNotificationsNoEmailRequested.json", INFORMATION_REQUEST,
+        String letter = generateDocument("personalPayloadNotificationsNoEmailRequested.json", INFORMATION_REQUEST,
                 1);
-        verifyPAEmailInformationRequestRedec(document1);
+        verifyPALetterInformationRequestRedec(letter);
     }
 
 
@@ -198,6 +198,14 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
         assertTrue(document.contains("Deceased First Name Deceased Last Name"));
         assertTrue(document.contains("Birmingham"));
         assertTrue(document.contains(BIRMINGHAM_NO));
+        assertTrue(document.contains("Declaration"));
+    }
+
+    private void verifyPALetterInformationRequestRedec(String document) {
+        assertTrue(document.contains("Deceased First Name Deceased Last Name"));
+        assertTrue(document.contains("Executor name 1 "));
+        assertTrue(document.contains("1st January 2000"));
+        assertTrue(document.contains("PA stop details"));
         assertTrue(document.contains("Declaration"));
     }
 
