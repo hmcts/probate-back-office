@@ -41,7 +41,6 @@ You now need to send us:
 *   the original will
 *   fee payment: your Cheque for &pound;0.10 (grant and copies)
 *   the printed version of this page which will be used as your cover letter to us
-*   completed inheritance tax form IHT400421
 *   the stamped (receipted) IHT 421 with this application
 *   renunciation form for Tim Smith
 *   death certificate for Bob Martin
@@ -67,6 +66,6 @@ What happens next
 
 When we've received your documents we'll start to process your application.
 
-You will receive your grant of probate, plus any extra copies you've ordered, within 20 working days of us receiving your documents.
+We will then review your application and issue your grant within 8 weeks.
 
 We'll email you if we need you to provide any more information.
