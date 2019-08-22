@@ -1,5 +1,4 @@
-FROM hmcts/cnp-java-base:openjdk-8u191-jre-alpine3.9-1.0
-
+FROM hmctspublic.azurecr.io/base/java:openjdk-8-distroless-1.0
 # Mandatory!
 ENV APP back-office.jar
 
