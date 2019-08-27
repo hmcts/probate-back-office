@@ -181,7 +181,8 @@ def versions = [
         springSecurityVersion           : '5.1.1.RELEASE',
         probateCommonsVersion           : '0.0.32',
         ccdClient                       : '4.4.1',
-        mapStruct                       : '1.2.0.Final'
+        mapStruct                       : '1.2.0.Final',
+        serviceAuthVersion              : '1.0.4'
 ]
 
 jacocoTestReport {
@@ -229,7 +230,7 @@ dependencies {
   compile group: 'uk.gov.hmcts.reform', name: 'java-logging-appinsights', version: versions.reformsJavaLoggingVersion
   compile group: 'uk.gov.hmcts.reform.auth', name: 'auth-checker-lib', version: '2.1.3'
   compile group: 'uk.gov.service.notify', name: 'notifications-java-client', version: '3.14.1-RELEASE'
-  compile group: 'uk.gov.hmcts.reform', name: 'service-auth-provider-client', version: '3.0.0'
+  compile group: 'uk.gov.hmcts.reform', name: 'service-auth-provider-client', version: versions.serviceAuthVersion
   compile group: 'uk.gov.hmcts.reform', name: 'pdf-service-client', version: '6.0.0'
   compile group: 'uk.gov.hmcts.reform', name: 'send-letter-client', version: '2.1.2'
 
@@ -278,7 +279,7 @@ dependencies {
   testFunctionalCompile group: 'net.serenity-bdd', name: 'serenity-spring', version: versions.serenityBddVersion
   testFunctionalCompile group: 'org.awaitility', name: 'awaitility', version: '3.1.6'
   testFunctionalCompile group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.0'
-  testFunctionalCompile group: 'uk.gov.hmcts.reform', name: 'service-auth-provider-client', version: '3.0.0'
+  testFunctionalCompile group: 'uk.gov.hmcts.reform', name: 'service-auth-provider-client', version: versions.serviceAuthVersion
   testFunctionalCompile group: 'uk.gov.hmcts.reform', name: 'pdf-service-client', version: '6.0.0'
   testFunctionalCompile sourceSets.main.runtimeClasspath
   testFunctionalCompile sourceSets.test.runtimeClasspath
@@ -291,7 +292,7 @@ dependencies {
   testCaseCreatorCompile group: 'net.serenity-bdd', name: 'serenity-rest-assured', version: versions.serenityBddVersion
   testCaseCreatorCompile group: 'net.serenity-bdd', name: 'serenity-spring', version: versions.serenityBddVersion
   testCaseCreatorCompile group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.0'
-  testCaseCreatorCompile group: 'uk.gov.hmcts.reform', name: 'service-auth-provider-client', version: '3.0.0'
+  testCaseCreatorCompile group: 'uk.gov.hmcts.reform', name: 'service-auth-provider-client', version: versions.serviceAuthVersion
   testCaseCreatorCompile sourceSets.main.runtimeClasspath
   testCaseCreatorCompile sourceSets.test.runtimeClasspath
 }
