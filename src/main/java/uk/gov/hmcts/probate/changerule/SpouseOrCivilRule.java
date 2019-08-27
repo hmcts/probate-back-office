@@ -11,7 +11,7 @@ public class SpouseOrCivilRule implements ChangeRule {
 
     @Override
     public boolean isChangeNeeded(CaseData caseData) {
-        return (caseData.getDeceasedMaritalStatus() != MARITAL_STATUS_MARRIED && caseData.getSolsApplicantRelationshipToDeceased() == RELATIONSHIP_SPOUSE_CIVIL);
+        return (!MARITAL_STATUS_MARRIED.equals(caseData.getDeceasedMaritalStatus()) &&  RELATIONSHIP_SPOUSE_CIVIL.equals(caseData.getSolsApplicantRelationshipToDeceased()));
     }
 
     @Override
