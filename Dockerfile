@@ -5,7 +5,6 @@ ENV APP back-office.jar
 
 COPY build/libs/$APP /opt/app/
 COPY lib/applicationinsights-agent-2.3.1.jar lib/AI-Agent.xml /opt/app/
-HEALTHCHECK --interval=10s --timeout=10s --retries=10 CMD http_proxy="" wget -q --spider http://localhost:4104/health || exit 1
 
 EXPOSE 4104
 
