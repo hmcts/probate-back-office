@@ -172,7 +172,7 @@ gitProperties {
 }
 
 def versions = [
-        springCloudStarterNetflixHystrix: '2.0.2.RELEASE',
+        springCloudStarterNetflixHystrix: '2.1.1.RELEASE',
         serenitySpring                  : '2.0.41',
         serenityBddVersion              : '2.0.41',
         applicationinsights             : '2.1.2',
@@ -182,7 +182,7 @@ def versions = [
         probateCommonsVersion           : '0.0.32',
         ccdClient                       : '4.4.1',
         mapStruct                       : '1.2.0.Final',
-        serviceAuthVersion              : '1.0.4'
+        serviceAuthVersion              : '3.0.0'
 ]
 
 jacocoTestReport {
@@ -233,6 +233,7 @@ dependencies {
   compile group: 'uk.gov.hmcts.reform', name: 'service-auth-provider-client', version: versions.serviceAuthVersion
   compile group: 'uk.gov.hmcts.reform', name: 'pdf-service-client', version: '6.0.0'
   compile group: 'uk.gov.hmcts.reform', name: 'send-letter-client', version: '2.1.2'
+  compile group: 'uk.gov.hmcts.reform', name: 'health-spring-boot-starter', version: '0.0.4'
 
   compile group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: '2.9.2'
   compile group: 'commons-io', name: 'commons-io', version: '2.6'
