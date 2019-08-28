@@ -95,7 +95,8 @@ public class ConfirmationResponseServiceTest {
         MockitoAnnotations.initMocks(this);
 
         underTest = new ConfirmationResponseService(messageResourceServiceMock, markdownSubstitutionServiceMock,
-                noOriginalWillRuleMock, domicilityRuleMock, executorsRuleMock, minorityRuleMock, applicantSiblingsRuleMock, renouncingRuleMock, spouseOrCivilRuleMock);
+                noOriginalWillRuleMock, domicilityRuleMock, executorsRuleMock, minorityRuleMock,
+                applicantSiblingsRuleMock, renouncingRuleMock, spouseOrCivilRuleMock);
         ReflectionTestUtils.setField(underTest, "templatesDirectory", "templates/markdown/");
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
