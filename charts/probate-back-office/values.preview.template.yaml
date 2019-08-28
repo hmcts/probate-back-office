@@ -21,11 +21,6 @@ java:
   image: ${IMAGE_NAME}
   ingressHost: ${SERVICE_FQDN}
 
-idam-pr:
-  redirect_uris:
-    Probate:
-      - https://${SERVICE_FQDN}/oauth2redirect
-
 postgresql:
   postgresqlUsername: probate_man
   postgresqlPassword: probate_man
