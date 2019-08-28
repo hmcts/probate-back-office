@@ -22,6 +22,7 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_DRAFT;
+import static uk.gov.hmcts.probate.model.DocumentType.GRANT_COVERSHEET;
 import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
 import static uk.gov.hmcts.probate.model.DocumentType.WILL_LODGEMENT_DEPOSIT_RECEIPT;
 
@@ -46,6 +47,8 @@ public class DocumentTransformerTest {
 
     private Document sentEmail;
 
+    private Document coversheet;
+
     private Document willLodgementReceipt;
 
     private List<Document> documents = new ArrayList<>();
@@ -55,6 +58,7 @@ public class DocumentTransformerTest {
         MockitoAnnotations.initMocks(this);
 
         digitalGrant = Document.builder().documentType(DIGITAL_GRANT).build();
+        coversheet = Document.builder().documentType(GRANT_COVERSHEET).build();
         sentEmail = Document.builder().documentType(SENT_EMAIL).build();
         willLodgementReceipt = Document.builder().documentType(WILL_LODGEMENT_DEPOSIT_RECEIPT).build();
 
@@ -104,5 +108,14 @@ public class DocumentTransformerTest {
         documentTransformer.addDocument(wlCallbackRequest, willLodgementReceipt);
 
         assertEquals(1, wlCallbackRequest.getCaseDetails().getData().getDocumentsGenerated().size());
+    }
+
+    @Test
+    public void shouldAddCoversheetToNotificationsGenerated() {
+        assertTrue(callbackRequest.getCaseDetails().getData().getProbateNotificationsGenerated().isEmpty());
+
+        documentTransformer.addDocument(callbackRequest, coversheet, true);
+
+        assertEquals(1, callbackRequest.getCaseDetails().getData().getProbateNotificationsGenerated().size());
     }
 }
