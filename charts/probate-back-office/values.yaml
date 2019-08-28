@@ -1,3 +1,6 @@
+tags:
+  - idam-pr
+
 java:
   applicationPort: 4104
   readinessDelay: 180
