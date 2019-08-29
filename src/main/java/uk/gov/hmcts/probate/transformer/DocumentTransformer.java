@@ -42,6 +42,10 @@ public class DocumentTransformer {
                 callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated()
                         .add(new CollectionMember<>(null, document));
                 break;
+            case STATEMENT_OF_TRUTH:
+                callbackRequest.getCaseDetails().getData().getProbateSotDocumentsGenerated()
+                        .add(new CollectionMember<>(null, document));
+                break;
             case SENT_EMAIL:
             case CAVEAT_STOPPED:
                 callbackRequest.getCaseDetails().getData().getProbateNotificationsGenerated()

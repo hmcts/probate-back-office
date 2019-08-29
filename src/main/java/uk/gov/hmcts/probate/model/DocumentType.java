@@ -93,7 +93,10 @@ public enum DocumentType {
     ADMON_WILL_GRANT_REISSUE("admonWillGrantReissue"),
 
     @JsonProperty("sotInformationRequest")
-    SOT_INFORMATION_REQUEST("sotInformationRequest");
+    SOT_INFORMATION_REQUEST("sotInformationRequest"),
+
+    @JsonProperty("statementOfTruth")
+    STATEMENT_OF_TRUTH("statementOfTruth");
 
     private final String templateName;
 

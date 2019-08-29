@@ -71,6 +71,7 @@ import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE;
 import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
 import static uk.gov.hmcts.probate.model.DocumentType.SOT_INFORMATION_REQUEST;
+import static uk.gov.hmcts.probate.model.DocumentType.STATEMENT_OF_TRUTH;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CallbackResponseTransformerTest {
@@ -1522,6 +1523,21 @@ public class CallbackResponseTransformerTest {
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
         CallbackResponse callbackResponse = underTest.resolveStop(callbackRequestMock);
         assertEquals(EXAMINING, callbackResponse.getData().getState());
+    }
+
+    @Test
+    public void shouldAddSOTToGeneratedDocuments() {
+        Document document = Document.builder()
+                .documentLink(documentLinkMock)
+                .documentType(STATEMENT_OF_TRUTH)
+                .build();
+
+        CallbackResponse callbackResponse = underTest.addDocuments(callbackRequestMock, Arrays.asList(document), null, null);
+
+        assertCommon(callbackResponse);
+        assertLegacyInfo(callbackResponse);
+
+        assertEquals(1, callbackResponse.getData().getProbateSotDocumentsGenerated().size());
     }
 
     private CollectionMember<ProbateAliasName> createdDeceasedAliasName(String id, String forename, String lastname, String onGrant) {

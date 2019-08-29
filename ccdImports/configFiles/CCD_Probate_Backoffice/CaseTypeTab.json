@@ -1,11 +1,9 @@
 [
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "eventHistoryTab", "TabLabel": "Event History", "TabDisplayOrder": 1, "CaseFieldID": "customHistoryViewer", "TabFieldDisplayOrder": 1},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "stopDetailsTab", "TabLabel": "Stop details", "TabDisplayOrder": 2, "CaseFieldID": "boCaseStopReasonList", "TabFieldDisplayOrder": 1},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "documentsTab", "TabLabel": "Documents", "TabDisplayOrder": 3, "CaseFieldID": "solsLegalStatementDocument", "TabFieldDisplayOrder": 1},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "documentsTab", "TabLabel": "Documents", "TabDisplayOrder": 3, "CaseFieldID": "statementOfTruthDocument", "TabFieldDisplayOrder": 2},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "documentsTab", "TabLabel": "Documents", "TabDisplayOrder": 3, "CaseFieldID": "probateDocumentsGenerated", "TabFieldDisplayOrder": 3},
-  {"LiveFrom": "02/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "documentsTab", "TabLabel": "Documents", "TabDisplayOrder": 3, "CaseFieldID": "boDocumentsUploaded", "TabFieldDisplayOrder": 4},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "documentsTab", "TabLabel": "Documents", "TabDisplayOrder": 3, "CaseFieldID": "scannedDocuments", "TabFieldDisplayOrder": 5},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "documentsTab", "TabLabel": "Documents", "TabDisplayOrder": 3, "CaseFieldID": "probateDocumentsGenerated", "TabFieldDisplayOrder": 1},
+  {"LiveFrom": "02/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "documentsTab", "TabLabel": "Documents", "TabDisplayOrder": 3, "CaseFieldID": "boDocumentsUploaded", "TabFieldDisplayOrder": 2},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "documentsTab", "TabLabel": "Documents", "TabDisplayOrder": 3, "CaseFieldID": "scannedDocuments", "TabFieldDisplayOrder": 3},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "deceasedTab", "TabLabel": "Deceased", "TabDisplayOrder": 4, "CaseFieldID": "deceasedDomicileInEngWales", "TabFieldDisplayOrder": 1},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "deceasedTab", "TabLabel": "Deceased", "TabDisplayOrder": 4, "CaseFieldID": "domicilityCountry", "TabFieldDisplayOrder": 2},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "deceasedTab", "TabLabel": "Deceased", "TabDisplayOrder": 4, "CaseFieldID": "dateOfDeathType", "TabFieldDisplayOrder": 3},
@@ -184,5 +182,8 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "legacyCaseTab", "TabLabel": "Legacy details", "TabDisplayOrder": 12, "CaseFieldID": "legacyCaseViewUrlLink", "TabFieldDisplayOrder": 3},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "legacyCaseTab", "TabLabel": "Legacy details", "TabDisplayOrder": 12, "CaseFieldID": "legacyCaseViewUrl", "TabFieldDisplayOrder": 4},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "grantReissueTab", "TabLabel": "Grant Reissue", "TabDisplayOrder": 13, "CaseFieldID": "reissueReason", "TabFieldDisplayOrder": 1},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "grantReissueTab", "TabLabel": "Grant Reissue", "TabDisplayOrder": 13, "CaseFieldID": "orderNeeded", "TabFieldDisplayOrder": 2}
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "grantReissueTab", "TabLabel": "Grant Reissue", "TabDisplayOrder": 13, "CaseFieldID": "orderNeeded", "TabFieldDisplayOrder": 2},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "sotTab", "TabLabel": "SOT", "TabDisplayOrder": 14, "CaseFieldID": "solsLegalStatementDocument", "TabFieldDisplayOrder": 1},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "sotTab", "TabLabel": "SOT", "TabDisplayOrder": 14, "CaseFieldID": "statementOfTruthDocument", "TabFieldDisplayOrder": 2},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "sotTab", "TabLabel": "SOT", "TabDisplayOrder": 14, "CaseFieldID": "probateSotDocumentsGenerated", "TabFieldDisplayOrder": 3}
 ]

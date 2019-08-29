@@ -42,7 +42,6 @@ import java.util.List;
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static uk.gov.hmcts.probate.model.Constants.LONDON;
-import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_REISSUE_DRAFT;
@@ -266,5 +265,15 @@ public class DocumentController {
         log.info("{} documents generated: {}", documents.size(), documents);
         return ResponseEntity.ok(callbackResponseTransformer.addDocuments(callbackRequest,
                 documents, letterId, pdfSize));
+    }
+
+    @PostMapping(path = "/generate-sot", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<CallbackResponse> generateStatementOfTruth(@RequestBody CallbackRequest callbackRequest) {
+
+      //ToDo
+          Document document = documentGeneratorService.generateGrantReissue(callbackRequest, DRAFT);
+
+        return ResponseEntity.ok(callbackResponseTransformer.addDocuments(callbackRequest,
+                Arrays.asList(document), null, null));
     }
 }
