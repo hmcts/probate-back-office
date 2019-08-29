@@ -477,11 +477,15 @@ public class CallbackResponseTransformer {
     }
 
     private boolean isPaperForm(CaseData caseData) {
-        return (caseData.getPaperForm() != null && caseData.getPaperForm().equals(ANSWER_YES));
+        return ANSWER_YES.equals(caseData.getPaperForm());
     }
 
     private boolean willExists(CaseData caseData) {
-        return !(caseData.getSolsWillType() != null && caseData.getSolsWillType().equals(NO_WILL));
+        return !(NO_WILL.equals(caseData.getSolsWillType()));
+    }
+
+    private boolean isIntestacy(CaseData caseData) {
+        return NO_WILL.equals(caseData.getSolsWillType());
     }
 
     private ResponseCaseDataBuilder getCaseCreatorResponseCaseBuilder(CaseData caseData, ResponseCaseDataBuilder builder) {
@@ -616,6 +620,11 @@ public class CallbackResponseTransformer {
                     .willExists(ANSWER_NO);
         }
 
+        if (isIntestacy(caseData)) {
+            builder
+                    .primaryApplicantIsApplying(ANSWER_YES);
+        }
+
         if (caseData.getCaseType() == null) {
             builder
                     .caseType(CASE_TYPE_DEFAULT);
@@ -689,6 +698,11 @@ public class CallbackResponseTransformer {
         } else {
             builder
                     .willExists(ANSWER_NO);
+        }
+
+        if (isIntestacy(caseData)) {
+            builder
+                    .primaryApplicantIsApplying(ANSWER_YES);
         }
 
         if (caseData.getCaseType() == null) {

@@ -93,7 +93,7 @@ public class BusinessValidationControllerTest {
     private static final String PRIMARY_SURNAME = "ExSN";
     private static final String DECEASED_OTHER_NAMES = "No";
     private static final String DECEASED_DOM_UK = "Yes";
-    private static final String RELATIONSHIP_TO_DECEASED = "SpouseOrCivil";
+    private static final String RELATIONSHIP_TO_DECEASED = "Child";
     private static final String MINORITY_INTEREST = "No";
     private static final String APPLICANT_SIBLINGS = "No";
     private static final String ANSWER_NO = "No";

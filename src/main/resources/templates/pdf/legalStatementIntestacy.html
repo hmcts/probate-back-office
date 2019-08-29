@@ -152,27 +152,16 @@
     <tr>
         <td colspan="2">
             <p>
-                {% if case_details.case_data.solsApplicantRelationshipToDeceased == "SpouseOrCivil" %}I am the spouse or civil partner of {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }} and
-                {% if (case_details.case_data.solsApplicantSiblings == "Yes") and (case_details.case_data.ihtNetValue/100 > 250000) %} one of the people now entitled to the estate along with the children and adopted children of {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }}.
-                {% else %} the only person now entitled to the estate.
-                {% endif %}
-                {% else %}
-                {% if case_details.case_data.solsSpouseOrCivilRenouncing == "Yes" %}
-                {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }}'s spouse or civil partner doesn't want to apply for letters of administration now or in the future. I am the
+                {% if case_details.case_data.deceasedMaritalStatus == "marriedCivilPartnership" %}
+                {% if case_details.case_data.solsApplicantRelationshipToDeceased == "SpouseOrCivil" %}I am the spouse or civil partner of {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }} and the only person now entitled to the estate.
+                {% else %}{{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }}'s spouse or civil partner doesn't want to apply for letters of administration now or in the future. I am the
                 {% if case_details.case_data.solsApplicantRelationshipToDeceased == "ChildAdopted" %} adopted {% endif %} child of {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }} and
                 {% if case_details.case_data.ihtNetValue/100 > 250000 %} one of the people entitled to the estate.
-                {% else %}
-                {% if case_details.case_data.solsApplicantSiblings == "Yes" %} one of the people who may become entitled to the estate.
                 {% else %} the only person who may become entitled to the estate.
                 {% endif %}
                 {% endif %}
-                {% else %} I am the
-                {% if case_details.case_data.solsApplicantSiblings == "Yes" %}
-                {% if case_details.case_data.solsApplicantRelationshipToDeceased == "ChildAdopted" %} adopted {% endif %} child of {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }} and one of the people now entitled to the estate.
-                {% else %}
+                {% else %}I am the
                 {% if case_details.case_data.solsApplicantRelationshipToDeceased == "ChildAdopted" %} adopted {% endif %} child of {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }} and the only person now entitled to the estate.
-                {% endif %}
-                {% endif %}
                 {% endif %}
             </p>
             <p>I am applying for letters of administration. I have provided what I believe to be true and accurate information about {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }}.</p>
