@@ -13,9 +13,11 @@ properties([
 String product = "probate"
 String component = "back-office"
 
-List<LinkedHashMap<String, Object>> secrets = [
+def secrets = [
+  'probate-aat': [
     secret('cwUserEmail', 'CW_USER_EMAIL'),
     secret('cwUserPass', 'CW_USER_PASSWORD')
+  ]
 ]
 
 static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
