@@ -25,4 +25,5 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "BOExaminingReissue", "Name": "Examining (reissue)", "Description": "Case Imported", "DisplayOrder": 21},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "BOCaseMatchingReissue", "Name": "Case Matching (Reissue grant)", "Description": "Case Matching (Reissue grant)", "DisplayOrder": 22},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "BOCaseStoppedReissue", "Name": "Case stopped (reissue)", "Description": "Case stopped", "DisplayOrder": 23}
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "Draft", "Name": "Draft", "Description": "Draft", "DisplayOrder": 24}
 ]

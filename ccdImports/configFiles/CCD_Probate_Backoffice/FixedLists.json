@@ -79,6 +79,7 @@
   {"LiveFrom": "01/01/2017", "ID": "paymentStatusEnum", "ListElementCode": "Initiated", "ListElement": "Initiated"},
   {"LiveFrom": "01/01/2017", "ID": "paymentStatusEnum", "ListElementCode": "Failed", "ListElement": "Failed"},
   {"LiveFrom": "01/01/2017", "ID": "paymentStatusEnum", "ListElementCode": "Pending", "ListElement": "Pending"},
+  {"LiveFrom": "01/01/2017", "ID": "paymentStatusEnum", "ListElementCode": "not_required", "ListElement": "Not Required"},
   {"LiveFrom": "06/01/2017", "ID": "aliasReasonList", "ListElementCode": "Marriage", "ListElement": "Marriage"},
   {"LiveFrom": "06/01/2017", "ID": "aliasReasonList", "ListElementCode": "Divorce", "ListElement": "Divorce"},
   {"LiveFrom": "06/01/2017", "ID": "aliasReasonList", "ListElementCode": "Change by deed poll", "ListElement": "Change by deed poll"},
