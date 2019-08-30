@@ -42,6 +42,9 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     private static final String DIED_ON_OR_ABOUT = "Died on or about";
     private static final String DIED_ON_OR_BEFORE = "Died on or before";
     private static final String PRESUMED_DIED_ON = "Presumed died on";
+    private static final String UK = "United Kingdom";
+    private static final String ENGLAND_AND_WALES = "England and Wales";
+    private static final String SPAIN = "Spain";
     private static final String CASE_REFERENCE = "Case Reference: 1528365719153338";
     private static final String DECEASED_DETAILS = "Deceased First Name Deceased Last Name of 1 2";
     private static final String DECEASED_DOD = "Died on 1st January 2000";
@@ -533,6 +536,56 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         assertTrue(response.contains(PRIMARY_APPLICANT));
         assertTrue(response.contains(DIED_ON_OR_SINCE));
 
+        assertTrue(!response.contains(PA));
+        assertTrue(!response.contains(WILL_MESSAGE));
+        assertTrue(!response.contains(ADMIN_MESSAGE));
+        assertTrue(!response.contains(LIMITATION_MESSAGE));
+        assertTrue(!response.contains(EXECUTOR_LIMITATION_MESSAGE));
+        assertTrue(!response.contains(POWER_RESERVED));
+        assertTrue(!response.contains(POWER_RESERVED_SINGLE));
+        assertTrue(!response.contains(TITLE));
+        assertTrue(!response.contains(HONOURS));
+
+    }
+
+    @Test
+    public void verifySuccessForGetDigitalGrantDomiciledUK() {
+        String response = generateDocument("solicitorPayloadNotificationsPartialAddress.json", GENERATE_GRANT);
+
+        assertTrue(response.contains(CTSC_REGISTRY_ADDRESS));
+        assertTrue(response.contains(SOLICITOR_INFO3));
+        assertTrue(response.contains(GOP));
+        assertTrue(response.contains(PRIMARY_APPLICANT));
+        assertTrue(response.contains(DIED_ON_OR_SINCE));
+        assertTrue(response.contains(UK));
+        assertTrue(response.contains(ENGLAND_AND_WALES));
+
+        assertTrue(!response.contains(PA));
+        assertTrue(!response.contains(WILL_MESSAGE));
+        assertTrue(!response.contains(ADMIN_MESSAGE));
+        assertTrue(!response.contains(LIMITATION_MESSAGE));
+        assertTrue(!response.contains(EXECUTOR_LIMITATION_MESSAGE));
+        assertTrue(!response.contains(POWER_RESERVED));
+        assertTrue(!response.contains(POWER_RESERVED_SINGLE));
+        assertTrue(!response.contains(TITLE));
+        assertTrue(!response.contains(HONOURS));
+
+    }
+
+
+    @Test
+    public void verifySuccessForGetDigitalGrantDomiciledForeignDomicile() {
+        String response = generateDocument("solicitorPayloadNotificationsForeignDomicile.json", GENERATE_GRANT);
+
+        assertTrue(response.contains(CTSC_REGISTRY_ADDRESS));
+        assertTrue(response.contains(SOLICITOR_INFO3));
+        assertTrue(response.contains(GOP));
+        assertTrue(response.contains(PRIMARY_APPLICANT));
+        assertTrue(response.contains(DIED_ON_OR_SINCE));
+        assertTrue(response.contains(ENGLAND_AND_WALES));
+        assertTrue(response.contains(SPAIN));
+
+        assertTrue(!response.contains(UK));
         assertTrue(!response.contains(PA));
         assertTrue(!response.contains(WILL_MESSAGE));
         assertTrue(!response.contains(ADMIN_MESSAGE));
