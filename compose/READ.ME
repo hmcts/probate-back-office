@@ -1,0 +1,124 @@
+##To use new ccd-docker elements
+**install this if needed**
+https://stedolan.github.io/jq/
+sudo apt-get install jq
+
+**login**
+
+az login
+
+az acr login --name hmctspublic
+
+az acr login --name hmctsprivate
+
+**reset images as necessary**
+
+docker image rm $(docker image ls -a -q)
+
+docker container rm $(docker container ls -a -q)
+
+docker volume rm $(docker volume ls -q)
+
+./ccd login
+
+./ccd enable backend frontend dm-store elasticsearch
+
+export ES_ENABLED_DOCKER=true
+
+**run env script**
+* for mac:
+./bin/set-environment-variables.sh
+* for linux 
+source ./bin/linux-set-environment-variables.sh
+
+**start up dockers**
+* docker network create compose_default
+* ./ccd compose pull
+* ./ccd compose build
+* ./ccd compose up
+
+**when started**
+
+./bin/document-management-store-create-blob-store-container.sh
+
+**not sure if you need this** 
+* I did not 
+az acr login --name hmcts --subscription 1c4f0704-a29e-403d-b719-b90c34ef14c9
+
+
+**login to idam-web**
+
+http://localhost:8082/login
+
+idamOwner@hmcts.net/Ref0rmIsFun
+
+Home > Manage Services > Add a new Service
+
+* add probate service
+
+label : probate
+
+description : probate
+
+client_id : ccd_gateway
+
+client_secret : ccd_gateway_secret
+
+new redirect_uri (click 'Add URI' before saving) : 
+
+http://localhost:3451/oauth2redirect
+
+SAVE
+
+**setup idam roles**
+* Home > Manage Roles > select your service
+* probate
+
+Add these roles
+* ccd-import
+* payment 
+* caseworker
+* caseworker-probate
+* caseworker-probate-issuer
+* caseworker-probate-solicitor
+* caseworker-probate-authoriser
+* caseworker-probate-systemupdate
+* caseworker-probate-caseofficer
+* caseworker-probate-caseadmin
+* caseworker-probate-registrar
+* caseworker-probate-superuser
+
+got to **ccd-import** role 
+tick assignable for roles under ccd-import
+SAVE
+
+**check healths**
+
+localhost:4544/health
+
+localhost:9200/_search
+
+localhost:5006/health
+
+**Generate roles, json->xls and import**
+* generate xls
+
+./ccdImports/conversionScripts/createAllXLS.sh 10.99.3.89:4104 (or equivalent for mac)
+
+* import xls
+
+./ccdImports/conversionScripts/importAllXLS.sh
+
+**login to ccd**
+* http://localhost:3451
+* ProbateSolCW1@gmail.com / Pa55word11
+
+**To start logstash-probateman (for legacy cases)**
+
+go to probate-backoffice
+
+sudo /usr/share/logstash/bin/logstash -f logstash/legacy-case-data-local.conf
+
+**Start your BO App**
+
+Login + create a case
