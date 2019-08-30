@@ -1,6 +1,8 @@
 ##To use new ccd-docker elements
 **install this if needed**
+
 https://stedolan.github.io/jq/
+
 sudo apt-get install jq
 
 **login**
@@ -94,16 +96,21 @@ SAVE
 
 **check healths**
 
-localhost:4544/health
-
 localhost:9200/_search
 
 localhost:5006/health
+* if this does not respond - you may need to restart your dm-store container
 
 **Generate roles, json->xls and import**
 * generate xls
 
 ./ccdImports/conversionScripts/createAllXLS.sh 10.99.3.89:4104 (or equivalent for mac)
+
+* create roles/users
+
+./bin/ccd-add-all-roles.sh
+
+* you can check the user + roles on the idam-web by searching for `ProbateSolCW1@gmail.com` on Manager Users page
 
 * import xls
 
@@ -122,3 +129,6 @@ sudo /usr/share/logstash/bin/logstash -f logstash/legacy-case-data-local.conf
 **Start your BO App**
 
 Login + create a case
+
+You can view a doc in dm by replacing the clicked link with port 3453, ie go to
+* localhost:3453/documents/[**ID**]/binary 
