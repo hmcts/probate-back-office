@@ -42,7 +42,7 @@ public class OCRFormsController {
             @ApiResponse(code = 403, message = "S2S token is not authorized to use the service"),
             @ApiResponse(code = 404, message = "Form type not found")
     })
-    @PostMapping(path = "/{form-type}/validate-ocr-data", consumes = APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(path = "/{form-type}/validate-ocr", consumes = APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<ValidationResponse> validateExceptionRecord(@PathVariable("form-type") String formType,
                                                                       @RequestBody OCRRequest ocrRequest) {
         log.info("Validate ocr data for form type: {}", formType);
