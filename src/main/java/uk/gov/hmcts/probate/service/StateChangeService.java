@@ -7,6 +7,8 @@ import uk.gov.hmcts.probate.changerule.ExecutorsRule;
 import uk.gov.hmcts.probate.changerule.MinorityRule;
 import uk.gov.hmcts.probate.changerule.ApplicantSiblingsRule;
 import uk.gov.hmcts.probate.changerule.NoOriginalWillRule;
+import uk.gov.hmcts.probate.changerule.RenouncingRule;
+import uk.gov.hmcts.probate.changerule.SpouseOrCivilRule;
 import uk.gov.hmcts.probate.changerule.UpdateApplicationRule;
 
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
@@ -31,6 +33,8 @@ public class StateChangeService {
     private final UpdateApplicationRule updateApplicationRule;
     private final MinorityRule minorityRule;
     private final ApplicantSiblingsRule applicantSiblingsRule;
+    private final RenouncingRule renouncingRule;
+    private final SpouseOrCivilRule spouseOrCivilRule;
 
     public Optional<String> getChangedStateForCaseUpdate(CaseData caseData) {
         if (noOriginalWillRule.isChangeNeeded(caseData)) {
@@ -68,6 +72,14 @@ public class StateChangeService {
         }
 
         if (applicantSiblingsRule.isChangeNeeded(caseData)) {
+            return Optional.of(STATE_STOPPED);
+        }
+
+        if (renouncingRule.isChangeNeeded(caseData)) {
+            return Optional.of(STATE_STOPPED);
+        }
+
+        if (spouseOrCivilRule.isChangeNeeded(caseData)) {
             return Optional.of(STATE_STOPPED);
         }
         return Optional.empty();

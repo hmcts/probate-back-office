@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <ApplicationInsightsAgent>
+        <AgentLogger>INFO</AgentLogger>
+        <Instrumentation>
+            <BuiltIn enabled="true">
+                <HTTP enabled="true"/>
+            </BuiltIn>
+            <Class name="uk.gov.hmcts.probate.controller.BusinessValidationController">
+                <Method name="validate" reportCaughtExceptions="true" reportExecutionTime="true"/>
+                <Method name="stopWithConfirmation" reportCaughtExceptions="true" reportExecutionTime="true"/>
+            </Class>
+            <Class name="uk.gov.hmcts.probate.controller.NextStepsController">
+                <Method name="validate" reportCaughtExceptions="true" reportExecutionTime="true"/>
+                <Method name="getNextSteps" reportCaughtExceptions="true" reportExecutionTime="true"/>
+            </Class>
+            <Class name="uk.gov.hmcts.probate.controller.PrintServiceTemplateController">
+                <Method name="getAllDocuments" reportCaughtExceptions="true" reportExecutionTime="true"/>
+                <Method name="getSolicitorCaseDetailsTemplate" reportCaughtExceptions="true" reportExecutionTime="true"/>
+                <Method name="getPACaseDetailsTemplate" reportCaughtExceptions="true" reportExecutionTime="true"/>
+            </Class>
+            <Class name="uk.gov.hmcts.probate.service.templates.printService">
+                <Method name="getAllDocuments" reportCaughtExceptions="true" reportExecutionTime="true"/>
+            </Class>
+            <Class name="uk.gov.hmcts.probate.service.template.pdf.PDFGeneratorService">
+                <Method name="generatePdf" reportCaughtExceptions="true" reportExecutionTime="true"/>
+            </Class>
+        </Instrumentation>
+    </ApplicationInsightsAgent>
