@@ -25,13 +25,11 @@ docker volume rm $(docker volume ls -q)
 
 ./ccd enable backend frontend dm-store elasticsearch
 
-export ES_ENABLED_DOCKER=true
-
 **run env script**
 * for mac:
-./bin/set-environment-variables.sh
+`./bin/set-environment-variables.sh`
 * for linux 
-source ./bin/linux-set-environment-variables.sh
+`source ./bin/linux-set-environment-variables.sh`
 
 **start up dockers**
 * docker network create compose_default
@@ -45,6 +43,7 @@ source ./bin/linux-set-environment-variables.sh
 
 **not sure if you need this** 
 * I did not 
+
 az acr login --name hmcts --subscription 1c4f0704-a29e-403d-b719-b90c34ef14c9
 
 
@@ -99,7 +98,13 @@ SAVE
 localhost:9200/_search
 
 localhost:5006/health
-* if this does not respond - you may need to restart your dm-store container
+
+if this does not respond - you may need to
+* ./bin/document-management-store-create-blob-store-container.sh
+ 
+* then restart your dm-store container
+
+* and possibly restart your fee-api, if its not started properly
 
 **Generate roles, json->xls and import**
 * generate xls
@@ -118,7 +123,8 @@ localhost:5006/health
 
 **login to ccd**
 * http://localhost:3451
-* ProbateSolCW1@gmail.com / Pa55word11
+* CASEWORKER = ProbateSolCW1@gmail.com / Pa55word11
+* SOLICITOR = ProbateSolicitor1@gmail.com / Pa55word11 
 
 **To start logstash-probateman (for legacy cases)**
 
