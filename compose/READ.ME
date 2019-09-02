@@ -43,16 +43,17 @@ docker volume rm $(docker volume ls -q)
 
 **not sure if you need this** 
 * I did not 
-
-az acr login --name hmcts --subscription 1c4f0704-a29e-403d-b719-b90c34ef14c9
+* az acr login --name hmcts --subscription 1c4f0704-a29e-403d-b719-b90c34ef14c9
 
 **setup idam data**
-./bin/idam-client-setup.sh
+* ./bin/idam-client-setup.sh
 
 **login to idam-web**
 
 * http://localhost:8082/login
 * idamOwner@hmcts.net/Ref0rmIsFun
+* check Managed Services -> roles -> ALL our CW roles
+* check ccd-import role has all other roles assignable
 
 **check healths**
 
@@ -63,13 +64,16 @@ az acr login --name hmcts --subscription 1c4f0704-a29e-403d-b719-b90c34ef14c9
 
 **Generate roles, json->xls and import**
 
-* generate xls
+generate xls
 * ./ccdImports/conversionScripts/createAllXLS.sh 10.99.2.36:4104 (or equivalent for mac)
 * create roles/users
 * ./bin/ccd-add-all-roles.sh
 * you can check the user + roles on the idam-web by searching for `ProbateSolCW1@gmail.com` on Manager Users page
 * import xls
 * ./ccdImports/conversionScripts/importAllXLS.sh
+
+**start your local services**
+* eg. probate-backoffice
 
 **login to ccd**
 * http://localhost:3451
