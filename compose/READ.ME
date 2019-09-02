@@ -38,88 +38,38 @@ docker volume rm $(docker volume ls -q)
 * ./ccd compose up
 
 **when started**
-
-./bin/document-management-store-create-blob-store-container.sh
+* ./bin/document-management-store-create-blob-store-container.sh
+* then restart the dm-store container
 
 **not sure if you need this** 
 * I did not 
 
 az acr login --name hmcts --subscription 1c4f0704-a29e-403d-b719-b90c34ef14c9
 
+**setup idam data**
+./bin/idam-client-setup.sh
 
 **login to idam-web**
 
-http://localhost:8082/login
-
-idamOwner@hmcts.net/Ref0rmIsFun
-
-Home > Manage Services > Add a new Service
-
-* add probate service
-
-label : probate
-
-description : probate
-
-client_id : ccd_gateway
-
-client_secret : ccd_gateway_secret
-
-new redirect_uri (click 'Add URI' before saving) : 
-
-http://localhost:3451/oauth2redirect
-
-SAVE
-
-**setup idam roles**
-* Home > Manage Roles > select your service
-* probate
-
-Add these roles
-* ccd-import
-* payment 
-* caseworker
-* caseworker-probate
-* caseworker-probate-issuer
-* caseworker-probate-solicitor
-* caseworker-probate-authoriser
-* caseworker-probate-systemupdate
-* caseworker-probate-caseofficer
-* caseworker-probate-caseadmin
-* caseworker-probate-registrar
-* caseworker-probate-superuser
-
-got to **ccd-import** role 
-tick assignable for roles under ccd-import
-SAVE
+* http://localhost:8082/login
+* idamOwner@hmcts.net/Ref0rmIsFun
 
 **check healths**
 
-localhost:9200/_search
-
-localhost:5006/health
-
-if this does not respond - you may need to
-* ./bin/document-management-store-create-blob-store-container.sh
- 
-* then restart your dm-store container
-
+* localhost:9200/_search
+* localhost:5006/health
+* localhost:4411/health
 * and possibly restart your fee-api, if its not started properly
 
 **Generate roles, json->xls and import**
+
 * generate xls
-
-./ccdImports/conversionScripts/createAllXLS.sh 10.99.3.89:4104 (or equivalent for mac)
-
+* ./ccdImports/conversionScripts/createAllXLS.sh 10.99.2.36:4104 (or equivalent for mac)
 * create roles/users
-
-./bin/ccd-add-all-roles.sh
-
+* ./bin/ccd-add-all-roles.sh
 * you can check the user + roles on the idam-web by searching for `ProbateSolCW1@gmail.com` on Manager Users page
-
 * import xls
-
-./ccdImports/conversionScripts/importAllXLS.sh
+* ./ccdImports/conversionScripts/importAllXLS.sh
 
 **login to ccd**
 * http://localhost:3451
@@ -127,10 +77,8 @@ if this does not respond - you may need to
 * SOLICITOR = ProbateSolicitor1@gmail.com / Pa55word11 
 
 **To start logstash-probateman (for legacy cases)**
-
-go to probate-backoffice
-
-sudo /usr/share/logstash/bin/logstash -f logstash/legacy-case-data-local.conf
+* go to probate-backoffice
+* sudo /usr/share/logstash/bin/logstash -f logstash/legacy-case-data-local.conf
 
 **Start your BO App**
 

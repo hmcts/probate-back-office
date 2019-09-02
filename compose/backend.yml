@@ -237,26 +237,25 @@ services:
     ports:
       - 5500:5500
 
-
   fees-api:
     image: hmctspublic.azurecr.io/fees-register/api:${FEES_API_DOCKER_VERSION:-latest}
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://ccd-shared-database:5432/fees_register
-      - SPRING_DATASOURCE_USERNAME="${DB_USERNAME}"
-      - SPRING_DATASOURCE_PASSWORD="${DB_PASSWORD}"
+      - SPRING_DATASOURCE_USERNAME=${DB_USERNAME}
+      - SPRING_DATASOURCE_PASSWORD=${DB_PASSWORD}
       - SPRING_PROFILES_ACTIVE=embedded
       - AUTH_IDAM_CLIENT_BASEURL=http://sidam-api:5000
-      #enabling here should be done only once per new clean build of fees-api. Set to false when fees have already been loaded to your dbgit
-      - ENABLE_FEE_LOADER=true
+      # enabling here should be done only once per new clean build of fees-api. Set to false when fees have already been loaded to your db
+      - ENABLE_FEE_LOADER=false
       - SPRING_LIQUIBASE_ENABLED=true
     links:
       - sidam-api
       - ccd-shared-database
+    ports:
+      - 4411:8080
     depends_on:
       - sidam-api
       - ccd-shared-database
-    ports:
-      - 4411:8080
 
 volumes:
   ccd-docker-ccd-shared-database-data:
