@@ -29,6 +29,7 @@ public class EmailAddressExecutorsApplyingValidationRuleTest {
 
     private CaseData caseDataEmpty;
     private CaseData caseDataNotEmpty;
+    private CaseData caseDataNotEmptySolicitor;
     private CaseData caseDataNull;
 
     private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
@@ -75,6 +76,11 @@ public class EmailAddressExecutorsApplyingValidationRuleTest {
                 .applicationType(ApplicationType.PERSONAL)
                 .executorsApplyingNotifications(EXECEUTORS_APPLYING_NOTIFICATION_NULL)
                 .registryLocation("Bristol").build();
+
+        caseDataNotEmptySolicitor = CaseData.builder()
+                .applicationType(ApplicationType.SOLICITOR)
+                .executorsApplyingNotifications(EXECEUTORS_APPLYING_NOTIFICATION)
+                .registryLocation("Bristol").build();
     }
 
     @Test
@@ -107,5 +113,13 @@ public class EmailAddressExecutorsApplyingValidationRuleTest {
                 new CaseDetails(caseDataNotEmpty, LAST_MODIFIED, CASE_ID);
 
         emailAddressExecutorsApplyingValidationRule.validateEmails(caseDetailsNotEmpty);
+    }
+
+    @Test
+    public void shouldThrowApplyingExecEmailIsNotEmptyForSolicitor() {
+        CaseDetails caseDetailsNotEmptySolicitor =
+                new CaseDetails(caseDataNotEmptySolicitor, LAST_MODIFIED, CASE_ID);
+
+        emailAddressExecutorsApplyingValidationRule.validateEmails(caseDetailsNotEmptySolicitor);
     }
 }
