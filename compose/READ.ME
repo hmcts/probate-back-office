@@ -9,9 +9,9 @@ sudo apt-get install jq
 
 az login
 
-az acr login --name hmctspublic
+az acr login --name hmctspublic --subscription DCD-CNP-Prod
 
-az acr login --name hmctsprivate
+az acr login --name hmctsprivate --subscription DCD-CNP-Prod
 
 **reset images as necessary**
 
@@ -65,7 +65,8 @@ docker volume rm $(docker volume ls -q)
 **Generate roles, json->xls and import**
 
 generate xls
-* ./ccdImports/conversionScripts/createAllXLS.sh 10.99.2.36:4104 (or equivalent for mac)
+* for linux: ./ccdImports/conversionScripts/createAllXLS.sh 10.99.2.36:4104 (replace with your ip)
+* for mac: ./ccdImports/conversionScripts/createAllXLS.sh docker.for.mac.localhost:4104
 * create roles/users
 * ./bin/ccd-add-all-roles.sh
 * you can check the user + roles on the idam-web by searching for `ProbateSolCW1@gmail.com` on Manager Users page
