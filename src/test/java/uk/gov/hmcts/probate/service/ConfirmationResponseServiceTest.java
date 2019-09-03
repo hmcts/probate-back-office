@@ -10,7 +10,10 @@ import org.springframework.test.util.ReflectionTestUtils;
 import uk.gov.hmcts.probate.changerule.DomicilityRule;
 import uk.gov.hmcts.probate.changerule.ExecutorsRule;
 import uk.gov.hmcts.probate.changerule.MinorityRule;
+import uk.gov.hmcts.probate.changerule.ApplicantSiblingsRule;
 import uk.gov.hmcts.probate.changerule.NoOriginalWillRule;
+import uk.gov.hmcts.probate.changerule.RenouncingRule;
+import uk.gov.hmcts.probate.changerule.SpouseOrCivilRule;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
 import uk.gov.hmcts.probate.model.ccd.Deceased;
 import uk.gov.hmcts.probate.model.ccd.Executor;
@@ -54,6 +57,12 @@ public class ConfirmationResponseServiceTest {
     @Mock
     private MinorityRule minorityRuleMock;
     @Mock
+    private ApplicantSiblingsRule applicantSiblingsRuleMock;
+    @Mock
+    private RenouncingRule renouncingRuleMock;
+    @Mock
+    private SpouseOrCivilRule spouseOrCivilRuleMock;
+    @Mock
     private CallbackRequest callbackRequestMock;
     @Mock
     private CaseDetails caseDetailsMock;
@@ -86,7 +95,8 @@ public class ConfirmationResponseServiceTest {
         MockitoAnnotations.initMocks(this);
 
         underTest = new ConfirmationResponseService(messageResourceServiceMock, markdownSubstitutionServiceMock,
-                noOriginalWillRuleMock, domicilityRuleMock, executorsRuleMock, minorityRuleMock);
+                noOriginalWillRuleMock, domicilityRuleMock, executorsRuleMock, minorityRuleMock,
+                applicantSiblingsRuleMock, renouncingRuleMock, spouseOrCivilRuleMock);
         ReflectionTestUtils.setField(underTest, "templatesDirectory", "templates/markdown/");
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
@@ -217,6 +227,93 @@ public class ConfirmationResponseServiceTest {
         assertNull(afterSubmitCallbackResponse.getConfirmationBody());
     }
 
+    @Test
+    public void shouldStopApplicantSiblingsConfirmation() {
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        when(applicantSiblingsRuleMock.isChangeNeeded(caseDataMock)).thenReturn(true);
+        when(markdownSubstitutionServiceMock.generatePage(anyString(), any(MarkdownTemplate.class), anyMap()))
+                .thenReturn(willBodyTemplateResponseMock);
+        when(caseDataMock.getSolsWillType()).thenReturn(GRANT_TYPE_INTESTACY);
+
+        AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getStopConfirmation(callbackRequestMock);
+
+        assertNull(afterSubmitCallbackResponse.getConfirmationHeader());
+        assertEquals(CONFIRMATION_BODY, afterSubmitCallbackResponse.getConfirmationBody());
+    }
+
+    @Test
+    public void shouldNOTStopApplicantSiblingsConfirmation() {
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        when(applicantSiblingsRuleMock.isChangeNeeded(caseDataMock)).thenReturn(false);
+        when(markdownSubstitutionServiceMock.generatePage(anyString(), any(MarkdownTemplate.class), anyMap()))
+                .thenReturn(willBodyTemplateResponseMock);
+
+        AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getStopConfirmation(callbackRequestMock);
+
+        assertNull(afterSubmitCallbackResponse.getConfirmationHeader());
+        assertNull(afterSubmitCallbackResponse.getConfirmationBody());
+    }
+
+    @Test
+    public void shouldStopRenouncingConfirmation() {
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        when(renouncingRuleMock.isChangeNeeded(caseDataMock)).thenReturn(true);
+        when(markdownSubstitutionServiceMock.generatePage(anyString(), any(MarkdownTemplate.class), anyMap()))
+                .thenReturn(willBodyTemplateResponseMock);
+        when(caseDataMock.getSolsWillType()).thenReturn(GRANT_TYPE_INTESTACY);
+
+        AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getStopConfirmation(callbackRequestMock);
+
+        assertNull(afterSubmitCallbackResponse.getConfirmationHeader());
+        assertEquals(CONFIRMATION_BODY, afterSubmitCallbackResponse.getConfirmationBody());
+    }
+
+    @Test
+    public void shouldNOTStopRenouncingConfirmation() {
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        when(renouncingRuleMock.isChangeNeeded(caseDataMock)).thenReturn(false);
+        when(markdownSubstitutionServiceMock.generatePage(anyString(), any(MarkdownTemplate.class), anyMap()))
+                .thenReturn(willBodyTemplateResponseMock);
+
+        AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getStopConfirmation(callbackRequestMock);
+
+        assertNull(afterSubmitCallbackResponse.getConfirmationHeader());
+        assertNull(afterSubmitCallbackResponse.getConfirmationBody());
+    }
+
+    @Test
+    public void shouldStopSpouseOrCivilConfirmation() {
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        when(spouseOrCivilRuleMock.isChangeNeeded(caseDataMock)).thenReturn(true);
+        when(markdownSubstitutionServiceMock.generatePage(anyString(), any(MarkdownTemplate.class), anyMap()))
+                .thenReturn(willBodyTemplateResponseMock);
+        when(caseDataMock.getSolsWillType()).thenReturn(GRANT_TYPE_INTESTACY);
+
+        AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getStopConfirmation(callbackRequestMock);
+
+        assertNull(afterSubmitCallbackResponse.getConfirmationHeader());
+        assertEquals(CONFIRMATION_BODY, afterSubmitCallbackResponse.getConfirmationBody());
+    }
+
+    @Test
+    public void shouldNOTStopSpouseOrCivilConfirmation() {
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        when(spouseOrCivilRuleMock.isChangeNeeded(caseDataMock)).thenReturn(false);
+        when(markdownSubstitutionServiceMock.generatePage(anyString(), any(MarkdownTemplate.class), anyMap()))
+                .thenReturn(willBodyTemplateResponseMock);
+
+        AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getStopConfirmation(callbackRequestMock);
+
+        assertNull(afterSubmitCallbackResponse.getConfirmationHeader());
+        assertNull(afterSubmitCallbackResponse.getConfirmationBody());
+    }
+
     @Captor
     private ArgumentCaptor<Map<String, String>> nextStepsKeyValueMap;
 
@@ -335,6 +432,7 @@ public class ConfirmationResponseServiceTest {
         when(ccdDataMock.getFee().getFeeForUkCopies()).thenReturn(BigDecimal.valueOf(50));
         when(ccdDataMock.getFee().getFeeForNonUkCopies()).thenReturn(BigDecimal.valueOf(150));
         when(ccdDataMock.getSolsAdditionalInfo()).thenReturn("solsAdditionalInfo");
+        when(ccdDataMock.getSolsWillType()).thenReturn("NoWill");
         executorsList.add(executorMock);
         executorsList.add(renouncingExecutorMock);
         executorsList.add(deadBeforeExecutorMock);

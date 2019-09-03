@@ -9,7 +9,10 @@ import org.springframework.test.context.junit4.SpringRunner;
 import uk.gov.hmcts.probate.changerule.DomicilityRule;
 import uk.gov.hmcts.probate.changerule.ExecutorsRule;
 import uk.gov.hmcts.probate.changerule.MinorityRule;
+import uk.gov.hmcts.probate.changerule.ApplicantSiblingsRule;
 import uk.gov.hmcts.probate.changerule.NoOriginalWillRule;
+import uk.gov.hmcts.probate.changerule.RenouncingRule;
+import uk.gov.hmcts.probate.changerule.SpouseOrCivilRule;
 import uk.gov.hmcts.probate.changerule.UpdateApplicationRule;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 
@@ -29,6 +32,12 @@ public class StateChangeServiceTest {
 
     @Mock
     private MinorityRule minorityInterestRule;
+    @Mock
+    private ApplicantSiblingsRule applicantSiblingsRule;
+    @Mock
+    private RenouncingRule renouncingRule;
+    @Mock
+    private SpouseOrCivilRule spouseOrCivilRule;
     @Mock
     private NoOriginalWillRule noOriginalWillRule;
     @Mock
@@ -53,7 +62,7 @@ public class StateChangeServiceTest {
         initMocks(this);
 
         underTest = new StateChangeService(noOriginalWillRule, domicilityRule, executorsStateRule,
-                updateApplicationRule, minorityInterestRule);
+                updateApplicationRule, minorityInterestRule, applicantSiblingsRule, renouncingRule, spouseOrCivilRule);
     }
 
     @Test
@@ -109,6 +118,63 @@ public class StateChangeServiceTest {
     @Test
     public void shouldNOTChangeStateForMinorityRule() {
         when(minorityInterestRule.isChangeNeeded(caseDataMock)).thenReturn(false);
+
+        Optional<String> newState = underTest.getChangedStateForCaseUpdate(caseDataMock);
+
+        assertEquals(Optional.empty(), newState);
+    }
+
+    @Test
+    public void shouldChangeStateForApplicantSiblingsRuleValid() {
+        when(applicantSiblingsRule.isChangeNeeded(caseDataMock)).thenReturn(true);
+
+        Optional<String> newState = underTest.getChangedStateForIntestacyUpdate(caseDataMock);
+
+        assertTrue(newState.isPresent());
+        assertEquals("Stopped", newState.get());
+    }
+
+    @Test
+    public void shouldNOTChangeStateForApplicantSiblingsRule() {
+        when(applicantSiblingsRule.isChangeNeeded(caseDataMock)).thenReturn(false);
+
+        Optional<String> newState = underTest.getChangedStateForCaseUpdate(caseDataMock);
+
+        assertEquals(Optional.empty(), newState);
+    }
+
+    @Test
+    public void shouldChangeStateForRenouncingRuleValid() {
+        when(renouncingRule.isChangeNeeded(caseDataMock)).thenReturn(true);
+
+        Optional<String> newState = underTest.getChangedStateForIntestacyUpdate(caseDataMock);
+
+        assertTrue(newState.isPresent());
+        assertEquals("Stopped", newState.get());
+    }
+
+    @Test
+    public void shouldNOTChangeStateForRenouncingRule() {
+        when(renouncingRule.isChangeNeeded(caseDataMock)).thenReturn(false);
+
+        Optional<String> newState = underTest.getChangedStateForCaseUpdate(caseDataMock);
+
+        assertEquals(Optional.empty(), newState);
+    }
+
+    @Test
+    public void shouldChangeStateForSpouseOrCivilRuleValid() {
+        when(spouseOrCivilRule.isChangeNeeded(caseDataMock)).thenReturn(true);
+
+        Optional<String> newState = underTest.getChangedStateForIntestacyUpdate(caseDataMock);
+
+        assertTrue(newState.isPresent());
+        assertEquals("Stopped", newState.get());
+    }
+
+    @Test
+    public void shouldNOTChangeStateForSpouseOrCivilRule() {
+        when(spouseOrCivilRule.isChangeNeeded(caseDataMock)).thenReturn(false);
 
         Optional<String> newState = underTest.getChangedStateForCaseUpdate(caseDataMock);
 

@@ -148,7 +148,8 @@ public class CaseData {
 
     private final String solsExecutorAliasNames;
 
-    @NotBlank(groups = {ApplicationProbateGroup.class}, message = "{primaryApplicantIsApplyingIsNull}")
+    @NotBlank(groups = {ApplicationProbateGroup.class,
+                        ApplicationIntestacyGroup.class}, message = "{primaryApplicantIsApplyingIsNull}")
     private final String primaryApplicantIsApplying;
 
     private final String solsPrimaryExecutorNotApplyingReason;
@@ -187,8 +188,8 @@ public class CaseData {
     @NotBlank(groups = {ApplicationIntestacyGroup.class}, message = "{solsMinorityInterestIsNull}")
     private final String solsMinorityInterest;
 
-    @NotBlank(groups = {ApplicationIntestacyGroup.class}, message = "{solsMultipleClaimsIsNull}")
-    private final String solsMultipleClaims;
+    @NotBlank(groups = {ApplicationIntestacyGroup.class}, message = "{solsApplicantSiblingsIsNull}")
+    private final String solsApplicantSiblings;
 
     private final String boEmailDocsReceivedNotificationRequested;
 

@@ -13,9 +13,11 @@ properties([
 String product = "probate"
 String component = "back-office"
 
-List<LinkedHashMap<String, Object>> secrets = [
+def secrets = [
+  'probate-aat': [
     secret('cwUserEmail', 'CW_USER_EMAIL'),
     secret('cwUserPass', 'CW_USER_PASSWORD')
+  ]
 ]
 
 static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
@@ -29,7 +31,6 @@ static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
 
 withNightlyPipeline("nodejs", product, component) {
     env.TEST_E2E_URL = params.URL_TO_TEST
-    setVaultName('probate')
     loadVaultSecrets(secrets)
     enableFullFunctionalTest()
 

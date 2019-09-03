@@ -87,6 +87,7 @@ public class CallbackResponseTransformerTest {
     private static final String WILL_TYPE_PROBATE = "WillLeft";
     private static final String WILL_TYPE_INTESTACY = "NoWill";
     private static final String WILL_TYPE_ADMON = "WillLeftAnnexed";
+    private static final String APPLICANT_SIBLINGS = "No";
 
     private static final ApplicationType APPLICATION_TYPE = SOLICITOR;
     private static final String REGISTRY_LOCATION = CTSC;
@@ -320,6 +321,7 @@ public class CallbackResponseTransformerTest {
                 .boCaseStopReasonList(STOP_REASONS_LIST)
                 .boStopDetails(STOP_DETAILS)
                 .solsWillType(WILL_TYPE_PROBATE)
+                .solsApplicantSiblings(APPLICANT_SIBLINGS)
                 .willExists(YES)
                 .additionalExecutorsApplying(ADDITIONAL_EXEC_LIST_APP)
                 .additionalExecutorsNotApplying(ADDITIONAL_EXEC_LIST_NOT_APP)
@@ -1720,6 +1722,7 @@ public class CallbackResponseTransformerTest {
         assertEquals(YES, callbackResponse.getData().getBoRequestInfoSendToBulkPrint());
         assertEquals(YES, callbackResponse.getData().getBoRequestInfoSendToBulkPrintRequested());
         assertEquals(EXECEUTORS_APPLYING_NOTIFICATION, callbackResponse.getData().getExecutorsApplyingNotifications());
+        assertEquals(APPLICANT_SIBLINGS, callbackResponse.getData().getSolsApplicantSiblings());
     }
 
     private void assertLegacyInfo(CallbackResponse callbackResponse) {

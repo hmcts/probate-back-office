@@ -163,7 +163,8 @@ public class NotificationControllerTest {
         when(callbackResponseTransformer.caseStopped(any(), any(), any())).thenReturn(successfulResponse);
         when(callbackResponseTransformer.defaultRequestInformationValues(any())).thenReturn(successfulResponse);
         when(callbackResponseTransformer.addInformationRequestDocuments(any(), eq(docList), any())).thenReturn(successfulResponse);
-        when(callbackResponseTransformer.addInformationRequestDocuments(any(), eq(new ArrayList<>()), any())).thenReturn(successfulResponse);
+        when(callbackResponseTransformer.addInformationRequestDocuments(any(),
+                eq(new ArrayList<>()), any())).thenReturn(successfulResponse);
 
         when(informationRequestService.emailInformationRequest(any())).thenReturn(docList);
 
