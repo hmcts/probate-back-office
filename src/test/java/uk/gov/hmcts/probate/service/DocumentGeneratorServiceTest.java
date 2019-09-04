@@ -119,6 +119,7 @@ public class DocumentGeneratorServiceTest {
         doNothing().when(documentService).expire(any(CallbackRequest.class), any());
 
         when(genericMapperService.addCaseData(caseDetails.getData())).thenReturn(expectedMap);
+        when(genericMapperService.addCaseDataWithRegistryProperties(caseDetails)).thenReturn(expectedMap);
 
     }
 
@@ -225,5 +226,13 @@ public class DocumentGeneratorServiceTest {
         when(pdfManagementService.generateDocmosisDocumentAndUpload(expectedMap, DocumentType.GRANT_COVERSHEET))
                 .thenReturn(Document.builder().documentType(DocumentType.GRANT_COVERSHEET).build());
         assertEquals(DocumentType.GRANT_COVERSHEET, documentGeneratorService.generateCoversheet(callbackRequest).getDocumentType());
+    }
+
+    @Test
+    public void testGenerateRequestInformationReturnsCorrectDocumentType() {
+        when(pdfManagementService.generateDocmosisDocumentAndUpload(expectedMap,DocumentType.SOT_INFORMATION_REQUEST))
+                .thenReturn(Document.builder().documentType(DocumentType.SOT_INFORMATION_REQUEST).build());
+        assertEquals(DocumentType.SOT_INFORMATION_REQUEST,
+                documentGeneratorService.generateRequestForInformation(callbackRequest.getCaseDetails()).getDocumentType());
     }
 }

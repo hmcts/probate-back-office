@@ -5,14 +5,15 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 import uk.gov.hmcts.probate.controller.validation.AmendCaseDetailsGroup;
+import uk.gov.hmcts.probate.controller.validation.ApplicationAdmonGroup;
 import uk.gov.hmcts.probate.controller.validation.ApplicationCreatedGroup;
+import uk.gov.hmcts.probate.controller.validation.ApplicationIntestacyGroup;
+import uk.gov.hmcts.probate.controller.validation.ApplicationProbateGroup;
 import uk.gov.hmcts.probate.controller.validation.ApplicationReviewedGroup;
 import uk.gov.hmcts.probate.controller.validation.ApplicationUpdatedGroup;
-import uk.gov.hmcts.probate.controller.validation.ApplicationProbateGroup;
-import uk.gov.hmcts.probate.controller.validation.ApplicationIntestacyGroup;
-import uk.gov.hmcts.probate.controller.validation.ApplicationAdmonGroup;
 import uk.gov.hmcts.probate.controller.validation.NextStepsConfirmationGroup;
 import uk.gov.hmcts.probate.model.ApplicationType;
+import uk.gov.hmcts.probate.model.ExecutorsApplyingNotification;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
 import uk.gov.hmcts.probate.model.ccd.Reissue;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
@@ -168,11 +169,10 @@ public class CaseData {
     private final List<CollectionMember<AdditionalExecutor>> solsAdditionalExecutorList;
 
     private final String solsAdditionalInfo;
-
     // EVENT = solicitorUpdateIntestacy
     @NotBlank(groups = {ApplicationProbateGroup.class,
-                        ApplicationAdmonGroup.class,
-                        ApplicationIntestacyGroup.class}, message = "{willExistsIsNull}")
+            ApplicationAdmonGroup.class,
+            ApplicationIntestacyGroup.class}, message = "{willExistsIsNull}")
     private final String willExists;
 
     @NotNull(groups = {ApplicationIntestacyGroup.class}, message = "{deceasedMaritalStatusIsNull}")
@@ -190,6 +190,24 @@ public class CaseData {
 
     @NotBlank(groups = {ApplicationIntestacyGroup.class}, message = "{solsApplicantSiblingsIsNull}")
     private final String solsApplicantSiblings;
+
+    private final String boEmailDocsReceivedNotificationRequested;
+
+    @SuppressWarnings("squid:S1170")
+    @Getter(lazy = true)
+    private final String boEmailDocsReceivedNotification = getDefaultValueForEmailNotifications();
+
+    private final String boEmailGrantIssuedNotificationRequested;
+
+    @SuppressWarnings("squid:S1170")
+    @Getter(lazy = true)
+    private final String boEmailGrantIssuedNotification = getDefaultValueForEmailNotifications();
+
+    @SuppressWarnings("squid:S1170")
+    @Getter(lazy = true)
+    private final String boSendToBulkPrint = YES;
+
+    private final String boSendToBulkPrintRequested;
 
     //EVENT = review
     private final DocumentLink solsLegalStatementDocument;
@@ -309,25 +327,6 @@ public class CaseData {
 
     private final String primaryApplicantSameWillName;
 
-    private final String boEmailDocsReceivedNotificationRequested;
-
-    @SuppressWarnings("squid:S1170")
-    @Getter(lazy = true)
-    private final String boEmailDocsReceivedNotification = getDefaultValueForEmailNotifications();
-
-    private final String boEmailGrantIssuedNotificationRequested;
-
-    @SuppressWarnings("squid:S1170")
-    @Getter(lazy = true)
-    private final String boEmailGrantIssuedNotification = getDefaultValueForEmailNotifications();
-
-    @SuppressWarnings("squid:S1170")
-    @Getter(lazy = true)
-    private final String boSendToBulkPrint = YES;
-
-    private final String boSendToBulkPrintRequested;
-
-
     //paper form case creator fields
     private final String primaryApplicantSecondPhoneNumber;
     private final String primaryApplicantRelationshipToDeceased;
@@ -423,6 +422,8 @@ public class CaseData {
     private final String reissueDate;
     private final String reissueReasonNotation;
     private final String latestGrantReissueDate;
+    private final String boStopDetailsDeclarationParagraph;
+    private final List<CollectionMember<ExecutorsApplyingNotification>> executorsApplyingNotifications;
 
     private final List<CollectionMember<CaseMatch>> legacySearchResultRows;
 
@@ -471,6 +472,16 @@ public class CaseData {
     private final String anyDeceasedGrandChildrenUnderEighteen;
     private final String deceasedAnyChildren;
     private final String deceasedHasAssetsOutsideUK;
+
+    private final String boEmailRequestInfoNotificationRequested;
+    @SuppressWarnings("squid:S1170")
+    @Getter(lazy = true)
+    private final String boEmailRequestInfoNotification = getDefaultValueForEmailNotifications();
+
+    @Getter(lazy = true)
+    private final String boRequestInfoSendToBulkPrint = YES;
+
+    private final String boRequestInfoSendToBulkPrintRequested;
 
     @Getter(lazy = true)
     private final List<CollectionMember<AdditionalExecutor>> executorsApplyingForLegalStatement = getAllExecutors(true);
@@ -565,6 +576,14 @@ public class CaseData {
 
     public boolean isCaveatStopSendToBulkPrintRequested() {
         return YES.equals(getBoCaveatStopSendToBulkPrint());
+    }
+
+    public boolean isBoEmailRequestInfoNotificationRequested() {
+        return YES.equals(getBoEmailRequestInfoNotification());
+    }
+
+    public boolean isBoRequestInfoSendToBulkPrintRequested() {
+        return YES.equals(getBoRequestInfoSendToBulkPrint());
     }
 
     private String convertDate(LocalDate dateToConvert) {

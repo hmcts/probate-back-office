@@ -119,6 +119,7 @@ notifications:
         excelaData: "pa-excela-data"
         caveatRaised: "pa-caveat-raised"
         caveatRaisedCtsc: "pa-ctsc-caveat-raised"
+        requestInformation: "pa-request-information"
       solicitor:
         documentReceived: "sol-document-received"
         caseStopped: "sol-case-stopped"
@@ -129,6 +130,7 @@ notifications:
         excelaData: "pa-excela-data"
         caveatRaised: "sols-caveat-raised"
         caveatRaisedCtsc: "sols-ctsc-caveat-raised"
+        requestInformation: "sols-request-information"
 
 registries:
   oxford:

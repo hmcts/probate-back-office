@@ -18,12 +18,16 @@ import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
+import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
 import uk.gov.hmcts.probate.service.BulkPrintService;
+import uk.gov.hmcts.probate.service.DocumentGeneratorService;
 import uk.gov.hmcts.probate.service.DocumentService;
 import uk.gov.hmcts.probate.service.EventValidationService;
+import uk.gov.hmcts.probate.service.InformationRequestService;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.docmosis.GrantOfRepresentationDocmosisMapperService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
+import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.util.TestUtils;
 import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
 import uk.gov.service.notify.NotificationClientException;
@@ -35,7 +39,6 @@ import java.util.Map;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
@@ -49,11 +52,11 @@ import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT_STOPPED;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_DRAFT;
+import static uk.gov.hmcts.probate.model.DocumentType.EDGE_CASE;
 import static uk.gov.hmcts.probate.model.DocumentType.GRANT_COVER;
 import static uk.gov.hmcts.probate.model.DocumentType.GRANT_COVERSHEET;
 import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_DRAFT;
-import static uk.gov.hmcts.probate.model.DocumentType.EDGE_CASE;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -88,23 +91,39 @@ public class NotificationControllerTest {
     @MockBean
     private CoreCaseDataApi coreCaseDataApi;
 
+    @MockBean
+    private CallbackResponseTransformer callbackResponseTransformer;
+
+    @MockBean
+    private DocumentGeneratorService documentGeneratorService;
+
+    @MockBean
+    private InformationRequestService informationRequestService;
+
     @SpyBean
     private DocumentService documentService;
 
     private static final String DOC_RECEIVED_URL = "/notify/documents-received";
     private static final String CASE_STOPPED_URL = "/notify/case-stopped";
+    private static final String REQUEST_INFO_DEFAULT_URL = "/notify/request-information-default-values";
+    private static final String REQUEST_INFO_URL = "/notify/stopped-information-request";
 
     private static final Map<String, Object> EMPTY_MAP = new HashMap();
     private static final Document EMPTY_DOC = Document.builder().documentType(CAVEAT_STOPPED).build();
 
     private List<String> errors = new ArrayList<>();
     private CallbackResponse errorResponse;
+    private CallbackResponse successfulResponse;
 
     @Before
     public void setUp() throws NotificationClientException, BadRequestException {
         errors.add("Bulk Print is currently unavailable please contact support desk.");
         errorResponse = CallbackResponse.builder().errors(errors).build();
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+        successfulResponse =
+                CallbackResponse.builder().data(ResponseCaseData.builder().deceasedForenames("Bob").build()).build();
+        List<Document> docList = new ArrayList<>();
+        docList.add(EMPTY_DOC);
 
         Document document = Document.builder().documentType(DIGITAL_GRANT).build();
 
@@ -137,6 +156,17 @@ public class NotificationControllerTest {
         when(grantOfRepresentationDocmosisMapperService.caseDataForStoppedMatchedCaveat(any())).thenReturn(EMPTY_MAP);
 
         when(pdfManagementService.generateDocmosisDocumentAndUpload(any(), eq(CAVEAT_STOPPED))).thenReturn(EMPTY_DOC);
+
+        when(documentGeneratorService.generateCoversheet(any())).thenReturn(EMPTY_DOC);
+
+        when(callbackResponseTransformer.addDocuments(any(), any(), any(), any())).thenReturn(successfulResponse);
+        when(callbackResponseTransformer.caseStopped(any(), any(), any())).thenReturn(successfulResponse);
+        when(callbackResponseTransformer.defaultRequestInformationValues(any())).thenReturn(successfulResponse);
+        when(callbackResponseTransformer.addInformationRequestDocuments(any(), eq(docList), any())).thenReturn(successfulResponse);
+        when(callbackResponseTransformer.addInformationRequestDocuments(any(),
+                eq(new ArrayList<>()), any())).thenReturn(successfulResponse);
+
+        when(informationRequestService.emailInformationRequest(any())).thenReturn(docList);
 
     }
 
@@ -396,4 +426,34 @@ public class NotificationControllerTest {
 
     }
 
+    @Test
+    public void shouldReturnSuccessfulForRequestInformationDefaultValues() throws Exception {
+        String personalPayload = testUtils.getStringFromFile("personalPayloadNotifications.json");
+
+        mockMvc.perform(post(REQUEST_INFO_DEFAULT_URL).content(personalPayload).contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
+
+    }
+
+    @Test
+    public void shouldReturnSuccessfulResponseForInformationRequest() throws Exception {
+        String personalPayload = testUtils.getStringFromFile("personalPayloadNotifications.json");
+
+        mockMvc.perform(post(REQUEST_INFO_URL).content(personalPayload).contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(content().string(containsString("data")));
+
+    }
+
+    @Test
+    public void shouldReturnSuccessfulResponseForEmailNotRequested() throws Exception {
+        String personalPayload = testUtils.getStringFromFile("personalPayloadNotificationsEmailNotRequested.json");
+
+        mockMvc.perform(post(REQUEST_INFO_URL).content(personalPayload).contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(content().string(containsString("data")));
+    }
 }
