@@ -3,6 +3,7 @@ package uk.gov.hmcts.probate.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
@@ -13,15 +14,16 @@ import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import java.util.HashMap;
 import java.util.Map;
 
+import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_DRAFT;
-import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_REISSUE_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_REISSUE;
+import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_REISSUE_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_DRAFT;
-import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_REISSUE_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_REISSUE;
+import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_REISSUE_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_DRAFT;
-import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_REISSUE_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_REISSUE;
+import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_REISSUE_DRAFT;
 
 @Slf4j
 @Service
@@ -83,6 +85,26 @@ public class DocumentGeneratorService {
                 callbackRequest.getCaseDetails().getId());
 
         return coversheet;
+    }
+
+    public Document generateRequestForInformation(CaseDetails caseDetails) {
+        log.info("Initiate call to generate information request letter for case id {}", caseDetails.getId());
+        Map<String, Object> placeholders = genericMapperService.addCaseDataWithRegistryProperties(caseDetails);
+        placeholders.put("fullRedec", NO);
+        String appName = null;
+        if (caseDetails.getData().getApplicationType() == ApplicationType.SOLICITOR) {
+            appName = caseDetails.getData().getSolsSOTName();
+        } else {
+            appName = caseDetails.getData().getPrimaryApplicantForenames();
+        }
+        placeholders.put("applicantName", appName);
+        placeholders.put("caseReference", caseDetails.getId());
+
+        Document letter = pdfManagementService.generateDocmosisDocumentAndUpload(placeholders,
+                DocumentType.SOT_INFORMATION_REQUEST);
+        log.info("Successful response for letter for case id {}", caseDetails.getId());
+
+        return letter;
     }
 
     private void expireDrafts(CallbackRequest callbackRequest) {
