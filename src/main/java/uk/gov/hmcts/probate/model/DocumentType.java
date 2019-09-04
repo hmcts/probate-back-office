@@ -90,7 +90,10 @@ public enum DocumentType {
     INTESTACY_GRANT_REISSUE("intestacyGrantReissue"),
 
     @JsonProperty("admonWillGrantReissue")
-    ADMON_WILL_GRANT_REISSUE("admonWillGrantReissue");
+    ADMON_WILL_GRANT_REISSUE("admonWillGrantReissue"),
+
+    @JsonProperty("sotInformationRequest")
+    SOT_INFORMATION_REQUEST("sotInformationRequest");
 
     private final String templateName;
 

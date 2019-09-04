@@ -42,6 +42,7 @@ import java.util.List;
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static uk.gov.hmcts.probate.model.Constants.LONDON;
+import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_REISSUE_DRAFT;
@@ -254,8 +255,9 @@ public class DocumentController {
         documents.add(grantDocument);
         documents.add(coversheet);
 
-        String letterId = bulkPrintService.sendToBulkPrintGrantReissue(callbackRequest, coversheet,
-                grantDocument);
+        String letterId = bulkPrintService.sendToBulkPrint(callbackRequest, coversheet,
+                grantDocument,
+                callbackRequest.getCaseDetails().getData().isSendForBulkPrintingRequestedGrantReIssued());
         String pdfSize = getPdfSize(callbackRequest.getCaseDetails().getData());
 
         if (callbackRequest.getCaseDetails().getData().isGrantReissuedEmailNotificationRequested()) {

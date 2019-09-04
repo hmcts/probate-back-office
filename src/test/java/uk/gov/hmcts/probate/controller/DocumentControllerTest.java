@@ -39,6 +39,7 @@ import java.util.UUID;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
@@ -133,8 +134,8 @@ public class DocumentControllerTest {
         when(documentGeneratorService.generateCoversheet(any(CallbackRequest.class)))
                 .thenReturn(Document.builder().documentType(DocumentType.GRANT_COVERSHEET).build());
 
-        when(bulkPrintService.sendToBulkPrintGrantReissue(any(), any(),
-                any())).thenReturn(LETTER_UUID);
+        when(bulkPrintService.sendToBulkPrint(any(), any(),
+                any(), anyBoolean())).thenReturn(LETTER_UUID);
 
         when(notificationService.generateGrantReissue(any(CallbackRequest.class)))
                 .thenReturn(Document.builder().documentType(SENT_EMAIL).build());
