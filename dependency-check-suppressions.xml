@@ -2,6 +2,34 @@
 <suppressions xmlns="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.1.xsd">
     <suppress>
         <notes><![CDATA[
+   file name: commons-beanutils-1.9.3.jar
+   ]]></notes>
+        <gav regex="true">^commons-beanutils:commons-beanutils:.*$</gav>
+        <cpe>cpe:/a:apache:commons_beanutils</cpe>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: commons-beanutils-1.9.3.jar
+   ]]></notes>
+        <gav regex="true">^commons-beanutils:commons-beanutils:.*$</gav>
+        <cve>CVE-2019-10086</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: gradle-pitest-plugin-1.3.0.jar
+   ]]></notes>
+        <gav regex="true">^info\.solidsoft\.gradle\.pitest:gradle-pitest-plugin:.*$</gav>
+        <cpe>cpe:/a:gradle:gradle</cpe>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: gradle-pitest-plugin-1.3.0.jar
+   ]]></notes>
+        <gav regex="true">^info\.solidsoft\.gradle\.pitest:gradle-pitest-plugin:.*$</gav>
+        <cve>CVE-2019-15052</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
    file name: tomcat-embed-websocket-9.0.16.jar
    ]]></notes>
         <gav regex="true">^org\.apache\.tomcat\.embed:tomcat-embed-websocket:.*$</gav>
