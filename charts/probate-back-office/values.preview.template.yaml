@@ -10,10 +10,12 @@ java:
     PROBATE_POSTGRESQL_PORT: 5432
     AUTH_PROVIDER_SERVICE_CLIENT_BASEURL: http://rpe-service-auth-provider-aat.service.core-compute-aat.internal
     SERVICE_AUTH_PROVIDER_BASE_URL: http://rpe-service-auth-provider-aat.service.core-compute-aat.internal
+    USER_AUTH_PROVIDER_OAUTH2_URL: https://idam-api.aat.platform.hmcts.net/oauth2redirect
     PDF_SERVICE_URL: http://cmc-pdf-service-aat.service.core-compute-aat.internal
     PRINTSERVICE_HOST: https://return-case-doc-ccd.nonprod.platform.hmcts.net
     PRINTSERVICE_INTERNAL_HOST: http://ccd-case-print-service-aat.service.core-compute-aat.internal
     IDAM_SERVICE_HOST: https://idam-api.aat.platform.hmcts.net
+    IDAM_REDIRECT_URL: https://idam-api.aat.platform.hmcts.net/oauth2redirect
     FEE_API_URL: http://fees-register-api-aat.service.core-compute-aat.internal
     EVIDENCE_MANAGEMENT_HOST: http://dm-store-aat.service.core-compute-aat.internal
     CCD_GATEWAY_HOST: https://gateway-ccd.aat.platform.hmcts.net
