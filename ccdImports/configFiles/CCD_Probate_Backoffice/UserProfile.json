@@ -30,5 +30,6 @@
   {"UserIDAMId": "ProbateCaseAdmin@gmail.com", "WorkBasketDefaultJurisdiction": "PROBATE", "WorkBasketDefaultCaseType": "GrantOfRepresentation", "WorkBasketDefaultState": "CaseCreated"},
   {"UserIDAMId": "ProbateCaseOfficer@gmail.com", "WorkBasketDefaultJurisdiction": "PROBATE", "WorkBasketDefaultCaseType": "GrantOfRepresentation", "WorkBasketDefaultState": "CaseCreated"},
   {"UserIDAMId": "ProbateRegistrar@gmail.com", "WorkBasketDefaultJurisdiction": "PROBATE", "WorkBasketDefaultCaseType": "GrantOfRepresentation", "WorkBasketDefaultState": "CaseCreated"},
-  {"UserIDAMId": "ProbateSuperuser@gmail.com", "WorkBasketDefaultJurisdiction": "PROBATE", "WorkBasketDefaultCaseType": "GrantOfRepresentation", "WorkBasketDefaultState": "CaseCreated"}
+  {"UserIDAMId": "ProbateSuperuser@gmail.com", "WorkBasketDefaultJurisdiction": "PROBATE", "WorkBasketDefaultCaseType": "GrantOfRepresentation", "WorkBasketDefaultState": "CaseCreated"},
+  {"UserIDAMId": "probatebackoffice@gmail.com", "WorkBasketDefaultJurisdiction": "PROBATE", "WorkBasketDefaultCaseType": "GrantOfRepresentation", "WorkBasketDefaultState": "CaseCreated"}
 ]
