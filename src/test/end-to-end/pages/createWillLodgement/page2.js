@@ -4,15 +4,15 @@ const testConfig = require('src/test/config');
 const createWillLodgementConfig = require('./createWillLodgementConfig');
 const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
 
-module.exports = function (crud) {
+module.exports = function (crud, unique_deceased_user) {
 
     const I = this;
 
     if (crud === 'create') {
         I.waitForText(createWillLodgementConfig.page2_waitForText, testConfig.TestTimeToWaitForText);
 
-        I.fillField('#deceasedForenames', createWillLodgementConfig.page2_forenames);
-        I.fillField('#deceasedSurname', createWillLodgementConfig.page2_surname);
+        I.fillField('#deceasedForenames', createWillLodgementConfig.page2_forenames + '_' + unique_deceased_user);
+        I.fillField('#deceasedSurname', createWillLodgementConfig.page2_surname + '_' + unique_deceased_user);
 
         I.selectOption('#deceasedGender', createWillLodgementConfig.page2_gender);
 
@@ -37,6 +37,7 @@ module.exports = function (crud) {
                 counter += 1;
             }
         });
+        I.fillField('#deceasedFullAliasNameList_0_FullAliasName', createWillLodgementConfig.page2_alias_1 + '_' + unique_deceased_user);
 
         I.click(createWillLodgementConfig.UKpostcodeLink);
         I.fillField('#deceasedAddress_AddressLine1', createWillLodgementConfig.address_line1);
@@ -52,12 +53,31 @@ module.exports = function (crud) {
     if (crud === 'update') {
         I.waitForText(createWillLodgementConfig.page2_amend_waitForText, testConfig.TestTimeToWaitForText);
 
-        I.fillField('#deceasedForenames', createWillLodgementConfig.page2_forenames_update);
-        I.fillField('#deceasedSurname', createWillLodgementConfig.page2_surname_update);
+        I.fillField('#deceasedForenames', createWillLodgementConfig.page2_forenames + '_' + unique_deceased_user + ' ' + 'UPDATED' + unique_deceased_user);
+        I.fillField('#deceasedSurname', createWillLodgementConfig.page2_surname + '_' + unique_deceased_user + ' ' + 'UPDATED' + unique_deceased_user);
+        I.fillField('#deceasedFullAliasNameList_0_FullAliasName', createWillLodgementConfig.page2_alias_1 + '_' + unique_deceased_user + '_' + 'UPDATED' + unique_deceased_user);
 
+        I.fillField('#deceasedDateOfDeath-day', createWillLodgementConfig.page2_dateOfDeath_day_update);
+        I.fillField('#deceasedDateOfDeath-month', createWillLodgementConfig.page2_dateOfDeath_month_update);
+        I.fillField('#deceasedDateOfDeath-year', createWillLodgementConfig.page2_dateOfDeath_year_update);
         I.fillField('#deceasedDateOfBirth-day', createWillLodgementConfig.page2_dateOfBirth_day_update);
         I.fillField('#deceasedDateOfBirth-month', createWillLodgementConfig.page2_dateOfBirth_month_update);
         I.fillField('#deceasedDateOfBirth-year', createWillLodgementConfig.page2_dateOfBirth_year_update);
+    }
+
+    if (crud === 'update2orig') {
+
+        // "reverting" update back to defaults - to enable case-match with matching case
+        I.waitForNavigationToComplete(commonConfig.continueButton);
+        I.waitForText(createWillLodgementConfig.page2_amend_waitForText, testConfig.TestTimeToWaitForText);
+
+        I.fillField('#deceasedDateOfDeath-day', createWillLodgementConfig.page2_dateOfDeath_day);
+        I.fillField('#deceasedDateOfDeath-month', createWillLodgementConfig.page2_dateOfDeath_month);
+        I.fillField('#deceasedDateOfDeath-year', createWillLodgementConfig.page2_dateOfDeath_year);
+        I.fillField('#deceasedDateOfBirth-day', createWillLodgementConfig.page2_dateOfBirth_day);
+        I.fillField('#deceasedDateOfBirth-month', createWillLodgementConfig.page2_dateOfBirth_month);
+        I.fillField('#deceasedDateOfBirth-year', createWillLodgementConfig.page2_dateOfBirth_year);
+        I.waitForNavigationToComplete(commonConfig.continueButton);
     }
 
     I.waitForNavigationToComplete(commonConfig.continueButton);
