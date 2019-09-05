@@ -48,9 +48,9 @@ module.exports = function (crud, unique_deceased_user) {
         I.selectOption('#selectionList', createGrantOfProbateConfig.page4_list1_update_option);
         I.waitForNavigationToComplete(commonConfig.continueButton);
 
-        I.fillField('#deceasedForenames', createGrantOfProbateConfig.page4_deceasedForenames + '_' + unique_deceased_user + ' ' + 'UPDATED' + unique_deceased_user);
-        I.fillField('#deceasedSurname', createGrantOfProbateConfig.page4_deceasedSurname + '_' + unique_deceased_user + ' ' + 'UPDATED' + unique_deceased_user);
-        I.fillField('#solsDeceasedAliasNamesList_0_SolsAliasname', createGrantOfProbateConfig.page4_deceasedAlias + '_' + unique_deceased_user + ' ' + 'UPDATED' + unique_deceased_user);
+        I.fillField('#deceasedForenames', createGrantOfProbateConfig.page4_deceasedForenames + '_' + unique_deceased_user + ' UPDATED' + unique_deceased_user);
+        I.fillField('#deceasedSurname', createGrantOfProbateConfig.page4_deceasedSurname + '_' + unique_deceased_user + ' UPDATED' + unique_deceased_user);
+        I.fillField('#solsDeceasedAliasNamesList_0_SolsAliasname', createGrantOfProbateConfig.page4_deceasedAlias + '_' + unique_deceased_user + ' UPDATED' + unique_deceased_user);
 
         I.fillField('#deceasedDateOfDeath-day', createGrantOfProbateConfig.page4_deceasedDod_day_update);
         I.fillField('#deceasedDateOfDeath-month', createGrantOfProbateConfig.page4_deceasedDod_month_update);
