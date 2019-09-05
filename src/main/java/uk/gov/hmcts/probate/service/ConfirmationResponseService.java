@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.changerule.DomicilityRule;
 import uk.gov.hmcts.probate.changerule.ExecutorsRule;
-import uk.gov.hmcts.probate.changerule.MinorityRule;
+import uk.gov.hmcts.probate.changerule.MinorityInterestRule;
 import uk.gov.hmcts.probate.changerule.ApplicantSiblingsRule;
 import uk.gov.hmcts.probate.changerule.NoOriginalWillRule;
 import uk.gov.hmcts.probate.changerule.ChangeRule;
@@ -54,7 +54,7 @@ public class ConfirmationResponseService {
     private final NoOriginalWillRule noOriginalWillRule;
     private final DomicilityRule domicilityConfirmationResponseRule;
     private final ExecutorsRule executorsConfirmationResponseRule;
-    private final MinorityRule minorityConfirmationResponseRule;
+    private final MinorityInterestRule minorityInterestConfirmationResponseRule;
     private final ApplicantSiblingsRule applicantSiblingsConfirmationResponseRule;
     private final RenouncingRule renouncingConfirmationResponseRule;
     private final SpouseOrCivilRule spouseOrCivilConfirmationResponseRule;
@@ -92,7 +92,7 @@ public class ConfirmationResponseService {
         }
 
         if (GRANT_TYPE_INTESTACY.equals(caseData.getSolsWillType())) {
-            response = getStopBodyMarkdown(caseData, minorityConfirmationResponseRule, STOP_BODY);
+            response = getStopBodyMarkdown(caseData, minorityInterestConfirmationResponseRule, STOP_BODY);
             if (response.isPresent()) {
                 return response.get();
             }

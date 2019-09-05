@@ -8,7 +8,7 @@ import org.mockito.Mock;
 import org.springframework.test.context.junit4.SpringRunner;
 import uk.gov.hmcts.probate.changerule.DomicilityRule;
 import uk.gov.hmcts.probate.changerule.ExecutorsRule;
-import uk.gov.hmcts.probate.changerule.MinorityRule;
+import uk.gov.hmcts.probate.changerule.MinorityInterestRule;
 import uk.gov.hmcts.probate.changerule.ApplicantSiblingsRule;
 import uk.gov.hmcts.probate.changerule.NoOriginalWillRule;
 import uk.gov.hmcts.probate.changerule.RenouncingRule;
@@ -31,7 +31,7 @@ public class StateChangeServiceTest {
     private StateChangeService underTest;
 
     @Mock
-    private MinorityRule minorityInterestRule;
+    private MinorityInterestRule minorityInterestRule;
     @Mock
     private ApplicantSiblingsRule applicantSiblingsRule;
     @Mock
@@ -106,7 +106,7 @@ public class StateChangeServiceTest {
     }
 
     @Test
-    public void shouldChangeStateForMinorityRuleValid() {
+    public void shouldChangeStateForMinorityInterestRuleValid() {
         when(minorityInterestRule.isChangeNeeded(caseDataMock)).thenReturn(true);
 
         Optional<String> newState = underTest.getChangedStateForIntestacyUpdate(caseDataMock);
@@ -116,7 +116,7 @@ public class StateChangeServiceTest {
     }
 
     @Test
-    public void shouldNOTChangeStateForMinorityRule() {
+    public void shouldNOTChangeStateForMinorityInterestRule() {
         when(minorityInterestRule.isChangeNeeded(caseDataMock)).thenReturn(false);
 
         Optional<String> newState = underTest.getChangedStateForCaseUpdate(caseDataMock);

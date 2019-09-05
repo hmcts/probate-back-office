@@ -6,7 +6,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 
 @Component
-public class MinorityRule implements ChangeRule {
+public class MinorityInterestRule implements ChangeRule {
     private static final String MESSAGE_KEY = "stopBodyMinorityInterest";
 
     @Override

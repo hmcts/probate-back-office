@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.changerule.DomicilityRule;
 import uk.gov.hmcts.probate.changerule.ExecutorsRule;
-import uk.gov.hmcts.probate.changerule.MinorityRule;
+import uk.gov.hmcts.probate.changerule.MinorityInterestRule;
 import uk.gov.hmcts.probate.changerule.ApplicantSiblingsRule;
 import uk.gov.hmcts.probate.changerule.NoOriginalWillRule;
 import uk.gov.hmcts.probate.changerule.RenouncingRule;
@@ -31,7 +31,7 @@ public class StateChangeService {
     private final DomicilityRule domicilityRule;
     private final ExecutorsRule executorsRule;
     private final UpdateApplicationRule updateApplicationRule;
-    private final MinorityRule minorityRule;
+    private final MinorityInterestRule minorityInterestRule;
     private final ApplicantSiblingsRule applicantSiblingsRule;
     private final RenouncingRule renouncingRule;
     private final SpouseOrCivilRule spouseOrCivilRule;
@@ -67,7 +67,7 @@ public class StateChangeService {
             return Optional.of(STATE_STOPPED);
         }
 
-        if (minorityRule.isChangeNeeded(caseData)) {
+        if (minorityInterestRule.isChangeNeeded(caseData)) {
             return Optional.of(STATE_STOPPED);
         }
 
