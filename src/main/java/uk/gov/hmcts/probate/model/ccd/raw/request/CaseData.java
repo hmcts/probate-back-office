@@ -135,6 +135,18 @@ public class CaseData {
 
     private final String willNumberOfCodicils;
 
+    @NotBlank(groups = {ApplicationAdmonGroup.class}, message = "{solsEntitledMinorityIsNull}")
+    private final String solsEntitledMinority;
+
+    @NotBlank(groups = {ApplicationAdmonGroup.class}, message = "{solsDiedOrNotApplyingIsNull}")
+    private final String solsDiedOrNotApplying;
+
+    @NotBlank(groups = {ApplicationAdmonGroup.class}, message = "{solsResiduaryIsNull}")
+    private final String solsResiduary;
+
+    @NotBlank(groups = {ApplicationAdmonGroup.class}, message = "{solsLifeInterestIsNull}")
+    private final String solsLifeInterest;
+
     @NotBlank(groups = {ApplicationProbateGroup.class, ApplicationIntestacyGroup.class, ApplicationAdmonGroup.class},
             message = "{primaryApplicantForenamesIsNull}")
     private final String primaryApplicantForenames;
