@@ -36,3 +36,8 @@ postgresql:
 
   persistence:
     enabled: false
+
+idam-pr:
+  redirect_uris:
+    Probate:
+      - https://${SERVICE_FQDN}/oauth2/callback
