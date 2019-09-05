@@ -257,6 +257,23 @@ services:
       - sidam-api
       - ccd-shared-database
 
+  persistence-service:
+    image: hmctspublic.azurecr.io/probate/persistence-service:pro-5125_persistence_to_orchestrator
+    container_name: persistence-service
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://ccd-shared-database:5432/probate
+      - PROBATE_POSTGRESQL_HOSTNAME=ccd-shared-database
+      - PROBATE_POSTGRESQL_PORT=5432
+      - PROBATE_POSTGRESQL_USER=${DB_USERNAME}
+      - PROBATE_POSTGRESQL_PASSWORD=${DB_PASSWORD}
+      - PROBATE_PERSISTENCE_PORT=8282
+      - http_proxy=
+      - https_proxy=
+      - no_proxy=
+      - LIQUIBASE_AT_STARTUP=true
+    ports:
+      - 8282:8282
+
 volumes:
   ccd-docker-ccd-shared-database-data:
   wiremock:
