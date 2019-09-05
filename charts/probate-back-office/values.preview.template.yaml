@@ -22,6 +22,8 @@ java:
     SEND_LETTER_SERIVCE_BASEURL: http://rpe-send-letter-service-aat.service.core-compute-aat.internal
     SERVICES_CORECASEDATA_BASEURL : http://ccd-data-store-api-aat.service.core-compute-aat.internal
     IDAM_SECRET: ${IDAM_SECRET}
+    IDAM_REDIRECT_URL: ${IDAM_REDIRECT_URL}
+    IDAM_USER_ID: ${IDAM_USER_ID}
   image: ${IMAGE_NAME}
   ingressHost: ${SERVICE_FQDN}
 
