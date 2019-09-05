@@ -49,7 +49,7 @@ public class ConfirmationResponseServiceTest {
     private ConfirmationResponseService underTest;
 
     @Mock
-    private NoOriginalWillRule noOriginalWillRuleMock;
+    private ApplicantSiblingsRule applicantSiblingsRuleMock;
     @Mock
     private DomicilityRule domicilityRuleMock;
     @Mock
@@ -57,7 +57,7 @@ public class ConfirmationResponseServiceTest {
     @Mock
     private MinorityInterestRule minorityInterestRuleMock;
     @Mock
-    private ApplicantSiblingsRule applicantSiblingsRuleMock;
+    private NoOriginalWillRule noOriginalWillRuleMock;
     @Mock
     private RenouncingRule renouncingRuleMock;
     @Mock
@@ -95,8 +95,8 @@ public class ConfirmationResponseServiceTest {
         MockitoAnnotations.initMocks(this);
 
         underTest = new ConfirmationResponseService(messageResourceServiceMock, markdownSubstitutionServiceMock,
-                noOriginalWillRuleMock, domicilityRuleMock, executorsRuleMock, minorityInterestRuleMock,
-                applicantSiblingsRuleMock, renouncingRuleMock, spouseOrCivilRuleMock);
+                applicantSiblingsRuleMock, domicilityRuleMock, executorsRuleMock, minorityInterestRuleMock,
+                noOriginalWillRuleMock, renouncingRuleMock, spouseOrCivilRuleMock);
         ReflectionTestUtils.setField(underTest, "templatesDirectory", "templates/markdown/");
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
