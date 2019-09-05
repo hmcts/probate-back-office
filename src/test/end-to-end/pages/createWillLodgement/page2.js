@@ -53,9 +53,9 @@ module.exports = function (crud, unique_deceased_user) {
     if (crud === 'update') {
         I.waitForText(createWillLodgementConfig.page2_amend_waitForText, testConfig.TestTimeToWaitForText);
 
-        I.fillField('#deceasedForenames', createWillLodgementConfig.page2_forenames + '_' + unique_deceased_user + ' ' + 'UPDATED' + unique_deceased_user);
-        I.fillField('#deceasedSurname', createWillLodgementConfig.page2_surname + '_' + unique_deceased_user + ' ' + 'UPDATED' + unique_deceased_user);
-        I.fillField('#deceasedFullAliasNameList_0_FullAliasName', createWillLodgementConfig.page2_alias_1 + '_' + unique_deceased_user + '_' + 'UPDATED' + unique_deceased_user);
+        I.fillField('#deceasedForenames', createWillLodgementConfig.page2_forenames + '_' + unique_deceased_user + ' UPDATED' + unique_deceased_user);
+        I.fillField('#deceasedSurname', createWillLodgementConfig.page2_surname + '_' + unique_deceased_user + ' UPDATED' + unique_deceased_user);
+        I.fillField('#deceasedFullAliasNameList_0_FullAliasName', createWillLodgementConfig.page2_alias_1 + '_' + unique_deceased_user + ' UPDATED' + unique_deceased_user);
 
         I.fillField('#deceasedDateOfDeath-day', createWillLodgementConfig.page2_dateOfDeath_day_update);
         I.fillField('#deceasedDateOfDeath-month', createWillLodgementConfig.page2_dateOfDeath_month_update);
