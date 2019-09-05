@@ -49,7 +49,7 @@ public class SecurityConfiguration {
                     .antMatchers("/swagger-resources/**").permitAll()
                     .antMatchers("/webjars/springfox-swagger-ui/**").permitAll()
                     .antMatchers("/v2/api-docs").permitAll()
-                    .antMatchers("/health").permitAll()
+                    .antMatchers("/health", "/health/liveness").permitAll()
                     .antMatchers("/info").permitAll()
                     .anyRequest().authenticated();
         }
