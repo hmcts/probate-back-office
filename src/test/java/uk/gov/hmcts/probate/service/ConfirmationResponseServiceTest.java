@@ -9,7 +9,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.test.util.ReflectionTestUtils;
 import uk.gov.hmcts.probate.changerule.DomicilityRule;
 import uk.gov.hmcts.probate.changerule.ExecutorsRule;
-import uk.gov.hmcts.probate.changerule.MinorityRule;
+import uk.gov.hmcts.probate.changerule.MinorityInterestRule;
 import uk.gov.hmcts.probate.changerule.ApplicantSiblingsRule;
 import uk.gov.hmcts.probate.changerule.NoOriginalWillRule;
 import uk.gov.hmcts.probate.changerule.RenouncingRule;
@@ -55,7 +55,7 @@ public class ConfirmationResponseServiceTest {
     @Mock
     private ExecutorsRule executorsRuleMock;
     @Mock
-    private MinorityRule minorityRuleMock;
+    private MinorityInterestRule minorityInterestRuleMock;
     @Mock
     private ApplicantSiblingsRule applicantSiblingsRuleMock;
     @Mock
@@ -95,7 +95,7 @@ public class ConfirmationResponseServiceTest {
         MockitoAnnotations.initMocks(this);
 
         underTest = new ConfirmationResponseService(messageResourceServiceMock, markdownSubstitutionServiceMock,
-                noOriginalWillRuleMock, domicilityRuleMock, executorsRuleMock, minorityRuleMock,
+                noOriginalWillRuleMock, domicilityRuleMock, executorsRuleMock, minorityInterestRuleMock,
                 applicantSiblingsRuleMock, renouncingRuleMock, spouseOrCivilRuleMock);
         ReflectionTestUtils.setField(underTest, "templatesDirectory", "templates/markdown/");
 
@@ -202,7 +202,7 @@ public class ConfirmationResponseServiceTest {
     public void shouldStopMinorityConfirmation() {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
-        when(minorityRuleMock.isChangeNeeded(caseDataMock)).thenReturn(true);
+        when(minorityInterestRuleMock.isChangeNeeded(caseDataMock)).thenReturn(true);
         when(markdownSubstitutionServiceMock.generatePage(anyString(), any(MarkdownTemplate.class), anyMap()))
                 .thenReturn(willBodyTemplateResponseMock);
         when(caseDataMock.getSolsWillType()).thenReturn(GRANT_TYPE_INTESTACY);
@@ -217,7 +217,7 @@ public class ConfirmationResponseServiceTest {
     public void shouldNOTStopMinorityConfirmation() {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
-        when(minorityRuleMock.isChangeNeeded(caseDataMock)).thenReturn(false);
+        when(minorityInterestRuleMock.isChangeNeeded(caseDataMock)).thenReturn(false);
         when(markdownSubstitutionServiceMock.generatePage(anyString(), any(MarkdownTemplate.class), anyMap()))
                 .thenReturn(willBodyTemplateResponseMock);
 
