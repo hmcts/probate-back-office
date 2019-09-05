@@ -6,7 +6,7 @@
   "page1_list2_registry_location_update": "Birmingham",
 
   "page2_waitForText": "Deceased details",
-  "page2_amend_waitForText": "Deceased details",
+  "page2_amend_waitForText": "Amend caveat details",
   "page2_forenames": "E2E_deceased_forenames",
   "page2_surname": "E2E_deceased_surname",
   "page2_forenames_update": "E2E_deceased_forenames_UPDATED",
