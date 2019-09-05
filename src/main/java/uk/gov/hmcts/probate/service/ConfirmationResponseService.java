@@ -49,13 +49,13 @@ public class ConfirmationResponseService {
     private String templatesDirectory;
 
     private final MessageResourceService messageResourceService;
-
     private final MarkdownSubstitutionService markdownSubstitutionService;
-    private final NoOriginalWillRule noOriginalWillRule;
+
+    private final ApplicantSiblingsRule applicantSiblingsConfirmationResponseRule;
     private final DomicilityRule domicilityConfirmationResponseRule;
     private final ExecutorsRule executorsConfirmationResponseRule;
     private final MinorityInterestRule minorityInterestConfirmationResponseRule;
-    private final ApplicantSiblingsRule applicantSiblingsConfirmationResponseRule;
+    private final NoOriginalWillRule noOriginalWillRule;
     private final RenouncingRule renouncingConfirmationResponseRule;
     private final SpouseOrCivilRule spouseOrCivilConfirmationResponseRule;
 

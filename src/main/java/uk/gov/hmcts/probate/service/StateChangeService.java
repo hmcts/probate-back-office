@@ -27,19 +27,17 @@ public class StateChangeService {
     private static final String GRANT_TYPE_INTESTACY = "NoWill";
 
 
-    private final NoOriginalWillRule noOriginalWillRule;
+    private final ApplicantSiblingsRule applicantSiblingsRule;
     private final DomicilityRule domicilityRule;
     private final ExecutorsRule executorsRule;
-    private final UpdateApplicationRule updateApplicationRule;
     private final MinorityInterestRule minorityInterestRule;
-    private final ApplicantSiblingsRule applicantSiblingsRule;
+    private final NoOriginalWillRule noOriginalWillRule;
     private final RenouncingRule renouncingRule;
     private final SpouseOrCivilRule spouseOrCivilRule;
+    private final UpdateApplicationRule updateApplicationRule;
+
 
     public Optional<String> getChangedStateForCaseUpdate(CaseData caseData) {
-        if (noOriginalWillRule.isChangeNeeded(caseData)) {
-            return Optional.of(STATE_STOPPED);
-        }
         if (domicilityRule.isChangeNeeded(caseData)) {
             return Optional.of(STATE_STOPPED);
         }
