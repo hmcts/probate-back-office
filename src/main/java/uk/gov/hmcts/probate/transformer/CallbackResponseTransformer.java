@@ -138,8 +138,10 @@ public class CallbackResponseTransformer {
         }
 
         if (documentTransformer.hasDocumentWithType(documents, SOT_INFORMATION_REQUEST) && !letterIds.isEmpty()) {
-            CollectionMember<BulkPrint> bulkPrint = buildBulkPrint(letterIds.get(0), SOT_INFORMATION_REQUEST.getTemplateName());
-            appendToBulkPrintCollection(bulkPrint, callbackRequest.getCaseDetails().getData());
+            letterIds.forEach(letterId -> {
+                CollectionMember<BulkPrint> bulkPrint = buildBulkPrint(letterId, SOT_INFORMATION_REQUEST.getTemplateName());
+                appendToBulkPrintCollection(bulkPrint, callbackRequest.getCaseDetails().getData());
+            });
             responseCaseDataBuilder
                     .boRequestInfoSendToBulkPrintRequested(
                             callbackRequest.getCaseDetails().getData().getBoRequestInfoSendToBulkPrint())
