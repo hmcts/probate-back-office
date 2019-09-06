@@ -83,6 +83,11 @@ public class CallbackResponseTransformerTest {
     private static final String WILL_TYPE_INTESTACY = "NoWill";
     private static final String WILL_TYPE_ADMON = "WillLeftAnnexed";
     private static final String APPLICANT_SIBLINGS = "No";
+    private static final String DIED_OR_NOT_APPLYING = "Yes";
+    private static final String ENTITLED_MINORITY = "No";
+    private static final String LIFE_INTEREST = "No";
+    private static final String RESIDUARY = "Yes";
+
 
     private static final ApplicationType APPLICATION_TYPE = SOLICITOR;
     private static final String REGISTRY_LOCATION = CTSC;
@@ -299,6 +304,10 @@ public class CallbackResponseTransformerTest {
                 .boStopDetails(STOP_DETAILS)
                 .solsWillType(WILL_TYPE_PROBATE)
                 .solsApplicantSiblings(APPLICANT_SIBLINGS)
+                .solsDiedOrNotApplying(DIED_OR_NOT_APPLYING)
+                .solsEntitledMinority(ENTITLED_MINORITY)
+                .solsLifeInterest(LIFE_INTEREST)
+                .solsResiduary(RESIDUARY)
                 .willExists(YES)
                 .additionalExecutorsApplying(ADDITIONAL_EXEC_LIST_APP)
                 .additionalExecutorsNotApplying(ADDITIONAL_EXEC_LIST_NOT_APP)
@@ -1497,6 +1506,10 @@ public class CallbackResponseTransformerTest {
 
         assertEquals(SCANNED_DOCUMENTS_LIST, callbackResponse.getData().getScannedDocuments());
         assertEquals(APPLICANT_SIBLINGS, callbackResponse.getData().getSolsApplicantSiblings());
+        assertEquals(DIED_OR_NOT_APPLYING, callbackResponse.getData().getSolsDiedOrNotApplying());
+        assertEquals(ENTITLED_MINORITY, callbackResponse.getData().getSolsEntitledMinority());
+        assertEquals(LIFE_INTEREST, callbackResponse.getData().getSolsLifeInterest());
+        assertEquals(RESIDUARY, callbackResponse.getData().getSolsResiduary());
     }
 
     private void assertLegacyInfo(CallbackResponse callbackResponse) {

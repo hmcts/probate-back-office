@@ -376,6 +376,10 @@ public class CallbackResponseTransformer {
                 .solsAdoptedEnglandOrWales(caseData.getSolsAdoptedEnglandOrWales())
                 .solsMinorityInterest(caseData.getSolsMinorityInterest())
                 .solsApplicantSiblings(caseData.getSolsApplicantSiblings())
+                .solsDiedOrNotApplying(caseData.getSolsDiedOrNotApplying())
+                .solsEntitledMinority(caseData.getSolsEntitledMinority())
+                .solsLifeInterest(caseData.getSolsLifeInterest())
+                .solsResiduary(caseData.getSolsResiduary())
 
                 .boCaveatStopNotificationRequested(caseData.getBoCaveatStopNotificationRequested())
                 .boCaveatStopNotification(caseData.getBoCaveatStopNotification())
