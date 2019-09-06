@@ -2,7 +2,7 @@ package uk.gov.hmcts.probate.validator;
 
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 
-public interface CaseDetailsEmailValidationRule {
+public interface CaseDetailsValidationRule {
 
-    void validateEmails(CaseDetails caseDetails);
+    void validate(CaseDetails caseDetails);
 }

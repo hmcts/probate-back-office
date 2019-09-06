@@ -13,27 +13,30 @@ import static uk.gov.hmcts.probate.model.Constants.YES;
 
 @Component
 @RequiredArgsConstructor
-public class EmailAddressExecutorsApplyingValidationRule implements CaseDetailsValidationRule {
+public class AddressExecutorsApplyingValidationRule implements CaseDetailsValidationRule {
 
     private final BusinessValidationMessageRetriever businessValidationMessageRetriever;
 
-    private static final String EMAIL_NOT_FOUND_PA = "multipleEmailsNotProvidedPA";
+    private static final String ADDRESS_NOT_FOUND = "multipleAddressNotProvidedPA";
 
     @Override
     public void validate(CaseDetails caseDetails) {
-
         CaseData caseData = caseDetails.getData();
         String[] args = {caseDetails.getId().toString()};
-        String userMessage = businessValidationMessageRetriever.getMessage(EMAIL_NOT_FOUND_PA, args, Locale.UK);
+        String userMessage = businessValidationMessageRetriever.getMessage(ADDRESS_NOT_FOUND, args, Locale.UK);
 
         caseData.getExecutorsApplyingNotifications().forEach(executor -> {
             if (executor.getValue().getNotification().equals(YES)) {
-                if (executor.getValue().getEmail() == null) {
+                if (executor.getValue().getAddress().getAddressLine1() == null
+                        || executor.getValue().getAddress().getPostCode() == null) {
                     throw new BusinessValidationException(userMessage,
-                            "An applying exec email is null for case id " + caseDetails.getId());
-                } else if (executor.getValue().getEmail().isEmpty()) {
+                            "An applying exec address has null value for Address line 1 or postcode with case id "
+                                    + caseDetails.getId());
+                } else if (executor.getValue().getAddress().getAddressLine1().isEmpty()
+                        || executor.getValue().getAddress().getPostCode().isEmpty()) {
                     throw new BusinessValidationException(userMessage,
-                            "An applying exec email is empty for case id " + caseDetails.getId());
+                            "An applying exec address has empty value for Address line 1 or postcode with case id "
+                                    + caseDetails.getId());
                 }
             }
         });

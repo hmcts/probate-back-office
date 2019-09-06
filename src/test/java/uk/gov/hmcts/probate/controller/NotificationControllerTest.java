@@ -23,6 +23,7 @@ import uk.gov.hmcts.probate.service.BulkPrintService;
 import uk.gov.hmcts.probate.service.DocumentGeneratorService;
 import uk.gov.hmcts.probate.service.DocumentService;
 import uk.gov.hmcts.probate.service.EventValidationService;
+import uk.gov.hmcts.probate.service.InformationRequestCorrespondenceService;
 import uk.gov.hmcts.probate.service.InformationRequestService;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.docmosis.GrantOfRepresentationDocmosisMapperService;
@@ -166,7 +167,7 @@ public class NotificationControllerTest {
         when(callbackResponseTransformer.addInformationRequestDocuments(any(),
                 eq(new ArrayList<>()), any())).thenReturn(successfulResponse);
 
-        when(informationRequestService.emailInformationRequest(any())).thenReturn(docList);
+        when(informationRequestService.handleInformationRequest(any())).thenReturn(successfulResponse);
 
     }
 
@@ -445,15 +446,5 @@ public class NotificationControllerTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(content().string(containsString("data")));
 
-    }
-
-    @Test
-    public void shouldReturnSuccessfulResponseForEmailNotRequested() throws Exception {
-        String personalPayload = testUtils.getStringFromFile("personalPayloadNotificationsEmailNotRequested.json");
-
-        mockMvc.perform(post(REQUEST_INFO_URL).content(personalPayload).contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(content().string(containsString("data")));
     }
 }

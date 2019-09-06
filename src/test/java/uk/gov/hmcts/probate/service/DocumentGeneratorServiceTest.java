@@ -7,8 +7,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import uk.gov.hmcts.probate.config.properties.registries.Registry;
+import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.DocumentType;
+import uk.gov.hmcts.probate.model.ExecutorsApplyingNotification;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
+import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
@@ -229,10 +232,36 @@ public class DocumentGeneratorServiceTest {
     }
 
     @Test
+    public void testGenerateCoversheetReturnsCorrectDocumentTypeForSpecificExec() {
+        when(pdfManagementService.generateDocmosisDocumentAndUpload(expectedMap, DocumentType.GRANT_COVERSHEET))
+                .thenReturn(Document.builder().documentType(DocumentType.GRANT_COVERSHEET).build());
+        assertEquals(DocumentType.GRANT_COVERSHEET,
+                documentGeneratorService.generateCoversheet(callbackRequest, "Bob Smith", SolsAddress.builder().build()).getDocumentType());
+    }
+
+    @Test
     public void testGenerateRequestInformationReturnsCorrectDocumentType() {
+        ExecutorsApplyingNotification executor = ExecutorsApplyingNotification.builder().name("Bob").build();
         when(pdfManagementService.generateDocmosisDocumentAndUpload(expectedMap,DocumentType.SOT_INFORMATION_REQUEST))
                 .thenReturn(Document.builder().documentType(DocumentType.SOT_INFORMATION_REQUEST).build());
         assertEquals(DocumentType.SOT_INFORMATION_REQUEST,
-                documentGeneratorService.generateRequestForInformation(callbackRequest.getCaseDetails()).getDocumentType());
+                documentGeneratorService.generateRequestForInformation(callbackRequest.getCaseDetails(), executor).getDocumentType());
+    }
+
+    @Test
+    public void testGenerateRequestInformationReturnsCorrectDocumentTypeForSolicitors() {
+        expectedMap.clear();
+        expectedMap.put("applicantName", "Bob Sot");
+        expectedMap.put("fullRedec", "No");
+        CaseDetails caseDetails = new CaseDetails(CaseData.builder().solsSOTName("Bob Sot")
+                .applicationType(ApplicationType.SOLICITOR)
+                .caseType("gop")
+                .registryLocation("Bristol")
+                .build(), LAST_MODIFIED, CASE_ID);
+        ExecutorsApplyingNotification executor = ExecutorsApplyingNotification.builder().name("boB").build();
+        when(pdfManagementService.generateDocmosisDocumentAndUpload(expectedMap, DocumentType.SOT_INFORMATION_REQUEST))
+                .thenReturn(Document.builder().documentType(DocumentType.SOT_INFORMATION_REQUEST).build());
+        assertEquals(DocumentType.SOT_INFORMATION_REQUEST,
+                documentGeneratorService.generateRequestForInformation(caseDetails, executor).getDocumentType());
     }
 }
