@@ -87,6 +87,7 @@ public class CallbackResponseTransformerTest {
     private static final String ENTITLED_MINORITY = "No";
     private static final String LIFE_INTEREST = "No";
     private static final String RESIDUARY = "Yes";
+    private static final String RESIDUARY_TYPE = "Legatee";
 
 
     private static final ApplicationType APPLICATION_TYPE = SOLICITOR;
@@ -308,6 +309,7 @@ public class CallbackResponseTransformerTest {
                 .solsEntitledMinority(ENTITLED_MINORITY)
                 .solsLifeInterest(LIFE_INTEREST)
                 .solsResiduary(RESIDUARY)
+                .solsResiduaryType(RESIDUARY_TYPE)
                 .willExists(YES)
                 .additionalExecutorsApplying(ADDITIONAL_EXEC_LIST_APP)
                 .additionalExecutorsNotApplying(ADDITIONAL_EXEC_LIST_NOT_APP)
@@ -1510,6 +1512,7 @@ public class CallbackResponseTransformerTest {
         assertEquals(ENTITLED_MINORITY, callbackResponse.getData().getSolsEntitledMinority());
         assertEquals(LIFE_INTEREST, callbackResponse.getData().getSolsLifeInterest());
         assertEquals(RESIDUARY, callbackResponse.getData().getSolsResiduary());
+        assertEquals(RESIDUARY_TYPE, callbackResponse.getData().getSolsResiduaryType());
     }
 
     private void assertLegacyInfo(CallbackResponse callbackResponse) {
