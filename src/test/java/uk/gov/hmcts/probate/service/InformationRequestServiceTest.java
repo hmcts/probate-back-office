@@ -23,7 +23,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
@@ -103,7 +102,7 @@ public class InformationRequestServiceTest {
 
         when(informationRequestCorrespondenceService.getLetterId(Arrays.asList(SOT_DOCUMENT), callbackRequest))
                 .thenReturn(Arrays.asList("123"));
-        when(informationRequestCorrespondenceService.getLetterId(Arrays.asList(SOT_DOCUMENT_2),callbackRequest))
+        when(informationRequestCorrespondenceService.getLetterId(Arrays.asList(SOT_DOCUMENT_2), callbackRequest))
                 .thenReturn(Arrays.asList("321"));
 
         when(callbackResponseTransformer.addInformationRequestDocuments(any(),
@@ -140,65 +139,66 @@ public class InformationRequestServiceTest {
                         .getData().getProbateNotificationsGenerated().get(0).getValue());
     }
 
-    @Test
-    public void testLetterReturnsForMultipleExecutorsSuccessfully() {
-        assertEquals(SOT_DOCUMENT,
-                informationRequestService.handleInformationRequest(callbackRequest)
-                        .getData().getProbateNotificationsGenerated().get(0).getValue());
-        assertEquals(SOT_DOCUMENT_2,
-                informationRequestService.handleInformationRequest(callbackRequest)
-                        .getData().getProbateNotificationsGenerated().get(1).getValue());
-    }
-
-    @Test
-    public void testLetterReturnsForSingleExecutorSuccessfully() {
-        executorsApplying.remove(executorsApplying.size() - 1);
-        documentList.remove(documentList.size() - 1);
-        letterIdDocs.remove(letterIdDocs.size() - 1);
-
-        caseData = CaseData.builder()
-                .executorsApplyingNotifications(executorsApplying)
-                .boRequestInfoSendToBulkPrintRequested("Yes")
-                .paperForm("No")
-                .build();
-        caseDetails = new CaseDetails(caseData, LAST_MODIFIED, ID);
-        callbackRequest = new CallbackRequest(caseDetails);
-
-        ResponseCaseData letterResponseCaseData =
-                ResponseCaseData.builder().probateNotificationsGenerated(documentList).build();
-        CallbackResponse callbackResponse = CallbackResponse.builder().data(letterResponseCaseData).build();
-
-        when(callbackResponseTransformer.addInformationRequestDocuments(any(),
-                eq(letterIdDocs), eq(Arrays.asList("123")))).thenReturn(callbackResponse);
-
-        assertEquals(SOT_DOCUMENT,
-                informationRequestService.handleInformationRequest(callbackRequest)
-                        .getData().getProbateNotificationsGenerated().get(0).getValue());
-    }
-
-    @Test
-    public void testBulkPrintIdReturnsSuccessfully() {
-        assertEquals(BULK_PRINT_IDS, informationRequestService.handleInformationRequest(callbackRequest).getData().getBulkPrintId());
-    }
-
-    @Test
-    public void testPaperFormReturnsNoDocuments() {
-        caseData = CaseData.builder()
-                .executorsApplyingNotifications(executorsApplying)
-                .boRequestInfoSendToBulkPrintRequested("Yes")
-                .paperForm("Yes")
-                .build();
-        caseDetails = new CaseDetails(caseData, LAST_MODIFIED, ID);
-        callbackRequest = new CallbackRequest(caseDetails);
-
-        ResponseCaseData responseCaseData = ResponseCaseData.builder().build();
-
-        when(callbackResponseTransformer.addInformationRequestDocuments(callbackRequest, new ArrayList<>(),
-                new ArrayList<>())).thenReturn(CallbackResponse.builder().data(responseCaseData).build());
-
-        assertNull(informationRequestService.handleInformationRequest(callbackRequest)
-                .getData().getProbateNotificationsGenerated());
-    }
+    //TODO: uncomment when letters are being used again
+    //@Test
+    //public void testLetterReturnsForMultipleExecutorsSuccessfully() {
+    //    assertEquals(SOT_DOCUMENT,
+    //            informationRequestService.handleInformationRequest(callbackRequest)
+    //                    .getData().getProbateNotificationsGenerated().get(0).getValue());
+    //    assertEquals(SOT_DOCUMENT_2,
+    //            informationRequestService.handleInformationRequest(callbackRequest)
+    //                    .getData().getProbateNotificationsGenerated().get(1).getValue());
+    //}
+    //
+    //@Test
+    //public void testLetterReturnsForSingleExecutorSuccessfully() {
+    //    executorsApplying.remove(executorsApplying.size() - 1);
+    //    documentList.remove(documentList.size() - 1);
+    //    letterIdDocs.remove(letterIdDocs.size() - 1);
+    //
+    //    caseData = CaseData.builder()
+    //            .executorsApplyingNotifications(executorsApplying)
+    //            .boRequestInfoSendToBulkPrintRequested("Yes")
+    //            .paperForm("No")
+    //            .build();
+    //    caseDetails = new CaseDetails(caseData, LAST_MODIFIED, ID);
+    //    callbackRequest = new CallbackRequest(caseDetails);
+    //
+    //    ResponseCaseData letterResponseCaseData =
+    //            ResponseCaseData.builder().probateNotificationsGenerated(documentList).build();
+    //    CallbackResponse callbackResponse = CallbackResponse.builder().data(letterResponseCaseData).build();
+    //
+    //    when(callbackResponseTransformer.addInformationRequestDocuments(any(),
+    //            eq(letterIdDocs), eq(Arrays.asList("123")))).thenReturn(callbackResponse);
+    //
+    //    assertEquals(SOT_DOCUMENT,
+    //            informationRequestService.handleInformationRequest(callbackRequest)
+    //                    .getData().getProbateNotificationsGenerated().get(0).getValue());
+    //}
+    //
+    //@Test
+    //public void testBulkPrintIdReturnsSuccessfully() {
+    //    assertEquals(BULK_PRINT_IDS, informationRequestService.handleInformationRequest(callbackRequest).getData().getBulkPrintId());
+    //}
+    //
+    //@Test
+    //public void testPaperFormReturnsNoDocuments() {
+    //    caseData = CaseData.builder()
+    //            .executorsApplyingNotifications(executorsApplying)
+    //            .boRequestInfoSendToBulkPrintRequested("Yes")
+    //            .paperForm("Yes")
+    //            .build();
+    //    caseDetails = new CaseDetails(caseData, LAST_MODIFIED, ID);
+    //    callbackRequest = new CallbackRequest(caseDetails);
+    //
+    //    ResponseCaseData responseCaseData = ResponseCaseData.builder().build();
+    //
+    //    when(callbackResponseTransformer.addInformationRequestDocuments(callbackRequest, new ArrayList<>(),
+    //            new ArrayList<>())).thenReturn(CallbackResponse.builder().data(responseCaseData).build());
+    //
+    //    assertNull(informationRequestService.handleInformationRequest(callbackRequest)
+    //            .getData().getProbateNotificationsGenerated());
+    //}
 
     private CollectionMember<ExecutorsApplyingNotification> buildExec(String item, String name, String email,
                                                                       String applying) {

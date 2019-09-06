@@ -32,17 +32,19 @@ public class InformationRequestService {
         if (callbackRequest.getCaseDetails().getData().getPaperForm().equals("No")) {
             if (callbackRequest.getCaseDetails().getData().isBoEmailRequestInfoNotificationRequested()) {
                 documents = informationRequestCorrespondenceService.emailInformationRequest(callbackRequest.getCaseDetails());
-            } else {
-                callbackRequest.getCaseDetails().getData().getExecutorsApplyingNotifications().forEach(executor -> {
-                    documents.addAll(informationRequestCorrespondenceService.generateLetterWithCoversheet(callbackRequest,
-                            executor.getValue()));
-                    if (callbackRequest.getCaseDetails().getData().isBoRequestInfoSendToBulkPrintRequested()) {
-                        letterIdDocuments = informationRequestCorrespondenceService.generateLetterWithCoversheet(callbackRequest,
-                                executor.getValue());
-                        letterIds.addAll(informationRequestCorrespondenceService
-                                .getLetterId(letterIdDocuments, callbackRequest));
-                    }
-                });
+                //TODO: uncomment code when letters are being used again.
+
+                // } else {
+                //    callbackRequest.getCaseDetails().getData().getExecutorsApplyingNotifications().forEach(executor -> {
+                //        documents.addAll(informationRequestCorrespondenceService.generateLetterWithCoversheet(callbackRequest,
+                //                executor.getValue()));
+                //        if (callbackRequest.getCaseDetails().getData().isBoRequestInfoSendToBulkPrintRequested()) {
+                //            letterIdDocuments = informationRequestCorrespondenceService.generateLetterWithCoversheet(callbackRequest,
+                //                    executor.getValue());
+                //            letterIds.addAll(informationRequestCorrespondenceService
+                //                    .getLetterId(letterIdDocuments, callbackRequest));
+                //        }
+                //    });
             }
         }
         return callbackResponseTransformer.addInformationRequestDocuments(callbackRequest, documents, letterIds);
