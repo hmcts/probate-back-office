@@ -95,21 +95,27 @@ public class StateChangeService {
         if (noOriginalWillRule.isChangeNeeded(caseData)) {
             return Optional.of(STATE_STOPPED);
         }
+
         if (domicilityRule.isChangeNeeded(caseData)) {
             return Optional.of(STATE_STOPPED);
         }
+
         if (diedOrNotApplyingRule.isChangeNeeded(caseData)) {
             return Optional.of(STATE_STOPPED);
         }
+
         if (entitledMinorityRule.isChangeNeeded(caseData)) {
             return Optional.of(STATE_STOPPED);
         }
+
         if (lifeInterestRule.isChangeNeeded(caseData)) {
             return Optional.of(STATE_STOPPED);
         }
+
         if (residuaryRule.isChangeNeeded(caseData)) {
             return Optional.of(STATE_STOPPED);
         }
+
         return Optional.empty();
     }
 
