@@ -136,15 +136,18 @@ public class InformationRequestServiceTest {
                 eq(Arrays.asList(SENT_EMAIL_DOCUMENT)), eq(new ArrayList<>()))).thenReturn(callbackResponse);
 
         assertEquals(SENT_EMAIL_DOCUMENT,
-                informationRequestService.handleInformationRequest(callbackRequest).getData().getProbateNotificationsGenerated().get(0).getValue());
+                informationRequestService.handleInformationRequest(callbackRequest)
+                        .getData().getProbateNotificationsGenerated().get(0).getValue());
     }
 
     @Test
     public void testLetterReturnsForMultipleExecutorsSuccessfully() {
         assertEquals(SOT_DOCUMENT,
-                informationRequestService.handleInformationRequest(callbackRequest).getData().getProbateNotificationsGenerated().get(0).getValue());
+                informationRequestService.handleInformationRequest(callbackRequest)
+                        .getData().getProbateNotificationsGenerated().get(0).getValue());
         assertEquals(SOT_DOCUMENT_2,
-                informationRequestService.handleInformationRequest(callbackRequest).getData().getProbateNotificationsGenerated().get(1).getValue());
+                informationRequestService.handleInformationRequest(callbackRequest)
+                        .getData().getProbateNotificationsGenerated().get(1).getValue());
     }
 
     @Test
@@ -169,7 +172,8 @@ public class InformationRequestServiceTest {
                 eq(letterIdDocs), eq(Arrays.asList("123")))).thenReturn(callbackResponse);
 
         assertEquals(SOT_DOCUMENT,
-                informationRequestService.handleInformationRequest(callbackRequest).getData().getProbateNotificationsGenerated().get(0).getValue());
+                informationRequestService.handleInformationRequest(callbackRequest)
+                        .getData().getProbateNotificationsGenerated().get(0).getValue());
     }
 
     @Test

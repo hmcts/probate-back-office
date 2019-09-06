@@ -250,15 +250,15 @@ public class DocumentGeneratorServiceTest {
 
     @Test
     public void testGenerateRequestInformationReturnsCorrectDocumentTypeForSolicitors() {
-        ExecutorsApplyingNotification executor = ExecutorsApplyingNotification.builder().name("boB").build();
+        expectedMap.clear();
+        expectedMap.put("applicantName", "Bob Sot");
+        expectedMap.put("fullRedec", "No");
         CaseDetails caseDetails = new CaseDetails(CaseData.builder().solsSOTName("Bob Sot")
                 .applicationType(ApplicationType.SOLICITOR)
                 .caseType("gop")
                 .registryLocation("Bristol")
                 .build(), LAST_MODIFIED, CASE_ID);
-        expectedMap.clear();
-        expectedMap.put("applicantName", "Bob Sot");
-        expectedMap.put("fullRedec", "No");
+        ExecutorsApplyingNotification executor = ExecutorsApplyingNotification.builder().name("boB").build();
         when(pdfManagementService.generateDocmosisDocumentAndUpload(expectedMap, DocumentType.SOT_INFORMATION_REQUEST))
                 .thenReturn(Document.builder().documentType(DocumentType.SOT_INFORMATION_REQUEST).build());
         assertEquals(DocumentType.SOT_INFORMATION_REQUEST,

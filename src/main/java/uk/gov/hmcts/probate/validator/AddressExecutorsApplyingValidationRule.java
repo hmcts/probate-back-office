@@ -27,12 +27,16 @@ public class AddressExecutorsApplyingValidationRule implements CaseDetailsValida
 
         caseData.getExecutorsApplyingNotifications().forEach(executor -> {
             if (executor.getValue().getNotification().equals(YES)) {
-                if (executor.getValue().getAddress().getAddressLine1() == null || executor.getValue().getAddress().getPostCode() == null) {
-                    throw new BusinessValidationException(userMessage, "An applying exec address has null value for " +
-                            "Address line 1 or postcode with case id " + caseDetails.getId());
-                } else if (executor.getValue().getAddress().getAddressLine1().isEmpty() || executor.getValue().getAddress().getPostCode().isEmpty()) {
-                    throw new BusinessValidationException(userMessage, "An applying exec address has empty value for " +
-                            "Address line 1 or postcode with case id " + caseDetails.getId());
+                if (executor.getValue().getAddress().getAddressLine1() == null
+                        || executor.getValue().getAddress().getPostCode() == null) {
+                    throw new BusinessValidationException(userMessage,
+                            "An applying exec address has null value for Address line 1 or postcode with case id "
+                                    + caseDetails.getId());
+                } else if (executor.getValue().getAddress().getAddressLine1().isEmpty()
+                        || executor.getValue().getAddress().getPostCode().isEmpty()) {
+                    throw new BusinessValidationException(userMessage,
+                            "An applying exec address has empty value for Address line 1 or postcode with case id "
+                                    + caseDetails.getId());
                 }
             }
         });
