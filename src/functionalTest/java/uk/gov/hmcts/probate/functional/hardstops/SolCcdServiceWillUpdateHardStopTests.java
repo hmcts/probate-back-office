@@ -76,17 +76,6 @@ public class SolCcdServiceWillUpdateHardStopTests extends IntegrationTestBase {
     }
 
     @Test
-    public void validateHardStopWithNoWillExistsAndNoWillAccessOriginalIntestacy() {
-        given().relaxedHTTPSValidation()
-                .headers(utils.getHeadersWithUserId())
-                .body(utils.getJsonFromFile("hardStop.noWillExists.noWillAccessOriginal.json"))
-                .post(VALIDATE_INTESTACY_URL).then().statusCode(200)
-                .and().body("data.state", equalToIgnoringCase("Stopped"))
-                .and().body("data.willExists", equalToIgnoringCase("No"))
-                .and().body("data.willAccessOriginal", equalToIgnoringCase("No"));
-    }
-
-    @Test
     public void validateHardMessageWithNoOriginalWill() {
         Response response = given()
                 .relaxedHTTPSValidation()
