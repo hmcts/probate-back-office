@@ -144,6 +144,9 @@ public class CaseData {
     @NotBlank(groups = {ApplicationAdmonGroup.class}, message = "{solsResiduaryIsNull}")
     private final String solsResiduary;
 
+    @NotBlank(groups = {ApplicationAdmonGroup.class}, message = "{solsResiduaryTypeIsNull}")
+    private final String solsResiduaryType;
+
     @NotBlank(groups = {ApplicationAdmonGroup.class}, message = "{solsLifeInterestIsNull}")
     private final String solsLifeInterest;
 

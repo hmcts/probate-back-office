@@ -430,6 +430,7 @@ public class CallbackResponseTransformer {
                 .solsEntitledMinority(caseData.getSolsEntitledMinority())
                 .solsLifeInterest(caseData.getSolsLifeInterest())
                 .solsResiduary(caseData.getSolsResiduary())
+                .solsResiduaryType(caseData.getSolsResiduaryType())
 
                 .boCaveatStopNotificationRequested(caseData.getBoCaveatStopNotificationRequested())
                 .boCaveatStopNotification(caseData.getBoCaveatStopNotification())

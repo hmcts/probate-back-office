@@ -99,6 +99,7 @@ public class BusinessValidationControllerTest {
     private static final String ENTITLED_MINORITY = "No";
     private static final String DIED_OR_NOT_APPLYING = "Yes";
     private static final String RESIDUARY = "Yes";
+    private static final String RESIDUARY_TYPE = "Legatee";
     private static final String LIFE_INTEREST = "No";
     private static final String ANSWER_NO = "No";
 
@@ -282,6 +283,7 @@ public class BusinessValidationControllerTest {
         caseDataBuilder.solsEntitledMinority(ENTITLED_MINORITY);
         caseDataBuilder.solsDiedOrNotApplying(DIED_OR_NOT_APPLYING);
         caseDataBuilder.solsResiduary(RESIDUARY);
+        caseDataBuilder.solsResiduaryType(RESIDUARY_TYPE);
         caseDataBuilder.solsLifeInterest(LIFE_INTEREST);
         caseDataBuilder.primaryApplicantEmailAddress(PRIMARY_APPLICANT_EMAIL);
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
