@@ -43,6 +43,7 @@ import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_REISSUE_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
 import static uk.gov.hmcts.probate.model.DocumentType.SOT_INFORMATION_REQUEST;
+import static uk.gov.hmcts.probate.model.DocumentType.STATEMENT_OF_TRUTH;
 import static uk.gov.hmcts.probate.model.DocumentType.WILL_LODGEMENT_DEPOSIT_RECEIPT;
 
 public class DocumentTransformerTest {
@@ -328,6 +329,15 @@ public class DocumentTransformerTest {
         documentTransformer.addDocument(caveatCallbackRequest, Document.builder().documentType(SENT_EMAIL).build());
 
         assertEquals(1, caveatCallbackRequest.getCaseDetails().getData().getNotificationsGenerated().size());
+    }
+
+    @Test
+    public void shouldAddSOTToGeneratedDocuments() {
+        assertTrue(callbackRequest.getCaseDetails().getData().getProbateSotDocumentsGenerated().isEmpty());
+
+        documentTransformer.addDocument(callbackRequest, Document.builder().documentType(STATEMENT_OF_TRUTH).build(), false);
+
+        assertEquals(1, callbackRequest.getCaseDetails().getData().getProbateSotDocumentsGenerated().size());
     }
 
 }

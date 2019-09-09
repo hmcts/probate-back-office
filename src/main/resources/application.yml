@@ -75,6 +75,8 @@ docmosis:
       templateName: FL-PRB-GNO-ENG-00085.doc
     sentEmail:
       templateName: FL-PRB-EML-ENG-00086.doc
+    statementOfTruth:
+      templateName: FL-PRB-SOT-ENG-00090.doc
 
 fee.api:
   url: http://localhost:4411

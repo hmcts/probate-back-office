@@ -275,4 +275,5 @@ public class ResponseCaseData {
     private final String boRequestInfoSendToBulkPrint;
     private final String boRequestInfoSendToBulkPrintRequested;
     private final List<CollectionMember<ExecutorsApplyingNotification>> executorsApplyingNotifications;
+    private final List<CollectionMember<Document>> probateSotDocumentsGenerated;
 }

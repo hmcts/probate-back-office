@@ -264,4 +264,12 @@ public class DocumentGeneratorServiceTest {
         assertEquals(DocumentType.SOT_INFORMATION_REQUEST,
                 documentGeneratorService.generateRequestForInformation(caseDetails, executor).getDocumentType());
     }
+
+    @Test
+    public void testStatementOfTruthReturnedSuccessfully() {
+        when(pdfManagementService.generateDocmosisDocumentAndUpload(expectedMap, DocumentType.STATEMENT_OF_TRUTH))
+                .thenReturn(Document.builder().documentType(DocumentType.STATEMENT_OF_TRUTH).build());
+        assertEquals(Document.builder().documentType(DocumentType.STATEMENT_OF_TRUTH).build(),
+                documentGeneratorService.generateSoT(callbackRequest.getCaseDetails()));
+    }
 }

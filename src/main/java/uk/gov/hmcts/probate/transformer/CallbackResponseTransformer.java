@@ -211,6 +211,12 @@ public class CallbackResponseTransformer {
         return transformResponse(responseCaseDataBuilder.build());
     }
 
+    public CallbackResponse addSOTDocument(CallbackRequest callbackRequest, Document document) {
+        documentTransformer.addDocument(callbackRequest, document, false);
+        ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), false);
+        return transformResponse(responseCaseDataBuilder.build());
+    }
+
     public CallbackResponse addMatches(CallbackRequest callbackRequest, List<CaseMatch> newMatches) {
         List<CollectionMember<CaseMatch>> storedMatches = callbackRequest.getCaseDetails().getData().getCaseMatches();
 
@@ -462,7 +468,8 @@ public class CallbackResponseTransformer {
                 .boEmailRequestInfoNotification(caseData.getBoEmailRequestInfoNotification())
                 .boEmailRequestInfoNotificationRequested(caseData.getBoEmailRequestInfoNotificationRequested())
                 .boRequestInfoSendToBulkPrint(caseData.getBoRequestInfoSendToBulkPrint())
-                .boRequestInfoSendToBulkPrintRequested(caseData.getBoRequestInfoSendToBulkPrintRequested());
+                .boRequestInfoSendToBulkPrintRequested(caseData.getBoRequestInfoSendToBulkPrintRequested())
+                .probateSotDocumentsGenerated(caseData.getProbateSotDocumentsGenerated());
 
         if (transform) {
             updateCaseBuilderForTransformCase(caseData, builder);
