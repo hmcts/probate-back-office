@@ -246,6 +246,7 @@ services:
       - SPRING_DATASOURCE_PASSWORD=${DB_PASSWORD}
       - SPRING_PROFILES_ACTIVE=embedded
       - AUTH_IDAM_CLIENT_BASEURL=http://sidam-api:5000
+      - APPINSIGHTS_INSTRUMENTATIONKEY=fake-key
       # enabling here should be done only once per new clean build of fees-api. Set to false when fees have already been loaded to your db
       - ENABLE_FEE_LOADER=true
       - SPRING_LIQUIBASE_ENABLED=true
