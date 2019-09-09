@@ -107,6 +107,17 @@ public class DocumentGeneratorService {
         return letter;
     }
 
+    public Document generateSoT(CaseDetails caseDetails) {
+        log.info("Initiate call to generate SoT for case id: {}", caseDetails.getId());
+        Map<String, Object> placeholders = genericMapperService.addCaseDataWithRegistryProperties(caseDetails);
+
+        Document statementOfTruth = pdfManagementService.generateDocmosisDocumentAndUpload(placeholders,
+                DocumentType.STATEMENT_OF_TRUTH);
+        log.info("Successful response for SoT for case id: {}", caseDetails.getId());
+
+        return statementOfTruth;
+    }
+
     private void expireDrafts(CallbackRequest callbackRequest) {
         log.info("Expiring drafts");
         DocumentType[] documentTypes = {DIGITAL_GRANT_DRAFT, INTESTACY_GRANT_DRAFT, ADMON_WILL_GRANT_DRAFT,

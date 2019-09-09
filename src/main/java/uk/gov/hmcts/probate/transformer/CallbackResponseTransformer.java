@@ -209,6 +209,12 @@ public class CallbackResponseTransformer {
         return transformResponse(responseCaseDataBuilder.build());
     }
 
+    public CallbackResponse addSOTDocument(CallbackRequest callbackRequest, Document document) {
+        documentTransformer.addDocument(callbackRequest, document, false);
+        ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), false);
+        return transformResponse(responseCaseDataBuilder.build());
+    }
+
     public CallbackResponse addMatches(CallbackRequest callbackRequest, List<CaseMatch> newMatches) {
         List<CollectionMember<CaseMatch>> storedMatches = callbackRequest.getCaseDetails().getData().getCaseMatches();
 

@@ -269,11 +269,8 @@ public class DocumentController {
 
     @PostMapping(path = "/generate-sot", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<CallbackResponse> generateStatementOfTruth(@RequestBody CallbackRequest callbackRequest) {
-
-      //ToDo
-          Document document = documentGeneratorService.generateGrantReissue(callbackRequest, DRAFT);
-
-        return ResponseEntity.ok(callbackResponseTransformer.addDocuments(callbackRequest,
-                Arrays.asList(document), null, null));
+        log.info("Initiating call for SoT");
+        return ResponseEntity.ok(callbackResponseTransformer.addSOTDocument(callbackRequest,
+                documentGeneratorService.generateSoT(callbackRequest.getCaseDetails())));
     }
 }

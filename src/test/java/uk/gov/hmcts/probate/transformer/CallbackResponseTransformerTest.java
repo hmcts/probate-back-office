@@ -9,6 +9,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.stubbing.Answer;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ExecutorsApplyingNotification;
@@ -59,6 +60,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
 import static uk.gov.hmcts.probate.model.Constants.CTSC;
@@ -205,6 +208,8 @@ public class CallbackResponseTransformerTest {
     private static final String CASE_PRINTED = "CasePrinted";
     private static final String READY_FOR_EXAMINATION = "BOReadyForExamination";
     private static final String EXAMINING = "BOExamining";
+
+    private static final Document SOT_DOC = Document.builder().documentType(STATEMENT_OF_TRUTH).build();
 
     private static final LocalDateTime scannedDate = LocalDateTime.parse("2018-01-01T12:34:56.123");
     private static final List<CollectionMember<Payment>> PAYMENTS_LIST = Arrays.asList(
@@ -1538,6 +1543,17 @@ public class CallbackResponseTransformerTest {
         assertLegacyInfo(callbackResponse);
 
         assertEquals(1, callbackResponse.getData().getProbateSotDocumentsGenerated().size());
+    }
+
+    @Test
+    public void testAddSotDocumentReturnsTransformedCaseWithDocAdded() {
+        doAnswer(invoke -> {
+            callbackRequestMock.getCaseDetails().getData().getProbateSotDocumentsGenerated().add(new CollectionMember<>(SOT_DOC));
+            assertEquals(SOT_DOC,
+                    callbackRequestMock.getCaseDetails().getData().getProbateSotDocumentsGenerated().get(0).getValue());
+            return null;
+        }).when(documentTransformer).addDocument(callbackRequestMock, SOT_DOC, false);
+        underTest.addSOTDocument(callbackRequestMock, SOT_DOC);
     }
 
     private CollectionMember<ProbateAliasName> createdDeceasedAliasName(String id, String forename, String lastname, String onGrant) {
