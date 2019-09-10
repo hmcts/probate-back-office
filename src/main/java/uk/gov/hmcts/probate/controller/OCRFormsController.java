@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import uk.gov.hmcts.probate.model.ccd.ocr.ValidationResponse;
-import uk.gov.hmcts.probate.model.ccd.ocr.ValidationResponseState;
+import uk.gov.hmcts.probate.model.ccd.ocr.ValidationResponseStatus;
 import uk.gov.hmcts.probate.model.ocr.OCRRequest;
 import uk.gov.hmcts.probate.service.ocr.FormType;
 import uk.gov.hmcts.probate.service.ocr.OCRMapper;
@@ -53,7 +53,7 @@ public class OCRFormsController {
 
         ValidationResponse validationResponse =
                 ValidationResponse.builder().warnings(warnings)
-                        .state(warnings.isEmpty() ? ValidationResponseState.SUCCESS : ValidationResponseState.WARNINGS).build();
+                        .status(warnings.isEmpty() ? ValidationResponseStatus.SUCCESS : ValidationResponseStatus.WARNINGS).build();
         return ResponseEntity.ok(validationResponse);
     }
 }
