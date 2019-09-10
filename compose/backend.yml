@@ -96,7 +96,6 @@ services:
     image: "hmctspublic.azurecr.io/idam/api:latest"
     environment:
       JAVA_OPTS: -Xms128m -Xmx512m -Dlogging.level.uk.gov.hmcts=DEBUG
-      SPRING_DATASOURCE_URL: jdbc:postgresql://shared-db:5432/openidm?currentSchema=fridam
       TESTING_SUPPORT_ENABLED: "true"
       IDAMHEALTHCHECK_AM_ENABLED: "false"
       IDAMHEALTHCHECK_IDM_ENABLED: "false"
