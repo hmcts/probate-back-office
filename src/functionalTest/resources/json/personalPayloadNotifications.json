@@ -39,6 +39,45 @@
         "AddressLine3": ""
       },
       "caseType": "gop",
+      "executorsApplyingNotifications": [
+        {
+          "id": "1",
+          "value": {
+            "name": "Bob Smith",
+            "email": "test@test.com",
+            "notification": "Yes",
+            "address": {
+              "County": "",
+              "Country": "",
+              "PostCode": "2",
+              "PostTown": "",
+              "AddressLine1": "1",
+              "AddressLine2": "",
+              "AddressLine3": ""
+            }
+          }
+        }
+      ],
+      "executorsApplying": [
+        {
+          "id": null,
+          "value": {
+            "applyingExecutorName": "Eileen Executor",
+            "applyingExecutorEmail": "test@test.com",
+            "applyingExecutorAddress": {
+              "County": "",
+              "Country": "",
+              "PostCode": "2",
+              "PostTown": "",
+              "AddressLine1": "1",
+              "AddressLine2": "",
+              "AddressLine3": ""
+            }
+          }
+        }
+      ],
+      "boEmailRequestInfoNotification": "Yes",
+      "boStopDetailsDeclarationParagraph": "Yes",
       "deceasedAnyOtherNames": "No",
       "solsFeeAccountNumber": "1234",
       "willHasCodicils": "No",

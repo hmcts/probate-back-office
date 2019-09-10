@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
@@ -215,4 +216,25 @@ public class CaseDataTest {
 
         assertEquals(null, caseData.getDeceasedDateOfDeathFormatted());
     }
+
+    @Test
+    public void isBoEmailRequestInfoNotificationRequestedTrue() {
+        final CaseData caseData = CaseData.builder()
+                .applicationType(ApplicationType.PERSONAL)
+                .primaryApplicantEmailAddress("test@test.com")
+                .build();
+
+        assertEquals(true, caseData.isBoEmailRequestInfoNotificationRequested());
+    }
+
+    @Test
+    public void isBoEmailRequestInfoNotificationRequestedFalse() {
+        final CaseData caseData = CaseData.builder()
+                .applicationType(ApplicationType.PERSONAL)
+                .primaryApplicantEmailAddress(null)
+                .build();
+
+        assertEquals(false, caseData.isBoEmailRequestInfoNotificationRequested());
+    }
+
 }

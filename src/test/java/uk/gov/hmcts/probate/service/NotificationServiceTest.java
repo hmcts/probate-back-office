@@ -1,6 +1,7 @@
 package uk.gov.hmcts.probate.service;
 
 import com.google.common.collect.ImmutableList;
+import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,6 +17,7 @@ import uk.gov.hmcts.probate.exception.InvalidEmailException;
 import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.CaseType;
+import uk.gov.hmcts.probate.model.ExecutorsApplyingNotification;
 import uk.gov.hmcts.probate.model.SentEmail;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
 import uk.gov.hmcts.probate.model.ccd.ProbateAddress;
@@ -25,6 +27,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.BulkPrint;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
+import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
@@ -41,6 +44,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -57,6 +61,7 @@ import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
 import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
 import static uk.gov.hmcts.probate.model.State.CASE_STOPPED;
 import static uk.gov.hmcts.probate.model.State.CASE_STOPPED_CAVEAT;
+import static uk.gov.hmcts.probate.model.State.CASE_STOPPED_REQUEST_INFORMATION;
 import static uk.gov.hmcts.probate.model.State.CAVEAT_RAISED;
 import static uk.gov.hmcts.probate.model.State.DOCUMENTS_RECEIVED;
 import static uk.gov.hmcts.probate.model.State.GENERAL_CAVEAT_MESSAGE;
@@ -101,14 +106,20 @@ public class NotificationServiceTest {
     private NotificationClient notificationClient;
 
     private CaseDetails personalCaseDataOxford;
+    private CaseDetails personalCaseDataOxfordInvalidAppType;
     private CaseDetails solicitorCaseDataOxford;
     private CaseDetails personalCaseDataBirmingham;
     private CaseDetails solicitorCaseDataBirmingham;
     private CaseDetails personalCaseDataManchester;
     private CaseDetails personalCaseDataCtsc;
+    private CaseDetails solsCaseDataCtsc;
+    private CaseDetails personalCaseDataCtscRequestInformation;
     private CaseDetails personalCaseDataBristol;
+    private CaseDetails solsCaseDataCtscRequestInformation;
     private CaseDetails solicitorCaseDataManchester;
     private ImmutableList.Builder<ReturnedCaseDetails> excelaCaseData = new ImmutableList.Builder<>();
+    private ImmutableList.Builder<ReturnedCaseDetails> excelaCaseDataNoWillReference = new ImmutableList.Builder<>();
+    private ImmutableList.Builder<ReturnedCaseDetails> excelaCaseDataNoSubtype = new ImmutableList.Builder<>();
 
     private CaveatDetails personalCaveatDataOxford;
     private CaveatDetails personalCaveatDataBirmingham;
@@ -152,6 +163,7 @@ public class NotificationServiceTest {
     private static final String PERSONALISATION_CAVEAT_ENTERED = "date_caveat_entered";
     private static final String PERSONALISATION_CAVEATOR_NAME = "caveator_name";
     private static final String PERSONALISATION_CAVEATOR_ADDRESS = "caveator_address";
+    private static final String PERSONALISATION_CASE_STOP_DETAILS_DEC = "boStopDetailsDeclarationParagraph";
 
 
     @Before
@@ -166,6 +178,16 @@ public class NotificationServiceTest {
                 .builder().subtype("will").controlNumber("123456").build());
         List<CollectionMember<ScannedDocument>> scannedDocuments = new ArrayList<>(1);
         scannedDocuments.add(scannedDocument);
+
+        CollectionMember<ScannedDocument> scannedDocumentsNoWillReference = new CollectionMember<>(ScannedDocument
+                .builder().subtype("subtype").build());
+        List<CollectionMember<ScannedDocument>> scannedDocumentsNoWill = new ArrayList<>(1);
+        scannedDocumentsNoWill.add(scannedDocumentsNoWillReference);
+
+        CollectionMember<ScannedDocument> scannedDocumensNoSubtype = new CollectionMember<>(ScannedDocument
+                .builder().subtype(null).build());
+        List<CollectionMember<ScannedDocument>> scannedDocumentsNoSubtype = new ArrayList<>(1);
+        scannedDocumentsNoSubtype.add(scannedDocumensNoSubtype);
 
         personalCaseDataOxford = new CaseDetails(CaseData.builder()
                 .applicationType(PERSONAL)
@@ -211,6 +233,35 @@ public class NotificationServiceTest {
                 .deceasedDateOfDeath(LocalDate.of(2000, 12, 12))
                 .build(), LAST_MODIFIED, ID);
 
+        solsCaseDataCtsc = new CaseDetails(CaseData.builder()
+                .applicationType(SOLICITOR)
+                .solsSOTName("fred smith")
+                .registryLocation("ctsc")
+                .solsSolicitorEmail("sols@test.com")
+                .primaryApplicantEmailAddress("personal@test.com")
+                .deceasedDateOfDeath(LocalDate.of(2000, 12, 12))
+                .build(), LAST_MODIFIED, ID);
+
+        personalCaseDataCtscRequestInformation = new CaseDetails(CaseData.builder()
+                .applicationType(PERSONAL)
+                .boStopDetailsDeclarationParagraph("Yes")
+                .deceasedDateOfDeath(LocalDate.now())
+                .registryLocation("ctsc")
+                .primaryApplicantEmailAddress("personal@test.com")
+                .deceasedDateOfDeath(LocalDate.of(2000, 12, 12))
+                .build(), LAST_MODIFIED, ID);
+
+        solsCaseDataCtscRequestInformation = new CaseDetails(CaseData.builder()
+                .applicationType(SOLICITOR)
+                .solsSOTName("fred smith")
+                .boStopDetailsDeclarationParagraph("Yes")
+                .deceasedDateOfDeath(LocalDate.now())
+                .registryLocation("ctsc")
+                .solsSolicitorEmail("sols@test.com")
+                .primaryApplicantEmailAddress("personal@test.com")
+                .deceasedDateOfDeath(LocalDate.of(2000, 12, 12))
+                .build(), LAST_MODIFIED, ID);
+
         personalCaseDataBristol = new CaseDetails(CaseData.builder()
                 .applicationType(PERSONAL)
                 .registryLocation("Bristol")
@@ -234,6 +285,24 @@ public class NotificationServiceTest {
                 .grantIssuedDate("2019-05-01")
                 .deceasedDateOfBirth(LocalDate.of(2019, 1, 1))
                 .scannedDocuments(scannedDocuments)
+                .build(), LAST_MODIFIED, ID));
+
+        excelaCaseDataNoWillReference.add(new ReturnedCaseDetails(CaseData.builder()
+                .applicationType(PERSONAL)
+                .deceasedForenames("Jack")
+                .deceasedSurname("Michelson")
+                .grantIssuedDate("2019-05-01")
+                .deceasedDateOfBirth(LocalDate.of(2019, 1, 1))
+                .scannedDocuments(scannedDocumentsNoWill)
+                .build(), LAST_MODIFIED, ID));
+
+        excelaCaseDataNoSubtype.add(new ReturnedCaseDetails(CaseData.builder()
+                .applicationType(PERSONAL)
+                .deceasedForenames("Jack")
+                .deceasedSurname("Michelson")
+                .grantIssuedDate("2019-05-01")
+                .deceasedDateOfBirth(LocalDate.of(2019, 1, 1))
+                .scannedDocuments(scannedDocumentsNoSubtype)
                 .build(), LAST_MODIFIED, ID));
 
         caveatRaisedCaseData = new CaveatDetails(CaveatData.builder()
@@ -804,6 +873,17 @@ public class NotificationServiceTest {
     }
 
     @Test
+    public void sendGeneralCaveatRaisedCtscEmailThrowsUnsupportedState()
+            throws BadRequestException {
+
+        Assertions.assertThatThrownBy(() -> {
+            notificationService.sendCaveatEmail(DOCUMENTS_RECEIVED, caveatRaisedCtscCaseData);
+        })
+                .isInstanceOf(BadRequestException.class)
+                .hasMessage("Unsupported State");
+    }
+
+    @Test
     public void shouldSendEmailForCaveatStoppedOnCtsc()
             throws NotificationClientException, BadRequestException {
 
@@ -815,6 +895,8 @@ public class NotificationServiceTest {
         personalisation.put(PERSONALISATION_SOLICITOR_REFERENCE, personalCaseDataCtsc.getData().getSolsSolicitorAppReference());
         personalisation.put(PERSONALISATION_REGISTRY_NAME, "CTSC");
         personalisation.put(PERSONALISATION_REGISTRY_PHONE, "0300 303 0648");
+        personalisation.put(PERSONALISATION_CASE_STOP_DETAILS_DEC,
+                personalCaseDataCtsc.getData().getBoStopDetailsDeclarationParagraph());
         personalisation.put(PERSONALISATION_CASE_STOP_DETAILS, personalCaseDataCtsc.getData().getBoStopDetails());
         personalisation.put(PERSONALISATION_CAVEAT_CASE_ID, personalCaseDataCtsc.getData().getBoCaseStopCaveatId());
         personalisation.put(PERSONALISATION_DECEASED_DOD, personalCaseDataCtsc.getData().getDeceasedDateOfDeathFormatted());
@@ -841,8 +923,73 @@ public class NotificationServiceTest {
     }
 
     @Test
+    public void shouldSendEmailForCaveatStoppedOnSolsCtsc()
+            throws NotificationClientException, BadRequestException {
+
+        HashMap<String, String> personalisation = new HashMap<>();
+
+        personalisation.put(PERSONALISATION_APPLICANT_NAME, solsCaseDataCtsc.getData().getSolsSOTName());
+        personalisation.put(PERSONALISATION_DECEASED_NAME, solsCaseDataCtsc.getData().getDeceasedFullName());
+        personalisation.put(PERSONALISATION_SOLICITOR_NAME, solsCaseDataCtsc.getData().getSolsSOTName());
+        personalisation.put(PERSONALISATION_SOLICITOR_REFERENCE, solsCaseDataCtsc.getData().getSolsSolicitorAppReference());
+        personalisation.put(PERSONALISATION_REGISTRY_NAME, "CTSC");
+        personalisation.put(PERSONALISATION_REGISTRY_PHONE, "0300 303 0648");
+        personalisation.put(PERSONALISATION_CASE_STOP_DETAILS_DEC,
+                solsCaseDataCtsc.getData().getBoStopDetailsDeclarationParagraph());
+        personalisation.put(PERSONALISATION_CASE_STOP_DETAILS, solsCaseDataCtsc.getData().getBoStopDetails());
+        personalisation.put(PERSONALISATION_CAVEAT_CASE_ID, solsCaseDataCtsc.getData().getBoCaseStopCaveatId());
+        personalisation.put(PERSONALISATION_DECEASED_DOD, solsCaseDataCtsc.getData().getDeceasedDateOfDeathFormatted());
+        personalisation.put(PERSONALISATION_CCD_REFERENCE, solsCaseDataCtsc.getId().toString());
+
+        personalisation.put(PERSONALISATION_CAVEATOR_NAME, caveatStoppedCtscCaseData.getData().getCaveatorFullName());
+        personalisation.put(PERSONALISATION_CAVEAT_ENTERED, "1st January 2019");
+        personalisation.put(PERSONALISATION_CAVEATOR_ADDRESS, "");
+        personalisation.put(PERSONALISATION_CAVEAT_EXPIRY_DATE, "1st January 2019");
+
+        when(caveatQueryServiceMock.findCaveatById(CaseType.CAVEAT, null)).thenReturn(caveatStoppedCtscCaseData.getData());
+        when(notificationClient.sendEmail(anyString(), anyString(), any(), any(), any())).thenReturn(sendEmailResponse);
+
+        notificationService.sendEmail(CASE_STOPPED_CAVEAT, solsCaseDataCtsc);
+
+        verify(notificationClient).sendEmail(
+                eq("sol-case-stopped-caveat"),
+                eq("sols@test.com"),
+                eq(personalisation),
+                eq(null),
+                eq("ctsc-emailReplyToId"));
+
+        verify(pdfManagementService).generateAndUpload(any(SentEmail.class), eq(SENT_EMAIL));
+    }
+
+    @Test
     public void sendExcelaEmail() throws NotificationClientException {
         notificationService.sendExcelaEmail(excelaCaseData.build());
+
+        verify(notificationClient).sendEmail(
+                eq("pa-excela-data"),
+                eq("probatetest@gmail.com"),
+                any(),
+                anyString());
+
+        verify(pdfManagementService).generateAndUpload(any(SentEmail.class), eq(SENT_EMAIL));
+    }
+
+    @Test
+    public void sendExcelaEmailScannedDocumentWithNoWillReference() throws NotificationClientException {
+        notificationService.sendExcelaEmail(excelaCaseDataNoWillReference.build());
+
+        verify(notificationClient).sendEmail(
+                eq("pa-excela-data"),
+                eq("probatetest@gmail.com"),
+                any(),
+                anyString());
+
+        verify(pdfManagementService).generateAndUpload(any(SentEmail.class), eq(SENT_EMAIL));
+    }
+
+    @Test
+    public void sendExcelaEmailScannedDocumentWithNoSubtype() throws NotificationClientException {
+        notificationService.sendExcelaEmail(excelaCaseDataNoSubtype.build());
 
         verify(notificationClient).sendEmail(
                 eq("pa-excela-data"),
@@ -917,4 +1064,101 @@ public class NotificationServiceTest {
         }).isInstanceOf(InvalidEmailException.class)
                 .hasMessage("Invalid email exception: No email address provided for application type SOLS: " + CASE_ID);
     }
+
+    @Test
+    public void shouldSendEmailForRequestInformationPACtsc()
+            throws NotificationClientException, BadRequestException {
+
+        HashMap<String, String> personalisation = new HashMap<>();
+
+        personalisation.put(PERSONALISATION_APPLICANT_NAME,
+                personalCaseDataCtscRequestInformation.getData().getPrimaryApplicantFullName());
+        personalisation.put(PERSONALISATION_DECEASED_NAME,
+                personalCaseDataCtscRequestInformation.getData().getDeceasedFullName());
+        personalisation.put(PERSONALISATION_SOLICITOR_NAME, personalCaseDataCtscRequestInformation.getData().getSolsSOTName());
+        personalisation.put(PERSONALISATION_SOLICITOR_REFERENCE,
+                personalCaseDataCtscRequestInformation.getData().getSolsSolicitorAppReference());
+        personalisation.put(PERSONALISATION_REGISTRY_NAME, "CTSC");
+        personalisation.put(PERSONALISATION_REGISTRY_PHONE, "0300 303 0648");
+        personalisation.put(PERSONALISATION_CASE_STOP_DETAILS_DEC,
+                personalCaseDataCtscRequestInformation.getData().getBoStopDetailsDeclarationParagraph());
+        personalisation.put(PERSONALISATION_CASE_STOP_DETAILS,
+                personalCaseDataCtscRequestInformation.getData().getBoStopDetails());
+        personalisation.put(PERSONALISATION_CAVEAT_CASE_ID,
+                personalCaseDataCtscRequestInformation.getData().getBoCaseStopCaveatId());
+        personalisation.put(PERSONALISATION_DECEASED_DOD,
+                personalCaseDataCtscRequestInformation.getData().getDeceasedDateOfDeathFormatted());
+        personalisation.put(PERSONALISATION_CCD_REFERENCE, personalCaseDataCtscRequestInformation.getId().toString());
+
+        when(notificationClient.sendEmail(anyString(), anyString(), any(), any(), any())).thenReturn(sendEmailResponse);
+        ExecutorsApplyingNotification executorsApplyingNotification = ExecutorsApplyingNotification.builder()
+                .name(personalCaseDataCtscRequestInformation.getData().getPrimaryApplicantFullName())
+                .address(SolsAddress.builder()
+                        .addressLine1("Addressline1")
+                        .postCode("postcode")
+                        .postTown("posttown")
+                        .build())
+                .email("personal@test.com")
+                .notification("Yes").build();
+        notificationService.sendEmail(CASE_STOPPED_REQUEST_INFORMATION, personalCaseDataCtscRequestInformation,
+                executorsApplyingNotification);
+        verify(notificationClient).sendEmail(
+                eq("pa-request-information"),
+                eq("personal@test.com"),
+                eq(personalisation),
+                eq(null),
+                eq("ctsc-emailReplyToId"));
+
+        when(pdfManagementService.generateDocmosisDocumentAndUpload(any(Map.class), any())).thenReturn(Document.builder()
+                .documentFileName(SENT_EMAIL_FILE_NAME).build());
+    }
+
+    @Test
+    public void shouldSendEmailForRequestInformationSolsCtsc()
+            throws NotificationClientException, BadRequestException {
+
+        HashMap<String, String> personalisation = new HashMap<>();
+
+        personalisation.put(PERSONALISATION_APPLICANT_NAME, solsCaseDataCtscRequestInformation.getData().getSolsSOTName());
+        personalisation.put(PERSONALISATION_DECEASED_NAME, solsCaseDataCtscRequestInformation.getData().getDeceasedFullName());
+        personalisation.put(PERSONALISATION_SOLICITOR_NAME, solsCaseDataCtscRequestInformation.getData().getSolsSOTName());
+        personalisation.put(PERSONALISATION_SOLICITOR_REFERENCE,
+                solsCaseDataCtscRequestInformation.getData().getSolsSolicitorAppReference());
+        personalisation.put(PERSONALISATION_REGISTRY_NAME, "CTSC");
+        personalisation.put(PERSONALISATION_REGISTRY_PHONE, "0300 303 0648");
+        personalisation.put(PERSONALISATION_CASE_STOP_DETAILS_DEC,
+                solsCaseDataCtscRequestInformation.getData().getBoStopDetailsDeclarationParagraph());
+        personalisation.put(PERSONALISATION_CASE_STOP_DETAILS, solsCaseDataCtscRequestInformation.getData().getBoStopDetails());
+        personalisation.put(PERSONALISATION_CAVEAT_CASE_ID,
+                solsCaseDataCtscRequestInformation.getData().getBoCaseStopCaveatId());
+        personalisation.put(PERSONALISATION_DECEASED_DOD,
+                solsCaseDataCtscRequestInformation.getData().getDeceasedDateOfDeathFormatted());
+        personalisation.put(PERSONALISATION_CCD_REFERENCE, solsCaseDataCtscRequestInformation.getId().toString());
+
+        when(notificationClient.sendEmail(anyString(), anyString(), any(), any(), any())).thenReturn(sendEmailResponse);
+
+        ExecutorsApplyingNotification executorsApplyingNotification = ExecutorsApplyingNotification.builder()
+                .name(solsCaseDataCtscRequestInformation.getData().getSolsSOTName())
+                .address(SolsAddress.builder()
+                        .addressLine1("Addressline1")
+                        .postCode("postcode")
+                        .postTown("posttown")
+                        .build())
+                .email("sols@test.com")
+                .notification("Yes").build();
+        notificationService.sendEmail(CASE_STOPPED_REQUEST_INFORMATION, solsCaseDataCtscRequestInformation,
+                executorsApplyingNotification);
+
+        verify(notificationClient).sendEmail(
+                eq("sols-request-information"),
+                eq("sols@test.com"),
+                eq(personalisation),
+                eq(null),
+                eq("ctsc-emailReplyToId"));
+
+        when(pdfManagementService.generateDocmosisDocumentAndUpload(any(Map.class), any())).thenReturn(Document.builder()
+                .documentFileName(SENT_EMAIL_FILE_NAME).build());
+    }
+
+
 }
