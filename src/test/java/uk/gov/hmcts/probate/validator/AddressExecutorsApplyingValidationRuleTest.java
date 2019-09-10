@@ -10,6 +10,7 @@ import uk.gov.hmcts.probate.exception.BusinessValidationException;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.ExecutorsApplyingNotification;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
+import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.service.BusinessValidationMessageRetriever;
@@ -19,10 +20,10 @@ import java.util.List;
 
 import static uk.gov.hmcts.probate.model.Constants.YES;
 
-public class EmailAddressExecutorsApplyingValidationRuleTest {
+public class AddressExecutorsApplyingValidationRuleTest {
 
     @InjectMocks
-    private EmailAddressExecutorsApplyingValidationRule emailAddressExecutorsApplyingValidationRule;
+    private AddressExecutorsApplyingValidationRule addressExecutorsApplyingValidationRule;
 
     @Mock
     private BusinessValidationMessageRetriever businessValidationMessageRetriever;
@@ -38,7 +39,7 @@ public class EmailAddressExecutorsApplyingValidationRuleTest {
             new CollectionMember<>("id",
                     ExecutorsApplyingNotification.builder()
                             .name("Name")
-                            .email("")
+                            .address(SolsAddress.builder().addressLine1("").postCode("").build())
                             .notification(YES)
                             .build()));
 
@@ -46,7 +47,7 @@ public class EmailAddressExecutorsApplyingValidationRuleTest {
             new CollectionMember<>("id",
                     ExecutorsApplyingNotification.builder()
                             .name("Name")
-                            .email(null)
+                            .address(SolsAddress.builder().build())
                             .notification(YES)
                             .build()));
 
@@ -54,7 +55,7 @@ public class EmailAddressExecutorsApplyingValidationRuleTest {
             new CollectionMember<>("id",
                     ExecutorsApplyingNotification.builder()
                             .name("Name")
-                            .email("test@test.com")
+                            .address(SolsAddress.builder().addressLine1("123").postCode("AB12CD").build())
                             .notification(YES)
                             .build()));
 
@@ -84,27 +85,27 @@ public class EmailAddressExecutorsApplyingValidationRuleTest {
     }
 
     @Test
-    public void shouldThrowApplyingExecEmailIsEmpty() {
+    public void shouldThrowApplyingExecAddressIsEmpty() {
         CaseDetails caseDetailsEmpty =
                 new CaseDetails(caseDataEmpty, LAST_MODIFIED, CASE_ID);
 
         Assertions.assertThatThrownBy(() -> {
-            emailAddressExecutorsApplyingValidationRule.validate(caseDetailsEmpty);
+            addressExecutorsApplyingValidationRule.validate(caseDetailsEmpty);
         })
                 .isInstanceOf(BusinessValidationException.class)
-                .hasMessage("An applying exec email is empty for case id 12345678987654321");
+                .hasMessage("An applying exec address has empty value for Address line 1 or postcode with case id 12345678987654321");
     }
 
     @Test
-    public void shouldThrowApplyingExecEmailIsNull() {
+    public void shouldThrowApplyingExecAddressIsNull() {
         CaseDetails caseDetailsNull =
                 new CaseDetails(caseDataNull, LAST_MODIFIED, CASE_ID);
 
         Assertions.assertThatThrownBy(() -> {
-            emailAddressExecutorsApplyingValidationRule.validate(caseDetailsNull);
+            addressExecutorsApplyingValidationRule.validate(caseDetailsNull);
         })
                 .isInstanceOf(BusinessValidationException.class)
-                .hasMessage("An applying exec email is null for case id 12345678987654321");
+                .hasMessage("An applying exec address has null value for Address line 1 or postcode with case id 12345678987654321");
     }
 
     @Test
@@ -112,7 +113,7 @@ public class EmailAddressExecutorsApplyingValidationRuleTest {
         CaseDetails caseDetailsNotEmpty =
                 new CaseDetails(caseDataNotEmpty, LAST_MODIFIED, CASE_ID);
 
-        emailAddressExecutorsApplyingValidationRule.validate(caseDetailsNotEmpty);
+        addressExecutorsApplyingValidationRule.validate(caseDetailsNotEmpty);
     }
 
     @Test
@@ -120,6 +121,7 @@ public class EmailAddressExecutorsApplyingValidationRuleTest {
         CaseDetails caseDetailsNotEmptySolicitor =
                 new CaseDetails(caseDataNotEmptySolicitor, LAST_MODIFIED, CASE_ID);
 
-        emailAddressExecutorsApplyingValidationRule.validate(caseDetailsNotEmptySolicitor);
+        addressExecutorsApplyingValidationRule.validate(caseDetailsNotEmptySolicitor);
     }
 }
+

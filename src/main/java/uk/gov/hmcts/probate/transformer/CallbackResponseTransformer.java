@@ -138,8 +138,10 @@ public class CallbackResponseTransformer {
         }
 
         if (documentTransformer.hasDocumentWithType(documents, SOT_INFORMATION_REQUEST) && !letterIds.isEmpty()) {
-            CollectionMember<BulkPrint> bulkPrint = buildBulkPrint(letterIds.get(0), SOT_INFORMATION_REQUEST.getTemplateName());
-            appendToBulkPrintCollection(bulkPrint, callbackRequest.getCaseDetails().getData());
+            letterIds.forEach(letterId -> {
+                CollectionMember<BulkPrint> bulkPrint = buildBulkPrint(letterId, SOT_INFORMATION_REQUEST.getTemplateName());
+                appendToBulkPrintCollection(bulkPrint, callbackRequest.getCaseDetails().getData());
+            });
             responseCaseDataBuilder
                     .boRequestInfoSendToBulkPrintRequested(
                             callbackRequest.getCaseDetails().getData().getBoRequestInfoSendToBulkPrint())
@@ -206,6 +208,12 @@ public class CallbackResponseTransformer {
         responseCaseDataBuilder
                 .solsSOTNeedToUpdate(null);
 
+        return transformResponse(responseCaseDataBuilder.build());
+    }
+
+    public CallbackResponse addSOTDocument(CallbackRequest callbackRequest, Document document) {
+        documentTransformer.addDocument(callbackRequest, document, false);
+        ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), false);
         return transformResponse(responseCaseDataBuilder.build());
     }
 
@@ -460,7 +468,8 @@ public class CallbackResponseTransformer {
                 .boEmailRequestInfoNotification(caseData.getBoEmailRequestInfoNotification())
                 .boEmailRequestInfoNotificationRequested(caseData.getBoEmailRequestInfoNotificationRequested())
                 .boRequestInfoSendToBulkPrint(caseData.getBoRequestInfoSendToBulkPrint())
-                .boRequestInfoSendToBulkPrintRequested(caseData.getBoRequestInfoSendToBulkPrintRequested());
+                .boRequestInfoSendToBulkPrintRequested(caseData.getBoRequestInfoSendToBulkPrintRequested())
+                .probateSotDocumentsGenerated(caseData.getProbateSotDocumentsGenerated());
 
         if (transform) {
             updateCaseBuilderForTransformCase(caseData, builder);

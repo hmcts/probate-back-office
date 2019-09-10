@@ -288,5 +288,6 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "boEmailRequestInfoNotification", "Label": "Do you wish to send an email notification for the request of information?", "HintText": "Request information email notification", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "boRequestInfoSendToBulkPrintRequested", "Label": "Is the request of information to be sent to bulk printing?", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "boRequestInfoSendToBulkPrint", "Label": "Is the request of information to be sent to bulk printing?", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "executorsApplyingNotifications", "Label": "Applying executor", "FieldType": "Collection", "FieldTypeParameter": "ExecutorsApplyingNotification", "SecurityClassification": "Public"}
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "executorsApplyingNotifications", "Label": "Applying executor", "FieldType": "Collection", "FieldTypeParameter": "ExecutorsApplyingNotification", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "probateSotDocumentsGenerated", "Label": "SOT Documents generated", "FieldType": "Collection", "FieldTypeParameter": "ProbateDocument", "SecurityClassification": "Public"}
 ]

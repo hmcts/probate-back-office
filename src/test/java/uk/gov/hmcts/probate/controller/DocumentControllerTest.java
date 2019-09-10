@@ -133,6 +133,8 @@ public class DocumentControllerTest {
         when(documentGeneratorService.generateGrantReissue(any(), any())).thenReturn(document);
         when(documentGeneratorService.generateCoversheet(any(CallbackRequest.class)))
                 .thenReturn(Document.builder().documentType(DocumentType.GRANT_COVERSHEET).build());
+        when(documentGeneratorService.generateSoT(any()))
+                .thenReturn(Document.builder().documentType(DocumentType.STATEMENT_OF_TRUTH).build());
 
         when(bulkPrintService.sendToBulkPrint(any(), any(),
                 any(), anyBoolean())).thenReturn(LETTER_UUID);
@@ -397,6 +399,18 @@ public class DocumentControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("data")))
                 .andExpect(content().string(doesNotContainString("sentEmail")));
+    }
+
+    @Test
+    public void testGenerateStatementOfTruthReturnsOk() throws Exception {
+        String personalPayload = testUtils.getStringFromFile("personalPayloadNotifications.json");
+
+        mockMvc.perform(post("/document/generate-sot")
+                .content(personalPayload)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("data")))
+                .andExpect(content().string(containsString("statementOfTruth")));
     }
 
     private Matcher<String> doesNotContainString(String s) {

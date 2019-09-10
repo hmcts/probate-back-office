@@ -474,6 +474,8 @@ public class CaseData {
     private final String deceasedHasAssetsOutsideUK;
 
     private final String boEmailRequestInfoNotificationRequested;
+
+    private final List<CollectionMember<Document>> probateSotDocumentsGenerated = new ArrayList<>();
     @SuppressWarnings("squid:S1170")
     @Getter(lazy = true)
     private final String boEmailRequestInfoNotification = getDefaultValueForEmailNotifications();
