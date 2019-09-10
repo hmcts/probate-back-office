@@ -1,11 +1,10 @@
 package uk.gov.hmcts.probate.model.ccd.ocr;
 
-public enum GORMandatoryFields {
+public enum IntestacyMandatoryFields {
     PRIMARY_APPLICANT_FORENAMES("primaryApplicantForenames", "Primary applicant first name(s)"),
     PRIMARY_APPLICANT_SURNAME("primaryApplicantSurname", "Primary applicant last name"),
     PRIMARY_APPLICANT_ADDRESS_LINE1("primaryApplicantAddressLine1", "Primary applicant building and street"),
     PRIMARY_APPLICANT_ADDRESS_POSTCODE("primaryApplicantAddressPostCode", "Primary applicant postcode"),
-    PRIMARY_APPLICANT_HAS_ALIAS("primaryApplicantHasAlias", "Primary applicant has alias"),
     DECEASED_FORENAMES("deceasedForenames", "Deceased first name(s)"),
     DECEASED_SURNAME("deceasedSurname", "Deceased last name"),
     DECEASED_ADDRESS_LINE1("deceasedAddressLine1", "Deceased building and street"),
@@ -22,7 +21,7 @@ public enum GORMandatoryFields {
     private final String key;
     private final String value;
 
-    GORMandatoryFields(String key, String value) {
+    IntestacyMandatoryFields(String key, String value) {
         this.key = key;
         this.value = value;
     }

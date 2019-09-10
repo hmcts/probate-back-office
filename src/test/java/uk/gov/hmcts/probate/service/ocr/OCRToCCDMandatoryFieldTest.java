@@ -28,7 +28,7 @@ public class OCRToCCDMandatoryFieldTest {
     @Test
     public void testMissingMandatoryFieldsReturnSuccessfullyForPA1P() {
         addDeceasedMandatoryFields();
-        assertEquals(3, ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrFields, FormType.PA1P).size());
+        assertEquals(8, ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrFields, FormType.PA1P).size());
     }
 
     @Test
@@ -42,21 +42,21 @@ public class OCRToCCDMandatoryFieldTest {
     public void testFieldDescriptionIsAddedToMissingValueListForPA1P() {
         addAllMandatoryGORFields();
         ocrFields.remove(ocrFields.size() - 1);
-        assertEquals("Primary applicant Building & Street", ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrFields,
+        assertEquals("Key 'primaryApplicantAlias' is mandatory.", ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrFields,
                 FormType.PA1P
         ).get(0));
     }
 
     @Test
     public void testAllMandatoryFieldsPresentPA1A() {
-        addAllMandatoryGORFields();
+        addAllMandatoryIntestacyFields();
         assertEquals(0, ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrFields, FormType.PA1A).size());
     }
 
     @Test
     public void testMissingMandatoryFieldsReturnSuccessfullyForPA1A() {
         addDeceasedMandatoryFields();
-        assertEquals(3, ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrFields, FormType.PA1A).size());
+        assertEquals(7, ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrFields, FormType.PA1A).size());
     }
 
     @Test
@@ -68,9 +68,9 @@ public class OCRToCCDMandatoryFieldTest {
 
     @Test
     public void testFieldDescriptionIsAddedToMissingValueListForPA1A() {
-        addAllMandatoryGORFields();
+        addAllMandatoryIntestacyFields();
         ocrFields.remove(ocrFields.size() - 1);
-        assertEquals("Primary applicant Building & Street", ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrFields,
+        assertEquals("Key 'primaryApplicantAddressPostCode' is mandatory.", ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrFields,
                 FormType.PA1A
         ).get(0));
     }
@@ -84,7 +84,7 @@ public class OCRToCCDMandatoryFieldTest {
     @Test
     public void testMissingMandatoryFieldsReturnSuccessfullyForPA8A() {
         addDeceasedMandatoryFields();
-        assertEquals(3, ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrFields, FormType.PA8A).size());
+        assertEquals(4, ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrFields, FormType.PA8A).size());
     }
 
     @Test
@@ -98,14 +98,36 @@ public class OCRToCCDMandatoryFieldTest {
     public void testFieldDescriptionIsAddedToMissingValueListForPA8A() {
         addAllCaveatMandatoryFields();
         ocrFields.remove(ocrFields.size() - 1);
-        assertEquals("Caveator address building and street", ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrFields,
+        assertEquals("Key 'caveatorAddressPostCode' is mandatory.", ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrFields,
                 FormType.PA8A
         ).get(0));
     }
 
+    private void addIHTMandatoryFields() {
+        OCRField field1 = OCRField.builder()
+                .name("ihtFormCompletedOnline")
+                .value("false")
+                .description("IHT Completed online?").build();
+        OCRField field2 = OCRField.builder()
+                .name("ihtFormId")
+                .value("C")
+                .description("IHT Form Id").build();
+        OCRField field3 = OCRField.builder()
+                .name("ihtGrossValue")
+                .value("220.30")
+                .description("Enter the gross value of the estate").build();
+        OCRField field4 = OCRField.builder()
+                .name("ihtNetValue")
+                .value("215.50")
+                .description("Enter the net value of the estate").build();
 
-    private void addAllMandatoryGORFields() {
-        addDeceasedMandatoryFields();
+        ocrFields.add(field1);
+        ocrFields.add(field2);
+        ocrFields.add(field3);
+        ocrFields.add(field4);
+    }
+
+    private void addPrimaryApplicantFields() {
         OCRField field1 = OCRField.builder()
                 .name("primaryApplicantForenames")
                 .value("Bob")
@@ -115,14 +137,18 @@ public class OCRToCCDMandatoryFieldTest {
                 .value("Smith")
                 .description("Primary applicant surname").build();
         OCRField field3 = OCRField.builder()
-                .name("primaryApplicantAddress_AddressLine1")
+                .name("primaryApplicantAddressLine1")
                 .value("123 Alphabet Street")
                 .description("Primary applicant Building & Street").build();
-
+        OCRField field4 = OCRField.builder()
+                .name("primaryApplicantAddressPostCode")
+                .value("NW1 5LE")
+                .description("Primary applicant postcode").build();
 
         ocrFields.add(field1);
         ocrFields.add(field2);
         ocrFields.add(field3);
+        ocrFields.add(field4);
     }
 
     private void addDeceasedMandatoryFields() {
@@ -135,23 +161,62 @@ public class OCRToCCDMandatoryFieldTest {
                 .value("Johnson")
                 .description("Deceased surname").build();
         OCRField field3 = OCRField.builder()
-                .name("deceasedAddress_AddressLine1")
+                .name("deceasedAddressLine1")
                 .value("Smith")
                 .description("Deceased address").build();
         OCRField field4 = OCRField.builder()
+                .name("deceasedAddressPostCode")
+                .value("NW1 6LE")
+                .description("Deceased postcode").build();
+        OCRField field5 = OCRField.builder()
                 .name("deceasedDateOfBirth")
                 .value("1900-01-01")
                 .description("Deceased DOB").build();
-        OCRField field5 = OCRField.builder()
+        OCRField field6 = OCRField.builder()
                 .name("deceasedDateOfDeath")
                 .value("2000-01-01")
                 .description("Deceased DOD").build();
+        OCRField field7 = OCRField.builder()
+                .name("deceasedAnyOtherNames")
+                .value("2000-01-01")
+                .description("Jack Johnson").build();
+        OCRField field8 = OCRField.builder()
+                .name("deceasedDomicileInEngWales")
+                .value("true")
+                .description("Deceased Domicile In England or Wales").build();
 
         ocrFields.add(field1);
         ocrFields.add(field2);
         ocrFields.add(field3);
         ocrFields.add(field4);
         ocrFields.add(field5);
+        ocrFields.add(field6);
+        ocrFields.add(field7);
+        ocrFields.add(field8);
+    }
+
+    private void addAllMandatoryGORFields() {
+        addIHTMandatoryFields();
+        addDeceasedMandatoryFields();
+        addPrimaryApplicantFields();
+
+        OCRField field1 = OCRField.builder()
+                .name("primaryApplicantHasAlias")
+                .value("true")
+                .description("Primary applicant has alias").build();
+        OCRField field2 = OCRField.builder()
+                .name("primaryApplicantAlias")
+                .value("Jack Johnson")
+                .description("Primary applicant alias name").build();
+
+        ocrFields.add(field1);
+        ocrFields.add(field2);
+    }
+
+    private void addAllMandatoryIntestacyFields() {
+        addIHTMandatoryFields();
+        addDeceasedMandatoryFields();
+        addPrimaryApplicantFields();
     }
 
     private void addAllCaveatMandatoryFields() {
@@ -176,9 +241,13 @@ public class OCRToCCDMandatoryFieldTest {
                 .value("Montague")
                 .description("Surname(s)").build();
         OCRField field6 = OCRField.builder()
-                .name("caveatorAddress_AddressLine1")
+                .name("caveatorAddressLine1")
                 .value("123 Montague Street")
                 .description("Caveator address building and street").build();
+        OCRField field7 = OCRField.builder()
+                .name("caveatorAddressPostCode")
+                .value("NW1 5LE")
+                .description("Caveator address postcode").build();
 
         ocrFields.add(field1);
         ocrFields.add(field2);
@@ -186,5 +255,6 @@ public class OCRToCCDMandatoryFieldTest {
         ocrFields.add(field4);
         ocrFields.add(field5);
         ocrFields.add(field6);
+        ocrFields.add(field7);
     }
 }
