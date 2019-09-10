@@ -96,6 +96,11 @@ public class BusinessValidationControllerTest {
     private static final String RELATIONSHIP_TO_DECEASED = "Child";
     private static final String MINORITY_INTEREST = "No";
     private static final String APPLICANT_SIBLINGS = "No";
+    private static final String ENTITLED_MINORITY = "No";
+    private static final String DIED_OR_NOT_APPLYING = "Yes";
+    private static final String RESIDUARY = "Yes";
+    private static final String RESIDUARY_TYPE = "Legatee";
+    private static final String LIFE_INTEREST = "No";
     private static final String ANSWER_NO = "No";
 
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
@@ -275,6 +280,11 @@ public class BusinessValidationControllerTest {
     @Test
     public void shouldReturnAdmonSuccess() throws Exception {
         caseDataBuilder.solsWillType(WILL_TYPE_ADMON);
+        caseDataBuilder.solsEntitledMinority(ENTITLED_MINORITY);
+        caseDataBuilder.solsDiedOrNotApplying(DIED_OR_NOT_APPLYING);
+        caseDataBuilder.solsResiduary(RESIDUARY);
+        caseDataBuilder.solsResiduaryType(RESIDUARY_TYPE);
+        caseDataBuilder.solsLifeInterest(LIFE_INTEREST);
         caseDataBuilder.primaryApplicantEmailAddress(PRIMARY_APPLICANT_EMAIL);
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);

@@ -6,12 +6,12 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 
 @Component
-public class MinorityRule implements ChangeRule {
-    private static final String MESSAGE_KEY = "stopBodyMinorityInterest";
+public class LifeInterestRule implements ChangeRule {
+    private static final String MESSAGE_KEY = "stopBodyLifeInterest";
 
     @Override
     public boolean isChangeNeeded(CaseData caseData) {
-        return YES.equals(caseData.getSolsMinorityInterest());
+        return YES.equals(caseData.getSolsLifeInterest());
     }
 
     @Override
