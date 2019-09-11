@@ -25,6 +25,10 @@ Guidance on how to set up probate locally using the updated docker images. User
 ```
 
 ##### 4) Run environments script
+```bash
+   ./ccd login
+```
+
 For mac: 
 ```bash
    ./bin/set-environment-variables.sh
