@@ -1551,5 +1551,8 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "foreignAsset", "UserRole": "citizen", "CRUD": "CRU"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "foreignAssetEstateValue", "UserRole": "citizen", "CRUD": "CRU"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "statementOfTruthDocument", "UserRole": "citizen", "CRUD": "CRU"},
-  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "primaryApplicantRelationshipToDeceased", "UserRole": "citizen", "CRUD": "CRU"}
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "primaryApplicantRelationshipToDeceased", "UserRole": "citizen", "CRUD": "CRU"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "childrenOverEighteenSurvived", "UserRole": "citizen", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "childrenUnderEighteenSurvived", "UserRole": "citizen", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "grandChildrenSurvivedUnderEighteen", "UserRole": "citizen", "CRUD": "CRUD"}
 ]
