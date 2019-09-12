@@ -57,6 +57,11 @@ public class ResponseCaseData {
     private final String solsAdoptedEnglandOrWales;
     private final String solsMinorityInterest;
     private final String solsApplicantSiblings;
+    private final String solsEntitledMinority;
+    private final String solsDiedOrNotApplying;
+    private final String solsResiduary;
+    private final String solsResiduaryType;
+    private final String solsLifeInterest;
     private final String willExists;
     private final String willAccessOriginal;
     private final String willHasCodicils;
