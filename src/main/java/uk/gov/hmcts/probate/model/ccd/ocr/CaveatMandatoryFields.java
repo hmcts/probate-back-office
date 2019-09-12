@@ -5,7 +5,7 @@ public enum CaveatMandatoryFields {
     DECEASED_SURNAME("deceasedSurname", "Deceased last name"),
     DECEASED_DOD("deceasedDateOfDeath", "What was their date of death?"),
     CAVEATOR_FORNAMES("caveatorForenames", "Forenames(s)"),
-    CAVEATOR_SURNAME("caveatorSurname", "Surname"),
+    CAVEATOR_SURNAME("caveatorSurnames", "Surname"),
     CAVEATOR_ADDRESS_LINE1("caveatorAddressLine1", "Caveator address building and street"),
     CAVEATOR_ADDRESS_POSTCODE("caveatorAddressPostCode", "Caveator address postcode");
 
