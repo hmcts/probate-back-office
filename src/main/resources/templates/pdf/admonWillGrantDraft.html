@@ -214,7 +214,7 @@
                 Died on or since
                 {% elseif case_details.case_data.dateOfDeathType == "diedOn" %}
                 Died on
-                {% endif %} <strong>{{case_details.case_data.deceasedDateOfDeathFormatted}}</strong> domiciled in <strong>England and Wales</strong>
+                {% endif %} <strong>{{case_details.case_data.deceasedDateOfDeathFormatted}}</strong> domiciled in <strong>{% if case_details.case_data.domicilityCountry != null and case_details.case_data.domicilityCountry != "" %}{{case_details.case_data.domicilityCountry}}{% else %}England and Wales{% endif %}</strong>
             </p>
             <p>The Last Will and Testament <strong><span class="camelCase">
                 {% if case_details.case_data.boWillMessage != null and case_details.case_data.boWillMessage != ""%}{{ case_details.case_data.boWillMessage }}{% endif %}
@@ -301,7 +301,7 @@
                 {{ case_details.case_data.boLimitationText }}{% endif %}
 
             </p>
-            <p>The application has stated that the gross value of the estate in the United Kingdom amounts to
+            <p>The application has stated that the gross value of the estate in {% if case_details.case_data.domicilityCountry != null and case_details.case_data.domicilityCountry != "" %}England and Wales{% else %}the United Kingdom{% endif %} amounts to
                 £{{(case_details.case_data.ihtGrossValue / 100) | numberformat("###,###.##")}} and the net value amounts to
                 £{{(case_details.case_data.ihtNetValue / 100) | numberformat("###,###.##")}}
             </p>
