@@ -200,7 +200,7 @@ public class NotificationService {
                 .from(response.getFromEmail().orElse(""))
                 .to(emailAddress)
                 .subject(response.getSubject())
-                .body(markdownTransformationService.toHtml(response.getBody()))
+                .body(response.getBody())
                 .build();
         Map<String, Object> placeholders = sentEmailPersonalisationService.getPersonalisation(sentEmail);
         return pdfManagementService.generateDocmosisDocumentAndUpload(placeholders, docType);
