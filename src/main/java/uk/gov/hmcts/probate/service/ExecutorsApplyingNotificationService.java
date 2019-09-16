@@ -51,7 +51,7 @@ public class ExecutorsApplyingNotificationService {
     }
 
     private void addPrimaryApplicant(CaseData caseData) {
-        if (caseData.getPrimaryApplicantIsApplying().equals(YES)) {
+        if (YES.equals(caseData.getPrimaryApplicantIsApplying())) {
             executorList.add(buildExecutorList(caseData.getPrimaryApplicantFullName(),
                     caseData.getPrimaryApplicantEmailAddress(), caseData.getPrimaryApplicantAddress()));
         }
