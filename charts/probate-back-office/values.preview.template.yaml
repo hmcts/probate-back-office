@@ -33,5 +33,6 @@ postgresql:
     init.sql: |-
       CREATE DATABASE "probate_man" WITH OWNER = probate ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
 
+
   persistence:
     enabled: false
