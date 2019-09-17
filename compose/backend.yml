@@ -93,7 +93,7 @@ services:
       - service-auth-provider-api
 
   sidam-api:
-    image: "hmctspublic.azurecr.io/idam/api:latest"
+    image: "hmctspublic.azurecr.io/idam/api:preview"
     environment:
       JAVA_OPTS: -Xms128m -Xmx512m -Dlogging.level.uk.gov.hmcts=DEBUG
       TESTING_SUPPORT_ENABLED: "true"
@@ -154,7 +154,7 @@ services:
       TESTING_SUPPORT_ENABLED: "true"
 
   fr-am:
-    image: "hmctsprivate.azurecr.io/idam/idam-fr-am:cmc"
+    image: "hmctsprivate.azurecr.io/idam/idam-fr-am:latest"
     environment:
       JAVA_OPTS: -Xms128m -Xmx512m
     ports:
