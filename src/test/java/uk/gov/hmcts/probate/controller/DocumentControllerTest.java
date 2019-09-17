@@ -206,7 +206,7 @@ public class DocumentControllerTest {
     @Test
     public void shouldNotPrintDigitalGrantIfBulkPrint() throws Exception {
 
-        String solicitorPayload = testUtils.getStringFromFile("payloadWithEdgeCase.json");
+        String solicitorPayload = testUtils.getStringFromFile("payloadWithBulkPrint.json");
 
         mockMvc.perform(post("/document/generate-grant")
                 .content(solicitorPayload)
@@ -214,8 +214,32 @@ public class DocumentControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("data")));
 
-        doNothing().when(documentService).expire(any(CallbackRequest.class), eq(DIGITAL_GRANT_DRAFT));
-        verify(documentService).expire(any(CallbackRequest.class), eq(DIGITAL_GRANT_DRAFT));
+    }
+
+    @Test
+    public void shouldNotSendToBulkPrintIfEdgeCaseReissue() throws Exception {
+
+        String solicitorPayload = testUtils.getStringFromFile("payloadWithEdgeCaseBulkPrint.json");
+
+        mockMvc.perform(post("/document/generate-grant-reissue")
+                .content(solicitorPayload)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("data")));
+
+    }
+
+    @Test
+    public void shouldSendToBulkPrintIfReissue() throws Exception {
+
+        String solicitorPayload = testUtils.getStringFromFile("payloadWithBulkPrint.json");
+
+        mockMvc.perform(post("/document/generate-grant-reissue")
+                .content(solicitorPayload)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("data")));
+
     }
 
     @Test
