@@ -3,6 +3,18 @@ java:
     AUTH_PROVIDER_SERVICE_CLIENT_KEY: ${S2S_AUTH_TOTP_SECRET}
     NOTIFICATIONS_GOVNOTIFYAPIKEY: ${PROBATE_BO_NOTIFY_KEY}
     PDF_SERVICE_GRANTSIGNATUREBASE64: ${BO_GRANT_SIG_FIRST}${BO_GRANT_SIG_LAST}
+    IDAM_SECRET : ${IDAM_SECRET}
+    IDAM_REDIRECT_URL : ${IDAM_REDIRECT_URL}
+    EXCELA_EMAIL : ${EXCELA_EMAIL}
+    AUTH_TOKEN_EMAIL : ${AUTH_TOKEN_EMAIL}
+    AUTH_TOKEN_PASSWORD : ${AUTH_TOKEN_PASSWORD}
+    FTP_SIGNATURE : ${FTP_SIGNATURE}
+    FTP_ENV : ${FTP_ENV}
+    PDF_SERVICE_HEALTH_URL : ${PDF_SERVICE_HEALTH_URL}
+    PDF_SERVICE_ACCESS_KEY : ${PDF_SERVICE_ACCESS_KEY}
+    PDF_SERVICE_BASEURL : ${PDF_SERVICE_BASEURL}
+    PDF_SERVICE_GRANTSIGNATURESECRETKEY : ${PDF_SERVICE_GRANTSIGNATURESECRETKEY}
+    PDF_SERVICE_GRANTSIGNATUREENCRYPTEDFILE : ${PDF_SERVICE_GRANTSIGNATUREENCRYPTEDFILE}
     PROBATE_POSTGRESQL_USER: probate_man
     PROBATE_POSTGRESQL_PASSWORD: probate_man
     PROBATE_POSTGRESQL_DATABASE: probate_man
@@ -15,9 +27,15 @@ java:
     IDAM_SERVICE_HOST: https://idam-api.aat.platform.hmcts.net
     FEE_API_URL: http://fees-register-api-aat.service.core-compute-aat.internal
     EVIDENCE_MANAGEMENT_HOST: http://dm-store-aat.service.core-compute-aat.internal
-    CCD_GATEWAY_HOST: https://gateway-ccd.aat.platform.hmcts.net
+    CCD_GATEWAY_HOST: http://ccd-api-gateway-web-aat.service.core-compute-aat.internal
     SEND_LETTER_SERIVCE_BASEURL: http://rpe-send-letter-service-aat.service.core-compute-aat.internal
     SERVICES_CORECASEDATA_BASEURL : http://ccd-data-store-api-aat.service.core-compute-aat.internal
+    CCD_DATA_STORE_API_HOST : http://ccd-data-store-api-aat.service.core-compute-aat.internal    
+    # PROBATE_POSTGRESQL_USER = "${data.azurerm_key_vault_secret.POSTGRES-USER.value}"
+    # PROBATE_POSTGRESQL_PASSWORD = "${data.azurerm_key_vault_secret.POSTGRES-PASS.value}"
+    # PROBATE_POSTGRESQL_DATABASE = "${data.azurerm_key_vault_secret.POSTGRES_DATABASE.value}"
+    # PROBATE_POSTGRESQL_HOSTNAME =  "${data.azurerm_key_vault_secret.POSTGRES_HOST.value}"
+    # PROBATE_POSTGRESQL_PORT = "${data.azurerm_key_vault_secret.POSTGRES_PORT.value}"
   image: ${IMAGE_NAME}
   ingressHost: ${SERVICE_FQDN}
 
