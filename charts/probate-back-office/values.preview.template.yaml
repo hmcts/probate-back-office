@@ -15,11 +15,11 @@ java:
     PDF_SERVICE_BASEURL : ${PDF_SERVICE_BASEURL}
     PDF_SERVICE_GRANTSIGNATURESECRETKEY : ${PDF_SERVICE_GRANTSIGNATURESECRETKEY}
     PDF_SERVICE_GRANTSIGNATUREENCRYPTEDFILE : ${PDF_SERVICE_GRANTSIGNATUREENCRYPTEDFILE}
-    PROBATE_POSTGRESQL_USER: probate_man
-    PROBATE_POSTGRESQL_PASSWORD: probate_man
-    PROBATE_POSTGRESQL_DATABASE: probate_man
-    PROBATE_POSTGRESQL_HOSTNAME: ${SERVICE_NAME}-postgres
-    PROBATE_POSTGRESQL_PORT: 5432
+    PROBATE_POSTGRESQL_USER: PROBATE_POSTGRESQL_USER_VAL
+    PROBATE_POSTGRESQL_PASSWORD: PROBATE_POSTGRESQL_PASSWORD_VAL
+    PROBATE_POSTGRESQL_DATABASE: PROBATE_POSTGRESQL_DATABASE_VAL
+    PROBATE_POSTGRESQL_HOSTNAME: PROBATE_POSTGRESQL_HOSTNAME_VAL
+    PROBATE_POSTGRESQL_PORT: PROBATE_POSTGRESQL_PORT_VAL
     AUTH_PROVIDER_SERVICE_CLIENT_BASEURL: http://rpe-service-auth-provider-aat.service.core-compute-aat.internal
     PDF_SERVICE_URL: http://cmc-pdf-service-aat.service.core-compute-aat.internal
     PRINTSERVICE_HOST: https://return-case-doc-ccd.nonprod.platform.hmcts.net
@@ -31,25 +31,20 @@ java:
     SEND_LETTER_SERIVCE_BASEURL: http://rpe-send-letter-service-aat.service.core-compute-aat.internal
     SERVICES_CORECASEDATA_BASEURL : http://ccd-data-store-api-aat.service.core-compute-aat.internal
     CCD_DATA_STORE_API_HOST : http://ccd-data-store-api-aat.service.core-compute-aat.internal    
-    # PROBATE_POSTGRESQL_USER = "${data.azurerm_key_vault_secret.POSTGRES-USER.value}"
-    # PROBATE_POSTGRESQL_PASSWORD = "${data.azurerm_key_vault_secret.POSTGRES-PASS.value}"
-    # PROBATE_POSTGRESQL_DATABASE = "${data.azurerm_key_vault_secret.POSTGRES_DATABASE.value}"
-    # PROBATE_POSTGRESQL_HOSTNAME =  "${data.azurerm_key_vault_secret.POSTGRES_HOST.value}"
-    # PROBATE_POSTGRESQL_PORT = "${data.azurerm_key_vault_secret.POSTGRES_PORT.value}"
   image: ${IMAGE_NAME}
   ingressHost: ${SERVICE_FQDN}
 
-postgresql:
-  postgresqlUsername: probate_man
-  postgresqlPassword: probate_man
-  postgresqlDatabase: probate_man
-  nameOverride: postgres
-  resources:
-    requests:
-      cpu: 25m
-  initdbScripts:
-    init.sql: |-
-      CREATE DATABASE "probate_man" WITH OWNER = probate ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
+# postgresql:
+#   postgresqlUsername: probate_man
+#   postgresqlPassword: probate_man
+#   postgresqlDatabase: probate_man
+#   nameOverride: postgres
+#   resources:
+#     requests:
+#       cpu: 25m
+#   initdbScripts:
+#     init.sql: |-
+#       CREATE DATABASE "probate_man" WITH OWNER = probate ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
 
-  persistence:
-    enabled: true
+#   persistence:
+#     enabled: true
