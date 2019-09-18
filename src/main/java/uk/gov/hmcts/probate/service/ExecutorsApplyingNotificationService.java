@@ -40,16 +40,18 @@ public class ExecutorsApplyingNotificationService {
     }
 
     private void addAdditionalExecutors(CaseData caseData) {
-        for (CollectionMember<AdditionalExecutorApplying> executorApplying : caseData.getAdditionalExecutorsApplying()) {
-            executorList.add(buildExecutorList(executorApplying.getValue().getApplyingExecutorName(),
-                    executorApplying.getValue().getApplyingExecutorEmail(),
-                    executorApplying.getValue().getApplyingExecutorAddress()));
+        if (caseData.getAdditionalExecutorsApplying() != null) {
+            for (CollectionMember<AdditionalExecutorApplying> executorApplying : caseData.getAdditionalExecutorsApplying()) {
+                executorList.add(buildExecutorList(executorApplying.getValue().getApplyingExecutorName(),
+                        executorApplying.getValue().getApplyingExecutorEmail(),
+                        executorApplying.getValue().getApplyingExecutorAddress()));
 
+            }
         }
     }
 
     private void addPrimaryApplicant(CaseData caseData) {
-        if (caseData.getPrimaryApplicantIsApplying().equals(YES)) {
+        if (YES.equals(caseData.getPrimaryApplicantIsApplying())) {
             executorList.add(buildExecutorList(caseData.getPrimaryApplicantFullName(),
                     caseData.getPrimaryApplicantEmailAddress(), caseData.getPrimaryApplicantAddress()));
         }

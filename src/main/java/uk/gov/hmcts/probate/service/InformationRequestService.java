@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import static uk.gov.hmcts.probate.model.Constants.NO;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -29,7 +31,7 @@ public class InformationRequestService {
         letterIdDocuments = new LinkedList<>();
         letterIds = new ArrayList<>();
 
-        if (callbackRequest.getCaseDetails().getData().getPaperForm().equals("No")) {
+        if (callbackRequest.getCaseDetails().getData().getPaperForm().equals(NO)) {
             if (callbackRequest.getCaseDetails().getData().isBoEmailRequestInfoNotificationRequested()) {
                 documents = informationRequestCorrespondenceService.emailInformationRequest(callbackRequest.getCaseDetails());
                 //TODO: uncomment code when letters are being used again.

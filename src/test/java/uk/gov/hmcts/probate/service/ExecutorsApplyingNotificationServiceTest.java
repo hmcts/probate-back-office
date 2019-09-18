@@ -173,8 +173,21 @@ public class ExecutorsApplyingNotificationServiceTest {
                 .primaryApplicantSurname("Smith")
                 .primaryApplicantEmailAddress("PA@test.com")
                 .primaryApplicantAddress(ADDRESS)
-                .additionalExecutorsApplying(additionalExecutorApplyingList)
                 .primaryApplicantIsApplying("No")
+                .build();
+        assertEquals(expectedResponse, executorsApplyingNotificationService.createExecutorList(caseDataPersonal));
+    }
+
+    @Test
+    public void testEmptyExecutorsReturnsSuccessfully() {
+        caseDataPersonal = CaseData.builder()
+                .applicationType(ApplicationType.PERSONAL)
+                .primaryApplicantForenames("Bob")
+                .primaryApplicantSurname("Smith")
+                .primaryApplicantEmailAddress("PA@test.com")
+                .primaryApplicantAddress(ADDRESS)
+                .primaryApplicantIsApplying("No")
+                .additionalExecutorsApplying(additionalExecutorApplyingList)
                 .build();
         assertEquals(expectedResponse, executorsApplyingNotificationService.createExecutorList(caseDataPersonal));
     }

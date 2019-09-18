@@ -43,6 +43,9 @@ public class DocumentTransformer {
                         .add(new CollectionMember<>(null, document));
                 break;
             case STATEMENT_OF_TRUTH:
+            case LEGAL_STATEMENT_PROBATE:
+            case LEGAL_STATEMENT_INTESTACY:
+            case LEGAL_STATEMENT_ADMON:
                 callbackRequest.getCaseDetails().getData().getProbateSotDocumentsGenerated()
                         .add(new CollectionMember<>(null, document));
                 break;
