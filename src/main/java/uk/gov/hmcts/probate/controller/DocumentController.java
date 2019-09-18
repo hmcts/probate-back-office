@@ -169,7 +169,7 @@ public class DocumentController {
 
         String letterId = null;
         String pdfSize = null;
-        if (caseData.isSendForBulkPrintingRequested() && !caseData.getCaseType().equals(EDGE_CASE_NAME)) {
+        if (caseData.isSendForBulkPrintingRequested() && !EDGE_CASE_NAME.equals(caseData.getCaseType())) {
             SendLetterResponse response = bulkPrintService.sendToBulkPrint(callbackRequest, digitalGrantDocument, coverSheet);
             letterId = response != null
                     ? response.letterId.toString()
@@ -254,11 +254,17 @@ public class DocumentController {
         documents.add(grantDocument);
         documents.add(coversheet);
 
-        String letterId = bulkPrintService.sendToBulkPrintGrantReissue(callbackRequest, coversheet,
-                grantDocument);
-        String pdfSize = getPdfSize(callbackRequest.getCaseDetails().getData());
+        CaseData caseData = callbackRequest.getCaseDetails().getData();
+        String letterId = null;
 
-        if (callbackRequest.getCaseDetails().getData().isGrantReissuedEmailNotificationRequested()) {
+        if (caseData.isSendForBulkPrintingRequested() && !EDGE_CASE_NAME.equals(caseData.getCaseType())) {
+            letterId = bulkPrintService.sendToBulkPrintGrantReissue(callbackRequest, coversheet,
+                    grantDocument);
+        }
+
+        String pdfSize = getPdfSize(caseData);
+
+        if (caseData.isGrantReissuedEmailNotificationRequested()) {
             documents.add(notificationService.generateGrantReissue(callbackRequest));
         }
         log.info("{} documents generated: {}", documents.size(), documents);
