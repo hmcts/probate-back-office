@@ -45,16 +45,16 @@ services:
       - ccd-elasticsearch
 
 
-  probate-man-database:
-    build:
-      context: ../docker/database
-    ports:
-      - 5344:5432
-    healthcheck:
-      test: psql -c 'select 1' -d postgres -U postgres
-      retries: 2
-    #mem_limit: 160m
-    #memswap_limit: 0
+#  probate-man-database:
+#    build:
+#      context: ../docker/database
+#    ports:
+#      - 5344:5432
+#    healthcheck:
+#      test: psql -c 'select 1' -d postgres -U postgres
+#      retries: 2
+#    #mem_limit: 160m
+#    #memswap_limit: 0
 
 #  logstash-probateman:
 #    build: ../docker/logstash-probateman/.
