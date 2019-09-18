@@ -344,6 +344,24 @@ services:
     ports:
       - 8282:8282
 
+  business-service:
+    image: hmctspublic.azurecr.io/probate/business-service:latest
+    container_name: business-service
+    environment:
+    - SERVER_PORT=8081
+    - SPRING_APPLICATION_JSON={
+        "services.auth.provider.baseUrl":"http://service-auth-provider-api:8080",
+        "services.pdf.service.url":"http://pdf-service-api:5500",
+        "services.persistence.baseUrl":"http://persistence-service:8282",
+        "document_management.url":"http://dm-store:8080"
+        }
+    - JAVA_OPTS=-Xms128m -Xmx256m -XX:MaxMetaspaceSize=128m
+    - http_proxy=
+    - https_proxy=
+    - no_proxy=
+    ports:
+    - 8081:8081
+
 volumes:
   ccd-docker-ccd-shared-database-data:
   wiremock:
