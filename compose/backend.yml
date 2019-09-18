@@ -100,15 +100,15 @@ services:
       IDAMHEALTHCHECK_AM_ENABLED: "false"
       IDAMHEALTHCHECK_IDM_ENABLED: "false"
       STRATEGIC_ADMIN_URL: http://idam-web-admin:8082
-      STRATEGIC_WEBPUBLIC_URL: http://idam-web-public:9002
+      STRATEGIC_WEBPUBLIC_URL: http://idam-web-public:3501
       SPRING_PROFILES_ACTIVE: local
       SPRING_DATASOURCE_URL: jdbc:postgresql://shared-db:5432/openidm?currentSchema=fridam
       SPRING_DATASOURCE_USERNAME: openidm
       SPRING_DATASOURCE_PASSWORD: openidm
       SPRING_DATA_ELASTICSEARCH_PROPERTIES_PATH_HOME: /tmp/es
       SECURITY_OAUTH2_CLIENT_CLIENTSECRET: password
-      SECURITY_OAUTH2_CLIENT_PRE_ESTABLISHED_REDIRECT_URI: http://idam-web-public:9002/login
-      SECURITY_OAUTH2_CLIENT_REGISTERED_REDIRECT_URI: http://idam-web-public:9002/login
+      SECURITY_OAUTH2_CLIENT_PRE_ESTABLISHED_REDIRECT_URI: http://idam-web-public:3501/login
+      SECURITY_OAUTH2_CLIENT_REGISTERED_REDIRECT_URI: http://idam-web-public:3501/login
       IDAM_SPI_FORGEROCK_AM_ROOT: http://fr-am:8080/openam
       IDAM_SPI_FORGEROCK_AM_TOPLEVELHOST: fr-am
       IDAM_SPI_FORGEROCK_AM_USERNAME: amadmin
@@ -177,7 +177,12 @@ services:
       - shared-db
 
   smtp-server:
+    container_name: smtp-server
     image: mailhog/mailhog
+    restart: always
+    ports:
+      - 1025:1025
+      - 8025:8025
 
   ccd-shared-database:
     build: ../docker/ccd-database
