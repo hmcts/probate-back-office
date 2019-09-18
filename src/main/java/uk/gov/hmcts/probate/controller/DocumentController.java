@@ -254,8 +254,9 @@ public class DocumentController {
         documents.add(grantDocument);
         documents.add(coversheet);
 
-        String letterId = bulkPrintService.sendToBulkPrintGrantReissue(callbackRequest, coversheet,
-                grantDocument);
+        String letterId = bulkPrintService.sendToBulkPrint(callbackRequest, coversheet,
+                grantDocument,
+                callbackRequest.getCaseDetails().getData().isSendForBulkPrintingRequestedGrantReIssued());
         String pdfSize = getPdfSize(callbackRequest.getCaseDetails().getData());
 
         if (callbackRequest.getCaseDetails().getData().isGrantReissuedEmailNotificationRequested()) {
@@ -264,5 +265,12 @@ public class DocumentController {
         log.info("{} documents generated: {}", documents.size(), documents);
         return ResponseEntity.ok(callbackResponseTransformer.addDocuments(callbackRequest,
                 documents, letterId, pdfSize));
+    }
+
+    @PostMapping(path = "/generate-sot", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<CallbackResponse> generateStatementOfTruth(@RequestBody CallbackRequest callbackRequest) {
+        log.info("Initiating call for SoT");
+        return ResponseEntity.ok(callbackResponseTransformer.addSOTDocument(callbackRequest,
+                documentGeneratorService.generateSoT(callbackRequest.getCaseDetails())));
     }
 }

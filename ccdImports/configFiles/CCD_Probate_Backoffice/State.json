@@ -19,10 +19,12 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "BOCaseMatchingIssueGrant", "Name": "Case Matching (Issue grant)", "Description": "Case Matching (Issue grant)", "DisplayOrder": 15},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "BOCaseMatchingExamining", "Name": "Case Matching (Examining)", "Description": "Case Matching (Examining)", "DisplayOrder": 16},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "BOGrantIssued", "Name": "Grant issued", "Description": "Grant issued", "DisplayOrder": 17},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "BOCaseClosed", "Name": "Case closed", "Description": "Case closed", "DisplayOrder": 17},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "applyforGrantPaperApplication", "Name": "PA1P/PA1A/Solicitors", "Description": "Create case", "DisplayOrder": 18},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "BOCaseImported", "Name": "Case imported", "Description": "Case Imported", "DisplayOrder": 19},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "BOExaminingReissue", "Name": "Examining (reissue)", "Description": "Case Imported", "DisplayOrder": 20},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "BOCaseMatchingReissue", "Name": "Case Matching (Reissue grant)", "Description": "Case Matching (Reissue grant)", "DisplayOrder": 21},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "BOCaseStoppedReissue", "Name": "Case stopped", "Description": "Case stopped", "DisplayOrder": 23}
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "BOCaseClosed", "Name": "Case closed", "Description": "Case closed", "DisplayOrder": 18},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "applyforGrantPaperApplication", "Name": "PA1P/PA1A/Solicitors", "Description": "Create case", "DisplayOrder": 19},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "BOCaseImported", "Name": "Case imported", "Description": "Case Imported", "DisplayOrder": 20},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "BOExaminingReissue", "Name": "Examining (reissue)", "Description": "Case Imported", "DisplayOrder": 21},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "BOCaseMatchingReissue", "Name": "Case Matching (Reissue grant)", "Description": "Case Matching (Reissue grant)", "DisplayOrder": 22},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "BOCaseStoppedReissue", "Name": "Case stopped (reissue)", "Description": "Case stopped", "DisplayOrder": 23},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "BOCaseStoppedAwaitRedec", "Name": "Awaiting redeclaration", "Description": "Awaiting redeclaration", "DisplayOrder": 24},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "Draft", "Name": "Draft", "Description": "Draft", "DisplayOrder": 25}
 ]

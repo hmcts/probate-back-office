@@ -39,6 +39,7 @@ import java.util.UUID;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
@@ -132,9 +133,11 @@ public class DocumentControllerTest {
         when(documentGeneratorService.generateGrantReissue(any(), any())).thenReturn(document);
         when(documentGeneratorService.generateCoversheet(any(CallbackRequest.class)))
                 .thenReturn(Document.builder().documentType(DocumentType.GRANT_COVERSHEET).build());
+        when(documentGeneratorService.generateSoT(any()))
+                .thenReturn(Document.builder().documentType(DocumentType.STATEMENT_OF_TRUTH).build());
 
-        when(bulkPrintService.sendToBulkPrintGrantReissue(any(), any(),
-                any())).thenReturn(LETTER_UUID);
+        when(bulkPrintService.sendToBulkPrint(any(), any(),
+                any(), anyBoolean())).thenReturn(LETTER_UUID);
 
         when(notificationService.generateGrantReissue(any(CallbackRequest.class)))
                 .thenReturn(Document.builder().documentType(SENT_EMAIL).build());
@@ -396,6 +399,18 @@ public class DocumentControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("data")))
                 .andExpect(content().string(doesNotContainString("sentEmail")));
+    }
+
+    @Test
+    public void testGenerateStatementOfTruthReturnsOk() throws Exception {
+        String personalPayload = testUtils.getStringFromFile("personalPayloadNotifications.json");
+
+        mockMvc.perform(post("/document/generate-sot")
+                .content(personalPayload)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("data")))
+                .andExpect(content().string(containsString("statementOfTruth")));
     }
 
     private Matcher<String> doesNotContainString(String s) {

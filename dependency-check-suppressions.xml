@@ -296,4 +296,11 @@
         <gav regex="true">^org\.elasticsearch:elasticsearch:.*$</gav>
         <cve>CVE-2019-7611</cve>
     </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: gradle-pitest-plugin-1.4.0.jar
+   ]]></notes>
+        <gav regex="true">^info\.solidsoft\.gradle\.pitest:gradle-pitest-plugin:.*$</gav>
+        <cpe>cpe:/a:gradle:gradle</cpe>
+    </suppress>
 </suppressions>
