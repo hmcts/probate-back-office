@@ -16,7 +16,7 @@ import uk.gov.hmcts.reform.auth.checker.spring.serviceonly.AuthCheckerServiceOnl
 public class SecurityConfiguration {
 
     @Configuration
-    @ConditionalOnProperty(name = "s2s.enabled", havingValue = "true", matchIfMissing = true)
+    @ConditionalOnProperty(name = "s2s.enabled", havingValue = "true")
     public class ServiceOnlySecurityConfigurationAdapter extends WebSecurityConfigurerAdapter {
 
         private final AuthCheckerServiceOnlyFilter filter;
