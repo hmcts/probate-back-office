@@ -65,7 +65,8 @@ public class OCRToCCDMandatoryField {
                     boolean result = BooleanUtils.toBoolean(ocrFieldValues.get(MANDATORY_KEY_IHTFORMCOMPLETEDONLINE));
                     if (result && !ocrFieldValues.containsKey(DEPENDANT_KEY_IHTREFERENCENUMBER)) {
                         log.warn("{} was not found in ocr fields", DEPENDANT_KEY_IHTREFERENCENUMBER);
-                        warnings.add(String.format(MANDATORY_FIELD_WARNING_STIRNG, DEPENDANT_DESC_IHTREFERENCENUMBER, DEPENDANT_KEY_IHTREFERENCENUMBER));
+                        warnings.add(String.format(MANDATORY_FIELD_WARNING_STIRNG,
+                                DEPENDANT_DESC_IHTREFERENCENUMBER, DEPENDANT_KEY_IHTREFERENCENUMBER));
                     } else if (!result && !ocrFieldValues.containsKey(DEPENDANT_KEY_IHTFORMID)) {
                         log.warn("{} was not found in ocr fields", DEPENDANT_KEY_IHTFORMID);
                         warnings.add(String.format(MANDATORY_FIELD_WARNING_STIRNG, DEPENDANT_DESC_IHTFORMID, DEPENDANT_KEY_IHTFORMID));
@@ -85,7 +86,8 @@ public class OCRToCCDMandatoryField {
                     boolean result = BooleanUtils.toBoolean(ocrFieldValues.get(MANDATORY_KEY_PRIMARYAPPLICANTHASALIAS));
                     if (result && !ocrFieldValues.containsKey(DEPENDANT_KEY_PRIMARYAPPLICANTALIAS)) {
                         log.warn("{} was not found in ocr fields", DEPENDANT_KEY_PRIMARYAPPLICANTALIAS);
-                        warnings.add(String.format(MANDATORY_FIELD_WARNING_STIRNG, DEPENDANT_DESC_PRIMARYAPPLICANTALIAS, DEPENDANT_KEY_PRIMARYAPPLICANTALIAS));
+                        warnings.add(String.format(MANDATORY_FIELD_WARNING_STIRNG,
+                                DEPENDANT_DESC_PRIMARYAPPLICANTALIAS, DEPENDANT_KEY_PRIMARYAPPLICANTALIAS));
                     }
                 }
 
@@ -100,7 +102,8 @@ public class OCRToCCDMandatoryField {
                         boolean resultPopulated = !ocrFieldValues.get(executorNotApplyingNameKey).isEmpty();
                         if (resultPopulated && !ocrFieldValues.containsKey(executorNotApplyingReasonKey)) {
                             log.warn("{} was not found in ocr fields", executorNotApplyingReasonKey);
-                            warnings.add(String.format(MANDATORY_FIELD_WARNING_STIRNG, executorNotApplyingReasonDesc, executorNotApplyingReasonKey));
+                            warnings.add(String.format(MANDATORY_FIELD_WARNING_STIRNG,
+                                    executorNotApplyingReasonDesc, executorNotApplyingReasonKey));
                         }
                     }
                 }
@@ -109,7 +112,8 @@ public class OCRToCCDMandatoryField {
                     boolean result = BooleanUtils.toBoolean(ocrFieldValues.get(MANDATORY_KEY_IHTFORMCOMPLETEDONLINE));
                     if (result && !ocrFieldValues.containsKey(DEPENDANT_KEY_IHTREFERENCENUMBER)) {
                         log.warn("{} was not found in ocr fields", DEPENDANT_KEY_IHTREFERENCENUMBER);
-                        warnings.add(String.format(MANDATORY_FIELD_WARNING_STIRNG, DEPENDANT_DESC_IHTREFERENCENUMBER, DEPENDANT_KEY_IHTREFERENCENUMBER));
+                        warnings.add(String.format(MANDATORY_FIELD_WARNING_STIRNG,
+                                DEPENDANT_DESC_IHTREFERENCENUMBER, DEPENDANT_KEY_IHTREFERENCENUMBER));
                     } else if (!result && !ocrFieldValues.containsKey(DEPENDANT_KEY_IHTFORMID)) {
                         log.warn("{} was not found in ocr fields", DEPENDANT_KEY_IHTFORMID);
                         warnings.add(String.format(MANDATORY_FIELD_WARNING_STIRNG, DEPENDANT_DESC_IHTFORMID, DEPENDANT_KEY_IHTFORMID));
