@@ -2,22 +2,27 @@ package uk.gov.hmcts.probate.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import uk.gov.hmcts.probate.changerule.ApplicantSiblingsRule;
 import uk.gov.hmcts.probate.changerule.DiedOrNotApplyingRule;
 import uk.gov.hmcts.probate.changerule.DomicilityRule;
 import uk.gov.hmcts.probate.changerule.EntitledMinorityRule;
 import uk.gov.hmcts.probate.changerule.ExecutorsRule;
 import uk.gov.hmcts.probate.changerule.LifeInterestRule;
 import uk.gov.hmcts.probate.changerule.MinorityInterestRule;
-import uk.gov.hmcts.probate.changerule.ApplicantSiblingsRule;
 import uk.gov.hmcts.probate.changerule.NoOriginalWillRule;
 import uk.gov.hmcts.probate.changerule.RenouncingRule;
 import uk.gov.hmcts.probate.changerule.ResiduaryRule;
 import uk.gov.hmcts.probate.changerule.SpouseOrCivilRule;
 import uk.gov.hmcts.probate.changerule.UpdateApplicationRule;
-
+import uk.gov.hmcts.probate.model.ExecutorsApplyingNotification;
+import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
+import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 
 import java.util.Optional;
+
+import static uk.gov.hmcts.probate.model.Constants.NO;
+import static uk.gov.hmcts.probate.model.Constants.REDEC_NOTIFICATION_SENT_STATE;
 
 @Component
 @RequiredArgsConstructor
@@ -43,6 +48,7 @@ public class StateChangeService {
     private final ResiduaryRule residuaryRule;
     private final SpouseOrCivilRule spouseOrCivilRule;
     private final UpdateApplicationRule updateApplicationRule;
+    private final CallbackResponseTransformer callbackResponseTransformer;
 
 
     public Optional<String> getChangedStateForCaseUpdate(CaseData caseData) {
@@ -138,5 +144,16 @@ public class StateChangeService {
             return Optional.of(STATE_GRANT_TYPE_INTESTACY);
         }
         return Optional.of(STATE_GRANT_TYPE_ADMON);
+    }
+
+    public Optional<String> getRedeclarationComplete (CaseData caseData) {
+        Optional<String> state = Optional.empty();
+        for (CollectionMember<ExecutorsApplyingNotification> executorsApplyingNotification :
+                caseData.getExecutorsApplyingNotifications()) {
+            if (executorsApplyingNotification.getValue().getResponseReceived().equals(NO)) {
+                return (Optional.of(REDEC_NOTIFICATION_SENT_STATE));
+            }
+        }
+        return state;
     }
 }

@@ -6,20 +6,25 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.test.context.junit4.SpringRunner;
+import uk.gov.hmcts.probate.changerule.ApplicantSiblingsRule;
 import uk.gov.hmcts.probate.changerule.DiedOrNotApplyingRule;
 import uk.gov.hmcts.probate.changerule.DomicilityRule;
 import uk.gov.hmcts.probate.changerule.EntitledMinorityRule;
 import uk.gov.hmcts.probate.changerule.ExecutorsRule;
 import uk.gov.hmcts.probate.changerule.LifeInterestRule;
 import uk.gov.hmcts.probate.changerule.MinorityInterestRule;
-import uk.gov.hmcts.probate.changerule.ApplicantSiblingsRule;
 import uk.gov.hmcts.probate.changerule.NoOriginalWillRule;
 import uk.gov.hmcts.probate.changerule.RenouncingRule;
 import uk.gov.hmcts.probate.changerule.ResiduaryRule;
 import uk.gov.hmcts.probate.changerule.SpouseOrCivilRule;
 import uk.gov.hmcts.probate.changerule.UpdateApplicationRule;
+import uk.gov.hmcts.probate.model.ExecutorsApplyingNotification;
+import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
+import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
@@ -27,6 +32,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
+import static uk.gov.hmcts.probate.model.Constants.REDEC_NOTIFICATION_SENT_STATE;
 
 @RunWith(SpringRunner.class)
 public class StateChangeServiceTest {
@@ -58,6 +64,8 @@ public class StateChangeServiceTest {
     private SpouseOrCivilRule spouseOrCivilRule;
     @Mock
     private UpdateApplicationRule updateApplicationRule;
+    @Mock
+    private CallbackResponseTransformer callbackResponseTransformer;
 
     @Mock
     private CaseData caseDataMock;
@@ -68,6 +76,12 @@ public class StateChangeServiceTest {
     private static final String STATE_GRANT_TYPE_PROBATE = "SolProbateCreated";
     private static final String STATE_GRANT_TYPE_INTESTACY = "SolIntestacyCreated";
     private static final String STATE_GRANT_TYPE_ADMON = "SolAdmonCreated";
+    private static final Long ID = 1L;
+    private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
+    private static final Long CASE_ID = 12345678987654321L;
+    private List<CollectionMember<ExecutorsApplyingNotification>> execList;
+    private CollectionMember<ExecutorsApplyingNotification> execResponseReceived;
+    private CollectionMember<ExecutorsApplyingNotification> execResponseNotReceived;
 
     @Before
     public void setup() {
@@ -75,7 +89,22 @@ public class StateChangeServiceTest {
 
         underTest = new StateChangeService(applicantSiblingsRule, diedOrNotApplyingRule, domicilityRule,
                 entitledMinorityRule, executorsStateRule, lifeInterestRule, minorityInterestRule, noOriginalWillRule,
-                renouncingRule, residuaryRule, spouseOrCivilRule, updateApplicationRule);
+                renouncingRule, residuaryRule, spouseOrCivilRule, updateApplicationRule, callbackResponseTransformer);
+
+        execList = new ArrayList<>();
+        execResponseReceived = new CollectionMember<>(
+                ExecutorsApplyingNotification.builder()
+                        .notification("Yes")
+                        .email("test@test.com")
+                        .responseReceived("Yes")
+                        .build());
+
+        execResponseNotReceived = new CollectionMember<>(
+                ExecutorsApplyingNotification.builder()
+                        .notification("Yes")
+                        .email("test@test.com")
+                        .responseReceived("No")
+                        .build());
     }
 
     @Test
@@ -380,6 +409,25 @@ public class StateChangeServiceTest {
         Optional<String> newState = underTest.getChangedStateForCaseReview(caseDataMock);
 
         assertFalse(newState.isPresent());
+    }
+
+    @Test
+    public void getRedeclarationCompleteNoStateChange() {
+        execList.add(execResponseReceived);
+        CaseData caseData = CaseData.builder().executorsApplyingNotifications(execList).build();
+
+        Optional<String> state = underTest.getRedeclarationComplete(caseData);
+        assertEquals(Optional.empty(), state);
+    }
+
+    @Test
+    public void getRedeclarationCompleteWithStateChange() {
+        execList.add(execResponseReceived);
+        execList.add(execResponseNotReceived);
+        CaseData caseData = CaseData.builder().executorsApplyingNotifications(execList).build();
+
+        Optional<String> state = underTest.getRedeclarationComplete(caseData);
+        assertEquals(Optional.of(REDEC_NOTIFICATION_SENT_STATE), state);
     }
 
 }
