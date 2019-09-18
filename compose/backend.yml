@@ -355,7 +355,6 @@ services:
         "services.persistence.baseUrl":"http://persistence-service:8282",
         "document_management.url":"http://dm-store:8080"
         }
-    - JAVA_OPTS=-Xms128m -Xmx256m -XX:MaxMetaspaceSize=128m
     - http_proxy=
     - https_proxy=
     - no_proxy=
