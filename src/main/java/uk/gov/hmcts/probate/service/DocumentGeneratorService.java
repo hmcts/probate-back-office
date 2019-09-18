@@ -134,7 +134,8 @@ public class DocumentGeneratorService {
             case PERSONAL:
             default:
                 log.info("Initiate call to generate SoT for case id: {}", callbackRequest.getCaseDetails().getId());
-                Map<String, Object> placeholders = genericMapperService.addCaseDataWithRegistryProperties(callbackRequest.getCaseDetails());
+                Map<String, Object> placeholders =
+                        genericMapperService.addCaseDataWithRegistryProperties(callbackRequest.getCaseDetails());
                 statementOfTruth = pdfManagementService.generateDocmosisDocumentAndUpload(placeholders,
                         DocumentType.STATEMENT_OF_TRUTH);
                 log.info("Successful response for SoT for case id: {}", callbackRequest.getCaseDetails().getId());
@@ -165,8 +166,8 @@ public class DocumentGeneratorService {
     private void expireDrafts(CallbackRequest callbackRequest) {
         log.info("Expiring drafts");
         DocumentType[] documentTypes = {DIGITAL_GRANT_DRAFT, INTESTACY_GRANT_DRAFT, ADMON_WILL_GRANT_DRAFT,
-                DIGITAL_GRANT_REISSUE_DRAFT, INTESTACY_GRANT_REISSUE_DRAFT,
-                ADMON_WILL_GRANT_REISSUE_DRAFT};
+                                        DIGITAL_GRANT_REISSUE_DRAFT, INTESTACY_GRANT_REISSUE_DRAFT,
+                                        ADMON_WILL_GRANT_REISSUE_DRAFT};
         for (DocumentType documentType : documentTypes) {
             documentService.expire(callbackRequest, documentType);
         }
