@@ -12,10 +12,10 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
-public class MinorityRuleTest {
+public class MinorityInterestRuleTest {
 
     @InjectMocks
-    private MinorityRule underTest;
+    private MinorityInterestRule underTest;
 
     @Mock
     private CaseData caseDataMock;

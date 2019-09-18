@@ -71,6 +71,12 @@ docmosis:
       templateName: FL-PRB-GNO-ENG-00061.doc
     admonWillGrantReissue:
       templateName: FL-PRB-GNO-ENG-00061.doc
+    sotInformationRequest:
+      templateName: FL-PRB-GNO-ENG-00085.doc
+    sentEmail:
+      templateName: FL-PRB-EML-ENG-00086.doc
+    statementOfTruth:
+      templateName: FL-PRB-SOT-ENG-00090.doc
 
 fee.api:
   url: http://localhost:4411
@@ -161,6 +167,7 @@ notifications:
         excelaData: "fd474506-a272-4caa-ad61-6086cee0639a"
         caveatRaised: "bf9dabd9-b22f-4cb6-b3aa-871ac8532209"
         caveatRaisedCtsc: "ed01d79f-08f0-4703-8cec-f490e499fc33"
+        requestInformation: "8fd291a1-67a7-48fa-a051-fa4c93315efc"
       solicitor:
         documentReceived: "7f8ff32d-8297-4702-9867-312047f81492"
         caseStopped: "77041301-77a5-4382-a3a7-0bada17518b0"
@@ -171,6 +178,7 @@ notifications:
         excelaData: "fd474506-a272-4caa-ad61-6086cee0639a"
         caveatRaised: "bf9dabd9-b22f-4cb6-b3aa-871ac8532209"
         caveatRaisedCtsc: "ed01d79f-08f0-4703-8cec-f490e499fc33"
+        requestInformation: "b2978c65-5974-416a-bc64-fb0ee083dc7e"
 
 registries:
   oxford:

@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.ArgumentMatchers.anyDouble;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -78,6 +79,11 @@ public class GenericMapperServiceTest {
     private static final String ADDRESS_LINE_1_VALUE = "123 Fake street";
     private static final String ADDRESS_LINE_3_VALUE = "The lane";
     private static final String POSTCODE_VALUE = "AB1 2CD";
+
+    private static final String APPEND_NAME = "Bob Smith";
+    private static final SolsAddress APPEND_ADDRESS =
+            SolsAddress.builder().addressLine1("678").addressLine2("the street").addressLine3("Lane").country(
+                    "England").county("County").postTown("town").postCode("AB1").build();
 
     private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
     private static final String REGISTRY_LOCATION = "oxford";
@@ -182,6 +188,38 @@ public class GenericMapperServiceTest {
                 .forEach((key) -> {
                     assertEquals(expectedImages().get(key), returnedMap.get(key));
                 });
+    }
+
+    @Test
+    public void testAllFieldsAreAppendedToExistingMap() {
+        assertEquals(expectedMappedCaseData().size() + 8,
+                genericMapperService.appendExecutorDetails(expectedMappedCaseData(), APPEND_NAME, APPEND_ADDRESS).size());
+    }
+
+    @Test
+    public void testAppendedValuesMatchExpected() {
+        Map<String, Object> resultMap = genericMapperService.appendExecutorDetails(expectedMappedCaseData(),
+                APPEND_NAME, APPEND_ADDRESS);
+
+        assertEquals(APPEND_NAME, resultMap.get("name"));
+        assertEquals(APPEND_ADDRESS.getAddressLine1(), resultMap.get("addressLine1"));
+        assertEquals(APPEND_ADDRESS.getAddressLine2(), resultMap.get("addressLine2"));
+        assertEquals(APPEND_ADDRESS.getAddressLine3(), resultMap.get("addressLine3"));
+        assertEquals(APPEND_ADDRESS.getCounty(), resultMap.get("county"));
+        assertEquals(APPEND_ADDRESS.getPostTown(), resultMap.get("postTown"));
+        assertEquals(APPEND_ADDRESS.getPostCode(), resultMap.get("postCode"));
+        assertEquals(APPEND_ADDRESS.getCountry(), resultMap.get("country"));
+    }
+
+    @Test
+    public void testPartPopulatedAddressIsAppendedWithExistingValues() {
+        SolsAddress address = SolsAddress.builder().addressLine1("321 street").postCode("AB").build();
+
+        assertEquals("321 street", genericMapperService.appendExecutorDetails(expectedMappedCaseData(), APPEND_NAME,
+                address).get("addressLine1"));
+        assertEquals(null,
+                genericMapperService.appendExecutorDetails(expectedMappedCaseData(), APPEND_NAME, address).get(
+                        "addressLine2"));
     }
 
     private Map<String, Object> expectedImages() {

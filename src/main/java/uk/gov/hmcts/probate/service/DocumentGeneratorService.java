@@ -3,8 +3,11 @@ package uk.gov.hmcts.probate.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.DocumentType;
+import uk.gov.hmcts.probate.model.ExecutorsApplyingNotification;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
+import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.service.docmosis.GenericMapperService;
@@ -13,15 +16,16 @@ import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import java.util.HashMap;
 import java.util.Map;
 
+import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_DRAFT;
-import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_REISSUE_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_REISSUE;
+import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_REISSUE_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_DRAFT;
-import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_REISSUE_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_REISSUE;
+import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_REISSUE_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_DRAFT;
-import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_REISSUE_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_REISSUE;
+import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_REISSUE_DRAFT;
 
 @Slf4j
 @Service
@@ -44,6 +48,8 @@ public class DocumentGeneratorService {
     private static final String WATERMARK_FILE_PATH = "watermarkImage.txt";
     private static final String DRAFT = "preview";
     private static final String FINAL = "final";
+    private static final String FULL_REDEC = "fullRedec";
+    private static final String APP_NAME = "applicantName";
 
     public Document generateGrantReissue(CallbackRequest callbackRequest, String version) {
         Map<String, Object> images;
@@ -71,18 +77,57 @@ public class DocumentGeneratorService {
         return document;
     }
 
-
     public Document generateCoversheet(CallbackRequest callbackRequest) {
+        return generateCoversheet(callbackRequest,
+                callbackRequest.getCaseDetails().getData().getPrimaryApplicantFullName(),
+                callbackRequest.getCaseDetails().getData().getPrimaryApplicantAddress());
+    }
+
+
+    public Document generateCoversheet(CallbackRequest callbackRequest, String name, SolsAddress address) {
 
         log.info("Initiate call to generate coversheet for case id {} ",
                 callbackRequest.getCaseDetails().getId());
         Map<String, Object> placeholders = genericMapperService.addCaseData(callbackRequest.getCaseDetails().getData());
+        genericMapperService.appendExecutorDetails(placeholders, name, address);
         Document coversheet = pdfManagementService
                 .generateDocmosisDocumentAndUpload(placeholders, DocumentType.GRANT_COVERSHEET);
         log.info("Successful response for coversheet for case id {} ",
                 callbackRequest.getCaseDetails().getId());
 
         return coversheet;
+    }
+
+    public Document generateRequestForInformation(CaseDetails caseDetails, ExecutorsApplyingNotification exec) {
+        log.info("Initiate call to generate information request letter for case id {}", caseDetails.getId());
+        Map<String, Object> placeholders = genericMapperService.addCaseDataWithRegistryProperties(caseDetails);
+        String appName;
+
+        if (caseDetails.getData().getApplicationType() == ApplicationType.SOLICITOR) {
+            appName = caseDetails.getData().getSolsSOTName();
+        } else {
+            appName = exec.getName();
+        }
+
+        placeholders.put(APP_NAME, appName);
+        placeholders.put(FULL_REDEC, NO);
+
+        Document letter = pdfManagementService.generateDocmosisDocumentAndUpload(placeholders,
+                DocumentType.SOT_INFORMATION_REQUEST);
+        log.info("Successful response for letter for case id {}", caseDetails.getId());
+
+        return letter;
+    }
+
+    public Document generateSoT(CaseDetails caseDetails) {
+        log.info("Initiate call to generate SoT for case id: {}", caseDetails.getId());
+        Map<String, Object> placeholders = genericMapperService.addCaseDataWithRegistryProperties(caseDetails);
+
+        Document statementOfTruth = pdfManagementService.generateDocmosisDocumentAndUpload(placeholders,
+                DocumentType.STATEMENT_OF_TRUTH);
+        log.info("Successful response for SoT for case id: {}", caseDetails.getId());
+
+        return statementOfTruth;
     }
 
     private void expireDrafts(CallbackRequest callbackRequest) {
