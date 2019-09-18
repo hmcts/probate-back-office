@@ -109,6 +109,11 @@ Start logstash-probateman (for legacy cases)
 Run probate-back-office app. You can a doc in dm by going to `localhost:3453/documents/[**ID**]/binary `. 
 
 ###### Probate-frontend
+Add keyword to fees database
+```bash
+    ./bin/fees-add-keyword.sh
+```
+
 Go to `probate-frontend/app/config.js` and update to `useIDAM: process.env.USE_IDAM || 'true'`. 
 
 Start probate-frontend app. Follow `http:localhost:3000`. Login using `testusername@test.com/Pa55word11`.
