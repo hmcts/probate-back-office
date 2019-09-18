@@ -40,7 +40,7 @@ public class OCRToCCDMandatoryFieldTest {
         ocrFields.remove(getOCRFieldByKey(ocrFields,"executorsNotApplying_0_notApplyingExecutorReason"));
         List<String> results = ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrFields, FormType.PA1P);
         assertEquals(1, results.size());
-        assertEquals("Key 'executorsNotApplying_0_notApplyingExecutorReason' is mandatory.", results.get(0));
+        assertEquals("Executor 0 not applying reason (executorsNotApplying_0_notApplyingExecutorReason) is mandatory.", results.get(0));
     }
 
     @Test
@@ -49,7 +49,7 @@ public class OCRToCCDMandatoryFieldTest {
         ocrFields.remove(getOCRFieldByKey(ocrFields,"ihtFormId"));
         List<String> results = ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrFields, FormType.PA1P);
         assertEquals(1, results.size());
-        assertEquals("Key 'ihtFormId' is mandatory.", results.get(0));
+        assertEquals("IHT form id (ihtFormId) is mandatory.", results.get(0));
     }
 
     @Test
@@ -59,7 +59,7 @@ public class OCRToCCDMandatoryFieldTest {
         ocrFields.add(OCRField.builder().name("ihtFormCompletedOnline").value("true").description("IHT Online?").build());
         List<String> results = ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrFields, FormType.PA1P);
         assertEquals(1, results.size());
-        assertEquals("Key 'ihtReferenceNumber' is mandatory.", results.get(0));
+        assertEquals("IHT reference number (ihtReferenceNumber) is mandatory.", results.get(0));
     }
 
     @Test
@@ -68,7 +68,7 @@ public class OCRToCCDMandatoryFieldTest {
         ocrFields.remove(getOCRFieldByKey(ocrFields,"ihtFormId"));
         List<String> results = ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrFields, FormType.PA1A);
         assertEquals(1, results.size());
-        assertEquals("Key 'ihtFormId' is mandatory.", results.get(0));
+        assertEquals("IHT form id (ihtFormId) is mandatory.", results.get(0));
     }
 
     @Test
@@ -78,7 +78,7 @@ public class OCRToCCDMandatoryFieldTest {
         ocrFields.add(OCRField.builder().name("ihtFormCompletedOnline").value("true").description("IHT Online?").build());
         List<String> results = ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrFields, FormType.PA1A);
         assertEquals(1, results.size());
-        assertEquals("Key 'ihtReferenceNumber' is mandatory.", results.get(0));
+        assertEquals("IHT reference number (ihtReferenceNumber) is mandatory.", results.get(0));
     }
 
     @Test
@@ -92,7 +92,7 @@ public class OCRToCCDMandatoryFieldTest {
     public void testFieldDescriptionIsAddedToMissingValueListForPA1P() {
         addAllMandatoryGORFields();
         ocrFields.remove(ocrFields.size() - 1);
-        assertEquals("Key 'primaryApplicantAlias' is mandatory.", ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrFields,
+        assertEquals("Primary applicant alias (primaryApplicantAlias) is mandatory.", ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrFields,
                 FormType.PA1P
         ).get(0));
     }
@@ -120,7 +120,7 @@ public class OCRToCCDMandatoryFieldTest {
     public void testFieldDescriptionIsAddedToMissingValueListForPA1A() {
         addAllMandatoryIntestacyFields();
         ocrFields.remove(ocrFields.size() - 1);
-        assertEquals("Key 'primaryApplicantAddressPostCode' is mandatory.", ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrFields,
+        assertEquals("Primary applicant postcode (primaryApplicantAddressPostCode) is mandatory.", ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrFields,
                 FormType.PA1A
         ).get(0));
     }
@@ -148,7 +148,7 @@ public class OCRToCCDMandatoryFieldTest {
     public void testFieldDescriptionIsAddedToMissingValueListForPA8A() {
         addAllCaveatMandatoryFields();
         ocrFields.remove(ocrFields.size() - 1);
-        assertEquals("Key 'caveatorAddressPostCode' is mandatory.", ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrFields,
+        assertEquals("Caveator address postcode (caveatorAddressPostCode) is mandatory.", ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrFields,
                 FormType.PA8A
         ).get(0));
     }
