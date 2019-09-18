@@ -527,7 +527,7 @@ public class CallbackResponseTransformer {
                 .epaOrLpa(caseData.getEpaOrLpa())
                 .epaRegistered(caseData.getEpaRegistered())
                 .domicilityCountry(caseData.getDomicilityCountry())
-                .ukEstateItems(caseData.getUkEstateItems())
+                .ukEstate(caseData.getUkEstate())
                 .domicilityIHTCert(caseData.getDomicilityIHTCert())
                 .entitledToApply(caseData.getEntitledToApply())
                 .entitledToApplyOther(caseData.getEntitledToApplyOther())

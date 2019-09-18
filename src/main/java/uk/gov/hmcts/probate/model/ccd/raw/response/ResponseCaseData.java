@@ -166,7 +166,7 @@ public class ResponseCaseData {
     private final String epaOrLpa;
     private final String epaRegistered;
     private final String domicilityCountry;
-    private final List<CollectionMember<EstateItem>> ukEstateItems;
+    private final List<CollectionMember<EstateItem>> ukEstate;
     private final String domicilityIHTCert;
     private final String willDatedBeforeApril;
     private final String deceasedEnterMarriageOrCP;
