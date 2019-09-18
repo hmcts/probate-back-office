@@ -146,7 +146,7 @@ public class StateChangeService {
         return Optional.of(STATE_GRANT_TYPE_ADMON);
     }
 
-    public Optional<String> getRedeclarationComplete (CaseData caseData) {
+    public Optional<String> getRedeclarationComplete(CaseData caseData) {
         Optional<String> state = Optional.empty();
         for (CollectionMember<ExecutorsApplyingNotification> executorsApplyingNotification :
                 caseData.getExecutorsApplyingNotifications()) {
