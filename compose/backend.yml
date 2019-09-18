@@ -105,6 +105,7 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://shared-db:5432/openidm?currentSchema=fridam
       SPRING_DATASOURCE_USERNAME: openidm
       SPRING_DATASOURCE_PASSWORD: openidm
+      SPRING_DATA_ELASTICSEARCH_PROPERTIES_PATH_HOME: /tmp/es
       SECURITY_OAUTH2_CLIENT_CLIENTSECRET: password
       SECURITY_OAUTH2_CLIENT_PRE_ESTABLISHED_REDIRECT_URI: http://idam-web-public:9002/login
       SECURITY_OAUTH2_CLIENT_REGISTERED_REDIRECT_URI: http://idam-web-public:9002/login
@@ -268,7 +269,7 @@ services:
     image: hmctspublic.azurecr.io/payment/api:latest
     container_name: payments-api
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://192.168.1.185:5430/payment
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://docker.for.mac.localhost:5430/payment
       - SPRING_DATASOURCE_USERNAME=payment
       - SPRING_DATASOURCE_PASSWORD=
       - AUTH_PROVIDER_SERVICE_CLIENT_BASEURL=http://service-auth-provider-api:8080/
