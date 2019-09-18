@@ -120,6 +120,7 @@ notifications:
         caveatRaised: "pa-caveat-raised"
         caveatRaisedCtsc: "pa-ctsc-caveat-raised"
         requestInformation: "pa-request-information"
+        redeclarationSot: "pa-redeclaration-sot"
       solicitor:
         documentReceived: "sol-document-received"
         caseStopped: "sol-case-stopped"
@@ -131,6 +132,7 @@ notifications:
         caveatRaised: "sols-caveat-raised"
         caveatRaisedCtsc: "sols-ctsc-caveat-raised"
         requestInformation: "sols-request-information"
+        redeclarationSot: "sols-redeclaration-sot"
 
 registries:
   oxford:

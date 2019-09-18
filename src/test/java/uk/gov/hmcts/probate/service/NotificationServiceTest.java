@@ -2,6 +2,7 @@ package uk.gov.hmcts.probate.service;
 
 import com.google.common.collect.ImmutableList;
 import org.assertj.core.api.Assertions;
+import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -33,15 +34,19 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
+import uk.gov.hmcts.probate.service.client.DocumentStoreClient;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.validator.EmailAddressNotificationValidationRule;
+import uk.gov.hmcts.reform.authorisation.generators.ServiceAuthTokenGenerator;
 import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
 import uk.gov.service.notify.NotificationClient;
 import uk.gov.service.notify.NotificationClientException;
 import uk.gov.service.notify.SendEmailResponse;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -67,6 +72,7 @@ import static uk.gov.hmcts.probate.model.State.DOCUMENTS_RECEIVED;
 import static uk.gov.hmcts.probate.model.State.GENERAL_CAVEAT_MESSAGE;
 import static uk.gov.hmcts.probate.model.State.GRANT_ISSUED;
 import static uk.gov.hmcts.probate.model.State.GRANT_REISSUED;
+import static uk.gov.hmcts.probate.model.State.REDECLARATION_SOT;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -97,10 +103,16 @@ public class NotificationServiceTest {
     private List<EmailAddressNotificationValidationRule> emailAddressNotificationValidationRules;
 
     @Mock
-    CallbackResponse callbackResponse;
+    private CallbackResponse callbackResponse;
 
     @Mock
     private DateFormatterService dateFormatterService;
+
+    @MockBean
+    private ServiceAuthTokenGenerator tokenGenerator;
+
+    @MockBean
+    private DocumentStoreClient documentStoreClient;
 
     @SpyBean
     private NotificationClient notificationClient;
@@ -145,6 +157,7 @@ public class NotificationServiceTest {
     private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
     private static final Long CASE_ID = 12345678987654321L;
     private static final String SENT_EMAIL_FILE_NAME = "sentEmail.pdf";
+    private static final byte[] DOC_BYTES = {(byte) 23};
 
     private static final String PERSONALISATION_APPLICANT_NAME = "applicant_name";
     private static final String PERSONALISATION_DECEASED_NAME = "deceased_name";
@@ -167,9 +180,12 @@ public class NotificationServiceTest {
 
 
     @Before
-    public void setUp() throws NotificationClientException {
+    public void setUp() throws NotificationClientException, IOException {
         when(sendEmailResponse.getFromEmail()).thenReturn(Optional.of("test@test.com"));
         when(sendEmailResponse.getBody()).thenReturn("test-body");
+        when(documentStoreClient.retrieveDocument(any(), any())).thenReturn(DOC_BYTES);
+
+        when(tokenGenerator.generate()).thenReturn("123");
 
         doReturn(sendEmailResponse).when(notificationClient).sendEmail(anyString(), anyString(), any(), isNull());
         doReturn(sendEmailResponse).when(notificationClient).sendEmail(any(), any(), any(), any(), any());
@@ -1160,5 +1176,46 @@ public class NotificationServiceTest {
                 .documentFileName(SENT_EMAIL_FILE_NAME).build());
     }
 
+    @Test
+    public void shouldSendEmailWithDocumentAttached() throws IOException, NotificationClientException {
+        Map<String, Object> personalisation = new HashMap<>();
+
+        personalisation.put("addressee", "fred smith");
+        personalisation.put("sot_link", "file\":\"Fw==");
+        personalisation.put(PERSONALISATION_CASE_STOP_DETAILS, null);
+        personalisation.put(PERSONALISATION_CCD_REFERENCE, 1);
+        personalisation.put(PERSONALISATION_DECEASED_DOD, "12th December 2000");
+        personalisation.put(PERSONALISATION_REGISTRY_PHONE, "0300 303 0648");
+        personalisation.put(PERSONALISATION_SOLICITOR_NAME, null);
+        personalisation.put(PERSONALISATION_REGISTRY_NAME, "CTSC");
+        personalisation.put(PERSONALISATION_CASE_STOP_DETAILS_DEC, null);
+        personalisation.put(PERSONALISATION_APPLICANT_NAME, "null null");
+        personalisation.put(PERSONALISATION_CAVEAT_CASE_ID, null);
+        personalisation.put(PERSONALISATION_SOLICITOR_REFERENCE, null);
+        personalisation.put(PERSONALISATION_DECEASED_NAME, "null null");
+
+        CollectionMember<Document> doc = new CollectionMember<>(Document.builder().build());
+
+        personalCaseDataCtsc.getData().getProbateSotDocumentsGenerated().add(doc);
+
+        ExecutorsApplyingNotification executorsApplyingNotification = ExecutorsApplyingNotification.builder()
+                .name(solsCaseDataCtscRequestInformation.getData().getSolsSOTName())
+                .address(SolsAddress.builder()
+                        .addressLine1("Addressline1")
+                        .postCode("postcode")
+                        .postTown("posttown")
+                        .build())
+                .email("personal@test.com")
+                .notification("Yes").build();
+        notificationService.sendEmailWithDocumentAttached(personalCaseDataCtsc, executorsApplyingNotification, REDECLARATION_SOT);
+
+        verify(notificationClient).sendEmail(
+                eq("pa-redeclaration-sot"),
+                eq("personal@test.com"),
+                eq(personalisation),
+                eq(null),
+                eq("ctsc-emailReplyToId"));
+
+    }
 
 }

@@ -150,7 +150,8 @@ public class GrantOfRepresentationPersonalisationServiceTest {
 
     @Test
     public void getPersonalisationContentIsOk() {
-        Map<String, String> response = grantOfRepresentationPersonalisationService.getPersonalisation(caseDetails, registry);
+        Map<String, Object> response = grantOfRepresentationPersonalisationService.getPersonalisation(caseDetails,
+                registry);
 
         assertEquals("first name surname", response.get(PERSONALISATION_APPLICANT_NAME));
         assertEquals("deceased forenames deceased surname", response.get(PERSONALISATION_DECEASED_NAME));
