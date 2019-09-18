@@ -26,6 +26,9 @@ import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_REISSUE_DRAF
 import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_REISSUE_DRAFT;
+import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_ADMON;
+import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_INTESTACY;
+import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE;
 
 @Slf4j
 @Service
@@ -119,22 +122,51 @@ public class DocumentGeneratorService {
         return letter;
     }
 
-    public Document generateSoT(CaseDetails caseDetails) {
-        log.info("Initiate call to generate SoT for case id: {}", caseDetails.getId());
-        Map<String, Object> placeholders = genericMapperService.addCaseDataWithRegistryProperties(caseDetails);
+    public Document generateSoT(CallbackRequest callbackRequest) {
+        Document statementOfTruth;
 
-        Document statementOfTruth = pdfManagementService.generateDocmosisDocumentAndUpload(placeholders,
-                DocumentType.STATEMENT_OF_TRUTH);
-        log.info("Successful response for SoT for case id: {}", caseDetails.getId());
+        switch (callbackRequest.getCaseDetails().getData().getApplicationType()) {
+            case SOLICITOR:
+                log.info("Initiate call to generate SoT for case id: {}", callbackRequest.getCaseDetails().getId());
+                statementOfTruth = generateSolicitorSoT(callbackRequest);
+                log.info("Successful response for SoT for case id: {}", callbackRequest.getCaseDetails().getId());
+                break;
+            case PERSONAL:
+            default:
+                log.info("Initiate call to generate SoT for case id: {}", callbackRequest.getCaseDetails().getId());
+                Map<String, Object> placeholders = genericMapperService.addCaseDataWithRegistryProperties(callbackRequest.getCaseDetails());
+                statementOfTruth = pdfManagementService.generateDocmosisDocumentAndUpload(placeholders,
+                        DocumentType.STATEMENT_OF_TRUTH);
+                log.info("Successful response for SoT for case id: {}", callbackRequest.getCaseDetails().getId());
+                break;
+        }
 
         return statementOfTruth;
     }
 
+    private Document generateSolicitorSoT(CallbackRequest callbackRequest) {
+        Document statementOfTruth;
+        switch (callbackRequest.getCaseDetails().getData().getCaseType()) {
+            case ADMON_WILL:
+                statementOfTruth = pdfManagementService.generateAndUpload(callbackRequest, LEGAL_STATEMENT_ADMON);
+                break;
+            case INTESTACY:
+                statementOfTruth = pdfManagementService.generateAndUpload(callbackRequest, LEGAL_STATEMENT_INTESTACY);
+                break;
+            case GRANT_OF_PROBATE:
+            default:
+                statementOfTruth = pdfManagementService.generateAndUpload(callbackRequest, LEGAL_STATEMENT_PROBATE);
+                break;
+        }
+        return statementOfTruth;
+    }
+
+
     private void expireDrafts(CallbackRequest callbackRequest) {
         log.info("Expiring drafts");
         DocumentType[] documentTypes = {DIGITAL_GRANT_DRAFT, INTESTACY_GRANT_DRAFT, ADMON_WILL_GRANT_DRAFT,
-                                        DIGITAL_GRANT_REISSUE_DRAFT, INTESTACY_GRANT_REISSUE_DRAFT,
-                                        ADMON_WILL_GRANT_REISSUE_DRAFT};
+                DIGITAL_GRANT_REISSUE_DRAFT, INTESTACY_GRANT_REISSUE_DRAFT,
+                ADMON_WILL_GRANT_REISSUE_DRAFT};
         for (DocumentType documentType : documentTypes) {
             documentService.expire(callbackRequest, documentType);
         }

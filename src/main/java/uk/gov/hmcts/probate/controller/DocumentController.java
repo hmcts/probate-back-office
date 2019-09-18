@@ -271,6 +271,6 @@ public class DocumentController {
     public ResponseEntity<CallbackResponse> generateStatementOfTruth(@RequestBody CallbackRequest callbackRequest) {
         log.info("Initiating call for SoT");
         return ResponseEntity.ok(callbackResponseTransformer.addSOTDocument(callbackRequest,
-                documentGeneratorService.generateSoT(callbackRequest.getCaseDetails())));
+                documentGeneratorService.generateSoT(callbackRequest)));
     }
 }
