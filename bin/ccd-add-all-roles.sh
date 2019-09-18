@@ -32,4 +32,5 @@ binFolder=$(dirname "$0")
 (${binFolder}/ccd-add-role.sh caseworker-probate-registrar)
 (${binFolder}/ccd-add-role.sh caseworker-probate-superuser)
 
+(${binFolder}/ccd-add-role.sh caseworker-probate-bulkscan)
 
