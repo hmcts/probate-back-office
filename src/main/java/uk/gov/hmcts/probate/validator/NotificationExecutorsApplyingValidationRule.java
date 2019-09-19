@@ -29,7 +29,7 @@ public class NotificationExecutorsApplyingValidationRule implements CaseDetailsV
         CaseData caseData = caseDetails.getData();
         String userMessage = businessValidationMessageRetriever.getMessage(SEND_NOTIFICATION_EMPTY, args, Locale.UK);
 
-        for (CollectionMember<ExecutorsApplyingNotification> executor : caseData.getExecutorsApplyingNotifications()){
+        for (CollectionMember<ExecutorsApplyingNotification> executor : caseData.getExecutorsApplyingNotifications()) {
             if (executor.getValue().getNotification().equals(NO)) {
                 counter++;
             }
