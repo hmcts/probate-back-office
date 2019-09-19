@@ -49,8 +49,12 @@ public class InformationRequestCorrespondenceServiceTest {
     private CaseDetails caseDetails;
     private CaseData caseData;
     private CallbackRequest callbackRequest;
+    private CaseData caseDataMultiple;
+    private CaseDetails caseDetailsMultiple;
+    private CallbackRequest callbackRequestMultiple;
     private List<Document> documents;
     private CollectionMember<ExecutorsApplyingNotification> execApplying;
+    private CollectionMember<ExecutorsApplyingNotification> execApplyingNotifIsNo;
 
     private static final String[] LAST_MODIFIED = {"2018", "1", "2", "0", "0", "0", "0"};
     private static final Long ID = 123456789L;
@@ -58,6 +62,8 @@ public class InformationRequestCorrespondenceServiceTest {
             SolsAddress.builder().addressLine1("Address line 1").postCode("AB1 2CD").build();
     private static final Document GENERIC_DOCUMENT =
             Document.builder().documentType(DocumentType.SOT_INFORMATION_REQUEST).build();
+    private static final Document SENT_EMAIL =
+            Document.builder().documentType(DocumentType.SENT_EMAIL).build();
     private static final Document COVERSHEET = Document.builder().documentType(DocumentType.GRANT_COVER).build();
 
     @Before
@@ -70,6 +76,12 @@ public class InformationRequestCorrespondenceServiceTest {
                         .address(ADDRESS)
                         .name("Fred Smith")
                         .notification("Yes").build());
+        execApplyingNotifIsNo = new CollectionMember<>("2",
+                ExecutorsApplyingNotification.builder()
+                        .email("test@test.com")
+                        .address(ADDRESS)
+                        .name("Fred Smith")
+                        .notification("No").build());
 
         List<CollectionMember<ExecutorsApplyingNotification>> executorsApplying = new ArrayList<>();
         executorsApplying.add(execApplying);
@@ -83,11 +95,28 @@ public class InformationRequestCorrespondenceServiceTest {
 
         when(notificationService.sendEmail(eq(State.CASE_STOPPED_REQUEST_INFORMATION), eq(caseDetails), any()))
                 .thenReturn(GENERIC_DOCUMENT);
+        when(notificationService.sendEmail(eq(State.CASE_STOPPED_REQUEST_INFORMATION), eq(caseDetails), any()))
+                .thenReturn(GENERIC_DOCUMENT);
         when(documentGeneratorService.generateCoversheet(callbackRequest, execApplying.getValue().getName(),
                 execApplying.getValue().getAddress())).thenReturn(COVERSHEET);
         when(documentGeneratorService.generateRequestForInformation(caseDetails, execApplying.getValue())).thenReturn(GENERIC_DOCUMENT);
         when(bulkPrintService.sendToBulkPrint(callbackRequest, COVERSHEET, GENERIC_DOCUMENT, true))
                 .thenReturn("123");
+    }
+
+    @Test
+    public void testEmailInformationRequestMultipleExecSuccessful() {
+        List<CollectionMember<ExecutorsApplyingNotification>> executorsApplyingList = new ArrayList<>();
+        executorsApplyingList.add(execApplyingNotifIsNo);
+        executorsApplyingList.add(execApplying);
+        caseDataMultiple = CaseData.builder()
+                .executorsApplyingNotifications(executorsApplyingList)
+                .boRequestInfoSendToBulkPrintRequested("Yes").build();
+        caseDetailsMultiple = new CaseDetails(caseDataMultiple, LAST_MODIFIED, ID);
+
+        List<Document> response =  informationRequestCorrespondenceService.emailInformationRequest(caseDetails);
+        assertEquals(GENERIC_DOCUMENT, response.get(0));
+
     }
 
     @Test
