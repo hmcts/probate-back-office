@@ -62,8 +62,6 @@ public class InformationRequestCorrespondenceServiceTest {
             SolsAddress.builder().addressLine1("Address line 1").postCode("AB1 2CD").build();
     private static final Document GENERIC_DOCUMENT =
             Document.builder().documentType(DocumentType.SOT_INFORMATION_REQUEST).build();
-    private static final Document SENT_EMAIL =
-            Document.builder().documentType(DocumentType.SENT_EMAIL).build();
     private static final Document COVERSHEET = Document.builder().documentType(DocumentType.GRANT_COVER).build();
 
     @Before
@@ -93,8 +91,6 @@ public class InformationRequestCorrespondenceServiceTest {
         documents.add(COVERSHEET);
         documents.add(GENERIC_DOCUMENT);
 
-        when(notificationService.sendEmail(eq(State.CASE_STOPPED_REQUEST_INFORMATION), eq(caseDetails), any()))
-                .thenReturn(GENERIC_DOCUMENT);
         when(notificationService.sendEmail(eq(State.CASE_STOPPED_REQUEST_INFORMATION), eq(caseDetails), any()))
                 .thenReturn(GENERIC_DOCUMENT);
         when(documentGeneratorService.generateCoversheet(callbackRequest, execApplying.getValue().getName(),
