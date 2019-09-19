@@ -35,7 +35,8 @@ public class NotificationsExecutorsApplyingValidationRuleTest {
 
     private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
     private static final Long CASE_ID = 12345678987654321L;
-    private static final List<CollectionMember<ExecutorsApplyingNotification>> EXECEUTORS_APPLYING_NOTIFICATION_YES_SINGLE = Arrays.asList(
+    private static final List<CollectionMember<ExecutorsApplyingNotification>> EXECEUTORS_APPLYING_NOTIFICATION_YES_SINGLE =
+            Arrays.asList(
             new CollectionMember<>("id",
                     ExecutorsApplyingNotification.builder()
                             .name("Name")
@@ -43,7 +44,8 @@ public class NotificationsExecutorsApplyingValidationRuleTest {
                             .notification(YES)
                             .build()));
 
-    private static final List<CollectionMember<ExecutorsApplyingNotification>> EXECEUTORS_APPLYING_NOTIFICATION_NO_SINGLE = Arrays.asList(
+    private static final List<CollectionMember<ExecutorsApplyingNotification>> EXECEUTORS_APPLYING_NOTIFICATION_NO_SINGLE =
+            Arrays.asList(
             new CollectionMember<>("id",
                     ExecutorsApplyingNotification.builder()
                             .name("Name")
@@ -51,7 +53,8 @@ public class NotificationsExecutorsApplyingValidationRuleTest {
                             .notification(NO)
                             .build()));
 
-    private static final List<CollectionMember<ExecutorsApplyingNotification>> EXECEUTORS_APPLYING_NOTIFICATION_YES_Multiple = Arrays.asList(
+    private static final List<CollectionMember<ExecutorsApplyingNotification>> EXECEUTORS_APPLYING_NOTIFICATION_YES_MULTIPLE =
+            Arrays.asList(
             new CollectionMember<>("id",
                     ExecutorsApplyingNotification.builder()
                             .name("Name")
@@ -72,7 +75,7 @@ public class NotificationsExecutorsApplyingValidationRuleTest {
                             .build()));
 
 
-    private static final List<CollectionMember<ExecutorsApplyingNotification>> EXECEUTORS_APPLYING_NOTIFICATION_NO_Multiple = Arrays.asList(
+    private static final List<CollectionMember<ExecutorsApplyingNotification>> EXECEUTORS_APPLYING_NOTIFICATION_NO_MULTIPLE = Arrays.asList(
             new CollectionMember<>("id",
                     ExecutorsApplyingNotification.builder()
                             .name("Name")
@@ -108,12 +111,12 @@ public class NotificationsExecutorsApplyingValidationRuleTest {
 
         caseDataNotificationYesMultiple = CaseData.builder()
                 .applicationType(ApplicationType.PERSONAL)
-                .executorsApplyingNotifications(EXECEUTORS_APPLYING_NOTIFICATION_YES_Multiple)
+                .executorsApplyingNotifications(EXECEUTORS_APPLYING_NOTIFICATION_YES_MULTIPLE)
                 .registryLocation("Bristol").build();
 
         caseDataNotificationNoMultiple = CaseData.builder()
                 .applicationType(ApplicationType.SOLICITOR)
-                .executorsApplyingNotifications(EXECEUTORS_APPLYING_NOTIFICATION_NO_Multiple)
+                .executorsApplyingNotifications(EXECEUTORS_APPLYING_NOTIFICATION_NO_MULTIPLE)
                 .registryLocation("Bristol").build();
     }
 
