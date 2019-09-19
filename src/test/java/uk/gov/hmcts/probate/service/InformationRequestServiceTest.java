@@ -17,6 +17,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
+import uk.gov.hmcts.probate.validator.NotificationExecutorsApplyingValidationRule;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -35,6 +36,9 @@ public class InformationRequestServiceTest {
 
     @Mock
     private CallbackResponseTransformer callbackResponseTransformer;
+
+    @Mock
+    private NotificationExecutorsApplyingValidationRule notificationExecutorsApplyingValidationRule;
 
     @InjectMocks
     private InformationRequestService informationRequestService;

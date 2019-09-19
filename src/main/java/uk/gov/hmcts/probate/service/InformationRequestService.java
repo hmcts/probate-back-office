@@ -7,6 +7,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
+import uk.gov.hmcts.probate.validator.NotificationExecutorsApplyingValidationRule;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -18,6 +19,7 @@ import static uk.gov.hmcts.probate.model.Constants.NO;
 @Service
 @RequiredArgsConstructor
 public class InformationRequestService {
+    private final NotificationExecutorsApplyingValidationRule notificationExecutorsApplyingValidationRule;
 
     private List<Document> documents;
     private List<Document> letterIdDocuments;
@@ -33,6 +35,7 @@ public class InformationRequestService {
 
         if (callbackRequest.getCaseDetails().getData().getPaperForm().equals(NO)) {
             if (callbackRequest.getCaseDetails().getData().isBoEmailRequestInfoNotificationRequested()) {
+                notificationExecutorsApplyingValidationRule.validate(callbackRequest.getCaseDetails());
                 documents = informationRequestCorrespondenceService.emailInformationRequest(callbackRequest.getCaseDetails());
                 //TODO: uncomment code when letters are being used again.
 
