@@ -56,3 +56,4 @@ export APPINSIGHTS_INSTRUMENTATIONKEY="SomeRandomStringForLocalDocker"
 export DEFINITION_STORE_DB_USE_SSL="false"
 export ES_ENABLED_DOCKER="true"
 export DB_USE_SSL="false"
+export MY_IP=$(ifconfig tun0 | grep 'inet ' | cut -b 14-26 | awk '{print $1}')

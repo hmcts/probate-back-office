@@ -67,6 +67,15 @@ Start the dm-store container
    ./ccd compose up -d dm-store
 ```
 
+#### 7.1) Restart other containers
+On linux I had to restart 
+* dm-store
+* fees-api
+* payments-api
+* sidam-api
+
+In that order
+
 ##### 8) Setup IDAM data
 ```bash
    ./bin/idam-client-setup.sh
@@ -90,7 +99,7 @@ For mac
 
 For linux (replace ip with your own ip)
 ```bash
-   ./ccdImports/conversionScripts/createAllXLS.sh 10.99.2.36:4104 
+   ./ccdImports/conversionScripts/createAllXLS.sh $MY_IP:4104 
 ```
 
 ###### Import xls
@@ -115,6 +124,8 @@ Add keyword to fees database
 ```
 
 Go to `probate-frontend/app/config.js` and update to `useIDAM: process.env.USE_IDAM || 'true'`. 
+
+When `USE_IDAM` is true to regester you will need to change the call back port from 9002 to 3501
 
 Start probate-frontend app. Follow `http:localhost:3000`. Login using `testusername@test.com/Pa55word11`.
 
