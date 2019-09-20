@@ -1219,7 +1219,7 @@ public class CallbackResponseTransformerTest {
                 .epaOrLpa(NO)
                 .epaRegistered(NO)
                 .domicilityCountry("Spain")
-                .ukEstateItems(estate)
+                .ukEstate(estate)
                 .attorneyOnBehalfOfNameAndAddress(attorneyList)
                 .adopted(YES)
                 .adoptiveRelatives(adoptedRelatives)
@@ -1295,7 +1295,7 @@ public class CallbackResponseTransformerTest {
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
         CallbackResponse callbackResponse = underTest.paperForm(callbackRequestMock);
-        assertEquals(1, callbackResponse.getData().getUkEstateItems().size());
+        assertEquals(1, callbackResponse.getData().getUkEstate().size());
         assertEquals(1, callbackResponse.getData().getAttorneyOnBehalfOfNameAndAddress().size());
         assertEquals(1, callbackResponse.getData().getScannedDocuments().size());
         assertEquals(1, callbackResponse.getData().getAdoptiveRelatives().size());
