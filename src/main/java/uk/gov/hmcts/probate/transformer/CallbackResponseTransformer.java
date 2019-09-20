@@ -23,6 +23,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData.ResponseCaseDataBuilder;
 import uk.gov.hmcts.probate.model.fee.FeeServiceResponse;
 import uk.gov.hmcts.probate.service.ExecutorsApplyingNotificationService;
+import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -495,11 +496,14 @@ public class CallbackResponseTransformer {
     }
 
     private boolean willExists(CaseData caseData) {
+        if (isIntestacy(caseData)) {
+            return false;
+        }
         return !(NO_WILL.equals(caseData.getSolsWillType()));
     }
 
     private boolean isIntestacy(CaseData caseData) {
-        return NO_WILL.equals(caseData.getSolsWillType());
+        return GrantType.INTESTACY.getName().equals(caseData.getCaseType()) || NO_WILL.equals(caseData.getSolsWillType());
     }
 
     private ResponseCaseDataBuilder getCaseCreatorResponseCaseBuilder(CaseData caseData, ResponseCaseDataBuilder builder) {
