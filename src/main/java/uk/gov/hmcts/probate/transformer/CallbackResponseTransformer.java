@@ -506,7 +506,7 @@ public class CallbackResponseTransformer {
         return INTESTACY.getName().equals(caseData.getCaseType()) || NO_WILL.equals(caseData.getSolsWillType());
     }
 
-    private boolean isBoEmailDocsReceivedNotification(CaseData caseData) { return !caseData.getSolsSolicitorEmail().isEmpty(); }
+    private boolean isSolsEmailSet(CaseData caseData) { return !caseData.getSolsSolicitorEmail().isEmpty(); }
 
     private ResponseCaseDataBuilder getCaseCreatorResponseCaseBuilder(CaseData caseData, ResponseCaseDataBuilder builder) {
 
@@ -645,12 +645,14 @@ public class CallbackResponseTransformer {
                     .primaryApplicantIsApplying(ANSWER_YES);
         }
 
-        if (isBoEmailDocsReceivedNotification(caseData)) {
+        if (isSolsEmailSet(caseData)) {
             builder
-                    .boEmailDocsReceivedNotification(ANSWER_YES);
+                    .boEmailDocsReceivedNotification(ANSWER_YES)
+                    .boEmailRequestInfoNotification(ANSWER_YES);
         } else {
             builder
-                    .boEmailDocsReceivedNotification(ANSWER_NO);
+                    .boEmailDocsReceivedNotification(ANSWER_NO)
+                    .boEmailRequestInfoNotification(ANSWER_NO);
         }
 
         if (caseData.getCaseType() == null) {
@@ -733,12 +735,14 @@ public class CallbackResponseTransformer {
                     .primaryApplicantIsApplying(ANSWER_YES);
         }
 
-        if (isBoEmailDocsReceivedNotification(caseData)) {
+        if (isSolsEmailSet(caseData)) {
             builder
-                    .boEmailDocsReceivedNotification(ANSWER_YES);
+                    .boEmailDocsReceivedNotification(ANSWER_YES)
+                    .boEmailRequestInfoNotification(ANSWER_YES);
         } else {
             builder
-                    .boEmailDocsReceivedNotification(ANSWER_NO);
+                    .boEmailDocsReceivedNotification(ANSWER_NO)
+                    .boEmailRequestInfoNotification(ANSWER_NO);
         }
 
         if (caseData.getCaseType() == null) {
