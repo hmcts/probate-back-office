@@ -25,6 +25,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -79,6 +80,7 @@ public class GrantOfRepresentationPersonalisationServiceTest {
     private static final String PERSONALISATION_CCD_REFERENCE = "ccd_reference";
     private static final String PERSONALISATION_EXCELA_NAME = "excelaName";
     private static final String PERSONALISATION_CASE_DATA = "caseData";
+    private static final String PERSONALISATION_ADDRESSEE = "addressee";
 
     Registry registry = new Registry();
 
@@ -192,6 +194,17 @@ public class GrantOfRepresentationPersonalisationServiceTest {
 
         assertEquals(LocalDateTime.now().format(EXCELA_DATE) + "will", response.get(PERSONALISATION_EXCELA_NAME));
         assertEquals(", Jack Michelson, 01/01/2019, 01/05/2019, 1\n", response.get(PERSONALISATION_CASE_DATA));
+    }
+
+    @Test
+    public void getAddSingleAddressee() {
+        Map<String, Object> currentMap = new HashMap<>();
+        String addressee = "addressee name";
+
+        Map<String, Object> response =
+                grantOfRepresentationPersonalisationService.addSingleAddressee(currentMap, addressee);
+
+        assertEquals(addressee, response.get(PERSONALISATION_ADDRESSEE));
     }
 
 
