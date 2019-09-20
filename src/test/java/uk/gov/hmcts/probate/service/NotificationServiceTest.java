@@ -177,6 +177,8 @@ public class NotificationServiceTest {
     private static final String PERSONALISATION_CAVEATOR_NAME = "caveator_name";
     private static final String PERSONALISATION_CAVEATOR_ADDRESS = "caveator_address";
     private static final String PERSONALISATION_CASE_STOP_DETAILS_DEC = "boStopDetailsDeclarationParagraph";
+    private static final String PERSONALISATION_ADDRESSEE = "addressee";
+    private static final String PERSONALISATION_SOT_LINK = "sot_link";
 
 
     @Before
@@ -262,6 +264,7 @@ public class NotificationServiceTest {
                 .applicationType(PERSONAL)
                 .boStopDetailsDeclarationParagraph("Yes")
                 .deceasedDateOfDeath(LocalDate.now())
+                .primaryApplicantForenames("Fred Smith")
                 .registryLocation("ctsc")
                 .primaryApplicantEmailAddress("personal@test.com")
                 .deceasedDateOfDeath(LocalDate.of(2000, 12, 12))
@@ -1179,27 +1182,28 @@ public class NotificationServiceTest {
     @Test
     public void shouldSendEmailWithDocumentAttached() throws IOException, NotificationClientException {
         Map<String, Object> personalisation = new HashMap<>();
-
-        personalisation.put("addressee", "fred smith");
-        personalisation.put("sot_link", "file\":\"Fw==");
-        personalisation.put(PERSONALISATION_CASE_STOP_DETAILS, null);
-        personalisation.put(PERSONALISATION_CCD_REFERENCE, 1);
-        personalisation.put(PERSONALISATION_DECEASED_DOD, "12th December 2000");
-        personalisation.put(PERSONALISATION_REGISTRY_PHONE, "0300 303 0648");
-        personalisation.put(PERSONALISATION_SOLICITOR_NAME, null);
-        personalisation.put(PERSONALISATION_REGISTRY_NAME, "CTSC");
-        personalisation.put(PERSONALISATION_CASE_STOP_DETAILS_DEC, null);
-        personalisation.put(PERSONALISATION_APPLICANT_NAME, "null null");
-        personalisation.put(PERSONALISATION_CAVEAT_CASE_ID, null);
-        personalisation.put(PERSONALISATION_SOLICITOR_REFERENCE, null);
-        personalisation.put(PERSONALISATION_DECEASED_NAME, "null null");
-
         CollectionMember<Document> doc = new CollectionMember<>(Document.builder().build());
 
         personalCaseDataCtsc.getData().getProbateSotDocumentsGenerated().add(doc);
+        Map<String, String> sotValue = new HashMap<>();
+        sotValue.put("file", "Fw==");
+
+        personalisation.put(PERSONALISATION_CAVEAT_CASE_ID, personalCaseDataCtsc.getData().getBoCaseStopCaveatId());
+        personalisation.put(PERSONALISATION_ADDRESSEE, personalCaseDataCtsc.getData().getPrimaryApplicantForenames());
+        personalisation.put(PERSONALISATION_SOT_LINK, new JSONObject(sotValue));
+        personalisation.put(PERSONALISATION_CASE_STOP_DETAILS, personalCaseDataCtsc.getData().getBoStopDetails());
+        personalisation.put(PERSONALISATION_CCD_REFERENCE, personalCaseDataCtsc.getId().toString());
+        personalisation.put(PERSONALISATION_DECEASED_DOD, personalCaseDataCtsc.getData().getDeceasedDateOfDeathFormatted());
+        personalisation.put(PERSONALISATION_REGISTRY_PHONE, "0300 303 0648");
+        personalisation.put(PERSONALISATION_SOLICITOR_NAME, personalCaseDataCtsc.getData().getSolsSolicitorFirmName());
+        personalisation.put(PERSONALISATION_REGISTRY_NAME, "CTSC");
+        personalisation.put(PERSONALISATION_CASE_STOP_DETAILS_DEC, personalCaseDataCtsc.getData().getBoStopDetailsDeclarationParagraph());
+        personalisation.put(PERSONALISATION_APPLICANT_NAME, "null null");
+        personalisation.put(PERSONALISATION_SOLICITOR_REFERENCE, personalCaseDataCtsc.getData().getSolsSolicitorAppReference());
+        personalisation.put(PERSONALISATION_DECEASED_NAME, "null null");
 
         ExecutorsApplyingNotification executorsApplyingNotification = ExecutorsApplyingNotification.builder()
-                .name(solsCaseDataCtscRequestInformation.getData().getSolsSOTName())
+                .name(personalCaseDataCtsc.getData().getSolsSOTName())
                 .address(SolsAddress.builder()
                         .addressLine1("Addressline1")
                         .postCode("postcode")
