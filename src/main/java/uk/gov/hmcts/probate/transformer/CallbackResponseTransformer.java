@@ -23,7 +23,6 @@ import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData.ResponseCaseDataBuilder;
 import uk.gov.hmcts.probate.model.fee.FeeServiceResponse;
 import uk.gov.hmcts.probate.service.ExecutorsApplyingNotificationService;
-import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -52,6 +51,7 @@ import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE;
 import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
 import static uk.gov.hmcts.probate.model.DocumentType.SOT_INFORMATION_REQUEST;
 import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.Constants.GRANT_OF_PROBATE_NAME;
+import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.INTESTACY;
 
 @Component
 @RequiredArgsConstructor
@@ -503,7 +503,7 @@ public class CallbackResponseTransformer {
     }
 
     private boolean isIntestacy(CaseData caseData) {
-        return GrantType.INTESTACY.getName().equals(caseData.getCaseType()) || NO_WILL.equals(caseData.getSolsWillType());
+        return INTESTACY.getName().equals(caseData.getCaseType()) || NO_WILL.equals(caseData.getSolsWillType());
     }
 
     private ResponseCaseDataBuilder getCaseCreatorResponseCaseBuilder(CaseData caseData, ResponseCaseDataBuilder builder) {
