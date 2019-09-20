@@ -5,12 +5,12 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 import uk.gov.hmcts.probate.controller.validation.AmendCaseDetailsGroup;
-import uk.gov.hmcts.probate.controller.validation.ApplicationAdmonGroup;
 import uk.gov.hmcts.probate.controller.validation.ApplicationCreatedGroup;
-import uk.gov.hmcts.probate.controller.validation.ApplicationIntestacyGroup;
-import uk.gov.hmcts.probate.controller.validation.ApplicationProbateGroup;
 import uk.gov.hmcts.probate.controller.validation.ApplicationReviewedGroup;
 import uk.gov.hmcts.probate.controller.validation.ApplicationUpdatedGroup;
+import uk.gov.hmcts.probate.controller.validation.ApplicationProbateGroup;
+import uk.gov.hmcts.probate.controller.validation.ApplicationIntestacyGroup;
+import uk.gov.hmcts.probate.controller.validation.ApplicationAdmonGroup;
 import uk.gov.hmcts.probate.controller.validation.NextStepsConfirmationGroup;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.ExecutorsApplyingNotification;
@@ -144,7 +144,6 @@ public class CaseData {
     @NotBlank(groups = {ApplicationAdmonGroup.class}, message = "{solsResiduaryIsNull}")
     private final String solsResiduary;
 
-    @NotBlank(groups = {ApplicationAdmonGroup.class}, message = "{solsResiduaryTypeIsNull}")
     private final String solsResiduaryType;
 
     @NotBlank(groups = {ApplicationAdmonGroup.class}, message = "{solsLifeInterestIsNull}")
@@ -184,10 +183,11 @@ public class CaseData {
     private final List<CollectionMember<AdditionalExecutor>> solsAdditionalExecutorList;
 
     private final String solsAdditionalInfo;
+
     // EVENT = solicitorUpdateIntestacy
     @NotBlank(groups = {ApplicationProbateGroup.class,
-            ApplicationAdmonGroup.class,
-            ApplicationIntestacyGroup.class}, message = "{willExistsIsNull}")
+                        ApplicationAdmonGroup.class,
+                        ApplicationIntestacyGroup.class}, message = "{willExistsIsNull}")
     private final String willExists;
 
     @NotNull(groups = {ApplicationIntestacyGroup.class}, message = "{deceasedMaritalStatusIsNull}")
