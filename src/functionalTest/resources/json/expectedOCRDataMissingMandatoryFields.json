@@ -1,16 +1,6 @@
 {
   "ocr_data_fields": [
     {
-      "name": "deceasedSurname",
-      "value": "Smith",
-      "description": "Deceased surname"
-    },
-    {
-      "name": "deceasedAddress_AddressLine1",
-      "value": "123 Alphabet Street",
-      "description": "Deceased address"
-    },
-    {
       "name": "primaryApplicantForenames",
       "value": "John",
       "description": "Primary applicant First name(s)"
@@ -18,17 +8,72 @@
     {
       "name": "primaryApplicantSurname",
       "value": "Johnson",
-      "description": "Primary applicant last name(s)"
+      "description": "Primary applicant last name"
     },
     {
-      "name": "primaryApplicantAddress_AddressLine1",
+      "name": "primaryApplicantAddressLine1",
       "value": "321 the street",
-      "description": "Primary applicant Building & Street"
+      "description": "Primary applicant address line 1"
+    },
+    {
+      "name": "primaryApplicantAddressPostCode",
+      "value": "NW1 3TA",
+      "description": "Primary applicant postcode"
+    },
+    {
+      "name": "primaryApplicantHasAlias",
+      "value": "false",
+      "description": "Primary applicant has alias?"
     },
     {
       "name": "deceasedForenames",
       "value": "Bob",
-      "description": "Deceased First name(s)"
+      "description": "Deceased first names"
+    },
+    {
+      "name": "deceasedSurname",
+      "value": "Bob",
+      "description": "Deceased last name"
+    },
+    {
+      "name": "deceasedAddressLine1",
+      "value": "123 Alphabet Street",
+      "description": "Deceased address line 1"
+    },
+    {
+      "name": "deceasedAddressPostCode",
+      "value": "NW1 3TA",
+      "description": "Deceased postcode"
+    },
+    {
+      "name": "deceasedAnyOtherNames",
+      "value": "123 Alphabet Street",
+      "description": "Deceased address line 1"
+    },
+    {
+      "name": "deceasedDomicileInEngWales",
+      "value": "true",
+      "description": "Was the deceased domiciled in England or Wales at the time of their death?"
+    },
+    {
+      "name": "ihtFormCompletedOnline",
+      "value": "true",
+      "description": "IHT form completed online?"
+    },
+    {
+      "name": "ihtReferenceNumber",
+      "value": "IHT394234234",
+      "description": "IHT reference number"
+    },
+    {
+      "name": "ihtGrossValue",
+      "value": "236,374",
+      "description": "Gross value of the estate"
+    },
+    {
+      "name": "ihtNetValue",
+      "value": "234,293",
+      "description": "Net value of the estate"
     }
   ]
 }
