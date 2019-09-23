@@ -15,7 +15,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import uk.gov.hmcts.probate.exception.BadRequestException;
 import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
-import uk.gov.hmcts.probate.model.ccd.CCDData;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
@@ -31,6 +30,7 @@ import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.validator.CaseworkerAmendValidationRule;
 import uk.gov.hmcts.probate.validator.CheckListAmendCaseValidationRule;
 import uk.gov.hmcts.probate.validator.EmailAddressNotificationValidationRule;
+import uk.gov.hmcts.probate.validator.RedeclarationSoTValidationRule;
 import uk.gov.hmcts.probate.validator.ValidationRule;
 
 import javax.servlet.http.HttpServletRequest;
@@ -87,6 +87,8 @@ public class BusinessValidationUnitTest {
     private AfterSubmitCallbackResponse afterSubmitCallbackResponseMock;
     @Mock
     private StateChangeService stateChangeServiceMock;
+    @Mock
+    private RedeclarationSoTValidationRule redeclarationSoTValidationRuleMock;
 
     private FieldErrorResponse businessValidationErrorMock;
     @Mock
@@ -111,7 +113,8 @@ public class BusinessValidationUnitTest {
                 callbackResponseTransformerMock,
                 confirmationResponseServiceMock,
                 stateChangeServiceMock,
-                pdfManagementServiceMock);
+                pdfManagementServiceMock,
+                redeclarationSoTValidationRuleMock);
 
         when(httpServletRequest.getRequestURI()).thenReturn("/test-uri");
     }

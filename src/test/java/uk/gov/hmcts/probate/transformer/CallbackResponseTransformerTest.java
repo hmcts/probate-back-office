@@ -1192,7 +1192,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldGetPaperApplication() {
+    public void shouldGetPaperIntestacyApplication() {
         caseDataBuilder.applicationType(ApplicationType.SOLICITOR);
         List<CollectionMember<EstateItem>> estate = new ArrayList<>();
         estate.add(createEstateItems("0"));
@@ -1299,6 +1299,125 @@ public class CallbackResponseTransformerTest {
         assertEquals(1, callbackResponse.getData().getAttorneyOnBehalfOfNameAndAddress().size());
         assertEquals(1, callbackResponse.getData().getScannedDocuments().size());
         assertEquals(1, callbackResponse.getData().getAdoptiveRelatives().size());
+        assertEquals(CASE_TYPE_INTESTACY, callbackResponse.getData().getCaseType());
+        assertEquals(NO, callbackResponse.getData().getWillExists());
+
+        assertCommonDetails(callbackResponse);
+        assertLegacyInfo(callbackResponse);
+        assertCommonPaperForm(callbackResponse);
+        assertSolsDetails(callbackResponse);
+    }
+
+    @Test
+    public void shouldGetPaperGOPApplication() {
+        caseDataBuilder.applicationType(ApplicationType.SOLICITOR);
+        List<CollectionMember<EstateItem>> estate = new ArrayList<>();
+        estate.add(createEstateItems("0"));
+        List<CollectionMember<AttorneyApplyingOnBehalfOf>> attorneyList = new ArrayList<>();
+        attorneyList.add(createAttorneyApplyingList("0"));
+        List<CollectionMember<AdoptedRelative>> adoptedRelatives = new ArrayList<>();
+        adoptedRelatives.add(createAdoptiveRelativeList("0"));
+        caseDataBuilder
+                .primaryApplicantSecondPhoneNumber(EXEC_PHONE)
+                .primaryApplicantRelationshipToDeceased("other")
+                .paRelationshipToDeceasedOther("cousin")
+                .deceasedMaritalStatus("neverMarried")
+                .willDatedBeforeApril(YES)
+                .deceasedEnterMarriageOrCP(NO)
+                .dateOfMarriageOrCP(null)
+                .dateOfDivorcedCPJudicially(null)
+                .willsOutsideOfUK(YES)
+                .courtOfDecree("Random Court Name")
+                .willGiftUnderEighteen(NO)
+                .applyingAsAnAttorney(YES)
+                .attorneyOnBehalfOfNameAndAddress(null)
+                .mentalCapacity(YES)
+                .courtOfProtection(YES)
+                .epaOrLpa(NO)
+                .epaRegistered(NO)
+                .domicilityCountry("Spain")
+                .ukEstateItems(estate)
+                .attorneyOnBehalfOfNameAndAddress(attorneyList)
+                .adopted(YES)
+                .adoptiveRelatives(adoptedRelatives)
+                .domicilityIHTCert(YES)
+                .entitledToApply(YES)
+                .entitledToApplyOther(YES)
+                .notifiedApplicants(YES)
+                .foreignAsset(YES)
+                .foreignAssetEstateValue("123")
+                .caseType(CASE_TYPE_GRANT_OF_PROBATE)
+                .spouseOrPartner(NO)
+                .childrenSurvived(YES)
+                .childrenOverEighteenSurvived(NUM_CODICILS)
+                .childrenUnderEighteenSurvived(NUM_CODICILS)
+                .childrenDied(YES)
+                .childrenDiedOverEighteen(NUM_CODICILS)
+                .childrenDiedUnderEighteen(NUM_CODICILS)
+                .grandChildrenSurvived(YES)
+                .grandChildrenSurvivedOverEighteen(NUM_CODICILS)
+                .grandChildrenSurvivedUnderEighteen(NUM_CODICILS)
+                .parentsExistSurvived(YES)
+                .parentsExistOverEighteenSurvived(NUM_CODICILS)
+                .parentsExistUnderEighteenSurvived(NUM_CODICILS)
+                .wholeBloodSiblingsSurvived(YES)
+                .wholeBloodSiblingsSurvivedOverEighteen(NUM_CODICILS)
+                .wholeBloodSiblingsSurvivedUnderEighteen(NUM_CODICILS)
+                .wholeBloodSiblingsDied(YES)
+                .wholeBloodSiblingsDiedOverEighteen(NUM_CODICILS)
+                .wholeBloodSiblingsDiedUnderEighteen(NUM_CODICILS)
+                .wholeBloodNeicesAndNephews(YES)
+                .wholeBloodNeicesAndNephewsOverEighteen(NUM_CODICILS)
+                .wholeBloodNeicesAndNephewsUnderEighteen(NUM_CODICILS)
+                .halfBloodSiblingsSurvived(YES)
+                .halfBloodSiblingsSurvivedOverEighteen(NUM_CODICILS)
+                .halfBloodSiblingsSurvivedUnderEighteen(NUM_CODICILS)
+                .halfBloodSiblingsDied(YES)
+                .halfBloodSiblingsDiedOverEighteen(NUM_CODICILS)
+                .halfBloodSiblingsDiedUnderEighteen(NUM_CODICILS)
+                .halfBloodNeicesAndNephews(YES)
+                .halfBloodNeicesAndNephewsOverEighteen(NUM_CODICILS)
+                .halfBloodNeicesAndNephewsUnderEighteen(NUM_CODICILS)
+                .grandparentsDied(YES)
+                .grandparentsDiedOverEighteen(NUM_CODICILS)
+                .grandparentsDiedUnderEighteen(NUM_CODICILS)
+                .wholeBloodUnclesAndAuntsSurvived(YES)
+                .wholeBloodUnclesAndAuntsSurvivedOverEighteen(NUM_CODICILS)
+                .wholeBloodUnclesAndAuntsSurvivedUnderEighteen(NUM_CODICILS)
+                .wholeBloodUnclesAndAuntsDied(YES)
+                .wholeBloodUnclesAndAuntsDiedOverEighteen(NUM_CODICILS)
+                .wholeBloodUnclesAndAuntsDiedUnderEighteen(NUM_CODICILS)
+                .wholeBloodCousinsSurvived(YES)
+                .wholeBloodCousinsSurvivedOverEighteen(NUM_CODICILS)
+                .wholeBloodCousinsSurvivedUnderEighteen(NUM_CODICILS)
+                .halfBloodUnclesAndAuntsSurvived(YES)
+                .halfBloodUnclesAndAuntsSurvivedOverEighteen(NUM_CODICILS)
+                .halfBloodUnclesAndAuntsSurvivedUnderEighteen(NUM_CODICILS)
+                .halfBloodUnclesAndAuntsDied(YES)
+                .halfBloodUnclesAndAuntsDiedOverEighteen(NUM_CODICILS)
+                .halfBloodUnclesAndAuntsDiedUnderEighteen(NUM_CODICILS)
+                .halfBloodCousinsSurvived(YES)
+                .halfBloodCousinsSurvivedOverEighteen(NUM_CODICILS)
+                .halfBloodCousinsSurvivedUnderEighteen(NUM_CODICILS)
+                .applicationFeePaperForm("0")
+                .feeForCopiesPaperForm("0")
+                .totalFeePaperForm("0")
+                .scannedDocuments(SCANNED_DOCUMENTS_LIST)
+                .paperPaymentMethod("debitOrCredit")
+                .paymentReferenceNumberPaperform(IHT_REFERENCE)
+                .paperForm(YES)
+                .dateOfDeathType(DECEASED_DATE_OF_DEATH_TYPE);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.paperForm(callbackRequestMock);
+        assertEquals(1, callbackResponse.getData().getUkEstateItems().size());
+        assertEquals(1, callbackResponse.getData().getAttorneyOnBehalfOfNameAndAddress().size());
+        assertEquals(1, callbackResponse.getData().getScannedDocuments().size());
+        assertEquals(1, callbackResponse.getData().getAdoptiveRelatives().size());
+        assertEquals(CASE_TYPE_GRANT_OF_PROBATE, callbackResponse.getData().getCaseType());
+        assertEquals(YES, callbackResponse.getData().getWillExists());
 
         assertCommonDetails(callbackResponse);
         assertLegacyInfo(callbackResponse);
@@ -1876,7 +1995,6 @@ public class CallbackResponseTransformerTest {
         assertEquals(YES, callbackResponse.getData().getNotifiedApplicants());
         assertEquals(YES, callbackResponse.getData().getForeignAsset());
         assertEquals("123", callbackResponse.getData().getForeignAssetEstateValue());
-        assertEquals(CASE_TYPE_INTESTACY, callbackResponse.getData().getCaseType());
         assertEquals(DECEASED_DATE_OF_DEATH_TYPE, callbackResponse.getData().getDateOfDeathType());
 
         assertEquals(DECEASED_DIVORCED_IN_ENGLAND_OR_WALES, callbackResponse.getData().getDeceasedDivorcedInEnglandOrWales());
