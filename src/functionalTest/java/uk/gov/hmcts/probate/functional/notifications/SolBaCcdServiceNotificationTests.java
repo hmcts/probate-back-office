@@ -126,13 +126,6 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
         validatePostSuccess("personalPayloadNotifications.json", INFORMATION_REQUEST_DEFAULT_VALUES);
     }
 
-    @Test
-    public void verifyPersonalApplicantRedecSoTIsOk() {
-       // validatePostSuccess("personalPayloadNotifications.json", REDEC_SOT_URL);
-        String document = sendEmail("personalPayloadNotifications.json", REDEC_SOT_URL, EMAIL_NOTIFICATION_URL);
-        verifyPAEmailNotificationReceived(document);
-    }
-
     //TODO: uncomment when letters are being used again
     //@Test
     //public void verifyPersonalApplicantRequestInformationLetterContentIsOk() {

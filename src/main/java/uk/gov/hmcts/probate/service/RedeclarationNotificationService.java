@@ -39,7 +39,9 @@ public class RedeclarationNotificationService {
                 callbackRequest.getCaseDetails().getData().getExecutorsApplyingNotifications()) {
             if (executor.getValue().getNotification().equals(YES)) {
                 try {
-                    emailDocument.add(notificationService.sendEmailWithDocumentAttached(callbackRequest.getCaseDetails(), executor.getValue(), State.REDECLARATION_SOT));
+                    emailDocument.add(
+                            notificationService.sendEmailWithDocumentAttached(
+                                    callbackRequest.getCaseDetails(), executor.getValue(), State.REDECLARATION_SOT));
                 } catch (NotificationClientException | IOException e) {
                     log.error("Error sending email with exception: {}. Has message: {}", e.getClass(), e.getMessage());
                 }

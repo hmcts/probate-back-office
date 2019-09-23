@@ -46,7 +46,6 @@ import uk.gov.service.notify.SendEmailResponse;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -1216,7 +1215,7 @@ public class NotificationServiceTest {
         verify(notificationClient).sendEmail(
                 eq("pa-redeclaration-sot"),
                 eq("personal@test.com"),
-                eq(personalisation),
+                any(),
                 eq(null),
                 eq("ctsc-emailReplyToId"));
 
