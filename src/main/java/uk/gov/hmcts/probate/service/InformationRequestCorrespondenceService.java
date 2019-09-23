@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.State.CASE_STOPPED_REQUEST_INFORMATION;
 
 @Slf4j
@@ -34,14 +35,16 @@ public class InformationRequestCorrespondenceService {
         emailAddressExecutorsApplyingValidationRule.validate(caseDetails);
 
         caseDetails.getData().getExecutorsApplyingNotifications().forEach(executor -> {
-            log.info("Initiate call to send request for information email for case id {} and executor: {} ",
-                    caseDetails.getId(), executor.getId());
-            try {
-                documents.add(notificationService.sendEmail(CASE_STOPPED_REQUEST_INFORMATION, caseDetails, executor.getValue()));
-                log.info("Successful response for request for information email for case id {} ",
-                        caseDetails.getId());
-            } catch (NotificationClientException e) {
-                log.error(e.getMessage());
+            if (executor.getValue().getNotification().equals(YES)) {
+                log.info("Initiate call to send request for information email for case id {} and executor: {} ",
+                        caseDetails.getId(), executor.getId());
+                try {
+                    documents.add(notificationService.sendEmail(CASE_STOPPED_REQUEST_INFORMATION, caseDetails, executor.getValue()));
+                    log.info("Successful response for request for information email for case id {} ",
+                            caseDetails.getId());
+                } catch (NotificationClientException e) {
+                    log.error(e.getMessage());
+                }
             }
         });
 

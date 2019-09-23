@@ -10,7 +10,10 @@
     "Alias name?",
     "Alias names",
     "Full alias name",
+    "Full alias name",
     "Building and Street",
+    "Address Line 2",
+    "Address Line 3",
     "Town or City",
     "County",
     "Postcode/Zipcode",
@@ -18,11 +21,11 @@
     "Email address"
   ],
   "dataKeys": [
-    "page2_forenames_update",
-    "page2_surname_update",
+    "page2_forenames",
+    "page2_surname",
     "page2_gender",
     "page2_dateOfBirth_long_update",
-    "page2_dateOfDeath_long",
+    "page2_dateOfDeath_long_update",
     "page2_typeOfDeath",
     "page2_hasAliasYes",
     "page2_alias_1",
@@ -32,8 +35,8 @@
     "address_line3",
     "address_town",
     "address_county",
-    "address_country",
     "address_postcode",
+    "address_country",
     "page2_email"
   ]
 }
