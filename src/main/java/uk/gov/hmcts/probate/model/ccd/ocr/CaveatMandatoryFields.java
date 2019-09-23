@@ -1,12 +1,13 @@
 package uk.gov.hmcts.probate.model.ccd.ocr;
 
 public enum CaveatMandatoryFields {
-    DECEASED_FORENAMES("deceasedForenames", "Deceased First name(s)"),
-    DECEASED_SURNAME("deceasedSurname", "Deceased last name(s)"),
-    DECEASED_DOD("deceasedDateOfDeath", "What was their date of death?"),
-    CAVEATOR_FORNAMES("caveatorForenames", "Forenames(s)"),
-    CAVEATOR_SURNAME("caveatorSurname", "Surname(s)"),
-    CAVEATOR_ADDRESS("caveatorAddress_AddressLine1", "Caveator address building and street");
+    CAVEATOR_FORNAMES("caveatorForenames", "Caveator forenames"),
+    CAVEATOR_SURNAME("caveatorSurnames", "Caveator last name"),
+    CAVEATOR_ADDRESS_LINE1("caveatorAddressLine1", "Caveator address line 1"),
+    CAVEATOR_ADDRESS_POSTCODE("caveatorAddressPostCode", "Caveator address postcode"),
+    DECEASED_FORENAMES("deceasedForenames", "Deceased first names"),
+    DECEASED_SURNAME("deceasedSurname", "Deceased last name"),
+    DECEASED_DOD("deceasedDateOfDeath", "Deceased date of death");
 
     private final String key;
     private final String value;

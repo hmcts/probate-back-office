@@ -402,7 +402,7 @@ public class BulkPrintServiceTest {
         when(sendLetterApiMock.sendLetter(anyString(), any(LetterWithPdfsRequest.class))).thenReturn(sendLetterResponse);
         when(eventValidationService.validateBulkPrintResponse(eq(uuid.toString()), any())).thenReturn(callbackResponse);
 
-        String letterId = bulkPrintService.sendToBulkPrintGrantReissue(callbackRequest, document, coverSheet);
+        String letterId = bulkPrintService.sendToBulkPrint(callbackRequest, document, coverSheet, true);
 
         verify(sendLetterApiMock).sendLetter(anyString(), any(LetterWithPdfsRequest.class));
 
@@ -455,7 +455,26 @@ public class BulkPrintServiceTest {
         when(businessValidationMessageService.generateError(any(), any())).thenReturn(FieldErrorResponse.builder().build());
 
         assertThatThrownBy(() -> {
-            bulkPrintService.sendToBulkPrintGrantReissue(callbackRequest, coverSheet, document);
+            bulkPrintService.sendToBulkPrint(callbackRequest, coverSheet, document, true);
         }).isInstanceOf(BulkPrintException.class).hasMessage("Bulk print send letter response is null for: 0");
+    }
+
+    @Test
+    public void testNoSendToBulkPrintReturnsNull() {
+        SolsAddress address = SolsAddress.builder().addressLine1("Address 1")
+                .addressLine2("Address 2")
+                .postCode("EC2")
+                .country("UK")
+                .build();
+        CaseData caseData = CaseData.builder()
+                .primaryApplicantEmailAddress("email@email.com")
+                .primaryApplicantForenames("firstname")
+                .primaryApplicantSurname("surname")
+                .primaryApplicantAddress(address)
+                .build();
+        final CallbackRequest callbackRequest = new CallbackRequest(new CaseDetails(caseData, null, 0L));
+
+        assertNull(bulkPrintService.sendToBulkPrint(callbackRequest, Document.builder().build(),
+                Document.builder().build(), false));
     }
 }

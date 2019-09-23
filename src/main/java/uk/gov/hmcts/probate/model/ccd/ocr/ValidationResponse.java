@@ -9,7 +9,7 @@ import java.util.List;
 @Builder
 public class ValidationResponse {
 
-    private ValidationResponseState state;
+    private ValidationResponseStatus status;
     private List<String> errors;
     private List<String> warnings;
 }

@@ -59,7 +59,6 @@ public class PDFGeneratorService {
         return new EvidenceManagementFileUpload(MediaType.APPLICATION_PDF, postResult);
     }
 
-
     private byte[] generateFromHtml(String templateName, String pdfGenerationData) throws IOException {
         String templatePath = pdfServiceConfiguration.getTemplatesDirectory() + templateName + TEMPLATE_EXTENSION;
         String templateAsString = fileSystemResourceService.getFileFromResourceAsString(templatePath);

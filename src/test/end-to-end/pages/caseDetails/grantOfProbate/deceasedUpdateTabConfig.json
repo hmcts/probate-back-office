@@ -22,7 +22,7 @@
       "page4_deceasedForenames",
       "page4_deceasedSurname",
       "page4_bo_deceasedHonours",
-      "page4_deceasedDob_long",
+      "page4_deceasedDob_long_update",
       "page4_deceasedDod_long_update",
       "page4_dateOfDeathType",
       "page4_deceasedAlias",
@@ -37,4 +37,3 @@
       "address_postcode"
     ]
   }
-  

@@ -15,13 +15,13 @@ import java.util.Map;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Strings.isNullOrEmpty;
+import static uk.gov.hmcts.probate.model.Constants.DOCMOSIS_OUTPUT_PDF;
 
 @Service
 @Slf4j
 public class DocmosisPdfGenerationService {
 
-    private static final String PDF_DOCUMENT_OUTPUT_NAME = "result.pdf";
-    private static final String PDF_DOCUMENT_OUTPUT_FORMAT = "pdf";
+    private static final String PDF_DOCUMENT_OUTPUT_NAME = "result.";
 
     @Autowired
     private RestTemplate restTemplate;
@@ -60,8 +60,8 @@ public class DocmosisPdfGenerationService {
         return PdfDocumentRequest.builder()
                 .accessKey(pdfServiceAccessKey)
                 .templateName(docmosisTemplateName)
-                .outputFormat(PDF_DOCUMENT_OUTPUT_FORMAT)
-                .outputName(PDF_DOCUMENT_OUTPUT_NAME)
+                .outputFormat(DOCMOSIS_OUTPUT_PDF)
+                .outputName(PDF_DOCUMENT_OUTPUT_NAME + DOCMOSIS_OUTPUT_PDF)
                 .pdfArchiveMode(true)
                 .data(placeholders).build();
     }

@@ -17,7 +17,7 @@
     "page1_list4_payment_method": "Debit or Credit card",
     "page1_list5_update_option": "Grant Details",
     "page1_boWillMessage": "bo will message",
-  
+
     "page2_waitForText": "About the applicant(s)",
     "page2_amend_waitForText": "Amend case details",
     "page2_url": "create/case/PROBATE/GrantOfRepresentation/applyforGrantPaperApplication/applyforGrantPaperApplicationapplyforGrantPaperApplicationPage2",
@@ -70,6 +70,10 @@
     "page4_deceasedDob_month": "03",
     "page4_deceasedDob_year": "1970",
     "page4_deceasedDob_long": "3 Mar 1970",
+    "page4_deceasedDob_day_update": "17",
+    "page4_deceasedDob_month_update": "09",
+    "page4_deceasedDob_year_update": "1964",
+    "page4_deceasedDob_long_update": "17 Sep 1964",
     "page4_dateOfDeathType": "Died on",
     "page4_deceasedDod_day": "03",
     "page4_deceasedDod_month": "03",
@@ -108,7 +112,7 @@
     "page5_courtOfDecree": "The Court",
     "page5_willGiftUnderEighteenYes": "Yes",
     "page5_list1_update_option": "Will and codicils",
-  
+
     "page6_waitForText": "Relatives of the person who has died",
     "page6_amend_waitForText": "Amend case details",
     "page6_url": "create/case/PROBATE/GrantOfRepresentation/applyforGrantPaperApplication/applyforGrantPaperApplicationapplyforGrantPaperApplicationPage6",
@@ -164,7 +168,6 @@
     "address_county": "London",
     "address_country": "United Kingdom",
     "address_postcode": "SW1A 1AA",
-  
+
     "UKpostcodeLink": ".manual-link"
 }
-  
