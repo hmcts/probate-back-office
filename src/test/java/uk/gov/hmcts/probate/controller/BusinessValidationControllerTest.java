@@ -240,7 +240,7 @@ public class BusinessValidationControllerTest {
 
 
     @Test
-    public void shouldReturnProbateSuccess() throws Exception {
+    public void shouldSuccesfullyGenerateProbateDeclaration() throws Exception {
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
         String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
@@ -257,7 +257,7 @@ public class BusinessValidationControllerTest {
     }
 
     @Test
-    public void shouldReturnIntestacySuccess() throws Exception {
+    public void shouldSuccesfullyGenerateIntestacyDeclaration() throws Exception {
         caseDataBuilder.solsWillType(WILL_TYPE_INTESTACY);
         caseDataBuilder.primaryApplicantEmailAddress(PRIMARY_APPLICANT_EMAIL);
         caseDataBuilder.deceasedMaritalStatus(MARITAL_STATUS);
@@ -280,7 +280,7 @@ public class BusinessValidationControllerTest {
     }
 
     @Test
-    public void shouldReturnAdmonSuccess() throws Exception {
+    public void shouldSuccesfullyGenerateAdmonWillDeclaration() throws Exception {
         caseDataBuilder.solsWillType(WILL_TYPE_ADMON);
         caseDataBuilder.solsEntitledMinority(ENTITLED_MINORITY);
         caseDataBuilder.solsDiedOrNotApplying(DIED_OR_NOT_APPLYING);
