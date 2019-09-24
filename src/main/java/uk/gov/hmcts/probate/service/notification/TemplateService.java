@@ -33,6 +33,8 @@ public class TemplateService {
                 return notificationTemplates.getEmail().get(applicationType).getGeneralCaveatMessage();
             case CASE_STOPPED_REQUEST_INFORMATION:
                 return notificationTemplates.getEmail().get(applicationType).getRequestInformation();
+            case REDECLARATION_SOT:
+                return notificationTemplates.getEmail().get(applicationType).getRedeclarationSot();
             case CAVEAT_RAISED:
                 if (registryLocation.equalsIgnoreCase(CTSC)) {
                     return notificationTemplates.getEmail().get(applicationType).getCaveatRaisedCtsc();

@@ -42,6 +42,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static uk.gov.hmcts.probate.model.Constants.REDEC_NOTIFICATION_SENT_STATE;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -112,6 +113,7 @@ public class BusinessValidationControllerTest {
     private static final String CASE_CHCEKLIST_URL = "/case/validateCheckListDetails";
     private static final String PAPER_FORM_URL = "/case/paperForm";
     private static final String RESOLVE_STOP_URL = "/case/resolveStop";
+    private static final String REDEC_COMPLETE = "/case/redeclarationComplete";
     private static final String REDECE_SOT = "/case/redeclarationSot";
 
     private static final DocumentLink SCANNED_DOCUMENT_URL = DocumentLink.builder()
@@ -506,6 +508,16 @@ public class BusinessValidationControllerTest {
         mockMvc.perform(post(RESOLVE_STOP_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data.state").value("BOExamining"))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
+    }
+
+    @Test
+    public void shouldSetStateForRedeclarationCompleteToRedec() throws Exception {
+        String payload = testUtils.getStringFromFile("payloadWithResponseRecorded.json");
+
+        mockMvc.perform(post(REDEC_COMPLETE).content(payload).contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.state").value(REDEC_NOTIFICATION_SENT_STATE))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
     }
 

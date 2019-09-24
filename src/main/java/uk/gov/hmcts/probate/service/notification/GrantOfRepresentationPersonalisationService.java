@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.config.properties.registries.Registry;
+import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
@@ -18,6 +19,8 @@ import java.util.List;
 import java.util.Map;
 
 import static uk.gov.hmcts.probate.model.Constants.DOC_SUBTYPE_WILL;
+import static uk.gov.hmcts.probate.model.Constants.NO;
+import static uk.gov.hmcts.probate.model.Constants.YES;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -40,10 +43,11 @@ public class GrantOfRepresentationPersonalisationService {
     private static final String PERSONALISATION_CCD_REFERENCE = "ccd_reference";
     private static final String PERSONALISATION_EXCELA_NAME = "excelaName";
     private static final String PERSONALISATION_CASE_DATA = "caseData";
+    private static final String PERSONALISATION_ADDRESSEE = "addressee";
 
-    public Map<String, String> getPersonalisation(CaseDetails caseDetails, Registry registry) {
+    public Map<String, Object> getPersonalisation(CaseDetails caseDetails, Registry registry) {
         CaseData caseData = caseDetails.getData();
-        HashMap<String, String> personalisation = new HashMap<>();
+        HashMap<String, Object> personalisation = new HashMap<>();
         personalisation.put(PERSONALISATION_APPLICANT_NAME, caseData.getPrimaryApplicantFullName());
         personalisation.put(PERSONALISATION_DECEASED_NAME, caseData.getDeceasedFullName());
         personalisation.put(PERSONALISATION_SOLICITOR_NAME, caseData.getSolsSOTName());
@@ -68,6 +72,11 @@ public class GrantOfRepresentationPersonalisationService {
         personalisation.put(PERSONALISATION_CASE_DATA, data.toString());
 
         return personalisation;
+    }
+
+    public Map<String, Object> addSingleAddressee(Map<String, Object> currentMap,String addressee) {
+        currentMap.put(PERSONALISATION_ADDRESSEE, addressee);
+        return currentMap;
     }
 
     private StringBuilder getBuiltData(List<ReturnedCaseDetails> cases) {
