@@ -32,6 +32,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import org.apache.commons.lang3.StringUtils;
 
 import static java.util.Collections.EMPTY_LIST;
 import static java.util.Optional.ofNullable;
@@ -506,7 +507,9 @@ public class CallbackResponseTransformer {
         return INTESTACY.getName().equals(caseData.getCaseType()) || NO_WILL.equals(caseData.getSolsWillType());
     }
 
-    private boolean isSolsEmailSet(CaseData caseData) { return !caseData.getSolsSolicitorEmail().isEmpty(); }
+    private boolean isSolsEmailSet(CaseData caseData) {
+        return StringUtils.isNotBlank(caseData.getSolsSolicitorEmail());
+    }
 
     private ResponseCaseDataBuilder getCaseCreatorResponseCaseBuilder(CaseData caseData, ResponseCaseDataBuilder builder) {
 
