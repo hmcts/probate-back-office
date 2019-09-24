@@ -37,7 +37,7 @@ public class RedeclarationNotificationService {
 
         for (CollectionMember<ExecutorsApplyingNotification> executor :
                 callbackRequest.getCaseDetails().getData().getExecutorsApplyingNotifications()) {
-            if (executor.getValue().getNotification().equals(YES)) {
+            if (YES.equals(executor.getValue().getNotification())) {
                 try {
                     emailDocument.add(
                             notificationService.sendEmailWithDocumentAttached(
