@@ -82,6 +82,7 @@ public class StateChangeServiceTest {
     private List<CollectionMember<ExecutorsApplyingNotification>> execList;
     private CollectionMember<ExecutorsApplyingNotification> execResponseReceived;
     private CollectionMember<ExecutorsApplyingNotification> execResponseNotReceived;
+    private CollectionMember<ExecutorsApplyingNotification> execResponseNotificationNo;
 
     @Before
     public void setup() {
@@ -102,6 +103,13 @@ public class StateChangeServiceTest {
         execResponseNotReceived = new CollectionMember<>(
                 ExecutorsApplyingNotification.builder()
                         .notification("Yes")
+                        .email("test@test.com")
+                        .responseReceived("No")
+                        .build());
+
+        execResponseNotificationNo = new CollectionMember<>(
+                ExecutorsApplyingNotification.builder()
+                        .notification("No")
                         .email("test@test.com")
                         .responseReceived("No")
                         .build());
@@ -428,6 +436,16 @@ public class StateChangeServiceTest {
 
         Optional<String> state = underTest.getRedeclarationComplete(caseData);
         assertEquals(Optional.of(REDEC_NOTIFICATION_SENT_STATE), state);
+    }
+
+    @Test
+    public void getRedeclarationCompleteWithStateChangeNotificationNo() {
+        execList.add(execResponseReceived);
+        execList.add(execResponseNotificationNo);
+        CaseData caseData = CaseData.builder().executorsApplyingNotifications(execList).build();
+
+        Optional<String> state = underTest.getRedeclarationComplete(caseData);
+        assertEquals(Optional.empty(), state);
     }
 
 }

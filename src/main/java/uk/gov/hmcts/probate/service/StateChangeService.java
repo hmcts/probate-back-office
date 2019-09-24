@@ -23,6 +23,7 @@ import java.util.Optional;
 
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.REDEC_NOTIFICATION_SENT_STATE;
+import static uk.gov.hmcts.probate.model.Constants.YES;
 
 @Component
 @RequiredArgsConstructor
@@ -150,8 +151,10 @@ public class StateChangeService {
         Optional<String> state = Optional.empty();
         for (CollectionMember<ExecutorsApplyingNotification> executorsApplyingNotification :
                 caseData.getExecutorsApplyingNotifications()) {
-            if (executorsApplyingNotification.getValue().getResponseReceived().equals(NO)) {
-                return (Optional.of(REDEC_NOTIFICATION_SENT_STATE));
+            if (YES.equals(executorsApplyingNotification.getValue().getNotification())) {
+                if (NO.equals(executorsApplyingNotification.getValue().getResponseReceived())) {
+                    return (Optional.of(REDEC_NOTIFICATION_SENT_STATE));
+                }
             }
         }
         return state;
