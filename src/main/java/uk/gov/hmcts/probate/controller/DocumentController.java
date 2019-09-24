@@ -260,8 +260,8 @@ public class DocumentController {
         String letterId = null;
 
         if (caseData.isSendForBulkPrintingRequested() && !EDGE_CASE_NAME.equals(caseData.getCaseType())) {
-            letterId = bulkPrintService.sendToBulkPrintGrantReissue(callbackRequest, coversheet,
-                    grantDocument);
+            letterId = bulkPrintService.sendToBulkPrint(callbackRequest, coversheet,
+                    grantDocument, true);
         }
 
         String pdfSize = getPdfSize(caseData);
