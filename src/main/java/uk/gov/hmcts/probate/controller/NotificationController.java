@@ -18,7 +18,9 @@ import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.service.BulkPrintService;
 import uk.gov.hmcts.probate.service.DocumentGeneratorService;
 import uk.gov.hmcts.probate.service.EventValidationService;
+import uk.gov.hmcts.probate.service.InformationRequestService;
 import uk.gov.hmcts.probate.service.NotificationService;
+import uk.gov.hmcts.probate.service.RedeclarationNotificationService;
 import uk.gov.hmcts.probate.service.docmosis.GrantOfRepresentationDocmosisMapperService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
@@ -28,6 +30,7 @@ import uk.gov.hmcts.probate.validator.EmailAddressNotifyValidationRule;
 import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
 import uk.gov.service.notify.NotificationClientException;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -55,6 +58,8 @@ public class NotificationController {
     private final BulkPrintService bulkPrintService;
     private final List<BulkPrintValidationRule> bulkPrintValidationRules;
     private final GrantOfRepresentationDocmosisMapperService gorDocmosisService;
+    private final InformationRequestService informationRequestService;
+    private final RedeclarationNotificationService redeclarationNotificationService;
 
 
     @PostMapping(path = "/documents-received")
@@ -145,5 +150,25 @@ public class NotificationController {
             response = callbackResponseTransformer.caseStopped(callbackRequest, documents, letterId);
         }
         return ResponseEntity.ok(response);
+    }
+
+    @PostMapping(path = "/request-information-default-values")
+    public ResponseEntity<CallbackResponse> requestInformationDefaultValues(
+            @RequestBody CallbackRequest callbackRequest) {
+
+        CallbackResponse callbackResponse = callbackResponseTransformer.defaultRequestInformationValues(callbackRequest);
+
+        return ResponseEntity.ok(callbackResponse);
+    }
+
+
+    @PostMapping(path = "/stopped-information-request")
+    public ResponseEntity<CallbackResponse> informationRequest(@RequestBody CallbackRequest callbackRequest) {
+        return ResponseEntity.ok(informationRequestService.handleInformationRequest(callbackRequest));
+    }
+
+    @PostMapping(path = "/redeclaration-sot")
+    public ResponseEntity<CallbackResponse> redeclarationSot(@RequestBody CallbackRequest callbackRequest) {
+        return ResponseEntity.ok(redeclarationNotificationService.handleRedeclarationNotification(callbackRequest));
     }
 }

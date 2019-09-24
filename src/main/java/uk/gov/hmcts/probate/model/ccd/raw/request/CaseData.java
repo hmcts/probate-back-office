@@ -13,6 +13,7 @@ import uk.gov.hmcts.probate.controller.validation.ApplicationIntestacyGroup;
 import uk.gov.hmcts.probate.controller.validation.ApplicationAdmonGroup;
 import uk.gov.hmcts.probate.controller.validation.NextStepsConfirmationGroup;
 import uk.gov.hmcts.probate.model.ApplicationType;
+import uk.gov.hmcts.probate.model.ExecutorsApplyingNotification;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
 import uk.gov.hmcts.probate.model.ccd.Reissue;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
@@ -205,6 +206,24 @@ public class CaseData {
     @NotBlank(groups = {ApplicationIntestacyGroup.class}, message = "{solsApplicantSiblingsIsNull}")
     private final String solsApplicantSiblings;
 
+    private final String boEmailDocsReceivedNotificationRequested;
+
+    @SuppressWarnings("squid:S1170")
+    @Getter(lazy = true)
+    private final String boEmailDocsReceivedNotification = getDefaultValueForEmailNotifications();
+
+    private final String boEmailGrantIssuedNotificationRequested;
+
+    @SuppressWarnings("squid:S1170")
+    @Getter(lazy = true)
+    private final String boEmailGrantIssuedNotification = getDefaultValueForEmailNotifications();
+
+    @SuppressWarnings("squid:S1170")
+    @Getter(lazy = true)
+    private final String boSendToBulkPrint = YES;
+
+    private final String boSendToBulkPrintRequested;
+
     //EVENT = review
     private final DocumentLink solsLegalStatementDocument;
 
@@ -323,25 +342,6 @@ public class CaseData {
 
     private final String primaryApplicantSameWillName;
 
-    private final String boEmailDocsReceivedNotificationRequested;
-
-    @SuppressWarnings("squid:S1170")
-    @Getter(lazy = true)
-    private final String boEmailDocsReceivedNotification = getDefaultValueForEmailNotifications();
-
-    private final String boEmailGrantIssuedNotificationRequested;
-
-    @SuppressWarnings("squid:S1170")
-    @Getter(lazy = true)
-    private final String boEmailGrantIssuedNotification = getDefaultValueForEmailNotifications();
-
-    @SuppressWarnings("squid:S1170")
-    @Getter(lazy = true)
-    private final String boSendToBulkPrint = YES;
-
-    private final String boSendToBulkPrintRequested;
-
-
     //paper form case creator fields
     private final String primaryApplicantSecondPhoneNumber;
     private final String primaryApplicantRelationshipToDeceased;
@@ -437,6 +437,8 @@ public class CaseData {
     private final String reissueDate;
     private final String reissueReasonNotation;
     private final String latestGrantReissueDate;
+    private final String boStopDetailsDeclarationParagraph;
+    private final List<CollectionMember<ExecutorsApplyingNotification>> executorsApplyingNotifications;
 
     private final List<CollectionMember<CaseMatch>> legacySearchResultRows;
 
@@ -485,6 +487,18 @@ public class CaseData {
     private final String anyDeceasedGrandChildrenUnderEighteen;
     private final String deceasedAnyChildren;
     private final String deceasedHasAssetsOutsideUK;
+
+    private final String boEmailRequestInfoNotificationRequested;
+
+    private final List<CollectionMember<Document>> probateSotDocumentsGenerated = new ArrayList<>();
+    @SuppressWarnings("squid:S1170")
+    @Getter(lazy = true)
+    private final String boEmailRequestInfoNotification = getDefaultValueForEmailNotifications();
+
+    @Getter(lazy = true)
+    private final String boRequestInfoSendToBulkPrint = YES;
+
+    private final String boRequestInfoSendToBulkPrintRequested;
 
     @Getter(lazy = true)
     private final List<CollectionMember<AdditionalExecutor>> executorsApplyingForLegalStatement = getAllExecutors(true);
@@ -579,6 +593,14 @@ public class CaseData {
 
     public boolean isCaveatStopSendToBulkPrintRequested() {
         return YES.equals(getBoCaveatStopSendToBulkPrint());
+    }
+
+    public boolean isBoEmailRequestInfoNotificationRequested() {
+        return YES.equals(getBoEmailRequestInfoNotification());
+    }
+
+    public boolean isBoRequestInfoSendToBulkPrintRequested() {
+        return YES.equals(getBoRequestInfoSendToBulkPrint());
     }
 
     private String convertDate(LocalDate dateToConvert) {

@@ -16,10 +16,10 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
 
     private static final String SUCCESS = "SUCCESS";
     private static final String WARNINGS = "WARNINGS";
-    private static final String DOB_MISSING = "What was their date of birth?";
-    private static final String DOD_MISSING = "What was their date of death?";
+    private static final String DOB_MISSING = "Deceased date of birth (deceasedDateOfBirth) is mandatory.";
+    private static final String DOD_MISSING = "Deceased date of death (deceasedDateOfDeath) is mandatory.";
 
-    private static final String VALIDATE_OCR_DATA = "/forms/PA1P/validate-ocr-data";
+    private static final String VALIDATE_OCR_DATA = "/forms/PA1P/validate-ocr";
 
     private String jsonFile;
 

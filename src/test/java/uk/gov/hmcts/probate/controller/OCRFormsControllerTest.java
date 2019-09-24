@@ -74,7 +74,7 @@ public class OCRFormsControllerTest {
 
     @Test
     public void testNoWarningsReturnOkResponseAndSuccessResponseStateForPA1P() throws Exception {
-        mockMvc.perform(post("/forms/PA1P/validate-ocr-data")
+        mockMvc.perform(post("/forms/PA1P/validate-ocr")
                 .content(ocrPayload)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -84,7 +84,7 @@ public class OCRFormsControllerTest {
     @Test
     public void testWarningsPopulateListAndReturnOkWithWarningsResponseState() throws Exception {
         when(ocrToCCDMandatoryField.ocrToCCDMandatoryFields(any(), any())).thenReturn(warnings);
-        mockMvc.perform(post("/forms/PA1P/validate-ocr-data")
+        mockMvc.perform(post("/forms/PA1P/validate-ocr")
                 .content(ocrPayload)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -94,7 +94,7 @@ public class OCRFormsControllerTest {
 
     @Test
     public void testNoWarningsReturnOkResponseAndSuccessResponseStateForPA1A() throws Exception {
-        mockMvc.perform(post("/forms/PA1A/validate-ocr-data")
+        mockMvc.perform(post("/forms/PA1A/validate-ocr")
                 .content(ocrPayload)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -103,7 +103,7 @@ public class OCRFormsControllerTest {
 
     @Test
     public void testNoWarningsReturnOkResponseAndSuccessResponseStateForPA8A() throws Exception {
-        mockMvc.perform(post("/forms/PA8A/validate-ocr-data")
+        mockMvc.perform(post("/forms/PA8A/validate-ocr")
                 .content(ocrPayload)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -112,7 +112,7 @@ public class OCRFormsControllerTest {
 
     @Test
     public void testInvalidFormTypeThrowsNotFound() throws Exception {
-        mockMvc.perform(post("/forms/test/validate-ocr-data")
+        mockMvc.perform(post("/forms/test/validate-ocr")
                 .content(ocrPayload)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is4xxClientError())

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Data;
 import uk.gov.hmcts.probate.model.ApplicationType;
+import uk.gov.hmcts.probate.model.ExecutorsApplyingNotification;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
 import uk.gov.hmcts.probate.model.ccd.Reissue;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
@@ -272,4 +273,12 @@ public class ResponseCaseData {
     private final String anyDeceasedGrandChildrenUnderEighteen;
     private final String deceasedAnyChildren;
     private final String deceasedHasAssetsOutsideUK;
+
+    private final String boStopDetailsDeclarationParagraph;
+    private final String boEmailRequestInfoNotificationRequested;
+    private final String boEmailRequestInfoNotification;
+    private final String boRequestInfoSendToBulkPrint;
+    private final String boRequestInfoSendToBulkPrintRequested;
+    private final List<CollectionMember<ExecutorsApplyingNotification>> executorsApplyingNotifications;
+    private final List<CollectionMember<Document>> probateSotDocumentsGenerated;
 }

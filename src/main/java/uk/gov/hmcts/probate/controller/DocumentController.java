@@ -31,6 +31,7 @@ import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.WillLodgementCallbackResponseTransformer;
 import uk.gov.hmcts.probate.validator.BulkPrintValidationRule;
 import uk.gov.hmcts.probate.validator.EmailAddressNotificationValidationRule;
+import uk.gov.hmcts.probate.validator.RedeclarationSoTValidationRule;
 import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
 import uk.gov.service.notify.NotificationClientException;
 
@@ -78,6 +79,7 @@ public class DocumentController {
     private final EventValidationService eventValidationService;
     private final List<EmailAddressNotificationValidationRule> emailAddressNotificationValidationRules;
     private final List<BulkPrintValidationRule> bulkPrintValidationRules;
+    private final RedeclarationSoTValidationRule redeclarationSoTValidationRule;
     private static final String DRAFT = "preview";
     private static final String FINAL = "final";
 
@@ -254,8 +256,9 @@ public class DocumentController {
         documents.add(grantDocument);
         documents.add(coversheet);
 
-        String letterId = bulkPrintService.sendToBulkPrintGrantReissue(callbackRequest, coversheet,
-                grantDocument);
+        String letterId = bulkPrintService.sendToBulkPrint(callbackRequest, coversheet,
+                grantDocument,
+                callbackRequest.getCaseDetails().getData().isSendForBulkPrintingRequestedGrantReIssued());
         String pdfSize = getPdfSize(callbackRequest.getCaseDetails().getData());
 
         if (callbackRequest.getCaseDetails().getData().isGrantReissuedEmailNotificationRequested()) {
@@ -264,5 +267,13 @@ public class DocumentController {
         log.info("{} documents generated: {}", documents.size(), documents);
         return ResponseEntity.ok(callbackResponseTransformer.addDocuments(callbackRequest,
                 documents, letterId, pdfSize));
+    }
+
+    @PostMapping(path = "/generate-sot", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<CallbackResponse> generateStatementOfTruth(@RequestBody CallbackRequest callbackRequest) {
+        redeclarationSoTValidationRule.validate(callbackRequest.getCaseDetails());
+        log.info("Initiating call for SoT");
+        return ResponseEntity.ok(callbackResponseTransformer.addSOTDocument(callbackRequest,
+                documentGeneratorService.generateSoT(callbackRequest)));
     }
 }

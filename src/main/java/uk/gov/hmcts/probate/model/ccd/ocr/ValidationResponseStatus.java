@@ -1,5 +1,5 @@
 package uk.gov.hmcts.probate.model.ccd.ocr;
 
-public enum ValidationResponseState {
+public enum ValidationResponseStatus {
     ERRORS, WARNINGS, SUCCESS
 }
