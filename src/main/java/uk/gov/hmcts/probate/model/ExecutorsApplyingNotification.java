@@ -11,4 +11,5 @@ public class ExecutorsApplyingNotification {
     private String email;
     private SolsAddress address;
     private String notification;
+    private String responseReceived;
 }
