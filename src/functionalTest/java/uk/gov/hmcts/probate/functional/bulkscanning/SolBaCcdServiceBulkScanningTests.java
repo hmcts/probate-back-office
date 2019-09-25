@@ -2,6 +2,7 @@ package uk.gov.hmcts.probate.functional.bulkscanning;
 
 import net.serenitybdd.junit.runners.SerenityRunner;
 import net.serenitybdd.rest.SerenityRest;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
@@ -36,12 +37,14 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
                 .and().content(containsString(containsText));
     }
 
+    @Ignore
     @Test
     public void testAllMandatoryFieldsPresentReturnNoWarnings() {
         jsonFile = utils.getJsonFromFile("expectedOCRDataAllMandatoryFields.json");
         validatePostSuccess(jsonFile, SUCCESS, null, 0, 0);
     }
 
+    @Ignore
     @Test
     public void testMissingMandatoryFieldsReturnWarnings() {
         jsonFile = utils.getJsonFromFile("expectedOCRDataMissingMandatoryFields.json");
