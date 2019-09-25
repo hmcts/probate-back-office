@@ -319,27 +319,17 @@ public class DocumentControllerTest {
     }
 
     @Test
-    public void shouldNotGenerateGrantEdgeCase() throws Exception {
+    public void shouldNotGenerateGrantEdgeCaseBulkPrint() throws Exception {
 
-        String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadNotificationsEdgeCase.json");
+        String solicitorPayload = testUtils.getStringFromFile("payloadWithEdgeCaseBulkPrint.json");
 
         MvcResult result = mockMvc.perform(post("/document/generate-grant")
                 .content(solicitorPayload)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
+                .andExpect(content().string(containsString("data")))
                 .andReturn();
-    }
 
-    @Test
-    public void shouldNotGenerateGrantDraftEdgeCaseReissue() throws Exception {
-
-        String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadNotificationsEdgeCase.json");
-
-        mockMvc.perform(post("/document/generate-grant-draft-reissue")
-                .content(solicitorPayload)
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().string(containsString("data")));
     }
 
     @Test
@@ -353,23 +343,6 @@ public class DocumentControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("data")));
 
-
-    }
-
-    @Test
-    public void shouldNotSendToBulkPrintIfEdgeCase() throws Exception {
-
-        String solicitorPayload = testUtils.getStringFromFile("payloadWithEdgeCaseBulkPrint.json");
-
-        mockMvc.perform(post("/document/generate-grant")
-                .content(solicitorPayload)
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().string(containsString("data")));
-
-        when(bulkPrintService.sendToBulkPrint(any(CallbackRequest.class), any(Document.class),
-                any(Document.class))).thenReturn(null);
-        verify(bulkPrintService).sendToBulkPrint(any(CallbackRequest.class), any(Document.class), any(Document.class));
 
     }
 
