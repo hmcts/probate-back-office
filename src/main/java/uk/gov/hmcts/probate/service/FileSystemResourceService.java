@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 
 @Slf4j
@@ -37,7 +37,7 @@ public class FileSystemResourceService {
         try {
             Optional<FileSystemResource> fileSystemResource = getFileSystemResource(resourcePath);
             if (fileSystemResource.isPresent()) {
-                return FileUtils.readFileToString(fileSystemResource.get().getFile(), Charset.defaultCharset());
+                return FileUtils.readFileToString(fileSystemResource.get().getFile(), StandardCharsets.UTF_8);
             }
             return null;
         } catch (IOException e) {
