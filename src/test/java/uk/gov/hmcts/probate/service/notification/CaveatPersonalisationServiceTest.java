@@ -79,7 +79,7 @@ public class CaveatPersonalisationServiceTest {
     private static final String PERSONALISATION_CAVEATOR_NAME = "caveator_name";
     private static final String PERSONALISATION_CAVEATOR_ADDRESS = "caveator_address";
 
-    HashMap<String, String> personalisation = new HashMap<>();
+    HashMap<String, Object> personalisation = new HashMap<>();
     private CaseData caseDataPersonal;
     private CaseData caseDataSolicitor;
     private CaveatData returnedCaveatData;
@@ -164,7 +164,8 @@ public class CaveatPersonalisationServiceTest {
         when(caveatQueryServiceMock.findCaveatById(CaseType.CAVEAT, caseDataPersonal.getBoCaseStopCaveatId()))
                 .thenReturn(returnedCaveatData);
 
-        Map<String, String> response = caveatPersonalisationService.getCaveatStopPersonalisation(personalisation, caseDataPersonal);
+        Map<String, Object> response = caveatPersonalisationService.getCaveatStopPersonalisation(personalisation,
+                caseDataPersonal);
 
         assertEquals("10th October 2000", response.get(PERSONALISATION_DATE_CAVEAT_ENTERED));
         assertEquals("cav first name cav surname", response.get(PERSONALISATION_CAVEATOR_NAME));
@@ -177,7 +178,8 @@ public class CaveatPersonalisationServiceTest {
         when(caveatQueryServiceMock.findCaveatById(CaseType.CAVEAT, caseDataSolicitor.getBoCaseStopCaveatId()))
                 .thenReturn(returnedCaveatData);
 
-        Map<String, String> response = caveatPersonalisationService.getCaveatStopPersonalisation(personalisation, caseDataSolicitor);
+        Map<String, Object> response = caveatPersonalisationService.getCaveatStopPersonalisation(personalisation,
+                caseDataSolicitor);
 
         assertEquals("10th October 2000", response.get(PERSONALISATION_DATE_CAVEAT_ENTERED));
         assertEquals("cav first name cav surname", response.get(PERSONALISATION_CAVEATOR_NAME));

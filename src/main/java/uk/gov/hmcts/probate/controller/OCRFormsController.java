@@ -38,8 +38,7 @@ public class OCRFormsController {
     @ApiResponses({
             @ApiResponse(code = 200, response = ValidationResponse.class, message = "Validation executed successfully"),
             @ApiResponse(code = 400, message = "Request failed due to malformed syntax"),
-            @ApiResponse(code = 401, message = "Provided S2S token is missing or invalid"),
-            @ApiResponse(code = 403, message = "S2S token is not authorized to use the service"),
+            @ApiResponse(code = 403, message = "S2S token is not authorized, missing or invalid"),
             @ApiResponse(code = 404, message = "Form type not found")
     })
     @PostMapping(path = "/{form-type}/validate-ocr", consumes = APPLICATION_JSON_UTF8_VALUE)

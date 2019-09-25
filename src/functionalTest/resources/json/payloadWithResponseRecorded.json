@@ -27,7 +27,6 @@
       "dateOfDeathType" : "presumedDiedOn",
       "otherExecutorExists": "No",
       "boSendToBulkPrint": "No",
-      "paperForm" : "No",
       "outsideUKGrantCopies": null,
       "applicationType": "Personal",
       "deceasedAddress": {
@@ -47,7 +46,7 @@
             "name": "Bob Smith",
             "email": "test@test.com",
             "notification": "Yes",
-            "responseReceived": "No",
+            "responseReceived": "Yes",
             "address": {
               "County": "",
               "Country": "",

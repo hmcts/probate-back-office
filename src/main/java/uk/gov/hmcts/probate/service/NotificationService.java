@@ -23,25 +23,29 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
+import uk.gov.hmcts.probate.service.client.DocumentStoreClient;
 import uk.gov.hmcts.probate.service.notification.CaveatPersonalisationService;
 import uk.gov.hmcts.probate.service.notification.GrantOfRepresentationPersonalisationService;
 import uk.gov.hmcts.probate.service.notification.SentEmailPersonalisationService;
 import uk.gov.hmcts.probate.service.notification.TemplateService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.validator.EmailAddressNotificationValidationRule;
+import uk.gov.hmcts.reform.authorisation.generators.ServiceAuthTokenGenerator;
 import uk.gov.service.notify.NotificationClient;
 import uk.gov.service.notify.NotificationClientException;
 import uk.gov.service.notify.SendEmailResponse;
 
-import javax.validation.Valid;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
+import javax.validation.Valid;
 
 import static uk.gov.hmcts.probate.model.Constants.BUSINESS_ERROR;
 import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
 import static uk.gov.hmcts.probate.model.State.GRANT_REISSUED;
+import static uk.gov.service.notify.NotificationClient.prepareUpload;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -62,11 +66,14 @@ public class NotificationService {
     private final CaveatPersonalisationService caveatPersonalisationService;
     private final SentEmailPersonalisationService sentEmailPersonalisationService;
     private final TemplateService templateService;
+    private final ServiceAuthTokenGenerator tokenGenerator;
+    private final DocumentStoreClient documentStoreClient;
 
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMM Y HH:mm");
     private static final DateTimeFormatter EXCELA_DATE = DateTimeFormatter.ofPattern("yyyyMMdd");
 
     private static final String PERSONALISATION_APPLICANT_NAME = "applicant_name";
+    private static final String PERSONALISATION_SOT_LINK = "sot_link";
 
 
     public Document sendEmail(State state, CaseDetails caseDetails)
@@ -78,7 +85,8 @@ public class NotificationService {
         String templateId = templateService.getTemplateId(state, caseData.getApplicationType(), caseData.getRegistryLocation());
         String emailReplyToId = registry.getEmailReplyToId();
         String emailAddress = getEmail(caseData);
-        Map<String, String> personalisation = grantOfRepresentationPersonalisationService.getPersonalisation(caseDetails, registry);
+        Map<String, Object> personalisation = grantOfRepresentationPersonalisationService.getPersonalisation(caseDetails,
+                registry);
         String reference = caseData.getSolsSolicitorAppReference();
 
         if (state == state.CASE_STOPPED_CAVEAT) {
@@ -102,7 +110,8 @@ public class NotificationService {
 
         String templateId = templateService.getTemplateId(state, caseData.getApplicationType(), caseData.getRegistryLocation());
         String emailAddress = executor.getEmail();
-        Map<String, String> personalisation = grantOfRepresentationPersonalisationService.getPersonalisation(caseDetails, registry);
+        Map<String, Object> personalisation = grantOfRepresentationPersonalisationService.getPersonalisation(caseDetails,
+                registry);
         String reference = caseData.getSolsSolicitorAppReference();
         String emailReplyToId = registry.getEmailReplyToId();
 
@@ -157,6 +166,33 @@ public class NotificationService {
         log.info("Excela email reference response: {}", response.getReference());
 
         return getGeneratedSentEmailDocument(response, emailAddresses.getExcelaEmail(), SENT_EMAIL);
+    }
+
+    public Document sendEmailWithDocumentAttached(CaseDetails caseDetails, ExecutorsApplyingNotification executor,
+                                                  State state) throws NotificationClientException, IOException {
+        String authHeader = tokenGenerator.generate();
+        byte[] sotDocument = documentStoreClient.retrieveDocument(caseDetails.getData()
+                .getProbateSotDocumentsGenerated()
+                .get(caseDetails.getData().getProbateSotDocumentsGenerated().size() - 1).getValue(), authHeader);
+
+        Registry registry = registriesProperties.getRegistries().get(caseDetails.getData().getRegistryLocation().toLowerCase());
+
+        String templateId = templateService.getTemplateId(state,
+                caseDetails.getData().getApplicationType(), caseDetails.getData().getRegistryLocation());
+        String emailReplyToId = registry.getEmailReplyToId();
+
+        Map<String, Object> personalisation =
+                grantOfRepresentationPersonalisationService.getPersonalisation(caseDetails, registry);
+        grantOfRepresentationPersonalisationService.addSingleAddressee(personalisation, executor.getName());
+
+        personalisation.put(PERSONALISATION_SOT_LINK, prepareUpload(sotDocument));
+
+        String reference = caseDetails.getData().getSolsSolicitorAppReference();
+
+        SendEmailResponse response =
+                getSendEmailResponse(state, templateId, emailReplyToId, executor.getEmail(), personalisation, reference);
+
+        return getSentEmailDocument(state, executor.getEmail(), response);
     }
 
     public Document generateGrantReissue(CallbackRequest callbackRequest) throws NotificationClientException {
@@ -215,7 +251,8 @@ public class NotificationService {
     }
 
     private SendEmailResponse getSendEmailResponse(State state, String templateId, String emailReplyToId,
-                                                   String emailAddress, Map<String, String> personalisation, String reference)
+                                                   String emailAddress, Map<String, Object> personalisation,
+                                                   String reference)
             throws NotificationClientException {
         SendEmailResponse response;
 
@@ -223,6 +260,7 @@ public class NotificationService {
             case CASE_STOPPED:
             case CASE_STOPPED_CAVEAT:
             case CASE_STOPPED_REQUEST_INFORMATION:
+            case REDECLARATION_SOT:
                 response = notificationClient.sendEmail(templateId, emailAddress, personalisation, reference, emailReplyToId);
                 break;
             default:
