@@ -1253,7 +1253,8 @@ public class NotificationServiceTest {
                         .build())
                 .email("personal@test.com")
                 .notification("Yes").build();
-        notificationService.sendEmailWithDocumentAttached(personalCaseDataCtsc, executorsApplyingNotification, CASE_STOPPED_REQUEST_INFORMATION);
+        notificationService.sendEmailWithDocumentAttached(personalCaseDataCtsc,
+                executorsApplyingNotification, CASE_STOPPED_REQUEST_INFORMATION);
 
         verify(notificationClient).sendEmail(
                 eq("pa-request-information"),
