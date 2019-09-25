@@ -9,7 +9,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.mockito.stubbing.Answer;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ExecutorsApplyingNotification;
@@ -61,7 +60,6 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.doAnswer;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
 import static uk.gov.hmcts.probate.model.Constants.CTSC;
@@ -1336,7 +1334,7 @@ public class CallbackResponseTransformerTest {
                 .epaOrLpa(NO)
                 .epaRegistered(NO)
                 .domicilityCountry("Spain")
-                .ukEstateItems(estate)
+                .ukEstate(estate)
                 .attorneyOnBehalfOfNameAndAddress(attorneyList)
                 .adopted(YES)
                 .adoptiveRelatives(adoptedRelatives)
@@ -1412,7 +1410,7 @@ public class CallbackResponseTransformerTest {
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
         CallbackResponse callbackResponse = underTest.paperForm(callbackRequestMock);
-        assertEquals(1, callbackResponse.getData().getUkEstateItems().size());
+        assertEquals(1, callbackResponse.getData().getUkEstate().size());
         assertEquals(1, callbackResponse.getData().getAttorneyOnBehalfOfNameAndAddress().size());
         assertEquals(1, callbackResponse.getData().getScannedDocuments().size());
         assertEquals(1, callbackResponse.getData().getAdoptiveRelatives().size());
