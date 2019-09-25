@@ -2,6 +2,7 @@ package uk.gov.hmcts.probate.service.template.pdf;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.nio.charset.StandardCharsets;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -66,7 +67,7 @@ public class PDFGeneratorService {
         Map<String, Object> paramMap = asMap(pdfGenerationData);
         appInsights.trackEvent(REQUEST_SENT, pdfServiceConfiguration.getUrl());
 
-        return pdfServiceClient.generateFromHtml(templateAsString.getBytes(), paramMap);
+        return pdfServiceClient.generateFromHtml(templateAsString.getBytes(StandardCharsets.UTF_8), paramMap);
     }
 
     private Map<String, Object> asMap(String placeholderValues) throws IOException {
