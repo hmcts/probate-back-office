@@ -1257,8 +1257,7 @@ public class NotificationServiceTest {
                 eq("pa-request-information"),
                 eq("personal@test.com"),
                 any(),
-                eq(null),
-                eq("ctsc-emailReplyToId"));
+                eq(null));
 
     }
 
