@@ -32,6 +32,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import org.apache.commons.lang3.StringUtils;
 
 import static java.util.Collections.EMPTY_LIST;
 import static java.util.Optional.ofNullable;
@@ -506,6 +507,10 @@ public class CallbackResponseTransformer {
         return INTESTACY.getName().equals(caseData.getCaseType()) || NO_WILL.equals(caseData.getSolsWillType());
     }
 
+    private boolean isSolsEmailSet(CaseData caseData) {
+        return StringUtils.isNotBlank(caseData.getSolsSolicitorEmail());
+    }
+
     private ResponseCaseDataBuilder getCaseCreatorResponseCaseBuilder(CaseData caseData, ResponseCaseDataBuilder builder) {
 
         builder
@@ -643,6 +648,16 @@ public class CallbackResponseTransformer {
                     .primaryApplicantIsApplying(ANSWER_YES);
         }
 
+        if (isSolsEmailSet(caseData)) {
+            builder
+                    .boEmailDocsReceivedNotification(ANSWER_YES)
+                    .boEmailRequestInfoNotification(ANSWER_YES);
+        } else {
+            builder
+                    .boEmailDocsReceivedNotification(ANSWER_NO)
+                    .boEmailRequestInfoNotification(ANSWER_NO);
+        }
+
         if (caseData.getCaseType() == null) {
             builder
                     .caseType(CASE_TYPE_DEFAULT);
@@ -721,6 +736,16 @@ public class CallbackResponseTransformer {
         if (isIntestacy(caseData)) {
             builder
                     .primaryApplicantIsApplying(ANSWER_YES);
+        }
+
+        if (isSolsEmailSet(caseData)) {
+            builder
+                    .boEmailDocsReceivedNotification(ANSWER_YES)
+                    .boEmailRequestInfoNotification(ANSWER_YES);
+        } else {
+            builder
+                    .boEmailDocsReceivedNotification(ANSWER_NO)
+                    .boEmailRequestInfoNotification(ANSWER_NO);
         }
 
         if (caseData.getCaseType() == null) {

@@ -1,6 +1,5 @@
 package uk.gov.hmcts.probate.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,11 +24,9 @@ import uk.gov.hmcts.probate.service.ConfirmationResponseService;
 import uk.gov.hmcts.probate.service.EventValidationService;
 import uk.gov.hmcts.probate.service.StateChangeService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
-import uk.gov.hmcts.probate.transformer.CCDDataTransformer;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.validator.CaseworkerAmendValidationRule;
 import uk.gov.hmcts.probate.validator.CheckListAmendCaseValidationRule;
-import uk.gov.hmcts.probate.validator.EmailAddressNotificationValidationRule;
 import uk.gov.hmcts.probate.validator.RedeclarationSoTValidationRule;
 import uk.gov.hmcts.probate.validator.ValidationRule;
 
@@ -54,8 +51,6 @@ public class BusinessValidationUnitTest {
     @Mock
     private ObjectMapper objectMapper;
     @Mock
-    private CCDDataTransformer ccdBeanTransformer;
-    @Mock
     private CallbackRequest callbackRequestMock;
     @Mock
     private HttpServletRequest httpServletRequest;
@@ -76,8 +71,6 @@ public class BusinessValidationUnitTest {
     @Mock
     private List<CheckListAmendCaseValidationRule> checkListAmendCaseValidationRules;
     @Mock
-    private List<EmailAddressNotificationValidationRule> emailAddressNotificationValidationRules;
-    @Mock
     private CallbackResponseTransformer callbackResponseTransformerMock;
     @Mock
     private CallbackResponse callbackResponseMock;
@@ -93,13 +86,11 @@ public class BusinessValidationUnitTest {
     private FieldErrorResponse businessValidationErrorMock;
     @Mock
     private PDFManagementService pdfManagementServiceMock;
-    @Mock
-    private JsonProcessingException jsonProcessingException;
 
 
     private BusinessValidationController underTest;
 
-    private static Optional<String> STATE_GRANT_TYPE_PROBATE;
+    private static Optional<String> STATE_GRANT_TYPE_PROBATE = Optional.of("SolProbateCreated");
 
     @Before
     public void setUp() {
@@ -268,24 +259,6 @@ public class BusinessValidationUnitTest {
         assertThat(response.getBody(), is(callbackResponseMock));
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(response.getBody().getErrors().isEmpty(), is(true));
-    }
-
-    @Test
-    public void shouldErrorForLogRequest() throws JsonProcessingException {
-        when(objectMapper.writeValueAsString(callbackRequestMock)).thenThrow(jsonProcessingException);
-
-        when(bindingResultMock.hasErrors()).thenReturn(false);
-        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
-        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
-        when(eventValidationServiceMock.validateRequest(callbackRequestMock, validationRules)).thenReturn(callbackResponseMock);
-        when(stateChangeServiceMock.getChangedStateForGrantType(caseDataMock)).thenReturn(STATE_GRANT_TYPE_PROBATE);
-        when(callbackResponseTransformerMock.transformWithConditionalStateChange(callbackRequestMock, STATE_GRANT_TYPE_PROBATE))
-                .thenReturn(callbackResponseMock);
-
-        ResponseEntity<CallbackResponse> response = underTest.solsValidate(callbackRequestMock,
-                bindingResultMock, httpServletRequest);
-
-        assertThat(response.getStatusCode(), is(HttpStatus.OK));
     }
 
     @Test(expected = BadRequestException.class)
