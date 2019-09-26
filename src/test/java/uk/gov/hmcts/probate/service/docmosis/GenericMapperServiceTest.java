@@ -21,9 +21,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.ArgumentMatchers.anyDouble;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.Constants.CTSC;
 
@@ -33,7 +30,9 @@ public class GenericMapperServiceTest {
     private static final String DECEASED_SURNAME_KEY = "deceasedSurname";
     private static final String DECEASED_SURNAME_VALUE = "Deadsoul";
     private static final String DECEASED_DOD_KEY = "deceasedDateOfDeath";
+    private static final String DECEASED_DOB_KEY = "deceasedDateOfBirth";
     private static final String DECEASED_DOD_VALUE = "2015-01-01";
+    private static final String DECEASED_DOB_VALUE = "1990-01-01";
     private static final String DECEASED_ADDRESS_KEY = "deceasedAddress";
     private static Map<String, Object> DECEASED_ADDRESS_VALUE = new HashMap<>();
     private static final String DECEASED_TITLE_KEY = "boDeceasedTitle";
@@ -275,6 +274,7 @@ public class GenericMapperServiceTest {
         expectedMap.put(DECEASED_FORNAME_KEY, DECEASED_FORNAME_VALUE);
         expectedMap.put(DECEASED_SURNAME_KEY, DECEASED_SURNAME_VALUE);
         expectedMap.put(DECEASED_DOD_KEY, DECEASED_DOD_VALUE);
+        expectedMap.put(DECEASED_DOB_KEY, DECEASED_DOB_VALUE);
         expectedMap.put(DECEASED_ADDRESS_KEY, DECEASED_ADDRESS_VALUE);
         expectedMap.put(DECEASED_TITLE_KEY, DECEASED_TITLE_VALUE);
         expectedMap.put(PRIMARY_APPLICANT_APPLYING_KEY, PRIMARY_APPLICANT_APPLYING_VALUE);

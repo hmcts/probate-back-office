@@ -1124,8 +1124,7 @@ public class NotificationServiceTest {
                 eq("pa-request-information"),
                 eq("personal@test.com"),
                 eq(personalisation),
-                eq(null),
-                eq("ctsc-emailReplyToId"));
+                eq(null));
 
         when(pdfManagementService.generateDocmosisDocumentAndUpload(any(Map.class), any())).thenReturn(Document.builder()
                 .documentFileName(SENT_EMAIL_FILE_NAME).build());
@@ -1171,8 +1170,7 @@ public class NotificationServiceTest {
                 eq("sols-request-information"),
                 eq("sols@test.com"),
                 eq(personalisation),
-                eq(null),
-                eq("ctsc-emailReplyToId"));
+                eq(null));
 
         when(pdfManagementService.generateDocmosisDocumentAndUpload(any(Map.class), any())).thenReturn(Document.builder()
                 .documentFileName(SENT_EMAIL_FILE_NAME).build());
@@ -1216,8 +1214,7 @@ public class NotificationServiceTest {
                 eq("pa-redeclaration-sot"),
                 eq("personal@test.com"),
                 any(),
-                eq(null),
-                eq("ctsc-emailReplyToId"));
+                eq(null));
 
     }
 
