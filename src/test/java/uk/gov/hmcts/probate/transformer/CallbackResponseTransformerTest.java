@@ -299,6 +299,7 @@ public class CallbackResponseTransformerTest {
                 .deceasedSurname(DECEASED_LASTNAME)
                 .deceasedDateOfBirth(DOB)
                 .deceasedDateOfDeath(DOD)
+                .willHasCodicils(YES)
                 .willNumberOfCodicils(NUM_CODICILS)
                 .ihtFormId(IHT_FORM_ID)
                 .ihtGrossValue(IHT_GROSS)
@@ -1553,6 +1554,19 @@ public class CallbackResponseTransformerTest {
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
         CallbackResponse callbackResponse = underTest.paperForm(callbackRequestMock);
         assertEquals("diedOn", callbackResponse.getData().getDateOfDeathType());
+    }
+
+    @Test
+    public void shouldSetCodicilsNumberNullWhenWillHasCodicilsNo() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL);
+        caseDataBuilder.willHasCodicils(NO);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+
+        assertEquals(null, callbackResponse.getData().getWillNumberOfCodicils());
     }
 
     @Test
