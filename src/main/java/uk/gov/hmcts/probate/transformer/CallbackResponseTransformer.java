@@ -39,6 +39,7 @@ import static java.util.Optional.ofNullable;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
 import static uk.gov.hmcts.probate.model.Constants.CTSC;
 import static uk.gov.hmcts.probate.model.Constants.DATE_OF_DEATH_TYPE_DEFAULT;
+import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT_STOPPED;
@@ -511,6 +512,10 @@ public class CallbackResponseTransformer {
         return StringUtils.isNotBlank(caseData.getSolsSolicitorEmail());
     }
 
+    private boolean isCodicil(CaseData caseData) {
+        return YES.equals(caseData.getWillHasCodicils());
+    }
+
     private ResponseCaseDataBuilder getCaseCreatorResponseCaseBuilder(CaseData caseData, ResponseCaseDataBuilder builder) {
 
         builder
@@ -658,6 +663,11 @@ public class CallbackResponseTransformer {
                     .boEmailRequestInfoNotification(ANSWER_NO);
         }
 
+        if (!isCodicil(caseData)) {
+            builder
+                    .willNumberOfCodicils(null);
+        }
+
         if (caseData.getCaseType() == null) {
             builder
                     .caseType(CASE_TYPE_DEFAULT);
@@ -746,6 +756,11 @@ public class CallbackResponseTransformer {
             builder
                     .boEmailDocsReceivedNotification(ANSWER_NO)
                     .boEmailRequestInfoNotification(ANSWER_NO);
+        }
+
+        if (!isCodicil(caseData)) {
+            builder
+                    .willNumberOfCodicils(null);
         }
 
         if (caseData.getCaseType() == null) {
