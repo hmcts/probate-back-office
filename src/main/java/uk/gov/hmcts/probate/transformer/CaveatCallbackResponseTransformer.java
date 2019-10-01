@@ -13,6 +13,7 @@ import uk.gov.hmcts.probate.model.ccd.caveat.response.ResponseCaveatData.Respons
 import uk.gov.hmcts.probate.model.ccd.raw.BulkPrint;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
+import uk.gov.hmcts.probate.model.exceptionrecord.CaseCreationDetails;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -82,11 +83,11 @@ public class CaveatCallbackResponseTransformer {
         return transformResponse(responseCaveatData);
     }
 
-    public CaveatCallbackResponse transform(CaveatCallbackRequest callbackRequest) {
+    public CaseCreationDetails transform(CaveatCallbackRequest callbackRequest) {
         ResponseCaveatData responseCaveatData = getResponseCaveatData(callbackRequest.getCaseDetails())
                 .build();
-
-        return transformResponse(responseCaveatData);
+        return CaseCreationDetails.builder().<ResponseCaveatData>
+                eventId("PA_APP_CREATED").caseData(responseCaveatData).caseTypeId("Caveat").build();
     }
 
     public CaveatCallbackResponse addMatches(CaveatCallbackRequest request, List<CaseMatch> newMatches) {
