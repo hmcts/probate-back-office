@@ -338,5 +338,5 @@
   {"CaseTypeID": "Caveat", "CaseEventID": "createCase", "UserRole": "citizen", "CRUD": "CRU"},
   {"CaseTypeID": "Caveat", "CaseEventID": "createCasePaymentFailed", "UserRole": "citizen", "CRUD": "CRU"},
   {"CaseTypeID": "Caveat", "CaseEventID": "createCasePaymentFailedMultiple", "UserRole": "citizen", "CRUD": "CRU"},
-  {"CaseTypeID": "Caveat", "CaseEventID": "createCasePaymentSuccess", "UserRole": "citizen", "CRUD": "CRU"},
+  {"CaseTypeID": "Caveat", "CaseEventID": "createCasePaymentSuccess", "UserRole": "citizen", "CRUD": "CRU"}
 ]
