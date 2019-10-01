@@ -19,6 +19,7 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "Channel": "CaseWorker", "TabID": "caveatTab", "TabLabel": "Caveat details", "TabDisplayOrder": 5, "CaseFieldID": "paperForm", "TabFieldDisplayOrder": 4},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "Channel": "CaseWorker", "TabID": "documentsTab", "TabLabel": "Documents", "TabDisplayOrder": 6, "CaseFieldID": "documentsUploaded", "TabFieldDisplayOrder": 1},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "Channel": "CaseWorker", "TabID": "documentsTab", "TabLabel": "Documents", "TabDisplayOrder": 6, "CaseFieldID": "documentsGenerated", "TabFieldDisplayOrder": 2},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "Channel": "CaseWorker", "TabID": "documentsTab", "TabLabel": "Documents", "TabDisplayOrder": 6, "CaseFieldID": "scannedDocuments", "TabFieldDisplayOrder": 3},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "Channel": "CaseWorker", "TabID": "notificationsTab", "TabLabel": "Notifications", "TabDisplayOrder": 7, "CaseFieldID": "caveatRaisedEmailNotificationRequested", "TabFieldDisplayOrder": 1},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "Channel": "CaseWorker", "TabID": "notificationsTab", "TabLabel": "Notifications", "TabDisplayOrder": 7, "CaseFieldID": "sendToBulkPrintRequested", "TabFieldDisplayOrder": 2},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "Channel": "CaseWorker", "TabID": "notificationsTab", "TabLabel": "Notifications", "TabDisplayOrder": 7, "CaseFieldID": "bulkPrintSendLetterId", "TabFieldDisplayOrder": 3},
