@@ -222,6 +222,29 @@ public class BusinessValidationControllerTest {
     }
 
     @Test
+    public void shouldValidateWithPrimaryApplicantAddressIsNullErrorIntestacy() throws Exception {
+        caseDataBuilder.solsWillType(WILL_TYPE_INTESTACY);
+        caseDataBuilder.primaryApplicantEmailAddress(PRIMARY_APPLICANT_EMAIL);
+        caseDataBuilder.deceasedMaritalStatus(MARITAL_STATUS);
+        caseDataBuilder.solsApplicantRelationshipToDeceased(RELATIONSHIP_TO_DECEASED);
+        caseDataBuilder.solsMinorityInterest(MINORITY_INTEREST);
+        caseDataBuilder.solsApplicantSiblings(APPLICANT_SIBLINGS);
+        validateAddressIsNullError(SOLS_VALIDATE_INTESTACY_URL);
+    }
+
+    @Test
+    public void shouldValidateWithPrimaryApplicantAddressIsNullErrorAdmonWill() throws Exception {
+        caseDataBuilder.solsWillType(WILL_TYPE_ADMON);
+        caseDataBuilder.solsEntitledMinority(ENTITLED_MINORITY);
+        caseDataBuilder.solsDiedOrNotApplying(DIED_OR_NOT_APPLYING);
+        caseDataBuilder.solsResiduary(RESIDUARY);
+        caseDataBuilder.solsResiduaryType(RESIDUARY_TYPE);
+        caseDataBuilder.solsLifeInterest(LIFE_INTEREST);
+        caseDataBuilder.primaryApplicantEmailAddress(PRIMARY_APPLICANT_EMAIL);
+        validateAddressIsNullError(SOLS_VALIDATE_ADMON_URL);
+    }
+
+    @Test
     public void shouldValidateWithSolicitorIHTFormIsNullError() throws Exception {
         caseDataBuilder.ihtFormId(null);
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
@@ -240,7 +263,7 @@ public class BusinessValidationControllerTest {
 
 
     @Test
-    public void shouldReturnProbateSuccess() throws Exception {
+    public void shouldSuccesfullyGenerateProbateDeclaration() throws Exception {
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
         String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
@@ -257,7 +280,7 @@ public class BusinessValidationControllerTest {
     }
 
     @Test
-    public void shouldReturnIntestacySuccess() throws Exception {
+    public void shouldSuccesfullyGenerateIntestacyDeclaration() throws Exception {
         caseDataBuilder.solsWillType(WILL_TYPE_INTESTACY);
         caseDataBuilder.primaryApplicantEmailAddress(PRIMARY_APPLICANT_EMAIL);
         caseDataBuilder.deceasedMaritalStatus(MARITAL_STATUS);
@@ -280,7 +303,7 @@ public class BusinessValidationControllerTest {
     }
 
     @Test
-    public void shouldReturnAdmonSuccess() throws Exception {
+    public void shouldSuccesfullyGenerateAdmonWillDeclaration() throws Exception {
         caseDataBuilder.solsWillType(WILL_TYPE_ADMON);
         caseDataBuilder.solsEntitledMinority(ENTITLED_MINORITY);
         caseDataBuilder.solsDiedOrNotApplying(DIED_OR_NOT_APPLYING);
@@ -381,6 +404,21 @@ public class BusinessValidationControllerTest {
                 .andExpect(jsonPath("$.fieldErrors[0].field").value("caseDetails.data.deceasedSurname"))
                 .andExpect(jsonPath("$.fieldErrors[0].code").value("NotBlank"))
                 .andExpect(jsonPath("$.fieldErrors[0].message").value("Deceased surname cannot be empty"));
+    }
+
+    private void validateAddressIsNullError(String url) throws Exception {
+        caseDataBuilder.primaryApplicantAddress(null);
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
+
+        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
+        mockMvc.perform(post(url).content(json).contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.fieldErrors[0].param").value("callbackRequest"))
+                .andExpect(jsonPath("$.fieldErrors[0].field").value("caseDetails.data.primaryApplicantAddress"))
+                .andExpect(jsonPath("$.fieldErrors[0].code").value("NotNull"))
+                .andExpect(jsonPath("$.fieldErrors[0].message").value("The executor address cannot be empty"));
     }
 
     @Test

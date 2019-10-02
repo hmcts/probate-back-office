@@ -34,6 +34,7 @@ import java.util.List;
 public class DataExtractController {
 
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    private static final DateTimeFormatter FILE_DATE_FORMAT = DateTimeFormatter.ofPattern("yyyyMMdd");
     private final CaseQueryService caseQueryService;
     private final NotificationService notificationService;
     private final FileTransferService fileTransferService;
@@ -61,7 +62,7 @@ public class DataExtractController {
         if (!cases.isEmpty()) {
             log.info("preparing for file upload");
             int response = fileTransferService.uploadFile(ironMountainFileService.createIronMountainFile(
-                    cases, date.replace("-", "") + "grant.txt"));
+                    cases, FILE_DATE_FORMAT.format(LocalDate.now()) + "grant.txt"));
 
             if (response != 201) {
                 log.error("Failed to upload file for: " + date);

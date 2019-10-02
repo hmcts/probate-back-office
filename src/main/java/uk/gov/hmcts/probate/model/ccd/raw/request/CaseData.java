@@ -168,8 +168,7 @@ public class CaseData {
 
     private final String solsPrimaryExecutorNotApplyingReason;
 
-    @NotNull(groups = {ApplicationProbateGroup.class,
-                       ApplicationAdmonGroup.class,
+    @NotNull(groups = {ApplicationAdmonGroup.class,
                        ApplicationIntestacyGroup.class}, message = "{primaryApplicantAddressIsNull}")
     private final SolsAddress primaryApplicantAddress;
 
@@ -360,7 +359,7 @@ public class CaseData {
     private final String epaOrLpa;
     private final String epaRegistered;
     private final String domicilityCountry;
-    private final List<CollectionMember<EstateItem>> ukEstateItems;
+    private final List<CollectionMember<EstateItem>> ukEstate;
     private final String domicilityIHTCert;
     private final String entitledToApply;
     private final String entitledToApplyOther;
