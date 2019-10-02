@@ -154,5 +154,19 @@
   {"LiveFrom": "06/01/2017", "ID": "spouseNotApplyingReasonFixedList", "ListElementCode": "renunciated", "ListElement": "Renounced"},
   {"LiveFrom": "06/01/2017", "ID": "spouseNotApplyingReasonFixedList", "ListElementCode": "mentallyIncapable", "ListElement": "Mentally incapable"},
   {"LiveFrom": "06/01/2017", "ID": "spouseNotApplyingReasonFixedList", "ListElementCode": "other", "ListElement": "Other"},
-  {"LiveFrom": "06/01/2017", "ID": "resolveStopStateReissueFixedList", "ListElementCode": "BOExaminingReissue", "ListElement": "Examining case (reissue)"}
+  {"LiveFrom": "06/01/2017", "ID": "resolveStopStateReissueFixedList", "ListElementCode": "BOExaminingReissue", "ListElement": "Examining case (reissue)"},
+  {"LiveFrom": "06/01/2017", "ID": "categoriesTypes", "ListElementCode": "Ent", "ListElement": "Category 2 - Entitlement", "DisplayOrder":  "2"},
+  {"LiveFrom": "06/01/2017", "ID": "categoriesTypes", "ListElementCode": "IHT", "ListElement": "Category 3 - IHT", "DisplayOrder":  "3"},
+  {"LiveFrom": "06/01/2017", "ID": "categoriesTypes", "ListElementCode": "MissInfo", "ListElement": "Category 6 – Missing/Further information", "DisplayOrder":  "6"},
+  {"LiveFrom": "06/01/2017", "ID": "categoriesTypes", "ListElementCode": "Will", "ListElement": "Category 7 - Will", "DisplayOrder":  "7"},
+  {"LiveFrom": "06/01/2017", "ID": "EntParagraphs", "ListElementCode": "EntExecNoAcc", "ListElement": "Executor not accounted for"},
+  {"LiveFrom": "06/01/2017", "ID": "IHTParagraphs", "ListElementCode": "IHT205Miss", "ListElement": "IHT205 Missing"},
+  {"LiveFrom": "06/01/2017", "ID": "IHTParagraphs", "ListElementCode": "IHT421Await", "ListElement": "Awaiting IHT421"},
+  {"LiveFrom": "06/01/2017", "ID": "MissInfoParagraphs", "ListElementCode": "MissInfoWill", "ListElement": "Original Will"},
+  {"LiveFrom": "06/01/2017", "ID": "MissInfoParagraphs", "ListElementCode": "MissInfoChangeApp", "ListElement": "Name change of applicant"},
+  {"LiveFrom": "06/01/2017", "ID": "MissInfoParagraphs", "ListElementCode": "MissInfoDeathCert", "ListElement": "Death Certificate"},
+  {"LiveFrom": "06/01/2017", "ID": "WillParagraphs", "ListElementCode": "WillAnyOther", "ListElement": "Any other wills"},
+  {"LiveFrom": "06/01/2017", "ID": "WillParagraphs", "ListElementCode": "WillPlight", "ListElement": "Plight and condition of will"},
+  {"LiveFrom": "06/01/2017", "ID": "WillParagraphs", "ListElementCode": "WillSepPages", "ListElement": "Separate pages of will"},
+  {"LiveFrom": "06/01/2017", "ID": "WillParagraphs", "ListElementCode": "WillStaple", "ListElement": "Staple removed for photocopying"}
 ]

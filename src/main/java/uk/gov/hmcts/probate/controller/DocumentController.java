@@ -1,10 +1,13 @@
 package uk.gov.hmcts.probate.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,6 +29,7 @@ import uk.gov.hmcts.probate.service.DocumentService;
 import uk.gov.hmcts.probate.service.EventValidationService;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.RegistryDetailsService;
+import uk.gov.hmcts.probate.service.docmosis.PreviewLetterService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.WillLodgementCallbackResponseTransformer;
@@ -82,6 +86,35 @@ public class DocumentController {
     private final RedeclarationSoTValidationRule redeclarationSoTValidationRule;
     private static final String DRAFT = "preview";
     private static final String FINAL = "final";
+
+    @PostMapping(path = "/assembleLetter", consumes = APPLICATION_JSON_UTF8_VALUE, produces = {APPLICATION_JSON_VALUE})
+    public ResponseEntity<CallbackResponse> assembleLetter(
+            @RequestBody CallbackRequest callbackRequest,
+            BindingResult bindingResult) {
+
+        CallbackResponse response = callbackResponseTransformer.transformCaseForLetter(callbackRequest);
+
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            String str = objectMapper.writeValueAsString(response);
+            log.info(str);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping(path = "/previewLetter", consumes = APPLICATION_JSON_UTF8_VALUE, produces = {APPLICATION_JSON_VALUE})
+    public ResponseEntity<CallbackResponse> assembleLetterTest(
+            @RequestBody CallbackRequest callbackRequest) {
+
+        Document letterPreview = documentGeneratorService.generateLetterPreview(callbackRequest);
+
+        CallbackResponse response = callbackResponseTransformer.transformCaseForLetterPreview(callbackRequest, letterPreview);
+
+        return ResponseEntity.ok(response);
+    }
 
     @PostMapping(path = "/generate-grant-draft", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<CallbackResponse> generateGrantDraft(@RequestBody CallbackRequest callbackRequest) {

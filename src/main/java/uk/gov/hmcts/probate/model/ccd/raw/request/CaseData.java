@@ -5,36 +5,18 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 import uk.gov.hmcts.probate.controller.validation.AmendCaseDetailsGroup;
+import uk.gov.hmcts.probate.controller.validation.ApplicationAdmonGroup;
 import uk.gov.hmcts.probate.controller.validation.ApplicationCreatedGroup;
+import uk.gov.hmcts.probate.controller.validation.ApplicationIntestacyGroup;
+import uk.gov.hmcts.probate.controller.validation.ApplicationProbateGroup;
 import uk.gov.hmcts.probate.controller.validation.ApplicationReviewedGroup;
 import uk.gov.hmcts.probate.controller.validation.ApplicationUpdatedGroup;
-import uk.gov.hmcts.probate.controller.validation.ApplicationProbateGroup;
-import uk.gov.hmcts.probate.controller.validation.ApplicationIntestacyGroup;
-import uk.gov.hmcts.probate.controller.validation.ApplicationAdmonGroup;
 import uk.gov.hmcts.probate.controller.validation.NextStepsConfirmationGroup;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.ExecutorsApplyingNotification;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
 import uk.gov.hmcts.probate.model.ccd.Reissue;
-import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
-import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
-import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
-import uk.gov.hmcts.probate.model.ccd.raw.AdoptedRelative;
-import uk.gov.hmcts.probate.model.ccd.raw.AliasName;
-import uk.gov.hmcts.probate.model.ccd.raw.AttorneyApplyingOnBehalfOf;
-import uk.gov.hmcts.probate.model.ccd.raw.BulkPrint;
-import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
-import uk.gov.hmcts.probate.model.ccd.raw.Declaration;
-import uk.gov.hmcts.probate.model.ccd.raw.Document;
-import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
-import uk.gov.hmcts.probate.model.ccd.raw.EstateItem;
-import uk.gov.hmcts.probate.model.ccd.raw.LegalStatement;
-import uk.gov.hmcts.probate.model.ccd.raw.Payment;
-import uk.gov.hmcts.probate.model.ccd.raw.ProbateAliasName;
-import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
-import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
-import uk.gov.hmcts.probate.model.ccd.raw.StopReason;
-import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
+import uk.gov.hmcts.probate.model.ccd.raw.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.DecimalMin;
@@ -120,9 +102,9 @@ public class CaseData {
     private final BigDecimal ihtGrossValue;
 
     @NotBlank(groups = {ApplicationUpdatedGroup.class,
-                        ApplicationProbateGroup.class,
-                        ApplicationIntestacyGroup.class,
-                        ApplicationAdmonGroup.class}, message = "{solsWillTypeIsNull}")
+            ApplicationProbateGroup.class,
+            ApplicationIntestacyGroup.class,
+            ApplicationAdmonGroup.class}, message = "{solsWillTypeIsNull}")
     private final String solsWillType;
 
     // EVENT = solicitorUpdateProbate and Admon
@@ -130,7 +112,7 @@ public class CaseData {
     private final String willAccessOriginal;
 
     @NotBlank(groups = {ApplicationProbateGroup.class,
-                        ApplicationAdmonGroup.class}, message = "{willNumberOfCodicilsIsNull}")
+            ApplicationAdmonGroup.class}, message = "{willNumberOfCodicilsIsNull}")
     private final String willHasCodicils;
 
     private final String willNumberOfCodicils;
@@ -163,18 +145,18 @@ public class CaseData {
     private final String solsExecutorAliasNames;
 
     @NotBlank(groups = {ApplicationProbateGroup.class,
-                        ApplicationIntestacyGroup.class}, message = "{primaryApplicantIsApplyingIsNull}")
+            ApplicationIntestacyGroup.class}, message = "{primaryApplicantIsApplyingIsNull}")
     private final String primaryApplicantIsApplying;
 
     private final String solsPrimaryExecutorNotApplyingReason;
 
     @NotNull(groups = {ApplicationProbateGroup.class,
-                       ApplicationAdmonGroup.class,
-                       ApplicationIntestacyGroup.class}, message = "{primaryApplicantAddressIsNull}")
+            ApplicationAdmonGroup.class,
+            ApplicationIntestacyGroup.class}, message = "{primaryApplicantAddressIsNull}")
     private final SolsAddress primaryApplicantAddress;
 
     @NotBlank(groups = {ApplicationAdmonGroup.class,
-                        ApplicationIntestacyGroup.class}, message = "{primaryApplicantEmailAddressIsNull}")
+            ApplicationIntestacyGroup.class}, message = "{primaryApplicantEmailAddressIsNull}")
     private final String primaryApplicantEmailAddress;
 
     @NotBlank(groups = {ApplicationProbateGroup.class}, message = "{otherExecutorExistsIsNull}")
@@ -186,8 +168,8 @@ public class CaseData {
 
     // EVENT = solicitorUpdateIntestacy
     @NotBlank(groups = {ApplicationProbateGroup.class,
-                        ApplicationAdmonGroup.class,
-                        ApplicationIntestacyGroup.class}, message = "{willExistsIsNull}")
+            ApplicationAdmonGroup.class,
+            ApplicationIntestacyGroup.class}, message = "{willExistsIsNull}")
     private final String willExists;
 
     @NotNull(groups = {ApplicationIntestacyGroup.class}, message = "{deceasedMaritalStatusIsNull}")
@@ -491,6 +473,10 @@ public class CaseData {
     private final String boEmailRequestInfoNotificationRequested;
 
     private final List<CollectionMember<Document>> probateSotDocumentsGenerated = new ArrayList<>();
+
+    private final Categories categories;
+    private final Document letterPreview;
+
     @SuppressWarnings("squid:S1170")
     @Getter(lazy = true)
     private final String boEmailRequestInfoNotification = getDefaultValueForEmailNotifications();

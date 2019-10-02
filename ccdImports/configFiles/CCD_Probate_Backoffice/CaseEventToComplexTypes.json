@@ -168,5 +168,4 @@
   {"LiveFrom": "01/01/2017", "ID": "ExecutorsApplyingNotifications", "CaseEventID":  "boNotifyRedeclarationSOT", "CaseFieldID": "executorsApplyingNotifications", "ListElementCode": "address", "EventElementLabel":  "Address of the executor", "FieldDisplayOrder": 3, "DisplayContext": "READONLY", "FieldShowCondition": "name=\"NeverShowThisField\""},
   {"LiveFrom": "01/01/2017", "ID": "ExecutorsApplyingNotifications", "CaseEventID":  "boNotifyRedeclarationSOT", "CaseFieldID": "executorsApplyingNotifications", "ListElementCode": "notification", "EventElementLabel":  "Do you wish to send a notification?", "FieldDisplayOrder": 4, "DisplayContext": "MANDATORY"},
   {"LiveFrom": "01/01/2017", "ID": "ExecutorsApplyingNotifications", "CaseEventID":  "boNotifyRedeclarationSOT", "CaseFieldID": "executorsApplyingNotifications", "ListElementCode": "responseReceived", "EventElementLabel":  "Has a response been received?", "FieldDisplayOrder": 5, "DisplayContext": "MANDATORY", "FieldShowCondition": "name=\"NeverShowThisField\""}
-
 ]

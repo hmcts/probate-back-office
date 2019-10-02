@@ -96,7 +96,10 @@ public enum DocumentType {
     SOT_INFORMATION_REQUEST("sotInformationRequest"),
 
     @JsonProperty("statementOfTruth")
-    STATEMENT_OF_TRUTH("statementOfTruth");
+    STATEMENT_OF_TRUTH("statementOfTruth"),
+
+    @JsonProperty("letterPreview")
+    LETTER_PREVIEW("letterPreview");
 
     private final String templateName;
 

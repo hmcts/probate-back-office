@@ -54,6 +54,6 @@ export IDAM_KEY_FPL_CASE_SERVICE="AABBCCDDEEFFGGHH"
 export OAUTH2_CLIENT_CCD_ADMIN="IIIIIIIIIIIIIIII"
 export APPINSIGHTS_INSTRUMENTATIONKEY="SomeRandomStringForLocalDocker"
 export DEFINITION_STORE_DB_USE_SSL="false"
-export ES_ENABLED_DOCKER="true"
+export ES_ENABLED_DOCKER="false"
 export DB_USE_SSL="false"
 export MY_IP=$(ifconfig tun0 | grep 'inet ' | cut -b 14-26 | awk '{print $1}')

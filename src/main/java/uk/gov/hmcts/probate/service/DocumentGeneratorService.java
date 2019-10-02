@@ -11,6 +11,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.service.docmosis.GenericMapperService;
+import uk.gov.hmcts.probate.service.docmosis.PreviewLetterService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 
 import java.util.HashMap;
@@ -38,6 +39,7 @@ public class DocumentGeneratorService {
     private final PDFManagementService pdfManagementService;
     private final DocumentService documentService;
     private final GenericMapperService genericMapperService;
+    private final PreviewLetterService previewLetterService;
 
     private static final String GRANT_OF_PROBATE = "gop";
     private static final String ADMON_WILL = "admonWill";
@@ -145,6 +147,13 @@ public class DocumentGeneratorService {
         return statementOfTruth;
     }
 
+    public Document generateLetterPreview(CallbackRequest callbackRequest) {
+        Map<String, Object> placeholders = previewLetterService.addLetterData(callbackRequest.getCaseDetails().getData());
+        Document letterPreview = pdfManagementService.generateDocmosisDocumentAndUpload(placeholders,
+                DocumentType.LETTER_PREVIEW);
+        return letterPreview;
+    }
+
     private Document generateSolicitorSoT(CallbackRequest callbackRequest) {
         Document statementOfTruth;
         switch (callbackRequest.getCaseDetails().getData().getCaseType()) {
@@ -204,4 +213,5 @@ public class DocumentGeneratorService {
 
         return document;
     }
+
 }

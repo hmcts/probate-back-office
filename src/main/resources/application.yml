@@ -21,7 +21,7 @@ management:
       show-details: always
       enabled: true
 
-authorised.services: probate_backend,ccd_data,ccd-datamgmt-api,ccd_ps,ccd,bulk_scan_processor
+authorised.services: probate_backend,ccd_data,ccd-datamgmt-api,ccd_ps,ccd,bulk_scan_processor,rpa-dg-docassembly,dg_docassembly_api
 auth.provider.service.client:
   key: AAAAAAAAAAAAAAAA
   baseUrl: http://localhost:4502
@@ -29,12 +29,12 @@ auth.provider.service.client:
   tokenTimeToLiveInSeconds: 900
 
 auth.provider.client:
-  user: ${IDAM_SERVICE_HOST:http://localhost:4501}
-  secret: ${IDAM_SECRET:123456}
-  id: probate
+  user: ${IDAM_SERVICE_HOST:http://localhost:5000}
+  secret: ${IDAM_SECRET:ccd_gateway_secret}
+  id: ccd_gateway
   redirect: ${IDAM_REDIRECT_URL:http://localhost:3451/oauth2redirect}
   email: ${AUTH_TOKEN_EMAIL:probatesolcw1@gmail.com}
-  password: ${AUTH_TOKEN_PASSWORD:password}
+  password: ${AUTH_TOKEN_PASSWORD:Pa55word11}
 
 pdf.service:
   url: http://localhost:5500
@@ -50,6 +50,7 @@ docmosis:
     uri: ${PDF_SERVICE_BASEURL:https://docmosis-development.platform.hmcts.net}
     accessKey: ${PDF_SERVICE_ACCESS_KEY:ZDYxMTkzZTQtMGY2Mi00NDM1LWIyN2ItNGRkNzdjOTczMjAwOjQ1NTE0ODQ}
     health.uri: ${PDF_SERVICE_HEALTH_URL:https://docmosis-development.platform.hmcts.net}
+  assembler.uri: http://localhost:4631
   templates:
     caveatRaised:
       templateName: FL-PRB-GNO-ENG-00011.doc
@@ -77,6 +78,8 @@ docmosis:
       templateName: FL-PRB-EML-ENG-00086.doc
     statementOfTruth:
       templateName: FL-PRB-SOT-ENG-00090.doc
+    letterPreview:
+      templateName: ProbateAssemblyTest.doc
 
 fee.api:
   url: http://localhost:4411
@@ -317,7 +320,7 @@ idam:
 send-letter:
   url: ${SEND_LETTER_SERIVCE_BASEURL:http://localhost:8485}
 
-auth.idam.client.baseUrl: http://localhost:4501
+auth.idam.client.baseUrl: http://localhost:5000
 
 core_case_data.api.url: ${services.coreCaseData.baseUrl:http://localhost:4452}
 
