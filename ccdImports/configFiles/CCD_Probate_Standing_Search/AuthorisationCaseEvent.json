@@ -30,7 +30,7 @@
   {"CaseTypeID": "StandingSearch", "CaseEventID": "importSS", "UserRole": "caseworker-probate-issuer", "CRUD": "CR"},
   {"CaseTypeID": "StandingSearch", "CaseEventID": "amendStandingSearchForImport", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
   {"CaseTypeID": "StandingSearch", "CaseEventID": "boHistoryCorrection", "UserRole": "caseworker-probate-issuer", "CRUD": "R"},
-  {"CaseTypeID": "StandingSearch", "CaseEventID": "CCD_ADMIN", "UserRole": "caseworker-probate-issuer", "CRUD": "R"},
+  {"CaseTypeID": "StandingSearch", "CaseEventID": "SYSTEM_MAINTENANCE", "UserRole": "caseworker-probate-issuer", "CRUD": "R"},
   {"CaseTypeID": "StandingSearch", "CaseEventID": "createStandingSearch", "UserRole": "caseworker-probate-caseadmin", "CRUD": "CRUD"},
   {"CaseTypeID": "StandingSearch", "CaseEventID": "matchApplication", "UserRole": "caseworker-probate-caseadmin", "CRUD": "CRUD"},
   {"CaseTypeID": "StandingSearch", "CaseEventID": "noMatch", "UserRole": "caseworker-probate-caseadmin", "CRUD": "CRUD"},
@@ -62,7 +62,7 @@
   {"CaseTypeID": "StandingSearch", "CaseEventID": "importSS", "UserRole": "caseworker-probate-caseadmin", "CRUD": "CR"},
   {"CaseTypeID": "StandingSearch", "CaseEventID": "amendStandingSearchForImport", "UserRole": "caseworker-probate-caseadmin", "CRUD": "CRUD"},
   {"CaseTypeID": "StandingSearch", "CaseEventID": "boHistoryCorrection", "UserRole": "caseworker-probate-caseadmin", "CRUD": "R"},
-  {"CaseTypeID": "StandingSearch", "CaseEventID": "CCD_ADMIN", "UserRole": "caseworker-probate-caseadmin", "CRUD": "R"},
+  {"CaseTypeID": "StandingSearch", "CaseEventID": "SYSTEM_MAINTENANCE", "UserRole": "caseworker-probate-caseadmin", "CRUD": "R"},
   {"CaseTypeID": "StandingSearch", "CaseEventID": "createStandingSearch", "UserRole": "caseworker-probate-caseofficer", "CRUD": "CRUD"},
   {"CaseTypeID": "StandingSearch", "CaseEventID": "matchApplication", "UserRole": "caseworker-probate-caseofficer", "CRUD": "CRUD"},
   {"CaseTypeID": "StandingSearch", "CaseEventID": "noMatch", "UserRole": "caseworker-probate-caseofficer", "CRUD": "CRUD"},
@@ -92,7 +92,7 @@
   {"CaseTypeID": "StandingSearch", "CaseEventID": "uploadDocumentForStandingSearchCompleted", "UserRole": "caseworker-probate-caseofficer", "CRUD": "CRUD"},
   {"CaseTypeID": "StandingSearch", "CaseEventID": "addComment", "UserRole": "caseworker-probate-caseofficer", "CRUD": "CRUD"},
   {"CaseTypeID": "StandingSearch", "CaseEventID": "boHistoryCorrection", "UserRole": "caseworker-probate-caseofficer", "CRUD": "R"},
-  {"CaseTypeID": "StandingSearch", "CaseEventID": "CCD_ADMIN", "UserRole": "caseworker-probate-caseofficer", "CRUD": "R"},
+  {"CaseTypeID": "StandingSearch", "CaseEventID": "SYSTEM_MAINTENANCE", "UserRole": "caseworker-probate-caseofficer", "CRUD": "R"},
   {"CaseTypeID": "StandingSearch", "CaseEventID": "createStandingSearch", "UserRole": "caseworker-probate-registrar", "CRUD": "CRUD"},
   {"CaseTypeID": "StandingSearch", "CaseEventID": "matchApplication", "UserRole": "caseworker-probate-registrar", "CRUD": "CRUD"},
   {"CaseTypeID": "StandingSearch", "CaseEventID": "noMatch", "UserRole": "caseworker-probate-registrar", "CRUD": "CRUD"},
@@ -122,7 +122,7 @@
   {"CaseTypeID": "StandingSearch", "CaseEventID": "uploadDocumentForStandingSearchCompleted", "UserRole": "caseworker-probate-registrar", "CRUD": "CRUD"},
   {"CaseTypeID": "StandingSearch", "CaseEventID": "addComment", "UserRole": "caseworker-probate-registrar", "CRUD": "CRUD"},
   {"CaseTypeID": "StandingSearch", "CaseEventID": "boHistoryCorrection", "UserRole": "caseworker-probate-registrar", "CRUD": "R"},
-  {"CaseTypeID": "StandingSearch", "CaseEventID": "CCD_ADMIN", "UserRole": "caseworker-probate-registrar", "CRUD": "R"},
+  {"CaseTypeID": "StandingSearch", "CaseEventID": "SYSTEM_MAINTENANCE", "UserRole": "caseworker-probate-registrar", "CRUD": "R"},
   {"CaseTypeID": "StandingSearch", "CaseEventID": "createStandingSearch", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"},
   {"CaseTypeID": "StandingSearch", "CaseEventID": "matchApplication", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"},
   {"CaseTypeID": "StandingSearch", "CaseEventID": "noMatch", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"},
@@ -152,5 +152,5 @@
   {"CaseTypeID": "StandingSearch", "CaseEventID": "uploadDocumentForStandingSearchCompleted", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"},
   {"CaseTypeID": "StandingSearch", "CaseEventID": "addComment", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"},
   {"CaseTypeID": "StandingSearch", "CaseEventID": "boHistoryCorrection", "UserRole": "caseworker-probate-superuser", "CRUD": "R"},
-  {"CaseTypeID": "StandingSearch", "CaseEventID": "CCD_ADMIN", "UserRole": "caseworker-probate-superuser", "CRUD": "R"}
+  {"CaseTypeID": "StandingSearch", "CaseEventID": "SYSTEM_MAINTENANCE", "UserRole": "caseworker-probate-superuser", "CRUD": "R"}
 ]

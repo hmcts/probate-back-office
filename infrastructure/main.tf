@@ -19,104 +19,110 @@ data "azurerm_key_vault" "probate_key_vault" {
   resource_group_name = "${local.vaultName}"
 }
 
+#s2s vault
+data "azurerm_key_vault" "s2s_vault" {
+  name = "s2s-${local.localenv}"
+  resource_group_name = "rpe-service-auth-provider-${local.localenv}"
+}
+
 data "azurerm_key_vault_secret" "govNotifyApiKey" {
   name = "probate-bo-govNotifyApiKey"
-  vault_uri = "${data.azurerm_key_vault.probate_key_vault.vault_uri}"
+  key_vault_id = "${data.azurerm_key_vault.probate_key_vault.id}"
 }
 
 data "azurerm_key_vault_secret" "pdf_service_grantSignatureKey" {
   name = "probate-bo-grantSignatureKey"
-  vault_uri = "${data.azurerm_key_vault.probate_key_vault.vault_uri}"
+  key_vault_id = "${data.azurerm_key_vault.probate_key_vault.id}"
 }
 
 data "azurerm_key_vault_secret" "pdf_service_grantSignatureFile" {
   name = "probate-bo-grantSignatureFile"
-  vault_uri = "${data.azurerm_key_vault.probate_key_vault.vault_uri}"
+  key_vault_id = "${data.azurerm_key_vault.probate_key_vault.id}"
 }
 
 data "azurerm_key_vault_secret" "s2s_key" {
   name      = "microservicekey-probate-backend"
-  vault_uri = "https://s2s-${local.localenv}.vault.azure.net/"
+  key_vault_id = "${data.azurerm_key_vault.s2s_vault.id}"
 }
 
 data "azurerm_key_vault_secret" "POSTGRES-USER" {
   name = "probatemandb-POSTGRES-USER"
-  vault_uri = "${data.azurerm_key_vault.probate_key_vault.vault_uri}"
+  key_vault_id = "${data.azurerm_key_vault.probate_key_vault.id}"
 }
 
 data "azurerm_key_vault_secret" "POSTGRES-PASS" {
   name = "probatemandb-POSTGRES-PASS"
-  vault_uri = "${data.azurerm_key_vault.probate_key_vault.vault_uri}"
+  key_vault_id = "${data.azurerm_key_vault.probate_key_vault.id}"
 }
 
 data "azurerm_key_vault_secret" "POSTGRES_HOST" {
   name = "probatemandb-POSTGRES-HOST"
-  vault_uri = "${data.azurerm_key_vault.probate_key_vault.vault_uri}"
+  key_vault_id = "${data.azurerm_key_vault.probate_key_vault.id}"
 }
 
 data "azurerm_key_vault_secret" "POSTGRES_PORT" {
   name = "probatemandb-POSTGRES-PORT"
-  vault_uri = "${data.azurerm_key_vault.probate_key_vault.vault_uri}"
+  key_vault_id = "${data.azurerm_key_vault.probate_key_vault.id}"
 }
 
 data "azurerm_key_vault_secret" "POSTGRES_DATABASE" {
   name = "probatemandb-POSTGRES-DATABASE"
-  vault_uri = "${data.azurerm_key_vault.probate_key_vault.vault_uri}"
+  key_vault_id = "${data.azurerm_key_vault.probate_key_vault.id}"
 }
 
 data "azurerm_key_vault_secret" "excelaEmail" {
   name = "excelaEmail"
-  vault_uri = "${data.azurerm_key_vault.probate_key_vault.vault_uri}"
+  key_vault_id = "${data.azurerm_key_vault.probate_key_vault.id}"
 }
 
 data "azurerm_key_vault_secret" "authTokenEmail" {
   name = "authTokenEmail"
-  vault_uri = "${data.azurerm_key_vault.probate_key_vault.vault_uri}"
+  key_vault_id = "${data.azurerm_key_vault.probate_key_vault.id}"
 }
 
 data "azurerm_key_vault_secret" "authTokenPassword" {
   name = "authTokenPassword"
-  vault_uri = "${data.azurerm_key_vault.probate_key_vault.vault_uri}"
+  key_vault_id = "${data.azurerm_key_vault.probate_key_vault.id}"
 }
 
 data "azurerm_key_vault_secret" "ftpSignature" {
   name = "ftpSignature"
-  vault_uri = "${data.azurerm_key_vault.probate_key_vault.vault_uri}"
+  key_vault_id = "${data.azurerm_key_vault.probate_key_vault.id}"
 }
 
 data "azurerm_key_vault_secret" "ftpEnv" {
   name = "ftpEnv"
-  vault_uri = "${data.azurerm_key_vault.probate_key_vault.vault_uri}"
+  key_vault_id = "${data.azurerm_key_vault.probate_key_vault.id}"
 }
 
 data "azurerm_key_vault_secret" "pdfServiceBaseUrl" {
   name = "pdfServiceBaseUrl"
-  vault_uri = "${data.azurerm_key_vault.probate_key_vault.vault_uri}"
+  key_vault_id = "${data.azurerm_key_vault.probate_key_vault.id}"
 }
 
 data "azurerm_key_vault_secret" "pdfServiceAccessKey" {
   name = "pdfServiceAccessKey"
-  vault_uri = "${data.azurerm_key_vault.probate_key_vault.vault_uri}"
+  key_vault_id = "${data.azurerm_key_vault.probate_key_vault.id}"
 }
 
 data "azurerm_key_vault_secret" "pdfServiceHealthUrl" {
   name = "pdfServiceHealthUrl"
-  vault_uri = "${data.azurerm_key_vault.probate_key_vault.vault_uri}"
+  key_vault_id = "${data.azurerm_key_vault.probate_key_vault.id}"
 }
 
 data "azurerm_key_vault_secret" "idamRedirectUrl" {
   name = "idamRedirectUrl"
-  vault_uri = "${data.azurerm_key_vault.probate_key_vault.vault_uri}"
+  key_vault_id = "${data.azurerm_key_vault.probate_key_vault.id}"
 }
 
 data "azurerm_key_vault_secret" "idamSecretProbate" {
   name = "idam-secret-probate"
-  vault_uri = "${data.azurerm_key_vault.probate_key_vault.vault_uri}"
+  key_vault_id = "${data.azurerm_key_vault.probate_key_vault.id}"
 }
 
 
 module "probate-back-office" {
-  source = "git@github.com:hmcts/moj-module-webapp.git?ref=master"
+  source = "git@github.com:hmcts/cnp-module-webapp?ref=master"
   product = "${var.product}-${var.microservice}"
   location = "${var.location}"
   env = "${var.env}"
@@ -172,7 +178,7 @@ module "probate-back-office" {
     PDF_SERVICE_HEALTH_URL = "${data.azurerm_key_vault_secret.pdfServiceHealthUrl.value}"
     IDAM_REDIRECT_URL = "${data.azurerm_key_vault_secret.idamRedirectUrl.value}"
     IDAM_SECRET = "${data.azurerm_key_vault_secret.idamSecretProbate.value}"
-    TESTING = "Testing"  // to upate the app setting
+    //TESTING = "Testing"  // to upate the app setting
   }
 }
 

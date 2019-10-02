@@ -15,7 +15,7 @@
   {"CaseTypeID": "WillLodgement", "CaseEventID": "importWill", "UserRole": "caseworker-probate-issuer", "CRUD": "CR"},
   {"CaseTypeID": "WillLodgement", "CaseEventID": "amendWilForImport", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
   {"CaseTypeID": "WillLodgement", "CaseEventID": "boHistoryCorrection", "UserRole": "caseworker-probate-issuer", "CRUD": "R"},
-  {"CaseTypeID": "WillLodgement", "CaseEventID": "CCD_ADMIN", "UserRole": "caseworker-probate-issuer", "CRUD": "R"},
+  {"CaseTypeID": "WillLodgement", "CaseEventID": "SYSTEM_MAINTENANCE", "UserRole": "caseworker-probate-issuer", "CRUD": "R"},
   {"CaseTypeID": "WillLodgement", "CaseEventID": "createWillLodgment", "UserRole": "caseworker-probate-caseadmin", "CRUD": "CRUD"},
   {"CaseTypeID": "WillLodgement", "CaseEventID": "matchApplication", "UserRole": "caseworker-probate-caseadmin", "CRUD": "CRUD"},
   {"CaseTypeID": "WillLodgement", "CaseEventID": "withdrawWill", "UserRole": "caseworker-probate-caseadmin", "CRUD": "CRUD"},
@@ -32,7 +32,7 @@
   {"CaseTypeID": "WillLodgement", "CaseEventID": "importWill", "UserRole": "caseworker-probate-caseadmin", "CRUD": "CR"},
   {"CaseTypeID": "WillLodgement", "CaseEventID": "amendWilForImport", "UserRole": "caseworker-probate-caseadmin", "CRUD": "CRUD"},
   {"CaseTypeID": "WillLodgement", "CaseEventID": "boHistoryCorrection", "UserRole": "caseworker-probate-caseadmin", "CRUD": "R"},
-  {"CaseTypeID": "WillLodgement", "CaseEventID": "CCD_ADMIN", "UserRole": "caseworker-probate-caseadmin", "CRUD": "R"},
+  {"CaseTypeID": "WillLodgement", "CaseEventID": "SYSTEM_MAINTENANCE", "UserRole": "caseworker-probate-caseadmin", "CRUD": "R"},
   {"CaseTypeID": "WillLodgement", "CaseEventID": "createWillLodgment", "UserRole": "caseworker-probate-caseofficer", "CRUD": "CRUD"},
   {"CaseTypeID": "WillLodgement", "CaseEventID": "matchApplication", "UserRole": "caseworker-probate-caseofficer", "CRUD": "CRUD"},
   {"CaseTypeID": "WillLodgement", "CaseEventID": "withdrawWill", "UserRole": "caseworker-probate-caseofficer", "CRUD": "CRUD"},
@@ -47,7 +47,7 @@
   {"CaseTypeID": "WillLodgement", "CaseEventID": "generateDepositReceiptForLodged", "UserRole": "caseworker-probate-caseofficer", "CRUD": "CRUD"},
   {"CaseTypeID": "WillLodgement", "CaseEventID": "generateDepositReceiptForWithdrawn", "UserRole": "caseworker-probate-caseofficer", "CRUD": "CRUD"},
   {"CaseTypeID": "WillLodgement", "CaseEventID": "boHistoryCorrection", "UserRole": "caseworker-probate-caseofficer", "CRUD": "R"},
-  {"CaseTypeID": "WillLodgement", "CaseEventID": "CCD_ADMIN", "UserRole": "caseworker-probate-caseofficer", "CRUD": "R"},
+  {"CaseTypeID": "WillLodgement", "CaseEventID": "SYSTEM_MAINTENANCE", "UserRole": "caseworker-probate-caseofficer", "CRUD": "R"},
   {"CaseTypeID": "WillLodgement", "CaseEventID": "createWillLodgment", "UserRole": "caseworker-probate-registrar", "CRUD": "CRUD"},
   {"CaseTypeID": "WillLodgement", "CaseEventID": "matchApplication", "UserRole": "caseworker-probate-registrar", "CRUD": "CRUD"},
   {"CaseTypeID": "WillLodgement", "CaseEventID": "withdrawWill", "UserRole": "caseworker-probate-registrar", "CRUD": "CRUD"},
@@ -62,7 +62,7 @@
   {"CaseTypeID": "WillLodgement", "CaseEventID": "generateDepositReceiptForLodged", "UserRole": "caseworker-probate-registrar", "CRUD": "CRUD"},
   {"CaseTypeID": "WillLodgement", "CaseEventID": "generateDepositReceiptForWithdrawn", "UserRole": "caseworker-probate-registrar", "CRUD": "CRUD"},
   {"CaseTypeID": "WillLodgement", "CaseEventID": "boHistoryCorrection", "UserRole": "caseworker-probate-registrar", "CRUD": "R"},
-  {"CaseTypeID": "WillLodgement", "CaseEventID": "CCD_ADMIN", "UserRole": "caseworker-probate-registrar", "CRUD": "R"},
+  {"CaseTypeID": "WillLodgement", "CaseEventID": "SYSTEM_MAINTENANCE", "UserRole": "caseworker-probate-registrar", "CRUD": "R"},
   {"CaseTypeID": "WillLodgement", "CaseEventID": "createWillLodgment", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"},
   {"CaseTypeID": "WillLodgement", "CaseEventID": "matchApplication", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"},
   {"CaseTypeID": "WillLodgement", "CaseEventID": "withdrawWill", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"},
@@ -77,5 +77,5 @@
   {"CaseTypeID": "WillLodgement", "CaseEventID": "generateDepositReceiptForLodged", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"},
   {"CaseTypeID": "WillLodgement", "CaseEventID": "generateDepositReceiptForWithdrawn", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"},
   {"CaseTypeID": "WillLodgement", "CaseEventID": "boHistoryCorrection", "UserRole": "caseworker-probate-superuser", "CRUD": "R"},
-  {"CaseTypeID": "WillLodgement", "CaseEventID": "CCD_ADMIN", "UserRole": "caseworker-probate-superuser", "CRUD": "R"}
+  {"CaseTypeID": "WillLodgement", "CaseEventID": "SYSTEM_MAINTENANCE", "UserRole": "caseworker-probate-superuser", "CRUD": "R"}
 ]

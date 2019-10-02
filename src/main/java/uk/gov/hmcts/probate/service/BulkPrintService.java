@@ -106,12 +106,13 @@ public class BulkPrintService {
         return sendLetterResponse;
     }
 
-    public String sendToBulkPrintGrantReissue(CallbackRequest callbackRequest, Document coversheet, Document document) {
+    public String sendToBulkPrint(CallbackRequest callbackRequest, Document coversheet, Document document,
+                                  boolean sendToBulkPrint) {
         CallbackResponse response;
         SendLetterResponse sendLetterResponse = null;
         String letterId = null;
-        if (callbackRequest.getCaseDetails().getData().isSendForBulkPrintingRequestedGrantReIssued()) {
-            log.info("Initiate call to bulk print for grant reissue and coversheet for case id {} ",
+        if (sendToBulkPrint) {
+            log.info("Initiate call to bulk print for document with case id {} and coversheet",
                     callbackRequest.getCaseDetails().getId());
             sendLetterResponse = sendToBulkPrint(callbackRequest, document, coversheet);
             letterId = sendLetterResponse != null

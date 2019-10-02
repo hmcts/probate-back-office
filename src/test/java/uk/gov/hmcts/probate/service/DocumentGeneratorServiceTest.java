@@ -7,8 +7,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import uk.gov.hmcts.probate.config.properties.registries.Registry;
+import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.DocumentType;
+import uk.gov.hmcts.probate.model.ExecutorsApplyingNotification;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
+import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
@@ -42,6 +45,9 @@ public class DocumentGeneratorServiceTest {
     private static final String DRAFT = "preview";
     private static final String FINAL = "final";
     private CallbackRequest callbackRequest;
+    private CallbackRequest callbackRequestSolsGop;
+    private CallbackRequest callbackRequestSolsAdmon;
+    private CallbackRequest callbackRequestSolsIntestacy;
     private Map<String, Object> expectedMap;
     private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMM Y HH:mm");
 
@@ -90,9 +96,34 @@ public class DocumentGeneratorServiceTest {
         registryMap.put(REGISTRY_LOCATION, registry);
         registryMap.put(CTSC, registry);
 
-        CaseDetails caseDetails = new CaseDetails(CaseData.builder().caseType("gop").registryLocation("Bristol").build(),
+        CaseDetails caseDetails = new CaseDetails(CaseData.builder()
+                .caseType("gop")
+                .registryLocation("Bristol")
+                .applicationType(ApplicationType.PERSONAL).build(),
                 LAST_MODIFIED, CASE_ID);
         callbackRequest = new CallbackRequest(caseDetails);
+
+        CaseDetails caseDetailsSolsGop = new CaseDetails(CaseData.builder()
+                .caseType("gop")
+                .registryLocation("Bristol")
+                .applicationType(ApplicationType.SOLICITOR).build(),
+                LAST_MODIFIED, CASE_ID);
+        callbackRequestSolsGop = new CallbackRequest(caseDetailsSolsGop);
+
+        CaseDetails caseDetailsSolsAdmon = new CaseDetails(CaseData.builder()
+                .caseType("admonWill")
+                .registryLocation("Bristol")
+                .applicationType(ApplicationType.SOLICITOR).build(),
+                LAST_MODIFIED, CASE_ID);
+        callbackRequestSolsAdmon = new CallbackRequest(caseDetailsSolsAdmon);
+
+        CaseDetails caseDetailsSolsIntestacy = new CaseDetails(CaseData.builder()
+                .caseType("intestacy")
+                .registryLocation("Bristol")
+                .applicationType(ApplicationType.SOLICITOR).build(),
+                LAST_MODIFIED, CASE_ID);
+        callbackRequestSolsIntestacy = new CallbackRequest(caseDetailsSolsIntestacy);
+
 
         CaseDetails returnedCaseDetails = caseDetails;
         returnedCaseDetails.setRegistryTelephone("01010101010101");
@@ -119,6 +150,7 @@ public class DocumentGeneratorServiceTest {
         doNothing().when(documentService).expire(any(CallbackRequest.class), any());
 
         when(genericMapperService.addCaseData(caseDetails.getData())).thenReturn(expectedMap);
+        when(genericMapperService.addCaseDataWithRegistryProperties(caseDetails)).thenReturn(expectedMap);
 
     }
 
@@ -225,5 +257,71 @@ public class DocumentGeneratorServiceTest {
         when(pdfManagementService.generateDocmosisDocumentAndUpload(expectedMap, DocumentType.GRANT_COVERSHEET))
                 .thenReturn(Document.builder().documentType(DocumentType.GRANT_COVERSHEET).build());
         assertEquals(DocumentType.GRANT_COVERSHEET, documentGeneratorService.generateCoversheet(callbackRequest).getDocumentType());
+    }
+
+    @Test
+    public void testGenerateCoversheetReturnsCorrectDocumentTypeForSpecificExec() {
+        when(pdfManagementService.generateDocmosisDocumentAndUpload(expectedMap, DocumentType.GRANT_COVERSHEET))
+                .thenReturn(Document.builder().documentType(DocumentType.GRANT_COVERSHEET).build());
+        assertEquals(DocumentType.GRANT_COVERSHEET,
+                documentGeneratorService.generateCoversheet(callbackRequest, "Bob Smith", SolsAddress.builder().build()).getDocumentType());
+    }
+
+    @Test
+    public void testGenerateRequestInformationReturnsCorrectDocumentType() {
+        ExecutorsApplyingNotification executor = ExecutorsApplyingNotification.builder().name("Bob").build();
+        when(pdfManagementService.generateDocmosisDocumentAndUpload(expectedMap,DocumentType.SOT_INFORMATION_REQUEST))
+                .thenReturn(Document.builder().documentType(DocumentType.SOT_INFORMATION_REQUEST).build());
+        assertEquals(DocumentType.SOT_INFORMATION_REQUEST,
+                documentGeneratorService.generateRequestForInformation(callbackRequest.getCaseDetails(), executor).getDocumentType());
+    }
+
+    @Test
+    public void testGenerateRequestInformationReturnsCorrectDocumentTypeForSolicitors() {
+        expectedMap.clear();
+        expectedMap.put("applicantName", "Bob Sot");
+        expectedMap.put("fullRedec", "No");
+        CaseDetails caseDetails = new CaseDetails(CaseData.builder().solsSOTName("Bob Sot")
+                .applicationType(ApplicationType.SOLICITOR)
+                .caseType("gop")
+                .registryLocation("Bristol")
+                .build(), LAST_MODIFIED, CASE_ID);
+        ExecutorsApplyingNotification executor = ExecutorsApplyingNotification.builder().name("boB").build();
+        when(pdfManagementService.generateDocmosisDocumentAndUpload(expectedMap, DocumentType.SOT_INFORMATION_REQUEST))
+                .thenReturn(Document.builder().documentType(DocumentType.SOT_INFORMATION_REQUEST).build());
+        assertEquals(DocumentType.SOT_INFORMATION_REQUEST,
+                documentGeneratorService.generateRequestForInformation(caseDetails, executor).getDocumentType());
+    }
+
+    @Test
+    public void testStatementOfTruthReturnedSuccessfullyForPersonalCase() {
+        when(pdfManagementService.generateDocmosisDocumentAndUpload(expectedMap, DocumentType.STATEMENT_OF_TRUTH))
+                .thenReturn(Document.builder().documentType(DocumentType.STATEMENT_OF_TRUTH).build());
+        assertEquals(Document.builder().documentType(DocumentType.STATEMENT_OF_TRUTH).build(),
+                documentGeneratorService.generateSoT(callbackRequest));
+    }
+
+    @Test
+    public void testStatementOfTruthReturnedSuccessfullyForSolsGopCase() {
+        when(pdfManagementService.generateAndUpload(callbackRequestSolsGop, DocumentType.LEGAL_STATEMENT_PROBATE))
+                .thenReturn(Document.builder().documentType(DocumentType.LEGAL_STATEMENT_PROBATE).build());
+        assertEquals(Document.builder().documentType(DocumentType.LEGAL_STATEMENT_PROBATE).build(),
+                documentGeneratorService.generateSoT(callbackRequestSolsGop));
+    }
+
+    @Test
+    public void testStatementOfTruthReturnedSuccessfullyForSolsIntestacyCase() {
+        when(pdfManagementService.generateAndUpload(callbackRequestSolsIntestacy, DocumentType.LEGAL_STATEMENT_INTESTACY))
+                .thenReturn(Document.builder().documentType(DocumentType.LEGAL_STATEMENT_INTESTACY).build());
+        assertEquals(Document.builder().documentType(DocumentType.LEGAL_STATEMENT_INTESTACY).build(),
+                documentGeneratorService.generateSoT(callbackRequestSolsIntestacy));
+    }
+
+    @Test
+    public void testStatementOfTruthReturnedSuccessfullyForSolsAdmonWillCase() {
+        when(pdfManagementService.generateAndUpload(callbackRequestSolsAdmon, DocumentType.LEGAL_STATEMENT_ADMON))
+                .thenReturn(Document.builder().documentType(DocumentType.LEGAL_STATEMENT_ADMON).build());
+        assertEquals(Document.builder().documentType(DocumentType.LEGAL_STATEMENT_ADMON).build(),
+                documentGeneratorService.generateSoT(callbackRequestSolsAdmon));
     }
 }

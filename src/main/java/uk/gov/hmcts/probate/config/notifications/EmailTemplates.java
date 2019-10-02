@@ -13,4 +13,6 @@ public class EmailTemplates {
     private String excelaData;
     private String caveatRaised;
     private String caveatRaisedCtsc;
+    private String requestInformation;
+    private String redeclarationSot;
 }

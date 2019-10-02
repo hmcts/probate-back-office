@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import uk.gov.hmcts.probate.model.ccd.ocr.ValidationResponse;
-import uk.gov.hmcts.probate.model.ccd.ocr.ValidationResponseState;
+import uk.gov.hmcts.probate.model.ccd.ocr.ValidationResponseStatus;
 import uk.gov.hmcts.probate.model.ocr.OCRRequest;
 import uk.gov.hmcts.probate.service.ocr.FormType;
 import uk.gov.hmcts.probate.service.ocr.OCRMapper;
@@ -38,11 +38,10 @@ public class OCRFormsController {
     @ApiResponses({
             @ApiResponse(code = 200, response = ValidationResponse.class, message = "Validation executed successfully"),
             @ApiResponse(code = 400, message = "Request failed due to malformed syntax"),
-            @ApiResponse(code = 401, message = "Provided S2S token is missing or invalid"),
-            @ApiResponse(code = 403, message = "S2S token is not authorized to use the service"),
+            @ApiResponse(code = 403, message = "S2S token is not authorized, missing or invalid"),
             @ApiResponse(code = 404, message = "Form type not found")
     })
-    @PostMapping(path = "/{form-type}/validate-ocr-data", consumes = APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(path = "/{form-type}/validate-ocr", consumes = APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<ValidationResponse> validateExceptionRecord(@PathVariable("form-type") String formType,
                                                                       @RequestBody OCRRequest ocrRequest) {
         log.info("Validate ocr data for form type: {}", formType);
@@ -53,7 +52,7 @@ public class OCRFormsController {
 
         ValidationResponse validationResponse =
                 ValidationResponse.builder().warnings(warnings)
-                        .state(warnings.isEmpty() ? ValidationResponseState.SUCCESS : ValidationResponseState.WARNINGS).build();
+                        .status(warnings.isEmpty() ? ValidationResponseStatus.SUCCESS : ValidationResponseStatus.WARNINGS).build();
         return ResponseEntity.ok(validationResponse);
     }
 }

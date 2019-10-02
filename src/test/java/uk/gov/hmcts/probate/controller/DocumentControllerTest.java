@@ -2,6 +2,7 @@ package uk.gov.hmcts.probate.controller;
 
 import org.hamcrest.CoreMatchers;
 import org.hamcrest.Matcher;
+import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,6 +16,7 @@ import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import uk.gov.hmcts.probate.insights.AppInsights;
@@ -38,7 +40,9 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
@@ -51,6 +55,7 @@ import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_DRAFT;
+import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.EDGE_CASE;
 import static uk.gov.hmcts.probate.model.DocumentType.GRANT_COVER;
 import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT;
@@ -121,6 +126,8 @@ public class DocumentControllerTest {
                 .thenReturn(Document.builder().documentType(ADMON_WILL_GRANT).build());
         when(pdfManagementService.generateAndUpload(any(CallbackRequest.class), eq(EDGE_CASE)))
                 .thenReturn(Document.builder().documentType(EDGE_CASE).build());
+        when(pdfManagementService.generateAndUpload(any(CallbackRequest.class), eq(EDGE_CASE)))
+                .thenReturn(Document.builder().documentType(EDGE_CASE).build());
         when(pdfManagementService.generateAndUpload(any(CallbackRequest.class), eq(GRANT_COVER)))
                 .thenReturn(Document.builder().documentType(GRANT_COVER).build());
 
@@ -132,12 +139,19 @@ public class DocumentControllerTest {
         when(documentGeneratorService.generateGrantReissue(any(), any())).thenReturn(document);
         when(documentGeneratorService.generateCoversheet(any(CallbackRequest.class)))
                 .thenReturn(Document.builder().documentType(DocumentType.GRANT_COVERSHEET).build());
+        when(documentGeneratorService.generateSoT(any()))
+                .thenReturn(Document.builder().documentType(DocumentType.STATEMENT_OF_TRUTH).build());
 
-        when(bulkPrintService.sendToBulkPrintGrantReissue(any(), any(),
-                any())).thenReturn(LETTER_UUID);
+        SendLetterResponse sendLetterResponse = new SendLetterResponse(UUID.randomUUID());
+        when(bulkPrintService.sendToBulkPrint(any(CallbackRequest.class), any(Document.class),
+                any(Document.class))).thenReturn(sendLetterResponse);
+
+        when(bulkPrintService.sendToBulkPrint(any(CallbackRequest.class), any(Document.class),
+                any(Document.class), eq(true))).thenReturn(LETTER_UUID);
 
         when(notificationService.generateGrantReissue(any(CallbackRequest.class)))
                 .thenReturn(Document.builder().documentType(SENT_EMAIL).build());
+        doNothing().when(documentService).expire(any(CallbackRequest.class), any(DocumentType.class));
     }
 
     @Test
@@ -145,13 +159,12 @@ public class DocumentControllerTest {
 
         String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadNotifications.json");
 
-        mockMvc.perform(post("/document/generate-grant-draft")
+        MvcResult result = mockMvc.perform(post("/document/generate-grant-draft")
                 .content(solicitorPayload)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("data")));
-
-        doNothing().when(documentService).expire(any(CallbackRequest.class), eq(DIGITAL_GRANT_DRAFT));
+                .andExpect(jsonPath("$.data.probateDocumentsGenerated[0].value.DocumentType", is(DIGITAL_GRANT_DRAFT.getTemplateName())))
+                .andReturn();
 
         verify(documentService).expire(any(CallbackRequest.class), eq(DIGITAL_GRANT_DRAFT));
     }
@@ -161,60 +174,58 @@ public class DocumentControllerTest {
 
         String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadNotifications.json");
 
-        mockMvc.perform(post("/document/generate-grant")
+        MvcResult result = mockMvc.perform(post("/document/generate-grant")
                 .content(solicitorPayload)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("data")));
+                .andExpect(jsonPath("$.data.probateDocumentsGenerated[1].value.DocumentType", is(DIGITAL_GRANT.getTemplateName())))
+                .andReturn();
 
-        doNothing().when(documentService).expire(any(CallbackRequest.class), eq(DIGITAL_GRANT_DRAFT));
         verify(documentService).expire(any(CallbackRequest.class), eq(DIGITAL_GRANT_DRAFT));
     }
 
     @Test
-    public void generateDigitalGrantBulkPrint() throws Exception {
+    public void generateDigitalGrantWithBulkPrint() throws Exception {
 
         String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadNotificationsBulkPrint.json");
 
-        mockMvc.perform(post("/document/generate-grant")
+        MvcResult result = mockMvc.perform(post("/document/generate-grant")
                 .content(solicitorPayload)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("data")));
+                .andExpect(jsonPath("$.data.probateDocumentsGenerated[1].value.DocumentType", is(DIGITAL_GRANT.getTemplateName())))
+                .andReturn();
 
-        SendLetterResponse sendLetterResponse = new SendLetterResponse(UUID.randomUUID());
-        when(bulkPrintService.sendToBulkPrint(any(CallbackRequest.class), any(Document.class),
-                any(Document.class))).thenReturn(sendLetterResponse);
         verify(bulkPrintService).sendToBulkPrint(any(CallbackRequest.class), any(Document.class), any(Document.class));
     }
 
     @Test
-    public void shouldNotPrintDigitalGrantIfLocalPrint() throws Exception {
+    public void generateDigitalGrantReissueWithBulkPrint() throws Exception {
 
-        String solicitorPayload = testUtils.getStringFromFile("payloadWithLocalPrint.json");
+        String solicitorPayload = testUtils.getStringFromFile("payloadWithBulkPrint.json");
 
-        mockMvc.perform(post("/document/generate-grant")
+        MvcResult result = mockMvc.perform(post("/document/generate-grant-reissue")
                 .content(solicitorPayload)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("data")));
+                .andExpect(jsonPath("$.data.probateDocumentsGenerated[1].value.DocumentType", is(DIGITAL_GRANT_REISSUE.getTemplateName())))
+                .andReturn();
 
-        doNothing().when(documentService).expire(any(CallbackRequest.class), eq(DIGITAL_GRANT_DRAFT));
-        verify(documentService).expire(any(CallbackRequest.class), eq(DIGITAL_GRANT_DRAFT));
+        verify(bulkPrintService).sendToBulkPrint(any(CallbackRequest.class), any(Document.class), any(Document.class), eq(true));
     }
 
     @Test
-    public void shouldNotPrintDigitalGrantIfBulkPrint() throws Exception {
+    public void generateDigitalGrantIfLocalPrint() throws Exception {
 
-        String solicitorPayload = testUtils.getStringFromFile("payloadWithEdgeCase.json");
+        String solicitorPayload = testUtils.getStringFromFile("payloadWithLocalPrint.json");
 
-        mockMvc.perform(post("/document/generate-grant")
+        MvcResult result = mockMvc.perform(post("/document/generate-grant")
                 .content(solicitorPayload)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("data")));
+                .andExpect(jsonPath("$.data.probateDocumentsGenerated[1].value.DocumentType", is(DIGITAL_GRANT.getTemplateName())))
+                .andReturn();
 
-        doNothing().when(documentService).expire(any(CallbackRequest.class), eq(DIGITAL_GRANT_DRAFT));
         verify(documentService).expire(any(CallbackRequest.class), eq(DIGITAL_GRANT_DRAFT));
     }
 
@@ -223,11 +234,12 @@ public class DocumentControllerTest {
 
         String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadNotificationsIntestacy.json");
 
-        mockMvc.perform(post("/document/generate-grant-draft")
+        MvcResult result = mockMvc.perform(post("/document/generate-grant-draft")
                 .content(solicitorPayload)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("data")));
+                .andExpect(jsonPath("$.data.probateDocumentsGenerated[1].value.DocumentType", is(INTESTACY_GRANT_DRAFT.getTemplateName())))
+                .andReturn();
 
         doNothing().when(documentService).expire(ArgumentMatchers.any(CallbackRequest.class), eq(INTESTACY_GRANT_DRAFT));
 
@@ -241,26 +253,30 @@ public class DocumentControllerTest {
 
         String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadNotificationsAdmonWill.json");
 
-        mockMvc.perform(post("/document/generate-grant-draft")
+        MvcResult result = mockMvc.perform(post("/document/generate-grant-draft")
                 .content(solicitorPayload)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("data")));
+                .andExpect(jsonPath("$.data.probateDocumentsGenerated[1].value.DocumentType", is(ADMON_WILL_GRANT_DRAFT.getTemplateName())))
+                .andReturn();
 
         doNothing().when(documentService).expire(ArgumentMatchers.any(CallbackRequest.class), eq(ADMON_WILL_GRANT_DRAFT));
 
         verify(documentService).expire(ArgumentMatchers.any(CallbackRequest.class), eq(ADMON_WILL_GRANT_DRAFT));
+        verify(documentService).expire(ArgumentMatchers.any(CallbackRequest.class), eq(DIGITAL_GRANT_DRAFT));
+        verify(documentService).expire(ArgumentMatchers.any(CallbackRequest.class), eq(INTESTACY_GRANT_DRAFT));
     }
 
     @Test
     public void generateGrantAdmonWill() throws Exception {
         String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadNotificationsAdmonWill.json");
 
-        mockMvc.perform(post("/document/generate-grant")
+        MvcResult result = mockMvc.perform(post("/document/generate-grant")
                 .content(solicitorPayload)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("data")));
+                .andExpect(jsonPath("$.data.probateDocumentsGenerated[1].value.DocumentType", is(ADMON_WILL_GRANT.getTemplateName())))
+                .andReturn();
 
         verify(pdfManagementService).generateAndUpload(any(CallbackRequest.class), eq(ADMON_WILL_GRANT));
 
@@ -268,21 +284,79 @@ public class DocumentControllerTest {
     }
 
     @Test
-    public void shouldNotGenerateGrantEdgeCase() throws Exception {
+    public void generateGrantIntestacy() throws Exception {
+        String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadNotificationsIntestacy.json");
 
-        String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadNotificationsEdgeCase.json");
-
-        mockMvc.perform(post("/document/generate-grant-draft")
+        MvcResult result = mockMvc.perform(post("/document/generate-grant")
                 .content(solicitorPayload)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("data")));
+                .andExpect(jsonPath("$.data.probateDocumentsGenerated[1].value.DocumentType", is(INTESTACY_GRANT.getTemplateName())))
+                .andReturn();
+
+        verify(pdfManagementService).generateAndUpload(any(CallbackRequest.class), eq(INTESTACY_GRANT));
+
+        doNothing().when(documentService).expire(any(CallbackRequest.class), eq(INTESTACY_GRANT));
+    }
+
+    @Test
+    public void shouldNotGenerateGrantDraftEdgeCase() throws Exception {
+
+        String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadNotificationsEdgeCase.json");
+
+        MvcResult result = mockMvc.perform(post("/document/generate-grant-draft")
+                .content(solicitorPayload)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.probateDocumentsGenerated", Matchers.empty()))
+                .andReturn();
 
         doNothing().when(documentService).expire(ArgumentMatchers.any(CallbackRequest.class), eq(EDGE_CASE));
 
         verify(documentService).expire(ArgumentMatchers.any(CallbackRequest.class), eq(ADMON_WILL_GRANT_DRAFT));
         verify(documentService).expire(ArgumentMatchers.any(CallbackRequest.class), eq(DIGITAL_GRANT_DRAFT));
         verify(documentService).expire(ArgumentMatchers.any(CallbackRequest.class), eq(INTESTACY_GRANT_DRAFT));
+    }
+
+    @Test
+    public void shouldNotGenerateGrantEdgeCaseBulkPrint() throws Exception {
+
+        String solicitorPayload = testUtils.getStringFromFile("payloadWithEdgeCaseBulkPrint.json");
+
+        MvcResult result = mockMvc.perform(post("/document/generate-grant")
+                .content(solicitorPayload)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("data")))
+                .andReturn();
+
+    }
+
+    @Test
+    public void shouldNotGenerateGrantEdgeCaseReissue() throws Exception {
+
+        String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadNotificationsEdgeCase.json");
+
+        mockMvc.perform(post("/document/generate-grant-reissue")
+                .content(solicitorPayload)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("data")));
+
+
+    }
+
+    @Test
+    public void shouldNotSendToBulkPrintIfEdgeCaseReissue() throws Exception {
+
+        String solicitorPayload = testUtils.getStringFromFile("payloadWithEdgeCaseBulkPrint.json");
+
+        mockMvc.perform(post("/document/generate-grant-reissue")
+                .content(solicitorPayload)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("data")));
+
     }
 
     @Test
@@ -396,6 +470,37 @@ public class DocumentControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("data")))
                 .andExpect(content().string(doesNotContainString("sentEmail")));
+    }
+
+    @Test
+    public void testGenerateStatementOfTruthReturnsOk() throws Exception {
+        String personalPayload = testUtils.getStringFromFile("personalPayloadNotifications.json");
+
+        mockMvc.perform(post("/document/generate-sot")
+                .content(personalPayload)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("data")))
+                .andExpect(content().string(containsString("statementOfTruth")));
+    }
+
+    @Test
+    public void shouldValidateWithPaperCase() throws Exception {
+        String solicitorPayload = testUtils.getStringFromFile("paperForm.json");
+
+        mockMvc.perform(post("/document/generate-sot").content(solicitorPayload).contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.errors[0]").value("You can only use this event for digital cases."))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
+    }
+
+    @Test
+    public void shouldValidateWithDigitalCase() throws Exception {
+        String solicitorPayload = testUtils.getStringFromFile("digitalCase.json");
+
+        mockMvc.perform(post("/document/generate-sot").content(solicitorPayload).contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
     }
 
     private Matcher<String> doesNotContainString(String s) {

@@ -16,7 +16,7 @@ import uk.gov.hmcts.reform.auth.checker.spring.serviceonly.AuthCheckerServiceOnl
 public class SecurityConfiguration {
 
     @Configuration
-    @ConditionalOnProperty(name = "s2s.enabled", havingValue = "true", matchIfMissing = true)
+    @ConditionalOnProperty(name = "s2s.enabled", havingValue = "true")
     public class ServiceOnlySecurityConfigurationAdapter extends WebSecurityConfigurerAdapter {
 
         private final AuthCheckerServiceOnlyFilter filter;
@@ -49,7 +49,7 @@ public class SecurityConfiguration {
                     .antMatchers("/swagger-resources/**").permitAll()
                     .antMatchers("/webjars/springfox-swagger-ui/**").permitAll()
                     .antMatchers("/v2/api-docs").permitAll()
-                    .antMatchers("/health").permitAll()
+                    .antMatchers("/health", "/health/liveness").permitAll()
                     .antMatchers("/info").permitAll()
                     .anyRequest().authenticated();
         }
