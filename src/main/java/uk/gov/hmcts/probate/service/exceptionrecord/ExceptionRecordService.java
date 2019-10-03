@@ -1,9 +1,8 @@
 package uk.gov.hmcts.probate.service.exceptionrecord;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
+import uk.gov.hmcts.probate.exception.OCRMappingException;
 import uk.gov.hmcts.probate.model.exceptionrecord.CaseCreationDetails;
 import uk.gov.hmcts.probate.model.exceptionrecord.ExceptionRecordRequest;
 import uk.gov.hmcts.probate.model.exceptionrecord.SuccessfulTransformationResponse;
@@ -11,8 +10,6 @@ import uk.gov.hmcts.probate.service.exceptionrecord.mapper.ExceptionRecordCaveat
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.ScannedDocumentMapper;
 import uk.gov.hmcts.probate.transformer.CaveatCallbackResponseTransformer;
 import uk.gov.hmcts.reform.probate.model.cases.caveat.CaveatData;
-
-import javax.validation.Valid;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,27 +28,32 @@ public class ExceptionRecordService {
     @Autowired
     CaveatCallbackResponseTransformer caveatTransformer;
 
-    public SuccessfulTransformationResponse createCaveatCaseFormExceptionRecord(
+    public SuccessfulTransformationResponse createCaveatCaseFromExceptionRecord(
             ExceptionRecordRequest erRequest,
             List<String> warnings) {
 
         List<String> errors = new ArrayList<String>();
 
-        CaveatData caveatData = erCaveatMapper.toCcdData(erRequest.getOCRFieldsObject());
+        try {
+            CaveatData caveatData = erCaveatMapper.toCcdData(erRequest.getOCRFieldsObject());
 
-        // Add scanned documents
-        caveatData.setScannedDocuments(erRequest.getScannedDocuments()
-                .stream()
-                .map(it -> documentMapper.toCaseDoc(it, erRequest.getId()))
-                .collect(toList()));
+            // Add scanned documents
+            caveatData.setScannedDocuments(erRequest.getScannedDocuments()
+                    .stream()
+                    .map(it -> documentMapper.toCaseDoc(it, erRequest.getId()))
+                    .collect(toList()));
 
-        CaseCreationDetails caveatCaseDetailsResponse = caveatTransformer.newCaveatCaseTransform(caveatData);
+            CaseCreationDetails caveatCaseDetailsResponse = caveatTransformer.newCaveatCaseTransform(caveatData);
 
-        return SuccessfulTransformationResponse.builder()
-                .caseCreationDetails(caveatCaseDetailsResponse)
-                .warnings(warnings)
-                .errors(errors)
-                .build();
+            return SuccessfulTransformationResponse.builder()
+                    .caseCreationDetails(caveatCaseDetailsResponse)
+                    .warnings(warnings)
+                    .errors(errors)
+                    .build();
+
+        } catch ( Exception e ) {
+            throw new OCRMappingException("Caveat OCR fields could not be mapped to a case", e.getMessage(), e);
+        }
     }
 
 }

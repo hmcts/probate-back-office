@@ -7,17 +7,23 @@ import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import uk.gov.hmcts.probate.exception.OCRMappingException;
+import uk.gov.hmcts.probate.exception.model.ErrorResponse;
 import uk.gov.hmcts.probate.model.ccd.ocr.ValidationResponse;
 import uk.gov.hmcts.probate.model.exceptionrecord.ExceptionRecordRequest;
 import uk.gov.hmcts.probate.model.exceptionrecord.JourneyClassification;
+import uk.gov.hmcts.probate.model.exceptionrecord.ExceptionRecordErrorResponse;
 import uk.gov.hmcts.probate.model.exceptionrecord.SuccessfulTransformationResponse;
 import uk.gov.hmcts.probate.service.exceptionrecord.ExceptionRecordService;
 import uk.gov.hmcts.probate.service.ocr.FormType;
@@ -26,8 +32,11 @@ import uk.gov.hmcts.probate.service.ocr.OCRToCCDMandatoryField;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
+import static net.logstash.logback.argument.StructuredArguments.keyValue;
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -84,11 +93,11 @@ public class ExceptionRecordController {
 
         switch (formType) {
             case PA8A: {
-                callbackResponse = erService.createCaveatCaseFormExceptionRecord(erRequest, warnings);
+                callbackResponse = erService.createCaveatCaseFromExceptionRecord(erRequest, warnings);
                 return ResponseEntity.ok(callbackResponse);
             }
             default: {
-                // Unreachnable
+                log.error("Error no case mappings exists for '{}' form-type.", formType.name());
             }
         }
 
@@ -98,7 +107,15 @@ public class ExceptionRecordController {
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public void handle(HttpMessageNotReadableException e) {
-        log.warn("Returning HTTP 400 Bad Request", e);
+        log.error("Returning HTTP 400 Bad Request", e);
     }
-
+    
+    @ExceptionHandler(OCRMappingException.class)
+    public ResponseEntity<ExceptionRecordErrorResponse> handle(OCRMappingException exception) {
+        log.warn("OCR Data Mapping Error: {}", exception.getMessage());
+        List<String> warnings = Arrays.asList(exception.getWarning());
+        List<String> errors = Arrays.asList(exception.getError());
+        ExceptionRecordErrorResponse errorResponse = new ExceptionRecordErrorResponse(errors, warnings);
+        return ResponseEntity.ok(errorResponse);
+    }
 }
