@@ -15,23 +15,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatCallbackRequest;
-import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
-import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
-import uk.gov.hmcts.probate.model.ccd.caveat.response.CaveatCallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.ocr.ValidationResponse;
-import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
-import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
-import uk.gov.hmcts.probate.model.exceptionrecord.CaseCreationDetails;
 import uk.gov.hmcts.probate.model.exceptionrecord.ExceptionRecordRequest;
 import uk.gov.hmcts.probate.model.exceptionrecord.JourneyClassification;
-import uk.gov.hmcts.probate.model.exceptionrecord.OCRFieldsList;
 import uk.gov.hmcts.probate.model.exceptionrecord.SuccessfulTransformationResponse;
-import uk.gov.hmcts.probate.service.exceptionrecord.mapper.ExceptionRecordMapper;
+import uk.gov.hmcts.probate.service.exceptionrecord.ExceptionRecordService;
 import uk.gov.hmcts.probate.service.ocr.FormType;
 import uk.gov.hmcts.probate.service.ocr.OCRMapper;
 import uk.gov.hmcts.probate.service.ocr.OCRToCCDMandatoryField;
-import uk.gov.hmcts.probate.transformer.CaveatCallbackResponseTransformer;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
@@ -49,13 +40,12 @@ public class ExceptionRecordController {
     private final OCRMapper ocrMapper;
     private final OCRToCCDMandatoryField ocrToCCDMandatoryField;
 
-    private static final String PA_APP_CREATED = "PAAppCreated";
+    public static final String PA8A_FORM = FormType.PA8A.name();
+    public static final String PA1A_FORM = FormType.PA1A.name();
+    public static final String PA1P_FORM = FormType.PA1P.name();
 
     @Autowired
-    ExceptionRecordMapper erMapper;
-
-    @Autowired
-    CaveatCallbackResponseTransformer caveatTransformer;
+    ExceptionRecordService erService;
 
     @ApiOperation(value = "Pre-validate OCR data", notes = "Will return validation errors as warnings. ")
     @ApiResponses({
@@ -68,13 +58,13 @@ public class ExceptionRecordController {
             consumes = APPLICATION_JSON_UTF8_VALUE, produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<SuccessfulTransformationResponse> transformExceptionRecord(@Valid @RequestBody ExceptionRecordRequest erRequest) {
 
-        String formType = erRequest.getFormType();
-        log.info("Transform exception record data for form type: {}", formType);
-        FormType.isFormTypeValid(formType);
+        log.info("Transform exception record data for form type: {}", erRequest.getFormType());
+        FormType.isFormTypeValid(erRequest.getFormType());
+        FormType formType = FormType.valueOf(erRequest.getFormType());
+        SuccessfulTransformationResponse callbackResponse;
         List<String> errors = new ArrayList<String>();
         List<String> warnings = ocrToCCDMandatoryField
-                .ocrToCCDMandatoryFields(ocrMapper.ocrMapper(erRequest.getOcrFields()),
-                        FormType.valueOf(formType));
+                .ocrToCCDMandatoryFields(ocrMapper.ocrMapper(erRequest.getOcrFields()), formType);
 
         if (!warnings.isEmpty()) {
             errors.add("Please resolve all warnings before creating this case.");
@@ -85,31 +75,24 @@ public class ExceptionRecordController {
         }
 
         if (!errors.isEmpty()) {
-            SuccessfulTransformationResponse callbackResponse = SuccessfulTransformationResponse.builder()
+            callbackResponse = SuccessfulTransformationResponse.builder()
                     .warnings(warnings)
                     .errors(errors)
                     .build();
             return ResponseEntity.ok(callbackResponse);
         }
 
-        CaveatData caveatData = erMapper.toCcdData(erRequest.getOCRFieldsObject());
+        switch (formType) {
+            case PA8A: {
+                callbackResponse = erService.createCaveatCaseFormExceptionRecord(erRequest, warnings);
+                return ResponseEntity.ok(callbackResponse);
+            }
+            default: {
+                // Unreachnable
+            }
+        }
 
-        long generatedLong = (long) (Math.random() * (1000));
-        Long id = new Long(generatedLong);
-
-        CaveatDetails caveatDetails = new CaveatDetails(caveatData, null, id);
-
-        CaveatCallbackRequest caveatCallbackRequest = new CaveatCallbackRequest(caveatDetails);
-
-        CaseCreationDetails caveatCaseDetailsResponse = caveatTransformer.transform(caveatCallbackRequest);
-
-        SuccessfulTransformationResponse callbackResponse = SuccessfulTransformationResponse.builder()
-                .caseCreationDetails(caveatCaseDetailsResponse)
-                .warnings(warnings)
-                .errors(errors)
-                .build();
-
-        return ResponseEntity.ok(callbackResponse);
+        return ResponseEntity.notFound().build();
     }
 
     @ExceptionHandler

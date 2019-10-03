@@ -8,6 +8,8 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class ExceptionRecordOCRFields {
+
+    // Caveats
     private final String caveatorForenames;
     private final String caveatorSurnames;
     private final String caveatorEmailAddress;
@@ -26,4 +28,11 @@ public class ExceptionRecordOCRFields {
     private final String deceasedAddressTown;
     private final String deceasedAddressCounty;
     private final String deceasedAddressPostCode;
+
+    // PA1A and PA1P
+    private final String ihtFormCompletedOnline;
+    private final String ihtReferenceNumber;
+    private final String ihtGrossValue;
+    private final String ihtNetValue;
+    private final String ihtFormId;
 }

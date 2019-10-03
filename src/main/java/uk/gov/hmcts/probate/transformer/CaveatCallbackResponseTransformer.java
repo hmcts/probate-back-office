@@ -3,7 +3,9 @@ package uk.gov.hmcts.probate.transformer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.model.ApplicationType;
+import uk.gov.hmcts.probate.model.Constants;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
+import uk.gov.hmcts.probate.model.ccd.ProbateAddress;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatCallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
@@ -14,6 +16,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.BulkPrint;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.exceptionrecord.CaseCreationDetails;
+import uk.gov.hmcts.reform.probate.model.cases.RegistryLocation;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -23,6 +26,7 @@ import java.util.stream.Collectors;
 
 import static java.util.Optional.ofNullable;
 import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
+import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT_RAISED;
 
@@ -83,11 +87,11 @@ public class CaveatCallbackResponseTransformer {
         return transformResponse(responseCaveatData);
     }
 
-    public CaseCreationDetails transform(CaveatCallbackRequest callbackRequest) {
+    public CaveatCallbackResponse transform(CaveatCallbackRequest callbackRequest) {
         ResponseCaveatData responseCaveatData = getResponseCaveatData(callbackRequest.getCaseDetails())
                 .build();
-        return CaseCreationDetails.builder().<ResponseCaveatData>
-                eventId("PA_APP_CREATED").caseData(responseCaveatData).caseTypeId("Caveat").build();
+
+        return transformResponse(responseCaveatData);
     }
 
     public CaveatCallbackResponse addMatches(CaveatCallbackRequest request, List<CaseMatch> newMatches) {
@@ -138,6 +142,7 @@ public class CaveatCallbackResponseTransformer {
 
                 .documentsUploaded(caveatData.getDocumentsUploaded())
                 .documentsGenerated(caveatData.getDocumentsGenerated())
+                .scannedDocuments(caveatData.getScannedDocuments())
                 .notificationsGenerated(caveatData.getNotificationsGenerated())
                 .recordId(caveatData.getRecordId())
                 .paperForm(caveatData.getPaperForm())
@@ -147,6 +152,20 @@ public class CaveatCallbackResponseTransformer {
                 .caveatRaisedEmailNotificationRequested(caveatData.getCaveatRaisedEmailNotificationRequested())
                 .bulkPrintId(caveatData.getBulkPrintId())
                 .applicationSubmittedDate(transformToString(caveatData.getApplicationSubmittedDate()));
+    }
+
+    public CaseCreationDetails newCaveatCaseTransform(uk.gov.hmcts.reform.probate.model.cases.caveat.CaveatData caveatData) {
+
+        if (caveatData.getApplicationType() == null) {
+            caveatData.setApplicationType(uk.gov.hmcts.reform.probate.model.cases.ApplicationType.PERSONAL);
+        }
+
+        if (caveatData.getRegistryLocation() == null) {
+            caveatData.setRegistryLocation(RegistryLocation.LEEDS);
+        }
+
+        return CaseCreationDetails.builder().<ResponseCaveatData>
+                eventId("PA_APP_CREATED").caseData(caveatData).caseTypeId("Caveat").build();
     }
 
     private String transformToString(LocalDate dateValue) {

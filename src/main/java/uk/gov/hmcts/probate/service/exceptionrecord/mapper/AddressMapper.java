@@ -7,10 +7,11 @@ import uk.gov.hmcts.probate.model.ccd.ProbateAddress;
 import uk.gov.hmcts.probate.model.exceptionrecord.ExceptionRecordOCRFields;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToCaveatorAddress;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToDeceasedAddress;
+import uk.gov.hmcts.reform.probate.model.cases.Address;
 
 @Slf4j
 @Component
-public class ProbateAddressMapper {
+public class AddressMapper {
 
     private String addressLine1;
     private String addressLine2;
@@ -22,7 +23,7 @@ public class ProbateAddressMapper {
 
     @SuppressWarnings("squid:S1168")
     @ToCaveatorAddress
-    public ProbateAddress toCaveatorAddress(ExceptionRecordOCRFields ocrFields) {
+    public Address toCaveatorAddress(ExceptionRecordOCRFields ocrFields) {
         log.info("Beginning mapping for Caveator Address");
         this.addressLine1 = ocrFields.getCaveatorAddressLine1();
         this.addressLine2 = ocrFields.getCaveatorAddressLine2();
@@ -36,7 +37,7 @@ public class ProbateAddressMapper {
 
     @SuppressWarnings("squid:S1168")
     @ToDeceasedAddress
-    public ProbateAddress toDeceasedAddress(ExceptionRecordOCRFields ocrFields) {
+    public Address toDeceasedAddress(ExceptionRecordOCRFields ocrFields) {
         log.info("Beginning mapping for Deceased Address");
         this.addressLine1 = ocrFields.getDeceasedAddressLine1();
         this.addressLine2 = ocrFields.getDeceasedAddressLine2();
@@ -48,15 +49,15 @@ public class ProbateAddressMapper {
         return buildAddress();
     }
 
-    private ProbateAddress buildAddress() {
-        ProbateAddress address = ProbateAddress.builder()
-                .proAddressLine1(addressLine1)
-                .proAddressLine2(addressLine2)
-                .proAddressLine3(addressLine3)
-                .proPostTown(postTown)
-                .proCounty(county)
-                .proCountry(country)
-                .proPostCode(postCode)
+    private Address buildAddress() {
+        Address address = Address.builder()
+                .addressLine1(addressLine1)
+                .addressLine2(addressLine2)
+                .addressLine3(addressLine3)
+                .postTown(postTown)
+                .county(county)
+                .country(country)
+                .postCode(postCode)
                 .build();
         return address;
     }

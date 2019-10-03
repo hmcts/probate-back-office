@@ -21,7 +21,7 @@ public class ExceptionRecordRequest {
     private final LocalDateTime deliveryDate;
     private final LocalDateTime openingDate;
     private final List<InputScannedDoc> scannedDocuments;
-    public final List<OCRField> ocrFields;
+    private final List<OCRField> ocrFields;
 
     public ExceptionRecordRequest(
             @JsonProperty("id") String id,
@@ -68,6 +68,13 @@ public class ExceptionRecordRequest {
                 .deceasedAddressPostCode(get(ocrFields, "deceasedAddressPostCode"))
                 .deceasedDateOfBirth(get(ocrFields, "deceasedDateOfBirth"))
                 .deceasedDateOfDeath(get(ocrFields, "deceasedDateOfDeath"))
+
+                .ihtFormCompletedOnline(get(ocrFields, "ihtFormCompletedOnline"))
+                .ihtReferenceNumber(get(ocrFields, "ihtReferenceNumber"))
+                .ihtGrossValue(get(ocrFields, "ihtGrossValue"))
+                .ihtNetValue(get(ocrFields, "ihtNetValue"))
+                .ihtFormId(get(ocrFields, "ihtFormId"))
+
                 .build();
     }
 }
