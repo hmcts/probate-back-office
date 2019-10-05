@@ -9,14 +9,14 @@ import java.time.format.DateTimeFormatter;
 
 @Slf4j
 @Component
-public class DefaultLocalDateFieldMapper {
+public class OCRFieldDefaultLocalDateFieldMapper {
 
-    static final String OCR_DATE_FORMAT = "ddMMyyyy";
+    public static final String OCR_DATE_FORMAT = "ddMMyyyy";
 
     @SuppressWarnings("squid:S1168")
     @ToDefaultLocalDate
     public LocalDate toDefaultDateFieldMember(String dateValue) {
-        log.info("Beginning date mapping for {}", dateValue);
+        log.info("Beginning mapping for Date value: {}", dateValue);
 
         if (dateValue == null || dateValue.isEmpty()) {
             return null;

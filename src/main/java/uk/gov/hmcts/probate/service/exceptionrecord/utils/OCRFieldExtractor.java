@@ -11,13 +11,20 @@ public class OCRFieldExtractor {
         return ocrFields
                 .stream()
                 .filter(it -> it.name.equals(name))
-                .map(it -> it.value)
+                .map(it -> it.value.trim())
                 .findFirst()
                 .orElse(null);
     }
 
     public static String get(List<OCRField> ocrFields, String name1, String name2) {
-        return (get(ocrFields, name1) + " " + get(ocrFields, name2)).trim();
+        return (get(ocrFields, name1) + " "
+                + get(ocrFields, name2)).trim().replaceAll("\\s{2,}", " ");
+    }
+
+    public static String get(List<OCRField> ocrFields, String name1, String name2, String name3) {
+        return (get(ocrFields, name1) + " "
+                + get(ocrFields, name2) + " "
+                + get(ocrFields, name3)).trim().replaceAll("\\s{2,}", " ");
     }
 
     private OCRFieldExtractor() {

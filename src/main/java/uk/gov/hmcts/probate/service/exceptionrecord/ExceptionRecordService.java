@@ -51,7 +51,7 @@ public class ExceptionRecordService {
                     .errors(errors)
                     .build();
 
-        } catch ( Exception e ) {
+        } catch (Exception e) {
             throw new OCRMappingException("Caveat OCR fields could not be mapped to a case", e.getMessage(), e);
         }
     }

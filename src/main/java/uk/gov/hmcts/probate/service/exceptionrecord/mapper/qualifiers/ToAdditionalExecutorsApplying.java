@@ -10,5 +10,5 @@ import java.lang.annotation.Target;
 @Qualifier
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.SOURCE)
-public @interface ToAdditionalExecutorApplying {
+public @interface ToAdditionalExecutorsApplying {
 }

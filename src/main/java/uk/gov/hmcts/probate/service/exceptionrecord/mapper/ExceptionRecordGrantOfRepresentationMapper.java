@@ -1,122 +1,136 @@
 package uk.gov.hmcts.probate.service.exceptionrecord.mapper;
 
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.NullValueCheckStrategy;
 import org.mapstruct.ReportingPolicy;
+import uk.gov.hmcts.probate.model.exceptionrecord.ExceptionRecordOCRFields;
+import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToAdditionalExecutorsApplying;
+import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToDeceasedAddress;
+import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToDefaultLocalDate;
+import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToMartialStatus;
+import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToYesOrNo;
+import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData;
 
 @Mapper(componentModel = "spring",
-        uses = {AddressMapper.class, DefaultLocalDateFieldMapper.class, YesOrNoMapper.class},
+        uses = {OCRFieldAddressMapper.class,
+                OCRFieldAdditionalExecutorsApplyingMapper.class,
+                OCRFieldDefaultLocalDateFieldMapper.class,
+                OCRFieldYesOrNoMapper.class,
+                OCRFieldMartialStatusMapper.class},
         unmappedTargetPolicy = ReportingPolicy.IGNORE, nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS)
 public interface ExceptionRecordGrantOfRepresentationMapper {
+    @Mapping(target = "extraCopiesOfGrant", source = "extraCopiesOfGrant")
+    @Mapping(target = "outsideUkGrantCopies", source = "outsideUKGrantCopies")
+
     /*
-    @Mapping(target = "ihtFormCompletedOnline", source = "ihtFormCompletedOnline", qualifiedBy = {ToYesOrNo.class})
-    @Mapping(target = "ihtReferenceNumber", source = "ihtReferenceNumber")
-    @Mapping(target = "ihtGrossValue", source = "ihtGrossValue")
-    @Mapping(target = "ihtNetValue", source = "ihtNetValue")
-    @Mapping(target = "ihtFormId", source = "ihtFormId")
+    @Mapping(target = "applicationFeePaperForm", source = "applicationFeePaperForm")
+    @Mapping(target = "feeForCopiesPaperForm", source = "feeForCopiesPaperForm")
+    @Mapping(target = "totalFeePaperForm", source = "totalFeePaperForm")
+    @Mapping(target = "paperPaymentMethod", source = "paperPaymentMethod")
+    @Mapping(target = "paymentReferenceNumberPaperform", source = "paymentReferenceNumberPaperform")
+    @Mapping(target = "primaryApplicantForenames", source = "primaryApplicantForenames")
+    @Mapping(target = "primaryApplicantMiddleNames", source = "primaryApplicantMiddleNames")
+    @Mapping(target = "primaryApplicantSurname", source = "primaryApplicantSurname")
+    @Mapping(target = "primaryApplicantAddressLine1", source = "primaryApplicantAddressLine1")
+    @Mapping(target = "primaryApplicantAddressLine2", source = "primaryApplicantAddressLine2")
+    @Mapping(target = "primaryApplicantAddressTown", source = "primaryApplicantAddressTown")
+    @Mapping(target = "primaryApplicantAddressCounty", source = "primaryApplicantAddressCounty")
+    @Mapping(target = "primaryApplicantAddressPostCode", source = "primaryApplicantAddressPostCode")
+    @Mapping(target = "primaryApplicantPhoneNumber", source = "primaryApplicantPhoneNumber")
+    @Mapping(target = "primaryApplicantSecondPhoneNumber", source = "primaryApplicantSecondPhoneNumber")
+    @Mapping(target = "primaryApplicantEmailAddress", source = "primaryApplicantEmailAddress")
+    */
+
+    @Mapping(target = "executorsApplying", source = "ocrFields", qualifiedBy = {ToAdditionalExecutorsApplying.class})
     @Mapping(target = "deceasedForenames", source = "deceasedForenames")
     @Mapping(target = "deceasedSurname", source = "deceasedSurname")
     @Mapping(target = "deceasedAddress", source = "ocrFields", qualifiedBy = {ToDeceasedAddress.class})
-    @Mapping(target = "deceasedDateOfDeath", source = "deceasedDateOfDeath", qualifiedBy = {ToDefaultLocalDate.class})
     @Mapping(target = "deceasedDateOfBirth", source = "deceasedDateOfBirth", qualifiedBy = {ToDefaultLocalDate.class})
+    @Mapping(target = "deceasedDateOfDeath", source = "deceasedDateOfDeath", qualifiedBy = {ToDefaultLocalDate.class})
     @Mapping(target = "deceasedAnyOtherNames", source = "deceasedAnyOtherNames", qualifiedBy = {ToYesOrNo.class})
-     */
-
+    @Mapping(target = "deceasedDomicileInEngWales", source = "deceasedDomicileInEngWales")
+    @Mapping(target = "deceasedMaritalStatus", source = "deceasedMartialStatus", qualifiedBy = {ToMartialStatus.class})
+    //@Mapping(target = "dateOfMarriageOrCP", source = "dateOfMarriageOrCP", qualifiedBy = {ToDefaultLocalDate.class})
+    //@Mapping(target = "dateOfDivorcedCPJudicially", source = "dateOfDivorcedCPJudicially", qualifiedBy = {ToDefaultLocalDate.class})
+    //@Mapping(target = "courtOfDecree", source = "courtOfDecree")
+    @Mapping(target = "deceasedHasAssetsOutsideUK", source = "foreignAsset", qualifiedBy = {ToYesOrNo.class})
+    @Mapping(target = "assetsOutsideNetValue", source = "foreignAssetEstateValue")
     /*
-    @Mapping(target = "extraCopiesOfGrant", source = "ocrFields, names.extraCopiesOfGrant",
-    qualifiedBy = {ToStraightCcdFieldMember.class})
-    @Mapping(target = "outsideUKGrantCopies", source = "ocrFields, outsideUKGrantCopies", qualifiedBy = {ToStraightCcdFieldMember.class})
-    @Mapping(target = "applicationFeePaperForm", source = "ocrFields, applicationFeePaperForm",
-    qualifiedBy = {ToStraightCcdFieldMember.class})
-    @Mapping(target = "feeForCopiesPaperForm", source = "ocrFields, feeForCopiesPaperForm", qualifiedBy = {ToStraightCcdFieldMember.class})
-    //@Mapping(target = "totalFeePaperForm", source = "ocrFields, totalFeePaperForm", qualifiedBy = {ToStraightCcdFieldMember.class})
-    @Mapping(target = "paperPaymentMethod", source = "ocrFields, paperPaymentMethod", qualifiedBy = {ToStraightCcdFieldMember.class})
-    //@Mapping(target = "paymentReferenceNumberPaperform", source = "ocrFields, paymentReferenceNumberPaperform",
-    qualifiedBy = {ToStraightCcdFieldMember.class})
-    @Mapping(target = "primaryApplicantForenames", source = "ocrFields, primaryApplicantForenames",
-    qualifiedBy = {ToStraightCcdFieldMember.class})
-    @Mapping(target = "primaryApplicantSurname", source = "ocrFields, primaryApplicantSurname",
-    qualifiedBy = {ToStraightCcdFieldMember.class})
-    @Mapping(target = "primaryApplicantHasAlias", source = "ocrFields, primaryApplicantHasAlias",
-    qualifiedBy = {ToStraightCcdFieldMember.class})
-    @Mapping(target = "primaryApplicantAlias", source = "ocrFields, primaryApplicantAlias",
-    qualifiedBy = {ToStraightCcdFieldMember.class})
-    @Mapping(target = "primaryApplicantPhoneNumber", source = "ocrFields, primaryApplicantPhoneNumber",
-    qualifiedBy = {ToStraightCcdFieldMember.class})
-    @Mapping(target = "primaryApplicantSecondPhoneNumber", source = "ocrFields, primaryApplicantSecondPhoneNumber",
-    qualifiedBy = {ToStraightCcdFieldMember.class})
-    @Mapping(target = "primaryApplicantEmailAddress", source = "ocrFields, primaryApplicantEmailAddress",
-    qualifiedBy = {ToStraightCcdFieldMember.class})
-    @Mapping(target = "primaryApplicantAddress.addressLine1", source = "ocrFields, primaryApplicantAddress_AddressLine1",
-    qualifiedBy = {ToStraightCcdFieldMember.class})
-    @Mapping(target = "primaryApplicantAddress.addressLine2", source = "ocrFields, primaryApplicantAddress_AddressLine2",
-    qualifiedBy = {ToStraightCcdFieldMember.class})
-    @Mapping(target = "primaryApplicantAddress.postTown", source = "ocrFields, primaryApplicantAddress_PostTown",
-    qualifiedBy = {ToStraightCcdFieldMember.class})
-    @Mapping(target = "primaryApplicantAddress.county", source = "ocrFields, primaryApplicantAddress_County",
-    qualifiedBy = {ToStraightCcdFieldMember.class})
-    @Mapping(target = "primaryApplicantAddress.postCode", source = "ocrFields, primaryApplicantAddress_PostCode",
-    qualifiedBy = {ToStraightCcdFieldMember.class})
-    @Mapping(target = "deceasedForenames", source = "ocrFields, deceasedForenames", qualifiedBy = {ToStraightCcdFieldMember.class})
-    @Mapping(target = "deceasedSurname", source = "ocrFields, deceasedSurname", qualifiedBy = {ToStraightCcdFieldMember.class})
-    @Mapping(target = "deceasedAddress.addressLine1", source = "ocrFields, deceasedAddress_AddressLine1",
-    qualifiedBy = {ToStraightCcdFieldMember.class})
-    @Mapping(target = "deceasedAddress.addressLine2", source = "ocrFields, deceasedAddress_AddressLine2",
-    qualifiedBy = {ToStraightCcdFieldMember.class})
-    @Mapping(target = "deceasedAddress.postTown", source = "ocrFields, deceasedAddress_PostTown",
-    qualifiedBy = {ToStraightCcdFieldMember.class})
-    @Mapping(target = "deceasedAddress.county", source = "ocrFields, deceasedAddress_County",
-    qualifiedBy = {ToStraightCcdFieldMember.class})
-    @Mapping(target = "deceasedAddress.postCode", source = "ocrFields, deceasedAddress_PostCode",
-    qualifiedBy = {ToStraightCcdFieldMember.class})
-    @Mapping(target = "deceasedAnyOtherNames", source = "ocrFields, deceasedAnyOtherNames", qualifiedBy = {ToStraightCcdFieldMember.class})
-    @Mapping(target = "deceasedDomicileInEngWales", source = "ocrFields, deceasedDomicileInEngWales",
-    qualifiedBy = {ToStraightCcdFieldMember.class})
-    @Mapping(target = "deceasedMartialStatus", source = "ocrFields, deceasedMartialStatus", qualifiedBy = {ToStraightCcdFieldMember.class})
-    @Mapping(target = "dateOfMarriageOrCP", source = "ocrFields, dateOfMarriageOrCP", qualifiedBy = {ToStraightCcdFieldMember.class})
-    @Mapping(target = "dateOfDivorcedCPJudicially", source = "ocrFields, dateOfDivorcedCPJudicially",
-    qualifiedBy = {ToStraightCcdFieldMember.class})
-    @Mapping(target = "courtOfDecree", source = "ocrFields, courtOfDecree", qualifiedBy = {ToStraightCcdFieldMember.class})
-    @Mapping(target = "foreignAsset", source = "ocrFields, foreignAsset", qualifiedBy = {ToStraightCcdFieldMember.class})
-    @Mapping(target = "foreignAssetEstateValue", source = "ocrFields, foreignAssetEstateValue",
-    qualifiedBy = {ToStraightCcdFieldMember.class})
-    @Mapping(target = "adopted", source = "ocrFields, adopted", qualifiedBy = {ToStraightCcdFieldMember.class})
-    //@Mapping(target = "willHasCodicils", source = "ocrFields, willHasCodicils", qualifiedBy = {ToStraightCcdFieldMember.class})
-    @Mapping(target = "willsOutsideOfUK", source = "ocrFields, willsOutsideOfUK", qualifiedBy = {ToStraightCcdFieldMember.class})
-    @Mapping(target = "deceasedMarriedAfterWillOrCodicilDate", source = "ocrFields, deceasedMarriedAfterWillOrCodicilDate",
-    qualifiedBy = {ToStraightCcdFieldMember.class})
-    @Mapping(target = "willGiftUnderEighteen", source = "ocrFields, willGiftUnderEighteen", qualifiedBy = {ToStraightCcdFieldMember.class})
-    @Mapping(target = "notifiedApplicants", source = "ocrFields, notifiedApplicants", qualifiedBy = {ToStraightCcdFieldMember.class})
-    @Mapping(target = "spouseOrPartner", source = "ocrFields, spouseOrPartner", qualifiedBy = {ToStraightCcdFieldMember.class})
-    @Mapping(target = "childrenUnderEighteenSurvived", source = "ocrFields, childrenUnderEighteenSurvived",
-    qualifiedBy = {ToStraightCcdFieldMember.class})
-    @Mapping(target = "childrenOverEighteenSurvived", source = "ocrFields, childrenOverEighteenSurvived",
-    qualifiedBy = {ToStraightCcdFieldMember.class})
-    @Mapping(target = "childrenDiedUnderEighteen", source = "ocrFields, childrenDiedUnderEighteen",
-    qualifiedBy = {ToStraightCcdFieldMember.class})
-    @Mapping(target = "childrenDiedOverEighteen", source = "ocrFields, childrenDiedOverEighteen",
-    qualifiedBy = {ToStraightCcdFieldMember.class})
-    @Mapping(target = "grandChildrenSurvivedUnderEighteen", source = "ocrFields, grandChildrenSurvivedUnderEighteen",
-    qualifiedBy = {ToStraightCcdFieldMember.class})
-    @Mapping(target = "grandChildrenSurvivedOverEighteen", source = "ocrFields, grandChildrenSurvivedOverEighteen",
-    qualifiedBy = {ToStraightCcdFieldMember.class})
-    @Mapping(target = "primaryApplicantRelationshipToDeceased", source = "ocrFields, primaryApplicantRelationshipToDeceased",
-    qualifiedBy = {ToStraightCcdFieldMember.class})
-    @Mapping(target = "applyingAsAnAttorney", source = "ocrFields, applyingAsAnAttorney", qualifiedBy = {ToStraightCcdFieldMember.class})
-    @Mapping(target = "mentalCapacity", source = "ocrFields, mentalCapacity", qualifiedBy = {ToStraightCcdFieldMember.class})
-    @Mapping(target = "courtOfProtection", source = "ocrFields, courtOfProtection", qualifiedBy = {ToStraightCcdFieldMember.class})
-    @Mapping(target = "epaOrLpa", source = "ocrFields, epaOrLpa", qualifiedBy = {ToStraightCcdFieldMember.class})
-    @Mapping(target = "epaRegistered", source = "ocrFields, epaRegistered", qualifiedBy = {ToStraightCcdFieldMember.class})
-    @Mapping(target = "domicilityCountry", source = "ocrFields, domicilityCountry", qualifiedBy = {ToStraightCcdFieldMember.class})
-    @Mapping(target = "ihtFormCompletedOnline", source = "ocrFields, ihtFormCompletedOnline",
-    qualifiedBy = {ToStraightCcdFieldMember.class})
-    @Mapping(target = "ihtReferenceNumber", source = "ocrFields, ihtReferenceNumber", qualifiedBy = {ToStraightCcdFieldMember.class})
-    @Mapping(target = "ihtGrossValue", source = "ocrFields, ihtGrossValue", qualifiedBy = {ToStraightCcdFieldMember.class})
-    @Mapping(target = "ihtNetValue", source = "ocrFields, ihtNetValue", qualifiedBy = {ToStraightCcdFieldMember.class})
-    @Mapping(target = "ihtFormId", source = "ocrFields, ihtFormId", qualifiedBy = {ToStraightCcdFieldMember.class})
-    @Mapping(target = "executorsApplying", source = "ocrFields", qualifiedBy = {ToAdditionalExecutorApplying.class})
-    //@Mapping(target = "deceasedDateOfBirth", source = "ocrFields, deceasedDateOfBirth",
-    qualifiedBy = {ToStraightCcdFieldMember.class})//should be a date one
-     */
-    //nCaseData toCcdData(ExceptionRecordOCRFields ocrFields);
+    @Mapping(target = "adopted", source = "adopted")
+    @Mapping(target = "adoptiveRelatives_1_name", source = "adoptiveRelatives_1_name")
+    @Mapping(target = "adoptiveRelatives_1_relationship", source = "adoptiveRelatives_1_relationship")
+    @Mapping(target = "adoptiveRelatives_1_adoptedInOrOut", source = "adoptiveRelatives_1_adoptedInOrOut")
+    @Mapping(target = "adoptiveRelatives_2_name", source = "adoptiveRelatives_2_name")
+    @Mapping(target = "adoptiveRelatives_2_relationship", source = "adoptiveRelatives_2_relationship")
+    @Mapping(target = "adoptiveRelatives_2_adoptedInOrOut", source = "adoptiveRelatives_2_adoptedInOrOut")
+    @Mapping(target = "adoptiveRelatives_3_name", source = "adoptiveRelatives_3_name")
+    @Mapping(target = "adoptiveRelatives_3_relationship", source = "adoptiveRelatives_3_relationship")
+    @Mapping(target = "adoptiveRelatives_3_adoptedInOrOut", source = "adoptiveRelatives_3_adoptedInOrOut")
+    @Mapping(target = "adoptiveRelatives_4_name", source = "adoptiveRelatives_4_name")
+    @Mapping(target = "adoptiveRelatives_4_relationship", source = "adoptiveRelatives_4_relationship")
+    @Mapping(target = "adoptiveRelatives_4_adoptedInOrOut", source = "adoptiveRelatives_4_adoptedInOrOut")
+    @Mapping(target = "adoptiveRelatives_5_name", source = "adoptiveRelatives_5_name")
+    @Mapping(target = "adoptiveRelatives_5_relationship", source = "adoptiveRelatives_5_relationship")
+    @Mapping(target = "adoptiveRelatives_5_adoptedInOrOut", source = "adoptiveRelatives_5_adoptedInOrOut")
+    @Mapping(target = "spouseOrPartner", source = "spouseOrPartner")
+    @Mapping(target = "childrenUnderEighteenSurvived", source = "childrenUnderEighteenSurvived")
+    @Mapping(target = "childrenOverEighteenSurvived", source = "childrenOverEighteenSurvived")
+    @Mapping(target = "childrenDiedUnderEighteen", source = "childrenDiedUnderEighteen")
+    @Mapping(target = "childrenDiedOverEighteen", source = "childrenDiedOverEighteen")
+    @Mapping(target = "grandChildrenSurvivedUnderEighteen", source = "grandChildrenSurvivedUnderEighteen")
+    @Mapping(target = "grandChildrenSurvivedOverEighteen", source = "grandChildrenSurvivedOverEighteen")
+    @Mapping(target = "parentsExistUnderEighteenSurvived", source = "parentsExistUnderEighteenSurvived")
+    @Mapping(target = "parentsExistOverEighteenSurvived", source = "parentsExistOverEighteenSurvived")
+    @Mapping(target = "wholeBloodSiblingsSurvivedUnderEighteen", source = "wholeBloodSiblingsSurvivedUnderEighteen")
+    @Mapping(target = "wholeBloodSiblingsSurvivedOverEighteen", source = "wholeBloodSiblingsSurvivedOverEighteen")
+    @Mapping(target = "wholeBloodSiblingsDiedUnderEighteen", source = "wholeBloodSiblingsDiedUnderEighteen")
+    @Mapping(target = "wholeBloodSiblingsDiedOverEighteen", source = "wholeBloodSiblingsDiedOverEighteen")
+    @Mapping(target = "wholeBloodNeicesAndNephewsUnderEighteen", source = "wholeBloodNeicesAndNephewsUnderEighteen")
+    @Mapping(target = "wholeBloodNeicesAndNephewsOverEighteen", source = "wholeBloodNeicesAndNephewsOverEighteen")
+    @Mapping(target = "halfBloodSiblingsSurvivedUnderEighteen", source = "halfBloodSiblingsSurvivedUnderEighteen")
+    @Mapping(target = "halfBloodSiblingsSurvivedOverEighteen", source = "halfBloodSiblingsSurvivedOverEighteen")
+    @Mapping(target = "halfBloodSiblingsDiedUnderEighteen", source = "halfBloodSiblingsDiedUnderEighteen")
+    @Mapping(target = "halfBloodSiblingsDiedOverEighteen", source = "halfBloodSiblingsDiedOverEighteen")
+    @Mapping(target = "halfBloodNeicesAndNephewsUnderEighteen", source = "halfBloodNeicesAndNephewsUnderEighteen")
+    @Mapping(target = "halfBloodNeicesAndNephewsOverEighteen", source = "halfBloodNeicesAndNephewsOverEighteen")
+    @Mapping(target = "grandparentsDiedUnderEighteen", source = "grandparentsDiedUnderEighteen")
+    @Mapping(target = "grandparentsDiedOverEighteen", source = "grandparentsDiedOverEighteen")
+    @Mapping(target = "wholeBloodUnclesAndAuntsSurvivedUnderEighteen", source = "wholeBloodUnclesAndAuntsSurvivedUnderEighteen")
+    @Mapping(target = "wholeBloodUnclesAndAuntsSurvivedOverEighteen", source = "wholeBloodUnclesAndAuntsSurvivedOverEighteen")
+    @Mapping(target = "wholeBloodUnclesAndAuntsDiedUnderEighteen", source = "wholeBloodUnclesAndAuntsDiedUnderEighteen")
+    @Mapping(target = "wholeBloodUnclesAndAuntsDiedOverEighteen", source = "wholeBloodUnclesAndAuntsDiedOverEighteen")
+    @Mapping(target = "wholeBloodCousinsSurvivedUnderEighteen", source = "wholeBloodCousinsSurvivedUnderEighteen")
+    @Mapping(target = "wholeBloodCousinsSurvivedOverEighteen", source = "wholeBloodCousinsSurvivedOverEighteen")
+    @Mapping(target = "halfBloodUnclesAndAuntsSurvivedUnderEighteen", source = "halfBloodUnclesAndAuntsSurvivedUnderEighteen")
+    @Mapping(target = "halfBloodUnclesAndAuntsSurvivedOverEighteen", source = "halfBloodUnclesAndAuntsSurvivedOverEighteen")
+    @Mapping(target = "halfBloodUnclesAndAuntsDiedUnderEighteen", source = "halfBloodUnclesAndAuntsDiedUnderEighteen")
+    @Mapping(target = "halfBloodUnclesAndAuntsDiedOverEighteen", source = "halfBloodUnclesAndAuntsDiedOverEighteen")
+    @Mapping(target = "halfBloodCousinsSurvivedUnderEighteen", source = "halfBloodCousinsSurvivedUnderEighteen")
+    @Mapping(target = "halfBloodCousinsSurvivedOverEighteen", source = "halfBloodCousinsSurvivedOverEighteen")
+    @Mapping(target = "primaryApplicantRelationshipToDeceased", source = "primaryApplicantRelationshipToDeceased")
+    @Mapping(target = "secondApplicantRelationshipToDeceased", source = "secondApplicantRelationshipToDeceased")
+    @Mapping(target = "thirdApplicantRelationshipToDeceased", source = "thirdApplicantRelationshipToDeceased")
+    @Mapping(target = "fourthApplicantRelationshipToDeceased", source = "fourthApplicantRelationshipToDeceased")
+    @Mapping(target = "applyingAsAnAttorney", source = "applyingAsAnAttorney")
+    @Mapping(target = "attorneyOnBehalfOfName", source = "attorneyOnBehalfOfName")
+    @Mapping(target = "attorneyOnBehalfOfAddressLine1", source = "attorneyOnBehalfOfAddressLine1")
+    @Mapping(target = "attorneyOnBehalfOfAddressLine2", source = "attorneyOnBehalfOfAddressLine2")
+    @Mapping(target = "attorneyOnBehalfOfAddressTown", source = "attorneyOnBehalfOfAddressTown")
+    @Mapping(target = "attorneyOnBehalfOfAddressCounty", source = "attorneyOnBehalfOfAddressCounty")
+    @Mapping(target = "attorneyOnBehalfOfAddressPostCode", source = "attorneyOnBehalfOfAddressPostCode")
+    */
+    //@Mapping(target = "mentalCapacity", source = "mentalCapacity")
+    //@Mapping(target = "courtOfProtection", source = "courtOfProtection")
+    //@Mapping(target = "epaOrLpa", source = "epaOrLpa")
+    //@Mapping(target = "epaRegistered", source = "epaRegistered")
+    //@Mapping(target = "domicilityCountry", source = "domicilityCountry")
+    //@Mapping(target = "domicilityEntrustingDocument", source = "domicilityEntrustingDocument")
+    //@Mapping(target = "domicilitySuccessionIHTCert", source = "domicilitySuccessionIHTCert")
+    @Mapping(target = "ihtFormCompletedOnline", source = "ihtFormCompletedOnline", qualifiedBy = {ToYesOrNo.class})
+    @Mapping(target = "ihtReferenceNumber", source = "ihtReferenceNumber")
+    @Mapping(target = "ihtFormId", source = "ihtFormId")
+    @Mapping(target = "ihtGrossValue", source = "ihtGrossValue")
+    @Mapping(target = "ihtNetValue", source = "ihtNetValue")
+    GrantOfRepresentationData toCcdData(ExceptionRecordOCRFields ocrFields);
 }

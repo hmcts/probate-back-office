@@ -1,5 +1,7 @@
 package uk.gov.hmcts.probate.controller;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -34,7 +36,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-public class OCRFormsControllerTest {
+public class ExceptionRecordControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -54,68 +56,64 @@ public class OCRFormsControllerTest {
     @MockBean
     private OCRToCCDMandatoryField ocrToCCDMandatoryField;
 
-    private String ocrPayload;
+    private String exceptionRecordPayloadPA8A;
+    private String exceptionRecordPayloadPA1P;
     private List<OCRField> ocrFields = new ArrayList<>();
     private List<String> warnings = new ArrayList<>();
 
     @Before
     public void setUp() throws IOException {
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-        ocrPayload = testUtils.getStringFromFile("expectedOCRData.json");
-        OCRField field1 = OCRField.builder()
-                .name("deceasedForenames")
-                .value("John")
-                .description("Deceased forename").build();
-        ocrFields.add(field1);
+        exceptionRecordPayloadPA8A = testUtils.getStringFromFile("expectedExceptionRecordDataPA8A.json");
         warnings.add("test warning");
         when(ocrPopulatedValueMapper.ocrPopulatedValueMapper(any())).thenReturn(ocrFields);
         when(ocrToCCDMandatoryField.ocrToCCDMandatoryFields(eq(ocrFields), any())).thenReturn(EMPTY_LIST);
     }
 
     @Test
-    public void testNoWarningsReturnOkResponseAndSuccessResponseStateForPA1P() throws Exception {
-        mockMvc.perform(post("/forms/PA1P/validate-ocr")
-                .content(ocrPayload)
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().string(containsString("SUCCESS")));
-    }
-
-    @Test
     public void testWarningsPopulateListAndReturnOkWithWarningsResponseState() throws Exception {
         when(ocrToCCDMandatoryField.ocrToCCDMandatoryFields(any(), any())).thenReturn(warnings);
-        mockMvc.perform(post("/forms/PA1P/validate-ocr")
-                .content(ocrPayload)
+        mockMvc.perform(post("/transform-exception-record")
+                .content(exceptionRecordPayloadPA8A)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("WARNINGS")))
+                .andExpect(content().string(containsString("Please resolve all warnings before creating this case.")))
                 .andExpect(content().string(containsString("test warning")));
     }
 
     @Test
-    public void testNoWarningsReturnOkResponseAndSuccessResponseStateForPA1A() throws Exception {
-        mockMvc.perform(post("/forms/PA1A/validate-ocr")
-                .content(ocrPayload)
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().string(containsString("SUCCESS")));
-    }
-
-    @Test
     public void testNoWarningsReturnOkResponseAndSuccessResponseStateForPA8A() throws Exception {
-        mockMvc.perform(post("/forms/PA8A/validate-ocr")
-                .content(ocrPayload)
+        mockMvc.perform(post("/transform-exception-record")
+                .content(exceptionRecordPayloadPA8A)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("SUCCESS")));
+                .andExpect(content().string(containsString("\"case_type_id\":\"Caveat\"")))
+                .andExpect(content().string(containsString("\"applicationType\":\"Personal\"")))
+                .andExpect(content().string(containsString("\"deceasedSurname\":\"Smith\"")))
+                .andExpect(content().string(containsString("\"warnings\":[]")))
+                .andExpect(content().string(containsString("\"errors\":[]")));
     }
 
     @Test
-    public void testInvalidFormTypeThrowsNotFound() throws Exception {
-        mockMvc.perform(post("/forms/test/validate-ocr")
-                .content(ocrPayload)
+    public void testMissingFormTypeN() throws Exception {
+        JSONObject modifiedExceptionRecordPayload  = new JSONObject(exceptionRecordPayloadPA8A);
+        modifiedExceptionRecordPayload.remove("form_type");
+        mockMvc.perform(post("/transform-exception-record")
+                .content(modifiedExceptionRecordPayload.toString())
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is4xxClientError())
-                .andExpect(content().string(containsString("Form type 'test' not found")));
+                .andExpect(content().string(containsString("Form type 'null' not found")));
+    }
+
+    @Test
+    public void testExceptionRecordErrorHandler() throws Exception {
+        String deceasedDateOfDeath = "\"name\": \"deceasedDateOfDeath\", \"value\": \"02022019\"";
+        String badDeceasedDateOfDeath = "\"name\": \"deceasedDateOfDeath\", \"value\": \"02022\"";
+        mockMvc.perform(post("/transform-exception-record")
+                .content(exceptionRecordPayloadPA8A.replace(deceasedDateOfDeath, badDeceasedDateOfDeath))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("\"warnings\":[\"Text '02022' could not be parsed at index 4\"]")))
+                .andExpect(content().string(containsString("\"errors\":[\"Caveat OCR fields could not be mapped to a case\"]")));
     }
 }

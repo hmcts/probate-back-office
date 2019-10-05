@@ -8,12 +8,12 @@ import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToYesOrNo;
 
 @Slf4j
 @Component
-public class YesOrNoMapper {
+public class OCRFieldYesOrNoMapper {
 
     @SuppressWarnings("squid:S1168")
     @ToYesOrNo
     public String toYesOrNo(String booleanValue) {
-        log.info("Beginning mapping for Yes or No value");
+        log.info("Beginning mapping for Yes or No value: {}", booleanValue);
 
         if (booleanValue == null || booleanValue.isEmpty()) {
             return null;

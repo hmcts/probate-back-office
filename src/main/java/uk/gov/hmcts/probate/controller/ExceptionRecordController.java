@@ -7,19 +7,15 @@ import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import uk.gov.hmcts.probate.exception.OCRMappingException;
-import uk.gov.hmcts.probate.exception.model.ErrorResponse;
 import uk.gov.hmcts.probate.model.ccd.ocr.ValidationResponse;
 import uk.gov.hmcts.probate.model.exceptionrecord.ExceptionRecordRequest;
 import uk.gov.hmcts.probate.model.exceptionrecord.JourneyClassification;
@@ -27,7 +23,7 @@ import uk.gov.hmcts.probate.model.exceptionrecord.ExceptionRecordErrorResponse;
 import uk.gov.hmcts.probate.model.exceptionrecord.SuccessfulTransformationResponse;
 import uk.gov.hmcts.probate.service.exceptionrecord.ExceptionRecordService;
 import uk.gov.hmcts.probate.service.ocr.FormType;
-import uk.gov.hmcts.probate.service.ocr.OCRMapper;
+import uk.gov.hmcts.probate.service.ocr.OCRPopulatedValueMapper;
 import uk.gov.hmcts.probate.service.ocr.OCRToCCDMandatoryField;
 
 import javax.validation.Valid;
@@ -36,7 +32,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import static net.logstash.logback.argument.StructuredArguments.keyValue;
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -46,7 +41,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @Api(tags = "Manage bulk scanning exception record data")
 public class ExceptionRecordController {
 
-    private final OCRMapper ocrMapper;
+    private final OCRPopulatedValueMapper ocrPopulatedValueMapper;
     private final OCRToCCDMandatoryField ocrToCCDMandatoryField;
 
     public static final String PA8A_FORM = FormType.PA8A.name();
@@ -73,7 +68,7 @@ public class ExceptionRecordController {
         SuccessfulTransformationResponse callbackResponse;
         List<String> errors = new ArrayList<String>();
         List<String> warnings = ocrToCCDMandatoryField
-                .ocrToCCDMandatoryFields(ocrMapper.ocrMapper(erRequest.getOcrFields()), formType);
+                .ocrToCCDMandatoryFields(ocrPopulatedValueMapper.ocrPopulatedValueMapper(erRequest.getOcrFields()), formType);
 
         if (!warnings.isEmpty()) {
             errors.add("Please resolve all warnings before creating this case.");
@@ -109,7 +104,7 @@ public class ExceptionRecordController {
     public void handle(HttpMessageNotReadableException e) {
         log.error("Returning HTTP 400 Bad Request", e);
     }
-    
+
     @ExceptionHandler(OCRMappingException.class)
     public ResponseEntity<ExceptionRecordErrorResponse> handle(OCRMappingException exception) {
         log.warn("OCR Data Mapping Error: {}", exception.getMessage());

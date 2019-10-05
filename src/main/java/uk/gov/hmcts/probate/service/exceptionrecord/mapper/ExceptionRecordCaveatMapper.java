@@ -12,7 +12,9 @@ import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToDefaultL
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToYesOrNo;
 
 @Mapper(componentModel = "spring",
-        uses = {AddressMapper.class, DefaultLocalDateFieldMapper.class, YesOrNoMapper.class},
+        uses = {OCRFieldAddressMapper.class,
+                OCRFieldDefaultLocalDateFieldMapper.class,
+                OCRFieldYesOrNoMapper.class},
         unmappedTargetPolicy = ReportingPolicy.IGNORE, nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS)
 public interface ExceptionRecordCaveatMapper {
     @Mapping(target = "caveatorForenames", source = "caveatorForenames")
