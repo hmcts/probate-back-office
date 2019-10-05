@@ -22,45 +22,45 @@ public class OCRFieldAdditionalExecutorsApplyingMapper {
 
         List<CollectionMember<ExecutorApplying>> collectionMemberList = new ArrayList<>();
 
-        if (ocrFields.getExecutorsApplying_0_applyingExecutorName() != null
-                && !ocrFields.getExecutorsApplying_0_applyingExecutorName().isEmpty()) {
+        if (ocrFields.getExecutorsApplying0applyingExecutorName() != null
+                && !ocrFields.getExecutorsApplying0applyingExecutorName().isEmpty()) {
             collectionMemberList.add(buildExecutor(
-                    ocrFields.getExecutorsApplying_0_applyingExecutorName(),
-                    ocrFields.getExecutorsApplying_0_applyingExecutorOtherNames(),
-                    ocrFields.getExecutorsApplying_0_applyingExecutorAddressLine1(),
-                    ocrFields.getExecutorsApplying_0_applyingExecutorAddressLine2(),
-                    ocrFields.getExecutorsApplying_0_applyingExecutorAddressTown(),
-                    ocrFields.getExecutorsApplying_0_applyingExecutorAddressCounty(),
-                    ocrFields.getExecutorsApplying_0_applyingExecutorAddressPostCode(),
-                    ocrFields.getExecutorsApplying_0_applyingExecutorEmail()
+                    ocrFields.getExecutorsApplying0applyingExecutorName(),
+                    ocrFields.getExecutorsApplying0applyingExecutorOtherNames(),
+                    ocrFields.getExecutorsApplying0applyingExecutorAddressLine1(),
+                    ocrFields.getExecutorsApplying0applyingExecutorAddressLine2(),
+                    ocrFields.getExecutorsApplying0applyingExecutorAddressTown(),
+                    ocrFields.getExecutorsApplying0applyingExecutorAddressCounty(),
+                    ocrFields.getExecutorsApplying0applyingExecutorAddressPostCode(),
+                    ocrFields.getExecutorsApplying0applyingExecutorEmail()
             ));
         }
 
-        if (ocrFields.getExecutorsApplying_1_applyingExecutorName() != null
-                && !ocrFields.getExecutorsApplying_1_applyingExecutorName().isEmpty()) {
+        if (ocrFields.getExecutorsApplying1applyingExecutorName() != null
+                && !ocrFields.getExecutorsApplying1applyingExecutorName().isEmpty()) {
             collectionMemberList.add(buildExecutor(
-                    ocrFields.getExecutorsApplying_1_applyingExecutorName(),
-                    ocrFields.getExecutorsApplying_1_applyingExecutorOtherNames(),
-                    ocrFields.getExecutorsApplying_1_applyingExecutorAddressLine1(),
-                    ocrFields.getExecutorsApplying_1_applyingExecutorAddressLine2(),
-                    ocrFields.getExecutorsApplying_1_applyingExecutorAddressTown(),
-                    ocrFields.getExecutorsApplying_1_applyingExecutorAddressCounty(),
-                    ocrFields.getExecutorsApplying_1_applyingExecutorAddressPostCode(),
-                    ocrFields.getExecutorsApplying_1_applyingExecutorEmail()
+                    ocrFields.getExecutorsApplying1applyingExecutorName(),
+                    ocrFields.getExecutorsApplying1applyingExecutorOtherNames(),
+                    ocrFields.getExecutorsApplying1applyingExecutorAddressLine1(),
+                    ocrFields.getExecutorsApplying1applyingExecutorAddressLine2(),
+                    ocrFields.getExecutorsApplying1applyingExecutorAddressTown(),
+                    ocrFields.getExecutorsApplying1applyingExecutorAddressCounty(),
+                    ocrFields.getExecutorsApplying1applyingExecutorAddressPostCode(),
+                    ocrFields.getExecutorsApplying1applyingExecutorEmail()
             ));
         }
 
-        if (ocrFields.getExecutorsApplying_2_applyingExecutorName() != null
-                && !ocrFields.getExecutorsApplying_2_applyingExecutorName().isEmpty()) {
+        if (ocrFields.getExecutorsApplying2applyingExecutorName() != null
+                && !ocrFields.getExecutorsApplying2applyingExecutorName().isEmpty()) {
             collectionMemberList.add(buildExecutor(
-                    ocrFields.getExecutorsApplying_2_applyingExecutorName(),
-                    ocrFields.getExecutorsApplying_2_applyingExecutorOtherNames(),
-                    ocrFields.getExecutorsApplying_2_applyingExecutorAddressLine1(),
-                    ocrFields.getExecutorsApplying_2_applyingExecutorAddressLine2(),
-                    ocrFields.getExecutorsApplying_2_applyingExecutorAddressTown(),
-                    ocrFields.getExecutorsApplying_2_applyingExecutorAddressCounty(),
-                    ocrFields.getExecutorsApplying_2_applyingExecutorAddressPostCode(),
-                    ocrFields.getExecutorsApplying_2_applyingExecutorEmail()
+                    ocrFields.getExecutorsApplying2applyingExecutorName(),
+                    ocrFields.getExecutorsApplying2applyingExecutorOtherNames(),
+                    ocrFields.getExecutorsApplying2applyingExecutorAddressLine1(),
+                    ocrFields.getExecutorsApplying2applyingExecutorAddressLine2(),
+                    ocrFields.getExecutorsApplying2applyingExecutorAddressTown(),
+                    ocrFields.getExecutorsApplying2applyingExecutorAddressCounty(),
+                    ocrFields.getExecutorsApplying2applyingExecutorAddressPostCode(),
+                    ocrFields.getExecutorsApplying2applyingExecutorEmail()
             ));
         }
 
@@ -80,7 +80,7 @@ public class OCRFieldAdditionalExecutorsApplyingMapper {
         ExecutorApplying applying = ExecutorApplying.builder()
                 .applyingExecutorName(executorName)
                 .applyingExecutorOtherNames(otherNames)
-                .applyingExecutorHasOtherName((otherNames.isEmpty()?false:true))
+                .applyingExecutorHasOtherName((otherNames.isEmpty() ? false : true))
                 .applyingExecutorEmail(email)
                 .applyingExecutorAddress(buildAddress(addressLine1, addressLine2, postTown, county, postCode))
                 .build();
