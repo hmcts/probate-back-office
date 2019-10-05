@@ -29,6 +29,9 @@ public interface ExceptionRecordGrantOfRepresentationMapper {
     @Mapping(target = "totalFeePaperForm", source = "totalFeePaperForm")
     @Mapping(target = "paperPaymentMethod", source = "paperPaymentMethod")
     @Mapping(target = "paymentReferenceNumberPaperform", source = "paymentReferenceNumberPaperform")
+    */
+
+    /*
     @Mapping(target = "primaryApplicantForenames", source = "primaryApplicantForenames")
     @Mapping(target = "primaryApplicantMiddleNames", source = "primaryApplicantMiddleNames")
     @Mapping(target = "primaryApplicantSurname", source = "primaryApplicantSurname")
@@ -127,6 +130,22 @@ public interface ExceptionRecordGrantOfRepresentationMapper {
     //@Mapping(target = "domicilityCountry", source = "domicilityCountry")
     //@Mapping(target = "domicilityEntrustingDocument", source = "domicilityEntrustingDocument")
     //@Mapping(target = "domicilitySuccessionIHTCert", source = "domicilitySuccessionIHTCert")
+
+    /*
+    @Mapping(target = "willDate", source = "willDate")
+    @Mapping(target = "willHasCodicils", source = "willHasCodicils")
+    @Mapping(target = "willsOutsideOfUK", source = "willsOutsideOfUK")
+    @Mapping(target = "deceasedMarriedAfterWillOrCodicilDate", source = "deceasedMarriedAfterWillOrCodicilDate")
+    @Mapping(target = "willGiftUnderEighteen", source = "willGiftUnderEighteen")
+    @Mapping(target = "executorsNotApplying0notApplyingExecutorName", source = "executorsNotApplying0notApplyingExecutorName")
+    @Mapping(target = "executorsNotApplying0notApplyingExecutorReason", source = "executorsNotApplying0notApplyingExecutorReason")
+    @Mapping(target = "executorsNotApplying1notApplyingExecutorName", source = "executorsNotApplying1notApplyingExecutorName")
+    @Mapping(target = "executorsNotApplying1notApplyingExecutorReason", source = "executorsNotApplying1notApplyingExecutorReason")
+    @Mapping(target = "executorsNotApplying2notApplyingExecutorName", source = "executorsNotApplying2notApplyingExecutorName")
+    @Mapping(target = "executorsNotApplying2notApplyingExecutorReason", source = "executorsNotApplying2notApplyingExecutorReason")
+    @Mapping(target = "notifiedApplicants", source = "notifiedApplicants")
+     */
+
     @Mapping(target = "ihtFormCompletedOnline", source = "ihtFormCompletedOnline", qualifiedBy = {ToYesOrNo.class})
     @Mapping(target = "ihtReferenceNumber", source = "ihtReferenceNumber")
     @Mapping(target = "ihtFormId", source = "ihtFormId")

@@ -153,6 +153,18 @@ public class ExceptionRecordOCRFields {
     private final String domicilityCountry;
     private final String domicilityEntrustingDocument;
     private final String domicilitySuccessionIHTCert;
+    private final String willDate;
+    private final String willHasCodicils;
+    private final String willsOutsideOfUK;
+    private final String deceasedMarriedAfterWillOrCodicilDate;
+    private final String willGiftUnderEighteen;
+    private final String executorsNotApplying0notApplyingExecutorName;
+    private final String executorsNotApplying0notApplyingExecutorReason;
+    private final String executorsNotApplying1notApplyingExecutorName;
+    private final String executorsNotApplying1notApplyingExecutorReason;
+    private final String executorsNotApplying2notApplyingExecutorName;
+    private final String executorsNotApplying2notApplyingExecutorReason;
+    private final String notifiedApplicants;
     private final String ihtFormCompletedOnline;
     private final String ihtReferenceNumber;
     private final String ihtFormId;
