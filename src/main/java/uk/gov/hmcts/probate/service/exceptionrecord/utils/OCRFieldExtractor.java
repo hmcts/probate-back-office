@@ -10,8 +10,8 @@ public class OCRFieldExtractor {
     public static String get(List<OCRField> ocrFields, String name) {
         return ocrFields
                 .stream()
-                .filter(it -> it.name.equals(name))
-                .map(it -> it.value.trim())
+                .filter(it -> it.getName().equals(name))
+                .map(it -> it.getValue().trim())
                 .findFirst()
                 .orElse(null);
     }

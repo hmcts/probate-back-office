@@ -6,7 +6,7 @@ import lombok.Data;
 @Data
 @Builder
 public class OCRField {
-    public String name;
-    public String value;
+    private String name;
+    private String value;
     private String description;
 }
