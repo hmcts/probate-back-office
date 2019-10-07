@@ -77,7 +77,7 @@ public class GenericMapperService {
         return currentMap;
     }
 
-    private Map<String, Object> mappedBase64Images(Map<String, Object> files) {
+    public Map<String, Object> mappedBase64Images(Map<String, Object> files) {
         Map<String, Object> mappedImages = new HashMap<>();
         for (Map.Entry entry : files.entrySet()) {
             mappedImages.put(entry.getKey().toString(),

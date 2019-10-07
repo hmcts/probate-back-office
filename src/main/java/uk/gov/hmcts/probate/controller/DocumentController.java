@@ -29,7 +29,6 @@ import uk.gov.hmcts.probate.service.DocumentService;
 import uk.gov.hmcts.probate.service.EventValidationService;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.RegistryDetailsService;
-import uk.gov.hmcts.probate.service.docmosis.PreviewLetterService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.WillLodgementCallbackResponseTransformer;
@@ -106,14 +105,32 @@ public class DocumentController {
     }
 
     @PostMapping(path = "/previewLetter", consumes = APPLICATION_JSON_UTF8_VALUE, produces = {APPLICATION_JSON_VALUE})
-    public ResponseEntity<CallbackResponse> assembleLetterTest(
+    public ResponseEntity<CallbackResponse> previewLetter(
             @RequestBody CallbackRequest callbackRequest) {
 
-        Document letterPreview = documentGeneratorService.generateLetterPreview(callbackRequest);
+        Document letterPreview = documentGeneratorService.generateLetter(callbackRequest);
 
         CallbackResponse response = callbackResponseTransformer.transformCaseForLetterPreview(callbackRequest, letterPreview);
 
         return ResponseEntity.ok(response);
+    }
+
+    @PostMapping(path = "/generateLetter", consumes = APPLICATION_JSON_UTF8_VALUE, produces = {APPLICATION_JSON_VALUE})
+    public ResponseEntity<CallbackResponse> generateLetter(
+            @RequestBody CallbackRequest callbackRequest) {
+
+        Document letterPreview = documentGeneratorService.generateLetter(callbackRequest);
+
+        CallbackResponse response = callbackResponseTransformer.transformCaseForLetter(callbackRequest, letterPreview);
+
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping(path = "/generateLetter1", consumes = APPLICATION_JSON_UTF8_VALUE, produces = {APPLICATION_JSON_VALUE})
+    public ResponseEntity<String> generateLetter1(
+            @RequestBody String callbackRequest) {
+
+        return ResponseEntity.ok(callbackRequest);
     }
 
     @PostMapping(path = "/generate-grant-draft", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -150,8 +167,8 @@ public class DocumentController {
         }
 
         DocumentType[] documentTypes = {DIGITAL_GRANT_DRAFT, INTESTACY_GRANT_DRAFT, ADMON_WILL_GRANT_DRAFT,
-                                        DIGITAL_GRANT_REISSUE_DRAFT, INTESTACY_GRANT_REISSUE_DRAFT,
-                                        ADMON_WILL_GRANT_REISSUE_DRAFT, DIGITAL_GRANT_REISSUE};
+            DIGITAL_GRANT_REISSUE_DRAFT, INTESTACY_GRANT_REISSUE_DRAFT,
+            ADMON_WILL_GRANT_REISSUE_DRAFT, DIGITAL_GRANT_REISSUE};
         for (DocumentType documentType : documentTypes) {
             documentService.expire(callbackRequest, documentType);
         }
@@ -222,8 +239,8 @@ public class DocumentController {
         documents.add(coverSheet);
 
         DocumentType[] documentTypes = {DIGITAL_GRANT_DRAFT, INTESTACY_GRANT_DRAFT, ADMON_WILL_GRANT_DRAFT,
-                                        DIGITAL_GRANT_REISSUE_DRAFT, INTESTACY_GRANT_REISSUE_DRAFT,
-                                        ADMON_WILL_GRANT_REISSUE_DRAFT};
+            DIGITAL_GRANT_REISSUE_DRAFT, INTESTACY_GRANT_REISSUE_DRAFT,
+            ADMON_WILL_GRANT_REISSUE_DRAFT};
         for (DocumentType documentType : documentTypes) {
             documentService.expire(callbackRequest, documentType);
         }

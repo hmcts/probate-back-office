@@ -78,6 +78,7 @@ services:
       ELASTIC_SEARCH_HOSTS: ccd-elasticsearch:9200
       ELASTIC_SEARCH_DATA_NODES_HOSTS: "http://ccd-elasticsearch:9200"
       JAVA_OPTS: -Xdebug -Xms128m -Xms512m -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005
+      DATA_STORE_DEFAULT_LOG_LEVEL: DEBUG
     ports:
       - 4452:4452
       - 5005:5005
@@ -226,29 +227,6 @@ services:
     environment:
       DOCMOSIS_KEY: "0OAD-KLTH-JALO-MLIA-DBBH-1ELH-XBKQ-GS91-23ED-8-2358"
       DOCMOSIS_SITE: "Free Trial License"
-
-  rpa-dg-docassembly-api:
-    image: hmctspublic.azurecr.io/dg/docassembly:latest
-    environment:
-      - SERVER_PORT=8080
-      - IDAM_API_BASE_URI=http://sidam-api:5000
-      - S2S_BASE_URI=http://service-auth-provider-api:8080
-      - DM_STORE_APP_URL=http://dm-store:8080
-      - APPINSIGHTS_INSTRUMENTATIONKEY=test_app
-      # these environment variables are used by java-logging library
-      - JSON_CONSOLE_PRETTY_PRINT=false
-      - REFORM_SERVICE_TYPE=java
-      - REFORM_SERVICE_NAME=rpa-dg-docassembly
-      - REFORM_TEAM=dg-docassembly
-      - REFORM_ENVIRONMENT=docker
-      - DOCMOSIS_ACCESS_KEY=ZDYxMTkzZTQtMGY2Mi00NDM1LWIyN2ItNGRkNzdjOTczMjAwOjQ1NTE0ODQ
-      - DOCMOSIS_TEMPLATES_ENDPOINT_AUTH=ZGV2ZWxvcGVyczpPbUp4REJPbDJEMTJoNzdKbDd3cExFb041aUVrWEw
-      #      endpoint toggles
-      - ENABLE_FORM_DEFINITION_ENDPOINT=true
-      - ENABLE_TEMPLATE_RENDITION_ENDPOINT=true
-      - S2S_NAMES_WHITELIST=ccd_gateway,probate_backend
-    ports:
-      - 4631:8080
 
 #  pdf-service-api:
 #    image: hmctspublic.azurecr.io/cmc/pdf-service:latest

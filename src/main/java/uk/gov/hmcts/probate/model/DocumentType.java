@@ -98,8 +98,8 @@ public enum DocumentType {
     @JsonProperty("statementOfTruth")
     STATEMENT_OF_TRUTH("statementOfTruth"),
 
-    @JsonProperty("letterPreview")
-    LETTER_PREVIEW("letterPreview");
+    @JsonProperty("assembledLetter")
+    ASSEMBLED_LETTER("assembledLetter");
 
     private final String templateName;
 

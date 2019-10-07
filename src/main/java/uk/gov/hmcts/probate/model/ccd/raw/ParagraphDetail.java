@@ -9,6 +9,7 @@ import java.util.List;
 @Builder
 public class ParagraphDetail {
     private final String code;
+    private final String templateName;
 
     private final String enableText;
     private final String textLabel;

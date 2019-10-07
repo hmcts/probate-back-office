@@ -78,8 +78,8 @@ docmosis:
       templateName: FL-PRB-EML-ENG-00086.doc
     statementOfTruth:
       templateName: FL-PRB-SOT-ENG-00090.doc
-    letterPreview:
-      templateName: ProbateAssemblyTest.doc
+    assembledLetter:
+      templateName: FL-PRB-GNO-ENG-00133.docx
 
 fee.api:
   url: http://localhost:4411

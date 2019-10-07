@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static uk.gov.hmcts.probate.model.Constants.NO;
+import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_REISSUE_DRAFT;
@@ -147,11 +148,21 @@ public class DocumentGeneratorService {
         return statementOfTruth;
     }
 
-    public Document generateLetterPreview(CallbackRequest callbackRequest) {
-        Map<String, Object> placeholders = previewLetterService.addLetterData(callbackRequest.getCaseDetails().getData());
-        Document letterPreview = pdfManagementService.generateDocmosisDocumentAndUpload(placeholders,
-                DocumentType.LETTER_PREVIEW);
-        return letterPreview;
+    public Document generateLetter(CallbackRequest callbackRequest) {
+        CaseDetails caseDetails = callbackRequest.getCaseDetails();
+
+        Map<String, Object> placeholders = previewLetterService.addLetterData(caseDetails);
+        String version = callbackRequest.getCaseDetails().getData().getGenerateLetter();
+        if (!YES.equals(version)) {
+            Map<String, Object> images = new HashMap<>();
+            images.put(WATERMARK, WATERMARK_FILE_PATH);
+            Map<String, Object> mappedImages = genericMapperService.mappedBase64Images(images);
+            placeholders.putAll(mappedImages);
+        }
+
+        Document letterDocument = pdfManagementService.generateDocmosisDocumentAndUpload(placeholders,
+                DocumentType.ASSEMBLED_LETTER);
+        return letterDocument;
     }
 
     private Document generateSolicitorSoT(CallbackRequest callbackRequest) {
