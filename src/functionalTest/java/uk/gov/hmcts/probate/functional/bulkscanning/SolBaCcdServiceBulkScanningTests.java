@@ -47,7 +47,7 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
                 .then().assertThat().statusCode(200)
                 .and().content(containsString(containsText));
     }
-    
+
     @Test
     public void testAllMandatoryFieldsPresentReturnNoWarnings() {
         jsonRequest = utils.getJsonFromFile("expectedOCRDataAllMandatoryFields.json");

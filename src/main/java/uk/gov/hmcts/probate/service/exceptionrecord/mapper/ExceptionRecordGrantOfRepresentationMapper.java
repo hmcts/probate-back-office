@@ -9,6 +9,7 @@ import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToAddition
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToDeceasedAddress;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToDefaultLocalDate;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToMartialStatus;
+import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToPrimaryApplicantAddress;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToYesOrNo;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData;
 
@@ -24,6 +25,7 @@ public interface ExceptionRecordGrantOfRepresentationMapper {
     @Mapping(target = "outsideUkGrantCopies", source = "outsideUKGrantCopies")
 
     /*
+    // Missing from Commons GrantOfRepresentationData.java
     @Mapping(target = "applicationFeePaperForm", source = "applicationFeePaperForm")
     @Mapping(target = "feeForCopiesPaperForm", source = "feeForCopiesPaperForm")
     @Mapping(target = "totalFeePaperForm", source = "totalFeePaperForm")
@@ -31,18 +33,15 @@ public interface ExceptionRecordGrantOfRepresentationMapper {
     @Mapping(target = "paymentReferenceNumberPaperform", source = "paymentReferenceNumberPaperform")
     */
 
-    /*
     @Mapping(target = "primaryApplicantForenames", source = "primaryApplicantForenames")
-    @Mapping(target = "primaryApplicantMiddleNames", source = "primaryApplicantMiddleNames")
     @Mapping(target = "primaryApplicantSurname", source = "primaryApplicantSurname")
-    @Mapping(target = "primaryApplicantAddressLine1", source = "primaryApplicantAddressLine1")
-    @Mapping(target = "primaryApplicantAddressLine2", source = "primaryApplicantAddressLine2")
-    @Mapping(target = "primaryApplicantAddressTown", source = "primaryApplicantAddressTown")
-    @Mapping(target = "primaryApplicantAddressCounty", source = "primaryApplicantAddressCounty")
-    @Mapping(target = "primaryApplicantAddressPostCode", source = "primaryApplicantAddressPostCode")
+    @Mapping(target = "primaryApplicantAddress", source = "ocrFields", qualifiedBy = {ToPrimaryApplicantAddress.class})
     @Mapping(target = "primaryApplicantPhoneNumber", source = "primaryApplicantPhoneNumber")
-    @Mapping(target = "primaryApplicantSecondPhoneNumber", source = "primaryApplicantSecondPhoneNumber")
     @Mapping(target = "primaryApplicantEmailAddress", source = "primaryApplicantEmailAddress")
+
+    /*
+    // Missing from Commons GrantOfRepresentationData.java
+    @Mapping(target = "primaryApplicantSecondPhoneNumber", source = "primaryApplicantSecondPhoneNumber")
     */
 
     @Mapping(target = "executorsApplying", source = "ocrFields", qualifiedBy = {ToAdditionalExecutorsApplying.class})
@@ -52,14 +51,20 @@ public interface ExceptionRecordGrantOfRepresentationMapper {
     @Mapping(target = "deceasedDateOfBirth", source = "deceasedDateOfBirth", qualifiedBy = {ToDefaultLocalDate.class})
     @Mapping(target = "deceasedDateOfDeath", source = "deceasedDateOfDeath", qualifiedBy = {ToDefaultLocalDate.class})
     @Mapping(target = "deceasedAnyOtherNames", source = "deceasedAnyOtherNames", qualifiedBy = {ToYesOrNo.class})
-    @Mapping(target = "deceasedDomicileInEngWales", source = "deceasedDomicileInEngWales")
+    @Mapping(target = "deceasedDomicileInEngWales", source = "deceasedDomicileInEngWales", qualifiedBy = {ToYesOrNo.class})
     @Mapping(target = "deceasedMaritalStatus", source = "deceasedMartialStatus", qualifiedBy = {ToMartialStatus.class})
-    //@Mapping(target = "dateOfMarriageOrCP", source = "dateOfMarriageOrCP", qualifiedBy = {ToDefaultLocalDate.class})
-    //@Mapping(target = "dateOfDivorcedCPJudicially", source = "dateOfDivorcedCPJudicially", qualifiedBy = {ToDefaultLocalDate.class})
-    //@Mapping(target = "courtOfDecree", source = "courtOfDecree")
+
+    /*
+    // Missing from Commons GrantOfRepresentationData.java
+    @Mapping(target = "dateOfMarriageOrCP", source = "dateOfMarriageOrCP", qualifiedBy = {ToDefaultLocalDate.class})
+    @Mapping(target = "dateOfDivorcedCPJudicially", source = "dateOfDivorcedCPJudicially", qualifiedBy = {ToDefaultLocalDate.class})
+    @Mapping(target = "courtOfDecree", source = "courtOfDecree")
+    */
+
     @Mapping(target = "deceasedHasAssetsOutsideUK", source = "foreignAsset", qualifiedBy = {ToYesOrNo.class})
     @Mapping(target = "assetsOutsideNetValue", source = "foreignAssetEstateValue")
     /*
+    // Missing from Commons GrantOfRepresentationData.java
     @Mapping(target = "adopted", source = "adopted")
     @Mapping(target = "adoptiveRelatives_1_name", source = "adoptiveRelatives_1_name")
     @Mapping(target = "adoptiveRelatives_1_relationship", source = "adoptiveRelatives_1_relationship")
@@ -77,12 +82,17 @@ public interface ExceptionRecordGrantOfRepresentationMapper {
     @Mapping(target = "adoptiveRelatives_5_relationship", source = "adoptiveRelatives_5_relationship")
     @Mapping(target = "adoptiveRelatives_5_adoptedInOrOut", source = "adoptiveRelatives_5_adoptedInOrOut")
     @Mapping(target = "spouseOrPartner", source = "spouseOrPartner")
-    @Mapping(target = "childrenUnderEighteenSurvived", source = "childrenUnderEighteenSurvived")
-    @Mapping(target = "childrenOverEighteenSurvived", source = "childrenOverEighteenSurvived")
-    @Mapping(target = "childrenDiedUnderEighteen", source = "childrenDiedUnderEighteen")
-    @Mapping(target = "childrenDiedOverEighteen", source = "childrenDiedOverEighteen")
-    @Mapping(target = "grandChildrenSurvivedUnderEighteen", source = "grandChildrenSurvivedUnderEighteen")
-    @Mapping(target = "grandChildrenSurvivedOverEighteen", source = "grandChildrenSurvivedOverEighteen")
+    */
+
+    @Mapping(target = "childrenUnderEighteenSurvived", source = "childrenUnderEighteenSurvived", qualifiedBy = {ToYesOrNo.class})
+    @Mapping(target = "childrenOverEighteenSurvived", source = "childrenOverEighteenSurvived", qualifiedBy = {ToYesOrNo.class})
+    @Mapping(target = "childrenDiedUnderEighteen", source = "childrenDiedUnderEighteen", qualifiedBy = {ToYesOrNo.class})
+    @Mapping(target = "childrenDiedOverEighteen", source = "childrenDiedOverEighteen", qualifiedBy = {ToYesOrNo.class})
+    @Mapping(target = "grandChildrenSurvivedUnderEighteen", source = "grandChildrenSurvivedUnderEighteen", qualifiedBy = {ToYesOrNo.class})
+    @Mapping(target = "grandChildrenSurvivedOverEighteen", source = "grandChildrenSurvivedOverEighteen", qualifiedBy = {ToYesOrNo.class})
+
+    /*
+    // Missing from Commons GrantOfRepresentationData.java
     @Mapping(target = "parentsExistUnderEighteenSurvived", source = "parentsExistUnderEighteenSurvived")
     @Mapping(target = "parentsExistOverEighteenSurvived", source = "parentsExistOverEighteenSurvived")
     @Mapping(target = "wholeBloodSiblingsSurvivedUnderEighteen", source = "wholeBloodSiblingsSurvivedUnderEighteen")
@@ -111,6 +121,9 @@ public interface ExceptionRecordGrantOfRepresentationMapper {
     @Mapping(target = "halfBloodUnclesAndAuntsDiedOverEighteen", source = "halfBloodUnclesAndAuntsDiedOverEighteen")
     @Mapping(target = "halfBloodCousinsSurvivedUnderEighteen", source = "halfBloodCousinsSurvivedUnderEighteen")
     @Mapping(target = "halfBloodCousinsSurvivedOverEighteen", source = "halfBloodCousinsSurvivedOverEighteen")
+    */
+
+    /*
     @Mapping(target = "primaryApplicantRelationshipToDeceased", source = "primaryApplicantRelationshipToDeceased")
     @Mapping(target = "secondApplicantRelationshipToDeceased", source = "secondApplicantRelationshipToDeceased")
     @Mapping(target = "thirdApplicantRelationshipToDeceased", source = "thirdApplicantRelationshipToDeceased")
@@ -122,20 +135,23 @@ public interface ExceptionRecordGrantOfRepresentationMapper {
     @Mapping(target = "attorneyOnBehalfOfAddressTown", source = "attorneyOnBehalfOfAddressTown")
     @Mapping(target = "attorneyOnBehalfOfAddressCounty", source = "attorneyOnBehalfOfAddressCounty")
     @Mapping(target = "attorneyOnBehalfOfAddressPostCode", source = "attorneyOnBehalfOfAddressPostCode")
+
+    @Mapping(target = "mentalCapacity", source = "mentalCapacity")
+    @Mapping(target = "courtOfProtection", source = "courtOfProtection")
+    @Mapping(target = "epaOrLpa", source = "epaOrLpa")
+    @Mapping(target = "epaRegistered", source = "epaRegistered")
+    @Mapping(target = "domicilityCountry", source = "domicilityCountry")
+    @Mapping(target = "domicilityEntrustingDocument", source = "domicilityEntrustingDocument")
+    @Mapping(target = "domicilitySuccessionIHTCert", source = "domicilitySuccessionIHTCert")
     */
-    //@Mapping(target = "mentalCapacity", source = "mentalCapacity")
-    //@Mapping(target = "courtOfProtection", source = "courtOfProtection")
-    //@Mapping(target = "epaOrLpa", source = "epaOrLpa")
-    //@Mapping(target = "epaRegistered", source = "epaRegistered")
-    //@Mapping(target = "domicilityCountry", source = "domicilityCountry")
-    //@Mapping(target = "domicilityEntrustingDocument", source = "domicilityEntrustingDocument")
-    //@Mapping(target = "domicilitySuccessionIHTCert", source = "domicilitySuccessionIHTCert")
+
+    @Mapping(target = "willHasCodicils", source = "willHasCodicils", qualifiedBy = {ToYesOrNo.class})
+    @Mapping(target = "deceasedMarriedAfterWillOrCodicilDate", source = "deceasedMarriedAfterWillOrCodicilDate",
+            qualifiedBy = {ToYesOrNo.class})
 
     /*
     @Mapping(target = "willDate", source = "willDate")
-    @Mapping(target = "willHasCodicils", source = "willHasCodicils")
     @Mapping(target = "willsOutsideOfUK", source = "willsOutsideOfUK")
-    @Mapping(target = "deceasedMarriedAfterWillOrCodicilDate", source = "deceasedMarriedAfterWillOrCodicilDate")
     @Mapping(target = "willGiftUnderEighteen", source = "willGiftUnderEighteen")
     @Mapping(target = "executorsNotApplying0notApplyingExecutorName", source = "executorsNotApplying0notApplyingExecutorName")
     @Mapping(target = "executorsNotApplying0notApplyingExecutorReason", source = "executorsNotApplying0notApplyingExecutorReason")

@@ -38,7 +38,6 @@ public class ExceptionRecordOCRFields {
     private final String paperPaymentMethod;
     private final String paymentReferenceNumberPaperform;
     private final String primaryApplicantForenames;
-    private final String primaryApplicantMiddleNames;
     private final String primaryApplicantSurname;
     private final String primaryApplicantHasAlias;
     private final String primaryApplicantAlias;
