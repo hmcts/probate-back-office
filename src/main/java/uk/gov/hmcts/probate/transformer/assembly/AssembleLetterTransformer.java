@@ -10,6 +10,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.ParagraphDetail;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
+import uk.gov.hmcts.probate.service.docmosis.assembler.AssembleCaseworker;
 import uk.gov.hmcts.probate.service.docmosis.assembler.AssembleEntitlement;
 import uk.gov.hmcts.probate.service.docmosis.assembler.AssembleIHT;
 import uk.gov.hmcts.probate.service.docmosis.assembler.AssembleMissingInformation;
@@ -18,6 +19,7 @@ import uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -39,6 +41,7 @@ import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.WILL
 @Component
 @RequiredArgsConstructor
 public class AssembleLetterTransformer {
+    private final AssembleCaseworker assembleCaseworker;
     private final AssembleEntitlement assembleEntitlement;
     private final AssembleIHT assembleIHT;
     private final AssembleMissingInformation assembleMissingInformation;
@@ -50,6 +53,7 @@ public class AssembleLetterTransformer {
     private Map<ParagraphCode, BiFunction<ParagraphCode, CaseData, ParagraphDetail>> getParagraphFunctions() {
         if (paragraphCodeFunctions == null) {
             paragraphCodeFunctions = ImmutableMap.<ParagraphCode, BiFunction<ParagraphCode, CaseData, ParagraphDetail>>builder()
+                    .put(CASEWORKER, assembleCaseworker::caseworker)
                     .put(ENT_EXEC_NOT_ACC, assembleEntitlement::executorNotAccountedFor)
                     .put(IHT_205_MISSING, assembleIHT::iht205Missing)
                     .put(IHT_AWAIT_IHT421, assembleIHT::ihtAwait421)
@@ -71,7 +75,7 @@ public class AssembleLetterTransformer {
         CaseData caseData = caseDetails.getData();
         Categories categories = caseData.getCategories();
         List<CollectionMember<ParagraphDetail>> paragraphDetails = new ArrayList<>();
-        addParagraph(paragraphDetails, caseworker());
+        addParagraphs(paragraphDetails, Arrays.asList(CASEWORKER.getCode()), caseData);
         addParagraphs(paragraphDetails, categories.getEntSelectedParagraphs(), caseData);
         addParagraphs(paragraphDetails, categories.getIhtSelectedParagraphs(), caseData);
         addParagraphs(paragraphDetails, categories.getMissInfoSelectedParagraphs(), caseData);
@@ -79,22 +83,6 @@ public class AssembleLetterTransformer {
 
         responseCaseDataBuilder.categories(categories);
         responseCaseDataBuilder.paragraphDetails(paragraphDetails);
-    }
-
-    private ParagraphDetail caseworker() {
-        ParagraphDetail paragraphDetail = ParagraphDetail.builder()
-                .enableText("Yes")
-                .textLabel(CASEWORKER.getLabel())
-                .code(CASEWORKER.getCode())
-                .build();
-
-        return paragraphDetail;
-    }
-
-    private void addParagraph(List<CollectionMember<ParagraphDetail>> paragraphDetails,
-                              ParagraphDetail paragraphDetail) {
-        CollectionMember<ParagraphDetail> paragraphDetailCollectionMember = new CollectionMember<>(null, paragraphDetail);
-        paragraphDetails.add(paragraphDetailCollectionMember);
     }
 
     private void addParagraphs(List<CollectionMember<ParagraphDetail>> paragraphDetails,
