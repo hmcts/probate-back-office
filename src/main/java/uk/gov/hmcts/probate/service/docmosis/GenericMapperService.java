@@ -6,7 +6,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.config.properties.registries.RegistriesProperties;
 import uk.gov.hmcts.probate.config.properties.registries.Registry;
-import uk.gov.hmcts.probate.model.ExecutorsApplyingNotification;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
@@ -28,6 +27,7 @@ public class GenericMapperService {
     private static final String PERSONALISATION_REGISTRY = "registry";
     private static final String GRANT_OF_REPRESENTATION_CASE_ID = "gorCaseReference";
     private static final String DECEASED_DATE_OF_DEATH = "deceasedDateOfDeath";
+    private static final String DECEASED_DATE_OF_BIRTH = "deceasedDateOfBirth";
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private static final String NAME = "name";
     private static final String ADDRESS_LINE_1 = "addressLine1";
@@ -42,6 +42,7 @@ public class GenericMapperService {
         mapper = new ObjectMapper();
         Map<String, Object> placeholders = mapper.convertValue(caseData, Map.class);
         placeholders.replace(DECEASED_DATE_OF_DEATH, DATE_FORMAT.format(caseData.getDeceasedDateOfDeath()));
+        placeholders.replace(DECEASED_DATE_OF_BIRTH, DATE_FORMAT.format(caseData.getDeceasedDateOfBirth()));
         return placeholders;
     }
 

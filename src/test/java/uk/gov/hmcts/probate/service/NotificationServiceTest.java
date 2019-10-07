@@ -1124,8 +1124,7 @@ public class NotificationServiceTest {
                 eq("pa-request-information"),
                 eq("personal@test.com"),
                 eq(personalisation),
-                eq(null),
-                eq("ctsc-emailReplyToId"));
+                eq(null));
 
         when(pdfManagementService.generateDocmosisDocumentAndUpload(any(Map.class), any())).thenReturn(Document.builder()
                 .documentFileName(SENT_EMAIL_FILE_NAME).build());
@@ -1171,15 +1170,14 @@ public class NotificationServiceTest {
                 eq("sols-request-information"),
                 eq("sols@test.com"),
                 eq(personalisation),
-                eq(null),
-                eq("ctsc-emailReplyToId"));
+                eq(null));
 
         when(pdfManagementService.generateDocmosisDocumentAndUpload(any(Map.class), any())).thenReturn(Document.builder()
                 .documentFileName(SENT_EMAIL_FILE_NAME).build());
     }
 
     @Test
-    public void shouldSendEmailWithDocumentAttached() throws IOException, NotificationClientException {
+    public void shouldSendEmailWithDocumentAttachedRedeclaration() throws IOException, NotificationClientException {
         Map<String, Object> personalisation = new HashMap<>();
         CollectionMember<Document> doc = new CollectionMember<>(Document.builder().build());
 
@@ -1216,8 +1214,50 @@ public class NotificationServiceTest {
                 eq("pa-redeclaration-sot"),
                 eq("personal@test.com"),
                 any(),
-                eq(null),
-                eq("ctsc-emailReplyToId"));
+                eq(null));
+
+    }
+
+    @Test
+    public void shouldSendEmailWithDocumentAttachedCaseStoppedRequestInfo() throws IOException, NotificationClientException {
+        Map<String, Object> personalisation = new HashMap<>();
+        CollectionMember<Document> doc = new CollectionMember<>(Document.builder().build());
+
+        personalCaseDataCtsc.getData().getProbateSotDocumentsGenerated().add(doc);
+        Map<String, String> sotValue = new HashMap<>();
+        sotValue.put("file", "Fw==");
+
+        personalisation.put(PERSONALISATION_CAVEAT_CASE_ID, personalCaseDataCtsc.getData().getBoCaseStopCaveatId());
+        personalisation.put(PERSONALISATION_ADDRESSEE, personalCaseDataCtsc.getData().getPrimaryApplicantForenames());
+        personalisation.put(PERSONALISATION_SOT_LINK, new JSONObject(sotValue));
+        personalisation.put(PERSONALISATION_CASE_STOP_DETAILS, personalCaseDataCtsc.getData().getBoStopDetails());
+        personalisation.put(PERSONALISATION_CCD_REFERENCE, personalCaseDataCtsc.getId().toString());
+        personalisation.put(PERSONALISATION_DECEASED_DOD, personalCaseDataCtsc.getData().getDeceasedDateOfDeathFormatted());
+        personalisation.put(PERSONALISATION_REGISTRY_PHONE, "0300 303 0648");
+        personalisation.put(PERSONALISATION_SOLICITOR_NAME, personalCaseDataCtsc.getData().getSolsSolicitorFirmName());
+        personalisation.put(PERSONALISATION_REGISTRY_NAME, "CTSC");
+        personalisation.put(PERSONALISATION_CASE_STOP_DETAILS_DEC, personalCaseDataCtsc.getData().getBoStopDetailsDeclarationParagraph());
+        personalisation.put(PERSONALISATION_APPLICANT_NAME, "null null");
+        personalisation.put(PERSONALISATION_SOLICITOR_REFERENCE, personalCaseDataCtsc.getData().getSolsSolicitorAppReference());
+        personalisation.put(PERSONALISATION_DECEASED_NAME, "null null");
+
+        ExecutorsApplyingNotification executorsApplyingNotification = ExecutorsApplyingNotification.builder()
+                .name(personalCaseDataCtsc.getData().getSolsSOTName())
+                .address(SolsAddress.builder()
+                        .addressLine1("Addressline1")
+                        .postCode("postcode")
+                        .postTown("posttown")
+                        .build())
+                .email("personal@test.com")
+                .notification("Yes").build();
+        notificationService.sendEmailWithDocumentAttached(personalCaseDataCtsc,
+                executorsApplyingNotification, CASE_STOPPED_REQUEST_INFORMATION);
+
+        verify(notificationClient).sendEmail(
+                eq("pa-request-information"),
+                eq("personal@test.com"),
+                any(),
+                eq(null));
 
     }
 

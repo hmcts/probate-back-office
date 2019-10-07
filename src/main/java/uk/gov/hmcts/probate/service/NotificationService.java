@@ -35,12 +35,12 @@ import uk.gov.service.notify.NotificationClient;
 import uk.gov.service.notify.NotificationClientException;
 import uk.gov.service.notify.SendEmailResponse;
 
+import javax.validation.Valid;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
-import javax.validation.Valid;
 
 import static uk.gov.hmcts.probate.model.Constants.BUSINESS_ERROR;
 import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
@@ -236,7 +236,7 @@ public class NotificationService {
                 .from(response.getFromEmail().orElse(""))
                 .to(emailAddress)
                 .subject(response.getSubject())
-                .body(markdownTransformationService.toHtml(response.getBody()))
+                .body(response.getBody())
                 .build();
         Map<String, Object> placeholders = sentEmailPersonalisationService.getPersonalisation(sentEmail);
         return pdfManagementService.generateDocmosisDocumentAndUpload(placeholders, docType);
@@ -259,10 +259,10 @@ public class NotificationService {
         switch (state) {
             case CASE_STOPPED:
             case CASE_STOPPED_CAVEAT:
-            case CASE_STOPPED_REQUEST_INFORMATION:
-            case REDECLARATION_SOT:
                 response = notificationClient.sendEmail(templateId, emailAddress, personalisation, reference, emailReplyToId);
                 break;
+            case CASE_STOPPED_REQUEST_INFORMATION:
+            case REDECLARATION_SOT:
             default:
                 response = notificationClient.sendEmail(templateId, emailAddress, personalisation, reference);
         }

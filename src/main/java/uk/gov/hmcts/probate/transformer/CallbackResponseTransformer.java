@@ -33,12 +33,14 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import org.apache.commons.lang3.StringUtils;
 
 import static java.util.Collections.EMPTY_LIST;
 import static java.util.Optional.ofNullable;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
 import static uk.gov.hmcts.probate.model.Constants.CTSC;
 import static uk.gov.hmcts.probate.model.Constants.DATE_OF_DEATH_TYPE_DEFAULT;
+import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT_STOPPED;
@@ -551,6 +553,14 @@ public class CallbackResponseTransformer {
         return INTESTACY.getName().equals(caseData.getCaseType()) || NO_WILL.equals(caseData.getSolsWillType());
     }
 
+    private boolean isSolsEmailSet(CaseData caseData) {
+        return StringUtils.isNotBlank(caseData.getSolsSolicitorEmail());
+    }
+
+    private boolean isCodicil(CaseData caseData) {
+        return YES.equals(caseData.getWillHasCodicils());
+    }
+
     private ResponseCaseDataBuilder getCaseCreatorResponseCaseBuilder(CaseData caseData, ResponseCaseDataBuilder builder) {
 
         builder
@@ -572,7 +582,7 @@ public class CallbackResponseTransformer {
                 .epaOrLpa(caseData.getEpaOrLpa())
                 .epaRegistered(caseData.getEpaRegistered())
                 .domicilityCountry(caseData.getDomicilityCountry())
-                .ukEstateItems(caseData.getUkEstateItems())
+                .ukEstate(caseData.getUkEstate())
                 .domicilityIHTCert(caseData.getDomicilityIHTCert())
                 .entitledToApply(caseData.getEntitledToApply())
                 .entitledToApplyOther(caseData.getEntitledToApplyOther())
@@ -688,6 +698,21 @@ public class CallbackResponseTransformer {
                     .primaryApplicantIsApplying(ANSWER_YES);
         }
 
+        if (isSolsEmailSet(caseData)) {
+            builder
+                    .boEmailDocsReceivedNotification(ANSWER_YES)
+                    .boEmailRequestInfoNotification(ANSWER_YES);
+        } else {
+            builder
+                    .boEmailDocsReceivedNotification(ANSWER_NO)
+                    .boEmailRequestInfoNotification(ANSWER_NO);
+        }
+
+        if (!isCodicil(caseData)) {
+            builder
+                    .willNumberOfCodicils(null);
+        }
+
         if (caseData.getCaseType() == null) {
             builder
                     .caseType(CASE_TYPE_DEFAULT);
@@ -766,6 +791,21 @@ public class CallbackResponseTransformer {
         if (isIntestacy(caseData)) {
             builder
                     .primaryApplicantIsApplying(ANSWER_YES);
+        }
+
+        if (isSolsEmailSet(caseData)) {
+            builder
+                    .boEmailDocsReceivedNotification(ANSWER_YES)
+                    .boEmailRequestInfoNotification(ANSWER_YES);
+        } else {
+            builder
+                    .boEmailDocsReceivedNotification(ANSWER_NO)
+                    .boEmailRequestInfoNotification(ANSWER_NO);
+        }
+
+        if (!isCodicil(caseData)) {
+            builder
+                    .willNumberOfCodicils(null);
         }
 
         if (caseData.getCaseType() == null) {
