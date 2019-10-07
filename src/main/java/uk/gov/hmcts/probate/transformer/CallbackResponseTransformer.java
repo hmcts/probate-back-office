@@ -1,6 +1,7 @@
 package uk.gov.hmcts.probate.transformer;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 import uk.gov.hmcts.probate.model.ApplicationType;
@@ -32,7 +33,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import org.apache.commons.lang3.StringUtils;
 
 import static java.util.Collections.EMPTY_LIST;
 import static java.util.Optional.ofNullable;
@@ -707,7 +707,7 @@ public class CallbackResponseTransformer {
         }
 
         builder
-                .additionalExecutorsApplying(caseData.getAdditionalExecutorsApplying())
+                .additionalExecutorsApplying(mapApplyingAdditionalExecutors(caseData))
                 .additionalExecutorsNotApplying(caseData.getAdditionalExecutorsNotApplying())
                 .solsAdditionalExecutorList(caseData.getSolsAdditionalExecutorList())
                 .primaryApplicantAlias(caseData.getPrimaryApplicantAlias())
@@ -821,6 +821,35 @@ public class CallbackResponseTransformer {
                 .applyingExecutorAddress(additionalExecutorApplying.getAdditionalExecAddress())
                 .applyingExecutorOtherNames(additionalExecutorApplying.getAdditionalExecAliasNameOnWill())
                 .build();
+    }
+
+    private List<CollectionMember<AdditionalExecutorApplying>> mapApplyingAdditionalExecutors(CaseData caseData) {
+        if (caseData.getAdditionalExecutorsApplying() != null) {
+            List<CollectionMember<AdditionalExecutorApplying>> applyingExec = caseData.getAdditionalExecutorsApplying()
+                    .stream()
+                    .map(CollectionMember::getValue)
+                    .map(this::buildApplyingAdditionalExecutors)
+                    .map(executor -> new CollectionMember<>(null, executor))
+                    .collect(Collectors.toList());
+            return applyingExec;
+        }
+        return caseData.getAdditionalExecutorsApplying();
+    }
+
+    private AdditionalExecutorApplying buildApplyingAdditionalExecutors(AdditionalExecutorApplying additionalExecutorApplying) {
+        if (additionalExecutorApplying.getApplyingExecutorName() == null) {
+            return AdditionalExecutorApplying.builder()
+                    .applyingExecutorName(additionalExecutorApplying.getApplyingExecutorFirstName()
+                            + " " + additionalExecutorApplying.getApplyingExecutorLastName())
+                    .applyingExecutorPhoneNumber(additionalExecutorApplying.getApplyingExecutorPhoneNumber())
+                    .applyingExecutorEmail(additionalExecutorApplying.getApplyingExecutorEmail())
+                    .applyingExecutorAddress(additionalExecutorApplying.getApplyingExecutorAddress())
+                    .applyingExecutorOtherNames(additionalExecutorApplying.getApplyingExecutorOtherNames())
+                    .applyingExecutorOtherNamesReason(additionalExecutorApplying.getApplyingExecutorOtherNamesReason())
+                    .applyingExecutorOtherReason(additionalExecutorApplying.getApplyingExecutorOtherReason())
+                    .build();
+        }
+        return additionalExecutorApplying;
     }
 
     private AliasName buildDeceasedAliasNameExecutor(ProbateAliasName aliasNames) {
