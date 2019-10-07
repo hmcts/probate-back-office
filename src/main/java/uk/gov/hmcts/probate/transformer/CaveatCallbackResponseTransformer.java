@@ -40,6 +40,8 @@ public class CaveatCallbackResponseTransformer {
 
     private static final ApplicationType DEFAULT_APPLICATION_TYPE = PERSONAL;
     private static final String DEFAULT_REGISTRY_LOCATION = "Leeds";
+    private static final String EXCEPTION_RECORD_CASE_TYPE_ID = "Caveat";
+    private static final String EXCEPTION_RECORD_EVENT_ID = "CaveatRaised";
 
     public CaveatCallbackResponse caveatRaised(CaveatCallbackRequest caveatCallbackRequest, List<Document> documents, String letterId) {
         CaveatDetails caveatDetails = caveatCallbackRequest.getCaseDetails();
@@ -165,7 +167,7 @@ public class CaveatCallbackResponseTransformer {
         }
 
         return CaseCreationDetails.builder().<ResponseCaveatData>
-                eventId("PA_APP_CREATED").caseData(caveatData).caseTypeId("Caveat").build();
+                eventId(EXCEPTION_RECORD_EVENT_ID).caseData(caveatData).caseTypeId(EXCEPTION_RECORD_CASE_TYPE_ID).build();
     }
 
     private String transformToString(LocalDate dateValue) {

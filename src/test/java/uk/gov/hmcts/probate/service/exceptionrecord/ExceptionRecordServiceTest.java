@@ -35,6 +35,9 @@ import static org.mockito.Mockito.when;
 @RunWith(SpringRunner.class)
 public class ExceptionRecordServiceTest {
 
+    private static final String EXCEPTION_RECORD_CASE_TYPE_ID = "Caveat";
+    private static final String EXCEPTION_RECORD_EVENT_ID = "CaveatRaised";
+
     @InjectMocks
     private ExceptionRecordService erService;
 
@@ -71,7 +74,7 @@ public class ExceptionRecordServiceTest {
         caveatData.setRegistryLocation(RegistryLocation.LEEDS);
         caveatData.setCaveatorSurname("Jones");
         caveatCaseDetailsResponse = CaseCreationDetails.builder().<ResponseCaveatData>
-                eventId("PA_APP_CREATED").caseData(caveatData).caseTypeId("Caveat").build();
+                eventId(EXCEPTION_RECORD_EVENT_ID).caseData(caveatData).caseTypeId(EXCEPTION_RECORD_CASE_TYPE_ID).build();
 
         when(erCaveatMapper.toCcdData(any())).thenReturn(caveatData);
         when(caveatTransformer.newCaveatCaseTransform(any())).thenReturn(caveatCaseDetailsResponse);

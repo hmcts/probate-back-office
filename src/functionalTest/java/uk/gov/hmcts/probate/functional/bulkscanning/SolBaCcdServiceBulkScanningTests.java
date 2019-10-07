@@ -47,15 +47,13 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
                 .then().assertThat().statusCode(200)
                 .and().content(containsString(containsText));
     }
-
-    @Ignore
+    
     @Test
     public void testAllMandatoryFieldsPresentReturnNoWarnings() {
         jsonRequest = utils.getJsonFromFile("expectedOCRDataAllMandatoryFields.json");
         validateOCRDataPostSuccess(jsonRequest, SUCCESS, null, 0, 0);
     }
 
-    @Ignore
     @Test
     public void testMissingMandatoryFieldsReturnWarnings() {
         jsonRequest = utils.getJsonFromFile("expectedOCRDataMissingMandatoryFields.json");
@@ -63,7 +61,6 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
         validateOCRDataPostSuccess(jsonRequest, WARNINGS, DOD_MISSING, 2, 1);
     }
 
-    @Ignore
     @Test
     public void testTransformPA8AReturnSuccessfulJSON() {
         jsonRequest = utils.getJsonFromFile("caveatTransformExceptionRecord.json");
@@ -71,7 +68,6 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
         transformExceptionPostSuccess(jsonRequest, jsonResponse);
     }
 
-    @Ignore
     @Test
     public void testTransformPA8AReturnTransformErrorJSON() {
         jsonRequest = utils.getJsonFromFile("caveatTransformExceptionRecordError.json");
