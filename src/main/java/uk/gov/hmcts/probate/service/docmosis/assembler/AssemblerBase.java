@@ -10,6 +10,8 @@ import uk.gov.hmcts.probate.model.ccd.raw.ParagraphDetail;
 import java.util.ArrayList;
 import java.util.List;
 
+import static uk.gov.hmcts.probate.model.Constants.YES;
+
 @Slf4j
 @Component
 @RequiredArgsConstructor
@@ -33,7 +35,7 @@ public class AssemblerBase {
 
     protected ParagraphDetail getStaticParagraphDetail(ParagraphCode paragraphCode) {
         ParagraphDetail paragraphDetail = ParagraphDetail.builder()
-                .enableStatic("Yes")
+                .enableStatic(YES)
                 .staticLabel(paragraphCode.getLabel())
                 .code(paragraphCode.getCode())
                 .templateName(paragraphCode.getTemplateName())
@@ -44,7 +46,7 @@ public class AssemblerBase {
 
     protected ParagraphDetail getTextParagraphDetail(ParagraphCode paragraphCode) {
         ParagraphDetail paragraphDetail = ParagraphDetail.builder()
-                .enableText("Yes")
+                .enableText(YES)
                 .textLabel(paragraphCode.getLabel())
                 .code(paragraphCode.getCode())
                 .templateName(paragraphCode.getTemplateName())
@@ -55,7 +57,7 @@ public class AssemblerBase {
 
     protected ParagraphDetail getTextParagraphDetailWithDefaultValue(ParagraphCode paragraphCode, String textValue) {
         ParagraphDetail paragraphDetail = ParagraphDetail.builder()
-                .enableText("Yes")
+                .enableText(YES)
                 .textLabel(paragraphCode.getLabel())
                 .textValue(textValue)
                 .code(paragraphCode.getCode())
@@ -72,7 +74,7 @@ public class AssemblerBase {
                 .build();
 
         ParagraphDetail paragraphDetail = ParagraphDetail.builder()
-                .enableList("Yes")
+                .enableList(YES)
                 .dynamicList(dynamicList)
                 .listLabel(paragraphCode.getLabel())
                 .code(paragraphCode.getCode())

@@ -13,6 +13,8 @@ import javax.validation.Valid;
 import java.util.Map;
 import java.util.Optional;
 
+import static uk.gov.hmcts.probate.model.Constants.YES;
+
 @Slf4j
 @Component
 @RequiredArgsConstructor
@@ -23,15 +25,8 @@ public class PreviewLetterService {
     public Map<String, Object> addLetterData(@Valid CaseDetails caseDetails) {
         CaseData caseData = caseDetails.getData();
         Map<String, Object> placeholders = genericMapperService.addCaseDataWithRegistryProperties(caseDetails);
-        addPlaceholderIfPresent(placeholders, ParagraphCode.FREE_TEXT, caseData);
-        addPlaceholderIfPresent(placeholders, ParagraphCode.CASEWORKER, caseData);
-        addPlaceholderIfPresent(placeholders, ParagraphCode.MISS_INFO_WILL, caseData);
-        addPlaceholderIfPresent(placeholders, ParagraphCode.ENT_EXEC_NOT_ACC, caseData);
-        addPlaceholderIfPresent(placeholders, ParagraphCode.MISS_INFO_CHANGE_APP, caseData);
-        addPlaceholderIfPresent(placeholders, ParagraphCode.MISS_INFO_DEATH_CERT, caseData);
-        addPlaceholderIfPresent(placeholders, ParagraphCode.WILL_ANY_OTHER, caseData);
-        addPlaceholderIfPresent(placeholders, ParagraphCode.WILL_PLIGHT, caseData);
-        addPlaceholderIfPresent(placeholders, ParagraphCode.WILL_SEP_PAGES, caseData);
+        ParagraphCode.getAll().stream().filter(code -> code.getPlaceholderName() != null).
+                forEach(code -> addPlaceholderIfPresent(placeholders, code, caseData));
 
         return placeholders;
     }
@@ -42,11 +37,11 @@ public class PreviewLetterService {
                     .stream().filter(para -> para.getValue().getCode().equals(paragraphCode.getCode()))
                     .findFirst();
             if (matchedDetail.isPresent()) {
-                if ("Yes".equals(matchedDetail.get().getValue().getEnableText())) {
+                if (YES.equals(matchedDetail.get().getValue().getEnableText())) {
                     placeholders.put(paragraphCode.getPlaceholderName(), matchedDetail.get().getValue().getTextValue());
-                } else if ("Yes".equals(matchedDetail.get().getValue().getEnableTextArea())) {
+                } else if (YES.equals(matchedDetail.get().getValue().getEnableTextArea())) {
                     placeholders.put(paragraphCode.getPlaceholderName(), matchedDetail.get().getValue().getTextAreaValue());
-                } else if ("Yes".equals(matchedDetail.get().getValue().getEnableList())) {
+                } else if (YES.equals(matchedDetail.get().getValue().getEnableList())) {
                     placeholders.put(paragraphCode.getPlaceholderName(),
                             matchedDetail.get().getValue().getDynamicList().getValue().getCode());
                 }
