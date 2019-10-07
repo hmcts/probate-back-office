@@ -93,14 +93,6 @@ public class DocumentController {
 
         CallbackResponse response = callbackResponseTransformer.transformCaseForLetter(callbackRequest);
 
-        try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            String str = objectMapper.writeValueAsString(response);
-            log.info(str);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-
         return ResponseEntity.ok(response);
     }
 

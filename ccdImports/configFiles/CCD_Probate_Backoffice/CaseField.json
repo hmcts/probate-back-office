@@ -301,7 +301,7 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "probateSotDocumentsGenerated", "Label": "SOT Documents generated", "FieldType": "Collection", "FieldTypeParameter": "ProbateDocument", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "applicantNotification", "Label": "At least one applicant must be selected to send a notification too", "FieldType": "Label", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "categories", "Label": "Choose categories", "FieldType": "Categories", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "paragraphDetails", "Label": "Enter requested details", "FieldType": "Collection", "FieldTypeParameter": "ParagraphDetail", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "paragraphDetails", "Label": "Enter any requested details", "FieldType": "Collection", "FieldTypeParameter": "ParagraphDetail", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "previewLink", "Label": "Letter preview", "FieldType": "Document", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "generateLetter", "Label": "Do you wish to save as final on the case?", "FieldType": "YesOrNo", "SecurityClassification": "Public"}
 ]

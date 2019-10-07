@@ -12,6 +12,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
 import uk.gov.hmcts.probate.service.docmosis.assembler.AssembleCaseworker;
 import uk.gov.hmcts.probate.service.docmosis.assembler.AssembleEntitlement;
+import uk.gov.hmcts.probate.service.docmosis.assembler.AssembleFreeText;
 import uk.gov.hmcts.probate.service.docmosis.assembler.AssembleIHT;
 import uk.gov.hmcts.probate.service.docmosis.assembler.AssembleMissingInformation;
 import uk.gov.hmcts.probate.service.docmosis.assembler.AssembleWill;
@@ -27,6 +28,7 @@ import java.util.function.BiFunction;
 
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.CASEWORKER;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.ENT_EXEC_NOT_ACC;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.FREE_TEXT;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.IHT_205_MISSING;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.IHT_AWAIT_IHT421;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.MISS_INFO_CHANGE_APP;
@@ -42,6 +44,7 @@ import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.WILL
 @RequiredArgsConstructor
 public class AssembleLetterTransformer {
     private final AssembleCaseworker assembleCaseworker;
+    private final AssembleFreeText assembleFreeText;
     private final AssembleEntitlement assembleEntitlement;
     private final AssembleIHT assembleIHT;
     private final AssembleMissingInformation assembleMissingInformation;
@@ -53,6 +56,7 @@ public class AssembleLetterTransformer {
     private Map<ParagraphCode, BiFunction<ParagraphCode, CaseData, ParagraphDetail>> getParagraphFunctions() {
         if (paragraphCodeFunctions == null) {
             paragraphCodeFunctions = ImmutableMap.<ParagraphCode, BiFunction<ParagraphCode, CaseData, ParagraphDetail>>builder()
+                    .put(FREE_TEXT, assembleFreeText::freeText)
                     .put(CASEWORKER, assembleCaseworker::caseworker)
                     .put(ENT_EXEC_NOT_ACC, assembleEntitlement::executorNotAccountedFor)
                     .put(IHT_205_MISSING, assembleIHT::iht205Missing)
@@ -80,6 +84,7 @@ public class AssembleLetterTransformer {
         addParagraphs(paragraphDetails, categories.getIhtSelectedParagraphs(), caseData);
         addParagraphs(paragraphDetails, categories.getMissInfoSelectedParagraphs(), caseData);
         addParagraphs(paragraphDetails, categories.getWillSelectedParagraphs(), caseData);
+        addParagraphs(paragraphDetails, Arrays.asList(FREE_TEXT.getCode()), caseData);
 
         responseCaseDataBuilder.categories(categories);
         responseCaseDataBuilder.paragraphDetails(paragraphDetails);

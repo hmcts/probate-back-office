@@ -306,10 +306,7 @@ public class CallbackResponseTransformer {
 
     public CallbackResponse transformCase(CallbackRequest callbackRequest) {
 
-
-        boolean transform = callbackRequest.getCaseDetails().getData().getApplicationType() == ApplicationType.SOLICITOR
-                && callbackRequest.getCaseDetails().getData().getRecordId() == null
-                && !callbackRequest.getCaseDetails().getData().getPaperForm().equalsIgnoreCase(ANSWER_YES);
+        boolean transform = doTransform(callbackRequest);
 
         ResponseCaseData responseCaseData = getResponseCaseData(callbackRequest.getCaseDetails(), transform)
                 .build();
@@ -318,11 +315,8 @@ public class CallbackResponseTransformer {
     }
 
     public CallbackResponse transformCaseForLetter(CallbackRequest callbackRequest) {
-        boolean transform = callbackRequest.getCaseDetails().getData().getApplicationType() == ApplicationType.SOLICITOR
-                && callbackRequest.getCaseDetails().getData().getRecordId() == null
-                && !callbackRequest.getCaseDetails().getData().getPaperForm().equalsIgnoreCase(ANSWER_YES);
-
-        ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), transform);
+        boolean doTransform = doTransform(callbackRequest);
+        ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), doTransform);
         assembleLetterTransformer.setupAllLetterParagraphDetails(callbackRequest.getCaseDetails(), responseCaseDataBuilder);
 
         return transformResponse(responseCaseDataBuilder.build());
@@ -330,11 +324,8 @@ public class CallbackResponseTransformer {
 
     public CallbackResponse transformCaseForLetter(CallbackRequest callbackRequest, Document letter) {
         CaseData caseData = callbackRequest.getCaseDetails().getData();
-        boolean transform = caseData.getApplicationType() == ApplicationType.SOLICITOR
-                && caseData.getRecordId() == null
-                && !caseData.getPaperForm().equalsIgnoreCase(ANSWER_YES);
-
-        ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), transform);
+        boolean doTransform = doTransform(callbackRequest);
+        ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), doTransform);
 
         List<CollectionMember<Document>> probateDocumentsGenerated = caseData.getProbateDocumentsGenerated();
         probateDocumentsGenerated.add(new CollectionMember<Document>(null, letter));
@@ -348,15 +339,21 @@ public class CallbackResponseTransformer {
 
     public CallbackResponse transformCaseForLetterPreview(CallbackRequest callbackRequest, Document letterPreview) {
         CaseData caseData = callbackRequest.getCaseDetails().getData();
-        boolean transform = caseData.getApplicationType() == ApplicationType.SOLICITOR
-                && caseData.getRecordId() == null
-                && !caseData.getPaperForm().equalsIgnoreCase(ANSWER_YES);
+        boolean doTransform = doTransform(callbackRequest);
 
-        ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), transform);
+        ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), doTransform);
         responseCaseDataBuilder.previewLink(letterPreview.getDocumentLink());
         responseCaseDataBuilder.generateLetter(caseData.getGenerateLetter());
 
         return transformResponse(responseCaseDataBuilder.build());
+    }
+
+    private boolean doTransform(CallbackRequest callbackRequest) {
+        CaseData caseData = callbackRequest.getCaseDetails().getData();
+        return caseData.getApplicationType() == ApplicationType.SOLICITOR
+                && caseData.getRecordId() == null
+                && !caseData.getPaperForm().equalsIgnoreCase(ANSWER_YES);
+
     }
 
     public CallbackResponse paperForm(CallbackRequest callbackRequest) {

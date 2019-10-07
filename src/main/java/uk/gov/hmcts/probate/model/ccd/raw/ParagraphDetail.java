@@ -15,6 +15,10 @@ public class ParagraphDetail {
     private final String textLabel;
     private final String textValue;
 
+    private final String enableTextArea;
+    private final String textAreaLabel;
+    private final String textAreaValue;
+
     private final String enableList;
     private final String listLabel;
     private final DynamicList dynamicList;

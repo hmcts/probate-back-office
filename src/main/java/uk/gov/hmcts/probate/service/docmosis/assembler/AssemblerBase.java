@@ -68,7 +68,7 @@ public class AssemblerBase {
     protected ParagraphDetail createDynamicListParagraphDetail(ParagraphCode paragraphCode, List<DynamicListItem> listItems) {
         DynamicList dynamicList = DynamicList.builder()
                 .listItems(listItems)
-                .value(listItems.get(0))
+                .value(DynamicListItem.builder().build())
                 .build();
 
         ParagraphDetail paragraphDetail = ParagraphDetail.builder()

@@ -17,29 +17,40 @@ import java.util.Optional;
 @Component
 @RequiredArgsConstructor
 public class PreviewLetterService {
-    private static final String APPLICANT_NAME = "applicantName";
-    private static final String CASEWORKER_NAME = "caseworkerName";
-    private static final String NAMES_OF_EXECUTORS = "nameOfExecutors";
 
     private final GenericMapperService genericMapperService;
 
     public Map<String, Object> addLetterData(@Valid CaseDetails caseDetails) {
         CaseData caseData = caseDetails.getData();
         Map<String, Object> placeholders = genericMapperService.addCaseDataWithRegistryProperties(caseDetails);
-        placeholders.put(APPLICANT_NAME, caseData.getPrimaryApplicantForenames() + " " + caseData.getPrimaryApplicantSurname());
-        addPlaceholderIfPresent(placeholders, CASEWORKER_NAME, ParagraphCode.CASEWORKER, caseData);
-        addPlaceholderIfPresent(placeholders, NAMES_OF_EXECUTORS, ParagraphCode.ENT_EXEC_NOT_ACC, caseData);
+        addPlaceholderIfPresent(placeholders, ParagraphCode.FREE_TEXT, caseData);
+        addPlaceholderIfPresent(placeholders, ParagraphCode.CASEWORKER, caseData);
+        addPlaceholderIfPresent(placeholders, ParagraphCode.MISS_INFO_WILL, caseData);
+        addPlaceholderIfPresent(placeholders, ParagraphCode.ENT_EXEC_NOT_ACC, caseData);
+        addPlaceholderIfPresent(placeholders, ParagraphCode.MISS_INFO_CHANGE_APP, caseData);
+        addPlaceholderIfPresent(placeholders, ParagraphCode.MISS_INFO_DEATH_CERT, caseData);
+        addPlaceholderIfPresent(placeholders, ParagraphCode.WILL_ANY_OTHER, caseData);
+        addPlaceholderIfPresent(placeholders, ParagraphCode.WILL_PLIGHT, caseData);
+        addPlaceholderIfPresent(placeholders, ParagraphCode.WILL_SEP_PAGES, caseData);
 
         return placeholders;
     }
 
-    private void addPlaceholderIfPresent(Map<String, Object> placeholders, String key,
-                                         ParagraphCode paragraphCode, CaseData caseData) {
-        Optional<CollectionMember<ParagraphDetail>> matchedDetail = caseData.getParagraphDetails()
-                .stream().filter(para -> para.getValue().getCode().equals(paragraphCode.getCode()))
-                .findFirst();
-        if (matchedDetail.isPresent()) {
-            placeholders.put(key, matchedDetail.get().getValue().getTextValue());
+    private void addPlaceholderIfPresent(Map<String, Object> placeholders, ParagraphCode paragraphCode, CaseData caseData) {
+        if (paragraphCode.getPlaceholderName() != null) {
+            Optional<CollectionMember<ParagraphDetail>> matchedDetail = caseData.getParagraphDetails()
+                    .stream().filter(para -> para.getValue().getCode().equals(paragraphCode.getCode()))
+                    .findFirst();
+            if (matchedDetail.isPresent()) {
+                if ("Yes".equals(matchedDetail.get().getValue().getEnableText())) {
+                    placeholders.put(paragraphCode.getPlaceholderName(), matchedDetail.get().getValue().getTextValue());
+                } else if ("Yes".equals(matchedDetail.get().getValue().getEnableTextArea())) {
+                    placeholders.put(paragraphCode.getPlaceholderName(), matchedDetail.get().getValue().getTextAreaValue());
+                } else if ("Yes".equals(matchedDetail.get().getValue().getEnableList())) {
+                    placeholders.put(paragraphCode.getPlaceholderName(),
+                            matchedDetail.get().getValue().getDynamicList().getValue().getCode());
+                }
+            }
         }
     }
 }
