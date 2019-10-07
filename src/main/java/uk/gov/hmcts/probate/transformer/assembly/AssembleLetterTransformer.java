@@ -62,8 +62,8 @@ public class AssembleLetterTransformer {
                     .put(WILL_STAPLE, assembleWill::willStaple)
                     .build();
         }
-        return paragraphCodeFunctions;
 
+        return paragraphCodeFunctions;
     }
 
     public void setupAllLetterParagraphDetails(@Valid CaseDetails caseDetails,

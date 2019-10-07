@@ -25,7 +25,7 @@ public class AssembleEntitlement {
         }
 
         String applicants = allApplicantsBuilder.toString();
-        applicants = applicants.substring(0, applicants.length() - 2);
+        applicants = applicants.substring(0, applicants.length() - 1);
 
         return assemblerBase.getTextParagraphDetailWithDefaultValue(paragraphCode, applicants);
     }
