@@ -17,6 +17,7 @@ import uk.gov.hmcts.probate.service.docmosis.assembler.AssembleIHT;
 import uk.gov.hmcts.probate.service.docmosis.assembler.AssembleMissingInformation;
 import uk.gov.hmcts.probate.service.docmosis.assembler.AssembleWill;
 import uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode;
+import uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphField;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
@@ -50,12 +51,12 @@ public class AssembleLetterTransformer {
     private final AssembleMissingInformation assembleMissingInformation;
     private final AssembleWill assembleWill;
 
-    private Map<ParagraphCode, BiFunction<ParagraphCode, CaseData, ParagraphDetail>>
+    private Map<ParagraphCode, BiFunction<ParagraphCode, CaseData, List<ParagraphDetail>>>
             paragraphCodeFunctions;
 
-    private Map<ParagraphCode, BiFunction<ParagraphCode, CaseData, ParagraphDetail>> getParagraphFunctions() {
+    private Map<ParagraphCode, BiFunction<ParagraphCode, CaseData, List<ParagraphDetail>>> getParagraphFunctions() {
         if (paragraphCodeFunctions == null) {
-            paragraphCodeFunctions = ImmutableMap.<ParagraphCode, BiFunction<ParagraphCode, CaseData, ParagraphDetail>>builder()
+            paragraphCodeFunctions = ImmutableMap.<ParagraphCode, BiFunction<ParagraphCode, CaseData, List<ParagraphDetail>>>builder()
                     .put(FREE_TEXT, assembleFreeText::freeText)
                     .put(CASEWORKER, assembleCaseworker::caseworker)
                     .put(ENT_EXEC_NOT_ACC, assembleEntitlement::executorNotAccountedFor)
@@ -79,27 +80,43 @@ public class AssembleLetterTransformer {
         CaseData caseData = caseDetails.getData();
         Categories categories = caseData.getCategories();
         List<CollectionMember<ParagraphDetail>> paragraphDetails = new ArrayList<>();
-        addParagraphs(paragraphDetails, Arrays.asList(CASEWORKER.getCode()), caseData);
+        addParagraphsForUsedFields(paragraphDetails, CASEWORKER.getParagraphFields(), caseData);
         addParagraphs(paragraphDetails, categories.getEntSelectedParagraphs(), caseData);
         addParagraphs(paragraphDetails, categories.getIhtSelectedParagraphs(), caseData);
         addParagraphs(paragraphDetails, categories.getMissInfoSelectedParagraphs(), caseData);
         addParagraphs(paragraphDetails, categories.getWillSelectedParagraphs(), caseData);
-        addParagraphs(paragraphDetails, Arrays.asList(FREE_TEXT.getCode()), caseData);
+        addParagraphsForUsedFields(paragraphDetails, FREE_TEXT.getParagraphFields(), caseData);
 
         responseCaseDataBuilder.categories(categories);
         responseCaseDataBuilder.paragraphDetails(paragraphDetails);
     }
 
-    private void addParagraphs(List<CollectionMember<ParagraphDetail>> paragraphDetails,
+    private void addParagraphsForUsedFields(List<CollectionMember<ParagraphDetail>> allParagraphDetails,
+                               List<ParagraphField> paragraphFields, CaseData caseData) {
+        for (ParagraphField paragraphField : paragraphFields) {
+            Optional<ParagraphCode> paragraphCode = ParagraphCode.fromCode(paragraphField.getFieldCode());
+            addAllParagraphDetails(allParagraphDetails, paragraphCode.get(), caseData);
+        }
+
+    }
+
+    private void addAllParagraphDetails(List<CollectionMember<ParagraphDetail>> allParagraphDetails,
+                                        ParagraphCode paragraphCode, CaseData caseData) {
+        List<ParagraphDetail> paragraphDetails = getParagraphFunctions().get(paragraphCode).apply(paragraphCode, caseData);
+        for (ParagraphDetail paragraphDetail : paragraphDetails) {
+            CollectionMember<ParagraphDetail> paragraphDetailCollectionMember = new CollectionMember<>(null, paragraphDetail);
+            allParagraphDetails.add(paragraphDetailCollectionMember);
+        }
+    }
+
+    private void addParagraphs(List<CollectionMember<ParagraphDetail>> allParagraphDetails,
                                List<String> selectedParagraphs, CaseData caseData) {
         if (selectedParagraphs == null) {
             return;
         }
         for (String selectedPara : selectedParagraphs) {
             Optional<ParagraphCode> paragraphCode = ParagraphCode.fromCode(selectedPara);
-            ParagraphDetail paragraphDetail = getParagraphFunctions().get(paragraphCode.get()).apply(paragraphCode.get(), caseData);
-            CollectionMember<ParagraphDetail> paragraphDetailCollectionMember = new CollectionMember<>(null, paragraphDetail);
-            paragraphDetails.add(paragraphDetailCollectionMember);
+            addAllParagraphDetails(allParagraphDetails, paragraphCode.get(), caseData);
         }
     }
 }

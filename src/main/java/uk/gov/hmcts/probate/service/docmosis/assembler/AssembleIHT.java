@@ -6,18 +6,20 @@ import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.model.ccd.raw.ParagraphDetail;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 
+import java.util.List;
+
 @Slf4j
 @Component
 @RequiredArgsConstructor
 public class AssembleIHT {
     private final AssemblerBase assemblerBase;
 
-    public ParagraphDetail iht205Missing(ParagraphCode paragraphCode, CaseData caseData) {
-        return assemblerBase.getStaticParagraphDetail(paragraphCode);
+    public List<ParagraphDetail> iht205Missing(ParagraphCode paragraphCode, CaseData caseData) {
+        return assemblerBase.getStaticParagraphDetails(paragraphCode);
     }
 
-    public ParagraphDetail ihtAwait421(ParagraphCode paragraphCode, CaseData caseData) {
-        return assemblerBase.getStaticParagraphDetail(paragraphCode);
+    public List<ParagraphDetail> ihtAwait421(ParagraphCode paragraphCode, CaseData caseData) {
+        return assemblerBase.getStaticParagraphDetails(paragraphCode);
     }
 
 }

@@ -8,13 +8,16 @@ import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.ParagraphDetail;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 
+import java.util.Arrays;
+import java.util.List;
+
 @Slf4j
 @Component
 @RequiredArgsConstructor
 public class AssembleEntitlement {
     private final AssemblerBase assemblerBase;
 
-    public ParagraphDetail executorNotAccountedFor(ParagraphCode paragraphCode, CaseData caseData) {
+    public List<ParagraphDetail> executorNotAccountedFor(ParagraphCode paragraphCode, CaseData caseData) {
         StringBuilder allApplicantsBuilder = new StringBuilder()
                 .append(caseData.getPrimaryApplicantForenames() + " " + caseData.getPrimaryApplicantSurname())
                 .append(",");
@@ -27,7 +30,8 @@ public class AssembleEntitlement {
         String applicants = allApplicantsBuilder.toString();
         applicants = applicants.substring(0, applicants.length() - 1);
 
-        return assemblerBase.getTextParagraphDetailWithDefaultValue(paragraphCode, applicants);
+        List<String> fieldValues = Arrays.asList(applicants);
+        return assemblerBase.getTextParagraphDetailWithDefaultValue(paragraphCode, fieldValues);
     }
 
 }

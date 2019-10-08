@@ -3,27 +3,19 @@ package uk.gov.hmcts.probate.service.docmosis.assembler;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import uk.gov.hmcts.probate.model.Constants;
 import uk.gov.hmcts.probate.model.ccd.raw.ParagraphDetail;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 
-import static uk.gov.hmcts.probate.model.Constants.YES;
-import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.CASEWORKER;
-import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.FREE_TEXT;
+import java.util.List;
 
 @Slf4j
 @Component
 @RequiredArgsConstructor
 public class AssembleFreeText {
+    private final AssemblerBase assemblerBase;
 
-    public ParagraphDetail freeText(ParagraphCode paragraphCode, CaseData caseData) {
-        ParagraphDetail paragraphDetail = ParagraphDetail.builder()
-                .enableTextArea(YES)
-                .textAreaLabel(FREE_TEXT.getLabel())
-                .code(FREE_TEXT.getCode())
-                .build();
-
-        return paragraphDetail;
+    public List<ParagraphDetail> freeText(ParagraphCode paragraphCode, CaseData caseData) {
+        return assemblerBase.getTextAreaParagraphDetails(paragraphCode);
     }
 
 }

@@ -33,53 +33,85 @@ public class AssemblerBase {
         return listItems;
     }
 
-    protected ParagraphDetail getStaticParagraphDetail(ParagraphCode paragraphCode) {
-        ParagraphDetail paragraphDetail = ParagraphDetail.builder()
-                .enableStatic(YES)
-                .staticLabel(paragraphCode.getLabel())
-                .code(paragraphCode.getCode())
-                .templateName(paragraphCode.getTemplateName())
-                .build();
+    protected List<ParagraphDetail> getStaticParagraphDetails(ParagraphCode paragraphCode) {
+        List<ParagraphDetail> paragraphDetails = new ArrayList<>();
+        for (ParagraphField paragraphField : paragraphCode.getParagraphFields()) {
+            ParagraphDetail paragraphDetail = ParagraphDetail.builder()
+                    .enableStatic(YES)
+                    .staticLabel(paragraphField.getFieldLabel())
+                    .code(paragraphField.getFieldCode())
+                    .templateName(paragraphCode.getTemplateName())
+                    .build();
+            paragraphDetails.add(paragraphDetail);
+        }
 
-        return paragraphDetail;
+        return paragraphDetails;
     }
 
-    protected ParagraphDetail getTextParagraphDetail(ParagraphCode paragraphCode) {
-        ParagraphDetail paragraphDetail = ParagraphDetail.builder()
-                .enableText(YES)
-                .textLabel(paragraphCode.getLabel())
-                .code(paragraphCode.getCode())
-                .templateName(paragraphCode.getTemplateName())
-                .build();
-
-        return paragraphDetail;
+    protected List<ParagraphDetail>  getTextParagraphDetails(ParagraphCode paragraphCode) {
+        List<ParagraphDetail> paragraphDetails = new ArrayList<>();
+        for (ParagraphField paragraphField : paragraphCode.getParagraphFields()) {
+            ParagraphDetail paragraphDetail = ParagraphDetail.builder()
+                    .enableText(YES)
+                    .textLabel(paragraphField.getFieldLabel())
+                    .code(paragraphField.getFieldCode())
+                    .templateName(paragraphCode.getTemplateName())
+                    .build();
+            paragraphDetails.add(paragraphDetail);
+        }
+        return paragraphDetails;
     }
 
-    protected ParagraphDetail getTextParagraphDetailWithDefaultValue(ParagraphCode paragraphCode, String textValue) {
-        ParagraphDetail paragraphDetail = ParagraphDetail.builder()
-                .enableText(YES)
-                .textLabel(paragraphCode.getLabel())
-                .textValue(textValue)
-                .code(paragraphCode.getCode())
-                .templateName(paragraphCode.getTemplateName())
-                .build();
-
-        return paragraphDetail;
+    protected List<ParagraphDetail>  getTextAreaParagraphDetails(ParagraphCode paragraphCode) {
+        List<ParagraphDetail> paragraphDetails = new ArrayList<>();
+        for (ParagraphField paragraphField : paragraphCode.getParagraphFields()) {
+            ParagraphDetail paragraphDetail = ParagraphDetail.builder()
+                    .enableTextArea(YES)
+                    .textAreaLabel(paragraphField.getFieldLabel())
+                    .code(paragraphField.getFieldCode())
+                    .templateName(paragraphCode.getTemplateName())
+                    .build();
+            paragraphDetails.add(paragraphDetail);
+        }
+        return paragraphDetails;
     }
 
-    protected ParagraphDetail createDynamicListParagraphDetail(ParagraphCode paragraphCode, List<DynamicListItem> listItems) {
-        DynamicList dynamicList = DynamicList.builder()
-                .listItems(listItems)
-                .value(DynamicListItem.builder().build())
-                .build();
+    protected List<ParagraphDetail> getTextParagraphDetailWithDefaultValue(ParagraphCode paragraphCode, List<String> textValues) {
+        List<ParagraphDetail> paragraphDetails = new ArrayList<>();
+        int index = 0;
+        for (ParagraphField paragraphField : paragraphCode.getParagraphFields()) {
+            ParagraphDetail paragraphDetail = ParagraphDetail.builder()
+                    .enableText(YES)
+                    .textLabel(paragraphField.getFieldLabel())
+                    .textValue(textValues.get(index))
+                    .code(paragraphField.getFieldCode())
+                    .templateName(paragraphCode.getTemplateName())
+                    .build();
+            paragraphDetails.add(paragraphDetail);
+            index ++;
+        }
+        return paragraphDetails;
+    }
 
-        ParagraphDetail paragraphDetail = ParagraphDetail.builder()
-                .enableList(YES)
-                .dynamicList(dynamicList)
-                .listLabel(paragraphCode.getLabel())
-                .code(paragraphCode.getCode())
-                .build();
+    protected List<ParagraphDetail> createDynamicListParagraphDetail(ParagraphCode paragraphCode, List<List<DynamicListItem>> listItems) {
+        List<ParagraphDetail> paragraphDetails = new ArrayList<>();
+        int index = 0;
+        for (ParagraphField paragraphField : paragraphCode.getParagraphFields()) {
+            DynamicList dynamicList = DynamicList.builder()
+                    .listItems(listItems.get(index))
+                    .value(DynamicListItem.builder().build())
+                    .build();
 
-        return paragraphDetail;
+            ParagraphDetail paragraphDetail = ParagraphDetail.builder()
+                    .enableList(YES)
+                    .dynamicList(dynamicList)
+                    .listLabel(paragraphField.getFieldLabel())
+                    .code(paragraphField.getFieldCode())
+                    .build();
+            paragraphDetails.add(paragraphDetail);
+            index ++;
+        }
+
+        return paragraphDetails;
     }
 }

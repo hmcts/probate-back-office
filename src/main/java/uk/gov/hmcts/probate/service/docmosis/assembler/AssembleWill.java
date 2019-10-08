@@ -7,6 +7,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.DynamicListItem;
 import uk.gov.hmcts.probate.model.ccd.raw.ParagraphDetail;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -15,26 +16,30 @@ import java.util.List;
 public class AssembleWill {
     private final AssemblerBase assemblerBase;
 
-    public ParagraphDetail willSeparatePages(ParagraphCode paragraphCode, CaseData caseData) {
-        return assemblerBase.getTextParagraphDetail(paragraphCode);
+    public List<ParagraphDetail> willSeparatePages(ParagraphCode paragraphCode, CaseData caseData) {
+        return assemblerBase.getTextParagraphDetails(paragraphCode);
     }
 
-    public ParagraphDetail willPlight(ParagraphCode paragraphCode, CaseData caseData) {
+    public List<ParagraphDetail> willPlight(ParagraphCode paragraphCode, CaseData caseData) {
         List<DynamicListItem> listItems = assemblerBase.create2ListItems("condition", "CONDITION REASON E.G.A TEAR",
                 "staple", "STAPLE HOLES/ PUNCH HOLES");
 
-        return assemblerBase.createDynamicListParagraphDetail(paragraphCode, listItems);
+        List<List<DynamicListItem>> allListItems = new ArrayList<>();
+        allListItems.add(listItems);
+        return assemblerBase.createDynamicListParagraphDetail(paragraphCode, allListItems);
     }
 
-    public ParagraphDetail willAnyOther(ParagraphCode paragraphCode, CaseData caseData) {
+    public List<ParagraphDetail> willAnyOther(ParagraphCode paragraphCode, CaseData caseData) {
         List<DynamicListItem> listItems = assemblerBase.create2ListItems("completeLimit", "COMPLETE LIMITATION",
                 "exemption", "EXEMPTION FROM THE WILL");
 
-        return assemblerBase.createDynamicListParagraphDetail(paragraphCode, listItems);
+        List<List<DynamicListItem>> allListItems = new ArrayList<>();
+        allListItems.add(listItems);
+        return assemblerBase.createDynamicListParagraphDetail(paragraphCode, allListItems);
     }
 
-    public ParagraphDetail willStaple(ParagraphCode paragraphCode, CaseData caseData) {
-        return assemblerBase.getStaticParagraphDetail(paragraphCode);
+    public List<ParagraphDetail> willStaple(ParagraphCode paragraphCode, CaseData caseData) {
+        return assemblerBase.getStaticParagraphDetails(paragraphCode);
     }
 
 }

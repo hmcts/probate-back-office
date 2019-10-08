@@ -7,6 +7,8 @@ import uk.gov.hmcts.probate.model.ccd.raw.DynamicListItem;
 import uk.gov.hmcts.probate.model.ccd.raw.ParagraphDetail;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Slf4j
@@ -15,21 +17,25 @@ import java.util.List;
 public class AssembleMissingInformation {
     private final AssemblerBase assemblerBase;
 
-    public ParagraphDetail missingInfoWill(ParagraphCode paragraphCode, CaseData caseData) {
+    public List<ParagraphDetail> missingInfoWill(ParagraphCode paragraphCode, CaseData caseData) {
         List<DynamicListItem> listItems = assemblerBase.create2ListItems("will", "WILL",
                 "codicil", "CODICIL");
-        return assemblerBase.createDynamicListParagraphDetail(paragraphCode, listItems);
+        List<List<DynamicListItem>> allListItems = new ArrayList();
+        allListItems.add(listItems);
+        return assemblerBase.createDynamicListParagraphDetail(paragraphCode, allListItems);
     }
 
-    public ParagraphDetail missingInfoDeathCert(ParagraphCode paragraphCode, CaseData caseData) {
+    public List<ParagraphDetail> missingInfoDeathCert(ParagraphCode paragraphCode, CaseData caseData) {
         List<DynamicListItem> listItems = assemblerBase.create2ListItems("unclear", "THE ONE SUPPLIED IS UNCLEAR",
                 "notSupplied", "ONE WAS NOT SUPPLIED");
+        List<List<DynamicListItem>> allListItems = new ArrayList();
+        allListItems.add(listItems);
 
-        return assemblerBase.createDynamicListParagraphDetail(paragraphCode, listItems);
+        return assemblerBase.createDynamicListParagraphDetail(paragraphCode, allListItems);
     }
 
-    public ParagraphDetail missingInfoChangeOfApplicant(ParagraphCode paragraphCode, CaseData caseData) {
-        return assemblerBase.getTextParagraphDetailWithDefaultValue(paragraphCode, caseData.getPrimaryApplicantFullName());
+    public List<ParagraphDetail> missingInfoChangeOfApplicant(ParagraphCode paragraphCode, CaseData caseData) {
+        return assemblerBase.getTextParagraphDetailWithDefaultValue(paragraphCode, Arrays.asList(caseData.getPrimaryApplicantFullName()));
     }
 
 
