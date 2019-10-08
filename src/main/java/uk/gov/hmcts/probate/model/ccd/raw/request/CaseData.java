@@ -168,8 +168,7 @@ public class CaseData {
 
     private final String solsPrimaryExecutorNotApplyingReason;
 
-    @NotNull(groups = {ApplicationProbateGroup.class,
-                       ApplicationAdmonGroup.class,
+    @NotNull(groups = {ApplicationAdmonGroup.class,
                        ApplicationIntestacyGroup.class}, message = "{primaryApplicantAddressIsNull}")
     private final SolsAddress primaryApplicantAddress;
 

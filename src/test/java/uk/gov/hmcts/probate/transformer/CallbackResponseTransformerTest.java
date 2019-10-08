@@ -1012,6 +1012,20 @@ public class CallbackResponseTransformerTest {
         assertEquals(IHT_REFERENCE, callbackResponse.getData().getIhtReferenceNumber());
     }
 
+
+    @Test
+    public void shouldTransformCaseForSolsEmailEmpty() {
+        caseDataBuilder.solsSolicitorEmail("");
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+
+        assertEquals(NO, callbackResponse.getData().getBoEmailGrantIssuedNotification());
+    }
+
+
     @Test
     public void shouldTransformCaseForPAWithPrimaryApplicantAlias() {
         caseDataBuilder.primaryApplicantAlias(PRIMARY_EXEC_ALIAS_NAMES);

@@ -29,6 +29,7 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "legacyCaseViewUrl", "Label": "Legacy case link", "FieldType": "Text", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "legacyCaseViewUrlLink", "Label": "[Click here to open legacy case](${legacyCaseViewUrl})", "FieldType": "Label", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "payments", "Label": "Online payments received", "FieldType": "Collection", "FieldTypeParameter": "Payment", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "scannedDocuments", "Label": "Documents scanned", "FieldType": "Collection", "FieldTypeParameter": "ScannedDocument", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "bulkPrintSendLetterId", "Label": "Send letter ID is:", "FieldType": "Text", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "caveatRaisedEmailNotificationRequested", "Label": "Do you wish to send an email notification?", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "caveatRaisedEmailNotification", "Label": "Do you wish to send an email notification?", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
