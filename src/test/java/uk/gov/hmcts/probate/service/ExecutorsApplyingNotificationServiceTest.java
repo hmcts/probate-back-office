@@ -108,6 +108,62 @@ public class ExecutorsApplyingNotificationServiceTest {
     }
 
     @Test
+    public void testPaApplyingIsNull() {
+        caseDataPersonal = CaseData.builder()
+                .applicationType(ApplicationType.PERSONAL)
+                .primaryApplicantForenames("Bob")
+                .primaryApplicantSurname("Smith")
+                .primaryApplicantEmailAddress("PA@test.com")
+                .primaryApplicantAddress(ADDRESS)
+                .primaryApplicantIsApplying(null)
+                .additionalExecutorsApplying(null)
+                .build();
+
+        CollectionMember<ExecutorsApplyingNotification> execApplying =
+                buildExecNotification("Bob Smith", "PA@test.com", "1");
+        expectedResponse.add(execApplying);
+
+        assertEquals(expectedResponse, executorsApplyingNotificationService.createExecutorList(caseDataPersonal));
+        assertEquals(expectedResponse.size(), 1);
+    }
+
+    @Test
+    public void testPaApplyingIsNotApplying() {
+        caseDataPersonal = CaseData.builder()
+                .applicationType(ApplicationType.PERSONAL)
+                .primaryApplicantForenames("Bob")
+                .primaryApplicantSurname("Smith")
+                .primaryApplicantEmailAddress("PA@test.com")
+                .primaryApplicantAddress(ADDRESS)
+                .primaryApplicantIsApplying("No")
+                .additionalExecutorsApplying(null)
+                .build();
+
+        assertEquals(expectedResponse, executorsApplyingNotificationService.createExecutorList(caseDataPersonal));
+        assertEquals(expectedResponse.size(), 0);
+    }
+
+    @Test
+    public void testPaIsApplying() {
+        caseDataPersonal = CaseData.builder()
+                .applicationType(ApplicationType.PERSONAL)
+                .primaryApplicantForenames("Bob")
+                .primaryApplicantSurname("Smith")
+                .primaryApplicantEmailAddress("PA@test.com")
+                .primaryApplicantAddress(ADDRESS)
+                .primaryApplicantIsApplying("Yes")
+                .additionalExecutorsApplying(null)
+                .build();
+
+        CollectionMember<ExecutorsApplyingNotification> execApplying =
+                buildExecNotification("Bob Smith", "PA@test.com", "1");
+        expectedResponse.add(execApplying);
+
+        assertEquals(expectedResponse, executorsApplyingNotificationService.createExecutorList(caseDataPersonal));
+        assertEquals(expectedResponse.size(), 1);
+    }
+
+    @Test
     public void testMultipleExecutorsAreAddedSuccessfully() {
         additionalExecutorApplyingList.add(buildExecApplying("Tommy Tank", "tommy@test.com"));
         additionalExecutorApplyingList.add(buildExecApplying("Bobby Bank", "bobby@test.com"));
@@ -173,8 +229,21 @@ public class ExecutorsApplyingNotificationServiceTest {
                 .primaryApplicantSurname("Smith")
                 .primaryApplicantEmailAddress("PA@test.com")
                 .primaryApplicantAddress(ADDRESS)
-                .additionalExecutorsApplying(additionalExecutorApplyingList)
                 .primaryApplicantIsApplying("No")
+                .build();
+        assertEquals(expectedResponse, executorsApplyingNotificationService.createExecutorList(caseDataPersonal));
+    }
+
+    @Test
+    public void testEmptyExecutorsReturnsSuccessfully() {
+        caseDataPersonal = CaseData.builder()
+                .applicationType(ApplicationType.PERSONAL)
+                .primaryApplicantForenames("Bob")
+                .primaryApplicantSurname("Smith")
+                .primaryApplicantEmailAddress("PA@test.com")
+                .primaryApplicantAddress(ADDRESS)
+                .primaryApplicantIsApplying("No")
+                .additionalExecutorsApplying(additionalExecutorApplyingList)
                 .build();
         assertEquals(expectedResponse, executorsApplyingNotificationService.createExecutorList(caseDataPersonal));
     }

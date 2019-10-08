@@ -168,9 +168,10 @@ notifications:
         caveatRaised: "bf9dabd9-b22f-4cb6-b3aa-871ac8532209"
         caveatRaisedCtsc: "ed01d79f-08f0-4703-8cec-f490e499fc33"
         requestInformation: "8fd291a1-67a7-48fa-a051-fa4c93315efc"
+        redeclarationSot: "4bd0e8f1-5cbd-4093-813f-f97dedcd0f5f"
       solicitor:
         documentReceived: "7f8ff32d-8297-4702-9867-312047f81492"
-        caseStopped: "77041301-77a5-4382-a3a7-0bada17518b0"
+        caseStopped: "350f488a-68f1-44f0-b083-157285b71581"
         caseStoppedCaveat: "937291a0-c0ae-40a4-a8cf-46a3452faff0"
         grantIssued: "95aa541b-e55e-4d7c-a6f5-810b5f03adba"
         grantReissued: "1e18751f-fd4e-4893-85bb-f59cc5330c38"
@@ -179,6 +180,7 @@ notifications:
         caveatRaised: "bf9dabd9-b22f-4cb6-b3aa-871ac8532209"
         caveatRaisedCtsc: "ed01d79f-08f0-4703-8cec-f490e499fc33"
         requestInformation: "b2978c65-5974-416a-bc64-fb0ee083dc7e"
+        redeclarationSot: "bcd9e4cc-db0c-4810-8172-8bcb2277b775"
 
 registries:
   oxford:

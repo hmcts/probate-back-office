@@ -44,12 +44,17 @@
       "deceasedDateOfBirth": "1900-01-01",
       "willAccessOriginal": "Yes",
       "willExists": "Yes",
-      "solsWillType": "WillLeft",
+      "solsWillType": "WillLeftAnnexed",
       "solsApplicantRelationshipToDeceased": null,
       "solsSpouseOrCivilRenouncing": null,
       "solsAdoptedEnglandOrWales": null,
       "solsMinorityInterest": null,
       "solsApplicantSiblings": null,
+      "solsEntitledMinority": "No",
+      "solsDiedOrNotApplying": "Yes",
+      "solsResiduary": "Yes",
+      "solsResiduaryType": "Legatee",
+      "solsLifeInterest": "No",
       "solsSolicitorFirmName": "Solicitor Firm Name",
       "deceasedDateOfDeath": "2000-01-01",
       "solsSOTNeedToUpdate": "No",
@@ -70,10 +75,10 @@
           "value": {
             "DocumentLink": {
               "document_url": "http://localhost:8080/documents/b533ddf6-3695-45a8-8546-aab63ff16093",
-              "document_filename": "digitalGrantDraft.pdf",
+              "document_filename": "admonWillGrantDraft.pdf",
               "document_binary_url": "http://localhost:8080/documents/b533ddf6-3695-45a8-8546-aab63ff16093/binary"
             },
-            "DocumentType": "digitalGrantDraft",
+            "DocumentType": "admonWillGrantDraft",
             "DocumentFileName": null,
             "DocumentDateAdded": "2018-08-03",
             "DocumentGeneratedBy": "30"
@@ -87,7 +92,7 @@
       "deceasedSurname": "Deceased Last Name",
       "solsLegalStatementDocument": {
         "document_url": "http://localhost:8080/documents/e1f4f972-1514-4247-bdb1-964998ef3710",
-        "document_filename": "legal_statement.pdf",
+        "document_filename": "legalStatementAdmon.pdf",
         "document_binary_url": "http://localhost:8080/documents/e1f4f972-1514-4247-bdb1-964998ef3710/binary"
       },
       "extraCopiesOfGrant": null,

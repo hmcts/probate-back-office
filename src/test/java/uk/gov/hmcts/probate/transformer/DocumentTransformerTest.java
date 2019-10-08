@@ -41,6 +41,9 @@ import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_REISSUE_DRAFT;
+import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_ADMON;
+import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_INTESTACY;
+import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE;
 import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
 import static uk.gov.hmcts.probate.model.DocumentType.SOT_INFORMATION_REQUEST;
 import static uk.gov.hmcts.probate.model.DocumentType.STATEMENT_OF_TRUTH;
@@ -340,4 +343,30 @@ public class DocumentTransformerTest {
         assertEquals(1, callbackRequest.getCaseDetails().getData().getProbateSotDocumentsGenerated().size());
     }
 
+    @Test
+    public void shouldAddLegalStatementGopToGeneratedDocuments() {
+        assertTrue(callbackRequest.getCaseDetails().getData().getProbateSotDocumentsGenerated().isEmpty());
+
+        documentTransformer.addDocument(callbackRequest, Document.builder().documentType(LEGAL_STATEMENT_PROBATE).build(), false);
+
+        assertEquals(1, callbackRequest.getCaseDetails().getData().getProbateSotDocumentsGenerated().size());
+    }
+
+    @Test
+    public void shouldAddLegalStatementAdmonToGeneratedDocuments() {
+        assertTrue(callbackRequest.getCaseDetails().getData().getProbateSotDocumentsGenerated().isEmpty());
+
+        documentTransformer.addDocument(callbackRequest, Document.builder().documentType(LEGAL_STATEMENT_ADMON).build(), false);
+
+        assertEquals(1, callbackRequest.getCaseDetails().getData().getProbateSotDocumentsGenerated().size());
+    }
+
+    @Test
+    public void shouldAddLegalStatementIntestacyToGeneratedDocuments() {
+        assertTrue(callbackRequest.getCaseDetails().getData().getProbateSotDocumentsGenerated().isEmpty());
+
+        documentTransformer.addDocument(callbackRequest, Document.builder().documentType(LEGAL_STATEMENT_INTESTACY).build(), false);
+
+        assertEquals(1, callbackRequest.getCaseDetails().getData().getProbateSotDocumentsGenerated().size());
+    }
 }

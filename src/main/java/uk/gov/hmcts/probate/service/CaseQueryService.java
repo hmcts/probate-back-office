@@ -54,7 +54,7 @@ public class CaseQueryService {
         query.must(matchQuery(STATE, STATE_MATCH));
         query.must(matchQuery(DOCUMENT_DATE, queryDate));
 
-        String jsonQuery = new SearchSourceBuilder().query(query).toString();
+        String jsonQuery = new SearchSourceBuilder().query(query).size(10000).toString();
 
         return runQuery(jsonQuery);
     }

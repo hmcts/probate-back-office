@@ -31,6 +31,7 @@ import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.WillLodgementCallbackResponseTransformer;
 import uk.gov.hmcts.probate.validator.BulkPrintValidationRule;
 import uk.gov.hmcts.probate.validator.EmailAddressNotificationValidationRule;
+import uk.gov.hmcts.probate.validator.RedeclarationSoTValidationRule;
 import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
 import uk.gov.service.notify.NotificationClientException;
 
@@ -78,6 +79,7 @@ public class DocumentController {
     private final EventValidationService eventValidationService;
     private final List<EmailAddressNotificationValidationRule> emailAddressNotificationValidationRules;
     private final List<BulkPrintValidationRule> bulkPrintValidationRules;
+    private final RedeclarationSoTValidationRule redeclarationSoTValidationRule;
     private static final String DRAFT = "preview";
     private static final String FINAL = "final";
 
@@ -169,7 +171,7 @@ public class DocumentController {
 
         String letterId = null;
         String pdfSize = null;
-        if (caseData.isSendForBulkPrintingRequested() && !caseData.getCaseType().equals(EDGE_CASE_NAME)) {
+        if (caseData.isSendForBulkPrintingRequested() && !EDGE_CASE_NAME.equals(caseData.getCaseType())) {
             SendLetterResponse response = bulkPrintService.sendToBulkPrint(callbackRequest, digitalGrantDocument, coverSheet);
             letterId = response != null
                     ? response.letterId.toString()
@@ -254,12 +256,17 @@ public class DocumentController {
         documents.add(grantDocument);
         documents.add(coversheet);
 
-        String letterId = bulkPrintService.sendToBulkPrint(callbackRequest, coversheet,
-                grantDocument,
-                callbackRequest.getCaseDetails().getData().isSendForBulkPrintingRequestedGrantReIssued());
-        String pdfSize = getPdfSize(callbackRequest.getCaseDetails().getData());
+        CaseData caseData = callbackRequest.getCaseDetails().getData();
+        String letterId = null;
 
-        if (callbackRequest.getCaseDetails().getData().isGrantReissuedEmailNotificationRequested()) {
+        if (caseData.isSendForBulkPrintingRequested() && !EDGE_CASE_NAME.equals(caseData.getCaseType())) {
+            letterId = bulkPrintService.sendToBulkPrint(callbackRequest, coversheet,
+                    grantDocument, true);
+        }
+
+        String pdfSize = getPdfSize(caseData);
+
+        if (caseData.isGrantReissuedEmailNotificationRequested()) {
             documents.add(notificationService.generateGrantReissue(callbackRequest));
         }
         log.info("{} documents generated: {}", documents.size(), documents);
@@ -269,8 +276,9 @@ public class DocumentController {
 
     @PostMapping(path = "/generate-sot", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<CallbackResponse> generateStatementOfTruth(@RequestBody CallbackRequest callbackRequest) {
+        redeclarationSoTValidationRule.validate(callbackRequest.getCaseDetails());
         log.info("Initiating call for SoT");
         return ResponseEntity.ok(callbackResponseTransformer.addSOTDocument(callbackRequest,
-                documentGeneratorService.generateSoT(callbackRequest.getCaseDetails())));
+                documentGeneratorService.generateSoT(callbackRequest)));
     }
 }

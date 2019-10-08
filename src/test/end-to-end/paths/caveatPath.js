@@ -29,20 +29,40 @@ const documentsTabUploadDocumentConfig = require('src/test/end-to-end/pages/case
 
 Feature('Back Office').retry(testConfig.TestRetryFeatures);
 
-Scenario('Caveat Workflow - E2E Test 01 - Caveat for a Personal Applicant - Raise a caveat -> Caveat not matched -> Order summons', async function (I) {
+Scenario('01 BO Caveat E2E - Order summons', async function (I) {
+
+    // BO Caveat (Personal): Raise a caveat -> Caveat not matched -> Order summons
+
+    // get unique suffix for names - in order to match only against 1 case
+    const unique_deceased_user = Date.now();
 
     // IdAM
     I.authenticateWithIdamIfAvailable();
+
+    // FIRST case is only needed for case-matching with SECOND one
 
     let nextStepName = 'Raise a caveat';
     I.selectNewCase();
     I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_caveat, createCaseConfig.list3_text_caveat);
     I.enterCaveatPage1('create');
-    I.enterCaveatPage2('create');
+    I.enterCaveatPage2('create', unique_deceased_user);
     I.enterCaveatPage3('create');
     I.enterCaveatPage4('create');
     I.checkMyAnswers(nextStepName);
     let endState = 'Caveat raised';
+
+    // SECOND case - the main test case
+
+    nextStepName = 'Raise a caveat';
+    I.selectNewCase();
+    I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_caveat, createCaseConfig.list3_text_caveat);
+    I.enterCaveatPage1('create');
+    I.enterCaveatPage2('create', unique_deceased_user);
+    I.enterCaveatPage3('create');
+    I.enterCaveatPage4('create');
+    I.checkMyAnswers(nextStepName);
+    endState = 'Caveat raised';
+
     const url = await I.grabCurrentUrl();
     const caseRef = url.split('/')
         .pop()
@@ -70,7 +90,7 @@ Scenario('Caveat Workflow - E2E Test 01 - Caveat for a Personal Applicant - Rais
 
     nextStepName = 'Caveat match';
     I.chooseNextStep(nextStepName);
-    I.selectCaseMatchesForCaveat(caseRef, caseMatchesConfig);
+    I.selectCaseMatchesForCaveat(caseRef, caseMatchesConfig, nextStepName);
     I.enterEventSummary(caseRef, nextStepName);
     endState = 'Caveat matching';
     I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
@@ -123,7 +143,7 @@ Scenario('Caveat Workflow - E2E Test 01 - Caveat for a Personal Applicant - Rais
     nextStepName = 'Amend caveat details';
     I.chooseNextStep(nextStepName);
     I.enterCaveatPage1('update');
-    I.enterCaveatPage2('update');
+    I.enterCaveatPage2('update', unique_deceased_user);
     I.enterCaveatPage3('update');
     I.enterCaveatPage4('update');
     I.enterEventSummary(caseRef, nextStepName);
