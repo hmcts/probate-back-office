@@ -94,8 +94,10 @@ public class AssembleLetterTransformer {
     private void addParagraphsForUsedFields(List<CollectionMember<ParagraphDetail>> allParagraphDetails,
                                List<ParagraphField> paragraphFields, CaseData caseData) {
         for (ParagraphField paragraphField : paragraphFields) {
-            Optional<ParagraphCode> paragraphCode = ParagraphCode.fromCode(paragraphField.getFieldCode());
-            addAllParagraphDetails(allParagraphDetails, paragraphCode.get(), caseData);
+            Optional<ParagraphCode> paragraphCode = ParagraphCode.fromFieldCode(paragraphField.getFieldCode());
+            if (paragraphCode.isPresent()) {
+                addAllParagraphDetails(allParagraphDetails, paragraphCode.get(), caseData);
+            }
         }
 
     }
@@ -115,8 +117,10 @@ public class AssembleLetterTransformer {
             return;
         }
         for (String selectedPara : selectedParagraphs) {
-            Optional<ParagraphCode> paragraphCode = ParagraphCode.fromCode(selectedPara);
-            addAllParagraphDetails(allParagraphDetails, paragraphCode.get(), caseData);
+            Optional<ParagraphCode> paragraphCode = ParagraphCode.fromFieldCode(selectedPara);
+            if (paragraphCode.isPresent()) {
+                addAllParagraphDetails(allParagraphDetails, paragraphCode.get(), caseData);
+            }
         }
     }
 }

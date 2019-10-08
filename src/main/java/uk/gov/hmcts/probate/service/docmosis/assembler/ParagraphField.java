@@ -2,7 +2,6 @@ package uk.gov.hmcts.probate.service.docmosis.assembler;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 public enum ParagraphField {
 
@@ -23,9 +22,9 @@ public enum ParagraphField {
     private final String fieldLabel;
     private final String fieldPlaceholderName;
 
-    ParagraphField(String fieldCode, String label, String fieldPlaceholderName) {
+    ParagraphField(String fieldCode, String fieldLabel, String fieldPlaceholderName) {
         this.fieldCode = fieldCode;
-        this.fieldLabel = label;
+        this.fieldLabel = fieldLabel;
         this.fieldPlaceholderName = fieldPlaceholderName;
     }
 
@@ -43,15 +42,5 @@ public enum ParagraphField {
 
     public static List<ParagraphField> getAll() {
         return Arrays.asList(ParagraphField.values());
-    }
-
-    public static Optional<ParagraphField> fromCode(String code) {
-        for (ParagraphField caseType : ParagraphField.values()) {
-            if (caseType.fieldCode.equals(code)) {
-                return Optional.of(caseType);
-            }
-        }
-
-        return Optional.empty();
     }
 }

@@ -40,10 +40,10 @@ public enum ParagraphCode {
         return Arrays.asList(ParagraphCode.values());
     }
 
-    public static Optional<ParagraphCode> fromCode(String code) {
+    public static Optional<ParagraphCode> fromFieldCode(String fieldCode) {
         for (ParagraphCode paragraphCode : ParagraphCode.values()) {
             for (ParagraphField paragraphField : paragraphCode.getParagraphFields()) {
-                if (paragraphField.getFieldCode().equals(code)) {
+                if (paragraphField.getFieldCode().equals(fieldCode)) {
                     return Optional.of(paragraphCode);
                 }
             }
