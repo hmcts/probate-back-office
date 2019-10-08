@@ -84,7 +84,7 @@
       "page7_epaRegisteredYes",
       "page8_domicilityIHTCertYes",
       "page9_ihtFormCompletedOnlineYes",
-      "page9_ihtReferenceNumber",
+      "page9_ihtReferenceNumber_update",
       "page9_ihtGrossValue",
       "page9_ihtNetValue",
       "address_line1",
@@ -96,4 +96,3 @@
       "address_postcode"
     ]
   }
-  

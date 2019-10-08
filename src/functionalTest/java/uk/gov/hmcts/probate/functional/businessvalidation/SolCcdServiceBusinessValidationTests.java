@@ -5,6 +5,7 @@ import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import net.serenitybdd.junit.runners.SerenityRunner;
 import net.serenitybdd.rest.SerenityRest;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
@@ -25,6 +26,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     private static final String CHECKLIST_URL = "/case/validateCheckListDetails";
     private static final String PAPER_FORM_URL = "/case/paperForm";
     private static final String RESOLVE_STOP_URL = "/case/resolveStop";
+    private static final String REDEC_COMPLETE = "/case/redeclarationComplete";
 
 
     @Test
@@ -212,6 +214,18 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     @Test
     public void verifyRequestSuccessForResolveStop() {
         validatePostSuccess("solicitorPayloadResolveStop.json", RESOLVE_STOP_URL);
+    }
+
+    @Ignore
+    @Test
+    public void verifyRequestSuccessForRedeclarationCompleteWithStateChange() {
+        validatePostSuccess("personalPayloadNotifications.json", REDEC_COMPLETE);
+    }
+
+    @Ignore
+    @Test
+    public void verifyRequestSuccessForRedeclarationCompleteWithoutStateChange() {
+        validatePostSuccess("payloadWithResponseRecorded.json", REDEC_COMPLETE);
     }
 
     @Test

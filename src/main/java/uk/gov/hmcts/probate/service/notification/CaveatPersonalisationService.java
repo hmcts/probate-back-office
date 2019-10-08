@@ -37,7 +37,7 @@ public class CaveatPersonalisationService {
     private static final String PERSONALISATION_CAVEATOR_ADDRESS = "caveator_address";
 
 
-    public Map<String, String> getCaveatStopPersonalisation(Map<String, String> personalisation, CaseData caseData) {
+    public Map<String, Object> getCaveatStopPersonalisation(Map<String, Object> personalisation, CaseData caseData) {
 
         CaveatData caveatData = caveatQueryService.findCaveatById(CaseType.CAVEAT, caseData.getBoCaseStopCaveatId());
 

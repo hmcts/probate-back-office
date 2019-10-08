@@ -37,6 +37,7 @@
         "AddressLine3": ""
       },
       "caseType": "gop",
+      "paperForm": "No",
       "boSendToBulkPrint": "No",
       "deceasedAnyOtherNames": "No",
       "solsFeeAccountNumber": "1234",

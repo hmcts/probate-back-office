@@ -26,6 +26,7 @@ import uk.gov.hmcts.probate.service.EventValidationService;
 import uk.gov.hmcts.probate.service.InformationRequestCorrespondenceService;
 import uk.gov.hmcts.probate.service.InformationRequestService;
 import uk.gov.hmcts.probate.service.NotificationService;
+import uk.gov.hmcts.probate.service.RedeclarationNotificationService;
 import uk.gov.hmcts.probate.service.docmosis.GrantOfRepresentationDocmosisMapperService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
@@ -33,6 +34,7 @@ import uk.gov.hmcts.probate.util.TestUtils;
 import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
 import uk.gov.service.notify.NotificationClientException;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -101,6 +103,9 @@ public class NotificationControllerTest {
     @MockBean
     private InformationRequestService informationRequestService;
 
+    @MockBean
+    private RedeclarationNotificationService redeclarationNotificationService;
+
     @SpyBean
     private DocumentService documentService;
 
@@ -108,6 +113,7 @@ public class NotificationControllerTest {
     private static final String CASE_STOPPED_URL = "/notify/case-stopped";
     private static final String REQUEST_INFO_DEFAULT_URL = "/notify/request-information-default-values";
     private static final String REQUEST_INFO_URL = "/notify/stopped-information-request";
+    private static final String REDECLARATION_SOT = "/notify/redeclaration-sot";
 
     private static final Map<String, Object> EMPTY_MAP = new HashMap();
     private static final Document EMPTY_DOC = Document.builder().documentType(CAVEAT_STOPPED).build();
@@ -168,6 +174,8 @@ public class NotificationControllerTest {
                 eq(new ArrayList<>()), any())).thenReturn(successfulResponse);
 
         when(informationRequestService.handleInformationRequest(any())).thenReturn(successfulResponse);
+
+        when(redeclarationNotificationService.handleRedeclarationNotification(any())).thenReturn(successfulResponse);
 
     }
 
@@ -445,6 +453,15 @@ public class NotificationControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(content().string(containsString("data")));
+    }
 
+    @Test
+    public void shouldReturnSuccessfulResponseForRedeclarationSot() throws Exception {
+        String personalPayload = testUtils.getStringFromFile("personalPayloadNotifications.json");
+
+        mockMvc.perform(post(REDECLARATION_SOT).content(personalPayload).contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(content().string(containsString("data")));
     }
 }

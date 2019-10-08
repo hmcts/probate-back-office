@@ -4,8 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.Before;
 import org.junit.Test;
-import static org.mockito.Mockito.when;
-
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -37,12 +35,14 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.mockito.ArgumentMatchers.any;
 import static org.hamcrest.Matchers.containsString;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static uk.gov.hmcts.probate.model.Constants.REDEC_NOTIFICATION_SENT_STATE;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -113,6 +113,8 @@ public class BusinessValidationControllerTest {
     private static final String CASE_CHCEKLIST_URL = "/case/validateCheckListDetails";
     private static final String PAPER_FORM_URL = "/case/paperForm";
     private static final String RESOLVE_STOP_URL = "/case/resolveStop";
+    private static final String REDEC_COMPLETE = "/case/redeclarationComplete";
+    private static final String REDECE_SOT = "/case/redeclarationSot";
 
     private static final DocumentLink SCANNED_DOCUMENT_URL = DocumentLink.builder()
             .documentBinaryUrl("http://somedoc")
@@ -238,7 +240,7 @@ public class BusinessValidationControllerTest {
 
 
     @Test
-    public void shouldReturnProbateSuccess() throws Exception {
+    public void shouldSuccesfullyGenerateProbateDeclaration() throws Exception {
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
         String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
@@ -255,7 +257,7 @@ public class BusinessValidationControllerTest {
     }
 
     @Test
-    public void shouldReturnIntestacySuccess() throws Exception {
+    public void shouldSuccesfullyGenerateIntestacyDeclaration() throws Exception {
         caseDataBuilder.solsWillType(WILL_TYPE_INTESTACY);
         caseDataBuilder.primaryApplicantEmailAddress(PRIMARY_APPLICANT_EMAIL);
         caseDataBuilder.deceasedMaritalStatus(MARITAL_STATUS);
@@ -278,7 +280,7 @@ public class BusinessValidationControllerTest {
     }
 
     @Test
-    public void shouldReturnAdmonSuccess() throws Exception {
+    public void shouldSuccesfullyGenerateAdmonWillDeclaration() throws Exception {
         caseDataBuilder.solsWillType(WILL_TYPE_ADMON);
         caseDataBuilder.solsEntitledMinority(ENTITLED_MINORITY);
         caseDataBuilder.solsDiedOrNotApplying(DIED_OR_NOT_APPLYING);
@@ -506,6 +508,35 @@ public class BusinessValidationControllerTest {
         mockMvc.perform(post(RESOLVE_STOP_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data.state").value("BOExamining"))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
+    }
+
+    @Test
+    public void shouldSetStateForRedeclarationCompleteToRedec() throws Exception {
+        String payload = testUtils.getStringFromFile("payloadWithResponseRecorded.json");
+
+        mockMvc.perform(post(REDEC_COMPLETE).content(payload).contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.state").value(REDEC_NOTIFICATION_SENT_STATE))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
+    }
+
+    @Test
+    public void shouldValidateWithPaperCase() throws Exception {
+        String solicitorPayload = testUtils.getStringFromFile("paperForm.json");
+
+        mockMvc.perform(post(REDECE_SOT).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.errors[0]").value("You can only use this event for digital cases."))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
+    }
+
+    @Test
+    public void shouldValidateWithDigitalCase() throws Exception {
+        String solicitorPayload = testUtils.getStringFromFile("digitalCase.json");
+
+        mockMvc.perform(post(REDECE_SOT).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
     }
 }
