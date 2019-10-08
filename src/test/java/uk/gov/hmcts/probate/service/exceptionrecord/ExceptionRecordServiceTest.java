@@ -36,7 +36,7 @@ import static org.mockito.Mockito.when;
 public class ExceptionRecordServiceTest {
 
     private static final String EXCEPTION_RECORD_CASE_TYPE_ID = "Caveat";
-    private static final String EXCEPTION_RECORD_EVENT_ID = "CaveatRaised";
+    private static final String EXCEPTION_RECORD_EVENT_ID = "raiseCaveat";
 
     @InjectMocks
     private ExceptionRecordService erService;
