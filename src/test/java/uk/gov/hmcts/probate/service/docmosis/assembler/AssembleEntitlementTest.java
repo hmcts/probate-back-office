@@ -25,16 +25,16 @@ public class AssembleEntitlementTest {
         CaseData caseData = CaseData.builder().primaryApplicantForenames("primary fn").primaryApplicantSurname("primary sn").build();
 
         List<ParagraphDetail> response = assembleEntitlement.executorNotAccountedFor(ParagraphCode.IHT421Await, caseData);
-        assertEquals(response.get(0).getCode(), "IHT421Await");
-        assertEquals(response.get(0).getTemplateName(), "FL-PRB-GNO-ENG-00125.docx");
-        assertEquals(response.get(0).getEnableText(), YES);
-        assertEquals(response.get(0).getTextLabel(), "Awaiting IHT421");
-        assertEquals(response.get(0).getTextValue(), "primary fn primary sn");
-        assertEquals(response.get(0).getEnableTextArea(), null);
-        assertEquals(response.get(0).getTextAreaLabel(), null);
-        assertEquals(response.get(0).getTextAreaValue(), null);
-        assertEquals(response.get(0).getEnableList(), null);
-        assertEquals(response.get(0).getStaticLabel(), null);
+        assertEquals("IHT421Await", response.get(0).getCode());
+        assertEquals("FL-PRB-GNO-ENG-00125.docx", response.get(0).getTemplateName());
+        assertEquals(YES, response.get(0).getEnableText());
+        assertEquals("Awaiting IHT421", response.get(0).getTextLabel());
+        assertEquals("primary fn primary sn", response.get(0).getTextValue());
+        assertEquals(null, response.get(0).getEnableTextArea());
+        assertEquals(null, response.get(0).getTextAreaLabel());
+        assertEquals(null, response.get(0).getTextAreaValue());
+        assertEquals(null, response.get(0).getEnableList());
+        assertEquals(null, response.get(0).getStaticLabel());
 
     }
 
@@ -58,16 +58,16 @@ public class AssembleEntitlementTest {
 
 
         List<ParagraphDetail> response = assembleEntitlement.executorNotAccountedFor(ParagraphCode.IHT421Await, caseData);
-        assertEquals(response.get(0).getCode(), "IHT421Await");
-        assertEquals(response.get(0).getTemplateName(), "FL-PRB-GNO-ENG-00125.docx");
-        assertEquals(response.get(0).getEnableText(), YES);
-        assertEquals(response.get(0).getTextLabel(), "Awaiting IHT421");
-        assertEquals(response.get(0).getTextValue(), "primary fn primary sn,Bob Smith");
-        assertEquals(response.get(0).getEnableTextArea(), null);
-        assertEquals(response.get(0).getTextAreaLabel(), null);
-        assertEquals(response.get(0).getTextAreaValue(), null);
-        assertEquals(response.get(0).getEnableList(), null);
-        assertEquals(response.get(0).getStaticLabel(), null);
+        assertEquals("IHT421Await", response.get(0).getCode());
+        assertEquals("FL-PRB-GNO-ENG-00125.docx", response.get(0).getTemplateName());
+        assertEquals(YES, response.get(0).getEnableText());
+        assertEquals("Awaiting IHT421", response.get(0).getTextLabel());
+        assertEquals("primary fn primary sn,Bob Smith", response.get(0).getTextValue());
+        assertEquals(null, response.get(0).getEnableTextArea());
+        assertEquals(null, response.get(0).getTextAreaLabel());
+        assertEquals(null, response.get(0).getTextAreaValue());
+        assertEquals(null, response.get(0).getEnableList());
+        assertEquals(null, response.get(0).getStaticLabel());
 
     }
 

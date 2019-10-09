@@ -19,16 +19,16 @@ public class AssembleCaseworkerTest {
     public void testCaseworker() {
 
         List<ParagraphDetail> response = assembleCaseworker.caseworker(ParagraphCode.Caseworker, CaseData.builder().build());
-        assertEquals(response.get(0).getCode(), "Caseworker");
-        assertEquals(response.get(0).getTemplateName(), null);
-        assertEquals(response.get(0).getEnableText(), YES);
-        assertEquals(response.get(0).getTextLabel(), "Caseworker");
-        assertEquals(response.get(0).getTextValue(), null);
-        assertEquals(response.get(0).getEnableTextArea(), null);
-        assertEquals(response.get(0).getTextAreaLabel(), null);
-        assertEquals(response.get(0).getTextAreaValue(), null);
-        assertEquals(response.get(0).getEnableList(), null);
-        assertEquals(response.get(0).getStaticLabel(), null);
+        assertEquals("Caseworker", response.get(0).getCode());
+        assertEquals(null, response.get(0).getTemplateName());
+        assertEquals(YES, response.get(0).getEnableText());
+        assertEquals("Caseworker", response.get(0).getTextLabel());
+        assertEquals(null, response.get(0).getTextValue());
+        assertEquals(null, response.get(0).getEnableTextArea());
+        assertEquals(null, response.get(0).getTextAreaLabel());
+        assertEquals(null, response.get(0).getTextAreaValue());
+        assertEquals(null, response.get(0).getEnableList());
+        assertEquals(null, response.get(0).getStaticLabel());
 
     }
 

@@ -19,17 +19,17 @@ public class AssembleIHTTest {
     public void testIht205Missing() {
 
         List<ParagraphDetail> response = assembleIHT.iht205Missing(ParagraphCode.IHT205Miss, CaseData.builder().build());
-        assertEquals(response.get(0).getCode(), "IHT205Miss");
-        assertEquals(response.get(0).getTemplateName(), "FL-PRB-GNO-ENG-00124.docx");
-        assertEquals(response.get(0).getEnableText(), null);
-        assertEquals(response.get(0).getTextLabel(), null);
-        assertEquals(response.get(0).getTextValue(), null);
-        assertEquals(response.get(0).getEnableTextArea(), null);
-        assertEquals(response.get(0).getTextAreaLabel(), null);
-        assertEquals(response.get(0).getTextAreaValue(), null);
-        assertEquals(response.get(0).getEnableList(), null);
-        assertEquals(response.get(0).getEnableStatic(), YES);
-        assertEquals(response.get(0).getStaticLabel(), "IHT205 Missing");
+        assertEquals("IHT205Miss", response.get(0).getCode());
+        assertEquals("FL-PRB-GNO-ENG-00124.docx", response.get(0).getTemplateName());
+        assertEquals(null, response.get(0).getEnableText());
+        assertEquals(null, response.get(0).getTextLabel());
+        assertEquals(null, response.get(0).getTextValue());
+        assertEquals(null, response.get(0).getEnableTextArea());
+        assertEquals(null, response.get(0).getTextAreaLabel());
+        assertEquals(null, response.get(0).getTextAreaValue());
+        assertEquals(null, response.get(0).getEnableList());
+        assertEquals(YES, response.get(0).getEnableStatic());
+        assertEquals( "IHT205 Missing", response.get(0).getStaticLabel());
 
     }
 
@@ -37,17 +37,17 @@ public class AssembleIHTTest {
     public void testIhtAwait421() {
 
         List<ParagraphDetail> response = assembleIHT.ihtAwait421(ParagraphCode.IHT421Await, CaseData.builder().build());
-        assertEquals(response.get(0).getCode(), "IHT421Await");
-        assertEquals(response.get(0).getTemplateName(), "FL-PRB-GNO-ENG-00125.docx");
-        assertEquals(response.get(0).getEnableText(), null);
-        assertEquals(response.get(0).getTextLabel(), null);
-        assertEquals(response.get(0).getTextValue(), null);
-        assertEquals(response.get(0).getEnableTextArea(), null);
-        assertEquals(response.get(0).getTextAreaLabel(), null);
-        assertEquals(response.get(0).getTextAreaValue(), null);
-        assertEquals(response.get(0).getEnableList(), null);
-        assertEquals(response.get(0).getEnableStatic(), YES);
-        assertEquals(response.get(0).getStaticLabel(), "Awaiting IHT421");
+        assertEquals("IHT421Await", response.get(0).getCode());
+        assertEquals("FL-PRB-GNO-ENG-00125.docx", response.get(0).getTemplateName());
+        assertEquals(null, response.get(0).getEnableText());
+        assertEquals(null, response.get(0).getTextLabel());
+        assertEquals(null, response.get(0).getTextValue());
+        assertEquals(null, response.get(0).getEnableTextArea());
+        assertEquals(null, response.get(0).getTextAreaLabel());
+        assertEquals(null, response.get(0).getTextAreaValue());
+        assertEquals(null, response.get(0).getEnableList());
+        assertEquals(YES, response.get(0).getEnableStatic());
+        assertEquals("Awaiting IHT421", response.get(0).getStaticLabel());
 
     }
 

@@ -23,36 +23,36 @@ public class AssembleWillTest {
         CaseData caseData = CaseData.builder().primaryApplicantForenames("primary fn").primaryApplicantSurname("primary sn").build();
 
         List<ParagraphDetail> response = assembleWill.willSeparatePages(ParagraphCode.WillSepPages, caseData);
-        assertEquals(response.get(0).getCode(), "WillSepPages");
-        assertEquals(response.get(0).getTemplateName(), "FL-PRB-GNO-ENG-00131.docx");
-        assertEquals(response.get(0).getEnableText(), YES);
-        assertEquals(response.get(0).getTextLabel(), "Separate pages of will");
-        assertEquals(response.get(0).getTextValue(), null);
-        assertEquals(response.get(0).getEnableTextArea(), null);
-        assertEquals(response.get(0).getTextAreaLabel(), null);
-        assertEquals(response.get(0).getTextAreaValue(), null);
-        assertEquals(response.get(0).getListLabel(), null);
-        assertEquals(response.get(0).getDynamicList(), null);
-        assertEquals(response.get(0).getEnableList(), null);
-        assertEquals(response.get(0).getStaticLabel(), null);
+        assertEquals("WillSepPages", response.get(0).getCode());
+        assertEquals("FL-PRB-GNO-ENG-00131.docx", response.get(0).getTemplateName());
+        assertEquals(YES, response.get(0).getEnableText());
+        assertEquals("Separate pages of will", response.get(0).getTextLabel());
+        assertEquals(null, response.get(0).getTextValue());
+        assertEquals(null, response.get(0).getEnableTextArea());
+        assertEquals(null, response.get(0).getTextAreaLabel());
+        assertEquals(null, response.get(0).getTextAreaValue());
+        assertEquals(null, response.get(0).getListLabel());
+        assertEquals(null, response.get(0).getDynamicList());
+        assertEquals(null, response.get(0).getEnableList());
+        assertEquals(null, response.get(0).getStaticLabel());
     }
 
     @Test
     public void testWillPlights() {
         CaseData caseData = CaseData.builder().build();
         List<ParagraphDetail> response = assembleWill.willPlight(ParagraphCode.WillPlight, caseData);
-        assertEquals(response.get(0).getDynamicList(), null);
-        assertEquals(response.get(0).getCode(), "WillPlight");
-        assertEquals(response.get(0).getTemplateName(), "FL-PRB-GNO-ENG-00130.docx");
-        assertEquals(response.get(0).getEnableText(), YES);
-        assertEquals(response.get(0).getTextLabel(), "Plight and condition of will");
-        assertEquals(response.get(0).getTextValue(), "Condition reason e.g. a tear / staple holes / punch holes");
-        assertEquals(response.get(0).getEnableTextArea(), null);
-        assertEquals(response.get(0).getTextAreaLabel(), null);
-        assertEquals(response.get(0).getTextAreaValue(), null);
-        assertEquals(response.get(0).getListLabel(), null);
-        assertEquals(response.get(0).getEnableList(), null);
-        assertEquals(response.get(0).getStaticLabel(), null);
+        assertEquals(null, response.get(0).getDynamicList());
+        assertEquals("WillPlight", response.get(0).getCode());
+        assertEquals("FL-PRB-GNO-ENG-00130.docx", response.get(0).getTemplateName());
+        assertEquals(YES, response.get(0).getEnableText());
+        assertEquals("Plight and condition of will", response.get(0).getTextLabel());
+        assertEquals("Condition reason e.g. a tear / staple holes / punch holes", response.get(0).getTextValue());
+        assertEquals(null, response.get(0).getEnableTextArea());
+        assertEquals(null, response.get(0).getTextAreaLabel());
+        assertEquals(null, response.get(0).getTextAreaValue());
+        assertEquals(null, response.get(0).getListLabel());
+        assertEquals(null, response.get(0).getEnableList());
+        assertEquals(null, response.get(0).getStaticLabel());
     }
 
     @Test
@@ -72,18 +72,18 @@ public class AssembleWillTest {
         CaseData caseData = CaseData.builder().primaryApplicantForenames("primary fn").primaryApplicantSurname("primary sn").build();
 
         List<ParagraphDetail> response = assembleWill.willAnyOther(ParagraphCode.WillAnyOther, caseData);
-        assertEquals(response.get(0).getDynamicList(), dynamicList1);
-        assertEquals(response.get(0).getCode(), "WillAnyOther");
-        assertEquals(response.get(0).getTemplateName(), null);
-        assertEquals(response.get(0).getEnableText(), null);
-        assertEquals(response.get(0).getTextLabel(), null);
-        assertEquals(response.get(0).getTextValue(), null);
-        assertEquals(response.get(0).getEnableTextArea(), null);
-        assertEquals(response.get(0).getTextAreaLabel(), null);
-        assertEquals(response.get(0).getTextAreaValue(), null);
-        assertEquals(response.get(0).getListLabel(), "Any other wills");
-        assertEquals(response.get(0).getEnableList(), YES);
-        assertEquals(response.get(0).getStaticLabel(), null);
+        assertEquals(dynamicList1, response.get(0).getDynamicList());
+        assertEquals("WillAnyOther", response.get(0).getCode());
+        assertEquals(null, response.get(0).getTemplateName());
+        assertEquals(null, response.get(0).getEnableText());
+        assertEquals(null, response.get(0).getTextLabel());
+        assertEquals(null, response.get(0).getTextValue());
+        assertEquals(null, response.get(0).getEnableTextArea());
+        assertEquals(null, response.get(0).getTextAreaLabel());
+        assertEquals(null, response.get(0).getTextAreaValue());
+        assertEquals("Any other wills", response.get(0).getListLabel());
+        assertEquals(YES, response.get(0).getEnableList());
+        assertEquals(null, response.get(0).getStaticLabel());
     }
 
     @Test
@@ -92,19 +92,19 @@ public class AssembleWillTest {
         CaseData caseData = CaseData.builder().primaryApplicantForenames("primary fn").primaryApplicantSurname("primary sn").build();
 
         List<ParagraphDetail> response = assembleWill.willStaple(ParagraphCode.WillStaple, caseData);
-        assertEquals(response.get(0).getCode(), "WillStaple");
-        assertEquals(response.get(0).getTemplateName(), "FL-PRB-GNO-ENG-00132.docx");
-        assertEquals(response.get(0).getEnableText(), null);
-        assertEquals(response.get(0).getTextLabel(), null);
-        assertEquals(response.get(0).getTextValue(), null);
-        assertEquals(response.get(0).getEnableTextArea(), null);
-        assertEquals(response.get(0).getTextAreaLabel(), null);
-        assertEquals(response.get(0).getTextAreaValue(), null);
-        assertEquals(response.get(0).getListLabel(), null);
-        assertEquals(response.get(0).getDynamicList(), null);
-        assertEquals(response.get(0).getEnableList(), null);
-        assertEquals(response.get(0).getStaticLabel(), "Staple removed for photocopying");
-        assertEquals(response.get(0).getEnableStatic(), YES);
+        assertEquals("WillStaple", response.get(0).getCode());
+        assertEquals("FL-PRB-GNO-ENG-00132.docx", response.get(0).getTemplateName());
+        assertEquals(null, response.get(0).getEnableText(), null);
+        assertEquals(null, response.get(0).getTextLabel(), null);
+        assertEquals(null, response.get(0).getTextValue(), null);
+        assertEquals(null, response.get(0).getEnableTextArea(), null);
+        assertEquals(null, response.get(0).getTextAreaLabel(), null);
+        assertEquals(null, response.get(0).getTextAreaValue(), null);
+        assertEquals(null, response.get(0).getListLabel(), null);
+        assertEquals(null, response.get(0).getDynamicList(), null);
+        assertEquals(null, response.get(0).getEnableList(), null);
+        assertEquals("Staple removed for photocopying", response.get(0).getStaticLabel());
+        assertEquals(YES, response.get(0).getEnableStatic());
     }
 
 }

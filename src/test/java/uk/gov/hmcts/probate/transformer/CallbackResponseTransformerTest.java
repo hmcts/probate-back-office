@@ -37,6 +37,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.model.fee.FeeServiceResponse;
 import uk.gov.hmcts.probate.service.ExecutorsApplyingNotificationService;
 import uk.gov.hmcts.probate.service.StateChangeService;
+import uk.gov.hmcts.probate.transformer.assembly.AssembleLetterTransformer;
 
 import java.math.BigDecimal;
 import java.text.DateFormat;
@@ -268,6 +269,9 @@ public class CallbackResponseTransformerTest {
 
     @Mock
     private CaseDetails caseDetailsMock;
+
+    @Mock
+    private AssembleLetterTransformer assembleLetterTransformer;
 
     private CaseData.CaseDataBuilder caseDataBuilder;
 
@@ -1670,6 +1674,42 @@ public class CallbackResponseTransformerTest {
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
         CallbackResponse callbackResponse = underTest.resolveStop(callbackRequestMock);
         assertEquals(EXAMINING, callbackResponse.getData().getState());
+    }
+
+    @Test
+    public void shouldTransformCaseForLetter() {
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        CallbackResponse callbackResponse = underTest.transformCaseForLetter(callbackRequestMock);
+
+        assertCommon(callbackResponse);
+    }
+
+    @Test
+    public void shouldTransformCaseForLetterWithDocument() {
+        Document letter = Document.builder().documentType(DocumentType.ASSEMBLED_LETTER).build();
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        CallbackResponse callbackResponse = underTest.transformCaseForLetter(callbackRequestMock, letter);
+
+        assertCommon(callbackResponse);
+        assertEquals(EMPTY_LIST, callbackResponse.getData().getParagraphDetails());
+        assertEquals(null, callbackResponse.getData().getPreviewLink());
+        assertEquals(1, callbackResponse.getData().getProbateDocumentsGenerated().size());
+        assertEquals(DocumentType.ASSEMBLED_LETTER, callbackResponse.getData().getProbateDocumentsGenerated().get(0).getValue().getDocumentType());
+    }
+
+    @Test
+    public void shouldTransformCaseForLetterPreview() {
+        Document letter = Document.builder().documentType(DocumentType.ASSEMBLED_LETTER).build();
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        CallbackResponse callbackResponse = underTest.transformCaseForLetterPreview(callbackRequestMock, letter);
+
+        assertCommon(callbackResponse);
     }
 
     @Test
