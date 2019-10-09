@@ -36,7 +36,7 @@ public class AssembleIHTTest {
     @Test
     public void testIhtAwait421() {
 
-        List<ParagraphDetail> response = assembleIHT.iht205Missing(ParagraphCode.IHT_AWAIT_IHT421, CaseData.builder().build());
+        List<ParagraphDetail> response = assembleIHT.ihtAwait421(ParagraphCode.IHT_AWAIT_IHT421, CaseData.builder().build());
         assertEquals(response.get(0).getCode(), "IHT421Await");
         assertEquals(response.get(0).getTemplateName(), "FL-PRB-GNO-ENG-00125.docx");
         assertEquals(response.get(0).getEnableText(), null);
