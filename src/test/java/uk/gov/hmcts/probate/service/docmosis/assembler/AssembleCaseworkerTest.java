@@ -21,15 +21,9 @@ public class AssembleCaseworkerTest {
         List<ParagraphDetail> response = assembleCaseworker.caseworker(ParagraphCode.Caseworker, CaseData.builder().build());
         assertEquals(response.get(0).getCode(), "Caseworker");
         assertEquals(response.get(0).getTemplateName(), null);
-        assertEquals(response.get(0).getEnableText(), YES);
-        assertEquals(response.get(0).getTextLabel(), "Caseworker");
+        assertEquals(response.get(0).getEnableType().name(), "Text");
         assertEquals(response.get(0).getTextValue(), null);
-        assertEquals(response.get(0).getEnableTextArea(), null);
-        assertEquals(response.get(0).getTextAreaLabel(), null);
         assertEquals(response.get(0).getTextAreaValue(), null);
-        assertEquals(response.get(0).getEnableList(), null);
-        assertEquals(response.get(0).getStaticLabel(), null);
-
     }
 
 }

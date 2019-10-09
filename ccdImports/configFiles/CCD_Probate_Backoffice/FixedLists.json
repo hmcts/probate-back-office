@@ -169,5 +169,9 @@
   {"LiveFrom": "06/01/2017", "ID": "WillParagraphs", "ListElementCode": "WillAnyOther", "ListElement": "Any other wills"},
   {"LiveFrom": "06/01/2017", "ID": "WillParagraphs", "ListElementCode": "WillPlight", "ListElement": "Plight and condition of will"},
   {"LiveFrom": "06/01/2017", "ID": "WillParagraphs", "ListElementCode": "WillSepPages", "ListElement": "Separate pages of will"},
-  {"LiveFrom": "06/01/2017", "ID": "WillParagraphs", "ListElementCode": "WillStaple", "ListElement": "Staple removed for photocopying"}
+  {"LiveFrom": "06/01/2017", "ID": "WillParagraphs", "ListElementCode": "WillStaple", "ListElement": "Staple removed for photocopying"},
+  {"LiveFrom": "06/01/2017", "ID": "enablementTypeFixedList", "ListElementCode": "Text", "ListElement": "DO NOT SHOW - Text"},
+  {"LiveFrom": "06/01/2017", "ID": "enablementTypeFixedList", "ListElementCode": "TextArea", "ListElement": "DO NOT SHOW - TextArea"},
+  {"LiveFrom": "06/01/2017", "ID": "enablementTypeFixedList", "ListElementCode": "List", "ListElement": "DO NOT SHOW - List"},
+  {"LiveFrom": "06/01/2017", "ID": "enablementTypeFixedList", "ListElementCode": "Static", "ListElement": "DO NOT SHOW - Static"}
 ]

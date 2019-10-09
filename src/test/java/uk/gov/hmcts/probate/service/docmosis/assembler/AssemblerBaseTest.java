@@ -35,8 +35,8 @@ public class AssemblerBaseTest {
         List<ParagraphDetail> response = assemblerBase.getStaticParagraphDetails(ParagraphCode.Caseworker);
         assertEquals(response.get(0).getCode(),
                 ParagraphField.valueOf(ParagraphField.CASEWORKER.toString()).getFieldCode());
-        assertEquals(response.get(0).getEnableStatic(), YES);
-        assertEquals(response.get(0).getStaticLabel(),
+        assertEquals(response.get(0).getEnableType().name(), "Static");
+        assertEquals(response.get(0).getLabel(),
                 ParagraphField.valueOf(ParagraphField.CASEWORKER.toString()).getFieldCode());
         assertEquals(response.get(0).getTemplateName(), null);
     }
@@ -45,8 +45,8 @@ public class AssemblerBaseTest {
     public void testGetTextParagraphsDetails() {
 
         List<ParagraphDetail> response = assemblerBase.getTextParagraphDetails(ParagraphCode.EntExecNoAcc);
-        assertEquals(response.get(0).getEnableText(), YES);
-        assertEquals(response.get(0).getTextLabel(), "Executor not accounted for");
+        assertEquals(response.get(0).getEnableType().name(), "Text");
+        assertEquals(response.get(0).getLabel(), "Executor not accounted for");
         assertEquals(response.get(0).getCode(), "EntExecNoAcc");
         assertEquals(response.get(0).getTemplateName(), "FL-PRB-GNO-ENG-00123.docx");
     }
@@ -55,8 +55,8 @@ public class AssemblerBaseTest {
     public void testGetTextAreaParagraphsDetails() {
 
         List<ParagraphDetail> response = assemblerBase.getTextAreaParagraphDetails(ParagraphCode.FreeText);
-        assertEquals(response.get(0).getEnableTextArea(), YES);
-        assertEquals(response.get(0).getTextAreaLabel(), "Free Text");
+        assertEquals(response.get(0).getEnableType().name(), "TextArea");
+        assertEquals(response.get(0).getLabel(), "Free Text");
         assertEquals(response.get(0).getCode(), "FreeText");
         assertEquals(response.get(0).getTemplateName(), null);
     }
@@ -67,8 +67,8 @@ public class AssemblerBaseTest {
         List<String> textValues = new ArrayList<>();
         textValues.add("test value one");
         List<ParagraphDetail> response = assemblerBase.getTextParagraphDetailWithDefaultValue(ParagraphCode.IHT421Await, textValues);
-        assertEquals(response.get(0).getEnableText(), YES);
-        assertEquals(response.get(0).getTextLabel(), "Awaiting IHT421");
+        assertEquals(response.get(0).getEnableType().name(), "Text");
+        assertEquals(response.get(0).getLabel(), "Awaiting IHT421");
         assertEquals(response.get(0).getTextValue(), "test value one");
         assertEquals(response.get(0).getCode(), "IHT421Await");
         assertEquals(response.get(0).getTemplateName(), "FL-PRB-GNO-ENG-00125.docx");
@@ -87,9 +87,9 @@ public class AssemblerBaseTest {
         DynamicList dynamicList1 = DynamicList.builder().listItems(listItems.get(0)).value(DynamicListItem.builder().build()).build();
 
         List<ParagraphDetail> response = assemblerBase.createDynamicListParagraphDetail(ParagraphCode.IHT421Await, listItems);
-        assertEquals(response.get(0).getEnableList(), YES);
+        assertEquals(response.get(0).getEnableType().name(), "List");
         assertEquals(response.get(0).getDynamicList(), dynamicList1);
-        assertEquals(response.get(0).getListLabel(), "Awaiting IHT421");
+        assertEquals(response.get(0).getLabel(), "Awaiting IHT421");
         assertEquals(response.get(0).getCode(), "IHT421Await");
     }
 }

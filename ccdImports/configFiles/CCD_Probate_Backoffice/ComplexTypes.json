@@ -140,15 +140,9 @@
   {"LiveFrom": "01/01/2017", "ID": "Categories", "ListElementCode": "willSelectedParagraphs", "FieldType": "MultiSelectList", "FieldTypeParameter": "WillParagraphs", "FieldShowCondition": "selectedCategoriesCONTAINS\"Will\"", "ElementLabel": "Will Paragraphs", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "ParagraphDetail", "ListElementCode": "code", "FieldType": "Text", "ElementLabel": " ", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "ParagraphDetail", "ListElementCode": "templateName", "FieldType": "Text", "ElementLabel": " ", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "ID": "ParagraphDetail", "ListElementCode": "enableText", "FieldType": "YesOrNo", "FieldShowCondition": "enableText=\"NeverShowThisField\"", "ElementLabel": " ", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "ID": "ParagraphDetail", "ListElementCode": "textLabel", "FieldType": "Text", "FieldShowCondition": "enableText=\"Yes\"", "ElementLabel": " ", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "ID": "ParagraphDetail", "ListElementCode": "textValue", "FieldType": "Text", "FieldShowCondition": "enableText=\"Yes\"", "ElementLabel": " ", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "ID": "ParagraphDetail", "ListElementCode": "enableTextArea", "FieldType": "YesOrNo", "FieldShowCondition": "enableTextArea=\"NeverShowThisField\"", "ElementLabel": " ", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "ID": "ParagraphDetail", "ListElementCode": "textAreaLabel", "FieldType": "Text", "FieldShowCondition": "enableTextArea=\"Yes\"", "ElementLabel": " ", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "ID": "ParagraphDetail", "ListElementCode": "textAreaValue", "FieldType": "TextArea", "FieldShowCondition": "enableTextArea=\"Yes\"", "ElementLabel": " ", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "ID": "ParagraphDetail", "ListElementCode": "enableList", "FieldType": "YesOrNo", "FieldShowCondition": "enableList=\"NeverShowThisField\"", "ElementLabel": " ", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "ID": "ParagraphDetail", "ListElementCode": "listLabel", "FieldType": "Text", "FieldShowCondition": "enableList=\"Yes\"", "ElementLabel": " ", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "ID": "ParagraphDetail", "ListElementCode": "dynamicList", "FieldType": "DynamicList", "FieldShowCondition": "enableList=\"Yes\"", "ElementLabel": " ", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "ID": "ParagraphDetail", "ListElementCode": "enableStatic", "FieldType": "YesOrNo", "FieldShowCondition": "enableStatic=\"NeverShowThisField\"", "ElementLabel": " ", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "ID": "ParagraphDetail", "ListElementCode": "staticLabel", "FieldType": "Text", "FieldShowCondition": "enableStatic=\"Yes\"", "ElementLabel": " ", "SecurityClassification": "Public"}
+  {"LiveFrom": "01/01/2017", "ID": "ParagraphDetail", "ListElementCode": "enableType", "FieldType": "FixedList", "FieldTypeParameter": "enablementTypeFixedList","FieldShowCondition": "enableType=\"NeverShowThisField\"", "ElementLabel": " ", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "ParagraphDetail", "ListElementCode": "label", "FieldType": "Text", "ElementLabel": " ", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "ParagraphDetail", "ListElementCode": "textValue", "FieldType": "Text", "FieldShowCondition": "enableType=\"Text\"", "ElementLabel": " ", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "ParagraphDetail", "ListElementCode": "textAreaValue", "FieldType": "TextArea", "FieldShowCondition": "enableType=\"TextArea\"", "ElementLabel": " ", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "ParagraphDetail", "ListElementCode": "dynamicList", "FieldType": "DynamicList", "FieldShowCondition": "enableType=\"List\"", "ElementLabel": " ", "SecurityClassification": "Public"}
 ]

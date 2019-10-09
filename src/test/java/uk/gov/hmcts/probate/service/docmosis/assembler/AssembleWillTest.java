@@ -25,16 +25,11 @@ public class AssembleWillTest {
         List<ParagraphDetail> response = assembleWill.willSeparatePages(ParagraphCode.WillSepPages, caseData);
         assertEquals(response.get(0).getCode(), "WillSepPages");
         assertEquals(response.get(0).getTemplateName(), "FL-PRB-GNO-ENG-00131.docx");
-        assertEquals(response.get(0).getEnableText(), YES);
-        assertEquals(response.get(0).getTextLabel(), "Separate pages of will");
+        assertEquals(response.get(0).getEnableType().name(), "Text");
+        assertEquals(response.get(0).getLabel(), "Separate pages of will");
         assertEquals(response.get(0).getTextValue(), null);
-        assertEquals(response.get(0).getEnableTextArea(), null);
-        assertEquals(response.get(0).getTextAreaLabel(), null);
         assertEquals(response.get(0).getTextAreaValue(), null);
-        assertEquals(response.get(0).getListLabel(), null);
         assertEquals(response.get(0).getDynamicList(), null);
-        assertEquals(response.get(0).getEnableList(), null);
-        assertEquals(response.get(0).getStaticLabel(), null);
     }
 
     @Test
@@ -44,15 +39,10 @@ public class AssembleWillTest {
         assertEquals(response.get(0).getDynamicList(), null);
         assertEquals(response.get(0).getCode(), "WillPlight");
         assertEquals(response.get(0).getTemplateName(), "FL-PRB-GNO-ENG-00130.docx");
-        assertEquals(response.get(0).getEnableText(), YES);
-        assertEquals(response.get(0).getTextLabel(), "Plight and condition of will");
+        assertEquals(response.get(0).getEnableType().name(), "Text");
+        assertEquals(response.get(0).getLabel(), "Plight and condition of will");
         assertEquals(response.get(0).getTextValue(), "Condition reason e.g. a tear / staple holes / punch holes");
-        assertEquals(response.get(0).getEnableTextArea(), null);
-        assertEquals(response.get(0).getTextAreaLabel(), null);
         assertEquals(response.get(0).getTextAreaValue(), null);
-        assertEquals(response.get(0).getListLabel(), null);
-        assertEquals(response.get(0).getEnableList(), null);
-        assertEquals(response.get(0).getStaticLabel(), null);
     }
 
     @Test
@@ -75,15 +65,10 @@ public class AssembleWillTest {
         assertEquals(response.get(0).getDynamicList(), dynamicList1);
         assertEquals(response.get(0).getCode(), "WillAnyOther");
         assertEquals(response.get(0).getTemplateName(), null);
-        assertEquals(response.get(0).getEnableText(), null);
-        assertEquals(response.get(0).getTextLabel(), null);
+        assertEquals(response.get(0).getEnableType().name(), "List");
+        assertEquals(response.get(0).getLabel(), "Any other wills");
         assertEquals(response.get(0).getTextValue(), null);
-        assertEquals(response.get(0).getEnableTextArea(), null);
-        assertEquals(response.get(0).getTextAreaLabel(), null);
         assertEquals(response.get(0).getTextAreaValue(), null);
-        assertEquals(response.get(0).getListLabel(), "Any other wills");
-        assertEquals(response.get(0).getEnableList(), YES);
-        assertEquals(response.get(0).getStaticLabel(), null);
     }
 
     @Test
@@ -94,17 +79,11 @@ public class AssembleWillTest {
         List<ParagraphDetail> response = assembleWill.willStaple(ParagraphCode.WillStaple, caseData);
         assertEquals(response.get(0).getCode(), "WillStaple");
         assertEquals(response.get(0).getTemplateName(), "FL-PRB-GNO-ENG-00132.docx");
-        assertEquals(response.get(0).getEnableText(), null);
-        assertEquals(response.get(0).getTextLabel(), null);
+        assertEquals(response.get(0).getEnableType().name(), "Static");
+        assertEquals(response.get(0).getLabel(), "Staple removed for photocopying");
         assertEquals(response.get(0).getTextValue(), null);
-        assertEquals(response.get(0).getEnableTextArea(), null);
-        assertEquals(response.get(0).getTextAreaLabel(), null);
         assertEquals(response.get(0).getTextAreaValue(), null);
-        assertEquals(response.get(0).getListLabel(), null);
         assertEquals(response.get(0).getDynamicList(), null);
-        assertEquals(response.get(0).getEnableList(), null);
-        assertEquals(response.get(0).getStaticLabel(), "Staple removed for photocopying");
-        assertEquals(response.get(0).getEnableStatic(), YES);
     }
 
 }

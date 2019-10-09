@@ -39,11 +39,11 @@ public class PreviewLetterService {
                     .findFirst();
             if (matchedDetailOptional.isPresent()) {
                 ParagraphDetail matchedDetail = matchedDetailOptional.get().getValue();
-                if (YES.equals(matchedDetail.getEnableText())) {
+                if ("Text".equals(matchedDetail.getEnableType())) {
                     placeholders.put(paragraphField.getFieldPlaceholderName(), matchedDetail.getTextValue());
-                } else if (YES.equals(matchedDetail.getEnableTextArea())) {
+                } else if ("TextArea".equals(matchedDetail.getEnableType())) {
                     placeholders.put(paragraphField.getFieldPlaceholderName(), matchedDetail.getTextAreaValue());
-                } else if (YES.equals(matchedDetail.getEnableList())) {
+                } else if ("List".equals(matchedDetail.getEnableType())) {
                     placeholders.put(paragraphField.getFieldPlaceholderName(),
                             matchedDetail.getDynamicList().getValue().getLabel());
                 }

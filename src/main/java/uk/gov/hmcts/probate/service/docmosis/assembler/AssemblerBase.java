@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.model.ccd.raw.DynamicList;
 import uk.gov.hmcts.probate.model.ccd.raw.DynamicListItem;
 import uk.gov.hmcts.probate.model.ccd.raw.ParagraphDetail;
+import uk.gov.hmcts.probate.model.ccd.raw.ParagraphDetailEnablementType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,8 +38,8 @@ public class AssemblerBase {
         List<ParagraphDetail> paragraphDetails = new ArrayList<>();
         for (ParagraphField paragraphField : paragraphCode.getParagraphFields()) {
             ParagraphDetail paragraphDetail = ParagraphDetail.builder()
-                    .enableStatic(YES)
-                    .staticLabel(paragraphField.getFieldLabel())
+                    .enableType(ParagraphDetailEnablementType.Static)
+                    .label(paragraphField.getFieldLabel())
                     .code(paragraphField.getFieldCode())
                     .templateName(paragraphCode.getTemplateName())
                     .build();
@@ -52,8 +53,8 @@ public class AssemblerBase {
         List<ParagraphDetail> paragraphDetails = new ArrayList<>();
         for (ParagraphField paragraphField : paragraphCode.getParagraphFields()) {
             ParagraphDetail paragraphDetail = ParagraphDetail.builder()
-                    .enableText(YES)
-                    .textLabel(paragraphField.getFieldLabel())
+                    .enableType(ParagraphDetailEnablementType.Text)
+                    .label(paragraphField.getFieldLabel())
                     .code(paragraphField.getFieldCode())
                     .templateName(paragraphCode.getTemplateName())
                     .build();
@@ -66,8 +67,8 @@ public class AssemblerBase {
         List<ParagraphDetail> paragraphDetails = new ArrayList<>();
         for (ParagraphField paragraphField : paragraphCode.getParagraphFields()) {
             ParagraphDetail paragraphDetail = ParagraphDetail.builder()
-                    .enableTextArea(YES)
-                    .textAreaLabel(paragraphField.getFieldLabel())
+                    .enableType(ParagraphDetailEnablementType.TextArea)
+                    .label(paragraphField.getFieldLabel())
                     .code(paragraphField.getFieldCode())
                     .templateName(paragraphCode.getTemplateName())
                     .build();
@@ -81,8 +82,8 @@ public class AssemblerBase {
         int index = 0;
         for (ParagraphField paragraphField : paragraphCode.getParagraphFields()) {
             ParagraphDetail paragraphDetail = ParagraphDetail.builder()
-                    .enableText(YES)
-                    .textLabel(paragraphField.getFieldLabel())
+                    .enableType(ParagraphDetailEnablementType.Text)
+                    .label(paragraphField.getFieldLabel())
                     .textValue(textValues.get(index))
                     .code(paragraphField.getFieldCode())
                     .templateName(paragraphCode.getTemplateName())
@@ -103,9 +104,9 @@ public class AssemblerBase {
                     .build();
 
             ParagraphDetail paragraphDetail = ParagraphDetail.builder()
-                    .enableList(YES)
+                    .enableType(ParagraphDetailEnablementType.List)
                     .dynamicList(dynamicList)
-                    .listLabel(paragraphField.getFieldLabel())
+                    .label(paragraphField.getFieldLabel())
                     .code(paragraphField.getFieldCode())
                     .build();
             paragraphDetails.add(paragraphDetail);

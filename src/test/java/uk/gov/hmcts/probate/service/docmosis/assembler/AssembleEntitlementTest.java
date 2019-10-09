@@ -27,15 +27,10 @@ public class AssembleEntitlementTest {
         List<ParagraphDetail> response = assembleEntitlement.executorNotAccountedFor(ParagraphCode.IHT421Await, caseData);
         assertEquals(response.get(0).getCode(), "IHT421Await");
         assertEquals(response.get(0).getTemplateName(), "FL-PRB-GNO-ENG-00125.docx");
-        assertEquals(response.get(0).getEnableText(), YES);
-        assertEquals(response.get(0).getTextLabel(), "Awaiting IHT421");
+        assertEquals(response.get(0).getEnableType().name(), "Text");
+        assertEquals(response.get(0).getLabel(), "Awaiting IHT421");
         assertEquals(response.get(0).getTextValue(), "primary fn primary sn");
-        assertEquals(response.get(0).getEnableTextArea(), null);
-        assertEquals(response.get(0).getTextAreaLabel(), null);
         assertEquals(response.get(0).getTextAreaValue(), null);
-        assertEquals(response.get(0).getEnableList(), null);
-        assertEquals(response.get(0).getStaticLabel(), null);
-
     }
 
     @Test
@@ -60,15 +55,10 @@ public class AssembleEntitlementTest {
         List<ParagraphDetail> response = assembleEntitlement.executorNotAccountedFor(ParagraphCode.IHT421Await, caseData);
         assertEquals(response.get(0).getCode(), "IHT421Await");
         assertEquals(response.get(0).getTemplateName(), "FL-PRB-GNO-ENG-00125.docx");
-        assertEquals(response.get(0).getEnableText(), YES);
-        assertEquals(response.get(0).getTextLabel(), "Awaiting IHT421");
+        assertEquals(response.get(0).getEnableType().name(), "Text");
+        assertEquals(response.get(0).getLabel(), "Awaiting IHT421");
         assertEquals(response.get(0).getTextValue(), "primary fn primary sn,Bob Smith");
-        assertEquals(response.get(0).getEnableTextArea(), null);
-        assertEquals(response.get(0).getTextAreaLabel(), null);
         assertEquals(response.get(0).getTextAreaValue(), null);
-        assertEquals(response.get(0).getEnableList(), null);
-        assertEquals(response.get(0).getStaticLabel(), null);
-
     }
 
 }

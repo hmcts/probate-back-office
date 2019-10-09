@@ -11,18 +11,10 @@ public class ParagraphDetail {
     private final String code;
     private final String templateName;
 
-    private final String enableText;
-    private final String textLabel;
+    private final ParagraphDetailEnablementType enableType;
+    private final String label;
+
     private final String textValue;
-
-    private final String enableTextArea;
-    private final String textAreaLabel;
     private final String textAreaValue;
-
-    private final String enableList;
-    private final String listLabel;
     private final DynamicList dynamicList;
-
-    private final String enableStatic;
-    private final String staticLabel;
 }

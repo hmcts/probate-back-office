@@ -21,15 +21,10 @@ public class AssembleFreeTextTest {
         List<ParagraphDetail> response = assembleFreeText.freeText(ParagraphCode.Caseworker, CaseData.builder().build());
         assertEquals(response.get(0).getCode(), "Caseworker");
         assertEquals(response.get(0).getTemplateName(), null);
-        assertEquals(response.get(0).getEnableText(), null);
-        assertEquals(response.get(0).getTextLabel(), null);
         assertEquals(response.get(0).getTextValue(), null);
-        assertEquals(response.get(0).getEnableTextArea(), YES);
-        assertEquals(response.get(0).getTextAreaLabel(), "Caseworker");
+        assertEquals(response.get(0).getEnableType().name(), "TextArea");
+        assertEquals(response.get(0).getLabel(), "Caseworker");
         assertEquals(response.get(0).getTextAreaValue(), null);
-        assertEquals(response.get(0).getEnableList(), null);
-        assertEquals(response.get(0).getStaticLabel(), null);
-
     }
 
 }
