@@ -24,10 +24,10 @@ public class OCRFieldMartialStatusMapper {
     public MaritalStatus toMartialStatus(String martialStatusValue) throws OCRMappingException {
         log.info("Beginning mapping for Martial Status value: {}", martialStatusValue);
 
-        if (martialStatusValue == null) {
+        if (martialStatusValue == null || martialStatusValue.isEmpty()) {
             return null;
         } else {
-            switch (martialStatusValue) {
+            switch (martialStatusValue.trim()) {
                 case NEVER_MARRIED:
                     return MaritalStatus.NEVER_MARRIED;
                 case WIDOWED:
@@ -40,7 +40,8 @@ public class OCRFieldMartialStatusMapper {
                     return MaritalStatus.JUDICIALLY_SEPARATED;
                 default: {
                     String errorMessage = "Martial Status field '" + martialStatusValue + "' could not be mapped to a case";
-                    throw new OCRMappingException(errorMessage, errorMessage, null);
+                    log.error(errorMessage);
+                    throw new OCRMappingException(errorMessage);
                 }
             }
         }

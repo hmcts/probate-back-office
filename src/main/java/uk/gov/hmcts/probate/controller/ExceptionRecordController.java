@@ -13,6 +13,7 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import uk.gov.hmcts.probate.exception.OCRMappingException;
@@ -37,6 +38,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @Slf4j
 @RequiredArgsConstructor
 @RestController
+@RequestMapping(value = "/", consumes = APPLICATION_JSON_UTF8_VALUE, produces = APPLICATION_JSON_VALUE)
 @Api(tags = "Manage bulk scanning exception record data")
 public class ExceptionRecordController {
 
@@ -107,8 +109,8 @@ public class ExceptionRecordController {
     @ExceptionHandler(OCRMappingException.class)
     public ResponseEntity<ExceptionRecordErrorResponse> handle(OCRMappingException exception) {
         log.warn("OCR Data Mapping Error: {}", exception.getMessage());
-        List<String> warnings = Arrays.asList(exception.getWarning());
-        List<String> errors = Arrays.asList(exception.getError());
+        List<String> warnings = Arrays.asList(exception.getMessage());
+        List<String> errors = Arrays.asList("Caveat OCR fields could not be mapped to a case");
         ExceptionRecordErrorResponse errorResponse = new ExceptionRecordErrorResponse(errors, warnings);
         return ResponseEntity.ok(errorResponse);
     }

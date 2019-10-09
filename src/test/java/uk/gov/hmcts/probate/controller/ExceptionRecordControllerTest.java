@@ -57,7 +57,7 @@ public class ExceptionRecordControllerTest {
     private OCRToCCDMandatoryField ocrToCCDMandatoryField;
 
     private String exceptionRecordPayloadPA8A;
-    private String exceptionRecordPayloadPA1P;
+    private String exceptionRecordInvalidJsonPayload;
     private List<OCRField> ocrFields = new ArrayList<>();
     private List<String> warnings = new ArrayList<>();
 
@@ -65,6 +65,7 @@ public class ExceptionRecordControllerTest {
     public void setUp() throws IOException {
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
         exceptionRecordPayloadPA8A = testUtils.getStringFromFile("expectedExceptionRecordDataPA8A.json");
+        exceptionRecordInvalidJsonPayload = testUtils.getStringFromFile("invalidExceptionRecordDataJson.json");
         warnings.add("test warning");
         when(ocrPopulatedValueMapper.ocrPopulatedValueMapper(any())).thenReturn(ocrFields);
         when(ocrToCCDMandatoryField.ocrToCCDMandatoryFields(eq(ocrFields), any())).thenReturn(EMPTY_LIST);
@@ -115,5 +116,13 @@ public class ExceptionRecordControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("\"warnings\":[\"Text '02022' could not be parsed at index 4\"]")))
                 .andExpect(content().string(containsString("\"errors\":[\"Caveat OCR fields could not be mapped to a case\"]")));
+    }
+
+    @Test
+    public void testInvalidExceptionRecordJsonResponse() throws Exception {
+        mockMvc.perform(post("/transform-exception-record")
+                .content(exceptionRecordInvalidJsonPayload)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().is4xxClientError());
     }
 }

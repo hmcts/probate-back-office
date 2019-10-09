@@ -2,9 +2,12 @@ package uk.gov.hmcts.probate.service.exceptionrecord.mapper;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.BooleanUtils;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Component;
+import uk.gov.hmcts.probate.exception.OCRMappingException;
 import uk.gov.hmcts.probate.model.Constants;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToYesOrNo;
+import uk.gov.hmcts.reform.probate.model.cases.MaritalStatus;
 
 @Slf4j
 @Component
@@ -12,15 +15,27 @@ public class OCRFieldYesOrNoMapper {
 
     @SuppressWarnings("squid:S1168")
     @ToYesOrNo
-    public String toYesOrNo(String booleanValue) {
+    public Boolean toYesOrNo(String booleanValue) {
         log.info("Beginning mapping for Yes or No value: {}", booleanValue);
 
         if (booleanValue == null || booleanValue.isEmpty()) {
             return null;
+        } else {
+            switch (booleanValue.toUpperCase().trim()) {
+                case "YES":
+                    return true;
+                case "NO":
+                    return false;
+                case "TRUE":
+                    return true;
+                case "FALSE":
+                    return false;
+                default: {
+                    String errorMessage = "Yes, no, true or false values expected but got '" + booleanValue + "'";
+                    log.error(errorMessage);
+                    throw new OCRMappingException(errorMessage);
+                }
+            }
         }
-
-        boolean result = BooleanUtils.toBoolean(booleanValue);
-        return (result ? Constants.YES : Constants.NO);
     }
-
 }
