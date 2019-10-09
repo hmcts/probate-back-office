@@ -22,7 +22,7 @@ public class AssembleWillTest {
     public void testWillSeparatePages() {
         CaseData caseData = CaseData.builder().primaryApplicantForenames("primary fn").primaryApplicantSurname("primary sn").build();
 
-        List<ParagraphDetail> response = assembleWill.willSeparatePages(ParagraphCode.WILL_SEP_PAGES, caseData);
+        List<ParagraphDetail> response = assembleWill.willSeparatePages(ParagraphCode.WillSepPages, caseData);
         assertEquals(response.get(0).getCode(), "WillSepPages");
         assertEquals(response.get(0).getTemplateName(), "FL-PRB-GNO-ENG-00131.docx");
         assertEquals(response.get(0).getEnableText(), YES);
@@ -53,7 +53,7 @@ public class AssembleWillTest {
 
         CaseData caseData = CaseData.builder().primaryApplicantForenames("primary fn").primaryApplicantSurname("primary sn").build();
 
-        List<ParagraphDetail> response = assembleWill.willPlight(ParagraphCode.WILL_PLIGHT, caseData);
+        List<ParagraphDetail> response = assembleWill.willPlight(ParagraphCode.WillPlight, caseData);
         assertEquals(response.get(0).getDynamicList(), dynamicList1);
         assertEquals(response.get(0).getCode(), "WillPlight");
         assertEquals(response.get(0).getTemplateName(), null);
@@ -84,7 +84,7 @@ public class AssembleWillTest {
 
         CaseData caseData = CaseData.builder().primaryApplicantForenames("primary fn").primaryApplicantSurname("primary sn").build();
 
-        List<ParagraphDetail> response = assembleWill.willAnyOther(ParagraphCode.WILL_ANY_OTHER, caseData);
+        List<ParagraphDetail> response = assembleWill.willAnyOther(ParagraphCode.WillAnyOther, caseData);
         assertEquals(response.get(0).getDynamicList(), dynamicList1);
         assertEquals(response.get(0).getCode(), "WillAnyOther");
         assertEquals(response.get(0).getTemplateName(), null);
@@ -104,7 +104,7 @@ public class AssembleWillTest {
 
         CaseData caseData = CaseData.builder().primaryApplicantForenames("primary fn").primaryApplicantSurname("primary sn").build();
 
-        List<ParagraphDetail> response = assembleWill.willStaple(ParagraphCode.WILL_STAPLE, caseData);
+        List<ParagraphDetail> response = assembleWill.willStaple(ParagraphCode.WillStaple, caseData);
         assertEquals(response.get(0).getCode(), "WillStaple");
         assertEquals(response.get(0).getTemplateName(), "FL-PRB-GNO-ENG-00132.docx");
         assertEquals(response.get(0).getEnableText(), null);

@@ -36,7 +36,7 @@ public class AssembleMissingInformationTest {
 
         CaseData caseData = CaseData.builder().primaryApplicantForenames("primary fn").primaryApplicantSurname("primary sn").build();
 
-        List<ParagraphDetail> response = assembleMissingInformation.missingInfoWill(ParagraphCode.IHT_AWAIT_IHT421, caseData);
+        List<ParagraphDetail> response = assembleMissingInformation.missingInfoWill(ParagraphCode.IHT421Await, caseData);
         assertEquals(response.get(0).getDynamicList(), dynamicList1);
         assertEquals(response.get(0).getCode(), "IHT421Await");
         assertEquals(response.get(0).getTemplateName(), null);
@@ -69,7 +69,7 @@ public class AssembleMissingInformationTest {
 
         CaseData caseData = CaseData.builder().primaryApplicantForenames("primary fn").primaryApplicantSurname("primary sn").build();
 
-        List<ParagraphDetail> response = assembleMissingInformation.missingInfoDeathCert(ParagraphCode.MISS_INFO_DEATH_CERT, caseData);
+        List<ParagraphDetail> response = assembleMissingInformation.missingInfoDeathCert(ParagraphCode.MissInfoDeathCert, caseData);
         assertEquals(response.get(0).getDynamicList(), dynamicList1);
         assertEquals(response.get(0).getCode(), "MissInfoDeathCert");
         assertEquals(response.get(0).getTemplateName(), null);
@@ -91,7 +91,7 @@ public class AssembleMissingInformationTest {
         CaseData caseData = CaseData.builder().primaryApplicantForenames("primary fn").primaryApplicantSurname("primary sn").build();
 
         List<ParagraphDetail> response =
-                assembleMissingInformation.missingInfoChangeOfApplicant(ParagraphCode.MISS_INFO_CHANGE_APP, caseData);
+                assembleMissingInformation.missingInfoChangeOfApplicant(ParagraphCode.MissInfoChangeApp, caseData);
         assertEquals(response.get(0).getCode(), "MissInfoChangeApp");
         assertEquals(response.get(0).getTemplateName(), "FL-PRB-GNO-ENG-00127.docx");
         assertEquals(response.get(0).getEnableText(), YES);

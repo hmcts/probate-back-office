@@ -24,7 +24,7 @@ public class AssembleEntitlementTest {
 
         CaseData caseData = CaseData.builder().primaryApplicantForenames("primary fn").primaryApplicantSurname("primary sn").build();
 
-        List<ParagraphDetail> response = assembleEntitlement.executorNotAccountedFor(ParagraphCode.IHT_AWAIT_IHT421, caseData);
+        List<ParagraphDetail> response = assembleEntitlement.executorNotAccountedFor(ParagraphCode.IHT421Await, caseData);
         assertEquals(response.get(0).getCode(), "IHT421Await");
         assertEquals(response.get(0).getTemplateName(), "FL-PRB-GNO-ENG-00125.docx");
         assertEquals(response.get(0).getEnableText(), YES);
@@ -57,7 +57,7 @@ public class AssembleEntitlementTest {
                 .build();
 
 
-        List<ParagraphDetail> response = assembleEntitlement.executorNotAccountedFor(ParagraphCode.IHT_AWAIT_IHT421, caseData);
+        List<ParagraphDetail> response = assembleEntitlement.executorNotAccountedFor(ParagraphCode.IHT421Await, caseData);
         assertEquals(response.get(0).getCode(), "IHT421Await");
         assertEquals(response.get(0).getTemplateName(), "FL-PRB-GNO-ENG-00125.docx");
         assertEquals(response.get(0).getEnableText(), YES);

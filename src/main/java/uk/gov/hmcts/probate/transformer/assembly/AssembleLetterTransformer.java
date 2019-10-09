@@ -26,7 +26,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.function.BiFunction;
 
-import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.Caeworker;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.Caseworker;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.EntExecNoAcc;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.FreeText;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.IHT205Miss;
@@ -57,7 +57,7 @@ public class AssembleLetterTransformer {
         if (paragraphCodeFunctions == null) {
             paragraphCodeFunctions = ImmutableMap.<ParagraphCode, BiFunction<ParagraphCode, CaseData, List<ParagraphDetail>>>builder()
                     .put(FreeText, assembleFreeText::freeText)
-                    .put(Caeworker, assembleCaseworker::caseworker)
+                    .put(Caseworker, assembleCaseworker::caseworker)
                     .put(EntExecNoAcc, assembleEntitlement::executorNotAccountedFor)
                     .put(IHT205Miss, assembleIHT::iht205Missing)
                     .put(IHT421Await, assembleIHT::ihtAwait421)
@@ -79,7 +79,7 @@ public class AssembleLetterTransformer {
         CaseData caseData = caseDetails.getData();
         Categories categories = caseData.getCategories();
         List<CollectionMember<ParagraphDetail>> paragraphDetails = new ArrayList<>();
-        addParagraphsForUsedFields(paragraphDetails, Caeworker.getParagraphFields(), caseData);
+        addParagraphsForUsedFields(paragraphDetails, Caseworker.getParagraphFields(), caseData);
         addParagraphs(paragraphDetails, categories.getEntSelectedParagraphs(), caseData);
         addParagraphs(paragraphDetails, categories.getIhtSelectedParagraphs(), caseData);
         addParagraphs(paragraphDetails, categories.getMissInfoSelectedParagraphs(), caseData);

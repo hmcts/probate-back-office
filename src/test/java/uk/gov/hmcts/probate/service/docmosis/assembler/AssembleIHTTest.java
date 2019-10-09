@@ -18,7 +18,7 @@ public class AssembleIHTTest {
     @Test
     public void testIht205Missing() {
 
-        List<ParagraphDetail> response = assembleIHT.iht205Missing(ParagraphCode.IHT_205_MISSING, CaseData.builder().build());
+        List<ParagraphDetail> response = assembleIHT.iht205Missing(ParagraphCode.IHT205Miss, CaseData.builder().build());
         assertEquals(response.get(0).getCode(), "IHT205Miss");
         assertEquals(response.get(0).getTemplateName(), "FL-PRB-GNO-ENG-00124.docx");
         assertEquals(response.get(0).getEnableText(), null);
@@ -36,7 +36,7 @@ public class AssembleIHTTest {
     @Test
     public void testIhtAwait421() {
 
-        List<ParagraphDetail> response = assembleIHT.ihtAwait421(ParagraphCode.IHT_AWAIT_IHT421, CaseData.builder().build());
+        List<ParagraphDetail> response = assembleIHT.ihtAwait421(ParagraphCode.IHT421Await, CaseData.builder().build());
         assertEquals(response.get(0).getCode(), "IHT421Await");
         assertEquals(response.get(0).getTemplateName(), "FL-PRB-GNO-ENG-00125.docx");
         assertEquals(response.get(0).getEnableText(), null);

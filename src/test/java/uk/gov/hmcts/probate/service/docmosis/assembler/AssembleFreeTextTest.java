@@ -18,7 +18,7 @@ public class AssembleFreeTextTest {
     @Test
     public void testFreeText() {
 
-        List<ParagraphDetail> response = assembleFreeText.freeText(ParagraphCode.CASEWORKER, CaseData.builder().build());
+        List<ParagraphDetail> response = assembleFreeText.freeText(ParagraphCode.Caseworker, CaseData.builder().build());
         assertEquals(response.get(0).getCode(), "Caseworker");
         assertEquals(response.get(0).getTemplateName(), null);
         assertEquals(response.get(0).getEnableText(), null);

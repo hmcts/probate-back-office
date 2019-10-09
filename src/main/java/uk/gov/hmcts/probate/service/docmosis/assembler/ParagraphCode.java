@@ -19,7 +19,7 @@ import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphField.STA
 public enum ParagraphCode {
 
     FreeText(null, FREE_TEXT),
-    Caeworker(null, ParagraphField.CASEWORKER),
+    Caseworker(null, ParagraphField.CASEWORKER),
     EntExecNoAcc("FL-PRB-GNO-ENG-00123.docx", EXEC_NOT_ACC_EXECUTOR_NAMES),
     IHT205Miss("FL-PRB-GNO-ENG-00124.docx", IHT205_MISSING),
     IHT421Await("FL-PRB-GNO-ENG-00125.docx", IHT421_AWAITING),
