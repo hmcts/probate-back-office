@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.ParagraphDetail;
+import uk.gov.hmcts.probate.model.ccd.raw.ParagraphDetailEnablementType;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode;
@@ -15,6 +16,9 @@ import java.util.Map;
 import java.util.Optional;
 
 import static uk.gov.hmcts.probate.model.Constants.YES;
+import static uk.gov.hmcts.probate.model.ccd.raw.ParagraphDetailEnablementType.List;
+import static uk.gov.hmcts.probate.model.ccd.raw.ParagraphDetailEnablementType.Text;
+import static uk.gov.hmcts.probate.model.ccd.raw.ParagraphDetailEnablementType.TextArea;
 
 @Slf4j
 @Component
@@ -39,11 +43,11 @@ public class PreviewLetterService {
                     .findFirst();
             if (matchedDetailOptional.isPresent()) {
                 ParagraphDetail matchedDetail = matchedDetailOptional.get().getValue();
-                if ("Text".equals(matchedDetail.getEnableType())) {
+                if (Text.equals(matchedDetail.getEnableType())) {
                     placeholders.put(paragraphField.getFieldPlaceholderName(), matchedDetail.getTextValue());
-                } else if ("TextArea".equals(matchedDetail.getEnableType())) {
+                } else if (TextArea.equals(matchedDetail.getEnableType())) {
                     placeholders.put(paragraphField.getFieldPlaceholderName(), matchedDetail.getTextAreaValue());
-                } else if ("List".equals(matchedDetail.getEnableType())) {
+                } else if (List.equals(matchedDetail.getEnableType())) {
                     placeholders.put(paragraphField.getFieldPlaceholderName(),
                             matchedDetail.getDynamicList().getValue().getLabel());
                 }

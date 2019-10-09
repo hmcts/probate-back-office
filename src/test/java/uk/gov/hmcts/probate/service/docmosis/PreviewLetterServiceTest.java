@@ -83,9 +83,13 @@ public class PreviewLetterServiceTest {
         List<List<DynamicListItem>> listItems = new ArrayList<List<DynamicListItem>>();
         listItems.add(dynamicList);
 
+        registry.setName("leeds");
+        registry.setPhone("123456789");
+        registries = mapper.convertValue(registry, Map.class);
+
         DynamicList dynamicList1 = DynamicList.builder().listItems(listItems.get(0)).value(DynamicListItem.builder().build()).build();
 
-        List<CollectionMember<ParagraphDetail>> PARAGRAPH_DETAILS = Arrays.asList(
+        List<CollectionMember<ParagraphDetail>> paragraphDetails = Arrays.asList(
                 new CollectionMember<ParagraphDetail>("id",
                         ParagraphDetail.builder()
                                 .code("IHT421Await")
@@ -114,13 +118,9 @@ public class PreviewLetterServiceTest {
                                 .textValue("primary fn primary sn")
                                 .build()));
 
-        registry.setName("leeds");
-        registry.setPhone("123456789");
-        registries = mapper.convertValue(registry, Map.class);
-
         CaseData caseData = CaseData.builder()
                 .registryLocation("leeds")
-                .paragraphDetails(PARAGRAPH_DETAILS)
+                .paragraphDetails(paragraphDetails)
                 .build();
         caseDetails = new CaseDetails(caseData, LAST_MODIFIED, ID);
         caseDetails.setRegistryTelephone("123456789");

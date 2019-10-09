@@ -27,10 +27,10 @@ public class AssembleEntitlementTest {
         List<ParagraphDetail> response = assembleEntitlement.executorNotAccountedFor(ParagraphCode.IHT421Await, caseData);
         assertEquals("IHT421Await", response.get(0).getCode());
         assertEquals("FL-PRB-GNO-ENG-00125.docx", response.get(0).getTemplateName());
-        assertEquals( "Text", response.get(0).getEnableType().name());
-        assertEquals( "Awaiting IHT421", response.get(0).getLabel());
-        assertEquals( "primary fn primary sn", response.get(0).getTextValue());
-        assertEquals( null, response.get(0).getTextAreaValue());
+        assertEquals("Text", response.get(0).getEnableType().name());
+        assertEquals("Awaiting IHT421", response.get(0).getLabel());
+        assertEquals("primary fn primary sn", response.get(0).getTextValue());
+        assertEquals(null, response.get(0).getTextAreaValue());
     }
 
     @Test

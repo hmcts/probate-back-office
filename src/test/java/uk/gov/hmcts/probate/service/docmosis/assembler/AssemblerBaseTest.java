@@ -88,8 +88,8 @@ public class AssemblerBaseTest {
 
         List<ParagraphDetail> response = assemblerBase.createDynamicListParagraphDetail(ParagraphCode.IHT421Await, listItems);
         assertEquals("List", response.get(0).getEnableType().name());
-        assertEquals( dynamicList1, response.get(0).getDynamicList());
-        assertEquals( "Awaiting IHT421", response.get(0).getLabel());
-        assertEquals( "IHT421Await", response.get(0).getCode());
+        assertEquals(dynamicList1, response.get(0).getDynamicList());
+        assertEquals("Awaiting IHT421", response.get(0).getLabel());
+        assertEquals("IHT421Await", response.get(0).getCode());
     }
 }

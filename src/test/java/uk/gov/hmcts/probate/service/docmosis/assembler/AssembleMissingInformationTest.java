@@ -24,13 +24,13 @@ public class AssembleMissingInformationTest {
         CaseData caseData = CaseData.builder().build();
 
         List<ParagraphDetail> response = assembleMissingInformation.missingInfoWill(ParagraphCode.MissInfoWill, caseData);
-        assertEquals( null, response.get(0).getDynamicList());
-        assertEquals( "MissInfoWill", response.get(0).getCode());
-        assertEquals( "FL-PRB-GNO-ENG-00126.docx", response.get(0).getTemplateName());
+        assertEquals(null, response.get(0).getDynamicList());
+        assertEquals("MissInfoWill", response.get(0).getCode());
+        assertEquals("FL-PRB-GNO-ENG-00126.docx", response.get(0).getTemplateName());
         assertEquals("Text", response.get(0).getEnableType().name());
-        assertEquals( "Original Will or Codicil", response.get(0).getLabel());
-        assertEquals( "Will or Coldicil", response.get(0).getTextValue());
-        assertEquals( null, response.get(0).getTextAreaValue());
+        assertEquals("Original Will or Codicil", response.get(0).getLabel());
+        assertEquals("Will or Coldicil", response.get(0).getTextValue());
+        assertEquals(null, response.get(0).getTextAreaValue());
     }
 
     @Test

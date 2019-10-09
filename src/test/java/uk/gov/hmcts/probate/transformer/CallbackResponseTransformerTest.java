@@ -1698,7 +1698,8 @@ public class CallbackResponseTransformerTest {
         assertEquals(EMPTY_LIST, callbackResponse.getData().getParagraphDetails());
         assertEquals(null, callbackResponse.getData().getPreviewLink());
         assertEquals(1, callbackResponse.getData().getProbateDocumentsGenerated().size());
-        assertEquals(DocumentType.ASSEMBLED_LETTER, callbackResponse.getData().getProbateDocumentsGenerated().get(0).getValue().getDocumentType());
+        assertEquals(DocumentType.ASSEMBLED_LETTER, callbackResponse.getData().getProbateDocumentsGenerated()
+                .get(0).getValue().getDocumentType());
     }
 
     @Test
