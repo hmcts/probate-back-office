@@ -24,13 +24,13 @@ public class AssembleMissingInformationTest {
         CaseData caseData = CaseData.builder().build();
 
         List<ParagraphDetail> response = assembleMissingInformation.missingInfoWill(ParagraphCode.MissInfoWill, caseData);
-        assertEquals(response.get(0).getDynamicList(), null);
-        assertEquals(response.get(0).getCode(), "MissInfoWill");
-        assertEquals(response.get(0).getTemplateName(), "FL-PRB-GNO-ENG-00126.docx");
-        assertEquals(response.get(0).getEnableType().name(), "Text");
-        assertEquals(response.get(0).getLabel(), "Original Will or Codicil");
-        assertEquals(response.get(0).getTextValue(), "Will or Coldicil");
-        assertEquals(response.get(0).getTextAreaValue(), null);
+        assertEquals( null, response.get(0).getDynamicList());
+        assertEquals( "MissInfoWill", response.get(0).getCode());
+        assertEquals( "FL-PRB-GNO-ENG-00126.docx", response.get(0).getTemplateName());
+        assertEquals("Text", response.get(0).getEnableType().name());
+        assertEquals( "Original Will or Codicil", response.get(0).getLabel());
+        assertEquals( "Will or Coldicil", response.get(0).getTextValue());
+        assertEquals( null, response.get(0).getTextAreaValue());
     }
 
     @Test
@@ -51,13 +51,13 @@ public class AssembleMissingInformationTest {
         CaseData caseData = CaseData.builder().primaryApplicantForenames("primary fn").primaryApplicantSurname("primary sn").build();
 
         List<ParagraphDetail> response = assembleMissingInformation.missingInfoDeathCert(ParagraphCode.MissInfoDeathCert, caseData);
-        assertEquals(response.get(0).getDynamicList(), dynamicList1);
-        assertEquals(response.get(0).getCode(), "MissInfoDeathCert");
-        assertEquals(response.get(0).getTemplateName(), null);
-        assertEquals(response.get(0).getTextValue(), null);
-        assertEquals(response.get(0).getTextAreaValue(), null);
-        assertEquals(response.get(0).getLabel(), "Death Certificate");
-        assertEquals(response.get(0).getEnableType().name(), "List");
+        assertEquals(dynamicList1, response.get(0).getDynamicList());
+        assertEquals("MissInfoDeathCert", response.get(0).getCode());
+        assertEquals(null, response.get(0).getTemplateName());
+        assertEquals(null, response.get(0).getTextValue());
+        assertEquals(null, response.get(0).getTextAreaValue());
+        assertEquals("Death Certificate", response.get(0).getLabel());
+        assertEquals("List", response.get(0).getEnableType().name());
     }
 
     @Test
@@ -67,12 +67,12 @@ public class AssembleMissingInformationTest {
 
         List<ParagraphDetail> response =
                 assembleMissingInformation.missingInfoChangeOfApplicant(ParagraphCode.MissInfoChangeApp, caseData);
-        assertEquals(response.get(0).getCode(), "MissInfoChangeApp");
-        assertEquals(response.get(0).getTemplateName(), "FL-PRB-GNO-ENG-00127.docx");
-        assertEquals(response.get(0).getEnableType().name(), "Text");
-        assertEquals(response.get(0).getLabel(), "Name change of applicant");
-        assertEquals(response.get(0).getTextValue(), "primary fn primary sn");
-        assertEquals(response.get(0).getTextAreaValue(), null);
-        assertEquals(response.get(0).getDynamicList(), null);
+        assertEquals("MissInfoChangeApp", response.get(0).getCode());
+        assertEquals("FL-PRB-GNO-ENG-00127.docx", response.get(0).getTemplateName());
+        assertEquals("Text", response.get(0).getEnableType().name());
+        assertEquals("Name change of applicant", response.get(0).getLabel());
+        assertEquals("primary fn primary sn", response.get(0).getTextValue());
+        assertEquals(null, response.get(0).getTextAreaValue());
+        assertEquals(null, response.get(0).getDynamicList());
     }
 }

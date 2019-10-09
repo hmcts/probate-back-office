@@ -19,12 +19,12 @@ public class AssembleFreeTextTest {
     public void testFreeText() {
 
         List<ParagraphDetail> response = assembleFreeText.freeText(ParagraphCode.Caseworker, CaseData.builder().build());
-        assertEquals(response.get(0).getCode(), "Caseworker");
-        assertEquals(response.get(0).getTemplateName(), null);
-        assertEquals(response.get(0).getTextValue(), null);
-        assertEquals(response.get(0).getEnableType().name(), "TextArea");
-        assertEquals(response.get(0).getLabel(), "Caseworker");
-        assertEquals(response.get(0).getTextAreaValue(), null);
+        assertEquals( "Caseworker", response.get(0).getCode());
+        assertEquals( null, response.get(0).getTemplateName());
+        assertEquals( null, response.get(0).getTextValue());
+        assertEquals("TextArea", response.get(0).getEnableType().name());
+        assertEquals( "Caseworker", response.get(0).getLabel());
+        assertEquals( null, response.get(0).getTextAreaValue());
     }
 
 }

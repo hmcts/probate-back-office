@@ -19,11 +19,11 @@ public class AssembleCaseworkerTest {
     public void testCaseworker() {
 
         List<ParagraphDetail> response = assembleCaseworker.caseworker(ParagraphCode.Caseworker, CaseData.builder().build());
-        assertEquals(response.get(0).getCode(), "Caseworker");
-        assertEquals(response.get(0).getTemplateName(), null);
-        assertEquals(response.get(0).getEnableType().name(), "Text");
-        assertEquals(response.get(0).getTextValue(), null);
-        assertEquals(response.get(0).getTextAreaValue(), null);
+        assertEquals("Caseworker", response.get(0).getCode());
+        assertEquals(null, response.get(0).getTemplateName());
+        assertEquals("Text", response.get(0).getEnableType().name());
+        assertEquals(null, response.get(0).getTextValue());
+        assertEquals(null, response.get(0).getTextAreaValue());
     }
 
 }

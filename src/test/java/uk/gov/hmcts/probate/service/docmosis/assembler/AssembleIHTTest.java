@@ -19,12 +19,12 @@ public class AssembleIHTTest {
     public void testIht205Missing() {
 
         List<ParagraphDetail> response = assembleIHT.iht205Missing(ParagraphCode.IHT205Miss, CaseData.builder().build());
-        assertEquals(response.get(0).getCode(), "IHT205Miss");
-        assertEquals(response.get(0).getTemplateName(), "FL-PRB-GNO-ENG-00124.docx");
-        assertEquals(response.get(0).getTextValue(), null);
-        assertEquals(response.get(0).getTextAreaValue(), null);
-        assertEquals(response.get(0).getEnableType().name(), "Static");
-        assertEquals(response.get(0).getLabel(), "IHT205 Missing");
+        assertEquals("IHT205Miss", response.get(0).getCode());
+        assertEquals("FL-PRB-GNO-ENG-00124.docx", response.get(0).getTemplateName());
+        assertEquals(null, response.get(0).getTextValue());
+        assertEquals(null, response.get(0).getTextAreaValue());
+        assertEquals("Static", response.get(0).getEnableType().name());
+        assertEquals("IHT205 Missing", response.get(0).getLabel());
 
     }
 
@@ -32,12 +32,12 @@ public class AssembleIHTTest {
     public void testIhtAwait421() {
 
         List<ParagraphDetail> response = assembleIHT.ihtAwait421(ParagraphCode.IHT421Await, CaseData.builder().build());
-        assertEquals(response.get(0).getCode(), "IHT421Await");
-        assertEquals(response.get(0).getTemplateName(), "FL-PRB-GNO-ENG-00125.docx");
-        assertEquals(response.get(0).getTextValue(), null);
-        assertEquals(response.get(0).getTextAreaValue(), null);
-        assertEquals(response.get(0).getEnableType().name(), "Static");
-        assertEquals(response.get(0).getLabel(), "Awaiting IHT421");
+        assertEquals("IHT421Await", response.get(0).getCode());
+        assertEquals("FL-PRB-GNO-ENG-00125.docx", response.get(0).getTemplateName());
+        assertEquals(null, response.get(0).getTextValue());
+        assertEquals(null, response.get(0).getTextAreaValue());
+        assertEquals("Static", response.get(0).getEnableType().name());
+        assertEquals("Awaiting IHT421", response.get(0).getLabel());
 
     }
 
