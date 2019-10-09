@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphField.ANY_OTHER;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphField.CASEWORKER;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphField.EXEC_NOT_ACC_EXECUTOR_NAMES;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphField.FREE_TEXT;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphField.IHT205_MISSING;
@@ -19,7 +20,7 @@ import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphField.STA
 public enum ParagraphCode {
 
     FreeText(null, FREE_TEXT),
-    Caseworker(null, ParagraphField.CASEWORKER),
+    Caseworker(null, CASEWORKER),
     EntExecNoAcc("FL-PRB-GNO-ENG-00123.docx", EXEC_NOT_ACC_EXECUTOR_NAMES),
     IHT205Miss("FL-PRB-GNO-ENG-00124.docx", IHT205_MISSING),
     IHT421Await("FL-PRB-GNO-ENG-00125.docx", IHT421_AWAITING),
