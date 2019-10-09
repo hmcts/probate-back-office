@@ -5,12 +5,12 @@ import java.util.List;
 
 public enum ParagraphField {
 
-    FREE_TEXT("FreeText", "Free Text", "freeText"),
+    FREE_TEXT("FreeText", "Free Text", "FreeText"),
     CASEWORKER("Caseworker", "Caseworker", "caseworkerName"),
-    EXEC_NOT_ACC("EntExecNoAcc", "Executor not accounted for", "nameOfExecutors"),
+    EXEC_NOT_ACC_EXECUTOR_NAMES("EntExecNoAcc", "Executor not accounted for", "nameOfExecutors"),
     IHT205_MISSING("IHT205Miss", "IHT205 Missing", null),
-    AWAIT_IHT421("IHT421Await", "Awaiting IHT421", null),
-    INFO_WILL("MissInfoWill", "Original Will or Codicil", "willOrCodicil"),
+    IHT421_AWAITING("IHT421Await", "Awaiting IHT421", null),
+    MISS_INFO_WILL_OR_DOCICIL("MissInfoWill", "Original Will or Codicil", "willOrCodicil"),
     INFO_CHANGE_APP("MissInfoChangeApp", "Name change of applicant", "applicantName"),
     INFO_DEATH_CERT("MissInfoDeathCert", "Death Certificate", "reason"),
     ANY_OTHER("WillAnyOther", "Any other wills", "limitation"),

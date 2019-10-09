@@ -21,24 +21,23 @@ import uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphField;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.BiFunction;
 
-import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.CASEWORKER;
-import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.ENT_EXEC_NOT_ACC;
-import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.FREE_TEXT;
-import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.IHT_205_MISSING;
-import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.IHT_AWAIT_IHT421;
-import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.MISS_INFO_CHANGE_APP;
-import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.MISS_INFO_DEATH_CERT;
-import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.MISS_INFO_WILL;
-import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.WILL_ANY_OTHER;
-import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.WILL_PLIGHT;
-import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.WILL_SEP_PAGES;
-import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.WILL_STAPLE;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.Caeworker;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.EntExecNoAcc;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.FreeText;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.IHT205Miss;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.IHT421Await;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.MissInfoChangeApp;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.MissInfoDeathCert;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.MissInfoWill;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.WillAnyOther;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.WillPlight;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.WillSepPages;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.WillStaple;
 
 @Slf4j
 @Component
@@ -57,18 +56,18 @@ public class AssembleLetterTransformer {
     private Map<ParagraphCode, BiFunction<ParagraphCode, CaseData, List<ParagraphDetail>>> getParagraphFunctions() {
         if (paragraphCodeFunctions == null) {
             paragraphCodeFunctions = ImmutableMap.<ParagraphCode, BiFunction<ParagraphCode, CaseData, List<ParagraphDetail>>>builder()
-                    .put(FREE_TEXT, assembleFreeText::freeText)
-                    .put(CASEWORKER, assembleCaseworker::caseworker)
-                    .put(ENT_EXEC_NOT_ACC, assembleEntitlement::executorNotAccountedFor)
-                    .put(IHT_205_MISSING, assembleIHT::iht205Missing)
-                    .put(IHT_AWAIT_IHT421, assembleIHT::ihtAwait421)
-                    .put(MISS_INFO_WILL, assembleMissingInformation::missingInfoWill)
-                    .put(MISS_INFO_DEATH_CERT, assembleMissingInformation::missingInfoDeathCert)
-                    .put(MISS_INFO_CHANGE_APP, assembleMissingInformation::missingInfoChangeOfApplicant)
-                    .put(WILL_ANY_OTHER, assembleWill::willAnyOther)
-                    .put(WILL_PLIGHT, assembleWill::willPlight)
-                    .put(WILL_SEP_PAGES, assembleWill::willSeparatePages)
-                    .put(WILL_STAPLE, assembleWill::willStaple)
+                    .put(FreeText, assembleFreeText::freeText)
+                    .put(Caeworker, assembleCaseworker::caseworker)
+                    .put(EntExecNoAcc, assembleEntitlement::executorNotAccountedFor)
+                    .put(IHT205Miss, assembleIHT::iht205Missing)
+                    .put(IHT421Await, assembleIHT::ihtAwait421)
+                    .put(MissInfoWill, assembleMissingInformation::missingInfoWill)
+                    .put(MissInfoDeathCert, assembleMissingInformation::missingInfoDeathCert)
+                    .put(MissInfoChangeApp, assembleMissingInformation::missingInfoChangeOfApplicant)
+                    .put(WillAnyOther, assembleWill::willAnyOther)
+                    .put(WillPlight, assembleWill::willPlight)
+                    .put(WillSepPages, assembleWill::willSeparatePages)
+                    .put(WillStaple, assembleWill::willStaple)
                     .build();
         }
 
@@ -80,19 +79,19 @@ public class AssembleLetterTransformer {
         CaseData caseData = caseDetails.getData();
         Categories categories = caseData.getCategories();
         List<CollectionMember<ParagraphDetail>> paragraphDetails = new ArrayList<>();
-        addParagraphsForUsedFields(paragraphDetails, CASEWORKER.getParagraphFields(), caseData);
+        addParagraphsForUsedFields(paragraphDetails, Caeworker.getParagraphFields(), caseData);
         addParagraphs(paragraphDetails, categories.getEntSelectedParagraphs(), caseData);
         addParagraphs(paragraphDetails, categories.getIhtSelectedParagraphs(), caseData);
         addParagraphs(paragraphDetails, categories.getMissInfoSelectedParagraphs(), caseData);
         addParagraphs(paragraphDetails, categories.getWillSelectedParagraphs(), caseData);
-        addParagraphsForUsedFields(paragraphDetails, FREE_TEXT.getParagraphFields(), caseData);
+        addParagraphsForUsedFields(paragraphDetails, FreeText.getParagraphFields(), caseData);
 
         responseCaseDataBuilder.categories(categories);
         responseCaseDataBuilder.paragraphDetails(paragraphDetails);
     }
 
     private void addParagraphsForUsedFields(List<CollectionMember<ParagraphDetail>> allParagraphDetails,
-                               List<ParagraphField> paragraphFields, CaseData caseData) {
+                                            List<ParagraphField> paragraphFields, CaseData caseData) {
         for (ParagraphField paragraphField : paragraphFields) {
             Optional<ParagraphCode> paragraphCode = ParagraphCode.fromFieldCode(paragraphField.getFieldCode());
             if (paragraphCode.isPresent()) {

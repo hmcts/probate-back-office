@@ -4,20 +4,32 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphField.ANY_OTHER;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphField.EXEC_NOT_ACC_EXECUTOR_NAMES;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphField.FREE_TEXT;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphField.IHT205_MISSING;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphField.IHT421_AWAITING;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphField.INFO_CHANGE_APP;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphField.INFO_DEATH_CERT;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphField.MISS_INFO_WILL_OR_DOCICIL;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphField.PLIGHT;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphField.SEP_PAGES;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphField.STAPLE;
+
 public enum ParagraphCode {
 
-    FREE_TEXT(null, ParagraphField.FREE_TEXT),
-    CASEWORKER(null, ParagraphField.CASEWORKER),
-    ENT_EXEC_NOT_ACC("FL-PRB-GNO-ENG-00123.docx", ParagraphField.EXEC_NOT_ACC),
-    IHT_205_MISSING("FL-PRB-GNO-ENG-00124.docx", ParagraphField.IHT205_MISSING),
-    IHT_AWAIT_IHT421("FL-PRB-GNO-ENG-00125.docx", ParagraphField.AWAIT_IHT421),
-    MISS_INFO_WILL("FL-PRB-GNO-ENG-00126.docx", ParagraphField.INFO_WILL),
-    MISS_INFO_CHANGE_APP("FL-PRB-GNO-ENG-00127.docx", ParagraphField.INFO_CHANGE_APP),
-    MISS_INFO_DEATH_CERT("FL-PRB-GNO-ENG-00128.docx", ParagraphField.INFO_DEATH_CERT),
-    WILL_ANY_OTHER("FL-PRB-GNO-ENG-00129.docx", ParagraphField.ANY_OTHER),
-    WILL_PLIGHT("FL-PRB-GNO-ENG-00130.docx", ParagraphField.PLIGHT),
-    WILL_SEP_PAGES("FL-PRB-GNO-ENG-00131.docx", ParagraphField.SEP_PAGES),
-    WILL_STAPLE("FL-PRB-GNO-ENG-00132.docx", ParagraphField.STAPLE);
+    FreeText(null, FREE_TEXT),
+    Caeworker(null, ParagraphField.CASEWORKER),
+    EntExecNoAcc("FL-PRB-GNO-ENG-00123.docx", EXEC_NOT_ACC_EXECUTOR_NAMES),
+    IHT205Miss("FL-PRB-GNO-ENG-00124.docx", IHT205_MISSING),
+    IHT421Await("FL-PRB-GNO-ENG-00125.docx", IHT421_AWAITING),
+    MissInfoWill("FL-PRB-GNO-ENG-00126.docx", MISS_INFO_WILL_OR_DOCICIL),
+    MissInfoChangeApp("FL-PRB-GNO-ENG-00127.docx", INFO_CHANGE_APP),
+    MissInfoDeathCert("FL-PRB-GNO-ENG-00128.docx", INFO_DEATH_CERT),
+    WillAnyOther("FL-PRB-GNO-ENG-00129.docx", ANY_OTHER),
+    WillPlight("FL-PRB-GNO-ENG-00130.docx", PLIGHT),
+    WillSepPages("FL-PRB-GNO-ENG-00131.docx", SEP_PAGES),
+    WillStaple("FL-PRB-GNO-ENG-00132.docx", STAPLE);
 
     private List<ParagraphField> paragraphFields;
     private final String templateName;
