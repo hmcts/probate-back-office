@@ -8,12 +8,14 @@ import uk.gov.hmcts.probate.model.ccd.raw.ParagraphDetail;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Slf4j
 @Component
 @RequiredArgsConstructor
 public class AssembleWill {
+    private static final String ALL_CONDITIONS = "Condition reason e.g. a tear / staple holes / punch holes";
     private final AssemblerBase assemblerBase;
 
     public List<ParagraphDetail> willSeparatePages(ParagraphCode paragraphCode, CaseData caseData) {
@@ -21,12 +23,7 @@ public class AssembleWill {
     }
 
     public List<ParagraphDetail> willPlight(ParagraphCode paragraphCode, CaseData caseData) {
-        List<DynamicListItem> listItems = assemblerBase.create2ListItems("condition", "CONDITION REASON E.G.A TEAR",
-                "staple", "STAPLE HOLES/ PUNCH HOLES");
-
-        List<List<DynamicListItem>> allListItems = new ArrayList<>();
-        allListItems.add(listItems);
-        return assemblerBase.createDynamicListParagraphDetail(paragraphCode, allListItems);
+        return assemblerBase.getTextParagraphDetailWithDefaultValue(paragraphCode, Arrays.asList(ALL_CONDITIONS));
     }
 
     public List<ParagraphDetail> willAnyOther(ParagraphCode paragraphCode, CaseData caseData) {

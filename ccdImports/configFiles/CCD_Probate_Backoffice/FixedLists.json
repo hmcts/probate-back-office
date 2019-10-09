@@ -163,7 +163,7 @@
   {"LiveFrom": "06/01/2017", "ID": "EntParagraphs", "ListElementCode": "EntExecNoAcc", "ListElement": "Executor not accounted for"},
   {"LiveFrom": "06/01/2017", "ID": "IHTParagraphs", "ListElementCode": "IHT205Miss", "ListElement": "IHT205 Missing"},
   {"LiveFrom": "06/01/2017", "ID": "IHTParagraphs", "ListElementCode": "IHT421Await", "ListElement": "Awaiting IHT421"},
-  {"LiveFrom": "06/01/2017", "ID": "MissInfoParagraphs", "ListElementCode": "MissInfoWill", "ListElement": "Original Will"},
+  {"LiveFrom": "06/01/2017", "ID": "MissInfoParagraphs", "ListElementCode": "MissInfoWill", "ListElement": "Original Will or Codicil"},
   {"LiveFrom": "06/01/2017", "ID": "MissInfoParagraphs", "ListElementCode": "MissInfoChangeApp", "ListElement": "Name change of applicant"},
   {"LiveFrom": "06/01/2017", "ID": "MissInfoParagraphs", "ListElementCode": "MissInfoDeathCert", "ListElement": "Death Certificate"},
   {"LiveFrom": "06/01/2017", "ID": "WillParagraphs", "ListElementCode": "WillAnyOther", "ListElement": "Any other wills"},

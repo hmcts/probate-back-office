@@ -148,12 +148,11 @@ public class DocumentGeneratorService {
         return statementOfTruth;
     }
 
-    public Document generateLetter(CallbackRequest callbackRequest) {
+    public Document generateLetter(CallbackRequest callbackRequest, boolean forFinal) {
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
 
         Map<String, Object> placeholders = previewLetterService.addLetterData(caseDetails);
-        String version = callbackRequest.getCaseDetails().getData().getGenerateLetter();
-        if (!YES.equals(version)) {
+        if (!forFinal) {
             Map<String, Object> images = new HashMap<>();
             images.put(WATERMARK, WATERMARK_FILE_PATH);
             Map<String, Object> mappedImages = genericMapperService.mappedBase64Images(images);

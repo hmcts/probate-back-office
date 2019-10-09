@@ -15,19 +15,16 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 public class AssembleMissingInformation {
+    private static final String WILL_OR_CODICIL_VALUE = "Will or Coldicil";
     private final AssemblerBase assemblerBase;
 
     public List<ParagraphDetail> missingInfoWill(ParagraphCode paragraphCode, CaseData caseData) {
-        List<DynamicListItem> listItems = assemblerBase.create2ListItems("will", "WILL",
-                "codicil", "CODICIL");
-        List<List<DynamicListItem>> allListItems = new ArrayList();
-        allListItems.add(listItems);
-        return assemblerBase.createDynamicListParagraphDetail(paragraphCode, allListItems);
+        return assemblerBase.getTextParagraphDetailWithDefaultValue(paragraphCode, Arrays.asList(WILL_OR_CODICIL_VALUE));
     }
 
     public List<ParagraphDetail> missingInfoDeathCert(ParagraphCode paragraphCode, CaseData caseData) {
-        List<DynamicListItem> listItems = assemblerBase.create2ListItems("unclear", "THE ONE SUPPLIED IS UNCLEAR",
-                "notSupplied", "ONE WAS NOT SUPPLIED");
+        List<DynamicListItem> listItems = assemblerBase.create2ListItems("unclear", "The one supplied was unclear",
+                "notSupplied", "One was not supplied");
         List<List<DynamicListItem>> allListItems = new ArrayList();
         allListItems.add(listItems);
 

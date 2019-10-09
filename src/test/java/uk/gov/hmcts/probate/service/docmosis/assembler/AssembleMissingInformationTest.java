@@ -21,33 +21,20 @@ public class AssembleMissingInformationTest {
     @Test
     public void testMissingInfoWill() {
 
-        DynamicListItem dynamicListItem = DynamicListItem.builder().code("will").label("WILL").build();
-        DynamicListItem dynamicListItem2 = DynamicListItem.builder().code("codicil").label("CODICIL").build();
+        CaseData caseData = CaseData.builder().build();
 
-        List<DynamicListItem> dynamicList = new ArrayList<DynamicListItem>();
-        dynamicList.add(dynamicListItem);
-        dynamicList.add(dynamicListItem2);
-
-        List<List<DynamicListItem>> listItems = new ArrayList<List<DynamicListItem>>();
-        listItems.add(dynamicList);
-
-        DynamicList dynamicList1 = DynamicList.builder().listItems(listItems.get(0)).value(DynamicListItem.builder().build()).build();
-
-
-        CaseData caseData = CaseData.builder().primaryApplicantForenames("primary fn").primaryApplicantSurname("primary sn").build();
-
-        List<ParagraphDetail> response = assembleMissingInformation.missingInfoWill(ParagraphCode.IHT421Await, caseData);
-        assertEquals(response.get(0).getDynamicList(), dynamicList1);
-        assertEquals(response.get(0).getCode(), "IHT421Await");
-        assertEquals(response.get(0).getTemplateName(), null);
-        assertEquals(response.get(0).getEnableText(), null);
-        assertEquals(response.get(0).getTextLabel(), null);
-        assertEquals(response.get(0).getTextValue(), null);
+        List<ParagraphDetail> response = assembleMissingInformation.missingInfoWill(ParagraphCode.MissInfoWill, caseData);
+        assertEquals(response.get(0).getDynamicList(), null);
+        assertEquals(response.get(0).getCode(), "MissInfoWill");
+        assertEquals(response.get(0).getTemplateName(), "FL-PRB-GNO-ENG-00126.docx");
+        assertEquals(response.get(0).getEnableText(), YES);
+        assertEquals(response.get(0).getTextLabel(), "Original Will or Codicil");
+        assertEquals(response.get(0).getTextValue(), "Will or Coldicil");
         assertEquals(response.get(0).getEnableTextArea(), null);
         assertEquals(response.get(0).getTextAreaLabel(), null);
         assertEquals(response.get(0).getTextAreaValue(), null);
-        assertEquals(response.get(0).getListLabel(), "Awaiting IHT421");
-        assertEquals(response.get(0).getEnableList(), YES);
+        assertEquals(response.get(0).getListLabel(), null);
+        assertEquals(response.get(0).getEnableList(), null);
         assertEquals(response.get(0).getStaticLabel(), null);
 
     }
@@ -55,8 +42,8 @@ public class AssembleMissingInformationTest {
     @Test
     public void testMissingInfoDeathCert() {
 
-        DynamicListItem dynamicListItem = DynamicListItem.builder().code("unclear").label("THE ONE SUPPLIED IS UNCLEAR").build();
-        DynamicListItem dynamicListItem2 = DynamicListItem.builder().code("notSupplied").label("ONE WAS NOT SUPPLIED").build();
+        DynamicListItem dynamicListItem = DynamicListItem.builder().code("unclear").label("The one supplied was unclear").build();
+        DynamicListItem dynamicListItem2 = DynamicListItem.builder().code("notSupplied").label("One was not supplied").build();
 
         List<DynamicListItem> dynamicList = new ArrayList<DynamicListItem>();
         dynamicList.add(dynamicListItem);

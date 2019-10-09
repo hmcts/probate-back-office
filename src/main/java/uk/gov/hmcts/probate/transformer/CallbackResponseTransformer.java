@@ -28,6 +28,7 @@ import uk.gov.hmcts.probate.transformer.assembly.AssembleLetterTransformer;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
@@ -331,8 +332,7 @@ public class CallbackResponseTransformer {
         probateDocumentsGenerated.add(new CollectionMember<Document>(null, letter));
         responseCaseDataBuilder.probateDocumentsGenerated(probateDocumentsGenerated);
         responseCaseDataBuilder.previewLink(null);
-        responseCaseDataBuilder.paragraphDetails(null);
-        responseCaseDataBuilder.generateLetter(null);
+        responseCaseDataBuilder.paragraphDetails(new ArrayList<>());
 
         return transformResponse(responseCaseDataBuilder.build());
     }
@@ -343,7 +343,6 @@ public class CallbackResponseTransformer {
 
         ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), doTransform);
         responseCaseDataBuilder.previewLink(letterPreview.getDocumentLink());
-        responseCaseDataBuilder.generateLetter(caseData.getGenerateLetter());
 
         return transformResponse(responseCaseDataBuilder.build());
     }

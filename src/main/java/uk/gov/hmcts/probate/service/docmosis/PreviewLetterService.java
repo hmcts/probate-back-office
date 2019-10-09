@@ -45,7 +45,7 @@ public class PreviewLetterService {
                     placeholders.put(paragraphField.getFieldPlaceholderName(), matchedDetail.getTextAreaValue());
                 } else if (YES.equals(matchedDetail.getEnableList())) {
                     placeholders.put(paragraphField.getFieldPlaceholderName(),
-                            matchedDetail.getDynamicList().getValue());
+                            matchedDetail.getDynamicList().getValue().getLabel());
                 }
             }
         }

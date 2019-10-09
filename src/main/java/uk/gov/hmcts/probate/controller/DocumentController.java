@@ -100,7 +100,7 @@ public class DocumentController {
     public ResponseEntity<CallbackResponse> previewLetter(
             @RequestBody CallbackRequest callbackRequest) {
 
-        Document letterPreview = documentGeneratorService.generateLetter(callbackRequest);
+        Document letterPreview = documentGeneratorService.generateLetter(callbackRequest, false);
 
         CallbackResponse response = callbackResponseTransformer.transformCaseForLetterPreview(callbackRequest, letterPreview);
 
@@ -111,7 +111,7 @@ public class DocumentController {
     public ResponseEntity<CallbackResponse> generateLetter(
             @RequestBody CallbackRequest callbackRequest) {
 
-        Document letterPreview = documentGeneratorService.generateLetter(callbackRequest);
+        Document letterPreview = documentGeneratorService.generateLetter(callbackRequest, true);
 
         CallbackResponse response = callbackResponseTransformer.transformCaseForLetter(callbackRequest, letterPreview);
 

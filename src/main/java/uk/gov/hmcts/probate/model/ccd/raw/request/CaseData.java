@@ -498,7 +498,6 @@ public class CaseData {
     private final DocumentLink previewLink;
     @Builder.Default
     private List<CollectionMember<ParagraphDetail>> paragraphDetails = new ArrayList<>();
-    private final String generateLetter;
 
     @SuppressWarnings("squid:S1170")
     @Getter(lazy = true)
