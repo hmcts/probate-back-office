@@ -5,7 +5,7 @@ import java.util.List;
 
 public enum ParagraphField {
 
-    FREE_TEXT("FreeText", "Free Text", "FreeText"),
+    FREE_TEXT("FreeText", "Free Text", "freeText"),
     CASEWORKER("Caseworker", "Caseworker", "caseworkerName"),
     EXEC_NOT_ACC_EXECUTOR_NAMES("EntExecNoAcc", "Executor not accounted for", "nameOfExecutors"),
     IHT205_MISSING("IHT205Miss", "IHT205 Missing", null),
