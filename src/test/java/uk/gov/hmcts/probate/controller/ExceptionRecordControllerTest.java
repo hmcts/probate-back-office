@@ -78,7 +78,7 @@ public class ExceptionRecordControllerTest {
                 .content(exceptionRecordPayloadPA8A)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("Please resolve all warnings before creating this case.")))
+                .andExpect(content().string(containsString("Please resolve all warnings before creating this case")))
                 .andExpect(content().string(containsString("test warning")));
     }
 
@@ -114,8 +114,16 @@ public class ExceptionRecordControllerTest {
                 .content(exceptionRecordPayloadPA8A.replace(deceasedDateOfDeath, badDeceasedDateOfDeath))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("\"warnings\":[\"Text '02022' could not be parsed at index 4\"]")))
                 .andExpect(content().string(containsString("\"errors\":[\"Caveat OCR fields could not be mapped to a case\"]")));
+    }
+
+    @Test
+    public void testErrorReturnedForIncorrectClassification() throws Exception {
+        mockMvc.perform(post("/transform-exception-record")
+                .content(exceptionRecordPayloadPA8A.replace("NEW_APPLICATION", "SUPPLEMENTARY_EVIDENCE"))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("\"errors\":[\"This Exception Record can not be created as a case\"]")));
     }
 
     @Test

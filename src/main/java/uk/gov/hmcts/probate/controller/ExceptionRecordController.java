@@ -66,17 +66,17 @@ public class ExceptionRecordController {
         log.info("Transform exception record data for form type: {}", erRequest.getFormType());
         FormType.isFormTypeValid(erRequest.getFormType());
         FormType formType = FormType.valueOf(erRequest.getFormType());
-        SuccessfulTransformationResponse callbackResponse;
+        SuccessfulTransformationResponse callbackResponse = SuccessfulTransformationResponse.builder().build();
         List<String> errors = new ArrayList<String>();
         List<String> warnings = ocrToCCDMandatoryField
                 .ocrToCCDMandatoryFields(ocrPopulatedValueMapper.ocrPopulatedValueMapper(erRequest.getOcrFields()), formType);
 
         if (!warnings.isEmpty()) {
-            errors.add("Please resolve all warnings before creating this case.");
+            errors.add("Please resolve all warnings before creating this case");
         }
 
         if (!erRequest.getJourneyClassification().name().equals(JourneyClassification.NEW_APPLICATION.name())) {
-            errors.add("This Exception Record can't be created as a case.");
+            errors.add("This Exception Record can not be created as a case");
         }
 
         if (!errors.isEmpty()) {
@@ -84,20 +84,20 @@ public class ExceptionRecordController {
                     .warnings(warnings)
                     .errors(errors)
                     .build();
-            return ResponseEntity.ok(callbackResponse);
+
+        } else {
+            switch (formType) {
+                case PA8A: {
+                    callbackResponse = erService.createCaveatCaseFromExceptionRecord(erRequest, warnings);
+                    return ResponseEntity.ok(callbackResponse);
+                }
+                default: {
+                    // Do nothing
+                }
+            }
         }
 
-        switch (formType) {
-            case PA8A: {
-                callbackResponse = erService.createCaveatCaseFromExceptionRecord(erRequest, warnings);
-                return ResponseEntity.ok(callbackResponse);
-            }
-            default: {
-                log.error("Error no case mappings exists for '{}' form-type.", formType.name());
-            }
-        }
-
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(callbackResponse);
     }
 
     @ExceptionHandler
