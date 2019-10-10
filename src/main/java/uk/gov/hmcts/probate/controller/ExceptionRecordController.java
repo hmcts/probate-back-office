@@ -67,7 +67,7 @@ public class ExceptionRecordController {
         FormType.isFormTypeValid(erRequest.getFormType());
         FormType formType = FormType.valueOf(erRequest.getFormType());
         SuccessfulTransformationResponse callbackResponse = SuccessfulTransformationResponse.builder().build();
-        List<String> errors = new ArrayList<String>();
+        List<String> errors = new ArrayList<>();
         List<String> warnings = ocrToCCDMandatoryField
                 .ocrToCCDMandatoryFields(ocrPopulatedValueMapper.ocrPopulatedValueMapper(erRequest.getOcrFields()), formType);
 
@@ -87,13 +87,11 @@ public class ExceptionRecordController {
 
         } else {
             switch (formType) {
-                case PA8A: {
+                case PA8A:
                     callbackResponse = erService.createCaveatCaseFromExceptionRecord(erRequest, warnings);
                     return ResponseEntity.ok(callbackResponse);
-                }
-                default: {
+                default:
                     // Do nothing
-                }
             }
         }
 
