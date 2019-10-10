@@ -21,6 +21,8 @@ import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
+import uk.gov.hmcts.probate.model.exceptionrecord.CaseCreationDetails;
+import uk.gov.hmcts.reform.probate.model.cases.Address;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -38,10 +40,13 @@ import static uk.gov.hmcts.probate.model.Constants.NO;
 @RunWith(MockitoJUnitRunner.class)
 public class CaveatCallbackResponseTransformerTest {
 
-    private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    private static final DateTimeFormatter dateTimeFormatter = CaveatCallbackResponseTransformer.dateTimeFormatter;
 
-    private static final ApplicationType CAV_APPLICATION_TYPE = PERSONAL;
-    private static final String CAV_REGISTRY_LOCATION = "Leeds";
+    private static final ApplicationType CAV_APPLICATION_TYPE = CaveatCallbackResponseTransformer.DEFAULT_APPLICATION_TYPE;
+    private static final String CAV_REGISTRY_LOCATION = CaveatCallbackResponseTransformer.DEFAULT_REGISTRY_LOCATION;
+
+    private static final String CAV_EXCEPTION_RECORD_CASE_TYPE_ID = CaveatCallbackResponseTransformer.EXCEPTION_RECORD_CASE_TYPE_ID;
+    private static final String CAV_EXCEPTION_RECORD_EVENT_ID = CaveatCallbackResponseTransformer.EXCEPTION_RECORD_EVENT_ID;
 
     private static final String YES = "Yes";
 
@@ -54,11 +59,13 @@ public class CaveatCallbackResponseTransformerTest {
     private static final String CAV_DECEASED_FULL_ALIAS_NAME = "AliasFN AliasSN";
     private static final List<CollectionMember<ProbateFullAliasName>> CAV_DECEASED_FULL_ALIAS_NAME_LIST = emptyList();
     private static final ProbateAddress CAV_DECEASED_ADDRESS = Mockito.mock(ProbateAddress.class);
+    private static final Address CAV_BSP_DECEASED_ADDRESS = Mockito.mock(Address.class);
 
     private static final String CAV_CAVEATOR_FORENAMES = "Forenames";
     private static final String CAV_CAVEATOR_SURNAME = "Surname";
     private static final String CAV_CAVEATOR_EMAIL_ADDRESS = "cav@email.com";
     private static final ProbateAddress CAV_CAVEATOR_ADDRESS = Mockito.mock(ProbateAddress.class);
+    private static final Address CAV_BSP_CAVEATOR_ADDRESS = Mockito.mock(Address.class);
 
     private static final LocalDate CAV_SUBMISSION_DATE = LocalDate.now();
     private static final String CAV_FORMATTED_SUBMISSION_DATE = dateTimeFormatter.format(CAV_SUBMISSION_DATE);
@@ -93,6 +100,8 @@ public class CaveatCallbackResponseTransformerTest {
 
     private CaveatData.CaveatDataBuilder caveatDataBuilder;
 
+    private uk.gov.hmcts.reform.probate.model.cases.caveat.CaveatData bulkScanCaveatData;
+
     @Before
     public void setup() {
 
@@ -116,6 +125,20 @@ public class CaveatCallbackResponseTransformerTest {
                 .applicationSubmittedDate(CAV_SUBMISSION_DATE)
                 .paperForm(YES)
                 .legacyType(CAV_LEGACY_CASE_TYPE);
+
+        bulkScanCaveatData = uk.gov.hmcts.reform.probate.model.cases.caveat.CaveatData.builder()
+                .deceasedForenames(CAV_DECEASED_FORENAMES)
+                .deceasedSurname(CAV_DECEASED_SURNAME)
+                .deceasedDateOfDeath(CAV_DECEASED_DOD)
+                .deceasedDateOfBirth(CAV_DECEASED_DOB)
+                .deceasedAnyOtherNames(false)
+                .deceasedAddress(CAV_BSP_DECEASED_ADDRESS)
+                .caveatorForenames(CAV_CAVEATOR_FORENAMES)
+                .caveatorSurname(CAV_CAVEATOR_SURNAME)
+                .caveatorEmailAddress(CAV_CAVEATOR_EMAIL_ADDRESS)
+                .caveatorAddress(CAV_BSP_CAVEATOR_ADDRESS)
+                .applicationSubmittedDate(CAV_SUBMISSION_DATE)
+                .build();
 
         when(caveatCallbackRequestMock.getCaseDetails()).thenReturn(caveatDetailsMock);
         when(caveatDetailsMock.getData()).thenReturn(caveatDataBuilder.build());
@@ -248,6 +271,33 @@ public class CaveatCallbackResponseTransformerTest {
         assertEquals(Constants.YES, caveatCallbackResponse.getCaveatData().getSendToBulkPrintRequested());
     }
 
+    @Test
+    public void bulkScanCaveatTransform() {
+        CaseCreationDetails caveatDetails = underTest.newCaveatCaseTransform(bulkScanCaveatData);
+        assertCaseCreationDetails(caveatDetails);
+    }
+
+    private void assertCaseCreationDetails(CaseCreationDetails caveatCreationDetails) {
+        uk.gov.hmcts.reform.probate.model.cases.caveat.CaveatData caveatData =
+                (uk.gov.hmcts.reform.probate.model.cases.caveat.CaveatData) caveatCreationDetails.getCaseData();
+        assertEquals(CAV_EXCEPTION_RECORD_EVENT_ID, caveatCreationDetails.getEventId());
+        assertEquals(CAV_EXCEPTION_RECORD_CASE_TYPE_ID, caveatCreationDetails.getCaseTypeId());
+
+        assertEquals(CAV_REGISTRY_LOCATION, caveatData.getRegistryLocation().getName());
+        assertEquals(CAV_APPLICATION_TYPE.name(), caveatData.getApplicationType().getName().toUpperCase());
+        assertEquals(DATE_SUBMITTED.toString(), caveatData.getApplicationSubmittedDate().toString());
+        assertEquals(true, caveatData.getPaperForm());
+
+        assertEquals(CAV_DECEASED_FORENAMES, caveatData.getDeceasedForenames());
+        assertEquals(CAV_DECEASED_SURNAME, caveatData.getDeceasedSurname());
+        assertEquals(CAV_BSP_DECEASED_ADDRESS, caveatData.getDeceasedAddress());
+        assertEquals(CAV_DECEASED_DOD, caveatData.getDeceasedDateOfDeath());
+        assertEquals(CAV_DECEASED_DOB, caveatData.getDeceasedDateOfBirth());
+        assertEquals(false, caveatData.getDeceasedAnyOtherNames());
+        assertEquals(CAV_BSP_CAVEATOR_ADDRESS, caveatData.getCaveatorAddress());
+        assertEquals(CAV_CAVEATOR_FORENAMES, caveatData.getCaveatorForenames());
+        assertEquals(CAV_CAVEATOR_SURNAME, caveatData.getCaveatorSurname());
+    }
 
     private void assertCommon(CaveatCallbackResponse caveatCallbackResponse) {
         assertCommonDetails(caveatCallbackResponse);
