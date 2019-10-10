@@ -1,7 +1,5 @@
 package uk.gov.hmcts.probate.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -118,12 +116,6 @@ public class DocumentController {
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping(path = "/generateLetter1", consumes = APPLICATION_JSON_UTF8_VALUE, produces = {APPLICATION_JSON_VALUE})
-    public ResponseEntity<String> generateLetter1(
-            @RequestBody String callbackRequest) {
-
-        return ResponseEntity.ok(callbackRequest);
-    }
 
     @PostMapping(path = "/generate-grant-draft", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<CallbackResponse> generateGrantDraft(@RequestBody CallbackRequest callbackRequest) {
