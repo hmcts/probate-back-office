@@ -1488,7 +1488,7 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "totalFee", "UserRole": "citizen", "CRUD": "CRU"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "paymentReferenceNumber", "UserRole": "citizen", "CRUD": "CRU"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "declaration", "UserRole": "citizen", "CRUD": "CRU"},
-  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "legalStatement", "UserRole": "citizen", "CRUD": "CRU"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "legalStatement", "UserRole": "citizen", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "softStop", "UserRole": "citizen", "CRUD": "CRU"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "solsSolicitorFirmName", "UserRole": "citizen", "CRUD": "CRU"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "solsSolicitorAddress", "UserRole": "citizen", "CRUD": "CRU"},
