@@ -15,12 +15,14 @@ import uk.gov.hmcts.probate.model.ccd.raw.AdoptedRelative;
 import uk.gov.hmcts.probate.model.ccd.raw.AliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.AttorneyApplyingOnBehalfOf;
 import uk.gov.hmcts.probate.model.ccd.raw.BulkPrint;
+import uk.gov.hmcts.probate.model.ccd.raw.Categories;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Declaration;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.EstateItem;
 import uk.gov.hmcts.probate.model.ccd.raw.LegalStatement;
+import uk.gov.hmcts.probate.model.ccd.raw.ParagraphDetail;
 import uk.gov.hmcts.probate.model.ccd.raw.Payment;
 import uk.gov.hmcts.probate.model.ccd.raw.ProbateAliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
@@ -29,6 +31,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.StopReason;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Builder
@@ -281,4 +284,9 @@ public class ResponseCaseData {
     private final String boRequestInfoSendToBulkPrintRequested;
     private final List<CollectionMember<ExecutorsApplyingNotification>> executorsApplyingNotifications;
     private final List<CollectionMember<Document>> probateSotDocumentsGenerated;
+
+    private final Categories categories;
+    private final DocumentLink previewLink;
+    @Builder.Default
+    private List<CollectionMember<ParagraphDetail>> paragraphDetails = new ArrayList<>();
 }

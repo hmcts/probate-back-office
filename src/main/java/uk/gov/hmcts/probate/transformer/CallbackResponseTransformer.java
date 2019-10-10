@@ -23,10 +23,12 @@ import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData.ResponseCaseDataBuilder;
 import uk.gov.hmcts.probate.model.fee.FeeServiceResponse;
 import uk.gov.hmcts.probate.service.ExecutorsApplyingNotificationService;
+import uk.gov.hmcts.probate.transformer.assembly.AssembleLetterTransformer;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
@@ -61,13 +63,15 @@ public class CallbackResponseTransformer {
 
     private static final String CASE_TYPE_DEFAULT = GRANT_OF_PROBATE_NAME;
     private final DocumentTransformer documentTransformer;
+    private final AssembleLetterTransformer assembleLetterTransformer;
     private final ExecutorsApplyingNotificationService executorsApplyingNotificationService;
 
     static final String PAYMENT_METHOD_VALUE_FEE_ACCOUNT = "fee account";
     static final String PAYMENT_REFERENCE_FEE_PREFIX = "Fee account PBA-";
     static final String PAYMENT_REFERENCE_CHEQUE = "Cheque (payable to ‘HM Courts & Tribunals Service’)";
 
-    private static final DocumentType[] LEGAL_STATEMENTS = {LEGAL_STATEMENT_PROBATE, LEGAL_STATEMENT_INTESTACY, LEGAL_STATEMENT_ADMON};
+    private static final DocumentType[] LEGAL_STATEMENTS = {LEGAL_STATEMENT_PROBATE, LEGAL_STATEMENT_INTESTACY,
+        LEGAL_STATEMENT_ADMON};
     private static final ApplicationType DEFAULT_APPLICATION_TYPE = SOLICITOR;
     private static final String DEFAULT_REGISTRY_LOCATION = CTSC;
     private static final String DEFAULT_IHT_FORM_ID = "IHT205";
@@ -303,15 +307,52 @@ public class CallbackResponseTransformer {
 
     public CallbackResponse transformCase(CallbackRequest callbackRequest) {
 
-
-        boolean transform = callbackRequest.getCaseDetails().getData().getApplicationType() == ApplicationType.SOLICITOR
-                && callbackRequest.getCaseDetails().getData().getRecordId() == null
-                && !callbackRequest.getCaseDetails().getData().getPaperForm().equalsIgnoreCase(ANSWER_YES);
+        boolean transform = doTransform(callbackRequest);
 
         ResponseCaseData responseCaseData = getResponseCaseData(callbackRequest.getCaseDetails(), transform)
                 .build();
 
         return transformResponse(responseCaseData);
+    }
+
+    public CallbackResponse transformCaseForLetter(CallbackRequest callbackRequest) {
+        boolean doTransform = doTransform(callbackRequest);
+        ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), doTransform);
+        assembleLetterTransformer.setupAllLetterParagraphDetails(callbackRequest.getCaseDetails(), responseCaseDataBuilder);
+
+        return transformResponse(responseCaseDataBuilder.build());
+    }
+
+    public CallbackResponse transformCaseForLetter(CallbackRequest callbackRequest, Document letter) {
+        CaseData caseData = callbackRequest.getCaseDetails().getData();
+        boolean doTransform = doTransform(callbackRequest);
+        ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), doTransform);
+
+        List<CollectionMember<Document>> probateDocumentsGenerated = caseData.getProbateDocumentsGenerated();
+        probateDocumentsGenerated.add(new CollectionMember<Document>(null, letter));
+        responseCaseDataBuilder.probateDocumentsGenerated(probateDocumentsGenerated);
+        responseCaseDataBuilder.previewLink(null);
+        responseCaseDataBuilder.paragraphDetails(new ArrayList<>());
+
+        return transformResponse(responseCaseDataBuilder.build());
+    }
+
+    public CallbackResponse transformCaseForLetterPreview(CallbackRequest callbackRequest, Document letterPreview) {
+        CaseData caseData = callbackRequest.getCaseDetails().getData();
+        boolean doTransform = doTransform(callbackRequest);
+
+        ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), doTransform);
+        responseCaseDataBuilder.previewLink(letterPreview.getDocumentLink());
+
+        return transformResponse(responseCaseDataBuilder.build());
+    }
+
+    private boolean doTransform(CallbackRequest callbackRequest) {
+        CaseData caseData = callbackRequest.getCaseDetails().getData();
+        return caseData.getApplicationType() == ApplicationType.SOLICITOR
+                && caseData.getRecordId() == null
+                && !caseData.getPaperForm().equalsIgnoreCase(ANSWER_YES);
+
     }
 
     public CallbackResponse paperForm(CallbackRequest callbackRequest) {

@@ -11,12 +11,14 @@ import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.service.docmosis.GenericMapperService;
+import uk.gov.hmcts.probate.service.docmosis.PreviewLetterService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import static uk.gov.hmcts.probate.model.Constants.NO;
+import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_REISSUE_DRAFT;
@@ -38,6 +40,7 @@ public class DocumentGeneratorService {
     private final PDFManagementService pdfManagementService;
     private final DocumentService documentService;
     private final GenericMapperService genericMapperService;
+    private final PreviewLetterService previewLetterService;
 
     private static final String GRANT_OF_PROBATE = "gop";
     private static final String ADMON_WILL = "admonWill";
@@ -145,6 +148,22 @@ public class DocumentGeneratorService {
         return statementOfTruth;
     }
 
+    public Document generateLetter(CallbackRequest callbackRequest, boolean forFinal) {
+        CaseDetails caseDetails = callbackRequest.getCaseDetails();
+
+        Map<String, Object> placeholders = previewLetterService.addLetterData(caseDetails);
+        if (!forFinal) {
+            Map<String, Object> images = new HashMap<>();
+            images.put(WATERMARK, WATERMARK_FILE_PATH);
+            Map<String, Object> mappedImages = genericMapperService.mappedBase64Images(images);
+            placeholders.putAll(mappedImages);
+        }
+
+        Document letterDocument = pdfManagementService.generateDocmosisDocumentAndUpload(placeholders,
+                DocumentType.ASSEMBLED_LETTER);
+        return letterDocument;
+    }
+
     private Document generateSolicitorSoT(CallbackRequest callbackRequest) {
         Document statementOfTruth;
         switch (callbackRequest.getCaseDetails().getData().getCaseType()) {
@@ -204,4 +223,5 @@ public class DocumentGeneratorService {
 
         return document;
     }
+
 }

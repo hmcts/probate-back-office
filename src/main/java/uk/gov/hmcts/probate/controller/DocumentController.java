@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -83,6 +84,39 @@ public class DocumentController {
     private static final String DRAFT = "preview";
     private static final String FINAL = "final";
 
+    @PostMapping(path = "/assembleLetter", consumes = APPLICATION_JSON_UTF8_VALUE, produces = {APPLICATION_JSON_VALUE})
+    public ResponseEntity<CallbackResponse> assembleLetter(
+            @RequestBody CallbackRequest callbackRequest,
+            BindingResult bindingResult) {
+
+        CallbackResponse response = callbackResponseTransformer.transformCaseForLetter(callbackRequest);
+
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping(path = "/previewLetter", consumes = APPLICATION_JSON_UTF8_VALUE, produces = {APPLICATION_JSON_VALUE})
+    public ResponseEntity<CallbackResponse> previewLetter(
+            @RequestBody CallbackRequest callbackRequest) {
+
+        Document letterPreview = documentGeneratorService.generateLetter(callbackRequest, false);
+
+        CallbackResponse response = callbackResponseTransformer.transformCaseForLetterPreview(callbackRequest, letterPreview);
+
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping(path = "/generateLetter", consumes = APPLICATION_JSON_UTF8_VALUE, produces = {APPLICATION_JSON_VALUE})
+    public ResponseEntity<CallbackResponse> generateLetter(
+            @RequestBody CallbackRequest callbackRequest) {
+
+        Document letterPreview = documentGeneratorService.generateLetter(callbackRequest, true);
+
+        CallbackResponse response = callbackResponseTransformer.transformCaseForLetter(callbackRequest, letterPreview);
+
+        return ResponseEntity.ok(response);
+    }
+
+
     @PostMapping(path = "/generate-grant-draft", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<CallbackResponse> generateGrantDraft(@RequestBody CallbackRequest callbackRequest) {
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
@@ -117,8 +151,8 @@ public class DocumentController {
         }
 
         DocumentType[] documentTypes = {DIGITAL_GRANT_DRAFT, INTESTACY_GRANT_DRAFT, ADMON_WILL_GRANT_DRAFT,
-                                        DIGITAL_GRANT_REISSUE_DRAFT, INTESTACY_GRANT_REISSUE_DRAFT,
-                                        ADMON_WILL_GRANT_REISSUE_DRAFT, DIGITAL_GRANT_REISSUE};
+            DIGITAL_GRANT_REISSUE_DRAFT, INTESTACY_GRANT_REISSUE_DRAFT,
+            ADMON_WILL_GRANT_REISSUE_DRAFT, DIGITAL_GRANT_REISSUE};
         for (DocumentType documentType : documentTypes) {
             documentService.expire(callbackRequest, documentType);
         }
@@ -189,8 +223,8 @@ public class DocumentController {
         documents.add(coverSheet);
 
         DocumentType[] documentTypes = {DIGITAL_GRANT_DRAFT, INTESTACY_GRANT_DRAFT, ADMON_WILL_GRANT_DRAFT,
-                                        DIGITAL_GRANT_REISSUE_DRAFT, INTESTACY_GRANT_REISSUE_DRAFT,
-                                        ADMON_WILL_GRANT_REISSUE_DRAFT};
+            DIGITAL_GRANT_REISSUE_DRAFT, INTESTACY_GRANT_REISSUE_DRAFT,
+            ADMON_WILL_GRANT_REISSUE_DRAFT};
         for (DocumentType documentType : documentTypes) {
             documentService.expire(callbackRequest, documentType);
         }
