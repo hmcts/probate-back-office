@@ -656,11 +656,13 @@ public class CallbackResponseTransformer {
         if (isSolsEmailSet(caseData)) {
             builder
                     .boEmailDocsReceivedNotification(ANSWER_YES)
-                    .boEmailRequestInfoNotification(ANSWER_YES);
+                    .boEmailRequestInfoNotification(ANSWER_YES)
+                    .boEmailGrantIssuedNotification(ANSWER_YES);
         } else {
             builder
                     .boEmailDocsReceivedNotification(ANSWER_NO)
-                    .boEmailRequestInfoNotification(ANSWER_NO);
+                    .boEmailRequestInfoNotification(ANSWER_NO)
+                    .boEmailGrantIssuedNotification(ANSWER_NO);
         }
 
         if (!isCodicil(caseData)) {
@@ -751,11 +753,13 @@ public class CallbackResponseTransformer {
         if (isSolsEmailSet(caseData)) {
             builder
                     .boEmailDocsReceivedNotification(ANSWER_YES)
-                    .boEmailRequestInfoNotification(ANSWER_YES);
+                    .boEmailRequestInfoNotification(ANSWER_YES)
+                    .boEmailGrantIssuedNotification(ANSWER_YES);
         } else {
             builder
                     .boEmailDocsReceivedNotification(ANSWER_NO)
-                    .boEmailRequestInfoNotification(ANSWER_NO);
+                    .boEmailRequestInfoNotification(ANSWER_NO)
+                    .boEmailGrantIssuedNotification(ANSWER_NO);
         }
 
         if (!isCodicil(caseData)) {
