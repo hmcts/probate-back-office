@@ -47,8 +47,8 @@ public class AssembleWillTest {
 
     @Test
     public void testWillAnyOther() {
-        DynamicListItem dynamicListItem = DynamicListItem.builder().code("completeLimit").label("COMPLETE LIMITATION").build();
-        DynamicListItem dynamicListItem2 = DynamicListItem.builder().code("exemption").label("EXEMPTION FROM THE WILL").build();
+        DynamicListItem dynamicListItem = DynamicListItem.builder().code("completeLimit").label("Complete limitation").build();
+        DynamicListItem dynamicListItem2 = DynamicListItem.builder().code("exemption").label("Exemption from the will").build();
 
         List<DynamicListItem> dynamicList = new ArrayList<DynamicListItem>();
         dynamicList.add(dynamicListItem);

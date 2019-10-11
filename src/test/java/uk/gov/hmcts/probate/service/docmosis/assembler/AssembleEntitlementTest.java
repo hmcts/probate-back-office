@@ -57,7 +57,7 @@ public class AssembleEntitlementTest {
         assertEquals("FL-PRB-GNO-ENG-00125.docx", response.get(0).getTemplateName());
         assertEquals("Text", response.get(0).getEnableType().name());
         assertEquals("Awaiting IHT421", response.get(0).getLabel());
-        assertEquals("primary fn primary sn,Bob Smith", response.get(0).getTextValue());
+        assertEquals("primary fn primary sn, Bob Smith", response.get(0).getTextValue());
         assertEquals(null, response.get(0).getTextAreaValue());
     }
 
