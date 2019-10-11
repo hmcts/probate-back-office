@@ -46,7 +46,7 @@ public class AssemblerBaseTest {
 
         List<ParagraphDetail> response = assemblerBase.getTextParagraphDetails(ParagraphCode.EntExecNoAcc);
         assertEquals("Text", response.get(0).getEnableType().name());
-        assertEquals("Executor not accounted for", response.get(0).getLabel());
+        assertEquals("Executor(s) not accounted for", response.get(0).getLabel());
         assertEquals("EntExecNoAcc", response.get(0).getCode());
         assertEquals("FL-PRB-GNO-ENG-00123.docx", response.get(0).getTemplateName());
     }
