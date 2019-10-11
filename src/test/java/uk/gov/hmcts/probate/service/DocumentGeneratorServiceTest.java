@@ -110,7 +110,9 @@ public class DocumentGeneratorServiceTest {
         CaseDetails caseDetailsSolsGop = new CaseDetails(CaseData.builder()
                 .caseType("gop")
                 .registryLocation("Bristol")
-                .applicationType(ApplicationType.SOLICITOR).build(),
+                .applicationType(ApplicationType.SOLICITOR)
+                .solsSolicitorAddress(SolsAddress.builder().build())
+                .solsSolicitorFirmName("firmName").build(),
                 LAST_MODIFIED, CASE_ID);
         callbackRequestSolsGop = new CallbackRequest(caseDetailsSolsGop);
 

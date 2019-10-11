@@ -18,7 +18,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static uk.gov.hmcts.probate.model.Constants.NO;
-import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_REISSUE_DRAFT;
@@ -37,11 +36,6 @@ import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE;
 @RequiredArgsConstructor
 public class DocumentGeneratorService {
 
-    private final PDFManagementService pdfManagementService;
-    private final DocumentService documentService;
-    private final GenericMapperService genericMapperService;
-    private final PreviewLetterService previewLetterService;
-
     private static final String GRANT_OF_PROBATE = "gop";
     private static final String ADMON_WILL = "admonWill";
     private static final String INTESTACY = "intestacy";
@@ -56,6 +50,10 @@ public class DocumentGeneratorService {
     private static final String FINAL = "final";
     private static final String FULL_REDEC = "fullRedec";
     private static final String APP_NAME = "applicantName";
+    private final PDFManagementService pdfManagementService;
+    private final DocumentService documentService;
+    private final GenericMapperService genericMapperService;
+    private final PreviewLetterService previewLetterService;
 
     public Document generateGrantReissue(CallbackRequest callbackRequest, String version) {
         Map<String, Object> images;

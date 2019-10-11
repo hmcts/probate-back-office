@@ -108,10 +108,22 @@ public class DocumentController {
     @PostMapping(path = "/generateLetter", consumes = APPLICATION_JSON_UTF8_VALUE, produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> generateLetter(
             @RequestBody CallbackRequest callbackRequest) {
+        CaseData caseData = callbackRequest.getCaseDetails().getData();
+        String letterId = null;
 
-        Document letterPreview = documentGeneratorService.generateLetter(callbackRequest, true);
+        List<Document> documents = new ArrayList<>();
+        Document letter = documentGeneratorService.generateLetter(callbackRequest, true);
+        Document coversheet = documentGeneratorService.generateCoversheet(callbackRequest);
 
-        CallbackResponse response = callbackResponseTransformer.transformCaseForLetter(callbackRequest, letterPreview);
+        documents.add(letter);
+        documents.add(coversheet);
+
+        if (caseData.isBoAssembleLetterSendToBulkPrintRequested()) {
+            letterId = bulkPrintService.sendToBulkPrint(callbackRequest, coversheet,
+                    letter, true);
+        }
+
+        CallbackResponse response = callbackResponseTransformer.transformCaseForLetter(callbackRequest, documents, letterId);
 
         return ResponseEntity.ok(response);
     }
