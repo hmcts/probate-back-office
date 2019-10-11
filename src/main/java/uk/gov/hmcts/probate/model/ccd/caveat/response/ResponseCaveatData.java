@@ -10,6 +10,7 @@ import uk.gov.hmcts.probate.model.ccd.ProbateFullAliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.BulkPrint;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
+import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 
 import java.util.List;
@@ -49,6 +50,7 @@ public class ResponseCaveatData {
 
     private final List<CollectionMember<UploadDocument>> documentsUploaded;
     private final List<CollectionMember<Document>> documentsGenerated;
+    private final List<CollectionMember<ScannedDocument>> scannedDocuments;
     private final List<CollectionMember<Document>> notificationsGenerated;
     private final List<CollectionMember<BulkPrint>> bulkPrintId;
 

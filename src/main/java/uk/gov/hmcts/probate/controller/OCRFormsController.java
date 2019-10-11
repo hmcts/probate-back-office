@@ -16,9 +16,10 @@ import uk.gov.hmcts.probate.model.ccd.ocr.ValidationResponse;
 import uk.gov.hmcts.probate.model.ccd.ocr.ValidationResponseStatus;
 import uk.gov.hmcts.probate.model.ocr.OCRRequest;
 import uk.gov.hmcts.probate.service.ocr.FormType;
-import uk.gov.hmcts.probate.service.ocr.OCRMapper;
+import uk.gov.hmcts.probate.service.ocr.OCRPopulatedValueMapper;
 import uk.gov.hmcts.probate.service.ocr.OCRToCCDMandatoryField;
 
+import javax.validation.Valid;
 import java.util.List;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
@@ -31,7 +32,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @Api(tags = "Manage bulk scanning data")
 public class OCRFormsController {
 
-    private final OCRMapper ocrMapper;
+    private final OCRPopulatedValueMapper ocrPopulatedValueMapper;
     private final OCRToCCDMandatoryField ocrToCCDMandatoryField;
 
     @ApiOperation(value = "Pre-validate OCR data", notes = "Will return validation errors as warnings. ")
@@ -43,11 +44,11 @@ public class OCRFormsController {
     })
     @PostMapping(path = "/{form-type}/validate-ocr", consumes = APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<ValidationResponse> validateExceptionRecord(@PathVariable("form-type") String formType,
-                                                                      @RequestBody OCRRequest ocrRequest) {
+                                                                      @Valid @RequestBody OCRRequest ocrRequest) {
         log.info("Validate ocr data for form type: {}", formType);
         FormType.isFormTypeValid(formType);
         List<String> warnings = ocrToCCDMandatoryField
-                .ocrToCCDMandatoryFields(ocrMapper.ocrMapper(ocrRequest.getOcrFields()),
+                .ocrToCCDMandatoryFields(ocrPopulatedValueMapper.ocrPopulatedValueMapper(ocrRequest.getOcrFields()),
                         FormType.valueOf(formType));
 
         ValidationResponse validationResponse =
