@@ -20,15 +20,15 @@ public class AssembleEntitlement {
     public List<ParagraphDetail> executorNotAccountedFor(ParagraphCode paragraphCode, CaseData caseData) {
         StringBuilder allApplicantsBuilder = new StringBuilder()
                 .append(caseData.getPrimaryApplicantForenames() + " " + caseData.getPrimaryApplicantSurname())
-                .append(",");
+                .append(", ");
         if (caseData.getAdditionalExecutorsApplying() != null) {
             for (CollectionMember<AdditionalExecutorApplying> executor : caseData.getAdditionalExecutorsApplying()) {
-                allApplicantsBuilder.append(executor.getValue().getApplyingExecutorName()).append(",");
+                allApplicantsBuilder.append(executor.getValue().getApplyingExecutorName()).append(", ");
             }
         }
 
         String applicants = allApplicantsBuilder.toString();
-        applicants = applicants.substring(0, applicants.length() - 1);
+        applicants = applicants.substring(0, applicants.length() - 2);
 
         List<String> fieldValues = Arrays.asList(applicants);
         return assemblerBase.getTextParagraphDetailWithDefaultValue(paragraphCode, fieldValues);

@@ -27,8 +27,8 @@ public class AssembleWill {
     }
 
     public List<ParagraphDetail> willAnyOther(ParagraphCode paragraphCode, CaseData caseData) {
-        List<DynamicListItem> listItems = assemblerBase.create2ListItems("completeLimit", "COMPLETE LIMITATION",
-                "exemption", "EXEMPTION FROM THE WILL");
+        List<DynamicListItem> listItems = assemblerBase.create2ListItems("completeLimit", "Complete limitation",
+                "exemption", "Exemption from the will");
 
         List<List<DynamicListItem>> allListItems = new ArrayList<>();
         allListItems.add(listItems);
