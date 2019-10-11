@@ -330,7 +330,7 @@ public class CallbackResponseTransformer {
         documents.forEach(document -> documentTransformer.addDocument(callbackRequest, document, false));
         ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), doTransform);
 
-        if (letterId != null){
+        if (letterId != null) {
             CollectionMember<BulkPrint> bulkPrint = buildBulkPrint(letterId, ASSEMBLED_LETTER.getTemplateName());
             appendToBulkPrintCollection(bulkPrint, callbackRequest.getCaseDetails().getData());
             responseCaseDataBuilder

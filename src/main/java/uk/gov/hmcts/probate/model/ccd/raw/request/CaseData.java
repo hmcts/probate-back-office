@@ -616,7 +616,9 @@ public class CaseData {
         return YES.equals(getBoRequestInfoSendToBulkPrint());
     }
 
-    public boolean isBoAssembleLetterSendToBulkPrintRequested() { return YES.equals(getBoAssembleLetterSendToBulkPrint()); }
+    public boolean isBoAssembleLetterSendToBulkPrintRequested() {
+        return YES.equals(getBoAssembleLetterSendToBulkPrint());
+    }
 
     private String convertDate(LocalDate dateToConvert) {
         if (dateToConvert == null) {
