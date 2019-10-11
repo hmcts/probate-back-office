@@ -10,10 +10,10 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class OCRMapperTest {
+public class OCRPopulatedValueMapperTest {
 
     private List<OCRField> ocrFields = new ArrayList<>();
-    private OCRMapper ocrMapper = new OCRMapper();
+    private OCRPopulatedValueMapper ocrPopulatedValueMapper = new OCRPopulatedValueMapper();
 
     @Before
     public void setup() {
@@ -46,29 +46,29 @@ public class OCRMapperTest {
 
     @Test
     public void testFieldsAreAddedSuccessfully() {
-        assertTrue(ocrMapper.ocrMapper(ocrFields).contains(ocrFields.get(0)));
+        assertTrue(ocrPopulatedValueMapper.ocrPopulatedValueMapper(ocrFields).contains(ocrFields.get(0)));
     }
 
     @Test
     public void testAllPopulatedFieldsAreAdded() {
-        assertEquals(5, ocrMapper.ocrMapper(ocrFields).size());
+        assertEquals(5, ocrPopulatedValueMapper.ocrPopulatedValueMapper(ocrFields).size());
     }
 
     @Test
     public void testNullFieldValueIsNotAdded() {
         ocrFields.add(OCRField.builder().name("test").description("test").build());
-        assertEquals(5, ocrMapper.ocrMapper(ocrFields).size());
+        assertEquals(5, ocrPopulatedValueMapper.ocrPopulatedValueMapper(ocrFields).size());
     }
 
     @Test
     public void testNullObjectsAreNotAdded() {
         ocrFields.add(OCRField.builder().build());
-        assertEquals(5, ocrMapper.ocrMapper(ocrFields).size());
+        assertEquals(5, ocrPopulatedValueMapper.ocrPopulatedValueMapper(ocrFields).size());
     }
 
     @Test
     public void testEmptyValueFieldsAreNotAdded() {
         ocrFields.add(OCRField.builder().name("test").value("").description("test").build());
-        assertEquals(5, ocrMapper.ocrMapper(ocrFields).size());
+        assertEquals(5, ocrPopulatedValueMapper.ocrPopulatedValueMapper(ocrFields).size());
     }
 }
