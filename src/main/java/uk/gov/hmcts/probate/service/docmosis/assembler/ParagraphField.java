@@ -7,7 +7,7 @@ public enum ParagraphField {
 
     FREE_TEXT("FreeText", "Free Text", "freeText"),
     CASEWORKER("Caseworker", "Caseworker", "caseworkerName"),
-    EXEC_NOT_ACC_EXECUTOR_NAMES("EntExecNoAcc", "Executor(s) not accounted for", "nameOfExecutors"),
+    EXEC_NOT_ACC_EXECUTOR_NAMES("EntExecNoAcc", "Executor not accounted for", "nameOfExecutors"),
     IHT205_MISSING("IHT205Miss", "IHT205 Missing", null),
     IHT421_AWAITING("IHT421Await", "Awaiting IHT421", null),
     MISS_INFO_WILL_OR_DOCICIL("MissInfoWill", "Original Will or Codicil", "willOrCodicil"),
