@@ -91,7 +91,12 @@ public class ExceptionRecordController {
                     callbackResponse = erService.createCaveatCaseFromExceptionRecord(erRequest, warnings);
                     return ResponseEntity.ok(callbackResponse);
                 default:
-                    // Do nothing
+                    errors.add("This Exception Record form currently has no case mapping");
+                    callbackResponse = SuccessfulTransformationResponse.builder()
+                            .warnings(warnings)
+                            .errors(errors)
+                            .build();
+                    return ResponseEntity.ok(callbackResponse);
             }
         }
 
