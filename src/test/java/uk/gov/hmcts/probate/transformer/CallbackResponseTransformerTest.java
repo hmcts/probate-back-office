@@ -377,6 +377,7 @@ public class CallbackResponseTransformerTest {
                 .statementOfTruthDocument(SOT)
                 .boStopDetailsDeclarationParagraph(YES)
                 .boEmailRequestInfoNotificationRequested(YES)
+                .boAssembleLetterSendToBulkPrintRequested(YES)
                 .boRequestInfoSendToBulkPrintRequested(YES)
                 .executorsApplyingNotifications(EXECEUTORS_APPLYING_NOTIFICATION);
 
@@ -1692,7 +1693,7 @@ public class CallbackResponseTransformerTest {
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-        CallbackResponse callbackResponse = underTest.transformCaseForLetter(callbackRequestMock, letter);
+        CallbackResponse callbackResponse = underTest.transformCaseForLetter(callbackRequestMock, Arrays.asList(letter), null);
 
         assertCommon(callbackResponse);
         assertEquals(EMPTY_LIST, callbackResponse.getData().getParagraphDetails());
@@ -1934,6 +1935,7 @@ public class CallbackResponseTransformerTest {
         assertEquals(YES, callbackResponse.getData().getBoStopDetailsDeclarationParagraph());
         assertEquals(YES, callbackResponse.getData().getBoEmailRequestInfoNotification());
         assertEquals(YES, callbackResponse.getData().getBoEmailRequestInfoNotificationRequested());
+        assertEquals(YES, callbackResponse.getData().getBoAssembleLetterSendToBulkPrintRequested());
         assertEquals(YES, callbackResponse.getData().getBoRequestInfoSendToBulkPrint());
         assertEquals(YES, callbackResponse.getData().getBoRequestInfoSendToBulkPrintRequested());
         assertEquals(EXECEUTORS_APPLYING_NOTIFICATION, callbackResponse.getData().getExecutorsApplyingNotifications());

@@ -509,6 +509,11 @@ public class CaseData {
     private final String boRequestInfoSendToBulkPrintRequested;
 
     @Getter(lazy = true)
+    private final String boAssembleLetterSendToBulkPrint = YES;
+
+    private final String boAssembleLetterSendToBulkPrintRequested;
+
+    @Getter(lazy = true)
     private final List<CollectionMember<AdditionalExecutor>> executorsApplyingForLegalStatement = getAllExecutors(true);
 
     @Getter(lazy = true)
@@ -610,6 +615,8 @@ public class CaseData {
     public boolean isBoRequestInfoSendToBulkPrintRequested() {
         return YES.equals(getBoRequestInfoSendToBulkPrint());
     }
+
+    public boolean isBoAssembleLetterSendToBulkPrintRequested() { return YES.equals(getBoAssembleLetterSendToBulkPrint()); }
 
     private String convertDate(LocalDate dateToConvert) {
         if (dateToConvert == null) {

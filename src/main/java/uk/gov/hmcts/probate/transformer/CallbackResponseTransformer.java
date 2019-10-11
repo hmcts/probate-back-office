@@ -1,6 +1,7 @@
 package uk.gov.hmcts.probate.transformer;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 import uk.gov.hmcts.probate.model.ApplicationType;
@@ -34,7 +35,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import org.apache.commons.lang3.StringUtils;
 
 import static java.util.Collections.EMPTY_LIST;
 import static java.util.Optional.ofNullable;
@@ -44,6 +44,7 @@ import static uk.gov.hmcts.probate.model.Constants.DATE_OF_DEATH_TYPE_DEFAULT;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_REISSUE;
+import static uk.gov.hmcts.probate.model.DocumentType.ASSEMBLED_LETTER;
 import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT_STOPPED;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_REISSUE;
@@ -323,16 +324,25 @@ public class CallbackResponseTransformer {
         return transformResponse(responseCaseDataBuilder.build());
     }
 
-    public CallbackResponse transformCaseForLetter(CallbackRequest callbackRequest, Document letter) {
+    public CallbackResponse transformCaseForLetter(CallbackRequest callbackRequest, List<Document> documents, String letterId) {
         CaseData caseData = callbackRequest.getCaseDetails().getData();
         boolean doTransform = doTransform(callbackRequest);
+        documents.forEach(document -> documentTransformer.addDocument(callbackRequest, document, false));
         ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), doTransform);
 
-        List<CollectionMember<Document>> probateDocumentsGenerated = caseData.getProbateDocumentsGenerated();
-        probateDocumentsGenerated.add(new CollectionMember<Document>(null, letter));
-        responseCaseDataBuilder.probateDocumentsGenerated(probateDocumentsGenerated);
-        responseCaseDataBuilder.previewLink(null);
-        responseCaseDataBuilder.paragraphDetails(new ArrayList<>());
+        if (letterId != null){
+            CollectionMember<BulkPrint> bulkPrint = buildBulkPrint(letterId, ASSEMBLED_LETTER.getTemplateName());
+            appendToBulkPrintCollection(bulkPrint, callbackRequest.getCaseDetails().getData());
+            responseCaseDataBuilder
+                    .bulkPrintId(caseData.getBulkPrintId())
+                    .boAssembleLetterSendToBulkPrintRequested(caseData.getBoCaveatStopSendToBulkPrint())
+                    .build();
+        }
+
+        responseCaseDataBuilder
+                .previewLink(null)
+                .paragraphDetails(new ArrayList<>())
+                .build();
 
         return transformResponse(responseCaseDataBuilder.build());
     }
@@ -489,6 +499,8 @@ public class CallbackResponseTransformer {
                 .boEmailDocsReceivedNotificationRequested(caseData.getBoEmailDocsReceivedNotificationRequested())
                 .boGrantReissueSendToBulkPrint(caseData.getBoGrantReissueSendToBulkPrint())
                 .boGrantReissueSendToBulkPrintRequested(caseData.getBoGrantReissueSendToBulkPrintRequested())
+                .boAssembleLetterSendToBulkPrint(caseData.getBoAssembleLetterSendToBulkPrint())
+                .boAssembleLetterSendToBulkPrintRequested(caseData.getBoAssembleLetterSendToBulkPrintRequested())
 
                 .recordId(caseData.getRecordId())
                 .legacyType(caseData.getLegacyType())
