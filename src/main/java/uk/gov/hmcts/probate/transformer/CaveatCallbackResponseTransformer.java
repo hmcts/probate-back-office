@@ -3,9 +3,7 @@ package uk.gov.hmcts.probate.transformer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.model.ApplicationType;
-import uk.gov.hmcts.probate.model.Constants;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
-import uk.gov.hmcts.probate.model.ccd.ProbateAddress;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatCallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
@@ -26,7 +24,6 @@ import java.util.stream.Collectors;
 
 import static java.util.Optional.ofNullable;
 import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
-import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT_RAISED;
 
@@ -36,12 +33,13 @@ public class CaveatCallbackResponseTransformer {
 
     private final DocumentTransformer documentTransformer;
 
-    private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    public static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-    private static final ApplicationType DEFAULT_APPLICATION_TYPE = PERSONAL;
-    private static final String DEFAULT_REGISTRY_LOCATION = "Leeds";
-    private static final String EXCEPTION_RECORD_CASE_TYPE_ID = "Caveat";
-    private static final String EXCEPTION_RECORD_EVENT_ID = "raiseCaveat";
+    public static final ApplicationType DEFAULT_APPLICATION_TYPE = PERSONAL;
+    public static final String DEFAULT_REGISTRY_LOCATION = "Leeds";
+
+    public static final String EXCEPTION_RECORD_CASE_TYPE_ID = "Caveat";
+    public static final String EXCEPTION_RECORD_EVENT_ID = "raiseCaveat";
 
     public CaveatCallbackResponse caveatRaised(CaveatCallbackRequest caveatCallbackRequest, List<Document> documents, String letterId) {
         CaveatDetails caveatDetails = caveatCallbackRequest.getCaseDetails();
@@ -164,6 +162,14 @@ public class CaveatCallbackResponseTransformer {
 
         if (caveatData.getRegistryLocation() == null) {
             caveatData.setRegistryLocation(RegistryLocation.LEEDS);
+        }
+
+        if (caveatData.getPaperForm() == null) {
+            caveatData.setPaperForm(true);
+        }
+
+        if (caveatData.getApplicationSubmittedDate() == null) {
+            caveatData.setApplicationSubmittedDate(LocalDate.now());
         }
 
         return CaseCreationDetails.builder().<ResponseCaveatData>

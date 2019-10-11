@@ -5,7 +5,6 @@ import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.model.exceptionrecord.ExceptionRecordOCRFields;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToCaveatorAddress;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToDeceasedAddress;
-import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToPrimaryApplicantAddress;
 import uk.gov.hmcts.reform.probate.model.cases.Address;
 
 @Slf4j
@@ -19,20 +18,6 @@ public class OCRFieldAddressMapper {
     private String county;
     private String country;
     private String postCode;
-
-    @SuppressWarnings("squid:S1168")
-    @ToPrimaryApplicantAddress
-    public Address toPrimaryApplicantAddress(ExceptionRecordOCRFields ocrFields) {
-        log.info("Beginning mapping for Primary Applicant Address");
-        this.addressLine1 = ocrFields.getPrimaryApplicantAddressLine1();
-        this.addressLine2 = ocrFields.getPrimaryApplicantAddressLine2();
-        this.addressLine3 = "";
-        this.postTown = ocrFields.getPrimaryApplicantAddressTown();
-        this.county = ocrFields.getPrimaryApplicantAddressCounty();
-        this.country = "";
-        this.postCode = ocrFields.getPrimaryApplicantAddressPostCode();
-        return buildAddress();
-    }
 
     @SuppressWarnings("squid:S1168")
     @ToCaveatorAddress

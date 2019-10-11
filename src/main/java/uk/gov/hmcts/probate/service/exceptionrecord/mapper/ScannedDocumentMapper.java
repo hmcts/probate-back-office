@@ -9,9 +9,6 @@ import uk.gov.hmcts.reform.probate.model.ScannedDocument;
 @Component
 public class ScannedDocumentMapper {
 
-    /**
-     * Converts document in Exception Record model to document in Case model.
-     */
     public CollectionMember<ScannedDocument> toCaseDoc(
             InputScannedDoc exceptionRecordDoc,
             String exceptionRecordReference
@@ -23,7 +20,7 @@ public class ScannedDocumentMapper {
                     .documentUrl(exceptionRecordDoc.url)
                     .documentFilename(exceptionRecordDoc.fileName)
                     .build();
-            return new CollectionMember<ScannedDocument>(null, new ScannedDocument(
+            return new CollectionMember<>(null, new ScannedDocument(
                     exceptionRecordDoc.controlNumber,
                     exceptionRecordDoc.fileName,
                     exceptionRecordDoc.type,

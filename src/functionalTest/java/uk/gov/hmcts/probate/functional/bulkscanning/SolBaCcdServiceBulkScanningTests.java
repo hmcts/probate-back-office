@@ -2,10 +2,12 @@ package uk.gov.hmcts.probate.functional.bulkscanning;
 
 import net.serenitybdd.junit.runners.SerenityRunner;
 import net.serenitybdd.rest.SerenityRest;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
+import uk.gov.hmcts.probate.transformer.CaveatCallbackResponseTransformer;
+
+import java.time.LocalDate;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
@@ -63,8 +65,11 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
 
     @Test
     public void testTransformPA8AReturnSuccessfulJSON() {
+        String currentDate = LocalDate.now().format(CaveatCallbackResponseTransformer.dateTimeFormatter);
+        String applicationSubmittedDate = "\"applicationSubmittedDate\":\"" + currentDate + "\"";
         jsonRequest = utils.getJsonFromFile("caveatTransformExceptionRecord.json");
         jsonResponse = utils.getJsonFromFile("expectedCaveatTransformExceptionRecordOutput.json");
+        jsonResponse = jsonResponse.replaceAll("\"applicationSubmittedDate\":\"[0-9-]+\"", applicationSubmittedDate);
         transformExceptionPostSuccess(jsonRequest, jsonResponse);
     }
 

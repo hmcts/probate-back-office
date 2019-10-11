@@ -13,6 +13,7 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import uk.gov.hmcts.probate.exception.OCRMappingException;
@@ -37,6 +38,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @Slf4j
 @RequiredArgsConstructor
 @RestController
+@RequestMapping(value = "/", consumes = APPLICATION_JSON_UTF8_VALUE, produces = APPLICATION_JSON_VALUE)
 @Api(tags = "Manage bulk scanning exception record data")
 public class ExceptionRecordController {
 
@@ -64,17 +66,17 @@ public class ExceptionRecordController {
         log.info("Transform exception record data for form type: {}", erRequest.getFormType());
         FormType.isFormTypeValid(erRequest.getFormType());
         FormType formType = FormType.valueOf(erRequest.getFormType());
-        SuccessfulTransformationResponse callbackResponse;
-        List<String> errors = new ArrayList<String>();
+        SuccessfulTransformationResponse callbackResponse = SuccessfulTransformationResponse.builder().build();
+        List<String> errors = new ArrayList<>();
         List<String> warnings = ocrToCCDMandatoryField
                 .ocrToCCDMandatoryFields(ocrPopulatedValueMapper.ocrPopulatedValueMapper(erRequest.getOcrFields()), formType);
 
         if (!warnings.isEmpty()) {
-            errors.add("Please resolve all warnings before creating this case.");
+            errors.add("Please resolve all warnings before creating this case");
         }
 
         if (!erRequest.getJourneyClassification().name().equals(JourneyClassification.NEW_APPLICATION.name())) {
-            errors.add("This Exception Record can't be created as a case.");
+            errors.add("This Exception Record can not be created as a case");
         }
 
         if (!errors.isEmpty()) {
@@ -82,20 +84,23 @@ public class ExceptionRecordController {
                     .warnings(warnings)
                     .errors(errors)
                     .build();
-            return ResponseEntity.ok(callbackResponse);
+
+        } else {
+            switch (formType) {
+                case PA8A:
+                    callbackResponse = erService.createCaveatCaseFromExceptionRecord(erRequest, warnings);
+                    return ResponseEntity.ok(callbackResponse);
+                default:
+                    errors.add("This Exception Record form currently has no case mapping");
+                    callbackResponse = SuccessfulTransformationResponse.builder()
+                            .warnings(warnings)
+                            .errors(errors)
+                            .build();
+                    return ResponseEntity.ok(callbackResponse);
+            }
         }
 
-        switch (formType) {
-            case PA8A: {
-                callbackResponse = erService.createCaveatCaseFromExceptionRecord(erRequest, warnings);
-                return ResponseEntity.ok(callbackResponse);
-            }
-            default: {
-                log.error("Error no case mappings exists for '{}' form-type.", formType.name());
-            }
-        }
-
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(callbackResponse);
     }
 
     @ExceptionHandler
@@ -107,8 +112,8 @@ public class ExceptionRecordController {
     @ExceptionHandler(OCRMappingException.class)
     public ResponseEntity<ExceptionRecordErrorResponse> handle(OCRMappingException exception) {
         log.warn("OCR Data Mapping Error: {}", exception.getMessage());
-        List<String> warnings = Arrays.asList(exception.getWarning());
-        List<String> errors = Arrays.asList(exception.getError());
+        List<String> warnings = Arrays.asList(exception.getMessage());
+        List<String> errors = Arrays.asList("Caveat OCR fields could not be mapped to a case");
         ExceptionRecordErrorResponse errorResponse = new ExceptionRecordErrorResponse(errors, warnings);
         return ResponseEntity.ok(errorResponse);
     }

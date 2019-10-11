@@ -5,6 +5,8 @@ import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
+import org.mockito.Spy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,6 +18,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.ocr.OCRField;
+import uk.gov.hmcts.probate.service.ocr.FormType;
 import uk.gov.hmcts.probate.service.ocr.OCRPopulatedValueMapper;
 import uk.gov.hmcts.probate.service.ocr.OCRToCCDMandatoryField;
 import uk.gov.hmcts.probate.util.TestUtils;
@@ -57,7 +60,7 @@ public class ExceptionRecordControllerTest {
     private OCRToCCDMandatoryField ocrToCCDMandatoryField;
 
     private String exceptionRecordPayloadPA8A;
-    private String exceptionRecordPayloadPA1P;
+    private String exceptionRecordInvalidJsonPayload;
     private List<OCRField> ocrFields = new ArrayList<>();
     private List<String> warnings = new ArrayList<>();
 
@@ -65,6 +68,7 @@ public class ExceptionRecordControllerTest {
     public void setUp() throws IOException {
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
         exceptionRecordPayloadPA8A = testUtils.getStringFromFile("expectedExceptionRecordDataPA8A.json");
+        exceptionRecordInvalidJsonPayload = testUtils.getStringFromFile("invalidExceptionRecordDataJson.json");
         warnings.add("test warning");
         when(ocrPopulatedValueMapper.ocrPopulatedValueMapper(any())).thenReturn(ocrFields);
         when(ocrToCCDMandatoryField.ocrToCCDMandatoryFields(eq(ocrFields), any())).thenReturn(EMPTY_LIST);
@@ -77,7 +81,7 @@ public class ExceptionRecordControllerTest {
                 .content(exceptionRecordPayloadPA8A)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("Please resolve all warnings before creating this case.")))
+                .andExpect(content().string(containsString("Please resolve all warnings before creating this case")))
                 .andExpect(content().string(containsString("test warning")));
     }
 
@@ -95,7 +99,7 @@ public class ExceptionRecordControllerTest {
     }
 
     @Test
-    public void testMissingFormTypeN() throws Exception {
+    public void testMissingFormType() throws Exception {
         JSONObject modifiedExceptionRecordPayload  = new JSONObject(exceptionRecordPayloadPA8A);
         modifiedExceptionRecordPayload.remove("form_type");
         mockMvc.perform(post("/transform-exception-record")
@@ -113,7 +117,32 @@ public class ExceptionRecordControllerTest {
                 .content(exceptionRecordPayloadPA8A.replace(deceasedDateOfDeath, badDeceasedDateOfDeath))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("\"warnings\":[\"Text '02022' could not be parsed at index 4\"]")))
                 .andExpect(content().string(containsString("\"errors\":[\"Caveat OCR fields could not be mapped to a case\"]")));
+    }
+
+    @Test
+    public void testErrorReturnedForIncorrectClassification() throws Exception {
+        mockMvc.perform(post("/transform-exception-record")
+                .content(exceptionRecordPayloadPA8A.replace("NEW_APPLICATION", "SUPPLEMENTARY_EVIDENCE"))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("\"errors\":[\"This Exception Record can not be created as a case\"]")));
+    }
+
+    @Test
+    public void testErrorReturnedForUnimplementedFormType() throws Exception {
+        mockMvc.perform(post("/transform-exception-record")
+                .content(exceptionRecordPayloadPA8A.replace("PA8A", "PA1P"))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("\"errors\":[\"This Exception Record form currently has no case mapping\"]")));
+    }
+
+    @Test
+    public void testInvalidExceptionRecordJsonResponse() throws Exception {
+        mockMvc.perform(post("/transform-exception-record")
+                .content(exceptionRecordInvalidJsonPayload)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().is4xxClientError());
     }
 }
