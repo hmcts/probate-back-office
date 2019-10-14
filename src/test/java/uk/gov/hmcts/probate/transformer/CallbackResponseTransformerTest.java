@@ -1740,6 +1740,35 @@ public class CallbackResponseTransformerTest {
         underTest.addSOTDocument(callbackRequestMock, SOT_DOC);
     }
 
+    @Test
+    public void shouldTransformAdditionalExecApplyingName() {
+        List<CollectionMember<AdditionalExecutorApplying>> additionalExecsAppList = new ArrayList<>();
+        additionalExecsAppList.add(createAdditionalExecutorApplying("0"));
+        caseDataBuilder.additionalExecutorsApplying(additionalExecsAppList);
+
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+        assertEquals(EXEC_FIRST_NAME + " " + EXEC_SURNAME,
+                callbackResponse.getData().getAdditionalExecutorsApplying().get(0).getValue().getApplyingExecutorName());
+    }
+
+    @Test
+    public void shouldNotTransformAdditionalExecApplyingName() {
+        List<CollectionMember<AdditionalExecutorApplying>> additionalExecsAppList = new ArrayList<>();
+        additionalExecsAppList.add(createAdditionalExecutorApplyingfNamelName("0"));
+        caseDataBuilder.additionalExecutorsApplying(additionalExecsAppList);
+
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+        assertEquals(EXEC_FIRST_NAME + " " + EXEC_SURNAME,
+                callbackResponse.getData().getAdditionalExecutorsApplying().get(0).getValue().getApplyingExecutorName());
+
+    }
+
     private CollectionMember<ProbateAliasName> createdDeceasedAliasName(String id, String forename, String lastname, String onGrant) {
         ProbateAliasName pan = ProbateAliasName.builder()
                 .appearOnGrant(onGrant)
@@ -1816,6 +1845,20 @@ public class CallbackResponseTransformerTest {
                 .applyingExecutorAddress(EXEC_ADDRESS)
                 .applyingExecutorEmail(EXEC_EMAIL)
                 .applyingExecutorName(EXEC_FIRST_NAME + " " + EXEC_SURNAME)
+                .applyingExecutorOtherNames(ALIAS_FORENAME + " " + ALIAS_SURNAME)
+                .applyingExecutorPhoneNumber(EXEC_PHONE)
+                .applyingExecutorOtherNamesReason("Other")
+                .applyingExecutorOtherReason("Married")
+                .build();
+        return new CollectionMember<>(id, add1na);
+    }
+
+    private CollectionMember<AdditionalExecutorApplying> createAdditionalExecutorApplyingfNamelName(String id) {
+        AdditionalExecutorApplying add1na = AdditionalExecutorApplying.builder()
+                .applyingExecutorAddress(EXEC_ADDRESS)
+                .applyingExecutorEmail(EXEC_EMAIL)
+                .applyingExecutorFirstName(EXEC_FIRST_NAME)
+                .applyingExecutorLastName(EXEC_SURNAME)
                 .applyingExecutorOtherNames(ALIAS_FORENAME + " " + ALIAS_SURNAME)
                 .applyingExecutorPhoneNumber(EXEC_PHONE)
                 .applyingExecutorOtherNamesReason("Other")
