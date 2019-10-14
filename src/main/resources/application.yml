@@ -21,7 +21,7 @@ management:
       show-details: always
       enabled: true
 
-authorised.services: probate_backend,ccd_data,ccd-datamgmt-api,ccd_ps,ccd,bulk_scan_processor
+authorised.services: probate_backend,ccd_data,ccd-datamgmt-api,ccd_ps,ccd,bulk_scan_processor,bulk_scan_orchestrator
 auth.provider.service.client:
   key: AAAAAAAAAAAAAAAA
   baseUrl: http://localhost:4502
