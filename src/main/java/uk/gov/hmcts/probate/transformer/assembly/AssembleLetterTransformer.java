@@ -12,6 +12,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
 import uk.gov.hmcts.probate.service.docmosis.assembler.AssembleCaseworker;
 import uk.gov.hmcts.probate.service.docmosis.assembler.AssembleEntitlement;
+import uk.gov.hmcts.probate.service.docmosis.assembler.AssembleForeignDomicile;
 import uk.gov.hmcts.probate.service.docmosis.assembler.AssembleFreeText;
 import uk.gov.hmcts.probate.service.docmosis.assembler.AssembleIHT;
 import uk.gov.hmcts.probate.service.docmosis.assembler.AssembleMissingInformation;
@@ -27,6 +28,8 @@ import java.util.Optional;
 import java.util.function.BiFunction;
 
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.Caseworker;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.ForDomAffidavit;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.ForDomInitialEnq;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.EntExecNoAcc;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.FreeText;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.IHT205Miss;
@@ -49,6 +52,7 @@ public class AssembleLetterTransformer {
     private final AssembleEntitlement assembleEntitlement;
     private final AssembleIHT assembleIHT;
     private final AssembleMissingInformation assembleMissingInformation;
+    private final AssembleForeignDomicile assembleForeignDomicile;
     private final AssembleWill assembleWill;
 
     private Map<ParagraphCode, BiFunction<ParagraphCode, CaseData, List<ParagraphDetail>>>
@@ -59,6 +63,8 @@ public class AssembleLetterTransformer {
             paragraphCodeFunctions = ImmutableMap.<ParagraphCode, BiFunction<ParagraphCode, CaseData, List<ParagraphDetail>>>builder()
                     .put(FreeText, assembleFreeText::freeText)
                     .put(Caseworker, assembleCaseworker::caseworker)
+                    .put(ForDomAffidavit, assembleForeignDomicile::affidavitOfLaw)
+                    .put(ForDomInitialEnq, assembleForeignDomicile::initialEnquiry)
                     .put(EntExecNoAcc, assembleEntitlement::executorNotAccountedFor)
                     .put(IHT205Miss, assembleIHT::iht205Missing)
                     .put(IHT421Await, assembleIHT::ihtAwait421)
@@ -82,14 +88,18 @@ public class AssembleLetterTransformer {
         Categories categories = caseData.getCategories();
         List<CollectionMember<ParagraphDetail>> paragraphDetails = new ArrayList<>();
         addParagraphsForUsedFields(paragraphDetails, Caseworker.getParagraphFields(), caseData);
-        addParagraphs(paragraphDetails, categories.getEntSelectedParagraphs(), caseData);
-        addParagraphs(paragraphDetails, categories.getIhtSelectedParagraphs(), caseData);
-        addParagraphs(paragraphDetails, categories.getMissInfoSelectedParagraphs(), caseData);
-        addParagraphs(paragraphDetails, categories.getWillSelectedParagraphs(), caseData);
+        addAllCategoryParagraphs(paragraphDetails, categories.getAllSelectedCategories(), caseData);
         addParagraphsForUsedFields(paragraphDetails, FreeText.getParagraphFields(), caseData);
 
         responseCaseDataBuilder.categories(categories);
         responseCaseDataBuilder.paragraphDetails(paragraphDetails);
+    }
+
+    private void addAllCategoryParagraphs(List<CollectionMember<ParagraphDetail>> paragraphDetails,
+                                          List<List<String>> allCategories, CaseData caseData) {
+        for (List<String> categories : allCategories) {
+            addParagraphs(paragraphDetails, categories, caseData);
+        }
     }
 
     private void addParagraphsForUsedFields(List<CollectionMember<ParagraphDetail>> allParagraphDetails,

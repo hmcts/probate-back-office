@@ -4,7 +4,7 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.Arrays;
 import java.util.List;
 
 @Data
@@ -16,4 +16,10 @@ public class Categories {
     private final List<String> ihtSelectedParagraphs = new ArrayList();
     private final List<String> missInfoSelectedParagraphs = new ArrayList();
     private final List<String> willSelectedParagraphs = new ArrayList();
+    private final List<String> forDomSelectedParagraphs = new ArrayList();
+
+    public List<List<String>> getAllSelectedCategories() {
+        return Arrays.asList(entSelectedParagraphs, ihtSelectedParagraphs, missInfoSelectedParagraphs,
+                willSelectedParagraphs, forDomSelectedParagraphs);
+    }
 }

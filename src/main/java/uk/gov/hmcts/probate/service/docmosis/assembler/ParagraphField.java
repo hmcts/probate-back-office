@@ -7,6 +7,8 @@ public enum ParagraphField {
 
     FREE_TEXT("FreeText", "Free Text", "freeText"),
     CASEWORKER("Caseworker", "Caseworker", "caseworkerName"),
+    AFFIDAVIT("ForDomAffidavit", "Foreign domicile affidavit of law", null),
+    INITIAL_ENQ("ForDomInitial", "Foreign domicile - initial enquiry", null),
     EXEC_NOT_ACC_EXECUTOR_NAMES("EntExecNoAcc", "Executor(s) not accounted for", "nameOfExecutors"),
     IHT205_MISSING("IHT205Miss", "IHT205 Missing", null),
     IHT421_AWAITING("IHT421Await", "Awaiting IHT421", null),
