@@ -16,6 +16,7 @@ public class Categories {
     private final List<String> ihtSelectedParagraphs = new ArrayList();
     private final List<String> missInfoSelectedParagraphs = new ArrayList();
     private final List<String> willSelectedParagraphs = new ArrayList();
+    private final List<String> incapacitySelectedParagraphs = new ArrayList();
     private final List<String> forDomSelectedParagraphs = new ArrayList();
 
     public List<List<String>> getAllSelectedCategories() {

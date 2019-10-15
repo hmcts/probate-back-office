@@ -15,6 +15,7 @@ import uk.gov.hmcts.probate.service.docmosis.assembler.AssembleEntitlement;
 import uk.gov.hmcts.probate.service.docmosis.assembler.AssembleForeignDomicile;
 import uk.gov.hmcts.probate.service.docmosis.assembler.AssembleFreeText;
 import uk.gov.hmcts.probate.service.docmosis.assembler.AssembleIHT;
+import uk.gov.hmcts.probate.service.docmosis.assembler.AssembleIncapacity;
 import uk.gov.hmcts.probate.service.docmosis.assembler.AssembleMissingInformation;
 import uk.gov.hmcts.probate.service.docmosis.assembler.AssembleWill;
 import uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode;
@@ -28,12 +29,24 @@ import java.util.Optional;
 import java.util.function.BiFunction;
 
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.Caseworker;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.EntAttorney;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.EntDeathPa;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.EntExecNoAcc;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.EntFamTree;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.EntLeadingApp;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.EntNoTitle;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.EntPrejudiced;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.EntSubExec;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.EntWrongExec;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.ForDomAffidavit;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.ForDomInitialEnq;
-import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.EntExecNoAcc;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.FreeText;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.IHT205Miss;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.IHT421Await;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.IncapGen;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.IncapInstitutedExec;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.IncapMedical;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.IncapOneExec;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.MissInfoAwaitResponse;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.MissInfoChangeApp;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.MissInfoDeathCert;
@@ -54,6 +67,7 @@ public class AssembleLetterTransformer {
     private final AssembleMissingInformation assembleMissingInformation;
     private final AssembleForeignDomicile assembleForeignDomicile;
     private final AssembleWill assembleWill;
+    private final AssembleIncapacity assembleIncapacity;
 
     private Map<ParagraphCode, BiFunction<ParagraphCode, CaseData, List<ParagraphDetail>>>
             paragraphCodeFunctions;
@@ -66,6 +80,15 @@ public class AssembleLetterTransformer {
                     .put(ForDomAffidavit, assembleForeignDomicile::affidavitOfLaw)
                     .put(ForDomInitialEnq, assembleForeignDomicile::initialEnquiry)
                     .put(EntExecNoAcc, assembleEntitlement::executorNotAccountedFor)
+                    .put(EntAttorney, assembleEntitlement::entitlementAttorneyAndExec)
+                    .put(EntLeadingApp, assembleEntitlement::entitlementLeadingGrantApplication)
+                    .put(EntNoTitle, assembleEntitlement::entitlementNoTitle)
+                  //  .put(EntTwoApps, assembleEntitlement::entitlementNoTitle)
+                    .put(EntFamTree, assembleEntitlement::entitlementFamilyTree)
+                    .put(EntDeathPa, assembleEntitlement::entitlementConfirmDeath)
+                    .put(EntSubExec, assembleEntitlement::entitlementSubstitutedExec)
+                    .put(EntPrejudiced, assembleEntitlement::entitlementPrejudice)
+                    .put(EntWrongExec, assembleEntitlement::entitlementWrongExec)
                     .put(IHT205Miss, assembleIHT::iht205Missing)
                     .put(IHT421Await, assembleIHT::ihtAwait421)
                     .put(MissInfoWill, assembleMissingInformation::missingInfoWill)
@@ -76,6 +99,10 @@ public class AssembleLetterTransformer {
                     .put(WillPlight, assembleWill::willPlight)
                     .put(WillSepPages, assembleWill::willSeparatePages)
                     .put(WillStaple, assembleWill::willStaple)
+                    .put(IncapGen, assembleIncapacity::incapacityGeneral)
+                    .put(IncapOneExec, assembleIncapacity::incapacityOneExecutor)
+                    .put(IncapInstitutedExec, assembleIncapacity::incapacityInstitutedExecutor)
+                    .put(IncapMedical, assembleIncapacity::incapacityMedicalEvidence)
                     .build();
         }
 
