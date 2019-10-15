@@ -18,7 +18,12 @@ import uk.gov.hmcts.probate.service.docmosis.assembler.AssembleIHT;
 import uk.gov.hmcts.probate.service.docmosis.assembler.AssembleIncapacity;
 import uk.gov.hmcts.probate.service.docmosis.assembler.AssembleLifeAndMinorityInterest;
 import uk.gov.hmcts.probate.service.docmosis.assembler.AssembleMissingInformation;
+import uk.gov.hmcts.probate.service.docmosis.assembler.AssembleSOTIncomplete;
+import uk.gov.hmcts.probate.service.docmosis.assembler.AssembleSolicitorAffidavit;
+import uk.gov.hmcts.probate.service.docmosis.assembler.AssembleSolicitorCert;
+import uk.gov.hmcts.probate.service.docmosis.assembler.AssembleSolicitorGeneral;
 import uk.gov.hmcts.probate.service.docmosis.assembler.AssembleWill;
+import uk.gov.hmcts.probate.service.docmosis.assembler.AssembleWitness;
 import uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode;
 import uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphField;
 
@@ -65,6 +70,20 @@ import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.Miss
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.MissInfoGrantReq;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.MissInfoRenunWill;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.MissInfoWill;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.SotNotSigned;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.SotPa1aQ2;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.SotPa1aQ3;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.SotPa1aQ4;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.SotPa1aQ5;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.SotPa1aQ6;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.SotPa1aRedec;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.SotPa1pQ2;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.SotPa1pQ3;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.SotPa1pQ4;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.SotPa1pQ5;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.SotPa1pQ6;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.SotPa1pQ7;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.SotPa1pRedec;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.WillAnyOther;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.WillFiat;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.WillList;
@@ -73,6 +92,44 @@ import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.Will
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.WillRevoked;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.WillSepPages;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.WillStaple;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.WitnessConsent;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.WitnessDate;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.WitnessExecution;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.WitnessSignature;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.solsAffidAlias;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.solsAffidAliasInt;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.solsAffidAlterations;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.solsAffidDate;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.solsAffidExec;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.solsAffidHandwriting;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.solsAffidIdentity;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.solsAffidKnowledge;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.solsAffidRecital;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.solsAffidSearch;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.solsCertAlias;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.solsCertDOB;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.solsCertDOD;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.solsCertDeceasedAdd;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.solsCertDeponentAdd;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.solsCertDivorce;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.solsCertDivorceDissolve;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.solsCertEpaLpa;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.solsCertExecName;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.solsCertExecNotAcc;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.solsCertFirmSucc;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.solsCertLifeMinority;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.solsCertOtherWill;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.solsCertPartnersDod;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.solsCertPlight;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.solsCertPowerReserved;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.solsCertSettledLand;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.solsCertSpouse;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.solsCertSurvivalExec;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.solsCertTrustCorp;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.solsCertWillSepPages;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.solsGenAuthorityPartners;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.solsGenPowerAttorney;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.solsGenVoid;
 
 @Slf4j
 @Component
@@ -87,6 +144,11 @@ public class AssembleLetterTransformer {
     private final AssembleWill assembleWill;
     private final AssembleIncapacity assembleIncapacity;
     private final AssembleLifeAndMinorityInterest assembleLifeAndMinorityInterest;
+    private final AssembleSOTIncomplete assembleSOTIncomplete;
+    private final AssembleWitness assembleWitness;
+    private final AssembleSolicitorGeneral assembleSolicitorGeneral;
+    private final AssembleSolicitorCert assembleSolicitorCert;
+    private final AssembleSolicitorAffidavit assembleSolicitorAffidavit;
 
     private Map<ParagraphCode, BiFunction<ParagraphCode, CaseData, List<ParagraphDetail>>>
             paragraphCodeFunctions;
@@ -140,6 +202,58 @@ public class AssembleLetterTransformer {
                     .put(AdmonLife, assembleLifeAndMinorityInterest::admonWillLife)
                     .put(AdmonMinor, assembleLifeAndMinorityInterest::admonWillMinority)
                     .put(IntParental, assembleLifeAndMinorityInterest::intestacyParentalResponsibility)
+                    .put(SotPa1pRedec, assembleSOTIncomplete::sotPa1pRedec)
+                    .put(SotPa1aRedec, assembleSOTIncomplete::sotPa1aRedec)
+                    .put(SotNotSigned, assembleSOTIncomplete::sotNotSigned)
+                    .put(SotPa1pQ2, assembleSOTIncomplete::sotPa1pQ2)
+                    .put(SotPa1pQ3, assembleSOTIncomplete::sotPa1pQ3)
+                    .put(SotPa1pQ4, assembleSOTIncomplete::sotPa1pQ4)
+                    .put(SotPa1pQ5, assembleSOTIncomplete::sotPa1pQ5)
+                    .put(SotPa1pQ6, assembleSOTIncomplete::sotPa1pQ6)
+                    .put(SotPa1pQ7, assembleSOTIncomplete::sotPa1pQ7)
+                    .put(SotPa1aQ2, assembleSOTIncomplete::sotPa1aQ2)
+                    .put(SotPa1aQ3, assembleSOTIncomplete::sotPa1aQ3)
+                    .put(SotPa1aQ4, assembleSOTIncomplete::sotPa1aQ4)
+                    .put(SotPa1aQ5, assembleSOTIncomplete::sotPa1aQ5)
+                    .put(SotPa1aQ6, assembleSOTIncomplete::sotPa1aQ6)
+                    .put(WitnessConsent, assembleWitness::witnessConsent)
+                    .put(WitnessDate, assembleWitness::witnessDate)
+                    .put(WitnessExecution, assembleWitness::witnessExecution)
+                    .put(WitnessSignature, assembleWitness::witnessSignature)
+                    .put(solsGenPowerAttorney, assembleSolicitorGeneral::solsGenPowerAttorney)
+                    .put(solsGenVoid, assembleSolicitorGeneral::solsGenVoidForUncertainity)
+                    .put(solsGenAuthorityPartners, assembleSolicitorGeneral::solsGneralAuthorityPartners)
+                    .put(solsCertOtherWill, assembleSolicitorCert::solsCertOtherWill)
+                    .put(solsCertAlias, assembleSolicitorCert::solsCertAlias)
+                    .put(solsCertDeceasedAdd, assembleSolicitorCert::solsCertDeceasedAddress)
+                    .put(solsCertDeponentAdd, assembleSolicitorCert::solsCertDeponentsAddress)
+                    .put(solsCertDivorce, assembleSolicitorCert::solsCertDivorce)
+                    .put(solsCertDivorceDissolve, assembleSolicitorCert::solsCertDivorceDissolved)
+                    .put(solsCertDOB, assembleSolicitorCert::solsCertDob)
+                    .put(solsCertDOD, assembleSolicitorCert::solsCertDod)
+                    .put(solsCertEpaLpa, assembleSolicitorCert::solsCertEpaLpa)
+                    .put(solsCertExecNotAcc, assembleSolicitorCert::solsCertExecNotAccounted)
+                    .put(solsCertFirmSucc, assembleSolicitorCert::solsCertFirmSuccceeded)
+                    .put(solsCertExecName, assembleSolicitorCert::solsCertExecName)
+                    .put(solsCertLifeMinority, assembleSolicitorCert::solsCertLifeMinority)
+                    .put(solsCertPartnersDod, assembleSolicitorCert::solsCertPartnersDod)
+                    .put(solsCertPlight, assembleSolicitorCert::solsCertPlightCondition)
+                    .put(solsCertPowerReserved, assembleSolicitorCert::solsCertPowerReserved)
+                    .put(solsCertSettledLand, assembleSolicitorCert::solsCertSettledLand)
+                    .put(solsCertSpouse, assembleSolicitorCert::solsCertSpouse)
+                    .put(solsCertSurvivalExec, assembleSolicitorCert::solsCertSurvivalExec)
+                    .put(solsCertTrustCorp, assembleSolicitorCert::solsCertTrustCorp)
+                    .put(solsCertWillSepPages, assembleSolicitorCert::solsCertWillSeparatePages)
+                    .put(solsAffidAliasInt, assembleSolicitorAffidavit::solsAffidAliasIntestacy)
+                    .put(solsAffidAlias, assembleSolicitorAffidavit::solsAffidAlias)
+                    .put(solsAffidExec, assembleSolicitorAffidavit::solsAffidExec)
+                    .put(solsAffidHandwriting, assembleSolicitorAffidavit::solsAffidHandwriting)
+                    .put(solsAffidIdentity, assembleSolicitorAffidavit::solsAffidIdentity)
+                    .put(solsAffidKnowledge, assembleSolicitorAffidavit::solsAffidKnowledge)
+                    .put(solsAffidAlterations, assembleSolicitorAffidavit::solsAffidAlterations)
+                    .put(solsAffidDate, assembleSolicitorAffidavit::solsAffidDate)
+                    .put(solsAffidSearch, assembleSolicitorAffidavit::solsAffidSearch)
+                    .put(solsAffidRecital, assembleSolicitorAffidavit::solsAffidMisRecital)
                     .build();
         }
 

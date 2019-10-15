@@ -256,7 +256,7 @@
   {"LiveFrom": "06/01/2017", "ID": "SolsCertsParagraphs", "ListElementCode": "CertsSurvivalExec", "ListElement": "Survival of executor"},
   {"LiveFrom": "06/01/2017", "ID": "SolsCertsParagraphs", "ListElementCode": "CertsTrustCorp", "ListElement": "Trust corporation"},
   {"LiveFrom": "06/01/2017", "ID": "SolsCertsParagraphs", "ListElementCode": "CertsWillSepPages", "ListElement": "Will of separate pages"},
-  {"LiveFrom": "06/01/2017", "ID": "SolsAffidParagraphs", "ListElementCode": "AffidAliasAffidInt", "ListElement": "Alias affidavit (Intestacy)"},
+  {"LiveFrom": "06/01/2017", "ID": "SolsAffidParagraphs", "ListElementCode": "AffidAliasInt", "ListElement": "Alias affidavit (Intestacy)"},
   {"LiveFrom": "06/01/2017", "ID": "SolsAffidParagraphs", "ListElementCode": "AffidAliasAffid", "ListElement": "Alias Affidavit"},
   {"LiveFrom": "06/01/2017", "ID": "SolsAffidParagraphs", "ListElementCode": "AffidExecution", "ListElement": "Due Execution or rule 12(3) affidavit"},
   {"LiveFrom": "06/01/2017", "ID": "SolsAffidParagraphs", "ListElementCode": "AffidHandWriting", "ListElement": "Handwriting affidavit"},
