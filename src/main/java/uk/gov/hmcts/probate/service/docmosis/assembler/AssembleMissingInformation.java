@@ -33,5 +33,17 @@ public class AssembleMissingInformation {
         return assemblerBase.getDateParagraphDetails(paragraphCode);
     }
 
+    public List<ParagraphDetail> missingInfoAlias(ParagraphCode paragraphCode, CaseData caseData) {
+        return assemblerBase.getStaticParagraphDetails(paragraphCode);
+    }
+
+    public List<ParagraphDetail> missingInfoRenunWill(ParagraphCode paragraphCode, CaseData caseData) {
+        return assemblerBase.getStaticParagraphDetails(paragraphCode);
+    }
+
+    public List<ParagraphDetail> missingInfoGrantReq(ParagraphCode paragraphCode, CaseData caseData) {
+        return assemblerBase.getStaticParagraphDetails(paragraphCode);
+    }
+
 
 }

@@ -16,6 +16,7 @@ import uk.gov.hmcts.probate.service.docmosis.assembler.AssembleForeignDomicile;
 import uk.gov.hmcts.probate.service.docmosis.assembler.AssembleFreeText;
 import uk.gov.hmcts.probate.service.docmosis.assembler.AssembleIHT;
 import uk.gov.hmcts.probate.service.docmosis.assembler.AssembleIncapacity;
+import uk.gov.hmcts.probate.service.docmosis.assembler.AssembleLifeAndMinorityInterest;
 import uk.gov.hmcts.probate.service.docmosis.assembler.AssembleMissingInformation;
 import uk.gov.hmcts.probate.service.docmosis.assembler.AssembleWill;
 import uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode;
@@ -28,6 +29,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.function.BiFunction;
 
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.AdmonLife;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.AdmonMinor;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.Caseworker;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.EntAttorney;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.EntDeathPa;
@@ -51,12 +54,23 @@ import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.Inca
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.IncapInstitutedExec;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.IncapMedical;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.IncapOneExec;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.IntLife;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.IntLifeAndMin;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.IntMinor;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.IntParental;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.MissInfoAlias;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.MissInfoAwaitResponse;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.MissInfoChangeApp;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.MissInfoDeathCert;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.MissInfoGrantReq;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.MissInfoRenunWill;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.MissInfoWill;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.WillAnyOther;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.WillFiat;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.WillList;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.WillLost;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.WillPlight;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.WillRevoked;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.WillSepPages;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.WillStaple;
 
@@ -72,6 +86,7 @@ public class AssembleLetterTransformer {
     private final AssembleForeignDomicile assembleForeignDomicile;
     private final AssembleWill assembleWill;
     private final AssembleIncapacity assembleIncapacity;
+    private final AssembleLifeAndMinorityInterest assembleLifeAndMinorityInterest;
 
     private Map<ParagraphCode, BiFunction<ParagraphCode, CaseData, List<ParagraphDetail>>>
             paragraphCodeFunctions;
@@ -104,14 +119,27 @@ public class AssembleLetterTransformer {
                     .put(MissInfoDeathCert, assembleMissingInformation::missingInfoDeathCert)
                     .put(MissInfoChangeApp, assembleMissingInformation::missingInfoChangeOfApplicant)
                     .put(MissInfoAwaitResponse, assembleMissingInformation::missingInfoDateOfRequest)
+                    .put(MissInfoAlias, assembleMissingInformation::missingInfoAlias)
+                    .put(MissInfoRenunWill, assembleMissingInformation::missingInfoRenunWill)
+                    .put(MissInfoGrantReq, assembleMissingInformation::missingInfoGrantReq)
                     .put(WillAnyOther, assembleWill::willAnyOther)
                     .put(WillPlight, assembleWill::willPlight)
                     .put(WillSepPages, assembleWill::willSeparatePages)
                     .put(WillStaple, assembleWill::willStaple)
+                    .put(WillRevoked, assembleWill::willRevoked)
+                    .put(WillLost, assembleWill::willLost)
+                    .put(WillList, assembleWill::willList)
+                    .put(WillFiat, assembleWill::willFiat)
                     .put(IncapGen, assembleIncapacity::incapacityGeneral)
                     .put(IncapOneExec, assembleIncapacity::incapacityOneExecutor)
                     .put(IncapInstitutedExec, assembleIncapacity::incapacityInstitutedExecutor)
                     .put(IncapMedical, assembleIncapacity::incapacityMedicalEvidence)
+                    .put(IntLifeAndMin, assembleLifeAndMinorityInterest::intestacyLifeandMinority)
+                    .put(IntLife, assembleLifeAndMinorityInterest::intestacyLife)
+                    .put(IntMinor, assembleLifeAndMinorityInterest::intestacyMinority)
+                    .put(AdmonLife, assembleLifeAndMinorityInterest::admonWillLife)
+                    .put(AdmonMinor, assembleLifeAndMinorityInterest::admonWillMinority)
+                    .put(IntParental, assembleLifeAndMinorityInterest::intestacyParentalResponsibility)
                     .build();
         }
 

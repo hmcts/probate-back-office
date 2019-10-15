@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphField.ADMON_WILL_LIFE;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphField.ADMON_WILL_MINORITY;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphField.AFFIDAVIT;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphField.ANY_OTHER;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphField.CASEWORKER;
@@ -32,10 +34,21 @@ import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphField.INC
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphField.INFO_CHANGE_APP;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphField.INFO_DEATH_CERT;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphField.INITIAL_ENQ;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphField.INTESTACY_LIFE;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphField.INTESTACY_LIFE_MINORITY;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphField.INTESTACY_MINORITY;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphField.INTESTACY_PARENTAL;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphField.MISS_INFO_ALIAS;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphField.MISS_INFO_GRANT_REQ;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphField.MISS_INFO_RENUN_WILL;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphField.MISS_INFO_WILL_OR_DOCICIL;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphField.PLIGHT;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphField.SEP_PAGES;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphField.STAPLE;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphField.WILL_FIAT;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphField.WILL_LIST;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphField.WILL_LOST;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphField.WILL_REVOKED;
 
 public enum ParagraphCode {
 
@@ -63,14 +76,27 @@ public enum ParagraphCode {
     MissInfoChangeApp("FL-PRB-GNO-ENG-00127.docx", INFO_CHANGE_APP),
     MissInfoDeathCert("FL-PRB-GNO-ENG-00128.docx", INFO_DEATH_CERT),
     MissInfoAwaitResponse("FL-PRB-GNO-ENG-00152.docx", DATE_OF_REQUEST),
+    MissInfoAlias("FL-PRB-GNO-ENG-00149.docx", MISS_INFO_ALIAS),
+    MissInfoRenunWill("FL-PRB-GNO-ENG-00150.docx", MISS_INFO_RENUN_WILL),
+    MissInfoGrantReq("FL-PRB-GNO-ENG-00151.docx", MISS_INFO_GRANT_REQ),
     WillAnyOther("FL-PRB-GNO-ENG-00129.docx", ANY_OTHER),
     WillPlight("FL-PRB-GNO-ENG-00130.docx", PLIGHT),
     WillSepPages("FL-PRB-GNO-ENG-00131.docx", SEP_PAGES),
     WillStaple("FL-PRB-GNO-ENG-00132.docx", STAPLE),
+    WillRevoked("FL-PRB-GNO-ENG-00154.docx", WILL_REVOKED),
+    WillLost("FL-PRB-GNO-ENG-00155.docx", WILL_LOST),
+    WillList("FL-PRB-GNO-ENG-00156.docx", WILL_LIST),
+    WillFiat("FL-PRB-GNO-ENG-00157.docx", WILL_FIAT),
     IncapGen("FL-PRB-GNO-ENG-00101.docx", INCAPACITY_GENERAL),
     IncapOneExec("FL-PRB-GNO-ENG-00102.docx", INCAPACITY_ONE_EXEC),
     IncapInstitutedExec("FL-PRB-GNO-ENG-00103.docx", INCAPACITY_INSTITUTE_EXEC),
-    IncapMedical("FL-PRB-GNO-ENG-00148.docx", INCAPACITY_MEDICAL);
+    IncapMedical("FL-PRB-GNO-ENG-00148.docx", INCAPACITY_MEDICAL),
+    IntLifeAndMin("FL-PRB-GNO-ENG-00104.docx", INTESTACY_LIFE_MINORITY),
+    IntLife("FL-PRB-GNO-ENG-00105.docx", INTESTACY_LIFE),
+    IntMinor("FL-PRB-GNO-ENG-00106.docx", INTESTACY_MINORITY),
+    AdmonLife("FL-PRB-GNO-ENG-00107.docx", ADMON_WILL_LIFE),
+    AdmonMinor("FL-PRB-GNO-ENG-00108.docx", ADMON_WILL_MINORITY),
+    IntParental("FL-PRB-GNO-ENG-00109.docx", INTESTACY_PARENTAL);
 
     private List<ParagraphField> paragraphFields;
     private final String templateName;

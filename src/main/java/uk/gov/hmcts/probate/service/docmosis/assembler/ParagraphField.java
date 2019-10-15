@@ -27,16 +27,29 @@ public enum ParagraphField {
     IHT400("IHT400", "IHT - IHT400", null),
     MISS_INFO_WILL_OR_DOCICIL("MissInfoWill", "Original Will or Codicil", "willOrCodicil"),
     DATE_OF_REQUEST("MissInfoAwaitResponse", "Date of request", "dateOfRequest"),
+    MISS_INFO_ALIAS("MissInfoAlias", "True name/Alias", null),
+    MISS_INFO_RENUN_WILL("MissInfoRenunWill", "Renunciation (will)", null),
+    MISS_INFO_GRANT_REQ("MissInfoGrantReq", "Why is a grant required?", null),
     INFO_CHANGE_APP("MissInfoChangeApp", "Name change of applicant", "applicantName"),
     INFO_DEATH_CERT("MissInfoDeathCert", "Death Certificate", "reason"),
     ANY_OTHER("WillAnyOther", "Any other wills", "limitation"),
     PLIGHT("WillPlight", "Plight and condition of will", "conditionReason"),
     SEP_PAGES("WillSepPages", "Separate pages of will", "numberOfPages"),
     STAPLE("WillStaple", "Staple removed for photocopying", null),
+    WILL_REVOKED("WillRevoked", "Will revoked by marriage", null),
+    WILL_LOST("WillLost", "Lost will", null),
+    WILL_LIST("WillList", "List/Memo named in will", null),
+    WILL_FIAT("WillFiat", "FIAT will SOT", null),
     INCAPACITY_GENERAL("IncapGen", "General", null),
     INCAPACITY_ONE_EXEC("IncapOneExec", "One executor", null),
     INCAPACITY_INSTITUTE_EXEC("IncapInstitutedExec", "Instituted executor", null),
-    INCAPACITY_MEDICAL("IncapMedical", "Medical evidence required", "nameOfPersonWithoutCapacity");
+    INCAPACITY_MEDICAL("IncapMedical", "Name of person without capacity", "nameOfPersonWithoutCapacity"),
+    INTESTACY_LIFE_MINORITY("LMIntLifeAndMin", "Intestacy: Life and Minority interest", null),
+    INTESTACY_LIFE("LMIntLife", "Intestacy: Life interest", null),
+    INTESTACY_MINORITY("LMIntMinor", "Intestacy: Minority interest", null),
+    ADMON_WILL_LIFE("LMAdmonLife", "Admon Will: Life interest", null),
+    ADMON_WILL_MINORITY("LMAdmonMinor", "Admon Will: Minority interest", null),
+    INTESTACY_PARENTAL("LMIntParental", "Intestacy: Minority interest parental responsibility", null);
 
     private final String fieldCode;
     private final String fieldLabel;
