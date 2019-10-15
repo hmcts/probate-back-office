@@ -31,6 +31,7 @@ import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.EntE
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.FreeText;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.IHT205Miss;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.IHT421Await;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.MissInfoAwaitResponse;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.MissInfoChangeApp;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.MissInfoDeathCert;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.MissInfoWill;
@@ -64,6 +65,7 @@ public class AssembleLetterTransformer {
                     .put(MissInfoWill, assembleMissingInformation::missingInfoWill)
                     .put(MissInfoDeathCert, assembleMissingInformation::missingInfoDeathCert)
                     .put(MissInfoChangeApp, assembleMissingInformation::missingInfoChangeOfApplicant)
+                    .put(MissInfoAwaitResponse, assembleMissingInformation::missingInfoDateOfRequest)
                     .put(WillAnyOther, assembleWill::willAnyOther)
                     .put(WillPlight, assembleWill::willPlight)
                     .put(WillSepPages, assembleWill::willSeparatePages)

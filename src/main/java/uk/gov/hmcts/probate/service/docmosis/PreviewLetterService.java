@@ -5,17 +5,16 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.ParagraphDetail;
-import uk.gov.hmcts.probate.model.ccd.raw.ParagraphDetailEnablementType;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
-import uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode;
+import uk.gov.hmcts.probate.service.DateFormatterService;
 import uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphField;
 
 import javax.validation.Valid;
 import java.util.Map;
 import java.util.Optional;
 
-import static uk.gov.hmcts.probate.model.Constants.YES;
+import static uk.gov.hmcts.probate.model.ccd.raw.ParagraphDetailEnablementType.Date;
 import static uk.gov.hmcts.probate.model.ccd.raw.ParagraphDetailEnablementType.List;
 import static uk.gov.hmcts.probate.model.ccd.raw.ParagraphDetailEnablementType.Text;
 import static uk.gov.hmcts.probate.model.ccd.raw.ParagraphDetailEnablementType.TextArea;
@@ -26,6 +25,7 @@ import static uk.gov.hmcts.probate.model.ccd.raw.ParagraphDetailEnablementType.T
 public class PreviewLetterService {
 
     private final GenericMapperService genericMapperService;
+    private final DateFormatterService dateFormatterService;
 
     public Map<String, Object> addLetterData(@Valid CaseDetails caseDetails) {
         CaseData caseData = caseDetails.getData();
@@ -50,6 +50,9 @@ public class PreviewLetterService {
                 } else if (List.equals(matchedDetail.getEnableType())) {
                     placeholders.put(paragraphField.getFieldPlaceholderName(),
                             matchedDetail.getDynamicList().getValue().getLabel());
+                } else if (Date.equals(matchedDetail.getEnableType())) {
+                    placeholders.put(paragraphField.getFieldPlaceholderName(),
+                            dateFormatterService.formatDate(matchedDetail.getDateValue()));
                 }
             }
         }

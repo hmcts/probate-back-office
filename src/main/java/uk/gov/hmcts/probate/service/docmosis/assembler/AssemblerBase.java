@@ -11,8 +11,6 @@ import uk.gov.hmcts.probate.model.ccd.raw.ParagraphDetailEnablementType;
 import java.util.ArrayList;
 import java.util.List;
 
-import static uk.gov.hmcts.probate.model.Constants.YES;
-
 @Slf4j
 @Component
 @RequiredArgsConstructor
@@ -54,6 +52,20 @@ public class AssemblerBase {
         for (ParagraphField paragraphField : paragraphCode.getParagraphFields()) {
             ParagraphDetail paragraphDetail = ParagraphDetail.builder()
                     .enableType(ParagraphDetailEnablementType.Text)
+                    .label(paragraphField.getFieldLabel())
+                    .code(paragraphField.getFieldCode())
+                    .templateName(paragraphCode.getTemplateName())
+                    .build();
+            paragraphDetails.add(paragraphDetail);
+        }
+        return paragraphDetails;
+    }
+
+    protected List<ParagraphDetail>  getDateParagraphDetails(ParagraphCode paragraphCode) {
+        List<ParagraphDetail> paragraphDetails = new ArrayList<>();
+        for (ParagraphField paragraphField : paragraphCode.getParagraphFields()) {
+            ParagraphDetail paragraphDetail = ParagraphDetail.builder()
+                    .enableType(ParagraphDetailEnablementType.Date)
                     .label(paragraphField.getFieldLabel())
                     .code(paragraphField.getFieldCode())
                     .templateName(paragraphCode.getTemplateName())

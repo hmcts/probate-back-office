@@ -5,5 +5,6 @@ public enum ParagraphDetailEnablementType {
     Text(),
     TextArea(),
     List(),
-    Static();
+    Static(),
+    Date();
 }

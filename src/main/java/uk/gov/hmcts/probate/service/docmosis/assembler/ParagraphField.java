@@ -11,6 +11,7 @@ public enum ParagraphField {
     IHT205_MISSING("IHT205Miss", "IHT205 Missing", null),
     IHT421_AWAITING("IHT421Await", "Awaiting IHT421", null),
     MISS_INFO_WILL_OR_DOCICIL("MissInfoWill", "Original Will or Codicil", "willOrCodicil"),
+    DATE_OF_REQUEST("MissInfoAwaitResponse", "Date of request", "dateOfRequest"),
     INFO_CHANGE_APP("MissInfoChangeApp", "Name change of applicant", "applicantName"),
     INFO_DEATH_CERT("MissInfoDeathCert", "Death Certificate", "reason"),
     ANY_OTHER("WillAnyOther", "Any other wills", "limitation"),

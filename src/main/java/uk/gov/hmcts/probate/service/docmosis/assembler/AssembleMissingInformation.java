@@ -29,5 +29,9 @@ public class AssembleMissingInformation {
         return assemblerBase.getTextParagraphDetailWithDefaultValue(paragraphCode, Arrays.asList(caseData.getPrimaryApplicantFullName()));
     }
 
+    public List<ParagraphDetail> missingInfoDateOfRequest(ParagraphCode paragraphCode, CaseData caseData) {
+        return assemblerBase.getDateParagraphDetails(paragraphCode);
+    }
+
 
 }

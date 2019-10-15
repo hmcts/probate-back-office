@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphField.ANY_OTHER;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphField.CASEWORKER;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphField.DATE_OF_REQUEST;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphField.EXEC_NOT_ACC_EXECUTOR_NAMES;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphField.FREE_TEXT;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphField.IHT205_MISSING;
@@ -27,6 +28,7 @@ public enum ParagraphCode {
     MissInfoWill("FL-PRB-GNO-ENG-00126.docx", MISS_INFO_WILL_OR_DOCICIL),
     MissInfoChangeApp("FL-PRB-GNO-ENG-00127.docx", INFO_CHANGE_APP),
     MissInfoDeathCert("FL-PRB-GNO-ENG-00128.docx", INFO_DEATH_CERT),
+    MissInfoAwaitResponse ("FL-PRB-GNO-ENG-00152.docx", DATE_OF_REQUEST),
     WillAnyOther("FL-PRB-GNO-ENG-00129.docx", ANY_OTHER),
     WillPlight("FL-PRB-GNO-ENG-00130.docx", PLIGHT),
     WillSepPages("FL-PRB-GNO-ENG-00131.docx", SEP_PAGES),

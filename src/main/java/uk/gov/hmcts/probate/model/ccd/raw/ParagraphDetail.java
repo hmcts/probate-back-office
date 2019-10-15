@@ -3,7 +3,7 @@ package uk.gov.hmcts.probate.model.ccd.raw;
 import lombok.Builder;
 import lombok.Data;
 
-import java.util.List;
+import java.time.LocalDate;
 
 @Data
 @Builder
@@ -17,4 +17,5 @@ public class ParagraphDetail {
     private final String textValue;
     private final String textAreaValue;
     private final DynamicList dynamicList;
+    private final LocalDate dateValue;
 }
