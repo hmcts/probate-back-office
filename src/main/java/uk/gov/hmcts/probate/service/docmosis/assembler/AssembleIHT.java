@@ -22,4 +22,19 @@ public class AssembleIHT {
         return assemblerBase.getStaticParagraphDetails(paragraphCode);
     }
 
+    public List<ParagraphDetail> ihtNoAssets(ParagraphCode paragraphCode, CaseData caseData) {
+        return assemblerBase.getStaticParagraphDetails(paragraphCode);
+    }
+
+    public List<ParagraphDetail> ihtGrossEstate(ParagraphCode paragraphCode, CaseData caseData) {
+        return assemblerBase.getStaticParagraphDetails(paragraphCode);
+    }
+
+    public List<ParagraphDetail> iht217Missing(ParagraphCode paragraphCode, CaseData caseData) {
+        return assemblerBase.getStaticParagraphDetails(paragraphCode);
+    }
+
+    public List<ParagraphDetail> iht400(ParagraphCode paragraphCode, CaseData caseData) {
+        return assemblerBase.getStaticParagraphDetails(paragraphCode);
+    }
 }

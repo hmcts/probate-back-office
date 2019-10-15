@@ -41,8 +41,12 @@ import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.EntW
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.ForDomAffidavit;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.ForDomInitialEnq;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.FreeText;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.IHT205GrossEstateOver;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.IHT205Miss;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.IHT205NoAssets;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.IHT217Miss;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.IHT421Await;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.IHTIHT400;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.IncapGen;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.IncapInstitutedExec;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.IncapMedical;
@@ -74,7 +78,8 @@ public class AssembleLetterTransformer {
 
     private Map<ParagraphCode, BiFunction<ParagraphCode, CaseData, List<ParagraphDetail>>> getParagraphFunctions() {
         if (paragraphCodeFunctions == null) {
-            paragraphCodeFunctions = ImmutableMap.<ParagraphCode, BiFunction<ParagraphCode, CaseData, List<ParagraphDetail>>>builder()
+            paragraphCodeFunctions = ImmutableMap.<ParagraphCode, BiFunction<ParagraphCode, CaseData,
+                    List<ParagraphDetail>>>builder()
                     .put(FreeText, assembleFreeText::freeText)
                     .put(Caseworker, assembleCaseworker::caseworker)
                     .put(ForDomAffidavit, assembleForeignDomicile::affidavitOfLaw)
@@ -83,7 +88,7 @@ public class AssembleLetterTransformer {
                     .put(EntAttorney, assembleEntitlement::entitlementAttorneyAndExec)
                     .put(EntLeadingApp, assembleEntitlement::entitlementLeadingGrantApplication)
                     .put(EntNoTitle, assembleEntitlement::entitlementNoTitle)
-                  //  .put(EntTwoApps, assembleEntitlement::entitlementNoTitle)
+                    //  .put(EntTwoApps, assembleEntitlement::entitlementNoTitle)
                     .put(EntFamTree, assembleEntitlement::entitlementFamilyTree)
                     .put(EntDeathPa, assembleEntitlement::entitlementConfirmDeath)
                     .put(EntSubExec, assembleEntitlement::entitlementSubstitutedExec)
@@ -91,6 +96,10 @@ public class AssembleLetterTransformer {
                     .put(EntWrongExec, assembleEntitlement::entitlementWrongExec)
                     .put(IHT205Miss, assembleIHT::iht205Missing)
                     .put(IHT421Await, assembleIHT::ihtAwait421)
+                    .put(IHT205NoAssets, assembleIHT::ihtNoAssets)
+                    .put(IHT205GrossEstateOver, assembleIHT::ihtGrossEstate)
+                    .put(IHT217Miss, assembleIHT::iht217Missing)
+                    .put(IHTIHT400, assembleIHT::iht400)
                     .put(MissInfoWill, assembleMissingInformation::missingInfoWill)
                     .put(MissInfoDeathCert, assembleMissingInformation::missingInfoDeathCert)
                     .put(MissInfoChangeApp, assembleMissingInformation::missingInfoChangeOfApplicant)

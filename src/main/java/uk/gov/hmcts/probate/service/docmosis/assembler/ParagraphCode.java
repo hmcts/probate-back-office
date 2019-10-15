@@ -19,7 +19,11 @@ import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphField.ENT
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphField.ENT_WRONG_EXEC;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphField.EXEC_NOT_ACC_EXECUTOR_NAMES;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphField.FREE_TEXT;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphField.IHT205_GROSS;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphField.IHT205_MISSING;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphField.IHT205_NO_ASSETS;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphField.IHT217_MISSING;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphField.IHT400;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphField.IHT421_AWAITING;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphField.INCAPACITY_GENERAL;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphField.INCAPACITY_INSTITUTE_EXEC;
@@ -51,6 +55,10 @@ public enum ParagraphCode {
     EntWrongExec("FL-PRB-GNO-ENG-00143.docx", ENT_WRONG_EXEC),
     IHT205Miss("FL-PRB-GNO-ENG-00124.docx", IHT205_MISSING),
     IHT421Await("FL-PRB-GNO-ENG-00125.docx", IHT421_AWAITING),
+    IHT205NoAssets("FL-PRB-GNO-ENG-00144.docx", IHT205_NO_ASSETS),
+    IHT205GrossEstateOver("FL-PRB-GNO-ENG-00145.docx", IHT205_GROSS),
+    IHT217Miss("FL-PRB-GNO-ENG-00146.docx", IHT217_MISSING),
+    IHTIHT400("FL-PRB-GNO-ENG-00147.docx", IHT400),
     MissInfoWill("FL-PRB-GNO-ENG-00126.docx", MISS_INFO_WILL_OR_DOCICIL),
     MissInfoChangeApp("FL-PRB-GNO-ENG-00127.docx", INFO_CHANGE_APP),
     MissInfoDeathCert("FL-PRB-GNO-ENG-00128.docx", INFO_DEATH_CERT),

@@ -18,6 +18,7 @@ import uk.gov.hmcts.probate.service.docmosis.assembler.AssembleEntitlement;
 import uk.gov.hmcts.probate.service.docmosis.assembler.AssembleForeignDomicile;
 import uk.gov.hmcts.probate.service.docmosis.assembler.AssembleFreeText;
 import uk.gov.hmcts.probate.service.docmosis.assembler.AssembleIHT;
+import uk.gov.hmcts.probate.service.docmosis.assembler.AssembleIncapacity;
 import uk.gov.hmcts.probate.service.docmosis.assembler.AssembleMissingInformation;
 import uk.gov.hmcts.probate.service.docmosis.assembler.AssembleWill;
 import uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode;
@@ -49,6 +50,8 @@ public class AssembleLetterTransformerTest {
     @Mock
     private AssembleWill assembleWill;
     @Mock
+    AssembleIncapacity assembleIncapacity;
+    @Mock
     private CaseDetails caseDetailsMock;
     @Mock
     private CaseData caseDataMock;
@@ -59,7 +62,7 @@ public class AssembleLetterTransformerTest {
     public void setUp() {
         assembleLetterTransformer = new AssembleLetterTransformer(assembleCaseworker,
                 assembleFreeText, assembleEntitlement, assembleIHT, assembleMissingInformation, assembleForeignDomicile,
-                assembleWill);
+                assembleWill, assembleIncapacity);
 
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
     }
