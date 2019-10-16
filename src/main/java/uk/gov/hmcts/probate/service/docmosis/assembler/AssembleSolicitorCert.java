@@ -59,7 +59,7 @@ public class AssembleSolicitorCert {
     }
 
     public List<ParagraphDetail> solsCertExecName(ParagraphCode paragraphCode, CaseData caseData) {
-        return assemblerBase.getStaticParagraphDetails(paragraphCode);
+        return assemblerBase.getTextParagraphDetails(paragraphCode);
     }
 
     public List<ParagraphDetail> solsCertLifeMinority(ParagraphCode paragraphCode, CaseData caseData) {
@@ -83,7 +83,7 @@ public class AssembleSolicitorCert {
     }
 
     public List<ParagraphDetail> solsCertSpouse(ParagraphCode paragraphCode, CaseData caseData) {
-        return assemblerBase.getStaticParagraphDetails(paragraphCode);
+        return assemblerBase.getTextParagraphDetails(paragraphCode);
     }
 
     public List<ParagraphDetail> solsCertSurvivalExec(ParagraphCode paragraphCode, CaseData caseData) {
@@ -91,7 +91,7 @@ public class AssembleSolicitorCert {
     }
 
     public List<ParagraphDetail> solsCertTrustCorp(ParagraphCode paragraphCode, CaseData caseData) {
-        return assemblerBase.getStaticParagraphDetails(paragraphCode);
+        return assemblerBase.getTextParagraphDetails(paragraphCode);
     }
 
     public List<ParagraphDetail> solsCertWillSeparatePages(ParagraphCode paragraphCode, CaseData caseData) {

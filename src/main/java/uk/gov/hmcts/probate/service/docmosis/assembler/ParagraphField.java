@@ -93,7 +93,7 @@ public enum ParagraphField {
     SOLS_CERT_SURVIVAL_EXEC("CertsSurvivalExec", "Survival of executo", null),
     SOLS_CERT_TRUST_CORP("CertsTrustCorp", "Trust corporation", "nameOfCorporation"),
     SOLS_CERT_WILL_SEP_PAGES("CertsWillSepPages", "Will of separate pages", null),
-    SOLS_AFFID_ALIAS_INT("AffidAliasInt", "Alias affidavit (Intestacy)", "nameOfCorporation"),
+    SOLS_AFFID_ALIAS_INT("AffidAliasInt", "Alias affidavit (Intestacy)", null),
     SOLS_AFFID_ALIAS("AffidAliasAffidInt", "Alias Affidavit", null),
     SOLS_AFFID_EXEC("AffidExecution", "Due Execution or rule 12(3) affidavit", null),
     SOLS_AFFID_HANDWRITING("AffidHandWriting", "Handwriting affidavit", null),
