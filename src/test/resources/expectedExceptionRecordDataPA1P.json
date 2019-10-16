@@ -10,7 +10,11 @@
     {
       "type": "form",
       "subtype": "PA1P",
-      "url": "https://dm-store:5006/fdfsfsdf",
+      "url": {
+        "document_url":"https://dm-store:5006/fdfsfsdf",
+        "document_binary_url":"https://dm-store:5006/fdfsfsdf",
+        "document_filename":"123135453645.pdf"
+      },
       "control_number": "123135453645",
       "file_name": "123135453645.pdf",
       "scanned_date": "2019-07-15T12:34:56.789Z",
