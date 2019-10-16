@@ -13,7 +13,7 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 public class AssembleMissingInformation {
-    private static final String CONDITIONS_WILL = "Will / Coldicil";
+    private static final String CONDITIONS_WILL = "Will / Codicil";
     private static final String CONDITIONS_DEATH_CERT = "The one supplied was unclear / One was not supplied";
     private final AssemblerBase assemblerBase;
 

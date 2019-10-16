@@ -24,7 +24,7 @@ public class AssembleMissingInformationTest {
         assertEquals("FL-PRB-GNO-ENG-00126.docx", response.get(0).getTemplateName());
         assertEquals("Text", response.get(0).getEnableType().name());
         assertEquals("Original Will or Codicil", response.get(0).getLabel());
-        assertEquals("Will / Coldicil", response.get(0).getTextValue());
+        assertEquals("Will / Codicil", response.get(0).getTextValue());
         assertEquals(null, response.get(0).getTextAreaValue());
         assertEquals(null, response.get(0).getDynamicList());
     }
