@@ -14,7 +14,7 @@ import java.util.List;
 public class AssembleSolicitorRedeclaration {
     private final AssemblerBase assemblerBase;
 
-    public List<ParagraphDetail> solsRedecDate(ParagraphCode paragraphCode, CaseData caseData) {
+    public List<ParagraphDetail> solsRedecCodicil(ParagraphCode paragraphCode, CaseData caseData) {
         return assemblerBase.getStaticParagraphDetails(paragraphCode);
     }
 

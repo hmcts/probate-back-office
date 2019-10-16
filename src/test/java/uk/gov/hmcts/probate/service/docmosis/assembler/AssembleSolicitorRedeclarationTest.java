@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.solsRedecClearing;
-import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.solsRedecDate;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.solsRedecCodicil;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.solsRedecDomicile;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.solsRedecIntForDom;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.solsRedecMinority;
@@ -25,7 +25,7 @@ public class AssembleSolicitorRedeclarationTest extends AssembleTestBase {
 
     @BeforeClass
     public static void setUpClass() {
-        code2Expected.put(solsRedecDate, new String[]{"RedecSotDate", "FL-PRB-GNO-ENG-00201.docx",
+        code2Expected.put(solsRedecCodicil, new String[]{"RedecCodicil", "FL-PRB-GNO-ENG-00201.docx",
             "Re-declare: Codicil omitted"});
         code2Expected.put(solsRedecSotSigned, new String[]{"RedecSotSigned", "FL-PRB-GNO-ENG-00202.docx",
             "Re-declare: SOT not signed"});
@@ -48,9 +48,9 @@ public class AssembleSolicitorRedeclarationTest extends AssembleTestBase {
     @Test
     public void shouldPopulateSolsRedecDate() {
 
-        List<ParagraphDetail> response = assembleSolicitorRedeclaration.solsRedecDate(solsRedecDate,
+        List<ParagraphDetail> response = assembleSolicitorRedeclaration.solsRedecCodicil(solsRedecCodicil,
             CaseData.builder().build());
-        assertAllForStaticField(response, solsRedecDate, code2Expected);
+        assertAllForStaticField(response, solsRedecCodicil, code2Expected);
     }
 
     @Test
