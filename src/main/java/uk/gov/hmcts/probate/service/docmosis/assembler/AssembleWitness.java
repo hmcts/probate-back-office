@@ -13,7 +13,7 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 public class AssembleWitness {
-    private static final String CONDITIONS_WILL = "Will / Coldicil";
+    private static final String CONDITIONS_WILL = "Will / Codicil";
      private final AssemblerBase assemblerBase;
 
     public List<ParagraphDetail> witnessConsent(ParagraphCode paragraphCode, CaseData caseData) {
