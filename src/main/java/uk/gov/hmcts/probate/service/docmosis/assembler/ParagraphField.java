@@ -102,7 +102,17 @@ public enum ParagraphField {
     SOLS_AFFID_ALTERATIONS("AffidAlterations", "Alterations affidavit", null),
     SOLS_AFFID_DATE("AffidDate", "Date of execution affidavit", "reasonForAffidavitExecution"),
     SOLS_AFFID_SEARCH("AffidSearch", "Search affidavit", "reasonForAffidavitSearch"),
-    SOLS_AFFID_RECITAL("AffidMisRecital", "Mis-recital of date of will in codicil affidavit", "reasonForAffidavitMissRecital");
+    SOLS_AFFID_RECITAL("AffidMisRecital", "Mis-recital of date of will in codicil affidavit", "reasonForAffidavitMissRecital"),
+    SOLS_REDEC_SOT_DATE("RedecSotDate", "Re-declare: incorrect or missing date of will in SOT", null),
+    SOLS_REDEC_DATE("RedecSotDate", "Re-declare: Codicil omitted", null),
+    SOLS_REDEC_SOT_SIGNED("RedecSotSigned", "Re-declare: SOT not signed", null),
+    SOLS_REDEC_DOMICILE("RedecDomcile", "Re-declare: Domicile", null),
+    SOLS_REDEC_INT_FOR_DOM("RedecIntForDom", "Re-declare: Intestacy foreign domicile", null),
+    SOLS_REDEC_WILLS_FOR_DOM("RedecWillsForDom", "Re-declare: Wills foreign domicile", null),
+    SOLS_REDEC_MINORITY("RedecMinority", "Re-declare: Minority interest", null),
+    SOLS_REDEC_NET_ESTATE("RedecNetEstate", "Re-declare: Net estate over SSL", null),
+    SOLS_REDEC_TITLE("RedecTitle", "Re-declare: Title", null),
+    SOLS_REDEC_CLEARING("RedecClearing", "Re-declare: Clearing", null);
 
     private final String fieldCode;
     private final String fieldLabel;
