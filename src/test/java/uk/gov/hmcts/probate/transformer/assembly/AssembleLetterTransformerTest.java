@@ -19,8 +19,15 @@ import uk.gov.hmcts.probate.service.docmosis.assembler.AssembleForeignDomicile;
 import uk.gov.hmcts.probate.service.docmosis.assembler.AssembleFreeText;
 import uk.gov.hmcts.probate.service.docmosis.assembler.AssembleIHT;
 import uk.gov.hmcts.probate.service.docmosis.assembler.AssembleIncapacity;
+import uk.gov.hmcts.probate.service.docmosis.assembler.AssembleLifeAndMinorityInterest;
 import uk.gov.hmcts.probate.service.docmosis.assembler.AssembleMissingInformation;
+import uk.gov.hmcts.probate.service.docmosis.assembler.AssembleSOTIncomplete;
+import uk.gov.hmcts.probate.service.docmosis.assembler.AssembleSolicitorAffidavit;
+import uk.gov.hmcts.probate.service.docmosis.assembler.AssembleSolicitorCert;
+import uk.gov.hmcts.probate.service.docmosis.assembler.AssembleSolicitorGeneral;
+import uk.gov.hmcts.probate.service.docmosis.assembler.AssembleSolicitorRedeclaration;
 import uk.gov.hmcts.probate.service.docmosis.assembler.AssembleWill;
+import uk.gov.hmcts.probate.service.docmosis.assembler.AssembleWitness;
 import uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode;
 
 import java.util.ArrayList;
@@ -52,6 +59,21 @@ public class AssembleLetterTransformerTest {
     @Mock
     AssembleIncapacity assembleIncapacity;
     @Mock
+    AssembleLifeAndMinorityInterest assembleLifeAndMinorityInterest;
+    @Mock
+    AssembleSOTIncomplete assembleSOTIncomplete;
+    @Mock
+    AssembleWitness assembleWitness;
+    @Mock
+    AssembleSolicitorGeneral assembleSolicitorGeneral;
+    @Mock
+    AssembleSolicitorCert assembleSolicitorCert;
+    @Mock
+    AssembleSolicitorAffidavit assembleSolicitorAffidavit;
+    @Mock
+    AssembleSolicitorRedeclaration assembleSolicitorRedeclaration;
+
+    @Mock
     private CaseDetails caseDetailsMock;
     @Mock
     private CaseData caseDataMock;
@@ -62,7 +84,9 @@ public class AssembleLetterTransformerTest {
     public void setUp() {
         assembleLetterTransformer = new AssembleLetterTransformer(assembleCaseworker,
                 assembleFreeText, assembleEntitlement, assembleIHT, assembleMissingInformation, assembleForeignDomicile,
-                assembleWill, assembleIncapacity);
+                assembleWill, assembleIncapacity, assembleLifeAndMinorityInterest, assembleSOTIncomplete,
+                assembleWitness, assembleSolicitorGeneral, assembleSolicitorCert, assembleSolicitorAffidavit,
+                assembleSolicitorRedeclaration);
 
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
     }

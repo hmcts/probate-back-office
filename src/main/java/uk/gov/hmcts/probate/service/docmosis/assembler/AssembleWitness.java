@@ -14,7 +14,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AssembleWitness {
     private static final String CONDITIONS_WILL = "Will / Coldicil";
-     private final AssemblerBase assemblerBase;
+    private final AssemblerBase assemblerBase;
 
     public List<ParagraphDetail> witnessConsent(ParagraphCode paragraphCode, CaseData caseData) {
         return assemblerBase.getTextParagraphDetailWithDefaultValue(paragraphCode, Arrays.asList(CONDITIONS_WILL));

@@ -10,8 +10,6 @@ import static org.junit.Assert.assertEquals;
 
 public class AssembleIHTTest extends AssembleTestBase {
 
-    private static final String YES = "Yes";
-
     private AssembleIHT assembleIHT = new AssembleIHT(assemblerBase);
 
     @Test
