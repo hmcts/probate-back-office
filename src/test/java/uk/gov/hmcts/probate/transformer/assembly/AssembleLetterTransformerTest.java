@@ -135,7 +135,17 @@ public class AssembleLetterTransformerTest {
         List<String> iht = Arrays.asList("IHT205Miss");
         List<String> miss = Arrays.asList("MissInfoChangeApp");
         List<String> will = Arrays.asList("WillAnyOther");
-        List selectedCats = Arrays.asList(forDom, ent, iht, miss, will);
+        List<String> incap = Arrays.asList("IncapGen");
+        List<String> admonLife = Arrays.asList("LMAdmonLife");
+        List<String> sotPa1pQ2 = Arrays.asList("SotPa1pQ2");
+        List<String> witConsent = Arrays.asList("WitConsent");
+        List<String> powAtt = Arrays.asList("GenPowerOfAttorney");
+        List<String> certAlias = Arrays.asList("Certsalias");
+        List<String> affidAliasAffidInt = Arrays.asList("AffidAliasAffidInt");
+        List<String> redecClearing = Arrays.asList("RedecClearing");
+
+        List selectedCats = Arrays.asList(forDom, ent, iht, miss, will, incap, admonLife, sotPa1pQ2, witConsent, powAtt,
+            certAlias, affidAliasAffidInt, redecClearing);
         when(categories.getAllSelectedCategories()).thenReturn(selectedCats);
         when(caseDataMock.getCategories()).thenReturn(categories);
 
@@ -167,21 +177,77 @@ public class AssembleLetterTransformerTest {
 
         List<ParagraphDetail> willTextList = Arrays.asList(ParagraphDetail.builder().code("someCode7").build());
         when(assembleWill.willAnyOther(ArgumentMatchers.any(ParagraphCode.class), ArgumentMatchers.any(CaseData.class)))
-                .thenReturn(willTextList);
+            .thenReturn(willTextList);
+
+        List<ParagraphDetail> incapGenTextList = Arrays.asList(ParagraphDetail.builder().code("someCode8").build());
+        when(assembleIncapacity.incapacityGeneral(ArgumentMatchers.any(ParagraphCode.class),
+            ArgumentMatchers.any(CaseData.class)))
+            .thenReturn(incapGenTextList);
+
+        List<ParagraphDetail> lifeMinTextList = Arrays.asList(ParagraphDetail.builder().code("someCode9").build());
+        when(assembleLifeAndMinorityInterest.admonWillLife(ArgumentMatchers.any(ParagraphCode.class),
+            ArgumentMatchers.any(CaseData.class)))
+            .thenReturn(lifeMinTextList);
+
+        List<ParagraphDetail> sotPa1pQ2TextList = Arrays.asList(ParagraphDetail.builder().code("someCode10").build());
+        when(assembleSOTIncomplete.sotPa1pQ2(ArgumentMatchers.any(ParagraphCode.class),
+            ArgumentMatchers.any(CaseData.class)))
+            .thenReturn(sotPa1pQ2TextList);
+
+        List<ParagraphDetail> witConsentTextList = Arrays.asList(ParagraphDetail.builder().code("someCode11").build());
+        when(assembleWitness.witnessConsent(ArgumentMatchers.any(ParagraphCode.class),
+            ArgumentMatchers.any(CaseData.class)))
+            .thenReturn(witConsentTextList);
+
+        List<ParagraphDetail> powAttTextList = Arrays.asList(ParagraphDetail.builder().code("someCode12").build());
+        when(assembleSolicitorGeneral.solsGenPowerAttorney(ArgumentMatchers.any(ParagraphCode.class),
+            ArgumentMatchers.any(CaseData.class)))
+            .thenReturn(powAttTextList);
+
+        List<ParagraphDetail> solCertAliasTextList = Arrays.asList(ParagraphDetail.builder().code("someCode13").build());
+        when(assembleSolicitorCert.solsCertAlias(ArgumentMatchers.any(ParagraphCode.class),
+            ArgumentMatchers.any(CaseData.class)))
+            .thenReturn(solCertAliasTextList);
+
+        List<ParagraphDetail> affidAliasAffidIntTextList =
+            Arrays.asList(ParagraphDetail.builder().code("someCode14").build());
+        when(assembleSolicitorAffidavit.solsAffidAlias(ArgumentMatchers.any(ParagraphCode.class),
+            ArgumentMatchers.any(CaseData.class)))
+            .thenReturn(affidAliasAffidIntTextList);
+
+        List<ParagraphDetail> redecClearingTextList =
+            Arrays.asList(ParagraphDetail.builder().code("someCode15").build());
+        when(assembleSolicitorRedeclaration.solsRedecClearing(ArgumentMatchers.any(ParagraphCode.class),
+            ArgumentMatchers.any(CaseData.class)))
+            .thenReturn(redecClearingTextList);
 
         ResponseCaseData.ResponseCaseDataBuilder responseCaseDataBuilder = ResponseCaseData.builder();
 
         assembleLetterTransformer.setupAllLetterParagraphDetails(caseDetailsMock, responseCaseDataBuilder);
 
         ResponseCaseData responseCaseData = responseCaseDataBuilder.build();
-        assertThat(responseCaseData.getParagraphDetails().size(), equalTo(7));
-        assertThat(responseCaseData.getParagraphDetails().get(0).getValue().getCode(), equalTo("someCode1"));
-        assertThat(responseCaseData.getParagraphDetails().get(1).getValue().getCode(), equalTo("someCode6"));
-        assertThat(responseCaseData.getParagraphDetails().get(2).getValue().getCode(), equalTo("someCode3"));
-        assertThat(responseCaseData.getParagraphDetails().get(3).getValue().getCode(), equalTo("someCode4"));
-        assertThat(responseCaseData.getParagraphDetails().get(4).getValue().getCode(), equalTo("someCode5"));
-        assertThat(responseCaseData.getParagraphDetails().get(5).getValue().getCode(), equalTo("someCode7"));
-        assertThat(responseCaseData.getParagraphDetails().get(6).getValue().getCode(), equalTo("someCode2"));
+        assertThat(responseCaseData.getParagraphDetails().size(), equalTo(15));
+        int i = 0;
 
+        assertDetail(responseCaseData, i++, "someCode1");
+        assertDetail(responseCaseData, i++, "someCode6");
+        assertDetail(responseCaseData, i++, "someCode3");
+        assertDetail(responseCaseData, i++, "someCode4");
+        assertDetail(responseCaseData, i++, "someCode5");
+        assertDetail(responseCaseData, i++, "someCode7");
+        assertDetail(responseCaseData, i++, "someCode8");
+        assertDetail(responseCaseData, i++, "someCode9");
+        assertDetail(responseCaseData, i++, "someCode10");
+        assertDetail(responseCaseData, i++, "someCode11");
+        assertDetail(responseCaseData, i++, "someCode12");
+        assertDetail(responseCaseData, i++, "someCode13");
+        assertDetail(responseCaseData, i++, "someCode14");
+        assertDetail(responseCaseData, i++, "someCode15");
+        assertDetail(responseCaseData, i++, "someCode2");
+
+    }
+
+    private void assertDetail(ResponseCaseData responseCaseData, int i, String code) {
+        assertThat(responseCaseData.getParagraphDetails().get(i).getValue().getCode(), equalTo(code));
     }
 }
