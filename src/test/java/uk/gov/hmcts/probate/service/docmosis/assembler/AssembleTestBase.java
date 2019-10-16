@@ -45,4 +45,22 @@ public class AssembleTestBase {
 
     }
 
+    protected void assertAllForTextFieldWithDefault(List<ParagraphDetail> response, ParagraphCode code, HashMap<ParagraphCode,
+        String[]> code2expected) {
+        assertAllForTextFieldWithDefault(response, code2expected.get(code)[0], code2expected.get(code)[1], code2expected.get(code)[2],
+            code2expected.get(code)[3]);
+
+    }
+
+    protected void assertAllForTextFieldWithDefault(List<ParagraphDetail> response, String detailCode, String templateName, String label,
+                                                    String defaultValue) {
+        assertEquals(detailCode, response.get(0).getCode());
+        assertEquals(templateName, response.get(0).getTemplateName());
+        assertEquals(defaultValue, response.get(0).getTextValue());
+        assertEquals(null, response.get(0).getTextAreaValue());
+        assertEquals("Text", response.get(0).getEnableType().name());
+        assertEquals(label, response.get(0).getLabel());
+
+    }
+
 }
