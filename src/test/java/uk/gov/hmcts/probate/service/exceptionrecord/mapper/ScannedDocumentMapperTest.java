@@ -4,6 +4,7 @@ import org.junit.Test;
 import uk.gov.hmcts.probate.model.exceptionrecord.InputScannedDoc;
 import uk.gov.hmcts.reform.probate.model.ScannedDocument;
 import uk.gov.hmcts.reform.probate.model.cases.CollectionMember;
+import uk.gov.hmcts.reform.probate.model.cases.DocumentLink;
 
 import static java.time.LocalDateTime.now;
 import static org.junit.Assert.assertEquals;
@@ -23,6 +24,8 @@ public class ScannedDocumentMapperTest {
         assertEquals("type" + DOC_NAME_PREFIX1, scannedDocumentCollectionMember.getValue().getType());
         assertEquals("subtype" + DOC_NAME_PREFIX1, scannedDocumentCollectionMember.getValue().getSubtype());
         assertEquals("url" + DOC_NAME_PREFIX1, scannedDocumentCollectionMember.getValue().getUrl().getDocumentUrl());
+        assertEquals("binary" + DOC_NAME_PREFIX1, scannedDocumentCollectionMember.getValue().getUrl().getDocumentBinaryUrl());
+        assertEquals("filename" + DOC_NAME_PREFIX1, scannedDocumentCollectionMember.getValue().getUrl().getDocumentFilename());
         assertEquals("dcn" + DOC_NAME_PREFIX1, scannedDocumentCollectionMember.getValue().getControlNumber());
         assertEquals("filename" + DOC_NAME_PREFIX1, scannedDocumentCollectionMember.getValue().getFileName());
     }
@@ -35,10 +38,14 @@ public class ScannedDocumentMapperTest {
     }
 
     public static InputScannedDoc getSampleInputDocument(String suffix) {
+        DocumentLink documentLink = DocumentLink.builder()
+                .documentUrl("url" + suffix)
+                .documentBinaryUrl("binary" + suffix)
+                .documentFilename("filename" + suffix).build();
         return new InputScannedDoc(
                 "type" + suffix,
                 "subtype" + suffix,
-                "url" + suffix,
+                documentLink,
                 "dcn" + suffix,
                 "filename" + suffix,
                 now(),

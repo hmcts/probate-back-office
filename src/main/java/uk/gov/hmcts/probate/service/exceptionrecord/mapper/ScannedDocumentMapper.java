@@ -17,8 +17,9 @@ public class ScannedDocumentMapper {
             return null;
         } else {
             ProbateDocumentLink exceptionRecordDocumentLink = ProbateDocumentLink.builder()
-                    .documentUrl(exceptionRecordDoc.url)
-                    .documentFilename(exceptionRecordDoc.fileName)
+                    .documentUrl(exceptionRecordDoc.url.getDocumentUrl())
+                    .documentBinaryUrl(exceptionRecordDoc.url.getDocumentBinaryUrl())
+                    .documentFilename(exceptionRecordDoc.url.getDocumentFilename())
                     .build();
             return new CollectionMember<>(null, new ScannedDocument(
                     exceptionRecordDoc.controlNumber,
