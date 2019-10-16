@@ -7,9 +7,12 @@ import uk.gov.hmcts.probate.model.exceptionrecord.CaseCreationDetails;
 import uk.gov.hmcts.probate.model.exceptionrecord.ExceptionRecordRequest;
 import uk.gov.hmcts.probate.model.exceptionrecord.SuccessfulTransformationResponse;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.ExceptionRecordCaveatMapper;
+import uk.gov.hmcts.probate.service.exceptionrecord.mapper.ExceptionRecordGrantOfRepresentationMapper;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.ScannedDocumentMapper;
+import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.CaveatCallbackResponseTransformer;
 import uk.gov.hmcts.reform.probate.model.cases.caveat.CaveatData;
+import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,10 +26,16 @@ public class ExceptionRecordService {
     ExceptionRecordCaveatMapper erCaveatMapper;
 
     @Autowired
+    ExceptionRecordGrantOfRepresentationMapper erGrantOfRepresentationMapper;
+
+    @Autowired
     ScannedDocumentMapper documentMapper;
 
     @Autowired
     CaveatCallbackResponseTransformer caveatTransformer;
+
+    @Autowired
+    CallbackResponseTransformer grantOfRepresentationTransformer;
 
     public SuccessfulTransformationResponse createCaveatCaseFromExceptionRecord(
             ExceptionRecordRequest erRequest,
@@ -47,6 +56,35 @@ public class ExceptionRecordService {
 
             return SuccessfulTransformationResponse.builder()
                     .caseCreationDetails(caveatCaseDetailsResponse)
+                    .warnings(warnings)
+                    .errors(errors)
+                    .build();
+
+        } catch (Exception e) {
+            throw new OCRMappingException(e.getMessage());
+        }
+    }
+
+    public SuccessfulTransformationResponse createGrantOfRepresentationCaseFromExceptionRecord(
+            ExceptionRecordRequest erRequest,
+            List<String> warnings) {
+
+        List<String> errors = new ArrayList<String>();
+
+        try {
+            GrantOfRepresentationData grantOfRepresentationData = erGrantOfRepresentationMapper.toCcdData(erRequest.getOCRFieldsObject());
+
+            // Add scanned documents
+            grantOfRepresentationData.setScannedDocuments(erRequest.getScannedDocuments()
+                    .stream()
+                    .map(it -> documentMapper.toCaseDoc(it, erRequest.getId()))
+                    .collect(toList()));
+
+            CaseCreationDetails grantOfRepresentationCaseDetailsResponse =
+                    grantOfRepresentationTransformer.newGrantOfRepresentationCaseTransform(grantOfRepresentationData);
+
+            return SuccessfulTransformationResponse.builder()
+                    .caseCreationDetails(grantOfRepresentationCaseDetailsResponse)
                     .warnings(warnings)
                     .errors(errors)
                     .build();

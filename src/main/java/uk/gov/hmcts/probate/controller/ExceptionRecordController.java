@@ -90,6 +90,12 @@ public class ExceptionRecordController {
                 case PA8A:
                     callbackResponse = erService.createCaveatCaseFromExceptionRecord(erRequest, warnings);
                     return ResponseEntity.ok(callbackResponse);
+                case PA1P:
+                    callbackResponse = erService.createGrantOfRepresentationCaseFromExceptionRecord(erRequest, warnings);
+                    return ResponseEntity.ok(callbackResponse);
+                case PA1A:
+                    callbackResponse = erService.createGrantOfRepresentationCaseFromExceptionRecord(erRequest, warnings);
+                    return ResponseEntity.ok(callbackResponse);
                 default:
                     errors.add("This Exception Record form currently has no case mapping");
                     callbackResponse = SuccessfulTransformationResponse.builder()
