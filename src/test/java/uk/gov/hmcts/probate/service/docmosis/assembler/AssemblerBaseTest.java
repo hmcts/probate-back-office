@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static uk.gov.hmcts.probate.model.Constants.YES;
 
 public class AssemblerBaseTest {
 
@@ -52,6 +51,16 @@ public class AssemblerBaseTest {
     }
 
     @Test
+    public void testGetSingleTextParagraphsDetails() {
+        ParagraphField paragraphField = ParagraphField.MISS_INFO_DECEASED_COUNTRY;
+        ParagraphDetail response = assemblerBase.getSingleTextParagraphDetails(paragraphField, "templateName");
+        assertEquals("Text", response.getEnableType().name());
+        assertEquals("Deceased was resident in country of executed will - country", response.getLabel());
+        assertEquals("MissInfoDeceased", response.getCode());
+        assertEquals("templateName", response.getTemplateName());
+    }
+
+    @Test
     public void testGetTextAreaParagraphsDetails() {
 
         List<ParagraphDetail> response = assemblerBase.getTextAreaParagraphDetails(ParagraphCode.FreeText);
@@ -63,6 +72,18 @@ public class AssemblerBaseTest {
 
     @Test
     public void testGetTextParagraphDetailWithDefaultValue() {
+        ParagraphField paragraphField = ParagraphField.MISS_INFO_DECEASED_COUNTRY;
+        List<String> textValues = new ArrayList<>();
+        ParagraphDetail response = assemblerBase.getSingleTextParagraphDetailWithDefaultValue(paragraphField, "textValues", "templateName");
+        assertEquals("Text", response.getEnableType().name());
+        assertEquals("Deceased was resident in country of executed will - country", response.getLabel());
+        assertEquals("textValues", response.getTextValue());
+        assertEquals("MissInfoDeceased", response.getCode());
+        assertEquals("templateName", response.getTemplateName());
+    }
+
+    @Test
+    public void testGetSingleTextParagraphDetailWithDefaultValue() {
 
         List<String> textValues = new ArrayList<>();
         textValues.add("test value one");
@@ -91,5 +112,24 @@ public class AssemblerBaseTest {
         assertEquals(dynamicList1, response.get(0).getDynamicList());
         assertEquals("Awaiting IHT421", response.get(0).getLabel());
         assertEquals("IHT421Await", response.get(0).getCode());
+    }
+
+    @Test
+    public void testGetDateParagraphDetailWithDefaultValue() {
+        List<ParagraphDetail> response = assemblerBase.getDateParagraphDetails(ParagraphCode.MissInfoAwaitResponse);
+        assertEquals("Date", response.get(0).getEnableType().name());
+        assertEquals("Date of request", response.get(0).getLabel());
+        assertEquals("MissInfoAwaitResponse", response.get(0).getCode());
+        assertEquals("FL-PRB-GNO-ENG-00152.docx", response.get(0).getTemplateName());
+    }
+
+    @Test
+    public void testGetSingleDateParagraphDetailWithDefaultValue() {
+        ParagraphField paragraphField = ParagraphField.DATE_OF_REQUEST;
+        ParagraphDetail response = assemblerBase.getSingleDateParagraphDetails(paragraphField, "templateName");
+        assertEquals("Date", response.getEnableType().name());
+        assertEquals("Date of request", response.getLabel());
+        assertEquals("MissInfoAwaitResponse", response.getCode());
+        assertEquals("templateName", response.getTemplateName());
     }
 }

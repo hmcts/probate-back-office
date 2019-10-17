@@ -34,4 +34,41 @@ public class AssembleEntitlement {
         return assemblerBase.getTextParagraphDetailWithDefaultValue(paragraphCode, fieldValues);
     }
 
+    public List<ParagraphDetail> entitlementAttorneyAndExec(ParagraphCode paragraphCode, CaseData caseData) {
+        return assemblerBase.getStaticParagraphDetails(paragraphCode);
+    }
+
+    public List<ParagraphDetail> entitlementLeadingGrantApplication(ParagraphCode paragraphCode, CaseData caseData) {
+        return assemblerBase.getTextParagraphDetails(paragraphCode);
+    }
+
+    public List<ParagraphDetail> entitlementNoTitle(ParagraphCode paragraphCode, CaseData caseData) {
+        return assemblerBase.getTextParagraphDetails(paragraphCode);
+    }
+
+    public List<ParagraphDetail> entitlementFamilyTree(ParagraphCode paragraphCode, CaseData caseData) {
+        return assemblerBase.getStaticParagraphDetails(paragraphCode);
+    }
+
+    public List<ParagraphDetail> entitlementConfirmDeath(ParagraphCode paragraphCode, CaseData caseData) {
+        return assemblerBase.getTextParagraphDetails(paragraphCode);
+    }
+
+    public List<ParagraphDetail> entitlementSubstitutedExec(ParagraphCode paragraphCode, CaseData caseData) {
+        return assemblerBase.getTextParagraphDetails(paragraphCode);
+    }
+
+    public List<ParagraphDetail> entitlementPrejudice(ParagraphCode paragraphCode, CaseData caseData) {
+        return assemblerBase.getStaticParagraphDetails(paragraphCode);
+    }
+
+    public List<ParagraphDetail> entitlementWrongExec(ParagraphCode paragraphCode, CaseData caseData) {
+        return assemblerBase.getTextParagraphDetails(paragraphCode);
+    }
+
+    public List<ParagraphDetail> entitlementTwoApplications(ParagraphCode paragraphCode, CaseData caseData) {
+        return assemblerBase.getTextParagraphDetails(paragraphCode);
+    }
+
+
 }

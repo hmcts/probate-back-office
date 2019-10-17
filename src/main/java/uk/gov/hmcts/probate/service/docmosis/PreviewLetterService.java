@@ -5,17 +5,18 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.ParagraphDetail;
-import uk.gov.hmcts.probate.model.ccd.raw.ParagraphDetailEnablementType;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
-import uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode;
+import uk.gov.hmcts.probate.service.DateFormatterService;
 import uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphField;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import static uk.gov.hmcts.probate.model.Constants.YES;
+import static uk.gov.hmcts.probate.model.ccd.raw.ParagraphDetailEnablementType.Date;
 import static uk.gov.hmcts.probate.model.ccd.raw.ParagraphDetailEnablementType.List;
 import static uk.gov.hmcts.probate.model.ccd.raw.ParagraphDetailEnablementType.Text;
 import static uk.gov.hmcts.probate.model.ccd.raw.ParagraphDetailEnablementType.TextArea;
@@ -26,14 +27,27 @@ import static uk.gov.hmcts.probate.model.ccd.raw.ParagraphDetailEnablementType.T
 public class PreviewLetterService {
 
     private final GenericMapperService genericMapperService;
+    private final DateFormatterService dateFormatterService;
 
     public Map<String, Object> addLetterData(@Valid CaseDetails caseDetails) {
         CaseData caseData = caseDetails.getData();
         Map<String, Object> placeholders = genericMapperService.addCaseDataWithRegistryProperties(caseDetails);
         ParagraphField.getAll().stream().filter(field -> field.getFieldPlaceholderName() != null)
                 .forEach(field -> addPlaceholderIfPresent(placeholders, field, caseData));
-
+        placeholders.put("templateList", addTemplateList(caseDetails));
         return placeholders;
+    }
+
+    private List<String> addTemplateList(@Valid CaseDetails caseDetails) {
+        List<String> templateList = new ArrayList<>();
+        for (CollectionMember<ParagraphDetail> paragraphDetail : caseDetails.getData().getParagraphDetails()) {
+            if (paragraphDetail.getValue().getTemplateName() != null) {
+                if (!templateList.contains(paragraphDetail.getValue().getTemplateName())) {
+                    templateList.add(paragraphDetail.getValue().getTemplateName());
+                }
+            }
+        }
+        return templateList;
     }
 
     private void addPlaceholderIfPresent(Map<String, Object> placeholders, ParagraphField paragraphField, CaseData caseData) {
@@ -50,6 +64,9 @@ public class PreviewLetterService {
                 } else if (List.equals(matchedDetail.getEnableType())) {
                     placeholders.put(paragraphField.getFieldPlaceholderName(),
                             matchedDetail.getDynamicList().getValue().getLabel());
+                } else if (Date.equals(matchedDetail.getEnableType())) {
+                    placeholders.put(paragraphField.getFieldPlaceholderName(),
+                            dateFormatterService.formatDate(matchedDetail.getDateValue()));
                 }
             }
         }

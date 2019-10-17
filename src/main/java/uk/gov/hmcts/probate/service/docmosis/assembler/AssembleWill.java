@@ -33,4 +33,20 @@ public class AssembleWill {
         return assemblerBase.getStaticParagraphDetails(paragraphCode);
     }
 
+    public List<ParagraphDetail> willRevoked(ParagraphCode paragraphCode, CaseData caseData) {
+        return assemblerBase.getStaticParagraphDetails(paragraphCode);
+    }
+
+    public List<ParagraphDetail> willLost(ParagraphCode paragraphCode, CaseData caseData) {
+        return assemblerBase.getStaticParagraphDetails(paragraphCode);
+    }
+
+    public List<ParagraphDetail> willList(ParagraphCode paragraphCode, CaseData caseData) {
+        return assemblerBase.getStaticParagraphDetails(paragraphCode);
+    }
+
+    public List<ParagraphDetail> willFiat(ParagraphCode paragraphCode, CaseData caseData) {
+        return assemblerBase.getStaticParagraphDetails(paragraphCode);
+    }
+
 }

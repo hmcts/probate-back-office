@@ -11,30 +11,31 @@ import java.util.List;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class AssembleIHT {
+public class AssembleLifeAndMinorityInterest {
     private final AssemblerBase assemblerBase;
 
-    public List<ParagraphDetail> iht205Missing(ParagraphCode paragraphCode, CaseData caseData) {
+    public List<ParagraphDetail> intestacyLifeandMinority(ParagraphCode paragraphCode, CaseData caseData) {
         return assemblerBase.getStaticParagraphDetails(paragraphCode);
     }
 
-    public List<ParagraphDetail> ihtAwait421(ParagraphCode paragraphCode, CaseData caseData) {
+    public List<ParagraphDetail> intestacyLife(ParagraphCode paragraphCode, CaseData caseData) {
         return assemblerBase.getStaticParagraphDetails(paragraphCode);
     }
 
-    public List<ParagraphDetail> ihtNoAssets(ParagraphCode paragraphCode, CaseData caseData) {
+    public List<ParagraphDetail> intestacyMinority(ParagraphCode paragraphCode, CaseData caseData) {
         return assemblerBase.getStaticParagraphDetails(paragraphCode);
     }
 
-    public List<ParagraphDetail> ihtGrossEstate(ParagraphCode paragraphCode, CaseData caseData) {
+    public List<ParagraphDetail> admonWillLife(ParagraphCode paragraphCode, CaseData caseData) {
         return assemblerBase.getStaticParagraphDetails(paragraphCode);
     }
 
-    public List<ParagraphDetail> iht217Missing(ParagraphCode paragraphCode, CaseData caseData) {
+    public List<ParagraphDetail> admonWillMinority(ParagraphCode paragraphCode, CaseData caseData) {
         return assemblerBase.getStaticParagraphDetails(paragraphCode);
     }
 
-    public List<ParagraphDetail> iht400(ParagraphCode paragraphCode, CaseData caseData) {
+    public List<ParagraphDetail> intestacyParentalResponsibility(ParagraphCode paragraphCode, CaseData caseData) {
         return assemblerBase.getStaticParagraphDetails(paragraphCode);
     }
+
 }
