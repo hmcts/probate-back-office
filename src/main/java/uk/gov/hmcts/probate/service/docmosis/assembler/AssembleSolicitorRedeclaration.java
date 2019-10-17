@@ -12,6 +12,7 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 public class AssembleSolicitorRedeclaration {
+    private static final String CONDITIONS_WILL = "Will / Codicil";
     private final AssemblerBase assemblerBase;
 
     public List<ParagraphDetail> solsRedecCodicil(ParagraphCode paragraphCode, CaseData caseData) {

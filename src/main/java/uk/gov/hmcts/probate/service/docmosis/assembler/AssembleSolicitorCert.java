@@ -6,12 +6,14 @@ import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.model.ccd.raw.ParagraphDetail;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Slf4j
 @Component
 @RequiredArgsConstructor
 public class AssembleSolicitorCert {
+    private static final String CONDITIONS_PLIGHT = "Condition reason e.g. a tear / staple holes / punch holes";
     private final AssemblerBase assemblerBase;
 
     public List<ParagraphDetail> solsCertOtherWill(ParagraphCode paragraphCode, CaseData caseData) {
@@ -71,7 +73,7 @@ public class AssembleSolicitorCert {
     }
 
     public List<ParagraphDetail> solsCertPlightCondition(ParagraphCode paragraphCode, CaseData caseData) {
-        return assemblerBase.getStaticParagraphDetails(paragraphCode);
+        return assemblerBase.getTextParagraphDetailWithDefaultValue(paragraphCode, Arrays.asList(CONDITIONS_PLIGHT));
     }
 
     public List<ParagraphDetail> solsCertSettledLand(ParagraphCode paragraphCode, CaseData caseData) {
