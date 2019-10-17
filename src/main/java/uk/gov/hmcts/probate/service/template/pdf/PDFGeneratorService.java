@@ -17,7 +17,9 @@ import uk.gov.hmcts.probate.service.docmosis.DocmosisPdfGenerationService;
 import uk.gov.hmcts.reform.pdf.service.client.PDFServiceClient;
 import uk.gov.hmcts.reform.pdf.service.client.exception.PDFServiceClientException;
 
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -52,6 +54,7 @@ public class PDFGeneratorService {
         byte[] postResult;
         try {
             postResult = docmosisPdfGenerationService.generateDocFrom(templateName, placeholders);
+            savePDF(postResult, templateName);
         } catch (PDFServiceClientException e) {
             log.error(e.getMessage(), e);
             throw new ClientException(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage());
@@ -67,6 +70,17 @@ public class PDFGeneratorService {
         appInsights.trackEvent(REQUEST_SENT, pdfServiceConfiguration.getUrl());
 
         return pdfServiceClient.generateFromHtml(templateAsString.getBytes(), paramMap);
+    }
+
+    private void savePDF(byte[] postResult, String templateName) {
+        try {
+            OutputStream out = new FileOutputStream("generated"+templateName+".pdf");
+            out.write(postResult);
+            out.close();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
     private Map<String, Object> asMap(String placeholderValues) throws IOException {

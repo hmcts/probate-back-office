@@ -9,6 +9,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.service.DateFormatterService;
 import uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphField;
+import uk.gov.hmcts.probate.service.docmosis.assembler.Template;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
@@ -38,12 +39,12 @@ public class PreviewLetterService {
         return placeholders;
     }
 
-    private List<String> addTemplateList(@Valid CaseDetails caseDetails) {
-        List<String> templateList = new ArrayList<>();
+    private List<Template> addTemplateList(@Valid CaseDetails caseDetails) {
+        List<Template> templateList = new ArrayList<>();
         for (CollectionMember<ParagraphDetail> paragraphDetail : caseDetails.getData().getParagraphDetails()) {
             if (paragraphDetail.getValue().getTemplateName() != null) {
                 if (!templateList.contains(paragraphDetail.getValue().getTemplateName())) {
-                    templateList.add(paragraphDetail.getValue().getTemplateName());
+                    templateList.add(Template.builder().value(paragraphDetail.getValue().getTemplateName()).build());
                 }
             }
         }
