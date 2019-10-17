@@ -14,7 +14,7 @@ import java.util.List;
 public class AssembleSolicitorGeneral {
     private final AssemblerBase assemblerBase;
 
-    public List<ParagraphDetail> solsGneralAuthorityPartners(ParagraphCode paragraphCode, CaseData caseData) {
+    public List<ParagraphDetail> solsGeneralAuthorityPartners(ParagraphCode paragraphCode, CaseData caseData) {
         return assemblerBase.getStaticParagraphDetails(paragraphCode);
     }
 
@@ -24,5 +24,9 @@ public class AssembleSolicitorGeneral {
 
     public List<ParagraphDetail> solsGenVoidForUncertainity(ParagraphCode paragraphCode, CaseData caseData) {
         return assemblerBase.getStaticParagraphDetails(paragraphCode);
+    }
+
+    public List<ParagraphDetail> solsGenExtendedRenunciation(ParagraphCode paragraphCode, CaseData caseData) {
+        return assemblerBase.getTextParagraphDetails(paragraphCode);
     }
 }

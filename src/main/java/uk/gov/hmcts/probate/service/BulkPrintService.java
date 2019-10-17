@@ -181,18 +181,6 @@ public class BulkPrintService {
         return documents;
     }
 
-    private List<String> addAdditionalCopiesForGrants(CallbackRequest callbackRequest,
-                                                      String encodedGrantDocument, List<String> documents) {
-        Long extraCopiesOfGrant = 0L;
-        if (callbackRequest.getCaseDetails().getData().getExtraCopiesOfGrant() != null) {
-            extraCopiesOfGrant = callbackRequest.getCaseDetails().getData().getExtraCopiesOfGrant();
-        }
-        LongStream.range(1, extraCopiesOfGrant + 1)
-                .forEach(i -> documents.add(encodedGrantDocument));
-
-        return documents;
-    }
-
     private List<String> arrangePdfDocumentsForBulkPrinting(CaveatCallbackRequest caveatCallbackRequest,
                                                             Document grantDocument,
                                                             Document coverSheetDocument,
@@ -204,6 +192,18 @@ public class BulkPrintService {
         //Layer documents as cover letter first, grant, and extra copies of grant to PA.
         documents.add(encodedCoverSheet);
         documents.add(encodedGrantDocument);
+        return documents;
+    }
+
+    private List<String> addAdditionalCopiesForGrants(CallbackRequest callbackRequest,
+                                                      String encodedGrantDocument, List<String> documents) {
+        Long extraCopiesOfGrant = 0L;
+        if (callbackRequest.getCaseDetails().getData().getExtraCopiesOfGrant() != null) {
+            extraCopiesOfGrant = callbackRequest.getCaseDetails().getData().getExtraCopiesOfGrant();
+        }
+        LongStream.range(1, extraCopiesOfGrant + 1)
+                .forEach(i -> documents.add(encodedGrantDocument));
+
         return documents;
     }
 

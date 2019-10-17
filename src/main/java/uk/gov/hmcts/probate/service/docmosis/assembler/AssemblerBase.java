@@ -47,7 +47,7 @@ public class AssemblerBase {
         return paragraphDetails;
     }
 
-    protected List<ParagraphDetail>  getTextParagraphDetails(ParagraphCode paragraphCode) {
+    protected List<ParagraphDetail> getTextParagraphDetails(ParagraphCode paragraphCode) {
         List<ParagraphDetail> paragraphDetails = new ArrayList<>();
         for (ParagraphField paragraphField : paragraphCode.getParagraphFields()) {
             ParagraphDetail paragraphDetail = ParagraphDetail.builder()
@@ -61,7 +61,17 @@ public class AssemblerBase {
         return paragraphDetails;
     }
 
-    protected List<ParagraphDetail>  getDateParagraphDetails(ParagraphCode paragraphCode) {
+    protected ParagraphDetail getSingleTextParagraphDetails(ParagraphField paragraphField, String templateName) {
+        ParagraphDetail paragraphDetail = ParagraphDetail.builder()
+                .enableType(ParagraphDetailEnablementType.Text)
+                .label(paragraphField.getFieldLabel())
+                .code(paragraphField.getFieldCode())
+                .templateName(templateName)
+                .build();
+        return paragraphDetail;
+    }
+
+    protected List<ParagraphDetail> getDateParagraphDetails(ParagraphCode paragraphCode) {
         List<ParagraphDetail> paragraphDetails = new ArrayList<>();
         for (ParagraphField paragraphField : paragraphCode.getParagraphFields()) {
             ParagraphDetail paragraphDetail = ParagraphDetail.builder()
@@ -75,7 +85,17 @@ public class AssemblerBase {
         return paragraphDetails;
     }
 
-    protected List<ParagraphDetail>  getTextAreaParagraphDetails(ParagraphCode paragraphCode) {
+    protected ParagraphDetail getSingleDateParagraphDetails(ParagraphField paragraphField, String templateName) {
+        ParagraphDetail paragraphDetail = ParagraphDetail.builder()
+                .enableType(ParagraphDetailEnablementType.Date)
+                .label(paragraphField.getFieldLabel())
+                .code(paragraphField.getFieldCode())
+                .templateName(templateName)
+                .build();
+        return paragraphDetail;
+    }
+
+    protected List<ParagraphDetail> getTextAreaParagraphDetails(ParagraphCode paragraphCode) {
         List<ParagraphDetail> paragraphDetails = new ArrayList<>();
         for (ParagraphField paragraphField : paragraphCode.getParagraphFields()) {
             ParagraphDetail paragraphDetail = ParagraphDetail.builder()
@@ -101,9 +121,21 @@ public class AssemblerBase {
                     .templateName(paragraphCode.getTemplateName())
                     .build();
             paragraphDetails.add(paragraphDetail);
-            index ++;
+            index++;
         }
         return paragraphDetails;
+    }
+
+    protected ParagraphDetail getSingleTextParagraphDetailWithDefaultValue(ParagraphField paragraphField,
+                                                                           String textValue, String templateName) {
+        ParagraphDetail paragraphDetail = ParagraphDetail.builder()
+                .enableType(ParagraphDetailEnablementType.Text)
+                .label(paragraphField.getFieldLabel())
+                .textValue(textValue)
+                .code(paragraphField.getFieldCode())
+                .templateName(templateName)
+                .build();
+        return paragraphDetail;
     }
 
     protected List<ParagraphDetail> createDynamicListParagraphDetail(ParagraphCode paragraphCode, List<List<DynamicListItem>> listItems) {
@@ -122,7 +154,7 @@ public class AssemblerBase {
                     .code(paragraphField.getFieldCode())
                     .build();
             paragraphDetails.add(paragraphDetail);
-            index ++;
+            index++;
         }
 
         return paragraphDetails;

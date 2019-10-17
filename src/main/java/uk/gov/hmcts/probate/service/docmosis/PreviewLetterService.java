@@ -11,6 +11,8 @@ import uk.gov.hmcts.probate.service.DateFormatterService;
 import uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphField;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -32,8 +34,20 @@ public class PreviewLetterService {
         Map<String, Object> placeholders = genericMapperService.addCaseDataWithRegistryProperties(caseDetails);
         ParagraphField.getAll().stream().filter(field -> field.getFieldPlaceholderName() != null)
                 .forEach(field -> addPlaceholderIfPresent(placeholders, field, caseData));
-
+        placeholders.put("templateList", addTemplateList(caseDetails));
         return placeholders;
+    }
+
+    private List<String> addTemplateList(@Valid CaseDetails caseDetails) {
+        List<String> templateList = new ArrayList<>();
+        for (CollectionMember<ParagraphDetail> paragraphDetail : caseDetails.getData().getParagraphDetails()) {
+            if (paragraphDetail.getValue().getTemplateName() != null) {
+                if (!templateList.contains(paragraphDetail.getValue().getTemplateName())) {
+                    templateList.add(paragraphDetail.getValue().getTemplateName());
+                }
+            }
+        }
+        return templateList;
     }
 
     private void addPlaceholderIfPresent(Map<String, Object> placeholders, ParagraphField paragraphField, CaseData caseData) {

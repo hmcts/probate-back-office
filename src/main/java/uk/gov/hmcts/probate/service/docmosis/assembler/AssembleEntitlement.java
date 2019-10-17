@@ -66,5 +66,9 @@ public class AssembleEntitlement {
         return assemblerBase.getTextParagraphDetails(paragraphCode);
     }
 
+    public List<ParagraphDetail> entitlementTwoApplications(ParagraphCode paragraphCode, CaseData caseData) {
+        return assemblerBase.getTextParagraphDetails(paragraphCode);
+    }
+
 
 }
