@@ -90,45 +90,47 @@ public class PreviewLetterServiceTest {
         DynamicList dynamicList1 = DynamicList.builder().listItems(listItems.get(0)).value(DynamicListItem.builder().build()).build();
 
         List<CollectionMember<ParagraphDetail>> paragraphDetails = Arrays.asList(
-                new CollectionMember<ParagraphDetail>("id",
-                        ParagraphDetail.builder()
-                                .code("IHT421Await")
-                                .enableType(ParagraphDetailEnablementType.Text)
-                                .label("Awaiting IHT421")
-                                .textValue("primary fn primary sn")
-                                .build()),
-                new CollectionMember<ParagraphDetail>("id",
-                        ParagraphDetail.builder()
-                                .code("FreeText")
-                                .enableType(ParagraphDetailEnablementType.TextArea)
-                                .textAreaValue("textArea")
-                                .build()),
-                new CollectionMember<ParagraphDetail>("id",
-                        ParagraphDetail.builder()
-                                .code("WillAnyOther")
-                                .enableType(ParagraphDetailEnablementType.List)
-                                .label("label")
-                                .dynamicList(dynamicList1)
-                                .build()),
-                new CollectionMember<ParagraphDetail>("id",
-                        ParagraphDetail.builder()
-                                .code("Caseworker")
-                                .enableType(ParagraphDetailEnablementType.Text)
-                                .label("Caseworker")
-                                .textValue("primary fn primary sn")
-                                .build()));
+            new CollectionMember<ParagraphDetail>("id",
+                ParagraphDetail.builder()
+                    .code("IHT421Await")
+                    .enableType(ParagraphDetailEnablementType.Text)
+                    .label("Awaiting IHT421")
+                    .textValue("primary fn primary sn")
+                    .templateName("template1.docx")
+                    .build()),
+            new CollectionMember<ParagraphDetail>("id",
+                ParagraphDetail.builder()
+                    .code("FreeText")
+                    .enableType(ParagraphDetailEnablementType.TextArea)
+                    .textAreaValue("textArea")
+                    .templateName("template1.docx")
+                    .build()),
+            new CollectionMember<ParagraphDetail>("id",
+                ParagraphDetail.builder()
+                    .code("WillAnyOther")
+                    .enableType(ParagraphDetailEnablementType.List)
+                    .label("label")
+                    .dynamicList(dynamicList1)
+                    .templateName("template2.docx")
+                    .build()),
+            new CollectionMember<ParagraphDetail>("id",
+                ParagraphDetail.builder()
+                    .code("Caseworker")
+                    .enableType(ParagraphDetailEnablementType.Text)
+                    .label("Caseworker")
+                    .textValue("primary fn primary sn")
+                    .templateName("template3.docx")
+                    .build()));
 
         CaseData caseData = CaseData.builder()
-                .registryLocation("leeds")
-                .paragraphDetails(paragraphDetails)
-                .build();
+            .registryLocation("leeds")
+            .paragraphDetails(paragraphDetails)
+            .build();
         caseDetails = new CaseDetails(caseData, LAST_MODIFIED, ID);
         caseDetails.setRegistryTelephone("123456789");
 
         when(registriesPropertiesMock.getRegistries()).thenReturn(registries);
         when(genericMapperService.addCaseDataWithRegistryProperties(caseDetails)).thenReturn(mapper.convertValue(caseDetails, Map.class));
-
-
 
 
     }
@@ -139,11 +141,12 @@ public class PreviewLetterServiceTest {
 
         Map<String, Object> placeholders = previewLetterService.addLetterData(caseDetails);
 
+        assertEquals(3, ((List) placeholders.get("templateList")).size());
         assertEquals(ccdReferenceFormatterServiceMock.getFormattedCaseReference("1234567891234567"),
-                placeholders.get(PERSONALISATION_CASE_REFERENCE));
+            placeholders.get(PERSONALISATION_CASE_REFERENCE));
         assertEquals(registries.get(
-                caseDetails.getData().getRegistryLocation().toLowerCase()),
-                placeholders.get(PERSONALISATION_REGISTRY));
+            caseDetails.getData().getRegistryLocation().toLowerCase()),
+            placeholders.get(PERSONALISATION_REGISTRY));
     }
 }
 

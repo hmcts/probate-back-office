@@ -8,6 +8,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import java.util.HashMap;
 import java.util.List;
 
+import static org.junit.Assert.assertEquals;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.solsRedecClearing;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.solsRedecCodicil;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.solsRedecDomicile;
@@ -107,6 +108,38 @@ public class AssembleSolicitorRedeclarationTest extends AssembleTestBase {
         List<ParagraphDetail> response = assembleSolicitorRedeclaration.solsRedecClearing(solsRedecClearing,
             CaseData.builder().build());
         assertAllForStaticField(response, solsRedecClearing, code2Expected);
+    }
+
+    @Test
+    public void shouldPopulateSolsRedecIntestacy() {
+
+        List<ParagraphDetail> response = assembleSolicitorRedeclaration.solsRedecIntestacyForeignDomicile(solsRedecClearing,
+                CaseData.builder().build());
+        assertAllForStaticField(response, solsRedecClearing, code2Expected);
+    }
+
+
+    @Test
+    public void shouldPopulateSolsRedecSotDate() {
+
+        CaseData caseData = CaseData.builder().primaryApplicantForenames("primary fn").primaryApplicantSurname("primary sn").build();
+
+        List<ParagraphDetail> response =
+                assembleSolicitorRedeclaration.solsRedecDate(ParagraphCode.solsRedecSotDate, caseData);
+        assertEquals("RedecSotDate", response.get(0).getCode());
+        assertEquals("FL-PRB-GNO-ENG-00200.docx", response.get(0).getTemplateName());
+        assertEquals("Date", response.get(0).getEnableType().name());
+        assertEquals("Re-declare: incorrect or missing date of will in SOT - date", response.get(0).getLabel());
+        assertEquals(null, response.get(0).getTextValue());
+        assertEquals(null, response.get(0).getTextAreaValue());
+        assertEquals(null, response.get(0).getDynamicList());
+        assertEquals("RedecSotWill", response.get(1).getCode());
+        assertEquals("FL-PRB-GNO-ENG-00200.docx", response.get(1).getTemplateName());
+        assertEquals("Text", response.get(1).getEnableType().name());
+        assertEquals("Re-declare: incorrect or missing date of will in SOT", response.get(1).getLabel());
+        assertEquals("Will / Codicil", response.get(1).getTextValue());
+        assertEquals(null, response.get(1).getTextAreaValue());
+        assertEquals(null, response.get(1).getDynamicList());
     }
 
 }

@@ -48,7 +48,7 @@ public class PDFGeneratorService {
     }
 
     public EvidenceManagementFileUpload generateDocmosisDocumentFrom(String templateName, Map<String, Object>
-            placeholders) {
+        placeholders) {
         byte[] postResult;
         try {
             postResult = docmosisPdfGenerationService.generateDocFrom(templateName, placeholders);
@@ -70,6 +70,7 @@ public class PDFGeneratorService {
     }
 
     private Map<String, Object> asMap(String placeholderValues) throws IOException {
-        return objectMapper.readValue(placeholderValues, new TypeReference<HashMap<String, Object>>() {});
+        return objectMapper.readValue(placeholderValues, new TypeReference<HashMap<String, Object>>() {
+        });
     }
 }
