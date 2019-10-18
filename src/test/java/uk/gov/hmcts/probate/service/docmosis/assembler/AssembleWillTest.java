@@ -15,7 +15,7 @@ public class AssembleWillTest {
     private AssembleWill assembleWill = new AssembleWill(assemblerBase);
 
     @Test
-    public void testWillSeparatePages() {
+    public void shouldGetWillSeparatePages() {
         CaseData caseData = CaseData.builder().primaryApplicantForenames("primary fn").primaryApplicantSurname("primary sn").build();
 
         List<ParagraphDetail> response = assembleWill.willSeparatePages(ParagraphCode.WillSepPages, caseData);
@@ -29,7 +29,7 @@ public class AssembleWillTest {
     }
 
     @Test
-    public void testWillPlights() {
+    public void shouldGetWillPlights() {
         CaseData caseData = CaseData.builder().build();
         List<ParagraphDetail> response = assembleWill.willPlight(ParagraphCode.WillPlight, caseData);
         assertEquals(null, response.get(0).getDynamicList());
@@ -42,7 +42,7 @@ public class AssembleWillTest {
     }
 
     @Test
-    public void testWillAnyOther() {
+    public void shouldGetWillAnyOther() {
         CaseData caseData = CaseData.builder().build();
         List<ParagraphDetail> response = assembleWill.willAnyOther(ParagraphCode.WillAnyOther, caseData);
         assertEquals("WillAnyOther", response.get(0).getCode());
@@ -55,11 +55,71 @@ public class AssembleWillTest {
     }
 
     @Test
-    public void testWillStaple() {
+    public void shouldGetWillStaple() {
 
         CaseData caseData = CaseData.builder().primaryApplicantForenames("primary fn").primaryApplicantSurname("primary sn").build();
 
         List<ParagraphDetail> response = assembleWill.willStaple(ParagraphCode.WillStaple, caseData);
+        assertEquals("WillStaple", response.get(0).getCode());
+        assertEquals("FL-PRB-GNO-ENG-00132.docx", response.get(0).getTemplateName());
+        assertEquals("Static", response.get(0).getEnableType().name());
+        assertEquals("Staple removed for photocopying", response.get(0).getLabel());
+        assertEquals(null, response.get(0).getTextValue());
+        assertEquals(null, response.get(0).getTextAreaValue());
+        assertEquals(null, response.get(0).getDynamicList());
+    }
+
+    @Test
+    public void shouldGetWillRevoked() {
+
+        CaseData caseData = CaseData.builder().primaryApplicantForenames("primary fn").primaryApplicantSurname("primary sn").build();
+
+        List<ParagraphDetail> response = assembleWill.willRevoked(ParagraphCode.WillStaple, caseData);
+        assertEquals("WillStaple", response.get(0).getCode());
+        assertEquals("FL-PRB-GNO-ENG-00132.docx", response.get(0).getTemplateName());
+        assertEquals("Static", response.get(0).getEnableType().name());
+        assertEquals("Staple removed for photocopying", response.get(0).getLabel());
+        assertEquals(null, response.get(0).getTextValue());
+        assertEquals(null, response.get(0).getTextAreaValue());
+        assertEquals(null, response.get(0).getDynamicList());
+    }
+
+    @Test
+    public void shouldGetWillLost() {
+
+        CaseData caseData = CaseData.builder().primaryApplicantForenames("primary fn").primaryApplicantSurname("primary sn").build();
+
+        List<ParagraphDetail> response = assembleWill.willLost(ParagraphCode.WillStaple, caseData);
+        assertEquals("WillStaple", response.get(0).getCode());
+        assertEquals("FL-PRB-GNO-ENG-00132.docx", response.get(0).getTemplateName());
+        assertEquals("Static", response.get(0).getEnableType().name());
+        assertEquals("Staple removed for photocopying", response.get(0).getLabel());
+        assertEquals(null, response.get(0).getTextValue());
+        assertEquals(null, response.get(0).getTextAreaValue());
+        assertEquals(null, response.get(0).getDynamicList());
+    }
+
+    @Test
+    public void shouldGetWillList() {
+
+        CaseData caseData = CaseData.builder().primaryApplicantForenames("primary fn").primaryApplicantSurname("primary sn").build();
+
+        List<ParagraphDetail> response = assembleWill.willList(ParagraphCode.WillStaple, caseData);
+        assertEquals("WillStaple", response.get(0).getCode());
+        assertEquals("FL-PRB-GNO-ENG-00132.docx", response.get(0).getTemplateName());
+        assertEquals("Static", response.get(0).getEnableType().name());
+        assertEquals("Staple removed for photocopying", response.get(0).getLabel());
+        assertEquals(null, response.get(0).getTextValue());
+        assertEquals(null, response.get(0).getTextAreaValue());
+        assertEquals(null, response.get(0).getDynamicList());
+    }
+
+    @Test
+    public void shouldGetWillFiat() {
+
+        CaseData caseData = CaseData.builder().primaryApplicantForenames("primary fn").primaryApplicantSurname("primary sn").build();
+
+        List<ParagraphDetail> response = assembleWill.willFiat(ParagraphCode.WillStaple, caseData);
         assertEquals("WillStaple", response.get(0).getCode());
         assertEquals("FL-PRB-GNO-ENG-00132.docx", response.get(0).getTemplateName());
         assertEquals("Static", response.get(0).getEnableType().name());

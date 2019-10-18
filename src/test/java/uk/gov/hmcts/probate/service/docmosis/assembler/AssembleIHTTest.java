@@ -47,7 +47,7 @@ public class AssembleIHTTest extends AssembleTestBase {
     @Test
     public void shouldPopulateIHT217Miss() {
 
-        List<ParagraphDetail> response = assembleIHT.ihtGrossEstate(ParagraphCode.IHT217Miss, caseData);
+        List<ParagraphDetail> response = assembleIHT.iht217Missing(ParagraphCode.IHT217Miss, caseData);
         assertAllForStaticField(response, "IHT217Miss", "FL-PRB-GNO-ENG-00146.docx",
                 "IHT - IHT217 missing");
     }

@@ -73,10 +73,20 @@ public class AssembleSOTIncompleteTest extends AssembleTestBase {
         assertAllForStaticField(response, SotNotSigned, code2Expected);
     }
 
+
+    @Test
+    public void shouldPopulateSotPa1pQ2() {
+
+        List<ParagraphDetail> response = assembleSOTIncomplete.sotPa1pQ2(SotPa1pQ2,
+                CaseData.builder().build());
+        assertAllForStaticField(response, SotPa1pQ2, code2Expected);
+    }
+
+
     @Test
     public void shouldPopulateSotPa1pQ3() {
 
-        List<ParagraphDetail> response = assembleSOTIncomplete.sotPa1pQ2(SotPa1pQ3,
+        List<ParagraphDetail> response = assembleSOTIncomplete.sotPa1pQ3(SotPa1pQ3,
             CaseData.builder().build());
         assertAllForStaticField(response, SotPa1pQ3, code2Expected);
     }
@@ -84,7 +94,7 @@ public class AssembleSOTIncompleteTest extends AssembleTestBase {
     @Test
     public void shouldPopulateSotPa1pQ4() {
 
-        List<ParagraphDetail> response = assembleSOTIncomplete.sotPa1pQ2(SotPa1pQ4,
+        List<ParagraphDetail> response = assembleSOTIncomplete.sotPa1pQ4(SotPa1pQ4,
             CaseData.builder().build());
         assertAllForStaticField(response, SotPa1pQ4, code2Expected);
     }
@@ -92,7 +102,7 @@ public class AssembleSOTIncompleteTest extends AssembleTestBase {
     @Test
     public void shouldPopulateSotPa1pQ5() {
 
-        List<ParagraphDetail> response = assembleSOTIncomplete.sotPa1pQ2(SotPa1pQ5,
+        List<ParagraphDetail> response = assembleSOTIncomplete.sotPa1pQ5(SotPa1pQ5,
             CaseData.builder().build());
         assertAllForStaticField(response, SotPa1pQ5, code2Expected);
     }
@@ -100,7 +110,7 @@ public class AssembleSOTIncompleteTest extends AssembleTestBase {
     @Test
     public void shouldPopulateSotPa1pQ6() {
 
-        List<ParagraphDetail> response = assembleSOTIncomplete.sotPa1pQ2(SotPa1pQ6,
+        List<ParagraphDetail> response = assembleSOTIncomplete.sotPa1pQ6(SotPa1pQ6,
             CaseData.builder().build());
         assertAllForStaticField(response, SotPa1pQ6, code2Expected);
     }
@@ -108,7 +118,7 @@ public class AssembleSOTIncompleteTest extends AssembleTestBase {
     @Test
     public void shouldPopulateSotPa1pQ7() {
 
-        List<ParagraphDetail> response = assembleSOTIncomplete.sotPa1pQ2(SotPa1pQ7,
+        List<ParagraphDetail> response = assembleSOTIncomplete.sotPa1pQ7(SotPa1pQ7,
             CaseData.builder().build());
         assertAllForStaticField(response, SotPa1pQ7, code2Expected);
     }
@@ -116,7 +126,7 @@ public class AssembleSOTIncompleteTest extends AssembleTestBase {
     @Test
     public void shouldPopulateSotPa1aQ2() {
 
-        List<ParagraphDetail> response = assembleSOTIncomplete.sotPa1pQ2(SotPa1aQ2,
+        List<ParagraphDetail> response = assembleSOTIncomplete.sotPa1aQ2(SotPa1aQ2,
             CaseData.builder().build());
         assertAllForStaticField(response, SotPa1aQ2, code2Expected);
     }
@@ -124,7 +134,7 @@ public class AssembleSOTIncompleteTest extends AssembleTestBase {
     @Test
     public void shouldPopulateSotPa1aQ3() {
 
-        List<ParagraphDetail> response = assembleSOTIncomplete.sotPa1pQ2(SotPa1aQ3,
+        List<ParagraphDetail> response = assembleSOTIncomplete.sotPa1aQ3(SotPa1aQ3,
             CaseData.builder().build());
         assertAllForStaticField(response, SotPa1aQ3, code2Expected);
     }
@@ -132,7 +142,7 @@ public class AssembleSOTIncompleteTest extends AssembleTestBase {
     @Test
     public void shouldPopulateSotPa1aQ4() {
 
-        List<ParagraphDetail> response = assembleSOTIncomplete.sotPa1pQ2(SotPa1pQ4,
+        List<ParagraphDetail> response = assembleSOTIncomplete.sotPa1aQ4(SotPa1pQ4,
             CaseData.builder().build());
         assertAllForStaticField(response, SotPa1pQ4, code2Expected);
     }
@@ -140,7 +150,7 @@ public class AssembleSOTIncompleteTest extends AssembleTestBase {
     @Test
     public void shouldPopulateSotPa1aQ5() {
 
-        List<ParagraphDetail> response = assembleSOTIncomplete.sotPa1pQ2(SotPa1aQ5,
+        List<ParagraphDetail> response = assembleSOTIncomplete.sotPa1aQ5(SotPa1aQ5,
             CaseData.builder().build());
         assertAllForStaticField(response, SotPa1aQ5, code2Expected);
     }
@@ -148,17 +158,11 @@ public class AssembleSOTIncompleteTest extends AssembleTestBase {
     @Test
     public void shouldPopulateSotPa1aQ6() {
 
-        List<ParagraphDetail> response = assembleSOTIncomplete.sotPa1pQ2(SotPa1aQ6,
+        List<ParagraphDetail> response = assembleSOTIncomplete.sotPa1aQ6(SotPa1aQ6,
             CaseData.builder().build());
         assertAllForStaticField(response, SotPa1aQ6, code2Expected);
     }
 
-    @Test
-    public void shouldPopulateSotPa1pQ2() {
 
-        List<ParagraphDetail> response = assembleSOTIncomplete.sotPa1pQ2(SotPa1pQ2,
-            CaseData.builder().build());
-        assertAllForStaticField(response, SotPa1pQ2, code2Expected);
-    }
 
 }
