@@ -13,4 +13,12 @@ public class Template {
         Template other = (Template) o;
         return this.value.equals(other.value);
     }
+
+    @Override
+    public int hashCode() {
+        int result = 17;
+        result = 31 * result + value.hashCode();
+        return result;
+    }
+
 }
