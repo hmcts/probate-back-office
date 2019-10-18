@@ -9,8 +9,14 @@ public class Template {
     private final String value;
 
     @Override
-    public boolean equals(Object o) {
-        Template other = (Template) o;
+    public boolean equals(Object obj) {
+        if (obj == null)
+            return false;
+
+        if (this.getClass() != obj.getClass())
+            return false;
+
+        Template other = (Template) obj;
         return this.value.equals(other.value);
     }
 
