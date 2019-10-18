@@ -50,11 +50,10 @@ public class PDFGeneratorService {
     }
 
     public EvidenceManagementFileUpload generateDocmosisDocumentFrom(String templateName, Map<String, Object>
-            placeholders) {
+        placeholders) {
         byte[] postResult;
         try {
             postResult = docmosisPdfGenerationService.generateDocFrom(templateName, placeholders);
-            savePDF(postResult, templateName);
         } catch (PDFServiceClientException e) {
             log.error(e.getMessage(), e);
             throw new ClientException(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage());
@@ -72,18 +71,8 @@ public class PDFGeneratorService {
         return pdfServiceClient.generateFromHtml(templateAsString.getBytes(), paramMap);
     }
 
-    private void savePDF(byte[] postResult, String templateName) {
-        try {
-            OutputStream out = new FileOutputStream("generated"+templateName+".pdf");
-            out.write(postResult);
-            out.close();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-
-    }
-
     private Map<String, Object> asMap(String placeholderValues) throws IOException {
-        return objectMapper.readValue(placeholderValues, new TypeReference<HashMap<String, Object>>() {});
+        return objectMapper.readValue(placeholderValues, new TypeReference<HashMap<String, Object>>() {
+        });
     }
 }

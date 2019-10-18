@@ -7,4 +7,10 @@ import lombok.Data;
 @Builder
 public class Template {
     private final String value;
+
+    @Override
+    public boolean equals(Object o) {
+        Template other = (Template) o;
+        return this.value.equals(other.value);
+    }
 }

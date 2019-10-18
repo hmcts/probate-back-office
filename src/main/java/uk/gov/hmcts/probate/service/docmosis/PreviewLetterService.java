@@ -43,8 +43,9 @@ public class PreviewLetterService {
         List<Template> templateList = new ArrayList<>();
         for (CollectionMember<ParagraphDetail> paragraphDetail : caseDetails.getData().getParagraphDetails()) {
             if (paragraphDetail.getValue().getTemplateName() != null) {
-                if (!templateList.contains(paragraphDetail.getValue().getTemplateName())) {
-                    templateList.add(Template.builder().value(paragraphDetail.getValue().getTemplateName()).build());
+                Template newTemplate = Template.builder().value(paragraphDetail.getValue().getTemplateName()).build();
+                if (!templateList.contains(newTemplate)) {
+                    templateList.add(newTemplate);
                 }
             }
         }
