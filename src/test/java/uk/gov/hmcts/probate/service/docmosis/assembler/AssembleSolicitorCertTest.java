@@ -22,7 +22,6 @@ import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.SotP
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.SotPa1aQ4;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.SotPa1aQ5;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.SotPa1aQ6;
-import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.solsCertPlight;
 
 
 public class AssembleSolicitorCertTest extends AssembleTestBase {
@@ -37,8 +36,6 @@ public class AssembleSolicitorCertTest extends AssembleTestBase {
             "PA1A: Part B - Full redec of application"});
         code2Expected.put(SotNotSigned, new String[]{"SotNotSigned", "FL-PRB-GNO-ENG-00158.docx",
             "Paper: Statement of truth not signed"});
-        code2Expected.put(solsCertPlight, new String[]{"SotNotSigned", "FL-PRB-GNO-ENG-00158.docx",
-                "Paper: Statement of truth not signed"});
 
         code2Expected.put(SotPa1pQ2, new String[]{"SotPa1pQ2", "FL-PRB-GNO-ENG-00159.docx", "PA1P Q2 incomplete/wrong"});
         code2Expected.put(SotPa1pQ3, new String[]{"SotPa1pQ3", "FL-PRB-GNO-ENG-00160.docx", "PA1P Q3 incomplete/wrong"});
@@ -51,7 +48,7 @@ public class AssembleSolicitorCertTest extends AssembleTestBase {
         code2Expected.put(SotPa1aQ4, new String[]{"SotPa1aQ4", "FL-PRB-GNO-ENG-00167.docx", "PA1A Q4 incomplete/wrong"});
         code2Expected.put(SotPa1aQ5, new String[]{"SotPa1aQ5", "FL-PRB-GNO-ENG-00168.docx", "PA1A Q5 incomplete/wrong"});
         code2Expected.put(SotPa1aQ6, new String[]{"SotPa1aQ6", "FL-PRB-GNO-ENG-00169.docx", "PA1A Q6 incomplete/wrong"});
-   }
+    }
 
     @Test
     public void shouldPopulateSolsCertAlias() {
