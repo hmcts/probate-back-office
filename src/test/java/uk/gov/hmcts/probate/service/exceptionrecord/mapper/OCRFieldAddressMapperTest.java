@@ -7,10 +7,12 @@ import uk.gov.hmcts.probate.model.exceptionrecord.ExceptionRecordOCRFields;
 import uk.gov.hmcts.reform.probate.model.cases.Address;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 @Component
 public class OCRFieldAddressMapperTest {
 
+    private static final String PRIMARY_APPLICANT_ADDRESS_LINE1 = "Petty Wales";
     private static final String CAVEAT_ADDRESS_LINE1 = "Petty England";
     private static final String DECEASED_ADDRESS_LINE1 = "Petty Scotland";
     private static final String ADDRESS_LINE2 = "22 Green Park";
@@ -25,17 +27,34 @@ public class OCRFieldAddressMapperTest {
     @Before
     public void setUpClass() throws Exception {
         ocrFields = ExceptionRecordOCRFields.builder()
+                .primaryApplicantAddressLine1(PRIMARY_APPLICANT_ADDRESS_LINE1)
+                .primaryApplicantAddressLine2(ADDRESS_LINE2)
+                .primaryApplicantAddressTown(ADDRESS_POST_TOWN)
+                .primaryApplicantAddressCounty(ADDRESS_COUNTY)
+                .primaryApplicantAddressPostCode(ADDRESS_POST_CODE)
+
                 .caveatorAddressLine1(CAVEAT_ADDRESS_LINE1)
                 .caveatorAddressLine2(ADDRESS_LINE2)
                 .caveatorAddressTown(ADDRESS_POST_TOWN)
                 .caveatorAddressCounty(ADDRESS_COUNTY)
                 .caveatorAddressPostCode(ADDRESS_POST_CODE)
+
                 .deceasedAddressLine1(DECEASED_ADDRESS_LINE1)
                 .deceasedAddressLine2(ADDRESS_LINE2)
                 .deceasedAddressTown(ADDRESS_POST_TOWN)
                 .deceasedAddressCounty(ADDRESS_COUNTY)
                 .deceasedAddressPostCode(ADDRESS_POST_CODE)
                 .build();
+    }
+
+    @Test
+    public void testPrimaryApplicantAddress() {
+        Address response = addressMapper.toPrimaryApplicantAddress(ocrFields);
+        assertEquals(PRIMARY_APPLICANT_ADDRESS_LINE1, response.getAddressLine1());
+        assertEquals(ADDRESS_LINE2, response.getAddressLine2());
+        assertEquals(ADDRESS_POST_TOWN, response.getPostTown());
+        assertEquals(ADDRESS_COUNTY, response.getCounty());
+        assertEquals(ADDRESS_POST_CODE, response.getPostCode());
     }
 
     @Test

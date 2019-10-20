@@ -26,6 +26,7 @@ import uk.gov.hmcts.probate.service.exceptionrecord.ExceptionRecordService;
 import uk.gov.hmcts.probate.service.ocr.FormType;
 import uk.gov.hmcts.probate.service.ocr.OCRPopulatedValueMapper;
 import uk.gov.hmcts.probate.service.ocr.OCRToCCDMandatoryField;
+import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
@@ -91,18 +92,16 @@ public class ExceptionRecordController {
                     callbackResponse = erService.createCaveatCaseFromExceptionRecord(erRequest, warnings);
                     return ResponseEntity.ok(callbackResponse);
                 case PA1P:
-                    callbackResponse = erService.createGrantOfRepresentationCaseFromExceptionRecord(erRequest, warnings);
+                    callbackResponse = erService.createGrantOfRepresentationCaseFromExceptionRecord(
+                            erRequest, GrantType.GRANT_OF_PROBATE, warnings);
                     return ResponseEntity.ok(callbackResponse);
                 case PA1A:
-                    callbackResponse = erService.createGrantOfRepresentationCaseFromExceptionRecord(erRequest, warnings);
+                    callbackResponse = erService.createGrantOfRepresentationCaseFromExceptionRecord(
+                            erRequest, GrantType.INTESTACY, warnings);
                     return ResponseEntity.ok(callbackResponse);
                 default:
+                    // Unreachable code
                     errors.add("This Exception Record form currently has no case mapping");
-                    callbackResponse = SuccessfulTransformationResponse.builder()
-                            .warnings(warnings)
-                            .errors(errors)
-                            .build();
-                    return ResponseEntity.ok(callbackResponse);
             }
         }
 
@@ -117,9 +116,9 @@ public class ExceptionRecordController {
 
     @ExceptionHandler(OCRMappingException.class)
     public ResponseEntity<ExceptionRecordErrorResponse> handle(OCRMappingException exception) {
-        log.warn("OCR Data Mapping Error: {}", exception.getMessage());
-        List<String> warnings = Arrays.asList(exception.getMessage());
-        List<String> errors = Arrays.asList("Caveat OCR fields could not be mapped to a case");
+        log.error("OCR Data Mapping Error: {}", exception.getMessage(), exception);
+        List<String> warnings = Arrays.asList("OCR field mapping error: " + exception.getMessage());
+        List<String> errors = Arrays.asList("OCR fields could not be mapped to a case");
         ExceptionRecordErrorResponse errorResponse = new ExceptionRecordErrorResponse(errors, warnings);
         return ResponseEntity.ok(errorResponse);
     }

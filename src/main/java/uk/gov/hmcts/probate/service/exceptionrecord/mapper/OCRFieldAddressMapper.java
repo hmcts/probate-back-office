@@ -3,10 +3,17 @@ package uk.gov.hmcts.probate.service.exceptionrecord.mapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.model.exceptionrecord.ExceptionRecordOCRFields;
+import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToAttorneyOnBehalfOfAddress;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToCaveatorAddress;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToDeceasedAddress;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToPrimaryApplicantAddress;
+import uk.gov.hmcts.reform.probate.model.AttorneyNamesAndAddress;
 import uk.gov.hmcts.reform.probate.model.cases.Address;
+import uk.gov.hmcts.reform.probate.model.cases.CollectionMember;
+import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.ExecutorApplying;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Slf4j
 @Component
@@ -32,6 +39,26 @@ public class OCRFieldAddressMapper {
         this.country = "";
         this.postCode = ocrFields.getPrimaryApplicantAddressPostCode();
         return buildAddress();
+    }
+
+    @SuppressWarnings("squid:S1168")
+    @ToAttorneyOnBehalfOfAddress
+    public List<CollectionMember<AttorneyNamesAndAddress>> toAttorneyOnBehalfOfAddress(ExceptionRecordOCRFields ocrFields) {
+        log.info("Beginning mapping for Attorney On Behalf Of Address");
+        this.addressLine1 = ocrFields.getAttorneyOnBehalfOfAddressLine1();
+        this.addressLine2 = ocrFields.getAttorneyOnBehalfOfAddressLine2();
+        this.addressLine3 = "";
+        this.postTown = ocrFields.getAttorneyOnBehalfOfAddressTown();
+        this.county = ocrFields.getAttorneyOnBehalfOfAddressCounty();
+        this.country = "";
+        this.postCode = ocrFields.getAttorneyOnBehalfOfAddressPostCode();
+        AttorneyNamesAndAddress attorneyNamesAndAddress = AttorneyNamesAndAddress.builder()
+                .name(ocrFields.getAttorneyOnBehalfOfName())
+                .address(buildAddress())
+                .build();
+        List<CollectionMember<AttorneyNamesAndAddress>> collectionMemberList = new ArrayList<>();
+        collectionMemberList.add(new CollectionMember<>(null, attorneyNamesAndAddress));
+        return collectionMemberList;
     }
 
     @SuppressWarnings("squid:S1168")

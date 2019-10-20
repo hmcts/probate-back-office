@@ -3,6 +3,7 @@ package uk.gov.hmcts.probate.service.exceptionrecord;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.exception.OCRMappingException;
+import uk.gov.hmcts.probate.model.CaseType;
 import uk.gov.hmcts.probate.model.exceptionrecord.CaseCreationDetails;
 import uk.gov.hmcts.probate.model.exceptionrecord.ExceptionRecordRequest;
 import uk.gov.hmcts.probate.model.exceptionrecord.SuccessfulTransformationResponse;
@@ -13,6 +14,7 @@ import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.CaveatCallbackResponseTransformer;
 import uk.gov.hmcts.reform.probate.model.cases.caveat.CaveatData;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData;
+import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,12 +63,13 @@ public class ExceptionRecordService {
                     .build();
 
         } catch (Exception e) {
-            throw new OCRMappingException(e.getMessage());
+            throw new OCRMappingException(e.getMessage(), e);
         }
     }
 
     public SuccessfulTransformationResponse createGrantOfRepresentationCaseFromExceptionRecord(
             ExceptionRecordRequest erRequest,
+            GrantType grantType,
             List<String> warnings) {
 
         List<String> errors = new ArrayList<String>();
@@ -80,6 +83,9 @@ public class ExceptionRecordService {
                     .map(it -> documentMapper.toCaseDoc(it, erRequest.getId()))
                     .collect(toList()));
 
+            // Add grant type
+            grantOfRepresentationData.setGrantType(grantType);
+
             CaseCreationDetails grantOfRepresentationCaseDetailsResponse =
                     grantOfRepresentationTransformer.newGrantOfRepresentationCaseTransform(grantOfRepresentationData);
 
@@ -90,8 +96,7 @@ public class ExceptionRecordService {
                     .build();
 
         } catch (Exception e) {
-            throw new OCRMappingException(e.getMessage());
+            throw new OCRMappingException(e.getMessage(), e);
         }
     }
-
 }

@@ -101,7 +101,7 @@ public class OCRFieldAdoptiveRelativesMapper {
         if (adoptedInOutValue == null || adoptedInOutValue.isEmpty()) {
             return null;
         } else {
-            switch (adoptedInOutValue.replace("adopted", "").toLowerCase().trim()) {
+            switch (adoptedInOutValue.toLowerCase().replaceAll("^.*\\b(in|out)\\b.*$", "$1")) {
                 case InOut.Constants.IN_VALUE:
                     return InOut.IN;
                 case InOut.Constants.OUT_VALUE:
