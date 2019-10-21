@@ -186,7 +186,7 @@ public interface ExceptionRecordGrantOfRepresentationMapper {
     }
 
     @AfterMapping
-    default void setDiedOrSurvivedBoolean(@MappingTarget GrantOfRepresentationData caseData, ExceptionRecordOCRFields ocrField) {
+    default void setDerivedFamilyBooleans(@MappingTarget GrantOfRepresentationData caseData, ExceptionRecordOCRFields ocrField) {
         if (BooleanUtils.toBoolean(caseData.getChildrenUnderEighteenSurvived().toString())
                 || BooleanUtils.toBoolean(caseData.getChildrenOverEighteenSurvived().toString())) {
             caseData.setChildrenSurvived(Boolean.TRUE);
@@ -288,6 +288,16 @@ public interface ExceptionRecordGrantOfRepresentationMapper {
             caseData.setHalfBloodCousinsSurvived(Boolean.TRUE);
         } else {
             caseData.setHalfBloodCousinsSurvived(Boolean.FALSE);
+        }
+    }
+
+    @AfterMapping
+    default void setApplyingAsAnAttorneyBoolean(@MappingTarget GrantOfRepresentationData caseData, ExceptionRecordOCRFields ocrField) {
+        if (caseData.getAttorneyNamesAndAddress().size() > 0
+                && !caseData.getAttorneyNamesAndAddress().get(0).getValue().getName().isEmpty()) {
+            caseData.setApplyingAsAnAttorney(Boolean.TRUE);
+        } else {
+            caseData.setApplyingAsAnAttorney(Boolean.FALSE);
         }
     }
 }
