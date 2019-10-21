@@ -176,7 +176,7 @@
         <td colspan="3" class="text-header">
             <br/>
             <br/>
-            <Strong>Letter of Administration</Strong>
+            <Strong>Letters of Administration</Strong>
             <br/>
             <br/>
         </td>
@@ -214,7 +214,7 @@
                 Died on or since
                 {% elseif case_details.case_data.dateOfDeathType == "diedOn" %}
                 Died on
-                {% endif %} <strong>{{case_details.case_data.deceasedDateOfDeathFormatted}}</strong> domiciled in <strong>{% if case_details.case_data.domicilityCountry != null and case_details.case_data.domicilityCountry != "" %}{{case_details.case_data.domicilityCountry}}{% else %}England and Wales{% endif %}</strong>
+                {% endif %} <strong>{{case_details.case_data.deceasedDateOfDeathFormatted}}</strong> domiciled in <strong>{% if case_details.case_data.domicilityCountry != null and case_details.case_data.domicilityCountry != "" %}{{case_details.case_data.domicilityCountry}}{% else %}England and Wales{% endif %}</strong> intestate
             </p>
             <p>The Administration of <strong>{{case_details.case_data.deceasedForenames}} {{case_details.case_data.deceasedSurname}}</strong>'s estate is granted by the High Court of Justice on this date to the following administrator{% set applyingExecCounter = 0 %}{% for executor
                 in case_details.case_data.executorsApplying %}{% set applyingExecCounter = applyingExecCounter + 1 %}{%
