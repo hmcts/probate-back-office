@@ -99,47 +99,47 @@ public interface ExceptionRecordGrantOfRepresentationMapper {
     @Mapping(target = "wholeBloodSiblingsDiedUnderEighteen", source = "wholeBloodSiblingsDiedUnderEighteen")
     @Mapping(target = "wholeBloodSiblingsDiedOverEighteen", source = "wholeBloodSiblingsDiedOverEighteen")
 
-
+    @Mapping(target = "wholeBloodNeicesAndNephews", ignore = true)
     @Mapping(target = "wholeBloodNeicesAndNephewsUnderEighteen", source = "wholeBloodNeicesAndNephewsUnderEighteen")
     @Mapping(target = "wholeBloodNeicesAndNephewsOverEighteen", source = "wholeBloodNeicesAndNephewsOverEighteen")
 
-
+    @Mapping(target = "halfBloodSiblingsSurvived", ignore = true)
     @Mapping(target = "halfBloodSiblingsSurvivedUnderEighteen", source = "halfBloodSiblingsSurvivedUnderEighteen")
     @Mapping(target = "halfBloodSiblingsSurvivedOverEighteen", source = "halfBloodSiblingsSurvivedOverEighteen")
 
-
+    @Mapping(target = "halfBloodSiblingsDied", ignore = true)
     @Mapping(target = "halfBloodSiblingsDiedUnderEighteen", source = "halfBloodSiblingsDiedUnderEighteen")
     @Mapping(target = "halfBloodSiblingsDiedOverEighteen", source = "halfBloodSiblingsDiedOverEighteen")
 
-
+    @Mapping(target = "halfBloodNeicesAndNephews", ignore = true)
     @Mapping(target = "halfBloodNeicesAndNephewsUnderEighteen", source = "halfBloodNeicesAndNephewsUnderEighteen")
     @Mapping(target = "halfBloodNeicesAndNephewsOverEighteen", source = "halfBloodNeicesAndNephewsOverEighteen")
 
-
+    @Mapping(target = "grandparentsDied", ignore = true)
     @Mapping(target = "grandparentsDiedUnderEighteen", source = "grandparentsDiedUnderEighteen")
     @Mapping(target = "grandparentsDiedOverEighteen", source = "grandparentsDiedOverEighteen")
 
-
+    @Mapping(target = "wholeBloodUnclesAndAuntsSurvived", ignore = true)
     @Mapping(target = "wholeBloodUnclesAndAuntsSurvivedUnderEighteen", source = "wholeBloodUnclesAndAuntsSurvivedUnderEighteen")
     @Mapping(target = "wholeBloodUnclesAndAuntsSurvivedOverEighteen", source = "wholeBloodUnclesAndAuntsSurvivedOverEighteen")
 
-
+    @Mapping(target = "wholeBloodUnclesAndAuntsDied", ignore = true)
     @Mapping(target = "wholeBloodUnclesAndAuntsDiedUnderEighteen", source = "wholeBloodUnclesAndAuntsDiedUnderEighteen")
     @Mapping(target = "wholeBloodUnclesAndAuntsDiedOverEighteen", source = "wholeBloodUnclesAndAuntsDiedOverEighteen")
 
-
+    @Mapping(target = "wholeBloodCousinsSurvived", ignore = true)
     @Mapping(target = "wholeBloodCousinsSurvivedUnderEighteen", source = "wholeBloodCousinsSurvivedUnderEighteen")
     @Mapping(target = "wholeBloodCousinsSurvivedOverEighteen", source = "wholeBloodCousinsSurvivedOverEighteen")
 
-
+    @Mapping(target = "halfBloodUnclesAndAuntsSurvived", ignore = true)
     @Mapping(target = "halfBloodUnclesAndAuntsSurvivedUnderEighteen", source = "halfBloodUnclesAndAuntsSurvivedUnderEighteen")
     @Mapping(target = "halfBloodUnclesAndAuntsSurvivedOverEighteen", source = "halfBloodUnclesAndAuntsSurvivedOverEighteen")
 
-
+    @Mapping(target = "halfBloodUnclesAndAuntsDied", ignore = true)
     @Mapping(target = "halfBloodUnclesAndAuntsDiedUnderEighteen", source = "halfBloodUnclesAndAuntsDiedUnderEighteen")
     @Mapping(target = "halfBloodUnclesAndAuntsDiedOverEighteen", source = "halfBloodUnclesAndAuntsDiedOverEighteen")
 
-
+    @Mapping(target = "halfBloodCousinsSurvived", ignore = true)
     @Mapping(target = "halfBloodCousinsSurvivedUnderEighteen", source = "halfBloodCousinsSurvivedUnderEighteen")
     @Mapping(target = "halfBloodCousinsSurvivedOverEighteen", source = "halfBloodCousinsSurvivedOverEighteen")
 
@@ -204,6 +204,90 @@ public interface ExceptionRecordGrantOfRepresentationMapper {
             caseData.setGrandChildrenSurvived(Boolean.TRUE);
         } else {
             caseData.setGrandChildrenSurvived(Boolean.FALSE);
+        }
+        if (BooleanUtils.toBoolean(caseData.getParentsExistUnderEighteenSurvived())
+                || BooleanUtils.toBoolean(caseData.getParentsExistOverEighteenSurvived())) {
+            caseData.setParentsExistSurvived(Boolean.TRUE);
+        } else {
+            caseData.setParentsExistSurvived(Boolean.FALSE);
+        }
+        if (BooleanUtils.toBoolean(caseData.getWholeBloodSiblingsSurvivedUnderEighteen())
+                || BooleanUtils.toBoolean(caseData.getWholeBloodSiblingsSurvivedOverEighteen())) {
+            caseData.setWholeBloodSiblingsSurvived(Boolean.TRUE);
+        } else {
+            caseData.setWholeBloodSiblingsSurvived(Boolean.FALSE);
+        }
+        if (BooleanUtils.toBoolean(caseData.getWholeBloodSiblingsDiedUnderEighteen())
+                || BooleanUtils.toBoolean(caseData.getWholeBloodSiblingsDiedOverEighteen())) {
+            caseData.setWholeBloodSiblingsDied(Boolean.TRUE);
+        } else {
+            caseData.setWholeBloodSiblingsDied(Boolean.FALSE);
+        }
+        if (BooleanUtils.toBoolean(caseData.getWholeBloodNeicesAndNephewsUnderEighteen())
+                || BooleanUtils.toBoolean(caseData.getWholeBloodNeicesAndNephewsOverEighteen())) {
+            caseData.setWholeBloodNeicesAndNephews(Boolean.TRUE);
+        } else {
+            caseData.setWholeBloodNeicesAndNephews(Boolean.FALSE);
+        }
+        if (BooleanUtils.toBoolean(caseData.getHalfBloodSiblingsSurvivedUnderEighteen())
+                || BooleanUtils.toBoolean(caseData.getHalfBloodSiblingsSurvivedOverEighteen())) {
+            caseData.setHalfBloodSiblingsSurvived(Boolean.TRUE);
+        } else {
+            caseData.setHalfBloodSiblingsSurvived(Boolean.FALSE);
+        }
+        if (BooleanUtils.toBoolean(caseData.getHalfBloodSiblingsDiedUnderEighteen())
+                || BooleanUtils.toBoolean(caseData.getHalfBloodSiblingsDiedOverEighteen())) {
+            caseData.setHalfBloodSiblingsDied(Boolean.TRUE);
+        } else {
+            caseData.setHalfBloodSiblingsDied(Boolean.FALSE);
+        }
+        if (BooleanUtils.toBoolean(caseData.getHalfBloodNeicesAndNephewsUnderEighteen())
+                || BooleanUtils.toBoolean(caseData.getHalfBloodNeicesAndNephewsOverEighteen())) {
+            caseData.setHalfBloodNeicesAndNephews(Boolean.TRUE);
+        } else {
+            caseData.setHalfBloodNeicesAndNephews(Boolean.FALSE);
+        }
+        if (BooleanUtils.toBoolean(caseData.getGrandparentsDiedUnderEighteen())
+                || BooleanUtils.toBoolean(caseData.getGrandparentsDiedOverEighteen())) {
+            caseData.setGrandparentsDied(Boolean.TRUE);
+        } else {
+            caseData.setGrandparentsDied(Boolean.FALSE);
+        }
+        if (BooleanUtils.toBoolean(caseData.getWholeBloodUnclesAndAuntsSurvivedUnderEighteen())
+                || BooleanUtils.toBoolean(caseData.getWholeBloodUnclesAndAuntsSurvivedOverEighteen())) {
+            caseData.setWholeBloodUnclesAndAuntsSurvived(Boolean.TRUE);
+        } else {
+            caseData.setWholeBloodUnclesAndAuntsSurvived(Boolean.FALSE);
+        }
+        if (BooleanUtils.toBoolean(caseData.getWholeBloodUnclesAndAuntsDiedUnderEighteen())
+                || BooleanUtils.toBoolean(caseData.getWholeBloodUnclesAndAuntsDiedOverEighteen())) {
+            caseData.setWholeBloodUnclesAndAuntsDied(Boolean.TRUE);
+        } else {
+            caseData.setWholeBloodUnclesAndAuntsDied(Boolean.FALSE);
+        }
+        if (BooleanUtils.toBoolean(caseData.getWholeBloodCousinsSurvivedUnderEighteen())
+                || BooleanUtils.toBoolean(caseData.getWholeBloodCousinsSurvivedOverEighteen())) {
+            caseData.setWholeBloodCousinsSurvived(Boolean.TRUE);
+        } else {
+            caseData.setWholeBloodCousinsSurvived(Boolean.FALSE);
+        }
+        if (BooleanUtils.toBoolean(caseData.getHalfBloodUnclesAndAuntsSurvivedUnderEighteen())
+                || BooleanUtils.toBoolean(caseData.getHalfBloodUnclesAndAuntsSurvivedOverEighteen())) {
+            caseData.setHalfBloodUnclesAndAuntsSurvived(Boolean.TRUE);
+        } else {
+            caseData.setHalfBloodUnclesAndAuntsSurvived(Boolean.FALSE);
+        }
+        if (BooleanUtils.toBoolean(caseData.getHalfBloodUnclesAndAuntsDiedUnderEighteen())
+                || BooleanUtils.toBoolean(caseData.getHalfBloodUnclesAndAuntsDiedOverEighteen())) {
+            caseData.setHalfBloodUnclesAndAuntsDied(Boolean.TRUE);
+        } else {
+            caseData.setHalfBloodUnclesAndAuntsDied(Boolean.FALSE);
+        }
+        if (BooleanUtils.toBoolean(caseData.getHalfBloodCousinsSurvivedUnderEighteen())
+                || BooleanUtils.toBoolean(caseData.getHalfBloodCousinsSurvivedOverEighteen())) {
+            caseData.setHalfBloodCousinsSurvived(Boolean.TRUE);
+        } else {
+            caseData.setHalfBloodCousinsSurvived(Boolean.FALSE);
         }
     }
 }
