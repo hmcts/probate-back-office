@@ -57,6 +57,7 @@ public class ExceptionRecordService {
                     .build();
 
         } catch (Exception e) {
+            log.error("Error transforming Caveat case from Exception Record", e);
             throw new OCRMappingException(e.getMessage());
         }
     }
