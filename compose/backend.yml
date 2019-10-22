@@ -94,7 +94,7 @@ services:
       - service-auth-provider-api
 
   sidam-api:
-    image: "hmctspublic.azurecr.io/idam/api:preview"
+    image: "hmctspublic.azurecr.io/idam/api:stable"
     environment:
       JAVA_OPTS: -Xms128m -Xmx512m -Dlogging.level.uk.gov.hmcts=DEBUG
       TESTING_SUPPORT_ENABLED: "true"
@@ -332,25 +332,25 @@ services:
     ports:
       - 5430:5432
 
-  persistence-service:
-    image: hmctspublic.azurecr.io/probate/persistence-service:pro-5125_persistence_to_orchestrator
-    container_name: persistence-service
-    environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://ccd-shared-database:5432/probate
-      - PROBATE_POSTGRESQL_HOSTNAME=ccd-shared-database
-      - PROBATE_POSTGRESQL_PORT=5432
-      - PROBATE_POSTGRESQL_USER=${DB_USERNAME}
-      - PROBATE_POSTGRESQL_PASSWORD=${DB_PASSWORD}
-      - PROBATE_PERSISTENCE_PORT=8282
-      - http_proxy=
-      - https_proxy=
-      - no_proxy=
-      - LIQUIBASE_AT_STARTUP=true
-    ports:
-      - 8282:8282
+#  persistence-service:
+#    image: hmctspublic.azurecr.io/probate/persistence-service:pro-5125_persistence_to_orchestrator
+#    container_name: persistence-service
+#    environment:
+#      - SPRING_DATASOURCE_URL=jdbc:postgresql://ccd-shared-database:5432/probate
+#      - PROBATE_POSTGRESQL_HOSTNAME=ccd-shared-database
+#      - PROBATE_POSTGRESQL_PORT=5432
+#      - PROBATE_POSTGRESQL_USER=${DB_USERNAME}
+#      - PROBATE_POSTGRESQL_PASSWORD=${DB_PASSWORD}
+#      - PROBATE_PERSISTENCE_PORT=8282
+#      - http_proxy=
+#      - https_proxy=
+#      - no_proxy=
+#      - LIQUIBASE_AT_STARTUP=true
+#    ports:
+#      - 8282:8282
 
   business-service:
-    image: hmctspublic.azurecr.io/probate/business-service:latest
+    image: hmctspublic.azurecr.io/probate/business-service:demo
     container_name: business-service
     environment:
     - SERVER_PORT=8081
