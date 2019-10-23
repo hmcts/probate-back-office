@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.service.exceptionrecord;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.exception.OCRMappingException;
@@ -20,6 +21,7 @@ import java.util.List;
 
 import static java.util.stream.Collectors.toList;
 
+@Slf4j
 @Service
 public class ExceptionRecordService {
 
@@ -45,14 +47,17 @@ public class ExceptionRecordService {
         List<String> errors = new ArrayList<String>();
 
         try {
+            log.info("About to map Caveat OCR fields to CCD.");
             CaveatData caveatData = erCaveatMapper.toCcdData(erRequest.getOCRFieldsObject());
 
             // Add scanned documents
+            log.info("About to map Caveat Scanned Documents to CCD.");
             caveatData.setScannedDocuments(erRequest.getScannedDocuments()
                     .stream()
                     .map(it -> documentMapper.toCaseDoc(it, erRequest.getId()))
                     .collect(toList()));
 
+            log.info("Calling caveatTransformer to create transformation response for bulk scan orchestrator.");
             CaseCreationDetails caveatCaseDetailsResponse = caveatTransformer.bulkScanCaveatCaseTransform(caveatData);
 
             return SuccessfulTransformationResponse.builder()
@@ -62,7 +67,8 @@ public class ExceptionRecordService {
                     .build();
 
         } catch (Exception e) {
-            throw new OCRMappingException(e.getMessage(), e);
+            log.error("Error transforming Caveat case from Exception Record", e);
+            throw new OCRMappingException(e.getMessage());
         }
     }
 
@@ -74,9 +80,11 @@ public class ExceptionRecordService {
         List<String> errors = new ArrayList<String>();
 
         try {
+            log.info("About to map Grant of Representation OCR fields to CCD.");
             GrantOfRepresentationData grantOfRepresentationData = erGrantOfRepresentationMapper.toCcdData(erRequest.getOCRFieldsObject());
 
             // Add scanned documents
+            log.info("About to map Caveat Scanned Documents to CCD.");
             grantOfRepresentationData.setScannedDocuments(erRequest.getScannedDocuments()
                     .stream()
                     .map(it -> documentMapper.toCaseDoc(it, erRequest.getId()))
@@ -85,6 +93,7 @@ public class ExceptionRecordService {
             // Add grant type
             grantOfRepresentationData.setGrantType(grantType);
 
+            log.info("Calling grantOfRepresentationTransformer to create transformation response for bulk scan orchestrator.");
             CaseCreationDetails grantOfRepresentationCaseDetailsResponse =
                     grantOfRepresentationTransformer.bulkScanGrantOfRepresentationCaseTransform(grantOfRepresentationData);
 
@@ -95,6 +104,7 @@ public class ExceptionRecordService {
                     .build();
 
         } catch (Exception e) {
+            log.error("Error transforming Grant of Representation case from Exception Record", e);
             throw new OCRMappingException(e.getMessage(), e);
         }
     }

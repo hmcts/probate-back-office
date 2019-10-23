@@ -46,6 +46,9 @@ public class ExceptionRecordController {
     private final OCRPopulatedValueMapper ocrPopulatedValueMapper;
     private final OCRToCCDMandatoryField ocrToCCDMandatoryField;
 
+    private static final String OCR_EXCEPTION_WARNING_PREFIX = "OCR Data Mapping Error: ";
+    private static final String OCR_EXCEPTION_ERROR = "OCR fields could not be mapped to a case";
+
     public static final String PA8A_FORM = FormType.PA8A.name();
     public static final String PA1A_FORM = FormType.PA1A.name();
     public static final String PA1P_FORM = FormType.PA1P.name();
@@ -81,12 +84,14 @@ public class ExceptionRecordController {
         }
 
         if (!errors.isEmpty()) {
+            log.info("Validation check failed, returning error response for form-type {}", formType);
             callbackResponse = SuccessfulTransformationResponse.builder()
                     .warnings(warnings)
                     .errors(errors)
                     .build();
 
         } else {
+            log.info("Validation check passed, attempting to transform case for form-type {}", formType);
             switch (formType) {
                 case PA8A:
                     callbackResponse = erService.createCaveatCaseFromExceptionRecord(erRequest, warnings);
@@ -116,9 +121,9 @@ public class ExceptionRecordController {
 
     @ExceptionHandler(OCRMappingException.class)
     public ResponseEntity<ExceptionRecordErrorResponse> handle(OCRMappingException exception) {
-        log.error("OCR Data Mapping Error: {}", exception.getMessage(), exception);
-        List<String> warnings = Arrays.asList("OCR field mapping error: " + exception.getMessage());
-        List<String> errors = Arrays.asList("OCR fields could not be mapped to a case");
+        log.error("An error has occured during the bulk scanning OCR transformation process: {}", exception.getMessage(), exception);
+        List<String> warnings = Arrays.asList(OCR_EXCEPTION_WARNING_PREFIX + exception.getMessage());
+        List<String> errors = Arrays.asList(OCR_EXCEPTION_ERROR);
         ExceptionRecordErrorResponse errorResponse = new ExceptionRecordErrorResponse(errors, warnings);
         return ResponseEntity.ok(errorResponse);
     }
