@@ -23,7 +23,7 @@ public class OCRFieldRelationshipMapper {
         if (relationshipValue == null || relationshipValue.isEmpty()) {
             return null;
         } else {
-            switch (relationshipValue.toUpperCase().trim()) {
+            switch (relationshipValue.trim()) {
                 case ADOPTED_CHILD_DESC:
                     return Relationship.ADOPTED_CHILD;
                 case CHILD_DESC:
@@ -48,7 +48,7 @@ public class OCRFieldRelationshipMapper {
             return otherNullValue;
         } else {
             Relationship relationship = toRelationship(relationshipValue);
-            if (relationship.getDescription().equals(Relationship.OTHER.getDescription())) {
+            if (relationship.name().equals(Relationship.OTHER.name())) {
                 log.info("Found Other value: {}", relationshipValue);
                 return relationshipValue;
             }

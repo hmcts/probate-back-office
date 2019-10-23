@@ -21,8 +21,6 @@ public class OCRFieldMartialStatusMapperTest {
 
     private OCRFieldMartialStatusMapper martialStatusMapper = new OCRFieldMartialStatusMapper();
 
-    ExceptionRecordOCRFields ocrFields;
-
     @Test
     public void testMartialStatusNeverMarried() {
         MaritalStatus response = martialStatusMapper.toMartialStatus(OCR_FORM_NEVER_MARRIED);

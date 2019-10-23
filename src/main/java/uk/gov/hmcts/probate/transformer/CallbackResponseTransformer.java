@@ -89,6 +89,7 @@ public class CallbackResponseTransformer {
 
     public static final String EXCEPTION_RECORD_CASE_TYPE_ID = "GrantOfRepresentation";
     public static final String EXCEPTION_RECORD_EVENT_ID = "createCase";
+    public static final RegistryLocation EXCEPTION_RECORD_REGISTRY_LOCATION = RegistryLocation.CTSC;
 
     private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(DATE_FORMAT);
 
@@ -933,14 +934,14 @@ public class CallbackResponseTransformer {
         return templateName;
     }
 
-    public CaseCreationDetails newGrantOfRepresentationCaseTransform(GrantOfRepresentationData grantOfRepresentationData) {
+    public CaseCreationDetails bulkScanGrantOfRepresentationCaseTransform(GrantOfRepresentationData grantOfRepresentationData) {
 
         if (grantOfRepresentationData.getApplicationType() == null) {
             grantOfRepresentationData.setApplicationType(uk.gov.hmcts.reform.probate.model.cases.ApplicationType.PERSONAL);
         }
 
         if (grantOfRepresentationData.getRegistryLocation() == null) {
-            grantOfRepresentationData.setRegistryLocation(RegistryLocation.CTSC);
+            grantOfRepresentationData.setRegistryLocation(EXCEPTION_RECORD_REGISTRY_LOCATION);
         }
 
         if (grantOfRepresentationData.getPaperForm() == null) {

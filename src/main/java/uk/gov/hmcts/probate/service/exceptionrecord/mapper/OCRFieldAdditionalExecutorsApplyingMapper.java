@@ -80,7 +80,7 @@ public class OCRFieldAdditionalExecutorsApplyingMapper {
         ExecutorApplying applying = ExecutorApplying.builder()
                 .applyingExecutorName(executorName)
                 .applyingExecutorOtherNames(otherNames)
-                .applyingExecutorHasOtherName((otherNames.isEmpty() ? false : true))
+                .applyingExecutorHasOtherName((otherNames == null || otherNames.isEmpty() ? false : true))
                 .applyingExecutorEmail(email)
                 .applyingExecutorAddress(buildAddress(addressLine1, addressLine2, postTown, county, postCode))
                 .build();

@@ -15,6 +15,7 @@ import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToAttorney
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToDeceasedAddress;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToDefaultLocalDate;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToIHTFormId;
+import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToLong;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToMartialStatus;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToPennies;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToPrimaryApplicantAddress;
@@ -34,12 +35,13 @@ import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepr
                 OCRFieldMartialStatusMapper.class,
                 OCRFieldAdoptiveRelativesMapper.class,
                 OCRFieldIhtMoneyMapper.class,
-                OCRFieldRelationshipMapper.class
+                OCRFieldRelationshipMapper.class,
+                OCRFieldNumberMapper.class
         },
         unmappedTargetPolicy = ReportingPolicy.IGNORE, nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS)
 public interface ExceptionRecordGrantOfRepresentationMapper {
-    @Mapping(target = "extraCopiesOfGrant", source = "extraCopiesOfGrant")
-    @Mapping(target = "outsideUkGrantCopies", source = "outsideUKGrantCopies")
+    @Mapping(target = "extraCopiesOfGrant", source = "extraCopiesOfGrant", qualifiedBy = {ToLong.class})
+    @Mapping(target = "outsideUkGrantCopies", source = "outsideUKGrantCopies", qualifiedBy = {ToLong.class})
 
     @Mapping(target = "applicationFeePaperForm", source = "applicationFeePaperForm", qualifiedBy = {ToPennies.class})
     @Mapping(target = "feeForCopiesPaperForm", source = "feeForCopiesPaperForm", qualifiedBy = {ToPennies.class})

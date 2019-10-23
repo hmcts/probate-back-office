@@ -57,7 +57,12 @@ public class OCRFieldAddressMapper {
                 .address(buildAddress())
                 .build();
         List<CollectionMember<AttorneyNamesAndAddress>> collectionMemberList = new ArrayList<>();
-        collectionMemberList.add(new CollectionMember<>(null, attorneyNamesAndAddress));
+        if ((attorneyNamesAndAddress.getName() != null
+                && !attorneyNamesAndAddress.getName().isEmpty())
+                || (attorneyNamesAndAddress.getAddress().getPostCode() != null
+                && !attorneyNamesAndAddress.getAddress().getPostCode().isEmpty())) {
+            collectionMemberList.add(new CollectionMember<>(null, attorneyNamesAndAddress));
+        }
         return collectionMemberList;
     }
 
@@ -99,6 +104,9 @@ public class OCRFieldAddressMapper {
                 .country(country)
                 .postCode(postCode)
                 .build();
+        if (address.getPostCode() == null || address.getPostCode().isEmpty()) {
+            return null;
+        }
         return address;
     }
 }

@@ -3,7 +3,6 @@ package uk.gov.hmcts.probate.service.exceptionrecord;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.exception.OCRMappingException;
-import uk.gov.hmcts.probate.model.CaseType;
 import uk.gov.hmcts.probate.model.exceptionrecord.CaseCreationDetails;
 import uk.gov.hmcts.probate.model.exceptionrecord.ExceptionRecordRequest;
 import uk.gov.hmcts.probate.model.exceptionrecord.SuccessfulTransformationResponse;
@@ -54,7 +53,7 @@ public class ExceptionRecordService {
                     .map(it -> documentMapper.toCaseDoc(it, erRequest.getId()))
                     .collect(toList()));
 
-            CaseCreationDetails caveatCaseDetailsResponse = caveatTransformer.newCaveatCaseTransform(caveatData);
+            CaseCreationDetails caveatCaseDetailsResponse = caveatTransformer.bulkScanCaveatCaseTransform(caveatData);
 
             return SuccessfulTransformationResponse.builder()
                     .caseCreationDetails(caveatCaseDetailsResponse)
@@ -87,7 +86,7 @@ public class ExceptionRecordService {
             grantOfRepresentationData.setGrantType(grantType);
 
             CaseCreationDetails grantOfRepresentationCaseDetailsResponse =
-                    grantOfRepresentationTransformer.newGrantOfRepresentationCaseTransform(grantOfRepresentationData);
+                    grantOfRepresentationTransformer.bulkScanGrantOfRepresentationCaseTransform(grantOfRepresentationData);
 
             return SuccessfulTransformationResponse.builder()
                     .caseCreationDetails(grantOfRepresentationCaseDetailsResponse)

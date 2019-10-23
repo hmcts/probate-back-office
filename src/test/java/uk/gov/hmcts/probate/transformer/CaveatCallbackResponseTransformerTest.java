@@ -23,6 +23,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 import uk.gov.hmcts.probate.model.exceptionrecord.CaseCreationDetails;
 import uk.gov.hmcts.reform.probate.model.cases.Address;
+import uk.gov.hmcts.reform.probate.model.cases.RegistryLocation;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -33,7 +34,6 @@ import static java.util.Collections.emptyList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
-import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
 import static uk.gov.hmcts.probate.model.Constants.CAVEAT_LIFESPAN;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 
@@ -44,6 +44,8 @@ public class CaveatCallbackResponseTransformerTest {
 
     private static final ApplicationType CAV_APPLICATION_TYPE = CaveatCallbackResponseTransformer.DEFAULT_APPLICATION_TYPE;
     private static final String CAV_REGISTRY_LOCATION = CaveatCallbackResponseTransformer.DEFAULT_REGISTRY_LOCATION;
+    private static final RegistryLocation BULK_SCAN_CAV_REGISTRY_LOCATION
+            = CaveatCallbackResponseTransformer.EXCEPTION_RECORD_REGISTRY_LOCATION;
 
     private static final String CAV_EXCEPTION_RECORD_CASE_TYPE_ID = CaveatCallbackResponseTransformer.EXCEPTION_RECORD_CASE_TYPE_ID;
     private static final String CAV_EXCEPTION_RECORD_EVENT_ID = CaveatCallbackResponseTransformer.EXCEPTION_RECORD_EVENT_ID;
@@ -127,6 +129,7 @@ public class CaveatCallbackResponseTransformerTest {
                 .legacyType(CAV_LEGACY_CASE_TYPE);
 
         bulkScanCaveatData = uk.gov.hmcts.reform.probate.model.cases.caveat.CaveatData.builder()
+                .registryLocation(BULK_SCAN_CAV_REGISTRY_LOCATION)
                 .deceasedForenames(CAV_DECEASED_FORENAMES)
                 .deceasedSurname(CAV_DECEASED_SURNAME)
                 .deceasedDateOfDeath(CAV_DECEASED_DOD)
@@ -273,17 +276,16 @@ public class CaveatCallbackResponseTransformerTest {
 
     @Test
     public void bulkScanCaveatTransform() {
-        CaseCreationDetails caveatDetails = underTest.newCaveatCaseTransform(bulkScanCaveatData);
-        assertCaseCreationDetails(caveatDetails);
+        CaseCreationDetails caveatDetails = underTest.bulkScanCaveatCaseTransform(bulkScanCaveatData);
+        assertBulkScanCaseCreationDetails(caveatDetails);
     }
 
-    private void assertCaseCreationDetails(CaseCreationDetails caveatCreationDetails) {
+    private void assertBulkScanCaseCreationDetails(CaseCreationDetails caveatCreationDetails) {
         uk.gov.hmcts.reform.probate.model.cases.caveat.CaveatData caveatData =
                 (uk.gov.hmcts.reform.probate.model.cases.caveat.CaveatData) caveatCreationDetails.getCaseData();
         assertEquals(CAV_EXCEPTION_RECORD_EVENT_ID, caveatCreationDetails.getEventId());
         assertEquals(CAV_EXCEPTION_RECORD_CASE_TYPE_ID, caveatCreationDetails.getCaseTypeId());
-
-        assertEquals(CAV_REGISTRY_LOCATION, caveatData.getRegistryLocation().getName());
+        assertEquals(BULK_SCAN_CAV_REGISTRY_LOCATION.name(), caveatData.getRegistryLocation().name());
         assertEquals(CAV_APPLICATION_TYPE.name(), caveatData.getApplicationType().getName().toUpperCase());
         assertEquals(DATE_SUBMITTED.toString(), caveatData.getApplicationSubmittedDate().toString());
         assertEquals(true, caveatData.getPaperForm());

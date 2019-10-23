@@ -15,6 +15,12 @@ public class OCRFieldIhtMoneyMapper {
 
     private static final BigDecimal ONE_HUNDRED = BigDecimal.valueOf(100);
 
+    private static final String FORM_IHT205 = "IHT205";
+    private static final String FORM_IHT207 = "IHT207";
+    private static final String FORM_IHT400421 = "IHT400421";
+    private static final String FORM_IHT421 = "IHT421";
+    private static final String FORM_IHT400 = "IHT400";
+
     @ToPennies
     public Long poundsToPennies(String monetaryValue) throws OCRMappingException {
         log.info("Beginning mapping for monetary value: {}", monetaryValue);
@@ -43,15 +49,15 @@ public class OCRFieldIhtMoneyMapper {
             return null;
         } else {
             switch (ihtFormId.toUpperCase().trim()) {
-                case "IHT205":
+                case FORM_IHT205:
                     return IhtFormType.IHT205;
-                case "IHT207":
+                case FORM_IHT207:
                     return IhtFormType.IHT207;
-                case "IHT400421":
+                case FORM_IHT400421:
                     return IhtFormType.IHT400421;
-                case "IHT421":
+                case FORM_IHT421:
                     return IhtFormType.IHT400421;
-                case "IHT400":
+                case FORM_IHT400:
                     return IhtFormType.IHT400421;
                 default:
                     String errorMessage = "Form type IHT205, IHT207 or IHT400421 expected but got '" + ihtFormId + "'";

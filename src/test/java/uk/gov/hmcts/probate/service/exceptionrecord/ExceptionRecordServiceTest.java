@@ -77,7 +77,7 @@ public class ExceptionRecordServiceTest {
                 eventId(EXCEPTION_RECORD_EVENT_ID).caseData(caveatData).caseTypeId(EXCEPTION_RECORD_CASE_TYPE_ID).build();
 
         when(erCaveatMapper.toCcdData(any())).thenReturn(caveatData);
-        when(caveatTransformer.newCaveatCaseTransform(any())).thenReturn(caveatCaseDetailsResponse);
+        when(caveatTransformer.bulkScanCaveatCaseTransform(any())).thenReturn(caveatCaseDetailsResponse);
     }
 
     @Test

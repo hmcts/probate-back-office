@@ -101,15 +101,16 @@ public class OCRFieldAdoptiveRelativesMapper {
         if (adoptedInOutValue == null || adoptedInOutValue.isEmpty()) {
             return null;
         } else {
-            switch (adoptedInOutValue.toLowerCase().replaceAll("^.*\\b(in|out)\\b.*$", "$1")) {
-                case InOut.Constants.IN_VALUE:
-                    return InOut.IN;
-                case InOut.Constants.OUT_VALUE:
-                    return InOut.IN;
-                default:
-                    String errorMessage = "Adopted In or Out field '" + adoptedInOutValue + "' could not be mapped to 'in' or 'out' values";
-                    log.error(errorMessage);
-                    throw new OCRMappingException(errorMessage);
+            boolean matchesIn = adoptedInOutValue.toLowerCase().matches("^.*\\bin\\b.*$");
+            boolean matchesOut = adoptedInOutValue.toLowerCase().matches("^.*\\bout\\b.*$");
+            if (matchesIn && !matchesOut) {
+                return InOut.IN;
+            } else if (!matchesIn && matchesOut) {
+                return InOut.OUT;
+            } else {
+                String errorMessage = "Adopted In or Out field '" + adoptedInOutValue + "' could not be mapped to 'in' or 'out' values";
+                log.error(errorMessage);
+                throw new OCRMappingException(errorMessage);
             }
         }
     }

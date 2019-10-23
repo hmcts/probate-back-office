@@ -119,7 +119,7 @@ public class ExceptionRecordControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString(
-                        "\"warnings\":[\"OCR field mapping error: Text '02022' could not be parsed at index 4\"]")))
+                        "\"warnings\":[\"OCR field mapping error: Date field '02022' not in expected format ddMMyyyy\"]")))
                 .andExpect(content().string(containsString("\"errors\":[\"OCR fields could not be mapped to a case\"]")));
     }
 
