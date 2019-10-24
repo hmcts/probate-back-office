@@ -79,26 +79,26 @@ public class OCRFieldAdditionalExecutorsNotApplyingMapper {
 
     private ExecutorNotApplyingReason identifyReason(String reasonValue) {
         if (reasonValue == null || reasonValue.isEmpty()) {
-            return null;
-        } else {
-            switch (reasonValue.toUpperCase().trim()) {
-                case "A":
-                    return ExecutorNotApplyingReason.DIED_BEFORE;
-                case "B":
-                    return ExecutorNotApplyingReason.DIED_AFTER;
-                case "C":
-                    return ExecutorNotApplyingReason.POWER_RESERVED;
-                case "D":
-                    return ExecutorNotApplyingReason.RENUNCIATION;
-                case "E":
-                    return ExecutorNotApplyingReason.RENUNCIATION;
-                case "F":
-                    return ExecutorNotApplyingReason.POWER_OF_ATTORNEY;
-                default:
-                    String errorMessage = "Not applying reason A, B, C, D, E, or F values expected but got '" + reasonValue + "'";
-                    log.error(errorMessage);
-                    throw new OCRMappingException(errorMessage);
-            }
+            reasonValue = "";
+        }
+
+        switch (reasonValue.toUpperCase().trim()) {
+            case "A":
+                return ExecutorNotApplyingReason.DIED_BEFORE;
+            case "B":
+                return ExecutorNotApplyingReason.DIED_AFTER;
+            case "C":
+                return ExecutorNotApplyingReason.POWER_RESERVED;
+            case "D":
+                return ExecutorNotApplyingReason.RENUNCIATION;
+            case "E":
+                return ExecutorNotApplyingReason.POWER_OF_ATTORNEY;
+            case "F":
+                return ExecutorNotApplyingReason.MENTALLY_INCAPABLE;
+            default:
+                String errorMessage = "Not applying reason A, B, C, D, E, or F values expected but got '" + reasonValue + "'";
+                log.error(errorMessage);
+                throw new OCRMappingException(errorMessage);
         }
     }
 }
