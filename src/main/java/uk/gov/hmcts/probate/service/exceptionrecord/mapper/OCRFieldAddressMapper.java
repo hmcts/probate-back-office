@@ -59,7 +59,8 @@ public class OCRFieldAddressMapper {
         List<CollectionMember<AttorneyNamesAndAddress>> collectionMemberList = new ArrayList<>();
         if ((attorneyNamesAndAddress.getName() != null
                 && !attorneyNamesAndAddress.getName().isEmpty())
-                || (attorneyNamesAndAddress.getAddress().getPostCode() != null
+                || (attorneyNamesAndAddress.getAddress() != null
+                && attorneyNamesAndAddress.getAddress().getPostCode() != null
                 && !attorneyNamesAndAddress.getAddress().getPostCode().isEmpty())) {
             collectionMemberList.add(new CollectionMember<>(null, attorneyNamesAndAddress));
         }
