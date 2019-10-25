@@ -29,7 +29,7 @@ public class OCRFieldAddressMapperTest {
 
     private OCRFieldAddressMapper addressMapper = new OCRFieldAddressMapper();
 
-    ExceptionRecordOCRFields ocrFields;
+    private ExceptionRecordOCRFields ocrFields;
 
     @Before
     public void setUpClass() throws Exception {

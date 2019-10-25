@@ -34,9 +34,9 @@ public class OCRFieldAdditionalExecutorsApplyingMapperTest {
     private OCRFieldAdditionalExecutorsApplyingMapper ocrFieldAdditionalExecutorsApplyingMapper
             = new OCRFieldAdditionalExecutorsApplyingMapper();
 
-    ExceptionRecordOCRFields ocrFields;
-    ExceptionRecordOCRFields ocrFields2;
-    ExceptionRecordOCRFields ocrFields3;
+    private ExceptionRecordOCRFields ocrFields;
+    private ExceptionRecordOCRFields ocrFields2;
+    private ExceptionRecordOCRFields ocrFields3;
 
     @Before
     public void setUpClass() throws Exception {

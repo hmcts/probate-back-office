@@ -189,104 +189,104 @@ public interface ExceptionRecordGrantOfRepresentationMapper {
 
     @AfterMapping
     default void setDerivedFamilyBooleans(@MappingTarget GrantOfRepresentationData caseData, ExceptionRecordOCRFields ocrField) {
-        if (BooleanUtils.toBoolean(caseData.getChildrenUnderEighteenSurvived().toString())
-                || BooleanUtils.toBoolean(caseData.getChildrenOverEighteenSurvived().toString())) {
+        if (greatThenZero(ocrField.getChildrenUnderEighteenSurvived())
+                || greatThenZero(ocrField.getChildrenOverEighteenSurvived())) {
             caseData.setChildrenSurvived(Boolean.TRUE);
         } else {
             caseData.setChildrenSurvived(Boolean.FALSE);
         }
-        if (BooleanUtils.toBoolean(caseData.getChildrenDiedUnderEighteen().toString())
-                || BooleanUtils.toBoolean(caseData.getChildrenDiedOverEighteen().toString())) {
+        if (greatThenZero(ocrField.getChildrenDiedUnderEighteen())
+                || greatThenZero(ocrField.getChildrenDiedOverEighteen())) {
             caseData.setChildrenDied(Boolean.TRUE);
         } else {
             caseData.setChildrenDied(Boolean.FALSE);
         }
-        if (BooleanUtils.toBoolean(caseData.getGrandChildrenSurvivedUnderEighteen().toString())
-                || BooleanUtils.toBoolean(caseData.getGrandChildrenSurvivedOverEighteen().toString())) {
+        if (greatThenZero(ocrField.getGrandChildrenSurvivedUnderEighteen())
+                || greatThenZero(ocrField.getGrandChildrenSurvivedOverEighteen())) {
             caseData.setGrandChildrenSurvived(Boolean.TRUE);
         } else {
             caseData.setGrandChildrenSurvived(Boolean.FALSE);
         }
-        if (BooleanUtils.toBoolean(caseData.getParentsExistUnderEighteenSurvived())
-                || BooleanUtils.toBoolean(caseData.getParentsExistOverEighteenSurvived())) {
+        if (greatThenZero(caseData.getParentsExistUnderEighteenSurvived())
+                || greatThenZero(caseData.getParentsExistOverEighteenSurvived())) {
             caseData.setParentsExistSurvived(Boolean.TRUE);
         } else {
             caseData.setParentsExistSurvived(Boolean.FALSE);
         }
-        if (BooleanUtils.toBoolean(caseData.getWholeBloodSiblingsSurvivedUnderEighteen())
-                || BooleanUtils.toBoolean(caseData.getWholeBloodSiblingsSurvivedOverEighteen())) {
+        if (greatThenZero(ocrField.getWholeBloodSiblingsSurvivedUnderEighteen())
+                || greatThenZero(ocrField.getWholeBloodSiblingsSurvivedOverEighteen())) {
             caseData.setWholeBloodSiblingsSurvived(Boolean.TRUE);
         } else {
             caseData.setWholeBloodSiblingsSurvived(Boolean.FALSE);
         }
-        if (BooleanUtils.toBoolean(caseData.getWholeBloodSiblingsDiedUnderEighteen())
-                || BooleanUtils.toBoolean(caseData.getWholeBloodSiblingsDiedOverEighteen())) {
+        if (greatThenZero(ocrField.getWholeBloodSiblingsDiedUnderEighteen())
+                || greatThenZero(ocrField.getWholeBloodSiblingsDiedOverEighteen())) {
             caseData.setWholeBloodSiblingsDied(Boolean.TRUE);
         } else {
             caseData.setWholeBloodSiblingsDied(Boolean.FALSE);
         }
-        if (BooleanUtils.toBoolean(caseData.getWholeBloodNeicesAndNephewsUnderEighteen())
-                || BooleanUtils.toBoolean(caseData.getWholeBloodNeicesAndNephewsOverEighteen())) {
+        if (greatThenZero(ocrField.getWholeBloodNeicesAndNephewsUnderEighteen())
+                || greatThenZero(ocrField.getWholeBloodNeicesAndNephewsOverEighteen())) {
             caseData.setWholeBloodNeicesAndNephews(Boolean.TRUE);
         } else {
             caseData.setWholeBloodNeicesAndNephews(Boolean.FALSE);
         }
-        if (BooleanUtils.toBoolean(caseData.getHalfBloodSiblingsSurvivedUnderEighteen())
-                || BooleanUtils.toBoolean(caseData.getHalfBloodSiblingsSurvivedOverEighteen())) {
+        if (greatThenZero(ocrField.getHalfBloodSiblingsSurvivedUnderEighteen())
+                || greatThenZero(ocrField.getHalfBloodSiblingsSurvivedOverEighteen())) {
             caseData.setHalfBloodSiblingsSurvived(Boolean.TRUE);
         } else {
             caseData.setHalfBloodSiblingsSurvived(Boolean.FALSE);
         }
-        if (BooleanUtils.toBoolean(caseData.getHalfBloodSiblingsDiedUnderEighteen())
-                || BooleanUtils.toBoolean(caseData.getHalfBloodSiblingsDiedOverEighteen())) {
+        if (greatThenZero(ocrField.getHalfBloodSiblingsDiedUnderEighteen())
+                || greatThenZero(ocrField.getHalfBloodSiblingsDiedOverEighteen())) {
             caseData.setHalfBloodSiblingsDied(Boolean.TRUE);
         } else {
             caseData.setHalfBloodSiblingsDied(Boolean.FALSE);
         }
-        if (BooleanUtils.toBoolean(caseData.getHalfBloodNeicesAndNephewsUnderEighteen())
-                || BooleanUtils.toBoolean(caseData.getHalfBloodNeicesAndNephewsOverEighteen())) {
+        if (greatThenZero(ocrField.getHalfBloodNeicesAndNephewsUnderEighteen())
+                || greatThenZero(ocrField.getHalfBloodNeicesAndNephewsOverEighteen())) {
             caseData.setHalfBloodNeicesAndNephews(Boolean.TRUE);
         } else {
             caseData.setHalfBloodNeicesAndNephews(Boolean.FALSE);
         }
-        if (BooleanUtils.toBoolean(caseData.getGrandparentsDiedUnderEighteen())
-                || BooleanUtils.toBoolean(caseData.getGrandparentsDiedOverEighteen())) {
+        if (greatThenZero(ocrField.getGrandparentsDiedUnderEighteen())
+                || greatThenZero(ocrField.getGrandparentsDiedOverEighteen())) {
             caseData.setGrandparentsDied(Boolean.TRUE);
         } else {
             caseData.setGrandparentsDied(Boolean.FALSE);
         }
-        if (BooleanUtils.toBoolean(caseData.getWholeBloodUnclesAndAuntsSurvivedUnderEighteen())
-                || BooleanUtils.toBoolean(caseData.getWholeBloodUnclesAndAuntsSurvivedOverEighteen())) {
+        if (greatThenZero(ocrField.getWholeBloodUnclesAndAuntsSurvivedUnderEighteen())
+                || greatThenZero(ocrField.getWholeBloodUnclesAndAuntsSurvivedOverEighteen())) {
             caseData.setWholeBloodUnclesAndAuntsSurvived(Boolean.TRUE);
         } else {
             caseData.setWholeBloodUnclesAndAuntsSurvived(Boolean.FALSE);
         }
-        if (BooleanUtils.toBoolean(caseData.getWholeBloodUnclesAndAuntsDiedUnderEighteen())
-                || BooleanUtils.toBoolean(caseData.getWholeBloodUnclesAndAuntsDiedOverEighteen())) {
+        if (greatThenZero(ocrField.getWholeBloodUnclesAndAuntsDiedUnderEighteen())
+                || greatThenZero(ocrField.getWholeBloodUnclesAndAuntsDiedOverEighteen())) {
             caseData.setWholeBloodUnclesAndAuntsDied(Boolean.TRUE);
         } else {
             caseData.setWholeBloodUnclesAndAuntsDied(Boolean.FALSE);
         }
-        if (BooleanUtils.toBoolean(caseData.getWholeBloodCousinsSurvivedUnderEighteen())
-                || BooleanUtils.toBoolean(caseData.getWholeBloodCousinsSurvivedOverEighteen())) {
+        if (greatThenZero(ocrField.getWholeBloodCousinsSurvivedUnderEighteen())
+                || greatThenZero(ocrField.getWholeBloodCousinsSurvivedOverEighteen())) {
             caseData.setWholeBloodCousinsSurvived(Boolean.TRUE);
         } else {
             caseData.setWholeBloodCousinsSurvived(Boolean.FALSE);
         }
-        if (BooleanUtils.toBoolean(caseData.getHalfBloodUnclesAndAuntsSurvivedUnderEighteen())
-                || BooleanUtils.toBoolean(caseData.getHalfBloodUnclesAndAuntsSurvivedOverEighteen())) {
+        if (greatThenZero(ocrField.getHalfBloodUnclesAndAuntsSurvivedUnderEighteen())
+                || greatThenZero(ocrField.getHalfBloodUnclesAndAuntsSurvivedOverEighteen())) {
             caseData.setHalfBloodUnclesAndAuntsSurvived(Boolean.TRUE);
         } else {
             caseData.setHalfBloodUnclesAndAuntsSurvived(Boolean.FALSE);
         }
-        if (BooleanUtils.toBoolean(caseData.getHalfBloodUnclesAndAuntsDiedUnderEighteen())
-                || BooleanUtils.toBoolean(caseData.getHalfBloodUnclesAndAuntsDiedOverEighteen())) {
+        if (greatThenZero(ocrField.getHalfBloodUnclesAndAuntsDiedUnderEighteen())
+                || greatThenZero(ocrField.getHalfBloodUnclesAndAuntsDiedOverEighteen())) {
             caseData.setHalfBloodUnclesAndAuntsDied(Boolean.TRUE);
         } else {
             caseData.setHalfBloodUnclesAndAuntsDied(Boolean.FALSE);
         }
-        if (BooleanUtils.toBoolean(caseData.getHalfBloodCousinsSurvivedUnderEighteen())
-                || BooleanUtils.toBoolean(caseData.getHalfBloodCousinsSurvivedOverEighteen())) {
+        if (greatThenZero(ocrField.getHalfBloodCousinsSurvivedUnderEighteen())
+                || greatThenZero(ocrField.getHalfBloodCousinsSurvivedOverEighteen())) {
             caseData.setHalfBloodCousinsSurvived(Boolean.TRUE);
         } else {
             caseData.setHalfBloodCousinsSurvived(Boolean.FALSE);
@@ -301,5 +301,17 @@ public interface ExceptionRecordGrantOfRepresentationMapper {
         } else {
             caseData.setApplyingAsAnAttorney(Boolean.FALSE);
         }
+    }
+
+    default boolean greatThenZero(String field) {
+        Integer integerValue = 0;
+        if (field != null) {
+            try {
+                integerValue = Integer.valueOf(field);
+            } catch (Exception e) {
+                // do nothing
+            }
+        }
+        return BooleanUtils.toBoolean(integerValue);
     }
 }

@@ -24,15 +24,15 @@ public class OCRFieldAdditionalExecutorsNotApplyingMapperTest {
     private static final String EXECUTOR_NOT_APPLYING_3_NAME = "Bob Hoskins";
     private static final String EXECUTOR_NOT_APPLYING_3_REASON = "F";
 
-    OCRFieldAdditionalExecutorsNotApplyingMapper ocrFieldAdditionalExecutorsNotApplyingMapper
+    private OCRFieldAdditionalExecutorsNotApplyingMapper ocrFieldAdditionalExecutorsNotApplyingMapper
             = new OCRFieldAdditionalExecutorsNotApplyingMapper();
 
-    ExceptionRecordOCRFields ocrFields;
-    ExceptionRecordOCRFields ocrFields2;
-    ExceptionRecordOCRFields ocrFields3;
-    ExceptionRecordOCRFields ocrFields4;
-    ExceptionRecordOCRFields ocrFields5;
-    ExceptionRecordOCRFields ocrFields6;
+    private ExceptionRecordOCRFields ocrFields;
+    private ExceptionRecordOCRFields ocrFields2;
+    private ExceptionRecordOCRFields ocrFields3;
+    private ExceptionRecordOCRFields ocrFields4;
+    private ExceptionRecordOCRFields ocrFields5;
+    private ExceptionRecordOCRFields ocrFields6;
 
     @Before
     public void setUpClass() throws Exception {

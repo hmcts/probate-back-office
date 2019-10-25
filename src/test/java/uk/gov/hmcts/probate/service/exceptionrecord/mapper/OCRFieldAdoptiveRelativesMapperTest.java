@@ -25,8 +25,8 @@ public class OCRFieldAdoptiveRelativesMapperTest {
 
     private OCRFieldAdoptiveRelativesMapper ocrFieldAdoptiveRelativesMapper = new OCRFieldAdoptiveRelativesMapper();
 
-    ExceptionRecordOCRFields ocrFields;
-    ExceptionRecordOCRFields ocrFieldsInOutError;
+    private ExceptionRecordOCRFields ocrFields;
+    private ExceptionRecordOCRFields ocrFieldsInOutError;
 
     @Before
     public void setUpClass() throws Exception {

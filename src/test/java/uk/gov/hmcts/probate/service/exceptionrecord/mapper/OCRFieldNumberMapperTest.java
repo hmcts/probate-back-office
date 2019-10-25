@@ -10,7 +10,7 @@ import static org.junit.Assert.assertTrue;
 @Component
 public class OCRFieldNumberMapperTest {
 
-    OCRFieldNumberMapper ocrFieldNumberMapper = new OCRFieldNumberMapper();
+    private OCRFieldNumberMapper ocrFieldNumberMapper = new OCRFieldNumberMapper();
 
     @Test
     public void testStringReturnedAsLong() {

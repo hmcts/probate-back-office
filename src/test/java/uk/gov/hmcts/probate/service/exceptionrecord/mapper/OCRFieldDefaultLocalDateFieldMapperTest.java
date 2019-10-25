@@ -11,9 +11,9 @@ import static org.junit.Assert.assertEquals;
 
 public class OCRFieldDefaultLocalDateFieldMapperTest {
 
-    public static final String OCR_DATE_FORMAT = "ddMMyyyy";
+    private static final String OCR_DATE_FORMAT = "ddMMyyyy";
 
-    OCRFieldDefaultLocalDateFieldMapper ocrFieldDefaultLocalDateFieldMapper = new OCRFieldDefaultLocalDateFieldMapper();
+    private OCRFieldDefaultLocalDateFieldMapper ocrFieldDefaultLocalDateFieldMapper = new OCRFieldDefaultLocalDateFieldMapper();
 
     @Test
     public void testOcrDateFormatCorrect() {
