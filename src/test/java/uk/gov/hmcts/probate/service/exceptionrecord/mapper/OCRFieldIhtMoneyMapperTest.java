@@ -12,19 +12,24 @@ public class OCRFieldIhtMoneyMapperTest {
 
     private static final String MONETARY_TEST_VALUE_INPUT = "125.50";
     private static final Long MONETARY_TEST_VALUE_PENNIES = 12550L;
+    private static final String MONETARY_TEST_UNKNOWN_VALUE = "Twenty two pounds";
 
     private static final String IHT205_FORM = "IHT205";
     private static final String IHT207_FORM = "IHT207";
     private static final String IHT400421_FORM = "IHT400421";
     private static final String IHT421_FORM = "IHT421";
     private static final String IHT400_FORM = "IHT400";
-
     private static final String UNKNOWN_FORM = "UNKOWNFORM";
 
     @Test
     public void testPoundsToPennies() {
         Long response = ocrFieldIhtMoneyMapper.poundsToPennies(MONETARY_TEST_VALUE_INPUT);
         assertEquals(MONETARY_TEST_VALUE_PENNIES, response);
+    }
+
+    @Test(expected = OCRMappingException.class)
+    public void testExceptionForToPenniesNotNumeric() {
+        Long response = ocrFieldIhtMoneyMapper.poundsToPennies(MONETARY_TEST_UNKNOWN_VALUE);
     }
 
     @Test

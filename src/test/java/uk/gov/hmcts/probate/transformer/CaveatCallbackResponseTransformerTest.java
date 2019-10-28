@@ -32,6 +32,7 @@ import java.util.List;
 
 import static java.util.Collections.emptyList;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.Constants.CAVEAT_LIFESPAN;
@@ -288,17 +289,22 @@ public class CaveatCallbackResponseTransformerTest {
         assertEquals(BULK_SCAN_CAV_REGISTRY_LOCATION.name(), caveatData.getRegistryLocation().name());
         assertEquals(CAV_APPLICATION_TYPE.name(), caveatData.getApplicationType().getName().toUpperCase());
         assertEquals(DATE_SUBMITTED.toString(), caveatData.getApplicationSubmittedDate().toString());
-        assertEquals(true, caveatData.getPaperForm());
 
+        assertEquals(true, caveatData.getPaperForm());
         assertEquals(CAV_DECEASED_FORENAMES, caveatData.getDeceasedForenames());
         assertEquals(CAV_DECEASED_SURNAME, caveatData.getDeceasedSurname());
         assertEquals(CAV_BSP_DECEASED_ADDRESS, caveatData.getDeceasedAddress());
         assertEquals(CAV_DECEASED_DOD, caveatData.getDeceasedDateOfDeath());
         assertEquals(CAV_DECEASED_DOB, caveatData.getDeceasedDateOfBirth());
-        assertEquals(false, caveatData.getDeceasedAnyOtherNames());
+
         assertEquals(CAV_BSP_CAVEATOR_ADDRESS, caveatData.getCaveatorAddress());
+        assertEquals(CAV_CAVEATOR_EMAIL_ADDRESS, caveatData.getCaveatorEmailAddress());
         assertEquals(CAV_CAVEATOR_FORENAMES, caveatData.getCaveatorForenames());
         assertEquals(CAV_CAVEATOR_SURNAME, caveatData.getCaveatorSurname());
+
+        assertFalse(caveatData.getDeceasedAnyOtherNames());
+        assertTrue(caveatData.getCaveatRaisedEmailNotificationRequested());
+        assertFalse(caveatData.getSendToBulkPrintRequested());
     }
 
     private void assertCommon(CaveatCallbackResponse caveatCallbackResponse) {

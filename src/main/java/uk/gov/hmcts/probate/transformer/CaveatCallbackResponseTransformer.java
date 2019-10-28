@@ -173,6 +173,14 @@ public class CaveatCallbackResponseTransformer {
             caveatData.setApplicationSubmittedDate(LocalDate.now());
         }
 
+        if (caveatData.getCaveatorEmailAddress() == null || caveatData.getCaveatorEmailAddress().isEmpty()) {
+            caveatData.setSendToBulkPrintRequested(Boolean.TRUE);
+            caveatData.setCaveatRaisedEmailNotificationRequested(Boolean.FALSE);
+        } else {
+            caveatData.setCaveatRaisedEmailNotificationRequested(Boolean.TRUE);
+            caveatData.setSendToBulkPrintRequested(Boolean.FALSE);
+        }
+
         return CaseCreationDetails.builder().<ResponseCaveatData>
                 eventId(EXCEPTION_RECORD_EVENT_ID).caseData(caveatData).caseTypeId(EXCEPTION_RECORD_CASE_TYPE_ID).build();
     }
