@@ -37,8 +37,17 @@ public class DocumentTransformer {
             case ADMON_WILL_GRANT:
             case ADMON_WILL_GRANT_REISSUE_DRAFT:
             case ADMON_WILL_GRANT_REISSUE:
+            case SOT_INFORMATION_REQUEST:
             case GRANT_COVER:
+            case ASSEMBLED_LETTER:
                 callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated()
+                        .add(new CollectionMember<>(null, document));
+                break;
+            case STATEMENT_OF_TRUTH:
+            case LEGAL_STATEMENT_PROBATE:
+            case LEGAL_STATEMENT_INTESTACY:
+            case LEGAL_STATEMENT_ADMON:
+                callbackRequest.getCaseDetails().getData().getProbateSotDocumentsGenerated()
                         .add(new CollectionMember<>(null, document));
                 break;
             case SENT_EMAIL:

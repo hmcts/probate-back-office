@@ -3,7 +3,6 @@ package uk.gov.hmcts.probate.service.docmosis;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import uk.gov.hmcts.probate.config.properties.registries.RegistriesProperties;
 import uk.gov.hmcts.probate.model.CaseType;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
@@ -22,21 +21,18 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class GrantOfRepresentationDocmosisMapperService {
     private static final String DATE_INPUT_FORMAT = "ddMMyyyy";
-    private final RegistriesProperties registriesProperties;
     private final CcdReferenceFormatterService ccdReferenceFormatterService;
     private final CaveatQueryService caveatQueryService;
     private final GenericMapperService gms;
     private final AddressFormatterService addressFormatterService;
     private final DateFormatterService dateFormatterService;
 
-    private static final String PERSONALISATION_DATE_CAVEAT_ENTERED = "dateCaveatEntered";
     private static final String PERSONALISATION_CAVEATOR_NAME = "caveatorName";
     private static final String PERSONALISATION_CAVEAT_REFERENCE = "caveatReference";
     private static final String PERSONALISATION_CAVEATOR_ADDRESS = "caveatorAddress";
     private static final String PERSONALISATION_CASE_REFERENCE = "caseReference";
     private static final String PERSONALISATION_GENERATED_DATE = "generatedDate";
     private static final String PERSONALISATION_CAVEAT_EXPIRY_DATE = "caveatExpiryDate";
-    private static final String PERSONALISATION_REGISTRY = "registry";
     private static final String PERSONALISATION_PA8AURL = "PA8AURL";
     private static final String PERSONALISATION_PA8BURL = "PA8BURL";
 

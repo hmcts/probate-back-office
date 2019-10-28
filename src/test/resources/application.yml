@@ -39,6 +39,7 @@ docmosis:
     uri: ${PDF_SERVICE_BASEURL:https://docmosis-development.platform.hmcts.net}
     accessKey: ${PDF_SERVICE_ACCESS_KEY:ZDYxMTkzZTQtMGY2Mi00NDM1LWIyN2ItNGRkNzdjOTczMjAwOjQ1NTE0ODQ}
     health.uri: ${PDF_SERVICE_HEALTH_URL:https://docmosis-development.platform.hmcts.net}
+  assembler.uri: http://localhost:4631
   templates:
     caveatRaised:
       templateName: FL-PRB-GNO-ENG-00011.docx
@@ -119,6 +120,8 @@ notifications:
         excelaData: "pa-excela-data"
         caveatRaised: "pa-caveat-raised"
         caveatRaisedCtsc: "pa-ctsc-caveat-raised"
+        requestInformation: "pa-request-information"
+        redeclarationSot: "pa-redeclaration-sot"
       solicitor:
         documentReceived: "sol-document-received"
         caseStopped: "sol-case-stopped"
@@ -129,6 +132,8 @@ notifications:
         excelaData: "pa-excela-data"
         caveatRaised: "sols-caveat-raised"
         caveatRaisedCtsc: "sols-ctsc-caveat-raised"
+        requestInformation: "sols-request-information"
+        redeclarationSot: "sols-redeclaration-sot"
 
 registries:
   oxford:

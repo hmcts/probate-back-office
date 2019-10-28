@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,6 +32,7 @@ import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.WillLodgementCallbackResponseTransformer;
 import uk.gov.hmcts.probate.validator.BulkPrintValidationRule;
 import uk.gov.hmcts.probate.validator.EmailAddressNotificationValidationRule;
+import uk.gov.hmcts.probate.validator.RedeclarationSoTValidationRule;
 import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
 import uk.gov.service.notify.NotificationClientException;
 
@@ -78,8 +80,54 @@ public class DocumentController {
     private final EventValidationService eventValidationService;
     private final List<EmailAddressNotificationValidationRule> emailAddressNotificationValidationRules;
     private final List<BulkPrintValidationRule> bulkPrintValidationRules;
+    private final RedeclarationSoTValidationRule redeclarationSoTValidationRule;
     private static final String DRAFT = "preview";
     private static final String FINAL = "final";
+
+    @PostMapping(path = "/assembleLetter", consumes = APPLICATION_JSON_UTF8_VALUE, produces = {APPLICATION_JSON_VALUE})
+    public ResponseEntity<CallbackResponse> assembleLetter(
+            @RequestBody CallbackRequest callbackRequest,
+            BindingResult bindingResult) {
+
+        CallbackResponse response = callbackResponseTransformer.transformCaseForLetter(callbackRequest);
+
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping(path = "/previewLetter", consumes = APPLICATION_JSON_UTF8_VALUE, produces = {APPLICATION_JSON_VALUE})
+    public ResponseEntity<CallbackResponse> previewLetter(
+            @RequestBody CallbackRequest callbackRequest) {
+
+        Document letterPreview = documentGeneratorService.generateLetter(callbackRequest, false);
+
+        CallbackResponse response = callbackResponseTransformer.transformCaseForLetterPreview(callbackRequest, letterPreview);
+
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping(path = "/generateLetter", consumes = APPLICATION_JSON_UTF8_VALUE, produces = {APPLICATION_JSON_VALUE})
+    public ResponseEntity<CallbackResponse> generateLetter(
+            @RequestBody CallbackRequest callbackRequest) {
+        CaseData caseData = callbackRequest.getCaseDetails().getData();
+        String letterId = null;
+
+        List<Document> documents = new ArrayList<>();
+        Document letter = documentGeneratorService.generateLetter(callbackRequest, true);
+        Document coversheet = documentGeneratorService.generateCoversheet(callbackRequest);
+
+        documents.add(letter);
+        documents.add(coversheet);
+
+        if (caseData.isBoAssembleLetterSendToBulkPrintRequested()) {
+            letterId = bulkPrintService.sendToBulkPrint(callbackRequest, coversheet,
+                    letter, true);
+        }
+
+        CallbackResponse response = callbackResponseTransformer.transformCaseForLetter(callbackRequest, documents, letterId);
+
+        return ResponseEntity.ok(response);
+    }
+
 
     @PostMapping(path = "/generate-grant-draft", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<CallbackResponse> generateGrantDraft(@RequestBody CallbackRequest callbackRequest) {
@@ -115,8 +163,8 @@ public class DocumentController {
         }
 
         DocumentType[] documentTypes = {DIGITAL_GRANT_DRAFT, INTESTACY_GRANT_DRAFT, ADMON_WILL_GRANT_DRAFT,
-                                        DIGITAL_GRANT_REISSUE_DRAFT, INTESTACY_GRANT_REISSUE_DRAFT,
-                                        ADMON_WILL_GRANT_REISSUE_DRAFT, DIGITAL_GRANT_REISSUE};
+            DIGITAL_GRANT_REISSUE_DRAFT, INTESTACY_GRANT_REISSUE_DRAFT,
+            ADMON_WILL_GRANT_REISSUE_DRAFT, DIGITAL_GRANT_REISSUE};
         for (DocumentType documentType : documentTypes) {
             documentService.expire(callbackRequest, documentType);
         }
@@ -169,7 +217,7 @@ public class DocumentController {
 
         String letterId = null;
         String pdfSize = null;
-        if (caseData.isSendForBulkPrintingRequested() && !caseData.getCaseType().equals(EDGE_CASE_NAME)) {
+        if (caseData.isSendForBulkPrintingRequested() && !EDGE_CASE_NAME.equals(caseData.getCaseType())) {
             SendLetterResponse response = bulkPrintService.sendToBulkPrint(callbackRequest, digitalGrantDocument, coverSheet);
             letterId = response != null
                     ? response.letterId.toString()
@@ -187,8 +235,8 @@ public class DocumentController {
         documents.add(coverSheet);
 
         DocumentType[] documentTypes = {DIGITAL_GRANT_DRAFT, INTESTACY_GRANT_DRAFT, ADMON_WILL_GRANT_DRAFT,
-                                        DIGITAL_GRANT_REISSUE_DRAFT, INTESTACY_GRANT_REISSUE_DRAFT,
-                                        ADMON_WILL_GRANT_REISSUE_DRAFT};
+            DIGITAL_GRANT_REISSUE_DRAFT, INTESTACY_GRANT_REISSUE_DRAFT,
+            ADMON_WILL_GRANT_REISSUE_DRAFT};
         for (DocumentType documentType : documentTypes) {
             documentService.expire(callbackRequest, documentType);
         }
@@ -254,15 +302,29 @@ public class DocumentController {
         documents.add(grantDocument);
         documents.add(coversheet);
 
-        String letterId = bulkPrintService.sendToBulkPrintGrantReissue(callbackRequest, coversheet,
-                grantDocument);
-        String pdfSize = getPdfSize(callbackRequest.getCaseDetails().getData());
+        CaseData caseData = callbackRequest.getCaseDetails().getData();
+        String letterId = null;
 
-        if (callbackRequest.getCaseDetails().getData().isGrantReissuedEmailNotificationRequested()) {
+        if (caseData.isSendForBulkPrintingRequested() && !EDGE_CASE_NAME.equals(caseData.getCaseType())) {
+            letterId = bulkPrintService.sendToBulkPrint(callbackRequest, coversheet,
+                    grantDocument, true);
+        }
+
+        String pdfSize = getPdfSize(caseData);
+
+        if (caseData.isGrantReissuedEmailNotificationRequested()) {
             documents.add(notificationService.generateGrantReissue(callbackRequest));
         }
         log.info("{} documents generated: {}", documents.size(), documents);
         return ResponseEntity.ok(callbackResponseTransformer.addDocuments(callbackRequest,
                 documents, letterId, pdfSize));
+    }
+
+    @PostMapping(path = "/generate-sot", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<CallbackResponse> generateStatementOfTruth(@RequestBody CallbackRequest callbackRequest) {
+        redeclarationSoTValidationRule.validate(callbackRequest.getCaseDetails());
+        log.info("Initiating call for SoT");
+        return ResponseEntity.ok(callbackResponseTransformer.addSOTDocument(callbackRequest,
+                documentGeneratorService.generateSoT(callbackRequest)));
     }
 }

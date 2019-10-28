@@ -21,8 +21,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.Constants.CTSC;
 
@@ -32,7 +30,9 @@ public class GenericMapperServiceTest {
     private static final String DECEASED_SURNAME_KEY = "deceasedSurname";
     private static final String DECEASED_SURNAME_VALUE = "Deadsoul";
     private static final String DECEASED_DOD_KEY = "deceasedDateOfDeath";
+    private static final String DECEASED_DOB_KEY = "deceasedDateOfBirth";
     private static final String DECEASED_DOD_VALUE = "2015-01-01";
+    private static final String DECEASED_DOB_VALUE = "1990-01-01";
     private static final String DECEASED_ADDRESS_KEY = "deceasedAddress";
     private static Map<String, Object> DECEASED_ADDRESS_VALUE = new HashMap<>();
     private static final String DECEASED_TITLE_KEY = "boDeceasedTitle";
@@ -78,6 +78,11 @@ public class GenericMapperServiceTest {
     private static final String ADDRESS_LINE_1_VALUE = "123 Fake street";
     private static final String ADDRESS_LINE_3_VALUE = "The lane";
     private static final String POSTCODE_VALUE = "AB1 2CD";
+
+    private static final String APPEND_NAME = "Bob Smith";
+    private static final SolsAddress APPEND_ADDRESS =
+            SolsAddress.builder().addressLine1("678").addressLine2("the street").addressLine3("Lane").country(
+                    "England").county("County").postTown("town").postCode("AB1").build();
 
     private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
     private static final String REGISTRY_LOCATION = "oxford";
@@ -184,6 +189,38 @@ public class GenericMapperServiceTest {
                 });
     }
 
+    @Test
+    public void testAllFieldsAreAppendedToExistingMap() {
+        assertEquals(expectedMappedCaseData().size() + 8,
+                genericMapperService.appendExecutorDetails(expectedMappedCaseData(), APPEND_NAME, APPEND_ADDRESS).size());
+    }
+
+    @Test
+    public void testAppendedValuesMatchExpected() {
+        Map<String, Object> resultMap = genericMapperService.appendExecutorDetails(expectedMappedCaseData(),
+                APPEND_NAME, APPEND_ADDRESS);
+
+        assertEquals(APPEND_NAME, resultMap.get("name"));
+        assertEquals(APPEND_ADDRESS.getAddressLine1(), resultMap.get("addressLine1"));
+        assertEquals(APPEND_ADDRESS.getAddressLine2(), resultMap.get("addressLine2"));
+        assertEquals(APPEND_ADDRESS.getAddressLine3(), resultMap.get("addressLine3"));
+        assertEquals(APPEND_ADDRESS.getCounty(), resultMap.get("county"));
+        assertEquals(APPEND_ADDRESS.getPostTown(), resultMap.get("postTown"));
+        assertEquals(APPEND_ADDRESS.getPostCode(), resultMap.get("postCode"));
+        assertEquals(APPEND_ADDRESS.getCountry(), resultMap.get("country"));
+    }
+
+    @Test
+    public void testPartPopulatedAddressIsAppendedWithExistingValues() {
+        SolsAddress address = SolsAddress.builder().addressLine1("321 street").postCode("AB").build();
+
+        assertEquals("321 street", genericMapperService.appendExecutorDetails(expectedMappedCaseData(), APPEND_NAME,
+                address).get("addressLine1"));
+        assertEquals(null,
+                genericMapperService.appendExecutorDetails(expectedMappedCaseData(), APPEND_NAME, address).get(
+                        "addressLine2"));
+    }
+
     private Map<String, Object> expectedImages() {
         Map<String, Object> expectedMap = new HashMap<>();
         expectedMap.put(SEAL_IMAGE, "image:base64:Seal");
@@ -237,6 +274,7 @@ public class GenericMapperServiceTest {
         expectedMap.put(DECEASED_FORNAME_KEY, DECEASED_FORNAME_VALUE);
         expectedMap.put(DECEASED_SURNAME_KEY, DECEASED_SURNAME_VALUE);
         expectedMap.put(DECEASED_DOD_KEY, DECEASED_DOD_VALUE);
+        expectedMap.put(DECEASED_DOB_KEY, DECEASED_DOB_VALUE);
         expectedMap.put(DECEASED_ADDRESS_KEY, DECEASED_ADDRESS_VALUE);
         expectedMap.put(DECEASED_TITLE_KEY, DECEASED_TITLE_VALUE);
         expectedMap.put(PRIMARY_APPLICANT_APPLYING_KEY, PRIMARY_APPLICANT_APPLYING_VALUE);

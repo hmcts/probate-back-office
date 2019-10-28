@@ -18,7 +18,6 @@ import uk.gov.hmcts.probate.controller.validation.ApplicationCreatedGroup;
 import uk.gov.hmcts.probate.controller.validation.ApplicationIntestacyGroup;
 import uk.gov.hmcts.probate.controller.validation.ApplicationProbateGroup;
 import uk.gov.hmcts.probate.controller.validation.ApplicationUpdatedGroup;
-
 import uk.gov.hmcts.probate.exception.BadRequestException;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
@@ -32,6 +31,7 @@ import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.validator.CaseworkerAmendValidationRule;
 import uk.gov.hmcts.probate.validator.CheckListAmendCaseValidationRule;
+import uk.gov.hmcts.probate.validator.RedeclarationSoTValidationRule;
 import uk.gov.hmcts.probate.validator.ValidationRule;
 
 import javax.servlet.http.HttpServletRequest;
@@ -40,9 +40,9 @@ import java.util.Optional;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
-import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_ADMON;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_INTESTACY;
+import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE;
 import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.Constants.ADMON_WILL_NAME;
 import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.Constants.GRANT_OF_PROBATE_NAME;
 import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.Constants.INTESTACY_NAME;
@@ -62,6 +62,7 @@ public class BusinessValidationController {
     private final ConfirmationResponseService confirmationResponseService;
     private final StateChangeService stateChangeService;
     private final PDFManagementService pdfManagementService;
+    private final RedeclarationSoTValidationRule redeclarationSoTValidationRule;
     private static final String DEFAULT_LOG_ERROR = "Case Id: {} ERROR: {}";
     private static final String INVALID_PAYLOAD = "Invalid payload";
 
@@ -210,6 +211,23 @@ public class BusinessValidationController {
         return ResponseEntity.ok(response);
     }
 
+    @PostMapping(path = "/redeclarationComplete", consumes = APPLICATION_JSON_UTF8_VALUE, produces = {APPLICATION_JSON_VALUE})
+    public ResponseEntity<CallbackResponse> redeclarationComplete(
+            @RequestBody CallbackRequest callbackRequest) {
+        Optional<String> state = stateChangeService.getRedeclarationComplete(callbackRequest.getCaseDetails().getData());
+        return ResponseEntity.ok(callbackResponseTransformer.transformWithConditionalStateChange(callbackRequest, state));
+    }
+
+
+    @PostMapping(path = "/redeclarationSot", consumes = APPLICATION_JSON_UTF8_VALUE, produces = {APPLICATION_JSON_VALUE})
+    public ResponseEntity<CallbackResponse> redeclarationSot(
+            @RequestBody CallbackRequest callbackRequest) {
+
+        redeclarationSoTValidationRule.validate(callbackRequest.getCaseDetails());
+
+        return ResponseEntity.ok(callbackResponseTransformer.transform(callbackRequest));
+    }
+
     private void validateForPayloadErrors(CallbackRequest callbackRequest, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             log.info(DEFAULT_LOG_ERROR, callbackRequest.getCaseDetails().getId(), bindingResult);
@@ -232,7 +250,9 @@ public class BusinessValidationController {
     private void logRequest(String uri, CallbackRequest callbackRequest) {
         try {
             log.info("POST: {} Case Id: {} ", uri, callbackRequest.getCaseDetails().getId().toString());
-            log.debug("POST: {} {}", uri, objectMapper.writeValueAsString(callbackRequest));
+            if (log.isDebugEnabled()) {
+                log.debug("POST: {} {}", uri, objectMapper.writeValueAsString(callbackRequest));
+            }
         } catch (JsonProcessingException e) {
             log.error("POST: {}", uri, e);
         }

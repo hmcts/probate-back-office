@@ -1,6 +1,14 @@
+tags:
+  - idam-pr
+
 java:
   image: ${IMAGE_NAME}
   ingressHost: ${SERVICE_FQDN}
-
-#   persistence:
-#     enabled: true
+  environment:
+    probatemandb-POSTGRES-USER: "{{ .Values.postgresql.postgresqlUsername}}"
+    probatemandb-POSTGRES-PASS: "{{ .Values.postgresql.postgresqlPassword}}"
+    probatemandb-POSTGRES-HOST: "{{ .Release.Name }}-postgresql"
+    probatemandb-POSTGRES-DATABASE: "{{ .Values.postgresql.postgresqlDatabase}}"
+  
+persistence:
+  enabled: true

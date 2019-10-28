@@ -302,8 +302,8 @@
 
             </p>
             <p>The application has stated that the gross value of the estate in {% if case_details.case_data.domicilityCountry != null and case_details.case_data.domicilityCountry != "" %}England and Wales{% else %}the United Kingdom{% endif %} amounts to
-                £{{(case_details.case_data.ihtGrossValue / 100) | numberformat("###,###.##")}} and the net value amounts to
-                £{{(case_details.case_data.ihtNetValue / 100) | numberformat("###,###.##")}}
+                &#163;{{(case_details.case_data.ihtGrossValue / 100) | numberformat("###,###.##")}} and the net value amounts to
+                &#163;{{(case_details.case_data.ihtNetValue / 100) | numberformat("###,###.##")}}
             </p>
         </td>
     </tr>
