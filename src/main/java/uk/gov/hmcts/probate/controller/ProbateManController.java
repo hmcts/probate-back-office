@@ -57,6 +57,7 @@ public class ProbateManController {
 
         ResponseCaseData responseCaseData = ResponseCaseData.builder()
                 .legacySearchResultRows(caseMatchesList)
+                .paragraphDetails(null)
                 .build();
 
         CallbackResponse callbackResponse = CallbackResponse.builder()
@@ -74,6 +75,7 @@ public class ProbateManController {
 
         ResponseCaseData responseCaseData = ResponseCaseData.builder()
                 .legacySearchResultRows(rows.stream().map(CollectionMember::new).collect(Collectors.toList()))
+                .paragraphDetails(null)
                 .build();
 
         CallbackResponse callbackResponse = CallbackResponse.builder()
