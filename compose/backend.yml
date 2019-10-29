@@ -228,6 +228,7 @@ services:
       DOCMOSIS_KEY: "0OAD-KLTH-JALO-MLIA-DBBH-1ELH-XBKQ-GS91-23ED-8-2358"
       DOCMOSIS_SITE: "Free Trial License"
 
+
   pdf-service-api:
     image: hmctspublic.azurecr.io/cmc/pdf-service:latest
     container_name: pdf-service-api

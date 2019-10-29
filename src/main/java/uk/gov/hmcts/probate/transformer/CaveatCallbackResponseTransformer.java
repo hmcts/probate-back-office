@@ -13,6 +13,8 @@ import uk.gov.hmcts.probate.model.ccd.caveat.response.ResponseCaveatData.Respons
 import uk.gov.hmcts.probate.model.ccd.raw.BulkPrint;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
+import uk.gov.hmcts.probate.model.exceptionrecord.CaseCreationDetails;
+import uk.gov.hmcts.reform.probate.model.cases.RegistryLocation;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -31,10 +33,13 @@ public class CaveatCallbackResponseTransformer {
 
     private final DocumentTransformer documentTransformer;
 
-    private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    public static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-    private static final ApplicationType DEFAULT_APPLICATION_TYPE = PERSONAL;
-    private static final String DEFAULT_REGISTRY_LOCATION = "Leeds";
+    public static final ApplicationType DEFAULT_APPLICATION_TYPE = PERSONAL;
+    public static final String DEFAULT_REGISTRY_LOCATION = "Leeds";
+
+    public static final String EXCEPTION_RECORD_CASE_TYPE_ID = "Caveat";
+    public static final String EXCEPTION_RECORD_EVENT_ID = "raiseCaveat";
 
     public CaveatCallbackResponse caveatRaised(CaveatCallbackRequest caveatCallbackRequest, List<Document> documents, String letterId) {
         CaveatDetails caveatDetails = caveatCallbackRequest.getCaseDetails();
@@ -137,6 +142,7 @@ public class CaveatCallbackResponseTransformer {
 
                 .documentsUploaded(caveatData.getDocumentsUploaded())
                 .documentsGenerated(caveatData.getDocumentsGenerated())
+                .scannedDocuments(caveatData.getScannedDocuments())
                 .notificationsGenerated(caveatData.getNotificationsGenerated())
                 .recordId(caveatData.getRecordId())
                 .paperForm(caveatData.getPaperForm())
@@ -146,6 +152,28 @@ public class CaveatCallbackResponseTransformer {
                 .caveatRaisedEmailNotificationRequested(caveatData.getCaveatRaisedEmailNotificationRequested())
                 .bulkPrintId(caveatData.getBulkPrintId())
                 .applicationSubmittedDate(transformToString(caveatData.getApplicationSubmittedDate()));
+    }
+
+    public CaseCreationDetails newCaveatCaseTransform(uk.gov.hmcts.reform.probate.model.cases.caveat.CaveatData caveatData) {
+
+        if (caveatData.getApplicationType() == null) {
+            caveatData.setApplicationType(uk.gov.hmcts.reform.probate.model.cases.ApplicationType.PERSONAL);
+        }
+
+        if (caveatData.getRegistryLocation() == null) {
+            caveatData.setRegistryLocation(RegistryLocation.LEEDS);
+        }
+
+        if (caveatData.getPaperForm() == null) {
+            caveatData.setPaperForm(true);
+        }
+
+        if (caveatData.getApplicationSubmittedDate() == null) {
+            caveatData.setApplicationSubmittedDate(LocalDate.now());
+        }
+
+        return CaseCreationDetails.builder().<ResponseCaveatData>
+                eventId(EXCEPTION_RECORD_EVENT_ID).caseData(caveatData).caseTypeId(EXCEPTION_RECORD_CASE_TYPE_ID).build();
     }
 
     private String transformToString(LocalDate dateValue) {
