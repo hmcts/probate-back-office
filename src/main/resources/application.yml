@@ -77,6 +77,8 @@ docmosis:
       templateName: FL-PRB-EML-ENG-00086.doc
     statementOfTruth:
       templateName: FL-PRB-SOT-ENG-00090.doc
+    assembledLetter:
+      templateName: FL-PRB-GNO-ENG-00133.docx
 
 fee.api:
   url: http://localhost:4411
@@ -129,7 +131,7 @@ spring:
   database.driverClassName: org.postgresql.Driver
 
 
-spring.document.retriever.service.api.baseurl: localhost:8080
+spring.document.retriever.service.api.baseurl: localhost:5006
 
 spring.jackson.serialization.write_dates_as_timestamps: false
 

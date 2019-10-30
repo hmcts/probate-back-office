@@ -27,6 +27,7 @@ import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_REISSUE_DRAFT;
+import static uk.gov.hmcts.probate.model.DocumentType.ASSEMBLED_LETTER;
 import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT_COVERSHEET;
 import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT_RAISED;
 import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT_STOPPED;
@@ -368,5 +369,14 @@ public class DocumentTransformerTest {
         documentTransformer.addDocument(callbackRequest, Document.builder().documentType(LEGAL_STATEMENT_INTESTACY).build(), false);
 
         assertEquals(1, callbackRequest.getCaseDetails().getData().getProbateSotDocumentsGenerated().size());
+    }
+
+    @Test
+    public void shouldAddAssembleLetterToGeneratedDocuments() {
+        assertTrue(callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated().isEmpty());
+
+        documentTransformer.addDocument(callbackRequest, Document.builder().documentType(ASSEMBLED_LETTER).build(), false);
+
+        assertEquals(1, callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated().size());
     }
 }

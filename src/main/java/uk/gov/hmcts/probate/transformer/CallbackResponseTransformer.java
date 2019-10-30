@@ -1,6 +1,7 @@
 package uk.gov.hmcts.probate.transformer;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 import uk.gov.hmcts.probate.model.ApplicationType;
@@ -23,16 +24,17 @@ import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData.ResponseCaseDataBuilder;
 import uk.gov.hmcts.probate.model.fee.FeeServiceResponse;
 import uk.gov.hmcts.probate.service.ExecutorsApplyingNotificationService;
+import uk.gov.hmcts.probate.transformer.assembly.AssembleLetterTransformer;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import org.apache.commons.lang3.StringUtils;
 
 import static java.util.Collections.EMPTY_LIST;
 import static java.util.Optional.ofNullable;
@@ -42,6 +44,7 @@ import static uk.gov.hmcts.probate.model.Constants.DATE_OF_DEATH_TYPE_DEFAULT;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_REISSUE;
+import static uk.gov.hmcts.probate.model.DocumentType.ASSEMBLED_LETTER;
 import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT_STOPPED;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_REISSUE;
@@ -61,13 +64,15 @@ public class CallbackResponseTransformer {
 
     private static final String CASE_TYPE_DEFAULT = GRANT_OF_PROBATE_NAME;
     private final DocumentTransformer documentTransformer;
+    private final AssembleLetterTransformer assembleLetterTransformer;
     private final ExecutorsApplyingNotificationService executorsApplyingNotificationService;
 
     static final String PAYMENT_METHOD_VALUE_FEE_ACCOUNT = "fee account";
     static final String PAYMENT_REFERENCE_FEE_PREFIX = "Fee account PBA-";
     static final String PAYMENT_REFERENCE_CHEQUE = "Cheque (payable to ‘HM Courts & Tribunals Service’)";
 
-    private static final DocumentType[] LEGAL_STATEMENTS = {LEGAL_STATEMENT_PROBATE, LEGAL_STATEMENT_INTESTACY, LEGAL_STATEMENT_ADMON};
+    private static final DocumentType[] LEGAL_STATEMENTS = {LEGAL_STATEMENT_PROBATE, LEGAL_STATEMENT_INTESTACY,
+        LEGAL_STATEMENT_ADMON};
     private static final ApplicationType DEFAULT_APPLICATION_TYPE = SOLICITOR;
     private static final String DEFAULT_REGISTRY_LOCATION = CTSC;
     private static final String DEFAULT_IHT_FORM_ID = "IHT205";
@@ -303,15 +308,61 @@ public class CallbackResponseTransformer {
 
     public CallbackResponse transformCase(CallbackRequest callbackRequest) {
 
-
-        boolean transform = callbackRequest.getCaseDetails().getData().getApplicationType() == ApplicationType.SOLICITOR
-                && callbackRequest.getCaseDetails().getData().getRecordId() == null
-                && !callbackRequest.getCaseDetails().getData().getPaperForm().equalsIgnoreCase(ANSWER_YES);
+        boolean transform = doTransform(callbackRequest);
 
         ResponseCaseData responseCaseData = getResponseCaseData(callbackRequest.getCaseDetails(), transform)
                 .build();
 
         return transformResponse(responseCaseData);
+    }
+
+    public CallbackResponse transformCaseForLetter(CallbackRequest callbackRequest) {
+        boolean doTransform = doTransform(callbackRequest);
+        ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), doTransform);
+        assembleLetterTransformer.setupAllLetterParagraphDetails(callbackRequest.getCaseDetails(), responseCaseDataBuilder);
+
+        return transformResponse(responseCaseDataBuilder.build());
+    }
+
+    public CallbackResponse transformCaseForLetter(CallbackRequest callbackRequest, List<Document> documents, String letterId) {
+        CaseData caseData = callbackRequest.getCaseDetails().getData();
+        boolean doTransform = doTransform(callbackRequest);
+        documents.forEach(document -> documentTransformer.addDocument(callbackRequest, document, false));
+        ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), doTransform);
+
+        if (letterId != null) {
+            CollectionMember<BulkPrint> bulkPrint = buildBulkPrint(letterId, ASSEMBLED_LETTER.getTemplateName());
+            appendToBulkPrintCollection(bulkPrint, callbackRequest.getCaseDetails().getData());
+            responseCaseDataBuilder
+                    .bulkPrintId(caseData.getBulkPrintId())
+                    .boAssembleLetterSendToBulkPrintRequested(caseData.getBoCaveatStopSendToBulkPrint())
+                    .build();
+        }
+
+        responseCaseDataBuilder
+                .previewLink(null)
+                .paragraphDetails(new ArrayList<>())
+                .build();
+
+        return transformResponse(responseCaseDataBuilder.build());
+    }
+
+    public CallbackResponse transformCaseForLetterPreview(CallbackRequest callbackRequest, Document letterPreview) {
+        CaseData caseData = callbackRequest.getCaseDetails().getData();
+        boolean doTransform = doTransform(callbackRequest);
+
+        ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), doTransform);
+        responseCaseDataBuilder.previewLink(letterPreview.getDocumentLink());
+
+        return transformResponse(responseCaseDataBuilder.build());
+    }
+
+    private boolean doTransform(CallbackRequest callbackRequest) {
+        CaseData caseData = callbackRequest.getCaseDetails().getData();
+        return caseData.getApplicationType() == ApplicationType.SOLICITOR
+                && caseData.getRecordId() == null
+                && !caseData.getPaperForm().equalsIgnoreCase(ANSWER_YES);
+
     }
 
     public CallbackResponse paperForm(CallbackRequest callbackRequest) {
@@ -448,6 +499,8 @@ public class CallbackResponseTransformer {
                 .boEmailDocsReceivedNotificationRequested(caseData.getBoEmailDocsReceivedNotificationRequested())
                 .boGrantReissueSendToBulkPrint(caseData.getBoGrantReissueSendToBulkPrint())
                 .boGrantReissueSendToBulkPrintRequested(caseData.getBoGrantReissueSendToBulkPrintRequested())
+                .boAssembleLetterSendToBulkPrint(caseData.getBoAssembleLetterSendToBulkPrint())
+                .boAssembleLetterSendToBulkPrintRequested(caseData.getBoAssembleLetterSendToBulkPrintRequested())
 
                 .recordId(caseData.getRecordId())
                 .legacyType(caseData.getLegacyType())
@@ -709,7 +762,7 @@ public class CallbackResponseTransformer {
         }
 
         builder
-                .additionalExecutorsApplying(caseData.getAdditionalExecutorsApplying())
+                .additionalExecutorsApplying(mapApplyingAdditionalExecutors(caseData))
                 .additionalExecutorsNotApplying(caseData.getAdditionalExecutorsNotApplying())
                 .solsAdditionalExecutorList(caseData.getSolsAdditionalExecutorList())
                 .primaryApplicantAlias(caseData.getPrimaryApplicantAlias())
@@ -825,6 +878,35 @@ public class CallbackResponseTransformer {
                 .applyingExecutorAddress(additionalExecutorApplying.getAdditionalExecAddress())
                 .applyingExecutorOtherNames(additionalExecutorApplying.getAdditionalExecAliasNameOnWill())
                 .build();
+    }
+
+    private List<CollectionMember<AdditionalExecutorApplying>> mapApplyingAdditionalExecutors(CaseData caseData) {
+        if (caseData.getAdditionalExecutorsApplying() != null) {
+            List<CollectionMember<AdditionalExecutorApplying>> applyingExec = caseData.getAdditionalExecutorsApplying()
+                    .stream()
+                    .map(CollectionMember::getValue)
+                    .map(this::buildApplyingAdditionalExecutors)
+                    .map(executor -> new CollectionMember<>(null, executor))
+                    .collect(Collectors.toList());
+            return applyingExec;
+        }
+        return caseData.getAdditionalExecutorsApplying();
+    }
+
+    private AdditionalExecutorApplying buildApplyingAdditionalExecutors(AdditionalExecutorApplying additionalExecutorApplying) {
+        if (additionalExecutorApplying.getApplyingExecutorName() == null) {
+            return AdditionalExecutorApplying.builder()
+                    .applyingExecutorName(additionalExecutorApplying.getApplyingExecutorFirstName()
+                            + " " + additionalExecutorApplying.getApplyingExecutorLastName())
+                    .applyingExecutorPhoneNumber(additionalExecutorApplying.getApplyingExecutorPhoneNumber())
+                    .applyingExecutorEmail(additionalExecutorApplying.getApplyingExecutorEmail())
+                    .applyingExecutorAddress(additionalExecutorApplying.getApplyingExecutorAddress())
+                    .applyingExecutorOtherNames(additionalExecutorApplying.getApplyingExecutorOtherNames())
+                    .applyingExecutorOtherNamesReason(additionalExecutorApplying.getApplyingExecutorOtherNamesReason())
+                    .applyingExecutorOtherReason(additionalExecutorApplying.getApplyingExecutorOtherReason())
+                    .build();
+        }
+        return additionalExecutorApplying;
     }
 
     private AliasName buildDeceasedAliasNameExecutor(ProbateAliasName aliasNames) {

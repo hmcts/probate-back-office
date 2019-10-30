@@ -26,6 +26,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
+import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
 import uk.gov.hmcts.probate.model.ccd.willlodgement.request.WillLodgementCallbackRequest;
 import uk.gov.hmcts.probate.service.BulkPrintService;
 import uk.gov.hmcts.probate.service.DocumentGeneratorService;
@@ -42,7 +43,6 @@ import java.util.UUID;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
@@ -98,12 +98,23 @@ public class DocumentControllerTest {
     @Mock
     private SendLetterResponse sendLetterResponseMock;
 
+    @Mock
+    private ResponseCaseData.ResponseCaseDataBuilder responseCaseDataBuilder;
+
     private static final String LETTER_UUID = "c387262a-c8a6-44eb-9aea-a740460f9302";
 
     @Before
     public void setUp() throws NotificationClientException {
         final Document document = Document.builder()
                 .documentType(DocumentType.DIGITAL_GRANT_REISSUE)
+                .documentDateAdded(LocalDate.now())
+                .documentFileName("test")
+                .documentGeneratedBy("test")
+                .documentLink(DocumentLink.builder().build())
+                .build();
+
+        final Document letter = Document.builder()
+                .documentType(DocumentType.ASSEMBLED_LETTER)
                 .documentDateAdded(LocalDate.now())
                 .documentFileName("test")
                 .documentGeneratedBy("test")
@@ -142,6 +153,9 @@ public class DocumentControllerTest {
         when(documentGeneratorService.generateSoT(any()))
                 .thenReturn(Document.builder().documentType(DocumentType.STATEMENT_OF_TRUTH).build());
 
+        when(documentGeneratorService.generateLetter(any(CallbackRequest.class), eq(true))).thenReturn(letter);
+        when(documentGeneratorService.generateLetter(any(CallbackRequest.class), eq(false))).thenReturn(letter);
+
         SendLetterResponse sendLetterResponse = new SendLetterResponse(UUID.randomUUID());
         when(bulkPrintService.sendToBulkPrint(any(CallbackRequest.class), any(Document.class),
                 any(Document.class))).thenReturn(sendLetterResponse);
@@ -152,6 +166,7 @@ public class DocumentControllerTest {
         when(notificationService.generateGrantReissue(any(CallbackRequest.class)))
                 .thenReturn(Document.builder().documentType(SENT_EMAIL).build());
         doNothing().when(documentService).expire(any(CallbackRequest.class), any(DocumentType.class));
+
     }
 
     @Test
@@ -499,6 +514,33 @@ public class DocumentControllerTest {
         String solicitorPayload = testUtils.getStringFromFile("digitalCase.json");
 
         mockMvc.perform(post("/document/generate-sot").content(solicitorPayload).contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
+    }
+
+    @Test
+    public void shouldValidateAssembleLetter() throws Exception {
+        String payload = testUtils.getStringFromFile("generateLetter.json");
+
+        mockMvc.perform(post("/document/assembleLetter").content(payload).contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
+    }
+
+    @Test
+    public void shouldValidatePreviewLetter() throws Exception {
+        String payload = testUtils.getStringFromFile("generateLetter.json");
+
+        mockMvc.perform(post("/document/previewLetter").content(payload).contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
+    }
+
+    @Test
+    public void shouldValidateGenerateLetter() throws Exception {
+        String payload = testUtils.getStringFromFile("generateLetter.json");
+
+        mockMvc.perform(post("/document/generateLetter").content(payload).contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
     }
