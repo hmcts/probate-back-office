@@ -28,5 +28,9 @@
   {"LiveFrom": "01/01/2017", "ID": "paymentStatusEnum", "ListElementCode": "Success", "ListElement": "Success"},
   {"LiveFrom": "01/01/2017", "ID": "paymentStatusEnum", "ListElementCode": "Initiated", "ListElement": "Initiated"},
   {"LiveFrom": "01/01/2017", "ID": "paymentStatusEnum", "ListElementCode": "Failed", "ListElement": "Failed"},
-  {"LiveFrom": "01/01/2017", "ID": "paymentStatusEnum", "ListElementCode": "Pending", "ListElement": "Pending"}
+  {"LiveFrom": "01/01/2017", "ID": "paymentStatusEnum", "ListElementCode": "Pending", "ListElement": "Pending"},
+  {"LiveFrom": "01/01/2017", "ID": "ScannedDocumentType", "ListElementCode": "cherished", "ListElement": "Cherished"},
+  {"LiveFrom": "01/01/2017", "ID": "ScannedDocumentType", "ListElementCode": "coversheet", "ListElement": "Coversheet"},
+  {"LiveFrom": "01/01/2017", "ID": "ScannedDocumentType", "ListElementCode": "form", "ListElement": "Form"},
+  {"LiveFrom": "01/01/2017", "ID": "ScannedDocumentType", "ListElementCode": "other", "ListElement": "Other"}
 ]

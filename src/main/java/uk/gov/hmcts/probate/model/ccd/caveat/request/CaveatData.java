@@ -14,6 +14,7 @@ import uk.gov.hmcts.probate.model.ccd.ProbateFullAliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.BulkPrint;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
+import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 
 import java.time.LocalDate;
@@ -101,6 +102,9 @@ public class CaveatData {
 
     @Builder.Default
     private List<CollectionMember<Document>> documentsGenerated = new ArrayList<>();
+
+    @Builder.Default
+    private List<CollectionMember<ScannedDocument>> scannedDocuments = new ArrayList<>();
 
     private String recordId;
     private String legacyType;
