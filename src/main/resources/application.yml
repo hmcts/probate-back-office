@@ -30,8 +30,8 @@ auth.provider.service.client:
 
 auth.provider.client:
   user: ${IDAM_SERVICE_HOST:http://localhost:4501}
-  secret: ${IDAM_SECRET:123456}
-  id: probate
+  secret: ${IDAM_SECRET:ccd_gateway_secret}
+  id: ${IDAM_CLIENT_NAME:ccd_gateway}
   redirect: ${IDAM_REDIRECT_URL:http://localhost:3451/oauth2redirect}
   email: ${AUTH_TOKEN_EMAIL:probatesolcw1@gmail.com}
   password: ${AUTH_TOKEN_PASSWORD:password}

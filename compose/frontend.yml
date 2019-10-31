@@ -34,6 +34,7 @@ services:
       PROXY_DEFINITION_IMPORT: http://ccd-definition-store-api:4451
       PROXY_DEFINITION_DATA: http://ccd-definition-store-api:4451/api/data
       PROXY_DEFINITION_DISPLAY: http://ccd-definition-store-api:4451/api/display
+      PROXY_PAYMENTS: http://localhost:8383/payments
       APPINSIGHTS_INSTRUMENTATIONKEY: key
     ports:
       - 3453:3453
