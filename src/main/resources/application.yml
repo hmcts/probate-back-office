@@ -191,8 +191,6 @@ registries:
     emailReplyToId: "3c2df3ad-6eaf-4395-b85c-1ef5c5c89d4f"
     addressline1: Combined Court Building
     addressline2: St Aldates
-    addressline3:
-    addressline4:
     town: Oxford
     postcode: OX1 1LY
   birmingham:
@@ -201,8 +199,6 @@ registries:
     emailReplyToId: "e3511bc5-98d8-457c-b49b-5b0c0ba4892a"
     addressline1: The Priory Courts
     addressline2: 33 Bull Street
-    addressline3:
-    addressline4:
     town: Birmingham
     postcode: B4 6DU
   manchester:
@@ -221,8 +217,6 @@ registries:
     emailReplyToId: "1c5cc757-b7a7-4eaf-a69c-ce5bb34b63cf"
     addressline1: York House
     addressline2: York Place
-    addressline3:
-    addressline4:
     town: Leeds
     postcode: LS1 2BA
   liverpool:
@@ -231,8 +225,6 @@ registries:
     emailReplyToId: "102affef-13f1-4c9b-856d-ed183e71bd6f"
     addressline1: The Queen Elizabeth II Law Courts
     addressline2: Derby Square
-    addressline3:
-    addressline4:
     town: Liverpool
     postcode: L2 1XA
   brighton:
@@ -240,9 +232,6 @@ registries:
     phone: 01273 573510
     emailReplyToId: "2aebc9bd-6192-43af-a774-f2f17e69f14e"
     addressline1: William Street
-    addressline2:
-    addressline3:
-    addressline4:
     town: Brighton
     postcode: BN2 0RF
   london:
@@ -252,7 +241,6 @@ registries:
     addressline1: Principal Registry of the Family Division
     addressline2: First Avenue House
     addressline3: 42-49 High Holborn
-    addressline4:
     town: London
     postcode: WC1V 6NP
   cardiff:
@@ -262,7 +250,6 @@ registries:
     addressline1: 3rd Floor, Cardiff Magistrates’ Court
     addressline2: Fitzalan Place
     addressline3: Cardiff
-    addressline4:
     town: South Wales
     postcode: CF24 0RZ
   newcastle:
@@ -271,8 +258,6 @@ registries:
     emailReplyToId: "21106760-70e7-4b61-adb8-7df6f653f8db"
     addressline1: Newcastle DPR
     addressline2: No 1 Waterloo Square
-    addressline3:
-    addressline4:
     town: Newcastle-Upon-Tyne
     postcode: NE1 4DR
   winchester:
@@ -302,7 +287,6 @@ registries:
     addressline1: 3rd Floor, Cardiff Magistrates’ Court
     addressline2: Fitzalan Place
     addressline3: Cardiff
-    addressline4:
     town: South Wales
     postcode: CF24 0RZ
 
