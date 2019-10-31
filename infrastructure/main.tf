@@ -178,6 +178,7 @@ module "probate-back-office" {
     PDF_SERVICE_HEALTH_URL = "${data.azurerm_key_vault_secret.pdfServiceHealthUrl.value}"
     IDAM_REDIRECT_URL = "${data.azurerm_key_vault_secret.idamRedirectUrl.value}"
     IDAM_SECRET = "${data.azurerm_key_vault_secret.idamSecretProbate.value}"
+    IDAM_CLIENT_NAME = "probate"
     TESTING = "Testing"  // to upate the app setting
   }
 }
