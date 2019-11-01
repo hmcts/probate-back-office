@@ -50,6 +50,9 @@ public class ExceptionRecordService {
             log.info("About to map Caveat OCR fields to CCD.");
             CaveatData caveatData = erCaveatMapper.toCcdData(erRequest.getOCRFieldsObject());
 
+            // Add bulkScanReferenceId
+            caveatData.setBulkScanCaseReference(erRequest.getId());
+
             // Add scanned documents
             log.info("About to map Caveat Scanned Documents to CCD.");
             caveatData.setScannedDocuments(erRequest.getScannedDocuments()
@@ -82,6 +85,9 @@ public class ExceptionRecordService {
         try {
             log.info("About to map Grant of Representation OCR fields to CCD.");
             GrantOfRepresentationData grantOfRepresentationData = erGrantOfRepresentationMapper.toCcdData(erRequest.getOCRFieldsObject());
+
+            // Add bulkScanReferenceId
+            grantOfRepresentationData.setBulkScanCaseReference(erRequest.getId());
 
             // Add scanned documents
             log.info("About to map Caveat Scanned Documents to CCD.");
