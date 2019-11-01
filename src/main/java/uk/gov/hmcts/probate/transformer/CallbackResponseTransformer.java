@@ -107,7 +107,7 @@ public class CallbackResponseTransformer {
 
         if (documentTransformer.hasDocumentWithType(documents, CAVEAT_STOPPED) && letterId != null) {
             CollectionMember<BulkPrint> bulkPrint = buildBulkPrint(letterId, CAVEAT_STOPPED.getTemplateName());
-            caseData.getBulkPrintId().add(bulkPrint);
+            appendToBulkPrintCollection(bulkPrint, caseData);
 
             responseCaseDataBuilder
                     .bulkPrintId(caseData.getBulkPrintId())
