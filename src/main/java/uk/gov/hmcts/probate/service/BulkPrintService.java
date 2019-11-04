@@ -11,6 +11,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.service.client.DocumentStoreClient;
+import uk.gov.hmcts.probate.transformer.DocumentTransformer;
 import uk.gov.hmcts.probate.validator.BulkPrintValidationRule;
 import uk.gov.hmcts.reform.authorisation.generators.ServiceAuthTokenGenerator;
 import uk.gov.hmcts.reform.sendletter.api.LetterWithPdfsRequest;
@@ -18,6 +19,7 @@ import uk.gov.hmcts.reform.sendletter.api.SendLetterApi;
 import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Base64;
 import java.util.Collections;
 import java.util.HashMap;
@@ -27,6 +29,12 @@ import java.util.Map;
 import java.util.stream.LongStream;
 
 import static uk.gov.hmcts.probate.model.Constants.BUSINESS_ERROR;
+import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_REISSUE;
+import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_REISSUE;
+import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_REISSUE;
 
 @Service
 @Slf4j
@@ -44,6 +52,7 @@ public class BulkPrintService {
     private final ServiceAuthTokenGenerator tokenGenerator;
     private final EventValidationService eventValidationService;
     private final List<BulkPrintValidationRule> bulkPrintValidationRules;
+    private final DocumentTransformer documentTransformer;
 
     public SendLetterResponse sendToBulkPrint(CallbackRequest callbackRequest, Document grantDocument, Document coverSheet) {
         SendLetterResponse sendLetterResponse = null;
@@ -156,17 +165,19 @@ public class BulkPrintService {
         List<String> documents = new LinkedList<>();
         String encodedCoverSheet = getPdfAsBase64EncodedString(coverSheetDocument, authHeaderValue, callbackRequest);
         String encodedGrantDocument = getPdfAsBase64EncodedString(grantDocument, authHeaderValue, callbackRequest);
-
         //Layer documents as cover letter first, grant, and extra copies of grant to PA.
         documents.add(encodedCoverSheet);
         documents.add(encodedGrantDocument);
 
-        Long extraCopiesOfGrant = 0L;
-        if (callbackRequest.getCaseDetails().getData().getExtraCopiesOfGrant() != null) {
-            extraCopiesOfGrant = callbackRequest.getCaseDetails().getData().getExtraCopiesOfGrant();
+        if (documentTransformer.hasDocumentWithType(Arrays.asList(grantDocument), DIGITAL_GRANT)
+                || documentTransformer.hasDocumentWithType(Arrays.asList(grantDocument), ADMON_WILL_GRANT)
+                || documentTransformer.hasDocumentWithType(Arrays.asList(grantDocument), INTESTACY_GRANT)
+                || documentTransformer.hasDocumentWithType(Arrays.asList(grantDocument), INTESTACY_GRANT_REISSUE)
+                || documentTransformer.hasDocumentWithType(Arrays.asList(grantDocument), ADMON_WILL_GRANT_REISSUE)
+                || documentTransformer.hasDocumentWithType(Arrays.asList(grantDocument), DIGITAL_GRANT_REISSUE)) {
+            documents = addAdditionalCopiesForGrants(callbackRequest, encodedGrantDocument, documents);
         }
-        LongStream.range(1, extraCopiesOfGrant + 1)
-                .forEach(i -> documents.add(encodedGrantDocument));
+
         return documents;
     }
 
@@ -181,6 +192,18 @@ public class BulkPrintService {
         //Layer documents as cover letter first, grant, and extra copies of grant to PA.
         documents.add(encodedCoverSheet);
         documents.add(encodedGrantDocument);
+        return documents;
+    }
+
+    private List<String> addAdditionalCopiesForGrants(CallbackRequest callbackRequest,
+                                                      String encodedGrantDocument, List<String> documents) {
+        Long extraCopiesOfGrant = 0L;
+        if (callbackRequest.getCaseDetails().getData().getExtraCopiesOfGrant() != null) {
+            extraCopiesOfGrant = callbackRequest.getCaseDetails().getData().getExtraCopiesOfGrant();
+        }
+        LongStream.range(1, extraCopiesOfGrant + 1)
+                .forEach(i -> documents.add(encodedGrantDocument));
+
         return documents;
     }
 

@@ -34,6 +34,7 @@ services:
       PROXY_DEFINITION_IMPORT: http://ccd-definition-store-api:4451
       PROXY_DEFINITION_DATA: http://ccd-definition-store-api:4451/api/data
       PROXY_DEFINITION_DISPLAY: http://ccd-definition-store-api:4451/api/display
+      PROXY_PAYMENTS: http://localhost:8383/payments
       APPINSIGHTS_INSTRUMENTATIONKEY: key
     ports:
       - 3453:3453
@@ -43,7 +44,7 @@ services:
       - ccd-data-store-api
 
   idam-web-admin:
-    image: "hmctspublic.azurecr.io/idam/web-admin:preview"
+    image: "hmctspublic.azurecr.io/idam/web-admin:stable"
     environment:
       JAVA_OPTS: -Xms128m -Xmx512m
       STRATEGIC_SERVICE_URL: http://sidam-api:5000
@@ -55,7 +56,7 @@ services:
       - sidam-api
 
   idam-web-public:
-    image: "hmctspublic.azurecr.io/idam/web-public:preview"
+    image: "hmctspublic.azurecr.io/idam/web-public:stable"
     environment:
      STRATEGIC_SERVICE_URL: http://sidam-api:5000
      IDAM_CONTINUE_URL_VALIDATOR_ENFORCE_TLS: "false"

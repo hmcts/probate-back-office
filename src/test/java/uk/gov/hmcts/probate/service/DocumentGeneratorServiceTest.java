@@ -17,6 +17,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.service.docmosis.GenericMapperService;
+import uk.gov.hmcts.probate.service.docmosis.PreviewLetterService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.validator.EmailAddressNotificationValidationRule;
 
@@ -68,6 +69,9 @@ public class DocumentGeneratorServiceTest {
     private RegistryDetailsService registryDetailsService;
 
     @Mock
+    private PreviewLetterService previewLetterService;
+
+    @Mock
     private CallbackResponse callbackResponse;
 
     @Mock
@@ -106,7 +110,9 @@ public class DocumentGeneratorServiceTest {
         CaseDetails caseDetailsSolsGop = new CaseDetails(CaseData.builder()
                 .caseType("gop")
                 .registryLocation("Bristol")
-                .applicationType(ApplicationType.SOLICITOR).build(),
+                .applicationType(ApplicationType.SOLICITOR)
+                .solsSolicitorAddress(SolsAddress.builder().build())
+                .solsSolicitorFirmName("firmName").build(),
                 LAST_MODIFIED, CASE_ID);
         callbackRequestSolsGop = new CallbackRequest(caseDetailsSolsGop);
 
@@ -151,6 +157,8 @@ public class DocumentGeneratorServiceTest {
 
         when(genericMapperService.addCaseData(caseDetails.getData())).thenReturn(expectedMap);
         when(genericMapperService.addCaseDataWithRegistryProperties(caseDetails)).thenReturn(expectedMap);
+
+        when(previewLetterService.addLetterData(caseDetails)).thenReturn(expectedMap);
 
     }
 
@@ -323,5 +331,21 @@ public class DocumentGeneratorServiceTest {
                 .thenReturn(Document.builder().documentType(DocumentType.LEGAL_STATEMENT_ADMON).build());
         assertEquals(Document.builder().documentType(DocumentType.LEGAL_STATEMENT_ADMON).build(),
                 documentGeneratorService.generateSoT(callbackRequestSolsAdmon));
+    }
+
+    @Test
+    public void testGenerateLetter() {
+        when(pdfManagementService.generateDocmosisDocumentAndUpload(expectedMap, DocumentType.ASSEMBLED_LETTER))
+                .thenReturn(Document.builder().documentType(DocumentType.ASSEMBLED_LETTER).build());
+        assertEquals(Document.builder().documentType(DocumentType.ASSEMBLED_LETTER).build(),
+                documentGeneratorService.generateLetter(callbackRequest, true));
+    }
+
+    @Test
+    public void testGenerateLetterWithWaterMark() {
+        when(pdfManagementService.generateDocmosisDocumentAndUpload(expectedMap, DocumentType.ASSEMBLED_LETTER))
+                .thenReturn(Document.builder().documentType(DocumentType.ASSEMBLED_LETTER).build());
+        assertEquals(Document.builder().documentType(DocumentType.ASSEMBLED_LETTER).build(),
+                documentGeneratorService.generateLetter(callbackRequest, false));
     }
 }
