@@ -26,6 +26,7 @@ import uk.gov.hmcts.probate.service.exceptionrecord.ExceptionRecordService;
 import uk.gov.hmcts.probate.service.ocr.FormType;
 import uk.gov.hmcts.probate.service.ocr.OCRPopulatedValueMapper;
 import uk.gov.hmcts.probate.service.ocr.OCRToCCDMandatoryField;
+import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
@@ -46,7 +47,7 @@ public class ExceptionRecordController {
     private final OCRToCCDMandatoryField ocrToCCDMandatoryField;
 
     private static final String OCR_EXCEPTION_WARNING_PREFIX = "OCR Data Mapping Error: ";
-    private static final String OCR_EXCEPTION_ERROR = "Caveat OCR fields could not be mapped to a case";
+    private static final String OCR_EXCEPTION_ERROR = "OCR fields could not be mapped to a case";
 
     public static final String PA8A_FORM = FormType.PA8A.name();
     public static final String PA1A_FORM = FormType.PA1A.name();
@@ -95,13 +96,17 @@ public class ExceptionRecordController {
                 case PA8A:
                     callbackResponse = erService.createCaveatCaseFromExceptionRecord(erRequest, warnings);
                     return ResponseEntity.ok(callbackResponse);
-                default:
-                    errors.add("This Exception Record form currently has no case mapping");
-                    callbackResponse = SuccessfulTransformationResponse.builder()
-                            .warnings(warnings)
-                            .errors(errors)
-                            .build();
+                case PA1P:
+                    callbackResponse = erService.createGrantOfRepresentationCaseFromExceptionRecord(
+                            erRequest, GrantType.GRANT_OF_PROBATE, warnings);
                     return ResponseEntity.ok(callbackResponse);
+                case PA1A:
+                    callbackResponse = erService.createGrantOfRepresentationCaseFromExceptionRecord(
+                            erRequest, GrantType.INTESTACY, warnings);
+                    return ResponseEntity.ok(callbackResponse);
+                default:
+                    // Unreachable code
+                    errors.add("This Exception Record form currently has no case mapping");
             }
         }
 

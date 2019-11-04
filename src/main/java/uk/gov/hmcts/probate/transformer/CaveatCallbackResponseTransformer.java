@@ -40,6 +40,7 @@ public class CaveatCallbackResponseTransformer {
 
     public static final String EXCEPTION_RECORD_CASE_TYPE_ID = "Caveat";
     public static final String EXCEPTION_RECORD_EVENT_ID = "raiseCaveat";
+    public static final RegistryLocation EXCEPTION_RECORD_REGISTRY_LOCATION = RegistryLocation.CTSC;
 
     public CaveatCallbackResponse caveatRaised(CaveatCallbackRequest caveatCallbackRequest, List<Document> documents, String letterId) {
         CaveatDetails caveatDetails = caveatCallbackRequest.getCaseDetails();
@@ -154,14 +155,14 @@ public class CaveatCallbackResponseTransformer {
                 .applicationSubmittedDate(transformToString(caveatData.getApplicationSubmittedDate()));
     }
 
-    public CaseCreationDetails newCaveatCaseTransform(uk.gov.hmcts.reform.probate.model.cases.caveat.CaveatData caveatData) {
+    public CaseCreationDetails bulkScanCaveatCaseTransform(uk.gov.hmcts.reform.probate.model.cases.caveat.CaveatData caveatData) {
 
         if (caveatData.getApplicationType() == null) {
             caveatData.setApplicationType(uk.gov.hmcts.reform.probate.model.cases.ApplicationType.PERSONAL);
         }
 
         if (caveatData.getRegistryLocation() == null) {
-            caveatData.setRegistryLocation(RegistryLocation.LEEDS);
+            caveatData.setRegistryLocation(EXCEPTION_RECORD_REGISTRY_LOCATION);
         }
 
         if (caveatData.getPaperForm() == null) {
@@ -170,6 +171,14 @@ public class CaveatCallbackResponseTransformer {
 
         if (caveatData.getApplicationSubmittedDate() == null) {
             caveatData.setApplicationSubmittedDate(LocalDate.now());
+        }
+
+        if (caveatData.getCaveatorEmailAddress() == null || caveatData.getCaveatorEmailAddress().isEmpty()) {
+            caveatData.setSendToBulkPrintRequested(Boolean.TRUE);
+            caveatData.setCaveatRaisedEmailNotificationRequested(Boolean.FALSE);
+        } else {
+            caveatData.setCaveatRaisedEmailNotificationRequested(Boolean.TRUE);
+            caveatData.setSendToBulkPrintRequested(Boolean.FALSE);
         }
 
         return CaseCreationDetails.builder().<ResponseCaveatData>
