@@ -23,11 +23,3 @@ ${conversionFolder}/convertJsonToXLS.sh ${configFolder}/CCD_Probate_Will_Lodgeme
 ${conversionFolder}/convertJsonToXLS.sh ${configFolder}/CCD_Probate_Standing_Search/
 
 echo XLS files placed in /jsonToXLS folder
-
-#${binFolder}/ccd-add-all-roles.sh
-#${binFolder}/ccd-import-definition.sh "../../xlsToJson/CCD_Probate_Backoffice.xlsx"
-#${binFolder}/ccd-import-definition.sh "../../xlsToJson/CCD_Probate_Caveat.xlsx"
-#${binFolder}/ccd-import-definition.sh "../../xlsToJson/CCD_Probate_LegacyCases.xlsx"
-#${binFolder}/ccd-import-definition.sh "../../xlsToJson/CCD_Probate_LegacySearch.xlsx"
-#${binFolder}/ccd-import-definition.sh "../../xlsToJson/CCD_Probate_WillLodgement.xlsx"
-#${binFolder}/ccd-import-definition.sh "../../xlsToJson/CCD_Probate_StandingSearch.xlsx"

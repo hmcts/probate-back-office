@@ -39,6 +39,7 @@ import uk.gov.hmcts.probate.model.exceptionrecord.CaseCreationDetails;
 import uk.gov.hmcts.probate.model.fee.FeeServiceResponse;
 import uk.gov.hmcts.probate.service.ExecutorsApplyingNotificationService;
 import uk.gov.hmcts.probate.service.StateChangeService;
+import uk.gov.hmcts.probate.transformer.assembly.AssembleLetterTransformer;
 import uk.gov.hmcts.reform.probate.model.IhtFormType;
 import uk.gov.hmcts.reform.probate.model.ProbateDocumentLink;
 import uk.gov.hmcts.reform.probate.model.Relationship;
@@ -310,6 +311,9 @@ public class CallbackResponseTransformerTest {
     @Mock
     private CaseDetails caseDetailsMock;
 
+    @Mock
+    private AssembleLetterTransformer assembleLetterTransformer;
+
     private CaseData.CaseDataBuilder caseDataBuilder;
 
     private GrantOfRepresentationData bulkScanGrantOfRepresentationData;
@@ -415,6 +419,7 @@ public class CallbackResponseTransformerTest {
                 .statementOfTruthDocument(SOT)
                 .boStopDetailsDeclarationParagraph(YES)
                 .boEmailRequestInfoNotificationRequested(YES)
+                .boAssembleLetterSendToBulkPrintRequested(YES)
                 .boRequestInfoSendToBulkPrintRequested(YES)
                 .executorsApplyingNotifications(EXECEUTORS_APPLYING_NOTIFICATION);
 
@@ -1843,6 +1848,43 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
+    public void shouldTransformCaseForLetter() {
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        CallbackResponse callbackResponse = underTest.transformCaseForLetter(callbackRequestMock);
+
+        assertCommon(callbackResponse);
+    }
+
+    @Test
+    public void shouldTransformCaseForLetterWithDocument() {
+        Document letter = Document.builder().documentType(DocumentType.ASSEMBLED_LETTER).build();
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        CallbackResponse callbackResponse = underTest.transformCaseForLetter(callbackRequestMock, Arrays.asList(letter), null);
+
+        assertCommon(callbackResponse);
+        assertEquals(EMPTY_LIST, callbackResponse.getData().getParagraphDetails());
+        assertEquals(null, callbackResponse.getData().getPreviewLink());
+        assertEquals(1, callbackResponse.getData().getProbateDocumentsGenerated().size());
+        assertEquals(DocumentType.ASSEMBLED_LETTER, callbackResponse.getData().getProbateDocumentsGenerated()
+                .get(0).getValue().getDocumentType());
+    }
+
+    @Test
+    public void shouldTransformCaseForLetterPreview() {
+        Document letter = Document.builder().documentType(DocumentType.ASSEMBLED_LETTER).build();
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        CallbackResponse callbackResponse = underTest.transformCaseForLetterPreview(callbackRequestMock, letter);
+
+        assertCommon(callbackResponse);
+    }
+
+    @Test
     public void shouldAddSOTToGeneratedDocuments() {
         Document document = Document.builder()
                 .documentLink(documentLinkMock)
@@ -1866,6 +1908,35 @@ public class CallbackResponseTransformerTest {
             return null;
         }).when(documentTransformer).addDocument(callbackRequestMock, SOT_DOC, false);
         underTest.addSOTDocument(callbackRequestMock, SOT_DOC);
+    }
+
+    @Test
+    public void shouldTransformAdditionalExecApplyingName() {
+        List<CollectionMember<AdditionalExecutorApplying>> additionalExecsAppList = new ArrayList<>();
+        additionalExecsAppList.add(createAdditionalExecutorApplying("0"));
+        caseDataBuilder.additionalExecutorsApplying(additionalExecsAppList);
+
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+        assertEquals(EXEC_FIRST_NAME + " " + EXEC_SURNAME,
+                callbackResponse.getData().getAdditionalExecutorsApplying().get(0).getValue().getApplyingExecutorName());
+    }
+
+    @Test
+    public void shouldNotTransformAdditionalExecApplyingName() {
+        List<CollectionMember<AdditionalExecutorApplying>> additionalExecsAppList = new ArrayList<>();
+        additionalExecsAppList.add(createAdditionalExecutorApplyingfNamelName("0"));
+        caseDataBuilder.additionalExecutorsApplying(additionalExecsAppList);
+
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+        assertEquals(EXEC_FIRST_NAME + " " + EXEC_SURNAME,
+                callbackResponse.getData().getAdditionalExecutorsApplying().get(0).getValue().getApplyingExecutorName());
+
     }
 
     private CollectionMember<ProbateAliasName> createdDeceasedAliasName(String id, String forename, String lastname, String onGrant) {
@@ -1944,6 +2015,20 @@ public class CallbackResponseTransformerTest {
                 .applyingExecutorAddress(EXEC_ADDRESS)
                 .applyingExecutorEmail(EXEC_EMAIL)
                 .applyingExecutorName(EXEC_FIRST_NAME + " " + EXEC_SURNAME)
+                .applyingExecutorOtherNames(ALIAS_FORENAME + " " + ALIAS_SURNAME)
+                .applyingExecutorPhoneNumber(EXEC_PHONE)
+                .applyingExecutorOtherNamesReason("Other")
+                .applyingExecutorOtherReason("Married")
+                .build();
+        return new CollectionMember<>(id, add1na);
+    }
+
+    private CollectionMember<AdditionalExecutorApplying> createAdditionalExecutorApplyingfNamelName(String id) {
+        AdditionalExecutorApplying add1na = AdditionalExecutorApplying.builder()
+                .applyingExecutorAddress(EXEC_ADDRESS)
+                .applyingExecutorEmail(EXEC_EMAIL)
+                .applyingExecutorFirstName(EXEC_FIRST_NAME)
+                .applyingExecutorLastName(EXEC_SURNAME)
                 .applyingExecutorOtherNames(ALIAS_FORENAME + " " + ALIAS_SURNAME)
                 .applyingExecutorPhoneNumber(EXEC_PHONE)
                 .applyingExecutorOtherNamesReason("Other")
@@ -2063,6 +2148,7 @@ public class CallbackResponseTransformerTest {
         assertEquals(YES, callbackResponse.getData().getBoStopDetailsDeclarationParagraph());
         assertEquals(YES, callbackResponse.getData().getBoEmailRequestInfoNotification());
         assertEquals(YES, callbackResponse.getData().getBoEmailRequestInfoNotificationRequested());
+        assertEquals(YES, callbackResponse.getData().getBoAssembleLetterSendToBulkPrintRequested());
         assertEquals(YES, callbackResponse.getData().getBoRequestInfoSendToBulkPrint());
         assertEquals(YES, callbackResponse.getData().getBoRequestInfoSendToBulkPrintRequested());
         assertEquals(EXECEUTORS_APPLYING_NOTIFICATION, callbackResponse.getData().getExecutorsApplyingNotifications());
