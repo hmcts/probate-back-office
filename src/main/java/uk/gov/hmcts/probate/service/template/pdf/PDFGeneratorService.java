@@ -69,6 +69,11 @@ public class PDFGeneratorService {
         return pdfServiceClient.generateFromHtml(templateAsString.getBytes(), paramMap);
     }
 
+    public EvidenceManagementFileUpload uploadDocument(byte [] bytes) {
+        return new EvidenceManagementFileUpload(MediaType.APPLICATION_PDF, bytes);
+    }
+
+
     private Map<String, Object> asMap(String placeholderValues) throws IOException {
         return objectMapper.readValue(placeholderValues, new TypeReference<HashMap<String, Object>>() {
         });

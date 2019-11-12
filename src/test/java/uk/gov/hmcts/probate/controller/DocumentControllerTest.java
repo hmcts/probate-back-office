@@ -1,67 +1,42 @@
 package uk.gov.hmcts.probate.controller;
 
-import org.hamcrest.CoreMatchers;
-import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.ArgumentMatchers;
-import org.mockito.Mock;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.boot.test.mock.mockito.SpyBean;
-import org.springframework.http.MediaType;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
-import uk.gov.hmcts.probate.insights.AppInsights;
-import uk.gov.hmcts.probate.model.DocumentType;
-import uk.gov.hmcts.probate.model.State;
+import org.hamcrest.*;
+import org.junit.*;
+import org.junit.runner.*;
+import org.mockito.*;
+import org.springframework.beans.factory.annotation.*;
+import org.springframework.boot.test.autoconfigure.web.servlet.*;
+import org.springframework.boot.test.context.*;
+import org.springframework.boot.test.mock.mockito.*;
+import org.springframework.http.*;
+import org.springframework.test.context.junit4.*;
+import org.springframework.test.web.servlet.*;
+import org.springframework.test.web.servlet.setup.*;
+import org.springframework.web.context.*;
+import uk.gov.hmcts.probate.insights.*;
+import uk.gov.hmcts.probate.model.*;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
-import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
-import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
-import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
-import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
-import uk.gov.hmcts.probate.model.ccd.willlodgement.request.WillLodgementCallbackRequest;
-import uk.gov.hmcts.probate.service.BulkPrintService;
-import uk.gov.hmcts.probate.service.DocumentGeneratorService;
-import uk.gov.hmcts.probate.service.DocumentService;
-import uk.gov.hmcts.probate.service.NotificationService;
-import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
-import uk.gov.hmcts.probate.util.TestUtils;
+import uk.gov.hmcts.probate.model.ccd.raw.*;
+import uk.gov.hmcts.probate.model.ccd.raw.request.*;
+import uk.gov.hmcts.probate.model.ccd.raw.response.*;
+import uk.gov.hmcts.probate.model.ccd.willlodgement.request.*;
+import uk.gov.hmcts.probate.service.*;
+import uk.gov.hmcts.probate.service.template.pdf.*;
+import uk.gov.hmcts.probate.util.*;
 import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
-import uk.gov.service.notify.NotificationClientException;
+import uk.gov.service.notify.*;
 
-import java.time.LocalDate;
-import java.util.UUID;
+import java.time.*;
+import java.util.*;
 
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT;
-import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_DRAFT;
-import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
-import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_DRAFT;
-import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_REISSUE;
-import static uk.gov.hmcts.probate.model.DocumentType.EDGE_CASE;
-import static uk.gov.hmcts.probate.model.DocumentType.GRANT_COVER;
-import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT;
-import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_DRAFT;
-import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
-import static uk.gov.hmcts.probate.model.DocumentType.WILL_LODGEMENT_DEPOSIT_RECEIPT;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static uk.gov.hmcts.probate.model.DocumentType.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -155,6 +130,10 @@ public class DocumentControllerTest {
 
         when(documentGeneratorService.generateLetter(any(CallbackRequest.class), eq(true))).thenReturn(letter);
         when(documentGeneratorService.generateLetter(any(CallbackRequest.class), eq(false))).thenReturn(letter);
+        byte[] bytes = "string".getBytes();
+        when (documentGeneratorService.generateSealedWillDocument(any())).thenReturn(bytes);
+        when(pdfManagementService.generateDocumentAndUpload(bytes))
+                .thenReturn(Document.builder().documentType(SEALED_WILL).build());
 
         SendLetterResponse sendLetterResponse = new SendLetterResponse(UUID.randomUUID());
         when(bulkPrintService.sendToBulkPrint(any(CallbackRequest.class), any(Document.class),
@@ -323,7 +302,7 @@ public class DocumentControllerTest {
                 .content(solicitorPayload)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data.probateDocumentsGenerated", Matchers.empty()))
+                .andExpect(jsonPath("$.data.probateDocumentsGenerated", Matchers.hasSize(1)))
                 .andReturn();
 
         doNothing().when(documentService).expire(ArgumentMatchers.any(CallbackRequest.class), eq(EDGE_CASE));

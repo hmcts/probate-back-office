@@ -1,35 +1,23 @@
 package uk.gov.hmcts.probate.service;
 
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
-import uk.gov.hmcts.probate.model.ApplicationType;
-import uk.gov.hmcts.probate.model.DocumentType;
-import uk.gov.hmcts.probate.model.ExecutorsApplyingNotification;
-import uk.gov.hmcts.probate.model.ccd.raw.Document;
-import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
-import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
-import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
-import uk.gov.hmcts.probate.service.docmosis.GenericMapperService;
-import uk.gov.hmcts.probate.service.docmosis.PreviewLetterService;
-import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
+import lombok.*;
+import lombok.extern.slf4j.*;
+import org.apache.pdfbox.multipdf.*;
+import org.apache.pdfbox.pdmodel.*;
+import org.springframework.stereotype.*;
+import uk.gov.hmcts.probate.model.*;
+import uk.gov.hmcts.probate.model.ccd.raw.*;
+import uk.gov.hmcts.probate.model.ccd.raw.request.*;
+import uk.gov.hmcts.probate.service.client.*;
+import uk.gov.hmcts.probate.service.docmosis.*;
+import uk.gov.hmcts.probate.service.template.pdf.*;
+import uk.gov.hmcts.reform.authorisation.generators.*;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.io.*;
+import java.util.*;
 
-import static uk.gov.hmcts.probate.model.Constants.NO;
-import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_DRAFT;
-import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_REISSUE;
-import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_REISSUE_DRAFT;
-import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_DRAFT;
-import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_REISSUE;
-import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_REISSUE_DRAFT;
-import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_DRAFT;
-import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_REISSUE;
-import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_REISSUE_DRAFT;
-import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_ADMON;
-import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_INTESTACY;
-import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE;
+import static uk.gov.hmcts.probate.model.Constants.*;
+import static uk.gov.hmcts.probate.model.DocumentType.*;
 
 @Slf4j
 @Service
@@ -54,6 +42,8 @@ public class DocumentGeneratorService {
     private final DocumentService documentService;
     private final GenericMapperService genericMapperService;
     private final PreviewLetterService previewLetterService;
+    private final DocumentStoreClient documentStoreClient;
+    private final ServiceAuthTokenGenerator tokenGenerator;
 
     public Document generateGrantReissue(CallbackRequest callbackRequest, String version) {
         Map<String, Object> images;
@@ -222,4 +212,62 @@ public class DocumentGeneratorService {
         return document;
     }
 
+    private CollectionMember<ScannedDocument> filterScannedDocumentsForWill(CaseDetails caseDetails) {
+        for (CollectionMember<ScannedDocument> document : caseDetails.getData().getScannedDocuments()) {
+            if (document.getValue().getSubtype() != null
+                    && document.getValue().getSubtype().equalsIgnoreCase(DOC_SUBTYPE_WILL)) {
+                return document;
+            }
+        }
+        return null;
+    }
+
+//    private CollectionMember<UploadDocument> filterScannedDocumentsForWill(CaseDetails caseDetails) {
+//        for (CollectionMember<UploadDocument> document : caseDetails.getData().getBoDocumentsUploaded()) {
+//            if (document.getValue().getDocumentType().getTemplateName() != null
+//                    && document.getValue().getDocumentType().getTemplateName().equalsIgnoreCase("correspondence")) {
+//                return document;
+//            }
+//        }
+//        return null;
+//    }
+
+    private boolean filterGeneratedDocumentsForWill(CaseDetails caseDetails) {
+            for (CollectionMember<Document> document : caseDetails.getData().getProbateDocumentsGenerated()) {
+                if (document.getValue().getDocumentType() != null
+                        && document.getValue().getDocumentType().getTemplateName().equalsIgnoreCase(DOC_SUBTYPE_SEALED_WILL)) {
+                    return true;
+                }
+            }
+        return false;
+    }
+
+    public byte[] generateSealedWillDocument(CaseDetails caseDetails) {
+        PDDocument scannedWill;
+        byte[] sealedWill = null;
+        if (!filterGeneratedDocumentsForWill(caseDetails)) {
+            CollectionMember<ScannedDocument> will = filterScannedDocumentsForWill(caseDetails);
+            if (will != null) {
+                try {
+                    String authHeaderValue = tokenGenerator.generate();
+
+                    scannedWill = PDDocument.load(documentStoreClient.retrieveUploadDocument(will.getValue(), authHeaderValue));
+                    PDDocument watermark = PDDocument.load(new File("watermark2.pdf"));
+
+                    Overlay overlay = new Overlay();
+                    overlay.setInputPDF(scannedWill);
+                    overlay.setDefaultOverlayPDF(watermark);
+                    overlay.setOverlayPosition(Overlay.Position.FOREGROUND);
+
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    overlay.overlay(new HashMap<Integer, String>()).save(baos);
+                    sealedWill = baos.toByteArray();
+
+                } catch (IOException e) {
+                    log.error("Cannot read file: ", e);
+                }
+            }
+        }
+        return sealedWill;
+    }
 }

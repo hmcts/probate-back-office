@@ -1,65 +1,34 @@
 package uk.gov.hmcts.probate.controller;
 
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import uk.gov.hmcts.probate.config.properties.registries.RegistriesProperties;
-import uk.gov.hmcts.probate.config.properties.registries.Registry;
-import uk.gov.hmcts.probate.model.DocumentType;
+import lombok.*;
+import lombok.extern.slf4j.*;
+import org.springframework.beans.factory.annotation.*;
+import org.springframework.http.*;
+import org.springframework.validation.*;
+import org.springframework.validation.annotation.*;
+import org.springframework.web.bind.annotation.*;
+import uk.gov.hmcts.probate.config.properties.registries.*;
+import uk.gov.hmcts.probate.model.*;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
-import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
-import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
-import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
-import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
-import uk.gov.hmcts.probate.model.ccd.willlodgement.request.WillLodgementCallbackRequest;
-import uk.gov.hmcts.probate.model.ccd.willlodgement.response.WillLodgementCallbackResponse;
-import uk.gov.hmcts.probate.service.BulkPrintService;
-import uk.gov.hmcts.probate.service.DocumentGeneratorService;
-import uk.gov.hmcts.probate.service.DocumentService;
-import uk.gov.hmcts.probate.service.EventValidationService;
-import uk.gov.hmcts.probate.service.NotificationService;
-import uk.gov.hmcts.probate.service.RegistryDetailsService;
-import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
-import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
-import uk.gov.hmcts.probate.transformer.WillLodgementCallbackResponseTransformer;
-import uk.gov.hmcts.probate.validator.BulkPrintValidationRule;
-import uk.gov.hmcts.probate.validator.EmailAddressNotificationValidationRule;
-import uk.gov.hmcts.probate.validator.RedeclarationSoTValidationRule;
+import uk.gov.hmcts.probate.model.ccd.raw.request.*;
+import uk.gov.hmcts.probate.model.ccd.raw.response.*;
+import uk.gov.hmcts.probate.model.ccd.willlodgement.request.*;
+import uk.gov.hmcts.probate.model.ccd.willlodgement.response.*;
+import uk.gov.hmcts.probate.service.*;
+import uk.gov.hmcts.probate.service.template.pdf.*;
+import uk.gov.hmcts.probate.transformer.*;
+import uk.gov.hmcts.probate.validator.*;
 import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
-import uk.gov.service.notify.NotificationClientException;
+import uk.gov.service.notify.*;
 
-import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import javax.validation.*;
+import java.util.*;
 
-import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
-import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
-import static uk.gov.hmcts.probate.model.Constants.LONDON;
-import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT;
-import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_DRAFT;
-import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_REISSUE_DRAFT;
-import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
-import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_DRAFT;
-import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_REISSUE;
-import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_REISSUE_DRAFT;
-import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT;
-import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_DRAFT;
-import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_REISSUE_DRAFT;
-import static uk.gov.hmcts.probate.model.DocumentType.WILL_LODGEMENT_DEPOSIT_RECEIPT;
-import static uk.gov.hmcts.probate.model.State.GRANT_ISSUED;
-import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.Constants.ADMON_WILL_NAME;
-import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.Constants.EDGE_CASE_NAME;
-import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.Constants.GRANT_OF_PROBATE_NAME;
-import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.Constants.INTESTACY_NAME;
+import static org.springframework.http.MediaType.*;
+import static uk.gov.hmcts.probate.model.Constants.*;
+import static uk.gov.hmcts.probate.model.DocumentType.*;
+import static uk.gov.hmcts.probate.model.State.*;
+import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.Constants.*;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -71,6 +40,7 @@ public class DocumentController {
     private final DocumentGeneratorService documentGeneratorService;
     private final RegistryDetailsService registryDetailsService;
     private final PDFManagementService pdfManagementService;
+    private final PDFGeneratorService pdfGeneratorService;
     private final CallbackResponseTransformer callbackResponseTransformer;
     private final WillLodgementCallbackResponseTransformer willLodgementCallbackResponseTransformer;
     private final DocumentService documentService;
@@ -169,8 +139,17 @@ public class DocumentController {
             documentService.expire(callbackRequest, documentType);
         }
 
+        List<Document> documents = new ArrayList<>();
+        documents.add(document);
+        Document sealedWill;
+        byte[] bytes = documentGeneratorService.generateSealedWillDocument(callbackRequest.getCaseDetails());
+        if (bytes != null){
+            sealedWill = pdfManagementService.generateDocumentAndUpload(bytes);
+            documents.add(sealedWill);
+        }
+
         return ResponseEntity.ok(callbackResponseTransformer.addDocuments(callbackRequest,
-                Arrays.asList(document), null, null));
+                documents, null, null));
     }
 
     @PostMapping(path = "/generate-grant", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -239,6 +218,13 @@ public class DocumentController {
             ADMON_WILL_GRANT_REISSUE_DRAFT};
         for (DocumentType documentType : documentTypes) {
             documentService.expire(callbackRequest, documentType);
+        }
+
+        Document sealedWill;
+        byte[] bytes = documentGeneratorService.generateSealedWillDocument(callbackRequest.getCaseDetails());
+        if (bytes != null){
+            sealedWill = pdfManagementService.generateDocumentAndUpload(bytes);
+            documents.add(sealedWill);
         }
 
         if (caseData.isGrantIssuedEmailNotificationRequested()) {

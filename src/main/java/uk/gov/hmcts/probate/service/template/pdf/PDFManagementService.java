@@ -120,6 +120,13 @@ public class PDFManagementService {
         return uploadDocument(documentType, fileUpload);
     }
 
+    public Document generateDocumentAndUpload(byte[] bytes) {
+
+        log.info("Generating pdf for template sealed will");
+        EvidenceManagementFileUpload fileUpload = pdfGeneratorService.uploadDocument(bytes);
+        return uploadDocument(DocumentType.SEALED_WILL, fileUpload);
+    }
+
     private Document uploadDocument(DocumentType documentType, EvidenceManagementFileUpload fileUpload) {
         try {
             log.info("Uploading pdf for template {}", documentType.getTemplateName());

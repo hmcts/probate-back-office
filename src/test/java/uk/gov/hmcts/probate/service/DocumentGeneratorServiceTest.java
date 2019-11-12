@@ -1,36 +1,27 @@
 package uk.gov.hmcts.probate.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import uk.gov.hmcts.probate.config.properties.registries.Registry;
-import uk.gov.hmcts.probate.model.ApplicationType;
-import uk.gov.hmcts.probate.model.DocumentType;
-import uk.gov.hmcts.probate.model.ExecutorsApplyingNotification;
-import uk.gov.hmcts.probate.model.ccd.raw.Document;
-import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
-import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
-import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
-import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
-import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
-import uk.gov.hmcts.probate.service.docmosis.GenericMapperService;
-import uk.gov.hmcts.probate.service.docmosis.PreviewLetterService;
-import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
-import uk.gov.hmcts.probate.validator.EmailAddressNotificationValidationRule;
+import com.fasterxml.jackson.databind.*;
+import org.apache.pdfbox.pdmodel.*;
+import org.junit.*;
+import org.mockito.*;
+import uk.gov.hmcts.probate.config.properties.registries.*;
+import uk.gov.hmcts.probate.model.*;
+import uk.gov.hmcts.probate.model.ccd.raw.*;
+import uk.gov.hmcts.probate.model.ccd.raw.request.*;
+import uk.gov.hmcts.probate.model.ccd.raw.response.*;
+import uk.gov.hmcts.probate.service.docmosis.*;
+import uk.gov.hmcts.probate.service.template.pdf.*;
+import uk.gov.hmcts.probate.validator.*;
+import uk.gov.hmcts.reform.authorisation.generators.*;
 
-import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.time.format.*;
+import java.util.*;
 
-import static org.junit.Assert.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.when;
-import static uk.gov.hmcts.probate.model.Constants.CTSC;
+import static org.junit.Assert.*;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.*;
+import static uk.gov.hmcts.probate.model.Constants.*;
+import static uk.gov.hmcts.probate.model.DocumentType.*;
 
 public class DocumentGeneratorServiceTest {
 
@@ -82,6 +73,24 @@ public class DocumentGeneratorServiceTest {
 
     @Mock
     private DocumentService documentService;
+
+    @Mock
+    private CaseData caseDataMock;
+
+    @Mock
+    private CaseDetails caseDetailsMock;
+
+    @Mock
+    private Document document;
+
+    @Mock
+    private ScannedDocument scannedDocument;
+
+    @Mock
+    private ServiceAuthTokenGenerator authTokenGeneratorMock;
+
+    @Mock
+    private PDDocument pdDocument;
 
     @Before
     public void setup() {
@@ -347,5 +356,33 @@ public class DocumentGeneratorServiceTest {
                 .thenReturn(Document.builder().documentType(DocumentType.ASSEMBLED_LETTER).build());
         assertEquals(Document.builder().documentType(DocumentType.ASSEMBLED_LETTER).build(),
                 documentGeneratorService.generateLetter(callbackRequest, false));
+    }
+
+    @Test
+    public void testGenerateSealedWillDocumentWhereSealedWillAlreadyExists() {
+        when(document.getDocumentType()).thenReturn(SEALED_WILL);
+        when(document.getDocumentLink()).thenReturn(DocumentLink.builder().build());
+
+        List<CollectionMember<Document>> documents = Arrays.asList(new CollectionMember(document));
+
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        when(caseDataMock.getProbateDocumentsGenerated()).thenReturn(documents);
+
+        assertEquals(null,
+                documentGeneratorService.generateSealedWillDocument(caseDetailsMock));
+    }
+
+    @Test
+    public void testGenerateSealedWillDocumentWhereScannedDocumentWillDoesntExist() {
+        when(scannedDocument.getSubtype()).thenReturn("notWill");
+        when(scannedDocument.getUrl()).thenReturn(DocumentLink.builder().build());
+
+        List<CollectionMember<ScannedDocument>> documents = Arrays.asList(new CollectionMember(scannedDocument));
+
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        when(caseDataMock.getScannedDocuments()).thenReturn(documents);
+
+        assertEquals(null,
+                documentGeneratorService.generateSealedWillDocument(caseDetailsMock));
     }
 }

@@ -1,50 +1,33 @@
 package uk.gov.hmcts.probate.service.template.pdf;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.hateoas.Link;
-import uk.gov.hmcts.probate.config.PDFServiceConfiguration;
-import uk.gov.hmcts.probate.exception.BadRequestException;
-import uk.gov.hmcts.probate.exception.ConnectionException;
-import uk.gov.hmcts.probate.model.SentEmail;
-import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatCallbackRequest;
-import uk.gov.hmcts.probate.model.ccd.raw.Document;
-import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
-import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
-import uk.gov.hmcts.probate.model.ccd.willlodgement.request.WillLodgementCallbackRequest;
-import uk.gov.hmcts.probate.model.ccd.willlodgement.request.WillLodgementDetails;
-import uk.gov.hmcts.probate.model.evidencemanagement.EvidenceManagementFile;
-import uk.gov.hmcts.probate.model.evidencemanagement.EvidenceManagementFileUpload;
-import uk.gov.hmcts.probate.service.FileSystemResourceService;
-import uk.gov.hmcts.probate.service.docmosis.CaveatDocmosisService;
-import uk.gov.hmcts.probate.service.evidencemanagement.upload.UploadService;
+import com.fasterxml.jackson.core.*;
+import com.fasterxml.jackson.databind.*;
+import org.junit.*;
+import org.junit.runner.*;
+import org.mockito.*;
+import org.mockito.junit.*;
+import org.springframework.hateoas.*;
+import uk.gov.hmcts.probate.config.*;
+import uk.gov.hmcts.probate.exception.*;
+import uk.gov.hmcts.probate.model.*;
+import uk.gov.hmcts.probate.model.ccd.caveat.request.*;
+import uk.gov.hmcts.probate.model.ccd.raw.*;
+import uk.gov.hmcts.probate.model.ccd.raw.request.*;
+import uk.gov.hmcts.probate.model.ccd.willlodgement.request.*;
+import uk.gov.hmcts.probate.model.evidencemanagement.*;
+import uk.gov.hmcts.probate.service.*;
+import uk.gov.hmcts.probate.service.docmosis.*;
+import uk.gov.hmcts.probate.service.evidencemanagement.upload.*;
 
-import javax.crypto.BadPaddingException;
-import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
-import java.util.Map;
+import javax.crypto.*;
+import javax.servlet.http.*;
+import java.io.*;
+import java.util.*;
 
-import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.when;
-import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT;
-import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT_RAISED;
-import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
-import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT;
-import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_ADMON;
-import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_INTESTACY;
-import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE;
-import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
-import static uk.gov.hmcts.probate.model.DocumentType.WILL_LODGEMENT_DEPOSIT_RECEIPT;
+import static org.hamcrest.core.Is.*;
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
+import static uk.gov.hmcts.probate.model.DocumentType.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class PDFManagementServiceTest {
@@ -312,6 +295,28 @@ public class PDFManagementServiceTest {
         Document response = underTest.generateDocmosisDocumentAndUpload(placeholdersMock, CAVEAT_RAISED);
 
         String fileName = "caveatRaised.pdf";
+        assertNotNull(response);
+        assertEquals(fileName, response.getDocumentLink().getDocumentFilename());
+        assertEquals(href, response.getDocumentLink().getDocumentBinaryUrl());
+        assertEquals(href, response.getDocumentLink().getDocumentUrl());
+    }
+
+    @Test
+    public void generateDocumentAndUpload() throws IOException {
+        byte[] bytes = "string".getBytes();
+
+        when(pdfGeneratorServiceMock.uploadDocument(bytes))
+                .thenReturn(evidenceManagementFileUpload);
+        when(uploadServiceMock.store(evidenceManagementFileUpload)).thenReturn(evidenceManagementFile);
+        when(evidenceManagementFile.getLink(Link.REL_SELF)).thenReturn(link);
+        when(evidenceManagementFile.getLink("binary")).thenReturn(link);
+
+        String href = "href";
+        when(link.getHref()).thenReturn(href);
+
+        Document response = underTest.generateDocumentAndUpload(bytes);
+
+        String fileName = "sealedWill.pdf";
         assertNotNull(response);
         assertEquals(fileName, response.getDocumentLink().getDocumentFilename());
         assertEquals(href, response.getDocumentLink().getDocumentBinaryUrl());

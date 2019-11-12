@@ -1,30 +1,23 @@
 package uk.gov.hmcts.probate.service.client;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.entity.ByteArrayEntity;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
-import uk.gov.hmcts.probate.model.ccd.raw.Document;
-import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
+import org.apache.http.*;
+import org.apache.http.client.methods.*;
+import org.apache.http.entity.*;
+import org.apache.http.impl.client.*;
+import org.junit.*;
+import org.junit.rules.*;
+import org.junit.runner.*;
+import org.mockito.*;
+import org.mockito.junit.*;
+import uk.gov.hmcts.probate.model.ccd.raw.*;
 
-import java.io.IOException;
-import java.time.LocalDate;
+import java.io.*;
+import java.time.*;
 
-import static org.hamcrest.Matchers.containsString;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DocumentStoreClientTest {
@@ -84,6 +77,42 @@ public class DocumentStoreClientTest {
         expectedException.expectMessage(containsString(document.getDocumentFileName()));
 
         byte[] bytes = documentStoreClient.retrieveDocument(document, "");
+
+        assertNull(bytes);
+    }
+
+    @Test
+    public void shouldReturnDocumentInBytesForScannedDocuments() throws IOException {
+        when(closeableHttpClientMock.execute(any(HttpGet.class))).thenReturn(closeableHttpResponseMock);
+
+        DocumentLink documentLink = DocumentLink.builder()
+                .documentBinaryUrl("http://localhost")
+                .build();
+        ScannedDocument document = ScannedDocument.builder()
+                .subtype("will")
+                .url(documentLink)
+                .build();
+        byte[] bytes = documentStoreClient.retrieveUploadDocument(document, "");
+
+        assertTrue(bytes.length > 0);
+    }
+
+    @Test
+    public void shouldThrowIOExceptionForScannedDocument() throws IOException {
+
+        doThrow(new IOException()).when(closeableHttpClientMock).execute(any(HttpGet.class));
+        DocumentLink documentLink = DocumentLink.builder()
+                .documentBinaryUrl("http://localhost")
+                .build();
+        ScannedDocument document = ScannedDocument.builder()
+                .subtype("will")
+                .url(documentLink)
+                .build();
+
+        expectedException.expect(IOException.class);
+        expectedException.expectMessage(containsString(document.getSubtype()));
+
+        byte[] bytes = documentStoreClient.retrieveUploadDocument(document, "");
 
         assertNull(bytes);
     }

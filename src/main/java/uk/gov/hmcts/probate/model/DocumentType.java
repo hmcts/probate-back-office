@@ -23,6 +23,9 @@ public enum DocumentType {
     @JsonProperty("blank")
     BLANK("blank"),
 
+    @JsonProperty("sealedWill")
+    SEALED_WILL("sealedWill"),
+
     @JsonProperty("digitalGrantDraft")
     DIGITAL_GRANT_DRAFT("digitalGrantDraft"),
 

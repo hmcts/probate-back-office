@@ -40,6 +40,7 @@ public class DocumentTransformer {
             case SOT_INFORMATION_REQUEST:
             case GRANT_COVER:
             case ASSEMBLED_LETTER:
+            case SEALED_WILL:
                 callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated()
                         .add(new CollectionMember<>(null, document));
                 break;

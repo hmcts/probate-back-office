@@ -14,6 +14,7 @@ public final class Constants {
     public static final String EXTRACT_ADMON_WILL = "ADMON/WILL";
     public static final String PRINCIPAL_REGISTRY = "Principal Registry";
     public static final String DOC_SUBTYPE_WILL = "will";
+    public static final String DOC_SUBTYPE_SEALED_WILL = "sealedWill";
     public static final String DATE_OF_DEATH_TYPE_DEFAULT = "diedOn";
     public static final String CASE_TYPE_DEFAULT = "gop";
     public static final String DOCMOSIS_OUTPUT_PDF = "pdf";

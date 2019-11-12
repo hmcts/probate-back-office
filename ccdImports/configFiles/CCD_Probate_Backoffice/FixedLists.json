@@ -56,6 +56,7 @@
   {"LiveFrom": "01/01/2017", "ID": "probateDocumentTypeEnum", "ListElementCode": "digitalGrant", "ListElement": "Digital Grant"},
   {"LiveFrom": "01/01/2017", "ID": "probateDocumentTypeEnum", "ListElementCode": "digitalGrantDraft", "ListElement": "Digital Grant Draft"},
   {"LiveFrom": "01/01/2017", "ID": "probateDocumentTypeEnum", "ListElementCode": "legalStatement", "ListElement": "Legal Statement"},
+  {"LiveFrom": "01/01/2017", "ID": "probateDocumentTypeEnum", "ListElementCode": "sealedWill", "ListElement": "Sealed Will"},
   {"LiveFrom": "01/01/2017", "ID": "probateDocumentTypeEnum", "ListElementCode": "sentEmail", "ListElement": "Sent Email"},
   {"LiveFrom": "01/01/2017", "ID": "probateDocumentTypeEnum", "ListElementCode": "intestacyGrant", "ListElement": "Intestacy Grant"},
   {"LiveFrom": "01/01/2017", "ID": "probateDocumentTypeEnum", "ListElementCode": "intestacyGrantDraft", "ListElement": "Intestacy Grant Draft"},

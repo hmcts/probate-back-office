@@ -1,37 +1,31 @@
 package uk.gov.hmcts.probate.service.template.pdf;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.*;
 import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.http.MediaType;
-import org.springframework.util.ReflectionUtils;
-import uk.gov.hmcts.probate.config.PDFServiceConfiguration;
-import uk.gov.hmcts.probate.exception.ClientException;
-import uk.gov.hmcts.probate.insights.AppInsights;
-import uk.gov.hmcts.probate.model.evidencemanagement.EvidenceManagementFileUpload;
-import uk.gov.hmcts.probate.service.FileSystemResourceService;
-import uk.gov.hmcts.probate.service.docmosis.DocmosisPdfGenerationService;
-import uk.gov.hmcts.reform.pdf.service.client.PDFServiceClient;
-import uk.gov.hmcts.reform.pdf.service.client.exception.PDFServiceClientException;
+import org.junit.*;
+import org.junit.runner.*;
+import org.mockito.*;
+import org.mockito.junit.*;
+import org.springframework.http.*;
+import org.springframework.util.*;
+import uk.gov.hmcts.probate.config.*;
+import uk.gov.hmcts.probate.exception.*;
+import uk.gov.hmcts.probate.insights.*;
+import uk.gov.hmcts.probate.model.evidencemanagement.*;
+import uk.gov.hmcts.probate.service.*;
+import uk.gov.hmcts.probate.service.docmosis.*;
+import uk.gov.hmcts.reform.pdf.service.client.*;
+import uk.gov.hmcts.reform.pdf.service.client.exception.*;
 
-import java.lang.reflect.Field;
-import java.util.HashMap;
-import java.util.Map;
+import java.lang.reflect.*;
+import java.util.*;
 
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.Matchers.greaterThan;
+import static org.hamcrest.Matchers.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyBoolean;
-import static org.mockito.ArgumentMatchers.anyMap;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.when;
-import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT_RAISED;
-import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.*;
+import static uk.gov.hmcts.probate.model.DocumentType.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class PDFGeneratorServiceTest {
@@ -78,6 +72,7 @@ public class PDFGeneratorServiceTest {
         Assert.assertThat(result.getBytes().length, greaterThan(0));
     }
 
+
     @Test
     public void shouldGeneratePDFFromDocmosisWithBytesAndPDFContentType() {
 
@@ -101,6 +96,16 @@ public class PDFGeneratorServiceTest {
 
         EvidenceManagementFileUpload result = underTest.generateDocmosisDocumentFrom(CAVEAT_RAISED.getTemplateName(),
                 placeholders);
+        Assert.assertThat(result.getContentType(), equalTo(MediaType.APPLICATION_PDF));
+        Assert.assertThat(result.getBytes().length, greaterThan(0));
+    }
+
+    @Test
+    public void shouldUploadDocument() {
+
+        byte [] bytes = "a string".getBytes();
+
+        EvidenceManagementFileUpload result = underTest.uploadDocument(bytes);
         Assert.assertThat(result.getContentType(), equalTo(MediaType.APPLICATION_PDF));
         Assert.assertThat(result.getBytes().length, greaterThan(0));
     }
