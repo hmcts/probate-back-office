@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import uk.gov.hmcts.probate.controller.validation.CaveatCreatedGroup;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatCallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
 import uk.gov.hmcts.probate.model.ccd.caveat.response.CaveatCallbackResponse;
@@ -79,5 +80,15 @@ public class CaveatController {
         }
 
         return ResponseEntity.ok(response);
+    }
+
+    @PostMapping(path = "/solsCreate")
+    public ResponseEntity<CaveatCallbackResponse> createSolsCaveat(
+            @Validated({CaveatCreatedGroup.class})
+            @RequestBody CaveatCallbackRequest caveatCallbackRequest) {
+
+        CaveatCallbackResponse caveatCallbackResponse = caveatCallbackResponseTransformer.transform(caveatCallbackRequest);
+
+        return ResponseEntity.ok(caveatCallbackResponse);
     }
 }

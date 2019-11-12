@@ -129,6 +129,12 @@ public class CaveatCallbackResponseTransformer {
                 .deceasedFullAliasNameList(caveatData.getDeceasedFullAliasNameList())
                 .deceasedAddress(caveatData.getDeceasedAddress())
 
+                .solsSolicitorFirmName(caveatData.getSolsSolicitorFirmName())
+                .solsSolicitorAddress(caveatData.getSolsSolicitorAddress())
+                .solsSolicitorEmail(caveatData.getSolsSolicitorEmail())
+                .solsSolicitorPhoneNumber(caveatData.getSolsSolicitorPhoneNumber())
+                .solsSolicitorAppReference(caveatData.getSolsSolicitorAppReference())
+
                 .caveatorForenames(caveatData.getCaveatorForenames())
                 .caveatorSurname(caveatData.getCaveatorSurname())
                 .caveatorEmailAddress(caveatData.getCaveatorEmailAddress())
