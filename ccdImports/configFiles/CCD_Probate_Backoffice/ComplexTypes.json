@@ -68,6 +68,7 @@
   {"LiveFrom": "01/01/2017", "ID": "Declaration", "ListElementCode": "requestsItem2", "FieldType": "Text", "ElementLabel": "Requestsitem2", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "Declaration", "ListElementCode": "understandItem1", "FieldType": "Text", "ElementLabel": "Understanditem1", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "Declaration", "ListElementCode": "understandItem2", "FieldType": "Text", "ElementLabel": "Understanditem2", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "Declaration", "ListElementCode": "submitWarning", "FieldType": "Text", "ElementLabel": "SubmitWarning", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "boCaseStopReason", "ListElementCode": "caseStopReason", "FieldType": "FixedList", "FieldTypeParameter": "stopReasonFixedList", "ElementLabel": "Select a reason for stopping the case", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "ProbateDocument", "ListElementCode": "DocumentType", "FieldType": "FixedList", "FieldTypeParameter": "probateDocumentTypeEnum", "ElementLabel": "Type", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "ProbateDocument", "ListElementCode": "DocumentLink", "FieldType": "Document", "ElementLabel": "Document Url", "SecurityClassification": "Public"},
