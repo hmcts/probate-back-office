@@ -64,7 +64,7 @@ public class CaveatData {
 
     private ProbateAddress caveatorAddress;
 
-    // EVENT = solsRaiseCaveat - firm data
+    // EVENT = solicitorCreateCaveat - firm data
 
     @NotBlank(groups = {CaveatCreatedGroup.class}, message = "{solsSolicitorFirmNameIsNull}")
     private String solsSolicitorFirmName;
