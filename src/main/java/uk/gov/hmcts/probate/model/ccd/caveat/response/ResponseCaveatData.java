@@ -32,11 +32,11 @@ public class ResponseCaveatData {
     private final List<CollectionMember<ProbateFullAliasName>> deceasedFullAliasNameList;
     private final ProbateAddress deceasedAddress;
 
-    private String solsSolicitorFirmName;
-    private SolsAddress solsSolicitorAddress;
-    private String solsSolicitorEmail;
-    private String solsSolicitorPhoneNumber;
-    private String solsSolicitorAppReference;
+    private final String solsSolicitorFirmName;
+    private final SolsAddress solsSolicitorAddress;
+    private final String solsSolicitorEmail;
+    private final String solsSolicitorPhoneNumber;
+    private final String solsSolicitorAppReference;
 
     private final String caveatorForenames;
     private final String caveatorSurname;
