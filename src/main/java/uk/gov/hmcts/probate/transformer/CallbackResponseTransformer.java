@@ -93,7 +93,7 @@ public class CallbackResponseTransformer {
     public static final String OTHER = "other";
 
     public static final String EXCEPTION_RECORD_CASE_TYPE_ID = "GrantOfRepresentation";
-    public static final String EXCEPTION_RECORD_EVENT_ID = "createCase";
+    public static final String EXCEPTION_RECORD_EVENT_ID = "createCaseFromBulkScan";
     public static final RegistryLocation EXCEPTION_RECORD_REGISTRY_LOCATION = RegistryLocation.CTSC;
 
     private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(DATE_FORMAT);

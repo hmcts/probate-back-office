@@ -39,7 +39,7 @@ public class CaveatCallbackResponseTransformer {
     public static final String DEFAULT_REGISTRY_LOCATION = "Leeds";
 
     public static final String EXCEPTION_RECORD_CASE_TYPE_ID = "Caveat";
-    public static final String EXCEPTION_RECORD_EVENT_ID = "raiseCaveat";
+    public static final String EXCEPTION_RECORD_EVENT_ID = "raiseCaveatFromBulkScan";
     public static final RegistryLocation EXCEPTION_RECORD_REGISTRY_LOCATION = RegistryLocation.CTSC;
 
     public CaveatCallbackResponse caveatRaised(CaveatCallbackRequest caveatCallbackRequest, List<Document> documents, String letterId) {
