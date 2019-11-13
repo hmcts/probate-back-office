@@ -65,6 +65,16 @@ public class CaveatDataTest {
     }
 
     @Test
+    public void shouldReturnApplicantFullNameForSolsCaveat() {
+        final CaveatData caveatData = CaveatData.builder()
+                .solsApplicantForenames(CAV_SOLS_APPLICANT_FORENAMES)
+                .solsApplicantSurname(CAV_SOLS_APPLICANT_SURNAME)
+                .build();
+        assertEquals(CAV_SOLS_APPLICANT_FORENAMES + " " + CAV_SOLS_APPLICANT_SURNAME,
+                caveatData.getSolsApplicantFullName());
+    }
+
+    @Test
     public void shouldReturnDefaultEmailNotificationCaveat() {
         final CaveatData caveatData = CaveatData.builder()
                 .caveatorEmailAddress(CAV_CAVEATOR_EMAIL)

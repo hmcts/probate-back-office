@@ -71,6 +71,9 @@ public class CaveatCallbackResponseTransformerTest {
     private static final String CAV_SOLICITOR_PHONENUMBER = "07070707077";
     private static final String CAV_SOLICITOR_APPREFERENCE = "REF";
 
+    private static final String CAV_SOLS_APPLICANT_FORENAMES = "Forenames";
+    private static final String CAV_SOLS_APPLICANT_SURNAME = "Surname";
+
     private static final LocalDate CAV_SUBMISSION_DATE = LocalDate.now();
     private static final String CAV_FORMATTED_SUBMISSION_DATE = dateTimeFormatter.format(CAV_SUBMISSION_DATE);
     private static final LocalDate CAV_EXPIRY_DATE = LocalDate.now().plusMonths(CAVEAT_LIFESPAN);
@@ -124,6 +127,8 @@ public class CaveatCallbackResponseTransformerTest {
                 .solsSolicitorFirmName(CAV_SOLICITOR_FIRMNAME)
                 .solsSolicitorPhoneNumber(CAV_SOLICITOR_PHONENUMBER)
                 .solsSolicitorAppReference(CAV_SOLICITOR_APPREFERENCE)
+                .solsApplicantForenames(CAV_SOLS_APPLICANT_FORENAMES)
+                .solsApplicantSurname(CAV_SOLS_APPLICANT_SURNAME)
                 .expiryDate(CAV_EXPIRY_DATE)
                 .messageContent(CAV_MESSAGE_CONTENT)
                 .caveatReopenReason(CAV_REOPEN_REASON)
@@ -330,6 +335,9 @@ public class CaveatCallbackResponseTransformerTest {
         assertEquals(CAV_SOLICITOR_FIRMNAME, caveatCallbackResponse.getCaveatData().getSolsSolicitorFirmName());
         assertEquals(CAV_SOLICITOR_PHONENUMBER, caveatCallbackResponse.getCaveatData().getSolsSolicitorPhoneNumber());
         assertEquals(CAV_SOLICITOR_APPREFERENCE, caveatCallbackResponse.getCaveatData().getSolsSolicitorAppReference());
+
+        assertEquals(CAV_SOLS_APPLICANT_FORENAMES, caveatCallbackResponse.getCaveatData().getSolsApplicantForenames());
+        assertEquals(CAV_SOLS_APPLICANT_SURNAME, caveatCallbackResponse.getCaveatData().getSolsApplicantSurname());
 
         assertEquals(CAV_FORMATTED_EXPIRY_DATE, caveatCallbackResponse.getCaveatData().getExpiryDate());
         assertEquals(CAV_MESSAGE_CONTENT, caveatCallbackResponse.getCaveatData().getMessageContent());
