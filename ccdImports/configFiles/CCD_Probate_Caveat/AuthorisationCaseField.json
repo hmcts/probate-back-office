@@ -230,5 +230,6 @@
   {"CaseTypeID": "Caveat", "CaseFieldID": "caveatorEmailAddress", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "caveatorAddress", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "solsSolicitorPhoneNumber", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"},
-  {"CaseTypeID": "Caveat", "CaseFieldID": "solsSolicitorAppReference", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"}
+  {"CaseTypeID": "Caveat", "CaseFieldID": "solsSolicitorAppReference", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"},
+  {"CaseTypeID": "Caveat", "CaseFieldID": "solsCaveatEligibility", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"}
 ]
