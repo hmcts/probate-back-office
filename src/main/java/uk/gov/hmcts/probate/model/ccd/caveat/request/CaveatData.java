@@ -148,6 +148,10 @@ public class CaveatData {
         return String.join(" ", caveatorForenames, caveatorSurname);
     }
 
+    public String getSolsApplicantFullName() {
+        return String.join(" ", solsApplicantForenames, solsApplicantSurname);
+    }
+
     public String getDefaultValueForEmailNotifications() {
         return caveatorEmailAddress == null || caveatorEmailAddress.isEmpty() ? NO : YES;
     }
