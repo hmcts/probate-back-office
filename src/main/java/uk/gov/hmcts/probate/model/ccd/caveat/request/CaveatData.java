@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import uk.gov.hmcts.probate.controller.validation.CaveatCreatedGroup;
+import uk.gov.hmcts.probate.controller.validation.CaveatUpdatedGroup;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
 import uk.gov.hmcts.probate.model.ccd.ProbateAddress;
@@ -76,6 +77,14 @@ public class CaveatData {
     @NotBlank(groups = {CaveatCreatedGroup.class}, message = "{solsSolicitorAppReferenceIsNull}")
     private String solsSolicitorAppReference;
 
+    // EVENT = solicitorUpdateCaveat - application details
+
+    @NotBlank(groups = {CaveatUpdatedGroup.class}, message = "{solsApplicantForenamesIsNull}")
+    private String solsApplicantForenames;
+
+    @NotBlank(groups = {CaveatUpdatedGroup.class}, message = "{solsApplicantSurnameIsNull}")
+    private String solsApplicantSurname;
+
     // EVENT = cavRaiseCaveat - caveat details
 
     @Getter(lazy = true)
@@ -132,6 +141,10 @@ public class CaveatData {
 
     public String getCaveatorFullName() {
         return String.join(" ", caveatorForenames, caveatorSurname);
+    }
+
+    public String getSolsApplicantFullName() {
+        return String.join(" ", solsApplicantForenames, solsApplicantSurname);
     }
 
     public String getDefaultValueForEmailNotifications() {

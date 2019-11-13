@@ -133,6 +133,9 @@ public class CaveatCallbackResponseTransformer {
                 .solsSolicitorPhoneNumber(caveatData.getSolsSolicitorPhoneNumber())
                 .solsSolicitorAppReference(caveatData.getSolsSolicitorAppReference())
 
+                .solsApplicantForenames(caveatData.getSolsApplicantForenames())
+                .solsApplicantSurname(caveatData.getSolsApplicantSurname())
+
                 .caveatorForenames(caveatData.getCaveatorForenames())
                 .caveatorSurname(caveatData.getCaveatorSurname())
                 .caveatorEmailAddress(caveatData.getCaveatorEmailAddress())
