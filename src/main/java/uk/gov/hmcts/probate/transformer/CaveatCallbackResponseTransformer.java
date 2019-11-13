@@ -123,7 +123,7 @@ public class CaveatCallbackResponseTransformer {
                 .registryLocation(ofNullable(caveatData.getRegistryLocation()).orElse(DEFAULT_REGISTRY_LOCATION))
                 .deceasedForenames(caveatData.getDeceasedForenames())
                 .deceasedSurname(caveatData.getDeceasedSurname())
-                .deceasedDateOfDeath(dateTimeFormatter.format(caveatData.getDeceasedDateOfDeath()))
+                .deceasedDateOfDeath(caveatData.getDeceasedDateOfDeath() != null ? dateTimeFormatter.format(caveatData.getDeceasedDateOfDeath()) : null)
                 .deceasedDateOfBirth(transformToString(caveatData.getDeceasedDateOfBirth()))
                 .deceasedAnyOtherNames(caveatData.getDeceasedAnyOtherNames())
                 .deceasedFullAliasNameList(caveatData.getDeceasedFullAliasNameList())
