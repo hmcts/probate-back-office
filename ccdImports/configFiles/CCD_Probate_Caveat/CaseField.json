@@ -54,6 +54,6 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "solsHasDateOfBirth", "Label": "Do you know the date of birth of the deceased?", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "solsDeceasedDateOfBirth", "Label": "What was their date of birth?", "HintText": "For example, 31 03 1945", "FieldType": "Date", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "solsDeceasedAnyOtherNames", "Label": "Did the deceased have assets in any other names?", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "solsDeceasedAliasNameList", "Label": "Deceased Alias Names", "FieldType": "Collection", "FieldTypeParameter": "ProbateAliasName", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "solsDeceasedAliasNameList", "Label": "Deceased Alias Names", "FieldType": "Collection", "FieldTypeParameter": "cavProbateFullAliasName", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "solsDeceasedAddress", "Label": "What was the permanent address of the deceased at the time of their death?", "FieldType": "AddressUK", "SecurityClassification": "Public"}
 ]
