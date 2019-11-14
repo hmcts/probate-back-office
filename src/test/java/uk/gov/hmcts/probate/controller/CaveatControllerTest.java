@@ -74,7 +74,7 @@ public class CaveatControllerTest {
     @Test
     public void solsCaveatCreated_ShouldReturnDataPayload_OkResponseCode() throws Exception {
 
-        String caveatPayload = testUtils.getStringFromFile("solsCaveatPayload.json");
+        String caveatPayload = testUtils.getStringFromFile("solicitorCreateCaveatPayload.json");
 
         mockMvc.perform(post("/caveat/solsCreate")
                 .content(caveatPayload)
@@ -91,6 +91,18 @@ public class CaveatControllerTest {
                 .content(personalPayload)
                 .contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(status().is4xxClientError());
+    }
+
+    @Test
+    public void solsCaveatUpdated_ShouldReturnDataPayload_OkResponseCode() throws Exception {
+
+        String caveatPayload = testUtils.getStringFromFile("solicitorUpdateCaveatPayload.json");
+
+        mockMvc.perform(post("/caveat/solsUpdate")
+                .content(caveatPayload)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("data")));
     }
 
     @Test

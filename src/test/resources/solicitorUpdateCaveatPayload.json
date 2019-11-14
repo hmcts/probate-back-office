@@ -1,0 +1,141 @@
+{
+  "case_details": {
+    "id": 1542274092932452,
+    "jurisdiction": "PROBATE",
+    "case_type_id": "Caveat",
+    "state": "SolAppCreated",
+    "created_date": "2018-11-15T09:28:12.992",
+    "last_modified": [
+      2018,
+      6,
+      7,
+      10,
+      8,
+      8,
+      695000000
+    ],
+    "security_classification": "PUBLIC",
+    "case_data": {
+      "applicationType": "Solicitor",
+      "registryLocation": "Leeds",
+      "solsSolicitorFirmName": "The Firm",
+      "solsSolicitorEmail": "test@test.com",
+      "solsSolicitorPhoneNumber": "07070707077",
+      "solsSolicitorAddress": {
+        "AddressLine1": "2",
+        "AddressLine2": "",
+        "AddressLine3": "",
+        "County": "",
+        "PostTown": "",
+        "PostCode": "2",
+        "Country": ""
+      },
+      "solsSolicitorAppReference": "REF",
+      "solsApplicantForenames": "SolsApplicant_fn",
+      "solsApplicantSurname": "SolsApplicant_ln",
+      "solsDeceasedForenames": "SolsDeceased_fn",
+      "solsDeceasedSurname": "SolsDeceased_ln",
+      "solsDeceasedDateOfDeath": "2018-01-01",
+      "solsHasDateOfBirth": "Yes",
+      "solsDeceasedDateOfBirth": "2017-01-01",
+      "solsDeceasedAnyOtherNames": "No",
+      "solsDeceasedAliasNameList": [],
+      "solsDeceasedAddress": {
+        "AddressLine1": "2",
+        "AddressLine2": "",
+        "AddressLine3": "",
+        "County": "",
+        "PostTown": "",
+        "PostCode": "2",
+        "Country": ""
+      }
+    },
+    "data_classification": {
+      "applicationType": "PUBLIC",
+      "registryLocation": "PUBLIC",
+      "solsSolicitorFirmName": "PUBLIC",
+      "solsSolicitorEmail": "PUBLIC",
+      "solsSolicitorPhoneNumber": "PUBLIC",
+      "solsSolicitorAddress": {
+        "classification": "PUBLIC",
+        "value": {
+          "AddressLine1": "PUBLIC",
+          "AddressLine2": "PUBLIC",
+          "AddressLine3": "PUBLIC",
+          "County": "PUBLIC",
+          "PostTown": "PUBLIC",
+          "PostCode": "PUBLIC",
+          "Country": "PUBLIC"
+        }
+      },
+      "solsSolicitorAppReference": "PUBLIC",
+      "solsApplicantForenames": "PUBLIC",
+      "solsApplicantSurname": "PUBLIC",
+      "solsDeceasedForenames": "PUBLIC",
+      "solsDeceasedSurname": "PUBLIC",
+      "solsDeceasedDateOfDeath": "PUBLIC",
+      "solsHasDateOfBirth": "PUBLIC",
+      "solsDeceasedDateOfBirth": "PUBLIC",
+      "solsDeceasedAnyOtherNames": "PUBLIC",
+      "solsDeceasedAliasNameList": "PUBLIC",
+      "solsDeceasedAddress": {
+        "classification": "PUBLIC",
+        "value": {
+          "AddressLine1": "PUBLIC",
+          "AddressLine2": "PUBLIC",
+          "AddressLine3": "PUBLIC",
+          "County": "PUBLIC",
+          "PostTown": "PUBLIC",
+          "PostCode": "PUBLIC",
+          "Country": "PUBLIC"
+        }
+      }
+    },
+    "after_submit_callback_response": null,
+    "callback_response_status_code": null,
+    "callback_response_status": null,
+    "delete_draft_response_status_code": null,
+    "delete_draft_response_status": null,
+    "security_classifications": {
+      "applicationType": "PUBLIC",
+      "registryLocation": "PUBLIC",
+      "solsSolicitorFirmName": "PUBLIC",
+      "solsSolicitorEmail": "PUBLIC",
+      "solsSolicitorPhoneNumber": "PUBLIC",
+      "solsSolicitorAddress": {
+        "classification": "PUBLIC",
+        "value": {
+          "AddressLine1": "PUBLIC",
+          "AddressLine2": "PUBLIC",
+          "AddressLine3": "PUBLIC",
+          "County": "PUBLIC",
+          "PostTown": "PUBLIC",
+          "PostCode": "PUBLIC",
+          "Country": "PUBLIC"
+        }
+      },
+      "solsSolicitorAppReference": "PUBLIC",
+      "solsApplicantForenames": "PUBLIC",
+      "solsApplicantSurname": "PUBLIC",
+      "solsDeceasedForenames": "PUBLIC",
+      "solsDeceasedSurname": "PUBLIC",
+      "solsDeceasedDateOfDeath": "PUBLIC",
+      "solsHasDateOfBirth": "PUBLIC",
+      "solsDeceasedDateOfBirth": "PUBLIC",
+      "solsDeceasedAnyOtherNames": "PUBLIC",
+      "solsDeceasedAliasNameList": "PUBLIC",
+      "solsDeceasedAddress": {
+        "classification": "PUBLIC",
+        "value": {
+          "AddressLine1": "PUBLIC",
+          "AddressLine2": "PUBLIC",
+          "AddressLine3": "PUBLIC",
+          "County": "PUBLIC",
+          "PostTown": "PUBLIC",
+          "PostCode": "PUBLIC",
+          "Country": "PUBLIC"
+        }
+      }
+    }
+  }
+}
