@@ -90,8 +90,6 @@ public class CaveatData {
 
     private String solsDeceasedNameSection;
 
-    private String solsDeceasedDetailsSection;
-
     private String solsDeceasedNameSection;
 
     @NotBlank(groups = {CaveatUpdatedGroup.class}, message = "{solsDeceasedForenamesIsNull}")
