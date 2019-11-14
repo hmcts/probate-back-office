@@ -85,8 +85,6 @@ public class CaveatData {
     @NotBlank(groups = {CaveatUpdatedGroup.class}, message = "{solsApplicantSurnameIsNull}")
     private String solsApplicantSurname;
 
-    private String solsDeceasedDetailsSection;
-
     private String solsDeceasedNameSection;
 
     @NotBlank(groups = {CaveatUpdatedGroup.class}, message = "{solsDeceasedForenamesIsNull}")
