@@ -90,6 +90,32 @@ public class CaveatData {
 
     private String solsDeceasedNameSection;
 
+    private String solsDeceasedDetailsSection;
+
+    private String solsDeceasedNameSection;
+
+    @NotBlank(groups = {CaveatUpdatedGroup.class}, message = "{solsDeceasedForenamesIsNull}")
+    private String solsDeceasedForenames;
+
+    @NotBlank(groups = {CaveatUpdatedGroup.class}, message = "{solsDeceasedSurnameIsNull}")
+    private String solsDeceasedSurname;
+
+    @NotNull(groups = {CaveatUpdatedGroup.class}, message = "{solsDeceasedSurnameIsNull}")
+    private LocalDate solsDeceasedDateOfDeath;
+
+    @NotBlank(groups = {CaveatUpdatedGroup.class}, message = "{solsHasDateOfBirthIsNull}")
+    private String solsHasDateOfBirth;
+
+    private LocalDate solsDeceasedDateOfBirth;
+
+    @NotBlank(groups = {CaveatUpdatedGroup.class}, message = "{solsDeceasedAnyOtherNamesIsNull}")
+    private String solsDeceasedAnyOtherNames;
+
+    private List<CollectionMember<ProbateFullAliasName>> solsDeceasedAliasNameList;
+
+    @NotNull(groups = {CaveatUpdatedGroup.class}, message = "{solsDeceasedAddressIsNull}")
+    private ProbateAddress solsDeceasedAddress;
+
     // EVENT = cavRaiseCaveat - caveat details
 
     @Getter(lazy = true)

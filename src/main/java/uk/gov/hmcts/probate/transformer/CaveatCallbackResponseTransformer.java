@@ -135,6 +135,14 @@ public class CaveatCallbackResponseTransformer {
 
                 .solsApplicantForenames(caveatData.getSolsApplicantForenames())
                 .solsApplicantSurname(caveatData.getSolsApplicantSurname())
+                .solsDeceasedForenames(caveatData.getSolsDeceasedForenames())
+                .solsDeceasedSurname(caveatData.getSolsDeceasedSurname())
+                .solsDeceasedDateOfDeath(caveatData.getSolsDeceasedDateOfDeath())
+                .solsHasDateOfBirth(caveatData.getSolsHasDateOfBirth())
+                .solsDeceasedDateOfBirth(caveatData.getSolsDeceasedDateOfBirth())
+                .solsDeceasedAnyOtherNames(caveatData.getSolsDeceasedAnyOtherNames())
+                .solsDeceasedAliasNameList(caveatData.getSolsDeceasedAliasNameList())
+                .solsDeceasedAddress(caveatData.getSolsDeceasedAddress())
 
                 .caveatorForenames(caveatData.getCaveatorForenames())
                 .caveatorSurname(caveatData.getCaveatorSurname())
