@@ -176,6 +176,10 @@ public class CaveatData {
         return String.join(" ", solsApplicantForenames, solsApplicantSurname);
     }
 
+    public String getSolsDeceasedFullName() {
+        return String.join(" ", solsDeceasedForenames, solsDeceasedSurname);
+    }
+
     public String getDefaultValueForEmailNotifications() {
         return caveatorEmailAddress == null || caveatorEmailAddress.isEmpty() ? NO : YES;
     }
