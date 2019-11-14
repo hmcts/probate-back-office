@@ -14,7 +14,6 @@ import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Builder
@@ -41,9 +40,9 @@ public class ResponseCaveatData {
     private final String solsApplicantSurname;
     private final String solsDeceasedForenames;
     private final String solsDeceasedSurname;
-    private final LocalDate solsDeceasedDateOfDeath;
+    private final String solsDeceasedDateOfDeath;
     private final String solsHasDateOfBirth;
-    private final LocalDate solsDeceasedDateOfBirth;
+    private final String solsDeceasedDateOfBirth;
     private final String solsDeceasedAnyOtherNames;
     private final List<CollectionMember<ProbateFullAliasName>> solsDeceasedAliasNameList;
     private final ProbateAddress solsDeceasedAddress;
