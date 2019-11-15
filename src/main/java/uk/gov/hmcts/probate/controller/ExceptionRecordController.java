@@ -98,14 +98,17 @@ public class ExceptionRecordController {
             switch (formType) {
                 case PA8A:
                     callbackResponse = erService.createCaveatCaseFromExceptionRecord(erRequest, warnings);
+                    logCallback(callbackResponse);
                     return ResponseEntity.ok(callbackResponse);
                 case PA1P:
                     callbackResponse = erService.createGrantOfRepresentationCaseFromExceptionRecord(
                             erRequest, GrantType.GRANT_OF_PROBATE, warnings);
+                    logCallback(callbackResponse);
                     return ResponseEntity.ok(callbackResponse);
                 case PA1A:
                     callbackResponse = erService.createGrantOfRepresentationCaseFromExceptionRecord(
                             erRequest, GrantType.INTESTACY, warnings);
+                    logCallback(callbackResponse);
                     return ResponseEntity.ok(callbackResponse);
                 default:
                     // Unreachable code
@@ -113,12 +116,15 @@ public class ExceptionRecordController {
             }
         }
 
+        return ResponseEntity.ok(callbackResponse);
+    }
+
+    private void logCallback(SuccessfulTransformationResponse callbackResponse) {
         try {
             log.debug("Response for transformExceptionRecord: {}", objectMapper.writeValueAsString(callbackResponse));
         } catch (JsonProcessingException e) {
             log.error("Exception on transformExceptionRecord: {}", e);
         }
-        return ResponseEntity.ok(callbackResponse);
     }
 
     @ExceptionHandler
