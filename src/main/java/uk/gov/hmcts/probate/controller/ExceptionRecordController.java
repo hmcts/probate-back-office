@@ -121,7 +121,7 @@ public class ExceptionRecordController {
 
     private void logCallback(SuccessfulTransformationResponse callbackResponse) {
         try {
-            log.debug("Response for transformExceptionRecord: {}", objectMapper.writeValueAsString(callbackResponse));
+            log.info("Response for transformExceptionRecord: {}", objectMapper.writeValueAsString(callbackResponse));
         } catch (JsonProcessingException e) {
             log.error("Exception on transformExceptionRecord: {}", e);
         }
