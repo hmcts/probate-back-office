@@ -1,5 +1,7 @@
 package uk.gov.hmcts.probate.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -45,6 +47,7 @@ public class ExceptionRecordController {
 
     private final OCRPopulatedValueMapper ocrPopulatedValueMapper;
     private final OCRToCCDMandatoryField ocrToCCDMandatoryField;
+    private final ObjectMapper objectMapper;
 
     private static final String OCR_EXCEPTION_WARNING_PREFIX = "OCR Data Mapping Error: ";
     private static final String OCR_EXCEPTION_ERROR = "OCR fields could not be mapped to a case";
@@ -95,14 +98,17 @@ public class ExceptionRecordController {
             switch (formType) {
                 case PA8A:
                     callbackResponse = erService.createCaveatCaseFromExceptionRecord(erRequest, warnings);
+                    logCallback(callbackResponse);
                     return ResponseEntity.ok(callbackResponse);
                 case PA1P:
                     callbackResponse = erService.createGrantOfRepresentationCaseFromExceptionRecord(
                             erRequest, GrantType.GRANT_OF_PROBATE, warnings);
+                    logCallback(callbackResponse);
                     return ResponseEntity.ok(callbackResponse);
                 case PA1A:
                     callbackResponse = erService.createGrantOfRepresentationCaseFromExceptionRecord(
                             erRequest, GrantType.INTESTACY, warnings);
+                    logCallback(callbackResponse);
                     return ResponseEntity.ok(callbackResponse);
                 default:
                     // Unreachable code
@@ -111,6 +117,14 @@ public class ExceptionRecordController {
         }
 
         return ResponseEntity.ok(callbackResponse);
+    }
+
+    private void logCallback(SuccessfulTransformationResponse callbackResponse) {
+        try {
+            log.debug("Response for transformExceptionRecord: {}", objectMapper.writeValueAsString(callbackResponse));
+        } catch (JsonProcessingException e) {
+            log.error("Exception on transformExceptionRecord: {}", e);
+        }
     }
 
     @ExceptionHandler

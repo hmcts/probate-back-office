@@ -153,7 +153,7 @@ public interface ExceptionRecordGrantOfRepresentationMapper {
             source = "primaryApplicantRelationshipToDeceased", qualifiedBy = {ToRelationshipOther.class})
 
     @Mapping(target = "applyingAsAnAttorney", source = "applyingAsAnAttorney", qualifiedBy = {ToYesOrNo.class})
-    @Mapping(target = "attorneyNamesAndAddress", source = "ocrFields", qualifiedBy = {ToAttorneyOnBehalfOfAddress.class})
+    @Mapping(target = "attorneyOnBehalfOfNameAndAddress", source = "ocrFields", qualifiedBy = {ToAttorneyOnBehalfOfAddress.class})
     @Mapping(target = "mentalCapacity", source = "mentalCapacity", qualifiedBy = {ToYesOrNo.class})
     @Mapping(target = "courtOfProtection", source = "courtOfProtection", qualifiedBy = {ToYesOrNo.class})
     @Mapping(target = "epaOrLpa", source = "epaOrLpa", qualifiedBy = {ToYesOrNo.class})
@@ -297,8 +297,8 @@ public interface ExceptionRecordGrantOfRepresentationMapper {
 
     @AfterMapping
     default void setApplyingAsAnAttorneyBoolean(@MappingTarget GrantOfRepresentationData caseData, ExceptionRecordOCRFields ocrField) {
-        if (caseData.getAttorneyNamesAndAddress().size() > 0
-                && !caseData.getAttorneyNamesAndAddress().get(0).getValue().getName().isEmpty()) {
+        if (caseData.getAttorneyOnBehalfOfNameAndAddress().size() > 0
+                && !caseData.getAttorneyOnBehalfOfNameAndAddress().get(0).getValue().getName().isEmpty()) {
             caseData.setApplyingAsAnAttorney(Boolean.TRUE);
         } else {
             caseData.setApplyingAsAnAttorney(Boolean.FALSE);
