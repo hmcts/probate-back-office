@@ -1,5 +1,7 @@
 package uk.gov.hmcts.probate.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -45,6 +47,7 @@ public class ExceptionRecordController {
 
     private final OCRPopulatedValueMapper ocrPopulatedValueMapper;
     private final OCRToCCDMandatoryField ocrToCCDMandatoryField;
+    private final ObjectMapper objectMapper;
 
     private static final String OCR_EXCEPTION_WARNING_PREFIX = "OCR Data Mapping Error: ";
     private static final String OCR_EXCEPTION_ERROR = "OCR fields could not be mapped to a case";
@@ -110,6 +113,11 @@ public class ExceptionRecordController {
             }
         }
 
+        try {
+            log.debug("Response for transformExceptionRecord: {}", objectMapper.writeValueAsString(callbackResponse));
+        } catch (JsonProcessingException e) {
+            log.error("Exception on transformExceptionRecord: {}", e);
+        }
         return ResponseEntity.ok(callbackResponse);
     }
 

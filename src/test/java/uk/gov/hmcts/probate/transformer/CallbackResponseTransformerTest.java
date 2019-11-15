@@ -466,7 +466,7 @@ public class CallbackResponseTransformerTest {
                 .courtOfDecree("Random Court Name")
                 .willGiftUnderEighteen(Boolean.FALSE)
                 .applyingAsAnAttorney(Boolean.TRUE)
-                .attorneyNamesAndAddress(null)
+                .attorneyOnBehalfOfNameAndAddress(null)
                 .mentalCapacity(Boolean.TRUE)
                 .courtOfProtection(Boolean.TRUE)
                 .epaOrLpa(Boolean.FALSE)
@@ -2349,7 +2349,7 @@ public class CallbackResponseTransformerTest {
         assertEquals("Random Court Name", grantOfRepresentationData.getCourtOfDecree());
         assertEquals(Boolean.FALSE, grantOfRepresentationData.getWillGiftUnderEighteen());
         assertEquals(Boolean.TRUE, grantOfRepresentationData.getApplyingAsAnAttorney());
-        assertEquals(null, grantOfRepresentationData.getAttorneyNamesAndAddress());
+        assertEquals(null, grantOfRepresentationData.getAttorneyOnBehalfOfNameAndAddress());
         assertEquals(Boolean.TRUE, grantOfRepresentationData.getMentalCapacity());
         assertEquals(Boolean.TRUE, grantOfRepresentationData.getCourtOfProtection());
         assertEquals(Boolean.FALSE, grantOfRepresentationData.getEpaOrLpa());
