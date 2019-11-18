@@ -90,7 +90,7 @@ public class ExceptionRecordService {
             grantOfRepresentationData.setBulkScanCaseReference(erRequest.getId());
 
             // Add scanned documents
-            log.info("About to map Caveat Scanned Documents to CCD.");
+            log.info("About to map Grant of Representation Scanned Documents to CCD.");
             grantOfRepresentationData.setScannedDocuments(erRequest.getScannedDocuments()
                     .stream()
                     .map(it -> documentMapper.toCaseDoc(it, erRequest.getId()))
@@ -111,7 +111,7 @@ public class ExceptionRecordService {
 
         } catch (Exception e) {
             log.error("Error transforming Grant of Representation case from Exception Record", e);
-            throw new OCRMappingException(e.getMessage(), e);
+            throw new OCRMappingException(e.getMessage());
         }
     }
 }
