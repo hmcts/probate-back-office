@@ -17,6 +17,7 @@ import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToDefaultL
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToIHTFormId;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToLong;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToMartialStatus;
+import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToPaperPaymentMethod;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToPennies;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToPrimaryApplicantAddress;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToRelationship;
@@ -36,7 +37,8 @@ import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepr
                 OCRFieldAdoptiveRelativesMapper.class,
                 OCRFieldIhtMoneyMapper.class,
                 OCRFieldRelationshipMapper.class,
-                OCRFieldNumberMapper.class
+                OCRFieldNumberMapper.class,
+                OCRFieldPaymentMapper.class
         },
         unmappedTargetPolicy = ReportingPolicy.IGNORE, nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS)
 public interface ExceptionRecordGrantOfRepresentationMapper {
@@ -46,8 +48,7 @@ public interface ExceptionRecordGrantOfRepresentationMapper {
     @Mapping(target = "applicationFeePaperForm", source = "applicationFeePaperForm", qualifiedBy = {ToPennies.class})
     @Mapping(target = "feeForCopiesPaperForm", source = "feeForCopiesPaperForm", qualifiedBy = {ToPennies.class})
     @Mapping(target = "totalFeePaperForm", source = "totalFeePaperForm", qualifiedBy = {ToPennies.class})
-    @Mapping(target = "paperPaymentMethod", expression = "java(ocrFields.getPaperPaymentMethod() == null ? null : \"debitOrCredit\")")
-    @Mapping(target = "paymentReferenceNumberPaperform", source = "paymentReferenceNumberPaperform")
+    @Mapping(target = "paperPaymentMethod", source = "paperPaymentMethod", qualifiedBy = {ToPaperPaymentMethod.class})
 
     @Mapping(target = "primaryApplicantForenames", source = "primaryApplicantForenames")
     @Mapping(target = "primaryApplicantSurname", source = "primaryApplicantSurname")
