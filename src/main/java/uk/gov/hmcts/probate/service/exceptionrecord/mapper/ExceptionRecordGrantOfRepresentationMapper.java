@@ -37,8 +37,8 @@ import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepr
                 OCRFieldAdoptiveRelativesMapper.class,
                 OCRFieldIhtMoneyMapper.class,
                 OCRFieldRelationshipMapper.class,
-                OCRFieldNumberMapper.class,
-                OCRFieldPaymentMapper.class
+                OCRFieldPaymentMethodMapper.class,
+                OCRFieldNumberMapper.class
         },
         unmappedTargetPolicy = ReportingPolicy.IGNORE, nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS)
 public interface ExceptionRecordGrantOfRepresentationMapper {
@@ -49,6 +49,7 @@ public interface ExceptionRecordGrantOfRepresentationMapper {
     @Mapping(target = "feeForCopiesPaperForm", source = "feeForCopiesPaperForm", qualifiedBy = {ToPennies.class})
     @Mapping(target = "totalFeePaperForm", source = "totalFeePaperForm", qualifiedBy = {ToPennies.class})
     @Mapping(target = "paperPaymentMethod", source = "paperPaymentMethod", qualifiedBy = {ToPaperPaymentMethod.class})
+    @Mapping(target = "paymentReferenceNumberPaperform", source = "paymentReferenceNumberPaperform")
 
     @Mapping(target = "primaryApplicantForenames", source = "primaryApplicantForenames")
     @Mapping(target = "primaryApplicantSurname", source = "primaryApplicantSurname")

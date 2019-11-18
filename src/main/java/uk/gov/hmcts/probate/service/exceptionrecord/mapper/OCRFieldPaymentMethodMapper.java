@@ -7,7 +7,7 @@ import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToPaperPay
 
 @Slf4j
 @Component
-public class OCRFieldPaymentMapper {
+public class OCRFieldPaymentMethodMapper {
 
     private static final String PAYMENT_METHOD_DEBTORCREDIT = "debitOrCredit";
     private static final String PAYMENT_METHOD_CHEQUE = "cheque";
@@ -31,10 +31,12 @@ public class OCRFieldPaymentMapper {
                 case "FEEACCOUNT":
                     return PAYMENT_METHOD_FEEACCOUNT;
                 default:
-                    String errorMessage = "Payment method debitOrCredit, cheque, feeAccount or cash expected but got '" + paymentMethod + "'";
+                    String errorMessage = "Payment method debitOrCredit, cheque, feeAccount or cash expected but got '"
+                            + paymentMethod + "'";
                     log.error(errorMessage);
                     throw new OCRMappingException(errorMessage);
             }
         }
     }
+
 }

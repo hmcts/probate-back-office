@@ -60,6 +60,9 @@ public class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
     @Autowired
     OCRFieldNumberMapper ocrFieldNumberMapper;
 
+    @Autowired
+    OCRFieldPaymentMethodMapper ocrFieldPaymentMethodMapper;
+
     private static GrantOfRepresentationData caseData;
 
     @Configuration
@@ -111,7 +114,12 @@ public class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
         }
 
         @Bean
-        public OCRFieldNumberMapper ocrFieldNumberMapper() {
+        public OCRFieldPaymentMethodMapper ocrFieldNumberMapper() {
+            return new OCRFieldPaymentMethodMapper();
+        }
+
+        @Bean
+        public OCRFieldNumberMapper ocrFieldPaymentMethodMapper() {
             return new OCRFieldNumberMapper();
         }
 
