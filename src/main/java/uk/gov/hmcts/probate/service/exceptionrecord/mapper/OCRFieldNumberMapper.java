@@ -15,7 +15,7 @@ import java.math.BigDecimal;
 public class OCRFieldNumberMapper {
 
     @ToLong
-    public Long stringToLong(String longString) throws OCRMappingException {
+    public Long stringToLong(String longString) {
         log.info("Beginning mapping for Long value: {}", longString);
         Long returnValue;
 

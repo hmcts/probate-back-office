@@ -22,7 +22,7 @@ public class OCRFieldIhtMoneyMapper {
     private static final String FORM_IHT400 = "IHT400";
 
     @ToPennies
-    public Long poundsToPennies(String monetaryValue) throws OCRMappingException {
+    public Long poundsToPennies(String monetaryValue) {
         log.info("Beginning mapping for monetary value: {}", monetaryValue);
         Long returnValue;
 
@@ -42,7 +42,7 @@ public class OCRFieldIhtMoneyMapper {
     }
 
     @ToIHTFormId
-    public IhtFormType ihtFormType(String ihtFormId) throws OCRMappingException {
+    public IhtFormType ihtFormType(String ihtFormId) {
         log.info("Beginning mapping for IHT Form Type value: {}", ihtFormId);
 
         if (ihtFormId == null || ihtFormId.isEmpty()) {

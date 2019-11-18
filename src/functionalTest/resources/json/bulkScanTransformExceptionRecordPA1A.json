@@ -28,7 +28,7 @@
     { "name": "applicationFeePaperForm", "value": "215" },
     { "name": "feeForCopiesPaperForm", "value": "" },
     { "name": "totalFeePaperForm", "value": "" },
-    { "name": "paperPaymentMethod", "value": "cheque" },
+    { "name": "paperPaymentMethod", "value": "debitOrCredit" },
     { "name": "paymentReferenceNumberPaperform", "value": "" },
     { "name": "primaryApplicantForenames", "value": "Andie-Sarah" },
     { "name": "primaryApplicantMiddleNames", "value": "Rebecca" },
