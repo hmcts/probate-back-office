@@ -22,9 +22,6 @@ import java.util.stream.Collectors;
 
 import static java.lang.Integer.parseInt;
 import static uk.gov.hmcts.probate.model.Constants.YES;
-import static uk.gov.hmcts.probate.transformer.CallbackResponseTransformer.PAYMENT_METHOD_VALUE_FEE_ACCOUNT;
-import static uk.gov.hmcts.probate.transformer.CallbackResponseTransformer.PAYMENT_REFERENCE_CHEQUE;
-import static uk.gov.hmcts.probate.transformer.CallbackResponseTransformer.PAYMENT_REFERENCE_FEE_PREFIX;
 
 @Slf4j
 @Component
@@ -39,7 +36,7 @@ public class CCDDataTransformer {
         CaseData caseData = callbackRequest.getCaseDetails().getData();
 
         return CCDData.builder()
-                .solicitorReference(getSolicitorAppReference(caseData.getSolsSolicitorAppReference()))
+                .solicitorReference(notNullWrapper(caseData.getSolsSolicitorAppReference()))
                 .caseSubmissionDate(getCaseSubmissionDate(callbackRequest.getCaseDetails().getLastModified()))
                 .solsWillType(callbackRequest.getCaseDetails().getData().getSolsWillType())
                 .solicitor(buildSolicitorDetails(caseData))
@@ -48,8 +45,8 @@ public class CCDDataTransformer {
                 .fee(buildFeeDetails(caseData))
                 .solsAdditionalInfo(caseData.getSolsAdditionalInfo())
                 .executors(getAllExecutors(caseData))
-                .boExaminationChecklistQ1(getBoExaminationCheckList(caseData.getBoExaminationChecklistQ1()))
-                .boExaminationChecklistQ2(getBoExaminationCheckList(caseData.getBoExaminationChecklistQ2()))
+                .boExaminationChecklistQ1(notNullWrapper(caseData.getBoExaminationChecklistQ1()))
+                .boExaminationChecklistQ2(notNullWrapper(caseData.getBoExaminationChecklistQ2()))
                 .build();
     }
 
@@ -62,9 +59,9 @@ public class CCDDataTransformer {
         CaseData caseData = callbackRequest.getCaseDetails().getData();
 
         return CCDData.builder()
-                .solsSolicitorEmail(getSolsSolicitorEmail(caseData.getSolsSolicitorEmail()))
-                .primaryApplicantEmailAddress(getPrimaryApplicantEmailAddress(caseData.getPrimaryApplicantEmailAddress()))
-                .applicationType(getApplicationType(caseData.getApplicationType().toString()))
+                .solsSolicitorEmail(notNullWrapper(caseData.getSolsSolicitorEmail()))
+                .primaryApplicantEmailAddress(notNullWrapper(caseData.getPrimaryApplicantEmailAddress()))
+                .applicationType(notNullWrapper(caseData.getApplicationType().toString()))
 
                 .build();
     }
@@ -101,40 +98,12 @@ public class CCDDataTransformer {
                 .extraCopiesOfGrant(caseData.getExtraCopiesOfGrant())
                 .outsideUKGrantCopies(caseData.getOutsideUKGrantCopies())
                 .paymentMethod(caseData.getSolsPaymentMethods())
-                .paymentReferenceNumber(getPaymentReferenceNumber(caseData))
+                .solsFeeAccountNumber(caseData.getSolsFeeAccountNumber())
                 .applicationFee(caseData.getApplicationFee())
                 .amount(caseData.getTotalFee())
                 .feeForUkCopies(caseData.getFeeForUkCopies())
                 .feeForNonUkCopies(caseData.getFeeForNonUkCopies())
                 .build();
-    }
-
-    private String getPaymentReferenceNumber(CaseData caseData) {
-        if (PAYMENT_METHOD_VALUE_FEE_ACCOUNT.equals(caseData.getSolsPaymentMethods())) {
-            return PAYMENT_REFERENCE_FEE_PREFIX + caseData.getSolsFeeAccountNumber();
-        } else {
-            return PAYMENT_REFERENCE_CHEQUE;
-        }
-    }
-
-    private String getSolicitorAppReference(String solsSolicitorAppReference) {
-        return solsSolicitorAppReference == null ? "" : solsSolicitorAppReference;
-    }
-
-    private String getApplicationType(String applicationType) {
-        return applicationType == null ? "" : applicationType;
-    }
-
-    private String getPrimaryApplicantEmailAddress(String primaryApplicantEmailAddress) {
-        return primaryApplicantEmailAddress == null ? "" : primaryApplicantEmailAddress;
-    }
-
-    private String getSolsSolicitorEmail(String solsSolicitorEmail) {
-        return solsSolicitorEmail == null ? "" : solsSolicitorEmail;
-    }
-
-    private String getBoExaminationCheckList(String boExaminationCheckList) {
-        return boExaminationCheckList == null ? "" : boExaminationCheckList;
     }
 
     private List<Executor> getAllExecutors(CaseData caseData) {
@@ -183,12 +152,26 @@ public class CCDDataTransformer {
         CaveatData caseData = callbackRequest.getCaseDetails().getData();
 
         return CaveatData.builder()
-                .caveatorEmailAddress(getCaveatorEmailAddress(caseData.getCaveatorEmailAddress()))
+                .caveatorEmailAddress(notNullWrapper(caseData.getCaveatorEmailAddress()))
                 .build();
     }
 
-    private String getCaveatorEmailAddress(String caveatorEmailAddress) {
-        return caveatorEmailAddress == null ? "" : caveatorEmailAddress;
+    public CaveatData transformSolsCaveats(CaveatCallbackRequest caveatCallbackRequest) {
+
+        return buildCCDDataSolsCaveats(caveatCallbackRequest);
+    }
+
+    private CaveatData buildCCDDataSolsCaveats(CaveatCallbackRequest caveatCallbackRequest) {
+        CaveatData caveatData = caveatCallbackRequest.getCaseDetails().getData();
+
+        return CaveatData.builder()
+                .solsSolicitorAppReference(notNullWrapper(caveatData.getSolsSolicitorAppReference()))
+                .applicationSubmittedDate(getCaseSubmissionDate(caveatCallbackRequest.getCaseDetails()
+                        .getLastModified()))
+                .solsSolicitorEmail(notNullWrapper(caveatData.getSolsSolicitorEmail()))
+                .solsPaymentMethod(notNullWrapper(caveatData.getSolsPaymentMethod()))
+                .solsFeeAccountNumber(notNullWrapper(caveatData.getSolsFeeAccountNumber()))
+                .build();
     }
 
     public CCDData transformBulkPrint(String letterId) {
@@ -198,11 +181,11 @@ public class CCDDataTransformer {
 
     private CCDData buildCCDDataBulkPrint(String letterId) {
 
-        return CCDData.builder().sendLetterId(getSendLetterId(letterId))
+        return CCDData.builder().sendLetterId(notNullWrapper(letterId))
                 .build();
     }
 
-    private String getSendLetterId(String sendLetterId) {
-        return sendLetterId == null ? "" : sendLetterId;
+    private String notNullWrapper(String nullableString) {
+        return nullableString == null ? "" : nullableString;
     }
 }

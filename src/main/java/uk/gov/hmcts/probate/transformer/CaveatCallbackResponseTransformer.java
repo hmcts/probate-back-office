@@ -24,6 +24,8 @@ import java.util.stream.Collectors;
 
 import static java.util.Optional.ofNullable;
 import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
+import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
+import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT_RAISED;
 
@@ -58,7 +60,7 @@ public class CaveatCallbackResponseTransformer {
 
         responseCaveatDataBuilder
                 .applicationSubmittedDate(dateTimeFormatter.format(LocalDate.now()))
-                .paperForm(YES)
+                .paperForm(caveatData.getApplicationType().equals(SOLICITOR) ? NO : YES)
                 .build();
 
         return transformResponse(responseCaveatDataBuilder.build());
@@ -89,6 +91,7 @@ public class CaveatCallbackResponseTransformer {
 
     public CaveatCallbackResponse transform(CaveatCallbackRequest callbackRequest) {
         ResponseCaveatData responseCaveatData = getResponseCaveatData(callbackRequest.getCaseDetails())
+                .applicationType(SOLICITOR)
                 .build();
 
         return transformResponse(responseCaveatData);
@@ -143,6 +146,8 @@ public class CaveatCallbackResponseTransformer {
                 .solsDeceasedAnyOtherNames(caveatData.getSolsDeceasedAnyOtherNames())
                 .solsDeceasedAliasNameList(caveatData.getSolsDeceasedAliasNameList())
                 .solsDeceasedAddress(caveatData.getSolsDeceasedAddress())
+                .solsPaymentMethod(caveatData.getSolsPaymentMethod())
+                .solsFeeAccountNumber(caveatData.getSolsFeeAccountNumber())
 
                 .caveatorForenames(caveatData.getCaveatorForenames())
                 .caveatorSurname(caveatData.getCaveatorSurname())
