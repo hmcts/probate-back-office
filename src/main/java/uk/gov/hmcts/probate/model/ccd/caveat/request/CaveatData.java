@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import uk.gov.hmcts.probate.controller.validation.CaveatCompletedGroup;
 import uk.gov.hmcts.probate.controller.validation.CaveatCreatedGroup;
 import uk.gov.hmcts.probate.controller.validation.CaveatUpdatedGroup;
 import uk.gov.hmcts.probate.model.ApplicationType;
@@ -90,8 +91,6 @@ public class CaveatData {
 
     private String solsDeceasedNameSection;
 
-    private String solsDeceasedNameSection;
-
     @NotBlank(groups = {CaveatUpdatedGroup.class}, message = "{solsDeceasedForenamesIsNull}")
     private String solsDeceasedForenames;
 
@@ -113,6 +112,12 @@ public class CaveatData {
 
     @NotNull(groups = {CaveatUpdatedGroup.class}, message = "{solsDeceasedAddressIsNull}")
     private ProbateAddress solsDeceasedAddress;
+
+    // EVENT = cavConfirmation - confirmation details
+    private String solsFeeAccountNumber;
+
+    @NotBlank(groups = {CaveatCompletedGroup.class}, message = "{solsPaymentMethodIsNull}")
+    private String solsPaymentMethod;
 
     // EVENT = cavRaiseCaveat - caveat details
 

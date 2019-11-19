@@ -46,6 +46,8 @@ public class ResponseCaveatData {
     private final String solsDeceasedAnyOtherNames;
     private final List<CollectionMember<ProbateFullAliasName>> solsDeceasedAliasNameList;
     private final ProbateAddress solsDeceasedAddress;
+    private final String solsPaymentMethod;
+    private final String solsFeeAccountNumber;
 
     private final String caveatorForenames;
     private final String caveatorSurname;
