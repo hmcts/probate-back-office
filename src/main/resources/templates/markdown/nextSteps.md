@@ -24,7 +24,7 @@ Payment summary
 
 **Payment method** {{paymentMethod}}
 
-**Payment reference number** {{solsPaymentReferenceNumber}}
+**Payment reference number** {{paymentReferenceNumber}}
 
 Notes for this application
 -------------------------------------------------

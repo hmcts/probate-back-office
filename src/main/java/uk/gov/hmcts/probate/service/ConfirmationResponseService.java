@@ -5,20 +5,21 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import uk.gov.hmcts.probate.changerule.ApplicantSiblingsRule;
+import uk.gov.hmcts.probate.changerule.ChangeRule;
 import uk.gov.hmcts.probate.changerule.DiedOrNotApplyingRule;
 import uk.gov.hmcts.probate.changerule.DomicilityRule;
 import uk.gov.hmcts.probate.changerule.EntitledMinorityRule;
 import uk.gov.hmcts.probate.changerule.ExecutorsRule;
 import uk.gov.hmcts.probate.changerule.LifeInterestRule;
 import uk.gov.hmcts.probate.changerule.MinorityInterestRule;
-import uk.gov.hmcts.probate.changerule.ApplicantSiblingsRule;
 import uk.gov.hmcts.probate.changerule.NoOriginalWillRule;
-import uk.gov.hmcts.probate.changerule.ChangeRule;
 import uk.gov.hmcts.probate.changerule.RenouncingRule;
 import uk.gov.hmcts.probate.changerule.ResiduaryRule;
 import uk.gov.hmcts.probate.changerule.SpouseOrCivilRule;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
 import uk.gov.hmcts.probate.model.ccd.Executor;
+import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
@@ -48,6 +49,11 @@ public class ConfirmationResponseService {
     private static final String GRANT_TYPE_PROBATE = "WillLeft";
     private static final String GRANT_TYPE_INTESTACY = "NoWill";
     private static final String GRANT_TYPE_ADMON = "WillLeftAnnexed";
+    private static final String CAVEAT_APPLICATION_FEE = "20.00";
+
+    static final String PAYMENT_METHOD_VALUE_FEE_ACCOUNT = "fee account";
+    static final String PAYMENT_REFERENCE_FEE_PREFIX = "Fee account PBA-";
+    static final String PAYMENT_REFERENCE_CHEQUE = "Cheque (payable to ‘HM Courts & Tribunals Service’)";
 
 
     @Value("${markdown.templatesDirectory}")
@@ -69,6 +75,34 @@ public class ConfirmationResponseService {
     private final SpouseOrCivilRule spouseOrCivilConfirmationResponseRule;
 
     private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+    public AfterSubmitCallbackResponse getNextStepsConfirmation(CaveatData caveatData) {
+        return getStopConfirmationUsingMarkdown(generateNextStepsBodyMarkdown(caveatData));
+    }
+
+    private TemplateResponse generateNextStepsBodyMarkdown(CaveatData caveatData) {
+        Map<String, String> keyValue = new HashMap<>();
+        keyValue.put("{{solicitorReference}}", caveatData.getSolsSolicitorAppReference());
+        String caseSubmissionDate = "";
+        if (caveatData.getApplicationSubmittedDate() != null) {
+            caseSubmissionDate = caveatData.getApplicationSubmittedDate().format(formatter);
+        }
+        keyValue.put("{{caseSubmissionDate}}", caseSubmissionDate);
+        keyValue.put("{{applicationFee}}", CAVEAT_APPLICATION_FEE);
+        keyValue.put("{{paymentMethod}}", caveatData.getSolsPaymentMethod());
+
+        String paymentReference;
+        String paymentReferencePrefix = "";
+        if (PAYMENT_METHOD_VALUE_FEE_ACCOUNT.equals(caveatData.getSolsPaymentMethod())) {
+            paymentReferencePrefix = PAYMENT_REFERENCE_FEE_PREFIX;
+            paymentReference = caveatData.getSolsFeeAccountNumber();
+        } else {
+            paymentReference = PAYMENT_REFERENCE_CHEQUE;
+        }
+        keyValue.put("{{paymentReferenceNumber}}", paymentReferencePrefix + paymentReference);
+
+        return markdownSubstitutionService.generatePage(templatesDirectory, MarkdownTemplate.CAVEAT_NEXT_STEPS, keyValue);
+    }
 
     public AfterSubmitCallbackResponse getStopConfirmation(CallbackRequest callbackRequest) {
         return getStopConfirmationUsingMarkdown(generateStopBodyMarkdown(callbackRequest.getCaseDetails().getData()));
@@ -197,9 +231,18 @@ public class ConfirmationResponseService {
         keyValue.put("{{applicationFee}}", getAmountAsString(ccdData.getFee().getApplicationFee()));
         keyValue.put("{{feeForUkCopies}}", getOptionalAmountAsString(ccdData.getFee().getFeeForUkCopies()));
         keyValue.put("{{feeForNonUkCopies}}", getOptionalAmountAsString(ccdData.getFee().getFeeForNonUkCopies()));
-        keyValue.put("{{solsPaymentReferenceNumber}}", ccdData.getFee().getPaymentReferenceNumber());
 
-        String solsWillType = ccdData.getSolsWillType().toString();
+        String paymentReference;
+        String paymentReferencePrefix = "";
+        if (PAYMENT_METHOD_VALUE_FEE_ACCOUNT.equals(ccdData.getFee().getPaymentMethod())) {
+            paymentReferencePrefix = PAYMENT_REFERENCE_FEE_PREFIX;
+            paymentReference = ccdData.getFee().getSolsFeeAccountNumber();
+        } else {
+            paymentReference = PAYMENT_REFERENCE_CHEQUE;
+        }
+        keyValue.put("{{paymentReferenceNumber}}", paymentReferencePrefix + paymentReference);
+
+        String solsWillType = ccdData.getSolsWillType();
         String originalWill = "\n*   the original will";
         if (solsWillType.equals(GRANT_TYPE_INTESTACY)) {
             originalWill = "";
@@ -278,5 +321,13 @@ public class ConfirmationResponseService {
 
     private String getAmountAsString(BigDecimal amount) {
         return amount.divide(BigDecimal.valueOf(100), 2, BigDecimal.ROUND_HALF_UP).toString();
+    }
+
+    private String getPaymentReferenceNumber(CaseData caseData) {
+        if (PAYMENT_METHOD_VALUE_FEE_ACCOUNT.equals(caseData.getSolsPaymentMethods())) {
+            return PAYMENT_REFERENCE_FEE_PREFIX + caseData.getSolsFeeAccountNumber();
+        } else {
+            return PAYMENT_REFERENCE_CHEQUE;
+        }
     }
 }
