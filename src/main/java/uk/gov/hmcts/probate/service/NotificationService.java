@@ -131,6 +131,9 @@ public class NotificationService {
 
         String templateId = templateService.getTemplateId(state, caveatData.getApplicationType(), caveatData.getRegistryLocation());
         String emailAddress = caveatData.getCaveatorEmailAddress();
+        if (caveatData.getApplicationType().equals(ApplicationType.SOLICITOR)) {
+            emailAddress = caveatData.getSolsSolicitorEmail();
+        }
         Map<String, String> personalisation = caveatPersonalisationService.getCaveatPersonalisation(caveatDetails, registry);
         String reference = caveatDetails.getId().toString();
 
