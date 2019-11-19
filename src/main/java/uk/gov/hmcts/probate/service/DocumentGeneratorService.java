@@ -11,6 +11,7 @@ import uk.gov.hmcts.probate.model.*;
 import uk.gov.hmcts.probate.model.ccd.raw.*;
 import uk.gov.hmcts.probate.model.ccd.raw.request.*;
 import uk.gov.hmcts.probate.model.evidencemanagement.*;
+import uk.gov.hmcts.probate.security.*;
 import uk.gov.hmcts.probate.service.client.*;
 import uk.gov.hmcts.probate.service.docmosis.*;
 import uk.gov.hmcts.probate.service.template.pdf.*;
@@ -50,6 +51,7 @@ public class DocumentGeneratorService {
     private final ServiceAuthTokenGenerator tokenGenerator;
     private final BulkPrintService bulkPrintService;
     private final ThirdPartiesProperties thirdPartiesProperties;
+    private final SecurityUtils securityUtils;
 
     public Document generateGrantReissue(CallbackRequest callbackRequest, String version) {
         Map<String, Object> images;
@@ -275,7 +277,7 @@ public class DocumentGeneratorService {
                 try {
                     String authHeaderValue = tokenGenerator.generate();
 
-                    scannedWill = PDDocument.load(documentStoreClient.retrieveUploadDocument(will.getValue(), authHeaderValue));
+                    scannedWill = PDDocument.load(documentStoreClient.retrieveUploadDocument(will.getValue(), authHeaderValue, securityUtils.getSecurityDTO()));
                     PDDocument watermark = PDDocument.load(new File("watermark.pdf"));
 
                     Overlay overlay = new Overlay();

@@ -5,6 +5,7 @@ import org.apache.http.client.methods.*;
 import org.apache.http.impl.client.*;
 import org.springframework.stereotype.*;
 import uk.gov.hmcts.probate.model.ccd.raw.*;
+import uk.gov.hmcts.probate.security.*;
 
 import java.io.*;
 
@@ -45,15 +46,15 @@ public class DocumentStoreClient {
         return bytes;
     }
 
-    public byte[] retrieveUploadDocument(ScannedDocument document, String authHeaderValue) throws IOException {
+    public byte[] retrieveUploadDocument(ScannedDocument document, String authHeaderValue, SecurityDTO securityDTO) throws IOException {
 
         byte[] bytes = null;
         try {
-            HttpGet request = new HttpGet("http://localhost:5006/documents/ccc4646d-a45a-4b0d-ae78-e6cb4f288924/binary");
+            HttpGet request = new HttpGet(document.getUrl().getDocumentBinaryUrl());
             request.setHeader(SERVICE_AUTHORIZATION, authHeaderValue);
-            request.setHeader(USER_ID, "e5f57c32-cef2-479e-887b-c26ecbb37f3d");
+            request.setHeader(USER_ID, document.getUrl().getDocumentUrl());
             log.info("About to retrieve " + document + " from dm-store with binary url: "
-                    + document.getUrl().getDocumentBinaryUrl());
+                    + securityDTO.getUserId());
             CloseableHttpResponse closeableHttpResponse = closeableHttpClient.execute(request);
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
             closeableHttpResponse.getEntity().writeTo(byteArrayOutputStream);

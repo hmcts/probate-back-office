@@ -10,6 +10,7 @@ import org.junit.runner.*;
 import org.mockito.*;
 import org.mockito.junit.*;
 import uk.gov.hmcts.probate.model.ccd.raw.*;
+import uk.gov.hmcts.probate.security.*;
 
 import java.io.*;
 import java.time.*;
@@ -29,6 +30,9 @@ public class DocumentStoreClientTest {
     private CloseableHttpClient closeableHttpClientMock;
     @Mock
     private CloseableHttpResponse closeableHttpResponseMock;
+
+    @Mock
+    private SecurityDTO securityDTO;
 
     @InjectMocks
     private DocumentStoreClient documentStoreClient;
@@ -92,7 +96,7 @@ public class DocumentStoreClientTest {
                 .subtype("will")
                 .url(documentLink)
                 .build();
-        byte[] bytes = documentStoreClient.retrieveUploadDocument(document, "");
+        byte[] bytes = documentStoreClient.retrieveUploadDocument(document, "", securityDTO);
 
         assertTrue(bytes.length > 0);
     }
@@ -112,7 +116,7 @@ public class DocumentStoreClientTest {
         expectedException.expect(IOException.class);
         expectedException.expectMessage(containsString(document.getSubtype()));
 
-        byte[] bytes = documentStoreClient.retrieveUploadDocument(document, "");
+        byte[] bytes = documentStoreClient.retrieveUploadDocument(document, "", securityDTO);
 
         assertNull(bytes);
     }

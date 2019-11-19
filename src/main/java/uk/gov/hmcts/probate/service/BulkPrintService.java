@@ -166,7 +166,7 @@ public class BulkPrintService {
                 || documentTransformer.hasDocumentWithType(Arrays.asList(grantDocument), INTESTACY_GRANT_REISSUE)
                 || documentTransformer.hasDocumentWithType(Arrays.asList(grantDocument), ADMON_WILL_GRANT_REISSUE)
                 || documentTransformer.hasDocumentWithType(Arrays.asList(grantDocument), DIGITAL_GRANT_REISSUE)) {
-            extraCopies = addAdditionalCopiesForGrants(callbackRequest);
+            extraCopies = addAdditionalCopiesForGrantsPlusOriginal(callbackRequest);
         }
 
         //Layer documents as cover letter first, grant, and extra copies of grant to PA.
@@ -196,7 +196,7 @@ public class BulkPrintService {
         return documents;
     }
 
-    private Long addAdditionalCopiesForGrants(CallbackRequest callbackRequest) {
+    private Long addAdditionalCopiesForGrantsPlusOriginal(CallbackRequest callbackRequest) {
         Long extraCopiesOfGrant = 1L;
         if (callbackRequest.getCaseDetails().getData().getExtraCopiesOfGrant() != null) {
             extraCopiesOfGrant = callbackRequest.getCaseDetails().getData().getExtraCopiesOfGrant() + 1;
