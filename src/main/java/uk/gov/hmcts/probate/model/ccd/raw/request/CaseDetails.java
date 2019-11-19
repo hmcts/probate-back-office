@@ -29,5 +29,11 @@ public class CaseDetails {
     private String registryPostcode;
     private String registryTelephone;
 
+    private String thirdPartyAddressLine1;
+    private String thirdPartyAddressLine2;
+    private String thirdPartyAddressLine3;
+    private String thirdPartyTown;
+    private String thirdPartyPostcode;
+
     private String ctscTelephone;
 }

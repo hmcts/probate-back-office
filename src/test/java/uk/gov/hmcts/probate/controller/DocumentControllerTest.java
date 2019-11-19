@@ -116,6 +116,8 @@ public class DocumentControllerTest {
                 .thenReturn(Document.builder().documentType(EDGE_CASE).build());
         when(pdfManagementService.generateAndUpload(any(CallbackRequest.class), eq(GRANT_COVER)))
                 .thenReturn(Document.builder().documentType(GRANT_COVER).build());
+        when(pdfManagementService.generateAndUpload(any(CallbackRequest.class), eq(SEALED_WILL)))
+                .thenReturn(Document.builder().documentType(SEALED_WILL).build());
 
         when(pdfManagementService.generateAndUpload(any(WillLodgementCallbackRequest.class), eq(WILL_LODGEMENT_DEPOSIT_RECEIPT)))
                 .thenReturn(Document.builder().documentType(WILL_LODGEMENT_DEPOSIT_RECEIPT).build());
@@ -172,7 +174,7 @@ public class DocumentControllerTest {
                 .content(solicitorPayload)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data.probateDocumentsGenerated[1].value.DocumentType", is(DIGITAL_GRANT.getTemplateName())))
+                .andExpect(jsonPath("$.data.probateDocumentsGenerated[2].value.DocumentType", is(DIGITAL_GRANT.getTemplateName())))
                 .andReturn();
 
         verify(documentService).expire(any(CallbackRequest.class), eq(DIGITAL_GRANT_DRAFT));
@@ -187,7 +189,7 @@ public class DocumentControllerTest {
                 .content(solicitorPayload)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data.probateDocumentsGenerated[1].value.DocumentType", is(DIGITAL_GRANT.getTemplateName())))
+                .andExpect(jsonPath("$.data.probateDocumentsGenerated[2].value.DocumentType", is(DIGITAL_GRANT.getTemplateName())))
                 .andReturn();
 
         verify(bulkPrintService).sendToBulkPrint(any(CallbackRequest.class), any(Document.class), any(Document.class));
@@ -217,7 +219,7 @@ public class DocumentControllerTest {
                 .content(solicitorPayload)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data.probateDocumentsGenerated[1].value.DocumentType", is(DIGITAL_GRANT.getTemplateName())))
+                .andExpect(jsonPath("$.data.probateDocumentsGenerated[2].value.DocumentType", is(DIGITAL_GRANT.getTemplateName())))
                 .andReturn();
 
         verify(documentService).expire(any(CallbackRequest.class), eq(DIGITAL_GRANT_DRAFT));
@@ -269,7 +271,7 @@ public class DocumentControllerTest {
                 .content(solicitorPayload)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data.probateDocumentsGenerated[1].value.DocumentType", is(ADMON_WILL_GRANT.getTemplateName())))
+                .andExpect(jsonPath("$.data.probateDocumentsGenerated[2].value.DocumentType", is(ADMON_WILL_GRANT.getTemplateName())))
                 .andReturn();
 
         verify(pdfManagementService).generateAndUpload(any(CallbackRequest.class), eq(ADMON_WILL_GRANT));
@@ -285,7 +287,7 @@ public class DocumentControllerTest {
                 .content(solicitorPayload)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data.probateDocumentsGenerated[1].value.DocumentType", is(INTESTACY_GRANT.getTemplateName())))
+                .andExpect(jsonPath("$.data.probateDocumentsGenerated[2].value.DocumentType", is(INTESTACY_GRANT.getTemplateName())))
                 .andReturn();
 
         verify(pdfManagementService).generateAndUpload(any(CallbackRequest.class), eq(INTESTACY_GRANT));

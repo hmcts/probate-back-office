@@ -1,13 +1,16 @@
 package uk.gov.hmcts.probate.service;
 
+import com.fasterxml.jackson.databind.*;
 import lombok.*;
 import lombok.extern.slf4j.*;
 import org.apache.pdfbox.multipdf.*;
 import org.apache.pdfbox.pdmodel.*;
 import org.springframework.stereotype.*;
+import uk.gov.hmcts.probate.config.properties.thirdParties.*;
 import uk.gov.hmcts.probate.model.*;
 import uk.gov.hmcts.probate.model.ccd.raw.*;
 import uk.gov.hmcts.probate.model.ccd.raw.request.*;
+import uk.gov.hmcts.probate.model.evidencemanagement.*;
 import uk.gov.hmcts.probate.service.client.*;
 import uk.gov.hmcts.probate.service.docmosis.*;
 import uk.gov.hmcts.probate.service.template.pdf.*;
@@ -33,6 +36,7 @@ public class DocumentGeneratorService {
     private static final String CREST_FILE_PATH = "crestImage.txt";
     private static final String SEAL_FILE_PATH = "sealImage.txt";
     private static final String WATERMARK = "draftbackground";
+    private static final String COMPANY = "companyName";
     private static final String WATERMARK_FILE_PATH = "watermarkImage.txt";
     private static final String DRAFT = "preview";
     private static final String FINAL = "final";
@@ -44,6 +48,8 @@ public class DocumentGeneratorService {
     private final PreviewLetterService previewLetterService;
     private final DocumentStoreClient documentStoreClient;
     private final ServiceAuthTokenGenerator tokenGenerator;
+    private final BulkPrintService bulkPrintService;
+    private final ThirdPartiesProperties thirdPartiesProperties;
 
     public Document generateGrantReissue(CallbackRequest callbackRequest, String version) {
         Map<String, Object> images;
@@ -152,6 +158,34 @@ public class DocumentGeneratorService {
         return letterDocument;
     }
 
+    public void sendToThirdParty(CallbackRequest callbackRequest, Document grant, Document will) throws IOException {
+
+        if (will == null){
+            for (CollectionMember<Document> document : callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated()) {
+                if (document.getValue().getDocumentType().getTemplateName().equals(SEALED_WILL)) {
+                    will =  document.getValue();
+                }
+            }
+        }
+        String authHeaderValue = tokenGenerator.generate();
+        byte [] ironMountain =  thirdPartyCoverSheet(IRON_MOUNTAIN, callbackRequest);
+        bulkPrintService.sendGrantToThirdParties(callbackRequest, grant, ironMountain, will, authHeaderValue);
+        byte [] smeeAndFord =  thirdPartyCoverSheet(SMEE_AND_FORD, callbackRequest);
+        bulkPrintService.sendGrantToThirdParties(callbackRequest, grant, smeeAndFord, will, authHeaderValue);
+
+    }
+
+
+    private byte[] thirdPartyCoverSheet(String company, CallbackRequest callbackRequest) {
+        ObjectMapper mapper = new ObjectMapper();
+        ThirdParty thirdParty = thirdPartiesProperties.getThirdParty().get(company);
+        Map<String, Object> thirdPartyPlaceholders = mapper.convertValue(thirdParty, Map.class);
+
+        EvidenceManagementFileUpload letterDocument = pdfManagementService.generateDocmosisDocument(thirdPartyPlaceholders,
+                DocumentType.THIRD_PARTY_COVERSHEET, callbackRequest);
+        return letterDocument.getBytes();
+    }
+
     private Document generateSolicitorSoT(CallbackRequest callbackRequest) {
         Document statementOfTruth;
         switch (callbackRequest.getCaseDetails().getData().getCaseType()) {
@@ -222,16 +256,6 @@ public class DocumentGeneratorService {
         return null;
     }
 
-//    private CollectionMember<UploadDocument> filterScannedDocumentsForWill(CaseDetails caseDetails) {
-//        for (CollectionMember<UploadDocument> document : caseDetails.getData().getBoDocumentsUploaded()) {
-//            if (document.getValue().getDocumentType().getTemplateName() != null
-//                    && document.getValue().getDocumentType().getTemplateName().equalsIgnoreCase("correspondence")) {
-//                return document;
-//            }
-//        }
-//        return null;
-//    }
-
     private boolean filterGeneratedDocumentsForWill(CaseDetails caseDetails) {
             for (CollectionMember<Document> document : caseDetails.getData().getProbateDocumentsGenerated()) {
                 if (document.getValue().getDocumentType() != null
@@ -252,7 +276,7 @@ public class DocumentGeneratorService {
                     String authHeaderValue = tokenGenerator.generate();
 
                     scannedWill = PDDocument.load(documentStoreClient.retrieveUploadDocument(will.getValue(), authHeaderValue));
-                    PDDocument watermark = PDDocument.load(new File("watermark2.pdf"));
+                    PDDocument watermark = PDDocument.load(new File("watermark.pdf"));
 
                     Overlay overlay = new Overlay();
                     overlay.setInputPDF(scannedWill);

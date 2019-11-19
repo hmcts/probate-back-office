@@ -241,6 +241,22 @@ registries:
     town: Cardiff
     postcode: CF24 0RZ
 
+thirdParty:
+  ironMountain:
+    name: Iron Mountain
+    addressline1: Unit 2
+    addressline2: Wood Lane
+    addressline3: Erdington
+    town: Birmingham
+    postcode: B24 9QG
+  smeeAndFord:
+    name: Smee and Ford
+    addressline1: Smee and Ford Ltd
+    addressline2: 5th Floor
+    addressline3: 10 Whitechapel High Street
+    town: London
+    postcode: E1 8QS
+
 auth.idam.client.baseUrl: http://localhost:4501
 
 core_case_data.api.url: http://localhost:4452

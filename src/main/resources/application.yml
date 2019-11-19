@@ -79,6 +79,8 @@ docmosis:
       templateName: FL-PRB-SOT-ENG-00090.doc
     assembledLetter:
       templateName: FL-PRB-GNO-ENG-00133.docx
+    thirdPartyCoversheet:
+      templateName: FL-PRB-GRP-ENG-00223.docx
 
 fee.api:
   url: http://localhost:4411
@@ -290,6 +292,21 @@ registries:
     town: South Wales
     postcode: CF24 0RZ
 
+thirdParty:
+  ironMountain:
+    name: Iron Mountain
+    addressline1: Unit 2
+    addressline2: Wood Lane
+    addressline3: Erdington
+    town: Birmingham
+    postcode: B24 9QG
+  smeeAndFord:
+    name: Smee and Ford
+    addressline1: Smee and Ford Ltd
+    addressline2: 5th Floor
+    addressline3: 10 Whitechapel High Street
+    town: London
+    postcode: E1 8QS
 
 document:
   retriever:

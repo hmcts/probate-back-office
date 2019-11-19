@@ -102,7 +102,10 @@ public enum DocumentType {
     STATEMENT_OF_TRUTH("statementOfTruth"),
 
     @JsonProperty("assembledLetter")
-    ASSEMBLED_LETTER("assembledLetter");
+    ASSEMBLED_LETTER("assembledLetter"),
+
+    @JsonProperty("thirdPartyCoversheet")
+    THIRD_PARTY_COVERSHEET("thirdPartyCoversheet");
 
     private final String templateName;
 

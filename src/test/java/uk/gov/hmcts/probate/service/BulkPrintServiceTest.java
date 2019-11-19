@@ -492,4 +492,45 @@ public class BulkPrintServiceTest {
         assertNull(bulkPrintService.sendToBulkPrint(callbackRequest, Document.builder().build(),
                 Document.builder().build(), false));
     }
+
+
+    @Test
+    public void testSuccessfulSendGrantToThirdParties()throws IOException {
+
+        SolsAddress address = SolsAddress.builder().addressLine1("Address 1")
+                .addressLine2("Address 2")
+                .postCode("EC2")
+                .country("UK")
+                .build();
+        CaseData caseData = CaseData.builder()
+                .primaryApplicantForenames("first")
+                .primaryApplicantSurname("last")
+                .primaryApplicantAddress(address)
+                .build();
+        CallbackRequest callbackRequest = new CallbackRequest(new CaseDetails(caseData, null, 0L));
+        DocumentLink documentLink = DocumentLink.builder()
+                .documentUrl("http://localhost")
+                .build();
+        Document grant = Document.builder()
+                .documentFileName("test.pdf")
+                .documentGeneratedBy("test")
+                .documentType(DocumentType.DIGITAL_GRANT)
+                .documentDateAdded(LocalDate.now())
+                .documentLink(documentLink)
+                .build();
+        Document will = Document.builder()
+                .documentFileName("test.pdf")
+                .documentGeneratedBy("test")
+                .documentDateAdded(LocalDate.now())
+                .documentLink(documentLink)
+                .build();
+        UUID uuid = UUID.randomUUID();
+        SendLetterResponse sendLetterResponse = new SendLetterResponse(uuid);
+        when(sendLetterApiMock.sendLetter(anyString(), any(LetterV3.class))).thenReturn(sendLetterResponse);
+        String token = "123";
+        when(authTokenGeneratorMock.generate()).thenReturn(token);
+        bulkPrintService.sendGrantToThirdParties(callbackRequest, grant, "byteToString".getBytes(), will, token);
+
+        verify(sendLetterApiMock).sendLetter(anyString(), any(LetterV3.class));
+    }
 }

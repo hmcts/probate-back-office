@@ -323,6 +323,16 @@ public class PDFManagementServiceTest {
         assertEquals(href, response.getDocumentLink().getDocumentUrl());
     }
 
+    @Test
+    public void shouldGenerateDocmosisDocument() {
+        when(pdfGeneratorServiceMock
+                .generateDocmosisDocumentFrom(THIRD_PARTY_COVERSHEET.getTemplateName(), placeholdersMock))
+                .thenReturn(evidenceManagementFileUpload);
+
+        EvidenceManagementFileUpload response = underTest.generateDocmosisDocument(placeholdersMock, THIRD_PARTY_COVERSHEET, callbackRequestMock);
+        assertNotNull(response);
+    }
+
     @Test(expected = BadRequestException.class)
     public void shouldThrowExceptionIfUnableToDecryptSignatureFile() throws IOException {
         when(pdfServiceConfiguration.getGrantSignatureSecretKey()).thenReturn("testkey");

@@ -120,6 +120,17 @@ public class PDFManagementService {
         return uploadDocument(documentType, fileUpload);
     }
 
+    public EvidenceManagementFileUpload generateDocmosisDocument(Map<String, Object> placeholders,
+                                                                 DocumentType documentType,
+                                                                 CallbackRequest callbackRequest) {
+
+        log.info("Generating pdf to docmosis for template {} for case id {}",
+                documentType.getTemplateName(), callbackRequest.getCaseDetails().getId());
+        return pdfGeneratorService.generateDocmosisDocumentFrom(documentType.getTemplateName(),
+                placeholders);
+
+    }
+
     public Document generateDocumentAndUpload(byte[] bytes) {
 
         log.info("Generating pdf for template sealed will");

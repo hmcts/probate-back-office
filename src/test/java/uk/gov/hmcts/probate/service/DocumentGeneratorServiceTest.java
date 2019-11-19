@@ -5,15 +5,18 @@ import org.apache.pdfbox.pdmodel.*;
 import org.junit.*;
 import org.mockito.*;
 import uk.gov.hmcts.probate.config.properties.registries.*;
+import uk.gov.hmcts.probate.config.properties.thirdParties.*;
 import uk.gov.hmcts.probate.model.*;
 import uk.gov.hmcts.probate.model.ccd.raw.*;
 import uk.gov.hmcts.probate.model.ccd.raw.request.*;
 import uk.gov.hmcts.probate.model.ccd.raw.response.*;
+import uk.gov.hmcts.probate.model.evidencemanagement.*;
 import uk.gov.hmcts.probate.service.docmosis.*;
 import uk.gov.hmcts.probate.service.template.pdf.*;
 import uk.gov.hmcts.probate.validator.*;
 import uk.gov.hmcts.reform.authorisation.generators.*;
 
+import java.io.*;
 import java.time.format.*;
 import java.util.*;
 
@@ -40,8 +43,13 @@ public class DocumentGeneratorServiceTest {
     private CallbackRequest callbackRequestSolsGop;
     private CallbackRequest callbackRequestSolsAdmon;
     private CallbackRequest callbackRequestSolsIntestacy;
+    private CaseData caseData;
+    private CaseDetails caseDetails;
     private Map<String, Object> expectedMap;
     private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMM Y HH:mm");
+    ThirdParty thirdParty = new ThirdParty();
+    ObjectMapper mapper = new ObjectMapper();
+    Map<String, ThirdParty> thirdParties = new HashMap<>();
 
 
     @InjectMocks
@@ -69,6 +77,9 @@ public class DocumentGeneratorServiceTest {
     private EventValidationService eventValidationService;
 
     @Mock
+    private EvidenceManagementFileUpload evidenceManagementFileUpload;
+
+    @Mock
     private List<EmailAddressNotificationValidationRule> emailAddressNotificationValidationRules;
 
     @Mock
@@ -87,10 +98,17 @@ public class DocumentGeneratorServiceTest {
     private ScannedDocument scannedDocument;
 
     @Mock
-    private ServiceAuthTokenGenerator authTokenGeneratorMock;
+    private BulkPrintService  bulkPrintService;
 
     @Mock
     private PDDocument pdDocument;
+
+    @Mock
+    private ServiceAuthTokenGenerator tokenGenerator;
+
+    @Mock
+    private ThirdPartiesProperties thirdPartiesPropertiesMock;
+
 
     @Before
     public void setup() {
@@ -385,4 +403,45 @@ public class DocumentGeneratorServiceTest {
         assertEquals(null,
                 documentGeneratorService.generateSealedWillDocument(caseDetailsMock));
     }
+
+    @Test
+    public void testSendToThirdParty() throws IOException {
+        Document grant = Document.builder().documentType(DIGITAL_GRANT).build();
+        Document will = Document.builder().documentType(SEALED_WILL).build();
+
+        when(tokenGenerator.generate()).thenReturn("123");
+
+        when(pdfManagementService
+                .generateDocmosisDocument(any(), any(), any())).thenReturn(evidenceManagementFileUpload);
+
+        documentGeneratorService.sendToThirdParty(callbackRequest, grant, will);
+    }
+
+    @Test
+    public void testSendToThirdPartyNoWill() throws IOException {
+        Document grant = Document.builder().documentType(DIGITAL_GRANT).build();
+
+        thirdParty.setAddressLine1("Unit 2");
+        thirdParty.setAddressLine2("Wood Lane");
+        thirdParty.setAddressLine3("Erdington");
+        thirdParty.setPostcode("Birmingham");
+        thirdParty.setTown("B24 9QG");
+        thirdParties = mapper.convertValue(thirdParty, Map.class);
+
+        when(thirdPartiesPropertiesMock.getThirdParty()).thenReturn(thirdParties);
+
+        when(document.getDocumentType()).thenReturn(SEALED_WILL);
+        when(document.getDocumentLink()).thenReturn(DocumentLink.builder().build());
+        List<CollectionMember<Document>> documents = Arrays.asList(new CollectionMember(document));
+        when(caseDataMock.getProbateDocumentsGenerated()).thenReturn(documents);
+
+        when(tokenGenerator.generate()).thenReturn("123");
+
+        when(pdfManagementService
+                .generateDocmosisDocument(any(), any(), any())).thenReturn(evidenceManagementFileUpload);
+
+        documentGeneratorService.sendToThirdParty(callbackRequest, grant, null);
+
+    }
+
 }

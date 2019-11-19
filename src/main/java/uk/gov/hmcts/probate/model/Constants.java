@@ -20,6 +20,8 @@ public final class Constants {
     public static final String DOCMOSIS_OUTPUT_PDF = "pdf";
     public static final String DOCMOSIS_OUTPUT_HTML = "html";
     public static final String REDEC_NOTIFICATION_SENT_STATE = "BORedecNotificationSent";
+    public static final String SMEE_AND_FORD = "smeeAndFord";
+    public static final String IRON_MOUNTAIN = "ironMountain";
 
 
     private Constants() {

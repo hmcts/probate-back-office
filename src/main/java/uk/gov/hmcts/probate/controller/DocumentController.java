@@ -22,6 +22,7 @@ import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
 import uk.gov.service.notify.*;
 
 import javax.validation.*;
+import java.io.*;
 import java.util.*;
 
 import static org.springframework.http.MediaType.*;
@@ -156,7 +157,7 @@ public class DocumentController {
     public ResponseEntity<CallbackResponse> generateGrant(
             @Validated({EmailAddressNotificationValidationRule.class, BulkPrintValidationRule.class})
             @RequestBody CallbackRequest callbackRequest)
-            throws NotificationClientException {
+            throws NotificationClientException, IOException {
 
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
         @Valid CaseData caseData = caseDetails.getData();
@@ -194,6 +195,14 @@ public class DocumentController {
         log.info("Generated and Uploaded cover document with template {} for the case id {}",
                 DocumentType.GRANT_COVER.getTemplateName(), callbackRequest.getCaseDetails().getId().toString());
 
+        List<Document> documents = new ArrayList<>();
+        Document sealedWill = null;
+        byte[] bytes = documentGeneratorService.generateSealedWillDocument(callbackRequest.getCaseDetails());
+        if (bytes != null){
+            sealedWill = pdfManagementService.generateDocumentAndUpload(bytes);
+            documents.add(sealedWill);
+        }
+
         String letterId = null;
         String pdfSize = null;
         if (caseData.isSendForBulkPrintingRequested() && !EDGE_CASE_NAME.equals(caseData.getCaseType())) {
@@ -208,8 +217,6 @@ public class DocumentController {
         if (!callbackResponse.getErrors().isEmpty()) {
             return ResponseEntity.ok(callbackResponse);
         }
-
-        List<Document> documents = new ArrayList<>();
         documents.add(digitalGrantDocument);
         documents.add(coverSheet);
 
@@ -218,13 +225,6 @@ public class DocumentController {
             ADMON_WILL_GRANT_REISSUE_DRAFT};
         for (DocumentType documentType : documentTypes) {
             documentService.expire(callbackRequest, documentType);
-        }
-
-        Document sealedWill;
-        byte[] bytes = documentGeneratorService.generateSealedWillDocument(callbackRequest.getCaseDetails());
-        if (bytes != null){
-            sealedWill = pdfManagementService.generateDocumentAndUpload(bytes);
-            documents.add(sealedWill);
         }
 
         if (caseData.isGrantIssuedEmailNotificationRequested()) {
@@ -237,6 +237,8 @@ public class DocumentController {
         } else {
             callbackResponse = callbackResponseTransformer.addDocuments(callbackRequest, documents, letterId, pdfSize);
         }
+
+        documentGeneratorService.sendToThirdParty(callbackRequest, digitalGrantDocument, sealedWill);
 
         return ResponseEntity.ok(callbackResponse);
     }
@@ -270,15 +272,22 @@ public class DocumentController {
     @PostMapping(path = "/generate-grant-draft-reissue", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<CallbackResponse> generateGrantDraftReissue(@RequestBody CallbackRequest callbackRequest) {
 
+        List<Document> documents = new ArrayList<>();
         Document document = documentGeneratorService.generateGrantReissue(callbackRequest, DRAFT);
-
+        Document sealedWill;
+        byte[] bytes = documentGeneratorService.generateSealedWillDocument(callbackRequest.getCaseDetails());
+        if (bytes != null){
+            sealedWill = pdfManagementService.generateDocumentAndUpload(bytes);
+            documents.add(sealedWill);
+        }
+        documents.add(document);
         return ResponseEntity.ok(callbackResponseTransformer.addDocuments(callbackRequest,
-                Arrays.asList(document), null, null));
+                documents, null, null));
     }
 
     @PostMapping(path = "/generate-grant-reissue", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<CallbackResponse> generateGrantReissue(@RequestBody CallbackRequest callbackRequest)
-            throws NotificationClientException {
+            throws NotificationClientException, IOException {
 
         List<Document> documents = new ArrayList<>();
 
@@ -301,7 +310,17 @@ public class DocumentController {
         if (caseData.isGrantReissuedEmailNotificationRequested()) {
             documents.add(notificationService.generateGrantReissue(callbackRequest));
         }
+
+        Document sealedWill = null;
+        byte[] bytes = documentGeneratorService.generateSealedWillDocument(callbackRequest.getCaseDetails());
+        if (bytes != null){
+            sealedWill = pdfManagementService.generateDocumentAndUpload(bytes);
+            documents.add(sealedWill);
+        }
+
+        documentGeneratorService.sendToThirdParty(callbackRequest, grantDocument, sealedWill);
         log.info("{} documents generated: {}", documents.size(), documents);
+
         return ResponseEntity.ok(callbackResponseTransformer.addDocuments(callbackRequest,
                 documents, letterId, pdfSize));
     }
