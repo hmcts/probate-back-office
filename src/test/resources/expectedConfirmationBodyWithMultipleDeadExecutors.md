@@ -44,6 +44,7 @@ You now need to send us:
 *   completed inheritance tax form IHT207
 *   death certificate for Bob Martin
 *   death certificate for John Martin
+*   a photocopy of the signed legal statement and declaration
 
 Where to send us your documents
 -------------------------------

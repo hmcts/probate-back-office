@@ -44,6 +44,7 @@ You now need to send us:
 *   the stamped (receipted) IHT 421 with this application
 *   renunciation form for Tim Smith
 *   death certificate for Bob Martin
+*   a photocopy of the signed legal statement and declaration
 
 Where to send us your documents
 -------------------------------

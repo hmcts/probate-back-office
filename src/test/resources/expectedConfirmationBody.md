@@ -42,6 +42,7 @@ You now need to send us:
 *   fee payment: your Cheque for &pound;0.10 (grant and copies)
 *   the printed version of this page which will be used as your cover letter to us
 *   completed inheritance tax form IHT207
+*   a photocopy of the signed legal statement and declaration
 
 Where to send us your documents
 -------------------------------

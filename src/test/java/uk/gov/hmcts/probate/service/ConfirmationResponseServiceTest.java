@@ -301,7 +301,7 @@ public class ConfirmationResponseServiceTest {
     }
 
     @Test
-    public void shouldStopWillConfirmationForMinoritInterest() {
+    public void shouldStopWillConfirmationForMinorityInterest() {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
         when(minorityInterestRuleMock.isChangeNeeded(caseDataMock)).thenReturn(true);
@@ -531,6 +531,8 @@ public class ConfirmationResponseServiceTest {
         assertEquals("Cheque", nextStepsValues.get("{{paymentMethod}}"));
         assertEquals("100.00", nextStepsValues.get("{{paymentAmount}}"));
         assertEquals("solsAdditionalInfo", nextStepsValues.get("{{additionalInfo}}"));
+        assertEquals("*   a photocopy of the signed legal statement and declaration",
+                nextStepsValues.get("{{legalPhotocopy}}"));
     }
 
     private CCDData getCcdDataForConfirmation() {

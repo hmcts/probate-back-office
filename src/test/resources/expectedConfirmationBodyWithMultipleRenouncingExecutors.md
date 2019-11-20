@@ -44,6 +44,7 @@ You now need to send us:
 *   completed inheritance tax form IHT207
 *   renunciation form for Tim Smith
 *   renunciation form for John Smith
+*   a photocopy of the signed legal statement and declaration
 
 Where to send us your documents
 -------------------------------
