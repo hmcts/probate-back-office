@@ -40,7 +40,8 @@ You now need to send us:
 {{originalWill}}
 *   fee payment: your {{paymentMethod}} for &pound;{{paymentAmount}} (grant and copies)
 *   the printed version of this page which will be used as your cover letter to us{{ihtText}}{{ihtForm}}
-{{iht400}}{{renouncingExecutors}}{{deadExecutors}}
+{{iht400}}{{renouncingExecutors}}{{deadExecutors}}{{legalPhotocopy}}
+
 Where to send us your documents
 -------------------------------
 
