@@ -10,7 +10,7 @@ Payment summary
 
 **Payment method** Cheque
 
-**Payment reference number** Cheque (payable to ‘HM Courts & Tribunals Service’)
+**Payment reference number** Cheque (payable to 'HM Courts & Tribunals Service')
 
 What happens next
 =================

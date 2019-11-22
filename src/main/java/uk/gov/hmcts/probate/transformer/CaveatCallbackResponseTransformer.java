@@ -58,10 +58,17 @@ public class CaveatCallbackResponseTransformer {
                     .build();
         }
 
-        responseCaveatDataBuilder
-                .applicationSubmittedDate(dateTimeFormatter.format(LocalDate.now()))
-                .paperForm(caveatData.getApplicationType().equals(SOLICITOR) ? NO : YES)
-                .build();
+        if (caveatData.getApplicationType() != null) {
+            responseCaveatDataBuilder
+                    .applicationSubmittedDate(dateTimeFormatter.format(LocalDate.now()))
+                    .paperForm(caveatData.getApplicationType().equals(SOLICITOR) ? NO : YES)
+                    .build();
+        } else {
+            responseCaveatDataBuilder
+                    .applicationSubmittedDate(dateTimeFormatter.format(LocalDate.now()))
+                    .paperForm(YES)
+                    .build();
+        }
 
         return transformResponse(responseCaveatDataBuilder.build());
     }
@@ -90,9 +97,16 @@ public class CaveatCallbackResponseTransformer {
     }
 
     public CaveatCallbackResponse transform(CaveatCallbackRequest callbackRequest) {
-        ResponseCaveatData responseCaveatData = getResponseCaveatData(callbackRequest.getCaseDetails())
-                .applicationType(SOLICITOR)
-                .build();
+        ResponseCaveatData responseCaveatData;
+
+        if (callbackRequest.getCaseDetails().getData().getSolsSolicitorEmail() != null) {
+            responseCaveatData = getResponseCaveatData(callbackRequest.getCaseDetails())
+                    .applicationType(SOLICITOR)
+                    .build();
+        } else {
+            responseCaveatData = getResponseCaveatData(callbackRequest.getCaseDetails())
+                    .build();
+        }
 
         return transformResponse(responseCaveatData);
     }

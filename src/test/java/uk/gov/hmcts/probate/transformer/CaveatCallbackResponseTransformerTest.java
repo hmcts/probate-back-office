@@ -212,6 +212,7 @@ public class CaveatCallbackResponseTransformerTest {
         CollectionMember<ProbateFullAliasName> an1 = new CollectionMember<>("0", an11);
         solsDeceasedFullAliasNameList.add(an1);
         caveatDataBuilder.solsDeceasedAliasNameList(solsDeceasedFullAliasNameList);
+        caveatDataBuilder.solsSolicitorEmail(CAV_SOLICITOR_EMAIL);
 
         when(caveatCallbackRequestMock.getCaseDetails()).thenReturn(caveatDetailsMock);
         when(caveatDetailsMock.getData()).thenReturn(caveatDataBuilder.build());
@@ -220,6 +221,7 @@ public class CaveatCallbackResponseTransformerTest {
 
         assertCommonDetails(caveatCallbackResponse);
         assertEquals(1, caveatCallbackResponse.getCaveatData().getSolsDeceasedAliasNameList().size());
+        assertEquals(CAV_SOLICITOR_EMAIL, caveatCallbackResponse.getCaveatData().getSolsSolicitorEmail());
     }
 
     @Test
