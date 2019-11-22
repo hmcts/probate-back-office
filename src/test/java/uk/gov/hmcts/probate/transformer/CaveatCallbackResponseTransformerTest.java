@@ -43,6 +43,7 @@ public class CaveatCallbackResponseTransformerTest {
     private static final DateTimeFormatter dateTimeFormatter = CaveatCallbackResponseTransformer.dateTimeFormatter;
 
     private static final ApplicationType CAV_APPLICATION_TYPE = CaveatCallbackResponseTransformer.DEFAULT_APPLICATION_TYPE;
+    private static final ApplicationType CAV_APPLICATION_TYPE_SOLS = ApplicationType.SOLICITOR;
     private static final String CAV_REGISTRY_LOCATION = CaveatCallbackResponseTransformer.DEFAULT_REGISTRY_LOCATION;
 
     private static final String CAV_EXCEPTION_RECORD_CASE_TYPE_ID = CaveatCallbackResponseTransformer.EXCEPTION_RECORD_CASE_TYPE_ID;
@@ -95,6 +96,9 @@ public class CaveatCallbackResponseTransformerTest {
     private static final String CAV_RECORD_ID = "12345";
     private static final String CAV_LEGACY_CASE_URL = "someUrl";
     private static final String CAV_LEGACY_CASE_TYPE = "someCaseType";
+
+    private static final String SOLS_PAYMENT_METHOD = "cheque";
+    private static final String SOLS_FEE_ACC = "1234";
 
     @InjectMocks
     private CaveatCallbackResponseTransformer underTest;
@@ -153,7 +157,9 @@ public class CaveatCallbackResponseTransformerTest {
                 .legacyCaseViewUrl(CAV_LEGACY_CASE_URL)
                 .applicationSubmittedDate(CAV_SUBMISSION_DATE)
                 .paperForm(YES)
-                .legacyType(CAV_LEGACY_CASE_TYPE);
+                .legacyType(CAV_LEGACY_CASE_TYPE)
+                .solsPaymentMethod(SOLS_PAYMENT_METHOD)
+                .solsFeeAccountNumber(SOLS_FEE_ACC);
 
         bulkScanCaveatData = uk.gov.hmcts.reform.probate.model.cases.caveat.CaveatData.builder()
                 .deceasedForenames(CAV_DECEASED_FORENAMES)
@@ -349,6 +355,7 @@ public class CaveatCallbackResponseTransformerTest {
     private void assertCommon(CaveatCallbackResponse caveatCallbackResponse) {
         assertCommonDetails(caveatCallbackResponse);
         assertApplicationType(caveatCallbackResponse, CAV_APPLICATION_TYPE);
+        assertPaperForm(caveatCallbackResponse, caveatCallbackResponse.getCaveatData().getApplicationType());
     }
 
     private void assertCommonDetails(CaveatCallbackResponse caveatCallbackResponse) {
@@ -388,11 +395,21 @@ public class CaveatCallbackResponseTransformerTest {
         assertEquals(CAV_RECORD_ID, caveatCallbackResponse.getCaveatData().getRecordId());
         assertEquals(CAV_LEGACY_CASE_TYPE, caveatCallbackResponse.getCaveatData().getLegacyType());
         assertEquals(CAV_LEGACY_CASE_URL, caveatCallbackResponse.getCaveatData().getLegacyCaseViewUrl());
-        assertEquals(YES, caveatCallbackResponse.getCaveatData().getPaperForm());
+
+        assertEquals(SOLS_PAYMENT_METHOD, caveatCallbackResponse.getCaveatData().getSolsPaymentMethod());
+        assertEquals(SOLS_FEE_ACC, caveatCallbackResponse.getCaveatData().getSolsFeeAccountNumber());
     }
 
     private void assertApplicationType(CaveatCallbackResponse caveatCallbackResponse, ApplicationType cavApplicationType) {
         assertEquals(cavApplicationType, caveatCallbackResponse.getCaveatData().getApplicationType());
+    }
+
+    private void assertPaperForm(CaveatCallbackResponse caveatCallbackResponse, ApplicationType applicationType) {
+        if (applicationType.equals(ApplicationType.SOLICITOR)) {
+            assertEquals(NO, caveatCallbackResponse.getCaveatData().getPaperForm());
+        } else {
+            assertEquals(YES, caveatCallbackResponse.getCaveatData().getPaperForm());
+        }
     }
 
     private CollectionMember<UploadDocument> createUploadDocuments(String id) {

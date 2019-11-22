@@ -7,13 +7,13 @@ import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.test.util.ReflectionTestUtils;
+import uk.gov.hmcts.probate.changerule.ApplicantSiblingsRule;
 import uk.gov.hmcts.probate.changerule.DiedOrNotApplyingRule;
 import uk.gov.hmcts.probate.changerule.DomicilityRule;
 import uk.gov.hmcts.probate.changerule.EntitledMinorityRule;
 import uk.gov.hmcts.probate.changerule.ExecutorsRule;
 import uk.gov.hmcts.probate.changerule.LifeInterestRule;
 import uk.gov.hmcts.probate.changerule.MinorityInterestRule;
-import uk.gov.hmcts.probate.changerule.ApplicantSiblingsRule;
 import uk.gov.hmcts.probate.changerule.NoOriginalWillRule;
 import uk.gov.hmcts.probate.changerule.RenouncingRule;
 import uk.gov.hmcts.probate.changerule.ResiduaryRule;
@@ -23,7 +23,9 @@ import uk.gov.hmcts.probate.model.ccd.Deceased;
 import uk.gov.hmcts.probate.model.ccd.Executor;
 import uk.gov.hmcts.probate.model.ccd.Fee;
 import uk.gov.hmcts.probate.model.ccd.InheritanceTax;
+import uk.gov.hmcts.probate.model.ccd.ProbateAddress;
 import uk.gov.hmcts.probate.model.ccd.Solicitor;
+import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
@@ -97,6 +99,8 @@ public class ConfirmationResponseServiceTest {
     private Executor deadAfterExecutorMock;
     @Mock
     private SolsAddress solsAddressMock;
+    @Mock
+    private ProbateAddress solsDeceasedAddressMock;
 
     private static final String GRANT_TYPE_PROBATE = "WillLeft";
     private static final String GRANT_TYPE_INTESTACY = "NoWill";
@@ -465,6 +469,22 @@ public class ConfirmationResponseServiceTest {
     }
 
     @Test
+    public void shouldGetCaveatNextStepsConfirmation() {
+        CaveatData caveatData = getCaveatDataForConfirmation();
+
+        when(markdownSubstitutionServiceMock.generatePage(any(String.class), any(MarkdownTemplate.class), nextStepsKeyValueMap.capture()))
+                .thenReturn(willBodyTemplateResponseMock);
+
+        AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getNextStepsConfirmation(caveatData);
+
+        assertNull(afterSubmitCallbackResponse.getConfirmationHeader());
+        assertEquals(CONFIRMATION_BODY, afterSubmitCallbackResponse.getConfirmationBody());
+        Map<String, String> nextStepsValues = nextStepsKeyValueMap.getValue();
+        assertEquals("31/12/2000", nextStepsValues.get("{{caseSubmissionDate}}"));
+        assertConfirmationValuesCaveats(nextStepsValues);
+    }
+
+    @Test
     public void shouldGetNextStepsConfirmationWithNoSubmissionDate() {
         CCDData ccdDataMock = getCcdDataForConfirmation();
         when(ccdDataMock.getCaseSubmissionDate()).thenReturn(null);
@@ -479,6 +499,23 @@ public class ConfirmationResponseServiceTest {
         Map<String, String> nextStepsValues = nextStepsKeyValueMap.getValue();
         assertEquals("", nextStepsValues.get("{{caseSubmissionDate}}"));
         assertConfirmationValues(nextStepsValues);
+    }
+
+    @Test
+    public void shouldGetCaveatNextStepsConfirmationWithNoSubmissionDate() {
+        CaveatData caveatData = getCaveatDataForConfirmation();
+        when(caveatData.getApplicationSubmittedDate()).thenReturn(null);
+
+        when(markdownSubstitutionServiceMock.generatePage(any(String.class), any(MarkdownTemplate.class), nextStepsKeyValueMap.capture()))
+                .thenReturn(willBodyTemplateResponseMock);
+
+        AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getNextStepsConfirmation(caveatData);
+
+        assertNull(afterSubmitCallbackResponse.getConfirmationHeader());
+        assertEquals(CONFIRMATION_BODY, afterSubmitCallbackResponse.getConfirmationBody());
+        Map<String, String> nextStepsValues = nextStepsKeyValueMap.getValue();
+        assertEquals("", nextStepsValues.get("{{caseSubmissionDate}}"));
+        assertConfirmationValuesCaveats(nextStepsValues);
     }
 
     @Test
@@ -533,6 +570,13 @@ public class ConfirmationResponseServiceTest {
         assertEquals("solsAdditionalInfo", nextStepsValues.get("{{additionalInfo}}"));
     }
 
+    private void assertConfirmationValuesCaveats(Map<String, String> nextStepsValues) {
+        assertEquals("ref", nextStepsValues.get("{{solicitorReference}}"));
+        assertEquals("20.00", nextStepsValues.get("{{applicationFee}}"));
+        assertEquals("31/12/2000", nextStepsValues.get("{{caseSubmissionDate}}"));
+        assertEquals("Cheque (payable to 'HM Courts & Tribunals Service')", nextStepsValues.get("{{paymentReferenceNumber}}"));
+    }
+
     private CCDData getCcdDataForConfirmation() {
         Solicitor solicitor = mock(Solicitor.class);
         Deceased deceased = mock(Deceased.class);
@@ -574,4 +618,26 @@ public class ConfirmationResponseServiceTest {
         return ccdDataMock;
     }
 
+    private CaveatData getCaveatDataForConfirmation() {
+        CaveatData caveatDataMock = mock(CaveatData.class);
+        LocalDate date = LocalDate.parse("2000-12-31");
+
+
+        when(caveatDataMock.getSolsSolicitorAppReference()).thenReturn("ref");
+        when(caveatDataMock.getApplicationSubmittedDate()).thenReturn(date);
+        when(caveatDataMock.getSolsSolicitorFirmName()).thenReturn("Sol Firm Name");
+        when(caveatDataMock.getSolsSolicitorEmail()).thenReturn("solicitor@test.com");
+        when(caveatDataMock.getSolsSolicitorPhoneNumber()).thenReturn("07070707077");
+        when(caveatDataMock.getSolsSolicitorAddress()).thenReturn(solsAddressMock);
+
+        when(caveatDataMock.getSolsApplicantFullName()).thenReturn("Applicant_fn Applicant_ln");
+        when(caveatDataMock.getSolsDeceasedFullName()).thenReturn("Deceased Fullname");
+        when(caveatDataMock.getSolsDeceasedDateOfDeath()).thenReturn(date);
+        when(caveatDataMock.getSolsHasDateOfBirth()).thenReturn("Yes");
+        when(caveatDataMock.getSolsDeceasedDateOfBirth()).thenReturn(date);
+        when(caveatDataMock.getSolsDeceasedAddress()).thenReturn(solsDeceasedAddressMock);
+        when(caveatDataMock.getSolsDeceasedAnyOtherNames()).thenReturn("No");
+
+        return caveatDataMock;
+    }
 }

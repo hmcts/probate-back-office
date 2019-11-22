@@ -39,6 +39,14 @@ public class CaveatDataTest {
     private static final String CAV_SOLS_POSTCODE = "1AB 1CD";
     private static final String CAV_SOLS_COUNTRY = "";
 
+    private static final String CAV_SOLS_DECEASED_ADDRESS_1 = "10 Sols Lane";
+    private static final String CAV_SOLS_DECEASED_ADDRESS_2 = "Salford";
+    private static final String CAV_SOLS_DECEASED_ADDRESS_3 = "";
+    private static final String CAV_SOLS_DECEASED_COUNTY = "";
+    private static final String CAV_SOLS_DECEASED_TOWN = "London";
+    private static final String CAV_SOLS_DECEASED_POSTCODE = "3AB 3CD";
+    private static final String CAV_SOLS_DECEASED_COUNTRY = "";
+
     private static final LocalDate LOCAL_DATE = LocalDate.of(2000, 01, 01);
 
     @InjectMocks
@@ -261,6 +269,40 @@ public class CaveatDataTest {
 
         assertEquals(CAV_SOLS_ADDRESS_1 + ", " + CAV_SOLS_POSTCODE,
                 addressFormatterService.formatSolsAddress(solicitorAddress));
+    }
+
+    @Test
+    public void shouldReturnSolicitorDeceasedFullAddressLongForCaveat() {
+
+        ProbateAddress deceasedAddress = new ProbateAddress(CAV_SOLS_DECEASED_ADDRESS_1,
+                CAV_SOLS_DECEASED_ADDRESS_2,
+                CAV_SOLS_DECEASED_ADDRESS_3,
+                CAV_SOLS_DECEASED_COUNTY,
+                CAV_SOLS_DECEASED_TOWN,
+                CAV_SOLS_DECEASED_POSTCODE,
+                CAV_SOLS_DECEASED_COUNTRY);
+
+        final CaveatData caveatData = CaveatData.builder()
+                .solsDeceasedAddress(deceasedAddress)
+                .build();
+
+        assertEquals(CAV_SOLS_DECEASED_ADDRESS_1 + ", " + CAV_SOLS_DECEASED_ADDRESS_2 + ", "
+                        + CAV_SOLS_DECEASED_TOWN + ", " + CAV_SOLS_DECEASED_POSTCODE,
+                addressFormatterService.formatAddress(deceasedAddress));
+    }
+
+    @Test
+    public void shouldReturnSolicitorDeceasedFullAddressShortForCaveat() {
+
+        ProbateAddress deceasedAddress = new ProbateAddress(CAV_SOLS_DECEASED_ADDRESS_1,
+                "", "", "", "", CAV_SOLS_DECEASED_POSTCODE, "");
+
+        final CaveatData caveatData = CaveatData.builder()
+                .solsDeceasedAddress(deceasedAddress)
+                .build();
+
+        assertEquals(CAV_SOLS_DECEASED_ADDRESS_1 + ", " + CAV_SOLS_DECEASED_POSTCODE,
+                addressFormatterService.formatAddress(deceasedAddress));
     }
 
 }

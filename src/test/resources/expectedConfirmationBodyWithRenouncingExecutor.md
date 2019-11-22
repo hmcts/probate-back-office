@@ -24,7 +24,7 @@ Payment summary
 
 **Payment method** Cheque
 
-**Payment reference number** XXXXX123456
+**Payment reference number** Cheque (payable to ‘HM Courts & Tribunals Service’)
 
 Notes for this application
 -------------------------------------------------

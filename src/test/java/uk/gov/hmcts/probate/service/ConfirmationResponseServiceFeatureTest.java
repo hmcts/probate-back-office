@@ -14,6 +14,7 @@ import uk.gov.hmcts.probate.model.ccd.Executor;
 import uk.gov.hmcts.probate.model.ccd.Fee;
 import uk.gov.hmcts.probate.model.ccd.InheritanceTax;
 import uk.gov.hmcts.probate.model.ccd.Solicitor;
+import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.response.AfterSubmitCallbackResponse;
 import uk.gov.hmcts.probate.util.TestUtils;
@@ -57,7 +58,7 @@ public class ConfirmationResponseServiceFeatureTest {
     private static final BigDecimal GROSS = BigDecimal.valueOf(1000f);
     private static final Long EXTRA_UK = 1L;
     private static final Long EXTRA_OUTSIDE_UK = 2L;
-    private static final String PAYMENT_REFERENCE = "XXXXX123456";
+    private static final String SOLS_FEE_ACC = "12345";
     private static final String ADDITIONAL_INFO = "ADDITIONAL INFO";
     private static final String WILL_TYPE_INTESTACY = "NoWill";
     private static final String WILL_TYPE_PROBATE = "WillLeft";
@@ -177,6 +178,16 @@ public class ConfirmationResponseServiceFeatureTest {
         assertThat(stopConfirmation.getConfirmationBody(), is(expectedConfirmationBody));
     }
 
+    @Test
+    public void shouldGenerateCorrectConfirmationBodyCaveats() throws Exception {
+        CaveatData caveatData = createCaveatDataBuilder().build();
+        AfterSubmitCallbackResponse stopConfirmation = confirmationResponseService.getNextStepsConfirmation(caveatData);
+
+        String expectedConfirmationBody = testUtils.getStringFromFile("expectedConfirmationBodyCaveat.md");
+
+        assertThat(stopConfirmation.getConfirmationBody(), is(expectedConfirmationBody));
+    }
+
     private CCDData.CCDDataBuilder createCCDataBuilder() {
         return CCDData.builder()
                 .solicitorReference(SOLICITOR_REFERENCE)
@@ -190,6 +201,14 @@ public class ConfirmationResponseServiceFeatureTest {
                 .solsWillType(WILL_TYPE_PROBATE);
     }
 
+    private CaveatData.CaveatDataBuilder createCaveatDataBuilder() {
+        return CaveatData.builder()
+                .solsSolicitorAppReference(SOLICITOR_REFERENCE)
+                .applicationSubmittedDate(LocalDate.of(2018, 1, 1))
+                .solsPaymentMethod(PAYMENT_METHOD)
+                .solsFeeAccountNumber(SOLS_FEE_ACC);
+    }
+
     private Fee createFee() {
         return Fee.builder()
                 .extraCopiesOfGrant(EXTRA_UK)
@@ -197,7 +216,7 @@ public class ConfirmationResponseServiceFeatureTest {
                 .paymentMethod(PAYMENT_METHOD)
                 .amount(TOTAL_FEE)
                 .applicationFee(APPLICATION_FEE)
-                .paymentReferenceNumber(PAYMENT_REFERENCE)
+                .solsFeeAccountNumber(SOLS_FEE_ACC)
                 .feeForUkCopies(FEE_UK)
                 .feeForNonUkCopies(FEE_NON_UK)
                 .build();
