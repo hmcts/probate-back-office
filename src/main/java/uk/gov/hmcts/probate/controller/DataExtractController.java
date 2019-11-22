@@ -18,6 +18,8 @@ import uk.gov.hmcts.probate.service.CaseQueryService;
 import uk.gov.hmcts.probate.service.ExcelaCriteriaService;
 import uk.gov.hmcts.probate.service.FileTransferService;
 import uk.gov.hmcts.probate.service.NotificationService;
+import uk.gov.hmcts.probate.service.filebuilder.FileExtractDateFormatter;
+import uk.gov.hmcts.probate.service.filebuilder.HmrcFileService;
 import uk.gov.hmcts.probate.service.filebuilder.IronMountainFileService;
 import uk.gov.service.notify.NotificationClientException;
 
@@ -34,12 +36,44 @@ import java.util.List;
 public class DataExtractController {
 
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-    private static final DateTimeFormatter FILE_DATE_FORMAT = DateTimeFormatter.ofPattern("yyyyMMdd");
     private final CaseQueryService caseQueryService;
     private final NotificationService notificationService;
     private final FileTransferService fileTransferService;
     private final IronMountainFileService ironMountainFileService;
+    private final HmrcFileService hmrcFileService;
+    private final FileExtractDateFormatter fileExtractDateFormatter;
     private final ExcelaCriteriaService excelaCriteriaService;
+
+    @Scheduled(cron = "${cron.data_extract}")
+    @ApiOperation(value = "Initiate HMRC data extract", notes = "Will find cases for yesterdays date")
+    @PostMapping(path = "/hmrc")
+    public ResponseEntity initiateHMRCExtract() {
+        log.info("Extract initiated for HMRC");
+        return initiateHMRCExtract(DATE_FORMAT.format(LocalDate.now().minusDays(1L)));
+    }
+
+    @ApiOperation(value = "Initiate HMRC data extract with date", notes = "Date MUST be in format 'yyyy-MM-dd'")
+    @PostMapping(path = "/hmrc/{date}")
+    public ResponseEntity initiateHMRCExtract(@ApiParam(value = "Date to find cases against", required = true)
+                                                      @PathVariable("date") String date) {
+        dateValidator(date);
+        log.info("HMRC data extract initiated for date: {}", date);
+
+        List<ReturnedCaseDetails> cases = caseQueryService.findCasesWithDatedDocument(date);
+        log.info("Cases found for HMRC: {}", cases.size());
+
+        if (!cases.isEmpty()) {
+            log.info("preparing for file upload");
+            int response = fileTransferService.uploadFile(hmrcFileService.createHMRCFile(
+                    cases, "1_"+fileExtractDateFormatter.formatFileDate() + ".dat"));
+
+            if (response != 201) {
+                log.error("Failed to upload file for: " + date);
+                throw new ClientException(HttpStatus.SERVICE_UNAVAILABLE.value(), "Failed to upload file for date: " + date);
+            }
+        }
+        return ResponseEntity.ok(cases.size() + " cases successfully found for date: " + date + " for HMRC");
+    }
 
     @Scheduled(cron = "${cron.data_extract}")
     @ApiOperation(value = "Initiate IronMountain data extract", notes = "Will find cases for yesterdays date")
@@ -62,7 +96,7 @@ public class DataExtractController {
         if (!cases.isEmpty()) {
             log.info("preparing for file upload");
             int response = fileTransferService.uploadFile(ironMountainFileService.createIronMountainFile(
-                    cases, FILE_DATE_FORMAT.format(LocalDate.now()) + "grant.txt"));
+                cases, fileExtractDateFormatter.formatFileDate() + "grant.txt"));
 
             if (response != 201) {
                 log.error("Failed to upload file for: " + date);

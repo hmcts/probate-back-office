@@ -22,6 +22,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 import uk.gov.hmcts.probate.service.CaseQueryService;
 import uk.gov.hmcts.probate.service.FileTransferService;
 import uk.gov.hmcts.probate.service.NotificationService;
+import uk.gov.hmcts.probate.service.filebuilder.HmrcFileService;
 import uk.gov.hmcts.probate.service.filebuilder.IronMountainFileService;
 
 import java.time.LocalDate;
@@ -48,6 +49,9 @@ public class DataExtractControllerTest {
 
     @MockBean
     private IronMountainFileService ironMountainFileService;
+
+    @MockBean
+    private HmrcFileService hmrcFileService;
 
     @MockBean
     private FileTransferService fileTransferService;
@@ -109,6 +113,27 @@ public class DataExtractControllerTest {
     public void shouldThrowClientExceptionWithBadRequestForIronMountainWithIncorrectDateFormat() throws Exception {
         mockMvc.perform(post("/data-extract/iron-mountain/2019-2-3"))
                 .andExpect(status().is4xxClientError());
+    }
+
+    @Test
+    public void hmrcShouldReturnOkResponseOnValidDateFormat() throws Exception {
+        mockMvc.perform(post("/data-extract/hmrc/2019-03-13"))
+            .andExpect(status().isOk())
+            .andExpect(content().string("1 cases successfully found for date: 2019-03-13 for HMRC"));
+    }
+
+    @Test
+    public void hmrcShouldReturnOkWithYesterdayDateOnEmptyPathParam() throws Exception {
+        mockMvc.perform(post("/data-extract/hmrc"))
+            .andExpect(status().isOk())
+            .andExpect(content().string("1 cases successfully found for date: " + DATE_FORMAT.format(LocalDate
+                .now().minusDays(1L))+" for HMRC"));
+    }
+
+    @Test
+    public void shouldThrowClientExceptionWithBadRequestForHMRCWithIncorrectDateFormat() throws Exception {
+        mockMvc.perform(post("/data-extract/hmrc/2019-2-3"))
+            .andExpect(status().is4xxClientError());
     }
 
     @Test
