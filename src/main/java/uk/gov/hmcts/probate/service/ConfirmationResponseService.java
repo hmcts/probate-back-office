@@ -90,16 +90,7 @@ public class ConfirmationResponseService {
         keyValue.put("{{caseSubmissionDate}}", caseSubmissionDate);
         keyValue.put("{{applicationFee}}", CAVEAT_APPLICATION_FEE);
         keyValue.put("{{paymentMethod}}", caveatData.getSolsPaymentMethod());
-
-        String paymentReference;
-        String paymentReferencePrefix = "";
-        if (PAYMENT_METHOD_VALUE_FEE_ACCOUNT.equals(caveatData.getSolsPaymentMethod())) {
-            paymentReferencePrefix = PAYMENT_REFERENCE_FEE_PREFIX;
-            paymentReference = caveatData.getSolsFeeAccountNumber();
-        } else {
-            paymentReference = PAYMENT_REFERENCE_CHEQUE;
-        }
-        keyValue.put("{{paymentReferenceNumber}}", paymentReferencePrefix + paymentReference);
+        keyValue.put("{{paymentReferenceNumber}}", getPaymentReference(caveatData));
 
         return markdownSubstitutionService.generatePage(templatesDirectory, MarkdownTemplate.CAVEAT_NEXT_STEPS, keyValue);
     }
@@ -231,16 +222,7 @@ public class ConfirmationResponseService {
         keyValue.put("{{applicationFee}}", getAmountAsString(ccdData.getFee().getApplicationFee()));
         keyValue.put("{{feeForUkCopies}}", getOptionalAmountAsString(ccdData.getFee().getFeeForUkCopies()));
         keyValue.put("{{feeForNonUkCopies}}", getOptionalAmountAsString(ccdData.getFee().getFeeForNonUkCopies()));
-
-        String paymentReference;
-        String paymentReferencePrefix = "";
-        if (PAYMENT_METHOD_VALUE_FEE_ACCOUNT.equals(ccdData.getFee().getPaymentMethod())) {
-            paymentReferencePrefix = PAYMENT_REFERENCE_FEE_PREFIX;
-            paymentReference = ccdData.getFee().getSolsFeeAccountNumber();
-        } else {
-            paymentReference = PAYMENT_REFERENCE_CHEQUE;
-        }
-        keyValue.put("{{paymentReferenceNumber}}", paymentReferencePrefix + paymentReference);
+        keyValue.put("{{paymentReferenceNumber}}", getPaymentReference(ccdData));
 
         String solsWillType = ccdData.getSolsWillType();
         String originalWill = "\n*   the original will";
@@ -323,9 +305,17 @@ public class ConfirmationResponseService {
         return amount.divide(BigDecimal.valueOf(100), 2, BigDecimal.ROUND_HALF_UP).toString();
     }
 
-    private String getPaymentReferenceNumber(CaseData caseData) {
-        if (PAYMENT_METHOD_VALUE_FEE_ACCOUNT.equals(caseData.getSolsPaymentMethods())) {
-            return PAYMENT_REFERENCE_FEE_PREFIX + caseData.getSolsFeeAccountNumber();
+    private String getPaymentReference(CCDData ccdData) {
+        if (PAYMENT_METHOD_VALUE_FEE_ACCOUNT.equals(ccdData.getFee().getPaymentMethod())) {
+            return PAYMENT_REFERENCE_FEE_PREFIX + ccdData.getFee().getSolsFeeAccountNumber();
+        } else {
+            return PAYMENT_REFERENCE_CHEQUE;
+        }
+    }
+
+    private String getPaymentReference(CaveatData caveatData) {
+        if (PAYMENT_METHOD_VALUE_FEE_ACCOUNT.equals(caveatData.getSolsPaymentMethod())) {
+            return PAYMENT_REFERENCE_FEE_PREFIX + caveatData.getSolsFeeAccountNumber();
         } else {
             return PAYMENT_REFERENCE_CHEQUE;
         }
