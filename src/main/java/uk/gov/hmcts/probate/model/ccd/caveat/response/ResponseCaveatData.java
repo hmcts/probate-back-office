@@ -54,6 +54,8 @@ public class ResponseCaveatData {
     private final List<CollectionMember<Document>> notificationsGenerated;
     private final List<CollectionMember<BulkPrint>> bulkPrintId;
 
+    private String bulkScanCaseReference;
+
     private String recordId;
     private String legacyType;
     private String legacyCaseViewUrl;

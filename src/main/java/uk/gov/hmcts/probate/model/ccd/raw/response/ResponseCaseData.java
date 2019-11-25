@@ -291,4 +291,5 @@ public class ResponseCaseData {
     private final DocumentLink previewLink;
     @Builder.Default
     private List<CollectionMember<ParagraphDetail>> paragraphDetails = new ArrayList<>();
+    private String bulkScanCaseReference;
 }

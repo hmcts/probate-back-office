@@ -106,6 +106,8 @@ public class CaveatData {
     @Builder.Default
     private List<CollectionMember<ScannedDocument>> scannedDocuments = new ArrayList<>();
 
+    private String bulkScanCaseReference;
+
     private String recordId;
     private String legacyType;
     private String legacyCaseViewUrl;

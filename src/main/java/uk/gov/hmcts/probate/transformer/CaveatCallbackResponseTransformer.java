@@ -152,6 +152,7 @@ public class CaveatCallbackResponseTransformer {
                 .sendToBulkPrintRequested(caveatData.getSendToBulkPrintRequested())
                 .caveatRaisedEmailNotificationRequested(caveatData.getCaveatRaisedEmailNotificationRequested())
                 .bulkPrintId(caveatData.getBulkPrintId())
+                .bulkScanCaseReference((caveatData.getBulkScanCaseReference()))
                 .applicationSubmittedDate(transformToString(caveatData.getApplicationSubmittedDate()));
     }
 
@@ -180,6 +181,8 @@ public class CaveatCallbackResponseTransformer {
             caveatData.setCaveatRaisedEmailNotificationRequested(Boolean.TRUE);
             caveatData.setSendToBulkPrintRequested(Boolean.FALSE);
         }
+
+        caveatData.setBulkScanCaseReference((caveatData.getBulkScanCaseReference()));
 
         return CaseCreationDetails.builder().<ResponseCaveatData>
                 eventId(EXCEPTION_RECORD_EVENT_ID).caseData(caveatData).caseTypeId(EXCEPTION_RECORD_CASE_TYPE_ID).build();

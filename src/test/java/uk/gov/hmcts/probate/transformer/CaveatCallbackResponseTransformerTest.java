@@ -83,6 +83,8 @@ public class CaveatCallbackResponseTransformerTest {
     private static final String CAV_LEGACY_CASE_URL = "someUrl";
     private static final String CAV_LEGACY_CASE_TYPE = "someCaseType";
 
+    private static final String BULK_SCAN_REFERENCE = "BulkScanRef";
+
     @InjectMocks
     private CaveatCallbackResponseTransformer underTest;
 
@@ -142,6 +144,7 @@ public class CaveatCallbackResponseTransformerTest {
                 .caveatorEmailAddress(CAV_CAVEATOR_EMAIL_ADDRESS)
                 .caveatorAddress(CAV_BSP_CAVEATOR_ADDRESS)
                 .applicationSubmittedDate(CAV_SUBMISSION_DATE)
+                .bulkScanCaseReference(BULK_SCAN_REFERENCE)
                 .build();
 
         when(caveatCallbackRequestMock.getCaseDetails()).thenReturn(caveatDetailsMock);
@@ -301,6 +304,7 @@ public class CaveatCallbackResponseTransformerTest {
         assertEquals(CAV_CAVEATOR_EMAIL_ADDRESS, caveatData.getCaveatorEmailAddress());
         assertEquals(CAV_CAVEATOR_FORENAMES, caveatData.getCaveatorForenames());
         assertEquals(CAV_CAVEATOR_SURNAME, caveatData.getCaveatorSurname());
+        assertEquals(BULK_SCAN_REFERENCE, caveatData.getBulkScanCaseReference());
 
         assertFalse(caveatData.getDeceasedAnyOtherNames());
         assertTrue(caveatData.getCaveatRaisedEmailNotificationRequested());
