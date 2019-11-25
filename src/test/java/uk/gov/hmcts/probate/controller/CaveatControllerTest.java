@@ -84,6 +84,16 @@ public class CaveatControllerTest {
     }
 
     @Test
+    public void solsCaveatCreated_ShouldReturnError_400ResponseCode() throws Exception {
+        String personalPayload = testUtils.getStringFromFile("solsCaveatPayloadNoEmail.json");
+
+        mockMvc.perform(post("/caveat/solsCreate")
+                .content(personalPayload)
+                .contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().is4xxClientError());
+    }
+
+    @Test
     public void caveatRaisedShouldReturnDataPayloadOkResponseCode() throws Exception {
 
         String caveatPayload = testUtils.getStringFromFile("caveatPayloadNotifications.json");

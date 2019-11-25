@@ -20,7 +20,6 @@ import uk.gov.hmcts.probate.model.ccd.caveat.response.CaveatCallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
-import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 import uk.gov.hmcts.probate.model.exceptionrecord.CaseCreationDetails;
 import uk.gov.hmcts.reform.probate.model.cases.Address;
@@ -68,8 +67,6 @@ public class CaveatCallbackResponseTransformerTest {
     private static final Address CAV_BSP_CAVEATOR_ADDRESS = Mockito.mock(Address.class);
 
     private static final String CAV_SOLICITOR_FIRMNAME = "The Firm";
-    private static final SolsAddress CAV_SOLICITOR_ADDRESS = Mockito.mock(SolsAddress.class);
-    private static final String CAV_SOLICITOR_EMAIL = "solicitor@test.com";
     private static final String CAV_SOLICITOR_PHONENUMBER = "07070707077";
     private static final String CAV_SOLICITOR_APPREFERENCE = "REF";
 
@@ -124,8 +121,6 @@ public class CaveatCallbackResponseTransformerTest {
                 .caveatorEmailAddress(CAV_CAVEATOR_EMAIL_ADDRESS)
                 .caveatorAddress(CAV_CAVEATOR_ADDRESS)
                 .solsSolicitorFirmName(CAV_SOLICITOR_FIRMNAME)
-                .solsSolicitorAddress(CAV_SOLICITOR_ADDRESS)
-                .solsSolicitorEmail(CAV_SOLICITOR_EMAIL)
                 .solsSolicitorPhoneNumber(CAV_SOLICITOR_PHONENUMBER)
                 .solsSolicitorAppReference(CAV_SOLICITOR_APPREFERENCE)
                 .expiryDate(CAV_EXPIRY_DATE)
@@ -332,8 +327,6 @@ public class CaveatCallbackResponseTransformerTest {
         assertEquals(DATE_SUBMITTED.toString(), caveatCallbackResponse.getCaveatData().getApplicationSubmittedDate());
 
         assertEquals(CAV_SOLICITOR_FIRMNAME, caveatCallbackResponse.getCaveatData().getSolsSolicitorFirmName());
-        assertEquals(CAV_SOLICITOR_ADDRESS, caveatCallbackResponse.getCaveatData().getSolsSolicitorAddress());
-        assertEquals(CAV_SOLICITOR_EMAIL, caveatCallbackResponse.getCaveatData().getSolsSolicitorEmail());
         assertEquals(CAV_SOLICITOR_PHONENUMBER, caveatCallbackResponse.getCaveatData().getSolsSolicitorPhoneNumber());
         assertEquals(CAV_SOLICITOR_APPREFERENCE, caveatCallbackResponse.getCaveatData().getSolsSolicitorAppReference());
 

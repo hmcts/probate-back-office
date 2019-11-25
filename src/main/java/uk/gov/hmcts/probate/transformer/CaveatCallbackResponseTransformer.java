@@ -123,15 +123,13 @@ public class CaveatCallbackResponseTransformer {
                 .registryLocation(ofNullable(caveatData.getRegistryLocation()).orElse(DEFAULT_REGISTRY_LOCATION))
                 .deceasedForenames(caveatData.getDeceasedForenames())
                 .deceasedSurname(caveatData.getDeceasedSurname())
-                .deceasedDateOfDeath(caveatData.getDeceasedDateOfDeath() != null ? dateTimeFormatter.format(caveatData.getDeceasedDateOfDeath()) : null)
+                .deceasedDateOfDeath(formatDateOfDeath(caveatData.getDeceasedDateOfDeath()))
                 .deceasedDateOfBirth(transformToString(caveatData.getDeceasedDateOfBirth()))
                 .deceasedAnyOtherNames(caveatData.getDeceasedAnyOtherNames())
                 .deceasedFullAliasNameList(caveatData.getDeceasedFullAliasNameList())
                 .deceasedAddress(caveatData.getDeceasedAddress())
 
                 .solsSolicitorFirmName(caveatData.getSolsSolicitorFirmName())
-                .solsSolicitorAddress(caveatData.getSolsSolicitorAddress())
-                .solsSolicitorEmail(caveatData.getSolsSolicitorEmail())
                 .solsSolicitorPhoneNumber(caveatData.getSolsSolicitorPhoneNumber())
                 .solsSolicitorAppReference(caveatData.getSolsSolicitorAppReference())
 
@@ -186,6 +184,10 @@ public class CaveatCallbackResponseTransformer {
         return ofNullable(dateValue)
                 .map(String::valueOf)
                 .orElse(null);
+    }
+
+    private String formatDateOfDeath(LocalDate dod) {
+        return dod != null ? dateTimeFormatter.format(dod) : null;
     }
 
     private CollectionMember<BulkPrint> buildBulkPrint(String letterId, String templateName) {

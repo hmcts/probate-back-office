@@ -16,11 +16,10 @@ import uk.gov.hmcts.probate.model.ccd.raw.BulkPrint;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
-import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 
-import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -60,19 +59,16 @@ public class CaveatData {
 
     private String caveatorSurname;
 
+    @NotBlank(groups = {CaveatCreatedGroup.class}, message = "{caveatorEmailAddressIsNull}")
     private String caveatorEmailAddress;
 
+    @NotNull(groups = {CaveatCreatedGroup.class}, message = "{caveatorAddressIsNull}")
     private ProbateAddress caveatorAddress;
 
     // EVENT = solicitorCreateCaveat - firm data
 
     @NotBlank(groups = {CaveatCreatedGroup.class}, message = "{solsSolicitorFirmNameIsNull}")
     private String solsSolicitorFirmName;
-
-    @Valid
-    private SolsAddress solsSolicitorAddress;
-
-    private String solsSolicitorEmail;
 
     private String solsSolicitorPhoneNumber;
 
