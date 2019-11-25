@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import uk.gov.hmcts.probate.controller.validation.CaveatCreatedGroup;
+import uk.gov.hmcts.probate.controller.validation.CaveatUpdatedGroup;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
 import uk.gov.hmcts.probate.model.ccd.ProbateAddress;
@@ -39,24 +40,33 @@ public class CaveatData {
 
     // EVENT = cavRaiseCaveat - deceased data
 
+    @NotBlank(groups = {CaveatUpdatedGroup.class}, message = "{deceasedForenamesIsNull}")
     private String deceasedForenames;
 
+    @NotBlank(groups = {CaveatUpdatedGroup.class}, message = "{deceasedSurnameIsNull}")
     private String deceasedSurname;
 
+    @NotNull(groups = {CaveatUpdatedGroup.class}, message = "{deceasedDateOfDeathIsNull}")
     private LocalDate deceasedDateOfDeath;
 
+    @NotNull(groups = {CaveatUpdatedGroup.class}, message = "{deceasedDateOfBirthIsNull}")
     private LocalDate deceasedDateOfBirth;
 
+    @NotBlank(groups = {CaveatUpdatedGroup.class}, message = "{deceasedAnyOtherNamesIsNull}")
     private String deceasedAnyOtherNames;
 
+    @NotNull(groups = {CaveatUpdatedGroup.class}, message = "{deceasedFullAliasNameListIsNull}")
     private List<CollectionMember<ProbateFullAliasName>> deceasedFullAliasNameList;
 
+    @NotNull(groups = {CaveatUpdatedGroup.class}, message = "{deceasedAddressIsNull}")
     private ProbateAddress deceasedAddress;
 
     // EVENT = cavRaiseCaveat - caveator data
 
+    @NotBlank(groups = {CaveatUpdatedGroup.class}, message = "{caveatorForenamesIsNull}")
     private String caveatorForenames;
 
+    @NotBlank(groups = {CaveatUpdatedGroup.class}, message = "{caveatorSurnameIsNull}")
     private String caveatorSurname;
 
     @NotBlank(groups = {CaveatCreatedGroup.class}, message = "{caveatorEmailAddressIsNull}")
@@ -74,6 +84,10 @@ public class CaveatData {
 
     @NotBlank(groups = {CaveatCreatedGroup.class}, message = "{solsSolicitorAppReferenceIsNull}")
     private String solsSolicitorAppReference;
+
+    // EVENT = solicitorUpdateCaveat - application details
+
+    private String solsDeceasedNameSection;
 
     // EVENT = cavRaiseCaveat - caveat details
 

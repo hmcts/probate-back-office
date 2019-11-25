@@ -49,8 +49,8 @@ public class CaveatCallbackResponseTransformerTest {
 
     private static final String YES = "Yes";
 
-    private static final String CAV_DECEASED_FORENAMES = "Forenames";
-    private static final String CAV_DECEASED_SURNAME = "Surname";
+    private static final String CAV_DECEASED_FORENAMES = "Deceased_fn";
+    private static final String CAV_DECEASED_SURNAME = "Deceased_ln";
     private static final LocalDate CAV_DECEASED_DOD = LocalDate.parse("2017-12-31", dateTimeFormatter);
     private static final LocalDate CAV_DECEASED_DOB = LocalDate.parse("2016-12-31", dateTimeFormatter);
     private static final String DATE_SUBMITTED = dateTimeFormatter.format(LocalDate.now());
@@ -60,8 +60,8 @@ public class CaveatCallbackResponseTransformerTest {
     private static final ProbateAddress CAV_DECEASED_ADDRESS = Mockito.mock(ProbateAddress.class);
     private static final Address CAV_BSP_DECEASED_ADDRESS = Mockito.mock(Address.class);
 
-    private static final String CAV_CAVEATOR_FORENAMES = "Forenames";
-    private static final String CAV_CAVEATOR_SURNAME = "Surname";
+    private static final String CAV_CAVEATOR_FORENAMES = "Caveator_fn";
+    private static final String CAV_CAVEATOR_SURNAME = "Caveator_ln";
     private static final String CAV_CAVEATOR_EMAIL_ADDRESS = "cav@email.com";
     private static final ProbateAddress CAV_CAVEATOR_ADDRESS = Mockito.mock(ProbateAddress.class);
     private static final Address CAV_BSP_CAVEATOR_ADDRESS = Mockito.mock(Address.class);

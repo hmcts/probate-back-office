@@ -16,10 +16,10 @@ public class CaveatDataTest {
     private DateFormatterService dateFormatterService = new DateFormatterService();
     private AddressFormatterService addressFormatterService = new AddressFormatterService();
 
-    private static final String CAV_DECEASED_FORENAMES = "Forenames";
-    private static final String CAV_DECEASED_SURNAME = "Surname";
-    private static final String CAV_CAVEATOR_FORENAMES = "fName";
-    private static final String CAV_CAVEATOR_SURNAME = "sName";
+    private static final String CAV_DECEASED_FORENAMES = "Deceased_fn";
+    private static final String CAV_DECEASED_SURNAME = "Deceased_ln";
+    private static final String CAV_CAVEATOR_FORENAMES = "Caveator_fn";
+    private static final String CAV_CAVEATOR_SURNAME = "Caveator_ln";
     private static final String CAV_CAVEATOR_EMAIL = "caveator@test.com";
     private static final String CAV_CAVEATOR_ADDRESS_1 = "15 Hanover Lane";
     private static final String CAV_CAVEATOR_ADDRESS_2 = "Catford";
