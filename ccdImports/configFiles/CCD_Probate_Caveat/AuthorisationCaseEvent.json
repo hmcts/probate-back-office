@@ -344,5 +344,6 @@
   {"CaseTypeID": "Caveat", "CaseEventID": "createCasePaymentFailed", "UserRole": "citizen", "CRUD": "CRU"},
   {"CaseTypeID": "Caveat", "CaseEventID": "createCasePaymentFailedMultiple", "UserRole": "citizen", "CRUD": "CRU"},
   {"CaseTypeID": "Caveat", "CaseEventID": "createCasePaymentSuccess", "UserRole": "citizen", "CRUD": "CRU"},
-  {"CaseTypeID": "Caveat", "CaseEventID": "SYSTEM_MAINTENANCE", "UserRole": "citizen", "CRUD": "R"}
+  {"CaseTypeID": "Caveat", "CaseEventID": "SYSTEM_MAINTENANCE", "UserRole": "citizen", "CRUD": "R"},
+  {"CaseTypeID": "Caveat", "CaseEventID": "solicitorCreateCaveat", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"}
 ]

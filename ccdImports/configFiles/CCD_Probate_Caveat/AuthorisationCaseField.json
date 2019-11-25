@@ -224,5 +224,11 @@
   {"CaseTypeID": "Caveat", "CaseFieldID": "sendToBulkPrint", "UserRole": "citizen", "CRUD": "CRUD"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "sendToBulkPrintRequested", "UserRole": "citizen", "CRUD": "CRUD"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "notificationsGenerated", "UserRole": "citizen", "CRUD": "CRUD"},
-  {"CaseTypeID": "Caveat", "CaseFieldID": "paperForm", "UserRole": "citizen", "CRUD": "CRU"}
+  {"CaseTypeID": "Caveat", "CaseFieldID": "paperForm", "UserRole": "citizen", "CRUD": "CRU"},
+  {"CaseTypeID": "Caveat", "CaseFieldID": "customHistoryViewer", "UserRole": "caseworker-probate-solicitor", "CRUD": "R"},
+  {"CaseTypeID": "Caveat", "CaseFieldID": "solsSolicitorFirmName", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"},
+  {"CaseTypeID": "Caveat", "CaseFieldID": "caveatorEmailAddress", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"},
+  {"CaseTypeID": "Caveat", "CaseFieldID": "caveatorAddress", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"},
+  {"CaseTypeID": "Caveat", "CaseFieldID": "solsSolicitorPhoneNumber", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"},
+  {"CaseTypeID": "Caveat", "CaseFieldID": "solsSolicitorAppReference", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"}
 ]
