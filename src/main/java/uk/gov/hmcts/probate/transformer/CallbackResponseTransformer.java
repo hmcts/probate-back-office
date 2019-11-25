@@ -538,7 +538,8 @@ public class CallbackResponseTransformer {
                 .boEmailRequestInfoNotificationRequested(caseData.getBoEmailRequestInfoNotificationRequested())
                 .boRequestInfoSendToBulkPrint(caseData.getBoRequestInfoSendToBulkPrint())
                 .boRequestInfoSendToBulkPrintRequested(caseData.getBoRequestInfoSendToBulkPrintRequested())
-                .probateSotDocumentsGenerated(caseData.getProbateSotDocumentsGenerated());
+                .probateSotDocumentsGenerated(caseData.getProbateSotDocumentsGenerated())
+                .bulkScanCaseReference(caseData.getBulkScanCaseReference());
 
         if (transform) {
             updateCaseBuilderForTransformCase(caseData, builder);

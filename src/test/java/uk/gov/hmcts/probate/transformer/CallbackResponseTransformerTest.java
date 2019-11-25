@@ -236,6 +236,7 @@ public class CallbackResponseTransformerTest {
     private static final String CASE_PRINTED = "CasePrinted";
     private static final String READY_FOR_EXAMINATION = "BOReadyForExamination";
     private static final String EXAMINING = "BOExamining";
+    private static final String BULK_SCAN_REFERENCE = "BulkScanRef";
 
     private static final Document SOT_DOC = Document.builder().documentType(STATEMENT_OF_TRUTH).build();
 
@@ -535,6 +536,7 @@ public class CallbackResponseTransformerTest {
                 .paperPaymentMethod("debitOrCredit")
                 .paymentReferenceNumberPaperform(IHT_REFERENCE)
                 .paperForm(Boolean.TRUE)
+                .bulkScanCaseReference(BULK_SCAN_REFERENCE)
                 .build();
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
@@ -2418,5 +2420,7 @@ public class CallbackResponseTransformerTest {
         assertEquals(Long.valueOf("0"), grantOfRepresentationData.getApplicationFeePaperForm());
         assertEquals(Long.valueOf("0"), grantOfRepresentationData.getFeeForCopiesPaperForm());
         assertEquals(Long.valueOf("0"), grantOfRepresentationData.getTotalFeePaperForm());
+
+        assertEquals(BULK_SCAN_REFERENCE, grantOfRepresentationData.getBulkScanCaseReference());
     }
 }
