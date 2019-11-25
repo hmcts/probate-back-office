@@ -5,12 +5,14 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import uk.gov.hmcts.probate.exception.ClientException;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
@@ -23,6 +25,7 @@ import uk.gov.hmcts.probate.service.filebuilder.HmrcFileService;
 import uk.gov.hmcts.probate.service.filebuilder.IronMountainFileService;
 import uk.gov.service.notify.NotificationClientException;
 
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -55,24 +58,27 @@ public class DataExtractController {
     @ApiOperation(value = "Initiate HMRC data extract with date", notes = "Date MUST be in format 'yyyy-MM-dd'")
     @PostMapping(path = "/hmrc/{date}")
     public ResponseEntity initiateHMRCExtract(@ApiParam(value = "Date to find cases against", required = true)
-                                                      @PathVariable("date") String date) {
+                                              @PathVariable("date") String date) {
         dateValidator(date);
         log.info("HMRC data extract initiated for date: {}", date);
 
         List<ReturnedCaseDetails> cases = caseQueryService.findCasesWithDatedDocument(date);
         log.info("Cases found for HMRC: {}", cases.size());
 
-        if (!cases.isEmpty()) {
-            log.info("preparing for file upload");
-            int response = fileTransferService.uploadFile(hmrcFileService.createHMRCFile(
-                    cases, "1_"+fileExtractDateFormatter.formatFileDate() + ".dat"));
+        return uploadHMRCFile(null, date, cases);
+    }
 
-            if (response != 201) {
-                log.error("Failed to upload file for: " + date);
-                throw new ClientException(HttpStatus.SERVICE_UNAVAILABLE.value(), "Failed to upload file for date: " + date);
-            }
-        }
-        return ResponseEntity.ok(cases.size() + " cases successfully found for date: " + date + " for HMRC");
+    @ApiOperation(value = "Initiate HMRC data extract within 2 dates", notes = "Dates MUST be in format 'yyyy-MM-dd'")
+    @PostMapping(path = "/hmrcFromTo")
+    public ResponseEntity initiateHMRCExtractFromDate(@RequestParam("fromDate") String fromDate,
+                                                      @RequestParam("toDate") String toDate) {
+        dateValidator(fromDate, toDate);
+        log.info("HMRC data extract initiated for dates from-to: {}-{}", fromDate, toDate);
+
+        List<ReturnedCaseDetails> cases = caseQueryService.findCaseStateWithinTimeFrame(fromDate, toDate);
+        log.info("Cases found for HMRC: {}", cases.size());
+
+        return uploadHMRCFile(fromDate, toDate, cases);
     }
 
     @Scheduled(cron = "${cron.data_extract}")
@@ -133,12 +139,39 @@ public class DataExtractController {
     }
 
     private void dateValidator(String date) {
+        dateValidator(null, date);
+    }
+
+    private void dateValidator(String fromDate, String toDate) {
         try {
-            LocalDate.parse(date, DATE_FORMAT);
+            LocalDate to = LocalDate.parse(toDate, DATE_FORMAT);
+            if (!StringUtils.isBlank(fromDate)) {
+                LocalDate from = LocalDate.parse(fromDate, DATE_FORMAT);
+                if (!from.isBefore(to)) {
+                    throw new ClientException(HttpStatus.BAD_REQUEST.value(),
+                        "Error on extract dates, fromDate is not before toDate: "+fromDate+","+toDate);
+                }
+            }
         } catch (DateTimeParseException e) {
             log.error("Error parsing date, use the format of 'yyyy-MM-dd': ");
             throw new ClientException(HttpStatus.BAD_REQUEST.value(),
-                    "Error parsing date, use the format of 'yyyy-MM-dd': " + e.getMessage());
+                "Error parsing date, use the format of 'yyyy-MM-dd': " + e.getMessage());
         }
     }
+
+    private ResponseEntity uploadHMRCFile(String fromDate, String date, List<ReturnedCaseDetails> cases) {
+        String dateDesc = (StringUtils.isEmpty(fromDate) ? " date:" : " from " + fromDate + " to") + " " + date;
+        if (!cases.isEmpty()) {
+            log.info("preparing for file upload");
+            int response = fileTransferService.uploadFile(hmrcFileService.createHMRCFile(
+                cases, "1_" + fileExtractDateFormatter.formatFileDate() + ".dat"));
+
+            if (response != 201) {
+                log.error("Failed to upload file for :" + dateDesc);
+                throw new ClientException(HttpStatus.SERVICE_UNAVAILABLE.value(), "Failed to upload file for " + dateDesc);
+            }
+        }
+        return ResponseEntity.ok(cases.size() + " cases successfully found for" + dateDesc +" for HMRC");
+    }
+
 }

@@ -74,45 +74,46 @@ public class DataExtractControllerTest {
     public void setup() {
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
         CollectionMember<ScannedDocument> scannedDocument = new CollectionMember<>(new ScannedDocument("1",
-                "test", "other", "will", LocalDateTime.now(), DocumentLink.builder().build(),
-                "test", LocalDateTime.now()));
+            "test", "other", "will", LocalDateTime.now(), DocumentLink.builder().build(),
+            "test", LocalDateTime.now()));
         CollectionMember<ScannedDocument> scannedDocumentNullSubType = new CollectionMember<>(new ScannedDocument("1",
-                "test", "other", null, LocalDateTime.now(), DocumentLink.builder().build(),
-                "test", LocalDateTime.now()));
+            "test", "other", null, LocalDateTime.now(), DocumentLink.builder().build(),
+            "test", LocalDateTime.now()));
         List<CollectionMember<ScannedDocument>> scannedDocuments = new ArrayList<>();
         scannedDocuments.add(scannedDocument);
         scannedDocuments.add(scannedDocumentNullSubType);
 
         CaseData caseData = CaseData.builder()
-                .deceasedSurname("smith")
-                .scannedDocuments(scannedDocuments)
-                .build();
+            .deceasedSurname("smith")
+            .scannedDocuments(scannedDocuments)
+            .build();
         List<ReturnedCaseDetails> returnedCases = new ImmutableList.Builder<ReturnedCaseDetails>().add(new
-                ReturnedCaseDetails(caseData, LAST_MODIFIED, 1L)).build();
+            ReturnedCaseDetails(caseData, LAST_MODIFIED, 1L)).build();
 
         when(caseQueryService.findCasesWithDatedDocument(any())).thenReturn(returnedCases);
+        when(caseQueryService.findCaseStateWithinTimeFrame(any(), any())).thenReturn(returnedCases);
         when(fileTransferService.uploadFile(any())).thenReturn(HttpStatus.CREATED.value());
     }
 
     @Test
     public void ironMountainShouldReturnOkResponseOnValidDateFormat() throws Exception {
         mockMvc.perform(post("/data-extract/iron-mountain/2019-03-13"))
-                .andExpect(status().isOk())
-                .andExpect(content().string("1 cases successfully found for date: 2019-03-13"));
+            .andExpect(status().isOk())
+            .andExpect(content().string("1 cases successfully found for date: 2019-03-13"));
     }
 
     @Test
     public void ironMountainShouldReturnOkWithYesterdayDateOnEmptyPathParam() throws Exception {
         mockMvc.perform(post("/data-extract/iron-mountain"))
-                .andExpect(status().isOk())
-                .andExpect(content().string("1 cases successfully found for date: " + DATE_FORMAT.format(LocalDate
-                        .now().minusDays(1L))));
+            .andExpect(status().isOk())
+            .andExpect(content().string("1 cases successfully found for date: " + DATE_FORMAT.format(LocalDate
+                .now().minusDays(1L))));
     }
 
     @Test
     public void shouldThrowClientExceptionWithBadRequestForIronMountainWithIncorrectDateFormat() throws Exception {
         mockMvc.perform(post("/data-extract/iron-mountain/2019-2-3"))
-                .andExpect(status().is4xxClientError());
+            .andExpect(status().is4xxClientError());
     }
 
     @Test
@@ -123,11 +124,26 @@ public class DataExtractControllerTest {
     }
 
     @Test
+    public void hmrcShouldReturnOkResponseOnValidDatesFormat() throws Exception {
+        mockMvc.perform(post("/data-extract/hmrcFromTo?fromDate=2019-03-13&toDate=2019-04-13"))
+            .andExpect(status().isOk())
+            .andExpect(content().string("1 cases successfully found for from 2019-03-13 to 2019-04-13 for HMRC"));
+    }
+
+    @Test
+    public void hmrcShouldReturnErroResponseOnInvalidDates() throws Exception {
+        mockMvc.perform(post("/data-extract/hmrcFromTo?fromDate=2019-09-13&toDate=2019-04-13"))
+            .andExpect(status().is4xxClientError())
+            .andExpect(content().string("{\"code\":400,\"error\":\"Client Error\",\"message\":\"Error on extract dates, " +
+                "fromDate is not before toDate: 2019-09-13,2019-04-13\",\"fieldErrors\":null}"));
+    }
+
+    @Test
     public void hmrcShouldReturnOkWithYesterdayDateOnEmptyPathParam() throws Exception {
         mockMvc.perform(post("/data-extract/hmrc"))
             .andExpect(status().isOk())
             .andExpect(content().string("1 cases successfully found for date: " + DATE_FORMAT.format(LocalDate
-                .now().minusDays(1L))+" for HMRC"));
+                .now().minusDays(1L)) + " for HMRC"));
     }
 
     @Test
@@ -139,22 +155,22 @@ public class DataExtractControllerTest {
     @Test
     public void excelaShouldReturnOkResponseOnValidDateFormat() throws Exception {
         mockMvc.perform(post("/data-extract/excela/2019-02-13"))
-                .andExpect(status().isOk())
-                .andExpect(content().string("1 cases found and emailed for date: 2019-02-13"));
+            .andExpect(status().isOk())
+            .andExpect(content().string("1 cases found and emailed for date: 2019-02-13"));
     }
 
     @Test
     public void excelaShouldReturnOkWithYesterdayDateOnEmptyPathParam() throws Exception {
         mockMvc.perform(post("/data-extract/excela"))
-                .andExpect(status().isOk())
-                .andExpect(content().string("1 cases found and emailed for date: " + DATE_FORMAT.format(LocalDate
-                        .now().minusDays(1L))));
+            .andExpect(status().isOk())
+            .andExpect(content().string("1 cases found and emailed for date: " + DATE_FORMAT.format(LocalDate
+                .now().minusDays(1L))));
     }
 
     @Test
     public void ironMountainShouldThrowExceptionOnStatusNotCreated() throws Exception {
         when(fileTransferService.uploadFile(any())).thenReturn(HttpStatus.SERVICE_UNAVAILABLE.value());
         mockMvc.perform(post("/data-extract/iron-mountain/2019-03-13"))
-                .andExpect(status().is5xxServerError());
+            .andExpect(status().is5xxServerError());
     }
 }
