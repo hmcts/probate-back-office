@@ -17,7 +17,6 @@ import uk.gov.hmcts.probate.model.ccd.raw.BulkPrint;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
-import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 
 import javax.validation.constraints.NotBlank;
@@ -41,24 +40,33 @@ public class CaveatData {
 
     // EVENT = cavRaiseCaveat - deceased data
 
+    @NotBlank(groups = {CaveatUpdatedGroup.class}, message = "{deceasedForenamesIsNull}")
     private String deceasedForenames;
 
+    @NotBlank(groups = {CaveatUpdatedGroup.class}, message = "{deceasedSurnameIsNull}")
     private String deceasedSurname;
 
+    @NotNull(groups = {CaveatUpdatedGroup.class}, message = "{deceasedDateOfDeathIsNull}")
     private LocalDate deceasedDateOfDeath;
 
+    @NotNull(groups = {CaveatUpdatedGroup.class}, message = "{deceasedDateOfBirthIsNull}")
     private LocalDate deceasedDateOfBirth;
 
+    @NotBlank(groups = {CaveatUpdatedGroup.class}, message = "{deceasedAnyOtherNamesIsNull}")
     private String deceasedAnyOtherNames;
 
+    @NotNull(groups = {CaveatUpdatedGroup.class}, message = "{deceasedFullAliasNameListIsNull}")
     private List<CollectionMember<ProbateFullAliasName>> deceasedFullAliasNameList;
 
+    @NotNull(groups = {CaveatUpdatedGroup.class}, message = "{deceasedAddressIsNull}")
     private ProbateAddress deceasedAddress;
 
     // EVENT = cavRaiseCaveat - caveator data
 
+    @NotBlank(groups = {CaveatUpdatedGroup.class}, message = "{caveatorForenamesIsNull}")
     private String caveatorForenames;
 
+    @NotBlank(groups = {CaveatUpdatedGroup.class}, message = "{caveatorSurnameIsNull}")
     private String caveatorSurname;
 
     @NotBlank(groups = {CaveatCreatedGroup.class}, message = "{caveatorEmailAddressIsNull}")
@@ -79,35 +87,7 @@ public class CaveatData {
 
     // EVENT = solicitorUpdateCaveat - application details
 
-    @NotBlank(groups = {CaveatUpdatedGroup.class}, message = "{solsApplicantForenamesIsNull}")
-    private String solsApplicantForenames;
-
-    @NotBlank(groups = {CaveatUpdatedGroup.class}, message = "{solsApplicantSurnameIsNull}")
-    private String solsApplicantSurname;
-
     private String solsDeceasedNameSection;
-
-    @NotBlank(groups = {CaveatUpdatedGroup.class}, message = "{solsDeceasedForenamesIsNull}")
-    private String solsDeceasedForenames;
-
-    @NotBlank(groups = {CaveatUpdatedGroup.class}, message = "{solsDeceasedSurnameIsNull}")
-    private String solsDeceasedSurname;
-
-    @NotNull(groups = {CaveatUpdatedGroup.class}, message = "{solsDeceasedSurnameIsNull}")
-    private LocalDate solsDeceasedDateOfDeath;
-
-    @NotBlank(groups = {CaveatUpdatedGroup.class}, message = "{solsHasDateOfBirthIsNull}")
-    private String solsHasDateOfBirth;
-
-    private LocalDate solsDeceasedDateOfBirth;
-
-    @NotBlank(groups = {CaveatUpdatedGroup.class}, message = "{solsDeceasedAnyOtherNamesIsNull}")
-    private String solsDeceasedAnyOtherNames;
-
-    private List<CollectionMember<ProbateFullAliasName>> solsDeceasedAliasNameList;
-
-    @NotNull(groups = {CaveatUpdatedGroup.class}, message = "{solsDeceasedAddressIsNull}")
-    private ProbateAddress solsDeceasedAddress;
 
     // EVENT = cavRaiseCaveat - caveat details
 
@@ -165,14 +145,6 @@ public class CaveatData {
 
     public String getCaveatorFullName() {
         return String.join(" ", caveatorForenames, caveatorSurname);
-    }
-
-    public String getSolsApplicantFullName() {
-        return String.join(" ", solsApplicantForenames, solsApplicantSurname);
-    }
-
-    public String getSolsDeceasedFullName() {
-        return String.join(" ", solsDeceasedForenames, solsDeceasedSurname);
     }
 
     public String getDefaultValueForEmailNotifications() {

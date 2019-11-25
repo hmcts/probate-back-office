@@ -20,7 +20,6 @@ import uk.gov.hmcts.probate.model.ccd.caveat.response.CaveatCallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
-import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 import uk.gov.hmcts.probate.model.exceptionrecord.CaseCreationDetails;
 import uk.gov.hmcts.reform.probate.model.cases.Address;
@@ -70,18 +69,6 @@ public class CaveatCallbackResponseTransformerTest {
     private static final String CAV_SOLICITOR_FIRMNAME = "The Firm";
     private static final String CAV_SOLICITOR_PHONENUMBER = "07070707077";
     private static final String CAV_SOLICITOR_APPREFERENCE = "REF";
-
-    private static final String CAV_SOLS_APPLICANT_FORENAMES = "SolsApplicant_fn";
-    private static final String CAV_SOLS_APPLICANT_SURNAME = "SolsApplicant_ln";
-    private static final String CAV_SOLS_DECEASED_FORENAMES = "SolsDeceased_fn";
-    private static final String CAV_SOLS_DECEASED_SURNAME = "SolsDeceased_ln";
-    private static final LocalDate CAV_SOLS_DECEASED_DOD = LocalDate.parse("2017-12-31", dateTimeFormatter);
-    private static final String CAV_SOLS_DECEASED_HAS_DOB = YES;
-    private static final LocalDate CAV_SOLS_DECEASED_DOB = LocalDate.parse("2016-12-31", dateTimeFormatter);
-    private static final String CAV_SOLS_DECEASED_HAS_ALIAS = YES;
-    private static final String CAV_SOLS_DECEASED_FULL_ALIAS_NAME = "AliasFN AliasLN";
-    private static final List<CollectionMember<ProbateFullAliasName>> CAV_SOLS_DECEASED_FULL_ALIAS_NAME_LIST = emptyList();
-    private static final ProbateAddress CAV_SOLS_DECEASED_ADDRESS = Mockito.mock(ProbateAddress.class);
 
     private static final LocalDate CAV_SUBMISSION_DATE = LocalDate.now();
     private static final String CAV_FORMATTED_SUBMISSION_DATE = dateTimeFormatter.format(CAV_SUBMISSION_DATE);
@@ -136,16 +123,6 @@ public class CaveatCallbackResponseTransformerTest {
                 .solsSolicitorFirmName(CAV_SOLICITOR_FIRMNAME)
                 .solsSolicitorPhoneNumber(CAV_SOLICITOR_PHONENUMBER)
                 .solsSolicitorAppReference(CAV_SOLICITOR_APPREFERENCE)
-                .solsApplicantForenames(CAV_SOLS_APPLICANT_FORENAMES)
-                .solsApplicantSurname(CAV_SOLS_APPLICANT_SURNAME)
-                .solsDeceasedForenames(CAV_SOLS_DECEASED_FORENAMES)
-                .solsDeceasedSurname(CAV_SOLS_DECEASED_SURNAME)
-                .solsDeceasedDateOfDeath(CAV_SOLS_DECEASED_DOD)
-                .solsHasDateOfBirth(CAV_SOLS_DECEASED_HAS_DOB)
-                .solsDeceasedDateOfBirth(CAV_SOLS_DECEASED_DOB)
-                .solsDeceasedAnyOtherNames(CAV_SOLS_DECEASED_HAS_ALIAS)
-                .solsDeceasedAliasNameList(CAV_SOLS_DECEASED_FULL_ALIAS_NAME_LIST)
-                .solsDeceasedAddress(CAV_SOLS_DECEASED_ADDRESS)
                 .expiryDate(CAV_EXPIRY_DATE)
                 .messageContent(CAV_MESSAGE_CONTENT)
                 .caveatReopenReason(CAV_REOPEN_REASON)
@@ -196,24 +173,6 @@ public class CaveatCallbackResponseTransformerTest {
 
         assertCommonDetails(caveatCallbackResponse);
         assertEquals(1, caveatCallbackResponse.getCaveatData().getDeceasedFullAliasNameList().size());
-    }
-
-    @Test
-    public void shouldTransformCaseForSolsCaveatWithDeceasedAliasNames() {
-        List<CollectionMember<ProbateFullAliasName>> solsDeceasedFullAliasNameList = new ArrayList<>();
-
-        ProbateFullAliasName an11 = ProbateFullAliasName.builder().fullAliasName(CAV_SOLS_DECEASED_FULL_ALIAS_NAME).build();
-        CollectionMember<ProbateFullAliasName> an1 = new CollectionMember<>("0", an11);
-        solsDeceasedFullAliasNameList.add(an1);
-        caveatDataBuilder.solsDeceasedAliasNameList(solsDeceasedFullAliasNameList);
-
-        when(caveatCallbackRequestMock.getCaseDetails()).thenReturn(caveatDetailsMock);
-        when(caveatDetailsMock.getData()).thenReturn(caveatDataBuilder.build());
-
-        CaveatCallbackResponse caveatCallbackResponse = underTest.transform(caveatCallbackRequestMock);
-
-        assertCommonDetails(caveatCallbackResponse);
-        assertEquals(1, caveatCallbackResponse.getCaveatData().getSolsDeceasedAliasNameList().size());
     }
 
     @Test
@@ -370,16 +329,6 @@ public class CaveatCallbackResponseTransformerTest {
         assertEquals(CAV_SOLICITOR_FIRMNAME, caveatCallbackResponse.getCaveatData().getSolsSolicitorFirmName());
         assertEquals(CAV_SOLICITOR_PHONENUMBER, caveatCallbackResponse.getCaveatData().getSolsSolicitorPhoneNumber());
         assertEquals(CAV_SOLICITOR_APPREFERENCE, caveatCallbackResponse.getCaveatData().getSolsSolicitorAppReference());
-
-        assertEquals(CAV_SOLS_APPLICANT_FORENAMES, caveatCallbackResponse.getCaveatData().getSolsApplicantForenames());
-        assertEquals(CAV_SOLS_APPLICANT_SURNAME, caveatCallbackResponse.getCaveatData().getSolsApplicantSurname());
-        assertEquals(CAV_SOLS_DECEASED_FORENAMES, caveatCallbackResponse.getCaveatData().getSolsDeceasedForenames());
-        assertEquals(CAV_SOLS_DECEASED_SURNAME, caveatCallbackResponse.getCaveatData().getSolsDeceasedSurname());
-        assertEquals("2017-12-31", caveatCallbackResponse.getCaveatData().getSolsDeceasedDateOfDeath());
-        assertEquals(CAV_SOLS_DECEASED_HAS_DOB, caveatCallbackResponse.getCaveatData().getSolsHasDateOfBirth());
-        assertEquals("2016-12-31", caveatCallbackResponse.getCaveatData().getSolsDeceasedDateOfBirth());
-        assertEquals(CAV_SOLS_DECEASED_HAS_ALIAS, caveatCallbackResponse.getCaveatData().getSolsDeceasedAnyOtherNames());
-        assertEquals(CAV_SOLS_DECEASED_ADDRESS, caveatCallbackResponse.getCaveatData().getSolsDeceasedAddress());
 
         assertEquals(CAV_FORMATTED_EXPIRY_DATE, caveatCallbackResponse.getCaveatData().getExpiryDate());
         assertEquals(CAV_MESSAGE_CONTENT, caveatCallbackResponse.getCaveatData().getMessageContent());

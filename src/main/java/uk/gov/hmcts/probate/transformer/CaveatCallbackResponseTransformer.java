@@ -133,17 +133,6 @@ public class CaveatCallbackResponseTransformer {
                 .solsSolicitorPhoneNumber(caveatData.getSolsSolicitorPhoneNumber())
                 .solsSolicitorAppReference(caveatData.getSolsSolicitorAppReference())
 
-                .solsApplicantForenames(caveatData.getSolsApplicantForenames())
-                .solsApplicantSurname(caveatData.getSolsApplicantSurname())
-                .solsDeceasedForenames(caveatData.getSolsDeceasedForenames())
-                .solsDeceasedSurname(caveatData.getSolsDeceasedSurname())
-                .solsDeceasedDateOfDeath(caveatData.getSolsDeceasedDateOfDeath() != null ? dateTimeFormatter.format(caveatData.getSolsDeceasedDateOfDeath()) : null)
-                .solsHasDateOfBirth(caveatData.getSolsHasDateOfBirth())
-                .solsDeceasedDateOfBirth(caveatData.getSolsDeceasedDateOfBirth() != null ? dateTimeFormatter.format(caveatData.getSolsDeceasedDateOfBirth()) : null)
-                .solsDeceasedAnyOtherNames(caveatData.getSolsDeceasedAnyOtherNames())
-                .solsDeceasedAliasNameList(caveatData.getSolsDeceasedAliasNameList())
-                .solsDeceasedAddress(caveatData.getSolsDeceasedAddress())
-
                 .caveatorForenames(caveatData.getCaveatorForenames())
                 .caveatorSurname(caveatData.getCaveatorSurname())
                 .caveatorEmailAddress(caveatData.getCaveatorEmailAddress())
