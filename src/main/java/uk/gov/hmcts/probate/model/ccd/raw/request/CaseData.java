@@ -493,14 +493,11 @@ public class CaseData {
 
     private final List<CollectionMember<Document>> probateSotDocumentsGenerated = new ArrayList<>();
 
-<<<<<<< Updated upstream
     private final Categories categories;
     private final DocumentLink previewLink;
     @Builder.Default
     private List<CollectionMember<ParagraphDetail>> paragraphDetails = new ArrayList<>();
-=======
     private String bulkScanCaseReference;
->>>>>>> Stashed changes
 
     @SuppressWarnings("squid:S1170")
     @Getter(lazy = true)

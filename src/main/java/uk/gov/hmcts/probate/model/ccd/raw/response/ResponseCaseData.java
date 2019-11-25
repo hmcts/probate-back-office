@@ -286,13 +286,10 @@ public class ResponseCaseData {
     private final String boAssembleLetterSendToBulkPrintRequested;
     private final List<CollectionMember<ExecutorsApplyingNotification>> executorsApplyingNotifications;
     private final List<CollectionMember<Document>> probateSotDocumentsGenerated;
-<<<<<<< Updated upstream
 
     private final Categories categories;
     private final DocumentLink previewLink;
     @Builder.Default
     private List<CollectionMember<ParagraphDetail>> paragraphDetails = new ArrayList<>();
-=======
     private String bulkScanCaseReference;
->>>>>>> Stashed changes
 }
