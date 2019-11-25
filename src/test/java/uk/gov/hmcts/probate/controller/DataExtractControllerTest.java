@@ -31,6 +31,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.hamcrest.CoreMatchers.containsString;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -134,8 +135,13 @@ public class DataExtractControllerTest {
     public void hmrcShouldReturnErroResponseOnInvalidDates() throws Exception {
         mockMvc.perform(post("/data-extract/hmrcFromTo?fromDate=2019-09-13&toDate=2019-04-13"))
             .andExpect(status().is4xxClientError())
-            .andExpect(content().string("{\"code\":400,\"error\":\"Client Error\",\"message\":\"Error on extract dates, " +
-                "fromDate is not before toDate: 2019-09-13,2019-04-13\",\"fieldErrors\":null}"));
+            .andExpect(content().string(containsString("Error on extract dates, fromDate is not before toDate: 2019-09-13,2019-04-13")));
+    }
+
+    @Test
+    public void hmrcShouldReturnErroResponseOnMissingDates() throws Exception {
+        mockMvc.perform(post("/data-extract/hmrcFromTo?fromDate=2019-09-13"))
+            .andExpect(status().is4xxClientError());
     }
 
     @Test

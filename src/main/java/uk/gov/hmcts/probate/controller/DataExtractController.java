@@ -25,7 +25,6 @@ import uk.gov.hmcts.probate.service.filebuilder.HmrcFileService;
 import uk.gov.hmcts.probate.service.filebuilder.IronMountainFileService;
 import uk.gov.service.notify.NotificationClientException;
 
-import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -70,8 +69,8 @@ public class DataExtractController {
 
     @ApiOperation(value = "Initiate HMRC data extract within 2 dates", notes = "Dates MUST be in format 'yyyy-MM-dd'")
     @PostMapping(path = "/hmrcFromTo")
-    public ResponseEntity initiateHMRCExtractFromDate(@RequestParam("fromDate") String fromDate,
-                                                      @RequestParam("toDate") String toDate) {
+    public ResponseEntity initiateHMRCExtractFromDate(@RequestParam(value = "fromDate", required = true) String fromDate,
+                                                      @RequestParam(value = "toDate", required = true) String toDate) {
         dateValidator(fromDate, toDate);
         log.info("HMRC data extract initiated for dates from-to: {}-{}", fromDate, toDate);
 
@@ -149,7 +148,7 @@ public class DataExtractController {
                 LocalDate from = LocalDate.parse(fromDate, DATE_FORMAT);
                 if (!from.isBefore(to)) {
                     throw new ClientException(HttpStatus.BAD_REQUEST.value(),
-                        "Error on extract dates, fromDate is not before toDate: "+fromDate+","+toDate);
+                        "Error on extract dates, fromDate is not before toDate: " + fromDate + "," + toDate);
                 }
             }
         } catch (DateTimeParseException e) {
@@ -171,7 +170,7 @@ public class DataExtractController {
                 throw new ClientException(HttpStatus.SERVICE_UNAVAILABLE.value(), "Failed to upload file for " + dateDesc);
             }
         }
-        return ResponseEntity.ok(cases.size() + " cases successfully found for" + dateDesc +" for HMRC");
+        return ResponseEntity.ok(cases.size() + " cases successfully found for" + dateDesc + " for HMRC");
     }
 
 }
