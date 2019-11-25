@@ -63,7 +63,7 @@ public class CaseQueryService {
         BoolQueryBuilder query = boolQuery();
 
         query.must(matchQuery(STATE, STATE_MATCH));
-        query.must(rangeQuery(DOCUMENT_DATE).gt(startDate).lt(endDate));
+        query.must(rangeQuery(DOCUMENT_DATE).gte(startDate).lte(endDate));
 
         String jsonQuery = new SearchSourceBuilder().query(query).toString();
 
