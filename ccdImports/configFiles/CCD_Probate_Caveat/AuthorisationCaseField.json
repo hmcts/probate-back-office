@@ -225,6 +225,7 @@
   {"CaseTypeID": "Caveat", "CaseFieldID": "sendToBulkPrintRequested", "UserRole": "citizen", "CRUD": "CRUD"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "notificationsGenerated", "UserRole": "citizen", "CRUD": "CRUD"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "paperForm", "UserRole": "citizen", "CRUD": "CRU"},
+  {"CaseTypeID": "Caveat", "CaseFieldID": "applicationType", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRU"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "customHistoryViewer", "UserRole": "caseworker-probate-solicitor", "CRUD": "R"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "solsSolicitorFirmName", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "caveatorEmailAddress", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"},
@@ -242,5 +243,7 @@
   {"CaseTypeID": "Caveat", "CaseFieldID": "deceasedDateOfBirth", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "deceasedAnyOtherNames", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "deceasedFullAliasNameList", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"},
-  {"CaseTypeID": "Caveat", "CaseFieldID": "deceasedAddress", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"}
+  {"CaseTypeID": "Caveat", "CaseFieldID": "deceasedAddress", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"},
+  {"CaseTypeID": "Caveat", "CaseFieldID": "solsPaymentMethods", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"},
+  {"CaseTypeID": "Caveat", "CaseFieldID": "solsFeeAccountNumber", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"}
 ]

@@ -122,8 +122,7 @@ public class CallbackResponseTransformerTest {
 
     private static final String SOL_PAY_METHODS_FEE = "fee account";
     private static final String SOL_PAY_METHODS_CHEQUE = "cheque";
-    private static final String FEE_ACCT_NUMBER = "FEE ACCT 1";
-    private static final String PAY_REF_FEE = "Fee account PBA-FEE ACCT 1";
+    private static final String FEE_ACCT_NUMBER = "1234";
     private static final String PAY_REF_CHEQUE = "Cheque (payable to ‘HM Courts & Tribunals Service’)";
 
     private static final BigDecimal feeForNonUkCopies = new BigDecimal(11);
@@ -476,7 +475,6 @@ public class CallbackResponseTransformerTest {
         assertEquals(TOTAL_FEE, callbackResponse.getData().getTotalFee());
         assertEquals(SOL_PAY_METHODS_FEE, callbackResponse.getData().getSolsPaymentMethods());
         assertEquals(FEE_ACCT_NUMBER, callbackResponse.getData().getSolsFeeAccountNumber());
-        assertEquals(PAY_REF_FEE, callbackResponse.getData().getPaymentReferenceNumber());
     }
 
     @Test
@@ -520,7 +518,6 @@ public class CallbackResponseTransformerTest {
         assertEquals(TOTAL_FEE, callbackResponse.getData().getTotalFee());
         assertEquals(SOL_PAY_METHODS_CHEQUE, callbackResponse.getData().getSolsPaymentMethods());
         assertNull(callbackResponse.getData().getSolsFeeAccountNumber());
-        assertEquals(PAY_REF_CHEQUE, callbackResponse.getData().getPaymentReferenceNumber());
     }
 
     @Test

@@ -77,6 +77,21 @@ public class CaveatNotificationService {
         return caveatCallbackResponse;
     }
 
+    public CaveatCallbackResponse solsCaveatRaise(CaveatCallbackRequest caveatCallbackRequest)
+            throws NotificationClientException {
+
+        CaveatCallbackResponse caveatCallbackResponse = CaveatCallbackResponse.builder().errors(new ArrayList<>()).build();
+        Document document;
+        List<Document> documents = new ArrayList<>();
+        CaveatDetails caveatDetails = caveatCallbackRequest.getCaseDetails();
+        setCaveatExpiryDate(caveatDetails.getData());
+
+        if (caveatCallbackResponse.getErrors().isEmpty()) {
+            caveatCallbackResponse = caveatCallbackResponseTransformer.caveatRaised(caveatCallbackRequest, documents, null);
+        }
+        return caveatCallbackResponse;
+    }
+
     private void setCaveatExpiryDate(CaveatData caveatData) {
         caveatData.setExpiryDate(LocalDate.now().plusMonths(CAVEAT_LIFESPAN));
     }

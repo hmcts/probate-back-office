@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import uk.gov.hmcts.probate.controller.validation.CaveatCompletedGroup;
 import uk.gov.hmcts.probate.controller.validation.CaveatCreatedGroup;
 import uk.gov.hmcts.probate.controller.validation.CaveatUpdatedGroup;
 import uk.gov.hmcts.probate.model.ApplicationType;
@@ -49,13 +50,11 @@ public class CaveatData {
     @NotNull(groups = {CaveatUpdatedGroup.class}, message = "{deceasedDateOfDeathIsNull}")
     private LocalDate deceasedDateOfDeath;
 
-    @NotNull(groups = {CaveatUpdatedGroup.class}, message = "{deceasedDateOfBirthIsNull}")
     private LocalDate deceasedDateOfBirth;
 
-    @NotBlank(groups = {CaveatUpdatedGroup.class}, message = "{deceasedAnyOtherNamesIsNull}")
+    @NotBlank(groups = {CaveatUpdatedGroup.class}, message = "{deceasedFullAliasNameListIsNull}")
     private String deceasedAnyOtherNames;
 
-    @NotNull(groups = {CaveatUpdatedGroup.class}, message = "{deceasedFullAliasNameListIsNull}")
     private List<CollectionMember<ProbateFullAliasName>> deceasedFullAliasNameList;
 
     @NotNull(groups = {CaveatUpdatedGroup.class}, message = "{deceasedAddressIsNull}")
@@ -88,6 +87,12 @@ public class CaveatData {
     // EVENT = solicitorUpdateCaveat - application details
 
     private String solsDeceasedNameSection;
+
+    // EVENT = cavConfirmation - confirmation details
+    private String solsFeeAccountNumber;
+
+    @NotBlank(groups = {CaveatCompletedGroup.class}, message = "{solsPaymentMethodsIsNull}")
+    private String solsPaymentMethods;
 
     // EVENT = cavRaiseCaveat - caveat details
 

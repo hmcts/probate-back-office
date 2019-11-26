@@ -35,6 +35,9 @@ public class ResponseCaveatData {
     private final String solsSolicitorPhoneNumber;
     private final String solsSolicitorAppReference;
 
+    private final String solsPaymentMethods;
+    private final String solsFeeAccountNumber;
+
     private final String caveatorForenames;
     private final String caveatorSurname;
     private final String caveatorEmailAddress;

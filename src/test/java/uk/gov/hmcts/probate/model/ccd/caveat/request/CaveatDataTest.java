@@ -65,6 +65,28 @@ public class CaveatDataTest {
     }
 
     @Test
+    public void shouldReturnApplicantFullNameForSolsCaveat() {
+        final CaveatData caveatData = CaveatData.builder()
+                .caveatorForenames(CAV_CAVEATOR_FORENAMES)
+                .caveatorSurname(CAV_CAVEATOR_SURNAME)
+                .build();
+        assertEquals(CAV_CAVEATOR_FORENAMES + " " + CAV_CAVEATOR_SURNAME,
+                caveatData.getCaveatorFullName());
+    }
+
+
+    @Test
+    public void shouldReturnDeceasedFullNameForSolsCaveat() {
+        final CaveatData caveatData = CaveatData.builder()
+                .deceasedForenames(CAV_CAVEATOR_FORENAMES)
+                .deceasedSurname(CAV_CAVEATOR_SURNAME)
+                .build();
+
+        assertEquals(CAV_CAVEATOR_FORENAMES + " " + CAV_CAVEATOR_SURNAME,
+                caveatData.getDeceasedFullName());
+    }
+
+    @Test
     public void shouldReturnDefaultEmailNotificationCaveat() {
         final CaveatData caveatData = CaveatData.builder()
                 .caveatorEmailAddress(CAV_CAVEATOR_EMAIL)
@@ -195,5 +217,4 @@ public class CaveatDataTest {
 
         assertEquals(CAV_CAVEATOR_ADDRESS_1 + ", " + CAV_CAVEATOR_POSTCODE, addressFormatterService.formatAddress(caveatorAddress));
     }
-
 }
