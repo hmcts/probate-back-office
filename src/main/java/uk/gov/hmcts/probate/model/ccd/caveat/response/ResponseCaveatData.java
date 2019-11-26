@@ -11,7 +11,6 @@ import uk.gov.hmcts.probate.model.ccd.raw.BulkPrint;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
-import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 
 import java.util.List;
@@ -36,17 +35,7 @@ public class ResponseCaveatData {
     private final String solsSolicitorPhoneNumber;
     private final String solsSolicitorAppReference;
 
-    private final String solsApplicantForenames;
-    private final String solsApplicantSurname;
-    private final String solsDeceasedForenames;
-    private final String solsDeceasedSurname;
-    private final String solsDeceasedDateOfDeath;
-    private final String solsHasDateOfBirth;
-    private final String solsDeceasedDateOfBirth;
-    private final String solsDeceasedAnyOtherNames;
-    private final List<CollectionMember<ProbateFullAliasName>> solsDeceasedAliasNameList;
-    private final ProbateAddress solsDeceasedAddress;
-    private final String solsPaymentMethod;
+    private final String solsPaymentMethods;
     private final String solsFeeAccountNumber;
 
     private final String caveatorForenames;

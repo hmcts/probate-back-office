@@ -100,7 +100,7 @@ public class ConfirmationResponseServiceTest {
     @Mock
     private SolsAddress solsAddressMock;
     @Mock
-    private ProbateAddress solsDeceasedAddressMock;
+    private ProbateAddress probateAddressMock;
 
     private static final String GRANT_TYPE_PROBATE = "WillLeft";
     private static final String GRANT_TYPE_INTESTACY = "NoWill";
@@ -625,17 +625,16 @@ public class ConfirmationResponseServiceTest {
         when(caveatDataMock.getSolsSolicitorAppReference()).thenReturn("ref");
         when(caveatDataMock.getApplicationSubmittedDate()).thenReturn(date);
         when(caveatDataMock.getSolsSolicitorFirmName()).thenReturn("Sol Firm Name");
-        when(caveatDataMock.getSolsSolicitorEmail()).thenReturn("solicitor@test.com");
+        when(caveatDataMock.getCaveatorEmailAddress()).thenReturn("solicitor@test.com");
         when(caveatDataMock.getSolsSolicitorPhoneNumber()).thenReturn("07070707077");
-        when(caveatDataMock.getSolsSolicitorAddress()).thenReturn(solsAddressMock);
+        when(caveatDataMock.getCaveatorAddress()).thenReturn(probateAddressMock);
 
-        when(caveatDataMock.getSolsApplicantFullName()).thenReturn("Applicant_fn Applicant_ln");
-        when(caveatDataMock.getSolsDeceasedFullName()).thenReturn("Deceased Fullname");
-        when(caveatDataMock.getSolsDeceasedDateOfDeath()).thenReturn(date);
-        when(caveatDataMock.getSolsHasDateOfBirth()).thenReturn("Yes");
-        when(caveatDataMock.getSolsDeceasedDateOfBirth()).thenReturn(date);
-        when(caveatDataMock.getSolsDeceasedAddress()).thenReturn(solsDeceasedAddressMock);
-        when(caveatDataMock.getSolsDeceasedAnyOtherNames()).thenReturn("No");
+        when(caveatDataMock.getCaveatorFullName()).thenReturn("Applicant_fn Applicant_ln");
+        when(caveatDataMock.getDeceasedFullName()).thenReturn("Deceased Fullname");
+        when(caveatDataMock.getDeceasedDateOfDeath()).thenReturn(date);
+        when(caveatDataMock.getDeceasedDateOfBirth()).thenReturn(date);
+        when(caveatDataMock.getDeceasedAddress()).thenReturn(probateAddressMock);
+        when(caveatDataMock.getDeceasedAnyOtherNames()).thenReturn("No");
 
         return caveatDataMock;
     }

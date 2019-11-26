@@ -89,7 +89,7 @@ public class ConfirmationResponseService {
         }
         keyValue.put("{{caseSubmissionDate}}", caseSubmissionDate);
         keyValue.put("{{applicationFee}}", CAVEAT_APPLICATION_FEE);
-        keyValue.put("{{paymentMethod}}", caveatData.getSolsPaymentMethod());
+        keyValue.put("{{paymentMethod}}", caveatData.getSolsPaymentMethods());
         keyValue.put("{{paymentReferenceNumber}}", getPaymentReference(caveatData));
 
         return markdownSubstitutionService.generatePage(templatesDirectory, MarkdownTemplate.CAVEAT_NEXT_STEPS, keyValue);
@@ -314,7 +314,7 @@ public class ConfirmationResponseService {
     }
 
     private String getPaymentReference(CaveatData caveatData) {
-        if (PAYMENT_METHOD_VALUE_FEE_ACCOUNT.equals(caveatData.getSolsPaymentMethod())) {
+        if (PAYMENT_METHOD_VALUE_FEE_ACCOUNT.equals(caveatData.getSolsPaymentMethods())) {
             return PAYMENT_REFERENCE_FEE_PREFIX + caveatData.getSolsFeeAccountNumber();
         } else {
             return PAYMENT_REFERENCE_CHEQUE;

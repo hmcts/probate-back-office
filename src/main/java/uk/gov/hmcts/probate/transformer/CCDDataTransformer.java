@@ -168,8 +168,8 @@ public class CCDDataTransformer {
                 .solsSolicitorAppReference(notNullWrapper(caveatData.getSolsSolicitorAppReference()))
                 .applicationSubmittedDate(getCaseSubmissionDate(caveatCallbackRequest.getCaseDetails()
                         .getLastModified()))
-                .solsSolicitorEmail(notNullWrapper(caveatData.getSolsSolicitorEmail()))
-                .solsPaymentMethod(notNullWrapper(caveatData.getSolsPaymentMethod()))
+                .caveatorEmailAddress(notNullWrapper(caveatData.getCaveatorEmailAddress()))
+                .solsPaymentMethods(notNullWrapper(caveatData.getSolsPaymentMethods()))
                 .solsFeeAccountNumber(notNullWrapper(caveatData.getSolsFeeAccountNumber()))
                 .build();
     }

@@ -19,9 +19,9 @@
       "applicationType": "Solicitor",
       "registryLocation": "ctsc",
       "solsSolicitorFirmName": "The Firm",
-      "solsSolicitorEmail": "test@test.com",
+      "caveatorEmailAddress": "test@test.com",
       "solsSolicitorPhoneNumber": "07070707077",
-      "solsSolicitorAddress": {
+      "caveatorAddress": {
         "AddressLine1": "2",
         "AddressLine2": "",
         "AddressLine3": "",
@@ -31,16 +31,15 @@
         "Country": ""
       },
       "solsSolicitorAppReference": "REF",
-      "solsApplicantForenames": "SolsApplicant_fn",
-      "solsApplicantSurname": "SolsApplicant_ln",
-      "solsDeceasedForenames": "SolsDeceased_fn",
-      "solsDeceasedSurname": "SolsDeceased_ln",
-      "solsDeceasedDateOfDeath": "2018-01-01",
-      "solsHasDateOfBirth": "Yes",
-      "solsDeceasedDateOfBirth": "2017-01-01",
-      "solsDeceasedAnyOtherNames": "No",
-      "solsDeceasedAliasNameList": [],
-      "solsDeceasedAddress": {
+      "caveatorForenames": "Applicant_fn",
+      "caveatorSurname": "Applicant_ln",
+      "deceasedForenames": "Deceased_fn",
+      "deceasedSurname": "Deceased_ln",
+      "deceasedDateOfDeath": "2018-01-01",
+      "deceasedDateOfBirth": "2017-01-01",
+      "deceasedAnyOtherNames": "No",
+      "deceasedFullAliasNameList": [],
+      "deceasedAddress": {
         "AddressLine1": "2",
         "AddressLine2": "",
         "AddressLine3": "",
@@ -49,16 +48,16 @@
         "PostCode": "2",
         "Country": ""
       },
-      "solsPaymentMethod": "cheque",
+      "solsPaymentMethods": "cheque",
       "solsFeeAccountNumber": "12345"
     },
     "data_classification": {
       "applicationType": "PUBLIC",
       "registryLocation": "PUBLIC",
       "solsSolicitorFirmName": "PUBLIC",
-      "solsSolicitorEmail": "PUBLIC",
+      "caveatorEmailAddress": "PUBLIC",
       "solsSolicitorPhoneNumber": "PUBLIC",
-      "solsSolicitorAddress": {
+      "caveatorAddress": {
         "classification": "PUBLIC",
         "value": {
           "AddressLine1": "PUBLIC",
@@ -71,16 +70,15 @@
         }
       },
       "solsSolicitorAppReference": "PUBLIC",
-      "solsApplicantForenames": "PUBLIC",
-      "solsApplicantSurname": "PUBLIC",
-      "solsDeceasedForenames": "PUBLIC",
-      "solsDeceasedSurname": "PUBLIC",
-      "solsDeceasedDateOfDeath": "PUBLIC",
-      "solsHasDateOfBirth": "PUBLIC",
-      "solsDeceasedDateOfBirth": "PUBLIC",
-      "solsDeceasedAnyOtherNames": "PUBLIC",
-      "solsDeceasedAliasNameList": "PUBLIC",
-      "solsDeceasedAddress": {
+      "caveatorForenames": "PUBLIC",
+      "caveatorSurname": "PUBLIC",
+      "deceasedForenames": "PUBLIC",
+      "deceasedSurname": "PUBLIC",
+      "deceasedDateOfDeath": "PUBLIC",
+      "deceasedDateOfBirth": "PUBLIC",
+      "deceasedAnyOtherNames": "PUBLIC",
+      "deceasedFullAliasNameList": "PUBLIC",
+      "deceasedAddress": {
         "classification": "PUBLIC",
         "value": {
           "AddressLine1": "PUBLIC",
@@ -92,7 +90,7 @@
           "Country": "PUBLIC"
         }
       },
-      "solsPaymentMethod": "PUBLIC",
+      "solsPaymentMethods": "PUBLIC",
       "solsFeeAccountNumber": "PUBLIC"
     },
     "after_submit_callback_response": null,
@@ -104,9 +102,9 @@
       "applicationType": "PUBLIC",
       "registryLocation": "PUBLIC",
       "solsSolicitorFirmName": "PUBLIC",
-      "solsSolicitorEmail": "PUBLIC",
+      "caveatorEmailAddress": "PUBLIC",
       "solsSolicitorPhoneNumber": "PUBLIC",
-      "solsSolicitorAddress": {
+      "caveatorAddress": {
         "classification": "PUBLIC",
         "value": {
           "AddressLine1": "PUBLIC",
@@ -119,16 +117,15 @@
         }
       },
       "solsSolicitorAppReference": "PUBLIC",
-      "solsApplicantForenames": "PUBLIC",
-      "solsApplicantSurname": "PUBLIC",
-      "solsDeceasedForenames": "PUBLIC",
-      "solsDeceasedSurname": "PUBLIC",
-      "solsDeceasedDateOfDeath": "PUBLIC",
-      "solsHasDateOfBirth": "PUBLIC",
-      "solsDeceasedDateOfBirth": "PUBLIC",
-      "solsDeceasedAnyOtherNames": "PUBLIC",
-      "solsDeceasedAliasNameList": "PUBLIC",
-      "solsDeceasedAddress": {
+      "caveatorForenames": "PUBLIC",
+      "caveatorSurname": "PUBLIC",
+      "deceasedForenames": "PUBLIC",
+      "deceasedSurname": "PUBLIC",
+      "deceasedDateOfDeath": "PUBLIC",
+      "deceasedDateOfBirth": "PUBLIC",
+      "deceasedAnyOtherNames": "PUBLIC",
+      "deceasedFullAliasNameList": "PUBLIC",
+      "deceasedAddress": {
         "classification": "PUBLIC",
         "value": {
           "AddressLine1": "PUBLIC",
@@ -140,7 +137,7 @@
           "Country": "PUBLIC"
         }
       },
-      "solsPaymentMethod": "PUBLIC",
+      "solsPaymentMethods": "PUBLIC",
       "solsFeeAccountNumber": "PUBLIC"
     }
   }

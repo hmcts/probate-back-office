@@ -205,7 +205,7 @@ public class ConfirmationResponseServiceFeatureTest {
         return CaveatData.builder()
                 .solsSolicitorAppReference(SOLICITOR_REFERENCE)
                 .applicationSubmittedDate(LocalDate.of(2018, 1, 1))
-                .solsPaymentMethod(PAYMENT_METHOD)
+                .solsPaymentMethods(PAYMENT_METHOD)
                 .solsFeeAccountNumber(SOLS_FEE_ACC);
     }
 

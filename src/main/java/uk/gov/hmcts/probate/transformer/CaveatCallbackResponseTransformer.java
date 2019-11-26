@@ -99,7 +99,7 @@ public class CaveatCallbackResponseTransformer {
     public CaveatCallbackResponse transform(CaveatCallbackRequest callbackRequest) {
         ResponseCaveatData responseCaveatData;
 
-        if (callbackRequest.getCaseDetails().getData().getSolsSolicitorEmail() != null) {
+        if (callbackRequest.getCaseDetails().getData().getSolsSolicitorFirmName() != null) {
             responseCaveatData = getResponseCaveatData(callbackRequest.getCaseDetails())
                     .applicationType(SOLICITOR)
                     .build();
@@ -150,17 +150,7 @@ public class CaveatCallbackResponseTransformer {
                 .solsSolicitorPhoneNumber(caveatData.getSolsSolicitorPhoneNumber())
                 .solsSolicitorAppReference(caveatData.getSolsSolicitorAppReference())
 
-                .solsApplicantForenames(caveatData.getSolsApplicantForenames())
-                .solsApplicantSurname(caveatData.getSolsApplicantSurname())
-                .solsDeceasedForenames(caveatData.getSolsDeceasedForenames())
-                .solsDeceasedSurname(caveatData.getSolsDeceasedSurname())
-                .solsDeceasedDateOfDeath(caveatData.getSolsDeceasedDateOfDeath() != null ? dateTimeFormatter.format(caveatData.getSolsDeceasedDateOfDeath()) : null)
-                .solsHasDateOfBirth(caveatData.getSolsHasDateOfBirth())
-                .solsDeceasedDateOfBirth(caveatData.getSolsDeceasedDateOfBirth() != null ? dateTimeFormatter.format(caveatData.getSolsDeceasedDateOfBirth()) : null)
-                .solsDeceasedAnyOtherNames(caveatData.getSolsDeceasedAnyOtherNames())
-                .solsDeceasedAliasNameList(caveatData.getSolsDeceasedAliasNameList())
-                .solsDeceasedAddress(caveatData.getSolsDeceasedAddress())
-                .solsPaymentMethod(caveatData.getSolsPaymentMethod())
+                .solsPaymentMethods(caveatData.getSolsPaymentMethods())
                 .solsFeeAccountNumber(caveatData.getSolsFeeAccountNumber())
 
                 .caveatorForenames(caveatData.getCaveatorForenames())

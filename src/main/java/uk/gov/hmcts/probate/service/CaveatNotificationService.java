@@ -86,18 +86,6 @@ public class CaveatNotificationService {
         CaveatDetails caveatDetails = caveatCallbackRequest.getCaseDetails();
         setCaveatExpiryDate(caveatDetails.getData());
 
-//        document = notificationService.sendCaveatEmail(CAVEAT_RAISED, caveatDetails);
-//        documents.add(document);
-
-//        Map<String, Object> placeholders = caveatDocmosisService.caseDataAsPlaceholders(caveatCallbackRequest.getCaseDetails());
-//        Document coversheet = pdfManagementService
-//                .generateDocmosisDocumentAndUpload(placeholders, DocumentType.CAVEAT_COVERSHEET);
-//        documents.add(coversheet);
-//        Document caveatRaisedDoc = pdfManagementService.generateDocmosisDocumentAndUpload(placeholders, DocumentType.CAVEAT_RAISED);
-//        documents.add(caveatRaisedDoc);
-
-
-
         if (caveatCallbackResponse.getErrors().isEmpty()) {
             caveatCallbackResponse = caveatCallbackResponseTransformer.caveatRaised(caveatCallbackRequest, documents, null);
         }

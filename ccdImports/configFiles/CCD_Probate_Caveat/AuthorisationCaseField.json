@@ -243,7 +243,7 @@
   {"CaseTypeID": "Caveat", "CaseFieldID": "deceasedDateOfBirth", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "deceasedAnyOtherNames", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "deceasedFullAliasNameList", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"},
-  {"CaseTypeID": "Caveat", "CaseFieldID": "deceasedAddress", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"}
-  {"CaseTypeID": "Caveat", "CaseFieldID": "solsPaymentMethod", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"},
+  {"CaseTypeID": "Caveat", "CaseFieldID": "deceasedAddress", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"},
+  {"CaseTypeID": "Caveat", "CaseFieldID": "solsPaymentMethods", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "solsFeeAccountNumber", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"}
 ]
