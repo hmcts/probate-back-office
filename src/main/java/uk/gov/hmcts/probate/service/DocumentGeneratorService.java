@@ -164,7 +164,7 @@ public class DocumentGeneratorService {
 
         if (will == null){
             for (CollectionMember<Document> document : callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated()) {
-                if (document.getValue().getDocumentType().getTemplateName().equals(DocumentType.SEALED_WILL)) {
+                if (document.getValue().getDocumentType().getTemplateName().equals(DocumentType.SEALED_WILL.getTemplateName())) {
                     will =  document.getValue();
                 }
             }
