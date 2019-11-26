@@ -51,12 +51,12 @@ public class DataExtractController {
     @PostMapping(path = "/hmrc")
     public ResponseEntity initiateHMRCExtract() {
         log.info("Extract initiated for HMRC");
-        return initiateHMRCExtract(DATE_FORMAT.format(LocalDate.now().minusDays(1L)));
+        return initiateHmrcExtract(DATE_FORMAT.format(LocalDate.now().minusDays(1L)));
     }
 
     @ApiOperation(value = "Initiate HMRC data extract with date", notes = "Date MUST be in format 'yyyy-MM-dd'")
     @PostMapping(path = "/hmrc/{date}")
-    public ResponseEntity initiateHMRCExtract(@ApiParam(value = "Date to find cases against", required = true)
+    public ResponseEntity initiateHmrcExtract(@ApiParam(value = "Date to find cases against", required = true)
                                               @PathVariable("date") String date) {
         dateValidator(date);
         log.info("HMRC data extract initiated for date: {}", date);
@@ -64,12 +64,12 @@ public class DataExtractController {
         List<ReturnedCaseDetails> cases = caseQueryService.findCasesWithDatedDocument(date);
         log.info("Cases found for HMRC: {}", cases.size());
 
-        return uploadHMRCFile(null, date, cases);
+        return uploadHmrcFile(null, date, cases);
     }
 
     @ApiOperation(value = "Initiate HMRC data extract within 2 dates", notes = "Dates MUST be in format 'yyyy-MM-dd'")
     @PostMapping(path = "/hmrcFromTo")
-    public ResponseEntity initiateHMRCExtractFromDate(@RequestParam(value = "fromDate", required = true) String fromDate,
+    public ResponseEntity initiateHmrcExtractFromDate(@RequestParam(value = "fromDate", required = true) String fromDate,
                                                       @RequestParam(value = "toDate", required = true) String toDate) {
         dateValidator(fromDate, toDate);
         log.info("HMRC data extract initiated for dates from-to: {}-{}", fromDate, toDate);
@@ -77,7 +77,7 @@ public class DataExtractController {
         List<ReturnedCaseDetails> cases = caseQueryService.findCaseStateWithinTimeFrame(fromDate, toDate);
         log.info("Cases found for HMRC: {}", cases.size());
 
-        return uploadHMRCFile(fromDate, toDate, cases);
+        return uploadHmrcFile(fromDate, toDate, cases);
     }
 
     @Scheduled(cron = "${cron.data_extract}")
@@ -158,11 +158,11 @@ public class DataExtractController {
         }
     }
 
-    private ResponseEntity uploadHMRCFile(String fromDate, String date, List<ReturnedCaseDetails> cases) {
+    private ResponseEntity uploadHmrcFile(String fromDate, String date, List<ReturnedCaseDetails> cases) {
         String dateDesc = (StringUtils.isEmpty(fromDate) ? " date:" : " from " + fromDate + " to") + " " + date;
         if (!cases.isEmpty()) {
             log.info("preparing for file upload");
-            int response = fileTransferService.uploadFile(hmrcFileService.createHMRCFile(
+            int response = fileTransferService.uploadFile(hmrcFileService.createHmrcFile(
                 cases, "1_" + fileExtractDateFormatter.formatFileDate() + ".dat"));
 
             if (response != 201) {

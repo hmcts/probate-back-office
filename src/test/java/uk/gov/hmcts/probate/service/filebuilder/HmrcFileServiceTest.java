@@ -166,7 +166,7 @@ public class HmrcFileServiceTest {
         builtData = caseDataSolictor.build();
         createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, 1111222233334444L);
         caseList.add(createdCase);
-        assertThat(createFile(hmrcFileService.createHMRCFile(caseList.build(), FILE_NAME)),
+        assertThat(createFile(hmrcFileService.createHmrcFile(caseList.build(), FILE_NAME)),
             is(FileUtils.getStringFromFile("expectedGeneratedFiles/hmrcSolicitor.txt")));
     }
 
@@ -175,7 +175,7 @@ public class HmrcFileServiceTest {
         builtData = caseDataPersonal.build();
         createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, 2222333344445555L);
         caseList.add(createdCase);
-        assertThat(createFile(hmrcFileService.createHMRCFile(caseList.build(), FILE_NAME)),
+        assertThat(createFile(hmrcFileService.createHmrcFile(caseList.build(), FILE_NAME)),
             is(FileUtils.getStringFromFile("expectedGeneratedFiles/hmrcPersonal.txt")));
     }
 
@@ -184,7 +184,7 @@ public class HmrcFileServiceTest {
         builtData = caseDataPersonal.ihtFormId("notAnIHTValue").build();
         createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, 2222333344445555L);
         caseList.add(createdCase);
-        hmrcFileService.createHMRCFile(caseList.build(), FILE_NAME);
+        hmrcFileService.createHmrcFile(caseList.build(), FILE_NAME);
     }
 
     @Test
@@ -193,7 +193,7 @@ public class HmrcFileServiceTest {
         caseList.add(new ReturnedCaseDetails(builtData, LAST_MODIFIED, 2222333344445555L));
         builtData = caseDataSolictor.build();
         caseList.add(new ReturnedCaseDetails(builtData, LAST_MODIFIED, 1111222233334444L));
-        assertThat(createFile(hmrcFileService.createHMRCFile(caseList.build(), FILE_NAME)),
+        assertThat(createFile(hmrcFileService.createHmrcFile(caseList.build(), FILE_NAME)),
             is(FileUtils.getStringFromFile("expectedGeneratedFiles/hmrcMultipleCases.txt")));
     }
 
@@ -212,7 +212,7 @@ public class HmrcFileServiceTest {
         builtData = caseDataSolictor.build();
         createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, 3333444455556666L);
         caseList.add(createdCase);
-        assertThat(createFile(hmrcFileService.createHMRCFile(caseList.build(), FILE_NAME)),
+        assertThat(createFile(hmrcFileService.createHmrcFile(caseList.build(), FILE_NAME)),
             is(FileUtils.getStringFromFile("expectedGeneratedFiles/hmrcEmptyOptionals.txt")));
     }
 
@@ -222,7 +222,7 @@ public class HmrcFileServiceTest {
         builtData = caseDataPersonal.build();
         createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, 4444555566667777L);
         caseList.add(createdCase);
-        assertThat(createFile(hmrcFileService.createHMRCFile(caseList.build(), FILE_NAME)),
+        assertThat(createFile(hmrcFileService.createHmrcFile(caseList.build(), FILE_NAME)),
             is(FileUtils.getStringFromFile("expectedGeneratedFiles/hmrcPrimaryApplicantNo.txt")));
     }
 
@@ -231,7 +231,7 @@ public class HmrcFileServiceTest {
         builtData = caseDataCarriageReturns.build();
         createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, 5555666677778888L);
         caseList.add(createdCase);
-        assertThat(createFile(hmrcFileService.createHMRCFile(caseList.build(), FILE_NAME)),
+        assertThat(createFile(hmrcFileService.createHmrcFile(caseList.build(), FILE_NAME)),
             is(FileUtils.getStringFromFile("expectedGeneratedFiles/hmrcPersonalReplaced.txt")));
     }
 

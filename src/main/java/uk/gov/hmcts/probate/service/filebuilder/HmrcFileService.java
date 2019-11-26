@@ -52,7 +52,7 @@ public class HmrcFileService {
         {"IHT207", "E"},
     }).collect(Collectors.toMap(data -> data[0], data -> data[1]));
 
-    public File createHMRCFile(List<ReturnedCaseDetails> ccdCases, String fileName) {
+    public File createHmrcFile(List<ReturnedCaseDetails> ccdCases, String fileName) {
         ImmutableList.Builder<String> fileData = new ImmutableList.Builder<>();
         fileData.add(ROW_HEADER + ROW_DELIMITER);
         int rowCount = 0;
