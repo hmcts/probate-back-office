@@ -1,14 +1,16 @@
 [
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "PAAppCreated", "Name": "PA caveat application created", "Description": "PA caveat application created", "DisplayOrder": 1},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "CaveatRaised", "Name": "Caveat raised", "Description": "Caveat raised", "DisplayOrder": 2},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "CasePaymentFailed", "Name": "Case payment failed", "Description": "Case created with payment failed", "DisplayOrder": 3},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "CaveatNotMatched", "Name": "Caveat not matched", "Description": "Caveat not matched", "DisplayOrder": 4},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "CaveatClosed", "Name": "Caveat closed", "Description": "Caveat closed", "DisplayOrder": 5},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "CaveatMatching", "Name": "Caveat matching", "Description": "Caveat matching", "DisplayOrder": 6},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "AwaitingCaveatResolution", "Name": "Awaiting caveat resolution", "Description": "Awaiting caveat resolution", "DisplayOrder": 7},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "WarningValidation", "Name": "Warning validation", "Description": "Warning validation", "DisplayOrder": 8},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "AwaitingWarningResponse", "Name": "Awaiting warning response", "Description": "Awaiting warning response", "DisplayOrder": 9},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "SummonsOrdered", "Name": "Summons ordered", "Description": "Summons ordered", "DisplayOrder": 10},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "ReviewAppearance", "Name": "Review appearance", "Description": "Review appearance", "DisplayOrder": 11},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "CaveatImported", "Name": "Caveat imported", "Description": "Caveat imported", "DisplayOrder": 12}
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "SolAppCreated", "Name": "Caveat created", "Description": "Caveat created (Solicitor)", "DisplayOrder": 2},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "SolAppUpdated", "Name": "Caveat updated", "Description": "Caveat updated (Solicitor)", "DisplayOrder": 3},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "CaveatRaised", "Name": "Caveat raised", "Description": "Caveat raised", "DisplayOrder": 4},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "CasePaymentFailed", "Name": "Case payment failed", "Description": "Case created with payment failed", "DisplayOrder": 5},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "CaveatNotMatched", "Name": "Caveat not matched", "Description": "Caveat not matched", "DisplayOrder": 6},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "CaveatClosed", "Name": "Caveat closed", "Description": "Caveat closed", "DisplayOrder": 7},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "CaveatMatching", "Name": "Caveat matching", "Description": "Caveat matching", "DisplayOrder": 8},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "AwaitingCaveatResolution", "Name": "Awaiting caveat resolution", "Description": "Awaiting caveat resolution", "DisplayOrder": 9},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "WarningValidation", "Name": "Warning validation", "Description": "Warning validation", "DisplayOrder": 10},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "AwaitingWarningResponse", "Name": "Awaiting warning response", "Description": "Awaiting warning response", "DisplayOrder": 11},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "SummonsOrdered", "Name": "Summons ordered", "Description": "Summons ordered", "DisplayOrder": 12},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "ReviewAppearance", "Name": "Review appearance", "Description": "Review appearance", "DisplayOrder": 13},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "CaveatImported", "Name": "Caveat imported", "Description": "Caveat imported", "DisplayOrder": 14}
 ]

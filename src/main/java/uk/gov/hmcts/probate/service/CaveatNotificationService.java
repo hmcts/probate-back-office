@@ -24,6 +24,7 @@ import java.util.Map;
 
 import static uk.gov.hmcts.probate.model.Constants.CAVEAT_LIFESPAN;
 import static uk.gov.hmcts.probate.model.State.CAVEAT_RAISED;
+import static uk.gov.hmcts.probate.model.State.CAVEAT_RAISED_SOLS;
 
 @Service
 @Slf4j
@@ -73,6 +74,24 @@ public class CaveatNotificationService {
 
         if (caveatCallbackResponse.getErrors().isEmpty()) {
             caveatCallbackResponse = caveatCallbackResponseTransformer.caveatRaised(caveatCallbackRequest, documents, letterId);
+        }
+        return caveatCallbackResponse;
+    }
+
+    public CaveatCallbackResponse solsCaveatRaise(CaveatCallbackRequest caveatCallbackRequest)
+            throws NotificationClientException {
+
+        CaveatCallbackResponse caveatCallbackResponse = CaveatCallbackResponse.builder().errors(new ArrayList<>()).build();
+        Document document;
+        List<Document> documents = new ArrayList<>();
+        CaveatDetails caveatDetails = caveatCallbackRequest.getCaseDetails();
+        setCaveatExpiryDate(caveatDetails.getData());
+
+        document = notificationService.sendCaveatEmail(CAVEAT_RAISED_SOLS, caveatDetails);
+        documents.add(document);
+
+        if (caveatCallbackResponse.getErrors().isEmpty()) {
+            caveatCallbackResponse = caveatCallbackResponseTransformer.caveatRaised(caveatCallbackRequest, documents, null);
         }
         return caveatCallbackResponse;
     }

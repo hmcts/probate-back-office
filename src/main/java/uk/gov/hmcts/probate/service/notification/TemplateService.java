@@ -41,6 +41,8 @@ public class TemplateService {
                 } else {
                     return notificationTemplates.getEmail().get(applicationType).getCaveatRaised();
                 }
+            case CAVEAT_RAISED_SOLS:
+                return notificationTemplates.getEmail().get(applicationType).getCaveatRaisedSols();
             default:
                 throw new BadRequestException("Unsupported state");
         }
