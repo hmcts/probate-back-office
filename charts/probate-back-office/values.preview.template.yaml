@@ -28,6 +28,6 @@ java:
   image: ${IMAGE_NAME}
   ingressHost: ${SERVICE_FQDN}
 
-postgresql:
-  enabled: true
+  postgresql:
+    enabled: true
 
