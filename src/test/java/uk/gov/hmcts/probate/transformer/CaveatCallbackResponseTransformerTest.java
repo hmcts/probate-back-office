@@ -158,43 +158,9 @@ public class CaveatCallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldTransformCaveatCallbackRequestToCaveatCallbackResponse() {
+    public void shouldTransformSolsCaveatCallbackRequestToCaveatCallbackResponse() {
         CaveatCallbackResponse caveatCallbackResponse = underTest.transform(caveatCallbackRequestMock);
-
-//        assertCommon(caveatCallbackResponse);
-    }
-
-    @Test
-    public void shouldTransformCaseForCaveatWithDeceasedAliasNames() {
-        List<CollectionMember<ProbateFullAliasName>> deceasedFullAliasNameList = new ArrayList<>();
-
-        ProbateFullAliasName an11 = ProbateFullAliasName.builder().fullAliasName(CAV_DECEASED_FULL_ALIAS_NAME).build();
-        CollectionMember<ProbateFullAliasName> an1 = new CollectionMember<>("0", an11);
-        deceasedFullAliasNameList.add(an1);
-        caveatDataBuilder.deceasedFullAliasNameList(deceasedFullAliasNameList);
-
-        when(caveatCallbackRequestMock.getCaseDetails()).thenReturn(caveatDetailsMock);
-        when(caveatDetailsMock.getData()).thenReturn(caveatDataBuilder.build());
-
-        CaveatCallbackResponse caveatCallbackResponse = underTest.transform(caveatCallbackRequestMock);
-
-        assertCommonDetails(caveatCallbackResponse);
-        assertEquals(1, caveatCallbackResponse.getCaveatData().getDeceasedFullAliasNameList().size());
-    }
-
-    @Test
-    public void shouldGetCaveatUploadedDocuments() {
-        List<CollectionMember<UploadDocument>> documents = new ArrayList<>();
-        documents.add(createUploadDocuments("0"));
-        caveatDataBuilder.documentsUploaded(documents);
-
-        when(caveatCallbackRequestMock.getCaseDetails()).thenReturn(caveatDetailsMock);
-        when(caveatDetailsMock.getData()).thenReturn(caveatDataBuilder.build());
-
-        CaveatCallbackResponse caveatCallbackResponse = underTest.transform(caveatCallbackRequestMock);
-
-        assertCommonDetails(caveatCallbackResponse);
-        assertEquals(1, caveatCallbackResponse.getCaveatData().getDocumentsUploaded().size());
+        assertCommonSolsCaveats(caveatCallbackResponse);
     }
 
     @Test
@@ -321,7 +287,7 @@ public class CaveatCallbackResponseTransformerTest {
 
     private void assertCommonSolsCaveats(CaveatCallbackResponse caveatCallbackResponse) {
         assertCommonDetails(caveatCallbackResponse);
-        assertApplicationType(caveatCallbackResponse, ApplicationType.SOLICITOR);
+        assertApplicationType(caveatCallbackResponse, CAV_APPLICATION_TYPE_SOLS);
         assertPaperForm(caveatCallbackResponse, NO);
         assertRegistryLocation(caveatCallbackResponse, CAV_SOLS_REGISTRY_LOCATION);
     }
