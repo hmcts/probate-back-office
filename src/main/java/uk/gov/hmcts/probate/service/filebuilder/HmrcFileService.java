@@ -11,28 +11,21 @@ import uk.gov.hmcts.probate.model.DataExtractGrantType;
 import uk.gov.hmcts.probate.model.ccd.raw.AliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Grantee;
-import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 
 import java.io.File;
 import java.time.LocalDate;
-import java.time.Period;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static uk.gov.hmcts.probate.model.Constants.YES;
-
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class HmrcFileService {
+public class HmrcFileService extends BaseFileService {
     private final TextFileBuilderService textFileBuilderService;
     private final FileExtractDateFormatter fileExtractDateFormatter;
 
@@ -65,7 +58,6 @@ public class HmrcFileService {
     }
 
     private int prepareData(ImmutableList.Builder<String> fileData, Long id, CaseData data) {
-        int rowCount = 0;
         fileData.add(ROW_TYPE_GRANT_DETAILS);
         fileData.add(id.toString());
         fileData.add(data.getRegistryLocation());
@@ -92,7 +84,7 @@ public class HmrcFileService {
         fileData.add(DataExtractGrantType.valueOf(data.getCaseType()).getCaseTypeMapped());
         fileData.add(FINAL_GRANT);
         fileData.add(ROW_DELIMITER);
-        rowCount++;
+        int rowCount = 1;
         for (CollectionMember<AliasName> member : data.getSolsDeceasedAliasNamesList()) {
             rowCount = rowCount + addAliasRow(fileData, id.toString(), member.getValue());
         }
@@ -125,18 +117,10 @@ public class HmrcFileService {
         String type = iht2EstateMap.get(data.getIhtFormId());
 
         if (type == null) {
-            throw new BadRequestException("Unsupported IHT Form Type for "+data.getIhtFormId());
+            throw new BadRequestException("Unsupported IHT Form Type for " + data.getIhtFormId());
         }
-        
-        fileData.add(type);
-    }
 
-    private void addAddress(ImmutableList.Builder<String> fileData, List<String> address) {
-        fileData.add(address.get(0));
-        fileData.add(address.get(1));
-        fileData.add(address.get(2));
-        fileData.add(address.get(3));
-        fileData.add(address.get(6));
+        fileData.add(type);
     }
 
     private void addGranteeDetails(ImmutableList.Builder<String> fileData, Grantee grantee) {
@@ -161,89 +145,4 @@ public class HmrcFileService {
             fileData.add("");
         }
     }
-
-    private int ageCalculator(CaseData data) {
-        return Period.between(data.getDeceasedDateOfBirth(), data.getDeceasedDateOfDeath()).getYears();
-    }
-
-    private List<String> addressManager(SolsAddress address) {
-        if (address == null) {
-            address = getEmptyAddress();
-        }
-        String[] addressArray = {(Optional.ofNullable(address.getAddressLine1()).orElse("")).replace("\n", " "),
-            Optional.ofNullable(address.getAddressLine2()).orElse(""),
-            Optional.ofNullable(address.getAddressLine3()).orElse(""),
-            Optional.ofNullable(address.getPostTown()).orElse(""),
-            Optional.ofNullable(address.getCounty()).orElse(""),
-            Optional.ofNullable(address.getCountry()).orElse("")};
-        Arrays.sort(addressArray, Comparator.comparingInt(value -> value == null || value.isEmpty() ? 1 : 0));
-        List<String> formattedAddress = new ArrayList<>(7);
-        formattedAddress.addAll(Arrays.asList(addressArray));
-        formattedAddress.add(Optional.ofNullable(address.getPostCode()).orElse(""));
-        return formattedAddress;
-    }
-
-    private Grantee createGrantee(CaseData data, int i) {
-        return Grantee.builder()
-            .fullName(getName(data, i))
-            .address(addressManager(getAddress(data, i)))
-            .build();
-    }
-
-    private String getName(CaseData caseData, int granteeNumber) {
-        if (isYes(caseData.getPrimaryApplicantIsApplying())) {
-            return granteeNumber == 1 ? caseData.getPrimaryApplicantForenames() + " " + caseData
-                .getPrimaryApplicantSurname() : getApplyingExecutorName(caseData, granteeNumber - 2);
-        }
-        if (granteeNumber == 1 && caseData.getAdditionalExecutorsApplying() == null && caseData.getApplicationType()
-            .equals(ApplicationType.SOLICITOR)) {
-            return caseData.getSolsSOTName();
-        }
-        return getApplyingExecutorName(caseData, granteeNumber - 1);
-    }
-
-    private SolsAddress getAddress(CaseData caseData, int granteeNumber) {
-        if (isYes(caseData.getPrimaryApplicantIsApplying())) {
-            return granteeNumber == 1 ? caseData.getPrimaryApplicantAddress() : getAdditionalExecutorAddress(caseData,
-                granteeNumber - 2);
-        }
-        if (granteeNumber == 1 && caseData.getAdditionalExecutorsApplying() == null && caseData.getApplicationType()
-            .equals(ApplicationType.SOLICITOR)) {
-            return caseData.getSolsSolicitorAddress();
-        }
-        return getAdditionalExecutorAddress(caseData, granteeNumber - 1);
-    }
-
-    private SolsAddress getAdditionalExecutorAddress(CaseData caseData, int index) {
-        if (caseData.getAdditionalExecutorsApplying() != null
-            && caseData.getAdditionalExecutorsApplying().size() >= (index + 1)) {
-            return caseData.getAdditionalExecutorsApplying().get(index).getValue().getApplyingExecutorAddress();
-        }
-        return getEmptyAddress();
-    }
-
-    private String getApplyingExecutorName(CaseData caseData, int index) {
-        if (caseData.getAdditionalExecutorsApplying() != null
-            && caseData.getAdditionalExecutorsApplying().size() >= (index + 1)) {
-            return caseData.getAdditionalExecutorsApplying().get(index).getValue().getApplyingExecutorName();
-        }
-        return "";
-    }
-
-    private Boolean isYes(String yesNoValue) {
-        return yesNoValue.equals(YES);
-    }
-
-    private SolsAddress getEmptyAddress() {
-        return SolsAddress.builder()
-            .addressLine1("")
-            .addressLine2("")
-            .addressLine3("")
-            .postCode("")
-            .country("")
-            .county("")
-            .postTown("")
-            .build();
-    }
-
 }

@@ -49,7 +49,7 @@ public class DataExtractController {
     @Scheduled(cron = "${cron.data_extract}")
     @ApiOperation(value = "Initiate HMRC data extract", notes = "Will find cases for yesterdays date")
     @PostMapping(path = "/hmrc")
-    public ResponseEntity initiateHMRCExtract() {
+    public ResponseEntity initiateHmrcExtract() {
         log.info("Extract initiated for HMRC");
         return initiateHmrcExtract(DATE_FORMAT.format(LocalDate.now().minusDays(1L)));
     }
