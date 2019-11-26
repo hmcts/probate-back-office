@@ -165,6 +165,7 @@ public class CCDDataTransformer {
         CaveatData caveatData = caveatCallbackRequest.getCaseDetails().getData();
 
         return CaveatData.builder()
+                .registryLocation(notNullWrapper(caveatData.getRegistryLocation()))
                 .solsSolicitorAppReference(notNullWrapper(caveatData.getSolsSolicitorAppReference()))
                 .applicationSubmittedDate(getCaseSubmissionDate(caveatCallbackRequest.getCaseDetails()
                         .getLastModified()))

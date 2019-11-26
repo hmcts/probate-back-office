@@ -25,6 +25,7 @@ import java.util.stream.Collectors;
 import static java.util.Optional.ofNullable;
 import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
+import static uk.gov.hmcts.probate.model.Constants.CTSC;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT_RAISED;
@@ -97,7 +98,10 @@ public class CaveatCallbackResponseTransformer {
     }
 
     public CaveatCallbackResponse transform(CaveatCallbackRequest callbackRequest) {
-        ResponseCaveatData responseCaveatData;
+        ResponseCaveatData responseCaveatData = getResponseCaveatData(callbackRequest.getCaseDetails())
+                .applicationType(SOLICITOR)
+                .registryLocation(CTSC)
+                .build();
 
         if (callbackRequest.getCaseDetails().getData().getSolsSolicitorFirmName() != null) {
             responseCaveatData = getResponseCaveatData(callbackRequest.getCaseDetails())
