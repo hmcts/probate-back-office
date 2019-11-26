@@ -85,7 +85,12 @@ public class HmrcFileServiceTest {
                 .build())
             .additionalExecutorsApplying(additionalExecutors)
             .solsSolicitorFirmName("BRAY & BRAY")
-            .solsSolicitorAddress(SolsAddress.builder().addressLine1("Spa Place").addressLine2("36-42 Humberstone Road").postTown("Leicester").postCode("LE5 0AE").build())
+            .solsSolicitorAddress(SolsAddress.builder()
+                .addressLine1("Spa Place")
+                .addressLine2("36-42 Humberstone Road")
+                .postTown("Leicester")
+                .postCode("LE5 0AE")
+                .build())
             .ihtFormId("IHT205")
             .ihtGrossValue(new BigDecimal(new BigInteger("32500000"), 0))
             .ihtNetValue(new BigDecimal(new BigInteger("28700000"), 0))
@@ -100,7 +105,8 @@ public class HmrcFileServiceTest {
             .deceasedSurname("KRNETA")
             .deceasedDateOfDeath(dod)
             .deceasedDateOfBirth(dob)
-            .deceasedAddress(SolsAddress.builder().addressLine1("7 Pevensey Avenue")
+            .deceasedAddress(SolsAddress.builder()
+                .addressLine1("7 Pevensey Avenue")
                 .addressLine3("Leicester")
                 .postCode("LE5 6XQ").build())
             .boDeceasedTitle("MR")
@@ -130,7 +136,8 @@ public class HmrcFileServiceTest {
             .deceasedSurname("KRNETA")
             .deceasedDateOfDeath(dod)
             .deceasedDateOfBirth(dob)
-            .deceasedAddress(SolsAddress.builder().addressLine1("7 Pevensey Avenue\nBelper")
+            .deceasedAddress(SolsAddress.builder()
+                .addressLine1("7 Pevensey Avenue\nBelper")
                 .addressLine3("Leicester")
                 .postCode("LE5 6XQ").build())
             .boDeceasedTitle("MR")
@@ -162,7 +169,7 @@ public class HmrcFileServiceTest {
     }
 
     @Test
-    public void testHMRCFileBuiltForSolicitor() throws IOException {
+    public void testHmrcFileBuiltForSolicitor() throws IOException {
         builtData = caseDataSolictor.build();
         createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, 1111222233334444L);
         caseList.add(createdCase);
@@ -171,7 +178,7 @@ public class HmrcFileServiceTest {
     }
 
     @Test
-    public void testHMRCFileBuiltForPersonal() throws IOException {
+    public void testHmrcFileBuiltForPersonal() throws IOException {
         builtData = caseDataPersonal.build();
         createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, 2222333344445555L);
         caseList.add(createdCase);
@@ -180,7 +187,7 @@ public class HmrcFileServiceTest {
     }
 
     @Test(expected = BadRequestException.class)
-    public void testHMRCFileIHTErrorForPersonal() {
+    public void testHmrcFileIHTErrorForPersonal() {
         builtData = caseDataPersonal.ihtFormId("notAnIHTValue").build();
         createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, 2222333344445555L);
         caseList.add(createdCase);
@@ -188,7 +195,7 @@ public class HmrcFileServiceTest {
     }
 
     @Test
-    public void testHMRCFileBuiltForMultiples() throws IOException {
+    public void testHmrcFileBuiltForMultiples() throws IOException {
         builtData = caseDataPersonal.build();
         caseList.add(new ReturnedCaseDetails(builtData, LAST_MODIFIED, 2222333344445555L));
         builtData = caseDataSolictor.build();

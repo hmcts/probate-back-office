@@ -153,7 +153,7 @@ public class DataExtractControllerTest {
     }
 
     @Test
-    public void shouldThrowClientExceptionWithBadRequestForHMRCWithIncorrectDateFormat() throws Exception {
+    public void shouldThrowClientExceptionWithBadRequestForHmrcWithIncorrectDateFormat() throws Exception {
         mockMvc.perform(post("/data-extract/hmrc/2019-2-3"))
             .andExpect(status().is4xxClientError());
     }
