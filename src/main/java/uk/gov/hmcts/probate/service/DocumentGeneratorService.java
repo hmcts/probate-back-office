@@ -261,26 +261,27 @@ public class DocumentGeneratorService {
     private boolean filterGeneratedDocumentsForWill(CaseDetails caseDetails) {
             for (CollectionMember<Document> document : caseDetails.getData().getProbateDocumentsGenerated()) {
                 if (document.getValue().getDocumentType() != null
-                        && document.getValue().getDocumentType().getTemplateName().equalsIgnoreCase(DOC_SUBTYPE_SEALED_WILL)) {
+                        && document.getValue().getDocumentType().getTemplateName() == Constants.DOC_SUBTYPE_SEALED_WILL) {
                     return true;
                 }
             }
         return false;
     }
 
-    public byte[] generateSealedWillDocument(CaseDetails caseDetails) {
+    public byte[] generateSealedWillDocument(CaseDetails caseDetails) throws IOException {
         PDDocument scannedWill;
         byte[] sealedWill = null;
         if (!filterGeneratedDocumentsForWill(caseDetails)) {
             CollectionMember<ScannedDocument> will = filterScannedDocumentsForWill(caseDetails);
             if (will != null) {
+                Overlay overlay = new Overlay();
                 try {
                     String authHeaderValue = tokenGenerator.generate();
 
                     scannedWill = PDDocument.load(documentStoreClient.retrieveUploadDocument(will.getValue(), authHeaderValue, securityUtils.getSecurityDTO()));
                     PDDocument watermark = PDDocument.load(new File("watermark.pdf"));
 
-                    Overlay overlay = new Overlay();
+
                     overlay.setInputPDF(scannedWill);
                     overlay.setDefaultOverlayPDF(watermark);
                     overlay.setOverlayPosition(Overlay.Position.FOREGROUND);
@@ -291,6 +292,8 @@ public class DocumentGeneratorService {
 
                 } catch (IOException e) {
                     log.error("Cannot read file: ", e);
+                }  finally {
+                    overlay.close();
                 }
             }
         }

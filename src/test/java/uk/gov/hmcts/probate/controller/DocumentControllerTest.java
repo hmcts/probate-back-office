@@ -27,6 +27,7 @@ import uk.gov.hmcts.probate.util.*;
 import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
 import uk.gov.service.notify.*;
 
+import java.io.*;
 import java.time.*;
 import java.util.*;
 
@@ -79,7 +80,7 @@ public class DocumentControllerTest {
     private static final String LETTER_UUID = "c387262a-c8a6-44eb-9aea-a740460f9302";
 
     @Before
-    public void setUp() throws NotificationClientException {
+    public void setUp() throws NotificationClientException, IOException {
         final Document document = Document.builder()
                 .documentType(DocumentType.DIGITAL_GRANT_REISSUE)
                 .documentDateAdded(LocalDate.now())

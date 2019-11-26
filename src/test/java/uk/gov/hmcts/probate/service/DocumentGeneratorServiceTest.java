@@ -377,7 +377,7 @@ public class DocumentGeneratorServiceTest {
     }
 
     @Test
-    public void testGenerateSealedWillDocumentWhereSealedWillAlreadyExists() {
+    public void testGenerateSealedWillDocumentWhereSealedWillAlreadyExists() throws IOException {
         when(document.getDocumentType()).thenReturn(SEALED_WILL);
         when(document.getDocumentLink()).thenReturn(DocumentLink.builder().build());
 
@@ -391,7 +391,7 @@ public class DocumentGeneratorServiceTest {
     }
 
     @Test
-    public void testGenerateSealedWillDocumentWhereScannedDocumentWillDoesntExist() {
+    public void testGenerateSealedWillDocumentWhereScannedDocumentWillDoesntExist() throws IOException {
         when(scannedDocument.getSubtype()).thenReturn("notWill");
         when(scannedDocument.getUrl()).thenReturn(DocumentLink.builder().build());
 

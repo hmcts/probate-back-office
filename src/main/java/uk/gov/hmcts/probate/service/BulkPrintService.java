@@ -222,7 +222,8 @@ public class BulkPrintService {
         String encodedWillDocument = getPdfAsBase64EncodedString(willDocument, authHeaderValue, callbackRequest);
 
         //Layer documents as cover letter first, grant, and extra copies of grant to PA.
-        uk.gov.hmcts.reform.sendletter.api.model.v3.Document coversheetDocument = new uk.gov.hmcts.reform.sendletter.api.model.v3.Document(coverSheetDocument.toString(), 1);
+        String coversheet = Arrays.toString(coverSheetDocument);
+        uk.gov.hmcts.reform.sendletter.api.model.v3.Document coversheetDocument = new uk.gov.hmcts.reform.sendletter.api.model.v3.Document(coversheet, 1);
         uk.gov.hmcts.reform.sendletter.api.model.v3.Document document = new uk.gov.hmcts.reform.sendletter.api.model.v3.Document(encodedGrantDocument, 1);
         uk.gov.hmcts.reform.sendletter.api.model.v3.Document will = new uk.gov.hmcts.reform.sendletter.api.model.v3.Document(encodedWillDocument, 1);
 
