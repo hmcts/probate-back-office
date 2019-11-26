@@ -251,7 +251,7 @@ public class DocumentGeneratorService {
     private CollectionMember<ScannedDocument> filterScannedDocumentsForWill(CaseDetails caseDetails) {
         for (CollectionMember<ScannedDocument> document : caseDetails.getData().getScannedDocuments()) {
             if (document.getValue().getSubtype() != null
-                    && document.getValue().getSubtype().equalsIgnoreCase(DOC_SUBTYPE_WILL)) {
+                    && document.getValue().getSubtype().equals(DOC_SUBTYPE_WILL)) {
                 return document;
             }
         }
@@ -261,7 +261,7 @@ public class DocumentGeneratorService {
     private boolean filterGeneratedDocumentsForWill(CaseDetails caseDetails) {
             for (CollectionMember<Document> document : caseDetails.getData().getProbateDocumentsGenerated()) {
                 if (document.getValue().getDocumentType() != null
-                        && document.getValue().getDocumentType().getTemplateName() == Constants.DOC_SUBTYPE_SEALED_WILL) {
+                        && document.getValue().getDocumentType().getTemplateName().equals(Constants.DOC_SUBTYPE_SEALED_WILL)) {
                     return true;
                 }
             }
