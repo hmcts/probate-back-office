@@ -100,17 +100,9 @@ public class CaveatCallbackResponseTransformer {
     public CaveatCallbackResponse transform(CaveatCallbackRequest callbackRequest) {
         ResponseCaveatData responseCaveatData = getResponseCaveatData(callbackRequest.getCaseDetails())
                 .applicationType(SOLICITOR)
+                .paperForm(NO)
                 .registryLocation(CTSC)
                 .build();
-
-        if (callbackRequest.getCaseDetails().getData().getSolsSolicitorFirmName() != null) {
-            responseCaveatData = getResponseCaveatData(callbackRequest.getCaseDetails())
-                    .applicationType(SOLICITOR)
-                    .build();
-        } else {
-            responseCaveatData = getResponseCaveatData(callbackRequest.getCaseDetails())
-                    .build();
-        }
 
         return transformResponse(responseCaveatData);
     }
