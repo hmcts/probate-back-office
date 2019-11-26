@@ -24,6 +24,9 @@ import java.util.stream.Collectors;
 
 import static java.util.Optional.ofNullable;
 import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
+import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
+import static uk.gov.hmcts.probate.model.Constants.CTSC;
+import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT_RAISED;
 
@@ -56,10 +59,17 @@ public class CaveatCallbackResponseTransformer {
                     .build();
         }
 
-        responseCaveatDataBuilder
-                .applicationSubmittedDate(dateTimeFormatter.format(LocalDate.now()))
-                .paperForm(YES)
-                .build();
+        if (caveatData.getApplicationType() != null) {
+            responseCaveatDataBuilder
+                    .applicationSubmittedDate(dateTimeFormatter.format(LocalDate.now()))
+                    .paperForm(caveatData.getApplicationType().equals(SOLICITOR) ? NO : YES)
+                    .build();
+        } else {
+            responseCaveatDataBuilder
+                    .applicationSubmittedDate(dateTimeFormatter.format(LocalDate.now()))
+                    .paperForm(YES)
+                    .build();
+        }
 
         return transformResponse(responseCaveatDataBuilder.build());
     }
@@ -89,6 +99,9 @@ public class CaveatCallbackResponseTransformer {
 
     public CaveatCallbackResponse transform(CaveatCallbackRequest callbackRequest) {
         ResponseCaveatData responseCaveatData = getResponseCaveatData(callbackRequest.getCaseDetails())
+                .applicationType(SOLICITOR)
+                .paperForm(NO)
+                .registryLocation(CTSC)
                 .build();
 
         return transformResponse(responseCaveatData);
@@ -123,11 +136,18 @@ public class CaveatCallbackResponseTransformer {
                 .registryLocation(ofNullable(caveatData.getRegistryLocation()).orElse(DEFAULT_REGISTRY_LOCATION))
                 .deceasedForenames(caveatData.getDeceasedForenames())
                 .deceasedSurname(caveatData.getDeceasedSurname())
-                .deceasedDateOfDeath(dateTimeFormatter.format(caveatData.getDeceasedDateOfDeath()))
+                .deceasedDateOfDeath(formatDateOfDeath(caveatData.getDeceasedDateOfDeath()))
                 .deceasedDateOfBirth(transformToString(caveatData.getDeceasedDateOfBirth()))
                 .deceasedAnyOtherNames(caveatData.getDeceasedAnyOtherNames())
                 .deceasedFullAliasNameList(caveatData.getDeceasedFullAliasNameList())
                 .deceasedAddress(caveatData.getDeceasedAddress())
+
+                .solsSolicitorFirmName(caveatData.getSolsSolicitorFirmName())
+                .solsSolicitorPhoneNumber(caveatData.getSolsSolicitorPhoneNumber())
+                .solsSolicitorAppReference(caveatData.getSolsSolicitorAppReference())
+
+                .solsPaymentMethods(caveatData.getSolsPaymentMethods())
+                .solsFeeAccountNumber(caveatData.getSolsFeeAccountNumber())
 
                 .caveatorForenames(caveatData.getCaveatorForenames())
                 .caveatorSurname(caveatData.getCaveatorSurname())
@@ -180,6 +200,10 @@ public class CaveatCallbackResponseTransformer {
         return ofNullable(dateValue)
                 .map(String::valueOf)
                 .orElse(null);
+    }
+
+    private String formatDateOfDeath(LocalDate dod) {
+        return dod != null ? dateTimeFormatter.format(dod) : null;
     }
 
     private CollectionMember<BulkPrint> buildBulkPrint(String letterId, String templateName) {
