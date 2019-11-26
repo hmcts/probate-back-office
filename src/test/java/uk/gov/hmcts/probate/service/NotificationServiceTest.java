@@ -159,6 +159,7 @@ public class NotificationServiceTest {
     private static final Long CASE_ID = 12345678987654321L;
     private static final String SENT_EMAIL_FILE_NAME = "sentEmail.pdf";
     private static final byte[] DOC_BYTES = {(byte) 23};
+    private static final String SOLS_CAVEATS_NAME = "Sir/Madam";
 
     private static final String PERSONALISATION_APPLICANT_NAME = "applicant_name";
     private static final String PERSONALISATION_DECEASED_NAME = "deceased_name";
@@ -345,6 +346,7 @@ public class NotificationServiceTest {
                 .applicationType(SOLICITOR)
                 .registryLocation("ctsc")
                 .caveatorEmailAddress("solicitor@test.com")
+                .solsSolicitorAppReference("SOLSREF")
                 .deceasedDateOfDeath(LocalDate.of(2000, 12, 12))
                 .expiryDate(LocalDate.of(2019, 01, 01))
                 .build(), LAST_MODIFIED, ID);
@@ -906,6 +908,7 @@ public class NotificationServiceTest {
 
         HashMap<String, String> personalisation = new HashMap<>();
 
+        personalisation.put(PERSONALISATION_APPLICANT_NAME, SOLS_CAVEATS_NAME);
         personalisation.put(PERSONALISATION_DECEASED_NAME, solicitorCaveatRaisedCaseData.getData().getDeceasedFullName());
         personalisation.put(PERSONALISATION_CCD_REFERENCE, solicitorCaveatRaisedCaseData.getId().toString());
         personalisation.put(PERSONALISATION_MESSAGE_CONTENT, caveatRaisedCtscCaseData.getData().getMessageContent());
