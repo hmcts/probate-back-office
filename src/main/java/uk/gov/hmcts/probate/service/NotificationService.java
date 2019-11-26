@@ -133,7 +133,7 @@ public class NotificationService {
         String emailAddress = caveatData.getCaveatorEmailAddress();
         Map<String, String> personalisation;
 
-        if (ApplicationType.SOLICITOR.equals(caveatData.getApplicationType()) && !caveatData.getCaveatorEmailAddress().isEmpty()) {
+        if (!caveatData.getSolsSolicitorAppReference().isEmpty()) {
             personalisation = caveatPersonalisationService.getSolsCaveatPersonalisation(caveatDetails, registry);
         } else {
             personalisation = caveatPersonalisationService.getCaveatPersonalisation(caveatDetails, registry);
