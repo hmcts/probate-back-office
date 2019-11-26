@@ -67,6 +67,7 @@ import static uk.gov.hmcts.probate.model.State.CASE_STOPPED;
 import static uk.gov.hmcts.probate.model.State.CASE_STOPPED_CAVEAT;
 import static uk.gov.hmcts.probate.model.State.CASE_STOPPED_REQUEST_INFORMATION;
 import static uk.gov.hmcts.probate.model.State.CAVEAT_RAISED;
+import static uk.gov.hmcts.probate.model.State.CAVEAT_RAISED_SOLS;
 import static uk.gov.hmcts.probate.model.State.DOCUMENTS_RECEIVED;
 import static uk.gov.hmcts.probate.model.State.GENERAL_CAVEAT_MESSAGE;
 import static uk.gov.hmcts.probate.model.State.GRANT_ISSUED;
@@ -145,6 +146,7 @@ public class NotificationServiceTest {
     private CaveatDetails personalCaveatDataBristol;
     private CaveatDetails caveatRaisedCaseData;
     private CaveatDetails caveatRaisedCtscCaseData;
+    private CaveatDetails solicitorCaveatRaisedCaseData;
     private CaveatData caveatData;
     private CallbackRequest callbackRequest;
     private CaveatDetails caveatStoppedCtscCaseData;
@@ -335,6 +337,14 @@ public class NotificationServiceTest {
                 .applicationType(PERSONAL)
                 .registryLocation("ctsc")
                 .caveatorEmailAddress("personal@test.com")
+                .deceasedDateOfDeath(LocalDate.of(2000, 12, 12))
+                .expiryDate(LocalDate.of(2019, 01, 01))
+                .build(), LAST_MODIFIED, ID);
+
+        solicitorCaveatRaisedCaseData = new CaveatDetails(CaveatData.builder()
+                .applicationType(SOLICITOR)
+                .registryLocation("ctsc")
+                .caveatorEmailAddress("solicitor@test.com")
                 .deceasedDateOfDeath(LocalDate.of(2000, 12, 12))
                 .expiryDate(LocalDate.of(2019, 01, 01))
                 .build(), LAST_MODIFIED, ID);
@@ -884,6 +894,31 @@ public class NotificationServiceTest {
         verify(notificationClient).sendEmail(
                 eq("pa-ctsc-caveat-raised"),
                 eq("personal@test.com"),
+                eq(personalisation),
+                eq("1"));
+
+        verify(pdfManagementService).generateAndUpload(any(SentEmail.class), eq(SENT_EMAIL));
+    }
+
+    @Test
+    public void sendSolsCaveatRaisedCtscEmail()
+            throws NotificationClientException, BadRequestException {
+
+        HashMap<String, String> personalisation = new HashMap<>();
+
+        personalisation.put(PERSONALISATION_DECEASED_NAME, solicitorCaveatRaisedCaseData.getData().getDeceasedFullName());
+        personalisation.put(PERSONALISATION_CCD_REFERENCE, solicitorCaveatRaisedCaseData.getId().toString());
+        personalisation.put(PERSONALISATION_MESSAGE_CONTENT, caveatRaisedCtscCaseData.getData().getMessageContent());
+        personalisation.put(PERSONALISATION_REGISTRY_NAME, "CTSC");
+        personalisation.put(PERSONALISATION_REGISTRY_PHONE, "0300 303 0648");
+        personalisation.put(PERSONALISATION_SOLICITOR_REFERENCE, solicitorCaveatRaisedCaseData.getData().getSolsSolicitorAppReference());
+        personalisation.put(PERSONALISATION_CAVEAT_EXPIRY_DATE, "1st January 2019");
+
+        notificationService.sendCaveatEmail(CAVEAT_RAISED_SOLS, solicitorCaveatRaisedCaseData);
+
+        verify(notificationClient).sendEmail(
+                eq("solicitor-caveat-raised"),
+                eq("solicitor@test.com"),
                 eq(personalisation),
                 eq("1"));
 

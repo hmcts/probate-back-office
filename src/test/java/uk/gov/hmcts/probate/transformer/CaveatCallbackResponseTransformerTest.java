@@ -86,6 +86,7 @@ public class CaveatCallbackResponseTransformerTest {
 
     private static final String SOLS_PAYMENT_METHOD = "cheque";
     private static final String SOLS_FEE_ACC = "1234";
+    private static final String CAV_SOLS_REGISTRY_LOCATION = "ctsc";
 
     @InjectMocks
     private CaveatCallbackResponseTransformer underTest;
@@ -314,11 +315,18 @@ public class CaveatCallbackResponseTransformerTest {
     private void assertCommon(CaveatCallbackResponse caveatCallbackResponse) {
         assertCommonDetails(caveatCallbackResponse);
         assertApplicationType(caveatCallbackResponse, CAV_APPLICATION_TYPE);
-        assertPaperForm(caveatCallbackResponse, caveatCallbackResponse.getCaveatData().getApplicationType());
+        assertPaperForm(caveatCallbackResponse, YES);
+        assertRegistryLocation(caveatCallbackResponse, CAV_REGISTRY_LOCATION);
+    }
+
+    private void assertCommonSolsCaveats(CaveatCallbackResponse caveatCallbackResponse) {
+        assertCommonDetails(caveatCallbackResponse);
+        assertApplicationType(caveatCallbackResponse, ApplicationType.SOLICITOR);
+        assertPaperForm(caveatCallbackResponse, NO);
+        assertRegistryLocation(caveatCallbackResponse, CAV_SOLS_REGISTRY_LOCATION);
     }
 
     private void assertCommonDetails(CaveatCallbackResponse caveatCallbackResponse) {
-        assertEquals(CAV_REGISTRY_LOCATION, caveatCallbackResponse.getCaveatData().getRegistryLocation());
 
         assertEquals(CAV_DECEASED_FORENAMES, caveatCallbackResponse.getCaveatData().getDeceasedForenames());
         assertEquals(CAV_DECEASED_SURNAME, caveatCallbackResponse.getCaveatData().getDeceasedSurname());
@@ -353,12 +361,12 @@ public class CaveatCallbackResponseTransformerTest {
         assertEquals(cavApplicationType, caveatCallbackResponse.getCaveatData().getApplicationType());
     }
 
-    private void assertPaperForm(CaveatCallbackResponse caveatCallbackResponse, ApplicationType applicationType) {
-        if (applicationType.equals(ApplicationType.SOLICITOR)) {
-            assertEquals(NO, caveatCallbackResponse.getCaveatData().getPaperForm());
-        } else {
-            assertEquals(YES, caveatCallbackResponse.getCaveatData().getPaperForm());
-        }
+    private void assertPaperForm(CaveatCallbackResponse caveatCallbackResponse, String paperForm) {
+        assertEquals(paperForm, caveatCallbackResponse.getCaveatData().getPaperForm());
+    }
+
+    private void assertRegistryLocation(CaveatCallbackResponse caveatCallbackResponse, String registry) {
+        assertEquals(registry, caveatCallbackResponse.getCaveatData().getRegistryLocation());
     }
 
     private CollectionMember<UploadDocument> createUploadDocuments(String id) {
