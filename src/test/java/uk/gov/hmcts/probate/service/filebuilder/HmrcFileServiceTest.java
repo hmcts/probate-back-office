@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableList;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
+import uk.gov.hmcts.probate.exception.BadRequestException;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.AliasName;
@@ -176,6 +177,14 @@ public class HmrcFileServiceTest {
         caseList.add(createdCase);
         assertThat(createFile(hmrcFileService.createHMRCFile(caseList.build(), FILE_NAME)),
             is(FileUtils.getStringFromFile("expectedGeneratedFiles/hmrcPersonal.txt")));
+    }
+
+    @Test(expected = BadRequestException.class)
+    public void testHMRCFileIHTErrorForPersonal() {
+        builtData = caseDataPersonal.ihtFormId("notAnIHTValue").build();
+        createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, 2222333344445555L);
+        caseList.add(createdCase);
+        hmrcFileService.createHMRCFile(caseList.build(), FILE_NAME);
     }
 
     @Test

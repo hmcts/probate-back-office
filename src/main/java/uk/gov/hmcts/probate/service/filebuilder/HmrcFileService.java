@@ -22,7 +22,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static uk.gov.hmcts.probate.model.Constants.YES;
 
@@ -43,10 +46,15 @@ public class HmrcFileService {
     private static final String NUMBER_OF_FILE = "1";
     private static final String LAST_FILE = "Y";
     private static final String FINAL_GRANT = "Y";
+    private static final Map<String, String> iht2EstateMap = Stream.of(new String[][]{
+        {"IHT400421", "N"},
+        {"IHT205", "Y"},
+        {"IHT207", "E"},
+    }).collect(Collectors.toMap(data -> data[0], data -> data[1]));
 
     public File createHMRCFile(List<ReturnedCaseDetails> ccdCases, String fileName) {
         ImmutableList.Builder<String> fileData = new ImmutableList.Builder<>();
-        fileData.add(ROW_HEADER+ROW_DELIMITER);
+        fileData.add(ROW_HEADER + ROW_DELIMITER);
         int rowCount = 0;
         for (ReturnedCaseDetails ccdCase : ccdCases) {
             rowCount = rowCount + prepareData(fileData, ccdCase.getId(), ccdCase.getData());
@@ -93,8 +101,8 @@ public class HmrcFileService {
 
     private void addFooter(ImmutableList.Builder<String> fileData, int rowCount) {
         fileData.add(ROW_TYPE_FOOTER);
-        
-        fileData.add("1_"+ fileExtractDateFormatter.formatFileDate()+".dat");
+
+        fileData.add("1_" + fileExtractDateFormatter.formatFileDate() + ".dat");
         fileData.add(String.valueOf(rowCount));
         fileData.add(NUMBER_OF_FILE);
         fileData.add(LAST_FILE);
@@ -106,7 +114,7 @@ public class HmrcFileService {
         fileData.add("");
         String fullName = aliasName.getSolsAliasname();
         String forenames = fullName.lastIndexOf(" ") > 0 ? fullName.substring(0, fullName.lastIndexOf(" ")) : fullName;
-        String surname = fullName.lastIndexOf(" ") > 0 ? fullName.substring(fullName.lastIndexOf(" ")+1) : "";
+        String surname = fullName.lastIndexOf(" ") > 0 ? fullName.substring(fullName.lastIndexOf(" ") + 1) : "";
         fileData.add(forenames);
         fileData.add(surname);
         fileData.add(ROW_DELIMITER);
@@ -114,20 +122,12 @@ public class HmrcFileService {
     }
 
     private void addExpectedEstateIndicator(ImmutableList.Builder<String> fileData, CaseData data) {
-        String type = null;
-        switch (data.getIhtFormId()) {
-            case "IHT400421":
-                type = "N";
-                break; 
-            case "IHT205":
-                type = "Y";
-                break;
-            case "IHT207":
-                type = "E";
-                break;
-            default:
-                throw new BadRequestException("Unsupported IHT Form Type");
+        String type = iht2EstateMap.get(data.getIhtFormId());
+
+        if (type == null) {
+            throw new BadRequestException("Unsupported IHT Form Type for "+data.getIhtFormId());
         }
+        
         fileData.add(type);
     }
 
@@ -171,11 +171,11 @@ public class HmrcFileService {
             address = getEmptyAddress();
         }
         String[] addressArray = {(Optional.ofNullable(address.getAddressLine1()).orElse("")).replace("\n", " "),
-                Optional.ofNullable(address.getAddressLine2()).orElse(""),
-                Optional.ofNullable(address.getAddressLine3()).orElse(""),
-                Optional.ofNullable(address.getPostTown()).orElse(""),
-                Optional.ofNullable(address.getCounty()).orElse(""),
-                Optional.ofNullable(address.getCountry()).orElse("")};
+            Optional.ofNullable(address.getAddressLine2()).orElse(""),
+            Optional.ofNullable(address.getAddressLine3()).orElse(""),
+            Optional.ofNullable(address.getPostTown()).orElse(""),
+            Optional.ofNullable(address.getCounty()).orElse(""),
+            Optional.ofNullable(address.getCountry()).orElse("")};
         Arrays.sort(addressArray, Comparator.comparingInt(value -> value == null || value.isEmpty() ? 1 : 0));
         List<String> formattedAddress = new ArrayList<>(7);
         formattedAddress.addAll(Arrays.asList(addressArray));
@@ -185,18 +185,18 @@ public class HmrcFileService {
 
     private Grantee createGrantee(CaseData data, int i) {
         return Grantee.builder()
-                .fullName(getName(data, i))
-                .address(addressManager(getAddress(data, i)))
-                .build();
+            .fullName(getName(data, i))
+            .address(addressManager(getAddress(data, i)))
+            .build();
     }
 
     private String getName(CaseData caseData, int granteeNumber) {
         if (isYes(caseData.getPrimaryApplicantIsApplying())) {
             return granteeNumber == 1 ? caseData.getPrimaryApplicantForenames() + " " + caseData
-                    .getPrimaryApplicantSurname() : getApplyingExecutorName(caseData, granteeNumber - 2);
+                .getPrimaryApplicantSurname() : getApplyingExecutorName(caseData, granteeNumber - 2);
         }
         if (granteeNumber == 1 && caseData.getAdditionalExecutorsApplying() == null && caseData.getApplicationType()
-                .equals(ApplicationType.SOLICITOR)) {
+            .equals(ApplicationType.SOLICITOR)) {
             return caseData.getSolsSOTName();
         }
         return getApplyingExecutorName(caseData, granteeNumber - 1);
@@ -205,10 +205,10 @@ public class HmrcFileService {
     private SolsAddress getAddress(CaseData caseData, int granteeNumber) {
         if (isYes(caseData.getPrimaryApplicantIsApplying())) {
             return granteeNumber == 1 ? caseData.getPrimaryApplicantAddress() : getAdditionalExecutorAddress(caseData,
-                    granteeNumber - 2);
+                granteeNumber - 2);
         }
         if (granteeNumber == 1 && caseData.getAdditionalExecutorsApplying() == null && caseData.getApplicationType()
-                .equals(ApplicationType.SOLICITOR)) {
+            .equals(ApplicationType.SOLICITOR)) {
             return caseData.getSolsSolicitorAddress();
         }
         return getAdditionalExecutorAddress(caseData, granteeNumber - 1);
@@ -216,7 +216,7 @@ public class HmrcFileService {
 
     private SolsAddress getAdditionalExecutorAddress(CaseData caseData, int index) {
         if (caseData.getAdditionalExecutorsApplying() != null
-                && caseData.getAdditionalExecutorsApplying().size() >= (index + 1)) {
+            && caseData.getAdditionalExecutorsApplying().size() >= (index + 1)) {
             return caseData.getAdditionalExecutorsApplying().get(index).getValue().getApplyingExecutorAddress();
         }
         return getEmptyAddress();
@@ -224,7 +224,7 @@ public class HmrcFileService {
 
     private String getApplyingExecutorName(CaseData caseData, int index) {
         if (caseData.getAdditionalExecutorsApplying() != null
-                && caseData.getAdditionalExecutorsApplying().size() >= (index + 1)) {
+            && caseData.getAdditionalExecutorsApplying().size() >= (index + 1)) {
             return caseData.getAdditionalExecutorsApplying().get(index).getValue().getApplyingExecutorName();
         }
         return "";
