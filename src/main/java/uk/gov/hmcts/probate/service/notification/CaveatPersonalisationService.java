@@ -30,6 +30,7 @@ public class CaveatPersonalisationService {
     private static final String PERSONALISATION_REGISTRY_NAME = "registry_name";
     private static final String PERSONALISATION_REGISTRY_PHONE = "registry_phone";
     private static final String PERSONALISATION_CCD_REFERENCE = "ccd_reference";
+    private static final String PERSONALISATION_SOLICITOR_REFERENCE = "solicitor_reference";
     private static final String PERSONALISATION_CAVEAT_EXPIRY_DATE = "caveat_expiry_date";
     private static final String PERSONALISATION_MESSAGE_CONTENT = "message_content";
     private static final String PERSONALISATION_DATE_CAVEAT_ENTERED = "date_caveat_entered";
@@ -63,6 +64,23 @@ public class CaveatPersonalisationService {
 
         personalisation.put(PERSONALISATION_APPLICANT_NAME, caveatData.getCaveatorFullName());
         personalisation.put(PERSONALISATION_DECEASED_NAME, caveatData.getDeceasedFullName());
+        personalisation.put(PERSONALISATION_CCD_REFERENCE, caveatDetails.getId().toString());
+        personalisation.put(PERSONALISATION_MESSAGE_CONTENT, caveatData.getMessageContent());
+        personalisation.put(PERSONALISATION_REGISTRY_NAME, registry.getName());
+        personalisation.put(PERSONALISATION_REGISTRY_PHONE, registry.getPhone());
+        personalisation.put(PERSONALISATION_CAVEAT_EXPIRY_DATE,
+                dateFormatterService.formatCaveatExpiryDate(caveatData.getExpiryDate()));
+
+        return personalisation;
+    }
+
+    public Map<String, String> getSolsCaveatPersonalisation(CaveatDetails caveatDetails, Registry registry) {
+        CaveatData caveatData = caveatDetails.getData();
+
+        HashMap<String, String> personalisation = new HashMap<>();
+
+        personalisation.put(PERSONALISATION_DECEASED_NAME, caveatData.getDeceasedFullName());
+        personalisation.put(PERSONALISATION_SOLICITOR_REFERENCE, caveatData.getSolsSolicitorAppReference());
         personalisation.put(PERSONALISATION_CCD_REFERENCE, caveatDetails.getId().toString());
         personalisation.put(PERSONALISATION_MESSAGE_CONTENT, caveatData.getMessageContent());
         personalisation.put(PERSONALISATION_REGISTRY_NAME, registry.getName());
