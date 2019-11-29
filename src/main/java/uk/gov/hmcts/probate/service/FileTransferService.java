@@ -49,7 +49,7 @@ public class FileTransferService {
                     SIG_CREATION_DATE,
                     SPR,
                     signature);
-            log.info("Iron Mountain file transfer response: {}", response.status());
+            log.info("File transfer response: {}", response.status());
             Files.delete(file.toPath());
         } catch (IOException e) {
             log.error("Error handling file: " + e.getMessage());

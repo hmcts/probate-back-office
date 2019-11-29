@@ -46,6 +46,7 @@ public class HmrcFileService extends BaseFileService {
     }).collect(Collectors.toMap(data -> data[0], data -> data[1]));
 
     public File createHmrcFile(List<ReturnedCaseDetails> ccdCases, String fileName) {
+        log.info("Creating HMRC file={}", fileName);
         ImmutableList.Builder<String> fileData = new ImmutableList.Builder<>();
         fileData.add(ROW_HEADER + ROW_DELIMITER);
         int rowCount = 0;
@@ -53,11 +54,12 @@ public class HmrcFileService extends BaseFileService {
             rowCount = rowCount + prepareData(fileData, ccdCase.getId(), ccdCase.getData());
         }
         addFooter(fileData, rowCount);
-        log.info("Creating HMRC file.");
+        log.info("Created HMRC file={}", fileName);
         return textFileBuilderService.createFile(fileData.build(), DELIMITER, fileName);
     }
 
     private int prepareData(ImmutableList.Builder<String> fileData, Long id, CaseData data) {
+        log.info("Perparing row data for HMRC, caseId={}", id);
         fileData.add(ROW_TYPE_GRANT_DETAILS);
         fileData.add(id.toString());
         fileData.add(data.getRegistryLocation());

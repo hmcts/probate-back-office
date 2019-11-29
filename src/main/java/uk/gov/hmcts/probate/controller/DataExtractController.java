@@ -34,7 +34,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/data-extract")
 @RestController
-@Api(tags = "Initiate data extract for IronMountain and Excela")
+@Api(tags = "Initiate data extract for HMRC, IronMountain and Excela")
 public class DataExtractController {
 
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -46,7 +46,7 @@ public class DataExtractController {
     private final FileExtractDateFormatter fileExtractDateFormatter;
     private final ExcelaCriteriaService excelaCriteriaService;
 
-    @Scheduled(cron = "${cron.data_extract}")
+    @Scheduled(cron = "${cron.hmrc_data_extract}")
     @ApiOperation(value = "Initiate HMRC data extract", notes = "Will find cases for yesterdays date")
     @PostMapping(path = "/hmrc")
     public ResponseEntity initiateHmrcExtract() {
@@ -80,7 +80,7 @@ public class DataExtractController {
         return uploadHmrcFile(fromDate, toDate, cases);
     }
 
-    @Scheduled(cron = "${cron.data_extract}")
+    @Scheduled(cron = "${cron.iron_data_extract}")
     @ApiOperation(value = "Initiate IronMountain data extract", notes = "Will find cases for yesterdays date")
     @PostMapping(path = "/iron-mountain")
     public ResponseEntity initiateIronMountainExtract() {
@@ -99,19 +99,19 @@ public class DataExtractController {
         log.info("Cases found for Iron Mountain: {}", cases.size());
 
         if (!cases.isEmpty()) {
-            log.info("preparing for file upload");
+            log.info("preparing for Iron Mountain file upload");
             int response = fileTransferService.uploadFile(ironMountainFileService.createIronMountainFile(
                 cases, fileExtractDateFormatter.formatFileDate() + "grant.txt"));
 
             if (response != 201) {
-                log.error("Failed to upload file for: " + date);
-                throw new ClientException(HttpStatus.SERVICE_UNAVAILABLE.value(), "Failed to upload file for date: " + date);
+                log.error("Failed to upload Iron Mountain file for: " + date);
+                throw new ClientException(HttpStatus.SERVICE_UNAVAILABLE.value(), "Failed to upload Iron Mountain file for date: " + date);
             }
         }
         return ResponseEntity.ok(cases.size() + " cases successfully found for date: " + date);
     }
 
-    @Scheduled(cron = "${cron.data_extract}")
+    @Scheduled(cron = "${cron.exela_data_extract}")
     @ApiOperation(value = "Initiate Excela data extract", notes = "Will find cases for yesterdays date")
     @PostMapping(path = "/excela")
     public ResponseEntity initiateExcelaExtract() throws NotificationClientException {
@@ -129,6 +129,7 @@ public class DataExtractController {
         List<ReturnedCaseDetails> cases = caseQueryService.findCasesWithDatedDocument(date);
         List<ReturnedCaseDetails> filteredCases = excelaCriteriaService.getFilteredCases(cases);
 
+        log.info("Sending email to Excela");
         if (!filteredCases.isEmpty()) {
             log.info("Sending email to Excela");
             notificationService.sendExcelaEmail(filteredCases);
@@ -161,13 +162,14 @@ public class DataExtractController {
     private ResponseEntity uploadHmrcFile(String fromDate, String date, List<ReturnedCaseDetails> cases) {
         String dateDesc = (StringUtils.isEmpty(fromDate) ? " date:" : " from " + fromDate + " to") + " " + date;
         if (!cases.isEmpty()) {
-            log.info("preparing for file upload");
+            log.info("preparing for file HMRC upload");
             int response = fileTransferService.uploadFile(hmrcFileService.createHmrcFile(
                 cases, "1_" + fileExtractDateFormatter.formatFileDate() + ".dat"));
 
+            log.info("Response for HMRC upload={}", response);
             if (response != 201) {
-                log.error("Failed to upload file for :" + dateDesc);
-                throw new ClientException(HttpStatus.SERVICE_UNAVAILABLE.value(), "Failed to upload file for " + dateDesc);
+                log.error("Failed to upload HMRC file for :" + dateDesc);
+                throw new ClientException(HttpStatus.SERVICE_UNAVAILABLE.value(), "Failed to upload HMRC file for " + dateDesc);
             }
         }
         return ResponseEntity.ok(cases.size() + " cases successfully found for" + dateDesc + " for HMRC");

@@ -27,12 +27,13 @@ public class IronMountainFileService extends BaseFileService {
     private ImmutableList.Builder<String> fileData;
 
     public File createIronMountainFile(List<ReturnedCaseDetails> ccdCases, String fileName) {
+        log.info("Creating IronMountain file="+fileName);
         fileData = new ImmutableList.Builder<>();
         fileData.add("\n");
         for (ReturnedCaseDetails ccdCase : ccdCases) {
             prepareData(ccdCase.getId(), ccdCase.getData());
         }
-        log.info("Creating IronMountain file.");
+        log.info("Created IronMountain file="+fileName);
         return textFileBuilderService.createFile(fileData.build(), DELIMITER, fileName);
     }
 
