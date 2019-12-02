@@ -147,6 +147,7 @@ public class ResponseCaseData {
 
     private final String caseType;
     private final String paperForm;
+    private final String languagePreferenceWelsh;
 
     //paper form case creator fields
     private final String primaryApplicantSecondPhoneNumber;

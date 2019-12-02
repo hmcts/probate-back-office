@@ -15,34 +15,19 @@ import static uk.gov.hmcts.probate.model.Constants.CTSC;
 @Service
 public class TemplateService {
 
-    private final NotificationTemplates notificationTemplates;
+    private final EnglishTemplateIdDeterminer englishTemplateIdDeterminer;
+    private final WelshTemplateIdDeterminer welshTemplateIdDeterminer;
 
-    public String getTemplateId(State state, ApplicationType applicationType, String registryLocation) {
-        switch (state) {
-            case DOCUMENTS_RECEIVED:
-                return notificationTemplates.getEmail().get(applicationType).getDocumentReceived();
-            case CASE_STOPPED:
-                return notificationTemplates.getEmail().get(applicationType).getCaseStopped();
-            case CASE_STOPPED_CAVEAT:
-                return notificationTemplates.getEmail().get(applicationType).getCaseStoppedCaveat();
-            case GRANT_ISSUED:
-                return notificationTemplates.getEmail().get(applicationType).getGrantIssued();
-            case GRANT_REISSUED:
-                return notificationTemplates.getEmail().get(applicationType).getGrantReissued();
-            case GENERAL_CAVEAT_MESSAGE:
-                return notificationTemplates.getEmail().get(applicationType).getGeneralCaveatMessage();
-            case CASE_STOPPED_REQUEST_INFORMATION:
-                return notificationTemplates.getEmail().get(applicationType).getRequestInformation();
-            case REDECLARATION_SOT:
-                return notificationTemplates.getEmail().get(applicationType).getRedeclarationSot();
-            case CAVEAT_RAISED:
-                if (registryLocation.equalsIgnoreCase(CTSC)) {
-                    return notificationTemplates.getEmail().get(applicationType).getCaveatRaisedCtsc();
-                } else {
-                    return notificationTemplates.getEmail().get(applicationType).getCaveatRaised();
-                }
-            default:
-                throw new BadRequestException("Unsupported state");
+    public String getTemplateId(State state, ApplicationType applicationType, String registryLocation,
+                                Boolean isWelshLanguagePreferred) {
+
+        if (!isWelshLanguagePreferred) {
+            return englishTemplateIdDeterminer.determineTemplateId(state, applicationType, registryLocation);
+        } else {
+            return welshTemplateIdDeterminer.determineTemplateId(state, applicationType, registryLocation);
         }
     }
+
+
 }
+

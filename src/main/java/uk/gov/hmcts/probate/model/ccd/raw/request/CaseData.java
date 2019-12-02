@@ -335,6 +335,8 @@ public class CaseData {
 
     private final String paperForm;
 
+    private final String languagePreferenceWelsh;
+
     private final String primaryApplicantAlias;
 
     private final String primaryApplicantAliasReason;
@@ -619,6 +621,10 @@ public class CaseData {
         return YES.equals(getBoAssembleLetterSendToBulkPrint());
     }
 
+    public boolean isWelshLanguagePreferred() {
+        return getLanguagePreferenceWelsh() !=null ? YES.equals(getLanguagePreferenceWelsh()) : Boolean.FALSE;
+    }
+
     private String convertDate(LocalDate dateToConvert) {
         if (dateToConvert == null) {
             return null;
@@ -651,4 +657,5 @@ public class CaseData {
             return null;
         }
     }
+
 }

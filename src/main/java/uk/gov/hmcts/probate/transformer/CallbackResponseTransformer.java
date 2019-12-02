@@ -473,6 +473,7 @@ public class CallbackResponseTransformer {
                 .evidenceHandled(caseData.getEvidenceHandled())
 
                 .paperForm(caseData.getPaperForm())
+                .languagePreferenceWelsh(caseData.getLanguagePreferenceWelsh())
                 .caseType(caseData.getCaseType())
                 .solsWillType(caseData.getSolsWillType())
                 .solsApplicantRelationshipToDeceased(caseData.getSolsApplicantRelationshipToDeceased())
@@ -548,6 +549,10 @@ public class CallbackResponseTransformer {
 
     private boolean isPaperForm(CaseData caseData) {
         return ANSWER_YES.equals(caseData.getPaperForm());
+    }
+
+    private boolean isWelshLanguagePreferred(CaseData caseData) {
+        return caseData.getLanguagePreferenceWelsh() !=null ? ANSWER_YES.equals(caseData.getPaperForm()) : Boolean.FALSE;
     }
 
     private boolean willExists(CaseData caseData) {
@@ -658,7 +663,7 @@ public class CallbackResponseTransformer {
                 .paymentReferenceNumberPaperform(caseData.getPaymentReferenceNumberPaperform())
                 .boSendToBulkPrint(caseData.getBoSendToBulkPrint())
                 .boSendToBulkPrintRequested(caseData.getBoSendToBulkPrintRequested())
-
+                .languagePreferenceWelsh(caseData.getLanguagePreferenceWelsh())
                 .bulkPrintPdfSize(caseData.getBulkPrintPdfSize())
                 .bulkPrintSendLetterId(caseData.getBulkPrintSendLetterId());
 
@@ -784,7 +789,6 @@ public class CallbackResponseTransformer {
                     .solsSolicitorPhoneNumber(caseData.getSolsSolicitorPhoneNumber())
                     .solsSolicitorAddress(caseData.getSolsSolicitorAddress());
         }
-
         if (!isPaperForm(caseData)) {
             builder
                     .paperForm(ANSWER_NO);

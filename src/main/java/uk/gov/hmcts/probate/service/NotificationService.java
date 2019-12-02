@@ -82,7 +82,8 @@ public class NotificationService {
         CaseData caseData = caseDetails.getData();
         Registry registry = registriesProperties.getRegistries().get(caseData.getRegistryLocation().toLowerCase());
 
-        String templateId = templateService.getTemplateId(state, caseData.getApplicationType(), caseData.getRegistryLocation());
+        String templateId = templateService.getTemplateId(state, caseData.getApplicationType(),
+                caseData.getRegistryLocation(), caseData.isWelshLanguagePreferred());
         String emailReplyToId = registry.getEmailReplyToId();
         String emailAddress = getEmail(caseData);
         Map<String, Object> personalisation = grantOfRepresentationPersonalisationService.getPersonalisation(caseDetails,
@@ -108,7 +109,8 @@ public class NotificationService {
         CaseData caseData = caseDetails.getData();
         Registry registry = registriesProperties.getRegistries().get(caseData.getRegistryLocation().toLowerCase());
 
-        String templateId = templateService.getTemplateId(state, caseData.getApplicationType(), caseData.getRegistryLocation());
+        String templateId = templateService.getTemplateId(state, caseData.getApplicationType()
+                , caseData.getRegistryLocation(), caseData.isWelshLanguagePreferred());
         String emailAddress = executor.getEmail();
         Map<String, Object> personalisation = grantOfRepresentationPersonalisationService.getPersonalisation(caseDetails,
                 registry);
@@ -129,7 +131,8 @@ public class NotificationService {
         CaveatData caveatData = caveatDetails.getData();
         Registry registry = registriesProperties.getRegistries().get(caveatData.getRegistryLocation().toLowerCase());
 
-        String templateId = templateService.getTemplateId(state, caveatData.getApplicationType(), caveatData.getRegistryLocation());
+        String templateId = templateService.getTemplateId(state, caveatData.getApplicationType()
+                , caveatData.getRegistryLocation() , Boolean.FALSE) ;
         String emailAddress = caveatData.getCaveatorEmailAddress();
         Map<String, String> personalisation = caveatPersonalisationService.getCaveatPersonalisation(caveatDetails, registry);
         String reference = caveatDetails.getId().toString();
@@ -177,8 +180,9 @@ public class NotificationService {
 
         Registry registry = registriesProperties.getRegistries().get(caseDetails.getData().getRegistryLocation().toLowerCase());
 
-        String templateId = templateService.getTemplateId(state,
-                caseDetails.getData().getApplicationType(), caseDetails.getData().getRegistryLocation());
+        String templateId = templateService.getTemplateId(state, caseDetails.getData().getApplicationType()
+                , caseDetails.getData().getRegistryLocation()
+                , caseDetails.getData().isWelshLanguagePreferred());
         String emailReplyToId = registry.getEmailReplyToId();
 
         Map<String, Object> personalisation =

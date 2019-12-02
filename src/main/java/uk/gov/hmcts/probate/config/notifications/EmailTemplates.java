@@ -15,4 +15,15 @@ public class EmailTemplates {
     private String caveatRaisedCtsc;
     private String requestInformation;
     private String redeclarationSot;
+    private String documentReceivedWelsh;
+    private String caseStoppedWelsh;
+    private String caseStoppedCaveatWelsh;
+    private String grantIssuedWelsh;
+    private String grantReissuedWelsh;
+    private String generalCaveatMessageWelsh;
+    private String excelaDataWelsh;
+    private String caveatRaisedWelsh;
+    private String caveatRaisedCtscWelsh;
+    private String requestInformationWelsh;
+    private String redeclarationSotWelsh;
 }
