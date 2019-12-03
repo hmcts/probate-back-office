@@ -13,6 +13,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import uk.gov.hmcts.probate.model.exceptionrecord.ExceptionRecordOCRFields;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData;
+import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -135,7 +136,7 @@ public class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
                 .domicilityEntrustingDocument(null)
                 .domicilitySuccessionIHTCert("true")
                 .build();
-        GrantOfRepresentationData response = exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields);
+        GrantOfRepresentationData response = exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.GRANT_OF_PROBATE);
         assertTrue(response.getDomicilityIHTCert());
     }
 
@@ -145,7 +146,7 @@ public class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
                 .domicilityEntrustingDocument("false")
                 .domicilitySuccessionIHTCert(null)
                 .build();
-        GrantOfRepresentationData response = exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields);
+        GrantOfRepresentationData response = exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.GRANT_OF_PROBATE);
         assertNull(response.getDomicilityIHTCert());
     }
 
@@ -187,7 +188,7 @@ public class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
                 .halfBloodCousinsSurvivedUnderEighteen("2")
                 .halfBloodCousinsSurvivedOverEighteen("")
                 .build();
-        GrantOfRepresentationData response = exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields);
+        GrantOfRepresentationData response = exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.INTESTACY);
         assertTrue(response.getChildrenSurvived());
         assertTrue(response.getChildrenDied());
         assertTrue(response.getGrandChildrenSurvived());
@@ -208,7 +209,7 @@ public class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
     }
 
     @Test
-    public void setDerivedFamilyBooleansFalse() {
+    public void setDerivedFamilyIntestacyBooleansNull() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
                 .childrenUnderEighteenSurvived("0")
                 .childrenOverEighteenSurvived(null)
@@ -245,24 +246,24 @@ public class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
                 .halfBloodCousinsSurvivedUnderEighteen("0")
                 .halfBloodCousinsSurvivedOverEighteen("")
                 .build();
-        GrantOfRepresentationData response = exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields);
-        assertFalse(response.getChildrenSurvived());
-        assertFalse(response.getChildrenDied());
-        assertFalse(response.getGrandChildrenSurvived());
-        assertFalse(response.getParentsExistSurvived());
-        assertFalse(response.getWholeBloodSiblingsSurvived());
-        assertFalse(response.getWholeBloodSiblingsDied());
-        assertFalse(response.getWholeBloodNeicesAndNephews());
-        assertFalse(response.getHalfBloodSiblingsSurvived());
-        assertFalse(response.getHalfBloodSiblingsDied());
-        assertFalse(response.getHalfBloodNeicesAndNephews());
-        assertFalse(response.getGrandparentsDied());
-        assertFalse(response.getWholeBloodUnclesAndAuntsSurvived());
-        assertFalse(response.getWholeBloodUnclesAndAuntsDied());
-        assertFalse(response.getWholeBloodCousinsSurvived());
-        assertFalse(response.getHalfBloodUnclesAndAuntsSurvived());
-        assertFalse(response.getHalfBloodUnclesAndAuntsDied());
-        assertFalse(response.getHalfBloodCousinsSurvived());
+        GrantOfRepresentationData response = exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.INTESTACY);
+        assertNull(response.getChildrenSurvived());
+        assertNull(response.getChildrenDied());
+        assertNull(response.getGrandChildrenSurvived());
+        assertNull(response.getParentsExistSurvived());
+        assertNull(response.getWholeBloodSiblingsSurvived());
+        assertNull(response.getWholeBloodSiblingsDied());
+        assertNull(response.getWholeBloodNeicesAndNephews());
+        assertNull(response.getHalfBloodSiblingsSurvived());
+        assertNull(response.getHalfBloodSiblingsDied());
+        assertNull(response.getHalfBloodNeicesAndNephews());
+        assertNull(response.getGrandparentsDied());
+        assertNull(response.getWholeBloodUnclesAndAuntsSurvived());
+        assertNull(response.getWholeBloodUnclesAndAuntsDied());
+        assertNull(response.getWholeBloodCousinsSurvived());
+        assertNull(response.getHalfBloodUnclesAndAuntsSurvived());
+        assertNull(response.getHalfBloodUnclesAndAuntsDied());
+        assertNull(response.getHalfBloodCousinsSurvived());
     }
 
     @Test
@@ -273,14 +274,14 @@ public class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
                 .attorneyOnBehalfOfAddressTown("London")
                 .attorneyOnBehalfOfAddressPostCode("NW1 1LO")
                 .build();
-        GrantOfRepresentationData response = exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields);
+        GrantOfRepresentationData response = exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.INTESTACY);
         assertTrue(response.getApplyingAsAnAttorney());
     }
 
     @Test
     public void testSetApplyingAsAnAttorneyBooleanFalse() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder().build();
-        GrantOfRepresentationData response = exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields);
+        GrantOfRepresentationData response = exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.INTESTACY);
         assertFalse(response.getApplyingAsAnAttorney());
     }
 }
