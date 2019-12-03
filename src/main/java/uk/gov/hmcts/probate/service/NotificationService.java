@@ -13,6 +13,7 @@ import uk.gov.hmcts.probate.exception.InvalidEmailException;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ExecutorsApplyingNotification;
+import uk.gov.hmcts.probate.model.LanguagePreference;
 import uk.gov.hmcts.probate.model.SentEmail;
 import uk.gov.hmcts.probate.model.State;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
@@ -81,9 +82,8 @@ public class NotificationService {
 
         CaseData caseData = caseDetails.getData();
         Registry registry = registriesProperties.getRegistries().get(caseData.getRegistryLocation().toLowerCase());
-
         String templateId = templateService.getTemplateId(state, caseData.getApplicationType(),
-                caseData.getRegistryLocation(), caseData.isWelshLanguagePreferred());
+                caseData.getRegistryLocation(), caseData.getLanguagePreference());
         String emailReplyToId = registry.getEmailReplyToId();
         String emailAddress = getEmail(caseData);
         Map<String, Object> personalisation = grantOfRepresentationPersonalisationService.getPersonalisation(caseDetails,
@@ -110,7 +110,7 @@ public class NotificationService {
         Registry registry = registriesProperties.getRegistries().get(caseData.getRegistryLocation().toLowerCase());
 
         String templateId = templateService.getTemplateId(state, caseData.getApplicationType()
-                , caseData.getRegistryLocation(), caseData.isWelshLanguagePreferred());
+                , caseData.getRegistryLocation(), caseData.getLanguagePreference());
         String emailAddress = executor.getEmail();
         Map<String, Object> personalisation = grantOfRepresentationPersonalisationService.getPersonalisation(caseDetails,
                 registry);
@@ -132,7 +132,7 @@ public class NotificationService {
         Registry registry = registriesProperties.getRegistries().get(caveatData.getRegistryLocation().toLowerCase());
 
         String templateId = templateService.getTemplateId(state, caveatData.getApplicationType()
-                , caveatData.getRegistryLocation() , Boolean.FALSE) ;
+                , caveatData.getRegistryLocation() , LanguagePreference.ENGLISH) ;
         String emailAddress = caveatData.getCaveatorEmailAddress();
         Map<String, String> personalisation = caveatPersonalisationService.getCaveatPersonalisation(caveatDetails, registry);
         String reference = caveatDetails.getId().toString();
@@ -158,7 +158,7 @@ public class NotificationService {
 
     public Document sendExcelaEmail(List<ReturnedCaseDetails> caseDetails) throws
             NotificationClientException {
-        String templateId = notificationTemplates.getEmail().get(caseDetails.get(0).getData().getApplicationType())
+        String templateId = notificationTemplates.getEmail().get(LanguagePreference.ENGLISH).get(caseDetails.get(0).getData().getApplicationType())
                 .getExcelaData();
         Map<String, String> personalisation = grantOfRepresentationPersonalisationService.getExcelaPersonalisation(caseDetails);
         String reference = LocalDateTime.now().format(EXCELA_DATE);
@@ -181,8 +181,8 @@ public class NotificationService {
         Registry registry = registriesProperties.getRegistries().get(caseDetails.getData().getRegistryLocation().toLowerCase());
 
         String templateId = templateService.getTemplateId(state, caseDetails.getData().getApplicationType()
-                , caseDetails.getData().getRegistryLocation()
-                , caseDetails.getData().isWelshLanguagePreferred());
+                ,caseDetails.getData().getRegistryLocation()
+                ,caseDetails.getData().getLanguagePreference());
         String emailReplyToId = registry.getEmailReplyToId();
 
         Map<String, Object> personalisation =
