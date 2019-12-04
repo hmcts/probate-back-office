@@ -690,6 +690,9 @@ public class CallbackResponseTransformer {
     }
 
     private void updateCaseBuilder(CaseData caseData, ResponseCaseDataBuilder builder) {
+        builder
+                .solsAdditionalExecutorList(caseData.getSolsAdditionalExecutorList());
+
         if (caseData.getIhtFormCompletedOnline() != null) {
             if (caseData.getIhtFormCompletedOnline().equalsIgnoreCase(ANSWER_YES)) {
                 builder
@@ -781,6 +784,11 @@ public class CallbackResponseTransformer {
                     .dateOfDeathType(DATE_OF_DEATH_TYPE_DEFAULT);
         }
 
+        if (!YES.equals(caseData.getOtherExecutorExists())) {
+            builder
+                    .solsAdditionalExecutorList(null);
+        }
+
         if (caseData.getPrimaryApplicantAliasReason() != null) {
             if (caseData.getPrimaryApplicantAliasReason().equalsIgnoreCase(OTHER)) {
                 builder
@@ -813,6 +821,7 @@ public class CallbackResponseTransformer {
                 .additionalExecutorsApplying(mapApplyingAdditionalExecutors(caseData))
                 .additionalExecutorsNotApplying(caseData.getAdditionalExecutorsNotApplying())
                 .solsAdditionalExecutorList(caseData.getSolsAdditionalExecutorList())
+                .primaryApplicantAlias(caseData.getPrimaryApplicantAlias())
                 .solsExecutorAliasNames(caseData.getSolsExecutorAliasNames());
     }
 
