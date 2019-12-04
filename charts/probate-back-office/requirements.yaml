@@ -1,12 +1,4 @@
 dependencies:
   - name: java
-    version: 2.3.1
+    version:  ~2.15.0
     repository: '@hmctspublic'
-  - name: postgresql
-    version: ~2.6.5
-    repository: '@stable'
-  - name: idam-pr
-    version: ~2.1.3
-    repository: '@hmctspublic'
-    tags:
-      - idam-pr
