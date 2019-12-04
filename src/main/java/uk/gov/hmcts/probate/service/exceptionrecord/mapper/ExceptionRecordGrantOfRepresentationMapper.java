@@ -42,6 +42,7 @@ import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType;
                 OCRFieldNumberMapper.class
         },
         unmappedTargetPolicy = ReportingPolicy.IGNORE, nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS)
+@SuppressWarnings("Duplicates")
 public interface ExceptionRecordGrantOfRepresentationMapper {
     @Mapping(target = "extraCopiesOfGrant", source = "ocrFields.extraCopiesOfGrant", qualifiedBy = {ToLong.class})
     @Mapping(target = "outsideUkGrantCopies", source = "ocrFields.outsideUKGrantCopies", qualifiedBy = {ToLong.class})
