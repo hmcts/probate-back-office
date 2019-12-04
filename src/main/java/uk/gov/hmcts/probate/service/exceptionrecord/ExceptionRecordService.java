@@ -84,7 +84,7 @@ public class ExceptionRecordService {
 
         try {
             log.info("About to map Grant of Representation OCR fields to CCD.");
-            GrantOfRepresentationData grantOfRepresentationData = erGrantOfRepresentationMapper.toCcdData(erRequest.getOCRFieldsObject());
+            GrantOfRepresentationData grantOfRepresentationData = erGrantOfRepresentationMapper.toCcdData(erRequest.getOCRFieldsObject(), grantType);
 
             // Add bulkScanReferenceId
             grantOfRepresentationData.setBulkScanCaseReference(erRequest.getId());

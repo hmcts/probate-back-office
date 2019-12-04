@@ -113,7 +113,7 @@ public class ExceptionRecordServiceTest {
                 .caseTypeId(EXCEPTION_RECORD_GOR_CASE_TYPE_ID).build();
 
         when(erCaveatMapper.toCcdData(any())).thenReturn(caveatData);
-        when(erGrantOfRepresentationMapper.toCcdData(any())).thenReturn(grantOfRepresentationData);
+        when(erGrantOfRepresentationMapper.toCcdData(any(), any())).thenReturn(grantOfRepresentationData);
         when(caveatTransformer.bulkScanCaveatCaseTransform(any())).thenReturn(caveatCaseDetailsResponse);
         when(grantOfProbatetransformer.bulkScanGrantOfRepresentationCaseTransform(any())).thenReturn(grantOfProbateCaseDetailsResponse);
     }
