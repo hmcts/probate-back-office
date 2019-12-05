@@ -334,25 +334,4 @@
         <gav regex="true">^com\.fasterxml\.jackson\.core:jackson-databind:.*$</gav>
         <cve>CVE-2019-16943</cve>
     </suppress>
-    <suppress>
-        <notes><![CDATA[
-   file name: applicationinsights-core-2.3.1.jar (shaded: io.netty:netty-tcnative-boringssl-static:2.0.17.Final)
-   ]]></notes>
-        <gav regex="true">^io\.netty:netty-tcnative-boringssl-static:.*$</gav>
-        <cve>CVE-2014-3488</cve>
-    </suppress>
-    <suppress>
-        <notes><![CDATA[
-   file name: applicationinsights-core-2.3.1.jar (shaded: io.netty:netty-tcnative-boringssl-static:2.0.17.Final)
-   ]]></notes>
-        <gav regex="true">^io\.netty:netty-tcnative-boringssl-static:.*$</gav>
-        <cve>CVE-2015-2156</cve>
-    </suppress>
-    <suppress>
-        <notes><![CDATA[
-   file name: applicationinsights-core-2.3.1.jar (shaded: io.netty:netty-tcnative-boringssl-static:2.0.17.Final)
-   ]]></notes>
-        <gav regex="true">^io\.netty:netty-tcnative-boringssl-static:.*$</gav>
-        <cve>CVE-2019-16869</cve>
-    </suppress>
 </suppressions>
