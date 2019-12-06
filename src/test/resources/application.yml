@@ -104,7 +104,7 @@ evidence.management.upload.file.url: /documents
 http.connect.timeout: 60000
 http.connect.request.timeout: 60000
 
-idam.service.host: ${PROVIDER_SERVICE_CLIENT_URL:http://localhost:4502}
+idam.service.host: ${AUTH_PROVIDER_SERVICE_CLIENT_BASEURL:http://localhost:4502}
 
 notifications:
   govNotifyApiKey: "dummy_key"
