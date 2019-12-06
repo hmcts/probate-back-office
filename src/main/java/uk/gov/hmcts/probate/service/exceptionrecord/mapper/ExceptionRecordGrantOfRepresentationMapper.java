@@ -94,62 +94,34 @@ public interface ExceptionRecordGrantOfRepresentationMapper {
     @Mapping(target = "grandChildrenSurvivedOverEighteenText", expression = "java(ocrFields.getGrandChildrenSurvivedOverEighteen())")
 
     // Ignored fields defined in after mapping section.
-    @Mapping(target = "parentsExistSurvived", ignore = true)
     @Mapping(target = "parentsExistUnderEighteenSurvived", source = "ocrFields.parentsExistUnderEighteenSurvived")
     @Mapping(target = "parentsExistOverEighteenSurvived", source = "ocrFields.parentsExistOverEighteenSurvived")
-
-    @Mapping(target = "wholeBloodSiblingsSurvived", ignore = true)
     @Mapping(target = "wholeBloodSiblingsSurvivedUnderEighteen", source = "ocrFields.wholeBloodSiblingsSurvivedUnderEighteen")
     @Mapping(target = "wholeBloodSiblingsSurvivedOverEighteen", source = "ocrFields.wholeBloodSiblingsSurvivedOverEighteen")
-
-    @Mapping(target = "wholeBloodSiblingsDied", ignore = true)
     @Mapping(target = "wholeBloodSiblingsDiedUnderEighteen", source = "ocrFields.wholeBloodSiblingsDiedUnderEighteen")
     @Mapping(target = "wholeBloodSiblingsDiedOverEighteen", source = "ocrFields.wholeBloodSiblingsDiedOverEighteen")
-
-    @Mapping(target = "wholeBloodNeicesAndNephews", ignore = true)
     @Mapping(target = "wholeBloodNeicesAndNephewsUnderEighteen", source = "ocrFields.wholeBloodNeicesAndNephewsUnderEighteen")
     @Mapping(target = "wholeBloodNeicesAndNephewsOverEighteen", source = "ocrFields.wholeBloodNeicesAndNephewsOverEighteen")
-
-    @Mapping(target = "halfBloodSiblingsSurvived", ignore = true)
     @Mapping(target = "halfBloodSiblingsSurvivedUnderEighteen", source = "ocrFields.halfBloodSiblingsSurvivedUnderEighteen")
     @Mapping(target = "halfBloodSiblingsSurvivedOverEighteen", source = "ocrFields.halfBloodSiblingsSurvivedOverEighteen")
-
-    @Mapping(target = "halfBloodSiblingsDied", ignore = true)
     @Mapping(target = "halfBloodSiblingsDiedUnderEighteen", source = "ocrFields.halfBloodSiblingsDiedUnderEighteen")
     @Mapping(target = "halfBloodSiblingsDiedOverEighteen", source = "ocrFields.halfBloodSiblingsDiedOverEighteen")
-
-    @Mapping(target = "halfBloodNeicesAndNephews", ignore = true)
     @Mapping(target = "halfBloodNeicesAndNephewsUnderEighteen", source = "ocrFields.halfBloodNeicesAndNephewsUnderEighteen")
     @Mapping(target = "halfBloodNeicesAndNephewsOverEighteen", source = "ocrFields.halfBloodNeicesAndNephewsOverEighteen")
-
-    @Mapping(target = "grandparentsDied", ignore = true)
     @Mapping(target = "grandparentsDiedUnderEighteen", source = "ocrFields.grandparentsDiedUnderEighteen")
     @Mapping(target = "grandparentsDiedOverEighteen", source = "ocrFields.grandparentsDiedOverEighteen")
-
-    @Mapping(target = "wholeBloodUnclesAndAuntsSurvived", ignore = true)
     @Mapping(target = "wholeBloodUnclesAndAuntsSurvivedUnderEighteen", source = "ocrFields.wholeBloodUnclesAndAuntsSurvivedUnderEighteen")
     @Mapping(target = "wholeBloodUnclesAndAuntsSurvivedOverEighteen", source = "ocrFields.wholeBloodUnclesAndAuntsSurvivedOverEighteen")
-
-    @Mapping(target = "wholeBloodUnclesAndAuntsDied", ignore = true)
     @Mapping(target = "wholeBloodUnclesAndAuntsDiedUnderEighteen", source = "ocrFields.wholeBloodUnclesAndAuntsDiedUnderEighteen")
     @Mapping(target = "wholeBloodUnclesAndAuntsDiedOverEighteen", source = "ocrFields.wholeBloodUnclesAndAuntsDiedOverEighteen")
-
-    @Mapping(target = "wholeBloodCousinsSurvived", ignore = true)
     @Mapping(target = "wholeBloodCousinsSurvivedUnderEighteen", source = "ocrFields.wholeBloodCousinsSurvivedUnderEighteen")
     @Mapping(target = "wholeBloodCousinsSurvivedOverEighteen", source = "ocrFields.wholeBloodCousinsSurvivedOverEighteen")
-
-    @Mapping(target = "halfBloodUnclesAndAuntsSurvived", ignore = true)
     @Mapping(target = "halfBloodUnclesAndAuntsSurvivedUnderEighteen", source = "ocrFields.halfBloodUnclesAndAuntsSurvivedUnderEighteen")
     @Mapping(target = "halfBloodUnclesAndAuntsSurvivedOverEighteen", source = "ocrFields.halfBloodUnclesAndAuntsSurvivedOverEighteen")
-
-    @Mapping(target = "halfBloodUnclesAndAuntsDied", ignore = true)
     @Mapping(target = "halfBloodUnclesAndAuntsDiedUnderEighteen", source = "ocrFields.halfBloodUnclesAndAuntsDiedUnderEighteen")
     @Mapping(target = "halfBloodUnclesAndAuntsDiedOverEighteen", source = "ocrFields.halfBloodUnclesAndAuntsDiedOverEighteen")
-
-    @Mapping(target = "halfBloodCousinsSurvived", ignore = true)
     @Mapping(target = "halfBloodCousinsSurvivedUnderEighteen", source = "ocrFields.halfBloodCousinsSurvivedUnderEighteen")
     @Mapping(target = "halfBloodCousinsSurvivedOverEighteen", source = "ocrFields.halfBloodCousinsSurvivedOverEighteen")
-
     @Mapping(target = "primaryApplicantRelationshipToDeceased",
             source = "ocrFields.primaryApplicantRelationshipToDeceased", qualifiedBy = {ToRelationship.class})
     @Mapping(target = "paRelationshipToDeceasedOther",
@@ -211,70 +183,121 @@ public interface ExceptionRecordGrantOfRepresentationMapper {
             if (greaterThenZero(ocrField.getChildrenUnderEighteenSurvived())
                     || greaterThenZero(ocrField.getChildrenOverEighteenSurvived())) {
                 caseData.setChildrenSurvived(Boolean.TRUE);
+            } else {
+                caseData.setChildrenOverEighteenSurvivedText(null);
+                caseData.setChildrenUnderEighteenSurvivedText(null);
             }
             if (greaterThenZero(ocrField.getChildrenDiedUnderEighteen())
                     || greaterThenZero(ocrField.getChildrenDiedOverEighteen())) {
                 caseData.setChildrenDied(Boolean.TRUE);
+            } else {
+                caseData.setChildrenDiedOverEighteenText(null);
+                caseData.setChildrenDiedUnderEighteenText(null);
             }
             if (greaterThenZero(ocrField.getGrandChildrenSurvivedUnderEighteen())
                     || greaterThenZero(ocrField.getGrandChildrenSurvivedOverEighteen())) {
                 caseData.setGrandChildrenSurvived(Boolean.TRUE);
+            } else {
+                caseData.setGrandChildrenSurvivedOverEighteenText(null);
+                caseData.setGrandChildrenSurvivedUnderEighteenText(null);
             }
             if (greaterThenZero(ocrField.getParentsExistUnderEighteenSurvived())
                     || greaterThenZero(ocrField.getParentsExistOverEighteenSurvived())) {
                 caseData.setParentsExistSurvived(Boolean.TRUE);
+            } else {
+                caseData.setParentsExistOverEighteenSurvived(null);
+                caseData.setParentsExistUnderEighteenSurvived(null);
             }
             if (greaterThenZero(ocrField.getWholeBloodSiblingsSurvivedUnderEighteen())
                     || greaterThenZero(ocrField.getWholeBloodSiblingsSurvivedOverEighteen())) {
                 caseData.setWholeBloodSiblingsSurvived(Boolean.TRUE);
+            } else {
+                caseData.setWholeBloodSiblingsSurvivedOverEighteen(null);
+                caseData.setWholeBloodSiblingsSurvivedUnderEighteen(null);
             }
             if (greaterThenZero(ocrField.getWholeBloodSiblingsDiedUnderEighteen())
                     || greaterThenZero(ocrField.getWholeBloodSiblingsDiedOverEighteen())) {
                 caseData.setWholeBloodSiblingsDied(Boolean.TRUE);
+            } else {
+                caseData.setWholeBloodSiblingsDiedOverEighteen(null);
+                caseData.setWholeBloodSiblingsDiedUnderEighteen(null);
             }
             if (greaterThenZero(ocrField.getWholeBloodNeicesAndNephewsUnderEighteen())
                     || greaterThenZero(ocrField.getWholeBloodNeicesAndNephewsOverEighteen())) {
                 caseData.setWholeBloodNeicesAndNephews(Boolean.TRUE);
+            } else {
+                caseData.setWholeBloodNeicesAndNephewsOverEighteen(null);
+                caseData.setWholeBloodNeicesAndNephewsUnderEighteen(null);
             }
             if (greaterThenZero(ocrField.getHalfBloodSiblingsSurvivedUnderEighteen())
                     || greaterThenZero(ocrField.getHalfBloodSiblingsSurvivedOverEighteen())) {
                 caseData.setHalfBloodSiblingsSurvived(Boolean.TRUE);
+            } else {
+                caseData.setHalfBloodSiblingsSurvivedOverEighteen(null);
+                caseData.setHalfBloodSiblingsSurvivedUnderEighteen(null);
             }
             if (greaterThenZero(ocrField.getHalfBloodSiblingsDiedUnderEighteen())
                     || greaterThenZero(ocrField.getHalfBloodSiblingsDiedOverEighteen())) {
                 caseData.setHalfBloodSiblingsDied(Boolean.TRUE);
+            } else {
+                caseData.setHalfBloodSiblingsDiedOverEighteen(null);
+                caseData.setHalfBloodSiblingsDiedUnderEighteen(null);
             }
             if (greaterThenZero(ocrField.getHalfBloodNeicesAndNephewsUnderEighteen())
                     || greaterThenZero(ocrField.getHalfBloodNeicesAndNephewsOverEighteen())) {
                 caseData.setHalfBloodNeicesAndNephews(Boolean.TRUE);
+            } else {
+                caseData.setHalfBloodNeicesAndNephewsOverEighteen(null);
+                caseData.setHalfBloodNeicesAndNephewsUnderEighteen(null);
             }
             if (greaterThenZero(ocrField.getGrandparentsDiedUnderEighteen())
                     || greaterThenZero(ocrField.getGrandparentsDiedOverEighteen())) {
                 caseData.setGrandparentsDied(Boolean.TRUE);
+            } else {
+                caseData.setGrandparentsDiedOverEighteen(null);
+                caseData.setGrandparentsDiedUnderEighteen(null);
             }
             if (greaterThenZero(ocrField.getWholeBloodUnclesAndAuntsSurvivedUnderEighteen())
                     || greaterThenZero(ocrField.getWholeBloodUnclesAndAuntsSurvivedOverEighteen())) {
                 caseData.setWholeBloodUnclesAndAuntsSurvived(Boolean.TRUE);
+            } else {
+                caseData.setWholeBloodUnclesAndAuntsSurvivedOverEighteen(null);
+                caseData.setWholeBloodUnclesAndAuntsSurvivedUnderEighteen(null);
             }
             if (greaterThenZero(ocrField.getWholeBloodUnclesAndAuntsDiedUnderEighteen())
                     || greaterThenZero(ocrField.getWholeBloodUnclesAndAuntsDiedOverEighteen())) {
                 caseData.setWholeBloodUnclesAndAuntsDied(Boolean.TRUE);
+            } else {
+                caseData.setWholeBloodUnclesAndAuntsDiedOverEighteen(null);
+                caseData.setWholeBloodUnclesAndAuntsDiedUnderEighteen(null);
             }
             if (greaterThenZero(ocrField.getWholeBloodCousinsSurvivedUnderEighteen())
                     || greaterThenZero(ocrField.getWholeBloodCousinsSurvivedOverEighteen())) {
                 caseData.setWholeBloodCousinsSurvived(Boolean.TRUE);
+            } else {
+                caseData.setWholeBloodCousinsSurvivedOverEighteen(null);
+                caseData.setWholeBloodCousinsSurvivedUnderEighteen(null);
             }
             if (greaterThenZero(ocrField.getHalfBloodUnclesAndAuntsSurvivedUnderEighteen())
                     || greaterThenZero(ocrField.getHalfBloodUnclesAndAuntsSurvivedOverEighteen())) {
                 caseData.setHalfBloodUnclesAndAuntsSurvived(Boolean.TRUE);
+            } else {
+                caseData.setHalfBloodUnclesAndAuntsSurvivedOverEighteen(null);
+                caseData.setHalfBloodUnclesAndAuntsSurvivedUnderEighteen(null);
             }
             if (greaterThenZero(ocrField.getHalfBloodUnclesAndAuntsDiedUnderEighteen())
                     || greaterThenZero(ocrField.getHalfBloodUnclesAndAuntsDiedOverEighteen())) {
                 caseData.setHalfBloodUnclesAndAuntsDied(Boolean.TRUE);
+            } else {
+                caseData.setHalfBloodUnclesAndAuntsDiedOverEighteen(null);
+                caseData.setHalfBloodUnclesAndAuntsDiedUnderEighteen(null);
             }
             if (greaterThenZero(ocrField.getHalfBloodCousinsSurvivedUnderEighteen())
                     || greaterThenZero(ocrField.getHalfBloodCousinsSurvivedOverEighteen())) {
                 caseData.setHalfBloodCousinsSurvived(Boolean.TRUE);
+            } else {
+                caseData.setHalfBloodCousinsSurvivedOverEighteen(null);
+                caseData.setHalfBloodCousinsSurvivedUnderEighteen(null);
             }
         }
     }
