@@ -167,10 +167,10 @@ public interface ExceptionRecordGrantOfRepresentationMapper {
     @AfterMapping
     default void clearIhtFormOrReferenceIfNotSelected(
             @MappingTarget GrantOfRepresentationData caseData, ExceptionRecordOCRFields ocrField) {
-        if (caseData.getIhtFormCompletedOnline()) {
+        if (caseData.getIhtFormCompletedOnline() != null && caseData.getIhtFormCompletedOnline()) {
             caseData.setIhtFormId(null);
         }
-        if (!caseData.getIhtFormCompletedOnline()) {
+        if (caseData.getIhtFormCompletedOnline() != null && !caseData.getIhtFormCompletedOnline()) {
             caseData.setIhtReferenceNumber(null);
         }
     }

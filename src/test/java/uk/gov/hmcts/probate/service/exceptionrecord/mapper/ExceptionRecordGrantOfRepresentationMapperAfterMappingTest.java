@@ -151,6 +151,30 @@ public class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
     }
 
     @Test
+    public void testIHTReferenceClearedIfNotOnline() {
+        ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
+                .ihtFormCompletedOnline("false")
+                .ihtReferenceNumber("REF123456789")
+                .ihtFormId("IHT205")
+                .build();
+        GrantOfRepresentationData response = exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.GRANT_OF_PROBATE);
+        assertNotNull(response.getIhtFormId());
+        assertNull(response.getIhtReferenceNumber());
+    }
+
+    @Test
+    public void testIHTFormIdClearedIfOnline() {
+        ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
+                .ihtFormCompletedOnline("true")
+                .ihtReferenceNumber("REF123456789")
+                .ihtFormId("IHT205")
+                .build();
+        GrantOfRepresentationData response = exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.GRANT_OF_PROBATE);
+        assertNotNull(response.getIhtReferenceNumber());
+        assertNull(response.getIhtFormId());
+    }
+
+    @Test
     public void setDerivedFamilyBooleansTrue() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
                 .childrenUnderEighteenSurvived("1")
@@ -306,7 +330,7 @@ public class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
                 .attorneyOnBehalfOfName("Fred and Sons")
                 .attorneyOnBehalfOfAddressLine1("12 Grren Park")
                 .attorneyOnBehalfOfAddressTown("London")
-                .attorneyOnBehalfOfAddressPostCode("NW1 1LO")
+                .attorneyOnBehalfOfAddressPostCode("W1A 0AX")
                 .build();
         GrantOfRepresentationData response = exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.INTESTACY);
         assertTrue(response.getApplyingAsAnAttorney());
