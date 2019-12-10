@@ -2,7 +2,6 @@ package uk.gov.hmcts.probate.service.exceptionrecord.mapper;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import uk.gov.hmcts.probate.exception.OCRMappingException;
 import uk.gov.hmcts.probate.model.exceptionrecord.ExceptionRecordOCRFields;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToAttorneyOnBehalfOfAddress;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToCaveatorAddress;
@@ -11,18 +10,13 @@ import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToPrimaryA
 import uk.gov.hmcts.reform.probate.model.AttorneyNamesAndAddress;
 import uk.gov.hmcts.reform.probate.model.cases.Address;
 import uk.gov.hmcts.reform.probate.model.cases.CollectionMember;
-import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.ExecutorApplying;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @Slf4j
 @Component
 public class OCRFieldAddressMapper {
-
-    private static final String POSTCODE_REGEX = "^[A-Z]{1,2}[0-9R][0-9A-Z]? [0-9][ABD-HJLNP-UW-Z]{2}$";
 
     private String addressLine1;
     private String addressLine2;
@@ -112,19 +106,7 @@ public class OCRFieldAddressMapper {
                 .build();
         if (address.getPostCode() == null || address.getPostCode().isEmpty()) {
             return null;
-        } else {
-            validatePostcode(address.getPostCode());
         }
         return address;
-    }
-
-    private void validatePostcode(String postcodeValue) {
-        Pattern pattern = Pattern.compile(POSTCODE_REGEX);
-        Matcher matcher = pattern.matcher(postcodeValue);
-        if (!matcher.matches()) {
-            String errorMessage = "Postcode field '" + postcodeValue + "' has an invalid UK format.";
-            log.error(errorMessage);
-            throw new OCRMappingException(errorMessage);
-        }
     }
 }
