@@ -1,0 +1,5 @@
+ENGLAND
+T~4444555566667777~Liverpool~MR~PETAR~KRNETA~~~17-AUG-2018~~20-OCT-1940~77~England and Wales~7 Pevensey Avenue~Leicester~~~LE5 6XQ~24-OCT-2018~~Bob~Smith~~123 Fake street~North West East Field~~~AB2 3CD~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~325000~Y~287000~PROBATE~Y~
+A~4444555566667777~~PETER PIPER~KRENT~
+A~4444555566667777~~PETE~KRENT~
+Z~1_20190101.dat~3~1~Y~

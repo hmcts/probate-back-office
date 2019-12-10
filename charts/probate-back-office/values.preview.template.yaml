@@ -10,5 +10,7 @@ java:
     probatemandb-POSTGRES-HOST: "{{ .Release.Name }}-postgresql"
     probatemandb-POSTGRES-DATABASE: "{{ .Values.postgresql.postgresqlDatabase}}"
   
-persistence:
-  enabled: true
+  postgresql:
+    enabled: true
+
+

@@ -181,7 +181,7 @@ def versions = [
         reformsJavaLoggingVersion       : '5.1.0',
         serviceAuthProviderClient       : '3.0.0',
         springSecurityVersion           : '5.1.1.RELEASE',
-        probateCommonsVersion           : '0.0.32',
+        probateCommonsVersion           : '0.0.58',
         ccdClient                       : '4.4.1',
         mapStruct                       : '1.2.0.Final'        
 ]

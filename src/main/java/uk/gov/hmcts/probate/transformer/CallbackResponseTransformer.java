@@ -67,10 +67,6 @@ public class CallbackResponseTransformer {
     private final AssembleLetterTransformer assembleLetterTransformer;
     private final ExecutorsApplyingNotificationService executorsApplyingNotificationService;
 
-    static final String PAYMENT_METHOD_VALUE_FEE_ACCOUNT = "fee account";
-    static final String PAYMENT_REFERENCE_FEE_PREFIX = "Fee account PBA-";
-    static final String PAYMENT_REFERENCE_CHEQUE = "Cheque (payable to ‘HM Courts & Tribunals Service’)";
-
     private static final DocumentType[] LEGAL_STATEMENTS = {LEGAL_STATEMENT_PROBATE, LEGAL_STATEMENT_INTESTACY,
         LEGAL_STATEMENT_ADMON};
     private static final ApplicationType DEFAULT_APPLICATION_TYPE = SOLICITOR;
@@ -107,7 +103,7 @@ public class CallbackResponseTransformer {
 
         if (documentTransformer.hasDocumentWithType(documents, CAVEAT_STOPPED) && letterId != null) {
             CollectionMember<BulkPrint> bulkPrint = buildBulkPrint(letterId, CAVEAT_STOPPED.getTemplateName());
-            caseData.getBulkPrintId().add(bulkPrint);
+            appendToBulkPrintCollection(bulkPrint, caseData);
 
             responseCaseDataBuilder
                     .bulkPrintId(caseData.getBulkPrintId())
@@ -424,7 +420,6 @@ public class CallbackResponseTransformer {
 
                 .solsPaymentMethods(caseData.getSolsPaymentMethods())
                 .solsFeeAccountNumber(caseData.getSolsFeeAccountNumber())
-                .paymentReferenceNumber(getPaymentReferenceNumber(caseData))
 
                 .extraCopiesOfGrant(transformToString(caseData.getExtraCopiesOfGrant()))
                 .outsideUKGrantCopies(transformToString(caseData.getOutsideUKGrantCopies()))
@@ -709,11 +704,13 @@ public class CallbackResponseTransformer {
         if (isSolsEmailSet(caseData)) {
             builder
                     .boEmailDocsReceivedNotification(ANSWER_YES)
-                    .boEmailRequestInfoNotification(ANSWER_YES);
+                    .boEmailRequestInfoNotification(ANSWER_YES)
+                    .boEmailGrantIssuedNotification(ANSWER_YES);
         } else {
             builder
                     .boEmailDocsReceivedNotification(ANSWER_NO)
-                    .boEmailRequestInfoNotification(ANSWER_NO);
+                    .boEmailRequestInfoNotification(ANSWER_NO)
+                    .boEmailGrantIssuedNotification(ANSWER_NO);
         }
 
         if (!isCodicil(caseData)) {
@@ -804,11 +801,13 @@ public class CallbackResponseTransformer {
         if (isSolsEmailSet(caseData)) {
             builder
                     .boEmailDocsReceivedNotification(ANSWER_YES)
-                    .boEmailRequestInfoNotification(ANSWER_YES);
+                    .boEmailRequestInfoNotification(ANSWER_YES)
+                    .boEmailGrantIssuedNotification(ANSWER_YES);
         } else {
             builder
                     .boEmailDocsReceivedNotification(ANSWER_NO)
-                    .boEmailRequestInfoNotification(ANSWER_NO);
+                    .boEmailRequestInfoNotification(ANSWER_NO)
+                    .boEmailGrantIssuedNotification(ANSWER_NO);
         }
 
         if (!isCodicil(caseData)) {
@@ -935,19 +934,6 @@ public class CallbackResponseTransformer {
         } else {
             return caseData.getPrimaryApplicantHasAlias();
         }
-    }
-
-    private String getPaymentReferenceNumber(CaseData caseData) {
-        if (ApplicationType.PERSONAL.equals(caseData.getApplicationType())) {
-            return caseData.getPaymentReferenceNumber();
-        } else {
-            if (PAYMENT_METHOD_VALUE_FEE_ACCOUNT.equals(caseData.getSolsPaymentMethods())) {
-                return PAYMENT_REFERENCE_FEE_PREFIX + caseData.getSolsFeeAccountNumber();
-            } else {
-                return PAYMENT_REFERENCE_CHEQUE;
-            }
-        }
-
     }
 
     private String transformMoneyGBPToString(BigDecimal bdValue) {

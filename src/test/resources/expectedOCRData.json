@@ -6,7 +6,7 @@
       "description": "Deceased surname"
     },
     {
-      "name": "deceasedAddress_AddressLine1",
+      "name": "deceasedAddressLine1",
       "value": "123 Alphabet Street",
       "description": "Deceased address"
     }
