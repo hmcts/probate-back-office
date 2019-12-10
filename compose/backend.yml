@@ -178,13 +178,13 @@ services:
       - fr-am
       - shared-db
 
-  smtp-server:
-    container_name: smtp-server
-    image: mailhog/mailhog
-    restart: always
-    ports:
-      - 1025:1025
-      - 8025:8025
+  #smtp-server:
+   # container_name: smtp-server
+    #image: mailhog/mailhog
+    #restart: always
+    #ports:
+     # - 1025:1025
+      #- 8025:8025
 
   ccd-shared-database:
     build: ../docker/ccd-database

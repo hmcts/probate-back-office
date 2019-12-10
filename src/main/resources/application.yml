@@ -79,7 +79,18 @@ docmosis:
       templateName: FL-PRB-SOT-ENG-00090.doc
     assembledLetter:
       templateName: FL-PRB-GNO-ENG-00133.docx
-
+    welshDigitalGrant:
+      templateName: FL-PRB-GRP-WEL-00226.doc
+    welshIntestacyGrant:
+      templateName: FL-PRB-GRP-WEL-00226.doc
+    welshaAmonWillGrant:
+      templateName: FL-PRB-GRP-WEL-00226.doc
+    welshDigitalGrantDraft:
+      templateName: FL-PRB-GRP-WEL-00226.doc
+    welshIntestacyGrantDraft:
+      templateName: FL-PRB-GRP-WEL-00226.doc
+    welshaAmonWillGrantDraft:
+      templateName: FL-PRB-GRP-WEL-00226.doc
 fee.api:
   url: http://localhost:4411
   api: /fees-register/fees/lookup

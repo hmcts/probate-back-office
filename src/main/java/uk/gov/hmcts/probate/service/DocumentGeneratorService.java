@@ -14,22 +14,13 @@ import uk.gov.hmcts.probate.service.docmosis.GenericMapperService;
 import uk.gov.hmcts.probate.service.docmosis.PreviewLetterService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 
 import static uk.gov.hmcts.probate.model.Constants.NO;
-import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_DRAFT;
-import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_REISSUE;
-import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_REISSUE_DRAFT;
-import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_DRAFT;
-import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_REISSUE;
-import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_REISSUE_DRAFT;
-import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_DRAFT;
-import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_REISSUE;
-import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_REISSUE_DRAFT;
-import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_ADMON;
-import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_INTESTACY;
-import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE;
+import static uk.gov.hmcts.probate.model.DocumentType.*;
 
 @Slf4j
 @Service
@@ -55,7 +46,15 @@ public class DocumentGeneratorService {
     private final GenericMapperService genericMapperService;
     private final PreviewLetterService previewLetterService;
 
+    public Document generateGrant(CallbackRequest callbackRequest, String version) {
+        return getDocument(callbackRequest, version);
+    }
+
     public Document generateGrantReissue(CallbackRequest callbackRequest, String version) {
+        return getDocument(callbackRequest, version);
+    }
+
+    private Document getDocument(CallbackRequest callbackRequest, String version) {
         Map<String, Object> images;
 
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
@@ -179,12 +178,11 @@ public class DocumentGeneratorService {
         return statementOfTruth;
     }
 
-
     private void expireDrafts(CallbackRequest callbackRequest) {
         log.info("Expiring drafts");
         DocumentType[] documentTypes = {DIGITAL_GRANT_DRAFT, INTESTACY_GRANT_DRAFT, ADMON_WILL_GRANT_DRAFT,
-                                        DIGITAL_GRANT_REISSUE_DRAFT, INTESTACY_GRANT_REISSUE_DRAFT,
-                                        ADMON_WILL_GRANT_REISSUE_DRAFT};
+                DIGITAL_GRANT_REISSUE_DRAFT, INTESTACY_GRANT_REISSUE_DRAFT,
+                ADMON_WILL_GRANT_REISSUE_DRAFT, WELSH_DIGITAL_GRANT_DRAFT, WELSH_AMON_WILL_GRANT_DRAFT, WELSH_INTESTACY_GRANT_DRAFT};
         for (DocumentType documentType : documentTypes) {
             documentService.expire(callbackRequest, documentType);
         }
@@ -193,33 +191,68 @@ public class DocumentGeneratorService {
     private Document generateAppropriateDocument(CaseDetails caseDetails, Map<String, Object> placeholders,
                                                  String version) {
         Document document;
+        DocumentType template = null;
+
+        if (caseDetails.getData().isLanguagePreferenceWelsh()) {
+            document = generateWelshAppropriateDocument(caseDetails, placeholders, version);
+        } else {
+            switch (caseDetails.getData().getCaseType()) {
+                case INTESTACY:
+                    template = version.equals(FINAL) ? INTESTACY_GRANT_REISSUE : INTESTACY_GRANT_REISSUE_DRAFT;
+                    document = pdfManagementService.generateDocmosisDocumentAndUpload(placeholders, template);
+                    log.info("Generated and Uploaded Intestacy grant {} document with template {} for the case id {}",
+                            version, template.getTemplateName(), caseDetails.getId().toString());
+                    break;
+                case ADMON_WILL:
+                    template = version.equals(FINAL) ? ADMON_WILL_GRANT_REISSUE : ADMON_WILL_GRANT_REISSUE_DRAFT;
+                    document = pdfManagementService.generateDocmosisDocumentAndUpload(placeholders, template);
+                    log.info("Generated and Uploaded Admon Will grant {} document with template {} for the case id {}",
+                            version, template.getTemplateName(), caseDetails.getId().toString());
+                    break;
+                case EDGE_CASE:
+                    document = Document.builder().documentType(DocumentType.EDGE_CASE).build();
+                    break;
+                case GRANT_OF_PROBATE:
+                default:
+                    template = version.equals(FINAL) ? DIGITAL_GRANT_REISSUE : DIGITAL_GRANT_REISSUE_DRAFT;
+                    document = pdfManagementService.generateDocmosisDocumentAndUpload(placeholders, template);
+                    log.info("Generated and Uploaded Grant of Probate {} document with template {} for the case id {}",
+                            version, template.getTemplateName(), caseDetails.getId().toString());
+                    break;
+            }
+        }
+
+        return document;
+    }
+
+    private Document generateWelshAppropriateDocument(CaseDetails caseDetails, Map<String, Object> placeholders,
+                                                      String version) {
+        Document document;
         DocumentType template;
         switch (caseDetails.getData().getCaseType()) {
             case INTESTACY:
-                template = version.equals(FINAL) ? INTESTACY_GRANT_REISSUE : INTESTACY_GRANT_REISSUE_DRAFT;
+                template = version.equals(FINAL) ? WELSH_INTESTACY_GRANT : WELSH_INTESTACY_GRANT_DRAFT;
                 document = pdfManagementService.generateDocmosisDocumentAndUpload(placeholders, template);
-                log.info("Generated and Uploaded Intestacy grant {} document with template {} for the case id {}",
+                log.info("Generated and Uploaded Welsh Intestacy grant {} document with template {} for the case id {}",
                         version, template.getTemplateName(), caseDetails.getId().toString());
                 break;
             case ADMON_WILL:
-                template = version.equals(FINAL) ? ADMON_WILL_GRANT_REISSUE : ADMON_WILL_GRANT_REISSUE_DRAFT;
+                template = version.equals(FINAL) ? WELSH_AMON_WILL_GRANT : WELSH_AMON_WILL_GRANT_DRAFT;
                 document = pdfManagementService.generateDocmosisDocumentAndUpload(placeholders, template);
-                log.info("Generated and Uploaded Admon Will grant {} document with template {} for the case id {}",
+                log.info("Generated and Uploaded Welsh Admon Will grant {} document with template {} for the case id {}",
                         version, template.getTemplateName(), caseDetails.getId().toString());
-                break;
-            case EDGE_CASE:
-                document = Document.builder().documentType(DocumentType.EDGE_CASE).build();
                 break;
             case GRANT_OF_PROBATE:
             default:
-                template = version.equals(FINAL) ? DIGITAL_GRANT_REISSUE : DIGITAL_GRANT_REISSUE_DRAFT;
+                template = version.equals(FINAL) ? WELSH_DIGITAL_GRANT : WELSH_DIGITAL_GRANT_DRAFT;
                 document = pdfManagementService.generateDocmosisDocumentAndUpload(placeholders, template);
-                log.info("Generated and Uploaded Grant of Probate {} document with template {} for the case id {}",
+                log.info("Generated and Uploaded Welsh Grant of Probate {} document with template {} for the case id {}",
                         version, template.getTemplateName(), caseDetails.getId().toString());
                 break;
         }
 
         return document;
     }
+
 
 }

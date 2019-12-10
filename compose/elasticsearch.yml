@@ -23,7 +23,7 @@ services:
       - compose_default
 
   ccd-logstash:
-    image: "ccd-logstash:probate"
+    image: hmcts/ccd-logstash:latest
     container_name: ccd-logstash
     depends_on:
           - "ccd-elasticsearch"

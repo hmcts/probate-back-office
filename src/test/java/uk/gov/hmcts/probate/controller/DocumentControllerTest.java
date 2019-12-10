@@ -14,6 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -51,17 +52,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT;
-import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_DRAFT;
-import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
-import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_DRAFT;
-import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_REISSUE;
-import static uk.gov.hmcts.probate.model.DocumentType.EDGE_CASE;
-import static uk.gov.hmcts.probate.model.DocumentType.GRANT_COVER;
-import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT;
-import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_DRAFT;
-import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
-import static uk.gov.hmcts.probate.model.DocumentType.WILL_LODGEMENT_DEPOSIT_RECEIPT;
+import static uk.gov.hmcts.probate.model.DocumentType.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -102,6 +93,8 @@ public class DocumentControllerTest {
     private ResponseCaseData.ResponseCaseDataBuilder responseCaseDataBuilder;
 
     private static final String LETTER_UUID = "c387262a-c8a6-44eb-9aea-a740460f9302";
+    private static final String DRAFT = "preview";
+    private static final String FINAL = "final";
 
     @Before
     public void setUp() throws NotificationClientException {
@@ -117,6 +110,15 @@ public class DocumentControllerTest {
                 .documentType(DocumentType.ASSEMBLED_LETTER)
                 .documentDateAdded(LocalDate.now())
                 .documentFileName("test")
+                .documentGeneratedBy("test")
+                .documentLink(DocumentLink.builder().build())
+                .build();
+
+
+        final Document welshDocumentDraft = Document.builder()
+                .documentType(DocumentType.WELSH_DIGITAL_GRANT_DRAFT)
+                .documentDateAdded(LocalDate.now())
+                .documentFileName("DRAFT")
                 .documentGeneratedBy("test")
                 .documentLink(DocumentLink.builder().build())
                 .build();
@@ -166,7 +168,9 @@ public class DocumentControllerTest {
         when(notificationService.generateGrantReissue(any(CallbackRequest.class)))
                 .thenReturn(Document.builder().documentType(SENT_EMAIL).build());
         doNothing().when(documentService).expire(any(CallbackRequest.class), any(DocumentType.class));
-
+        when(documentGeneratorService.generateGrant(any(CallbackRequest.class), eq(FINAL)))
+               .thenReturn(Document.builder().documentType(WELSH_DIGITAL_GRANT).build());
+        when(documentGeneratorService.generateGrant(any(CallbackRequest.class), eq(DRAFT))).thenReturn(welshDocumentDraft);
     }
 
     @Test
@@ -242,6 +246,35 @@ public class DocumentControllerTest {
                 .andReturn();
 
         verify(documentService).expire(any(CallbackRequest.class), eq(DIGITAL_GRANT_DRAFT));
+    }
+    @Test
+    public void generateWelshDigitalGrant() throws Exception {
+
+        String payload = testUtils.getStringFromFile("welshGrantOfProbatPayload.json");
+
+        MvcResult result = mockMvc.perform(post("/document/generate-grant")
+                .content(payload)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.probateDocumentsGenerated[0].value.DocumentType", is(WELSH_DIGITAL_GRANT.getTemplateName())))
+                .andReturn();
+
+        verify(documentGeneratorService).generateGrant(any(CallbackRequest.class), eq(FINAL));
+    }
+
+    @Test
+    public void generateWelshDigitalGrantDraft() throws Exception {
+
+        String payload = testUtils.getStringFromFile("welshGrantOfProbatPayloadDraft.json");
+
+         MvcResult result = mockMvc.perform(post("/document/generate-grant-draft")
+            .content(payload)
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.data.probateDocumentsGenerated[0].value.DocumentType", is(WELSH_DIGITAL_GRANT_DRAFT.getTemplateName())))
+            .andReturn();
+
+        verify(documentGeneratorService).generateGrant(any(CallbackRequest.class), eq(DRAFT));
     }
 
     @Test

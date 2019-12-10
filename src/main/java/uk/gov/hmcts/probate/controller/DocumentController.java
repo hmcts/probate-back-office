@@ -137,38 +137,41 @@ public class DocumentController {
         DocumentType template;
         registryDetailsService.getRegistryDetails(caseDetails);
 
-        switch (caseData.getCaseType()) {
-            case INTESTACY_NAME:
-                template = INTESTACY_GRANT_DRAFT;
-                document = pdfManagementService.generateAndUpload(callbackRequest, template);
-                log.info("Generated and Uploaded Intestacy grant preview document with template {} for the case id {}",
-                        template.getTemplateName(), callbackRequest.getCaseDetails().getId().toString());
-                break;
-            case ADMON_WILL_NAME:
-                template = ADMON_WILL_GRANT_DRAFT;
-                document = pdfManagementService.generateAndUpload(callbackRequest, template);
-                log.info("Generated and Uploaded Admon Will grant preview document with template {} for the case id {}",
-                        template.getTemplateName(), callbackRequest.getCaseDetails().getId().toString());
-                break;
-            case EDGE_CASE_NAME:
-                document = Document.builder().documentType(DocumentType.EDGE_CASE).build();
-                break;
-            case GRANT_OF_PROBATE_NAME:
-            default:
-                template = DIGITAL_GRANT_DRAFT;
-                document = pdfManagementService.generateAndUpload(callbackRequest, template);
-                log.info("Generated and Uploaded Grant of Probate preview document with template {} for the case id {}",
-                        template.getTemplateName(), callbackRequest.getCaseDetails().getId().toString());
-                break;
-        }
+        if(caseDetails.getData().isLanguagePreferenceWelsh()){
+            document = documentGeneratorService.generateGrant(callbackRequest, DRAFT);
+        } else {
+          switch (caseData.getCaseType()) {
+                case INTESTACY_NAME:
+                    template = INTESTACY_GRANT_DRAFT;
+                    document = pdfManagementService.generateAndUpload(callbackRequest, template);
+                    log.info("Generated and Uploaded Intestacy grant preview document with template {} for the case id {}",
+                            template.getTemplateName(), callbackRequest.getCaseDetails().getId().toString());
+                    break;
+                case ADMON_WILL_NAME:
+                    template = ADMON_WILL_GRANT_DRAFT;
+                    document = pdfManagementService.generateAndUpload(callbackRequest, template);
+                    log.info("Generated and Uploaded Admon Will grant preview document with template {} for the case id {}",
+                            template.getTemplateName(), callbackRequest.getCaseDetails().getId().toString());
+                    break;
+                case EDGE_CASE_NAME:
+                    document = Document.builder().documentType(DocumentType.EDGE_CASE).build();
+                    break;
+                case GRANT_OF_PROBATE_NAME:
+                default:
+                    template = DIGITAL_GRANT_DRAFT;
+                    document = pdfManagementService.generateAndUpload(callbackRequest, template);
+                    log.info("Generated and Uploaded Grant of Probate preview document with template {} for the case id {}",
+                            template.getTemplateName(), callbackRequest.getCaseDetails().getId().toString());
+                    break;
+            }
 
-        DocumentType[] documentTypes = {DIGITAL_GRANT_DRAFT, INTESTACY_GRANT_DRAFT, ADMON_WILL_GRANT_DRAFT,
-            DIGITAL_GRANT_REISSUE_DRAFT, INTESTACY_GRANT_REISSUE_DRAFT,
-            ADMON_WILL_GRANT_REISSUE_DRAFT, DIGITAL_GRANT_REISSUE};
-        for (DocumentType documentType : documentTypes) {
-            documentService.expire(callbackRequest, documentType);
+            DocumentType[] documentTypes = {DIGITAL_GRANT_DRAFT, INTESTACY_GRANT_DRAFT, ADMON_WILL_GRANT_DRAFT,
+                    DIGITAL_GRANT_REISSUE_DRAFT, INTESTACY_GRANT_REISSUE_DRAFT,
+                    ADMON_WILL_GRANT_REISSUE_DRAFT, DIGITAL_GRANT_REISSUE};
+            for (DocumentType documentType : documentTypes) {
+                documentService.expire(callbackRequest, documentType);
+            }
         }
-
         return ResponseEntity.ok(callbackResponseTransformer.addDocuments(callbackRequest,
                 Arrays.asList(document), null, null));
     }
@@ -185,32 +188,41 @@ public class DocumentController {
         Document digitalGrantDocument;
         registryDetailsService.getRegistryDetails(caseDetails);
         CallbackResponse callbackResponse = CallbackResponse.builder().errors(new ArrayList<>()).build();
+        if(caseDetails.getData().isLanguagePreferenceWelsh()){
+            digitalGrantDocument = documentGeneratorService.generateGrant(callbackRequest, FINAL);
+        } else {
+            switch (caseData.getCaseType()) {
+                case EDGE_CASE_NAME:
+                    digitalGrantDocument = Document.builder().documentType(DocumentType.EDGE_CASE).build();
+                    break;
+                case INTESTACY_NAME:
+                    template = INTESTACY_GRANT;
+                    digitalGrantDocument = pdfManagementService.generateAndUpload(callbackRequest, template);
+                    log.info("Generated and Uploaded Intestacy grant document with template {} for the case id {}",
+                            template.getTemplateName(), callbackRequest.getCaseDetails().getId().toString());
+                    break;
+                case ADMON_WILL_NAME:
+                    template = ADMON_WILL_GRANT;
+                    digitalGrantDocument = pdfManagementService.generateAndUpload(callbackRequest, template);
+                    log.info("Generated and Uploaded Admon Will grant document with template {} for the case id {}",
+                            template.getTemplateName(), callbackRequest.getCaseDetails().getId().toString());
+                    break;
+                case GRANT_OF_PROBATE_NAME:
+                default:
+                    template = DIGITAL_GRANT;
+                    digitalGrantDocument = pdfManagementService.generateAndUpload(callbackRequest, template);
+                    log.info("Generated and Uploaded Grant of Probate document with template {} for the case id {}",
+                            template.getTemplateName(), callbackRequest.getCaseDetails().getId().toString());
+                    break;
+            }
 
-        switch (caseData.getCaseType()) {
-            case EDGE_CASE_NAME:
-                digitalGrantDocument = Document.builder().documentType(DocumentType.EDGE_CASE).build();
-                break;
-            case INTESTACY_NAME:
-                template = INTESTACY_GRANT;
-                digitalGrantDocument = pdfManagementService.generateAndUpload(callbackRequest, template);
-                log.info("Generated and Uploaded Intestacy grant document with template {} for the case id {}",
-                        template.getTemplateName(), callbackRequest.getCaseDetails().getId().toString());
-                break;
-            case ADMON_WILL_NAME:
-                template = ADMON_WILL_GRANT;
-                digitalGrantDocument = pdfManagementService.generateAndUpload(callbackRequest, template);
-                log.info("Generated and Uploaded Admon Will grant document with template {} for the case id {}",
-                        template.getTemplateName(), callbackRequest.getCaseDetails().getId().toString());
-                break;
-            case GRANT_OF_PROBATE_NAME:
-            default:
-                template = DIGITAL_GRANT;
-                digitalGrantDocument = pdfManagementService.generateAndUpload(callbackRequest, template);
-                log.info("Generated and Uploaded Grant of Probate document with template {} for the case id {}",
-                        template.getTemplateName(), callbackRequest.getCaseDetails().getId().toString());
-                break;
+            DocumentType[] documentTypes = {DIGITAL_GRANT_DRAFT, INTESTACY_GRANT_DRAFT, ADMON_WILL_GRANT_DRAFT,
+                    DIGITAL_GRANT_REISSUE_DRAFT, INTESTACY_GRANT_REISSUE_DRAFT,
+                    ADMON_WILL_GRANT_REISSUE_DRAFT};
+            for (DocumentType documentType : documentTypes) {
+                documentService.expire(callbackRequest, documentType);
+            }
         }
-
         Document coverSheet = pdfManagementService.generateAndUpload(callbackRequest, DocumentType.GRANT_COVER);
         log.info("Generated and Uploaded cover document with template {} for the case id {}",
                 DocumentType.GRANT_COVER.getTemplateName(), callbackRequest.getCaseDetails().getId().toString());
@@ -233,13 +245,6 @@ public class DocumentController {
         List<Document> documents = new ArrayList<>();
         documents.add(digitalGrantDocument);
         documents.add(coverSheet);
-
-        DocumentType[] documentTypes = {DIGITAL_GRANT_DRAFT, INTESTACY_GRANT_DRAFT, ADMON_WILL_GRANT_DRAFT,
-            DIGITAL_GRANT_REISSUE_DRAFT, INTESTACY_GRANT_REISSUE_DRAFT,
-            ADMON_WILL_GRANT_REISSUE_DRAFT};
-        for (DocumentType documentType : documentTypes) {
-            documentService.expire(callbackRequest, documentType);
-        }
 
         if (caseData.isGrantIssuedEmailNotificationRequested()) {
             callbackResponse = eventValidationService.validateEmailRequest(callbackRequest, emailAddressNotificationValidationRules);

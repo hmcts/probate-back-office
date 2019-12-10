@@ -8,6 +8,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import uk.gov.hmcts.probate.config.properties.registries.Registry;
 import uk.gov.hmcts.probate.model.ApplicationType;
+import uk.gov.hmcts.probate.model.Constants;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ExecutorsApplyingNotification;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
@@ -43,6 +44,13 @@ public class DocumentGeneratorServiceTest {
     private static final String DIGITAL_GRANT_REISSUE_FILE_NAME = "digitalGrantReissue.pdf";
     private static final String INTESTACY_REISSUE_FILE_NAME = "intestacyGrantReissue.pdf";
     private static final String ADMON_WILL_REISSUE_FILE_NAME = "admonWillGrantReissue.pdf";
+    private static final String ADMON_WILL_FINAL_FILE_NAME = "welshAdmonWillGrantFinal.pdf";
+    private static final String ADMON_WILL_DRAFT_FILE_NAME = "welshAdmonWillGrantDraft.pdf";
+    private static final String DIGITAL_GRANT_DRAFT_FILE_NAME = "welshDigitalGrantDraft.pdf";
+    private static final String DIGITAL_GRANT_FINAL_FILE_NAME = "welshDigitalGrantFinal.pdf";
+    private static final String WELSH_INTESTACY_GRANT_DRAFT_FILE_NAME = "welshIntestacyGrantDraft.pdf";
+    private static final String WELSH_INTESTACY_GRANT_FINAL_FILE_NAME = "welshIntestacyGrantFinal.pdf";
+
     private static final String DRAFT = "preview";
     private static final String FINAL = "final";
     private CallbackRequest callbackRequest;
@@ -230,7 +238,98 @@ public class DocumentGeneratorServiceTest {
         assertEquals(ADMON_WILL_REISSUE_FILE_NAME,
                 documentGeneratorService.generateGrantReissue(callbackRequest, FINAL).getDocumentFileName());
     }
+//******************/
+    @Test
+    public void testGenerateProducesWelshAdmonWillVersionFinal() {
+        CaseDetails caseDetails =
+                new CaseDetails(CaseData.builder().caseType("admonWill").registryLocation("Bristol").
+                        languagePreferenceWelsh(Constants.YES).build(),
+                        LAST_MODIFIED, CASE_ID);
 
+        callbackRequest = new CallbackRequest(caseDetails);
+        when(pdfManagementService.generateDocmosisDocumentAndUpload(expectedMap,
+                DocumentType.WELSH_AMON_WILL_GRANT)).thenReturn(Document.builder()
+                .documentFileName(ADMON_WILL_FINAL_FILE_NAME).build());
+        assertEquals(ADMON_WILL_FINAL_FILE_NAME,
+                documentGeneratorService.generateGrant(callbackRequest, FINAL).getDocumentFileName());
+    }
+
+    @Test
+    public void testGenerateProducesWelshAdmonWillVersionDraft() {
+        CaseDetails caseDetails =
+                new CaseDetails(CaseData.builder().caseType("admonWill").registryLocation("Bristol").
+                        languagePreferenceWelsh(Constants.YES).build(),
+                        LAST_MODIFIED, CASE_ID);
+
+        callbackRequest = new CallbackRequest(caseDetails);
+        when(pdfManagementService.generateDocmosisDocumentAndUpload(expectedMap,
+                DocumentType.WELSH_AMON_WILL_GRANT_DRAFT)).thenReturn(Document.builder()
+                .documentFileName(ADMON_WILL_DRAFT_FILE_NAME).build());
+        assertEquals(ADMON_WILL_DRAFT_FILE_NAME,
+                documentGeneratorService.generateGrant(callbackRequest, DRAFT).getDocumentFileName());
+    }
+
+    @Test
+    public void testGenerateProducesWelshDigitalGrantFinal() {
+        CaseDetails caseDetails =
+                new CaseDetails(CaseData.builder().caseType("gop").registryLocation("Bristol").
+                        languagePreferenceWelsh(Constants.YES).build(),
+                        LAST_MODIFIED, CASE_ID);
+
+        callbackRequest = new CallbackRequest(caseDetails);
+        when(pdfManagementService.generateDocmosisDocumentAndUpload(expectedMap,
+                DocumentType.WELSH_DIGITAL_GRANT)).thenReturn(Document.builder()
+                .documentFileName(DIGITAL_GRANT_FINAL_FILE_NAME).build());
+        assertEquals(DIGITAL_GRANT_FINAL_FILE_NAME,
+                documentGeneratorService.generateGrant(callbackRequest, FINAL).getDocumentFileName());
+    }
+
+    @Test
+    public void testGenerateProducesWelshDigitalGrantDraft() {
+        CaseDetails caseDetails =
+                new CaseDetails(CaseData.builder().caseType("gop").registryLocation("Bristol").
+                        languagePreferenceWelsh(Constants.YES).build(),
+                        LAST_MODIFIED, CASE_ID);
+
+        callbackRequest = new CallbackRequest(caseDetails);
+        when(pdfManagementService.generateDocmosisDocumentAndUpload(expectedMap,
+                DocumentType.WELSH_DIGITAL_GRANT_DRAFT)).thenReturn(Document.builder()
+                .documentFileName(DIGITAL_GRANT_DRAFT_FILE_NAME).build());
+        assertEquals(DIGITAL_GRANT_DRAFT_FILE_NAME,
+                documentGeneratorService.generateGrant(callbackRequest, DRAFT).getDocumentFileName());
+    }
+
+    @Test
+    public void testGenerateProducesWelshIntestacyGrantDraft() {
+        CaseDetails caseDetails =
+                new CaseDetails(CaseData.builder().caseType("intestacy").registryLocation("Bristol").
+                        languagePreferenceWelsh(Constants.YES).build(),
+                        LAST_MODIFIED, CASE_ID);
+
+        callbackRequest = new CallbackRequest(caseDetails);
+        when(pdfManagementService.generateDocmosisDocumentAndUpload(expectedMap,
+                DocumentType.WELSH_INTESTACY_GRANT_DRAFT)).thenReturn(Document.builder()
+                .documentFileName(WELSH_INTESTACY_GRANT_DRAFT_FILE_NAME).build());
+        assertEquals(WELSH_INTESTACY_GRANT_DRAFT_FILE_NAME,
+                documentGeneratorService.generateGrant(callbackRequest, DRAFT).getDocumentFileName());
+    }
+
+    @Test
+    public void testGenerateProducesWelshIntestacyGrantFinal() {
+        CaseDetails caseDetails =
+                new CaseDetails(CaseData.builder().caseType("intestacy").registryLocation("Bristol").
+                        languagePreferenceWelsh(Constants.YES).build(),
+                        LAST_MODIFIED, CASE_ID);
+
+        callbackRequest = new CallbackRequest(caseDetails);
+        when(pdfManagementService.generateDocmosisDocumentAndUpload(expectedMap,
+                DocumentType.WELSH_INTESTACY_GRANT)).thenReturn(Document.builder()
+                .documentFileName(WELSH_INTESTACY_GRANT_FINAL_FILE_NAME).build());
+        assertEquals(WELSH_INTESTACY_GRANT_FINAL_FILE_NAME,
+                documentGeneratorService.generateGrant(callbackRequest, FINAL).getDocumentFileName());
+    }
+
+/////////////////////////////////////////
     @Test
     public void testGenerateReissueProducesNewEdgeCaseDocumentForDraft() {
         CaseDetails caseDetails =

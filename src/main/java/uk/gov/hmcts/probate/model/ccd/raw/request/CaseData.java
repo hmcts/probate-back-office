@@ -626,6 +626,10 @@ public class CaseData {
         return getLanguagePreferenceWelsh() != null && YES.equals(getLanguagePreferenceWelsh()) ? LanguagePreference.WELSH : LanguagePreference.ENGLISH;
     }
 
+    public boolean isLanguagePreferenceWelsh() {
+        return YES.equals(getLanguagePreferenceWelsh());
+    }
+
     private String convertDate(LocalDate dateToConvert) {
         if (dateToConvert == null) {
             return null;
