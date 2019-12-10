@@ -39,6 +39,7 @@ public class CCDDataTransformer {
                 .solicitorReference(notNullWrapper(caseData.getSolsSolicitorAppReference()))
                 .caseSubmissionDate(getCaseSubmissionDate(callbackRequest.getCaseDetails().getLastModified()))
                 .solsWillType(callbackRequest.getCaseDetails().getData().getSolsWillType())
+                .solsSolicitorApplying(callbackRequest.getCaseDetails().getData().getSolsSolicitorApplying())
                 .solicitor(buildSolicitorDetails(caseData))
                 .deceased(buildDeceasedDetails(caseData))
                 .iht(buildInheritanceTaxDetails(caseData))

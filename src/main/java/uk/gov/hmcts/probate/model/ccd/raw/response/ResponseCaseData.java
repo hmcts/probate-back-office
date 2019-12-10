@@ -55,6 +55,7 @@ public class ResponseCaseData {
     private final String solsSOTJobTitle;
     private final String solsSolicitorAppReference;
     private final String ihtFormId;
+    private final String solsSolicitorApplying;
     private final String solsWillType;
     private final String solsApplicantRelationshipToDeceased;
     private final String solsSpouseOrCivilRenouncing;
