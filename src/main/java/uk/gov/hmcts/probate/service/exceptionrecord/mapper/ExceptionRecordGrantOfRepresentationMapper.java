@@ -165,31 +165,42 @@ public interface ExceptionRecordGrantOfRepresentationMapper {
     }
 
     @AfterMapping
+    default void clearIhtFormOrReferenceIfNotSelected(
+            @MappingTarget GrantOfRepresentationData caseData, ExceptionRecordOCRFields ocrField) {
+        if (caseData.getIhtFormCompletedOnline() != null && caseData.getIhtFormCompletedOnline()) {
+            caseData.setIhtFormId(null);
+        }
+        if (caseData.getIhtFormCompletedOnline() != null && !caseData.getIhtFormCompletedOnline()) {
+            caseData.setIhtReferenceNumber(null);
+        }
+    }
+
+    @AfterMapping
     @SuppressWarnings("Duplicates")
-    default void setDerivedFamilyIntestacyBooleans(
+    default void setDerivedFamilyBooleans(
             @MappingTarget GrantOfRepresentationData caseData, ExceptionRecordOCRFields ocrField, GrantType grantType) {
+        if (greaterThenZero(ocrField.getChildrenUnderEighteenSurvived())
+                || greaterThenZero(ocrField.getChildrenOverEighteenSurvived())) {
+            caseData.setChildrenSurvived(Boolean.TRUE);
+        } else {
+            caseData.setChildrenOverEighteenSurvivedText(null);
+            caseData.setChildrenUnderEighteenSurvivedText(null);
+        }
+        if (greaterThenZero(ocrField.getChildrenDiedUnderEighteen())
+                || greaterThenZero(ocrField.getChildrenDiedOverEighteen())) {
+            caseData.setChildrenDied(Boolean.TRUE);
+        } else {
+            caseData.setChildrenDiedOverEighteenText(null);
+            caseData.setChildrenDiedUnderEighteenText(null);
+        }
+        if (greaterThenZero(ocrField.getGrandChildrenSurvivedUnderEighteen())
+                || greaterThenZero(ocrField.getGrandChildrenSurvivedOverEighteen())) {
+            caseData.setGrandChildrenSurvived(Boolean.TRUE);
+        } else {
+            caseData.setGrandChildrenSurvivedOverEighteenText(null);
+            caseData.setGrandChildrenSurvivedUnderEighteenText(null);
+        }
         if (grantType.equals(GrantType.INTESTACY)) {
-            if (greaterThenZero(ocrField.getChildrenUnderEighteenSurvived())
-                    || greaterThenZero(ocrField.getChildrenOverEighteenSurvived())) {
-                caseData.setChildrenSurvived(Boolean.TRUE);
-            } else {
-                caseData.setChildrenOverEighteenSurvivedText(null);
-                caseData.setChildrenUnderEighteenSurvivedText(null);
-            }
-            if (greaterThenZero(ocrField.getChildrenDiedUnderEighteen())
-                    || greaterThenZero(ocrField.getChildrenDiedOverEighteen())) {
-                caseData.setChildrenDied(Boolean.TRUE);
-            } else {
-                caseData.setChildrenDiedOverEighteenText(null);
-                caseData.setChildrenDiedUnderEighteenText(null);
-            }
-            if (greaterThenZero(ocrField.getGrandChildrenSurvivedUnderEighteen())
-                    || greaterThenZero(ocrField.getGrandChildrenSurvivedOverEighteen())) {
-                caseData.setGrandChildrenSurvived(Boolean.TRUE);
-            } else {
-                caseData.setGrandChildrenSurvivedOverEighteenText(null);
-                caseData.setGrandChildrenSurvivedUnderEighteenText(null);
-            }
             if (greaterThenZero(ocrField.getParentsExistUnderEighteenSurvived())
                     || greaterThenZero(ocrField.getParentsExistOverEighteenSurvived())) {
                 caseData.setParentsExistSurvived(Boolean.TRUE);
