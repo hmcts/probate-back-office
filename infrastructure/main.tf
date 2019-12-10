@@ -154,7 +154,7 @@ module "probate-back-office" {
     PROBATE_POSTGRESQL_HOSTNAME =  "${data.azurerm_key_vault_secret.POSTGRES_HOST.value}"
     PROBATE_POSTGRESQL_PORT = "${data.azurerm_key_vault_secret.POSTGRES_PORT.value}"
 
-    AUTH_PROVIDER_SERVICE_CLIENT_BASEURL = "${var.auth_service_url}"
+    AUTH_S2S_URL = "${var.auth_service_url}"
     PDF_SERVICE_URL = "${var.pdf_service_api_url}"
     PRINTSERVICE_HOST = "${var.printservice_host}"
     PRINTSERVICE_INTERNAL_HOST = "${var.printservice_internal_host}"
