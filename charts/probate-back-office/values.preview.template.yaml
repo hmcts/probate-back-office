@@ -5,11 +5,11 @@ java:
   image: ${IMAGE_NAME}
   ingressHost: ${SERVICE_FQDN}
   environment:
-    probatemandb-POSTGRES-USER: "{{ .Values.postgresql.postgresqlUsername}}"
-    probatemandb-POSTGRES-PASS: "{{ .Values.postgresql.postgresqlPassword}}"
-    probatemandb-POSTGRES-HOST: "{{ .Release.Name }}-postgresql"
-    probatemandb-POSTGRES-DATABASE: "{{ .Values.postgresql.postgresqlDatabase}}"
-  
+    PROBATE_POSTGRESQL_USER: "{{ .Values.postgresql.postgresqlUsername}}"
+    PROBATE_POSTGRESQL_PASSWORD: "{{ .Values.postgresql.postgresqlPassword}}"
+    PROBATE_POSTGRESQL_HOSTNAME: "{{ .Release.Name }}-postgresql"
+    PROBATE_POSTGRESQL_DATABASE: "{{ .Values.postgresql.postgresqlDatabase}}"
+    PROBATE_POSTGRESQL_PORT: 5432
   postgresql:
     enabled: true
 

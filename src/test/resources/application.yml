@@ -13,7 +13,7 @@ ftp.client:
 authorised.services: probate_backend,ccd_data,ccd-datamgmt-api,ccd_ps,ccd
 auth.provider.service.client:
   key: AAAAAAAAAAAAAAAA
-  baseUrl: http://localhost:4502
+  baseUrl: ${AUTH_S2S_URL:http://localhost:4502}
   microservice: probate_backend
   tokenTimeToLiveInSeconds: 900
 
@@ -104,7 +104,7 @@ evidence.management.upload.file.url: /documents
 http.connect.timeout: 60000
 http.connect.request.timeout: 60000
 
-idam.service.host: ${PROVIDER_SERVICE_CLIENT_URL:http://localhost:4502}
+idam.service.host: ${AUTH_S2S_URL:http://localhost:4502}
 
 notifications:
   govNotifyApiKey: "dummy_key"
