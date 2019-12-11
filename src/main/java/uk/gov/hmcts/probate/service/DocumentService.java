@@ -69,7 +69,7 @@ public class DocumentService {
                         .collect(Collectors.toList()));
                 break;
             case WELSH_DIGITAL_GRANT_DRAFT:
-            case WELSH_AMON_WILL_GRANT_DRAFT:
+            case WELSH_ADMON_WILL_GRANT_DRAFT:
             case WELSH_INTESTACY_GRANT_DRAFT:
                 documentsToExpire.addAll(callbackRequest.getCaseDetails().getData()
                         .getProbateDocumentsGenerated().stream()

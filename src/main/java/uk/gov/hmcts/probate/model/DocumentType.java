@@ -107,11 +107,11 @@ public enum DocumentType {
     @JsonProperty("welshDigitalGrant")
     WELSH_DIGITAL_GRANT("welshDigitalGrant"),
 
-    @JsonProperty("welshaAmonWillGrantDraft")
-    WELSH_AMON_WILL_GRANT_DRAFT("welshAmonWillGrantDraft"),
+    @JsonProperty("welshaAdmonWillGrantDraft")
+    WELSH_ADMON_WILL_GRANT_DRAFT("welshAdmonWillGrantDraft"),
 
-    @JsonProperty("welshaAmonWillGrant")
-    WELSH_AMON_WILL_GRANT("welshAmonWillGrant"),
+    @JsonProperty("welshAdmonWillGrant")
+    WELSH_ADMON_WILL_GRANT("welshAdmonWillGrant"),
 
     @JsonProperty("welshIntestacyGrantDraft")
     WELSH_INTESTACY_GRANT_DRAFT("welshIntestacyGrantDraft"),

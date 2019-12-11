@@ -9,14 +9,18 @@ import org.mockito.MockitoAnnotations;
 import uk.gov.hmcts.probate.config.properties.registries.Registry;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.Constants;
+import uk.gov.hmcts.probate.model.DocumentCaseType;
+import uk.gov.hmcts.probate.model.DocumentStatus;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ExecutorsApplyingNotification;
+import uk.gov.hmcts.probate.model.LanguagePreference;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
+import uk.gov.hmcts.probate.service.docmosis.DocumentTemplateService;
 import uk.gov.hmcts.probate.service.docmosis.GenericMapperService;
 import uk.gov.hmcts.probate.service.docmosis.PreviewLetterService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
@@ -90,6 +94,9 @@ public class DocumentGeneratorServiceTest {
 
     @Mock
     private DocumentService documentService;
+
+    @Mock
+    private DocumentTemplateService documentTemplateService;
 
     @Before
     public void setup() {
@@ -175,6 +182,9 @@ public class DocumentGeneratorServiceTest {
         when(pdfManagementService.generateDocmosisDocumentAndUpload(expectedMap,
                 DocumentType.DIGITAL_GRANT_REISSUE_DRAFT))
                 .thenReturn(Document.builder().documentFileName(DIGITAL_GRANT_DRAFT_REISSUE_FILE_NAME).build());
+
+        when(documentTemplateService.getTemplateId(LanguagePreference.ENGLISH, DocumentStatus.PREVIEW, DocumentCaseType.GOP )).thenReturn(DocumentType.DIGITAL_GRANT_REISSUE_DRAFT);
+
         assertEquals(DIGITAL_GRANT_DRAFT_REISSUE_FILE_NAME,
                 documentGeneratorService.generateGrantReissue(callbackRequest, DRAFT).getDocumentFileName());
     }
@@ -188,6 +198,9 @@ public class DocumentGeneratorServiceTest {
         when(pdfManagementService.generateDocmosisDocumentAndUpload(expectedMap,
                 DocumentType.INTESTACY_GRANT_REISSUE_DRAFT))
                 .thenReturn(Document.builder().documentFileName(INTESTACY_DRAFT_REISSUE_FILE_NAME).build());
+
+        when(documentTemplateService.getTemplateId(LanguagePreference.ENGLISH, DocumentStatus.PREVIEW, DocumentCaseType.INTESTACY )).thenReturn(DocumentType.INTESTACY_GRANT_REISSUE_DRAFT);
+
         assertEquals(INTESTACY_DRAFT_REISSUE_FILE_NAME,
                 documentGeneratorService.generateGrantReissue(callbackRequest, DRAFT).getDocumentFileName());
     }
@@ -201,6 +214,9 @@ public class DocumentGeneratorServiceTest {
         when(pdfManagementService.generateDocmosisDocumentAndUpload(expectedMap,
                 DocumentType.ADMON_WILL_GRANT_REISSUE_DRAFT)).thenReturn(Document.builder()
                 .documentFileName(ADMON_WILL_DRAFT_REISSUE_FILE_NAME).build());
+
+        when(documentTemplateService.getTemplateId(LanguagePreference.ENGLISH, DocumentStatus.PREVIEW, DocumentCaseType.ADMON_WILL )).thenReturn(DocumentType.ADMON_WILL_GRANT_REISSUE_DRAFT);
+
         assertEquals(ADMON_WILL_DRAFT_REISSUE_FILE_NAME,
                 documentGeneratorService.generateGrantReissue(callbackRequest, DRAFT).getDocumentFileName());
     }
@@ -209,6 +225,9 @@ public class DocumentGeneratorServiceTest {
     public void testGenerateReissueProducesFinalVersionForGOP() {
         when(pdfManagementService.generateDocmosisDocumentAndUpload(expectedMap, DocumentType.DIGITAL_GRANT_REISSUE))
                 .thenReturn(Document.builder().documentFileName(DIGITAL_GRANT_REISSUE_FILE_NAME).build());
+
+        when(documentTemplateService.getTemplateId(LanguagePreference.ENGLISH, DocumentStatus.FINAL, DocumentCaseType.GOP )).thenReturn(DocumentType.DIGITAL_GRANT_REISSUE);
+
         assertEquals(DIGITAL_GRANT_REISSUE_FILE_NAME, documentGeneratorService.generateGrantReissue(callbackRequest,
                 FINAL).getDocumentFileName());
     }
@@ -222,6 +241,9 @@ public class DocumentGeneratorServiceTest {
         when(pdfManagementService.generateDocmosisDocumentAndUpload(expectedMap,
                 DocumentType.INTESTACY_GRANT_REISSUE))
                 .thenReturn(Document.builder().documentFileName(INTESTACY_REISSUE_FILE_NAME).build());
+
+        when(documentTemplateService.getTemplateId(LanguagePreference.ENGLISH, DocumentStatus.FINAL, DocumentCaseType.INTESTACY )).thenReturn(DocumentType.INTESTACY_GRANT_REISSUE);
+
         assertEquals(INTESTACY_REISSUE_FILE_NAME,
                 documentGeneratorService.generateGrantReissue(callbackRequest, FINAL).getDocumentFileName());
     }
@@ -235,10 +257,13 @@ public class DocumentGeneratorServiceTest {
         when(pdfManagementService.generateDocmosisDocumentAndUpload(expectedMap,
                 DocumentType.ADMON_WILL_GRANT_REISSUE)).thenReturn(Document.builder()
                 .documentFileName(ADMON_WILL_REISSUE_FILE_NAME).build());
+
+        when(documentTemplateService.getTemplateId(LanguagePreference.ENGLISH, DocumentStatus.FINAL, DocumentCaseType.ADMON_WILL )).thenReturn(DocumentType.ADMON_WILL_GRANT_REISSUE);
+
         assertEquals(ADMON_WILL_REISSUE_FILE_NAME,
                 documentGeneratorService.generateGrantReissue(callbackRequest, FINAL).getDocumentFileName());
     }
-//******************/
+
     @Test
     public void testGenerateProducesWelshAdmonWillVersionFinal() {
         CaseDetails caseDetails =
@@ -248,8 +273,12 @@ public class DocumentGeneratorServiceTest {
 
         callbackRequest = new CallbackRequest(caseDetails);
         when(pdfManagementService.generateDocmosisDocumentAndUpload(expectedMap,
-                DocumentType.WELSH_AMON_WILL_GRANT)).thenReturn(Document.builder()
+                DocumentType.WELSH_ADMON_WILL_GRANT)).thenReturn(Document.builder()
                 .documentFileName(ADMON_WILL_FINAL_FILE_NAME).build());
+
+        when(documentTemplateService.getTemplateId(LanguagePreference.WELSH, DocumentStatus.FINAL, DocumentCaseType.ADMON_WILL )).thenReturn(DocumentType.WELSH_ADMON_WILL_GRANT);
+
+
         assertEquals(ADMON_WILL_FINAL_FILE_NAME,
                 documentGeneratorService.generateGrant(callbackRequest, FINAL).getDocumentFileName());
     }
@@ -263,8 +292,11 @@ public class DocumentGeneratorServiceTest {
 
         callbackRequest = new CallbackRequest(caseDetails);
         when(pdfManagementService.generateDocmosisDocumentAndUpload(expectedMap,
-                DocumentType.WELSH_AMON_WILL_GRANT_DRAFT)).thenReturn(Document.builder()
+                DocumentType.WELSH_ADMON_WILL_GRANT_DRAFT)).thenReturn(Document.builder()
                 .documentFileName(ADMON_WILL_DRAFT_FILE_NAME).build());
+
+        when(documentTemplateService.getTemplateId(LanguagePreference.WELSH, DocumentStatus.PREVIEW, DocumentCaseType.ADMON_WILL )).thenReturn(DocumentType.WELSH_ADMON_WILL_GRANT_DRAFT);
+
         assertEquals(ADMON_WILL_DRAFT_FILE_NAME,
                 documentGeneratorService.generateGrant(callbackRequest, DRAFT).getDocumentFileName());
     }
@@ -280,6 +312,9 @@ public class DocumentGeneratorServiceTest {
         when(pdfManagementService.generateDocmosisDocumentAndUpload(expectedMap,
                 DocumentType.WELSH_DIGITAL_GRANT)).thenReturn(Document.builder()
                 .documentFileName(DIGITAL_GRANT_FINAL_FILE_NAME).build());
+
+        when(documentTemplateService.getTemplateId(LanguagePreference.WELSH, DocumentStatus.FINAL, DocumentCaseType.GOP )).thenReturn(DocumentType.WELSH_DIGITAL_GRANT);
+
         assertEquals(DIGITAL_GRANT_FINAL_FILE_NAME,
                 documentGeneratorService.generateGrant(callbackRequest, FINAL).getDocumentFileName());
     }
@@ -295,6 +330,9 @@ public class DocumentGeneratorServiceTest {
         when(pdfManagementService.generateDocmosisDocumentAndUpload(expectedMap,
                 DocumentType.WELSH_DIGITAL_GRANT_DRAFT)).thenReturn(Document.builder()
                 .documentFileName(DIGITAL_GRANT_DRAFT_FILE_NAME).build());
+
+        when(documentTemplateService.getTemplateId(LanguagePreference.WELSH, DocumentStatus.PREVIEW, DocumentCaseType.GOP )).thenReturn(DocumentType.WELSH_DIGITAL_GRANT_DRAFT);
+
         assertEquals(DIGITAL_GRANT_DRAFT_FILE_NAME,
                 documentGeneratorService.generateGrant(callbackRequest, DRAFT).getDocumentFileName());
     }
@@ -310,6 +348,9 @@ public class DocumentGeneratorServiceTest {
         when(pdfManagementService.generateDocmosisDocumentAndUpload(expectedMap,
                 DocumentType.WELSH_INTESTACY_GRANT_DRAFT)).thenReturn(Document.builder()
                 .documentFileName(WELSH_INTESTACY_GRANT_DRAFT_FILE_NAME).build());
+
+        when(documentTemplateService.getTemplateId(LanguagePreference.WELSH, DocumentStatus.PREVIEW, DocumentCaseType.INTESTACY )).thenReturn(DocumentType.WELSH_INTESTACY_GRANT_DRAFT);
+
         assertEquals(WELSH_INTESTACY_GRANT_DRAFT_FILE_NAME,
                 documentGeneratorService.generateGrant(callbackRequest, DRAFT).getDocumentFileName());
     }
@@ -325,6 +366,9 @@ public class DocumentGeneratorServiceTest {
         when(pdfManagementService.generateDocmosisDocumentAndUpload(expectedMap,
                 DocumentType.WELSH_INTESTACY_GRANT)).thenReturn(Document.builder()
                 .documentFileName(WELSH_INTESTACY_GRANT_FINAL_FILE_NAME).build());
+
+        when(documentTemplateService.getTemplateId(LanguagePreference.WELSH, DocumentStatus.FINAL, DocumentCaseType.INTESTACY )).thenReturn(DocumentType.WELSH_INTESTACY_GRANT);
+
         assertEquals(WELSH_INTESTACY_GRANT_FINAL_FILE_NAME,
                 documentGeneratorService.generateGrant(callbackRequest, FINAL).getDocumentFileName());
     }
@@ -355,6 +399,9 @@ public class DocumentGeneratorServiceTest {
         when(pdfManagementService.generateDocmosisDocumentAndUpload(expectedMap,
                 DocumentType.DIGITAL_GRANT_REISSUE_DRAFT))
                 .thenReturn(Document.builder().documentFileName(DIGITAL_GRANT_DRAFT_REISSUE_FILE_NAME).build());
+
+        when(documentTemplateService.getTemplateId(LanguagePreference.ENGLISH, DocumentStatus.PREVIEW, DocumentCaseType.GOP )).thenReturn(DocumentType.DIGITAL_GRANT_REISSUE_DRAFT);
+
         assertEquals(DIGITAL_GRANT_DRAFT_REISSUE_FILE_NAME,
                 documentGeneratorService.generateGrantReissue(callbackRequest, "INVALID").getDocumentFileName());
     }

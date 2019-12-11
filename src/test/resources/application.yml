@@ -161,6 +161,38 @@ notifications:
           requestInformation: "sols-request-information-welsh"
           redeclarationSot: "sols-redeclaration-sot-welsh"
 
+documents:
+    templates:
+      docmosis:
+        english:
+          final:
+            intestacy: INTESTACY_GRANT_REISSUE
+            admonWill: ADMON_WILL_GRANT_REISSUE
+            gop: DIGITAL_GRANT_REISSUE
+          preview:
+            intestacy: INTESTACY_GRANT_REISSUE_DRAFT
+            admonWill: ADMON_WILL_GRANT_REISSUE_DRAFT
+            gop: DIGITAL_GRANT_REISSUE_DRAFT
+        welsh:
+          final:
+            intestacy: WELSH_INTESTACY_GRANT
+            admonWill: WELSH_ADMON_WILL_GRANT
+            gop: WELSH_DIGITAL_GRANT
+          preview:
+            intestacy: WELSH_INTESTACY_GRANT_DRAFT
+            admonWill: WELSH_ADMON_WILL_GRANT_DRAFT
+            gop: WELSH_DIGITAL_GRANT_DRAFT
+#      pdfservice:
+#          final:
+#            intestacy: INTESTACY_GRANT
+#            admonWill: ADMON_WILL_GRANT
+#            gop: DIGITAL_GRANT
+#          preview:
+#            intestacy: INTESTACY_GRANT_DRAFT
+#            admonWill: ADMON_WILL_GRANT_DRAFT
+#            gop: DIGITAL_GRANT_DRAFT
+
+
 registries:
   oxford:
     name: Oxford Probate Registry
