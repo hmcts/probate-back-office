@@ -22,18 +22,18 @@ public class OCRFieldIhtMoneyMapper {
     private static final String FORM_IHT400 = "IHT400";
 
     @ToPennies
-    public Long poundsToPennies(String monetaryValue) {
+    public Long poundsToPennies(final String monetaryValue) {
         log.info("Beginning mapping for monetary value: {}", monetaryValue);
         Long returnValue;
 
         if (monetaryValue == null || monetaryValue.isEmpty()) {
             return null;
         } else {
-            monetaryValue = monetaryValue.replaceAll("[^\\d^\\.]","");
+            String numericalMonetaryValue = monetaryValue.replaceAll("[^\\d^\\.]","");
             try {
-                returnValue = new BigDecimal(monetaryValue).multiply(ONE_HUNDRED).longValue();
+                returnValue = new BigDecimal(numericalMonetaryValue).multiply(ONE_HUNDRED).longValue();
             } catch (Exception e) {
-                String errorMessage = "Monetary field '" + monetaryValue + "' could not be mapped to a case: " + e.getMessage();
+                String errorMessage = "Monetary field '" + monetaryValue + "' could not be converted to a number";
                 log.error(errorMessage);
                 throw new OCRMappingException(errorMessage);
             }
