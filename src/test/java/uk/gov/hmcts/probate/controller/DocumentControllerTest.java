@@ -21,6 +21,8 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import uk.gov.hmcts.probate.insights.AppInsights;
+import uk.gov.hmcts.probate.model.DocumentIssueType;
+import uk.gov.hmcts.probate.model.DocumentStatus;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.State;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
@@ -93,8 +95,6 @@ public class DocumentControllerTest {
     private ResponseCaseData.ResponseCaseDataBuilder responseCaseDataBuilder;
 
     private static final String LETTER_UUID = "c387262a-c8a6-44eb-9aea-a740460f9302";
-    private static final String DRAFT = "preview";
-    private static final String FINAL = "final";
 
     @Before
     public void setUp() throws NotificationClientException {
@@ -125,14 +125,20 @@ public class DocumentControllerTest {
 
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
 
+
         when(pdfManagementService.generateAndUpload(any(CallbackRequest.class), eq(DIGITAL_GRANT_DRAFT)))
                 .thenReturn(Document.builder().documentType(DIGITAL_GRANT_DRAFT).build());
+        when(documentGeneratorService.getPDFGrant(any(CallbackRequest.class),  eq(DocumentStatus.FINAL), eq(DocumentIssueType.GRANT)))
+                .thenReturn(Document.builder().documentType(DIGITAL_GRANT).build());
         when(pdfManagementService.generateAndUpload(any(CallbackRequest.class), eq(DIGITAL_GRANT)))
                 .thenReturn(Document.builder().documentType(DIGITAL_GRANT).build());
-        when(pdfManagementService.generateAndUpload(any(CallbackRequest.class), eq(INTESTACY_GRANT_DRAFT)))
-                .thenReturn(Document.builder().documentType(INTESTACY_GRANT_DRAFT).build());
+
         when(pdfManagementService.generateAndUpload(any(CallbackRequest.class), eq(INTESTACY_GRANT)))
                 .thenReturn(Document.builder().documentType(INTESTACY_GRANT).build());
+
+
+
+
         when(pdfManagementService.generateAndUpload(any(CallbackRequest.class), eq(ADMON_WILL_GRANT_DRAFT)))
                 .thenReturn(Document.builder().documentType(ADMON_WILL_GRANT_DRAFT).build());
         when(pdfManagementService.generateAndUpload(any(CallbackRequest.class), eq(ADMON_WILL_GRANT)))
@@ -144,12 +150,15 @@ public class DocumentControllerTest {
         when(pdfManagementService.generateAndUpload(any(CallbackRequest.class), eq(GRANT_COVER)))
                 .thenReturn(Document.builder().documentType(GRANT_COVER).build());
 
+
+
+
         when(pdfManagementService.generateAndUpload(any(WillLodgementCallbackRequest.class), eq(WILL_LODGEMENT_DEPOSIT_RECEIPT)))
                 .thenReturn(Document.builder().documentType(WILL_LODGEMENT_DEPOSIT_RECEIPT).build());
 
         when(notificationService.sendEmail(any(State.class), any(CaseDetails.class))).thenReturn(document);
 
-        when(documentGeneratorService.generateGrantReissue(any(), any())).thenReturn(document);
+        when(documentGeneratorService.generateGrantReissue(any(), any(), any())).thenReturn(document);
         when(documentGeneratorService.generateCoversheet(any(CallbackRequest.class)))
                 .thenReturn(Document.builder().documentType(DocumentType.GRANT_COVERSHEET).build());
         when(documentGeneratorService.generateSoT(any()))
@@ -168,13 +177,17 @@ public class DocumentControllerTest {
         when(notificationService.generateGrantReissue(any(CallbackRequest.class)))
                 .thenReturn(Document.builder().documentType(SENT_EMAIL).build());
         doNothing().when(documentService).expire(any(CallbackRequest.class), any(DocumentType.class));
-        when(documentGeneratorService.generateGrant(any(CallbackRequest.class), eq(FINAL)))
+        when(documentGeneratorService.generateGrant(any(CallbackRequest.class), eq(DocumentStatus.FINAL), eq(DocumentIssueType.GRANT)))
                .thenReturn(Document.builder().documentType(WELSH_DIGITAL_GRANT).build());
-        when(documentGeneratorService.generateGrant(any(CallbackRequest.class), eq(DRAFT))).thenReturn(welshDocumentDraft);
+        when(documentGeneratorService.generateGrant(any(CallbackRequest.class), eq(DocumentStatus.PREVIEW), eq(DocumentIssueType.GRANT)))
+                .thenReturn(welshDocumentDraft);
     }
 
     @Test
     public void generateGrantDraftGrantOfRepresentation() throws Exception {
+
+        when(documentGeneratorService.getPDFGrant(any(CallbackRequest.class),  eq(DocumentStatus.PREVIEW), eq(DocumentIssueType.GRANT)))
+                .thenReturn(Document.builder().documentType(DIGITAL_GRANT_DRAFT).build());
 
         String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadNotifications.json");
 
@@ -185,7 +198,7 @@ public class DocumentControllerTest {
                 .andExpect(jsonPath("$.data.probateDocumentsGenerated[0].value.DocumentType", is(DIGITAL_GRANT_DRAFT.getTemplateName())))
                 .andReturn();
 
-        verify(documentService).expire(any(CallbackRequest.class), eq(DIGITAL_GRANT_DRAFT));
+        verify(documentGeneratorService).getPDFGrant(any(CallbackRequest.class), eq(DocumentStatus.PREVIEW), eq(DocumentIssueType.GRANT));
     }
 
     @Test
@@ -200,7 +213,7 @@ public class DocumentControllerTest {
                 .andExpect(jsonPath("$.data.probateDocumentsGenerated[1].value.DocumentType", is(DIGITAL_GRANT.getTemplateName())))
                 .andReturn();
 
-        verify(documentService).expire(any(CallbackRequest.class), eq(DIGITAL_GRANT_DRAFT));
+        verify(documentGeneratorService).getPDFGrant(any(CallbackRequest.class), eq(DocumentStatus.FINAL), eq(DocumentIssueType.GRANT));
     }
 
     @Test
@@ -235,7 +248,8 @@ public class DocumentControllerTest {
 
     @Test
     public void generateDigitalGrantIfLocalPrint() throws Exception {
-
+        when(documentGeneratorService.getPDFGrant(any(CallbackRequest.class),  eq(DocumentStatus.FINAL), eq(DocumentIssueType.GRANT)))
+                .thenReturn(Document.builder().documentType(DIGITAL_GRANT).build());
         String solicitorPayload = testUtils.getStringFromFile("payloadWithLocalPrint.json");
 
         MvcResult result = mockMvc.perform(post("/document/generate-grant")
@@ -245,7 +259,7 @@ public class DocumentControllerTest {
                 .andExpect(jsonPath("$.data.probateDocumentsGenerated[1].value.DocumentType", is(DIGITAL_GRANT.getTemplateName())))
                 .andReturn();
 
-        verify(documentService).expire(any(CallbackRequest.class), eq(DIGITAL_GRANT_DRAFT));
+        verify(documentGeneratorService).getPDFGrant(any(CallbackRequest.class), eq(DocumentStatus.FINAL), eq(DocumentIssueType.GRANT));
     }
     @Test
     public void generateWelshDigitalGrant() throws Exception {
@@ -259,7 +273,7 @@ public class DocumentControllerTest {
                 .andExpect(jsonPath("$.data.probateDocumentsGenerated[0].value.DocumentType", is(WELSH_DIGITAL_GRANT.getTemplateName())))
                 .andReturn();
 
-        verify(documentGeneratorService).generateGrant(any(CallbackRequest.class), eq(FINAL));
+        verify(documentGeneratorService).generateGrant(any(CallbackRequest.class), eq(DocumentStatus.FINAL), eq(DocumentIssueType.GRANT));
     }
 
     @Test
@@ -274,11 +288,13 @@ public class DocumentControllerTest {
             .andExpect(jsonPath("$.data.probateDocumentsGenerated[0].value.DocumentType", is(WELSH_DIGITAL_GRANT_DRAFT.getTemplateName())))
             .andReturn();
 
-        verify(documentGeneratorService).generateGrant(any(CallbackRequest.class), eq(DRAFT));
+        verify(documentGeneratorService).generateGrant(any(CallbackRequest.class), eq(DocumentStatus.PREVIEW), eq(DocumentIssueType.GRANT));
     }
 
     @Test
     public void generateGrantDraftIntestacy() throws Exception {
+        when(documentGeneratorService.getPDFGrant(any(CallbackRequest.class),  eq(DocumentStatus.PREVIEW), eq(DocumentIssueType.GRANT)))
+                .thenReturn(Document.builder().documentType(INTESTACY_GRANT_DRAFT).build());
 
         String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadNotificationsIntestacy.json");
 
@@ -289,15 +305,13 @@ public class DocumentControllerTest {
                 .andExpect(jsonPath("$.data.probateDocumentsGenerated[1].value.DocumentType", is(INTESTACY_GRANT_DRAFT.getTemplateName())))
                 .andReturn();
 
-        doNothing().when(documentService).expire(ArgumentMatchers.any(CallbackRequest.class), eq(INTESTACY_GRANT_DRAFT));
-
-        verify(documentService).expire(ArgumentMatchers.any(CallbackRequest.class), eq(ADMON_WILL_GRANT_DRAFT));
-        verify(documentService).expire(ArgumentMatchers.any(CallbackRequest.class), eq(DIGITAL_GRANT_DRAFT));
-        verify(documentService).expire(ArgumentMatchers.any(CallbackRequest.class), eq(INTESTACY_GRANT_DRAFT));
+        verify(documentGeneratorService).getPDFGrant(any(CallbackRequest.class), eq(DocumentStatus.PREVIEW), eq(DocumentIssueType.GRANT));
     }
 
     @Test
     public void generateGrantDraftAdmonWill() throws Exception {
+        when(documentGeneratorService.getPDFGrant(any(CallbackRequest.class),  eq(DocumentStatus.PREVIEW), eq(DocumentIssueType.GRANT)))
+                .thenReturn(Document.builder().documentType(ADMON_WILL_GRANT_DRAFT).build());
 
         String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadNotificationsAdmonWill.json");
 
@@ -308,15 +322,14 @@ public class DocumentControllerTest {
                 .andExpect(jsonPath("$.data.probateDocumentsGenerated[1].value.DocumentType", is(ADMON_WILL_GRANT_DRAFT.getTemplateName())))
                 .andReturn();
 
-        doNothing().when(documentService).expire(ArgumentMatchers.any(CallbackRequest.class), eq(ADMON_WILL_GRANT_DRAFT));
-
-        verify(documentService).expire(ArgumentMatchers.any(CallbackRequest.class), eq(ADMON_WILL_GRANT_DRAFT));
-        verify(documentService).expire(ArgumentMatchers.any(CallbackRequest.class), eq(DIGITAL_GRANT_DRAFT));
-        verify(documentService).expire(ArgumentMatchers.any(CallbackRequest.class), eq(INTESTACY_GRANT_DRAFT));
+        verify(documentGeneratorService).getPDFGrant(any(CallbackRequest.class), eq(DocumentStatus.PREVIEW), eq(DocumentIssueType.GRANT));
     }
 
     @Test
     public void generateGrantAdmonWill() throws Exception {
+        when(documentGeneratorService.getPDFGrant(any(CallbackRequest.class),  eq(DocumentStatus.FINAL), eq(DocumentIssueType.GRANT)))
+                .thenReturn(Document.builder().documentType(ADMON_WILL_GRANT).build());
+
         String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadNotificationsAdmonWill.json");
 
         MvcResult result = mockMvc.perform(post("/document/generate-grant")
@@ -326,13 +339,14 @@ public class DocumentControllerTest {
                 .andExpect(jsonPath("$.data.probateDocumentsGenerated[1].value.DocumentType", is(ADMON_WILL_GRANT.getTemplateName())))
                 .andReturn();
 
-        verify(pdfManagementService).generateAndUpload(any(CallbackRequest.class), eq(ADMON_WILL_GRANT));
-
-        doNothing().when(documentService).expire(any(CallbackRequest.class), eq(ADMON_WILL_GRANT));
+        verify(documentGeneratorService).getPDFGrant(any(CallbackRequest.class), eq(DocumentStatus.FINAL), eq(DocumentIssueType.GRANT));
     }
 
     @Test
     public void generateGrantIntestacy() throws Exception {
+        when(documentGeneratorService.getPDFGrant(any(CallbackRequest.class),  eq(DocumentStatus.FINAL), eq(DocumentIssueType.GRANT)))
+                .thenReturn(Document.builder().documentType(INTESTACY_GRANT).build());
+
         String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadNotificationsIntestacy.json");
 
         MvcResult result = mockMvc.perform(post("/document/generate-grant")
@@ -342,13 +356,13 @@ public class DocumentControllerTest {
                 .andExpect(jsonPath("$.data.probateDocumentsGenerated[1].value.DocumentType", is(INTESTACY_GRANT.getTemplateName())))
                 .andReturn();
 
-        verify(pdfManagementService).generateAndUpload(any(CallbackRequest.class), eq(INTESTACY_GRANT));
-
-        doNothing().when(documentService).expire(any(CallbackRequest.class), eq(INTESTACY_GRANT));
+        verify(documentGeneratorService).getPDFGrant(any(CallbackRequest.class), eq(DocumentStatus.FINAL), eq(DocumentIssueType.GRANT));
     }
 
     @Test
     public void shouldNotGenerateGrantDraftEdgeCase() throws Exception {
+        when(documentGeneratorService.getPDFGrant(any(CallbackRequest.class),  eq(DocumentStatus.PREVIEW), eq(DocumentIssueType.GRANT)))
+                .thenReturn(Document.builder().documentType(EDGE_CASE).build());
 
         String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadNotificationsEdgeCase.json");
 
@@ -359,11 +373,7 @@ public class DocumentControllerTest {
                 .andExpect(jsonPath("$.data.probateDocumentsGenerated", Matchers.empty()))
                 .andReturn();
 
-        doNothing().when(documentService).expire(ArgumentMatchers.any(CallbackRequest.class), eq(EDGE_CASE));
-
-        verify(documentService).expire(ArgumentMatchers.any(CallbackRequest.class), eq(ADMON_WILL_GRANT_DRAFT));
-        verify(documentService).expire(ArgumentMatchers.any(CallbackRequest.class), eq(DIGITAL_GRANT_DRAFT));
-        verify(documentService).expire(ArgumentMatchers.any(CallbackRequest.class), eq(INTESTACY_GRANT_DRAFT));
+        verify(documentGeneratorService).getPDFGrant(any(CallbackRequest.class), eq(DocumentStatus.PREVIEW), eq(DocumentIssueType.GRANT));
     }
 
     @Test
@@ -409,6 +419,8 @@ public class DocumentControllerTest {
 
     @Test
     public void shouldGenerateGrantDefaultCaseType() throws Exception {
+        when(documentGeneratorService.getPDFGrant(any(CallbackRequest.class),  eq(DocumentStatus.PREVIEW), eq(DocumentIssueType.GRANT)))
+                .thenReturn(Document.builder().documentType(DIGITAL_GRANT_DRAFT).build());
 
         String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadNotificationsDefaultCase.json");
 
@@ -418,11 +430,7 @@ public class DocumentControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("data")));
 
-        doNothing().when(documentService).expire(ArgumentMatchers.any(CallbackRequest.class), eq(EDGE_CASE));
-
-        verify(documentService).expire(ArgumentMatchers.any(CallbackRequest.class), eq(ADMON_WILL_GRANT_DRAFT));
-        verify(documentService).expire(ArgumentMatchers.any(CallbackRequest.class), eq(DIGITAL_GRANT_DRAFT));
-        verify(documentService).expire(ArgumentMatchers.any(CallbackRequest.class), eq(INTESTACY_GRANT_DRAFT));
+        verify(documentGeneratorService).getPDFGrant(any(CallbackRequest.class), eq(DocumentStatus.PREVIEW), eq(DocumentIssueType.GRANT));
     }
 
     @Test
@@ -464,8 +472,7 @@ public class DocumentControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("data")));
 
-        doNothing().when(documentService).expire(any(CallbackRequest.class), eq(DIGITAL_GRANT_DRAFT));
-        verify(documentService).expire(any(CallbackRequest.class), eq(DIGITAL_GRANT_DRAFT));
+        verify(documentGeneratorService).getPDFGrant(any(CallbackRequest.class), eq(DocumentStatus.FINAL), eq(DocumentIssueType.GRANT));
     }
 
     @Test

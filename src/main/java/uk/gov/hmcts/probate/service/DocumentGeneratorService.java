@@ -3,11 +3,8 @@ package uk.gov.hmcts.probate.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import uk.gov.hmcts.probate.model.ApplicationType;
-import uk.gov.hmcts.probate.model.DocumentCaseType;
-import uk.gov.hmcts.probate.model.DocumentStatus;
-import uk.gov.hmcts.probate.model.DocumentType;
-import uk.gov.hmcts.probate.model.ExecutorsApplyingNotification;
+import org.springframework.web.bind.annotation.RequestBody;
+import uk.gov.hmcts.probate.model.*;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
@@ -19,6 +16,7 @@ import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_DRAFT;
@@ -62,15 +60,15 @@ public class DocumentGeneratorService {
     private final PreviewLetterService previewLetterService;
     private final DocumentTemplateService documentTemplateService;
 
-    public Document generateGrant(CallbackRequest callbackRequest, String version) {
-        return getDocument(callbackRequest, version);
+    public Document generateGrant(CallbackRequest callbackRequest, DocumentStatus status, DocumentIssueType issueType) {
+        return getDocument(callbackRequest, status, Optional.of(issueType));
     }
 
-    public Document generateGrantReissue(CallbackRequest callbackRequest, String version) {
-        return getDocument(callbackRequest, version);
+    public Document generateGrantReissue(CallbackRequest callbackRequest, DocumentStatus status, Optional<DocumentIssueType> issueType) {
+        return getDocument(callbackRequest, status, issueType);
     }
 
-    private Document getDocument(CallbackRequest callbackRequest, String version) {
+    private Document getDocument(CallbackRequest callbackRequest, DocumentStatus status, Optional<DocumentIssueType> issueType) {
         Map<String, Object> images;
 
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
@@ -79,16 +77,14 @@ public class DocumentGeneratorService {
         images.put(SEAL_IMAGE, SEAL_FILE_PATH);
 
         Document document;
-        if (version.equals(FINAL)) {
+        Map<String, Object> placeholders = genericMapperService.addCaseDataWithImages(images, caseDetails);
+        if (status == DocumentStatus.FINAL) {
             log.info("Generating Grant document");
-            Map<String, Object> placeholders = genericMapperService.addCaseDataWithImages(images, caseDetails);
             placeholders.put("Signature", "image:base64:" + pdfManagementService.getDecodedSignature());
-            document = generateAppropriateDocument(caseDetails, placeholders, FINAL);
         } else {
             images.put(WATERMARK, WATERMARK_FILE_PATH);
-            Map<String, Object> placeholders = genericMapperService.addCaseDataWithImages(images, caseDetails);
-            document = generateAppropriateDocument(caseDetails, placeholders, DRAFT);
         }
+        document = generateAppropriateDocument(caseDetails, placeholders, status, issueType);
 
         expireDrafts(callbackRequest);
 
@@ -205,16 +201,47 @@ public class DocumentGeneratorService {
     }
 
     private Document generateAppropriateDocument(CaseDetails caseDetails, Map<String, Object> placeholders,
-                                                      String version) {
+                                                 DocumentStatus status, Optional<DocumentIssueType> issueType) {
         Document document;
         if (caseDetails.getData().getCaseType().equals(EDGE_CASE)) {
             document = Document.builder().documentType(DocumentType.EDGE_CASE).build();
         } else {
-            DocumentType template = documentTemplateService.getTemplateId(caseDetails.getData().getLanguagePreference(), version.equals(FINAL) ? DocumentStatus.FINAL : DocumentStatus.PREVIEW, DocumentCaseType.getCaseType(caseDetails.getData().getCaseType()));
+            DocumentType template = getDocumentType(caseDetails, status, issueType.get());
             document = pdfManagementService.generateDocmosisDocumentAndUpload(placeholders, template);
+            log.info("For the case id {}, generated {} grant with  status {}, issue type {} and case type {} ", caseDetails.getId(), caseDetails.getData().getLanguagePreference(), status, issueType.get(),
+                    caseDetails.getData().getCaseType());
         }
         return document;
     }
 
+    public Document getPDFGrant(CallbackRequest callbackRequest, DocumentStatus status, DocumentIssueType issueTyp) {
+        Document document;
+        if (callbackRequest.getCaseDetails().getData().getCaseType().equals(EDGE_CASE)) {
+            document = Document.builder().documentType(DocumentType.EDGE_CASE).build();
+        } else {
+            DocumentType template = getDocumentType(callbackRequest.getCaseDetails(), status, issueTyp);
+            document = pdfManagementService.generateAndUpload(callbackRequest, template);
+            log.info("Generated and Uploaded {} {} document with template {} for the case id {}", callbackRequest.getCaseDetails().getData().getCaseType(), status,
+                    template.getTemplateName(), callbackRequest.getCaseDetails().getId().toString());
+        }
+        expireDrafts(callbackRequest);
+        return document;
+    }
 
+    private DocumentType getDocumentType(CaseDetails caseDetails, DocumentStatus status, DocumentIssueType issueType) {
+        return documentTemplateService.getTemplateId(caseDetails.getData().getLanguagePreference(),
+                        status,
+                        issueType,
+                        DocumentCaseType.getCaseType(caseDetails.getData().getCaseType()));
+    }
+
+    public Document getDocument(CallbackRequest callbackRequest, DocumentStatus documentStatus, DocumentIssueType documentIssueType) {
+        Document document;
+        if (callbackRequest.getCaseDetails().getData().isLanguagePreferenceWelsh()) {
+            document = generateGrant(callbackRequest, documentStatus, documentIssueType);
+        } else {
+            document = getPDFGrant(callbackRequest, documentStatus, documentIssueType);
+        }
+        return document;
+    }
 }

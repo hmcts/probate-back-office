@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import uk.gov.hmcts.probate.config.properties.registries.RegistriesProperties;
 import uk.gov.hmcts.probate.config.properties.registries.Registry;
+import uk.gov.hmcts.probate.model.DocumentIssueType;
+import uk.gov.hmcts.probate.model.DocumentStatus;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
@@ -40,6 +42,7 @@ import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -131,47 +134,9 @@ public class DocumentController {
 
     @PostMapping(path = "/generate-grant-draft", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<CallbackResponse> generateGrantDraft(@RequestBody CallbackRequest callbackRequest) {
-        CaseDetails caseDetails = callbackRequest.getCaseDetails();
-        CaseData caseData = caseDetails.getData();
-        Document document;
-        DocumentType template;
-        registryDetailsService.getRegistryDetails(caseDetails);
+        registryDetailsService.getRegistryDetails(callbackRequest.getCaseDetails());
+        Document document = documentGeneratorService.getDocument(callbackRequest, DocumentStatus.PREVIEW, DocumentIssueType.GRANT);
 
-        if(caseDetails.getData().isLanguagePreferenceWelsh()){
-            document = documentGeneratorService.generateGrant(callbackRequest, DRAFT);
-        } else {
-          switch (caseData.getCaseType()) {
-                case INTESTACY_NAME:
-                    template = INTESTACY_GRANT_DRAFT;
-                    document = pdfManagementService.generateAndUpload(callbackRequest, template);
-                    log.info("Generated and Uploaded Intestacy grant preview document with template {} for the case id {}",
-                            template.getTemplateName(), callbackRequest.getCaseDetails().getId().toString());
-                    break;
-                case ADMON_WILL_NAME:
-                    template = ADMON_WILL_GRANT_DRAFT;
-                    document = pdfManagementService.generateAndUpload(callbackRequest, template);
-                    log.info("Generated and Uploaded Admon Will grant preview document with template {} for the case id {}",
-                            template.getTemplateName(), callbackRequest.getCaseDetails().getId().toString());
-                    break;
-                case EDGE_CASE_NAME:
-                    document = Document.builder().documentType(DocumentType.EDGE_CASE).build();
-                    break;
-                case GRANT_OF_PROBATE_NAME:
-                default:
-                    template = DIGITAL_GRANT_DRAFT;
-                    document = pdfManagementService.generateAndUpload(callbackRequest, template);
-                    log.info("Generated and Uploaded Grant of Probate preview document with template {} for the case id {}",
-                            template.getTemplateName(), callbackRequest.getCaseDetails().getId().toString());
-                    break;
-            }
-
-            DocumentType[] documentTypes = {DIGITAL_GRANT_DRAFT, INTESTACY_GRANT_DRAFT, ADMON_WILL_GRANT_DRAFT,
-                    DIGITAL_GRANT_REISSUE_DRAFT, INTESTACY_GRANT_REISSUE_DRAFT,
-                    ADMON_WILL_GRANT_REISSUE_DRAFT, DIGITAL_GRANT_REISSUE};
-            for (DocumentType documentType : documentTypes) {
-                documentService.expire(callbackRequest, documentType);
-            }
-        }
         return ResponseEntity.ok(callbackResponseTransformer.addDocuments(callbackRequest,
                 Arrays.asList(document), null, null));
     }
@@ -184,45 +149,12 @@ public class DocumentController {
 
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
         @Valid CaseData caseData = caseDetails.getData();
-        DocumentType template;
-        Document digitalGrantDocument;
+
         registryDetailsService.getRegistryDetails(caseDetails);
         CallbackResponse callbackResponse = CallbackResponse.builder().errors(new ArrayList<>()).build();
-        if(caseDetails.getData().isLanguagePreferenceWelsh()){
-            digitalGrantDocument = documentGeneratorService.generateGrant(callbackRequest, FINAL);
-        } else {
-            switch (caseData.getCaseType()) {
-                case EDGE_CASE_NAME:
-                    digitalGrantDocument = Document.builder().documentType(DocumentType.EDGE_CASE).build();
-                    break;
-                case INTESTACY_NAME:
-                    template = INTESTACY_GRANT;
-                    digitalGrantDocument = pdfManagementService.generateAndUpload(callbackRequest, template);
-                    log.info("Generated and Uploaded Intestacy grant document with template {} for the case id {}",
-                            template.getTemplateName(), callbackRequest.getCaseDetails().getId().toString());
-                    break;
-                case ADMON_WILL_NAME:
-                    template = ADMON_WILL_GRANT;
-                    digitalGrantDocument = pdfManagementService.generateAndUpload(callbackRequest, template);
-                    log.info("Generated and Uploaded Admon Will grant document with template {} for the case id {}",
-                            template.getTemplateName(), callbackRequest.getCaseDetails().getId().toString());
-                    break;
-                case GRANT_OF_PROBATE_NAME:
-                default:
-                    template = DIGITAL_GRANT;
-                    digitalGrantDocument = pdfManagementService.generateAndUpload(callbackRequest, template);
-                    log.info("Generated and Uploaded Grant of Probate document with template {} for the case id {}",
-                            template.getTemplateName(), callbackRequest.getCaseDetails().getId().toString());
-                    break;
-            }
 
-            DocumentType[] documentTypes = {DIGITAL_GRANT_DRAFT, INTESTACY_GRANT_DRAFT, ADMON_WILL_GRANT_DRAFT,
-                    DIGITAL_GRANT_REISSUE_DRAFT, INTESTACY_GRANT_REISSUE_DRAFT,
-                    ADMON_WILL_GRANT_REISSUE_DRAFT};
-            for (DocumentType documentType : documentTypes) {
-                documentService.expire(callbackRequest, documentType);
-            }
-        }
+        Document digitalGrantDocument = documentGeneratorService.getDocument(callbackRequest, DocumentStatus.FINAL, DocumentIssueType.GRANT);
+
         Document coverSheet = pdfManagementService.generateAndUpload(callbackRequest, DocumentType.GRANT_COVER);
         log.info("Generated and Uploaded cover document with template {} for the case id {}",
                 DocumentType.GRANT_COVER.getTemplateName(), callbackRequest.getCaseDetails().getId().toString());
@@ -289,7 +221,7 @@ public class DocumentController {
     @PostMapping(path = "/generate-grant-draft-reissue", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<CallbackResponse> generateGrantDraftReissue(@RequestBody CallbackRequest callbackRequest) {
 
-        Document document = documentGeneratorService.generateGrantReissue(callbackRequest, DRAFT);
+        Document document = documentGeneratorService.generateGrantReissue(callbackRequest, DocumentStatus.PREVIEW, Optional.of(DocumentIssueType.REISSUE));
 
         return ResponseEntity.ok(callbackResponseTransformer.addDocuments(callbackRequest,
                 Arrays.asList(document), null, null));
@@ -301,7 +233,7 @@ public class DocumentController {
 
         List<Document> documents = new ArrayList<>();
 
-        Document grantDocument = documentGeneratorService.generateGrantReissue(callbackRequest, FINAL);
+        Document grantDocument = documentGeneratorService.generateGrantReissue(callbackRequest, DocumentStatus.FINAL, Optional.of(DocumentIssueType.REISSUE));
         Document coversheet = documentGeneratorService.generateCoversheet(callbackRequest);
 
         documents.add(grantDocument);

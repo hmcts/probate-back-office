@@ -7,10 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 import uk.gov.hmcts.probate.insights.AppInsights;
-import uk.gov.hmcts.probate.model.DocumentCaseType;
-import uk.gov.hmcts.probate.model.DocumentStatus;
-import uk.gov.hmcts.probate.model.DocumentType;
-import uk.gov.hmcts.probate.model.LanguagePreference;
+import uk.gov.hmcts.probate.model.*;
 import uk.gov.hmcts.probate.service.CaveatQueryService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
@@ -44,16 +41,16 @@ public class DocumentTemplateServiceTest {
     @Test
     public void shouldGetGrantOfProbateTemplate() {
 
-        DocumentType response = documentTemplateService.getTemplateId(LanguagePreference.ENGLISH, DocumentStatus.FINAL, DocumentCaseType.GOP);
+        DocumentType response = documentTemplateService.getTemplateId(LanguagePreference.ENGLISH, DocumentStatus.FINAL, DocumentIssueType.REISSUE,DocumentCaseType.GOP);
         assertEquals(DocumentType.DIGITAL_GRANT_REISSUE, response);
 
-        DocumentType responseWelsh = documentTemplateService.getTemplateId(LanguagePreference.WELSH, DocumentStatus.FINAL, DocumentCaseType.GOP);
+        DocumentType responseWelsh = documentTemplateService.getTemplateId(LanguagePreference.WELSH, DocumentStatus.FINAL, DocumentIssueType.GRANT, DocumentCaseType.GOP);
         assertEquals(DocumentType.WELSH_DIGITAL_GRANT, responseWelsh);
 
-        DocumentType responseDraft = documentTemplateService.getTemplateId(LanguagePreference.ENGLISH, DocumentStatus.PREVIEW, DocumentCaseType.GOP);
+        DocumentType responseDraft = documentTemplateService.getTemplateId(LanguagePreference.ENGLISH, DocumentStatus.PREVIEW, DocumentIssueType.REISSUE,DocumentCaseType.GOP);
         assertEquals(DocumentType.DIGITAL_GRANT_REISSUE_DRAFT, responseDraft);
 
-        DocumentType responseDraftWelsh = documentTemplateService.getTemplateId(LanguagePreference.WELSH, DocumentStatus.PREVIEW, DocumentCaseType.GOP);
+        DocumentType responseDraftWelsh = documentTemplateService.getTemplateId(LanguagePreference.WELSH, DocumentStatus.PREVIEW,  DocumentIssueType.GRANT,DocumentCaseType.GOP);
         assertEquals(DocumentType.WELSH_DIGITAL_GRANT_DRAFT, responseDraftWelsh);
     }
 
@@ -61,32 +58,32 @@ public class DocumentTemplateServiceTest {
     @Test
     public void shouldGetIntestacyTemplate() {
 
-        DocumentType response = documentTemplateService.getTemplateId(LanguagePreference.ENGLISH, DocumentStatus.FINAL, DocumentCaseType.INTESTACY);
+        DocumentType response = documentTemplateService.getTemplateId(LanguagePreference.ENGLISH, DocumentStatus.FINAL, DocumentIssueType.REISSUE, DocumentCaseType.INTESTACY);
         assertEquals(DocumentType.INTESTACY_GRANT_REISSUE, response);
 
-        DocumentType responseWelsh = documentTemplateService.getTemplateId(LanguagePreference.WELSH, DocumentStatus.FINAL, DocumentCaseType.INTESTACY);
+        DocumentType responseWelsh = documentTemplateService.getTemplateId(LanguagePreference.WELSH, DocumentStatus.FINAL, DocumentIssueType.GRANT, DocumentCaseType.INTESTACY);
         assertEquals(DocumentType.WELSH_INTESTACY_GRANT, responseWelsh);
 
-        DocumentType responseDraft = documentTemplateService.getTemplateId(LanguagePreference.ENGLISH, DocumentStatus.PREVIEW, DocumentCaseType.INTESTACY);
+        DocumentType responseDraft = documentTemplateService.getTemplateId(LanguagePreference.ENGLISH, DocumentStatus.PREVIEW, DocumentIssueType.REISSUE, DocumentCaseType.INTESTACY);
         assertEquals(DocumentType.INTESTACY_GRANT_REISSUE_DRAFT, responseDraft);
 
-        DocumentType responseDraftWelsh = documentTemplateService.getTemplateId(LanguagePreference.WELSH, DocumentStatus.PREVIEW, DocumentCaseType.INTESTACY);
+        DocumentType responseDraftWelsh = documentTemplateService.getTemplateId(LanguagePreference.WELSH, DocumentStatus.PREVIEW, DocumentIssueType.GRANT, DocumentCaseType.INTESTACY);
         assertEquals(DocumentType.WELSH_INTESTACY_GRANT_DRAFT, responseDraftWelsh);
     }
 
     @Test
     public void shouldGetAdmonWillTemplate() {
 
-        DocumentType response = documentTemplateService.getTemplateId(LanguagePreference.ENGLISH, DocumentStatus.FINAL, DocumentCaseType.ADMON_WILL);
+        DocumentType response = documentTemplateService.getTemplateId(LanguagePreference.ENGLISH, DocumentStatus.FINAL, DocumentIssueType.REISSUE,DocumentCaseType.ADMON_WILL);
         assertEquals(DocumentType.ADMON_WILL_GRANT_REISSUE, response);
 
-        DocumentType responseWelsh = documentTemplateService.getTemplateId(LanguagePreference.WELSH, DocumentStatus.FINAL, DocumentCaseType.ADMON_WILL);
+        DocumentType responseWelsh = documentTemplateService.getTemplateId(LanguagePreference.WELSH, DocumentStatus.FINAL, DocumentIssueType.GRANT,DocumentCaseType.ADMON_WILL);
         assertEquals(DocumentType.WELSH_ADMON_WILL_GRANT, responseWelsh);
 
-        DocumentType responseDraft = documentTemplateService.getTemplateId(LanguagePreference.ENGLISH, DocumentStatus.PREVIEW, DocumentCaseType.ADMON_WILL);
+        DocumentType responseDraft = documentTemplateService.getTemplateId(LanguagePreference.ENGLISH, DocumentStatus.PREVIEW, DocumentIssueType.REISSUE, DocumentCaseType.ADMON_WILL);
         assertEquals(DocumentType.ADMON_WILL_GRANT_REISSUE_DRAFT, responseDraft);
 
-        DocumentType responseDraftWelsh = documentTemplateService.getTemplateId(LanguagePreference.WELSH, DocumentStatus.PREVIEW, DocumentCaseType.ADMON_WILL);
+        DocumentType responseDraftWelsh = documentTemplateService.getTemplateId(LanguagePreference.WELSH, DocumentStatus.PREVIEW, DocumentIssueType.GRANT,DocumentCaseType.ADMON_WILL);
         assertEquals(DocumentType.WELSH_ADMON_WILL_GRANT_DRAFT, responseDraftWelsh);
     }
 }

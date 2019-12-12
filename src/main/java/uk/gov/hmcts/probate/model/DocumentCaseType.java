@@ -1,6 +1,7 @@
 package uk.gov.hmcts.probate.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.apache.commons.lang.StringUtils;
 
 import java.util.Arrays;
 
@@ -24,8 +25,6 @@ public enum DocumentCaseType {
     }
 
     public static DocumentCaseType getCaseType(String name) {
-        return Arrays.stream(DocumentCaseType.values()).filter(caseState -> caseState.getCaseType().equals(name)).findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("Cannot find DocumentCaseType enum for name: " + name));
+        return Arrays.stream(DocumentCaseType.values()).filter(caseState -> caseState.getCaseType().equals(name)).findFirst().orElse(GOP);
     }
-
 }
