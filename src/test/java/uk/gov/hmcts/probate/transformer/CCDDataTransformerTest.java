@@ -54,9 +54,7 @@ public class CCDDataTransformerTest {
     private static final BigDecimal FEE_NON_UK_COPIES = new BigDecimal(1.50);
     private static final String PAYMENT_METHOD_CHEQUE = "cheque";
     private static final String PAYMENT_METHOD_FEE = "fee account";
-    private static final String FEE_ACCOUNT = "FeeAct1";
-    private static final String PAYMENT_REF_NUMBER_FEE = "Fee account PBA-FeeAct1";
-    private static final String PAYMENT_REF_NUMBER_CHEQUE = "Cheque (payable to ‘HM Courts & Tribunals Service’)";
+    private static final String FEE_ACCOUNT = "1234";
 
     @Mock
     private CallbackRequest callbackRequestMock;
@@ -180,7 +178,7 @@ public class CCDDataTransformerTest {
         assertAll(ccdData);
         assertCaseSubmissionDate(ccdData);
         assertEquals(APPLICATION_FEE.floatValue(), ccdData.getFee().getApplicationFee().floatValue(), 0.01);
-        assertEquals(PAYMENT_REF_NUMBER_CHEQUE, ccdData.getFee().getPaymentReferenceNumber());
+        assertNull(ccdData.getFee().getSolsFeeAccountNumber());
     }
 
     @Test
@@ -196,7 +194,7 @@ public class CCDDataTransformerTest {
         assertAll(ccdData);
         assertCaseSubmissionDate(ccdData);
         assertEquals(APPLICATION_FEE.floatValue(), ccdData.getFee().getApplicationFee().floatValue(), 0.01);
-        assertEquals(PAYMENT_REF_NUMBER_FEE, ccdData.getFee().getPaymentReferenceNumber());
+        assertEquals(FEE_ACCOUNT, ccdData.getFee().getSolsFeeAccountNumber());
     }
 
     @Test

@@ -27,3 +27,4 @@ java:
 
   postgresql:
     enabled: true
+    

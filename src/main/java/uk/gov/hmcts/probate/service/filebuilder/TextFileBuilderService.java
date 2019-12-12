@@ -30,7 +30,7 @@ public class TextFileBuilderService {
     private void writeDataToFile(String data, String delimiter) {
         try {
             writer.write(data);
-            if (!data.equals("\n")) {
+            if (!data.contains("\n")) {
                 writer.write(delimiter);
             }
         } catch (Exception e) {

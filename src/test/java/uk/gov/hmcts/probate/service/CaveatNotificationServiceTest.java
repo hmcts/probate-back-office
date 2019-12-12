@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.State;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatCallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
@@ -31,6 +32,7 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
+import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT_COVERSHEET;
 import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT_RAISED;
 
@@ -74,6 +76,7 @@ public class CaveatNotificationServiceTest {
     private Document caveatRaised;
     private Document sentEmail;
     private CaveatData caveatData;
+    private CaveatData solsCaveatData;
     private CaveatDetails caveatDetails;
     private CaveatCallbackRequest caveatCallbackRequest;
     private ResponseCaveatData responseCaveatData;
@@ -119,10 +122,44 @@ public class CaveatNotificationServiceTest {
                 .caveatRaisedEmailNotificationRequested("Yes")
                 .build();
 
+        solsCaveatData = CaveatData.builder()
+                .applicationType(ApplicationType.SOLICITOR)
+                .registryLocation("ctsc")
+                .caveatorEmailAddress("solicitor@test.com")
+                .deceasedForenames("forename")
+                .deceasedSurname("surname")
+                .build();
+
         sentEmail = Document.builder().documentFileName(SENT_EMAIL_FILE_NAME).build();
         coversheet = Document.builder().documentFileName(COVERSHEET_FILE_NAME).build();
         caveatRaised = Document.builder().documentFileName(CAVEAT_RAISED_FILE_NAME).build();
 
+    }
+
+    @Test
+    public void testSolsCaveatRaise() throws NotificationClientException {
+        solsCaveatData = CaveatData.builder()
+                .build();
+
+        documents.add(sentEmail);
+
+        responseCaveatData = ResponseCaveatData.builder()
+                .notificationsGenerated(DOCUMENTS_LIST)
+                .paperForm(NO)
+                .build();
+
+        caveatDetails = new CaveatDetails(solsCaveatData, LAST_MODIFIED, ID);
+        caveatCallbackRequest = new CaveatCallbackRequest(caveatDetails);
+
+        when(notificationService.sendCaveatEmail(State.CAVEAT_RAISED_SOLS, caveatDetails)).thenReturn(Document.builder()
+                .documentFileName(SENT_EMAIL_FILE_NAME).build());
+
+        caveatCallbackResponse = CaveatCallbackResponse.builder().caveatData(responseCaveatData).build();
+        when(caveatCallbackResponseTransformer.caveatRaised(caveatCallbackRequest, documents, null)).thenReturn(caveatCallbackResponse);
+
+        caveatNotificationService.solsCaveatRaise(caveatCallbackRequest);
+
+        assertEquals(1, caveatCallbackResponse.getCaveatData().getNotificationsGenerated().size());
     }
 
     @Test
