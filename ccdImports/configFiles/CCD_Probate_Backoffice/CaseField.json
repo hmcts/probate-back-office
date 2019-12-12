@@ -50,6 +50,8 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "paymentReferenceNumber", "Label": "Payment Reference Number", "FieldType": "Text", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "declaration", "Label": "Declaration", "FieldType": "Declaration", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "legalStatement", "Label": "LegalStatement", "FieldType": "LegalStatement", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "welshDeclaration", "Label": "Welsh Declaration", "FieldType": "Declaration", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "welshLegalStatement", "Label": "Welsh LegalStatement", "FieldType": "LegalStatement", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "softStop", "Label": "Soft Stop", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "solsSolicitorFirmName", "Label": "Name of your firm", "FieldType": "Text", "SecurityClassification": "Public", "Min": 1, "Max": 100},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "solsSolicitorAddress", "Label": "Address of your firm", "FieldType": "AddressUK", "SecurityClassification": "Public"},
