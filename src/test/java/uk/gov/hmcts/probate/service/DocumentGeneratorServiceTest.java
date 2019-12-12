@@ -274,7 +274,7 @@ public class DocumentGeneratorServiceTest {
 
 
         assertEquals(ADMON_WILL_FINAL_FILE_NAME,
-                documentGeneratorService.generateGrant(callbackRequest, DocumentStatus.FINAL,DocumentIssueType.REISSUE).getDocumentFileName());
+                documentGeneratorService.getDocument(callbackRequest, DocumentStatus.FINAL,DocumentIssueType.REISSUE).getDocumentFileName());
     }
 
     @Test
@@ -292,7 +292,7 @@ public class DocumentGeneratorServiceTest {
         when(documentTemplateService.getTemplateId(LanguagePreference.WELSH, DocumentStatus.PREVIEW, DocumentIssueType.REISSUE, DocumentCaseType.ADMON_WILL )).thenReturn(DocumentType.WELSH_ADMON_WILL_GRANT_DRAFT);
 
         assertEquals(ADMON_WILL_DRAFT_FILE_NAME,
-                documentGeneratorService.generateGrant(callbackRequest, DocumentStatus.PREVIEW,DocumentIssueType.REISSUE).getDocumentFileName());
+                documentGeneratorService.getDocument(callbackRequest, DocumentStatus.PREVIEW,DocumentIssueType.REISSUE).getDocumentFileName());
     }
 
     @Test
@@ -310,7 +310,7 @@ public class DocumentGeneratorServiceTest {
         when(documentTemplateService.getTemplateId(LanguagePreference.WELSH, DocumentStatus.FINAL, DocumentIssueType.REISSUE,DocumentCaseType.GOP )).thenReturn(DocumentType.WELSH_DIGITAL_GRANT);
 
         assertEquals(DIGITAL_GRANT_FINAL_FILE_NAME,
-                documentGeneratorService.generateGrant(callbackRequest, DocumentStatus.FINAL, DocumentIssueType.REISSUE).getDocumentFileName());
+                documentGeneratorService.getDocument(callbackRequest, DocumentStatus.FINAL, DocumentIssueType.REISSUE).getDocumentFileName());
     }
 
     @Test
@@ -328,7 +328,7 @@ public class DocumentGeneratorServiceTest {
         when(documentTemplateService.getTemplateId(LanguagePreference.WELSH, DocumentStatus.PREVIEW, DocumentIssueType.REISSUE,DocumentCaseType.GOP )).thenReturn(DocumentType.WELSH_DIGITAL_GRANT_DRAFT);
 
         assertEquals(DIGITAL_GRANT_DRAFT_FILE_NAME,
-                documentGeneratorService.generateGrant(callbackRequest, DocumentStatus.PREVIEW, DocumentIssueType.REISSUE).getDocumentFileName());
+                documentGeneratorService.getDocument(callbackRequest, DocumentStatus.PREVIEW, DocumentIssueType.REISSUE).getDocumentFileName());
     }
 
     @Test
@@ -346,7 +346,7 @@ public class DocumentGeneratorServiceTest {
         when(documentTemplateService.getTemplateId(LanguagePreference.WELSH, DocumentStatus.PREVIEW, DocumentIssueType.REISSUE,DocumentCaseType.INTESTACY )).thenReturn(DocumentType.WELSH_INTESTACY_GRANT_DRAFT);
 
         assertEquals(WELSH_INTESTACY_GRANT_DRAFT_FILE_NAME,
-                documentGeneratorService.generateGrant(callbackRequest, DocumentStatus.PREVIEW, DocumentIssueType.REISSUE).getDocumentFileName());
+                documentGeneratorService.getDocument(callbackRequest, DocumentStatus.PREVIEW, DocumentIssueType.REISSUE).getDocumentFileName());
     }
 
     @Test
@@ -364,7 +364,7 @@ public class DocumentGeneratorServiceTest {
         when(documentTemplateService.getTemplateId(LanguagePreference.WELSH, DocumentStatus.FINAL, DocumentIssueType.REISSUE, DocumentCaseType.INTESTACY )).thenReturn(DocumentType.WELSH_INTESTACY_GRANT);
 
         assertEquals(WELSH_INTESTACY_GRANT_FINAL_FILE_NAME,
-                documentGeneratorService.generateGrant(callbackRequest, DocumentStatus.FINAL, DocumentIssueType.REISSUE).getDocumentFileName());
+                documentGeneratorService.getDocument(callbackRequest, DocumentStatus.FINAL, DocumentIssueType.REISSUE).getDocumentFileName());
     }
 
 /////////////////////////////////////////

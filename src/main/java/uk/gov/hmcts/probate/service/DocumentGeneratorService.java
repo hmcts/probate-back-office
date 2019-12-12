@@ -60,7 +60,7 @@ public class DocumentGeneratorService {
     private final PreviewLetterService previewLetterService;
     private final DocumentTemplateService documentTemplateService;
 
-    public Document generateGrant(CallbackRequest callbackRequest, DocumentStatus status, DocumentIssueType issueType) {
+    private Document generateGrant(CallbackRequest callbackRequest, DocumentStatus status, DocumentIssueType issueType) {
         return getDocument(callbackRequest, status, Optional.of(issueType));
     }
 
@@ -214,7 +214,7 @@ public class DocumentGeneratorService {
         return document;
     }
 
-    public Document getPDFGrant(CallbackRequest callbackRequest, DocumentStatus status, DocumentIssueType issueTyp) {
+    private Document getPDFGrant(CallbackRequest callbackRequest, DocumentStatus status, DocumentIssueType issueTyp) {
         Document document;
         if (callbackRequest.getCaseDetails().getData().getCaseType().equals(EDGE_CASE)) {
             document = Document.builder().documentType(DocumentType.EDGE_CASE).build();
