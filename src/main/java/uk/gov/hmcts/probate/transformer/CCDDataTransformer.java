@@ -40,6 +40,7 @@ public class CCDDataTransformer {
                 .caseSubmissionDate(getCaseSubmissionDate(callbackRequest.getCaseDetails().getLastModified()))
                 .solsWillType(callbackRequest.getCaseDetails().getData().getSolsWillType())
                 .solsSolicitorApplying(callbackRequest.getCaseDetails().getData().getSolsSolicitorApplying())
+                .solsSolicitorIsMainApplicant(callbackRequest.getCaseDetails().getData().getSolsSolicitorIsMainApplicant())
                 .solicitor(buildSolicitorDetails(caseData))
                 .deceased(buildDeceasedDetails(caseData))
                 .iht(buildInheritanceTaxDetails(caseData))

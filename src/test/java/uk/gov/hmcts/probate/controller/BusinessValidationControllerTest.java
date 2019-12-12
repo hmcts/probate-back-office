@@ -192,6 +192,7 @@ public class BusinessValidationControllerTest {
                 .ihtFormId(IHT_FORM)
                 .solsSOTName(SOLICITOR_NAME)
                 .solsSolicitorApplying(YES)
+                .solsSolicitorIsMainApplicant(YES)
                 .solsSOTJobTitle(SOLICITOR_JOB_TITLE)
                 .solsPaymentMethods(PAYMENT_METHOD)
                 .applicationFee(APPLICATION_FEE)
