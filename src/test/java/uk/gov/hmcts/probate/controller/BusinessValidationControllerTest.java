@@ -43,6 +43,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static uk.gov.hmcts.probate.model.Constants.REDEC_NOTIFICATION_SENT_STATE;
+import static uk.gov.hmcts.probate.model.Constants.YES;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -190,6 +191,7 @@ public class BusinessValidationControllerTest {
                 .solsSolicitorAddress(solsAddress)
                 .ihtFormId(IHT_FORM)
                 .solsSOTName(SOLICITOR_NAME)
+                .solsSolicitorApplying(YES)
                 .solsSOTJobTitle(SOLICITOR_JOB_TITLE)
                 .solsPaymentMethods(PAYMENT_METHOD)
                 .applicationFee(APPLICATION_FEE)
