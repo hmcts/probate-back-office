@@ -74,6 +74,8 @@ public class NextStepsControllerTest {
     private static final String DECEASED_OTHER_NAMES = "No";
     private static final String DECEASED_DOM_UK = "Yes";
     private static final String SOT_NEED_TO_UPDATE = "Yes";
+    private static final String SOLICITOR_APPLYING = "Yes";
+    private static final String SOLICITOR_IS_MAIN_APPLICANT = "Yes";
 
     private static final BigDecimal APPLICATION_FEE = BigDecimal.TEN;
     private static final BigDecimal FEE_FOR_UK_COPIES = BigDecimal.TEN;
@@ -133,6 +135,8 @@ public class NextStepsControllerTest {
                 .ihtFormId(IHT_FORM)
                 .solsSOTNeedToUpdate(NEED_TO_UPDATE)
                 .solsSOTName(SOLICITOR_NAME)
+                .solsSolicitorApplying(SOLICITOR_APPLYING)
+                .solsSolicitorIsMainApplicant(SOLICITOR_IS_MAIN_APPLICANT)
                 .solsSOTJobTitle(SOLICITOR_JOB_TITLE)
                 .solsPaymentMethods(PAYMENT_METHOD)
                 .applicationFee(APPLICATION_FEE)

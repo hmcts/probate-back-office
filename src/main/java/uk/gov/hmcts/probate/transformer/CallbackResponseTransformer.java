@@ -485,6 +485,8 @@ public class CallbackResponseTransformer {
                 .paperForm(caseData.getPaperForm())
                 .languagePreferenceWelsh(caseData.getLanguagePreferenceWelsh())
                 .caseType(caseData.getCaseType())
+                .solsSolicitorApplying(caseData.getSolsSolicitorApplying())
+                .solsSolicitorIsMainApplicant(caseData.getSolsSolicitorIsMainApplicant())
                 .solsWillType(caseData.getSolsWillType())
                 .solsApplicantRelationshipToDeceased(caseData.getSolsApplicantRelationshipToDeceased())
                 .solsSpouseOrCivilRenouncing(caseData.getSolsSpouseOrCivilRenouncing())
