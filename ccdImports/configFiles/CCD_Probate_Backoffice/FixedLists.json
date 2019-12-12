@@ -55,6 +55,7 @@
   {"LiveFrom": "01/01/2017", "ID": "stopReasonFixedList", "ListElementCode": "CaveatMatch", "ListElement": "Caveat match"},
   {"LiveFrom": "01/01/2017", "ID": "stopReasonFixedList", "ListElementCode": "Other", "ListElement": "Other"},
   {"LiveFrom": "01/01/2017", "ID": "stopReasonFixedList", "ListElementCode": "NotEligible", "ListElement": "Not eligible for digital process"},
+  {"LiveFrom": "01/01/2017", "ID": "stopReasonFixedList", "ListElementCode": "WelshTranslationRequired", "ListElement": "Welsh Translation Required"},
   {"LiveFrom": "01/01/2017", "ID": "probateDocumentTypeEnum", "ListElementCode": "digitalGrant", "ListElement": "Digital Grant"},
   {"LiveFrom": "01/01/2017", "ID": "probateDocumentTypeEnum", "ListElementCode": "digitalGrantDraft", "ListElement": "Digital Grant Draft"},
   {"LiveFrom": "01/01/2017", "ID": "probateDocumentTypeEnum", "ListElementCode": "legalStatement", "ListElement": "Legal Statement"},
