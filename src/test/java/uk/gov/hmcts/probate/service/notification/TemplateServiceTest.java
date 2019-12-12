@@ -263,8 +263,9 @@ public class TemplateServiceTest {
     @Test
     public void getSolsCaveatRaised() {
 
-        String response = templateService.getTemplateId(CAVEAT_RAISED_SOLS, ApplicationType.SOLICITOR, "CTSC");
+        String response = templateService.getTemplateId(CAVEAT_RAISED_SOLS, ApplicationType.SOLICITOR,
+                "CTSC", LanguagePreference.ENGLISH);
 
         assertEquals("solicitor-caveat-raised", response);
-    }
+     }
 }

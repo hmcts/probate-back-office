@@ -47,7 +47,7 @@ public class TemplateService {
                     return emailTemplates.getCaveatRaised();
                 }
             case CAVEAT_RAISED_SOLS:
-                return notificationTemplates.getEmail().get(applicationType).getCaveatRaisedSols();
+                return notificationTemplates.getEmail().get(languagePreference).get(applicationType).getCaveatRaisedSols();
             default:
                 throw new BadRequestException("Unsupported state");
         }
