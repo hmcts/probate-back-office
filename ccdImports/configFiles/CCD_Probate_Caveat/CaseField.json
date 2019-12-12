@@ -37,6 +37,7 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "sendToBulkPrintRequested", "Label": "Do you wish to send via bulk print?", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "notificationsGenerated", "Label": "Notifications generated", "FieldType": "Collection", "FieldTypeParameter": "cavProbateDocument", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "bulkPrintId", "Label": "Bulk print send letter Ids", "FieldType": "Collection", "FieldTypeParameter": "BulkPrint", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "bulkScanCaseReference", "Label": "Bulk scan case reference", "FieldType": "Text", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "applicationSubmittedDate","Label": "Date application was submitted","HintText": "This is the date that the application is received by the Registry either via post or digital","FieldType": "Date","SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "paperForm", "Label": "Is this a paper form?", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "solsSolicitorFirmName", "Label": "Name of your firm", "FieldType": "Text", "SecurityClassification": "Public", "Min": 1, "Max": 100},

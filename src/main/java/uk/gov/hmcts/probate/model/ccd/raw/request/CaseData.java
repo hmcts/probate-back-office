@@ -497,6 +497,7 @@ public class CaseData {
     private final DocumentLink previewLink;
     @Builder.Default
     private List<CollectionMember<ParagraphDetail>> paragraphDetails = new ArrayList<>();
+    private String bulkScanCaseReference;
 
     @SuppressWarnings("squid:S1170")
     @Getter(lazy = true)

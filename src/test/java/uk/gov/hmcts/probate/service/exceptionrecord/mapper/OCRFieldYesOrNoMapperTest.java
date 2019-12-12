@@ -13,7 +13,7 @@ import static org.junit.Assert.assertTrue;
 @Component
 public class OCRFieldYesOrNoMapperTest {
 
-    OCRFieldYesOrNoMapper yesOrNoMapper = new OCRFieldYesOrNoMapper();
+    private OCRFieldYesOrNoMapper yesOrNoMapper = new OCRFieldYesOrNoMapper();
 
     @Test
     public void testTrueAsYesState() {
