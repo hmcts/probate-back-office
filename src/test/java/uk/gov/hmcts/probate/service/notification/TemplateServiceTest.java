@@ -19,6 +19,7 @@ import static uk.gov.hmcts.probate.model.State.CASE_STOPPED;
 import static uk.gov.hmcts.probate.model.State.CASE_STOPPED_CAVEAT;
 import static uk.gov.hmcts.probate.model.State.CASE_STOPPED_REQUEST_INFORMATION;
 import static uk.gov.hmcts.probate.model.State.CAVEAT_RAISED;
+import static uk.gov.hmcts.probate.model.State.CAVEAT_RAISED_SOLS;
 import static uk.gov.hmcts.probate.model.State.DOCUMENTS_RECEIVED;
 import static uk.gov.hmcts.probate.model.State.GENERAL_CAVEAT_MESSAGE;
 import static uk.gov.hmcts.probate.model.State.GRANT_ISSUED;
@@ -257,5 +258,13 @@ public class TemplateServiceTest {
         String responseWelsh = templateService.getTemplateId(CAVEAT_RAISED, ApplicationType.SOLICITOR, "CTSC",
                 LanguagePreference.WELSH);
         assertEquals("sols-ctsc-caveat-raised-welsh", responseWelsh);
+    }
+
+    @Test
+    public void getSolsCaveatRaised() {
+
+        String response = templateService.getTemplateId(CAVEAT_RAISED_SOLS, ApplicationType.SOLICITOR, "CTSC");
+
+        assertEquals("solicitor-caveat-raised", response);
     }
 }

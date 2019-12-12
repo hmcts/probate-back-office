@@ -134,7 +134,14 @@ public class NotificationService {
         String templateId = templateService.getTemplateId(state, caveatData.getApplicationType()
                 , caveatData.getRegistryLocation() , LanguagePreference.ENGLISH) ;
         String emailAddress = caveatData.getCaveatorEmailAddress();
-        Map<String, String> personalisation = caveatPersonalisationService.getCaveatPersonalisation(caveatDetails, registry);
+        Map<String, String> personalisation;
+
+        if (caveatData.getSolsSolicitorAppReference() != null) {
+            personalisation = caveatPersonalisationService.getSolsCaveatPersonalisation(caveatDetails, registry);
+        } else {
+            personalisation = caveatPersonalisationService.getCaveatPersonalisation(caveatDetails, registry);
+        }
+
         String reference = caveatDetails.getId().toString();
 
         SendEmailResponse response;
@@ -147,6 +154,9 @@ public class NotificationService {
                 documentType = SENT_EMAIL;
                 break;
             case CAVEAT_RAISED:
+                documentType = SENT_EMAIL;
+                break;
+            case CAVEAT_RAISED_SOLS:
                 documentType = SENT_EMAIL;
                 break;
             default:

@@ -133,6 +133,7 @@ notifications:
           excelaData: "pa-excela-data"
           caveatRaised: "sols-caveat-raised"
           caveatRaisedCtsc: "sols-ctsc-caveat-raised"
+          caveatRaisedSols: "solicitor-caveat-raised"
           requestInformation: "sols-request-information"
           redeclarationSot: "sols-redeclaration-sot"
       welsh:
