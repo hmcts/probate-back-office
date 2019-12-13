@@ -74,6 +74,7 @@ public class CaveatCallbackResponseTransformerTest {
     private static final LocalDate CAV_SUBMISSION_DATE = LocalDate.now();
     private static final String CAV_FORMATTED_SUBMISSION_DATE = dateTimeFormatter.format(CAV_SUBMISSION_DATE);
     private static final LocalDate CAV_EXPIRY_DATE = LocalDate.now().plusMonths(CAVEAT_LIFESPAN);
+    private static final String CAV_AUTO_EXPIRED = "Yes";
 
     private static final String CAV_FORMATTED_EXPIRY_DATE = dateTimeFormatter.format(CAV_EXPIRY_DATE);
 
@@ -134,6 +135,7 @@ public class CaveatCallbackResponseTransformerTest {
                 .recordId(CAV_RECORD_ID)
                 .legacyCaseViewUrl(CAV_LEGACY_CASE_URL)
                 .applicationSubmittedDate(CAV_SUBMISSION_DATE)
+                .autoClosedExpiry(CAV_AUTO_EXPIRED)
                 .paperForm(YES)
                 .legacyType(CAV_LEGACY_CASE_TYPE)
                 .solsPaymentMethods(SOLS_PAYMENT_METHOD)
@@ -321,6 +323,8 @@ public class CaveatCallbackResponseTransformerTest {
 
         assertEquals(SOLS_PAYMENT_METHOD, caveatCallbackResponse.getCaveatData().getSolsPaymentMethods());
         assertEquals(SOLS_FEE_ACC, caveatCallbackResponse.getCaveatData().getSolsFeeAccountNumber());
+
+        assertEquals(YES, caveatCallbackResponse.getCaveatData().getAutoClosedExpiry());
     }
 
     private void assertApplicationType(CaveatCallbackResponse caveatCallbackResponse, ApplicationType cavApplicationType) {

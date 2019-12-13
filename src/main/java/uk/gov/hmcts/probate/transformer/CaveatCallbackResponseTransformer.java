@@ -171,7 +171,8 @@ public class CaveatCallbackResponseTransformer {
                 .sendToBulkPrintRequested(caveatData.getSendToBulkPrintRequested())
                 .caveatRaisedEmailNotificationRequested(caveatData.getCaveatRaisedEmailNotificationRequested())
                 .bulkPrintId(caveatData.getBulkPrintId())
-                .applicationSubmittedDate(transformToString(caveatData.getApplicationSubmittedDate()));
+                .applicationSubmittedDate(transformToString(caveatData.getApplicationSubmittedDate()))
+                .autoClosedExpiry(caveatData.getAutoClosedExpiry());
     }
 
     public CaseCreationDetails newCaveatCaseTransform(uk.gov.hmcts.reform.probate.model.cases.caveat.CaveatData caveatData) {

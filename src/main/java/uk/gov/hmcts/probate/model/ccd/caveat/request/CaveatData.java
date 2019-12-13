@@ -144,6 +144,8 @@ public class CaveatData {
     private String legacyType;
     private String legacyCaseViewUrl;
 
+    private String autoClosedExpiry;
+
     public String getDeceasedFullName() {
         return String.join(" ", deceasedForenames, deceasedSurname);
     }

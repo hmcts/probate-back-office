@@ -8,5 +8,6 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "CaseFieldID": "deceasedDateOfDeath", "Label": "Date of death", "DisplayOrder": 7},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "CaseFieldID": "caveatorForenames", "Label": "Caveator forename(s)", "DisplayOrder": 8},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "CaseFieldID": "caveatorSurname", "Label": "Caveator surname(s)", "DisplayOrder": 9},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "CaseFieldID": "expiryDate", "Label": "Expiry date", "DisplayOrder": 10}
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "CaseFieldID": "expiryDate", "Label": "Expiry date", "DisplayOrder": 10},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "CaseFieldID": "autoClosedExpiry", "Label": "Auto closed on expiry?", "DisplayOrder": 11}
 ]

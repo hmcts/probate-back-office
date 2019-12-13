@@ -65,4 +65,6 @@ public class ResponseCaveatData {
     private String legacyType;
     private String legacyCaseViewUrl;
     private String paperForm;
+    private String autoClosedExpiry;
+
 }

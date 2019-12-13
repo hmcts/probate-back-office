@@ -46,5 +46,6 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "solsApplicantNameSection", "Label": "### What's the full name of the applicant?", "FieldType": "Label", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "solsDeceasedNameSection", "Label": "### What's the full name of the deceased? \nUse the name on the death certificate", "HintText": "Use the name on the death certificate", "FieldType": "Label", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "solsPaymentMethods", "Label": "How do you want to pay?", "FieldType": "FixedList", "FieldTypeParameter": "solsPaymentMethods", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "solsFeeAccountNumber", "Label": "Fee account number", "HintText": "Enter your account number without the letters PBA, for example 001234", "FieldType": "Text", "SecurityClassification": "Public"}
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "solsFeeAccountNumber", "Label": "Fee account number", "HintText": "Enter your account number without the letters PBA, for example 001234", "FieldType": "Text", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "autoClosedExpiry", "Label": "Closed automatially due to expiry", "FieldType": "YesOrNo", "SecurityClassification": "Public"}
 ]
