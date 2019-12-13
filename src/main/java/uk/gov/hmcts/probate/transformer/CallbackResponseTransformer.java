@@ -469,7 +469,7 @@ public class CallbackResponseTransformer {
 
                 .paperForm(caseData.getPaperForm())
                 .caseType(caseData.getCaseType())
-                .solsSolicitorApplying(caseData.getSolsSolicitorApplying())
+                .solsSolicitoIsApplying(caseData.getSolsSolicitorIsApplying())
                 .solsSolicitorIsMainApplicant(caseData.getSolsSolicitorIsMainApplicant())
                 .solsWillType(caseData.getSolsWillType())
                 .solsApplicantRelationshipToDeceased(caseData.getSolsApplicantRelationshipToDeceased())

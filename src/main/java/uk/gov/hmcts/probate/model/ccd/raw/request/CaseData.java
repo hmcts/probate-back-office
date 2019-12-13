@@ -75,8 +75,8 @@ public class CaseData {
 
     private final String solsSolicitorPhoneNumber;
 
-    @NotBlank(groups = {ApplicationCreatedGroup.class}, message = "{solsSolicitorApplyingIsNull}")
-    private final String solsSolicitorApplying;
+    @NotBlank(groups = {ApplicationCreatedGroup.class}, message = "{solsSolicitorIsApplyingIsNull}")
+    private final String solsSolicitorIsApplying;
 
     private final String solsSolicitorIsMainApplicant;
 

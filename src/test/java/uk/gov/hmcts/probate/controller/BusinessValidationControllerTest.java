@@ -191,7 +191,7 @@ public class BusinessValidationControllerTest {
                 .solsSolicitorAddress(solsAddress)
                 .ihtFormId(IHT_FORM)
                 .solsSOTName(SOLICITOR_NAME)
-                .solsSolicitorApplying(YES)
+                .solsSolicitorIsApplying(YES)
                 .solsSolicitorIsMainApplicant(YES)
                 .solsSOTJobTitle(SOLICITOR_JOB_TITLE)
                 .solsPaymentMethods(PAYMENT_METHOD)

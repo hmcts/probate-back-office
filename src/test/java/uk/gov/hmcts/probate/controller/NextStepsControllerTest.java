@@ -135,7 +135,7 @@ public class NextStepsControllerTest {
                 .ihtFormId(IHT_FORM)
                 .solsSOTNeedToUpdate(NEED_TO_UPDATE)
                 .solsSOTName(SOLICITOR_NAME)
-                .solsSolicitorApplying(SOLICITOR_APPLYING)
+                .solsSolicitorIsApplying(SOLICITOR_APPLYING)
                 .solsSolicitorIsMainApplicant(SOLICITOR_IS_MAIN_APPLICANT)
                 .solsSOTJobTitle(SOLICITOR_JOB_TITLE)
                 .solsPaymentMethods(PAYMENT_METHOD)
