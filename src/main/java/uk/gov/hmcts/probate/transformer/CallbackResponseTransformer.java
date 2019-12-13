@@ -469,7 +469,7 @@ public class CallbackResponseTransformer {
 
                 .paperForm(caseData.getPaperForm())
                 .caseType(caseData.getCaseType())
-                .solsSolicitoIsApplying(caseData.getSolsSolicitorIsApplying())
+                .solsSolicitorIsApplying(caseData.getSolsSolicitorIsApplying())
                 .solsSolicitorIsMainApplicant(caseData.getSolsSolicitorIsMainApplicant())
                 .solsWillType(caseData.getSolsWillType())
                 .solsApplicantRelationshipToDeceased(caseData.getSolsApplicantRelationshipToDeceased())
@@ -675,7 +675,7 @@ public class CallbackResponseTransformer {
 
         if (caseData.getApplicationType() != ApplicationType.PERSONAL) {
             builder
-                    .solsSOTName(caseData.getSolsSOTName())
+                    .solsSOTName(getSolsSOTName(caseData.getSolsSOTForenames(), caseData.getSolsSOTSurname()))
                     .solsSOTJobTitle(caseData.getSolsSOTJobTitle())
                     .solsSolicitorAppReference(caseData.getSolsSolicitorAppReference())
                     .solsSolicitorFirmName(caseData.getSolsSolicitorFirmName())
@@ -773,7 +773,7 @@ public class CallbackResponseTransformer {
 
         if (caseData.getApplicationType() != ApplicationType.PERSONAL) {
             builder
-                    .solsSOTName(caseData.getSolsSOTName())
+                    .solsSOTName(getSolsSOTName(caseData.getSolsSOTForenames(), caseData.getSolsSOTSurname()))
                     .solsSOTJobTitle(caseData.getSolsSOTJobTitle())
                     .solsSolicitorAppReference(caseData.getSolsSolicitorAppReference())
                     .solsSolicitorFirmName(caseData.getSolsSolicitorFirmName())
@@ -990,5 +990,12 @@ public class CallbackResponseTransformer {
             }
         }
         return templateName;
+    }
+
+    private String getSolsSOTName(String firstNames, String surname) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(firstNames);
+        sb.append(" " + surname);
+        return sb.toString();
     }
 }

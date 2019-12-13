@@ -52,6 +52,8 @@ public class ResponseCaseData {
     private final String solsSolicitorEmail;
     private final String solsSolicitorPhoneNumber;
     private final String solsSOTName;
+    private final String solsSOTForenames;
+    private final String solsSOTSurname;
     private final String solsSOTJobTitle;
     private final String solsSolicitorAppReference;
     private final String ihtFormId;
