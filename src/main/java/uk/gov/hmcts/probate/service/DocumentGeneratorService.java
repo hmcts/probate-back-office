@@ -77,14 +77,16 @@ public class DocumentGeneratorService {
         images.put(SEAL_IMAGE, SEAL_FILE_PATH);
 
         Document document;
-        Map<String, Object> placeholders = genericMapperService.addCaseDataWithImages(images, caseDetails);
         if (status == DocumentStatus.FINAL) {
             log.info("Generating Grant document");
+            Map<String, Object> placeholders = genericMapperService.addCaseDataWithImages(images, caseDetails);
             placeholders.put("Signature", "image:base64:" + pdfManagementService.getDecodedSignature());
+            document = generateAppropriateDocument(caseDetails, placeholders, status, issueType);
         } else {
             images.put(WATERMARK, WATERMARK_FILE_PATH);
+            Map<String, Object> placeholders = genericMapperService.addCaseDataWithImages(images, caseDetails);
+            document = generateAppropriateDocument(caseDetails, placeholders, status, issueType);
         }
-        document = generateAppropriateDocument(caseDetails, placeholders, status, issueType);
 
         expireDrafts(callbackRequest);
 

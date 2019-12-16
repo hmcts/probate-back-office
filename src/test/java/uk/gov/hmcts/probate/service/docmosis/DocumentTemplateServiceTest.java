@@ -40,6 +40,11 @@ public class DocumentTemplateServiceTest {
 
     @Test
     public void shouldGetGrantOfProbateTemplate() {
+        DocumentType responseEnglish = documentTemplateService.getTemplateId(LanguagePreference.ENGLISH, DocumentStatus.FINAL, DocumentIssueType.GRANT,DocumentCaseType.GOP);
+        assertEquals(DocumentType.DIGITAL_GRANT, responseEnglish);
+
+        DocumentType responseEnglishDraft = documentTemplateService.getTemplateId(LanguagePreference.ENGLISH, DocumentStatus.PREVIEW, DocumentIssueType.GRANT,DocumentCaseType.GOP);
+        assertEquals(DocumentType.DIGITAL_GRANT_DRAFT, responseEnglishDraft);
 
         DocumentType response = documentTemplateService.getTemplateId(LanguagePreference.ENGLISH, DocumentStatus.FINAL, DocumentIssueType.REISSUE,DocumentCaseType.GOP);
         assertEquals(DocumentType.DIGITAL_GRANT_REISSUE, response);
@@ -52,11 +57,18 @@ public class DocumentTemplateServiceTest {
 
         DocumentType responseDraftWelsh = documentTemplateService.getTemplateId(LanguagePreference.WELSH, DocumentStatus.PREVIEW,  DocumentIssueType.GRANT,DocumentCaseType.GOP);
         assertEquals(DocumentType.WELSH_DIGITAL_GRANT_DRAFT, responseDraftWelsh);
+
+
     }
 
 
     @Test
     public void shouldGetIntestacyTemplate() {
+        DocumentType responseEnglish = documentTemplateService.getTemplateId(LanguagePreference.ENGLISH, DocumentStatus.FINAL, DocumentIssueType.GRANT,DocumentCaseType.INTESTACY);
+        assertEquals(DocumentType.INTESTACY_GRANT, responseEnglish);
+
+        DocumentType responseEnglishDraft = documentTemplateService.getTemplateId(LanguagePreference.ENGLISH, DocumentStatus.PREVIEW, DocumentIssueType.GRANT,DocumentCaseType.INTESTACY);
+        assertEquals(DocumentType.INTESTACY_GRANT_DRAFT, responseEnglishDraft);
 
         DocumentType response = documentTemplateService.getTemplateId(LanguagePreference.ENGLISH, DocumentStatus.FINAL, DocumentIssueType.REISSUE, DocumentCaseType.INTESTACY);
         assertEquals(DocumentType.INTESTACY_GRANT_REISSUE, response);
@@ -73,6 +85,11 @@ public class DocumentTemplateServiceTest {
 
     @Test
     public void shouldGetAdmonWillTemplate() {
+        DocumentType responseEnglish = documentTemplateService.getTemplateId(LanguagePreference.ENGLISH, DocumentStatus.FINAL, DocumentIssueType.GRANT,DocumentCaseType.ADMON_WILL);
+        assertEquals(DocumentType.ADMON_WILL_GRANT, responseEnglish);
+
+        DocumentType responseEnglishDraft = documentTemplateService.getTemplateId(LanguagePreference.ENGLISH, DocumentStatus.PREVIEW, DocumentIssueType.GRANT,DocumentCaseType.ADMON_WILL);
+        assertEquals(DocumentType.ADMON_WILL_GRANT_DRAFT, responseEnglishDraft);
 
         DocumentType response = documentTemplateService.getTemplateId(LanguagePreference.ENGLISH, DocumentStatus.FINAL, DocumentIssueType.REISSUE,DocumentCaseType.ADMON_WILL);
         assertEquals(DocumentType.ADMON_WILL_GRANT_REISSUE, response);
