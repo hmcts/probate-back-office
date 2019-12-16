@@ -75,10 +75,14 @@ public class CaseData {
 
     private final String solsSolicitorPhoneNumber;
 
-    @NotBlank(groups = {ApplicationCreatedGroup.class}, message = "{solsSolicitorIsApplyingIsNull}")
-    private final String solsSolicitorIsApplying;
+    @NotBlank(groups = {ApplicationCreatedGroup.class}, message = "{solsSolicitorIsApplyingExecIsNull}")
+    private final String solsSolicitorIsApplyingExec;
 
     private final String solsSolicitorIsMainApplicant;
+
+    private final String solsSolicitorIsApplying;
+
+    private final String solsSolicitorNotApplyingReason;
 
     // EVENT = solicitorUpdateApplication
     @NotBlank(groups = {ApplicationUpdatedGroup.class, AmendCaseDetailsGroup.class},

@@ -19,6 +19,7 @@ import uk.gov.hmcts.reform.pdf.service.client.exception.PDFServiceClientExceptio
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.io.FileOutputStream;
 import java.util.Map;
 
 import static uk.gov.hmcts.probate.insights.AppInsightsEvent.REQUEST_SENT;
@@ -37,13 +38,20 @@ public class PDFGeneratorService {
     private final DocmosisPdfGenerationService docmosisPdfGenerationService;
 
     public EvidenceManagementFileUpload generatePdf(DocumentType documentType, String pdfGenerationData) {
-        byte[] postResult;
-        try {
-            postResult = generateFromHtml(documentType.getTemplateName(), pdfGenerationData);
-        } catch (IOException | PDFServiceClientException e) {
-            log.error(e.getMessage(), e);
-            throw new ClientException(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage());
+        byte[] postResult = new byte[0];
+//        try {
+//            postResult = generateFromHtml(documentType.getTemplateName(), pdfGenerationData);
+//        } catch (IOException | PDFServiceClientException e) {
+//            log.error(e.getMessage(), e);
+//            throw new ClientException(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage());
+//        }
+        try (FileOutputStream fos = new FileOutputStream("ls")) {
+            fos.write(generateFromHtml(documentType.getTemplateName(), pdfGenerationData));
+            //fos.close(); There is no more need for this line since you had created the instance of "fos" inside the try. And this will automatically close the OutputStream
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
         }
+
         return new EvidenceManagementFileUpload(MediaType.APPLICATION_PDF, postResult);
     }
 

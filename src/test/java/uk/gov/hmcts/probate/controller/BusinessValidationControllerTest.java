@@ -103,6 +103,7 @@ public class BusinessValidationControllerTest {
     private static final String RESIDUARY_TYPE = "Legatee";
     private static final String LIFE_INTEREST = "No";
     private static final String ANSWER_NO = "No";
+    private static final String SOLS_NOT_APPLYING_REASON = "Power reserved";
 
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private static final String SOLS_VALIDATE_URL = "/case/sols-validate";
@@ -191,8 +192,10 @@ public class BusinessValidationControllerTest {
                 .solsSolicitorAddress(solsAddress)
                 .ihtFormId(IHT_FORM)
                 .solsSOTName(SOLICITOR_NAME)
-                .solsSolicitorIsApplying(YES)
+                .solsSolicitorIsApplyingExec(YES)
                 .solsSolicitorIsMainApplicant(YES)
+                .solsSolicitorIsApplying(YES)
+                .solsSolicitorNotApplyingReason(SOLS_NOT_APPLYING_REASON)
                 .solsSOTJobTitle(SOLICITOR_JOB_TITLE)
                 .solsPaymentMethods(PAYMENT_METHOD)
                 .applicationFee(APPLICATION_FEE)
