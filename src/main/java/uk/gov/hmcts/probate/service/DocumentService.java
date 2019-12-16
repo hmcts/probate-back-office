@@ -68,6 +68,14 @@ public class DocumentService {
                         .filter(collectionMember -> collectionMember.getValue().getDocumentType().equals(ADMON_WILL_GRANT_REISSUE_DRAFT))
                         .collect(Collectors.toList()));
                 break;
+            case WELSH_DIGITAL_GRANT_DRAFT:
+            case WELSH_ADMON_WILL_GRANT_DRAFT:
+            case WELSH_INTESTACY_GRANT_DRAFT:
+                documentsToExpire.addAll(callbackRequest.getCaseDetails().getData()
+                        .getProbateDocumentsGenerated().stream()
+                        .filter(collectionMember -> collectionMember.getValue().getDocumentType().equals(documentType))
+                        .collect(Collectors.toList()));
+                break;
             default:
                 documentsToExpire.addAll(callbackRequest.getCaseDetails().getData()
                         .getProbateDocumentsGenerated().stream()
