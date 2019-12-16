@@ -52,8 +52,6 @@ public class DocumentGeneratorService {
     private static final String SEAL_FILE_PATH = "sealImage.txt";
     private static final String WATERMARK = "draftbackground";
     private static final String WATERMARK_FILE_PATH = "watermarkImage.txt";
-    private static final String DRAFT = "preview";
-    private static final String FINAL = "final";
     private static final String FULL_REDEC = "fullRedec";
     private static final String APP_NAME = "applicantName";
     private final PDFManagementService pdfManagementService;
@@ -209,9 +207,10 @@ public class DocumentGeneratorService {
         if (caseDetails.getData().getCaseType().equals(EDGE_CASE)) {
             document = Document.builder().documentType(DocumentType.EDGE_CASE).build();
         } else {
-            DocumentType template = getDocumentType(caseDetails, status, issueType.orElse(DocumentIssueType.GRANT));
+            DocumentIssueType documentIssueType = issueType.orElse(DocumentIssueType.GRANT);
+            DocumentType template = getDocumentType(caseDetails, status, documentIssueType);
             document = pdfManagementService.generateDocmosisDocumentAndUpload(placeholders, template);
-            log.info("For the case id {}, generated {} grant with  status {}, issue type {} and case type {} ", caseDetails.getId(), caseDetails.getData().getLanguagePreference(), status, issueType.get(),
+            log.info("For the case id {}, generated {} grant with  status {}, issue type {} and case type {} ", caseDetails.getId(), caseDetails.getData().getLanguagePreference(), status, documentIssueType,
                     caseDetails.getData().getCaseType());
         }
         return document;
