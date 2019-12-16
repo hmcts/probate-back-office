@@ -49,6 +49,7 @@ public class DocumentGeneratorServiceTest {
     private static final String DIGITAL_GRANT_FINAL_FILE_NAME = "welshDigitalGrantFinal.pdf";
     private static final String WELSH_INTESTACY_GRANT_DRAFT_FILE_NAME = "welshIntestacyGrantDraft.pdf";
     private static final String WELSH_INTESTACY_GRANT_FINAL_FILE_NAME = "welshIntestacyGrantFinal.pdf";
+    private static final String DIGITAL_GRANT_FILE_NAME = "digitalGrantDraft.pdf";
 
 
     private CallbackRequest callbackRequest;
@@ -476,4 +477,36 @@ public class DocumentGeneratorServiceTest {
         assertEquals(Document.builder().documentType(DocumentType.ASSEMBLED_LETTER).build(),
                 documentGeneratorService.generateLetter(callbackRequest, false));
     }
+
+    @Test
+    public void testGeneratePDFDocument() {
+        CaseDetails caseDetails =
+                new CaseDetails(CaseData.builder().caseType("digitalGrant").registryLocation("Bristol").
+                        build(),
+                        LAST_MODIFIED, CASE_ID);
+
+        callbackRequest = new CallbackRequest(caseDetails);
+
+        when(pdfManagementService.generateAndUpload(callbackRequest, DocumentType.DIGITAL_GRANT))
+                .thenReturn(Document.builder().documentType(DocumentType.DIGITAL_GRANT).documentFileName(DIGITAL_GRANT_FILE_NAME)
+                        .build());
+
+        when(documentTemplateService.getTemplateId(LanguagePreference.ENGLISH, DocumentStatus.FINAL, DocumentIssueType.GRANT,DocumentCaseType.GOP )).thenReturn(DocumentType.DIGITAL_GRANT);
+
+        assertEquals(DIGITAL_GRANT_FILE_NAME,
+                documentGeneratorService.getDocument(callbackRequest, DocumentStatus.FINAL, DocumentIssueType.GRANT).getDocumentFileName());
+    }
+
+    @Test
+    public void testGenerateEdgeCasePDFDocument() {
+        CaseDetails caseDetails =
+                new CaseDetails(CaseData.builder().caseType("edgeCase").registryLocation("Bristol").
+                        build(),
+                        LAST_MODIFIED, CASE_ID);
+
+        callbackRequest = new CallbackRequest(caseDetails);
+        assertEquals(DocumentType.EDGE_CASE,
+                documentGeneratorService.getDocument(callbackRequest, DocumentStatus.FINAL, DocumentIssueType.GRANT).getDocumentType());
+    }
+
 }

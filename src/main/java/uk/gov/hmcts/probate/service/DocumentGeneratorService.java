@@ -3,8 +3,12 @@ package uk.gov.hmcts.probate.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
-import uk.gov.hmcts.probate.model.*;
+import uk.gov.hmcts.probate.model.ApplicationType;
+import uk.gov.hmcts.probate.model.DocumentCaseType;
+import uk.gov.hmcts.probate.model.DocumentIssueType;
+import uk.gov.hmcts.probate.model.DocumentStatus;
+import uk.gov.hmcts.probate.model.DocumentType;
+import uk.gov.hmcts.probate.model.ExecutorsApplyingNotification;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
@@ -20,13 +24,10 @@ import java.util.Optional;
 
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_DRAFT;
-import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_REISSUE_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_DRAFT;
-import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_REISSUE_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_DRAFT;
-import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_REISSUE_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_ADMON;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_INTESTACY;
@@ -34,6 +35,7 @@ import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_ADMON_WILL_GRANT_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_DIGITAL_GRANT_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_INTESTACY_GRANT_DRAFT;
+
 
 @Slf4j
 @Service
@@ -170,9 +172,8 @@ public class DocumentGeneratorService {
             placeholders.putAll(mappedImages);
         }
 
-        Document letterDocument = pdfManagementService.generateDocmosisDocumentAndUpload(placeholders,
+        return pdfManagementService.generateDocmosisDocumentAndUpload(placeholders,
                 DocumentType.ASSEMBLED_LETTER);
-        return letterDocument;
     }
 
     private Document generateSolicitorSoT(CallbackRequest callbackRequest) {
@@ -208,7 +209,7 @@ public class DocumentGeneratorService {
         if (caseDetails.getData().getCaseType().equals(EDGE_CASE)) {
             document = Document.builder().documentType(DocumentType.EDGE_CASE).build();
         } else {
-            DocumentType template = getDocumentType(caseDetails, status, issueType.get());
+            DocumentType template = getDocumentType(caseDetails, status, issueType.orElse(DocumentIssueType.GRANT));
             document = pdfManagementService.generateDocmosisDocumentAndUpload(placeholders, template);
             log.info("For the case id {}, generated {} grant with  status {}, issue type {} and case type {} ", caseDetails.getId(), caseDetails.getData().getLanguagePreference(), status, issueType.get(),
                     caseDetails.getData().getCaseType());
@@ -216,12 +217,12 @@ public class DocumentGeneratorService {
         return document;
     }
 
-    private Document getPDFGrant(CallbackRequest callbackRequest, DocumentStatus status, DocumentIssueType issueTyp) {
+    private Document getPDFGrant(CallbackRequest callbackRequest, DocumentStatus status, DocumentIssueType issueType) {
         Document document;
         if (callbackRequest.getCaseDetails().getData().getCaseType().equals(EDGE_CASE)) {
             document = Document.builder().documentType(DocumentType.EDGE_CASE).build();
         } else {
-            DocumentType template = getDocumentType(callbackRequest.getCaseDetails(), status, issueTyp);
+            DocumentType template = getDocumentType(callbackRequest.getCaseDetails(), status, issueType);
             document = pdfManagementService.generateAndUpload(callbackRequest, template);
             log.info("Generated and Uploaded {} {} document with template {} for the case id {}", callbackRequest.getCaseDetails().getData().getCaseType(), status,
                     template.getTemplateName(), callbackRequest.getCaseDetails().getId().toString());
