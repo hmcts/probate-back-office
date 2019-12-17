@@ -737,7 +737,7 @@ public class CallbackResponseTransformer {
                         .primaryApplicantPhoneNumber(caseData.getSolsSolicitorPhoneNumber())
                         .primaryApplicantEmailAddress(caseData.getSolsSolicitorEmail())
                         .primaryApplicantAddress(caseData.getSolsSolicitorAddress())
-                        .primaryApplicantHasAlias(NO)
+                        .primaryApplicantAlias(NO)
                         .primaryApplicantIsApplying(caseData.getSolsSolicitorIsApplying())
                         .solsPrimaryExecutorNotApplyingReason(caseData.getSolsSolicitorNotApplyingReason());
             }
@@ -842,6 +842,23 @@ public class CallbackResponseTransformer {
         if (!isCodicil(caseData)) {
             builder
                     .willNumberOfCodicils(null);
+        }
+
+        if (isApplyAsExecutor(caseData)) {
+            if (YES.equals(caseData.getSolsSolicitorIsMainApplicant())) {
+                builder
+                        .primaryApplicantForenames(caseData.getSolsSOTForenames())
+                        .primaryApplicantSurname(caseData.getSolsSOTSurname())
+                        .primaryApplicantPhoneNumber(caseData.getSolsSolicitorPhoneNumber())
+                        .primaryApplicantEmailAddress(caseData.getSolsSolicitorEmail())
+                        .primaryApplicantAddress(caseData.getSolsSolicitorAddress())
+                        .primaryApplicantHasAlias(NO)
+                        .primaryApplicantIsApplying(caseData.getSolsSolicitorIsApplying())
+                        .solsPrimaryExecutorNotApplyingReason(caseData.getSolsSolicitorNotApplyingReason());
+            }
+        } else {
+            builder
+                    .primaryApplicantAlias(caseData.getPrimaryApplicantAlias());
         }
 
         if (caseData.getCaseType() == null) {
