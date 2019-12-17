@@ -682,6 +682,8 @@ public class CallbackResponseTransformer {
 
         if (caseData.getApplicationType() != ApplicationType.PERSONAL) {
             builder
+                    .solsSOTForenames(caseData.getSolsSOTForenames())
+                    .solsSOTSurname(caseData.getSolsSOTSurname())
                     .solsSOTName(getSolsSOTName(caseData.getSolsSOTForenames(), caseData.getSolsSOTSurname()))
                     .solsSOTJobTitle(caseData.getSolsSOTJobTitle())
                     .solsSolicitorAppReference(caseData.getSolsSolicitorAppReference())
@@ -796,6 +798,8 @@ public class CallbackResponseTransformer {
 
         if (caseData.getApplicationType() != ApplicationType.PERSONAL) {
             builder
+                    .solsSOTForenames(caseData.getSolsSOTForenames())
+                    .solsSOTSurname(caseData.getSolsSOTSurname())
                     .solsSOTName(getSolsSOTName(caseData.getSolsSOTForenames(), caseData.getSolsSOTSurname()))
                     .solsSOTJobTitle(caseData.getSolsSOTJobTitle())
                     .solsSolicitorAppReference(caseData.getSolsSolicitorAppReference())
