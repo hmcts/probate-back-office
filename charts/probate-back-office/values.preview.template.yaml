@@ -4,6 +4,7 @@ tags:
 java:
   image: ${IMAGE_NAME}
   ingressHost: ${SERVICE_FQDN}
+  aadIdentityName:
   environment:
     PROBATE_POSTGRESQL_USER: "{{ .Values.postgresql.postgresqlUsername}}"
     PROBATE_POSTGRESQL_PASSWORD: "{{ .Values.postgresql.postgresqlPassword}}"
