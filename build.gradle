@@ -1,34 +1,37 @@
 buildscript {
-  ext {
-    springBootVersion = '2.1.3.RELEASE'
-  }
-  repositories {
-    jcenter()
-  }
-  dependencies {
-    classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-    classpath group: 'org.sonarsource.scanner.gradle', name: 'sonarqube-gradle-plugin', version: '2.6.2'
-    classpath("net.serenity-bdd:serenity-gradle-plugin:2.0.41")
-  }
+    dependencies {
+        classpath("net.serenity-bdd:serenity-gradle-plugin:2.0.89")
+    }
 }
 
 plugins {
-  id 'application'
-  id 'checkstyle'
-  id 'io.spring.dependency-management' version '1.0.6.RELEASE'
-  id 'org.springframework.boot' version '2.1.3.RELEASE'
-  id 'org.owasp.dependencycheck' version '5.0.0'
-  id 'com.github.ben-manes.versions' version '0.15.0'
-  id 'com.gorylenko.gradle-git-properties' version '1.4.21'
-  id 'info.solidsoft.pitest' version '1.3.0'
+    id 'application'
+    id 'pmd'
+    id 'checkstyle'
+    id 'io.spring.dependency-management' version '1.0.8.RELEASE'
+    id 'org.springframework.boot' version '2.2.1.RELEASE'
+    id 'org.owasp.dependencycheck' version '5.2.4'
+    id 'com.github.ben-manes.versions' version '0.27.0'
+    id 'com.gorylenko.gradle-git-properties' version '2.2.0'
+    id 'info.solidsoft.pitest' version '1.4.5'
+    id 'org.sonarqube' version '2.8'
+    id 'au.com.dius.pact' version '4.0.3'
 }
 
 apply plugin: 'project-report'
 apply plugin: 'org.sonarqube'
-apply plugin: 'findbugs'
+// apply plugin: 'findbugs'
 apply plugin: 'jacoco'
 apply plugin: 'net.serenity-bdd.aggregator'
 apply plugin: "com.gorylenko.gradle-git-properties"
+
+gitProperties {
+    gitPropertiesDir = new File("${project.rootDir}/src/main/resources/uk/gov/hmcts/probate/services/business")
+    keys = ['git.commit.id','git.commit.time']
+    dateFormat = "yyyy-MM-dd'T'HH:mmZ"
+    dateFormatTimeZone = "GMT"
+}
+
 
 group = 'uk.gov.hmcts.probate'
 version = "4.0.0"
@@ -57,28 +60,28 @@ tasks.withType(Checkstyle).each { checkstyleTask ->
 }
 
 jacoco {
-  toolVersion = '0.8.0'
+    toolVersion = '0.8.5'
 }
 
 jacocoTestReport {
-  group = "Reporting"
-  reports {
-    xml.enabled false
-    html.destination "${buildDir}/reports/jacoco"
-  }
+    group = "Reporting"
+    reports {
+        xml.enabled false
+        html.destination file("${buildDir}/reports/jacoco")
+    }
 }
 
-tasks.withType(FindBugs) {
-  reports {
-    xml.enabled = false
-    html.enabled = true
-  }
-}
+// tasks.withType(FindBugs) {
+//   reports {
+//     xml.enabled = false
+//     html.enabled = true
+//   }
+// }
 
-findbugs {
-  ignoreFailures = true
-  reportLevel = "low"
-}
+// findbugs {
+//   ignoreFailures = true
+//   reportLevel = "low"
+// }
 
 sonarqube {
   properties {
@@ -165,94 +168,97 @@ task caseCreator(type: Test) {
   finalizedBy aggregate
 }
 
-gitProperties {
-  gitPropertiesDir = new File("${project.rootDir}/src/main/resources/uk/gov/hmcts/probate/sol")
-  keys = ['git.commit.id','git.commit.time']
-  dateFormat = "yyyy-MM-dd'T'HH:mmZ"
-  dateFormatTimeZone = "GMT"
+
+
+
+jacocoTestReport {
+    executionData(test)
+    reports {
+        xml.enabled = true
+        csv.enabled = false
+        xml.destination = file("${project.buildDir}/reports/jacoco/test/jacocoTestReport.xml")
+    }
+}
+
+repositories {
+    mavenLocal()
+    maven { url "https://dl.bintray.com/hmcts/hmcts-maven" }
+    jcenter()
 }
 
 def versions = [
         springCloudStarterNetflixHystrix: '2.1.1.RELEASE',
-        serenitySpring                  : '2.0.41',
-        serenityBddVersion              : '2.0.41',
+        serenitySpring                  : '2.0.89',
+        serenityBddVersion              : '2.0.89',
         applicationinsights             : '2.1.2',
         springBootVersion               : '2.1.3.RELEASE',
-        reformsJavaLoggingVersion       : '5.1.0',
+        reformsJavaLoggingVersion       : '5.1.1',
         serviceAuthProviderClient       : '3.0.0',
         springSecurityVersion           : '5.1.1.RELEASE',
         probateCommonsVersion           : '0.0.58',
         ccdClient                       : '4.4.1',
-        mapStruct                       : '1.2.0.Final'        
+        mapStruct                       : '1.2.0.Final'  
 ]
 
-jacocoTestReport {
-  executionData(test)
-  reports {
-    xml.enabled = true
-    csv.enabled = false
-    xml.destination = file("${project.buildDir}/reports/jacoco/test/jacocoTestReport.xml")
-  }
-}
 
-repositories {
-  mavenLocal()
-  mavenCentral()
-  jcenter()
-  maven { url "https://dl.bintray.com/hmcts/hmcts-maven" }
-  maven { url "http://repo.maven.apache.org/maven2" }
-}
-
-
-processResources {
-  from ('src/lib/AI-Agent.xml') {
-    into 'lib'
-  }
-}
+ext["rest-assured.version"] = '4.1.2'
+ext["jackson-bom.version"] = '2.10.1'
 
 dependencies {
-  compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: versions.springBootVersion
-  compile group: 'org.springframework.boot', name: 'spring-boot-starter-web-services', version: versions.springBootVersion
-  compile group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: versions.springBootVersion
-  compile group: 'org.springframework.boot', name: 'spring-boot-starter-aop', version: versions.springBootVersion
-  compile group: 'org.springframework.boot', name: 'spring-boot-configuration-processor', version: versions.springBootVersion
-  compile group: 'org.springframework.retry', name: 'spring-retry', version: '1.2.4.RELEASE'
-  compile group: 'uk.gov.hmcts.reform.probate', name: 'probate-commons', version: versions.probateCommonsVersion
+  implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web'
+  implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web-services'
+  implementation group: 'org.springframework.boot', name: 'spring-boot-starter-actuator'
+  implementation group: 'org.springframework.boot', name: 'spring-boot-starter-aop'
+  // implementation group: 'org.springframework.boot', name: 'spring-boot-starter-hateoas'
+  implementation group: 'org.springframework.boot', name: 'spring-boot-configuration-processor'
+  implementation group: 'org.springframework.retry', name: 'spring-retry'
+  implementation group: 'org.springframework.hateoas', name: 'spring-hateoas'
+
+  implementation group: 'uk.gov.service.notify', name: 'notifications-java-client', version: '3.15.1-RELEASE'
+  implementation group: 'uk.gov.hmcts.reform', name: 'logging-appinsights', version: versions.reformsJavaLoggingVersion
+  implementation group: 'uk.gov.hmcts.reform', name: 'service-auth-provider-client', version: versions.serviceAuthProviderClient
+
+  annotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.10'
+  compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.10'
+
+
+  implementation group: 'uk.gov.hmcts.reform.probate', name: 'probate-commons', version: versions.probateCommonsVersion
 
   compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: versions.springCloudStarterNetflixHystrix
   compile ('io.github.openfeign.form:feign-form-spring:3.4.1') {
     force = true
   }
 
-  compile group: 'org.springframework.hateoas', name: 'spring-hateoas', version: '0.23.0.RELEASE'
 
   compile group: 'uk.gov.hmcts.reform', name: 'logging-spring', version: versions.reformsJavaLoggingVersion
   compile group: 'uk.gov.hmcts.reform', name: 'logging-httpcomponents', version: versions.reformsJavaLoggingVersion
-  compile group: 'uk.gov.hmcts.reform', name: 'logging-appinsights', version: versions.reformsJavaLoggingVersion
+ 
   compile group: 'uk.gov.hmcts.reform.auth', name: 'auth-checker-lib', version: '2.1.3'
-  compile group: 'uk.gov.service.notify', name: 'notifications-java-client', version: '3.14.1-RELEASE'
-  compile group: 'uk.gov.hmcts.reform', name: 'service-auth-provider-client', version: versions.serviceAuthProviderClient
-  compile group: 'uk.gov.hmcts.reform', name: 'pdf-service-client', version: '6.0.0'
-  compile group: 'uk.gov.hmcts.reform', name: 'send-letter-client', version: '2.1.2'
-  compile group: 'uk.gov.hmcts.reform', name: 'health-spring-boot-starter', version: '0.0.4'
+  
+  implementation group: 'uk.gov.hmcts.reform', name: 'pdf-service-client', version: '7.0.0'
+  implementation group: 'uk.gov.hmcts.reform', name: 'send-letter-client', version: '2.1.2'
+  implementation group: 'uk.gov.hmcts.reform', name: 'health-spring-boot-starter', version: '0.0.5'
 
   compile group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: '2.9.2'
   compile group: 'commons-io', name: 'commons-io', version: '2.6'
 
-  compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.9.9.3'
+  implementation ("com.fasterxml.jackson.core:jackson-databind")
+
   compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
   compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
-  compile group: 'org.springframework.hateoas', name: 'spring-hateoas', version: '0.23.0.RELEASE'
-  compile group: 'org.projectlombok', name: 'lombok', version: '1.16.18'
+
+  
 
   compile group: 'org.elasticsearch.client', name: 'elasticsearch-rest-high-level-client', version: '6.6.0'
 
   compile group: 'io.github.openfeign', name: 'feign-httpclient', version: '9.7.0'
 
-  compile group: 'org.pitest', name: 'pitest', version: '1.3.2'
+
   compile group: 'com.atlassian.commonmark', name: 'commonmark', version: '0.11.0'
-  compile 'info.solidsoft.gradle.pitest:gradle-pitest-plugin:1.3.0'
-  compile 'org.codehaus.sonar-plugins:sonar-pitest-plugin:0.5'
+
+  implementation group: 'org.pitest', name: 'pitest', version: '1.4.10'
+  implementation 'info.solidsoft.gradle.pitest:gradle-pitest-plugin:1.3.0'
+  implementation 'org.codehaus.sonar-plugins:sonar-pitest-plugin:0.5'
 
   compile group: 'uk.gov.hmcts.reform', name: 'core-case-data-store-client', version: versions.ccdClient
   compile ('org.springframework.boot:spring-boot-starter-data-jpa')
@@ -261,18 +267,19 @@ dependencies {
   }
   compile group: 'org.mapstruct', name: 'mapstruct-jdk8', version: versions.mapStruct
   compileOnly group: 'org.mapstruct', name: 'mapstruct-processor', version: versions.mapStruct
-  compile group: 'uk.gov.hmcts.reform', name: 'properties-volume-spring-boot-starter', version: '0.0.4'
+  implementation group: 'uk.gov.hmcts.reform', name: 'properties-volume-spring-boot-starter', version: '0.0.4'
 
   testCompile group: 'uk.gov.hmcts.reform.probate', name: 'probate-commons', version: versions.probateCommonsVersion
-  testCompile("org.springframework.boot:spring-boot-starter-test:$versions.springBootVersion") {
-    exclude group: 'com.vaadin.external.google', module:'android-json'
+  testImplementation("org.springframework.boot:spring-boot-starter-test") {
+      exclude group: "com.vaadin.external.google", module:"android-json"
   }
   testCompile group: 'com.h2database', name: 'h2', version: '1.4.197'
-  testCompile group: 'org.pdfbox', name: 'com.springsource.org.pdfbox', version: '0.7.3'
+  testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test'
+  testImplementation group: 'org.apache.pdfbox', name: 'pdfbox', version: '2.0.17'
   testCompile group: 'org.springframework.security', name: 'spring-security-test', version: versions.springSecurityVersion
   testCompile group: 'com.mitchellbosecke', name: 'pebble', version: '2.4.0'
 
-  testSmokeCompile group: 'io.rest-assured', name: 'rest-assured', version: '3.0.7'
+  testImplementation group: 'io.rest-assured', name: 'rest-assured'
   testSmokeCompile sourceSets.main.runtimeClasspath
   testSmokeCompile sourceSets.test.runtimeClasspath
 
@@ -282,45 +289,34 @@ dependencies {
   testFunctionalCompile group: 'net.serenity-bdd', name: 'serenity-spring', version: versions.serenityBddVersion
   testFunctionalCompile group: 'org.awaitility', name: 'awaitility', version: '3.1.6'
   testFunctionalCompile group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.0'
-  testFunctionalCompile group: 'uk.gov.hmcts.reform', name: 'service-auth-provider-client', version: versions.serviceAuthProviderClient
-  testFunctionalCompile group: 'uk.gov.hmcts.reform', name: 'pdf-service-client', version: '6.0.0'
+  testFunctionalImplementation group: 'uk.gov.hmcts.reform', name: 'pdf-service-client', version: '7.0.0'
   testFunctionalCompile sourceSets.main.runtimeClasspath
   testFunctionalCompile sourceSets.test.runtimeClasspath
   testFunctionalCompile ('io.github.openfeign.form:feign-form-spring:3.4.1') {
     force = true
   }
 
-  testCaseCreatorCompile group: 'net.serenity-bdd', name: 'serenity-core', version: versions.serenityBddVersion
-  testCaseCreatorCompile group: 'net.serenity-bdd', name: 'serenity-junit', version: versions.serenityBddVersion
-  testCaseCreatorCompile group: 'net.serenity-bdd', name: 'serenity-rest-assured', version: versions.serenityBddVersion
-  testCaseCreatorCompile group: 'net.serenity-bdd', name: 'serenity-spring', version: versions.serenityBddVersion
-  testCaseCreatorCompile group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.0'
-  testCaseCreatorCompile group: 'uk.gov.hmcts.reform', name: 'service-auth-provider-client', version: versions.serviceAuthProviderClient
+  testFunctionalImplementation group: 'net.serenity-bdd', name: 'serenity-core', version: versions.serenityBddVersion
+  testFunctionalImplementation group: 'net.serenity-bdd', name: 'serenity-junit', version: versions.serenityBddVersion
+  testFunctionalImplementation group: 'net.serenity-bdd', name: 'serenity-rest-assured', version: versions.serenityBddVersion
+  testFunctionalImplementation group: 'net.serenity-bdd', name: 'serenity-spring', version: versions.serenityBddVersion
+  testFunctionalImplementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
+  testFunctionalImplementation group: 'uk.gov.hmcts.reform', name: 'service-auth-provider-client', version: versions.serviceAuthProviderClient
   testCaseCreatorCompile sourceSets.main.runtimeClasspath
   testCaseCreatorCompile sourceSets.test.runtimeClasspath
 }
 
-compileJava {
-  options.compilerArgs << '-parameters'
-}
-
 bootJar {
-  archiveName = 'back-office.jar'
-  manifest {
+    archiveFileName = 'back-office.jar'
+    manifest {
 
-    attributes 'Implementation-Title': project.name,
-            'Implementation-Version': project.version
-  }
+        attributes 'Implementation-Title': project.name,
+                'Implementation-Version': project.version
+    }
 }
 
 task printVersion {
   doLast {
     print project.version
-  }
-}
-
-run {
-  if (debug == 'true') {
-    jvmArgs = ['-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5005']
   }
 }
