@@ -83,13 +83,13 @@ docmosis:
       templateName: FL-PRB-GRP-WEL-00226.doc
     welshIntestacyGrant:
       templateName: FL-PRB-GRP-WEL-00226.doc
-    welshaAmonWillGrant:
+    welshAdmonWillGrant:
       templateName: FL-PRB-GRP-WEL-00226.doc
     welshDigitalGrantDraft:
       templateName: FL-PRB-GRP-WEL-00226.doc
     welshIntestacyGrantDraft:
       templateName: FL-PRB-GRP-WEL-00226.doc
-    welshaAmonWillGrantDraft:
+    welshAdmonWillGrantDraft:
       templateName: FL-PRB-GRP-WEL-00226.doc
 fee.api:
   url: http://localhost:4411
