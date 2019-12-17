@@ -738,6 +738,7 @@ public class CallbackResponseTransformer {
                         .primaryApplicantEmailAddress(caseData.getSolsSolicitorEmail())
                         .primaryApplicantAddress(caseData.getSolsSolicitorAddress())
                         .primaryApplicantAlias(NO)
+                        .primaryApplicantHasAlias(NO)
                         .primaryApplicantIsApplying(caseData.getSolsSolicitorIsApplying())
                         .solsPrimaryExecutorNotApplyingReason(caseData.getSolsSolicitorNotApplyingReason());
             }
@@ -852,6 +853,7 @@ public class CallbackResponseTransformer {
                         .primaryApplicantPhoneNumber(caseData.getSolsSolicitorPhoneNumber())
                         .primaryApplicantEmailAddress(caseData.getSolsSolicitorEmail())
                         .primaryApplicantAddress(caseData.getSolsSolicitorAddress())
+                        .primaryApplicantAlias(NO)
                         .primaryApplicantHasAlias(NO)
                         .primaryApplicantIsApplying(caseData.getSolsSolicitorIsApplying())
                         .solsPrimaryExecutorNotApplyingReason(caseData.getSolsSolicitorNotApplyingReason());
