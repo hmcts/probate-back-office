@@ -2,10 +2,8 @@ spring:
   cloud:
     propertiesvolume:
       prefixed: false
-      enabled: true
       paths: /mnt/secrets/probate
       aliases:
-        s2s-probate-backend: S2S_AUTH_TOTP_SECRET
         AppInsightsInstrumentationKey: azure.application-insights.instrumentation-key
         probate-bo-govNotifyApiKey: notifications.govNotifyApiKey
         probate-bo-grantSignatureKey: pdf.service.grantSignatureSecretKey
@@ -25,3 +23,5 @@ spring:
         pdfServiceHealthUrl: docmosis.service.health.uri
         idamRedirectUrl: auth.provider.client.redirect
         idam-secret-probate: auth.provider.client.secret
+        s2s-probate-backend: S2S_AUTH_KEY
+
