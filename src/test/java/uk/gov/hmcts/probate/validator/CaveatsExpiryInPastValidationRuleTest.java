@@ -17,7 +17,8 @@ import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.Constants.BUSINESS_ERROR;
 
 @RunWith(MockitoJUnitRunner.class)
-public class CaveatsExpiryNotInPastValidationRuleTest {
+public class CaveatsExpiryInPastValidationRuleTest {
+
     @Mock
     private BusinessValidationMessageService businessValidationMessageService;
 
@@ -26,16 +27,16 @@ public class CaveatsExpiryNotInPastValidationRuleTest {
 
     private LocalDate expiryDate;
 
-    private CaveatsExpiryNotInPastValidationRule underTest;
+    private CaveatsExpiryInPastValidationRule underTest;
 
-    private static final String CAVEAT_EXPIRY_MESSAGE_KEY = "caveatExpiryCannotBeInPast";
-    private static final String CAVEAT_EXPIRY_MESSAGE = "Caveat expiry error";
+    private static final String CAVEAT_EXPIRY_IN_PAST_MESSAGE_KEY = "caveatExpiryInThePast";
+    private static final String CAVEAT_EXPIRY_MESSAGE = "Caveat expiry in past error";
 
     @Before
     public void setUp() {
-        underTest = new CaveatsExpiryNotInPastValidationRule(businessValidationMessageService);
+        underTest = new CaveatsExpiryInPastValidationRule(businessValidationMessageService);
 
-        when(businessValidationMessageService.generateError(BUSINESS_ERROR, CAVEAT_EXPIRY_MESSAGE_KEY))
+        when(businessValidationMessageService.generateError(BUSINESS_ERROR, CAVEAT_EXPIRY_IN_PAST_MESSAGE_KEY))
             .thenReturn(FieldErrorResponse.builder().code(CAVEAT_EXPIRY_MESSAGE).build());
     }
 
@@ -47,24 +48,5 @@ public class CaveatsExpiryNotInPastValidationRuleTest {
         List<FieldErrorResponse> validationErrors = underTest.validate(ccdDataMock);
 
         assertEquals(CAVEAT_EXPIRY_MESSAGE, validationErrors.get(0).getCode());
-    }
-
-    @Test
-    public void shouldNotErrorWithExpiryInFuture() {
-        expiryDate = LocalDate.now().plusDays(1);
-        when(ccdDataMock.getExpiryDate()).thenReturn(expiryDate);
-
-        List<FieldErrorResponse> validationErrors = underTest.validate(ccdDataMock);
-
-        assertEquals(0, validationErrors.size());
-    }
-    @Test
-    public void shouldNotErrorWithExpiryToday() {
-        expiryDate = LocalDate.now();
-        when(ccdDataMock.getExpiryDate()).thenReturn(expiryDate);
-
-        List<FieldErrorResponse> validationErrors = underTest.validate(ccdDataMock);
-
-        assertEquals(0, validationErrors.size());
     }
 }

@@ -33,7 +33,6 @@ import uk.gov.hmcts.probate.transformer.CaveatDataTransformer;
 import uk.gov.hmcts.probate.validator.BulkPrintValidationRule;
 import uk.gov.hmcts.probate.validator.CaveatsEmailAddressNotificationValidationRule;
 import uk.gov.hmcts.probate.validator.CaveatsEmailValidationRule;
-import uk.gov.hmcts.probate.validator.CaveatsExpiryInPastValidationRule;
 import uk.gov.hmcts.probate.validator.CaveatsExpiryValidationRule;
 import uk.gov.service.notify.NotificationClientException;
 
@@ -53,7 +52,6 @@ public class CaveatController {
     private final List<BulkPrintValidationRule> bulkPrintValidationRules;
     private final List<CaveatsEmailValidationRule> validationRuleCaveats;
     private final List<CaveatsExpiryValidationRule> validationRuleCaveatsExpiry;
-    private final List<CaveatsExpiryInPastValidationRule> validationRuleCaveatsExpiryInPast;
     private final CCDDataTransformer ccdBeanTransformer;
     private final CaveatDataTransformer caveatDataTransformer;
     private final CaveatCallbackResponseTransformer caveatCallbackResponseTransformer;
@@ -163,17 +161,6 @@ public class CaveatController {
         CaveatCallbackResponse caveatCallbackResponse = eventValidationService.validateCaveatRequest(caveatCallbackRequest, validationRuleCaveatsExpiry);
         if (caveatCallbackResponse.getErrors().isEmpty()) {
             caveatCallbackResponse = caveatCallbackResponseTransformer.transformResponseWithExtendedExpiry(caveatCallbackRequest);
-        }
-
-        return ResponseEntity.ok(caveatCallbackResponse);
-    }
-
-    @PostMapping(path = "/extend")
-    public ResponseEntity<CaveatCallbackResponse> extend(@RequestBody CaveatCallbackRequest caveatCallbackRequest) {
-
-        CaveatCallbackResponse caveatCallbackResponse = eventValidationService.validateCaveatRequest(caveatCallbackRequest, validationRuleCaveatsExpiryInPast);
-        if (caveatCallbackResponse.getErrors().isEmpty()) {
-            caveatCallbackResponse = caveatCallbackResponseTransformer.transformResponseWithNoChanges(caveatCallbackRequest);
         }
 
         return ResponseEntity.ok(caveatCallbackResponse);

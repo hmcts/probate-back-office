@@ -219,16 +219,4 @@ public class CaveatControllerTest {
             .andExpect(content().string(containsString("errors")));
     }
 
-    @Test
-    public void shouldCaveatExpiryExtendErrors() throws Exception {
-
-        String caveatPayload = testUtils.getStringFromFile("caveatPayloadNotifications.json");
-
-        mockMvc.perform(post("/caveat/extend")
-            .content(caveatPayload)
-            .contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk())
-            .andExpect(content().string(containsString("errors")));
-    }
-
 }
