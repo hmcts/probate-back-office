@@ -29,12 +29,12 @@ auth.provider.service.client:
   tokenTimeToLiveInSeconds: 900
 
 auth.provider.client:
-  user: ${IDAM_SERVICE_HOST:http://localhost:4501}
+  user: ${IDAM_SERVICE_HOST:http://localhost:5000}
   secret: ${IDAM_SECRET:ccd_gateway_secret}
   id: ${IDAM_CLIENT_NAME:ccd_gateway}
   redirect: ${IDAM_REDIRECT_URL:http://localhost:3451/oauth2redirect}
   email: ${AUTH_TOKEN_EMAIL:probatesolcw1@gmail.com}
-  password: ${AUTH_TOKEN_PASSWORD:password}
+  password: ${AUTH_TOKEN_PASSWORD:Pa55word11}
 
 pdf.service:
   url: http://localhost:5500
@@ -292,19 +292,13 @@ registries:
     postcode: CF24 0RZ
 
 
-document:
-  retriever:
-    service:
-      api:
-        baseurl: localhost:8080
-
 idam:
   s2s-auth:
     url: ${PROVIDER_SERVICE_CLIENT_URL:http://localhost:4502}
 send-letter:
   url: ${SEND_LETTER_SERIVCE_BASEURL:http://localhost:8485}
 
-auth.idam.client.baseUrl: http://localhost:4501
+auth.idam.client.baseUrl: http://localhost:5000
 
 core_case_data.api.url: ${services.coreCaseData.baseUrl:http://localhost:4452}
 

@@ -13,7 +13,7 @@ import uk.gov.hmcts.probate.service.docmosis.CaveatDocmosisService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CaveatCallbackResponseTransformer;
 import uk.gov.hmcts.probate.validator.BulkPrintValidationRule;
-import uk.gov.hmcts.probate.validator.ValidationRuleCaveats;
+import uk.gov.hmcts.probate.validator.CaveatsEmailValidationRule;
 import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
 import uk.gov.service.notify.NotificationClientException;
 
@@ -32,7 +32,7 @@ import static uk.gov.hmcts.probate.model.State.CAVEAT_RAISED_SOLS;
 public class CaveatNotificationService {
     private final EventValidationService eventValidationService;
     private final NotificationService notificationService;
-    private final List<ValidationRuleCaveats> validationRuleCaveats;
+    private final List<CaveatsEmailValidationRule> emailValidationRuleCaveats;
     private final CaveatCallbackResponseTransformer caveatCallbackResponseTransformer;
     private final PDFManagementService pdfManagementService;
     private final BulkPrintService bulkPrintService;
@@ -40,7 +40,7 @@ public class CaveatNotificationService {
     private final CaveatDocmosisService caveatDocmosisService;
 
     public CaveatCallbackResponse caveatRaise(CaveatCallbackRequest caveatCallbackRequest)
-            throws NotificationClientException {
+        throws NotificationClientException {
 
         CaveatCallbackResponse caveatCallbackResponse = CaveatCallbackResponse.builder().errors(new ArrayList<>()).build();
         Document document;
@@ -50,7 +50,7 @@ public class CaveatNotificationService {
         setCaveatExpiryDate(caveatDetails.getData());
 
         if (caveatDetails.getData().isCaveatRaisedEmailNotificationRequested()) {
-            caveatCallbackResponse = eventValidationService.validateCaveatRequest(caveatCallbackRequest, validationRuleCaveats);
+            caveatCallbackResponse = eventValidationService.validateCaveatRequest(caveatCallbackRequest, emailValidationRuleCaveats);
             if (caveatCallbackResponse.getErrors().isEmpty()) {
                 document = notificationService.sendCaveatEmail(CAVEAT_RAISED, caveatDetails);
                 documents.add(document);
@@ -58,7 +58,7 @@ public class CaveatNotificationService {
         } else {
             Map<String, Object> placeholders = caveatDocmosisService.caseDataAsPlaceholders(caveatCallbackRequest.getCaseDetails());
             Document coversheet = pdfManagementService
-                    .generateDocmosisDocumentAndUpload(placeholders, DocumentType.CAVEAT_COVERSHEET);
+                .generateDocmosisDocumentAndUpload(placeholders, DocumentType.CAVEAT_COVERSHEET);
             documents.add(coversheet);
             Document caveatRaisedDoc = pdfManagementService.generateDocmosisDocumentAndUpload(placeholders, DocumentType.CAVEAT_RAISED);
             documents.add(caveatRaisedDoc);
@@ -66,8 +66,8 @@ public class CaveatNotificationService {
             if (caveatCallbackRequest.getCaseDetails().getData().isSendForBulkPrintingRequested()) {
                 SendLetterResponse response = bulkPrintService.sendToBulkPrint(caveatCallbackRequest, caveatRaisedDoc, coversheet);
                 letterId = response != null
-                        ? response.letterId.toString()
-                        : null;
+                    ? response.letterId.toString()
+                    : null;
                 caveatCallbackResponse = eventValidationService.validateCaveatBulkPrintResponse(letterId, bulkPrintValidationRules);
             }
         }
@@ -79,7 +79,7 @@ public class CaveatNotificationService {
     }
 
     public CaveatCallbackResponse solsCaveatRaise(CaveatCallbackRequest caveatCallbackRequest)
-            throws NotificationClientException {
+        throws NotificationClientException {
 
         CaveatCallbackResponse caveatCallbackResponse = CaveatCallbackResponse.builder().errors(new ArrayList<>()).build();
         Document document;
