@@ -55,6 +55,9 @@ import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_INTESTACY;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE;
 import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
 import static uk.gov.hmcts.probate.model.DocumentType.SOT_INFORMATION_REQUEST;
+import static uk.gov.hmcts.probate.model.DocumentType.WELSH_ADMON_WILL_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.WELSH_DIGITAL_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.WELSH_INTESTACY_GRANT;
 import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.Constants.GRANT_OF_PROBATE_NAME;
 import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.INTESTACY;
 
@@ -171,7 +174,10 @@ public class CallbackResponseTransformer {
         }
         if (documentTransformer.hasDocumentWithType(documents, DIGITAL_GRANT)
                 || documentTransformer.hasDocumentWithType(documents, ADMON_WILL_GRANT)
-                || documentTransformer.hasDocumentWithType(documents, INTESTACY_GRANT)) {
+                || documentTransformer.hasDocumentWithType(documents, INTESTACY_GRANT)
+                || documentTransformer.hasDocumentWithType(documents, WELSH_DIGITAL_GRANT)
+                || documentTransformer.hasDocumentWithType(documents, WELSH_ADMON_WILL_GRANT)
+                || documentTransformer.hasDocumentWithType(documents, WELSH_INTESTACY_GRANT)) {
 
             String grantIssuedDate = dateTimeFormatter.format(LocalDate.now());
             responseCaseDataBuilder
