@@ -282,6 +282,7 @@ public class ResponseCaseData {
     private final String anyDeceasedGrandChildrenUnderEighteen;
     private final String deceasedAnyChildren;
     private final String deceasedHasAssetsOutsideUK;
+    private final String solicitorIsMainApplicant;
 
     private final String boStopDetailsDeclarationParagraph;
     private final String boEmailRequestInfoNotificationRequested;

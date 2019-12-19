@@ -533,6 +533,10 @@ public class CaseData {
     @Getter(lazy = true)
     private final List<CollectionMember<AdditionalExecutor>> executorsNotApplyingForLegalStatement = getAllExecutors(false);
 
+    public String solicitorIsMainApplicant() {
+        return YES.equals(solsSolicitorIsMainApplicant) ? YES : NO;
+    }
+
     public boolean isPrimaryApplicantApplying() {
         return YES.equals(primaryApplicantIsApplying);
     }
