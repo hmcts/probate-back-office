@@ -18,6 +18,8 @@ import uk.gov.hmcts.reform.pdf.service.client.PDFServiceClient;
 import uk.gov.hmcts.reform.pdf.service.client.exception.PDFServiceClientException;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,7 +33,8 @@ public class PDFGeneratorService {
     private final FileSystemResourceService fileSystemResourceService;
     private final PDFServiceConfiguration pdfServiceConfiguration;
     private final AppInsights appInsights;
-
+    public static final String DATE_FORMAT = "yyyy-MM-dd";
+    private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(DATE_FORMAT);
     private final ObjectMapper objectMapper;
     private final PDFServiceClient pdfServiceClient;
     private final DocmosisPdfGenerationService docmosisPdfGenerationService;
@@ -51,6 +54,9 @@ public class PDFGeneratorService {
         placeholders) {
         byte[] postResult;
         try {
+            if(placeholders.get("grantIssuedDate") == null){
+                placeholders.put("grantIssuedDate",dateTimeFormatter.format(LocalDate.now()));
+            }
             postResult = docmosisPdfGenerationService.generateDocFrom(templateName, placeholders);
         } catch (PDFServiceClientException e) {
             log.error(e.getMessage(), e);
