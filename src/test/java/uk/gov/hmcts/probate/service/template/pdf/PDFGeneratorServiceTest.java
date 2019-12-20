@@ -20,6 +20,7 @@ import uk.gov.hmcts.reform.pdf.service.client.PDFServiceClient;
 import uk.gov.hmcts.reform.pdf.service.client.exception.PDFServiceClientException;
 
 import java.lang.reflect.Field;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -141,5 +142,12 @@ public class PDFGeneratorServiceTest {
         when(docmosisPdfGenerationServiceMock.generateDocFrom(any(), any()))
                 .thenThrow(pdfServiceClientExceptionMock);
         underTest.generateDocmosisDocumentFrom(CAVEAT_RAISED.getTemplateName(), placeholders);
+    }
+
+    @Test
+    public void convertDateInWelsh(){
+        final LocalDate localDate =  LocalDate.of(2019,5,15);
+        final String dateInWelsh =  underTest.convertDateInWelsh(localDate);
+        Assert.assertEquals("15 Mai 2019","15 Mai 2019");
     }
 }
