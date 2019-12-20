@@ -137,7 +137,7 @@
     <tr>
         <td colspan="2">
             <p>The gross value for the estate amounts to &#163;{{ (case_details.case_data.ihtGrossValue/100)|numberformat("#.00") }} and the net value for the estate amounts to &#163;{{ (case_details.case_data.ihtNetValue/100)|numberformat("#.00") }}.</p>
-            <p>To the best of our knowledge, information and belief, there was no land vested in {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }} which was settled previously to the death (and not by the will) of {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }} and which remained settled land notwithstanding such death.</p>
+            <p>To the best of {% if (case_details.case_data.executorsApplyingForLegalStatement|length > 1) %}our{% else %}my{% endif %} knowledge, information and belief, there was no land vested in {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }} which was settled previously to the death (and not by the will) of {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }} and which remained settled land notwithstanding such death.</p>
         </td>
     </tr>
 
@@ -149,7 +149,7 @@
             {% for executor in case_details.case_data.executorsApplyingForLegalStatement %}
             <p>
                 {{ executor.value.additionalExecForenames }} {{ executor.value.additionalExecLastname }},
-                an executor named in the will{% if case_details.case_data.willHasCodicils == "Yes" %} and codicil{% if case_details.case_data.willNumberOfCodicils != "" and case_details.case_data.willNumberOfCodicils != "0" and case_details.case_data.willNumberOfCodicils != "1" %}s{% endif %}{% endif %}{% if executor.value.additionalExecNameOnWill == "Yes" %} as {{ executor.value.additionalExecAliasNameOnWill }}{% endif %},
+                {% if (case_details.case_data.executorsApplyingForLegalStatement|length > 1) %}an{% else %}the{% endif %} executor named in the will{% if case_details.case_data.willHasCodicils == "Yes" %} and codicil{% if case_details.case_data.willNumberOfCodicils != "" and case_details.case_data.willNumberOfCodicils != "0" and case_details.case_data.willNumberOfCodicils != "1" %}s{% endif %}{% endif %}{% if executor.value.additionalExecNameOnWill == "Yes" %} as {{ executor.value.additionalExecAliasNameOnWill }}{% endif %},
                 is applying for probate.
             </p>
             {% endfor %}
@@ -157,8 +157,8 @@
     </tr>
     <tr>
         <td colspan="2">
-            <p>We authorise {{ case_details.case_data.solsSolicitorFirmName }}
-                to send on our behalf what we believe to be the true and original last will and testament
+            <p>{% if (case_details.case_data.executorsApplyingForLegalStatement|length > 1) %}We{% else %}I{% endif %} authorise {{ case_details.case_data.solsSolicitorFirmName }}
+                to send on {% if (case_details.case_data.executorsApplyingForLegalStatement|length > 1) %}our{% else %}my{% endif %} behalf what {% if (case_details.case_data.executorsApplyingForLegalStatement|length > 1) %}we{% else %}I{% endif %} believe to be the true and original last will and testament
                 {% if case_details.case_data.willHasCodicils == "Yes" %} and {{ case_details.case_data.willNumberOfCodicils }} codicils {% endif %}of
                 {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }}.</p>
         </td>
@@ -181,7 +181,7 @@
             {% else %}
             <p><span>None.</span></p>
             {% endif %}
-            <p>We confirm that the information we have provided is correct to the best of our knowledge.</p>
+            <p>{% if (case_details.case_data.executorsApplyingForLegalStatement|length > 1) %}We{% else %}I{% endif %} confirm that the information {% if (case_details.case_data.executorsApplyingForLegalStatement|length > 1) %}we{% else %}I{% endif %} have provided is correct to the best of {% if (case_details.case_data.executorsApplyingForLegalStatement|length > 1) %}our{% else %}my{% endif %} knowledge.</p>
         </td>
     </tr>
     <tr>
@@ -192,26 +192,26 @@
     </tr>
     <tr>
         <td colspan="2">
-            <p>We confirm that we will deal with the estate of {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }}, according to law. We will:</p>
+            <p>{% if (case_details.case_data.executorsApplyingForLegalStatement|length > 1) %}We{% else %}I{% endif %} confirm that {% if (case_details.case_data.executorsApplyingForLegalStatement|length > 1) %}we{% else %}I{% endif %} will deal with the estate of {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }}, according to law. {% if (case_details.case_data.executorsApplyingForLegalStatement|length > 1) %}We{% else %}I{% endif %} will:</p>
             <ul>
                 <li>collect the whole estate</li>
                 <li>keep full details (an inventory) of the estate</li>
                 <li>keep a full account of how the estate has been distributed</li>
             </ul>
 
-            <p>If the probate registry (court) asks us to do so, we will:</p>
+            <p>If the probate registry (court) asks {% if (case_details.case_data.executorsApplyingForLegalStatement|length > 1) %}us{% else %}me{% endif %} to do so, {% if (case_details.case_data.executorsApplyingForLegalStatement|length > 1) %}we{% else %}I{% endif %} will:</p>
             <ul>
                 <li>provide the full details of the estate and how it has been distributed</li>
                 <li>return the grant of probate to the court</li>
             </ul>
 
-            <p>We understand that:</p>
+            <p>{% if (case_details.case_data.executorsApplyingForLegalStatement|length > 1) %}We{% else %}I{% endif %} understand that:</p>
             <ul>
-                <li>the application will be rejected if we do not provide information (if asked)</li>
-                <li>criminal proceedings for fraud may be brought against us if we are found to have been deliberately untruthful or dishonest</li>
+                <li>the application will be rejected if {% if (case_details.case_data.executorsApplyingForLegalStatement|length > 1) %}we{% else %}I{% endif %} do not provide information (if asked)</li>
+                <li>criminal proceedings for fraud may be brought against {% if (case_details.case_data.executorsApplyingForLegalStatement|length > 1) %}us{% else %}me{% endif %} if {% if (case_details.case_data.executorsApplyingForLegalStatement|length > 1) %}we are{% else %}I am{% endif %} found to have been deliberately untruthful or dishonest</li>
             </ul>
-            <p>We authorise {{ case_details.case_data.solsSolicitorFirmName }}, as our appointed firm, to
-                submit this application on our behalf.</p>
+            <p>{% if (case_details.case_data.executorsApplyingForLegalStatement|length > 1) %}We{% else %}I{% endif %} authorise {{ case_details.case_data.solsSolicitorFirmName }}, as {% if (case_details.case_data.executorsApplyingForLegalStatement|length > 1) %}our{% else %}my{% endif %} appointed firm, to
+                submit this application on {% if (case_details.case_data.executorsApplyingForLegalStatement|length > 1) %}our{% else %}my{% endif %} behalf.</p>
         </td>
     </tr>
     <tr>
