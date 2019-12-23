@@ -1,10 +1,6 @@
 package uk.gov.hmcts.probate.service.template.pdf;
 
-import java.lang.reflect.Field;
-import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.Map;
-
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,9 +10,6 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.MediaType;
 import org.springframework.util.ReflectionUtils;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import uk.gov.hmcts.probate.config.PDFServiceConfiguration;
 import uk.gov.hmcts.probate.config.documents.WelshMonthTranslation;
 import uk.gov.hmcts.probate.exception.ClientException;
@@ -27,6 +20,11 @@ import uk.gov.hmcts.probate.service.docmosis.DocmosisPdfGenerationService;
 import uk.gov.hmcts.reform.pdf.service.client.PDFServiceClient;
 import uk.gov.hmcts.reform.pdf.service.client.exception.PDFServiceClientException;
 
+import java.lang.reflect.Field;
+import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.Map;
+
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.mockito.ArgumentMatchers.any;
@@ -35,7 +33,6 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-
 import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT_RAISED;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE;
 
@@ -61,7 +58,7 @@ public class PDFGeneratorServiceTest {
     private DocmosisPdfGenerationService docmosisPdfGenerationServiceMock;
 
     @Mock
-    private WelshMonthTranslation welshMonthTranslation;
+    private PlaceholderDecorator placeholderDecorator;
 
     @InjectMocks
     private PDFGeneratorService underTest;
@@ -78,7 +75,6 @@ public class PDFGeneratorServiceTest {
                 .thenReturn("MockedBytes".getBytes());
         when(fileSystemResourceServiceMock.getFileFromResourceAsString(anyString()))
                 .thenReturn("<htmlTemplate>");
-        when(welshMonthTranslation.getMonths()).thenReturn(new HashMap<Integer, String>());
     }
 
     @Test
@@ -112,9 +108,10 @@ public class PDFGeneratorServiceTest {
 
         EvidenceManagementFileUpload result = underTest.generateDocmosisDocumentFrom(CAVEAT_RAISED.getTemplateName(),
                 placeholders);
+
+        verify(placeholderDecorator).decorate(placeholders);
         Assert.assertThat(result.getContentType(), equalTo(MediaType.APPLICATION_PDF));
         Assert.assertThat(result.getBytes().length, greaterThan(0));
-        verify(welshMonthTranslation, times(2)).getMonths();
     }
 
     @Test(expected = ClientException.class)
