@@ -40,10 +40,6 @@ public class PDFGeneratorService {
     private final ObjectMapper objectMapper;
     private final PDFServiceClient pdfServiceClient;
     private final DocmosisPdfGenerationService docmosisPdfGenerationService;
-    private final String DECEASED_DATE_OF_DEATH ="deceasedDateOfDeath";
-    private final String DECEASED_DATE_OF_DEATH_IN_WELSH ="deceasedDateOfDeathInWelsh";
-    private final String GRANT_ISSUED_DATE ="grantIssuedDate";
-    private final String GRANT_ISSUED_DATE_IN_WELSH ="grantIssuedDateInWelsh";
 
     public EvidenceManagementFileUpload generatePdf(DocumentType documentType, String pdfGenerationData) {
         byte[] postResult;
@@ -58,6 +54,10 @@ public class PDFGeneratorService {
 
     public EvidenceManagementFileUpload generateDocmosisDocumentFrom(String templateName, Map<String, Object>
         placeholders) {
+        final String DECEASED_DATE_OF_DEATH ="deceasedDateOfDeath";
+        final String DECEASED_DATE_OF_DEATH_IN_WELSH ="deceasedDateOfDeathInWelsh";
+        final String GRANT_ISSUED_DATE ="grantIssuedDate";
+        final String GRANT_ISSUED_DATE_IN_WELSH ="grantIssuedDateInWelsh";
         byte[] postResult;
         try {
             if(placeholders.get(DECEASED_DATE_OF_DEATH) !=null){
@@ -128,13 +128,6 @@ public class PDFGeneratorService {
             case 12: month = "Rhagfyr";
                 break;
         }
-
-        StringBuilder dateBuilder =  new StringBuilder();
-        dateBuilder.append(day);
-        dateBuilder.append(" ");
-        dateBuilder.append(month);
-        dateBuilder.append(" ");
-        dateBuilder.append(year);
-        return dateBuilder.toString();
+        return (day+" "+ month+ " " + year);
     }
 }
