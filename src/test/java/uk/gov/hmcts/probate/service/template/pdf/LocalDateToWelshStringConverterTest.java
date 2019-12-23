@@ -1,4 +1,6 @@
-package uk.gov.hmcts.probate.config.documents;
+package uk.gov.hmcts.probate.service.template.pdf;
+
+import java.time.LocalDate;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -12,17 +14,18 @@ import uk.gov.hmcts.probate.insights.AppInsights;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class WelshMonthTranslationTest {
+public class LocalDateToWelshStringConverterTest {
 
     @MockBean
     private AppInsights appInsights;
 
     @Autowired
-    private WelshMonthTranslation welshMonthTranslation;
+    private LocalDateToWelshStringConverter localDateToWelshStringConverter;
 
     @Test
     public void convertDateInWelsh(){
-        final String dateInWelsh =  welshMonthTranslation.getMonths().get(5);
-        Assert.assertEquals("Mai",dateInWelsh);
+        LocalDate localDate = LocalDate.of(2019,12,23);
+        final String dateInWelsh =  localDateToWelshStringConverter.convert(localDate);
+        Assert.assertEquals("23 Rhagfyr 2019",dateInWelsh);
     }
 }
