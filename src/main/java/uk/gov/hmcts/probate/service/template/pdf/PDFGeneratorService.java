@@ -16,6 +16,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import uk.gov.hmcts.probate.config.PDFServiceConfiguration;
+import uk.gov.hmcts.probate.config.documents.WelshMonthTranslation;
 import uk.gov.hmcts.probate.exception.ClientException;
 import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.DocumentType;
@@ -40,6 +41,7 @@ public class PDFGeneratorService {
     private final ObjectMapper objectMapper;
     private final PDFServiceClient pdfServiceClient;
     private final DocmosisPdfGenerationService docmosisPdfGenerationService;
+    private final WelshMonthTranslation welshMonthTranslation;
 
     public EvidenceManagementFileUpload generatePdf(DocumentType documentType, String pdfGenerationData) {
         byte[] postResult;
@@ -99,35 +101,7 @@ public class PDFGeneratorService {
         if (dateToConvert == null) {
             return null;
         }
-        int day = dateToConvert.getDayOfMonth();
-        String month=null;
-        int year = dateToConvert.getYear();
-        switch (dateToConvert.getMonth().getValue()) {
-            case 1: month = "Ionawr";
-                break;
-            case 2: month = "Chwefror";
-                break;
-            case 3: month = "Mawrth";
-                break;
-            case 4: month = "Ebrill";
-                break;
-            case 5: month = "Mai";
-                break;
-            case 6: month = "Mehefin";
-                break;
-            case 7: month = "Gorffennaf";
-                break;
-            case 8: month = "Awst";
-                break;
-            case 9: month = "Medi";
-                break;
-            case 10: month = "Hydref";
-                break;
-            case 11: month = "Tachwedd";
-                break;
-            case 12: month = "Rhagfyr";
-                break;
-        }
-        return (day+" "+ month+ " " + year);
+        String month = welshMonthTranslation.getMonths().get(dateToConvert.getMonth().getValue());
+        return (dateToConvert.getDayOfMonth()+" "+ month+ " " + dateToConvert.getYear());
     }
 }
