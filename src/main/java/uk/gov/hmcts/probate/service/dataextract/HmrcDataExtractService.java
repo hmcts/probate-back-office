@@ -38,7 +38,8 @@ public class HmrcDataExtractService {
         log.info("HMRC data extract initiated for dates from-to: {}-{}", fromDate, toDate);
 
         List<ReturnedCaseDetails> casesFound = caseQueryService.findCaseStateWithinTimeFrame(fromDate, toDate);
-        log.info("Cases found for HMRC data extract initiated for dates from-to: {}-{}, cases found: {}", fromDate, toDate, casesFound.size());
+        log.info("Cases found for HMRC data extract initiated for dates from-to: {}-{}, cases found: {}", 
+            fromDate, toDate, casesFound.size());
 
         if (!casesFound.isEmpty()) {
             uploadHmrcFile(fromDate, toDate, casesFound);

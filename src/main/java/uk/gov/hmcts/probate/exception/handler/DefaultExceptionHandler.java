@@ -12,6 +12,7 @@ import uk.gov.hmcts.probate.exception.BadRequestException;
 import uk.gov.hmcts.probate.exception.BusinessValidationException;
 import uk.gov.hmcts.probate.exception.ClientException;
 import uk.gov.hmcts.probate.exception.ConnectionException;
+import uk.gov.hmcts.probate.exception.DataExtractUnauthorisedException;
 import uk.gov.hmcts.probate.exception.NotFoundException;
 import uk.gov.hmcts.probate.exception.model.ErrorResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
@@ -23,6 +24,7 @@ import static net.logstash.logback.argument.StructuredArguments.keyValue;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.SERVICE_UNAVAILABLE;
+import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 @Slf4j
 @ControllerAdvice
@@ -31,6 +33,7 @@ class DefaultExceptionHandler extends ResponseEntityExceptionHandler {
     public static final String INVALID_REQUEST = "Invalid Request";
     public static final String CLIENT_ERROR = "Client Error";
     public static final String CONNECTION_ERROR = "Connection error";
+    public static final String UNAUTHORISED_DATA_EXTRACT_ERROR = "Unauthorised access to Data-Extract error";
 
 
     @ExceptionHandler(BadRequestException.class)
@@ -91,5 +94,15 @@ class DefaultExceptionHandler extends ResponseEntityExceptionHandler {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         return new ResponseEntity<>(errorResponse, headers, NOT_FOUND);
+    }
+
+    @ExceptionHandler(value = DataExtractUnauthorisedException.class)
+    public ResponseEntity<ErrorResponse> handle(DataExtractUnauthorisedException exception) {
+        log.warn("Not found exception", exception);
+        ErrorResponse errorResponse = new ErrorResponse(UNAUTHORIZED.value(), 
+            UNAUTHORISED_DATA_EXTRACT_ERROR, exception.getMessage());
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        return new ResponseEntity<>(errorResponse, headers, UNAUTHORIZED);
     }
 }
