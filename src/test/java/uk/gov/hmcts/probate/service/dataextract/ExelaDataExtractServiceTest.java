@@ -118,7 +118,7 @@ public class ExelaDataExtractServiceTest {
             .add(new ReturnedCaseDetails(caseData1, LAST_MODIFIED, 1L))
             .build();
         when(excelaCriteriaService.getFilteredCases(any())).thenReturn(filteredCases);
-        when(notificationService.sendExcelaEmail(any())).thenThrow(ClientException.class);
+        when(notificationService.sendExcelaEmail(any())).thenThrow(NotificationClientException.class);
 
         exelaDataExtractService.performExelaExtractForDate("2000-12-31");
     }
