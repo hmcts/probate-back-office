@@ -1,4 +1,4 @@
-w # Spring Boot application template
+ # Probate Back Office
 
 [![Build Status](https://travis-ci.org/hmcts/spring-boot-template.svg?branch=master)](https://travis-ci.org/hmcts/spring-boot-template)
 
