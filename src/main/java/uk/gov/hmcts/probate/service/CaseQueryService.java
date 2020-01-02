@@ -73,9 +73,9 @@ public class CaseQueryService {
     private List<ReturnedCaseDetails> runQuery(String jsonQuery) {
         log.info("GrantMatchingService runQuery: " + jsonQuery);
         URI uri = UriComponentsBuilder
-                .fromHttpUrl(ccdDataStoreAPIConfiguration.getHost() + ccdDataStoreAPIConfiguration.getCaseMatchingPath())
-                .queryParam(CASE_TYPE_ID, CASE_TYPE.getCode())
-                .build().encode().toUri();
+            .fromHttpUrl(ccdDataStoreAPIConfiguration.getHost() + ccdDataStoreAPIConfiguration.getCaseMatchingPath())
+            .queryParam(CASE_TYPE_ID, CASE_TYPE.getCode())
+            .build().encode().toUri();
 
         HttpHeaders tokenHeaders = null;
         HttpEntity<String> entity;
@@ -93,7 +93,9 @@ public class CaseQueryService {
 
         ReturnedCases returnedCases;
         try {
+            log.info("restTemplate.postForObject");
             returnedCases = restTemplate.postForObject(uri, entity, ReturnedCases.class);
+            log.info("restTemplate.postForObject returnedCases");
         } catch (HttpClientErrorException e) {
             appInsights.trackEvent(REST_CLIENT_EXCEPTION, e.getMessage());
             throw new CaseMatchingException(e.getStatusCode(), e.getMessage());
@@ -101,6 +103,7 @@ public class CaseQueryService {
 
         appInsights.trackEvent(REQUEST_SENT, uri.toString());
 
+        log.info("returnedCases.toString() {}" + returnedCases.toString());
         return returnedCases.getCases();
     }
 }
