@@ -46,6 +46,7 @@ public class IdamAuthenticateUserService {
     }
 
     public String getIdamOauth2Token() {
+        log.info("getIdamOauth2Token: email, password = {}, {}", email, password);
         String authorisation = email + ":" + password;
         String base64Authorisation = Base64.getEncoder().encodeToString(authorisation.getBytes());
 
