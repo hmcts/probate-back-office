@@ -37,5 +37,4 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "Channel": "CaseWorker", "TabID": "legacyCaseTab", "TabLabel": "Legacy details", "TabDisplayOrder": 11, "CaseFieldID": "legacyType", "TabFieldDisplayOrder": 2},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "Channel": "CaseWorker", "TabID": "legacyCaseTab", "TabLabel": "Legacy details", "TabDisplayOrder": 11, "CaseFieldID": "legacyCaseViewUrlLink", "TabFieldDisplayOrder": 3},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "Channel": "CaseWorker", "TabID": "legacyCaseTab", "TabLabel": "Legacy details", "TabDisplayOrder": 11, "CaseFieldID": "legacyCaseViewUrl", "TabFieldDisplayOrder": 4}
-
 ]
