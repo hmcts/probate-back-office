@@ -146,6 +146,8 @@ public class CaveatData {
     private String legacyType;
     private String legacyCaseViewUrl;
 
+    private String languagePreferenceWelsh;
+
     public String getDeceasedFullName() {
         return String.join(" ", deceasedForenames, deceasedSurname);
     }

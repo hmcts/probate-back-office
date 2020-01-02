@@ -562,10 +562,6 @@ public class CallbackResponseTransformer {
         return ANSWER_YES.equals(caseData.getPaperForm());
     }
 
-    private boolean isWelshLanguagePreferred(CaseData caseData) {
-        return caseData.getLanguagePreferenceWelsh() !=null ? ANSWER_YES.equals(caseData.getPaperForm()) : Boolean.FALSE;
-    }
-
     private boolean willExists(CaseData caseData) {
         if (isIntestacy(caseData)) {
             return false;

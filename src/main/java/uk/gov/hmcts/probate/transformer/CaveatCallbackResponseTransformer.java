@@ -143,6 +143,7 @@ public class CaveatCallbackResponseTransformer {
                 .deceasedFullAliasNameList(caveatData.getDeceasedFullAliasNameList())
                 .deceasedAddress(caveatData.getDeceasedAddress())
 
+                .languagePreferenceWelsh(caveatData.getLanguagePreferenceWelsh())
                 .solsSolicitorFirmName(caveatData.getSolsSolicitorFirmName())
                 .solsSolicitorPhoneNumber(caveatData.getSolsSolicitorPhoneNumber())
                 .solsSolicitorAppReference(caveatData.getSolsSolicitorAppReference())
