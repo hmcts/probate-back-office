@@ -11,6 +11,25 @@ java:
     PROBATE_POSTGRESQL_HOSTNAME: "{{ .Release.Name }}-postgresql"
     PROBATE_POSTGRESQL_DATABASE: "{{ .Values.postgresql.postgresqlDatabase}}"
     PROBATE_POSTGRESQL_PORT: 5432
+  keyVaults:
+    "probate":
+      resourceGroup: probate
+      secrets:
+        - s2s-probate-backend
+        - AppInsightsInstrumentationKey
+        - probate-bo-govNotifyApiKey
+        - probate-bo-grantSignatureKey
+        - probate-bo-grantSignatureFile
+        - excelaEmail
+        - authTokenEmail
+        - authTokenPassword
+        - ftpSignature
+        - ftpEnv
+        - pdfServiceBaseUrl
+        - pdfServiceAccessKey
+        - pdfServiceHealthUrl
+        - idamRedirectUrl
+        - idam-secret-probate
   postgresql:
     enabled: true
 
