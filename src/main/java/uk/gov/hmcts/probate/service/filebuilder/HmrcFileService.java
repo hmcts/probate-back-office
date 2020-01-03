@@ -101,16 +101,19 @@ public class HmrcFileService extends BaseFileService {
         fileData.add(data.getIhtGrossValue().toString().substring(0, data.getIhtGrossValue().toString().length() - 2));
         log.info("LOG addExpectedEstateIndicator");
         addExpectedEstateIndicator(fileData, data);
-        log.info("LOG 1");
-        fileData.add(data.getIhtNetValue().toString().substring(0, data.getIhtNetValue().toString().length() - 2));
         log.info("LOG getIhtNetValue");
+        fileData.add(data.getIhtNetValue().toString().substring(0, data.getIhtNetValue().toString().length() - 2));
+        log.info("LOG getCaseTypeMapped");
         fileData.add(DataExtractGrantType.valueOf(data.getCaseType()).getCaseTypeMapped());
         fileData.add(FINAL_GRANT);
         fileData.add(ROW_DELIMITER);
         int rowCount = 1;
-        for (CollectionMember<AliasName> member : data.getSolsDeceasedAliasNamesList()) {
-            rowCount = rowCount + addAliasRow(fileData, id.toString(), member.getValue());
-            log.info("LOG AliasName");
+        log.info("LOG getSolsDeceasedAliasNamesList {}", data.getSolsDeceasedAliasNamesList());
+        if (data.getSolsDeceasedAliasNamesList() != null) {
+            for (CollectionMember<AliasName> member : data.getSolsDeceasedAliasNamesList()) {
+                rowCount = rowCount + addAliasRow(fileData, id.toString(), member.getValue());
+                log.info("LOG AliasName");
+            }
         }
         log.info("LOG rowCount {}", rowCount);
         return rowCount;
