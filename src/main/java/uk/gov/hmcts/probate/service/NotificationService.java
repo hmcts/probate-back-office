@@ -132,7 +132,7 @@ public class NotificationService {
         Registry registry = registriesProperties.getRegistries().get(caveatData.getRegistryLocation().toLowerCase());
 
         String templateId = templateService.getTemplateId(state, caveatData.getApplicationType()
-                , caveatData.getRegistryLocation() , LanguagePreference.ENGLISH) ;
+                , caveatData.getRegistryLocation() , caveatData.getLanguagePreference()) ;
         String emailAddress = caveatData.getCaveatorEmailAddress();
         Map<String, String> personalisation;
 

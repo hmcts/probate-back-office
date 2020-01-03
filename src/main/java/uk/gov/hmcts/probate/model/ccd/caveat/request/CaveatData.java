@@ -11,6 +11,7 @@ import uk.gov.hmcts.probate.controller.validation.CaveatCompletedGroup;
 import uk.gov.hmcts.probate.controller.validation.CaveatCreatedGroup;
 import uk.gov.hmcts.probate.controller.validation.CaveatUpdatedGroup;
 import uk.gov.hmcts.probate.model.ApplicationType;
+import uk.gov.hmcts.probate.model.LanguagePreference;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
 import uk.gov.hmcts.probate.model.ccd.ProbateAddress;
 import uk.gov.hmcts.probate.model.ccd.ProbateFullAliasName;
@@ -171,4 +172,9 @@ public class CaveatData {
     @JsonPOJOBuilder(withPrefix = "")
     public static final class CaveatDataBuilder {
     }
+
+    public LanguagePreference getLanguagePreference() {
+        return getLanguagePreferenceWelsh() != null && YES.equals(getLanguagePreferenceWelsh()) ? LanguagePreference.WELSH : LanguagePreference.ENGLISH;
+    }
+
 }
