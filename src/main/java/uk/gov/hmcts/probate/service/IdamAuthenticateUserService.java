@@ -50,6 +50,7 @@ public class IdamAuthenticateUserService {
         String authorisation = email + ":" + password;
         String base64Authorisation = Base64.getEncoder().encodeToString(authorisation.getBytes());
         log.info("got base64Authorisation {}", base64Authorisation);
+        log.info("CODE, id, redirect={}, {}, {}", CODE, id, redirect);
 
         AuthenticateUserResponse authenticateUserResponse = idamApi.authenticateUser(
                 BASIC + base64Authorisation,
