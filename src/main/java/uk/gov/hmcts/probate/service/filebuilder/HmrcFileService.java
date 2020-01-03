@@ -60,62 +60,39 @@ public class HmrcFileService extends BaseFileService {
 
     private int prepareData(ImmutableList.Builder<String> fileData, Long id, CaseData data) {
         log.info("Perparing row data for HMRC, caseId={}", id);
-        int l = 0;
         fileData.add(ROW_TYPE_GRANT_DETAILS);
-        log.info("LOG id");
         fileData.add(id.toString());
-        log.info("LOG getRegistryLocation");
         fileData.add(data.getRegistryLocation());
-        log.info("LOG getBoDeceasedTitle");
         fileData.add(Optional.ofNullable(data.getBoDeceasedTitle()).orElse(""));
-        log.info("LOG getDeceasedForenames");
         fileData.add(data.getDeceasedForenames());
-        log.info("LOG getDeceasedSurname");
         fileData.add(data.getDeceasedSurname());
-        log.info("LOG getBoDeceasedHonours");
         fileData.add(StringUtils.isEmpty(data.getBoDeceasedHonours()) ? "" : data.getBoDeceasedHonours());
         fileData.add("");
-        log.info("LOG getDeceasedDateOfDeath");
         fileData.add(fileExtractDateFormatter.formatDataDate(data.getDeceasedDateOfDeath()));
         fileData.add("");
-        log.info("LOG getDeceasedDateOfBirth");
         fileData.add(fileExtractDateFormatter.formatDataDate(data.getDeceasedDateOfBirth()));
-        log.info("LOG ageCalculator");
         fileData.add(String.valueOf(ageCalculator(data)));
         fileData.add(DOMICILE);
-        log.info("LOG getDeceasedAddress");
         addAddress(fileData, addressManager(data.getDeceasedAddress()));
-        log.info("LOG getGrantIssuedDate");
         fileData.add(fileExtractDateFormatter.formatDataDate(LocalDate.parse(data.getGrantIssuedDate())));
-        log.info("LOG createGrantee1");
         addGranteeDetails(fileData, createGrantee(data, 1));
-        log.info("LOG createGrantee2");
         addGranteeDetails(fileData, createGrantee(data, 2));
-        log.info("LOG createGrantee3");
         addGranteeDetails(fileData, createGrantee(data, 3));
-        log.info("LOG createGrantee4");
         addGranteeDetails(fileData, createGrantee(data, 4));
-        log.info("LOG addSolicitorDetails");
         addSolicitorDetails(fileData, data);
-        log.info("LOG getIhtGrossValue");
         fileData.add(data.getIhtGrossValue().toString().substring(0, data.getIhtGrossValue().toString().length() - 2));
-        log.info("LOG addExpectedEstateIndicator");
         addExpectedEstateIndicator(fileData, data);
-        log.info("LOG getIhtNetValue");
         fileData.add(data.getIhtNetValue().toString().substring(0, data.getIhtNetValue().toString().length() - 2));
-        log.info("LOG getCaseTypeMapped");
         fileData.add(DataExtractGrantType.valueOf(data.getCaseType()).getCaseTypeMapped());
         fileData.add(FINAL_GRANT);
         fileData.add(ROW_DELIMITER);
         int rowCount = 1;
-        log.info("LOG getSolsDeceasedAliasNamesList {}", data.getSolsDeceasedAliasNamesList());
         if (data.getSolsDeceasedAliasNamesList() != null) {
             for (CollectionMember<AliasName> member : data.getSolsDeceasedAliasNamesList()) {
                 rowCount = rowCount + addAliasRow(fileData, id.toString(), member.getValue());
-                log.info("LOG AliasName");
             }
         }
-        log.info("LOG rowCount {}", rowCount);
+        log.info("rowCount {}", rowCount);
         return rowCount;
     }
 

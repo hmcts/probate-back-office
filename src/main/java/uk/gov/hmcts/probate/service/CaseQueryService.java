@@ -71,7 +71,7 @@ public class CaseQueryService {
     }
 
     private List<ReturnedCaseDetails> runQuery(String jsonQuery) {
-        log.info("GrantMatchingService runQuery: " + jsonQuery);
+        log.info("CaseQueryService runQuery: " + jsonQuery);
         URI uri = UriComponentsBuilder
             .fromHttpUrl(ccdDataStoreAPIConfiguration.getHost() + ccdDataStoreAPIConfiguration.getCaseMatchingPath())
             .queryParam(CASE_TYPE_ID, CASE_TYPE.getCode())
@@ -88,14 +88,13 @@ public class CaseQueryService {
             tokenHeaders.setContentType(MediaType.APPLICATION_JSON);
         } finally {
             entity = new HttpEntity<>(jsonQuery, tokenHeaders);
-            log.info("Data extract Elastic search entity: " + entity);
+            log.info("CaseQueryService Elastic search entity: " + entity);
         }
 
         ReturnedCases returnedCases;
         try {
-            log.info("restTemplate.postForObject");
             returnedCases = restTemplate.postForObject(uri, entity, ReturnedCases.class);
-            log.info("restTemplate.postForObject returnedCases");
+            log.info("Posted object for CaseQueryService");
         } catch (HttpClientErrorException e) {
             appInsights.trackEvent(REST_CLIENT_EXCEPTION, e.getMessage());
             throw new CaseMatchingException(e.getStatusCode(), e.getMessage());
@@ -103,7 +102,7 @@ public class CaseQueryService {
 
         appInsights.trackEvent(REQUEST_SENT, uri.toString());
 
-        log.info("returnedCases.toString() {}" + returnedCases.toString());
+        log.info("CaseQueryService returnedCases.size = {}" + returnedCases.getCases().size());
         return returnedCases.getCases();
     }
 }
