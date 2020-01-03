@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import uk.gov.hmcts.probate.exception.handler.AuthenticationExceptionHandler;
@@ -28,6 +29,19 @@ public class SecurityConfiguration {
             filter = new AuthCheckerServiceOnlyFilter(serviceRequestAuthorizer);
             filter.setAuthenticationManager(authenticationManager);
             this.authenticationExceptionHandler = authenticationExceptionHandler;
+        }
+
+        @Override
+        public void configure(WebSecurity web) {
+            web.ignoring().antMatchers("/swagger-ui.html",
+                "/swagger-resources/**",
+                "/webjars/springfox-swagger-ui/**",
+                "/v2/api-docs",
+                "/health",
+                "/health/liveness",
+                "/info",
+                "/data-extract/**",
+                "/");
         }
 
         @Override
