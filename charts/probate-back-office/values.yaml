@@ -21,6 +21,7 @@ java:
     CCD_DATA_STORE_API_HOST : http://ccd-data-store-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal 
     LOG_LEVEL: DEBUG
     AUTH_S2S_CLIENT_ID: "probate_backend"
+    IDAM_CLIENT_NAME: "probate"
   keyVaults:
     "probate":
       resourceGroup: probate
