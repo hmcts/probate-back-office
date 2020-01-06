@@ -7,6 +7,7 @@
   {"LiveFrom": "02/01/2017", "ID": "IHTFormID", "ListElementCode": "IHT205", "ListElement": "IHT 205 - there was no Inheritance Tax to pay"},
   {"LiveFrom": "02/01/2017", "ID": "IHTFormID", "ListElementCode": "IHT207", "ListElement": "IHT 207 - there was no Inheritance Tax to pay and the deceased lived abroad"},
   {"LiveFrom": "02/01/2017", "ID": "IHTFormID", "ListElementCode": "IHT400421", "ListElement": "IHT 400"},
+  {"LiveFrom": "02/01/2017", "ID": "IHTFormID", "ListElementCode": "NA", "ListElement": "Not applicable"},
   {"LiveFrom": "03/01/2017", "ID": "solsPaymentMethods", "ListElementCode": "fee account", "ListElement": "Fee account"},
   {"LiveFrom": "03/01/2017", "ID": "solsPaymentMethods", "ListElementCode": "cheque", "ListElement": "Cheque (Citizen's only)"},
   {"LiveFrom": "04/01/2017", "ID": "DomiciledDetails", "ListElementCode": "domiciledPermE&W", "ListElement": "domiciled permanently in England or Wales"},
