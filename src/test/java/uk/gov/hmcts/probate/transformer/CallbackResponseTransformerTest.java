@@ -106,7 +106,8 @@ public class CallbackResponseTransformerTest {
     private static final String SOLICITOR_FIRM_POSTCODE = "SW13 6EA";
     private static final String SOLICITOR_FIRM_EMAIL = "sol@email.com";
     private static final String SOLICITOR_FIRM_PHONE = "0123456789";
-    private static final String SOLICITOR_SOT_NAME = "Andy Test";
+    private static final String SOLICITOR_SOT_FORENAME = "Andy Middlename";
+    private static final String SOLICITOR_SOT_SURNAME = "Test";
     private static final String SOLICITOR_SOT_JOB_TITLE = "Lawyer";
 
     private static final String DECEASED_FIRSTNAME = "Firstname";
@@ -296,7 +297,8 @@ public class CallbackResponseTransformerTest {
                         .postCode(SOLICITOR_FIRM_POSTCODE).build())
                 .solsSolicitorEmail(SOLICITOR_FIRM_EMAIL)
                 .solsSolicitorPhoneNumber(SOLICITOR_FIRM_PHONE)
-                .solsSOTName(SOLICITOR_SOT_NAME)
+                .solsSOTForenames(SOLICITOR_SOT_FORENAME)
+                .solsSOTSurname(SOLICITOR_SOT_SURNAME)
                 .solsSOTJobTitle(SOLICITOR_SOT_JOB_TITLE)
                 .deceasedForenames(DECEASED_FIRSTNAME)
                 .deceasedSurname(DECEASED_LASTNAME)
@@ -1926,7 +1928,7 @@ public class CallbackResponseTransformerTest {
         assertEquals(SOLICITOR_FIRM_POSTCODE, callbackResponse.getData().getSolsSolicitorAddress().getPostCode());
         assertEquals(SOLICITOR_FIRM_EMAIL, callbackResponse.getData().getSolsSolicitorEmail());
         assertEquals(SOLICITOR_FIRM_PHONE, callbackResponse.getData().getSolsSolicitorPhoneNumber());
-        assertEquals(SOLICITOR_SOT_NAME, callbackResponse.getData().getSolsSOTName());
+        assertEquals(SOLICITOR_SOT_FORENAME + " " + SOLICITOR_SOT_SURNAME, callbackResponse.getData().getSolsSOTName());
         assertEquals(SOLICITOR_SOT_JOB_TITLE, callbackResponse.getData().getSolsSOTJobTitle());
         assertEquals(APP_REF, callbackResponse.getData().getSolsSolicitorAppReference());
 
