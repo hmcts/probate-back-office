@@ -84,6 +84,9 @@ public class ExceptionRecordOCRFields {
     private final String foreignAsset;
     private final String foreignAssetEstateValue;
     private final String adopted;
+    private final String adoptiveRelatives0name;
+    private final String adoptiveRelatives0relationship;
+    private final String adoptiveRelatives0adoptedInOrOut;
     private final String adoptiveRelatives1name;
     private final String adoptiveRelatives1relationship;
     private final String adoptiveRelatives1adoptedInOrOut;
