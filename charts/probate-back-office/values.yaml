@@ -8,7 +8,6 @@ java:
   environment:
     REFORM_TEAM: probate
     REFORM_SERVICE_NAME: back-office
-    APPINSIGHTS_INSTRUMENTATIONKEY: dummy
     AUTH_S2S_URL: http://rpe-service-auth-provider-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
     PDF_SERVICE_URL: http://cmc-pdf-service-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
     PRINTSERVICE_HOST: https://return-case-doc-ccd.nonprod.platform.hmcts.net
@@ -28,6 +27,7 @@ java:
       resourceGroup: probate
       secrets:
         - s2s-probate-backend
+        - AppInsightsInstrumentationKey
         - probate-bo-govNotifyApiKey
         - probate-bo-grantSignatureKey
         - probate-bo-grantSignatureFile
