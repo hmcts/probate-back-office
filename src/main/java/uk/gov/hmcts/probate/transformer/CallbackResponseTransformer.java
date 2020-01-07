@@ -691,13 +691,17 @@ public class CallbackResponseTransformer {
             builder
                     .solsSOTForenames(caseData.getSolsSOTForenames())
                     .solsSOTSurname(caseData.getSolsSOTSurname())
-                    .solsSOTName(getSolsSOTName(caseData.getSolsSOTForenames(), caseData.getSolsSOTSurname()))
                     .solsSOTJobTitle(caseData.getSolsSOTJobTitle())
                     .solsSolicitorAppReference(caseData.getSolsSolicitorAppReference())
                     .solsSolicitorFirmName(caseData.getSolsSolicitorFirmName())
                     .solsSolicitorEmail(caseData.getSolsSolicitorEmail())
                     .solsSolicitorPhoneNumber(caseData.getSolsSolicitorPhoneNumber())
                     .solsSolicitorAddress(caseData.getSolsSolicitorAddress());
+
+            if (caseData.getSolsSOTForenames() != null && caseData.getSolsSOTSurname() != null) {
+                builder
+                        .solsSOTName(getSolsSOTName(caseData.getSolsSOTForenames(), caseData.getSolsSOTSurname()));
+            }
 
         }
 
@@ -808,13 +812,18 @@ public class CallbackResponseTransformer {
             builder
                     .solsSOTForenames(caseData.getSolsSOTForenames())
                     .solsSOTSurname(caseData.getSolsSOTSurname())
-                    .solsSOTName(getSolsSOTName(caseData.getSolsSOTForenames(), caseData.getSolsSOTSurname()))
                     .solsSOTJobTitle(caseData.getSolsSOTJobTitle())
                     .solsSolicitorAppReference(caseData.getSolsSolicitorAppReference())
                     .solsSolicitorFirmName(caseData.getSolsSolicitorFirmName())
                     .solsSolicitorEmail(caseData.getSolsSolicitorEmail())
                     .solsSolicitorPhoneNumber(caseData.getSolsSolicitorPhoneNumber())
                     .solsSolicitorAddress(caseData.getSolsSolicitorAddress());
+
+            if (caseData.getSolsSOTForenames() != null && caseData.getSolsSOTSurname() != null) {
+                builder
+                    .solsSOTName(getSolsSOTName(caseData.getSolsSOTForenames(), caseData.getSolsSOTSurname()));
+
+            }
         }
 
         if (!isPaperForm(caseData)) {
