@@ -1,6 +1,3 @@
-tags:
-  - idam-pr
-
 java:
   environment:
     AUTH_PROVIDER_SERVICE_CLIENT_KEY: ${S2S_AUTH_TOTP_SECRET}
@@ -30,4 +27,4 @@ java:
 
   postgresql:
     enabled: true
-
+    

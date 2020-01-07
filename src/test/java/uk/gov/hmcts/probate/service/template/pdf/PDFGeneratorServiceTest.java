@@ -11,6 +11,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.MediaType;
 import org.springframework.util.ReflectionUtils;
 import uk.gov.hmcts.probate.config.PDFServiceConfiguration;
+import uk.gov.hmcts.probate.config.documents.WelshMonthTranslation;
 import uk.gov.hmcts.probate.exception.ClientException;
 import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.evidencemanagement.EvidenceManagementFileUpload;
@@ -20,15 +21,17 @@ import uk.gov.hmcts.reform.pdf.service.client.PDFServiceClient;
 import uk.gov.hmcts.reform.pdf.service.client.exception.PDFServiceClientException;
 
 import java.lang.reflect.Field;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyMap;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT_RAISED;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE;
@@ -53,6 +56,9 @@ public class PDFGeneratorServiceTest {
 
     @Mock
     private DocmosisPdfGenerationService docmosisPdfGenerationServiceMock;
+
+    @Mock
+    private PlaceholderDecorator placeholderDecorator;
 
     @InjectMocks
     private PDFGeneratorService underTest;
@@ -98,9 +104,12 @@ public class PDFGeneratorServiceTest {
         placeholders.put("registry", registry);
         placeholders.put("PA8AURL", "www.citizensadvice.org.uk|https://www.citizensadvice.org.uk/");
         placeholders.put("hmctsfamily", "image:base64:" + null);
+        placeholders.put("deceasedDateOfDeath", LocalDate.now().toString());
 
         EvidenceManagementFileUpload result = underTest.generateDocmosisDocumentFrom(CAVEAT_RAISED.getTemplateName(),
                 placeholders);
+
+        verify(placeholderDecorator).decorate(placeholders);
         Assert.assertThat(result.getContentType(), equalTo(MediaType.APPLICATION_PDF));
         Assert.assertThat(result.getBytes().length, greaterThan(0));
     }

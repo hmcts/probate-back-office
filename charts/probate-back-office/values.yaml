@@ -10,4 +10,3 @@ java:
     LOG_LEVEL: DEBUG
     APPINSIGHTS_INSTRUMENTATIONKEY: dummy
   image: hmctspublic.azurecr.io/probate/back-office:latest
-
