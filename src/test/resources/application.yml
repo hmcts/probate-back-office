@@ -314,7 +314,9 @@ document:
 
 idam:
   s2s-auth:
-    url: ""
+    url: http://localhost:4502
+    totp_secret: 'AAAAAAAAAAAAAAAA'
+    microservice: probate_backend
 
 send-letter:
   url: ${SEND_LETTER_SERIVCE_BASEURL:http://localhost:8485}
