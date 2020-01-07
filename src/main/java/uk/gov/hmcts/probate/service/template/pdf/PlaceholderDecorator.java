@@ -1,13 +1,12 @@
 package uk.gov.hmcts.probate.service.template.pdf;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Map;
-
-import org.springframework.stereotype.Component;
-
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Component
@@ -24,14 +23,13 @@ public class PlaceholderDecorator {
     private static final String GRANT_ISSUED_DATE_IN_WELSH = "grantIssuedDateInWelsh";
 
     public void decorate(Map<String, Object> placeholders) {
-        if (placeholders.get(DECEASED_DATE_OF_DEATH) != null) {
+        if (placeholders.get(DECEASED_DATE_OF_DEATH) != null && (placeholders.get(DECEASED_DATE_OF_DEATH)) instanceof String) {
             String deceasedDate = (String) placeholders.get(DECEASED_DATE_OF_DEATH);
             placeholders.put(DECEASED_DATE_OF_DEATH_IN_WELSH, localDateToWelshStringConverter.convert(LocalDate.parse(deceasedDate)));
         }
-        if (placeholders.get(GRANT_ISSUED_DATE) == null) {
-            placeholders.put(GRANT_ISSUED_DATE, dateTimeFormatter.format(LocalDate.now()));
+        placeholders.computeIfAbsent(GRANT_ISSUED_DATE, k -> dateTimeFormatter.format(LocalDate.now()));
+        if ((placeholders.get(GRANT_ISSUED_DATE)) instanceof String) {
+            placeholders.put(GRANT_ISSUED_DATE_IN_WELSH, localDateToWelshStringConverter.convert(LocalDate.parse((String) placeholders.get(GRANT_ISSUED_DATE))));
         }
-        placeholders.put(GRANT_ISSUED_DATE_IN_WELSH, localDateToWelshStringConverter.convert(LocalDate.parse((String) placeholders.get(GRANT_ISSUED_DATE))));
     }
-
 }
