@@ -23,5 +23,6 @@ spring:
         pdfServiceHealthUrl: docmosis.service.health.uri
         idamRedirectUrl: auth.provider.client.redirect
         idam-secret-probate: auth.provider.client.secret
-        s2s-probate-backend: auth.provider.service.client.key
+        s2s-probate-backend: S2S_AUTH_KEY
+        
 

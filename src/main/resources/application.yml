@@ -298,6 +298,8 @@ document:
 idam:
   s2s-auth:
     url: ${AUTH_S2S_URL:http://localhost:4502}
+    totp_secret: ${S2S_AUTH_KEY:'AAAAAAAAAAAAAAAA'}
+    microservice: ${AUTH_S2S_CLIENT_ID:probate_backend}
 send-letter:
   url: ${SEND_LETTER_SERIVCE_BASEURL:http://localhost:8485}
 
@@ -309,3 +311,5 @@ excelaEmail: ${EXCELA_EMAIL:probatetest@gmail.com}
 
 cron:
   data_extract: "0 0 2 * * *"
+
+
