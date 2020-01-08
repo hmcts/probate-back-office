@@ -17,7 +17,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.function.Function;
 
-@SpringBootApplication(exclude = {ServiceAuthHealthIndicator.class, CoreCaseDataClientAutoConfiguration.class})
+@SpringBootApplication(exclude = {CoreCaseDataClientAutoConfiguration.class})
 @EnableFeignClients(basePackages = {"uk.gov.hmcts.reform", "uk.gov.hmcts.reform.sendletter", "uk.gov.hmcts.probate.service"})
 public class BusinessRulesValidationApplication {
 
