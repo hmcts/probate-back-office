@@ -77,10 +77,10 @@ public class CaveatPersonalisationServiceTest {
     private static final String PERSONALISATION_REGISTRY_PHONE = "registry_phone";
     private static final String PERSONALISATION_CCD_REFERENCE = "ccd_reference";
     private static final String PERSONALISATION_CAVEAT_EXPIRY_DATE = "caveat_expiry_date";
+    private static final String PERSONALISATION_WELSH_CAVEAT_EXPIRY_DATE = "welsh_caveat_expiry_date";
     private static final String PERSONALISATION_MESSAGE_CONTENT = "message_content";
     private static final String PERSONALISATION_DATE_CAVEAT_ENTERED = "date_caveat_entered";
     private static final String PERSONALISATION_CAVEATOR_NAME = "caveator_name";
-    private static final String PERSONALISATION_CAVEATOR_ADDRESS = "caveator_address";
 
     HashMap<String, Object> personalisation = new HashMap<>();
     private CaseData caseDataPersonal;
@@ -171,6 +171,7 @@ public class CaveatPersonalisationServiceTest {
         assertEquals("CTSC", response.get(PERSONALISATION_REGISTRY_NAME));
         assertEquals("1234567890", response.get(PERSONALISATION_REGISTRY_PHONE));
         assertEquals("10th October 2000", response.get(PERSONALISATION_CAVEAT_EXPIRY_DATE));
+        assertEquals("10 Hydref 2000", response.get(PERSONALISATION_WELSH_CAVEAT_EXPIRY_DATE));
     }
 
     @Test
@@ -183,6 +184,7 @@ public class CaveatPersonalisationServiceTest {
         assertEquals("CTSC", response.get(PERSONALISATION_REGISTRY_NAME));
         assertEquals("1234567890", response.get(PERSONALISATION_REGISTRY_PHONE));
         assertEquals("10th October 2000", response.get(PERSONALISATION_CAVEAT_EXPIRY_DATE));
+        assertEquals("10 Hydref 2000", response.get(PERSONALISATION_WELSH_CAVEAT_EXPIRY_DATE));
     }
 
 

@@ -176,7 +176,7 @@ public class NotificationServiceTest {
     private static final String PERSONALISATION_DECEASED_DOD = "deceased_dod";
     private static final String PERSONALISATION_CCD_REFERENCE = "ccd_reference";
     private static final String PERSONALISATION_MESSAGE_CONTENT = "message_content";
-    private static final String PERSONALISATION_EXCELA_NAME = "excelaName";
+    private static final String PERSONALISATION_WELSH_CAVEAT_EXPIRY_DATE = "welsh_caveat_expiry_date";
     private static final String PERSONALISATION_CASE_DATA = "caseData";
     private static final String PERSONALISATION_CAVEAT_EXPIRY_DATE = "caveat_expiry_date";
     private static final String PERSONALISATION_CAVEAT_ENTERED = "date_caveat_entered";
@@ -920,7 +920,7 @@ public class NotificationServiceTest {
         personalisation.put(PERSONALISATION_REGISTRY_NAME, "Oxford Probate Registry");
         personalisation.put(PERSONALISATION_REGISTRY_PHONE, "0186 579 3055");
         personalisation.put(PERSONALISATION_CAVEAT_EXPIRY_DATE, "1st January 2019");
-
+        personalisation.put(PERSONALISATION_WELSH_CAVEAT_EXPIRY_DATE, "1 Ionawr 2019");
         notificationService.sendCaveatEmail(CAVEAT_RAISED, caveatRaisedCaseData);
 
         verify(notificationClient).sendEmail(
@@ -946,7 +946,7 @@ public class NotificationServiceTest {
         personalisation.put(PERSONALISATION_REGISTRY_NAME, "Oxford Probate Registry");
         personalisation.put(PERSONALISATION_REGISTRY_PHONE, "0186 579 3055");
         personalisation.put(PERSONALISATION_CAVEAT_EXPIRY_DATE, "1st January 2019");
-
+        personalisation.put(PERSONALISATION_WELSH_CAVEAT_EXPIRY_DATE, "1 Ionawr 2019");
         notificationService.sendCaveatEmail(CAVEAT_RAISED, caveatRaisedCaseDataBilingual);
 
         verify(notificationClient).sendEmail(
@@ -973,6 +973,8 @@ public class NotificationServiceTest {
         personalisation.put(PERSONALISATION_REGISTRY_NAME, "CTSC");
         personalisation.put(PERSONALISATION_REGISTRY_PHONE, "0300 303 0648");
         personalisation.put(PERSONALISATION_CAVEAT_EXPIRY_DATE, "1st January 2019");
+        personalisation.put(PERSONALISATION_WELSH_CAVEAT_EXPIRY_DATE, "1 Ionawr 2019");
+
 
         notificationService.sendCaveatEmail(CAVEAT_RAISED, caveatRaisedCtscCaseData);
 
@@ -998,6 +1000,7 @@ public class NotificationServiceTest {
         personalisation.put(PERSONALISATION_REGISTRY_NAME, "CTSC");
         personalisation.put(PERSONALISATION_REGISTRY_PHONE, "0300 303 0648");
         personalisation.put(PERSONALISATION_CAVEAT_EXPIRY_DATE, "1st January 2019");
+        personalisation.put(PERSONALISATION_WELSH_CAVEAT_EXPIRY_DATE, "1 Ionawr 2019");
 
         notificationService.sendCaveatEmail(CAVEAT_RAISED, caveatRaisedCtscCaseDataBilingual);
 
@@ -1024,7 +1027,7 @@ public class NotificationServiceTest {
         personalisation.put(PERSONALISATION_REGISTRY_PHONE, "0300 303 0648");
         personalisation.put(PERSONALISATION_SOLICITOR_REFERENCE, solicitorCaveatRaisedCaseData.getData().getSolsSolicitorAppReference());
         personalisation.put(PERSONALISATION_CAVEAT_EXPIRY_DATE, "1st January 2019");
-
+        personalisation.put(PERSONALISATION_WELSH_CAVEAT_EXPIRY_DATE, "1 Ionawr 2019");
         notificationService.sendCaveatEmail(CAVEAT_RAISED_SOLS, solicitorCaveatRaisedCaseData);
 
         verify(notificationClient).sendEmail(
