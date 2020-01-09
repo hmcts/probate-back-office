@@ -24,7 +24,7 @@ Payment summary
 
 **Payment method** Cheque
 
-**Payment reference number** XXXXX123456
+**Payment reference number** Cheque (payable to 'HM Courts & Tribunals Service')
 
 Notes for this application
 -------------------------------------------------
@@ -46,6 +46,7 @@ You now need to send us:
 *   renunciation form for John Smith
 *   death certificate for Bob Martin
 *   death certificate for John Martin
+*   a photocopy of the signed legal statement and declaration
 
 Where to send us your documents
 -------------------------------

@@ -7,5 +7,6 @@
   {"LiveFrom": "01/01/2018", "CaseTypeID": "PROBATE_ExceptionRecord", "Channel": "CaseWorker", "TabID": "envelope", "TabLabel": "Envelope", "TabDisplayOrder": 1, "CaseFieldID": "openingDate", "TabFieldDisplayOrder": 6},
   {"LiveFrom": "01/01/2018", "CaseTypeID": "PROBATE_ExceptionRecord", "Channel": "CaseWorker", "TabID": "envelope", "TabLabel": "Envelope", "TabDisplayOrder": 1, "CaseFieldID": "attachToCaseReference", "TabFieldDisplayOrder": 7},
   {"LiveFrom": "01/01/2018", "CaseTypeID": "PROBATE_ExceptionRecord", "Channel": "CaseWorker", "TabID": "documentation", "TabLabel": "Documentation", "TabDisplayOrder": 2, "CaseFieldID": "scannedDocuments", "TabFieldDisplayOrder": 1},
-  {"LiveFrom": "01/01/2018", "CaseTypeID": "PROBATE_ExceptionRecord", "Channel": "CaseWorker", "TabID": "ocr", "TabLabel": "Form OCR", "TabDisplayOrder": 3, "CaseFieldID": "scanOCRData", "TabFieldDisplayOrder": 1, "FieldShowCondition": " "}
+  {"LiveFrom": "01/01/2018", "CaseTypeID": "PROBATE_ExceptionRecord", "Channel": "CaseWorker", "TabID": "ocr", "TabLabel": "Form OCR", "TabDisplayOrder": 3, "CaseFieldID": "scanOCRData", "TabFieldDisplayOrder": 1, "FieldShowCondition": " "},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "PROBATE_ExceptionRecord", "Channel": "CaseWorker", "TabID": "paymentHistoryTab", "TabLabel": "Payment History", "TabDisplayOrder": 4, "CaseFieldID": "customPaymentHistoryViewer", "TabFieldDisplayOrder": 1}
 ]

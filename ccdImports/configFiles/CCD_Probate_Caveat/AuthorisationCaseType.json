@@ -4,5 +4,7 @@
   {"CaseTypeID": "Caveat", "UserRole": "caseworker-probate-caseofficer", "CRUD": "CRUD"},
   {"CaseTypeID": "Caveat", "UserRole": "caseworker-probate-registrar", "CRUD": "CRUD"},
   {"CaseTypeID": "Caveat", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"},
-  {"CaseTypeID": "Caveat", "UserRole": "citizen", "CRUD": "CRUD"}
+  {"CaseTypeID": "Caveat", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRUD"},
+  {"CaseTypeID": "Caveat", "UserRole": "citizen", "CRUD": "CRUD"},
+  {"CaseTypeID": "Caveat", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"}
 ]

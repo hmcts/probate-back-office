@@ -110,30 +110,91 @@ notifications:
   govNotifyApiKey: "dummy_key"
   templates:
     email:
-      personal:
-        documentReceived: "pa-document-received"
-        caseStopped: "pa-case-stopped"
-        caseStoppedCaveat: "pa-case-stopped-caveat"
-        grantIssued: "pa-grant-issued"
-        grantReissued: "pa-grant-reissued"
-        generalCaveatMessage: "pa-general-caveat-message"
-        excelaData: "pa-excela-data"
-        caveatRaised: "pa-caveat-raised"
-        caveatRaisedCtsc: "pa-ctsc-caveat-raised"
-        requestInformation: "pa-request-information"
-        redeclarationSot: "pa-redeclaration-sot"
-      solicitor:
-        documentReceived: "sol-document-received"
-        caseStopped: "sol-case-stopped"
-        caseStoppedCaveat: "sol-case-stopped-caveat"
-        grantIssued: "sol-grant-issued"
-        grantReissued: "sol-grant-reissued"
-        generalCaveatMessage: "sol-general-caveat-message"
-        excelaData: "pa-excela-data"
-        caveatRaised: "sols-caveat-raised"
-        caveatRaisedCtsc: "sols-ctsc-caveat-raised"
-        requestInformation: "sols-request-information"
-        redeclarationSot: "sols-redeclaration-sot"
+      english:
+        personal:
+          documentReceived: "pa-document-received"
+          caseStopped: "pa-case-stopped"
+          caseStoppedCaveat: "pa-case-stopped-caveat"
+          grantIssued: "pa-grant-issued"
+          grantReissued: "pa-grant-reissued"
+          generalCaveatMessage: "pa-general-caveat-message"
+          excelaData: "pa-excela-data"
+          caveatRaised: "pa-caveat-raised"
+          caveatRaisedCtsc: "pa-ctsc-caveat-raised"
+          requestInformation: "pa-request-information"
+          redeclarationSot: "pa-redeclaration-sot"
+        solicitor:
+          documentReceived: "sol-document-received"
+          caseStopped: "sol-case-stopped"
+          caseStoppedCaveat: "sol-case-stopped-caveat"
+          grantIssued: "sol-grant-issued"
+          grantReissued: "sol-grant-reissued"
+          generalCaveatMessage: "sol-general-caveat-message"
+          excelaData: "pa-excela-data"
+          caveatRaised: "sols-caveat-raised"
+          caveatRaisedCtsc: "sols-ctsc-caveat-raised"
+          caveatRaisedSols: "solicitor-caveat-raised"
+          requestInformation: "sols-request-information"
+          redeclarationSot: "sols-redeclaration-sot"
+      welsh:
+        personal:
+          documentReceived: "pa-document-received-welsh"
+          caseStopped: "pa-case-stopped-welsh"
+          caseStoppedCaveat: "pa-case-stopped-caveat-welsh"
+          grantIssued: "pa-grant-issued-welsh"
+          grantReissued: "pa-grant-reissued-welsh"
+          generalCaveatMessage: "pa-general-caveat-message-welsh"
+          excelaData: "pa-excela-data-welsh"
+          caveatRaised: "pa-caveat-raised-welsh"
+          caveatRaisedCtsc: "pa-ctsc-caveat-raised-welsh"
+          requestInformation: "pa-request-information-welsh"
+          redeclarationSot: "pa-redeclaration-sot-welsh"
+        solicitor:
+          documentReceived: "sol-document-received-welsh"
+          caseStopped: "sol-case-stopped-welsh"
+          caseStoppedCaveat: "sol-case-stopped-caveat-welsh"
+          grantIssued: "sol-grant-issued-welsh"
+          grantReissued: "sol-grant-reissued-welsh"
+          generalCaveatMessage: "sol-general-caveat-message-welsh"
+          excelaData: "pa-excela-data-welsh"
+          caveatRaised: "sols-caveat-raised-welsh"
+          caveatRaisedCtsc: "sols-ctsc-caveat-raised-welsh"
+          requestInformation: "sols-request-information-welsh"
+          redeclarationSot: "sols-redeclaration-sot-welsh"
+
+documents:
+  templates:
+    docmosis:
+      english:
+        final:
+          reissue:
+            intestacy: INTESTACY_GRANT_REISSUE
+            admonWill: ADMON_WILL_GRANT_REISSUE
+            gop: DIGITAL_GRANT_REISSUE
+          grant:
+            intestacy: INTESTACY_GRANT
+            admonWill: ADMON_WILL_GRANT
+            gop: DIGITAL_GRANT
+        preview:
+          reissue:
+            intestacy: INTESTACY_GRANT_REISSUE_DRAFT
+            admonWill: ADMON_WILL_GRANT_REISSUE_DRAFT
+            gop: DIGITAL_GRANT_REISSUE_DRAFT
+          grant:
+            intestacy: INTESTACY_GRANT_DRAFT
+            admonWill: ADMON_WILL_GRANT_DRAFT
+            gop: DIGITAL_GRANT_DRAFT
+      welsh:
+        final:
+          grant:
+            intestacy: WELSH_INTESTACY_GRANT
+            admonWill: WELSH_ADMON_WILL_GRANT
+            gop: WELSH_DIGITAL_GRANT
+        preview:
+          grant:
+            intestacy: WELSH_INTESTACY_GRANT_DRAFT
+            admonWill: WELSH_ADMON_WILL_GRANT_DRAFT
+            gop: WELSH_DIGITAL_GRANT_DRAFT
 
 registries:
   oxford:
@@ -142,8 +203,6 @@ registries:
     emailReplyToId: "oxford-emailReplyToId"
     addressline1: Combined Court Building
     addressline2: St Aldates
-    addressline3:
-    addressline4:
     town: Oxford
     postcode: OX1 1LY
   birmingham:
@@ -152,8 +211,6 @@ registries:
     emailReplyToId: "birmingham-emailReplyToId"
     addressline1: The Priory Courts
     addressline2: 33 Bull Street
-    addressline3:
-    addressline4:
     town: Birmingham
     postcode: B4 6DU
   manchester:
@@ -172,8 +229,6 @@ registries:
     emailReplyToId: "leeds-emailReplyToId"
     addressline1: York House
     addressline2: York Place
-    addressline3:
-    addressline4:
     town: Leeds
     postcode: LS1 2BA
   liverpool:
@@ -182,8 +237,6 @@ registries:
     emailReplyToId: "liverpool-emailReplyToId"
     addressline1: The Queen Elizabeth II Law Courts
     addressline2: Derby Square
-    addressline3:
-    addressline4:
     town: Liverpool
     postcode: L2 1XA
   brighton:
@@ -191,9 +244,6 @@ registries:
     phone: 01273 573510
     emailReplyToId: "brighton-emailReplyToId"
     addressline1: William Street
-    addressline2:
-    addressline3:
-    addressline4:
     town: Brighton
     postcode: BN2 0RF
   london:
@@ -203,7 +253,6 @@ registries:
     addressline1: Principal Registry of the Family Division
     addressline2: First Avenue House
     addressline3: 42-49 High Holborn
-    addressline4:
     town: London
     postcode: WC1V 6NP
   cardiff:
@@ -213,7 +262,6 @@ registries:
     addressline1: 3rd Floor, Cardiff Magistrates’ Court
     addressline2: Fitzalan Place
     addressline3: Cardiff
-    addressline4:
     town: South Wales
     postcode: CF24 0RZ
   newcastle:
@@ -222,8 +270,6 @@ registries:
     emailReplyToId: "newcastle-emailReplyToId"
     addressline1: Newcastle DPR
     addressline2: No 1 Waterloo Square
-    addressline3:
-    addressline4:
     town: Newcastle-Upon-Tyne
     postcode: NE1 4DR
   winchester:
@@ -253,7 +299,6 @@ registries:
     addressline1: The Probate Registry of Wales
     addressline2: Cardiff Magistrates' Court
     addressline3: Fitzalan Place
-    addressline4:
     town: Cardiff
     postcode: CF24 0RZ
 
@@ -283,3 +328,18 @@ excelaEmail: probatetest@gmail.com
 
 cron:
   data_extract: "0 0 2 * * *"
+
+welsh:
+  months:
+    1: "Ionawr"
+    2: "Chwefror"
+    3: "Mawrth"
+    4: "Ebrill"
+    5: "Mai"
+    6: "Mehefin"
+    7: "Gorffennaf"
+    8: "Awst"
+    9: "Medi"
+    10: "Hydref"
+    11: "Tachwedd"
+    12: "Rhagfyr"
