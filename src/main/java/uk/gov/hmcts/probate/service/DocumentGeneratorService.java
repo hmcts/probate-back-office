@@ -17,6 +17,7 @@ import uk.gov.hmcts.probate.service.docmosis.DocumentTemplateService;
 import uk.gov.hmcts.probate.service.docmosis.GenericMapperService;
 import uk.gov.hmcts.probate.service.docmosis.PreviewLetterService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
+import uk.gov.hmcts.probate.service.template.pdf.PlaceholderDecorator;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -42,6 +43,7 @@ import static uk.gov.hmcts.probate.model.DocumentType.WELSH_INTESTACY_GRANT_DRAF
 @RequiredArgsConstructor
 public class DocumentGeneratorService {
 
+    private final PlaceholderDecorator placeholderDecorator;
     private static final String GRANT_OF_PROBATE = "gop";
     private static final String ADMON_WILL = "admonWill";
     private static final String INTESTACY = "intestacy";
@@ -77,14 +79,17 @@ public class DocumentGeneratorService {
         images.put(SEAL_IMAGE, SEAL_FILE_PATH);
 
         Document document;
+
         if (status == DocumentStatus.FINAL) {
             log.info("Generating Grant document");
             Map<String, Object> placeholders = genericMapperService.addCaseDataWithImages(images, caseDetails);
+            placeholderDecorator.decorate(placeholders);
             placeholders.put("Signature", "image:base64:" + pdfManagementService.getDecodedSignature());
             document = generateAppropriateDocument(caseDetails, placeholders, status, issueType);
         } else {
             images.put(WATERMARK, WATERMARK_FILE_PATH);
             Map<String, Object> placeholders = genericMapperService.addCaseDataWithImages(images, caseDetails);
+            placeholderDecorator.decorate(placeholders);
             document = generateAppropriateDocument(caseDetails, placeholders, status, issueType);
         }
 
