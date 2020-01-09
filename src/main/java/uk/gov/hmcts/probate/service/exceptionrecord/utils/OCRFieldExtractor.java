@@ -1,12 +1,13 @@
 package uk.gov.hmcts.probate.service.exceptionrecord.utils;
 
 import lombok.extern.slf4j.Slf4j;
-import uk.gov.hmcts.probate.model.exceptionrecord.ExceptionRecordRequest;
+import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.model.ocr.OCRField;
 
 import java.util.List;
 
 @Slf4j
+@Component
 public class OCRFieldExtractor {
 
     public static String get(List<OCRField> ocrFields, String name) {
@@ -28,16 +29,12 @@ public class OCRFieldExtractor {
 
     public static String get(List<OCRField> ocrFields, String name1, String name2) {
         return (get(ocrFields, name1) + " "
-                + get(ocrFields, name2)).trim().replaceAll("\\s{2,}", " ");
+                + get(ocrFields, name2)).replace("null", "").replaceAll("\\s{2,}", " ").trim();
     }
 
     public static String get(List<OCRField> ocrFields, String name1, String name2, String name3) {
         return (get(ocrFields, name1) + " "
                 + get(ocrFields, name2) + " "
-                + get(ocrFields, name3)).trim().replaceAll("\\s{2,}", " ");
-    }
-
-    private OCRFieldExtractor() {
-        // util class
+                + get(ocrFields, name3)).replace("null", "").replaceAll("\\s{2,}", " ").trim();
     }
 }

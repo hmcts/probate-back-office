@@ -12,4 +12,3 @@ java:
     S2S_AUTH_URL : "http://rpe-service-auth-provider-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal"
     AUTH_IDAM_CLIENT_BASEURL : "https://idam-api.{{ .Values.global.environment }}.platform.hmcts.net"
   image: hmctspublic.azurecr.io/probate/back-office:latest
-
