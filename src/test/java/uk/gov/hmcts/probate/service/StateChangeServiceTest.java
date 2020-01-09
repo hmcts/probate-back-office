@@ -76,6 +76,7 @@ public class StateChangeServiceTest {
     private static final String STATE_GRANT_TYPE_PROBATE = "SolProbateCreated";
     private static final String STATE_GRANT_TYPE_INTESTACY = "SolIntestacyCreated";
     private static final String STATE_GRANT_TYPE_ADMON = "SolAdmonCreated";
+    private static final String STATE_GRANT_TYPE_CREATED = "SolAppCreated";
     private static final Long ID = 1L;
     private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
     private static final Long CASE_ID = 12345678987654321L;
@@ -348,36 +349,13 @@ public class StateChangeServiceTest {
     }
 
     @Test
-    public void shouldChangeStateProbateForCaseReview() {
+    public void shouldChangeStateForCaseReview() {
         when(updateApplicationRule.isChangeNeeded(caseDataMock)).thenReturn(true);
-        when(caseDataMock.getSolsWillType()).thenReturn(WILL_TYPE_PROBATE);
 
         Optional<String> newState = underTest.getChangedStateForCaseReview(caseDataMock);
 
         assertTrue(newState.isPresent());
-        assertEquals(STATE_GRANT_TYPE_PROBATE, newState.get());
-    }
-
-    @Test
-    public void shouldChangeStateIntestacyForCaseReview() {
-        when(updateApplicationRule.isChangeNeeded(caseDataMock)).thenReturn(true);
-        when(caseDataMock.getSolsWillType()).thenReturn(WILL_TYPE_INTESTACY);
-
-        Optional<String> newState = underTest.getChangedStateForCaseReview(caseDataMock);
-
-        assertTrue(newState.isPresent());
-        assertEquals(STATE_GRANT_TYPE_INTESTACY, newState.get());
-    }
-
-    @Test
-    public void shouldChangeStateAdmonForCaseReview() {
-        when(updateApplicationRule.isChangeNeeded(caseDataMock)).thenReturn(true);
-        when(caseDataMock.getSolsWillType()).thenReturn(WILL_TYPE_ADMON);
-
-        Optional<String> newState = underTest.getChangedStateForCaseReview(caseDataMock);
-
-        assertTrue(newState.isPresent());
-        assertEquals(STATE_GRANT_TYPE_ADMON, newState.get());
+        assertEquals(STATE_GRANT_TYPE_CREATED, newState.get());
     }
 
     @Test

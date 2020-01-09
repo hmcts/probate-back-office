@@ -32,6 +32,7 @@ public class StateChangeService {
     private static final String STATE_GRANT_TYPE_PROBATE = "SolProbateCreated";
     private static final String STATE_GRANT_TYPE_INTESTACY = "SolIntestacyCreated";
     private static final String STATE_GRANT_TYPE_ADMON = "SolAdmonCreated";
+    private static final String STATE_GRANT_TYPE_CREATED = "SolAppCreated";
 
     private static final String GRANT_TYPE_PROBATE = "WillLeft";
     private static final String GRANT_TYPE_INTESTACY = "NoWill";
@@ -128,12 +129,7 @@ public class StateChangeService {
 
     public Optional<String> getChangedStateForCaseReview(CaseData caseData) {
         if (updateApplicationRule.isChangeNeeded(caseData)) {
-            if (caseData.getSolsWillType().equals(GRANT_TYPE_PROBATE)) {
-                return Optional.of(STATE_GRANT_TYPE_PROBATE);
-            } else if (caseData.getSolsWillType().equals(GRANT_TYPE_INTESTACY)) {
-                return Optional.of(STATE_GRANT_TYPE_INTESTACY);
-            }
-            return Optional.of(STATE_GRANT_TYPE_ADMON);
+            return Optional.of(STATE_GRANT_TYPE_CREATED);
         }
         return Optional.empty();
     }
