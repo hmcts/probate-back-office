@@ -249,6 +249,8 @@ public class ConfirmationResponseService {
             iht400 = "*   the stamped (receipted) IHT 421 with this application\n";
         }
 
+        String legalPhotocopy = "*   a photocopy of the signed legal statement and declaration";
+        keyValue.put("{{legalPhotocopy}}", legalPhotocopy);
         keyValue.put("{{ihtText}}", ihtText);
         keyValue.put("{{ihtForm}}", ihtForm);
         keyValue.put("{{iht400}}", iht400);
