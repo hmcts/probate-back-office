@@ -13,7 +13,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.service.client.DocumentStoreClient;
 import uk.gov.hmcts.probate.transformer.DocumentTransformer;
 import uk.gov.hmcts.probate.validator.BulkPrintValidationRule;
-import uk.gov.hmcts.reform.authorisation.generators.ServiceAuthTokenGenerator;
+import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.sendletter.api.LetterWithPdfsRequest;
 import uk.gov.hmcts.reform.sendletter.api.SendLetterApi;
 import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
@@ -49,7 +49,7 @@ public class BulkPrintService {
     private BusinessValidationMessageService businessValidationMessageService;
     private final SendLetterApi sendLetterApi;
     private final DocumentStoreClient documentStoreClient;
-    private final ServiceAuthTokenGenerator tokenGenerator;
+    private final AuthTokenGenerator serviceAuthTokenGenerator;
     private final EventValidationService eventValidationService;
     private final List<BulkPrintValidationRule> bulkPrintValidationRules;
     private final DocumentTransformer documentTransformer;
@@ -57,7 +57,7 @@ public class BulkPrintService {
     public SendLetterResponse sendToBulkPrint(CallbackRequest callbackRequest, Document grantDocument, Document coverSheet) {
         SendLetterResponse sendLetterResponse = null;
         try {
-            String authHeaderValue = tokenGenerator.generate();
+            String authHeaderValue = serviceAuthTokenGenerator.generate();
 
             Map<String, Object> additionalData = new HashMap<>();
             additionalData.put(ADDITIONAL_DATA_CASE_REFERENCE, callbackRequest.getCaseDetails().getId());
@@ -88,7 +88,7 @@ public class BulkPrintService {
     public SendLetterResponse sendToBulkPrint(CaveatCallbackRequest caveatCallbackRequest, Document grantDocument, Document coverSheet) {
         SendLetterResponse sendLetterResponse = null;
         try {
-            String authHeaderValue = tokenGenerator.generate();
+            String authHeaderValue = serviceAuthTokenGenerator.generate();
 
             Map<String, Object> additionalData = new HashMap<>();
             additionalData.put(ADDITIONAL_DATA_CASE_REFERENCE, caveatCallbackRequest.getCaseDetails().getId());
