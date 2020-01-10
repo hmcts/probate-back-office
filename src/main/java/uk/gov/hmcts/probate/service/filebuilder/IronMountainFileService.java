@@ -13,32 +13,15 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 
 import java.io.File;
 import java.time.LocalDate;
-import java.time.Period;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
-
-import static uk.gov.hmcts.probate.model.Constants.CTSC;
-import static uk.gov.hmcts.probate.model.Constants.PRINCIPAL_REGISTRY;
-import static uk.gov.hmcts.probate.model.Constants.YES;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class IronMountainFileService {
+public class IronMountainFileService extends BaseFileService {
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd-MMM-yyyy");
-    private static final SolsAddress EMPTY_ADDRESS = SolsAddress.builder()
-            .addressLine1("")
-            .addressLine2("")
-            .addressLine3("")
-            .postCode("")
-            .country("")
-            .county("")
-            .postTown("")
-            .build();
     private final TextFileBuilderService textFileBuilderService;
     private static final String DELIMITER = "|";
     private ImmutableList.Builder<String> fileData;
@@ -66,7 +49,7 @@ public class IronMountainFileService {
         fileData.add("");
         fileData.add(DATE_FORMAT.format(data.getDeceasedDateOfBirth()));
         fileData.add(String.valueOf(ageCalculator(data)));
-        addDeceasedAddress(fileData, deceasedAddress);
+        addAddress(fileData, deceasedAddress);
         fileData.add(id.toString());
         fileData.add(DATE_FORMAT.format(LocalDate.parse(data.getGrantIssuedDate())));
         addGranteeDetails(fileData, createGrantee(data, 1));
@@ -76,7 +59,7 @@ public class IronMountainFileService {
         fileData.add(data.getApplicationType().name());
         fileData.add(data.getApplicationType().equals(ApplicationType.PERSONAL) ? data.getPrimaryApplicantSurname() :
                 data.getSolsSolicitorFirmName());
-        addDeceasedAddress(fileData, applicantAddress);
+        addAddress(fileData, applicantAddress);
         fileData.add(data.getIhtGrossValue().toString().substring(0, data.getIhtGrossValue().toString().length() - 2));
         fileData.add(data.getIhtNetValue().toString().substring(0, data.getIhtNetValue().toString().length() - 2));
         fileData.add(DataExtractGrantType.valueOf(data.getCaseType()).getCaseTypeMapped());
@@ -84,94 +67,12 @@ public class IronMountainFileService {
         fileData.add("\n");
     }
 
-    private void addDeceasedAddress(ImmutableList.Builder<String> fileData, List<String> deceasedAddress) {
-        fileData.add(deceasedAddress.get(0));
-        fileData.add(deceasedAddress.get(1));
-        fileData.add(deceasedAddress.get(2));
-        fileData.add(deceasedAddress.get(3));
-        fileData.add(deceasedAddress.get(6));
-    }
-
-    private void addGranteeDetails(ImmutableList.Builder<String> fileData, Grantee grantee) {
+    protected void addGranteeDetails(ImmutableList.Builder<String> fileData, Grantee grantee) {
         fileData.add("");
         fileData.add(grantee.getFirstName());
         fileData.add(grantee.getLastName());
-        addDeceasedAddress(fileData, grantee.getAddress());
+        addAddress(fileData, grantee.getAddress());
     }
 
-    private int ageCalculator(CaseData data) {
-        return Period.between(data.getDeceasedDateOfBirth(), data.getDeceasedDateOfDeath()).getYears();
-    }
 
-    private List<String> addressManager(SolsAddress address) {
-        if (address == null) {
-            address = EMPTY_ADDRESS;
-        }
-        String[] addressArray = {(Optional.ofNullable(address.getAddressLine1()).orElse("")).replace("\n", " "),
-                Optional.ofNullable(address.getAddressLine2()).orElse(""),
-                Optional.ofNullable(address.getAddressLine3()).orElse(""),
-                Optional.ofNullable(address.getPostTown()).orElse(""),
-                Optional.ofNullable(address.getCounty()).orElse(""),
-                Optional.ofNullable(address.getCountry()).orElse("")};
-        Arrays.sort(addressArray, Comparator.comparingInt(value -> value == null || value.isEmpty() ? 1 : 0));
-        List<String> formattedAddress = new ArrayList<>(7);
-        formattedAddress.addAll(Arrays.asList(addressArray));
-        formattedAddress.add(Optional.ofNullable(address.getPostCode()).orElse(""));
-        return formattedAddress;
-    }
-
-    private Grantee createGrantee(CaseData data, int i) {
-        return Grantee.builder()
-                .fullName(getName(data, i))
-                .address(addressManager(getAddress(data, i)))
-                .build();
-    }
-
-    private String getName(CaseData caseData, int granteeNumber) {
-        if (isYes(caseData.getPrimaryApplicantIsApplying())) {
-            return granteeNumber == 1 ? caseData.getPrimaryApplicantForenames() + " " + caseData
-                    .getPrimaryApplicantSurname() : getApplyingExecutorName(caseData, granteeNumber - 2);
-        }
-        if (granteeNumber == 1 && caseData.getAdditionalExecutorsApplying() == null && caseData.getApplicationType()
-                .equals(ApplicationType.SOLICITOR)) {
-            return caseData.getSolsSOTName();
-        }
-        return getApplyingExecutorName(caseData, granteeNumber - 1);
-    }
-
-    private SolsAddress getAddress(CaseData caseData, int granteeNumber) {
-        if (isYes(caseData.getPrimaryApplicantIsApplying())) {
-            return granteeNumber == 1 ? caseData.getPrimaryApplicantAddress() : getAdditionalExecutorAddress(caseData,
-                    granteeNumber - 2);
-        }
-        if (granteeNumber == 1 && caseData.getAdditionalExecutorsApplying() == null && caseData.getApplicationType()
-                .equals(ApplicationType.SOLICITOR)) {
-            return caseData.getSolsSolicitorAddress();
-        }
-        return getAdditionalExecutorAddress(caseData, granteeNumber - 1);
-    }
-
-    private SolsAddress getAdditionalExecutorAddress(CaseData caseData, int index) {
-        if (caseData.getAdditionalExecutorsApplying() != null
-                && caseData.getAdditionalExecutorsApplying().size() >= (index + 1)) {
-            return caseData.getAdditionalExecutorsApplying().get(index).getValue().getApplyingExecutorAddress();
-        }
-        return EMPTY_ADDRESS;
-    }
-
-    private String getApplyingExecutorName(CaseData caseData, int index) {
-        if (caseData.getAdditionalExecutorsApplying() != null
-                && caseData.getAdditionalExecutorsApplying().size() >= (index + 1)) {
-            return caseData.getAdditionalExecutorsApplying().get(index).getValue().getApplyingExecutorName();
-        }
-        return "";
-    }
-
-    private String registryLocationCheck(String registry) {
-        return registry.equalsIgnoreCase(CTSC) ? PRINCIPAL_REGISTRY : registry;
-    }
-
-    private Boolean isYes(String yesNoValue) {
-        return yesNoValue.equals(YES);
-    }
 }

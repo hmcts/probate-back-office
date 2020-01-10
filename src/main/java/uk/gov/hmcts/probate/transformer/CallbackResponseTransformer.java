@@ -8,6 +8,7 @@ import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ExecutorsApplyingNotification;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
+import uk.gov.hmcts.probate.model.ccd.caveat.response.ResponseCaveatData;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
@@ -22,6 +23,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData.ResponseCaseDataBuilder;
+import uk.gov.hmcts.probate.model.exceptionrecord.CaseCreationDetails;
 import uk.gov.hmcts.probate.model.fee.FeeServiceResponse;
 import uk.gov.hmcts.probate.service.ExecutorsApplyingNotificationService;
 import uk.gov.hmcts.probate.transformer.assembly.AssembleLetterTransformer;
@@ -35,6 +37,9 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import org.apache.commons.lang3.StringUtils;
+import uk.gov.hmcts.reform.probate.model.cases.RegistryLocation;
+import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData;
 
 import static java.util.Collections.EMPTY_LIST;
 import static java.util.Optional.ofNullable;
@@ -55,6 +60,9 @@ import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_INTESTACY;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE;
 import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
 import static uk.gov.hmcts.probate.model.DocumentType.SOT_INFORMATION_REQUEST;
+import static uk.gov.hmcts.probate.model.DocumentType.WELSH_ADMON_WILL_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.WELSH_DIGITAL_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.WELSH_INTESTACY_GRANT;
 import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.Constants.GRANT_OF_PROBATE_NAME;
 import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.INTESTACY;
 
@@ -67,12 +75,11 @@ public class CallbackResponseTransformer {
     private final AssembleLetterTransformer assembleLetterTransformer;
     private final ExecutorsApplyingNotificationService executorsApplyingNotificationService;
 
+    private static final DocumentType[] LEGAL_STATEMENTS = {LEGAL_STATEMENT_PROBATE, LEGAL_STATEMENT_INTESTACY,
+        LEGAL_STATEMENT_ADMON};
     static final String PAYMENT_METHOD_VALUE_FEE_ACCOUNT = "fee account";
     static final String PAYMENT_REFERENCE_FEE_PREFIX = "Fee account PBA-";
     static final String PAYMENT_REFERENCE_CHEQUE = "Cheque (payable to ‘HM Courts & Tribunals Service’)";
-
-    private static final DocumentType[] LEGAL_STATEMENTS = {LEGAL_STATEMENT_PROBATE, LEGAL_STATEMENT_INTESTACY,
-        LEGAL_STATEMENT_ADMON};
     private static final ApplicationType DEFAULT_APPLICATION_TYPE = SOLICITOR;
     private static final String DEFAULT_REGISTRY_LOCATION = CTSC;
     private static final String DEFAULT_IHT_FORM_ID = "IHT205";
@@ -87,6 +94,10 @@ public class CallbackResponseTransformer {
     public static final String QA_CASE_STATE = "BOCaseQA";
     public static final String DATE_FORMAT = "yyyy-MM-dd";
     public static final String OTHER = "other";
+
+    public static final String EXCEPTION_RECORD_CASE_TYPE_ID = "GrantOfRepresentation";
+    public static final String EXCEPTION_RECORD_EVENT_ID = "createCaseFromBulkScan";
+    public static final RegistryLocation EXCEPTION_RECORD_REGISTRY_LOCATION = RegistryLocation.CTSC;
 
     private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(DATE_FORMAT);
 
@@ -107,7 +118,7 @@ public class CallbackResponseTransformer {
 
         if (documentTransformer.hasDocumentWithType(documents, CAVEAT_STOPPED) && letterId != null) {
             CollectionMember<BulkPrint> bulkPrint = buildBulkPrint(letterId, CAVEAT_STOPPED.getTemplateName());
-            caseData.getBulkPrintId().add(bulkPrint);
+            appendToBulkPrintCollection(bulkPrint, caseData);
 
             responseCaseDataBuilder
                     .bulkPrintId(caseData.getBulkPrintId())
@@ -424,7 +435,6 @@ public class CallbackResponseTransformer {
 
                 .solsPaymentMethods(caseData.getSolsPaymentMethods())
                 .solsFeeAccountNumber(caseData.getSolsFeeAccountNumber())
-                .paymentReferenceNumber(getPaymentReferenceNumber(caseData))
 
                 .extraCopiesOfGrant(transformToString(caseData.getExtraCopiesOfGrant()))
                 .outsideUKGrantCopies(transformToString(caseData.getOutsideUKGrantCopies()))
@@ -473,6 +483,7 @@ public class CallbackResponseTransformer {
                 .evidenceHandled(caseData.getEvidenceHandled())
 
                 .paperForm(caseData.getPaperForm())
+                .languagePreferenceWelsh(caseData.getLanguagePreferenceWelsh())
                 .caseType(caseData.getCaseType())
                 .solsWillType(caseData.getSolsWillType())
                 .solsApplicantRelationshipToDeceased(caseData.getSolsApplicantRelationshipToDeceased())
@@ -530,7 +541,8 @@ public class CallbackResponseTransformer {
                 .boEmailRequestInfoNotificationRequested(caseData.getBoEmailRequestInfoNotificationRequested())
                 .boRequestInfoSendToBulkPrint(caseData.getBoRequestInfoSendToBulkPrint())
                 .boRequestInfoSendToBulkPrintRequested(caseData.getBoRequestInfoSendToBulkPrintRequested())
-                .probateSotDocumentsGenerated(caseData.getProbateSotDocumentsGenerated());
+                .probateSotDocumentsGenerated(caseData.getProbateSotDocumentsGenerated())
+                .bulkScanCaseReference(caseData.getBulkScanCaseReference());
 
         if (transform) {
             updateCaseBuilderForTransformCase(caseData, builder);
@@ -658,7 +670,7 @@ public class CallbackResponseTransformer {
                 .paymentReferenceNumberPaperform(caseData.getPaymentReferenceNumberPaperform())
                 .boSendToBulkPrint(caseData.getBoSendToBulkPrint())
                 .boSendToBulkPrintRequested(caseData.getBoSendToBulkPrintRequested())
-
+                .languagePreferenceWelsh(caseData.getLanguagePreferenceWelsh())
                 .bulkPrintPdfSize(caseData.getBulkPrintPdfSize())
                 .bulkPrintSendLetterId(caseData.getBulkPrintSendLetterId());
 
@@ -709,11 +721,13 @@ public class CallbackResponseTransformer {
         if (isSolsEmailSet(caseData)) {
             builder
                     .boEmailDocsReceivedNotification(ANSWER_YES)
-                    .boEmailRequestInfoNotification(ANSWER_YES);
+                    .boEmailRequestInfoNotification(ANSWER_YES)
+                    .boEmailGrantIssuedNotification(ANSWER_YES);
         } else {
             builder
                     .boEmailDocsReceivedNotification(ANSWER_NO)
-                    .boEmailRequestInfoNotification(ANSWER_NO);
+                    .boEmailRequestInfoNotification(ANSWER_NO)
+                    .boEmailGrantIssuedNotification(ANSWER_NO);
         }
 
         if (!isCodicil(caseData)) {
@@ -782,7 +796,6 @@ public class CallbackResponseTransformer {
                     .solsSolicitorPhoneNumber(caseData.getSolsSolicitorPhoneNumber())
                     .solsSolicitorAddress(caseData.getSolsSolicitorAddress());
         }
-
         if (!isPaperForm(caseData)) {
             builder
                     .paperForm(ANSWER_NO);
@@ -804,11 +817,13 @@ public class CallbackResponseTransformer {
         if (isSolsEmailSet(caseData)) {
             builder
                     .boEmailDocsReceivedNotification(ANSWER_YES)
-                    .boEmailRequestInfoNotification(ANSWER_YES);
+                    .boEmailRequestInfoNotification(ANSWER_YES)
+                    .boEmailGrantIssuedNotification(ANSWER_YES);
         } else {
             builder
                     .boEmailDocsReceivedNotification(ANSWER_NO)
-                    .boEmailRequestInfoNotification(ANSWER_NO);
+                    .boEmailRequestInfoNotification(ANSWER_NO)
+                    .boEmailGrantIssuedNotification(ANSWER_NO);
         }
 
         if (!isCodicil(caseData)) {
@@ -937,19 +952,6 @@ public class CallbackResponseTransformer {
         }
     }
 
-    private String getPaymentReferenceNumber(CaseData caseData) {
-        if (ApplicationType.PERSONAL.equals(caseData.getApplicationType())) {
-            return caseData.getPaymentReferenceNumber();
-        } else {
-            if (PAYMENT_METHOD_VALUE_FEE_ACCOUNT.equals(caseData.getSolsPaymentMethods())) {
-                return PAYMENT_REFERENCE_FEE_PREFIX + caseData.getSolsFeeAccountNumber();
-            } else {
-                return PAYMENT_REFERENCE_CHEQUE;
-            }
-        }
-
-    }
-
     private String transformMoneyGBPToString(BigDecimal bdValue) {
         return ofNullable(bdValue)
                 .map(value -> bdValue.multiply(new BigDecimal(100)))
@@ -1002,5 +1004,27 @@ public class CallbackResponseTransformer {
             }
         }
         return templateName;
+    }
+
+    public CaseCreationDetails bulkScanGrantOfRepresentationCaseTransform(GrantOfRepresentationData grantOfRepresentationData) {
+
+        if (grantOfRepresentationData.getApplicationType() == null) {
+            grantOfRepresentationData.setApplicationType(uk.gov.hmcts.reform.probate.model.cases.ApplicationType.PERSONAL);
+        }
+
+        if (grantOfRepresentationData.getRegistryLocation() == null) {
+            grantOfRepresentationData.setRegistryLocation(EXCEPTION_RECORD_REGISTRY_LOCATION);
+        }
+
+        if (grantOfRepresentationData.getPaperForm() == null) {
+            grantOfRepresentationData.setPaperForm(true);
+        }
+
+        if (grantOfRepresentationData.getApplicationSubmittedDate() == null) {
+            grantOfRepresentationData.setApplicationSubmittedDate(LocalDate.now());
+        }
+
+        return CaseCreationDetails.builder().<ResponseCaveatData>
+                eventId(EXCEPTION_RECORD_EVENT_ID).caseData(grantOfRepresentationData).caseTypeId(EXCEPTION_RECORD_CASE_TYPE_ID).build();
     }
 }

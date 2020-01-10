@@ -136,8 +136,6 @@ services:
       interval: 10s
       timeout: 10s
       retries: 10
-    ports:
-      - 4502:8080
     environment:
       SERVER_PORT: 8080
       JWT_KEY: wThK0f0/lh3FlxFcL4xUWDMI5C1J9KyQBgXV4wseh1e5J1uYJIjvTvArHxQDrYoHJ23xFxjHkOnvNbR5dXRoxA==
@@ -155,6 +153,8 @@ services:
       MICROSERVICEKEYS_DG_DOCASSEMBLY_API: "AAAAAAAAAAAAAAAA"
       MICROSERVICE_KEYS_RPA_DG_DOCASSEMBLY: "AAAAAAAAAAAAAAAA"
       TESTING_SUPPORT_ENABLED: "true"
+    ports:
+      - 4502:8080
 
   fr-am:
     image: "hmctsprivate.azurecr.io/idam/idam-fr-am:latest"
@@ -168,12 +168,12 @@ services:
 
   fr-idm:
     image: "hmctsprivate.azurecr.io/idam/idam-fr-idm:latest"
-    ports:
-      - 18080:18080
-      - 9010:9010
     environment:
       JAVA_TOOL_OPTIONS: -Dcom.sun.management.jmxremote.port=9010 -Dcom.sun.management.jmxremote.local.only=false -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Djava.rmi.server.hostname=vm-ubuntu16 -Dcom.sun.management.jmxremote.rmi.port=9010
       JAVA_OPTS: -Xms128m -Xmx512m
+    ports:
+      - 18080:18080
+      - 9010:9010
     depends_on:
       - fr-am
       - shared-db
@@ -220,13 +220,14 @@ services:
   #   ports:
   #     - 5600:5432
 
-  tornado:
-    image: "hmcts/tornado:latest"
-    ports:
-      - 8052:8085
-    environment:
-      DOCMOSIS_KEY: "0OAD-KLTH-JALO-MLIA-DBBH-1ELH-XBKQ-GS91-23ED-8-2358"
-      DOCMOSIS_SITE: "Free Trial License"
+#  tornado:
+#    image: "hmcts/tornado:latest"
+#    ports:
+#      - 8052:8085
+#    environment:
+#      DOCMOSIS_KEY: "0OAD-KLTH-JALO-MLIA-DBBH-1ELH-XBKQ-GS91-23ED-8-2358"
+#      DOCMOSIS_SITE: "Free Trial License"
+
 
   pdf-service-api:
     image: hmctspublic.azurecr.io/cmc/pdf-service:latest
@@ -271,67 +272,67 @@ services:
 #    ports:
 #      - 5182:5432
 #
-#  payments-api:
-#    image: hmctspublic.azurecr.io/payment/api:latest
-#    container_name: payments-api
-#    environment:
-#      SPRING_DATASOURCE_URL: "jdbc:postgresql://${MY_IP}:5430/payment"
-#      SPRING_DATASOURCE_USERNAME: "payment"
-#      SPRING_DATASOURCE_PASSWORD: ""
-#      AUTH_PROVIDER_SERVICE_CLIENT_BASEURL: "http://service-auth-provider-api:8080/"
-#      FEES_REGISTER_URL: "http://fees-register-api-aat.service.core-compute-aat.internal"
-#      PAYMENTS_REPORT_FILE_LOCATION: "."
-#      PBA_CMC_PAYMENTS_EMAIL_FROM: "no-reply@reform.hmcts.net"
-#      CARD_PAYMENTS_REPORT_SCHEDULER_ENABLED: "true"
-#      PBA_DIVORCE_PAYMENTS_EMAIL_SUBJECT: "AAT Env - PBA Reconciliation Report for Divorce"
-#      GOV_PAY_AUTH_KEY_PROBATE_FRONTEND: "238mpukgl3uonfrqpt7ndqvr82ok75i3t8v66156q470k474iai66ukhdf"
-#      PBA_CMC_PAYMENTS_REPORT_SCHEDULER_ENABLED: "true"
-#      GOV_PAY_OPERATIONAL_SERVICES: "ccd_gw"
-#      CARD_PAYMENTS_EMAIL_TO: "Oluwakemi.Benson@hmcts.net,Leonie.Watson@Justice.gov.uk,kevin.harper@hmcts.net,Krishna.Nuthalapati@HMCTS.NET"
-#      PAYMENT_AUDIT_FILE: "%HOME%\\LogFiles\\payment-audit.log"
-#      PBA_CMC_PAYMENTS_EMAIL_TO: "Oluwakemi.Benson@hmcts.net,Leonie.Watson@Justice.gov.uk,kevin.harper@hmcts.net,Krishna.Nuthalapati@HMCTS.NET"
-#      SPRING_MAIL_PORT: "1025"
-#      SPRING_MAIL_HOST: "smtp-server"
-#      GOV_PAY_URL: "https://publicapi.payments.service.gov.uk/v1/payments"
-#      PBA_DIVORCE_PAYMENTS_EMAIL_FROM: "no-reply@reform.hmcts.net"
-#      PBA_DIVORCE_PAYMENTS_EMAIL_MESSAGE: "Hi <br/><br/>Please find attached today''s Payment by Account reconciliation report. <br/><br/>Regards <br/><br/>Payments team<br/><br/>"
-#      PAYMENT_SERVER_URL: "http://localhost:8383"
-#      GOV_PAY_AUTH_KEY_REFERENCE: "DummyKey"
-#      PBA_CMC_PAYMENTS_EMAIL_MESSAGE: "Hi <br/><br/>Please find attached today''s Payment by Account reconciliation report. <br/><br/>Regards <br/><br/>Payments team<br/><br/>"
-#      REFORM_SERVICE_NAME: "payment-api"
-#      AUTH_IDAM_CLIENT_BASEURL: "http://sidam-api:5000"
-#      GOV_PAY_AUTH_KEY_CMC: "DummyKey"
-#      PBA_CMC_PAYMENTS_EMAIL_SUBJECT: "AAT Env - PBA Reconciliation Report for CMC"
-#      CARD_PAYMENTS_EMAIL_FROM: "no-reply@reform.hmcts.net"
-#      CARD_PAYMENTS_EMAIL_MESSAGE: "Hi <br/><br/>Please find attached today''s reconciliation report. <br/><br/>Regards <br/><br/>Payments team<br/><br/>"
-#      GOV_PAY_AUTH_KEY_DIVORCE_FRONTEND: "DummyKey"
-#      FEATURE_PAYMENTS_SEARCH: "true"
-#      PBA_DIVORCE_PAYMENTS_REPORT_SCHEDULER_ENABLED: "true"
-#      SPRING_MAIL_PROPERTIES_MAIL_SMTP_SSL_TRUST: "*"
-#      WEBSITE_LOCAL_CACHE_OPTION: "Always"
-#      PBA_DIVORCE_PAYMENTS_EMAIL_TO: "Oluwakemi.Benson@hmcts.net,Leonie.Watson@Justice.gov.uk,kevin.harper@hmcts.net,Krishna.Nuthalapati@HMCTS.NET"
-#      SPRING_MAIL_PROPERTIES_MAIL_SMTP_STARTTLS_ENABLE: "true"
-#      APPINSIGHTS_INSTRUMENTATIONKEY: "57b197f7-87bb-4dbf-b812-8572521c620a"
-#      CARD_PAYMENTS_EMAIL_SUBJECT: "AAT Env - Card Payments Reconciliation Report"
-#    ports:
-#      - 8383:8080
-#    links:
-#      - payments-database
-#      - service-auth-provider-api
-#      - sidam-api
-#    depends_on:
-#      - payments-database
-#      - service-auth-provider-api
-#      - sidam-api
-#
-#  payments-database:
-#    container_name: payments-database
-#    image: postgres:11-alpine
-#    environment:
-#      POSTGRES_USER: "payment"
-#      POSTGRES_DB: "payment"
-#    ports:
-#      - 5430:5432
+  payments-api:
+    image: hmctspublic.azurecr.io/payment/api:latest
+    container_name: payments-api
+    environment:
+      SPRING_DATASOURCE_URL: "jdbc:postgresql://${MY_IP}:5430/payment"
+      SPRING_DATASOURCE_USERNAME: "payment"
+      SPRING_DATASOURCE_PASSWORD: ""
+      AUTH_PROVIDER_SERVICE_CLIENT_BASEURL: "http://service-auth-provider-api:8080/"
+      FEES_REGISTER_URL: "http://fees-register-api-aat.service.core-compute-aat.internal"
+      PAYMENTS_REPORT_FILE_LOCATION: "."
+      PBA_CMC_PAYMENTS_EMAIL_FROM: "no-reply@reform.hmcts.net"
+      CARD_PAYMENTS_REPORT_SCHEDULER_ENABLED: "true"
+      PBA_DIVORCE_PAYMENTS_EMAIL_SUBJECT: "AAT Env - PBA Reconciliation Report for Divorce"
+      GOV_PAY_AUTH_KEY_PROBATE_FRONTEND: "238mpukgl3uonfrqpt7ndqvr82ok75i3t8v66156q470k474iai66ukhdf"
+      PBA_CMC_PAYMENTS_REPORT_SCHEDULER_ENABLED: "true"
+      GOV_PAY_OPERATIONAL_SERVICES: "ccd_gw"
+      CARD_PAYMENTS_EMAIL_TO: "Oluwakemi.Benson@hmcts.net,Leonie.Watson@Justice.gov.uk,kevin.harper@hmcts.net,Krishna.Nuthalapati@HMCTS.NET"
+      PAYMENT_AUDIT_FILE: "%HOME%\\LogFiles\\payment-audit.log"
+      PBA_CMC_PAYMENTS_EMAIL_TO: "Oluwakemi.Benson@hmcts.net,Leonie.Watson@Justice.gov.uk,kevin.harper@hmcts.net,Krishna.Nuthalapati@HMCTS.NET"
+      SPRING_MAIL_PORT: "1025"
+      SPRING_MAIL_HOST: "smtp-server"
+      GOV_PAY_URL: "https://publicapi.payments.service.gov.uk/v1/payments"
+      PBA_DIVORCE_PAYMENTS_EMAIL_FROM: "no-reply@reform.hmcts.net"
+      PBA_DIVORCE_PAYMENTS_EMAIL_MESSAGE: "Hi <br/><br/>Please find attached today''s Payment by Account reconciliation report. <br/><br/>Regards <br/><br/>Payments team<br/><br/>"
+      PAYMENT_SERVER_URL: "http://localhost:8383"
+      GOV_PAY_AUTH_KEY_REFERENCE: "DummyKey"
+      PBA_CMC_PAYMENTS_EMAIL_MESSAGE: "Hi <br/><br/>Please find attached today''s Payment by Account reconciliation report. <br/><br/>Regards <br/><br/>Payments team<br/><br/>"
+      REFORM_SERVICE_NAME: "payment-api"
+      AUTH_IDAM_CLIENT_BASEURL: "http://sidam-api:5000"
+      GOV_PAY_AUTH_KEY_CMC: "DummyKey"
+      PBA_CMC_PAYMENTS_EMAIL_SUBJECT: "AAT Env - PBA Reconciliation Report for CMC"
+      CARD_PAYMENTS_EMAIL_FROM: "no-reply@reform.hmcts.net"
+      CARD_PAYMENTS_EMAIL_MESSAGE: "Hi <br/><br/>Please find attached today''s reconciliation report. <br/><br/>Regards <br/><br/>Payments team<br/><br/>"
+      GOV_PAY_AUTH_KEY_DIVORCE_FRONTEND: "DummyKey"
+      FEATURE_PAYMENTS_SEARCH: "true"
+      PBA_DIVORCE_PAYMENTS_REPORT_SCHEDULER_ENABLED: "true"
+      SPRING_MAIL_PROPERTIES_MAIL_SMTP_SSL_TRUST: "*"
+      WEBSITE_LOCAL_CACHE_OPTION: "Always"
+      PBA_DIVORCE_PAYMENTS_EMAIL_TO: "Oluwakemi.Benson@hmcts.net,Leonie.Watson@Justice.gov.uk,kevin.harper@hmcts.net,Krishna.Nuthalapati@HMCTS.NET"
+      SPRING_MAIL_PROPERTIES_MAIL_SMTP_STARTTLS_ENABLE: "true"
+      APPINSIGHTS_INSTRUMENTATIONKEY: "57b197f7-87bb-4dbf-b812-8572521c620a"
+      CARD_PAYMENTS_EMAIL_SUBJECT: "AAT Env - Card Payments Reconciliation Report"
+    ports:
+      - 8383:8080
+    links:
+      - payments-database
+      - service-auth-provider-api
+      - sidam-api
+    depends_on:
+      - payments-database
+      - service-auth-provider-api
+      - sidam-api
+
+  payments-database:
+    container_name: payments-database
+    image: postgres:11-alpine
+    environment:
+      POSTGRES_USER: "payment"
+      POSTGRES_DB: "payment"
+    ports:
+      - 5430:5432
 #
 #  persistence-service:
 #    image: hmctspublic.azurecr.io/probate/persistence-service:pro-5125_persistence_to_orchestrator
