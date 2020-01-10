@@ -12,8 +12,8 @@ public class ServiceTokenGeneratorConfiguration {
     @Bean
     public AuthTokenGenerator serviceAuthTokenGenerator(
         final ServiceAuthorisationApi serviceAuthorisationApi,
-        @Value("${auth.provider.service.client.key}") String secret,
-        @Value("${auth.provider.service.client.microservice}") String microservice) {
+        @Value("${idam.s2s-auth.totp_secret}") String secret,
+        @Value("${idam.s2s-auth.microservice}") String microservice) {
 
         return AuthTokenGeneratorFactory.createDefaultGenerator(secret, microservice, serviceAuthorisationApi);
     }
