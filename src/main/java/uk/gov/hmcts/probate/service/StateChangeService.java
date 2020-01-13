@@ -12,6 +12,7 @@ import uk.gov.hmcts.probate.changerule.MinorityInterestRule;
 import uk.gov.hmcts.probate.changerule.NoOriginalWillRule;
 import uk.gov.hmcts.probate.changerule.RenouncingRule;
 import uk.gov.hmcts.probate.changerule.ResiduaryRule;
+import uk.gov.hmcts.probate.changerule.SolsExecutorRule;
 import uk.gov.hmcts.probate.changerule.SpouseOrCivilRule;
 import uk.gov.hmcts.probate.changerule.UpdateApplicationRule;
 import uk.gov.hmcts.probate.model.ExecutorsApplyingNotification;
@@ -48,6 +49,7 @@ public class StateChangeService {
     private final NoOriginalWillRule noOriginalWillRule;
     private final RenouncingRule renouncingRule;
     private final ResiduaryRule residuaryRule;
+    private final SolsExecutorRule solsExecutorRule;
     private final SpouseOrCivilRule spouseOrCivilRule;
     private final UpdateApplicationRule updateApplicationRule;
     private final CallbackResponseTransformer callbackResponseTransformer;
@@ -93,6 +95,10 @@ public class StateChangeService {
             return Optional.of(STATE_STOPPED);
         }
 
+        if (solsExecutorRule.isChangeNeeded(caseData)) {
+            return Optional.of(STATE_STOPPED);
+        }
+
         if (spouseOrCivilRule.isChangeNeeded(caseData)) {
             return Optional.of(STATE_STOPPED);
         }
@@ -121,6 +127,10 @@ public class StateChangeService {
         }
 
         if (residuaryRule.isChangeNeeded(caseData)) {
+            return Optional.of(STATE_STOPPED);
+        }
+
+        if (solsExecutorRule.isChangeNeeded(caseData)) {
             return Optional.of(STATE_STOPPED);
         }
 

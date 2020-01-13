@@ -16,6 +16,7 @@ import uk.gov.hmcts.probate.changerule.MinorityInterestRule;
 import uk.gov.hmcts.probate.changerule.NoOriginalWillRule;
 import uk.gov.hmcts.probate.changerule.RenouncingRule;
 import uk.gov.hmcts.probate.changerule.ResiduaryRule;
+import uk.gov.hmcts.probate.changerule.SolsExecutorRule;
 import uk.gov.hmcts.probate.changerule.SpouseOrCivilRule;
 import uk.gov.hmcts.probate.changerule.UpdateApplicationRule;
 import uk.gov.hmcts.probate.model.ExecutorsApplyingNotification;
@@ -61,6 +62,8 @@ public class StateChangeServiceTest {
     @Mock
     private ResiduaryRule residuaryRule;
     @Mock
+    private SolsExecutorRule solsExecutorRule;
+    @Mock
     private SpouseOrCivilRule spouseOrCivilRule;
     @Mock
     private UpdateApplicationRule updateApplicationRule;
@@ -91,7 +94,7 @@ public class StateChangeServiceTest {
 
         underTest = new StateChangeService(applicantSiblingsRule, diedOrNotApplyingRule, domicilityRule,
                 entitledMinorityRule, executorsStateRule, lifeInterestRule, minorityInterestRule, noOriginalWillRule,
-                renouncingRule, residuaryRule, spouseOrCivilRule, updateApplicationRule, callbackResponseTransformer);
+                renouncingRule, residuaryRule, solsExecutorRule,spouseOrCivilRule, updateApplicationRule, callbackResponseTransformer);
 
         execList = new ArrayList<>();
         execResponseReceived = new CollectionMember<>(
@@ -311,6 +314,35 @@ public class StateChangeServiceTest {
     @Test
     public void shouldNOTChangeStateForResiduaryRule() {
         when(residuaryRule.isChangeNeeded(caseDataMock)).thenReturn(false);
+
+        Optional<String> newState = underTest.getChangedStateForCaseUpdate(caseDataMock);
+
+        assertEquals(Optional.empty(), newState);
+    }
+
+    @Test
+    public void shouldChangeStateForSolsExecutorRuleIntestacyValid() {
+        when(solsExecutorRule.isChangeNeeded(caseDataMock)).thenReturn(true);
+
+        Optional<String> newState = underTest.getChangedStateForIntestacyUpdate(caseDataMock);
+
+        assertTrue(newState.isPresent());
+        assertEquals("Stopped", newState.get());
+    }
+
+    @Test
+    public void shouldChangeStateForSolsExecutorRuleAdmonValid() {
+        when(solsExecutorRule.isChangeNeeded(caseDataMock)).thenReturn(true);
+
+        Optional<String> newState = underTest.getChangedStateForAdmonUpdate(caseDataMock);
+
+        assertTrue(newState.isPresent());
+        assertEquals("Stopped", newState.get());
+    }
+
+    @Test
+    public void shouldNOTChangeStateForSolsExecutorRule() {
+        when(solsExecutorRule.isChangeNeeded(caseDataMock)).thenReturn(false);
 
         Optional<String> newState = underTest.getChangedStateForCaseUpdate(caseDataMock);
 

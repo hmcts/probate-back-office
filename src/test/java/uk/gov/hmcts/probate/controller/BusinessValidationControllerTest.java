@@ -43,6 +43,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static uk.gov.hmcts.probate.model.Constants.REDEC_NOTIFICATION_SENT_STATE;
+import static uk.gov.hmcts.probate.model.Constants.YES;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -102,6 +103,7 @@ public class BusinessValidationControllerTest {
     private static final String RESIDUARY_TYPE = "Legatee";
     private static final String LIFE_INTEREST = "No";
     private static final String ANSWER_NO = "No";
+    private static final String SOLS_NOT_APPLYING_REASON = "Power reserved";
 
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private static final String SOLS_VALIDATE_URL = "/case/sols-validate";
@@ -190,6 +192,10 @@ public class BusinessValidationControllerTest {
                 .solsSolicitorAddress(solsAddress)
                 .ihtFormId(IHT_FORM)
                 .solsSOTName(SOLICITOR_NAME)
+                .solsSolicitorIsApplyingExec(YES)
+                .solsSolicitorIsMainApplicant(YES)
+                .solsSolicitorIsApplying(YES)
+                .solsSolicitorNotApplyingReason(SOLS_NOT_APPLYING_REASON)
                 .solsSOTJobTitle(SOLICITOR_JOB_TITLE)
                 .solsPaymentMethods(PAYMENT_METHOD)
                 .applicationFee(APPLICATION_FEE)
