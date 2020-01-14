@@ -46,7 +46,8 @@ public class NextStepsControllerTest {
     private static final String SOLICITOR_FIRM_LINE1 = "Sols Add Line1";
     private static final String SOLICITOR_FIRM_POSTCODE = "SW1E 6EA";
     private static final String IHT_FORM = "IHT207";
-    private static final String SOLICITOR_NAME = "Peter Crouch";
+    private static final String SOLICITOR_FORENAME = "Peter Middlename";
+    private static final String SOLICITOR_SURNAME = "Crouch";
     private static final String SOLICITOR_JOB_TITLE = "Lawyer";
     private static final String PAYMENT_METHOD = "Cheque";
     private static final String WILL_HAS_CODICLIS = "Yes";
@@ -74,6 +75,9 @@ public class NextStepsControllerTest {
     private static final String DECEASED_OTHER_NAMES = "No";
     private static final String DECEASED_DOM_UK = "Yes";
     private static final String SOT_NEED_TO_UPDATE = "Yes";
+    private static final String SOLICITOR_APPLYING = "Yes";
+    private static final String SOLICITOR_IS_MAIN_APPLICANT = "Yes";
+    private static final String SOLS_NOT_APPLYING_REASON = "Power reserved";
 
     private static final BigDecimal APPLICATION_FEE = BigDecimal.TEN;
     private static final BigDecimal FEE_FOR_UK_COPIES = BigDecimal.TEN;
@@ -132,7 +136,12 @@ public class NextStepsControllerTest {
                 .willNumberOfCodicils(NUMBER_OF_CODICLIS)
                 .ihtFormId(IHT_FORM)
                 .solsSOTNeedToUpdate(NEED_TO_UPDATE)
-                .solsSOTName(SOLICITOR_NAME)
+                .solsSOTForenames(SOLICITOR_FORENAME)
+                .solsSOTSurname(SOLICITOR_SURNAME)
+                .solsSolicitorIsApplyingExec(SOLICITOR_APPLYING)
+                .solsSolicitorIsMainApplicant(SOLICITOR_IS_MAIN_APPLICANT)
+                .solsSolicitorIsApplying(SOLICITOR_APPLYING)
+                .solsSolicitorNotApplyingReason(SOLS_NOT_APPLYING_REASON)
                 .solsSOTJobTitle(SOLICITOR_JOB_TITLE)
                 .solsPaymentMethods(PAYMENT_METHOD)
                 .applicationFee(APPLICATION_FEE)
@@ -188,8 +197,8 @@ public class NextStepsControllerTest {
     }
 
     @Test
-    public void shouldConfirmNextStepsWithSolsSOTNameIsNullError() throws Exception {
-        caseDataBuilder.solsSOTName(null);
+    public void shouldConfirmNextStepsWithSolsSOTForenamesIsNullError() throws Exception {
+        caseDataBuilder.solsSOTForenames(null);
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
 
@@ -198,9 +207,25 @@ public class NextStepsControllerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.fieldErrors[0].param").value("callbackRequest"))
-                .andExpect(jsonPath("$.fieldErrors[0].field").value("caseDetails.data.solsSOTName"))
+                .andExpect(jsonPath("$.fieldErrors[0].field").value("caseDetails.data.solsSOTForenames"))
                 .andExpect(jsonPath("$.fieldErrors[0].code").value("NotBlank"))
-                .andExpect(jsonPath("$.fieldErrors[0].message").value("Solicitor SOT name cannot be empty"));
+                .andExpect(jsonPath("$.fieldErrors[0].message").value("Solicitor SOT forenames cannot be empty"));
+    }
+
+    @Test
+    public void shouldConfirmNextStepsWithSolsSOTSurnameIsNullError() throws Exception {
+        caseDataBuilder.solsSOTSurname(null);
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
+
+        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
+        mockMvc.perform(post(NEXTSTEPS_CONFIRMATION_URL).content(json).contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.fieldErrors[0].param").value("callbackRequest"))
+                .andExpect(jsonPath("$.fieldErrors[0].field").value("caseDetails.data.solsSOTSurname"))
+                .andExpect(jsonPath("$.fieldErrors[0].code").value("NotBlank"))
+                .andExpect(jsonPath("$.fieldErrors[0].message").value("Solicitor SOT surname cannot be empty"));
     }
 
     @Test
