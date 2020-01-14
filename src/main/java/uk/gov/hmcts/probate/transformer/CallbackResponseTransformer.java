@@ -43,6 +43,7 @@ import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepr
 
 import static java.util.Collections.EMPTY_LIST;
 import static java.util.Optional.ofNullable;
+import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
 import static uk.gov.hmcts.probate.model.Constants.CTSC;
 import static uk.gov.hmcts.probate.model.Constants.DATE_OF_DEATH_TYPE_DEFAULT;
@@ -60,6 +61,9 @@ import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_INTESTACY;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE;
 import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
 import static uk.gov.hmcts.probate.model.DocumentType.SOT_INFORMATION_REQUEST;
+import static uk.gov.hmcts.probate.model.DocumentType.WELSH_ADMON_WILL_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.WELSH_DIGITAL_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.WELSH_INTESTACY_GRANT;
 import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.Constants.GRANT_OF_PROBATE_NAME;
 import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.INTESTACY;
 
@@ -77,8 +81,6 @@ public class CallbackResponseTransformer {
     static final String PAYMENT_METHOD_VALUE_FEE_ACCOUNT = "fee account";
     static final String PAYMENT_REFERENCE_FEE_PREFIX = "Fee account PBA-";
     static final String PAYMENT_REFERENCE_CHEQUE = "Cheque (payable to ‘HM Courts & Tribunals Service’)";
-
-    private static final DocumentType[] LEGAL_STATEMENTS = {LEGAL_STATEMENT_PROBATE, LEGAL_STATEMENT_INTESTACY, LEGAL_STATEMENT_ADMON};
     private static final ApplicationType DEFAULT_APPLICATION_TYPE = SOLICITOR;
     private static final String DEFAULT_REGISTRY_LOCATION = CTSC;
     private static final String DEFAULT_IHT_FORM_ID = "IHT205";
@@ -951,7 +953,7 @@ public class CallbackResponseTransformer {
     }
 
     private String getOtherExecutorExists(CaseData caseData) {
-        if (ApplicationType.PERSONAL.equals(caseData.getApplicationType())) {
+        if (PERSONAL.equals(caseData.getApplicationType())) {
             return caseData.getAdditionalExecutorsApplying() == null || caseData.getAdditionalExecutorsApplying().isEmpty()
                     ? ANSWER_NO : ANSWER_YES;
         } else {
