@@ -4,14 +4,17 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.NullValueCheckStrategy;
 import org.mapstruct.ReportingPolicy;
+import uk.gov.hmcts.reform.probate.model.cases.ApplicationType;
 import uk.gov.hmcts.reform.probate.model.cases.caveat.CaveatData;
 import uk.gov.hmcts.probate.model.exceptionrecord.ExceptionRecordOCRFields;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToCaveatorAddress;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToDeceasedAddress;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToDefaultLocalDate;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToYesOrNo;
+import uk.gov.hmcts.reform.probate.model.forms.caveat.CaveatForm;
 
 @Mapper(componentModel = "spring",
+        imports = {ApplicationType.class},
         uses = {OCRFieldAddressMapper.class,
                 OCRFieldDefaultLocalDateFieldMapper.class,
                 OCRFieldYesOrNoMapper.class},
@@ -27,5 +30,8 @@ public interface ExceptionRecordCaveatMapper {
     @Mapping(target = "deceasedDateOfDeath", source = "deceasedDateOfDeath", qualifiedBy = {ToDefaultLocalDate.class})
     @Mapping(target = "deceasedDateOfBirth", source = "deceasedDateOfBirth", qualifiedBy = {ToDefaultLocalDate.class})
     @Mapping(target = "deceasedAnyOtherNames", source = "deceasedAnyOtherNames", qualifiedBy = {ToYesOrNo.class})
+    @Mapping(target = "caveatRaisedEmailNotificationRequested", expression = "java(Boolean.TRUE)")
+    @Mapping(target = "paperForm", expression = "java(Boolean.TRUE)")
+    @Mapping(target = "applicationType", expression = "java(ApplicationType.PERSONAL)")
     CaveatData toCcdData(ExceptionRecordOCRFields ocrFields);
 }

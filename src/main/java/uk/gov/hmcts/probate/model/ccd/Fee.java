@@ -10,12 +10,12 @@ import java.math.BigDecimal;
 @Builder
 public class Fee implements Serializable {
     private final String paymentMethod;
+    private final String solsFeeAccountNumber;
     private final BigDecimal applicationFee;
     private final BigDecimal amount;
     private final Long extraCopiesOfGrant;
     private final Long outsideUKGrantCopies;
     private final BigDecimal feeForUkCopies;
     private final BigDecimal feeForNonUkCopies;
-    private final String paymentReferenceNumber;
 
 }

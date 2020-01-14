@@ -10,11 +10,13 @@ public class Template {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null)
+        if (obj == null) {
             return false;
+        }
 
-        if (this.getClass() != obj.getClass())
+        if (this.getClass() != obj.getClass()) {
             return false;
+        }
 
         Template other = (Template) obj;
         return this.value.equals(other.value);
