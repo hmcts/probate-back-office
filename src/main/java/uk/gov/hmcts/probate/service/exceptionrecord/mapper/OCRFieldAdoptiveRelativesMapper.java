@@ -97,7 +97,7 @@ public class OCRFieldAdoptiveRelativesMapper {
         return new CollectionMember<>(null, adoptiveRelative);
     }
 
-    private InOut getInOutValue(String adoptedInOutValue) throws OCRMappingException {
+    private InOut getInOutValue(String adoptedInOutValue) {
         if (adoptedInOutValue == null || adoptedInOutValue.isEmpty()) {
             return null;
         } else {

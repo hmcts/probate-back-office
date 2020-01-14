@@ -25,6 +25,7 @@ public class OCRFieldAdditionalExecutorsNotApplyingMapper {
 
         if (ocrFields.getExecutorsNotApplying0notApplyingExecutorName() != null
                 && !ocrFields.getExecutorsNotApplying0notApplyingExecutorName().isEmpty()) {
+            log.info("Adding Executor 1");
             collectionMemberList.add(buildExecutorNotApplying(
                     ocrFields.getExecutorsNotApplying0notApplyingExecutorName(),
                     ocrFields.getExecutorsNotApplying0notApplyingExecutorReason()

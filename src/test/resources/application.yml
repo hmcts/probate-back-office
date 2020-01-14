@@ -110,30 +110,91 @@ notifications:
   govNotifyApiKey: "dummy_key"
   templates:
     email:
-      personal:
-        documentReceived: "pa-document-received"
-        caseStopped: "pa-case-stopped"
-        caseStoppedCaveat: "pa-case-stopped-caveat"
-        grantIssued: "pa-grant-issued"
-        grantReissued: "pa-grant-reissued"
-        generalCaveatMessage: "pa-general-caveat-message"
-        excelaData: "pa-excela-data"
-        caveatRaised: "pa-caveat-raised"
-        caveatRaisedCtsc: "pa-ctsc-caveat-raised"
-        requestInformation: "pa-request-information"
-        redeclarationSot: "pa-redeclaration-sot"
-      solicitor:
-        documentReceived: "sol-document-received"
-        caseStopped: "sol-case-stopped"
-        caseStoppedCaveat: "sol-case-stopped-caveat"
-        grantIssued: "sol-grant-issued"
-        grantReissued: "sol-grant-reissued"
-        generalCaveatMessage: "sol-general-caveat-message"
-        excelaData: "pa-excela-data"
-        caveatRaised: "sols-caveat-raised"
-        caveatRaisedCtsc: "sols-ctsc-caveat-raised"
-        requestInformation: "sols-request-information"
-        redeclarationSot: "sols-redeclaration-sot"
+      english:
+        personal:
+          documentReceived: "pa-document-received"
+          caseStopped: "pa-case-stopped"
+          caseStoppedCaveat: "pa-case-stopped-caveat"
+          grantIssued: "pa-grant-issued"
+          grantReissued: "pa-grant-reissued"
+          generalCaveatMessage: "pa-general-caveat-message"
+          excelaData: "pa-excela-data"
+          caveatRaised: "pa-caveat-raised"
+          caveatRaisedCtsc: "pa-ctsc-caveat-raised"
+          requestInformation: "pa-request-information"
+          redeclarationSot: "pa-redeclaration-sot"
+        solicitor:
+          documentReceived: "sol-document-received"
+          caseStopped: "sol-case-stopped"
+          caseStoppedCaveat: "sol-case-stopped-caveat"
+          grantIssued: "sol-grant-issued"
+          grantReissued: "sol-grant-reissued"
+          generalCaveatMessage: "sol-general-caveat-message"
+          excelaData: "pa-excela-data"
+          caveatRaised: "sols-caveat-raised"
+          caveatRaisedCtsc: "sols-ctsc-caveat-raised"
+          caveatRaisedSols: "solicitor-caveat-raised"
+          requestInformation: "sols-request-information"
+          redeclarationSot: "sols-redeclaration-sot"
+      welsh:
+        personal:
+          documentReceived: "pa-document-received-welsh"
+          caseStopped: "pa-case-stopped-welsh"
+          caseStoppedCaveat: "pa-case-stopped-caveat-welsh"
+          grantIssued: "pa-grant-issued-welsh"
+          grantReissued: "pa-grant-reissued-welsh"
+          generalCaveatMessage: "pa-general-caveat-message-welsh"
+          excelaData: "pa-excela-data-welsh"
+          caveatRaised: "pa-caveat-raised-welsh"
+          caveatRaisedCtsc: "pa-ctsc-caveat-raised-welsh"
+          requestInformation: "pa-request-information-welsh"
+          redeclarationSot: "pa-redeclaration-sot-welsh"
+        solicitor:
+          documentReceived: "sol-document-received-welsh"
+          caseStopped: "sol-case-stopped-welsh"
+          caseStoppedCaveat: "sol-case-stopped-caveat-welsh"
+          grantIssued: "sol-grant-issued-welsh"
+          grantReissued: "sol-grant-reissued-welsh"
+          generalCaveatMessage: "sol-general-caveat-message-welsh"
+          excelaData: "pa-excela-data-welsh"
+          caveatRaised: "sols-caveat-raised-welsh"
+          caveatRaisedCtsc: "sols-ctsc-caveat-raised-welsh"
+          requestInformation: "sols-request-information-welsh"
+          redeclarationSot: "sols-redeclaration-sot-welsh"
+
+documents:
+  templates:
+    docmosis:
+      english:
+        final:
+          reissue:
+            intestacy: INTESTACY_GRANT_REISSUE
+            admonWill: ADMON_WILL_GRANT_REISSUE
+            gop: DIGITAL_GRANT_REISSUE
+          grant:
+            intestacy: INTESTACY_GRANT
+            admonWill: ADMON_WILL_GRANT
+            gop: DIGITAL_GRANT
+        preview:
+          reissue:
+            intestacy: INTESTACY_GRANT_REISSUE_DRAFT
+            admonWill: ADMON_WILL_GRANT_REISSUE_DRAFT
+            gop: DIGITAL_GRANT_REISSUE_DRAFT
+          grant:
+            intestacy: INTESTACY_GRANT_DRAFT
+            admonWill: ADMON_WILL_GRANT_DRAFT
+            gop: DIGITAL_GRANT_DRAFT
+      welsh:
+        final:
+          grant:
+            intestacy: WELSH_INTESTACY_GRANT
+            admonWill: WELSH_ADMON_WILL_GRANT
+            gop: WELSH_DIGITAL_GRANT
+        preview:
+          grant:
+            intestacy: WELSH_INTESTACY_GRANT_DRAFT
+            admonWill: WELSH_ADMON_WILL_GRANT_DRAFT
+            gop: WELSH_DIGITAL_GRANT_DRAFT
 
 registries:
   oxford:
@@ -267,3 +328,18 @@ excelaEmail: probatetest@gmail.com
 
 cron:
   data_extract: "0 0 2 * * *"
+
+welsh:
+  months:
+    1: "Ionawr"
+    2: "Chwefror"
+    3: "Mawrth"
+    4: "Ebrill"
+    5: "Mai"
+    6: "Mehefin"
+    7: "Gorffennaf"
+    8: "Awst"
+    9: "Medi"
+    10: "Hydref"
+    11: "Tachwedd"
+    12: "Rhagfyr"

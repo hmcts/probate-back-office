@@ -138,8 +138,7 @@ public class CallbackResponseTransformerTest {
 
     private static final String SOL_PAY_METHODS_FEE = "fee account";
     private static final String SOL_PAY_METHODS_CHEQUE = "cheque";
-    private static final String FEE_ACCT_NUMBER = "FEE ACCT 1";
-    private static final String PAY_REF_FEE = "Fee account PBA-FEE ACCT 1";
+    private static final String FEE_ACCT_NUMBER = "1234";
     private static final String PAY_REF_CHEQUE = "Cheque (payable to ‘HM Courts & Tribunals Service’)";
 
     private static final BigDecimal feeForNonUkCopies = new BigDecimal(11);
@@ -237,6 +236,7 @@ public class CallbackResponseTransformerTest {
     private static final String CASE_PRINTED = "CasePrinted";
     private static final String READY_FOR_EXAMINATION = "BOReadyForExamination";
     private static final String EXAMINING = "BOExamining";
+    private static final String BULK_SCAN_REFERENCE = "BulkScanRef";
 
     private static final Document SOT_DOC = Document.builder().documentType(STATEMENT_OF_TRUTH).build();
 
@@ -468,7 +468,7 @@ public class CallbackResponseTransformerTest {
                 .courtOfDecree("Random Court Name")
                 .willGiftUnderEighteen(Boolean.FALSE)
                 .applyingAsAnAttorney(Boolean.TRUE)
-                .attorneyNamesAndAddress(null)
+                .attorneyOnBehalfOfNameAndAddress(null)
                 .mentalCapacity(Boolean.TRUE)
                 .courtOfProtection(Boolean.TRUE)
                 .epaOrLpa(Boolean.FALSE)
@@ -537,6 +537,7 @@ public class CallbackResponseTransformerTest {
                 .paperPaymentMethod("debitOrCredit")
                 .paymentReferenceNumberPaperform(IHT_REFERENCE)
                 .paperForm(Boolean.TRUE)
+                .bulkScanCaseReference(BULK_SCAN_REFERENCE)
                 .build();
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
@@ -634,7 +635,6 @@ public class CallbackResponseTransformerTest {
         assertEquals(TOTAL_FEE, callbackResponse.getData().getTotalFee());
         assertEquals(SOL_PAY_METHODS_FEE, callbackResponse.getData().getSolsPaymentMethods());
         assertEquals(FEE_ACCT_NUMBER, callbackResponse.getData().getSolsFeeAccountNumber());
-        assertEquals(PAY_REF_FEE, callbackResponse.getData().getPaymentReferenceNumber());
     }
 
     @Test
@@ -678,7 +678,6 @@ public class CallbackResponseTransformerTest {
         assertEquals(TOTAL_FEE, callbackResponse.getData().getTotalFee());
         assertEquals(SOL_PAY_METHODS_CHEQUE, callbackResponse.getData().getSolsPaymentMethods());
         assertNull(callbackResponse.getData().getSolsFeeAccountNumber());
-        assertEquals(PAY_REF_CHEQUE, callbackResponse.getData().getPaymentReferenceNumber());
     }
 
     @Test
@@ -2387,7 +2386,7 @@ public class CallbackResponseTransformerTest {
         assertEquals("Random Court Name", grantOfRepresentationData.getCourtOfDecree());
         assertEquals(Boolean.FALSE, grantOfRepresentationData.getWillGiftUnderEighteen());
         assertEquals(Boolean.TRUE, grantOfRepresentationData.getApplyingAsAnAttorney());
-        assertEquals(null, grantOfRepresentationData.getAttorneyNamesAndAddress());
+        assertEquals(null, grantOfRepresentationData.getAttorneyOnBehalfOfNameAndAddress());
         assertEquals(Boolean.TRUE, grantOfRepresentationData.getMentalCapacity());
         assertEquals(Boolean.TRUE, grantOfRepresentationData.getCourtOfProtection());
         assertEquals(Boolean.FALSE, grantOfRepresentationData.getEpaOrLpa());
@@ -2456,5 +2455,7 @@ public class CallbackResponseTransformerTest {
         assertEquals(Long.valueOf("0"), grantOfRepresentationData.getApplicationFeePaperForm());
         assertEquals(Long.valueOf("0"), grantOfRepresentationData.getFeeForCopiesPaperForm());
         assertEquals(Long.valueOf("0"), grantOfRepresentationData.getTotalFeePaperForm());
+
+        assertEquals(BULK_SCAN_REFERENCE, grantOfRepresentationData.getBulkScanCaseReference());
     }
 }

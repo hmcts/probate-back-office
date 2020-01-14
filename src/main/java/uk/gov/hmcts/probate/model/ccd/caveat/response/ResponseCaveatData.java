@@ -31,6 +31,13 @@ public class ResponseCaveatData {
     private final List<CollectionMember<ProbateFullAliasName>> deceasedFullAliasNameList;
     private final ProbateAddress deceasedAddress;
 
+    private final String solsSolicitorFirmName;
+    private final String solsSolicitorPhoneNumber;
+    private final String solsSolicitorAppReference;
+
+    private final String solsPaymentMethods;
+    private final String solsFeeAccountNumber;
+
     private final String caveatorForenames;
     private final String caveatorSurname;
     private final String caveatorEmailAddress;
@@ -54,8 +61,12 @@ public class ResponseCaveatData {
     private final List<CollectionMember<Document>> notificationsGenerated;
     private final List<CollectionMember<BulkPrint>> bulkPrintId;
 
+    private String bulkScanCaseReference;
+
     private String recordId;
     private String legacyType;
     private String legacyCaseViewUrl;
     private String paperForm;
+
+    private String languagePreferenceWelsh;
 }

@@ -1,41 +1,67 @@
 package uk.gov.hmcts.probate.transformer;
 
-import lombok.*;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.stereotype.*;
-import org.springframework.util.*;
+import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.DocumentType;
-import uk.gov.hmcts.probate.model.*;
+import uk.gov.hmcts.probate.model.ExecutorsApplyingNotification;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
-import uk.gov.hmcts.probate.model.ccd.caveat.response.*;
+import uk.gov.hmcts.probate.model.ccd.caveat.response.ResponseCaveatData;
+import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
+import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
+import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.AliasName;
+import uk.gov.hmcts.probate.model.ccd.raw.BulkPrint;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
-import uk.gov.hmcts.probate.model.ccd.raw.*;
+import uk.gov.hmcts.probate.model.ccd.raw.Document;
+import uk.gov.hmcts.probate.model.ccd.raw.ProbateAliasName;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
-import uk.gov.hmcts.probate.model.ccd.raw.request.*;
-import uk.gov.hmcts.probate.model.ccd.raw.response.*;
-import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData.*;
-import uk.gov.hmcts.probate.model.exceptionrecord.*;
-import uk.gov.hmcts.probate.model.fee.*;
-import uk.gov.hmcts.probate.service.*;
-import uk.gov.hmcts.probate.transformer.assembly.*;
-import uk.gov.hmcts.reform.probate.model.cases.*;
-import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.*;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
+import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
+import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
+import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData.ResponseCaseDataBuilder;
+import uk.gov.hmcts.probate.model.exceptionrecord.CaseCreationDetails;
+import uk.gov.hmcts.probate.model.fee.FeeServiceResponse;
+import uk.gov.hmcts.probate.service.ExecutorsApplyingNotificationService;
+import uk.gov.hmcts.probate.transformer.assembly.AssembleLetterTransformer;
 
-import java.math.*;
-import java.time.*;
-import java.time.format.*;
-import java.util.*;
-import java.util.stream.*;
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import org.apache.commons.lang3.StringUtils;
+import uk.gov.hmcts.reform.probate.model.cases.RegistryLocation;
+import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData;
 
-import static java.util.Collections.*;
-import static java.util.Optional.*;
-import static uk.gov.hmcts.probate.model.ApplicationType.*;
-import static uk.gov.hmcts.probate.model.Constants.*;
-import static uk.gov.hmcts.probate.model.DocumentType.*;
-import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.Constants.*;
-import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.*;
+import static java.util.Collections.EMPTY_LIST;
+import static java.util.Optional.ofNullable;
+import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
+import static uk.gov.hmcts.probate.model.Constants.CTSC;
+import static uk.gov.hmcts.probate.model.Constants.DATE_OF_DEATH_TYPE_DEFAULT;
+import static uk.gov.hmcts.probate.model.Constants.YES;
+import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_REISSUE;
+import static uk.gov.hmcts.probate.model.DocumentType.ASSEMBLED_LETTER;
+import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT_STOPPED;
+import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_REISSUE;
+import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_REISSUE;
+import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_ADMON;
+import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_INTESTACY;
+import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE;
+import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
+import static uk.gov.hmcts.probate.model.DocumentType.SOT_INFORMATION_REQUEST;
+import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.Constants.GRANT_OF_PROBATE_NAME;
+import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.INTESTACY;
 
 @Component
 @RequiredArgsConstructor
@@ -46,6 +72,8 @@ public class CallbackResponseTransformer {
     private final AssembleLetterTransformer assembleLetterTransformer;
     private final ExecutorsApplyingNotificationService executorsApplyingNotificationService;
 
+    private static final DocumentType[] LEGAL_STATEMENTS = {LEGAL_STATEMENT_PROBATE, LEGAL_STATEMENT_INTESTACY,
+        LEGAL_STATEMENT_ADMON};
     static final String PAYMENT_METHOD_VALUE_FEE_ACCOUNT = "fee account";
     static final String PAYMENT_REFERENCE_FEE_PREFIX = "Fee account PBA-";
     static final String PAYMENT_REFERENCE_CHEQUE = "Cheque (payable to ‘HM Courts & Tribunals Service’)";
@@ -67,7 +95,7 @@ public class CallbackResponseTransformer {
     public static final String OTHER = "other";
 
     public static final String EXCEPTION_RECORD_CASE_TYPE_ID = "GrantOfRepresentation";
-    public static final String EXCEPTION_RECORD_EVENT_ID = "createCase";
+    public static final String EXCEPTION_RECORD_EVENT_ID = "createCaseFromBulkScan";
     public static final RegistryLocation EXCEPTION_RECORD_REGISTRY_LOCATION = RegistryLocation.CTSC;
 
     private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(DATE_FORMAT);
@@ -406,7 +434,6 @@ public class CallbackResponseTransformer {
 
                 .solsPaymentMethods(caseData.getSolsPaymentMethods())
                 .solsFeeAccountNumber(caseData.getSolsFeeAccountNumber())
-                .paymentReferenceNumber(getPaymentReferenceNumber(caseData))
 
                 .extraCopiesOfGrant(transformToString(caseData.getExtraCopiesOfGrant()))
                 .outsideUKGrantCopies(transformToString(caseData.getOutsideUKGrantCopies()))
@@ -455,6 +482,7 @@ public class CallbackResponseTransformer {
                 .evidenceHandled(caseData.getEvidenceHandled())
 
                 .paperForm(caseData.getPaperForm())
+                .languagePreferenceWelsh(caseData.getLanguagePreferenceWelsh())
                 .caseType(caseData.getCaseType())
                 .solsWillType(caseData.getSolsWillType())
                 .solsApplicantRelationshipToDeceased(caseData.getSolsApplicantRelationshipToDeceased())
@@ -512,7 +540,8 @@ public class CallbackResponseTransformer {
                 .boEmailRequestInfoNotificationRequested(caseData.getBoEmailRequestInfoNotificationRequested())
                 .boRequestInfoSendToBulkPrint(caseData.getBoRequestInfoSendToBulkPrint())
                 .boRequestInfoSendToBulkPrintRequested(caseData.getBoRequestInfoSendToBulkPrintRequested())
-                .probateSotDocumentsGenerated(caseData.getProbateSotDocumentsGenerated());
+                .probateSotDocumentsGenerated(caseData.getProbateSotDocumentsGenerated())
+                .bulkScanCaseReference(caseData.getBulkScanCaseReference());
 
         if (transform) {
             updateCaseBuilderForTransformCase(caseData, builder);
@@ -644,7 +673,7 @@ public class CallbackResponseTransformer {
                 .paymentReferenceNumberPaperform(caseData.getPaymentReferenceNumberPaperform())
                 .boSendToBulkPrint(caseData.getBoSendToBulkPrint())
                 .boSendToBulkPrintRequested(caseData.getBoSendToBulkPrintRequested())
-
+                .languagePreferenceWelsh(caseData.getLanguagePreferenceWelsh())
                 .bulkPrintPdfSize(caseData.getBulkPrintPdfSize())
                 .bulkPrintSendLetterId(caseData.getBulkPrintSendLetterId());
 
@@ -782,7 +811,6 @@ public class CallbackResponseTransformer {
                     .solsSolicitorPhoneNumber(caseData.getSolsSolicitorPhoneNumber())
                     .solsSolicitorAddress(caseData.getSolsSolicitorAddress());
         }
-
         if (!isPaperForm(caseData)) {
             builder
                     .paperForm(ANSWER_NO);
@@ -923,7 +951,7 @@ public class CallbackResponseTransformer {
     }
 
     private String getOtherExecutorExists(CaseData caseData) {
-        if (PERSONAL.equals(caseData.getApplicationType())) {
+        if (ApplicationType.PERSONAL.equals(caseData.getApplicationType())) {
             return caseData.getAdditionalExecutorsApplying() == null || caseData.getAdditionalExecutorsApplying().isEmpty()
                     ? ANSWER_NO : ANSWER_YES;
         } else {
@@ -937,19 +965,6 @@ public class CallbackResponseTransformer {
         } else {
             return caseData.getPrimaryApplicantHasAlias();
         }
-    }
-
-    private String getPaymentReferenceNumber(CaseData caseData) {
-        if (PERSONAL.equals(caseData.getApplicationType())) {
-            return caseData.getPaymentReferenceNumber();
-        } else {
-            if (PAYMENT_METHOD_VALUE_FEE_ACCOUNT.equals(caseData.getSolsPaymentMethods())) {
-                return PAYMENT_REFERENCE_FEE_PREFIX + caseData.getSolsFeeAccountNumber();
-            } else {
-                return PAYMENT_REFERENCE_CHEQUE;
-            }
-        }
-
     }
 
     private String transformMoneyGBPToString(BigDecimal bdValue) {

@@ -24,7 +24,7 @@ Payment summary
 
 **Payment method** Cheque
 
-**Payment reference number** XXXXX123456
+**Payment reference number** Cheque (payable to 'HM Courts & Tribunals Service')
 
 Notes for this application
 -------------------------------------------------
@@ -44,6 +44,7 @@ You now need to send us:
 *   completed inheritance tax form IHT207
 *   renunciation form for Tim Smith
 *   renunciation form for John Smith
+*   a photocopy of the signed legal statement and declaration
 
 Where to send us your documents
 -------------------------------

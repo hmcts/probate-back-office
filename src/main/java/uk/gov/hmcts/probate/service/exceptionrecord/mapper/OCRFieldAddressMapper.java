@@ -10,7 +10,6 @@ import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToPrimaryA
 import uk.gov.hmcts.reform.probate.model.AttorneyNamesAndAddress;
 import uk.gov.hmcts.reform.probate.model.cases.Address;
 import uk.gov.hmcts.reform.probate.model.cases.CollectionMember;
-import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.ExecutorApplying;
 
 import java.util.ArrayList;
 import java.util.List;

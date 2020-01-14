@@ -1,16 +1,13 @@
-tags:
-  - idam-pr
-
 java:
   environment:
     AUTH_PROVIDER_SERVICE_CLIENT_KEY: ${S2S_AUTH_TOTP_SECRET}
     NOTIFICATIONS_GOVNOTIFYAPIKEY: ${PROBATE_BO_NOTIFY_KEY}
     PDF_SERVICE_GRANTSIGNATUREBASE64: ${BO_GRANT_SIG_FIRST}${BO_GRANT_SIG_LAST}
     IDAM_CLIENT_NAME: probate
-    PROBATE_POSTGRESQL_USER: probate_man
-    PROBATE_POSTGRESQL_PASSWORD: probate_man
-    PROBATE_POSTGRESQL_DATABASE: probate_man
-    PROBATE_POSTGRESQL_HOSTNAME: ${SERVICE_NAME}-postgres
+    PROBATE_POSTGRESQL_USER: "{{ .Values.postgresql.postgresqlUsername}}"
+    PROBATE_POSTGRESQL_PASSWORD: "{{ .Values.postgresql.postgresqlPassword}}"
+    PROBATE_POSTGRESQL_HOSTNAME: "{{ .Release.Name }}-postgresql"
+    PROBATE_POSTGRESQL_DATABASE: "{{ .Values.postgresql.postgresqlDatabase}}"
     PROBATE_POSTGRESQL_PORT: 5432
     AUTH_PROVIDER_SERVICE_CLIENT_BASEURL: http://rpe-service-auth-provider-aat.service.core-compute-aat.internal
     PDF_SERVICE_URL: http://cmc-pdf-service-aat.service.core-compute-aat.internal
@@ -28,22 +25,6 @@ java:
   image: ${IMAGE_NAME}
   ingressHost: ${SERVICE_FQDN}
 
-postgresql:
-  postgresqlUsername: probate_man
-  postgresqlPassword: probate_man
-  postgresqlDatabase: probate_man
-  nameOverride: postgres
-  resources:
-    requests:
-      cpu: 25m
-  initdbScripts:
-    init.sql: |-
-      CREATE DATABASE "probate_man" WITH OWNER = probate ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
-
-  persistence:
-    enabled: false
-
-idam-pr:
-  redirect_uris:
-    Probate:
-      - http://${SERVICE_FQDN}/oauth2/callback
+  postgresql:
+    enabled: true
+    
