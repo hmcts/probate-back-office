@@ -6,5 +6,12 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class OCRMappingException extends RuntimeException {
-    private final String message;
+
+    public OCRMappingException(String message) {
+        super(message);
+    }
+
+    public OCRMappingException(String message, Throwable t) {
+        super(message, t);
+    }
 }

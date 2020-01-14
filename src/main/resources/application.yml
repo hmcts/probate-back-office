@@ -79,7 +79,18 @@ docmosis:
       templateName: FL-PRB-SOT-ENG-00090.doc
     assembledLetter:
       templateName: FL-PRB-GNO-ENG-00133.docx
-
+    welshDigitalGrant:
+      templateName: FL-PRB-GRP-WEL-00226.doc
+    welshIntestacyGrant:
+      templateName: FL-PRB-GRP-WEL-00226.doc
+    welshAdmonWillGrant:
+      templateName: FL-PRB-GRP-WEL-00226.doc
+    welshDigitalGrantDraft:
+      templateName: FL-PRB-GRP-WEL-00226.doc
+    welshIntestacyGrantDraft:
+      templateName: FL-PRB-GRP-WEL-00226.doc
+    welshAdmonWillGrantDraft:
+      templateName: FL-PRB-GRP-WEL-00226.doc
 fee.api:
   url: http://localhost:4411
   api: /fees-register/fees/lookup
@@ -159,31 +170,92 @@ notifications:
   govNotifyApiKey: "probate_back_office_live_test-4809d6a8-a10b-405d-88eb-1fee9b3042e3-682b1c3b-647e-4a32-99b9-98a8b7c7feb7"
   templates:
     email:
-      personal:
-        documentReceived: "04308c65-a0bb-40b4-a3f3-ba8869048520"
-        caseStopped: "58aed5cb-0aab-44f5-842f-9f0a6a150f72"
-        caseStoppedCaveat: "937291a0-c0ae-40a4-a8cf-46a3452faff0"
-        grantIssued: "9344693b-9ea3-487d-bec1-68201214fd27"
-        grantReissued: "1b094aae-1b4e-4161-9a61-f563a1a6ed6d"
-        generalCaveatMessage: "afadf00e-c224-4da0-a6dc-fb47a2e5db67"
-        excelaData: "fd474506-a272-4caa-ad61-6086cee0639a"
-        caveatRaised: "bf9dabd9-b22f-4cb6-b3aa-871ac8532209"
-        caveatRaisedCtsc: "ed01d79f-08f0-4703-8cec-f490e499fc33"
-        requestInformation: "8fd291a1-67a7-48fa-a051-fa4c93315efc"
-        redeclarationSot: "4bd0e8f1-5cbd-4093-813f-f97dedcd0f5f"
-      solicitor:
-        documentReceived: "7f8ff32d-8297-4702-9867-312047f81492"
-        caseStopped: "350f488a-68f1-44f0-b083-157285b71581"
-        caseStoppedCaveat: "937291a0-c0ae-40a4-a8cf-46a3452faff0"
-        grantIssued: "95aa541b-e55e-4d7c-a6f5-810b5f03adba"
-        grantReissued: "1e18751f-fd4e-4893-85bb-f59cc5330c38"
-        generalCaveatMessage: "afadf00e-c224-4da0-a6dc-fb47a2e5db67"
-        excelaData: "fd474506-a272-4caa-ad61-6086cee0639a"
-        caveatRaised: "bf9dabd9-b22f-4cb6-b3aa-871ac8532209"
-        caveatRaisedCtsc: "ed01d79f-08f0-4703-8cec-f490e499fc33"
-        caveatRaisedSols: "022966cb-e4da-4996-a831-02c2310ab4f8"
-        requestInformation: "b2978c65-5974-416a-bc64-fb0ee083dc7e"
-        redeclarationSot: "bcd9e4cc-db0c-4810-8172-8bcb2277b775"
+      english:
+        personal:
+          documentReceived: "04308c65-a0bb-40b4-a3f3-ba8869048520"
+          caseStopped: "58aed5cb-0aab-44f5-842f-9f0a6a150f72"
+          caseStoppedCaveat: "937291a0-c0ae-40a4-a8cf-46a3452faff0"
+          grantIssued: "9344693b-9ea3-487d-bec1-68201214fd27"
+          grantReissued: "1b094aae-1b4e-4161-9a61-f563a1a6ed6d"
+          generalCaveatMessage: "afadf00e-c224-4da0-a6dc-fb47a2e5db67"
+          excelaData: "fd474506-a272-4caa-ad61-6086cee0639a"
+          caveatRaised: "bf9dabd9-b22f-4cb6-b3aa-871ac8532209"
+          caveatRaisedCtsc: "ed01d79f-08f0-4703-8cec-f490e499fc33"
+          requestInformation: "8fd291a1-67a7-48fa-a051-fa4c93315efc"
+          redeclarationSot: "4bd0e8f1-5cbd-4093-813f-f97dedcd0f5f"
+        solicitor:
+          documentReceived: "7f8ff32d-8297-4702-9867-312047f81492"
+          caseStopped: "350f488a-68f1-44f0-b083-157285b71581"
+          caseStoppedCaveat: "937291a0-c0ae-40a4-a8cf-46a3452faff0"
+          grantIssued: "95aa541b-e55e-4d7c-a6f5-810b5f03adba"
+          grantReissued: "1e18751f-fd4e-4893-85bb-f59cc5330c38"
+          generalCaveatMessage: "afadf00e-c224-4da0-a6dc-fb47a2e5db67"
+          excelaData: "fd474506-a272-4caa-ad61-6086cee0639a"
+          caveatRaised: "bf9dabd9-b22f-4cb6-b3aa-871ac8532209"
+          caveatRaisedCtsc: "ed01d79f-08f0-4703-8cec-f490e499fc33"
+          caveatRaisedSols: "022966cb-e4da-4996-a831-02c2310ab4f8"
+          requestInformation: "b2978c65-5974-416a-bc64-fb0ee083dc7e"
+          redeclarationSot: "bcd9e4cc-db0c-4810-8172-8bcb2277b775"
+      welsh:
+        personal:
+          documentReceived: "1c847dd8-212e-425a-ad83-1bbc48d89428"
+          caseStopped: "3e367544-c75a-4556-9831-7d0a3acbac0d"
+          caseStoppedCaveat: "1fde1860-b827-45e7-b430-1406f74beb93"
+          grantIssued: "8f935357-fecd-46f3-bb6e-ebd3da317433"
+          grantReissued: "c5232b10-0975-4085-ba5a-3e5a6eb5c2bf"
+          generalCaveatMessage: "d2b33c5b-0c65-4472-b26f-9352de5538ba"
+          excelaData: "fd474506-a272-4caa-ad61-6086cee0639a"
+          caveatRaised: "251192c8-5d3a-4b44-82e6-a398bfbe72fe"
+          caveatRaisedCtsc: "a970c66c-911f-40d6-a6ae-711200ae43a7"
+          requestInformation: "23a980e6-d883-45fa-8daf-acb4e017b6bb"
+          redeclarationSot: "253fa4a9-ef84-4b15-a059-0a0359f4ca5b"
+        solicitor:
+          documentReceived: "7f8ff32d-8297-4702-9867-312047f81492"
+          caseStopped: "350f488a-68f1-44f0-b083-157285b71581"
+          caseStoppedCaveat: "937291a0-c0ae-40a4-a8cf-46a3452faff0"
+          grantIssued: "95aa541b-e55e-4d7c-a6f5-810b5f03adba"
+          grantReissued: "1e18751f-fd4e-4893-85bb-f59cc5330c38"
+          generalCaveatMessage: "afadf00e-c224-4da0-a6dc-fb47a2e5db67"
+          excelaData: "fd474506-a272-4caa-ad61-6086cee0639a"
+          caveatRaised: "bf9dabd9-b22f-4cb6-b3aa-871ac8532209"
+          caveatRaisedCtsc: "ed01d79f-08f0-4703-8cec-f490e499fc33"
+          caveatRaisedSols: "022966cb-e4da-4996-a831-02c2310ab4f8"
+          requestInformation: "b2978c65-5974-416a-bc64-fb0ee083dc7e"
+          redeclarationSot: "bcd9e4cc-db0c-4810-8172-8bcb2277b775"
+
+documents:
+  templates:
+    docmosis:
+      english:
+        final:
+          reissue:
+            intestacy: INTESTACY_GRANT_REISSUE
+            admonWill: ADMON_WILL_GRANT_REISSUE
+            gop: DIGITAL_GRANT_REISSUE
+          grant:
+            intestacy: INTESTACY_GRANT
+            admonWill: ADMON_WILL_GRANT
+            gop: DIGITAL_GRANT
+        preview:
+          reissue:
+            intestacy: INTESTACY_GRANT_REISSUE_DRAFT
+            admonWill: ADMON_WILL_GRANT_REISSUE_DRAFT
+            gop: DIGITAL_GRANT_REISSUE_DRAFT
+          grant:
+            intestacy: INTESTACY_GRANT_DRAFT
+            admonWill: ADMON_WILL_GRANT_DRAFT
+            gop: DIGITAL_GRANT_DRAFT
+      welsh:
+        final:
+          grant:
+            intestacy: WELSH_INTESTACY_GRANT
+            admonWill: WELSH_ADMON_WILL_GRANT
+            gop: WELSH_DIGITAL_GRANT
+        preview:
+          grant:
+            intestacy: WELSH_INTESTACY_GRANT_DRAFT
+            admonWill: WELSH_ADMON_WILL_GRANT_DRAFT
+            gop: WELSH_DIGITAL_GRANT_DRAFT
 
 registries:
   oxford:
@@ -312,3 +384,18 @@ excelaEmail: ${EXCELA_EMAIL:probatetest@gmail.com}
 
 cron:
   data_extract: "0 0 2 * * *"
+
+welsh:
+  months:
+    1: "Ionawr"
+    2: "Chwefror"
+    3: "Mawrth"
+    4: "Ebrill"
+    5: "Mai"
+    6: "Mehefin"
+    7: "Gorffennaf"
+    8: "Awst"
+    9: "Medi"
+    10: "Hydref"
+    11: "Tachwedd"
+    12: "Rhagfyr"

@@ -99,7 +99,25 @@ public enum DocumentType {
     STATEMENT_OF_TRUTH("statementOfTruth"),
 
     @JsonProperty("assembledLetter")
-    ASSEMBLED_LETTER("assembledLetter");
+    ASSEMBLED_LETTER("assembledLetter"),
+
+    @JsonProperty("welshDigitalGrantDraft")
+    WELSH_DIGITAL_GRANT_DRAFT("welshDigitalGrantDraft"),
+
+    @JsonProperty("welshDigitalGrant")
+    WELSH_DIGITAL_GRANT("welshDigitalGrant"),
+
+    @JsonProperty("welshAdmonWillGrantDraft")
+    WELSH_ADMON_WILL_GRANT_DRAFT("welshAdmonWillGrantDraft"),
+
+    @JsonProperty("welshAdmonWillGrant")
+    WELSH_ADMON_WILL_GRANT("welshAdmonWillGrant"),
+
+    @JsonProperty("welshIntestacyGrantDraft")
+    WELSH_INTESTACY_GRANT_DRAFT("welshIntestacyGrantDraft"),
+
+    @JsonProperty("welshIntestacyGrant")
+    WELSH_INTESTACY_GRANT("welshIntestacyGrant");
 
     private final String templateName;
 

@@ -2,12 +2,8 @@ package uk.gov.hmcts.probate.service.exceptionrecord.utils;
 
 import org.junit.Before;
 import org.junit.Test;
-import uk.gov.hmcts.probate.model.exceptionrecord.SuccessfulTransformationResponse;
 import uk.gov.hmcts.probate.model.ocr.OCRField;
-import uk.gov.hmcts.reform.probate.model.cases.RegistryLocation;
-import uk.gov.hmcts.reform.probate.model.cases.caveat.CaveatData;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,14 +43,26 @@ public class OCRFieldExtractorTest {
 
     @Test
     public void getValidTwoParamResponse() {
+        String response = OCRFieldExtractor.get(ocrFields, FIRST_NAME_KEY, LAST_NAME_KEY);
+        assertEquals(FIRST_NAME_VALUE + " " + LAST_NAME_VALUE, response);
+    }
+
+    @Test
+    public void getValidThreeParamResponse() {
         String response = OCRFieldExtractor.get(ocrFields, FIRST_NAME_KEY, MIDDLE_NAME_KEY, LAST_NAME_KEY);
         assertEquals(FIRST_NAME_VALUE + " " + MIDDLE_NAME_VALUE + " " + LAST_NAME_VALUE, response);
     }
 
     @Test
-    public void getValidThreeParamResponse() {
-        String response = OCRFieldExtractor.get(ocrFields, FIRST_NAME_KEY, LAST_NAME_KEY);
+    public void getValidThreeParamResponseWithNoMiddleName() {
+        String response = OCRFieldExtractor.get(ocrFields, FIRST_NAME_KEY, null, LAST_NAME_KEY);
         assertEquals(FIRST_NAME_VALUE + " " + LAST_NAME_VALUE, response);
+    }
+
+    @Test
+    public void getValidThreeParamResponseWithNoMiddleNameOrFirstName() {
+        String response = OCRFieldExtractor.get(ocrFields, null, null, LAST_NAME_KEY);
+        assertEquals(LAST_NAME_VALUE, response);
     }
 
     @Test
