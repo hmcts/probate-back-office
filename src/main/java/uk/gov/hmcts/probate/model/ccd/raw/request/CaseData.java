@@ -567,7 +567,7 @@ public class CaseData {
             totalExecutors.add(primaryAdditionalExecutors);
         }
 
-        if (getSolsAdditionalExecutorList() != null) {
+        if (YES.equals(getOtherExecutorExists()) && getSolsAdditionalExecutorList() != null) {
             totalExecutors.addAll(getSolsAdditionalExecutorList());
         }
 
