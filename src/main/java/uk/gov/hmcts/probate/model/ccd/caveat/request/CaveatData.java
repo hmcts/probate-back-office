@@ -11,6 +11,7 @@ import uk.gov.hmcts.probate.controller.validation.CaveatCompletedGroup;
 import uk.gov.hmcts.probate.controller.validation.CaveatCreatedGroup;
 import uk.gov.hmcts.probate.controller.validation.CaveatUpdatedGroup;
 import uk.gov.hmcts.probate.model.ApplicationType;
+import uk.gov.hmcts.probate.model.LanguagePreference;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
 import uk.gov.hmcts.probate.model.ccd.ProbateAddress;
 import uk.gov.hmcts.probate.model.ccd.ProbateFullAliasName;
@@ -140,9 +141,13 @@ public class CaveatData {
     @Builder.Default
     private List<CollectionMember<ScannedDocument>> scannedDocuments = new ArrayList<>();
 
+    private String bulkScanCaseReference;
+
     private String recordId;
     private String legacyType;
     private String legacyCaseViewUrl;
+
+    private String languagePreferenceWelsh;
 
     private String autoClosedExpiry;
 
@@ -169,4 +174,9 @@ public class CaveatData {
     @JsonPOJOBuilder(withPrefix = "")
     public static final class CaveatDataBuilder {
     }
+
+    public LanguagePreference getLanguagePreference() {
+        return getLanguagePreferenceWelsh() != null && YES.equals(getLanguagePreferenceWelsh()) ? LanguagePreference.WELSH : LanguagePreference.ENGLISH;
+    }
+
 }

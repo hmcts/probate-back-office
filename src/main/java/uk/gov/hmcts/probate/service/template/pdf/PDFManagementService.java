@@ -131,6 +131,7 @@ public class PDFManagementService {
                     .build();
 
             return Document.builder()
+                    .documentFileName(fileUpload.getFileName())
                     .documentLink(documentLink)
                     .documentType(documentType)
                     .documentDateAdded(LocalDate.now())

@@ -6,6 +6,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
 import uk.gov.hmcts.probate.model.ApplicationType;
+import uk.gov.hmcts.probate.model.LanguagePreference;
 
 import javax.validation.Valid;
 import java.util.Map;
@@ -18,5 +19,6 @@ import java.util.Map;
 public class NotificationTemplates {
 
     @Valid
-    private Map<ApplicationType, EmailTemplates> email;
+    private Map<LanguagePreference,Map<ApplicationType, EmailTemplates>> email;
+
 }
