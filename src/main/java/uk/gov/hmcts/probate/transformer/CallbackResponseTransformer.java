@@ -27,6 +27,8 @@ import uk.gov.hmcts.probate.model.exceptionrecord.CaseCreationDetails;
 import uk.gov.hmcts.probate.model.fee.FeeServiceResponse;
 import uk.gov.hmcts.probate.service.ExecutorsApplyingNotificationService;
 import uk.gov.hmcts.probate.transformer.assembly.AssembleLetterTransformer;
+import uk.gov.hmcts.reform.probate.model.cases.RegistryLocation;
+import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -37,9 +39,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import org.apache.commons.lang3.StringUtils;
-import uk.gov.hmcts.reform.probate.model.cases.RegistryLocation;
-import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData;
 
 import static java.util.Collections.EMPTY_LIST;
 import static java.util.Optional.ofNullable;
@@ -61,9 +60,6 @@ import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_INTESTACY;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE;
 import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
 import static uk.gov.hmcts.probate.model.DocumentType.SOT_INFORMATION_REQUEST;
-import static uk.gov.hmcts.probate.model.DocumentType.WELSH_ADMON_WILL_GRANT;
-import static uk.gov.hmcts.probate.model.DocumentType.WELSH_DIGITAL_GRANT;
-import static uk.gov.hmcts.probate.model.DocumentType.WELSH_INTESTACY_GRANT;
 import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.Constants.GRANT_OF_PROBATE_NAME;
 import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.INTESTACY;
 
@@ -280,7 +276,7 @@ public class CallbackResponseTransformer {
         return transformResponse(responseCaseDataBuilder.build());
     }
 
-    public CallbackResponse toggleApplicantFields(CallbackRequest callbackRequest) {
+    public CallbackResponse setApplicantFieldsForSolsApplyAsExec(CallbackRequest callbackRequest) {
         ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), false);
         CaseData caseData = callbackRequest.getCaseDetails().getData();
 
@@ -593,7 +589,7 @@ public class CallbackResponseTransformer {
         return YES.equals(caseData.getWillHasCodicils());
     }
 
-    private boolean isApplyAsExecutor(CaseData caseData) {
+    private boolean isSolicitorApplyingAsExecutor(CaseData caseData) {
         return YES.equals(caseData.getSolsSolicitorIsApplyingExec());
     }
 
@@ -757,7 +753,7 @@ public class CallbackResponseTransformer {
                     .willNumberOfCodicils(null);
         }
 
-        if (isApplyAsExecutor(caseData)) {
+        if (isSolicitorApplyingAsExecutor(caseData)) {
             if (YES.equals(caseData.getSolsSolicitorIsMainApplicant())) {
                 builder
                         .primaryApplicantForenames(caseData.getSolsSOTForenames())
@@ -877,7 +873,7 @@ public class CallbackResponseTransformer {
                     .willNumberOfCodicils(null);
         }
 
-        if (isApplyAsExecutor(caseData)) {
+        if (isSolicitorApplyingAsExecutor(caseData)) {
             if (YES.equals(caseData.getSolsSolicitorIsMainApplicant())) {
                 builder
                         .primaryApplicantForenames(caseData.getSolsSOTForenames())

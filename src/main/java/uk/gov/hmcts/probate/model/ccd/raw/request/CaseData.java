@@ -39,6 +39,10 @@ import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.StopReason;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 
+import javax.validation.Valid;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -50,10 +54,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
-import javax.validation.Valid;
-import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
@@ -596,13 +596,26 @@ public class CaseData {
 
         for (CollectionMember<AdditionalExecutorApplying> e : additionalExecutors) {
             exec = e.getValue();
+
+            if(exec == null) {
+                continue;
+            }
+
             String forenames = exec.getApplyingExecutorFirstName();
             String surname = exec.getApplyingExecutorLastName();
 
             if (exec.getApplyingExecutorFirstName() == null || exec.getApplyingExecutorLastName() == null) {
                 List<String> names = splitFullname(exec.getApplyingExecutorName());
-                surname = names.remove(names.size()-1);
-                forenames = String.join(" ", names);
+
+                if(names.size() > 2) {
+                    surname = names.remove(names.size()-1);
+                    forenames = String.join(" ", names);
+                } else if(names.size() == 1) {
+                    forenames = names.get(0);
+                } else {
+                    surname = names.get(1);
+                    forenames = names.get(0);
+                }
             }
 
             newExec = AdditionalExecutor.builder()
@@ -629,13 +642,26 @@ public class CaseData {
 
         for (CollectionMember<AdditionalExecutorNotApplying> e : additionalExecutors) {
             exec = e.getValue();
+
+            if(exec == null) {
+                continue;
+            }
+
             String forenames = null;
             String surname = null;
 
             if(exec.getNotApplyingExecutorName() != null) {
                 List<String> names = splitFullname(exec.getNotApplyingExecutorName());
-                surname = names.remove(names.size()-1);
-                forenames = String.join(" ", names);
+
+                if(names.size() > 2) {
+                    surname = names.remove(names.size()-1);
+                    forenames = String.join(" ", names);
+                } else if(names.size() == 1) {
+                    forenames = names.get(0);
+                } else {
+                    surname = names.get(1);
+                    forenames = names.get(0);
+                }
             }
 
             newExec = AdditionalExecutor.builder()

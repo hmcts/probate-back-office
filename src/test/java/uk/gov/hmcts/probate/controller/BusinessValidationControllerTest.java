@@ -62,7 +62,8 @@ public class BusinessValidationControllerTest {
     private static final String SOLICITOR_FIRM_LINE1 = "Aols Add Line1";
     private static final String SOLICITOR_FIRM_POSTCODE = "SW1E 6EA";
     private static final String IHT_FORM = "IHT207";
-    private static final String SOLICITOR_NAME = "Peter Crouch";
+    private static final String SOLICITOR_FORENAMES = "Peter";
+    private static final String SOLICITOR_SURNAME = "Crouch";
     private static final String SOLICITOR_JOB_TITLE = "Lawyer";
     private static final String PAYMENT_METHOD = "Cheque";
     private static final String WILL_HAS_CODICILS = "Yes";
@@ -111,6 +112,7 @@ public class BusinessValidationControllerTest {
     private static final String SOLS_VALIDATE_INTESTACY_URL = "/case/sols-validate-intestacy";
     private static final String SOLS_VALIDATE_ADMON_URL = "/case/sols-validate-admon";
     private static final String CASE_VALIDATE_CASE_DETAILS_URL = "/case/validateCaseDetails";
+    private static final String SOLS_APPLY_AS_EXEC = "/sols-apply-as-exec";
     private static final String CASE_TRANSFORM_URL = "/case/transformCase";
     private static final String CASE_CHCEKLIST_URL = "/case/validateCheckListDetails";
     private static final String PAPER_FORM_URL = "/case/paperForm";
@@ -191,7 +193,8 @@ public class BusinessValidationControllerTest {
                 .solsSolicitorFirmName(SOLICITOR_FIRM_NAME)
                 .solsSolicitorAddress(solsAddress)
                 .ihtFormId(IHT_FORM)
-                .solsSOTName(SOLICITOR_NAME)
+                .solsSOTForenames(SOLICITOR_FORENAMES)
+                .solsSOTSurname(SOLICITOR_SURNAME)
                 .solsSolicitorIsApplyingExec(YES)
                 .solsSolicitorIsMainApplicant(YES)
                 .solsSolicitorIsApplying(YES)
@@ -330,6 +333,23 @@ public class BusinessValidationControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(jsonPath("$.data.solsLegalStatementDocument.document_filename").value("legalStatementAdmon.pdf"));
+    }
+
+    @Test
+    public void shouldValidateWithSolsApplyingAsExecutorIsNullError() throws Exception {
+        caseDataBuilder.solsSolicitorIsApplyingExec(null);
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
+
+        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
+
+        mockMvc.perform(post(SOLS_VALIDATE_URL).content(json).contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.fieldErrors[0].param").value("callbackRequest"))
+                .andExpect(jsonPath("$.fieldErrors[0].field").value("caseDetails.data.solsSolicitorIsApplyingExec"))
+                .andExpect(jsonPath("$.fieldErrors[0].code").value("NotBlank"))
+                .andExpect(jsonPath("$.fieldErrors[0].message").value("Solicitor applying as executor must be chosen"));
     }
 
     @Test
