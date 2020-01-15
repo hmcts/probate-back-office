@@ -147,6 +147,7 @@ public class ResponseCaseData {
 
     private final String caseType;
     private final String paperForm;
+    private final String languagePreferenceWelsh;
 
     //paper form case creator fields
     private final String primaryApplicantSecondPhoneNumber;
@@ -291,4 +292,5 @@ public class ResponseCaseData {
     private final DocumentLink previewLink;
     @Builder.Default
     private List<CollectionMember<ParagraphDetail>> paragraphDetails = new ArrayList<>();
+    private String bulkScanCaseReference;
 }
