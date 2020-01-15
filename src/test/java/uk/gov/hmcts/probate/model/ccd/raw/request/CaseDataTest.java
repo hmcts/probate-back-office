@@ -125,6 +125,7 @@ public class CaseDataTest {
                 .primaryApplicantAddress(PRIMARY_APPLICANT_ADDRESS)
                 .primaryApplicantAlias(PRIMARY_APPLICANT_NAME_ON_WILL)
                 .solsAdditionalExecutorList(additionalExecutorsList)
+                .otherExecutorExists(YES)
                 .build();
     }
 
@@ -319,6 +320,7 @@ public class CaseDataTest {
                 .primaryApplicantAddress(PRIMARY_APPLICANT_ADDRESS)
                 .primaryApplicantAlias(PRIMARY_APPLICANT_NAME_ON_WILL)
                 .solsAdditionalExecutorList(additionalExecutorsList)
+                .otherExecutorExists(YES)
                 .build();
     }
 
