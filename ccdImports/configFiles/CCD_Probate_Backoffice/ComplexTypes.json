@@ -36,7 +36,7 @@
   {"LiveFrom": "01/01/2017", "ID": "ExecutorApplying", "ListElementCode": "applyingExecutorAgreed", "FieldType": "YesOrNo", "ElementLabel": "Has agreed?", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "ExecutorApplying", "ListElementCode": "applyingExecutorHasOtherName", "FieldType": "YesOrNo", "ElementLabel": "Has other name?", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "ExecutorApplying", "ListElementCode": "applyingExecutorEmailChanged", "FieldType": "YesOrNo", "ElementLabel": "Has email changed?", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "ID": "ExecutorApplying", "ListElementCode": "applyingExecutorEmailSent", "FieldType": "YesOrNo", "ElementLabel": "Has email changed?", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "ExecutorApplying", "ListElementCode": "applyingExecutorEmailSent", "FieldType": "YesOrNo", "ElementLabel": "Has email been sent?", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "ExecutorApplying", "ListElementCode": "applyingExecutorApplicant", "FieldType": "YesOrNo", "ElementLabel": "Is applicant?", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "Executor", "ListElementCode": "executorPerson", "FieldType": "Person", "ElementLabel": "Executor", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "Executor", "ListElementCode": "executorAddress", "FieldType": "Address", "ElementLabel": "Executor Address", "SecurityClassification": "Public"},
