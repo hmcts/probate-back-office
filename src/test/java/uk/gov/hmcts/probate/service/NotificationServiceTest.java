@@ -35,6 +35,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.service.client.DocumentStoreClient;
+import uk.gov.hmcts.probate.service.template.pdf.LocalDateToWelshStringConverter;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.validator.EmailAddressNotificationValidationRule;
 import uk.gov.hmcts.reform.authorisation.generators.ServiceAuthTokenGenerator;
@@ -81,6 +82,9 @@ public class NotificationServiceTest {
     @Autowired
     private NotificationService notificationService;
 
+    @Autowired
+    private LocalDateToWelshStringConverter localDateToWelshStringConverter;
+
     @MockBean
     private AppInsights appInsights;
 
@@ -116,6 +120,7 @@ public class NotificationServiceTest {
 
     @SpyBean
     private NotificationClient notificationClient;
+
 
     private CaseDetails personalCaseDataOxford;
     private CaseDetails personalCaseDataOxfordInvalidAppType;
@@ -185,7 +190,7 @@ public class NotificationServiceTest {
     private static final String PERSONALISATION_CASE_STOP_DETAILS_DEC = "boStopDetailsDeclarationParagraph";
     private static final String PERSONALISATION_ADDRESSEE = "addressee";
     private static final String PERSONALISATION_SOT_LINK = "sot_link";
-
+    private static final String PERSONALISATION_WELSH_DECEASED_DATE_OF_DEATH = "welsh_deceased_date_of_death";
 
     @Before
     public void setUp() throws NotificationClientException, IOException {
@@ -1073,6 +1078,8 @@ public class NotificationServiceTest {
         personalisation.put(PERSONALISATION_CAVEAT_ENTERED, "1st January 2019");
         personalisation.put(PERSONALISATION_CAVEATOR_ADDRESS, "");
         personalisation.put(PERSONALISATION_CAVEAT_EXPIRY_DATE, "1st January 2019");
+        personalisation.put(PERSONALISATION_WELSH_DECEASED_DATE_OF_DEATH, localDateToWelshStringConverter.convert( personalCaseDataCtsc.getData().getDeceasedDateOfDeath()));
+
 
         when(caveatQueryServiceMock.findCaveatById(CaseType.CAVEAT, null)).thenReturn(caveatStoppedCtscCaseData.getData());
         when(notificationClient.sendEmail(anyString(), anyString(), any(), any(), any())).thenReturn(sendEmailResponse);
@@ -1112,6 +1119,7 @@ public class NotificationServiceTest {
         personalisation.put(PERSONALISATION_CAVEAT_ENTERED, "1st January 2019");
         personalisation.put(PERSONALISATION_CAVEATOR_ADDRESS, "");
         personalisation.put(PERSONALISATION_CAVEAT_EXPIRY_DATE, "1st January 2019");
+        personalisation.put(PERSONALISATION_WELSH_DECEASED_DATE_OF_DEATH, localDateToWelshStringConverter.convert( personalCaseDataCtscBilingual.getData().getDeceasedDateOfDeath()));
 
         when(caveatQueryServiceMock.findCaveatById(CaseType.CAVEAT, null)).thenReturn(caveatStoppedCtscCaseData.getData());
         when(notificationClient.sendEmail(anyString(), anyString(), any(), any(), any())).thenReturn(sendEmailResponse);
@@ -1151,6 +1159,7 @@ public class NotificationServiceTest {
         personalisation.put(PERSONALISATION_CAVEAT_ENTERED, "1st January 2019");
         personalisation.put(PERSONALISATION_CAVEATOR_ADDRESS, "");
         personalisation.put(PERSONALISATION_CAVEAT_EXPIRY_DATE, "1st January 2019");
+        personalisation.put(PERSONALISATION_WELSH_DECEASED_DATE_OF_DEATH, localDateToWelshStringConverter.convert( solsCaseDataCtsc.getData().getDeceasedDateOfDeath()));
 
         when(caveatQueryServiceMock.findCaveatById(CaseType.CAVEAT, null)).thenReturn(caveatStoppedCtscCaseData.getData());
         when(notificationClient.sendEmail(anyString(), anyString(), any(), any(), any())).thenReturn(sendEmailResponse);
@@ -1295,6 +1304,7 @@ public class NotificationServiceTest {
         personalisation.put(PERSONALISATION_DECEASED_DOD,
                 personalCaseDataCtscRequestInformation.getData().getDeceasedDateOfDeathFormatted());
         personalisation.put(PERSONALISATION_CCD_REFERENCE, personalCaseDataCtscRequestInformation.getId().toString());
+        personalisation.put(PERSONALISATION_WELSH_DECEASED_DATE_OF_DEATH, localDateToWelshStringConverter.convert( personalCaseDataCtscRequestInformation.getData().getDeceasedDateOfDeath()));
 
         when(notificationClient.sendEmail(anyString(), anyString(), any(), any(), any())).thenReturn(sendEmailResponse);
         ExecutorsApplyingNotification executorsApplyingNotification = ExecutorsApplyingNotification.builder()
@@ -1339,6 +1349,7 @@ public class NotificationServiceTest {
         personalisation.put(PERSONALISATION_DECEASED_DOD,
                 solsCaseDataCtscRequestInformation.getData().getDeceasedDateOfDeathFormatted());
         personalisation.put(PERSONALISATION_CCD_REFERENCE, solsCaseDataCtscRequestInformation.getId().toString());
+        personalisation.put(PERSONALISATION_WELSH_DECEASED_DATE_OF_DEATH, localDateToWelshStringConverter.convert( solsCaseDataCtscRequestInformation.getData().getDeceasedDateOfDeath()));
 
         when(notificationClient.sendEmail(anyString(), anyString(), any(), any(), any())).thenReturn(sendEmailResponse);
 
