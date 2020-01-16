@@ -86,7 +86,6 @@ public class HmrcFileService extends BaseFileService {
         addAddress(fileData, addressManager(data.getDeceasedAddress()));
         log.info("LOG getGrantIssuedDate");
         fileData.add(fileExtractDateFormatter.formatDataDate(LocalDate.parse(data.getGrantIssuedDate())));
-        log.info("LOG createGrantee1");
         addGranteeDetails(fileData, createGrantee(data, 1));
         log.info("LOG createGrantee2");
         addGranteeDetails(fileData, createGrantee(data, 2));

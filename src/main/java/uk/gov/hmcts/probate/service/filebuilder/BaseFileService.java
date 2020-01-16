@@ -1,6 +1,7 @@
 package uk.gov.hmcts.probate.service.filebuilder;
 
 import com.google.common.collect.ImmutableList;
+import lombok.extern.slf4j.Slf4j;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.ccd.raw.Grantee;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
@@ -17,6 +18,7 @@ import static uk.gov.hmcts.probate.model.Constants.CTSC;
 import static uk.gov.hmcts.probate.model.Constants.PRINCIPAL_REGISTRY;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 
+@Slf4j
 public abstract class BaseFileService {
     private static final SolsAddress EMPTY_ADDRESS = SolsAddress.builder()
             .addressLine1("")
@@ -66,11 +68,13 @@ public abstract class BaseFileService {
 
     private String getName(CaseData caseData, int granteeNumber) {
         if (isYes(caseData.getPrimaryApplicantIsApplying())) {
+            log.info("LOG getName getPrimaryApplicantSurname "+granteeNumber);
             return granteeNumber == 1 ? caseData.getPrimaryApplicantForenames() + " " + caseData
                     .getPrimaryApplicantSurname() : getApplyingExecutorName(caseData, granteeNumber - 2);
         }
         if (granteeNumber == 1 && caseData.getAdditionalExecutorsApplying() == null && caseData.getApplicationType()
                 .equals(ApplicationType.SOLICITOR)) {
+            log.info("LOG getName getSolsSOTName "+granteeNumber);
             return caseData.getSolsSOTName();
         }
         return getApplyingExecutorName(caseData, granteeNumber - 1);
@@ -85,12 +89,14 @@ public abstract class BaseFileService {
                 .equals(ApplicationType.SOLICITOR)) {
             return caseData.getSolsSolicitorAddress();
         }
+        log.info("LOG getName "+granteeNumber);
         return getAdditionalExecutorAddress(caseData, granteeNumber - 1);
     }
 
     private SolsAddress getAdditionalExecutorAddress(CaseData caseData, int index) {
         if (caseData.getAdditionalExecutorsApplying() != null
                 && caseData.getAdditionalExecutorsApplying().size() >= (index + 1)) {
+            log.info("LOG getAdditionalExecutorAddress "+index);
             return caseData.getAdditionalExecutorsApplying().get(index).getValue().getApplyingExecutorAddress();
         }
         return EMPTY_ADDRESS;
@@ -99,6 +105,7 @@ public abstract class BaseFileService {
     private String getApplyingExecutorName(CaseData caseData, int index) {
         if (caseData.getAdditionalExecutorsApplying() != null
                 && caseData.getAdditionalExecutorsApplying().size() >= (index + 1)) {
+            log.info("LOG getApplyingExecutorName "+index);
             return caseData.getAdditionalExecutorsApplying().get(index).getValue().getApplyingExecutorName();
         }
         return "";
@@ -109,6 +116,6 @@ public abstract class BaseFileService {
     }
 
     protected Boolean isYes(String yesNoValue) {
-        return yesNoValue.equals(YES);
+        return YES.equals(yesNoValue);
     }
 }
