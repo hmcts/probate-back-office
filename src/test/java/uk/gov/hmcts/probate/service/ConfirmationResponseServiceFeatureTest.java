@@ -28,6 +28,8 @@ import java.util.Collections;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
+import static uk.gov.hmcts.probate.model.Constants.WILL_TYPE_INTESTACY;
+import static uk.gov.hmcts.probate.model.Constants.WILL_TYPE_PROBATE;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -60,8 +62,6 @@ public class ConfirmationResponseServiceFeatureTest {
     private static final Long EXTRA_OUTSIDE_UK = 2L;
     private static final String SOLS_FEE_ACC = "12345";
     private static final String ADDITIONAL_INFO = "ADDITIONAL INFO";
-    private static final String WILL_TYPE_INTESTACY = "NoWill";
-    private static final String WILL_TYPE_PROBATE = "WillLeft";
 
     @Autowired
     private ConfirmationResponseService confirmationResponseService;

@@ -24,19 +24,18 @@ import java.util.Optional;
 
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.REDEC_NOTIFICATION_SENT_STATE;
+import static uk.gov.hmcts.probate.model.Constants.WILL_TYPE_INTESTACY;
+import static uk.gov.hmcts.probate.model.Constants.WILL_TYPE_PROBATE;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 
 @Component
 @RequiredArgsConstructor
 public class StateChangeService {
     private static final String STATE_STOPPED = "Stopped";
-    private static final String STATE_GRANT_TYPE_PROBATE = "SolProbateCreated";
-    private static final String STATE_GRANT_TYPE_INTESTACY = "SolIntestacyCreated";
+    private static final String STATE_WILL_TYPE_PROBATE = "SolProbateCreated";
+    private static final String STATE_WILL_TYPE_INTESTACY = "SolIntestacyCreated";
     private static final String STATE_GRANT_TYPE_ADMON = "SolAdmonCreated";
     private static final String STATE_GRANT_TYPE_CREATED = "SolAppCreated";
-
-    private static final String GRANT_TYPE_PROBATE = "WillLeft";
-    private static final String GRANT_TYPE_INTESTACY = "NoWill";
 
 
     private final ApplicantSiblingsRule applicantSiblingsRule;
@@ -145,10 +144,10 @@ public class StateChangeService {
     }
 
     public Optional<String> getChangedStateForGrantType(CaseData caseData) {
-        if (caseData.getSolsWillType().equals(GRANT_TYPE_PROBATE)) {
-            return Optional.of(STATE_GRANT_TYPE_PROBATE);
-        } else if (caseData.getSolsWillType().equals(GRANT_TYPE_INTESTACY)) {
-            return Optional.of(STATE_GRANT_TYPE_INTESTACY);
+        if (caseData.getSolsWillType().equals(WILL_TYPE_PROBATE)) {
+            return Optional.of(STATE_WILL_TYPE_PROBATE);
+        } else if (caseData.getSolsWillType().equals(WILL_TYPE_INTESTACY)) {
+            return Optional.of(STATE_WILL_TYPE_INTESTACY);
         }
         return Optional.of(STATE_GRANT_TYPE_ADMON);
     }

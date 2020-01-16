@@ -22,6 +22,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 import static uk.gov.hmcts.probate.model.Constants.NO;
+import static uk.gov.hmcts.probate.model.Constants.WILL_TYPE_PROBATE;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 
 public class CaseDataTest {
@@ -34,7 +35,6 @@ public class CaseDataTest {
     private static final String DECEASED_SURNAME = "Surname";
     private static final String NOT_APPLYING_REASON = "not applying reason";
     private static final LocalDate LOCAL_DATE = LocalDate.of(2000,01,01);
-    private static final String WILL_TYPE_PROBATE = "WillLeft";
 
     @Mock
     private AdditionalExecutor additionalExecutor1Mock;

@@ -37,6 +37,9 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static uk.gov.hmcts.probate.model.Constants.WILL_TYPE_ADMON;
+import static uk.gov.hmcts.probate.model.Constants.WILL_TYPE_INTESTACY;
+import static uk.gov.hmcts.probate.model.Constants.WILL_TYPE_PROBATE;
 import static uk.gov.hmcts.probate.model.template.MarkdownTemplate.STOP_BODY;
 
 @Component
@@ -47,9 +50,6 @@ public class ConfirmationResponseService {
     private static final String REASON_FOR_NOT_APPLYING_DIED_BEFORE = "DiedBefore";
     private static final String REASON_FOR_NOT_APPLYING_DIED_AFTER = "DiedAfter";
     private static final String IHT_400421 = "IHT400421";
-    private static final String GRANT_TYPE_PROBATE = "WillLeft";
-    private static final String GRANT_TYPE_INTESTACY = "NoWill";
-    private static final String GRANT_TYPE_ADMON = "WillLeftAnnexed";
     private static final String CAVEAT_APPLICATION_FEE = "20.00";
 
     static final String PAYMENT_METHOD_VALUE_FEE_ACCOUNT = "fee account";
@@ -112,7 +112,7 @@ public class ConfirmationResponseService {
             return response.get();
         }
 
-        if (GRANT_TYPE_PROBATE.equals(caseData.getSolsWillType())) {
+        if (WILL_TYPE_PROBATE.equals(caseData.getSolsWillType())) {
             response = getStopBodyMarkdown(caseData, executorsConfirmationResponseRule, STOP_BODY);
             if (response.isPresent()) {
                 return response.get();
@@ -124,7 +124,7 @@ public class ConfirmationResponseService {
             }
         }
 
-        if (GRANT_TYPE_INTESTACY.equals(caseData.getSolsWillType())) {
+        if (WILL_TYPE_INTESTACY.equals(caseData.getSolsWillType())) {
             response = getStopBodyMarkdown(caseData, minorityInterestConfirmationResponseRule, STOP_BODY);
             if (response.isPresent()) {
                 return response.get();
@@ -151,7 +151,7 @@ public class ConfirmationResponseService {
             }
         }
 
-        if (GRANT_TYPE_ADMON.equals(caseData.getSolsWillType())) {
+        if (WILL_TYPE_ADMON.equals(caseData.getSolsWillType())) {
             response = getStopBodyMarkdown(caseData, noOriginalWillRule, STOP_BODY);
             if (response.isPresent()) {
                 return response.get();
@@ -238,7 +238,7 @@ public class ConfirmationResponseService {
 
         String solsWillType = ccdData.getSolsWillType();
         String originalWill = "\n*   the original will";
-        if (solsWillType.equals(GRANT_TYPE_INTESTACY)) {
+        if (solsWillType.equals(WILL_TYPE_INTESTACY)) {
             originalWill = "";
         }
         keyValue.put("{{originalWill}}", originalWill);

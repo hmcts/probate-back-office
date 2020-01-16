@@ -4,12 +4,12 @@ import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 
 import static uk.gov.hmcts.probate.model.Constants.NO;
+import static uk.gov.hmcts.probate.model.Constants.WILL_TYPE_PROBATE;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 
 @Component
 public class SolsExecutorRule implements ChangeRule {
     private static final String MESSAGE_KEY = "stopBodySolsExecutor";
-    private static final String WILL_TYPE_PROBATE = "WillLeft";
 
     @Override
     public boolean isChangeNeeded(CaseData caseData) {

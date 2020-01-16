@@ -11,6 +11,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
+import static uk.gov.hmcts.probate.model.Constants.WILL_TYPE_PROBATE;
 
 public class SolsExecutorRuleTest {
 
@@ -43,7 +44,7 @@ public class SolsExecutorRuleTest {
 
     @Test
     public void shouldNotNeedChange() {
-        when(caseDataMock.getSolsWillType()).thenReturn("WillLeft");
+        when(caseDataMock.getSolsWillType()).thenReturn(WILL_TYPE_PROBATE);
 
         assertFalse(underTest.isChangeNeeded(caseDataMock));
     }

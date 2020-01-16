@@ -43,6 +43,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static uk.gov.hmcts.probate.model.Constants.REDEC_NOTIFICATION_SENT_STATE;
+import static uk.gov.hmcts.probate.model.Constants.WILL_TYPE_ADMON;
+import static uk.gov.hmcts.probate.model.Constants.WILL_TYPE_INTESTACY;
+import static uk.gov.hmcts.probate.model.Constants.WILL_TYPE_PROBATE;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 
 @RunWith(SpringRunner.class)
@@ -87,9 +90,6 @@ public class BusinessValidationControllerTest {
     private static final String PRIMARY_APPLICANT_EMAIL = "test@test.com";
     private static final String OTHER_EXEC_EXISTS = "No";
     private static final String WILL_EXISTS = "Yes";
-    private static final String WILL_TYPE_PROBATE = "WillLeft";
-    private static final String WILL_TYPE_INTESTACY = "NoWill";
-    private static final String WILL_TYPE_ADMON = "WillLeftAnnexed";
     private static final String WILL_ACCESS_ORIGINAL = "Yes";
     private static final String PRIMARY_FORENAMES = "ExFN";
     private static final String PRIMARY_SURNAME = "ExSN";

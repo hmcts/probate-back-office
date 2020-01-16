@@ -49,6 +49,9 @@ import static org.mockito.ArgumentMatchers.anyMap;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static uk.gov.hmcts.probate.model.Constants.WILL_TYPE_ADMON;
+import static uk.gov.hmcts.probate.model.Constants.WILL_TYPE_INTESTACY;
+import static uk.gov.hmcts.probate.model.Constants.WILL_TYPE_PROBATE;
 
 public class ConfirmationResponseServiceTest {
 
@@ -105,10 +108,6 @@ public class ConfirmationResponseServiceTest {
     @Mock
     private ProbateAddress probateAddressMock;
 
-    private static final String GRANT_TYPE_PROBATE = "WillLeft";
-    private static final String GRANT_TYPE_INTESTACY = "NoWill";
-    private static final String GRANT_TYPE_ADMON = "WillLeftAnnexed";
-
 
     @Before
     public void setup() {
@@ -140,7 +139,7 @@ public class ConfirmationResponseServiceTest {
         when(applicantSiblingsRuleMock.isChangeNeeded(caseDataMock)).thenReturn(true);
         when(markdownSubstitutionServiceMock.generatePage(anyString(), any(MarkdownTemplate.class), anyMap()))
                 .thenReturn(willBodyTemplateResponseMock);
-        when(caseDataMock.getSolsWillType()).thenReturn(GRANT_TYPE_INTESTACY);
+        when(caseDataMock.getSolsWillType()).thenReturn(WILL_TYPE_INTESTACY);
 
         AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getStopConfirmation(callbackRequestMock);
 
@@ -169,7 +168,7 @@ public class ConfirmationResponseServiceTest {
         when(diedOrNotApplyingRuleMock.isChangeNeeded(caseDataMock)).thenReturn(true);
         when(markdownSubstitutionServiceMock.generatePage(anyString(), any(MarkdownTemplate.class), anyMap()))
                 .thenReturn(willBodyTemplateResponseMock);
-        when(caseDataMock.getSolsWillType()).thenReturn(GRANT_TYPE_ADMON);
+        when(caseDataMock.getSolsWillType()).thenReturn(WILL_TYPE_ADMON);
 
 
         AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getStopConfirmation(callbackRequestMock);
@@ -227,7 +226,7 @@ public class ConfirmationResponseServiceTest {
         when(entitledMinorityRuleMock.isChangeNeeded(caseDataMock)).thenReturn(true);
         when(markdownSubstitutionServiceMock.generatePage(anyString(), any(MarkdownTemplate.class), anyMap()))
                 .thenReturn(willBodyTemplateResponseMock);
-        when(caseDataMock.getSolsWillType()).thenReturn(GRANT_TYPE_ADMON);
+        when(caseDataMock.getSolsWillType()).thenReturn(WILL_TYPE_ADMON);
 
         AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getStopConfirmation(callbackRequestMock);
 
@@ -256,7 +255,7 @@ public class ConfirmationResponseServiceTest {
         when(executorsRuleMock.isChangeNeeded(caseDataMock)).thenReturn(true);
         when(markdownSubstitutionServiceMock.generatePage(anyString(), any(MarkdownTemplate.class), anyMap()))
             .thenReturn(willBodyTemplateResponseMock);
-        when(caseDataMock.getSolsWillType()).thenReturn(GRANT_TYPE_PROBATE);
+        when(caseDataMock.getSolsWillType()).thenReturn(WILL_TYPE_PROBATE);
 
         AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getStopConfirmation(callbackRequestMock);
 
@@ -285,7 +284,7 @@ public class ConfirmationResponseServiceTest {
         when(lifeInterestRuleMock.isChangeNeeded(caseDataMock)).thenReturn(true);
         when(markdownSubstitutionServiceMock.generatePage(anyString(), any(MarkdownTemplate.class), anyMap()))
                 .thenReturn(willBodyTemplateResponseMock);
-        when(caseDataMock.getSolsWillType()).thenReturn(GRANT_TYPE_ADMON);
+        when(caseDataMock.getSolsWillType()).thenReturn(WILL_TYPE_ADMON);
 
         AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getStopConfirmation(callbackRequestMock);
 
@@ -314,7 +313,7 @@ public class ConfirmationResponseServiceTest {
         when(minorityInterestRuleMock.isChangeNeeded(caseDataMock)).thenReturn(true);
         when(markdownSubstitutionServiceMock.generatePage(anyString(), any(MarkdownTemplate.class), anyMap()))
                 .thenReturn(willBodyTemplateResponseMock);
-        when(caseDataMock.getSolsWillType()).thenReturn(GRANT_TYPE_INTESTACY);
+        when(caseDataMock.getSolsWillType()).thenReturn(WILL_TYPE_INTESTACY);
 
         AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getStopConfirmation(callbackRequestMock);
 
@@ -343,7 +342,7 @@ public class ConfirmationResponseServiceTest {
         when(renouncingRuleMock.isChangeNeeded(caseDataMock)).thenReturn(true);
         when(markdownSubstitutionServiceMock.generatePage(anyString(), any(MarkdownTemplate.class), anyMap()))
                 .thenReturn(willBodyTemplateResponseMock);
-        when(caseDataMock.getSolsWillType()).thenReturn(GRANT_TYPE_INTESTACY);
+        when(caseDataMock.getSolsWillType()).thenReturn(WILL_TYPE_INTESTACY);
 
         AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getStopConfirmation(callbackRequestMock);
 
@@ -372,7 +371,7 @@ public class ConfirmationResponseServiceTest {
         when(residuaryRuleMock.isChangeNeeded(caseDataMock)).thenReturn(true);
         when(markdownSubstitutionServiceMock.generatePage(anyString(), any(MarkdownTemplate.class), anyMap()))
                 .thenReturn(willBodyTemplateResponseMock);
-        when(caseDataMock.getSolsWillType()).thenReturn(GRANT_TYPE_ADMON);
+        when(caseDataMock.getSolsWillType()).thenReturn(WILL_TYPE_ADMON);
 
         AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getStopConfirmation(callbackRequestMock);
 
@@ -401,7 +400,7 @@ public class ConfirmationResponseServiceTest {
         when(solsExecutorRuleMock.isChangeNeeded(caseDataMock)).thenReturn(true);
         when(markdownSubstitutionServiceMock.generatePage(anyString(), any(MarkdownTemplate.class), anyMap()))
                 .thenReturn(willBodyTemplateResponseMock);
-        when(caseDataMock.getSolsWillType()).thenReturn(GRANT_TYPE_INTESTACY);
+        when(caseDataMock.getSolsWillType()).thenReturn(WILL_TYPE_INTESTACY);
 
         AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getStopConfirmation(callbackRequestMock);
 
@@ -430,7 +429,7 @@ public class ConfirmationResponseServiceTest {
         when(spouseOrCivilRuleMock.isChangeNeeded(caseDataMock)).thenReturn(true);
         when(markdownSubstitutionServiceMock.generatePage(anyString(), any(MarkdownTemplate.class), anyMap()))
                 .thenReturn(willBodyTemplateResponseMock);
-        when(caseDataMock.getSolsWillType()).thenReturn(GRANT_TYPE_INTESTACY);
+        when(caseDataMock.getSolsWillType()).thenReturn(WILL_TYPE_INTESTACY);
 
         AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getStopConfirmation(callbackRequestMock);
 
@@ -459,7 +458,7 @@ public class ConfirmationResponseServiceTest {
         when(noOriginalWillRuleMock.isChangeNeeded(caseDataMock)).thenReturn(true);
         when(markdownSubstitutionServiceMock.generatePage(anyString(), any(MarkdownTemplate.class), anyMap()))
                 .thenReturn(willBodyTemplateResponseMock);
-        when(caseDataMock.getSolsWillType()).thenReturn(GRANT_TYPE_PROBATE);
+        when(caseDataMock.getSolsWillType()).thenReturn(WILL_TYPE_PROBATE);
 
         AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getStopConfirmation(callbackRequestMock);
 
@@ -640,7 +639,7 @@ public class ConfirmationResponseServiceTest {
         when(ccdDataMock.getFee().getFeeForUkCopies()).thenReturn(BigDecimal.valueOf(50));
         when(ccdDataMock.getFee().getFeeForNonUkCopies()).thenReturn(BigDecimal.valueOf(150));
         when(ccdDataMock.getSolsAdditionalInfo()).thenReturn("solsAdditionalInfo");
-        when(ccdDataMock.getSolsWillType()).thenReturn("NoWill");
+        when(ccdDataMock.getSolsWillType()).thenReturn(WILL_TYPE_INTESTACY);
         executorsList.add(executorMock);
         executorsList.add(renouncingExecutorMock);
         executorsList.add(deadBeforeExecutorMock);

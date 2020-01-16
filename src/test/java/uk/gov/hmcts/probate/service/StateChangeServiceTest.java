@@ -34,6 +34,9 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 import static uk.gov.hmcts.probate.model.Constants.REDEC_NOTIFICATION_SENT_STATE;
+import static uk.gov.hmcts.probate.model.Constants.WILL_TYPE_ADMON;
+import static uk.gov.hmcts.probate.model.Constants.WILL_TYPE_INTESTACY;
+import static uk.gov.hmcts.probate.model.Constants.WILL_TYPE_PROBATE;
 
 @RunWith(SpringRunner.class)
 public class StateChangeServiceTest {
@@ -73,9 +76,6 @@ public class StateChangeServiceTest {
     @Mock
     private CaseData caseDataMock;
 
-    private static final String WILL_TYPE_PROBATE = "WillLeft";
-    private static final String WILL_TYPE_INTESTACY = "NoWill";
-    private static final String WILL_TYPE_ADMON = "WillLeftAnnexed";
     private static final String STATE_GRANT_TYPE_PROBATE = "SolProbateCreated";
     private static final String STATE_GRANT_TYPE_INTESTACY = "SolIntestacyCreated";
     private static final String STATE_GRANT_TYPE_ADMON = "SolAdmonCreated";

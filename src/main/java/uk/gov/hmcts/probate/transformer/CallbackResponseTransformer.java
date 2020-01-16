@@ -46,6 +46,8 @@ import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
 import static uk.gov.hmcts.probate.model.Constants.CTSC;
 import static uk.gov.hmcts.probate.model.Constants.DATE_OF_DEATH_TYPE_DEFAULT;
 import static uk.gov.hmcts.probate.model.Constants.NO;
+import static uk.gov.hmcts.probate.model.Constants.WILL_TYPE_INTESTACY;
+import static uk.gov.hmcts.probate.model.Constants.WILL_TYPE_PROBATE;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_REISSUE;
@@ -87,8 +89,6 @@ public class CallbackResponseTransformer {
     private static final String CASE_PRINTED = "CasePrinted";
     private static final String READY_FOR_EXAMINATION = "BOReadyForExamination";
     private static final String EXAMINING = "BOExamining";
-    private static final String NO_WILL = "NoWill";
-    private static final String WILL_LEFT = "WillLeft";
     private static final String STATE_GRANT_TYPE_PROBATE = "SolProbateCreated";
     private static final String STATE_GRANT_TYPE_INTESTACY = "SolIntestacyCreated";
     private static final String STATE_GRANT_TYPE_ADMON = "SolAdmonCreated";
@@ -584,15 +584,15 @@ public class CallbackResponseTransformer {
         if (isIntestacy(caseData)) {
             return false;
         }
-        return !(NO_WILL.equals(caseData.getSolsWillType()));
+        return !(WILL_TYPE_INTESTACY.equals(caseData.getSolsWillType()));
     }
 
     private boolean isIntestacy(CaseData caseData) {
-        return INTESTACY.getName().equals(caseData.getCaseType()) || NO_WILL.equals(caseData.getSolsWillType());
+        return INTESTACY.getName().equals(caseData.getCaseType()) || WILL_TYPE_INTESTACY.equals(caseData.getSolsWillType());
     }
 
     private boolean isProbate(CaseData caseData) {
-        return GRANT_OF_PROBATE.getName().equals(caseData.getCaseType()) || WILL_LEFT.equals(caseData.getSolsWillType());
+        return GRANT_OF_PROBATE.getName().equals(caseData.getCaseType()) || WILL_TYPE_PROBATE.equals(caseData.getSolsWillType());
     }
 
     private boolean isSolsEmailSet(CaseData caseData) {
