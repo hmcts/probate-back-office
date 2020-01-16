@@ -60,7 +60,9 @@ import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_INTESTACY;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE;
 import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
 import static uk.gov.hmcts.probate.model.DocumentType.SOT_INFORMATION_REQUEST;
+import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.Constants.ADMON_WILL_NAME;
 import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.Constants.GRANT_OF_PROBATE_NAME;
+import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.Constants.INTESTACY_NAME;
 import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.INTESTACY;
 
 @Component
@@ -85,6 +87,9 @@ public class CallbackResponseTransformer {
     private static final String READY_FOR_EXAMINATION = "BOReadyForExamination";
     private static final String EXAMINING = "BOExamining";
     private static final String NO_WILL = "NoWill";
+    private static final String STATE_GRANT_TYPE_PROBATE = "SolProbateCreated";
+    private static final String STATE_GRANT_TYPE_INTESTACY = "SolIntestacyCreated";
+    private static final String STATE_GRANT_TYPE_ADMON = "SolAdmonCreated";
 
     public static final String ANSWER_YES = "Yes";
     public static final String ANSWER_NO = "No";
@@ -99,11 +104,14 @@ public class CallbackResponseTransformer {
     private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(DATE_FORMAT);
 
     public CallbackResponse transformWithConditionalStateChange(CallbackRequest callbackRequest, Optional<String> newState) {
-        ResponseCaseData responseCaseData = getResponseCaseData(callbackRequest.getCaseDetails(), false)
-                .state(newState.orElse(null))
-                .build();
+        ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), false)
+                .state(newState.orElse(null));
 
-        return transformResponse(responseCaseData);
+        if (YES.equals(callbackRequest.getCaseDetails().getData().getSolsSOTNeedToUpdate()) && newState.isPresent()) {
+            responseCaseDataBuilder = clearGrantSpecificData(callbackRequest, responseCaseDataBuilder, newState.get());
+        }
+
+        return transformResponse(responseCaseDataBuilder.build());
     }
 
     public CallbackResponse caseStopped(CallbackRequest callbackRequest, List<Document> documents, String letterId) {
@@ -1120,6 +1128,57 @@ public class CallbackResponseTransformer {
         sb.append(firstNames);
         sb.append(" " + surname);
         return sb.toString();
+    }
+
+    private ResponseCaseDataBuilder clearGrantSpecificData(CallbackRequest callbackRequest, ResponseCaseDataBuilder responseCaseDataBuilder, String newState) {
+        CaseData caseData = callbackRequest.getCaseDetails().getData();
+
+        switch (caseData.getCaseType()) {
+            case GRANT_OF_PROBATE_NAME:
+                if (!STATE_GRANT_TYPE_PROBATE.equals(newState)) {
+                    responseCaseDataBuilder
+                            .willAccessOriginal(null)
+                            .willHasCodicils(null)
+                            .willNumberOfCodicils(null)
+                            .primaryApplicantHasAlias(null)
+                            .solsExecutorAliasNames(null)
+                            .primaryApplicantIsApplying(null)
+                            .solsPrimaryExecutorNotApplyingReason(null)
+                            .otherExecutorExists(null)
+                            .solsAdditionalExecutorList(null);
+                }
+                break;
+            case INTESTACY_NAME:
+                if (!STATE_GRANT_TYPE_INTESTACY.equals(newState)) {
+                    responseCaseDataBuilder
+                            .solsMinorityInterest(null)
+                            .solsApplicantSiblings(null)
+                            .primaryApplicantPhoneNumber(null)
+                            .primaryApplicantEmailAddress(null)
+                            .deceasedMaritalStatus(null)
+                            .solsApplicantRelationshipToDeceased(null)
+                            .solsSpouseOrCivilRenouncing(null)
+                            .solsAdoptedEnglandOrWales(null);
+                }
+                break;
+            case ADMON_WILL_NAME:
+                if (!STATE_GRANT_TYPE_ADMON.equals(newState)) {
+                    responseCaseDataBuilder
+                            .willAccessOriginal(null)
+                            .willHasCodicils(null)
+                            .willNumberOfCodicils(null)
+                            .solsEntitledMinority(null)
+                            .solsDiedOrNotApplying(null)
+                            .solsResiduary(null)
+                            .solsResiduaryType(null)
+                            .solsLifeInterest(null)
+                            .primaryApplicantPhoneNumber(null)
+                            .primaryApplicantEmailAddress(null);
+                }
+                break;
+        }
+
+        return responseCaseDataBuilder;
     }
 
     public CaseCreationDetails bulkScanGrantOfRepresentationCaseTransform(GrantOfRepresentationData grantOfRepresentationData) {
