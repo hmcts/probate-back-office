@@ -102,7 +102,7 @@ public class CaseQueryService {
 
         appInsights.trackEvent(REQUEST_SENT, uri.toString());
 
-        log.info("CaseQueryService returnedCases.size = {}" + returnedCases.getCases().size());
+        log.info("CaseQueryService returnedCases.size = {}", returnedCases.getCases().size());
         return returnedCases.getCases();
     }
 }
