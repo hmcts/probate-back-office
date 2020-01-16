@@ -97,9 +97,13 @@ public class CallbackResponseTransformerTest {
 
     private static final String CASE_TYPE_GRANT_OF_PROBATE = "gop";
     private static final String CASE_TYPE_INTESTACY = "intestacy";
+    private static final String CASE_TYPE_ADMON_WILL = "admonWill";
     private static final String WILL_TYPE_PROBATE = "WillLeft";
     private static final String WILL_TYPE_INTESTACY = "NoWill";
     private static final String WILL_TYPE_ADMON = "WillLeftAnnexed";
+    private static final String STATE_GRANT_TYPE_PROBATE = "SolProbateCreated";
+    private static final String STATE_GRANT_TYPE_INTESTACY = "SolIntestacyCreated";
+    private static final String STATE_GRANT_TYPE_ADMON = "SolAdmonCreated";
     private static final String APPLICANT_SIBLINGS = "No";
     private static final String DIED_OR_NOT_APPLYING = "Yes";
     private static final String ENTITLED_MINORITY = "No";
@@ -564,6 +568,68 @@ public class CallbackResponseTransformerTest {
         assertLegacyInfo(callbackResponse);
 
         assertNull(callbackResponse.getData().getState());
+    }
+
+    @Test
+    public void shouldClearProbateGrantData() {
+        CaseData caseData = caseDataBuilder
+                .solsSOTNeedToUpdate(YES)
+                .caseType(CASE_TYPE_GRANT_OF_PROBATE)
+                .build();
+        when(caseDetailsMock.getData()).thenReturn(caseData);
+
+        CallbackResponse callbackResponse = underTest.transformWithConditionalStateChange(callbackRequestMock, Optional.of(STATE_GRANT_TYPE_ADMON));
+
+        assertNull(callbackResponse.getData().getWillAccessOriginal());
+        assertNull(callbackResponse.getData().getWillHasCodicils());
+        assertNull(callbackResponse.getData().getWillNumberOfCodicils());
+        assertNull(callbackResponse.getData().getPrimaryApplicantHasAlias());
+        assertNull(callbackResponse.getData().getSolsExecutorAliasNames());
+        assertNull(callbackResponse.getData().getSolsPrimaryExecutorNotApplyingReason());
+        assertNull(callbackResponse.getData().getOtherExecutorExists());
+        assertNull(callbackResponse.getData().getSolsAdditionalExecutorList());
+    }
+
+    @Test
+    public void shouldClearIntestacyGrantData() {
+        CaseData caseData = caseDataBuilder
+                .solsSOTNeedToUpdate(YES)
+                .caseType(CASE_TYPE_INTESTACY)
+                .build();
+        when(caseDetailsMock.getData()).thenReturn(caseData);
+
+        CallbackResponse callbackResponse = underTest.transformWithConditionalStateChange(callbackRequestMock, Optional.of(STATE_GRANT_TYPE_PROBATE));
+
+        assertNull(callbackResponse.getData().getSolsMinorityInterest());
+        assertNull(callbackResponse.getData().getSolsApplicantSiblings());
+        assertNull(callbackResponse.getData().getPrimaryApplicantPhoneNumber());
+        assertNull(callbackResponse.getData().getPrimaryApplicantEmailAddress());
+        assertNull(callbackResponse.getData().getDeceasedMaritalStatus());
+        assertNull(callbackResponse.getData().getSolsApplicantRelationshipToDeceased());
+        assertNull(callbackResponse.getData().getSolsSpouseOrCivilRenouncing());
+        assertNull(callbackResponse.getData().getSolsAdoptedEnglandOrWales());
+    }
+
+    @Test
+    public void shouldClearAdmonWillGrantData() {
+        CaseData caseData = caseDataBuilder
+                .solsSOTNeedToUpdate(YES)
+                .caseType(CASE_TYPE_ADMON_WILL)
+                .build();
+        when(caseDetailsMock.getData()).thenReturn(caseData);
+
+        CallbackResponse callbackResponse = underTest.transformWithConditionalStateChange(callbackRequestMock, Optional.of(STATE_GRANT_TYPE_INTESTACY));
+
+        assertNull(callbackResponse.getData().getWillAccessOriginal());
+        assertNull(callbackResponse.getData().getWillHasCodicils());
+        assertNull(callbackResponse.getData().getWillNumberOfCodicils());
+        assertNull(callbackResponse.getData().getSolsEntitledMinority());
+        assertNull(callbackResponse.getData().getSolsDiedOrNotApplying());
+        assertNull(callbackResponse.getData().getSolsResiduary());
+        assertNull(callbackResponse.getData().getSolsResiduaryType());
+        assertNull(callbackResponse.getData().getSolsLifeInterest());
+        assertNull(callbackResponse.getData().getPrimaryApplicantPhoneNumber());
+        assertNull(callbackResponse.getData().getPrimaryApplicantEmailAddress());
     }
 
     @Test
