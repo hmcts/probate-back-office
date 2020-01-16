@@ -5,6 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 import uk.gov.hmcts.probate.exception.BadRequestException;
+import uk.gov.hmcts.probate.exception.ClientException;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.AliasName;
@@ -186,7 +187,7 @@ public class HmrcFileServiceTest {
             is(FileUtils.getStringFromFile("expectedGeneratedFiles/hmrcPersonal.txt")));
     }
 
-    @Test(expected = BadRequestException.class)
+    @Test(expected = ClientException.class)
     public void testHmrcFileIHTErrorForPersonal() {
         builtData = caseDataPersonal.ihtFormId("notAnIHTValue").build();
         createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, 2222333344445555L);

@@ -4,8 +4,10 @@ import com.google.common.collect.ImmutableList;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.exception.BadRequestException;
+import uk.gov.hmcts.probate.exception.ClientException;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.DataExtractGrantType;
 import uk.gov.hmcts.probate.model.ccd.raw.AliasName;
@@ -47,15 +49,26 @@ public class HmrcFileService extends BaseFileService {
 
     public File createHmrcFile(List<ReturnedCaseDetails> ccdCases, String fileName) {
         log.info("Creating HMRC file={}", fileName);
-        ImmutableList.Builder<String> fileData = new ImmutableList.Builder<>();
-        fileData.add(ROW_HEADER + ROW_DELIMITER);
-        int rowCount = 0;
-        for (ReturnedCaseDetails ccdCase : ccdCases) {
-            rowCount = rowCount + prepareData(fileData, ccdCase.getId(), ccdCase.getData());
-        }
-        addFooter(fileData, rowCount);
+        ImmutableList.Builder<String> fileData = prepareFileData(ccdCases, fileName);
         log.info("Created HMRC file={}", fileName);
         return textFileBuilderService.createFile(fileData.build(), DELIMITER, fileName);
+    }
+
+    private ImmutableList.Builder<String> prepareFileData(List<ReturnedCaseDetails> ccdCases, String fileName) {
+        ImmutableList.Builder<String> fileData = new ImmutableList.Builder<>();
+        try {
+            fileData.add(ROW_HEADER + ROW_DELIMITER);
+            int rowCount = 0;
+            for (ReturnedCaseDetails ccdCase : ccdCases) {
+                rowCount = rowCount + prepareData(fileData, ccdCase.getId(), ccdCase.getData());
+            }
+            addFooter(fileData, rowCount);
+        } catch (Exception e) {
+            log.error("Failed to prepare data HMRC file for :" + fileName);
+            throw new ClientException(HttpStatus.SERVICE_UNAVAILABLE.value(), 
+                "Failed to prepare data HMRC file for " + fileName +" exception:" + e.getStackTrace());
+        }
+        return fileData;
     }
 
     private int prepareData(ImmutableList.Builder<String> fileData, Long id, CaseData data) {
