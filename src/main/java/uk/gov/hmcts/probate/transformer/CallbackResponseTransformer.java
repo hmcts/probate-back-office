@@ -63,6 +63,7 @@ import static uk.gov.hmcts.probate.model.DocumentType.SOT_INFORMATION_REQUEST;
 import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.Constants.ADMON_WILL_NAME;
 import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.Constants.GRANT_OF_PROBATE_NAME;
 import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.Constants.INTESTACY_NAME;
+import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.GRANT_OF_PROBATE;
 import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.INTESTACY;
 
 @Component
@@ -87,6 +88,7 @@ public class CallbackResponseTransformer {
     private static final String READY_FOR_EXAMINATION = "BOReadyForExamination";
     private static final String EXAMINING = "BOExamining";
     private static final String NO_WILL = "NoWill";
+    private static final String WILL_LEFT = "WillLeft";
     private static final String STATE_GRANT_TYPE_PROBATE = "SolProbateCreated";
     private static final String STATE_GRANT_TYPE_INTESTACY = "SolIntestacyCreated";
     private static final String STATE_GRANT_TYPE_ADMON = "SolAdmonCreated";
@@ -589,6 +591,10 @@ public class CallbackResponseTransformer {
         return INTESTACY.getName().equals(caseData.getCaseType()) || NO_WILL.equals(caseData.getSolsWillType());
     }
 
+    private boolean isProbate(CaseData caseData) {
+        return GRANT_OF_PROBATE.getName().equals(caseData.getCaseType()) || WILL_LEFT.equals(caseData.getSolsWillType());
+    }
+
     private boolean isSolsEmailSet(CaseData caseData) {
         return StringUtils.isNotBlank(caseData.getSolsSolicitorEmail());
     }
@@ -747,7 +753,7 @@ public class CallbackResponseTransformer {
                     .willExists(ANSWER_NO);
         }
 
-        if (isIntestacy(caseData)) {
+        if (!isProbate(caseData)) {
             builder
                     .primaryApplicantIsApplying(ANSWER_YES);
         }
@@ -880,7 +886,7 @@ public class CallbackResponseTransformer {
                     .willExists(ANSWER_NO);
         }
 
-        if (isIntestacy(caseData)) {
+        if (!isProbate(caseData)) {
             builder
                     .primaryApplicantIsApplying(ANSWER_YES);
         }
@@ -1142,7 +1148,6 @@ public class CallbackResponseTransformer {
                             .willNumberOfCodicils(null)
                             .primaryApplicantHasAlias(null)
                             .solsExecutorAliasNames(null)
-                            .primaryApplicantIsApplying(null)
                             .solsPrimaryExecutorNotApplyingReason(null)
                             .otherExecutorExists(null)
                             .solsAdditionalExecutorList(null);
