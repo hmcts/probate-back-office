@@ -46,6 +46,8 @@ public class TemplateService {
                 } else {
                     return emailTemplates.getCaveatRaised();
                 }
+            case CAVEAT_EXTEND:
+                return emailTemplates.getCaveatExtend();
             case CAVEAT_RAISED_SOLS:
                 return notificationTemplates.getEmail().get(languagePreference).get(applicationType).getCaveatRaisedSols();
             default:

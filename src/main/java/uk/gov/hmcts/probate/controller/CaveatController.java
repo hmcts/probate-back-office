@@ -40,6 +40,7 @@ import java.util.List;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static uk.gov.hmcts.probate.model.State.CAVEAT_EXTEND;
 import static uk.gov.hmcts.probate.model.State.GENERAL_CAVEAT_MESSAGE;
 
 @Slf4j
@@ -166,5 +167,24 @@ public class CaveatController {
         return ResponseEntity.ok(caveatCallbackResponse);
     }
 
+    @PostMapping(path = "/extend")
+    public ResponseEntity<CaveatCallbackResponse> extend(@RequestBody CaveatCallbackRequest caveatCallbackRequest)
+        throws NotificationClientException {
+
+        CaveatCallbackResponse response = null;
+        if (caveatCallbackRequest.getCaseDetails().getData().isCaveatExtendEmailNotificationRequested()) {
+            response = eventValidationService.validateCaveatRequest(caveatCallbackRequest, validationRuleCaveats);
+            if (response.getErrors().isEmpty()) {
+                Document document = notificationService.sendCaveatEmail(CAVEAT_EXTEND, caveatCallbackRequest.getCaseDetails());
+                response = caveatCallbackResponseTransformer.generalMessage(caveatCallbackRequest, document);
+            } else {
+                return ResponseEntity.ok(response);
+            }
+        } else {
+            response = caveatCallbackResponseTransformer.transformResponseWithNoChanges(caveatCallbackRequest);
+        }
+
+        return ResponseEntity.ok(response);
+    }
 
 }

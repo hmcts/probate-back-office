@@ -51,6 +51,7 @@ public class ResponseCaveatData {
 
     private final String caveatRaisedEmailNotificationRequested;
     private final String caveatRaisedEmailNotification;
+    private final String caveatExtendEmailNotificationRequested;
 
     private final String sendToBulkPrintRequested;
     private final String sendToBulkPrint;
