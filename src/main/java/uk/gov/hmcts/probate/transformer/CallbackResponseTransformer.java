@@ -593,6 +593,10 @@ public class CallbackResponseTransformer {
         return YES.equals(caseData.getSolsSolicitorIsExec());
     }
 
+    private boolean isSolicitorMainApplicant(CaseData caseData) {
+        return YES.equals(caseData.getSolsSolicitorIsMainApplicant());
+    }
+
     private ResponseCaseDataBuilder getCaseCreatorResponseCaseBuilder(CaseData caseData, ResponseCaseDataBuilder builder) {
 
         builder
@@ -757,7 +761,7 @@ public class CallbackResponseTransformer {
         }
 
         if (isSolicitorExecutor(caseData)) {
-            if (YES.equals(caseData.getSolsSolicitorIsMainApplicant())) {
+            if (isSolicitorMainApplicant(caseData)) {
                 builder
                         .primaryApplicantForenames(caseData.getSolsSOTForenames())
                         .primaryApplicantSurname(caseData.getSolsSOTSurname())
@@ -771,6 +775,7 @@ public class CallbackResponseTransformer {
             }
         } else {
             builder
+                    .primaryApplicantIsApplying(YES)
                     .primaryApplicantAlias(caseData.getPrimaryApplicantAlias());
         }
 
@@ -883,7 +888,7 @@ public class CallbackResponseTransformer {
         }
 
         if (isSolicitorExecutor(caseData)) {
-            if (YES.equals(caseData.getSolsSolicitorIsMainApplicant())) {
+            if (isSolicitorMainApplicant(caseData)) {
                 builder
                         .primaryApplicantForenames(caseData.getSolsSOTForenames())
                         .primaryApplicantSurname(caseData.getSolsSOTSurname())
@@ -897,6 +902,7 @@ public class CallbackResponseTransformer {
             }
         } else {
             builder
+                    .primaryApplicantIsApplying(YES)
                     .primaryApplicantAlias(caseData.getPrimaryApplicantAlias());
         }
 
