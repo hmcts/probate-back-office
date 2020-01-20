@@ -35,7 +35,7 @@ public class SolsExecutorRuleTest {
 
     @Test
     public void shouldNeedChangeNoMainApplicant() {
-        when(caseDataMock.getSolsSolicitorIsApplyingExec()).thenReturn("Yes");
+        when(caseDataMock.getSolsSolicitorIsExec()).thenReturn("Yes");
         when(caseDataMock.getSolsSolicitorIsMainApplicant()).thenReturn("No");
 
         assertTrue(underTest.isChangeNeeded(caseDataMock));

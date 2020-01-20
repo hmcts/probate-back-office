@@ -57,7 +57,7 @@ public class ResponseCaseData {
     private final String solsSOTJobTitle;
     private final String solsSolicitorAppReference;
     private final String ihtFormId;
-    private final String solsSolicitorIsApplyingExec;
+    private final String solsSolicitorIsExec;
     private final String solsSolicitorIsMainApplicant;
     private final String solsSolicitorIsApplying;
     private final String solsSolicitorNotApplyingReason;

@@ -489,7 +489,7 @@ public class CallbackResponseTransformer {
                 .paperForm(caseData.getPaperForm())
                 .languagePreferenceWelsh(caseData.getLanguagePreferenceWelsh())
                 .caseType(caseData.getCaseType())
-                .solsSolicitorIsApplyingExec(caseData.getSolsSolicitorIsApplyingExec())
+                .solsSolicitorIsExec(caseData.getSolsSolicitorIsExec())
                 .solsSolicitorIsMainApplicant(caseData.getSolsSolicitorIsMainApplicant())
                 .solsSolicitorIsApplying(caseData.getSolsSolicitorIsApplying())
                 .solsSolicitorNotApplyingReason(caseData.getSolsSolicitorNotApplyingReason())
@@ -589,8 +589,8 @@ public class CallbackResponseTransformer {
         return YES.equals(caseData.getWillHasCodicils());
     }
 
-    private boolean isSolicitorApplyingAsExecutor(CaseData caseData) {
-        return YES.equals(caseData.getSolsSolicitorIsApplyingExec());
+    private boolean isSolicitorExecutor(CaseData caseData) {
+        return YES.equals(caseData.getSolsSolicitorIsExec());
     }
 
     private ResponseCaseDataBuilder getCaseCreatorResponseCaseBuilder(CaseData caseData, ResponseCaseDataBuilder builder) {
@@ -756,7 +756,7 @@ public class CallbackResponseTransformer {
                     .willNumberOfCodicils(null);
         }
 
-        if (isSolicitorApplyingAsExecutor(caseData)) {
+        if (isSolicitorExecutor(caseData)) {
             if (YES.equals(caseData.getSolsSolicitorIsMainApplicant())) {
                 builder
                         .primaryApplicantForenames(caseData.getSolsSOTForenames())
@@ -882,7 +882,7 @@ public class CallbackResponseTransformer {
                     .willNumberOfCodicils(null);
         }
 
-        if (isSolicitorApplyingAsExecutor(caseData)) {
+        if (isSolicitorExecutor(caseData)) {
             if (YES.equals(caseData.getSolsSolicitorIsMainApplicant())) {
                 builder
                         .primaryApplicantForenames(caseData.getSolsSOTForenames())
