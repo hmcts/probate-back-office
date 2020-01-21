@@ -347,7 +347,7 @@ public class CaseDataTest {
 
     @Test
     public void shouldSplitApplyingExecutorNameWhenDoubleBarrelledNames() {
-        when(additionalExecutorApplying1Mock.getApplyingExecutorName()).thenReturn("Appl-ying Name");
+        when(additionalExecutorApplying1Mock.getApplyingExecutorName()).thenReturn("John James Michael Smith");
         when(additionalExecutorApplying2Mock.getApplyingExecutorName()).thenReturn("Applying Na-me");
         when(additionalExecutorApplying3Mock.getApplyingExecutorName()).thenReturn("Appl-ying Na-me");
 
@@ -365,8 +365,8 @@ public class CaseDataTest {
         List<CollectionMember<AdditionalExecutor>> applying = caseData.getExecutorsApplyingForLegalStatement();
 
         assertEquals(4, applying.size());
-        assertEquals("Appl-ying", applying.get(1).getValue().getAdditionalExecForenames());
-        assertEquals("Name", applying.get(1).getValue().getAdditionalExecLastname());
+        assertEquals("John James Michael", applying.get(1).getValue().getAdditionalExecForenames());
+        assertEquals("Smith", applying.get(1).getValue().getAdditionalExecLastname());
         assertEquals("Applying", applying.get(2).getValue().getAdditionalExecForenames());
         assertEquals("Na-me", applying.get(2).getValue().getAdditionalExecLastname());
         assertEquals("Appl-ying", applying.get(3).getValue().getAdditionalExecForenames());
