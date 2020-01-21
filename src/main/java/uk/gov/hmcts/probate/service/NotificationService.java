@@ -31,6 +31,7 @@ import uk.gov.hmcts.probate.service.notification.SentEmailPersonalisationService
 import uk.gov.hmcts.probate.service.notification.TemplateService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.validator.EmailAddressNotificationValidationRule;
+import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.authorisation.generators.ServiceAuthTokenGenerator;
 import uk.gov.service.notify.NotificationClient;
 import uk.gov.service.notify.NotificationClientException;
@@ -67,7 +68,7 @@ public class NotificationService {
     private final CaveatPersonalisationService caveatPersonalisationService;
     private final SentEmailPersonalisationService sentEmailPersonalisationService;
     private final TemplateService templateService;
-    private final ServiceAuthTokenGenerator tokenGenerator;
+    private final AuthTokenGenerator serviceAuthTokenGenerator;
     private final DocumentStoreClient documentStoreClient;
 
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMM Y HH:mm");
@@ -186,7 +187,7 @@ public class NotificationService {
 
     public Document sendEmailWithDocumentAttached(CaseDetails caseDetails, ExecutorsApplyingNotification executor,
                                                   State state) throws NotificationClientException, IOException {
-        String authHeader = tokenGenerator.generate();
+        String authHeader = serviceAuthTokenGenerator.generate();
         byte[] sotDocument = documentStoreClient.retrieveDocument(caseDetails.getData()
                 .getProbateSotDocumentsGenerated()
                 .get(caseDetails.getData().getProbateSotDocumentsGenerated().size() - 1).getValue(), authHeader);
