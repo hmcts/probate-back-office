@@ -144,7 +144,7 @@ module "probate-back-office" {
 
     DEPLOYMENT_ENV= "${var.deployment_env}"
 
-    AUTH_PROVIDER_SERVICE_CLIENT_KEY = "${data.azurerm_key_vault_secret.s2s_key.value}"
+    S2S_AUTH_TOTP_SECRET = "${data.azurerm_key_vault_secret.s2s_key.value}"
     PDF_SERVICE_GRANTSIGNATURESECRETKEY = "${data.azurerm_key_vault_secret.pdf_service_grantSignatureKey.value}"
     PDF_SERVICE_GRANTSIGNATUREENCRYPTEDFILE = "${data.azurerm_key_vault_secret.pdf_service_grantSignatureFile.value}"
 
@@ -154,7 +154,7 @@ module "probate-back-office" {
     PROBATE_POSTGRESQL_HOSTNAME =  "${data.azurerm_key_vault_secret.POSTGRES_HOST.value}"
     PROBATE_POSTGRESQL_PORT = "${data.azurerm_key_vault_secret.POSTGRES_PORT.value}"
 
-    AUTH_PROVIDER_SERVICE_CLIENT_BASEURL = "${var.auth_service_url}"
+    S2S_AUTH_URL = "${var.auth_service_url}"
     PDF_SERVICE_URL = "${var.pdf_service_api_url}"
     PRINTSERVICE_HOST = "${var.printservice_host}"
     PRINTSERVICE_INTERNAL_HOST = "${var.printservice_internal_host}"
