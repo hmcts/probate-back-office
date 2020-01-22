@@ -208,6 +208,7 @@ notifications:
           excelaData: "fd474506-a272-4caa-ad61-6086cee0639a"
           caveatRaised: "251192c8-5d3a-4b44-82e6-a398bfbe72fe"
           caveatRaisedCtsc: "a970c66c-911f-40d6-a6ae-711200ae43a7"
+          caveatExtend: "6a8d36f5-75cf-4a4c-9cae-c0b561143c86"
           requestInformation: "23a980e6-d883-45fa-8daf-acb4e017b6bb"
           redeclarationSot: "253fa4a9-ef84-4b15-a059-0a0359f4ca5b"
         solicitor:

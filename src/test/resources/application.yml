@@ -121,6 +121,7 @@ notifications:
           excelaData: "pa-excela-data"
           caveatRaised: "pa-caveat-raised"
           caveatRaisedCtsc: "pa-ctsc-caveat-raised"
+          caveatExtend: "pa-ctsc-caveat-extend"
           requestInformation: "pa-request-information"
           redeclarationSot: "pa-redeclaration-sot"
         solicitor:
@@ -147,6 +148,7 @@ notifications:
           excelaData: "pa-excela-data-welsh"
           caveatRaised: "pa-caveat-raised-welsh"
           caveatRaisedCtsc: "pa-ctsc-caveat-raised-welsh"
+          caveatExtend: "pa-ctsc-caveat-extend-welsh"
           requestInformation: "pa-request-information-welsh"
           redeclarationSot: "pa-redeclaration-sot-welsh"
         solicitor:
