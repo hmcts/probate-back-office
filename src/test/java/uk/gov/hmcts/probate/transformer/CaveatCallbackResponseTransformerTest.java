@@ -3,6 +3,8 @@ package uk.gov.hmcts.probate.transformer;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -34,6 +36,8 @@ import static java.util.Collections.emptyList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.Constants.CAVEAT_LIFESPAN;
 import static uk.gov.hmcts.probate.model.Constants.NO;
@@ -166,8 +170,24 @@ public class CaveatCallbackResponseTransformerTest {
 
     @Test
     public void shouldTransformSolsCaveatCallbackRequestToCaveatCallbackResponse() {
-        CaveatCallbackResponse caveatCallbackResponse = underTest.transform(caveatCallbackRequestMock);
+        CaveatCallbackResponse caveatCallbackResponse = underTest.transformForSolicitor(caveatCallbackRequestMock);
         assertCommonSolsCaveats(caveatCallbackResponse);
+        assertCommonExpiryDateDetails(caveatCallbackResponse);
+    }
+
+    @Test
+    public void shouldTransformCaveatCallbackRequestToCaveatCallbackResponseWithNoChanges() {
+        CaveatCallbackResponse caveatCallbackResponse = underTest.transformResponseWithNoChanges(caveatCallbackRequestMock);
+        assertCommonCaveats(caveatCallbackResponse);
+        assertCommonExpiryDateDetails(caveatCallbackResponse);
+    }
+
+    @Test
+    public void shouldTransformCaveatCallbackRequestToCaveatCallbackResponseWithExtended() {
+        String expectedExpiryString = dateTimeFormatter.format(LocalDate.now().plusMonths(12));
+        CaveatCallbackResponse caveatCallbackResponse = underTest.transformResponseWithExtendedExpiry(caveatCallbackRequestMock);
+        assertCommonCaveats(caveatCallbackResponse);
+        assertEquals(expectedExpiryString, caveatCallbackResponse.getCaveatData().getExpiryDate());
     }
 
     @Test
@@ -292,6 +312,7 @@ public class CaveatCallbackResponseTransformerTest {
 
     private void assertCommon(CaveatCallbackResponse caveatCallbackResponse) {
         assertCommonDetails(caveatCallbackResponse);
+        assertCommonExpiryDateDetails(caveatCallbackResponse);
         assertApplicationType(caveatCallbackResponse, CAV_APPLICATION_TYPE);
         assertPaperForm(caveatCallbackResponse, YES);
         assertRegistryLocation(caveatCallbackResponse, CAV_REGISTRY_LOCATION);
@@ -304,6 +325,17 @@ public class CaveatCallbackResponseTransformerTest {
         assertRegistryLocation(caveatCallbackResponse, CAV_SOLS_REGISTRY_LOCATION);
     }
 
+    private void assertCommonCaveats(CaveatCallbackResponse caveatCallbackResponse) {
+        assertCommonDetails(caveatCallbackResponse);
+        assertApplicationType(caveatCallbackResponse, CAV_APPLICATION_TYPE);
+        assertPaperForm(caveatCallbackResponse, YES);
+        assertRegistryLocation(caveatCallbackResponse, CAV_REGISTRY_LOCATION);
+    }
+
+    private void assertCommonExpiryDateDetails(CaveatCallbackResponse caveatCallbackResponse) {
+        assertEquals(CAV_FORMATTED_EXPIRY_DATE, caveatCallbackResponse.getCaveatData().getExpiryDate());
+
+    }
     private void assertCommonDetails(CaveatCallbackResponse caveatCallbackResponse) {
 
         assertEquals(CAV_DECEASED_FORENAMES, caveatCallbackResponse.getCaveatData().getDeceasedForenames());
@@ -323,7 +355,6 @@ public class CaveatCallbackResponseTransformerTest {
         assertEquals(CAV_SOLICITOR_PHONENUMBER, caveatCallbackResponse.getCaveatData().getSolsSolicitorPhoneNumber());
         assertEquals(CAV_SOLICITOR_APP_REFERENCE, caveatCallbackResponse.getCaveatData().getSolsSolicitorAppReference());
 
-        assertEquals(CAV_FORMATTED_EXPIRY_DATE, caveatCallbackResponse.getCaveatData().getExpiryDate());
         assertEquals(CAV_MESSAGE_CONTENT, caveatCallbackResponse.getCaveatData().getMessageContent());
         assertEquals(CAV_REOPEN_REASON, caveatCallbackResponse.getCaveatData().getCaveatReopenReason());
 

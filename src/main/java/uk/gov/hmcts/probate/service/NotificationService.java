@@ -160,6 +160,9 @@ public class NotificationService {
             case CAVEAT_RAISED_SOLS:
                 documentType = SENT_EMAIL;
                 break;
+            case CAVEAT_EXTEND:
+                documentType = SENT_EMAIL;
+                break;
             default:
                 throw new BadRequestException("Unsupported State");
         }

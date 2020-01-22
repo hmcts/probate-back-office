@@ -80,6 +80,7 @@ public class CaveatCallbackResponseTransformer {
 
         ResponseCaveatData responseCaveatData = getResponseCaveatData(caveatDetails)
                 .caveatRaisedEmailNotificationRequested(caveatCallbackRequest.getCaseDetails().getData().getCaveatRaisedEmailNotification())
+                .caveatExtendEmailNotificationRequested(caveatCallbackRequest.getCaseDetails().getData().getCaveatExtendEmailNotification())
                 .sendToBulkPrintRequested(caveatCallbackRequest.getCaseDetails().getData().getSendToBulkPrint())
                 .build();
 
@@ -98,7 +99,7 @@ public class CaveatCallbackResponseTransformer {
         return transformResponse(responseCaveatData);
     }
 
-    public CaveatCallbackResponse transform(CaveatCallbackRequest callbackRequest) {
+    public CaveatCallbackResponse transformForSolicitor(CaveatCallbackRequest callbackRequest) {
         ResponseCaveatData responseCaveatData = getResponseCaveatData(callbackRequest.getCaseDetails())
                 .applicationType(SOLICITOR)
                 .paperForm(NO)
@@ -120,6 +121,21 @@ public class CaveatCallbackResponseTransformer {
         storedMatches.sort(Comparator.comparingInt(m -> ofNullable(m.getValue().getValid()).orElse("").length()));
 
         ResponseCaveatData.ResponseCaveatDataBuilder responseCaseDataBuilder = getResponseCaveatData(request.getCaseDetails());
+
+        return transformResponse(responseCaseDataBuilder.build());
+    }
+
+    public CaveatCallbackResponse transformResponseWithExtendedExpiry(CaveatCallbackRequest caveatCallbackRequest) {
+        ResponseCaveatData.ResponseCaveatDataBuilder responseCaseDataBuilder = getResponseCaveatData(caveatCallbackRequest.getCaseDetails());
+
+        String defaultExpiry = dateTimeFormatter.format(caveatCallbackRequest.getCaseDetails().getData().getExpiryDate().plusMonths(6));
+        return transformResponse(responseCaseDataBuilder.expiryDate(defaultExpiry)
+            .caveatExtendEmailNotificationRequested(caveatCallbackRequest.getCaseDetails().getData().getCaveatExtendEmailNotification())
+            .build());
+    }
+
+    public CaveatCallbackResponse transformResponseWithNoChanges(CaveatCallbackRequest caveatCallbackRequest) {
+        ResponseCaveatData.ResponseCaveatDataBuilder responseCaseDataBuilder = getResponseCaveatData(caveatCallbackRequest.getCaseDetails());
 
         return transformResponse(responseCaseDataBuilder.build());
     }
@@ -172,6 +188,7 @@ public class CaveatCallbackResponseTransformer {
                 .legacyType(caveatData.getLegacyType())
                 .sendToBulkPrintRequested(caveatData.getSendToBulkPrintRequested())
                 .caveatRaisedEmailNotificationRequested(caveatData.getCaveatRaisedEmailNotificationRequested())
+                .caveatExtendEmailNotificationRequested(caveatData.getCaveatExtendEmailNotificationRequested())
                 .bulkPrintId(caveatData.getBulkPrintId())
                 .bulkScanCaseReference((caveatData.getBulkScanCaseReference()))
                 .applicationSubmittedDate(transformToString(caveatData.getApplicationSubmittedDate()));

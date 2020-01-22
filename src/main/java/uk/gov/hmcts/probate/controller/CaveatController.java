@@ -29,15 +29,18 @@ import uk.gov.hmcts.probate.service.docmosis.CaveatDocmosisService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CCDDataTransformer;
 import uk.gov.hmcts.probate.transformer.CaveatCallbackResponseTransformer;
+import uk.gov.hmcts.probate.transformer.CaveatDataTransformer;
 import uk.gov.hmcts.probate.validator.BulkPrintValidationRule;
 import uk.gov.hmcts.probate.validator.CaveatsEmailAddressNotificationValidationRule;
-import uk.gov.hmcts.probate.validator.ValidationRuleCaveats;
+import uk.gov.hmcts.probate.validator.CaveatsEmailValidationRule;
+import uk.gov.hmcts.probate.validator.CaveatsExpiryValidationRule;
 import uk.gov.service.notify.NotificationClientException;
 
 import java.util.List;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static uk.gov.hmcts.probate.model.State.CAVEAT_EXTEND;
 import static uk.gov.hmcts.probate.model.State.GENERAL_CAVEAT_MESSAGE;
 
 @Slf4j
@@ -48,8 +51,10 @@ public class CaveatController {
 
     private final ObjectMapper objectMapper;
     private final List<BulkPrintValidationRule> bulkPrintValidationRules;
-    private final List<ValidationRuleCaveats> validationRuleCaveats;
+    private final List<CaveatsEmailValidationRule> validationRuleCaveats;
+    private final List<CaveatsExpiryValidationRule> validationRuleCaveatsExpiry;
     private final CCDDataTransformer ccdBeanTransformer;
+    private final CaveatDataTransformer caveatDataTransformer;
     private final CaveatCallbackResponseTransformer caveatCallbackResponseTransformer;
 
     private final EventValidationService eventValidationService;
@@ -62,9 +67,9 @@ public class CaveatController {
 
     @PostMapping(path = "/raise")
     public ResponseEntity<CaveatCallbackResponse> raiseCaveat(
-            @Validated({CaveatsEmailAddressNotificationValidationRule.class, BulkPrintValidationRule.class})
-            @RequestBody CaveatCallbackRequest caveatCallbackRequest)
-            throws NotificationClientException {
+        @Validated({CaveatsEmailAddressNotificationValidationRule.class, BulkPrintValidationRule.class})
+        @RequestBody CaveatCallbackRequest caveatCallbackRequest)
+        throws NotificationClientException {
 
         CaveatCallbackResponse caveatCallbackResponse = caveatNotificationService.caveatRaise(caveatCallbackRequest);
 
@@ -81,9 +86,9 @@ public class CaveatController {
 
     @PostMapping(path = "/general-message")
     public ResponseEntity<CaveatCallbackResponse> sendGeneralMessageNotification(
-            @Validated({CaveatsEmailAddressNotificationValidationRule.class})
-            @RequestBody CaveatCallbackRequest caveatCallbackRequest)
-            throws NotificationClientException {
+        @Validated({CaveatsEmailAddressNotificationValidationRule.class})
+        @RequestBody CaveatCallbackRequest caveatCallbackRequest)
+        throws NotificationClientException {
         CaveatDetails caveatDetails = caveatCallbackRequest.getCaseDetails();
 
         CaveatCallbackResponse response = eventValidationService.validateCaveatRequest(caveatCallbackRequest, validationRuleCaveats);
@@ -97,30 +102,30 @@ public class CaveatController {
 
     @PostMapping(path = "/solsCreate")
     public ResponseEntity<CaveatCallbackResponse> createSolsCaveat(
-            @Validated({CaveatCreatedGroup.class})
-            @RequestBody CaveatCallbackRequest caveatCallbackRequest) {
+        @Validated({CaveatCreatedGroup.class})
+        @RequestBody CaveatCallbackRequest caveatCallbackRequest) {
 
-        CaveatCallbackResponse caveatCallbackResponse = caveatCallbackResponseTransformer.transform(caveatCallbackRequest);
+        CaveatCallbackResponse caveatCallbackResponse = caveatCallbackResponseTransformer.transformForSolicitor(caveatCallbackRequest);
 
         return ResponseEntity.ok(caveatCallbackResponse);
     }
 
     @PostMapping(path = "/solsUpdate")
     public ResponseEntity<CaveatCallbackResponse> updateSolsCaveat(
-            @Validated({CaveatCreatedGroup.class, CaveatUpdatedGroup.class})
-            @RequestBody CaveatCallbackRequest caveatCallbackRequest) {
+        @Validated({CaveatCreatedGroup.class, CaveatUpdatedGroup.class})
+        @RequestBody CaveatCallbackRequest caveatCallbackRequest) {
 
-        CaveatCallbackResponse caveatCallbackResponse = caveatCallbackResponseTransformer.transform(caveatCallbackRequest);
+        CaveatCallbackResponse caveatCallbackResponse = caveatCallbackResponseTransformer.transformForSolicitor(caveatCallbackRequest);
 
         return ResponseEntity.ok(caveatCallbackResponse);
     }
 
     @PostMapping(path = "/validate", consumes = APPLICATION_JSON_UTF8_VALUE, produces = {APPLICATION_JSON_UTF8_VALUE})
     public ResponseEntity<CaveatCallbackResponse> validate(
-            @Validated({CaveatCreatedGroup.class, CaveatUpdatedGroup.class, CaveatCompletedGroup.class})
-            @RequestBody CaveatCallbackRequest caveatCallbackRequest,
-            BindingResult bindingResult)
-            throws NotificationClientException {
+        @Validated({CaveatCreatedGroup.class, CaveatUpdatedGroup.class, CaveatCompletedGroup.class})
+        @RequestBody CaveatCallbackRequest caveatCallbackRequest,
+        BindingResult bindingResult)
+        throws NotificationClientException {
 
         if (bindingResult.hasErrors()) {
             log.error("Case Id: {} ERROR: {}", caveatCallbackRequest.getCaseDetails().getId(), bindingResult);
@@ -134,20 +139,52 @@ public class CaveatController {
 
     @PostMapping(path = "/confirmation", consumes = APPLICATION_JSON_UTF8_VALUE, produces = {APPLICATION_JSON_UTF8_VALUE})
     public ResponseEntity<AfterSubmitCallbackResponse> getNextSteps(
-            @Validated({CaveatCreatedGroup.class, CaveatUpdatedGroup.class, CaveatCompletedGroup.class})
-            @RequestBody CaveatCallbackRequest caveatCallbackRequest,
-            BindingResult bindingResult) {
+        @Validated({CaveatCreatedGroup.class, CaveatUpdatedGroup.class, CaveatCompletedGroup.class})
+        @RequestBody CaveatCallbackRequest caveatCallbackRequest,
+        BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
             log.error("Case Id: {} ERROR: {}", caveatCallbackRequest.getCaseDetails().getId(), bindingResult);
             throw new BadRequestException("Invalid payload", bindingResult);
         }
 
-        CaveatData caveatData = ccdBeanTransformer.transformSolsCaveats(caveatCallbackRequest);
+        CaveatData caveatData = caveatDataTransformer.transformSolsCaveats(caveatCallbackRequest);
 
         AfterSubmitCallbackResponse afterSubmitCallbackResponse = confirmationResponseService
-                .getNextStepsConfirmation(caveatData);
+            .getNextStepsConfirmation(caveatData);
 
         return ResponseEntity.ok(afterSubmitCallbackResponse);
     }
+
+    @PostMapping(path = "/validate-extend")
+    public ResponseEntity<CaveatCallbackResponse> validateExtend(@RequestBody CaveatCallbackRequest caveatCallbackRequest) {
+
+        CaveatCallbackResponse caveatCallbackResponse = eventValidationService.validateCaveatRequest(caveatCallbackRequest, validationRuleCaveatsExpiry);
+        if (caveatCallbackResponse.getErrors().isEmpty()) {
+            caveatCallbackResponse = caveatCallbackResponseTransformer.transformResponseWithExtendedExpiry(caveatCallbackRequest);
+        }
+
+        return ResponseEntity.ok(caveatCallbackResponse);
+    }
+
+    @PostMapping(path = "/extend")
+    public ResponseEntity<CaveatCallbackResponse> extend(@RequestBody CaveatCallbackRequest caveatCallbackRequest)
+        throws NotificationClientException {
+
+        CaveatCallbackResponse response = null;
+        if (caveatCallbackRequest.getCaseDetails().getData().isCaveatExtendEmailNotificationRequested()) {
+            response = eventValidationService.validateCaveatRequest(caveatCallbackRequest, validationRuleCaveats);
+            if (response.getErrors().isEmpty()) {
+                Document document = notificationService.sendCaveatEmail(CAVEAT_EXTEND, caveatCallbackRequest.getCaseDetails());
+                response = caveatCallbackResponseTransformer.generalMessage(caveatCallbackRequest, document);
+            } else {
+                return ResponseEntity.ok(response);
+            }
+        } else {
+            response = caveatCallbackResponseTransformer.transformResponseWithNoChanges(caveatCallbackRequest);
+        }
+
+        return ResponseEntity.ok(response);
+    }
+
 }

@@ -29,12 +29,12 @@ auth.provider.service.client:
   tokenTimeToLiveInSeconds: 900
 
 auth.provider.client:
-  user: ${IDAM_SERVICE_HOST:http://localhost:4501}
+  user: ${IDAM_SERVICE_HOST:http://localhost:5000}
   secret: ${IDAM_SECRET:ccd_gateway_secret}
   id: ${IDAM_CLIENT_NAME:ccd_gateway}
   redirect: ${IDAM_REDIRECT_URL:http://localhost:3451/oauth2redirect}
   email: ${AUTH_TOKEN_EMAIL:probatesolcw1@gmail.com}
-  password: ${AUTH_TOKEN_PASSWORD:password}
+  password: ${AUTH_TOKEN_PASSWORD:Pa55word11}
 
 pdf.service:
   url: http://localhost:5500
@@ -181,6 +181,7 @@ notifications:
           excelaData: "fd474506-a272-4caa-ad61-6086cee0639a"
           caveatRaised: "bf9dabd9-b22f-4cb6-b3aa-871ac8532209"
           caveatRaisedCtsc: "ed01d79f-08f0-4703-8cec-f490e499fc33"
+          caveatExtend: "6a8d36f5-75cf-4a4c-9cae-c0b561143c86"
           requestInformation: "8fd291a1-67a7-48fa-a051-fa4c93315efc"
           redeclarationSot: "4bd0e8f1-5cbd-4093-813f-f97dedcd0f5f"
         solicitor:
@@ -207,6 +208,7 @@ notifications:
           excelaData: "fd474506-a272-4caa-ad61-6086cee0639a"
           caveatRaised: "251192c8-5d3a-4b44-82e6-a398bfbe72fe"
           caveatRaisedCtsc: "a970c66c-911f-40d6-a6ae-711200ae43a7"
+          caveatExtend: "6a8d36f5-75cf-4a4c-9cae-c0b561143c86"
           requestInformation: "23a980e6-d883-45fa-8daf-acb4e017b6bb"
           redeclarationSot: "253fa4a9-ef84-4b15-a059-0a0359f4ca5b"
         solicitor:
@@ -364,12 +366,6 @@ registries:
     postcode: CF24 0RZ
 
 
-document:
-  retriever:
-    service:
-      api:
-        baseurl: localhost:8080
-
 idam:
   s2s-auth:
     url: ${S2S_AUTH_URL:http://localhost:4502}
@@ -379,7 +375,7 @@ idam:
 send-letter:
   url: ${SEND_LETTER_SERIVCE_BASEURL:http://localhost:8485}
 
-auth.idam.client.baseUrl: http://localhost:4501
+auth.idam.client.baseUrl: http://localhost:5000
 
 core_case_data.api.url: ${services.coreCaseData.baseUrl:http://localhost:4452}
 
