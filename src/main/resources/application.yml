@@ -23,8 +23,8 @@ management:
 
 authorised.services: probate_backend,ccd_data,ccd-datamgmt-api,ccd_ps,ccd,bulk_scan_processor,bulk_scan_orchestrator
 auth.provider.service.client:
-  key: AAAAAAAAAAAAAAAA
-  baseUrl: http://localhost:4502
+  key: ${S2S_AUTH_TOTP_SECRET:AAAAAAAAAAAAAAAA}
+  baseUrl: ${S2S_AUTH_URL:http://localhost:4502}
   microservice: probate_backend
   tokenTimeToLiveInSeconds: 900
 
@@ -154,7 +154,7 @@ evidence.management.upload.file.url: /documents
 http.connect.timeout: 60000
 http.connect.request.timeout: 60000
 
-idam.service.host: ${PROVIDER_SERVICE_CLIENT_URL:http://localhost:4502}
+idam.service.host: ${S2S_AUTH_URL:http://localhost:4502}
 
 logging:
   level:
@@ -372,7 +372,10 @@ document:
 
 idam:
   s2s-auth:
-    url: ${PROVIDER_SERVICE_CLIENT_URL:http://localhost:4502}
+    url: ${S2S_AUTH_URL:http://localhost:4502}
+    totp_secret: ${S2S_AUTH_TOTP_SECRET:AAAAAAAAAAAAAAAA}
+    microservice: probate_backend
+
 send-letter:
   url: ${SEND_LETTER_SERIVCE_BASEURL:http://localhost:8485}
 

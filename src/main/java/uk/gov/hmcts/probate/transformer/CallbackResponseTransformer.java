@@ -43,6 +43,7 @@ import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepr
 
 import static java.util.Collections.EMPTY_LIST;
 import static java.util.Optional.ofNullable;
+import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
 import static uk.gov.hmcts.probate.model.Constants.CTSC;
 import static uk.gov.hmcts.probate.model.Constants.DATE_OF_DEATH_TYPE_DEFAULT;
@@ -574,7 +575,11 @@ public class CallbackResponseTransformer {
     }
 
     private boolean isSolsEmailSet(CaseData caseData) {
-        return StringUtils.isNotBlank(caseData.getSolsSolicitorEmail());
+        return SOLICITOR.equals(caseData.getApplicationType()) && StringUtils.isNotBlank(caseData.getSolsSolicitorEmail());
+    }
+
+    private boolean isPAEmailSet(CaseData caseData) {
+        return PERSONAL.equals(caseData.getApplicationType()) && StringUtils.isNotBlank(caseData.getPrimaryApplicantEmailAddress());
     }
 
     private boolean isCodicil(CaseData caseData) {
@@ -688,7 +693,7 @@ public class CallbackResponseTransformer {
             }
         }
 
-        if (caseData.getApplicationType() != ApplicationType.PERSONAL) {
+        if (caseData.getApplicationType() != PERSONAL) {
             builder
                     .solsSOTName(caseData.getSolsSOTName())
                     .solsSOTJobTitle(caseData.getSolsSOTJobTitle())
@@ -719,6 +724,18 @@ public class CallbackResponseTransformer {
         }
 
         if (isSolsEmailSet(caseData)) {
+            builder
+                    .boEmailDocsReceivedNotification(ANSWER_YES)
+                    .boEmailRequestInfoNotification(ANSWER_YES)
+                    .boEmailGrantIssuedNotification(ANSWER_YES);
+        } else {
+            builder
+                    .boEmailDocsReceivedNotification(ANSWER_NO)
+                    .boEmailRequestInfoNotification(ANSWER_NO)
+                    .boEmailGrantIssuedNotification(ANSWER_NO);
+        }
+
+        if (isPAEmailSet(caseData)) {
             builder
                     .boEmailDocsReceivedNotification(ANSWER_YES)
                     .boEmailRequestInfoNotification(ANSWER_YES)
@@ -786,7 +803,7 @@ public class CallbackResponseTransformer {
                 .ihtReferenceNumber(caseData.getIhtReferenceNumber())
                 .solsDeceasedAliasNamesList(caseData.getSolsDeceasedAliasNamesList());
 
-        if (caseData.getApplicationType() != ApplicationType.PERSONAL) {
+        if (caseData.getApplicationType() != PERSONAL) {
             builder
                     .solsSOTName(caseData.getSolsSOTName())
                     .solsSOTJobTitle(caseData.getSolsSOTJobTitle())
@@ -936,7 +953,7 @@ public class CallbackResponseTransformer {
     }
 
     private String getOtherExecutorExists(CaseData caseData) {
-        if (ApplicationType.PERSONAL.equals(caseData.getApplicationType())) {
+        if (PERSONAL.equals(caseData.getApplicationType())) {
             return caseData.getAdditionalExecutorsApplying() == null || caseData.getAdditionalExecutorsApplying().isEmpty()
                     ? ANSWER_NO : ANSWER_YES;
         } else {
@@ -945,7 +962,7 @@ public class CallbackResponseTransformer {
     }
 
     private String getPrimaryApplicantHasAlias(CaseData caseData) {
-        if (ApplicationType.PERSONAL.equals(caseData.getApplicationType())) {
+        if (PERSONAL.equals(caseData.getApplicationType())) {
             return ANSWER_NO;
         } else {
             return caseData.getPrimaryApplicantHasAlias();
