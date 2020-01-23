@@ -177,7 +177,7 @@ def versions = [
         serenitySpring                  : '2.0.41',
         serenityBddVersion              : '2.0.41',
         springBootVersion               : '2.1.3.RELEASE',
-        hmctsJavaLogging                : '5.1.0',
+        hmctsJavaLogging                : '3.0.2',
         authCheckerLib                  : '2.1.4',
         jacksonDatabind                 : '2.9.9.3',
         commonsIO                       : '2.6',
@@ -188,7 +188,7 @@ def versions = [
         probateCommonsVersion           : '1.0.1',
         ccdClient                       : '4.4.1',
         mapStruct                       : '1.2.0.Final',
-        serviceAuthVersion              : '3.0.0'
+        serviceAuthVersion              : '1.0.4'
 ]
 
 jacocoTestReport {
@@ -252,7 +252,7 @@ dependencies {
 
   compile group: 'org.elasticsearch.client', name: 'elasticsearch-rest-high-level-client', version: '6.6.0'
 
-  compile group: 'io.github.openfeign', name: 'feign-httpclient', version: '10.7.2'
+  compile group: 'io.github.openfeign', name: 'feign-httpclient', version: '9.7.0'
 
   compile group: 'org.pitest', name: 'pitest', version: '1.3.2'
   compile group: 'com.atlassian.commonmark', name: 'commonmark', version: '0.11.0'
