@@ -124,6 +124,7 @@ public class CallbackResponseTransformerTest {
     private static final String SOLICITOR_SOT_FORENAME = "Andy Middlename";
     private static final String SOLICITOR_SOT_SURNAME = "Test";
     private static final String SOLICITOR_SOT_JOB_TITLE = "Lawyer";
+    private static final String SOLICITOR_SOT_NOT_APPLYING_REASON = "Power reserved";
 
     private static final String DECEASED_FIRSTNAME = "Firstname";
     private static final String DECEASED_LASTNAME = "Lastname";
@@ -1268,6 +1269,35 @@ public class CallbackResponseTransformerTest {
 
         assertEquals(EMPTY_LIST, callbackResponse.getData().getAdditionalExecutorsApplying());
         assertEquals(EMPTY_LIST, callbackResponse.getData().getAdditionalExecutorsNotApplying());
+    }
+
+    @Test
+    public void shouldTransformCaseForSolIsAdditionalExecApplying() {
+        caseDataBuilder
+                .solsSolicitorIsMainApplicant(NO)
+                .solsSolicitorIsApplying(YES);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock);
+
+        assertEquals("Andy Middlename Test", callbackResponse.getData().getAdditionalExecutorsApplying().get(0).getValue().getApplyingExecutorName());
+    }
+
+    @Test
+    public void shouldTransformCaseForSolIsAdditionalExecNotApplying() {
+        caseDataBuilder
+                .solsSolicitorIsMainApplicant(NO)
+                .solsSolicitorIsApplying(NO)
+                .solsSolicitorNotApplyingReason(SOLICITOR_SOT_NOT_APPLYING_REASON);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock);
+
+        assertEquals("Andy Middlename Test", callbackResponse.getData().getAdditionalExecutorsNotApplying().get(0).getValue().getNotApplyingExecutorName());
     }
 
     @Test

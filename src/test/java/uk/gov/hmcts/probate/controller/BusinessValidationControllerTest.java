@@ -195,7 +195,7 @@ public class BusinessValidationControllerTest {
                 .ihtFormId(IHT_FORM)
                 .solsSOTForenames(SOLICITOR_FORENAMES)
                 .solsSOTSurname(SOLICITOR_SURNAME)
-                .solsSolicitorIsApplyingExec(YES)
+                .solsSolicitorIsExec(YES)
                 .solsSolicitorIsMainApplicant(YES)
                 .solsSolicitorIsApplying(YES)
                 .solsSolicitorNotApplyingReason(SOLS_NOT_APPLYING_REASON)
@@ -336,8 +336,8 @@ public class BusinessValidationControllerTest {
     }
 
     @Test
-    public void shouldValidateWithSolsApplyingAsExecutorIsNullError() throws Exception {
-        caseDataBuilder.solsSolicitorIsApplyingExec(null);
+    public void shouldValidateWithSolIsExecutorIsNullError() throws Exception {
+        caseDataBuilder.solsSolicitorIsExec(null);
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
 
@@ -347,9 +347,9 @@ public class BusinessValidationControllerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.fieldErrors[0].param").value("callbackRequest"))
-                .andExpect(jsonPath("$.fieldErrors[0].field").value("caseDetails.data.solsSolicitorIsApplyingExec"))
+                .andExpect(jsonPath("$.fieldErrors[0].field").value("caseDetails.data.solsSolicitorIsExec"))
                 .andExpect(jsonPath("$.fieldErrors[0].code").value("NotBlank"))
-                .andExpect(jsonPath("$.fieldErrors[0].message").value("Solicitor applying as executor must be chosen"));
+                .andExpect(jsonPath("$.fieldErrors[0].message").value("Solicitor named as an exec must be chosen"));
     }
 
     @Test
