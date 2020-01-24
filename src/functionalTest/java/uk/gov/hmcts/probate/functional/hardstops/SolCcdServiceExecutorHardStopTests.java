@@ -32,7 +32,7 @@ public class SolCcdServiceExecutorHardStopTests extends IntegrationTestBase {
                 .when().post(VALIDATE_URL).then().statusCode(200)
                 .and().body("data.state", equalToIgnoringCase("Stopped"))
                 .and().body("data.otherExecutorExists", equalToIgnoringCase("No"))
-                .and().body("data.primaryApplicantIsApplying", equalToIgnoringCase("No"));
+                .and().body("data.primaryApplicantIsApplying", equalToIgnoringCase("Yes"));
     }
 
     @Test

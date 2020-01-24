@@ -46,7 +46,7 @@ public class SolCcdServiceNextStepsTests extends IntegrationTestBase {
 
     @Test
     public void verifySolicitorSOTNameInTheReturnedMarkdown() {
-        validatePostRequestSuccessForLegalStatement("TestSOTName");
+        validatePostRequestSuccessForLegalStatement("Solicitor_fn Solicitor_ln");
     }
 
     @Test
@@ -80,8 +80,13 @@ public class SolCcdServiceNextStepsTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyEmptySolicitorSOTNamedReturnsError() {
-        validatePostRequestFailureForLegalStatement("\"solsSOTName\": \"TestSOTName\"", "\"solsSOTName\": \"\"", "caseDetails.data.solsSOTName");
+    public void verifyEmptySolicitorSOTForenamesReturnsError() {
+        validatePostRequestFailureForLegalStatement("\"solsSOTForenames\": \"Solicitor_fn\"", "\"solsSOTForenames\": \"\"", "caseDetails.data.solsSOTForenames");
+    }
+
+    @Test
+    public void verifyEmptySolicitorSOTSurnameReturnsError() {
+        validatePostRequestFailureForLegalStatement("\"solsSOTSurname\": \"Solicitor_ln\"", "\"solsSOTSurname\": \"\"", "caseDetails.data.solsSOTSurname");
     }
 
     @Test
