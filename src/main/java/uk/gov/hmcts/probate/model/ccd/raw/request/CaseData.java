@@ -681,7 +681,7 @@ public class CaseData {
     }
 
     private List<String> splitFullname(String fullName) {
-        return Arrays.asList(fullName.split(" "));
+        return new ArrayList<>(Arrays.asList(fullName.split(" ")));
     }
 
     private boolean isApplying(CollectionMember<AdditionalExecutor> ex, boolean applying) {
