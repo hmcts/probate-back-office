@@ -115,6 +115,11 @@ For linux (replace ip with your own ip)
    ./ccdImports/conversionScripts/importAllXLS.sh
 ```
 ##### 10) Start your local service 
+###### Pull probate specific ccd-logstash
+pull ccd-logstash branch probate-conf locally then
+
+docker build . -t ccd-logstash:probate
+
 ###### Probate-back-office
 Login to ccd on `http://localhost:3451`. Caseworker: `ProbateSolCW1@gmail.com / Pa55word11`. Solicitor  `ProbateSolicitor1@gmail.com / Pa55word11`.
 
