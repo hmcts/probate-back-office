@@ -91,18 +91,6 @@ public class CaveatCallbackResponseTransformer {
                 .build();
         }
 
-        if (caveatData.getApplicationType() != null) {
-            responseCaveatDataBuilder
-                .applicationSubmittedDate(dateTimeFormatter.format(LocalDate.now()))
-                .paperForm(caveatData.getApplicationType().equals(SOLICITOR) ? NO : YES)
-                .build();
-        } else {
-            responseCaveatDataBuilder
-                .applicationSubmittedDate(dateTimeFormatter.format(LocalDate.now()))
-                .paperForm(YES)
-                .build();
-        }
-
         return transformResponse(responseCaveatDataBuilder.build());
     }
 
