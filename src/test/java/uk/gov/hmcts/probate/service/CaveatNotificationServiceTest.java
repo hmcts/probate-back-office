@@ -273,7 +273,7 @@ public class CaveatNotificationServiceTest {
     @Test
     public void testCaveatExtendWithError() throws NotificationClientException {
         caveatData = CaveatData.builder()
-            .caveatExtendEmailNotificationRequested("Yes")
+            .caveatRaisedEmailNotificationRequested("Yes")
             .build();
 
         documents.add(sentEmail);
@@ -297,7 +297,7 @@ public class CaveatNotificationServiceTest {
     @Test
     public void testCaveatExtendWithEmail() throws NotificationClientException {
         caveatData = CaveatData.builder()
-            .caveatExtendEmailNotificationRequested("Yes")
+            .caveatRaisedEmailNotificationRequested("Yes")
             .build();
 
         documents.add(sentEmail);
@@ -325,7 +325,7 @@ public class CaveatNotificationServiceTest {
     @Test
     public void testCaveatExtendWithNoEmailNoBP() throws NotificationClientException {
         caveatData = CaveatData.builder()
-            .caveatExtendEmailNotificationRequested("No")
+            .caveatRaisedEmailNotificationRequested("No")
             .sendToBulkPrintRequested("No")
             .build();
 
@@ -353,7 +353,7 @@ public class CaveatNotificationServiceTest {
     @Test
     public void testCaveatExtendWithNoEmailBulkPrintValidSendLetter() throws NotificationClientException {
         caveatData = CaveatData.builder()
-            .caveatExtendEmailNotificationRequested("No")
+            .caveatRaisedEmailNotificationRequested("No")
             .sendToBulkPrintRequested("Yes")
             .build();
 
@@ -362,7 +362,7 @@ public class CaveatNotificationServiceTest {
             .caveatorEmailAddress("test@test.com")
             .deceasedForenames("name")
             .deceasedSurname("name")
-            .caveatExtendEmailNotificationRequested("Yes")
+            .caveatRaisedEmailNotificationRequested("Yes")
             .notificationsGenerated(DOCUMENTS_LIST_CAVEAT_EXTENDED)
             .build();
 

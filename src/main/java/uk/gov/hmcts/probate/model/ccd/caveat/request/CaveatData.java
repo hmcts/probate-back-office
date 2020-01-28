@@ -102,11 +102,6 @@ public class CaveatData {
 
     private String caveatRaisedEmailNotificationRequested;
 
-    @Getter(lazy = true)
-    private final String caveatExtendEmailNotification = getDefaultValueForEmailNotifications();
-
-    private String caveatExtendEmailNotificationRequested;
-
     @SuppressWarnings("squid:S1170")
     @Getter(lazy = true)
     private final String sendToBulkPrint = YES;
@@ -170,12 +165,8 @@ public class CaveatData {
         return YES.equals(getSendToBulkPrintRequested());
     }
 
-    public boolean isCaveatRaisedEmailNotificationRequested() {
+    public boolean isCaveatEmailNotificationRequested() {
         return YES.equals(getCaveatRaisedEmailNotificationRequested());
-    }
-
-    public boolean isCaveatExtendEmailNotificationRequested() {
-        return YES.equals(getCaveatExtendEmailNotificationRequested());
     }
 
     @JsonPOJOBuilder(withPrefix = "")
