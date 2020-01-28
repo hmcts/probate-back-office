@@ -173,7 +173,7 @@ notifications:
       english:
         personal:
           documentReceived: "9e950599-4f07-4b07-9015-2938e030c25c"
-          caseStopped: "58aed5cb-0aab-44f5-842f-9f0a6a150f72"
+          caseStopped: "60b95b7c-0a76-4608-b549-b3a579cfa3d0"
           caseStoppedCaveat: "937291a0-c0ae-40a4-a8cf-46a3452faff0"
           grantIssued: "8c05655d-02c9-4391-b461-56d8e585f48b"
           grantReissued: "1b094aae-1b4e-4161-9a61-f563a1a6ed6d"
@@ -181,11 +181,11 @@ notifications:
           excelaData: "fd474506-a272-4caa-ad61-6086cee0639a"
           caveatRaised: "bf9dabd9-b22f-4cb6-b3aa-871ac8532209"
           caveatRaisedCtsc: "ed01d79f-08f0-4703-8cec-f490e499fc33"
-          requestInformation: "8fd291a1-67a7-48fa-a051-fa4c93315efc"
+          requestInformation: "7888704d-b4fb-409f-9dd9-0869b2e293c0"
           redeclarationSot: "4bd0e8f1-5cbd-4093-813f-f97dedcd0f5f"
         solicitor:
           documentReceived: "7f8ff32d-8297-4702-9867-312047f81492"
-          caseStopped: "350f488a-68f1-44f0-b083-157285b71581"
+          caseStopped: "9e93a9c8-0246-4a95-b792-1c02da4bed4e"
           caseStoppedCaveat: "937291a0-c0ae-40a4-a8cf-46a3452faff0"
           grantIssued: "95aa541b-e55e-4d7c-a6f5-810b5f03adba"
           grantReissued: "1e18751f-fd4e-4893-85bb-f59cc5330c38"
@@ -194,7 +194,7 @@ notifications:
           caveatRaised: "bf9dabd9-b22f-4cb6-b3aa-871ac8532209"
           caveatRaisedCtsc: "ed01d79f-08f0-4703-8cec-f490e499fc33"
           caveatRaisedSols: "022966cb-e4da-4996-a831-02c2310ab4f8"
-          requestInformation: "b2978c65-5974-416a-bc64-fb0ee083dc7e"
+          requestInformation: "2fb640dd-f21e-496c-b8a4-bddbd87b8981"
           redeclarationSot: "bcd9e4cc-db0c-4810-8172-8bcb2277b775"
       welsh:
         personal:
