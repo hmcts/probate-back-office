@@ -57,6 +57,8 @@ docmosis:
       templateName: FL-PRB-GNO-ENG-00018.docx
     caveatStopped:
       templateName: FL-PRB-GNO-ENG-00025.docx
+    caveatExtended:
+      templateName: FL-PRB-GNO-ENG-00229.docx
     grantCoversheet:
       templateName: FL-PRB-GNO-ENG-00024.docx
     digitalGrantReissueDraft:

@@ -28,6 +28,7 @@ import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
 import static uk.gov.hmcts.probate.model.Constants.CTSC;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
+import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT_EXTENDED;
 import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT_RAISED;
 
 @Component
@@ -70,6 +71,36 @@ public class CaveatCallbackResponseTransformer {
                     .applicationSubmittedDate(dateTimeFormatter.format(LocalDate.now()))
                     .paperForm(YES)
                     .build();
+        }
+
+        return transformResponse(responseCaveatDataBuilder.build());
+    }
+
+    public CaveatCallbackResponse caveatExtendExpiry(CaveatCallbackRequest caveatCallbackRequest, List<Document> documents, String letterId) {
+        CaveatDetails caveatDetails = caveatCallbackRequest.getCaseDetails();
+        CaveatData caveatData = caveatDetails.getData();
+        documents.forEach(document -> documentTransformer.addDocument(caveatCallbackRequest, document));
+        ResponseCaveatDataBuilder responseCaveatDataBuilder = getResponseCaveatData(caveatDetails);
+
+        if (documentTransformer.hasDocumentWithType(documents, CAVEAT_EXTENDED) && letterId != null) {
+            CollectionMember<BulkPrint> bulkPrint = buildBulkPrint(letterId, CAVEAT_EXTENDED.getTemplateName());
+            caveatData.getBulkPrintId().add(bulkPrint);
+
+            responseCaveatDataBuilder
+                .bulkPrintId(caveatData.getBulkPrintId())
+                .build();
+        }
+
+        if (caveatData.getApplicationType() != null) {
+            responseCaveatDataBuilder
+                .applicationSubmittedDate(dateTimeFormatter.format(LocalDate.now()))
+                .paperForm(caveatData.getApplicationType().equals(SOLICITOR) ? NO : YES)
+                .build();
+        } else {
+            responseCaveatDataBuilder
+                .applicationSubmittedDate(dateTimeFormatter.format(LocalDate.now()))
+                .paperForm(YES)
+                .build();
         }
 
         return transformResponse(responseCaveatDataBuilder.build());

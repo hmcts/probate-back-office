@@ -171,18 +171,7 @@ public class CaveatController {
     public ResponseEntity<CaveatCallbackResponse> extend(@RequestBody CaveatCallbackRequest caveatCallbackRequest)
         throws NotificationClientException {
 
-        CaveatCallbackResponse response = null;
-        if (caveatCallbackRequest.getCaseDetails().getData().isCaveatExtendEmailNotificationRequested()) {
-            response = eventValidationService.validateCaveatRequest(caveatCallbackRequest, validationRuleCaveats);
-            if (response.getErrors().isEmpty()) {
-                Document document = notificationService.sendCaveatEmail(CAVEAT_EXTEND, caveatCallbackRequest.getCaseDetails());
-                response = caveatCallbackResponseTransformer.generalMessage(caveatCallbackRequest, document);
-            } else {
-                return ResponseEntity.ok(response);
-            }
-        } else {
-            response = caveatCallbackResponseTransformer.transformResponseWithNoChanges(caveatCallbackRequest);
-        }
+        CaveatCallbackResponse response = caveatNotificationService.caveatExtend(caveatCallbackRequest);
 
         return ResponseEntity.ok(response);
     }

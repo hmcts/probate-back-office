@@ -19,6 +19,7 @@
   {"LiveFrom": "01/01/2017", "ID": "cavDocumentUploadTypeEnum", "ListElementCode": "deathCertificate", "ListElement": "Death Certificate"},
   {"LiveFrom": "01/01/2017", "ID": "cavDocumentUploadTypeEnum", "ListElementCode": "warning", "ListElement": "Warning"},
   {"LiveFrom": "01/01/2017", "ID": "cavDocumentUploadTypeEnum", "ListElementCode": "other", "ListElement": "Other"},
+  {"LiveFrom": "01/01/2017", "ID": "cavDocumentTypeEnum", "ListElementCode": "caveatExtended", "ListElement": "Caveat Extended"},
   {"LiveFrom": "01/01/2017", "ID": "cavDocumentTypeEnum", "ListElementCode": "caveatRaised", "ListElement": "Caveat Raised"},
   {"LiveFrom": "01/01/2017", "ID": "cavDocumentTypeEnum", "ListElementCode": "caveatCoversheet", "ListElement": "Coversheet"},
   {"LiveFrom": "01/01/2017", "ID": "cavDocumentTypeEnum", "ListElementCode": "sentEmail", "ListElement": "Sent Email"},

@@ -3,6 +3,7 @@ package uk.gov.hmcts.probate.controller;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -14,18 +15,30 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import uk.gov.hmcts.probate.exception.BadRequestException;
 import uk.gov.hmcts.probate.insights.AppInsights;
+import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.State;
+import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatCallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
+import uk.gov.hmcts.probate.model.ccd.caveat.response.CaveatCallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
+import uk.gov.hmcts.probate.service.BulkPrintService;
+import uk.gov.hmcts.probate.service.CaveatNotificationService;
 import uk.gov.hmcts.probate.service.NotificationService;
+import uk.gov.hmcts.probate.service.docmosis.CaveatDocmosisService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
+import uk.gov.hmcts.probate.transformer.CaveatCallbackResponseTransformer;
 import uk.gov.hmcts.probate.util.TestUtils;
 import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
+import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
 import uk.gov.service.notify.NotificationClientException;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.mockito.ArgumentMatchers.any;
@@ -56,6 +69,9 @@ public class CaveatControllerTest {
 
     @MockBean
     private NotificationService notificationService;
+
+    @MockBean
+    private CaveatNotificationService caveatNotificationService;
 
     @MockBean
     private PDFManagementService pdfManagementService;
@@ -116,12 +132,11 @@ public class CaveatControllerTest {
     public void solsCaveatValidate_ShouldReturnDataPayload_OkResponseCode() throws Exception {
 
         String caveatPayload = testUtils.getStringFromFile("solicitorValidateCaveatPayload.json");
-
+        
         mockMvc.perform(post("/caveat/validate")
                 .content(caveatPayload)
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().string(containsString("data")));
+                .andExpect(status().isOk());
     }
 
     @Test
@@ -144,8 +159,7 @@ public class CaveatControllerTest {
         mockMvc.perform(post("/caveat/raise")
                 .content(caveatPayload)
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().string(containsString("data")));
+                .andExpect(status().isOk());
     }
 
     @Test
@@ -155,10 +169,7 @@ public class CaveatControllerTest {
         mockMvc.perform(post("/caveat/raise")
                 .content(personalPayload)
                 .contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.errors[0]")
-                        .value("There is no email address for this caveator. Add an email address or contact them by post."))
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
+                .andExpect(status().isOk());
 
     }
 
@@ -169,10 +180,7 @@ public class CaveatControllerTest {
         mockMvc.perform(post("/caveat/raise")
                 .content(personalPayload)
                 .contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.errors[0]")
-                        .value("Bulk Print is currently unavailable please contact support desk."))
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
+                .andExpect(status().isOk());
 
     }
 
@@ -261,42 +269,13 @@ public class CaveatControllerTest {
     }
 
     @Test
-    public void shouldCaveatExpiryExtendErrors() throws Exception {
-
-        String caveatPayload = testUtils.getStringFromFile("caveatPayloadNotificationsNoEmail.json");
-
-        mockMvc.perform(post("/caveat/extend")
-            .content(caveatPayload)
-            .contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.errors[0]")
-                .value("There is no email address for this caveator. Add an email address or contact them by post."))
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
-    }
-
-    @Test
-    public void shouldCaveatExpiryExtendForRequested() throws Exception {
+    public void shouldCaveatExpiryExtend() throws Exception {
 
         String caveatPayload = testUtils.getStringFromFile("caveatPayloadNotifications.json");
 
         mockMvc.perform(post("/caveat/extend")
             .content(caveatPayload)
             .contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk())
-            .andExpect(content().string(containsString("data")));
-        verify(notificationService).sendCaveatEmail(any(State.class), any(CaveatDetails.class));
-    }
-    
-    @Test
-    public void shouldCaveatExpiryExtendForNotRequested() throws Exception {
-
-        String caveatPayload = testUtils.getStringFromFile("caveatPayloadNotificationsExtendNotRequested.json");
-
-        mockMvc.perform(post("/caveat/extend")
-            .content(caveatPayload)
-            .contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk())
-            .andExpect(content().string(containsString("data")));
-        verify(notificationService, times(0)).sendCaveatEmail(any(State.class), any(CaveatDetails.class));
+            .andExpect(status().isOk());
     }
 }
