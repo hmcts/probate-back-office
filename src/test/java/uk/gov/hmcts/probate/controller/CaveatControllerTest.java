@@ -66,7 +66,6 @@ public class CaveatControllerTest {
     @MockBean
     private CoreCaseDataApi coreCaseDataApi;
 
-    @MockBean
     private CaveatCallbackResponseTransformer caveatCallbackResponseTransformer;
 
     @Autowired
@@ -225,8 +224,6 @@ public class CaveatControllerTest {
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(content().string(containsString("data")));
-
-        verify(caveatCallbackResponseTransformer).transformResponseWithExtendedExpiry(any(CaveatCallbackRequest.class));
     }
 
     @Test
