@@ -2,26 +2,13 @@ package uk.gov.hmcts.probate.transformer;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import uk.gov.hmcts.probate.model.ccd.CCDData;
-import uk.gov.hmcts.probate.model.ccd.Deceased;
-import uk.gov.hmcts.probate.model.ccd.Executor;
-import uk.gov.hmcts.probate.model.ccd.Fee;
-import uk.gov.hmcts.probate.model.ccd.InheritanceTax;
-import uk.gov.hmcts.probate.model.ccd.Solicitor;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatCallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
-import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
-import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
-import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 
 import java.time.DateTimeException;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import static java.lang.Integer.parseInt;
-import static uk.gov.hmcts.probate.model.Constants.YES;
 
 @Slf4j
 @Component
@@ -50,14 +37,14 @@ public class CaveatDataTransformer {
         CaveatData caveatData = caveatCallbackRequest.getCaseDetails().getData();
 
         return CaveatData.builder()
-                .registryLocation(notNullWrapper(caveatData.getRegistryLocation()))
-                .solsSolicitorAppReference(notNullWrapper(caveatData.getSolsSolicitorAppReference()))
-                .applicationSubmittedDate(getCaseSubmissionDate(caveatCallbackRequest.getCaseDetails()
-                        .getLastModified()))
-                .caveatorEmailAddress(notNullWrapper(caveatData.getCaveatorEmailAddress()))
-                .solsPaymentMethods(notNullWrapper(caveatData.getSolsPaymentMethods()))
-                .solsFeeAccountNumber(notNullWrapper(caveatData.getSolsFeeAccountNumber()))
-                .build();
+            .registryLocation(notNullWrapper(caveatData.getRegistryLocation()))
+            .solsSolicitorAppReference(notNullWrapper(caveatData.getSolsSolicitorAppReference()))
+            .applicationSubmittedDate(getCaseSubmissionDate(caveatCallbackRequest.getCaseDetails()
+                .getLastModified()))
+            .caveatorEmailAddress(notNullWrapper(caveatData.getCaveatorEmailAddress()))
+            .solsPaymentMethods(notNullWrapper(caveatData.getSolsPaymentMethods()))
+            .solsFeeAccountNumber(notNullWrapper(caveatData.getSolsFeeAccountNumber()))
+            .build();
     }
 
     private String notNullWrapper(String nullableString) {

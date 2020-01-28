@@ -82,6 +82,7 @@ public class DocumentTransformer {
             case CAVEAT_RAISED:
             case CAVEAT_EXTENDED:
                 caveatCallbackRequest.getCaseDetails().getData().getDocumentsGenerated().add(new CollectionMember<>(null, document));
+                break;
             case SENT_EMAIL:
                 caveatCallbackRequest.getCaseDetails().getData().getNotificationsGenerated()
                         .add(new CollectionMember<>(null, document));
