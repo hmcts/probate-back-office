@@ -79,13 +79,7 @@ public class DocumentTransformer {
     public void addDocument(CaveatCallbackRequest caveatCallbackRequest, Document document) {
         switch (document.getDocumentType()) {
             case CAVEAT_COVERSHEET:
-                caveatCallbackRequest.getCaseDetails().getData().getNotificationsGenerated()
-                    .add(new CollectionMember<>(null, document));
             case CAVEAT_RAISED:
-            case CAVEAT_EXTENDED:
-                caveatCallbackRequest.getCaseDetails().getData().getNotificationsGenerated()
-                    .add(new CollectionMember<>(null, document));
-                break;
             case SENT_EMAIL:
                 caveatCallbackRequest.getCaseDetails().getData().getNotificationsGenerated()
                         .add(new CollectionMember<>(null, document));
