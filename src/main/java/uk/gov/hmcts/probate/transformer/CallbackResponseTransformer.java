@@ -26,6 +26,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData.ResponseCase
 import uk.gov.hmcts.probate.model.exceptionrecord.CaseCreationDetails;
 import uk.gov.hmcts.probate.model.fee.FeeServiceResponse;
 import uk.gov.hmcts.probate.service.ExecutorsApplyingNotificationService;
+import uk.gov.hmcts.probate.service.GrantChangeService;
 import uk.gov.hmcts.probate.transformer.assembly.AssembleLetterTransformer;
 import uk.gov.hmcts.reform.probate.model.cases.RegistryLocation;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData;
@@ -63,7 +64,6 @@ import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
 import static uk.gov.hmcts.probate.model.DocumentType.SOT_INFORMATION_REQUEST;
 import static uk.gov.hmcts.probate.transformer.TransformerUtils.appendToBulkPrintCollection;
 import static uk.gov.hmcts.probate.transformer.TransformerUtils.buildBulkPrint;
-import static uk.gov.hmcts.probate.transformer.TransformerUtils.clearGrantSpecificData;
 import static uk.gov.hmcts.probate.transformer.TransformerUtils.getOtherExecutorExists;
 import static uk.gov.hmcts.probate.transformer.TransformerUtils.getPrimaryApplicantHasAlias;
 import static uk.gov.hmcts.probate.transformer.TransformerUtils.getSolsSOTName;
@@ -82,6 +82,7 @@ public class CallbackResponseTransformer {
     private final DocumentTransformer documentTransformer;
     private final AssembleLetterTransformer assembleLetterTransformer;
     private final ExecutorsApplyingNotificationService executorsApplyingNotificationService;
+    private final GrantChangeService grantChangeService;
 
     private static final DocumentType[] LEGAL_STATEMENTS = {LEGAL_STATEMENT_PROBATE, LEGAL_STATEMENT_INTESTACY,
         LEGAL_STATEMENT_ADMON};
@@ -111,7 +112,7 @@ public class CallbackResponseTransformer {
                 .state(newState.orElse(null));
 
         if (YES.equals(callbackRequest.getCaseDetails().getData().getSolsSOTNeedToUpdate()) && newState.isPresent()) {
-            responseCaseDataBuilder = clearGrantSpecificData(callbackRequest, responseCaseDataBuilder, newState.get());
+            responseCaseDataBuilder = grantChangeService.clearGrantSpecificData(callbackRequest, responseCaseDataBuilder, newState.get());
         }
 
         return transformResponse(responseCaseDataBuilder.build());

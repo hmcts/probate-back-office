@@ -5,6 +5,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -35,9 +36,11 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
+import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
 import uk.gov.hmcts.probate.model.exceptionrecord.CaseCreationDetails;
 import uk.gov.hmcts.probate.model.fee.FeeServiceResponse;
 import uk.gov.hmcts.probate.service.ExecutorsApplyingNotificationService;
+import uk.gov.hmcts.probate.service.GrantChangeService;
 import uk.gov.hmcts.probate.service.StateChangeService;
 import uk.gov.hmcts.probate.transformer.assembly.AssembleLetterTransformer;
 import uk.gov.hmcts.reform.probate.model.IhtFormType;
@@ -70,7 +73,10 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
 import static uk.gov.hmcts.probate.model.Constants.CTSC;
@@ -306,10 +312,22 @@ public class CallbackResponseTransformerTest {
     private CallbackResponseTransformer underTest;
 
     @Mock
+    private GrantChangeService grantChangeServiceMock;
+
+    @Mock
     private StateChangeService stateChangeServiceMock;
 
     @Mock
+    private ResponseCaseData responseCaseDataMock;
+
+    @Mock
+    private ResponseCaseData.ResponseCaseDataBuilder responseCaseDataBuilderMock;
+
+    @Mock
     private CallbackRequest callbackRequestMock;
+
+    @Mock
+    private CallbackResponse callbackResponseMock;
 
     @Mock
     private ExecutorsApplyingNotificationService executorsApplyingNotificationService;
@@ -547,6 +565,10 @@ public class CallbackResponseTransformerTest {
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        when(grantChangeServiceMock.clearGrantSpecificData(
+                ArgumentMatchers.any(CallbackRequest.class),
+                ArgumentMatchers.any(),
+                ArgumentMatchers.any(String.class))).thenReturn(responseCaseDataBuilderMock);
     }
 
     @Test
@@ -572,64 +594,39 @@ public class CallbackResponseTransformerTest {
 
     @Test
     public void shouldClearProbateGrantData() {
-        CaseData caseData = caseDataBuilder
+        CaseData caseData = CaseData.builder()
                 .solsSOTNeedToUpdate(YES)
                 .caseType(CASE_TYPE_GRANT_OF_PROBATE)
                 .build();
         when(caseDetailsMock.getData()).thenReturn(caseData);
 
         CallbackResponse callbackResponse = underTest.transformWithConditionalStateChange(callbackRequestMock, Optional.of(STATE_GRANT_TYPE_ADMON));
-
-        assertNull(callbackResponse.getData().getWillAccessOriginal());
-        assertNull(callbackResponse.getData().getWillHasCodicils());
-        assertNull(callbackResponse.getData().getWillNumberOfCodicils());
-        assertNull(callbackResponse.getData().getPrimaryApplicantHasAlias());
-        assertNull(callbackResponse.getData().getSolsExecutorAliasNames());
-        assertNull(callbackResponse.getData().getSolsPrimaryExecutorNotApplyingReason());
-        assertNull(callbackResponse.getData().getOtherExecutorExists());
-        assertNull(callbackResponse.getData().getSolsAdditionalExecutorList());
+        verify(grantChangeServiceMock).clearGrantSpecificData(eq(callbackRequestMock), ArgumentMatchers.any(ResponseCaseData.ResponseCaseDataBuilder.class), anyString());
     }
 
     @Test
     public void shouldClearIntestacyGrantData() {
-        CaseData caseData = caseDataBuilder
+        CaseData caseData = CaseData.builder()
                 .solsSOTNeedToUpdate(YES)
                 .caseType(CASE_TYPE_INTESTACY)
                 .build();
         when(caseDetailsMock.getData()).thenReturn(caseData);
 
         CallbackResponse callbackResponse = underTest.transformWithConditionalStateChange(callbackRequestMock, Optional.of(STATE_GRANT_TYPE_PROBATE));
-
-        assertNull(callbackResponse.getData().getSolsMinorityInterest());
-        assertNull(callbackResponse.getData().getSolsApplicantSiblings());
-        assertNull(callbackResponse.getData().getPrimaryApplicantPhoneNumber());
-        assertNull(callbackResponse.getData().getPrimaryApplicantEmailAddress());
-        assertNull(callbackResponse.getData().getDeceasedMaritalStatus());
-        assertNull(callbackResponse.getData().getSolsApplicantRelationshipToDeceased());
-        assertNull(callbackResponse.getData().getSolsSpouseOrCivilRenouncing());
-        assertNull(callbackResponse.getData().getSolsAdoptedEnglandOrWales());
+        verify(grantChangeServiceMock).clearGrantSpecificData(eq(callbackRequestMock), ArgumentMatchers.any(ResponseCaseData.ResponseCaseDataBuilder.class), anyString());
     }
 
     @Test
     public void shouldClearAdmonWillGrantData() {
-        CaseData caseData = caseDataBuilder
+        CaseData caseData = CaseData.builder()
                 .solsSOTNeedToUpdate(YES)
                 .caseType(CASE_TYPE_ADMON_WILL)
                 .build();
         when(caseDetailsMock.getData()).thenReturn(caseData);
 
         CallbackResponse callbackResponse = underTest.transformWithConditionalStateChange(callbackRequestMock, Optional.of(STATE_GRANT_TYPE_INTESTACY));
+        verify(grantChangeServiceMock).clearGrantSpecificData(eq(callbackRequestMock), ArgumentMatchers.any(ResponseCaseData.ResponseCaseDataBuilder.class), anyString());
 
-        assertNull(callbackResponse.getData().getWillAccessOriginal());
-        assertNull(callbackResponse.getData().getWillHasCodicils());
-        assertNull(callbackResponse.getData().getWillNumberOfCodicils());
-        assertNull(callbackResponse.getData().getSolsEntitledMinority());
-        assertNull(callbackResponse.getData().getSolsDiedOrNotApplying());
-        assertNull(callbackResponse.getData().getSolsResiduary());
-        assertNull(callbackResponse.getData().getSolsResiduaryType());
-        assertNull(callbackResponse.getData().getSolsLifeInterest());
-        assertNull(callbackResponse.getData().getPrimaryApplicantPhoneNumber());
-        assertNull(callbackResponse.getData().getPrimaryApplicantEmailAddress());
     }
 
     @Test
