@@ -271,6 +271,30 @@ public class CaveatNotificationServiceTest {
     }
 
     @Test
+    public void testCaveatExtendWithError() throws NotificationClientException {
+        caveatData = CaveatData.builder()
+            .caveatExtendEmailNotificationRequested("Yes")
+            .build();
+
+        documents.add(sentEmail);
+
+        responseCaveatData = ResponseCaveatData.builder()
+            .notificationsGenerated(DOCUMENTS_LIST)
+            .build();
+
+        caveatDetails = new CaveatDetails(caveatData, LAST_MODIFIED, ID);
+        caveatCallbackRequest = new CaveatCallbackRequest(caveatDetails);
+
+        caveatCallbackResponse = caveatCallbackResponse.builder().errors(new ArrayList<>(Arrays.asList("error1"))).build();
+        when(eventValidationService.validateCaveatRequest(any(CaveatCallbackRequest.class), any(List.class)))
+            .thenReturn(caveatCallbackResponse);
+
+        caveatNotificationService.caveatExtend(caveatCallbackRequest);
+
+        assertEquals(1, caveatCallbackResponse.getErrors().size());
+    }
+
+    @Test
     public void testCaveatExtendWithEmail() throws NotificationClientException {
         caveatData = CaveatData.builder()
             .caveatExtendEmailNotificationRequested("Yes")
