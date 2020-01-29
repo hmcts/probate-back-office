@@ -56,4 +56,23 @@ public class GrantOfRepresentationDocmosisMapperService {
                 ccdReferenceFormatterService.getFormattedCaseReference(caseDetails.getData().getBoCaseStopCaveatId()));
         return placeholders;
     }
+
+    public Map<String, Object> caseDataAsPlaceholders(CaseDetails caseDetails) {
+
+        Map<String, Object> placeholders = gms.addCaseDataWithRegistryProperties(caseDetails);
+
+        DateFormat generatedDateFormat = new SimpleDateFormat(DATE_INPUT_FORMAT);
+
+        placeholders.put(PERSONALISATION_CASE_REFERENCE,
+                ccdReferenceFormatterService.getFormattedCaseReference(caseDetails.getId().toString()));
+        placeholders.put(PERSONALISATION_GENERATED_DATE, generatedDateFormat.format(new Date()));
+        placeholders.put(PERSONALISATION_PA8AURL, "https://www.gov.uk/inherits-someone-dies-without-will|https://www.gov.uk/inherits-someone-dies-without-will");
+        placeholders.put(PERSONALISATION_PA8BURL, "https://www.citizensadvice.org.uk|https://www.citizensadvice.org.uk/");
+        placeholders.put(PERSONALISATION_CAVEATOR_NAME, caveatData.getCaveatorFullName());
+        placeholders.put(PERSONALISATION_CAVEATOR_ADDRESS, addressFormatterService.formatAddress(caveatData.getCaveatorAddress()));
+        placeholders.put(PERSONALISATION_CAVEAT_EXPIRY_DATE, dateFormatterService.formatCaveatExpiryDate(caveatData.getExpiryDate()));
+        placeholders.put(PERSONALISATION_CAVEAT_REFERENCE,
+                ccdReferenceFormatterService.getFormattedCaseReference(caseDetails.getData().getBoCaseStopCaveatId()));
+        return placeholders;
+    }
 }
