@@ -123,6 +123,7 @@ public class CaveatNotificationService {
             documents.add(caveatRaisedDoc);
             if (caveatCallbackRequest.getCaseDetails().getData().isSendForBulkPrintingRequested()) {
                 SendLetterResponse response = bulkPrintService.sendToBulkPrint(caveatCallbackRequest, caveatRaisedDoc, coversheet);
+                ///
                 letterId = response != null
                     ? response.letterId.toString()
                     : null;
@@ -130,6 +131,7 @@ public class CaveatNotificationService {
             }
         }
 
+        ///
         if (caveatCallbackResponse.getErrors().isEmpty()) {
             caveatCallbackResponse = caveatCallbackResponseTransformer.caveatExtendExpiry(caveatCallbackRequest, documents, letterId);
         }

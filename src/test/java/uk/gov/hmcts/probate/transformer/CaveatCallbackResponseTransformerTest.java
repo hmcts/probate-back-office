@@ -3,8 +3,6 @@ package uk.gov.hmcts.probate.transformer;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -36,8 +34,6 @@ import static java.util.Collections.emptyList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.Constants.CAVEAT_LIFESPAN;
 import static uk.gov.hmcts.probate.model.Constants.NO;
@@ -303,6 +299,22 @@ public class CaveatCallbackResponseTransformerTest {
     public void shouldConvertRequestToDataBeanWithCaveatExpiryWithNoDocuments() {
         List<Document> documents = new ArrayList<>();
         CaveatCallbackResponse caveatCallbackResponse = underTest.caveatExtendExpiry(caveatCallbackRequestMock, documents, null);
+
+        assertCommon(caveatCallbackResponse);
+
+        assertEquals(0, caveatCallbackResponse.getCaveatData().getNotificationsGenerated().size());
+    }
+
+    @Test
+    public void shouldConvertRequestToDataBeanWithCaveatExpiryWithNoCaveatExtendDocuments() {
+        List<Document> documents = new ArrayList<>();
+        Document document = Document.builder()
+            .documentLink(documentLinkMock)
+            .documentType(DocumentType.DIGITAL_GRANT)
+            .build();
+        documents.add(0, document);
+        String letterId = "123-456";
+        CaveatCallbackResponse caveatCallbackResponse = underTest.caveatExtendExpiry(caveatCallbackRequestMock, documents, letterId);
 
         assertCommon(caveatCallbackResponse);
 

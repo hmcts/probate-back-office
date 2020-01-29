@@ -99,4 +99,16 @@ public class CaveatDataTransformerTest {
         assertEquals("", caveatData.getSolsPaymentMethods());
         assertEquals("", caveatData.getSolsFeeAccountNumber());
     }
+
+    @Test
+    public void shouldTransformSolsCaveatsWithAllNullValues() {
+        CaveatData caveatData = underTest.transformSolsCaveats(callbackRequestMock);
+
+        assertEquals("", caveatData.getCaveatorEmailAddress());
+        assertEquals("", caveatData.getRegistryLocation());
+        assertEquals("", caveatData.getSolsSolicitorAppReference());
+        assertEquals(null, caveatData.getApplicationSubmittedDate());
+        assertEquals("", caveatData.getSolsPaymentMethods());
+        assertEquals("", caveatData.getSolsFeeAccountNumber());
+    }
 }

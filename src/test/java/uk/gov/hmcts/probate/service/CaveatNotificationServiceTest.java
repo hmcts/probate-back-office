@@ -381,11 +381,48 @@ public class CaveatNotificationServiceTest {
         when(eventValidationService.validateCaveatBulkPrintResponse(eq(sendLetterResponse.letterId.toString()), any(List.class)))
             .thenReturn(caveatCallbackResponse.builder().errors(new ArrayList<>()).build());
 
-        when(caveatCallbackResponseTransformer.caveatExtendExpiry(caveatCallbackRequest, documents, null)).thenReturn(caveatCallbackResponse);
+        when(caveatCallbackResponseTransformer.caveatExtendExpiry(caveatCallbackRequest, documents, sendLetterResponse.letterId.toString()))
+            .thenReturn(caveatCallbackResponse);
 
         caveatNotificationService.caveatExtend(caveatCallbackRequest);
 
         assertEquals(2, caveatCallbackResponse.getCaveatData().getNotificationsGenerated().size());
     }
 
+    @Test
+    public void testCaveatExtendWithNoEmailBulkPrintNullSendLetter() throws NotificationClientException {
+        caveatData = CaveatData.builder()
+            .caveatRaisedEmailNotificationRequested("No")
+            .sendToBulkPrintRequested("Yes")
+            .build();
+
+        responseCaveatData = ResponseCaveatData.builder()
+            .registryLocation("leeds")
+            .caveatorEmailAddress("test@test.com")
+            .deceasedForenames("name")
+            .deceasedSurname("name")
+            .caveatRaisedEmailNotificationRequested("Yes")
+            .notificationsGenerated(DOCUMENTS_LIST_CAVEAT_EXTENDED)
+            .build();
+
+
+        documents.add(coversheet);
+        documents.add(caveatExtended);
+
+        caveatCallbackResponse = CaveatCallbackResponse.builder().caveatData(responseCaveatData).build();
+        caveatDetails = new CaveatDetails(caveatData, LAST_MODIFIED, ID);
+        caveatCallbackRequest = new CaveatCallbackRequest(caveatDetails);
+        when(caveatDocmosisService.caseDataAsPlaceholders(caveatDetails)).thenReturn(placeholders);
+        when(pdfManagementService.generateDocmosisDocumentAndUpload(placeholders, CAVEAT_COVERSHEET)).thenReturn(coversheet);
+        when(pdfManagementService.generateDocmosisDocumentAndUpload(placeholders, CAVEAT_EXTENDED)).thenReturn(caveatExtended);
+        when(eventValidationService.validateCaveatBulkPrintResponse(eq(null), any(List.class)))
+            .thenReturn(caveatCallbackResponse.builder().errors(new ArrayList<>()).build());
+
+        when(caveatCallbackResponseTransformer.caveatExtendExpiry(caveatCallbackRequest, documents, null))
+            .thenReturn(caveatCallbackResponse);
+
+        caveatNotificationService.caveatExtend(caveatCallbackRequest);
+
+        assertEquals(2, caveatCallbackResponse.getCaveatData().getNotificationsGenerated().size());
+    }
 }
