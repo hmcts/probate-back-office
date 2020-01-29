@@ -218,6 +218,9 @@ public class CaveatControllerTest {
     public void shouldCaveatExpiryValidateExtend() throws Exception {
 
         String caveatPayload = testUtils.getStringFromFile("caveatPayloadNotifications.json");
+        DateTimeFormatter caveatExpiryDateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate newExpired = LocalDate.now().plusDays(1);
+        caveatPayload = caveatPayload.replace("2019-05-15", caveatExpiryDateFormatter.format(newExpired));
 
         mockMvc.perform(post("/caveat/validate-extend")
             .content(caveatPayload)

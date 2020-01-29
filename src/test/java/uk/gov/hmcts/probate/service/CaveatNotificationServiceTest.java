@@ -307,5 +307,25 @@ public class CaveatNotificationServiceTest {
         assertEquals(1, caveatCallbackResponse.getCaveatData().getNotificationsGenerated().size());
     }
 
+    @Test
+    public void testCaveatExtendWithNoEmail() throws NotificationClientException {
+        caveatData = CaveatData.builder()
+            .caveatRaisedEmailNotificationRequested("No")
+            .build();
+
+        documents.add(sentEmail);
+
+        responseCaveatData = ResponseCaveatData.builder()
+            .notificationsGenerated(DOCUMENTS_LIST)
+            .build();
+
+        caveatDetails = new CaveatDetails(caveatData, LAST_MODIFIED, ID);
+        caveatCallbackRequest = new CaveatCallbackRequest(caveatDetails);
+        when(caveatCallbackResponseTransformer.transformResponseWithNoChanges(caveatCallbackRequest)).thenReturn(caveatCallbackResponse);
+
+        CaveatCallbackResponse response = caveatNotificationService.caveatExtend(caveatCallbackRequest);
+
+        assertEquals(caveatCallbackResponse, response);
+    }
 
 }
