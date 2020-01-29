@@ -25,6 +25,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 import uk.gov.hmcts.probate.model.exceptionrecord.CaseCreationDetails;
 import uk.gov.hmcts.reform.probate.model.cases.Address;
+import uk.gov.hmcts.reform.probate.model.cases.RegistryLocation;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -33,6 +34,7 @@ import java.util.List;
 
 import static java.util.Collections.emptyList;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
@@ -48,6 +50,8 @@ public class CaveatCallbackResponseTransformerTest {
     private static final ApplicationType CAV_APPLICATION_TYPE = CaveatCallbackResponseTransformer.DEFAULT_APPLICATION_TYPE;
     private static final ApplicationType CAV_APPLICATION_TYPE_SOLS = ApplicationType.SOLICITOR;
     private static final String CAV_REGISTRY_LOCATION = CaveatCallbackResponseTransformer.DEFAULT_REGISTRY_LOCATION;
+    private static final RegistryLocation BULK_SCAN_CAV_REGISTRY_LOCATION
+            = CaveatCallbackResponseTransformer.EXCEPTION_RECORD_REGISTRY_LOCATION;
 
     private static final String CAV_EXCEPTION_RECORD_CASE_TYPE_ID = CaveatCallbackResponseTransformer.EXCEPTION_RECORD_CASE_TYPE_ID;
     private static final String CAV_EXCEPTION_RECORD_EVENT_ID = CaveatCallbackResponseTransformer.EXCEPTION_RECORD_EVENT_ID;
@@ -91,6 +95,7 @@ public class CaveatCallbackResponseTransformerTest {
     private static final String SOLS_PAYMENT_METHOD = "cheque";
     private static final String SOLS_FEE_ACC = "1234";
     private static final String CAV_SOLS_REGISTRY_LOCATION = "ctsc";
+    private static final String BULK_SCAN_REFERENCE = "BulkScanRef";
 
     @InjectMocks
     private CaveatCallbackResponseTransformer underTest;
@@ -144,6 +149,7 @@ public class CaveatCallbackResponseTransformerTest {
                 .solsFeeAccountNumber(SOLS_FEE_ACC);
 
         bulkScanCaveatData = uk.gov.hmcts.reform.probate.model.cases.caveat.CaveatData.builder()
+                .registryLocation(BULK_SCAN_CAV_REGISTRY_LOCATION)
                 .deceasedForenames(CAV_DECEASED_FORENAMES)
                 .deceasedSurname(CAV_DECEASED_SURNAME)
                 .deceasedDateOfDeath(CAV_DECEASED_DOD)
@@ -155,6 +161,7 @@ public class CaveatCallbackResponseTransformerTest {
                 .caveatorEmailAddress(CAV_CAVEATOR_EMAIL_ADDRESS)
                 .caveatorAddress(CAV_BSP_CAVEATOR_ADDRESS)
                 .applicationSubmittedDate(CAV_SUBMISSION_DATE)
+                .bulkScanCaseReference(BULK_SCAN_REFERENCE)
                 .build();
 
         when(caveatCallbackRequestMock.getCaseDetails()).thenReturn(caveatDetailsMock);
@@ -272,30 +279,35 @@ public class CaveatCallbackResponseTransformerTest {
 
     @Test
     public void bulkScanCaveatTransform() {
-        CaseCreationDetails caveatDetails = underTest.newCaveatCaseTransform(bulkScanCaveatData);
-        assertCaseCreationDetails(caveatDetails);
+        CaseCreationDetails caveatDetails = underTest.bulkScanCaveatCaseTransform(bulkScanCaveatData);
+        assertBulkScanCaseCreationDetails(caveatDetails);
     }
 
-    private void assertCaseCreationDetails(CaseCreationDetails caveatCreationDetails) {
+    private void assertBulkScanCaseCreationDetails(CaseCreationDetails caveatCreationDetails) {
         uk.gov.hmcts.reform.probate.model.cases.caveat.CaveatData caveatData =
                 (uk.gov.hmcts.reform.probate.model.cases.caveat.CaveatData) caveatCreationDetails.getCaseData();
         assertEquals(CAV_EXCEPTION_RECORD_EVENT_ID, caveatCreationDetails.getEventId());
         assertEquals(CAV_EXCEPTION_RECORD_CASE_TYPE_ID, caveatCreationDetails.getCaseTypeId());
-
-        assertEquals(CAV_REGISTRY_LOCATION, caveatData.getRegistryLocation().getName());
+        assertEquals(BULK_SCAN_CAV_REGISTRY_LOCATION.name(), caveatData.getRegistryLocation().name());
         assertEquals(CAV_APPLICATION_TYPE.name(), caveatData.getApplicationType().getName().toUpperCase());
         assertEquals(DATE_SUBMITTED.toString(), caveatData.getApplicationSubmittedDate().toString());
-        assertEquals(true, caveatData.getPaperForm());
 
+        assertEquals(true, caveatData.getPaperForm());
         assertEquals(CAV_DECEASED_FORENAMES, caveatData.getDeceasedForenames());
         assertEquals(CAV_DECEASED_SURNAME, caveatData.getDeceasedSurname());
         assertEquals(CAV_BSP_DECEASED_ADDRESS, caveatData.getDeceasedAddress());
         assertEquals(CAV_DECEASED_DOD, caveatData.getDeceasedDateOfDeath());
         assertEquals(CAV_DECEASED_DOB, caveatData.getDeceasedDateOfBirth());
-        assertEquals(false, caveatData.getDeceasedAnyOtherNames());
+
         assertEquals(CAV_BSP_CAVEATOR_ADDRESS, caveatData.getCaveatorAddress());
+        assertEquals(CAV_CAVEATOR_EMAIL_ADDRESS, caveatData.getCaveatorEmailAddress());
         assertEquals(CAV_CAVEATOR_FORENAMES, caveatData.getCaveatorForenames());
         assertEquals(CAV_CAVEATOR_SURNAME, caveatData.getCaveatorSurname());
+        assertEquals(BULK_SCAN_REFERENCE, caveatData.getBulkScanCaseReference());
+
+        assertFalse(caveatData.getDeceasedAnyOtherNames());
+        assertTrue(caveatData.getCaveatRaisedEmailNotificationRequested());
+        assertFalse(caveatData.getSendToBulkPrintRequested());
     }
 
     private void assertCommon(CaveatCallbackResponse caveatCallbackResponse) {

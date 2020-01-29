@@ -13,6 +13,7 @@ import uk.gov.hmcts.probate.exception.InvalidEmailException;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ExecutorsApplyingNotification;
+import uk.gov.hmcts.probate.model.LanguagePreference;
 import uk.gov.hmcts.probate.model.SentEmail;
 import uk.gov.hmcts.probate.model.State;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
@@ -30,6 +31,7 @@ import uk.gov.hmcts.probate.service.notification.SentEmailPersonalisationService
 import uk.gov.hmcts.probate.service.notification.TemplateService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.validator.EmailAddressNotificationValidationRule;
+import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.authorisation.generators.ServiceAuthTokenGenerator;
 import uk.gov.service.notify.NotificationClient;
 import uk.gov.service.notify.NotificationClientException;
@@ -66,7 +68,7 @@ public class NotificationService {
     private final CaveatPersonalisationService caveatPersonalisationService;
     private final SentEmailPersonalisationService sentEmailPersonalisationService;
     private final TemplateService templateService;
-    private final ServiceAuthTokenGenerator tokenGenerator;
+    private final AuthTokenGenerator serviceAuthTokenGenerator;
     private final DocumentStoreClient documentStoreClient;
 
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMM Y HH:mm");
@@ -81,8 +83,8 @@ public class NotificationService {
 
         CaseData caseData = caseDetails.getData();
         Registry registry = registriesProperties.getRegistries().get(caseData.getRegistryLocation().toLowerCase());
-
-        String templateId = templateService.getTemplateId(state, caseData.getApplicationType(), caseData.getRegistryLocation());
+        String templateId = templateService.getTemplateId(state, caseData.getApplicationType(),
+                caseData.getRegistryLocation(), caseData.getLanguagePreference());
         String emailReplyToId = registry.getEmailReplyToId();
         String emailAddress = getEmail(caseData);
         Map<String, Object> personalisation = grantOfRepresentationPersonalisationService.getPersonalisation(caseDetails,
@@ -108,7 +110,8 @@ public class NotificationService {
         CaseData caseData = caseDetails.getData();
         Registry registry = registriesProperties.getRegistries().get(caseData.getRegistryLocation().toLowerCase());
 
-        String templateId = templateService.getTemplateId(state, caseData.getApplicationType(), caseData.getRegistryLocation());
+        String templateId = templateService.getTemplateId(state, caseData.getApplicationType()
+                , caseData.getRegistryLocation(), caseData.getLanguagePreference());
         String emailAddress = executor.getEmail();
         Map<String, Object> personalisation = grantOfRepresentationPersonalisationService.getPersonalisation(caseDetails,
                 registry);
@@ -129,7 +132,8 @@ public class NotificationService {
         CaveatData caveatData = caveatDetails.getData();
         Registry registry = registriesProperties.getRegistries().get(caveatData.getRegistryLocation().toLowerCase());
 
-        String templateId = templateService.getTemplateId(state, caveatData.getApplicationType(), caveatData.getRegistryLocation());
+        String templateId = templateService.getTemplateId(state, caveatData.getApplicationType()
+                , caveatData.getRegistryLocation() , caveatData.getLanguagePreference()) ;
         String emailAddress = caveatData.getCaveatorEmailAddress();
         Map<String, String> personalisation;
 
@@ -165,7 +169,7 @@ public class NotificationService {
 
     public Document sendExcelaEmail(List<ReturnedCaseDetails> caseDetails) throws
             NotificationClientException {
-        String templateId = notificationTemplates.getEmail().get(caseDetails.get(0).getData().getApplicationType())
+        String templateId = notificationTemplates.getEmail().get(LanguagePreference.ENGLISH).get(caseDetails.get(0).getData().getApplicationType())
                 .getExcelaData();
         Map<String, String> personalisation = grantOfRepresentationPersonalisationService.getExcelaPersonalisation(caseDetails);
         String reference = LocalDateTime.now().format(EXCELA_DATE);
@@ -180,15 +184,16 @@ public class NotificationService {
 
     public Document sendEmailWithDocumentAttached(CaseDetails caseDetails, ExecutorsApplyingNotification executor,
                                                   State state) throws NotificationClientException, IOException {
-        String authHeader = tokenGenerator.generate();
+        String authHeader = serviceAuthTokenGenerator.generate();
         byte[] sotDocument = documentStoreClient.retrieveDocument(caseDetails.getData()
                 .getProbateSotDocumentsGenerated()
                 .get(caseDetails.getData().getProbateSotDocumentsGenerated().size() - 1).getValue(), authHeader);
 
         Registry registry = registriesProperties.getRegistries().get(caseDetails.getData().getRegistryLocation().toLowerCase());
 
-        String templateId = templateService.getTemplateId(state,
-                caseDetails.getData().getApplicationType(), caseDetails.getData().getRegistryLocation());
+        String templateId = templateService.getTemplateId(state, caseDetails.getData().getApplicationType()
+                ,caseDetails.getData().getRegistryLocation()
+                ,caseDetails.getData().getLanguagePreference());
         String emailReplyToId = registry.getEmailReplyToId();
 
         Map<String, Object> personalisation =

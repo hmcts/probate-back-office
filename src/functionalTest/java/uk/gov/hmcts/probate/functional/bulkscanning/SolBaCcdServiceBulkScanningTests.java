@@ -67,16 +67,36 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
     public void testTransformPA8AReturnSuccessfulJSON() {
         String currentDate = LocalDate.now().format(CaveatCallbackResponseTransformer.dateTimeFormatter);
         String applicationSubmittedDate = "\"applicationSubmittedDate\":\"" + currentDate + "\"";
-        jsonRequest = utils.getJsonFromFile("caveatTransformExceptionRecord.json");
-        jsonResponse = utils.getJsonFromFile("expectedCaveatTransformExceptionRecordOutput.json");
+        jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordPA8A.json");
+        jsonResponse = utils.getJsonFromFile("expectedBulkScanTransformExceptionRecordOutputPA8A.json");
+        jsonResponse = jsonResponse.replaceAll("\"applicationSubmittedDate\":\"[0-9-]+\"", applicationSubmittedDate);
+        transformExceptionPostSuccess(jsonRequest, jsonResponse);
+    }
+
+    @Test
+    public void testTransformPA1PReturnSuccessfulJSON() {
+        String currentDate = LocalDate.now().format(CaveatCallbackResponseTransformer.dateTimeFormatter);
+        String applicationSubmittedDate = "\"applicationSubmittedDate\":\"" + currentDate + "\"";
+        jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordPA1P.json");
+        jsonResponse = utils.getJsonFromFile("expectedBulkScanTransformExceptionRecordOutputPA1P.json");
+        jsonResponse = jsonResponse.replaceAll("\"applicationSubmittedDate\":\"[0-9-]+\"", applicationSubmittedDate);
+        transformExceptionPostSuccess(jsonRequest, jsonResponse);
+    }
+
+    @Test
+    public void testTransformPA1AReturnSuccessfulJSON() {
+        String currentDate = LocalDate.now().format(CaveatCallbackResponseTransformer.dateTimeFormatter);
+        String applicationSubmittedDate = "\"applicationSubmittedDate\":\"" + currentDate + "\"";
+        jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordPA1A.json");
+        jsonResponse = utils.getJsonFromFile("expectedBulkScanTransformExceptionRecordOutputPA1A.json");
         jsonResponse = jsonResponse.replaceAll("\"applicationSubmittedDate\":\"[0-9-]+\"", applicationSubmittedDate);
         transformExceptionPostSuccess(jsonRequest, jsonResponse);
     }
 
     @Test
     public void testTransformPA8AReturnTransformErrorJSON() {
-        jsonRequest = utils.getJsonFromFile("caveatTransformExceptionRecordError.json");
-        jsonResponse = utils.getJsonFromFile("expectedCaveatTransformExceptionRecordOutputError.json");
+        jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordError.json");
+        jsonResponse = utils.getJsonFromFile("expectedBulkScanTransformExceptionRecordOutputError.json");
         transformExceptionPostSuccess(jsonRequest, jsonResponse);
     }
 }
