@@ -83,10 +83,12 @@ public class CaseQueryService {
         try {
             tokenHeaders = headers.getAuthorizationHeaders();
         } catch (Exception e) {
-            log.info("CaseQueryService Exception: " + e.getStackTrace());
+            log.info("CaseQueryService Exception: " + e.getMessage());
             tokenHeaders = new HttpHeaders();
             tokenHeaders.add(SERVICE_AUTH, "Bearer " + serviceAuthTokenGenerator.generate());
+            log.info("DONE serviceAuthTokenGenerator.generate()");
             tokenHeaders.add(AUTHORIZATION, idamAuthenticateUserService.getIdamOauth2Token());
+            log.info("DONE idamAuthenticateUserService.getIdamOauth2Token()");
             tokenHeaders.setContentType(MediaType.APPLICATION_JSON);
         } finally {
             entity = new HttpEntity<>(jsonQuery, tokenHeaders);
