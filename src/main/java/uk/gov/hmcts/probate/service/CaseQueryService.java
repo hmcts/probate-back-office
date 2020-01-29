@@ -94,9 +94,11 @@ public class CaseQueryService {
 
         ReturnedCases returnedCases;
         try {
+            log.info("Posting object for CaseQueryService...");
             returnedCases = restTemplate.postForObject(uri, entity, ReturnedCases.class);
-            log.info("Posted object for CaseQueryService");
+            log.info("...Posted object for CaseQueryService");
         } catch (HttpClientErrorException e) {
+            log.error("CaseMatchingException on CaseQueryService, message="+e.getMessage());
             appInsights.trackEvent(REST_CLIENT_EXCEPTION, e.getMessage());
             throw new CaseMatchingException(e.getStatusCode(), e.getMessage());
         }
