@@ -18,7 +18,6 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "caveatorEmailAddress", "Label": "Email address", "HintText": "If applying through a solicitor, provide the solicitor's email instead", "FieldType": "Text", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "caveatorAddress", "Label": "Address - (If applying through a solicitor, provide the solicitor's firm name and address instead)", "FieldType": "AddressUK", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "expiryDate", "Label": "Caveat expiry date", "FieldType": "Date", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "caveatExtendEmailNotificationRequested", "Label": "Do you wish to send an email notification for caveat extended?", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "messageContent", "Label": "Message content", "FieldType": "TextArea", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "caveatReopenReason", "Label": "What is the reason for re-opening this Caveat?", "FieldType": "TextArea", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "documentsUploaded", "Label": "Documents uploaded", "FieldType": "Collection", "FieldTypeParameter": "cavDocumentUpload", "SecurityClassification": "Public"},

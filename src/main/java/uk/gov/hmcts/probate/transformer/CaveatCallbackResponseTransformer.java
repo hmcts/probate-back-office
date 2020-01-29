@@ -89,7 +89,6 @@ public class CaveatCallbackResponseTransformer {
 
         ResponseCaveatData responseCaveatData = getResponseCaveatData(caveatDetails)
                 .caveatRaisedEmailNotificationRequested(caveatCallbackRequest.getCaseDetails().getData().getCaveatRaisedEmailNotification())
-                .caveatExtendEmailNotificationRequested(caveatCallbackRequest.getCaseDetails().getData().getCaveatExtendEmailNotification())
                 .sendToBulkPrintRequested(caveatCallbackRequest.getCaseDetails().getData().getSendToBulkPrint())
                 .build();
 
@@ -139,7 +138,7 @@ public class CaveatCallbackResponseTransformer {
 
         String defaultExpiry = dateTimeFormatter.format(caveatCallbackRequest.getCaseDetails().getData().getExpiryDate().plusMonths(6));
         return transformResponse(responseCaseDataBuilder.expiryDate(defaultExpiry)
-            .caveatExtendEmailNotificationRequested(caveatCallbackRequest.getCaseDetails().getData().getCaveatExtendEmailNotification())
+            .caveatRaisedEmailNotification(caveatCallbackRequest.getCaseDetails().getData().getCaveatRaisedEmailNotification())
             .build());
     }
 
@@ -197,7 +196,6 @@ public class CaveatCallbackResponseTransformer {
                 .legacyType(caveatData.getLegacyType())
                 .sendToBulkPrintRequested(caveatData.getSendToBulkPrintRequested())
                 .caveatRaisedEmailNotificationRequested(caveatData.getCaveatRaisedEmailNotificationRequested())
-                .caveatExtendEmailNotificationRequested(caveatData.getCaveatExtendEmailNotificationRequested())
                 .bulkPrintId(caveatData.getBulkPrintId())
                 .bulkScanCaseReference((caveatData.getBulkScanCaseReference()))
                 .applicationSubmittedDate(transformToString(caveatData.getApplicationSubmittedDate()));

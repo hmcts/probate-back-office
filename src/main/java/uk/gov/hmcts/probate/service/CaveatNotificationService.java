@@ -53,7 +53,7 @@ public class CaveatNotificationService {
         CaveatDetails caveatDetails = caveatCallbackRequest.getCaseDetails();
         setCaveatExpiryDate(caveatDetails.getData());
 
-        if (caveatDetails.getData().isCaveatRaisedEmailNotificationRequested()) {
+        if (caveatDetails.getData().isCaveatEmailNotificationRequested()) {
             caveatCallbackResponse = eventValidationService.validateCaveatRequest(caveatCallbackRequest, emailValidationRuleCaveats);
             if (caveatCallbackResponse.getErrors().isEmpty()) {
                 document = notificationService.sendCaveatEmail(CAVEAT_RAISED, caveatDetails);
@@ -103,7 +103,7 @@ public class CaveatNotificationService {
     public CaveatCallbackResponse caveatExtend(CaveatCallbackRequest caveatCallbackRequest)
         throws NotificationClientException {
         CaveatCallbackResponse response = null;
-        if (caveatCallbackRequest.getCaseDetails().getData().isCaveatExtendEmailNotificationRequested()) {
+        if (caveatCallbackRequest.getCaseDetails().getData().isCaveatEmailNotificationRequested()) {
             response = eventValidationService.validateCaveatRequest(caveatCallbackRequest, emailValidationRuleCaveats);
             if (response.getErrors().isEmpty()) {
                 Document document = notificationService.sendCaveatEmail(CAVEAT_EXTEND, caveatCallbackRequest.getCaseDetails());
