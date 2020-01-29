@@ -261,42 +261,13 @@ public class CaveatControllerTest {
     }
 
     @Test
-    public void shouldCaveatExpiryExtendErrors() throws Exception {
-
-        String caveatPayload = testUtils.getStringFromFile("caveatPayloadNotificationsNoEmail.json");
-
-        mockMvc.perform(post("/caveat/extend")
-            .content(caveatPayload)
-            .contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.errors[0]")
-                .value("There is no email address for this caveator. Add an email address or contact them by post."))
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
-    }
-
-    @Test
-    public void shouldCaveatExpiryExtendForRequested() throws Exception {
+    public void shouldCaveatExpiryExtend() throws Exception {
 
         String caveatPayload = testUtils.getStringFromFile("caveatPayloadNotifications.json");
 
         mockMvc.perform(post("/caveat/extend")
             .content(caveatPayload)
             .contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk())
-            .andExpect(content().string(containsString("data")));
-        verify(notificationService).sendCaveatEmail(any(State.class), any(CaveatDetails.class));
-    }
-    
-    @Test
-    public void shouldCaveatExpiryExtendForNotRequested() throws Exception {
-
-        String caveatPayload = testUtils.getStringFromFile("caveatPayloadNotificationsExtendNotRequested.json");
-
-        mockMvc.perform(post("/caveat/extend")
-            .content(caveatPayload)
-            .contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk())
-            .andExpect(content().string(containsString("data")));
-        verify(notificationService, times(0)).sendCaveatEmail(any(State.class), any(CaveatDetails.class));
+            .andExpect(status().isOk());
     }
 }

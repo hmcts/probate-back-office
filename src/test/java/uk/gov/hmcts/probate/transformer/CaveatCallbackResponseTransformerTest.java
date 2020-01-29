@@ -283,6 +283,48 @@ public class CaveatCallbackResponseTransformerTest {
         assertBulkScanCaseCreationDetails(caveatDetails);
     }
 
+    @Test
+    public void shouldConvertRequestToDataBeanWithCaveatExpiry() {
+        List<Document> documents = new ArrayList<>();
+        Document document = Document.builder()
+            .documentLink(documentLinkMock)
+            .documentType(DocumentType.CAVEAT_EXTENDED)
+            .build();
+        documents.add(0, document);
+        String letterId = "123-456";
+        CaveatCallbackResponse caveatCallbackResponse = underTest.caveatExtendExpiry(caveatCallbackRequestMock, documents, letterId);
+
+        assertCommon(caveatCallbackResponse);
+
+        assertEquals(1, caveatCallbackResponse.getCaveatData().getNotificationsGenerated().size());
+    }
+
+    @Test
+    public void shouldConvertRequestToDataBeanWithCaveatExpiryWithNoDocuments() {
+        List<Document> documents = new ArrayList<>();
+        CaveatCallbackResponse caveatCallbackResponse = underTest.caveatExtendExpiry(caveatCallbackRequestMock, documents, null);
+
+        assertCommon(caveatCallbackResponse);
+
+        assertEquals(0, caveatCallbackResponse.getCaveatData().getNotificationsGenerated().size());
+    }
+
+    @Test
+    public void shouldConvertRequestToDataBeanWithCaveatExpiryWithNoCaveatExtendDocuments() {
+        List<Document> documents = new ArrayList<>();
+        Document document = Document.builder()
+            .documentLink(documentLinkMock)
+            .documentType(DocumentType.DIGITAL_GRANT)
+            .build();
+        documents.add(0, document);
+        String letterId = "123-456";
+        CaveatCallbackResponse caveatCallbackResponse = underTest.caveatExtendExpiry(caveatCallbackRequestMock, documents, letterId);
+
+        assertCommon(caveatCallbackResponse);
+
+        assertEquals(0, caveatCallbackResponse.getCaveatData().getNotificationsGenerated().size());
+    }
+
     private void assertBulkScanCaseCreationDetails(CaseCreationDetails caveatCreationDetails) {
         uk.gov.hmcts.reform.probate.model.cases.caveat.CaveatData caveatData =
                 (uk.gov.hmcts.reform.probate.model.cases.caveat.CaveatData) caveatCreationDetails.getCaseData();
