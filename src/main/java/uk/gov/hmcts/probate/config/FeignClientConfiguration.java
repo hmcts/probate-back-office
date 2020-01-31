@@ -51,11 +51,4 @@ public class FeignClientConfiguration {
                 .setDefaultRequestConfig(config)
                 .build();
     }
-
-    @Bean
-    @Primary
-    Decoder feignDecoder(ObjectMapper objectMapper) {
-        return new JacksonDecoder(objectMapper);
-    }
-
 }
