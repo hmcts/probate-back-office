@@ -54,24 +54,28 @@ public class IdamAuthenticateUserService {
         log.info("id:" + id);
         log.info("redirect:" + redirect);
 
-        AuthenticateUserResponse authenticateUserResponse = idamApi.authenticateUser(
+        try {
+            AuthenticateUserResponse authenticateUserResponse = idamApi.authenticateUser(
                 BASIC + base64Authorisation,
                 CODE,
                 id,
                 redirect
-        );
-        log.info("authenticateUserResponse.code" + authenticateUserResponse.getCode());
+            );
+            log.info("authenticateUserResponse.code" + authenticateUserResponse.getCode());
 
-        TokenExchangeResponse tokenExchangeResponse = idamApi.exchangeCode(
+            TokenExchangeResponse tokenExchangeResponse = idamApi.exchangeCode(
                 authenticateUserResponse.getCode(),
                 AUTHORIZATION_CODE,
                 redirect,
                 id,
                 secret
-        );
-
-        log.info("tokenExchangeResponse.getAccessToken" + tokenExchangeResponse.getAccessToken());
-        return BEARER + tokenExchangeResponse.getAccessToken();
+            );
+            log.info("tokenExchangeResponse.getAccessToken" + tokenExchangeResponse.getAccessToken());
+            return BEARER + tokenExchangeResponse.getAccessToken();
+        } catch (Exception e) {
+            log.error("Exception" + e.getMessage());
+            throw e;
+        }
     }
 
 }
