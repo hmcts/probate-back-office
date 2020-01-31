@@ -962,9 +962,15 @@ public class CallbackResponseTransformer {
         }
 
         if (CollectionUtils.isEmpty(caseData.getSolsAdditionalExecutorList())) {
-            builder
-                    .additionalExecutorsApplying(EMPTY_LIST)
-                    .additionalExecutorsNotApplying(EMPTY_LIST);
+            if (YES.equals(caseData.getSolsSolicitorIsExec())) {
+                builder
+                        .additionalExecutorsApplying(caseData.getAdditionalExecutorsApplying())
+                        .additionalExecutorsNotApplying(caseData.getAdditionalExecutorsNotApplying());
+            } else {
+                builder
+                        .additionalExecutorsApplying(EMPTY_LIST)
+                        .additionalExecutorsNotApplying(EMPTY_LIST);
+            }
         } else {
             List<CollectionMember<AdditionalExecutorApplying>> applyingExec = caseData.getSolsAdditionalExecutorList()
                     .stream()
