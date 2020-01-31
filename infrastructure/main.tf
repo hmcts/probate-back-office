@@ -120,6 +120,20 @@ data "azurerm_key_vault_secret" "idamSecretProbate" {
   key_vault_id = "${data.azurerm_key_vault.probate_key_vault.id}"
 }
 
+data "azurerm_key_vault_secret" "cornKeyExela" {
+  name = "cornKeyExela"
+  key_vault_id = "${data.azurerm_key_vault.probate_key_vault.id}"
+}
+
+data "azurerm_key_vault_secret" "cornKeyIron" {
+  name = "cornKeyIron"
+  key_vault_id = "${data.azurerm_key_vault.probate_key_vault.id}"
+}
+
+data "azurerm_key_vault_secret" "cornKeyHmrc" {
+  name = "cornKeyHmrc"
+  key_vault_id = "${data.azurerm_key_vault.probate_key_vault.id}"
+}
 
 module "probate-back-office" {
   source = "git@github.com:hmcts/cnp-module-webapp?ref=master"
@@ -179,6 +193,9 @@ module "probate-back-office" {
     IDAM_REDIRECT_URL = "${data.azurerm_key_vault_secret.idamRedirectUrl.value}"
     IDAM_SECRET = "${data.azurerm_key_vault_secret.idamSecretProbate.value}"
     IDAM_CLIENT_NAME = "probate"
+    CRON_KEY_EXELA = "${data.azurerm_key_vault_secret.cornKeyExela.value}"
+    CRON_KEY_IRON = "${data.azurerm_key_vault_secret.cornKeyIron.value}"
+    CRON_KEY_HMRC = "${data.azurerm_key_vault_secret.cornKeyHmrc.value}"    
     TESTING = "Testing"  // to upate the app setting
   }
 }
