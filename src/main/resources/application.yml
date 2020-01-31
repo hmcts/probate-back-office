@@ -32,7 +32,7 @@ auth.provider.client:
   user: ${IDAM_SERVICE_HOST:http://localhost:4501}
   secret: ${IDAM_SECRET:ccd_gateway_secret}
   id: ${IDAM_CLIENT_NAME:ccd_gateway}
-  redirect: https://probate-frontend-aat.service.core-compute-aat.internal/oauth2/callback
+  redirect: ${IDAM_REDIRECT_URL:http://localhost:3451/oauth2redirect}
   email: ${AUTH_TOKEN_EMAIL:probatesolcw1@gmail.com}
   password: ${AUTH_TOKEN_PASSWORD:Pa55word11}
 
