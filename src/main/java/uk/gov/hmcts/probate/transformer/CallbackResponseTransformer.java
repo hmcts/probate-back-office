@@ -775,10 +775,15 @@ public class CallbackResponseTransformer {
                         .primaryApplicantAlias(NO)
                         .primaryApplicantHasAlias(NO)
                         .primaryApplicantIsApplying(YES)
-                        .solsPrimaryExecutorNotApplyingReason(caseData.getSolsSolicitorNotApplyingReason());
+                        .solsPrimaryExecutorNotApplyingReason(null)
+                        .solsSolicitorNotApplyingReason(null)
+                        .solsSolicitorIsApplying(YES);
             }
         } else {
             builder
+                    .solsSolicitorIsMainApplicant(null)
+                    .solsSolicitorIsApplying(null)
+                    .solsSolicitorNotApplyingReason(null)
                     .primaryApplicantIsApplying(YES)
                     .primaryApplicantAlias(caseData.getPrimaryApplicantAlias());
         }
@@ -933,10 +938,15 @@ public class CallbackResponseTransformer {
                         .primaryApplicantAlias(NO)
                         .primaryApplicantHasAlias(NO)
                         .primaryApplicantIsApplying(YES)
-                        .solsPrimaryExecutorNotApplyingReason(caseData.getSolsSolicitorNotApplyingReason());
+                        .solsPrimaryExecutorNotApplyingReason(null)
+                        .solsSolicitorNotApplyingReason(null)
+                        .solsSolicitorIsApplying(YES);
             }
         } else {
             builder
+                    .solsSolicitorIsMainApplicant(null)
+                    .solsSolicitorIsApplying(null)
+                    .solsSolicitorNotApplyingReason(null)
                     .primaryApplicantIsApplying(YES)
                     .primaryApplicantAlias(caseData.getPrimaryApplicantAlias());
         }
