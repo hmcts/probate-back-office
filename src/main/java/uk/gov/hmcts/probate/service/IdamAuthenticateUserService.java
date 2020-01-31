@@ -40,7 +40,7 @@ public class IdamAuthenticateUserService {
 
     @Autowired
     public IdamAuthenticateUserService(
-            IdamApi idamApi
+        IdamApi idamApi
     ) {
         this.idamApi = idamApi;
     }
@@ -49,33 +49,22 @@ public class IdamAuthenticateUserService {
         String authorisation = email + ":" + password;
         log.info(email + ":" + password);
         String base64Authorisation = Base64.getEncoder().encodeToString(authorisation.getBytes());
-        log.info("base64Authorisation:" + base64Authorisation);
-        log.info("CODE:" + CODE);
-        log.info("id:" + id);
-        log.info("redirect:" + redirect);
 
-        try {
-            AuthenticateUserResponse authenticateUserResponse = idamApi.authenticateUser(
-                BASIC + base64Authorisation,
-                CODE,
-                id,
-                redirect
-            );
-            log.info("authenticateUserResponse.code" + authenticateUserResponse.getCode());
+        AuthenticateUserResponse authenticateUserResponse = idamApi.authenticateUser(
+            BASIC + base64Authorisation,
+            CODE,
+            id,
+            redirect
+        );
 
-            TokenExchangeResponse tokenExchangeResponse = idamApi.exchangeCode(
-                authenticateUserResponse.getCode(),
-                AUTHORIZATION_CODE,
-                redirect,
-                id,
-                secret
-            );
-            log.info("tokenExchangeResponse.getAccessToken" + tokenExchangeResponse.getAccessToken());
-            return BEARER + tokenExchangeResponse.getAccessToken();
-        } catch (Exception e) {
-            log.error("Exception" + e.getMessage());
-            throw e;
-        }
+        TokenExchangeResponse tokenExchangeResponse = idamApi.exchangeCode(
+            authenticateUserResponse.getCode(),
+            AUTHORIZATION_CODE,
+            redirect,
+            id,
+            secret
+        );
+        return BEARER + tokenExchangeResponse.getAccessToken();
     }
 
 }

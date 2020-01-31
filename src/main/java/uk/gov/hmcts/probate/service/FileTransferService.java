@@ -14,12 +14,12 @@ import java.nio.file.Files;
 public class FileTransferService {
 
     private final FileTransferApi fileTransferApi;
-    private static final String VALID_FROM = "2018-03-28";
+    private static final String VALID_FROM = "2019-02-02";
     private static final String SS = "b";
     private static final String SRT = "sco";
     private static final String SP = "rwdlac";
-    private static final String SIG_EXPIRY_DATE = "3019-04-15T22:49:23Z";
-    private static final String SIG_CREATION_DATE = "2019-04-15T14:49:23Z";
+    private static final String SIG_EXPIRY_DATE = "2029-01-31T20:35:04Z";
+    private static final String SIG_CREATION_DATE = "2020-01-31T12:35:04Z";
     private static final String SPR = "https";
 
     @Value("${ftp.client.signature}")
