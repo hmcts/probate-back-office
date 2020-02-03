@@ -38,6 +38,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.model.exceptionrecord.CaseCreationDetails;
 import uk.gov.hmcts.probate.model.fee.FeeServiceResponse;
 import uk.gov.hmcts.probate.service.ExecutorsApplyingNotificationService;
+import uk.gov.hmcts.probate.service.SolicitorExecutorService;
 import uk.gov.hmcts.probate.service.StateChangeService;
 import uk.gov.hmcts.probate.transformer.assembly.AssembleLetterTransformer;
 import uk.gov.hmcts.reform.probate.model.IhtFormType;
@@ -70,6 +71,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
@@ -123,6 +126,7 @@ public class CallbackResponseTransformerTest {
     private static final String SOLICITOR_FIRM_PHONE = "0123456789";
     private static final String SOLICITOR_SOT_FORENAME = "Andy Middlename";
     private static final String SOLICITOR_SOT_SURNAME = "Test";
+    private static final String SOLICITOR_SOT_NAME = "Andy Middlename Test";
     private static final String SOLICITOR_SOT_JOB_TITLE = "Lawyer";
     private static final String SOLICITOR_SOT_NOT_APPLYING_REASON = "Power reserved";
 
@@ -298,11 +302,22 @@ public class CallbackResponseTransformerTest {
                             .notification(YES)
                             .build()));
 
+    private static final AdditionalExecutorApplying ADDITIONAL_EXECUTOR_APPLYING = AdditionalExecutorApplying.builder()
+            .applyingExecutorName(SOLICITOR_SOT_NAME)
+            .build();
+
+    private static final AdditionalExecutorNotApplying ADDITIONAL_EXECUTOR_NOT_APPLYING = AdditionalExecutorNotApplying.builder()
+            .notApplyingExecutorName(SOLICITOR_SOT_NAME)
+            .build();
+
     @InjectMocks
     private CallbackResponseTransformer underTest;
 
     @Mock
     private StateChangeService stateChangeServiceMock;
+
+    @Mock
+    private SolicitorExecutorService solicitorExecutorService;
 
     @Mock
     private CallbackRequest callbackRequestMock;
@@ -312,6 +327,15 @@ public class CallbackResponseTransformerTest {
 
     @Mock
     private CaseDetails caseDetailsMock;
+
+    @Mock
+    private CaseData caseDataMock;
+
+    @Mock
+    private List<CollectionMember<AdditionalExecutorApplying>> additionalExecutorsApplyingMock;
+
+    @Mock
+    private List<CollectionMember<AdditionalExecutorNotApplying>> additionalExecutorsNotApplyingMock;
 
     @Mock
     private AssembleLetterTransformer assembleLetterTransformer;
@@ -343,6 +367,7 @@ public class CallbackResponseTransformerTest {
                 .solsSolicitorPhoneNumber(SOLICITOR_FIRM_PHONE)
                 .solsSOTForenames(SOLICITOR_SOT_FORENAME)
                 .solsSOTSurname(SOLICITOR_SOT_SURNAME)
+                .solsSOTName(SOLICITOR_SOT_NAME)
                 .solsSOTJobTitle(SOLICITOR_SOT_JOB_TITLE)
                 .deceasedForenames(DECEASED_FIRSTNAME)
                 .deceasedSurname(DECEASED_LASTNAME)
@@ -540,6 +565,12 @@ public class CallbackResponseTransformerTest {
                 .paperForm(Boolean.TRUE)
                 .bulkScanCaseReference(BULK_SCAN_REFERENCE)
                 .build();
+
+        additionalExecutorsApplyingMock = new ArrayList<>();
+        additionalExecutorsNotApplyingMock = new ArrayList<>();
+
+        additionalExecutorsApplyingMock.add(new CollectionMember<>(null, ADDITIONAL_EXECUTOR_APPLYING));
+        additionalExecutorsNotApplyingMock.add(new CollectionMember<>(null, ADDITIONAL_EXECUTOR_NOT_APPLYING));
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
@@ -1272,13 +1303,18 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldTransformCaseForSolIsAdditionalExecApplying() {
+    public void shouldTransformCaseForSolIsAdditionalExecApplyingUpdate() {
         caseDataBuilder
+                .solsSolicitorIsExec(YES)
                 .solsSolicitorIsMainApplicant(NO)
                 .solsSolicitorIsApplying(YES);
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        when(solicitorExecutorService.updateSolicitorApplyingExecutor(any(CaseData.class), anyList()))
+                .thenReturn(additionalExecutorsApplyingMock);
+        when(solicitorExecutorService.removeSolicitorAsNotApplyingExecutor(anyList())).thenReturn(new ArrayList<>());
 
         CallbackResponse callbackResponse = underTest.transform(callbackRequestMock);
 
@@ -1286,14 +1322,19 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldTransformCaseForSolIsAdditionalExecNotApplying() {
+    public void shouldTransformCaseForSolIsAdditionalExecNotApplyingUpdate() {
         caseDataBuilder
+                .solsSolicitorIsExec(YES)
                 .solsSolicitorIsMainApplicant(NO)
                 .solsSolicitorIsApplying(NO)
                 .solsSolicitorNotApplyingReason(SOLICITOR_SOT_NOT_APPLYING_REASON);
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        when(solicitorExecutorService.updateSolicitorNotApplyingExecutor(any(CaseData.class), anyList()))
+                .thenReturn(additionalExecutorsNotApplyingMock);
+        when(solicitorExecutorService.removeSolicitorAsApplyingExecutor(anyList())).thenReturn(new ArrayList<>());
 
         CallbackResponse callbackResponse = underTest.transform(callbackRequestMock);
 
