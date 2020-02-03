@@ -775,10 +775,10 @@ public class CallbackResponseTransformer {
                         .primaryApplicantAlias(NO)
                         .primaryApplicantHasAlias(NO)
                         .primaryApplicantIsApplying(YES)
-                        .solsSolicitorIsApplying(YES);
-            }
-
-            if(YES.equals(caseData.getSolsSolicitorIsApplying())) {
+                        .solsSolicitorIsApplying(YES)
+                        .solsSolicitorNotApplyingReason(null)
+                        .solsPrimaryExecutorNotApplyingReason(null);
+            } else {
                 builder
                         .solsSolicitorNotApplyingReason(null)
                         .solsPrimaryExecutorNotApplyingReason(null);
@@ -856,14 +856,13 @@ public class CallbackResponseTransformer {
             }
         }
 
-        if (NO.equals(caseData.getSolsSolicitorIsExec()) || isSolicitorMainApplicant(caseData)) {
-            if (YES.equals(caseData.getSolsSolicitorIsApplying())) {
-                execsApplying = solicitorExecutorService.removeSolicitorAsApplyingExecutor(execsApplying);
-                execsNotApplying = solicitorExecutorService.removeSolicitorAsNotApplyingExecutor(execsNotApplying);
-            } else if (NO.equals(caseData.getSolsSolicitorIsApplying())) {
-                execsApplying = solicitorExecutorService.removeSolicitorAsApplyingExecutor(execsApplying);
-                execsNotApplying = solicitorExecutorService.removeSolicitorAsNotApplyingExecutor(execsNotApplying);
-            }
+        if (NO.equals(caseData.getSolsSolicitorIsExec())) {
+            execsApplying = solicitorExecutorService.removeSolicitorAsApplyingExecutor(execsApplying);
+            execsNotApplying = solicitorExecutorService.removeSolicitorAsNotApplyingExecutor(execsNotApplying);
+        }
+
+        if (isSolicitorMainApplicant(caseData)) {
+            execsNotApplying = solicitorExecutorService.removeSolicitorAsNotApplyingExecutor(execsNotApplying);
         }
 
         builder
@@ -942,10 +941,10 @@ public class CallbackResponseTransformer {
                         .primaryApplicantAlias(NO)
                         .primaryApplicantHasAlias(NO)
                         .primaryApplicantIsApplying(YES)
-                        .solsSolicitorIsApplying(YES);
-            }
-
-            if(YES.equals(caseData.getSolsSolicitorIsApplying())) {
+                        .solsSolicitorIsApplying(YES)
+                        .solsSolicitorNotApplyingReason(null)
+                        .solsPrimaryExecutorNotApplyingReason(null);
+            } else {
                 builder
                         .solsSolicitorNotApplyingReason(null)
                         .solsPrimaryExecutorNotApplyingReason(null);
@@ -979,11 +978,41 @@ public class CallbackResponseTransformer {
                     .solsExecutorAliasNames(caseData.getSolsExecutorAliasNames());
         }
 
+        List<CollectionMember<AdditionalExecutorApplying>> execsApplying = new ArrayList<>();
+        List<CollectionMember<AdditionalExecutorNotApplying>> execsNotApplying = new ArrayList<>();
+
         if (CollectionUtils.isEmpty(caseData.getSolsAdditionalExecutorList())) {
             if (YES.equals(caseData.getSolsSolicitorIsExec())) {
+                if (caseData.getAdditionalExecutorsApplying() != null) {
+                    execsApplying = mapApplyingAdditionalExecutors(caseData);
+                }
+
+                if (caseData.getAdditionalExecutorsNotApplying() != null) {
+                    execsNotApplying = caseData.getAdditionalExecutorsNotApplying();
+                }
+
+                if (YES.equals(caseData.getSolsSolicitorIsExec()) && !isSolicitorMainApplicant(caseData)) {
+                    if (YES.equals(caseData.getSolsSolicitorIsApplying())) {
+                        execsApplying = solicitorExecutorService.updateSolicitorApplyingExecutor(caseData, execsApplying);
+                        execsNotApplying = solicitorExecutorService.removeSolicitorAsNotApplyingExecutor(execsNotApplying);
+                    } else if (NO.equals(caseData.getSolsSolicitorIsApplying())) {
+                        execsNotApplying = solicitorExecutorService.updateSolicitorNotApplyingExecutor(caseData, execsNotApplying);
+                        execsApplying = solicitorExecutorService.removeSolicitorAsApplyingExecutor(execsApplying);
+                    }
+                }
+
+                if (NO.equals(caseData.getSolsSolicitorIsExec())) {
+                    execsApplying = solicitorExecutorService.removeSolicitorAsApplyingExecutor(execsApplying);
+                    execsNotApplying = solicitorExecutorService.removeSolicitorAsNotApplyingExecutor(execsNotApplying);
+                }
+
+                if (isSolicitorMainApplicant(caseData)) {
+                    execsNotApplying = solicitorExecutorService.removeSolicitorAsNotApplyingExecutor(execsNotApplying);
+                }
+
                 builder
-                        .additionalExecutorsApplying(caseData.getAdditionalExecutorsApplying())
-                        .additionalExecutorsNotApplying(caseData.getAdditionalExecutorsNotApplying());
+                        .additionalExecutorsApplying(execsApplying)
+                        .additionalExecutorsNotApplying(execsNotApplying);
             } else {
                 builder
                         .additionalExecutorsApplying(EMPTY_LIST)
