@@ -9,6 +9,9 @@ import uk.gov.hmcts.probate.config.DataExtractConfiguration;
 import uk.gov.hmcts.probate.exception.ClientException;
 import uk.gov.hmcts.probate.exception.DataExtractUnauthorisedException;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -32,9 +35,15 @@ public class DataExtractScheduleValidator {
     }
 
     private void validateScheduleKey(String cronConfig, String pathKey) {
-        if (!cronConfig.equals(pathKey)) {
-            log.error("Data extract for {} does not have a valid auth key", cronConfig);
-            throw new DataExtractUnauthorisedException();
+        try {
+            String decodedKey = URLDecoder.decode(pathKey, StandardCharsets.ISO_8859_1.name());
+            log.error("Decoded key/config {} / {} ", decodedKey, cronConfig);
+            if (!cronConfig.equals(decodedKey)) {
+                log.error("Data extract for {} does not have a valid auth key", pathKey);
+                throw new DataExtractUnauthorisedException();
+            }
+        } catch (UnsupportedEncodingException e) {
+            log.error("Error decoding pathKey {} / {} ", pathKey, cronConfig);
         }
     }
 

@@ -57,4 +57,10 @@ public class DataExtractScheduleValidatorTest {
         dataExtractScheduleValidator.validateExela("AAAAAAAAAX");
     }
 
+    @Test
+    public void shouldValidateHMRCEncodedKey() {
+        when(dataExtractConfiguration.getHmrc()).thenReturn("LNyqVCLdE5evHKyht@\"£_aat_hmrc");
+        dataExtractScheduleValidator.validateHmrc("LNyqVCLdE5evHKyht@%22%A3_aat_hmrc");
+    }
+
 }
