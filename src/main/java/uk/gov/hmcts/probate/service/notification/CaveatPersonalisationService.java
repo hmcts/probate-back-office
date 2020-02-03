@@ -12,6 +12,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.service.AddressFormatterService;
 import uk.gov.hmcts.probate.service.CaveatQueryService;
 import uk.gov.hmcts.probate.service.DateFormatterService;
+import uk.gov.hmcts.probate.service.template.pdf.LocalDateToWelshStringConverter;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,6 +25,7 @@ public class CaveatPersonalisationService {
     private final DateFormatterService dateFormatterService;
     private final AddressFormatterService addressFormatterService;
     private final CaveatQueryService caveatQueryService;
+    private final LocalDateToWelshStringConverter localDateToWelshStringConverter;
 
     private static final String PERSONALISATION_APPLICANT_NAME = "applicant_name";
     private static final String PERSONALISATION_DECEASED_NAME = "deceased_name";
@@ -36,7 +38,7 @@ public class CaveatPersonalisationService {
     private static final String PERSONALISATION_DATE_CAVEAT_ENTERED = "date_caveat_entered";
     private static final String PERSONALISATION_CAVEATOR_NAME = "caveator_name";
     private static final String PERSONALISATION_CAVEATOR_ADDRESS = "caveator_address";
-
+    private static final String PERSONALISATION_WELSH_CAVEAT_EXPIRY_DATE = "welsh_caveat_expiry_date";
 
     public Map<String, Object> getCaveatStopPersonalisation(Map<String, Object> personalisation, CaseData caseData) {
 
@@ -70,6 +72,8 @@ public class CaveatPersonalisationService {
         personalisation.put(PERSONALISATION_REGISTRY_PHONE, registry.getPhone());
         personalisation.put(PERSONALISATION_CAVEAT_EXPIRY_DATE,
                 dateFormatterService.formatCaveatExpiryDate(caveatData.getExpiryDate()));
+        personalisation.put(PERSONALISATION_WELSH_CAVEAT_EXPIRY_DATE,
+                        localDateToWelshStringConverter.convert(caveatData.getExpiryDate()));
 
         return personalisation;
     }
@@ -88,6 +92,8 @@ public class CaveatPersonalisationService {
         personalisation.put(PERSONALISATION_REGISTRY_PHONE, registry.getPhone());
         personalisation.put(PERSONALISATION_CAVEAT_EXPIRY_DATE,
                 dateFormatterService.formatCaveatExpiryDate(caveatData.getExpiryDate()));
+        personalisation.put(PERSONALISATION_WELSH_CAVEAT_EXPIRY_DATE,
+                        localDateToWelshStringConverter.convert(caveatData.getExpiryDate()));
 
         return personalisation;
     }
