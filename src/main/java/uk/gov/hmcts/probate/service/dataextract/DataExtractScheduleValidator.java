@@ -36,7 +36,7 @@ public class DataExtractScheduleValidator {
 
     private void validateScheduleKey(String cronConfig, String pathKey) {
         try {
-            String decodedKey = URLDecoder.decode(pathKey, StandardCharsets.ISO_8859_1.name());
+            String decodedKey = URLDecoder.decode(pathKey, StandardCharsets.UTF_8.name());
             log.error("Decoded key/config {} / {} ", decodedKey, cronConfig);
             if (!cronConfig.equals(decodedKey)) {
                 log.error("Data extract for {} does not have a valid auth key", pathKey);
