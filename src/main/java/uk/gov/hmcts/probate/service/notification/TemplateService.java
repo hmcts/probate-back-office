@@ -50,7 +50,9 @@ public class TemplateService {
                 return emailTemplates.getCaveatExtend();
             case CAVEAT_RAISED_SOLS:
                 return notificationTemplates.getEmail().get(languagePreference).get(applicationType).getCaveatRaisedSols();
-            default:
+            case CAVEAT_WITHDRAW:
+                return emailTemplates.getCaveatWithdrawn();
+             default:
                 throw new BadRequestException("Unsupported state");
         }
     }

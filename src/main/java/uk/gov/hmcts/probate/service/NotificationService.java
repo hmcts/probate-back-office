@@ -151,15 +151,10 @@ public class NotificationService {
         DocumentType documentType;
         switch (state) {
             case GENERAL_CAVEAT_MESSAGE:
-                documentType = SENT_EMAIL;
-                break;
             case CAVEAT_RAISED:
-                documentType = SENT_EMAIL;
-                break;
             case CAVEAT_RAISED_SOLS:
-                documentType = SENT_EMAIL;
-                break;
             case CAVEAT_EXTEND:
+            case CAVEAT_WITHDRAW:
                 documentType = SENT_EMAIL;
                 break;
             default:

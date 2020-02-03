@@ -2,6 +2,7 @@ package uk.gov.hmcts.probate.service;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -19,7 +20,6 @@ import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CaveatCallbackResponseTransformer;
 import uk.gov.hmcts.probate.validator.BulkPrintValidationRule;
 import uk.gov.hmcts.probate.validator.CaveatsEmailValidationRule;
-import uk.gov.hmcts.probate.validator.ValidationRuleCaveats;
 import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
 import uk.gov.service.notify.NotificationClientException;
 
@@ -32,7 +32,11 @@ import java.util.UUID;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT_COVERSHEET;
 import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT_EXTENDED;
@@ -425,4 +429,53 @@ public class CaveatNotificationServiceTest {
 
         assertEquals(2, caveatCallbackResponse.getCaveatData().getNotificationsGenerated().size());
     }
+
+    @Test
+    public void testWithDraw() throws NotificationClientException {
+        CaveatData caveatData = CaveatData.builder()
+                .caveatRaisedEmailNotificationRequested("Yes")
+                .caveatorEmailAddress("test@test.com").build();
+
+        caveatDetails = new CaveatDetails(caveatData, LAST_MODIFIED, ID);
+        caveatCallbackRequest = new CaveatCallbackRequest(caveatDetails);
+        CaveatCallbackResponse caveatCallbackResponse = CaveatCallbackResponse.builder().errors(new ArrayList<>()).build();
+        Document document = Document.builder().build();
+        when(notificationService.sendCaveatEmail(eq(State.CAVEAT_WITHDRAW), eq(caveatDetails))).thenReturn(document);
+        when(eventValidationService.validateCaveatRequest(eq(caveatCallbackRequest), isA(List.class ))).thenReturn(caveatCallbackResponse);
+
+
+        caveatNotificationService.withdraw(caveatCallbackRequest);
+
+        ArgumentCaptor<List<Document>> listArgumentCaptor = ArgumentCaptor.forClass(List.class);
+        verify(caveatCallbackResponseTransformer).withDrawn(eq(caveatCallbackRequest), listArgumentCaptor.capture(), isNull());
+        List<Document> passedDocument = listArgumentCaptor.getValue();
+
+        assertEquals("Document matched", passedDocument.get(0), document);
+        verify(notificationService).sendCaveatEmail(eq(State.CAVEAT_WITHDRAW), eq(caveatDetails));
+        verify(eventValidationService).validateCaveatRequest(eq(caveatCallbackRequest), isA(List.class ));
+    }
+
+    @Test
+    public void testWithDraw_validationFailure() throws NotificationClientException {
+        CaveatData caveatData = CaveatData.builder()
+                .caveatRaisedEmailNotificationRequested("Yes")
+                .build();
+
+        caveatDetails = new CaveatDetails(caveatData, LAST_MODIFIED, ID);
+        caveatCallbackRequest = new CaveatCallbackRequest(caveatDetails);
+        CaveatCallbackResponse caveatCallbackResponse = CaveatCallbackResponse.builder().errors(Arrays.asList("emailNotProvidedCaveats")).build();
+        Document document = Document.builder().build();
+        when(notificationService.sendCaveatEmail(eq(State.CAVEAT_WITHDRAW), eq(caveatDetails))).thenReturn(document);
+        when(eventValidationService.validateCaveatRequest(eq(caveatCallbackRequest), isA(List.class ))).thenReturn(caveatCallbackResponse);
+
+
+        caveatNotificationService.withdraw(caveatCallbackRequest);
+
+
+        verify(caveatCallbackResponseTransformer, never()).withDrawn(eq(caveatCallbackRequest), any(), isNull());
+
+        verify(notificationService, never()).sendCaveatEmail(eq(State.CAVEAT_WITHDRAW), eq(caveatDetails));
+        verify(eventValidationService).validateCaveatRequest(eq(caveatCallbackRequest), isA(List.class ));
+    }
 }
+

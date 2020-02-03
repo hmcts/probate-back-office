@@ -175,4 +175,11 @@ public class CaveatController {
         return ResponseEntity.ok(response);
     }
 
+    @PostMapping(path = "/withdraw")
+    public ResponseEntity<CaveatCallbackResponse> withDraw(@RequestBody CaveatCallbackRequest caveatCallbackRequest)
+            throws NotificationClientException {
+       CaveatCallbackResponse response = caveatNotificationService.withdraw(caveatCallbackRequest);
+
+       return ResponseEntity.ok(response);
+    }
 }
