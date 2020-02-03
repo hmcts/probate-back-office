@@ -72,6 +72,7 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.when;
+import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
 import static uk.gov.hmcts.probate.model.Constants.CTSC;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_REISSUE;
@@ -336,6 +337,7 @@ public class CallbackResponseTransformerTest {
     public void setup() {
 
         caseDataBuilder = CaseData.builder()
+                .applicationType(APPLICATION_TYPE)
                 .solsSolicitorFirmName(SOLICITOR_FIRM_NAME)
                 .solsSolicitorAddress(SolsAddress.builder().addressLine1(SOLICITOR_FIRM_LINE1)
                         .postCode(SOLICITOR_FIRM_POSTCODE).build())
@@ -562,7 +564,7 @@ public class CallbackResponseTransformerTest {
 
         assertCommon(callbackResponse);
         assertLegacyInfo(callbackResponse);
-
+        assertEquals(NO, callbackResponse.getData().getBoEmailRequestInfoNotification());
         assertNull(callbackResponse.getData().getState());
     }
 
@@ -675,7 +677,7 @@ public class CallbackResponseTransformerTest {
 
         assertCommon(callbackResponse);
         assertLegacyInfo(callbackResponse);
-
+        assertEquals(NO, callbackResponse.getData().getBoEmailRequestInfoNotification());
         assertEquals(TOTAL_FEE, callbackResponse.getData().getTotalFee());
         assertEquals(SOL_PAY_METHODS_CHEQUE, callbackResponse.getData().getSolsPaymentMethods());
         assertNull(callbackResponse.getData().getSolsFeeAccountNumber());
@@ -749,7 +751,7 @@ public class CallbackResponseTransformerTest {
                 Arrays.asList(grantDocument, grantIssuedSentEmail), "abc123", "2");
 
         assertCommon(callbackResponse);
-
+        assertEquals(NO, callbackResponse.getData().getBoEmailRequestInfoNotification());
         assertEquals("abc123", callbackResponse.getData().getBulkPrintId().get(0).getValue().getSendLetterId());
         assertEquals(ADMON_WILL_GRANT_REISSUE.getTemplateName(),
                 callbackResponse.getData().getBulkPrintId().get(0).getValue().getTemplateName());
@@ -882,6 +884,7 @@ public class CallbackResponseTransformerTest {
 
         assertCommonDetails(callbackResponse);
         assertLegacyInfo(callbackResponse);
+        assertEquals(YES, callbackResponse.getData().getBoEmailRequestInfoNotification());
         assertApplicationType(callbackResponse, ApplicationType.PERSONAL);
         assertEquals(NO, callbackResponse.getData().getPrimaryApplicantHasAlias());
         assertEquals(1, callbackResponse.getData().getSolsDeceasedAliasNamesList().size());
@@ -901,6 +904,7 @@ public class CallbackResponseTransformerTest {
 
         assertCommonDetails(callbackResponse);
         assertLegacyInfo(callbackResponse);
+        assertEquals(YES, callbackResponse.getData().getBoEmailRequestInfoNotification());
         assertApplicationType(callbackResponse, ApplicationType.PERSONAL);
         assertEquals(NO, callbackResponse.getData().getPrimaryApplicantHasAlias());
         assertEquals(0, callbackResponse.getData().getSolsDeceasedAliasNamesList().size());
@@ -922,6 +926,7 @@ public class CallbackResponseTransformerTest {
 
         assertCommonDetails(callbackResponse);
         assertLegacyInfo(callbackResponse);
+        assertEquals(YES, callbackResponse.getData().getBoEmailRequestInfoNotification());
         assertApplicationType(callbackResponse, ApplicationType.PERSONAL);
         assertEquals(NO, callbackResponse.getData().getPrimaryApplicantHasAlias());
         assertEquals(0, callbackResponse.getData().getAdditionalExecutorsApplying().size());
@@ -945,6 +950,7 @@ public class CallbackResponseTransformerTest {
 
         assertCommonDetails(callbackResponse);
         assertLegacyInfo(callbackResponse);
+        assertEquals(YES, callbackResponse.getData().getBoEmailRequestInfoNotification());
         assertApplicationType(callbackResponse, ApplicationType.PERSONAL);
         assertEquals(NO, callbackResponse.getData().getPrimaryApplicantHasAlias());
         assertEquals(0, callbackResponse.getData().getAdditionalExecutorsApplying().size());
@@ -969,6 +975,7 @@ public class CallbackResponseTransformerTest {
         CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
 
         assertCommonDetails(callbackResponse);
+        assertEquals(YES, callbackResponse.getData().getBoEmailRequestInfoNotification());
         assertApplicationType(callbackResponse, ApplicationType.PERSONAL);
         assertEquals(NO, callbackResponse.getData().getPrimaryApplicantHasAlias());
         assertEquals(1, callbackResponse.getData().getAdditionalExecutorsApplying().size());
@@ -1017,6 +1024,7 @@ public class CallbackResponseTransformerTest {
         CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
 
         assertCommonDetails(callbackResponse);
+        assertEquals(YES, callbackResponse.getData().getBoEmailRequestInfoNotification());
         assertEquals(2, callbackResponse.getData().getAdditionalExecutorsApplying().size());
         assertApplyingExecutorDetailsFromSols(callbackResponse.getData().getAdditionalExecutorsApplying().get(0).getValue());
         assertEquals(1, callbackResponse.getData().getAdditionalExecutorsNotApplying().size());
@@ -1056,6 +1064,7 @@ public class CallbackResponseTransformerTest {
         assertEquals(0, callbackResponse.getData().getAdditionalExecutorsApplying().size());
         assertEquals(0, callbackResponse.getData().getAdditionalExecutorsNotApplying().size());
         assertSolsDetails(callbackResponse);
+        assertEquals(NO, callbackResponse.getData().getBoEmailRequestInfoNotification());
     }
 
     @Test
@@ -1071,6 +1080,7 @@ public class CallbackResponseTransformerTest {
 
         assertCommonDetails(callbackResponse);
         assertLegacyInfo(callbackResponse);
+        assertEquals(NO, callbackResponse.getData().getBoEmailRequestInfoNotification());
         assertEquals(0, callbackResponse.getData().getAdditionalExecutorsApplying().size());
         assertEquals(0, callbackResponse.getData().getAdditionalExecutorsNotApplying().size());
         assertSolsDetails(callbackResponse);
@@ -1136,6 +1146,7 @@ public class CallbackResponseTransformerTest {
         CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
 
         assertCommonDetails(callbackResponse);
+        assertEquals(NO, callbackResponse.getData().getBoEmailRequestInfoNotification());
         assertLegacyInfo(callbackResponse);
         assertEquals(0, callbackResponse.getData().getAdditionalExecutorsApplying().size());
         assertEquals(0, callbackResponse.getData().getAdditionalExecutorsNotApplying().size());
@@ -1179,6 +1190,7 @@ public class CallbackResponseTransformerTest {
     @Test
     public void shouldTransformCaseForSolsEmailEmpty() {
         caseDataBuilder.solsSolicitorEmail("");
+        caseDataBuilder.applicationType(SOLICITOR);
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
@@ -1188,6 +1200,31 @@ public class CallbackResponseTransformerTest {
         assertEquals(NO, callbackResponse.getData().getBoEmailGrantIssuedNotification());
     }
 
+    @Test
+    public void shouldTransformCaseForPAEmailEmpty() {
+        caseDataBuilder.primaryApplicantEmailAddress("");
+        caseDataBuilder.applicationType(PERSONAL);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+
+        assertEquals(NO, callbackResponse.getData().getBoEmailGrantIssuedNotification());
+    }
+
+    @Test
+    public void shouldTransformCaseForPAEmailIsNotEmpty() {
+        caseDataBuilder.primaryApplicantEmailAddress("test@test.com");
+        caseDataBuilder.applicationType(PERSONAL);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+
+        assertEquals(YES, callbackResponse.getData().getBoEmailGrantIssuedNotification());
+    }
 
     @Test
     public void shouldTransformCaseForPAWithPrimaryApplicantAlias() {
@@ -1508,6 +1545,7 @@ public class CallbackResponseTransformerTest {
         assertEquals(NO, callbackResponse.getData().getWillExists());
 
         assertCommonDetails(callbackResponse);
+        assertEquals(NO, callbackResponse.getData().getBoEmailRequestInfoNotification());
         assertLegacyInfo(callbackResponse);
         assertCommonPaperForm(callbackResponse);
         assertSolsDetails(callbackResponse);
@@ -1913,6 +1951,7 @@ public class CallbackResponseTransformerTest {
         CallbackResponse callbackResponse = underTest.transformCaseForLetterPreview(callbackRequestMock, letter);
 
         assertCommon(callbackResponse);
+        assertEquals(NO, callbackResponse.getData().getBoEmailRequestInfoNotification());
     }
 
     @Test
@@ -2177,7 +2216,6 @@ public class CallbackResponseTransformerTest {
 
         assertEquals(SCANNED_DOCUMENTS_LIST, callbackResponse.getData().getScannedDocuments());
         assertEquals(YES, callbackResponse.getData().getBoStopDetailsDeclarationParagraph());
-        assertEquals(YES, callbackResponse.getData().getBoEmailRequestInfoNotification());
         assertEquals(YES, callbackResponse.getData().getBoEmailRequestInfoNotificationRequested());
         assertEquals(YES, callbackResponse.getData().getBoAssembleLetterSendToBulkPrintRequested());
         assertEquals(YES, callbackResponse.getData().getBoRequestInfoSendToBulkPrint());
