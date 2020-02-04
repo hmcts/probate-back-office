@@ -87,6 +87,7 @@ public class CallbackResponseTransformer {
     private static final String READY_FOR_EXAMINATION = "BOReadyForExamination";
     private static final String EXAMINING = "BOExamining";
     private static final String NO_WILL = "NoWill";
+    private static final String WILL_LEFT = "WillLeft";
     private static final String SOL_AS_EXEC_ID = "solicitor";
 
     public static final String ANSWER_YES = "Yes";
@@ -788,7 +789,6 @@ public class CallbackResponseTransformer {
                     .solsSolicitorIsMainApplicant(null)
                     .solsSolicitorIsApplying(null)
                     .solsSolicitorNotApplyingReason(null)
-                    .primaryApplicantIsApplying(YES)
                     .primaryApplicantAlias(caseData.getPrimaryApplicantAlias());
         }
 
@@ -835,6 +835,7 @@ public class CallbackResponseTransformer {
                     .deceasedAliasNamesList(null);
         }
 
+
         List<CollectionMember<AdditionalExecutorApplying>> execsApplying = new ArrayList<>();
         List<CollectionMember<AdditionalExecutorNotApplying>> execsNotApplying = new ArrayList<>();
 
@@ -871,6 +872,17 @@ public class CallbackResponseTransformer {
                 .solsAdditionalExecutorList(caseData.getSolsAdditionalExecutorList())
                 .primaryApplicantAlias(caseData.getPrimaryApplicantAlias())
                 .solsExecutorAliasNames(caseData.getSolsExecutorAliasNames());
+
+        if (WILL_LEFT.equals(caseData.getSolsWillType()) && caseData.getSolsFeeAccountNumber() == null) {
+            List<CollectionMember<AdditionalExecutor>> solsExecutors = caseData.getSolsAdditionalExecutorList();
+            solsExecutors = mapSolsAdditionalExecutors(caseData, solsExecutors);
+
+            builder.solsAdditionalExecutorList(solsExecutors);
+
+            if (isSolicitorExecutor(caseData) && !isSolicitorMainApplicant(caseData)) {
+                builder.otherExecutorExists(YES);
+            }
+        }
     }
 
     private void updateCaseBuilderForTransformCase(CaseData caseData, ResponseCaseDataBuilder builder) {
@@ -954,7 +966,6 @@ public class CallbackResponseTransformer {
                     .solsSolicitorIsMainApplicant(null)
                     .solsSolicitorIsApplying(null)
                     .solsSolicitorNotApplyingReason(null)
-                    .primaryApplicantIsApplying(YES)
                     .primaryApplicantAlias(caseData.getPrimaryApplicantAlias());
         }
 
@@ -1019,22 +1030,16 @@ public class CallbackResponseTransformer {
                         .additionalExecutorsNotApplying(EMPTY_LIST);
             }
         } else {
-            List<CollectionMember<AdditionalExecutorApplying>> applyingExec = caseData.getSolsAdditionalExecutorList()
-                    .stream()
-                    .map(CollectionMember::getValue)
-                    .filter(additionalExecutor -> ANSWER_YES.equalsIgnoreCase(additionalExecutor.getAdditionalApplying()))
-                    .map(this::buildApplyingAdditionalExecutor)
-                    .map(executor -> new CollectionMember<>(null, executor))
-                    .collect(Collectors.toList());
+            List<CollectionMember<AdditionalExecutorApplying>> applyingExec = new ArrayList<>();
+            List<CollectionMember<AdditionalExecutorNotApplying>> notApplyingExec = new ArrayList<>();
 
-
-            List<CollectionMember<AdditionalExecutorNotApplying>> notApplyingExec = caseData.getSolsAdditionalExecutorList()
-                    .stream()
-                    .map(CollectionMember::getValue)
-                    .filter(additionalExecutor -> ANSWER_NO.equalsIgnoreCase(additionalExecutor.getAdditionalApplying()))
-                    .map(this::buildNotApplyingAdditionalExecutor)
-                    .map(executor -> new CollectionMember<>(null, executor))
-                    .collect(Collectors.toList());
+            for (CollectionMember<AdditionalExecutor> additionalExec : caseData.getSolsAdditionalExecutorList()) {
+                if (ANSWER_YES.equalsIgnoreCase(additionalExec.getValue().getAdditionalApplying())) {
+                    applyingExec.add( new CollectionMember<>(additionalExec.getId(), buildApplyingAdditionalExecutor(additionalExec.getValue())));
+                } else if (ANSWER_NO.equalsIgnoreCase(additionalExec.getValue().getAdditionalApplying())) {
+                    notApplyingExec.add( new CollectionMember<>(additionalExec.getId(), buildNotApplyingAdditionalExecutor(additionalExec.getValue())));
+                }
+            }
 
             builder
                     .additionalExecutorsApplying(applyingExec)
@@ -1081,6 +1086,28 @@ public class CallbackResponseTransformer {
             return new CollectionMember<>(additionalExecutorApplying.getId(), newExec);
         }
         return additionalExecutorApplying;
+    }
+
+    private List<CollectionMember<AdditionalExecutor>> mapSolsAdditionalExecutors(CaseData caseData, List<CollectionMember<AdditionalExecutor>> execs) {
+        List<CollectionMember<AdditionalExecutor>> updatedExecs = new ArrayList<>();
+
+        if (execs != null && !execs.isEmpty()) {
+            updatedExecs.addAll(execs);
+        }
+
+        if (updatedExecs.stream().anyMatch(exec -> SOL_AS_EXEC_ID.equalsIgnoreCase(exec.getId()))) {
+            return updatedExecs;
+        }
+
+        if (YES.equals(caseData.getSolsSolicitorIsExec()) && !isSolicitorMainApplicant(caseData)) {
+            if (YES.equals(caseData.getSolsSolicitorIsApplying())) {
+                updatedExecs = solicitorExecutorService.addSolicitorApplyingExecutor(caseData, updatedExecs);
+            } else if (NO.equals(caseData.getSolsSolicitorIsApplying())) {
+                updatedExecs = solicitorExecutorService.addSolicitorNotApplyingExecutor(caseData, updatedExecs);
+            }
+        }
+
+        return updatedExecs;
     }
 
     private AliasName buildDeceasedAliasNameExecutor(ProbateAliasName aliasNames) {

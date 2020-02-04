@@ -2,6 +2,7 @@ package uk.gov.hmcts.probate.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
@@ -10,6 +11,9 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static uk.gov.hmcts.probate.model.Constants.NO;
+import static uk.gov.hmcts.probate.model.Constants.YES;
 
 @Slf4j
 @Component
@@ -86,6 +90,48 @@ public class SolicitorExecutorService {
                 .build();
 
         return new CollectionMember<>(SOL_AS_EXEC_ID, exec);
+    }
+
+    public List<CollectionMember<AdditionalExecutor>> addSolicitorApplyingExecutor(CaseData caseData, List<CollectionMember<AdditionalExecutor>> execs) {
+        List<CollectionMember<AdditionalExecutor>> updatedExecs = new ArrayList<>();
+
+        if (execs != null && !execs.isEmpty()) {
+            updatedExecs.addAll(execs);
+        }
+
+        AdditionalExecutor solicitor = AdditionalExecutor.builder()
+                .additionalExecForenames(caseData.getSolsSOTForenames())
+                .additionalExecLastname(caseData.getSolsSOTSurname())
+                .additionalExecNameOnWill(NO)
+                .additionalApplying(YES)
+                .additionalExecAddress(caseData.getSolsSolicitorAddress())
+                .build();
+
+        CollectionMember<AdditionalExecutor> updatedExec = new CollectionMember<>(SOL_AS_EXEC_ID, solicitor);
+        updatedExecs.add(updatedExec);
+
+        return updatedExecs;
+    }
+
+    public List<CollectionMember<AdditionalExecutor>> addSolicitorNotApplyingExecutor(CaseData caseData, List<CollectionMember<AdditionalExecutor>> execs) {
+        List<CollectionMember<AdditionalExecutor>> updatedExecs = new ArrayList<>();
+
+        if (execs != null && !execs.isEmpty()) {
+            updatedExecs.addAll(execs);
+        }
+
+        AdditionalExecutor solicitor = AdditionalExecutor.builder()
+                .additionalExecForenames(caseData.getSolsSOTForenames())
+                .additionalExecLastname(caseData.getSolsSOTSurname())
+                .additionalExecNameOnWill(NO)
+                .additionalApplying(NO)
+                .additionalExecReasonNotApplying(caseData.getSolsSolicitorNotApplyingReason())
+                .build();
+
+        CollectionMember<AdditionalExecutor> updatedExec = new CollectionMember<>(SOL_AS_EXEC_ID, solicitor);
+        updatedExecs.add(updatedExec);
+
+        return updatedExecs;
     }
 }
 
