@@ -372,7 +372,7 @@ document:
   retriever:
     service:
       api:
-        baseurl: localhost:5006
+        baseurl: localhost:8080
 
 idam:
   s2s-auth:
