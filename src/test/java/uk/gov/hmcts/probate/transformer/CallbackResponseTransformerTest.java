@@ -1407,7 +1407,6 @@ public class CallbackResponseTransformerTest {
 
         assertEquals(SOLICITOR_SOT_NAME, callbackResponse.getData().getAdditionalExecutorsApplying().get(0).getValue().getApplyingExecutorName());
         assertEquals(SOLICITOR_SOT_ID, callbackResponse.getData().getAdditionalExecutorsApplying().get(0).getId());
-        assertNull(callbackResponse.getData().getSolsSolicitorNotApplyingReason());
         assertNull(callbackResponse.getData().getSolsPrimaryExecutorNotApplyingReason());
     }
 
@@ -1432,8 +1431,6 @@ public class CallbackResponseTransformerTest {
         assertEquals(SOLICITOR_SOT_NAME, callbackResponse.getData().getAdditionalExecutorsNotApplying().get(0).getValue().getNotApplyingExecutorName());
         assertEquals(SOLICITOR_SOT_ID, callbackResponse.getData().getAdditionalExecutorsNotApplying().get(0).getId());
         assertEquals(SOLICITOR_SOT_NOT_APPLYING_REASON, callbackResponse.getData().getAdditionalExecutorsNotApplying().get(0).getValue().getNotApplyingExecutorReason());
-        assertNull(callbackResponse.getData().getSolsSolicitorNotApplyingReason());
-        assertNull(callbackResponse.getData().getSolsPrimaryExecutorNotApplyingReason());
     }
 
     @Test
@@ -1461,8 +1458,6 @@ public class CallbackResponseTransformerTest {
         assertTrue(callbackResponse.getData().getAdditionalExecutorsNotApplying().isEmpty());
         assertEquals(SOLICITOR_SOT_NAME, callbackResponse.getData().getAdditionalExecutorsApplying().get(0).getValue().getApplyingExecutorName());
         assertEquals(SOLICITOR_SOT_ID, callbackResponse.getData().getAdditionalExecutorsApplying().get(0).getId());
-        assertNull(callbackResponse.getData().getSolsSolicitorNotApplyingReason());
-        assertNull(callbackResponse.getData().getSolsPrimaryExecutorNotApplyingReason());
     }
 
     @Test
@@ -1537,6 +1532,23 @@ public class CallbackResponseTransformerTest {
         assertNull(callbackResponse.getData().getSolsSolicitorIsMainApplicant());
         assertNull(callbackResponse.getData().getSolsSolicitorIsApplying());
         assertNull(callbackResponse.getData().getSolsSolicitorNotApplyingReason());
+    }
+
+    @Test
+    public void shouldClearAdditionalExecListsWhenSolsAdditionalExecListNotEmpty() {
+        caseDataBuilder
+                .solsAdditionalExecutorList(solAdditionalExecutorsApplyingMock)
+                .additionalExecutorsApplying(additionalExecutorsApplyingMock)
+                .additionalExecutorsNotApplying(additionalExecutorsNotApplyingMock);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock);
+
+        assertTrue(callbackResponse.getData().getAdditionalExecutorsApplying().isEmpty());
+        assertTrue(callbackResponse.getData().getAdditionalExecutorsNotApplying().isEmpty());
+        assertFalse(callbackResponse.getData().getSolsAdditionalExecutorList().isEmpty());
     }
 
     @Test
@@ -1620,7 +1632,6 @@ public class CallbackResponseTransformerTest {
 
         assertFalse(callbackResponse.getData().getSolsAdditionalExecutorList().isEmpty());
         assertEquals(YES, callbackResponse.getData().getOtherExecutorExists());
-        assertNull(callbackResponse.getData().getSolsSolicitorNotApplyingReason());
     }
 
     @Test

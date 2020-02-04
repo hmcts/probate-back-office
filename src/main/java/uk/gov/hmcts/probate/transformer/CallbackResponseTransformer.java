@@ -779,9 +779,8 @@ public class CallbackResponseTransformer {
                         .solsSolicitorIsApplying(YES)
                         .solsSolicitorNotApplyingReason(null)
                         .solsPrimaryExecutorNotApplyingReason(null);
-            } else {
+            }  else if (YES.equals(caseData.getSolsSolicitorIsApplying())) {
                 builder
-                        .solsSolicitorNotApplyingReason(null)
                         .solsPrimaryExecutorNotApplyingReason(null);
             }
         } else {
@@ -883,6 +882,14 @@ public class CallbackResponseTransformer {
                 builder.otherExecutorExists(YES);
             }
         }
+
+        if (caseData.getSolsAdditionalExecutorList() != null) {
+            if (!caseData.getSolsAdditionalExecutorList().isEmpty()) {
+                builder
+                        .additionalExecutorsApplying(EMPTY_LIST)
+                        .additionalExecutorsNotApplying(EMPTY_LIST);
+            }
+        }
     }
 
     private void updateCaseBuilderForTransformCase(CaseData caseData, ResponseCaseDataBuilder builder) {
@@ -956,9 +963,8 @@ public class CallbackResponseTransformer {
                         .solsSolicitorIsApplying(YES)
                         .solsSolicitorNotApplyingReason(null)
                         .solsPrimaryExecutorNotApplyingReason(null);
-            } else {
+            } else if (YES.equals(caseData.getSolsSolicitorIsApplying())) {
                 builder
-                        .solsSolicitorNotApplyingReason(null)
                         .solsPrimaryExecutorNotApplyingReason(null);
             }
         } else {
