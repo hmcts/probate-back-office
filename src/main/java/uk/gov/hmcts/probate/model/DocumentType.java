@@ -98,6 +98,9 @@ public enum DocumentType {
     @JsonProperty("statementOfTruth")
     STATEMENT_OF_TRUTH("statementOfTruth"),
 
+    @JsonProperty("welshStatementOfTruth")
+    WELSH_STATEMENT_OF_TRUTH("welshStatementOfTruth"),
+
     @JsonProperty("assembledLetter")
     ASSEMBLED_LETTER("assembledLetter"),
 

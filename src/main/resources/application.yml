@@ -77,6 +77,8 @@ docmosis:
       templateName: FL-PRB-EML-ENG-00086.doc
     statementOfTruth:
       templateName: FL-PRB-SOT-ENG-00090.doc
+    welshStatementOfTruth:
+      templateName: FL-PRB-SOT-WEL-00234.doc
     assembledLetter:
       templateName: FL-PRB-GNO-ENG-00133.docx
     welshDigitalGrant:
