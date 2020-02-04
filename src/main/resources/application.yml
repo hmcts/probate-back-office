@@ -144,13 +144,13 @@ spring:
   database.driverClassName: org.postgresql.Driver
 
 
-spring.document.retriever.service.api.baseurl: dm-store:5006
+spring.document.retriever.service.api.baseurl: localhost:5006
 
 spring.jackson.serialization.write_dates_as_timestamps: false
 
 ####Evidence management Service URL's
 #hard coded to point to docker container ccd-data-store-api CCD_DM_DOMAIN value
-evidence.management.host: http://dm-store:5006
+evidence.management.host: http://localhost:5006
 evidence.management.upload.file.url: /documents
 
 http.connect.timeout: 60000
@@ -372,7 +372,7 @@ document:
   retriever:
     service:
       api:
-        baseurl: dm-store:5006
+        baseurl: localhost:5006
 
 idam:
   s2s-auth:
