@@ -42,6 +42,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.REDEC_NOTIFICATION_SENT_STATE;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 
@@ -296,6 +297,7 @@ public class BusinessValidationControllerTest {
         caseDataBuilder.solsApplicantRelationshipToDeceased(RELATIONSHIP_TO_DECEASED);
         caseDataBuilder.solsMinorityInterest(MINORITY_INTEREST);
         caseDataBuilder.solsApplicantSiblings(APPLICANT_SIBLINGS);
+        caseDataBuilder.solsSolicitorIsExec(NO);
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
         String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
@@ -320,6 +322,7 @@ public class BusinessValidationControllerTest {
         caseDataBuilder.solsResiduaryType(RESIDUARY_TYPE);
         caseDataBuilder.solsLifeInterest(LIFE_INTEREST);
         caseDataBuilder.primaryApplicantEmailAddress(PRIMARY_APPLICANT_EMAIL);
+        caseDataBuilder.solsSolicitorIsExec(NO);
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
         String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);

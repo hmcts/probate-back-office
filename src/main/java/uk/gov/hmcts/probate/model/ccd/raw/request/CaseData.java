@@ -627,7 +627,7 @@ public class CaseData {
                     .additionalExecAliasNameOnWill(exec.getApplyingExecutorOtherNames())
                     .additionalExecReasonNotApplying(null)
                     .build();
-            newAdditionalExecutor = new CollectionMember<>(null, newExec);
+            newAdditionalExecutor = new CollectionMember<>(e.getId(), newExec);
             newAdditionalExecutors.add(newAdditionalExecutor);
         }
 
@@ -673,7 +673,7 @@ public class CaseData {
                     .additionalExecAliasNameOnWill(exec.getNotApplyingExecutorNameOnWill())
                     .additionalExecReasonNotApplying(exec.getNotApplyingExecutorReason())
                     .build();
-            newAdditionalExecutor = new CollectionMember<>(null, newExec);
+            newAdditionalExecutor = new CollectionMember<>(e.getId(), newExec);
             newAdditionalExecutors.add(newAdditionalExecutor);
         }
 
