@@ -863,6 +863,7 @@ public class CallbackResponseTransformer {
 
         if (isSolicitorMainApplicant(caseData)) {
             execsNotApplying = solicitorExecutorService.removeSolicitorAsNotApplyingExecutor(execsNotApplying);
+            execsApplying = solicitorExecutorService.removeSolicitorAsApplyingExecutor(execsApplying);
         }
 
         builder
@@ -1025,6 +1026,7 @@ public class CallbackResponseTransformer {
 
                 if (isSolicitorMainApplicant(caseData)) {
                     execsNotApplying = solicitorExecutorService.removeSolicitorAsNotApplyingExecutor(execsNotApplying);
+                    execsApplying = solicitorExecutorService.removeSolicitorAsApplyingExecutor(execsApplying);
                 }
 
                 builder

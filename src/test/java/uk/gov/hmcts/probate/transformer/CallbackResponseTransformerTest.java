@@ -1347,11 +1347,12 @@ public class CallbackResponseTransformerTest {
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        when(solicitorExecutorService.removeSolicitorAsApplyingExecutor(anyList())).thenReturn(new ArrayList<>());
         when(solicitorExecutorService.removeSolicitorAsNotApplyingExecutor(anyList())).thenReturn(new ArrayList<>());
 
         CallbackResponse callbackResponse = underTest.transform(callbackRequestMock);
 
-        assertFalse(callbackResponse.getData().getAdditionalExecutorsApplying().isEmpty());
+        assertTrue(callbackResponse.getData().getAdditionalExecutorsApplying().isEmpty());
         assertTrue(callbackResponse.getData().getAdditionalExecutorsNotApplying().isEmpty());
         assertEquals(YES, callbackResponse.getData().getPrimaryApplicantIsApplying());
         assertEquals(YES, callbackResponse.getData().getSolsSolicitorIsApplying());
@@ -1379,7 +1380,7 @@ public class CallbackResponseTransformerTest {
 
         CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
 
-        assertFalse(callbackResponse.getData().getAdditionalExecutorsApplying().isEmpty());
+        assertTrue(callbackResponse.getData().getAdditionalExecutorsApplying().isEmpty());
         assertTrue(callbackResponse.getData().getAdditionalExecutorsNotApplying().isEmpty());
         assertEquals(YES, callbackResponse.getData().getPrimaryApplicantIsApplying());
         assertEquals(YES, callbackResponse.getData().getSolsSolicitorIsApplying());
