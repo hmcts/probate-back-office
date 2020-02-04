@@ -25,6 +25,7 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     private static final String CASE_STOPPED = "/notify/case-stopped";
     private static final String INFORMATION_REQUEST_DEFAULT_VALUES = "/notify/request-information-default-values";
     private static final String INFORMATION_REQUEST = "/notify/stopped-information-request";
+    private static final String GRANT_RAISED = "/notify/grant-received";
     private static final String REDEC_SOT_URL = "/notify/redeclaration-sot";
 
     private static final String BIRMINGHAM_NO = "0121 681 3401";
@@ -71,6 +72,16 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     @Test
     public void verifyPersonalApplicantGrantReissuedShouldReturnOkResponseCode() {
         validatePostSuccess("personalPayloadNotifications.json", GRANT_REISSUED);
+    }
+
+    @Test
+    public void verifyPersonalApplicantGrantRaisedWithEmailShouldReturnOkResponseCode() {
+        validatePostSuccess("personalRaiseGrantWithEmailNotifications.json", GRANT_RAISED);
+    }
+
+    @Test
+    public void verifyPersonalApplicantGrantRaisedWithoutEmailShouldReturnOkResponseCode() {
+        validatePostSuccess("personalRaiseGrantWithoutEmailNotifications.json", GRANT_RAISED);
     }
 
     @Test

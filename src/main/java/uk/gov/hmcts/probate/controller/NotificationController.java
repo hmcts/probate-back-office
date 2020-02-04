@@ -20,6 +20,7 @@ import uk.gov.hmcts.probate.service.DocumentGeneratorService;
 import uk.gov.hmcts.probate.service.EventValidationService;
 import uk.gov.hmcts.probate.service.InformationRequestService;
 import uk.gov.hmcts.probate.service.NotificationService;
+import uk.gov.hmcts.probate.service.RaiseGrantOfRepresentationNotificationService;
 import uk.gov.hmcts.probate.service.RedeclarationNotificationService;
 import uk.gov.hmcts.probate.service.docmosis.GrantOfRepresentationDocmosisMapperService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
@@ -30,7 +31,6 @@ import uk.gov.hmcts.probate.validator.EmailAddressNotifyValidationRule;
 import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
 import uk.gov.service.notify.NotificationClientException;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -38,6 +38,7 @@ import java.util.Map;
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static uk.gov.hmcts.probate.model.Constants.YES;
+import static uk.gov.hmcts.probate.model.DocumentType.GRANT_COVERSHEET;
 import static uk.gov.hmcts.probate.model.State.CASE_STOPPED;
 import static uk.gov.hmcts.probate.model.State.CASE_STOPPED_CAVEAT;
 import static uk.gov.hmcts.probate.model.State.DOCUMENTS_RECEIVED;
@@ -62,7 +63,7 @@ public class NotificationController {
     private final GrantOfRepresentationDocmosisMapperService gorDocmosisService;
     private final InformationRequestService informationRequestService;
     private final RedeclarationNotificationService redeclarationNotificationService;
-
+    private final RaiseGrantOfRepresentationNotificationService raiseGrantOfRepresentationNotificationService;
 
     @PostMapping(path = "/documents-received")
     public ResponseEntity<CallbackResponse> sendDocumentReceivedNotification(
@@ -85,48 +86,6 @@ public class NotificationController {
         } else {
             response = callbackResponseTransformer.addDocuments(callbackRequest, documents, null, null);
 
-        }
-        return ResponseEntity.ok(response);
-    }
-
-    @PostMapping(path = "/grant-received")
-    public ResponseEntity<CallbackResponse> sendFormsReceivedNotification(
-            @Validated({EmailAddressNotificationValidationRule.class})
-            @RequestBody CallbackRequest callbackRequest)
-            throws NotificationClientException {
-
-        CallbackResponse response = CallbackResponse.builder().errors(new ArrayList<>()).build();
-        Document document;
-        List<Document> documents = new ArrayList<>();
-        String letterId = null;
-        boolean useEmailNotification =
-                callbackRequest.getCaseDetails().getData().getDefaultValueForEmailNotifications().equals(YES)?true:false;
-
-        if (useEmailNotification) {
-            response = eventValidationService.validateEmailRequest(callbackRequest, emailAddressNotificationValidationRules);
-            if (response.getErrors().isEmpty()) {
-                document = notificationService.sendEmail(GRANT_RAISED, callbackRequest.getCaseDetails());
-                documents.add(document);
-            }
-        } else {
-            Map<String, Object> placeholders = gorDocmosisService.caseDataAsPlaceholders(callbackRequest.getCaseDetails());
-            Document coversheet = pdfManagementService
-                    .generateDocmosisDocumentAndUpload(placeholders, DocumentType.GRANT_COVERSHEET);
-            documents.add(coversheet);
-            Document grantRaisedDoc = pdfManagementService.generateDocmosisDocumentAndUpload(placeholders, DocumentType.GRANT_RAISED);
-            documents.add(grantRaisedDoc);
-
-            if (callbackRequest.getCaseDetails().getData().isSendForBulkPrintingRequested()) {
-                SendLetterResponse letterResponse = bulkPrintService.sendToBulkPrint(callbackRequest, grantRaisedDoc, coversheet);
-                letterId = letterResponse != null
-                        ? letterResponse.letterId.toString()
-                        : null;
-                response = eventValidationService.validateBulkPrintResponse(letterId, bulkPrintValidationRules);
-            }
-        }
-
-        if (response.getErrors().isEmpty()) {
-            response = callbackResponseTransformer.grantRaised(callbackRequest, documents, letterId);
         }
         return ResponseEntity.ok(response);
     }
@@ -199,12 +158,9 @@ public class NotificationController {
     @PostMapping(path = "/request-information-default-values")
     public ResponseEntity<CallbackResponse> requestInformationDefaultValues(
             @RequestBody CallbackRequest callbackRequest) {
-
         CallbackResponse callbackResponse = callbackResponseTransformer.defaultRequestInformationValues(callbackRequest);
-
         return ResponseEntity.ok(callbackResponse);
     }
-
 
     @PostMapping(path = "/stopped-information-request")
     public ResponseEntity<CallbackResponse> informationRequest(@RequestBody CallbackRequest callbackRequest) {
@@ -214,5 +170,12 @@ public class NotificationController {
     @PostMapping(path = "/redeclaration-sot")
     public ResponseEntity<CallbackResponse> redeclarationSot(@RequestBody CallbackRequest callbackRequest) {
         return ResponseEntity.ok(redeclarationNotificationService.handleRedeclarationNotification(callbackRequest));
+    }
+
+    @PostMapping(path = "/grant-received")
+    public ResponseEntity<CallbackResponse> sendGrantReceivedNotification(
+            @Validated({EmailAddressNotificationValidationRule.class})
+            @RequestBody CallbackRequest callbackRequest) throws NotificationClientException {
+        return ResponseEntity.ok(raiseGrantOfRepresentationNotificationService.handleGrantReceivedNotification(callbackRequest));
     }
 }

@@ -113,7 +113,7 @@ public class CallbackResponseTransformer {
         CaseData caseData = caseDetails.getData();
         documents.forEach(document -> documentTransformer.addDocument(callbackRequest, document, true));
 
-        ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(caseDetails, false);
+        ResponseCaseData.ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(caseDetails, false);
 
         if (documentTransformer.hasDocumentWithType(documents, GRANT_RAISED) && letterId != null) {
             CollectionMember<BulkPrint> bulkPrint = buildBulkPrint(letterId, GRANT_RAISED.getTemplateName());
@@ -121,18 +121,6 @@ public class CallbackResponseTransformer {
 
             responseCaseDataBuilder
                     .bulkPrintId(caseData.getBulkPrintId())
-                    .build();
-        }
-
-        if (caseData.getApplicationType() != null) {
-            responseCaseDataBuilder
-                    .applicationSubmittedDate(dateTimeFormatter.format(LocalDate.now()))
-                    .paperForm(caseData.getApplicationType().equals(SOLICITOR) ? NO : YES)
-                    .build();
-        } else {
-            responseCaseDataBuilder
-                    .applicationSubmittedDate(dateTimeFormatter.format(LocalDate.now()))
-                    .paperForm(YES)
                     .build();
         }
 
