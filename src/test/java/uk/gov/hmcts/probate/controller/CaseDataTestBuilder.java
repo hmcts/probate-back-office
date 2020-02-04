@@ -55,13 +55,28 @@ public class CaseDataTestBuilder {
     public static final BigDecimal TOTAL_FEE = BigDecimal.TEN;
     public static final String NEED_TO_UPDATE = "No";
 
-    public static CaseData.CaseDataBuilder build() {
+    public static CaseData.CaseDataBuilder withDefaults() {
 
-        SolsAddress solsAddress = SolsAddress.builder()
+        SolsAddress solsAddress = getSolsAddress();
+
+        return getCaseDataBuilder(solsAddress, PRIMARY_APPLICANT_EMAIL_ADDRESS);
+    }
+
+    private static SolsAddress getSolsAddress() {
+        return SolsAddress.builder()
                 .addressLine1(SOLICITOR_FIRM_LINE1)
                 .postCode(SOLICITOR_FIRM_POSTCODE)
                 .build();
+    }
 
+    public static CaseData.CaseDataBuilder withDefaultsAndNoPrimaryApplicantEmailAddress() {
+
+        SolsAddress solsAddress = getSolsAddress();
+
+        return getCaseDataBuilder(solsAddress, null);
+    }
+
+    private static CaseData.CaseDataBuilder getCaseDataBuilder(SolsAddress solsAddress, String primaryApplicantEmailAddress) {
         return CaseData.builder()
                 .solsSolicitorFirmName(SOLICITOR_FIRM_NAME)
                 .solsSolicitorAddress(solsAddress)
@@ -78,7 +93,7 @@ public class CaseDataTestBuilder {
                 .primaryApplicantAddress(PRIMARY_ADDRESS)
                 .primaryApplicantIsApplying(PRIMARY_APPLICANT_APPLYING)
                 .primaryApplicantHasAlias(PRIMARY_APPLICANT_HAS_ALIAS)
-                .primaryApplicantEmailAddress(PRIMARY_APPLICANT_EMAIL_ADDRESS)
+                .primaryApplicantEmailAddress(primaryApplicantEmailAddress)
                 .otherExecutorExists(OTHER_EXEC_EXISTS)
                 .solsWillType(WILL_TYPE)
                 .willExists(WILL_EXISTS)
@@ -99,11 +114,6 @@ public class CaseDataTestBuilder {
                 .extraCopiesOfGrant(EXTRA_UK)
                 .outsideUKGrantCopies(EXTRA_OUTSIDE_UK)
                 .totalFee(TOTAL_FEE);
-    }
-
-    CaseDataTestBuilder withPrimaryApplicantEmailAddress(String primaryApplicantEmailAddress){
-
-        return this;
     }
 
 }

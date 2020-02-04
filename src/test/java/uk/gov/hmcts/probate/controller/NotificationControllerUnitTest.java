@@ -12,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import uk.gov.hmcts.probate.model.State;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
-import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.service.BulkPrintService;
@@ -28,6 +27,7 @@ import uk.gov.hmcts.probate.validator.BulkPrintValidationRule;
 import uk.gov.hmcts.probate.validator.EmailAddressNotificationValidationRule;
 import uk.gov.hmcts.probate.validator.EmailAddressNotifyValidationRule;
 import uk.gov.service.notify.NotificationClientException;
+import static org.hamcrest.Matchers.empty;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -83,7 +83,6 @@ public class NotificationControllerUnitTest {
     private ArgumentCaptor<List<Document>> documents;
 
 
-    private CaseData.CaseDataBuilder caseDataBuilder = CaseDataTestBuilder.build();
     private CallbackRequest callbackRequest;
     private Document document;
 
@@ -98,9 +97,13 @@ public class NotificationControllerUnitTest {
     @Test
     public void shouldAddDocumentEvenIfNoEmailAddressPresent() throws IOException, NotificationClientException {
 
+        CaseDetails caseDetails = new CaseDetails(CaseDataTestBuilder.withDefaultsAndNoPrimaryApplicantEmailAddress().build(), LAST_MODIFIED, ID);
+        callbackRequest = new CallbackRequest(caseDetails);
+        when(callbackResponseTransformer.addDocuments(any(CallbackRequest.class), documents.capture(), nullable(String.class), nullable(String.class))).thenReturn(CallbackResponse.builder().errors(new ArrayList<>()).build());
         ResponseEntity<String> stringResponseEntity = notificationController.sendApplicationReceivedNotification(callbackRequest);
         assertThat(stringResponseEntity.getStatusCode(), is(HttpStatus.OK));
-        verifyDocumentsAreAdded();
+        verifyNoDocumentsAreAdded();
+        verifyNoMoreInteractions(notificationService);
     }
 
     @Test
@@ -118,6 +121,12 @@ public class NotificationControllerUnitTest {
         assertThat(docs, hasItems(document));
     }
 
+    private void verifyNoDocumentsAreAdded() {
+        verify(callbackResponseTransformer).addDocuments(any(CallbackRequest.class), documents.capture(), isNull(), isNull());
+        List<Document> docs = documents.getValue();
+        assertThat(docs, is(empty()));
+    }
+
     @Test
     public void shouldSendDocumentsReceived() throws IOException, NotificationClientException {
         setUpMocks(DOCUMENTS_RECEIVED);
@@ -127,7 +136,9 @@ public class NotificationControllerUnitTest {
 
 
     private void setUpMocks(State state, String ...errors) throws NotificationClientException {
-        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        CaseDetails caseDetails = new CaseDetails(CaseDataTestBuilder.withDefaults().build(), LAST_MODIFIED, ID);
+        callbackRequest = new CallbackRequest(caseDetails);
+        when(eventValidationService.validateEmailRequest(any(CallbackRequest.class), anyList())).thenReturn(CallbackResponse.builder().errors(Arrays.asList(errors)).build());
         document = Document.builder().build();
         when(notificationService.sendEmail(state, caseDetails)).thenReturn(document);
         when(callbackResponseTransformer.addDocuments(any(CallbackRequest.class), documents.capture(), nullable(String.class), nullable(String.class))).thenReturn(CallbackResponse.builder().errors(new ArrayList<>()).build());

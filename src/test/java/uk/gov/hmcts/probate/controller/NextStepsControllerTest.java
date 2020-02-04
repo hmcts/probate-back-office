@@ -43,7 +43,7 @@ public class NextStepsControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    private CaseDataBuilder  caseDataBuilder = CaseDataTestBuilder.build();
+    private CaseDataBuilder  caseDataBuilder = CaseDataTestBuilder.withDefaults();
 
     @MockBean
     AppInsights appInsights;

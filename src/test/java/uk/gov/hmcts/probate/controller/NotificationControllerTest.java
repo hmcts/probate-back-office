@@ -25,7 +25,6 @@ import uk.gov.hmcts.probate.service.BulkPrintService;
 import uk.gov.hmcts.probate.service.DocumentGeneratorService;
 import uk.gov.hmcts.probate.service.DocumentService;
 import uk.gov.hmcts.probate.service.EventValidationService;
-import uk.gov.hmcts.probate.service.InformationRequestCorrespondenceService;
 import uk.gov.hmcts.probate.service.InformationRequestService;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.RedeclarationNotificationService;
@@ -36,7 +35,6 @@ import uk.gov.hmcts.probate.util.TestUtils;
 import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
 import uk.gov.service.notify.NotificationClientException;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -422,11 +420,8 @@ public class NotificationControllerTest {
         mockMvc.perform(post("/notify/application-received")
                 .content(personalPayload)
                 .contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.errors[0]")
-                        .value("There is no email address for this applicant. "
-                                + "To continue the application, go back and select no to sending an email."))
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string(containsString("There is no email address for this applicant. To continue the application, go back and select no to sending an email.")));
 
     }
 
