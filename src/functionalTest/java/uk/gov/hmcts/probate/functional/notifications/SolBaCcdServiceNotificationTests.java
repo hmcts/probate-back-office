@@ -85,6 +85,12 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     }
 
     @Test
+    public void verifyPersonalApplicantGrantReceivedContentIsOk() {
+        String document = sendEmail("personalRaiseGrantWithEmailNotifications.json", GRANT_RAISED, EMAIL_NOTIFICATION_URL);
+        verifyPAEmailNotificationReceived(document);
+    }
+
+    @Test
     public void verifyPersonalApplicantGrantIssuedContentIsOk() {
         String document = sendEmail("personalPayloadNotifications.json", GRANT_ISSUED, EMAIL_NOTIFICATION_URL);
         verifyPAEmailNotificationReceived(document);
