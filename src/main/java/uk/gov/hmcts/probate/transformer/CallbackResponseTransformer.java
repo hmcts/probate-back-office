@@ -699,11 +699,18 @@ public class CallbackResponseTransformer {
                 .bulkPrintPdfSize(caseData.getBulkPrintPdfSize())
                 .bulkPrintSendLetterId(caseData.getBulkPrintSendLetterId());
 
+        if (YES.equals(caseData.getSolsSolicitorIsMainApplicant())) {
+            builder
+                    .primaryApplicantSecondPhoneNumber(null)
+                    .primaryApplicantRelationshipToDeceased(null);
+        }
+
         return builder;
     }
 
     private void updateCaseBuilder(CaseData caseData, ResponseCaseDataBuilder builder) {
         builder
+                .primaryApplicantAlias(caseData.getPrimaryApplicantAlias())
                 .additionalExecutorsNotApplying(caseData.getAdditionalExecutorsNotApplying())
                 .solsAdditionalExecutorList(caseData.getSolsAdditionalExecutorList());
 
@@ -790,7 +797,7 @@ public class CallbackResponseTransformer {
                         .primaryApplicantPhoneNumber(caseData.getSolsSolicitorPhoneNumber())
                         .primaryApplicantEmailAddress(caseData.getSolsSolicitorEmail())
                         .primaryApplicantAddress(caseData.getSolsSolicitorAddress())
-                        .primaryApplicantAlias(NO)
+                        .primaryApplicantAlias(null)
                         .primaryApplicantHasAlias(NO)
                         .primaryApplicantIsApplying(YES)
                         .solsSolicitorIsApplying(YES)
@@ -887,7 +894,6 @@ public class CallbackResponseTransformer {
                 .additionalExecutorsApplying(execsApplying)
                 .additionalExecutorsNotApplying(execsNotApplying)
                 .solsAdditionalExecutorList(caseData.getSolsAdditionalExecutorList())
-                .primaryApplicantAlias(caseData.getPrimaryApplicantAlias())
                 .solsExecutorAliasNames(caseData.getSolsExecutorAliasNames());
 
         if (WILL_LEFT.equals(caseData.getSolsWillType()) && caseData.getSolsFeeAccountNumber() == null) {
@@ -913,6 +919,7 @@ public class CallbackResponseTransformer {
     private void updateCaseBuilderForTransformCase(CaseData caseData, ResponseCaseDataBuilder builder) {
         builder
                 .ihtReferenceNumber(caseData.getIhtReferenceNumber())
+                .primaryApplicantAlias(caseData.getPrimaryApplicantAlias())
                 .solsDeceasedAliasNamesList(caseData.getSolsDeceasedAliasNamesList());
 
         if (caseData.getApplicationType() != PERSONAL) {
@@ -975,7 +982,7 @@ public class CallbackResponseTransformer {
                         .primaryApplicantPhoneNumber(caseData.getSolsSolicitorPhoneNumber())
                         .primaryApplicantEmailAddress(caseData.getSolsSolicitorEmail())
                         .primaryApplicantAddress(caseData.getSolsSolicitorAddress())
-                        .primaryApplicantAlias(NO)
+                        .primaryApplicantAlias(null)
                         .primaryApplicantHasAlias(NO)
                         .primaryApplicantIsApplying(YES)
                         .solsSolicitorIsApplying(YES)
@@ -1003,14 +1010,17 @@ public class CallbackResponseTransformer {
                     .dateOfDeathType(DATE_OF_DEATH_TYPE_DEFAULT);
         }
 
-        if (caseData.getSolsExecutorAliasNames() != null) {
+        if (isSolicitorMainApplicant(caseData)) {
             builder
-                    .primaryApplicantAlias(caseData.getSolsExecutorAliasNames())
-                    .solsExecutorAliasNames(null);
+                    .primaryApplicantAlias(null);
+        } else if (caseData.getSolsExecutorAliasNames() != null) {
+                builder
+                        .primaryApplicantAlias(caseData.getSolsExecutorAliasNames())
+                        .solsExecutorAliasNames(null);
         } else {
-            builder
-                    .primaryApplicantAlias(caseData.getPrimaryApplicantAlias())
-                    .solsExecutorAliasNames(caseData.getSolsExecutorAliasNames());
+                builder
+                        .primaryApplicantAlias(caseData.getPrimaryApplicantAlias())
+                        .solsExecutorAliasNames(caseData.getSolsExecutorAliasNames());
         }
 
         List<CollectionMember<AdditionalExecutorApplying>> execsApplying = new ArrayList<>();

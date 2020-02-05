@@ -232,6 +232,7 @@ public class CallbackResponseTransformerTest {
 
     private static final String DECEASED_DIVORCED_IN_ENGLAND_OR_WALES = YES;
     private static final String PRIMARY_APPLICANT_ADOPTION_IN_ENGLAND_OR_WALES = NO;
+    private static final String PRIMARY_APPLICANT_RELATIONSHIP_TO_DECEASED = "partner";
     private static final String DECEASED_SPOUSE_NOT_APPLYING_REASON = "notApplyingReason";
     private static final String DECEASED_OTHER_CHILDREN = YES;
     private static final String ALL_DECEASED_CHILDREN_OVER_EIGHTEEN = YES;
@@ -1379,6 +1380,9 @@ public class CallbackResponseTransformerTest {
                 .solsSolicitorIsApplying(NO)
                 .solsSolicitorNotApplyingReason(SOLICITOR_SOT_NOT_APPLYING_REASON)
                 .solsPrimaryExecutorNotApplyingReason(SOLICITOR_SOT_NOT_APPLYING_REASON)
+                .primaryApplicantAlias(PRIMARY_EXEC_ALIAS_NAMES)
+                .primaryApplicantSecondPhoneNumber(EXEC_PHONE)
+                .primaryApplicantRelationshipToDeceased(PRIMARY_APPLICANT_RELATIONSHIP_TO_DECEASED)
                 .additionalExecutorsApplying(additionalExecutorsApplyingMock)
                 .additionalExecutorsNotApplying(additionalExecutorsNotApplyingMock);
 
@@ -1391,10 +1395,15 @@ public class CallbackResponseTransformerTest {
 
         assertTrue(callbackResponse.getData().getAdditionalExecutorsApplying().isEmpty());
         assertTrue(callbackResponse.getData().getAdditionalExecutorsNotApplying().isEmpty());
+
         assertEquals(YES, callbackResponse.getData().getPrimaryApplicantIsApplying());
         assertEquals(YES, callbackResponse.getData().getSolsSolicitorIsApplying());
+
         assertNull(callbackResponse.getData().getSolsSolicitorNotApplyingReason());
         assertNull(callbackResponse.getData().getSolsPrimaryExecutorNotApplyingReason());
+        assertNull(callbackResponse.getData().getPrimaryApplicantAlias());
+        assertNull(callbackResponse.getData().getPrimaryApplicantSecondPhoneNumber());
+        assertNull(callbackResponse.getData().getPrimaryApplicantRelationshipToDeceased());
     }
 
     @Test
@@ -1409,6 +1418,9 @@ public class CallbackResponseTransformerTest {
                 .solsSolicitorIsApplying(NO)
                 .solsSolicitorNotApplyingReason(SOLICITOR_SOT_NOT_APPLYING_REASON)
                 .solsPrimaryExecutorNotApplyingReason(SOLICITOR_SOT_NOT_APPLYING_REASON)
+                .primaryApplicantAlias(PRIMARY_EXEC_ALIAS_NAMES)
+                .primaryApplicantSecondPhoneNumber(EXEC_PHONE)
+                .primaryApplicantRelationshipToDeceased(PRIMARY_APPLICANT_RELATIONSHIP_TO_DECEASED)
                 .additionalExecutorsApplying(additionalExecutorsApplyingMock)
                 .additionalExecutorsNotApplying(additionalExecutorsNotApplyingMock);
 
@@ -1419,10 +1431,15 @@ public class CallbackResponseTransformerTest {
 
         assertTrue(callbackResponse.getData().getAdditionalExecutorsApplying().isEmpty());
         assertTrue(callbackResponse.getData().getAdditionalExecutorsNotApplying().isEmpty());
+
         assertEquals(YES, callbackResponse.getData().getPrimaryApplicantIsApplying());
         assertEquals(YES, callbackResponse.getData().getSolsSolicitorIsApplying());
+
         assertNull(callbackResponse.getData().getSolsSolicitorNotApplyingReason());
         assertNull(callbackResponse.getData().getSolsPrimaryExecutorNotApplyingReason());
+        assertNull(callbackResponse.getData().getPrimaryApplicantAlias());
+        assertNull(callbackResponse.getData().getPrimaryApplicantSecondPhoneNumber());
+        assertNull(callbackResponse.getData().getPrimaryApplicantRelationshipToDeceased());
     }
 
     @Test
