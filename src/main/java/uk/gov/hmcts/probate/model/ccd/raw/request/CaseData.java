@@ -77,8 +77,8 @@ public class CaseData {
 
     private final String solsSolicitorPhoneNumber;
 
-    @NotBlank(groups = {ApplicationCreatedGroup.class}, message = "{solsSolicitorIsApplyingExecIsNull}")
-    private final String solsSolicitorIsApplyingExec;
+    @NotBlank(groups = {ApplicationCreatedGroup.class}, message = "{solsSolicitorIsExecIsNull}")
+    private final String solsSolicitorIsExec;
 
     private final String solsSolicitorIsMainApplicant;
 
@@ -627,7 +627,7 @@ public class CaseData {
                     .additionalExecAliasNameOnWill(exec.getApplyingExecutorOtherNames())
                     .additionalExecReasonNotApplying(null)
                     .build();
-            newAdditionalExecutor = new CollectionMember<>(null, newExec);
+            newAdditionalExecutor = new CollectionMember<>(e.getId(), newExec);
             newAdditionalExecutors.add(newAdditionalExecutor);
         }
 
@@ -673,7 +673,7 @@ public class CaseData {
                     .additionalExecAliasNameOnWill(exec.getNotApplyingExecutorNameOnWill())
                     .additionalExecReasonNotApplying(exec.getNotApplyingExecutorReason())
                     .build();
-            newAdditionalExecutor = new CollectionMember<>(null, newExec);
+            newAdditionalExecutor = new CollectionMember<>(e.getId(), newExec);
             newAdditionalExecutors.add(newAdditionalExecutor);
         }
 
@@ -681,7 +681,7 @@ public class CaseData {
     }
 
     private List<String> splitFullname(String fullName) {
-        return Arrays.asList(fullName.split(" "));
+        return new ArrayList<>(Arrays.asList(fullName.split(" ")));
     }
 
     private boolean isApplying(CollectionMember<AdditionalExecutor> ex, boolean applying) {

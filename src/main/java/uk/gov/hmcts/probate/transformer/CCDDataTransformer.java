@@ -39,7 +39,7 @@ public class CCDDataTransformer {
                 .solicitorReference(notNullWrapper(caseData.getSolsSolicitorAppReference()))
                 .caseSubmissionDate(getCaseSubmissionDate(callbackRequest.getCaseDetails().getLastModified()))
                 .solsWillType(callbackRequest.getCaseDetails().getData().getSolsWillType())
-                .solsSolicitorIsApplyingExec(callbackRequest.getCaseDetails().getData().getSolsSolicitorIsApplyingExec())
+                .solsSolicitorIsExec(callbackRequest.getCaseDetails().getData().getSolsSolicitorIsExec())
                 .solsSolicitorIsMainApplicant(callbackRequest.getCaseDetails().getData().getSolsSolicitorIsMainApplicant())
                 .solsSolicitorIsApplying(callbackRequest.getCaseDetails().getData().getSolsSolicitorIsApplying())
                 .solsSolicitorNotApplyingReason(callbackRequest.getCaseDetails().getData().getSolsSolicitorNotApplyingReason())

@@ -26,24 +26,41 @@ public class SolsExecutorRuleTest {
     }
 
     @Test
-    public void shouldNeedChangeMainApplicant() {
-        when(caseDataMock.getSolsSolicitorIsMainApplicant()).thenReturn("Yes");
-        when(caseDataMock.getSolsSolicitorIsApplying()).thenReturn("No");
+    public void shouldNeedChangeSolIsExecAndIntestacy() {
+        when(caseDataMock.getSolsWillType()).thenReturn("NoWill");
+        when(caseDataMock.getSolsSolicitorIsExec()).thenReturn("Yes");
 
         assertTrue(underTest.isChangeNeeded(caseDataMock));
     }
 
     @Test
-    public void shouldNeedChangeNoMainApplicant() {
-        when(caseDataMock.getSolsSolicitorIsApplyingExec()).thenReturn("Yes");
-        when(caseDataMock.getSolsSolicitorIsMainApplicant()).thenReturn("No");
+    public void shouldNeedChangeSolIsExecAndAdmonWill() {
+        when(caseDataMock.getSolsWillType()).thenReturn("WillLeftAnnexed");
+        when(caseDataMock.getSolsSolicitorIsExec()).thenReturn("Yes");
 
         assertTrue(underTest.isChangeNeeded(caseDataMock));
     }
 
     @Test
-    public void shouldNotNeedChange() {
+    public void shouldNotNeedChangeIfGrantOfProbate() {
         when(caseDataMock.getSolsWillType()).thenReturn("WillLeft");
+        when(caseDataMock.getSolsSolicitorIsExec()).thenReturn("Yes");
+
+        assertFalse(underTest.isChangeNeeded(caseDataMock));
+    }
+
+    @Test
+    public void shouldNotNeedChangeIfSolIsNOTExecAndIntestacy() {
+        when(caseDataMock.getSolsWillType()).thenReturn("NoWill");
+        when(caseDataMock.getSolsSolicitorIsExec()).thenReturn("No");
+
+        assertFalse(underTest.isChangeNeeded(caseDataMock));
+    }
+
+    @Test
+    public void shouldNotNeedChangeIfSolIsNOTExecAndAdmonWill() {
+        when(caseDataMock.getSolsWillType()).thenReturn("WillLeftAnnexed");
+        when(caseDataMock.getSolsSolicitorIsExec()).thenReturn("No");
 
         assertFalse(underTest.isChangeNeeded(caseDataMock));
     }

@@ -9,7 +9,6 @@ import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
 import static net.serenitybdd.rest.SerenityRest.given;
-import static org.hamcrest.Matchers.equalToIgnoringCase;
 
 
 @RunWith(SerenityRunner.class)
@@ -47,7 +46,7 @@ public class SolCcdServiceNextStepsTests extends IntegrationTestBase {
 
     @Test
     public void verifySolicitorSOTNameInTheReturnedMarkdown() {
-        validatePostRequestSuccessForLegalStatement("TestSOTName");
+        validatePostRequestSuccessForLegalStatement("Solicitor_fn Solicitor_ln");
     }
 
     @Test
@@ -81,8 +80,13 @@ public class SolCcdServiceNextStepsTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyEmptySolicitorSOTNamedReturnsError() {
-        validatePostRequestFailureForLegalStatement("\"solsSOTName\": \"TestSOTName\"", "\"solsSOTName\": \"\"", "caseDetails.data.solsSOTName");
+    public void verifyEmptySolicitorSOTForenamesReturnsError() {
+        validatePostRequestFailureForLegalStatement("\"solsSOTForenames\": \"Solicitor_fn\"", "\"solsSOTForenames\": \"\"", "caseDetails.data.solsSOTForenames");
+    }
+
+    @Test
+    public void verifyEmptySolicitorSOTSurnameReturnsError() {
+        validatePostRequestFailureForLegalStatement("\"solsSOTSurname\": \"Solicitor_ln\"", "\"solsSOTSurname\": \"\"", "caseDetails.data.solsSOTSurname");
     }
 
     @Test
@@ -92,28 +96,20 @@ public class SolCcdServiceNextStepsTests extends IntegrationTestBase {
 
     @Test
     public void verifyEmptySolicitorFirmAddressLine1ReturnsError() {
-        given().relaxedHTTPSValidation()
-                .headers(utils.getHeaders())
-                .body(utils.getJsonFromFile("failure.missingSolicitorAddressLine1.json"))
-                .post("/nextsteps/validate").then().statusCode(400)
-                .and().body("fieldErrors[0].field", equalToIgnoringCase("caseDetails.data.solsSolicitorAddress.addressLine1"))
-                .and().body("message", equalToIgnoringCase("Invalid payload"));
+        verifyAll("/nextsteps/validate", "failure.missingSolicitorAddressLine1.json", 400, "Invalid payload",
+            "caseDetails.data.solsSolicitorAddress.addressLine1");
     }
 
     @Test
     public void verifyEmptySolicitorFirmPostcodeReturnsError() {
-        given().relaxedHTTPSValidation()
-                .headers(utils.getHeaders())
-                .body(utils.getJsonFromFile("failure.missingSolicitorPostcode.json"))
-                .post("/nextsteps/validate").then().statusCode(400)
-                .and().body("fieldErrors[0].field", equalToIgnoringCase("caseDetails.data.solsSolicitorAddress.postCode"))
-                .and().body("message", equalToIgnoringCase("Invalid payload"));
+        verifyAll("/nextsteps/validate", "failure.missingSolicitorPostcode.json", 400, "Invalid payload",
+            "caseDetails.data.solsSolicitorAddress.postCode");
     }
 
     private void validatePostRequestSuccessForLegalStatement(String validationString) {
         Response response = given()
                 .relaxedHTTPSValidation()
-                .headers(utils.getHeadersWithUserId())
+                .headers(utils.getHeaders())
                 .body(utils.getJsonFromFile("success.nextsteps.json"))
                 .post("/nextsteps/confirmation");
 
@@ -123,15 +119,26 @@ public class SolCcdServiceNextStepsTests extends IntegrationTestBase {
     }
 
     private void validatePostRequestFailureForLegalStatement(String oldString, String replacingString, String errorMsg) {
-        given().relaxedHTTPSValidation()
-                .headers(utils.getHeaders())
-                .body(replaceString(oldString, replacingString))
-                .post("/nextsteps/validate").then().statusCode(400)
-                .and().body("fieldErrors[0].field", equalToIgnoringCase(errorMsg))
-                .and().body("message", equalToIgnoringCase("Invalid payload"));
+        Response response = given().relaxedHTTPSValidation()
+            .headers(utils.getHeaders())
+            .body(replaceString(oldString, replacingString))
+            .post("/nextsteps/validate");
+        assertEquals(400, response.getStatusCode());
+        assertEquals(response.getBody().jsonPath().get("message"), "Invalid payload");
+        assertTrue(response.getBody().asString().contains(errorMsg));
     }
 
     private String replaceString(String oldJson, String newJson) {
         return utils.getJsonFromFile("success.nextsteps.json").replace(oldJson, newJson);
+    }
+
+    private void verifyAll(String url, String jsonInput, int statusCode, String message, String fieldError) {
+        Response response = given().relaxedHTTPSValidation()
+            .headers(utils.getHeaders())
+            .body(utils.getJsonFromFile(jsonInput))
+            .post(url);
+        assertEquals(statusCode, response.getStatusCode());
+        assertEquals(response.getBody().jsonPath().get("message"), message);
+        assertTrue(response.getBody().asString().contains(fieldError));
     }
 }

@@ -138,7 +138,7 @@ public class NextStepsControllerTest {
                 .solsSOTNeedToUpdate(NEED_TO_UPDATE)
                 .solsSOTForenames(SOLICITOR_FORENAME)
                 .solsSOTSurname(SOLICITOR_SURNAME)
-                .solsSolicitorIsApplyingExec(SOLICITOR_APPLYING)
+                .solsSolicitorIsExec(SOLICITOR_APPLYING)
                 .solsSolicitorIsMainApplicant(SOLICITOR_IS_MAIN_APPLICANT)
                 .solsSolicitorIsApplying(SOLICITOR_APPLYING)
                 .solsSolicitorNotApplyingReason(SOLS_NOT_APPLYING_REASON)

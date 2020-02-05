@@ -189,7 +189,7 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     private void verifySolsEmailNotificationReceived(String document){
         assertTrue(document.contains("1231-3984-3949-0300"));
         assertTrue(document.contains("Birmingham"));
-        assertTrue(document.contains("name"));
+        assertTrue(document.contains("Solicitor_fn Solicitor_ln"));
         assertTrue(document.contains("Deceased First Name Deceased Last Name"));
         assertTrue(document.contains(BIRMINGHAM_NO));
     }
@@ -198,7 +198,7 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
         assertTrue(document.contains(SOLS_STOP_DETAILS));
         assertTrue(document.contains("1231-3984-3949-0300"));
         assertTrue(document.contains("Birmingham"));
-        assertTrue(document.contains("name"));
+        assertTrue(document.contains("Solicitor_fn Solicitor_ln"));
         assertTrue(document.contains("1528365719153338"));
         assertTrue(document.contains("1st January 2000"));
         assertTrue(document.contains("Deceased First Name Deceased Last Name"));
