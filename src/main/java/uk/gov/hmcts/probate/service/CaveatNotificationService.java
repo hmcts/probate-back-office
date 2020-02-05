@@ -20,12 +20,15 @@ import uk.gov.service.notify.NotificationClientException;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import static uk.gov.hmcts.probate.model.Constants.CAVEAT_LIFESPAN;
-import static uk.gov.hmcts.probate.model.State.*;
+import static uk.gov.hmcts.probate.model.State.CAVEAT_EXTEND;
+import static uk.gov.hmcts.probate.model.State.CAVEAT_RAISED;
+import static uk.gov.hmcts.probate.model.State.CAVEAT_RAISED_SOLS;
+import static uk.gov.hmcts.probate.model.State.CAVEAT_WITHDRAW;
 
 @Service
 @Slf4j
@@ -140,6 +143,7 @@ public class CaveatNotificationService {
     public CaveatCallbackResponse withdraw(CaveatCallbackRequest caveatCallbackRequest) throws NotificationClientException  {
         CaveatCallbackResponse caveatCallbackResponse = CaveatCallbackResponse.builder().errors(new ArrayList<>()).build();
         List<Document> documents = new ArrayList<>();
+        String letterId = null;
         if (caveatCallbackRequest.getCaseDetails().getData().isCaveatEmailNotificationRequested()){
             caveatCallbackResponse = eventValidationService.validateCaveatRequest(caveatCallbackRequest, emailValidationRuleCaveats);
              if (caveatCallbackResponse.getErrors().isEmpty()) {
@@ -148,11 +152,24 @@ public class CaveatNotificationService {
             } else {
                 return caveatCallbackResponse;
             }
+        } else {
+            Map<String, Object> placeholders = caveatDocmosisService.caseDataAsPlaceholders(caveatCallbackRequest.getCaseDetails());
+            Document coversheet = pdfManagementService
+                    .generateDocmosisDocumentAndUpload(placeholders, DocumentType.CAVEAT_COVERSHEET);
+            documents.add(coversheet);
+            Document caveatRaisedDoc = pdfManagementService.generateDocmosisDocumentAndUpload(placeholders, DocumentType.CAVEAT_WITHDRAWN);
+            documents.add(caveatRaisedDoc);
+            if (caveatCallbackRequest.getCaseDetails().getData().isSendForBulkPrintingRequested()) {
+                SendLetterResponse response = bulkPrintService.sendToBulkPrint(caveatCallbackRequest, caveatRaisedDoc, coversheet);
+                letterId = Optional.ofNullable(response).map(data -> data.letterId.toString()).orElse(letterId);
+
+                caveatCallbackResponse = eventValidationService.validateCaveatBulkPrintResponse(letterId, bulkPrintValidationRules);
+            }
         }
 
-        if (caveatCallbackResponse.getErrors().isEmpty()) {
-            caveatCallbackResponse = caveatCallbackResponseTransformer.withDrawn(caveatCallbackRequest, documents, null);
-        }
+       if (caveatCallbackResponse.getErrors().isEmpty()) {
+            caveatCallbackResponse = caveatCallbackResponseTransformer.withdrawn(caveatCallbackRequest, documents, letterId);
+       }
         return caveatCallbackResponse;
     }
     
