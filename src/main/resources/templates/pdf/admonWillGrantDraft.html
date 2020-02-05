@@ -58,6 +58,10 @@
             text-transform: uppercase;
         }
 
+        .lowerCase {
+            text-transform: lowercase;
+        }
+
         .circle {
             border-radius: 50%;
             border: 1px solid black;
@@ -176,7 +180,7 @@
         <td colspan="3" class="text-header">
             <br/>
             <br/>
-            <Strong>Letter of Administration with will</Strong>
+            <Strong>Letters of Administration with will</Strong>
             <br/>
             <br/>
         </td>
@@ -192,8 +196,7 @@
     <tr>
         <td colspan="3" class="text-leftAligned">
             <p>
-                {% if case_details.case_data.boDeceasedTitle != null and case_details.case_data.boDeceasedTitle != "" %}{{ case_details.case_data.boDeceasedTitle }}{% endif %} <strong>{{case_details.case_data.deceasedForenames}} {{case_details.case_data.deceasedSurname}}</strong> {% if case_details.case_data.boDeceasedHonours != null and case_details.case_data.boDeceasedHonours != "" %}{{ case_details.case_data.boDeceasedHonours }}{% endif %}
-                of  <strong>{% if case_details.case_data.deceasedAddress.AddressLine1 != null and case_details.case_data.deceasedAddress.AddressLine1 != "" %}{{ case_details.case_data.deceasedAddress.AddressLine1}}{% endif %}
+                {% if case_details.case_data.boDeceasedTitle != null and case_details.case_data.boDeceasedTitle != "" %}{{ case_details.case_data.boDeceasedTitle }}{% endif %} <strong>{{case_details.case_data.deceasedForenames}} {{case_details.case_data.deceasedSurname}}</strong> {% if case_details.case_data.boDeceasedHonours != null and case_details.case_data.boDeceasedHonours != "" %}{{ case_details.case_data.boDeceasedHonours }}{% endif %}{% if case_details.case_data.solsDeceasedAliasNamesList != null and case_details.case_data.solsDeceasedAliasNamesList != "" %}{% for alias in case_details.case_data.solsDeceasedAliasNamesList %}{% if loop.first %} otherwise {{alias.value.SolsAliasname}}{% else %}, {{alias.value.SolsAliasname}}{% endif %}{% endfor %}{% endif %}  of  <strong>{% if case_details.case_data.deceasedAddress.AddressLine1 != null and case_details.case_data.deceasedAddress.AddressLine1 != "" %}{{ case_details.case_data.deceasedAddress.AddressLine1}}{% endif %}
                 {% if case_details.case_data.deceasedAddress.AddressLine2 != null and case_details.case_data.deceasedAddress.AddressLine2 != "" %} {{case_details.case_data.deceasedAddress.AddressLine2}}{% endif %}
                 {% if case_details.case_data.deceasedAddress.AddressLine3 != null and case_details.case_data.deceasedAddress.AddressLine3 != "" %} {{case_details.case_data.deceasedAddress.AddressLine3}}{% endif %}
                 {% if case_details.case_data.deceasedAddress.PostTown != null and case_details.case_data.deceasedAddress.PostTown != "" %} {{case_details.case_data.deceasedAddress.PostTown}}{% endif %}
@@ -201,7 +204,6 @@
                 {% if case_details.case_data.deceasedAddress.PostCode != null and case_details.case_data.deceasedAddress.PostCode != ""%} {{case_details.case_data.deceasedAddress.PostCode}}{% endif %}
                 {% if case_details.case_data.deceasedAddress.Country != null and case_details.case_data.deceasedAddress.Country != ""%} {{case_details.case_data.deceasedAddress.Country}}{% endif %}</strong>
 
-                {% if case_details.case_data.solsDeceasedAliasNamesList != null and case_details.case_data.solsDeceasedAliasNamesList != "" %}{% for alias in case_details.case_data.solsDeceasedAliasNamesList %}{% if loop.first %}<br />Otherwise {{alias.value.SolsAliasname}}{% else %}, {{alias.value.SolsAliasname}}{% endif %}{% endfor %} {% endif %}
                 <br />{% if case_details.case_data.dateOfDeathType == null %}
                 Died on
                 {% elseif case_details.case_data.dateOfDeathType == "diedOnOrAbout" %}
@@ -216,7 +218,7 @@
                 Died on
                 {% endif %} <strong>{{case_details.case_data.deceasedDateOfDeathFormatted}}</strong> domiciled in <strong>{% if case_details.case_data.domicilityCountry != null and case_details.case_data.domicilityCountry != "" %}{{case_details.case_data.domicilityCountry}}{% else %}England and Wales{% endif %}</strong>
             </p>
-            <p>The Last Will and Testament <strong><span class="camelCase">
+            <p>The Last Will and Testament <strong><span class="lowerCase">
                 {% if case_details.case_data.boWillMessage != null and case_details.case_data.boWillMessage != ""%}{{ case_details.case_data.boWillMessage }}{% endif %}
                 </span></strong> of <strong>{{case_details.case_data.deceasedForenames}} {{case_details.case_data.deceasedSurname}}</strong> (An official copy of which is available from the Court) was proved and registered before the High Court of Justice.
                 The Administration of <strong>{{case_details.case_data.deceasedForenames}} {{case_details.case_data.deceasedSurname}}</strong>'s estate is granted by this court to the following administrator{% set applyingExecCounter = 0 %}{% for executor

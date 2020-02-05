@@ -38,6 +38,7 @@ import uk.gov.hmcts.probate.service.client.DocumentStoreClient;
 import uk.gov.hmcts.probate.service.template.pdf.LocalDateToWelshStringConverter;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.validator.EmailAddressNotificationValidationRule;
+import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.authorisation.generators.ServiceAuthTokenGenerator;
 import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
 import uk.gov.service.notify.NotificationClient;
@@ -113,7 +114,7 @@ public class NotificationServiceTest {
     private DateFormatterService dateFormatterService;
 
     @MockBean
-    private ServiceAuthTokenGenerator tokenGenerator;
+    private AuthTokenGenerator tokenGenerator;
 
     @MockBean
     private DocumentStoreClient documentStoreClient;
