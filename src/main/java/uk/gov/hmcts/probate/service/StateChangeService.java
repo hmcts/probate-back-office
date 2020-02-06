@@ -12,6 +12,7 @@ import uk.gov.hmcts.probate.changerule.MinorityInterestRule;
 import uk.gov.hmcts.probate.changerule.NoOriginalWillRule;
 import uk.gov.hmcts.probate.changerule.RenouncingRule;
 import uk.gov.hmcts.probate.changerule.ResiduaryRule;
+import uk.gov.hmcts.probate.changerule.SolsExecutorRule;
 import uk.gov.hmcts.probate.changerule.SpouseOrCivilRule;
 import uk.gov.hmcts.probate.changerule.UpdateApplicationRule;
 import uk.gov.hmcts.probate.model.ExecutorsApplyingNotification;
@@ -32,6 +33,7 @@ public class StateChangeService {
     private static final String STATE_GRANT_TYPE_PROBATE = "SolProbateCreated";
     private static final String STATE_GRANT_TYPE_INTESTACY = "SolIntestacyCreated";
     private static final String STATE_GRANT_TYPE_ADMON = "SolAdmonCreated";
+    private static final String STATE_GRANT_TYPE_CREATED = "SolAppCreated";
 
     private static final String GRANT_TYPE_PROBATE = "WillLeft";
     private static final String GRANT_TYPE_INTESTACY = "NoWill";
@@ -47,6 +49,7 @@ public class StateChangeService {
     private final NoOriginalWillRule noOriginalWillRule;
     private final RenouncingRule renouncingRule;
     private final ResiduaryRule residuaryRule;
+    private final SolsExecutorRule solsExecutorRule;
     private final SpouseOrCivilRule spouseOrCivilRule;
     private final UpdateApplicationRule updateApplicationRule;
     private final CallbackResponseTransformer callbackResponseTransformer;
@@ -92,6 +95,10 @@ public class StateChangeService {
             return Optional.of(STATE_STOPPED);
         }
 
+        if (solsExecutorRule.isChangeNeeded(caseData)) {
+            return Optional.of(STATE_STOPPED);
+        }
+
         if (spouseOrCivilRule.isChangeNeeded(caseData)) {
             return Optional.of(STATE_STOPPED);
         }
@@ -123,17 +130,16 @@ public class StateChangeService {
             return Optional.of(STATE_STOPPED);
         }
 
+        if (solsExecutorRule.isChangeNeeded(caseData)) {
+            return Optional.of(STATE_STOPPED);
+        }
+
         return Optional.empty();
     }
 
     public Optional<String> getChangedStateForCaseReview(CaseData caseData) {
         if (updateApplicationRule.isChangeNeeded(caseData)) {
-            if (caseData.getSolsWillType().equals(GRANT_TYPE_PROBATE)) {
-                return Optional.of(STATE_GRANT_TYPE_PROBATE);
-            } else if (caseData.getSolsWillType().equals(GRANT_TYPE_INTESTACY)) {
-                return Optional.of(STATE_GRANT_TYPE_INTESTACY);
-            }
-            return Optional.of(STATE_GRANT_TYPE_ADMON);
+            return Optional.of(STATE_GRANT_TYPE_CREATED);
         }
         return Optional.empty();
     }

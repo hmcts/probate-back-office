@@ -33,7 +33,7 @@ import static uk.gov.hmcts.probate.controller.CaseDataTestBuilder.SOLICITOR_FIRM
 @SpringBootTest
 @AutoConfigureMockMvc
 public class NextStepsControllerTest {
-
+  
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private static final String NEXTSTEPS_CONFIRMATION_URL = "/nextsteps/confirmation";
 
@@ -99,8 +99,8 @@ public class NextStepsControllerTest {
     }
 
     @Test
-    public void shouldConfirmNextStepsWithSolsSOTNameIsNullError() throws Exception {
-        caseDataBuilder.solsSOTName(null);
+    public void shouldConfirmNextStepsWithSolsSOTForenamesIsNullError() throws Exception {
+        caseDataBuilder.solsSOTForenames(null);
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
 
@@ -109,9 +109,25 @@ public class NextStepsControllerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.fieldErrors[0].param").value("callbackRequest"))
-                .andExpect(jsonPath("$.fieldErrors[0].field").value("caseDetails.data.solsSOTName"))
+                .andExpect(jsonPath("$.fieldErrors[0].field").value("caseDetails.data.solsSOTForenames"))
                 .andExpect(jsonPath("$.fieldErrors[0].code").value("NotBlank"))
-                .andExpect(jsonPath("$.fieldErrors[0].message").value("Solicitor SOT name cannot be empty"));
+                .andExpect(jsonPath("$.fieldErrors[0].message").value("Solicitor SOT forenames cannot be empty"));
+    }
+
+    @Test
+    public void shouldConfirmNextStepsWithSolsSOTSurnameIsNullError() throws Exception {
+        caseDataBuilder.solsSOTSurname(null);
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
+
+        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
+        mockMvc.perform(post(NEXTSTEPS_CONFIRMATION_URL).content(json).contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.fieldErrors[0].param").value("callbackRequest"))
+                .andExpect(jsonPath("$.fieldErrors[0].field").value("caseDetails.data.solsSOTSurname"))
+                .andExpect(jsonPath("$.fieldErrors[0].code").value("NotBlank"))
+                .andExpect(jsonPath("$.fieldErrors[0].message").value("Solicitor SOT surname cannot be empty"));
     }
 
     @Test

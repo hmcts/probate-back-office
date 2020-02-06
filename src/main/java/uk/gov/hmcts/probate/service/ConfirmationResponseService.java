@@ -16,6 +16,7 @@ import uk.gov.hmcts.probate.changerule.MinorityInterestRule;
 import uk.gov.hmcts.probate.changerule.NoOriginalWillRule;
 import uk.gov.hmcts.probate.changerule.RenouncingRule;
 import uk.gov.hmcts.probate.changerule.ResiduaryRule;
+import uk.gov.hmcts.probate.changerule.SolsExecutorRule;
 import uk.gov.hmcts.probate.changerule.SpouseOrCivilRule;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
 import uk.gov.hmcts.probate.model.ccd.Executor;
@@ -72,6 +73,7 @@ public class ConfirmationResponseService {
     private final NoOriginalWillRule noOriginalWillRule;
     private final RenouncingRule renouncingConfirmationResponseRule;
     private final ResiduaryRule residuaryRule;
+    private final SolsExecutorRule solsExecutorConfirmationResponseRule;
     private final SpouseOrCivilRule spouseOrCivilConfirmationResponseRule;
 
     private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -138,6 +140,11 @@ public class ConfirmationResponseService {
                 return response.get();
             }
 
+            response = getStopBodyMarkdown(caseData, solsExecutorConfirmationResponseRule, STOP_BODY);
+            if (response.isPresent()) {
+                return response.get();
+            }
+
             response = getStopBodyMarkdown(caseData, spouseOrCivilConfirmationResponseRule, STOP_BODY);
             if (response.isPresent()) {
                 return response.get();
@@ -166,6 +173,11 @@ public class ConfirmationResponseService {
             }
 
             response = getStopBodyMarkdown(caseData, residuaryRule, STOP_BODY);
+            if (response.isPresent()) {
+                return response.get();
+            }
+
+            response = getStopBodyMarkdown(caseData, solsExecutorConfirmationResponseRule, STOP_BODY);
             if (response.isPresent()) {
                 return response.get();
             }
