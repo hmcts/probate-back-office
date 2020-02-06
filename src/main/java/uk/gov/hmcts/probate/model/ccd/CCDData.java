@@ -22,6 +22,10 @@ public class CCDData implements Serializable {
     private final String boExaminationChecklistQ1;
     private final String boExaminationChecklistQ2;
     private final String applicationType;
+    private final String solsSolicitorIsExec;
+    private final String solsSolicitorIsMainApplicant;
+    private final String solsSolicitorIsApplying;
+    private final String solsSolicitorNotApplyingReason;
     private final String solsWillType;
     private final String primaryApplicantEmailAddress;
     private final String solsSolicitorEmail;

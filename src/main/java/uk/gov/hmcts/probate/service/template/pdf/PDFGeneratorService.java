@@ -28,8 +28,6 @@ import static uk.gov.hmcts.probate.insights.AppInsightsEvent.REQUEST_SENT;
 @RequiredArgsConstructor
 public class PDFGeneratorService {
 
-    private final PlaceholderDecorator placeholderDecorator;
-
     public static final String TEMPLATE_EXTENSION = ".html";
     private final FileSystemResourceService fileSystemResourceService;
     private final PDFServiceConfiguration pdfServiceConfiguration;
@@ -53,7 +51,6 @@ public class PDFGeneratorService {
             placeholders) {
         byte[] postResult;
         try {
-            placeholderDecorator.decorate(placeholders);
             postResult = docmosisPdfGenerationService.generateDocFrom(templateName, placeholders);
         } catch (PDFServiceClientException e) {
             log.error(e.getMessage(), e);
