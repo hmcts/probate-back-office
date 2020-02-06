@@ -21,25 +21,28 @@ import java.time.format.DateTimeParseException;
 @Slf4j
 public class DataExtractScheduleValidator {
     private final DataExtractConfiguration dataExtractConfiguration;
+    private static final String SCHEDULE_EXELA = "EXELA";
+    private static final String SCHEDULE_HMRC = "HMRC";
+    private static final String SCHEDULE_IRON = "IRON MOUNTAIN";
 
     public void validateHmrc(String pathKey) {
-        validateScheduleKey(dataExtractConfiguration.getHmrc(), pathKey);
+        validateScheduleKey(SCHEDULE_HMRC, dataExtractConfiguration.getHmrc(), pathKey);
     }
 
     public void validateIronMountain(String pathKey) {
-        validateScheduleKey(dataExtractConfiguration.getIron(), pathKey);
+        validateScheduleKey(SCHEDULE_IRON, dataExtractConfiguration.getIron(), pathKey);
     }
 
     public void validateExela(String pathKey) {
-        validateScheduleKey(dataExtractConfiguration.getExela(), pathKey);
+        validateScheduleKey(SCHEDULE_EXELA, dataExtractConfiguration.getExela(), pathKey);
     }
 
-    private void validateScheduleKey(String cronConfig, String pathKey) {
+    private void validateScheduleKey(String scheduleType, String cronConfig, String pathKey) {
         try {
             String decodedKey = URLDecoder.decode(pathKey, StandardCharsets.UTF_8.name());
             log.error("Decoded key/config {} / {} ", decodedKey, cronConfig);
             if (!cronConfig.equals(decodedKey)) {
-                log.error("Data extract for {} does not have a valid auth key", pathKey);
+                log.error("Data extract for {} does not have a valid auth key", scheduleType);
                 throw new DataExtractUnauthorisedException();
             }
         } catch (UnsupportedEncodingException e) {
