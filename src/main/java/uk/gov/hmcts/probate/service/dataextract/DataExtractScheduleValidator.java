@@ -46,7 +46,7 @@ public class DataExtractScheduleValidator {
                 throw new DataExtractUnauthorisedException();
             }
         } catch (UnsupportedEncodingException e) {
-            log.error("Error decoding pathKey {} / {} ", pathKey, cronConfig);
+            log.error("Error decoding pathKey {}", pathKey, cronConfig);
         }
     }
 
