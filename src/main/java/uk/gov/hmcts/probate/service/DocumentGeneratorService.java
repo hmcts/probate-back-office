@@ -143,7 +143,7 @@ public class DocumentGeneratorService {
 
     public Document generateSoT(CallbackRequest callbackRequest) {
         Document statementOfTruth;
-
+        DocumentType documentType = DocumentType.STATEMENT_OF_TRUTH;
         switch (callbackRequest.getCaseDetails().getData().getApplicationType()) {
             case SOLICITOR:
                 log.info("Initiate call to generate SoT for case id: {}", callbackRequest.getCaseDetails().getId());
@@ -152,11 +152,14 @@ public class DocumentGeneratorService {
                 break;
             case PERSONAL:
             default:
-                log.info("Initiate call to generate SoT for case id: {}", callbackRequest.getCaseDetails().getId());
-                Map<String, Object> placeholders =
-                        genericMapperService.addCaseDataWithRegistryProperties(callbackRequest.getCaseDetails());
-                statementOfTruth = pdfManagementService.generateDocmosisDocumentAndUpload(placeholders,
-                        DocumentType.STATEMENT_OF_TRUTH);
+                CaseDetails caseDetails = callbackRequest.getCaseDetails();
+                log.info("Initiate call to generate SoT for case id: {}", caseDetails.getId());
+                Map<String, Object> placeholders = genericMapperService.addCaseDataWithRegistryProperties(caseDetails);
+                if(caseDetails.getData().isLanguagePreferenceWelsh()) {
+                    placeholderDecorator.decorate(placeholders);
+                    documentType = DocumentType.WELSH_STATEMENT_OF_TRUTH;
+                }
+                statementOfTruth = pdfManagementService.generateDocmosisDocumentAndUpload(placeholders, documentType);
                 log.info("Successful response for SoT for case id: {}", callbackRequest.getCaseDetails().getId());
                 break;
         }
