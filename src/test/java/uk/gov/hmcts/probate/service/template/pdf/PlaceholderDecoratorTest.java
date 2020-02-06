@@ -22,6 +22,8 @@ public class PlaceholderDecoratorTest {
 
     private static final String DECEASED_DATE_OF_DEATH = "deceasedDateOfDeath";
     private static final String DECEASED_DATE_OF_DEATH_IN_WELSH = "deceasedDateOfDeathInWelsh";
+    private static final String DECEASED_DATE_OF_BIRTH = "deceasedDateOfBirth";
+    private static final String DECEASED_DATE_OF_BIRTH_IN_WELSH = "deceasedDateOfBirthInWelsh";
     private static final String GRANT_ISSUED_DATE = "grantIssuedDate";
     private static final String GRANT_ISSUED_DATE_IN_WELSH = "grantIssuedDateInWelsh";
 
@@ -41,6 +43,13 @@ public class PlaceholderDecoratorTest {
         assertEquals("19 Hydref 2018", placeholders.get(DECEASED_DATE_OF_DEATH_IN_WELSH));
     }
 
+    @Test
+    public void decorate_date_of_birth() {
+        Map<String, Object> placeholders = new HashMap<>();
+        placeholders.put(DECEASED_DATE_OF_BIRTH, String.valueOf(LocalDate.of(2018,10,19)));
+        placeholderDecorator.decorate(placeholders);
+        assertEquals("19 Hydref 2018", placeholders.get(DECEASED_DATE_OF_BIRTH_IN_WELSH));
+    }
     @Test
     public void decorate_when_grant_issued_not_provided() {
         Map<String, Object> placeholders = new HashMap<>();
