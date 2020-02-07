@@ -48,9 +48,7 @@ public class HmrcFileService extends BaseFileService {
     }).collect(Collectors.toMap(data -> data[0], data -> data[1]));
 
     public File createHmrcFile(List<ReturnedCaseDetails> ccdCases, String fileName) {
-        log.info("Creating HMRC file={}", fileName);
         ImmutableList.Builder<String> fileData = prepareFileData(ccdCases, fileName);
-        log.info("Created HMRC file={}", fileName);
         return textFileBuilderService.createFile(fileData.build(), DELIMITER, fileName);
     }
 

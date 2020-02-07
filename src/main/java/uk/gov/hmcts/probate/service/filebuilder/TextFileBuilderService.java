@@ -29,6 +29,7 @@ public class TextFileBuilderService {
 
     private void writeDataToFile(String data, String delimiter) {
         try {
+            log.info("data="+data);
             writer.write(data);
             if (!data.contains("\n")) {
                 writer.write(delimiter);
@@ -39,16 +40,19 @@ public class TextFileBuilderService {
     }
 
     public File createFile(List<String> data, String delimiter, String fileName) {
+        log.info("Creating file={} with {} rows", fileName, data.size());
         openWriter(fileName);
         for (String item : data) {
             writeDataToFile(item, delimiter);
         }
         try {
+            log.info("Closing file={}", fileName);
             writer.close();
         } catch (IOException e) {
             log.error("Unable to close writer. " + e.getMessage());
         }
 
+        log.info("Created file={}", fileName);
         return new File(sanitiseFilePath(fileName));
     }
 }
