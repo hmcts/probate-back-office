@@ -15,12 +15,12 @@ public class FileTransferService {
 
     private final FileTransferApi fileTransferApi;
     private static final String VALID_FROM = "2019-02-02";
-    private static final String SS = "b";
+    private static final String SS = "bfqt";
     private static final String SRT = "sco";
-    private static final String SP = "rwdlac";
-    private static final String SIG_EXPIRY_DATE = "2029-01-31T20:35:04Z";
-    private static final String SIG_CREATION_DATE = "2020-01-31T12:35:04Z";
-    private static final String SPR = "https";
+    private static final String SP = "rwdlacup";
+    private static final String SIG_EXPIRY_DATE = "2029-02-07T22:04:58Z";
+    private static final String SIG_CREATION_DATE = "2020-02-07T14:04:58Z";
+    private static final String SPR = "https,http";
 
     @Value("${ftp.client.signature}")
     private String signature;
@@ -35,6 +35,8 @@ public class FileTransferService {
 
     public int uploadFile(File file) {
         log.info("Starting file upload to ftp for file:" +file.toPath() + ":" + file.getName());
+        log.info("signature="+signature);
+        log.info("targetEnv="+targetEnv);
         Response response;
         try {
             response = fileTransferApi.sendFile(
