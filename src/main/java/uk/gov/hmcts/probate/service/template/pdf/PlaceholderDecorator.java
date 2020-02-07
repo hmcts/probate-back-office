@@ -29,6 +29,7 @@ public class PlaceholderDecorator {
             String deceasedDate = (String) placeholders.get(DECEASED_DATE_OF_DEATH);
             placeholders.put(DECEASED_DATE_OF_DEATH_IN_WELSH, localDateToWelshStringConverter.convert(LocalDate.parse(deceasedDate)));
         }
+
         if (placeholders.get(DECEASED_DATE_OF_BIRTH) != null) {
             String deceasedDateOfBirth = (String) placeholders.get(DECEASED_DATE_OF_BIRTH);
             placeholders.put(DECEASED_DATE_OF_BIRTH_IN_WELSH, localDateToWelshStringConverter.convert(LocalDate.parse(deceasedDateOfBirth)));
