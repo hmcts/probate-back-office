@@ -47,14 +47,21 @@ public class IdamAuthenticateUserService {
 
     public String getIdamOauth2Token() {
         String authorisation = email + ":" + password;
+        log.info(email + ":" + password);
         String base64Authorisation = Base64.getEncoder().encodeToString(authorisation.getBytes());
+        log.info("base64Authorisation:" + base64Authorisation);
+        log.info("CODE:" + CODE);
+        log.info("id:" + id);
+        log.info("redirect:" + redirect);
 
+        try {
         AuthenticateUserResponse authenticateUserResponse = idamApi.authenticateUser(
             BASIC + base64Authorisation,
             CODE,
             id,
             redirect
         );
+            log.info("authenticateUserResponse.code" + authenticateUserResponse.getCode());
 
         TokenExchangeResponse tokenExchangeResponse = idamApi.exchangeCode(
             authenticateUserResponse.getCode(),
@@ -63,7 +70,12 @@ public class IdamAuthenticateUserService {
             id,
             secret
         );
+            log.info("tokenExchangeResponse.getAccessToken" + tokenExchangeResponse.getAccessToken());
         return BEARER + tokenExchangeResponse.getAccessToken();
+        } catch (Exception e) {
+            log.error("Exception" + e.getMessage());
+            throw e;
+        }
     }
 
 }
