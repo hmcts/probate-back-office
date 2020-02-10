@@ -423,4 +423,11 @@ file name: spring-jcl-5.1.5.RELEASE.jar
         <gav regex="true">^org\.springframework:spring-jcl:.*$</gav>
         <cve>CVE-2020-5398</cve>
     </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: checkstyle-8.18.jar
+   ]]></notes>
+        <gav regex="true">^com\.puppycrawl\.tools:checkstyle:.*$</gav>
+        <cve>CVE-2019-10782</cve>
+    </suppress>
 </suppressions>
