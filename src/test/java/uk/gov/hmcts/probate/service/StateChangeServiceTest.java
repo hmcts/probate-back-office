@@ -16,6 +16,7 @@ import uk.gov.hmcts.probate.changerule.MinorityInterestRule;
 import uk.gov.hmcts.probate.changerule.NoOriginalWillRule;
 import uk.gov.hmcts.probate.changerule.RenouncingRule;
 import uk.gov.hmcts.probate.changerule.ResiduaryRule;
+import uk.gov.hmcts.probate.changerule.SolsExecutorRule;
 import uk.gov.hmcts.probate.changerule.SpouseOrCivilRule;
 import uk.gov.hmcts.probate.changerule.UpdateApplicationRule;
 import uk.gov.hmcts.probate.model.ExecutorsApplyingNotification;
@@ -61,6 +62,8 @@ public class StateChangeServiceTest {
     @Mock
     private ResiduaryRule residuaryRule;
     @Mock
+    private SolsExecutorRule solsExecutorRule;
+    @Mock
     private SpouseOrCivilRule spouseOrCivilRule;
     @Mock
     private UpdateApplicationRule updateApplicationRule;
@@ -76,6 +79,7 @@ public class StateChangeServiceTest {
     private static final String STATE_GRANT_TYPE_PROBATE = "SolProbateCreated";
     private static final String STATE_GRANT_TYPE_INTESTACY = "SolIntestacyCreated";
     private static final String STATE_GRANT_TYPE_ADMON = "SolAdmonCreated";
+    private static final String STATE_GRANT_TYPE_CREATED = "SolAppCreated";
     private static final Long ID = 1L;
     private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
     private static final Long CASE_ID = 12345678987654321L;
@@ -90,7 +94,7 @@ public class StateChangeServiceTest {
 
         underTest = new StateChangeService(applicantSiblingsRule, diedOrNotApplyingRule, domicilityRule,
                 entitledMinorityRule, executorsStateRule, lifeInterestRule, minorityInterestRule, noOriginalWillRule,
-                renouncingRule, residuaryRule, spouseOrCivilRule, updateApplicationRule, callbackResponseTransformer);
+                renouncingRule, residuaryRule, solsExecutorRule,spouseOrCivilRule, updateApplicationRule, callbackResponseTransformer);
 
         execList = new ArrayList<>();
         execResponseReceived = new CollectionMember<>(
@@ -317,6 +321,35 @@ public class StateChangeServiceTest {
     }
 
     @Test
+    public void shouldChangeStateForSolsExecutorRuleIntestacyValid() {
+        when(solsExecutorRule.isChangeNeeded(caseDataMock)).thenReturn(true);
+
+        Optional<String> newState = underTest.getChangedStateForIntestacyUpdate(caseDataMock);
+
+        assertTrue(newState.isPresent());
+        assertEquals("Stopped", newState.get());
+    }
+
+    @Test
+    public void shouldChangeStateForSolsExecutorRuleAdmonValid() {
+        when(solsExecutorRule.isChangeNeeded(caseDataMock)).thenReturn(true);
+
+        Optional<String> newState = underTest.getChangedStateForAdmonUpdate(caseDataMock);
+
+        assertTrue(newState.isPresent());
+        assertEquals("Stopped", newState.get());
+    }
+
+    @Test
+    public void shouldNOTChangeStateForSolsExecutorRule() {
+        when(solsExecutorRule.isChangeNeeded(caseDataMock)).thenReturn(false);
+
+        Optional<String> newState = underTest.getChangedStateForCaseUpdate(caseDataMock);
+
+        assertEquals(Optional.empty(), newState);
+    }
+
+    @Test
     public void shouldChangeStateForSpouseOrCivilRuleValid() {
         when(spouseOrCivilRule.isChangeNeeded(caseDataMock)).thenReturn(true);
 
@@ -348,36 +381,13 @@ public class StateChangeServiceTest {
     }
 
     @Test
-    public void shouldChangeStateProbateForCaseReview() {
+    public void shouldChangeStateForCaseReview() {
         when(updateApplicationRule.isChangeNeeded(caseDataMock)).thenReturn(true);
-        when(caseDataMock.getSolsWillType()).thenReturn(WILL_TYPE_PROBATE);
 
         Optional<String> newState = underTest.getChangedStateForCaseReview(caseDataMock);
 
         assertTrue(newState.isPresent());
-        assertEquals(STATE_GRANT_TYPE_PROBATE, newState.get());
-    }
-
-    @Test
-    public void shouldChangeStateIntestacyForCaseReview() {
-        when(updateApplicationRule.isChangeNeeded(caseDataMock)).thenReturn(true);
-        when(caseDataMock.getSolsWillType()).thenReturn(WILL_TYPE_INTESTACY);
-
-        Optional<String> newState = underTest.getChangedStateForCaseReview(caseDataMock);
-
-        assertTrue(newState.isPresent());
-        assertEquals(STATE_GRANT_TYPE_INTESTACY, newState.get());
-    }
-
-    @Test
-    public void shouldChangeStateAdmonForCaseReview() {
-        when(updateApplicationRule.isChangeNeeded(caseDataMock)).thenReturn(true);
-        when(caseDataMock.getSolsWillType()).thenReturn(WILL_TYPE_ADMON);
-
-        Optional<String> newState = underTest.getChangedStateForCaseReview(caseDataMock);
-
-        assertTrue(newState.isPresent());
-        assertEquals(STATE_GRANT_TYPE_ADMON, newState.get());
+        assertEquals(STATE_GRANT_TYPE_CREATED, newState.get());
     }
 
     @Test
