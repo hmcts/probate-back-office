@@ -166,5 +166,13 @@ public class CaveatController {
         return ResponseEntity.ok(caveatCallbackResponse);
     }
 
+    @PostMapping(path = "/extend")
+    public ResponseEntity<CaveatCallbackResponse> extend(@RequestBody CaveatCallbackRequest caveatCallbackRequest)
+        throws NotificationClientException {
+
+        CaveatCallbackResponse response = caveatNotificationService.caveatExtend(caveatCallbackRequest);
+
+        return ResponseEntity.ok(response);
+    }
 
 }

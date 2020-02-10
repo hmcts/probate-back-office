@@ -28,6 +28,7 @@ import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
 import static uk.gov.hmcts.probate.model.Constants.CTSC;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
+import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT_EXTENDED;
 import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT_RAISED;
 
 @Component
@@ -71,6 +72,14 @@ public class CaveatCallbackResponseTransformer {
                     .paperForm(YES)
                     .build();
         }
+
+        return transformResponse(responseCaveatDataBuilder.build());
+    }
+
+    public CaveatCallbackResponse caveatExtendExpiry(CaveatCallbackRequest caveatCallbackRequest, List<Document> documents, String letterId) {
+        CaveatDetails caveatDetails = caveatCallbackRequest.getCaseDetails();
+        documents.forEach(document -> documentTransformer.addDocument(caveatCallbackRequest, document));
+        ResponseCaveatDataBuilder responseCaveatDataBuilder = getResponseCaveatData(caveatDetails);
 
         return transformResponse(responseCaveatDataBuilder.build());
     }
@@ -128,7 +137,9 @@ public class CaveatCallbackResponseTransformer {
         ResponseCaveatData.ResponseCaveatDataBuilder responseCaseDataBuilder = getResponseCaveatData(caveatCallbackRequest.getCaseDetails());
 
         String defaultExpiry = dateTimeFormatter.format(caveatCallbackRequest.getCaseDetails().getData().getExpiryDate().plusMonths(6));
-        return transformResponse(responseCaseDataBuilder.expiryDate(defaultExpiry).build());
+        return transformResponse(responseCaseDataBuilder.expiryDate(defaultExpiry)
+            .caveatRaisedEmailNotification(caveatCallbackRequest.getCaseDetails().getData().getCaveatRaisedEmailNotification())
+            .build());
     }
 
     public CaveatCallbackResponse transformResponseWithNoChanges(CaveatCallbackRequest caveatCallbackRequest) {

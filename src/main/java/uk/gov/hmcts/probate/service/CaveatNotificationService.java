@@ -19,10 +19,12 @@ import uk.gov.service.notify.NotificationClientException;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
 import static uk.gov.hmcts.probate.model.Constants.CAVEAT_LIFESPAN;
+import static uk.gov.hmcts.probate.model.State.CAVEAT_EXTEND;
 import static uk.gov.hmcts.probate.model.State.CAVEAT_RAISED;
 import static uk.gov.hmcts.probate.model.State.CAVEAT_RAISED_SOLS;
 
@@ -49,7 +51,7 @@ public class CaveatNotificationService {
         CaveatDetails caveatDetails = caveatCallbackRequest.getCaseDetails();
         setCaveatExpiryDate(caveatDetails.getData());
 
-        if (caveatDetails.getData().isCaveatRaisedEmailNotificationRequested()) {
+        if (caveatDetails.getData().isCaveatEmailNotificationRequested()) {
             caveatCallbackResponse = eventValidationService.validateCaveatRequest(caveatCallbackRequest, emailValidationRuleCaveats);
             if (caveatCallbackResponse.getErrors().isEmpty()) {
                 document = notificationService.sendCaveatEmail(CAVEAT_RAISED, caveatDetails);
@@ -94,6 +96,25 @@ public class CaveatNotificationService {
             caveatCallbackResponse = caveatCallbackResponseTransformer.caveatRaised(caveatCallbackRequest, documents, null);
         }
         return caveatCallbackResponse;
+    }
+
+    public CaveatCallbackResponse caveatExtend(CaveatCallbackRequest caveatCallbackRequest)
+        throws NotificationClientException {
+        CaveatCallbackResponse response = null;
+        if (caveatCallbackRequest.getCaseDetails().getData().isCaveatEmailNotificationRequested()) {
+            response = eventValidationService.validateCaveatRequest(caveatCallbackRequest, emailValidationRuleCaveats);
+            if (response.getErrors().isEmpty()) {
+                Document document = notificationService.sendCaveatEmail(CAVEAT_EXTEND, caveatCallbackRequest.getCaseDetails());
+                ArrayList<Document> documents = new ArrayList(Arrays.asList(document));
+                response = caveatCallbackResponseTransformer.caveatExtendExpiry(caveatCallbackRequest, documents, null);
+            } else {
+                return response;
+            }
+        } else {
+            response = caveatCallbackResponseTransformer.transformResponseWithNoChanges(caveatCallbackRequest);
+        }
+
+        return response;
     }
 
     private void setCaveatExpiryDate(CaveatData caveatData) {
