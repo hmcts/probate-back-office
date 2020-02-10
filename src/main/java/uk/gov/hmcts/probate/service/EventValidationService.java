@@ -11,7 +11,6 @@ import uk.gov.hmcts.probate.model.ccd.caveat.response.CaveatCallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.transformer.CCDDataTransformer;
-import uk.gov.hmcts.probate.transformer.CaveatDataTransformer;
 import uk.gov.hmcts.probate.validator.BulkPrintValidationRule;
 import uk.gov.hmcts.probate.validator.EmailValidationRule;
 import uk.gov.hmcts.probate.validator.ValidationRule;
@@ -26,7 +25,6 @@ import java.util.stream.Collectors;
 public class EventValidationService {
 
     private final CCDDataTransformer ccdBeanTransformer;
-    private final CaveatDataTransformer caveatDataTransformer;
 
     public List<FieldErrorResponse> validate(CCDData form, List<? extends ValidationRule> rules) {
         return rules.stream()
@@ -69,7 +67,7 @@ public class EventValidationService {
     public CaveatCallbackResponse validateCaveatRequest(CaveatCallbackRequest callbackRequest,
                                                   List<? extends ValidationRuleCaveats> rules) {
 
-        CaveatData caveatData = caveatDataTransformer.transformCaveats(callbackRequest);
+        CaveatData caveatData = ccdBeanTransformer.transformCaveats(callbackRequest);
 
         List<FieldErrorResponse> businessErrors = validateCaveat(caveatData, rules);
 

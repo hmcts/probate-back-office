@@ -98,7 +98,7 @@ public class CaveatCallbackResponseTransformer {
         return transformResponse(responseCaveatData);
     }
 
-    public CaveatCallbackResponse transformForSolicitor(CaveatCallbackRequest callbackRequest) {
+    public CaveatCallbackResponse transform(CaveatCallbackRequest callbackRequest) {
         ResponseCaveatData responseCaveatData = getResponseCaveatData(callbackRequest.getCaseDetails())
                 .applicationType(SOLICITOR)
                 .paperForm(NO)
@@ -120,19 +120,6 @@ public class CaveatCallbackResponseTransformer {
         storedMatches.sort(Comparator.comparingInt(m -> ofNullable(m.getValue().getValid()).orElse("").length()));
 
         ResponseCaveatData.ResponseCaveatDataBuilder responseCaseDataBuilder = getResponseCaveatData(request.getCaseDetails());
-
-        return transformResponse(responseCaseDataBuilder.build());
-    }
-
-    public CaveatCallbackResponse transformResponseWithExtendedExpiry(CaveatCallbackRequest caveatCallbackRequest) {
-        ResponseCaveatData.ResponseCaveatDataBuilder responseCaseDataBuilder = getResponseCaveatData(caveatCallbackRequest.getCaseDetails());
-
-        String defaultExpiry = dateTimeFormatter.format(caveatCallbackRequest.getCaseDetails().getData().getExpiryDate().plusMonths(6));
-        return transformResponse(responseCaseDataBuilder.expiryDate(defaultExpiry).build());
-    }
-
-    public CaveatCallbackResponse transformResponseWithNoChanges(CaveatCallbackRequest caveatCallbackRequest) {
-        ResponseCaveatData.ResponseCaveatDataBuilder responseCaseDataBuilder = getResponseCaveatData(caveatCallbackRequest.getCaseDetails());
 
         return transformResponse(responseCaseDataBuilder.build());
     }

@@ -6,7 +6,6 @@ import org.mockito.Mock;
 import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
 import uk.gov.hmcts.probate.transformer.CCDDataTransformer;
-import uk.gov.hmcts.probate.transformer.CaveatDataTransformer;
 import uk.gov.hmcts.probate.validator.ValidationRule;
 
 import java.util.Arrays;
@@ -27,15 +26,13 @@ public class EventValidationServiceTest {
     private FieldErrorResponse fieldErrorResponse2Mock;
     @Mock
     private CCDDataTransformer ccdBeanTransformer;
-    @Mock
-    private CaveatDataTransformer caveatDataTransformer;
 
     private SimpleValidationRule validationRule;
 
 
     @Before
     public void setup() {
-        eventValidationService = new EventValidationService(ccdBeanTransformer, caveatDataTransformer);
+        eventValidationService = new EventValidationService(ccdBeanTransformer);
         validationRule = new SimpleValidationRule();
     }
 

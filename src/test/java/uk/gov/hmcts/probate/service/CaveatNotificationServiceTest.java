@@ -18,7 +18,6 @@ import uk.gov.hmcts.probate.service.docmosis.CaveatDocmosisService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CaveatCallbackResponseTransformer;
 import uk.gov.hmcts.probate.validator.BulkPrintValidationRule;
-import uk.gov.hmcts.probate.validator.CaveatsEmailValidationRule;
 import uk.gov.hmcts.probate.validator.ValidationRuleCaveats;
 import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
 import uk.gov.service.notify.NotificationClientException;
@@ -50,7 +49,7 @@ public class CaveatNotificationServiceTest {
     private EventValidationService eventValidationService;
 
     @Mock
-    private List<CaveatsEmailValidationRule> emailAddressNotificationValidationRules;
+    private List<ValidationRuleCaveats> emailAddressNotificationValidationRules;
 
     @Mock
     private List<BulkPrintValidationRule> bulkPrintValidationRules;
