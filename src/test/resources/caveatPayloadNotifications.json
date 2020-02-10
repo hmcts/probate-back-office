@@ -19,6 +19,7 @@
       "applicationType": "Personal",
       "registryLocation": "Leeds",
       "caveatRaisedEmailNotificationRequested": "Yes",
+      "caveatExtendEmailNotificationRequested": "Yes",
       "sendToBulkPrintRequested": "No",
       "deceasedSurname": "dl name 2",
       "deceasedDateOfDeath": "2017-12-31",

@@ -23,8 +23,8 @@ management:
 
 authorised.services: probate_backend,ccd_data,ccd-datamgmt-api,ccd_ps,ccd,bulk_scan_processor,bulk_scan_orchestrator
 auth.provider.service.client:
-  key: AAAAAAAAAAAAAAAA
-  baseUrl: http://localhost:4502
+  key: ${S2S_AUTH_TOTP_SECRET:AAAAAAAAAAAAAAAA}
+  baseUrl: ${S2S_AUTH_URL:http://localhost:4502}
   microservice: probate_backend
   tokenTimeToLiveInSeconds: 900
 
@@ -154,7 +154,7 @@ evidence.management.upload.file.url: /documents
 http.connect.timeout: 60000
 http.connect.request.timeout: 60000
 
-idam.service.host: ${PROVIDER_SERVICE_CLIENT_URL:http://localhost:4502}
+idam.service.host: ${S2S_AUTH_URL:http://localhost:4502}
 
 logging:
   level:
@@ -181,6 +181,7 @@ notifications:
           excelaData: "fd474506-a272-4caa-ad61-6086cee0639a"
           caveatRaised: "bf9dabd9-b22f-4cb6-b3aa-871ac8532209"
           caveatRaisedCtsc: "ed01d79f-08f0-4703-8cec-f490e499fc33"
+          caveatExtend: "6a8d36f5-75cf-4a4c-9cae-c0b561143c86"
           requestInformation: "8fd291a1-67a7-48fa-a051-fa4c93315efc"
           redeclarationSot: "4bd0e8f1-5cbd-4093-813f-f97dedcd0f5f"
         solicitor:
@@ -198,7 +199,7 @@ notifications:
           redeclarationSot: "bcd9e4cc-db0c-4810-8172-8bcb2277b775"
       welsh:
         personal:
-          documentReceived: "1c847dd8-212e-425a-ad83-1bbc48d89428"
+          documentReceived: "9e950599-4f07-4b07-9015-2938e030c25c"
           caseStopped: "3e367544-c75a-4556-9831-7d0a3acbac0d"
           caseStoppedCaveat: "1fde1860-b827-45e7-b430-1406f74beb93"
           grantIssued: "8f935357-fecd-46f3-bb6e-ebd3da317433"
@@ -207,6 +208,7 @@ notifications:
           excelaData: "fd474506-a272-4caa-ad61-6086cee0639a"
           caveatRaised: "251192c8-5d3a-4b44-82e6-a398bfbe72fe"
           caveatRaisedCtsc: "a970c66c-911f-40d6-a6ae-711200ae43a7"
+          caveatExtend: "6a8d36f5-75cf-4a4c-9cae-c0b561143c86"
           requestInformation: "23a980e6-d883-45fa-8daf-acb4e017b6bb"
           redeclarationSot: "253fa4a9-ef84-4b15-a059-0a0359f4ca5b"
         solicitor:
@@ -364,15 +366,12 @@ registries:
     postcode: CF24 0RZ
 
 
-document:
-  retriever:
-    service:
-      api:
-        baseurl: localhost:8080
-
 idam:
   s2s-auth:
-    url: ${PROVIDER_SERVICE_CLIENT_URL:http://localhost:4502}
+    url: ${S2S_AUTH_URL:http://localhost:4502}
+    totp_secret: ${S2S_AUTH_TOTP_SECRET:AAAAAAAAAAAAAAAA}
+    microservice: probate_backend
+
 send-letter:
   url: ${SEND_LETTER_SERIVCE_BASEURL:http://localhost:8485}
 

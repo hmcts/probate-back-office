@@ -12,6 +12,7 @@ public class EmailTemplates {
     private String generalCaveatMessage;
     private String excelaData;
     private String caveatRaised;
+    private String caveatExtend;
     private String caveatRaisedCtsc;
     private String caveatRaisedSols;
     private String requestInformation;

@@ -36,7 +36,7 @@ spec:
               value: '${PROBATE_POSTGRESQL_HOSTNAME_VAL}'
             - name: PROBATE_POSTGRESQL_PORT
               value: '${PROBATE_POSTGRESQL_PORT_VAL}'
-            - name: AUTH_PROVIDER_SERVICE_CLIENT_KEY
+            - name: S2S_AUTH_TOTP_SECRET
               value: ${S2S_AUTH_TOTP_SECRET}
             - name: NOTIFICATIONS_GOVNOTIFYAPIKEY
               value: ${PROBATE_BO_NOTIFY_KEY}

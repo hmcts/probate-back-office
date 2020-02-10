@@ -96,7 +96,7 @@ public class CaveatData {
     private String solsPaymentMethods;
 
     // EVENT = cavRaiseCaveat - caveat details
-
+    //both these used in multiple sceanrios - CaveatRaised, CaveatExtend etc. Ignore the naming here
     @Getter(lazy = true)
     private final String caveatRaisedEmailNotification = getDefaultValueForEmailNotifications();
 
@@ -167,7 +167,7 @@ public class CaveatData {
         return YES.equals(getSendToBulkPrintRequested());
     }
 
-    public boolean isCaveatRaisedEmailNotificationRequested() {
+    public boolean isCaveatEmailNotificationRequested() {
         return YES.equals(getCaveatRaisedEmailNotificationRequested());
     }
 

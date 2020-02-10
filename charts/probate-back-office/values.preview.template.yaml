@@ -1,6 +1,6 @@
 java:
   environment:
-    AUTH_PROVIDER_SERVICE_CLIENT_KEY: ${S2S_AUTH_TOTP_SECRET}
+    S2S_AUTH_TOTP_SECRET: ${S2S_AUTH_TOTP_SECRET}
     NOTIFICATIONS_GOVNOTIFYAPIKEY: ${PROBATE_BO_NOTIFY_KEY}
     PDF_SERVICE_GRANTSIGNATUREBASE64: ${BO_GRANT_SIG_FIRST}${BO_GRANT_SIG_LAST}
     IDAM_CLIENT_NAME: probate
@@ -9,7 +9,7 @@ java:
     PROBATE_POSTGRESQL_HOSTNAME: "{{ .Release.Name }}-postgresql"
     PROBATE_POSTGRESQL_DATABASE: "{{ .Values.postgresql.postgresqlDatabase}}"
     PROBATE_POSTGRESQL_PORT: 5432
-    AUTH_PROVIDER_SERVICE_CLIENT_BASEURL: http://rpe-service-auth-provider-aat.service.core-compute-aat.internal
+    S2S_AUTH_URL: http://rpe-service-auth-provider-aat.service.core-compute-aat.internal
     PDF_SERVICE_URL: http://cmc-pdf-service-aat.service.core-compute-aat.internal
     PRINTSERVICE_HOST: https://return-case-doc-ccd.nonprod.platform.hmcts.net
     PRINTSERVICE_INTERNAL_HOST: http://ccd-case-print-service-aat.service.core-compute-aat.internal

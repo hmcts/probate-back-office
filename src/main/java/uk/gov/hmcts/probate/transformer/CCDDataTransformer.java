@@ -39,6 +39,10 @@ public class CCDDataTransformer {
                 .solicitorReference(notNullWrapper(caseData.getSolsSolicitorAppReference()))
                 .caseSubmissionDate(getCaseSubmissionDate(callbackRequest.getCaseDetails().getLastModified()))
                 .solsWillType(callbackRequest.getCaseDetails().getData().getSolsWillType())
+                .solsSolicitorIsExec(callbackRequest.getCaseDetails().getData().getSolsSolicitorIsExec())
+                .solsSolicitorIsMainApplicant(callbackRequest.getCaseDetails().getData().getSolsSolicitorIsMainApplicant())
+                .solsSolicitorIsApplying(callbackRequest.getCaseDetails().getData().getSolsSolicitorIsApplying())
+                .solsSolicitorNotApplyingReason(callbackRequest.getCaseDetails().getData().getSolsSolicitorNotApplyingReason())
                 .solicitor(buildSolicitorDetails(caseData))
                 .deceased(buildDeceasedDetails(caseData))
                 .iht(buildInheritanceTaxDetails(caseData))
@@ -141,38 +145,6 @@ public class CCDDataTransformer {
             log.warn(e.getMessage(), e);
             return null;
         }
-    }
-
-    public CaveatData transformCaveats(CaveatCallbackRequest callbackRequest) {
-
-        return buildCCDDataCaveats(callbackRequest);
-    }
-
-    private CaveatData buildCCDDataCaveats(CaveatCallbackRequest callbackRequest) {
-        CaveatData caseData = callbackRequest.getCaseDetails().getData();
-
-        return CaveatData.builder()
-                .caveatorEmailAddress(notNullWrapper(caseData.getCaveatorEmailAddress()))
-                .build();
-    }
-
-    public CaveatData transformSolsCaveats(CaveatCallbackRequest caveatCallbackRequest) {
-
-        return buildCCDDataSolsCaveats(caveatCallbackRequest);
-    }
-
-    private CaveatData buildCCDDataSolsCaveats(CaveatCallbackRequest caveatCallbackRequest) {
-        CaveatData caveatData = caveatCallbackRequest.getCaseDetails().getData();
-
-        return CaveatData.builder()
-                .registryLocation(notNullWrapper(caveatData.getRegistryLocation()))
-                .solsSolicitorAppReference(notNullWrapper(caveatData.getSolsSolicitorAppReference()))
-                .applicationSubmittedDate(getCaseSubmissionDate(caveatCallbackRequest.getCaseDetails()
-                        .getLastModified()))
-                .caveatorEmailAddress(notNullWrapper(caveatData.getCaveatorEmailAddress()))
-                .solsPaymentMethods(notNullWrapper(caveatData.getSolsPaymentMethods()))
-                .solsFeeAccountNumber(notNullWrapper(caveatData.getSolsFeeAccountNumber()))
-                .build();
     }
 
     public CCDData transformBulkPrint(String letterId) {
