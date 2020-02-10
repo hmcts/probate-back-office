@@ -364,12 +364,6 @@ registries:
     postcode: CF24 0RZ
 
 
-document:
-  retriever:
-    service:
-      api:
-        baseurl: localhost:8080
-
 idam:
   s2s-auth:
     url: ${S2S_AUTH_URL:http://localhost:4502}
