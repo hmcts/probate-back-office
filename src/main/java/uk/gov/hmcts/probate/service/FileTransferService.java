@@ -15,9 +15,9 @@ public class FileTransferService {
 
     private final FileTransferApi fileTransferApi;
     private static final String VALID_FROM = "2019-02-02";
-    private static final String SS = "b";
+    private static final String SS = "bfqt";
     private static final String SRT = "sco";
-    private static final String SP = "rwdlac";
+    private static final String SP = "rwdlacup";
     private static final String SIG_EXPIRY_DATE = "2029-02-07T22:04:58Z";
     private static final String SIG_CREATION_DATE = "2020-02-07T14:04:58Z";
     private static final String SPR = "https";
