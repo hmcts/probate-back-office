@@ -15,7 +15,7 @@ import static uk.gov.hmcts.probate.model.Constants.BUSINESS_ERROR;
 
 @Component
 @RequiredArgsConstructor
-class CaveatsEmailAddressValidationRule implements CaveatsEmailAddressNotificationValidationRule, CaveatsExpiryValidationRule {
+class CaveatsEmailAddressValidationRule implements CaveatsEmailAddressNotificationValidationRule {
 
     private final BusinessValidationMessageService businessValidationMessageService;
 
