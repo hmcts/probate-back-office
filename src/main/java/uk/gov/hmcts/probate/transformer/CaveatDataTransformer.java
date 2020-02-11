@@ -37,14 +37,14 @@ public class CaveatDataTransformer {
         CaveatData caveatData = caveatCallbackRequest.getCaseDetails().getData();
 
         return CaveatData.builder()
-                .registryLocation(notNullWrapper(caveatData.getRegistryLocation()))
-                .solsSolicitorAppReference(notNullWrapper(caveatData.getSolsSolicitorAppReference()))
-                .applicationSubmittedDate(getCaseSubmissionDate(caveatCallbackRequest.getCaseDetails()
-                        .getLastModified()))
-                .caveatorEmailAddress(notNullWrapper(caveatData.getCaveatorEmailAddress()))
-                .solsPaymentMethods(notNullWrapper(caveatData.getSolsPaymentMethods()))
-                .solsFeeAccountNumber(notNullWrapper(caveatData.getSolsFeeAccountNumber()))
-                .build();
+            .registryLocation(notNullWrapper(caveatData.getRegistryLocation()))
+            .solsSolicitorAppReference(notNullWrapper(caveatData.getSolsSolicitorAppReference()))
+            .applicationSubmittedDate(getCaseSubmissionDate(caveatCallbackRequest.getCaseDetails()
+                .getLastModified()))
+            .caveatorEmailAddress(notNullWrapper(caveatData.getCaveatorEmailAddress()))
+            .solsPaymentMethods(notNullWrapper(caveatData.getSolsPaymentMethods()))
+            .solsFeeAccountNumber(notNullWrapper(caveatData.getSolsFeeAccountNumber()))
+            .build();
     }
 
     private String notNullWrapper(String nullableString) {

@@ -78,8 +78,18 @@ public class CaveatCallbackResponseTransformer {
 
     public CaveatCallbackResponse caveatExtendExpiry(CaveatCallbackRequest caveatCallbackRequest, List<Document> documents, String letterId) {
         CaveatDetails caveatDetails = caveatCallbackRequest.getCaseDetails();
+        CaveatData caveatData = caveatDetails.getData();
         documents.forEach(document -> documentTransformer.addDocument(caveatCallbackRequest, document));
         ResponseCaveatDataBuilder responseCaveatDataBuilder = getResponseCaveatData(caveatDetails);
+
+        if (documentTransformer.hasDocumentWithType(documents, CAVEAT_EXTENDED) && letterId != null) {
+            CollectionMember<BulkPrint> bulkPrint = buildBulkPrint(letterId, CAVEAT_EXTENDED.getTemplateName());
+            caveatData.getBulkPrintId().add(bulkPrint);
+
+            responseCaveatDataBuilder
+                .bulkPrintId(caveatData.getBulkPrintId())
+                .build();
+        }
 
         return transformResponse(responseCaveatDataBuilder.build());
     }

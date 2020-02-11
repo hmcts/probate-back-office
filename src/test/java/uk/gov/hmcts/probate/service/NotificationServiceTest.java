@@ -18,6 +18,7 @@ import uk.gov.hmcts.probate.exception.InvalidEmailException;
 import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.CaseType;
+import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ExecutorsApplyingNotification;
 import uk.gov.hmcts.probate.model.SentEmail;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
@@ -121,7 +122,6 @@ public class NotificationServiceTest {
 
     @SpyBean
     private NotificationClient notificationClient;
-
 
     private CaseDetails personalCaseDataOxford;
     private CaseDetails personalCaseDataOxfordInvalidAppType;
