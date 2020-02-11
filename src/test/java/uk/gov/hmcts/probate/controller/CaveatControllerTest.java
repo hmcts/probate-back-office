@@ -286,7 +286,5 @@ public class CaveatControllerTest {
                 .content(caveatPayload)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
-
-        verify(caveatNotificationService).withdraw(isA(CaveatCallbackRequest.class));
     }
 }
