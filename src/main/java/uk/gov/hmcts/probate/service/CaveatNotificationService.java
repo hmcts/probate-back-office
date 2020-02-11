@@ -20,6 +20,7 @@ import uk.gov.service.notify.NotificationClientException;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -172,9 +173,10 @@ public class CaveatNotificationService {
        }
         return caveatCallbackResponse;
     }
-    
+
     private void setCaveatExpiryDate(CaveatData caveatData) {
         caveatData.setExpiryDate(LocalDate.now().plusMonths(CAVEAT_LIFESPAN));
     }
+
 
 }
