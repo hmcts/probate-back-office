@@ -28,6 +28,7 @@ import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
 import static uk.gov.hmcts.probate.model.Constants.CTSC;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
+import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT_EXTENDED;
 import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT_RAISED;
 
 @Component
@@ -75,6 +76,24 @@ public class CaveatCallbackResponseTransformer {
         return transformResponse(responseCaveatDataBuilder.build());
     }
 
+    public CaveatCallbackResponse caveatExtendExpiry(CaveatCallbackRequest caveatCallbackRequest, List<Document> documents, String letterId) {
+        CaveatDetails caveatDetails = caveatCallbackRequest.getCaseDetails();
+        CaveatData caveatData = caveatDetails.getData();
+        documents.forEach(document -> documentTransformer.addDocument(caveatCallbackRequest, document));
+        ResponseCaveatDataBuilder responseCaveatDataBuilder = getResponseCaveatData(caveatDetails);
+
+        if (documentTransformer.hasDocumentWithType(documents, CAVEAT_EXTENDED) && letterId != null) {
+            CollectionMember<BulkPrint> bulkPrint = buildBulkPrint(letterId, CAVEAT_EXTENDED.getTemplateName());
+            caveatData.getBulkPrintId().add(bulkPrint);
+
+            responseCaveatDataBuilder
+                .bulkPrintId(caveatData.getBulkPrintId())
+                .build();
+        }
+
+        return transformResponse(responseCaveatDataBuilder.build());
+    }
+
     public CaveatCallbackResponse defaultCaveatValues(CaveatCallbackRequest caveatCallbackRequest) {
         CaveatDetails caveatDetails = caveatCallbackRequest.getCaseDetails();
 
@@ -98,7 +117,7 @@ public class CaveatCallbackResponseTransformer {
         return transformResponse(responseCaveatData);
     }
 
-    public CaveatCallbackResponse transform(CaveatCallbackRequest callbackRequest) {
+    public CaveatCallbackResponse transformForSolicitor(CaveatCallbackRequest callbackRequest) {
         ResponseCaveatData responseCaveatData = getResponseCaveatData(callbackRequest.getCaseDetails())
                 .applicationType(SOLICITOR)
                 .paperForm(NO)
@@ -120,6 +139,21 @@ public class CaveatCallbackResponseTransformer {
         storedMatches.sort(Comparator.comparingInt(m -> ofNullable(m.getValue().getValid()).orElse("").length()));
 
         ResponseCaveatData.ResponseCaveatDataBuilder responseCaseDataBuilder = getResponseCaveatData(request.getCaseDetails());
+
+        return transformResponse(responseCaseDataBuilder.build());
+    }
+
+    public CaveatCallbackResponse transformResponseWithExtendedExpiry(CaveatCallbackRequest caveatCallbackRequest) {
+        ResponseCaveatData.ResponseCaveatDataBuilder responseCaseDataBuilder = getResponseCaveatData(caveatCallbackRequest.getCaseDetails());
+
+        String defaultExpiry = dateTimeFormatter.format(caveatCallbackRequest.getCaseDetails().getData().getExpiryDate().plusMonths(6));
+        return transformResponse(responseCaseDataBuilder.expiryDate(defaultExpiry)
+            .caveatRaisedEmailNotification(caveatCallbackRequest.getCaseDetails().getData().getCaveatRaisedEmailNotification())
+            .build());
+    }
+
+    public CaveatCallbackResponse transformResponseWithNoChanges(CaveatCallbackRequest caveatCallbackRequest) {
+        ResponseCaveatData.ResponseCaveatDataBuilder responseCaseDataBuilder = getResponseCaveatData(caveatCallbackRequest.getCaseDetails());
 
         return transformResponse(responseCaseDataBuilder.build());
     }

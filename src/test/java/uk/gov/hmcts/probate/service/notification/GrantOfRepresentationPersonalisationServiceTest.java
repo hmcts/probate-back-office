@@ -3,6 +3,7 @@ package uk.gov.hmcts.probate.service.notification;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,6 +18,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 import uk.gov.hmcts.probate.service.CaveatQueryService;
+import uk.gov.hmcts.probate.service.template.pdf.LocalDateToWelshStringConverter;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
 import uk.gov.service.notify.SendEmailResponse;
@@ -30,13 +32,15 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class GrantOfRepresentationPersonalisationServiceTest {
 
-    @Autowired
+    @InjectMocks
     private GrantOfRepresentationPersonalisationService grantOfRepresentationPersonalisationService;
 
     @MockBean
@@ -56,6 +60,9 @@ public class GrantOfRepresentationPersonalisationServiceTest {
 
     @Mock
     private RegistriesProperties registriesPropertiesMock;
+
+    @Mock
+    private LocalDateToWelshStringConverter localDateToWelshStringConverter;
 
     private CaseDetails caseDetails;
 
@@ -81,6 +88,7 @@ public class GrantOfRepresentationPersonalisationServiceTest {
     private static final String PERSONALISATION_EXCELA_NAME = "excelaName";
     private static final String PERSONALISATION_CASE_DATA = "caseData";
     private static final String PERSONALISATION_ADDRESSEE = "addressee";
+    private static final String PERSONALISATION_WELSH_DECEASED_DATE_OF_DEATH = "welsh_deceased_date_of_death";
 
     Registry registry = new Registry();
 
@@ -152,6 +160,8 @@ public class GrantOfRepresentationPersonalisationServiceTest {
 
     @Test
     public void getPersonalisationContentIsOk() {
+        String welshDeceaseDateOfDeath = "27 Mai 2019";
+        when(localDateToWelshStringConverter.convert(isA(LocalDate.class))).thenReturn(welshDeceaseDateOfDeath);
         Map<String, Object> response = grantOfRepresentationPersonalisationService.getPersonalisation(caseDetails,
                 registry);
 
@@ -166,6 +176,7 @@ public class GrantOfRepresentationPersonalisationServiceTest {
         assertEquals("CTSC", response.get(PERSONALISATION_REGISTRY_NAME));
         assertEquals("1234567890", response.get(PERSONALISATION_REGISTRY_PHONE));
         assertEquals(caseDetails.getId().toString(), response.get(PERSONALISATION_CCD_REFERENCE));
+        assertEquals(welshDeceaseDateOfDeath, response.get(PERSONALISATION_WELSH_DECEASED_DATE_OF_DEATH));
     }
 
     @Test
