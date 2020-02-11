@@ -448,7 +448,6 @@ file name: spring-jcl-5.1.5.RELEASE.jar
         <notes><![CDATA[
    file name: spring-aop-5.1.5.RELEASE.jar
    ]]></notes>
-]]></notes>
         <gav regex="true">^org\.springframework:spring-aop:.*$</gav>
         <cve>CVE-2020-5398</cve>
     </suppress>
