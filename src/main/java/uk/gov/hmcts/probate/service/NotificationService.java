@@ -147,6 +147,7 @@ public class NotificationService {
         SendEmailResponse response;
 
         response = notificationClient.sendEmail(templateId, emailAddress, personalisation, reference);
+        log.info("Sent email with template {} for case ", templateId, caveatDetails.getId());
 
         DocumentType documentType;
         switch (state) {

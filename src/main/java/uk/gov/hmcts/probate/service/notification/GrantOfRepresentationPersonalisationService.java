@@ -10,6 +10,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
+import uk.gov.hmcts.probate.service.template.pdf.LocalDateToWelshStringConverter;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -26,6 +27,7 @@ import static uk.gov.hmcts.probate.model.Constants.YES;
 @RequiredArgsConstructor
 @Service
 public class GrantOfRepresentationPersonalisationService {
+    private final LocalDateToWelshStringConverter localDateToWelshStringConverter;
 
     private static final DateTimeFormatter EXCELA_DATE = DateTimeFormatter.ofPattern("yyyyMMdd");
     private static final DateTimeFormatter EXCELA_CONTENT_DATE = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -44,6 +46,7 @@ public class GrantOfRepresentationPersonalisationService {
     private static final String PERSONALISATION_EXCELA_NAME = "excelaName";
     private static final String PERSONALISATION_CASE_DATA = "caseData";
     private static final String PERSONALISATION_ADDRESSEE = "addressee";
+    private static final String PERSONALISATION_WELSH_DECEASED_DATE_OF_DEATH = "welsh_deceased_date_of_death";
 
     public Map<String, Object> getPersonalisation(CaseDetails caseDetails, Registry registry) {
         CaseData caseData = caseDetails.getData();
@@ -59,6 +62,7 @@ public class GrantOfRepresentationPersonalisationService {
         personalisation.put(PERSONALISATION_DECEASED_DOD, caseData.getDeceasedDateOfDeathFormatted());
         personalisation.put(PERSONALISATION_CCD_REFERENCE, caseDetails.getId().toString());
         personalisation.put(PERSONALISATION_CASE_STOP_DETAILS_DEC, caseData.getBoStopDetailsDeclarationParagraph());
+        personalisation.put(PERSONALISATION_WELSH_DECEASED_DATE_OF_DEATH, localDateToWelshStringConverter.convert(caseData.getDeceasedDateOfDeath()));
 
         return personalisation;
     }

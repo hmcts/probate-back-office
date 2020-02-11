@@ -205,7 +205,7 @@ repositories {
   mavenCentral()
   jcenter()
   maven { url "https://dl.bintray.com/hmcts/hmcts-maven" }
-  maven { url "http://repo.maven.apache.org/maven2" }
+  maven { url "https://repo.maven.apache.org/maven2" }
 }
 
 
