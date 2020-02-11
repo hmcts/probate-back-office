@@ -58,9 +58,6 @@ public class CaveatControllerTest {
     private NotificationService notificationService;
 
     @MockBean
-    private CaveatNotificationService caveatNotificationService;
-
-    @MockBean
     private PDFManagementService pdfManagementService;
 
     @MockBean
@@ -123,9 +120,10 @@ public class CaveatControllerTest {
         String caveatPayload = testUtils.getStringFromFile("solicitorValidateCaveatPayload.json");
 
         mockMvc.perform(post("/caveat/validate")
-            .content(caveatPayload)
-            .contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk());
+                .content(caveatPayload)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("data")));
     }
 
     @Test
@@ -134,10 +132,10 @@ public class CaveatControllerTest {
         String caveatPayload = testUtils.getStringFromFile("solicitorValidateCaveatPayload.json");
 
         mockMvc.perform(post("/caveat/confirmation")
-            .content(caveatPayload)
-            .contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
+                .content(caveatPayload)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
     }
 
     @Test
@@ -146,9 +144,10 @@ public class CaveatControllerTest {
         String caveatPayload = testUtils.getStringFromFile("caveatPayloadNotifications.json");
 
         mockMvc.perform(post("/caveat/raise")
-            .content(caveatPayload)
-            .contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk());
+                .content(caveatPayload)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("data")));
     }
 
     @Test
@@ -156,9 +155,12 @@ public class CaveatControllerTest {
         String personalPayload = testUtils.getStringFromFile("caveatPayloadNotificationsNoEmail.json");
 
         mockMvc.perform(post("/caveat/raise")
-            .content(personalPayload)
-            .contentType(MediaType.APPLICATION_JSON_UTF8))
-            .andExpect(status().isOk());
+                .content(personalPayload)
+                .contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.errors[0]")
+                        .value("There is no email address for this caveator. Add an email address or contact them by post."))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
 
     }
 
@@ -167,9 +169,12 @@ public class CaveatControllerTest {
         String personalPayload = testUtils.getStringFromFile("caveatPayloadNotificationsBulkPrint.json");
 
         mockMvc.perform(post("/caveat/raise")
-            .content(personalPayload)
-            .contentType(MediaType.APPLICATION_JSON_UTF8))
-            .andExpect(status().isOk());
+                .content(personalPayload)
+                .contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.errors[0]")
+                        .value("Bulk Print is currently unavailable please contact support desk."))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
 
     }
 
@@ -179,10 +184,10 @@ public class CaveatControllerTest {
         String caveatPayload = testUtils.getStringFromFile("caveatPayloadNotifications.json");
 
         mockMvc.perform(post("/caveat/general-message")
-            .content(caveatPayload)
-            .contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk())
-            .andExpect(content().string(containsString("data")));
+                .content(caveatPayload)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("data")));
     }
 
     @Test
@@ -190,12 +195,12 @@ public class CaveatControllerTest {
         String personalPayload = testUtils.getStringFromFile("caveatPayloadNotificationsNoEmail.json");
 
         mockMvc.perform(post("/caveat/general-message")
-            .content(personalPayload)
-            .contentType(MediaType.APPLICATION_JSON_UTF8))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.errors[0]")
-                .value("There is no email address for this caveator. Add an email address or contact them by post."))
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
+                .content(personalPayload)
+                .contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.errors[0]")
+                        .value("There is no email address for this caveator. Add an email address or contact them by post."))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
 
     }
 
@@ -205,10 +210,10 @@ public class CaveatControllerTest {
         String caveatPayload = testUtils.getStringFromFile("caveatPayloadNotifications.json");
 
         mockMvc.perform(post("/caveat/defaultValues")
-            .content(caveatPayload)
-            .contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk())
-            .andExpect(content().string(containsString("data")));
+                .content(caveatPayload)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("data")));
     }
 
     @Test
@@ -216,7 +221,7 @@ public class CaveatControllerTest {
 
         String caveatPayload = testUtils.getStringFromFile("caveatPayloadNotifications.json");
         DateTimeFormatter caveatExpiryDateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate newExpired = LocalDate.now().plusDays(10);
+        LocalDate newExpired = LocalDate.now().plusDays(1);
         caveatPayload = caveatPayload.replace("2019-05-15", caveatExpiryDateFormatter.format(newExpired));
 
         mockMvc.perform(post("/caveat/validate-extend")
