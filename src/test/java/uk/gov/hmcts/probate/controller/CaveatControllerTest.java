@@ -249,6 +249,21 @@ public class CaveatControllerTest {
     }
 
     @Test
+    public void shouldCaveatExpiryValidateExtendErrorsNoEmail() throws Exception {
+
+        String caveatPayload = testUtils.getStringFromFile("caveatPayloadNotifications.json");
+        caveatPayload = caveatPayload.replace("personal@hmcts-test.com", "");
+
+        mockMvc.perform(post("/caveat/validate-extend")
+            .content(caveatPayload)
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.errors[0]")
+                .value("There is no email address for this caveator. Add an email address or contact them by post."))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
+    }
+
+    @Test
     public void shouldCaveatExpiryValidateExtendErrorsMoreThan1MonthRemaining() throws Exception {
 
         String caveatPayload = testUtils.getStringFromFile("caveatPayloadNotifications.json");
