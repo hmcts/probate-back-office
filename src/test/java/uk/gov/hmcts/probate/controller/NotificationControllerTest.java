@@ -365,7 +365,7 @@ public class NotificationControllerTest {
                         .value("There is no email address for this solicitor. "
                                 + "To continue the application, go back and select no to sending an email."))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
-        
+
     }
 
     @Test
