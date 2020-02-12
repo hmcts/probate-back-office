@@ -352,8 +352,7 @@ public class NotificationControllerTest {
 
         mockMvc.perform(post(DOC_RECEIVED_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(content().string(containsString("data")));
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
     }
 
     @Test
@@ -366,6 +365,7 @@ public class NotificationControllerTest {
                         .value("There is no email address for this solicitor. "
                                 + "To continue the application, go back and select no to sending an email."))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
+        
     }
 
     @Test
