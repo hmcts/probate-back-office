@@ -515,6 +515,29 @@ public class CaseDataTest {
     }
 
     @Test
+    public void isCreatedFromBulkScanTrue() {
+        final CaseData caseData = CaseData.builder()
+                .bulkScanCaseReference("123456789")
+                .build();
+
+        assertEquals(true, caseData.isCreatedFromBulkScan());
+    }
+
+    @Test
+    public void isCreatedFromBulkScanFalse() {
+        final CaseData caseDataEmpty = CaseData.builder()
+                .bulkScanCaseReference("")
+                .build();
+
+        final CaseData caseDataNull = CaseData.builder()
+                .bulkScanCaseReference(null)
+                .build();
+
+        assertEquals(false, caseDataEmpty.isCreatedFromBulkScan());
+        assertEquals(false, caseDataNull.isCreatedFromBulkScan());
+    }
+
+    @Test
     public void solicitorIsMainApplicantIsYes() {
         final CaseData caseData = CaseData.builder()
                 .solsSolicitorIsMainApplicant(YES)
