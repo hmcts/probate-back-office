@@ -16,7 +16,7 @@ java:
     IDAM_SERVICE_HOST: https://idam-api.aat.platform.hmcts.net
     FEE_API_URL: http://fees-register-api-aat.service.core-compute-aat.internal
     EVIDENCE_MANAGEMENT_HOST: http://dm-store-aat.service.core-compute-aat.internal
-    CCD_GATEWAY_HOST: http://ccd-api-gateway-web-aat.service.core-compute-aat.internal
+    CCD_GATEWAY_HOST: https://xui-webapp-aat.service.core-compute-aat.internal
     SEND_LETTER_SERIVCE_BASEURL: http://rpe-send-letter-service-aat.service.core-compute-aat.internal
     SERVICES_CORECASEDATA_BASEURL : http://ccd-data-store-api-aat.service.core-compute-aat.internal
     IDAM_SECRET: ${IDAM_SECRET}
