@@ -94,7 +94,7 @@ public class CaveatCallbackResponseTransformer {
         return transformResponse(responseCaveatDataBuilder.build());
     }
 
-    public CaveatCallbackResponse withDrawn(final CaveatCallbackRequest caveatCallbackRequest, List<Document> documents, String letterId) {
+    public CaveatCallbackResponse withdrawn(final CaveatCallbackRequest caveatCallbackRequest, List<Document> documents, String letterId) {
         documents.forEach(document -> documentTransformer.addDocument(caveatCallbackRequest, document));
         return defaultCaveatValues(caveatCallbackRequest);
     }
