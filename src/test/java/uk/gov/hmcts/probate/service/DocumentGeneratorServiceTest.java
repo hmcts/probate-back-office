@@ -7,7 +7,14 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import uk.gov.hmcts.probate.config.properties.registries.Registry;
-import uk.gov.hmcts.probate.model.*;
+import uk.gov.hmcts.probate.model.ApplicationType;
+import uk.gov.hmcts.probate.model.Constants;
+import uk.gov.hmcts.probate.model.DocumentCaseType;
+import uk.gov.hmcts.probate.model.DocumentIssueType;
+import uk.gov.hmcts.probate.model.DocumentStatus;
+import uk.gov.hmcts.probate.model.DocumentType;
+import uk.gov.hmcts.probate.model.ExecutorsApplyingNotification;
+import uk.gov.hmcts.probate.model.LanguagePreference;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
@@ -18,6 +25,7 @@ import uk.gov.hmcts.probate.service.docmosis.DocumentTemplateService;
 import uk.gov.hmcts.probate.service.docmosis.GenericMapperService;
 import uk.gov.hmcts.probate.service.docmosis.PreviewLetterService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
+import uk.gov.hmcts.probate.service.template.pdf.PlaceholderDecorator;
 import uk.gov.hmcts.probate.validator.EmailAddressNotificationValidationRule;
 
 import java.time.format.DateTimeFormatter;
@@ -29,6 +37,7 @@ import java.util.Optional;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.Constants.CTSC;
 
@@ -92,6 +101,9 @@ public class DocumentGeneratorServiceTest {
 
     @Mock
     private DocumentTemplateService documentTemplateService;
+
+    @Mock
+    private PlaceholderDecorator placeholderDecorator;
 
     @Before
     public void setup() {
@@ -178,10 +190,12 @@ public class DocumentGeneratorServiceTest {
                 DocumentType.DIGITAL_GRANT_REISSUE_DRAFT))
                 .thenReturn(Document.builder().documentFileName(DIGITAL_GRANT_DRAFT_REISSUE_FILE_NAME).build());
 
-        when(documentTemplateService.getTemplateId(LanguagePreference.ENGLISH, DocumentStatus.PREVIEW, DocumentIssueType.REISSUE, DocumentCaseType.GOP )).thenReturn(DocumentType.DIGITAL_GRANT_REISSUE_DRAFT);
+        when(documentTemplateService.getTemplateId(LanguagePreference.ENGLISH, DocumentStatus.PREVIEW, DocumentIssueType.REISSUE, DocumentCaseType.GOP))
+                .thenReturn(DocumentType.DIGITAL_GRANT_REISSUE_DRAFT);
 
         assertEquals(DIGITAL_GRANT_DRAFT_REISSUE_FILE_NAME,
-                documentGeneratorService.generateGrantReissue(callbackRequest, DocumentStatus.PREVIEW, Optional.of(DocumentIssueType.REISSUE)).getDocumentFileName());
+                documentGeneratorService.generateGrantReissue(callbackRequest, DocumentStatus.PREVIEW, Optional.of(DocumentIssueType.REISSUE))
+                        .getDocumentFileName());
     }
 
     @Test
@@ -276,6 +290,7 @@ public class DocumentGeneratorServiceTest {
 
         assertEquals(ADMON_WILL_FINAL_FILE_NAME,
                 documentGeneratorService.getDocument(callbackRequest, DocumentStatus.FINAL,DocumentIssueType.REISSUE).getDocumentFileName());
+        verify(placeholderDecorator).decorate(expectedMap);
     }
 
     @Test
@@ -294,6 +309,7 @@ public class DocumentGeneratorServiceTest {
 
         assertEquals(ADMON_WILL_DRAFT_FILE_NAME,
                 documentGeneratorService.getDocument(callbackRequest, DocumentStatus.PREVIEW,DocumentIssueType.REISSUE).getDocumentFileName());
+        verify(placeholderDecorator).decorate(expectedMap);
     }
 
     @Test
@@ -312,6 +328,7 @@ public class DocumentGeneratorServiceTest {
 
         assertEquals(DIGITAL_GRANT_FINAL_FILE_NAME,
                 documentGeneratorService.getDocument(callbackRequest, DocumentStatus.FINAL, DocumentIssueType.REISSUE).getDocumentFileName());
+        verify(placeholderDecorator).decorate(expectedMap);
     }
 
     @Test
@@ -330,6 +347,7 @@ public class DocumentGeneratorServiceTest {
 
         assertEquals(DIGITAL_GRANT_DRAFT_FILE_NAME,
                 documentGeneratorService.getDocument(callbackRequest, DocumentStatus.PREVIEW, DocumentIssueType.REISSUE).getDocumentFileName());
+        verify(placeholderDecorator).decorate(expectedMap);
     }
 
     @Test
@@ -348,6 +366,7 @@ public class DocumentGeneratorServiceTest {
 
         assertEquals(WELSH_INTESTACY_GRANT_DRAFT_FILE_NAME,
                 documentGeneratorService.getDocument(callbackRequest, DocumentStatus.PREVIEW, DocumentIssueType.REISSUE).getDocumentFileName());
+        verify(placeholderDecorator).decorate(expectedMap);
     }
 
     @Test
@@ -366,6 +385,7 @@ public class DocumentGeneratorServiceTest {
 
         assertEquals(WELSH_INTESTACY_GRANT_FINAL_FILE_NAME,
                 documentGeneratorService.getDocument(callbackRequest, DocumentStatus.FINAL, DocumentIssueType.REISSUE).getDocumentFileName());
+        verify(placeholderDecorator).decorate(expectedMap);
     }
 
 /////////////////////////////////////////

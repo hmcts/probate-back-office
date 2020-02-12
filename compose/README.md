@@ -37,7 +37,15 @@ For linux
 ```bash
    source ./bin/linux-set-environment-variables.sh
 ```
-
+##### 4.1) setup the logstash
+    In order to work locally on probate-frontend you will need following logstash
+```
+   clone project ccd-logstash from github
+   checkout branch probate-conf
+   docker build . -t ccd-logstash:probate
+   In elasticsearch.yml replace
+   image: hmcts/ccd-logstash:latest with image: "ccd-logstash:probate"  
+```   
 ##### 5) Start up docker 
 ```bash
    docker network create compose_default
@@ -107,6 +115,11 @@ For linux (replace ip with your own ip)
    ./ccdImports/conversionScripts/importAllXLS.sh
 ```
 ##### 10) Start your local service 
+###### Pull probate specific ccd-logstash
+pull ccd-logstash branch probate-conf locally then
+
+docker build . -t ccd-logstash:probate
+
 ###### Probate-back-office
 Login to ccd on `http://localhost:3451`. Caseworker: `ProbateSolCW1@gmail.com / Pa55word11`. Solicitor  `ProbateSolicitor1@gmail.com / Pa55word11`.
 
