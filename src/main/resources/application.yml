@@ -59,6 +59,8 @@ docmosis:
       templateName: FL-PRB-GNO-ENG-00025.docx
     caveatExtended:
       templateName: FL-PRB-GNO-ENG-00229.docx
+    caveatWithdrawn:
+      templateName: FL-PRB-GNO-ENG-00236.docx
     grantCoversheet:
       templateName: FL-PRB-GNO-ENG-00024.docx
     digitalGrantReissueDraft:
@@ -93,6 +95,7 @@ docmosis:
       templateName: FL-PRB-GRP-WEL-00226.doc
     welshAdmonWillGrantDraft:
       templateName: FL-PRB-GRP-WEL-00226.doc
+
 fee.api:
   url: http://localhost:4411
   api: /fees-register/fees/lookup

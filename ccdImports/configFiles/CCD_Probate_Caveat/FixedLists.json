@@ -23,6 +23,7 @@
   {"LiveFrom": "01/01/2017", "ID": "cavDocumentTypeEnum", "ListElementCode": "caveatRaised", "ListElement": "Caveat Raised"},
   {"LiveFrom": "01/01/2017", "ID": "cavDocumentTypeEnum", "ListElementCode": "caveatCoversheet", "ListElement": "Coversheet"},
   {"LiveFrom": "01/01/2017", "ID": "cavDocumentTypeEnum", "ListElementCode": "sentEmail", "ListElement": "Sent Email"},
+  {"LiveFrom": "01/01/2017", "ID": "cavDocumentTypeEnum", "ListElementCode": "caveatWithdrawn", "ListElement": "Caveat Withdrawn"},
   {"LiveFrom": "01/01/2017", "ID": "paymentMethodEnum", "ListElementCode": "cheque", "ListElement": "Cheque"},
   {"LiveFrom": "01/01/2017", "ID": "paymentMethodEnum", "ListElementCode": "online", "ListElement": "Online"},
   {"LiveFrom": "01/01/2017", "ID": "paymentMethodEnum", "ListElementCode": "card", "ListElement": "Credit/debit card"},
