@@ -21,13 +21,12 @@ import uk.gov.service.notify.NotificationClientException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
 import static uk.gov.hmcts.probate.model.Constants.CAVEAT_LIFESPAN;
-import static uk.gov.hmcts.probate.model.State.CAVEAT_EXTEND;
-import static uk.gov.hmcts.probate.model.State.CAVEAT_RAISED;
-import static uk.gov.hmcts.probate.model.State.CAVEAT_RAISED_SOLS;
+import static uk.gov.hmcts.probate.model.State.*;
 
 @Service
 @Slf4j
@@ -135,6 +134,25 @@ public class CaveatNotificationService {
         ///
         if (caveatCallbackResponse.getErrors().isEmpty()) {
             caveatCallbackResponse = caveatCallbackResponseTransformer.caveatExtendExpiry(caveatCallbackRequest, documents, letterId);
+        }
+        return caveatCallbackResponse;
+    }
+
+    public CaveatCallbackResponse withdraw(CaveatCallbackRequest caveatCallbackRequest) throws NotificationClientException  {
+        CaveatCallbackResponse caveatCallbackResponse = CaveatCallbackResponse.builder().errors(new ArrayList<>()).build();
+        List<Document> documents = new ArrayList<>();
+        if (caveatCallbackRequest.getCaseDetails().getData().isCaveatEmailNotificationRequested()){
+            caveatCallbackResponse = eventValidationService.validateCaveatRequest(caveatCallbackRequest, emailValidationRuleCaveats);
+             if (caveatCallbackResponse.getErrors().isEmpty()) {
+                Document document = notificationService.sendCaveatEmail(CAVEAT_WITHDRAW, caveatCallbackRequest.getCaseDetails());
+                documents.add(document);
+            } else {
+                return caveatCallbackResponse;
+            }
+        }
+
+        if (caveatCallbackResponse.getErrors().isEmpty()) {
+            caveatCallbackResponse = caveatCallbackResponseTransformer.withDrawn(caveatCallbackRequest, documents, null);
         }
         return caveatCallbackResponse;
     }

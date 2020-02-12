@@ -186,6 +186,7 @@ notifications:
           caveatExtend: "6a8d36f5-75cf-4a4c-9cae-c0b561143c86"
           requestInformation: "8fd291a1-67a7-48fa-a051-fa4c93315efc"
           redeclarationSot: "4bd0e8f1-5cbd-4093-813f-f97dedcd0f5f"
+          caveatWithdrawn: "99b9ba1a-a2a1-4b85-ae83-e1652e9d342b"
         solicitor:
           documentReceived: "7f8ff32d-8297-4702-9867-312047f81492"
           caseStopped: "350f488a-68f1-44f0-b083-157285b71581"
@@ -213,6 +214,7 @@ notifications:
           caveatExtend: "6a8d36f5-75cf-4a4c-9cae-c0b561143c86"
           requestInformation: "23a980e6-d883-45fa-8daf-acb4e017b6bb"
           redeclarationSot: "253fa4a9-ef84-4b15-a059-0a0359f4ca5b"
+          caveatWithdrawn: "c63bc430-9868-4f10-924b-408c7ac3cbd8"
         solicitor:
           documentReceived: "7f8ff32d-8297-4702-9867-312047f81492"
           caseStopped: "350f488a-68f1-44f0-b083-157285b71581"

@@ -17,4 +17,5 @@ public class EmailTemplates {
     private String caveatRaisedSols;
     private String requestInformation;
     private String redeclarationSot;
+    private String caveatWithdrawn;
 }
