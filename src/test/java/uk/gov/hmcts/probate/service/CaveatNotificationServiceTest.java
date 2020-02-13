@@ -2,10 +2,12 @@ package uk.gov.hmcts.probate.service;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import uk.gov.hmcts.probate.model.ApplicationType;
+import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.State;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatCallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
@@ -30,10 +32,16 @@ import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.ArgumentMatchers.isNull;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT_COVERSHEET;
+import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT_EXTENDED;
 import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT_RAISED;
 
 
@@ -74,6 +82,7 @@ public class CaveatNotificationServiceTest {
 
     private Document coversheet;
     private Document caveatRaised;
+    private Document caveatExtended;
     private Document sentEmail;
     private CaveatData caveatData;
     private CaveatData solsCaveatData;
@@ -87,6 +96,7 @@ public class CaveatNotificationServiceTest {
     private static final String SENT_EMAIL_FILE_NAME = "sentEmail.pdf";
     private static final String COVERSHEET_FILE_NAME = "sentEmail.pdf";
     private static final String CAVEAT_RAISED_FILE_NAME = "sentEmail.pdf";
+    private static final String CAVEAT_EXTENDED_FILE_NAME = "sentEmail.pdf";
     private static final List<CollectionMember<Document>> DOCUMENTS_LIST = Arrays.asList(
             new CollectionMember("id",
                     Document.builder()
@@ -102,6 +112,16 @@ public class CaveatNotificationServiceTest {
                     Document.builder()
                             .documentFileName(CAVEAT_RAISED_FILE_NAME)
                             .build()));
+
+    private static final List<CollectionMember<Document>> DOCUMENTS_LIST_CAVEAT_EXTENDED = Arrays.asList(
+        new CollectionMember("id",
+            Document.builder()
+                .documentFileName(COVERSHEET_FILE_NAME)
+                .build()),
+        new CollectionMember("id",
+            Document.builder()
+                .documentFileName(CAVEAT_EXTENDED_FILE_NAME)
+                .build()));
 
     @Before
     public void setUp() {
@@ -300,7 +320,8 @@ public class CaveatNotificationServiceTest {
             .documentFileName(SENT_EMAIL_FILE_NAME).build());
 
         caveatCallbackResponse = CaveatCallbackResponse.builder().caveatData(responseCaveatData).build();
-        when(caveatCallbackResponseTransformer.caveatExtendExpiry(caveatCallbackRequest, documents, null)).thenReturn(caveatCallbackResponse);
+        when(caveatCallbackResponseTransformer.caveatExtendExpiry(caveatCallbackRequest, documents, null))
+                .thenReturn(caveatCallbackResponse);
 
         caveatNotificationService.caveatExtend(caveatCallbackRequest);
 
@@ -313,7 +334,8 @@ public class CaveatNotificationServiceTest {
             .caveatRaisedEmailNotificationRequested("No")
             .build();
 
-        documents.add(sentEmail);
+        documents.add(null);
+        documents.add(null);
 
         responseCaveatData = ResponseCaveatData.builder()
             .notificationsGenerated(DOCUMENTS_LIST)
@@ -322,10 +344,273 @@ public class CaveatNotificationServiceTest {
         caveatDetails = new CaveatDetails(caveatData, LAST_MODIFIED, ID);
         caveatCallbackRequest = new CaveatCallbackRequest(caveatDetails);
         when(caveatCallbackResponseTransformer.transformResponseWithNoChanges(caveatCallbackRequest)).thenReturn(caveatCallbackResponse);
+        when(caveatCallbackResponseTransformer.caveatExtendExpiry(caveatCallbackRequest, documents, null)).thenReturn(caveatCallbackResponse);
 
         CaveatCallbackResponse response = caveatNotificationService.caveatExtend(caveatCallbackRequest);
 
         assertEquals(caveatCallbackResponse, response);
     }
 
+    @Test
+    public void testCaveatExtendWithNoEmailNoBP() throws NotificationClientException {
+        caveatData = CaveatData.builder()
+            .caveatRaisedEmailNotificationRequested("No")
+            .sendToBulkPrintRequested("No")
+            .build();
+
+        responseCaveatData = ResponseCaveatData.builder()
+            .notificationsGenerated(DOCUMENTS_LIST_CAVEAT_EXTENDED)
+            .build();
+
+        documents.add(coversheet);
+        documents.add(caveatExtended);
+
+        caveatDetails = new CaveatDetails(caveatData, LAST_MODIFIED, ID);
+        caveatCallbackRequest = new CaveatCallbackRequest(caveatDetails);
+
+        when(caveatDocmosisService.caseDataAsPlaceholders(caveatDetails)).thenReturn(placeholders);
+        when(pdfManagementService.generateDocmosisDocumentAndUpload(placeholders, CAVEAT_COVERSHEET)).thenReturn(coversheet);
+        when(pdfManagementService.generateDocmosisDocumentAndUpload(placeholders, CAVEAT_EXTENDED)).thenReturn(caveatExtended);
+        caveatCallbackResponse = CaveatCallbackResponse.builder().caveatData(responseCaveatData).build();
+        when(caveatCallbackResponseTransformer.caveatExtendExpiry(caveatCallbackRequest, documents, null))
+                .thenReturn(caveatCallbackResponse);
+
+        caveatNotificationService.caveatExtend(caveatCallbackRequest);
+
+        assertEquals(2, caveatCallbackResponse.getCaveatData().getNotificationsGenerated().size());
+    }
+
+    @Test
+    public void testCaveatExtendWithNoEmailBulkPrintValidSendLetter() throws NotificationClientException {
+        caveatData = CaveatData.builder()
+            .caveatRaisedEmailNotificationRequested("No")
+            .sendToBulkPrintRequested("Yes")
+            .build();
+
+        responseCaveatData = ResponseCaveatData.builder()
+            .registryLocation("leeds")
+            .caveatorEmailAddress("test@test.com")
+            .deceasedForenames("name")
+            .deceasedSurname("name")
+            .caveatRaisedEmailNotificationRequested("Yes")
+            .notificationsGenerated(DOCUMENTS_LIST_CAVEAT_EXTENDED)
+            .build();
+
+
+        documents.add(coversheet);
+        documents.add(caveatExtended);
+
+        caveatCallbackResponse = CaveatCallbackResponse.builder().caveatData(responseCaveatData).build();
+        caveatDetails = new CaveatDetails(caveatData, LAST_MODIFIED, ID);
+        caveatCallbackRequest = new CaveatCallbackRequest(caveatDetails);
+        SendLetterResponse sendLetterResponse = new SendLetterResponse(UUID.randomUUID());
+        when(caveatDocmosisService.caseDataAsPlaceholders(caveatDetails)).thenReturn(placeholders);
+        when(pdfManagementService.generateDocmosisDocumentAndUpload(placeholders, CAVEAT_COVERSHEET)).thenReturn(coversheet);
+        when(pdfManagementService.generateDocmosisDocumentAndUpload(placeholders, CAVEAT_EXTENDED)).thenReturn(caveatExtended);
+        when(bulkPrintService.sendToBulkPrint(caveatCallbackRequest, caveatExtended, coversheet)).thenReturn(sendLetterResponse);
+        when(eventValidationService.validateCaveatBulkPrintResponse(eq(sendLetterResponse.letterId.toString()), any(List.class)))
+            .thenReturn(caveatCallbackResponse.builder().errors(new ArrayList<>()).build());
+
+        when(caveatCallbackResponseTransformer.caveatExtendExpiry(caveatCallbackRequest, documents, sendLetterResponse.letterId.toString()))
+            .thenReturn(caveatCallbackResponse);
+
+        caveatNotificationService.caveatExtend(caveatCallbackRequest);
+
+        assertEquals(2, caveatCallbackResponse.getCaveatData().getNotificationsGenerated().size());
+    }
+
+    @Test
+    public void testCaveatExtendWithNoEmailBulkPrintNullSendLetter() throws NotificationClientException {
+        caveatData = CaveatData.builder()
+            .caveatRaisedEmailNotificationRequested("No")
+            .sendToBulkPrintRequested("Yes")
+            .build();
+
+        responseCaveatData = ResponseCaveatData.builder()
+            .registryLocation("leeds")
+            .caveatorEmailAddress("test@test.com")
+            .deceasedForenames("name")
+            .deceasedSurname("name")
+            .caveatRaisedEmailNotificationRequested("Yes")
+            .notificationsGenerated(DOCUMENTS_LIST_CAVEAT_EXTENDED)
+            .build();
+
+
+        documents.add(coversheet);
+        documents.add(caveatExtended);
+
+        caveatCallbackResponse = CaveatCallbackResponse.builder().caveatData(responseCaveatData).build();
+        caveatDetails = new CaveatDetails(caveatData, LAST_MODIFIED, ID);
+        caveatCallbackRequest = new CaveatCallbackRequest(caveatDetails);
+        when(caveatDocmosisService.caseDataAsPlaceholders(caveatDetails)).thenReturn(placeholders);
+        when(pdfManagementService.generateDocmosisDocumentAndUpload(placeholders, CAVEAT_COVERSHEET)).thenReturn(coversheet);
+        when(pdfManagementService.generateDocmosisDocumentAndUpload(placeholders, CAVEAT_EXTENDED)).thenReturn(caveatExtended);
+        when(eventValidationService.validateCaveatBulkPrintResponse(eq(null), any(List.class)))
+            .thenReturn(caveatCallbackResponse.builder().errors(new ArrayList<>()).build());
+
+        when(caveatCallbackResponseTransformer.caveatExtendExpiry(caveatCallbackRequest, documents, null))
+            .thenReturn(caveatCallbackResponse);
+
+        caveatNotificationService.caveatExtend(caveatCallbackRequest);
+
+        assertEquals(2, caveatCallbackResponse.getCaveatData().getNotificationsGenerated().size());
+    }
+
+    @Test
+    public void testWithDrawEmail() throws NotificationClientException {
+        CaveatData caveatData = CaveatData.builder()
+                .caveatRaisedEmailNotificationRequested("Yes")
+                .caveatorEmailAddress("test@test.com").build();
+
+        caveatDetails = new CaveatDetails(caveatData, LAST_MODIFIED, ID);
+        caveatCallbackRequest = new CaveatCallbackRequest(caveatDetails);
+        CaveatCallbackResponse caveatCallbackResponse = CaveatCallbackResponse.builder().errors(new ArrayList<>()).build();
+        Document document = Document.builder().build();
+        when(notificationService.sendCaveatEmail(eq(State.CAVEAT_WITHDRAW), eq(caveatDetails))).thenReturn(document);
+        when(eventValidationService.validateCaveatRequest(eq(caveatCallbackRequest), isA(List.class))).thenReturn(caveatCallbackResponse);
+
+
+        caveatNotificationService.withdraw(caveatCallbackRequest);
+
+        ArgumentCaptor<List<Document>> listArgumentCaptor = ArgumentCaptor.forClass(List.class);
+        verify(caveatCallbackResponseTransformer).withdrawn(eq(caveatCallbackRequest), listArgumentCaptor.capture(), isNull());
+        List<Document> passedDocument = listArgumentCaptor.getValue();
+
+        assertEquals("Document matched", passedDocument.get(0), document);
+        verify(notificationService).sendCaveatEmail(eq(State.CAVEAT_WITHDRAW), eq(caveatDetails));
+        verify(eventValidationService).validateCaveatRequest(eq(caveatCallbackRequest), isA(List.class));
+    }
+
+    @Test
+    public void testWithdrawnBluckPrint() throws NotificationClientException {
+        CaveatData caveatData = CaveatData.builder()
+                .caveatRaisedEmailNotificationRequested("No")
+                .caveatorEmailAddress("test@test.com")
+                .sendToBulkPrintRequested("Yes")
+                .build();
+
+        caveatDetails = new CaveatDetails(caveatData, LAST_MODIFIED, ID);
+        caveatCallbackRequest = new CaveatCallbackRequest(caveatDetails);
+        CaveatCallbackResponse caveatCallbackResponse = CaveatCallbackResponse.builder().errors(new ArrayList<>()).build();
+        Document document = Document.builder().documentFileName("withdrawn.doc").build();
+
+        when(caveatDocmosisService.caseDataAsPlaceholders(eq(caveatCallbackRequest.getCaseDetails()))).thenReturn(placeholders);
+        when(pdfManagementService.generateDocmosisDocumentAndUpload(eq(placeholders),  eq(DocumentType.CAVEAT_COVERSHEET)))
+                .thenReturn(coversheet);
+        when(pdfManagementService.generateDocmosisDocumentAndUpload(eq(placeholders),  eq(DocumentType.CAVEAT_WITHDRAWN)))
+                .thenReturn(document);
+
+        SendLetterResponse sendLetterResponse = new SendLetterResponse(UUID.randomUUID());
+        when(bulkPrintService.sendToBulkPrint(eq(caveatCallbackRequest), eq(document), eq(coversheet))).thenReturn(sendLetterResponse);
+        when(eventValidationService.validateCaveatBulkPrintResponse(eq(sendLetterResponse.letterId.toString()), any()))
+                .thenReturn(caveatCallbackResponse);
+
+        caveatNotificationService.withdraw(caveatCallbackRequest);
+
+        ArgumentCaptor<List<Document>> listArgumentCaptor = ArgumentCaptor.forClass(List.class);
+        verify(caveatCallbackResponseTransformer).withdrawn(eq(caveatCallbackRequest),
+                listArgumentCaptor.capture(), eq(sendLetterResponse.letterId.toString()));
+        List<Document> passedDocument = listArgumentCaptor.getValue();
+
+        assertEquals("Document size", 2, passedDocument.size());
+        verify(notificationService, never()).sendCaveatEmail(eq(State.CAVEAT_WITHDRAW), eq(caveatDetails));
+        verify(eventValidationService, never()).validateCaveatRequest(eq(caveatCallbackRequest), isA(List.class));
+        verify(bulkPrintService).sendToBulkPrint(eq(caveatCallbackRequest), eq(document), eq(coversheet));
+        verify(eventValidationService).validateCaveatBulkPrintResponse(eq(sendLetterResponse.letterId.toString()),
+                any());
+    }
+
+    @Test
+    public void testWithdrawnBluckPrintValidationFailure() throws NotificationClientException {
+        CaveatData caveatData = CaveatData.builder()
+                .caveatRaisedEmailNotificationRequested("No")
+                .caveatorEmailAddress("test@test.com")
+                .sendToBulkPrintRequested("Yes")
+                .build();
+
+        caveatDetails = new CaveatDetails(caveatData, LAST_MODIFIED, ID);
+        caveatCallbackRequest = new CaveatCallbackRequest(caveatDetails);
+        CaveatCallbackResponse caveatCallbackResponse = CaveatCallbackResponse.builder()
+                .errors(Arrays.asList("bulkPrintResponseNull")).build();
+        Document document = Document.builder().documentFileName("withdrawn.doc").build();
+
+        when(caveatDocmosisService.caseDataAsPlaceholders(eq(caveatCallbackRequest.getCaseDetails()))).thenReturn(placeholders);
+        when(pdfManagementService.generateDocmosisDocumentAndUpload(eq(placeholders),  eq(DocumentType.CAVEAT_COVERSHEET)))
+                .thenReturn(coversheet);
+        when(pdfManagementService.generateDocmosisDocumentAndUpload(eq(placeholders),  eq(DocumentType.CAVEAT_WITHDRAWN)))
+                .thenReturn(document);
+
+        SendLetterResponse sendLetterResponse = new SendLetterResponse(UUID.randomUUID());
+        when(bulkPrintService.sendToBulkPrint(eq(caveatCallbackRequest), eq(document), eq(coversheet))).thenReturn(sendLetterResponse);
+        when(eventValidationService.validateCaveatBulkPrintResponse(eq(sendLetterResponse.letterId.toString()), any()))
+                .thenReturn(caveatCallbackResponse);
+
+        caveatNotificationService.withdraw(caveatCallbackRequest);
+
+        verify(caveatCallbackResponseTransformer, never()).withdrawn(eq(caveatCallbackRequest), anyList(), isNull());
+        verify(notificationService, never()).sendCaveatEmail(eq(State.CAVEAT_WITHDRAW), eq(caveatDetails));
+        verify(eventValidationService, never()).validateCaveatRequest(eq(caveatCallbackRequest), isA(List.class));
+        verify(bulkPrintService).sendToBulkPrint(eq(caveatCallbackRequest), eq(document), eq(coversheet));
+        verify(eventValidationService).validateCaveatBulkPrintResponse(eq(sendLetterResponse.letterId.toString()),
+                any());
+    }
+
+    @Test
+    public void testWithdrawnWithoutEmailOrBulkPrint() throws NotificationClientException {
+        CaveatData caveatData = CaveatData.builder()
+                .caveatRaisedEmailNotificationRequested("No")
+                .caveatorEmailAddress("test@test.com")
+                .sendToBulkPrintRequested("No")
+                .build();
+
+        caveatDetails = new CaveatDetails(caveatData, LAST_MODIFIED, ID);
+        caveatCallbackRequest = new CaveatCallbackRequest(caveatDetails);
+        CaveatCallbackResponse caveatCallbackResponse = CaveatCallbackResponse.builder().errors(new ArrayList<>()).build();
+        Document document = Document.builder().documentFileName("withdrawn.doc").build();
+
+        when(caveatDocmosisService.caseDataAsPlaceholders(eq(caveatCallbackRequest.getCaseDetails()))).thenReturn(placeholders);
+        when(pdfManagementService.generateDocmosisDocumentAndUpload(eq(placeholders),  eq(DocumentType.CAVEAT_COVERSHEET)))
+                .thenReturn(coversheet);
+        when(pdfManagementService.generateDocmosisDocumentAndUpload(eq(placeholders),  eq(DocumentType.CAVEAT_WITHDRAWN)))
+                .thenReturn(document);
+
+
+        caveatNotificationService.withdraw(caveatCallbackRequest);
+
+        ArgumentCaptor<List<Document>> listArgumentCaptor = ArgumentCaptor.forClass(List.class);
+        verify(caveatCallbackResponseTransformer).withdrawn(eq(caveatCallbackRequest), listArgumentCaptor.capture(), isNull());
+        List<Document> passedDocument = listArgumentCaptor.getValue();
+
+        assertEquals("Document size", 2, passedDocument.size());
+        verify(notificationService, never()).sendCaveatEmail(eq(State.CAVEAT_WITHDRAW), eq(caveatDetails));
+        verify(eventValidationService, never()).validateCaveatRequest(eq(caveatCallbackRequest), isA(List.class));
+        verify(bulkPrintService, never()).sendToBulkPrint(eq(caveatCallbackRequest), eq(document), eq(coversheet));
+        verify(eventValidationService, never()).validateCaveatBulkPrintResponse(any(), any());
+
+    }
+
+    @Test
+    public void testWithDrawNotificationValidationFailure() throws NotificationClientException {
+        CaveatData caveatData = CaveatData.builder()
+                .caveatRaisedEmailNotificationRequested("Yes")
+                .build();
+
+        caveatDetails = new CaveatDetails(caveatData, LAST_MODIFIED, ID);
+        caveatCallbackRequest = new CaveatCallbackRequest(caveatDetails);
+        CaveatCallbackResponse caveatCallbackResponse = CaveatCallbackResponse.builder()
+                .errors(Arrays.asList("notifyApplicantNoEmailPA")).build();
+        Document document = Document.builder().build();
+        when(notificationService.sendCaveatEmail(eq(State.CAVEAT_WITHDRAW), eq(caveatDetails))).thenReturn(document);
+        when(eventValidationService.validateCaveatRequest(eq(caveatCallbackRequest), isA(List.class))).thenReturn(caveatCallbackResponse);
+
+
+        caveatNotificationService.withdraw(caveatCallbackRequest);
+
+
+        verify(caveatCallbackResponseTransformer, never()).withdrawn(eq(caveatCallbackRequest), any(), isNull());
+
+        verify(notificationService, never()).sendCaveatEmail(eq(State.CAVEAT_WITHDRAW), eq(caveatDetails));
+        verify(eventValidationService).validateCaveatRequest(eq(caveatCallbackRequest), isA(List.class));
+    }
 }
+

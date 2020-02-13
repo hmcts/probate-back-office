@@ -14,12 +14,11 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import uk.gov.hmcts.probate.exception.BadRequestException;
 import uk.gov.hmcts.probate.insights.AppInsights;
-import uk.gov.hmcts.probate.model.State;
-import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
+import uk.gov.hmcts.probate.transformer.CaveatCallbackResponseTransformer;
 import uk.gov.hmcts.probate.util.TestUtils;
 import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
 import uk.gov.service.notify.NotificationClientException;
@@ -31,8 +30,6 @@ import static org.hamcrest.CoreMatchers.containsString;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -63,6 +60,8 @@ public class CaveatControllerTest {
     @MockBean
     private CoreCaseDataApi coreCaseDataApi;
 
+    private CaveatCallbackResponseTransformer caveatCallbackResponseTransformer;
+
     @Autowired
     private WebApplicationContext webApplicationContext;
 
@@ -75,7 +74,7 @@ public class CaveatControllerTest {
         doReturn(document).when(notificationService).sendCaveatEmail(any(), any());
 
         when(pdfManagementService.generateAndUpload(any(CallbackRequest.class), eq(SENT_EMAIL)))
-                .thenReturn(Document.builder().documentType(SENT_EMAIL).build());
+            .thenReturn(Document.builder().documentType(SENT_EMAIL).build());
     }
 
     @Test
@@ -84,10 +83,10 @@ public class CaveatControllerTest {
         String caveatPayload = testUtils.getStringFromFile("solicitorCreateCaveatPayload.json");
 
         mockMvc.perform(post("/caveat/solsCreate")
-                .content(caveatPayload)
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().string(containsString("data")));
+            .content(caveatPayload)
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(content().string(containsString("data")));
     }
 
     @Test
@@ -95,9 +94,9 @@ public class CaveatControllerTest {
         String personalPayload = testUtils.getStringFromFile("solsCaveatPayloadNoEmail.json");
 
         mockMvc.perform(post("/caveat/solsCreate")
-                .content(personalPayload)
-                .contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(status().is4xxClientError());
+            .content(personalPayload)
+            .contentType(MediaType.APPLICATION_JSON_UTF8))
+            .andExpect(status().is4xxClientError());
     }
 
     @Test
@@ -106,10 +105,10 @@ public class CaveatControllerTest {
         String caveatPayload = testUtils.getStringFromFile("solicitorUpdateCaveatPayload.json");
 
         mockMvc.perform(post("/caveat/solsUpdate")
-                .content(caveatPayload)
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().string(containsString("data")));
+            .content(caveatPayload)
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(content().string(containsString("data")));
     }
 
     @Test
@@ -272,5 +271,16 @@ public class CaveatControllerTest {
             .content(caveatPayload)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk());
+    }
+
+    @Test
+    public void shouldCaveatWithdraw() throws Exception {
+
+        String caveatPayload = testUtils.getStringFromFile("caveatPayloadNotifications.json");
+
+        mockMvc.perform(post("/caveat/withdraw")
+                .content(caveatPayload)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
     }
 }
