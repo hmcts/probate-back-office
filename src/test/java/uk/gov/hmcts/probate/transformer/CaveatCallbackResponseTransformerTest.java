@@ -117,8 +117,7 @@ public class CaveatCallbackResponseTransformerTest {
 
     @Before
     public void setup() {
-
-        caveatDataBuilder = CaveatData.builder()
+         caveatDataBuilder = CaveatData.builder()
                 .deceasedForenames(CAV_DECEASED_FORENAMES)
                 .deceasedSurname(CAV_DECEASED_SURNAME)
                 .deceasedDateOfDeath(CAV_DECEASED_DOD)
@@ -293,6 +292,8 @@ public class CaveatCallbackResponseTransformerTest {
         assertCommon(caveatCallbackResponse);
 
         assertEquals(1, caveatCallbackResponse.getCaveatData().getNotificationsGenerated().size());
+        assertEquals(1, caveatCallbackResponse.getCaveatData().getBulkPrintId().size());
+        assertEquals(letterId, caveatCallbackResponse.getCaveatData().getBulkPrintId().get(0).getValue().getSendLetterId());
     }
 
     @Test
@@ -319,6 +320,52 @@ public class CaveatCallbackResponseTransformerTest {
         assertCommon(caveatCallbackResponse);
 
         assertEquals(0, caveatCallbackResponse.getCaveatData().getNotificationsGenerated().size());
+    }
+
+    @Test
+    public void shouldConvertRequestToDataBeanWithCaveatWithdrawn() {
+        List<Document> documents = new ArrayList<>();
+        Document document = Document.builder()
+                .documentLink(documentLinkMock)
+                .documentType(DocumentType.CAVEAT_WITHDRAWN)
+                .build();
+        documents.add(0, document);
+        String letterId = "123-456";
+        CaveatCallbackResponse caveatCallbackResponse = underTest.withdrawn(caveatCallbackRequestMock, documents, letterId);
+
+        assertCommon(caveatCallbackResponse);
+
+        assertEquals(1, caveatCallbackResponse.getCaveatData().getNotificationsGenerated().size());
+        assertEquals(1, caveatCallbackResponse.getCaveatData().getBulkPrintId().size());
+        assertEquals(letterId, caveatCallbackResponse.getCaveatData().getBulkPrintId().get(0).getValue().getSendLetterId());
+    }
+
+    @Test
+    public void shouldConvertRequestToDataBeanWithCaveatWithdrawnWithNoDocuments() {
+        List<Document> documents = new ArrayList<>();
+        CaveatCallbackResponse caveatCallbackResponse = underTest.withdrawn(caveatCallbackRequestMock, documents, null);
+
+        assertCommon(caveatCallbackResponse);
+
+        assertEquals(0, caveatCallbackResponse.getCaveatData().getNotificationsGenerated().size());
+        assertEquals(0, caveatCallbackResponse.getCaveatData().getBulkPrintId().size());
+    }
+
+    @Test
+    public void shouldConvertRequestToDataBeanWithCaveatWithdrawnNoCaveatWithdrawnDocuments() {
+        List<Document> documents = new ArrayList<>();
+        Document document = Document.builder()
+                .documentLink(documentLinkMock)
+                .documentType(DocumentType.DIGITAL_GRANT)
+                .build();
+        documents.add(0, document);
+        String letterId = "123-456";
+        CaveatCallbackResponse caveatCallbackResponse = underTest.withdrawn(caveatCallbackRequestMock, documents, letterId);
+
+        assertCommon(caveatCallbackResponse);
+
+        assertEquals(0, caveatCallbackResponse.getCaveatData().getNotificationsGenerated().size());
+        assertEquals(0, caveatCallbackResponse.getCaveatData().getBulkPrintId().size());
     }
 
     private void assertBulkScanCaseCreationDetails(CaseCreationDetails caveatCreationDetails) {
