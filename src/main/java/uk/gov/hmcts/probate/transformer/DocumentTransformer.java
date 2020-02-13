@@ -81,6 +81,8 @@ public class DocumentTransformer {
         switch (document.getDocumentType()) {
             case CAVEAT_COVERSHEET:
             case CAVEAT_RAISED:
+            case CAVEAT_EXTENDED:
+            case CAVEAT_WITHDRAWN:
             case SENT_EMAIL:
                 caveatCallbackRequest.getCaseDetails().getData().getNotificationsGenerated()
                         .add(new CollectionMember<>(null, document));

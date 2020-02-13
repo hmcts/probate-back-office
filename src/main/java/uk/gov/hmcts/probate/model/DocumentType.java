@@ -74,6 +74,12 @@ public enum DocumentType {
     @JsonProperty("caveatStopped")
     CAVEAT_STOPPED("caveatStopped"),
 
+    @JsonProperty("caveatExtended")
+    CAVEAT_EXTENDED("caveatExtended"),
+
+    @JsonProperty("caveatWithdrawn")
+    CAVEAT_WITHDRAWN("caveatWithdrawn"),
+
     @JsonProperty("grantCoversheet")
     GRANT_COVERSHEET("grantCoversheet"),
 
