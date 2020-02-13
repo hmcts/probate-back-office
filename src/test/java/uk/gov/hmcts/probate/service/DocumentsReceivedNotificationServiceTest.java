@@ -101,6 +101,7 @@ public class DocumentsReceivedNotificationServiceTest {
                 .solsSolicitorEmail("solicitor@test.com")
                 .solsSolicitorAppReference("1234-5678-9012")
                 .deceasedDateOfDeath(LocalDate.of(2000, 12, 12))
+                .bulkScanCaseReference(null)
                 .build(), LAST_MODIFIED, CASE_ID);
 
         personalCaseDataBirminghamFromBulkScan = new CaseDetails(CaseData.builder()

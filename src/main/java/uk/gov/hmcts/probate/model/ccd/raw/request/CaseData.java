@@ -760,10 +760,6 @@ public class CaseData {
         return YES.equals(getLanguagePreferenceWelsh());
     }
 
-    public boolean isCreatedFromBulkScan() {
-        return (getBulkScanCaseReference()==null||getBulkScanCaseReference().isEmpty()?false:true);
-    }
-
     private String convertDate(LocalDate dateToConvert) {
         if (dateToConvert == null) {
             return null;

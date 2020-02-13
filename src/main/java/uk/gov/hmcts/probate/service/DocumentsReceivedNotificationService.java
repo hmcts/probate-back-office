@@ -2,6 +2,7 @@ package uk.gov.hmcts.probate.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -47,7 +48,7 @@ public class DocumentsReceivedNotificationService {
 
         List<Document> documents = new ArrayList<>();
 
-        if (caseData.isDocsReceivedEmailNotificationRequested() && !caseData.isCreatedFromBulkScan()) {
+        if (caseData.isDocsReceivedEmailNotificationRequested() && !isCaseCreatedFromBulkScan(caseData)) {
             response = eventValidationService.validateEmailRequest(callbackRequest, emailAddressNotificationValidationRules);
             if (response.getErrors().isEmpty()) {
                 Document documentsReceivedSentEmail = notificationService.sendEmail(DOCUMENTS_RECEIVED, caseDetails);
@@ -55,12 +56,16 @@ public class DocumentsReceivedNotificationService {
                 response = callbackResponseTransformer.addDocuments(callbackRequest, documents, null, null);
             }
         } else {
-            if (caseData.isCreatedFromBulkScan()) {
+            if (isCaseCreatedFromBulkScan(caseData)) {
                 log.info("Document received notification ignored for case: {} created from bulk scan.", caseDetails.getId());
             }
             response = callbackResponseTransformer.addDocuments(callbackRequest, documents, null, null);
 
         }
         return response;
+    }
+
+    private boolean isCaseCreatedFromBulkScan(final CaseData caseData) {
+        return (StringUtils.isBlank(caseData.getBulkScanCaseReference())?false:true);
     }
 }
