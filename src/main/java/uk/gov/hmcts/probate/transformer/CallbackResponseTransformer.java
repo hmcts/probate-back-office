@@ -121,7 +121,7 @@ public class CallbackResponseTransformer {
 
         if (documentTransformer.hasDocumentWithType(documents, GRANT_RAISED) && letterId != null) {
             CollectionMember<BulkPrint> bulkPrint = buildBulkPrint(letterId, GRANT_RAISED.getTemplateName());
-            caseData.getBulkPrintId().add(bulkPrint);
+            appendToBulkPrintCollection(bulkPrint, caseData);
 
             responseCaseDataBuilder
                     .bulkPrintId(caseData.getBulkPrintId())
