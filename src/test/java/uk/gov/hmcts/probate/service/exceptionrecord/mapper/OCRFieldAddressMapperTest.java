@@ -3,6 +3,7 @@ package uk.gov.hmcts.probate.service.exceptionrecord.mapper;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.stereotype.Component;
+import uk.gov.hmcts.probate.exception.OCRMappingException;
 import uk.gov.hmcts.probate.model.exceptionrecord.ExceptionRecordOCRFields;
 import uk.gov.hmcts.reform.probate.model.AttorneyNamesAndAddress;
 import uk.gov.hmcts.reform.probate.model.cases.Address;
@@ -24,10 +25,16 @@ public class OCRFieldAddressMapperTest {
     private static final String ADDRESS_POST_TOWN = "London";
     private static final String ADDRESS_COUNTY = "Greater London";
     private static final String ADDRESS_POST_CODE = "NW1 1AB";
+    private static final String ADDRESS_POST_CODE_ERROR = "NW1";
+
+    private static final String ADDRESS_POST_CODE_CORRECT_ERROR_MESSAGE =
+            "An invalid postcode has been found 'NW1', please provide a valid postcode";
 
     private OCRFieldAddressMapper addressMapper = new OCRFieldAddressMapper();
 
     private ExceptionRecordOCRFields ocrFields;
+
+    private ExceptionRecordOCRFields ocrFieldsPostcodeError;
 
     @Before
     public void setUpClass() throws Exception {
@@ -56,6 +63,33 @@ public class OCRFieldAddressMapperTest {
                 .deceasedAddressTown(ADDRESS_POST_TOWN)
                 .deceasedAddressCounty(ADDRESS_COUNTY)
                 .deceasedAddressPostCode(ADDRESS_POST_CODE)
+                .build();
+
+        ocrFieldsPostcodeError = ExceptionRecordOCRFields.builder()
+                .attorneyOnBehalfOfName(ATTORNEY_ON_BEHALF_OF_NAME)
+                .attorneyOnBehalfOfAddressLine1(ATTORNEY_ON_BEHALF_OF_ADDRESS_LINE1)
+                .attorneyOnBehalfOfAddressLine2(ADDRESS_LINE2)
+                .attorneyOnBehalfOfAddressTown(ADDRESS_POST_TOWN)
+                .attorneyOnBehalfOfAddressCounty(ADDRESS_COUNTY)
+                .attorneyOnBehalfOfAddressPostCode(ADDRESS_POST_CODE_ERROR)
+
+                .primaryApplicantAddressLine1(PRIMARY_APPLICANT_ADDRESS_LINE1)
+                .primaryApplicantAddressLine2(ADDRESS_LINE2)
+                .primaryApplicantAddressTown(ADDRESS_POST_TOWN)
+                .primaryApplicantAddressCounty(ADDRESS_COUNTY)
+                .primaryApplicantAddressPostCode(ADDRESS_POST_CODE_ERROR)
+
+                .caveatorAddressLine1(CAVEAT_ADDRESS_LINE1)
+                .caveatorAddressLine2(ADDRESS_LINE2)
+                .caveatorAddressTown(ADDRESS_POST_TOWN)
+                .caveatorAddressCounty(ADDRESS_COUNTY)
+                .caveatorAddressPostCode(ADDRESS_POST_CODE_ERROR)
+
+                .deceasedAddressLine1(DECEASED_ADDRESS_LINE1)
+                .deceasedAddressLine2(ADDRESS_LINE2)
+                .deceasedAddressTown(ADDRESS_POST_TOWN)
+                .deceasedAddressCounty(ADDRESS_COUNTY)
+                .deceasedAddressPostCode(ADDRESS_POST_CODE_ERROR)
                 .build();
     }
 
@@ -98,5 +132,36 @@ public class OCRFieldAddressMapperTest {
         assertEquals(ADDRESS_POST_TOWN, response.get(0).getValue().getAddress().getPostTown());
         assertEquals(ADDRESS_COUNTY, response.get(0).getValue().getAddress().getCounty());
         assertEquals(ADDRESS_POST_CODE, response.get(0).getValue().getAddress().getPostCode());
+    }
+
+    @Test(expected = OCRMappingException.class)
+    public void testPrimaryApplicantAddressPostcodeError() {
+        Address response = addressMapper.toPrimaryApplicantAddress(ocrFieldsPostcodeError);
+    }
+
+    @Test(expected = OCRMappingException.class)
+    public void testCaveatAddressPostcodeError() {
+        Address response = addressMapper.toCaveatorAddress(ocrFieldsPostcodeError);
+    }
+
+    @Test(expected = OCRMappingException.class)
+    public void testDeceasedAddressPostcodeError() {
+        Address response = addressMapper.toDeceasedAddress(ocrFieldsPostcodeError);
+    }
+
+    @Test(expected = OCRMappingException.class)
+    public void testAttorneyNamesAndAddressPostcodeError() {
+        List<CollectionMember<AttorneyNamesAndAddress>> response = addressMapper.toAttorneyOnBehalfOfAddress(ocrFieldsPostcodeError);
+    }
+
+    @Test
+    public void testPrimaryApplicantAddressPostcodeCorrectErrorMessage() {
+        String errorMessage = null;
+        try {
+            Address response = addressMapper.toPrimaryApplicantAddress(ocrFieldsPostcodeError);
+        } catch ( OCRMappingException ocrme) {
+            errorMessage = ocrme.getMessage();
+        }
+        assertEquals(ADDRESS_POST_CODE_CORRECT_ERROR_MESSAGE, errorMessage);
     }
 }

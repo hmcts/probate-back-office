@@ -1,7 +1,9 @@
 package uk.gov.hmcts.probate.service.exceptionrecord.mapper;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Component;
+import uk.gov.hmcts.probate.exception.OCRMappingException;
 import uk.gov.hmcts.probate.model.exceptionrecord.ExceptionRecordOCRFields;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToAttorneyOnBehalfOfAddress;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToCaveatorAddress;
@@ -25,6 +27,8 @@ public class OCRFieldAddressMapper {
     private String county;
     private String country;
     private String postCode;
+
+    private final static String POSTCODE_REGEX_PATTERN = "^([A-Z]{1,2}\\d[A-Z\\d]? ?\\d[A-Z]{2}|GIR ?0A{2})$";
 
     @SuppressWarnings("squid:S1168")
     @ToPrimaryApplicantAddress
@@ -104,9 +108,19 @@ public class OCRFieldAddressMapper {
                 .country(country)
                 .postCode(postCode)
                 .build();
-        if (address.getPostCode() == null || address.getPostCode().isEmpty()) {
+        if (StringUtils.isBlank(address.getPostCode())) {
             return null;
+        } else {
+            validatePostCode(address.getPostCode());
         }
         return address;
+    }
+
+    private void validatePostCode(final String postCode) {
+        if (!postCode.matches(POSTCODE_REGEX_PATTERN)) {
+            String errorMessage = "An invalid postcode has been found '" + postCode + "', please provide a valid postcode";
+            log.error(errorMessage);
+            throw new OCRMappingException(errorMessage);
+        }
     }
 }
