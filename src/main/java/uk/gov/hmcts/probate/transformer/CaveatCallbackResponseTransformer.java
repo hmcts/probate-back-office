@@ -154,9 +154,7 @@ public class CaveatCallbackResponseTransformer {
         ResponseCaveatData.ResponseCaveatDataBuilder responseCaseDataBuilder = getResponseCaveatData(caveatCallbackRequest.getCaseDetails());
 
         String defaultExpiry = dateTimeFormatter.format(caveatCallbackRequest.getCaseDetails().getData().getExpiryDate().plusMonths(6));
-        return transformResponse(responseCaseDataBuilder.expiryDate(defaultExpiry)
-            .caveatRaisedEmailNotification(caveatCallbackRequest.getCaseDetails().getData().getCaveatRaisedEmailNotification())
-            .build());
+        return transformResponse(responseCaseDataBuilder.expiryDate(defaultExpiry).build());
     }
 
     public CaveatCallbackResponse transformResponseWithNoChanges(CaveatCallbackRequest caveatCallbackRequest) {

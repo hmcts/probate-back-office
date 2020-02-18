@@ -20,8 +20,6 @@ import uk.gov.service.notify.NotificationClientException;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -142,13 +140,13 @@ public class CaveatNotificationService {
         return caveatCallbackResponse;
     }
 
-    public CaveatCallbackResponse withdraw(CaveatCallbackRequest caveatCallbackRequest) throws NotificationClientException  {
+    public CaveatCallbackResponse withdraw(CaveatCallbackRequest caveatCallbackRequest) throws NotificationClientException {
         CaveatCallbackResponse caveatCallbackResponse = CaveatCallbackResponse.builder().errors(new ArrayList<>()).build();
         List<Document> documents = new ArrayList<>();
         String letterId = null;
-        if (caveatCallbackRequest.getCaseDetails().getData().isCaveatEmailNotificationRequested()){
+        if (caveatCallbackRequest.getCaseDetails().getData().isCaveatEmailNotificationRequested()) {
             caveatCallbackResponse = eventValidationService.validateCaveatRequest(caveatCallbackRequest, emailValidationRuleCaveats);
-             if (caveatCallbackResponse.getErrors().isEmpty()) {
+            if (caveatCallbackResponse.getErrors().isEmpty()) {
                 Document document = notificationService.sendCaveatEmail(CAVEAT_WITHDRAW, caveatCallbackRequest.getCaseDetails());
                 documents.add(document);
             } else {
@@ -157,7 +155,7 @@ public class CaveatNotificationService {
         } else {
             Map<String, Object> placeholders = caveatDocmosisService.caseDataAsPlaceholders(caveatCallbackRequest.getCaseDetails());
             Document coversheet = pdfManagementService
-                    .generateDocmosisDocumentAndUpload(placeholders, DocumentType.CAVEAT_COVERSHEET);
+                .generateDocmosisDocumentAndUpload(placeholders, DocumentType.CAVEAT_COVERSHEET);
             documents.add(coversheet);
             Document caveatRaisedDoc = pdfManagementService.generateDocmosisDocumentAndUpload(placeholders, DocumentType.CAVEAT_WITHDRAWN);
             documents.add(caveatRaisedDoc);
@@ -169,9 +167,9 @@ public class CaveatNotificationService {
             }
         }
 
-       if (caveatCallbackResponse.getErrors().isEmpty()) {
+        if (caveatCallbackResponse.getErrors().isEmpty()) {
             caveatCallbackResponse = caveatCallbackResponseTransformer.withdrawn(caveatCallbackRequest, documents, letterId);
-       }
+        }
         return caveatCallbackResponse;
     }
 
