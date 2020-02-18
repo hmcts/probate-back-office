@@ -37,9 +37,9 @@
         "AddressLine3": ""
       },
       "caseType": "gop",
-      "paperForm": "No",
+      "paperForm": "Yes",
       "boSendToBulkPrint": "No",
-      "bulkScanCaseReference": null,
+      "bulkScanCaseReference": "9876123487652345",
       "deceasedAnyOtherNames": "No",
       "solsFeeAccountNumber": "1234",
       "willHasCodicils": "No",
