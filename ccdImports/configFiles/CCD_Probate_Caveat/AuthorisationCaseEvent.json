@@ -32,6 +32,7 @@
   {"CaseTypeID": "Caveat", "CaseEventID": "withdrawCaveatForAwaitingCaveatResolution", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
   {"CaseTypeID": "Caveat", "CaseEventID": "caveatExpiredForAwaitingCaveatResolution", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
   {"CaseTypeID": "Caveat", "CaseEventID": "warningRequested", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
+  {"CaseTypeID": "Caveat", "CaseEventID": "extendCaveat", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
   {"CaseTypeID": "Caveat", "CaseEventID": "amendCaveatForWarningValidation", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
   {"CaseTypeID": "Caveat", "CaseEventID": "uploadDocumentForWarningValidation", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
   {"CaseTypeID": "Caveat", "CaseEventID": "emailCaveatorForWarningValidation", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
