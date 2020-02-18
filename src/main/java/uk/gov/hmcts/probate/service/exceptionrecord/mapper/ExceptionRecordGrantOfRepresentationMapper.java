@@ -306,7 +306,7 @@ public interface ExceptionRecordGrantOfRepresentationMapper {
     @AfterMapping
     default void setApplyingAsAnAttorneyBoolean(@MappingTarget GrantOfRepresentationData caseData, ExceptionRecordOCRFields ocrField) {
         if (caseData.getAttorneyOnBehalfOfNameAndAddress().size() > 0
-                && !StringUtils.isBlank(caseData.getAttorneyOnBehalfOfNameAndAddress().get(0).getValue().getName())) {
+                && StringUtils.isNotBlank(caseData.getAttorneyOnBehalfOfNameAndAddress().get(0).getValue().getName())) {
             caseData.setApplyingAsAnAttorney(Boolean.TRUE);
         } else {
             caseData.setApplyingAsAnAttorney(Boolean.FALSE);
