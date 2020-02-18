@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.service.exceptionrecord.mapper;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
 import uk.gov.hmcts.probate.exception.OCRMappingException;
@@ -34,6 +35,9 @@ public class OCRFieldAdoptiveRelativesMapperTest {
     private static final String ADOPTED_RELATIVE_6_INOUT = "out";
 
     private static final String ADOPTED_RELATIVE_INOUT_ERROR = "this is not in or out";
+
+    private static final String ADOPTED_EXPECTED_IN_VALUE = "in";
+    private static final String ADOPTED_EXPECTED_OUT_VALUE = "out";
 
     private OCRFieldAdoptiveRelativesMapper ocrFieldAdoptiveRelativesMapper = new OCRFieldAdoptiveRelativesMapper();
 
@@ -92,22 +96,22 @@ public class OCRFieldAdoptiveRelativesMapperTest {
                 = ocrFieldAdoptiveRelativesMapper.toAdoptiveRelativesCollectionMember(ocrFieldsMultiple);
         assertEquals(ADOPTED_RELATIVE_1_NAME, response.get(0).getValue().getName());
         assertEquals(ADOPTED_RELATIVE_1_RELATIONSHIP, response.get(0).getValue().getRelationship());
-        assertEquals(InOut.IN, response.get(0).getValue().getAdoptedInOrOut());
+        assertEquals(ADOPTED_EXPECTED_IN_VALUE, response.get(0).getValue().getAdoptedInOrOut());
         assertEquals(ADOPTED_RELATIVE_2_NAME, response.get(1).getValue().getName());
         assertEquals(ADOPTED_RELATIVE_2_RELATIONSHIP, response.get(1).getValue().getRelationship());
-        assertEquals(InOut.OUT, response.get(1).getValue().getAdoptedInOrOut());
+        assertEquals(ADOPTED_EXPECTED_OUT_VALUE, response.get(1).getValue().getAdoptedInOrOut());
         assertEquals(ADOPTED_RELATIVE_3_NAME, response.get(2).getValue().getName());
         assertEquals(ADOPTED_RELATIVE_3_RELATIONSHIP, response.get(2).getValue().getRelationship());
-        assertEquals(InOut.IN, response.get(2).getValue().getAdoptedInOrOut());
+        assertEquals(ADOPTED_EXPECTED_OUT_VALUE, response.get(2).getValue().getAdoptedInOrOut());
         assertEquals(ADOPTED_RELATIVE_4_NAME, response.get(3).getValue().getName());
         assertEquals(ADOPTED_RELATIVE_4_RELATIONSHIP, response.get(3).getValue().getRelationship());
-        assertEquals(InOut.OUT, response.get(3).getValue().getAdoptedInOrOut());
+        assertEquals(ADOPTED_EXPECTED_OUT_VALUE, response.get(3).getValue().getAdoptedInOrOut());
         assertEquals(ADOPTED_RELATIVE_5_NAME, response.get(4).getValue().getName());
         assertEquals(ADOPTED_RELATIVE_5_RELATIONSHIP, response.get(4).getValue().getRelationship());
-        assertEquals(InOut.IN, response.get(4).getValue().getAdoptedInOrOut());
+        assertEquals(ADOPTED_EXPECTED_IN_VALUE, response.get(4).getValue().getAdoptedInOrOut());
         assertEquals(ADOPTED_RELATIVE_6_NAME, response.get(5).getValue().getName());
         assertEquals(ADOPTED_RELATIVE_6_RELATIONSHIP, response.get(5).getValue().getRelationship());
-        assertEquals(InOut.OUT, response.get(5).getValue().getAdoptedInOrOut());
+        assertEquals(ADOPTED_EXPECTED_OUT_VALUE, response.get(5).getValue().getAdoptedInOrOut());
         assertEquals(6, response.size());
     }
 

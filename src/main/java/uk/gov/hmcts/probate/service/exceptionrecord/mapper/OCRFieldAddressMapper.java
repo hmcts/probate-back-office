@@ -1,6 +1,7 @@
 package uk.gov.hmcts.probate.service.exceptionrecord.mapper;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.model.exceptionrecord.ExceptionRecordOCRFields;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToAttorneyOnBehalfOfAddress;
@@ -56,11 +57,9 @@ public class OCRFieldAddressMapper {
                 .address(buildAddress())
                 .build();
         List<CollectionMember<AttorneyNamesAndAddress>> collectionMemberList = new ArrayList<>();
-        if ((attorneyNamesAndAddress.getName() != null
-                && !attorneyNamesAndAddress.getName().isEmpty())
+        if (!StringUtils.isBlank(attorneyNamesAndAddress.getName())
                 || (attorneyNamesAndAddress.getAddress() != null
-                && attorneyNamesAndAddress.getAddress().getPostCode() != null
-                && !attorneyNamesAndAddress.getAddress().getPostCode().isEmpty())) {
+                && StringUtils.isBlank(attorneyNamesAndAddress.getAddress().getPostCode()))) {
             collectionMemberList.add(new CollectionMember<>(null, attorneyNamesAndAddress));
         }
         return collectionMemberList;
