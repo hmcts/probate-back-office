@@ -175,10 +175,12 @@ public class DocumentGeneratorServiceTest {
                 DocumentType.DIGITAL_GRANT_REISSUE_DRAFT))
                 .thenReturn(Document.builder().documentFileName(DIGITAL_GRANT_DRAFT_REISSUE_FILE_NAME).build());
 
-        when(documentTemplateService.getTemplateId(LanguagePreference.ENGLISH, DocumentStatus.PREVIEW, DocumentIssueType.REISSUE, DocumentCaseType.GOP )).thenReturn(DocumentType.DIGITAL_GRANT_REISSUE_DRAFT);
+        when(documentTemplateService.getTemplateId(LanguagePreference.ENGLISH, DocumentStatus.PREVIEW, DocumentIssueType.REISSUE, DocumentCaseType.GOP))
+                .thenReturn(DocumentType.DIGITAL_GRANT_REISSUE_DRAFT);
 
         assertEquals(DIGITAL_GRANT_DRAFT_REISSUE_FILE_NAME,
-                documentGeneratorService.generateGrantReissue(callbackRequest, DocumentStatus.PREVIEW, Optional.of(DocumentIssueType.REISSUE)).getDocumentFileName());
+                documentGeneratorService.generateGrantReissue(callbackRequest, DocumentStatus.PREVIEW, Optional.of(DocumentIssueType.REISSUE))
+                        .getDocumentFileName());
     }
 
     @Test

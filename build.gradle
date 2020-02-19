@@ -185,7 +185,7 @@ def versions = [
         lombok                          : '1.16.18',
         springfoxSwagger                : '2.9.2',
         springSecurityVersion           : '5.1.1.RELEASE',
-        probateCommonsVersion           : '1.0.1',
+        probateCommonsVersion           : '1.0.5',
         ccdClient                       : '4.4.1',
         mapStruct                       : '1.2.0.Final',
         serviceAuthVersion              : '3.0.0'
@@ -205,7 +205,7 @@ repositories {
   mavenCentral()
   jcenter()
   maven { url "https://dl.bintray.com/hmcts/hmcts-maven" }
-  maven { url "http://repo.maven.apache.org/maven2" }
+  maven { url "https://repo.maven.apache.org/maven2" }
 }
 
 

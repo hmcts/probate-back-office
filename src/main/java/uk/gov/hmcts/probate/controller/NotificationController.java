@@ -17,6 +17,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.service.BulkPrintService;
 import uk.gov.hmcts.probate.service.DocumentGeneratorService;
+import uk.gov.hmcts.probate.service.DocumentsReceivedNotificationService;
 import uk.gov.hmcts.probate.service.EventValidationService;
 import uk.gov.hmcts.probate.service.InformationRequestService;
 import uk.gov.hmcts.probate.service.NotificationService;
@@ -49,6 +50,7 @@ public class NotificationController {
 
     @Autowired
     private final DocumentGeneratorService documentGeneratorService;
+    private final DocumentsReceivedNotificationService documentsReceivedNotificationService;
     private final NotificationService notificationService;
     private final CallbackResponseTransformer callbackResponseTransformer;
     private final EventValidationService eventValidationService;
@@ -60,32 +62,6 @@ public class NotificationController {
     private final GrantOfRepresentationDocmosisMapperService gorDocmosisService;
     private final InformationRequestService informationRequestService;
     private final RedeclarationNotificationService redeclarationNotificationService;
-
-
-    @PostMapping(path = "/documents-received")
-    public ResponseEntity<CallbackResponse> sendDocumentReceivedNotification(
-            @Validated({EmailAddressNotificationValidationRule.class})
-            @RequestBody CallbackRequest callbackRequest)
-            throws NotificationClientException {
-
-        CaseDetails caseDetails = callbackRequest.getCaseDetails();
-        CaseData caseData = callbackRequest.getCaseDetails().getData();
-        CallbackResponse response;
-
-        List<Document> documents = new ArrayList<>();
-        if (caseData.isDocsReceivedEmailNotificationRequested()) {
-            response = eventValidationService.validateEmailRequest(callbackRequest, emailAddressNotificationValidationRules);
-            if (response.getErrors().isEmpty()) {
-                Document documentsReceivedSentEmail = notificationService.sendEmail(DOCUMENTS_RECEIVED, caseDetails);
-                documents.add(documentsReceivedSentEmail);
-                response = callbackResponseTransformer.addDocuments(callbackRequest, documents, null, null);
-            }
-        } else {
-            response = callbackResponseTransformer.addDocuments(callbackRequest, documents, null, null);
-
-        }
-        return ResponseEntity.ok(response);
-    }
 
     @PostMapping(path = "/case-stopped")
     public ResponseEntity<CallbackResponse> sendCaseStoppedNotification(
@@ -155,12 +131,17 @@ public class NotificationController {
     @PostMapping(path = "/request-information-default-values")
     public ResponseEntity<CallbackResponse> requestInformationDefaultValues(
             @RequestBody CallbackRequest callbackRequest) {
-
         CallbackResponse callbackResponse = callbackResponseTransformer.defaultRequestInformationValues(callbackRequest);
-
         return ResponseEntity.ok(callbackResponse);
     }
 
+    @PostMapping(path = "/documents-received")
+    public ResponseEntity<CallbackResponse> sendDocumentReceivedNotification(
+            @Validated({EmailAddressNotificationValidationRule.class})
+            @RequestBody CallbackRequest callbackRequest)
+            throws NotificationClientException {
+        return ResponseEntity.ok(documentsReceivedNotificationService.handleDocumentReceivedNotification(callbackRequest));
+    }
 
     @PostMapping(path = "/stopped-information-request")
     public ResponseEntity<CallbackResponse> informationRequest(@RequestBody CallbackRequest callbackRequest) {
