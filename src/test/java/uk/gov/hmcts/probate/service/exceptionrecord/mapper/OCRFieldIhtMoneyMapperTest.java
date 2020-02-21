@@ -42,31 +42,31 @@ public class OCRFieldIhtMoneyMapperTest {
     @Test
     public void testCorrectFormTypeIHT205() {
         IhtFormType response = ocrFieldIhtMoneyMapper.ihtFormType(IHT205_FORM);
-        assertEquals(IhtFormType.IHT205, response);
+        assertEquals(IhtFormType.optionIHT205, response);
     }
 
     @Test
     public void testCorrectFormTypeIHT207() {
         IhtFormType response = ocrFieldIhtMoneyMapper.ihtFormType(IHT207_FORM);
-        assertEquals(IhtFormType.IHT207, response);
+        assertEquals(IhtFormType.optionIHT207, response);
     }
 
     @Test
     public void testCorrectFormTypeIHT400421() {
         IhtFormType response = ocrFieldIhtMoneyMapper.ihtFormType(IHT400421_FORM);
-        assertEquals(IhtFormType.IHT400421, response);
+        assertEquals(IhtFormType.optionIHT400421, response);
     }
 
     @Test
     public void testCorrectFormTypeIHT421() {
         IhtFormType response = ocrFieldIhtMoneyMapper.ihtFormType(IHT421_FORM);
-        assertEquals(IhtFormType.IHT400421, response);
+        assertEquals(IhtFormType.optionIHT400421, response);
     }
 
     @Test
     public void testCorrectFormTypeIHT400() {
         IhtFormType response = ocrFieldIhtMoneyMapper.ihtFormType(IHT400_FORM);
-        assertEquals(IhtFormType.IHT400421, response);
+        assertEquals(IhtFormType.optionIHT400421, response);
     }
 
     @Test(expected = OCRMappingException.class)

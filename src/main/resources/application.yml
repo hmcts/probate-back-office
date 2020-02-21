@@ -29,12 +29,12 @@ auth.provider.service.client:
   tokenTimeToLiveInSeconds: 900
 
 auth.provider.client:
-  user: ${IDAM_SERVICE_HOST:http://localhost:5000}
+  user: ${IDAM_SERVICE_HOST:http://localhost:4501}
   secret: ${IDAM_SECRET:ccd_gateway_secret}
   id: ${IDAM_CLIENT_NAME:ccd_gateway}
   redirect: ${IDAM_REDIRECT_URL:http://localhost:3451/oauth2redirect}
   email: ${AUTH_TOKEN_EMAIL:probatesolcw1@gmail.com}
-  password: ${AUTH_TOKEN_PASSWORD:Pa55word11}
+  password: ${AUTH_TOKEN_PASSWORD:password}
 
 pdf.service:
   url: http://localhost:5500
@@ -57,6 +57,10 @@ docmosis:
       templateName: FL-PRB-GNO-ENG-00018.docx
     caveatStopped:
       templateName: FL-PRB-GNO-ENG-00025.docx
+    caveatExtended:
+      templateName: FL-PRB-GNO-ENG-00229.docx
+    caveatWithdrawn:
+      templateName: FL-PRB-GNO-ENG-00236.docx
     grantCoversheet:
       templateName: FL-PRB-GNO-ENG-00024.docx
     digitalGrantReissueDraft:
@@ -77,6 +81,8 @@ docmosis:
       templateName: FL-PRB-EML-ENG-00086.doc
     statementOfTruth:
       templateName: FL-PRB-SOT-ENG-00090.doc
+    welshStatementOfTruth:
+      templateName: FL-PRB-SOT-WEL-00234.doc
     assembledLetter:
       templateName: FL-PRB-GNO-ENG-00133.docx
     welshDigitalGrant:
@@ -91,6 +97,7 @@ docmosis:
       templateName: FL-PRB-GRP-WEL-00226.doc
     welshAdmonWillGrantDraft:
       templateName: FL-PRB-GRP-WEL-00226.doc
+
 fee.api:
   url: http://localhost:4411
   api: /fees-register/fees/lookup
@@ -181,8 +188,10 @@ notifications:
           excelaData: "fd474506-a272-4caa-ad61-6086cee0639a"
           caveatRaised: "bf9dabd9-b22f-4cb6-b3aa-871ac8532209"
           caveatRaisedCtsc: "ed01d79f-08f0-4703-8cec-f490e499fc33"
+          caveatExtend: "6a8d36f5-75cf-4a4c-9cae-c0b561143c86"
           requestInformation: "8fd291a1-67a7-48fa-a051-fa4c93315efc"
           redeclarationSot: "4bd0e8f1-5cbd-4093-813f-f97dedcd0f5f"
+          caveatWithdrawn: "99b9ba1a-a2a1-4b85-ae83-e1652e9d342b"
         solicitor:
           documentReceived: "7f8ff32d-8297-4702-9867-312047f81492"
           caseStopped: "350f488a-68f1-44f0-b083-157285b71581"
@@ -198,7 +207,7 @@ notifications:
           redeclarationSot: "bcd9e4cc-db0c-4810-8172-8bcb2277b775"
       welsh:
         personal:
-          documentReceived: "9e950599-4f07-4b07-9015-2938e030c25c"
+          documentReceived: "1c847dd8-212e-425a-ad83-1bbc48d89428"
           caseStopped: "3e367544-c75a-4556-9831-7d0a3acbac0d"
           caseStoppedCaveat: "1fde1860-b827-45e7-b430-1406f74beb93"
           grantIssued: "8f935357-fecd-46f3-bb6e-ebd3da317433"
@@ -207,8 +216,10 @@ notifications:
           excelaData: "fd474506-a272-4caa-ad61-6086cee0639a"
           caveatRaised: "251192c8-5d3a-4b44-82e6-a398bfbe72fe"
           caveatRaisedCtsc: "a970c66c-911f-40d6-a6ae-711200ae43a7"
+          caveatExtend: "6a8d36f5-75cf-4a4c-9cae-c0b561143c86"
           requestInformation: "23a980e6-d883-45fa-8daf-acb4e017b6bb"
           redeclarationSot: "253fa4a9-ef84-4b15-a059-0a0359f4ca5b"
+          caveatWithdrawn: "c63bc430-9868-4f10-924b-408c7ac3cbd8"
         solicitor:
           documentReceived: "7f8ff32d-8297-4702-9867-312047f81492"
           caseStopped: "350f488a-68f1-44f0-b083-157285b71581"
@@ -364,6 +375,12 @@ registries:
     postcode: CF24 0RZ
 
 
+document:
+  retriever:
+    service:
+      api:
+        baseurl: localhost:8080
+
 idam:
   s2s-auth:
     url: ${S2S_AUTH_URL:http://localhost:4502}
@@ -373,7 +390,7 @@ idam:
 send-letter:
   url: ${SEND_LETTER_SERIVCE_BASEURL:http://localhost:8485}
 
-auth.idam.client.baseUrl: http://localhost:5000
+auth.idam.client.baseUrl: http://localhost:4501
 
 core_case_data.api.url: ${services.coreCaseData.baseUrl:http://localhost:4452}
 

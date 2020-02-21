@@ -1,6 +1,5 @@
 package uk.gov.hmcts.probate.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -20,14 +19,10 @@ import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
 import uk.gov.hmcts.probate.model.ccd.caveat.response.CaveatCallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.response.AfterSubmitCallbackResponse;
-import uk.gov.hmcts.probate.service.BulkPrintService;
 import uk.gov.hmcts.probate.service.CaveatNotificationService;
 import uk.gov.hmcts.probate.service.ConfirmationResponseService;
 import uk.gov.hmcts.probate.service.EventValidationService;
 import uk.gov.hmcts.probate.service.NotificationService;
-import uk.gov.hmcts.probate.service.docmosis.CaveatDocmosisService;
-import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
-import uk.gov.hmcts.probate.transformer.CCDDataTransformer;
 import uk.gov.hmcts.probate.transformer.CaveatCallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.CaveatDataTransformer;
 import uk.gov.hmcts.probate.validator.BulkPrintValidationRule;
@@ -48,19 +43,13 @@ import static uk.gov.hmcts.probate.model.State.GENERAL_CAVEAT_MESSAGE;
 @RestController
 public class CaveatController {
 
-    private final ObjectMapper objectMapper;
-    private final List<BulkPrintValidationRule> bulkPrintValidationRules;
     private final List<CaveatsEmailValidationRule> validationRuleCaveats;
     private final List<CaveatsExpiryValidationRule> validationRuleCaveatsExpiry;
-    private final CCDDataTransformer ccdBeanTransformer;
     private final CaveatDataTransformer caveatDataTransformer;
     private final CaveatCallbackResponseTransformer caveatCallbackResponseTransformer;
 
     private final EventValidationService eventValidationService;
     private final NotificationService notificationService;
-    private final PDFManagementService pdfManagementService;
-    private final BulkPrintService bulkPrintService;
-    private final CaveatDocmosisService caveatDocmosisService;
     private final CaveatNotificationService caveatNotificationService;
     private final ConfirmationResponseService confirmationResponseService;
 
@@ -166,5 +155,20 @@ public class CaveatController {
         return ResponseEntity.ok(caveatCallbackResponse);
     }
 
+    @PostMapping(path = "/extend")
+    public ResponseEntity<CaveatCallbackResponse> extend(@RequestBody CaveatCallbackRequest caveatCallbackRequest)
+        throws NotificationClientException {
 
+        CaveatCallbackResponse response = caveatNotificationService.caveatExtend(caveatCallbackRequest);
+
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping(path = "/withdraw")
+    public ResponseEntity<CaveatCallbackResponse> withDraw(@RequestBody CaveatCallbackRequest caveatCallbackRequest)
+        throws NotificationClientException {
+        CaveatCallbackResponse response = caveatNotificationService.withdraw(caveatCallbackRequest);
+
+        return ResponseEntity.ok(response);
+    }
 }

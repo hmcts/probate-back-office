@@ -32,7 +32,6 @@ import uk.gov.hmcts.probate.service.notification.TemplateService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.validator.EmailAddressNotificationValidationRule;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
-import uk.gov.hmcts.reform.authorisation.generators.ServiceAuthTokenGenerator;
 import uk.gov.service.notify.NotificationClient;
 import uk.gov.service.notify.NotificationClientException;
 import uk.gov.service.notify.SendEmailResponse;
@@ -148,16 +147,15 @@ public class NotificationService {
         SendEmailResponse response;
 
         response = notificationClient.sendEmail(templateId, emailAddress, personalisation, reference);
+        log.info("Sent email with template {} for case ", templateId, caveatDetails.getId());
 
         DocumentType documentType;
         switch (state) {
             case GENERAL_CAVEAT_MESSAGE:
-                documentType = SENT_EMAIL;
-                break;
             case CAVEAT_RAISED:
-                documentType = SENT_EMAIL;
-                break;
             case CAVEAT_RAISED_SOLS:
+            case CAVEAT_EXTEND:
+            case CAVEAT_WITHDRAW:
                 documentType = SENT_EMAIL;
                 break;
             default:

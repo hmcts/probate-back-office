@@ -488,7 +488,7 @@ public class CallbackResponseTransformerTest {
                 .deceasedDateOfDeath(DOD)
                 .willHasCodicils(Boolean.TRUE)
                 .willNumberOfCodicils(Long.valueOf(NUM_CODICILS))
-                .ihtFormId(IhtFormType.IHT205)
+                .ihtFormId(IhtFormType.optionIHT205)
                 .ihtGrossValue(IHT_GROSS.longValue())
                 .ihtNetValue(IHT_NET.longValue())
                 .primaryApplicantForenames(APPLICANT_FORENAME)
@@ -2708,7 +2708,7 @@ public class CallbackResponseTransformerTest {
         assertEquals("2017-12-31", grantOfRepresentationData.getDeceasedDateOfDeath().toString());
         assertEquals(Long.valueOf(NUM_CODICILS), grantOfRepresentationData.getWillNumberOfCodicils());
 
-        assertEquals(IHT_FORM_ID, grantOfRepresentationData.getIhtFormId().name());
+        assertEquals(IHT_FORM_ID, grantOfRepresentationData.getIhtFormId().getDescription());
         assertThat(Long.valueOf("10000"), comparesEqualTo(grantOfRepresentationData.getIhtGrossValue()));
         assertThat(Long.valueOf("9000"), comparesEqualTo(grantOfRepresentationData.getIhtNetValue()));
 
