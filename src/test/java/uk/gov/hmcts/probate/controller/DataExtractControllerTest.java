@@ -12,12 +12,10 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-import uk.gov.hmcts.probate.config.DataExtractConfiguration;
 import uk.gov.hmcts.probate.exception.ClientException;
 import uk.gov.hmcts.probate.exception.DataExtractUnauthorisedException;
 import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.service.dataextract.DataExtractDateValidator;
-import uk.gov.hmcts.probate.service.dataextract.DataExtractScheduleValidator;
 import uk.gov.hmcts.probate.service.dataextract.ExelaDataExtractService;
 import uk.gov.hmcts.probate.service.dataextract.HmrcDataExtractService;
 import uk.gov.hmcts.probate.service.dataextract.IronMountainDataExtractService;
@@ -49,13 +47,7 @@ public class DataExtractControllerTest {
     private DataExtractDateValidator dataExtractDateValidator;
 
     @MockBean
-    private DataExtractScheduleValidator dataExtractScheduleValidator;
-
-    @MockBean
     private AppInsights appInsights;
-
-    @MockBean
-    private DataExtractConfiguration dataExtractConfiguration;
 
     @Autowired
     private MockMvc mockMvc;
@@ -68,22 +60,18 @@ public class DataExtractControllerTest {
     @Before
     public void setup() {
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-
-        doReturn("AAAAAAAAAA").when(dataExtractConfiguration).getExela();
-        doReturn("BBBBBBBBBB").when(dataExtractConfiguration).getIron();
-        doReturn("CCCCCCCCCC").when(dataExtractConfiguration).getHmrc();
     }
 
     @Test
     public void ironMountainShouldReturnOkResponseOnValidDateFormat() throws Exception {
-        mockMvc.perform(post("/data-extract/iron-mountain/BBBBBBBBBB/2019-03-13"))
+        mockMvc.perform(post("/data-extract/iron-mountain/2019-03-13"))
             .andExpect(status().isAccepted())
             .andExpect(content().string("Perform Iron Mountain data extract finished"));
     }
 
     @Test
     public void ironMountainShouldReturnOkWithYesterdayDateOnEmptyPathParam() throws Exception {
-        mockMvc.perform(post("/data-extract/iron-mountain/BBBBBBBBBB"))
+        mockMvc.perform(post("/data-extract/iron-mountain"))
             .andExpect(status().isAccepted())
             .andExpect(content().string("Perform Iron Mountain data extract finished"));
     }
@@ -91,20 +79,20 @@ public class DataExtractControllerTest {
     @Test
     public void shouldThrowClientExceptionWithBadRequestForIronMountainWithIncorrectDateFormat() throws Exception {
         doThrow(new ClientException(HttpStatus.BAD_REQUEST.value(), "")).when(dataExtractDateValidator).dateValidator("2019-2-3");
-        mockMvc.perform(post("/data-extract/iron-mountain/BBBBBBBBBB/2019-2-3"))
+        mockMvc.perform(post("/data-extract/iron-mountain/2019-2-3"))
             .andExpect(status().is4xxClientError());
     }
 
     @Test
     public void hmrcShouldReturnOkResponseOnValidDateFormat() throws Exception {
-        mockMvc.perform(post("/data-extract/hmrc/CCCCCCCCCC/2019-03-13"))
+        mockMvc.perform(post("/data-extract/hmrc/2019-03-13"))
             .andExpect(status().isAccepted())
             .andExpect(content().string("Perform HMRC data extract called"));
     }
 
     @Test
     public void hmrcShouldReturnOkResponseOnValidDatesFormat() throws Exception {
-        mockMvc.perform(post("/data-extract/hmrc/CCCCCCCCCC/hmrcFromTo?fromDate=2019-03-13&toDate=2019-04-13"))
+        mockMvc.perform(post("/data-extract/hmrc/hmrcFromTo?fromDate=2019-03-13&toDate=2019-04-13"))
             .andExpect(status().isAccepted())
             .andExpect(content().string("Perform HMRC data extract finished"));
     }
@@ -112,19 +100,19 @@ public class DataExtractControllerTest {
     @Test
     public void hmrcShouldReturnErroResponseOnInvalidDates() throws Exception {
         doThrow(new ClientException(HttpStatus.BAD_REQUEST.value(), "")).when(dataExtractDateValidator).dateValidator("2019-09-13", "2019-04-13");
-        mockMvc.perform(post("/data-extract/hmrc/CCCCCCCCCC/hmrcFromTo?fromDate=2019-09-13&toDate=2019-04-13"))
+        mockMvc.perform(post("/data-extract/hmrc/hmrcFromTo?fromDate=2019-09-13&toDate=2019-04-13"))
             .andExpect(status().is4xxClientError());
     }
 
     @Test
     public void hmrcShouldReturnErroResponseOnMissingDates() throws Exception {
-        mockMvc.perform(post("/data-extract/hmrc/CCCCCCCCCC/hmrcFromTo?fromDate=2019-09-13"))
+        mockMvc.perform(post("/data-extract/hmrc/hmrcFromTo?fromDate=2019-09-13"))
             .andExpect(status().is4xxClientError());
     }
 
     @Test
     public void hmrcShouldReturnOkWithYesterdayDateOnEmptyPathParam() throws Exception {
-        mockMvc.perform(post("/data-extract/hmrc/CCCCCCCCCC"))
+        mockMvc.perform(post("/data-extract/hmrc"))
             .andExpect(status().isAccepted())
             .andExpect(content().string("Perform HMRC data extract called"));
     }
@@ -132,46 +120,21 @@ public class DataExtractControllerTest {
     @Test
     public void shouldThrowClientExceptionWithBadRequestForHmrcWithIncorrectDateFormat() throws Exception {
         doThrow(new ClientException(HttpStatus.BAD_REQUEST.value(), "")).when(dataExtractDateValidator).dateValidator("2019-2-3");
-        mockMvc.perform(post("/data-extract/hmrc/CCCCCCCCCC/2019-2-3"))
+        mockMvc.perform(post("/data-extract/hmrc/2019-2-3"))
             .andExpect(status().is4xxClientError());
     }
 
     @Test
     public void excelaShouldReturnOkResponseOnValidDateFormat() throws Exception {
-        mockMvc.perform(post("/data-extract/excela/AAAAAAAAAA/2019-02-13"))
+        mockMvc.perform(post("/data-extract/excela/2019-02-13"))
             .andExpect(status().isAccepted())
             .andExpect(content().string("Excela data extract finished"));
     }
 
     @Test
     public void excelaShouldReturnOkWithYesterdayDateOnEmptyPathParam() throws Exception {
-        mockMvc.perform(post("/data-extract/excela/AAAAAAAAAA"))
+        mockMvc.perform(post("/data-extract/excela"))
             .andExpect(status().isAccepted())
             .andExpect(content().string("Excela data extract finished"));
     }
-
-    @Test
-    public void shouldReturnDataExtractExceptionForExela() throws Exception {
-        doThrow(new DataExtractUnauthorisedException()).when(dataExtractScheduleValidator)
-            .validateExela(anyString());
-        mockMvc.perform(post("/data-extract/excela/AAAAAAAAAX"))
-            .andExpect(status().isUnauthorized());
-    }
-
-    @Test
-    public void shouldReturnDataExtractExceptionForIronMountain() throws Exception {
-        doThrow(new DataExtractUnauthorisedException()).when(dataExtractScheduleValidator)
-            .validateIronMountain(anyString());
-        mockMvc.perform(post("/data-extract/iron-mountain/BBBBBBBBBX"))
-            .andExpect(status().isUnauthorized());
-    }
-
-    @Test
-    public void shouldReturnDataExtractExceptionForHmrc() throws Exception {
-        doThrow(new DataExtractUnauthorisedException()).when(dataExtractScheduleValidator)
-            .validateHmrc(anyString());
-        mockMvc.perform(post("/data-extract/hmrc/CCCCCCCCCX"))
-            .andExpect(status().isUnauthorized());
-    }
-
 }

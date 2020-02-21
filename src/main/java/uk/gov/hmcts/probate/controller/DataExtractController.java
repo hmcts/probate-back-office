@@ -6,14 +6,13 @@ import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import uk.gov.hmcts.probate.config.DataExtractConfiguration;
 import uk.gov.hmcts.probate.service.dataextract.DataExtractDateValidator;
-import uk.gov.hmcts.probate.service.dataextract.DataExtractScheduleValidator;
 import uk.gov.hmcts.probate.service.dataextract.ExelaDataExtractService;
 import uk.gov.hmcts.probate.service.dataextract.HmrcDataExtractService;
 import uk.gov.hmcts.probate.service.dataextract.IronMountainDataExtractService;
@@ -37,25 +36,20 @@ public class DataExtractController {
     private final IronMountainDataExtractService ironMountainDataExtractService;
     private final ExelaDataExtractService exelaDataExtractService;
     private final DataExtractDateValidator dataExtractDateValidator;
-    private final DataExtractScheduleValidator dataExtractScheduleValidator;
 
+    @Scheduled(cron = "${cron.hmrc.schedule}")
     @ApiOperation(value = "Initiate HMRC data extract", notes = "Will find cases for yesterdays date")
-    @PostMapping(path = "/hmrc/{cronKeyHmrc}")
-    public ResponseEntity initiateHmrcExtract(@ApiParam(value = "Cron Key for HMRC", required = true)
-                                                  @PathVariable("cronKeyHmrc") String cronKeyHmrc) {
-        dataExtractScheduleValidator.validateHmrc(cronKeyHmrc);
+    @PostMapping(path = "/hmrc")
+    public ResponseEntity initiateHmrcExtract() {
         log.info("Extract initiated for HMRC");
-        return initiateHmrcExtract(cronKeyHmrc, DATE_FORMAT.format(LocalDate.now().minusDays(1L)));
+        return initiateHmrcExtract(DATE_FORMAT.format(LocalDate.now().minusDays(1L)));
     }
 
     @ApiOperation(value = "Initiate HMRC data extract with date", notes = "Date MUST be in format 'yyyy-MM-dd'")
-    @PostMapping(path = "/hmrc/{cronKeyHmrc}/{date}")
-    public ResponseEntity initiateHmrcExtract(@ApiParam(value = "Cron Key for HMRC", required = true)
-                                                  @PathVariable("cronKeyHmrc") String cronKeyHmrc,
-                                            @ApiParam(value = "Date to find cases against", required = true)
-                                                @PathVariable("date") String date) {
-        
-        dataExtractScheduleValidator.validateHmrc(cronKeyHmrc);
+    @PostMapping(path = "/hmrc/{date}")
+    public ResponseEntity initiateHmrcExtract(@ApiParam(value = "Date to find cases against", required = true)
+                                              @PathVariable("date") String date) {
+
         dataExtractDateValidator.dateValidator(date);
 
         log.info("Calling perform HMRC data extract...");
@@ -69,13 +63,10 @@ public class DataExtractController {
     }
 
     @ApiOperation(value = "Initiate HMRC data extract within 2 dates", notes = "Dates MUST be in format 'yyyy-MM-dd'")
-    @PostMapping(path = "/hmrc/{cronKeyHmrc}/hmrcFromTo")
-    public ResponseEntity initiateHmrcExtractFromDate(@ApiParam(value = "Cron Key for HMRC", required = true)
-                                                          @PathVariable("cronKeyHmrc") String cronKeyHmrc,
-                                                      @RequestParam(value = "fromDate", required = true) String fromDate,
+    @PostMapping(path = "/hmrc/hmrcFromTo")
+    public ResponseEntity initiateHmrcExtractFromDate(@RequestParam(value = "fromDate", required = true) String fromDate,
                                                       @RequestParam(value = "toDate", required = true) String toDate) {
 
-        dataExtractScheduleValidator.validateHmrc(cronKeyHmrc);
         dataExtractDateValidator.dateValidator(fromDate, toDate);
 
         log.info("Calling perform HMRC data extract from date...");
@@ -88,25 +79,19 @@ public class DataExtractController {
         return new ResponseEntity("Perform HMRC data extract finished", ACCEPTED);
     }
 
+    @Scheduled(cron = "${cron.ironMountain.schedule}")
     @ApiOperation(value = "Initiate IronMountain data extract", notes = "Will find cases for yesterdays date")
-    @PostMapping(path = "/iron-mountain/{cronKeyIron}")
-    public ResponseEntity initiateIronMountainExtract(@ApiParam(value = "Cron Key for IronMountain", required = true)
-                                                          @PathVariable("cronKeyIron") String cronKeyIron) {
-
-        dataExtractScheduleValidator.validateIronMountain(cronKeyIron);
+    @PostMapping(path = "/iron-mountain")
+    public ResponseEntity initiateIronMountainExtract() {
 
         log.info("Extract initiated for Iron Mountain");
-        return initiateIronMountainExtract(cronKeyIron, DATE_FORMAT.format(LocalDate.now().minusDays(1L)));
+        return initiateIronMountainExtract(DATE_FORMAT.format(LocalDate.now().minusDays(1L)));
     }
 
     @ApiOperation(value = "Initiate IronMountain data extract with date", notes = "Date MUST be in format 'yyyy-MM-dd'")
-    @PostMapping(path = "/iron-mountain/{cronKeyIron}/{date}")
-    public ResponseEntity initiateIronMountainExtract(@ApiParam(value = "Cron Key for IronMountain", required = true)
-                                                          @PathVariable("cronKeyIron") String cronKeyIron,
-                                                      @ApiParam(value = "Date to find cases against", required = true)
+    @PostMapping(path = "/iron-mountain/{date}")
+    public ResponseEntity initiateIronMountainExtract(@ApiParam(value = "Date to find cases against", required = true)
                                                       @PathVariable("date") String date) {
-        dataExtractScheduleValidator.validateIronMountain(cronKeyIron);
-
         dataExtractDateValidator.dateValidator(date);
 
         log.info("Calling perform Iron Mountain data extract from date...");
@@ -119,24 +104,18 @@ public class DataExtractController {
         return new ResponseEntity("Perform Iron Mountain data extract finished", ACCEPTED);
     }
 
+    @Scheduled(cron = "${cron.exela.schedule}")
     @ApiOperation(value = "Initiate Excela data extract", notes = "Will find cases for yesterdays date")
-    @PostMapping(path = "/excela/{cronKeyExela}")
-    public ResponseEntity initiateExcelaExtract(@ApiParam(value = "Cron Key for Exela", required = true)
-                                                    @PathVariable("cronKeyExela") String cronKeyExela) {
-        dataExtractScheduleValidator.validateExela(cronKeyExela);
-
+    @PostMapping(path = "/excela")
+    public ResponseEntity initiateExcelaExtract() {
         log.info("Extract initiated for Excela");
-        return initiateExcelaExtract(cronKeyExela, DATE_FORMAT.format(LocalDate.now().minusDays(1L)));
+        return initiateExcelaExtract(DATE_FORMAT.format(LocalDate.now().minusDays(1L)));
     }
 
     @ApiOperation(value = "Initiate Excela data extract", notes = " Date MUST be in format 'yyyy-MM-dd'")
-    @PostMapping(path = "/excela/{cronKeyExela}/{date}")
-    public ResponseEntity initiateExcelaExtract(@ApiParam(value = "Cron Key for Exela", required = true)
-                                                    @PathVariable("cronKeyExela") String cronKeyExela,
-                                                @ApiParam(value = "Date to find cases against", required = true)
+    @PostMapping(path = "/excela/{date}")
+    public ResponseEntity initiateExcelaExtract(@ApiParam(value = "Date to find cases against", required = true)
                                                 @PathVariable("date") String date) {
-
-        dataExtractScheduleValidator.validateExela(cronKeyExela);
 
         dataExtractDateValidator.dateValidator(date);
 
