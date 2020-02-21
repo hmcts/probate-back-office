@@ -17,6 +17,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 
 import java.io.File;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
@@ -45,6 +46,7 @@ public class HmrcFileService extends BaseFileService {
         {"IHT400421", "N"},
         {"IHT205", "Y"},
         {"IHT207", "E"},
+        {"NA", "X"},
     }).collect(Collectors.toMap(data -> data[0], data -> data[1]));
 
     public File createHmrcFile(List<ReturnedCaseDetails> ccdCases, String fileName) {
@@ -63,8 +65,8 @@ public class HmrcFileService extends BaseFileService {
             addFooter(fileData, rowCount);
         } catch (Exception e) {
             log.error("Failed to prepare data HMRC file for :" + fileName);
-            throw new ClientException(HttpStatus.SERVICE_UNAVAILABLE.value(), 
-                "Failed to prepare data HMRC file for " + fileName +" exception:" + e.getStackTrace());
+            throw new ClientException(HttpStatus.SERVICE_UNAVAILABLE.value(),
+                "Failed to prepare data HMRC file for " + fileName + " exception:" + e.getStackTrace());
         }
         return fileData;
     }
@@ -107,11 +109,11 @@ public class HmrcFileService extends BaseFileService {
         log.info("LOG addSolicitorDetails");
         addSolicitorDetails(fileData, data);
         log.info("LOG getIhtGrossValue");
-        fileData.add(data.getIhtGrossValue().toString().substring(0, data.getIhtGrossValue().toString().length() - 2));
+        fileData.add(getPoundValue(data.getIhtGrossValue()));
         log.info("LOG addExpectedEstateIndicator");
         addExpectedEstateIndicator(fileData, data);
         log.info("LOG 1");
-        fileData.add(data.getIhtNetValue().toString().substring(0, data.getIhtNetValue().toString().length() - 2));
+        fileData.add(getPoundValue(data.getIhtNetValue()));
         log.info("LOG getIhtNetValue");
         fileData.add(DataExtractGrantType.valueOf(data.getCaseType()).getCaseTypeMapped());
         fileData.add(FINAL_GRANT);
@@ -126,7 +128,7 @@ public class HmrcFileService extends BaseFileService {
         log.info("LOG rowCount {}", rowCount);
         return rowCount;
     }
-    
+
     private void addFooter(ImmutableList.Builder<String> fileData, int rowCount) {
         fileData.add(ROW_TYPE_FOOTER);
 
@@ -154,7 +156,7 @@ public class HmrcFileService extends BaseFileService {
 
         if (type == null) {
             throw new BadRequestException("Unsupported IHT Form Type for " + data.getIhtFormId());
-        }
+        } 
 
         fileData.add(type);
     }

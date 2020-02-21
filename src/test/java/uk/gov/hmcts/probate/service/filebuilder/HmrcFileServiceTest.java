@@ -187,6 +187,18 @@ public class HmrcFileServiceTest {
             is(FileUtils.getStringFromFile("expectedGeneratedFiles/hmrcPersonal.txt")));
     }
 
+    @Test
+    public void testHmrcFileBuiltForPersonalForEmptyGrossNetValues() throws IOException {
+        caseDataPersonal.ihtGrossValue(null);
+        caseDataPersonal.ihtNetValue(null);
+        builtData = caseDataPersonal.build();
+
+        createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, 2222333344445555L);
+        caseList.add(createdCase);
+        assertThat(createFile(hmrcFileService.createHmrcFile(caseList.build(), FILE_NAME)),
+            is(FileUtils.getStringFromFile("expectedGeneratedFiles/hmrcPersonalZeroIHTs.txt")));
+    }
+
     @Test(expected = ClientException.class)
     public void testHmrcFileIHTErrorForPersonal() {
         builtData = caseDataPersonal.ihtFormId("notAnIHTValue").build();

@@ -7,6 +7,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.Grantee;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 
+import java.math.BigDecimal;
 import java.time.Period;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -118,4 +119,13 @@ public abstract class BaseFileService {
     protected Boolean isYes(String yesNoValue) {
         return YES.equals(yesNoValue);
     }
+
+    protected String getPoundValue(BigDecimal value) {
+        if (value == null || value.toString().length() < 2) {
+            return "0";
+        }
+        return value.toString().substring(0, value.toString().length() - 2);
+    }
+
+
 }

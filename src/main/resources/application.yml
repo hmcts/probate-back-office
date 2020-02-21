@@ -398,7 +398,7 @@ excelaEmail: ${EXCELA_EMAIL:probatetest@gmail.com}
 
 cron:
   hmrc:
-    schedule: "0 0/15 * * * *"
+    schedule: "0 0 * * * *"
   ironMountain:
     schedule: "0 5 2 * * *"
   exela:
