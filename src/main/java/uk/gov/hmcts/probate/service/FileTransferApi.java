@@ -12,7 +12,7 @@ import uk.gov.hmcts.probate.config.FeignClientConfiguration;
 public interface FileTransferApi {
 
     @RequestLine("PUT /{environment}/{fileName}?sv={sv}&ss={ss}&srt={srt}&sp={sp}&se={se}&st={st}&spr={spr}&sig={sig}")
-    @Headers({"x-ms-blob-type: BlockBlob", "Content-Type: multipart/form-data"})
+    @Headers({"x-ms-type: file", "Content-Type: multipart/form-data"})
     Response sendFile(
             @RequestAttribute("file") final byte[] file,
             @Param(encoded = true, value = "environment") final String environment,
