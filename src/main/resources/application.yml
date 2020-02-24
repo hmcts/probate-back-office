@@ -107,6 +107,7 @@ fee.api:
   channel: default
   applicantType: all
   keyword: GrantWill
+  keyword1: SA
 
 markdown.templatesDirectory: templates/markdown/
 

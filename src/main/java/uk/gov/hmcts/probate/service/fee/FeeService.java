@@ -82,7 +82,7 @@ public class FeeService {
         if (FEE_API_EVENT_TYPE_COPIES.equals(event)) {
             builder.queryParam("keyword", feeServiceConfiguration.getKeyword());
         } else {
-            builder.queryParam("keyword", "SA");
+            builder.queryParam("keyword1", feeServiceConfiguration.getKeyword1());
         }
 
         return builder.build().encode().toUri();
