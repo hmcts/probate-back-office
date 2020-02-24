@@ -91,6 +91,9 @@ import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE;
 import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
 import static uk.gov.hmcts.probate.model.DocumentType.SOT_INFORMATION_REQUEST;
 import static uk.gov.hmcts.probate.model.DocumentType.STATEMENT_OF_TRUTH;
+import static uk.gov.hmcts.probate.model.DocumentType.WELSH_ADMON_WILL_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.WELSH_DIGITAL_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.WELSH_INTESTACY_GRANT;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CallbackResponseTransformerTest {
@@ -489,7 +492,7 @@ public class CallbackResponseTransformerTest {
                 .deceasedDateOfDeath(DOD)
                 .willHasCodicils(Boolean.TRUE)
                 .willNumberOfCodicils(Long.valueOf(NUM_CODICILS))
-                .ihtFormId(IhtFormType.IHT205)
+                .ihtFormId(IhtFormType.optionIHT205)
                 .ihtGrossValue(IHT_GROSS.longValue())
                 .ihtNetValue(IHT_NET.longValue())
                 .primaryApplicantForenames(APPLICANT_FORENAME)
@@ -782,6 +785,60 @@ public class CallbackResponseTransformerTest {
         assertEquals(1, callbackResponse.getData().getProbateNotificationsGenerated().size());
         assertEquals(grantIssuedSentEmail, callbackResponse.getData().getProbateNotificationsGenerated().get(0).getValue());
 
+    }
+
+    @Test
+    public void shouldSetSendLetterIdAndPdfSizeInWelshDigitalGrant() {
+        Document grantDocument = Document.builder().documentType(WELSH_DIGITAL_GRANT).build();
+        Document grantIssuedSentEmail = Document.builder().documentType(SENT_EMAIL).build();
+
+        CallbackResponse callbackResponse = underTest.addDocuments(callbackRequestMock,
+                Arrays.asList(grantDocument, grantIssuedSentEmail), "abc123", "2");
+
+        assertCommon(callbackResponse);
+
+        assertEquals("2", callbackResponse.getData().getBulkPrintPdfSize());
+        assertEquals("abc123", callbackResponse.getData().getBulkPrintSendLetterId());
+        assertEquals(1, callbackResponse.getData().getProbateDocumentsGenerated().size());
+        assertEquals(grantDocument, callbackResponse.getData().getProbateDocumentsGenerated().get(0).getValue());
+        assertEquals(1, callbackResponse.getData().getProbateNotificationsGenerated().size());
+        assertEquals(grantIssuedSentEmail, callbackResponse.getData().getProbateNotificationsGenerated().get(0).getValue());
+    }
+
+    @Test
+    public void shouldSetSendLetterIdAndPdfSizeInWelshIntestacyGrant() {
+        Document grantDocument = Document.builder().documentType(WELSH_INTESTACY_GRANT).build();
+        Document grantIssuedSentEmail = Document.builder().documentType(SENT_EMAIL).build();
+
+        CallbackResponse callbackResponse = underTest.addDocuments(callbackRequestMock,
+                Arrays.asList(grantDocument, grantIssuedSentEmail), "abc123", "2");
+
+        assertCommon(callbackResponse);
+
+        assertEquals("2", callbackResponse.getData().getBulkPrintPdfSize());
+        assertEquals("abc123", callbackResponse.getData().getBulkPrintSendLetterId());
+        assertEquals(1, callbackResponse.getData().getProbateDocumentsGenerated().size());
+        assertEquals(grantDocument, callbackResponse.getData().getProbateDocumentsGenerated().get(0).getValue());
+        assertEquals(1, callbackResponse.getData().getProbateNotificationsGenerated().size());
+        assertEquals(grantIssuedSentEmail, callbackResponse.getData().getProbateNotificationsGenerated().get(0).getValue());
+    }
+
+    @Test
+    public void shouldSetSendLetterIdAndPdfSizeInWelshAdmonWillGrant() {
+        Document grantDocument = Document.builder().documentType(WELSH_ADMON_WILL_GRANT).build();
+        Document grantIssuedSentEmail = Document.builder().documentType(SENT_EMAIL).build();
+
+        CallbackResponse callbackResponse = underTest.addDocuments(callbackRequestMock,
+                Arrays.asList(grantDocument, grantIssuedSentEmail), "abc123", "2");
+
+        assertCommon(callbackResponse);
+
+        assertEquals("2", callbackResponse.getData().getBulkPrintPdfSize());
+        assertEquals("abc123", callbackResponse.getData().getBulkPrintSendLetterId());
+        assertEquals(1, callbackResponse.getData().getProbateDocumentsGenerated().size());
+        assertEquals(grantDocument, callbackResponse.getData().getProbateDocumentsGenerated().get(0).getValue());
+        assertEquals(1, callbackResponse.getData().getProbateNotificationsGenerated().size());
+        assertEquals(grantIssuedSentEmail, callbackResponse.getData().getProbateNotificationsGenerated().get(0).getValue());
     }
 
     @Test
@@ -2725,7 +2782,7 @@ public class CallbackResponseTransformerTest {
         assertEquals("2017-12-31", grantOfRepresentationData.getDeceasedDateOfDeath().toString());
         assertEquals(Long.valueOf(NUM_CODICILS), grantOfRepresentationData.getWillNumberOfCodicils());
 
-        assertEquals(IHT_FORM_ID, grantOfRepresentationData.getIhtFormId().name());
+        assertEquals(IHT_FORM_ID, grantOfRepresentationData.getIhtFormId().getDescription());
         assertThat(Long.valueOf("10000"), comparesEqualTo(grantOfRepresentationData.getIhtGrossValue()));
         assertThat(Long.valueOf("9000"), comparesEqualTo(grantOfRepresentationData.getIhtNetValue()));
 

@@ -3,6 +3,7 @@ package uk.gov.hmcts.probate.transformer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.model.ApplicationType;
+import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatCallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
@@ -30,6 +31,7 @@ import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT_EXTENDED;
 import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT_RAISED;
+import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT_WITHDRAWN;
 
 @Component
 @RequiredArgsConstructor
@@ -52,25 +54,16 @@ public class CaveatCallbackResponseTransformer {
         documents.forEach(document -> documentTransformer.addDocument(caveatCallbackRequest, document));
         ResponseCaveatDataBuilder responseCaveatDataBuilder = getResponseCaveatData(caveatDetails);
 
-        if (documentTransformer.hasDocumentWithType(documents, CAVEAT_RAISED) && letterId != null) {
-            CollectionMember<BulkPrint> bulkPrint = buildBulkPrint(letterId, CAVEAT_RAISED.getTemplateName());
-            caveatData.getBulkPrintId().add(bulkPrint);
-
-            responseCaveatDataBuilder
-                    .bulkPrintId(caveatData.getBulkPrintId())
-                    .build();
-        }
+        updateBulkPrint(documents, letterId, caveatData, responseCaveatDataBuilder, CAVEAT_RAISED);
 
         if (caveatData.getApplicationType() != null) {
             responseCaveatDataBuilder
                     .applicationSubmittedDate(dateTimeFormatter.format(LocalDate.now()))
-                    .paperForm(caveatData.getApplicationType().equals(SOLICITOR) ? NO : YES)
-                    .build();
+                    .paperForm(caveatData.getApplicationType().equals(SOLICITOR) ? NO : YES);
         } else {
             responseCaveatDataBuilder
                     .applicationSubmittedDate(dateTimeFormatter.format(LocalDate.now()))
-                    .paperForm(YES)
-                    .build();
+                    .paperForm(YES);
         }
 
         return transformResponse(responseCaveatDataBuilder.build());
@@ -82,21 +75,30 @@ public class CaveatCallbackResponseTransformer {
         documents.forEach(document -> documentTransformer.addDocument(caveatCallbackRequest, document));
         ResponseCaveatDataBuilder responseCaveatDataBuilder = getResponseCaveatData(caveatDetails);
 
-        if (documentTransformer.hasDocumentWithType(documents, CAVEAT_EXTENDED) && letterId != null) {
-            CollectionMember<BulkPrint> bulkPrint = buildBulkPrint(letterId, CAVEAT_EXTENDED.getTemplateName());
-            caveatData.getBulkPrintId().add(bulkPrint);
-
-            responseCaveatDataBuilder
-                .bulkPrintId(caveatData.getBulkPrintId())
-                .build();
-        }
+        updateBulkPrint(documents, letterId, caveatData, responseCaveatDataBuilder, CAVEAT_EXTENDED);
 
         return transformResponse(responseCaveatDataBuilder.build());
     }
 
     public CaveatCallbackResponse withdrawn(final CaveatCallbackRequest caveatCallbackRequest, List<Document> documents, String letterId) {
+        CaveatDetails caveatDetails = caveatCallbackRequest.getCaseDetails();
+        CaveatData caveatData = caveatDetails.getData();
         documents.forEach(document -> documentTransformer.addDocument(caveatCallbackRequest, document));
-        return defaultCaveatValues(caveatCallbackRequest);
+        ResponseCaveatDataBuilder responseCaveatDataBuilder = getResponseCaveatData(caveatDetails);
+
+        updateBulkPrint(documents, letterId, caveatData, responseCaveatDataBuilder, CAVEAT_WITHDRAWN);
+
+        return transformResponse(responseCaveatDataBuilder.build());
+    }
+
+    private void updateBulkPrint(List<Document> documents, String letterId, CaveatData caveatData,
+                                 ResponseCaveatDataBuilder responseCaveatDataBuilder, DocumentType documentType) {
+        if (documentTransformer.hasDocumentWithType(documents, documentType) && letterId != null) {
+            CollectionMember<BulkPrint> bulkPrint = buildBulkPrint(letterId, documentType.getTemplateName());
+            caveatData.getBulkPrintId().add(bulkPrint);
+
+            responseCaveatDataBuilder.bulkPrintId(caveatData.getBulkPrintId());
+        }
     }
 
     public CaveatCallbackResponse defaultCaveatValues(CaveatCallbackRequest caveatCallbackRequest) {
@@ -152,9 +154,7 @@ public class CaveatCallbackResponseTransformer {
         ResponseCaveatData.ResponseCaveatDataBuilder responseCaseDataBuilder = getResponseCaveatData(caveatCallbackRequest.getCaseDetails());
 
         String defaultExpiry = dateTimeFormatter.format(caveatCallbackRequest.getCaseDetails().getData().getExpiryDate().plusMonths(6));
-        return transformResponse(responseCaseDataBuilder.expiryDate(defaultExpiry)
-            .caveatRaisedEmailNotification(caveatCallbackRequest.getCaseDetails().getData().getCaveatRaisedEmailNotification())
-            .build());
+        return transformResponse(responseCaseDataBuilder.expiryDate(defaultExpiry).build());
     }
 
     public CaveatCallbackResponse transformResponseWithNoChanges(CaveatCallbackRequest caveatCallbackRequest) {
@@ -213,7 +213,8 @@ public class CaveatCallbackResponseTransformer {
                 .caveatRaisedEmailNotificationRequested(caveatData.getCaveatRaisedEmailNotificationRequested())
                 .bulkPrintId(caveatData.getBulkPrintId())
                 .bulkScanCaseReference((caveatData.getBulkScanCaseReference()))
-                .applicationSubmittedDate(transformToString(caveatData.getApplicationSubmittedDate()));
+                .applicationSubmittedDate(transformToString(caveatData.getApplicationSubmittedDate()))
+                .autoClosedExpiry(caveatData.getAutoClosedExpiry());
     }
 
     public CaseCreationDetails bulkScanCaveatCaseTransform(uk.gov.hmcts.reform.probate.model.cases.caveat.CaveatData caveatData) {
