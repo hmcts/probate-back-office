@@ -332,11 +332,11 @@ excelaEmail: probatetest@gmail.com
 
 cron:
   hmrc:
-    schedule: "0 0 2 * * *"
+    schedule: "0 0/30 * * * *"
   ironMountain:
-    schedule: "0 5 2 * * *"
+    schedule: "0 0/35 * * * *"
   exela:
-    schedule: "0 10 2 * * *"
+    schedule: "0 0/40 * * * *"
 
 welsh:
   months:
