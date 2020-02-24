@@ -79,6 +79,12 @@ public class FeeService {
             .queryParam("amount_or_volume", amount)
             .queryParam("keyword", feeServiceConfiguration.getKeyword());
 
+        if (FEE_API_EVENT_TYPE_COPIES.equals(event)) {
+            builder.queryParam("keyword", feeServiceConfiguration.getKeyword());
+        } else {
+            builder.queryParam("keyword", "SA");
+        }
+
         return builder.build().encode().toUri();
     }
 }
