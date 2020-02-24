@@ -76,11 +76,8 @@ public class FeeService {
             .queryParam("channel", feeServiceConfiguration.getChannel())
             .queryParam("applicant_type", feeServiceConfiguration.getApplicantType())
             .queryParam("event", event)
-            .queryParam("amount_or_volume", amount);
-
-        if (FEE_API_EVENT_TYPE_COPIES.equals(event)) {
-            builder.queryParam("keyword", feeServiceConfiguration.getKeyword());
-        }
+            .queryParam("amount_or_volume", amount)
+            .queryParam("keyword", feeServiceConfiguration.getKeyword());
 
         return builder.build().encode().toUri();
     }
