@@ -2,16 +2,19 @@ package uk.gov.hmcts.probate.service;
 
 import feign.Response;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import uk.gov.hmcts.probate.exception.BadRequestException;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.file.Files;
 
 @Slf4j
@@ -38,27 +41,28 @@ public class FileTransferService {
     }
 
     public int uploadFile(File file) {
-        log.info("Starting file upload to ftp for file:" +file.toPath() + ":" + file.getName());
-        log.info("signature="+signature);
-        log.info("targetEnv="+targetEnv);
+        log.info("Starting file upload to ftp for file:" + file.toPath() + ":" + file.getName());
         Response response;
         try {
             FileInputStream input = new FileInputStream(file);
-            MultipartFile multipartFile = new MockMultipartFile(file.getName(),
-                file.getName(), "text/plain", IOUtils.toByteArray(input));
-            log.info("file.bytes.len="+Files.readAllBytes(file.toPath()).length);
+            FileItem fileItem = new DiskFileItem("mainFile", Files.probeContentType(file.toPath()), false, 
+                file.getName(), (int) file.length(), file.getParentFile());
+            OutputStream os = fileItem.getOutputStream();
+            IOUtils.copy(input, os);
+            MultipartFile multipartFile = new CommonsMultipartFile(fileItem);
+
             response = fileTransferApi.sendFile(
-                    multipartFile,
-                    targetEnv,
-                    file.getName(),
-                    SV_VALID_FROM,
-                    SS,
-                    SRT,
-                    SP,
-                    SE_SIG_EXPIRY_DATE,
-                    ST_SIG_CREATION_DATE,
-                    SPR,
-                    signature);
+                multipartFile,
+                targetEnv,
+                file.getName(),
+                SV_VALID_FROM,
+                SS,
+                SRT,
+                SP,
+                SE_SIG_EXPIRY_DATE,
+                ST_SIG_CREATION_DATE,
+                SPR,
+                signature);
             log.info("File transfer response: {}", response.status());
             Files.delete(file.toPath());
         } catch (IOException e) {

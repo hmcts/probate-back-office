@@ -69,13 +69,11 @@ public abstract class BaseFileService {
 
     private String getName(CaseData caseData, int granteeNumber) {
         if (isYes(caseData.getPrimaryApplicantIsApplying())) {
-            log.info("LOG getName getPrimaryApplicantSurname "+granteeNumber);
             return granteeNumber == 1 ? caseData.getPrimaryApplicantForenames() + " " + caseData
                     .getPrimaryApplicantSurname() : getApplyingExecutorName(caseData, granteeNumber - 2);
         }
         if (granteeNumber == 1 && caseData.getAdditionalExecutorsApplying() == null && caseData.getApplicationType()
                 .equals(ApplicationType.SOLICITOR)) {
-            log.info("LOG getName getSolsSOTName "+granteeNumber);
             return caseData.getSolsSOTName();
         }
         return getApplyingExecutorName(caseData, granteeNumber - 1);
@@ -90,14 +88,12 @@ public abstract class BaseFileService {
                 .equals(ApplicationType.SOLICITOR)) {
             return caseData.getSolsSolicitorAddress();
         }
-        log.info("LOG getName "+granteeNumber);
         return getAdditionalExecutorAddress(caseData, granteeNumber - 1);
     }
 
     private SolsAddress getAdditionalExecutorAddress(CaseData caseData, int index) {
         if (caseData.getAdditionalExecutorsApplying() != null
                 && caseData.getAdditionalExecutorsApplying().size() >= (index + 1)) {
-            log.info("LOG getAdditionalExecutorAddress "+index);
             return caseData.getAdditionalExecutorsApplying().get(index).getValue().getApplyingExecutorAddress();
         }
         return EMPTY_ADDRESS;
@@ -106,7 +102,6 @@ public abstract class BaseFileService {
     private String getApplyingExecutorName(CaseData caseData, int index) {
         if (caseData.getAdditionalExecutorsApplying() != null
                 && caseData.getAdditionalExecutorsApplying().size() >= (index + 1)) {
-            log.info("LOG getApplyingExecutorName "+index);
             return caseData.getAdditionalExecutorsApplying().get(index).getValue().getApplyingExecutorName();
         }
         return "";

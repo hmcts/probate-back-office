@@ -29,7 +29,6 @@ public class TextFileBuilderService {
 
     private void writeDataToFile(String data, String delimiter) {
         try {
-            log.info("data="+data);
             writer.write(data);
             if (!data.contains("\n")) {
                 writer.write(delimiter);

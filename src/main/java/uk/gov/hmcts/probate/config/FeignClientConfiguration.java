@@ -1,11 +1,7 @@
 package uk.gov.hmcts.probate.config;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import feign.Client;
-import feign.Logger;
-import feign.codec.Decoder;
 import feign.httpclient.ApacheHttpClient;
-import feign.jackson.JacksonDecoder;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.http.client.config.RequestConfig;
@@ -14,7 +10,6 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 
@@ -52,16 +47,4 @@ public class FeignClientConfiguration {
                 .setDefaultRequestConfig(config)
                 .build();
     }
-
-    @Bean
-    @Primary
-    Decoder feignDecoder(ObjectMapper objectMapper) {
-        return new JacksonDecoder(objectMapper);
-    }
-
-    @Bean
-    Logger.Level feignLoggerLevel() {
-        return Logger.Level.FULL;
-    }
-
 }
