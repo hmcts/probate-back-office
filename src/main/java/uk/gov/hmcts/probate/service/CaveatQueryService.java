@@ -20,6 +20,7 @@ import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.ReturnedCaveatDetails;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.ReturnedCaveats;
 import uk.gov.hmcts.probate.service.evidencemanagement.header.HttpHeadersFactory;
+import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.authorisation.generators.ServiceAuthTokenGenerator;
 
 import java.net.URI;
@@ -48,7 +49,7 @@ public class CaveatQueryService {
     private final AppInsights appInsights;
     private final HttpHeadersFactory headers;
     private final CCDDataStoreAPIConfiguration ccdDataStoreAPIConfiguration;
-    private final ServiceAuthTokenGenerator serviceAuthTokenGenerator;
+    private final AuthTokenGenerator serviceAuthTokenGenerator;
     private final IdamAuthenticateUserService idamAuthenticateUserService;
     private final BusinessValidationMessageRetriever businessValidationMessageRetriever;
 

@@ -8,20 +8,33 @@ import org.springframework.web.client.*;
 import uk.gov.hmcts.probate.exception.*;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.*;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
-import uk.gov.hmcts.probate.model.ccd.raw.request.*;
-import uk.gov.hmcts.probate.model.ccd.raw.response.*;
-import uk.gov.hmcts.probate.service.client.*;
-import uk.gov.hmcts.probate.transformer.*;
-import uk.gov.hmcts.probate.validator.*;
-import uk.gov.hmcts.reform.authorisation.generators.*;
-import uk.gov.hmcts.reform.sendletter.api.*;
-import uk.gov.hmcts.reform.sendletter.api.model.v3.*;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
+import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
+import uk.gov.hmcts.probate.service.client.DocumentStoreClient;
+import uk.gov.hmcts.probate.transformer.DocumentTransformer;
+import uk.gov.hmcts.probate.validator.BulkPrintValidationRule;
+import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
+import uk.gov.hmcts.reform.sendletter.api.LetterWithPdfsRequest;
+import uk.gov.hmcts.reform.sendletter.api.SendLetterApi;
+import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
 
-import java.io.*;
-import java.util.*;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.Base64;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.LongStream;
 
-import static uk.gov.hmcts.probate.model.Constants.*;
-import static uk.gov.hmcts.probate.model.DocumentType.*;
+import static uk.gov.hmcts.probate.model.Constants.BUSINESS_ERROR;
+import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_REISSUE;
+import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_REISSUE;
+import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_REISSUE;
 
 @Service
 @Slf4j
@@ -36,7 +49,7 @@ public class BulkPrintService {
     private BusinessValidationMessageService businessValidationMessageService;
     private final SendLetterApi sendLetterApi;
     private final DocumentStoreClient documentStoreClient;
-    private final ServiceAuthTokenGenerator tokenGenerator;
+    private final AuthTokenGenerator serviceAuthTokenGenerator;
     private final EventValidationService eventValidationService;
     private final List<BulkPrintValidationRule> bulkPrintValidationRules;
     private final DocumentTransformer documentTransformer;
@@ -44,7 +57,7 @@ public class BulkPrintService {
     public SendLetterResponse sendToBulkPrint(CallbackRequest callbackRequest, Document grantDocument, Document coverSheet) {
         SendLetterResponse sendLetterResponse = null;
         try {
-            String authHeaderValue = tokenGenerator.generate();
+            String authHeaderValue = serviceAuthTokenGenerator.generate();
 
             Map<String, Object> additionalData = new HashMap<>();
             additionalData.put(ADDITIONAL_DATA_CASE_REFERENCE, callbackRequest.getCaseDetails().getId());
@@ -75,7 +88,7 @@ public class BulkPrintService {
     public SendLetterResponse sendToBulkPrint(CaveatCallbackRequest caveatCallbackRequest, Document grantDocument, Document coverSheet) {
         SendLetterResponse sendLetterResponse = null;
         try {
-            String authHeaderValue = tokenGenerator.generate();
+            String authHeaderValue = serviceAuthTokenGenerator.generate();
 
             Map<String, Object> additionalData = new HashMap<>();
             additionalData.put(ADDITIONAL_DATA_CASE_REFERENCE, caveatCallbackRequest.getCaseDetails().getId());

@@ -104,7 +104,7 @@ evidence.management.upload.file.url: /documents
 http.connect.timeout: 60000
 http.connect.request.timeout: 60000
 
-idam.service.host: ${PROVIDER_SERVICE_CLIENT_URL:http://localhost:4502}
+idam.service.host: ${S2S_AUTH_URL:http://localhost:4502}
 
 notifications:
   govNotifyApiKey: "dummy_key"
@@ -121,6 +121,7 @@ notifications:
           excelaData: "pa-excela-data"
           caveatRaised: "pa-caveat-raised"
           caveatRaisedCtsc: "pa-ctsc-caveat-raised"
+          caveatExtend: "pa-ctsc-caveat-extend"
           requestInformation: "pa-request-information"
           redeclarationSot: "pa-redeclaration-sot"
         solicitor:
@@ -147,6 +148,7 @@ notifications:
           excelaData: "pa-excela-data-welsh"
           caveatRaised: "pa-caveat-raised-welsh"
           caveatRaisedCtsc: "pa-ctsc-caveat-raised-welsh"
+          caveatExtend: "pa-ctsc-caveat-extend-welsh"
           requestInformation: "pa-request-information-welsh"
           redeclarationSot: "pa-redeclaration-sot-welsh"
         solicitor:
@@ -314,7 +316,9 @@ document:
 
 idam:
   s2s-auth:
-    url: ""
+    url: ${S2S_AUTH_URL:http://localhost:4502}
+    totp_secret: ${S2S_AUTH_TOTP_SECRET:AAAAAAAAAAAAAAAA}
+    microservice: probate_backend
 
 send-letter:
   url: ${SEND_LETTER_SERIVCE_BASEURL:http://localhost:8485}
