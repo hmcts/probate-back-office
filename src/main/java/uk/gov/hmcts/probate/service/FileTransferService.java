@@ -2,11 +2,15 @@ package uk.gov.hmcts.probate.service;
 
 import feign.Response;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.web.multipart.MultipartFile;
 import uk.gov.hmcts.probate.exception.BadRequestException;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 
@@ -39,9 +43,12 @@ public class FileTransferService {
         log.info("targetEnv="+targetEnv);
         Response response;
         try {
+            FileInputStream input = new FileInputStream(file);
+            MultipartFile multipartFile = new MockMultipartFile(file.getName(),
+                file.getName(), "text/plain", IOUtils.toByteArray(input));
             log.info("file.bytes.len="+Files.readAllBytes(file.toPath()).length);
             response = fileTransferApi.sendFile(
-                    file,
+                    multipartFile,
                     targetEnv,
                     file.getName(),
                     SV_VALID_FROM,

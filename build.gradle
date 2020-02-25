@@ -266,14 +266,15 @@ dependencies {
   }
   compile group: 'org.mapstruct', name: 'mapstruct-jdk8', version: versions.mapStruct
   compileOnly group: 'org.mapstruct', name: 'mapstruct-processor', version: versions.mapStruct
-
+  compile group: 'org.springframework', name: 'spring-test', version: versions.'5.1.5.RELEASE'
+  
   testCompile group: 'uk.gov.hmcts.reform.probate', name: 'probate-commons', version: versions.probateCommonsVersion
   testCompile("org.springframework.boot:spring-boot-starter-test:$versions.springBootVersion") {
     exclude group: 'com.vaadin.external.google', module:'android-json'
   }
   testCompile group: 'com.h2database', name: 'h2', version: '1.4.197'
   testCompile group: 'org.pdfbox', name: 'com.springsource.org.pdfbox', version: '0.7.3'
-  testCompile group: 'org.springframework.security', name: 'spring-security-test', version: versions.springSecurityVersion
+  testCompile group: 'org.springframework.security', name: 'spring-security-test', version: versions.springSecurityVersio
   testCompile group: 'com.mitchellbosecke', name: 'pebble', version: '2.4.0'
 
   testSmokeCompile group: 'io.rest-assured', name: 'rest-assured', version: versions.restAssured
