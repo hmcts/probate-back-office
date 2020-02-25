@@ -41,7 +41,7 @@ public class FileTransferService {
         try {
             log.info("file.bytes.len="+Files.readAllBytes(file.toPath()).length);
             response = fileTransferApi.sendFile(
-                    Files.readAllBytes(file.toPath()),
+                    file,
                     targetEnv,
                     file.getName(),
                     SV_VALID_FROM,
