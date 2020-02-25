@@ -16,6 +16,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.file.Files;
+import java.util.Optional;
 
 @Slf4j
 public class FileTransferService {
@@ -68,25 +69,19 @@ public class FileTransferService {
     }
 
     private MultipartFile buildMultipartFile(File file) {
-        FileInputStream input = null;
+        Optional<FileInputStream> inputStreamOptional = Optional.empty();
         try {
-            input = new FileInputStream(file);
+            inputStreamOptional = Optional.of(new FileInputStream(file));
             FileItem fileItem = new DiskFileItem("mainFile", Files.probeContentType(file.toPath()), false,
                 file.getName(), (int) file.length(), file.getParentFile());
             OutputStream os = fileItem.getOutputStream();
-            IOUtils.copy(input, os);
+            IOUtils.copy(inputStreamOptional.get(), os);
+            inputStreamOptional.get().close();
 
             return new CommonsMultipartFile(fileItem);
         } catch (IOException e) {
             log.error("Error building multipart file: " + e.getMessage());
             throw new BadRequestException("Error building multipart file: " + e.getMessage());
-        } finally {
-            try {
-                input.close();
-            } catch (IOException e) {
-                log.error("Error closing multipart file: " + e.getMessage());
-                throw new BadRequestException("Error closing multipart file: " + e.getMessage());
-            }
         }
 
     }
