@@ -42,15 +42,10 @@ public class FileTransferService {
 
     public int uploadFile(File file) {
         log.info("Starting file upload to ftp for file:" + file.toPath() + ":" + file.getName());
-        Response response;
-        try {
-            FileInputStream input = new FileInputStream(file);
-            FileItem fileItem = new DiskFileItem("mainFile", Files.probeContentType(file.toPath()), false, 
-                file.getName(), (int) file.length(), file.getParentFile());
-            OutputStream os = fileItem.getOutputStream();
-            IOUtils.copy(input, os);
-            MultipartFile multipartFile = new CommonsMultipartFile(fileItem);
+        Response response = null;
+        MultipartFile multipartFile = buildMultipartFile(file);
 
+        try {
             response = fileTransferApi.sendFile(
                 multipartFile,
                 targetEnv,
@@ -70,5 +65,29 @@ public class FileTransferService {
             throw new BadRequestException("Failed to initiate file transfer request: " + e.getMessage());
         }
         return response.status();
+    }
+
+    private MultipartFile buildMultipartFile(File file) {
+        FileInputStream input = null;
+        try {
+            input = new FileInputStream(file);
+            FileItem fileItem = new DiskFileItem("mainFile", Files.probeContentType(file.toPath()), false,
+                file.getName(), (int) file.length(), file.getParentFile());
+            OutputStream os = fileItem.getOutputStream();
+            IOUtils.copy(input, os);
+
+            return new CommonsMultipartFile(fileItem);
+        } catch (IOException e) {
+            log.error("Error building multipart file: " + e.getMessage());
+            throw new BadRequestException("Error building multipart file: " + e.getMessage());
+        } finally {
+            try {
+                input.close();
+            } catch (IOException e) {
+                log.error("Error closing multipart file: " + e.getMessage());
+                throw new BadRequestException("Error closing multipart file: " + e.getMessage());
+            }
+        }
+
     }
 }
