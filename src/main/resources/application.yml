@@ -106,7 +106,7 @@ fee.api:
   jurisdiction2: probate registry
   channel: default
   applicantType: all
-  keyword: NewFee
+  keyword: GrantWill
 
 markdown.templatesDirectory: templates/markdown/
 
