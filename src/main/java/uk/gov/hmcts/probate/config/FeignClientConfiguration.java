@@ -1,8 +1,6 @@
 package uk.gov.hmcts.probate.config;
 
 import feign.Client;
-import feign.codec.Encoder;
-import feign.form.spring.SpringFormEncoder;
 import feign.httpclient.ApacheHttpClient;
 import lombok.Getter;
 import lombok.Setter;
@@ -38,15 +36,15 @@ public class FeignClientConfiguration {
 
     private CloseableHttpClient getHttpClient() {
         RequestConfig config = RequestConfig.custom()
-                .setConnectTimeout(timeout)
-                .setConnectionRequestTimeout(timeout)
-                .setSocketTimeout(timeout)
-                .build();
+            .setConnectTimeout(timeout)
+            .setConnectionRequestTimeout(timeout)
+            .setSocketTimeout(timeout)
+            .build();
 
         return HttpClientBuilder
-                .create()
-                .useSystemProperties()
-                .setDefaultRequestConfig(config)
-                .build();
+            .create()
+            .useSystemProperties()
+            .setDefaultRequestConfig(config)
+            .build();
     }
 }

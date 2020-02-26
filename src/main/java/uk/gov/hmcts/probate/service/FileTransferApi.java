@@ -6,9 +6,9 @@ import feign.RequestLine;
 import feign.Response;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.RequestBody;
-import uk.gov.hmcts.probate.config.FeignFTPConfiguration;
+import uk.gov.hmcts.probate.config.FeignClientConfiguration;
 
-@FeignClient(name = "ftp-client", url = "${ftp.client.url}", configuration = FeignFTPConfiguration.class)
+@FeignClient(name = "ftp-client", url = "${ftp.client.url}", configuration = FeignClientConfiguration.class)
 public interface FileTransferApi {
 
     @RequestLine("PUT /{environment}/{fileName}?sv={sv}&ss={ss}&srt={srt}&sp={sp}&se={se}&st={st}&spr={spr}&sig={sig}")
