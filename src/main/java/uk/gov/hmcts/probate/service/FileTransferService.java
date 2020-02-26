@@ -46,11 +46,11 @@ public class FileTransferService {
     public int uploadFile(File file) {
         log.info("Starting file upload to ftp for file:" + file.toPath() + ":" + file.getName());
         Response response = null;
-        //MultipartFile multipartFile = buildMultipartFile(file);
+        MultipartFile multipartFile = buildMultipartFile(file);
 
         try {
             response = fileTransferApi.sendFile(
-                Files.readAllBytes(file.toPath()),
+                multipartFile,
                 targetEnv,
                 file.getName(),
                 SV_VALID_FROM,
