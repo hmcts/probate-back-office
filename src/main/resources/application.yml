@@ -29,12 +29,12 @@ auth.provider.service.client:
   tokenTimeToLiveInSeconds: 900
 
 auth.provider.client:
-  user: ${IDAM_SERVICE_HOST:http://localhost:5000}
+  user: ${IDAM_SERVICE_HOST:http://localhost:4501}
   secret: ${IDAM_SECRET:ccd_gateway_secret}
   id: ${IDAM_CLIENT_NAME:ccd_gateway}
   redirect: ${IDAM_REDIRECT_URL:http://localhost:3451/oauth2redirect}
   email: ${AUTH_TOKEN_EMAIL:probatesolcw1@gmail.com}
-  password: ${AUTH_TOKEN_PASSWORD:Pa55word11}
+  password: ${AUTH_TOKEN_PASSWORD:password}
 
 pdf.service:
   url: http://localhost:5500
@@ -81,6 +81,8 @@ docmosis:
       templateName: FL-PRB-EML-ENG-00086.doc
     statementOfTruth:
       templateName: FL-PRB-SOT-ENG-00090.doc
+    welshStatementOfTruth:
+      templateName: FL-PRB-SOT-WEL-00234.doc
     assembledLetter:
       templateName: FL-PRB-GNO-ENG-00133.docx
     welshDigitalGrant:
@@ -104,7 +106,7 @@ fee.api:
   jurisdiction2: probate registry
   channel: default
   applicantType: all
-  keyword: NewFee
+  keyword: GrantWill
 
 markdown.templatesDirectory: templates/markdown/
 
@@ -205,7 +207,7 @@ notifications:
           redeclarationSot: "bcd9e4cc-db0c-4810-8172-8bcb2277b775"
       welsh:
         personal:
-          documentReceived: "9e950599-4f07-4b07-9015-2938e030c25c"
+          documentReceived: "1c847dd8-212e-425a-ad83-1bbc48d89428"
           caseStopped: "3e367544-c75a-4556-9831-7d0a3acbac0d"
           caseStoppedCaveat: "1fde1860-b827-45e7-b430-1406f74beb93"
           grantIssued: "8f935357-fecd-46f3-bb6e-ebd3da317433"
@@ -373,6 +375,12 @@ registries:
     postcode: CF24 0RZ
 
 
+document:
+  retriever:
+    service:
+      api:
+        baseurl: localhost:8080
+
 idam:
   s2s-auth:
     url: ${S2S_AUTH_URL:http://localhost:4502}
@@ -382,7 +390,7 @@ idam:
 send-letter:
   url: ${SEND_LETTER_SERIVCE_BASEURL:http://localhost:8485}
 
-auth.idam.client.baseUrl: http://localhost:5000
+auth.idam.client.baseUrl: http://localhost:4501
 
 core_case_data.api.url: ${services.coreCaseData.baseUrl:http://localhost:4452}
 
