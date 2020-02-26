@@ -49,10 +49,4 @@ public class FeignClientConfiguration {
                 .setDefaultRequestConfig(config)
                 .build();
     }
-
-    @Bean
-    public Encoder feignFormEncoder() {
-        return new SpringFormEncoder();
-    }
-
 }
