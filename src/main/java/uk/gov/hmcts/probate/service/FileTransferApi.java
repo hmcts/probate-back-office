@@ -5,18 +5,17 @@ import feign.Param;
 import feign.RequestLine;
 import feign.Response;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.multipart.MultipartFile;
 import uk.gov.hmcts.probate.config.FeignClientConfiguration;
-
-import java.io.File;
 
 @FeignClient(name = "ftp-client", url = "${ftp.client.url}", configuration = FeignClientConfiguration.class)
 public interface FileTransferApi {
 
     @RequestLine("PUT /{environment}/{fileName}?sv={sv}&ss={ss}&srt={srt}&sp={sp}&se={se}&st={st}&spr={spr}&sig={sig}")
-    @Headers({"x-ms-type: file", "x-ms-blob-type: BlockBlob", "Content-Type: multipart/form-data"})
+    @Headers({"x-ms-type: file", "Content-Type: multipart/form-data"})
     Response sendFile(
-        @RequestBody final File file,
+        @RequestPart final MultipartFile file,
         @Param(encoded = true, value = "environment") final String environment,
         @Param(encoded = true, value = "fileName") final String fileName,
         @Param(encoded = true, value = "sv") final String validFromDate,
