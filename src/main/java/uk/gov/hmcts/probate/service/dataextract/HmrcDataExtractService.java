@@ -50,7 +50,7 @@ public class HmrcDataExtractService {
         String dateDesc = (StringUtils.isEmpty(fromDate) ? " date:" : " from " + fromDate + " to") + " " + date;
         log.info("preparing for file HMRC upload");
         int response = fileTransferService.uploadFile(hmrcFileService.createHmrcFile(
-            casesFound, "1_" + fileExtractDateFormatter.formatFileDate() + ".txt"));
+            casesFound, "1_" + fileExtractDateFormatter.formatFileDate() + ".dat"));
 
         log.info("Response for HMRC upload={}", response);
         if (response != 201) {
