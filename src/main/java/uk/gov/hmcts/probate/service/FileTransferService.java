@@ -1,10 +1,6 @@
 package uk.gov.hmcts.probate.service;
 
-import feign.Response;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.fileupload.disk.DiskFileItem;
-import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -15,16 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
-import uk.gov.hmcts.probate.exception.BadRequestException;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.nio.file.Files;
-import java.util.Optional;
 
 @Slf4j
 public class FileTransferService {
@@ -56,15 +44,19 @@ public class FileTransferService {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+        headers.add("x-ms-blob-type", "BlockBlob");
 
         MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
         body.add("file", file);
 
 
         HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
+        log.info("serverUrl: {}", serverUrl);
+        log.info("requestEntity: {}", requestEntity);
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<String> response = restTemplate.exchange(serverUrl, HttpMethod.PUT, requestEntity, String.class);
 
+        log.info("response: {}", response);
         return response.getStatusCode().value();
     }
 }
