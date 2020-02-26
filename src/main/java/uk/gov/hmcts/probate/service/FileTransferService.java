@@ -77,7 +77,7 @@ public class FileTransferService {
         try (Stream<String> stream = Files.lines(Paths.get(filePath), StandardCharsets.UTF_8)) {
             stream.forEach(s -> contentBuilder.append(s).append("\n"));
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error("Error creating body from file: {}", e.getMessage());
         }
         return contentBuilder.toString();
     }
