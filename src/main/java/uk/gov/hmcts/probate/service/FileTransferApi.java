@@ -15,7 +15,7 @@ public interface FileTransferApi {
     @RequestLine("PUT /{environment}/{fileName}?sv={sv}&ss={ss}&srt={srt}&sp={sp}&se={se}&st={st}&spr={spr}&sig={sig}")
     @Headers({"x-ms-type: file", "x-ms-blob-type: BlockBlob", "Content-Type: multipart/form-data"})
     Response sendFile(
-        @RequestPart final MultipartFile file,
+        @RequestPart(value="file", required=true) final MultipartFile file,
         @Param(encoded = true, value = "environment") final String environment,
         @Param(encoded = true, value = "fileName") final String fileName,
         @Param(encoded = true, value = "sv") final String validFromDate,
