@@ -72,7 +72,7 @@ public class FileTransferService {
         Optional<FileInputStream> inputStreamOptional = Optional.empty();
         try {
             inputStreamOptional = Optional.of(new FileInputStream(file));
-            FileItem fileItem = new DiskFileItem("mainFile", Files.probeContentType(file.toPath()), false,
+            FileItem fileItem = new DiskFileItem("file", Files.probeContentType(file.toPath()), false,
                 file.getName(), (int) file.length(), file.getParentFile());
             OutputStream os = fileItem.getOutputStream();
             IOUtils.copy(inputStreamOptional.get(), os);
