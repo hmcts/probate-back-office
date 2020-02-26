@@ -7,8 +7,6 @@ import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import uk.gov.hmcts.probate.exception.BadRequestException;
@@ -17,8 +15,11 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 @Slf4j
 public class FileTransferService {
@@ -46,11 +47,12 @@ public class FileTransferService {
     public int uploadFile(File file) {
         log.info("Starting file upload to ftp for file:" + file.toPath() + ":" + file.getName());
         Response response = null;
-        MultipartFile multipartFile = buildMultipartFile(file);
+        //MultipartFile multipartFile = buildMultipartFile(file);
+        String fileAsString = fileAsString(file.toPath().toString());
 
         try {
             response = fileTransferApi.sendFile(
-                multipartFile,
+                fileAsString,
                 targetEnv,
                 file.getName(),
                 SV_VALID_FROM,
@@ -68,6 +70,16 @@ public class FileTransferService {
             throw new BadRequestException("Failed to initiate file transfer request: " + e.getMessage());
         }
         return response.status();
+    }
+
+    private String fileAsString(String filePath) {
+        StringBuilder contentBuilder = new StringBuilder();
+        try (Stream<String> stream = Files.lines(Paths.get(filePath), StandardCharsets.UTF_8)) {
+            stream.forEach(s -> contentBuilder.append(s).append("\n"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return contentBuilder.toString();
     }
 
     private MultipartFile buildMultipartFile(File file) {
