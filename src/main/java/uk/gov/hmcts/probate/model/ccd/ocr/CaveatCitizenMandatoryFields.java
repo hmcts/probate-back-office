@@ -1,6 +1,6 @@
 package uk.gov.hmcts.probate.model.ccd.ocr;
 
-public enum CaveatMandatoryFields {
+public enum CaveatCitizenMandatoryFields {
     CAVEATOR_FORNAMES("caveatorForenames", "Caveator forenames"),
     CAVEATOR_SURNAME("caveatorSurnames", "Caveator last name"),
     CAVEATOR_ADDRESS_LINE1("caveatorAddressLine1", "Caveator address line 1"),
@@ -12,7 +12,7 @@ public enum CaveatMandatoryFields {
     private final String key;
     private final String value;
 
-    CaveatMandatoryFields(String key, String value) {
+    CaveatCitizenMandatoryFields(String key, String value) {
         this.key = key;
         this.value = value;
     }
