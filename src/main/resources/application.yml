@@ -179,7 +179,7 @@ notifications:
     email:
       english:
         personal:
-          documentReceived: "04308c65-a0bb-40b4-a3f3-ba8869048520"
+          documentReceived: "9e950599-4f07-4b07-9015-2938e030c25c"
           caseStopped: "60b95b7c-0a76-4608-b549-b3a579cfa3d0"
           caseStoppedCaveat: "937291a0-c0ae-40a4-a8cf-46a3452faff0"
           grantIssued: "8c05655d-02c9-4391-b461-56d8e585f48b"
@@ -207,7 +207,7 @@ notifications:
           redeclarationSot: "bcd9e4cc-db0c-4810-8172-8bcb2277b775"
       welsh:
         personal:
-          documentReceived: "1c847dd8-212e-425a-ad83-1bbc48d89428"
+          documentReceived: "f9beb3a9-9bd2-469e-b584-d6c2f805aed7"
           caseStopped: "80b576b4-1a33-4920-837a-f2904784c9e2"
           caseStoppedCaveat: "1fde1860-b827-45e7-b430-1406f74beb93"
           grantIssued: "515c7643-ea3b-4a86-9b94-4622114be080"
