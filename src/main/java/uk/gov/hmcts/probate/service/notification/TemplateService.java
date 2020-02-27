@@ -24,6 +24,8 @@ public class TemplateService {
 
         EmailTemplates emailTemplates = notificationTemplates.getEmail().get(languagePreference).get(applicationType);
         switch (state) {
+            case APPLICATION_RECEIVED:
+                return emailTemplates.getApplicationReceived();
             case DOCUMENTS_RECEIVED:
                 return emailTemplates.getDocumentReceived();
             case CASE_STOPPED:

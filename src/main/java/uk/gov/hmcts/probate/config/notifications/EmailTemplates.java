@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class EmailTemplates {
+    private String applicationReceived;
     private String documentReceived;
     private String caseStopped;
     private String caseStoppedCaveat;
