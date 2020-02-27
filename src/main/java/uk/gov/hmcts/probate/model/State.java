@@ -1,6 +1,7 @@
 package uk.gov.hmcts.probate.model;
 
 public enum State {
+    APPLICATION_RECEIVED,
     DOCUMENTS_RECEIVED,
     CASE_STOPPED,
     CASE_STOPPED_CAVEAT,
