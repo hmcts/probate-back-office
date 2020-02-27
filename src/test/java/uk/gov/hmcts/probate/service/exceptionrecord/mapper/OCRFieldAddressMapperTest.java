@@ -24,7 +24,7 @@ public class OCRFieldAddressMapperTest {
     private static final String ADDRESS_LINE2 = "22 Green Park";
     private static final String ADDRESS_POST_TOWN = "London";
     private static final String ADDRESS_COUNTY = "Greater London";
-    private static final String ADDRESS_POST_CODE = "NW1 1AB";
+    private static final String ADDRESS_POST_CODE = "nW1 1Ab";
     private static final String ADDRESS_POST_CODE_ERROR = "NW1";
 
     private static final String ADDRESS_POST_CODE_CORRECT_ERROR_MESSAGE =
@@ -100,7 +100,7 @@ public class OCRFieldAddressMapperTest {
         assertEquals(ADDRESS_LINE2, response.getAddressLine2());
         assertEquals(ADDRESS_POST_TOWN, response.getPostTown());
         assertEquals(ADDRESS_COUNTY, response.getCounty());
-        assertEquals(ADDRESS_POST_CODE, response.getPostCode());
+        assertEquals(ADDRESS_POST_CODE.toUpperCase(), response.getPostCode());
     }
 
     @Test
@@ -110,7 +110,7 @@ public class OCRFieldAddressMapperTest {
         assertEquals(ADDRESS_LINE2, response.getAddressLine2());
         assertEquals(ADDRESS_POST_TOWN, response.getPostTown());
         assertEquals(ADDRESS_COUNTY, response.getCounty());
-        assertEquals(ADDRESS_POST_CODE, response.getPostCode());
+        assertEquals(ADDRESS_POST_CODE.toUpperCase(), response.getPostCode());
     }
 
     @Test
@@ -120,7 +120,7 @@ public class OCRFieldAddressMapperTest {
         assertEquals(ADDRESS_LINE2, response.getAddressLine2());
         assertEquals(ADDRESS_POST_TOWN, response.getPostTown());
         assertEquals(ADDRESS_COUNTY, response.getCounty());
-        assertEquals(ADDRESS_POST_CODE, response.getPostCode());
+        assertEquals(ADDRESS_POST_CODE.toUpperCase(), response.getPostCode());
     }
 
     @Test
@@ -131,7 +131,7 @@ public class OCRFieldAddressMapperTest {
         assertEquals(ADDRESS_LINE2, response.get(0).getValue().getAddress().getAddressLine2());
         assertEquals(ADDRESS_POST_TOWN, response.get(0).getValue().getAddress().getPostTown());
         assertEquals(ADDRESS_COUNTY, response.get(0).getValue().getAddress().getCounty());
-        assertEquals(ADDRESS_POST_CODE, response.get(0).getValue().getAddress().getPostCode());
+        assertEquals(ADDRESS_POST_CODE.toUpperCase(), response.get(0).getValue().getAddress().getPostCode());
     }
 
     @Test(expected = OCRMappingException.class)
