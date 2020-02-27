@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.service.exceptionrecord.mapper;
 
+import io.micrometer.core.instrument.util.StringUtils;
 import org.apache.commons.lang.BooleanUtils;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
@@ -305,7 +306,7 @@ public interface ExceptionRecordGrantOfRepresentationMapper {
     @AfterMapping
     default void setApplyingAsAnAttorneyBoolean(@MappingTarget GrantOfRepresentationData caseData, ExceptionRecordOCRFields ocrField) {
         if (caseData.getAttorneyOnBehalfOfNameAndAddress().size() > 0
-                && !caseData.getAttorneyOnBehalfOfNameAndAddress().get(0).getValue().getName().isEmpty()) {
+                && StringUtils.isNotBlank(caseData.getAttorneyOnBehalfOfNameAndAddress().get(0).getValue().getName())) {
             caseData.setApplyingAsAnAttorney(Boolean.TRUE);
         } else {
             caseData.setApplyingAsAnAttorney(Boolean.FALSE);

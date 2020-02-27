@@ -3,6 +3,7 @@ package uk.gov.hmcts.probate.service.exceptionrecord.mapper;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.stereotype.Component;
+import uk.gov.hmcts.probate.exception.OCRMappingException;
 import uk.gov.hmcts.probate.model.exceptionrecord.ExceptionRecordOCRFields;
 import uk.gov.hmcts.reform.probate.model.AttorneyNamesAndAddress;
 import uk.gov.hmcts.reform.probate.model.cases.Address;
@@ -28,6 +29,8 @@ public class OCRFieldAddressMapperTest {
     private OCRFieldAddressMapper addressMapper = new OCRFieldAddressMapper();
 
     private ExceptionRecordOCRFields ocrFields;
+    private ExceptionRecordOCRFields ocrFieldsAttorneyMissingAddress;
+    private ExceptionRecordOCRFields ocrFieldsAttorneyMissingName;
 
     @Before
     public void setUpClass() throws Exception {
@@ -56,6 +59,18 @@ public class OCRFieldAddressMapperTest {
                 .deceasedAddressTown(ADDRESS_POST_TOWN)
                 .deceasedAddressCounty(ADDRESS_COUNTY)
                 .deceasedAddressPostCode(ADDRESS_POST_CODE)
+                .build();
+
+        ocrFieldsAttorneyMissingAddress = ExceptionRecordOCRFields.builder()
+                .attorneyOnBehalfOfName(ATTORNEY_ON_BEHALF_OF_NAME)
+                .build();
+
+        ocrFieldsAttorneyMissingName = ExceptionRecordOCRFields.builder()
+                .attorneyOnBehalfOfAddressLine1(ATTORNEY_ON_BEHALF_OF_ADDRESS_LINE1)
+                .attorneyOnBehalfOfAddressLine2(ADDRESS_LINE2)
+                .attorneyOnBehalfOfAddressTown(ADDRESS_POST_TOWN)
+                .attorneyOnBehalfOfAddressCounty(ADDRESS_COUNTY)
+                .attorneyOnBehalfOfAddressPostCode(ADDRESS_POST_CODE)
                 .build();
     }
 
@@ -98,5 +113,17 @@ public class OCRFieldAddressMapperTest {
         assertEquals(ADDRESS_POST_TOWN, response.get(0).getValue().getAddress().getPostTown());
         assertEquals(ADDRESS_COUNTY, response.get(0).getValue().getAddress().getCounty());
         assertEquals(ADDRESS_POST_CODE, response.get(0).getValue().getAddress().getPostCode());
+    }
+
+    @Test(expected = OCRMappingException.class)
+    public void testAttorneyNameWithMissingNameError() {
+        List<CollectionMember<AttorneyNamesAndAddress>> response =
+                addressMapper.toAttorneyOnBehalfOfAddress(ocrFieldsAttorneyMissingName);
+    }
+
+    @Test(expected = OCRMappingException.class)
+    public void testAttorneyNameWithMissingAddressError() {
+        List<CollectionMember<AttorneyNamesAndAddress>> response =
+                addressMapper.toAttorneyOnBehalfOfAddress(ocrFieldsAttorneyMissingAddress);
     }
 }
