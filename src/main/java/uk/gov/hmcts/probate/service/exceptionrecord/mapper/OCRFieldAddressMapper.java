@@ -60,12 +60,20 @@ public class OCRFieldAddressMapper {
                 .address(buildAddress())
                 .build();
         List<CollectionMember<AttorneyNamesAndAddress>> collectionMemberList = new ArrayList<>();
-        if ((attorneyNamesAndAddress.getName() != null
-                && !attorneyNamesAndAddress.getName().isEmpty())
-                || (attorneyNamesAndAddress.getAddress() != null
-                && attorneyNamesAndAddress.getAddress().getPostCode() != null
-                && !attorneyNamesAndAddress.getAddress().getPostCode().isEmpty())) {
+        if (StringUtils.isNotBlank(attorneyNamesAndAddress.getName())
+                && attorneyNamesAndAddress.getAddress() != null
+                && StringUtils.isNotBlank(attorneyNamesAndAddress.getAddress().getPostCode())) {
             collectionMemberList.add(new CollectionMember<>(null, attorneyNamesAndAddress));
+        } else if (StringUtils.isBlank(attorneyNamesAndAddress.getName())
+                && attorneyNamesAndAddress.getAddress() != null) {
+            String errorMessage = "Attorney name is missing but an attorney address has been supplied";
+            log.error(errorMessage);
+            throw new OCRMappingException(errorMessage);
+        } else if (StringUtils.isNotBlank(attorneyNamesAndAddress.getName())
+                && attorneyNamesAndAddress.getAddress() == null) {
+            String errorMessage = "Attorney address is missing but an attorney name has been supplied";
+            log.error(errorMessage);
+            throw new OCRMappingException(errorMessage);
         }
         return collectionMemberList;
     }
