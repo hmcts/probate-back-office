@@ -181,7 +181,7 @@ notifications:
         personal:
           applicationReceived: "917dece3-e89d-460b-a6cb-e605ace39f2e"
           documentReceived: "9e950599-4f07-4b07-9015-2938e030c25c"
-          caseStopped: "937291a0-c0ae-40a4-a8cf-46a3452faff0"
+          caseStopped: "60b95b7c-0a76-4608-b549-b3a579cfa3d0"
           caseStoppedCaveat: "937291a0-c0ae-40a4-a8cf-46a3452faff0"
           grantIssued: "8c05655d-02c9-4391-b461-56d8e585f48b"
           grantReissued: "1b094aae-1b4e-4161-9a61-f563a1a6ed6d"
