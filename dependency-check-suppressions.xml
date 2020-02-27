@@ -229,7 +229,7 @@
    ]]></notes>
         <cve>CVE-2018-1260</cve>
     </suppress>
-  <suppress>
+    <suppress>
         <notes><![CDATA[
    file name: tomcat-embed-core-9.0.16.jar
    ]]></notes>
@@ -293,6 +293,9 @@
         <cve>CVE-2019-16943</cve>
         <cve>CVE-2019-17267</cve>
         <cve>CVE-2019-17531</cve>
+        <cve>CVE-2019-16942</cve>
+        <cve>CVE-2019-16943</cve>
+        <cve>CVE-2019-20330</cve>
     </suppress>
     <suppress>
         <notes><![CDATA[
@@ -310,29 +313,135 @@
     </suppress>
     <suppress>
         <notes><![CDATA[
-   file name: jackson-databind-2.9.9.3.jar
+   file name: spring-security-web-5.1.4.RELEASE.jar
    ]]></notes>
-        <gav regex="true">^com\.fasterxml\.jackson\.core:jackson-databind:.*$</gav>
-        <cve>CVE-2019-14540</cve>
-        <cve>CVE-2019-16335</cve>
-        <cve>CVE-2019-16942</cve>
-        <cve>CVE-2019-16943</cve>
-        <cve>CVE-2019-17267</cve>
-        <cve>CVE-2019-17531</cve>
-        <cve>CVE-2019-20330</cve>
+        <gav regex="true">^org\.springframework\.security:spring-security-web:.*$</gav>
+        <cve>CVE-2020-5398</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: spring-security-config-5.1.4.RELEASE.jar
+   ]]></notes>
+        <gav regex="true">^org\.springframework\.security:spring-security-config:.*$</gav>
+        <cve>CVE-2020-5398</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: spring-security-core-5.1.4.RELEASE.jar
+   ]]></notes>
+        <gav regex="true">^org\.springframework\.security:spring-security-core:.*$</gav>
+        <cve>CVE-2020-5398</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: spring-security-crypto-5.1.4.RELEASE.jar
+   ]]></notes>
+        <gav regex="true">^org\.springframework\.security:spring-security-crypto:.*$</gav>
+        <cve>CVE-2020-5398</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+file name: spring-webmvc-5.1.5.RELEASE.jar
+]]></notes>
+        <gav regex="true">^org\.springframework:spring-webmvc:.*$</gav>
+        <cve>CVE-2020-5398</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+file name: spring-oxm-5.1.5.RELEASE.jar
+]]></notes>
+        <gav regex="true">^org\.springframework:spring-oxm:.*$</gav>
+        <cpe>cpe:/a:pivotal_software:spring_framework</cpe>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+file name: spring-context-5.1.5.RELEASE.jar
+]]></notes>
+        <gav regex="true">^org\.springframework:spring-context:.*$</gav>
+        <cpe>cpe:/a:pivotal_software:spring_framework</cpe>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+file name: spring-aop-5.1.5.RELEASE.jar
+]]></notes>
+        <gav regex="true">^org\.springframework:spring-aop:.*$</gav>
+        <cpe>cpe:/a:pivotal_software:spring_framework</cpe>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+file name: spring-aspects-5.1.5.RELEASE.jar
+]]></notes>
+        <gav regex="true">^org\.springframework:spring-aspects:.*$</gav>
+        <cpe>cpe:/a:pivotal_software:spring_framework</cpe>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+file name: spring-orm-5.1.5.RELEASE.jar
+]]></notes>
+        <gav regex="true">^org\.springframework:spring-orm:.*$</gav>
+        <cpe>cpe:/a:pivotal_software:spring_framework</cpe>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+file name: spring-jdbc-5.1.5.RELEASE.jar
+]]></notes>
+        <gav regex="true">^org\.springframework:spring-jdbc:.*$</gav>
+        <cpe>cpe:/a:pivotal_software:spring_framework</cpe>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+file name: spring-tx-5.1.5.RELEASE.jar
+]]></notes>
+        <gav regex="true">^org\.springframework:spring-tx:.*$</gav>
+        <cpe>cpe:/a:pivotal_software:spring_framework</cpe>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+file name: spring-beans-5.1.5.RELEASE.jar
+]]></notes>
+        <gav regex="true">^org\.springframework:spring-beans:.*$</gav>
+        <cpe>cpe:/a:pivotal_software:spring_framework</cpe>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+file name: spring-expression-5.1.5.RELEASE.jar
+]]></notes>
+        <gav regex="true">^org\.springframework:spring-expression:.*$</gav>
+        <cpe>cpe:/a:pivotal_software:spring_framework</cpe>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+file name: spring-core-5.1.5.RELEASE.jar
+]]></notes>
+        <gav regex="true">^org\.springframework:spring-core:.*$</gav>
+        <cve>CVE-2020-5398</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+file name: spring-jcl-5.1.5.RELEASE.jar
+]]></notes>
+        <gav regex="true">^org\.springframework:spring-jcl:.*$</gav>
+        <cve>CVE-2020-5398</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: checkstyle-8.18.jar
+   ]]></notes>
+        <gav regex="true">^com\.puppycrawl\.tools:checkstyle:.*$</gav>
+        <cve>CVE-2019-10782</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: checkstyle-8.18.jar
+   ]]></notes>
+        <gav regex="true">^com\.puppycrawl\.tools:checkstyle:.*$</gav>
+        <cve>CVE-2019-10782</cve>
     </suppress>
     <suppress>
         <notes><![CDATA[
    file name: jackson-databind-2.9.9.3.jar
    ]]></notes>
         <gav regex="true">^com\.fasterxml\.jackson\.core:jackson-databind:.*$</gav>
-        <cve>CVE-2019-16942</cve>
-    </suppress>
-    <suppress>
-        <notes><![CDATA[
-   file name: jackson-databind-2.9.9.3.jar
-   ]]></notes>
-        <gav regex="true">^com\.fasterxml\.jackson\.core:jackson-databind:.*$</gav>
-        <cve>CVE-2019-16943</cve>
+        <cve>CVE-2020-8840</cve>
     </suppress>
 </suppressions>

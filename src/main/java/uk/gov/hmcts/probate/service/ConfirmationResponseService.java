@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.changerule.ApplicantSiblingsRule;
 import uk.gov.hmcts.probate.changerule.ChangeRule;
 import uk.gov.hmcts.probate.changerule.DiedOrNotApplyingRule;
-import uk.gov.hmcts.probate.changerule.DomicilityRule;
 import uk.gov.hmcts.probate.changerule.EntitledMinorityRule;
 import uk.gov.hmcts.probate.changerule.ExecutorsRule;
 import uk.gov.hmcts.probate.changerule.LifeInterestRule;
@@ -16,6 +15,7 @@ import uk.gov.hmcts.probate.changerule.MinorityInterestRule;
 import uk.gov.hmcts.probate.changerule.NoOriginalWillRule;
 import uk.gov.hmcts.probate.changerule.RenouncingRule;
 import uk.gov.hmcts.probate.changerule.ResiduaryRule;
+import uk.gov.hmcts.probate.changerule.SolsExecutorRule;
 import uk.gov.hmcts.probate.changerule.SpouseOrCivilRule;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
 import uk.gov.hmcts.probate.model.ccd.Executor;
@@ -64,7 +64,6 @@ public class ConfirmationResponseService {
 
     private final ApplicantSiblingsRule applicantSiblingsConfirmationResponseRule;
     private final DiedOrNotApplyingRule diedOrNotApplyingRule;
-    private final DomicilityRule domicilityConfirmationResponseRule;
     private final EntitledMinorityRule entitledMinorityRule;
     private final ExecutorsRule executorsConfirmationResponseRule;
     private final LifeInterestRule lifeInterestRule;
@@ -72,6 +71,7 @@ public class ConfirmationResponseService {
     private final NoOriginalWillRule noOriginalWillRule;
     private final RenouncingRule renouncingConfirmationResponseRule;
     private final ResiduaryRule residuaryRule;
+    private final SolsExecutorRule solsExecutorConfirmationResponseRule;
     private final SpouseOrCivilRule spouseOrCivilConfirmationResponseRule;
 
     private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -105,10 +105,7 @@ public class ConfirmationResponseService {
 
     private TemplateResponse generateStopBodyMarkdown(CaseData caseData) {
 
-        Optional<TemplateResponse> response = getStopBodyMarkdown(caseData, domicilityConfirmationResponseRule, STOP_BODY);
-        if (response.isPresent()) {
-            return response.get();
-        }
+        Optional<TemplateResponse> response = Optional.of(new TemplateResponse(null));
 
         if (GRANT_TYPE_PROBATE.equals(caseData.getSolsWillType())) {
             response = getStopBodyMarkdown(caseData, executorsConfirmationResponseRule, STOP_BODY);
@@ -134,6 +131,11 @@ public class ConfirmationResponseService {
             }
 
             response = getStopBodyMarkdown(caseData, renouncingConfirmationResponseRule, STOP_BODY);
+            if (response.isPresent()) {
+                return response.get();
+            }
+
+            response = getStopBodyMarkdown(caseData, solsExecutorConfirmationResponseRule, STOP_BODY);
             if (response.isPresent()) {
                 return response.get();
             }
@@ -166,6 +168,11 @@ public class ConfirmationResponseService {
             }
 
             response = getStopBodyMarkdown(caseData, residuaryRule, STOP_BODY);
+            if (response.isPresent()) {
+                return response.get();
+            }
+
+            response = getStopBodyMarkdown(caseData, solsExecutorConfirmationResponseRule, STOP_BODY);
             if (response.isPresent()) {
                 return response.get();
             }

@@ -28,6 +28,7 @@ import uk.gov.hmcts.reform.authorisation.generators.ServiceAuthTokenGenerator;
 import uk.gov.hmcts.reform.sendletter.api.LetterWithPdfsRequest;
 import uk.gov.hmcts.reform.sendletter.api.SendLetterApi;
 import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
+import uk.gov.hmcts.reform.sendletter.api.model.v3.*;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -112,10 +113,10 @@ public class BulkPrintServiceTest {
                 .build();
         UUID uuid = UUID.randomUUID();
         SendLetterResponse sendLetterResponse = new SendLetterResponse(uuid);
-        when(sendLetterApiMock.sendLetter(anyString(), any(LetterWithPdfsRequest.class))).thenReturn(sendLetterResponse);
+        when(sendLetterApiMock.sendLetter(anyString(), any(LetterV3.class))).thenReturn(sendLetterResponse);
         SendLetterResponse response = bulkPrintService.sendToBulkPrint(callbackRequest, grant, coverSheet);
 
-        verify(sendLetterApiMock).sendLetter(anyString(), any(LetterWithPdfsRequest.class));
+        verify(sendLetterApiMock).sendLetter(anyString(), any(LetterV3.class));
 
         assertNotNull(response);
         assertThat(response.letterId, is(uuid));
@@ -155,12 +156,12 @@ public class BulkPrintServiceTest {
                 .build();
         UUID uuid = UUID.randomUUID();
         SendLetterResponse sendLetterResponse = new SendLetterResponse(uuid);
-        when(sendLetterApiMock.sendLetter(anyString(), any(LetterWithPdfsRequest.class))).thenReturn(sendLetterResponse);
+        when(sendLetterApiMock.sendLetter(anyString(), any(LetterV3.class))).thenReturn(sendLetterResponse);
         when(documentTransformer.hasDocumentWithType(Arrays.asList(document), DocumentType.DIGITAL_GRANT_REISSUE)).thenReturn(true);
 
         SendLetterResponse response = bulkPrintService.sendToBulkPrint(callbackRequest, document, coverSheet);
 
-        verify(sendLetterApiMock).sendLetter(anyString(), any(LetterWithPdfsRequest.class));
+        verify(sendLetterApiMock).sendLetter(anyString(), any(LetterV3.class));
 
         assertNotNull(response);
         assertThat(response.letterId, is(uuid));
@@ -359,10 +360,10 @@ public class BulkPrintServiceTest {
                 .build();
         UUID uuid = UUID.randomUUID();
         SendLetterResponse sendLetterResponse = new SendLetterResponse(uuid);
-        when(sendLetterApiMock.sendLetter(anyString(), any(LetterWithPdfsRequest.class))).thenReturn(sendLetterResponse);
+        when(sendLetterApiMock.sendLetter(anyString(), any(LetterV3.class))).thenReturn(sendLetterResponse);
         SendLetterResponse response = bulkPrintService.sendToBulkPrint(callbackRequest, document, coverSheet);
 
-        verify(sendLetterApiMock).sendLetter(anyString(), any(LetterWithPdfsRequest.class));
+        verify(sendLetterApiMock).sendLetter(anyString(), any(LetterV3.class));
 
         assertNotNull(response);
         assertThat(response.letterId, is(uuid));
@@ -413,12 +414,12 @@ public class BulkPrintServiceTest {
 
         UUID uuid = UUID.randomUUID();
         SendLetterResponse sendLetterResponse = new SendLetterResponse(uuid);
-        when(sendLetterApiMock.sendLetter(anyString(), any(LetterWithPdfsRequest.class))).thenReturn(sendLetterResponse);
+        when(sendLetterApiMock.sendLetter(anyString(), any(LetterV3.class))).thenReturn(sendLetterResponse);
         when(eventValidationService.validateBulkPrintResponse(eq(uuid.toString()), any())).thenReturn(callbackResponse);
 
         String letterId = bulkPrintService.sendToBulkPrint(callbackRequest, document, coverSheet, true);
 
-        verify(sendLetterApiMock).sendLetter(anyString(), any(LetterWithPdfsRequest.class));
+        verify(sendLetterApiMock).sendLetter(anyString(), any(LetterV3.class));
 
         assertNotNull(letterId);
         assertThat(letterId, is(uuid.toString()));
@@ -464,7 +465,7 @@ public class BulkPrintServiceTest {
                 .errors(errors)
                 .build();
 
-        when(sendLetterApiMock.sendLetter(anyString(), any(LetterWithPdfsRequest.class))).thenReturn(null);
+        when(sendLetterApiMock.sendLetter(anyString(), any(LetterV3.class))).thenReturn(null);
         when(eventValidationService.validateBulkPrintResponse(any(), any())).thenReturn(callbackResponse);
         when(businessValidationMessageService.generateError(any(), any())).thenReturn(FieldErrorResponse.builder().build());
 

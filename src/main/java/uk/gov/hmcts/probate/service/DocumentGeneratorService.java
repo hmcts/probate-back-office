@@ -17,6 +17,7 @@ import uk.gov.hmcts.probate.service.docmosis.DocumentTemplateService;
 import uk.gov.hmcts.probate.service.docmosis.GenericMapperService;
 import uk.gov.hmcts.probate.service.docmosis.PreviewLetterService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
+import uk.gov.hmcts.probate.service.template.pdf.PlaceholderDecorator;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -42,6 +43,7 @@ import static uk.gov.hmcts.probate.model.DocumentType.WELSH_INTESTACY_GRANT_DRAF
 @RequiredArgsConstructor
 public class DocumentGeneratorService {
 
+    private final PlaceholderDecorator placeholderDecorator;
     private static final String GRANT_OF_PROBATE = "gop";
     private static final String ADMON_WILL = "admonWill";
     private static final String INTESTACY = "intestacy";
@@ -77,14 +79,17 @@ public class DocumentGeneratorService {
         images.put(SEAL_IMAGE, SEAL_FILE_PATH);
 
         Document document;
+
         if (status == DocumentStatus.FINAL) {
             log.info("Generating Grant document");
             Map<String, Object> placeholders = genericMapperService.addCaseDataWithImages(images, caseDetails);
+            placeholderDecorator.decorate(placeholders);
             placeholders.put("Signature", "image:base64:" + pdfManagementService.getDecodedSignature());
             document = generateAppropriateDocument(caseDetails, placeholders, status, issueType);
         } else {
             images.put(WATERMARK, WATERMARK_FILE_PATH);
             Map<String, Object> placeholders = genericMapperService.addCaseDataWithImages(images, caseDetails);
+            placeholderDecorator.decorate(placeholders);
             document = generateAppropriateDocument(caseDetails, placeholders, status, issueType);
         }
 
@@ -138,7 +143,7 @@ public class DocumentGeneratorService {
 
     public Document generateSoT(CallbackRequest callbackRequest) {
         Document statementOfTruth;
-
+        DocumentType documentType = DocumentType.STATEMENT_OF_TRUTH;
         switch (callbackRequest.getCaseDetails().getData().getApplicationType()) {
             case SOLICITOR:
                 log.info("Initiate call to generate SoT for case id: {}", callbackRequest.getCaseDetails().getId());
@@ -147,11 +152,14 @@ public class DocumentGeneratorService {
                 break;
             case PERSONAL:
             default:
-                log.info("Initiate call to generate SoT for case id: {}", callbackRequest.getCaseDetails().getId());
-                Map<String, Object> placeholders =
-                        genericMapperService.addCaseDataWithRegistryProperties(callbackRequest.getCaseDetails());
-                statementOfTruth = pdfManagementService.generateDocmosisDocumentAndUpload(placeholders,
-                        DocumentType.STATEMENT_OF_TRUTH);
+                CaseDetails caseDetails = callbackRequest.getCaseDetails();
+                log.info("Initiate call to generate SoT for case id: {}", caseDetails.getId());
+                Map<String, Object> placeholders = genericMapperService.addCaseDataWithRegistryProperties(caseDetails);
+                if(caseDetails.getData().isLanguagePreferenceWelsh()) {
+                    placeholderDecorator.decorate(placeholders);
+                    documentType = DocumentType.WELSH_STATEMENT_OF_TRUTH;
+                }
+                statementOfTruth = pdfManagementService.generateDocmosisDocumentAndUpload(placeholders, documentType);
                 log.info("Successful response for SoT for case id: {}", callbackRequest.getCaseDetails().getId());
                 break;
         }

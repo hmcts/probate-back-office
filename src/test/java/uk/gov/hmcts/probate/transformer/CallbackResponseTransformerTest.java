@@ -38,6 +38,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.model.exceptionrecord.CaseCreationDetails;
 import uk.gov.hmcts.probate.model.fee.FeeServiceResponse;
 import uk.gov.hmcts.probate.service.ExecutorsApplyingNotificationService;
+import uk.gov.hmcts.probate.service.SolicitorExecutorService;
 import uk.gov.hmcts.probate.service.StateChangeService;
 import uk.gov.hmcts.probate.transformer.assembly.AssembleLetterTransformer;
 import uk.gov.hmcts.reform.probate.model.IhtFormType;
@@ -67,9 +68,13 @@ import static java.util.Collections.emptyList;
 import static org.hamcrest.Matchers.comparesEqualTo;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
@@ -85,6 +90,9 @@ import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE;
 import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
 import static uk.gov.hmcts.probate.model.DocumentType.SOT_INFORMATION_REQUEST;
 import static uk.gov.hmcts.probate.model.DocumentType.STATEMENT_OF_TRUTH;
+import static uk.gov.hmcts.probate.model.DocumentType.WELSH_ADMON_WILL_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.WELSH_DIGITAL_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.WELSH_INTESTACY_GRANT;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CallbackResponseTransformerTest {
@@ -122,8 +130,12 @@ public class CallbackResponseTransformerTest {
     private static final String SOLICITOR_FIRM_POSTCODE = "SW13 6EA";
     private static final String SOLICITOR_FIRM_EMAIL = "sol@email.com";
     private static final String SOLICITOR_FIRM_PHONE = "0123456789";
-    private static final String SOLICITOR_SOT_NAME = "Andy Test";
+    private static final String SOLICITOR_SOT_FORENAME = "Andy Middlename";
+    private static final String SOLICITOR_SOT_SURNAME = "Test";
+    private static final String SOLICITOR_SOT_NAME = "Andy Middlename Test";
     private static final String SOLICITOR_SOT_JOB_TITLE = "Lawyer";
+    private static final String SOLICITOR_SOT_NOT_APPLYING_REASON = "Power reserved";
+    private static final String SOLICITOR_SOT_ID = "solicitor";
 
     private static final String DECEASED_FIRSTNAME = "Firstname";
     private static final String DECEASED_LASTNAME = "Lastname";
@@ -223,6 +235,7 @@ public class CallbackResponseTransformerTest {
 
     private static final String DECEASED_DIVORCED_IN_ENGLAND_OR_WALES = YES;
     private static final String PRIMARY_APPLICANT_ADOPTION_IN_ENGLAND_OR_WALES = NO;
+    private static final String PRIMARY_APPLICANT_RELATIONSHIP_TO_DECEASED = "partner";
     private static final String DECEASED_SPOUSE_NOT_APPLYING_REASON = "notApplyingReason";
     private static final String DECEASED_OTHER_CHILDREN = YES;
     private static final String ALL_DECEASED_CHILDREN_OVER_EIGHTEEN = YES;
@@ -297,11 +310,40 @@ public class CallbackResponseTransformerTest {
                             .notification(YES)
                             .build()));
 
+    private static final AdditionalExecutorApplying ADDITIONAL_EXECUTOR_APPLYING = AdditionalExecutorApplying.builder()
+            .applyingExecutorName(SOLICITOR_SOT_NAME)
+            .build();
+
+    private static final AdditionalExecutorNotApplying ADDITIONAL_EXECUTOR_NOT_APPLYING = AdditionalExecutorNotApplying.builder()
+            .notApplyingExecutorName(SOLICITOR_SOT_NAME)
+            .notApplyingExecutorReason(SOLICITOR_SOT_NOT_APPLYING_REASON)
+            .build();
+
+    private static final AdditionalExecutor SOL_ADDITIONAL_EXECUTOR_APPLYING = AdditionalExecutor.builder()
+            .additionalExecForenames(SOLICITOR_SOT_FORENAME)
+            .additionalExecLastname(SOLICITOR_SOT_SURNAME)
+            .additionalExecNameOnWill(NO)
+            .additionalApplying(YES)
+            .additionalExecAddress(SolsAddress.builder().addressLine1(SOLICITOR_FIRM_LINE1)
+                    .postCode(SOLICITOR_FIRM_POSTCODE).build())
+            .build();
+
+    private static final AdditionalExecutor SOL_ADDITIONAL_EXECUTOR_NOT_APPLYING = AdditionalExecutor.builder()
+            .additionalExecForenames(SOLICITOR_SOT_FORENAME)
+            .additionalExecLastname(SOLICITOR_SOT_SURNAME)
+            .additionalExecNameOnWill(NO)
+            .additionalApplying(NO)
+            .additionalExecReasonNotApplying(SOLICITOR_SOT_NOT_APPLYING_REASON)
+            .build();
+
     @InjectMocks
     private CallbackResponseTransformer underTest;
 
     @Mock
     private StateChangeService stateChangeServiceMock;
+
+    @Mock
+    private SolicitorExecutorService solicitorExecutorService;
 
     @Mock
     private CallbackRequest callbackRequestMock;
@@ -311,6 +353,21 @@ public class CallbackResponseTransformerTest {
 
     @Mock
     private CaseDetails caseDetailsMock;
+
+    @Mock
+    private CaseData caseDataMock;
+
+    @Mock
+    private List<CollectionMember<AdditionalExecutorApplying>> additionalExecutorsApplyingMock;
+
+    @Mock
+    private List<CollectionMember<AdditionalExecutorNotApplying>> additionalExecutorsNotApplyingMock;
+
+    @Mock
+    private List<CollectionMember<AdditionalExecutor>> solAdditionalExecutorsApplyingMock;
+
+    @Mock
+    private List<CollectionMember<AdditionalExecutor>> solAdditionalExecutorsNotApplyingMock;
 
     @Mock
     private AssembleLetterTransformer assembleLetterTransformer;
@@ -341,6 +398,8 @@ public class CallbackResponseTransformerTest {
                         .postCode(SOLICITOR_FIRM_POSTCODE).build())
                 .solsSolicitorEmail(SOLICITOR_FIRM_EMAIL)
                 .solsSolicitorPhoneNumber(SOLICITOR_FIRM_PHONE)
+                .solsSOTForenames(SOLICITOR_SOT_FORENAME)
+                .solsSOTSurname(SOLICITOR_SOT_SURNAME)
                 .solsSOTName(SOLICITOR_SOT_NAME)
                 .solsSOTJobTitle(SOLICITOR_SOT_JOB_TITLE)
                 .deceasedForenames(DECEASED_FIRSTNAME)
@@ -432,7 +491,7 @@ public class CallbackResponseTransformerTest {
                 .deceasedDateOfDeath(DOD)
                 .willHasCodicils(Boolean.TRUE)
                 .willNumberOfCodicils(Long.valueOf(NUM_CODICILS))
-                .ihtFormId(IhtFormType.IHT205)
+                .ihtFormId(IhtFormType.optionIHT205)
                 .ihtGrossValue(IHT_GROSS.longValue())
                 .ihtNetValue(IHT_NET.longValue())
                 .primaryApplicantForenames(APPLICANT_FORENAME)
@@ -539,6 +598,16 @@ public class CallbackResponseTransformerTest {
                 .paperForm(Boolean.TRUE)
                 .bulkScanCaseReference(BULK_SCAN_REFERENCE)
                 .build();
+
+        additionalExecutorsApplyingMock = new ArrayList<>();
+        additionalExecutorsNotApplyingMock = new ArrayList<>();
+        solAdditionalExecutorsApplyingMock = new ArrayList<>();
+        solAdditionalExecutorsNotApplyingMock = new ArrayList<>();
+
+        additionalExecutorsApplyingMock.add(new CollectionMember<>(SOLICITOR_SOT_ID, ADDITIONAL_EXECUTOR_APPLYING));
+        additionalExecutorsNotApplyingMock.add(new CollectionMember<>(SOLICITOR_SOT_ID, ADDITIONAL_EXECUTOR_NOT_APPLYING));
+        solAdditionalExecutorsApplyingMock.add(new CollectionMember<>(SOLICITOR_SOT_ID, SOL_ADDITIONAL_EXECUTOR_APPLYING));
+        solAdditionalExecutorsNotApplyingMock.add(new CollectionMember<>(SOLICITOR_SOT_ID, SOL_ADDITIONAL_EXECUTOR_NOT_APPLYING));
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
@@ -715,6 +784,60 @@ public class CallbackResponseTransformerTest {
         assertEquals(1, callbackResponse.getData().getProbateNotificationsGenerated().size());
         assertEquals(grantIssuedSentEmail, callbackResponse.getData().getProbateNotificationsGenerated().get(0).getValue());
 
+    }
+
+    @Test
+    public void shouldSetSendLetterIdAndPdfSizeInWelshDigitalGrant() {
+        Document grantDocument = Document.builder().documentType(WELSH_DIGITAL_GRANT).build();
+        Document grantIssuedSentEmail = Document.builder().documentType(SENT_EMAIL).build();
+
+        CallbackResponse callbackResponse = underTest.addDocuments(callbackRequestMock,
+                Arrays.asList(grantDocument, grantIssuedSentEmail), "abc123", "2");
+
+        assertCommon(callbackResponse);
+
+        assertEquals("2", callbackResponse.getData().getBulkPrintPdfSize());
+        assertEquals("abc123", callbackResponse.getData().getBulkPrintSendLetterId());
+        assertEquals(1, callbackResponse.getData().getProbateDocumentsGenerated().size());
+        assertEquals(grantDocument, callbackResponse.getData().getProbateDocumentsGenerated().get(0).getValue());
+        assertEquals(1, callbackResponse.getData().getProbateNotificationsGenerated().size());
+        assertEquals(grantIssuedSentEmail, callbackResponse.getData().getProbateNotificationsGenerated().get(0).getValue());
+    }
+
+    @Test
+    public void shouldSetSendLetterIdAndPdfSizeInWelshIntestacyGrant() {
+        Document grantDocument = Document.builder().documentType(WELSH_INTESTACY_GRANT).build();
+        Document grantIssuedSentEmail = Document.builder().documentType(SENT_EMAIL).build();
+
+        CallbackResponse callbackResponse = underTest.addDocuments(callbackRequestMock,
+                Arrays.asList(grantDocument, grantIssuedSentEmail), "abc123", "2");
+
+        assertCommon(callbackResponse);
+
+        assertEquals("2", callbackResponse.getData().getBulkPrintPdfSize());
+        assertEquals("abc123", callbackResponse.getData().getBulkPrintSendLetterId());
+        assertEquals(1, callbackResponse.getData().getProbateDocumentsGenerated().size());
+        assertEquals(grantDocument, callbackResponse.getData().getProbateDocumentsGenerated().get(0).getValue());
+        assertEquals(1, callbackResponse.getData().getProbateNotificationsGenerated().size());
+        assertEquals(grantIssuedSentEmail, callbackResponse.getData().getProbateNotificationsGenerated().get(0).getValue());
+    }
+
+    @Test
+    public void shouldSetSendLetterIdAndPdfSizeInWelshAdmonWillGrant() {
+        Document grantDocument = Document.builder().documentType(WELSH_ADMON_WILL_GRANT).build();
+        Document grantIssuedSentEmail = Document.builder().documentType(SENT_EMAIL).build();
+
+        CallbackResponse callbackResponse = underTest.addDocuments(callbackRequestMock,
+                Arrays.asList(grantDocument, grantIssuedSentEmail), "abc123", "2");
+
+        assertCommon(callbackResponse);
+
+        assertEquals("2", callbackResponse.getData().getBulkPrintPdfSize());
+        assertEquals("abc123", callbackResponse.getData().getBulkPrintSendLetterId());
+        assertEquals(1, callbackResponse.getData().getProbateDocumentsGenerated().size());
+        assertEquals(grantDocument, callbackResponse.getData().getProbateDocumentsGenerated().get(0).getValue());
+        assertEquals(1, callbackResponse.getData().getProbateNotificationsGenerated().size());
+        assertEquals(grantIssuedSentEmail, callbackResponse.getData().getProbateNotificationsGenerated().get(0).getValue());
     }
 
     @Test
@@ -1306,6 +1429,241 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
+    public void shouldTransformForSolIsMainApplicant() {
+        caseDataBuilder
+                .solsSolicitorIsExec(YES)
+                .solsSolicitorIsMainApplicant(YES)
+                .primaryApplicantIsApplying(NO)
+                .solsSolicitorIsApplying(NO)
+                .solsSolicitorNotApplyingReason(SOLICITOR_SOT_NOT_APPLYING_REASON)
+                .solsPrimaryExecutorNotApplyingReason(SOLICITOR_SOT_NOT_APPLYING_REASON)
+                .primaryApplicantAlias(PRIMARY_EXEC_ALIAS_NAMES)
+                .primaryApplicantSecondPhoneNumber(EXEC_PHONE)
+                .primaryApplicantRelationshipToDeceased(PRIMARY_APPLICANT_RELATIONSHIP_TO_DECEASED)
+                .additionalExecutorsApplying(additionalExecutorsApplyingMock)
+                .additionalExecutorsNotApplying(additionalExecutorsNotApplyingMock);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        when(solicitorExecutorService.removeSolicitorAsApplyingExecutor(anyList())).thenReturn(new ArrayList<>());
+        when(solicitorExecutorService.removeSolicitorAsNotApplyingExecutor(anyList())).thenReturn(new ArrayList<>());
+
+        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock);
+
+        assertTrue(callbackResponse.getData().getAdditionalExecutorsApplying().isEmpty());
+        assertTrue(callbackResponse.getData().getAdditionalExecutorsNotApplying().isEmpty());
+
+        assertEquals(YES, callbackResponse.getData().getPrimaryApplicantIsApplying());
+        assertEquals(YES, callbackResponse.getData().getSolsSolicitorIsApplying());
+
+        assertNull(callbackResponse.getData().getSolsSolicitorNotApplyingReason());
+        assertNull(callbackResponse.getData().getSolsPrimaryExecutorNotApplyingReason());
+        assertNull(callbackResponse.getData().getPrimaryApplicantAlias());
+        assertNull(callbackResponse.getData().getPrimaryApplicantSecondPhoneNumber());
+        assertNull(callbackResponse.getData().getPrimaryApplicantRelationshipToDeceased());
+    }
+
+    @Test
+    public void shouldTransformCaseForSolIsMainApplicant() {
+        caseDataBuilder
+                .applicationType(SOLICITOR)
+                .recordId(null)
+                .paperForm(NO)
+                .solsSolicitorIsExec(YES)
+                .solsSolicitorIsMainApplicant(YES)
+                .primaryApplicantIsApplying(NO)
+                .solsSolicitorIsApplying(NO)
+                .solsSolicitorNotApplyingReason(SOLICITOR_SOT_NOT_APPLYING_REASON)
+                .solsPrimaryExecutorNotApplyingReason(SOLICITOR_SOT_NOT_APPLYING_REASON)
+                .primaryApplicantAlias(PRIMARY_EXEC_ALIAS_NAMES)
+                .primaryApplicantSecondPhoneNumber(EXEC_PHONE)
+                .primaryApplicantRelationshipToDeceased(PRIMARY_APPLICANT_RELATIONSHIP_TO_DECEASED)
+                .additionalExecutorsApplying(additionalExecutorsApplyingMock)
+                .additionalExecutorsNotApplying(additionalExecutorsNotApplyingMock);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+
+        assertTrue(callbackResponse.getData().getAdditionalExecutorsApplying().isEmpty());
+        assertTrue(callbackResponse.getData().getAdditionalExecutorsNotApplying().isEmpty());
+
+        assertEquals(YES, callbackResponse.getData().getPrimaryApplicantIsApplying());
+        assertEquals(YES, callbackResponse.getData().getSolsSolicitorIsApplying());
+
+        assertNull(callbackResponse.getData().getSolsSolicitorNotApplyingReason());
+        assertNull(callbackResponse.getData().getSolsPrimaryExecutorNotApplyingReason());
+        assertNull(callbackResponse.getData().getPrimaryApplicantAlias());
+        assertNull(callbackResponse.getData().getPrimaryApplicantSecondPhoneNumber());
+        assertNull(callbackResponse.getData().getPrimaryApplicantRelationshipToDeceased());
+    }
+
+    @Test
+    public void shouldTransformForSolIsAdditionalExecApplyingUpdate() {
+        caseDataBuilder
+                .solsSolicitorIsExec(YES)
+                .solsSolicitorIsMainApplicant(NO)
+                .solsSolicitorIsApplying(YES)
+                .solsSolicitorNotApplyingReason(SOLICITOR_SOT_NOT_APPLYING_REASON)
+                .solsPrimaryExecutorNotApplyingReason(SOLICITOR_SOT_NOT_APPLYING_REASON)
+                .additionalExecutorsNotApplying(additionalExecutorsNotApplyingMock);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        when(solicitorExecutorService.updateSolicitorApplyingExecutor(any(CaseData.class), anyList()))
+                .thenReturn(additionalExecutorsApplyingMock);
+        when(solicitorExecutorService.removeSolicitorAsNotApplyingExecutor(anyList())).thenReturn(new ArrayList<>());
+
+        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock);
+
+        assertEquals(SOLICITOR_SOT_NAME, callbackResponse.getData().getAdditionalExecutorsApplying().get(0).getValue().getApplyingExecutorName());
+        assertEquals(SOLICITOR_SOT_ID, callbackResponse.getData().getAdditionalExecutorsApplying().get(0).getId());
+        assertNull(callbackResponse.getData().getSolsPrimaryExecutorNotApplyingReason());
+    }
+
+    @Test
+    public void shouldTransformForSolIsAdditionalExecNotApplyingUpdate() {
+        caseDataBuilder
+                .solsSolicitorIsExec(YES)
+                .solsSolicitorIsMainApplicant(NO)
+                .solsSolicitorIsApplying(NO)
+                .solsSolicitorNotApplyingReason(SOLICITOR_SOT_NOT_APPLYING_REASON)
+                .additionalExecutorsApplying(additionalExecutorsApplyingMock);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        when(solicitorExecutorService.updateSolicitorNotApplyingExecutor(any(CaseData.class), anyList()))
+                .thenReturn(additionalExecutorsNotApplyingMock);
+        when(solicitorExecutorService.removeSolicitorAsApplyingExecutor(anyList())).thenReturn(new ArrayList<>());
+
+        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock);
+
+        assertTrue(callbackResponse.getData().getAdditionalExecutorsApplying().isEmpty());
+        assertEquals(SOLICITOR_SOT_NAME, callbackResponse.getData().getAdditionalExecutorsNotApplying().get(0).getValue().getNotApplyingExecutorName());
+        assertEquals(SOLICITOR_SOT_ID, callbackResponse.getData().getAdditionalExecutorsNotApplying().get(0).getId());
+        assertEquals(SOLICITOR_SOT_NOT_APPLYING_REASON, callbackResponse.getData().getAdditionalExecutorsNotApplying().get(0).getValue().getNotApplyingExecutorReason());
+    }
+
+    @Test
+    public void shouldTransformCaseForSolIsAdditionalExecApplyingUpdate() {
+        caseDataBuilder
+                .applicationType(SOLICITOR)
+                .recordId(null)
+                .paperForm(NO)
+                .solsSolicitorIsExec(YES)
+                .solsSolicitorIsMainApplicant(NO)
+                .solsSolicitorIsApplying(YES)
+                .solsSolicitorNotApplyingReason(SOLICITOR_SOT_NOT_APPLYING_REASON)
+                .solsPrimaryExecutorNotApplyingReason(SOLICITOR_SOT_NOT_APPLYING_REASON)
+                .additionalExecutorsNotApplying(additionalExecutorsNotApplyingMock);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        when(solicitorExecutorService.updateSolicitorApplyingExecutor(any(CaseData.class), anyList()))
+                .thenReturn(additionalExecutorsApplyingMock);
+        when(solicitorExecutorService.removeSolicitorAsNotApplyingExecutor(anyList())).thenReturn(new ArrayList<>());
+
+        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock);
+
+        assertTrue(callbackResponse.getData().getAdditionalExecutorsNotApplying().isEmpty());
+        assertEquals(SOLICITOR_SOT_NAME, callbackResponse.getData().getAdditionalExecutorsApplying().get(0).getValue().getApplyingExecutorName());
+        assertEquals(SOLICITOR_SOT_ID, callbackResponse.getData().getAdditionalExecutorsApplying().get(0).getId());
+    }
+
+    @Test
+    public void shouldTransformCaseForSolIsAdditionalExecNotApplyingUpdate() {
+        caseDataBuilder
+                .applicationType(SOLICITOR)
+                .recordId(null)
+                .paperForm(NO)
+                .solsSolicitorIsExec(YES)
+                .solsSolicitorIsMainApplicant(NO)
+                .solsSolicitorIsApplying(NO)
+                .solsSolicitorNotApplyingReason(SOLICITOR_SOT_NOT_APPLYING_REASON)
+                .additionalExecutorsApplying(additionalExecutorsApplyingMock);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        when(solicitorExecutorService.updateSolicitorNotApplyingExecutor(any(CaseData.class), anyList()))
+                .thenReturn(additionalExecutorsNotApplyingMock);
+        when(solicitorExecutorService.removeSolicitorAsApplyingExecutor(anyList())).thenReturn(new ArrayList<>());
+
+        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock);
+
+        assertTrue(callbackResponse.getData().getAdditionalExecutorsApplying().isEmpty());
+        assertEquals(SOLICITOR_SOT_NAME, callbackResponse.getData().getAdditionalExecutorsNotApplying().get(0).getValue().getNotApplyingExecutorName());
+        assertEquals(SOLICITOR_SOT_ID, callbackResponse.getData().getAdditionalExecutorsNotApplying().get(0).getId());
+        assertEquals(SOLICITOR_SOT_NOT_APPLYING_REASON, callbackResponse.getData().getAdditionalExecutorsNotApplying().get(0).getValue().getNotApplyingExecutorReason());
+    }
+
+    @Test
+    public void shouldTransformForSolIsChangedToNotNamedOnWill() {
+        caseDataBuilder
+                .solsSolicitorIsExec(NO)
+                .solsSolicitorIsMainApplicant(NO)
+                .solsSolicitorIsApplying(NO)
+                .solsSolicitorNotApplyingReason(SOLICITOR_SOT_NOT_APPLYING_REASON)
+                .additionalExecutorsApplying(additionalExecutorsApplyingMock)
+                .additionalExecutorsNotApplying(additionalExecutorsNotApplyingMock);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock);
+
+        assertTrue(callbackResponse.getData().getAdditionalExecutorsApplying().isEmpty());
+        assertTrue(callbackResponse.getData().getAdditionalExecutorsNotApplying().isEmpty());
+        assertNull(callbackResponse.getData().getSolsSolicitorIsMainApplicant());
+        assertNull(callbackResponse.getData().getSolsSolicitorIsApplying());
+        assertNull(callbackResponse.getData().getSolsSolicitorNotApplyingReason());
+    }
+
+    @Test
+    public void shouldTransformCaseForSolIsChangedToNotNamedOnWill() {
+        caseDataBuilder
+                .applicationType(SOLICITOR)
+                .recordId(null)
+                .paperForm(NO)
+                .solsSolicitorIsExec(NO)
+                .solsSolicitorIsMainApplicant(NO)
+                .solsSolicitorIsApplying(NO)
+                .solsSolicitorNotApplyingReason(SOLICITOR_SOT_NOT_APPLYING_REASON)
+                .additionalExecutorsApplying(additionalExecutorsApplyingMock)
+                .additionalExecutorsNotApplying(additionalExecutorsNotApplyingMock);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock);
+
+        assertTrue(callbackResponse.getData().getAdditionalExecutorsApplying().isEmpty());
+        assertTrue(callbackResponse.getData().getAdditionalExecutorsNotApplying().isEmpty());
+        assertNull(callbackResponse.getData().getSolsSolicitorIsMainApplicant());
+        assertNull(callbackResponse.getData().getSolsSolicitorIsApplying());
+        assertNull(callbackResponse.getData().getSolsSolicitorNotApplyingReason());
+    }
+
+    @Test
+    public void shouldClearAdditionalExecListsWhenSolsAdditionalExecListNotEmpty() {
+        caseDataBuilder
+                .solsAdditionalExecutorList(solAdditionalExecutorsApplyingMock)
+                .additionalExecutorsApplying(additionalExecutorsApplyingMock)
+                .additionalExecutorsNotApplying(additionalExecutorsNotApplyingMock);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock);
+
+        assertTrue(callbackResponse.getData().getAdditionalExecutorsApplying().isEmpty());
+        assertTrue(callbackResponse.getData().getAdditionalExecutorsNotApplying().isEmpty());
+        assertFalse(callbackResponse.getData().getSolsAdditionalExecutorList().isEmpty());
+    }
+
+    @Test
     public void shouldTransformCaseForSolsExecAliasIsNull() {
         caseDataBuilder.applicationType(SOLICITOR);
         caseDataBuilder.recordId(null);
@@ -1319,6 +1677,73 @@ public class CallbackResponseTransformerTest {
 
         assertEquals("Alias names", callbackResponse.getData().getPrimaryApplicantAlias());
         assertEquals(null, callbackResponse.getData().getSolsExecutorAliasNames());
+    }
+
+    @Test
+    public void shouldTransformForSolExecMainApplicantInSolicitorJourney() {
+        caseDataBuilder
+                .solsWillType(WILL_TYPE_PROBATE)
+                .solsSolicitorIsExec(YES)
+                .solsSolicitorIsMainApplicant(YES);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock);
+
+        assertTrue(callbackResponse.getData().getAdditionalExecutorsApplying().isEmpty());
+        assertTrue(callbackResponse.getData().getAdditionalExecutorsNotApplying().isEmpty());
+        assertEquals(YES, callbackResponse.getData().getPrimaryApplicantIsApplying());
+        assertEquals(YES, callbackResponse.getData().getSolsSolicitorIsApplying());
+        assertNotEquals(YES, callbackResponse.getData().getOtherExecutorExists());
+        assertNull(callbackResponse.getData().getSolsSolicitorNotApplyingReason());
+        assertNull(callbackResponse.getData().getSolsPrimaryExecutorNotApplyingReason());
+    }
+
+    @Test
+    public void shouldTransformForSolApplyingExecInSolicitorJourney() {
+        caseDataBuilder
+                .solsSOTForenames(SOLICITOR_SOT_FORENAME)
+                .solsSOTSurname(SOLICITOR_SOT_SURNAME)
+                .solsSolicitorAddress(SolsAddress.builder().addressLine1(SOLICITOR_FIRM_LINE1)
+                        .postCode(SOLICITOR_FIRM_POSTCODE).build())
+                .solsWillType(WILL_TYPE_PROBATE)
+                .solsSolicitorIsExec(YES)
+                .solsSolicitorIsMainApplicant(NO)
+                .solsSolicitorIsApplying(YES);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        when(solicitorExecutorService.addSolicitorApplyingExecutor(caseDataBuilder.build(), new ArrayList<>()))
+                .thenReturn(solAdditionalExecutorsApplyingMock);
+
+        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock);
+
+        assertFalse(callbackResponse.getData().getSolsAdditionalExecutorList().isEmpty());
+        assertEquals(YES, callbackResponse.getData().getOtherExecutorExists());
+        assertNull(callbackResponse.getData().getSolsSolicitorNotApplyingReason());
+    }
+
+    @Test
+    public void shouldTransformForSolNotApplyingExecInSolicitorJourney() {
+        caseDataBuilder
+                .solsSOTForenames(SOLICITOR_SOT_FORENAME)
+                .solsSOTSurname(SOLICITOR_SOT_SURNAME)
+                .solsSolicitorNotApplyingReason(SOLICITOR_SOT_NOT_APPLYING_REASON)
+                .solsWillType(WILL_TYPE_PROBATE)
+                .solsSolicitorIsExec(YES)
+                .solsSolicitorIsMainApplicant(NO)
+                .solsSolicitorIsApplying(NO);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        when(solicitorExecutorService.addSolicitorNotApplyingExecutor(caseDataBuilder.build(), new ArrayList<>()))
+                .thenReturn(solAdditionalExecutorsNotApplyingMock);
+
+        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock);
+
+        assertFalse(callbackResponse.getData().getSolsAdditionalExecutorList().isEmpty());
+        assertEquals(YES, callbackResponse.getData().getOtherExecutorExists());
     }
 
     @Test
@@ -1433,6 +1858,8 @@ public class CallbackResponseTransformerTest {
                 .attorneyOnBehalfOfNameAndAddress(attorneyList)
                 .adopted(YES)
                 .adoptiveRelatives(adoptedRelatives)
+                .solsEntrustingDoc(null)
+                .solsDomicilityCert(null)
                 .domicilityIHTCert(YES)
                 .entitledToApply(YES)
                 .entitledToApplyOther(YES)
@@ -1551,6 +1978,8 @@ public class CallbackResponseTransformerTest {
                 .attorneyOnBehalfOfNameAndAddress(attorneyList)
                 .adopted(YES)
                 .adoptiveRelatives(adoptedRelatives)
+                .solsEntrustingDoc(null)
+                .solsDomicilityCert(null)
                 .domicilityIHTCert(YES)
                 .entitledToApply(YES)
                 .entitledToApplyOther(YES)
@@ -2123,7 +2552,7 @@ public class CallbackResponseTransformerTest {
         assertEquals(SOLICITOR_FIRM_POSTCODE, callbackResponse.getData().getSolsSolicitorAddress().getPostCode());
         assertEquals(SOLICITOR_FIRM_EMAIL, callbackResponse.getData().getSolsSolicitorEmail());
         assertEquals(SOLICITOR_FIRM_PHONE, callbackResponse.getData().getSolsSolicitorPhoneNumber());
-        assertEquals(SOLICITOR_SOT_NAME, callbackResponse.getData().getSolsSOTName());
+        assertEquals(SOLICITOR_SOT_FORENAME + " " + SOLICITOR_SOT_SURNAME, callbackResponse.getData().getSolsSOTName());
         assertEquals(SOLICITOR_SOT_JOB_TITLE, callbackResponse.getData().getSolsSOTJobTitle());
         assertEquals(APP_REF, callbackResponse.getData().getSolsSolicitorAppReference());
 
@@ -2301,6 +2730,8 @@ public class CallbackResponseTransformerTest {
         assertEquals(YES, callbackResponse.getData().getForeignAsset());
         assertEquals("123", callbackResponse.getData().getForeignAssetEstateValue());
         assertEquals(DECEASED_DATE_OF_DEATH_TYPE, callbackResponse.getData().getDateOfDeathType());
+        assertNull(callbackResponse.getData().getSolsEntrustingDoc());
+        assertNull(callbackResponse.getData().getSolsDomicilityCert());
 
         assertEquals(DECEASED_DIVORCED_IN_ENGLAND_OR_WALES, callbackResponse.getData().getDeceasedDivorcedInEnglandOrWales());
         assertEquals(PRIMARY_APPLICANT_ADOPTION_IN_ENGLAND_OR_WALES,
@@ -2340,7 +2771,7 @@ public class CallbackResponseTransformerTest {
         assertEquals("2017-12-31", grantOfRepresentationData.getDeceasedDateOfDeath().toString());
         assertEquals(Long.valueOf(NUM_CODICILS), grantOfRepresentationData.getWillNumberOfCodicils());
 
-        assertEquals(IHT_FORM_ID, grantOfRepresentationData.getIhtFormId().name());
+        assertEquals(IHT_FORM_ID, grantOfRepresentationData.getIhtFormId().getDescription());
         assertThat(Long.valueOf("10000"), comparesEqualTo(grantOfRepresentationData.getIhtGrossValue()));
         assertThat(Long.valueOf("9000"), comparesEqualTo(grantOfRepresentationData.getIhtNetValue()));
 

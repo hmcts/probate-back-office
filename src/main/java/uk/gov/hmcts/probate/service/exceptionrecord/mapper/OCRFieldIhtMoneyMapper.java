@@ -50,15 +50,15 @@ public class OCRFieldIhtMoneyMapper {
         } else {
             switch (ihtFormId.toUpperCase().trim()) {
                 case FORM_IHT205:
-                    return IhtFormType.IHT205;
+                    return IhtFormType.optionIHT205;
                 case FORM_IHT207:
-                    return IhtFormType.IHT207;
+                    return IhtFormType.optionIHT207;
                 case FORM_IHT400421:
-                    return IhtFormType.IHT400421;
+                    return IhtFormType.optionIHT400421;
                 case FORM_IHT421:
-                    return IhtFormType.IHT400421;
+                    return IhtFormType.optionIHT400421;
                 case FORM_IHT400:
-                    return IhtFormType.IHT400421;
+                    return IhtFormType.optionIHT400421;
                 default:
                     String errorMessage = "Form type IHT205, IHT207 or IHT400421 expected but got '" + ihtFormId + "'";
                     log.error(errorMessage);

@@ -71,6 +71,12 @@ public enum DocumentType {
     @JsonProperty("caveatStopped")
     CAVEAT_STOPPED("caveatStopped"),
 
+    @JsonProperty("caveatExtended")
+    CAVEAT_EXTENDED("caveatExtended"),
+
+    @JsonProperty("caveatWithdrawn")
+    CAVEAT_WITHDRAWN("caveatWithdrawn"),
+
     @JsonProperty("grantCoversheet")
     GRANT_COVERSHEET("grantCoversheet"),
 
@@ -97,6 +103,9 @@ public enum DocumentType {
 
     @JsonProperty("statementOfTruth")
     STATEMENT_OF_TRUTH("statementOfTruth"),
+
+    @JsonProperty("welshStatementOfTruth")
+    WELSH_STATEMENT_OF_TRUTH("welshStatementOfTruth"),
 
     @JsonProperty("assembledLetter")
     ASSEMBLED_LETTER("assembledLetter"),

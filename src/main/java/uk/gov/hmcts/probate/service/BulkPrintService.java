@@ -14,9 +14,9 @@ import uk.gov.hmcts.probate.service.client.DocumentStoreClient;
 import uk.gov.hmcts.probate.transformer.DocumentTransformer;
 import uk.gov.hmcts.probate.validator.BulkPrintValidationRule;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
-import uk.gov.hmcts.reform.sendletter.api.LetterWithPdfsRequest;
 import uk.gov.hmcts.reform.sendletter.api.SendLetterApi;
 import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
+import uk.gov.hmcts.reform.sendletter.api.model.v3.LetterV3;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -26,7 +26,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.LongStream;
 
 import static uk.gov.hmcts.probate.model.Constants.BUSINESS_ERROR;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT;
@@ -64,11 +63,11 @@ public class BulkPrintService {
 
             additionalData = Collections.unmodifiableMap(additionalData);
 
-            List<String> pdfs = arrangePdfDocumentsForBulkPrinting(callbackRequest, grantDocument, coverSheet, authHeaderValue);
+            List<uk.gov.hmcts.reform.sendletter.api.model.v3.Document> pdfs = arrangePdfDocumentsForBulkPrinting(callbackRequest, grantDocument, coverSheet, authHeaderValue);
             getDocumentSize(pdfs, callbackRequest);
 
             sendLetterResponse = sendLetterApi.sendLetter(BEARER + authHeaderValue,
-                    new LetterWithPdfsRequest(pdfs, XEROX_TYPE_PARAMETER, additionalData));
+                    new LetterV3(XEROX_TYPE_PARAMETER, pdfs, additionalData));
             log.info("Letter service produced the following letter Id {} for a pdf size {} for the case id {}",
                     sendLetterResponse.letterId, pdfs.size(), callbackRequest.getCaseDetails().getId());
 
@@ -95,10 +94,10 @@ public class BulkPrintService {
 
             additionalData = Collections.unmodifiableMap(additionalData);
 
-            List<String> pdfs = arrangePdfDocumentsForBulkPrinting(caveatCallbackRequest, grantDocument, coverSheet, authHeaderValue);
+            List<uk.gov.hmcts.reform.sendletter.api.model.v3.Document> pdfs = arrangePdfDocumentsForBulkPrinting(caveatCallbackRequest, grantDocument, coverSheet, authHeaderValue);
 
             sendLetterResponse = sendLetterApi.sendLetter(BEARER + authHeaderValue,
-                    new LetterWithPdfsRequest(pdfs, XEROX_TYPE_PARAMETER, additionalData));
+                    new LetterV3(XEROX_TYPE_PARAMETER, pdfs, additionalData));
             log.info("Letter service produced the following letter Id {} for a pdf size {} for the case id {}",
                     sendLetterResponse.letterId, pdfs.size(), caveatCallbackRequest.getCaseDetails().getId());
 
@@ -158,16 +157,14 @@ public class BulkPrintService {
         return response;
     }
 
-    private List<String> arrangePdfDocumentsForBulkPrinting(CallbackRequest callbackRequest,
+    private List<uk.gov.hmcts.reform.sendletter.api.model.v3.Document> arrangePdfDocumentsForBulkPrinting(CallbackRequest callbackRequest,
                                                             Document grantDocument,
                                                             Document coverSheetDocument,
                                                             String authHeaderValue) throws IOException {
-        List<String> documents = new LinkedList<>();
+        Long extraCopies = 1L;
+        List<uk.gov.hmcts.reform.sendletter.api.model.v3.Document> documents = new LinkedList<>();
         String encodedCoverSheet = getPdfAsBase64EncodedString(coverSheetDocument, authHeaderValue, callbackRequest);
         String encodedGrantDocument = getPdfAsBase64EncodedString(grantDocument, authHeaderValue, callbackRequest);
-        //Layer documents as cover letter first, grant, and extra copies of grant to PA.
-        documents.add(encodedCoverSheet);
-        documents.add(encodedGrantDocument);
 
         if (documentTransformer.hasDocumentWithType(Arrays.asList(grantDocument), DIGITAL_GRANT)
                 || documentTransformer.hasDocumentWithType(Arrays.asList(grantDocument), ADMON_WILL_GRANT)
@@ -175,39 +172,45 @@ public class BulkPrintService {
                 || documentTransformer.hasDocumentWithType(Arrays.asList(grantDocument), INTESTACY_GRANT_REISSUE)
                 || documentTransformer.hasDocumentWithType(Arrays.asList(grantDocument), ADMON_WILL_GRANT_REISSUE)
                 || documentTransformer.hasDocumentWithType(Arrays.asList(grantDocument), DIGITAL_GRANT_REISSUE)) {
-            documents = addAdditionalCopiesForGrants(callbackRequest, encodedGrantDocument, documents);
+            extraCopies = addAdditionalCopiesForGrants(callbackRequest);
         }
+
+        //Layer documents as cover letter first, grant, and extra copies of grant to PA.
+        uk.gov.hmcts.reform.sendletter.api.model.v3.Document coversheetDocument = new uk.gov.hmcts.reform.sendletter.api.model.v3.Document(encodedCoverSheet, 1);
+        uk.gov.hmcts.reform.sendletter.api.model.v3.Document document = new uk.gov.hmcts.reform.sendletter.api.model.v3.Document(encodedGrantDocument, extraCopies.intValue());
+
+        documents.add(coversheetDocument);
+        documents.add(document);
 
         return documents;
     }
 
-    private List<String> arrangePdfDocumentsForBulkPrinting(CaveatCallbackRequest caveatCallbackRequest,
+    private List<uk.gov.hmcts.reform.sendletter.api.model.v3.Document> arrangePdfDocumentsForBulkPrinting(CaveatCallbackRequest caveatCallbackRequest,
                                                             Document grantDocument,
                                                             Document coverSheetDocument,
                                                             String authHeaderValue) throws IOException {
-        List<String> documents = new LinkedList<>();
+        List<uk.gov.hmcts.reform.sendletter.api.model.v3.Document> documents = new LinkedList<>();
         String encodedCoverSheet = getPdfAsBase64EncodedString(coverSheetDocument, authHeaderValue, caveatCallbackRequest);
         String encodedGrantDocument = getPdfAsBase64EncodedString(grantDocument, authHeaderValue, caveatCallbackRequest);
 
+        uk.gov.hmcts.reform.sendletter.api.model.v3.Document coversheetDocument = new uk.gov.hmcts.reform.sendletter.api.model.v3.Document(encodedCoverSheet, 1);
+        uk.gov.hmcts.reform.sendletter.api.model.v3.Document document = new uk.gov.hmcts.reform.sendletter.api.model.v3.Document(encodedGrantDocument, 1);
+
         //Layer documents as cover letter first, grant, and extra copies of grant to PA.
-        documents.add(encodedCoverSheet);
-        documents.add(encodedGrantDocument);
+        documents.add(coversheetDocument);
+        documents.add(document);
         return documents;
     }
 
-    private List<String> addAdditionalCopiesForGrants(CallbackRequest callbackRequest,
-                                                      String encodedGrantDocument, List<String> documents) {
-        Long extraCopiesOfGrant = 0L;
+    private Long addAdditionalCopiesForGrants(CallbackRequest callbackRequest) {
+        Long extraCopiesOfGrant = 1L;
         if (callbackRequest.getCaseDetails().getData().getExtraCopiesOfGrant() != null) {
-            extraCopiesOfGrant = callbackRequest.getCaseDetails().getData().getExtraCopiesOfGrant();
+            extraCopiesOfGrant = callbackRequest.getCaseDetails().getData().getExtraCopiesOfGrant() + 1;
         }
-        LongStream.range(1, extraCopiesOfGrant + 1)
-                .forEach(i -> documents.add(encodedGrantDocument));
-
-        return documents;
+        return extraCopiesOfGrant;
     }
 
-    private List<String> getDocumentSize(List<String> documents, CallbackRequest callbackRequest) throws IOException {
+    private List<uk.gov.hmcts.reform.sendletter.api.model.v3.Document> getDocumentSize(List<uk.gov.hmcts.reform.sendletter.api.model.v3.Document> documents, CallbackRequest callbackRequest) {
         log.info(CASE_ID + callbackRequest.getCaseDetails().getId().toString() + "number of documents is: " + documents.size());
         return documents;
     }

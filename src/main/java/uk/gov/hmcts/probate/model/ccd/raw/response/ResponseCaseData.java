@@ -52,9 +52,15 @@ public class ResponseCaseData {
     private final String solsSolicitorEmail;
     private final String solsSolicitorPhoneNumber;
     private final String solsSOTName;
+    private final String solsSOTForenames;
+    private final String solsSOTSurname;
     private final String solsSOTJobTitle;
     private final String solsSolicitorAppReference;
     private final String ihtFormId;
+    private final String solsSolicitorIsExec;
+    private final String solsSolicitorIsMainApplicant;
+    private final String solsSolicitorIsApplying;
+    private final String solsSolicitorNotApplyingReason;
     private final String solsWillType;
     private final String solsApplicantRelationshipToDeceased;
     private final String solsSpouseOrCivilRenouncing;
@@ -172,6 +178,8 @@ public class ResponseCaseData {
     private final String domicilityCountry;
     private final List<CollectionMember<EstateItem>> ukEstate;
     private final String domicilityIHTCert;
+    private final String solsEntrustingDoc;
+    private final String solsDomicilityCert;
     private final String willDatedBeforeApril;
     private final String deceasedEnterMarriageOrCP;
     private final String deceasedMaritalStatus;
@@ -277,6 +285,7 @@ public class ResponseCaseData {
     private final String anyDeceasedGrandChildrenUnderEighteen;
     private final String deceasedAnyChildren;
     private final String deceasedHasAssetsOutsideUK;
+    private final String solicitorIsMainApplicant;
 
     private final String boStopDetailsDeclarationParagraph;
     private final String boEmailRequestInfoNotificationRequested;
