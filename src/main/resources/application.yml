@@ -206,6 +206,7 @@ notifications:
           caveatRaisedSols: "022966cb-e4da-4996-a831-02c2310ab4f8"
           requestInformation: "b2978c65-5974-416a-bc64-fb0ee083dc7e"
           redeclarationSot: "bcd9e4cc-db0c-4810-8172-8bcb2277b775"
+          grantIssuedIntestacy: "95aa541b-e55e-4d7c-a6f5-810b5f03adba"
       welsh:
         personal:
           documentReceived: "1c847dd8-212e-425a-ad83-1bbc48d89428"
@@ -235,6 +236,8 @@ notifications:
           caveatRaisedSols: "022966cb-e4da-4996-a831-02c2310ab4f8"
           requestInformation: "b2978c65-5974-416a-bc64-fb0ee083dc7e"
           redeclarationSot: "bcd9e4cc-db0c-4810-8172-8bcb2277b775"
+          grantIssuedIntestacy: "95aa541b-e55e-4d7c-a6f5-810b5f03adba"
+
 
 documents:
   templates:
