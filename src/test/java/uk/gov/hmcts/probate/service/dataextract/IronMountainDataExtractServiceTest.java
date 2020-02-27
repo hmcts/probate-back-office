@@ -80,16 +80,16 @@ public class IronMountainDataExtractServiceTest {
     }
 
     @Test
-    public void shouldNotExtractWhenNoCasesFound() {
+    public void shouldExtractWhenNoCasesFound() {
         List<ReturnedCaseDetails> returnedCases = new ImmutableList.Builder<ReturnedCaseDetails>()
             .build();
         when(caseQueryService.findCasesWithDatedDocument(any())).thenReturn(returnedCases);
 
         ironMountainDataExtractService.performIronMountainExtractForDate("2000-12-31");
 
-        verify(fileTransferService, times(0)).uploadFile(any());
-        verify(fileExtractDateFormatter, times(0)).formatFileDate();
-        verify(ironMountainFileService, times(0)).createIronMountainFile(any(), anyString());
+        verify(fileTransferService, times(1)).uploadFile(any());
+        verify(fileExtractDateFormatter, times(1)).formatFileDate();
+        verify(ironMountainFileService, times(1)).createIronMountainFile(any(), anyString());
     }
 
     @Test(expected = ClientException.class)

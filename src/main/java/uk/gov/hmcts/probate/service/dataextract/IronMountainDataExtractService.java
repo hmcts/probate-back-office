@@ -28,15 +28,13 @@ public class IronMountainDataExtractService {
         List<ReturnedCaseDetails> cases = caseQueryService.findCasesWithDatedDocument(date);
         log.info("Cases found for Iron Mountain: {}", cases.size());
 
-        if (!cases.isEmpty()) {
-            log.info("preparing for Iron Mountain file upload");
-            int response = fileTransferService.uploadFile(ironMountainFileService.createIronMountainFile(
-                cases, fileExtractDateFormatter.formatFileDate() + "grant.txt"));
+        log.info("preparing for Iron Mountain file upload");
+        int response = fileTransferService.uploadFile(ironMountainFileService.createIronMountainFile(
+            cases, fileExtractDateFormatter.formatFileDate() + "grant.txt"));
 
-            if (response != 201) {
-                log.error("Failed to upload Iron Mountain file for: " + date);
-                throw new ClientException(HttpStatus.SERVICE_UNAVAILABLE.value(), "Failed to upload Iron Mountain file for date: " + date);
-            }
+        if (response != 201) {
+            log.error("Failed to upload Iron Mountain file for: " + date);
+            throw new ClientException(HttpStatus.SERVICE_UNAVAILABLE.value(), "Failed to upload Iron Mountain file for date: " + date);
         }
     }
 

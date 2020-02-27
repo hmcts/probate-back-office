@@ -26,14 +26,13 @@ public class HmrcDataExtractService {
     public void performHmrcExtractFromDate(String fromDate, String toDate) {
         if (fromDate.equals(toDate)) {
             performHmrcExtract(fromDate);
-        }
-        log.info("HMRC data extract initiated for dates from-to: {}-{}", fromDate, toDate);
+        } else {
+            log.info("HMRC data extract initiated for dates from-to: {}-{}", fromDate, toDate);
 
-        List<ReturnedCaseDetails> casesFound = caseQueryService.findCaseStateWithinTimeFrame(fromDate, toDate);
-        log.info("Cases found for HMRC data extract initiated for dates from-to: {}-{}, cases found: {}", 
-            fromDate, toDate, casesFound.size());
+            List<ReturnedCaseDetails> casesFound = caseQueryService.findCaseStateWithinTimeFrame(fromDate, toDate);
+            log.info("Cases found for HMRC data extract initiated for dates from-to: {}-{}, cases found: {}",
+                fromDate, toDate, casesFound.size());
 
-        if (!casesFound.isEmpty()) {
             uploadHmrcFile(fromDate, toDate, casesFound);
         }
     }
@@ -44,9 +43,7 @@ public class HmrcDataExtractService {
         List<ReturnedCaseDetails> casesFound = caseQueryService.findCasesWithDatedDocument(date);
         log.info("Cases found for HMRC data extract initiated for date: {}, cases found: {}", date, casesFound.size());
 
-        if (!casesFound.isEmpty()) {
-            uploadHmrcFile(null, date, casesFound);
-        }
+          uploadHmrcFile(null, date, casesFound);
     }
 
     private void uploadHmrcFile(String fromDate, String date, List<ReturnedCaseDetails> casesFound) {

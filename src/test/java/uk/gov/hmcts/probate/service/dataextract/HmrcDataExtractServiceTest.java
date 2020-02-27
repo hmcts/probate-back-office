@@ -82,16 +82,16 @@ public class HmrcDataExtractServiceTest {
     }
 
     @Test
-    public void shouldNotExtractWhenNoCasesFound() {
+    public void shouldExtractWhenNoCasesFound() {
         List<ReturnedCaseDetails> returnedCases = new ImmutableList.Builder<ReturnedCaseDetails>()
             .build();
         when(caseQueryService.findCasesWithDatedDocument(any())).thenReturn(returnedCases);
         
         hmrcDataExtractService.performHmrcExtractFromDate("2000-12-31", "2000-12-31");
 
-        verify(fileTransferService, times(0)).uploadFile(any());
-        verify(fileExtractDateFormatter, times(0)).formatFileDate();
-        verify(hmrcFileService, times(0)).createHmrcFile(any(), anyString());
+        verify(fileTransferService, times(1)).uploadFile(any());
+        verify(fileExtractDateFormatter, times(1)).formatFileDate();
+        verify(hmrcFileService, times(1)).createHmrcFile(any(), anyString());
     }
 
     @Test
@@ -108,16 +108,16 @@ public class HmrcDataExtractServiceTest {
     }
 
     @Test
-    public void shouldNotExtractForNoCasesFoundToFrom() {
+    public void shouldExtractForNoCasesFoundToFrom() {
         List<ReturnedCaseDetails> returnedCases = new ImmutableList.Builder<ReturnedCaseDetails>()
             .build();
         when(caseQueryService.findCasesWithDatedDocument(any())).thenReturn(returnedCases);
 
         hmrcDataExtractService.performHmrcExtractFromDate("2000-10-30", "2000-12-31");
 
-        verify(fileTransferService, times(0)).uploadFile(any());
-        verify(fileExtractDateFormatter, times(0)).formatFileDate();
-        verify(hmrcFileService, times(0)).createHmrcFile(any(), anyString());
+        verify(fileTransferService, times(1)).uploadFile(any());
+        verify(fileExtractDateFormatter, times(1)).formatFileDate();
+        verify(hmrcFileService, times(1)).createHmrcFile(any(), anyString());
     }
 
     @Test(expected = ClientException.class)
