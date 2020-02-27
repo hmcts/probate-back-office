@@ -152,7 +152,8 @@ public class DocumentController {
         registryDetailsService.getRegistryDetails(caseDetails);
         CallbackResponse callbackResponse = CallbackResponse.builder().errors(new ArrayList<>()).build();
 
-        Document digitalGrantDocument = documentGeneratorService.getDocument(callbackRequest, DocumentStatus.FINAL, DocumentIssueType.GRANT);
+        Document digitalGrantDocument = documentGeneratorService.getDocument(callbackRequest, DocumentStatus.FINAL,
+                DocumentIssueType.GRANT);
 
         Document coverSheet = pdfManagementService.generateAndUpload(callbackRequest, DocumentType.GRANT_COVER);
         log.info("Generated and Uploaded cover document with template {} for the case id {}",
@@ -220,7 +221,8 @@ public class DocumentController {
     @PostMapping(path = "/generate-grant-draft-reissue", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<CallbackResponse> generateGrantDraftReissue(@RequestBody CallbackRequest callbackRequest) {
 
-        Document document = documentGeneratorService.generateGrantReissue(callbackRequest, DocumentStatus.PREVIEW, Optional.of(DocumentIssueType.REISSUE));
+        Document document = documentGeneratorService.generateGrantReissue(callbackRequest, DocumentStatus.PREVIEW,
+                Optional.of(DocumentIssueType.REISSUE));
 
         return ResponseEntity.ok(callbackResponseTransformer.addDocuments(callbackRequest,
                 Arrays.asList(document), null, null));
@@ -232,7 +234,8 @@ public class DocumentController {
 
         List<Document> documents = new ArrayList<>();
 
-        Document grantDocument = documentGeneratorService.generateGrantReissue(callbackRequest, DocumentStatus.FINAL, Optional.of(DocumentIssueType.REISSUE));
+        Document grantDocument = documentGeneratorService.generateGrantReissue(callbackRequest, DocumentStatus.FINAL,
+                Optional.of(DocumentIssueType.REISSUE));
         Document coversheet = documentGeneratorService.generateCoversheet(callbackRequest);
 
         documents.add(grantDocument);
