@@ -64,35 +64,6 @@ public class NotificationController {
     private final InformationRequestService informationRequestService;
     private final RedeclarationNotificationService redeclarationNotificationService;
 
-
-    private ResponseEntity<CallbackResponse> sendNotification(
-            @Validated({EmailAddressNotificationValidationRule.class})
-            @RequestBody CallbackRequest callbackRequest, State state)
-            throws NotificationClientException {
-
-        CaseDetails caseDetails = callbackRequest.getCaseDetails();
-        CaseData caseData = callbackRequest.getCaseDetails().getData();
-        CallbackResponse response;
-
-        List<Document> documents = new ArrayList<>();
-        if (isAnEmailAddressPresent(caseData)) {
-            response = eventValidationService.validateEmailRequest(callbackRequest, emailAddressNotificationValidationRules);
-            if (response.getErrors().isEmpty()) {
-                Document sentEmailAsDocument = notificationService.sendEmail(state, caseDetails);
-                documents.add(sentEmailAsDocument);
-                response = callbackResponseTransformer.addDocuments(callbackRequest, documents, null, null);
-            }
-        } else {
-            response = callbackResponseTransformer.addDocuments(callbackRequest, documents, null, null);
-
-        }
-        return ResponseEntity.ok(response);
-    }
-
-    private boolean isAnEmailAddressPresent(CaseData caseData) {
-        return caseData.isDocsReceivedEmailNotificationRequested();
-    }
-
     @PostMapping(path = "/application-received")
     public ResponseEntity<String> sendApplicationReceivedNotification(
             @Validated({EmailAddressNotificationValidationRule.class})
@@ -196,5 +167,33 @@ public class NotificationController {
     @PostMapping(path = "/redeclaration-sot")
     public ResponseEntity<CallbackResponse> redeclarationSot(@RequestBody CallbackRequest callbackRequest) {
         return ResponseEntity.ok(redeclarationNotificationService.handleRedeclarationNotification(callbackRequest));
+    }
+
+    private ResponseEntity<CallbackResponse> sendNotification(
+            @Validated({EmailAddressNotificationValidationRule.class})
+            @RequestBody CallbackRequest callbackRequest, State state)
+            throws NotificationClientException {
+
+        CaseDetails caseDetails = callbackRequest.getCaseDetails();
+        CaseData caseData = callbackRequest.getCaseDetails().getData();
+        CallbackResponse response;
+
+        List<Document> documents = new ArrayList<>();
+        if (isAnEmailAddressPresent(caseData)) {
+            response = eventValidationService.validateEmailRequest(callbackRequest, emailAddressNotificationValidationRules);
+            if (response.getErrors().isEmpty()) {
+                Document sentEmailAsDocument = notificationService.sendEmail(state, caseDetails);
+                documents.add(sentEmailAsDocument);
+                response = callbackResponseTransformer.addDocuments(callbackRequest, documents, null, null);
+            }
+        } else {
+            response = callbackResponseTransformer.addDocuments(callbackRequest, documents, null, null);
+
+        }
+        return ResponseEntity.ok(response);
+    }
+
+    private boolean isAnEmailAddressPresent(CaseData caseData) {
+        return caseData.isDocsReceivedEmailNotificationRequested();
     }
 }
