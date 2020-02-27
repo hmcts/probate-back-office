@@ -19,7 +19,6 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCases;
 import uk.gov.hmcts.probate.service.evidencemanagement.header.HttpHeadersFactory;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
-import uk.gov.hmcts.reform.authorisation.generators.ServiceAuthTokenGenerator;
 
 import java.net.URI;
 import java.util.List;
@@ -35,7 +34,7 @@ import static uk.gov.hmcts.probate.insights.AppInsightsEvent.REST_CLIENT_EXCEPTI
 @Slf4j
 public class CaseQueryService {
 
-    private static final String DOCUMENT_DATE = "data.grantIssuedDate";
+    private static final String GRANT_ISSUED_DATE = "data.grantIssuedDate";
     private static final String STATE = "state";
     private static final String STATE_MATCH = "BOGrantIssued";
     private static final String SERVICE_AUTH = "ServiceAuthorization";
@@ -53,7 +52,7 @@ public class CaseQueryService {
         BoolQueryBuilder query = boolQuery();
 
         query.must(matchQuery(STATE, STATE_MATCH));
-        query.must(matchQuery(DOCUMENT_DATE, queryDate));
+        query.must(matchQuery(GRANT_ISSUED_DATE, queryDate));
 
         String jsonQuery = new SearchSourceBuilder().query(query).size(10000).toString();
 
@@ -64,7 +63,7 @@ public class CaseQueryService {
         BoolQueryBuilder query = boolQuery();
 
         query.must(matchQuery(STATE, STATE_MATCH));
-        query.must(rangeQuery(DOCUMENT_DATE).gte(startDate).lte(endDate));
+        query.must(rangeQuery(GRANT_ISSUED_DATE).gte(startDate).lte(endDate));
 
         String jsonQuery = new SearchSourceBuilder().query(query).toString();
 

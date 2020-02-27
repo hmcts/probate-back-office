@@ -74,7 +74,7 @@ public class HmrcDataExtractServiceTest {
             ReturnedCaseDetails(caseData, LAST_MODIFIED, 1L)).build();
         when(caseQueryService.findCasesWithDatedDocument(any())).thenReturn(returnedCases);
         
-        hmrcDataExtractService.performHmrcExtract("2000-12-31");
+        hmrcDataExtractService.performHmrcExtractFromDate("2000-12-31", "2000-12-31");
 
         verify(fileTransferService).uploadFile(any());
         verify(fileExtractDateFormatter).formatFileDate();
@@ -87,7 +87,7 @@ public class HmrcDataExtractServiceTest {
             .build();
         when(caseQueryService.findCasesWithDatedDocument(any())).thenReturn(returnedCases);
         
-        hmrcDataExtractService.performHmrcExtract("2000-12-31");
+        hmrcDataExtractService.performHmrcExtractFromDate("2000-12-31", "2000-12-31");
 
         verify(fileTransferService, times(0)).uploadFile(any());
         verify(fileExtractDateFormatter, times(0)).formatFileDate();
@@ -127,7 +127,7 @@ public class HmrcDataExtractServiceTest {
         when(caseQueryService.findCasesWithDatedDocument(any())).thenReturn(returnedCases);
         when(fileTransferService.uploadFile(any())).thenReturn(HttpStatus.SERVICE_UNAVAILABLE.value());
 
-        hmrcDataExtractService.performHmrcExtract("2000-12-31");
+        hmrcDataExtractService.performHmrcExtractFromDate("2000-12-31", "2000-12-31");
 
         verify(fileTransferService).uploadFile(any());
         verify(fileExtractDateFormatter).formatFileDate();

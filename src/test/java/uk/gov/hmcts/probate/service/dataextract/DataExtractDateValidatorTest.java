@@ -33,6 +33,11 @@ public class DataExtractDateValidatorTest {
         dataExtractDateValidator.dateValidator("2000-12-31", "2001-12-31");
     }
 
+    @Test
+    public void shouldValidateDateFromToSame() {
+        dataExtractDateValidator.dateValidator("2000-12-31", "2000-12-31");
+    }
+
     @Test(expected = ClientException.class)
     public void shouldThrowExceptionForInvalidaDate() {
         dataExtractDateValidator.dateValidator("2000-14-31");
@@ -46,11 +51,6 @@ public class DataExtractDateValidatorTest {
     @Test(expected = ClientException.class)
     public void shouldThrowExceptionForInvalidToDate() {
         dataExtractDateValidator.dateValidator("2000-12-31", "2001");
-    }
-
-    @Test(expected = ClientException.class)
-    public void shouldThrowExceptionForToDateNotAfterFromDate() {
-        dataExtractDateValidator.dateValidator("2000-12-31", "2000-12-31");
     }
 
     @Test(expected = ClientException.class)

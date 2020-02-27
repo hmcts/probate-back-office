@@ -396,14 +396,6 @@ core_case_data.api.url: ${services.coreCaseData.baseUrl:http://localhost:4452}
 
 excelaEmail: ${EXCELA_EMAIL:probatetest@gmail.com}
 
-cron:
-  hmrc:
-    schedule: "0 0,15,30,45 * * * *"
-  ironMountain:
-    schedule: "0 5,20,35,50 * * * *"
-  exela:
-    schedule: "0 10,25,40,55 * * * *"
-
 welsh:
   months:
     1: "Ionawr"

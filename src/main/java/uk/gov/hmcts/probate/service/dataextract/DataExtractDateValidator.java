@@ -30,7 +30,7 @@ public class DataExtractDateValidator {
             LocalDate to = LocalDate.parse(toDate, DATE_FORMAT);
             if (!StringUtils.isBlank(fromDate)) {
                 LocalDate from = LocalDate.parse(fromDate, DATE_FORMAT);
-                if (!from.isBefore(to)) {
+                if (!from.isEqual(to) && !from.isBefore(to)) {
                     throw new ClientException(HttpStatus.BAD_REQUEST.value(),
                         "Error on extract dates, fromDate is not before toDate: " + fromDate + "," + toDate);
                 }
