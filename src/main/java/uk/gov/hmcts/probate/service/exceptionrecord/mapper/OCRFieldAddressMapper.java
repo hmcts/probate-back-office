@@ -119,6 +119,7 @@ public class OCRFieldAddressMapper {
         if (StringUtils.isBlank(address.getPostCode())) {
             return null;
         } else {
+            address.setPostCode(postCode.toUpperCase());
             validatePostCode(address.getPostCode());
         }
         return address;
