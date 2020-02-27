@@ -19,7 +19,8 @@ public class CaseDataTestBuilder {
     public static final String SOLICITOR_FIRM_LINE1 = "Sols Add Line1";
     public static final String SOLICITOR_FIRM_POSTCODE = "SW1E 6EA";
     public static final String IHT_FORM = "IHT207";
-    public static final String SOLICITOR_NAME = "Peter Crouch";
+    public static final String SOLICITOR_FORENAME = "Peter Middlename";
+    public static final String SOLICITOR_SURNAME = "Crouch";
     public static final String SOLICITOR_JOB_TITLE = "Lawyer";
     public static final String PAYMENT_METHOD = "Cheque";
     public static final String WILL_HAS_CODICLIS = "Yes";
@@ -48,12 +49,16 @@ public class CaseDataTestBuilder {
     public static final String DECEASED_OTHER_NAMES = "No";
     public static final String DECEASED_DOM_UK = "Yes";
     public static final String SOT_NEED_TO_UPDATE = "Yes";
+    public static final String SOLICITOR_APPLYING = "Yes";
+    public static final String SOLICITOR_IS_MAIN_APPLICANT = "Yes";
+    public static final String SOLS_NOT_APPLYING_REASON = "Power reserved";
 
     public static final BigDecimal APPLICATION_FEE = BigDecimal.TEN;
     public static final BigDecimal FEE_FOR_UK_COPIES = BigDecimal.TEN;
     public static final BigDecimal FEE_FOR_NON_UK_COPIES = BigDecimal.TEN;
     public static final BigDecimal TOTAL_FEE = BigDecimal.TEN;
     public static final String NEED_TO_UPDATE = "No";
+
 
     public static CaseData.CaseDataBuilder withDefaults() {
 
@@ -105,7 +110,12 @@ public class CaseDataTestBuilder {
                 .willNumberOfCodicils(NUMBER_OF_CODICLIS)
                 .ihtFormId(IHT_FORM)
                 .solsSOTNeedToUpdate(NEED_TO_UPDATE)
-                .solsSOTName(SOLICITOR_NAME)
+                .solsSOTForenames(SOLICITOR_FORENAME)
+                .solsSOTSurname(SOLICITOR_SURNAME)
+                .solsSolicitorIsExec(SOLICITOR_APPLYING)
+                .solsSolicitorIsMainApplicant(SOLICITOR_IS_MAIN_APPLICANT)
+                .solsSolicitorIsApplying(SOLICITOR_APPLYING)
+                .solsSolicitorNotApplyingReason(SOLS_NOT_APPLYING_REASON)
                 .solsSOTJobTitle(SOLICITOR_JOB_TITLE)
                 .solsPaymentMethods(PAYMENT_METHOD)
                 .applicationFee(APPLICATION_FEE)

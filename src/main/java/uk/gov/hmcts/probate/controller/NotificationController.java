@@ -42,7 +42,6 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static uk.gov.hmcts.probate.model.State.APPLICATION_RECEIVED;
 import static uk.gov.hmcts.probate.model.State.CASE_STOPPED;
 import static uk.gov.hmcts.probate.model.State.CASE_STOPPED_CAVEAT;
-import static uk.gov.hmcts.probate.model.State.DOCUMENTS_RECEIVED;
 
 @RequiredArgsConstructor
 @RequestMapping(value = "/notify", consumes = APPLICATION_JSON_UTF8_VALUE, produces = APPLICATION_JSON_VALUE)
@@ -92,15 +91,6 @@ public class NotificationController {
 
     private boolean isAnEmailAddressPresent(CaseData caseData) {
         return caseData.isDocsReceivedEmailNotificationRequested();
-    }
-
-    @PostMapping(path = "/documents-received")
-    public ResponseEntity<CallbackResponse> sendDocumentReceivedNotification(
-            @Validated({EmailAddressNotificationValidationRule.class})
-            @RequestBody CallbackRequest callbackRequest)
-            throws NotificationClientException {
-
-        return sendNotification(callbackRequest, DOCUMENTS_RECEIVED);
     }
 
     @PostMapping(path = "/application-received")

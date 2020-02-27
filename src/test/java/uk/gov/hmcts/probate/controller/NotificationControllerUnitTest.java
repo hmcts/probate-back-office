@@ -16,6 +16,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.service.BulkPrintService;
 import uk.gov.hmcts.probate.service.DocumentGeneratorService;
+import uk.gov.hmcts.probate.service.DocumentsReceivedNotificationService;
 import uk.gov.hmcts.probate.service.EventValidationService;
 import uk.gov.hmcts.probate.service.InformationRequestService;
 import uk.gov.hmcts.probate.service.NotificationService;
@@ -75,6 +76,8 @@ public class NotificationControllerUnitTest {
     InformationRequestService informationRequestService;
     @Mock
     RedeclarationNotificationService redeclarationNotificationService;
+    @Mock
+    DocumentsReceivedNotificationService documentsReceivedNotificationService;
 
     @InjectMocks
     NotificationController notificationController;
@@ -131,7 +134,7 @@ public class NotificationControllerUnitTest {
     public void shouldSendDocumentsReceived() throws IOException, NotificationClientException {
         setUpMocks(DOCUMENTS_RECEIVED);
         notificationController.sendDocumentReceivedNotification(callbackRequest);
-        verifyDocumentsAreAdded();
+        verify(documentsReceivedNotificationService).handleDocumentReceivedNotification(any(CallbackRequest.class));
     }
 
 

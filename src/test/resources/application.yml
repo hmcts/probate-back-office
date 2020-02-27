@@ -18,7 +18,7 @@ auth.provider.service.client:
   tokenTimeToLiveInSeconds: 900
 
 auth.provider.client:
-  user: http://localhost:4501
+  user: http://localhost:5000
   secret: 123456
   id: probate
   redirect: http://localhost:3451/oauth2redirect
@@ -308,7 +308,7 @@ registries:
     town: Cardiff
     postcode: CF24 0RZ
 
-auth.idam.client.baseUrl: http://localhost:4501
+auth.idam.client.baseUrl: http://localhost:5000
 
 core_case_data.api.url: http://localhost:4452
 
