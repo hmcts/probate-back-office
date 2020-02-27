@@ -197,8 +197,7 @@ notifications:
           caveatRaisedSols: "022966cb-e4da-4996-a831-02c2310ab4f8"
           requestInformation: "b2978c65-5974-416a-bc64-fb0ee083dc7e"
           redeclarationSot: "bcd9e4cc-db0c-4810-8172-8bcb2277b775"
-          grantIssuedIntestacy: "fc9748a7-6e92-480d-9ee8-fdd4fc45552d"
-      welsh:
+       welsh:
         personal:
           documentReceived: "1c847dd8-212e-425a-ad83-1bbc48d89428"
           caseStopped: "3e367544-c75a-4556-9831-7d0a3acbac0d"
@@ -211,6 +210,7 @@ notifications:
           caveatRaisedCtsc: "a970c66c-911f-40d6-a6ae-711200ae43a7"
           requestInformation: "23a980e6-d883-45fa-8daf-acb4e017b6bb"
           redeclarationSot: "253fa4a9-ef84-4b15-a059-0a0359f4ca5b"
+          grantIssuedIntestacy: "fc9748a7-6e92-480d-9ee8-fdd4fc45552d"
         solicitor:
           documentReceived: "7f8ff32d-8297-4702-9867-312047f81492"
           caseStopped: "350f488a-68f1-44f0-b083-157285b71581"

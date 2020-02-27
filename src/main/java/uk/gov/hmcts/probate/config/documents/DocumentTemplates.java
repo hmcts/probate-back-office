@@ -11,8 +11,8 @@ import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.LanguagePreference;
 import uk.gov.hmcts.probate.model.DocumentIssueType;
 
-import javax.validation.Valid;
 import java.util.Map;
+import javax.validation.Valid;
 
 @Getter
 @Setter
