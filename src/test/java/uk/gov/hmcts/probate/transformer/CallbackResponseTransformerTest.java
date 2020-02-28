@@ -115,7 +115,7 @@ public class CallbackResponseTransformerTest {
     private static final String LIFE_INTEREST = "No";
     private static final String RESIDUARY = "Yes";
     private static final String RESIDUARY_TYPE = "Legatee";
-
+    private static final String DOMICILITY_COUNTRY = "OtherCountry";
 
     private static final ApplicationType APPLICATION_TYPE = SOLICITOR;
     private static final String REGISTRY_LOCATION = CTSC;
@@ -252,6 +252,13 @@ public class CallbackResponseTransformerTest {
     private static final String BULK_SCAN_REFERENCE = "BulkScanRef";
 
     private static final Document SOT_DOC = Document.builder().documentType(STATEMENT_OF_TRUTH).build();
+
+    private static final List<CollectionMember<EstateItem>> UK_ESTATE = Arrays.asList(
+            new CollectionMember<>(null,
+                    EstateItem.builder()
+                            .item("Item")
+                            .value("999.99")
+                            .build()));
 
     private static final LocalDateTime scannedDate = LocalDateTime.parse("2018-01-01T12:34:56.123");
     private static final List<CollectionMember<Payment>> PAYMENTS_LIST = Arrays.asList(
@@ -1426,6 +1433,53 @@ public class CallbackResponseTransformerTest {
 
         assertEquals(EMPTY_LIST, callbackResponse.getData().getAdditionalExecutorsApplying());
         assertEquals(EMPTY_LIST, callbackResponse.getData().getAdditionalExecutorsNotApplying());
+    }
+
+    @Test
+    public void shouldTransformForSolDeceasedDomicileEngAndWales() {
+        caseDataBuilder
+                .applicationType(SOLICITOR)
+                .recordId(null)
+                .paperForm(NO)
+                .deceasedDomicileInEngWales(YES)
+                .ukEstate(UK_ESTATE)
+                .domicilityCountry(DOMICILITY_COUNTRY)
+                .solsEntrustingDoc(NO)
+                .solsDomicilityCert(YES);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+
+        assertNull(callbackResponse.getData().getDomicilityCountry());
+        assertNull(callbackResponse.getData().getSolsEntrustingDoc());
+        assertNull(callbackResponse.getData().getSolsDomicilityCert());
+        assertEquals("Item", callbackResponse.getData().getUkEstate().get(0).getValue().getItem());
+        assertEquals("999.99", callbackResponse.getData().getUkEstate().get(0).getValue().getValue());
+    }
+
+    @Test
+    public void shouldTransformForSolDeceasedForeignDomicile() {
+        caseDataBuilder
+                .applicationType(SOLICITOR)
+                .recordId(null)
+                .paperForm(NO)
+                .deceasedDomicileInEngWales(NO)
+                .ukEstate(UK_ESTATE)
+                .domicilityCountry(DOMICILITY_COUNTRY)
+                .solsEntrustingDoc(NO)
+                .solsDomicilityCert(YES);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+
+        assertEquals("OtherCountry", callbackResponse.getData().getDomicilityCountry());
+        assertEquals(NO, callbackResponse.getData().getSolsEntrustingDoc());
+        assertEquals(YES, callbackResponse.getData().getSolsDomicilityCert());
+        assertNull(callbackResponse.getData().getUkEstate());
     }
 
     @Test
