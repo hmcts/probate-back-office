@@ -19,4 +19,5 @@ public class EmailTemplates {
     private String requestInformation;
     private String redeclarationSot;
     private String caveatWithdrawn;
+    private String grantIssuedIntestacy;
 }
