@@ -43,7 +43,7 @@ public class HmrcDataExtractService {
         List<ReturnedCaseDetails> casesFound = caseQueryService.findCasesWithDatedDocument(date);
         log.info("Cases found for HMRC data extract initiated for date: {}, cases found: {}", date, casesFound.size());
 
-        uploadHmrcFile(null, date, casesFound);
+        uploadHmrcFile(date, date, casesFound);
     }
 
     private void uploadHmrcFile(String fromDate, String date, List<ReturnedCaseDetails> casesFound) {
