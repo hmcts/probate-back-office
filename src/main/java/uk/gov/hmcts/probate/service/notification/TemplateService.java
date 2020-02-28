@@ -34,6 +34,8 @@ public class TemplateService {
                 return emailTemplates.getCaseStoppedCaveat();
             case GRANT_ISSUED:
                 return emailTemplates.getGrantIssued();
+            case GRANT_ISSUED_INTESTACY:
+                return emailTemplates.getGrantIssuedIntestacy();
             case GRANT_REISSUED:
                 return emailTemplates.getGrantReissued();
             case GENERAL_CAVEAT_MESSAGE:
