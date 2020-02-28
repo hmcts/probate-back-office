@@ -75,7 +75,7 @@ public class IronMountainDataExtractServiceTest {
         ironMountainDataExtractService.performIronMountainExtractForDate("2000-12-31");
 
         verify(fileTransferService).uploadFile(any());
-        verify(fileExtractDateFormatter).formatFileDate();
+        verify(fileExtractDateFormatter).getFormattedFileDate(any());
         verify(ironMountainFileService).createIronMountainFile(any(), anyString());
     }
 
@@ -88,7 +88,7 @@ public class IronMountainDataExtractServiceTest {
         ironMountainDataExtractService.performIronMountainExtractForDate("2000-12-31");
 
         verify(fileTransferService, times(1)).uploadFile(any());
-        verify(fileExtractDateFormatter, times(1)).formatFileDate();
+        verify(fileExtractDateFormatter, times(1)).getFormattedFileDate(any());
         verify(ironMountainFileService, times(1)).createIronMountainFile(any(), anyString());
     }
 
@@ -102,7 +102,7 @@ public class IronMountainDataExtractServiceTest {
         ironMountainDataExtractService.performIronMountainExtractForDate("2000-12-31");
 
         verify(fileTransferService).uploadFile(any());
-        verify(fileExtractDateFormatter).formatFileDate();
+        verify(fileExtractDateFormatter).getFormattedFileDate(any());
         verify(ironMountainFileService, times(0)).createIronMountainFile(any(), anyString());
     }
 

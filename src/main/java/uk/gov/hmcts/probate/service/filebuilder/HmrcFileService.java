@@ -62,7 +62,7 @@ public class HmrcFileService extends BaseFileService {
             for (ReturnedCaseDetails ccdCase : ccdCases) {
                 rowCount = rowCount + prepareData(fileData, ccdCase.getId(), ccdCase.getData());
             }
-            addFooter(fileData, rowCount);
+            addFooter(fileData, rowCount, fileName);
         } catch (Exception e) {
             log.error("Failed to prepare data HMRC file for :" + fileName);
             throw new ClientException(HttpStatus.SERVICE_UNAVAILABLE.value(),
@@ -108,10 +108,10 @@ public class HmrcFileService extends BaseFileService {
         return rowCount;
     }
 
-    private void addFooter(ImmutableList.Builder<String> fileData, int rowCount) {
+    private void addFooter(ImmutableList.Builder<String> fileData, int rowCount, String fileName) {
         fileData.add(ROW_TYPE_FOOTER);
 
-        fileData.add("1_" + fileExtractDateFormatter.formatFileDate() + ".dat");
+        fileData.add(fileName);
         fileData.add(String.valueOf(rowCount));
         fileData.add(NUMBER_OF_FILE);
         fileData.add(LAST_FILE);

@@ -43,19 +43,29 @@ public class HmrcDataExtractService {
         List<ReturnedCaseDetails> casesFound = caseQueryService.findCasesWithDatedDocument(date);
         log.info("Cases found for HMRC data extract initiated for date: {}, cases found: {}", date, casesFound.size());
 
-          uploadHmrcFile(null, date, casesFound);
+        uploadHmrcFile(null, date, casesFound);
     }
 
     private void uploadHmrcFile(String fromDate, String date, List<ReturnedCaseDetails> casesFound) {
         String dateDesc = (StringUtils.isEmpty(fromDate) ? " date:" : " from " + fromDate + " to") + " " + date;
         log.info("preparing for file HMRC upload");
         int response = fileTransferService.uploadFile(hmrcFileService.createHmrcFile(
-            casesFound, "1_" + fileExtractDateFormatter.formatFileDate() + ".dat"));
+            casesFound, buildFileName(fromDate, date)));
 
         log.info("Response for HMRC upload={}", response);
         if (response != 201) {
             log.error("Failed to upload HMRC file for :" + dateDesc);
             throw new ClientException(HttpStatus.SERVICE_UNAVAILABLE.value(), "Failed to upload HMRC file for " + dateDesc);
+        }
+    }
+
+    private String buildFileName(String fromDate, String toDate) {
+        if (toDate.equals(fromDate)) {
+            return "1_" + fileExtractDateFormatter.getFormattedFileDate(fromDate) + ".dat";
+        } else {
+            return "1_" + fileExtractDateFormatter.getFormattedFileDate(fromDate) 
+                + "-" 
+                + fileExtractDateFormatter.getFormattedFileDate(toDate) + ".dat";
         }
     }
 

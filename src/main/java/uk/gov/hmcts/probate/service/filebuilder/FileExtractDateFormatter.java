@@ -10,13 +10,15 @@ import java.time.format.DateTimeFormatter;
 @RequiredArgsConstructor
 public class FileExtractDateFormatter {
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd-MMM-yyyy");
+    private static final DateTimeFormatter DATE_FORMAT_REQUEST = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private static final DateTimeFormatter DATE_FORMAT_FOOTER = DateTimeFormatter.ofPattern("yyyyMMdd");
 
     public String formatDataDate(LocalDate date) {
         return DATE_FORMAT.format(date).toUpperCase();
     }
 
-    public String formatFileDate() {
-        return DATE_FORMAT_FOOTER.format(LocalDate.now()).toUpperCase();
+    public String getFormattedFileDate(String date) {
+        LocalDate dateUsed = LocalDate.from(DATE_FORMAT_REQUEST.parse(date));
+        return DATE_FORMAT_FOOTER.format(dateUsed).toUpperCase();
     }
 }

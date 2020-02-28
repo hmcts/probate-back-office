@@ -14,9 +14,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 import uk.gov.hmcts.probate.service.CaseQueryService;
-import uk.gov.hmcts.probate.service.ExcelaCriteriaService;
 import uk.gov.hmcts.probate.service.FileTransferService;
-import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.filebuilder.FileExtractDateFormatter;
 import uk.gov.hmcts.probate.service.filebuilder.HmrcFileService;
 
@@ -77,7 +75,7 @@ public class HmrcDataExtractServiceTest {
         hmrcDataExtractService.performHmrcExtractFromDate("2000-12-31", "2000-12-31");
 
         verify(fileTransferService).uploadFile(any());
-        verify(fileExtractDateFormatter).formatFileDate();
+        verify(fileExtractDateFormatter).getFormattedFileDate("2000-12-31");
         verify(hmrcFileService).createHmrcFile(any(), anyString());
     }
 
@@ -90,7 +88,8 @@ public class HmrcDataExtractServiceTest {
         hmrcDataExtractService.performHmrcExtractFromDate("2000-12-31", "2000-12-31");
 
         verify(fileTransferService, times(1)).uploadFile(any());
-        verify(fileExtractDateFormatter, times(1)).formatFileDate();
+        verify(fileExtractDateFormatter, times(1)).getFormattedFileDate("2000-12-31");
+        verify(fileExtractDateFormatter, times(1)).getFormattedFileDate("2000-12-31");
         verify(hmrcFileService, times(1)).createHmrcFile(any(), anyString());
     }
 
@@ -103,7 +102,7 @@ public class HmrcDataExtractServiceTest {
         hmrcDataExtractService.performHmrcExtractFromDate("2000-10-30", "2000-12-31");
 
         verify(fileTransferService).uploadFile(any());
-        verify(fileExtractDateFormatter).formatFileDate();
+        verify(fileExtractDateFormatter).getFormattedFileDate("2000-10-30");
         verify(hmrcFileService).createHmrcFile(any(), anyString());
     }
 
@@ -116,7 +115,8 @@ public class HmrcDataExtractServiceTest {
         hmrcDataExtractService.performHmrcExtractFromDate("2000-10-30", "2000-12-31");
 
         verify(fileTransferService, times(1)).uploadFile(any());
-        verify(fileExtractDateFormatter, times(1)).formatFileDate();
+        verify(fileExtractDateFormatter, times(1)).getFormattedFileDate("2000-10-30");
+        verify(fileExtractDateFormatter, times(1)).getFormattedFileDate("2000-12-31");
         verify(hmrcFileService, times(1)).createHmrcFile(any(), anyString());
     }
 
@@ -130,7 +130,7 @@ public class HmrcDataExtractServiceTest {
         hmrcDataExtractService.performHmrcExtractFromDate("2000-12-31", "2000-12-31");
 
         verify(fileTransferService).uploadFile(any());
-        verify(fileExtractDateFormatter).formatFileDate();
+        verify(fileExtractDateFormatter).getFormattedFileDate("2000-12-31");
         verify(hmrcFileService, times(0)).createHmrcFile(any(), anyString());
     }
 
@@ -145,7 +145,9 @@ public class HmrcDataExtractServiceTest {
         hmrcDataExtractService.performHmrcExtractFromDate("2000-12-31", "2001-01-01");
 
         verify(fileTransferService).uploadFile(any());
-        verify(fileExtractDateFormatter).formatFileDate();
+        verify(fileExtractDateFormatter).getFormattedFileDate("2000-12-31");
+        verify(fileExtractDateFormatter).getFormattedFileDate("2001-01-01");
+        
         verify(hmrcFileService, times(0)).createHmrcFile(any(), anyString());
     }
 }

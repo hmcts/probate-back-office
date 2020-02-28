@@ -30,12 +30,16 @@ public class IronMountainDataExtractService {
 
         log.info("preparing for Iron Mountain file upload");
         int response = fileTransferService.uploadFile(ironMountainFileService.createIronMountainFile(
-            cases, fileExtractDateFormatter.formatFileDate() + "grant.txt"));
+            cases, buildFileName(date)));
 
         if (response != 201) {
             log.error("Failed to upload Iron Mountain file for: " + date);
             throw new ClientException(HttpStatus.SERVICE_UNAVAILABLE.value(), "Failed to upload Iron Mountain file for date: " + date);
         }
+    }
+
+    private String buildFileName(String date) {
+        return fileExtractDateFormatter.getFormattedFileDate(date) + "grant.txt";
     }
 
 }

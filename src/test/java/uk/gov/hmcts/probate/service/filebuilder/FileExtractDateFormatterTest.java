@@ -13,14 +13,15 @@ public class FileExtractDateFormatterTest {
 
     @Test
     public void shouldFormatDataDate() {
-        LocalDate data = LocalDate.of(1999, 12, 31);
-        assertEquals("31-DEC-1999", fileExtractDateFormatter.formatDataDate(data));
+        LocalDate date = LocalDate.of(1999, 12, 31);
+        assertEquals("31-DEC-1999", fileExtractDateFormatter.formatDataDate(date));
     }
 
     @Test
     public void shouldFormatFooterDate() {
-        LocalDate data = LocalDate.now();
-        String expected = DateTimeFormatter.ofPattern("yyyyMMdd").format(data);
-        assertEquals(expected, fileExtractDateFormatter.formatFileDate());
+        LocalDate date = LocalDate.now();
+        String fileDate = DateTimeFormatter.ofPattern("yyyy-MM-dd").format(date);
+        String expected = DateTimeFormatter.ofPattern("yyyyMMdd").format(date);
+        assertEquals(expected, fileExtractDateFormatter.getFormattedFileDate(fileDate));
     }
 }
