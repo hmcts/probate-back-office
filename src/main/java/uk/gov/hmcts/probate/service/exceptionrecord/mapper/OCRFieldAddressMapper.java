@@ -1,6 +1,7 @@
 package uk.gov.hmcts.probate.service.exceptionrecord.mapper;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.model.exceptionrecord.ExceptionRecordOCRFields;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToAttorneyOnBehalfOfAddress;
@@ -69,15 +70,12 @@ public class OCRFieldAddressMapper {
     @SuppressWarnings("squid:S1168")
     @ToCaveatorAddress
     public Address toCaveatorAddress(ExceptionRecordOCRFields ocrFields) {
-        log.info("Beginning mapping for Caveator Address");
-        this.addressLine1 = ocrFields.getCaveatorAddressLine1();
-        this.addressLine2 = ocrFields.getCaveatorAddressLine2();
-        this.addressLine3 = "";
-        this.postTown = ocrFields.getCaveatorAddressTown();
-        this.county = ocrFields.getCaveatorAddressCounty();
-        this.country = "";
-        this.postCode = ocrFields.getCaveatorAddressPostCode();
-        return buildAddress();
+        if (StringUtils.isNotBlank(ocrFields.getSolsSolicitorAddressLine1()) ||
+                StringUtils.isNotBlank(ocrFields.getSolsSolicitorAddressPostCode())) {
+            return buildSolicitorAddress(ocrFields);
+        } else {
+            return buildCaveatorAddress(ocrFields);
+        }
     }
 
     @SuppressWarnings("squid:S1168")
@@ -91,6 +89,30 @@ public class OCRFieldAddressMapper {
         this.county = ocrFields.getDeceasedAddressCounty();
         this.country = "";
         this.postCode = ocrFields.getDeceasedAddressPostCode();
+        return buildAddress();
+    }
+
+    private Address buildCaveatorAddress(ExceptionRecordOCRFields ocrFields) {
+        log.info("Beginning mapping for Caveator Address");
+        this.addressLine1 = ocrFields.getCaveatorAddressLine1();
+        this.addressLine2 = ocrFields.getCaveatorAddressLine2();
+        this.addressLine3 = "";
+        this.postTown = ocrFields.getCaveatorAddressTown();
+        this.county = ocrFields.getCaveatorAddressCounty();
+        this.country = "";
+        this.postCode = ocrFields.getCaveatorAddressPostCode();
+        return buildAddress();
+    }
+
+    private Address buildSolicitorAddress(ExceptionRecordOCRFields ocrFields) {
+        log.info("Beginning mapping for Solicitor Address");
+        this.addressLine1 = ocrFields.getSolsSolicitorAddressLine1();
+        this.addressLine2 = ocrFields.getSolsSolicitorAddressLine2();
+        this.addressLine3 = "";
+        this.postTown = ocrFields.getSolsSolicitorAddressTown();
+        this.county = ocrFields.getSolsSolicitorAddressCounty();
+        this.country = "";
+        this.postCode = ocrFields.getSolsSolicitorAddressPostCode();
         return buildAddress();
     }
 
