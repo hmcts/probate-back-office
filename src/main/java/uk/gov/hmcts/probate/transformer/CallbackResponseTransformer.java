@@ -710,6 +710,16 @@ public class CallbackResponseTransformer {
                     .primaryApplicantRelationshipToDeceased(null);
         }
 
+        if(YES.equals(caseData.getDeceasedDomicileInEngWales())) {
+            builder
+                    .domicilityCountry(null)
+                    .solsEntrustingDoc(null)
+                    .solsDomicilityCert(null);
+        } else if(NO.equals(caseData.getDeceasedDomicileInEngWales())) {
+            builder
+                    .ukEstate(null);
+        }
+
         return builder;
     }
 
