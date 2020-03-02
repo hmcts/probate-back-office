@@ -67,4 +67,9 @@ public class DataExtractDateValidatorTest {
     public void shouldThrowExceptionForEmptyFromToDates() {
         dataExtractDateValidator.dateValidator("", "");
     }
+    
+    @Test(expected = ClientException.class)
+    public void shouldThrowExceptionForFromDateNotBeforeToDate() {
+        dataExtractDateValidator.dateValidator("2001-12-31", "2001-01-31");
+    }
 }

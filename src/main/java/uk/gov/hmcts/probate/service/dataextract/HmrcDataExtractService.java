@@ -47,7 +47,7 @@ public class HmrcDataExtractService {
     }
 
     private void uploadHmrcFile(String fromDate, String date, List<ReturnedCaseDetails> casesFound) {
-        String dateDesc = (StringUtils.isEmpty(fromDate) ? " date:" : " from " + fromDate + " to") + " " + date;
+        String dateDesc = " from " + fromDate + " to " + date;
         log.info("preparing for file HMRC upload");
         int response = fileTransferService.uploadFile(hmrcFileService.createHmrcFile(
             casesFound, buildFileName(fromDate, date)));

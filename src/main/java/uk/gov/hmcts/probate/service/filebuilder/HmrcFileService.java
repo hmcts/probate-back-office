@@ -17,7 +17,6 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 
 import java.io.File;
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
@@ -135,7 +134,7 @@ public class HmrcFileService extends BaseFileService {
 
         if (type == null) {
             throw new BadRequestException("Unsupported IHT Form Type for " + data.getIhtFormId());
-        } 
+        }
 
         fileData.add(type);
     }

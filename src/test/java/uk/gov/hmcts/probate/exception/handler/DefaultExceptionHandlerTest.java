@@ -9,7 +9,6 @@ import uk.gov.hmcts.probate.exception.BadRequestException;
 import uk.gov.hmcts.probate.exception.BusinessValidationException;
 import uk.gov.hmcts.probate.exception.ClientException;
 import uk.gov.hmcts.probate.exception.ConnectionException;
-import uk.gov.hmcts.probate.exception.DataExtractUnauthorisedException;
 import uk.gov.hmcts.probate.exception.NotFoundException;
 import uk.gov.hmcts.probate.exception.model.ErrorResponse;
 import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
@@ -25,8 +24,6 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.http.HttpStatus.SERVICE_UNAVAILABLE;
-import static org.springframework.http.HttpStatus.UNAUTHORIZED;
-import static uk.gov.hmcts.probate.exception.DataExtractUnauthorisedException.DATA_EXTRACT_NOT_AUTHORISED_MESSAGE;
 
 public class DefaultExceptionHandlerTest {
 
@@ -49,9 +46,6 @@ public class DefaultExceptionHandlerTest {
 
     @Mock
     private NotFoundException notFoundException;
-
-    @Mock
-    private DataExtractUnauthorisedException dataExtractUnauthorisedException;
 
     @InjectMocks
     private DefaultExceptionHandler underTest;
@@ -87,16 +81,16 @@ public class DefaultExceptionHandlerTest {
     @Test
     public void shouldHandleMissingPDFDataAsStatusUN() {
         final FieldErrorResponse bve1Mock = FieldErrorResponse.builder()
-                .param("Object")
-                .field("field1")
-                .message("message")
-                .build();
+            .param("Object")
+            .field("field1")
+            .message("message")
+            .build();
 
         final FieldErrorResponse bve2Mock = FieldErrorResponse.builder()
-                .param("Object")
-                .field("field2")
-                .message("message")
-                .build();
+            .param("Object")
+            .field("field2")
+            .message("message")
+            .build();
 
         when(badRequestException.getErrors()).thenReturn(Arrays.asList(bve1Mock, bve2Mock));
 
@@ -139,15 +133,5 @@ public class DefaultExceptionHandlerTest {
         assertEquals(NOT_FOUND, response.getStatusCode());
         assertEquals(DefaultExceptionHandler.CLIENT_ERROR, response.getBody().getError());
         assertEquals(EXCEPTION_MESSAGE, response.getBody().getMessage());
-    }
-    @Test
-    public void shouldReturnUnauthorisedException() {
-        when(dataExtractUnauthorisedException.getMessage()).thenReturn(DATA_EXTRACT_NOT_AUTHORISED_MESSAGE);
-
-        ResponseEntity<ErrorResponse> response = underTest.handle(dataExtractUnauthorisedException);
-
-        assertEquals(UNAUTHORIZED, response.getStatusCode());
-        assertEquals(DefaultExceptionHandler.UNAUTHORISED_DATA_EXTRACT_ERROR, response.getBody().getError());
-        assertEquals(DATA_EXTRACT_NOT_AUTHORISED_MESSAGE, response.getBody().getMessage());
     }
 }
