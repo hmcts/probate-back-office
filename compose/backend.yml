@@ -327,7 +327,7 @@ services:
 
   payments-database:
     container_name: payments-database
-    image: postgres:11-alpine
+    image: postgres:9.5.18
     environment:
       POSTGRES_USER: "payment"
       POSTGRES_DB: "payment"
