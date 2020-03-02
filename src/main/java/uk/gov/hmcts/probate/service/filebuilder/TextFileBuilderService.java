@@ -39,7 +39,7 @@ public class TextFileBuilderService {
     }
 
     public File createFile(List<String> data, String delimiter, String fileName) {
-        log.info("Creating file={} with {} rows", fileName, data.size());
+        log.info("Creating file={} with {} elements", fileName, data.size());
         openWriter(fileName);
         for (String item : data) {
             writeDataToFile(item, delimiter);
