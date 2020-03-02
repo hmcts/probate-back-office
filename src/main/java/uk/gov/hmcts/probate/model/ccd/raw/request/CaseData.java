@@ -587,7 +587,7 @@ public class CaseData {
     }
 
     private boolean isSolicitorCreatedGrant(String solsWillType) {
-        return (solsWillType != null);
+        return (solsWillType != null && solsFeeAccountNumber == null);
     }
 
     private List<CollectionMember<AdditionalExecutor>> mapAdditionalExecutorsApplying(List<CollectionMember<AdditionalExecutorApplying>> additionalExecutors) {
