@@ -2,7 +2,6 @@ package uk.gov.hmcts.probate.service.dataextract;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.exception.ClientException;
@@ -46,11 +45,11 @@ public class HmrcDataExtractService {
         uploadHmrcFile(date, date, casesFound);
     }
 
-    private void uploadHmrcFile(String fromDate, String date, List<ReturnedCaseDetails> casesFound) {
-        String dateDesc = " from " + fromDate + " to " + date;
+    private void uploadHmrcFile(String fromDate, String toDate, List<ReturnedCaseDetails> casesFound) {
+        String dateDesc = " from " + fromDate + " to " + toDate;
         log.info("preparing for file HMRC upload");
         int response = fileTransferService.uploadFile(hmrcFileService.createHmrcFile(
-            casesFound, buildFileName(fromDate, date)));
+            casesFound, buildFileName(toDate)));
 
         log.info("Response for HMRC upload={}", response);
         if (response != 201) {
@@ -59,14 +58,8 @@ public class HmrcDataExtractService {
         }
     }
 
-    private String buildFileName(String fromDate, String toDate) {
-        if (toDate.equals(fromDate)) {
-            return "1_" + fileExtractDateFormatter.getFormattedFileDate(fromDate) + ".dat";
-        } else {
-            return "1_" + fileExtractDateFormatter.getFormattedFileDate(fromDate) 
-                + "-" 
-                + fileExtractDateFormatter.getFormattedFileDate(toDate) + ".dat";
-        }
+    private String buildFileName(String toDate) {
+        return "1_" + fileExtractDateFormatter.getFormattedFileDate(toDate) + ".dat";
     }
 
 }

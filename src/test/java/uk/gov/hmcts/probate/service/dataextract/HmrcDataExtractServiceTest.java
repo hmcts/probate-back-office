@@ -102,7 +102,7 @@ public class HmrcDataExtractServiceTest {
         hmrcDataExtractService.performHmrcExtractFromDate("2000-10-30", "2000-12-31");
 
         verify(fileTransferService).uploadFile(any());
-        verify(fileExtractDateFormatter).getFormattedFileDate("2000-10-30");
+        verify(fileExtractDateFormatter).getFormattedFileDate("2000-12-31");
         verify(hmrcFileService).createHmrcFile(any(), anyString());
     }
 
@@ -115,7 +115,6 @@ public class HmrcDataExtractServiceTest {
         hmrcDataExtractService.performHmrcExtractFromDate("2000-10-30", "2000-12-31");
 
         verify(fileTransferService, times(1)).uploadFile(any());
-        verify(fileExtractDateFormatter, times(1)).getFormattedFileDate("2000-10-30");
         verify(fileExtractDateFormatter, times(1)).getFormattedFileDate("2000-12-31");
         verify(hmrcFileService, times(1)).createHmrcFile(any(), anyString());
     }
