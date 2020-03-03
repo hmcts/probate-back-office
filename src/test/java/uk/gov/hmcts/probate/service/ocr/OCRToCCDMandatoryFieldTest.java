@@ -2,9 +2,6 @@ package uk.gov.hmcts.probate.service.ocr;
 
 import org.junit.Before;
 import org.junit.Test;
-import uk.gov.hmcts.probate.model.ccd.ocr.CaveatMandatoryFields;
-import uk.gov.hmcts.probate.model.ccd.ocr.GORMandatoryFields;
-import uk.gov.hmcts.probate.model.ccd.ocr.IntestacyMandatoryFields;
 import uk.gov.hmcts.probate.model.ocr.OCRField;
 
 import java.util.ArrayList;

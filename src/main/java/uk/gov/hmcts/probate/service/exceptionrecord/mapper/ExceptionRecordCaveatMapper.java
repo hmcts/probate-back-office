@@ -30,8 +30,7 @@ import java.util.List;
 public interface ExceptionRecordCaveatMapper {
     @Mapping(target = "caveatorForenames", source = "caveatorForenames")
     @Mapping(target = "caveatorSurname", source = "caveatorSurnames")
-    @Mapping(target = "caveatorEmailAddress", expression = "java(StringUtils.isNotBlank(ocrFields.getSolsSolicitorEmail()) ? "
-            + "ocrFields.getSolsSolicitorEmail() : ocrFields.getCaveatorEmailAddress())")
+    @Mapping(target = "caveatorEmailAddress", source = "caveatorEmailAddress")
     @Mapping(target = "caveatorAddress", source = "ocrFields", qualifiedBy = {ToCaveatorAddress.class})
     @Mapping(target = "deceasedForenames", source = "deceasedForenames")
     @Mapping(target = "deceasedSurname", source = "deceasedSurname")
@@ -51,7 +50,7 @@ public interface ExceptionRecordCaveatMapper {
     CaveatData toCcdData(ExceptionRecordOCRFields ocrFields);
 
     @AfterMapping
-    default void setSolPaymentMethod(
+    default void setSolsPaymentMethod(
             @MappingTarget CaveatData caseData, ExceptionRecordOCRFields ocrField) {
         if ((caseData.getApplicationType() == ApplicationType.SOLICITORS) &&
                 StringUtils.isNotBlank(caseData.getSolsFeeAccountNumber())) {
@@ -60,15 +59,26 @@ public interface ExceptionRecordCaveatMapper {
     }
 
     @AfterMapping
+    default void setSolsSolicitorEmail(
+            @MappingTarget CaveatData caseData, ExceptionRecordOCRFields ocrField) {
+        if ((caseData.getApplicationType() == ApplicationType.SOLICITORS) &&
+                StringUtils.isNotBlank(ocrField.getSolsSolicitorEmail())) {
+            caseData.setCaveatorEmailAddress(ocrField.getSolsSolicitorEmail());
+        }
+    }
+
+    @AfterMapping
     default void setSolsSolicitorRepresentativeName(
             @MappingTarget CaveatData caseData, ExceptionRecordOCRFields ocrField) {
-        if (StringUtils.isNotBlank(ocrField.getSolsSolicitorRepresentativeName())) {
+        if ((caseData.getApplicationType() == ApplicationType.SOLICITORS) &&
+                (StringUtils.isNotBlank(ocrField.getSolsSolicitorRepresentativeName()))) {
             String solicitorFullName = ocrField.getSolsSolicitorRepresentativeName();
             List<String> names = OCRFieldExtractor.splitFullname(solicitorFullName);
             if (names.size() > 2) {
                 caseData.setCaveatorSurname(names.get(names.size()-1));
-                caseData.setCaveatorForenames(String.join(" ", names.remove(names.size()-1)));
+                caseData.setCaveatorForenames(String.join(" ", names.subList(0, names.size()-1)));
             } else if(names.size() == 1) {
+                caseData.setCaveatorSurname("");
                 caseData.setCaveatorForenames(names.get(0));
             } else {
                 caseData.setCaveatorSurname(names.get(1));
