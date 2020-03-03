@@ -1,12 +1,9 @@
 package uk.gov.hmcts.probate.service.exceptionrecord.mapper;
 
-import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.ContextConfiguration;
@@ -15,14 +12,10 @@ import uk.gov.hmcts.probate.model.exceptionrecord.ExceptionRecordOCRFields;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.is;
 
 @RunWith(SpringRunner.class)
 @ContextConfiguration
@@ -32,37 +25,37 @@ public class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
     private ExceptionRecordGrantOfRepresentationMapper exceptionRecordGrantOfRepresentationMapper;
 
     @Autowired
-    OCRFieldAddressMapper ocrFieldAddressMapper;
+    private OCRFieldAddressMapper ocrFieldAddressMapper;
 
     @Autowired
-    OCRFieldAdditionalExecutorsApplyingMapper ocrFieldAdditionalExecutorsApplyingMapper;
+    private OCRFieldAdditionalExecutorsApplyingMapper ocrFieldAdditionalExecutorsApplyingMapper;
 
     @Autowired
-    OCRFieldAdditionalExecutorsNotApplyingMapper ocrFieldAdditionalExecutorsNotApplyingMapper;
+    private OCRFieldAdditionalExecutorsNotApplyingMapper ocrFieldAdditionalExecutorsNotApplyingMapper;
 
     @Autowired
-    OCRFieldDefaultLocalDateFieldMapper ocrFieldDefaultLocalDateFieldMapper;
+    private OCRFieldDefaultLocalDateFieldMapper ocrFieldDefaultLocalDateFieldMapper;
 
     @Autowired
-    OCRFieldYesOrNoMapper ocrFieldYesOrNoMapper;
+    private OCRFieldYesOrNoMapper ocrFieldYesOrNoMapper;
 
     @Autowired
-    OCRFieldMartialStatusMapper ocrFieldMartialStatusMapper;
+    private OCRFieldMartialStatusMapper ocrFieldMartialStatusMapper;
 
     @Autowired
-    OCRFieldAdoptiveRelativesMapper ocrFieldAdoptiveRelativesMapper;
+    private OCRFieldAdoptiveRelativesMapper ocrFieldAdoptiveRelativesMapper;
 
     @Autowired
-    OCRFieldIhtMoneyMapper ocrFieldIhtMoneyMapper;
+    private OCRFieldIhtMoneyMapper ocrFieldIhtMoneyMapper;
 
     @Autowired
-    OCRFieldRelationshipMapper ocrFieldRelationshipMapper;
+    private OCRFieldRelationshipMapper ocrFieldRelationshipMapper;
 
     @Autowired
-    OCRFieldNumberMapper ocrFieldNumberMapper;
+    private OCRFieldNumberMapper ocrFieldNumberMapper;
 
     @Autowired
-    OCRFieldPaymentMethodMapper ocrFieldPaymentMethodMapper;
+    private OCRFieldPaymentMethodMapper ocrFieldPaymentMethodMapper;
 
     private static GrantOfRepresentationData caseData;
 
