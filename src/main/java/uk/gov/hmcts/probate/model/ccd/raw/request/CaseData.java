@@ -381,6 +381,8 @@ public class CaseData {
     private final String domicilityCountry;
     private final List<CollectionMember<EstateItem>> ukEstate;
     private final String domicilityIHTCert;
+    private final String solsEntrustingDoc;
+    private final String solsDomicilityCert;
     private final String entitledToApply;
     private final String entitledToApplyOther;
     private final String notifiedApplicants;
@@ -585,7 +587,7 @@ public class CaseData {
     }
 
     private boolean isSolicitorCreatedGrant(String solsWillType) {
-        return (solsWillType != null);
+        return (solsWillType != null && solsFeeAccountNumber == null);
     }
 
     private List<CollectionMember<AdditionalExecutor>> mapAdditionalExecutorsApplying(List<CollectionMember<AdditionalExecutorApplying>> additionalExecutors) {
