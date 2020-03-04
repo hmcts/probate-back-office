@@ -531,6 +531,10 @@ public class CaseData {
 
     private final String boAssembleLetterSendToBulkPrintRequested;
 
+    private final String grantDelayedNotificationDate;
+    private final String grantStoppedDate;
+    private final String grantDelayedNotificationSent;
+
     @Getter(lazy = true)
     private final List<CollectionMember<AdditionalExecutor>> executorsApplyingForLegalStatement = getAllExecutors(true);
 
