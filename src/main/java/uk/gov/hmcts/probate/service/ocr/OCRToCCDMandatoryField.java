@@ -4,15 +4,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
-import uk.gov.hmcts.probate.model.ccd.ocr.CaveatSolicitorMandatoryFields;
-import uk.gov.hmcts.probate.model.ccd.ocr.IntestacyMandatoryFields;
-import uk.gov.hmcts.probate.model.ccd.ocr.GORMandatoryFields;
 import uk.gov.hmcts.probate.model.ccd.ocr.CaveatCitizenMandatoryFields;
+import uk.gov.hmcts.probate.model.ccd.ocr.CaveatSolicitorMandatoryFields;
+import uk.gov.hmcts.probate.model.ccd.ocr.GORMandatoryFields;
+import uk.gov.hmcts.probate.model.ccd.ocr.IntestacyMandatoryFields;
 import uk.gov.hmcts.probate.model.ocr.OCRField;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.ArrayList;
 import java.util.stream.Stream;
 
 @Slf4j
@@ -39,8 +38,7 @@ public class OCRToCCDMandatoryField {
     private static final String SOLICTOR_KEY_REPRESENTATIVE_NAME = "solsSolicitorRepresentativeName";
     private static final String SOLICTOR_KEY_FIRM_NAME = "solsSolicitorFirmName";
 
-    public List<String> ocrToCCDMandatoryFields(List<OCRField> ocrFields, FormType formType) {
-        List<String> warnings = new ArrayList<String>();
+    public List<String> ocrToCCDMandatoryFields(List<OCRField> ocrFields, FormType formType, List<String> warnings) {
         HashMap<String, String> ocrFieldValues = new HashMap<String, String>();
         boolean isSolicitorForm = false;
 
@@ -142,6 +140,37 @@ public class OCRToCCDMandatoryField {
                         warnings.add(String.format(MANDATORY_FIELD_WARNING_STIRNG, DEPENDANT_DESC_IHTFORMID, DEPENDANT_KEY_IHTFORMID));
                     }
                 }
+                break;
+            default:
+                log.error("Error '{}' does not match a known form-type.", formType);
+        }
+
+        return warnings;
+    }
+
+    public List<String> ocrToCCDNonMandatoryWarnings(List<OCRField> ocrFields, FormType formType, List<String> warnings) {
+        HashMap<String, String> ocrFieldValues = new HashMap<String, String>();
+        boolean isSolicitorForm = false;
+
+        ocrFields.forEach(ocrField -> {
+            ocrFieldValues.put(ocrField.getName(), ocrField.getValue());
+        });
+
+        switch (formType) {
+            case PA8A:
+                if (StringUtils.isNotBlank(ocrFieldValues.get(SOLICTOR_KEY_REPRESENTATIVE_NAME))
+                        || (StringUtils.isNotBlank(ocrFieldValues.get(SOLICTOR_KEY_FIRM_NAME)))) {
+                    isSolicitorForm = true;
+                }
+
+                if (isSolicitorForm) {
+                    log.warn("Solictor details have been provided this will be flagged as a solicitor case.");
+                    warnings.add("The form has been flagged as a Solictor case.");
+                }
+                break;
+            case PA1A:
+                break;
+            case PA1P:
                 break;
             default:
                 log.error("Error '{}' does not match a known form-type.", formType);
