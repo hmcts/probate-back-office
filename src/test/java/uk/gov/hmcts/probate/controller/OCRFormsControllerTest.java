@@ -83,7 +83,7 @@ public class OCRFormsControllerTest {
 
     @Test
     public void testWarningsPopulateListAndReturnOkWithWarningsResponseState() throws Exception {
-        when(ocrToCCDMandatoryField.ocrToCCDMandatoryFields(any(), any(), any())).thenReturn(warnings);
+        when(ocrToCCDMandatoryField.ocrToCCDNonMandatoryWarnings(any(), any(), any())).thenReturn(warnings);
         mockMvc.perform(post("/forms/PA1P/validate-ocr")
                 .content(ocrPayload)
                 .contentType(MediaType.APPLICATION_JSON))

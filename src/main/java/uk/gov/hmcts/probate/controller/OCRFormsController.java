@@ -50,9 +50,12 @@ public class OCRFormsController {
         FormType.isFormTypeValid(formType);
         List<String> warnings = new ArrayList<String>();
 
-
         warnings = ocrToCCDMandatoryField
                 .ocrToCCDMandatoryFields(ocrPopulatedValueMapper.ocrPopulatedValueMapper(ocrRequest.getOcrFields()),
+                        FormType.valueOf(formType), warnings);
+
+        warnings = ocrToCCDMandatoryField
+                .ocrToCCDNonMandatoryWarnings(ocrPopulatedValueMapper.ocrPopulatedValueMapper(ocrRequest.getOcrFields()),
                         FormType.valueOf(formType), warnings);
 
         ValidationResponse validationResponse =
