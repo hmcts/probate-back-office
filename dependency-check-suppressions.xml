@@ -296,6 +296,8 @@
         <cve>CVE-2019-16942</cve>
         <cve>CVE-2019-16943</cve>
         <cve>CVE-2019-20330</cve>
+        <cve>CVE-2019-14893</cve>
+        <cve>CVE-2019-14892</cve>
     </suppress>
     <suppress>
         <notes><![CDATA[
