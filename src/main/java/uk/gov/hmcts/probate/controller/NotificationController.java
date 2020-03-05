@@ -8,6 +8,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
@@ -19,6 +20,7 @@ import uk.gov.hmcts.probate.service.BulkPrintService;
 import uk.gov.hmcts.probate.service.DocumentGeneratorService;
 import uk.gov.hmcts.probate.service.DocumentsReceivedNotificationService;
 import uk.gov.hmcts.probate.service.EventValidationService;
+import uk.gov.hmcts.probate.service.GrantDelayedNotificationService;
 import uk.gov.hmcts.probate.service.InformationRequestService;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.RedeclarationNotificationService;
@@ -62,6 +64,7 @@ public class NotificationController {
     private final GrantOfRepresentationDocmosisMapperService gorDocmosisService;
     private final InformationRequestService informationRequestService;
     private final RedeclarationNotificationService redeclarationNotificationService;
+    private final GrantDelayedNotificationService grantDelayedNotificationService;
 
     @PostMapping(path = "/case-stopped")
     public ResponseEntity<CallbackResponse> sendCaseStoppedNotification(
@@ -151,5 +154,10 @@ public class NotificationController {
     @PostMapping(path = "/redeclaration-sot")
     public ResponseEntity<CallbackResponse> redeclarationSot(@RequestBody CallbackRequest callbackRequest) {
         return ResponseEntity.ok(redeclarationNotificationService.handleRedeclarationNotification(callbackRequest));
+    }
+
+    @PostMapping(path = "/grant-delayed")
+    public ResponseEntity<String> grantDelayed(@RequestParam("date") final String date) {
+        return ResponseEntity.ok(grantDelayedNotificationService.handleGrantDelayedNotification(date));
     }
 }

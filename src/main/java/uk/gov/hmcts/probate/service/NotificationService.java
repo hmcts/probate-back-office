@@ -230,6 +230,24 @@ public class NotificationService {
         return sentEmail;
     }
 
+    public Document sendGrantDelayedEmail(ReturnedCaseDetails caseDetails) throws NotificationClientException {
+
+        Registry registry = registriesProperties.getRegistries().get(caseDetails.getData().getRegistryLocation().toLowerCase());
+        String templateId = notificationTemplates.getEmail().get(caseDetails.getData().getLanguagePreference())
+            .get(caseDetails.getData().getApplicationType())
+            .getGrantDelayed();
+        Map<String, Object> personalisation = grantOfRepresentationPersonalisationService.getPersonalisation(caseDetails, registry);
+        String reference = LocalDateTime.now().format(EXCELA_DATE);
+        String emailAddress = caseDetails.getData().getPrimaryApplicantEmailAddress();
+        SendEmailResponse response;
+
+        response = notificationClient.sendEmail(templateId, emailAddress, personalisation, reference);
+        log.info("Grant delayed email reference response: {}", response.getReference());
+
+        return getGeneratedSentEmailDocument(response, emailAddress, SENT_EMAIL);
+    }
+
+
     private Document getGeneratedSentEmailDocument(SendEmailResponse response, String emailAddress, DocumentType docType) {
         SentEmail sentEmail = SentEmail.builder()
                 .sentOn(LocalDateTime.now().format(formatter))
