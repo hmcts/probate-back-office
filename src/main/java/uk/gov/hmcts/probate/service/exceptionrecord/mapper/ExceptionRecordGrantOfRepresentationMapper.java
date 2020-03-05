@@ -75,9 +75,9 @@ public interface ExceptionRecordGrantOfRepresentationMapper {
     @Mapping(target = "solsSolicitorAddress", source = "ocrFields", qualifiedBy = {ToSolicitorAddress.class})
     @Mapping(target = "solsSolicitorFirmName", source = "ocrFields.solsSolicitorFirmName")
     @Mapping(target = "solsSolicitorAppReference", source = "ocrFields.solsSolicitorAppReference")
-    @Mapping(target = "solsFeeAccountNumber", source = "solsFeeAccountNumber")
-    @Mapping(target = "solsSolicitorEmail", source = "solsSolicitorEmail")
-    @Mapping(target = "solsSolicitorPhoneNumber", source = "solsSolicitorPhoneNumber")
+    @Mapping(target = "solsFeeAccountNumber", source = "ocrFields.solsFeeAccountNumber")
+    @Mapping(target = "solsSolicitorEmail", source = "ocrFields.solsSolicitorEmail")
+    @Mapping(target = "solsSolicitorPhoneNumber", source = "ocrFields.solsSolicitorPhoneNumber")
 
     @Mapping(target = "deceasedForenames", source = "ocrFields.deceasedForenames")
     @Mapping(target = "deceasedSurname", source = "ocrFields.deceasedSurname")
