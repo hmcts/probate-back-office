@@ -11,7 +11,6 @@ import uk.gov.hmcts.probate.model.ccd.ocr.IntestacyCitizenMandatoryFields;
 import uk.gov.hmcts.probate.model.ccd.ocr.IntestacySolicitorMandatoryFields;
 import uk.gov.hmcts.probate.model.ocr.OCRField;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Stream;
@@ -31,6 +30,7 @@ public class OCRToCCDMandatoryField {
     private static final String DEPENDANT_KEY_PAPERPAYMENTMETHOD = "paperPaymentMethod";
     private static final String DEPENDANT_KEY_SOLSFEEACCOUNTNUMBER = "solsFeeAccountNumber";
     private static final String DEPENDANT_DESC_SOLSFEEACCOUNTNUMBER = "Solicitors fee account number";
+    private static final String DEPENDANT_KEY_SOLSWILLTYPE = "solsWillType";
 
     private static final String MANDATORY_KEY_EXECUTORSNOTAPPLYING_EXECUTORNAME =
             "executorsNotApplying_%s_notApplyingExecutorName";
@@ -43,8 +43,7 @@ public class OCRToCCDMandatoryField {
 
     private static final String SOLICTOR_KEY_IS_APPLYING = "solsSolicitorIsApplying";
 
-    public List<String> ocrToCCDMandatoryFields(List<OCRField> ocrFields, FormType formType) {
-        List<String> warnings = new ArrayList<String>();
+    public List<String> ocrToCCDMandatoryFields(List<OCRField> ocrFields, FormType formType, List<String> warnings) {
         HashMap<String, String> ocrFieldValues = new HashMap<String, String>();
         boolean isSolicitorForm = false;
 
@@ -174,6 +173,50 @@ public class OCRToCCDMandatoryField {
                         log.warn("{} was not found in ocr fields", DEPENDANT_KEY_IHTFORMID);
                         warnings.add(String.format(MANDATORY_FIELD_WARNING_STIRNG, DEPENDANT_DESC_IHTFORMID, DEPENDANT_KEY_IHTFORMID));
                     }
+                }
+                break;
+            default:
+                log.error("Error '{}' does not match a known form-type.", formType);
+        }
+
+        return warnings;
+    }
+
+    public List<String> ocrToCCDNonMandatoryWarnings(List<OCRField> ocrFields, FormType formType, List<String> warnings) {
+        HashMap<String, String> ocrFieldValues = new HashMap<String, String>();
+        boolean isSolicitorForm = false;
+
+        ocrFields.forEach(ocrField -> {
+            ocrFieldValues.put(ocrField.getName(), ocrField.getValue());
+        });
+
+        switch (formType) {
+            case PA8A:
+                break;
+            case PA1A:
+                if (ocrFieldValues.containsKey(SOLICTOR_KEY_IS_APPLYING)) {
+                    isSolicitorForm = BooleanUtils.toBoolean(ocrFieldValues.get(SOLICTOR_KEY_IS_APPLYING));
+                }
+
+                if (isSolicitorForm) {
+                    log.warn("Solictor details have been provided this will be flagged as a solicitor case.");
+                    warnings.add("The form has been flagged as a Solictor case.");
+                }
+                break;
+            case PA1P:
+                if (ocrFieldValues.containsKey(SOLICTOR_KEY_IS_APPLYING)) {
+                    isSolicitorForm = BooleanUtils.toBoolean(ocrFieldValues.get(SOLICTOR_KEY_IS_APPLYING));
+                }
+
+                if (isSolicitorForm) {
+                    log.warn("Solictor details have been provided this will be flagged as a solicitor case.");
+                    warnings.add("The form has been flagged as a Solictor case.");
+                }
+
+                if (ocrFieldValues.containsKey(DEPENDANT_KEY_SOLSWILLTYPE)
+                        && StringUtils.isNotBlank(ocrFieldValues.get(DEPENDANT_KEY_SOLSWILLTYPE))) {
+                    log.warn("Solictor details include a will type to be flagged.");
+                    warnings.add("A Solicitor Will type has been provided.");
                 }
                 break;
             default:

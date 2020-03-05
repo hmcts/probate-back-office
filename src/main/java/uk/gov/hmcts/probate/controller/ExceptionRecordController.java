@@ -52,10 +52,6 @@ public class ExceptionRecordController {
     private static final String OCR_EXCEPTION_WARNING_PREFIX = "OCR Data Mapping Error: ";
     private static final String OCR_EXCEPTION_ERROR = "OCR fields could not be mapped to a case";
 
-    public static final String PA8A_FORM = FormType.PA8A.name();
-    public static final String PA1A_FORM = FormType.PA1A.name();
-    public static final String PA1P_FORM = FormType.PA1P.name();
-
     @Autowired
     ExceptionRecordService erService;
 
@@ -75,8 +71,10 @@ public class ExceptionRecordController {
         FormType formType = FormType.valueOf(erRequest.getFormType());
         SuccessfulTransformationResponse callbackResponse = SuccessfulTransformationResponse.builder().build();
         List<String> errors = new ArrayList<>();
-        List<String> warnings = ocrToCCDMandatoryField
-                .ocrToCCDMandatoryFields(ocrPopulatedValueMapper.ocrPopulatedValueMapper(erRequest.getOcrFields()), formType);
+        List<String> warnings = new ArrayList<String>();
+
+        warnings = ocrToCCDMandatoryField
+                .ocrToCCDMandatoryFields(ocrPopulatedValueMapper.ocrPopulatedValueMapper(erRequest.getOcrFields()), formType, warnings);
 
         if (!warnings.isEmpty()) {
             errors.add("Please resolve all warnings before creating this case");
