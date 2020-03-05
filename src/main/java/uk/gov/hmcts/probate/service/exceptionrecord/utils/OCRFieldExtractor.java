@@ -4,6 +4,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.model.ocr.OCRField;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Slf4j
@@ -36,5 +38,9 @@ public class OCRFieldExtractor {
         return (get(ocrFields, name1) + " "
                 + get(ocrFields, name2) + " "
                 + get(ocrFields, name3)).replace("null", "").replaceAll("\\s{2,}", " ").trim();
+    }
+
+    public static List<String> splitFullname(String fullName) {
+        return new ArrayList<>(Arrays.asList(fullName.split(" ")));
     }
 }

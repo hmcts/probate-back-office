@@ -36,6 +36,7 @@ public class ExceptionRecordOCRFields {
     private final String feeForCopiesPaperForm;
     private final String totalFeePaperForm;
     private final String paperPaymentMethod;
+    private final String solsFeeAccountNumber;
     private final String paymentReferenceNumberPaperform;
     private final String primaryApplicantForenames;
     private final String primaryApplicantSurname;
@@ -76,6 +77,17 @@ public class ExceptionRecordOCRFields {
     private final String executorsApplying2applyingExecutorEmail;
     private final String executorsApplying2applyingExecutorDifferentNameToWill;
     private final String executorsApplying2applyingExecutorOtherNames;
+    private final String solsSolicitorIsApplying;
+    private final String solsSolicitorRepresentativeName;
+    private final String solsSolicitorFirmName;
+    private final String solsSolicitorAppReference;
+    private final String solsSolicitorAddressLine1;
+    private final String solsSolicitorAddressLine2;
+    private final String solsSolicitorAddressTown;
+    private final String solsSolicitorAddressCounty;
+    private final String solsSolicitorAddressPostCode;
+    private final String solsSolicitorEmail;
+    private final String solsSolicitorPhoneNumber;
     private final String deceasedDomicileInEngWales;
     private final String deceasedMartialStatus;
     private final String dateOfMarriageOrCP;
@@ -102,6 +114,9 @@ public class ExceptionRecordOCRFields {
     private final String adoptiveRelatives5name;
     private final String adoptiveRelatives5relationship;
     private final String adoptiveRelatives5adoptedInOrOut;
+    private final String solsWillType;
+    private final String solsWillTypeReason;
+    private final String bilingualGrantRequested;
     private final String spouseOrPartner;
     private final String childrenUnderEighteenSurvived;
     private final String childrenOverEighteenSurvived;
