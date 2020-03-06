@@ -25,6 +25,7 @@ public class GrantDelayedNotificationService {
     public String handleGrantDelayedNotification(String date) {
         String processedCases = "";
         List<ReturnedCaseDetails> foundCases = caseQueryService.findCasesForGrantDelayed(date);
+        log.info("Found cases for grant delayed notification: {}", foundCases.size());
         for (ReturnedCaseDetails foundCase : foundCases) {
             processedCases += "," +sendNotificationForCase(foundCase);
         }
