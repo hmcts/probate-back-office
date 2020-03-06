@@ -1912,8 +1912,6 @@ public class CallbackResponseTransformerTest {
                 .attorneyOnBehalfOfNameAndAddress(attorneyList)
                 .adopted(YES)
                 .adoptiveRelatives(adoptedRelatives)
-                .solsEntrustingDoc(null)
-                .solsDomicilityCert(null)
                 .domicilityIHTCert(YES)
                 .entitledToApply(YES)
                 .entitledToApplyOther(YES)
@@ -2032,8 +2030,6 @@ public class CallbackResponseTransformerTest {
                 .attorneyOnBehalfOfNameAndAddress(attorneyList)
                 .adopted(YES)
                 .adoptiveRelatives(adoptedRelatives)
-                .solsEntrustingDoc(null)
-                .solsDomicilityCert(null)
                 .domicilityIHTCert(YES)
                 .entitledToApply(YES)
                 .entitledToApplyOther(YES)
@@ -2784,8 +2780,6 @@ public class CallbackResponseTransformerTest {
         assertEquals(YES, callbackResponse.getData().getForeignAsset());
         assertEquals("123", callbackResponse.getData().getForeignAssetEstateValue());
         assertEquals(DECEASED_DATE_OF_DEATH_TYPE, callbackResponse.getData().getDateOfDeathType());
-        assertNull(callbackResponse.getData().getSolsEntrustingDoc());
-        assertNull(callbackResponse.getData().getSolsDomicilityCert());
 
         assertEquals(DECEASED_DIVORCED_IN_ENGLAND_OR_WALES, callbackResponse.getData().getDeceasedDivorcedInEnglandOrWales());
         assertEquals(PRIMARY_APPLICANT_ADOPTION_IN_ENGLAND_OR_WALES,

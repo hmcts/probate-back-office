@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.changerule.ApplicantSiblingsRule;
 import uk.gov.hmcts.probate.changerule.ChangeRule;
 import uk.gov.hmcts.probate.changerule.DiedOrNotApplyingRule;
+import uk.gov.hmcts.probate.changerule.DomicilityRule;
 import uk.gov.hmcts.probate.changerule.EntitledMinorityRule;
 import uk.gov.hmcts.probate.changerule.ExecutorsRule;
 import uk.gov.hmcts.probate.changerule.LifeInterestRule;
@@ -64,6 +65,7 @@ public class ConfirmationResponseService {
 
     private final ApplicantSiblingsRule applicantSiblingsConfirmationResponseRule;
     private final DiedOrNotApplyingRule diedOrNotApplyingRule;
+    private final DomicilityRule domicilityConfirmationResponseRule;
     private final EntitledMinorityRule entitledMinorityRule;
     private final ExecutorsRule executorsConfirmationResponseRule;
     private final LifeInterestRule lifeInterestRule;
@@ -105,7 +107,10 @@ public class ConfirmationResponseService {
 
     private TemplateResponse generateStopBodyMarkdown(CaseData caseData) {
 
-        Optional<TemplateResponse> response = Optional.of(new TemplateResponse(null));
+        Optional<TemplateResponse> response = getStopBodyMarkdown(caseData, domicilityConfirmationResponseRule, STOP_BODY);
+        if (response.isPresent()) {
+            return response.get();
+        }
 
         if (GRANT_TYPE_PROBATE.equals(caseData.getSolsWillType())) {
             response = getStopBodyMarkdown(caseData, executorsConfirmationResponseRule, STOP_BODY);
