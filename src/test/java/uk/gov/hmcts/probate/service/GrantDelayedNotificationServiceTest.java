@@ -6,6 +6,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
+import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
@@ -64,6 +65,7 @@ public class GrantDelayedNotificationServiceTest {
             .primaryApplicantEmailAddress("test1@test1.com")
             .primaryApplicantForenames("Forename1")
             .primaryApplicantSurname("Surname1")
+            .applicationType(ApplicationType.PERSONAL)
             .build();
 
         caseData2 = CaseData.builder()
@@ -71,13 +73,15 @@ public class GrantDelayedNotificationServiceTest {
             .primaryApplicantEmailAddress("test2@test2.com")
             .primaryApplicantForenames("Forename2")
             .primaryApplicantSurname("Surname2")
+            .applicationType(ApplicationType.PERSONAL)
             .build();
 
         caseData3 = CaseData.builder()
             .registryLocation("Registry3")
-            .primaryApplicantEmailAddress("test3@test3.com")
+            .solsSolicitorEmail("test3@test3.com")
             .primaryApplicantForenames("Forename3")
             .primaryApplicantSurname("Surname3")
+            .applicationType(ApplicationType.SOLICITOR)
             .build();
 
         returnedCaseDetails1 = new ReturnedCaseDetails(caseData1, null, Long.valueOf(1));

@@ -34,7 +34,10 @@ public class GrantDelayedNotificationService {
 
     private String sendNotificationForCase(ReturnedCaseDetails foundCase) {
         log.info("Preparing to send email to executors for grant delayed notification");
-        CCDData dataForEmailAddress = CCDData.builder().primaryApplicantEmailAddress(foundCase.getData().getPrimaryApplicantEmailAddress()).build();
+        CCDData dataForEmailAddress = CCDData.builder()
+            .primaryApplicantEmailAddress(foundCase.getData().getPrimaryApplicantEmailAddress())
+            .applicationType(foundCase.getData().getApplicationType().getCode())
+            .build();
         List<FieldErrorResponse> emailErrors = emailAddressNotifyApplicantValidationRule.validate(dataForEmailAddress);
         if (!emailErrors.isEmpty()) {
             return "<" + emailErrors.get(0).getMessage() + ">";
