@@ -17,6 +17,7 @@ import uk.gov.hmcts.probate.exception.BadRequestException;
 import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.DocumentIssueType;
 import uk.gov.hmcts.probate.model.DocumentStatus;
+import uk.gov.hmcts.probate.model.GrantDelayedResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
@@ -39,6 +40,7 @@ import uk.gov.service.notify.NotificationClientException;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -495,10 +497,11 @@ public class NotificationControllerTest {
     
     @Test
     public void shouldReturnSuccessfulResponseForGrantDelayed() throws Exception {
-        when(grantDelayedNotificationService.handleGrantDelayedNotification("aDate")).thenReturn("returnString");
+        GrantDelayedResponse response = GrantDelayedResponse.builder().delayResponseData(Arrays.asList("returnString")).build();
+        when(grantDelayedNotificationService.handleGrantDelayedNotification("aDate")).thenReturn(response);
         mockMvc.perform(post(GRANT_DELAYED).contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
-            .andExpect(content().string(containsString("returnString")));
+            .andExpect(content().string(containsString("")));
 
         verify(grantDelayedNotificationService, times(1)).handleGrantDelayedNotification(anyString());
 

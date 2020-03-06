@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import uk.gov.hmcts.probate.model.DocumentType;
+import uk.gov.hmcts.probate.model.GrantDelayedResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
@@ -157,8 +158,10 @@ public class NotificationController {
         return ResponseEntity.ok(redeclarationNotificationService.handleRedeclarationNotification(callbackRequest));
     }
 
-    @PostMapping(path = "/grant-delayed", produces = MediaType.TEXT_HTML_VALUE)
-    public ResponseEntity<String> grantDelayed(@RequestParam("date") final String date) {
-        return  ResponseEntity.ok(grantDelayedNotificationService.handleGrantDelayedNotification(date));
+    @PostMapping(path = "/grant-delayed")
+    public ResponseEntity<GrantDelayedResponse> grantDelayed(@RequestParam("date") final String date) {
+        GrantDelayedResponse grantDelayedResponse = grantDelayedNotificationService.handleGrantDelayedNotification(date);
+        log.info("Grants delayed for: {} grants", grantDelayedResponse.getDelayResponseData().size());
+        return  ResponseEntity.ok(grantDelayedResponse);
     }
 }

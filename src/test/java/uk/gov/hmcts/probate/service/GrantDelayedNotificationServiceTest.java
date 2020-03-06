@@ -7,6 +7,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
 import uk.gov.hmcts.probate.model.ApplicationType;
+import uk.gov.hmcts.probate.model.GrantDelayedResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
@@ -107,9 +108,13 @@ public class GrantDelayedNotificationServiceTest {
         when(notificationService.sendGrantDelayedEmail(returnedCaseDetails3)).thenReturn(Document.builder()
             .documentFileName(SENT_EMAIL_FILE_NAME).build());
 
-        String response = grantDelayedNotificationService.handleGrantDelayedNotification(dateString);
+        GrantDelayedResponse response = grantDelayedNotificationService.handleGrantDelayedNotification(dateString);
+        assertThat(response.getDelayResponseData().size(), equalTo(3));
 
-        assertThat(response, equalTo(",1,2,3"));
+        assertThat(response.getDelayResponseData().size(), equalTo(3));
+        assertThat(response.getDelayResponseData().get(0), equalTo("1"));
+        assertThat(response.getDelayResponseData().get(1), equalTo("2"));
+        assertThat(response.getDelayResponseData().get(2), equalTo("3"));
     }
 
     @Test
@@ -122,11 +127,14 @@ public class GrantDelayedNotificationServiceTest {
             .documentFileName(SENT_EMAIL_FILE_NAME).build());
         when(notificationService.sendGrantDelayedEmail(returnedCaseDetails2)).thenReturn(Document.builder()
             .documentFileName(SENT_EMAIL_FILE_NAME).build());
-        when(notificationService.sendGrantDelayedEmail(returnedCaseDetails3)).thenThrow(NotificationClientException.class);
+        when(notificationService.sendGrantDelayedEmail(returnedCaseDetails3)).thenThrow(new NotificationClientException("notificationError"));
 
-        String response = grantDelayedNotificationService.handleGrantDelayedNotification(dateString);
+        GrantDelayedResponse response = grantDelayedNotificationService.handleGrantDelayedNotification(dateString);
 
-        assertThat(response, equalTo(",1,2,*3*"));
+        assertThat(response.getDelayResponseData().size(), equalTo(3));
+        assertThat(response.getDelayResponseData().get(0), equalTo("1"));
+        assertThat(response.getDelayResponseData().get(1), equalTo("2"));
+        assertThat(response.getDelayResponseData().get(2), equalTo("<3:notificationError>"));
     }
     
     @Test
@@ -139,10 +147,13 @@ public class GrantDelayedNotificationServiceTest {
         List<FieldErrorResponse> errorsList = new ArrayList<>();
         errorsList.add(FieldErrorResponse.builder().message("emailError").build());
         when(emailAddressNotifyApplicantValidationRule.validate(any())).thenReturn(errorsList);
-        
-        String response = grantDelayedNotificationService.handleGrantDelayedNotification(dateString);
 
-        assertThat(response, equalTo(",<emailError>,<emailError>,<emailError>"));
+        GrantDelayedResponse response = grantDelayedNotificationService.handleGrantDelayedNotification(dateString);
+
+        assertThat(response.getDelayResponseData().size(), equalTo(3));
+        assertThat(response.getDelayResponseData().get(0), equalTo("<1:emailError>"));
+        assertThat(response.getDelayResponseData().get(1), equalTo("<2:emailError>"));
+        assertThat(response.getDelayResponseData().get(2), equalTo("<3:emailError>"));
     }
 
 

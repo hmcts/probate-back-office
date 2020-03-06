@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
+import uk.gov.hmcts.probate.model.GrantDelayedResponse;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
@@ -11,6 +12,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 import uk.gov.hmcts.probate.validator.EmailAddressNotifyApplicantValidationRule;
 import uk.gov.service.notify.NotificationClientException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -22,14 +24,14 @@ public class GrantDelayedNotificationService {
     private final EmailAddressNotifyApplicantValidationRule emailAddressNotifyApplicantValidationRule;
     private final CaseQueryService caseQueryService;
 
-    public String handleGrantDelayedNotification(String date) {
-        String processedCases = "";
+    public GrantDelayedResponse handleGrantDelayedNotification(String date) {
+        List<String> delayedRepsonseData = new ArrayList<>();
         List<ReturnedCaseDetails> foundCases = caseQueryService.findCasesForGrantDelayed(date);
         log.info("Found cases for grant delayed notification: {}", foundCases.size());
         for (ReturnedCaseDetails foundCase : foundCases) {
-            processedCases += "," + sendNotificationForCase(foundCase);
+            delayedRepsonseData.add(sendNotificationForCase(foundCase));
         }
-        return processedCases;
+        return GrantDelayedResponse.builder().delayResponseData(delayedRepsonseData).build();
     }
 
     private String sendNotificationForCase(ReturnedCaseDetails foundCase) {
@@ -39,10 +41,11 @@ public class GrantDelayedNotificationService {
             .applicationType(foundCase.getData().getApplicationType().getCode())
             .build();
         List<FieldErrorResponse> emailErrors = emailAddressNotifyApplicantValidationRule.validate(dataForEmailAddress);
-        if (!emailErrors.isEmpty()) {
-            return "<" + emailErrors.get(0).getMessage() + ">";
-        }
         String caseId = foundCase.getId().toString();
+        if (!emailErrors.isEmpty()) {
+            log.error("Cannot send Grant Delayed notification, message: {}", emailErrors.get(0).getMessage());
+            return getErroredCaseIdentifier(caseId, emailErrors.get(0).getMessage());
+        }
         try {
             Document emailDocument = notificationService.sendGrantDelayedEmail(foundCase);
             foundCase.getData().getProbateNotificationsGenerated()
@@ -50,10 +53,14 @@ public class GrantDelayedNotificationService {
             updateFoundCase(foundCase);
         } catch (NotificationClientException e) {
             log.error("Error sending email for Grant Delayed with exception: {}. Has message: {}", e.getClass(), e.getMessage());
-            caseId = "*" + caseId + "*";
+            caseId = getErroredCaseIdentifier(caseId, e.getMessage());
         }
 
         return caseId;
+    }
+
+    private String getErroredCaseIdentifier(String caseId, String message) {
+        return "<" + caseId + ":" + message +">";
     }
 
     private void updateFoundCase(ReturnedCaseDetails foundCase) {
