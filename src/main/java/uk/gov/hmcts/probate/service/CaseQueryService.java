@@ -46,7 +46,7 @@ public class CaseQueryService {
     private static final String CASE_TYPE_ID = "ctid";
     private static final CaseType CASE_TYPE = CaseType.GRANT_OF_REPRESENTATION;
     private static final String STATES_MATCH_GRANT_DELAYED[] = {"BOReadyForExamination", "BOCaseMatchingExamining", "BOExamining",
-        "BOReadyToIssue", "BOCaseQA", "BOCaseMatchingIssueGrant"};
+        "BOReadyToIssue", "BOCaseQA", "BOCaseMatchingIssueGrant", "CasePaymentFailed"}; //TODO remove CasePaymentFailed
     private static final String KEY_GRANT_DELAYED_NOTIFICATION_DATE = "created_date";  //TODO change to "data.grantDelayedNotificationDate";
     private final RestTemplate restTemplate;
     private final AppInsights appInsights;
@@ -89,7 +89,7 @@ public class CaseQueryService {
         }
         oredStateChecks.minimumShouldMatch(1);
         
-        query.should(oredStateChecks);
+        query.must(oredStateChecks);
         query.must(matchQuery(KEY_GRANT_DELAYED_NOTIFICATION_DATE, queryDate));
 
         String jsonQuery = new SearchSourceBuilder().query(query).size(10000).toString();
