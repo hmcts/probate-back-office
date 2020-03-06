@@ -17,7 +17,7 @@ import static uk.gov.hmcts.probate.model.Constants.BUSINESS_ERROR;
 
 @Component
 @RequiredArgsConstructor
-class EmailAddressNotifyApplicantValidationRule implements EmailAddressNotifyValidationRule {
+public class EmailAddressNotifyApplicantValidationRule implements EmailAddressNotifyValidationRule {
 
     private final BusinessValidationMessageService businessValidationMessageService;
 

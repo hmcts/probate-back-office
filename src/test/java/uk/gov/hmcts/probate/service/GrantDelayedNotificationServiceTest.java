@@ -5,10 +5,12 @@ import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
+import uk.gov.hmcts.probate.validator.EmailAddressNotifyApplicantValidationRule;
 import uk.gov.service.notify.NotificationClientException;
 
 import java.util.ArrayList;
@@ -17,6 +19,7 @@ import java.util.List;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 public class GrantDelayedNotificationServiceTest {
@@ -27,6 +30,9 @@ public class GrantDelayedNotificationServiceTest {
     @Mock
     private NotificationService notificationService;
 
+    @Mock
+    private EmailAddressNotifyApplicantValidationRule emailAddressNotifyApplicantValidationRule;
+    
     @Mock
     private CaseQueryService caseQueryService;
 
@@ -118,5 +124,22 @@ public class GrantDelayedNotificationServiceTest {
 
         assertThat(response, equalTo(",1,2,*3*"));
     }
+    
+    @Test
+    public void shouldThrowExceptionForMissingEmailAddressForGrantDelayed() throws NotificationClientException {
+        documents.add(sentEmail);
+
+        String dateString = "31-12-2020";
+        when(caseQueryService.findCasesForGrantDelayed(dateString)).thenReturn(returnedCases);
+
+        List<FieldErrorResponse> errorsList = new ArrayList<>();
+        errorsList.add(FieldErrorResponse.builder().message("emailError").build());
+        when(emailAddressNotifyApplicantValidationRule.validate(any())).thenReturn(errorsList);
+        
+        String response = grantDelayedNotificationService.handleGrantDelayedNotification(dateString);
+
+        assertThat(response, equalTo(",<emailError>,<emailError>,<emailError>"));
+    }
+
 
 }
