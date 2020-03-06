@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.changerule.ApplicantSiblingsRule;
 import uk.gov.hmcts.probate.changerule.DiedOrNotApplyingRule;
+import uk.gov.hmcts.probate.changerule.DomicilityRule;
 import uk.gov.hmcts.probate.changerule.EntitledMinorityRule;
 import uk.gov.hmcts.probate.changerule.ExecutorsRule;
 import uk.gov.hmcts.probate.changerule.LifeInterestRule;
@@ -40,6 +41,7 @@ public class StateChangeService {
 
     private final ApplicantSiblingsRule applicantSiblingsRule;
     private final DiedOrNotApplyingRule diedOrNotApplyingRule;
+    private final DomicilityRule domicilityRule;
     private final EntitledMinorityRule entitledMinorityRule;
     private final ExecutorsRule executorsRule;
     private final LifeInterestRule lifeInterestRule;
@@ -53,11 +55,23 @@ public class StateChangeService {
     private final CallbackResponseTransformer callbackResponseTransformer;
 
 
+    public Optional<String> getChangedStateForCaseUpdate(CaseData caseData) {
+        if (domicilityRule.isChangeNeeded(caseData)) {
+            return Optional.of(STATE_STOPPED);
+        }
+        if (executorsRule.isChangeNeeded(caseData)) {
+            return Optional.of(STATE_STOPPED);
+        }
+        return Optional.empty();
+    }
+
     public Optional<String> getChangedStateForProbateUpdate(CaseData caseData) {
         if (noOriginalWillRule.isChangeNeeded(caseData)) {
             return Optional.of(STATE_STOPPED);
         }
-
+        if (domicilityRule.isChangeNeeded(caseData)) {
+            return Optional.of(STATE_STOPPED);
+        }
         if (executorsRule.isChangeNeeded(caseData)) {
             return Optional.of(STATE_STOPPED);
         }
@@ -65,6 +79,10 @@ public class StateChangeService {
     }
 
     public Optional<String> getChangedStateForIntestacyUpdate(CaseData caseData) {
+        if (domicilityRule.isChangeNeeded(caseData)) {
+            return Optional.of(STATE_STOPPED);
+        }
+
         if (minorityInterestRule.isChangeNeeded(caseData)) {
             return Optional.of(STATE_STOPPED);
         }
@@ -89,6 +107,10 @@ public class StateChangeService {
 
     public Optional<String> getChangedStateForAdmonUpdate(CaseData caseData) {
         if (noOriginalWillRule.isChangeNeeded(caseData)) {
+            return Optional.of(STATE_STOPPED);
+        }
+
+        if (domicilityRule.isChangeNeeded(caseData)) {
             return Optional.of(STATE_STOPPED);
         }
 

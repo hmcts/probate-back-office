@@ -632,8 +632,6 @@ public class CallbackResponseTransformer {
                 .domicilityCountry(caseData.getDomicilityCountry())
                 .ukEstate(caseData.getUkEstate())
                 .domicilityIHTCert(caseData.getDomicilityIHTCert())
-                .solsEntrustingDoc(caseData.getSolsEntrustingDoc())
-                .solsDomicilityCert(caseData.getSolsDomicilityCert())
                 .entitledToApply(caseData.getEntitledToApply())
                 .entitledToApplyOther(caseData.getEntitledToApplyOther())
                 .notifiedApplicants(caseData.getNotifiedApplicants())
@@ -708,16 +706,6 @@ public class CallbackResponseTransformer {
             builder
                     .primaryApplicantSecondPhoneNumber(null)
                     .primaryApplicantRelationshipToDeceased(null);
-        }
-
-        if(YES.equals(caseData.getDeceasedDomicileInEngWales())) {
-            builder
-                    .domicilityCountry(null)
-                    .solsEntrustingDoc(null)
-                    .solsDomicilityCert(null);
-        } else if(NO.equals(caseData.getDeceasedDomicileInEngWales())) {
-            builder
-                    .ukEstate(null);
         }
 
         return builder;
