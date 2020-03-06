@@ -55,7 +55,7 @@ public class GrantOfRepresentationPersonalisationService {
     }
 
     public Map<String, Object> getPersonalisation(ReturnedCaseDetails caseDetails, Registry registry) {
-
+ 
         return getPersonalisationFromCaseData(caseDetails.getData(), caseDetails.getId(), registry);
     }
 

@@ -20,16 +20,13 @@ public class GrantDelayedNotificationService {
 
     private final NotificationService notificationService;
     private final EmailAddressExecutorsApplyingValidationRule emailAddressExecutorsApplyingValidationRule;
-    private final CallbackResponseTransformer callbackResponseTransformer;
     private final CaseQueryService caseQueryService;
-    private final CoreCaseDataService coreCaseDataService;
-    private final SecurityUtils securityUtils;
 
     public String handleGrantDelayedNotification(String date) {
         String processedCases = "";
         List<ReturnedCaseDetails> foundCases = caseQueryService.findCasesForGrantDelayed(date);
         for (ReturnedCaseDetails foundCase : foundCases) {
-            processedCases += sendNotificationForCase(foundCase);
+            processedCases += "," +sendNotificationForCase(foundCase);
         }
         return processedCases;
     }

@@ -124,6 +124,7 @@ notifications:
           caveatExtend: "pa-ctsc-caveat-extend"
           requestInformation: "pa-request-information"
           redeclarationSot: "pa-redeclaration-sot"
+          grantDelayed: "pa-grantDelayed"
         solicitor:
           documentReceived: "sol-document-received"
           caseStopped: "sol-case-stopped"
@@ -137,6 +138,7 @@ notifications:
           caveatRaisedSols: "solicitor-caveat-raised"
           requestInformation: "sols-request-information"
           redeclarationSot: "sols-redeclaration-sot"
+          grantDelayed: "sols-grantDelayed"
       welsh:
         personal:
           documentReceived: "pa-document-received-welsh"
@@ -151,6 +153,7 @@ notifications:
           caveatExtend: "pa-ctsc-caveat-extend-welsh"
           requestInformation: "pa-request-information-welsh"
           redeclarationSot: "pa-redeclaration-sot-welsh"
+          grantDelayed: "pa-grantDelayed-welsh"
         solicitor:
           documentReceived: "sol-document-received-welsh"
           caseStopped: "sol-case-stopped-welsh"
@@ -163,6 +166,7 @@ notifications:
           caveatRaisedCtsc: "sols-ctsc-caveat-raised-welsh"
           requestInformation: "sols-request-information-welsh"
           redeclarationSot: "sols-redeclaration-sot-welsh"
+          grantDelayed: "sols-grantDelayed-welsh"
 
 documents:
   templates:

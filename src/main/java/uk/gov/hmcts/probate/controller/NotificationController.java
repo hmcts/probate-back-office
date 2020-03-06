@@ -3,6 +3,7 @@ package uk.gov.hmcts.probate.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -156,8 +157,8 @@ public class NotificationController {
         return ResponseEntity.ok(redeclarationNotificationService.handleRedeclarationNotification(callbackRequest));
     }
 
-    @PostMapping(path = "/grant-delayed")
+    @PostMapping(path = "/grant-delayed", produces = MediaType.TEXT_HTML_VALUE)
     public ResponseEntity<String> grantDelayed(@RequestParam("date") final String date) {
-        return ResponseEntity.ok(grantDelayedNotificationService.handleGrantDelayedNotification(date));
+        return  ResponseEntity.ok(grantDelayedNotificationService.handleGrantDelayedNotification(date));
     }
 }

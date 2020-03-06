@@ -77,6 +77,7 @@ public class CaseQueryService {
     }
 
     public List<ReturnedCaseDetails> findCasesForGrantDelayed(String queryDate) {
+        
         BoolQueryBuilder query = boolQuery();
         BoolQueryBuilder oredStateChecks = boolQuery();
 

@@ -231,13 +231,13 @@ public class NotificationService {
     }
 
     public Document sendGrantDelayedEmail(ReturnedCaseDetails caseDetails) throws NotificationClientException {
-
+ 
         Registry registry = registriesProperties.getRegistries().get(caseDetails.getData().getRegistryLocation().toLowerCase());
         String templateId = notificationTemplates.getEmail().get(caseDetails.getData().getLanguagePreference())
             .get(caseDetails.getData().getApplicationType())
             .getGrantDelayed();
         Map<String, Object> personalisation = grantOfRepresentationPersonalisationService.getPersonalisation(caseDetails, registry);
-        String reference = LocalDateTime.now().format(EXCELA_DATE);
+        String reference = caseDetails.getData().getSolsSolicitorAppReference();
         String emailAddress = caseDetails.getData().getPrimaryApplicantEmailAddress();
         SendEmailResponse response;
 

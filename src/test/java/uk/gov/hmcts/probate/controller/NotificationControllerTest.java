@@ -25,6 +25,7 @@ import uk.gov.hmcts.probate.service.BulkPrintService;
 import uk.gov.hmcts.probate.service.DocumentGeneratorService;
 import uk.gov.hmcts.probate.service.DocumentService;
 import uk.gov.hmcts.probate.service.EventValidationService;
+import uk.gov.hmcts.probate.service.GrantDelayedNotificationService;
 import uk.gov.hmcts.probate.service.InformationRequestCorrespondenceService;
 import uk.gov.hmcts.probate.service.InformationRequestService;
 import uk.gov.hmcts.probate.service.NotificationService;
@@ -44,8 +45,10 @@ import java.util.Map;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -107,6 +110,9 @@ public class NotificationControllerTest {
 
     @MockBean
     private RedeclarationNotificationService redeclarationNotificationService;
+    
+    @MockBean
+    private GrantDelayedNotificationService grantDelayedNotificationService;
 
     @SpyBean
     private DocumentService documentService;
@@ -116,6 +122,7 @@ public class NotificationControllerTest {
     private static final String REQUEST_INFO_DEFAULT_URL = "/notify/request-information-default-values";
     private static final String REQUEST_INFO_URL = "/notify/stopped-information-request";
     private static final String REDECLARATION_SOT = "/notify/redeclaration-sot";
+    private static final String GRANT_DELAYED = "/notify/grant-delayed?date=aDate";
 
     private static final Map<String, Object> EMPTY_MAP = new HashMap();
     private static final Document EMPTY_DOC = Document.builder().documentType(CAVEAT_STOPPED).build();
@@ -484,5 +491,16 @@ public class NotificationControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(content().string(containsString("data")));
+    }
+    
+    @Test
+    public void shouldReturnSuccessfulResponseForGrantDelayed() throws Exception {
+        when(grantDelayedNotificationService.handleGrantDelayedNotification("aDate")).thenReturn("returnString");
+        mockMvc.perform(post(GRANT_DELAYED).contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(content().string(containsString("returnString")));
+
+        verify(grantDelayedNotificationService, times(1)).handleGrantDelayedNotification(anyString());
+
     }
 }
