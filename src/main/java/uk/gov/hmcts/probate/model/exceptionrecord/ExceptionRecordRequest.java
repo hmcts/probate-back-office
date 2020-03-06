@@ -75,7 +75,7 @@ public class ExceptionRecordRequest {
                 .totalFeePaperForm(get(ocrFields, "totalFeePaperForm"))
                 .paperPaymentMethod(get(ocrFields, "paperPaymentMethod"))
                 .paymentReferenceNumberPaperform(get(ocrFields, "paymentReferenceNumberPaperform"))
-                .paymentReferenceNumberPaperform(get(ocrFields, "solsFeeAccountNumber"))
+                .solsFeeAccountNumber(get(ocrFields, "solsFeeAccountNumber"))
                 .primaryApplicantForenames(get(ocrFields, "primaryApplicantForenames", "primaryApplicantMiddleNames"))
                 .primaryApplicantSurname(get(ocrFields, "primaryApplicantSurname"))
                 .primaryApplicantAddressLine1(get(ocrFields, "primaryApplicantAddressLine1"))

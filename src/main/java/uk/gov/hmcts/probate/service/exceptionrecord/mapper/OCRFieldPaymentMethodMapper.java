@@ -13,7 +13,6 @@ public class OCRFieldPaymentMethodMapper {
     private static final String PAYMENT_METHOD_CHEQUE = "cheque";
     private static final String PAYMENT_METHOD_CASH = "cash";
     private static final String PAYMENT_METHOD_FEEACCOUNT = "feeAccount";
-    private static final String SOLS_PAYMENT_METHOD_PBA = "PBA";
 
     @ToPaperPaymentMethod
     public String validateKnownPaymentMethod(String paymentMethod) {
