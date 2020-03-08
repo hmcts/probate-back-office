@@ -21,6 +21,7 @@ public class OCRFieldAddressMapperTest {
     private static final String PRIMARY_APPLICANT_ADDRESS_LINE1 = "Petty Wales";
     private static final String CAVEAT_ADDRESS_LINE1 = "Petty England";
     private static final String DECEASED_ADDRESS_LINE1 = "Petty Scotland";
+    private static final String SOLICITOR_ADDRESS_LINE1 = "Petty Northen Ireland";
     private static final String ADDRESS_LINE2 = "22 Green Park";
     private static final String ADDRESS_POST_TOWN = "London";
     private static final String ADDRESS_COUNTY = "Greater London";
@@ -60,6 +61,12 @@ public class OCRFieldAddressMapperTest {
                 .caveatorAddressCounty(ADDRESS_COUNTY)
                 .caveatorAddressPostCode(ADDRESS_POST_CODE)
 
+                .solsSolicitorAddressLine1(SOLICITOR_ADDRESS_LINE1)
+                .solsSolicitorAddressLine2(ADDRESS_LINE2)
+                .solsSolicitorAddressTown(ADDRESS_POST_TOWN)
+                .solsSolicitorAddressCounty(ADDRESS_COUNTY)
+                .solsSolicitorAddressPostCode(ADDRESS_POST_CODE)
+
                 .deceasedAddressLine1(DECEASED_ADDRESS_LINE1)
                 .deceasedAddressLine2(ADDRESS_LINE2)
                 .deceasedAddressTown(ADDRESS_POST_TOWN)
@@ -86,6 +93,12 @@ public class OCRFieldAddressMapperTest {
                 .caveatorAddressTown(ADDRESS_POST_TOWN)
                 .caveatorAddressCounty(ADDRESS_COUNTY)
                 .caveatorAddressPostCode(ADDRESS_POST_CODE_ERROR)
+
+                .solsSolicitorAddressLine1(SOLICITOR_ADDRESS_LINE1)
+                .solsSolicitorAddressLine2(ADDRESS_LINE2)
+                .solsSolicitorAddressTown(ADDRESS_POST_TOWN)
+                .solsSolicitorAddressCounty(ADDRESS_COUNTY)
+                .solsSolicitorAddressPostCode(ADDRESS_POST_CODE_ERROR)
 
                 .deceasedAddressLine1(DECEASED_ADDRESS_LINE1)
                 .deceasedAddressLine2(ADDRESS_LINE2)
@@ -138,6 +151,16 @@ public class OCRFieldAddressMapperTest {
     }
 
     @Test
+    public void testSolicitorAddress() {
+        Address response = addressMapper.toSolicitorAddress(ocrFields);
+        assertEquals(SOLICITOR_ADDRESS_LINE1, response.getAddressLine1());
+        assertEquals(ADDRESS_LINE2, response.getAddressLine2());
+        assertEquals(ADDRESS_POST_TOWN, response.getPostTown());
+        assertEquals(ADDRESS_COUNTY, response.getCounty());
+        assertEquals(ADDRESS_POST_CODE.toUpperCase(), response.getPostCode());
+    }
+
+    @Test
     public void testAttorneyNamesAndAddress() {
         List<CollectionMember<AttorneyNamesAndAddress>> response = addressMapper.toAttorneyOnBehalfOfAddress(ocrFields);
         assertEquals(ATTORNEY_ON_BEHALF_OF_NAME, response.get(0).getValue().getName());
@@ -161,6 +184,11 @@ public class OCRFieldAddressMapperTest {
     @Test(expected = OCRMappingException.class)
     public void testDeceasedAddressPostcodeError() {
         Address response = addressMapper.toDeceasedAddress(ocrFieldsPostcodeError);
+    }
+
+    @Test(expected = OCRMappingException.class)
+    public void testSolicitorAddressPostcodeError() {
+        Address response = addressMapper.toSolicitorAddress(ocrFieldsPostcodeError);
     }
 
     @Test(expected = OCRMappingException.class)
