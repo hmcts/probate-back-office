@@ -18,10 +18,13 @@ public class CaseDataTestBuilder {
     public static final String SOLICITOR_FIRM_NAME = "Legal Service Ltd";
     public static final String SOLICITOR_FIRM_LINE1 = "Sols Add Line1";
     public static final String SOLICITOR_FIRM_POSTCODE = "SW1E 6EA";
+    private static final String SOLICITOR_FORENAME = "Peter Middlename";
+    private static final String SOLICITOR_SURNAME = "Crouch";
+    private static final String SOLICITOR_JOB_TITLE = "Lawyer";
+    private static final String SOLICITOR_IS_MAIN_APPLICANT = "Yes";
+    private static final String SOLS_NOT_APPLYING_REASON = "Power reserved";
+    private static final String SOLICITOR_APPLYING = "Yes";
     public static final String IHT_FORM = "IHT207";
-    public static final String SOLICITOR_FORENAME = "Peter Middlename";
-    public static final String SOLICITOR_SURNAME = "Crouch";
-    public static final String SOLICITOR_JOB_TITLE = "Lawyer";
     public static final String PAYMENT_METHOD = "Cheque";
     public static final String WILL_HAS_CODICLIS = "Yes";
     public static final String NUMBER_OF_CODICLIS = "1";
@@ -58,7 +61,6 @@ public class CaseDataTestBuilder {
     public static final BigDecimal FEE_FOR_NON_UK_COPIES = BigDecimal.TEN;
     public static final BigDecimal TOTAL_FEE = BigDecimal.TEN;
     public static final String NEED_TO_UPDATE = "No";
-
 
     public static CaseData.CaseDataBuilder withDefaults() {
 

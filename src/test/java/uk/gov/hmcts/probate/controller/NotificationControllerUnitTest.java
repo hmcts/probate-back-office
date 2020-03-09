@@ -134,7 +134,7 @@ public class NotificationControllerUnitTest {
     public void shouldSendDocumentsReceived() throws IOException, NotificationClientException {
         setUpMocks(DOCUMENTS_RECEIVED);
         notificationController.sendDocumentReceivedNotification(callbackRequest);
-        verify(documentsReceivedNotificationService).handleDocumentReceivedNotification(any(CallbackRequest.class));
+        verify(documentsReceivedNotificationService).handleDocumentReceivedNotification(callbackRequest);
     }
 
 
