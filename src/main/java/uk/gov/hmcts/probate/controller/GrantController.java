@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -22,6 +23,7 @@ import uk.gov.hmcts.probate.config.properties.registries.RegistriesProperties;
 import uk.gov.hmcts.probate.config.properties.registries.Registry;
 import uk.gov.hmcts.probate.controller.validation.AmendCaseDetailsGroup;
 import uk.gov.hmcts.probate.exception.BadRequestException;
+import uk.gov.hmcts.probate.model.Constants;
 import uk.gov.hmcts.probate.model.DocumentIssueType;
 import uk.gov.hmcts.probate.model.DocumentStatus;
 import uk.gov.hmcts.probate.model.DocumentType;
@@ -56,6 +58,7 @@ import uk.gov.service.notify.NotificationClientException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -92,15 +95,19 @@ public class GrantController {
         validateForPayloadErrors(callbackRequest, bindingResult);
 
         log.info("GrantController /start-delayed-notify-period started");
-        List<CollectionMember<ScannedDocument>> scannedDocs = callbackRequest.getCaseDetails().getData().getScannedDocuments();
-        String evidenceHandled = callbackRequest.getCaseDetails().getData().getEvidenceHandled();
+        @Valid CaseData data = callbackRequest.getCaseDetails().getData();
+        String evidenceHandled = data.getEvidenceHandled();
+        if (!StringUtils.isEmpty(evidenceHandled)) {
+            log.info("Evidence Handled flag {} ", evidenceHandled);
+            if(evidenceHandled.equals(Constants.NO)){
+                data.setGrantDelayedNotificationDate(LocalDate.now());
+            }
+        }
+
+        List<CollectionMember<ScannedDocument>> scannedDocs = data.getScannedDocuments();
         int scannedDocsSize = (null!=scannedDocs?scannedDocs.size():0);
         log.info("Case {} has a total of {} scanned documents", callbackRequest.getCaseDetails().getId(),
                 scannedDocsSize);
-        if (null != evidenceHandled) {
-            log.info("Evidence Handled flag {} ", evidenceHandled);
-        }
-
         if (null != scannedDocs) {
             for (CollectionMember<ScannedDocument> scannedDocument : scannedDocs) {
                 log.info("Scanned document DCN {} and type {}", scannedDocument.getValue().getControlNumber(),

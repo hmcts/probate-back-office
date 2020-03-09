@@ -559,8 +559,10 @@ public class CallbackResponseTransformer {
                 .boRequestInfoSendToBulkPrintRequested(caseData.getBoRequestInfoSendToBulkPrintRequested())
                 .probateSotDocumentsGenerated(caseData.getProbateSotDocumentsGenerated())
                 .bulkScanCaseReference(caseData.getBulkScanCaseReference())
-                .grantDelayedNotificationDate(caseData.getGrantDelayedNotificationDate())
-                .grantStoppedDate(caseData.getGrantStoppedDate())
+                .grantDelayedNotificationDate(ofNullable(caseData.getGrantDelayedNotificationDate())
+                        .map(dateTimeFormatter::format).orElse(null))
+                .grantStoppedDate(ofNullable(caseData.getGrantStoppedDate())
+                        .map(dateTimeFormatter::format).orElse(null))
                 .grantDelayedNotificationSent(caseData.getGrantDelayedNotificationSent());
 
         if (transform) {
