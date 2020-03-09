@@ -18,6 +18,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.service.BulkPrintService;
 import uk.gov.hmcts.probate.service.DocumentGeneratorService;
+import uk.gov.hmcts.probate.service.DocumentsReceivedNotificationService;
 import uk.gov.hmcts.probate.service.EventValidationService;
 import uk.gov.hmcts.probate.service.InformationRequestService;
 import uk.gov.hmcts.probate.service.NotificationService;
@@ -31,6 +32,7 @@ import uk.gov.hmcts.probate.validator.EmailAddressNotifyValidationRule;
 import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
 import uk.gov.service.notify.NotificationClientException;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -51,6 +53,7 @@ public class NotificationController {
 
     @Autowired
     private final DocumentGeneratorService documentGeneratorService;
+    private final DocumentsReceivedNotificationService documentsReceivedNotificationService;
     private final NotificationService notificationService;
     private final CallbackResponseTransformer callbackResponseTransformer;
     private final EventValidationService eventValidationService;
@@ -62,44 +65,6 @@ public class NotificationController {
     private final GrantOfRepresentationDocmosisMapperService gorDocmosisService;
     private final InformationRequestService informationRequestService;
     private final RedeclarationNotificationService redeclarationNotificationService;
-
-
-    private ResponseEntity<CallbackResponse> sendNotification(
-            @Validated({EmailAddressNotificationValidationRule.class})
-            @RequestBody CallbackRequest callbackRequest, State state)
-            throws NotificationClientException {
-
-        CaseDetails caseDetails = callbackRequest.getCaseDetails();
-        CaseData caseData = callbackRequest.getCaseDetails().getData();
-        CallbackResponse response;
-
-        List<Document> documents = new ArrayList<>();
-        if (isAnEmailAddressPresent(caseData)) {
-            response = eventValidationService.validateEmailRequest(callbackRequest, emailAddressNotificationValidationRules);
-            if (response.getErrors().isEmpty()) {
-                Document sentEmailAsDocument = notificationService.sendEmail(state, caseDetails);
-                documents.add(sentEmailAsDocument);
-                response = callbackResponseTransformer.addDocuments(callbackRequest, documents, null, null);
-            }
-        } else {
-            response = callbackResponseTransformer.addDocuments(callbackRequest, documents, null, null);
-
-        }
-        return ResponseEntity.ok(response);
-    }
-
-    private boolean isAnEmailAddressPresent(CaseData caseData) {
-        return caseData.isDocsReceivedEmailNotificationRequested();
-    }
-
-    @PostMapping(path = "/documents-received")
-    public ResponseEntity<CallbackResponse> sendDocumentReceivedNotification(
-            @Validated({EmailAddressNotificationValidationRule.class})
-            @RequestBody CallbackRequest callbackRequest)
-            throws NotificationClientException {
-
-        return sendNotification(callbackRequest, DOCUMENTS_RECEIVED);
-    }
 
     @PostMapping(path = "/application-received")
     public ResponseEntity<String> sendApplicationReceivedNotification(
@@ -184,12 +149,17 @@ public class NotificationController {
     @PostMapping(path = "/request-information-default-values")
     public ResponseEntity<CallbackResponse> requestInformationDefaultValues(
             @RequestBody CallbackRequest callbackRequest) {
-
         CallbackResponse callbackResponse = callbackResponseTransformer.defaultRequestInformationValues(callbackRequest);
-
         return ResponseEntity.ok(callbackResponse);
     }
 
+    @PostMapping(path = "/documents-received")
+    public ResponseEntity<CallbackResponse> sendDocumentReceivedNotification(
+            @Validated({EmailAddressNotificationValidationRule.class})
+            @RequestBody CallbackRequest callbackRequest)
+            throws NotificationClientException {
+        return ResponseEntity.ok(documentsReceivedNotificationService.handleDocumentReceivedNotification(callbackRequest));
+    }
 
     @PostMapping(path = "/stopped-information-request")
     public ResponseEntity<CallbackResponse> informationRequest(@RequestBody CallbackRequest callbackRequest) {
@@ -199,5 +169,33 @@ public class NotificationController {
     @PostMapping(path = "/redeclaration-sot")
     public ResponseEntity<CallbackResponse> redeclarationSot(@RequestBody CallbackRequest callbackRequest) {
         return ResponseEntity.ok(redeclarationNotificationService.handleRedeclarationNotification(callbackRequest));
+    }
+
+    private ResponseEntity<CallbackResponse> sendNotification(
+            @Validated({EmailAddressNotificationValidationRule.class})
+            @RequestBody CallbackRequest callbackRequest, State state)
+            throws NotificationClientException {
+
+        CaseDetails caseDetails = callbackRequest.getCaseDetails();
+        CaseData caseData = callbackRequest.getCaseDetails().getData();
+        CallbackResponse response;
+
+        List<Document> documents = new ArrayList<>();
+        if (isAnEmailAddressPresent(caseData)) {
+            response = eventValidationService.validateEmailRequest(callbackRequest, emailAddressNotificationValidationRules);
+            if (response.getErrors().isEmpty()) {
+                Document sentEmailAsDocument = notificationService.sendEmail(state, caseDetails);
+                documents.add(sentEmailAsDocument);
+                response = callbackResponseTransformer.addDocuments(callbackRequest, documents, null, null);
+            }
+        } else {
+            response = callbackResponseTransformer.addDocuments(callbackRequest, documents, null, null);
+
+        }
+        return ResponseEntity.ok(response);
+    }
+
+    private boolean isAnEmailAddressPresent(CaseData caseData) {
+        return caseData.isDocsReceivedEmailNotificationRequested();
     }
 }

@@ -25,6 +25,7 @@ import static uk.gov.hmcts.probate.model.State.DOCUMENTS_RECEIVED;
 import static uk.gov.hmcts.probate.model.State.GENERAL_CAVEAT_MESSAGE;
 import static uk.gov.hmcts.probate.model.State.GRANT_ISSUED;
 import static uk.gov.hmcts.probate.model.State.GRANT_REISSUED;
+import static uk.gov.hmcts.probate.model.State.CAVEAT_EXTEND;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -282,4 +283,17 @@ public class TemplateServiceTest {
 
         assertEquals("solicitor-caveat-raised", response);
      }
+     
+    @Test
+    public void getCaveatExtendPersonalCTSC() {
+
+        String response = templateService.getTemplateId(CAVEAT_EXTEND, ApplicationType.PERSONAL, "CTSC",
+            LanguagePreference.ENGLISH);
+        assertEquals("pa-ctsc-caveat-extend", response);
+
+        String responseWelsh = templateService.getTemplateId(CAVEAT_EXTEND, ApplicationType.PERSONAL, "CTSC",
+            LanguagePreference.WELSH);
+        assertEquals("pa-ctsc-caveat-extend-welsh", responseWelsh);
+    }
+
 }

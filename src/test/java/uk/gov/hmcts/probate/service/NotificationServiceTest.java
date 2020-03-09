@@ -18,6 +18,7 @@ import uk.gov.hmcts.probate.exception.InvalidEmailException;
 import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.CaseType;
+import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ExecutorsApplyingNotification;
 import uk.gov.hmcts.probate.model.SentEmail;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
@@ -39,7 +40,6 @@ import uk.gov.hmcts.probate.service.template.pdf.LocalDateToWelshStringConverter
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.validator.EmailAddressNotificationValidationRule;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
-import uk.gov.hmcts.reform.authorisation.generators.ServiceAuthTokenGenerator;
 import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
 import uk.gov.service.notify.NotificationClient;
 import uk.gov.service.notify.NotificationClientException;
@@ -68,6 +68,7 @@ import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
 import static uk.gov.hmcts.probate.model.State.CASE_STOPPED;
 import static uk.gov.hmcts.probate.model.State.CASE_STOPPED_CAVEAT;
 import static uk.gov.hmcts.probate.model.State.CASE_STOPPED_REQUEST_INFORMATION;
+import static uk.gov.hmcts.probate.model.State.CAVEAT_EXTEND;
 import static uk.gov.hmcts.probate.model.State.CAVEAT_RAISED;
 import static uk.gov.hmcts.probate.model.State.CAVEAT_RAISED_SOLS;
 import static uk.gov.hmcts.probate.model.State.DOCUMENTS_RECEIVED;
@@ -121,7 +122,6 @@ public class NotificationServiceTest {
 
     @SpyBean
     private NotificationClient notificationClient;
-
 
     private CaseDetails personalCaseDataOxford;
     private CaseDetails personalCaseDataOxfordInvalidAppType;
@@ -1459,6 +1459,32 @@ public class NotificationServiceTest {
                 any(),
                 eq(null));
 
+    }
+
+    @Test
+    public void sendGeneralCaveatExtendEmail()
+        throws NotificationClientException, BadRequestException {
+
+        HashMap<String, String> personalisation = new HashMap<>();
+
+        personalisation.put(PERSONALISATION_APPLICANT_NAME, caveatRaisedCaseData.getData().getCaveatorFullName());
+        personalisation.put(PERSONALISATION_DECEASED_NAME, caveatRaisedCaseData.getData().getDeceasedFullName());
+        personalisation.put(PERSONALISATION_CCD_REFERENCE, caveatRaisedCaseData.getId().toString());
+        personalisation.put(PERSONALISATION_MESSAGE_CONTENT, caveatRaisedCaseData.getData().getMessageContent());
+        personalisation.put(PERSONALISATION_REGISTRY_NAME, "Oxford Probate Registry");
+        personalisation.put(PERSONALISATION_REGISTRY_PHONE, "0186 579 3055");
+        personalisation.put(PERSONALISATION_CAVEAT_EXPIRY_DATE, "1st January 2019");
+        personalisation.put(PERSONALISATION_WELSH_CAVEAT_EXPIRY_DATE, "1 Ionawr 2019");
+
+        notificationService.sendCaveatEmail(CAVEAT_EXTEND, caveatRaisedCaseData);
+
+        verify(notificationClient).sendEmail(
+            eq("pa-ctsc-caveat-extend"),
+            eq("personal@test.com"),
+            eq(personalisation),
+            eq("1"));
+
+        verify(pdfManagementService).generateAndUpload(any(SentEmail.class), eq(SENT_EMAIL));
     }
 
 }
