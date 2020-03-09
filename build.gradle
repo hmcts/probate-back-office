@@ -185,13 +185,13 @@ def versions = [
         lombok                          : '1.16.18',
         springfoxSwagger                : '2.9.2',
         springSecurityVersion           : '5.1.1.RELEASE',
-        probateCommonsVersion           : '1.0.5.2',
+        probateCommonsVersion           : '6546_Grant_Delayed_Notification',
         ccdClient                       : '4.4.1',
         mapStruct                       : '1.2.0.Final',
         serviceAuthVersion              : '3.0.0'
 ]
 
-jacocoTestReport {
+  jacocoTestReport {
   executionData(test)
   reports {
     xml.enabled = true
@@ -252,7 +252,7 @@ dependencies {
 
   compile group: 'org.elasticsearch.client', name: 'elasticsearch-rest-high-level-client', version: '6.6.0'
 
-  compile group: 'io.github.openfeign', name: 'feign-httpclient', version: '10.7.2'
+  compile group: 'io.github.openfeign', name: 'feign-httpclient', version: '10.2.3'
 
   compile group: 'org.pitest', name: 'pitest', version: '1.3.2'
   compile group: 'com.atlassian.commonmark', name: 'commonmark', version: '0.11.0'

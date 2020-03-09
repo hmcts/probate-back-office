@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.model.ccd.raw.request;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Data;
@@ -58,6 +59,7 @@ import java.util.stream.Collectors;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @Builder
 @Data
 public class CaseData {
@@ -530,6 +532,10 @@ public class CaseData {
     private final String boAssembleLetterSendToBulkPrint = YES;
 
     private final String boAssembleLetterSendToBulkPrintRequested;
+
+    private LocalDate grantDelayedNotificationDate;
+    private LocalDate grantStoppedDate;
+    private String grantDelayedNotificationSent;
 
     @Getter(lazy = true)
     private final List<CollectionMember<AdditionalExecutor>> executorsApplyingForLegalStatement = getAllExecutors(true);

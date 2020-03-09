@@ -124,7 +124,7 @@ public class NotificationControllerTest {
     private static final String REQUEST_INFO_DEFAULT_URL = "/notify/request-information-default-values";
     private static final String REQUEST_INFO_URL = "/notify/stopped-information-request";
     private static final String REDECLARATION_SOT = "/notify/redeclaration-sot";
-    private static final String GRANT_DELAYED = "/notify/grant-delayed?date=aDate";
+    private static final String GRANT_DELAYED = "/notify/grant-delayed-scheduled?date=aDate";
 
     private static final Map<String, Object> EMPTY_MAP = new HashMap();
     private static final Document EMPTY_DOC = Document.builder().documentType(CAVEAT_STOPPED).build();

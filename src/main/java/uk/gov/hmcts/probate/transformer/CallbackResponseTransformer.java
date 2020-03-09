@@ -558,7 +558,12 @@ public class CallbackResponseTransformer {
                 .boRequestInfoSendToBulkPrint(caseData.getBoRequestInfoSendToBulkPrint())
                 .boRequestInfoSendToBulkPrintRequested(caseData.getBoRequestInfoSendToBulkPrintRequested())
                 .probateSotDocumentsGenerated(caseData.getProbateSotDocumentsGenerated())
-                .bulkScanCaseReference(caseData.getBulkScanCaseReference());
+                .bulkScanCaseReference(caseData.getBulkScanCaseReference())
+                .grantDelayedNotificationDate(ofNullable(caseData.getGrantDelayedNotificationDate())
+                        .map(dateTimeFormatter::format).orElse(null))
+                .grantStoppedDate(ofNullable(caseData.getGrantStoppedDate())
+                        .map(dateTimeFormatter::format).orElse(null))
+                .grantDelayedNotificationSent(caseData.getGrantDelayedNotificationSent());
 
         if (transform) {
             updateCaseBuilderForTransformCase(caseData, builder);

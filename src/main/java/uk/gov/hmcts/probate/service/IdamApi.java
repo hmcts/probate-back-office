@@ -7,14 +7,19 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import uk.gov.hmcts.probate.config.FeignClientConfiguration;
+import uk.gov.hmcts.probate.config.IdamConfiguration;
 import uk.gov.hmcts.probate.model.AuthenticateUserResponse;
 import uk.gov.hmcts.probate.model.TokenExchangeResponse;
 
-@FeignClient(name = "idam-api", url = "${auth.provider.client.user}", configuration = FeignClientConfiguration.class)
+import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
+import static org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED_VALUE;
+
+@FeignClient(name = "idam-api", url = "${auth.provider.client.user}", configuration = IdamConfiguration.class)
 public interface IdamApi {
     @PostMapping(
             value = "/oauth2/authorize",
-            consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE
+            headers = CONTENT_TYPE + "=" + APPLICATION_FORM_URLENCODED_VALUE,
+            consumes = APPLICATION_FORM_URLENCODED_VALUE
     )
     AuthenticateUserResponse authenticateUser(
             @RequestHeader(HttpHeaders.AUTHORIZATION) final String authorisation,
@@ -22,6 +27,7 @@ public interface IdamApi {
             @RequestParam("client_id") final String clientId,
             @RequestParam("redirect_uri") final String redirectUri
     );
+
 
     @PostMapping(
             value = "/oauth2/token",
