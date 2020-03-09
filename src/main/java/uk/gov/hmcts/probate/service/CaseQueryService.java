@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.MatchQueryBuilder;
-import org.elasticsearch.index.query.TermQueryBuilder;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -21,7 +20,6 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCases;
 import uk.gov.hmcts.probate.service.evidencemanagement.header.HttpHeadersFactory;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
-import uk.gov.hmcts.reform.authorisation.generators.ServiceAuthTokenGenerator;
 
 import java.net.URI;
 import java.util.Arrays;
@@ -45,7 +43,7 @@ public class CaseQueryService {
     private static final String AUTHORIZATION = "Authorization";
     private static final String CASE_TYPE_ID = "ctid";
     private static final CaseType CASE_TYPE = CaseType.GRANT_OF_REPRESENTATION;
-    private static final String STATES_MATCH_GRANT_DELAYED[] = {"BOReadyForExamination", "BOCaseMatchingExamining", "BOExamining",
+    private static final String[] STATES_MATCH_GRANT_DELAYED = {"BOReadyForExamination", "BOCaseMatchingExamining", "BOExamining",
         "BOReadyToIssue", "BOCaseQA", "BOCaseMatchingIssueGrant"};
     private static final String KEY_GRANT_DELAYED_NOTIFICATION_DATE = "created_date";  //TODO change to "data.grantDelayedNotificationDate";
     private final RestTemplate restTemplate;

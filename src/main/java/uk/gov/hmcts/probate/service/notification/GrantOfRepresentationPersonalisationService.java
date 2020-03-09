@@ -1,11 +1,9 @@
 package uk.gov.hmcts.probate.service.notification;
 
-import com.microsoft.applicationinsights.core.dependencies.google.gson.internal.$Gson$Preconditions;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.config.properties.registries.Registry;
-import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
@@ -21,8 +19,6 @@ import java.util.List;
 import java.util.Map;
 
 import static uk.gov.hmcts.probate.model.Constants.DOC_SUBTYPE_WILL;
-import static uk.gov.hmcts.probate.model.Constants.NO;
-import static uk.gov.hmcts.probate.model.Constants.YES;
 
 @Slf4j
 @RequiredArgsConstructor
