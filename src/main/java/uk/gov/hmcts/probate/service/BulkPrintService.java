@@ -34,6 +34,9 @@ import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_REISSUE;
+import static uk.gov.hmcts.probate.model.DocumentType.WELSH_ADMON_WILL_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.WELSH_DIGITAL_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.WELSH_INTESTACY_GRANT;
 
 @Service
 @Slf4j
@@ -117,7 +120,7 @@ public class BulkPrintService {
     public String sendToBulkPrint(CallbackRequest callbackRequest, Document coversheet, Document document,
                                   boolean sendToBulkPrint) {
         CallbackResponse response;
-        SendLetterResponse sendLetterResponse = null;
+        SendLetterResponse sendLetterResponse;
         String letterId = null;
         if (sendToBulkPrint) {
             log.info("Initiate call to bulk print for document with case id {} and coversheet",
@@ -169,6 +172,9 @@ public class BulkPrintService {
         if (documentTransformer.hasDocumentWithType(Arrays.asList(grantDocument), DIGITAL_GRANT)
                 || documentTransformer.hasDocumentWithType(Arrays.asList(grantDocument), ADMON_WILL_GRANT)
                 || documentTransformer.hasDocumentWithType(Arrays.asList(grantDocument), INTESTACY_GRANT)
+                || documentTransformer.hasDocumentWithType(Arrays.asList(grantDocument), WELSH_DIGITAL_GRANT)
+                || documentTransformer.hasDocumentWithType(Arrays.asList(grantDocument), WELSH_INTESTACY_GRANT)
+                || documentTransformer.hasDocumentWithType(Arrays.asList(grantDocument), WELSH_ADMON_WILL_GRANT)
                 || documentTransformer.hasDocumentWithType(Arrays.asList(grantDocument), INTESTACY_GRANT_REISSUE)
                 || documentTransformer.hasDocumentWithType(Arrays.asList(grantDocument), ADMON_WILL_GRANT_REISSUE)
                 || documentTransformer.hasDocumentWithType(Arrays.asList(grantDocument), DIGITAL_GRANT_REISSUE)) {
