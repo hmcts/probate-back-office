@@ -52,9 +52,6 @@ public class CaseDataTestBuilder {
     public static final String DECEASED_OTHER_NAMES = "No";
     public static final String DECEASED_DOM_UK = "Yes";
     public static final String SOT_NEED_TO_UPDATE = "Yes";
-    public static final String SOLICITOR_APPLYING = "Yes";
-    public static final String SOLICITOR_IS_MAIN_APPLICANT = "Yes";
-    public static final String SOLS_NOT_APPLYING_REASON = "Power reserved";
 
     public static final BigDecimal APPLICATION_FEE = BigDecimal.TEN;
     public static final BigDecimal FEE_FOR_UK_COPIES = BigDecimal.TEN;
