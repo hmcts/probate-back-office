@@ -21,6 +21,8 @@ import uk.gov.hmcts.reform.probate.model.cases.ProbateCaseDetails;
 import java.util.List;
 import java.util.Optional;
 
+import static uk.gov.hmcts.reform.probate.model.cases.JurisdictionId.PROBATE;
+
 @Slf4j
 @Component
 @RequiredArgsConstructor
@@ -82,7 +84,7 @@ public class CcdClientApi implements CoreCaseDataService {
                 securityDTO.getAuthorisation(),
                 securityDTO.getServiceAuthorisation(),
                 securityDTO.getUserId(),
-                uk.gov.hmcts.reform.probate.model.cases.JurisdictionId.PROBATE.name(),
+                PROBATE.name(),
                 caseType.getName(),
                 caseId,
                 eventId.getName()
@@ -94,7 +96,7 @@ public class CcdClientApi implements CoreCaseDataService {
                 securityDTO.getAuthorisation(),
                 securityDTO.getServiceAuthorisation(),
                 securityDTO.getUserId(),
-                uk.gov.hmcts.reform.probate.model.cases.JurisdictionId.PROBATE.name(),
+                PROBATE.name(),
                 caseType.getName(),
                 caseId,
                 false,

@@ -26,6 +26,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
+import static org.elasticsearch.index.query.QueryBuilders.existsQuery;
 import static org.elasticsearch.index.query.QueryBuilders.matchQuery;
 import static org.elasticsearch.index.query.QueryBuilders.rangeQuery;
 import static uk.gov.hmcts.probate.insights.AppInsightsEvent.REQUEST_SENT;
@@ -45,7 +46,8 @@ public class CaseQueryService {
     private static final CaseType CASE_TYPE = CaseType.GRANT_OF_REPRESENTATION;
     private static final String[] STATES_MATCH_GRANT_DELAYED = {"BOReadyForExamination", "BOCaseMatchingExamining", "BOExamining",
         "BOReadyToIssue", "BOCaseQA", "BOCaseMatchingIssueGrant"};
-    private static final String KEY_GRANT_DELAYED_NOTIFICATION_DATE = "created_date";  //TODO change to "data.grantDelayedNotificationDate";
+    private static final String KEY_GRANT_DELAYED_NOTIFICATION_DATE = "data.grantDelayedNotificationDate";
+    private static final String KEY_GRANT_DELAYED_NOTIFICATION_SENT = "grantDelayedNotificationSent";
     private final RestTemplate restTemplate;
     private final AppInsights appInsights;
     private final HttpHeadersFactory headers;
@@ -89,6 +91,7 @@ public class CaseQueryService {
         
         query.must(oredStateChecks);
         query.must(matchQuery(KEY_GRANT_DELAYED_NOTIFICATION_DATE, queryDate));
+        query.mustNot(existsQuery(KEY_GRANT_DELAYED_NOTIFICATION_SENT));
 
         String jsonQuery = new SearchSourceBuilder().query(query).size(10000).toString();
 

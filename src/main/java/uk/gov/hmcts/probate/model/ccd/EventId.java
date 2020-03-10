@@ -12,7 +12,8 @@ public enum EventId {
     IMPORT_WILL_LODGEMENT("importWill"),
     EXCEPTION_RECORD_GOR_CASE("createCase"),
     EXCEPTION_RECORD_CAVEAT("createCase"),
-    START_GRANT_DELAY_NOTIFICATION_PERIOD("startGrantDelayNotificationPeriod");
+    START_GRANT_DELAY_NOTIFICATION_PERIOD("startGrantDelayNotificationPeriod"),
+    UPDATE_GRANT_DELAY_NOTIFICATION_SENT("updateGrantDelayNotificationSent");
 
     @Getter
     private final String name;

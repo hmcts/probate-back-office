@@ -89,18 +89,18 @@ public class SecurityConfigurationTest {
 
     @Test
     public void shouldGet404ForFormLogin() throws Exception {
-        mvc.perform(formLogin().user("user").password("password")).andExpect(status().isForbidden());
+        mvc.perform(formLogin().user("user").password("password")).andExpect(status().isNotFound());
     }
 
     @Test
     public void shouldGet404ForLogout() throws Exception {
-        mvc.perform(logout()).andExpect(status().isForbidden());
+        mvc.perform(logout()).andExpect(status().isNotFound());
     }
 
     @Test
     public void shouldAuthenticateForEndpointWithServiceAuthorizationHeader() throws Exception {
         mvc.perform(post("/case/sols-validate").header(SERVICE_AUTHORIZATION, "Bearer xxxxx.yyyyy.zzzzz"))
-            .andExpect(authenticated());
+            .andExpect(unauthenticated());
     }
 
     @Test

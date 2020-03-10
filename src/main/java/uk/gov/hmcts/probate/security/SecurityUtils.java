@@ -10,6 +10,8 @@ import uk.gov.hmcts.probate.model.AuthenticateUserResponse;
 import uk.gov.hmcts.probate.model.TokenExchangeResponse;
 import uk.gov.hmcts.probate.service.IdamApi;
 import uk.gov.hmcts.probate.service.IdamAuthenticateUserService;
+import uk.gov.hmcts.reform.auth.checker.spring.serviceanduser.ServiceAndUserDetails;
+import uk.gov.hmcts.reform.auth.checker.spring.serviceonly.ServiceDetails;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 
 import java.util.Base64;
@@ -53,9 +55,16 @@ public class SecurityUtils {
     public SecurityDTO getSecurityDTO() {
         return SecurityDTO.builder()
             .authorisation(httpServletRequest.getHeader(AUTHORIZATION))
-            .userId(httpServletRequest.getHeader(USER_ID))
+            .userId(getUserId())
             .serviceAuthorisation(generateServiceToken())
             .build();
+    }
+
+    public String getUserId() {
+        return ((ServiceAndUserDetails) SecurityContextHolder.getContext()
+            .getAuthentication()
+            .getPrincipal())
+            .getUsername();
     }
 
     public String generateServiceToken() {

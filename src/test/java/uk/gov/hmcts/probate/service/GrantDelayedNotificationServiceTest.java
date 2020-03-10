@@ -7,16 +7,19 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
 import uk.gov.hmcts.probate.model.ApplicationType;
+import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.GrantDelayedResponse;
-import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
+import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
+import uk.gov.hmcts.probate.security.SecurityUtils;
+import uk.gov.hmcts.probate.service.ccd.CcdClientApi;
 import uk.gov.hmcts.probate.validator.EmailAddressNotifyApplicantValidationRule;
 import uk.gov.service.notify.NotificationClientException;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static org.hamcrest.Matchers.equalTo;
@@ -34,9 +37,16 @@ public class GrantDelayedNotificationServiceTest {
 
     @Mock
     private EmailAddressNotifyApplicantValidationRule emailAddressNotifyApplicantValidationRule;
-    
+
     @Mock
     private CaseQueryService caseQueryService;
+
+    @Mock
+    private CcdClientApi ccdClientApi;
+
+    @Mock
+    private SecurityUtils securityUtils;
+
 
     private Document sentEmail;
     private CaseData caseData1;
@@ -48,14 +58,7 @@ public class GrantDelayedNotificationServiceTest {
     private ReturnedCaseDetails returnedCaseDetails2;
     private ReturnedCaseDetails returnedCaseDetails3;
 
-    private static final long ID = 1234567891234567L;
-    private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
     private static final String SENT_EMAIL_FILE_NAME = "sentEmail.pdf";
-    private static final List<CollectionMember<Document>> DOCUMENTS_LIST = Arrays.asList(
-        new CollectionMember("id",
-            Document.builder()
-                .documentFileName(SENT_EMAIL_FILE_NAME)
-                .build()));
 
     @Before
     public void setUp() {
@@ -101,12 +104,9 @@ public class GrantDelayedNotificationServiceTest {
 
         String dateString = "31-12-2020";
         when(caseQueryService.findCasesForGrantDelayed(dateString)).thenReturn(returnedCases);
-        when(notificationService.sendGrantDelayedEmail(returnedCaseDetails1)).thenReturn(Document.builder()
-            .documentFileName(SENT_EMAIL_FILE_NAME).build());
-        when(notificationService.sendGrantDelayedEmail(returnedCaseDetails2)).thenReturn(Document.builder()
-            .documentFileName(SENT_EMAIL_FILE_NAME).build());
-        when(notificationService.sendGrantDelayedEmail(returnedCaseDetails3)).thenReturn(Document.builder()
-            .documentFileName(SENT_EMAIL_FILE_NAME).build());
+        when(notificationService.sendGrantDelayedEmail(returnedCaseDetails1)).thenReturn(buildDocument());
+        when(notificationService.sendGrantDelayedEmail(returnedCaseDetails2)).thenReturn(buildDocument());
+        when(notificationService.sendGrantDelayedEmail(returnedCaseDetails3)).thenReturn(buildDocument());
 
         GrantDelayedResponse response = grantDelayedNotificationService.handleGrantDelayedNotification(dateString);
         assertThat(response.getDelayResponseData().size(), equalTo(3));
@@ -123,10 +123,8 @@ public class GrantDelayedNotificationServiceTest {
 
         String dateString = "31-12-2020";
         when(caseQueryService.findCasesForGrantDelayed(dateString)).thenReturn(returnedCases);
-        when(notificationService.sendGrantDelayedEmail(returnedCaseDetails1)).thenReturn(Document.builder()
-            .documentFileName(SENT_EMAIL_FILE_NAME).build());
-        when(notificationService.sendGrantDelayedEmail(returnedCaseDetails2)).thenReturn(Document.builder()
-            .documentFileName(SENT_EMAIL_FILE_NAME).build());
+        when(notificationService.sendGrantDelayedEmail(returnedCaseDetails1)).thenReturn(buildDocument());
+        when(notificationService.sendGrantDelayedEmail(returnedCaseDetails2)).thenReturn(buildDocument());
         when(notificationService.sendGrantDelayedEmail(returnedCaseDetails3)).thenThrow(new NotificationClientException("notificationError"));
 
         GrantDelayedResponse response = grantDelayedNotificationService.handleGrantDelayedNotification(dateString);
@@ -136,7 +134,7 @@ public class GrantDelayedNotificationServiceTest {
         assertThat(response.getDelayResponseData().get(1), equalTo("2"));
         assertThat(response.getDelayResponseData().get(2), equalTo("<3:notificationError>"));
     }
-    
+
     @Test
     public void shouldThrowExceptionForMissingEmailAddressForGrantDelayed() throws NotificationClientException {
         documents.add(sentEmail);
@@ -154,6 +152,18 @@ public class GrantDelayedNotificationServiceTest {
         assertThat(response.getDelayResponseData().get(0), equalTo("<1:emailError>"));
         assertThat(response.getDelayResponseData().get(1), equalTo("<2:emailError>"));
         assertThat(response.getDelayResponseData().get(2), equalTo("<3:emailError>"));
+    }
+
+    private Document buildDocument() {
+        Document document = Document.builder()
+            .documentFileName(SENT_EMAIL_FILE_NAME)
+            .documentDateAdded(LocalDate.now())
+            .documentGeneratedBy("GenBy")
+            .documentLink(DocumentLink.builder().documentBinaryUrl("binUrl").documentFilename("fileName").documentUrl("url").build())
+            .documentType(DocumentType.DIGITAL_GRANT)
+            .build();
+
+        return document;
     }
 
 

@@ -276,7 +276,7 @@ public class NotificationService {
     }
 
     public void startGrantDelayNotificationPeriod(CaseDetails caseDetails){
-        securityUtils.setSecurityContextUserAsCaseworker();
+        //securityUtils.setSecurityContextUserAsCaseworker();
         CaseData caseData = caseDetails.getData();
         String evidenceHandled = caseData.getEvidenceHandled();
         if (!StringUtils.isEmpty(evidenceHandled)) {
