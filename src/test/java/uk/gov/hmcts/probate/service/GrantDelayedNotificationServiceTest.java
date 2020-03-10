@@ -9,6 +9,7 @@ import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.GrantDelayedResponse;
+import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
@@ -20,6 +21,7 @@ import uk.gov.service.notify.NotificationClientException;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.hamcrest.Matchers.equalTo;
@@ -79,6 +81,7 @@ public class GrantDelayedNotificationServiceTest {
             .primaryApplicantSurname("Surname2")
             .applicationType(ApplicationType.PERSONAL)
             .build();
+        caseData2.getProbateDocumentsGenerated().add(new CollectionMember("100", buildDocument()));
 
         caseData3 = CaseData.builder()
             .registryLocation("Registry3")
@@ -133,6 +136,24 @@ public class GrantDelayedNotificationServiceTest {
         assertThat(response.getDelayResponseData().get(0), equalTo("1"));
         assertThat(response.getDelayResponseData().get(1), equalTo("2"));
         assertThat(response.getDelayResponseData().get(2), equalTo("<3:notificationError>"));
+    }
+
+    @Test
+    public void shouldNotifyForGrantDelayedWithCCDException() throws NotificationClientException {
+        documents.add(sentEmail);
+
+        String dateString = "31-12-2020";
+        when(caseQueryService.findCasesForGrantDelayed(dateString)).thenReturn(returnedCases);
+        when(notificationService.sendGrantDelayedEmail(returnedCaseDetails1)).thenReturn(buildDocument());
+        when(notificationService.sendGrantDelayedEmail(returnedCaseDetails2)).thenReturn(buildDocument());
+        when(notificationService.sendGrantDelayedEmail(returnedCaseDetails3)).thenThrow(RuntimeException.class);
+
+        GrantDelayedResponse response = grantDelayedNotificationService.handleGrantDelayedNotification(dateString);
+
+        assertThat(response.getDelayResponseData().size(), equalTo(3));
+        assertThat(response.getDelayResponseData().get(0), equalTo("1"));
+        assertThat(response.getDelayResponseData().get(1), equalTo("2"));
+        assertThat(response.getDelayResponseData().get(2), equalTo("<3:null>"));
     }
 
     @Test

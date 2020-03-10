@@ -63,9 +63,9 @@ public class GrantDelayedNotificationService {
         } catch (NotificationClientException e) {
             log.error("Error sending email for Grant Delayed with exception: {}. Has message: {}", e.getClass(), e.getMessage());
             caseId = getErroredCaseIdentifier(caseId, e.getMessage());
-        } catch (FeignException.FeignClientException fce) {
-            log.error("Error updating case for Grant Delayed with exception: {}. Has message: {}", fce.getClass(), fce.getMessage());
-            caseId = getErroredCaseIdentifier(caseId, fce.getMessage());
+        } catch (RuntimeException re) {
+            log.error("Error updating case for Grant Delayed with exception: {}. Has message: {}", re.getClass(), re.getMessage());
+            caseId = getErroredCaseIdentifier(caseId, re.getMessage());
         }
 
         return caseId;
