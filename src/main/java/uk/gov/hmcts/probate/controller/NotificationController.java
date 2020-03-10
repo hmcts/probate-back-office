@@ -17,8 +17,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import uk.gov.hmcts.probate.model.DocumentType;
+import uk.gov.hmcts.probate.model.GrantDelayedResponse;
 import uk.gov.hmcts.probate.model.GrantDelayedResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
@@ -52,6 +54,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static uk.gov.hmcts.probate.model.State.CASE_STOPPED;
 import static uk.gov.hmcts.probate.model.State.CASE_STOPPED_CAVEAT;
+import static uk.gov.hmcts.probate.model.State.DOCUMENTS_RECEIVED;
 
 @RequiredArgsConstructor
 @RequestMapping(value = "/notify", consumes = APPLICATION_JSON_UTF8_VALUE, produces = APPLICATION_JSON_VALUE)
@@ -180,12 +183,6 @@ public class NotificationController {
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping(path = "/grant-delayed-scheduled")
-    public ResponseEntity<GrantDelayedResponse> grantDelayed(@RequestParam("date") final String date) {
-        GrantDelayedResponse grantDelayedResponse = grantDelayedNotificationService.handleGrantDelayedNotification(date);
-        log.info("Grants delayed attempted for: {} grants", grantDelayedResponse.getDelayResponseData().size());
-        return  ResponseEntity.ok(grantDelayedResponse);
-    }
 
     private void logRequest(String uri, CallbackRequest callbackRequest) {
         try {
@@ -198,11 +195,11 @@ public class NotificationController {
             log.error("POST: {}", uri, e);
         }
     }
-
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public void handle(HttpMessageNotReadableException e) {
-        log.error("Returning HTTP 400 Bad Request", e);
+    @PostMapping(path = "/grant-delayed-scheduled")
+    public ResponseEntity<GrantDelayedResponse> grantDelayed(@RequestParam("date") final String date) {
+        GrantDelayedResponse grantDelayedResponse = grantDelayedNotificationService.handleGrantDelayedNotification(date);
+        log.info("Grants delayed attempted for: {} grants", grantDelayedResponse.getDelayResponseData().size());
+        return  ResponseEntity.ok(grantDelayedResponse);
     }
 
 }

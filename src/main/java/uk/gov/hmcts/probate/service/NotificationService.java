@@ -39,6 +39,7 @@ import uk.gov.hmcts.probate.service.notification.TemplateService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.validator.EmailAddressNotificationValidationRule;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
+import uk.gov.hmcts.reform.ccd.client.model.CaseDataContent;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData;
 import uk.gov.service.notify.NotificationClient;
 import uk.gov.service.notify.NotificationClientException;
@@ -88,8 +89,8 @@ public class NotificationService {
     private final CcdClientApi ccdClientApi;
     private final SecurityUtils securityUtils;
 
-    @Value("${notifications.grantDelayedNotificationPeriodWeeks}")
-    private Long grantDelayedNotificationPeriodWeeks;
+    @Value("${notifications.grantDelayedNotificationPeriodDays}")
+    private Long grantDelayedNotificationPeriodDays;
 
 
     public Document sendEmail(State state, CaseDetails caseDetails)
@@ -276,7 +277,7 @@ public class NotificationService {
     }
 
     public void startGrantDelayNotificationPeriod(CaseDetails caseDetails){
-        //securityUtils.setSecurityContextUserAsCaseworker();
+        //securityUtils.setSecurityContextUserAsCaseworker(); TODO - reinstate once BSP can invoke
         CaseData caseData = caseDetails.getData();
         String evidenceHandled = caseData.getEvidenceHandled();
         if (!StringUtils.isEmpty(evidenceHandled)) {
@@ -284,9 +285,9 @@ public class NotificationService {
             if(evidenceHandled.equals(Constants.NO)){
                 log.info("Grant delay notification {} ", caseData.getGrantDelayedNotificationDate());
                 GrantOfRepresentationData grantOfRepresentationData = GrantOfRepresentationData.builder()
-                    .grantDelayedNotificationDate(LocalDate.now().plusWeeks(grantDelayedNotificationPeriodWeeks)).build();
-                ccdClientApi.updateCaseAsCaseworker(CcdCaseType.GRANT_OF_REPRESENTATION, caseDetails.getId().toString(),
-                    grantOfRepresentationData, EventId.START_GRANT_DELAY_NOTIFICATION_PERIOD, securityUtils.getSecurityDTO());
+                    .grantDelayedNotificationDate(LocalDate.now().plusDays(grantDelayedNotificationPeriodDays))
+                    .build();
+                ccdClientApi.updateCaseAsCaseworker(CcdCaseType.GRANT_OF_REPRESENTATION, caseDetails.getId().toString(),grantOfRepresentationData, EventId.START_GRANT_DELAY_NOTIFICATION_PERIOD, securityUtils.getSecurityDTO());
             }
         }
     }
