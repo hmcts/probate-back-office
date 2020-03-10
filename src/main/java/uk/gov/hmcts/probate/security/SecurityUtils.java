@@ -48,7 +48,6 @@ public class SecurityUtils {
     private String caseworkerPassword;
 
     private final IdamApi idamClient;
-    private final IdamAuthenticateUserService idamAuthenticateUserService;
 
     public SecurityDTO getSecurityDTO() {
         return SecurityDTO.builder()

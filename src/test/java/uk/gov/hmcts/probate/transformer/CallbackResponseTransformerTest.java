@@ -142,6 +142,9 @@ public class CallbackResponseTransformerTest {
     private static final String DECEASED_DATE_OF_DEATH_TYPE = "diedOnOrSince";
     private static final LocalDate DOB = LocalDate.parse("2016-12-31", dateTimeFormatter);
     private static final LocalDate DOD = LocalDate.parse("2017-12-31", dateTimeFormatter);
+    private static final LocalDate GRANT_DELAYED_DATE = LocalDate.parse("2019-12-31", dateTimeFormatter);
+    private static final LocalDate GRANT_STOPPED_DATE = LocalDate.parse("2020-08-31", dateTimeFormatter);
+    private static final String GRANT_DELAYED_NOTIFICATION_SENT = YES;
     private static final String NUM_CODICILS = "9";
 
     private static final String IHT_FORM_ID = "IHT205";
@@ -482,7 +485,10 @@ public class CallbackResponseTransformerTest {
                 .boEmailRequestInfoNotificationRequested(YES)
                 .boAssembleLetterSendToBulkPrintRequested(YES)
                 .boRequestInfoSendToBulkPrintRequested(YES)
-                .executorsApplyingNotifications(EXECEUTORS_APPLYING_NOTIFICATION);
+                .executorsApplyingNotifications(EXECEUTORS_APPLYING_NOTIFICATION)
+                .grantDelayedNotificationDate(GRANT_DELAYED_DATE)
+                .grantStoppedDate(GRANT_STOPPED_DATE)
+                .grantDelayedNotificationSent(GRANT_DELAYED_NOTIFICATION_SENT);
 
         bulkScanGrantOfRepresentationData = GrantOfRepresentationData.builder()
                 .deceasedForenames(DECEASED_FIRSTNAME)
@@ -597,6 +603,9 @@ public class CallbackResponseTransformerTest {
                 .paymentReferenceNumberPaperform(IHT_REFERENCE)
                 .paperForm(Boolean.TRUE)
                 .bulkScanCaseReference(BULK_SCAN_REFERENCE)
+                .grantDelayedNotificationDate(GRANT_DELAYED_DATE)
+                .grantStoppedDate(GRANT_STOPPED_DATE)
+                .grantDelayedNotificationSent(GRANT_DELAYED_NOTIFICATION_SENT)
                 .build();
 
         additionalExecutorsApplyingMock = new ArrayList<>();
@@ -2739,6 +2748,9 @@ public class CallbackResponseTransformerTest {
                 callbackResponse.getData().getAnyDeceasedChildrenDieBeforeDeceased());
         assertEquals(DECEASED_ANY_CHILDREN, callbackResponse.getData().getDeceasedAnyChildren());
         assertEquals(DECEASED_HAS_ASSETS_OUTSIDE_UK, callbackResponse.getData().getDeceasedHasAssetsOutsideUK());
+        assertEquals(GRANT_DELAYED_NOTIFICATION_SENT, callbackResponse.getData().getGrantDelayedNotificationSent());
+        assertEquals(CallbackResponseTransformer.dateTimeFormatter.format(GRANT_DELAYED_DATE), callbackResponse.getData().getGrantDelayedNotificationDate());
+        assertEquals(CallbackResponseTransformer.dateTimeFormatter.format(GRANT_STOPPED_DATE), callbackResponse.getData().getGrantStoppedDate());
     }
 
     @Test
@@ -2882,5 +2894,9 @@ public class CallbackResponseTransformerTest {
         assertEquals(Long.valueOf("0"), grantOfRepresentationData.getTotalFeePaperForm());
 
         assertEquals(BULK_SCAN_REFERENCE, grantOfRepresentationData.getBulkScanCaseReference());
+
+        assertEquals(GRANT_DELAYED_NOTIFICATION_SENT, grantOfRepresentationData.getGrantDelayedNotificationSent());
+        assertEquals(GRANT_DELAYED_DATE, grantOfRepresentationData.getGrantDelayedNotificationDate());
+        assertEquals(GRANT_STOPPED_DATE, grantOfRepresentationData.getGrantStoppedDate());
     }
 }

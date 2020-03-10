@@ -195,10 +195,4 @@ public class NotificationController {
             log.error("POST: {}", uri, e);
         }
     }
-
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public void handle(HttpMessageNotReadableException e) {
-        log.error("Returning HTTP 400 Bad Request", e);
-    }
 }

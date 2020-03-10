@@ -101,7 +101,7 @@ public class CallbackResponseTransformer {
     public static final String EXCEPTION_RECORD_EVENT_ID = "createCaseFromBulkScan";
     public static final RegistryLocation EXCEPTION_RECORD_REGISTRY_LOCATION = RegistryLocation.CTSC;
 
-    private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(DATE_FORMAT);
+    protected static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(DATE_FORMAT);
 
     public CallbackResponse transformWithConditionalStateChange(CallbackRequest callbackRequest, Optional<String> newState) {
         ResponseCaseData responseCaseData = getResponseCaseData(callbackRequest.getCaseDetails(), false)
@@ -705,7 +705,12 @@ public class CallbackResponseTransformer {
                 .boSendToBulkPrintRequested(caseData.getBoSendToBulkPrintRequested())
                 .languagePreferenceWelsh(caseData.getLanguagePreferenceWelsh())
                 .bulkPrintPdfSize(caseData.getBulkPrintPdfSize())
-                .bulkPrintSendLetterId(caseData.getBulkPrintSendLetterId());
+                .bulkPrintSendLetterId(caseData.getBulkPrintSendLetterId())
+                .grantDelayedNotificationDate(ofNullable(caseData.getGrantDelayedNotificationDate())
+                        .map(dateTimeFormatter::format).orElse(null))
+                .grantStoppedDate(ofNullable(caseData.getGrantStoppedDate())
+                        .map(dateTimeFormatter::format).orElse(null))
+                .grantDelayedNotificationSent(caseData.getGrantDelayedNotificationSent());
 
         if (YES.equals(caseData.getSolsSolicitorIsMainApplicant())) {
             builder
