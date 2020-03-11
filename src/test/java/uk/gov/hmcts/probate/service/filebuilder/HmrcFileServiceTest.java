@@ -42,7 +42,7 @@ public class HmrcFileServiceTest {
     private CaseData.CaseDataBuilder caseDataMissingData;
     private ReturnedCaseDetails createdCase;
     private CaseData builtData;
-    private static final String FILE_DATE = "20190101";
+    private static final String FILE_DATE = "20190101-123456";
     private static final String FILE_NAME = "1_20190101.dat";
     private static final String[] LAST_MODIFIED = {"2019", "3", "3", "0", "0", "0", "0"};
 
@@ -186,7 +186,7 @@ public class HmrcFileServiceTest {
         when(fileExtractDateFormatter.formatDataDate(dod)).thenReturn("17-AUG-2018");
         when(fileExtractDateFormatter.formatDataDate(dob)).thenReturn("20-OCT-1940");
         when(fileExtractDateFormatter.formatDataDate(LocalDate.parse(grantIssuedDate))).thenReturn("24-OCT-2018");
-        when(fileExtractDateFormatter.getFormattedFileDate(any())).thenReturn(FILE_DATE);
+        when(fileExtractDateFormatter.getHMRCFormattedFileDate(any(), any())).thenReturn(FILE_DATE);
     }
 
     @Test

@@ -39,7 +39,7 @@ public class IronMountainDataExtractService {
     }
 
     private String buildFileName(String date) {
-        return fileExtractDateFormatter.getFormattedFileDate(date) + "grant.txt";
+        return fileExtractDateFormatter.getIronMountainFormattedFileDate(date) + "grant.txt";
     }
 
 }

@@ -11,6 +11,7 @@ import uk.gov.hmcts.probate.service.FileTransferService;
 import uk.gov.hmcts.probate.service.filebuilder.FileExtractDateFormatter;
 import uk.gov.hmcts.probate.service.filebuilder.HmrcFileService;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -59,7 +60,7 @@ public class HmrcDataExtractService {
     }
 
     private String buildFileName(String toDate) {
-        return "1_" + fileExtractDateFormatter.getFormattedFileDate(toDate) + ".dat";
+        return "1_" + fileExtractDateFormatter.getHMRCFormattedFileDate(toDate, LocalDateTime.now()) + ".new";
     }
 
 }
