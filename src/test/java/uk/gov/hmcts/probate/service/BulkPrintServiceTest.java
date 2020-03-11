@@ -28,12 +28,12 @@ import uk.gov.hmcts.reform.authorisation.generators.ServiceAuthTokenGenerator;
 import uk.gov.hmcts.reform.sendletter.api.LetterWithPdfsRequest;
 import uk.gov.hmcts.reform.sendletter.api.SendLetterApi;
 import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
-import uk.gov.hmcts.reform.sendletter.api.model.v3.*;
+import uk.gov.hmcts.reform.sendletter.api.model.v3.LetterV3;
 
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -70,7 +70,6 @@ public class BulkPrintServiceTest {
     private BusinessValidationMessageService businessValidationMessageService;
 
     private ResponseCaseData responseCaseData;
-    private CallbackResponse callbackResponse;
     @Mock
     private DocumentTransformer documentTransformer;
 
@@ -157,7 +156,7 @@ public class BulkPrintServiceTest {
         UUID uuid = UUID.randomUUID();
         SendLetterResponse sendLetterResponse = new SendLetterResponse(uuid);
         when(sendLetterApiMock.sendLetter(anyString(), any(LetterV3.class))).thenReturn(sendLetterResponse);
-        when(documentTransformer.hasDocumentWithType(Arrays.asList(document), DocumentType.DIGITAL_GRANT_REISSUE)).thenReturn(true);
+        when(documentTransformer.hasDocumentWithType(Collections.singletonList(document), DocumentType.DIGITAL_GRANT)).thenReturn(true);
 
         SendLetterResponse response = bulkPrintService.sendToBulkPrint(callbackRequest, document, coverSheet);
 
@@ -457,10 +456,10 @@ public class BulkPrintServiceTest {
                 .documentLink(documentLink)
                 .build();
 
-        List errors = new ArrayList();
+        List<String> errors = new ArrayList<>();
         errors.add("test error");
 
-        callbackResponse = callbackResponse.builder()
+        CallbackResponse callbackResponse = CallbackResponse.builder()
                 .data(responseCaseData)
                 .errors(errors)
                 .build();
@@ -469,9 +468,8 @@ public class BulkPrintServiceTest {
         when(eventValidationService.validateBulkPrintResponse(any(), any())).thenReturn(callbackResponse);
         when(businessValidationMessageService.generateError(any(), any())).thenReturn(FieldErrorResponse.builder().build());
 
-        assertThatThrownBy(() -> {
-            bulkPrintService.sendToBulkPrint(callbackRequest, coverSheet, document, true);
-        }).isInstanceOf(BulkPrintException.class).hasMessage("Bulk print send letter response is null for: 0");
+        assertThatThrownBy(() -> bulkPrintService.sendToBulkPrint(callbackRequest, coverSheet, document, true))
+                .isInstanceOf(BulkPrintException.class).hasMessage("Bulk print send letter response is null for: 0");
     }
 
     @Test
@@ -491,5 +489,137 @@ public class BulkPrintServiceTest {
 
         assertNull(bulkPrintService.sendToBulkPrint(callbackRequest, Document.builder().build(),
                 Document.builder().build(), false));
+    }
+
+    @Test
+    public void sendToBulkPrintWith50ExtraCopiesWDG() {
+
+        SolsAddress address = SolsAddress.builder().addressLine1("Address 1")
+                .addressLine2("Address 2")
+                .postCode("EC2")
+                .country("UK")
+                .build();
+        CaseData caseData = CaseData.builder()
+                .primaryApplicantForenames("first")
+                .primaryApplicantSurname("last")
+                .primaryApplicantAddress(address)
+                .extraCopiesOfGrant(50L)
+                .build();
+        CallbackRequest callbackRequest = new CallbackRequest(new CaseDetails(caseData, null, 0L));
+        DocumentLink documentLink = DocumentLink.builder()
+                .documentUrl("http://localhost")
+                .build();
+        Document document = Document.builder()
+                .documentFileName("test.pdf")
+                .documentGeneratedBy("test")
+                .documentType(DocumentType.WELSH_DIGITAL_GRANT)
+                .documentDateAdded(LocalDate.now())
+                .documentLink(documentLink)
+                .build();
+        Document coverSheet = Document.builder()
+                .documentFileName("test.pdf")
+                .documentGeneratedBy("test")
+                .documentDateAdded(LocalDate.now())
+                .documentLink(documentLink)
+                .build();
+        UUID uuid = UUID.randomUUID();
+        SendLetterResponse sendLetterResponse = new SendLetterResponse(uuid);
+        when(sendLetterApiMock.sendLetter(anyString(), any(LetterV3.class))).thenReturn(sendLetterResponse);
+        when(documentTransformer.hasDocumentWithType(Collections.singletonList(document), DocumentType.WELSH_DIGITAL_GRANT)).thenReturn(true);
+
+        SendLetterResponse response = bulkPrintService.sendToBulkPrint(callbackRequest, document, coverSheet);
+
+        verify(sendLetterApiMock).sendLetter(anyString(), any(LetterV3.class));
+
+        assertNotNull(response);
+        assertThat(response.letterId, is(uuid));
+    }
+
+    @Test
+    public void sendToBulkPrintWith50ExtraCopiesWIG() {
+
+        SolsAddress address = SolsAddress.builder().addressLine1("Address 1")
+                .addressLine2("Address 2")
+                .postCode("EC2")
+                .country("UK")
+                .build();
+        CaseData caseData = CaseData.builder()
+                .primaryApplicantForenames("first")
+                .primaryApplicantSurname("last")
+                .primaryApplicantAddress(address)
+                .extraCopiesOfGrant(50L)
+                .build();
+        CallbackRequest callbackRequest = new CallbackRequest(new CaseDetails(caseData, null, 0L));
+        DocumentLink documentLink = DocumentLink.builder()
+                .documentUrl("http://localhost")
+                .build();
+        Document document = Document.builder()
+                .documentFileName("test.pdf")
+                .documentGeneratedBy("test")
+                .documentType(DocumentType.WELSH_INTESTACY_GRANT)
+                .documentDateAdded(LocalDate.now())
+                .documentLink(documentLink)
+                .build();
+        Document coverSheet = Document.builder()
+                .documentFileName("test.pdf")
+                .documentGeneratedBy("test")
+                .documentDateAdded(LocalDate.now())
+                .documentLink(documentLink)
+                .build();
+        UUID uuid = UUID.randomUUID();
+        SendLetterResponse sendLetterResponse = new SendLetterResponse(uuid);
+        when(sendLetterApiMock.sendLetter(anyString(), any(LetterV3.class))).thenReturn(sendLetterResponse);
+        when(documentTransformer.hasDocumentWithType(Collections.singletonList(document), DocumentType.WELSH_INTESTACY_GRANT)).thenReturn(true);
+
+        SendLetterResponse response = bulkPrintService.sendToBulkPrint(callbackRequest, document, coverSheet);
+
+        verify(sendLetterApiMock).sendLetter(anyString(), any(LetterV3.class));
+
+        assertNotNull(response);
+        assertThat(response.letterId, is(uuid));
+    }
+
+    @Test
+    public void sendToBulkPrintWith50ExtraCopiesAWDG() {
+
+        SolsAddress address = SolsAddress.builder().addressLine1("Address 1")
+                .addressLine2("Address 2")
+                .postCode("EC2")
+                .country("UK")
+                .build();
+        CaseData caseData = CaseData.builder()
+                .primaryApplicantForenames("first")
+                .primaryApplicantSurname("last")
+                .primaryApplicantAddress(address)
+                .extraCopiesOfGrant(50L)
+                .build();
+        CallbackRequest callbackRequest = new CallbackRequest(new CaseDetails(caseData, null, 0L));
+        DocumentLink documentLink = DocumentLink.builder()
+                .documentUrl("http://localhost")
+                .build();
+        Document document = Document.builder()
+                .documentFileName("test.pdf")
+                .documentGeneratedBy("test")
+                .documentType(DocumentType.WELSH_ADMON_WILL_GRANT)
+                .documentDateAdded(LocalDate.now())
+                .documentLink(documentLink)
+                .build();
+        Document coverSheet = Document.builder()
+                .documentFileName("test.pdf")
+                .documentGeneratedBy("test")
+                .documentDateAdded(LocalDate.now())
+                .documentLink(documentLink)
+                .build();
+        UUID uuid = UUID.randomUUID();
+        SendLetterResponse sendLetterResponse = new SendLetterResponse(uuid);
+        when(sendLetterApiMock.sendLetter(anyString(), any(LetterV3.class))).thenReturn(sendLetterResponse);
+        when(documentTransformer.hasDocumentWithType(Collections.singletonList(document), DocumentType.WELSH_ADMON_WILL_GRANT)).thenReturn(true);
+
+        SendLetterResponse response = bulkPrintService.sendToBulkPrint(callbackRequest, document, coverSheet);
+
+        verify(sendLetterApiMock).sendLetter(anyString(), any(LetterV3.class));
+
+        assertNotNull(response);
+        assertThat(response.letterId, is(uuid));
     }
 }
