@@ -44,6 +44,7 @@ import java.util.List;
 import java.util.Map;
 
 import static uk.gov.hmcts.probate.model.Constants.BUSINESS_ERROR;
+import static uk.gov.hmcts.probate.model.DocumentType.GRANT_RAISED;
 import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
 import static uk.gov.hmcts.probate.model.State.GRANT_REISSUED;
 import static uk.gov.service.notify.NotificationClient.prepareUpload;
@@ -52,8 +53,10 @@ import static uk.gov.service.notify.NotificationClient.prepareUpload;
 @RequiredArgsConstructor
 @Component
 public class NotificationService {
+
     @Autowired
     private final EmailAddresses emailAddresses;
+
     @Autowired
     private BusinessValidationMessageService businessValidationMessageService;
     private final NotificationTemplates notificationTemplates;

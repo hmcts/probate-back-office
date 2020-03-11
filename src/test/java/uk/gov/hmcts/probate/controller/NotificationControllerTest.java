@@ -58,6 +58,7 @@ import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.EDGE_CASE;
 import static uk.gov.hmcts.probate.model.DocumentType.GRANT_COVER;
 import static uk.gov.hmcts.probate.model.DocumentType.GRANT_COVERSHEET;
+import static uk.gov.hmcts.probate.model.DocumentType.GRANT_RAISED;
 import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_DRAFT;
 
@@ -114,6 +115,7 @@ public class NotificationControllerTest {
     private static final String REQUEST_INFO_DEFAULT_URL = "/notify/request-information-default-values";
     private static final String REQUEST_INFO_URL = "/notify/stopped-information-request";
     private static final String REDECLARATION_SOT = "/notify/redeclaration-sot";
+    private static final String RAISE_GRANT = "/notify/grant-received";
     private static final String APPLICATION_RECEIVED_URL = "/notify/application-received";
 
     private static final Map<String, Object> EMPTY_MAP = new HashMap();
@@ -171,8 +173,8 @@ public class NotificationControllerTest {
         when(callbackResponseTransformer.caseStopped(any(), any(), any())).thenReturn(successfulResponse);
         when(callbackResponseTransformer.defaultRequestInformationValues(any())).thenReturn(successfulResponse);
         when(callbackResponseTransformer.addInformationRequestDocuments(any(), eq(docList), any())).thenReturn(successfulResponse);
-        when(callbackResponseTransformer.addInformationRequestDocuments(any(),
-                eq(new ArrayList<>()), any())).thenReturn(successfulResponse);
+        when(callbackResponseTransformer.addInformationRequestDocuments(any(), eq(new ArrayList<>()), any())).thenReturn(successfulResponse);
+        when(callbackResponseTransformer.grantRaised(any(), any(), any())).thenReturn(successfulResponse);
 
         when(informationRequestService.handleInformationRequest(any())).thenReturn(successfulResponse);
 
@@ -501,6 +503,30 @@ public class NotificationControllerTest {
         String personalPayload = testUtils.getStringFromFile("personalPayloadNotifications.json");
 
         mockMvc.perform(post(REDECLARATION_SOT).content(personalPayload).contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(content().string(containsString("data")));
+    }
+
+    @Test
+    public void shouldReturnSuccessfulResponseFoRaiseGrant() throws Exception {
+        String personalPayload = testUtils.getStringFromFile("personalPayloadNotifications.json");
+        Document raiseGrantDoc = Document.builder().documentType(GRANT_RAISED).build();
+        doReturn(raiseGrantDoc).when(notificationService).sendEmail(any(), any());
+
+        mockMvc.perform(post(RAISE_GRANT).content(personalPayload).contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(content().string(containsString("data")));
+    }
+
+    @Test
+    public void shouldReturnSuccessfulResponseFoRaiseGrantWithoutEmail() throws Exception {
+        String personalPayload = testUtils.getStringFromFile("personalPayloadNotificationsNoEmail.json");
+        Document raiseGrantDoc = Document.builder().documentType(GRANT_RAISED).build();
+        doReturn(raiseGrantDoc).when(notificationService).sendEmail(any(), any());
+
+        mockMvc.perform(post(RAISE_GRANT).content(personalPayload).contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(content().string(containsString("data")));
