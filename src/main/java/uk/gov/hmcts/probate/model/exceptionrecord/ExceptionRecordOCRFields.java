@@ -18,6 +18,17 @@ public class ExceptionRecordOCRFields {
     private final String caveatorAddressTown;
     private final String caveatorAddressCounty;
     private final String caveatorAddressPostCode;
+    private final String solsSolicitorRepresentativeName;
+    private final String solsSolicitorFirmName;
+    private final String solsSolicitorAppReference;
+    private final String solsFeeAccountNumber;
+    private final String solsSolicitorAddressLine1;
+    private final String solsSolicitorAddressLine2;
+    private final String solsSolicitorAddressTown;
+    private final String solsSolicitorAddressCounty;
+    private final String solsSolicitorAddressPostCode;
+    private final String solsSolicitorEmail;
+    private final String solsSolicitorPhoneNumber;
     private final String deceasedForenames;
     private final String deceasedSurname;
     private final String deceasedDateOfDeath;
@@ -28,6 +39,7 @@ public class ExceptionRecordOCRFields {
     private final String deceasedAddressTown;
     private final String deceasedAddressCounty;
     private final String deceasedAddressPostCode;
+    private final String caseReference;
 
     // PA1A and PA1P
     private final String extraCopiesOfGrant;

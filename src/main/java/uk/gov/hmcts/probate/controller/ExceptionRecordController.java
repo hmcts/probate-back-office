@@ -75,8 +75,9 @@ public class ExceptionRecordController {
         FormType formType = FormType.valueOf(erRequest.getFormType());
         SuccessfulTransformationResponse callbackResponse = SuccessfulTransformationResponse.builder().build();
         List<String> errors = new ArrayList<>();
-        List<String> warnings = ocrToCCDMandatoryField
-                .ocrToCCDMandatoryFields(ocrPopulatedValueMapper.ocrPopulatedValueMapper(erRequest.getOcrFields()), formType);
+        List<String> warnings = new ArrayList<String>();
+        warnings = ocrToCCDMandatoryField
+                .ocrToCCDMandatoryFields(ocrPopulatedValueMapper.ocrPopulatedValueMapper(erRequest.getOcrFields()), formType, warnings);
 
         if (!warnings.isEmpty()) {
             errors.add("Please resolve all warnings before creating this case");
