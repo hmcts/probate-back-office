@@ -448,10 +448,6 @@ file name: spring-jcl-5.1.5.RELEASE.jar
     </suppress>
     <suppress>
         <notes><![CDATA[
-   file name: spring-test-5.1.5.RELEASE.jar
-   ]]></notes>
-        <gav regex="true">^org\.springframework:spring-test:.*$</gav>
-        <cve>CVE-2020-5398</cve>
    file name: jackson-databind-2.9.9.3.jar
    ]]></notes>
         <gav regex="true">^com\.fasterxml\.jackson\.core:jackson-databind:.*$</gav>
