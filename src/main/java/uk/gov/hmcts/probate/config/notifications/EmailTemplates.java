@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class EmailTemplates {
+    private String applicationReceived;
     private String documentReceived;
     private String caseStopped;
     private String caseStoppedCaveat;
@@ -19,4 +20,5 @@ public class EmailTemplates {
     private String requestInformation;
     private String redeclarationSot;
     private String caveatWithdrawn;
+    private String grantIssuedIntestacy;
 }
