@@ -38,7 +38,7 @@ public class GrantOfRepresentationDocmosisMapperService {
     private static final String PERSONALISATION_CAVEAT_EXPIRY_DATE = "caveatExpiryDate";
     private static final String PERSONALISATION_PA8AURL = "PA8AURL";
     private static final String PERSONALISATION_PA8BURL = "PA8BURL";
-    private static final String PERSONALISATION_APPLICANTION_TYPE = "applicationType";
+    private static final String PERSONALISATION_APPLICATION_TYPE = "applicationType";
 
     public Map<String, Object> caseDataForStoppedMatchedCaveat(CaseDetails caseDetails) {
 
@@ -67,7 +67,7 @@ public class GrantOfRepresentationDocmosisMapperService {
 
         DateFormat generatedDateFormat = new SimpleDateFormat(DATE_INPUT_FORMAT);
 
-        placeholders.put(PERSONALISATION_APPLICANTION_TYPE,
+        placeholders.put(PERSONALISATION_APPLICATION_TYPE,
                 (caseDetails.getData().getApplicationType().getCode().equals(ApplicationType.SOLICITOR.getCode())?"Solicitor":"Personal"));
         placeholders.put(PERSONALISATION_GENERATED_DATE, generatedDateFormat.format(new Date()));
 
