@@ -40,6 +40,7 @@ public class SecurityConfiguration {
                 "/health",
                 "/health/liveness",
                 "/info",
+                "/data-extract/**",
                 "/");
         }
 
@@ -64,6 +65,7 @@ public class SecurityConfiguration {
                     .antMatchers("/v2/api-docs").permitAll()
                     .antMatchers("/health", "/health/liveness").permitAll()
                     .antMatchers("/info").permitAll()
+                    .antMatchers("/data-extract/**").permitAll()
                     .anyRequest().authenticated();
         }
     }

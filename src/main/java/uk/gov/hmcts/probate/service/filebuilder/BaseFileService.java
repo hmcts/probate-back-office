@@ -1,11 +1,13 @@
 package uk.gov.hmcts.probate.service.filebuilder;
 
 import com.google.common.collect.ImmutableList;
+import lombok.extern.slf4j.Slf4j;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.ccd.raw.Grantee;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 
+import java.math.BigDecimal;
 import java.time.Period;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -17,6 +19,7 @@ import static uk.gov.hmcts.probate.model.Constants.CTSC;
 import static uk.gov.hmcts.probate.model.Constants.PRINCIPAL_REGISTRY;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 
+@Slf4j
 public abstract class BaseFileService {
     private static final SolsAddress EMPTY_ADDRESS = SolsAddress.builder()
             .addressLine1("")
@@ -109,6 +112,15 @@ public abstract class BaseFileService {
     }
 
     protected Boolean isYes(String yesNoValue) {
-        return yesNoValue.equals(YES);
+        return YES.equals(yesNoValue);
     }
+
+    protected String getPoundValue(BigDecimal value) {
+        if (value == null || value.toString().length() < 2) {
+            return "0";
+        }
+        return value.toString().substring(0, value.toString().length() - 2);
+    }
+
+
 }

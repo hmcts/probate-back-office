@@ -31,6 +31,7 @@ class DefaultExceptionHandler extends ResponseEntityExceptionHandler {
     public static final String INVALID_REQUEST = "Invalid Request";
     public static final String CLIENT_ERROR = "Client Error";
     public static final String CONNECTION_ERROR = "Connection error";
+    public static final String UNAUTHORISED_DATA_EXTRACT_ERROR = "Unauthorised access to Data-Extract error";
 
 
     @ExceptionHandler(BadRequestException.class)
@@ -60,8 +61,8 @@ class DefaultExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<CallbackResponse> handle(BusinessValidationException exception) {
         log.warn(exception.getMessage());
         CallbackResponse callbackResponse = CallbackResponse.builder()
-                .errors(Collections.singletonList(exception.getUserMessage()))
-                .build();
+            .errors(Collections.singletonList(exception.getUserMessage()))
+            .build();
         return ResponseEntity.ok(callbackResponse);
     }
 
@@ -92,4 +93,5 @@ class DefaultExceptionHandler extends ResponseEntityExceptionHandler {
         headers.setContentType(MediaType.APPLICATION_JSON);
         return new ResponseEntity<>(errorResponse, headers, NOT_FOUND);
     }
+
 }
