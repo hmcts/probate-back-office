@@ -26,6 +26,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.response.AfterSubmitCallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.service.ConfirmationResponseService;
 import uk.gov.hmcts.probate.service.EventValidationService;
+import uk.gov.hmcts.probate.service.CaseStoppedService;
 import uk.gov.hmcts.probate.service.StateChangeService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
@@ -63,6 +64,7 @@ public class BusinessValidationController {
     private final StateChangeService stateChangeService;
     private final PDFManagementService pdfManagementService;
     private final RedeclarationSoTValidationRule redeclarationSoTValidationRule;
+    private final CaseStoppedService caseStoppedService;
     private static final String DEFAULT_LOG_ERROR = "Case Id: {} ERROR: {}";
     private static final String INVALID_PAYLOAD = "Invalid payload";
 
@@ -172,10 +174,32 @@ public class BusinessValidationController {
         return ResponseEntity.ok(response);
     }
 
+
+    @PostMapping(path = "/case-stopped", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<CallbackResponse> startDelayedNotificationPeriod(
+            @RequestBody CallbackRequest callbackRequest,
+            BindingResult bindingResult,
+            HttpServletRequest request) {
+
+        logRequest(request.getRequestURI(), callbackRequest);
+
+        validateForPayloadErrors(callbackRequest, bindingResult);
+
+        log.info("case-stopped started");
+
+        caseStoppedService.caseStopped(callbackRequest.getCaseDetails());
+
+        CallbackResponse response = callbackResponseTransformer.transformCase(callbackRequest);
+        return ResponseEntity.ok(response);
+    }
+
+
     @PostMapping(path = "/resolveStop", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<CallbackResponse> resolveStopState(@RequestBody CallbackRequest callbackRequest,
                                                              HttpServletRequest request) {
         logRequest(request.getRequestURI(), callbackRequest);
+
+        caseStoppedService.caseResolved(callbackRequest.getCaseDetails());
 
         CallbackResponse response = callbackResponseTransformer.resolveStop(callbackRequest);
         return ResponseEntity.ok(response);
