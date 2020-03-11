@@ -29,7 +29,6 @@ import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
 import static org.elasticsearch.index.query.QueryBuilders.existsQuery;
 import static org.elasticsearch.index.query.QueryBuilders.matchQuery;
 import static org.elasticsearch.index.query.QueryBuilders.rangeQuery;
-import static org.elasticsearch.index.query.QueryBuilders.termQuery;
 import static uk.gov.hmcts.probate.insights.AppInsightsEvent.REQUEST_SENT;
 import static uk.gov.hmcts.probate.insights.AppInsightsEvent.REST_CLIENT_EXCEPTION;
 
@@ -38,7 +37,7 @@ import static uk.gov.hmcts.probate.insights.AppInsightsEvent.REST_CLIENT_EXCEPTI
 @Slf4j
 public class CaseQueryService {
 
-    private static final String DOCUMENT_DATE = "data.grantIssuedDate";
+    private static final String GRANT_ISSUED_DATE = "data.grantIssuedDate";
     private static final String STATE = "state";
     private static final String STATE_MATCH = "BOGrantIssued";
     private static final String SERVICE_AUTH = "ServiceAuthorization";
@@ -60,7 +59,7 @@ public class CaseQueryService {
         BoolQueryBuilder query = boolQuery();
 
         query.must(matchQuery(STATE, STATE_MATCH));
-        query.must(matchQuery(DOCUMENT_DATE, queryDate));
+        query.must(matchQuery(GRANT_ISSUED_DATE, queryDate));
 
         String jsonQuery = new SearchSourceBuilder().query(query).size(10000).toString();
 
@@ -71,7 +70,7 @@ public class CaseQueryService {
         BoolQueryBuilder query = boolQuery();
 
         query.must(matchQuery(STATE, STATE_MATCH));
-        query.must(rangeQuery(DOCUMENT_DATE).gte(startDate).lte(endDate));
+        query.must(rangeQuery(GRANT_ISSUED_DATE).gte(startDate).lte(endDate));
 
         String jsonQuery = new SearchSourceBuilder().query(query).toString();
 
@@ -98,36 +97,43 @@ public class CaseQueryService {
     }
 
     private List<ReturnedCaseDetails> runQuery(String jsonQuery) {
-        log.info("GrantMatchingService runQuery: " + jsonQuery);
+        log.info("CaseQueryService runQuery: " + jsonQuery);
         URI uri = UriComponentsBuilder
-                .fromHttpUrl(ccdDataStoreAPIConfiguration.getHost() + ccdDataStoreAPIConfiguration.getCaseMatchingPath())
-                .queryParam(CASE_TYPE_ID, CASE_TYPE.getCode())
-                .build().encode().toUri();
+            .fromHttpUrl(ccdDataStoreAPIConfiguration.getHost() + ccdDataStoreAPIConfiguration.getCaseMatchingPath())
+            .queryParam(CASE_TYPE_ID, CASE_TYPE.getCode())
+            .build().encode().toUri();
 
         HttpHeaders tokenHeaders = null;
         HttpEntity<String> entity;
         try {
             tokenHeaders = headers.getAuthorizationHeaders();
         } catch (Exception e) {
+            log.info("CaseQueryService Exception: " + e.getMessage());
             tokenHeaders = new HttpHeaders();
             tokenHeaders.add(SERVICE_AUTH, "Bearer " + serviceAuthTokenGenerator.generate());
+            log.info("DONE serviceAuthTokenGenerator.generate()");
             tokenHeaders.add(AUTHORIZATION, idamAuthenticateUserService.getIdamOauth2Token());
+            log.info("DONE idamAuthenticateUserService.getIdamOauth2Token()");
             tokenHeaders.setContentType(MediaType.APPLICATION_JSON);
         } finally {
             entity = new HttpEntity<>(jsonQuery, tokenHeaders);
-            log.info("Data extract Elastic search entity: " + entity);
+            log.info("CaseQueryService Elastic search entity: " + entity);
         }
 
         ReturnedCases returnedCases;
         try {
+            log.info("Posting object for CaseQueryService...");
             returnedCases = restTemplate.postForObject(uri, entity, ReturnedCases.class);
+            log.info("...Posted object for CaseQueryService");
         } catch (HttpClientErrorException e) {
+            log.error("CaseMatchingException on CaseQueryService, message="+e.getMessage());
             appInsights.trackEvent(REST_CLIENT_EXCEPTION, e.getMessage());
             throw new CaseMatchingException(e.getStatusCode(), e.getMessage());
         }
 
         appInsights.trackEvent(REQUEST_SENT, uri.toString());
 
+        log.info("CaseQueryService returnedCases.size = {}", returnedCases.getCases().size());
         return returnedCases.getCases();
     }
 }

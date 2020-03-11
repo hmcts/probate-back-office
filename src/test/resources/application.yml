@@ -335,9 +335,6 @@ idam-s2s-auth:
 
 excelaEmail: probatetest@gmail.com
 
-cron:
-  data_extract: "0 0 2 * * *"
-
 welsh:
   months:
     1: "Ionawr"

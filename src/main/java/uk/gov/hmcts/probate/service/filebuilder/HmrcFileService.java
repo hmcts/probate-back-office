@@ -4,8 +4,10 @@ import com.google.common.collect.ImmutableList;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.exception.BadRequestException;
+import uk.gov.hmcts.probate.exception.ClientException;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.DataExtractGrantType;
 import uk.gov.hmcts.probate.model.ccd.raw.AliasName;
@@ -43,21 +45,33 @@ public class HmrcFileService extends BaseFileService {
         {"IHT400421", "N"},
         {"IHT205", "Y"},
         {"IHT207", "E"},
+        {"NA", "X"},
     }).collect(Collectors.toMap(data -> data[0], data -> data[1]));
 
     public File createHmrcFile(List<ReturnedCaseDetails> ccdCases, String fileName) {
-        ImmutableList.Builder<String> fileData = new ImmutableList.Builder<>();
-        fileData.add(ROW_HEADER + ROW_DELIMITER);
-        int rowCount = 0;
-        for (ReturnedCaseDetails ccdCase : ccdCases) {
-            rowCount = rowCount + prepareData(fileData, ccdCase.getId(), ccdCase.getData());
-        }
-        addFooter(fileData, rowCount);
-        log.info("Creating HMRC file.");
+        ImmutableList.Builder<String> fileData = prepareFileData(ccdCases, fileName);
         return textFileBuilderService.createFile(fileData.build(), DELIMITER, fileName);
     }
 
+    private ImmutableList.Builder<String> prepareFileData(List<ReturnedCaseDetails> ccdCases, String fileName) {
+        ImmutableList.Builder<String> fileData = new ImmutableList.Builder<>();
+        try {
+            fileData.add(ROW_HEADER + ROW_DELIMITER);
+            int rowCount = 0;
+            for (ReturnedCaseDetails ccdCase : ccdCases) {
+                rowCount = rowCount + prepareData(fileData, ccdCase.getId(), ccdCase.getData());
+            }
+            addFooter(fileData, rowCount, fileName);
+        } catch (Exception e) {
+            log.error("Failed to prepare data HMRC file for :" + fileName);
+            throw new ClientException(HttpStatus.SERVICE_UNAVAILABLE.value(),
+                "Failed to prepare data HMRC file for " + fileName + " exception:" + e.getStackTrace());
+        }
+        return fileData;
+    }
+
     private int prepareData(ImmutableList.Builder<String> fileData, Long id, CaseData data) {
+        log.info("Perparing row data for HMRC, caseId={}", id);
         fileData.add(ROW_TYPE_GRANT_DETAILS);
         fileData.add(id.toString());
         fileData.add(data.getRegistryLocation());
@@ -78,23 +92,25 @@ public class HmrcFileService extends BaseFileService {
         addGranteeDetails(fileData, createGrantee(data, 3));
         addGranteeDetails(fileData, createGrantee(data, 4));
         addSolicitorDetails(fileData, data);
-        fileData.add(data.getIhtGrossValue().toString().substring(0, data.getIhtGrossValue().toString().length() - 2));
+        fileData.add(getPoundValue(data.getIhtGrossValue()));
         addExpectedEstateIndicator(fileData, data);
-        fileData.add(data.getIhtNetValue().toString().substring(0, data.getIhtNetValue().toString().length() - 2));
+        fileData.add(getPoundValue(data.getIhtNetValue()));
         fileData.add(DataExtractGrantType.valueOf(data.getCaseType()).getCaseTypeMapped());
         fileData.add(FINAL_GRANT);
         fileData.add(ROW_DELIMITER);
         int rowCount = 1;
-        for (CollectionMember<AliasName> member : data.getSolsDeceasedAliasNamesList()) {
-            rowCount = rowCount + addAliasRow(fileData, id.toString(), member.getValue());
+        if (data.getSolsDeceasedAliasNamesList() != null) {
+            for (CollectionMember<AliasName> member : data.getSolsDeceasedAliasNamesList()) {
+                rowCount = rowCount + addAliasRow(fileData, id.toString(), member.getValue());
+            }
         }
         return rowCount;
     }
 
-    private void addFooter(ImmutableList.Builder<String> fileData, int rowCount) {
+    private void addFooter(ImmutableList.Builder<String> fileData, int rowCount, String fileName) {
         fileData.add(ROW_TYPE_FOOTER);
 
-        fileData.add("1_" + fileExtractDateFormatter.formatFileDate() + ".dat");
+        fileData.add(fileName);
         fileData.add(String.valueOf(rowCount));
         fileData.add(NUMBER_OF_FILE);
         fileData.add(LAST_FILE);
