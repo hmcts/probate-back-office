@@ -105,11 +105,11 @@ public class SecurityConfigurationTest {
 
     @Test
     public void shouldAuthenticateForEndpointWithServiceAndUserAuthorizationHeader() throws Exception {
-        mvc.perform(post("/probateManTypes/CAVEAT/cases/1").header(SERVICE_AUTHORIZATION, "Bearer xxxxx.yyyyy.zzzzz")
+        mvc.perform(post("/notify/grant-delayed-scheduled").header(SERVICE_AUTHORIZATION, "Bearer xxxxx.yyyyy.zzzzz")
             .header(AUTHORIZATION, "Bearer jddslfjsdlfj"))
             .andExpect(authenticated());
     }
-
+    
     @TestConfiguration
     @EnableWebSecurity
     @ComponentScan("uk.gov.hmcts.probate")
