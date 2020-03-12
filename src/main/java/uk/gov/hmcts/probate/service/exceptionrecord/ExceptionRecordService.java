@@ -4,9 +4,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.exception.OCRMappingException;
+import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatCallbackRequest;
+import uk.gov.hmcts.probate.model.ccd.caveat.response.CaveatCallbackResponse;
+import uk.gov.hmcts.probate.model.ccd.caveat.response.ResponseCaveatData;
+import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
 import uk.gov.hmcts.probate.model.exceptionrecord.CaseCreationDetails;
+import uk.gov.hmcts.probate.model.exceptionrecord.CaseUpdateRequest;
 import uk.gov.hmcts.probate.model.exceptionrecord.ExceptionRecordRequest;
 import uk.gov.hmcts.probate.model.exceptionrecord.SuccessfulTransformationResponse;
+import uk.gov.hmcts.probate.model.exceptionrecord.SuccessfulUpdateResponse;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.ExceptionRecordCaveatMapper;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.ExceptionRecordGrantOfRepresentationMapper;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.ScannedDocumentMapper;
@@ -114,4 +120,51 @@ public class ExceptionRecordService {
             throw new OCRMappingException(e.getMessage());
         }
     }
+
+    public SuccessfulUpdateResponse updateCaveatCaseFromExceptionRecord(
+            CaseUpdateRequest erCaseUpdateRequest) {
+
+        List<String> errors = new ArrayList<String>();
+
+        try {
+            log.info("About to update Caveat expiry date extention.");
+            ExceptionRecordRequest erRequest = erCaseUpdateRequest.getExceptionRecord();
+
+            CaveatCallbackRequest caveatCallbackRequest = CaveatCallbackRequest
+
+            // Transform case data
+            ResponseCaveatData.ResponseCaveatDataBuilder responseCaseDataBuilder = caveatTransformer.getResponseCaveatData(caveatCallbackRequest.getCaseDetails());
+
+
+
+            CaveatCallbackResponse caveatCallbackResponse = CaveatCallbackResponseTransformer.transformResponseWithNoChanges(erCaseUpdateRequest.getCaseDetails()) {
+                ResponseCaveatData.ResponseCaveatDataBuilder responseCaseDataBuilder = getResponseCaveatData(caveatCallbackRequest.getCaseDetails());
+
+                return transformResponse(responseCaseDataBuilder.build());
+            }
+
+
+
+            // Add scanned documents
+            log.info("About to map Caveat Scanned Documents to CCD.");
+            caveatData.setScannedDocuments(erRequest.getScannedDocuments()
+                    .stream()
+                    .map(it -> documentMapper.toCaseDoc(it, erRequest.getId()))
+                    .collect(toList()));
+
+            log.info("Calling caveatTransformer to create transformation response for bulk scan orchestrator.");
+            ResponseCaseDeta caveatCaseDataResponse = caveatTransformer.trans.bulkScanCaveatCaseTransform(caveatData);
+
+            return SuccessfulUpdateResponse.builder()
+                    .caseUpdateDetails(caveatCaseDetailsResponse)
+                    .warnings(warnings)
+                    .errors(errors)
+                    .build();
+
+        } catch (Exception e) {
+            log.error("Error transforming Caveat case from Exception Record", e);
+            throw new OCRMappingException(e.getMessage());
+        }
+    }
+
 }
