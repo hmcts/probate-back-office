@@ -137,7 +137,7 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
     private void validatePostSuccess(String jsonFileName, String path) {
         SerenityRest.given()
                 .relaxedHTTPSValidation()
-                .headers(utils.getHeaders())
+                .headers(utils.getHeadersWithUserId())
                 .body(utils.getJsonFromFile(jsonFileName))
                 .when().post(path)
                 .then().assertThat().statusCode(200);

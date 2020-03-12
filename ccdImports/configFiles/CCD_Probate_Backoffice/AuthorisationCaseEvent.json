@@ -63,7 +63,6 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "handleEvidence", "UserRole": "caseworker-probate-issuer", "CRUD": "CRU"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "startGrantDelayNotificationPeriod", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "updateGrantDelayNotificationSent", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
-  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "grantResolved", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "grantStoppedDate", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "grantResolved", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "attachScannedDocs", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},

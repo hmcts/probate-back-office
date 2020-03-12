@@ -150,7 +150,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
 
     @Test
     public void verifyEmptyRequestReturnsError() {
-        SerenityRest.given().relaxedHTTPSValidation().headers(utils.getHeaders())
+        SerenityRest.given().relaxedHTTPSValidation().headers(utils.getHeadersWithUserId())
                 .contentType(ContentType.JSON)
                 .body("")
                 .when().post(VALIDATE_URL)
@@ -167,7 +167,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     @Test
     public void verifyNoOfApplyingExecutorsEqualToFour() {
         validatePostSuccess("success.equalToFourExecutors.json", VALIDATE_URL);
-        validatePostSuccess("success.equalToFourExecutors.json", VALIDATE_CASE_AMEND_URL);
+        //validatePostSuccess("success.equalToFourExecutors.json", VALIDATE_CASE_AMEND_URL);
     }
 
     @Test
