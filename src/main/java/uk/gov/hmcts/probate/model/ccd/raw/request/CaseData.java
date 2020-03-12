@@ -535,6 +535,7 @@ public class CaseData {
 
     private LocalDate grantDelayedNotificationDate;
     private LocalDate grantStoppedDate;
+    private String grantDelayedNotificationIdentified;
     private String grantDelayedNotificationSent;
 
     @Getter(lazy = true)

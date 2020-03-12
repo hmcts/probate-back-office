@@ -9,6 +9,8 @@ import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.GrantDelayedResponse;
+import uk.gov.hmcts.probate.model.ccd.CcdCaseType;
+import uk.gov.hmcts.probate.model.ccd.EventId;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
@@ -27,6 +29,7 @@ import java.util.List;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class GrantDelayedNotificationServiceTest {
@@ -156,6 +159,24 @@ public class GrantDelayedNotificationServiceTest {
         assertThat(response.getDelayResponseData().get(2), equalTo("<3:null>"));
     }
 
+    @Test
+    public void shouldNotifyForGrantDelayedWithCCDUpdateException() throws NotificationClientException {
+        documents.add(sentEmail);
+
+        String dateString = "31-12-2020";
+        when(caseQueryService.findCasesForGrantDelayed(dateString)).thenReturn(returnedCases);
+        when(notificationService.sendGrantDelayedEmail(returnedCaseDetails1)).thenReturn(buildDocument());
+        when(notificationService.sendGrantDelayedEmail(returnedCaseDetails2)).thenReturn(buildDocument());
+        when(notificationService.sendGrantDelayedEmail(returnedCaseDetails3)).thenReturn(buildDocument());
+
+        when(ccdClientApi.updateCaseAsCaseworker(any(), any(),any(), any(), any())).thenThrow(new RuntimeException());
+        GrantDelayedResponse response = grantDelayedNotificationService.handleGrantDelayedNotification(dateString);
+
+        assertThat(response.getDelayResponseData().size(), equalTo(3));
+        assertThat(response.getDelayResponseData().get(0), equalTo("<1:null>"));
+        assertThat(response.getDelayResponseData().get(1), equalTo("<2:null>"));
+        assertThat(response.getDelayResponseData().get(2), equalTo("<3:null>"));
+    }
     @Test
     public void shouldThrowExceptionForMissingEmailAddressForGrantDelayed() throws NotificationClientException {
         documents.add(sentEmail);

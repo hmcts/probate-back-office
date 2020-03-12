@@ -54,8 +54,15 @@ public class GrantDelayedNotificationService {
         List<FieldErrorResponse> emailErrors = emailAddressNotifyApplicantValidationRule.validate(dataForEmailAddress);
         String caseId = foundCase.getId().toString();
         if (!emailErrors.isEmpty()) {
-            log.error("Cannot send Grant Delayed notification, message: {}", emailErrors.get(0).getMessage());
+            log.error("Cannot send Grant Delayed notification, for email validation errors: {}", emailErrors.get(0).getMessage());
             return getErroredCaseIdentifier(caseId, emailErrors.get(0).getMessage());
+        }
+
+        try {
+            updateCaseIdentified(foundCase);
+        } catch (RuntimeException e) {
+            log.error("Cannot identify Grant Delayed for notification, message: {}", e.getMessage());
+            return getErroredCaseIdentifier(caseId, e.getMessage());
         }
         try {
             Document emailDocument = notificationService.sendGrantDelayedEmail(foundCase);
@@ -73,6 +80,18 @@ public class GrantDelayedNotificationService {
 
     private String getErroredCaseIdentifier(String caseId, String message) {
         return "<" + caseId + ":" + message +">";
+    }
+
+    private void updateCaseIdentified(ReturnedCaseDetails foundCase) {
+        log.info("Updating case for grant delayed, caseId: {}", foundCase.getId());
+
+        GrantOfRepresentationData grantOfRepresentationData = GrantOfRepresentationData.builder()
+            .grantDelayedNotificationIdentified(Boolean.TRUE)
+            .build();
+        
+        ccdClientApi.updateCaseAsCaseworker(CcdCaseType.GRANT_OF_REPRESENTATION, foundCase.getId().toString(),
+            grantOfRepresentationData, EventId.UPDATE_GRANT_DELAY_NOTIFICATION_IDENTIFIED, securityUtils.getSecurityDTO());
+
     }
 
     private void updateFoundCase(ReturnedCaseDetails foundCase, Document emailDocument) {

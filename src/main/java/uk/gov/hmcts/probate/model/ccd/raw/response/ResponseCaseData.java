@@ -303,6 +303,7 @@ public class ResponseCaseData {
 
     private final String grantDelayedNotificationDate;
     private final String grantStoppedDate;
+    private String grantDelayedNotificationIdentified;
     private final String grantDelayedNotificationSent;
 
 }
