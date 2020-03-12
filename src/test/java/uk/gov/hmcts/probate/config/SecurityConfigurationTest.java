@@ -100,7 +100,7 @@ public class SecurityConfigurationTest {
     @Test
     public void shouldAuthenticateForEndpointWithServiceAuthorizationHeader() throws Exception {
         mvc.perform(post("/case/sols-validate").header(SERVICE_AUTHORIZATION, "Bearer xxxxx.yyyyy.zzzzz"))
-            .andExpect(unauthenticated());
+            .andExpect(authenticated());
     }
 
     @Test
