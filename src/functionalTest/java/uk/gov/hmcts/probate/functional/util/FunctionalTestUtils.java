@@ -35,6 +35,12 @@ public class FunctionalTestUtils {
 
     private String serviceToken;
 
+    @Value("${probate.caseworker.email")
+    private String caseworkerEmail;
+
+    @Value("${probate.caseworker.password")
+    private String caseworkerPassword;
+
     @PostConstruct
     public void init() {
         serviceToken = serviceAuthTokenGenerator.generateServiceToken();
@@ -83,7 +89,7 @@ public class FunctionalTestUtils {
         return Headers.headers(
                 new Header("ServiceAuthorization", serviceToken),
                 new Header("Content-Type", ContentType.JSON.toString()),
-                new Header("Authorization", serviceAuthTokenGenerator.generateAuthorisation("ProbateSolCW1@gmail.com", "Pa55word11")),
+                new Header("Authorization", serviceAuthTokenGenerator.generateAuthorisation(caseworkerEmail, caseworkerPassword)),
                 new Header("user-id", userId));
     }
 
