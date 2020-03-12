@@ -110,7 +110,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     private void validatePostSuccess(String jsonFileName, String path) {
         SerenityRest.given()
                 .relaxedHTTPSValidation()
-                .headers(utils.getHeadersWithUserId())
+                .headers(utils.getHeaders())
                 .body(utils.getJsonFromFile(jsonFileName))
                 .when().post(path)
                 .then().assertThat().statusCode(200);

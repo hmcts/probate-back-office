@@ -189,7 +189,7 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
 
     private void validatePostRequestFailureForLegalStatement(String oldString, String replacingString, String errorMsg, String postURL) {
         given().relaxedHTTPSValidation()
-                .headers(utils.getHeadersWithUserId())
+                .headers(utils.getHeaders())
                 .body(replaceString(oldString, replacingString))
                 .when().post(postURL).then().statusCode(400)
                 .and().body("fieldErrors[0].field", equalToIgnoringCase(errorMsg))

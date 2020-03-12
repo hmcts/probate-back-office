@@ -19,13 +19,17 @@ import uk.gov.hmcts.reform.auth.checker.spring.serviceonly.AuthCheckerServiceOnl
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-    private AuthCheckerServiceAndUserFilter filter;
+    private AuthCheckerServiceAndUserFilter authCheckerServiceAndUserFilter;
+    private AuthCheckerServiceOnlyFilter authCheckerServiceOnlyFilter;
 
     public SecurityConfiguration(RequestAuthorizer<Service> serviceRequestAuthorizer,
                                  AuthenticationManager authenticationManager,
                                  RequestAuthorizer<User> userRequestAuthorizer) {
-        filter = new AuthCheckerServiceAndUserFilter(serviceRequestAuthorizer, userRequestAuthorizer);
-        filter.setAuthenticationManager(authenticationManager);
+        authCheckerServiceAndUserFilter = new AuthCheckerServiceAndUserFilter(serviceRequestAuthorizer, userRequestAuthorizer);
+        authCheckerServiceAndUserFilter.setAuthenticationManager(authenticationManager);
+        authCheckerServiceOnlyFilter = new AuthCheckerServiceOnlyFilter(serviceRequestAuthorizer);
+        authCheckerServiceOnlyFilter.setAuthenticationManager(authenticationManager);
+
     }
 
     @Override
@@ -45,6 +49,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
 
         http
+            .requestMatchers()
+            .antMatchers("/notify/grant-delayed-scheduled")
+            .and()
+            .addFilter(authCheckerServiceAndUserFilter)
             .requestMatchers()
             .antMatchers("/swagger-ui.html")
             .antMatchers("/swagger-resources/**")
@@ -67,7 +75,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .antMatchers("/legacy/**")
             .antMatchers("/standing-search/**")
             .and()
-            .addFilter(filter)
+            .addFilter(authCheckerServiceOnlyFilter)
             .csrf().disable()
             .formLogin().disable()
             .logout().disable()

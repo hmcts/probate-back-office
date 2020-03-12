@@ -31,7 +31,7 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
                                             String warningMessage, int warningSize, int warningItem) {
         SerenityRest.given()
                 .relaxedHTTPSValidation()
-                .headers(utils.getHeadersWithUserId())
+                .headers(utils.getHeaders())
                 .body(bodyText)
                 .when().post(VALIDATE_OCR_DATA)
                 .then().assertThat().statusCode(200)
@@ -43,7 +43,7 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
     private void transformExceptionPostSuccess(String bodyText, String containsText) {
         SerenityRest.given()
                 .relaxedHTTPSValidation()
-                .headers(utils.getHeadersWithUserId())
+                .headers(utils.getHeaders())
                 .body(bodyText)
                 .when().post(TRANSFORM_EXCEPTON_RECORD)
                 .then().assertThat().statusCode(200)
