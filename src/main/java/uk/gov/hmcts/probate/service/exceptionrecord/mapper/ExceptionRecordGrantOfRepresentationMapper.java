@@ -144,6 +144,7 @@ public interface ExceptionRecordGrantOfRepresentationMapper {
     @Mapping(target = "paRelationshipToDeceasedOther",
             source = "ocrFields.primaryApplicantRelationshipToDeceased", qualifiedBy = {ToRelationshipOther.class})
 
+    @Mapping(target = "solsSOTName", source = "ocrFields.solsSolicitorRepresentativeName")
     @Mapping(target = "applyingAsAnAttorney", source = "ocrFields.applyingAsAnAttorney", qualifiedBy = {ToYesOrNo.class})
     @Mapping(target = "attorneyOnBehalfOfNameAndAddress", source = "ocrFields", qualifiedBy = {ToAttorneyOnBehalfOfAddress.class})
     @Mapping(target = "mentalCapacity", source = "ocrFields.mentalCapacity", qualifiedBy = {ToYesOrNo.class})
@@ -173,6 +174,8 @@ public interface ExceptionRecordGrantOfRepresentationMapper {
     @Mapping(target = "paperForm", expression = "java(Boolean.TRUE)")
     @Mapping(target = "applicationType", source = "ocrFields", qualifiedBy = {ToApplicationTypeGrantOfRepresentation.class})
     GrantOfRepresentationData toCcdData(ExceptionRecordOCRFields ocrFields, GrantType grantType);
+
+
 
     @AfterMapping
     default void setDomicilityIHTCert(@MappingTarget GrantOfRepresentationData caseData, ExceptionRecordOCRFields ocrField) {
