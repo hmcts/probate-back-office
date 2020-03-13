@@ -8,10 +8,7 @@ import uk.gov.hmcts.probate.exception.ClientException;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 import uk.gov.hmcts.probate.service.CaseQueryService;
 import uk.gov.hmcts.probate.service.ExcelaCriteriaService;
-import uk.gov.hmcts.probate.service.FileTransferService;
 import uk.gov.hmcts.probate.service.NotificationService;
-import uk.gov.hmcts.probate.service.filebuilder.FileExtractDateFormatter;
-import uk.gov.hmcts.probate.service.filebuilder.IronMountainFileService;
 import uk.gov.service.notify.NotificationClientException;
 
 import java.util.List;

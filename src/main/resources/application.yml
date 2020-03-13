@@ -29,12 +29,12 @@ auth.provider.service.client:
   tokenTimeToLiveInSeconds: 900
 
 auth.provider.client:
-  user: ${IDAM_SERVICE_HOST:http://localhost:4501}
+  user: ${IDAM_SERVICE_HOST:http://localhost:5000}
   secret: ${IDAM_SECRET:ccd_gateway_secret}
   id: ${IDAM_CLIENT_NAME:ccd_gateway}
   redirect: ${IDAM_REDIRECT_URL:http://localhost:3451/oauth2redirect}
-  email: ${AUTH_TOKEN_EMAIL:probatesolcw1@gmail.com}
-  password: ${AUTH_TOKEN_PASSWORD:password}
+  email: ${AUTH_TOKEN_EMAIL:ProbateSuperuser@gmail.com}
+  password: ${AUTH_TOKEN_PASSWORD:Pa55word11}
 
 pdf.service:
   url: http://localhost:5500
@@ -174,6 +174,8 @@ azure:
   app_insights_key: ${APPINSIGHTS_INSTRUMENTATIONKEY:false}
 
 notifications:
+  grantDelayedNotificationPeriodDays: -1
+  grantDelayedNotificationReleaseDate: "2020-03-13"
   govNotifyApiKey: "probate_back_office_live_test-4809d6a8-a10b-405d-88eb-1fee9b3042e3-682b1c3b-647e-4a32-99b9-98a8b7c7feb7"
   templates:
     email:
@@ -192,6 +194,7 @@ notifications:
           requestInformation: "8fd291a1-67a7-48fa-a051-fa4c93315efc"
           redeclarationSot: "4bd0e8f1-5cbd-4093-813f-f97dedcd0f5f"
           caveatWithdrawn: "99b9ba1a-a2a1-4b85-ae83-e1652e9d342b"
+          grantDelayed: "30baff9f-fff8-41f5-879e-5ea963e3d144"
         solicitor:
           documentReceived: "7f8ff32d-8297-4702-9867-312047f81492"
           caseStopped: "350f488a-68f1-44f0-b083-157285b71581"
@@ -205,6 +208,7 @@ notifications:
           caveatRaisedSols: "022966cb-e4da-4996-a831-02c2310ab4f8"
           requestInformation: "b2978c65-5974-416a-bc64-fb0ee083dc7e"
           redeclarationSot: "bcd9e4cc-db0c-4810-8172-8bcb2277b775"
+          grantDelayed: "30baff9f-fff8-41f5-879e-5ea963e3d144"
       welsh:
         personal:
           documentReceived: "1c847dd8-212e-425a-ad83-1bbc48d89428"
@@ -220,6 +224,7 @@ notifications:
           requestInformation: "23a980e6-d883-45fa-8daf-acb4e017b6bb"
           redeclarationSot: "253fa4a9-ef84-4b15-a059-0a0359f4ca5b"
           caveatWithdrawn: "c63bc430-9868-4f10-924b-408c7ac3cbd8"
+          grantDelayed: "30baff9f-fff8-41f5-879e-5ea963e3d144"
         solicitor:
           documentReceived: "7f8ff32d-8297-4702-9867-312047f81492"
           caseStopped: "350f488a-68f1-44f0-b083-157285b71581"
@@ -233,6 +238,7 @@ notifications:
           caveatRaisedSols: "022966cb-e4da-4996-a831-02c2310ab4f8"
           requestInformation: "b2978c65-5974-416a-bc64-fb0ee083dc7e"
           redeclarationSot: "bcd9e4cc-db0c-4810-8172-8bcb2277b775"
+          grantDelayed: "30baff9f-fff8-41f5-879e-5ea963e3d144"
 
 documents:
   templates:
@@ -390,7 +396,7 @@ idam:
 send-letter:
   url: ${SEND_LETTER_SERIVCE_BASEURL:http://localhost:8485}
 
-auth.idam.client.baseUrl: http://localhost:4501
+auth.idam.client.baseUrl: http://localhost:5000
 
 core_case_data.api.url: ${services.coreCaseData.baseUrl:http://localhost:4452}
 

@@ -11,8 +11,12 @@ public enum EventId {
     IMPORT_STANDING_SEARCH("importSS"),
     IMPORT_WILL_LODGEMENT("importWill"),
     EXCEPTION_RECORD_GOR_CASE("createCase"),
-    EXCEPTION_RECORD_CAVEAT("createCase");
-
+    EXCEPTION_RECORD_CAVEAT("createCase"),
+    START_GRANT_DELAY_NOTIFICATION_PERIOD("startGrantDelayNotificationPeriod"),
+    UPDATE_GRANT_DELAY_NOTIFICATION_IDENTIFIED("updateGrantDelayNotificationIdentified"),
+    UPDATE_GRANT_DELAY_NOTIFICATION_SENT("updateGrantDelayNotificationSent"),
+    GRANT_STOPPED_DATE("grantStoppedDate"),
+    GRANT_RESOLVED("grantResolved");
     @Getter
     private final String name;
 

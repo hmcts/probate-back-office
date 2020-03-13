@@ -20,6 +20,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.AfterSubmitCallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
+import uk.gov.hmcts.probate.service.CaseStoppedService;
 import uk.gov.hmcts.probate.service.ConfirmationResponseService;
 import uk.gov.hmcts.probate.service.EventValidationService;
 import uk.gov.hmcts.probate.service.StateChangeService;
@@ -86,6 +87,8 @@ public class BusinessValidationUnitTest {
     private FieldErrorResponse businessValidationErrorMock;
     @Mock
     private PDFManagementService pdfManagementServiceMock;
+    @Mock
+    private CaseStoppedService  caseStoppedServiceMock;
 
 
     private BusinessValidationController underTest;
@@ -105,7 +108,8 @@ public class BusinessValidationUnitTest {
                 confirmationResponseServiceMock,
                 stateChangeServiceMock,
                 pdfManagementServiceMock,
-                redeclarationSoTValidationRuleMock);
+                redeclarationSoTValidationRuleMock,
+                caseStoppedServiceMock);
 
         when(httpServletRequest.getRequestURI()).thenReturn("/test-uri");
     }
