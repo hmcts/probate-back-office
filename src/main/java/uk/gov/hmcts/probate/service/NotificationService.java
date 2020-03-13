@@ -19,8 +19,6 @@ import uk.gov.hmcts.probate.model.ExecutorsApplyingNotification;
 import uk.gov.hmcts.probate.model.LanguagePreference;
 import uk.gov.hmcts.probate.model.SentEmail;
 import uk.gov.hmcts.probate.model.State;
-import uk.gov.hmcts.probate.model.ccd.CcdCaseType;
-import uk.gov.hmcts.probate.model.ccd.EventId;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
@@ -29,8 +27,6 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
-import uk.gov.hmcts.probate.security.SecurityUtils;
-import uk.gov.hmcts.probate.service.ccd.CcdClientApi;
 import uk.gov.hmcts.probate.service.client.DocumentStoreClient;
 import uk.gov.hmcts.probate.service.notification.CaveatPersonalisationService;
 import uk.gov.hmcts.probate.service.notification.GrantOfRepresentationPersonalisationService;
@@ -39,8 +35,6 @@ import uk.gov.hmcts.probate.service.notification.TemplateService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.validator.EmailAddressNotificationValidationRule;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
-import uk.gov.hmcts.reform.ccd.client.model.CaseDataContent;
-import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData;
 import uk.gov.service.notify.NotificationClient;
 import uk.gov.service.notify.NotificationClientException;
 import uk.gov.service.notify.SendEmailResponse;
@@ -86,12 +80,12 @@ public class NotificationService {
     private static final String PERSONALISATION_APPLICANT_NAME = "applicant_name";
     private static final String PERSONALISATION_SOT_LINK = "sot_link";
 
-    private final CcdClientApi ccdClientApi;
-    private final SecurityUtils securityUtils;
-
     @Value("${notifications.grantDelayedNotificationPeriodDays}")
     private Long grantDelayedNotificationPeriodDays;
 
+    private static final DateTimeFormatter RELEASE_DATE_FORMAT =  DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    @Value("${notifications.grantDelayedNotificationReleaseDate}")
+    private String grantDelayedNotificationReleaseDate;
 
     public Document sendEmail(State state, CaseDetails caseDetails)
             throws NotificationClientException {
@@ -277,17 +271,19 @@ public class NotificationService {
     }
 
     public void startGrantDelayNotificationPeriod(CaseDetails caseDetails){
-        //securityUtils.setSecurityContextUserAsCaseworker(); TODO - reinstate once BSP can invoke
         CaseData caseData = caseDetails.getData();
+        
+        LocalDate grantDelayedNotificationReleaseLocalDate = LocalDate.parse(grantDelayedNotificationReleaseDate, RELEASE_DATE_FORMAT);
         String evidenceHandled = caseData.getEvidenceHandled();
         if (!StringUtils.isEmpty(evidenceHandled)) {
             log.info("Evidence Handled flag {} ", evidenceHandled);
-            if(evidenceHandled.equals(Constants.NO)){
+            if(evidenceHandled.equals(Constants.NO) 
+                && caseData.getGrantDelayedNotificationDate() == null
+                && !grantDelayedNotificationReleaseLocalDate.isBefore(LocalDate.now())){
                 log.info("Grant delay notification {} ", caseData.getGrantDelayedNotificationDate());
-                GrantOfRepresentationData grantOfRepresentationData = GrantOfRepresentationData.builder()
-                    .grantDelayedNotificationDate(LocalDate.now().plusDays(grantDelayedNotificationPeriodDays))
-                    .build();
-                ccdClientApi.updateCaseAsCaseworker(CcdCaseType.GRANT_OF_REPRESENTATION, caseDetails.getId().toString(),grantOfRepresentationData, EventId.START_GRANT_DELAY_NOTIFICATION_PERIOD, securityUtils.getSecurityDTO());
+                caseData.setGrantDelayedNotificationDate(LocalDate.now().plusDays(grantDelayedNotificationPeriodDays));
+            } else {
+                log.info("Grant delay notification date not set for case: {}", caseDetails.getId());
             }
         }
     }

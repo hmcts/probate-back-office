@@ -53,6 +53,14 @@ public class SecurityUtils {
     public SecurityDTO getSecurityDTO() {
         return SecurityDTO.builder()
             .authorisation(httpServletRequest.getHeader(AUTHORIZATION))
+            .userId(httpServletRequest.getHeader(USER_ID))
+            .serviceAuthorisation(generateServiceToken())
+            .build();
+    }
+
+    public SecurityDTO getUserAndServiceSecurityDTO() {
+        return SecurityDTO.builder()
+            .authorisation(httpServletRequest.getHeader(AUTHORIZATION))
             .userId(getUserId())
             .serviceAuthorisation(generateServiceToken())
             .build();

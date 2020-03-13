@@ -107,7 +107,8 @@ http.connect.request.timeout: 60000
 idam.service.host: ${S2S_AUTH_URL:http://localhost:4502}
 
 notifications:
-  grantDelayedNotificationPeriodDays: 49
+  grantDelayedNotificationPeriodDays: 1
+  grantDelayedNotificationReleaseDate: "2020-03-13"
   govNotifyApiKey: "dummy_key"
   templates:
     email:

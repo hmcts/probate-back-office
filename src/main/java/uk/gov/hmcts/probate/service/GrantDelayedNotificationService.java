@@ -24,6 +24,9 @@ import uk.gov.service.notify.NotificationClientException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.lang.Boolean.FALSE;
+import static java.lang.Boolean.TRUE;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -86,11 +89,11 @@ public class GrantDelayedNotificationService {
         log.info("Updating case for grant delayed, caseId: {}", foundCase.getId());
 
         GrantOfRepresentationData grantOfRepresentationData = GrantOfRepresentationData.builder()
-            .grantDelayedNotificationIdentified(Boolean.TRUE)
+            .grantDelayedNotificationIdentified(TRUE)
             .build();
         
         ccdClientApi.updateCaseAsCaseworker(CcdCaseType.GRANT_OF_REPRESENTATION, foundCase.getId().toString(),
-            grantOfRepresentationData, EventId.UPDATE_GRANT_DELAY_NOTIFICATION_IDENTIFIED, securityUtils.getSecurityDTO());
+            grantOfRepresentationData, EventId.UPDATE_GRANT_DELAY_NOTIFICATION_IDENTIFIED, securityUtils.getUserAndServiceSecurityDTO());
 
     }
 
@@ -98,11 +101,12 @@ public class GrantDelayedNotificationService {
         log.info("Updating case for grant delayed, caseId: {}", foundCase.getId());
         
         GrantOfRepresentationData grantOfRepresentationData = GrantOfRepresentationData.builder()
-            .grantDelayedNotificationSent(Boolean.TRUE)
+            .grantDelayedNotificationSent(TRUE)
+            .grantDelayedNotificationIdentified(FALSE)
             .probateNotificationsGenerated(getProbateDocuments(emailDocument, foundCase.getData().getProbateDocumentsGenerated())) 
             .build();
         ccdClientApi.updateCaseAsCaseworker(CcdCaseType.GRANT_OF_REPRESENTATION, foundCase.getId().toString(),
-            grantOfRepresentationData, EventId.UPDATE_GRANT_DELAY_NOTIFICATION_SENT, securityUtils.getSecurityDTO());
+            grantOfRepresentationData, EventId.UPDATE_GRANT_DELAY_NOTIFICATION_SENT, securityUtils.getUserAndServiceSecurityDTO());
 
     }
 

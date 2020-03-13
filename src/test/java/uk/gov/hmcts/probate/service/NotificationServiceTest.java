@@ -6,10 +6,7 @@ import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
 import org.mockito.Mock;
-import org.mockito.stubbing.OngoingStubbing;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -22,12 +19,9 @@ import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.CaseType;
 import uk.gov.hmcts.probate.model.Constants;
-import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ExecutorsApplyingNotification;
 import uk.gov.hmcts.probate.model.SentEmail;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
-import uk.gov.hmcts.probate.model.ccd.CcdCaseType;
-import uk.gov.hmcts.probate.model.ccd.EventId;
 import uk.gov.hmcts.probate.model.ccd.ProbateAddress;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
@@ -41,18 +35,11 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
-import uk.gov.hmcts.probate.model.template.MarkdownTemplate;
-import uk.gov.hmcts.probate.security.SecurityDTO;
-import uk.gov.hmcts.probate.security.SecurityUtils;
-import uk.gov.hmcts.probate.service.ccd.CcdClientApi;
 import uk.gov.hmcts.probate.service.client.DocumentStoreClient;
 import uk.gov.hmcts.probate.service.template.pdf.LocalDateToWelshStringConverter;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.validator.EmailAddressNotificationValidationRule;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
-import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
-import uk.gov.hmcts.reform.ccd.client.model.StartEventResponse;
-import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData;
 import uk.gov.service.notify.NotificationClient;
 import uk.gov.service.notify.NotificationClientException;
 import uk.gov.service.notify.SendEmailResponse;
@@ -109,9 +96,6 @@ public class NotificationServiceTest {
     private PDFManagementService pdfManagementService;
 
     @MockBean
-    private CoreCaseDataApi coreCaseDataApi;
-
-    @MockBean
     private CaveatQueryService caveatQueryServiceMock;
 
     @Mock
@@ -134,14 +118,6 @@ public class NotificationServiceTest {
 
     @SpyBean
     private NotificationClient notificationClient;
-
-    @MockBean
-    private SecurityUtils securityUtils;
-    @MockBean
-    private CcdClientApi ccdClientApi;
-
-    @Captor
-    private ArgumentCaptor<GrantOfRepresentationData> grantOfRepresentationDataArgumentCaptor;
 
     private CaseDetails personalCaseDataOxford;
     private CaseDetails solicitorCaseDataOxford;
@@ -181,7 +157,6 @@ public class NotificationServiceTest {
     private CaveatData caveatData;
     private CallbackRequest callbackRequest;
     private CaveatDetails caveatStoppedCtscCaseData;
-    private List<ReturnedCaseDetails> grantDelayedCases = new ArrayList();
 
 
     @Mock
@@ -1563,6 +1538,7 @@ public class NotificationServiceTest {
 
         verify(pdfManagementService).generateAndUpload(any(SentEmail.class), eq(SENT_EMAIL));
     }
+    
     @Test
     public void shouldSetStartGrantDelayNotificationPeriod(){
         CaseDetails  caseDetails=
@@ -1574,27 +1550,27 @@ public class NotificationServiceTest {
                         .evidenceHandled(Constants.NO)
                         .build(),
                         LAST_MODIFIED, CASE_ID);
-        uk.gov.hmcts.reform.ccd.client.model.CaseDetails caseDetailsModel = uk.gov.hmcts.reform.ccd.client.model.CaseDetails.builder().build();
-        SecurityDTO securityDTO = SecurityDTO.builder().authorisation("authorisation").userId("userId").serviceAuthorisation("serviceAuthorisation").build();
-        when(securityUtils.getSecurityDTO()).thenReturn(securityDTO);
-        when(coreCaseDataApi.startEventForCaseWorker(
-                securityDTO.getAuthorisation(),
-                securityDTO.getServiceAuthorisation(),
-                securityDTO.getUserId(),
-                uk.gov.hmcts.reform.probate.model.cases.JurisdictionId.PROBATE.name(),
-                CcdCaseType.GRANT_OF_REPRESENTATION.getName(),
-                CASE_ID.toString(),
-                EventId.START_GRANT_DELAY_NOTIFICATION_PERIOD.getName())).thenReturn(StartEventResponse.builder().token("token").build());
-
-        when(ccdClientApi.updateCaseAsCaseworker(any(CcdCaseType.class), anyString(),any(GrantOfRepresentationData.class), any(EventId.class), any(SecurityDTO.class)))
-                .thenReturn(caseDetailsModel);
 
         notificationService.startGrantDelayNotificationPeriod(caseDetails);
-        verify(ccdClientApi).updateCaseAsCaseworker(any(CcdCaseType.class), anyString(),grantOfRepresentationDataArgumentCaptor.capture(), any(EventId.class), any(SecurityDTO.class));
 
-        GrantOfRepresentationData gop = grantOfRepresentationDataArgumentCaptor.getValue();
+        assertEquals(LocalDate.now().plusDays(1), caseDetails.getData().getGrantDelayedNotificationDate() );
 
-        assertEquals(LocalDate.now().plusDays(49),gop.getGrantDelayedNotificationDate() );
+    }
+
+    @Test
+    public void shouldNotSetStartGrantDelayNotificationPeriodWhenAlreadySet(){
+        CaseDetails  caseDetails=
+            new CaseDetails(CaseData.builder()
+                .caseType("gop")
+                .applicationType(SOLICITOR)
+                .primaryApplicantEmailAddress("")
+                .registryLocation("Bristol")
+                .evidenceHandled(Constants.NO)
+                .grantDelayedNotificationDate(LocalDate.now())
+                .build(),
+                LAST_MODIFIED, CASE_ID);
+
+        notificationService.startGrantDelayNotificationPeriod(caseDetails);
 
     }
 }
