@@ -20,12 +20,12 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import uk.gov.hmcts.probate.exception.OCRMappingException;
 import uk.gov.hmcts.probate.model.ccd.ocr.ValidationResponse;
-import uk.gov.hmcts.probate.model.exceptionrecord.CaseUpdateRequest;
+import uk.gov.hmcts.probate.model.exceptionrecord.CaveatCaseUpdateRequest;
 import uk.gov.hmcts.probate.model.exceptionrecord.ExceptionRecordErrorResponse;
 import uk.gov.hmcts.probate.model.exceptionrecord.ExceptionRecordRequest;
 import uk.gov.hmcts.probate.model.exceptionrecord.JourneyClassification;
 import uk.gov.hmcts.probate.model.exceptionrecord.SuccessfulTransformationResponse;
-import uk.gov.hmcts.probate.model.exceptionrecord.SuccessfulUpdateResponse;
+import uk.gov.hmcts.probate.model.exceptionrecord.SuccessfulCaveatUpdateResponse;
 import uk.gov.hmcts.probate.service.exceptionrecord.ExceptionRecordService;
 import uk.gov.hmcts.probate.service.ocr.FormType;
 import uk.gov.hmcts.probate.service.ocr.OCRPopulatedValueMapper;
@@ -131,13 +131,13 @@ public class ExceptionRecordController {
     })
     @PostMapping(path = "/update-case",
             consumes = APPLICATION_JSON_UTF8_VALUE, produces = APPLICATION_JSON_VALUE)
-    public ResponseEntity<SuccessfulUpdateResponse> transformExceptionRecord(@Valid @RequestBody CaseUpdateRequest erCaseUpdateRequest) {
+    public ResponseEntity<SuccessfulCaveatUpdateResponse> transformExceptionRecord(@Valid @RequestBody CaveatCaseUpdateRequest erCaseUpdateRequest) {
 
         ExceptionRecordRequest erRequest = erCaseUpdateRequest.getExceptionRecord();
         log.info("Update case data from exception record for form type: {}", erRequest.getFormType());
         FormType.isFormTypeValid(erRequest.getFormType());
         FormType formType = FormType.valueOf(erRequest.getFormType());
-        SuccessfulUpdateResponse callbackResponse = SuccessfulUpdateResponse.builder().build();
+        SuccessfulCaveatUpdateResponse callbackResponse = SuccessfulCaveatUpdateResponse.builder().build();
         List<String> warnings = new ArrayList<String>();
 
         if (!erRequest.getJourneyClassification().name().equals(JourneyClassification.SUPPLEMENTARY_EVIDENCE_WITH_OCR.name())) {
@@ -169,7 +169,7 @@ public class ExceptionRecordController {
         }
     }
 
-    private void logUpdateCallback(SuccessfulUpdateResponse callbackResponse) {
+    private void logUpdateCallback(SuccessfulCaveatUpdateResponse callbackResponse) {
         try {
             log.info("Response for update ExceptionRecord: {}", objectMapper.writeValueAsString(callbackResponse));
         } catch (JsonProcessingException e) {

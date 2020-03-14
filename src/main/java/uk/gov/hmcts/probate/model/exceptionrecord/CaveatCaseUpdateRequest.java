@@ -2,19 +2,19 @@ package uk.gov.hmcts.probate.model.exceptionrecord;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
-import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
+import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
 
 @Data
-public class CaseUpdateRequest {
+public class CaveatCaseUpdateRequest {
 
     private final ExceptionRecordRequest exceptionRecord;
-    private final CaseDetails caseDetails;
+    private final CaveatDetails caveatDetails;
 
-    public CaseUpdateRequest(
+    public CaveatCaseUpdateRequest(
             @JsonProperty("exception_record") ExceptionRecordRequest exceptionRecord,
-            @JsonProperty("case_details") CaseDetails caseDetails
+            @JsonProperty("case_details") CaveatDetails caveatDetails
     ) {
         this.exceptionRecord = exceptionRecord;
-        this.caseDetails = caseDetails;
+        this.caveatDetails = caveatDetails;
     }
 }
