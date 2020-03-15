@@ -28,6 +28,7 @@ import uk.gov.hmcts.reform.probate.model.cases.caveat.CaveatData;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -176,21 +177,22 @@ public class ExceptionRecordService {
             CaveatCallbackRequest caveatCallbackRequest = new CaveatCallbackRequest(caveatDetails);
 
             // Add scanned documents
-            log.info("About to map Caveat Scanned Documents to case.");
+            log.info("Mapping Caveat Scanned Documents to case.");
             uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData caveatData = caveatDetails.getData();
             caveatCallbackRequest.getCaseDetails().getData().setScannedDocuments(
                     mergeScannedDocuments(caveatData.getScannedDocuments(), erRequest.getScannedDocuments(), erRequest.getId()));
 
             // Validate caveat extension
-            log.info("About to validate caveat extension.");
+            log.info("Validating caveat extension.");
             CaveatCallbackResponse caveatCallbackResponse = eventValidationService.validateCaveatRequest(caveatCallbackRequest, validationRuleCaveatsExpiry);
             if (caveatCallbackResponse.getErrors().isEmpty()) {
-                caveatCallbackResponse = caveatCallbackResponseTransformer.transformResponseWithExtendedExpiry(caveatCallbackRequest);
-            }
-
-            log.info("About to notify of caveat extension.");
-            if (caveatCallbackResponse.getErrors().isEmpty()) {
+                LocalDate defaultExpiry = caveatCallbackRequest.getCaseDetails().getData().getExpiryDate().plusMonths(6);
+                log.info("No errors found with validateCaveatRequest, updating expiryDate to {} in request.",
+                        defaultExpiry.format(CaveatCallbackResponseTransformer.dateTimeFormatter));
+                caveatCallbackRequest.getCaseDetails().getData().setExpiryDate(defaultExpiry);
+                log.info("Calling caveatExtend to notify of caveator of extension.");
                 caveatCallbackResponse = caveatNotificationService.caveatExtend(caveatCallbackRequest);
+                log.info("Call to caveatExtend was successful.");
             }
 
             return SuccessfulCaveatUpdateResponse.builder()
@@ -228,7 +230,7 @@ public class ExceptionRecordService {
                 );
 
             if (!foundDoc.get()) {
-                log.warn("Adding document with DCN {} to case", newScannedDoc.controlNumber);
+                log.info("Adding document with DCN {} to case", newScannedDoc.controlNumber);
                 newScannedDocuments.add(documentMapper.updateCaseDoc(newScannedDoc, exceptionRecordReference));
             } else {
                 log.warn("Skipping adding document to case as the DCN {} already exists", newScannedDoc.controlNumber);

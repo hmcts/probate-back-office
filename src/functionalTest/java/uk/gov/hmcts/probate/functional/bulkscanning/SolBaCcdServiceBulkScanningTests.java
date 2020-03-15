@@ -23,6 +23,7 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
 
     private static final String VALIDATE_OCR_DATA = "/forms/PA1P/validate-ocr";
     private static final String TRANSFORM_EXCEPTON_RECORD = "/transform-exception-record";
+    private static final String UPDATE_CASE_FROM_EXCEPTON_RECORD = "/update-case";
 
     private String jsonRequest;
     private String jsonResponse;
@@ -46,6 +47,16 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
                 .headers(utils.getHeaders())
                 .body(bodyText)
                 .when().post(TRANSFORM_EXCEPTON_RECORD)
+                .then().assertThat().statusCode(200)
+                .and().content(containsString(containsText));
+    }
+
+    private void updateCaseFromExceptionPostSuccess(String bodyText, String containsText) {
+        SerenityRest.given()
+                .relaxedHTTPSValidation()
+                .headers(utils.getHeaders())
+                .body(bodyText)
+                .when().post(UPDATE_CASE_FROM_EXCEPTON_RECORD)
                 .then().assertThat().statusCode(200)
                 .and().content(containsString(containsText));
     }
@@ -111,6 +122,38 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
         jsonResponse = utils.getJsonFromFile("expectedBulkScanTransformExceptionRecordOutputPA1A.json");
         jsonResponse = jsonResponse.replaceAll("\"applicationSubmittedDate\":\"[0-9-]+\"", applicationSubmittedDate);
         transformExceptionPostSuccess(jsonRequest, jsonResponse);
+    }
+
+    @Test
+    public void testUpdateCaseExtendCaveatPA8AReturnSuccessfulJSON() {
+        String currentDate = LocalDate.now().format(CaveatCallbackResponseTransformer.dateTimeFormatter);
+        String expiryDate7DaysFromNow = LocalDate.now().plusDays(7).format(CaveatCallbackResponseTransformer.dateTimeFormatter);
+        String expectedExpiryDate6MonthsFromNow = LocalDate.now().plusMonths(6).format(CaveatCallbackResponseTransformer.dateTimeFormatter);
+        String applicationSubmittedDate = "\"applicationSubmittedDate\":\"" + currentDate + "\"";
+        String expiryDate = "\"expiryDate\":\"" + expiryDate7DaysFromNow + "\"";
+        jsonRequest = utils.getJsonFromFile("bulkScanUpdateCaseExceptionRecordExtendExpiryPA8A.json");
+        jsonRequest = jsonRequest.replaceAll("\"expiryDate\":\"[0-9-]+\"", expiryDate);
+        jsonResponse = utils.getJsonFromFile("expectedBulkScanUpdateCaseExceptionRecordSuccessfulExtendCaveatOutputPA8A.json");
+        jsonResponse = jsonResponse.replaceAll("\"applicationSubmittedDate\":\"[0-9-]+\"", applicationSubmittedDate);
+        jsonResponse = jsonResponse.replaceAll("\"expiryDate\":\"[0-9-]+\"", expectedExpiryDate6MonthsFromNow);
+        updateCaseFromExceptionPostSuccess(jsonRequest, jsonResponse);
+    }
+
+    @Test
+    public void testUpdateCaseExtendCaveatPA8AReturnExpiredErrorJSON() {
+        jsonRequest = utils.getJsonFromFile("bulkScanUpdateCaseExceptionRecordExtendExpiryPA8A.json");
+        jsonResponse = utils.getJsonFromFile("expectedBulkScanUpdateCaseExceptionRecordExpiredCaveatErrorPA8A.json");
+        updateCaseFromExceptionPostSuccess(jsonRequest, jsonResponse);
+    }
+
+    @Test
+    public void testUpdateCaseExtendCaveatPA8AReturnOutsideOneMonthExpiryErrorJSON() {
+        String expiryDate3MonthsFromNow = LocalDate.now().plusMonths(3).format(CaveatCallbackResponseTransformer.dateTimeFormatter);
+        String expireDate = "\"expiryDate\":\"" + expiryDate3MonthsFromNow + "\"";
+        jsonRequest = utils.getJsonFromFile("bulkScanUpdateCaseExceptionRecordExtendExpiryPA8A.json");
+        jsonRequest = jsonRequest.replaceAll("\"expiryDate\":\"[0-9-]+\"", expireDate);
+        jsonResponse = utils.getJsonFromFile("expectedBulkScanUpdateCaseExceptionRecordExpiryOutsideOneMonthErrorPA8A.json");
+        updateCaseFromExceptionPostSuccess(jsonRequest, jsonResponse);
     }
 
     @Test
