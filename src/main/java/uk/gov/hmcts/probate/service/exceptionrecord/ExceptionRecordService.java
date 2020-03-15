@@ -186,7 +186,8 @@ public class ExceptionRecordService {
             log.info("Validating caveat extension.");
             CaveatCallbackResponse caveatCallbackResponse = eventValidationService.validateCaveatRequest(caveatCallbackRequest, validationRuleCaveatsExpiry);
             if (caveatCallbackResponse.getErrors().isEmpty()) {
-                LocalDate defaultExpiry = caveatCallbackRequest.getCaseDetails().getData().getExpiryDate().plusMonths(6);
+                LocalDate defaultExpiry = caveatCallbackRequest.getCaseDetails().getData()
+                        .getExpiryDate().plusMonths(CaveatCallbackResponseTransformer.CAVEAT_EXPIRY_EXTENSION_PERIOD_IN_MONTHS);
                 log.info("No errors found with validateCaveatRequest, updating expiryDate to {} in request.",
                         defaultExpiry.format(CaveatCallbackResponseTransformer.dateTimeFormatter));
                 caveatCallbackRequest.getCaseDetails().getData().setExpiryDate(defaultExpiry);

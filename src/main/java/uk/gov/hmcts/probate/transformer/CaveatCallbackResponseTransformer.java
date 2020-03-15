@@ -44,6 +44,8 @@ public class CaveatCallbackResponseTransformer {
     public static final ApplicationType DEFAULT_APPLICATION_TYPE = PERSONAL;
     public static final String DEFAULT_REGISTRY_LOCATION = "Leeds";
 
+    public static final int CAVEAT_EXPIRY_EXTENSION_PERIOD_IN_MONTHS = 6;
+
     public static final String EXCEPTION_RECORD_CASE_TYPE_ID = "Caveat";
     public static final String EXCEPTION_RECORD_EVENT_ID = "raiseCaveatFromBulkScan";
     public static final RegistryLocation EXCEPTION_RECORD_REGISTRY_LOCATION = RegistryLocation.CTSC;
@@ -153,7 +155,8 @@ public class CaveatCallbackResponseTransformer {
     public CaveatCallbackResponse transformResponseWithExtendedExpiry(CaveatCallbackRequest caveatCallbackRequest) {
         ResponseCaveatData.ResponseCaveatDataBuilder responseCaseDataBuilder = getResponseCaveatData(caveatCallbackRequest.getCaseDetails());
 
-        String defaultExpiry = dateTimeFormatter.format(caveatCallbackRequest.getCaseDetails().getData().getExpiryDate().plusMonths(6));
+        String defaultExpiry = dateTimeFormatter.format(caveatCallbackRequest.getCaseDetails()
+                .getData().getExpiryDate().plusMonths(CAVEAT_EXPIRY_EXTENSION_PERIOD_IN_MONTHS));
         return transformResponse(responseCaseDataBuilder.expiryDate(defaultExpiry).build());
     }
 
