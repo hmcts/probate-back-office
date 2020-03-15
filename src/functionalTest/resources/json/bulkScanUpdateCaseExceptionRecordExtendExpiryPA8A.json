@@ -95,9 +95,9 @@
           "DocumentGeneratedBy":"ecb5edf4-2f5f-4031-a0ec-12fb71f47584",
           "DocumentDateAdded":"2020-02-10",
           "DocumentLink":{
-            "document_url":"http://dm-store-demo.service.core-compute-demo.internal/documents/3bdcf395-c63f-4af7-8adb-20b170f4159e",
+            "document_url":"http://dm-store:5006/documents/3bdcf395-c63f-4af7-8adb-20b170f4159e",
             "document_filename":"sentEmail.pdf",
-            "document_binary_url":"http://dm-store-demo.service.core-compute-demo.internal/documents/3bdcf395-c63f-4af7-8adb-20b170f4159e/binary"
+            "document_binary_url":"http://dm-store:5006/documents/3bdcf395-c63f-4af7-8adb-20b170f4159e/binary"
           },
           "DocumentFileName":"06c54b3d-a706-411b-b388-2ac441d526f4.pdf"
         }
@@ -115,9 +115,9 @@
           "DocumentGeneratedBy":"ecb5edf4-2f5f-4031-a0ec-12fb71f47584",
           "DocumentDateAdded":"2020-01-08",
           "DocumentLink":{
-            "document_url":"http://dm-store-demo.service.core-compute-demo.internal/documents/73014150-ba9d-46b9-9f63-fee791a5a444",
+            "document_url":"http://dm-store:5006/documents/73014150-ba9d-46b9-9f63-fee791a5a444",
             "document_filename":"sentEmail.pdf",
-            "document_binary_url":"http://dm-store-demo.service.core-compute-demo.internal/documents/73014150-ba9d-46b9-9f63-fee791a5a444/binary"
+            "document_binary_url":"http://dm-store:5006/documents/73014150-ba9d-46b9-9f63-fee791a5a444/binary"
           },
           "DocumentFileName":"04d0c3e2-b7e7-4fce-aa61-8dfc67148378.pdf"
         }
@@ -127,17 +127,17 @@
         "id":"9d08c00c-c617-4cf8-8207-3c97fe955ef4",
         "value":{
           "url":{
-            "document_url":"http://dm-store-demo.service.core-compute-demo.internal/documents/dfd74122-8a21-4bab-b7d1-e6f3d9ca3dad",
+            "document_url":"http://dm-store:5006/documents/dfd74122-8a21-4bab-b7d1-e6f3d9ca3dad",
             "document_filename":"19365040100100002.pdf",
-            "document_binary_url":"http://dm-store-demo.service.core-compute-demo.internal/documents/dfd74122-8a21-4bab-b7d1-e6f3d9ca3dad/binary"
+            "document_binary_url":"http://dm-store:5006/documents/dfd74122-8a21-4bab-b7d1-e6f3d9ca3dad/binary"
           },
           "scannedDate":"2020-01-02T17:42:03.868Z",
           "controlNumber":"19365040100100002",
           "exceptionRecordReference":"1577986967061368",
-          "type":"other",
+          "type":"form",
           "fileName":"19365040100100002.pdf",
           "deliveryDate":"2020-01-02T17:42:03.868Z",
-          "subtype":"duplicate document"
+          "subtype":"duoplicate document"
         }
       }],
       "expiryDate":"2020-01-01",
