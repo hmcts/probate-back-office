@@ -178,7 +178,7 @@ public class NotificationController {
             HttpServletRequest request) {
         logRequest(request.getRequestURI(), callbackRequest);
         log.info("start-delayed-notify-period started");
-        notificationService.startGrantDelayNotificationPeriod(callbackRequest.getCaseDetails());
+        notificationService.scheduledStartGrantDelayNotificationPeriod(callbackRequest.getCaseDetails());
         CallbackResponse response = callbackResponseTransformer.transformCase(callbackRequest);
         return ResponseEntity.ok(response);
     }

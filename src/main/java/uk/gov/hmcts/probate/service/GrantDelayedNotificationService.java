@@ -1,6 +1,5 @@
 package uk.gov.hmcts.probate.service;
 
-import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -86,14 +85,14 @@ public class GrantDelayedNotificationService {
     }
 
     private void updateCaseIdentified(ReturnedCaseDetails foundCase) {
-        log.info("Updating case for grant delayed, caseId: {}", foundCase.getId());
+        log.info("Updating case for grant identified, caseId: {}", foundCase.getId());
 
         GrantOfRepresentationData grantOfRepresentationData = GrantOfRepresentationData.builder()
             .grantDelayedNotificationIdentified(TRUE)
             .build();
         
         ccdClientApi.updateCaseAsCaseworker(CcdCaseType.GRANT_OF_REPRESENTATION, foundCase.getId().toString(),
-            grantOfRepresentationData, EventId.UPDATE_GRANT_DELAY_NOTIFICATION_IDENTIFIED, securityUtils.getUserAndServiceSecurityDTO());
+            grantOfRepresentationData, EventId.SCHEDULED_UPDATE_GRANT_DELAY_NOTIFICATION_IDENTIFIED, securityUtils.getUserAndServiceSecurityDTO());
 
     }
 
@@ -106,7 +105,7 @@ public class GrantDelayedNotificationService {
             .probateNotificationsGenerated(getProbateDocuments(emailDocument, foundCase.getData().getProbateDocumentsGenerated())) 
             .build();
         ccdClientApi.updateCaseAsCaseworker(CcdCaseType.GRANT_OF_REPRESENTATION, foundCase.getId().toString(),
-            grantOfRepresentationData, EventId.UPDATE_GRANT_DELAY_NOTIFICATION_SENT, securityUtils.getUserAndServiceSecurityDTO());
+            grantOfRepresentationData, EventId.SCHEDULED_UPDATE_GRANT_DELAY_NOTIFICATION_SENT, securityUtils.getUserAndServiceSecurityDTO());
 
     }
 
