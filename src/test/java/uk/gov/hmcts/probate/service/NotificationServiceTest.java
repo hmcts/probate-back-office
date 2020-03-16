@@ -1551,7 +1551,7 @@ public class NotificationServiceTest {
                         .build(),
                         LAST_MODIFIED, CASE_ID);
 
-        notificationService.scheduledStartGrantDelayNotificationPeriod(caseDetails);
+        notificationService.startGrantDelayNotificationPeriod(caseDetails);
         assertEquals(null, caseDetails.getData().getGrantDelayedNotificationDate() );
 
     }
@@ -1569,7 +1569,7 @@ public class NotificationServiceTest {
                 .build(),
                 LAST_MODIFIED, CASE_ID);
 
-        notificationService.scheduledStartGrantDelayNotificationPeriod(caseDetails);
+        notificationService.startGrantDelayNotificationPeriod(caseDetails);
         assertEquals(LocalDate.of(2020, 12, 31), caseDetails.getData().getGrantDelayedNotificationDate() );
     }
 }

@@ -270,9 +270,9 @@ public class NotificationService {
         return pdfManagementService.generateAndUpload(sentEmail, docType);
     }
 
-    public void scheduledStartGrantDelayNotificationPeriod(CaseDetails caseDetails){
+    public void startGrantDelayNotificationPeriod(CaseDetails caseDetails){
+
         CaseData caseData = caseDetails.getData();
-        
         LocalDate grantDelayedNotificationReleaseLocalDate = LocalDate.parse(grantDelayedNotificationReleaseDate, RELEASE_DATE_FORMAT);
         String evidenceHandled = caseData.getEvidenceHandled();
         if (!StringUtils.isEmpty(evidenceHandled)) {
@@ -285,6 +285,24 @@ public class NotificationService {
             } else {
                 log.info("Grant delay notification date not set for case: {}", caseDetails.getId());
             }
+        }
+    }
+
+    public void startAwaitingDocumentationNotificationPeriod(CaseDetails caseDetails) {
+
+        CaseData caseData = caseDetails.getData();
+        LocalDate grantDelayedNotificationReleaseLocalDate = LocalDate.parse(grantDelayedNotificationReleaseDate, RELEASE_DATE_FORMAT);
+        if (!grantDelayedNotificationReleaseLocalDate.isBefore(LocalDate.now())){
+            caseData.setGrantAwaitingDocumentationNotificationDate(LocalDate.now());
+        }
+    }
+
+    public void resetAwaitingDocumentationNotificationDate(CaseDetails caseDetails) {
+
+        CaseData caseData = caseDetails.getData();
+        LocalDate grantDelayedNotificationReleaseLocalDate = LocalDate.parse(grantDelayedNotificationReleaseDate, RELEASE_DATE_FORMAT);
+        if (!grantDelayedNotificationReleaseLocalDate.isBefore(LocalDate.now())){
+            caseData.setGrantAwaitingDocumentationNotificationDate(null);
         }
     }
 

@@ -39,11 +39,13 @@ public class CaseStoppedServiceTest {
     public void shouldIncrementGrantDelayedNotificationDateByStoppedPeriodWhenCaseResolved() {
 
         caseDetails.getData().setGrantDelayedNotificationDate(LocalDate.now().plusWeeks(6));
+        caseDetails.getData().setGrantAwaitingDocumentationNotificationDate(LocalDate.now().plusWeeks(3));
         caseDetails.getData().setGrantStoppedDate(LocalDate.now().minusWeeks(2));
 
         caseStoppedService.caseResolved(caseDetails);
 
         assertEquals(LocalDate.now().plusWeeks(8), caseDetails.getData().getGrantDelayedNotificationDate());
+        assertEquals(LocalDate.now().plusWeeks(5), caseDetails.getData().getGrantAwaitingDocumentationNotificationDate());
     }
 
     @Test
@@ -79,5 +81,18 @@ public class CaseStoppedServiceTest {
         caseStoppedService.caseResolved(caseDetails);
 
         assertEquals(LocalDate.now().plusWeeks(6), caseDetails.getData().getGrantDelayedNotificationDate());
+    }
+
+    @Test
+    public void shouldNotIncrementGrantAwaitingDocsNotificationDateWhenNoDocDateIsSet() {
+
+        caseDetails.getData().setGrantDelayedNotificationSent(Constants.NO);
+        caseDetails.getData().setGrantDelayedNotificationDate(LocalDate.now().plusWeeks(6));
+        caseDetails.getData().setGrantStoppedDate(null);
+
+        caseStoppedService.caseResolved(caseDetails);
+
+        assertEquals(LocalDate.now().plusWeeks(6), caseDetails.getData().getGrantDelayedNotificationDate());
+        assertEquals(null, caseDetails.getData().getGrantAwaitingDocumentationNotificationDate());
     }
 }
