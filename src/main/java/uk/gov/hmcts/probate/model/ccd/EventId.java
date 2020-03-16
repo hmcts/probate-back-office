@@ -12,9 +12,9 @@ public enum EventId {
     IMPORT_WILL_LODGEMENT("importWill"),
     EXCEPTION_RECORD_GOR_CASE("createCase"),
     EXCEPTION_RECORD_CAVEAT("createCase"),
-    START_GRANT_DELAY_NOTIFICATION_PERIOD("startGrantDelayNotificationPeriod"),
-    UPDATE_GRANT_DELAY_NOTIFICATION_IDENTIFIED("updateGrantDelayNotificationIdentified"),
-    UPDATE_GRANT_DELAY_NOTIFICATION_SENT("updateGrantDelayNotificationSent"),
+    SCHEDULED_START_GRANT_DELAY_NOTIFICATION_PERIOD("scheduledStartGrantDelayNotificationPeriod"),
+    SCHEDULED_UPDATE_GRANT_DELAY_NOTIFICATION_IDENTIFIED("scheduledUpdateGrantDelayNotificationIdentified"),
+    SCHEDULED_UPDATE_GRANT_DELAY_NOTIFICATION_SENT("scheduledUpdateGrantDelayNotificationSent"),
     GRANT_STOPPED_DATE("grantStoppedDate"),
     GRANT_RESOLVED("grantResolved");
     @Getter

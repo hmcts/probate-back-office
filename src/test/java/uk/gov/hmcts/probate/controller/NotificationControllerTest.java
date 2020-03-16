@@ -506,7 +506,7 @@ public class NotificationControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(content().string(containsString("data")));
-        verify(notificationService).startGrantDelayNotificationPeriod(any());
+        verify(notificationService).scheduledStartGrantDelayNotificationPeriod(any());
 
     }
     

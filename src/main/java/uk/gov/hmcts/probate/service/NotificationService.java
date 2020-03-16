@@ -270,7 +270,7 @@ public class NotificationService {
         return pdfManagementService.generateAndUpload(sentEmail, docType);
     }
 
-    public void startGrantDelayNotificationPeriod(CaseDetails caseDetails){
+    public void scheduledStartGrantDelayNotificationPeriod(CaseDetails caseDetails){
         CaseData caseData = caseDetails.getData();
         
         LocalDate grantDelayedNotificationReleaseLocalDate = LocalDate.parse(grantDelayedNotificationReleaseDate, RELEASE_DATE_FORMAT);

@@ -1540,7 +1540,7 @@ public class NotificationServiceTest {
     }
     
     @Test
-    public void shouldSetStartGrantDelayNotificationPeriod(){
+    public void shouldSetScheduledStartGrantDelayNotificationPeriod(){
         CaseDetails  caseDetails=
                 new CaseDetails(CaseData.builder()
                         .caseType("gop")
@@ -1551,14 +1551,13 @@ public class NotificationServiceTest {
                         .build(),
                         LAST_MODIFIED, CASE_ID);
 
-        notificationService.startGrantDelayNotificationPeriod(caseDetails);
-
-        assertEquals(LocalDate.now().plusDays(1), caseDetails.getData().getGrantDelayedNotificationDate() );
+        notificationService.scheduledStartGrantDelayNotificationPeriod(caseDetails);
+        assertEquals(null, caseDetails.getData().getGrantDelayedNotificationDate() );
 
     }
 
     @Test
-    public void shouldNotSetStartGrantDelayNotificationPeriodWhenAlreadySet(){
+    public void shouldNotSetScheduledStartGrantDelayNotificationPeriodWhenAlreadySet(){
         CaseDetails  caseDetails=
             new CaseDetails(CaseData.builder()
                 .caseType("gop")
@@ -1566,11 +1565,11 @@ public class NotificationServiceTest {
                 .primaryApplicantEmailAddress("")
                 .registryLocation("Bristol")
                 .evidenceHandled(Constants.NO)
-                .grantDelayedNotificationDate(LocalDate.now())
+                .grantDelayedNotificationDate(LocalDate.of(2020, 12, 31))
                 .build(),
                 LAST_MODIFIED, CASE_ID);
 
-        notificationService.startGrantDelayNotificationPeriod(caseDetails);
-
+        notificationService.scheduledStartGrantDelayNotificationPeriod(caseDetails);
+        assertEquals(LocalDate.of(2020, 12, 31), caseDetails.getData().getGrantDelayedNotificationDate() );
     }
 }
