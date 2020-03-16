@@ -108,7 +108,7 @@ idam.service.host: ${S2S_AUTH_URL:http://localhost:4502}
 
 notifications:
   grantDelayedNotificationPeriodDays: 1
-  grantDelayedNotificationReleaseDate: "2020-03-13"
+  grantDelayedNotificationReleaseDate: "2099-01-01"
   govNotifyApiKey: "dummy_key"
   templates:
     email:

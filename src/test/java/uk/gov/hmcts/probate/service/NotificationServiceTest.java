@@ -1572,4 +1572,22 @@ public class NotificationServiceTest {
         notificationService.startGrantDelayNotificationPeriod(caseDetails);
         assertEquals(LocalDate.of(2020, 12, 31), caseDetails.getData().getGrantDelayedNotificationDate() );
     }
+    
+    @Test
+    public void shouldSetScheduledStartGrantAwaitingDocsNotificationPeriod(){
+        CaseDetails  caseDetails=
+            new CaseDetails(CaseData.builder()
+                .caseType("gop")
+                .applicationType(SOLICITOR)
+                .primaryApplicantEmailAddress("")
+                .registryLocation("Bristol")
+                .evidenceHandled(Constants.NO)
+                .build(),
+                LAST_MODIFIED, CASE_ID);
+
+        notificationService.startAwaitingDocumentationNotificationPeriod(caseDetails);
+        assertEquals(LocalDate.now(), caseDetails.getData().getGrantAwaitingDocumentationNotificationDate() );
+
+    }
+
 }

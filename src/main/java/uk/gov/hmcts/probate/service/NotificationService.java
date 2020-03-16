@@ -86,7 +86,7 @@ public class NotificationService {
     private static final DateTimeFormatter RELEASE_DATE_FORMAT =  DateTimeFormatter.ofPattern("yyyy-MM-dd");
     @Value("${notifications.grantDelayedNotificationReleaseDate}")
     private String grantDelayedNotificationReleaseDate;
-
+    
     public Document sendEmail(State state, CaseDetails caseDetails)
             throws NotificationClientException {
 
