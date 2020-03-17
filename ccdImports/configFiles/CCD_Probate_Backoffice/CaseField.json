@@ -321,5 +321,6 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "grantDelayedNotificationIdentified", "Label": "Has a grant delayed notification been identified?", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "grantDelayedNotificationSent", "Label": "Has a grant delayed notification been sent?", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "grantDelayedNotificationDate", "Label": "Grant delayed notification date", "FieldType": "Date", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "grantStoppedDate", "Label": "Grant stopped date", "FieldType": "Date", "SecurityClassification": "Public"}
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "grantStoppedDate", "Label": "Grant stopped date", "FieldType": "Date", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "grantAwaitingDocumentationNotificationDate", "Label": "Grant stopped date", "FieldType": "Date", "SecurityClassification": "Public"}
 ]

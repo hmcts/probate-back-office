@@ -142,7 +142,6 @@ public class GrantNotificationService {
         for (CollectionMember<Document> documentCollectionMember : probateDocumentsGenerated) {
             probateDocuments.add(new uk.gov.hmcts.reform.probate.model.cases.CollectionMember<ProbateDocument>(documentCollectionMember.getId(),
                 getProbateDocument(documentCollectionMember.getValue())));
-
         }
         probateDocuments.add(new uk.gov.hmcts.reform.probate.model.cases.CollectionMember<>(null, getProbateDocument(emailDocument)));
         return probateDocuments;

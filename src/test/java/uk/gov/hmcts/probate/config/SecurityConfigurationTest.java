@@ -116,6 +116,19 @@ public class SecurityConfigurationTest {
             .andExpect(unauthenticated());
     }
 
+    @Test
+    public void shouldAuthenticateForAwaitDocsEndpointWithServiceAndUserAuthorizationHeader() throws Exception {
+        mvc.perform(post("/notify/grant-awaiting-documents-scheduled").header(SERVICE_AUTHORIZATION, "Bearer xxxxx.yyyyy.zzzzz")
+            .header(AUTHORIZATION, "Bearer jddslfjsdlfj"))
+            .andExpect(authenticated());
+    }
+
+    @Test
+    public void shouldNotAuthenticateForAwaitDocEndpointWithServiceAndUserAuthorizationHeader() throws Exception {
+        mvc.perform(post("/notify/grant-awaiting-documents-scheduled").header(SERVICE_AUTHORIZATION, "Bearer xxxxx.yyyyy.zzzzz"))
+            .andExpect(unauthenticated());
+    }
+
     @TestConfiguration
     @EnableWebSecurity
     @ComponentScan("uk.gov.hmcts.probate")
