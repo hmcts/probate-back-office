@@ -1552,7 +1552,7 @@ public class NotificationServiceTest {
                         LAST_MODIFIED, CASE_ID);
 
         notificationService.startGrantDelayNotificationPeriod(caseDetails);
-        assertEquals(null, caseDetails.getData().getGrantDelayedNotificationDate() );
+        assertEquals(LocalDate.now().plusDays(1), caseDetails.getData().getGrantDelayedNotificationDate() );
 
     }
 
