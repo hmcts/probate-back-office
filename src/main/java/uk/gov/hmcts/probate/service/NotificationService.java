@@ -244,17 +244,26 @@ public class NotificationService {
     }
 
     public Document sendGrantDelayedEmail(ReturnedCaseDetails caseDetails) throws NotificationClientException {
- 
-        Registry registry = registriesProperties.getRegistries().get(caseDetails.getData().getRegistryLocation().toLowerCase());
         String templateId = notificationTemplates.getEmail().get(caseDetails.getData().getLanguagePreference())
             .get(caseDetails.getData().getApplicationType())
             .getGrantDelayed();
+        return sendGrantNotificationEmail(caseDetails, templateId);
+    }
+
+    public Document sendGrantAwaitingDocumentationEmail(ReturnedCaseDetails caseDetails) throws NotificationClientException {
+        String templateId = notificationTemplates.getEmail().get(caseDetails.getData().getLanguagePreference())
+            .get(caseDetails.getData().getApplicationType())
+            .getGrantAwaitingDocumentation();
+        return sendGrantNotificationEmail(caseDetails, templateId);
+    }
+
+    private Document sendGrantNotificationEmail(ReturnedCaseDetails caseDetails, String templateId) throws NotificationClientException {
+ 
+        Registry registry = registriesProperties.getRegistries().get(caseDetails.getData().getRegistryLocation().toLowerCase());
         Map<String, Object> personalisation = grantOfRepresentationPersonalisationService.getPersonalisation(caseDetails, registry);
         String reference = caseDetails.getData().getSolsSolicitorAppReference();
         String emailAddress = caseDetails.getData().getPrimaryApplicantEmailAddress();
-        SendEmailResponse response;
-
-        response = notificationClient.sendEmail(templateId, emailAddress, personalisation, reference);
+        SendEmailResponse response = notificationClient.sendEmail(templateId, emailAddress, personalisation, reference);
         log.info("Grant delayed email reference response: {}", response.getReference());
 
         return getGeneratedSentEmailDocument(response, emailAddress, SENT_EMAIL);

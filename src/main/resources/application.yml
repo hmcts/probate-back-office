@@ -196,6 +196,7 @@ notifications:
           redeclarationSot: "4bd0e8f1-5cbd-4093-813f-f97dedcd0f5f"
           caveatWithdrawn: "99b9ba1a-a2a1-4b85-ae83-e1652e9d342b"
           grantDelayed: "30baff9f-fff8-41f5-879e-5ea963e3d144"
+          grantAwaitingDocumentation: "2debe394-5d0f-4d66-8b05-f3d4276d34eb"
         solicitor:
           documentReceived: "7f8ff32d-8297-4702-9867-312047f81492"
           caseStopped: "350f488a-68f1-44f0-b083-157285b71581"
@@ -210,6 +211,7 @@ notifications:
           requestInformation: "b2978c65-5974-416a-bc64-fb0ee083dc7e"
           redeclarationSot: "bcd9e4cc-db0c-4810-8172-8bcb2277b775"
           grantDelayed: "30baff9f-fff8-41f5-879e-5ea963e3d144"
+          grantAwaitingDocumentation: "2debe394-5d0f-4d66-8b05-f3d4276d34eb"
       welsh:
         personal:
           documentReceived: "1c847dd8-212e-425a-ad83-1bbc48d89428"
@@ -226,6 +228,7 @@ notifications:
           redeclarationSot: "253fa4a9-ef84-4b15-a059-0a0359f4ca5b"
           caveatWithdrawn: "c63bc430-9868-4f10-924b-408c7ac3cbd8"
           grantDelayed: "30baff9f-fff8-41f5-879e-5ea963e3d144"
+          grantAwaitingDocumentation: "2debe394-5d0f-4d66-8b05-f3d4276d34eb"
         solicitor:
           documentReceived: "7f8ff32d-8297-4702-9867-312047f81492"
           caseStopped: "350f488a-68f1-44f0-b083-157285b71581"
@@ -240,6 +243,7 @@ notifications:
           requestInformation: "b2978c65-5974-416a-bc64-fb0ee083dc7e"
           redeclarationSot: "bcd9e4cc-db0c-4810-8172-8bcb2277b775"
           grantDelayed: "30baff9f-fff8-41f5-879e-5ea963e3d144"
+          grantAwaitingDocumentation: "2debe394-5d0f-4d66-8b05-f3d4276d34eb"
 
 documents:
   templates:

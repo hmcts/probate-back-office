@@ -15,6 +15,7 @@ public enum EventId {
     SCHEDULED_START_GRANT_DELAY_NOTIFICATION_PERIOD("scheduledStartGrantDelayNotificationPeriod"),
     SCHEDULED_UPDATE_GRANT_DELAY_NOTIFICATION_IDENTIFIED("scheduledUpdateGrantDelayNotificationIdentified"),
     SCHEDULED_UPDATE_GRANT_DELAY_NOTIFICATION_SENT("scheduledUpdateGrantDelayNotificationSent"),
+    SCHEDULED_UPDATE_GRANT_AWAITING_DOCUMENTATION_NOTIFICATION_SENT("scheduledUpdateGrantAwaitingDocsNotificationSent"),
     GRANT_STOPPED_DATE("grantStoppedDate"),
     GRANT_RESOLVED("grantResolved");
     @Getter

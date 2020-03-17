@@ -8,9 +8,7 @@ import org.mockito.MockitoAnnotations;
 import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.DocumentType;
-import uk.gov.hmcts.probate.model.GrantDelayedResponse;
-import uk.gov.hmcts.probate.model.ccd.CcdCaseType;
-import uk.gov.hmcts.probate.model.ccd.EventId;
+import uk.gov.hmcts.probate.model.GrantScheduleResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
@@ -23,7 +21,6 @@ import uk.gov.service.notify.NotificationClientException;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static org.hamcrest.Matchers.equalTo;
@@ -32,10 +29,10 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class GrantDelayedNotificationServiceTest {
+public class GrantNotificationServiceTest {
 
     @InjectMocks
-    private GrantDelayedNotificationService grantDelayedNotificationService;
+    private GrantNotificationService grantNotificationService;
 
     @Mock
     private NotificationService notificationService;
@@ -114,13 +111,13 @@ public class GrantDelayedNotificationServiceTest {
         when(notificationService.sendGrantDelayedEmail(returnedCaseDetails2)).thenReturn(buildDocument());
         when(notificationService.sendGrantDelayedEmail(returnedCaseDetails3)).thenReturn(buildDocument());
 
-        GrantDelayedResponse response = grantDelayedNotificationService.handleGrantDelayedNotification(dateString);
-        assertThat(response.getDelayResponseData().size(), equalTo(3));
+        GrantScheduleResponse response = grantNotificationService.handleGrantDelayedNotification(dateString);
+        assertThat(response.getScheduleResponseData().size(), equalTo(3));
 
-        assertThat(response.getDelayResponseData().size(), equalTo(3));
-        assertThat(response.getDelayResponseData().get(0), equalTo("1"));
-        assertThat(response.getDelayResponseData().get(1), equalTo("2"));
-        assertThat(response.getDelayResponseData().get(2), equalTo("3"));
+        assertThat(response.getScheduleResponseData().size(), equalTo(3));
+        assertThat(response.getScheduleResponseData().get(0), equalTo("1"));
+        assertThat(response.getScheduleResponseData().get(1), equalTo("2"));
+        assertThat(response.getScheduleResponseData().get(2), equalTo("3"));
     }
 
     @Test
@@ -133,12 +130,12 @@ public class GrantDelayedNotificationServiceTest {
         when(notificationService.sendGrantDelayedEmail(returnedCaseDetails2)).thenReturn(buildDocument());
         when(notificationService.sendGrantDelayedEmail(returnedCaseDetails3)).thenThrow(new NotificationClientException("notificationError"));
 
-        GrantDelayedResponse response = grantDelayedNotificationService.handleGrantDelayedNotification(dateString);
+        GrantScheduleResponse response = grantNotificationService.handleGrantDelayedNotification(dateString);
 
-        assertThat(response.getDelayResponseData().size(), equalTo(3));
-        assertThat(response.getDelayResponseData().get(0), equalTo("1"));
-        assertThat(response.getDelayResponseData().get(1), equalTo("2"));
-        assertThat(response.getDelayResponseData().get(2), equalTo("<3:notificationError>"));
+        assertThat(response.getScheduleResponseData().size(), equalTo(3));
+        assertThat(response.getScheduleResponseData().get(0), equalTo("1"));
+        assertThat(response.getScheduleResponseData().get(1), equalTo("2"));
+        assertThat(response.getScheduleResponseData().get(2), equalTo("<3:notificationError>"));
     }
 
     @Test
@@ -151,12 +148,12 @@ public class GrantDelayedNotificationServiceTest {
         when(notificationService.sendGrantDelayedEmail(returnedCaseDetails2)).thenReturn(buildDocument());
         when(notificationService.sendGrantDelayedEmail(returnedCaseDetails3)).thenThrow(RuntimeException.class);
 
-        GrantDelayedResponse response = grantDelayedNotificationService.handleGrantDelayedNotification(dateString);
+        GrantScheduleResponse response = grantNotificationService.handleGrantDelayedNotification(dateString);
 
-        assertThat(response.getDelayResponseData().size(), equalTo(3));
-        assertThat(response.getDelayResponseData().get(0), equalTo("1"));
-        assertThat(response.getDelayResponseData().get(1), equalTo("2"));
-        assertThat(response.getDelayResponseData().get(2), equalTo("<3:null>"));
+        assertThat(response.getScheduleResponseData().size(), equalTo(3));
+        assertThat(response.getScheduleResponseData().get(0), equalTo("1"));
+        assertThat(response.getScheduleResponseData().get(1), equalTo("2"));
+        assertThat(response.getScheduleResponseData().get(2), equalTo("<3:null>"));
     }
 
     @Test
@@ -170,12 +167,12 @@ public class GrantDelayedNotificationServiceTest {
         when(notificationService.sendGrantDelayedEmail(returnedCaseDetails3)).thenReturn(buildDocument());
 
         when(ccdClientApi.updateCaseAsCaseworker(any(), any(),any(), any(), any())).thenThrow(new RuntimeException());
-        GrantDelayedResponse response = grantDelayedNotificationService.handleGrantDelayedNotification(dateString);
+        GrantScheduleResponse response = grantNotificationService.handleGrantDelayedNotification(dateString);
 
-        assertThat(response.getDelayResponseData().size(), equalTo(3));
-        assertThat(response.getDelayResponseData().get(0), equalTo("<1:null>"));
-        assertThat(response.getDelayResponseData().get(1), equalTo("<2:null>"));
-        assertThat(response.getDelayResponseData().get(2), equalTo("<3:null>"));
+        assertThat(response.getScheduleResponseData().size(), equalTo(3));
+        assertThat(response.getScheduleResponseData().get(0), equalTo("<1:null>"));
+        assertThat(response.getScheduleResponseData().get(1), equalTo("<2:null>"));
+        assertThat(response.getScheduleResponseData().get(2), equalTo("<3:null>"));
     }
     @Test
     public void shouldThrowExceptionForMissingEmailAddressForGrantDelayed() throws NotificationClientException {
@@ -188,12 +185,69 @@ public class GrantDelayedNotificationServiceTest {
         errorsList.add(FieldErrorResponse.builder().message("emailError").build());
         when(emailAddressNotifyApplicantValidationRule.validate(any())).thenReturn(errorsList);
 
-        GrantDelayedResponse response = grantDelayedNotificationService.handleGrantDelayedNotification(dateString);
+        GrantScheduleResponse response = grantNotificationService.handleGrantDelayedNotification(dateString);
 
-        assertThat(response.getDelayResponseData().size(), equalTo(3));
-        assertThat(response.getDelayResponseData().get(0), equalTo("<1:emailError>"));
-        assertThat(response.getDelayResponseData().get(1), equalTo("<2:emailError>"));
-        assertThat(response.getDelayResponseData().get(2), equalTo("<3:emailError>"));
+        assertThat(response.getScheduleResponseData().size(), equalTo(3));
+        assertThat(response.getScheduleResponseData().get(0), equalTo("<1:emailError>"));
+        assertThat(response.getScheduleResponseData().get(1), equalTo("<2:emailError>"));
+        assertThat(response.getScheduleResponseData().get(2), equalTo("<3:emailError>"));
+    }
+
+    @Test
+    public void shouldNotifyForGrantAwaitingDocs() throws NotificationClientException {
+        documents.add(sentEmail);
+
+        String dateString = "31-12-2020";
+        when(caseQueryService.findCasesForGrantAwaitingDocumentation(dateString)).thenReturn(returnedCases);
+        when(notificationService.sendGrantAwaitingDocumentationEmail(returnedCaseDetails1)).thenReturn(buildDocument());
+        when(notificationService.sendGrantAwaitingDocumentationEmail(returnedCaseDetails2)).thenReturn(buildDocument());
+        when(notificationService.sendGrantAwaitingDocumentationEmail(returnedCaseDetails3)).thenReturn(buildDocument());
+
+        GrantScheduleResponse response = grantNotificationService.handleAwaitingDocumentationNotification(dateString);
+        assertThat(response.getScheduleResponseData().size(), equalTo(3));
+
+        assertThat(response.getScheduleResponseData().size(), equalTo(3));
+        assertThat(response.getScheduleResponseData().get(0), equalTo("1"));
+        assertThat(response.getScheduleResponseData().get(1), equalTo("2"));
+        assertThat(response.getScheduleResponseData().get(2), equalTo("3"));
+    }
+
+    @Test
+    public void shouldNotifyForGrantAwaitingDocsWithCCDUpdateException() throws NotificationClientException {
+        documents.add(sentEmail);
+
+        String dateString = "31-12-2020";
+        when(caseQueryService.findCasesForGrantAwaitingDocumentation(dateString)).thenReturn(returnedCases);
+        when(notificationService.sendGrantAwaitingDocumentationEmail(returnedCaseDetails1)).thenReturn(buildDocument());
+        when(notificationService.sendGrantAwaitingDocumentationEmail(returnedCaseDetails2)).thenReturn(buildDocument());
+        when(notificationService.sendGrantAwaitingDocumentationEmail(returnedCaseDetails3)).thenReturn(buildDocument());
+
+        when(ccdClientApi.updateCaseAsCaseworker(any(), any(),any(), any(), any())).thenThrow(new RuntimeException());
+        GrantScheduleResponse response = grantNotificationService.handleAwaitingDocumentationNotification(dateString);
+
+        assertThat(response.getScheduleResponseData().size(), equalTo(3));
+        assertThat(response.getScheduleResponseData().get(0), equalTo("<1:null>"));
+        assertThat(response.getScheduleResponseData().get(1), equalTo("<2:null>"));
+        assertThat(response.getScheduleResponseData().get(2), equalTo("<3:null>"));
+    }
+
+    @Test
+    public void shouldThrowExceptionForMissingEmailAddressForGrantAwaitingDocs() throws NotificationClientException {
+        documents.add(sentEmail);
+
+        String dateString = "31-12-2020";
+        when(caseQueryService.findCasesForGrantAwaitingDocumentation(dateString)).thenReturn(returnedCases);
+
+        List<FieldErrorResponse> errorsList = new ArrayList<>();
+        errorsList.add(FieldErrorResponse.builder().message("emailError").build());
+        when(emailAddressNotifyApplicantValidationRule.validate(any())).thenReturn(errorsList);
+
+        GrantScheduleResponse response = grantNotificationService.handleAwaitingDocumentationNotification(dateString);
+
+        assertThat(response.getScheduleResponseData().size(), equalTo(3));
+        assertThat(response.getScheduleResponseData().get(0), equalTo("<1:emailError>"));
+        assertThat(response.getScheduleResponseData().get(1), equalTo("<2:emailError>"));
+        assertThat(response.getScheduleResponseData().get(2), equalTo("<3:emailError>"));
     }
 
     private Document buildDocument() {
@@ -207,6 +261,4 @@ public class GrantDelayedNotificationServiceTest {
 
         return document;
     }
-
-
 }

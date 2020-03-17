@@ -48,6 +48,7 @@ public class CaseQueryService {
         "BOReadyToIssue", "BOCaseQA", "BOCaseMatchingIssueGrant"};
     private static final String KEY_GRANT_DELAYED_NOTIFICATION_DATE = "data.grantDelayedNotificationDate";
     private static final String KEY_GRANT_DELAYED_NOTIFICATION_SENT = "data.grantDelayedNotificationSent";
+    private static final String KEY_GRANT_AWAITING_DOCUMENTATION_NOTIFICATION_DATE = "data.grantAwaitingDocumentationNotificationDate";
     private final RestTemplate restTemplate;
     private final AppInsights appInsights;
     private final HttpHeadersFactory headers;
@@ -90,6 +91,16 @@ public class CaseQueryService {
         query.must(oredStateChecks);
         query.must(matchQuery(KEY_GRANT_DELAYED_NOTIFICATION_DATE, queryDate));
         query.mustNot(existsQuery(KEY_GRANT_DELAYED_NOTIFICATION_SENT));
+
+        String jsonQuery = new SearchSourceBuilder().query(query).size(10000).toString();
+
+        return runQuery(jsonQuery);
+    }
+
+    public List<ReturnedCaseDetails> findCasesForGrantAwaitingDocumentation(String queryDate) {
+
+        BoolQueryBuilder query = boolQuery();
+        query.must(matchQuery(KEY_GRANT_AWAITING_DOCUMENTATION_NOTIFICATION_DATE, queryDate));
 
         String jsonQuery = new SearchSourceBuilder().query(query).size(10000).toString();
 
