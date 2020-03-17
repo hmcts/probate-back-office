@@ -83,6 +83,9 @@ public class NotificationService {
     @Value("${notifications.grantDelayedNotificationPeriodDays}")
     private Long grantDelayedNotificationPeriodDays;
 
+    @Value("${notifications.grantAwaitingDocumentationNotificationPeriodDays}")
+    private Long grantAwaitingDocumentationNotificationPeriodDays;
+
     private static final DateTimeFormatter RELEASE_DATE_FORMAT =  DateTimeFormatter.ofPattern("yyyy-MM-dd");
     @Value("${notifications.grantDelayedNotificationReleaseDate}")
     private String grantDelayedNotificationReleaseDate;
@@ -293,7 +296,7 @@ public class NotificationService {
         CaseData caseData = caseDetails.getData();
         LocalDate grantDelayedNotificationReleaseLocalDate = LocalDate.parse(grantDelayedNotificationReleaseDate, RELEASE_DATE_FORMAT);
         if (!grantDelayedNotificationReleaseLocalDate.isBefore(LocalDate.now())){
-            caseData.setGrantAwaitingDocumentationNotificationDate(LocalDate.now());
+            caseData.setGrantAwaitingDocumentationNotificationDate(LocalDate.now().plusDays(grantAwaitingDocumentationNotificationPeriodDays));
         }
     }
 
