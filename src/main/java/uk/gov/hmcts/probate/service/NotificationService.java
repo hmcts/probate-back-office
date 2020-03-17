@@ -291,7 +291,7 @@ public class NotificationService {
             log.info("Evidence Handled flag {} ", evidenceHandled);
             if(evidenceHandled.equals(Constants.NO) 
                 && caseData.getGrantDelayedNotificationDate() == null
-                && !grantDelayedNotificationReleaseLocalDate.isBefore(LocalDate.now())){
+                && !LocalDate.now().isBefore(grantDelayedNotificationReleaseLocalDate)){
                 log.info("Grant delay notification {} ", caseData.getGrantDelayedNotificationDate());
                 caseData.setGrantDelayedNotificationDate(LocalDate.now().plusDays(grantDelayedNotificationPeriodDays));
             } else {
@@ -304,7 +304,7 @@ public class NotificationService {
 
         CaseData caseData = caseDetails.getData();
         LocalDate grantDelayedNotificationReleaseLocalDate = LocalDate.parse(grantDelayedNotificationReleaseDate, RELEASE_DATE_FORMAT);
-        if (!grantDelayedNotificationReleaseLocalDate.isBefore(LocalDate.now())){
+        if(!LocalDate.now().isBefore(grantDelayedNotificationReleaseLocalDate)){
             caseData.setGrantAwaitingDocumentationNotificationDate(LocalDate.now().plusDays(grantAwaitingDocumentationNotificationPeriodDays));
         }
     }
@@ -313,7 +313,7 @@ public class NotificationService {
 
         CaseData caseData = caseDetails.getData();
         LocalDate grantDelayedNotificationReleaseLocalDate = LocalDate.parse(grantDelayedNotificationReleaseDate, RELEASE_DATE_FORMAT);
-        if (!grantDelayedNotificationReleaseLocalDate.isBefore(LocalDate.now())){
+        if(!LocalDate.now().isBefore(grantDelayedNotificationReleaseLocalDate)){
             caseData.setGrantAwaitingDocumentationNotificationDate(null);
         }
     }
