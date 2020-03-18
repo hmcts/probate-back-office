@@ -176,7 +176,7 @@ def versions = [
         springCloudStarterNetflixHystrix: '2.1.3.RELEASE',
         serenitySpring                  : '2.0.41',
         serenityBddVersion              : '2.0.41',
-        springBootVersion               : '2.1.3.RELEASE',
+        springBootVersion               : '2.1.5.RELEASE',
         hmctsJavaLogging                : '5.1.0',
         authCheckerLib                  : '2.1.4',
         jacksonDatabind                 : '2.9.9.3',
@@ -185,8 +185,8 @@ def versions = [
         lombok                          : '1.16.18',
         springfoxSwagger                : '2.9.2',
         springSecurityVersion           : '5.1.1.RELEASE',
-        probateCommonsVersion           : '1.0.5.2',
-        ccdClient                       : '4.4.1',
+        probateCommonsVersion           : '1.0.5.2_PRO-7124',
+        ccdClient                       : '4.6.4',
         mapStruct                       : '1.2.0.Final',
         serviceAuthVersion              : '3.0.0'
 ]

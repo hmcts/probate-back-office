@@ -17,6 +17,7 @@ import uk.gov.hmcts.probate.exception.BadRequestException;
 import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.DocumentIssueType;
 import uk.gov.hmcts.probate.model.DocumentStatus;
+import uk.gov.hmcts.probate.model.GrantDelayedResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
@@ -25,6 +26,8 @@ import uk.gov.hmcts.probate.service.BulkPrintService;
 import uk.gov.hmcts.probate.service.DocumentGeneratorService;
 import uk.gov.hmcts.probate.service.DocumentService;
 import uk.gov.hmcts.probate.service.EventValidationService;
+import uk.gov.hmcts.probate.service.GrantDelayedNotificationService;
+import uk.gov.hmcts.probate.service.InformationRequestCorrespondenceService;
 import uk.gov.hmcts.probate.service.InformationRequestService;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.RedeclarationNotificationService;
@@ -36,15 +39,20 @@ import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
 import uk.gov.service.notify.NotificationClientException;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.anyVararg;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -107,6 +115,9 @@ public class NotificationControllerTest {
     @MockBean
     private RedeclarationNotificationService redeclarationNotificationService;
 
+    @MockBean
+    private GrantDelayedNotificationService grantDelayedNotificationService;
+
     @SpyBean
     private DocumentService documentService;
 
@@ -117,6 +128,8 @@ public class NotificationControllerTest {
     private static final String REDECLARATION_SOT = "/notify/redeclaration-sot";
     private static final String RAISE_GRANT = "/notify/grant-received";
     private static final String APPLICATION_RECEIVED_URL = "/notify/application-received";
+    private static final String GRANT_DELAYED = "/notify/grant-delayed-scheduled?date=aDate";
+    private static final String START_GRANT_DELAYED_NOTIFICATION_DATE = "/notify/start-grant-delayed-notify-period";
 
     private static final Map<String, Object> EMPTY_MAP = new HashMap();
     private static final Document EMPTY_DOC = Document.builder().documentType(CAVEAT_STOPPED).build();
@@ -507,7 +520,7 @@ public class NotificationControllerTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(content().string(containsString("data")));
     }
-
+    
     @Test
     public void shouldReturnSuccessfulResponseFoRaiseGrant() throws Exception {
         String personalPayload = testUtils.getStringFromFile("personalPayloadNotifications.json");
@@ -530,5 +543,29 @@ public class NotificationControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(content().string(containsString("data")));
+    }
+
+    @Test
+    public void shouldReturnSuccessfulResponseForStartGrantDelayNotification() throws Exception {
+        String personalPayload = testUtils.getStringFromFile("personalPayloadNotifications.json");
+        when(callbackResponseTransformer.transformCase(any())).thenReturn(successfulResponse);
+        mockMvc.perform(post(START_GRANT_DELAYED_NOTIFICATION_DATE).content(personalPayload).contentType(MediaType.APPLICATION_JSON_UTF8))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+            .andExpect(content().string(containsString("data")));
+        verify(notificationService).scheduledStartGrantDelayNotificationPeriod(any());
+
+    }
+
+    @Test
+    public void shouldReturnSuccessfulResponseForGrantDelayed() throws Exception {
+        GrantDelayedResponse response = GrantDelayedResponse.builder().delayResponseData(Arrays.asList("returnString")).build();
+        when(grantDelayedNotificationService.handleGrantDelayedNotification("aDate")).thenReturn(response);
+        mockMvc.perform(post(GRANT_DELAYED).contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(content().string(containsString("")));
+
+        verify(grantDelayedNotificationService, times(1)).handleGrantDelayedNotification(anyString());
+
     }
 }

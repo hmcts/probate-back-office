@@ -107,6 +107,8 @@ http.connect.request.timeout: 60000
 idam.service.host: ${S2S_AUTH_URL:http://localhost:4502}
 
 notifications:
+  grantDelayedNotificationPeriodDays: 1
+  grantDelayedNotificationReleaseDate: "2020-03-13"
   govNotifyApiKey: "dummy_key"
   templates:
     email:
@@ -125,6 +127,7 @@ notifications:
           caveatExtend: "pa-ctsc-caveat-extend"
           requestInformation: "pa-request-information"
           redeclarationSot: "pa-redeclaration-sot"
+          grantDelayed: "pa-grantDelayed"
         solicitor:
           applicationReceived: "sol-application-received"
           documentReceived: "sol-document-received"
@@ -139,6 +142,7 @@ notifications:
           caveatRaisedSols: "solicitor-caveat-raised"
           requestInformation: "sols-request-information"
           redeclarationSot: "sols-redeclaration-sot"
+          grantDelayed: "sols-grantDelayed"
       welsh:
         personal:
           applicationReceived: "pa-application-received-welsh"
@@ -154,6 +158,7 @@ notifications:
           caveatExtend: "pa-ctsc-caveat-extend-welsh"
           requestInformation: "pa-request-information-welsh"
           redeclarationSot: "pa-redeclaration-sot-welsh"
+          grantDelayed: "pa-grantDelayed-welsh"
         solicitor:
           applicationReceived: "sol-application-received-welsh"
           documentReceived: "sol-document-received-welsh"
@@ -167,6 +172,7 @@ notifications:
           caveatRaisedCtsc: "sols-ctsc-caveat-raised-welsh"
           requestInformation: "sols-request-information-welsh"
           redeclarationSot: "sols-redeclaration-sot-welsh"
+          grantDelayed: "sols-grantDelayed-welsh"
 
 documents:
   templates:
