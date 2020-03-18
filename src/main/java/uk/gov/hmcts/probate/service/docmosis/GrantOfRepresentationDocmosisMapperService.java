@@ -1,8 +1,11 @@
 package uk.gov.hmcts.probate.service.docmosis;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import uk.gov.hmcts.probate.config.properties.registries.Registry;
+import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.CaseType;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
@@ -35,6 +38,7 @@ public class GrantOfRepresentationDocmosisMapperService {
     private static final String PERSONALISATION_CAVEAT_EXPIRY_DATE = "caveatExpiryDate";
     private static final String PERSONALISATION_PA8AURL = "PA8AURL";
     private static final String PERSONALISATION_PA8BURL = "PA8BURL";
+    private static final String PERSONALISATION_APPLICATION_TYPE = "applicationType";
 
     public Map<String, Object> caseDataForStoppedMatchedCaveat(CaseDetails caseDetails) {
 
@@ -54,6 +58,19 @@ public class GrantOfRepresentationDocmosisMapperService {
         placeholders.put(PERSONALISATION_CAVEAT_EXPIRY_DATE, dateFormatterService.formatCaveatExpiryDate(caveatData.getExpiryDate()));
         placeholders.put(PERSONALISATION_CAVEAT_REFERENCE,
                 ccdReferenceFormatterService.getFormattedCaseReference(caseDetails.getData().getBoCaseStopCaveatId()));
+        return placeholders;
+    }
+
+    public Map<String, Object> caseDataAsPlaceholders(CaseDetails caseDetails) {
+
+        Map<String, Object> placeholders = gms.addCaseDataWithRegistryProperties(caseDetails);
+
+        DateFormat generatedDateFormat = new SimpleDateFormat(DATE_INPUT_FORMAT);
+
+        placeholders.put(PERSONALISATION_APPLICATION_TYPE,
+                (caseDetails.getData().getApplicationType().getCode().equals(ApplicationType.SOLICITOR.getCode())?"Solicitor":"Personal"));
+        placeholders.put(PERSONALISATION_GENERATED_DATE, generatedDateFormat.format(new Date()));
+
         return placeholders;
     }
 }

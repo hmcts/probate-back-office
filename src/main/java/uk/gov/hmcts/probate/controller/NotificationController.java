@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import uk.gov.hmcts.probate.model.DocumentType;
+import uk.gov.hmcts.probate.model.State;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
@@ -21,6 +22,7 @@ import uk.gov.hmcts.probate.service.DocumentsReceivedNotificationService;
 import uk.gov.hmcts.probate.service.EventValidationService;
 import uk.gov.hmcts.probate.service.InformationRequestService;
 import uk.gov.hmcts.probate.service.NotificationService;
+import uk.gov.hmcts.probate.service.RaiseGrantOfRepresentationNotificationService;
 import uk.gov.hmcts.probate.service.RedeclarationNotificationService;
 import uk.gov.hmcts.probate.service.docmosis.GrantOfRepresentationDocmosisMapperService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
@@ -31,16 +33,21 @@ import uk.gov.hmcts.probate.validator.EmailAddressNotifyValidationRule;
 import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
 import uk.gov.service.notify.NotificationClientException;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+
+import static uk.gov.hmcts.probate.model.Constants.YES;
+import static uk.gov.hmcts.probate.model.DocumentType.GRANT_COVERSHEET;
+import static uk.gov.hmcts.probate.model.State.APPLICATION_RECEIVED;
 import static uk.gov.hmcts.probate.model.State.CASE_STOPPED;
 import static uk.gov.hmcts.probate.model.State.CASE_STOPPED_CAVEAT;
 import static uk.gov.hmcts.probate.model.State.DOCUMENTS_RECEIVED;
+import static uk.gov.hmcts.probate.model.State.GRANT_RAISED;
 
 @RequiredArgsConstructor
 @RequestMapping(value = "/notify", consumes = APPLICATION_JSON_UTF8_VALUE, produces = APPLICATION_JSON_VALUE)
@@ -62,6 +69,22 @@ public class NotificationController {
     private final GrantOfRepresentationDocmosisMapperService gorDocmosisService;
     private final InformationRequestService informationRequestService;
     private final RedeclarationNotificationService redeclarationNotificationService;
+    private final RaiseGrantOfRepresentationNotificationService raiseGrantOfRepresentationNotificationService;
+
+    @PostMapping(path = "/application-received")
+    public ResponseEntity<String> sendApplicationReceivedNotification(
+            @Validated({EmailAddressNotificationValidationRule.class})
+            @RequestBody CallbackRequest callbackRequest)
+            throws NotificationClientException {
+
+        ResponseEntity<CallbackResponse> callbackResponseResponseEntity = sendNotification(callbackRequest, APPLICATION_RECEIVED);
+        List<String> errors = callbackResponseResponseEntity.getBody().getErrors();
+        if (errors == null || errors.isEmpty()) {
+            return ResponseEntity.ok("Application received email sent");
+        } else {
+            return ResponseEntity.badRequest().body(errors.stream().collect(Collectors.joining(", ")));
+        }
+    }
 
     @PostMapping(path = "/case-stopped")
     public ResponseEntity<CallbackResponse> sendCaseStoppedNotification(
@@ -151,5 +174,40 @@ public class NotificationController {
     @PostMapping(path = "/redeclaration-sot")
     public ResponseEntity<CallbackResponse> redeclarationSot(@RequestBody CallbackRequest callbackRequest) {
         return ResponseEntity.ok(redeclarationNotificationService.handleRedeclarationNotification(callbackRequest));
+    }
+
+    @PostMapping(path = "/grant-received")
+    public ResponseEntity<CallbackResponse> sendGrantReceivedNotification(
+            @Validated({EmailAddressNotificationValidationRule.class})
+            @RequestBody CallbackRequest callbackRequest) throws NotificationClientException {
+        return ResponseEntity.ok(raiseGrantOfRepresentationNotificationService.handleGrantReceivedNotification(callbackRequest));
+    }
+
+    private ResponseEntity<CallbackResponse> sendNotification(
+            @Validated({EmailAddressNotificationValidationRule.class})
+            @RequestBody CallbackRequest callbackRequest, State state)
+            throws NotificationClientException {
+
+        CaseDetails caseDetails = callbackRequest.getCaseDetails();
+        CaseData caseData = callbackRequest.getCaseDetails().getData();
+        CallbackResponse response;
+
+        List<Document> documents = new ArrayList<>();
+        if (isAnEmailAddressPresent(caseData)) {
+            response = eventValidationService.validateEmailRequest(callbackRequest, emailAddressNotificationValidationRules);
+            if (response.getErrors().isEmpty()) {
+                Document sentEmailAsDocument = notificationService.sendEmail(state, caseDetails);
+                documents.add(sentEmailAsDocument);
+                response = callbackResponseTransformer.addDocuments(callbackRequest, documents, null, null);
+            }
+        } else {
+            response = callbackResponseTransformer.addDocuments(callbackRequest, documents, null, null);
+
+        }
+        return ResponseEntity.ok(response);
+    }
+
+    private boolean isAnEmailAddressPresent(CaseData caseData) {
+        return caseData.isDocsReceivedEmailNotificationRequested();
     }
 }

@@ -39,6 +39,7 @@ import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT_RAISED;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.GRANT_RAISED;
 import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_ADMON;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_INTESTACY;
@@ -296,7 +297,7 @@ public class PDFManagementServiceTest {
     }
 
     @Test
-    public void shouldGenerateAndUploadDocmosisDocument() throws IOException {
+    public void shouldGenerateAndUploadDocmosisDocumentCaveatRaised() throws IOException {
         String json = "{}";
 
         when(pdfGeneratorServiceMock
@@ -312,6 +313,51 @@ public class PDFManagementServiceTest {
         Document response = underTest.generateDocmosisDocumentAndUpload(placeholdersMock, CAVEAT_RAISED);
 
         String fileName = "caveatRaised.pdf";
+        assertNotNull(response);
+        assertEquals(fileName, response.getDocumentLink().getDocumentFilename());
+        assertEquals(href, response.getDocumentLink().getDocumentBinaryUrl());
+        assertEquals(href, response.getDocumentLink().getDocumentUrl());
+    }
+
+    @Test
+    public void shouldGenerateAndUploadGrantRaised() throws IOException {
+        String json = "{}";
+
+        when(objectMapperMock.writeValueAsString(callbackRequestMock)).thenReturn(json);
+        when(pdfGeneratorServiceMock.generatePdf(GRANT_RAISED, json)).thenReturn(evidenceManagementFileUpload);
+        when(uploadServiceMock.store(evidenceManagementFileUpload)).thenReturn(evidenceManagementFile);
+        when(evidenceManagementFile.getLink(Link.REL_SELF)).thenReturn(link);
+        when(evidenceManagementFile.getLink("binary")).thenReturn(link);
+
+        String href = "href";
+        when(link.getHref()).thenReturn(href);
+
+        Document response = underTest.generateAndUpload(callbackRequestMock, GRANT_RAISED);
+
+        String fileName = "grantRaised.pdf";
+        assertNotNull(response);
+        assertEquals(fileName, response.getDocumentLink().getDocumentFilename());
+        assertEquals(href, response.getDocumentLink().getDocumentBinaryUrl());
+        assertEquals(href, response.getDocumentLink().getDocumentUrl());
+    }
+
+    @Test
+    public void shouldGenerateAndUploadDocmosisDocumentGrantRaised() throws IOException {
+        String json = "{}";
+
+        when(pdfGeneratorServiceMock
+                .generateDocmosisDocumentFrom(GRANT_RAISED.getTemplateName(), placeholdersMock))
+                .thenReturn(evidenceManagementFileUpload);
+        when(uploadServiceMock.store(evidenceManagementFileUpload)).thenReturn(evidenceManagementFile);
+        when(evidenceManagementFile.getLink(Link.REL_SELF)).thenReturn(link);
+        when(evidenceManagementFile.getLink("binary")).thenReturn(link);
+
+        String href = "href";
+        when(link.getHref()).thenReturn(href);
+
+        Document response = underTest.generateDocmosisDocumentAndUpload(placeholdersMock, GRANT_RAISED);
+
+        String fileName = "grantRaised.pdf";
         assertNotNull(response);
         assertEquals(fileName, response.getDocumentLink().getDocumentFilename());
         assertEquals(href, response.getDocumentLink().getDocumentBinaryUrl());

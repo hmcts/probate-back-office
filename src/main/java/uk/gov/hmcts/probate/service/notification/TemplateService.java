@@ -24,6 +24,8 @@ public class TemplateService {
 
         EmailTemplates emailTemplates = notificationTemplates.getEmail().get(languagePreference).get(applicationType);
         switch (state) {
+            case APPLICATION_RECEIVED:
+                return emailTemplates.getApplicationReceived();
             case DOCUMENTS_RECEIVED:
                 return emailTemplates.getDocumentReceived();
             case CASE_STOPPED:
@@ -32,6 +34,8 @@ public class TemplateService {
                 return emailTemplates.getCaseStoppedCaveat();
             case GRANT_ISSUED:
                 return emailTemplates.getGrantIssued();
+            case GRANT_ISSUED_INTESTACY:
+                return emailTemplates.getGrantIssuedIntestacy();
             case GRANT_REISSUED:
                 return emailTemplates.getGrantReissued();
             case GENERAL_CAVEAT_MESSAGE:
@@ -40,6 +44,8 @@ public class TemplateService {
                 return emailTemplates.getRequestInformation();
             case REDECLARATION_SOT:
                 return emailTemplates.getRedeclarationSot();
+            case GRANT_RAISED:
+                return emailTemplates.getGrantRaised();
             case CAVEAT_RAISED:
                 if (registryLocation.equalsIgnoreCase(CTSC)) {
                     return emailTemplates.getCaveatRaisedCtsc();
