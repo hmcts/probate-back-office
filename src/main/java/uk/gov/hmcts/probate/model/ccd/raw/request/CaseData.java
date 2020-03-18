@@ -701,7 +701,8 @@ public class CaseData {
     }
 
     public String getDefaultValueForEmailNotifications() {
-        return primaryApplicantEmailAddress == null && solsSolicitorEmail == null ? NO : YES;
+        return (primaryApplicantEmailAddress == null || primaryApplicantEmailAddress.isEmpty())
+                && (solsSolicitorEmail == null || solsSolicitorEmail.isEmpty()) ? NO : YES;
     }
 
     public String getDefaultValueForCaveatStopEmailNotification() {
