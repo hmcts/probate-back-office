@@ -85,17 +85,19 @@ public class GrantNotificationService {
             return getErroredCaseIdentifier(caseId, e.getMessage());
         }
         try {
-            boolean grantDelayedNotificationSent = false;
+            Boolean grantDelayedNotificationSent = null;
+            Boolean grantAwaitingDocumentatioNotificationSent = null;
             Document emailDocument = null;
             if (SCHEDULED_UPDATE_GRANT_DELAY_NOTIFICATION_SENT.equals(sentEvent)) {
-                grantDelayedNotificationSent = true;
+                grantDelayedNotificationSent = TRUE;
                 emailDocument = notificationService.sendGrantDelayedEmail(foundCase);
             } else if (SCHEDULED_UPDATE_GRANT_AWAITING_DOCUMENTATION_NOTIFICATION_SENT.equals(sentEvent)) {
+                grantAwaitingDocumentatioNotificationSent = TRUE;
                 emailDocument = notificationService.sendGrantAwaitingDocumentationEmail(foundCase);
             } else {
                 throw new RuntimeException("EventId not recognised for sending email");
             }
-            updateFoundCase(foundCase, emailDocument, sentEvent, grantDelayedNotificationSent);
+            updateFoundCase(foundCase, emailDocument, sentEvent, grantDelayedNotificationSent, grantAwaitingDocumentatioNotificationSent);
         } catch (NotificationClientException e) {
             log.error("Error sending email for Grant Delayed with exception: {}. Has message: {}", e.getClass(), e.getMessage());
             caseId = getErroredCaseIdentifier(caseId, e.getMessage());
@@ -123,11 +125,13 @@ public class GrantNotificationService {
 
     }
 
-    private void updateFoundCase(ReturnedCaseDetails foundCase, Document emailDocument, EventId sentEvent, boolean grantDelayedNotificationSent) {
+    private void updateFoundCase(ReturnedCaseDetails foundCase, Document emailDocument, EventId sentEvent, Boolean grantDelayedNotificationSent,
+                                 Boolean grantAwaitingDocumentatioNotificationSent) {
         log.info("Updating case for grant delayed, caseId: {}", foundCase.getId());
 
         GrantOfRepresentationData grantOfRepresentationData = GrantOfRepresentationData.builder()
             .grantDelayedNotificationSent(grantDelayedNotificationSent)
+            .grantAwaitingDocumentatioNotificationSent(grantAwaitingDocumentatioNotificationSent)
             .grantDelayedNotificationIdentified(FALSE)
             .probateNotificationsGenerated(getProbateDocuments(emailDocument, foundCase.getData().getProbateDocumentsGenerated()))
             .build();

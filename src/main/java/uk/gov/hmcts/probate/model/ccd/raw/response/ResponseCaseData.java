@@ -306,4 +306,5 @@ public class ResponseCaseData {
     private String grantDelayedNotificationIdentified;
     private final String grantDelayedNotificationSent;
     private final String grantAwaitingDocumentationNotificationDate;
+    private final String grantAwaitingDocumentatioNotificationSent;
 }

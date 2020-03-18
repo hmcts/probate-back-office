@@ -491,6 +491,7 @@ public class CallbackResponseTransformerTest {
                 .grantDelayedNotificationDate(GRANT_DELAYED_DATE)
                 .grantStoppedDate(GRANT_STOPPED_DATE)
                 .grantDelayedNotificationSent(YES)
+                .grantAwaitingDocumentatioNotificationSent(YES)
                 .grantAwaitingDocumentationNotificationDate(GRANT_AWAITING_DOCS_DATE);
 
         bulkScanGrantOfRepresentationData = GrantOfRepresentationData.builder()
@@ -610,6 +611,7 @@ public class CallbackResponseTransformerTest {
                 .grantStoppedDate(GRANT_STOPPED_DATE)
                 .grantDelayedNotificationSent(TRUE)
                 .grantAwaitingDocumentationNotificationDate(GRANT_AWAITING_DOCS_DATE)
+                .grantAwaitingDocumentatioNotificationSent(TRUE)
                 .build();
 
         additionalExecutorsApplyingMock = new ArrayList<>();

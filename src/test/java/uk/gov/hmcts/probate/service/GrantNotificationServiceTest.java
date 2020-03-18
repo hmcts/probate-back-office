@@ -2,6 +2,7 @@ package uk.gov.hmcts.probate.service;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -17,17 +18,23 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.service.ccd.CcdClientApi;
 import uk.gov.hmcts.probate.validator.EmailAddressNotifyApplicantValidationRule;
+import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData;
 import uk.gov.service.notify.NotificationClientException;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.lang.Boolean.TRUE;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static uk.gov.hmcts.probate.model.ccd.EventId.SCHEDULED_UPDATE_GRANT_AWAITING_DOCUMENTATION_NOTIFICATION_SENT;
+import static uk.gov.hmcts.probate.model.ccd.EventId.SCHEDULED_UPDATE_GRANT_DELAY_NOTIFICATION_SENT;
 
 public class GrantNotificationServiceTest {
 
@@ -132,6 +139,12 @@ public class GrantNotificationServiceTest {
 
         GrantScheduleResponse response = grantNotificationService.handleGrantDelayedNotification(dateString);
 
+        ArgumentCaptor<GrantOfRepresentationData> grantOfRepresentationDataArgumentCaptor = ArgumentCaptor.forClass(GrantOfRepresentationData.class);
+        verify(ccdClientApi, times(2)).updateCaseAsCaseworker(any(), any(), grantOfRepresentationDataArgumentCaptor.capture(),
+            eq(SCHEDULED_UPDATE_GRANT_DELAY_NOTIFICATION_SENT), any());
+        GrantOfRepresentationData grantOfRepresentationData = grantOfRepresentationDataArgumentCaptor.getValue();
+        assertThat(grantOfRepresentationData.getGrantDelayedNotificationSent(), equalTo(TRUE));
+
         assertThat(response.getScheduleResponseData().size(), equalTo(3));
         assertThat(response.getScheduleResponseData().get(0), equalTo("1"));
         assertThat(response.getScheduleResponseData().get(1), equalTo("2"));
@@ -150,6 +163,12 @@ public class GrantNotificationServiceTest {
 
         GrantScheduleResponse response = grantNotificationService.handleGrantDelayedNotification(dateString);
 
+        ArgumentCaptor<GrantOfRepresentationData> grantOfRepresentationDataArgumentCaptor = ArgumentCaptor.forClass(GrantOfRepresentationData.class);
+        verify(ccdClientApi, times(2)).updateCaseAsCaseworker(any(), any(), grantOfRepresentationDataArgumentCaptor.capture(),
+            eq(SCHEDULED_UPDATE_GRANT_DELAY_NOTIFICATION_SENT), any());
+        GrantOfRepresentationData grantOfRepresentationData = grantOfRepresentationDataArgumentCaptor.getValue();
+        assertThat(grantOfRepresentationData.getGrantDelayedNotificationSent(), equalTo(TRUE));
+
         assertThat(response.getScheduleResponseData().size(), equalTo(3));
         assertThat(response.getScheduleResponseData().get(0), equalTo("1"));
         assertThat(response.getScheduleResponseData().get(1), equalTo("2"));
@@ -166,7 +185,7 @@ public class GrantNotificationServiceTest {
         when(notificationService.sendGrantDelayedEmail(returnedCaseDetails2)).thenReturn(buildDocument());
         when(notificationService.sendGrantDelayedEmail(returnedCaseDetails3)).thenReturn(buildDocument());
 
-        when(ccdClientApi.updateCaseAsCaseworker(any(), any(),any(), any(), any())).thenThrow(new RuntimeException());
+        when(ccdClientApi.updateCaseAsCaseworker(any(), any(), any(), any(), any())).thenThrow(new RuntimeException());
         GrantScheduleResponse response = grantNotificationService.handleGrantDelayedNotification(dateString);
 
         assertThat(response.getScheduleResponseData().size(), equalTo(3));
@@ -174,6 +193,7 @@ public class GrantNotificationServiceTest {
         assertThat(response.getScheduleResponseData().get(1), equalTo("<2:null>"));
         assertThat(response.getScheduleResponseData().get(2), equalTo("<3:null>"));
     }
+
     @Test
     public void shouldThrowExceptionForMissingEmailAddressForGrantDelayed() throws NotificationClientException {
         documents.add(sentEmail);
@@ -204,8 +224,14 @@ public class GrantNotificationServiceTest {
         when(notificationService.sendGrantAwaitingDocumentationEmail(returnedCaseDetails3)).thenReturn(buildDocument());
 
         GrantScheduleResponse response = grantNotificationService.handleAwaitingDocumentationNotification(dateString);
-        assertThat(response.getScheduleResponseData().size(), equalTo(3));
 
+        ArgumentCaptor<GrantOfRepresentationData> grantOfRepresentationDataArgumentCaptor = ArgumentCaptor.forClass(GrantOfRepresentationData.class);
+        verify(ccdClientApi, times(3)).updateCaseAsCaseworker(any(), any(), grantOfRepresentationDataArgumentCaptor.capture(),
+            eq(SCHEDULED_UPDATE_GRANT_AWAITING_DOCUMENTATION_NOTIFICATION_SENT), any());
+        GrantOfRepresentationData grantOfRepresentationData = grantOfRepresentationDataArgumentCaptor.getValue();
+        assertThat(grantOfRepresentationData.getGrantAwaitingDocumentatioNotificationSent(), equalTo(TRUE));
+
+        assertThat(response.getScheduleResponseData().size(), equalTo(3));
         assertThat(response.getScheduleResponseData().size(), equalTo(3));
         assertThat(response.getScheduleResponseData().get(0), equalTo("1"));
         assertThat(response.getScheduleResponseData().get(1), equalTo("2"));
@@ -222,7 +248,7 @@ public class GrantNotificationServiceTest {
         when(notificationService.sendGrantAwaitingDocumentationEmail(returnedCaseDetails2)).thenReturn(buildDocument());
         when(notificationService.sendGrantAwaitingDocumentationEmail(returnedCaseDetails3)).thenReturn(buildDocument());
 
-        when(ccdClientApi.updateCaseAsCaseworker(any(), any(),any(), any(), any())).thenThrow(new RuntimeException());
+        when(ccdClientApi.updateCaseAsCaseworker(any(), any(), any(), any(), any())).thenThrow(new RuntimeException());
         GrantScheduleResponse response = grantNotificationService.handleAwaitingDocumentationNotification(dateString);
 
         assertThat(response.getScheduleResponseData().size(), equalTo(3));

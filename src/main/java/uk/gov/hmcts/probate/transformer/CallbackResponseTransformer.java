@@ -566,7 +566,8 @@ public class CallbackResponseTransformer {
                     .map(dateTimeFormatter::format).orElse(null))
                 .grantDelayedNotificationSent(caseData.getGrantDelayedNotificationSent())
                 .grantAwaitingDocumentationNotificationDate(ofNullable(caseData.getGrantAwaitingDocumentationNotificationDate())
-                    .map(dateTimeFormatter::format).orElse(null));
+                    .map(dateTimeFormatter::format).orElse(null))
+                .grantAwaitingDocumentatioNotificationSent(caseData.getGrantAwaitingDocumentatioNotificationSent());
 
 
         if (transform) {
@@ -717,7 +718,8 @@ public class CallbackResponseTransformer {
                     .map(dateTimeFormatter::format).orElse(null))
                 .grantDelayedNotificationSent(caseData.getGrantDelayedNotificationSent())
                 .grantAwaitingDocumentationNotificationDate(ofNullable(caseData.getGrantAwaitingDocumentationNotificationDate())
-                    .map(dateTimeFormatter::format).orElse(null));
+                    .map(dateTimeFormatter::format).orElse(null))
+                .grantAwaitingDocumentatioNotificationSent(caseData.getGrantAwaitingDocumentatioNotificationSent());
 
         if (YES.equals(caseData.getSolsSolicitorIsMainApplicant())) {
             builder
