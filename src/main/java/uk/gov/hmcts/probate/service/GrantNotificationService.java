@@ -1,10 +1,12 @@
 package uk.gov.hmcts.probate.service;
 
+import com.google.common.collect.ImmutableMap;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
-import uk.gov.hmcts.probate.model.GrantDelayedResponse;
+import uk.gov.hmcts.probate.model.GrantScheduleResponse;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
 import uk.gov.hmcts.probate.model.ccd.CcdCaseType;
 import uk.gov.hmcts.probate.model.ccd.EventId;
@@ -17,19 +19,25 @@ import uk.gov.hmcts.probate.validator.EmailAddressNotifyApplicantValidationRule;
 import uk.gov.hmcts.reform.probate.model.ProbateDocument;
 import uk.gov.hmcts.reform.probate.model.ProbateDocumentLink;
 import uk.gov.hmcts.reform.probate.model.ProbateDocumentType;
+import uk.gov.hmcts.reform.probate.model.ProbateType;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData;
+import uk.gov.hmcts.reform.probate.model.forms.Form;
 import uk.gov.service.notify.NotificationClientException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
 
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
+import static uk.gov.hmcts.probate.model.ccd.EventId.SCHEDULED_UPDATE_GRANT_AWAITING_DOCUMENTATION_NOTIFICATION_SENT;
+import static uk.gov.hmcts.probate.model.ccd.EventId.SCHEDULED_UPDATE_GRANT_DELAY_NOTIFICATION_SENT;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class GrantDelayedNotificationService {
+public class GrantNotificationService {
 
     private final NotificationService notificationService;
     private final EmailAddressNotifyApplicantValidationRule emailAddressNotifyApplicantValidationRule;
@@ -37,17 +45,27 @@ public class GrantDelayedNotificationService {
     private final CcdClientApi ccdClientApi;
     private final SecurityUtils securityUtils;
 
-    public GrantDelayedResponse handleGrantDelayedNotification(String date) {
+    public GrantScheduleResponse handleGrantDelayedNotification(String date) {
         List<String> delayedRepsonseData = new ArrayList<>();
         List<ReturnedCaseDetails> foundCases = caseQueryService.findCasesForGrantDelayed(date);
         log.info("Found cases for grant delayed notification: {}", foundCases.size());
         for (ReturnedCaseDetails foundCase : foundCases) {
-            delayedRepsonseData.add(sendNotificationForCase(foundCase));
+            delayedRepsonseData.add(sendNotificationForCase(foundCase, SCHEDULED_UPDATE_GRANT_DELAY_NOTIFICATION_SENT));
         }
-        return GrantDelayedResponse.builder().delayResponseData(delayedRepsonseData).build();
+        return GrantScheduleResponse.builder().scheduleResponseData(delayedRepsonseData).build();
     }
 
-    private String sendNotificationForCase(ReturnedCaseDetails foundCase) {
+    public GrantScheduleResponse handleAwaitingDocumentationNotification(String date) {
+        List<String> delayedRepsonseData = new ArrayList<>();
+        List<ReturnedCaseDetails> foundCases = caseQueryService.findCasesForGrantAwaitingDocumentation(date);
+        log.info("Found cases for grant awaiting documentation notification: {}", foundCases.size());
+        for (ReturnedCaseDetails foundCase : foundCases) {
+            delayedRepsonseData.add(sendNotificationForCase(foundCase, SCHEDULED_UPDATE_GRANT_AWAITING_DOCUMENTATION_NOTIFICATION_SENT));
+        }
+        return GrantScheduleResponse.builder().scheduleResponseData(delayedRepsonseData).build();
+    }
+
+    private String sendNotificationForCase(ReturnedCaseDetails foundCase, EventId sentEvent) {
         log.info("Preparing to send email to executors for grant delayed notification");
         CCDData dataForEmailAddress = CCDData.builder()
             .primaryApplicantEmailAddress(foundCase.getData().getPrimaryApplicantEmailAddress())
@@ -67,8 +85,19 @@ public class GrantDelayedNotificationService {
             return getErroredCaseIdentifier(caseId, e.getMessage());
         }
         try {
-            Document emailDocument = notificationService.sendGrantDelayedEmail(foundCase);
-            updateFoundCase(foundCase, emailDocument);
+            Boolean grantDelayedNotificationSent = null;
+            Boolean grantAwaitingDocumentatioNotificationSent = null;
+            Document emailDocument = null;
+            if (SCHEDULED_UPDATE_GRANT_DELAY_NOTIFICATION_SENT.equals(sentEvent)) {
+                grantDelayedNotificationSent = TRUE;
+                emailDocument = notificationService.sendGrantDelayedEmail(foundCase);
+            } else if (SCHEDULED_UPDATE_GRANT_AWAITING_DOCUMENTATION_NOTIFICATION_SENT.equals(sentEvent)) {
+                grantAwaitingDocumentatioNotificationSent = TRUE;
+                emailDocument = notificationService.sendGrantAwaitingDocumentationEmail(foundCase);
+            } else {
+                throw new RuntimeException("EventId not recognised for sending email");
+            }
+            updateFoundCase(foundCase, emailDocument, sentEvent, grantDelayedNotificationSent, grantAwaitingDocumentatioNotificationSent);
         } catch (NotificationClientException e) {
             log.error("Error sending email for Grant Delayed with exception: {}. Has message: {}", e.getClass(), e.getMessage());
             caseId = getErroredCaseIdentifier(caseId, e.getMessage());
@@ -81,7 +110,7 @@ public class GrantDelayedNotificationService {
     }
 
     private String getErroredCaseIdentifier(String caseId, String message) {
-        return "<" + caseId + ":" + message +">";
+        return "<" + caseId + ":" + message + ">";
     }
 
     private void updateCaseIdentified(ReturnedCaseDetails foundCase) {
@@ -90,32 +119,33 @@ public class GrantDelayedNotificationService {
         GrantOfRepresentationData grantOfRepresentationData = GrantOfRepresentationData.builder()
             .grantDelayedNotificationIdentified(TRUE)
             .build();
-        
+
         ccdClientApi.updateCaseAsCaseworker(CcdCaseType.GRANT_OF_REPRESENTATION, foundCase.getId().toString(),
             grantOfRepresentationData, EventId.SCHEDULED_UPDATE_GRANT_DELAY_NOTIFICATION_IDENTIFIED, securityUtils.getUserAndServiceSecurityDTO());
 
     }
 
-    private void updateFoundCase(ReturnedCaseDetails foundCase, Document emailDocument) {
+    private void updateFoundCase(ReturnedCaseDetails foundCase, Document emailDocument, EventId sentEvent, Boolean grantDelayedNotificationSent,
+                                 Boolean grantAwaitingDocumentatioNotificationSent) {
         log.info("Updating case for grant delayed, caseId: {}", foundCase.getId());
-        
+
         GrantOfRepresentationData grantOfRepresentationData = GrantOfRepresentationData.builder()
-            .grantDelayedNotificationSent(TRUE)
+            .grantDelayedNotificationSent(grantDelayedNotificationSent)
+            .grantAwaitingDocumentatioNotificationSent(grantAwaitingDocumentatioNotificationSent)
             .grantDelayedNotificationIdentified(FALSE)
-            .probateNotificationsGenerated(getProbateDocuments(emailDocument, foundCase.getData().getProbateDocumentsGenerated())) 
+            .probateNotificationsGenerated(getProbateDocuments(emailDocument, foundCase.getData().getProbateDocumentsGenerated()))
             .build();
         ccdClientApi.updateCaseAsCaseworker(CcdCaseType.GRANT_OF_REPRESENTATION, foundCase.getId().toString(),
-            grantOfRepresentationData, EventId.SCHEDULED_UPDATE_GRANT_DELAY_NOTIFICATION_SENT, securityUtils.getUserAndServiceSecurityDTO());
+            grantOfRepresentationData, sentEvent, securityUtils.getUserAndServiceSecurityDTO());
 
     }
 
-    private List<uk.gov.hmcts.reform.probate.model.cases.CollectionMember<ProbateDocument>> getProbateDocuments(Document emailDocument, 
-                                                                        List<CollectionMember<Document>> probateDocumentsGenerated) {
+    private List<uk.gov.hmcts.reform.probate.model.cases.CollectionMember<ProbateDocument>> getProbateDocuments(Document emailDocument,
+                                                                                                                List<CollectionMember<Document>> probateDocumentsGenerated) {
         List<uk.gov.hmcts.reform.probate.model.cases.CollectionMember<ProbateDocument>> probateDocuments = new ArrayList<>();
         for (CollectionMember<Document> documentCollectionMember : probateDocumentsGenerated) {
-            probateDocuments.add(new uk.gov.hmcts.reform.probate.model.cases.CollectionMember<ProbateDocument>(documentCollectionMember.getId(), 
+            probateDocuments.add(new uk.gov.hmcts.reform.probate.model.cases.CollectionMember<ProbateDocument>(documentCollectionMember.getId(),
                 getProbateDocument(documentCollectionMember.getValue())));
-
         }
         probateDocuments.add(new uk.gov.hmcts.reform.probate.model.cases.CollectionMember<>(null, getProbateDocument(emailDocument)));
         return probateDocuments;

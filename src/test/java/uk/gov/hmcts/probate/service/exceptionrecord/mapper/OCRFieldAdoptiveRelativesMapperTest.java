@@ -117,8 +117,8 @@ public class OCRFieldAdoptiveRelativesMapperTest {
 
     @Test
     public void testObjectMapperInOut() throws JsonProcessingException {
-        assertEquals("\"IN\"", objectMapper.writeValueAsString(InOut.IN));
-        assertEquals("\"OUT\"", objectMapper.writeValueAsString(InOut.OUT));
+        assertEquals("\"in\"", objectMapper.writeValueAsString(InOut.IN));
+        assertEquals("\"out\"", objectMapper.writeValueAsString(InOut.OUT));
     }
 
     @Test(expected = OCRMappingException.class)

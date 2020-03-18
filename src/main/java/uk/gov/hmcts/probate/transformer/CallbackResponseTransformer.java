@@ -581,10 +581,14 @@ public class CallbackResponseTransformer {
                 .bulkScanCaseReference(caseData.getBulkScanCaseReference())
                 .grantDelayedNotificationIdentified(caseData.getGrantDelayedNotificationIdentified())
                 .grantDelayedNotificationDate(ofNullable(caseData.getGrantDelayedNotificationDate())
-                        .map(dateTimeFormatter::format).orElse(null))
+                    .map(dateTimeFormatter::format).orElse(null))
                 .grantStoppedDate(ofNullable(caseData.getGrantStoppedDate())
-                        .map(dateTimeFormatter::format).orElse(null))
-                .grantDelayedNotificationSent(caseData.getGrantDelayedNotificationSent());
+                    .map(dateTimeFormatter::format).orElse(null))
+                .grantDelayedNotificationSent(caseData.getGrantDelayedNotificationSent())
+                .grantAwaitingDocumentationNotificationDate(ofNullable(caseData.getGrantAwaitingDocumentationNotificationDate())
+                    .map(dateTimeFormatter::format).orElse(null))
+                .grantAwaitingDocumentatioNotificationSent(caseData.getGrantAwaitingDocumentatioNotificationSent());
+
 
         if (transform) {
             updateCaseBuilderForTransformCase(caseData, builder);
@@ -729,10 +733,13 @@ public class CallbackResponseTransformer {
                 .bulkPrintSendLetterId(caseData.getBulkPrintSendLetterId())
                 .grantDelayedNotificationIdentified(caseData.getGrantDelayedNotificationIdentified())
                 .grantDelayedNotificationDate(ofNullable(caseData.getGrantDelayedNotificationDate())
-                        .map(dateTimeFormatter::format).orElse(null))
+                    .map(dateTimeFormatter::format).orElse(null))
                 .grantStoppedDate(ofNullable(caseData.getGrantStoppedDate())
-                        .map(dateTimeFormatter::format).orElse(null))
-                .grantDelayedNotificationSent(caseData.getGrantDelayedNotificationSent());
+                    .map(dateTimeFormatter::format).orElse(null))
+                .grantDelayedNotificationSent(caseData.getGrantDelayedNotificationSent())
+                .grantAwaitingDocumentationNotificationDate(ofNullable(caseData.getGrantAwaitingDocumentationNotificationDate())
+                    .map(dateTimeFormatter::format).orElse(null))
+                .grantAwaitingDocumentatioNotificationSent(caseData.getGrantAwaitingDocumentatioNotificationSent());
 
         if (YES.equals(caseData.getSolsSolicitorIsMainApplicant())) {
             builder

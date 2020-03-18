@@ -46,8 +46,11 @@ public class CaseQueryService {
     private static final CaseType CASE_TYPE = CaseType.GRANT_OF_REPRESENTATION;
     private static final String[] STATES_MATCH_GRANT_DELAYED = {"BOReadyForExamination", "BOCaseMatchingExamining", "BOExamining",
         "BOReadyToIssue", "BOCaseQA", "BOCaseMatchingIssueGrant"};
+    private static final String[] STATES_MATCH_GRANT_AWAITING_DOCUMENTATION = {"CasePrinted"};
     private static final String KEY_GRANT_DELAYED_NOTIFICATION_DATE = "data.grantDelayedNotificationDate";
     private static final String KEY_GRANT_DELAYED_NOTIFICATION_SENT = "data.grantDelayedNotificationSent";
+    private static final String KEY_GRANT_AWAITING_DOCUMENTATION_NOTIFICATION_DATE = "data.grantAwaitingDocumentationNotificationDate";
+    private static final String KEY_GRANT_AWAITING_DOCUMENTATION_NOTIFICATION_SENT = "data.grantAwaitingDocumentatioNotificationSent";
     private final RestTemplate restTemplate;
     private final AppInsights appInsights;
     private final HttpHeadersFactory headers;
@@ -90,6 +93,23 @@ public class CaseQueryService {
         query.must(oredStateChecks);
         query.must(matchQuery(KEY_GRANT_DELAYED_NOTIFICATION_DATE, queryDate));
         query.mustNot(existsQuery(KEY_GRANT_DELAYED_NOTIFICATION_SENT));
+
+        String jsonQuery = new SearchSourceBuilder().query(query).size(10000).toString();
+
+        return runQuery(jsonQuery);
+    }
+
+    public List<ReturnedCaseDetails> findCasesForGrantAwaitingDocumentation(String queryDate) {
+        BoolQueryBuilder query = boolQuery();
+        BoolQueryBuilder awaitingDocsStateChecks = boolQuery();
+
+        for (String stateToMatch : Arrays.asList(STATES_MATCH_GRANT_AWAITING_DOCUMENTATION)) {
+            awaitingDocsStateChecks.should(new MatchQueryBuilder(STATE, stateToMatch));
+        }
+        awaitingDocsStateChecks.minimumShouldMatch(1);
+        query.must(awaitingDocsStateChecks);
+        query.must(matchQuery(KEY_GRANT_AWAITING_DOCUMENTATION_NOTIFICATION_DATE, queryDate));
+        query.mustNot(existsQuery(KEY_GRANT_AWAITING_DOCUMENTATION_NOTIFICATION_SENT));
 
         String jsonQuery = new SearchSourceBuilder().query(query).size(10000).toString();
 

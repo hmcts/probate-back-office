@@ -25,6 +25,25 @@ public class CaseStoppedService {
 
         CaseData caseData = caseDetails.getData();
 
+        addToGrantDelay(caseData);
+        addToAwaitingDocumentation(caseData);
+
+        caseData.setGrantStoppedDate(null);
+    }
+
+    private void addToAwaitingDocumentation(CaseData caseData) {
+        if (caseData.getGrantAwaitingDocumentationNotificationDate() != null
+            && caseData.getGrantStoppedDate() != null) {
+            
+            LocalDate now = LocalDate.now();
+            Period period = Period.between(caseData.getGrantStoppedDate(), now);
+
+            caseData.setGrantAwaitingDocumentationNotificationDate(caseData.getGrantAwaitingDocumentationNotificationDate()
+                .plusDays(period.getDays()));
+        }
+    }
+
+    private void addToGrantDelay(CaseData caseData) {
         if ((StringUtils.isEmpty(caseData.getGrantDelayedNotificationSent())
             || caseData.getGrantDelayedNotificationSent().equals(Constants.NO))
             && caseData.getGrantStoppedDate() != null
@@ -35,7 +54,6 @@ public class CaseStoppedService {
 
             caseData.setGrantDelayedNotificationDate(caseData.getGrantDelayedNotificationDate()
                 .plusDays(period.getDays()));
-            caseData.setGrantStoppedDate(null);
         }
     }
 }

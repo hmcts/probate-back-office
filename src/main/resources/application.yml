@@ -178,6 +178,7 @@ azure:
 notifications:
   grantDelayedNotificationPeriodDays: -1
   grantDelayedNotificationReleaseDate: "2020-03-16"
+  grantAwaitingDocumentationNotificationPeriodDays: -1
   govNotifyApiKey: "probate_back_office_live_test-4809d6a8-a10b-405d-88eb-1fee9b3042e3-682b1c3b-647e-4a32-99b9-98a8b7c7feb7"
   templates:
     email:
@@ -201,6 +202,7 @@ notifications:
           grantIssuedIntestacy: "cda48ea1-6ee4-4cde-a3e2-0e1f87f9e702"
           caveatWithdrawn: "99b9ba1a-a2a1-4b85-ae83-e1652e9d342b"
           grantDelayed: "30baff9f-fff8-41f5-879e-5ea963e3d144"
+          grantAwaitingDocumentation: "2debe394-5d0f-4d66-8b05-f3d4276d34eb"
         solicitor:
           applicationReceived: "917dece3-e89d-460b-a6cb-e605ace39f2e"
           documentReceived: "7f8ff32d-8297-4702-9867-312047f81492"
@@ -217,6 +219,7 @@ notifications:
           redeclarationSot: "bcd9e4cc-db0c-4810-8172-8bcb2277b775"
           grantIssuedIntestacy: "95aa541b-e55e-4d7c-a6f5-810b5f03adba"
           grantDelayed: "30baff9f-fff8-41f5-879e-5ea963e3d144"
+          grantAwaitingDocumentation: "2debe394-5d0f-4d66-8b05-f3d4276d34eb"
       welsh:
         personal:
           applicationReceived: "7947f089-70ad-4fbc-9632-76ccc834cee9"
@@ -235,6 +238,7 @@ notifications:
           grantIssuedIntestacy: "fc9748a7-6e92-480d-9ee8-fdd4fc45552d"
           caveatWithdrawn: "c63bc430-9868-4f10-924b-408c7ac3cbd8"
           grantDelayed: "30baff9f-fff8-41f5-879e-5ea963e3d144"
+          grantAwaitingDocumentation: "2debe394-5d0f-4d66-8b05-f3d4276d34eb"
         solicitor:
           applicationReceived: "7947f089-70ad-4fbc-9632-76ccc834cee9"
           documentReceived: "7f8ff32d-8297-4702-9867-312047f81492"
@@ -251,6 +255,7 @@ notifications:
           redeclarationSot: "bcd9e4cc-db0c-4810-8172-8bcb2277b775"
           grantIssuedIntestacy: "95aa541b-e55e-4d7c-a6f5-810b5f03adba"
           grantDelayed: "30baff9f-fff8-41f5-879e-5ea963e3d144"
+          grantAwaitingDocumentation: "2debe394-5d0f-4d66-8b05-f3d4276d34eb"
 
 documents:
   templates:

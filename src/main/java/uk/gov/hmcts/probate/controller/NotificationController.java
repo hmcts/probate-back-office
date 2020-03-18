@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import uk.gov.hmcts.probate.model.DocumentType;
-import uk.gov.hmcts.probate.model.GrantDelayedResponse;
 import uk.gov.hmcts.probate.model.State;
+import uk.gov.hmcts.probate.model.GrantScheduleResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
@@ -26,7 +26,7 @@ import uk.gov.hmcts.probate.service.BulkPrintService;
 import uk.gov.hmcts.probate.service.DocumentGeneratorService;
 import uk.gov.hmcts.probate.service.DocumentsReceivedNotificationService;
 import uk.gov.hmcts.probate.service.EventValidationService;
-import uk.gov.hmcts.probate.service.GrantDelayedNotificationService;
+import uk.gov.hmcts.probate.service.GrantNotificationService;
 import uk.gov.hmcts.probate.service.InformationRequestService;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.RaiseGrantOfRepresentationNotificationService;
@@ -76,7 +76,7 @@ public class NotificationController {
     private final ObjectMapper objectMapper;
     private static final String DEFAULT_LOG_ERROR = "Case Id: {} ERROR: {}";
     private static final String INVALID_PAYLOAD = "Invalid payload";
-    private final GrantDelayedNotificationService grantDelayedNotificationService;
+    private final GrantNotificationService grantNotificationService;
 
     @PostMapping(path = "/application-received")
     public ResponseEntity<String> sendApplicationReceivedNotification(
@@ -225,11 +225,11 @@ public class NotificationController {
         HttpServletRequest request) {
         logRequest(request.getRequestURI(), callbackRequest);
         log.info("start-delayed-notify-period started");
-        notificationService.scheduledStartGrantDelayNotificationPeriod(callbackRequest.getCaseDetails());
+        notificationService.startGrantDelayNotificationPeriod(callbackRequest.getCaseDetails());
+        notificationService.resetAwaitingDocumentationNotificationDate(callbackRequest.getCaseDetails());
         CallbackResponse response = callbackResponseTransformer.transformCase(callbackRequest);
         return ResponseEntity.ok(response);
     }
-
 
     private void logRequest(String uri, CallbackRequest callbackRequest) {
         try {
@@ -244,10 +244,17 @@ public class NotificationController {
     }
 
     @PostMapping(path = "/grant-delayed-scheduled")
-    public ResponseEntity<GrantDelayedResponse> grantDelayed(@RequestParam("date") final String date) {
-        GrantDelayedResponse grantDelayedResponse = grantDelayedNotificationService.handleGrantDelayedNotification(date);
-        log.info("Grants delayed attempted for: {} grants", grantDelayedResponse.getDelayResponseData().size());
-        return ResponseEntity.ok(grantDelayedResponse);
+    public ResponseEntity<GrantScheduleResponse> grantDelayed(@RequestParam("date") final String date) {
+        GrantScheduleResponse grantScheduleResponse = grantNotificationService.handleGrantDelayedNotification(date);
+        log.info("Grants delayed attempted for: {} grants", grantScheduleResponse.getScheduleResponseData().size());
+        return  ResponseEntity.ok(grantScheduleResponse);
+    }
+
+    @PostMapping(path = "/grant-awaiting-documents-scheduled")
+    public ResponseEntity<GrantScheduleResponse> grantAwaitingDocuments(@RequestParam("date") final String date) {
+        GrantScheduleResponse grantScheduleResponse = grantNotificationService.handleAwaitingDocumentationNotification(date);
+        log.info("Grants delayed attempted for: {} grants", grantScheduleResponse.getScheduleResponseData().size());
+        return  ResponseEntity.ok(grantScheduleResponse);
     }
 
 }

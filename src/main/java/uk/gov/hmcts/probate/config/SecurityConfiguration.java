@@ -35,6 +35,7 @@ public class SecurityConfiguration {
             http
                 .requestMatchers()
                 .antMatchers("/notify/grant-delayed-scheduled")
+                .antMatchers("/notify/grant-awaiting-documents-scheduled")
                 .and()
                 .addFilter(authCheckerServiceAndUserFilter)
                 .csrf().disable()

@@ -146,6 +146,7 @@ public class CallbackResponseTransformerTest {
     private static final LocalDate DOD = LocalDate.parse("2017-12-31", dateTimeFormatter);
     private static final LocalDate GRANT_DELAYED_DATE = LocalDate.parse("2019-12-31", dateTimeFormatter);
     private static final LocalDate GRANT_STOPPED_DATE = LocalDate.parse("2020-08-31", dateTimeFormatter);
+    private static final LocalDate GRANT_AWAITING_DOCS_DATE = LocalDate.parse("2020-09-31", dateTimeFormatter);
     private static final String GRANT_DELAYED_NOTIFICATION_SENT = YES;
     private static final String NUM_CODICILS = "9";
 
@@ -490,7 +491,9 @@ public class CallbackResponseTransformerTest {
                 .executorsApplyingNotifications(EXECEUTORS_APPLYING_NOTIFICATION)
                 .grantDelayedNotificationDate(GRANT_DELAYED_DATE)
                 .grantStoppedDate(GRANT_STOPPED_DATE)
-                .grantDelayedNotificationSent(YES);
+                .grantDelayedNotificationSent(YES)
+                .grantAwaitingDocumentatioNotificationSent(YES)
+                .grantAwaitingDocumentationNotificationDate(GRANT_AWAITING_DOCS_DATE);
 
         bulkScanGrantOfRepresentationData = GrantOfRepresentationData.builder()
                 .deceasedForenames(DECEASED_FIRSTNAME)
@@ -608,6 +611,8 @@ public class CallbackResponseTransformerTest {
                 .grantDelayedNotificationDate(GRANT_DELAYED_DATE)
                 .grantStoppedDate(GRANT_STOPPED_DATE)
                 .grantDelayedNotificationSent(TRUE)
+                .grantAwaitingDocumentationNotificationDate(GRANT_AWAITING_DOCS_DATE)
+                .grantAwaitingDocumentatioNotificationSent(TRUE)
                 .build();
 
         additionalExecutorsApplyingMock = new ArrayList<>();

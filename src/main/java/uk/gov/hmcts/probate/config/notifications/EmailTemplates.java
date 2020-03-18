@@ -22,4 +22,5 @@ public class EmailTemplates {
     private String caveatWithdrawn;
     private String grantIssuedIntestacy;
     private String grantDelayed;
+    private String grantAwaitingDocumentation;
 }

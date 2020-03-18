@@ -537,6 +537,8 @@ public class CaseData {
     private LocalDate grantStoppedDate;
     private String grantDelayedNotificationIdentified;
     private String grantDelayedNotificationSent;
+    private LocalDate grantAwaitingDocumentationNotificationDate;
+    private String grantAwaitingDocumentatioNotificationSent;
 
     @Getter(lazy = true)
     private final List<CollectionMember<AdditionalExecutor>> executorsApplyingForLegalStatement = getAllExecutors(true);

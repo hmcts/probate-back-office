@@ -9,17 +9,17 @@ import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Builder
-public class GrantDelayedResponse {
+public class GrantScheduleResponse {
 
-    private List<String> delayResponseData;
+    private List<String> scheduleResponseData;
 
     @JsonCreator
-    public GrantDelayedResponse(@JsonProperty("delayResponseData") List<String> delayResponseData) {
-        this.delayResponseData = delayResponseData;
+    public GrantScheduleResponse(@JsonProperty("scheduleResponseData") List<String> scheduleResponseData) {
+        this.scheduleResponseData = scheduleResponseData;
     }
 
-    public List<String> getDelayResponseData() {
-        return delayResponseData;
+    public List<String> getScheduleResponseData() {
+        return scheduleResponseData;
     }
 
 }
