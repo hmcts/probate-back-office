@@ -18,7 +18,7 @@ auth.provider.service.client:
   tokenTimeToLiveInSeconds: 900
 
 auth.provider.client:
-  user: http://localhost:4501
+  user: http://localhost:5000
   secret: 123456
   id: probate
   redirect: http://localhost:3451/oauth2redirect
@@ -115,6 +115,7 @@ notifications:
     email:
       english:
         personal:
+          applicationReceived: "pa-application-received"
           documentReceived: "pa-document-received"
           caseStopped: "pa-case-stopped"
           caseStoppedCaveat: "pa-case-stopped-caveat"
@@ -129,6 +130,7 @@ notifications:
           redeclarationSot: "pa-redeclaration-sot"
           grantDelayed: "pa-grantDelayed"
         solicitor:
+          applicationReceived: "sol-application-received"
           documentReceived: "sol-document-received"
           caseStopped: "sol-case-stopped"
           caseStoppedCaveat: "sol-case-stopped-caveat"
@@ -144,6 +146,7 @@ notifications:
           grantDelayed: "sols-grantDelayed"
       welsh:
         personal:
+          applicationReceived: "pa-application-received-welsh"
           documentReceived: "pa-document-received-welsh"
           caseStopped: "pa-case-stopped-welsh"
           caseStoppedCaveat: "pa-case-stopped-caveat-welsh"
@@ -158,6 +161,7 @@ notifications:
           redeclarationSot: "pa-redeclaration-sot-welsh"
           grantDelayed: "pa-grantDelayed-welsh"
         solicitor:
+          applicationReceived: "sol-application-received-welsh"
           documentReceived: "sol-document-received-welsh"
           caseStopped: "sol-case-stopped-welsh"
           caseStoppedCaveat: "sol-case-stopped-caveat-welsh"
@@ -311,7 +315,7 @@ registries:
     town: Cardiff
     postcode: CF24 0RZ
 
-auth.idam.client.baseUrl: http://localhost:4501
+auth.idam.client.baseUrl: http://localhost:5000
 
 core_case_data.api.url: http://localhost:4452
 

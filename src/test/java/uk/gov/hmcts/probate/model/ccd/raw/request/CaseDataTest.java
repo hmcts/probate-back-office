@@ -541,4 +541,45 @@ public class    CaseDataTest {
         assertEquals(NO, caseData.solicitorIsMainApplicant());
     }
 
+    @Test
+    public void shouldGetDefaultValueForEmailNotificationsWhenPrimaryAppEmailSet() {
+        final CaseData caseData = CaseData.builder()
+                .primaryApplicantEmailAddress("test-primaryApp@test.com")
+                .solsSolicitorEmail(null)
+                .build();
+
+        final CaseData caseData2 = CaseData.builder()
+                .primaryApplicantEmailAddress("test-primaryApp@test.com")
+                .solsSolicitorEmail("")
+                .build();
+
+        assertEquals(YES, caseData.getDefaultValueForEmailNotifications());
+        assertEquals(YES, caseData2.getDefaultValueForEmailNotifications());
+    }
+
+    @Test
+    public void shouldGetDefaultValueForEmailNotificationsWhenSolicitorEmailSet() {
+        final CaseData caseData = CaseData.builder()
+                .primaryApplicantEmailAddress(null)
+                .solsSolicitorEmail("test-solictor@test.com")
+                .build();
+
+        final CaseData caseData2 = CaseData.builder()
+                .primaryApplicantEmailAddress("")
+                .solsSolicitorEmail("test-solictor@test.com")
+                .build();
+
+        assertEquals(YES, caseData.getDefaultValueForEmailNotifications());
+        assertEquals(YES, caseData2.getDefaultValueForEmailNotifications());
+    }
+
+    @Test
+    public void shouldGetDefaultValueForEmailNotificationsWhenEmailAddressNotSet() {
+        final CaseData caseData = CaseData.builder()
+                .primaryApplicantEmailAddress("")
+                .solsSolicitorEmail(null)
+                .build();
+
+        assertEquals(NO, caseData.getDefaultValueForEmailNotifications());
+    }
 }

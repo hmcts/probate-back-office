@@ -14,7 +14,6 @@ public class RegistryDetailsService {
 
     private final RegistriesProperties registriesProperties;
 
-
     public CaseDetails getRegistryDetails(CaseDetails caseDetails) {
         Registry registry = registriesProperties.getRegistries().get(
                 caseDetails.getData().getRegistryLocation().toLowerCase());
