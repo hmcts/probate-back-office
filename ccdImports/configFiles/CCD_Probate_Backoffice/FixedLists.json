@@ -68,6 +68,7 @@
   {"LiveFrom": "01/01/2017", "ID": "probateDocumentTypeEnum", "ListElementCode": "caveatStopped", "ListElement": "caveat Stopped"},
   {"LiveFrom": "01/01/2017", "ID": "probateDocumentTypeEnum", "ListElementCode": "grantCoversheet", "ListElement": "Cover Sheet"},
   {"LiveFrom": "01/01/2017", "ID": "probateDocumentTypeEnum", "ListElementCode": "grantCover", "ListElement": "Grant Cover Sheet"},
+  {"LiveFrom": "01/01/2017", "ID": "probateDocumentTypeEnum", "ListElementCode": "grantRaised", "ListElement": "Grant Raised"},
   {"LiveFrom": "01/01/2017", "ID": "probateDocumentTypeEnum", "ListElementCode": "digitalGrantReissueDraft", "ListElement": "Digital Grant Reissue Draft"},
   {"LiveFrom": "01/01/2017", "ID": "probateDocumentTypeEnum", "ListElementCode": "intestacyGrantReissueDraft", "ListElement": "Intestacy Grant Reissue Draft"},
   {"LiveFrom": "01/01/2017", "ID": "probateDocumentTypeEnum", "ListElementCode": "admonWillGrantReissueDraft", "ListElement": "Admon Will Grant Reissue Draft"},

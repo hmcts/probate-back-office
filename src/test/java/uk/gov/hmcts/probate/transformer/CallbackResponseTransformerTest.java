@@ -15,6 +15,7 @@ import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ExecutorsApplyingNotification;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
 import uk.gov.hmcts.probate.model.ccd.Reissue;
+import uk.gov.hmcts.probate.model.ccd.caveat.response.CaveatCallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
@@ -2759,6 +2760,22 @@ public class CallbackResponseTransformerTest {
         CaseCreationDetails grantOfRepresentationDetails
                 = underTest.bulkScanGrantOfRepresentationCaseTransform(bulkScanGrantOfRepresentationData);
         assertBulkScanCaseCreationDetails(grantOfRepresentationDetails);
+    }
+
+    @Test
+    public void shouldSetCorrectPrintIdForBulkScanGrantRaise() {
+        List<Document> documents = new ArrayList<>();
+        Document document = Document.builder()
+                .documentLink(documentLinkMock)
+                .documentType(DocumentType.GRANT_RAISED)
+                .build();
+        documents.add(0, document);
+        String letterId = "123-456";
+        CallbackResponse callbackResponse = underTest.grantRaised(callbackRequestMock, documents, letterId);
+
+        assertCommon(callbackResponse);
+
+        assertEquals("123-456", callbackResponse.getData().getBulkPrintId().get(0).getValue().getSendLetterId());
     }
 
     private void assertBulkScanCaseCreationDetails(CaseCreationDetails gorCreationDetails) {

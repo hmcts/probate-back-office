@@ -1,5 +1,7 @@
 package uk.gov.hmcts.probate.service.exceptionrecord.mapper;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
 import uk.gov.hmcts.probate.exception.OCRMappingException;
@@ -40,9 +42,11 @@ public class OCRFieldAdoptiveRelativesMapperTest {
     private ExceptionRecordOCRFields ocrFields;
     private ExceptionRecordOCRFields ocrFieldsMultiple;
     private ExceptionRecordOCRFields ocrFieldsInOutError;
+    private ObjectMapper objectMapper;
 
     @Before
     public void setUpClass() throws Exception {
+        objectMapper = new ObjectMapper();
         ocrFields = ExceptionRecordOCRFields.builder()
                 .adoptiveRelatives0name(ADOPTED_RELATIVE_1_NAME)
                 .adoptiveRelatives0relationship(ADOPTED_RELATIVE_1_RELATIONSHIP)
@@ -87,7 +91,7 @@ public class OCRFieldAdoptiveRelativesMapperTest {
     }
 
     @Test
-    public void testGetMultipleAdoptedRelatives() {
+    public void testGetMultipleAdoptedRelatives() throws JsonProcessingException {
         List<CollectionMember<AdoptiveRelative>> response
                 = ocrFieldAdoptiveRelativesMapper.toAdoptiveRelativesCollectionMember(ocrFieldsMultiple);
         assertEquals(ADOPTED_RELATIVE_1_NAME, response.get(0).getValue().getName());
@@ -109,6 +113,12 @@ public class OCRFieldAdoptiveRelativesMapperTest {
         assertEquals(ADOPTED_RELATIVE_6_RELATIONSHIP, response.get(5).getValue().getRelationship());
         assertEquals(InOut.OUT, response.get(5).getValue().getAdoptedInOrOut());
         assertEquals(6, response.size());
+    }
+
+    @Test
+    public void testObjectMapperInOut() throws JsonProcessingException {
+        assertEquals("\"IN\"", objectMapper.writeValueAsString(InOut.IN));
+        assertEquals("\"OUT\"", objectMapper.writeValueAsString(InOut.OUT));
     }
 
     @Test(expected = OCRMappingException.class)

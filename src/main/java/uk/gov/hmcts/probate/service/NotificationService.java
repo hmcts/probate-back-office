@@ -56,8 +56,10 @@ import static uk.gov.service.notify.NotificationClient.prepareUpload;
 @RequiredArgsConstructor
 @Component
 public class NotificationService {
+
     @Autowired
     private final EmailAddresses emailAddresses;
+
     @Autowired
     private BusinessValidationMessageService businessValidationMessageService;
     private final NotificationTemplates notificationTemplates;
