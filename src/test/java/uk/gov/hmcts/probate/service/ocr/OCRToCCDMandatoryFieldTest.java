@@ -57,12 +57,46 @@ public class OCRToCCDMandatoryFieldTest {
     }
 
     @Test
-    public void testFlagWillTypeCaseWarningPA1P() {
+    public void testFlagSolsWillTypeCaseWarningPA1P() {
         addAllMandatoryGORSolicitorFields();
         ocrFields.add(OCRField.builder().name("solsWillType").value("Grant I think").description("Will Type").build());
         List<String> warningsResponse = ocrToCCDMandatoryField.ocrToCCDNonMandatoryWarnings(ocrFields, FormType.PA1P, warnings);
         assertEquals("The form has been flagged as a Solictor case.", warningsResponse.get(0));
-        assertEquals("A Solicitor Will type has been provided.", warningsResponse.get(1));
+        assertEquals("An application type and/or reason has been provided, this will need to be reviewed as it will not be " +
+                "mapped to the case.", warningsResponse.get(1));
+        assertEquals(2, warningsResponse.size());
+    }
+
+    @Test
+    public void testFlagSolsWillTypeReasonCaseWarningPA1P() {
+        addAllMandatoryGORSolicitorFields();
+        ocrFields.add(OCRField.builder().name("solsWillTypeReason").value("Because they died").description("Will Type").build());
+        List<String> warningsResponse = ocrToCCDMandatoryField.ocrToCCDNonMandatoryWarnings(ocrFields, FormType.PA1P, warnings);
+        assertEquals("The form has been flagged as a Solictor case.", warningsResponse.get(0));
+        assertEquals("An application type and/or reason has been provided, this will need to be reviewed as it will not be " +
+                "mapped to the case.", warningsResponse.get(1));
+        assertEquals(2, warningsResponse.size());
+    }
+
+    @Test
+    public void testFlagSolsWillTypeCaseWarningPA1A() {
+        addAllMandatoryGORSolicitorFields();
+        ocrFields.add(OCRField.builder().name("solsWillType").value("Grant I think").description("Will Type").build());
+        List<String> warningsResponse = ocrToCCDMandatoryField.ocrToCCDNonMandatoryWarnings(ocrFields, FormType.PA1A, warnings);
+        assertEquals("The form has been flagged as a Solictor case.", warningsResponse.get(0));
+        assertEquals("An application type and/or reason has been provided, this will need to be reviewed as it will not be " +
+                "mapped to the case.", warningsResponse.get(1));
+        assertEquals(2, warningsResponse.size());
+    }
+
+    @Test
+    public void testFlagSolsWillTypeReasonCaseWarningPA1A() {
+        addAllMandatoryGORSolicitorFields();
+        ocrFields.add(OCRField.builder().name("solsWillTypeReason").value("Because they died").description("Will Type").build());
+        List<String> warningsResponse = ocrToCCDMandatoryField.ocrToCCDNonMandatoryWarnings(ocrFields, FormType.PA1A, warnings);
+        assertEquals("The form has been flagged as a Solictor case.", warningsResponse.get(0));
+        assertEquals("An application type and/or reason has been provided, this will need to be reviewed as it will not be " +
+                "mapped to the case.", warningsResponse.get(1));
         assertEquals(2, warningsResponse.size());
     }
 

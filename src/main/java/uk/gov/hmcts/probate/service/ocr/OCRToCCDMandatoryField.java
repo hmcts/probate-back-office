@@ -31,6 +31,7 @@ public class OCRToCCDMandatoryField {
     private static final String DEPENDANT_KEY_SOLSFEEACCOUNTNUMBER = "solsFeeAccountNumber";
     private static final String DEPENDANT_DESC_SOLSFEEACCOUNTNUMBER = "Solicitors fee account number";
     private static final String DEPENDANT_KEY_SOLSWILLTYPE = "solsWillType";
+    private static final String DEPENDANT_KEY_SOLSWILLTYPEREASON = "solsWillTypeReason";
 
     private static final String MANDATORY_KEY_EXECUTORSNOTAPPLYING_EXECUTORNAME =
             "executorsNotApplying_%s_notApplyingExecutorName";
@@ -194,15 +195,6 @@ public class OCRToCCDMandatoryField {
             case PA8A:
                 break;
             case PA1A:
-                if (ocrFieldValues.containsKey(SOLICTOR_KEY_IS_APPLYING)) {
-                    isSolicitorForm = BooleanUtils.toBoolean(ocrFieldValues.get(SOLICTOR_KEY_IS_APPLYING));
-                }
-
-                if (isSolicitorForm) {
-                    log.warn("Solictor details have been provided this will be flagged as a solicitor case.");
-                    warnings.add("The form has been flagged as a Solictor case.");
-                }
-                break;
             case PA1P:
                 if (ocrFieldValues.containsKey(SOLICTOR_KEY_IS_APPLYING)) {
                     isSolicitorForm = BooleanUtils.toBoolean(ocrFieldValues.get(SOLICTOR_KEY_IS_APPLYING));
@@ -213,12 +205,16 @@ public class OCRToCCDMandatoryField {
                     warnings.add("The form has been flagged as a Solictor case.");
                 }
 
-                if (ocrFieldValues.containsKey(DEPENDANT_KEY_SOLSWILLTYPE)
-                        && StringUtils.isNotBlank(ocrFieldValues.get(DEPENDANT_KEY_SOLSWILLTYPE))) {
-                    log.warn("Solictor details include a will type to be flagged.");
-                    warnings.add("A Solicitor Will type has been provided.");
+                if ((ocrFieldValues.containsKey(DEPENDANT_KEY_SOLSWILLTYPE)
+                        && StringUtils.isNotBlank(ocrFieldValues.get(DEPENDANT_KEY_SOLSWILLTYPE))) ||
+                        (ocrFieldValues.containsKey(DEPENDANT_KEY_SOLSWILLTYPEREASON)
+                                && StringUtils.isNotBlank(ocrFieldValues.get(DEPENDANT_KEY_SOLSWILLTYPEREASON)))) {
+                    log.warn("Solictor details include a will type or reason to be flagged.");
+                    warnings.add("An application type and/or reason has been provided, this will need to be reviewed as it will not be " +
+                            "mapped to the case.");
                 }
                 break;
+
             default:
                 log.error("Error '{}' does not match a known form-type.", formType);
         }
