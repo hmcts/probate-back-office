@@ -37,15 +37,6 @@ def secrets = [
                 secret('pdfServiceBaseUrl', 'PDF_SERVICE_BASEURL'),
                 secret('pdfServiceAccessKey', 'PDF_SERVICE_ACCESS_KEY'),
                 secret('pdfServiceHealthUrl', 'PDF_SERVICE_HEALTH_URL')
-        ],
-        's2s-${env}'      : [
-                secret('microservicekey-ccd-data', 'DATA_STORE_S2S_KEY'),
-                secret('microservicekey-ccd-definition', 'DEFINITION_STORE_S2S_KEY'),
-                secret('microservicekey-ccd-gw', 'API_GATEWAY_S2S_KEY'),
-                secret('microservicekey-ccd-ps', 'PRINT_S2S_KEY')
-        ],
-        'ccd-${env}'      : [
-                secret('ccd-api-gateway-oauth2-client-secret', 'API_GATEWAY_IDAM_SECRET')
         ]
 ]
 
