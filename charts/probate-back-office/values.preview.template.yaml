@@ -1,11 +1,29 @@
 java:
+  image: ${IMAGE_NAME}
+  ingressHost: ${SERVICE_FQDN}
   environment:
     PROBATE_POSTGRESQL_USER: "{{ .Values.postgresql.postgresqlUsername}}"
     PROBATE_POSTGRESQL_PASSWORD: "{{ .Values.postgresql.postgresqlPassword}}"
     PROBATE_POSTGRESQL_HOSTNAME: "{{ .Release.Name }}-postgresql"
     PROBATE_POSTGRESQL_DATABASE: "{{ .Values.postgresql.postgresqlDatabase}}"
-  image: ${IMAGE_NAME}
-  ingressHost: ${SERVICE_FQDN}
+
+  keyVaults:
+    probate:
+      secrets:
+        - s2s-probate-backend
+        - probate-bo-govNotifyApiKey
+        - authTokenEmail
+        - authTokenPassword
+        - excelaEmail
+        - ftpSignature
+        - ftpEnv
+        - probate-bo-grantSignatureKey
+        - probate-bo-grantSignatureFile
+        - pdfServiceBaseUrl
+        - pdfServiceAccessKey
+        - pdfServiceHealthUrl
+        - idam-secret-probate
+        - idamRedirectUrl
 
   postgresql:
     enabled: true
