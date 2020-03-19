@@ -1,8 +1,4 @@
 java:
-  readinessDelay: 180
-  livenessDelay: 180
-  readinessPeriod: 60
-  livenessPeriod: 60
   environment:
     PROBATE_POSTGRESQL_USER: "{{ .Values.postgresql.postgresqlUsername}}"
     PROBATE_POSTGRESQL_PASSWORD: "{{ .Values.postgresql.postgresqlPassword}}"
