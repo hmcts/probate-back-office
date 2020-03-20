@@ -98,10 +98,13 @@ public class NotificationService {
             throws NotificationClientException {
 
         CaseData caseData = caseDetails.getData();
+        log.info("sendEmail for case: {}", caseDetails.getId());
         Registry registry = getRegistry(caseData.getRegistryLocation(), caseData.getLanguagePreference());
         String templateId = templateService.getTemplateId(state, caseData.getApplicationType(),
                 caseData.getRegistryLocation(), caseData.getLanguagePreference());
+        log.info("Got templateId: {}", templateId);
         String emailReplyToId = registry.getEmailReplyToId();
+
         String emailAddress = getEmail(caseData);
         Map<String, Object> personalisation = grantOfRepresentationPersonalisationService.getPersonalisation(caseDetails,
                 registry);
@@ -114,7 +117,7 @@ public class NotificationService {
         if (caseData.getApplicationType().equals(ApplicationType.SOLICITOR)) {
             personalisation.replace(PERSONALISATION_APPLICANT_NAME, caseData.getSolsSOTName());
         }
-
+        log.info("Personlisation complete now get the email repsonse");
         SendEmailResponse response =
                 getSendEmailResponse(state, templateId, emailReplyToId, emailAddress, personalisation, reference);
 
@@ -353,7 +356,7 @@ public class NotificationService {
                                                    String reference)
             throws NotificationClientException {
         SendEmailResponse response;
-
+        log.info("getSendEmailResponse");
         switch (state) {
             case CASE_STOPPED:
             case CASE_STOPPED_CAVEAT:
@@ -362,8 +365,11 @@ public class NotificationService {
             case CASE_STOPPED_REQUEST_INFORMATION:
             case REDECLARATION_SOT:
             default:
+                log.info("send the email to notificationClient");
                 response = notificationClient.sendEmail(templateId, emailAddress, personalisation, reference);
+                log.info("sent the email to the client!");
         }
+        log.info("Return the SendEmailResponse: {} " , response );
         return response;
     }
 

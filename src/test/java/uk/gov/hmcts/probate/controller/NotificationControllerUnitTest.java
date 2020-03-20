@@ -92,42 +92,25 @@ public class NotificationControllerUnitTest {
     @Test
     public void shouldSendApplicationReceived() throws IOException, NotificationClientException {
         setUpMocks(APPLICATION_RECEIVED);
-        ResponseEntity<String> stringResponseEntity = notificationController.sendApplicationReceivedNotification(callbackRequest);
-        assertThat(stringResponseEntity.getStatusCode(), is(HttpStatus.OK));
-        verifyDocumentsAreAdded();
+        ResponseEntity<Document> responseEntity = notificationController.sendApplicationReceivedNotification(callbackRequest);
+        assertThat(responseEntity.getStatusCode(), is(HttpStatus.OK));
     }
 
     @Test
-    public void shouldAddDocumentEvenIfNoEmailAddressPresent() throws IOException, NotificationClientException {
+    public void shouldReturnBadRequestIfNoEmailAddressPresent() throws IOException, NotificationClientException {
 
         CaseDetails caseDetails = new CaseDetails(CaseDataTestBuilder.withDefaultsAndNoPrimaryApplicantEmailAddress().build(), LAST_MODIFIED, ID);
         callbackRequest = new CallbackRequest(caseDetails);
-        when(callbackResponseTransformer.addDocuments(any(CallbackRequest.class), documents.capture(), nullable(String.class), nullable(String.class))).thenReturn(CallbackResponse.builder().errors(new ArrayList<>()).build());
-        ResponseEntity<String> stringResponseEntity = notificationController.sendApplicationReceivedNotification(callbackRequest);
-        assertThat(stringResponseEntity.getStatusCode(), is(HttpStatus.OK));
-        verifyNoDocumentsAreAdded();
+        ResponseEntity<Document> responseEntity = notificationController.sendApplicationReceivedNotification(callbackRequest);
+        assertThat(responseEntity.getStatusCode(), is(HttpStatus.BAD_REQUEST));
         verifyNoMoreInteractions(notificationService);
     }
 
     @Test
     public void shouldHandleErrorsFromSendApplicationReceived() throws IOException, NotificationClientException {
         setUpMocks(APPLICATION_RECEIVED, "This is an error", "This is another error");
-        ResponseEntity<String> stringResponseEntity = notificationController.sendApplicationReceivedNotification(callbackRequest);
-        assertThat(stringResponseEntity.getStatusCode(), is(HttpStatus.BAD_REQUEST));
-        assertThat(stringResponseEntity.getBody(), is("This is an error, This is another error"));
-        verifyNoMoreInteractions(callbackResponseTransformer);
-    }
-
-    private void verifyDocumentsAreAdded() {
-        verify(callbackResponseTransformer).addDocuments(any(CallbackRequest.class), documents.capture(), isNull(), isNull());
-        List<Document> docs = documents.getValue();
-        assertThat(docs, hasItems(document));
-    }
-
-    private void verifyNoDocumentsAreAdded() {
-        verify(callbackResponseTransformer).addDocuments(any(CallbackRequest.class), documents.capture(), isNull(), isNull());
-        List<Document> docs = documents.getValue();
-        assertThat(docs, is(empty()));
+        ResponseEntity<Document> responseEntity  = notificationController.sendApplicationReceivedNotification(callbackRequest);
+        assertThat(responseEntity.getStatusCode(), is(HttpStatus.BAD_REQUEST));
     }
 
     @Test

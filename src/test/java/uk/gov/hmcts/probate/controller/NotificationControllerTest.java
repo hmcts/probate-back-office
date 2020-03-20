@@ -225,7 +225,7 @@ public class NotificationControllerTest {
                 .content(solicitorPayload)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("Applicat")));
+                .andExpect(content().string(containsString("DocumentLink")));
     }
 
 
@@ -441,9 +441,7 @@ public class NotificationControllerTest {
         mockMvc.perform(post("/notify/application-received")
                 .content(personalPayload)
                 .contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(status().isBadRequest())
-                .andExpect(content().string(containsString("There is no email address for this applicant. To continue the application, go back and select no to sending an email.")));
-
+                .andExpect(status().isBadRequest());
     }
 
     @Test
