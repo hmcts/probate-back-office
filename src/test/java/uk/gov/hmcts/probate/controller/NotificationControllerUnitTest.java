@@ -127,7 +127,6 @@ public class NotificationControllerUnitTest {
         when(eventValidationService.validateEmailRequest(any(CallbackRequest.class), anyList())).thenReturn(CallbackResponse.builder().errors(Arrays.asList(errors)).build());
         document = Document.builder().build();
         when(notificationService.sendEmail(state, caseDetails)).thenReturn(document);
-        when(callbackResponseTransformer.addDocuments(any(CallbackRequest.class), documents.capture(), nullable(String.class), nullable(String.class))).thenReturn(CallbackResponse.builder().errors(new ArrayList<>()).build());
     }
 
     private void setUpMocks(State state) throws NotificationClientException {
