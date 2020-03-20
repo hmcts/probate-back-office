@@ -34,7 +34,7 @@ public class DataExtractController {
 
     @ApiOperation(value = "Initiate HMRC data extract within 2 dates", notes = "Dates MUST be in format 'yyyy-MM-dd'")
     @PostMapping(path = "/hmrc")
-    public ResponseEntity initiateHmrcExtractFromDate(@RequestParam(value = "fromDate") String fromDate,
+    public ResponseEntity<String> initiateHmrcExtractFromDate(@RequestParam(value = "fromDate") String fromDate,
                                                       @RequestParam(value = "toDate") String toDate) {
 
         dataExtractDateValidator.dateValidator(fromDate, toDate);
@@ -51,7 +51,7 @@ public class DataExtractController {
 
     @ApiOperation(value = "Initiate IronMountain data extract with date", notes = "Date MUST be in format 'yyyy-MM-dd'")
     @PostMapping(path = "/iron-mountain")
-    public ResponseEntity initiateIronMountainExtract(@ApiParam(value = "Date to find cases against", required = true)
+    public ResponseEntity<String> initiateIronMountainExtract(@ApiParam(value = "Date to find cases against", required = true)
                                                       @RequestParam("date") String date) {
         dataExtractDateValidator.dateValidator(date);
 
@@ -67,7 +67,7 @@ public class DataExtractController {
 
     @ApiOperation(value = "Initiate Exela data extract", notes = " Date MUST be in format 'yyyy-MM-dd'")
     @PostMapping(path = "/exela")
-    public ResponseEntity initiateExelaExtract(@ApiParam(value = "Date to find cases against", required = true)
+    public ResponseEntity<String> initiateExelaExtract(@ApiParam(value = "Date to find cases against", required = true)
                                                 @RequestParam("date") String date) {
 
         dataExtractDateValidator.dateValidator(date);
