@@ -34,7 +34,7 @@ public class DataExtractController {
 
     @ApiOperation(value = "Initiate HMRC data extract within 2 dates", notes = "Dates MUST be in format 'yyyy-MM-dd'")
     @PostMapping(path = "/hmrc")
-    public ResponseEntity<String> initiateHmrcExtractFromDate(@RequestParam(value = "fromDate") String fromDate,
+    public ResponseEntity initiateHmrcExtractFromDate(@RequestParam(value = "fromDate") String fromDate,
                                                       @RequestParam(value = "toDate") String toDate) {
 
         dataExtractDateValidator.dateValidator(fromDate, toDate);
@@ -46,12 +46,12 @@ public class DataExtractController {
         });
         log.info("Perform HMRC data extract from dates finished");
 
-        return new ResponseEntity("Perform HMRC data extract finished", ACCEPTED);
+        return ResponseEntity.accepted().body("Perform HMRC data extract finished");
     }
 
     @ApiOperation(value = "Initiate IronMountain data extract with date", notes = "Date MUST be in format 'yyyy-MM-dd'")
     @PostMapping(path = "/iron-mountain")
-    public ResponseEntity<String> initiateIronMountainExtract(@ApiParam(value = "Date to find cases against", required = true)
+    public ResponseEntity initiateIronMountainExtract(@ApiParam(value = "Date to find cases against", required = true)
                                                       @RequestParam("date") String date) {
         dataExtractDateValidator.dateValidator(date);
 
@@ -62,12 +62,12 @@ public class DataExtractController {
         });
         log.info("Perform Iron Mountain data extract from date finished");
 
-        return new ResponseEntity("Perform Iron Mountain data extract finished", ACCEPTED);
+        return ResponseEntity.accepted().body("Perform Iron Mountain data extract finished");
     }
 
     @ApiOperation(value = "Initiate Exela data extract", notes = " Date MUST be in format 'yyyy-MM-dd'")
     @PostMapping(path = "/exela")
-    public ResponseEntity<String> initiateExelaExtract(@ApiParam(value = "Date to find cases against", required = true)
+    public ResponseEntity initiateExelaExtract(@ApiParam(value = "Date to find cases against", required = true)
                                                 @RequestParam("date") String date) {
 
         dataExtractDateValidator.dateValidator(date);
@@ -79,8 +79,7 @@ public class DataExtractController {
         });
         log.info("Perform Exela data extract from date finished");
 
-        return new ResponseEntity("Exela data extract finished", ACCEPTED);
-
+        return ResponseEntity.accepted().body("Exela data extract finished");
     }
 
 }
