@@ -64,6 +64,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import static java.lang.Boolean.TRUE;
 import static java.util.Collections.EMPTY_LIST;
 import static java.util.Collections.emptyList;
 import static org.hamcrest.Matchers.comparesEqualTo;
@@ -143,6 +144,10 @@ public class CallbackResponseTransformerTest {
     private static final String DECEASED_DATE_OF_DEATH_TYPE = "diedOnOrSince";
     private static final LocalDate DOB = LocalDate.parse("2016-12-31", dateTimeFormatter);
     private static final LocalDate DOD = LocalDate.parse("2017-12-31", dateTimeFormatter);
+    private static final LocalDate GRANT_DELAYED_DATE = LocalDate.parse("2019-12-31", dateTimeFormatter);
+    private static final LocalDate GRANT_STOPPED_DATE = LocalDate.parse("2020-08-31", dateTimeFormatter);
+    private static final LocalDate GRANT_AWAITING_DOCS_DATE = LocalDate.parse("2020-09-31", dateTimeFormatter);
+    private static final String GRANT_DELAYED_NOTIFICATION_SENT = YES;
     private static final String NUM_CODICILS = "9";
 
     private static final String IHT_FORM_ID = "IHT205";
@@ -483,14 +488,19 @@ public class CallbackResponseTransformerTest {
                 .boEmailRequestInfoNotificationRequested(YES)
                 .boAssembleLetterSendToBulkPrintRequested(YES)
                 .boRequestInfoSendToBulkPrintRequested(YES)
-                .executorsApplyingNotifications(EXECEUTORS_APPLYING_NOTIFICATION);
+                .executorsApplyingNotifications(EXECEUTORS_APPLYING_NOTIFICATION)
+                .grantDelayedNotificationDate(GRANT_DELAYED_DATE)
+                .grantStoppedDate(GRANT_STOPPED_DATE)
+                .grantDelayedNotificationSent(YES)
+                .grantAwaitingDocumentatioNotificationSent(YES)
+                .grantAwaitingDocumentationNotificationDate(GRANT_AWAITING_DOCS_DATE);
 
         bulkScanGrantOfRepresentationData = GrantOfRepresentationData.builder()
                 .deceasedForenames(DECEASED_FIRSTNAME)
                 .deceasedSurname(DECEASED_LASTNAME)
                 .deceasedDateOfBirth(DOB)
                 .deceasedDateOfDeath(DOD)
-                .willHasCodicils(Boolean.TRUE)
+                .willHasCodicils(TRUE)
                 .willNumberOfCodicils(Long.valueOf(NUM_CODICILS))
                 .ihtFormId(IhtFormType.optionIHT205)
                 .ihtGrossValue(IHT_GROSS.longValue())
@@ -498,24 +508,24 @@ public class CallbackResponseTransformerTest {
                 .primaryApplicantForenames(APPLICANT_FORENAME)
                 .primaryApplicantSurname(APPLICANT_SURNAME)
                 .primaryApplicantEmailAddress(APPLICANT_EMAIL_ADDRESS)
-                .primaryApplicantIsApplying(Boolean.TRUE)
-                .primaryApplicantHasAlias(Boolean.TRUE)
+                .primaryApplicantIsApplying(TRUE)
+                .primaryApplicantHasAlias(TRUE)
                 .primaryApplicantAlias(PRIMARY_EXEC_ALIAS_NAMES)
                 .deceasedAddress(BSP_DECEASED_ADDRESS)
-                .deceasedAnyOtherNames(Boolean.TRUE)
+                .deceasedAnyOtherNames(TRUE)
                 .primaryApplicantAddress(BSP_APPLICANT_ADDRESS)
-                .boSendToBulkPrintRequested(Boolean.TRUE)
+                .boSendToBulkPrintRequested(TRUE)
                 .grantType(GrantType.GRANT_OF_PROBATE)
-                .willExists(Boolean.TRUE)
+                .willExists(TRUE)
                 .executorsApplying(BSP_ADDITIONAL_EXEC_LIST_APP)
                 .executorsNotApplying(BSP_ADDITIONAL_EXEC_LIST_NOT_APP)
                 .ihtReferenceNumber(IHT_REFERENCE)
-                .ihtFormCompletedOnline(Boolean.TRUE)
+                .ihtFormCompletedOnline(TRUE)
                 .scannedDocuments(BSP_SCANNED_DOCUMENTS_LIST)
-                .deceasedDivorcedInEnglandOrWales(Boolean.TRUE)
+                .deceasedDivorcedInEnglandOrWales(TRUE)
                 .primaryApplicantAdoptionInEnglandOrWales(Boolean.FALSE)
-                .deceasedOtherChildren(Boolean.TRUE)
-                .deceasedHasAssetsOutsideUK(Boolean.TRUE)
+                .deceasedOtherChildren(TRUE)
+                .deceasedHasAssetsOutsideUK(TRUE)
                 .boEmailRequestInfoNotificationRequested(Boolean.FALSE)
                 .boSendToBulkPrintRequested(Boolean.FALSE)
                 .primaryApplicantSecondPhoneNumber(EXEC_PHONE)
@@ -524,71 +534,71 @@ public class CallbackResponseTransformerTest {
                 .deceasedMaritalStatus(MaritalStatus.NEVER_MARRIED)
                 .dateOfMarriageOrCP(null)
                 .dateOfDivorcedCPJudicially(null)
-                .willsOutsideOfUK(Boolean.TRUE)
+                .willsOutsideOfUK(TRUE)
                 .courtOfDecree("Random Court Name")
                 .willGiftUnderEighteen(Boolean.FALSE)
-                .applyingAsAnAttorney(Boolean.TRUE)
+                .applyingAsAnAttorney(TRUE)
                 .attorneyOnBehalfOfNameAndAddress(null)
-                .mentalCapacity(Boolean.TRUE)
-                .courtOfProtection(Boolean.TRUE)
+                .mentalCapacity(TRUE)
+                .courtOfProtection(TRUE)
                 .epaOrLpa(Boolean.FALSE)
                 .epaRegistered(Boolean.FALSE)
                 .domicilityCountry("Spain")
-                .adopted(Boolean.TRUE)
+                .adopted(TRUE)
                 .adoptiveRelatives(null)
-                .domicilityIHTCert(Boolean.TRUE)
-                .foreignAsset(Boolean.TRUE)
+                .domicilityIHTCert(TRUE)
+                .foreignAsset(TRUE)
                 .foreignAssetEstateValue(Long.valueOf("123"))
                 .grantType(GrantType.INTESTACY)
-                .childrenSurvived(Boolean.TRUE)
+                .childrenSurvived(TRUE)
                 .childrenOverEighteenSurvivedText(NUM_CODICILS)
                 .childrenUnderEighteenSurvivedText(NUM_CODICILS)
-                .childrenDied(Boolean.TRUE)
+                .childrenDied(TRUE)
                 .childrenDiedOverEighteenText(NUM_CODICILS)
                 .childrenDiedUnderEighteenText(NUM_CODICILS)
-                .grandChildrenSurvived(Boolean.TRUE)
+                .grandChildrenSurvived(TRUE)
                 .grandChildrenSurvivedOverEighteenText(NUM_CODICILS)
                 .grandChildrenSurvivedUnderEighteenText(NUM_CODICILS)
-                .parentsExistSurvived(Boolean.TRUE)
+                .parentsExistSurvived(TRUE)
                 .parentsExistOverEighteenSurvived(NUM_CODICILS)
                 .parentsExistUnderEighteenSurvived(NUM_CODICILS)
-                .wholeBloodSiblingsSurvived(Boolean.TRUE)
+                .wholeBloodSiblingsSurvived(TRUE)
                 .wholeBloodSiblingsSurvivedOverEighteen(NUM_CODICILS)
                 .wholeBloodSiblingsSurvivedUnderEighteen(NUM_CODICILS)
-                .wholeBloodSiblingsDied(Boolean.TRUE)
+                .wholeBloodSiblingsDied(TRUE)
                 .wholeBloodSiblingsDiedOverEighteen(NUM_CODICILS)
                 .wholeBloodSiblingsDiedUnderEighteen(NUM_CODICILS)
-                .wholeBloodNeicesAndNephews(Boolean.TRUE)
+                .wholeBloodNeicesAndNephews(TRUE)
                 .wholeBloodNeicesAndNephewsOverEighteen(NUM_CODICILS)
                 .wholeBloodNeicesAndNephewsUnderEighteen(NUM_CODICILS)
-                .halfBloodSiblingsSurvived(Boolean.TRUE)
+                .halfBloodSiblingsSurvived(TRUE)
                 .halfBloodSiblingsSurvivedOverEighteen(NUM_CODICILS)
                 .halfBloodSiblingsSurvivedUnderEighteen(NUM_CODICILS)
-                .halfBloodSiblingsDied(Boolean.TRUE)
+                .halfBloodSiblingsDied(TRUE)
                 .halfBloodSiblingsDiedOverEighteen(NUM_CODICILS)
                 .halfBloodSiblingsDiedUnderEighteen(NUM_CODICILS)
-                .halfBloodNeicesAndNephews(Boolean.TRUE)
+                .halfBloodNeicesAndNephews(TRUE)
                 .halfBloodNeicesAndNephewsOverEighteen(NUM_CODICILS)
                 .halfBloodNeicesAndNephewsUnderEighteen(NUM_CODICILS)
-                .grandparentsDied(Boolean.TRUE)
+                .grandparentsDied(TRUE)
                 .grandparentsDiedOverEighteen(NUM_CODICILS)
                 .grandparentsDiedUnderEighteen(NUM_CODICILS)
-                .wholeBloodUnclesAndAuntsSurvived(Boolean.TRUE)
+                .wholeBloodUnclesAndAuntsSurvived(TRUE)
                 .wholeBloodUnclesAndAuntsSurvivedOverEighteen(NUM_CODICILS)
                 .wholeBloodUnclesAndAuntsSurvivedUnderEighteen(NUM_CODICILS)
-                .wholeBloodUnclesAndAuntsDied(Boolean.TRUE)
+                .wholeBloodUnclesAndAuntsDied(TRUE)
                 .wholeBloodUnclesAndAuntsDiedOverEighteen(NUM_CODICILS)
                 .wholeBloodUnclesAndAuntsDiedUnderEighteen(NUM_CODICILS)
-                .wholeBloodCousinsSurvived(Boolean.TRUE)
+                .wholeBloodCousinsSurvived(TRUE)
                 .wholeBloodCousinsSurvivedOverEighteen(NUM_CODICILS)
                 .wholeBloodCousinsSurvivedUnderEighteen(NUM_CODICILS)
-                .halfBloodUnclesAndAuntsSurvived(Boolean.TRUE)
+                .halfBloodUnclesAndAuntsSurvived(TRUE)
                 .halfBloodUnclesAndAuntsSurvivedOverEighteen(NUM_CODICILS)
                 .halfBloodUnclesAndAuntsSurvivedUnderEighteen(NUM_CODICILS)
-                .halfBloodUnclesAndAuntsDied(Boolean.TRUE)
+                .halfBloodUnclesAndAuntsDied(TRUE)
                 .halfBloodUnclesAndAuntsDiedOverEighteen(NUM_CODICILS)
                 .halfBloodUnclesAndAuntsDiedUnderEighteen(NUM_CODICILS)
-                .halfBloodCousinsSurvived(Boolean.TRUE)
+                .halfBloodCousinsSurvived(TRUE)
                 .halfBloodCousinsSurvivedOverEighteen(NUM_CODICILS)
                 .halfBloodCousinsSurvivedUnderEighteen(NUM_CODICILS)
                 .applicationFeePaperForm(Long.valueOf("0"))
@@ -596,8 +606,13 @@ public class CallbackResponseTransformerTest {
                 .totalFeePaperForm(Long.valueOf("0"))
                 .paperPaymentMethod("debitOrCredit")
                 .paymentReferenceNumberPaperform(IHT_REFERENCE)
-                .paperForm(Boolean.TRUE)
+                .paperForm(TRUE)
                 .bulkScanCaseReference(BULK_SCAN_REFERENCE)
+                .grantDelayedNotificationDate(GRANT_DELAYED_DATE)
+                .grantStoppedDate(GRANT_STOPPED_DATE)
+                .grantDelayedNotificationSent(TRUE)
+                .grantAwaitingDocumentationNotificationDate(GRANT_AWAITING_DOCS_DATE)
+                .grantAwaitingDocumentatioNotificationSent(TRUE)
                 .build();
 
         additionalExecutorsApplyingMock = new ArrayList<>();
@@ -2740,6 +2755,9 @@ public class CallbackResponseTransformerTest {
                 callbackResponse.getData().getAnyDeceasedChildrenDieBeforeDeceased());
         assertEquals(DECEASED_ANY_CHILDREN, callbackResponse.getData().getDeceasedAnyChildren());
         assertEquals(DECEASED_HAS_ASSETS_OUTSIDE_UK, callbackResponse.getData().getDeceasedHasAssetsOutsideUK());
+        assertEquals(GRANT_DELAYED_NOTIFICATION_SENT, callbackResponse.getData().getGrantDelayedNotificationSent());
+        assertEquals(CallbackResponseTransformer.dateTimeFormatter.format(GRANT_DELAYED_DATE), callbackResponse.getData().getGrantDelayedNotificationDate());
+        assertEquals(CallbackResponseTransformer.dateTimeFormatter.format(GRANT_STOPPED_DATE), callbackResponse.getData().getGrantStoppedDate());
     }
 
     @Test
@@ -2773,7 +2791,7 @@ public class CallbackResponseTransformerTest {
         assertEquals(BULK_SCAN_REGISTRY_LOCATION.name(), grantOfRepresentationData.getRegistryLocation().name());
         assertEquals(ApplicationType.PERSONAL.name(), grantOfRepresentationData.getApplicationType().getName().toUpperCase());
 
-        assertEquals(Boolean.TRUE, grantOfRepresentationData.getPaperForm());
+        assertEquals(TRUE, grantOfRepresentationData.getPaperForm());
         assertEquals(GrantType.INTESTACY, grantOfRepresentationData.getGrantType());
 
         assertEquals(DECEASED_FIRSTNAME, grantOfRepresentationData.getDeceasedForenames());
@@ -2807,12 +2825,12 @@ public class CallbackResponseTransformerTest {
 
         assertEquals(null, grantOfRepresentationData.getDateOfMarriageOrCP());
         assertEquals(null, grantOfRepresentationData.getDateOfDivorcedCPJudicially());
-        assertEquals(Boolean.TRUE, grantOfRepresentationData.getWillsOutsideOfUK());
+        assertEquals(TRUE, grantOfRepresentationData.getWillsOutsideOfUK());
         assertEquals("Random Court Name", grantOfRepresentationData.getCourtOfDecree());
         assertEquals(Boolean.FALSE, grantOfRepresentationData.getWillGiftUnderEighteen());
-        assertEquals(Boolean.TRUE, grantOfRepresentationData.getApplyingAsAnAttorney());
-        assertEquals(Boolean.TRUE, grantOfRepresentationData.getMentalCapacity());
-        assertEquals(Boolean.TRUE, grantOfRepresentationData.getCourtOfProtection());
+        assertEquals(TRUE, grantOfRepresentationData.getApplyingAsAnAttorney());
+        assertEquals(TRUE, grantOfRepresentationData.getMentalCapacity());
+        assertEquals(TRUE, grantOfRepresentationData.getCourtOfProtection());
         assertEquals(Boolean.FALSE, grantOfRepresentationData.getEpaOrLpa());
 
         assertEquals(Boolean.FALSE, grantOfRepresentationData.getEpaRegistered());
@@ -2824,71 +2842,71 @@ public class CallbackResponseTransformerTest {
         assertEquals(MaritalStatus.NEVER_MARRIED, grantOfRepresentationData.getDeceasedMaritalStatus());
         assertEquals(null, grantOfRepresentationData.getDateOfMarriageOrCP());
         assertEquals(null, grantOfRepresentationData.getDateOfDivorcedCPJudicially());
-        assertEquals(Boolean.TRUE, grantOfRepresentationData.getWillsOutsideOfUK());
+        assertEquals(TRUE, grantOfRepresentationData.getWillsOutsideOfUK());
         assertEquals("Random Court Name", grantOfRepresentationData.getCourtOfDecree());
         assertEquals(Boolean.FALSE, grantOfRepresentationData.getWillGiftUnderEighteen());
-        assertEquals(Boolean.TRUE, grantOfRepresentationData.getApplyingAsAnAttorney());
+        assertEquals(TRUE, grantOfRepresentationData.getApplyingAsAnAttorney());
         assertEquals(null, grantOfRepresentationData.getAttorneyOnBehalfOfNameAndAddress());
-        assertEquals(Boolean.TRUE, grantOfRepresentationData.getMentalCapacity());
-        assertEquals(Boolean.TRUE, grantOfRepresentationData.getCourtOfProtection());
+        assertEquals(TRUE, grantOfRepresentationData.getMentalCapacity());
+        assertEquals(TRUE, grantOfRepresentationData.getCourtOfProtection());
         assertEquals(Boolean.FALSE, grantOfRepresentationData.getEpaOrLpa());
         assertEquals(Boolean.FALSE, grantOfRepresentationData.getEpaRegistered());
         assertEquals("Spain", grantOfRepresentationData.getDomicilityCountry());
-        assertEquals(Boolean.TRUE, grantOfRepresentationData.getAdopted());
+        assertEquals(TRUE, grantOfRepresentationData.getAdopted());
         assertEquals(null, grantOfRepresentationData.getAdoptiveRelatives());
-        assertEquals(Boolean.TRUE, grantOfRepresentationData.getDomicilityIHTCert());
-        assertEquals(Boolean.TRUE, grantOfRepresentationData.getForeignAsset());
+        assertEquals(TRUE, grantOfRepresentationData.getDomicilityIHTCert());
+        assertEquals(TRUE, grantOfRepresentationData.getForeignAsset());
         assertEquals(Long.valueOf("123"), grantOfRepresentationData.getForeignAssetEstateValue());
 
-        assertEquals(Boolean.TRUE, grantOfRepresentationData.getChildrenSurvived());
+        assertEquals(TRUE, grantOfRepresentationData.getChildrenSurvived());
         assertEquals(NUM_CODICILS, grantOfRepresentationData.getChildrenOverEighteenSurvivedText());
         assertEquals(NUM_CODICILS, grantOfRepresentationData.getChildrenUnderEighteenSurvivedText());
-        assertEquals(Boolean.TRUE, grantOfRepresentationData.getChildrenDied());
+        assertEquals(TRUE, grantOfRepresentationData.getChildrenDied());
         assertEquals(NUM_CODICILS, grantOfRepresentationData.getChildrenDiedOverEighteenText());
         assertEquals(NUM_CODICILS, grantOfRepresentationData.getChildrenDiedUnderEighteenText());
-        assertEquals(Boolean.TRUE, grantOfRepresentationData.getGrandChildrenSurvived());
+        assertEquals(TRUE, grantOfRepresentationData.getGrandChildrenSurvived());
         assertEquals(NUM_CODICILS, grantOfRepresentationData.getGrandChildrenSurvivedOverEighteenText());
         assertEquals(NUM_CODICILS, grantOfRepresentationData.getGrandChildrenSurvivedUnderEighteenText());
-        assertEquals(Boolean.TRUE, grantOfRepresentationData.getParentsExistSurvived());
+        assertEquals(TRUE, grantOfRepresentationData.getParentsExistSurvived());
         assertEquals(NUM_CODICILS, grantOfRepresentationData.getParentsExistOverEighteenSurvived());
         assertEquals(NUM_CODICILS, grantOfRepresentationData.getParentsExistUnderEighteenSurvived());
-        assertEquals(Boolean.TRUE, grantOfRepresentationData.getWholeBloodSiblingsSurvived());
+        assertEquals(TRUE, grantOfRepresentationData.getWholeBloodSiblingsSurvived());
         assertEquals(NUM_CODICILS, grantOfRepresentationData.getWholeBloodSiblingsSurvivedOverEighteen());
         assertEquals(NUM_CODICILS, grantOfRepresentationData.getWholeBloodSiblingsSurvivedUnderEighteen());
-        assertEquals(Boolean.TRUE, grantOfRepresentationData.getWholeBloodSiblingsDied());
+        assertEquals(TRUE, grantOfRepresentationData.getWholeBloodSiblingsDied());
         assertEquals(NUM_CODICILS, grantOfRepresentationData.getWholeBloodSiblingsDiedOverEighteen());
         assertEquals(NUM_CODICILS, grantOfRepresentationData.getWholeBloodSiblingsDiedUnderEighteen());
-        assertEquals(Boolean.TRUE, grantOfRepresentationData.getWholeBloodNeicesAndNephews());
+        assertEquals(TRUE, grantOfRepresentationData.getWholeBloodNeicesAndNephews());
         assertEquals(NUM_CODICILS, grantOfRepresentationData.getWholeBloodNeicesAndNephewsOverEighteen());
         assertEquals(NUM_CODICILS, grantOfRepresentationData.getWholeBloodNeicesAndNephewsUnderEighteen());
-        assertEquals(Boolean.TRUE, grantOfRepresentationData.getHalfBloodSiblingsSurvived());
+        assertEquals(TRUE, grantOfRepresentationData.getHalfBloodSiblingsSurvived());
         assertEquals(NUM_CODICILS, grantOfRepresentationData.getHalfBloodSiblingsSurvivedOverEighteen());
         assertEquals(NUM_CODICILS, grantOfRepresentationData.getHalfBloodSiblingsSurvivedUnderEighteen());
-        assertEquals(Boolean.TRUE, grantOfRepresentationData.getHalfBloodSiblingsDied());
+        assertEquals(TRUE, grantOfRepresentationData.getHalfBloodSiblingsDied());
         assertEquals(NUM_CODICILS, grantOfRepresentationData.getHalfBloodSiblingsDiedUnderEighteen());
         assertEquals(NUM_CODICILS, grantOfRepresentationData.getHalfBloodSiblingsDiedOverEighteen());
-        assertEquals(Boolean.TRUE, grantOfRepresentationData.getHalfBloodNeicesAndNephews());
+        assertEquals(TRUE, grantOfRepresentationData.getHalfBloodNeicesAndNephews());
         assertEquals(NUM_CODICILS, grantOfRepresentationData.getHalfBloodNeicesAndNephewsUnderEighteen());
         assertEquals(NUM_CODICILS, grantOfRepresentationData.getHalfBloodNeicesAndNephewsOverEighteen());
-        assertEquals(Boolean.TRUE, grantOfRepresentationData.getGrandparentsDied());
+        assertEquals(TRUE, grantOfRepresentationData.getGrandparentsDied());
         assertEquals(NUM_CODICILS, grantOfRepresentationData.getGrandparentsDiedOverEighteen());
         assertEquals(NUM_CODICILS, grantOfRepresentationData.getGrandparentsDiedUnderEighteen());
-        assertEquals(Boolean.TRUE, grantOfRepresentationData.getWholeBloodUnclesAndAuntsSurvived());
+        assertEquals(TRUE, grantOfRepresentationData.getWholeBloodUnclesAndAuntsSurvived());
         assertEquals(NUM_CODICILS, grantOfRepresentationData.getWholeBloodUnclesAndAuntsSurvivedOverEighteen());
         assertEquals(NUM_CODICILS, grantOfRepresentationData.getWholeBloodUnclesAndAuntsSurvivedUnderEighteen());
-        assertEquals(Boolean.TRUE, grantOfRepresentationData.getWholeBloodUnclesAndAuntsDied());
+        assertEquals(TRUE, grantOfRepresentationData.getWholeBloodUnclesAndAuntsDied());
         assertEquals(NUM_CODICILS, grantOfRepresentationData.getWholeBloodUnclesAndAuntsDiedOverEighteen());
         assertEquals(NUM_CODICILS, grantOfRepresentationData.getWholeBloodUnclesAndAuntsDiedUnderEighteen());
-        assertEquals(Boolean.TRUE, grantOfRepresentationData.getWholeBloodCousinsSurvived());
+        assertEquals(TRUE, grantOfRepresentationData.getWholeBloodCousinsSurvived());
         assertEquals(NUM_CODICILS, grantOfRepresentationData.getWholeBloodCousinsSurvivedOverEighteen());
         assertEquals(NUM_CODICILS, grantOfRepresentationData.getWholeBloodCousinsSurvivedUnderEighteen());
-        assertEquals(Boolean.TRUE, grantOfRepresentationData.getHalfBloodUnclesAndAuntsSurvived());
+        assertEquals(TRUE, grantOfRepresentationData.getHalfBloodUnclesAndAuntsSurvived());
         assertEquals(NUM_CODICILS, grantOfRepresentationData.getHalfBloodUnclesAndAuntsSurvivedOverEighteen());
         assertEquals(NUM_CODICILS, grantOfRepresentationData.getHalfBloodUnclesAndAuntsSurvivedUnderEighteen());
-        assertEquals(Boolean.TRUE, grantOfRepresentationData.getHalfBloodUnclesAndAuntsDied());
+        assertEquals(TRUE, grantOfRepresentationData.getHalfBloodUnclesAndAuntsDied());
         assertEquals(NUM_CODICILS, grantOfRepresentationData.getHalfBloodUnclesAndAuntsSurvivedUnderEighteen());
         assertEquals(NUM_CODICILS, grantOfRepresentationData.getHalfBloodUnclesAndAuntsSurvivedOverEighteen());
-        assertEquals(Boolean.TRUE, grantOfRepresentationData.getHalfBloodCousinsSurvived());
+        assertEquals(TRUE, grantOfRepresentationData.getHalfBloodCousinsSurvived());
         assertEquals(NUM_CODICILS, grantOfRepresentationData.getHalfBloodCousinsSurvivedOverEighteen());
         assertEquals(NUM_CODICILS, grantOfRepresentationData.getHalfBloodCousinsSurvivedUnderEighteen());
 
@@ -2899,5 +2917,9 @@ public class CallbackResponseTransformerTest {
         assertEquals(Long.valueOf("0"), grantOfRepresentationData.getTotalFeePaperForm());
 
         assertEquals(BULK_SCAN_REFERENCE, grantOfRepresentationData.getBulkScanCaseReference());
+
+        assertEquals(TRUE, grantOfRepresentationData.getGrantDelayedNotificationSent());
+        assertEquals(GRANT_DELAYED_DATE, grantOfRepresentationData.getGrantDelayedNotificationDate());
+        assertEquals(GRANT_STOPPED_DATE, grantOfRepresentationData.getGrantStoppedDate());
     }
 }

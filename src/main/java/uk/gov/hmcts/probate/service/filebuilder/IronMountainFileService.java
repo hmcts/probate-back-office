@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.DataExtractGrantType;
 import uk.gov.hmcts.probate.model.ccd.raw.Grantee;
-import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 
@@ -27,12 +26,13 @@ public class IronMountainFileService extends BaseFileService {
     private ImmutableList.Builder<String> fileData;
 
     public File createIronMountainFile(List<ReturnedCaseDetails> ccdCases, String fileName) {
+        log.info("Creating IronMountain file=" + fileName);
         fileData = new ImmutableList.Builder<>();
         fileData.add("\n");
         for (ReturnedCaseDetails ccdCase : ccdCases) {
             prepareData(ccdCase.getId(), ccdCase.getData());
         }
-        log.info("Creating IronMountain file.");
+        log.info("Created IronMountain file=" + fileName);
         return textFileBuilderService.createFile(fileData.build(), DELIMITER, fileName);
     }
 
@@ -40,7 +40,7 @@ public class IronMountainFileService extends BaseFileService {
 
         final List<String> deceasedAddress = addressManager(data.getDeceasedAddress());
         final List<String> applicantAddress = addressManager(data.getApplicationType().equals(ApplicationType
-                .PERSONAL) ? data.getPrimaryApplicantAddress() : data.getSolsSolicitorAddress());
+            .PERSONAL) ? data.getPrimaryApplicantAddress() : data.getSolsSolicitorAddress());
 
         fileData.add(Optional.ofNullable(data.getBoDeceasedTitle()).orElse(""));
         fileData.add(data.getDeceasedForenames());
@@ -58,10 +58,10 @@ public class IronMountainFileService extends BaseFileService {
         addGranteeDetails(fileData, createGrantee(data, 4));
         fileData.add(data.getApplicationType().name());
         fileData.add(data.getApplicationType().equals(ApplicationType.PERSONAL) ? data.getPrimaryApplicantSurname() :
-                data.getSolsSolicitorFirmName());
+            data.getSolsSolicitorFirmName());
         addAddress(fileData, applicantAddress);
-        fileData.add(data.getIhtGrossValue().toString().substring(0, data.getIhtGrossValue().toString().length() - 2));
-        fileData.add(data.getIhtNetValue().toString().substring(0, data.getIhtNetValue().toString().length() - 2));
+        fileData.add(getPoundValue(data.getIhtGrossValue()));
+        fileData.add(getPoundValue(data.getIhtNetValue()));
         fileData.add(DataExtractGrantType.valueOf(data.getCaseType()).getCaseTypeMapped());
         fileData.add(registryLocationCheck(data.getRegistryLocation()));
         fileData.add("\n");

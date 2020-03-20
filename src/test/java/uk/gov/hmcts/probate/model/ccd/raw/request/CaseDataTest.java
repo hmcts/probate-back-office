@@ -24,7 +24,7 @@ import static org.mockito.MockitoAnnotations.initMocks;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 
-public class CaseDataTest {
+public class    CaseDataTest {
 
     private static final String PRIMARY_APPLICANT_FIRST_NAME = "fName";
     private static final String PRIMARY_APPLICANT_SURNAME = "sName";

@@ -81,16 +81,16 @@ public class DefaultExceptionHandlerTest {
     @Test
     public void shouldHandleMissingPDFDataAsStatusUN() {
         final FieldErrorResponse bve1Mock = FieldErrorResponse.builder()
-                .param("Object")
-                .field("field1")
-                .message("message")
-                .build();
+            .param("Object")
+            .field("field1")
+            .message("message")
+            .build();
 
         final FieldErrorResponse bve2Mock = FieldErrorResponse.builder()
-                .param("Object")
-                .field("field2")
-                .message("message")
-                .build();
+            .param("Object")
+            .field("field2")
+            .message("message")
+            .build();
 
         when(badRequestException.getErrors()).thenReturn(Arrays.asList(bve1Mock, bve2Mock));
 

@@ -3,25 +3,20 @@ package uk.gov.hmcts.probate.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.service.docmosis.GrantOfRepresentationDocmosisMapperService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
+import uk.gov.hmcts.probate.validator.BulkPrintValidationRule;
 import uk.gov.hmcts.probate.validator.EmailAddressNotificationValidationRule;
 import uk.gov.service.notify.NotificationClientException;
-import uk.gov.hmcts.probate.validator.BulkPrintValidationRule;
-import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import static uk.gov.hmcts.probate.model.Constants.YES;
-import static uk.gov.hmcts.probate.model.DocumentType.GRANT_COVERSHEET;
 import static uk.gov.hmcts.probate.model.State.GRANT_RAISED;
 
 @Slf4j
@@ -45,7 +40,7 @@ public class RaiseGrantOfRepresentationNotificationService {
         List<Document> documents = new ArrayList<>();
         String letterId = null;
         boolean useEmailNotification =
-                callbackRequest.getCaseDetails().getData().getDefaultValueForEmailNotifications().equals(YES) ? true : false;
+                callbackRequest.getCaseDetails().getData().getDefaultValueForEmailNotifications().equals(YES);
 
         if (useEmailNotification) {
             log.info("Email address available, sending email to applicant.");
@@ -57,19 +52,7 @@ public class RaiseGrantOfRepresentationNotificationService {
             }
 
         } else {
-            log.info("Email address not available, sending a letter to applicant.");
-            Map<String, Object> placeholders = gorDocmosisService.caseDataAsPlaceholders(callbackRequest.getCaseDetails());
-            Document coversheet = pdfManagementService
-                    .generateDocmosisDocumentAndUpload(placeholders, GRANT_COVERSHEET);
-            documents.add(coversheet);
-            Document grantRaisedDoc = pdfManagementService.generateDocmosisDocumentAndUpload(placeholders, DocumentType.GRANT_RAISED);
-            documents.add(grantRaisedDoc);
-
-            SendLetterResponse letterResponse = bulkPrintService.sendToBulkPrint(callbackRequest, grantRaisedDoc, coversheet);
-            letterId = letterResponse != null
-                    ? letterResponse.letterId.toString()
-                    : null;
-            response = eventValidationService.validateBulkPrintResponse(letterId, bulkPrintValidationRules);
+            log.info("Email address not available and letter sending not currently available.");
         }
 
         if (response.getErrors().isEmpty()) {
