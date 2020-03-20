@@ -65,6 +65,7 @@ public class GrantOfRepresentationPersonalisationServiceTest {
     private LocalDateToWelshStringConverter localDateToWelshStringConverter;
 
     private CaseDetails caseDetails;
+    private ReturnedCaseDetails returnedCaseDetails;
 
     private List<ReturnedCaseDetails> excelaCaseData = new ArrayList<>();
     private List<ReturnedCaseDetails> excelaCaseDataNoWillReference = new ArrayList<>();
@@ -128,6 +129,7 @@ public class GrantOfRepresentationPersonalisationServiceTest {
                 .build();
 
         caseDetails = new CaseDetails(caseData, LAST_MODIFIED, ID);
+        returnedCaseDetails = new ReturnedCaseDetails(caseData, LAST_MODIFIED, ID);
 
         excelaCaseData.add(new ReturnedCaseDetails(CaseData.builder()
                 .applicationType(PERSONAL)
@@ -164,6 +166,27 @@ public class GrantOfRepresentationPersonalisationServiceTest {
         when(localDateToWelshStringConverter.convert(isA(LocalDate.class))).thenReturn(welshDeceaseDateOfDeath);
         Map<String, Object> response = grantOfRepresentationPersonalisationService.getPersonalisation(caseDetails,
                 registry);
+
+        assertEquals("first name surname", response.get(PERSONALISATION_APPLICANT_NAME));
+        assertEquals("deceased forenames deceased surname", response.get(PERSONALISATION_DECEASED_NAME));
+        assertEquals("app reference", response.get(PERSONALISATION_SOLICITOR_REFERENCE));
+        assertEquals("sols sot name", response.get(PERSONALISATION_SOLICITOR_NAME));
+        assertEquals("stop details", response.get(PERSONALISATION_CASE_STOP_DETAILS));
+        assertEquals("123456789012345678", response.get(PERSONALISATION_CAVEAT_CASE_ID));
+        assertEquals(caseDetails.getData().getDeceasedDateOfDeathFormatted(), response.get(PERSONALISATION_DECEASED_DOD));
+        assertEquals("Yes", response.get(PERSONALISATION_CASE_STOP_DETAILS_DEC));
+        assertEquals("CTSC", response.get(PERSONALISATION_REGISTRY_NAME));
+        assertEquals("1234567890", response.get(PERSONALISATION_REGISTRY_PHONE));
+        assertEquals(caseDetails.getId().toString(), response.get(PERSONALISATION_CCD_REFERENCE));
+        assertEquals(welshDeceaseDateOfDeath, response.get(PERSONALISATION_WELSH_DECEASED_DATE_OF_DEATH));
+    }
+
+    @Test
+    public void getPersonalisationContentIsOkFromCaseData() {
+        String welshDeceaseDateOfDeath = "27 Mai 2019";
+        when(localDateToWelshStringConverter.convert(isA(LocalDate.class))).thenReturn(welshDeceaseDateOfDeath);
+        Map<String, Object> response = grantOfRepresentationPersonalisationService.getPersonalisation(returnedCaseDetails,
+            registry);
 
         assertEquals("first name surname", response.get(PERSONALISATION_APPLICANT_NAME));
         assertEquals("deceased forenames deceased surname", response.get(PERSONALISATION_DECEASED_NAME));

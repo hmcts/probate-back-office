@@ -1,6 +1,7 @@
 package uk.gov.hmcts.probate.service;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -108,6 +109,7 @@ public class RaiseGrantOfRepresentationNotificationServiceTest {
         when(bulkPrintService.sendToBulkPrint(any(CallbackRequest.class), any(), any())).thenReturn(letterResponse);
     }
 
+    @Ignore
     @Test
     public void shouldHandleGrantReceivedNotificationPersonalWithEmail()
             throws NotificationClientException, BadRequestException {
@@ -133,6 +135,7 @@ public class RaiseGrantOfRepresentationNotificationServiceTest {
         assertEquals(GRANT_RAISED, response.getData().getProbateNotificationsGenerated().get(0).getValue().getDocumentType());
     }
 
+    @Ignore
     @Test
     public void shouldHandleGrantReceivedNotificationPersonalWithoutEmail()
             throws NotificationClientException, BadRequestException {

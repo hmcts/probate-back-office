@@ -29,12 +29,12 @@ auth.provider.service.client:
   tokenTimeToLiveInSeconds: 900
 
 auth.provider.client:
-  user: ${IDAM_SERVICE_HOST:http://localhost:4501}
+  user: ${IDAM_SERVICE_HOST:http://localhost:5000}
   secret: ${IDAM_SECRET:ccd_gateway_secret}
   id: ${IDAM_CLIENT_NAME:ccd_gateway}
   redirect: ${IDAM_REDIRECT_URL:http://localhost:3451/oauth2redirect}
-  email: ${AUTH_TOKEN_EMAIL:probatesolcw1@gmail.com}
-  password: ${AUTH_TOKEN_PASSWORD:password}
+  email: ${AUTH_TOKEN_EMAIL:ProbateSuperuser@gmail.com}
+  password: ${AUTH_TOKEN_PASSWORD:Pa55word11}
 
 pdf.service:
   url: http://localhost:5500
@@ -108,7 +108,7 @@ fee.api:
   jurisdiction2: probate registry
   channel: default
   applicantType: all
-  keyword: GrantWill
+  keyword: NewFee
 
 markdown.templatesDirectory: templates/markdown/
 
@@ -176,6 +176,9 @@ azure:
   app_insights_key: ${APPINSIGHTS_INSTRUMENTATIONKEY:false}
 
 notifications:
+  grantDelayedNotificationPeriodDays: 49
+  grantDelayedNotificationReleaseDate: "2020-03-16"
+  grantAwaitingDocumentationNotificationPeriodDays: 21
   govNotifyApiKey: "probate_back_office_live_test-4809d6a8-a10b-405d-88eb-1fee9b3042e3-682b1c3b-647e-4a32-99b9-98a8b7c7feb7"
   templates:
     email:
@@ -198,6 +201,8 @@ notifications:
           redeclarationSot: "4bd0e8f1-5cbd-4093-813f-f97dedcd0f5f"
           grantIssuedIntestacy: "cda48ea1-6ee4-4cde-a3e2-0e1f87f9e702"
           caveatWithdrawn: "99b9ba1a-a2a1-4b85-ae83-e1652e9d342b"
+          grantDelayed: "30baff9f-fff8-41f5-879e-5ea963e3d144"
+          grantAwaitingDocumentation: "2debe394-5d0f-4d66-8b05-f3d4276d34eb"
         solicitor:
           applicationReceived: "917dece3-e89d-460b-a6cb-e605ace39f2e"
           documentReceived: "7f8ff32d-8297-4702-9867-312047f81492"
@@ -213,6 +218,8 @@ notifications:
           requestInformation: "2fb640dd-f21e-496c-b8a4-bddbd87b8981"
           redeclarationSot: "bcd9e4cc-db0c-4810-8172-8bcb2277b775"
           grantIssuedIntestacy: "95aa541b-e55e-4d7c-a6f5-810b5f03adba"
+          grantDelayed: "30baff9f-fff8-41f5-879e-5ea963e3d144"
+          grantAwaitingDocumentation: "2debe394-5d0f-4d66-8b05-f3d4276d34eb"
       welsh:
         personal:
           applicationReceived: "7947f089-70ad-4fbc-9632-76ccc834cee9"
@@ -230,6 +237,8 @@ notifications:
           redeclarationSot: "253fa4a9-ef84-4b15-a059-0a0359f4ca5b"
           grantIssuedIntestacy: "fc9748a7-6e92-480d-9ee8-fdd4fc45552d"
           caveatWithdrawn: "c63bc430-9868-4f10-924b-408c7ac3cbd8"
+          grantDelayed: "30baff9f-fff8-41f5-879e-5ea963e3d144"
+          grantAwaitingDocumentation: "2debe394-5d0f-4d66-8b05-f3d4276d34eb"
         solicitor:
           applicationReceived: "7947f089-70ad-4fbc-9632-76ccc834cee9"
           documentReceived: "7f8ff32d-8297-4702-9867-312047f81492"
@@ -245,7 +254,8 @@ notifications:
           requestInformation: "9a843d4e-103e-4776-be58-7333ee87555b"
           redeclarationSot: "bcd9e4cc-db0c-4810-8172-8bcb2277b775"
           grantIssuedIntestacy: "95aa541b-e55e-4d7c-a6f5-810b5f03adba"
-
+          grantDelayed: "30baff9f-fff8-41f5-879e-5ea963e3d144"
+          grantAwaitingDocumentation: "2debe394-5d0f-4d66-8b05-f3d4276d34eb"
 
 documents:
   templates:
@@ -403,7 +413,7 @@ idam:
 send-letter:
   url: ${SEND_LETTER_SERIVCE_BASEURL:http://localhost:8485}
 
-auth.idam.client.baseUrl: http://localhost:4501
+auth.idam.client.baseUrl: http://localhost:5000
 
 core_case_data.api.url: ${services.coreCaseData.baseUrl:http://localhost:4452}
 

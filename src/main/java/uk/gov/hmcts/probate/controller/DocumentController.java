@@ -49,11 +49,11 @@ import java.util.function.Function;
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static uk.gov.hmcts.probate.model.Constants.LONDON;
+import static uk.gov.hmcts.probate.model.DocumentCaseType.INTESTACY;
 import static uk.gov.hmcts.probate.model.DocumentType.WILL_LODGEMENT_DEPOSIT_RECEIPT;
 import static uk.gov.hmcts.probate.model.State.GRANT_ISSUED;
 import static uk.gov.hmcts.probate.model.State.GRANT_ISSUED_INTESTACY;
 import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.Constants.EDGE_CASE_NAME;
-import static uk.gov.hmcts.probate.model.DocumentCaseType.INTESTACY;
 
 @Slf4j
 @RequiredArgsConstructor
