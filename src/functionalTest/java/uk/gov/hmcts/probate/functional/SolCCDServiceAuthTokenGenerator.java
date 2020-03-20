@@ -127,6 +127,11 @@ public class SolCCDServiceAuthTokenGenerator {
         return token;
     }
 
+    public String generateAuthorisation(String userName, String password) {
+        return generateClientToken(userName, password);
+    }
+
+
     private String generateClientCode(String userName, String password) {
         final String encoded = Base64.getEncoder().encodeToString((userName + ":" + password).getBytes());
         ResponseBody authorization = given().relaxedHTTPSValidation().baseUri(idamUrl)

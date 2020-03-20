@@ -300,4 +300,11 @@ public class ResponseCaseData {
     @Builder.Default
     private List<CollectionMember<ParagraphDetail>> paragraphDetails = new ArrayList<>();
     private String bulkScanCaseReference;
+
+    private final String grantDelayedNotificationDate;
+    private final String grantStoppedDate;
+    private String grantDelayedNotificationIdentified;
+    private final String grantDelayedNotificationSent;
+    private final String grantAwaitingDocumentationNotificationDate;
+    private final String grantAwaitingDocumentatioNotificationSent;
 }

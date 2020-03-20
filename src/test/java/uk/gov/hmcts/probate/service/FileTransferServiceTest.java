@@ -8,15 +8,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.util.ResourceUtils;
-import uk.gov.hmcts.probate.exception.BadRequestException;
 import uk.gov.hmcts.probate.util.FileUtils;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.AccessDeniedException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Map;

@@ -317,5 +317,11 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "previewLink", "Label": "Letter preview", "FieldType": "Document", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "generateLetter", "Label": "If you wish to save the letter to the case, press Continue.\nTo create another preview, press Cancel and assemble the letter again.", "FieldType": "Label", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "boAssembleLetterSendToBulkPrintRequested", "Label": "Is the request of information to be sent to bulk printing?", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "boAssembleLetterSendToBulkPrint", "Label": "Is the request of information to be sent to bulk printing?", "FieldType": "YesOrNo", "SecurityClassification": "Public"}
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "boAssembleLetterSendToBulkPrint", "Label": "Is the request of information to be sent to bulk printing?", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "grantDelayedNotificationIdentified", "Label": "Has a grant delayed notification been identified?", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "grantDelayedNotificationSent", "Label": "Has a grant delayed notification been sent?", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "grantDelayedNotificationDate", "Label": "Grant delayed notification date", "FieldType": "Date", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "grantStoppedDate", "Label": "Grant stopped date", "FieldType": "Date", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "grantAwaitingDocumentationNotificationDate", "Label": "Grant stopped date", "FieldType": "Date", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "grantAwaitingDocumentatioNotificationSent", "Label": "Has a grant awaiting documentation notification been sent?", "FieldType": "YesOrNo", "SecurityClassification": "Public"}
 ]

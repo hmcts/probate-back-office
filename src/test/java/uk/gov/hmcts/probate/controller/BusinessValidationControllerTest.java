@@ -25,6 +25,8 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData.CaseDataBuilder;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
+import uk.gov.hmcts.probate.service.CaseStoppedService;
+import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.util.TestUtils;
 import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
@@ -37,6 +39,7 @@ import java.util.List;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -114,10 +117,11 @@ public class BusinessValidationControllerTest {
     private static final String SOLS_VALIDATE_ADMON_URL = "/case/sols-validate-admon";
     private static final String CASE_VALIDATE_CASE_DETAILS_URL = "/case/validateCaseDetails";
     private static final String SOLS_APPLY_AS_EXEC = "/sols-apply-as-exec";
-    private static final String CASE_TRANSFORM_URL = "/case/transformCase";
+    private static final String CASE_PRINTED = "/case/casePrinted";
     private static final String CASE_CHCEKLIST_URL = "/case/validateCheckListDetails";
     private static final String PAPER_FORM_URL = "/case/paperForm";
     private static final String RESOLVE_STOP_URL = "/case/resolveStop";
+    private static final String CASE_STOPPED_URL = "/case/case-stopped";
     private static final String REDEC_COMPLETE = "/case/redeclarationComplete";
     private static final String REDECE_SOT = "/case/redeclarationSot";
 
@@ -158,6 +162,13 @@ public class BusinessValidationControllerTest {
 
     @MockBean
     private CoreCaseDataApi coreCaseDataApi;
+
+    @MockBean
+    private CaseStoppedService caseStoppedService;
+    
+    @MockBean
+    private NotificationService notificationService;
+
 
     @Before
     public void setup() {
@@ -454,7 +465,7 @@ public class BusinessValidationControllerTest {
     public void shouldReturnAliasNameTransformed() throws Exception {
         String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadAliasNames.json");
 
-        mockMvc.perform(post(CASE_TRANSFORM_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON_UTF8))
+        mockMvc.perform(post(CASE_PRINTED).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
     }
@@ -463,7 +474,7 @@ public class BusinessValidationControllerTest {
     public void shouldReturnAdditionalExecutorsTransformed() throws Exception {
         String solicitorPayload = testUtils.getStringFromFile("solicitorAdditionalExecutors.json");
 
-        mockMvc.perform(post(CASE_TRANSFORM_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON_UTF8))
+        mockMvc.perform(post(CASE_PRINTED).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
     }
@@ -528,14 +539,27 @@ public class BusinessValidationControllerTest {
     }
 
     @Test
-    public void shouldReturnScannedDocuments() throws Exception {
+    public void shouldReturnScannedDocumentsAndStartAwaitingDocumentationPeriod() throws Exception {
         String scannedDocumentsJson = testUtils.getStringFromFile("scannedDocuments.json");
 
-        mockMvc.perform(post(CASE_TRANSFORM_URL).content(scannedDocumentsJson).contentType(MediaType.APPLICATION_JSON_UTF8))
+        mockMvc.perform(post(CASE_PRINTED).content(scannedDocumentsJson).contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(content().string(containsString("controlNumber\":\"1234")))
                 .andExpect(content().string(containsString("fileName\":\"scanneddocument.pdf")));
+
+        verify(notificationService).startAwaitingDocumentationNotificationPeriod(any(CaseDetails.class));
+    }
+
+    @Test
+    public void shouldStopCase() throws Exception {
+        String solicitorPayload = testUtils.getStringFromFile("solicitorAdditionalExecutors.json");
+
+        mockMvc.perform(post(CASE_STOPPED_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
+
+        verify(caseStoppedService).caseStopped(any(CaseDetails.class));
     }
 
     @Test
@@ -546,6 +570,8 @@ public class BusinessValidationControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data.state").value("CaseCreated"))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
+
+        verify(caseStoppedService).caseResolved(any(CaseDetails.class));
     }
 
     @Test
@@ -556,6 +582,8 @@ public class BusinessValidationControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data.state").value("CasePrinted"))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
+
+        verify(caseStoppedService).caseResolved(any(CaseDetails.class));
     }
 
     @Test
@@ -566,6 +594,8 @@ public class BusinessValidationControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data.state").value("BOReadyForExamination"))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
+
+        verify(caseStoppedService).caseResolved(any(CaseDetails.class));
     }
 
     @Test
@@ -576,6 +606,8 @@ public class BusinessValidationControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data.state").value("BOExamining"))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
+
+        verify(caseStoppedService).caseResolved(any(CaseDetails.class));
     }
 
     @Test
