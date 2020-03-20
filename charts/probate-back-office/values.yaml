@@ -1,6 +1,7 @@
 java:
   applicationPort: 4104
   image: hmctspublic.azurecr.io/probate/back-office:latest
+  aadIdentityName: probate
   environment:
     REFORM_TEAM: probate
     REFORM_SERVICE_NAME: back-office
