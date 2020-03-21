@@ -217,19 +217,6 @@ public class NotificationControllerTest {
     }
 
     @Test
-    public void personalApplicationReceivedShouldReturnDataPayloadOkResponseCode() throws Exception {
-
-        String solicitorPayload = testUtils.getStringFromFile("personalPayloadNotifications.json");
-
-        mockMvc.perform(post("/notify/application-received")
-                .content(solicitorPayload)
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().string(containsString("DocumentLink")));
-    }
-
-
-    @Test
     public void solicitorGrantIssuedShouldReturnDataPayloadOkResponseCode() throws Exception {
         when(documentGeneratorService.getDocument(any(CallbackRequest.class),  eq(DocumentStatus.FINAL), eq(DocumentIssueType.GRANT)))
                 .thenReturn(Document.builder().documentType(DIGITAL_GRANT).build());
@@ -401,17 +388,6 @@ public class NotificationControllerTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
     }
 
-
-    @Test
-    public void shouldReturnEmailPAApplicationReceivedValidateSuccessful() throws Exception {
-        String personalPayload = testUtils.getStringFromFile("personalPayloadNotifications.json");
-
-        mockMvc.perform(post(APPLICATION_RECEIVED_URL).content(personalPayload).contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
-    }
-
-
     @Test
     public void shouldReturnEmailPAValidateFromBulkScanSuccessful() throws Exception {
         String personalPayload = testUtils.getStringFromFile("personalPayloadNotificationsFromBulkScan.json");
@@ -432,16 +408,6 @@ public class NotificationControllerTest {
                                 + "To continue the application, go back and select no to sending an email."))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
 
-    }
-
-    @Test
-    public void shouldReturnPAApplicantReceivedValidateUnSuccessfulCaseStopped() throws Exception {
-        String personalPayload = testUtils.getStringFromFile("personalPayloadNotificationsNoEmail.json");
-
-        mockMvc.perform(post("/notify/application-received")
-                .content(personalPayload)
-                .contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(status().isBadRequest());
     }
 
     @Test

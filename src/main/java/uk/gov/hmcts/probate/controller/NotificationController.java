@@ -78,15 +78,6 @@ public class NotificationController {
     private static final String INVALID_PAYLOAD = "Invalid payload";
     private final GrantNotificationService grantNotificationService;
 
-    @PostMapping(path = "/application-received")
-    public ResponseEntity<Document> sendApplicationReceivedNotification(
-            @Validated({EmailAddressNotificationValidationRule.class})
-            @RequestBody CallbackRequest callbackRequest)
-            throws NotificationClientException {
-        log.info("Initiate call to notify applicant-received for case id {} ", callbackRequest.getCaseDetails().getId());
-        return sendNotification(callbackRequest, APPLICATION_RECEIVED);
-    }
-
     @PostMapping(path = "/case-stopped")
     public ResponseEntity<CallbackResponse> sendCaseStoppedNotification(
             @Validated({EmailAddressNotifyValidationRule.class})
@@ -182,32 +173,6 @@ public class NotificationController {
             @Validated({EmailAddressNotificationValidationRule.class})
             @RequestBody CallbackRequest callbackRequest) throws NotificationClientException {
         return ResponseEntity.ok(raiseGrantOfRepresentationNotificationService.handleGrantReceivedNotification(callbackRequest));
-    }
-
-    private ResponseEntity<Document> sendNotification(
-            @Validated({EmailAddressNotificationValidationRule.class})
-            @RequestBody CallbackRequest callbackRequest, State state)
-            throws NotificationClientException {
-
-        CaseDetails caseDetails = callbackRequest.getCaseDetails();
-        CaseData caseData = callbackRequest.getCaseDetails().getData();
-        Document sentEmailAsDocument;
-        log.info("sendNotification for case id {} ", callbackRequest.getCaseDetails().getId());
-        List<Document> documents = new ArrayList<>();
-        if (isAnEmailAddressPresent(caseData)) {
-            log.info("Email id present validate it!");
-            CallbackResponse response = eventValidationService.validateEmailRequest(callbackRequest,emailAddressNotificationValidationRules);
-            if (response.getErrors().isEmpty()) {
-                log.info("Email is valid sending!");
-                sentEmailAsDocument = notificationService.sendEmail(state, caseDetails);
-                return ResponseEntity.ok(sentEmailAsDocument);
-            }
-        }
-        return new ResponseEntity<Document>(HttpStatus.BAD_REQUEST);
-    }
-
-    private boolean isAnEmailAddressPresent(CaseData caseData) {
-        return caseData.isDocsReceivedEmailNotificationRequested();
     }
 
     @PostMapping(path = "/start-grant-delayed-notify-period", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)

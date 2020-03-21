@@ -99,7 +99,7 @@ public class NotificationService {
 
         CaseData caseData = caseDetails.getData();
         log.info("sendEmail for case: {}", caseDetails.getId());
-        Registry registry = getRegistry(caseData.getRegistryLocation(), caseData.getLanguagePreference());
+        Registry registry = registriesProperties.getRegistries().get(caseData.getRegistryLocation().toLowerCase());
         String templateId = templateService.getTemplateId(state, caseData.getApplicationType(),
                 caseData.getRegistryLocation(), caseData.getLanguagePreference());
         log.info("Got templateId: {}", templateId);
@@ -277,10 +277,6 @@ public class NotificationService {
         return getGeneratedSentEmailDocument(response, emailAddress, SENT_EMAIL);
     }
 
-    protected Registry getRegistry(String registryLocation, LanguagePreference languagePreference) {
-        String defaultRegistryLocation = (languagePreference == null || LanguagePreference.ENGLISH.equals(languagePreference)) ? RegistryLocation.CTSC.getName() : RegistryLocation.CARDIFF.getName();
-        return registriesProperties.getRegistries().get((Optional.ofNullable(registryLocation).orElse(defaultRegistryLocation)).toLowerCase());
-    }
 
     private Document getGeneratedSentEmailDocument(SendEmailResponse response, String emailAddress, DocumentType docType) {
         SentEmail sentEmail = SentEmail.builder()
