@@ -89,29 +89,6 @@ public class NotificationControllerUnitTest {
     private CallbackRequest callbackRequest;
     private Document document;
 
-    @Test
-    public void shouldSendApplicationReceived() throws IOException, NotificationClientException {
-        setUpMocks(APPLICATION_RECEIVED);
-        ResponseEntity<Document> responseEntity = notificationController.sendApplicationReceivedNotification(callbackRequest);
-        assertThat(responseEntity.getStatusCode(), is(HttpStatus.OK));
-    }
-
-    @Test
-    public void shouldReturnBadRequestIfNoEmailAddressPresent() throws IOException, NotificationClientException {
-
-        CaseDetails caseDetails = new CaseDetails(CaseDataTestBuilder.withDefaultsAndNoPrimaryApplicantEmailAddress().build(), LAST_MODIFIED, ID);
-        callbackRequest = new CallbackRequest(caseDetails);
-        ResponseEntity<Document> responseEntity = notificationController.sendApplicationReceivedNotification(callbackRequest);
-        assertThat(responseEntity.getStatusCode(), is(HttpStatus.BAD_REQUEST));
-        verifyNoMoreInteractions(notificationService);
-    }
-
-    @Test
-    public void shouldHandleErrorsFromSendApplicationReceived() throws IOException, NotificationClientException {
-        setUpMocks(APPLICATION_RECEIVED, "This is an error", "This is another error");
-        ResponseEntity<Document> responseEntity  = notificationController.sendApplicationReceivedNotification(callbackRequest);
-        assertThat(responseEntity.getStatusCode(), is(HttpStatus.BAD_REQUEST));
-    }
 
     @Test
     public void shouldSendDocumentsReceived() throws IOException, NotificationClientException {
@@ -124,9 +101,7 @@ public class NotificationControllerUnitTest {
     private void setUpMocks(State state, String ...errors) throws NotificationClientException {
         CaseDetails caseDetails = new CaseDetails(CaseDataTestBuilder.withDefaults().build(), LAST_MODIFIED, ID);
         callbackRequest = new CallbackRequest(caseDetails);
-        when(eventValidationService.validateEmailRequest(any(CallbackRequest.class), anyList())).thenReturn(CallbackResponse.builder().errors(Arrays.asList(errors)).build());
         document = Document.builder().build();
-        when(notificationService.sendEmail(state, caseDetails)).thenReturn(document);
     }
 
     private void setUpMocks(State state) throws NotificationClientException {

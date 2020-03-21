@@ -1610,19 +1610,5 @@ public class NotificationServiceTest {
 
     }
 
-    @Test
-    public void shouldDefaultRegistryLocationIfNotSet() {
-
-        Registry registry = notificationService.getRegistry(null, LanguagePreference.ENGLISH);
-        assertEquals("CTSC", registry.getName());
-
-        Registry registryWelsh = notificationService.getRegistry(null, LanguagePreference.WELSH);
-        assertEquals( "Probate Registry of Wales", registryWelsh.getName());
-
-        Registry registryPassedIn = notificationService.getRegistry(RegistryLocation.MANCHESTER.getName(),
-                LanguagePreference.WELSH);
-        assertEquals("Manchester Probate Registry", registryPassedIn.getName());
-
-    }
 
 }
