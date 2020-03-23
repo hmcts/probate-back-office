@@ -177,7 +177,7 @@ def versions = [
         serenitySpring                  : '2.0.41',
         serenityBddVersion              : '2.0.41',
         springBootVersion               : '2.1.5.RELEASE',
-        hmctsJavaLogging                : '5.1.0',
+        hmctsJavaLogging                : '5.1.1',
         authCheckerLib                  : '2.1.4',
         jacksonDatabind                 : '2.9.9.3',
         commonsIO                       : '2.6',
