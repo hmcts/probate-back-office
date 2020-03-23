@@ -1,14 +1,44 @@
 java:
   applicationPort: 4104
-  readinessDelay: 180
-  livenessDelay: 180
-  readinessPeriod: 60
-  livenessPeriod: 60
+  image: hmctspublic.azurecr.io/probate/back-office:latest
+  aadIdentityName: probate
   environment:
     REFORM_TEAM: probate
     REFORM_SERVICE_NAME: back-office
-    LOG_LEVEL: DEBUG
-    APPINSIGHTS_INSTRUMENTATIONKEY: dummy
-    S2S_AUTH_URL : "http://rpe-service-auth-provider-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal"
-    AUTH_IDAM_CLIENT_BASEURL : "https://idam-api.{{ .Values.global.environment }}.platform.hmcts.net"
-  image: hmctspublic.azurecr.io/probate/back-office:latest
+    LOG_LEVEL: INFO
+    IDAM_CLIENT_NAME: probate
+    S2S_AUTH_URL : http://rpe-service-auth-provider-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
+    PDF_SERVICE_URL: http://cmc-pdf-service-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
+    PRINTSERVICE_HOST: https://return-case-doc-ccd.{{ .Values.global.environment }}.platform.hmcts.net
+    PRINTSERVICE_INTERNAL_HOST: http://ccd-case-print-service-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
+    IDAM_SERVICE_HOST: https://idam-api.{{ .Values.global.environment }}.platform.hmcts.net
+    FEE_API_URL: http://fees-register-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
+    EVIDENCE_MANAGEMENT_HOST: http://dm-store-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
+    CCD_GATEWAY_HOST: http://ccd-api-gateway-web-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
+    SEND_LETTER_SERIVCE_BASEURL: http://rpe-send-letter-service-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
+    SERVICES_CORECASEDATA_BASEURL : http://ccd-data-store-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
+    CCD_DATA_STORE_API_HOST : http://ccd-data-store-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
+
+    PROBATE_POSTGRESQL_USER: probateman_user@probatemandb-postgres-db-{{ .Values.global.environment }}
+    PROBATE_POSTGRESQL_HOSTNAME: probatemandb-postgres-db-{{ .Values.global.environment }}.postgres.database.azure.com
+    PROBATE_POSTGRESQL_DATABASE: probatemandb
+    PROBATE_POSTGRESQL_PORT: 5432
+  keyVaults:
+    probate:
+      secrets:
+        - AppInsightsInstrumentationKey
+        - probatemandb-POSTGRES-PASS
+        - s2s-probate-backend
+        - probate-bo-govNotifyApiKey
+        - authTokenEmail
+        - authTokenPassword
+        - excelaEmail
+        - ftpSignature
+        - ftpEnv
+        - probate-bo-grantSignatureKey
+        - probate-bo-grantSignatureFile
+        - pdfServiceBaseUrl
+        - pdfServiceAccessKey
+        - pdfServiceHealthUrl
+        - idam-secret-probate
+        - idamRedirectUrl
