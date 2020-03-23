@@ -46,7 +46,7 @@ public class DataExtractController {
         });
         log.info("Perform HMRC data extract from dates finished");
 
-        return new ResponseEntity("Perform HMRC data extract finished", ACCEPTED);
+        return ResponseEntity.accepted().body("Perform HMRC data extract finished");
     }
 
     @ApiOperation(value = "Initiate IronMountain data extract with date", notes = "Date MUST be in format 'yyyy-MM-dd'")
@@ -62,7 +62,7 @@ public class DataExtractController {
         });
         log.info("Perform Iron Mountain data extract from date finished");
 
-        return new ResponseEntity("Perform Iron Mountain data extract finished", ACCEPTED);
+        return ResponseEntity.accepted().body("Perform Iron Mountain data extract finished");
     }
 
     @ApiOperation(value = "Initiate Exela data extract", notes = " Date MUST be in format 'yyyy-MM-dd'")
@@ -79,8 +79,7 @@ public class DataExtractController {
         });
         log.info("Perform Exela data extract from date finished");
 
-        return new ResponseEntity("Exela data extract finished", ACCEPTED);
-
+        return ResponseEntity.accepted().body("Exela data extract finished");
     }
 
 }

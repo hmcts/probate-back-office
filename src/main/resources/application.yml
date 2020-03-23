@@ -176,9 +176,9 @@ azure:
   app_insights_key: ${APPINSIGHTS_INSTRUMENTATIONKEY:false}
 
 notifications:
-  grantDelayedNotificationPeriodDays: -1
+  grantDelayedNotificationPeriodDays: 49
   grantDelayedNotificationReleaseDate: "2020-03-16"
-  grantAwaitingDocumentationNotificationPeriodDays: -1
+  grantAwaitingDocumentationNotificationPeriodDays: 21
   govNotifyApiKey: "probate_back_office_live_test-4809d6a8-a10b-405d-88eb-1fee9b3042e3-682b1c3b-647e-4a32-99b9-98a8b7c7feb7"
   templates:
     email:
@@ -413,7 +413,7 @@ idam:
 send-letter:
   url: ${SEND_LETTER_SERIVCE_BASEURL:http://localhost:8485}
 
-auth.idam.client.baseUrl: http://localhost:5000
+auth.idam.client.baseUrl: ${IDAM_SERVICE_HOST:http://localhost:5000}
 
 core_case_data.api.url: ${services.coreCaseData.baseUrl:http://localhost:4452}
 
