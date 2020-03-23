@@ -1,0 +1,22 @@
+spring:
+  cloud:
+    propertiesvolume:
+      prefixed: false
+      paths: /mnt/secrets/probate
+      aliases:
+        AppInsightsInstrumentationKey: azure.application-insights.instrumentation-key
+        probatemandb-POSTGRES-PASS: spring.datasource.password
+        s2s-probate-backend: idam.s2s-auth.totp_secret
+        probate-bo-govNotifyApiKey: notifications.govNotifyApiKey
+        authTokenEmail: auth.provider.client.email
+        authTokenPassword: auth.provider.client.password
+        excelaEmail: excelaEmail
+        ftpSignature: ftp.client.signature
+        ftpEnv: ftp.client.environment
+        probate-bo-grantSignatureKey: pdf.service.grantSignatureSecretKey
+        probate-bo-grantSignatureFile: pdf.service.grantSignatureEncryptedFile
+        pdfServiceBaseUrl: docmosis.service.uri
+        pdfServiceAccessKey: docmosis.service.accessKey
+        pdfServiceHealthUrl: docmosis.service.health.uri
+        idam-secret-probate: auth.provider.client.secret
+        idamRedirectUrl: auth.provider.client.redirect

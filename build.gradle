@@ -177,7 +177,7 @@ def versions = [
         serenitySpring                  : '2.0.41',
         serenityBddVersion              : '2.0.41',
         springBootVersion               : '2.1.5.RELEASE',
-        hmctsJavaLogging                : '5.1.0',
+        hmctsJavaLogging                : '5.1.1',
         authCheckerLib                  : '2.1.4',
         jacksonDatabind                 : '2.9.9.3',
         commonsIO                       : '2.6',
@@ -240,6 +240,7 @@ dependencies {
   compile group: 'uk.gov.hmcts.reform', name: 'pdf-service-client', version: '6.0.0'
   compile group: 'uk.gov.hmcts.reform', name: 'send-letter-client', version: '2.5.0'
   compile group: 'uk.gov.hmcts.reform', name: 'health-spring-boot-starter', version: '0.0.4'
+  compile group: 'uk.gov.hmcts.reform', name: 'properties-volume-spring-boot-starter', version: '0.0.4'
 
   compile group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: '2.9.2'
   compile group: 'commons-io', name: 'commons-io', version: versions.commonsIO
