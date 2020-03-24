@@ -76,7 +76,7 @@ public class OCRFieldAddressMapperTest {
                 .solsSolicitorAddressCounty(ADDRESS_COUNTY)
                 .solsSolicitorAddressPostCode(ADDRESS_POST_CODE)
                 .build();
-      
+
         ocrFieldsPostcodeError = ExceptionRecordOCRFields.builder()
                 .attorneyOnBehalfOfName(ATTORNEY_ON_BEHALF_OF_NAME)
                 .attorneyOnBehalfOfAddressLine1(ATTORNEY_ON_BEHALF_OF_ADDRESS_LINE1)
@@ -144,7 +144,7 @@ public class OCRFieldAddressMapperTest {
         assertEquals(ADDRESS_LINE2, response.getAddressLine2());
         assertEquals(ADDRESS_POST_TOWN, response.getPostTown());
         assertEquals(ADDRESS_COUNTY, response.getCounty());
-        assertEquals(ADDRESS_POST_CODE, response.getPostCode());
+        assertEquals(ADDRESS_POST_CODE.toUpperCase(), response.getPostCode());
     }
 
     @Test
@@ -196,9 +196,9 @@ public class OCRFieldAddressMapperTest {
         } catch ( OCRMappingException ocrme) {
             errorMessage = ocrme.getMessage();
         }
-        assertEquals(ADDRESS_POST_CODE_CORRECT_ERROR_MESSAGE, errorMessage);  
+        assertEquals(ADDRESS_POST_CODE_CORRECT_ERROR_MESSAGE, errorMessage);
     }
-  
+
     @Test(expected = OCRMappingException.class)
     public void testAttorneyNameWithMissingNameError() {
         List<CollectionMember<AttorneyNamesAndAddress>> response =
