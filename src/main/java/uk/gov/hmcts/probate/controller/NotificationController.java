@@ -220,15 +220,15 @@ public class NotificationController {
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
         CaseData caseData = callbackRequest.getCaseDetails().getData();
 
-        Document sentEmailAsDocument = null;
         if (isAnEmailAddressPresent(caseData)) {
             CallbackResponse response = eventValidationService.validateEmailRequest(callbackRequest, emailAddressNotificationValidationRules);
             if (response.getErrors().isEmpty()) {
-                sentEmailAsDocument = notificationService.sendEmail(state, caseDetails);
+                Document sentEmailAsDocument = notificationService.sendEmail(state, caseDetails);
+                return ResponseEntity.ok(buildProbateDocument(sentEmailAsDocument));
             }
         }
-        
-        return ResponseEntity.ok(buildProbateDocument(sentEmailAsDocument));
+
+        return ResponseEntity.ok(null);
     }
 
     private ProbateDocument buildProbateDocument(Document boDocument) {
