@@ -2,9 +2,6 @@ package uk.gov.hmcts.probate.service.ocr;
 
 import org.junit.Before;
 import org.junit.Test;
-import uk.gov.hmcts.probate.model.ccd.ocr.CaveatMandatoryFields;
-import uk.gov.hmcts.probate.model.ccd.ocr.GORMandatoryFields;
-import uk.gov.hmcts.probate.model.ccd.ocr.IntestacyMandatoryFields;
 import uk.gov.hmcts.probate.model.ocr.OCRField;
 
 import java.util.ArrayList;
@@ -15,6 +12,7 @@ import static org.junit.Assert.assertEquals;
 public class OCRToCCDMandatoryFieldTest {
 
     private List<OCRField> ocrFields;
+    private List<String> warnings = new ArrayList<String>();
     private OCRToCCDMandatoryField ocrToCCDMandatoryField = new OCRToCCDMandatoryField();
 
     @Before
@@ -25,20 +23,20 @@ public class OCRToCCDMandatoryFieldTest {
     @Test
     public void testAllMandatoryFieldsPresentPA1P() {
         addAllMandatoryGORFields();
-        assertEquals(0, ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrFields, FormType.PA1P).size());
+        assertEquals(0, ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrFields, FormType.PA1P, warnings).size());
     }
 
     @Test
     public void testMissingMandatoryFieldsReturnSuccessfullyForPA1P() {
         addDeceasedMandatoryFields();
-        assertEquals(8, ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrFields, FormType.PA1P).size());
+        assertEquals(8, ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrFields, FormType.PA1P, warnings).size());
     }
 
     @Test
     public void testMissingNotApplyingMandatoryFieldReturnSuccessfullyForPA1P() {
         addAllMandatoryGORFields();
         ocrFields.remove(getOCRFieldByKey(ocrFields,"executorsNotApplying_0_notApplyingExecutorReason"));
-        List<String> results = ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrFields, FormType.PA1P);
+        List<String> results = ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrFields, FormType.PA1P, warnings);
         assertEquals(1, results.size());
         assertEquals("Executor 0 not applying reason (executorsNotApplying_0_notApplyingExecutorReason) is mandatory.",
                 results.get(0));
@@ -48,7 +46,7 @@ public class OCRToCCDMandatoryFieldTest {
     public void testMissingIHTFormIdMandatoryFieldReturnSuccessfullyForPA1P() {
         addAllMandatoryGORFields();
         ocrFields.remove(getOCRFieldByKey(ocrFields,"ihtFormId"));
-        List<String> results = ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrFields, FormType.PA1P);
+        List<String> results = ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrFields, FormType.PA1P, warnings);
         assertEquals(1, results.size());
         assertEquals("IHT form id (ihtFormId) is mandatory.", results.get(0));
     }
@@ -58,7 +56,7 @@ public class OCRToCCDMandatoryFieldTest {
         addAllMandatoryGORFields();
         ocrFields.remove(getOCRFieldByKey(ocrFields,"ihtFormId"));
         ocrFields.add(OCRField.builder().name("ihtFormCompletedOnline").value("true").description("IHT Online?").build());
-        List<String> results = ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrFields, FormType.PA1P);
+        List<String> results = ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrFields, FormType.PA1P, warnings);
         assertEquals(1, results.size());
         assertEquals("IHT reference number (ihtReferenceNumber) is mandatory.", results.get(0));
     }
@@ -67,7 +65,7 @@ public class OCRToCCDMandatoryFieldTest {
     public void testMissingIHTFormIdMandatoryFieldReturnSuccessfullyForPA1A() {
         addAllMandatoryIntestacyFields();
         ocrFields.remove(getOCRFieldByKey(ocrFields,"ihtFormId"));
-        List<String> results = ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrFields, FormType.PA1A);
+        List<String> results = ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrFields, FormType.PA1A, warnings);
         assertEquals(1, results.size());
         assertEquals("IHT form id (ihtFormId) is mandatory.", results.get(0));
     }
@@ -77,7 +75,7 @@ public class OCRToCCDMandatoryFieldTest {
         addAllMandatoryIntestacyFields();
         ocrFields.remove(getOCRFieldByKey(ocrFields,"ihtFormId"));
         ocrFields.add(OCRField.builder().name("ihtFormCompletedOnline").value("true").description("IHT Online?").build());
-        List<String> results = ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrFields, FormType.PA1A);
+        List<String> results = ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrFields, FormType.PA1A, warnings);
         assertEquals(1, results.size());
         assertEquals("IHT reference number (ihtReferenceNumber) is mandatory.", results.get(0));
     }
@@ -86,7 +84,7 @@ public class OCRToCCDMandatoryFieldTest {
     public void testOptionalFieldsNotAddedForPA1P() {
         addAllMandatoryGORFields();
         ocrFields.add(OCRField.builder().name("non-mandatoryField").value("test").description("test").build());
-        assertEquals(0, ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrFields, FormType.PA1P).size());
+        assertEquals(0, ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrFields, FormType.PA1P, warnings).size());
     }
 
     @Test
@@ -94,27 +92,27 @@ public class OCRToCCDMandatoryFieldTest {
         addAllMandatoryGORFields();
         ocrFields.remove(ocrFields.size() - 1);
         assertEquals("Primary applicant alias (primaryApplicantAlias) is mandatory.",
-                ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrFields, FormType.PA1P
+                ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrFields, FormType.PA1P, warnings
         ).get(0));
     }
 
     @Test
     public void testAllMandatoryFieldsPresentPA1A() {
         addAllMandatoryIntestacyFields();
-        assertEquals(0, ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrFields, FormType.PA1A).size());
+        assertEquals(0, ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrFields, FormType.PA1A, warnings).size());
     }
 
     @Test
     public void testMissingMandatoryFieldsReturnSuccessfullyForPA1A() {
         addDeceasedMandatoryFields();
-        assertEquals(7, ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrFields, FormType.PA1A).size());
+        assertEquals(7, ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrFields, FormType.PA1A, warnings).size());
     }
 
     @Test
     public void testOptionalFieldsNotAddedForPA1A() {
         addAllMandatoryIntestacyFields();
         ocrFields.add(OCRField.builder().name("non-mandatoryField").value("test").description("test").build());
-        assertEquals(0, ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrFields, FormType.PA1A).size());
+        assertEquals(0, ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrFields, FormType.PA1A, warnings).size());
     }
 
     @Test
@@ -122,36 +120,59 @@ public class OCRToCCDMandatoryFieldTest {
         addAllMandatoryIntestacyFields();
         ocrFields.remove(ocrFields.size() - 1);
         assertEquals("Primary applicant postcode (primaryApplicantAddressPostCode) is mandatory.",
-                ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrFields, FormType.PA1A
+                ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrFields, FormType.PA1A, warnings
         ).get(0));
     }
 
     @Test
     public void testAllMandatoryFieldsPresentPA8A() {
-        addAllCaveatMandatoryFields();
-        assertEquals(0, ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrFields, FormType.PA8A).size());
+        addAllCaveatCitizenMandatoryFields();
+        assertEquals(0, ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrFields, FormType.PA8A, warnings).size());
     }
 
     @Test
     public void testMissingMandatoryFieldsReturnSuccessfullyForPA8A() {
         addDeceasedMandatoryFields();
-        assertEquals(4, ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrFields, FormType.PA8A).size());
+        assertEquals(4, ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrFields, FormType.PA8A, warnings).size());
     }
 
     @Test
     public void testOptionalFieldsNotAddedForPA8A() {
-        addAllCaveatMandatoryFields();
+        addAllCaveatCitizenMandatoryFields();
         ocrFields.add(OCRField.builder().name("non-mandatoryField").value("test").description("test").build());
-        assertEquals(0, ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrFields, FormType.PA8A).size());
+        assertEquals(0, ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrFields, FormType.PA8A, warnings).size());
     }
 
     @Test
     public void testFieldDescriptionIsAddedToMissingValueListForPA8A() {
-        addAllCaveatMandatoryFields();
+        addAllCaveatCitizenMandatoryFields();
         ocrFields.remove(ocrFields.size() - 1);
         assertEquals("Caveator address postcode (caveatorAddressPostCode) is mandatory.",
-                ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrFields, FormType.PA8A
+                ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrFields, FormType.PA8A, warnings
         ).get(0));
+    }
+
+    @Test
+    public void testSolictorMandatoryFieldsPA8A() {
+        addAllCaveatSolcitorMandatoryFields();
+        assertEquals(0, ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrFields, FormType.PA8A, warnings).size());
+    }
+
+    @Test
+    public void testSolicitorMissingMandatoryFieldsPA8A() {
+        addAllCaveatCitizenMandatoryFields();
+        ocrFields.add(OCRField.builder().name("solsSolicitorRepresentativeName").value("Solicitor Firm").description("Sols Firm").build());
+        assertEquals("Solicitors Firm name (solsSolicitorFirmName) is mandatory.",
+                ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrFields, FormType.PA8A, warnings
+                ).get(0));
+    }
+
+    @Test
+    public void testFlagAsSolicitorCaseWarningPA8A() {
+        addAllCaveatSolcitorMandatoryFields();
+        assertEquals("The form has been flagged as a Solictor case.",
+                ocrToCCDMandatoryField.ocrToCCDNonMandatoryWarnings(ocrFields, FormType.PA8A, warnings
+                ).get(0));
     }
 
     private void addIHTMandatoryFields() {
@@ -270,7 +291,7 @@ public class OCRToCCDMandatoryFieldTest {
         addPrimaryApplicantFields();
     }
 
-    private void addAllCaveatMandatoryFields() {
+    private void addAllCaveatCitizenMandatoryFields() {
         OCRField field1 = OCRField.builder()
                 .name("deceasedForenames")
                 .value("John")
@@ -307,6 +328,26 @@ public class OCRToCCDMandatoryFieldTest {
         ocrFields.add(field5);
         ocrFields.add(field6);
         ocrFields.add(field7);
+    }
+
+    private void addAllCaveatSolcitorMandatoryFields() {
+        addAllCaveatCitizenMandatoryFields();
+        OCRField field1 = OCRField.builder()
+                .name("solsSolicitorRepresentativeName")
+                .value("Mark Jones")
+                .description("Solicitor Representative Name").build();
+        OCRField field2 = OCRField.builder()
+                .name("solsSolicitorFirmName")
+                .value("MJ Solicitors")
+                .description("Solicitor Firm Name").build();
+        OCRField field3 = OCRField.builder()
+                .name("solsSolicitorAppReference")
+                .value("SOLS123456")
+                .description("Solicitor App Reference").build();
+
+        ocrFields.add(field1);
+        ocrFields.add(field2);
+        ocrFields.add(field3);
     }
 
 

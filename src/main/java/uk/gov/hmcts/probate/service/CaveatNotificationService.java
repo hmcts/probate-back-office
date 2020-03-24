@@ -2,7 +2,9 @@ package uk.gov.hmcts.probate.service;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
+import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatCallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
@@ -46,6 +48,25 @@ public class CaveatNotificationService {
     private final CaveatDocmosisService caveatDocmosisService;
 
     public CaveatCallbackResponse caveatRaise(CaveatCallbackRequest caveatCallbackRequest)
+            throws NotificationClientException {
+
+        CaveatCallbackResponse caveatCallbackResponse;
+        CaveatData caveatDetails = caveatCallbackRequest.getCaseDetails().getData();
+        if (caveatDetails.getApplicationType() == ApplicationType.SOLICITOR) {
+            if (StringUtils.isNotBlank(caveatDetails.getCaveatorEmailAddress())) {
+                caveatCallbackResponse = solsCaveatRaise(caveatCallbackRequest);
+            } else {
+                // Bulk scan may not include caveator email for solicitor.
+                caveatCallbackResponse = caveatCallbackResponseTransformer.transformResponseWithNoChanges(caveatCallbackRequest);
+            }
+        } else {
+            caveatCallbackResponse = citizenCaveatRaise(caveatCallbackRequest);
+        }
+
+        return caveatCallbackResponse;
+    }
+
+    private CaveatCallbackResponse citizenCaveatRaise(CaveatCallbackRequest caveatCallbackRequest)
         throws NotificationClientException {
 
         CaveatCallbackResponse caveatCallbackResponse = CaveatCallbackResponse.builder().errors(new ArrayList<>()).build();
@@ -133,7 +154,6 @@ public class CaveatNotificationService {
             }
         }
 
-        ///
         if (caveatCallbackResponse.getErrors().isEmpty()) {
             caveatCallbackResponse = caveatCallbackResponseTransformer.caveatExtendExpiry(caveatCallbackRequest, documents, letterId);
         }
