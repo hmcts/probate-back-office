@@ -37,6 +37,9 @@ import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.validator.BulkPrintValidationRule;
 import uk.gov.hmcts.probate.validator.EmailAddressNotificationValidationRule;
 import uk.gov.hmcts.probate.validator.EmailAddressNotifyValidationRule;
+import uk.gov.hmcts.reform.probate.model.ProbateDocument;
+import uk.gov.hmcts.reform.probate.model.ProbateDocumentLink;
+import uk.gov.hmcts.reform.probate.model.ProbateDocumentType;
 import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
 import uk.gov.service.notify.NotificationClientException;
 
@@ -79,18 +82,13 @@ public class NotificationController {
     private final GrantNotificationService grantNotificationService;
 
     @PostMapping(path = "/application-received")
-    public ResponseEntity<String> sendApplicationReceivedNotification(
+    public ResponseEntity<ProbateDocument> sendApplicationReceivedNotification(
         @Validated({EmailAddressNotificationValidationRule.class})
         @RequestBody CallbackRequest callbackRequest)
         throws NotificationClientException {
 
-        ResponseEntity<CallbackResponse> callbackResponseResponseEntity = sendNotification(callbackRequest, APPLICATION_RECEIVED);
-        List<String> errors = callbackResponseResponseEntity.getBody().getErrors();
-        if (errors == null || errors.isEmpty()) {
-            return ResponseEntity.ok("Application received email sent");
-        } else {
-            return ResponseEntity.badRequest().body(errors.stream().collect(Collectors.joining(", ")));
-        }
+        ResponseEntity<ProbateDocument> responseDocument = sendNotificationForDocumentOnly(callbackRequest, APPLICATION_RECEIVED);
+        return responseDocument;
     }
 
     @PostMapping(path = "/case-stopped")
@@ -212,6 +210,42 @@ public class NotificationController {
 
         }
         return ResponseEntity.ok(response);
+    }
+
+    private ResponseEntity<ProbateDocument> sendNotificationForDocumentOnly(
+        @Validated({EmailAddressNotificationValidationRule.class})
+        @RequestBody CallbackRequest callbackRequest, State state)
+        throws NotificationClientException {
+
+        CaseDetails caseDetails = callbackRequest.getCaseDetails();
+        CaseData caseData = callbackRequest.getCaseDetails().getData();
+
+        Document sentEmailAsDocument = null;
+        if (isAnEmailAddressPresent(caseData)) {
+            CallbackResponse response = eventValidationService.validateEmailRequest(callbackRequest, emailAddressNotificationValidationRules);
+            if (response.getErrors().isEmpty()) {
+                sentEmailAsDocument = notificationService.sendEmail(state, caseDetails);
+            }
+        }
+        
+        return ResponseEntity.ok(buildProbateDocument(sentEmailAsDocument));
+    }
+
+    private ProbateDocument buildProbateDocument(Document boDocument) {
+        ProbateDocumentLink probateDocumentLink = ProbateDocumentLink.builder()
+            .documentBinaryUrl(boDocument.getDocumentLink().getDocumentBinaryUrl())
+            .documentFilename(boDocument.getDocumentLink().getDocumentFilename())
+            .documentUrl(boDocument.getDocumentLink().getDocumentUrl())
+            .build();
+        ProbateDocumentType probateDocumentType = ProbateDocumentType.valueOf(boDocument.getDocumentType().name());
+        return ProbateDocument.builder()
+            .documentDateAdded(boDocument.getDocumentDateAdded())
+            .documentFileName(boDocument.getDocumentFileName())
+            .documentGeneratedBy(boDocument.getDocumentGeneratedBy())
+            .documentLink(probateDocumentLink)
+            .documentType(probateDocumentType)
+            .build();
+
     }
 
     private boolean isAnEmailAddressPresent(CaseData caseData) {

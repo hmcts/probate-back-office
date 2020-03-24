@@ -13,6 +13,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.test.context.junit4.SpringRunner;
 import uk.gov.hmcts.probate.config.properties.registries.RegistriesProperties;
+import uk.gov.hmcts.probate.config.properties.registries.Registry;
 import uk.gov.hmcts.probate.exception.BadRequestException;
 import uk.gov.hmcts.probate.exception.InvalidEmailException;
 import uk.gov.hmcts.probate.insights.AppInsights;
@@ -20,6 +21,7 @@ import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.CaseType;
 import uk.gov.hmcts.probate.model.Constants;
 import uk.gov.hmcts.probate.model.ExecutorsApplyingNotification;
+import uk.gov.hmcts.probate.model.LanguagePreference;
 import uk.gov.hmcts.probate.model.SentEmail;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
 import uk.gov.hmcts.probate.model.ccd.ProbateAddress;
@@ -40,6 +42,7 @@ import uk.gov.hmcts.probate.service.template.pdf.LocalDateToWelshStringConverter
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.validator.EmailAddressNotificationValidationRule;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
+import uk.gov.hmcts.reform.probate.model.cases.RegistryLocation;
 import uk.gov.service.notify.NotificationClient;
 import uk.gov.service.notify.NotificationClientException;
 import uk.gov.service.notify.SendEmailResponse;
@@ -1607,4 +1610,18 @@ public class NotificationServiceTest {
 
     }
 
+    @Test
+    public void shouldDefaultRegistryLocationIfNotSet() {
+
+        Registry registry = notificationService.getRegistry(null, LanguagePreference.ENGLISH);
+        assertEquals("CTSC", registry.getName());
+
+        Registry registryWelsh = notificationService.getRegistry(null, LanguagePreference.WELSH);
+        assertEquals( "Probate Registry of Wales", registryWelsh.getName());
+
+        Registry registryPassedIn = notificationService.getRegistry(RegistryLocation.MANCHESTER.getName(),
+            LanguagePreference.WELSH);
+        assertEquals("Manchester Probate Registry", registryPassedIn.getName());
+
+    }
 }
