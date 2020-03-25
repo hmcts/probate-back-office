@@ -129,6 +129,7 @@ notifications:
           requestInformation: "pa-request-information"
           redeclarationSot: "pa-redeclaration-sot"
           grantDelayed: "pa-grantDelayed"
+          grantAwaitingDocumentation: "pa-grantAwaitingDoc"
         solicitor:
           applicationReceived: "sol-application-received"
           documentReceived: "sol-document-received"
@@ -144,6 +145,7 @@ notifications:
           requestInformation: "sols-request-information"
           redeclarationSot: "sols-redeclaration-sot"
           grantDelayed: "sols-grantDelayed"
+          grantAwaitingDocumentation: "sols-grantAwaitingDoc"
       welsh:
         personal:
           applicationReceived: "pa-application-received-welsh"
@@ -160,6 +162,7 @@ notifications:
           requestInformation: "pa-request-information-welsh"
           redeclarationSot: "pa-redeclaration-sot-welsh"
           grantDelayed: "pa-grantDelayed-welsh"
+          grantAwaitingDocumentation: "pa-grantAwaitingDoc-welsh"
         solicitor:
           applicationReceived: "sol-application-received-welsh"
           documentReceived: "sol-document-received-welsh"
@@ -174,6 +177,7 @@ notifications:
           requestInformation: "sols-request-information-welsh"
           redeclarationSot: "sols-redeclaration-sot-welsh"
           grantDelayed: "sols-grantDelayed-welsh"
+          grantAwaitingDocumentation: "sols-grantAwaitingDoc-welsh"
 
 documents:
   templates:

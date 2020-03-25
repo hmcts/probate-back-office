@@ -87,8 +87,19 @@ public class NotificationController {
         @RequestBody CallbackRequest callbackRequest)
         throws NotificationClientException {
 
-        ResponseEntity<ProbateDocument> responseDocument = sendNotificationForDocumentOnly(callbackRequest, APPLICATION_RECEIVED);
-        return responseDocument;
+        CaseDetails caseDetails = callbackRequest.getCaseDetails();
+        CaseData caseData = callbackRequest.getCaseDetails().getData();
+
+        if (isAnEmailAddressPresent(caseData)) {
+            CallbackResponse response = eventValidationService.validateEmailRequest(callbackRequest, emailAddressNotificationValidationRules);
+            if (response.getErrors().isEmpty()) {
+                Document sentEmailAsDocument = notificationService.sendEmail(APPLICATION_RECEIVED, caseDetails);
+                return ResponseEntity.ok(buildProbateDocument(sentEmailAsDocument));
+            }
+        }
+
+        log.info("No email sent or document returned to case: {}", caseDetails.getId());
+        return ResponseEntity.ok(null);
     }
 
     @PostMapping(path = "/case-stopped")
@@ -186,49 +197,6 @@ public class NotificationController {
         @Validated({EmailAddressNotificationValidationRule.class})
         @RequestBody CallbackRequest callbackRequest) throws NotificationClientException {
         return ResponseEntity.ok(raiseGrantOfRepresentationNotificationService.handleGrantReceivedNotification(callbackRequest));
-    }
-
-    private ResponseEntity<CallbackResponse> sendNotification(
-        @Validated({EmailAddressNotificationValidationRule.class})
-        @RequestBody CallbackRequest callbackRequest, State state)
-        throws NotificationClientException {
-
-        CaseDetails caseDetails = callbackRequest.getCaseDetails();
-        CaseData caseData = callbackRequest.getCaseDetails().getData();
-        CallbackResponse response;
-
-        List<Document> documents = new ArrayList<>();
-        if (isAnEmailAddressPresent(caseData)) {
-            response = eventValidationService.validateEmailRequest(callbackRequest, emailAddressNotificationValidationRules);
-            if (response.getErrors().isEmpty()) {
-                Document sentEmailAsDocument = notificationService.sendEmail(state, caseDetails);
-                documents.add(sentEmailAsDocument);
-                response = callbackResponseTransformer.addDocuments(callbackRequest, documents, null, null);
-            }
-        } else {
-            response = callbackResponseTransformer.addDocuments(callbackRequest, documents, null, null);
-
-        }
-        return ResponseEntity.ok(response);
-    }
-
-    private ResponseEntity<ProbateDocument> sendNotificationForDocumentOnly(
-        @Validated({EmailAddressNotificationValidationRule.class})
-        @RequestBody CallbackRequest callbackRequest, State state)
-        throws NotificationClientException {
-
-        CaseDetails caseDetails = callbackRequest.getCaseDetails();
-        CaseData caseData = callbackRequest.getCaseDetails().getData();
-
-        if (isAnEmailAddressPresent(caseData)) {
-            CallbackResponse response = eventValidationService.validateEmailRequest(callbackRequest, emailAddressNotificationValidationRules);
-            if (response.getErrors().isEmpty()) {
-                Document sentEmailAsDocument = notificationService.sendEmail(state, caseDetails);
-                return ResponseEntity.ok(buildProbateDocument(sentEmailAsDocument));
-            }
-        }
-
-        return ResponseEntity.ok(null);
     }
 
     private ProbateDocument buildProbateDocument(Document boDocument) {
