@@ -59,13 +59,4 @@ public class OCRFormsController {
                         .status(warnings.isEmpty() ? ValidationResponseStatus.SUCCESS : ValidationResponseStatus.WARNINGS).build();
         return ResponseEntity.ok(validationResponse);
     }
-
-    @ExceptionHandler(OCRMappingException.class)
-    public ResponseEntity<ValidationResponse> handle(OCRMappingException exception) {
-        log.error("An error has occured during the bulk scanning OCR validation process: {}", exception.getMessage(), exception);
-        List<String> errors = Arrays.asList(exception.getMessage());
-        ValidationResponse validationResponse =
-                ValidationResponse.builder().status(ValidationResponseStatus.ERRORS).errors(errors).build();
-        return ResponseEntity.ok(validationResponse);
-    }
 }

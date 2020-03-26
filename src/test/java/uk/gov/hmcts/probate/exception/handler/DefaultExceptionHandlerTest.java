@@ -10,8 +10,10 @@ import uk.gov.hmcts.probate.exception.BusinessValidationException;
 import uk.gov.hmcts.probate.exception.ClientException;
 import uk.gov.hmcts.probate.exception.ConnectionException;
 import uk.gov.hmcts.probate.exception.NotFoundException;
+import uk.gov.hmcts.probate.exception.OCRMappingException;
 import uk.gov.hmcts.probate.exception.model.ErrorResponse;
 import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
+import uk.gov.hmcts.probate.model.ccd.ocr.ValidationResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.service.notify.NotificationClientException;
 
@@ -46,6 +48,9 @@ public class DefaultExceptionHandlerTest {
 
     @Mock
     private NotFoundException notFoundException;
+
+    @Mock
+    private OCRMappingException ocrMappingException;
 
     @InjectMocks
     private DefaultExceptionHandler underTest;
@@ -133,5 +138,16 @@ public class DefaultExceptionHandlerTest {
         assertEquals(NOT_FOUND, response.getStatusCode());
         assertEquals(DefaultExceptionHandler.CLIENT_ERROR, response.getBody().getError());
         assertEquals(EXCEPTION_MESSAGE, response.getBody().getMessage());
+    }
+    
+    @Test
+    public void shouldReturnOCRMappingException() {
+        when(ocrMappingException.getMessage()).thenReturn(EXCEPTION_MESSAGE);
+
+        ResponseEntity<ValidationResponse> response = underTest.handle(ocrMappingException);
+
+        assertEquals(OK, response.getStatusCode());
+        assertEquals(1, response.getBody().getErrors().size());
+        assertEquals("Message", response.getBody().getErrors().get(0));
     }
 }
