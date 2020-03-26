@@ -179,8 +179,14 @@ public class ExceptionRecordService {
             // Add scanned documents
             log.info("Mapping Caveat Scanned Documents to case.");
             uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData caveatData = caveatDetails.getData();
+            int originalScannedNumber = caveatCallbackRequest.getCaseDetails().getData().getScannedDocuments().size();
             caveatCallbackRequest.getCaseDetails().getData().setScannedDocuments(
                     mergeScannedDocuments(caveatData.getScannedDocuments(), erRequest.getScannedDocuments(), erRequest.getId()));
+
+            Assert.isTrue(
+                originalScannedNumber < caveatDetails.getData().getScannedDocuments().size(),
+                "Number of scanned documents has not increased"
+            );
 
             // Validate caveat extension
             log.info("Validating caveat extension.");
