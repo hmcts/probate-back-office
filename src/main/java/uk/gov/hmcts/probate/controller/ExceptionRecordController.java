@@ -75,9 +75,6 @@ public class ExceptionRecordController {
         warnings = ocrToCCDMandatoryField
                 .ocrToCCDMandatoryFields(ocrPopulatedValueMapper.ocrPopulatedValueMapper(erRequest.getOcrFields()), formType, warnings);
 
-        warnings = ocrToCCDMandatoryField
-                .ocrToCCDMandatoryFields(ocrPopulatedValueMapper.ocrPopulatedValueMapper(erRequest.getOcrFields()), formType, warnings);
-
         if (!warnings.isEmpty()) {
             errors.add("Please resolve all warnings before creating this case");
         }
