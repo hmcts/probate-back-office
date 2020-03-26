@@ -2,6 +2,7 @@ java:
   applicationPort: 4104
   image: hmctspublic.azurecr.io/probate/back-office:latest
   aadIdentityName: probate
+  ingressHost: probate-back-office-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
   environment:
     REFORM_TEAM: probate
     REFORM_SERVICE_NAME: back-office
