@@ -63,8 +63,7 @@ public class ExceptionRecordController {
     @ApiResponses({
             @ApiResponse(code = 200, response = ValidationResponse.class, message = "Validation executed successfully"),
             @ApiResponse(code = 400, message = "Request failed due to malformed syntax"),
-            @ApiResponse(code = 403, message = "S2S token is not authorized, missing or invalid"),
-            @ApiResponse(code = 404, message = "Form type not found")
+            @ApiResponse(code = 403, message = "S2S token is not authorized, missing or invalid")
     })
     @PostMapping(path = "/transform-exception-record",
             consumes = APPLICATION_JSON_UTF8_VALUE, produces = APPLICATION_JSON_VALUE)

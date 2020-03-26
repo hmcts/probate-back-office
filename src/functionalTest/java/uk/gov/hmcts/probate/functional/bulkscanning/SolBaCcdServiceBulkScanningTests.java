@@ -18,10 +18,13 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
 
     private static final String SUCCESS = "SUCCESS";
     private static final String WARNINGS = "WARNINGS";
+    private static final String ERRORS = "ERRORS";
     private static final String DOB_MISSING = "Deceased date of birth (deceasedDateOfBirth) is mandatory.";
     private static final String DOD_MISSING = "Deceased date of death (deceasedDateOfDeath) is mandatory.";
+    private static final String FORM_TYPE_MISSING = "Form type not found or invalid";
 
     private static final String VALIDATE_OCR_DATA = "/forms/PA1P/validate-ocr";
+    private static final String VALIDATE_OCR_DATA_UNKNOWN_FORM_TYPE = "/forms/XZY/validate-ocr";
     private static final String TRANSFORM_EXCEPTON_RECORD = "/transform-exception-record";
 
     private String jsonRequest;
@@ -37,6 +40,19 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
                 .then().assertThat().statusCode(200)
                 .and().body("warnings", hasSize(warningSize))
                 .and().body("warnings[" + warningItem + "]", equalTo(warningMessage))
+                .and().content(containsString(containsText));
+    }
+
+    private void validateOCRDataPostError(String bodyText, String containsText,
+                                            String errorMessage, int errorSize, int errorItem) {
+        SerenityRest.given()
+                .relaxedHTTPSValidation()
+                .headers(utils.getHeaders())
+                .body(bodyText)
+                .when().post(VALIDATE_OCR_DATA_UNKNOWN_FORM_TYPE)
+                .then().assertThat().statusCode(200)
+                .and().body("errors", hasSize(errorSize))
+                .and().body("errors[" + errorItem + "]", equalTo(errorMessage))
                 .and().content(containsString(containsText));
     }
 
@@ -61,6 +77,12 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
         jsonRequest = utils.getJsonFromFile("expectedOCRDataMissingMandatoryFields.json");
         validateOCRDataPostSuccess(jsonRequest, WARNINGS, DOB_MISSING, 2, 0);
         validateOCRDataPostSuccess(jsonRequest, WARNINGS, DOD_MISSING, 2, 1);
+    }
+
+    @Test
+    public void testInvalidFormTypeReturnError() {
+        jsonRequest = utils.getJsonFromFile("expectedOCRDataAllMandatoryFields.json");
+        validateOCRDataPostError(jsonRequest, ERRORS, FORM_TYPE_MISSING, 1, 0);
     }
 
     @Test

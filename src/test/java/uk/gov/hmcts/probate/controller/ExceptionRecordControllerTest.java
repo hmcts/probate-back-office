@@ -137,8 +137,8 @@ public class ExceptionRecordControllerTest {
         mockMvc.perform(post("/transform-exception-record")
                 .content(modifiedExceptionRecordPayload.toString())
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().is4xxClientError())
-                .andExpect(content().string(containsString("Form type 'null' not found")));
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("Form type not found or invalid")));
     }
 
     @Test
