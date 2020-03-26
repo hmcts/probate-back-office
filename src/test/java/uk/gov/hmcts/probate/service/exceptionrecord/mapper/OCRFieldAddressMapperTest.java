@@ -196,9 +196,9 @@ public class OCRFieldAddressMapperTest {
         } catch ( OCRMappingException ocrme) {
             errorMessage = ocrme.getMessage();
         }
-        assertEquals(ADDRESS_POST_CODE_CORRECT_ERROR_MESSAGE, errorMessage);  
+        assertEquals(ADDRESS_POST_CODE_CORRECT_ERROR_MESSAGE, errorMessage);
     }
-  
+
     @Test(expected = OCRMappingException.class)
     public void testAttorneyNameWithMissingNameError() {
         List<CollectionMember<AttorneyNamesAndAddress>> response =

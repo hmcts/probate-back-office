@@ -4,6 +4,8 @@ java:
     NOTIFICATIONS_GOVNOTIFYAPIKEY: ${PROBATE_BO_NOTIFY_KEY}
     PDF_SERVICE_GRANTSIGNATUREBASE64: ${BO_GRANT_SIG_FIRST}${BO_GRANT_SIG_LAST}
     IDAM_CLIENT_NAME: probate
+    AUTH_TOKEN_EMAIL: ${AUTH_TOKEN_EMAIL}
+    AUTH_TOKEN_PASSWORD: ${AUTH_TOKEN_PASSWORD}
     PROBATE_POSTGRESQL_USER: "{{ .Values.postgresql.postgresqlUsername}}"
     PROBATE_POSTGRESQL_PASSWORD: "{{ .Values.postgresql.postgresqlPassword}}"
     PROBATE_POSTGRESQL_HOSTNAME: "{{ .Release.Name }}-postgresql"
@@ -19,12 +21,21 @@ java:
     CCD_GATEWAY_HOST: http://ccd-api-gateway-web-aat.service.core-compute-aat.internal
     SEND_LETTER_SERIVCE_BASEURL: http://rpe-send-letter-service-aat.service.core-compute-aat.internal
     SERVICES_CORECASEDATA_BASEURL : http://ccd-data-store-api-aat.service.core-compute-aat.internal
+    CCD_DATA_STORE_API_HOST : http://ccd-data-store-api-aat.service.core-compute-aat.internal
+    EXCELA_EMAIL : ${EXCELA_EMAIL} 
+    FTP_SIGNATURE : ${FTP_SIGNATURE} 
+    FTP_ENV : ${FTP_ENV} 
+    PDF_SERVICE_GRANTSIGNATURESECRETKEY : ${PDF_SERVICE_GRANTSIGNATURESECRETKEY}
+    PDF_SERVICE_GRANTSIGNATUREENCRYPTEDFILE : ${PDF_SERVICE_GRANTSIGNATUREENCRYPTEDFILE}
+    PDF_SERVICE_BASEURL : ${PDF_SERVICE_BASEURL}
+    PDF_SERVICE_ACCESS_KEY : ${PDF_SERVICE_ACCESS_KEY}
+    PDF_SERVICE_HEALTH_URL : ${PDF_SERVICE_HEALTH_URL}
+    LOG_LEVEL : "INFO"
     IDAM_SECRET: ${IDAM_SECRET}
-    IDAM_REDIRECT_URL: http://${SERVICE_FQDN}/oauth2/callback
+    IDAM_REDIRECT_URL: ${IDAM_REDIRECT_URL}
     IDAM_USER_ID: ${IDAM_USER_ID}
   image: ${IMAGE_NAME}
   ingressHost: ${SERVICE_FQDN}
 
   postgresql:
     enabled: true
-    

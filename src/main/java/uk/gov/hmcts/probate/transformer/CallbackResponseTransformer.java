@@ -55,6 +55,7 @@ import static uk.gov.hmcts.probate.model.DocumentType.ASSEMBLED_LETTER;
 import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT_STOPPED;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_REISSUE;
+import static uk.gov.hmcts.probate.model.DocumentType.GRANT_RAISED;
 import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_ADMON;
@@ -101,7 +102,7 @@ public class CallbackResponseTransformer {
     public static final String EXCEPTION_RECORD_EVENT_ID = "createCaseFromBulkScan";
     public static final RegistryLocation EXCEPTION_RECORD_REGISTRY_LOCATION = RegistryLocation.CTSC;
 
-    private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(DATE_FORMAT);
+    protected static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(DATE_FORMAT);
 
     public CallbackResponse transformWithConditionalStateChange(CallbackRequest callbackRequest, Optional<String> newState) {
         ResponseCaseData responseCaseData = getResponseCaseData(callbackRequest.getCaseDetails(), false)
@@ -109,6 +110,25 @@ public class CallbackResponseTransformer {
                 .build();
 
         return transformResponse(responseCaseData);
+    }
+
+    public CallbackResponse grantRaised(CallbackRequest callbackRequest, List<Document> documents, String letterId) {
+        CaseDetails caseDetails = callbackRequest.getCaseDetails();
+        CaseData caseData = caseDetails.getData();
+        documents.forEach(document -> documentTransformer.addDocument(callbackRequest, document, true));
+
+        ResponseCaseData.ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(caseDetails, false);
+
+        if (documentTransformer.hasDocumentWithType(documents, GRANT_RAISED) && letterId != null) {
+            CollectionMember<BulkPrint> bulkPrint = buildBulkPrint(letterId, GRANT_RAISED.getTemplateName());
+            appendToBulkPrintCollection(bulkPrint, caseData);
+
+            responseCaseDataBuilder
+                    .bulkPrintId(caseData.getBulkPrintId())
+                    .build();
+        }
+
+        return transformResponse(responseCaseDataBuilder.build());
     }
 
     public CallbackResponse caseStopped(CallbackRequest callbackRequest, List<Document> documents, String letterId) {
@@ -558,7 +578,17 @@ public class CallbackResponseTransformer {
                 .boRequestInfoSendToBulkPrint(caseData.getBoRequestInfoSendToBulkPrint())
                 .boRequestInfoSendToBulkPrintRequested(caseData.getBoRequestInfoSendToBulkPrintRequested())
                 .probateSotDocumentsGenerated(caseData.getProbateSotDocumentsGenerated())
-                .bulkScanCaseReference(caseData.getBulkScanCaseReference());
+                .bulkScanCaseReference(caseData.getBulkScanCaseReference())
+                .grantDelayedNotificationIdentified(caseData.getGrantDelayedNotificationIdentified())
+                .grantDelayedNotificationDate(ofNullable(caseData.getGrantDelayedNotificationDate())
+                    .map(dateTimeFormatter::format).orElse(null))
+                .grantStoppedDate(ofNullable(caseData.getGrantStoppedDate())
+                    .map(dateTimeFormatter::format).orElse(null))
+                .grantDelayedNotificationSent(caseData.getGrantDelayedNotificationSent())
+                .grantAwaitingDocumentationNotificationDate(ofNullable(caseData.getGrantAwaitingDocumentationNotificationDate())
+                    .map(dateTimeFormatter::format).orElse(null))
+                .grantAwaitingDocumentatioNotificationSent(caseData.getGrantAwaitingDocumentatioNotificationSent());
+
 
         if (transform) {
             updateCaseBuilderForTransformCase(caseData, builder);
@@ -700,7 +730,16 @@ public class CallbackResponseTransformer {
                 .boSendToBulkPrintRequested(caseData.getBoSendToBulkPrintRequested())
                 .languagePreferenceWelsh(caseData.getLanguagePreferenceWelsh())
                 .bulkPrintPdfSize(caseData.getBulkPrintPdfSize())
-                .bulkPrintSendLetterId(caseData.getBulkPrintSendLetterId());
+                .bulkPrintSendLetterId(caseData.getBulkPrintSendLetterId())
+                .grantDelayedNotificationIdentified(caseData.getGrantDelayedNotificationIdentified())
+                .grantDelayedNotificationDate(ofNullable(caseData.getGrantDelayedNotificationDate())
+                    .map(dateTimeFormatter::format).orElse(null))
+                .grantStoppedDate(ofNullable(caseData.getGrantStoppedDate())
+                    .map(dateTimeFormatter::format).orElse(null))
+                .grantDelayedNotificationSent(caseData.getGrantDelayedNotificationSent())
+                .grantAwaitingDocumentationNotificationDate(ofNullable(caseData.getGrantAwaitingDocumentationNotificationDate())
+                    .map(dateTimeFormatter::format).orElse(null))
+                .grantAwaitingDocumentatioNotificationSent(caseData.getGrantAwaitingDocumentatioNotificationSent());
 
         if (YES.equals(caseData.getSolsSolicitorIsMainApplicant())) {
             builder

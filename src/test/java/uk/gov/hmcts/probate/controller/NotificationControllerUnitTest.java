@@ -89,46 +89,6 @@ public class NotificationControllerUnitTest {
     private CallbackRequest callbackRequest;
     private Document document;
 
-    @Test
-    public void shouldSendApplicationReceived() throws IOException, NotificationClientException {
-        setUpMocks(APPLICATION_RECEIVED);
-        ResponseEntity<String> stringResponseEntity = notificationController.sendApplicationReceivedNotification(callbackRequest);
-        assertThat(stringResponseEntity.getStatusCode(), is(HttpStatus.OK));
-        verifyDocumentsAreAdded();
-    }
-
-    @Test
-    public void shouldAddDocumentEvenIfNoEmailAddressPresent() throws IOException, NotificationClientException {
-
-        CaseDetails caseDetails = new CaseDetails(CaseDataTestBuilder.withDefaultsAndNoPrimaryApplicantEmailAddress().build(), LAST_MODIFIED, ID);
-        callbackRequest = new CallbackRequest(caseDetails);
-        when(callbackResponseTransformer.addDocuments(any(CallbackRequest.class), documents.capture(), nullable(String.class), nullable(String.class))).thenReturn(CallbackResponse.builder().errors(new ArrayList<>()).build());
-        ResponseEntity<String> stringResponseEntity = notificationController.sendApplicationReceivedNotification(callbackRequest);
-        assertThat(stringResponseEntity.getStatusCode(), is(HttpStatus.OK));
-        verifyNoDocumentsAreAdded();
-        verifyNoMoreInteractions(notificationService);
-    }
-
-    @Test
-    public void shouldHandleErrorsFromSendApplicationReceived() throws IOException, NotificationClientException {
-        setUpMocks(APPLICATION_RECEIVED, "This is an error", "This is another error");
-        ResponseEntity<String> stringResponseEntity = notificationController.sendApplicationReceivedNotification(callbackRequest);
-        assertThat(stringResponseEntity.getStatusCode(), is(HttpStatus.BAD_REQUEST));
-        assertThat(stringResponseEntity.getBody(), is("This is an error, This is another error"));
-        verifyNoMoreInteractions(callbackResponseTransformer);
-    }
-
-    private void verifyDocumentsAreAdded() {
-        verify(callbackResponseTransformer).addDocuments(any(CallbackRequest.class), documents.capture(), isNull(), isNull());
-        List<Document> docs = documents.getValue();
-        assertThat(docs, hasItems(document));
-    }
-
-    private void verifyNoDocumentsAreAdded() {
-        verify(callbackResponseTransformer).addDocuments(any(CallbackRequest.class), documents.capture(), isNull(), isNull());
-        List<Document> docs = documents.getValue();
-        assertThat(docs, is(empty()));
-    }
 
     @Test
     public void shouldSendDocumentsReceived() throws IOException, NotificationClientException {
@@ -141,10 +101,7 @@ public class NotificationControllerUnitTest {
     private void setUpMocks(State state, String ...errors) throws NotificationClientException {
         CaseDetails caseDetails = new CaseDetails(CaseDataTestBuilder.withDefaults().build(), LAST_MODIFIED, ID);
         callbackRequest = new CallbackRequest(caseDetails);
-        when(eventValidationService.validateEmailRequest(any(CallbackRequest.class), anyList())).thenReturn(CallbackResponse.builder().errors(Arrays.asList(errors)).build());
         document = Document.builder().build();
-        when(notificationService.sendEmail(state, caseDetails)).thenReturn(document);
-        when(callbackResponseTransformer.addDocuments(any(CallbackRequest.class), documents.capture(), nullable(String.class), nullable(String.class))).thenReturn(CallbackResponse.builder().errors(new ArrayList<>()).build());
     }
 
     private void setUpMocks(State state) throws NotificationClientException {

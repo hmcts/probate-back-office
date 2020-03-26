@@ -2,4 +2,5 @@ ENGLAND
 T~5555666677778888~Liverpool~MR~PETAR~KRNETA~~~17-AUG-2018~~20-OCT-1940~77~England and Wales~7 Pevensey Avenue Belper~Leicester~~~LE5 6XQ~24-OCT-2018~~ANDJELKA~KOMODROMOS~~37 Otter Lane Street~Mountsorrel~Loughborough~Leicestershire~LE12 7GL~~Bob~Smith~~123 Fake street~North West East Field~~~AB2 3CD~~~~~~~~~~~~~~~~~~~~~~~~~325000~Y~287000~PROBATE~Y~
 A~5555666677778888~~PETER PIPER~KRENT~
 A~5555666677778888~~PETE~KRENT~
-Z~1_20190101.dat~3~1~Y~
+A~5555666677778888~~PETRA~~
+Z~1_20190101.dat~4~1~Y~

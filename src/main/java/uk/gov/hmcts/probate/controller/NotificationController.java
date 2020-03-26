@@ -1,15 +1,22 @@
 package uk.gov.hmcts.probate.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import uk.gov.hmcts.probate.model.DocumentType;
+import uk.gov.hmcts.probate.model.GrantScheduleResponse;
 import uk.gov.hmcts.probate.model.State;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
@@ -20,8 +27,10 @@ import uk.gov.hmcts.probate.service.BulkPrintService;
 import uk.gov.hmcts.probate.service.DocumentGeneratorService;
 import uk.gov.hmcts.probate.service.DocumentsReceivedNotificationService;
 import uk.gov.hmcts.probate.service.EventValidationService;
+import uk.gov.hmcts.probate.service.GrantNotificationService;
 import uk.gov.hmcts.probate.service.InformationRequestService;
 import uk.gov.hmcts.probate.service.NotificationService;
+import uk.gov.hmcts.probate.service.RaiseGrantOfRepresentationNotificationService;
 import uk.gov.hmcts.probate.service.RedeclarationNotificationService;
 import uk.gov.hmcts.probate.service.docmosis.GrantOfRepresentationDocmosisMapperService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
@@ -32,11 +41,10 @@ import uk.gov.hmcts.probate.validator.EmailAddressNotifyValidationRule;
 import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
 import uk.gov.service.notify.NotificationClientException;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
+import javax.servlet.http.HttpServletRequest;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -64,21 +72,11 @@ public class NotificationController {
     private final GrantOfRepresentationDocmosisMapperService gorDocmosisService;
     private final InformationRequestService informationRequestService;
     private final RedeclarationNotificationService redeclarationNotificationService;
-
-    @PostMapping(path = "/application-received")
-    public ResponseEntity<String> sendApplicationReceivedNotification(
-            @Validated({EmailAddressNotificationValidationRule.class})
-            @RequestBody CallbackRequest callbackRequest)
-            throws NotificationClientException {
-
-        ResponseEntity<CallbackResponse> callbackResponseResponseEntity = sendNotification(callbackRequest, APPLICATION_RECEIVED);
-        List<String> errors = callbackResponseResponseEntity.getBody().getErrors();
-        if (errors == null || errors.isEmpty()) {
-            return ResponseEntity.ok("Application received email sent");
-        } else {
-            return ResponseEntity.badRequest().body(errors.stream().collect(Collectors.joining(", ")));
-        }
-    }
+    private final RaiseGrantOfRepresentationNotificationService raiseGrantOfRepresentationNotificationService;
+    private final ObjectMapper objectMapper;
+    private static final String DEFAULT_LOG_ERROR = "Case Id: {} ERROR: {}";
+    private static final String INVALID_PAYLOAD = "Invalid payload";
+    private final GrantNotificationService grantNotificationService;
 
     @PostMapping(path = "/case-stopped")
     public ResponseEntity<CallbackResponse> sendCaseStoppedNotification(
@@ -170,31 +168,50 @@ public class NotificationController {
         return ResponseEntity.ok(redeclarationNotificationService.handleRedeclarationNotification(callbackRequest));
     }
 
-    private ResponseEntity<CallbackResponse> sendNotification(
+    @PostMapping(path = "/grant-received")
+    public ResponseEntity<CallbackResponse> sendGrantReceivedNotification(
             @Validated({EmailAddressNotificationValidationRule.class})
-            @RequestBody CallbackRequest callbackRequest, State state)
-            throws NotificationClientException {
+            @RequestBody CallbackRequest callbackRequest) throws NotificationClientException {
+        return ResponseEntity.ok(raiseGrantOfRepresentationNotificationService.handleGrantReceivedNotification(callbackRequest));
+    }
 
-        CaseDetails caseDetails = callbackRequest.getCaseDetails();
-        CaseData caseData = callbackRequest.getCaseDetails().getData();
-        CallbackResponse response;
-
-        List<Document> documents = new ArrayList<>();
-        if (isAnEmailAddressPresent(caseData)) {
-            response = eventValidationService.validateEmailRequest(callbackRequest, emailAddressNotificationValidationRules);
-            if (response.getErrors().isEmpty()) {
-                Document sentEmailAsDocument = notificationService.sendEmail(state, caseDetails);
-                documents.add(sentEmailAsDocument);
-                response = callbackResponseTransformer.addDocuments(callbackRequest, documents, null, null);
-            }
-        } else {
-            response = callbackResponseTransformer.addDocuments(callbackRequest, documents, null, null);
-
-        }
+    @PostMapping(path = "/start-grant-delayed-notify-period", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<CallbackResponse> startDelayedNotificationPeriod(
+            @RequestBody CallbackRequest callbackRequest,
+            BindingResult bindingResult,
+            HttpServletRequest request) {
+        logRequest(request.getRequestURI(), callbackRequest);
+        log.info("start-delayed-notify-period started");
+        notificationService.startGrantDelayNotificationPeriod(callbackRequest.getCaseDetails());
+        notificationService.resetAwaitingDocumentationNotificationDate(callbackRequest.getCaseDetails());
+        CallbackResponse response = callbackResponseTransformer.transformCase(callbackRequest);
         return ResponseEntity.ok(response);
     }
 
-    private boolean isAnEmailAddressPresent(CaseData caseData) {
-        return caseData.isDocsReceivedEmailNotificationRequested();
+    private void logRequest(String uri, CallbackRequest callbackRequest) {
+        try {
+            log.info("POST: {} Case Id: {} ", uri, callbackRequest.getCaseDetails().getId().toString());
+            log.info("POST: {} {}", uri, objectMapper.writeValueAsString(callbackRequest));
+            if (log.isDebugEnabled()) {
+                log.debug("POST: {} {}", uri, objectMapper.writeValueAsString(callbackRequest));
+            }
+        } catch (JsonProcessingException e) {
+            log.error("POST: {}", uri, e);
+        }
     }
+
+    @PostMapping(path = "/grant-delayed-scheduled")
+    public ResponseEntity<GrantScheduleResponse> grantDelayed(@RequestParam("date") final String date) {
+        GrantScheduleResponse grantScheduleResponse = grantNotificationService.handleGrantDelayedNotification(date);
+        log.info("Grants delayed attempted for: {} grants", grantScheduleResponse.getScheduleResponseData().size());
+        return ResponseEntity.ok(grantScheduleResponse);
+    }
+
+    @PostMapping(path = "/grant-awaiting-documents-scheduled")
+    public ResponseEntity<GrantScheduleResponse> grantAwaitingDocuments(@RequestParam("date") final String date) {
+        GrantScheduleResponse grantScheduleResponse = grantNotificationService.handleAwaitingDocumentationNotification(date);
+        log.info("Grants delayed attempted for: {} grants", grantScheduleResponse.getScheduleResponseData().size());
+        return ResponseEntity.ok(grantScheduleResponse);
+    }
+
 }

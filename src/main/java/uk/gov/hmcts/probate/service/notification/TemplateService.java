@@ -44,6 +44,8 @@ public class TemplateService {
                 return emailTemplates.getRequestInformation();
             case REDECLARATION_SOT:
                 return emailTemplates.getRedeclarationSot();
+            case GRANT_RAISED:
+                return emailTemplates.getGrantRaised();
             case CAVEAT_RAISED:
                 if (registryLocation.equalsIgnoreCase(CTSC)) {
                     return emailTemplates.getCaveatRaisedCtsc();

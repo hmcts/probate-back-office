@@ -12,6 +12,7 @@ public class EmailTemplates {
     private String grantReissued;
     private String generalCaveatMessage;
     private String excelaData;
+    private String grantRaised;
     private String caveatRaised;
     private String caveatExtend;
     private String caveatRaisedCtsc;
@@ -20,4 +21,6 @@ public class EmailTemplates {
     private String redeclarationSot;
     private String caveatWithdrawn;
     private String grantIssuedIntestacy;
+    private String grantDelayed;
+    private String grantAwaitingDocumentation;
 }
