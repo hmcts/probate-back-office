@@ -299,12 +299,11 @@ registries:
     name: CTSC
     phone: 0300 303 0648
     emailReplyToId: "ctsc-emailReplyToId"
-    addressline1: Manchester Civil Justice Centre
-    addressline2: Ground Floor
-    addressline3: 1 Bridge Street West
-    addressline4: PO Box 4240
-    town: Manchester
-    postcode: M60 1WJ
+    addressline1: Principal Registry of the Family Division
+    addressline2: HMCTS Probate
+    addressline3: PO Box 12625
+    town: Harlow
+    postcode: CM20 9QE
   bristol:
     name: Bristol District Probate Registry
     phone: 02920 474373
