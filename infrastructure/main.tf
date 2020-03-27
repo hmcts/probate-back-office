@@ -157,7 +157,6 @@ module "probate-back-office" {
     S2S_AUTH_URL = "${var.auth_service_url}"
     PDF_SERVICE_URL = "${var.pdf_service_api_url}"
     PRINTSERVICE_HOST = "${var.printservice_host}"
-    PRINTSERVICE_INTERNAL_HOST = "${var.printservice_internal_host}"
     CCD_GATEWAY_HOST = "${var.ccd_gateway_host}"
     SERVICES_CORECASEDATA_BASEURL = "${var.ccd_baseUrl}"
     IDAM_SERVICE_HOST = "${var.idam_service_host}"
