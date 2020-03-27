@@ -19,16 +19,4 @@ public class SuccessfulCaveatUpdateResponse {
 
     @JsonProperty("errors")
     public final List<String> errors;
-
-    // region constructor
-    public SuccessfulCaveatUpdateResponse(
-            ResponseCaveatData caseUpdateDetails,
-            List<String> warnings,
-            List<String> errors
-    ) {
-        this.caseUpdateDetails = caseUpdateDetails;
-        this.warnings = warnings;
-        this.errors = errors;
-    }
-    // endregion
 }

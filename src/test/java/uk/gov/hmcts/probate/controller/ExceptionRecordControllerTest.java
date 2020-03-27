@@ -15,7 +15,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import uk.gov.hmcts.probate.insights.AppInsights;
+import uk.gov.hmcts.probate.model.exceptionrecord.CaveatCaseUpdateRequest;
+import uk.gov.hmcts.probate.model.exceptionrecord.SuccessfulCaveatUpdateResponse;
 import uk.gov.hmcts.probate.model.ocr.OCRField;
+import uk.gov.hmcts.probate.service.exceptionrecord.ExceptionRecordService;
 import uk.gov.hmcts.probate.service.ocr.OCRPopulatedValueMapper;
 import uk.gov.hmcts.probate.service.ocr.OCRToCCDMandatoryField;
 import uk.gov.hmcts.probate.util.TestUtils;
@@ -60,6 +63,7 @@ public class ExceptionRecordControllerTest {
     private String exceptionRecordPayloadPA1P;
     private String exceptionRecordPayloadPA1A;
     private String exceptionRecordInvalidJsonPayload;
+    private String updateCasePayload;
     private List<OCRField> ocrFields = new ArrayList<>();
     private List<String> warnings = new ArrayList<>();
 
@@ -70,6 +74,7 @@ public class ExceptionRecordControllerTest {
         exceptionRecordPayloadPA1P = testUtils.getStringFromFile("expectedExceptionRecordDataPA1P.json");
         exceptionRecordPayloadPA1A = testUtils.getStringFromFile("expectedExceptionRecordDataPA1A.json");
         exceptionRecordInvalidJsonPayload = testUtils.getStringFromFile("invalidExceptionRecordDataJson.json");
+        updateCasePayload = testUtils.getStringFromFile("updateExceptionRecordDataPA8A.json");
         warnings.add("test warning");
         when(ocrPopulatedValueMapper.ocrPopulatedValueMapper(any())).thenReturn(ocrFields);
         when(ocrToCCDMandatoryField.ocrToCCDMandatoryFields(eq(ocrFields), any(),any())).thenReturn(EMPTY_LIST);
@@ -175,8 +180,17 @@ public class ExceptionRecordControllerTest {
     @Test
     public void testInvalidExceptionRecordJsonResponse() throws Exception {
         mockMvc.perform(post("/transform-exception-record")
-                .content(exceptionRecordInvalidJsonPayload)
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().is4xxClientError());
+            .content(exceptionRecordInvalidJsonPayload)
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().is4xxClientError());
+    }
+    @Test
+    public void testUpdateCase() throws Exception {
+
+        mockMvc.perform(post("/update-case")
+            .content(updateCasePayload)
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(content().string(containsString("\"errors\":[\"Cannot extend an already expired caveat.\"]")));
     }
 }
