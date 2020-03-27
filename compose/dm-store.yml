@@ -5,19 +5,19 @@ services:
   ccd-case-management-web:
     environment:
       DM_URL: http://localhost:3453/documents
-      DM_URL_REMOTE: http://dm-store:8080/documents
+      DM_URL_REMOTE: http://localhost:5006/documents
     depends_on:
       - dm-store
 
   ccd-api-gateway:
     environment:
-      PROXY_DOCUMENT_MANAGEMENT: http://dm-store:8080
+      PROXY_DOCUMENT_MANAGEMENT: http://localhost:5006
     depends_on:
       - dm-store
 
   ccd-data-store-api:
     environment:
-      CCD_DM_DOMAIN: http://dm-store:8080
+      CCD_DM_DOMAIN: http://localhost:5006
 
   service-auth-provider-api:
     environment:

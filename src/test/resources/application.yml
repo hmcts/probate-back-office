@@ -18,7 +18,7 @@ auth.provider.service.client:
   tokenTimeToLiveInSeconds: 900
 
 auth.provider.client:
-  user: http://localhost:4501
+  user: http://localhost:5000
   secret: 123456
   id: probate
   redirect: http://localhost:3451/oauth2redirect
@@ -104,14 +104,18 @@ evidence.management.upload.file.url: /documents
 http.connect.timeout: 60000
 http.connect.request.timeout: 60000
 
-idam.service.host: ${PROVIDER_SERVICE_CLIENT_URL:http://localhost:4502}
+idam.service.host: ${S2S_AUTH_URL:http://localhost:4502}
 
 notifications:
+  grantDelayedNotificationPeriodDays: 1
+  grantDelayedNotificationReleaseDate: "2020-01-01"
+  grantAwaitingDocumentationNotificationPeriodDays: 1
   govNotifyApiKey: "dummy_key"
   templates:
     email:
       english:
         personal:
+          applicationReceived: "pa-application-received"
           documentReceived: "pa-document-received"
           caseStopped: "pa-case-stopped"
           caseStoppedCaveat: "pa-case-stopped-caveat"
@@ -121,9 +125,12 @@ notifications:
           excelaData: "pa-excela-data"
           caveatRaised: "pa-caveat-raised"
           caveatRaisedCtsc: "pa-ctsc-caveat-raised"
+          caveatExtend: "pa-ctsc-caveat-extend"
           requestInformation: "pa-request-information"
           redeclarationSot: "pa-redeclaration-sot"
+          grantDelayed: "pa-grantDelayed"
         solicitor:
+          applicationReceived: "sol-application-received"
           documentReceived: "sol-document-received"
           caseStopped: "sol-case-stopped"
           caseStoppedCaveat: "sol-case-stopped-caveat"
@@ -136,8 +143,10 @@ notifications:
           caveatRaisedSols: "solicitor-caveat-raised"
           requestInformation: "sols-request-information"
           redeclarationSot: "sols-redeclaration-sot"
+          grantDelayed: "sols-grantDelayed"
       welsh:
         personal:
+          applicationReceived: "pa-application-received-welsh"
           documentReceived: "pa-document-received-welsh"
           caseStopped: "pa-case-stopped-welsh"
           caseStoppedCaveat: "pa-case-stopped-caveat-welsh"
@@ -147,9 +156,12 @@ notifications:
           excelaData: "pa-excela-data-welsh"
           caveatRaised: "pa-caveat-raised-welsh"
           caveatRaisedCtsc: "pa-ctsc-caveat-raised-welsh"
+          caveatExtend: "pa-ctsc-caveat-extend-welsh"
           requestInformation: "pa-request-information-welsh"
           redeclarationSot: "pa-redeclaration-sot-welsh"
+          grantDelayed: "pa-grantDelayed-welsh"
         solicitor:
+          applicationReceived: "sol-application-received-welsh"
           documentReceived: "sol-document-received-welsh"
           caseStopped: "sol-case-stopped-welsh"
           caseStoppedCaveat: "sol-case-stopped-caveat-welsh"
@@ -161,6 +173,7 @@ notifications:
           caveatRaisedCtsc: "sols-ctsc-caveat-raised-welsh"
           requestInformation: "sols-request-information-welsh"
           redeclarationSot: "sols-redeclaration-sot-welsh"
+          grantDelayed: "sols-grantDelayed-welsh"
 
 documents:
   templates:
@@ -301,7 +314,7 @@ registries:
     town: Cardiff
     postcode: CF24 0RZ
 
-auth.idam.client.baseUrl: http://localhost:4501
+auth.idam.client.baseUrl: http://localhost:5000
 
 core_case_data.api.url: http://localhost:4452
 
@@ -313,7 +326,9 @@ document:
 
 idam:
   s2s-auth:
-    url: ""
+    url: ${S2S_AUTH_URL:http://localhost:4502}
+    totp_secret: ${S2S_AUTH_TOTP_SECRET:AAAAAAAAAAAAAAAA}
+    microservice: probate_backend
 
 send-letter:
   url: ${SEND_LETTER_SERIVCE_BASEURL:http://localhost:8485}
@@ -324,9 +339,6 @@ idam-s2s-auth:
       enabled: false
 
 excelaEmail: probatetest@gmail.com
-
-cron:
-  data_extract: "0 0 2 * * *"
 
 welsh:
   months:

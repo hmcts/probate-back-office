@@ -15,6 +15,7 @@ import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
 import uk.gov.service.notify.SendEmailResponse;
 
 import static org.junit.Assert.assertEquals;
+import static uk.gov.hmcts.probate.model.State.APPLICATION_RECEIVED;
 import static uk.gov.hmcts.probate.model.State.CASE_STOPPED;
 import static uk.gov.hmcts.probate.model.State.CASE_STOPPED_CAVEAT;
 import static uk.gov.hmcts.probate.model.State.CASE_STOPPED_REQUEST_INFORMATION;
@@ -24,6 +25,7 @@ import static uk.gov.hmcts.probate.model.State.DOCUMENTS_RECEIVED;
 import static uk.gov.hmcts.probate.model.State.GENERAL_CAVEAT_MESSAGE;
 import static uk.gov.hmcts.probate.model.State.GRANT_ISSUED;
 import static uk.gov.hmcts.probate.model.State.GRANT_REISSUED;
+import static uk.gov.hmcts.probate.model.State.CAVEAT_EXTEND;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -59,6 +61,19 @@ public class TemplateServiceTest {
                 LanguagePreference.WELSH);
         assertEquals("pa-document-received-welsh", responseWelsh);
     }
+
+    @Test
+    public void getApplicationReceivedPA() {
+
+        String response = templateService.getTemplateId(APPLICATION_RECEIVED, ApplicationType.PERSONAL, "CTSC",
+                LanguagePreference.ENGLISH);
+        assertEquals("pa-application-received", response);
+
+        String responseWelsh = templateService.getTemplateId(APPLICATION_RECEIVED, ApplicationType.PERSONAL, "CTSC",
+                LanguagePreference.WELSH);
+        assertEquals("pa-application-received-welsh", responseWelsh);
+    }
+
 
     @Test
     public void getDocumentsReceivedSols() {
@@ -268,4 +283,17 @@ public class TemplateServiceTest {
 
         assertEquals("solicitor-caveat-raised", response);
      }
+     
+    @Test
+    public void getCaveatExtendPersonalCTSC() {
+
+        String response = templateService.getTemplateId(CAVEAT_EXTEND, ApplicationType.PERSONAL, "CTSC",
+            LanguagePreference.ENGLISH);
+        assertEquals("pa-ctsc-caveat-extend", response);
+
+        String responseWelsh = templateService.getTemplateId(CAVEAT_EXTEND, ApplicationType.PERSONAL, "CTSC",
+            LanguagePreference.WELSH);
+        assertEquals("pa-ctsc-caveat-extend-welsh", responseWelsh);
+    }
+
 }

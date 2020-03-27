@@ -25,6 +25,7 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     private static final String CASE_STOPPED = "/notify/case-stopped";
     private static final String INFORMATION_REQUEST_DEFAULT_VALUES = "/notify/request-information-default-values";
     private static final String INFORMATION_REQUEST = "/notify/stopped-information-request";
+    private static final String GRANT_RAISED = "/notify/grant-received";
     private static final String REDEC_SOT_URL = "/notify/redeclaration-sot";
 
     private static final String BIRMINGHAM_NO = "0121 681 3401";
@@ -71,6 +72,22 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     @Test
     public void verifyPersonalApplicantGrantReissuedShouldReturnOkResponseCode() {
         validatePostSuccess("personalPayloadNotifications.json", GRANT_REISSUED);
+    }
+
+    @Test
+    public void verifyPersonalApplicantGrantRaisedWithEmailShouldReturnOkResponseCode() {
+        validatePostSuccess("personalRaiseGrantWithEmailNotifications.json", GRANT_RAISED);
+    }
+
+    @Test
+    public void verifyPersonalApplicantGrantRaisedWithoutEmailShouldReturnOkResponseCode() {
+        validatePostSuccess("personalRaiseGrantWithoutEmailNotifications.json", GRANT_RAISED);
+    }
+
+    @Test
+    public void verifyPersonalApplicantGrantReceivedContentIsOk() {
+        String document = sendEmail("personalRaiseGrantWithEmailNotifications.json", GRANT_RAISED, EMAIL_NOTIFICATION_URL);
+        verifyPAEmailNotificationReceived(document);
     }
 
     @Test
@@ -172,7 +189,7 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     private void verifySolsEmailNotificationReceived(String document){
         assertTrue(document.contains("1231-3984-3949-0300"));
         assertTrue(document.contains("Birmingham"));
-        assertTrue(document.contains("name"));
+        assertTrue(document.contains("Solicitor_fn Solicitor_ln"));
         assertTrue(document.contains("Deceased First Name Deceased Last Name"));
         assertTrue(document.contains(BIRMINGHAM_NO));
     }
@@ -181,7 +198,7 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
         assertTrue(document.contains(SOLS_STOP_DETAILS));
         assertTrue(document.contains("1231-3984-3949-0300"));
         assertTrue(document.contains("Birmingham"));
-        assertTrue(document.contains("name"));
+        assertTrue(document.contains("Solicitor_fn Solicitor_ln"));
         assertTrue(document.contains("1528365719153338"));
         assertTrue(document.contains("1st January 2000"));
         assertTrue(document.contains("Deceased First Name Deceased Last Name"));

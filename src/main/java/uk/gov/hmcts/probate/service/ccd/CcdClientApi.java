@@ -14,9 +14,14 @@ import uk.gov.hmcts.reform.ccd.client.model.CaseDataContent;
 import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
 import uk.gov.hmcts.reform.ccd.client.model.Event;
 import uk.gov.hmcts.reform.ccd.client.model.StartEventResponse;
+import uk.gov.hmcts.reform.probate.model.cases.CaseData;
+import uk.gov.hmcts.reform.probate.model.cases.CaseType;
+import uk.gov.hmcts.reform.probate.model.cases.ProbateCaseDetails;
 
 import java.util.List;
 import java.util.Optional;
+
+import static uk.gov.hmcts.reform.probate.model.cases.JurisdictionId.PROBATE;
 
 @Slf4j
 @Component
@@ -66,6 +71,38 @@ public class CcdClientApi implements CoreCaseDataService {
             throw new IllegalStateException("Multiple cases exist with legacyId provided!");
         }
         return Optional.of(caseDetails.get(0));
+    }
+
+    @Override
+    public CaseDetails updateCaseAsCaseworker(CcdCaseType caseType, String caseId, CaseData caseData, EventId eventId,
+                                              SecurityDTO securityDTO) {
+        log.info("Update case as for caseType: {}, caseId: {}, eventId: {}",
+                caseType.getName(), caseId, eventId.getName());
+        log.info("Retrieve event token from CCD for Caseworker, caseType: {}, caseId: {}, eventId: {}",
+                caseType.getName(), caseId, eventId.getName());
+        StartEventResponse startEventResponse = coreCaseDataApi.startEventForCaseWorker(
+                securityDTO.getAuthorisation(),
+                securityDTO.getServiceAuthorisation(),
+                securityDTO.getUserId(),
+                PROBATE.name(),
+                caseType.getName(),
+                caseId,
+                eventId.getName()
+        );
+        CaseDataContent caseDataContent = createCaseDataContent(caseData, eventId, startEventResponse);
+        log.info("Submit event to CCD for Caseworker, caseType: {}, caseId: {}",
+                caseType.getName(), caseId);
+        CaseDetails caseDetails = coreCaseDataApi.submitEventForCaseWorker(
+                securityDTO.getAuthorisation(),
+                securityDTO.getServiceAuthorisation(),
+                securityDTO.getUserId(),
+                PROBATE.name(),
+                caseType.getName(),
+                caseId,
+                false,
+                caseDataContent
+        );
+        return caseDetails;
     }
 
     private CaseDataContent createCaseDataContent(Object object, EventId eventId, StartEventResponse startEventResponse) {

@@ -2,13 +2,14 @@ version: '2.1'
 
 services:
   back-office:
-      #context: .
+    build:
+      context: .
     #image: back-office
-    image: docker.artifactory.reform.hmcts.net/probate/back-office:${SOL_CCD_SERVICE_API_DOCKER_VERSION:-latest}
+    image: hmctspublic.azurecr.io/probate/back-office
     container_name: back-office
     environment:
       - SERVER_PORT=4104
-      - AUTH_PROVIDER_SERVICE_CLIENT_BASEURL=http://service-auth-provider-api:8080/
+      - S2S_AUTH_URL=http://service-auth-provider-api:8080/
       - AUTHORISED_SERVICES=TEST
       - PDF_SERVICE_URL=http://pdf-service-api:5500
       - PDF_SERVICE_PDFAPI=/api/v1/pdf-generator/html
@@ -29,7 +30,7 @@ services:
      - pdf-service-api
 
   service-auth-provider-api:
-    image: hmcts/service-auth-provider-app:latest
+    image: hmctspublic.azurecr.io/rpe/service-auth-provider:latest
     container_name: service-auth-provider-api
     environment:
     - SERVER_PORT=8080
@@ -47,7 +48,7 @@ services:
     - 4502:8080
 
   pdf-service-api:
-    image: docker.artifactory.reform.hmcts.net/cmc/pdf-service-api:latest
+    image: hmctspublic.azurecr.io/cmc/pdf-service:latest
     container_name: pdf-service-api
     environment:
       - ROOT_APPENDER

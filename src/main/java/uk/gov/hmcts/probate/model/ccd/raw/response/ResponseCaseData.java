@@ -52,9 +52,15 @@ public class ResponseCaseData {
     private final String solsSolicitorEmail;
     private final String solsSolicitorPhoneNumber;
     private final String solsSOTName;
+    private final String solsSOTForenames;
+    private final String solsSOTSurname;
     private final String solsSOTJobTitle;
     private final String solsSolicitorAppReference;
     private final String ihtFormId;
+    private final String solsSolicitorIsExec;
+    private final String solsSolicitorIsMainApplicant;
+    private final String solsSolicitorIsApplying;
+    private final String solsSolicitorNotApplyingReason;
     private final String solsWillType;
     private final String solsApplicantRelationshipToDeceased;
     private final String solsSpouseOrCivilRenouncing;
@@ -277,6 +283,7 @@ public class ResponseCaseData {
     private final String anyDeceasedGrandChildrenUnderEighteen;
     private final String deceasedAnyChildren;
     private final String deceasedHasAssetsOutsideUK;
+    private final String solicitorIsMainApplicant;
 
     private final String boStopDetailsDeclarationParagraph;
     private final String boEmailRequestInfoNotificationRequested;
@@ -293,4 +300,11 @@ public class ResponseCaseData {
     @Builder.Default
     private List<CollectionMember<ParagraphDetail>> paragraphDetails = new ArrayList<>();
     private String bulkScanCaseReference;
+
+    private final String grantDelayedNotificationDate;
+    private final String grantStoppedDate;
+    private String grantDelayedNotificationIdentified;
+    private final String grantDelayedNotificationSent;
+    private final String grantAwaitingDocumentationNotificationDate;
+    private final String grantAwaitingDocumentatioNotificationSent;
 }

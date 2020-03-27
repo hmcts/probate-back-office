@@ -279,7 +279,7 @@ services:
       SPRING_DATASOURCE_URL: "jdbc:postgresql://${MY_IP}:5430/payment"
       SPRING_DATASOURCE_USERNAME: "payment"
       SPRING_DATASOURCE_PASSWORD: ""
-      AUTH_PROVIDER_SERVICE_CLIENT_BASEURL: "http://service-auth-provider-api:8080/"
+      S2S_AUTH_URL: "http://service-auth-provider-api:8080/"
       FEES_REGISTER_URL: "http://fees-register-api-aat.service.core-compute-aat.internal"
       PAYMENTS_REPORT_FILE_LOCATION: "."
       PBA_CMC_PAYMENTS_EMAIL_FROM: "no-reply@reform.hmcts.net"
@@ -327,7 +327,7 @@ services:
 
   payments-database:
     container_name: payments-database
-    image: postgres:11-alpine
+    image: postgres:9.5.18
     environment:
       POSTGRES_USER: "payment"
       POSTGRES_DB: "payment"
