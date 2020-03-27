@@ -29,7 +29,7 @@
     { "name": "feeForCopiesPaperForm", "value": "" },
     { "name": "totalFeePaperForm", "value": "" },
     { "name": "paperPaymentMethod", "value": "debitOrCredit" },
-    { "name": "paymentReferenceNumberPaperform", "value": "" },
+    { "name": "paymentReferenceNumberPaperform", "value": "1234-2345-3456-4567" },
     { "name": "primaryApplicantForenames", "value": "Andie-Sarah" },
     { "name": "primaryApplicantMiddleNames", "value": "Rebecca" },
     { "name": "primaryApplicantSurname", "value": "Rollingstone" },

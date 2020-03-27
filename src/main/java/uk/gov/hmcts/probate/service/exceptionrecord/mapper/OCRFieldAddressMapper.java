@@ -9,6 +9,7 @@ import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToAttorney
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToCaveatorAddress;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToDeceasedAddress;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToPrimaryApplicantAddress;
+import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToSolicitorAddress;
 import uk.gov.hmcts.reform.probate.model.AttorneyNamesAndAddress;
 import uk.gov.hmcts.reform.probate.model.cases.Address;
 import uk.gov.hmcts.reform.probate.model.cases.CollectionMember;
@@ -87,6 +88,20 @@ public class OCRFieldAddressMapper {
         } else {
             return buildCaveatorAddress(ocrFields);
         }
+    }
+
+    @SuppressWarnings("squid:S1168")
+    @ToSolicitorAddress
+    public Address toSolicitorAddress(ExceptionRecordOCRFields ocrFields) {
+        log.info("Beginning mapping for Solicitor Address");
+        this.addressLine1 = ocrFields.getSolsSolicitorAddressLine1();
+        this.addressLine2 = ocrFields.getSolsSolicitorAddressLine2();
+        this.addressLine3 = "";
+        this.postTown = ocrFields.getSolsSolicitorAddressTown();
+        this.county = ocrFields.getSolsSolicitorAddressCounty();
+        this.country = "";
+        this.postCode = ocrFields.getSolsSolicitorAddressPostCode();
+        return buildAddress();
     }
 
     @SuppressWarnings("squid:S1168")
