@@ -1,12 +1,13 @@
 package uk.gov.hmcts.probate.service.exceptionrecord.mapper;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.model.exceptionrecord.ExceptionRecordOCRFields;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToApplicationTypeCaveat;
+import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToApplicationTypeGrantOfRepresentation;
 import uk.gov.hmcts.reform.probate.model.cases.ApplicationType;
-import org.apache.commons.lang.BooleanUtils;
 
 @Slf4j
 @Component
@@ -25,7 +26,6 @@ public class ApplicationTypeMapper {
         log.info("No solicitor details found returning ApplicationType.PERSONAL");
         return ApplicationType.PERSONAL;
     }
-}
 
     @SuppressWarnings("squid:S1168")
     @ToApplicationTypeCaveat

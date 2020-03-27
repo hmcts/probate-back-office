@@ -41,6 +41,30 @@ public class ApplicationTypeMapperTest {
     }
 
     @Test
+    public void testApplicationTypeGrantOfRepresentationIsPersonal() {
+        ApplicationType applicationType = applicationTypeMapper.toApplicationTypeGrantOfRepresentation(ocrFields);
+        assertEquals(ApplicationType.PERSONAL, applicationType);
+    }
+
+    @Test
+    public void testApplicationTypeGrantOfRepresentationIsSolicitor() {
+        ApplicationType applicationType = applicationTypeMapper.toApplicationTypeGrantOfRepresentation(ocrFieldsWithSolicitor);
+        assertEquals(ApplicationType.SOLICITORS, applicationType);
+    }
+
+    @Test
+    public void testApplicationTypeGrantOfRepresentationIsSolicitorMissingFirmName() {
+        ApplicationType applicationType = applicationTypeMapper.toApplicationTypeGrantOfRepresentation(ocrFieldsWithSolicitorNoFirmName);
+        assertEquals(ApplicationType.SOLICITORS, applicationType);
+    }
+
+    @Test
+    public void testApplicationTypeGrantOfRepresentationIsSolicitorMissingRepName() {
+        ApplicationType applicationType = applicationTypeMapper.toApplicationTypeGrantOfRepresentation(ocrFieldsWithSolicitorNoRepName);
+        assertEquals(ApplicationType.SOLICITORS, applicationType);
+    }
+
+    @Test
     public void testApplicationTypeCaveatIsPersonal() {
         ApplicationType applicationType = applicationTypeMapper.toApplicationTypeCaveat(ocrFields);
         assertEquals(ApplicationType.PERSONAL, applicationType);
