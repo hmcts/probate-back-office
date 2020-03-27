@@ -341,9 +341,9 @@ public class CaveatCallbackResponseTransformerTest {
     public void shouldConvertRequestToDataBeanWithCaveatWithdrawnNoCaveatWithdrawnDocuments() {
         List<Document> documents = new ArrayList<>();
         Document document = Document.builder()
-                .documentLink(documentLinkMock)
-                .documentType(DocumentType.DIGITAL_GRANT)
-                .build();
+            .documentLink(documentLinkMock)
+            .documentType(DocumentType.DIGITAL_GRANT)
+            .build();
         documents.add(0, document);
         String letterId = "123-456";
         CaveatCallbackResponse caveatCallbackResponse = underTest.withdrawn(caveatCallbackRequestMock, documents, letterId);
@@ -352,6 +352,14 @@ public class CaveatCallbackResponseTransformerTest {
 
         assertEquals(0, caveatCallbackResponse.getCaveatData().getNotificationsGenerated().size());
         assertEquals(0, caveatCallbackResponse.getCaveatData().getBulkPrintId().size());
+    }
+
+    @Test
+    public void shouldExtendCaveatExpiry() {
+        CaveatCallbackResponse caveatCallbackResponse = underTest.transformResponseWithExtendedExpiry(caveatCallbackRequestMock);
+
+        String extendedDate = dateTimeFormatter.format(LocalDate.now().plusMonths(12));
+        assertEquals(extendedDate, caveatCallbackResponse.getCaveatData().getExpiryDate());
     }
 
     private void assertBulkScanCaseCreationDetails(CaseCreationDetails caveatCreationDetails) {

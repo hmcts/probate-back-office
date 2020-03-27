@@ -35,6 +35,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import static java.util.stream.Collectors.toList;
+import static uk.gov.hmcts.probate.model.Constants.CAVEAT_EXPIRY_EXTENSION_PERIOD_IN_MONTHS;
 
 @Slf4j
 @Service
@@ -193,7 +194,7 @@ public class ExceptionRecordService {
             CaveatCallbackResponse caveatCallbackResponse = eventValidationService.validateCaveatRequest(caveatCallbackRequest, validationRuleCaveatsExpiry);
             if (caveatCallbackResponse.getErrors().isEmpty()) {
                 LocalDate defaultExpiry = caveatCallbackRequest.getCaseDetails().getData()
-                        .getExpiryDate().plusMonths(CaveatCallbackResponseTransformer.CAVEAT_EXPIRY_EXTENSION_PERIOD_IN_MONTHS);
+                        .getExpiryDate().plusMonths(CAVEAT_EXPIRY_EXTENSION_PERIOD_IN_MONTHS);
                 log.info("No errors found with validateCaveatRequest, updating expiryDate to {} in request.",
                         defaultExpiry.format(CaveatCallbackResponseTransformer.dateTimeFormatter));
                 caveatCallbackRequest.getCaseDetails().getData().setExpiryDate(defaultExpiry);

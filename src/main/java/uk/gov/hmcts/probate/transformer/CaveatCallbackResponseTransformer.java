@@ -26,6 +26,7 @@ import java.util.stream.Collectors;
 import static java.util.Optional.ofNullable;
 import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
+import static uk.gov.hmcts.probate.model.Constants.CAVEAT_EXPIRY_EXTENSION_PERIOD_IN_MONTHS;
 import static uk.gov.hmcts.probate.model.Constants.CTSC;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
@@ -43,8 +44,6 @@ public class CaveatCallbackResponseTransformer {
 
     public static final ApplicationType DEFAULT_APPLICATION_TYPE = PERSONAL;
     public static final String DEFAULT_REGISTRY_LOCATION = "Leeds";
-
-    public static final int CAVEAT_EXPIRY_EXTENSION_PERIOD_IN_MONTHS = 6;
 
     public static final String EXCEPTION_RECORD_CASE_TYPE_ID = "Caveat";
     public static final String EXCEPTION_RECORD_EVENT_ID = "raiseCaveatFromBulkScan";
