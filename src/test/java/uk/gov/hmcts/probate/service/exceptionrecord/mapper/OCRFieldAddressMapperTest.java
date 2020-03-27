@@ -36,6 +36,7 @@ public class OCRFieldAddressMapperTest {
 
     private ExceptionRecordOCRFields ocrFields;
     private ExceptionRecordOCRFields ocrFieldsSolicitorsAddress;
+    private ExceptionRecordOCRFields ocrFieldsCaveatAddress;
     private ExceptionRecordOCRFields ocrFieldsAttorneyMissingAddress;
     private ExceptionRecordOCRFields ocrFieldsAttorneyMissingName;
 
@@ -57,12 +58,6 @@ public class OCRFieldAddressMapperTest {
                 .primaryApplicantAddressCounty(ADDRESS_COUNTY)
                 .primaryApplicantAddressPostCode(ADDRESS_POST_CODE)
 
-                .caveatorAddressLine1(CAVEAT_ADDRESS_LINE1)
-                .caveatorAddressLine2(ADDRESS_LINE2)
-                .caveatorAddressTown(ADDRESS_POST_TOWN)
-                .caveatorAddressCounty(ADDRESS_COUNTY)
-                .caveatorAddressPostCode(ADDRESS_POST_CODE)
-
                 .solsSolicitorAddressLine1(SOLICITOR_ADDRESS_LINE1)
                 .solsSolicitorAddressLine2(ADDRESS_LINE2)
                 .solsSolicitorAddressTown(ADDRESS_POST_TOWN)
@@ -75,6 +70,15 @@ public class OCRFieldAddressMapperTest {
                 .deceasedAddressCounty(ADDRESS_COUNTY)
                 .deceasedAddressPostCode(ADDRESS_POST_CODE)
                 .build();
+
+        ocrFieldsCaveatAddress = ExceptionRecordOCRFields.builder()
+                .caveatorAddressLine1(CAVEAT_ADDRESS_LINE1)
+                .caveatorAddressLine2(ADDRESS_LINE2)
+                .caveatorAddressTown(ADDRESS_POST_TOWN)
+                .caveatorAddressCounty(ADDRESS_COUNTY)
+                .caveatorAddressPostCode(ADDRESS_POST_CODE)
+                .build();
+
 
         ocrFieldsSolicitorsAddress = ExceptionRecordOCRFields.builder()
                 .solsSolicitorAddressLine1(SOLICITORS_ADDRESS_LINE1)
@@ -141,8 +145,8 @@ public class OCRFieldAddressMapperTest {
     }
 
     @Test
-    public void testCaveatAddress() {
-        Address response = addressMapper.toCaveatorAddress(ocrFields);
+    public void testCaveatWithCaveatAddress() {
+        Address response = addressMapper.toCaveatorAddress(ocrFieldsCaveatAddress);
         assertEquals(CAVEAT_ADDRESS_LINE1, response.getAddressLine1());
         assertEquals(ADDRESS_LINE2, response.getAddressLine2());
         assertEquals(ADDRESS_POST_TOWN, response.getPostTown());
@@ -151,7 +155,7 @@ public class OCRFieldAddressMapperTest {
     }
 
     @Test
-    public void testSolicitorsAddress() {
+    public void testCaveatWithSolicitorsAddress() {
         Address response = addressMapper.toCaveatorAddress(ocrFieldsSolicitorsAddress);
         assertEquals(SOLICITORS_ADDRESS_LINE1, response.getAddressLine1());
         assertEquals(ADDRESS_LINE2, response.getAddressLine2());

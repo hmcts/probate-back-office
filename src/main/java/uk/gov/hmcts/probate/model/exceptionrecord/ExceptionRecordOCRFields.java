@@ -21,7 +21,6 @@ public class ExceptionRecordOCRFields {
     private final String solsSolicitorRepresentativeName;
     private final String solsSolicitorFirmName;
     private final String solsSolicitorAppReference;
-    private final String solsFeeAccountNumber;
     private final String solsSolicitorAddressLine1;
     private final String solsSolicitorAddressLine2;
     private final String solsSolicitorAddressTown;
@@ -90,16 +89,6 @@ public class ExceptionRecordOCRFields {
     private final String executorsApplying2applyingExecutorDifferentNameToWill;
     private final String executorsApplying2applyingExecutorOtherNames;
     private final String solsSolicitorIsApplying;
-    private final String solsSolicitorRepresentativeName;
-    private final String solsSolicitorFirmName;
-    private final String solsSolicitorAppReference;
-    private final String solsSolicitorAddressLine1;
-    private final String solsSolicitorAddressLine2;
-    private final String solsSolicitorAddressTown;
-    private final String solsSolicitorAddressCounty;
-    private final String solsSolicitorAddressPostCode;
-    private final String solsSolicitorEmail;
-    private final String solsSolicitorPhoneNumber;
     private final String deceasedDomicileInEngWales;
     private final String deceasedMartialStatus;
     private final String dateOfMarriageOrCP;

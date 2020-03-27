@@ -6,6 +6,7 @@ import uk.gov.hmcts.probate.model.exceptionrecord.ExceptionRecordOCRFields;
 import uk.gov.hmcts.reform.probate.model.cases.ApplicationType;
 
 import static org.junit.Assert.assertEquals;
+import static uk.gov.hmcts.probate.model.Constants.YES;
 
 public class ApplicationTypeMapperTest {
 
@@ -25,16 +26,19 @@ public class ApplicationTypeMapperTest {
                 .build();
 
         ocrFieldsWithSolicitor = ExceptionRecordOCRFields.builder()
+                .solsSolicitorIsApplying(YES)
                 .solsSolicitorFirmName(SOLS_SOLICITORS_FIRM_NAME)
                 .solsSolicitorRepresentativeName(SOLS_SOLICITORS_REPRESENTITIVE_NAME)
                 .build();
 
         ocrFieldsWithSolicitorNoRepName = ExceptionRecordOCRFields.builder()
+                .solsSolicitorIsApplying(YES)
                 .solsSolicitorFirmName(SOLS_SOLICITORS_FIRM_NAME)
                 .solsSolicitorRepresentativeName(null)
                 .build();
 
         ocrFieldsWithSolicitorNoFirmName = ExceptionRecordOCRFields.builder()
+                .solsSolicitorIsApplying(YES)
                 .solsSolicitorFirmName("")
                 .solsSolicitorRepresentativeName(SOLS_SOLICITORS_REPRESENTITIVE_NAME)
                 .build();
