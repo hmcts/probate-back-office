@@ -84,7 +84,7 @@ On linux I had to restart
 
 In that order
 
-##### 8) Setup IDAM data.
+##### 8) Setup IDAM data
 ```bash
    ./bin/idam-client-setup.sh
 ```
