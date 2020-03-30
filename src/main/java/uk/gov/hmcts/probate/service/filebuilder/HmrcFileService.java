@@ -55,15 +55,18 @@ public class HmrcFileService extends BaseFileService {
 
     private ImmutableList.Builder<String> prepareFileData(List<ReturnedCaseDetails> ccdCases, String fileName) {
         ImmutableList.Builder<String> fileData = new ImmutableList.Builder<>();
+        int rowCount = 0;
+        Long currentCaseId = 0L;
         try {
             fileData.add(ROW_HEADER + ROW_DELIMITER);
-            int rowCount = 0;
             for (ReturnedCaseDetails ccdCase : ccdCases) {
-                rowCount = rowCount + prepareData(fileData, ccdCase.getId(), ccdCase.getData());
+                currentCaseId = ccdCase.getId();
+                rowCount = rowCount + prepareData(fileData, currentCaseId, ccdCase.getData());
             }
             addFooter(fileData, rowCount, fileName);
         } catch (Exception e) {
-            log.error("Failed to prepare data HMRC file for :" + fileName);
+            log.error("Failed to prepare data HMRC file for {}, case:{}, rowCount:{}, exception: {}", 
+                fileName, currentCaseId, rowCount, e.getMessage());
             throw new ClientException(HttpStatus.SERVICE_UNAVAILABLE.value(),
                 "Failed to prepare data HMRC file for " + fileName + " exception:" + e.getStackTrace());
         }

@@ -56,7 +56,7 @@ public class FileTransferService {
                 signature);
             log.info("File transfer response: {}", response.status());
             Files.delete(file.toPath());
-        } catch (IOException e) {
+        } catch (Exception e) {
             log.error("Error handling file: " + e.getMessage());
             throw new BadRequestException("Failed to initiate file transfer request: " + e.getMessage());
         }
