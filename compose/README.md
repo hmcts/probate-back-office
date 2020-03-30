@@ -86,7 +86,7 @@ In that order
 
 ##### 8) Setup IDAM data
 ```bash
-   ./bin/idam-client-setup.sh
+   ./bin/idam-client-setup.sh.
 ```
 
 To check the IDAM data, you can log into IDAM-web `http://localhost:8082/login` with `idamOwner@hmcts.net/Ref0rmIsFun`.
