@@ -77,7 +77,7 @@ public class ExceptionRecordControllerTest {
         updateCasePayload = testUtils.getStringFromFile("updateExceptionRecordDataPA8A.json");
         warnings.add("test warning");
         when(ocrPopulatedValueMapper.ocrPopulatedValueMapper(any())).thenReturn(ocrFields);
-        when(ocrToCCDMandatoryField.ocrToCCDMandatoryFields(eq(ocrFields), any(),any())).thenReturn(EMPTY_LIST);
+        when(ocrToCCDMandatoryField.ocrToCCDMandatoryFields(eq(ocrFields), any(), any())).thenReturn(EMPTY_LIST);
     }
 
     @Test

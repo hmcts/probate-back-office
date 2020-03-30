@@ -54,10 +54,6 @@ public class ExceptionRecordController {
     private static final String OCR_EXCEPTION_WARNING_PREFIX = "OCR Data Mapping Error: ";
     private static final String OCR_EXCEPTION_ERROR = "OCR fields could not be mapped to a case";
 
-    public static final String PA8A_FORM = FormType.PA8A.name();
-    public static final String PA1A_FORM = FormType.PA1A.name();
-    public static final String PA1P_FORM = FormType.PA1P.name();
-
     @Autowired
     ExceptionRecordService erService;
 
