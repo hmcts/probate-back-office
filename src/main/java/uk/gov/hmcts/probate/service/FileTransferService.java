@@ -38,7 +38,8 @@ public class FileTransferService {
 
     public int uploadFile(File file) {
         log.info("Starting file upload to ftp for file:" + file.toPath() + ":" + file.getName());
-        log.info(":{} :{} :{} :{} :{} :{} :{} :{} :{} :{}",  targetEnv , file.getName(), SV_VALID_FROM, SS, SRT, 
+        log.info("targetEnv:{} fileName:{} SV_VALID_FROM:{} SS:{} SRT:{} SP:{} SE_SIG_EXPIRY_DATE:{} ST_SIG_CREATION_DATE:{} SPR:{} signature:{}",  
+            targetEnv , file.getName(), SV_VALID_FROM, SS, SRT, 
             SP, SE_SIG_EXPIRY_DATE, ST_SIG_CREATION_DATE, SPR, signature);
         Response response = null;
         String fileAsString = fileAsString(file.toPath().toString());
