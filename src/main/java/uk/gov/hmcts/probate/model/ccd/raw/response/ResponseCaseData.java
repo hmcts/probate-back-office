@@ -20,6 +20,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Declaration;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
+import uk.gov.hmcts.probate.model.ccd.raw.DynamicList;
 import uk.gov.hmcts.probate.model.ccd.raw.EstateItem;
 import uk.gov.hmcts.probate.model.ccd.raw.LegalStatement;
 import uk.gov.hmcts.probate.model.ccd.raw.ParagraphDetail;
@@ -307,4 +308,9 @@ public class ResponseCaseData {
     private final String grantDelayedNotificationSent;
     private final String grantAwaitingDocumentationNotificationDate;
     private final String grantAwaitingDocumentatioNotificationSent;
+
+    private final DynamicList reprintDocumentList;
+    private final String reprintDocument;
+    private final String reprintNumberOfCopies;
+
 }
