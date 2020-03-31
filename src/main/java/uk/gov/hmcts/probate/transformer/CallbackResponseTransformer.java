@@ -587,7 +587,8 @@ public class CallbackResponseTransformer {
                 .grantDelayedNotificationSent(caseData.getGrantDelayedNotificationSent())
                 .grantAwaitingDocumentationNotificationDate(ofNullable(caseData.getGrantAwaitingDocumentationNotificationDate())
                     .map(dateTimeFormatter::format).orElse(null))
-                .grantAwaitingDocumentatioNotificationSent(caseData.getGrantAwaitingDocumentatioNotificationSent());
+                .grantAwaitingDocumentatioNotificationSent(caseData.getGrantAwaitingDocumentatioNotificationSent())
+                .pcqId(caseData.getPcqId());
 
 
         if (transform) {

@@ -1,100 +1,49 @@
 package uk.gov.hmcts.probate.transformer;
 
-import org.apache.commons.lang.BooleanUtils;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.Spy;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.apache.commons.lang.*;
+import org.junit.*;
+import org.junit.runner.*;
+import org.mockito.*;
+import org.mockito.junit.*;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.DocumentType;
-import uk.gov.hmcts.probate.model.ExecutorsApplyingNotification;
+import uk.gov.hmcts.probate.model.*;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
-import uk.gov.hmcts.probate.model.ccd.Reissue;
-import uk.gov.hmcts.probate.model.ccd.caveat.response.CaveatCallbackResponse;
-import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
-import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
-import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
-import uk.gov.hmcts.probate.model.ccd.raw.AdoptedRelative;
+import uk.gov.hmcts.probate.model.ccd.*;
 import uk.gov.hmcts.probate.model.ccd.raw.AliasName;
-import uk.gov.hmcts.probate.model.ccd.raw.AttorneyApplyingOnBehalfOf;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
-import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
-import uk.gov.hmcts.probate.model.ccd.raw.EstateItem;
-import uk.gov.hmcts.probate.model.ccd.raw.Payment;
-import uk.gov.hmcts.probate.model.ccd.raw.ProbateAliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
-import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
-import uk.gov.hmcts.probate.model.ccd.raw.StopReason;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
-import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
+import uk.gov.hmcts.probate.model.ccd.raw.*;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
-import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
-import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
-import uk.gov.hmcts.probate.model.exceptionrecord.CaseCreationDetails;
-import uk.gov.hmcts.probate.model.fee.FeeServiceResponse;
-import uk.gov.hmcts.probate.service.ExecutorsApplyingNotificationService;
-import uk.gov.hmcts.probate.service.SolicitorExecutorService;
-import uk.gov.hmcts.probate.service.StateChangeService;
-import uk.gov.hmcts.probate.transformer.assembly.AssembleLetterTransformer;
-import uk.gov.hmcts.reform.probate.model.IhtFormType;
-import uk.gov.hmcts.reform.probate.model.ProbateDocumentLink;
-import uk.gov.hmcts.reform.probate.model.Relationship;
-import uk.gov.hmcts.reform.probate.model.cases.Address;
-import uk.gov.hmcts.reform.probate.model.cases.MaritalStatus;
-import uk.gov.hmcts.reform.probate.model.cases.RegistryLocation;
-import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData;
-import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType;
+import uk.gov.hmcts.probate.model.ccd.raw.request.*;
+import uk.gov.hmcts.probate.model.ccd.raw.response.*;
+import uk.gov.hmcts.probate.model.exceptionrecord.*;
+import uk.gov.hmcts.probate.model.fee.*;
+import uk.gov.hmcts.probate.service.*;
+import uk.gov.hmcts.probate.transformer.assembly.*;
+import uk.gov.hmcts.reform.probate.model.*;
+import uk.gov.hmcts.reform.probate.model.cases.*;
+import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.*;
 
-import java.math.BigDecimal;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.math.*;
+import java.text.*;
+import java.time.*;
+import java.time.format.*;
+import java.util.*;
 
-import static java.lang.Boolean.TRUE;
-import static java.util.Collections.EMPTY_LIST;
-import static java.util.Collections.emptyList;
-import static org.hamcrest.Matchers.comparesEqualTo;
+import static java.lang.Boolean.*;
+import static java.util.Collections.*;
+import static org.hamcrest.Matchers.*;
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyList;
-import static org.mockito.Mockito.doAnswer;
-import static org.mockito.Mockito.when;
-import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
-import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
-import static uk.gov.hmcts.probate.model.Constants.CTSC;
-import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_REISSUE;
-import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT_STOPPED;
-import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
-import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_DRAFT;
-import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_REISSUE;
-import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_REISSUE;
-import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE;
-import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
-import static uk.gov.hmcts.probate.model.DocumentType.SOT_INFORMATION_REQUEST;
-import static uk.gov.hmcts.probate.model.DocumentType.STATEMENT_OF_TRUTH;
-import static uk.gov.hmcts.probate.model.DocumentType.WELSH_ADMON_WILL_GRANT;
-import static uk.gov.hmcts.probate.model.DocumentType.WELSH_DIGITAL_GRANT;
-import static uk.gov.hmcts.probate.model.DocumentType.WELSH_INTESTACY_GRANT;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.*;
+import static uk.gov.hmcts.probate.model.ApplicationType.*;
+import static uk.gov.hmcts.probate.model.Constants.*;
+import static uk.gov.hmcts.probate.model.DocumentType.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CallbackResponseTransformerTest {
@@ -493,7 +442,8 @@ public class CallbackResponseTransformerTest {
                 .grantStoppedDate(GRANT_STOPPED_DATE)
                 .grantDelayedNotificationSent(YES)
                 .grantAwaitingDocumentatioNotificationSent(YES)
-                .grantAwaitingDocumentationNotificationDate(GRANT_AWAITING_DOCS_DATE);
+                .grantAwaitingDocumentationNotificationDate(GRANT_AWAITING_DOCS_DATE)
+                .pcqId(APP_REF);
 
         bulkScanGrantOfRepresentationData = GrantOfRepresentationData.builder()
                 .deceasedForenames(DECEASED_FIRSTNAME)
@@ -2636,6 +2586,7 @@ public class CallbackResponseTransformerTest {
         assertEquals(LIFE_INTEREST, callbackResponse.getData().getSolsLifeInterest());
         assertEquals(RESIDUARY, callbackResponse.getData().getSolsResiduary());
         assertEquals(RESIDUARY_TYPE, callbackResponse.getData().getSolsResiduaryType());
+        assertEquals(APP_REF, callbackResponse.getData().getPcqId());
     }
 
     private void assertLegacyInfo(CallbackResponse callbackResponse) {
