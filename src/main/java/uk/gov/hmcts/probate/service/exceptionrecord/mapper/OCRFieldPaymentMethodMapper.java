@@ -33,6 +33,8 @@ public class OCRFieldPaymentMethodMapper {
                     return PAYMENT_METHOD_CASH;
                 case "FEEACCOUNT":
                     return PAYMENT_METHOD_FEEACCOUNT;
+                case "PBA":
+                    return null;
                 default:
                     String errorMessage = "Payment method debitOrCredit, cheque, feeAccount or cash expected but got '"
                             + paymentMethod + "'";
