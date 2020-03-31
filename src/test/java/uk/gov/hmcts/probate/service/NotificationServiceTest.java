@@ -634,7 +634,7 @@ public class NotificationServiceTest {
             eq("personal@test.com"),
             any(),
             isNull(),
-            eq("e3511bc5-98d8-457c-b49b-5b0c0ba4892a"));
+            eq("birmingham-emailReplyToId"));
 
         verify(pdfManagementService).generateAndUpload(any(SentEmail.class), eq(SENT_EMAIL));
     }
@@ -650,7 +650,7 @@ public class NotificationServiceTest {
             eq("solicitor@test.com"),
             any(),
             eq("1234-5678-9012"),
-            eq("e3511bc5-98d8-457c-b49b-5b0c0ba4892a"));
+            eq("birmingham-emailReplyToId"));
 
         verify(pdfManagementService).generateAndUpload(any(SentEmail.class), eq(SENT_EMAIL));
     }
@@ -666,7 +666,7 @@ public class NotificationServiceTest {
             eq("personal@test.com"),
             any(),
             isNull(),
-            eq("3c2df3ad-6eaf-4395-b85c-1ef5c5c89d4f"));
+            eq("oxford-emailReplyToId"));
 
         verify(pdfManagementService).generateAndUpload(any(SentEmail.class), eq(SENT_EMAIL));
     }
@@ -682,7 +682,7 @@ public class NotificationServiceTest {
             eq("solicitor@test.com"),
             any(),
             eq("1234-5678-9012"),
-            eq("3c2df3ad-6eaf-4395-b85c-1ef5c5c89d4f"));
+            eq("oxford-emailReplyToId"));
 
         verify(pdfManagementService).generateAndUpload(any(SentEmail.class), eq(SENT_EMAIL));
     }
@@ -698,7 +698,7 @@ public class NotificationServiceTest {
             eq("personal@test.com"),
             any(),
             isNull(),
-            eq("cdb5b02c-c6b6-490b-9367-8af3a3ae80b1"));
+            eq("manchester-emailReplyToId"));
 
         verify(pdfManagementService).generateAndUpload(any(SentEmail.class), eq(SENT_EMAIL));
     }
@@ -714,7 +714,7 @@ public class NotificationServiceTest {
             eq("solicitor@test.com"),
             any(),
             eq("1234-5678-9012"),
-            eq("cdb5b02c-c6b6-490b-9367-8af3a3ae80b1"));
+            eq("manchester-emailReplyToId"));
 
         verify(pdfManagementService).generateAndUpload(any(SentEmail.class), eq(SENT_EMAIL));
     }
@@ -730,7 +730,7 @@ public class NotificationServiceTest {
             eq("personal@test.com"),
             any(),
             isNull(),
-            eq("deb43d21-bb3a-481a-afca-5fdf83a76113"));
+            eq("ctsc-emailReplyToId"));
 
         verify(pdfManagementService).generateAndUpload(any(SentEmail.class), eq(SENT_EMAIL));
     }
@@ -746,7 +746,7 @@ public class NotificationServiceTest {
             eq("personal@test.com"),
             any(),
             isNull(),
-            eq("6d98cad6-adb4-4446-b37e-5c3f0441a0c8"));
+            eq("bristol-emailReplyToId"));
 
         verify(pdfManagementService).generateAndUpload(any(SentEmail.class), eq(SENT_EMAIL));
     }
@@ -1110,7 +1110,7 @@ public class NotificationServiceTest {
             eq("personal@test.com"),
             eq(personalisation),
             eq(null),
-            eq("deb43d21-bb3a-481a-afca-5fdf83a76113"));
+            eq("ctsc-emailReplyToId"));
 
         verify(pdfManagementService).generateAndUpload(any(SentEmail.class), eq(SENT_EMAIL));
     }
@@ -1150,7 +1150,7 @@ public class NotificationServiceTest {
             eq("personal@test.com"),
             eq(personalisation),
             eq(null),
-            eq("deb43d21-bb3a-481a-afca-5fdf83a76113"));
+            eq("ctsc-emailReplyToId"));
 
         verify(pdfManagementService).generateAndUpload(any(SentEmail.class), eq(SENT_EMAIL));
     }
@@ -1190,7 +1190,7 @@ public class NotificationServiceTest {
             eq("sols@test.com"),
             eq(personalisation),
             eq(null),
-            eq("deb43d21-bb3a-481a-afca-5fdf83a76113"));
+            eq("ctsc-emailReplyToId"));
 
         verify(pdfManagementService).generateAndUpload(any(SentEmail.class), eq(SENT_EMAIL));
     }
