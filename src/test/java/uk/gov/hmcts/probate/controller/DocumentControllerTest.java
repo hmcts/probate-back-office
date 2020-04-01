@@ -616,6 +616,19 @@ public class DocumentControllerTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
     }
 
+    @Test
+    public void shouldDefaultReprintValues() throws Exception {
+        String solicitorPayload = testUtils.getStringFromFile("welshGrantOfProbatPayload.json");
+
+        mockMvc.perform(post("/document/default-reprint-values")
+            .content(solicitorPayload)
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.data.reprintDocument.list_items[0].label", is("Grant")))
+            .andExpect(jsonPath("$.data.reprintDocument.list_items[0].code", is("WelshGrantFileName")))
+            .andReturn();
+    }
+
     private Matcher<String> doesNotContainString(String s) {
         return CoreMatchers.not(containsString(s));
     }
