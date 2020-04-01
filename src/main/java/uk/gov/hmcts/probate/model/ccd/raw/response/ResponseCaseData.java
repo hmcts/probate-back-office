@@ -309,8 +309,7 @@ public class ResponseCaseData {
     private final String grantAwaitingDocumentationNotificationDate;
     private final String grantAwaitingDocumentatioNotificationSent;
 
-    private final DynamicList reprintDocumentList;
-    private final String reprintDocument;
+    private final DynamicList reprintDocument;
     private final String reprintNumberOfCopies;
 
 }

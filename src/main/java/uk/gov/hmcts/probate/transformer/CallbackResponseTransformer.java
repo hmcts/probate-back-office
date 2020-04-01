@@ -598,7 +598,6 @@ public class CallbackResponseTransformer {
                 .grantAwaitingDocumentationNotificationDate(ofNullable(caseData.getGrantAwaitingDocumentationNotificationDate())
                     .map(dateTimeFormatter::format).orElse(null))
                 .grantAwaitingDocumentatioNotificationSent(caseData.getGrantAwaitingDocumentatioNotificationSent())
-                .reprintDocumentList(caseData.getReprintDocumentList())
                 .reprintDocument(caseData.getReprintDocument())
                 .reprintNumberOfCopies((caseData.getReprintNumberOfCopies()));
 
@@ -753,7 +752,6 @@ public class CallbackResponseTransformer {
                 .grantAwaitingDocumentationNotificationDate(ofNullable(caseData.getGrantAwaitingDocumentationNotificationDate())
                     .map(dateTimeFormatter::format).orElse(null))
                 .grantAwaitingDocumentatioNotificationSent(caseData.getGrantAwaitingDocumentatioNotificationSent())
-                .reprintDocumentList(caseData.getReprintDocumentList())
                 .reprintDocument(caseData.getReprintDocument())
                 .reprintNumberOfCopies((caseData.getReprintNumberOfCopies()));
 

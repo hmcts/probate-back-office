@@ -541,8 +541,7 @@ public class CaseData {
     private LocalDate grantAwaitingDocumentationNotificationDate;
     private String grantAwaitingDocumentatioNotificationSent;
     
-    private DynamicList reprintDocumentList;
-    private String reprintDocument;
+    private DynamicList reprintDocument;
     private String reprintNumberOfCopies;
 
     @Getter(lazy = true)
