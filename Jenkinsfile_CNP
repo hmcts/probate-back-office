@@ -62,6 +62,8 @@ withPipeline("java", product, component) {
   env.APPINSIGHTS_INSTRUMENTATIONKEY=false
 
   installCharts()
+  enableAksStagingDeployment()
+  disableLegacyDeployment()
   loadVaultSecrets(secrets)
 
   enableSlackNotifications('#probate-jenkins')
