@@ -9,8 +9,11 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import uk.gov.hmcts.probate.exception.ClientException;
+import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.State;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
+import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
@@ -27,10 +30,12 @@ import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.validator.BulkPrintValidationRule;
 import uk.gov.hmcts.probate.validator.EmailAddressNotificationValidationRule;
 import uk.gov.hmcts.probate.validator.EmailAddressNotifyValidationRule;
+import uk.gov.hmcts.reform.probate.model.ProbateDocument;
 import uk.gov.service.notify.NotificationClientException;
 import static org.hamcrest.Matchers.empty;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -90,48 +95,33 @@ public class NotificationControllerUnitTest {
     private Document document;
 
     @Test
-    public void shouldSendApplicationReceived() throws IOException, NotificationClientException {
+    public void shouldSendApplicationReceived() throws NotificationClientException {
         setUpMocks(APPLICATION_RECEIVED);
-        ResponseEntity<String> stringResponseEntity = notificationController.sendApplicationReceivedNotification(callbackRequest);
+        ResponseEntity<ProbateDocument> stringResponseEntity = notificationController.sendApplicationReceivedNotification(callbackRequest);
         assertThat(stringResponseEntity.getStatusCode(), is(HttpStatus.OK));
-        verifyDocumentsAreAdded();
     }
 
     @Test
-    public void shouldAddDocumentEvenIfNoEmailAddressPresent() throws IOException, NotificationClientException {
-
+    public void shouldAddDocumentEvenIfNoEmailAddressPresent() throws NotificationClientException {
+        setUpMocks(APPLICATION_RECEIVED);
         CaseDetails caseDetails = new CaseDetails(CaseDataTestBuilder.withDefaultsAndNoPrimaryApplicantEmailAddress().build(), LAST_MODIFIED, ID);
         callbackRequest = new CallbackRequest(caseDetails);
-        when(callbackResponseTransformer.addDocuments(any(CallbackRequest.class), documents.capture(), nullable(String.class), nullable(String.class))).thenReturn(CallbackResponse.builder().errors(new ArrayList<>()).build());
-        ResponseEntity<String> stringResponseEntity = notificationController.sendApplicationReceivedNotification(callbackRequest);
+        ResponseEntity<ProbateDocument> stringResponseEntity = notificationController.sendApplicationReceivedNotification(callbackRequest);
         assertThat(stringResponseEntity.getStatusCode(), is(HttpStatus.OK));
-        verifyNoDocumentsAreAdded();
         verifyNoMoreInteractions(notificationService);
     }
 
     @Test
-    public void shouldHandleErrorsFromSendApplicationReceived() throws IOException, NotificationClientException {
+    public void shouldHandleErrorsFromSendApplicationReceived() throws NotificationClientException {
         setUpMocks(APPLICATION_RECEIVED, "This is an error", "This is another error");
-        ResponseEntity<String> stringResponseEntity = notificationController.sendApplicationReceivedNotification(callbackRequest);
-        assertThat(stringResponseEntity.getStatusCode(), is(HttpStatus.BAD_REQUEST));
-        assertThat(stringResponseEntity.getBody(), is("This is an error, This is another error"));
+
+        ResponseEntity<ProbateDocument> stringResponseEntity = notificationController.sendApplicationReceivedNotification(callbackRequest);
+        assertThat(stringResponseEntity.getStatusCode(), is(HttpStatus.OK));
         verifyNoMoreInteractions(callbackResponseTransformer);
     }
 
-    private void verifyDocumentsAreAdded() {
-        verify(callbackResponseTransformer).addDocuments(any(CallbackRequest.class), documents.capture(), isNull(), isNull());
-        List<Document> docs = documents.getValue();
-        assertThat(docs, hasItems(document));
-    }
-
-    private void verifyNoDocumentsAreAdded() {
-        verify(callbackResponseTransformer).addDocuments(any(CallbackRequest.class), documents.capture(), isNull(), isNull());
-        List<Document> docs = documents.getValue();
-        assertThat(docs, is(empty()));
-    }
-
     @Test
-    public void shouldSendDocumentsReceived() throws IOException, NotificationClientException {
+    public void shouldSendDocumentsReceived() throws NotificationClientException {
         setUpMocks(DOCUMENTS_RECEIVED);
         notificationController.sendDocumentReceivedNotification(callbackRequest);
         verify(documentsReceivedNotificationService).handleDocumentReceivedNotification(callbackRequest);
@@ -142,9 +132,14 @@ public class NotificationControllerUnitTest {
         CaseDetails caseDetails = new CaseDetails(CaseDataTestBuilder.withDefaults().build(), LAST_MODIFIED, ID);
         callbackRequest = new CallbackRequest(caseDetails);
         when(eventValidationService.validateEmailRequest(any(CallbackRequest.class), anyList())).thenReturn(CallbackResponse.builder().errors(Arrays.asList(errors)).build());
-        document = Document.builder().build();
+        document = Document.builder()
+            .documentDateAdded(LocalDate.now())
+            .documentFileName("fileName")
+            .documentGeneratedBy("generatedBy")
+            .documentLink(DocumentLink.builder().documentUrl("url").documentFilename("file").documentBinaryUrl("binary").build())
+            .documentType(DocumentType.DIGITAL_GRANT)
+            .build();
         when(notificationService.sendEmail(state, caseDetails)).thenReturn(document);
-        when(callbackResponseTransformer.addDocuments(any(CallbackRequest.class), documents.capture(), nullable(String.class), nullable(String.class))).thenReturn(CallbackResponse.builder().errors(new ArrayList<>()).build());
     }
 
     private void setUpMocks(State state) throws NotificationClientException {

@@ -13,7 +13,7 @@ import java.util.Map;
 @Setter
 @Component
 @Validated
-@ConfigurationProperties
+@ConfigurationProperties("registry")
 public class RegistriesProperties {
 
     private Map<String, Registry> registries = new HashMap<>();
