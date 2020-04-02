@@ -68,7 +68,7 @@ public class IronMountainFileService extends BaseFileService {
             fileData.add("\n");
         } catch (Exception e){
             log.info("Exception preparing row data for Iron Mountain, caseId={}, exception={}", id, e.getMessage());
-            fileData.add("Exception proparing row data: "+e.getMessage());
+            fileData.add("Exception proparing IM row data: "+e.getMessage());
             fileData.add("\n");
         }
     }

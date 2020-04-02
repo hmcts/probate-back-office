@@ -110,7 +110,7 @@ public class HmrcFileService extends BaseFileService {
             }
         } catch (Exception e) {
             log.info("Exception preparing row data for HMRC, caseId={}, exception=", id, e.getMessage());
-            fileData.add("Exception preparing row data: " + e.getMessage());
+            fileData.add("Exception preparing HMRC row data: " + e.getMessage());
             fileData.add(ROW_DELIMITER);
         }
         return rowCount;
