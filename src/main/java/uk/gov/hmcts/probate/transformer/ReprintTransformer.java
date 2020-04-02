@@ -13,7 +13,6 @@ import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -52,12 +51,10 @@ public class ReprintTransformer {
                 .collect(Collectors.toList()));
         }
 
-        DynamicList dynamicList = DynamicList.builder()
+        return DynamicList.builder()
             .listItems(listItems)
             .value(DynamicListItem.builder().build())
             .build();
-
-        return dynamicList;
     }
 
     private DynamicListItem buildListItem(String code, String label) {
@@ -93,9 +90,7 @@ public class ReprintTransformer {
     }
 
     private Optional<DynamicListItem> buildFromScannedDocument(ScannedDocument document) {
-        Optional<DynamicListItem> optionalDynamicListItem = Optional.of(buildListItem(document.getFileName(), LABEL_WILL));
-
-        return optionalDynamicListItem;
+        return Optional.of(buildListItem(document.getFileName(), LABEL_WILL));
     }
 
     private Optional<DynamicListItem> buildFromGeneratedDocument(Document document) {
