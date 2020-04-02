@@ -629,6 +629,21 @@ public class DocumentControllerTest {
             .andReturn();
     }
 
+    @Test
+    public void shouldSendForReprint() throws Exception {
+        String solicitorPayload = testUtils.getStringFromFile("welshGrantOfProbatPayloadReprintGrant.json");
+
+        mockMvc.perform(post("/document/reprint")
+            .content(solicitorPayload)
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.data.reprintDocument.list_items[0].label", is("Grant")))
+            .andExpect(jsonPath("$.data.reprintDocument.list_items[0].code", is("WelshGrantFileName")))
+            .andExpect(jsonPath("$.data.reprintDocument.value.label", is("Grant")))
+            .andExpect(jsonPath("$.data.reprintDocument.value.code", is("WelshGrantFileName")))
+            .andReturn();
+    }
+    
     private Matcher<String> doesNotContainString(String s) {
         return CoreMatchers.not(containsString(s));
     }

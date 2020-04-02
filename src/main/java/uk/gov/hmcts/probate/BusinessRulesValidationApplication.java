@@ -27,6 +27,9 @@ public class BusinessRulesValidationApplication {
     private ObjectMapper objectMapper;
 
     public static void main(String[] args) {
+        System.setProperty("http.proxyHost", "proxyout.reform.hmcts.net");
+        System.setProperty("http.proxyPort", "8080");
+        
         SpringApplication.run(BusinessRulesValidationApplication.class, args);
     }
 

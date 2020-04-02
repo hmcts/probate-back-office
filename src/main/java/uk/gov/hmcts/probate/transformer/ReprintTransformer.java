@@ -18,17 +18,18 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static uk.gov.hmcts.probate.service.ReprintService.LABEL_GRANT;
+import static uk.gov.hmcts.probate.service.ReprintService.LABEL_REISSUED_GRANT;
+import static uk.gov.hmcts.probate.service.ReprintService.LABEL_SOT;
+import static uk.gov.hmcts.probate.service.ReprintService.LABEL_WILL;
+import static uk.gov.hmcts.probate.service.ReprintService.WILL_DOC_SUB_TYPE;
+import static uk.gov.hmcts.probate.service.ReprintService.WILL_DOC_TYPE;
+
 @Service
 @Slf4j
 @AllArgsConstructor
 public class ReprintTransformer {
 
-    private static final String LABEL_GRANT = "Grant";
-    private static final String LABEL_REISSUED_GRANT = "ReissuedGrant";
-    private static final String LABEL_WILL = "Will";
-    private static final String LABEL_SOT = "SOT";
-    private static final String WILL_DOC_TYPE = "Other";
-    private static final String WILL_DOC_SUB_TYPE = "Will";
 
     public void transformReprintDocuments(@Valid CaseDetails caseDetails,
                                           ResponseCaseData.ResponseCaseDataBuilder responseCaseDataBuilder) {

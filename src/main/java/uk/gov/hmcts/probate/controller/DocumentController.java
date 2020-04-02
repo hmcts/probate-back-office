@@ -276,7 +276,7 @@ public class DocumentController {
     
     @PostMapping(path = "/reprint", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<CallbackResponse> reprint(@RequestBody CallbackRequest callbackRequest) {
-        reprintService.reprintSelectedDocument(callbackRequest.getCaseDetails().getData());
+        reprintService.reprintSelectedDocument(callbackRequest);
         return ResponseEntity.ok(callbackResponseTransformer.transform(callbackRequest));
     }
 }

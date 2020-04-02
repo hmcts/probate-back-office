@@ -139,7 +139,17 @@ public class BulkPrintService {
         return letterId;
     }
 
+    public void sendDocumentForReprint(CallbackRequest callbackRequest, Document selectedDocument, Document coverSheet) {
+        SendLetterResponse sendLetterResponse = sendToBulkPrint(callbackRequest, selectedDocument, coverSheet);
+        String letterId = sendLetterResponse != null ? sendLetterResponse.letterId.toString() : null;
+        CallbackResponse response = eventValidationService.validateBulkPrintResponse(letterId, bulkPrintValidationRules);
+        if (!response.getErrors().isEmpty()) {
+            throw new BulkPrintException(businessValidationMessageService.generateError(BUSINESS_ERROR,
+                "bulkPrintResponseNull").getMessage(),
+                "Bulk print send letter for reprint response is null for: " + callbackRequest.getCaseDetails().getId());
+        }
 
+    }
     private String getPdfAsBase64EncodedString(Document document,
                                                String authHeaderValue,
                                                CallbackRequest callbackRequest) throws IOException {
