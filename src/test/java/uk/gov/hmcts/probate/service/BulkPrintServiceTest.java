@@ -46,6 +46,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -621,5 +622,153 @@ public class BulkPrintServiceTest {
 
         assertNotNull(response);
         assertThat(response.letterId, is(uuid));
+    }
+    
+    @Test
+    public void shouldSendToBulkPrintForReprint() {
+
+        SolsAddress address = SolsAddress.builder().addressLine1("Address 1")
+            .addressLine2("Address 2")
+            .postCode("EC2")
+            .country("UK")
+            .build();
+        CaseData caseData = CaseData.builder()
+            .primaryApplicantForenames("first")
+            .primaryApplicantSurname("last")
+            .primaryApplicantAddress(address)
+            .build();
+        CallbackRequest callbackRequest = new CallbackRequest(new CaseDetails(caseData, null, 0L));
+        DocumentLink documentLink = DocumentLink.builder()
+            .documentUrl("http://localhost")
+            .build();
+        Document grant = Document.builder()
+            .documentFileName("test.pdf")
+            .documentGeneratedBy("test")
+            .documentType(DocumentType.DIGITAL_GRANT)
+            .documentDateAdded(LocalDate.now())
+            .documentLink(documentLink)
+            .build();
+        Document coverSheet = Document.builder()
+            .documentFileName("test.pdf")
+            .documentGeneratedBy("test")
+            .documentDateAdded(LocalDate.now())
+            .documentLink(documentLink)
+            .build();
+        UUID uuid = UUID.randomUUID();
+        SendLetterResponse sendLetterResponse = new SendLetterResponse(uuid);
+
+        List<String> errors = new ArrayList<>();
+        CallbackResponse callbackResponse = CallbackResponse.builder()
+            .data(responseCaseData)
+            .errors(errors)
+            .build();
+
+
+
+        when(sendLetterApiMock.sendLetter(anyString(), any(LetterV3.class))).thenReturn(sendLetterResponse);
+        when(eventValidationService.validateBulkPrintResponse(eq(uuid.toString()), any())).thenReturn(callbackResponse);
+
+        bulkPrintService.sendDocumentForReprint(callbackRequest, grant, coverSheet);
+
+        verify(sendLetterApiMock).sendLetter(anyString(), any(LetterV3.class));
+    }
+
+    @Test
+    public void shouldSendToBulkPrintForReprintWillNullLetterId() {
+
+        SolsAddress address = SolsAddress.builder().addressLine1("Address 1")
+            .addressLine2("Address 2")
+            .postCode("EC2")
+            .country("UK")
+            .build();
+        CaseData caseData = CaseData.builder()
+            .primaryApplicantForenames("first")
+            .primaryApplicantSurname("last")
+            .primaryApplicantAddress(address)
+            .build();
+        CallbackRequest callbackRequest = new CallbackRequest(new CaseDetails(caseData, null, 0L));
+        DocumentLink documentLink = DocumentLink.builder()
+            .documentUrl("http://localhost")
+            .build();
+        Document grant = Document.builder()
+            .documentFileName("test.pdf")
+            .documentGeneratedBy("test")
+            .documentType(DocumentType.DIGITAL_GRANT)
+            .documentDateAdded(LocalDate.now())
+            .documentLink(documentLink)
+            .build();
+        Document coverSheet = Document.builder()
+            .documentFileName("test.pdf")
+            .documentGeneratedBy("test")
+            .documentDateAdded(LocalDate.now())
+            .documentLink(documentLink)
+            .build();
+        UUID uuid = UUID.randomUUID();
+        SendLetterResponse sendLetterResponse = new SendLetterResponse(uuid);
+
+        List<String> errors = new ArrayList<>();
+        CallbackResponse callbackResponse = CallbackResponse.builder()
+            .data(responseCaseData)
+            .errors(errors)
+            .build();
+
+
+
+        when(eventValidationService.validateBulkPrintResponse(any(), any())).thenReturn(callbackResponse);
+
+        bulkPrintService.sendDocumentForReprint(callbackRequest, grant, coverSheet);
+
+        verify(sendLetterApiMock).sendLetter(anyString(), any(LetterV3.class));
+    }
+
+    @Test
+    public void shouldErrorOnSendToBulkPrintForReprint() {
+
+        SolsAddress address = SolsAddress.builder().addressLine1("Address 1")
+            .addressLine2("Address 2")
+            .postCode("EC2")
+            .country("UK")
+            .build();
+        CaseData caseData = CaseData.builder()
+            .primaryApplicantForenames("first")
+            .primaryApplicantSurname("last")
+            .primaryApplicantAddress(address)
+            .build();
+        CallbackRequest callbackRequest = new CallbackRequest(new CaseDetails(caseData, null, 0L));
+        DocumentLink documentLink = DocumentLink.builder()
+            .documentUrl("http://localhost")
+            .build();
+        Document grant = Document.builder()
+            .documentFileName("test.pdf")
+            .documentGeneratedBy("test")
+            .documentType(DocumentType.DIGITAL_GRANT)
+            .documentDateAdded(LocalDate.now())
+            .documentLink(documentLink)
+            .build();
+        Document coverSheet = Document.builder()
+            .documentFileName("test.pdf")
+            .documentGeneratedBy("test")
+            .documentDateAdded(LocalDate.now())
+            .documentLink(documentLink)
+            .build();
+        UUID uuid = UUID.randomUUID();
+        SendLetterResponse sendLetterResponse = new SendLetterResponse(uuid);
+
+        List<String> errors = new ArrayList<>();
+        errors.add("test error");
+        CallbackResponse callbackResponse = CallbackResponse.builder()
+            .data(responseCaseData)
+            .errors(errors)
+            .build();
+
+
+
+        when(sendLetterApiMock.sendLetter(anyString(), any(LetterV3.class))).thenReturn(sendLetterResponse);
+        when(eventValidationService.validateBulkPrintResponse(eq(uuid.toString()), any())).thenReturn(callbackResponse);
+
+        when(businessValidationMessageService.generateError(any(), any())).thenReturn(FieldErrorResponse.builder().build());
+
+        assertThatThrownBy(() -> bulkPrintService.sendDocumentForReprint(callbackRequest, grant, coverSheet))
+            .isInstanceOf(BulkPrintException.class).hasMessage("Bulk print send letter for reprint response is null for: 0");
     }
 }
