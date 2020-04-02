@@ -61,11 +61,11 @@ public class HmrcFileService extends BaseFileService {
             fileData.add(ROW_HEADER + ROW_DELIMITER);
             for (ReturnedCaseDetails ccdCase : ccdCases) {
                 currentCaseId = ccdCase.getId();
-                rowCount = rowCount + prepareData(fileData, currentCaseId, ccdCase.getData());
+                rowCount = rowCount + prepareCaseData(fileData, currentCaseId, ccdCase.getData());
             }
             addFooter(fileData, rowCount, fileName);
         } catch (Exception e) {
-            log.error("Failed to prepare data HMRC file for {}, case:{}, rowCount:{}, exception: {}", 
+            log.error("Failed to prepare data HMRC file for {}, case:{}, rowCount:{}, exception: {}",
                 fileName, currentCaseId, rowCount, e.getMessage());
             throw new ClientException(HttpStatus.SERVICE_UNAVAILABLE.value(),
                 "Failed to prepare data HMRC file for " + fileName + " exception:" + e.getStackTrace());
@@ -73,39 +73,45 @@ public class HmrcFileService extends BaseFileService {
         return fileData;
     }
 
-    private int prepareData(ImmutableList.Builder<String> fileData, Long id, CaseData data) {
-        log.info("Perparing row data for HMRC, caseId={}", id);
-        fileData.add(ROW_TYPE_GRANT_DETAILS);
-        fileData.add(id.toString());
-        fileData.add(data.getRegistryLocation());
-        fileData.add(Optional.ofNullable(data.getBoDeceasedTitle()).orElse(""));
-        fileData.add(data.getDeceasedForenames());
-        fileData.add(data.getDeceasedSurname());
-        fileData.add(StringUtils.isEmpty(data.getBoDeceasedHonours()) ? "" : data.getBoDeceasedHonours());
-        fileData.add("");
-        fileData.add(fileExtractDateFormatter.formatDataDate(data.getDeceasedDateOfDeath()));
-        fileData.add("");
-        fileData.add(fileExtractDateFormatter.formatDataDate(data.getDeceasedDateOfBirth()));
-        fileData.add(String.valueOf(ageCalculator(data)));
-        fileData.add(DOMICILE);
-        addAddress(fileData, addressManager(data.getDeceasedAddress()));
-        fileData.add(fileExtractDateFormatter.formatDataDate(LocalDate.parse(data.getGrantIssuedDate())));
-        addGranteeDetails(fileData, createGrantee(data, 1));
-        addGranteeDetails(fileData, createGrantee(data, 2));
-        addGranteeDetails(fileData, createGrantee(data, 3));
-        addGranteeDetails(fileData, createGrantee(data, 4));
-        addSolicitorDetails(fileData, data);
-        fileData.add(getPoundValue(data.getIhtGrossValue()));
-        addExpectedEstateIndicator(fileData, data);
-        fileData.add(getPoundValue(data.getIhtNetValue()));
-        fileData.add(DataExtractGrantType.valueOf(data.getCaseType()).getCaseTypeMapped());
-        fileData.add(FINAL_GRANT);
-        fileData.add(ROW_DELIMITER);
+    private int prepareCaseData(ImmutableList.Builder<String> fileData, Long id, CaseData data) {
         int rowCount = 1;
-        if (data.getSolsDeceasedAliasNamesList() != null) {
-            for (CollectionMember<AliasName> member : data.getSolsDeceasedAliasNamesList()) {
-                rowCount = rowCount + addAliasRow(fileData, id.toString(), member.getValue());
+        try {
+            log.info("Preparing row data for HMRC, caseId={}", id);
+            fileData.add(ROW_TYPE_GRANT_DETAILS);
+            fileData.add(id.toString());
+            fileData.add(data.getRegistryLocation());
+            fileData.add(Optional.ofNullable(data.getBoDeceasedTitle()).orElse(""));
+            fileData.add(data.getDeceasedForenames());
+            fileData.add(data.getDeceasedSurname());
+            fileData.add(StringUtils.isEmpty(data.getBoDeceasedHonours()) ? "" : data.getBoDeceasedHonours());
+            fileData.add("");
+            fileData.add(fileExtractDateFormatter.formatDataDate(data.getDeceasedDateOfDeath()));
+            fileData.add("");
+            fileData.add(fileExtractDateFormatter.formatDataDate(data.getDeceasedDateOfBirth()));
+            fileData.add(String.valueOf(ageCalculator(data)));
+            fileData.add(DOMICILE);
+            addAddress(fileData, addressManager(data.getDeceasedAddress()));
+            fileData.add(fileExtractDateFormatter.formatDataDate(LocalDate.parse(data.getGrantIssuedDate())));
+            addGranteeDetails(fileData, createGrantee(data, 1));
+            addGranteeDetails(fileData, createGrantee(data, 2));
+            addGranteeDetails(fileData, createGrantee(data, 3));
+            addGranteeDetails(fileData, createGrantee(data, 4));
+            addSolicitorDetails(fileData, data);
+            fileData.add(getPoundValue(data.getIhtGrossValue()));
+            addExpectedEstateIndicator(fileData, data);
+            fileData.add(getPoundValue(data.getIhtNetValue()));
+            fileData.add(DataExtractGrantType.valueOf(data.getCaseType()).getCaseTypeMapped());
+            fileData.add(FINAL_GRANT);
+            fileData.add(ROW_DELIMITER);
+            if (data.getSolsDeceasedAliasNamesList() != null) {
+                for (CollectionMember<AliasName> member : data.getSolsDeceasedAliasNamesList()) {
+                    rowCount = rowCount + addAliasRow(fileData, id.toString(), member.getValue());
+                }
             }
+        } catch (Exception e) {
+            log.info("Exception preparing row data for HMRC, caseId={}, exception=", id, e.getMessage());
+            fileData.add("Exception preparing HMRC row data: " + e.getMessage());
+            fileData.add(ROW_DELIMITER);
         }
         return rowCount;
     }
@@ -133,7 +139,10 @@ public class HmrcFileService extends BaseFileService {
     }
 
     private void addExpectedEstateIndicator(ImmutableList.Builder<String> fileData, CaseData data) {
-        String type = iht2EstateMap.get(data.getIhtFormId());
+        String type = iht2EstateMap.get("NA");
+        if (!StringUtils.isEmpty(data.getIhtFormId())) {
+            type = iht2EstateMap.get(data.getIhtFormId());
+        }
 
         if (type == null) {
             throw new BadRequestException("Unsupported IHT Form Type for " + data.getIhtFormId());
