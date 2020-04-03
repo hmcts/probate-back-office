@@ -75,8 +75,6 @@ public class DocumentController {
     private final List<EmailAddressNotificationValidationRule> emailAddressNotificationValidationRules;
     private final List<BulkPrintValidationRule> bulkPrintValidationRules;
     private final RedeclarationSoTValidationRule redeclarationSoTValidationRule;
-    private static final String DRAFT = "preview";
-    private static final String FINAL = "final";
 
     private Function<String, State> grantState = (String caseType) -> {
         if (caseType.equals(INTESTACY.getCaseType())) {
@@ -100,7 +98,8 @@ public class DocumentController {
     public ResponseEntity<CallbackResponse> previewLetter(
             @RequestBody CallbackRequest callbackRequest) {
 
-        Document letterPreview = documentGeneratorService.generateLetter(callbackRequest, false);
+        Document letterPreview = documentGeneratorService.generateLetter(callbackRequest,
+                DocumentType.ASSEMBLED_LETTER, false);
 
         CallbackResponse response = callbackResponseTransformer.transformCaseForLetterPreview(callbackRequest, letterPreview);
 
@@ -114,7 +113,8 @@ public class DocumentController {
         String letterId = null;
 
         List<Document> documents = new ArrayList<>();
-        Document letter = documentGeneratorService.generateLetter(callbackRequest, true);
+        Document letter = documentGeneratorService.generateLetter(callbackRequest,  DocumentType.ASSEMBLED_LETTER,
+                true);
         Document coversheet = documentGeneratorService.generateCoversheet(callbackRequest);
 
         documents.add(letter);
@@ -159,10 +159,21 @@ public class DocumentController {
         log.info("Generated and Uploaded cover document with template {} for the case id {}",
                 DocumentType.GRANT_COVER.getTemplateName(), callbackRequest.getCaseDetails().getId().toString());
 
+        Document letterOfGrantIssuedState = null;
+        if (!caseDetails.getData().isLanguagePreferenceWelsh() && grantState.apply(caseData.getCaseType())== GRANT_ISSUED) {
+            letterOfGrantIssuedState = documentGeneratorService.generateLetter(callbackRequest,
+                    DocumentType.LETTER_OF_GRANT_ISSUED_STATE, true);
+        } else if (!caseDetails.getData().isLanguagePreferenceWelsh() && grantState.apply(caseData.getCaseType())== GRANT_ISSUED_INTESTACY) {
+            letterOfGrantIssuedState = documentGeneratorService.generateLetter(callbackRequest,
+                    DocumentType.LETTER_OF_GRANT_ISSUED_INTESTACY, true);
+        } else {
+            //place holder for Welsh e.g. bilingual
+        }
         String letterId = null;
         String pdfSize = null;
         if (caseData.isSendForBulkPrintingRequested() && !EDGE_CASE_NAME.equals(caseData.getCaseType())) {
-            SendLetterResponse response = bulkPrintService.sendToBulkPrint(callbackRequest, digitalGrantDocument, coverSheet);
+            SendLetterResponse response = bulkPrintService.sendToBulkPrint(callbackRequest, digitalGrantDocument,
+                    letterOfGrantIssuedState, coverSheet);
             letterId = response != null
                     ? response.letterId.toString()
                     : null;

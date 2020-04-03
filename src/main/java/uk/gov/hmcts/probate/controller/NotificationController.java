@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -16,8 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import uk.gov.hmcts.probate.model.DocumentType;
-import uk.gov.hmcts.probate.model.GrantScheduleResponse;
 import uk.gov.hmcts.probate.model.State;
+import uk.gov.hmcts.probate.model.GrantScheduleResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
@@ -120,7 +119,7 @@ public class NotificationController {
                 log.info("Initiate call to bulk print for Caveat stopped document and coversheet for case id {} ",
                         callbackRequest.getCaseDetails().getId());
                 SendLetterResponse sendLetterResponse =
-                        bulkPrintService.sendToBulkPrint(callbackRequest, caveatRaisedDoc, coversheet);
+                        bulkPrintService.sendToBulkPrint(callbackRequest, caveatRaisedDoc, null, coversheet);
                 letterId = sendLetterResponse != null
                         ? sendLetterResponse.letterId.toString()
                         : null;

@@ -19,7 +19,6 @@ import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
 import uk.gov.hmcts.reform.sendletter.api.model.v3.LetterV3;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Base64;
 import java.util.Collections;
 import java.util.HashMap;
@@ -56,7 +55,8 @@ public class BulkPrintService {
     private final List<BulkPrintValidationRule> bulkPrintValidationRules;
     private final DocumentTransformer documentTransformer;
 
-    public SendLetterResponse sendToBulkPrint(CallbackRequest callbackRequest, Document grantDocument, Document coverSheet) {
+    public SendLetterResponse sendToBulkPrint(CallbackRequest callbackRequest, Document grantDocument,
+                                              Document letterOfGrantIssuedState, Document coverSheet) {
         SendLetterResponse sendLetterResponse = null;
         try {
             String authHeaderValue = serviceAuthTokenGenerator.generate();
@@ -66,7 +66,9 @@ public class BulkPrintService {
 
             additionalData = Collections.unmodifiableMap(additionalData);
 
-            List<uk.gov.hmcts.reform.sendletter.api.model.v3.Document> pdfs = arrangePdfDocumentsForBulkPrinting(callbackRequest, grantDocument, coverSheet, authHeaderValue);
+            List<uk.gov.hmcts.reform.sendletter.api.model.v3.Document> pdfs =
+                    arrangePdfDocumentsForBulkPrinting(callbackRequest, grantDocument, letterOfGrantIssuedState,
+                            coverSheet, authHeaderValue);
             getDocumentSize(pdfs, callbackRequest);
 
             sendLetterResponse = sendLetterApi.sendLetter(BEARER + authHeaderValue,
@@ -80,7 +82,7 @@ public class BulkPrintService {
                     ex.getLocalizedMessage(),
                     ex.getStatusCode());
         } catch (IOException ioe) {
-            log.error("Error retrieving document from store with url {}", ioe);
+            log.error("Error retrieving document from store with url {}", callbackRequest.getCaseDetails().getId(), ioe);
         } catch (Exception e) {
             log.error("Error sending pdfs to bulk print {}", e.getMessage());
         }
@@ -110,7 +112,8 @@ public class BulkPrintService {
                     ex.getLocalizedMessage(),
                     ex.getStatusCode());
         } catch (IOException ioe) {
-            log.error("Error retrieving document from store with url {}", ioe);
+            log.error("Error retrieving document from store with url {}",
+                    caveatCallbackRequest.getCaseDetails().getId(), ioe);
         } catch (Exception e) {
             log.error("Error sending pdfs to bulk print {}", e.getMessage());
         }
@@ -125,7 +128,7 @@ public class BulkPrintService {
         if (sendToBulkPrint) {
             log.info("Initiate call to bulk print for document with case id {} and coversheet",
                     callbackRequest.getCaseDetails().getId());
-            sendLetterResponse = sendToBulkPrint(callbackRequest, document, coversheet);
+            sendLetterResponse = sendToBulkPrint(callbackRequest, document, null, coversheet);
             letterId = sendLetterResponse != null
                     ? sendLetterResponse.letterId.toString()
                     : null;
@@ -162,32 +165,43 @@ public class BulkPrintService {
 
     private List<uk.gov.hmcts.reform.sendletter.api.model.v3.Document> arrangePdfDocumentsForBulkPrinting(CallbackRequest callbackRequest,
                                                             Document grantDocument,
+                                                            Document letterOfGrantIssuedState,
                                                             Document coverSheetDocument,
                                                             String authHeaderValue) throws IOException {
         Long extraCopies = 1L;
         List<uk.gov.hmcts.reform.sendletter.api.model.v3.Document> documents = new LinkedList<>();
         String encodedCoverSheet = getPdfAsBase64EncodedString(coverSheetDocument, authHeaderValue, callbackRequest);
         String encodedGrantDocument = getPdfAsBase64EncodedString(grantDocument, authHeaderValue, callbackRequest);
+        String encodedletterDocument =
+                letterOfGrantIssuedState !=null? getPdfAsBase64EncodedString(letterOfGrantIssuedState, authHeaderValue,
+                        callbackRequest): null;
 
-        if (documentTransformer.hasDocumentWithType(Arrays.asList(grantDocument), DIGITAL_GRANT)
-                || documentTransformer.hasDocumentWithType(Arrays.asList(grantDocument), ADMON_WILL_GRANT)
-                || documentTransformer.hasDocumentWithType(Arrays.asList(grantDocument), INTESTACY_GRANT)
-                || documentTransformer.hasDocumentWithType(Arrays.asList(grantDocument), WELSH_DIGITAL_GRANT)
-                || documentTransformer.hasDocumentWithType(Arrays.asList(grantDocument), WELSH_INTESTACY_GRANT)
-                || documentTransformer.hasDocumentWithType(Arrays.asList(grantDocument), WELSH_ADMON_WILL_GRANT)
-                || documentTransformer.hasDocumentWithType(Arrays.asList(grantDocument), INTESTACY_GRANT_REISSUE)
-                || documentTransformer.hasDocumentWithType(Arrays.asList(grantDocument), ADMON_WILL_GRANT_REISSUE)
-                || documentTransformer.hasDocumentWithType(Arrays.asList(grantDocument), DIGITAL_GRANT_REISSUE)) {
+        if (documentTransformer.hasDocumentWithType(Collections.singletonList(grantDocument), DIGITAL_GRANT)
+                || documentTransformer.hasDocumentWithType(Collections.singletonList(grantDocument), ADMON_WILL_GRANT)
+                || documentTransformer.hasDocumentWithType(Collections.singletonList(grantDocument), INTESTACY_GRANT)
+                || documentTransformer.hasDocumentWithType(Collections.singletonList(grantDocument), WELSH_DIGITAL_GRANT)
+                || documentTransformer.hasDocumentWithType(Collections.singletonList(grantDocument), WELSH_INTESTACY_GRANT)
+                || documentTransformer.hasDocumentWithType(Collections.singletonList(grantDocument), WELSH_ADMON_WILL_GRANT)
+                || documentTransformer.hasDocumentWithType(Collections.singletonList(grantDocument), INTESTACY_GRANT_REISSUE)
+                || documentTransformer.hasDocumentWithType(Collections.singletonList(grantDocument), ADMON_WILL_GRANT_REISSUE)
+                || documentTransformer.hasDocumentWithType(Collections.singletonList(grantDocument), DIGITAL_GRANT_REISSUE)) {
             extraCopies = addAdditionalCopiesForGrants(callbackRequest);
         }
 
         //Layer documents as cover letter first, grant, and extra copies of grant to PA.
         uk.gov.hmcts.reform.sendletter.api.model.v3.Document coversheetDocument = new uk.gov.hmcts.reform.sendletter.api.model.v3.Document(encodedCoverSheet, 1);
+        uk.gov.hmcts.reform.sendletter.api.model.v3.Document letter = null;
+        if(encodedletterDocument !=null) {
+            letter = new uk.gov.hmcts.reform.sendletter.api.model.v3.Document(encodedletterDocument,
+                    1);
+        }
         uk.gov.hmcts.reform.sendletter.api.model.v3.Document document = new uk.gov.hmcts.reform.sendletter.api.model.v3.Document(encodedGrantDocument, extraCopies.intValue());
 
         documents.add(coversheetDocument);
+        if(letter !=null) {
+            documents.add(letter);
+        }
         documents.add(document);
-
         return documents;
     }
 
@@ -216,8 +230,8 @@ public class BulkPrintService {
         return extraCopiesOfGrant;
     }
 
-    private List<uk.gov.hmcts.reform.sendletter.api.model.v3.Document> getDocumentSize(List<uk.gov.hmcts.reform.sendletter.api.model.v3.Document> documents, CallbackRequest callbackRequest) {
+    private void getDocumentSize(List<uk.gov.hmcts.reform.sendletter.api.model.v3.Document> documents,
+                              CallbackRequest callbackRequest) {
         log.info(CASE_ID + callbackRequest.getCaseDetails().getId().toString() + "number of documents is: " + documents.size());
-        return documents;
     }
 }

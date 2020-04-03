@@ -5,6 +5,12 @@ import lombok.Getter;
 
 @Getter
 public enum DocumentType {
+    @JsonProperty("letterOfGrantIssuedState")
+    LETTER_OF_GRANT_ISSUED_STATE("letterOfGrantIssuedState"),
+
+    @JsonProperty("letterOfGrantIssuedIntestacy")
+    LETTER_OF_GRANT_ISSUED_INTESTACY("letterOfGrantIssuedIntestacy"),
+
     @JsonProperty("legalStatement")
     LEGAL_STATEMENT_ADMON("legalStatementAdmon"),
 

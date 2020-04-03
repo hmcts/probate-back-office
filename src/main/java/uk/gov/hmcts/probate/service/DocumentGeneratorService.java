@@ -167,9 +167,8 @@ public class DocumentGeneratorService {
         return statementOfTruth;
     }
 
-    public Document generateLetter(CallbackRequest callbackRequest, boolean forFinal) {
+    public Document generateLetter(CallbackRequest callbackRequest, DocumentType documentType, boolean forFinal) {
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
-
         Map<String, Object> placeholders = previewLetterService.addLetterData(caseDetails);
         if (!forFinal) {
             Map<String, Object> images = new HashMap<>();
@@ -177,9 +176,7 @@ public class DocumentGeneratorService {
             Map<String, Object> mappedImages = genericMapperService.mappedBase64Images(images);
             placeholders.putAll(mappedImages);
         }
-
-        return pdfManagementService.generateDocmosisDocumentAndUpload(placeholders,
-                DocumentType.ASSEMBLED_LETTER);
+        return pdfManagementService.generateDocmosisDocumentAndUpload(placeholders, documentType);
     }
 
     private Document generateSolicitorSoT(CallbackRequest callbackRequest) {
