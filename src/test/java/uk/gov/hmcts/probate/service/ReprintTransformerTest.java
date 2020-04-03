@@ -148,6 +148,7 @@ public class ReprintTransformerTest {
             .subtype("subType")
             .build();
         scannedDocs = Arrays.asList(new CollectionMember(null, doc));
+        generatedDocs = null;
         when(caseData.getScannedDocuments()).thenReturn(scannedDocs);
 
         reprintTransformer.transformReprintDocuments(caseDetails, responseCaseDataBuilder);
