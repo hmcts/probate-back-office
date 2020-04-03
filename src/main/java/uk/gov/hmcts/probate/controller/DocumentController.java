@@ -123,7 +123,7 @@ public class DocumentController {
         documents.add(coversheet);
 
         if (caseData.isBoAssembleLetterSendToBulkPrintRequested()) {
-            letterId = bulkPrintService.sendToBulkPrint(callbackRequest, coversheet,
+            letterId = bulkPrintService.optionallySendToBulkPrint(callbackRequest, coversheet,
                     letter, true);
         }
 
@@ -164,7 +164,7 @@ public class DocumentController {
         String letterId = null;
         String pdfSize = null;
         if (caseData.isSendForBulkPrintingRequested() && !EDGE_CASE_NAME.equals(caseData.getCaseType())) {
-            SendLetterResponse response = bulkPrintService.sendToBulkPrint(callbackRequest, digitalGrantDocument, coverSheet);
+            SendLetterResponse response = bulkPrintService.sendToBulkPrintForGrant(callbackRequest, digitalGrantDocument, coverSheet);
             letterId = response != null
                     ? response.letterId.toString()
                     : null;
@@ -247,7 +247,7 @@ public class DocumentController {
         String letterId = null;
 
         if (caseData.isSendForBulkPrintingRequested() && !EDGE_CASE_NAME.equals(caseData.getCaseType())) {
-            letterId = bulkPrintService.sendToBulkPrint(callbackRequest, coversheet,
+            letterId = bulkPrintService.optionallySendToBulkPrint(callbackRequest, coversheet,
                     grantDocument, true);
         }
 

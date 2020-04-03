@@ -74,7 +74,7 @@ public class ReprintServiceTest {
         
         reprintService.reprintSelectedDocument(callbackRequest);
 
-        verify(bulkPrintService).sendDocumentForReprint(any(), selectedDocumentCaptor.capture(), any());
+        verify(bulkPrintService).sendDocumentsForReprint(any(), selectedDocumentCaptor.capture(), any());
         assertThat(selectedDocumentCaptor.getValue().getDocumentType(), is(DocumentType.DIGITAL_GRANT));
         assertThat(selectedDocumentCaptor.getValue().getDocumentFileName(), is("GrantFileName"));
     }
@@ -97,7 +97,7 @@ public class ReprintServiceTest {
 
         reprintService.reprintSelectedDocument(callbackRequest);
 
-        verify(bulkPrintService).sendDocumentForReprint(any(), selectedDocumentCaptor.capture(), any());
+        verify(bulkPrintService).sendDocumentsForReprint(any(), selectedDocumentCaptor.capture(), any());
         assertThat(selectedDocumentCaptor.getValue().getDocumentType(), is(DocumentType.DIGITAL_GRANT_REISSUE));
         assertThat(selectedDocumentCaptor.getValue().getDocumentFileName(), is("ReissuedGrantFileName"));
     }
@@ -120,7 +120,7 @@ public class ReprintServiceTest {
 
         reprintService.reprintSelectedDocument(callbackRequest);
 
-        verify(bulkPrintService).sendDocumentForReprint(any(), selectedDocumentCaptor.capture(), any());
+        verify(bulkPrintService).sendDocumentsForReprint(any(), selectedDocumentCaptor.capture(), any());
         assertThat(selectedDocumentCaptor.getValue().getDocumentType(), is(DocumentType.STATEMENT_OF_TRUTH));
         assertThat(selectedDocumentCaptor.getValue().getDocumentFileName(), is("SOTFileName"));
     }
@@ -143,7 +143,7 @@ public class ReprintServiceTest {
 
         reprintService.reprintSelectedDocument(callbackRequest);
 
-        verify(bulkPrintService).sendDocumentForReprint(any(), selectedDocumentCaptor.capture(), any());
+        verify(bulkPrintService).sendDocumentsForReprint(any(), selectedDocumentCaptor.capture(), any());
         assertThat(selectedDocumentCaptor.getValue().getDocumentType(), is(DocumentType.OTHER));
         assertThat(selectedDocumentCaptor.getValue().getDocumentFileName(), is("WillFileName"));
     }

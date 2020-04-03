@@ -37,7 +37,7 @@ public class ReprintService {
         }
         Document coverSheet = pdfManagementService.generateAndUpload(callbackRequest, DocumentType.GRANT_COVER);
         Document selectedDocument = findDocument(selectedDocumentItem, callbackRequest.getCaseDetails().getData());
-        bulkPrintService.sendDocumentForReprint(callbackRequest, selectedDocument, coverSheet);
+        bulkPrintService.sendDocumentsForReprint(callbackRequest, selectedDocument, coverSheet);
     }
 
     private Document findDocument(DynamicListItem selectedDocumentItem, CaseData data) {

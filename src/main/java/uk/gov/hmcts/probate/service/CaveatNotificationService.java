@@ -70,7 +70,7 @@ public class CaveatNotificationService {
             documents.add(caveatRaisedDoc);
 
             if (caveatCallbackRequest.getCaseDetails().getData().isSendForBulkPrintingRequested()) {
-                SendLetterResponse response = bulkPrintService.sendToBulkPrint(caveatCallbackRequest, caveatRaisedDoc, coversheet);
+                SendLetterResponse response = bulkPrintService.sendToBulkPrintForCaveat(caveatCallbackRequest, caveatRaisedDoc, coversheet);
                 letterId = response != null
                     ? response.letterId.toString()
                     : null;
@@ -124,7 +124,7 @@ public class CaveatNotificationService {
             Document caveatRaisedDoc = pdfManagementService.generateDocmosisDocumentAndUpload(placeholders, DocumentType.CAVEAT_EXTENDED);
             documents.add(caveatRaisedDoc);
             if (caveatCallbackRequest.getCaseDetails().getData().isSendForBulkPrintingRequested()) {
-                SendLetterResponse response = bulkPrintService.sendToBulkPrint(caveatCallbackRequest, caveatRaisedDoc, coversheet);
+                SendLetterResponse response = bulkPrintService.sendToBulkPrintForCaveat(caveatCallbackRequest, caveatRaisedDoc, coversheet);
                 ///
                 letterId = response != null
                     ? response.letterId.toString()
@@ -160,7 +160,7 @@ public class CaveatNotificationService {
             Document caveatRaisedDoc = pdfManagementService.generateDocmosisDocumentAndUpload(placeholders, DocumentType.CAVEAT_WITHDRAWN);
             documents.add(caveatRaisedDoc);
             if (caveatCallbackRequest.getCaseDetails().getData().isSendForBulkPrintingRequested()) {
-                SendLetterResponse response = bulkPrintService.sendToBulkPrint(caveatCallbackRequest, caveatRaisedDoc, coversheet);
+                SendLetterResponse response = bulkPrintService.sendToBulkPrintForCaveat(caveatCallbackRequest, caveatRaisedDoc, coversheet);
                 letterId = Optional.ofNullable(response).map(data -> data.letterId.toString()).orElse(letterId);
 
                 caveatCallbackResponse = eventValidationService.validateCaveatBulkPrintResponse(letterId, bulkPrintValidationRules);
