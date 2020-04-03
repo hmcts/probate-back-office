@@ -150,6 +150,7 @@ public class ReprintTransformerTest {
         scannedDocs = Arrays.asList(new CollectionMember(null, doc));
         generatedDocs = null;
         when(caseData.getScannedDocuments()).thenReturn(scannedDocs);
+        when(caseData.getProbateDocumentsGenerated()).thenReturn(generatedDocs);
 
         reprintTransformer.transformReprintDocuments(caseDetails, responseCaseDataBuilder);
         assertThat(responseCaseDataBuilder.build().getReprintDocument().getListItems().size(), is(0));
