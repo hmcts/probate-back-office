@@ -7,14 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import uk.gov.hmcts.probate.exception.BadRequestException;
-import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.DocumentIssueType;
 import uk.gov.hmcts.probate.model.DocumentStatus;
 import uk.gov.hmcts.probate.model.DocumentType;
@@ -26,8 +24,6 @@ import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
 import uk.gov.hmcts.probate.service.BulkPrintService;
 import uk.gov.hmcts.probate.service.DocumentGeneratorService;
-import uk.gov.hmcts.probate.service.DocumentService;
-import uk.gov.hmcts.probate.service.EventValidationService;
 import uk.gov.hmcts.probate.service.GrantNotificationService;
 import uk.gov.hmcts.probate.service.InformationRequestService;
 import uk.gov.hmcts.probate.service.NotificationService;
@@ -36,12 +32,11 @@ import uk.gov.hmcts.probate.service.docmosis.GrantOfRepresentationDocmosisMapper
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.util.TestUtils;
-import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
 import uk.gov.service.notify.NotificationClientException;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -95,14 +90,6 @@ public class NotificationControllerTest {
     @MockBean
     private BulkPrintService bulkPrintService;
 
-    private EventValidationService eventValidationService;
-
-    @MockBean
-    private AppInsights appInsights;
-
-    @MockBean
-    private CoreCaseDataApi coreCaseDataApi;
-
     @MockBean
     private CallbackResponseTransformer callbackResponseTransformer;
 
@@ -118,9 +105,6 @@ public class NotificationControllerTest {
     @MockBean
     private GrantNotificationService grantNotificationService;
 
-    @SpyBean
-    private DocumentService documentService;
-
     private static final String DOC_RECEIVED_URL = "/notify/documents-received";
     private static final String CASE_STOPPED_URL = "/notify/case-stopped";
     private static final String REQUEST_INFO_DEFAULT_URL = "/notify/request-information-default-values";
@@ -135,13 +119,12 @@ public class NotificationControllerTest {
     private static final Document EMPTY_DOC = Document.builder().documentType(CAVEAT_STOPPED).build();
 
     private List<String> errors = new ArrayList<>();
-    private CallbackResponse errorResponse;
     private CallbackResponse successfulResponse;
 
     @Before
     public void setUp() throws NotificationClientException, BadRequestException {
         errors.add("Bulk Print is currently unavailable please contact support desk.");
-        errorResponse = CallbackResponse.builder().errors(errors).build();
+        //CallbackResponse errorResponse = CallbackResponse.builder().errors(errors).build();
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
         successfulResponse =
                 CallbackResponse.builder().data(ResponseCaseData.builder().deceasedForenames("Bob").build()).build();
@@ -367,7 +350,7 @@ public class NotificationControllerTest {
 
     @Test
     public void caseStoppedWithNoEmailNotificationRequestedShouldReturnBulkPrintError() throws Exception {
-        when(bulkPrintService.sendToBulkPrint(any(CallbackRequest.class), eq(Document.builder().build()), eq(Document
+        when(bulkPrintService.sendToBulkPrint(any(CallbackRequest.class), eq(Document.builder().build()), eq(Document.builder().build()), eq(Document
                 .builder().build()))).thenReturn(null);
         String solicitorPayload = testUtils.getStringFromFile("stopNotificationNoEmailRequested.json");
 
@@ -524,7 +507,7 @@ public class NotificationControllerTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(content().string(containsString("data")));
     }
-    
+
     @Test
     public void shouldReturnSuccessfulResponseFoRaiseGrant() throws Exception {
         String personalPayload = testUtils.getStringFromFile("personalPayloadNotifications.json");
@@ -563,7 +546,7 @@ public class NotificationControllerTest {
 
     @Test
     public void shouldReturnSuccessfulResponseForGrantDelayed() throws Exception {
-        GrantScheduleResponse response = GrantScheduleResponse.builder().scheduleResponseData(Arrays.asList("returnString")).build();
+        GrantScheduleResponse response = GrantScheduleResponse.builder().scheduleResponseData(Collections.singletonList("returnString")).build();
         when(grantNotificationService.handleGrantDelayedNotification("aDate")).thenReturn(response);
         mockMvc.perform(post(GRANT_DELAYED).contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())

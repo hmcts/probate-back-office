@@ -11,7 +11,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.test.context.junit4.SpringRunner;
 import uk.gov.hmcts.probate.exception.BadRequestException;
-import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.SentEmail;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
@@ -20,7 +19,6 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.service.client.DocumentStoreClient;
-import uk.gov.hmcts.probate.service.docmosis.GrantOfRepresentationDocmosisMapperService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.validator.EmailAddressNotificationValidationRule;
 import uk.gov.hmcts.reform.authorisation.generators.ServiceAuthTokenGenerator;
@@ -52,16 +50,10 @@ public class RaiseGrantOfRepresentationNotificationServiceTest {
     private RaiseGrantOfRepresentationNotificationService handleGrantReceivedNotification;
 
     @MockBean
-    private AppInsights appInsights;
-
-    @MockBean
     private SendEmailResponse sendEmailResponse;
 
     @MockBean
     private PDFManagementService pdfManagementService;
-
-    @MockBean
-    private GrantOfRepresentationDocmosisMapperService grantOfRepresentationDocmosisMapperService;
 
     @Mock
     private EventValidationService eventValidationService;
@@ -71,9 +63,6 @@ public class RaiseGrantOfRepresentationNotificationServiceTest {
 
     @Mock
     private CallbackResponse callbackResponse;
-
-    @Mock
-    private DateFormatterService dateFormatterService;
 
     @MockBean
     private ServiceAuthTokenGenerator tokenGenerator;
@@ -89,7 +78,6 @@ public class RaiseGrantOfRepresentationNotificationServiceTest {
 
     private CallbackRequest callbackRequest;
 
-    private static final Long ID = 1L;
     private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
     private static final Long CASE_ID = 12345678987654321L;
     private static final String SENT_EMAIL_FILE_NAME = "sentEmail.pdf";
@@ -106,7 +94,7 @@ public class RaiseGrantOfRepresentationNotificationServiceTest {
         doReturn(sendEmailResponse).when(notificationClient).sendEmail(any(), any(), any(), any(), any());
 
         SendLetterResponse letterResponse = new SendLetterResponse(UUID.randomUUID());
-        when(bulkPrintService.sendToBulkPrint(any(CallbackRequest.class), any(), any())).thenReturn(letterResponse);
+        when(bulkPrintService.sendToBulkPrint(any(CallbackRequest.class), any(),any(), any())).thenReturn(letterResponse);
     }
 
     @Ignore

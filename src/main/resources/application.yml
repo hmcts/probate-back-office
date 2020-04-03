@@ -51,6 +51,10 @@ docmosis:
     accessKey: ${PDF_SERVICE_ACCESS_KEY:ZDYxMTkzZTQtMGY2Mi00NDM1LWIyN2ItNGRkNzdjOTczMjAwOjQ1NTE0ODQ}
     health.uri: ${PDF_SERVICE_HEALTH_URL:https://docmosis-development.platform.hmcts.net}
   templates:
+    letterOfGrantIssuedState:
+      templateName: FL-PRB-GRP-ENG-00261.docx
+    letterOfGrantIssuedIntestacy:
+      templateName: FL-PRB-GRP-ENG-00262.docx
     caveatRaised:
       templateName: FL-PRB-GNO-ENG-00011.doc
     grantRaised:
@@ -396,7 +400,7 @@ registry:
       addressline3: Cardiff
       town: South Wales
       postcode: CF24 0RZ
-      
+
 document:
   retriever:
     service:
