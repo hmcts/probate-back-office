@@ -27,6 +27,9 @@
    ]]></notes>
         <gav regex="true">^org\.apache\.tomcat\.embed:tomcat-embed-core:.*$</gav>
         <cve>CVE-2019-0232</cve>
+        <cve>CVE-2019-12418</cve>
+        <cve>CVE-2019-17563</cve>
+        <cve>CVE-2020-1938</cve>
     </suppress>
     <suppress>
         <notes><![CDATA[
@@ -298,6 +301,10 @@
         <cve>CVE-2019-20330</cve>
         <cve>CVE-2019-14893</cve>
         <cve>CVE-2019-14892</cve>
+        <cve>CVE-2020-10969</cve>
+        <cve>CVE-2020-11111</cve>
+        <cve>CVE-2020-11112</cve>
+        <cve>CVE-2020-11113</cve>
     </suppress>
     <suppress>
         <notes><![CDATA[
