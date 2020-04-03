@@ -187,6 +187,16 @@ public class IronMountainFileServiceTest {
                 is(FileUtils.getStringFromFile("expectedGeneratedFiles/ironMountainSolAsPrimary.txt")));
     }
 
+    @Test
+    public void testAddExceptionForIncorrectCaseData() throws IOException {
+        caseData2.applicationType(null);
+        builtData = caseData2.build();
+        createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, 1234567890876L);
+        caseList.add(createdCase);
+        assertThat(createFile(ironmountainFileService.createIronMountainFile(caseList.build(), FILE_NAME)),
+            is(FileUtils.getStringFromFile("expectedGeneratedFiles/ironMountainExceptionCase.txt")));
+    }
+
     private String createFile(File file) throws IOException {
         file.deleteOnExit();
         return new String(Files.readAllBytes(Paths.get(file.getName())), StandardCharsets.UTF_8);

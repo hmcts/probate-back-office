@@ -219,14 +219,6 @@ public class HmrcFileServiceTest {
             is(FileUtils.getStringFromFile("expectedGeneratedFiles/hmrcPersonalZeroIHTs.txt")));
     }
 
-    @Test(expected = ClientException.class)
-    public void testHmrcFileIHTErrorForPersonal() {
-        builtData = caseDataPersonal.ihtFormId("notAnIHTValue").build();
-        createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, 2222333344445555L);
-        caseList.add(createdCase);
-        hmrcFileService.createHmrcFile(caseList.build(), FILE_NAME);
-    }
-
     @Test
     public void testHmrcFileBuiltForMultiples() throws IOException {
         builtData = caseDataPersonal.build();
@@ -284,6 +276,30 @@ public class HmrcFileServiceTest {
             is(FileUtils.getStringFromFile("expectedGeneratedFiles/hmrcPersonalMissingAddresses.txt")));
     }
 
+    @Test
+    public void testMissingIHTReplacedWithX() throws IOException {
+        caseDataMissingData.ihtFormId(null);
+        builtData = caseDataMissingData.build();
+        createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, 5555666677778888L);
+        caseList.add(createdCase);
+        String expected = FileUtils.getStringFromFile("expectedGeneratedFiles/hmrcPersonalMissingIHT.txt");
+        
+        assertThat(createFile(hmrcFileService.createHmrcFile(caseList.build(), FILE_NAME)),
+            is(expected));
+    }
+
+    @Test
+    public void testOtherIHTRefusesCaseRow() throws IOException {
+        caseDataMissingData.ihtFormId("OTHER");
+        builtData = caseDataMissingData.build();
+        createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, 5555666677778888L);
+        caseList.add(createdCase);
+        String expected = FileUtils.getStringFromFile("expectedGeneratedFiles/hmrcPersonalMissingCase.txt");
+
+        assertThat(createFile(hmrcFileService.createHmrcFile(caseList.build(), FILE_NAME)),
+            is(expected));
+    }
+    
     private String createFile(File file) throws IOException {
         file.deleteOnExit();
         return new String(Files.readAllBytes(Paths.get(file.getName())), StandardCharsets.UTF_8);
