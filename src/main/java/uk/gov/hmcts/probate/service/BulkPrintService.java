@@ -133,7 +133,7 @@ public class BulkPrintService {
 
             additionalData = Collections.unmodifiableMap(additionalData);
 
-            List<uk.gov.hmcts.reform.sendletter.api.model.v3.Document> pdfs = Collections.EMPTY_LIST;
+            List<uk.gov.hmcts.reform.sendletter.api.model.v3.Document> pdfs;
             if (forReprint) {
                 pdfs = arrangePdfDocumentsForReprint(callbackRequest, grantDocument, coverSheet, authHeaderValue);
             } else {
