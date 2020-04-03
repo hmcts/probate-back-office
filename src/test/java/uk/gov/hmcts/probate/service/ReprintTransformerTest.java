@@ -135,11 +135,25 @@ public class ReprintTransformerTest {
     }
 
     @Test
-    public void shouldNotCreateForEmptyItems() {
+    public void shouldNotCreateForEmptyScannedItems() {
         reprintTransformer.transformReprintDocuments(caseDetails, responseCaseDataBuilder);
         assertThat(responseCaseDataBuilder.build().getReprintDocument().getListItems().size(), is(0));
     }
-    
+
+    @Test
+    public void shouldNotCreateForEmptyGeneratedItems() {
+        ScannedDocument doc = ScannedDocument.builder()
+            .type("Extra")
+            .fileName("scFileName")
+            .subtype("subType")
+            .build();
+        scannedDocs = Arrays.asList(new CollectionMember(null, doc));
+        when(caseData.getScannedDocuments()).thenReturn(scannedDocs);
+
+        reprintTransformer.transformReprintDocuments(caseDetails, responseCaseDataBuilder);
+        assertThat(responseCaseDataBuilder.build().getReprintDocument().getListItems().size(), is(0));
+    }
+
     private void createAndAssertGeneratedListItem(DocumentType docType, String genFileName, String genLabel) {
         Document doc = Document.builder()
             .documentType(docType)
