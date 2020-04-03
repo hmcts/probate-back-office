@@ -309,6 +309,9 @@
         <cve>CVE-2020-10672</cve>
         <cve>CVE-2020-10968</cve>
         <cve>CVE-2020-10969</cve>
+        <cve>CVE-2020-11111</cve>
+        <cve>CVE-2020-11112</cve>
+        <cve>CVE-2020-11113</cve>
     </suppress>
     <suppress>
         <notes><![CDATA[
