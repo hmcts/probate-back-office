@@ -119,16 +119,4 @@ public class DataExtractControllerTest {
             .andExpect(status().is4xxClientError());
     }
 
-    @Test
-    public void exelaShouldReturnOkResponseOnValidDateFormat() throws Exception {
-        mockMvc.perform(post("/data-extract/exela?date=2019-02-13"))
-            .andExpect(status().isAccepted())
-            .andExpect(content().string("Exela data extract finished"));
-    }
-
-    @Test
-    public void exelaShouldReturnErrorWithNoDateOnPathParam() throws Exception {
-        mockMvc.perform(post("/data-extract/exela"))
-            .andExpect(status().is4xxClientError());
-    }
 }

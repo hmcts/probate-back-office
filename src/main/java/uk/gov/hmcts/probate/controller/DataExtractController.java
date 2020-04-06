@@ -65,21 +65,4 @@ public class DataExtractController {
         return ResponseEntity.accepted().body("Perform Iron Mountain data extract finished");
     }
 
-    @ApiOperation(value = "Initiate Exela data extract", notes = " Date MUST be in format 'yyyy-MM-dd'")
-    @PostMapping(path = "/exela")
-    public ResponseEntity initiateExelaExtract(@ApiParam(value = "Date to find cases against", required = true)
-                                                @RequestParam("date") String date) {
-
-        dataExtractDateValidator.dateValidator(date);
-
-        log.info("Calling perform Exela data extract from date...");
-        ExecutorService executor = Executors.newFixedThreadPool(1);
-        executor.submit(() -> {
-            exelaDataExtractService.performExelaExtractForDate(date);
-        });
-        log.info("Perform Exela data extract from date finished");
-
-        return ResponseEntity.accepted().body("Exela data extract finished");
-    }
-
 }
