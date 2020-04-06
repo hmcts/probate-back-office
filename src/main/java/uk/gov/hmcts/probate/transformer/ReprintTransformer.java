@@ -39,16 +39,23 @@ public class ReprintTransformer {
         List<DynamicListItem> listItems = new ArrayList<>();
         if (caseData.getScannedDocuments() != null) {
             listItems = caseData.getScannedDocuments().stream()
-                .filter(doc -> isWill(doc.getValue()))
+                .filter(doc -> isFromScannedDOcuments(doc.getValue()))
                 .map(doc -> buildFromScannedDocument(doc.getValue()).get())
                 .collect(Collectors.toList());
         }
 
         if (caseData.getProbateDocumentsGenerated() != null) {
             listItems.addAll(caseData.getProbateDocumentsGenerated().stream()
-                .filter(doc -> isGrantOrReissueOrSOT(doc.getValue()))
+                .filter(doc -> isFromGeneratedDocuments(doc.getValue()))
                 .map(doc -> buildFromGeneratedDocument(doc.getValue()).get())
                 .collect(Collectors.toList()));
+        }
+
+        if (caseData.getProbateSotDocumentsGenerated() != null && !caseData.getProbateSotDocumentsGenerated().isEmpty()) {
+            Document sot = caseData.getProbateSotDocumentsGenerated().get(caseData.getProbateSotDocumentsGenerated().size()-1).getValue();
+            if (isFromGeneratedDocuments(sot)) {
+                listItems.add(buildFromGeneratedDocument(sot).get());
+            }
         }
 
         return DynamicList.builder()
@@ -64,12 +71,12 @@ public class ReprintTransformer {
             .build();
     }
 
-    private boolean isWill(ScannedDocument document) {
+    private boolean isFromScannedDOcuments(ScannedDocument document) {
         return (WILL_DOC_TYPE.equalsIgnoreCase(document.getType()) &&
             WILL_DOC_SUB_TYPE.equalsIgnoreCase(document.getSubtype()));
     }
 
-    private boolean isGrantOrReissueOrSOT(Document document) {
+    private boolean isFromGeneratedDocuments(Document document) {
         switch (document.getDocumentType()) {
             case DIGITAL_GRANT:
             case INTESTACY_GRANT:

@@ -8,6 +8,7 @@ import org.mockito.MockitoAnnotations;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
+import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
@@ -44,6 +45,7 @@ public class ReprintTransformerTest {
     private CaseData caseData;
 
     private List<CollectionMember<Document>> generatedDocs = Collections.EMPTY_LIST;
+    private List<CollectionMember<Document>> sotDocs = Collections.EMPTY_LIST;
     private List<CollectionMember<ScannedDocument>> scannedDocs = Collections.EMPTY_LIST;
 
     private ResponseCaseData.ResponseCaseDataBuilder responseCaseDataBuilder;
@@ -62,10 +64,6 @@ public class ReprintTransformerTest {
             .documentType(DIGITAL_GRANT)
             .documentFileName("Grant1")
             .build();
-        Document sot = Document.builder()
-            .documentType(STATEMENT_OF_TRUTH)
-            .documentFileName("SOT1")
-            .build();
         Document other = Document.builder()
             .documentType(OTHER)
             .documentFileName("Other1")
@@ -75,7 +73,6 @@ public class ReprintTransformerTest {
             .documentFileName("GrantDraft1")
             .build();
         generatedDocs = Arrays.asList(new CollectionMember(null, grant),
-            new CollectionMember(null, sot),
             new CollectionMember(null, other),
             new CollectionMember(null, draft));
         when(caseData.getProbateDocumentsGenerated()).thenReturn(generatedDocs);
@@ -93,13 +90,30 @@ public class ReprintTransformerTest {
         scannedDocs = Arrays.asList(new CollectionMember(null, will), new CollectionMember(null, otherSc));
         when(caseData.getScannedDocuments()).thenReturn(scannedDocs);
 
+        Document sot1 = Document.builder()
+            .documentType(STATEMENT_OF_TRUTH)
+            .documentFileName("SOT1")
+            .build();
+        Document sot2 = Document.builder()
+            .documentType(STATEMENT_OF_TRUTH)
+            .documentFileName("SOT2")
+            .build();
+        Document sot3 = Document.builder()
+            .documentType(STATEMENT_OF_TRUTH)
+            .documentFileName("SOT3")
+            .build();
+        sotDocs = Arrays.asList(new CollectionMember(null, sot1),
+            new CollectionMember(null, sot2),
+            new CollectionMember(null, sot3));
+        when(caseData.getProbateSotDocumentsGenerated()).thenReturn(sotDocs);
+
         reprintTransformer.transformReprintDocuments(caseDetails, responseCaseDataBuilder);
         assertThat(responseCaseDataBuilder.build().getReprintDocument().getListItems().size(), is(3));
         assertThat(responseCaseDataBuilder.build().getReprintDocument().getListItems().get(0).getCode(), is("Will1"));
         assertThat(responseCaseDataBuilder.build().getReprintDocument().getListItems().get(0).getLabel(), is("Will"));
         assertThat(responseCaseDataBuilder.build().getReprintDocument().getListItems().get(1).getCode(), is("Grant1"));
         assertThat(responseCaseDataBuilder.build().getReprintDocument().getListItems().get(1).getLabel(), is("Grant"));
-        assertThat(responseCaseDataBuilder.build().getReprintDocument().getListItems().get(2).getCode(), is("SOT1"));
+        assertThat(responseCaseDataBuilder.build().getReprintDocument().getListItems().get(2).getCode(), is("SOT3"));
         assertThat(responseCaseDataBuilder.build().getReprintDocument().getListItems().get(2).getLabel(), is("SOT"));
     }
 
@@ -117,8 +131,6 @@ public class ReprintTransformerTest {
         createAndAssertGeneratedListItem(DIGITAL_GRANT_REISSUE, "GrantReissue1", "ReissuedGrant");
         createAndAssertGeneratedListItem(INTESTACY_GRANT_REISSUE, "IGrantReissue1", "ReissuedGrant");
         createAndAssertGeneratedListItem(ADMON_WILL_GRANT_REISSUE, "AWGrantReissue1", "ReissuedGrant");
-
-        createAndAssertGeneratedListItem(STATEMENT_OF_TRUTH, "SOT1", "SOT");
     }
 
     @Test
