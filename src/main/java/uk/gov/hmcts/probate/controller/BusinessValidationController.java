@@ -80,6 +80,7 @@ public class BusinessValidationController {
             @Validated({ApplicationCreatedGroup.class, ApplicationUpdatedGroup.class}) @RequestBody CallbackRequest callbackRequest,
             BindingResult bindingResult,
             HttpServletRequest request) {
+        log.info("Sanjay added some logging to force rebuild");
         logRequest(request.getRequestURI(), callbackRequest);
 
         validateForPayloadErrors(callbackRequest, bindingResult);
