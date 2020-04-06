@@ -27,7 +27,7 @@ public class HealthConfiguration {
     @Value("${evidence.management.host}")
     private String evidenceManagementHost;
 
-    @Value("${printservice.internal.host}")
+    @Value("${printservice.host}")
     private String printServiceInternalHost;
 
     @Value("${core_case_data.api.url}")
