@@ -357,7 +357,7 @@ public class CaveatCallbackResponseTransformerTest {
     public void shouldExtendCaveatExpiry() {
         CaveatCallbackResponse caveatCallbackResponse = underTest.transformResponseWithExtendedExpiry(caveatCallbackRequestMock);
 
-        String extendedDate = dateTimeFormatter.format(LocalDate.now().plusMonths(9).minusDays(1));
+        String extendedDate = dateTimeFormatter.format(LocalDate.now().plusMonths(9));
         assertEquals(extendedDate, caveatCallbackResponse.getCaveatData().getExpiryDate());
     }
 
