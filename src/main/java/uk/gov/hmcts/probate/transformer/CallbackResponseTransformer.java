@@ -78,6 +78,7 @@ public class CallbackResponseTransformer {
     private final AssembleLetterTransformer assembleLetterTransformer;
     private final ExecutorsApplyingNotificationService executorsApplyingNotificationService;
     private final SolicitorExecutorService solicitorExecutorService;
+    private final ReprintTransformer reprintTransformer;
 
     private static final DocumentType[] LEGAL_STATEMENTS = {LEGAL_STATEMENT_PROBATE, LEGAL_STATEMENT_INTESTACY,
         LEGAL_STATEMENT_ADMON};
@@ -400,6 +401,14 @@ public class CallbackResponseTransformer {
         return transformResponse(responseCaseDataBuilder.build());
     }
 
+    public CallbackResponse transformCaseForReprint(CallbackRequest callbackRequest) {
+        boolean doTransform = doTransform(callbackRequest);
+        ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), doTransform);
+        reprintTransformer.transformReprintDocuments(callbackRequest.getCaseDetails(), responseCaseDataBuilder);
+
+        return transformResponse(responseCaseDataBuilder.build());
+    }
+
     private boolean doTransform(CallbackRequest callbackRequest) {
         CaseData caseData = callbackRequest.getCaseDetails().getData();
         return caseData.getApplicationType() == ApplicationType.SOLICITOR
@@ -587,7 +596,9 @@ public class CallbackResponseTransformer {
                 .grantDelayedNotificationSent(caseData.getGrantDelayedNotificationSent())
                 .grantAwaitingDocumentationNotificationDate(ofNullable(caseData.getGrantAwaitingDocumentationNotificationDate())
                     .map(dateTimeFormatter::format).orElse(null))
-                .grantAwaitingDocumentatioNotificationSent(caseData.getGrantAwaitingDocumentatioNotificationSent());
+                .grantAwaitingDocumentatioNotificationSent(caseData.getGrantAwaitingDocumentatioNotificationSent())
+                .reprintDocument(caseData.getReprintDocument())
+                .reprintNumberOfCopies((caseData.getReprintNumberOfCopies()));
 
 
         if (transform) {
@@ -739,7 +750,9 @@ public class CallbackResponseTransformer {
                 .grantDelayedNotificationSent(caseData.getGrantDelayedNotificationSent())
                 .grantAwaitingDocumentationNotificationDate(ofNullable(caseData.getGrantAwaitingDocumentationNotificationDate())
                     .map(dateTimeFormatter::format).orElse(null))
-                .grantAwaitingDocumentatioNotificationSent(caseData.getGrantAwaitingDocumentatioNotificationSent());
+                .grantAwaitingDocumentatioNotificationSent(caseData.getGrantAwaitingDocumentatioNotificationSent())
+                .reprintDocument(caseData.getReprintDocument())
+                .reprintNumberOfCopies((caseData.getReprintNumberOfCopies()));
 
         if (YES.equals(caseData.getSolsSolicitorIsMainApplicant())) {
             builder

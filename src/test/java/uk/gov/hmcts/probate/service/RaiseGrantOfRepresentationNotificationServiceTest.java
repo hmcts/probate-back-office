@@ -106,7 +106,7 @@ public class RaiseGrantOfRepresentationNotificationServiceTest {
         doReturn(sendEmailResponse).when(notificationClient).sendEmail(any(), any(), any(), any(), any());
 
         SendLetterResponse letterResponse = new SendLetterResponse(UUID.randomUUID());
-        when(bulkPrintService.sendToBulkPrint(any(CallbackRequest.class), any(), any())).thenReturn(letterResponse);
+        when(bulkPrintService.sendToBulkPrintForGrant(any(CallbackRequest.class), any(), any())).thenReturn(letterResponse);
     }
 
     @Ignore
