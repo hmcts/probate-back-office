@@ -178,6 +178,8 @@ public class ResponseCaseData {
     private final String domicilityCountry;
     private final List<CollectionMember<EstateItem>> ukEstate;
     private final String domicilityIHTCert;
+    private final String solsEntrustingDoc;
+    private final String solsDomicilityCert;
     private final String willDatedBeforeApril;
     private final String deceasedEnterMarriageOrCP;
     private final String deceasedMaritalStatus;
