@@ -25,6 +25,7 @@
     "security_classification": "PUBLIC",
     "case_data": {
       "dateOfDeathType" : "diedOnOrSince",
+      "languagePreferenceWelsh": "No",
       "otherExecutorExists": "No",
       "boSendToBulkPrint": "No",
       "outsideUKGrantCopies": null,

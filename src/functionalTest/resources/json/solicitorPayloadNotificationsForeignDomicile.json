@@ -27,6 +27,7 @@
       "domicilityCountry" : "Spain",
       "dateOfDeathType" : "diedOnOrSince",
       "otherExecutorExists": "No",
+      "languagePreferenceWelsh": "No",
       "boSendToBulkPrint": "No",
       "outsideUKGrantCopies": null,
       "applicationType": "Solicitor",

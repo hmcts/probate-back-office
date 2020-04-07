@@ -26,6 +26,7 @@
     "case_data": {
       "otherExecutorExists": "No",
       "outsideUKGrantCopies": null,
+      "languagePreferenceWelsh": "No",
       "boSendToBulkPrint": "No",
       "applicationType": "Solicitor",
       "deceasedAddress": {
