@@ -355,7 +355,6 @@ public class NotificationService {
                                                    String reference)
         throws NotificationClientException {
         SendEmailResponse response;
-        log.info("getSendEmailResponse");
         switch (state) {
             case CASE_STOPPED:
             case CASE_STOPPED_CAVEAT:
@@ -364,9 +363,7 @@ public class NotificationService {
             case CASE_STOPPED_REQUEST_INFORMATION:
             case REDECLARATION_SOT:
             default:
-                log.info("send the email to notificationClient");
                 response = notificationClient.sendEmail(templateId, emailAddress, personalisation, reference);
-                log.info("sent the email to the client!");
         }
         log.info("Return the SendEmailResponse: {} " , response );
         return response;

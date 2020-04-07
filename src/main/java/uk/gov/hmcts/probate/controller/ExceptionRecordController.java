@@ -1,6 +1,5 @@
 package uk.gov.hmcts.probate.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -24,8 +23,8 @@ import uk.gov.hmcts.probate.model.exceptionrecord.CaveatCaseUpdateRequest;
 import uk.gov.hmcts.probate.model.exceptionrecord.ExceptionRecordErrorResponse;
 import uk.gov.hmcts.probate.model.exceptionrecord.ExceptionRecordRequest;
 import uk.gov.hmcts.probate.model.exceptionrecord.JourneyClassification;
-import uk.gov.hmcts.probate.model.exceptionrecord.SuccessfulTransformationResponse;
 import uk.gov.hmcts.probate.model.exceptionrecord.SuccessfulCaveatUpdateResponse;
+import uk.gov.hmcts.probate.model.exceptionrecord.SuccessfulTransformationResponse;
 import uk.gov.hmcts.probate.service.exceptionrecord.ExceptionRecordService;
 import uk.gov.hmcts.probate.service.ocr.FormType;
 import uk.gov.hmcts.probate.service.ocr.OCRPopulatedValueMapper;
@@ -96,17 +95,14 @@ public class ExceptionRecordController {
             switch (formType) {
                 case PA8A:
                     callbackResponse = erService.createCaveatCaseFromExceptionRecord(erRequest, warnings);
-                    logTransformationCallback(callbackResponse);
                     return ResponseEntity.ok(callbackResponse);
                 case PA1P:
                     callbackResponse = erService.createGrantOfRepresentationCaseFromExceptionRecord(
                             erRequest, GrantType.GRANT_OF_PROBATE, warnings);
-                    logTransformationCallback(callbackResponse);
                     return ResponseEntity.ok(callbackResponse);
                 case PA1A:
                     callbackResponse = erService.createGrantOfRepresentationCaseFromExceptionRecord(
                             erRequest, GrantType.INTESTACY, warnings);
-                    logTransformationCallback(callbackResponse);
                     return ResponseEntity.ok(callbackResponse);
                 default:
                     // Unreachable code
@@ -144,7 +140,6 @@ public class ExceptionRecordController {
         switch (formType) {
             case PA8A: {
                 callbackResponse = erService.updateCaveatCaseFromExceptionRecord(erCaseUpdateRequest);
-                logUpdateCallback(callbackResponse);
                 break;
             }
             default: {
@@ -154,22 +149,6 @@ public class ExceptionRecordController {
         }
 
         return ResponseEntity.ok(callbackResponse);
-    }
-
-    private void logTransformationCallback(SuccessfulTransformationResponse callbackResponse) {
-        try {
-            log.info("Response for transformExceptionRecord: {}", objectMapper.writeValueAsString(callbackResponse));
-        } catch (JsonProcessingException e) {
-            log.error("Exception on transform ExceptionRecord: {}", e);
-        }
-    }
-
-    private void logUpdateCallback(SuccessfulCaveatUpdateResponse callbackResponse) {
-        try {
-            log.info("Response for update ExceptionRecord: {}", objectMapper.writeValueAsString(callbackResponse));
-        } catch (JsonProcessingException e) {
-            log.error("Exception on transformExceptionRecord: {}", e);
-        }
     }
 
     @ExceptionHandler
