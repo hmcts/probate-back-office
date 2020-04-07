@@ -410,17 +410,6 @@ public class NotificationControllerTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
     }
 
-
-    @Test
-    public void shouldReturnEmailPAApplicationReceivedValidateSuccessful() throws Exception {
-        String personalPayload = testUtils.getStringFromFile("personalPayloadNotifications.json");
-
-        mockMvc.perform(post(APPLICATION_RECEIVED_URL).content(personalPayload).contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
-    }
-
-
     @Test
     public void shouldReturnEmailPAValidateFromBulkScanSuccessful() throws Exception {
         String personalPayload = testUtils.getStringFromFile("personalPayloadNotificationsFromBulkScan.json");

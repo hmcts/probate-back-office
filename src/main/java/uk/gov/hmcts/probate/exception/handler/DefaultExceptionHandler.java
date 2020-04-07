@@ -13,11 +13,16 @@ import uk.gov.hmcts.probate.exception.BusinessValidationException;
 import uk.gov.hmcts.probate.exception.ClientException;
 import uk.gov.hmcts.probate.exception.ConnectionException;
 import uk.gov.hmcts.probate.exception.NotFoundException;
+import uk.gov.hmcts.probate.exception.OCRMappingException;
 import uk.gov.hmcts.probate.exception.model.ErrorResponse;
+import uk.gov.hmcts.probate.model.ccd.ocr.ValidationResponse;
+import uk.gov.hmcts.probate.model.ccd.ocr.ValidationResponseStatus;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.service.notify.NotificationClientException;
 
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 import static net.logstash.logback.argument.StructuredArguments.keyValue;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
@@ -92,6 +97,15 @@ class DefaultExceptionHandler extends ResponseEntityExceptionHandler {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         return new ResponseEntity<>(errorResponse, headers, NOT_FOUND);
+    }
+
+    @ExceptionHandler(OCRMappingException.class)
+    public ResponseEntity<ValidationResponse> handle(OCRMappingException exception) {
+        log.error("An error has occured during the bulk scanning OCR validation process: {}", exception.getMessage(), exception);
+        List<String> errors = Arrays.asList(exception.getMessage());
+        ValidationResponse validationResponse =
+            ValidationResponse.builder().status(ValidationResponseStatus.ERRORS).errors(errors).build();
+        return ResponseEntity.ok(validationResponse);
     }
 
 }

@@ -35,7 +35,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
-import static uk.gov.hmcts.probate.model.Constants.CAVEAT_LIFESPAN;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -77,7 +76,7 @@ public class CaveatCallbackResponseTransformerTest {
 
     private static final LocalDate CAV_SUBMISSION_DATE = LocalDate.now();
     private static final String CAV_FORMATTED_SUBMISSION_DATE = dateTimeFormatter.format(CAV_SUBMISSION_DATE);
-    private static final LocalDate CAV_EXPIRY_DATE = LocalDate.now().plusMonths(CAVEAT_LIFESPAN);
+    private static final LocalDate CAV_EXPIRY_DATE = LocalDate.now().plusMonths(3);
     private static final String CAV_AUTO_EXPIRED = "Yes";
 
     private static final String CAV_FORMATTED_EXPIRY_DATE = dateTimeFormatter.format(CAV_EXPIRY_DATE);
@@ -341,9 +340,9 @@ public class CaveatCallbackResponseTransformerTest {
     public void shouldConvertRequestToDataBeanWithCaveatWithdrawnNoCaveatWithdrawnDocuments() {
         List<Document> documents = new ArrayList<>();
         Document document = Document.builder()
-                .documentLink(documentLinkMock)
-                .documentType(DocumentType.DIGITAL_GRANT)
-                .build();
+            .documentLink(documentLinkMock)
+            .documentType(DocumentType.DIGITAL_GRANT)
+            .build();
         documents.add(0, document);
         String letterId = "123-456";
         CaveatCallbackResponse caveatCallbackResponse = underTest.withdrawn(caveatCallbackRequestMock, documents, letterId);
@@ -352,6 +351,14 @@ public class CaveatCallbackResponseTransformerTest {
 
         assertEquals(0, caveatCallbackResponse.getCaveatData().getNotificationsGenerated().size());
         assertEquals(0, caveatCallbackResponse.getCaveatData().getBulkPrintId().size());
+    }
+
+    @Test
+    public void shouldExtendCaveatExpiry() {
+        CaveatCallbackResponse caveatCallbackResponse = underTest.transformResponseWithExtendedExpiry(caveatCallbackRequestMock);
+
+        String extendedDate = dateTimeFormatter.format(LocalDate.now().plusMonths(9));
+        assertEquals(extendedDate, caveatCallbackResponse.getCaveatData().getExpiryDate());
     }
 
     private void assertBulkScanCaseCreationDetails(CaseCreationDetails caveatCreationDetails) {

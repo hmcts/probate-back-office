@@ -9,11 +9,21 @@ import lombok.Data;
 public class DocumentLink {
 
     @JsonProperty(value = "document_url")
-    private final String documentUrl;
+    private String documentUrl;
 
     @JsonProperty(value = "document_binary_url")
-    private final String documentBinaryUrl;
+    private String documentBinaryUrl;
 
     @JsonProperty(value = "document_filename")
-    private final String documentFilename;
+    private String documentFilename;
+
+    public DocumentLink() {
+        super();
+    }
+
+    public DocumentLink(String documentUrl, String documentBinaryUrl, String documentFilename) {
+        this.documentUrl = documentUrl;
+        this.documentBinaryUrl = documentBinaryUrl;
+        this.documentFilename = documentFilename;
+    }
 }

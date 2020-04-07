@@ -234,6 +234,13 @@
    file name: tomcat-embed-core-9.0.16.jar
    ]]></notes>
         <cve>CVE-2019-0232</cve>
+        <cve>CVE-2020-10969</cve>
+        <cve>CVE-2020-11113</cve>
+        <cve>CVE-2020-11112</cve>
+        <cve>CVE-2020-11111</cve>
+        <cve>CVE-2020-1938</cve>
+        <cve>CVE-2019-12418</cve>
+        <cve>CVE-2019-17563</cve>
     </suppress>
     <suppress>
         <notes><![CDATA[
@@ -466,5 +473,26 @@ file name: spring-jcl-5.1.5.RELEASE.jar
    ]]></notes>
         <gav regex="true">^org\.apache\.tomcat\.embed:tomcat-embed-core:.*$</gav>
         <cpe>cpe:/a:apache_tomcat:apache_tomcat</cpe>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: jackson-databind-2.9.9.3.jar
+   ]]></notes>
+        <gav regex="true">^com\.fasterxml\.jackson\.core:jackson-databind:.*$</gav>
+        <cve>CVE-2020-10672</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: jackson-databind-2.9.9.3.jar
+   ]]></notes>
+        <gav regex="true">^com\.fasterxml\.jackson\.core:jackson-databind:.*$</gav>
+        <cve>CVE-2020-10673</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: jackson-databind-2.9.9.3.jar
+   ]]></notes>
+        <gav regex="true">^com\.fasterxml\.jackson\.core:jackson-databind:.*$</gav>
+        <cve>CVE-2020-10968</cve>
     </suppress>
 </suppressions>

@@ -14,6 +14,11 @@ public class ExceptionRecordErrorResponse {
     @JsonProperty("errors")
     public final List<String> errors;
 
+    public ExceptionRecordErrorResponse(List<String> errors) {
+        this.errors = errors;
+        this.warnings = null;
+    }
+
     public ExceptionRecordErrorResponse(List<String> errors, List<String> warnings) {
         this.errors = errors;
         this.warnings = warnings;
