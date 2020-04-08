@@ -51,17 +51,13 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
                 .and().content(containsString(containsText));
     }
 
-    private void validateOCRDataPostError(String bodyText, String containsText,
-                                            String errorMessage, int errorSize, int errorItem) {
+    private void validateOCRDataPostError(String bodyText) {
         SerenityRest.given()
                 .relaxedHTTPSValidation()
                 .headers(utils.getHeaders())
                 .body(bodyText)
                 .when().post(VALIDATE_OCR_DATA_UNKNOWN_FORM_TYPE)
-                .then().assertThat().statusCode(404)
-                .and().body("errors", hasSize(errorSize))
-                .and().body("errors[" + errorItem + "]", equalTo(errorMessage))
-                .and().content(containsString(containsText));
+                .then().assertThat().statusCode(404);
     }
 
     private void transformExceptionPostSuccess(String bodyText, String containsText) {
@@ -110,7 +106,7 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
     @Test
     public void testInvalidFormTypeReturnError() {
         jsonRequest = utils.getJsonFromFile("expectedOCRDataAllMandatoryFields.json");
-        validateOCRDataPostError(jsonRequest, ERRORS, FORM_TYPE_MISSING, 1, 0);
+        validateOCRDataPostError(jsonRequest);
     }
 
     @Test
