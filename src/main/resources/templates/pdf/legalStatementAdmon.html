@@ -138,6 +138,11 @@
     <tr>
         <td colspan="2">
             <p>
+                {% if case_details.case_data.applicationGrounds != null and case_details.case_data.applicationGrounds != "" %}The grounds for making this application and any supporting evidence are:
+                {{ case_details.case_data.applicationGrounds }}
+                {% endif %}
+            </p>
+            <p>
                 {{ case_details.case_data.primaryApplicantForenames }} {{ case_details.case_data.primaryApplicantSurname }}, of
                 {% if case_details.case_data.primaryApplicantAddress.AddressLine1 != null and case_details.case_data.primaryApplicantAddress.AddressLine1 != "" %}{{ case_details.case_data.primaryApplicantAddress.AddressLine1 }},{% endif %}
                 {% if case_details.case_data.primaryApplicantAddress.AddressLine2 != null and case_details.case_data.primaryApplicantAddress.AddressLine2 != "" %}{{ case_details.case_data.primaryApplicantAddress.AddressLine2 }},{% endif %}

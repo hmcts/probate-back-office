@@ -147,6 +147,11 @@
     </tr>
     <tr>
         <td colspan="2">
+            <p>
+                {% if case_details.case_data.applicationGrounds != null and case_details.case_data.applicationGrounds != "" %}The grounds for making this application and any supporting evidence are:
+                {{ case_details.case_data.applicationGrounds }}
+                {% endif %}
+            </p>
             {% for executor in case_details.case_data.executorsApplyingForLegalStatement %}
             <p>
                 {{ executor.value.additionalExecForenames }} {{ executor.value.additionalExecLastname }},

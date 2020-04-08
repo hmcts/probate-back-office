@@ -153,6 +153,11 @@
     <tr>
         <td colspan="2">
             <p>
+                {% if case_details.case_data.applicationGrounds != null and case_details.case_data.applicationGrounds != "" %}The grounds for making this application and any supporting evidence are:
+                {{ case_details.case_data.applicationGrounds }}
+                {% endif %}
+            </p>
+            <p>
                 {% if case_details.case_data.deceasedMaritalStatus == "marriedCivilPartnership" %}
                 {% if case_details.case_data.solsApplicantRelationshipToDeceased == "SpouseOrCivil" %}I am the spouse or civil partner of {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }} and the only person now entitled to the estate.
                 {% else %}{{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }}'s spouse or civil partner doesn't want to apply for letters of administration now or in the future. I am the
