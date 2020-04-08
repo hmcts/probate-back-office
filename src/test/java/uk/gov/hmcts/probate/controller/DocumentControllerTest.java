@@ -173,10 +173,8 @@ public class DocumentControllerTest {
         when(documentGeneratorService.generateSoT(any()))
                 .thenReturn(Document.builder().documentType(DocumentType.STATEMENT_OF_TRUTH).build());
 
-        when(documentGeneratorService.generateLetter(any(CallbackRequest.class),
-                eq(DocumentType.ASSEMBLED_LETTER), eq(true))).thenReturn(letter);
-        when(documentGeneratorService.generateLetter(any(CallbackRequest.class),eq(DocumentType.ASSEMBLED_LETTER), eq(false))).thenReturn(letter);
-
+        when(documentGeneratorService.generateLetter(any(CallbackRequest.class), eq(true))).thenReturn(letter);
+        when(documentGeneratorService.generateLetter(any(CallbackRequest.class), eq(false))).thenReturn(letter);
 
         SendLetterResponse sendLetterResponse = new SendLetterResponse(UUID.randomUUID());
         when(bulkPrintService.sendToBulkPrintForGrant(any(CallbackRequest.class), any(Document.class),
@@ -242,8 +240,8 @@ public class DocumentControllerTest {
 
         when(documentGeneratorService.getDocument(any(CallbackRequest.class),  eq(DocumentStatus.FINAL), eq(DocumentIssueType.GRANT)))
                 .thenReturn(Document.builder().documentType(DIGITAL_GRANT).build());
-        when(documentGeneratorService.generateLetter(any(CallbackRequest.class),
-                eq(DocumentType.LETTER_OF_GRANT_ISSUED_STATE), eq(true)))
+        when(documentGeneratorService.generateLetterOfGrantDelay(any(CallbackRequest.class),
+                eq(DocumentType.LETTER_OF_GRANT_ISSUED_STATE)))
                 .thenReturn(letter);
         String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadNotificationsBulkPrint.json");
 
@@ -272,8 +270,8 @@ public class DocumentControllerTest {
         when(documentGeneratorService.getDocument(any(CallbackRequest.class),  eq(DocumentStatus.FINAL), eq(DocumentIssueType.GRANT)))
                 .thenReturn(Document.builder().documentType(INTESTACY_GRANT).build());
 
-        when(documentGeneratorService.generateLetter(any(CallbackRequest.class),
-                eq(DocumentType.LETTER_OF_GRANT_ISSUED_INTESTACY), eq(true)))
+        when(documentGeneratorService.generateLetterOfGrantDelay(any(CallbackRequest.class),
+                eq(DocumentType.LETTER_OF_GRANT_ISSUED_INTESTACY)))
                 .thenReturn(letter);
         String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadNotificationsBulkPrintIntestacy.json");
 

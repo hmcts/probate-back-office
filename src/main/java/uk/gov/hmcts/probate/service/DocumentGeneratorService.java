@@ -166,8 +166,14 @@ public class DocumentGeneratorService {
 
         return statementOfTruth;
     }
+    public Document generateLetterOfGrantDelay(CallbackRequest callbackRequest, DocumentType documentType) {
+        CaseDetails caseDetails = callbackRequest.getCaseDetails();
+        Map<String, Object> placeholders = previewLetterService.addLetterData(caseDetails);
+        return pdfManagementService.generateDocmosisDocumentAndUpload(placeholders,
+                documentType);
+    }
 
-    public Document generateLetter(CallbackRequest callbackRequest, DocumentType documentType, boolean forFinal) {
+    public Document generateLetter(CallbackRequest callbackRequest, boolean forFinal) {
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
 
         Map<String, Object> placeholders = previewLetterService.addLetterData(caseDetails);
@@ -179,7 +185,7 @@ public class DocumentGeneratorService {
         }
 
         return pdfManagementService.generateDocmosisDocumentAndUpload(placeholders,
-                documentType);
+                DocumentType.ASSEMBLED_LETTER);
     }
 
     private Document generateSolicitorSoT(CallbackRequest callbackRequest) {

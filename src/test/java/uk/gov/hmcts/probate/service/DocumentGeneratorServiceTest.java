@@ -493,7 +493,7 @@ public class DocumentGeneratorServiceTest {
         when(pdfManagementService.generateDocmosisDocumentAndUpload(expectedMap, DocumentType.ASSEMBLED_LETTER))
                 .thenReturn(Document.builder().documentType(DocumentType.ASSEMBLED_LETTER).build());
         assertEquals(Document.builder().documentType(DocumentType.ASSEMBLED_LETTER).build(),
-                documentGeneratorService.generateLetter(callbackRequest, DocumentType.ASSEMBLED_LETTER,true));
+                documentGeneratorService.generateLetter(callbackRequest, true));
     }
 
     @Test
@@ -501,7 +501,7 @@ public class DocumentGeneratorServiceTest {
         when(pdfManagementService.generateDocmosisDocumentAndUpload(expectedMap, DocumentType.ASSEMBLED_LETTER))
                 .thenReturn(Document.builder().documentType(DocumentType.ASSEMBLED_LETTER).build());
         assertEquals(Document.builder().documentType(DocumentType.ASSEMBLED_LETTER).build(),
-                documentGeneratorService.generateLetter(callbackRequest, DocumentType.ASSEMBLED_LETTER,false));
+                documentGeneratorService.generateLetter(callbackRequest, false));
     }
 
     @Test
