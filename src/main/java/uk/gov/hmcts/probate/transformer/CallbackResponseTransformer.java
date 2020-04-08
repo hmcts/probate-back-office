@@ -663,6 +663,7 @@ public class CallbackResponseTransformer {
                 .ukEstate(caseData.getUkEstate())
                 .domicilityIHTCert(caseData.getDomicilityIHTCert())
                 .solsEntrustingDoc(caseData.getSolsEntrustingDoc())
+                .applicationGrounds(caseData.getApplicationGrounds())
                 .solsDomicilityCert(caseData.getSolsDomicilityCert())
                 .entitledToApply(caseData.getEntitledToApply())
                 .entitledToApplyOther(caseData.getEntitledToApplyOther())

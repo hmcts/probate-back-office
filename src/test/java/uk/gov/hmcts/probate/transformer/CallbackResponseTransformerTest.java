@@ -15,7 +15,6 @@ import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ExecutorsApplyingNotification;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
 import uk.gov.hmcts.probate.model.ccd.Reissue;
-import uk.gov.hmcts.probate.model.ccd.caveat.response.CaveatCallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
@@ -118,6 +117,7 @@ public class CallbackResponseTransformerTest {
     private static final String RESIDUARY = "Yes";
     private static final String RESIDUARY_TYPE = "Legatee";
     private static final String DOMICILITY_COUNTRY = "OtherCountry";
+    private static final String APPLICATION_GROUNDS = "Application grounds";
 
     private static final ApplicationType APPLICATION_TYPE = SOLICITOR;
     private static final String REGISTRY_LOCATION = CTSC;
@@ -451,6 +451,7 @@ public class CallbackResponseTransformerTest {
                 .boCaveatStopSendToBulkPrintRequested(CAVEAT_STOP_SEND_TO_BULK_PRINT)
                 .boCaseStopReasonList(STOP_REASONS_LIST)
                 .boStopDetails(STOP_DETAILS)
+                .applicationGrounds(APPLICATION_GROUNDS)
                 .solsWillType(WILL_TYPE_PROBATE)
                 .solsApplicantSiblings(APPLICANT_SIBLINGS)
                 .solsDiedOrNotApplying(DIED_OR_NOT_APPLYING)

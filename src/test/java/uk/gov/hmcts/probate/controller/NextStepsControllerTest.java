@@ -16,10 +16,15 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.ApplicationType;
+import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
+import uk.gov.hmcts.probate.model.ccd.raw.EstateItem;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData.CaseDataBuilder;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
+
+import java.util.Arrays;
+import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -27,7 +32,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static uk.gov.hmcts.probate.controller.CaseDataTestBuilder.ID;
 import static uk.gov.hmcts.probate.controller.CaseDataTestBuilder.LAST_MODIFIED;
-import static uk.gov.hmcts.probate.controller.CaseDataTestBuilder.SOLICITOR_FIRM_LINE1;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -36,6 +40,13 @@ public class NextStepsControllerTest {
   
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private static final String NEXTSTEPS_CONFIRMATION_URL = "/nextsteps/confirmation";
+    private static final List<CollectionMember<EstateItem>> UK_ESTATE = Arrays.asList(
+            new CollectionMember<>(null,
+                    EstateItem.builder()
+                            .item("Item")
+                            .value("999.99")
+                            .build()));
+    private static final String APPLICATION_GROUNDS = "Application grounds";
 
     @Autowired
     private WebApplicationContext webApplicationContext;
@@ -57,6 +68,8 @@ public class NextStepsControllerTest {
     @Test
     public void shouldConfirmNextStepsWithNoErrors() throws Exception {
         caseDataBuilder.applicationType(ApplicationType.SOLICITOR).build();
+        caseDataBuilder.ukEstate(UK_ESTATE);
+        caseDataBuilder.applicationGrounds(APPLICATION_GROUNDS);
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
 
@@ -220,6 +233,7 @@ public class NextStepsControllerTest {
     @Test
     public void shouldConfirmNextStepsWithNullNonUKFeeError() throws Exception {
         caseDataBuilder.feeForNonUkCopies(null);
+        caseDataBuilder.ukEstate(UK_ESTATE);
 
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
