@@ -86,9 +86,8 @@ public class ExceptionRecordControllerTest {
         mockMvc.perform(post("/transform-exception-record")
                 .content(exceptionRecordPayloadPA8A)
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().string(containsString("Please resolve all warnings before creating this case")))
-                .andExpect(content().string(containsString("test warning")));
+                .andExpect(status().isUnprocessableEntity())
+                .andExpect(content().string(containsString("Please resolve all warnings before creating this case")));
     }
 
     @Test
@@ -101,8 +100,7 @@ public class ExceptionRecordControllerTest {
                 .andExpect(content().string(containsString("\"case_type_id\":\"Caveat\"")))
                 .andExpect(content().string(containsString("\"applicationType\":\"Personal\"")))
                 .andExpect(content().string(containsString("\"deceasedSurname\":\"Smith\"")))
-                .andExpect(content().string(containsString("\"warnings\":[]")))
-                .andExpect(content().string(containsString("\"errors\":[]")));
+                .andExpect(content().string(containsString("\"warnings\":[]")));
     }
 
     @Test
@@ -116,8 +114,7 @@ public class ExceptionRecordControllerTest {
                 .andExpect(content().string(containsString("\"applicationType\":\"Personal\"")))
                 .andExpect(content().string(containsString("\"caseType\":\"gop\"")))
                 .andExpect(content().string(containsString("\"deceasedSurname\":\"Smith\"")))
-                .andExpect(content().string(containsString("\"warnings\":[]")))
-                .andExpect(content().string(containsString("\"errors\":[]")));
+                .andExpect(content().string(containsString("\"warnings\":[]")));
     }
 
     @Test
@@ -131,8 +128,7 @@ public class ExceptionRecordControllerTest {
                 .andExpect(content().string(containsString("\"applicationType\":\"Personal\"")))
                 .andExpect(content().string(containsString("\"caseType\":\"intestacy\"")))
                 .andExpect(content().string(containsString("\"deceasedSurname\":\"Smith\"")))
-                .andExpect(content().string(containsString("\"warnings\":[]")))
-                .andExpect(content().string(containsString("\"errors\":[]")));
+                .andExpect(content().string(containsString("\"warnings\":[]")));
     }
 
     @Test
@@ -142,8 +138,8 @@ public class ExceptionRecordControllerTest {
         mockMvc.perform(post("/transform-exception-record")
                 .content(modifiedExceptionRecordPayload.toString())
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().string(containsString("Form type not found or invalid")));
+                .andExpect(status().is4xxClientError())
+                .andExpect(content().string(containsString("Form type 'null' not found")));
     }
 
     @Test
@@ -153,7 +149,7 @@ public class ExceptionRecordControllerTest {
         mockMvc.perform(post("/transform-exception-record")
                 .content(exceptionRecordPayloadPA8A.replace(deceasedDateOfDeath, badDeceasedDateOfDeath))
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
+                .andExpect(status().isUnprocessableEntity())
                 .andExpect(content().string(containsString(
                         "\"warnings\":[\"OCR Data Mapping Error: Date field '02022' not in expected format ddMMyyyy\"]")))
                 .andExpect(content().string(containsString("\"errors\":[\"OCR fields could not be mapped to a case\"]")));
@@ -164,8 +160,9 @@ public class ExceptionRecordControllerTest {
         mockMvc.perform(post("/transform-exception-record")
                 .content(exceptionRecordPayloadPA8A.replace("NEW_APPLICATION", "SUPPLEMENTARY_EVIDENCE"))
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().string(containsString("\"errors\":[\"This Exception Record can not be created as a case\"]")));
+                .andExpect(status().isUnprocessableEntity())
+                .andExpect(content().string(containsString(
+                        "\"warnings\":[\"OCR Data Mapping Error: This Exception Record can not be created as a case\"]")));
     }
 
     @Ignore
@@ -173,16 +170,17 @@ public class ExceptionRecordControllerTest {
         mockMvc.perform(post("/transform-exception-record")
                 .content(exceptionRecordPayloadPA8A.replace("PA8A", "PPPP"))
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().string(containsString("\"errors\":[\"This Exception Record form currently has no case mapping\"]")));
+                .andExpect(status().isUnprocessableEntity())
+                .andExpect(content().string(containsString(
+                        "\"warnings\":[\"OCR Data Mapping Error: This Exception Record form currently has no case mapping\"]")));
     }
 
     @Test
     public void testInvalidExceptionRecordJsonResponse() throws Exception {
         mockMvc.perform(post("/transform-exception-record")
-            .content(exceptionRecordInvalidJsonPayload)
-            .contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().is4xxClientError());
+                .content(exceptionRecordInvalidJsonPayload)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().is4xxClientError());
     }
     @Test
     public void testUpdateCase() throws Exception {

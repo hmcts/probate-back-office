@@ -111,11 +111,11 @@ public class OCRFormsControllerTest {
     }
 
     @Test
-    public void testInvalidFormTypeReturnsError() throws Exception {
+    public void testInvalidFormTypeThrowsNotFound() throws Exception {
         mockMvc.perform(post("/forms/test/validate-ocr")
                 .content(ocrPayload)
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().string(containsString("Form type not found or invalid")));
+                .andExpect(status().is4xxClientError())
+                .andExpect(content().string(containsString("Form type 'test' not found")));
     }
 }

@@ -16,18 +16,13 @@ public class SuccessfulTransformationResponse {
     @JsonProperty("warnings")
     public final List<String> warnings;
 
-    @JsonProperty("errors")
-    public final List<String> errors;
-
     // region constructor
     public SuccessfulTransformationResponse(
             CaseCreationDetails caseCreationDetails,
-            List<String> warnings,
-            List<String> errors
+            List<String> warnings
     ) {
         this.caseCreationDetails = caseCreationDetails;
         this.warnings = warnings;
-        this.errors = errors;
     }
     // endregion
 }

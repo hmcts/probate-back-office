@@ -251,6 +251,16 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
     public void testTransformPA8AReturnTransformErrorJSON() {
         jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordError.json");
         jsonResponse = utils.getJsonFromFile("expectedBulkScanTransformExceptionRecordOutputError.json");
-        transformExceptionPostSuccess(jsonRequest, jsonResponse);
+        transformExceptionPostUnprocessed(jsonRequest, jsonResponse);
+    }
+
+    private void transformExceptionPostUnprocessed(String bodyText, String containsText) {
+        SerenityRest.given()
+            .relaxedHTTPSValidation()
+            .headers(utils.getHeaders())
+            .body(bodyText)
+            .when().post(TRANSFORM_EXCEPTON_RECORD)
+            .then().assertThat().statusCode(422)
+            .and().content(containsString(containsText));
     }
 }
