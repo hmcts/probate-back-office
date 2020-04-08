@@ -899,7 +899,23 @@ public class CallbackResponseTransformer {
                         .solsSolicitorIsApplying(YES)
                         .solsSolicitorNotApplyingReason(null)
                         .solsPrimaryExecutorNotApplyingReason(null);
-            }  else if (YES.equals(caseData.getSolsSolicitorIsApplying())) {
+            } else if (YES.equals(caseData.getSolsSolicitorIsApplying()) || NO.equals(caseData.getSolsSolicitorIsApplying())) {
+                if(getSolsSOTName(caseData.getSolsSOTForenames(), caseData.getSolsSOTSurname()).equals(caseData.getPrimaryApplicantFullName())) {
+                    builder
+                            .primaryApplicantForenames(null)
+                            .primaryApplicantSurname(null)
+                            .primaryApplicantPhoneNumber(null)
+                            .primaryApplicantEmailAddress(null)
+                            .primaryApplicantAddress(null)
+                            .primaryApplicantAlias(null)
+                            .primaryApplicantHasAlias(null)
+                            .primaryApplicantIsApplying(null)
+                            .solsPrimaryExecutorNotApplyingReason(null);
+                } else if(YES.equals(caseData.getSolsSolicitorIsApplying())) {
+                    builder
+                            .solsPrimaryExecutorNotApplyingReason(null);
+                }
+            } else {
                 builder
                         .solsPrimaryExecutorNotApplyingReason(null);
             }
@@ -1083,7 +1099,23 @@ public class CallbackResponseTransformer {
                         .solsSolicitorIsApplying(YES)
                         .solsSolicitorNotApplyingReason(null)
                         .solsPrimaryExecutorNotApplyingReason(null);
-            } else if (YES.equals(caseData.getSolsSolicitorIsApplying())) {
+            } else if (YES.equals(caseData.getSolsSolicitorIsApplying()) || NO.equals(caseData.getSolsSolicitorIsApplying())) {
+                if(getSolsSOTName(caseData.getSolsSOTForenames(), caseData.getSolsSOTSurname()).equals(caseData.getPrimaryApplicantFullName())) {
+                    builder
+                            .primaryApplicantForenames(null)
+                            .primaryApplicantSurname(null)
+                            .primaryApplicantPhoneNumber(null)
+                            .primaryApplicantEmailAddress(null)
+                            .primaryApplicantAddress(null)
+                            .primaryApplicantAlias(null)
+                            .primaryApplicantHasAlias(null)
+                            .primaryApplicantIsApplying(null)
+                            .solsPrimaryExecutorNotApplyingReason(null);
+                } else if(YES.equals(caseData.getSolsSolicitorIsApplying())) {
+                    builder
+                            .solsPrimaryExecutorNotApplyingReason(null);
+                }
+            } else {
                 builder
                         .solsPrimaryExecutorNotApplyingReason(null);
             }
