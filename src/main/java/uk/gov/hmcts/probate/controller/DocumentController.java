@@ -161,15 +161,7 @@ public class DocumentController {
                 DocumentType.GRANT_COVER.getTemplateName(), callbackRequest.getCaseDetails().getId().toString());
 
         Document letterOfGrantIssuedState = null;
-        if (!caseDetails.getData().isLanguagePreferenceWelsh() && grantState.apply(caseData.getCaseType()).equals(GRANT_ISSUED)) {
-            letterOfGrantIssuedState = documentGeneratorService.generateLetter(callbackRequest,
-                    DocumentType.LETTER_OF_GRANT_ISSUED_STATE, true);
-        } else if (!caseDetails.getData().isLanguagePreferenceWelsh() && grantState.apply(caseData.getCaseType()).equals(GRANT_ISSUED_INTESTACY)) {
-            letterOfGrantIssuedState = documentGeneratorService.generateLetter(callbackRequest,
-                    DocumentType.LETTER_OF_GRANT_ISSUED_INTESTACY, true);
-        } else {
-            //place holder for Welsh e.g. bilingual
-        }
+        letterOfGrantIssuedState = getLetterOfGrantIssuedState(callbackRequest, caseDetails, caseData);
 
         String letterId = null;
         String pdfSize = null;
@@ -205,6 +197,21 @@ public class DocumentController {
         }
 
         return ResponseEntity.ok(callbackResponse);
+    }
+
+    private Document getLetterOfGrantIssuedState(@RequestBody @Validated({EmailAddressNotificationValidationRule.class,
+            BulkPrintValidationRule.class}) CallbackRequest callbackRequest, CaseDetails caseDetails, @Valid CaseData caseData) {
+        Document letterOfGrantIssuedState=null;
+        if(caseData.isSendForBulkPrintingRequested()){
+            if (!caseDetails.getData().isLanguagePreferenceWelsh() && grantState.apply(caseData.getCaseType()).equals(GRANT_ISSUED)) {
+                letterOfGrantIssuedState = documentGeneratorService.generateLetter(callbackRequest,
+                        DocumentType.LETTER_OF_GRANT_ISSUED_STATE, true);
+            } else if (!caseDetails.getData().isLanguagePreferenceWelsh() && grantState.apply(caseData.getCaseType()).equals(GRANT_ISSUED_INTESTACY)) {
+                letterOfGrantIssuedState = documentGeneratorService.generateLetter(callbackRequest,
+                        DocumentType.LETTER_OF_GRANT_ISSUED_INTESTACY, true);
+            }
+        }
+        return letterOfGrantIssuedState;
     }
 
     private String getPdfSize(@Valid CaseData caseData) {
