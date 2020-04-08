@@ -135,8 +135,10 @@ public enum DocumentType {
     LETTER_OF_GRANT_ISSUED_STATE("letterOfGrantIssuedState"),
 
     @JsonProperty("letterOfGrantIssuedIntestacy")
-    LETTER_OF_GRANT_ISSUED_INTESTACY("letterOfGrantIssuedIntestacy");
+    LETTER_OF_GRANT_ISSUED_INTESTACY("letterOfGrantIssuedIntestacy"),
 
+    @JsonProperty("letterOfGrantDelay")
+    LETTER_OF_GRANT_DELAY("letterOfGrantDelay");
     private final String templateName;
 
     DocumentType(String templateName) {

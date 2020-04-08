@@ -103,6 +103,9 @@ docmosis:
       templateName: FL-PRB-GRP-ENG-00261.docx
     letterOfGrantIssuedIntestacy:
       templateName: FL-PRB-GRP-ENG-00262.docx
+    letterOfGrantDelay:
+      templateName: FL-PRB-GRP-ENG-00321.docx
+
 
 fee.api:
   url: http://localhost:4411

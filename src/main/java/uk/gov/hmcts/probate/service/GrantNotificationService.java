@@ -1,11 +1,15 @@
 package uk.gov.hmcts.probate.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableMap;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
+import uk.gov.hmcts.probate.config.properties.registries.RegistriesProperties;
+import uk.gov.hmcts.probate.config.properties.registries.Registry;
 import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
+import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.GrantScheduleResponse;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
 import uk.gov.hmcts.probate.model.ccd.CcdCaseType;
@@ -15,6 +19,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.service.ccd.CcdClientApi;
+import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.validator.EmailAddressNotifyApplicantValidationRule;
 import uk.gov.hmcts.reform.probate.model.ProbateDocument;
 import uk.gov.hmcts.reform.probate.model.ProbateDocumentLink;
@@ -25,6 +30,7 @@ import uk.gov.hmcts.reform.probate.model.forms.Form;
 import uk.gov.service.notify.NotificationClientException;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -44,6 +50,10 @@ public class GrantNotificationService {
     private final CaseQueryService caseQueryService;
     private final CcdClientApi ccdClientApi;
     private final SecurityUtils securityUtils;
+    private final PDFManagementService pdfManagementService;
+    private ObjectMapper mapper;
+    private final RegistriesProperties registriesProperties;
+    private static final String PERSONALISATION_REGISTRY = "registry";
 
     public GrantScheduleResponse handleGrantDelayedNotification(String date) {
         List<String> delayedRepsonseData = new ArrayList<>();
@@ -74,8 +84,18 @@ public class GrantNotificationService {
         List<FieldErrorResponse> emailErrors = emailAddressNotifyApplicantValidationRule.validate(dataForEmailAddress);
         String caseId = foundCase.getId().toString();
         if (!emailErrors.isEmpty()) {
-            log.error("Cannot send Grant Delayed notification, for email validation errors: {}", emailErrors.get(0).getMessage());
-            return getErroredCaseIdentifier(caseId, emailErrors.get(0).getMessage());
+            log.info("Cannot send Grant Delayed notification, for email validation errors: {}",
+                    emailErrors.get(0).getMessage());
+            //return getErroredCaseIdentifier(caseId, emailErrors.get(0).getMessage());
+            Map<String, Object> placeholders = new HashMap<>();
+            Registry registry = registriesProperties.getRegistries().get(
+                    foundCase.getData().getRegistryLocation().toLowerCase());
+            Map<String, Object> registryPlaceholders = mapper.convertValue(registry, Map.class);
+
+            placeholders.put(PERSONALISATION_REGISTRY, registryPlaceholders);
+            Document letterOfGrantDelay = pdfManagementService.generateDocmosisDocumentAndUpload(placeholders,
+                    DocumentType.LETTER_OF_GRANT_DELAY);
+
         }
 
         try {
