@@ -367,7 +367,9 @@ public class NotificationControllerTest {
 
     @Test
     public void caseStoppedWithNoEmailNotificationRequestedShouldReturnBulkPrintError() throws Exception {
-        when(bulkPrintService.sendToBulkPrintForGrant(any(CallbackRequest.class), eq(Document.builder().build()), eq(Document
+        when(bulkPrintService.sendToBulkPrintForGrant(any(CallbackRequest.class), eq(Document.builder().build()),
+                eq(Document.builder().build()),
+                eq(Document
                 .builder().build()))).thenReturn(null);
         String solicitorPayload = testUtils.getStringFromFile("stopNotificationNoEmailRequested.json");
 
@@ -524,7 +526,7 @@ public class NotificationControllerTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(content().string(containsString("data")));
     }
-    
+
     @Test
     public void shouldReturnSuccessfulResponseFoRaiseGrant() throws Exception {
         String personalPayload = testUtils.getStringFromFile("personalPayloadNotifications.json");

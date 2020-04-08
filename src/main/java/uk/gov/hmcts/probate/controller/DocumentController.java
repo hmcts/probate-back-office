@@ -102,7 +102,8 @@ public class DocumentController {
     public ResponseEntity<CallbackResponse> previewLetter(
             @RequestBody CallbackRequest callbackRequest) {
 
-        Document letterPreview = documentGeneratorService.generateLetter(callbackRequest, false);
+        Document letterPreview = documentGeneratorService.generateLetter(callbackRequest,
+                DocumentType.ASSEMBLED_LETTER,false);
 
         CallbackResponse response = callbackResponseTransformer.transformCaseForLetterPreview(callbackRequest, letterPreview);
 
@@ -116,7 +117,7 @@ public class DocumentController {
         String letterId = null;
 
         List<Document> documents = new ArrayList<>();
-        Document letter = documentGeneratorService.generateLetter(callbackRequest, true);
+        Document letter = documentGeneratorService.generateLetter(callbackRequest, DocumentType.ASSEMBLED_LETTER,true);
         Document coversheet = documentGeneratorService.generateCoversheet(callbackRequest);
 
         documents.add(letter);
@@ -160,11 +161,13 @@ public class DocumentController {
         Document coverSheet = pdfManagementService.generateAndUpload(callbackRequest, DocumentType.GRANT_COVER);
         log.info("Generated and Uploaded cover document with template {} for the case id {}",
                 DocumentType.GRANT_COVER.getTemplateName(), callbackRequest.getCaseDetails().getId().toString());
+        Document letterOfGrantIssuedState = getLetterOfGrantIssuedState(callbackRequest, caseDetails, caseData);
 
         String letterId = null;
         String pdfSize = null;
         if (caseData.isSendForBulkPrintingRequested() && !EDGE_CASE_NAME.equals(caseData.getCaseType())) {
-            SendLetterResponse response = bulkPrintService.sendToBulkPrintForGrant(callbackRequest, digitalGrantDocument, coverSheet);
+            SendLetterResponse response = bulkPrintService.sendToBulkPrintForGrant(callbackRequest, digitalGrantDocument,
+                    letterOfGrantIssuedState, coverSheet);
             letterId = response != null
                     ? response.letterId.toString()
                     : null;
@@ -192,6 +195,23 @@ public class DocumentController {
         }
 
         return ResponseEntity.ok(callbackResponse);
+    }
+
+    private Document getLetterOfGrantIssuedState(@RequestBody @Validated({EmailAddressNotificationValidationRule.class, BulkPrintValidationRule.class})
+                                                         CallbackRequest callbackRequest, CaseDetails caseDetails,
+                                                 @Valid CaseData caseData) {
+        Document letterOfGrantIssuedState;
+        if (!caseDetails.getData().isLanguagePreferenceWelsh() && grantState.apply(caseData.getCaseType()).equals(GRANT_ISSUED)) {
+            letterOfGrantIssuedState = documentGeneratorService.generateLetter(callbackRequest,
+                    DocumentType.LETTER_OF_GRANT_ISSUED_STATE, true);
+        } else if (!caseDetails.getData().isLanguagePreferenceWelsh() && grantState.apply(caseData.getCaseType()).equals(GRANT_ISSUED_INTESTACY)) {
+            letterOfGrantIssuedState = documentGeneratorService.generateLetter(callbackRequest,
+                    DocumentType.LETTER_OF_GRANT_ISSUED_INTESTACY, true);
+        } else {
+            //Welsh support
+            letterOfGrantIssuedState = null;
+        }
+        return letterOfGrantIssuedState;
     }
 
     private String getPdfSize(@Valid CaseData caseData) {
@@ -268,12 +288,12 @@ public class DocumentController {
         return ResponseEntity.ok(callbackResponseTransformer.addSOTDocument(callbackRequest,
                 documentGeneratorService.generateSoT(callbackRequest)));
     }
-    
+
     @PostMapping(path = "/default-reprint-values", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<CallbackResponse> defaultReprintValues(@RequestBody CallbackRequest callbackRequest) {
         return ResponseEntity.ok(callbackResponseTransformer.transformCaseForReprint(callbackRequest));
     }
-    
+
     @PostMapping(path = "/reprint", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<CallbackResponse> reprint(@RequestBody CallbackRequest callbackRequest) {
         reprintService.reprintSelectedDocument(callbackRequest);

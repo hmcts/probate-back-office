@@ -167,7 +167,7 @@ public class DocumentGeneratorService {
         return statementOfTruth;
     }
 
-    public Document generateLetter(CallbackRequest callbackRequest, boolean forFinal) {
+    public Document generateLetter(CallbackRequest callbackRequest, DocumentType documentType, boolean forFinal) {
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
 
         Map<String, Object> placeholders = previewLetterService.addLetterData(caseDetails);
@@ -179,7 +179,7 @@ public class DocumentGeneratorService {
         }
 
         return pdfManagementService.generateDocmosisDocumentAndUpload(placeholders,
-                DocumentType.ASSEMBLED_LETTER);
+                documentType);
     }
 
     private Document generateSolicitorSoT(CallbackRequest callbackRequest) {
