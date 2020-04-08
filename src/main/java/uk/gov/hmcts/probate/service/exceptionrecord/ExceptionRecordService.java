@@ -66,7 +66,6 @@ public class ExceptionRecordService {
             return SuccessfulTransformationResponse.builder()
                     .caseCreationDetails(caveatCaseDetailsResponse)
                     .warnings(warnings)
-                    .errors(errors)
                     .build();
 
         } catch (Exception e) {
@@ -106,7 +105,6 @@ public class ExceptionRecordService {
             return SuccessfulTransformationResponse.builder()
                     .caseCreationDetails(grantOfRepresentationCaseDetailsResponse)
                     .warnings(warnings)
-                    .errors(errors)
                     .build();
 
         } catch (Exception e) {
