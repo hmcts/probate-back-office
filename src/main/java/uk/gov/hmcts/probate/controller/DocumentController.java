@@ -161,10 +161,10 @@ public class DocumentController {
                 DocumentType.GRANT_COVER.getTemplateName(), callbackRequest.getCaseDetails().getId().toString());
 
         Document letterOfGrantIssuedState = null;
-        if (!caseDetails.getData().isLanguagePreferenceWelsh() && grantState.apply(caseData.getCaseType())== GRANT_ISSUED) {
+        if (!caseDetails.getData().isLanguagePreferenceWelsh() && grantState.apply(caseData.getCaseType()).equals(GRANT_ISSUED)) {
             letterOfGrantIssuedState = documentGeneratorService.generateLetter(callbackRequest,
                     DocumentType.LETTER_OF_GRANT_ISSUED_STATE, true);
-        } else if (!caseDetails.getData().isLanguagePreferenceWelsh() && grantState.apply(caseData.getCaseType())== GRANT_ISSUED_INTESTACY) {
+        } else if (!caseDetails.getData().isLanguagePreferenceWelsh() && grantState.apply(caseData.getCaseType()).equals(GRANT_ISSUED_INTESTACY)) {
             letterOfGrantIssuedState = documentGeneratorService.generateLetter(callbackRequest,
                     DocumentType.LETTER_OF_GRANT_ISSUED_INTESTACY, true);
         } else {
