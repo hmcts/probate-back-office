@@ -75,7 +75,7 @@ public class CaseQueryService {
         query.must(matchQuery(STATE, STATE_MATCH));
         query.must(rangeQuery(GRANT_ISSUED_DATE).gte(startDate).lte(endDate));
 
-        String jsonQuery = new SearchSourceBuilder().query(query).size(1000000).toString();
+        String jsonQuery = new SearchSourceBuilder().query(query).size(10000).toString();
 
         return runQuery(jsonQuery);
     }

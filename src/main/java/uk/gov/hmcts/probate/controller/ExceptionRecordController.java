@@ -1,6 +1,5 @@
 package uk.gov.hmcts.probate.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -30,7 +29,6 @@ import uk.gov.hmcts.probate.service.ocr.OCRToCCDMandatoryField;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -68,43 +66,32 @@ public class ExceptionRecordController {
         FormType.isFormTypeValid(erRequest.getFormType());
         FormType formType = FormType.valueOf(erRequest.getFormType());
         SuccessfulTransformationResponse callbackResponse = SuccessfulTransformationResponse.builder().build();
-        List<String> errors = new ArrayList<>();
         List<String> warnings = ocrToCCDMandatoryField
                 .ocrToCCDMandatoryFields(ocrPopulatedValueMapper.ocrPopulatedValueMapper(erRequest.getOcrFields()), formType);
 
         if (!warnings.isEmpty()) {
-            errors.add("Please resolve all warnings before creating this case");
+            throw new OCRMappingException("Please resolve all warnings before creating this case");
         }
 
         if (!erRequest.getJourneyClassification().name().equals(JourneyClassification.NEW_APPLICATION.name())) {
-            errors.add("This Exception Record can not be created as a case");
+            throw new OCRMappingException("This Exception Record can not be created as a case");
         }
 
-        if (!errors.isEmpty()) {
-            log.info("Validation check failed, returning error response for form-type {}", formType);
-            callbackResponse = SuccessfulTransformationResponse.builder()
-                    .warnings(warnings)
-                    .errors(errors)
-                    .build();
-
-        } else {
-            log.info("Validation check passed, attempting to transform case for form-type {}", formType);
-            switch (formType) {
-                case PA8A:
-                    callbackResponse = erService.createCaveatCaseFromExceptionRecord(erRequest, warnings);
-                    return ResponseEntity.ok(callbackResponse);
-                case PA1P:
-                    callbackResponse = erService.createGrantOfRepresentationCaseFromExceptionRecord(
-                            erRequest, GrantType.GRANT_OF_PROBATE, warnings);
-                    return ResponseEntity.ok(callbackResponse);
-                case PA1A:
-                    callbackResponse = erService.createGrantOfRepresentationCaseFromExceptionRecord(
-                            erRequest, GrantType.INTESTACY, warnings);
-                    return ResponseEntity.ok(callbackResponse);
-                default:
-                    // Unreachable code
-                    errors.add("This Exception Record form currently has no case mapping");
-            }
+        log.info("Validation check passed, attempting to transform case for form-type {}", formType);
+        switch (formType) {
+            case PA8A:
+                callbackResponse = erService.createCaveatCaseFromExceptionRecord(erRequest, warnings);
+                break;
+            case PA1P:
+                callbackResponse = erService.createGrantOfRepresentationCaseFromExceptionRecord(
+                        erRequest, GrantType.GRANT_OF_PROBATE, warnings);
+                break;
+            case PA1A:
+                callbackResponse = erService.createGrantOfRepresentationCaseFromExceptionRecord(
+                        erRequest, GrantType.INTESTACY, warnings);
+                break;
+            default:
+                throw new OCRMappingException("This Exception Record form currently has no case mapping");
         }
 
         return ResponseEntity.ok(callbackResponse);
@@ -122,6 +109,6 @@ public class ExceptionRecordController {
         List<String> warnings = Arrays.asList(OCR_EXCEPTION_WARNING_PREFIX + exception.getMessage());
         List<String> errors = Arrays.asList(OCR_EXCEPTION_ERROR);
         ExceptionRecordErrorResponse errorResponse = new ExceptionRecordErrorResponse(errors, warnings);
-        return ResponseEntity.ok(errorResponse);
+        return new ResponseEntity(errorResponse, HttpStatus.UNPROCESSABLE_ENTITY);
     }
 }
