@@ -58,7 +58,7 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
                 .headers(utils.getHeaders())
                 .body(bodyText)
                 .when().post(VALIDATE_OCR_DATA_UNKNOWN_FORM_TYPE)
-                .then().assertThat().statusCode(200)
+                .then().assertThat().statusCode(404)
                 .and().body("errors", hasSize(errorSize))
                 .and().body("errors[" + errorItem + "]", equalTo(errorMessage))
                 .and().content(containsString(containsText));
