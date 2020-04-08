@@ -1,15 +1,7 @@
 {
   "case_details": {
     "id": 1542274092932452,
-    "last_modified": [
-      2018,
-      6,
-      7,
-      10,
-      8,
-      8,
-      695000000
-    ],
+    "case_type_id": "Caveat",
     "case_data": {
       "applicationType": "Personal",
       "registryLocation": "Leeds",

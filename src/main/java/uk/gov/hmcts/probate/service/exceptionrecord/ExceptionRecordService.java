@@ -8,6 +8,7 @@ import org.springframework.util.Assert;
 import uk.gov.hmcts.probate.exception.OCRMappingException;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatCallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
+import uk.gov.hmcts.probate.model.ccd.caveat.request.ExceptionRecordCaveatDetails;
 import uk.gov.hmcts.probate.model.ccd.caveat.response.CaveatCallbackResponse;
 import uk.gov.hmcts.probate.model.exceptionrecord.CaseCreationDetails;
 import uk.gov.hmcts.probate.model.exceptionrecord.CaveatCaseUpdateRequest;
@@ -145,7 +146,8 @@ public class ExceptionRecordService {
 
         List<String> errors = new ArrayList<String>();
         ExceptionRecordRequest erRequest = erCaseUpdateRequest.getExceptionRecord();
-        CaveatDetails caveatDetails = erCaseUpdateRequest.getCaveatDetails();
+        ExceptionRecordCaveatDetails exceptionRecordCaveatDetails = erCaseUpdateRequest.getCaveatDetails();
+        CaveatDetails caveatDetails = new CaveatDetails(exceptionRecordCaveatDetails.getData(), null, exceptionRecordCaveatDetails.getId());
         HashMap<String, String> ocrFieldValues = new HashMap<String, String>();
         List<OCRField> ocrFields = erRequest.getOcrFields();
         String caseReference = null;
