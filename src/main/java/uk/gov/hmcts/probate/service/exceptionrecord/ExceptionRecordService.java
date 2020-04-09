@@ -187,7 +187,7 @@ public class ExceptionRecordService {
             // Validate caveat extension
             log.info("Validating caveat extension.");
             CaveatCallbackResponse caveatCallbackResponse = eventValidationService.validateCaveatRequest(caveatCallbackRequest, validationRuleCaveatsExpiry);
-            if (caveatCallbackResponse.getErrors().isEmpty()) {
+            if (caveatCallbackResponse.getErrors().isEmpty()) { 
                 LocalDate defaultExpiry = caveatCallbackRequest.getCaseDetails().getData()
                         .getExpiryDate().plusMonths(CAVEAT_EXPIRY_EXTENSION_PERIOD_IN_MONTHS);
                 log.info("No errors found with validateCaveatRequest, updating expiryDate to {} in request.",
@@ -203,12 +203,13 @@ public class ExceptionRecordService {
                 }
 
                 log.info("Call to caveatExtend was successful.");
+            } else {
+                throw new OCRMappingException(caveatCallbackResponse.getErrors().get(0));
             }
 
             return SuccessfulCaveatUpdateResponse.builder()
                     .caseUpdateDetails(caveatCallbackResponse.getCaveatData())
                     .warnings(caveatCallbackResponse.getWarnings())
-                    .errors(caveatCallbackResponse.getErrors())
                     .build();
 
         } catch(Exception e){

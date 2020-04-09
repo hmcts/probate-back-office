@@ -16,7 +16,4 @@ public class SuccessfulCaveatUpdateResponse {
 
     @JsonProperty("warnings")
     public final List<String> warnings;
-
-    @JsonProperty("errors")
-    public final List<String> errors;
 }

@@ -160,8 +160,7 @@ public class ExceptionRecordController {
 
     private void logRequest(CaveatCaseUpdateRequest caveatCaseUpdateRequest) {
         try {
-            log.info("logging request on ExceptionRecordController");
-            log.info("POST: {}", objectMapper.writeValueAsString(caveatCaseUpdateRequest));
+            log.info("logging request on ExceptionRecordController: {}", objectMapper.writeValueAsString(caveatCaseUpdateRequest));
         } catch (JsonProcessingException e) {
             log.error("POST: {}", e);
         }
@@ -169,8 +168,7 @@ public class ExceptionRecordController {
     
     private void logResponse(SuccessfulCaveatUpdateResponse successfulCaveatUpdateResponse) {
         try {
-            log.info("logging response on ExceptionRecordController");
-            log.info("POST: {}", objectMapper.writeValueAsString(successfulCaveatUpdateResponse));
+            log.info("logging response on ExceptionRecordController: {}", objectMapper.writeValueAsString(successfulCaveatUpdateResponse));
         } catch (JsonProcessingException e) {
             log.error("POST: {}", e);
         }

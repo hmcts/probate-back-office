@@ -188,7 +188,7 @@ public class ExceptionRecordControllerTest {
         mockMvc.perform(post("/update-case")
             .content(updateCasePayload)
             .contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk())
-            .andExpect(content().string(containsString("\"errors\":[\"Cannot extend an already expired caveat.\"]")));
+            .andExpect(status().isUnprocessableEntity())
+            .andExpect(content().string(containsString("\"warnings\":[\"OCR Data Mapping Error: Cannot extend an already expired caveat.\"]")));
     }
 }
