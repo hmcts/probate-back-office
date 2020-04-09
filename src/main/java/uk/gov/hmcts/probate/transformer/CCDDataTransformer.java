@@ -140,11 +140,14 @@ public class CCDDataTransformer {
 
     private LocalDate getCaseSubmissionDate(String[] lastModified) {
         try {
-            return LocalDate.of(parseInt(lastModified[0]), parseInt(lastModified[1]), parseInt(lastModified[2]));
+            if(lastModified != null) {
+                return LocalDate.of(parseInt(lastModified[0]), parseInt(lastModified[1]), parseInt(lastModified[2]));
+            }
         } catch (ArrayIndexOutOfBoundsException | NumberFormatException | DateTimeException | NullPointerException e) {
             log.warn(e.getMessage(), e);
             return null;
         }
+        return null;
     }
 
     public CaveatData transformCaveats(CaveatCallbackRequest callbackRequest) {
