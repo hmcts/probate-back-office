@@ -76,7 +76,7 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
                 .headers(utils.getHeaders())
                 .body(bodyText)
                 .when().post(UPDATE_CASE_FROM_EXCEPTON_RECORD)
-                .then().assertThat().statusCode(200)
+                .then().assertThat().statusCode(422)
                 .and().content(containsString(containsText));
     }
 
