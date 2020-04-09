@@ -127,9 +127,20 @@ public class FunctionalTestUtils {
                     pdDoc.close();
                 }
             } catch (Exception e1) {
-                e.printStackTrace();
+                e1.printStackTrace();
             }
 
+        } finally {
+            try {
+                if (cosDoc != null) {
+                    cosDoc.close();
+                }
+                if (pdDoc != null) {
+                    pdDoc.close();
+                }
+            } catch (Exception e1) {
+                e1.printStackTrace();
+            }
         }
         return parsedText;
     }
