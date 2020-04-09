@@ -1,1 +1,1 @@
-{"case_update_details":null,"warnings":["OCR Data Mapping Error: Cannot extend an already expired caveat."],"errors":["OCR fields could not be mapped to a case"]}
+{"warnings":["OCR Data Mapping Error: Cannot extend a caveat that is more than 1 month from expiry."],"errors":["OCR fields could not be mapped to a case"]}
