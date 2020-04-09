@@ -89,6 +89,14 @@ public class CaseData {
     private final String solsSolicitorNotApplyingReason;
 
     // EVENT = solicitorUpdateApplication
+    private final String willDispose;
+
+    private final String englishWill;
+
+    private final String appointExec;
+
+    private final String appointExecByDuties;
+
     @NotBlank(groups = {ApplicationUpdatedGroup.class}, message = "{applicationGroundsIsNull}")
     private final String applicationGrounds;
 

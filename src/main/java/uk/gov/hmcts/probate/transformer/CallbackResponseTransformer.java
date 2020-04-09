@@ -664,6 +664,10 @@ public class CallbackResponseTransformer {
                 .domicilityIHTCert(caseData.getDomicilityIHTCert())
                 .solsEntrustingDoc(caseData.getSolsEntrustingDoc())
                 .applicationGrounds(caseData.getApplicationGrounds())
+                .willDispose(caseData.getWillDispose())
+                .englishWill(caseData.getEnglishWill())
+                .appointExec(caseData.getEnglishWill())
+                .appointExecByDuties(caseData.getAppointExecByDuties())
                 .solsDomicilityCert(caseData.getSolsDomicilityCert())
                 .entitledToApply(caseData.getEntitledToApply())
                 .entitledToApplyOther(caseData.getEntitledToApplyOther())
@@ -755,9 +759,20 @@ public class CallbackResponseTransformer {
                     .domicilityCountry(null)
                     .solsEntrustingDoc(null)
                     .solsDomicilityCert(null);
-        } else if(NO.equals(caseData.getDeceasedDomicileInEngWales())) {
+        }
+
+        if(!WILL_LEFT.equals(caseData.getSolsWillType())) {
             builder
-                    .ukEstate(null);
+                    .willDispose(null)
+                    .englishWill(null)
+                    .appointExec(null)
+                    .appointExecByDuties(null);
+        } else if(YES.equals(caseData.getEnglishWill())) {
+            builder
+                    .appointExecByDuties(null);
+        } else if(NO.equals(caseData.getEnglishWill())) {
+            builder
+                    .appointExec(null);
         }
 
         return builder;

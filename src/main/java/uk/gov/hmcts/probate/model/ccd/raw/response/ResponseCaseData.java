@@ -180,6 +180,10 @@ public class ResponseCaseData {
     private final String domicilityIHTCert;
     private final String solsEntrustingDoc;
     private final String applicationGrounds;
+    private final String willDispose;
+    private final String englishWill;
+    private final String appointExec;
+    private final String appointExecByDuties;
     private final String solsDomicilityCert;
     private final String willDatedBeforeApril;
     private final String deceasedEnterMarriageOrCP;

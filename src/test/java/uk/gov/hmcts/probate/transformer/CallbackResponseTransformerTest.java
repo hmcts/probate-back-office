@@ -452,6 +452,9 @@ public class CallbackResponseTransformerTest {
                 .boCaseStopReasonList(STOP_REASONS_LIST)
                 .boStopDetails(STOP_DETAILS)
                 .applicationGrounds(APPLICATION_GROUNDS)
+                .willDispose(YES)
+                .englishWill(NO)
+                .appointExec(YES)
                 .solsWillType(WILL_TYPE_PROBATE)
                 .solsApplicantSiblings(APPLICANT_SIBLINGS)
                 .solsDiedOrNotApplying(DIED_OR_NOT_APPLYING)
@@ -1496,7 +1499,6 @@ public class CallbackResponseTransformerTest {
         assertEquals("OtherCountry", callbackResponse.getData().getDomicilityCountry());
         assertEquals(NO, callbackResponse.getData().getSolsEntrustingDoc());
         assertEquals(YES, callbackResponse.getData().getSolsDomicilityCert());
-        assertNull(callbackResponse.getData().getUkEstate());
     }
 
     @Test

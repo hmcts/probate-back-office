@@ -1,10 +1,14 @@
 package uk.gov.hmcts.probate.controller;
 
+import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
+import uk.gov.hmcts.probate.model.ccd.raw.EstateItem;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.List;
 
 public class CaseDataTestBuilder {
 
@@ -58,6 +62,14 @@ public class CaseDataTestBuilder {
     public static final BigDecimal FEE_FOR_NON_UK_COPIES = BigDecimal.TEN;
     public static final BigDecimal TOTAL_FEE = BigDecimal.TEN;
     public static final String NEED_TO_UPDATE = "No";
+    public static final String APPLICATION_GROUNDS = "Application grounds";
+
+    private static final List<CollectionMember<EstateItem>> UK_ESTATE = Arrays.asList(
+            new CollectionMember<>(null,
+                    EstateItem.builder()
+                            .item("Item")
+                            .value("999.99")
+                            .build()));
 
     public static CaseData.CaseDataBuilder withDefaults() {
 
@@ -102,6 +114,8 @@ public class CaseDataTestBuilder {
                 .solsWillType(WILL_TYPE)
                 .willExists(WILL_EXISTS)
                 .willAccessOriginal(WILL_ACCESS_ORIGINAL)
+                .ukEstate(UK_ESTATE)
+                .applicationGrounds(APPLICATION_GROUNDS)
                 .ihtNetValue(NET)
                 .ihtGrossValue(GROSS)
                 .solsSOTNeedToUpdate(SOT_NEED_TO_UPDATE)
