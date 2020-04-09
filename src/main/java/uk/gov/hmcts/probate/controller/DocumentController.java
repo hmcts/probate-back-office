@@ -163,6 +163,7 @@ public class DocumentController {
         Document letterOfGrantIssuedState = null;
         String letterId = null;
         String pdfSize = null;
+        log.info("isSendForBulkPrintingRequested {}", caseData.isSendForBulkPrintingRequested());
         if (caseData.isSendForBulkPrintingRequested() && !EDGE_CASE_NAME.equals(caseData.getCaseType())) {
             letterOfGrantIssuedState = getLetterOfGrantIssuedState(callbackRequest, caseDetails, caseData);
             SendLetterResponse response = bulkPrintService.sendToBulkPrintForGrant(callbackRequest, digitalGrantDocument,
