@@ -196,6 +196,9 @@ public class ExceptionRecordService {
                 log.info("Calling caveatExtend to notify of caveator of extension.");
                 caveatCallbackResponse = caveatNotificationService.caveatExtend(caveatCallbackRequest);
                 if (!caveatDetails.getId().toString().equals(caseReference)) {
+                    if (caveatCallbackResponse.getWarnings() == null) {
+                        caveatCallbackResponse.setWarnings(new ArrayList());
+                    }
                     caveatCallbackResponse.getWarnings().add("Case retrieved does not match OCR data for caseReference");
                 }
 
