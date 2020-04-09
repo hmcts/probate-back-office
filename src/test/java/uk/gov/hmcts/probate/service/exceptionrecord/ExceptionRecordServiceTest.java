@@ -162,7 +162,7 @@ public class ExceptionRecordServiceTest {
         when(caveatCallbackResponse.getCaveatData()).thenReturn(responseCaseveatData);
 
         SuccessfulCaveatUpdateResponse response = erService.updateCaveatCaseFromExceptionRecord(caveatCaseUpdateRequest);
-        List<CollectionMember<ScannedDocument>> scannedDocuments = response.getCaseUpdateDetails().getScannedDocuments();
+        List<CollectionMember<ScannedDocument>> scannedDocuments = response.getCaseUpdateDetails().getCaseData().getScannedDocuments();
         assertEquals(1, scannedDocuments.size());
     }
 
@@ -181,7 +181,7 @@ public class ExceptionRecordServiceTest {
         when(caveatCallbackResponse.getCaveatData()).thenReturn(responseCaseveatData);
 
         SuccessfulCaveatUpdateResponse response = erService.updateCaveatCaseFromExceptionRecord(caveatCaseUpdateRequest);
-        List<CollectionMember<ScannedDocument>> scannedDocuments = response.getCaseUpdateDetails().getScannedDocuments();
+        List<CollectionMember<ScannedDocument>> scannedDocuments = response.getCaseUpdateDetails().getCaseData().getScannedDocuments();
         assertEquals(1, scannedDocuments.size());
         assertEquals(1, response.warnings.size());
     }

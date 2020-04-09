@@ -5,15 +5,11 @@ import lombok.Builder;
 import lombok.Data;
 import uk.gov.hmcts.probate.model.ccd.caveat.response.ResponseCaveatData;
 
-import java.util.List;
-
 @Data
 @Builder
-public class SuccessfulCaveatUpdateResponse {
+public class ResponseCaveatDetails {
+    
+    @JsonProperty("case_data")
+    public final ResponseCaveatData caseData;
 
-    @JsonProperty("case_update_details")
-    public final ResponseCaveatDetails caseUpdateDetails;
-
-    @JsonProperty("warnings")
-    public final List<String> warnings;
 }

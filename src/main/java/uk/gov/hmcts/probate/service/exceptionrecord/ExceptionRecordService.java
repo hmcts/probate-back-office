@@ -14,6 +14,7 @@ import uk.gov.hmcts.probate.model.exceptionrecord.CaseCreationDetails;
 import uk.gov.hmcts.probate.model.exceptionrecord.CaveatCaseUpdateRequest;
 import uk.gov.hmcts.probate.model.exceptionrecord.ExceptionRecordRequest;
 import uk.gov.hmcts.probate.model.exceptionrecord.InputScannedDoc;
+import uk.gov.hmcts.probate.model.exceptionrecord.ResponseCaveatDetails;
 import uk.gov.hmcts.probate.model.exceptionrecord.SuccessfulCaveatUpdateResponse;
 import uk.gov.hmcts.probate.model.exceptionrecord.SuccessfulTransformationResponse;
 import uk.gov.hmcts.probate.model.ocr.OCRField;
@@ -208,7 +209,7 @@ public class ExceptionRecordService {
             }
 
             return SuccessfulCaveatUpdateResponse.builder()
-                    .caseUpdateDetails(caveatCallbackResponse.getCaveatData())
+                    .caseUpdateDetails(ResponseCaveatDetails.builder().caseData(caveatCallbackResponse.getCaveatData()).build())
                     .warnings(caveatCallbackResponse.getWarnings())
                     .build();
 
