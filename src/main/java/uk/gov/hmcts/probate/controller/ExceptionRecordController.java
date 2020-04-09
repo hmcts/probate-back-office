@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -112,6 +113,8 @@ public class ExceptionRecordController {
             consumes = APPLICATION_JSON_UTF8_VALUE, produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<SuccessfulCaveatUpdateResponse> transformExceptionRecord(@Valid @RequestBody CaveatCaseUpdateRequest erCaseUpdateRequest) {
 
+        logRequest(erCaseUpdateRequest);
+        
         ExceptionRecordRequest erRequest = erCaseUpdateRequest.getExceptionRecord();
         log.info("Update case data from exception record for form type: {}", erRequest.getFormType());
         FormType.isFormTypeValid(erRequest.getFormType());
@@ -136,6 +139,7 @@ public class ExceptionRecordController {
             }
         }
 
+        logResponse(callbackResponse);
         return ResponseEntity.ok(callbackResponse);
     }
 
@@ -153,4 +157,23 @@ public class ExceptionRecordController {
         ExceptionRecordErrorResponse errorResponse = new ExceptionRecordErrorResponse(errors, warnings);
         return new ResponseEntity(errorResponse, HttpStatus.UNPROCESSABLE_ENTITY);
     }
+
+    private void logRequest(CaveatCaseUpdateRequest caveatCaseUpdateRequest) {
+        try {
+            log.info("logging request on ExceptionRecordController");
+            log.info("POST: {}", objectMapper.writeValueAsString(caveatCaseUpdateRequest));
+        } catch (JsonProcessingException e) {
+            log.error("POST: {}", e);
+        }
+    }
+    
+    private void logResponse(SuccessfulCaveatUpdateResponse successfulCaveatUpdateResponse) {
+        try {
+            log.info("logging response on ExceptionRecordController");
+            log.info("POST: {}", objectMapper.writeValueAsString(successfulCaveatUpdateResponse));
+        } catch (JsonProcessingException e) {
+            log.error("POST: {}", e);
+        }
+    }
+
 }
