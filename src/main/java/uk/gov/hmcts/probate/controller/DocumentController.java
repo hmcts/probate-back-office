@@ -160,11 +160,11 @@ public class DocumentController {
         Document coverSheet = pdfManagementService.generateAndUpload(callbackRequest, DocumentType.GRANT_COVER);
         log.info("Generated and Uploaded cover document with template {} for the case id {}",
                 DocumentType.GRANT_COVER.getTemplateName(), callbackRequest.getCaseDetails().getId().toString());
-
+        Document letterOfGrantIssuedState =null;
         String letterId = null;
         String pdfSize = null;
         if (caseData.isSendForBulkPrintingRequested() && !EDGE_CASE_NAME.equals(caseData.getCaseType())) {
-            Document letterOfGrantIssuedState = getLetterOfGrantIssuedState(callbackRequest, caseDetails, caseData);
+            letterOfGrantIssuedState = getLetterOfGrantIssuedState(callbackRequest, caseDetails, caseData);
             SendLetterResponse response = bulkPrintService.sendToBulkPrintForGrant(callbackRequest, digitalGrantDocument,
                     letterOfGrantIssuedState, coverSheet);
             letterId = response != null
@@ -179,8 +179,12 @@ public class DocumentController {
         }
 
         List<Document> documents = new ArrayList<>();
-        documents.add(digitalGrantDocument);
         documents.add(coverSheet);
+        if(letterOfGrantIssuedState != null){
+            documents.add(letterOfGrantIssuedState);
+        }
+        documents.add(digitalGrantDocument);
+
 
         if (caseData.isGrantIssuedEmailNotificationRequested()) {
             callbackResponse = eventValidationService.validateEmailRequest(callbackRequest, emailAddressNotificationValidationRules);
