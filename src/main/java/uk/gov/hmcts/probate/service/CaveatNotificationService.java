@@ -125,7 +125,10 @@ public class CaveatNotificationService {
 
     public CaveatCallbackResponse caveatExtend(CaveatCallbackRequest caveatCallbackRequest)
         throws NotificationClientException {
-        CaveatCallbackResponse caveatCallbackResponse = CaveatCallbackResponse.builder().errors(new ArrayList<>()).build();
+        CaveatCallbackResponse caveatCallbackResponse = CaveatCallbackResponse.builder()
+            .errors(new ArrayList<>())
+            .warnings(new ArrayList<>())
+            .build();
         List<Document> documents = new ArrayList<>();
         String letterId = null;
 
