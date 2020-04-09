@@ -168,7 +168,7 @@ public class DocumentGeneratorService {
     }
     public Document generateLetterOfGrantDelay(CallbackRequest callbackRequest, DocumentType documentType) {
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
-        Map<String, Object> placeholders = previewLetterService.addLetterData(caseDetails);
+        Map<String, Object> placeholders = genericMapperService.addCaseDataWithRegistryProperties(caseDetails);
         return pdfManagementService.generateDocmosisDocumentAndUpload(placeholders,
                 documentType);
     }
