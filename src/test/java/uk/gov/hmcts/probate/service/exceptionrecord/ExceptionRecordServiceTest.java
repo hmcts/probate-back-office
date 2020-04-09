@@ -166,6 +166,26 @@ public class ExceptionRecordServiceTest {
         assertEquals(1, scannedDocuments.size());
     }
 
+    @Test
+    public void shouldUpdateCaveatCaseFromExceptionRecordWithUnmatchedCaveatNumbersWarning() throws IOException, NotificationClientException {
+        exceptionRecordPayloadPA8A = testUtils.getStringFromFile("updateExceptionRecordDataPA8ADiffCaseNumbers.json");
+        caveatCaseUpdateRequest = getObjectMapper().readValue(exceptionRecordPayloadPA8A, CaveatCaseUpdateRequest.class);
+        CaveatCallbackResponse caveatCallbackResponse = Mockito.mock(CaveatCallbackResponse.class);
+        when(caveatCallbackResponse.getErrors()).thenReturn(Collections.emptyList());
+        List warnings = new ArrayList();
+        when(caveatCallbackResponse.getWarnings()).thenReturn(warnings);
+        when(eventValidationService.validateCaveatRequest(any(CaveatCallbackRequest.class), nullable(List.class))).thenReturn(caveatCallbackResponse);
+        when(caveatNotificationService.caveatExtend(any(CaveatCallbackRequest.class))).thenReturn(caveatCallbackResponse);
+        ResponseCaveatData responseCaseveatData = Mockito.mock(ResponseCaveatData.class);
+        when(responseCaseveatData.getScannedDocuments()).thenReturn(Arrays.asList(new CollectionMember(null, null)));
+        when(caveatCallbackResponse.getCaveatData()).thenReturn(responseCaseveatData);
+
+        SuccessfulCaveatUpdateResponse response = erService.updateCaveatCaseFromExceptionRecord(caveatCaseUpdateRequest);
+        List<CollectionMember<ScannedDocument>> scannedDocuments = response.getCaseUpdateDetails().getScannedDocuments();
+        assertEquals(1, scannedDocuments.size());
+        assertEquals(1, response.warnings.size());
+    }
+
     @Test(expected = OCRMappingException.class)
     public void shouldNotUpdateCaveatCaseFromExceptionRecordNoAdditionalDocuments() throws IOException, NotificationClientException {
         exceptionRecordPayloadPA8A = testUtils.getStringFromFile("updateExceptionRecordDataPA8ANoAdditionalDocuments.json");

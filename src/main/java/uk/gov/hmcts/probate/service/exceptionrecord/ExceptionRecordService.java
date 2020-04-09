@@ -169,11 +169,6 @@ public class ExceptionRecordService {
                     "Missing scanned documents in Exception Record"
             );
 
-            Assert.isTrue(
-                    caveatDetails.getId().toString().equals(caseReference),
-                    "Case retrieved does not match OCR data for caseReference"
-            );
-
             // Create CaveatCallbackRequest
             CaveatCallbackRequest caveatCallbackRequest = new CaveatCallbackRequest(caveatDetails);
 
@@ -200,6 +195,10 @@ public class ExceptionRecordService {
                 caveatCallbackRequest.getCaseDetails().getData().setExpiryDate(defaultExpiry);
                 log.info("Calling caveatExtend to notify of caveator of extension.");
                 caveatCallbackResponse = caveatNotificationService.caveatExtend(caveatCallbackRequest);
+                if (!caveatDetails.getId().toString().equals(caseReference)) {
+                    caveatCallbackResponse.getWarnings().add("Case retrieved does not match OCR data for caseReference");
+                }
+
                 log.info("Call to caveatExtend was successful.");
             }
 
