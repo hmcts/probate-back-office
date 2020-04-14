@@ -116,7 +116,7 @@ public class ReprintServiceTest {
         when(pdfManagementService.generateAndUpload(any(CallbackRequest.class), any(DocumentType.class)))
             .thenReturn(coversheet);
 
-        setupGeneratedDocs();
+        setupSOTDoc();
 
         reprintService.reprintSelectedDocument(callbackRequest);
 
@@ -238,15 +238,24 @@ public class ReprintServiceTest {
         reprintService.reprintSelectedDocument(callbackRequest);
     }
 
+    private void setupSOTDoc() {
+        List<CollectionMember<Document>> collectionMemberList = new ArrayList();
+        Document sot = Document.builder()
+            .documentType(DocumentType.STATEMENT_OF_TRUTH)
+            .documentFileName("SOTFileName")
+            .build();
+
+        CollectionMember<Document> collectionMember1 = new CollectionMember(null, sot);
+        collectionMemberList.add(collectionMember1);
+
+        when(caseData.getProbateSotDocumentsGenerated()).thenReturn(collectionMemberList);
+    }
+    
     private void setupGeneratedDocs() {
         List<CollectionMember<Document>> collectionMemberList = new ArrayList();
         Document grant = Document.builder()
             .documentType(DocumentType.DIGITAL_GRANT)
             .documentFileName("GrantFileName")
-            .build();
-        Document sot = Document.builder()
-            .documentType(DocumentType.STATEMENT_OF_TRUTH)
-            .documentFileName("SOTFileName")
             .build();
         Document reissuedGrant = Document.builder()
             .documentType(DocumentType.DIGITAL_GRANT_REISSUE)
@@ -254,12 +263,9 @@ public class ReprintServiceTest {
             .build();
         CollectionMember<Document> collectionMember1 = new CollectionMember(null, grant);
         collectionMemberList.add(collectionMember1);
-        CollectionMember<Document> collectionMember2 = new CollectionMember(null, sot);
-        collectionMemberList.add(collectionMember2);
         CollectionMember<Document> collectionMember3 = new CollectionMember(null, reissuedGrant);
         collectionMemberList.add(collectionMember3);
         when(caseData.getProbateDocumentsGenerated()).thenReturn(collectionMemberList);
-
     }
 
     private void setupScannedDocs() {

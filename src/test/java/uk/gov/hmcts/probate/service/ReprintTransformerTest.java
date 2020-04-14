@@ -23,6 +23,7 @@ import static org.hamcrest.core.Is.is;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_REISSUE;
+import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT_EXTENDED;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_REISSUE;
@@ -33,6 +34,7 @@ import static uk.gov.hmcts.probate.model.DocumentType.STATEMENT_OF_TRUTH;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_ADMON_WILL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_DIGITAL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_INTESTACY_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.WELSH_STATEMENT_OF_TRUTH;
 
 public class ReprintTransformerTest {
     @InjectMocks
@@ -44,6 +46,7 @@ public class ReprintTransformerTest {
     private CaseData caseData;
 
     private List<CollectionMember<Document>> generatedDocs = Collections.EMPTY_LIST;
+    private List<CollectionMember<Document>> sotDocs = Collections.EMPTY_LIST;
     private List<CollectionMember<ScannedDocument>> scannedDocs = Collections.EMPTY_LIST;
 
     private ResponseCaseData.ResponseCaseDataBuilder responseCaseDataBuilder;
@@ -62,10 +65,6 @@ public class ReprintTransformerTest {
             .documentType(DIGITAL_GRANT)
             .documentFileName("Grant1")
             .build();
-        Document sot = Document.builder()
-            .documentType(STATEMENT_OF_TRUTH)
-            .documentFileName("SOT1")
-            .build();
         Document other = Document.builder()
             .documentType(OTHER)
             .documentFileName("Other1")
@@ -75,7 +74,6 @@ public class ReprintTransformerTest {
             .documentFileName("GrantDraft1")
             .build();
         generatedDocs = Arrays.asList(new CollectionMember(null, grant),
-            new CollectionMember(null, sot),
             new CollectionMember(null, other),
             new CollectionMember(null, draft));
         when(caseData.getProbateDocumentsGenerated()).thenReturn(generatedDocs);
@@ -93,13 +91,30 @@ public class ReprintTransformerTest {
         scannedDocs = Arrays.asList(new CollectionMember(null, will), new CollectionMember(null, otherSc));
         when(caseData.getScannedDocuments()).thenReturn(scannedDocs);
 
+        Document sot1 = Document.builder()
+            .documentType(CAVEAT_EXTENDED)
+            .documentFileName("NON-SOT1")
+            .build();
+        Document sot2 = Document.builder()
+            .documentType(STATEMENT_OF_TRUTH)
+            .documentFileName("SOT2")
+            .build();
+        Document sot3 = Document.builder()
+            .documentType(WELSH_STATEMENT_OF_TRUTH)
+            .documentFileName("WSOT3")
+            .build();
+        sotDocs = Arrays.asList(new CollectionMember(null, sot1),
+            new CollectionMember(null, sot2),
+            new CollectionMember(null, sot3));
+        when(caseData.getProbateSotDocumentsGenerated()).thenReturn(sotDocs);
+
         reprintTransformer.transformReprintDocuments(caseDetails, responseCaseDataBuilder);
         assertThat(responseCaseDataBuilder.build().getReprintDocument().getListItems().size(), is(3));
         assertThat(responseCaseDataBuilder.build().getReprintDocument().getListItems().get(0).getCode(), is("Will1"));
         assertThat(responseCaseDataBuilder.build().getReprintDocument().getListItems().get(0).getLabel(), is("Will"));
         assertThat(responseCaseDataBuilder.build().getReprintDocument().getListItems().get(1).getCode(), is("Grant1"));
         assertThat(responseCaseDataBuilder.build().getReprintDocument().getListItems().get(1).getLabel(), is("Grant"));
-        assertThat(responseCaseDataBuilder.build().getReprintDocument().getListItems().get(2).getCode(), is("SOT1"));
+        assertThat(responseCaseDataBuilder.build().getReprintDocument().getListItems().get(2).getCode(), is("WSOT3"));
         assertThat(responseCaseDataBuilder.build().getReprintDocument().getListItems().get(2).getLabel(), is("SOT"));
     }
 
@@ -117,8 +132,6 @@ public class ReprintTransformerTest {
         createAndAssertGeneratedListItem(DIGITAL_GRANT_REISSUE, "GrantReissue1", "ReissuedGrant");
         createAndAssertGeneratedListItem(INTESTACY_GRANT_REISSUE, "IGrantReissue1", "ReissuedGrant");
         createAndAssertGeneratedListItem(ADMON_WILL_GRANT_REISSUE, "AWGrantReissue1", "ReissuedGrant");
-
-        createAndAssertGeneratedListItem(STATEMENT_OF_TRUTH, "SOT1", "SOT");
     }
 
     @Test
@@ -130,6 +143,7 @@ public class ReprintTransformerTest {
     public void shouldNotCreateForNullItems() {
         generatedDocs = null;
         scannedDocs = null;
+        sotDocs = null;
         reprintTransformer.transformReprintDocuments(caseDetails, responseCaseDataBuilder);
         assertThat(responseCaseDataBuilder.build().getReprintDocument().getListItems().size(), is(0));
     }
