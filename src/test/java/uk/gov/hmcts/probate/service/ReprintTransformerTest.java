@@ -143,6 +143,7 @@ public class ReprintTransformerTest {
     public void shouldNotCreateForNullItems() {
         generatedDocs = null;
         scannedDocs = null;
+        sotDocs = null;
         reprintTransformer.transformReprintDocuments(caseDetails, responseCaseDataBuilder);
         assertThat(responseCaseDataBuilder.build().getReprintDocument().getListItems().size(), is(0));
     }

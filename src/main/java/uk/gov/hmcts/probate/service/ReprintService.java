@@ -62,15 +62,13 @@ public class ReprintService {
             if (document.isPresent()) {
                 return document.get().getValue();
             }
-        } else if (LABEL_SOT.equalsIgnoreCase(selectedDocumentItem.getLabel())){
-            if (data.getProbateSotDocumentsGenerated() != null) {
-                String fileName = selectedDocumentItem.getCode();
-                Optional<CollectionMember<Document>> document = data.getProbateSotDocumentsGenerated().stream()
-                    .filter(doc -> doc.getValue().getDocumentFileName().equals(fileName))
-                    .findFirst();
-                if (document.isPresent()) {
-                    return document.get().getValue();
-                }
+        } else if (LABEL_SOT.equalsIgnoreCase(selectedDocumentItem.getLabel()) && data.getProbateSotDocumentsGenerated() != null){
+            String fileName = selectedDocumentItem.getCode();
+            Optional<CollectionMember<Document>> document = data.getProbateSotDocumentsGenerated().stream()
+                .filter(doc -> doc.getValue().getDocumentFileName().equals(fileName))
+                .findFirst();
+            if (document.isPresent()) {
+                return document.get().getValue();
             }
         }
 
