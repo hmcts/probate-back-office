@@ -2534,7 +2534,7 @@ public class CallbackResponseTransformerTest {
         CallbackResponse callbackResponse = underTest.addBulkPrintInformationForReprint(callbackRequestMock, document, letterId, pdfSize);
 
         assertThat(callbackResponse.getData().getBulkPrintId().get(0).getValue().getSendLetterId(), is(letterId));
-        assertThat(callbackResponse.getData().getBulkPrintId().get(0).getValue().getTemplateName(), is(STATEMENT_OF_TRUTH.getTemplateName()));
+        assertThat(callbackResponse.getData().getBulkPrintId().get(0).getValue().getTemplateName(), is(ADMON_WILL_GRANT_REISSUE.getTemplateName()));
         assertEquals(null, callbackResponse.getData().getBulkPrintPdfSize());
     }
 
@@ -2548,7 +2548,7 @@ public class CallbackResponseTransformerTest {
         CallbackResponse callbackResponse = underTest.addBulkPrintInformationForReprint(callbackRequestMock, document, letterId, pdfSize);
 
         assertThat(callbackResponse.getData().getBulkPrintId().get(0).getValue().getSendLetterId(), is(letterId));
-        assertThat(callbackResponse.getData().getBulkPrintId().get(0).getValue().getTemplateName(), is(STATEMENT_OF_TRUTH.getTemplateName()));
+        assertThat(callbackResponse.getData().getBulkPrintId().get(0).getValue().getTemplateName(), is(INTESTACY_GRANT_REISSUE.getTemplateName()));
         assertEquals(null, callbackResponse.getData().getBulkPrintPdfSize());
     }
 
@@ -2562,7 +2562,7 @@ public class CallbackResponseTransformerTest {
         CallbackResponse callbackResponse = underTest.addBulkPrintInformationForReprint(callbackRequestMock, document, letterId, pdfSize);
 
         assertThat(callbackResponse.getData().getBulkPrintId().get(0).getValue().getSendLetterId(), is(letterId));
-        assertThat(callbackResponse.getData().getBulkPrintId().get(0).getValue().getTemplateName(), is(STATEMENT_OF_TRUTH.getTemplateName()));
+        assertThat(callbackResponse.getData().getBulkPrintId().get(0).getValue().getTemplateName(), is(WELSH_STATEMENT_OF_TRUTH.getTemplateName()));
         assertEquals(null, callbackResponse.getData().getBulkPrintPdfSize());
     }
 
