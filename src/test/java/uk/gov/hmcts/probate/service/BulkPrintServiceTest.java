@@ -802,10 +802,12 @@ public class BulkPrintServiceTest {
             .build();
 
         when(eventValidationService.validateBulkPrintResponse(any(), any())).thenReturn(callbackResponse);
+        when(sendLetterApiMock.sendLetter(anyString(), any(LetterV3.class))).thenReturn(sendLetterResponse);
 
         SendLetterResponse response = bulkPrintService.sendDocumentsForReprint(callbackRequest, grant, coverSheet);
 
-        assertEquals(sendLetterResponse, null);
+        assertEquals(sendLetterResponse, response);
+        assertEquals(sendLetterResponse.letterId, response.letterId);
         verify(sendLetterApiMock).sendLetter(anyString(), any(LetterV3.class));
     }
 
