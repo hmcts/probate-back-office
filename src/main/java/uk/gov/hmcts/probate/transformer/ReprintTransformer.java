@@ -54,7 +54,10 @@ public class ReprintTransformer {
         if (caseData.getProbateSotDocumentsGenerated() != null && !caseData.getProbateSotDocumentsGenerated().isEmpty()) {
             Document sot = caseData.getProbateSotDocumentsGenerated().get(caseData.getProbateSotDocumentsGenerated().size()-1).getValue();
             if (isFromGeneratedDocuments(sot)) {
-                listItems.add(buildFromGeneratedDocument(sot).get());
+                Optional<DynamicListItem> dynamicListItem = buildFromGeneratedDocument(sot);
+                if (dynamicListItem.isPresent()) {
+                    listItems.add(dynamicListItem.get());
+                }
             }
         }
 
@@ -90,6 +93,7 @@ public class ReprintTransformer {
             case ADMON_WILL_GRANT_REISSUE:
                 return true;
             case STATEMENT_OF_TRUTH:
+            case WELSH_STATEMENT_OF_TRUTH:
                 return true;
             default:
                 return false;
@@ -117,6 +121,7 @@ public class ReprintTransformer {
                 optionalDynamicListItem = Optional.of(buildListItem(document.getDocumentFileName(), LABEL_REISSUED_GRANT));
                 break;
             case STATEMENT_OF_TRUTH:
+            case WELSH_STATEMENT_OF_TRUTH:
                 optionalDynamicListItem = Optional.of(buildListItem(document.getDocumentFileName(), LABEL_SOT));
                 break;
             default:

@@ -8,7 +8,6 @@ import org.mockito.MockitoAnnotations;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
-import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
@@ -24,6 +23,7 @@ import static org.hamcrest.core.Is.is;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_REISSUE;
+import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT_EXTENDED;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_REISSUE;
@@ -34,6 +34,7 @@ import static uk.gov.hmcts.probate.model.DocumentType.STATEMENT_OF_TRUTH;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_ADMON_WILL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_DIGITAL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_INTESTACY_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.WELSH_STATEMENT_OF_TRUTH;
 
 public class ReprintTransformerTest {
     @InjectMocks
@@ -91,16 +92,16 @@ public class ReprintTransformerTest {
         when(caseData.getScannedDocuments()).thenReturn(scannedDocs);
 
         Document sot1 = Document.builder()
-            .documentType(STATEMENT_OF_TRUTH)
-            .documentFileName("SOT1")
+            .documentType(CAVEAT_EXTENDED)
+            .documentFileName("NON-SOT1")
             .build();
         Document sot2 = Document.builder()
             .documentType(STATEMENT_OF_TRUTH)
             .documentFileName("SOT2")
             .build();
         Document sot3 = Document.builder()
-            .documentType(STATEMENT_OF_TRUTH)
-            .documentFileName("SOT3")
+            .documentType(WELSH_STATEMENT_OF_TRUTH)
+            .documentFileName("WSOT3")
             .build();
         sotDocs = Arrays.asList(new CollectionMember(null, sot1),
             new CollectionMember(null, sot2),
@@ -113,7 +114,7 @@ public class ReprintTransformerTest {
         assertThat(responseCaseDataBuilder.build().getReprintDocument().getListItems().get(0).getLabel(), is("Will"));
         assertThat(responseCaseDataBuilder.build().getReprintDocument().getListItems().get(1).getCode(), is("Grant1"));
         assertThat(responseCaseDataBuilder.build().getReprintDocument().getListItems().get(1).getLabel(), is("Grant"));
-        assertThat(responseCaseDataBuilder.build().getReprintDocument().getListItems().get(2).getCode(), is("SOT3"));
+        assertThat(responseCaseDataBuilder.build().getReprintDocument().getListItems().get(2).getCode(), is("WSOT3"));
         assertThat(responseCaseDataBuilder.build().getReprintDocument().getListItems().get(2).getLabel(), is("SOT"));
     }
 
