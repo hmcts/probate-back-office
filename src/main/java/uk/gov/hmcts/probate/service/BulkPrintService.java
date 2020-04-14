@@ -112,7 +112,7 @@ public class BulkPrintService {
         return letterId;
     }
 
-    public void sendDocumentsForReprint(CallbackRequest callbackRequest, Document selectedDocument, Document coverSheet) {
+    public SendLetterResponse sendDocumentsForReprint(CallbackRequest callbackRequest, Document selectedDocument, Document coverSheet) {
         SendLetterResponse sendLetterResponse = sendToBulkPrint(callbackRequest, selectedDocument, coverSheet, true);
         String letterId = sendLetterResponse != null ? sendLetterResponse.letterId.toString() : null;
         CallbackResponse response = eventValidationService.validateBulkPrintResponse(letterId, bulkPrintValidationRules);
@@ -121,6 +121,7 @@ public class BulkPrintService {
                 "bulkPrintResponseNull").getMessage(),
                 "Bulk print send letter for reprint response is null for: " + callbackRequest.getCaseDetails().getId());
         }
+        return sendLetterResponse;
     }
 
     private SendLetterResponse sendToBulkPrint(CallbackRequest callbackRequest, Document grantDocument, Document coverSheet, boolean forReprint) {

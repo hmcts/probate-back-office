@@ -63,9 +63,11 @@ import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_INTESTACY;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE;
 import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
 import static uk.gov.hmcts.probate.model.DocumentType.SOT_INFORMATION_REQUEST;
+import static uk.gov.hmcts.probate.model.DocumentType.STATEMENT_OF_TRUTH;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_ADMON_WILL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_DIGITAL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_INTESTACY_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.WELSH_STATEMENT_OF_TRUTH;
 import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.Constants.GRANT_OF_PROBATE_NAME;
 import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.INTESTACY;
 
@@ -252,6 +254,43 @@ public class CallbackResponseTransformer {
 
         responseCaseDataBuilder
                 .solsSOTNeedToUpdate(null);
+
+        return transformResponse(responseCaseDataBuilder.build());
+    }
+
+    public CallbackResponse addBulkPrintInformationForReprint(CallbackRequest callbackRequest, Document document,
+                                                              String letterId, String pdfSize) {
+        CaseDetails caseDetails = callbackRequest.getCaseDetails();
+        CaseData caseData = caseDetails.getData();
+        ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), false);
+        
+        List<Document> documents = Arrays.asList(document);
+        if (documentTransformer.hasDocumentWithType(documents, DIGITAL_GRANT)
+            || documentTransformer.hasDocumentWithType(documents, ADMON_WILL_GRANT)
+            || documentTransformer.hasDocumentWithType(documents, INTESTACY_GRANT)
+            || documentTransformer.hasDocumentWithType(documents, WELSH_DIGITAL_GRANT)
+            || documentTransformer.hasDocumentWithType(documents, WELSH_INTESTACY_GRANT)
+            || documentTransformer.hasDocumentWithType(documents, WELSH_ADMON_WILL_GRANT)) {
+
+            responseCaseDataBuilder
+                .bulkPrintSendLetterId(letterId)
+                .bulkPrintPdfSize(String.valueOf(pdfSize));
+        }
+        if (documentTransformer.hasDocumentWithType(documents, DIGITAL_GRANT_REISSUE)
+            || documentTransformer.hasDocumentWithType(documents, ADMON_WILL_GRANT_REISSUE)
+            || documentTransformer.hasDocumentWithType(documents, INTESTACY_GRANT_REISSUE)
+            || documentTransformer.hasDocumentWithType(documents, STATEMENT_OF_TRUTH)
+            || documentTransformer.hasDocumentWithType(documents, WELSH_STATEMENT_OF_TRUTH)) {
+            if (letterId != null) {
+                DocumentType[] documentTypes = {DIGITAL_GRANT_REISSUE, ADMON_WILL_GRANT_REISSUE, INTESTACY_GRANT_REISSUE,
+                    STATEMENT_OF_TRUTH, WELSH_STATEMENT_OF_TRUTH};
+                String templateName = getTemplateName(documents, documentTypes);
+                CollectionMember<BulkPrint> bulkPrint = buildBulkPrint(letterId, templateName);
+                appendToBulkPrintCollection(bulkPrint, caseData);
+                responseCaseDataBuilder
+                    .bulkPrintId(caseData.getBulkPrintId());
+            }
+        }
 
         return transformResponse(responseCaseDataBuilder.build());
     }
