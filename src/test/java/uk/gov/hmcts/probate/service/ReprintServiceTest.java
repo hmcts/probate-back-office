@@ -17,14 +17,19 @@ import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
+import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
+import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
+import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyDouble;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -37,6 +42,8 @@ public class ReprintServiceTest {
     private BulkPrintService bulkPrintService;
     @Mock
     private PDFManagementService pdfManagementService;
+    @Mock
+    private CallbackResponseTransformer callbackResponseTransformer;
 
     @Mock
     private CallbackRequest callbackRequest;
@@ -65,13 +72,16 @@ public class ReprintServiceTest {
                 .build())
             .build();
         when(caseData.getReprintDocument()).thenReturn(reprintDoc);
+        when(caseData.getReprintNumberOfCopies()).thenReturn("10");
 
         Document coversheet = Document.builder().build();
         when(pdfManagementService.generateAndUpload(any(CallbackRequest.class), any(DocumentType.class)))
             .thenReturn(coversheet);
 
         setupGeneratedDocs();
-        
+
+        SendLetterResponse sendLetterResponse = new SendLetterResponse(UUID.randomUUID());
+        when(bulkPrintService.sendDocumentsForReprint(any(), any(), any())).thenReturn(sendLetterResponse);
         reprintService.reprintSelectedDocument(callbackRequest);
 
         verify(bulkPrintService).sendDocumentsForReprint(any(), selectedDocumentCaptor.capture(), any());
@@ -79,6 +89,32 @@ public class ReprintServiceTest {
         assertThat(selectedDocumentCaptor.getValue().getDocumentFileName(), is("GrantFileName"));
     }
 
+    @Test
+    public void shouldReprintSelectedGrantDocumentNoLetterId() {
+        DynamicList reprintDoc = DynamicList.builder()
+            .value(DynamicListItem.builder()
+                .code("GrantFileName")
+                .label("Grant")
+                .build())
+            .build();
+        when(caseData.getReprintDocument()).thenReturn(reprintDoc);
+        when(caseData.getReprintNumberOfCopies()).thenReturn("10");
+
+        Document coversheet = Document.builder().build();
+        when(pdfManagementService.generateAndUpload(any(CallbackRequest.class), any(DocumentType.class)))
+            .thenReturn(coversheet);
+
+        setupGeneratedDocs();
+
+        SendLetterResponse sendLetterResponse = new SendLetterResponse(UUID.randomUUID());
+        when(bulkPrintService.sendDocumentsForReprint(any(), any(), any())).thenReturn(sendLetterResponse);
+        reprintService.reprintSelectedDocument(callbackRequest);
+
+        verify(bulkPrintService).sendDocumentsForReprint(any(), selectedDocumentCaptor.capture(), any());
+        assertThat(selectedDocumentCaptor.getValue().getDocumentType(), is(DocumentType.DIGITAL_GRANT));
+        assertThat(selectedDocumentCaptor.getValue().getDocumentFileName(), is("GrantFileName"));
+    }
+    
     @Test
     public void shouldReprintSelectedReissuedGrantDocument() {
         DynamicList reprintDoc = DynamicList.builder()
@@ -88,6 +124,7 @@ public class ReprintServiceTest {
                 .build())
             .build();
         when(caseData.getReprintDocument()).thenReturn(reprintDoc);
+        when(caseData.getReprintNumberOfCopies()).thenReturn("10");
 
         Document coversheet = Document.builder().build();
         when(pdfManagementService.generateAndUpload(any(CallbackRequest.class), any(DocumentType.class)))
@@ -95,6 +132,8 @@ public class ReprintServiceTest {
 
         setupGeneratedDocs();
 
+        SendLetterResponse sendLetterResponse = new SendLetterResponse(UUID.randomUUID());
+        when(bulkPrintService.sendDocumentsForReprint(any(), any(), any())).thenReturn(sendLetterResponse);
         reprintService.reprintSelectedDocument(callbackRequest);
 
         verify(bulkPrintService).sendDocumentsForReprint(any(), selectedDocumentCaptor.capture(), any());
@@ -111,6 +150,7 @@ public class ReprintServiceTest {
                 .build())
             .build();
         when(caseData.getReprintDocument()).thenReturn(reprintDoc);
+        when(caseData.getReprintNumberOfCopies()).thenReturn("10");
 
         Document coversheet = Document.builder().build();
         when(pdfManagementService.generateAndUpload(any(CallbackRequest.class), any(DocumentType.class)))
@@ -118,6 +158,8 @@ public class ReprintServiceTest {
 
         setupSOTDoc();
 
+        SendLetterResponse sendLetterResponse = new SendLetterResponse(UUID.randomUUID());
+        when(bulkPrintService.sendDocumentsForReprint(any(), any(), any())).thenReturn(sendLetterResponse);
         reprintService.reprintSelectedDocument(callbackRequest);
 
         verify(bulkPrintService).sendDocumentsForReprint(any(), selectedDocumentCaptor.capture(), any());
@@ -134,12 +176,15 @@ public class ReprintServiceTest {
                 .build())
             .build();
         when(caseData.getReprintDocument()).thenReturn(reprintDoc);
+        when(caseData.getReprintNumberOfCopies()).thenReturn("10");
 
         Document coversheet = Document.builder().build();
         when(pdfManagementService.generateAndUpload(any(CallbackRequest.class), any(DocumentType.class)))
             .thenReturn(coversheet);
 
         setupScannedDocs();
+        SendLetterResponse sendLetterResponse = new SendLetterResponse(UUID.randomUUID());
+        when(bulkPrintService.sendDocumentsForReprint(any(), any(), any())).thenReturn(sendLetterResponse);
 
         reprintService.reprintSelectedDocument(callbackRequest);
 

@@ -752,8 +752,9 @@ public class BulkPrintServiceTest {
         when(sendLetterApiMock.sendLetter(anyString(), letterV3ArgumentCaptor.capture())).thenReturn(sendLetterResponse);
         when(eventValidationService.validateBulkPrintResponse(eq(uuid.toString()), any())).thenReturn(callbackResponse);
 
-        bulkPrintService.sendDocumentsForReprint(callbackRequest, grant, coverSheet);
+        SendLetterResponse response = bulkPrintService.sendDocumentsForReprint(callbackRequest, grant, coverSheet);
 
+        assertEquals(sendLetterResponse, response);
         assertEquals(1, letterV3ArgumentCaptor.getValue().documents.get(0).copies);
         assertEquals(10, letterV3ArgumentCaptor.getValue().documents.get(1).copies);
 
@@ -802,8 +803,9 @@ public class BulkPrintServiceTest {
 
         when(eventValidationService.validateBulkPrintResponse(any(), any())).thenReturn(callbackResponse);
 
-        bulkPrintService.sendDocumentsForReprint(callbackRequest, grant, coverSheet);
+        SendLetterResponse response = bulkPrintService.sendDocumentsForReprint(callbackRequest, grant, coverSheet);
 
+        assertEquals(sendLetterResponse, null);
         verify(sendLetterApiMock).sendLetter(anyString(), any(LetterV3.class));
     }
 

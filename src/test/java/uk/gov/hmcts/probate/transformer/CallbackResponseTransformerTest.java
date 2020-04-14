@@ -77,6 +77,7 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -2427,7 +2428,34 @@ public class CallbackResponseTransformerTest {
         underTest.transformCaseForReprint(callbackRequestMock);
         verify(reprintTransformer).transformReprintDocuments(any(CaseDetails.class), any(ResponseCaseData.ResponseCaseDataBuilder.class));
     }
+
+    @Test
+    public void shouldAddBPInformationForGrantReprint() {
+        Document document = Document.builder()
+            .documentType(DIGITAL_GRANT)
+            .build();
+        String letterId = "letterId";
+        String pdfSize = "10";
+        CallbackResponse callbackResponse = underTest.addBulkPrintInformationForReprint(callbackRequestMock, document, letterId, pdfSize);
     
+        assertThat(callbackResponse.getData().getBulkPrintSendLetterId(), is(letterId));
+        assertThat(callbackResponse.getData().getBulkPrintPdfSize(), is(pdfSize));
+    }
+
+    @Test
+    public void shouldAddBPInformationForSOTReprint() {
+        Document document = Document.builder()
+            .documentType(STATEMENT_OF_TRUTH)
+            .build();
+        String letterId = "letterId";
+        String pdfSize = "10";
+        CallbackResponse callbackResponse = underTest.addBulkPrintInformationForReprint(callbackRequestMock, document, letterId, pdfSize);
+
+        assertThat(callbackResponse.getData().getBulkPrintId().get(0).getValue().getSendLetterId(), is(letterId));
+        assertThat(callbackResponse.getData().getBulkPrintId().get(0).getValue().getTemplateName(), is(STATEMENT_OF_TRUTH.getTemplateName()));
+        assertEquals(null, callbackResponse.getData().getBulkPrintPdfSize());
+    }
+
     private CollectionMember<ProbateAliasName> createdDeceasedAliasName(String id, String forename, String lastname, String onGrant) {
         ProbateAliasName pan = ProbateAliasName.builder()
                 .appearOnGrant(onGrant)
