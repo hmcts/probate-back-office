@@ -93,6 +93,7 @@ import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE;
+import static uk.gov.hmcts.probate.model.DocumentType.OTHER;
 import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
 import static uk.gov.hmcts.probate.model.DocumentType.SOT_INFORMATION_REQUEST;
 import static uk.gov.hmcts.probate.model.DocumentType.STATEMENT_OF_TRUTH;
@@ -2513,14 +2514,14 @@ public class CallbackResponseTransformerTest {
     @Test
     public void shouldAddBPInformationForGrantReissueReprint() {
         Document document = Document.builder()
-            .documentType(STATEMENT_OF_TRUTH)
+            .documentType(DIGITAL_GRANT_REISSUE)
             .build();
         String letterId = "letterId";
         String pdfSize = "10";
         CallbackResponse callbackResponse = underTest.addBulkPrintInformationForReprint(callbackRequestMock, document, letterId, pdfSize);
 
         assertThat(callbackResponse.getData().getBulkPrintId().get(0).getValue().getSendLetterId(), is(letterId));
-        assertThat(callbackResponse.getData().getBulkPrintId().get(0).getValue().getTemplateName(), is(STATEMENT_OF_TRUTH.getTemplateName()));
+        assertThat(callbackResponse.getData().getBulkPrintId().get(0).getValue().getTemplateName(), is(DIGITAL_GRANT_REISSUE.getTemplateName()));
         assertEquals(null, callbackResponse.getData().getBulkPrintPdfSize());
     }
 
@@ -2577,6 +2578,20 @@ public class CallbackResponseTransformerTest {
 
         assertThat(callbackResponse.getData().getBulkPrintId().get(0).getValue().getSendLetterId(), is(letterId));
         assertThat(callbackResponse.getData().getBulkPrintId().get(0).getValue().getTemplateName(), is(STATEMENT_OF_TRUTH.getTemplateName()));
+        assertEquals(null, callbackResponse.getData().getBulkPrintPdfSize());
+    }
+
+    @Test
+    public void shouldAddBPInformationForWillReprint() {
+        Document document = Document.builder()
+            .documentType(OTHER)
+            .build();
+        String letterId = "letterId";
+        String pdfSize = "10";
+        CallbackResponse callbackResponse = underTest.addBulkPrintInformationForReprint(callbackRequestMock, document, letterId, pdfSize);
+
+        assertThat(callbackResponse.getData().getBulkPrintId().get(0).getValue().getSendLetterId(), is(letterId));
+        assertThat(callbackResponse.getData().getBulkPrintId().get(0).getValue().getTemplateName(), is(OTHER.getTemplateName()));
         assertEquals(null, callbackResponse.getData().getBulkPrintPdfSize());
     }
 
