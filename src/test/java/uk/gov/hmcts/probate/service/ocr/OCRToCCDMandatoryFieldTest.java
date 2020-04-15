@@ -254,17 +254,20 @@ public class OCRToCCDMandatoryFieldTest {
     public void testSolicitorMissingMandatoryFieldsPA8A() {
         addAllCaveatCitizenMandatoryFields();
         ocrFields.add(OCRField.builder().name("solsSolicitorRepresentativeName").value("Solicitor Firm").description("Sols Firm").build());
-        assertEquals("Solicitors Firm name (solsSolicitorFirmName) is mandatory.",
-                ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrFields, FormType.PA8A, warnings
-                ).get(0));
+        List warningsResult = ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrFields, FormType.PA8A, warnings);
+        assertEquals(4, warningsResult.size());
+        assertEquals("Solictor address line 1 (solsSolicitorAddressLine1) is mandatory.", warningsResult.get(0));
+        assertEquals("Solictor address postcode (solsSolicitorAddressPostCode) is mandatory.", warningsResult.get(1));
+        assertEquals("Solicitors Firm name (solsSolicitorFirmName) is mandatory.", warningsResult.get(2));
+        assertEquals("Solictor application reference (solsSolicitorAppReference) is mandatory.", warningsResult.get(3));
     }
 
     @Test
     public void testFlagAsSolicitorCaseWarningPA8A() {
         addAllCaveatSolcitorMandatoryFields();
-        assertEquals("The form has been flagged as a Solictor case.",
-                ocrToCCDMandatoryField.ocrToCCDNonMandatoryWarnings(ocrFields, FormType.PA8A, warnings
-                ).get(0));
+        List warningsResult = ocrToCCDMandatoryField.ocrToCCDNonMandatoryWarnings(ocrFields, FormType.PA8A, warnings);
+        assertEquals(1, warningsResult.size());
+        assertEquals("The form has been flagged as a Solictor case.", warningsResult.get(0));
     }
 
     private void addIHTMandatoryFields() {
@@ -486,10 +489,19 @@ public class OCRToCCDMandatoryFieldTest {
                 .name("solsSolicitorAppReference")
                 .value("SOLS123456")
                 .description("Solicitor App Reference").build();
-
+        OCRField field4 = OCRField.builder()
+                .name("solsSolicitorAddressLine1")
+                .value("22 Palmer Street")
+                .description("Solicitor address building and street").build();
+        OCRField field5 = OCRField.builder()
+                .name("solsSolicitorAddressPostCode")
+                .value("NW1 5LA")
+                .description("Solicitor address postcode").build();
         ocrFields.add(field1);
         ocrFields.add(field2);
         ocrFields.add(field3);
+        ocrFields.add(field4);
+        ocrFields.add(field5);
     }
 
 
