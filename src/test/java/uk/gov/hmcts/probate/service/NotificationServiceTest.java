@@ -7,6 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -1542,6 +1543,43 @@ public class NotificationServiceTest {
     }
 
     @Test
+    public void sendGrantDelayedAwaitingDocumentationEmail()
+        throws NotificationClientException, BadRequestException {
+
+        HashMap<String, String> personalisation = new HashMap<>();
+
+        personalisation.put(PERSONALISATION_CASE_STOP_DETAILS, personalGrantDelayedOxford.getData().getBoStopDetails());
+        personalisation.put(PERSONALISATION_CCD_REFERENCE, personalGrantDelayedOxford.getId().toString());
+        personalisation.put(PERSONALISATION_CAVEAT_CASE_ID, null);
+        personalisation.put(PERSONALISATION_DECEASED_DOD, "12th December 2000");
+        personalisation.put(PERSONALISATION_SOLICITOR_REFERENCE, null);
+        personalisation.put(PERSONALISATION_REGISTRY_PHONE, "0186 579 3055");
+        personalisation.put(PERSONALISATION_SOLICITOR_NAME, null);
+        personalisation.put(PERSONALISATION_DECEASED_NAME, personalGrantDelayedOxford.getData().getDeceasedFullName());
+        personalisation.put(PERSONALISATION_REGISTRY_NAME, "Oxford Probate Registry");
+        personalisation.put(PERSONALISATION_WELSH_DECEASED_DATE_OF_DEATH, "12 Rhagfyr 2000");
+        personalisation.put(PERSONALISATION_CASE_STOP_DETAILS_DEC, null);
+        personalisation.put(PERSONALISATION_APPLICANT_NAME, personalGrantDelayedOxford.getData().getPrimaryApplicantFullName());
+
+        ReturnedCaseDetails returnedCaseDetails = new ReturnedCaseDetails(personalGrantDelayedOxford.getData(), null, ID);
+
+        when(pdfManagementService.generateAndUpload(any(SentEmail.class), any())).thenReturn(Document.builder()
+            .documentFileName(SENT_EMAIL_FILE_NAME).build());
+
+        Document document = notificationService.sendGrantAwaitingDocumentationEmail(returnedCaseDetails);
+
+        assertEquals(SENT_EMAIL_FILE_NAME, document.getDocumentFileName());
+
+        verify(notificationClient).sendEmail(
+            eq("pa-grantAwaitingDoc"),
+            eq("personal@test.com"),
+            eq(personalisation),
+            eq(null));
+
+        verify(pdfManagementService).generateAndUpload(any(SentEmail.class), eq(SENT_EMAIL));
+    }
+
+    @Test
     public void shouldSetScheduledStartGrantDelayNotificationPeriod() {
         CaseDetails caseDetails =
             new CaseDetails(CaseData.builder()
@@ -1555,6 +1593,39 @@ public class NotificationServiceTest {
 
         notificationService.startGrantDelayNotificationPeriod(caseDetails);
         assertEquals(LocalDate.now().plusDays(1), caseDetails.getData().getGrantDelayedNotificationDate());
+
+    }
+
+    @Test
+    public void shouldNotSetScheduledStartGrantDelayNotificationPeriodWithNoEvidenceHandled() {
+        CaseDetails caseDetails =
+            new CaseDetails(CaseData.builder()
+                .caseType("gop")
+                .applicationType(SOLICITOR)
+                .primaryApplicantEmailAddress("")
+                .registryLocation("Bristol")
+                .build(),
+                LAST_MODIFIED, CASE_ID);
+
+        notificationService.startGrantDelayNotificationPeriod(caseDetails);
+        assertEquals(null, caseDetails.getData().getGrantDelayedNotificationDate());
+
+    }
+
+    @Test
+    public void shouldNotSetScheduledStartGrantDelayNotificationPeriodWithEvidenceHandled() {
+        CaseDetails caseDetails =
+            new CaseDetails(CaseData.builder()
+                .caseType("gop")
+                .applicationType(SOLICITOR)
+                .primaryApplicantEmailAddress("")
+                .registryLocation("Bristol")
+                .evidenceHandled(Constants.YES)
+                .build(),
+                LAST_MODIFIED, CASE_ID);
+
+        notificationService.startGrantDelayNotificationPeriod(caseDetails);
+        assertEquals(null, caseDetails.getData().getGrantDelayedNotificationDate());
 
     }
 
@@ -1610,5 +1681,18 @@ public class NotificationServiceTest {
 
     }
 
+    @Test
+    public void shouldDefaultRegistryLocationIfNotSet() {
 
+        Registry registry = notificationService.getRegistry(null, LanguagePreference.ENGLISH);
+        assertEquals("CTSC", registry.getName());
+
+        Registry registryWelsh = notificationService.getRegistry(null, LanguagePreference.WELSH);
+        assertEquals( "Probate Registry of Wales", registryWelsh.getName());
+
+        Registry registryPassedIn = notificationService.getRegistry(RegistryLocation.MANCHESTER.getName(),
+            LanguagePreference.WELSH);
+        assertEquals("Manchester Probate Registry", registryPassedIn.getName());
+
+    }
 }

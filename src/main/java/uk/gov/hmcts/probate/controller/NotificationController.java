@@ -38,6 +38,9 @@ import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.validator.BulkPrintValidationRule;
 import uk.gov.hmcts.probate.validator.EmailAddressNotificationValidationRule;
 import uk.gov.hmcts.probate.validator.EmailAddressNotifyValidationRule;
+import uk.gov.hmcts.reform.probate.model.ProbateDocument;
+import uk.gov.hmcts.reform.probate.model.ProbateDocumentLink;
+import uk.gov.hmcts.reform.probate.model.ProbateDocumentType;
 import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
 import uk.gov.service.notify.NotificationClientException;
 
@@ -77,6 +80,27 @@ public class NotificationController {
     private static final String DEFAULT_LOG_ERROR = "Case Id: {} ERROR: {}";
     private static final String INVALID_PAYLOAD = "Invalid payload";
     private final GrantNotificationService grantNotificationService;
+
+    @PostMapping(path = "/application-received")
+    public ResponseEntity<ProbateDocument> sendApplicationReceivedNotification(
+        @Validated({EmailAddressNotificationValidationRule.class})
+        @RequestBody CallbackRequest callbackRequest)
+        throws NotificationClientException {
+
+        CaseDetails caseDetails = callbackRequest.getCaseDetails();
+        CaseData caseData = callbackRequest.getCaseDetails().getData();
+
+        if (isAnEmailAddressPresent(caseData)) {
+            CallbackResponse response = eventValidationService.validateEmailRequest(callbackRequest, emailAddressNotificationValidationRules);
+            if (response.getErrors().isEmpty()) {
+                Document sentEmailAsDocument = notificationService.sendEmail(APPLICATION_RECEIVED, caseDetails);
+                return ResponseEntity.ok(buildProbateDocument(sentEmailAsDocument));
+            }
+        }
+
+        log.info("No email sent or document returned to case: {}", caseDetails.getId());
+        return ResponseEntity.ok(null);
+    }
 
     @PostMapping(path = "/case-stopped")
     public ResponseEntity<CallbackResponse> sendCaseStoppedNotification(
@@ -120,7 +144,7 @@ public class NotificationController {
                 log.info("Initiate call to bulk print for Caveat stopped document and coversheet for case id {} ",
                         callbackRequest.getCaseDetails().getId());
                 SendLetterResponse sendLetterResponse =
-                        bulkPrintService.sendToBulkPrint(callbackRequest, caveatRaisedDoc, coversheet);
+                    bulkPrintService.sendToBulkPrintForGrant(callbackRequest, caveatRaisedDoc, coversheet);
                 letterId = sendLetterResponse != null
                         ? sendLetterResponse.letterId.toString()
                         : null;
@@ -173,6 +197,27 @@ public class NotificationController {
             @Validated({EmailAddressNotificationValidationRule.class})
             @RequestBody CallbackRequest callbackRequest) throws NotificationClientException {
         return ResponseEntity.ok(raiseGrantOfRepresentationNotificationService.handleGrantReceivedNotification(callbackRequest));
+    }
+
+    private ProbateDocument buildProbateDocument(Document boDocument) {
+        ProbateDocumentLink probateDocumentLink = ProbateDocumentLink.builder()
+            .documentBinaryUrl(boDocument.getDocumentLink().getDocumentBinaryUrl())
+            .documentFilename(boDocument.getDocumentLink().getDocumentFilename())
+            .documentUrl(boDocument.getDocumentLink().getDocumentUrl())
+            .build();
+        ProbateDocumentType probateDocumentType = ProbateDocumentType.valueOf(boDocument.getDocumentType().name());
+        return ProbateDocument.builder()
+            .documentDateAdded(boDocument.getDocumentDateAdded())
+            .documentFileName(boDocument.getDocumentFileName())
+            .documentGeneratedBy(boDocument.getDocumentGeneratedBy())
+            .documentLink(probateDocumentLink)
+            .documentType(probateDocumentType)
+            .build();
+
+    }
+
+    private boolean isAnEmailAddressPresent(CaseData caseData) {
+        return caseData.isDocsReceivedEmailNotificationRequested();
     }
 
     @PostMapping(path = "/start-grant-delayed-notify-period", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
