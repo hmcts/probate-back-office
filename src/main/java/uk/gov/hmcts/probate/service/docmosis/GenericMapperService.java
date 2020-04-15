@@ -9,6 +9,7 @@ import uk.gov.hmcts.probate.config.properties.registries.Registry;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
+import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 import uk.gov.hmcts.probate.service.FileSystemResourceService;
 
 import java.time.format.DateTimeFormatter;
@@ -43,6 +44,18 @@ public class GenericMapperService {
         Map<String, Object> placeholders = mapper.convertValue(caseData, Map.class);
         placeholders.replace(DECEASED_DATE_OF_DEATH, DATE_FORMAT.format(caseData.getDeceasedDateOfDeath()));
         placeholders.replace(DECEASED_DATE_OF_BIRTH, DATE_FORMAT.format(caseData.getDeceasedDateOfBirth()));
+        return placeholders;
+    }
+
+    public Map<String, Object> addCaseDataWithRegistryProperties(ReturnedCaseDetails foundCase) {
+        CaseData caseData = foundCase.getData();
+        Registry registry = registriesProperties.getRegistries().get(
+                caseData.getRegistryLocation().toLowerCase());
+        Map<String, Object> placeholders = addCaseData(caseData);
+        Map<String, Object> registryPlaceholders = mapper.convertValue(registry, Map.class);
+
+        placeholders.put(PERSONALISATION_REGISTRY, registryPlaceholders);
+        placeholders.put(GRANT_OF_REPRESENTATION_CASE_ID, foundCase.getId().toString());
         return placeholders;
     }
 

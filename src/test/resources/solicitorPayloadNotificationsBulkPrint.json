@@ -105,6 +105,7 @@
       "primaryApplicantIsApplying": "Yes",
       "primaryApplicantHasAlias": "No",
       "boSendToBulkPrint": "Yes",
+      "boSendToBulkPrintRequested":"Yes",
       "solsSOTName": "Solicitor_fn Solicitor_ln",
       "solsSOTForenames": "Solicitor_fn",
       "solsSOTSurname": "Solicitor_ln",

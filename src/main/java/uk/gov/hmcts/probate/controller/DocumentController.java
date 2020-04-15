@@ -165,7 +165,7 @@ public class DocumentController {
         String pdfSize = null;
         log.info("isSendForBulkPrintingRequested {}", caseData.isSendForBulkPrintingRequested());
         if (caseData.isSendForBulkPrintingRequested() && !EDGE_CASE_NAME.equals(caseData.getCaseType())) {
-            letterOfGrantIssuedState = getLetterOfGrantIssuedState(callbackRequest, caseDetails, caseData);
+            letterOfGrantIssuedState = getLetterOfGrantIssuedState(callbackRequest, caseData);
             SendLetterResponse response = bulkPrintService.sendToBulkPrintForGrant(callbackRequest, digitalGrantDocument,
                     letterOfGrantIssuedState, coverSheet);
             letterId = response != null
@@ -200,14 +200,14 @@ public class DocumentController {
     }
 
     private Document getLetterOfGrantIssuedState(@RequestBody @Validated({EmailAddressNotificationValidationRule.class, BulkPrintValidationRule.class})
-                                                         CallbackRequest callbackRequest, CaseDetails caseDetails,
-                                                 @Valid CaseData caseData) {
+                                                         CallbackRequest callbackRequest, @Valid CaseData caseData) {
         Document letterOfGrantIssuedState=null;
+        CaseDetails caseDetails = callbackRequest.getCaseDetails();
         if (!caseDetails.getData().isLanguagePreferenceWelsh() && grantState.apply(caseData.getCaseType()).equals(GRANT_ISSUED)) {
-            letterOfGrantIssuedState = documentGeneratorService.generateLetterOfGrantDelay(callbackRequest,
+            letterOfGrantIssuedState = documentGeneratorService.generateLetterOfGrantDelay(caseDetails,
                     DocumentType.LETTER_OF_GRANT_ISSUED_STATE);
         } else if (!caseDetails.getData().isLanguagePreferenceWelsh() && grantState.apply(caseData.getCaseType()).equals(GRANT_ISSUED_INTESTACY)) {
-            letterOfGrantIssuedState = documentGeneratorService.generateLetterOfGrantDelay(callbackRequest,
+            letterOfGrantIssuedState = documentGeneratorService.generateLetterOfGrantDelay(caseDetails,
                     DocumentType.LETTER_OF_GRANT_ISSUED_INTESTACY);
         }
         return letterOfGrantIssuedState;

@@ -240,7 +240,7 @@ public class DocumentControllerTest {
 
         when(documentGeneratorService.getDocument(any(CallbackRequest.class),  eq(DocumentStatus.FINAL), eq(DocumentIssueType.GRANT)))
                 .thenReturn(Document.builder().documentType(DIGITAL_GRANT).build());
-        when(documentGeneratorService.generateLetterOfGrantDelay(any(CallbackRequest.class),
+        when(documentGeneratorService.generateLetterOfGrantDelay(any(CaseDetails.class),
                 eq(DocumentType.LETTER_OF_GRANT_ISSUED_STATE)))
                 .thenReturn(letter);
         String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadNotificationsBulkPrint.json");
@@ -260,7 +260,7 @@ public class DocumentControllerTest {
     @Test
     public void generateDigitalGrantIntestacyWithBulkPrint() throws Exception {
         final Document letter = Document.builder()
-                .documentType(DocumentType.ASSEMBLED_LETTER)
+                .documentType(DocumentType.INTESTACY_GRANT)
                 .documentDateAdded(LocalDate.now())
                 .documentFileName("test")
                 .documentGeneratedBy("test")
@@ -270,7 +270,7 @@ public class DocumentControllerTest {
         when(documentGeneratorService.getDocument(any(CallbackRequest.class),  eq(DocumentStatus.FINAL), eq(DocumentIssueType.GRANT)))
                 .thenReturn(Document.builder().documentType(INTESTACY_GRANT).build());
 
-        when(documentGeneratorService.generateLetterOfGrantDelay(any(CallbackRequest.class),
+        when(documentGeneratorService.generateLetterOfGrantDelay(any(CaseDetails.class),
                 eq(DocumentType.LETTER_OF_GRANT_ISSUED_INTESTACY)))
                 .thenReturn(letter);
         String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadNotificationsBulkPrintIntestacy.json");

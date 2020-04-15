@@ -39,6 +39,7 @@
       },
       "caseType": "intestacy",
       "boSendToBulkPrint": "Yes",
+      "boSendToBulkPrintRequested":"Yes",
       "deceasedAnyOtherNames": "No",
       "solsFeeAccountNumber": "1234",
       "willHasCodicils": "No",
