@@ -29,6 +29,7 @@
       "willHasCodicils":"No",
       "willNumberOfCodicils":null,
       "boSendToBulkPrint": "No",
+      "bulkScanCaseReference": null,
       "deceasedDomicileInEngWales":"Yes",
       "deceasedAddress":{
         "AddressLine1":"1",

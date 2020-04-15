@@ -13,18 +13,30 @@ import java.time.LocalDate;
 public class Document {
 
     @JsonProperty("DocumentLink")
-    private final DocumentLink documentLink;
+    private DocumentLink documentLink;
 
     @JsonProperty("DocumentType")
-    private final DocumentType documentType;
+    private DocumentType documentType;
 
     @JsonProperty("DocumentFileName")
-    private final String documentFileName;
+    private String documentFileName;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     @JsonProperty("DocumentDateAdded")
-    private final LocalDate documentDateAdded;
+    private LocalDate documentDateAdded;
 
     @JsonProperty("DocumentGeneratedBy")
-    private final String documentGeneratedBy;
+    private String documentGeneratedBy;
+
+    public Document() {
+        super();
+    }
+
+    public Document(DocumentLink documentLink, DocumentType documentType, String documentFileName, LocalDate documentDateAdded, String documentGeneratedBy) {
+        this.documentLink = documentLink;
+        this.documentType = documentType;
+        this.documentFileName = documentFileName;
+        this.documentDateAdded = documentDateAdded;
+        this.documentGeneratedBy = documentGeneratedBy;
+    }
 }

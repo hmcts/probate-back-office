@@ -1,0 +1,77 @@
+{
+  "case_details": {
+    "id": 1542274092932452,
+    "case_type_id": "Caveat",
+    "case_data": {
+      "applicationType": "Personal",
+      "registryLocation": "Leeds",
+      "caveatRaisedEmailNotificationRequested": "Yes",
+      "sendToBulkPrintRequested": "No",
+      "deceasedSurname": "dl name 2",
+      "deceasedDateOfDeath": "2017-12-31",
+      "deceasedDateOfBirth": "2016-12-31",
+      "deceasedAddress": {
+        "AddressLine1": "2",
+        "AddressLine2": "",
+        "AddressLine3": "",
+        "County": "",
+        "PostTown": "",
+        "PostCode": "2",
+        "Country": ""
+      },
+      "documentsGenerated": [
+      ],
+      "caveatorEmailAddress": "personal@hmcts-test.com",
+      "expiryDate": "2019-05-15",
+      "messageContent": "content message",
+      "deceasedAnyOtherNames": "No",
+      "caveatorForenames": "cf name 2",
+      "deceasedForenames": "df name 2",
+      "caveatorSurname": "cl name 2",
+      "caveatorAddress": {
+        "AddressLine1": "2",
+        "AddressLine2": "",
+        "AddressLine3": "",
+        "County": "",
+        "PostTown": "",
+        "PostCode": "2",
+        "Country": ""
+      },
+      "scannedDocuments": [
+        {
+          "id": "95d45c17-aba1-4441-8d98-aaaa2ec49668",
+          "value": {
+            "controlNumber": "123135453645",
+            "fileName": "scanneddocument.pdf",
+            "type": "other",
+            "subtype": "will",
+            "scannedDate": "2018-01-01T12:34:56.123",
+            "url": {
+              "document_url": "http://somedoc",
+              "document_binary_url": "somedoc.pdf/binary",
+              "document_filename": "somedoc.pdf"
+            },
+            "exceptionRecordReference": "EX-REF-REC-001"
+          }
+        }
+      ]
+    }
+  },
+  "exception_record" : {
+    "id": "1542274092932452",
+    "case_type_id": "PROBATE_ExceptionRecord",
+    "po_box": "12626",
+    "po_box_jurisdiction": "PROBATE",
+    "form_type": "PA8A",
+    "journey_classification": "NEW_APPLICATION",
+    "delivery_date": "2019-07-20T12:34:56.789Z",
+    "opening_date": "2019-07-21T13:00:00.000Z",
+    "ocr_data_fields": [
+      { "name": "caseReference", "value": "1542274092932452" },
+      { "name": "deceasedSurname", "value": "Smith" },
+      { "name": "deceasedAddressLine1", "value": "123 Alphabet Street" },
+      { "name": "deceasedDateOfDeath", "value": "02022019" },
+      { "name": "deceasedDateOfBirth", "value": "12031950" }
+    ]
+  }
+}

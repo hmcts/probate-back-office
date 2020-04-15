@@ -20,8 +20,10 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.AfterSubmitCallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
+import uk.gov.hmcts.probate.service.CaseStoppedService;
 import uk.gov.hmcts.probate.service.ConfirmationResponseService;
 import uk.gov.hmcts.probate.service.EventValidationService;
+import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.StateChangeService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
@@ -48,6 +50,8 @@ public class BusinessValidationUnitTest {
 
     @Mock
     private EventValidationService eventValidationServiceMock;
+    @Mock
+    private NotificationService notificationService;
     @Mock
     private ObjectMapper objectMapper;
     @Mock
@@ -86,6 +90,8 @@ public class BusinessValidationUnitTest {
     private FieldErrorResponse businessValidationErrorMock;
     @Mock
     private PDFManagementService pdfManagementServiceMock;
+    @Mock
+    private CaseStoppedService  caseStoppedServiceMock;
 
 
     private BusinessValidationController underTest;
@@ -97,6 +103,7 @@ public class BusinessValidationUnitTest {
         MockitoAnnotations.initMocks(this);
         businessValidationErrorMock = FieldErrorResponse.builder().build();
         underTest = new BusinessValidationController(eventValidationServiceMock,
+                notificationService,
                 objectMapper,
                 validationRules,
                 caseworkerAmendValidationRules,
@@ -105,9 +112,22 @@ public class BusinessValidationUnitTest {
                 confirmationResponseServiceMock,
                 stateChangeServiceMock,
                 pdfManagementServiceMock,
-                redeclarationSoTValidationRuleMock);
+                redeclarationSoTValidationRuleMock,
+                caseStoppedServiceMock);
 
         when(httpServletRequest.getRequestURI()).thenReturn("/test-uri");
+    }
+
+    @Test
+    public void shouldValidateSolsApplyAsExecWithNoErrors() {
+        when(callbackResponseTransformerMock.setApplicantFieldsForSolsApplyAsExec(callbackRequestMock))
+                .thenReturn(callbackResponseMock);
+
+        ResponseEntity<CallbackResponse> response = underTest.setApplicantFieldsForSolsApplyAsExec(callbackRequestMock);
+
+        assertThat(response.getBody(), is(callbackResponseMock));
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        assertThat(response.getBody().getErrors().isEmpty(), is(true));
     }
 
     @Test
@@ -370,7 +390,7 @@ public class BusinessValidationUnitTest {
         when(bindingResultMock.getFieldErrors()).thenReturn(Collections.singletonList(fieldErrorMock));
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
 
-        ResponseEntity<CallbackResponse> response = underTest.transformCaseDetails(callbackRequestMock,
+        ResponseEntity<CallbackResponse> response = underTest.casePrinted(callbackRequestMock,
                 bindingResultMock);
 
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
@@ -383,7 +403,7 @@ public class BusinessValidationUnitTest {
         when(callbackResponseTransformerMock.transformCase(callbackRequestMock))
                 .thenReturn(callbackResponseMock);
 
-        ResponseEntity<CallbackResponse> response = underTest.transformCaseDetails(callbackRequestMock,
+        ResponseEntity<CallbackResponse> response = underTest.casePrinted(callbackRequestMock,
                 bindingResultMock);
 
         assertThat(response.getStatusCode(), is(HttpStatus.OK));

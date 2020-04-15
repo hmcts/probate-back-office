@@ -10,10 +10,14 @@ import uk.gov.hmcts.probate.config.FeignClientConfiguration;
 import uk.gov.hmcts.probate.model.AuthenticateUserResponse;
 import uk.gov.hmcts.probate.model.TokenExchangeResponse;
 
+import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
+import static org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED_VALUE;
+
 @FeignClient(name = "idam-api", url = "${auth.provider.client.user}", configuration = FeignClientConfiguration.class)
 public interface IdamApi {
     @PostMapping(
             value = "/oauth2/authorize",
+            headers = CONTENT_TYPE + "=" + APPLICATION_FORM_URLENCODED_VALUE,
             consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE
     )
     AuthenticateUserResponse authenticateUser(
@@ -25,6 +29,7 @@ public interface IdamApi {
 
     @PostMapping(
             value = "/oauth2/token",
+            headers = CONTENT_TYPE + "=" + APPLICATION_FORM_URLENCODED_VALUE,
             consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE
     )
     TokenExchangeResponse exchangeCode(

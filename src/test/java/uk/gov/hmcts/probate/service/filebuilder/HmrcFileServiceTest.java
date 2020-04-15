@@ -4,7 +4,7 @@ import com.google.common.collect.ImmutableList;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
-import uk.gov.hmcts.probate.exception.BadRequestException;
+import uk.gov.hmcts.probate.exception.ClientException;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.AliasName;
@@ -28,6 +28,7 @@ import java.util.List;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 public class HmrcFileServiceTest {
@@ -38,9 +39,10 @@ public class HmrcFileServiceTest {
     private CaseData.CaseDataBuilder caseDataSolictor;
     private CaseData.CaseDataBuilder caseDataPersonal;
     private CaseData.CaseDataBuilder caseDataCarriageReturns;
+    private CaseData.CaseDataBuilder caseDataMissingData;
     private ReturnedCaseDetails createdCase;
     private CaseData builtData;
-    private static final String FILE_DATE = "20190101";
+    private static final String FILE_DATE = "20190101-123456";
     private static final String FILE_NAME = "1_20190101.dat";
     private static final String[] LAST_MODIFIED = {"2019", "3", "3", "0", "0", "0", "0"};
 
@@ -58,7 +60,8 @@ public class HmrcFileServiceTest {
 
         List<CollectionMember<AliasName>> deceasedAliasNames = Arrays.asList(
             new CollectionMember(null, AliasName.builder().solsAliasname("PETER PIPER KRENT").build()),
-            new CollectionMember(null, AliasName.builder().solsAliasname("PETE KRENT").build())
+            new CollectionMember(null, AliasName.builder().solsAliasname("PETE KRENT").build()),
+            new CollectionMember(null, AliasName.builder().solsAliasname("PETRA").build())
         );
         LocalDate dod = LocalDate.of(2018, 8, 17);
         LocalDate dob = LocalDate.of(1940, 10, 20);
@@ -162,10 +165,28 @@ public class HmrcFileServiceTest {
             .solsSOTName("John The personal")
             .applicationType(ApplicationType.PERSONAL);
 
+        caseDataMissingData = CaseData.builder()
+            .deceasedForenames("PETAR")
+            .deceasedSurname("KRNETA")
+            .deceasedDateOfDeath(dod)
+            .deceasedDateOfBirth(dob)
+            .boDeceasedHonours("Sir")
+            .boDeceasedTitle("MR")
+            .primaryApplicantIsApplying("Yes")
+            .primaryApplicantForenames("ANDJELKA")
+            .primaryApplicantSurname("KOMODROMOS")
+            .additionalExecutorsApplying(additionalExecutors)
+            .ihtFormId("IHT205")
+            .caseType("gop")
+            .registryLocation("Liverpool")
+            .grantIssuedDate(grantIssuedDate)
+            .solsSOTName("John The personal")
+            .applicationType(ApplicationType.PERSONAL);
+
         when(fileExtractDateFormatter.formatDataDate(dod)).thenReturn("17-AUG-2018");
         when(fileExtractDateFormatter.formatDataDate(dob)).thenReturn("20-OCT-1940");
         when(fileExtractDateFormatter.formatDataDate(LocalDate.parse(grantIssuedDate))).thenReturn("24-OCT-2018");
-        when(fileExtractDateFormatter.formatFileDate()).thenReturn(FILE_DATE);
+        when(fileExtractDateFormatter.getHMRCFormattedFileDate(any(), any())).thenReturn(FILE_DATE);
     }
 
     @Test
@@ -186,12 +207,16 @@ public class HmrcFileServiceTest {
             is(FileUtils.getStringFromFile("expectedGeneratedFiles/hmrcPersonal.txt")));
     }
 
-    @Test(expected = BadRequestException.class)
-    public void testHmrcFileIHTErrorForPersonal() {
-        builtData = caseDataPersonal.ihtFormId("notAnIHTValue").build();
+    @Test
+    public void testHmrcFileBuiltForPersonalForEmptyGrossNetValues() throws IOException {
+        caseDataPersonal.ihtGrossValue(null);
+        caseDataPersonal.ihtNetValue(null);
+        builtData = caseDataPersonal.build();
+
         createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, 2222333344445555L);
         caseList.add(createdCase);
-        hmrcFileService.createHmrcFile(caseList.build(), FILE_NAME);
+        assertThat(createFile(hmrcFileService.createHmrcFile(caseList.build(), FILE_NAME)),
+            is(FileUtils.getStringFromFile("expectedGeneratedFiles/hmrcPersonalZeroIHTs.txt")));
     }
 
     @Test
@@ -242,6 +267,39 @@ public class HmrcFileServiceTest {
             is(FileUtils.getStringFromFile("expectedGeneratedFiles/hmrcPersonalReplaced.txt")));
     }
 
+    @Test
+    public void testMissingAddressIsReplacedWithSpace() throws IOException {
+        builtData = caseDataMissingData.build();
+        createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, 5555666677778888L);
+        caseList.add(createdCase);
+        assertThat(createFile(hmrcFileService.createHmrcFile(caseList.build(), FILE_NAME)),
+            is(FileUtils.getStringFromFile("expectedGeneratedFiles/hmrcPersonalMissingAddresses.txt")));
+    }
+
+    @Test
+    public void testMissingIHTReplacedWithX() throws IOException {
+        caseDataMissingData.ihtFormId(null);
+        builtData = caseDataMissingData.build();
+        createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, 5555666677778888L);
+        caseList.add(createdCase);
+        String expected = FileUtils.getStringFromFile("expectedGeneratedFiles/hmrcPersonalMissingIHT.txt");
+        
+        assertThat(createFile(hmrcFileService.createHmrcFile(caseList.build(), FILE_NAME)),
+            is(expected));
+    }
+
+    @Test
+    public void testOtherIHTRefusesCaseRow() throws IOException {
+        caseDataMissingData.ihtFormId("OTHER");
+        builtData = caseDataMissingData.build();
+        createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, 5555666677778888L);
+        caseList.add(createdCase);
+        String expected = FileUtils.getStringFromFile("expectedGeneratedFiles/hmrcPersonalMissingCase.txt");
+
+        assertThat(createFile(hmrcFileService.createHmrcFile(caseList.build(), FILE_NAME)),
+            is(expected));
+    }
+    
     private String createFile(File file) throws IOException {
         file.deleteOnExit();
         return new String(Files.readAllBytes(Paths.get(file.getName())), StandardCharsets.UTF_8);

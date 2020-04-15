@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.model.ccd.raw.request;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Data;
@@ -29,6 +30,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Declaration;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
+import uk.gov.hmcts.probate.model.ccd.raw.DynamicList;
 import uk.gov.hmcts.probate.model.ccd.raw.EstateItem;
 import uk.gov.hmcts.probate.model.ccd.raw.LegalStatement;
 import uk.gov.hmcts.probate.model.ccd.raw.ParagraphDetail;
@@ -39,24 +41,26 @@ import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.StopReason;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 
+import javax.validation.Valid;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
-import javax.validation.Valid;
-import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @Builder
 @Data
 public class CaseData {
@@ -75,6 +79,15 @@ public class CaseData {
     private final String solsSolicitorEmail;
 
     private final String solsSolicitorPhoneNumber;
+
+    @NotBlank(groups = {ApplicationCreatedGroup.class}, message = "{solsSolicitorIsExecIsNull}")
+    private final String solsSolicitorIsExec;
+
+    private final String solsSolicitorIsMainApplicant;
+
+    private final String solsSolicitorIsApplying;
+
+    private final String solsSolicitorNotApplyingReason;
 
     // EVENT = solicitorUpdateApplication
     @NotBlank(groups = {ApplicationUpdatedGroup.class, AmendCaseDetailsGroup.class},
@@ -242,8 +255,13 @@ public class CaseData {
     @NotNull(groups = {ApplicationReviewedGroup.class}, message = "{solsSOTNeedToUpdateIsNull}")
     private final String solsSOTNeedToUpdate;
 
-    @NotBlank(groups = {ApplicationReviewedGroup.class}, message = "{solsSOTNameIsNull}")
     private final String solsSOTName;
+
+    @NotBlank(groups = {ApplicationReviewedGroup.class}, message = "{solsSOTForenamesIsNull}")
+    private final String solsSOTForenames;
+
+    @NotBlank(groups = {ApplicationReviewedGroup.class}, message = "{solsSOTSurnameIsNull}")
+    private final String solsSOTSurname;
 
     @NotBlank(groups = {ApplicationReviewedGroup.class}, message = "{solsSOTJobTitleIsNull}")
     private final String solsSOTJobTitle;
@@ -516,11 +534,25 @@ public class CaseData {
 
     private final String boAssembleLetterSendToBulkPrintRequested;
 
+    private LocalDate grantDelayedNotificationDate;
+    private LocalDate grantStoppedDate;
+    private String grantDelayedNotificationIdentified;
+    private String grantDelayedNotificationSent;
+    private LocalDate grantAwaitingDocumentationNotificationDate;
+    private String grantAwaitingDocumentatioNotificationSent;
+    
+    private DynamicList reprintDocument;
+    private String reprintNumberOfCopies;
+
     @Getter(lazy = true)
     private final List<CollectionMember<AdditionalExecutor>> executorsApplyingForLegalStatement = getAllExecutors(true);
 
     @Getter(lazy = true)
     private final List<CollectionMember<AdditionalExecutor>> executorsNotApplyingForLegalStatement = getAllExecutors(false);
+
+    public String solicitorIsMainApplicant() {
+        return YES.equals(solsSolicitorIsMainApplicant) ? YES : NO;
+    }
 
     public boolean isPrimaryApplicantApplying() {
         return YES.equals(primaryApplicantIsApplying);
@@ -548,11 +580,121 @@ public class CaseData {
             totalExecutors.add(primaryAdditionalExecutors);
         }
 
-        if (getSolsAdditionalExecutorList() != null) {
+        if (YES.equals(getOtherExecutorExists()) && getSolsAdditionalExecutorList() != null) {
             totalExecutors.addAll(getSolsAdditionalExecutorList());
         }
 
+        if (!isSolicitorCreatedGrant(getSolsWillType())) {
+            if (additionalExecutorsApplying != null) {
+                totalExecutors.addAll(mapAdditionalExecutorsApplying(getAdditionalExecutorsApplying()));
+            }
+
+            if (additionalExecutorsNotApplying != null) {
+                totalExecutors.addAll(mapAdditionalExecutorsNotApplying(getAdditionalExecutorsNotApplying()));
+            }
+        }
+
         return totalExecutors.stream().filter(ex -> isApplying(ex, applying)).collect(Collectors.toList());
+    }
+
+    private boolean isSolicitorCreatedGrant(String solsWillType) {
+        return (solsWillType != null && solsFeeAccountNumber == null);
+    }
+
+    private List<CollectionMember<AdditionalExecutor>> mapAdditionalExecutorsApplying(List<CollectionMember<AdditionalExecutorApplying>> additionalExecutors) {
+        AdditionalExecutorApplying exec;
+        AdditionalExecutor newExec;
+        CollectionMember<AdditionalExecutor> newAdditionalExecutor;
+        List<CollectionMember<AdditionalExecutor>> newAdditionalExecutors = new ArrayList<>();
+
+        for (CollectionMember<AdditionalExecutorApplying> e : additionalExecutors) {
+            exec = e.getValue();
+
+            if(exec == null) {
+                continue;
+            }
+
+            String forenames = exec.getApplyingExecutorFirstName();
+            String surname = exec.getApplyingExecutorLastName();
+
+            if (exec.getApplyingExecutorFirstName() == null || exec.getApplyingExecutorLastName() == null) {
+                List<String> names = splitFullname(exec.getApplyingExecutorName());
+
+                if(names.size() > 2) {
+                    surname = names.remove(names.size()-1);
+                    forenames = String.join(" ", names);
+                } else if(names.size() == 1) {
+                    forenames = names.get(0);
+                } else {
+                    surname = names.get(1);
+                    forenames = names.get(0);
+                }
+            }
+
+            newExec = AdditionalExecutor.builder()
+                    .additionalExecForenames(forenames)
+                    .additionalExecLastname(surname)
+                    .additionalApplying(YES)
+                    .additionalExecAddress(exec.getApplyingExecutorAddress())
+                    .additionalExecNameOnWill(exec.getApplyingExecutorOtherNames() == null ? NO : YES)
+                    .additionalExecAliasNameOnWill(exec.getApplyingExecutorOtherNames())
+                    .additionalExecReasonNotApplying(null)
+                    .build();
+            newAdditionalExecutor = new CollectionMember<>(e.getId(), newExec);
+            newAdditionalExecutors.add(newAdditionalExecutor);
+        }
+
+        return newAdditionalExecutors;
+    }
+
+    private List<CollectionMember<AdditionalExecutor>> mapAdditionalExecutorsNotApplying(List<CollectionMember<AdditionalExecutorNotApplying>> additionalExecutors) {
+        AdditionalExecutorNotApplying exec;
+        AdditionalExecutor newExec;
+        CollectionMember<AdditionalExecutor> newAdditionalExecutor;
+        List<CollectionMember<AdditionalExecutor>> newAdditionalExecutors = new ArrayList<>();
+
+        for (CollectionMember<AdditionalExecutorNotApplying> e : additionalExecutors) {
+            exec = e.getValue();
+
+            if(exec == null) {
+                continue;
+            }
+
+            String forenames = null;
+            String surname = null;
+
+            if(exec.getNotApplyingExecutorName() != null) {
+                List<String> names = splitFullname(exec.getNotApplyingExecutorName());
+
+                if(names.size() > 2) {
+                    surname = names.remove(names.size()-1);
+                    forenames = String.join(" ", names);
+                } else if(names.size() == 1) {
+                    forenames = names.get(0);
+                } else {
+                    surname = names.get(1);
+                    forenames = names.get(0);
+                }
+            }
+
+            newExec = AdditionalExecutor.builder()
+                    .additionalExecForenames(forenames)
+                    .additionalExecLastname(surname)
+                    .additionalApplying(NO)
+                    .additionalExecAddress(null)
+                    .additionalExecNameOnWill(exec.getNotApplyingExecutorNameOnWill() == null ? NO : YES)
+                    .additionalExecAliasNameOnWill(exec.getNotApplyingExecutorNameOnWill())
+                    .additionalExecReasonNotApplying(exec.getNotApplyingExecutorReason())
+                    .build();
+            newAdditionalExecutor = new CollectionMember<>(e.getId(), newExec);
+            newAdditionalExecutors.add(newAdditionalExecutor);
+        }
+
+        return newAdditionalExecutors;
+    }
+
+    private List<String> splitFullname(String fullName) {
+        return new ArrayList<>(Arrays.asList(fullName.split(" ")));
     }
 
     private boolean isApplying(CollectionMember<AdditionalExecutor> ex, boolean applying) {
@@ -572,7 +714,8 @@ public class CaseData {
     }
 
     public String getDefaultValueForEmailNotifications() {
-        return primaryApplicantEmailAddress == null && solsSolicitorEmail == null ? NO : YES;
+        return (primaryApplicantEmailAddress == null || primaryApplicantEmailAddress.isEmpty())
+                && (solsSolicitorEmail == null || solsSolicitorEmail.isEmpty()) ? NO : YES;
     }
 
     public String getDefaultValueForCaveatStopEmailNotification() {

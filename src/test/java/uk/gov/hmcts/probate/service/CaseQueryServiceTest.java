@@ -113,4 +113,22 @@ public class CaseQueryServiceTest {
         Assertions.assertThatThrownBy(() -> caseQueryService.findCasesWithDatedDocument("testDate"))
                 .isInstanceOf(CaseMatchingException.class);
     }
+
+    @Test
+    public void findCasesForGrantDelayed() {
+        List<ReturnedCaseDetails> cases = caseQueryService.findCasesForGrantDelayed("2019-02-05");
+
+        assertEquals(1, cases.size());
+        assertThat(cases.get(0).getId(), is(1L));
+        assertEquals("Smith", cases.get(0).getData().getDeceasedSurname());
+    }
+
+    @Test
+    public void findCasesForGrantAwaitingDocs() {
+        List<ReturnedCaseDetails> cases = caseQueryService.findCasesForGrantAwaitingDocumentation("2019-02-05");
+
+        assertEquals(1, cases.size());
+        assertThat(cases.get(0).getId(), is(1L));
+        assertEquals("Smith", cases.get(0).getData().getDeceasedSurname());
+    }
 }

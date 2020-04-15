@@ -1,12 +1,15 @@
 package uk.gov.hmcts.probate.service.exceptionrecord.mapper;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Component;
+import uk.gov.hmcts.probate.exception.OCRMappingException;
 import uk.gov.hmcts.probate.model.exceptionrecord.ExceptionRecordOCRFields;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToAttorneyOnBehalfOfAddress;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToCaveatorAddress;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToDeceasedAddress;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToPrimaryApplicantAddress;
+import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToSolicitorAddress;
 import uk.gov.hmcts.reform.probate.model.AttorneyNamesAndAddress;
 import uk.gov.hmcts.reform.probate.model.cases.Address;
 import uk.gov.hmcts.reform.probate.model.cases.CollectionMember;
@@ -25,6 +28,8 @@ public class OCRFieldAddressMapper {
     private String county;
     private String country;
     private String postCode;
+
+    private final static String POSTCODE_REGEX_PATTERN = "^([A-Z]{1,2}\\d[A-Z\\d]? ?\\d[A-Z]{2}|GIR ?0A{2})$";
 
     @SuppressWarnings("squid:S1168")
     @ToPrimaryApplicantAddress
@@ -56,12 +61,20 @@ public class OCRFieldAddressMapper {
                 .address(buildAddress())
                 .build();
         List<CollectionMember<AttorneyNamesAndAddress>> collectionMemberList = new ArrayList<>();
-        if ((attorneyNamesAndAddress.getName() != null
-                && !attorneyNamesAndAddress.getName().isEmpty())
-                || (attorneyNamesAndAddress.getAddress() != null
-                && attorneyNamesAndAddress.getAddress().getPostCode() != null
-                && !attorneyNamesAndAddress.getAddress().getPostCode().isEmpty())) {
+        if (StringUtils.isNotBlank(attorneyNamesAndAddress.getName())
+                && attorneyNamesAndAddress.getAddress() != null
+                && StringUtils.isNotBlank(attorneyNamesAndAddress.getAddress().getPostCode())) {
             collectionMemberList.add(new CollectionMember<>(null, attorneyNamesAndAddress));
+        } else if (StringUtils.isBlank(attorneyNamesAndAddress.getName())
+                && attorneyNamesAndAddress.getAddress() != null) {
+            String errorMessage = "Attorney name is missing but an attorney address has been supplied";
+            log.error(errorMessage);
+            throw new OCRMappingException(errorMessage);
+        } else if (StringUtils.isNotBlank(attorneyNamesAndAddress.getName())
+                && attorneyNamesAndAddress.getAddress() == null) {
+            String errorMessage = "Attorney address is missing but an attorney name has been supplied";
+            log.error(errorMessage);
+            throw new OCRMappingException(errorMessage);
         }
         return collectionMemberList;
     }
@@ -69,14 +82,25 @@ public class OCRFieldAddressMapper {
     @SuppressWarnings("squid:S1168")
     @ToCaveatorAddress
     public Address toCaveatorAddress(ExceptionRecordOCRFields ocrFields) {
-        log.info("Beginning mapping for Caveator Address");
-        this.addressLine1 = ocrFields.getCaveatorAddressLine1();
-        this.addressLine2 = ocrFields.getCaveatorAddressLine2();
+        if (StringUtils.isNotBlank(ocrFields.getSolsSolicitorAddressLine1()) ||
+                StringUtils.isNotBlank(ocrFields.getSolsSolicitorAddressPostCode())) {
+            return buildSolicitorAddress(ocrFields);
+        } else {
+            return buildCaveatorAddress(ocrFields);
+        }
+    }
+
+    @SuppressWarnings("squid:S1168")
+    @ToSolicitorAddress
+    public Address toSolicitorAddress(ExceptionRecordOCRFields ocrFields) {
+        log.info("Beginning mapping for Solicitor Address");
+        this.addressLine1 = ocrFields.getSolsSolicitorAddressLine1();
+        this.addressLine2 = ocrFields.getSolsSolicitorAddressLine2();
         this.addressLine3 = "";
-        this.postTown = ocrFields.getCaveatorAddressTown();
-        this.county = ocrFields.getCaveatorAddressCounty();
+        this.postTown = ocrFields.getSolsSolicitorAddressTown();
+        this.county = ocrFields.getSolsSolicitorAddressCounty();
         this.country = "";
-        this.postCode = ocrFields.getCaveatorAddressPostCode();
+        this.postCode = ocrFields.getSolsSolicitorAddressPostCode();
         return buildAddress();
     }
 
@@ -94,6 +118,30 @@ public class OCRFieldAddressMapper {
         return buildAddress();
     }
 
+    private Address buildCaveatorAddress(ExceptionRecordOCRFields ocrFields) {
+        log.info("Beginning mapping for Caveator Address");
+        this.addressLine1 = ocrFields.getCaveatorAddressLine1();
+        this.addressLine2 = ocrFields.getCaveatorAddressLine2();
+        this.addressLine3 = "";
+        this.postTown = ocrFields.getCaveatorAddressTown();
+        this.county = ocrFields.getCaveatorAddressCounty();
+        this.country = "";
+        this.postCode = ocrFields.getCaveatorAddressPostCode();
+        return buildAddress();
+    }
+
+    private Address buildSolicitorAddress(ExceptionRecordOCRFields ocrFields) {
+        log.info("Beginning mapping for Solicitor Address");
+        this.addressLine1 = ocrFields.getSolsSolicitorAddressLine1();
+        this.addressLine2 = ocrFields.getSolsSolicitorAddressLine2();
+        this.addressLine3 = "";
+        this.postTown = ocrFields.getSolsSolicitorAddressTown();
+        this.county = ocrFields.getSolsSolicitorAddressCounty();
+        this.country = "";
+        this.postCode = ocrFields.getSolsSolicitorAddressPostCode();
+        return buildAddress();
+    }
+
     private Address buildAddress() {
         Address address = Address.builder()
                 .addressLine1(addressLine1)
@@ -104,9 +152,20 @@ public class OCRFieldAddressMapper {
                 .country(country)
                 .postCode(postCode)
                 .build();
-        if (address.getPostCode() == null || address.getPostCode().isEmpty()) {
+        if (StringUtils.isBlank(address.getPostCode())) {
             return null;
+        } else {
+            address.setPostCode(postCode.toUpperCase());
+            validatePostCode(address.getPostCode());
         }
         return address;
+    }
+
+    private void validatePostCode(final String postCode) {
+        if (!postCode.matches(POSTCODE_REGEX_PATTERN)) {
+            String errorMessage = "An invalid postcode has been found '" + postCode + "', please provide a valid postcode";
+            log.error(errorMessage);
+            throw new OCRMappingException(errorMessage);
+        }
     }
 }

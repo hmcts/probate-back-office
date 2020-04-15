@@ -13,11 +13,16 @@ import uk.gov.hmcts.probate.exception.BusinessValidationException;
 import uk.gov.hmcts.probate.exception.ClientException;
 import uk.gov.hmcts.probate.exception.ConnectionException;
 import uk.gov.hmcts.probate.exception.NotFoundException;
+import uk.gov.hmcts.probate.exception.OCRMappingException;
 import uk.gov.hmcts.probate.exception.model.ErrorResponse;
+import uk.gov.hmcts.probate.model.ccd.ocr.ValidationResponse;
+import uk.gov.hmcts.probate.model.ccd.ocr.ValidationResponseStatus;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.service.notify.NotificationClientException;
 
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 import static net.logstash.logback.argument.StructuredArguments.keyValue;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
@@ -31,6 +36,7 @@ class DefaultExceptionHandler extends ResponseEntityExceptionHandler {
     public static final String INVALID_REQUEST = "Invalid Request";
     public static final String CLIENT_ERROR = "Client Error";
     public static final String CONNECTION_ERROR = "Connection error";
+    public static final String UNAUTHORISED_DATA_EXTRACT_ERROR = "Unauthorised access to Data-Extract error";
 
 
     @ExceptionHandler(BadRequestException.class)
@@ -60,8 +66,8 @@ class DefaultExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<CallbackResponse> handle(BusinessValidationException exception) {
         log.warn(exception.getMessage());
         CallbackResponse callbackResponse = CallbackResponse.builder()
-                .errors(Collections.singletonList(exception.getUserMessage()))
-                .build();
+            .errors(Collections.singletonList(exception.getUserMessage()))
+            .build();
         return ResponseEntity.ok(callbackResponse);
     }
 
@@ -92,4 +98,14 @@ class DefaultExceptionHandler extends ResponseEntityExceptionHandler {
         headers.setContentType(MediaType.APPLICATION_JSON);
         return new ResponseEntity<>(errorResponse, headers, NOT_FOUND);
     }
+
+    @ExceptionHandler(OCRMappingException.class)
+    public ResponseEntity<ValidationResponse> handle(OCRMappingException exception) {
+        log.error("An error has occured during the bulk scanning OCR validation process: {}", exception.getMessage(), exception);
+        List<String> errors = Arrays.asList(exception.getMessage());
+        ValidationResponse validationResponse =
+            ValidationResponse.builder().status(ValidationResponseStatus.ERRORS).errors(errors).build();
+        return ResponseEntity.ok(validationResponse);
+    }
+
 }

@@ -6,7 +6,6 @@ import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -14,7 +13,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.MediaType;
-import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -54,7 +52,19 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static uk.gov.hmcts.probate.model.DocumentType.*;
+import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_DRAFT;
+import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_DRAFT;
+import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_REISSUE;
+import static uk.gov.hmcts.probate.model.DocumentType.EDGE_CASE;
+import static uk.gov.hmcts.probate.model.DocumentType.GRANT_COVER;
+import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_DRAFT;
+import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
+import static uk.gov.hmcts.probate.model.DocumentType.WELSH_DIGITAL_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.WELSH_DIGITAL_GRANT_DRAFT;
+import static uk.gov.hmcts.probate.model.DocumentType.WILL_LODGEMENT_DEPOSIT_RECEIPT;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -167,10 +177,10 @@ public class DocumentControllerTest {
         when(documentGeneratorService.generateLetter(any(CallbackRequest.class), eq(false))).thenReturn(letter);
 
         SendLetterResponse sendLetterResponse = new SendLetterResponse(UUID.randomUUID());
-        when(bulkPrintService.sendToBulkPrint(any(CallbackRequest.class), any(Document.class),
+        when(bulkPrintService.sendToBulkPrintForGrant(any(CallbackRequest.class), any(Document.class),
                 any(Document.class))).thenReturn(sendLetterResponse);
 
-        when(bulkPrintService.sendToBulkPrint(any(CallbackRequest.class), any(Document.class),
+        when(bulkPrintService.optionallySendToBulkPrint(any(CallbackRequest.class), any(Document.class),
                 any(Document.class), eq(true))).thenReturn(LETTER_UUID);
 
         when(notificationService.generateGrantReissue(any(CallbackRequest.class)))
@@ -231,7 +241,7 @@ public class DocumentControllerTest {
                 .andExpect(jsonPath("$.data.probateDocumentsGenerated[1].value.DocumentType", is(DIGITAL_GRANT.getTemplateName())))
                 .andReturn();
 
-        verify(bulkPrintService).sendToBulkPrint(any(CallbackRequest.class), any(Document.class), any(Document.class));
+        verify(bulkPrintService).sendToBulkPrintForGrant(any(CallbackRequest.class), any(Document.class), any(Document.class));
     }
 
     @Test
@@ -246,7 +256,7 @@ public class DocumentControllerTest {
                 .andExpect(jsonPath("$.data.probateDocumentsGenerated[1].value.DocumentType", is(DIGITAL_GRANT_REISSUE.getTemplateName())))
                 .andReturn();
 
-        verify(bulkPrintService).sendToBulkPrint(any(CallbackRequest.class), any(Document.class), any(Document.class), eq(true));
+        verify(bulkPrintService).optionallySendToBulkPrint(any(CallbackRequest.class), any(Document.class), any(Document.class), eq(true));
     }
 
     @Test
@@ -261,9 +271,25 @@ public class DocumentControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data.probateDocumentsGenerated[1].value.DocumentType", is(DIGITAL_GRANT.getTemplateName())))
                 .andReturn();
-
+        verify(notificationService).sendEmail(eq(State.GRANT_ISSUED), any(CaseDetails.class));
         verify(documentGeneratorService).getDocument(any(CallbackRequest.class), eq(DocumentStatus.FINAL), eq(DocumentIssueType.GRANT));
     }
+
+    @Test
+    public void generateDigitalGrantIntestacy() throws Exception {
+        when(documentGeneratorService.getDocument(any(CallbackRequest.class),  eq(DocumentStatus.FINAL), eq(DocumentIssueType.GRANT)))
+                .thenReturn(Document.builder().documentType(DIGITAL_GRANT).build());
+        String solicitorPayload = testUtils.getStringFromFile("personalPayloadNotificationsGrantIntestacy.json");
+
+        MvcResult result = mockMvc.perform(post("/document/generate-grant")
+                .content(solicitorPayload)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andReturn();
+        verify(notificationService).sendEmail(eq(State.GRANT_ISSUED_INTESTACY), any(CaseDetails.class));
+        verify(documentGeneratorService).getDocument(any(CallbackRequest.class), eq(DocumentStatus.FINAL), eq(DocumentIssueType.GRANT));
+    }
+
     @Test
     public void generateWelshDigitalGrant() throws Exception {
 
@@ -281,10 +307,9 @@ public class DocumentControllerTest {
 
     @Test
     public void generateWelshDigitalGrantDraft() throws Exception {
-
         String payload = testUtils.getStringFromFile("welshGrantOfProbatPayloadDraft.json");
 
-         MvcResult result = mockMvc.perform(post("/document/generate-grant-draft")
+        MvcResult result = mockMvc.perform(post("/document/generate-grant-draft")
             .content(payload)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
@@ -591,6 +616,34 @@ public class DocumentControllerTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
     }
 
+    @Test
+    public void shouldDefaultReprintValues() throws Exception {
+        String solicitorPayload = testUtils.getStringFromFile("welshGrantOfProbatPayload.json");
+
+        mockMvc.perform(post("/document/default-reprint-values")
+            .content(solicitorPayload)
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.data.reprintDocument.list_items[0].label", is("Grant")))
+            .andExpect(jsonPath("$.data.reprintDocument.list_items[0].code", is("WelshGrantFileName")))
+            .andReturn();
+    }
+
+    @Test
+    public void shouldSendForReprint() throws Exception {
+        String solicitorPayload = testUtils.getStringFromFile("welshGrantOfProbatPayloadReprintGrant.json");
+
+        mockMvc.perform(post("/document/reprint")
+            .content(solicitorPayload)
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.data.reprintDocument.list_items[0].label", is("Grant")))
+            .andExpect(jsonPath("$.data.reprintDocument.list_items[0].code", is("WelshGrantFileName")))
+            .andExpect(jsonPath("$.data.reprintDocument.value.label", is("Grant")))
+            .andExpect(jsonPath("$.data.reprintDocument.value.code", is("WelshGrantFileName")))
+            .andReturn();
+    }
+    
     private Matcher<String> doesNotContainString(String s) {
         return CoreMatchers.not(containsString(s));
     }

@@ -6,6 +6,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
+import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
+import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 
@@ -22,7 +24,7 @@ import static org.mockito.MockitoAnnotations.initMocks;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 
-public class CaseDataTest {
+public class    CaseDataTest {
 
     private static final String PRIMARY_APPLICANT_FIRST_NAME = "fName";
     private static final String PRIMARY_APPLICANT_SURNAME = "sName";
@@ -32,6 +34,7 @@ public class CaseDataTest {
     private static final String DECEASED_SURNAME = "Surname";
     private static final String NOT_APPLYING_REASON = "not applying reason";
     private static final LocalDate LOCAL_DATE = LocalDate.of(2000,01,01);
+    private static final String WILL_TYPE_PROBATE = "WillLeft";
 
     @Mock
     private AdditionalExecutor additionalExecutor1Mock;
@@ -41,11 +44,43 @@ public class CaseDataTest {
     private AdditionalExecutor additionalExecutor3Mock;
 
     @Mock
+    private AdditionalExecutorApplying additionalExecutorApplying1Mock;
+    @Mock
+    private AdditionalExecutorApplying additionalExecutorApplying2Mock;
+    @Mock
+    private AdditionalExecutorApplying additionalExecutorApplying3Mock;
+
+    @Mock
+    private AdditionalExecutorNotApplying additionalExecutorNotApplying1Mock;
+    @Mock
+    private AdditionalExecutorNotApplying additionalExecutorNotApplying2Mock;
+    @Mock
+    private AdditionalExecutorNotApplying additionalExecutorNotApplying3Mock;
+
+    @Mock
     private CollectionMember<AdditionalExecutor> additionalExecutors1Mock;
     @Mock
     private CollectionMember<AdditionalExecutor> additionalExecutors2Mock;
     @Mock
     private CollectionMember<AdditionalExecutor> additionalExecutors3Mock;
+
+    @Mock
+    private CollectionMember<AdditionalExecutorApplying> additionalExecutorsApplying1Mock;
+    @Mock
+    private CollectionMember<AdditionalExecutorApplying> additionalExecutorsApplying2Mock;
+    @Mock
+    private CollectionMember<AdditionalExecutorApplying> additionalExecutorsApplying3Mock;
+
+    @Mock
+    private CollectionMember<AdditionalExecutorNotApplying> additionalExecutorsNotApplying1Mock;
+    @Mock
+    private CollectionMember<AdditionalExecutorNotApplying> additionalExecutorsNotApplying2Mock;
+    @Mock
+    private CollectionMember<AdditionalExecutorNotApplying> additionalExecutorsNotApplying3Mock;
+
+    private List<CollectionMember<AdditionalExecutorApplying>> additionalExecutorsApplyingList;
+
+    private List<CollectionMember<AdditionalExecutorNotApplying>> additionalExecutorsNotApplyingList;
 
     @InjectMocks
     private CaseData underTest;
@@ -59,20 +94,157 @@ public class CaseDataTest {
         when(additionalExecutors2Mock.getValue()).thenReturn(additionalExecutor2Mock);
         when(additionalExecutors3Mock.getValue()).thenReturn(additionalExecutor3Mock);
 
+        when(additionalExecutorsApplying1Mock.getValue()).thenReturn(additionalExecutorApplying1Mock);
+        when(additionalExecutorsApplying2Mock.getValue()).thenReturn(additionalExecutorApplying2Mock);
+        when(additionalExecutorsApplying3Mock.getValue()).thenReturn(additionalExecutorApplying3Mock);
+
+        when(additionalExecutorsNotApplying1Mock.getValue()).thenReturn(additionalExecutorNotApplying1Mock);
+        when(additionalExecutorsNotApplying2Mock.getValue()).thenReturn(additionalExecutorNotApplying2Mock);
+        when(additionalExecutorsNotApplying3Mock.getValue()).thenReturn(additionalExecutorNotApplying3Mock);
+
         List<CollectionMember<AdditionalExecutor>> additionalExecutorsList = new ArrayList<>();
         additionalExecutorsList.add(additionalExecutors1Mock);
         additionalExecutorsList.add(additionalExecutors2Mock);
         additionalExecutorsList.add(additionalExecutors3Mock);
         additionalExecutorsList.add(null);
 
+        additionalExecutorsApplyingList = new ArrayList<>();
+        additionalExecutorsApplyingList.add(additionalExecutorsApplying1Mock);
+        additionalExecutorsApplyingList.add(additionalExecutorsApplying2Mock);
+        additionalExecutorsApplyingList.add(additionalExecutorsApplying3Mock);
+
+        additionalExecutorsNotApplyingList = new ArrayList<>();
+        additionalExecutorsNotApplyingList.add(additionalExecutorsNotApplying1Mock);
+        additionalExecutorsNotApplyingList.add(additionalExecutorsNotApplying2Mock);
+        additionalExecutorsNotApplyingList.add(additionalExecutorsNotApplying3Mock);
+
         underTest = CaseData.builder()
                 .primaryApplicantForenames(PRIMARY_APPLICANT_FIRST_NAME)
-                .primaryApplicantForenames(PRIMARY_APPLICANT_SURNAME)
+                .primaryApplicantSurname(PRIMARY_APPLICANT_SURNAME)
                 .primaryApplicantIsApplying(YES)
                 .primaryApplicantAddress(PRIMARY_APPLICANT_ADDRESS)
                 .primaryApplicantAlias(PRIMARY_APPLICANT_NAME_ON_WILL)
                 .solsAdditionalExecutorList(additionalExecutorsList)
+                .otherExecutorExists(YES)
                 .build();
+    }
+
+    @Test
+    public void shouldMapExecsApplying() {
+        when(additionalExecutorApplying1Mock.getApplyingExecutorName()).thenReturn("Applying Name");
+        when(additionalExecutorApplying2Mock.getApplyingExecutorName()).thenReturn("Applying Name");
+        when(additionalExecutorApplying3Mock.getApplyingExecutorName()).thenReturn("Applying Name");
+
+        final CaseData caseData = CaseData.builder()
+                .primaryApplicantForenames(PRIMARY_APPLICANT_FIRST_NAME)
+                .primaryApplicantSurname(PRIMARY_APPLICANT_SURNAME)
+                .primaryApplicantIsApplying(YES)
+                .primaryApplicantAddress(PRIMARY_APPLICANT_ADDRESS)
+                .primaryApplicantAlias(PRIMARY_APPLICANT_NAME_ON_WILL)
+                .solsAdditionalExecutorList(null)
+                .solsWillType(null)
+                .additionalExecutorsApplying(additionalExecutorsApplyingList)
+                .build();
+
+        List<CollectionMember<AdditionalExecutor>> applying = caseData.getExecutorsApplyingForLegalStatement();
+
+        assertEquals(4, applying.size());
+    }
+
+    @Test
+    public void shouldNOTMapExecsApplying() {
+        final CaseData caseData = CaseData.builder()
+                .primaryApplicantForenames(PRIMARY_APPLICANT_FIRST_NAME)
+                .primaryApplicantSurname(PRIMARY_APPLICANT_SURNAME)
+                .primaryApplicantIsApplying(YES)
+                .primaryApplicantAddress(PRIMARY_APPLICANT_ADDRESS)
+                .primaryApplicantAlias(PRIMARY_APPLICANT_NAME_ON_WILL)
+                .solsAdditionalExecutorList(null)
+                .solsWillType(null)
+                .additionalExecutorsApplying(null)
+                .build();
+
+        List<CollectionMember<AdditionalExecutor>> applying = caseData.getExecutorsApplyingForLegalStatement();
+
+        assertEquals(1, applying.size());
+    }
+
+    @Test
+    public void shouldMapExecsNotApplying() {
+        when(additionalExecutorNotApplying1Mock.getNotApplyingExecutorName()).thenReturn("NotApplying Name");
+        when(additionalExecutorNotApplying2Mock.getNotApplyingExecutorName()).thenReturn("NotApplying Name");
+        when(additionalExecutorNotApplying3Mock.getNotApplyingExecutorName()).thenReturn("NotApplying Name");
+
+        final CaseData caseData = CaseData.builder()
+                .primaryApplicantForenames(PRIMARY_APPLICANT_FIRST_NAME)
+                .primaryApplicantSurname(PRIMARY_APPLICANT_SURNAME)
+                .primaryApplicantIsApplying(NO)
+                .primaryApplicantAddress(PRIMARY_APPLICANT_ADDRESS)
+                .primaryApplicantAlias(PRIMARY_APPLICANT_NAME_ON_WILL)
+                .solsAdditionalExecutorList(null)
+                .solsWillType(null)
+                .additionalExecutorsNotApplying(additionalExecutorsNotApplyingList)
+                .build();
+
+        List<CollectionMember<AdditionalExecutor>> notApplying = caseData.getExecutorsNotApplyingForLegalStatement();
+
+        assertEquals(4, notApplying.size());
+    }
+
+    @Test
+    public void shouldNOTMapExecsNotApplying() {
+        final CaseData caseData = CaseData.builder()
+                .primaryApplicantForenames(PRIMARY_APPLICANT_FIRST_NAME)
+                .primaryApplicantSurname(PRIMARY_APPLICANT_SURNAME)
+                .primaryApplicantIsApplying(NO)
+                .primaryApplicantAddress(PRIMARY_APPLICANT_ADDRESS)
+                .primaryApplicantAlias(PRIMARY_APPLICANT_NAME_ON_WILL)
+                .solsAdditionalExecutorList(null)
+                .solsWillType(null)
+                .additionalExecutorsNotApplying(null)
+                .build();
+
+        List<CollectionMember<AdditionalExecutor>> notApplying = caseData.getExecutorsNotApplyingForLegalStatement();
+
+        assertEquals(1, notApplying.size());
+    }
+
+    @Test
+    public void shouldNOTMapExecsApplyingWhenSolicitorCreatedGrant() {
+        final CaseData caseData = CaseData.builder()
+                .primaryApplicantForenames(PRIMARY_APPLICANT_FIRST_NAME)
+                .primaryApplicantSurname(PRIMARY_APPLICANT_SURNAME)
+                .primaryApplicantIsApplying(YES)
+                .primaryApplicantAddress(PRIMARY_APPLICANT_ADDRESS)
+                .primaryApplicantAlias(PRIMARY_APPLICANT_NAME_ON_WILL)
+                .solsAdditionalExecutorList(null)
+                .solsWillType(WILL_TYPE_PROBATE)
+                .additionalExecutorsApplying(additionalExecutorsApplyingList)
+                .additionalExecutorsNotApplying(additionalExecutorsNotApplyingList)
+                .build();
+
+        List<CollectionMember<AdditionalExecutor>> execs = caseData.getExecutorsApplyingForLegalStatement();
+
+        assertEquals(1, execs.size());
+    }
+
+    @Test
+    public void shouldNOTMapExecsNotApplyingWhenSolicitorCreatedGrant() {
+        final CaseData caseData = CaseData.builder()
+                .primaryApplicantForenames(PRIMARY_APPLICANT_FIRST_NAME)
+                .primaryApplicantSurname(PRIMARY_APPLICANT_SURNAME)
+                .primaryApplicantIsApplying(NO)
+                .primaryApplicantAddress(PRIMARY_APPLICANT_ADDRESS)
+                .primaryApplicantAlias(PRIMARY_APPLICANT_NAME_ON_WILL)
+                .solsAdditionalExecutorList(null)
+                .solsWillType(WILL_TYPE_PROBATE)
+                .additionalExecutorsApplying(additionalExecutorsApplyingList)
+                .additionalExecutorsNotApplying(additionalExecutorsNotApplyingList)
+                .build();
+
+        List<CollectionMember<AdditionalExecutor>> execs = caseData.getExecutorsNotApplyingForLegalStatement();
+
+        assertEquals(1, execs.size());
     }
 
     @Test
@@ -148,6 +320,7 @@ public class CaseDataTest {
                 .primaryApplicantAddress(PRIMARY_APPLICANT_ADDRESS)
                 .primaryApplicantAlias(PRIMARY_APPLICANT_NAME_ON_WILL)
                 .solsAdditionalExecutorList(additionalExecutorsList)
+                .otherExecutorExists(YES)
                 .build();
     }
 
@@ -170,6 +343,110 @@ public class CaseDataTest {
                 .build();
 
         assertEquals(DECEASED_FIRST_NAME + " " + DECEASED_SURNAME, caseData.getDeceasedFullName());
+    }
+
+    @Test
+    public void shouldSplitApplyingExecutorNameWhenDoubleBarrelledNames() {
+        when(additionalExecutorApplying1Mock.getApplyingExecutorName()).thenReturn("Appl-ying Name");
+        when(additionalExecutorApplying2Mock.getApplyingExecutorName()).thenReturn("Applying Na-me");
+        when(additionalExecutorApplying3Mock.getApplyingExecutorName()).thenReturn("Appl-ying Na-me");
+
+        final CaseData caseData = CaseData.builder()
+                .primaryApplicantForenames(PRIMARY_APPLICANT_FIRST_NAME)
+                .primaryApplicantSurname(PRIMARY_APPLICANT_SURNAME)
+                .primaryApplicantIsApplying(YES)
+                .primaryApplicantAddress(PRIMARY_APPLICANT_ADDRESS)
+                .primaryApplicantAlias(PRIMARY_APPLICANT_NAME_ON_WILL)
+                .solsAdditionalExecutorList(null)
+                .solsWillType(null)
+                .additionalExecutorsApplying(additionalExecutorsApplyingList)
+                .build();
+
+        List<CollectionMember<AdditionalExecutor>> applying = caseData.getExecutorsApplyingForLegalStatement();
+
+        assertEquals(4, applying.size());
+        assertEquals("Appl-ying", applying.get(1).getValue().getAdditionalExecForenames());
+        assertEquals("Name", applying.get(1).getValue().getAdditionalExecLastname());
+        assertEquals("Applying", applying.get(2).getValue().getAdditionalExecForenames());
+        assertEquals("Na-me", applying.get(2).getValue().getAdditionalExecLastname());
+        assertEquals("Appl-ying", applying.get(3).getValue().getAdditionalExecForenames());
+        assertEquals("Na-me", applying.get(3).getValue().getAdditionalExecLastname());
+    }
+
+    @Test
+    public void shouldSplitApplyingExecutorNameWhenSingleName() {
+        when(additionalExecutorApplying1Mock.getApplyingExecutorName()).thenReturn("ApplyingName");
+        when(additionalExecutorsApplying2Mock.getValue()).thenReturn(null);
+        when(additionalExecutorsApplying3Mock.getValue()).thenReturn(null);
+
+        final CaseData caseData = CaseData.builder()
+                .primaryApplicantForenames(PRIMARY_APPLICANT_FIRST_NAME)
+                .primaryApplicantSurname(PRIMARY_APPLICANT_SURNAME)
+                .primaryApplicantIsApplying(YES)
+                .primaryApplicantAddress(PRIMARY_APPLICANT_ADDRESS)
+                .primaryApplicantAlias(PRIMARY_APPLICANT_NAME_ON_WILL)
+                .solsAdditionalExecutorList(null)
+                .solsWillType(null)
+                .additionalExecutorsApplying(additionalExecutorsApplyingList)
+                .build();
+
+        List<CollectionMember<AdditionalExecutor>> applying = caseData.getExecutorsApplyingForLegalStatement();
+
+        assertEquals(2, applying.size());
+        assertEquals("ApplyingName", applying.get(1).getValue().getAdditionalExecForenames());
+        assertEquals(null, applying.get(1).getValue().getAdditionalExecLastname());
+    }
+
+    @Test
+    public void shouldSplitNotApplyingExecutorNameWhenDoubleBarrelledNames() {
+        when(additionalExecutorNotApplying1Mock.getNotApplyingExecutorName()).thenReturn("NotAppl-ying Name");
+        when(additionalExecutorNotApplying2Mock.getNotApplyingExecutorName()).thenReturn("NotApplying Na-me");
+        when(additionalExecutorNotApplying3Mock.getNotApplyingExecutorName()).thenReturn("NotAppl-ying Na-me");
+
+        final CaseData caseData = CaseData.builder()
+                .primaryApplicantForenames(PRIMARY_APPLICANT_FIRST_NAME)
+                .primaryApplicantSurname(PRIMARY_APPLICANT_SURNAME)
+                .primaryApplicantIsApplying(NO)
+                .primaryApplicantAddress(PRIMARY_APPLICANT_ADDRESS)
+                .primaryApplicantAlias(PRIMARY_APPLICANT_NAME_ON_WILL)
+                .solsAdditionalExecutorList(null)
+                .solsWillType(null)
+                .additionalExecutorsNotApplying(additionalExecutorsNotApplyingList)
+                .build();
+
+        List<CollectionMember<AdditionalExecutor>> notApplying = caseData.getExecutorsNotApplyingForLegalStatement();
+
+        assertEquals(4, notApplying.size());
+        assertEquals("NotAppl-ying", notApplying.get(1).getValue().getAdditionalExecForenames());
+        assertEquals("Name", notApplying.get(1).getValue().getAdditionalExecLastname());
+        assertEquals("NotApplying", notApplying.get(2).getValue().getAdditionalExecForenames());
+        assertEquals("Na-me", notApplying.get(2).getValue().getAdditionalExecLastname());
+        assertEquals("NotAppl-ying", notApplying.get(3).getValue().getAdditionalExecForenames());
+        assertEquals("Na-me", notApplying.get(3).getValue().getAdditionalExecLastname());
+    }
+
+    @Test
+    public void shouldSplitNotApplyingExecutorNameWhenSingleName() {
+        when(additionalExecutorNotApplying1Mock.getNotApplyingExecutorName()).thenReturn("NotApplyingName");
+        when(additionalExecutorsNotApplying2Mock.getValue()).thenReturn(null);
+        when(additionalExecutorsNotApplying3Mock.getValue()).thenReturn(null);
+
+        final CaseData caseData = CaseData.builder()
+                .primaryApplicantForenames(PRIMARY_APPLICANT_FIRST_NAME)
+                .primaryApplicantSurname(PRIMARY_APPLICANT_SURNAME)
+                .primaryApplicantIsApplying(NO)
+                .primaryApplicantAddress(PRIMARY_APPLICANT_ADDRESS)
+                .primaryApplicantAlias(PRIMARY_APPLICANT_NAME_ON_WILL)
+                .solsAdditionalExecutorList(null)
+                .solsWillType(null)
+                .additionalExecutorsNotApplying(additionalExecutorsNotApplyingList)
+                .build();
+
+        List<CollectionMember<AdditionalExecutor>> notApplying = caseData.getExecutorsNotApplyingForLegalStatement();
+
+        assertEquals(2, notApplying.size());
+        assertEquals("NotApplyingName", notApplying.get(1).getValue().getAdditionalExecForenames());
+        assertEquals(null, notApplying.get(1).getValue().getAdditionalExecLastname());
     }
 
     @Test
@@ -237,4 +514,72 @@ public class CaseDataTest {
         assertEquals(false, caseData.isBoEmailRequestInfoNotificationRequested());
     }
 
+    @Test
+    public void solicitorIsMainApplicantIsYes() {
+        final CaseData caseData = CaseData.builder()
+                .solsSolicitorIsMainApplicant(YES)
+                .build();
+
+        assertEquals(YES, caseData.solicitorIsMainApplicant());
+    }
+
+    @Test
+    public void solicitorIsMainApplicantIsNoWhenNoMainApplicant() {
+        final CaseData caseData = CaseData.builder()
+                .solsSolicitorIsMainApplicant(NO)
+                .build();
+
+        assertEquals(NO, caseData.solicitorIsMainApplicant());
+    }
+
+    @Test
+    public void solicitorIsMainApplicantIsNoWhenNullMainApplicant() {
+        final CaseData caseData = CaseData.builder()
+                .solsSolicitorIsMainApplicant(null)
+                .build();
+
+        assertEquals(NO, caseData.solicitorIsMainApplicant());
+    }
+
+    @Test
+    public void shouldGetDefaultValueForEmailNotificationsWhenPrimaryAppEmailSet() {
+        final CaseData caseData = CaseData.builder()
+                .primaryApplicantEmailAddress("test-primaryApp@test.com")
+                .solsSolicitorEmail(null)
+                .build();
+
+        final CaseData caseData2 = CaseData.builder()
+                .primaryApplicantEmailAddress("test-primaryApp@test.com")
+                .solsSolicitorEmail("")
+                .build();
+
+        assertEquals(YES, caseData.getDefaultValueForEmailNotifications());
+        assertEquals(YES, caseData2.getDefaultValueForEmailNotifications());
+    }
+
+    @Test
+    public void shouldGetDefaultValueForEmailNotificationsWhenSolicitorEmailSet() {
+        final CaseData caseData = CaseData.builder()
+                .primaryApplicantEmailAddress(null)
+                .solsSolicitorEmail("test-solictor@test.com")
+                .build();
+
+        final CaseData caseData2 = CaseData.builder()
+                .primaryApplicantEmailAddress("")
+                .solsSolicitorEmail("test-solictor@test.com")
+                .build();
+
+        assertEquals(YES, caseData.getDefaultValueForEmailNotifications());
+        assertEquals(YES, caseData2.getDefaultValueForEmailNotifications());
+    }
+
+    @Test
+    public void shouldGetDefaultValueForEmailNotificationsWhenEmailAddressNotSet() {
+        final CaseData caseData = CaseData.builder()
+                .primaryApplicantEmailAddress("")
+                .solsSolicitorEmail(null)
+                .build();
+
+        assertEquals(NO, caseData.getDefaultValueForEmailNotifications());
+    }
 }

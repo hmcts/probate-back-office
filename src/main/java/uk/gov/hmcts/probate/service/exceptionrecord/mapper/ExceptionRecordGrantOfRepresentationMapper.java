@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.service.exceptionrecord.mapper;
 
+import io.micrometer.core.instrument.util.StringUtils;
 import org.apache.commons.lang.BooleanUtils;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
@@ -11,6 +12,7 @@ import uk.gov.hmcts.probate.model.exceptionrecord.ExceptionRecordOCRFields;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToAdditionalExecutorsApplying;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToAdditionalExecutorsNotApplying;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToAdoptiveRelatives;
+import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToApplicationTypeGrantOfRepresentation;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToAttorneyOnBehalfOfAddress;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToDeceasedAddress;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToDefaultLocalDate;
@@ -22,14 +24,20 @@ import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToPennies;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToPrimaryApplicantAddress;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToRelationship;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToRelationshipOther;
+import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToSolicitorAddress;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToYesOrNo;
+import uk.gov.hmcts.probate.service.exceptionrecord.utils.OCRFieldExtractor;
 import uk.gov.hmcts.reform.probate.model.cases.ApplicationType;
+import uk.gov.hmcts.reform.probate.model.cases.SolsPaymentMethods;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType;
 
+import java.util.List;
+
 @Mapper(componentModel = "spring",
-        imports = {ApplicationType.class},
-        uses = {OCRFieldAddressMapper.class,
+        imports = {StringUtils.class, ApplicationType.class},
+        uses = {ApplicationTypeMapper.class,
+                OCRFieldAddressMapper.class,
                 OCRFieldAdditionalExecutorsApplyingMapper.class,
                 OCRFieldAdditionalExecutorsNotApplyingMapper.class,
                 OCRFieldDefaultLocalDateFieldMapper.class,
@@ -62,6 +70,15 @@ public interface ExceptionRecordGrantOfRepresentationMapper {
     @Mapping(target = "primaryApplicantAlias", source = "ocrFields.primaryApplicantAlias")
 
     @Mapping(target = "executorsApplying", source = "ocrFields", qualifiedBy = {ToAdditionalExecutorsApplying.class})
+
+    @Mapping(target = "solsSolicitorIsApplying", source = "ocrFields.solsSolicitorIsApplying", qualifiedBy = {ToYesOrNo.class})
+    @Mapping(target = "solsSolicitorAddress", source = "ocrFields", qualifiedBy = {ToSolicitorAddress.class})
+    @Mapping(target = "solsSolicitorFirmName", source = "ocrFields.solsSolicitorFirmName")
+    @Mapping(target = "solsSolicitorAppReference", source = "ocrFields.solsSolicitorAppReference")
+    @Mapping(target = "solsFeeAccountNumber", source = "ocrFields.solsFeeAccountNumber")
+    @Mapping(target = "solsSolicitorEmail", source = "ocrFields.solsSolicitorEmail")
+    @Mapping(target = "solsSolicitorPhoneNumber", source = "ocrFields.solsSolicitorPhoneNumber")
+
     @Mapping(target = "deceasedForenames", source = "ocrFields.deceasedForenames")
     @Mapping(target = "deceasedSurname", source = "ocrFields.deceasedSurname")
     @Mapping(target = "deceasedAddress", source = "ocrFields", qualifiedBy = {ToDeceasedAddress.class})
@@ -127,6 +144,7 @@ public interface ExceptionRecordGrantOfRepresentationMapper {
     @Mapping(target = "paRelationshipToDeceasedOther",
             source = "ocrFields.primaryApplicantRelationshipToDeceased", qualifiedBy = {ToRelationshipOther.class})
 
+    @Mapping(target = "solsSOTName", source = "ocrFields.solsSolicitorRepresentativeName")
     @Mapping(target = "applyingAsAnAttorney", source = "ocrFields.applyingAsAnAttorney", qualifiedBy = {ToYesOrNo.class})
     @Mapping(target = "attorneyOnBehalfOfNameAndAddress", source = "ocrFields", qualifiedBy = {ToAttorneyOnBehalfOfAddress.class})
     @Mapping(target = "mentalCapacity", source = "ocrFields.mentalCapacity", qualifiedBy = {ToYesOrNo.class})
@@ -142,6 +160,7 @@ public interface ExceptionRecordGrantOfRepresentationMapper {
     @Mapping(target = "willHasCodicils", source = "ocrFields.willHasCodicils", qualifiedBy = {ToYesOrNo.class})
     @Mapping(target = "deceasedMarriedAfterWillOrCodicilDate", source = "ocrFields.deceasedMarriedAfterWillOrCodicilDate",
             qualifiedBy = {ToYesOrNo.class})
+    @Mapping(target = "languagePreferenceWelsh", source = "ocrFields.bilingualGrantRequested", qualifiedBy = {ToYesOrNo.class})
     @Mapping(target = "willDate", source = "ocrFields.willDate", qualifiedBy = {ToDefaultLocalDate.class})
     @Mapping(target = "willsOutsideOfUK", source = "ocrFields.willsOutsideOfUK", qualifiedBy = {ToYesOrNo.class})
     @Mapping(target = "willGiftUnderEighteen", source = "ocrFields.willGiftUnderEighteen", qualifiedBy = {ToYesOrNo.class})
@@ -153,14 +172,45 @@ public interface ExceptionRecordGrantOfRepresentationMapper {
     @Mapping(target = "ihtNetValue", source = "ocrFields.ihtNetValue", qualifiedBy = {ToPennies.class})
 
     @Mapping(target = "paperForm", expression = "java(Boolean.TRUE)")
-    @Mapping(target = "applicationType", expression = "java(ApplicationType.PERSONAL)")
+    @Mapping(target = "applicationType", source = "ocrFields", qualifiedBy = {ToApplicationTypeGrantOfRepresentation.class})
     GrantOfRepresentationData toCcdData(ExceptionRecordOCRFields ocrFields, GrantType grantType);
+
+
 
     @AfterMapping
     default void setDomicilityIHTCert(@MappingTarget GrantOfRepresentationData caseData, ExceptionRecordOCRFields ocrField) {
         if (BooleanUtils.toBoolean(ocrField.getDomicilityEntrustingDocument())
                 || BooleanUtils.toBoolean(ocrField.getDomicilitySuccessionIHTCert())) {
             caseData.setDomicilityIHTCert(Boolean.TRUE);
+        }
+    }
+
+    @AfterMapping
+    default void setSolsPaymentMethod(
+            @MappingTarget GrantOfRepresentationData caseData, ExceptionRecordOCRFields ocrField) {
+        if ((caseData.getApplicationType() == ApplicationType.SOLICITORS) &&
+                StringUtils.isNotBlank(caseData.getSolsFeeAccountNumber())) {
+            caseData.setSolsPaymentMethods(SolsPaymentMethods.FEE_ACCOUNT);
+        }
+    }
+
+    @AfterMapping
+    default void setSolsSolicitorRepresentativeName(
+            @MappingTarget GrantOfRepresentationData caseData, ExceptionRecordOCRFields ocrField) {
+        if ((caseData.getApplicationType() == ApplicationType.SOLICITORS) &&
+                (StringUtils.isNotBlank(ocrField.getSolsSolicitorRepresentativeName()))) {
+            String solicitorFullName = ocrField.getSolsSolicitorRepresentativeName();
+            List<String> names = OCRFieldExtractor.splitFullname(solicitorFullName);
+            if (names.size() > 2) {
+                caseData.setSolsSOTSurname(names.get(names.size()-1));
+                caseData.setSolsSOTForenames(String.join(" ", names.subList(0, names.size()-1)));
+            } else if(names.size() == 1) {
+                caseData.setSolsSOTSurname("");
+                caseData.setSolsSOTForenames(names.get(0));
+            } else {
+                caseData.setSolsSOTSurname(names.get(1));
+                caseData.setSolsSOTForenames(names.get(0));
+            }
         }
     }
 
@@ -305,7 +355,7 @@ public interface ExceptionRecordGrantOfRepresentationMapper {
     @AfterMapping
     default void setApplyingAsAnAttorneyBoolean(@MappingTarget GrantOfRepresentationData caseData, ExceptionRecordOCRFields ocrField) {
         if (caseData.getAttorneyOnBehalfOfNameAndAddress().size() > 0
-                && !caseData.getAttorneyOnBehalfOfNameAndAddress().get(0).getValue().getName().isEmpty()) {
+                && StringUtils.isNotBlank(caseData.getAttorneyOnBehalfOfNameAndAddress().get(0).getValue().getName())) {
             caseData.setApplyingAsAnAttorney(Boolean.TRUE);
         } else {
             caseData.setApplyingAsAnAttorney(Boolean.FALSE);

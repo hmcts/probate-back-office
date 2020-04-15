@@ -69,4 +69,7 @@ public class ResponseCaveatData {
     private String paperForm;
 
     private String languagePreferenceWelsh;
+    
+    private String autoClosedExpiry;
+
 }

@@ -1,35 +1,43 @@
 package uk.gov.hmcts.probate.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import uk.gov.hmcts.probate.config.properties.registries.Registry;
-import uk.gov.hmcts.probate.model.*;
+import uk.gov.hmcts.probate.model.ApplicationType;
+import uk.gov.hmcts.probate.model.Constants;
+import uk.gov.hmcts.probate.model.DocumentCaseType;
+import uk.gov.hmcts.probate.model.DocumentIssueType;
+import uk.gov.hmcts.probate.model.DocumentStatus;
+import uk.gov.hmcts.probate.model.DocumentType;
+import uk.gov.hmcts.probate.model.ExecutorsApplyingNotification;
+import uk.gov.hmcts.probate.model.LanguagePreference;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
-import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.service.docmosis.DocumentTemplateService;
 import uk.gov.hmcts.probate.service.docmosis.GenericMapperService;
 import uk.gov.hmcts.probate.service.docmosis.PreviewLetterService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
-import uk.gov.hmcts.probate.validator.EmailAddressNotificationValidationRule;
-
-import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-
+import uk.gov.hmcts.probate.service.template.pdf.PlaceholderDecorator;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+
 import static uk.gov.hmcts.probate.model.Constants.CTSC;
 
 public class DocumentGeneratorServiceTest {
@@ -57,17 +65,12 @@ public class DocumentGeneratorServiceTest {
     private CallbackRequest callbackRequestSolsAdmon;
     private CallbackRequest callbackRequestSolsIntestacy;
     private Map<String, Object> expectedMap;
-    private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMM Y HH:mm");
-
 
     @InjectMocks
     private DocumentGeneratorService documentGeneratorService;
 
     @Mock
     private PDFManagementService pdfManagementService;
-
-    @Mock
-    private NotificationService notificationService;
 
     @Mock
     private GenericMapperService genericMapperService;
@@ -79,19 +82,13 @@ public class DocumentGeneratorServiceTest {
     private PreviewLetterService previewLetterService;
 
     @Mock
-    private CallbackResponse callbackResponse;
-
-    @Mock
-    private EventValidationService eventValidationService;
-
-    @Mock
-    private List<EmailAddressNotificationValidationRule> emailAddressNotificationValidationRules;
-
-    @Mock
     private DocumentService documentService;
 
     @Mock
     private DocumentTemplateService documentTemplateService;
+
+    @Mock
+    private PlaceholderDecorator placeholderDecorator;
 
     @Before
     public void setup() {
@@ -178,10 +175,12 @@ public class DocumentGeneratorServiceTest {
                 DocumentType.DIGITAL_GRANT_REISSUE_DRAFT))
                 .thenReturn(Document.builder().documentFileName(DIGITAL_GRANT_DRAFT_REISSUE_FILE_NAME).build());
 
-        when(documentTemplateService.getTemplateId(LanguagePreference.ENGLISH, DocumentStatus.PREVIEW, DocumentIssueType.REISSUE, DocumentCaseType.GOP )).thenReturn(DocumentType.DIGITAL_GRANT_REISSUE_DRAFT);
+        when(documentTemplateService.getTemplateId(LanguagePreference.ENGLISH, DocumentStatus.PREVIEW, DocumentIssueType.REISSUE, DocumentCaseType.GOP))
+                .thenReturn(DocumentType.DIGITAL_GRANT_REISSUE_DRAFT);
 
         assertEquals(DIGITAL_GRANT_DRAFT_REISSUE_FILE_NAME,
-                documentGeneratorService.generateGrantReissue(callbackRequest, DocumentStatus.PREVIEW, Optional.of(DocumentIssueType.REISSUE)).getDocumentFileName());
+                documentGeneratorService.generateGrantReissue(callbackRequest, DocumentStatus.PREVIEW, Optional.of(DocumentIssueType.REISSUE))
+                        .getDocumentFileName());
     }
 
     @Test
@@ -276,6 +275,7 @@ public class DocumentGeneratorServiceTest {
 
         assertEquals(ADMON_WILL_FINAL_FILE_NAME,
                 documentGeneratorService.getDocument(callbackRequest, DocumentStatus.FINAL,DocumentIssueType.REISSUE).getDocumentFileName());
+        verify(placeholderDecorator).decorate(expectedMap);
     }
 
     @Test
@@ -294,6 +294,7 @@ public class DocumentGeneratorServiceTest {
 
         assertEquals(ADMON_WILL_DRAFT_FILE_NAME,
                 documentGeneratorService.getDocument(callbackRequest, DocumentStatus.PREVIEW,DocumentIssueType.REISSUE).getDocumentFileName());
+        verify(placeholderDecorator).decorate(expectedMap);
     }
 
     @Test
@@ -312,6 +313,7 @@ public class DocumentGeneratorServiceTest {
 
         assertEquals(DIGITAL_GRANT_FINAL_FILE_NAME,
                 documentGeneratorService.getDocument(callbackRequest, DocumentStatus.FINAL, DocumentIssueType.REISSUE).getDocumentFileName());
+        verify(placeholderDecorator).decorate(expectedMap);
     }
 
     @Test
@@ -330,6 +332,7 @@ public class DocumentGeneratorServiceTest {
 
         assertEquals(DIGITAL_GRANT_DRAFT_FILE_NAME,
                 documentGeneratorService.getDocument(callbackRequest, DocumentStatus.PREVIEW, DocumentIssueType.REISSUE).getDocumentFileName());
+        verify(placeholderDecorator).decorate(expectedMap);
     }
 
     @Test
@@ -348,6 +351,7 @@ public class DocumentGeneratorServiceTest {
 
         assertEquals(WELSH_INTESTACY_GRANT_DRAFT_FILE_NAME,
                 documentGeneratorService.getDocument(callbackRequest, DocumentStatus.PREVIEW, DocumentIssueType.REISSUE).getDocumentFileName());
+        verify(placeholderDecorator).decorate(expectedMap);
     }
 
     @Test
@@ -366,6 +370,7 @@ public class DocumentGeneratorServiceTest {
 
         assertEquals(WELSH_INTESTACY_GRANT_FINAL_FILE_NAME,
                 documentGeneratorService.getDocument(callbackRequest, DocumentStatus.FINAL, DocumentIssueType.REISSUE).getDocumentFileName());
+        verify(placeholderDecorator).decorate(expectedMap);
     }
 
 /////////////////////////////////////////
@@ -460,6 +465,27 @@ public class DocumentGeneratorServiceTest {
                 .thenReturn(Document.builder().documentType(DocumentType.LEGAL_STATEMENT_ADMON).build());
         assertEquals(Document.builder().documentType(DocumentType.LEGAL_STATEMENT_ADMON).build(),
                 documentGeneratorService.generateSoT(callbackRequestSolsAdmon));
+    }
+
+    @Test
+    public void redeclarationOfSOTWelsh() {
+        expectedMap.put("deceasedDateOfBirth", String.valueOf(LocalDate.of(2018,10,19)));
+        expectedMap.put("deceasedDateOfDeath", String.valueOf(LocalDate.of(2018,10,19)));
+
+        CaseDetails caseDetails =
+                        new CaseDetails(CaseData.builder().caseType("gop").registryLocation("Bristol").
+                                        languagePreferenceWelsh(Constants.YES).
+                                        deceasedDateOfBirth(LocalDate.of(2018,10,19)).
+                                        deceasedDateOfDeath(LocalDate.of(2018,10,19)).
+                                        applicationType(ApplicationType.PERSONAL).
+                                        build(),
+                                        LAST_MODIFIED, CASE_ID);
+        callbackRequest = new CallbackRequest(caseDetails);
+        when(genericMapperService.addCaseDataWithRegistryProperties(caseDetails)).thenReturn(expectedMap);
+        when(pdfManagementService.generateDocmosisDocumentAndUpload(expectedMap, DocumentType.WELSH_STATEMENT_OF_TRUTH))
+                        .thenReturn(Document.builder().documentType(DocumentType.WELSH_STATEMENT_OF_TRUTH).build());
+        assertEquals(Document.builder().documentType(DocumentType.WELSH_STATEMENT_OF_TRUTH).build(),
+                        documentGeneratorService.generateSoT(callbackRequest));
     }
 
     @Test

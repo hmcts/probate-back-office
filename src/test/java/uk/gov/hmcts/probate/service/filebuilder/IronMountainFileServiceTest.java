@@ -105,6 +105,17 @@ public class IronMountainFileServiceTest {
     }
 
     @Test
+    public void testIronMountainFileBuiltWithEmptyIHTValues() throws IOException {
+        caseData.ihtGrossValue(null);
+        caseData.ihtNetValue(null);
+        builtData = caseData.build();
+        createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, 1234567890876L);
+        caseList.add(createdCase);
+        assertThat(createFile(ironmountainFileService.createIronMountainFile(caseList.build(), FILE_NAME)),
+            is(FileUtils.getStringFromFile("expectedGeneratedFiles/ironMountainFilePopulatedZeroIHTs.txt")));
+    }
+
+    @Test
     public void testFileIsBuildWithEmptyOptionalValues() throws IOException {
         CollectionMember<AdditionalExecutorApplying> additionalExecutor =
                 new CollectionMember<>(AdditionalExecutorApplying.builder().applyingExecutorName("Bob Smith")
@@ -174,6 +185,16 @@ public class IronMountainFileServiceTest {
         caseList.add(createdCase);
         assertThat(createFile(ironmountainFileService.createIronMountainFile(caseList.build(), FILE_NAME)),
                 is(FileUtils.getStringFromFile("expectedGeneratedFiles/ironMountainSolAsPrimary.txt")));
+    }
+
+    @Test
+    public void testAddExceptionForIncorrectCaseData() throws IOException {
+        caseData2.applicationType(null);
+        builtData = caseData2.build();
+        createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, 1234567890876L);
+        caseList.add(createdCase);
+        assertThat(createFile(ironmountainFileService.createIronMountainFile(caseList.build(), FILE_NAME)),
+            is(FileUtils.getStringFromFile("expectedGeneratedFiles/ironMountainExceptionCase.txt")));
     }
 
     private String createFile(File file) throws IOException {

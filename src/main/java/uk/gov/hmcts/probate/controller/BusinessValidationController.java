@@ -26,6 +26,8 @@ import uk.gov.hmcts.probate.model.ccd.raw.response.AfterSubmitCallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.service.ConfirmationResponseService;
 import uk.gov.hmcts.probate.service.EventValidationService;
+import uk.gov.hmcts.probate.service.CaseStoppedService;
+import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.StateChangeService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
@@ -54,6 +56,7 @@ import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.Gran
 public class BusinessValidationController {
 
     private final EventValidationService eventValidationService;
+    private final NotificationService notificationService;
     private final ObjectMapper objectMapper;
     private final List<ValidationRule> allValidationRules;
     private final List<CaseworkerAmendValidationRule> allCaseworkerAmendValidationRules;
@@ -63,8 +66,14 @@ public class BusinessValidationController {
     private final StateChangeService stateChangeService;
     private final PDFManagementService pdfManagementService;
     private final RedeclarationSoTValidationRule redeclarationSoTValidationRule;
+    private final CaseStoppedService caseStoppedService;
     private static final String DEFAULT_LOG_ERROR = "Case Id: {} ERROR: {}";
     private static final String INVALID_PAYLOAD = "Invalid payload";
+
+    @PostMapping(path = "/sols-apply-as-exec")
+    public ResponseEntity<CallbackResponse> setApplicantFieldsForSolsApplyAsExec(@RequestBody CallbackRequest request) {
+        return ResponseEntity.ok(callbackResponseTransformer.setApplicantFieldsForSolsApplyAsExec(request));
+    }
 
     @PostMapping(path = "/sols-validate", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<CallbackResponse> solsValidate(
@@ -167,10 +176,32 @@ public class BusinessValidationController {
         return ResponseEntity.ok(response);
     }
 
+
+    @PostMapping(path = "/case-stopped", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<CallbackResponse> startDelayedNotificationPeriod(
+            @RequestBody CallbackRequest callbackRequest,
+            BindingResult bindingResult,
+            HttpServletRequest request) {
+
+        logRequest(request.getRequestURI(), callbackRequest);
+
+        validateForPayloadErrors(callbackRequest, bindingResult);
+
+        log.info("case-stopped started");
+
+        caseStoppedService.caseStopped(callbackRequest.getCaseDetails());
+
+        CallbackResponse response = callbackResponseTransformer.transformCase(callbackRequest);
+        return ResponseEntity.ok(response);
+    }
+
+
     @PostMapping(path = "/resolveStop", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<CallbackResponse> resolveStopState(@RequestBody CallbackRequest callbackRequest,
                                                              HttpServletRequest request) {
         logRequest(request.getRequestURI(), callbackRequest);
+
+        caseStoppedService.caseResolved(callbackRequest.getCaseDetails());
 
         CallbackResponse response = callbackResponseTransformer.resolveStop(callbackRequest);
         return ResponseEntity.ok(response);
@@ -187,13 +218,14 @@ public class BusinessValidationController {
         return ResponseEntity.ok(afterSubmitCallbackResponse);
     }
 
-    @PostMapping(path = "/transformCase", consumes = APPLICATION_JSON_UTF8_VALUE, produces = {APPLICATION_JSON_VALUE})
-    public ResponseEntity<CallbackResponse> transformCaseDetails(
+    @PostMapping(path = "/casePrinted", consumes = APPLICATION_JSON_UTF8_VALUE, produces = {APPLICATION_JSON_VALUE})
+    public ResponseEntity<CallbackResponse> casePrinted(
             @RequestBody CallbackRequest callbackRequest,
             BindingResult bindingResult) {
 
         validateForPayloadErrors(callbackRequest, bindingResult);
 
+        notificationService.startAwaitingDocumentationNotificationPeriod(callbackRequest.getCaseDetails());
         CallbackResponse response = callbackResponseTransformer.transformCase(callbackRequest);
 
         return ResponseEntity.ok(response);

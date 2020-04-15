@@ -18,7 +18,7 @@ auth.provider.service.client:
   tokenTimeToLiveInSeconds: 900
 
 auth.provider.client:
-  user: http://localhost:4501
+  user: http://localhost:5000
   secret: 123456
   id: probate
   redirect: http://localhost:3451/oauth2redirect
@@ -107,11 +107,15 @@ http.connect.request.timeout: 60000
 idam.service.host: ${S2S_AUTH_URL:http://localhost:4502}
 
 notifications:
+  grantDelayedNotificationPeriodDays: 1
+  grantDelayedNotificationReleaseDate: "2020-01-01"
+  grantAwaitingDocumentationNotificationPeriodDays: 1
   govNotifyApiKey: "dummy_key"
   templates:
     email:
       english:
         personal:
+          applicationReceived: "pa-application-received"
           documentReceived: "pa-document-received"
           caseStopped: "pa-case-stopped"
           caseStoppedCaveat: "pa-case-stopped-caveat"
@@ -121,9 +125,13 @@ notifications:
           excelaData: "pa-excela-data"
           caveatRaised: "pa-caveat-raised"
           caveatRaisedCtsc: "pa-ctsc-caveat-raised"
+          caveatExtend: "pa-ctsc-caveat-extend"
           requestInformation: "pa-request-information"
           redeclarationSot: "pa-redeclaration-sot"
+          grantDelayed: "pa-grantDelayed"
+          grantAwaitingDocumentation: "pa-grantAwaitingDoc"
         solicitor:
+          applicationReceived: "sol-application-received"
           documentReceived: "sol-document-received"
           caseStopped: "sol-case-stopped"
           caseStoppedCaveat: "sol-case-stopped-caveat"
@@ -136,8 +144,11 @@ notifications:
           caveatRaisedSols: "solicitor-caveat-raised"
           requestInformation: "sols-request-information"
           redeclarationSot: "sols-redeclaration-sot"
+          grantDelayed: "sols-grantDelayed"
+          grantAwaitingDocumentation: "sols-grantAwaitingDoc"
       welsh:
         personal:
+          applicationReceived: "pa-application-received-welsh"
           documentReceived: "pa-document-received-welsh"
           caseStopped: "pa-case-stopped-welsh"
           caseStoppedCaveat: "pa-case-stopped-caveat-welsh"
@@ -147,9 +158,13 @@ notifications:
           excelaData: "pa-excela-data-welsh"
           caveatRaised: "pa-caveat-raised-welsh"
           caveatRaisedCtsc: "pa-ctsc-caveat-raised-welsh"
+          caveatExtend: "pa-ctsc-caveat-extend-welsh"
           requestInformation: "pa-request-information-welsh"
           redeclarationSot: "pa-redeclaration-sot-welsh"
+          grantDelayed: "pa-grantDelayed-welsh"
+          grantAwaitingDocumentation: "pa-grantAwaitingDoc-welsh"
         solicitor:
+          applicationReceived: "sol-application-received-welsh"
           documentReceived: "sol-document-received-welsh"
           caseStopped: "sol-case-stopped-welsh"
           caseStoppedCaveat: "sol-case-stopped-caveat-welsh"
@@ -161,6 +176,8 @@ notifications:
           caveatRaisedCtsc: "sols-ctsc-caveat-raised-welsh"
           requestInformation: "sols-request-information-welsh"
           redeclarationSot: "sols-redeclaration-sot-welsh"
+          grantDelayed: "sols-grantDelayed-welsh"
+          grantAwaitingDocumentation: "sols-grantAwaitingDoc-welsh"
 
 documents:
   templates:
@@ -196,113 +213,113 @@ documents:
             admonWill: WELSH_ADMON_WILL_GRANT_DRAFT
             gop: WELSH_DIGITAL_GRANT_DRAFT
 
-registries:
-  oxford:
-    name: Oxford Probate Registry
-    phone: 0186 579 3055
-    emailReplyToId: "oxford-emailReplyToId"
-    addressline1: Combined Court Building
-    addressline2: St Aldates
-    town: Oxford
-    postcode: OX1 1LY
-  birmingham:
-    name: Birmingham Probate Registry
-    phone: 0121 681 3401
-    emailReplyToId: "birmingham-emailReplyToId"
-    addressline1: The Priory Courts
-    addressline2: 33 Bull Street
-    town: Birmingham
-    postcode: B4 6DU
-  manchester:
-    name: Manchester Probate Registry
-    phone: 0161 240 5701 / 0161 240 5702
-    emailReplyToId: "manchester-emailReplyToId"
-    addressline1: Manchester Civil Justice Centre
-    addressline2: Ground Floor
-    addressline3: 1 Bridge Street West
-    addressline4: PO Box 4240
-    town: Manchester
-    postcode: M60 1WJ
-  leeds:
-    name: Leeds Probate Registry
-    phone: 0113 389 6133
-    emailReplyToId: "leeds-emailReplyToId"
-    addressline1: York House
-    addressline2: York Place
-    town: Leeds
-    postcode: LS1 2BA
-  liverpool:
-    name: Liverpool Probate Registry
-    phone: 0151 236 8264
-    emailReplyToId: "liverpool-emailReplyToId"
-    addressline1: The Queen Elizabeth II Law Courts
-    addressline2: Derby Square
-    town: Liverpool
-    postcode: L2 1XA
-  brighton:
-    name: Brighton Probate Registry
-    phone: 01273 573510
-    emailReplyToId: "brighton-emailReplyToId"
-    addressline1: William Street
-    town: Brighton
-    postcode: BN2 0RF
-  london:
-    name: London Probate Department
-    phone: 020 7421 8509
-    emailReplyToId: "london-emailReplyToId"
-    addressline1: Principal Registry of the Family Division
-    addressline2: First Avenue House
-    addressline3: 42-49 High Holborn
-    town: London
-    postcode: WC1V 6NP
-  cardiff:
-    name: Probate Registry of Wales
-    phone: 02920 474373
-    emailReplyToId: "cardiff-emailReplyToId"
-    addressline1: 3rd Floor, Cardiff Magistrates’ Court
-    addressline2: Fitzalan Place
-    addressline3: Cardiff
-    town: South Wales
-    postcode: CF24 0RZ
-  newcastle:
-    name: Newcastle-Upon-Tyne Probate Registry
-    phone: 0191 211 2170
-    emailReplyToId: "newcastle-emailReplyToId"
-    addressline1: Newcastle DPR
-    addressline2: No 1 Waterloo Square
-    town: Newcastle-Upon-Tyne
-    postcode: NE1 4DR
-  winchester:
-    name: Winchester Probate Registry
-    phone: 01962 814100
-    emailReplyToId: "winchester-emailReplyToId"
-    addressline1: 1st Floor
-    addressline2: Southside Offices
-    addressline3: The Law Courts
-    addressline4: Winchester
-    town: Hampshire
-    postcode: S023 9EL
-  ctsc:
-    name: CTSC
-    phone: 0300 303 0648
-    emailReplyToId: "ctsc-emailReplyToId"
-    addressline1: Manchester Civil Justice Centre
-    addressline2: Ground Floor
-    addressline3: 1 Bridge Street West
-    addressline4: PO Box 4240
-    town: Manchester
-    postcode: M60 1WJ
-  bristol:
-    name: Bristol District Probate Registry
-    phone: 02920 474373
-    emailReplyToId: "bristol-emailReplyToId"
-    addressline1: The Probate Registry of Wales
-    addressline2: Cardiff Magistrates' Court
-    addressline3: Fitzalan Place
-    town: Cardiff
-    postcode: CF24 0RZ
+registry:
+  registries:
+    oxford:
+      name: Oxford Probate Registry
+      phone: 0186 579 3055
+      emailReplyToId: "oxford-emailReplyToId"
+      addressline1: Combined Court Building
+      addressline2: St Aldates
+      town: Oxford
+      postcode: OX1 1LY
+    birmingham:
+      name: Birmingham Probate Registry
+      phone: 0121 681 3401
+      emailReplyToId: "birmingham-emailReplyToId"
+      addressline1: The Priory Courts
+      addressline2: 33 Bull Street
+      town: Birmingham
+      postcode: B4 6DU
+    manchester:
+      name: Manchester Probate Registry
+      phone: 0161 240 5701 / 0161 240 5702
+      emailReplyToId: "manchester-emailReplyToId"
+      addressline1: Manchester Civil Justice Centre
+      addressline2: Ground Floor
+      addressline3: 1 Bridge Street West
+      addressline4: PO Box 4240
+      town: Manchester
+      postcode: M60 1WJ
+    leeds:
+      name: Leeds Probate Registry
+      phone: 0113 389 6133
+      emailReplyToId: "leeds-emailReplyToId"
+      addressline1: York House
+      addressline2: York Place
+      town: Leeds
+      postcode: LS1 2BA
+    liverpool:
+      name: Liverpool Probate Registry
+      phone: 0151 236 8264
+      emailReplyToId: "liverpool-emailReplyToId"
+      addressline1: The Queen Elizabeth II Law Courts
+      addressline2: Derby Square
+      town: Liverpool
+      postcode: L2 1XA
+    brighton:
+      name: Brighton Probate Registry
+      phone: 01273 573510
+      emailReplyToId: "brighton-emailReplyToId"
+      addressline1: William Street
+      town: Brighton
+      postcode: BN2 0RF
+    london:
+      name: London Probate Department
+      phone: 020 7421 8509
+      emailReplyToId: "london-emailReplyToId"
+      addressline1: Principal Registry of the Family Division
+      addressline2: First Avenue House
+      addressline3: 42-49 High Holborn
+      town: London
+      postcode: WC1V 6NP
+    cardiff:
+      name: Probate Registry of Wales
+      phone: 02920 474373
+      emailReplyToId: "cardiff-emailReplyToId"
+      addressline1: 3rd Floor, Cardiff Magistrates’ Court
+      addressline2: Fitzalan Place
+      addressline3: Cardiff
+      town: South Wales
+      postcode: CF24 0RZ
+    newcastle:
+      name: Newcastle-Upon-Tyne Probate Registry
+      phone: 0191 211 2170
+      emailReplyToId: "newcastle-emailReplyToId"
+      addressline1: Newcastle DPR
+      addressline2: No 1 Waterloo Square
+      town: Newcastle-Upon-Tyne
+      postcode: NE1 4DR
+    winchester:
+      name: Winchester Probate Registry
+      phone: 01962 814100
+      emailReplyToId: "winchester-emailReplyToId"
+      addressline1: 1st Floor
+      addressline2: Southside Offices
+      addressline3: The Law Courts
+      addressline4: Winchester
+      town: Hampshire
+      postcode: S023 9EL
+    ctsc:
+      name: CTSC
+      phone: 0300 303 0648
+      emailReplyToId: "ctsc-emailReplyToId"
+      addressline1: Principal Registry of the Family Division
+      addressline2: HMCTS Probate
+      addressline3: PO Box 12625
+      town: Harlow
+      postcode: CM20 9QE
+    bristol:
+      name: Bristol District Probate Registry
+      phone: 02920 474373
+      emailReplyToId: "bristol-emailReplyToId"
+      addressline1: The Probate Registry of Wales
+      addressline2: Cardiff Magistrates' Court
+      addressline3: Fitzalan Place
+      town: Cardiff
+      postcode: CF24 0RZ
 
-auth.idam.client.baseUrl: http://localhost:4501
+auth.idam.client.baseUrl: http://localhost:5000
 
 core_case_data.api.url: http://localhost:4452
 
@@ -327,9 +344,6 @@ idam-s2s-auth:
       enabled: false
 
 excelaEmail: probatetest@gmail.com
-
-cron:
-  data_extract: "0 0 2 * * *"
 
 welsh:
   months:
