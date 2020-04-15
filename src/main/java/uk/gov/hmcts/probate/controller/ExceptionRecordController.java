@@ -65,7 +65,7 @@ public class ExceptionRecordController {
     })
     @PostMapping(path = "/transform-exception-record",
             consumes = APPLICATION_JSON_UTF8_VALUE, produces = APPLICATION_JSON_VALUE)
-    public ResponseEntity<SuccessfulTransformationResponse> transformExceptionRecord(@Valid @RequestBody ExceptionRecordRequest erRequest) {
+    public ResponseEntity<SuccessfulTransformationResponse> updateCase(@Valid @RequestBody ExceptionRecordRequest erRequest) {
 
         log.info("Transform exception record data for form type: {}", erRequest.getFormType());
         FormType.isFormTypeValid(erRequest.getFormType());
@@ -111,7 +111,7 @@ public class ExceptionRecordController {
     })
     @PostMapping(path = "/update-case",
             consumes = APPLICATION_JSON_UTF8_VALUE, produces = APPLICATION_JSON_VALUE)
-    public ResponseEntity<SuccessfulCaveatUpdateResponse> transformExceptionRecord(@Valid @RequestBody CaveatCaseUpdateRequest erCaseUpdateRequest) {
+    public ResponseEntity<SuccessfulCaveatUpdateResponse> updateCase(@Valid @RequestBody CaveatCaseUpdateRequest erCaseUpdateRequest) {
 
         logRequest(erCaseUpdateRequest);
         
@@ -119,12 +119,11 @@ public class ExceptionRecordController {
         log.info("Update case data from exception record for form type: {}", erRequest.getFormType());
         FormType.isFormTypeValid(erRequest.getFormType());
         FormType formType = FormType.valueOf(erRequest.getFormType());
-        SuccessfulCaveatUpdateResponse callbackResponse = SuccessfulCaveatUpdateResponse.builder().build();
-        List<String> warnings = new ArrayList<String>();
+        SuccessfulCaveatUpdateResponse callbackResponse;
 
         if (!erRequest.getJourneyClassification().name().equals(JourneyClassification.SUPPLEMENTARY_EVIDENCE_WITH_OCR.name())) {
-            log.error("This Exception Record can not be created as a case");
-            throw new OCRMappingException("This Exception Record can not be created as a caseg");
+            log.error("This Exception Record can not be created as a case update");
+            throw new OCRMappingException("This Exception Record can not be created as a case update");
         }
 
         log.info("Validation check passed, attempting to transform case for form-type {}", formType);

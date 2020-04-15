@@ -158,9 +158,6 @@ public class CaveatNotificationServiceTest {
 
     @Test
     public void testSolsCaveatRaise() throws NotificationClientException {
-        solsCaveatData = CaveatData.builder()
-                .build();
-
         documents.add(sentEmail);
 
         responseCaveatData = ResponseCaveatData.builder()
@@ -181,7 +178,7 @@ public class CaveatNotificationServiceTest {
 
         assertEquals(1, caveatCallbackResponse.getCaveatData().getNotificationsGenerated().size());
     }
-
+    
     @Test
     public void testCaveatRaiseWithEmail() throws NotificationClientException {
         caveatData = CaveatData.builder()
@@ -275,6 +272,66 @@ public class CaveatNotificationServiceTest {
 
         assertEquals(2, caveatCallbackResponse.getCaveatData().getNotificationsGenerated().size());
     }
+
+    @Test
+    public void testSolicitorCaveatRaiseWithEmail() throws NotificationClientException {
+        caveatData = CaveatData.builder()
+            .caveatRaisedEmailNotificationRequested("Yes")
+            .caveatorEmailAddress("caveator@email.com")
+            .applicationType(ApplicationType.SOLICITOR)
+            .build();
+
+        documents.add(sentEmail);
+
+        responseCaveatData = ResponseCaveatData.builder()
+            .notificationsGenerated(DOCUMENTS_LIST)
+            .build();
+
+        caveatDetails = new CaveatDetails(caveatData, LAST_MODIFIED, ID);
+        caveatCallbackRequest = new CaveatCallbackRequest(caveatDetails);
+
+        when(eventValidationService.validateCaveatRequest(any(CaveatCallbackRequest.class), any(List.class)))
+            .thenReturn(caveatCallbackResponse.builder().errors(new ArrayList<>()).build());
+        when(notificationService.sendCaveatEmail(State.CAVEAT_RAISED, caveatDetails)).thenReturn(Document.builder()
+            .documentFileName(SENT_EMAIL_FILE_NAME).build());
+
+        caveatCallbackResponse = CaveatCallbackResponse.builder().caveatData(responseCaveatData).build();
+        when(caveatCallbackResponseTransformer.caveatRaised(caveatCallbackRequest, documents, null)).thenReturn(caveatCallbackResponse);
+
+        caveatNotificationService.caveatRaise(caveatCallbackRequest);
+
+        assertEquals(1, caveatCallbackResponse.getCaveatData().getNotificationsGenerated().size());
+    }
+
+    @Test
+    public void testSolicitorCaveatRaiseWithNoEmail() throws NotificationClientException {
+        caveatData = CaveatData.builder()
+            .caveatRaisedEmailNotificationRequested("Yes")
+            .applicationType(ApplicationType.SOLICITOR)
+            .build();
+
+        documents.add(sentEmail);
+
+        responseCaveatData = ResponseCaveatData.builder()
+            .notificationsGenerated(DOCUMENTS_LIST)
+            .build();
+
+        caveatDetails = new CaveatDetails(caveatData, LAST_MODIFIED, ID);
+        caveatCallbackRequest = new CaveatCallbackRequest(caveatDetails);
+
+        when(eventValidationService.validateCaveatRequest(any(CaveatCallbackRequest.class), any(List.class)))
+            .thenReturn(caveatCallbackResponse.builder().errors(new ArrayList<>()).build());
+        when(notificationService.sendCaveatEmail(State.CAVEAT_RAISED, caveatDetails)).thenReturn(Document.builder()
+            .documentFileName(SENT_EMAIL_FILE_NAME).build());
+
+        caveatCallbackResponse = CaveatCallbackResponse.builder().caveatData(responseCaveatData).build();
+        when(caveatCallbackResponseTransformer.caveatRaised(caveatCallbackRequest, documents, null)).thenReturn(caveatCallbackResponse);
+
+        caveatNotificationService.caveatRaise(caveatCallbackRequest);
+
+        assertEquals(1, caveatCallbackResponse.getCaveatData().getNotificationsGenerated().size());
+    }
+
     @Test
     public void testCaveatExtendWithError() throws NotificationClientException {
         caveatData = CaveatData.builder()
