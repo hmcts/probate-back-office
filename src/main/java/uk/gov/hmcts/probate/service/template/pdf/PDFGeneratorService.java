@@ -39,11 +39,14 @@ public class PDFGeneratorService {
     public EvidenceManagementFileUpload generatePdf(DocumentType documentType, String pdfGenerationData) {
         byte[] postResult;
         try {
+            log.info("Generate pdf from template {}", documentType.getTemplateName());
             postResult = generateFromHtml(documentType.getTemplateName(), pdfGenerationData);
+            log.info("Generated from templates with bytes size {}", postResult.length);
         } catch (IOException | PDFServiceClientException e) {
             log.error(e.getMessage(), e);
             throw new ClientException(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage());
         }
+        log.info("Returning FileUpload obj");
         return new EvidenceManagementFileUpload(MediaType.APPLICATION_PDF, postResult);
     }
 

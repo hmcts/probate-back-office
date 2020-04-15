@@ -98,9 +98,11 @@ public class NotificationService {
         throws NotificationClientException {
 
         CaseData caseData = caseDetails.getData();
+        log.info("sendEmail for case: {}", caseDetails.getId());
         Registry registry = getRegistry(caseData.getRegistryLocation(), caseData.getLanguagePreference());
         String templateId = templateService.getTemplateId(state, caseData.getApplicationType(),
             caseData.getRegistryLocation(), caseData.getLanguagePreference());
+        log.info("Got templateId: {}", templateId);
         String emailReplyToId = registry.getEmailReplyToId();
         String emailAddress = getEmail(caseData);
         Map<String, Object> personalisation = grantOfRepresentationPersonalisationService.getPersonalisation(caseDetails,
@@ -114,7 +116,7 @@ public class NotificationService {
         if (caseData.getApplicationType().equals(ApplicationType.SOLICITOR)) {
             personalisation.replace(PERSONALISATION_APPLICANT_NAME, caseData.getSolsSOTName());
         }
-
+        log.info("Personlisation complete now get the email repsonse");
         SendEmailResponse response =
             getSendEmailResponse(state, templateId, emailReplyToId, emailAddress, personalisation, reference);
 
@@ -263,7 +265,7 @@ public class NotificationService {
     }
 
     private Document sendGrantNotificationEmail(ReturnedCaseDetails caseDetails, String templateId) throws NotificationClientException {
-
+ 
         Registry registry = registriesProperties.getRegistries().get(caseDetails.getData().getRegistryLocation().toLowerCase());
         Map<String, Object> personalisation = grantOfRepresentationPersonalisationService.getPersonalisation(caseDetails, registry);
         String reference = caseDetails.getData().getSolsSolicitorAppReference();
@@ -353,7 +355,6 @@ public class NotificationService {
                                                    String reference)
         throws NotificationClientException {
         SendEmailResponse response;
-
         switch (state) {
             case CASE_STOPPED:
             case CASE_STOPPED_CAVEAT:
@@ -364,6 +365,7 @@ public class NotificationService {
             default:
                 response = notificationClient.sendEmail(templateId, emailAddress, personalisation, reference);
         }
+        log.info("Return the SendEmailResponse: {} " , response );
         return response;
     }
 
