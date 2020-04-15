@@ -1,6 +1,7 @@
 package uk.gov.hmcts.probate.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.exception.BadRequestException;
@@ -18,6 +19,7 @@ import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
 
 import java.util.Optional;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class ReprintService {
@@ -45,6 +47,8 @@ public class ReprintService {
         String letterId = response != null ? response.letterId.toString() : null;
         String pdfSize = String.valueOf(Integer.parseInt(callbackRequest.getCaseDetails().getData().getReprintNumberOfCopies()) + 1);
 
+        log.info("Adding BP info for case={}, docType.template={}, letterId={}, pdfSize={}", callbackRequest.getCaseDetails().getId(),
+            selectedDocument.getDocumentType().getTemplateName(), letterId, pdfSize);
         return callbackResponseTransformer.addBulkPrintInformationForReprint(callbackRequest, selectedDocument, letterId, pdfSize);
     }
 
