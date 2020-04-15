@@ -61,6 +61,7 @@ import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_ADMON;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_INTESTACY;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE;
+import static uk.gov.hmcts.probate.model.DocumentType.OTHER;
 import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
 import static uk.gov.hmcts.probate.model.DocumentType.SOT_INFORMATION_REQUEST;
 import static uk.gov.hmcts.probate.model.DocumentType.STATEMENT_OF_TRUTH;
@@ -280,10 +281,11 @@ public class CallbackResponseTransformer {
             || documentTransformer.hasDocumentWithType(documents, ADMON_WILL_GRANT_REISSUE)
             || documentTransformer.hasDocumentWithType(documents, INTESTACY_GRANT_REISSUE)
             || documentTransformer.hasDocumentWithType(documents, STATEMENT_OF_TRUTH)
-            || documentTransformer.hasDocumentWithType(documents, WELSH_STATEMENT_OF_TRUTH)) {
+            || documentTransformer.hasDocumentWithType(documents, WELSH_STATEMENT_OF_TRUTH)
+            || documentTransformer.hasDocumentWithType(documents, DocumentType.OTHER)) {
             if (letterId != null) {
                 DocumentType[] documentTypes = {DIGITAL_GRANT_REISSUE, ADMON_WILL_GRANT_REISSUE, INTESTACY_GRANT_REISSUE,
-                    STATEMENT_OF_TRUTH, WELSH_STATEMENT_OF_TRUTH};
+                    STATEMENT_OF_TRUTH, WELSH_STATEMENT_OF_TRUTH, DocumentType.OTHER};
                 String templateName = getTemplateName(documents, documentTypes);
                 CollectionMember<BulkPrint> bulkPrint = buildBulkPrint(letterId, templateName);
                 appendToBulkPrintCollection(bulkPrint, caseData);
