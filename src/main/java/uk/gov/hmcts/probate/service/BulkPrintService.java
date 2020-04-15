@@ -57,7 +57,6 @@ public class BulkPrintService {
     private final List<BulkPrintValidationRule> bulkPrintValidationRules;
     private final DocumentTransformer documentTransformer;
 
-
     public SendLetterResponse sendToBulkPrintForGrant(CallbackRequest callbackRequest, Document grantDocument,
                                                       Document letterOfGrantIssuedState, Document coverSheet) {
         return sendToBulkPrint(callbackRequest, grantDocument, letterOfGrantIssuedState, coverSheet, false);

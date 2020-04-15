@@ -25,6 +25,7 @@
     "security_classification": "PUBLIC",
     "case_data": {
       "otherExecutorExists": "No",
+      "languagePreferenceWelsh": "No",
       "outsideUKGrantCopies": null,
       "applicationType": "Solicitor",
       "deceasedAddress": {

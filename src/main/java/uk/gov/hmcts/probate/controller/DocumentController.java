@@ -116,7 +116,7 @@ public class DocumentController {
         String letterId = null;
 
         List<Document> documents = new ArrayList<>();
-        Document letter = documentGeneratorService.generateLetter(callbackRequest, true);
+        Document letter = documentGeneratorService.generateLetter(callbackRequest,true);
         Document coversheet = documentGeneratorService.generateCoversheet(callbackRequest);
 
         documents.add(letter);

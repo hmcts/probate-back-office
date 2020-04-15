@@ -26,6 +26,7 @@
     "case_data": {
       "dateOfDeathType" : null,
       "otherExecutorExists": "No",
+      "languagePreferenceWelsh": "No",
       "outsideUKGrantCopies": null,
       "boSendToBulkPrint": "No",
       "applicationType": "Solicitor",

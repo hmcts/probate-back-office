@@ -1,10 +1,8 @@
 package uk.gov.hmcts.probate.service;
 
-import com.google.common.collect.ImmutableMap;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
 import uk.gov.hmcts.probate.model.DocumentType;
@@ -22,23 +20,18 @@ import uk.gov.hmcts.probate.validator.EmailAddressNotifyApplicantValidationRule;
 import uk.gov.hmcts.reform.probate.model.ProbateDocument;
 import uk.gov.hmcts.reform.probate.model.ProbateDocumentLink;
 import uk.gov.hmcts.reform.probate.model.ProbateDocumentType;
-import uk.gov.hmcts.reform.probate.model.ProbateType;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData;
-import uk.gov.hmcts.reform.probate.model.forms.Form;
 import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
 import uk.gov.service.notify.NotificationClientException;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.function.Function;
 
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 import static uk.gov.hmcts.probate.model.ccd.EventId.SCHEDULED_UPDATE_GRANT_AWAITING_DOCUMENTATION_NOTIFICATION_SENT;
 import static uk.gov.hmcts.probate.model.ccd.EventId.SCHEDULED_UPDATE_GRANT_DELAY_NOTIFICATION_SENT;
-import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.Constants.EDGE_CASE_NAME;
 
 @Slf4j
 @Service
