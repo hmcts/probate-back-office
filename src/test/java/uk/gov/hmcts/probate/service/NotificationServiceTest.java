@@ -51,6 +51,7 @@ import uk.gov.service.notify.SendEmailResponse;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -1660,6 +1661,43 @@ public class NotificationServiceTest {
 
         notificationService.startAwaitingDocumentationNotificationPeriod(caseDetails);
         assertEquals(LocalDate.now().plusDays(1), caseDetails.getData().getGrantAwaitingDocumentationNotificationDate());
+
+    }
+
+    @Test
+    public void shouldSetScheduledStartGrantAwaitingDocsNotificationPeriodForEmptyScannedDocs() {
+        CaseDetails caseDetails =
+            new CaseDetails(CaseData.builder()
+                .caseType("gop")
+                .applicationType(SOLICITOR)
+                .primaryApplicantEmailAddress("")
+                .registryLocation("Bristol")
+                .evidenceHandled(Constants.NO)
+                .scannedDocuments(new ArrayList())
+                .build(),
+                LAST_MODIFIED, CASE_ID);
+
+        notificationService.startAwaitingDocumentationNotificationPeriod(caseDetails);
+        assertEquals(LocalDate.now().plusDays(1), caseDetails.getData().getGrantAwaitingDocumentationNotificationDate());
+
+    }
+
+    @Test
+    public void shouldNotSetScheduledStartGrantAwaitingDocsNotificationPeriodForCaseWithScannedDocs() {
+        CollectionMember<ScannedDocument> collectionMember = new CollectionMember<>(null, ScannedDocument.builder().build());
+        CaseDetails caseDetails =
+            new CaseDetails(CaseData.builder()
+                .caseType("gop")
+                .applicationType(SOLICITOR)
+                .primaryApplicantEmailAddress("")
+                .registryLocation("Bristol")
+                .evidenceHandled(Constants.NO)
+                .scannedDocuments(Arrays.asList(collectionMember))
+                .build(),
+                LAST_MODIFIED, CASE_ID);
+
+        notificationService.startAwaitingDocumentationNotificationPeriod(caseDetails);
+        assertEquals(null, caseDetails.getData().getGrantAwaitingDocumentationNotificationDate());
 
     }
 

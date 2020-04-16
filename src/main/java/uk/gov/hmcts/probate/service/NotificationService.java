@@ -315,8 +315,11 @@ public class NotificationService {
 
         CaseData caseData = caseDetails.getData();
         LocalDate grantDelayedNotificationReleaseLocalDate = LocalDate.parse(grantDelayedNotificationReleaseDate, RELEASE_DATE_FORMAT);
-        if (!LocalDate.now().isBefore(grantDelayedNotificationReleaseLocalDate)) {
-            caseData.setGrantAwaitingDocumentationNotificationDate(LocalDate.now().plusDays(grantAwaitingDocumentationNotificationPeriodDays));
+        if (!LocalDate.now().isBefore(grantDelayedNotificationReleaseLocalDate)
+            && (caseData.getScannedDocuments() == null || caseData.getScannedDocuments().isEmpty())) {
+            LocalDate notificationDate = LocalDate.now().plusDays(grantAwaitingDocumentationNotificationPeriodDays);
+            log.info("Setting grantAwaitingDocumentationNotificationDate {} for case {}", notificationDate.toString(), caseDetails.getId());
+            caseData.setGrantAwaitingDocumentationNotificationDate(notificationDate);
         }
     }
 
@@ -325,6 +328,7 @@ public class NotificationService {
         CaseData caseData = caseDetails.getData();
         LocalDate grantDelayedNotificationReleaseLocalDate = LocalDate.parse(grantDelayedNotificationReleaseDate, RELEASE_DATE_FORMAT);
         if (!LocalDate.now().isBefore(grantDelayedNotificationReleaseLocalDate)) {
+            log.info("Resetting grantAwaitingDocumentationNotificationDate to null for case {}", caseDetails.getId());
             caseData.setGrantAwaitingDocumentationNotificationDate(null);
         }
     }
