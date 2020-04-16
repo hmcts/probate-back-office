@@ -160,11 +160,13 @@ public class DocumentController {
         Document coverSheet = pdfManagementService.generateAndUpload(callbackRequest, DocumentType.GRANT_COVER);
         log.info("Generated and Uploaded cover document with template {} for the case id {}",
                 DocumentType.GRANT_COVER.getTemplateName(), callbackRequest.getCaseDetails().getId().toString());
-
+        Document letterOfGrantIssuedState = null;
         String letterId = null;
         String pdfSize = null;
         if (caseData.isSendForBulkPrintingRequested() && !EDGE_CASE_NAME.equals(caseData.getCaseType())) {
-            SendLetterResponse response = bulkPrintService.sendToBulkPrintForGrant(callbackRequest, digitalGrantDocument, coverSheet);
+            letterOfGrantIssuedState = getLetterOfGrantIssuedState(callbackRequest);
+            SendLetterResponse response = bulkPrintService.sendToBulkPrintForGrant(callbackRequest,
+                    digitalGrantDocument, letterOfGrantIssuedState, coverSheet);
             letterId = response != null
                     ? response.letterId.toString()
                     : null;
@@ -179,7 +181,9 @@ public class DocumentController {
         List<Document> documents = new ArrayList<>();
         documents.add(digitalGrantDocument);
         documents.add(coverSheet);
-
+        if(letterOfGrantIssuedState != null){
+            documents.add(letterOfGrantIssuedState);
+        }
         if (caseData.isGrantIssuedEmailNotificationRequested()) {
             callbackResponse = eventValidationService.validateEmailRequest(callbackRequest, emailAddressNotificationValidationRules);
             if (callbackResponse.getErrors().isEmpty()) {
@@ -192,6 +196,21 @@ public class DocumentController {
         }
 
         return ResponseEntity.ok(callbackResponse);
+    }
+
+    private Document getLetterOfGrantIssuedState(@RequestBody @Validated({EmailAddressNotificationValidationRule.class, BulkPrintValidationRule.class})
+                                                         CallbackRequest callbackRequest) {
+        CaseDetails caseDetails =  callbackRequest.getCaseDetails();
+        CaseData caseData =  caseDetails.getData();
+        Document letterOfGrantIssuedState=null;
+        if (!caseDetails.getData().isLanguagePreferenceWelsh() && grantState.apply(caseData.getCaseType()).equals(GRANT_ISSUED)) {
+            letterOfGrantIssuedState = documentGeneratorService.generateLetterOfGrantDelay(callbackRequest,
+                    DocumentType.LETTER_OF_GRANT_ISSUED_STATE);
+        } else if (!caseDetails.getData().isLanguagePreferenceWelsh() && grantState.apply(caseData.getCaseType()).equals(GRANT_ISSUED_INTESTACY)) {
+            letterOfGrantIssuedState = documentGeneratorService.generateLetterOfGrantDelay(callbackRequest,
+                    DocumentType.LETTER_OF_GRANT_ISSUED_INTESTACY);
+        }
+        return letterOfGrantIssuedState;
     }
 
     private String getPdfSize(@Valid CaseData caseData) {
@@ -268,12 +287,12 @@ public class DocumentController {
         return ResponseEntity.ok(callbackResponseTransformer.addSOTDocument(callbackRequest,
                 documentGeneratorService.generateSoT(callbackRequest)));
     }
-    
+
     @PostMapping(path = "/default-reprint-values", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<CallbackResponse> defaultReprintValues(@RequestBody CallbackRequest callbackRequest) {
         return ResponseEntity.ok(callbackResponseTransformer.transformCaseForReprint(callbackRequest));
     }
-    
+
     @PostMapping(path = "/reprint", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<CallbackResponse> reprint(@RequestBody CallbackRequest callbackRequest) {
         return ResponseEntity.ok(reprintService.reprintSelectedDocument(callbackRequest));
