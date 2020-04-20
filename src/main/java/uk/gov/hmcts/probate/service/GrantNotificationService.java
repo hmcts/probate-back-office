@@ -3,15 +3,18 @@ package uk.gov.hmcts.probate.service;
 import com.google.common.collect.ImmutableMap;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
+import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.GrantScheduleResponse;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
 import uk.gov.hmcts.probate.model.ccd.CcdCaseType;
 import uk.gov.hmcts.probate.model.ccd.EventId;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.service.ccd.CcdClientApi;
@@ -22,8 +25,10 @@ import uk.gov.hmcts.reform.probate.model.ProbateDocumentType;
 import uk.gov.hmcts.reform.probate.model.ProbateType;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData;
 import uk.gov.hmcts.reform.probate.model.forms.Form;
+import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
 import uk.gov.service.notify.NotificationClientException;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -39,11 +44,14 @@ import static uk.gov.hmcts.probate.model.ccd.EventId.SCHEDULED_UPDATE_GRANT_DELA
 @RequiredArgsConstructor
 public class GrantNotificationService {
 
+    @Autowired
+    private final DocumentGeneratorService documentGeneratorService;
     private final NotificationService notificationService;
     private final EmailAddressNotifyApplicantValidationRule emailAddressNotifyApplicantValidationRule;
     private final CaseQueryService caseQueryService;
     private final CcdClientApi ccdClientApi;
     private final SecurityUtils securityUtils;
+    private final BulkPrintService bulkPrintService;
 
     public GrantScheduleResponse handleGrantDelayedNotification(String date) {
         List<String> delayedRepsonseData = new ArrayList<>();
@@ -74,8 +82,28 @@ public class GrantNotificationService {
         List<FieldErrorResponse> emailErrors = emailAddressNotifyApplicantValidationRule.validate(dataForEmailAddress);
         String caseId = foundCase.getId().toString();
         if (!emailErrors.isEmpty()) {
-            log.error("Cannot send Grant Delayed notification, for email validation errors: {}", emailErrors.get(0).getMessage());
-            return getErroredCaseIdentifier(caseId, emailErrors.get(0).getMessage());
+            log.info("Cannot send Grant Delayed notification, for email validation errors: {}",
+                    emailErrors.get(0).getMessage());
+            Document letterOfGrantDelay = null;
+            Document coverSheet = null;
+            String letterId = null;
+            String  pdfSize = null;
+            if (foundCase.getData().isSendForBulkPrintingRequested()){
+                coverSheet  = documentGeneratorService.generateLetterOfGrantDelay(foundCase,
+                        DocumentType.GRANT_COVER);
+                letterOfGrantDelay = documentGeneratorService.generateLetterOfGrantDelay(foundCase,
+                        DocumentType.LETTER_OF_GRANT_DELAY);
+                SendLetterResponse response = bulkPrintService.sendToBulkPrintForGrantDelay(foundCase, letterOfGrantDelay, coverSheet);
+                letterId = response != null
+                        ? response.letterId.toString()
+                        : null;
+                pdfSize = getPdfSize(foundCase.getData());
+                updateFoundCase(foundCase, letterOfGrantDelay, sentEvent, false,
+                        false, letterId, pdfSize);
+            }
+            else {
+                return getErroredCaseIdentifier(caseId, emailErrors.get(0).getMessage());
+            }
         }
 
         try {
@@ -97,7 +125,8 @@ public class GrantNotificationService {
             } else {
                 throw new RuntimeException("EventId not recognised for sending email");
             }
-            updateFoundCase(foundCase, emailDocument, sentEvent, grantDelayedNotificationSent, grantAwaitingDocumentatioNotificationSent);
+            updateFoundCase(foundCase, emailDocument, sentEvent, grantDelayedNotificationSent,
+                    grantAwaitingDocumentatioNotificationSent, null, null);
         } catch (NotificationClientException e) {
             log.error("Error sending email for Grant Delayed with exception: {}. Has message: {}", e.getClass(), e.getMessage());
             caseId = getErroredCaseIdentifier(caseId, e.getMessage());
@@ -126,13 +155,15 @@ public class GrantNotificationService {
     }
 
     private void updateFoundCase(ReturnedCaseDetails foundCase, Document emailDocument, EventId sentEvent, Boolean grantDelayedNotificationSent,
-                                 Boolean grantAwaitingDocumentatioNotificationSent) {
+                                 Boolean grantAwaitingDocumentatioNotificationSent, String letterId, String pdfSize) {
         log.info("Updating case for grant delayed, caseId: {}", foundCase.getId());
 
         GrantOfRepresentationData grantOfRepresentationData = GrantOfRepresentationData.builder()
             .grantDelayedNotificationSent(grantDelayedNotificationSent)
             .grantAwaitingDocumentatioNotificationSent(grantAwaitingDocumentatioNotificationSent)
             .grantDelayedNotificationIdentified(FALSE)
+            .bulkPrintSendLetterId(letterId)
+            .bulkPrintPdfSize(pdfSize)
             .probateNotificationsGenerated(getProbateDocuments(emailDocument, foundCase.getData().getProbateDocumentsGenerated()))
             .build();
         ccdClientApi.updateCaseAsCaseworker(CcdCaseType.GRANT_OF_REPRESENTATION, foundCase.getId().toString(),
@@ -166,5 +197,15 @@ public class GrantNotificationService {
             .documentType(probateDocumentType)
             .build();
 
+    }
+
+    private String getPdfSize(@Valid CaseData caseData) {
+        String pdfSize;
+        if (caseData.getExtraCopiesOfGrant() != null) {
+            pdfSize = String.valueOf(caseData.getExtraCopiesOfGrant() + 2);
+        } else {
+            pdfSize = String.valueOf(2);
+        }
+        return pdfSize;
     }
 }

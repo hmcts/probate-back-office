@@ -13,6 +13,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
+import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 import uk.gov.hmcts.probate.service.docmosis.DocumentTemplateService;
 import uk.gov.hmcts.probate.service.docmosis.GenericMapperService;
 import uk.gov.hmcts.probate.service.docmosis.PreviewLetterService;
@@ -165,6 +166,12 @@ public class DocumentGeneratorService {
         }
 
         return statementOfTruth;
+    }
+
+    public Document generateLetterOfGrantDelay(ReturnedCaseDetails foundCase, DocumentType documentType) {
+        Map<String, Object> placeholders = genericMapperService.addCaseDataWithRegistryProperties(foundCase);
+        return pdfManagementService.generateDocmosisDocumentAndUpload(placeholders,
+                documentType);
     }
 
     public Document generateLetter(CallbackRequest callbackRequest, boolean forFinal) {

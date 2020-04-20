@@ -129,7 +129,10 @@ public enum DocumentType {
     WELSH_INTESTACY_GRANT_DRAFT("welshIntestacyGrantDraft"),
 
     @JsonProperty("welshIntestacyGrant")
-    WELSH_INTESTACY_GRANT("welshIntestacyGrant");
+    WELSH_INTESTACY_GRANT("welshIntestacyGrant"),
+
+    @JsonProperty("letterOfGrantDelay")
+    LETTER_OF_GRANT_DELAY("letterOfGrantDelay");
 
     private final String templateName;
 

@@ -12,6 +12,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
+import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 import uk.gov.hmcts.probate.service.FileSystemResourceService;
 
 import java.math.BigDecimal;
@@ -96,7 +97,7 @@ public class GenericMapperServiceTest {
     private CallbackRequest callbackRequest;
     private Map<String, Object> images = new HashMap<>();
     private Registry registry = new Registry();
-
+    private ReturnedCaseDetails returnedCaseDetails;
 
     @Mock
     private RegistriesProperties registriesProperties;
@@ -158,6 +159,8 @@ public class GenericMapperServiceTest {
         when(fileSystemResourceService.getFileFromResourceAsString(CREST_FILE_PATH)).thenReturn("Crest");
         when(fileSystemResourceService.getFileFromResourceAsString(SEAL_FILE_PATH)).thenReturn("Seal");
         when(fileSystemResourceService.getFileFromResourceAsString(WATERMARK_FILE_PATH)).thenReturn("Watermark");
+
+        returnedCaseDetails = new ReturnedCaseDetails(caseData, null, Long.valueOf(1));
     }
 
     @Test
@@ -170,13 +173,24 @@ public class GenericMapperServiceTest {
     }
 
     @Test
-    public void testRegistryMappedSuccessfully() {
+    public void addCaseDataWithRegistryProperties() {
         Map<String, Object> returnedMap =
                 genericMapperService.addCaseDataWithRegistryProperties(callbackRequest.getCaseDetails());
         expectedMappedRegistries().keySet().stream()
                 .forEach((key) -> {
                     assertEquals(expectedMappedRegistries().get(key), ((Map) returnedMap.get("registry")).get(key));
                 });
+    }
+
+    @Test
+    public void testRegistryMappedSuccessfully() {
+        Map<String, Object> returnedMap =
+                genericMapperService.addCaseDataWithRegistryProperties(returnedCaseDetails);
+        expectedMappedRegistries().keySet().stream()
+                .forEach((key) -> {
+                    assertEquals(expectedMappedRegistries().get(key), ((Map) returnedMap.get("registry")).get(key));
+                });
+        assertEquals("1", returnedMap.get("gorCaseReference").toString());
     }
 
     @Test

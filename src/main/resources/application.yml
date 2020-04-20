@@ -99,6 +99,8 @@ docmosis:
       templateName: FL-PRB-GRP-WEL-00226.doc
     welshAdmonWillGrantDraft:
       templateName: FL-PRB-GRP-WEL-00226.doc
+    letterOfGrantDelay:
+      templateName: FL-PRB-GRP-ENG-00321.docx
 
 fee.api:
   url: http://localhost:4411
@@ -397,7 +399,7 @@ registry:
       addressline3: Cardiff
       town: South Wales
       postcode: CF24 0RZ
-      
+
 document:
   retriever:
     service:

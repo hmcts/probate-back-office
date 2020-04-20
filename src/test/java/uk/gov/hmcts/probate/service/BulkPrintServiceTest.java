@@ -22,6 +22,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
+import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
 import uk.gov.hmcts.probate.service.client.DocumentStoreClient;
@@ -705,10 +706,10 @@ public class BulkPrintServiceTest {
         assertNotNull(response);
         assertThat(response.letterId, is(uuid));
     }
-    
-    @Captor 
+
+    @Captor
     private ArgumentCaptor<LetterV3> letterV3ArgumentCaptor;
-    
+
     @Test
     public void shouldSendToBulkPrintForReprint() {
 
@@ -851,7 +852,7 @@ public class BulkPrintServiceTest {
             .data(responseCaseData)
             .errors(errors)
             .build();
-        
+
         when(sendLetterApiMock.sendLetter(anyString(), any(LetterV3.class))).thenReturn(sendLetterResponse);
         when(eventValidationService.validateBulkPrintResponse(eq(uuid.toString()), any())).thenReturn(callbackResponse);
 
@@ -859,5 +860,48 @@ public class BulkPrintServiceTest {
 
         assertThatThrownBy(() -> bulkPrintService.sendDocumentsForReprint(callbackRequest, grant, coverSheet))
             .isInstanceOf(BulkPrintException.class).hasMessage("Bulk print send letter for reprint response is null for: 0");
+    }
+
+    @Test
+    public void sendToBulkPrintForGrantDelay() {
+
+        SolsAddress address = SolsAddress.builder().addressLine1("Address 1")
+                .addressLine2("Address 2")
+                .postCode("EC2")
+                .country("UK")
+                .build();
+        CaseData caseData = CaseData.builder()
+                .primaryApplicantForenames("first")
+                .primaryApplicantSurname("last")
+                .primaryApplicantAddress(address)
+                .build();
+
+        ReturnedCaseDetails returnedCaseDetails = new ReturnedCaseDetails(caseData, null, Long.valueOf(1));
+        DocumentLink documentLink = DocumentLink.builder()
+                .documentUrl("http://localhost")
+                .build();
+        Document letterOfGrantDelayed = Document.builder()
+                .documentFileName("letterOfGrantIssuedState.pdf")
+                .documentGeneratedBy("letterOfGrantIssuedState")
+                .documentType(DocumentType.LETTER_OF_GRANT_DELAY)
+                .documentDateAdded(LocalDate.now())
+                .documentLink(documentLink)
+                .build();
+        Document coverSheet = Document.builder()
+                .documentFileName("test.pdf")
+                .documentGeneratedBy("test")
+                .documentDateAdded(LocalDate.now())
+                .documentLink(documentLink)
+                .build();
+        UUID uuid = UUID.randomUUID();
+        SendLetterResponse sendLetterResponse = new SendLetterResponse(uuid);
+        when(sendLetterApiMock.sendLetter(anyString(), any(LetterV3.class))).thenReturn(sendLetterResponse);
+        SendLetterResponse response = bulkPrintService.sendToBulkPrintForGrantDelay(returnedCaseDetails,
+                letterOfGrantDelayed, coverSheet);
+
+        verify(sendLetterApiMock).sendLetter(anyString(), any(LetterV3.class));
+
+        assertNotNull(response);
+        assertThat(response.letterId, is(uuid));
     }
 }

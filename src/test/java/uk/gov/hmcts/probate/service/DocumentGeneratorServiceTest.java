@@ -1,5 +1,7 @@
 package uk.gov.hmcts.probate.service;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
@@ -27,6 +29,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
+import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 import uk.gov.hmcts.probate.service.docmosis.DocumentTemplateService;
 import uk.gov.hmcts.probate.service.docmosis.GenericMapperService;
 import uk.gov.hmcts.probate.service.docmosis.PreviewLetterService;
@@ -65,6 +68,7 @@ public class DocumentGeneratorServiceTest {
     private CallbackRequest callbackRequestSolsAdmon;
     private CallbackRequest callbackRequestSolsIntestacy;
     private Map<String, Object> expectedMap;
+    private ReturnedCaseDetails returnedCaseDetail;
 
     @InjectMocks
     private DocumentGeneratorService documentGeneratorService;
@@ -94,6 +98,26 @@ public class DocumentGeneratorServiceTest {
     public void setup() {
         MockitoAnnotations.initMocks(this);
 
+        CaseData caseData = CaseData.builder()
+                .deceasedForenames("Nigel")
+                .deceasedSurname("Deadsoul")
+                .deceasedDateOfDeath(LocalDate.of(2015, 1, 1))
+                .deceasedDateOfBirth(LocalDate.of(1990, 1, 1))
+
+                .boDeceasedTitle("Mr")
+                .primaryApplicantIsApplying("Yes")
+                .primaryApplicantForenames("Tim")
+                .primaryApplicantSurname("Timson")
+
+                .ihtGrossValue(new BigDecimal(new BigInteger("8899"), 0))
+                .ihtNetValue(new BigDecimal(new BigInteger("7787"), 0))
+                .caseType("gop")
+                .registryLocation("Oxford")
+                .grantIssuedDate("2019-02-18")
+                .solsSOTName("John Thesolicitor")
+                .applicationType(ApplicationType.PERSONAL)
+                .build();
+        returnedCaseDetail = new ReturnedCaseDetails(caseData, null, Long.valueOf(1));
         Registry registry = new Registry();
         registry.setPhone("01010101010101");
         registry.setAddressLine1("addressLine1");
@@ -164,7 +188,7 @@ public class DocumentGeneratorServiceTest {
 
         when(genericMapperService.addCaseData(caseDetails.getData())).thenReturn(expectedMap);
         when(genericMapperService.addCaseDataWithRegistryProperties(caseDetails)).thenReturn(expectedMap);
-
+        when(genericMapperService.addCaseDataWithRegistryProperties(returnedCaseDetail)).thenReturn(expectedMap);
         when(previewLetterService.addLetterData(caseDetails)).thenReturn(expectedMap);
 
     }
@@ -494,6 +518,14 @@ public class DocumentGeneratorServiceTest {
                 .thenReturn(Document.builder().documentType(DocumentType.ASSEMBLED_LETTER).build());
         assertEquals(Document.builder().documentType(DocumentType.ASSEMBLED_LETTER).build(),
                 documentGeneratorService.generateLetter(callbackRequest, true));
+    }
+
+    @Test
+    public void generateLetterOfGrantDelay() {
+        when(pdfManagementService.generateDocmosisDocumentAndUpload(expectedMap, DocumentType.LETTER_OF_GRANT_DELAY))
+                .thenReturn(Document.builder().documentType(DocumentType.LETTER_OF_GRANT_DELAY).build());
+        assertEquals(Document.builder().documentType(DocumentType.LETTER_OF_GRANT_DELAY).build(),
+                documentGeneratorService.generateLetterOfGrantDelay(returnedCaseDetail, DocumentType.LETTER_OF_GRANT_DELAY));
     }
 
     @Test
