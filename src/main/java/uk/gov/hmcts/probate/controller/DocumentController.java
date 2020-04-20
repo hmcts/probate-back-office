@@ -160,13 +160,13 @@ public class DocumentController {
         Document coverSheet = pdfManagementService.generateAndUpload(callbackRequest, DocumentType.GRANT_COVER);
         log.info("Generated and Uploaded cover document with template {} for the case id {}",
                 DocumentType.GRANT_COVER.getTemplateName(), callbackRequest.getCaseDetails().getId().toString());
-        Document letterOfGrantIssuedState = null;
+        Document letter = null;
         String letterId = null;
         String pdfSize = null;
         if (caseData.isSendForBulkPrintingRequested() && !EDGE_CASE_NAME.equals(caseData.getCaseType())) {
-            letterOfGrantIssuedState = getLetterOfGrantIssuedState(callbackRequest);
-            SendLetterResponse response = bulkPrintService.sendToBulkPrintForGrant(callbackRequest,
-                    digitalGrantDocument, letterOfGrantIssuedState, coverSheet);
+            letter = generateDocument(callbackRequest);
+            SendLetterResponse response = bulkPrintService.sendToBulkPrintForLetterOfGrantIssued(callbackRequest,
+                    digitalGrantDocument, letter, coverSheet);
             letterId = response != null
                     ? response.letterId.toString()
                     : null;
@@ -181,9 +181,10 @@ public class DocumentController {
         List<Document> documents = new ArrayList<>();
         documents.add(digitalGrantDocument);
         documents.add(coverSheet);
-        if(letterOfGrantIssuedState != null){
-            documents.add(letterOfGrantIssuedState);
+        if(letter != null){
+            documents.add(letter);
         }
+
         if (caseData.isGrantIssuedEmailNotificationRequested()) {
             callbackResponse = eventValidationService.validateEmailRequest(callbackRequest, emailAddressNotificationValidationRules);
             if (callbackResponse.getErrors().isEmpty()) {
@@ -198,19 +199,19 @@ public class DocumentController {
         return ResponseEntity.ok(callbackResponse);
     }
 
-    private Document getLetterOfGrantIssuedState(@RequestBody @Validated({EmailAddressNotificationValidationRule.class, BulkPrintValidationRule.class})
-                                                         CallbackRequest callbackRequest) {
+    private Document generateDocument(@RequestBody @Validated({EmailAddressNotificationValidationRule.class,
+            BulkPrintValidationRule.class}) CallbackRequest callbackRequest) {
         CaseDetails caseDetails =  callbackRequest.getCaseDetails();
         CaseData caseData =  caseDetails.getData();
-        Document letterOfGrantIssuedState=null;
+        Document letter =null;
         if (!caseDetails.getData().isLanguagePreferenceWelsh() && grantState.apply(caseData.getCaseType()).equals(GRANT_ISSUED)) {
-            letterOfGrantIssuedState = documentGeneratorService.generateLetterOfGrantDelay(callbackRequest,
-                    DocumentType.LETTER_OF_GRANT_ISSUED_STATE);
+            letter = documentGeneratorService.generateLetterOfGrantDelay(callbackRequest,
+                    DocumentType.LETTER_OF_GRANT_ISSUED);
         } else if (!caseDetails.getData().isLanguagePreferenceWelsh() && grantState.apply(caseData.getCaseType()).equals(GRANT_ISSUED_INTESTACY)) {
-            letterOfGrantIssuedState = documentGeneratorService.generateLetterOfGrantDelay(callbackRequest,
+            letter = documentGeneratorService.generateLetterOfGrantDelay(callbackRequest,
                     DocumentType.LETTER_OF_GRANT_ISSUED_INTESTACY);
         }
-        return letterOfGrantIssuedState;
+        return letter;
     }
 
     private String getPdfSize(@Valid CaseData caseData) {

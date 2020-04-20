@@ -131,8 +131,8 @@ public enum DocumentType {
     @JsonProperty("welshIntestacyGrant")
     WELSH_INTESTACY_GRANT("welshIntestacyGrant"),
 
-    @JsonProperty("letterOfGrantIssuedState")
-    LETTER_OF_GRANT_ISSUED_STATE("letterOfGrantIssuedState"),
+    @JsonProperty("letterOfGrantIssued")
+    LETTER_OF_GRANT_ISSUED("letterOfGrantIssued"),
 
     @JsonProperty("letterOfGrantIssuedIntestacy")
     LETTER_OF_GRANT_ISSUED_INTESTACY("letterOfGrantIssuedIntestacy");

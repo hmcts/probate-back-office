@@ -177,7 +177,7 @@ public class DocumentControllerTest {
         when(documentGeneratorService.generateLetter(any(CallbackRequest.class), eq(false))).thenReturn(letter);
 
         SendLetterResponse sendLetterResponse = new SendLetterResponse(UUID.randomUUID());
-        when(bulkPrintService.sendToBulkPrintForGrant(any(CallbackRequest.class), any(Document.class),
+        when(bulkPrintService.sendToBulkPrintForLetterOfGrantIssued (any(CallbackRequest.class), any(Document.class),
                 any(Document.class), any(Document.class))).thenReturn(sendLetterResponse);
 
         when(bulkPrintService.optionallySendToBulkPrint(any(CallbackRequest.class), any(Document.class),
@@ -230,7 +230,7 @@ public class DocumentControllerTest {
     @Test
     public void generateDigitalGrantWithBulkPrint() throws Exception {
         final Document letter = Document.builder()
-                .documentType(DocumentType.LETTER_OF_GRANT_ISSUED_STATE)
+                .documentType(DocumentType.LETTER_OF_GRANT_ISSUED)
                 .documentDateAdded(LocalDate.now())
                 .documentFileName("test")
                 .documentGeneratedBy("test")
@@ -239,7 +239,7 @@ public class DocumentControllerTest {
         when(documentGeneratorService.getDocument(any(CallbackRequest.class),  eq(DocumentStatus.FINAL), eq(DocumentIssueType.GRANT)))
                 .thenReturn(Document.builder().documentType(DIGITAL_GRANT).build());
         when(documentGeneratorService.generateLetterOfGrantDelay(any(CallbackRequest.class),
-                eq(DocumentType.LETTER_OF_GRANT_ISSUED_STATE)))
+                eq(DocumentType.LETTER_OF_GRANT_ISSUED)))
                 .thenReturn(letter);
 
         String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadNotificationsBulkPrint.json");
@@ -251,7 +251,7 @@ public class DocumentControllerTest {
                 .andExpect(jsonPath("$.data.probateDocumentsGenerated[1].value.DocumentType", is(DIGITAL_GRANT.getTemplateName())))
                 .andReturn();
 
-        verify(bulkPrintService).sendToBulkPrintForGrant(any(CallbackRequest.class), any(Document.class),
+        verify(bulkPrintService).sendToBulkPrintForLetterOfGrantIssued(any(CallbackRequest.class), any(Document.class),
                 any(Document.class), any(Document.class));
     }
 
@@ -658,7 +658,7 @@ public class DocumentControllerTest {
     @Test
     public void generateDigitalGrantIntestacyWithBulkPrint() throws Exception {
         final Document letter = Document.builder()
-                .documentType(DocumentType.ASSEMBLED_LETTER)
+                .documentType(DocumentType.LETTER_OF_GRANT_ISSUED_INTESTACY)
                 .documentDateAdded(LocalDate.now())
                 .documentFileName("test")
                 .documentGeneratedBy("test")
@@ -681,7 +681,7 @@ public class DocumentControllerTest {
                         is(INTESTACY_GRANT.getTemplateName())))
                 .andReturn();
 
-        verify(bulkPrintService).sendToBulkPrintForGrant(any(CallbackRequest.class), any(Document.class),
+        verify(bulkPrintService).sendToBulkPrintForLetterOfGrantIssued(any(CallbackRequest.class), any(Document.class),
                 any(Document.class), any(Document.class));
     }
     private Matcher<String> doesNotContainString(String s) {
