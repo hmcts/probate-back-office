@@ -48,6 +48,7 @@ import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE;
 import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
 import static uk.gov.hmcts.probate.model.DocumentType.SOT_INFORMATION_REQUEST;
 import static uk.gov.hmcts.probate.model.DocumentType.STATEMENT_OF_TRUTH;
+import static uk.gov.hmcts.probate.model.DocumentType.WELSH_STATEMENT_OF_TRUTH;
 import static uk.gov.hmcts.probate.model.DocumentType.WILL_LODGEMENT_DEPOSIT_RECEIPT;
 
 public class DocumentTransformerTest {
@@ -340,6 +341,15 @@ public class DocumentTransformerTest {
         assertTrue(callbackRequest.getCaseDetails().getData().getProbateSotDocumentsGenerated().isEmpty());
 
         documentTransformer.addDocument(callbackRequest, Document.builder().documentType(STATEMENT_OF_TRUTH).build(), false);
+
+        assertEquals(1, callbackRequest.getCaseDetails().getData().getProbateSotDocumentsGenerated().size());
+    }
+
+    @Test
+    public void shouldAddWelshSOTToGeneratedDocuments() {
+        assertTrue(callbackRequest.getCaseDetails().getData().getProbateSotDocumentsGenerated().isEmpty());
+
+        documentTransformer.addDocument(callbackRequest, Document.builder().documentType(WELSH_STATEMENT_OF_TRUTH).build(), false);
 
         assertEquals(1, callbackRequest.getCaseDetails().getData().getProbateSotDocumentsGenerated().size());
     }
