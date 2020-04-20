@@ -1156,8 +1156,8 @@ public class CallbackResponseTransformer {
                         .additionalExecutorsNotApplying(execsNotApplying);
             } else {
                 builder
-                        .additionalExecutorsApplying(EMPTY_LIST)
-                        .additionalExecutorsNotApplying(EMPTY_LIST);
+                        .additionalExecutorsApplying(caseData.getAdditionalExecutorsApplying())
+                        .additionalExecutorsNotApplying(caseData.getAdditionalExecutorsNotApplying());
             }
         } else {
             List<CollectionMember<AdditionalExecutorApplying>> applyingExec = new ArrayList<>();

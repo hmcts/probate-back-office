@@ -124,7 +124,6 @@ public class CallbackResponseTransformerTest {
     private static final String RESIDUARY = "Yes";
     private static final String RESIDUARY_TYPE = "Legatee";
 
-
     private static final ApplicationType APPLICATION_TYPE = SOLICITOR;
     private static final String REGISTRY_LOCATION = CTSC;
     private static final RegistryLocation BULK_SCAN_REGISTRY_LOCATION
