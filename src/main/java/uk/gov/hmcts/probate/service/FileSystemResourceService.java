@@ -39,6 +39,7 @@ public class FileSystemResourceService {
             if (fileSystemResource.isPresent()) {
                 return FileUtils.readFileToString(fileSystemResource.get().getFile(), Charset.defaultCharset());
             }
+            log.info("No file found for resource resource: " + resourcePath);
             return null;
         } catch (IOException e) {
             log.error("Cannot read file system resource: " + resourcePath, e);

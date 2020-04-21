@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import lombok.extern.slf4j.Slf4j;
+import org.pitest.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Link;
 import org.springframework.stereotype.Service;
@@ -146,7 +147,7 @@ public class PDFManagementService {
 
     private String decryptedFileAsBase64String(String fileResource) {
         String cipherMessage = fileSystemResourceService.getFileFromResourceAsString(fileResource);
-        log.info("Decrypting file: " + fileResource);
+        log.info("Decrypting file: {}, cipherMessage.isNull: {}", fileResource, StringUtil.isNullOrEmpty(cipherMessage);
         String decryptedString = null;
         try {
             IvParameterSpec iv = new IvParameterSpec(SIGNATURE_DECRYPTION_IV.getBytes(StandardCharsets.UTF_8));
