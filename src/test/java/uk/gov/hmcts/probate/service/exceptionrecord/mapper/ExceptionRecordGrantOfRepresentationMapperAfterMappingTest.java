@@ -1,28 +1,23 @@
 package uk.gov.hmcts.probate.service.exceptionrecord.mapper;
 
-import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import uk.gov.hmcts.probate.model.exceptionrecord.ExceptionRecordOCRFields;
+import uk.gov.hmcts.reform.probate.model.cases.ApplicationType;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringRunner.class)
 @ContextConfiguration
@@ -32,37 +27,40 @@ public class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
     private ExceptionRecordGrantOfRepresentationMapper exceptionRecordGrantOfRepresentationMapper;
 
     @Autowired
-    OCRFieldAddressMapper ocrFieldAddressMapper;
+    private OCRFieldAddressMapper ocrFieldAddressMapper;
 
     @Autowired
-    OCRFieldAdditionalExecutorsApplyingMapper ocrFieldAdditionalExecutorsApplyingMapper;
+    private OCRFieldAdditionalExecutorsApplyingMapper ocrFieldAdditionalExecutorsApplyingMapper;
 
     @Autowired
-    OCRFieldAdditionalExecutorsNotApplyingMapper ocrFieldAdditionalExecutorsNotApplyingMapper;
+    private OCRFieldAdditionalExecutorsNotApplyingMapper ocrFieldAdditionalExecutorsNotApplyingMapper;
 
     @Autowired
-    OCRFieldDefaultLocalDateFieldMapper ocrFieldDefaultLocalDateFieldMapper;
+    private OCRFieldDefaultLocalDateFieldMapper ocrFieldDefaultLocalDateFieldMapper;
 
     @Autowired
-    OCRFieldYesOrNoMapper ocrFieldYesOrNoMapper;
+    private OCRFieldYesOrNoMapper ocrFieldYesOrNoMapper;
 
     @Autowired
-    OCRFieldMartialStatusMapper ocrFieldMartialStatusMapper;
+    private OCRFieldMartialStatusMapper ocrFieldMartialStatusMapper;
 
     @Autowired
-    OCRFieldAdoptiveRelativesMapper ocrFieldAdoptiveRelativesMapper;
+    private OCRFieldAdoptiveRelativesMapper ocrFieldAdoptiveRelativesMapper;
 
     @Autowired
-    OCRFieldIhtMoneyMapper ocrFieldIhtMoneyMapper;
+    private OCRFieldIhtMoneyMapper ocrFieldIhtMoneyMapper;
 
     @Autowired
-    OCRFieldRelationshipMapper ocrFieldRelationshipMapper;
+    private OCRFieldRelationshipMapper ocrFieldRelationshipMapper;
 
     @Autowired
-    OCRFieldNumberMapper ocrFieldNumberMapper;
+    private OCRFieldNumberMapper ocrFieldNumberMapper;
 
     @Autowired
-    OCRFieldPaymentMethodMapper ocrFieldPaymentMethodMapper;
+    private OCRFieldPaymentMethodMapper ocrFieldPaymentMethodMapper;
+
+    @Autowired
+    private ApplicationTypeMapper applicationTypeMapper;
 
     private static GrantOfRepresentationData caseData;
 
@@ -125,9 +123,95 @@ public class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
         }
 
         @Bean
+        public ApplicationTypeMapper applicationTypeMapper() { return new ApplicationTypeMapper(); }
+
+        @Bean
         public ExceptionRecordGrantOfRepresentationMapper mainMapper() {
             return Mappers.getMapper(ExceptionRecordGrantOfRepresentationMapper.class);
         }
+    }
+
+    @Test
+    public void testSetSolsPaymentMethodIsSolicitorGrantOfProbate() {
+        ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
+                .solsSolicitorIsApplying("True")
+                .solsSolicitorFirmName("Firm Name")
+                .solsSolicitorRepresentativeName("Sonny Solicitor")
+                .build();
+        GrantOfRepresentationData response = exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.GRANT_OF_PROBATE);
+        assertEquals(ApplicationType.SOLICITORS, response.getApplicationType());
+    }
+
+    @Test
+    public void testSetSolsPaymentMethodIsSolicitorIntestacy() {
+        ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
+                .solsSolicitorIsApplying("True")
+                .solsSolicitorFirmName("Firm Name")
+                .solsSolicitorRepresentativeName("Sonny Solicitor")
+                .build();
+        GrantOfRepresentationData response = exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.INTESTACY);
+        assertEquals(ApplicationType.SOLICITORS, response.getApplicationType());
+    }
+
+    @Test
+    public void testSetSolsPaymentMethodIsPersonal() {
+        ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
+                .solsSolicitorIsApplying(null)
+                .primaryApplicantForenames("Joe")
+                .primaryApplicantSurname("Smith")
+                .solsSolicitorFirmName(null)
+                .solsSolicitorRepresentativeName("")
+                .build();
+        GrantOfRepresentationData response = exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.GRANT_OF_PROBATE);
+        assertEquals(ApplicationType.PERSONAL, response.getApplicationType());
+    }
+
+    @Test
+    public void testSetSolsSolicitorRepresentativeSingleNameGrantOfProbate() {
+        ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
+                .solsSolicitorIsApplying("True")
+                .solsSolicitorFirmName("Firm Name")
+                .solsSolicitorRepresentativeName("Jim")
+                .build();
+        GrantOfRepresentationData response = exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.GRANT_OF_PROBATE);
+        assertEquals("", response.getSolsSOTSurname());
+        assertEquals("Jim", response.getSolsSOTForenames());
+    }
+
+    @Test
+    public void testSetSolsSolicitorRepresentativeThreeNameIntestacy() {
+        ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
+                .solsSolicitorIsApplying("True")
+                .solsSolicitorFirmName("Firm Name")
+                .solsSolicitorRepresentativeName("Jim Young")
+                .build();
+        GrantOfRepresentationData response = exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.INTESTACY);
+        assertEquals("Young", response.getSolsSOTSurname());
+        assertEquals("Jim", response.getSolsSOTForenames());
+    }
+
+    @Test
+    public void testSetSolsSolicitorRepresentativeNameTwoNamesGrantOfProbate() {
+        ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
+                .solsSolicitorIsApplying("True")
+                .solsSolicitorFirmName("Firm Name")
+                .solsSolicitorRepresentativeName("Jim Martyn Young")
+                .build();
+        GrantOfRepresentationData response = exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.GRANT_OF_PROBATE);
+        assertEquals("Young", response.getSolsSOTSurname());
+        assertEquals("Jim Martyn", response.getSolsSOTForenames());
+    }
+
+    @Test
+    public void testSetSolsSolicitorRepresentativeNameNoNamesIntestacy() {
+        ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
+                .solsSolicitorIsApplying("True")
+                .solsSolicitorFirmName("Firm Name")
+                .solsSolicitorRepresentativeName(null)
+                .build();
+        GrantOfRepresentationData response = exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.INTESTACY);
+        assertEquals(null, response.getSolsSOTSurname());
+        assertEquals(null, response.getSolsSOTForenames());
     }
 
     @Test

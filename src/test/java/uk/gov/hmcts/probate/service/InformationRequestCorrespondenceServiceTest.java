@@ -96,7 +96,7 @@ public class InformationRequestCorrespondenceServiceTest {
         when(documentGeneratorService.generateCoversheet(callbackRequest, execApplying.getValue().getName(),
                 execApplying.getValue().getAddress())).thenReturn(COVERSHEET);
         when(documentGeneratorService.generateRequestForInformation(caseDetails, execApplying.getValue())).thenReturn(GENERIC_DOCUMENT);
-        when(bulkPrintService.sendToBulkPrint(callbackRequest, COVERSHEET, GENERIC_DOCUMENT, true))
+        when(bulkPrintService.optionallySendToBulkPrint(callbackRequest, COVERSHEET, GENERIC_DOCUMENT, true))
                 .thenReturn("123");
     }
 

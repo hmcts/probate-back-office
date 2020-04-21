@@ -69,7 +69,7 @@ public class InformationRequestCorrespondenceService {
 
     public List<String> getLetterId(List<Document> documents, CallbackRequest callbackRequest) {
         List<String> letterIds = new ArrayList<>();
-        String letterId = bulkPrintService.sendToBulkPrint(callbackRequest, documents.get(0), documents.get(1),
+        String letterId = bulkPrintService.optionallySendToBulkPrint(callbackRequest, documents.get(0), documents.get(1),
                 callbackRequest.getCaseDetails().getData().isBoRequestInfoSendToBulkPrintRequested());
 
         letterIds.add(letterId);

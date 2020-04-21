@@ -5,6 +5,7 @@ public final class Constants {
     public static final String YES = "Yes";
     public static final String NO = "No";
     public static final int CAVEAT_LIFESPAN = 6;
+    public static final int CAVEAT_EXPIRY_EXTENSION_PERIOD_IN_MONTHS = 6;
     public static final int STANDING_SEARCH_LIFESPAN = 6;
     public static final String BUSINESS_ERROR = "businessError";
     public static final String LONDON = "london";

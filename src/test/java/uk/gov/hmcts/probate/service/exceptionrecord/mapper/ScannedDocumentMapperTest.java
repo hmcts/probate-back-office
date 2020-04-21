@@ -7,8 +7,10 @@ import uk.gov.hmcts.reform.probate.model.cases.CollectionMember;
 import uk.gov.hmcts.reform.probate.model.cases.DocumentLink;
 
 import static java.time.LocalDateTime.now;
+import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertThat;
 
 public class ScannedDocumentMapperTest {
 
@@ -35,6 +37,23 @@ public class ScannedDocumentMapperTest {
         CollectionMember<ScannedDocument> scannedDocumentCollectionMember
                 = scannedDocumentMapper.toCaseDoc(null,null);
         assertNull(scannedDocumentCollectionMember);
+    }
+
+    @Test
+    public void shouldUPdateCaseDoc() {
+        InputScannedDoc inputDoc = getSampleInputDocument(DOC_NAME_PREFIX1);
+        uk.gov.hmcts.probate.model.ccd.raw.CollectionMember<uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument> collectionMember 
+            = scannedDocumentMapper.updateCaseDoc(inputDoc, "Ref1");
+        assertThat(collectionMember.getValue().getExceptionRecordReference(), is("Ref1"));
+        
+    }
+
+    @Test
+    public void shouldNoUpdateCaseDocForNullExceptionDoc() {
+        uk.gov.hmcts.probate.model.ccd.raw.CollectionMember<uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument> collectionMember
+            = scannedDocumentMapper.updateCaseDoc(null, "Ref1");
+        assertNull(collectionMember);
+
     }
 
     public static InputScannedDoc getSampleInputDocument(String suffix) {

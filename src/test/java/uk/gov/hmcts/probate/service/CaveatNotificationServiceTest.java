@@ -158,9 +158,6 @@ public class CaveatNotificationServiceTest {
 
     @Test
     public void testSolsCaveatRaise() throws NotificationClientException {
-        solsCaveatData = CaveatData.builder()
-                .build();
-
         documents.add(sentEmail);
 
         responseCaveatData = ResponseCaveatData.builder()
@@ -181,7 +178,7 @@ public class CaveatNotificationServiceTest {
 
         assertEquals(1, caveatCallbackResponse.getCaveatData().getNotificationsGenerated().size());
     }
-
+    
     @Test
     public void testCaveatRaiseWithEmail() throws NotificationClientException {
         caveatData = CaveatData.builder()
@@ -265,7 +262,7 @@ public class CaveatNotificationServiceTest {
         when(caveatDocmosisService.caseDataAsPlaceholders(caveatDetails)).thenReturn(placeholders);
         when(pdfManagementService.generateDocmosisDocumentAndUpload(placeholders, CAVEAT_COVERSHEET)).thenReturn(coversheet);
         when(pdfManagementService.generateDocmosisDocumentAndUpload(placeholders, CAVEAT_RAISED)).thenReturn(caveatRaised);
-        when(bulkPrintService.sendToBulkPrint(caveatCallbackRequest, caveatRaised, coversheet)).thenReturn(sendLetterResponse);
+        when(bulkPrintService.sendToBulkPrintForCaveat(caveatCallbackRequest, caveatRaised, coversheet)).thenReturn(sendLetterResponse);
         when(eventValidationService.validateCaveatBulkPrintResponse(eq(sendLetterResponse.letterId.toString()), any(List.class)))
                 .thenReturn(caveatCallbackResponse.builder().errors(new ArrayList<>()).build());
 
@@ -275,6 +272,66 @@ public class CaveatNotificationServiceTest {
 
         assertEquals(2, caveatCallbackResponse.getCaveatData().getNotificationsGenerated().size());
     }
+
+    @Test
+    public void testSolicitorCaveatRaiseWithEmail() throws NotificationClientException {
+        caveatData = CaveatData.builder()
+            .caveatRaisedEmailNotificationRequested("Yes")
+            .caveatorEmailAddress("caveator@email.com")
+            .applicationType(ApplicationType.SOLICITOR)
+            .build();
+
+        documents.add(sentEmail);
+
+        responseCaveatData = ResponseCaveatData.builder()
+            .notificationsGenerated(DOCUMENTS_LIST)
+            .build();
+
+        caveatDetails = new CaveatDetails(caveatData, LAST_MODIFIED, ID);
+        caveatCallbackRequest = new CaveatCallbackRequest(caveatDetails);
+
+        when(eventValidationService.validateCaveatRequest(any(CaveatCallbackRequest.class), any(List.class)))
+            .thenReturn(caveatCallbackResponse.builder().errors(new ArrayList<>()).build());
+        when(notificationService.sendCaveatEmail(State.CAVEAT_RAISED, caveatDetails)).thenReturn(Document.builder()
+            .documentFileName(SENT_EMAIL_FILE_NAME).build());
+
+        caveatCallbackResponse = CaveatCallbackResponse.builder().caveatData(responseCaveatData).build();
+        when(caveatCallbackResponseTransformer.caveatRaised(caveatCallbackRequest, documents, null)).thenReturn(caveatCallbackResponse);
+
+        caveatNotificationService.caveatRaise(caveatCallbackRequest);
+
+        assertEquals(1, caveatCallbackResponse.getCaveatData().getNotificationsGenerated().size());
+    }
+
+    @Test
+    public void testSolicitorCaveatRaiseWithNoEmail() throws NotificationClientException {
+        caveatData = CaveatData.builder()
+            .caveatRaisedEmailNotificationRequested("Yes")
+            .applicationType(ApplicationType.SOLICITOR)
+            .build();
+
+        documents.add(sentEmail);
+
+        responseCaveatData = ResponseCaveatData.builder()
+            .notificationsGenerated(DOCUMENTS_LIST)
+            .build();
+
+        caveatDetails = new CaveatDetails(caveatData, LAST_MODIFIED, ID);
+        caveatCallbackRequest = new CaveatCallbackRequest(caveatDetails);
+
+        when(eventValidationService.validateCaveatRequest(any(CaveatCallbackRequest.class), any(List.class)))
+            .thenReturn(caveatCallbackResponse.builder().errors(new ArrayList<>()).build());
+        when(notificationService.sendCaveatEmail(State.CAVEAT_RAISED, caveatDetails)).thenReturn(Document.builder()
+            .documentFileName(SENT_EMAIL_FILE_NAME).build());
+
+        caveatCallbackResponse = CaveatCallbackResponse.builder().caveatData(responseCaveatData).build();
+        when(caveatCallbackResponseTransformer.caveatRaised(caveatCallbackRequest, documents, null)).thenReturn(caveatCallbackResponse);
+
+        caveatNotificationService.caveatRaise(caveatCallbackRequest);
+
+        assertEquals(1, caveatCallbackResponse.getCaveatData().getNotificationsGenerated().size());
+    }
+
     @Test
     public void testCaveatExtendWithError() throws NotificationClientException {
         caveatData = CaveatData.builder()
@@ -407,7 +464,7 @@ public class CaveatNotificationServiceTest {
         when(caveatDocmosisService.caseDataAsPlaceholders(caveatDetails)).thenReturn(placeholders);
         when(pdfManagementService.generateDocmosisDocumentAndUpload(placeholders, CAVEAT_COVERSHEET)).thenReturn(coversheet);
         when(pdfManagementService.generateDocmosisDocumentAndUpload(placeholders, CAVEAT_EXTENDED)).thenReturn(caveatExtended);
-        when(bulkPrintService.sendToBulkPrint(caveatCallbackRequest, caveatExtended, coversheet)).thenReturn(sendLetterResponse);
+        when(bulkPrintService.sendToBulkPrintForCaveat(caveatCallbackRequest, caveatExtended, coversheet)).thenReturn(sendLetterResponse);
         when(eventValidationService.validateCaveatBulkPrintResponse(eq(sendLetterResponse.letterId.toString()), any(List.class)))
             .thenReturn(caveatCallbackResponse.builder().errors(new ArrayList<>()).build());
 
@@ -501,7 +558,7 @@ public class CaveatNotificationServiceTest {
                 .thenReturn(document);
 
         SendLetterResponse sendLetterResponse = new SendLetterResponse(UUID.randomUUID());
-        when(bulkPrintService.sendToBulkPrint(eq(caveatCallbackRequest), eq(document), eq(coversheet))).thenReturn(sendLetterResponse);
+        when(bulkPrintService.sendToBulkPrintForCaveat(eq(caveatCallbackRequest), eq(document), eq(coversheet))).thenReturn(sendLetterResponse);
         when(eventValidationService.validateCaveatBulkPrintResponse(eq(sendLetterResponse.letterId.toString()), any()))
                 .thenReturn(caveatCallbackResponse);
 
@@ -515,7 +572,7 @@ public class CaveatNotificationServiceTest {
         assertEquals("Document size", 2, passedDocument.size());
         verify(notificationService, never()).sendCaveatEmail(eq(State.CAVEAT_WITHDRAW), eq(caveatDetails));
         verify(eventValidationService, never()).validateCaveatRequest(eq(caveatCallbackRequest), isA(List.class));
-        verify(bulkPrintService).sendToBulkPrint(eq(caveatCallbackRequest), eq(document), eq(coversheet));
+        verify(bulkPrintService).sendToBulkPrintForCaveat(eq(caveatCallbackRequest), eq(document), eq(coversheet));
         verify(eventValidationService).validateCaveatBulkPrintResponse(eq(sendLetterResponse.letterId.toString()),
                 any());
     }
@@ -541,7 +598,7 @@ public class CaveatNotificationServiceTest {
                 .thenReturn(document);
 
         SendLetterResponse sendLetterResponse = new SendLetterResponse(UUID.randomUUID());
-        when(bulkPrintService.sendToBulkPrint(eq(caveatCallbackRequest), eq(document), eq(coversheet))).thenReturn(sendLetterResponse);
+        when(bulkPrintService.sendToBulkPrintForCaveat(eq(caveatCallbackRequest), eq(document), eq(coversheet))).thenReturn(sendLetterResponse);
         when(eventValidationService.validateCaveatBulkPrintResponse(eq(sendLetterResponse.letterId.toString()), any()))
                 .thenReturn(caveatCallbackResponse);
 
@@ -550,7 +607,7 @@ public class CaveatNotificationServiceTest {
         verify(caveatCallbackResponseTransformer, never()).withdrawn(eq(caveatCallbackRequest), anyList(), isNull());
         verify(notificationService, never()).sendCaveatEmail(eq(State.CAVEAT_WITHDRAW), eq(caveatDetails));
         verify(eventValidationService, never()).validateCaveatRequest(eq(caveatCallbackRequest), isA(List.class));
-        verify(bulkPrintService).sendToBulkPrint(eq(caveatCallbackRequest), eq(document), eq(coversheet));
+        verify(bulkPrintService).sendToBulkPrintForCaveat(eq(caveatCallbackRequest), eq(document), eq(coversheet));
         verify(eventValidationService).validateCaveatBulkPrintResponse(eq(sendLetterResponse.letterId.toString()),
                 any());
     }
@@ -584,7 +641,7 @@ public class CaveatNotificationServiceTest {
         assertEquals("Document size", 2, passedDocument.size());
         verify(notificationService, never()).sendCaveatEmail(eq(State.CAVEAT_WITHDRAW), eq(caveatDetails));
         verify(eventValidationService, never()).validateCaveatRequest(eq(caveatCallbackRequest), isA(List.class));
-        verify(bulkPrintService, never()).sendToBulkPrint(eq(caveatCallbackRequest), eq(document), eq(coversheet));
+        verify(bulkPrintService, never()).sendToBulkPrintForCaveat(eq(caveatCallbackRequest), eq(document), eq(coversheet));
         verify(eventValidationService, never()).validateCaveatBulkPrintResponse(any(), any());
 
     }

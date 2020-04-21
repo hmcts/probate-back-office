@@ -75,6 +75,7 @@ public class SecurityConfiguration {
                 .antMatchers("/data-extract/**")
                 .antMatchers("/document/**")
                 .antMatchers("/transform-exception-record")
+                .antMatchers("/update-case")
                 .antMatchers("/grant/**")
                 .antMatchers("/nextsteps/**")
                 .antMatchers("/notify/**")

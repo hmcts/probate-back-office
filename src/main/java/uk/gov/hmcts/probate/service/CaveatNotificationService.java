@@ -2,7 +2,9 @@ package uk.gov.hmcts.probate.service;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
+import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatCallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
@@ -46,6 +48,25 @@ public class CaveatNotificationService {
     private final CaveatDocmosisService caveatDocmosisService;
 
     public CaveatCallbackResponse caveatRaise(CaveatCallbackRequest caveatCallbackRequest)
+            throws NotificationClientException {
+
+        CaveatCallbackResponse caveatCallbackResponse;
+        CaveatData caveatDetails = caveatCallbackRequest.getCaseDetails().getData();
+        if (caveatDetails.getApplicationType() == ApplicationType.SOLICITOR) {
+            if (StringUtils.isNotBlank(caveatDetails.getCaveatorEmailAddress())) {
+                caveatCallbackResponse = solsCaveatRaise(caveatCallbackRequest);
+            } else {
+                // Bulk scan may not include caveator email for solicitor.
+                caveatCallbackResponse = caveatCallbackResponseTransformer.transformResponseWithNoChanges(caveatCallbackRequest);
+            }
+        } else {
+            caveatCallbackResponse = citizenCaveatRaise(caveatCallbackRequest);
+        }
+
+        return caveatCallbackResponse;
+    }
+
+    private CaveatCallbackResponse citizenCaveatRaise(CaveatCallbackRequest caveatCallbackRequest)
         throws NotificationClientException {
 
         CaveatCallbackResponse caveatCallbackResponse = CaveatCallbackResponse.builder().errors(new ArrayList<>()).build();
@@ -70,7 +91,7 @@ public class CaveatNotificationService {
             documents.add(caveatRaisedDoc);
 
             if (caveatCallbackRequest.getCaseDetails().getData().isSendForBulkPrintingRequested()) {
-                SendLetterResponse response = bulkPrintService.sendToBulkPrint(caveatCallbackRequest, caveatRaisedDoc, coversheet);
+                SendLetterResponse response = bulkPrintService.sendToBulkPrintForCaveat(caveatCallbackRequest, caveatRaisedDoc, coversheet);
                 letterId = response != null
                     ? response.letterId.toString()
                     : null;
@@ -104,7 +125,10 @@ public class CaveatNotificationService {
 
     public CaveatCallbackResponse caveatExtend(CaveatCallbackRequest caveatCallbackRequest)
         throws NotificationClientException {
-        CaveatCallbackResponse caveatCallbackResponse = CaveatCallbackResponse.builder().errors(new ArrayList<>()).build();
+        CaveatCallbackResponse caveatCallbackResponse = CaveatCallbackResponse.builder()
+            .errors(new ArrayList<>())
+            .warnings(new ArrayList<>())
+            .build();
         List<Document> documents = new ArrayList<>();
         String letterId = null;
 
@@ -124,7 +148,7 @@ public class CaveatNotificationService {
             Document caveatRaisedDoc = pdfManagementService.generateDocmosisDocumentAndUpload(placeholders, DocumentType.CAVEAT_EXTENDED);
             documents.add(caveatRaisedDoc);
             if (caveatCallbackRequest.getCaseDetails().getData().isSendForBulkPrintingRequested()) {
-                SendLetterResponse response = bulkPrintService.sendToBulkPrint(caveatCallbackRequest, caveatRaisedDoc, coversheet);
+                SendLetterResponse response = bulkPrintService.sendToBulkPrintForCaveat(caveatCallbackRequest, caveatRaisedDoc, coversheet);
                 ///
                 letterId = response != null
                     ? response.letterId.toString()
@@ -133,7 +157,6 @@ public class CaveatNotificationService {
             }
         }
 
-        ///
         if (caveatCallbackResponse.getErrors().isEmpty()) {
             caveatCallbackResponse = caveatCallbackResponseTransformer.caveatExtendExpiry(caveatCallbackRequest, documents, letterId);
         }
@@ -160,7 +183,7 @@ public class CaveatNotificationService {
             Document caveatRaisedDoc = pdfManagementService.generateDocmosisDocumentAndUpload(placeholders, DocumentType.CAVEAT_WITHDRAWN);
             documents.add(caveatRaisedDoc);
             if (caveatCallbackRequest.getCaseDetails().getData().isSendForBulkPrintingRequested()) {
-                SendLetterResponse response = bulkPrintService.sendToBulkPrint(caveatCallbackRequest, caveatRaisedDoc, coversheet);
+                SendLetterResponse response = bulkPrintService.sendToBulkPrintForCaveat(caveatCallbackRequest, caveatRaisedDoc, coversheet);
                 letterId = Optional.ofNullable(response).map(data -> data.letterId.toString()).orElse(letterId);
 
                 caveatCallbackResponse = eventValidationService.validateCaveatBulkPrintResponse(letterId, bulkPrintValidationRules);

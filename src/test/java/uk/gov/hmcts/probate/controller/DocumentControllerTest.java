@@ -177,10 +177,10 @@ public class DocumentControllerTest {
         when(documentGeneratorService.generateLetter(any(CallbackRequest.class), eq(false))).thenReturn(letter);
 
         SendLetterResponse sendLetterResponse = new SendLetterResponse(UUID.randomUUID());
-        when(bulkPrintService.sendToBulkPrint(any(CallbackRequest.class), any(Document.class),
+        when(bulkPrintService.sendToBulkPrintForGrant(any(CallbackRequest.class), any(Document.class),
                 any(Document.class))).thenReturn(sendLetterResponse);
 
-        when(bulkPrintService.sendToBulkPrint(any(CallbackRequest.class), any(Document.class),
+        when(bulkPrintService.optionallySendToBulkPrint(any(CallbackRequest.class), any(Document.class),
                 any(Document.class), eq(true))).thenReturn(LETTER_UUID);
 
         when(notificationService.generateGrantReissue(any(CallbackRequest.class)))
@@ -241,7 +241,7 @@ public class DocumentControllerTest {
                 .andExpect(jsonPath("$.data.probateDocumentsGenerated[1].value.DocumentType", is(DIGITAL_GRANT.getTemplateName())))
                 .andReturn();
 
-        verify(bulkPrintService).sendToBulkPrint(any(CallbackRequest.class), any(Document.class), any(Document.class));
+        verify(bulkPrintService).sendToBulkPrintForGrant(any(CallbackRequest.class), any(Document.class), any(Document.class));
     }
 
     @Test
@@ -256,7 +256,7 @@ public class DocumentControllerTest {
                 .andExpect(jsonPath("$.data.probateDocumentsGenerated[1].value.DocumentType", is(DIGITAL_GRANT_REISSUE.getTemplateName())))
                 .andReturn();
 
-        verify(bulkPrintService).sendToBulkPrint(any(CallbackRequest.class), any(Document.class), any(Document.class), eq(true));
+        verify(bulkPrintService).optionallySendToBulkPrint(any(CallbackRequest.class), any(Document.class), any(Document.class), eq(true));
     }
 
     @Test
@@ -616,6 +616,34 @@ public class DocumentControllerTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
     }
 
+    @Test
+    public void shouldDefaultReprintValues() throws Exception {
+        String solicitorPayload = testUtils.getStringFromFile("welshGrantOfProbatPayload.json");
+
+        mockMvc.perform(post("/document/default-reprint-values")
+            .content(solicitorPayload)
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.data.reprintDocument.list_items[0].label", is("Grant")))
+            .andExpect(jsonPath("$.data.reprintDocument.list_items[0].code", is("WelshGrantFileName")))
+            .andReturn();
+    }
+
+    @Test
+    public void shouldSendForReprint() throws Exception {
+        String solicitorPayload = testUtils.getStringFromFile("welshGrantOfProbatPayloadReprintGrant.json");
+
+        mockMvc.perform(post("/document/reprint")
+            .content(solicitorPayload)
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.data.reprintDocument.list_items[0].label", is("Grant")))
+            .andExpect(jsonPath("$.data.reprintDocument.list_items[0].code", is("WelshGrantFileName")))
+            .andExpect(jsonPath("$.data.reprintDocument.value.label", is("Grant")))
+            .andExpect(jsonPath("$.data.reprintDocument.value.code", is("WelshGrantFileName")))
+            .andReturn();
+    }
+    
     private Matcher<String> doesNotContainString(String s) {
         return CoreMatchers.not(containsString(s));
     }

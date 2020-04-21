@@ -3,7 +3,6 @@ package uk.gov.hmcts.probate.service.ocr;
 import uk.gov.hmcts.probate.exception.NotFoundException;
 
 import java.util.Arrays;
-import java.util.Optional;
 
 public enum FormType {
     PA1P,

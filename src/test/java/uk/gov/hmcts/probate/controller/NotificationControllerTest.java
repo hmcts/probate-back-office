@@ -17,8 +17,10 @@ import uk.gov.hmcts.probate.exception.BadRequestException;
 import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.DocumentIssueType;
 import uk.gov.hmcts.probate.model.DocumentStatus;
+import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.GrantScheduleResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
+import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
@@ -37,6 +39,7 @@ import uk.gov.hmcts.probate.util.TestUtils;
 import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
 import uk.gov.service.notify.NotificationClientException;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -145,7 +148,13 @@ public class NotificationControllerTest {
         List<Document> docList = new ArrayList<>();
         docList.add(EMPTY_DOC);
 
-        Document document = Document.builder().documentType(DIGITAL_GRANT).build();
+        Document document = Document.builder()
+            .documentDateAdded(LocalDate.now())
+            .documentFileName("fileName")
+            .documentGeneratedBy("generatedBy")
+            .documentLink(DocumentLink.builder().documentUrl("url").documentFilename("file").documentBinaryUrl("binary").build())
+            .documentType(DocumentType.DIGITAL_GRANT)
+            .build();
 
         doReturn(document).when(notificationService).sendEmail(any(), any());
 
@@ -225,7 +234,7 @@ public class NotificationControllerTest {
                 .content(solicitorPayload)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("Applicat")));
+                .andExpect(content().string(containsString("generatedBy")));
     }
 
 
@@ -358,7 +367,7 @@ public class NotificationControllerTest {
 
     @Test
     public void caseStoppedWithNoEmailNotificationRequestedShouldReturnBulkPrintError() throws Exception {
-        when(bulkPrintService.sendToBulkPrint(any(CallbackRequest.class), eq(Document.builder().build()), eq(Document
+        when(bulkPrintService.sendToBulkPrintForGrant(any(CallbackRequest.class), eq(Document.builder().build()), eq(Document
                 .builder().build()))).thenReturn(null);
         String solicitorPayload = testUtils.getStringFromFile("stopNotificationNoEmailRequested.json");
 
@@ -401,17 +410,6 @@ public class NotificationControllerTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
     }
 
-
-    @Test
-    public void shouldReturnEmailPAApplicationReceivedValidateSuccessful() throws Exception {
-        String personalPayload = testUtils.getStringFromFile("personalPayloadNotifications.json");
-
-        mockMvc.perform(post(APPLICATION_RECEIVED_URL).content(personalPayload).contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
-    }
-
-
     @Test
     public void shouldReturnEmailPAValidateFromBulkScanSuccessful() throws Exception {
         String personalPayload = testUtils.getStringFromFile("personalPayloadNotificationsFromBulkScan.json");
@@ -441,9 +439,7 @@ public class NotificationControllerTest {
         mockMvc.perform(post("/notify/application-received")
                 .content(personalPayload)
                 .contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(status().isBadRequest())
-                .andExpect(content().string(containsString("There is no email address for this applicant. To continue the application, go back and select no to sending an email.")));
-
+                .andExpect(status().isOk());
     }
 
     @Test

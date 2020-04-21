@@ -9,7 +9,11 @@ import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.*;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
-import uk.gov.hmcts.probate.model.ccd.*;
+import uk.gov.hmcts.probate.model.ccd.Reissue;
+import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
+import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
+import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
+import uk.gov.hmcts.probate.model.ccd.raw.AdoptedRelative;
 import uk.gov.hmcts.probate.model.ccd.raw.AliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
@@ -17,33 +21,69 @@ import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.*;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
-import uk.gov.hmcts.probate.model.ccd.raw.request.*;
-import uk.gov.hmcts.probate.model.ccd.raw.response.*;
-import uk.gov.hmcts.probate.model.exceptionrecord.*;
-import uk.gov.hmcts.probate.model.fee.*;
-import uk.gov.hmcts.probate.service.*;
-import uk.gov.hmcts.probate.transformer.assembly.*;
-import uk.gov.hmcts.reform.probate.model.*;
-import uk.gov.hmcts.reform.probate.model.cases.*;
-import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.*;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
+import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
+import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
+import uk.gov.hmcts.probate.model.exceptionrecord.CaseCreationDetails;
+import uk.gov.hmcts.probate.model.fee.FeeServiceResponse;
+import uk.gov.hmcts.probate.service.ExecutorsApplyingNotificationService;
+import uk.gov.hmcts.probate.service.SolicitorExecutorService;
+import uk.gov.hmcts.probate.service.StateChangeService;
+import uk.gov.hmcts.probate.transformer.assembly.AssembleLetterTransformer;
+import uk.gov.hmcts.reform.probate.model.IhtFormType;
+import uk.gov.hmcts.reform.probate.model.ProbateDocumentLink;
+import uk.gov.hmcts.reform.probate.model.Relationship;
+import uk.gov.hmcts.reform.probate.model.cases.Address;
+import uk.gov.hmcts.reform.probate.model.cases.MaritalStatus;
+import uk.gov.hmcts.reform.probate.model.cases.RegistryLocation;
+import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData;
+import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType;
 
-import java.math.*;
-import java.text.*;
-import java.time.*;
-import java.time.format.*;
-import java.util.*;
+import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
 
-import static java.lang.Boolean.*;
-import static java.util.Collections.*;
-import static org.hamcrest.Matchers.*;
+import static java.lang.Boolean.TRUE;
+import static java.util.Collections.EMPTY_LIST;
+import static java.util.Collections.emptyList;
+import static org.hamcrest.Matchers.comparesEqualTo;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.*;
-import static uk.gov.hmcts.probate.model.ApplicationType.*;
-import static uk.gov.hmcts.probate.model.Constants.*;
-import static uk.gov.hmcts.probate.model.DocumentType.*;
+import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.ArgumentMatchers.isNull;
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
+import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
+import static uk.gov.hmcts.probate.model.Constants.CTSC;
+import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_REISSUE;
+import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT_STOPPED;
+import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_DRAFT;
+import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_REISSUE;
+import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_REISSUE;
+import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE;
+import static uk.gov.hmcts.probate.model.DocumentType.OTHER;
+import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
+import static uk.gov.hmcts.probate.model.DocumentType.SOT_INFORMATION_REQUEST;
+import static uk.gov.hmcts.probate.model.DocumentType.STATEMENT_OF_TRUTH;
+import static uk.gov.hmcts.probate.model.DocumentType.WELSH_ADMON_WILL_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.WELSH_DIGITAL_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.WELSH_INTESTACY_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.WELSH_STATEMENT_OF_TRUTH;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CallbackResponseTransformerTest {
@@ -342,6 +382,9 @@ public class CallbackResponseTransformerTest {
 
     @Spy
     private DocumentTransformer documentTransformer;
+
+    @Mock
+    private ReprintTransformer reprintTransformer;
 
     @Before
     public void setup() {
@@ -2366,6 +2409,174 @@ public class CallbackResponseTransformerTest {
         assertEquals(EXEC_FIRST_NAME + " " + EXEC_SURNAME,
                 callbackResponse.getData().getAdditionalExecutorsApplying().get(0).getValue().getApplyingExecutorName());
 
+    }
+
+    @Test
+    public void shouldCallReprintTransformer() {
+        underTest.transformCaseForReprint(callbackRequestMock);
+        verify(reprintTransformer).transformReprintDocuments(any(CaseDetails.class), any(ResponseCaseData.ResponseCaseDataBuilder.class));
+    }
+
+    @Test
+    public void shouldAddBPInformationForGrantReprint() {
+        Document document = Document.builder()
+            .documentType(DIGITAL_GRANT)
+            .build();
+        String letterId = "letterId";
+        String pdfSize = "10";
+        CallbackResponse callbackResponse = underTest.addBulkPrintInformationForReprint(callbackRequestMock, document, letterId, pdfSize);
+
+        assertThat(callbackResponse.getData().getBulkPrintSendLetterId(), is(letterId));
+        assertThat(callbackResponse.getData().getBulkPrintPdfSize(), is(pdfSize));
+    }
+
+    @Test
+    public void shouldAddBPInformationForAdmonWillReprint() {
+        Document document = Document.builder()
+            .documentType(ADMON_WILL_GRANT)
+            .build();
+        String letterId = "letterId";
+        String pdfSize = "10";
+        CallbackResponse callbackResponse = underTest.addBulkPrintInformationForReprint(callbackRequestMock, document, letterId, pdfSize);
+
+        assertThat(callbackResponse.getData().getBulkPrintSendLetterId(), is(letterId));
+        assertThat(callbackResponse.getData().getBulkPrintPdfSize(), is(pdfSize));
+    }
+
+    @Test
+    public void shouldAddBPInformationForIntestacyReprint() {
+        Document document = Document.builder()
+            .documentType(INTESTACY_GRANT)
+            .build();
+        String letterId = "letterId";
+        String pdfSize = "10";
+        CallbackResponse callbackResponse = underTest.addBulkPrintInformationForReprint(callbackRequestMock, document, letterId, pdfSize);
+
+        assertThat(callbackResponse.getData().getBulkPrintSendLetterId(), is(letterId));
+        assertThat(callbackResponse.getData().getBulkPrintPdfSize(), is(pdfSize));
+    }
+
+    @Test
+    public void shouldAddBPInformationForWelshGrantReprint() {
+        Document document = Document.builder()
+            .documentType(WELSH_DIGITAL_GRANT)
+            .build();
+        String letterId = "letterId";
+        String pdfSize = "10";
+        CallbackResponse callbackResponse = underTest.addBulkPrintInformationForReprint(callbackRequestMock, document, letterId, pdfSize);
+
+        assertThat(callbackResponse.getData().getBulkPrintSendLetterId(), is(letterId));
+        assertThat(callbackResponse.getData().getBulkPrintPdfSize(), is(pdfSize));
+    }
+
+    @Test
+    public void shouldAddBPInformationForWelshAdmonWillReprint() {
+        Document document = Document.builder()
+            .documentType(WELSH_ADMON_WILL_GRANT)
+            .build();
+        String letterId = "letterId";
+        String pdfSize = "10";
+        CallbackResponse callbackResponse = underTest.addBulkPrintInformationForReprint(callbackRequestMock, document, letterId, pdfSize);
+
+        assertThat(callbackResponse.getData().getBulkPrintSendLetterId(), is(letterId));
+        assertThat(callbackResponse.getData().getBulkPrintPdfSize(), is(pdfSize));
+    }
+
+    @Test
+    public void shouldAddBPInformationForWelshIntestacyReprint() {
+        Document document = Document.builder()
+            .documentType(WELSH_INTESTACY_GRANT)
+            .build();
+        String letterId = "letterId";
+        String pdfSize = "10";
+        CallbackResponse callbackResponse = underTest.addBulkPrintInformationForReprint(callbackRequestMock, document, letterId, pdfSize);
+
+        assertThat(callbackResponse.getData().getBulkPrintSendLetterId(), is(letterId));
+        assertThat(callbackResponse.getData().getBulkPrintPdfSize(), is(pdfSize));
+    }
+
+    @Test
+    public void shouldAddBPInformationForGrantReissueReprint() {
+        Document document = Document.builder()
+            .documentType(DIGITAL_GRANT_REISSUE)
+            .build();
+        String letterId = "letterId";
+        String pdfSize = "10";
+        CallbackResponse callbackResponse = underTest.addBulkPrintInformationForReprint(callbackRequestMock, document, letterId, pdfSize);
+
+        assertThat(callbackResponse.getData().getBulkPrintId().get(0).getValue().getSendLetterId(), is(letterId));
+        assertThat(callbackResponse.getData().getBulkPrintId().get(0).getValue().getTemplateName(), is(DIGITAL_GRANT_REISSUE.getTemplateName()));
+        assertEquals(null, callbackResponse.getData().getBulkPrintPdfSize());
+    }
+
+    @Test
+    public void shouldAddBPInformationForAdmonWillReissueReprint() {
+        Document document = Document.builder()
+            .documentType(ADMON_WILL_GRANT_REISSUE)
+            .build();
+        String letterId = "letterId";
+        String pdfSize = "10";
+        CallbackResponse callbackResponse = underTest.addBulkPrintInformationForReprint(callbackRequestMock, document, letterId, pdfSize);
+
+        assertThat(callbackResponse.getData().getBulkPrintId().get(0).getValue().getSendLetterId(), is(letterId));
+        assertThat(callbackResponse.getData().getBulkPrintId().get(0).getValue().getTemplateName(), is(ADMON_WILL_GRANT_REISSUE.getTemplateName()));
+        assertEquals(null, callbackResponse.getData().getBulkPrintPdfSize());
+    }
+
+    @Test
+    public void shouldAddBPInformationForIntestacyReissueReprint() {
+        Document document = Document.builder()
+            .documentType(INTESTACY_GRANT_REISSUE)
+            .build();
+        String letterId = "letterId";
+        String pdfSize = "10";
+        CallbackResponse callbackResponse = underTest.addBulkPrintInformationForReprint(callbackRequestMock, document, letterId, pdfSize);
+
+        assertThat(callbackResponse.getData().getBulkPrintId().get(0).getValue().getSendLetterId(), is(letterId));
+        assertThat(callbackResponse.getData().getBulkPrintId().get(0).getValue().getTemplateName(), is(INTESTACY_GRANT_REISSUE.getTemplateName()));
+        assertEquals(null, callbackResponse.getData().getBulkPrintPdfSize());
+    }
+
+    @Test
+    public void shouldAddBPInformationForWelshSOTReprint() {
+        Document document = Document.builder()
+            .documentType(WELSH_STATEMENT_OF_TRUTH)
+            .build();
+        String letterId = "letterId";
+        String pdfSize = "10";
+        CallbackResponse callbackResponse = underTest.addBulkPrintInformationForReprint(callbackRequestMock, document, letterId, pdfSize);
+
+        assertThat(callbackResponse.getData().getBulkPrintId().get(0).getValue().getSendLetterId(), is(letterId));
+        assertThat(callbackResponse.getData().getBulkPrintId().get(0).getValue().getTemplateName(), is(WELSH_STATEMENT_OF_TRUTH.getTemplateName()));
+        assertEquals(null, callbackResponse.getData().getBulkPrintPdfSize());
+    }
+
+    @Test
+    public void shouldAddBPInformationForSOTReprint() {
+        Document document = Document.builder()
+            .documentType(STATEMENT_OF_TRUTH)
+            .build();
+        String letterId = "letterId";
+        String pdfSize = "10";
+        CallbackResponse callbackResponse = underTest.addBulkPrintInformationForReprint(callbackRequestMock, document, letterId, pdfSize);
+
+        assertThat(callbackResponse.getData().getBulkPrintId().get(0).getValue().getSendLetterId(), is(letterId));
+        assertThat(callbackResponse.getData().getBulkPrintId().get(0).getValue().getTemplateName(), is(STATEMENT_OF_TRUTH.getTemplateName()));
+        assertEquals(null, callbackResponse.getData().getBulkPrintPdfSize());
+    }
+
+    @Test
+    public void shouldAddBPInformationForWillReprint() {
+        Document document = Document.builder()
+            .documentType(OTHER)
+            .build();
+        String letterId = "letterId";
+        String pdfSize = "10";
+        CallbackResponse callbackResponse = underTest.addBulkPrintInformationForReprint(callbackRequestMock, document, letterId, pdfSize);
+
+        assertThat(callbackResponse.getData().getBulkPrintId().get(0).getValue().getSendLetterId(), is(letterId));
+        assertThat(callbackResponse.getData().getBulkPrintId().get(0).getValue().getTemplateName(), is(OTHER.getTemplateName()));
+        assertEquals(null, callbackResponse.getData().getBulkPrintPdfSize());
     }
 
     private CollectionMember<ProbateAliasName> createdDeceasedAliasName(String id, String forename, String lastname, String onGrant) {
