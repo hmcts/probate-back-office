@@ -502,7 +502,8 @@ public class CallbackResponseTransformerTest {
                 .grantStoppedDate(GRANT_STOPPED_DATE)
                 .grantDelayedNotificationSent(YES)
                 .grantAwaitingDocumentatioNotificationSent(YES)
-                .grantAwaitingDocumentationNotificationDate(GRANT_AWAITING_DOCS_DATE);
+                .grantAwaitingDocumentationNotificationDate(GRANT_AWAITING_DOCS_DATE)
+                .pcqId(APP_REF);
 
         bulkScanGrantOfRepresentationData = GrantOfRepresentationData.builder()
                 .deceasedForenames(DECEASED_FIRSTNAME)
@@ -2813,6 +2814,7 @@ public class CallbackResponseTransformerTest {
         assertEquals(LIFE_INTEREST, callbackResponse.getData().getSolsLifeInterest());
         assertEquals(RESIDUARY, callbackResponse.getData().getSolsResiduary());
         assertEquals(RESIDUARY_TYPE, callbackResponse.getData().getSolsResiduaryType());
+        assertEquals(APP_REF, callbackResponse.getData().getPcqId());
     }
 
     private void assertLegacyInfo(CallbackResponse callbackResponse) {

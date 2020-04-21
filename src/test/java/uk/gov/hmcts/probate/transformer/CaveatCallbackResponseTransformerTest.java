@@ -142,7 +142,8 @@ public class CaveatCallbackResponseTransformerTest {
                 .paperForm(YES)
                 .legacyType(CAV_LEGACY_CASE_TYPE)
                 .solsPaymentMethods(SOLS_PAYMENT_METHOD)
-                .solsFeeAccountNumber(SOLS_FEE_ACC);
+                .solsFeeAccountNumber(SOLS_FEE_ACC)
+                .pcqId(CAV_SOLICITOR_APP_REFERENCE);
 
         bulkScanCaveatData = uk.gov.hmcts.reform.probate.model.cases.caveat.CaveatData.builder()
                 .registryLocation(BULK_SCAN_CAV_REGISTRY_LOCATION)
@@ -433,6 +434,7 @@ public class CaveatCallbackResponseTransformerTest {
         assertEquals(SOLS_FEE_ACC, caveatCallbackResponse.getCaveatData().getSolsFeeAccountNumber());
 
         assertEquals(YES, caveatCallbackResponse.getCaveatData().getAutoClosedExpiry());
+        assertEquals(CAV_SOLICITOR_APP_REFERENCE, caveatCallbackResponse.getCaveatData().getPcqId());
     }
 
     private void assertApplicationType(CaveatCallbackResponse caveatCallbackResponse, ApplicationType cavApplicationType) {

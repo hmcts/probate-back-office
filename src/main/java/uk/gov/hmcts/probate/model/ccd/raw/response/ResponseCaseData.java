@@ -308,8 +308,8 @@ public class ResponseCaseData {
     private final String grantDelayedNotificationSent;
     private final String grantAwaitingDocumentationNotificationDate;
     private final String grantAwaitingDocumentatioNotificationSent;
+    private final String pcqId;
 
     private final DynamicList reprintDocument;
     private final String reprintNumberOfCopies;
-
 }

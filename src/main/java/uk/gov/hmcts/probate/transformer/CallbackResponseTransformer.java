@@ -638,9 +638,9 @@ public class CallbackResponseTransformer {
                 .grantAwaitingDocumentationNotificationDate(ofNullable(caseData.getGrantAwaitingDocumentationNotificationDate())
                     .map(dateTimeFormatter::format).orElse(null))
                 .grantAwaitingDocumentatioNotificationSent(caseData.getGrantAwaitingDocumentatioNotificationSent())
+                .pcqId(caseData.getPcqId())
                 .reprintDocument(caseData.getReprintDocument())
                 .reprintNumberOfCopies((caseData.getReprintNumberOfCopies()));
-
 
         if (transform) {
             updateCaseBuilderForTransformCase(caseData, builder);
