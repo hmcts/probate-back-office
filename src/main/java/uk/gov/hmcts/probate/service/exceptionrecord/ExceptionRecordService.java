@@ -8,11 +8,13 @@ import org.springframework.util.Assert;
 import uk.gov.hmcts.probate.exception.OCRMappingException;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatCallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
+import uk.gov.hmcts.probate.model.ccd.caveat.request.ExceptionRecordCaveatDetails;
 import uk.gov.hmcts.probate.model.ccd.caveat.response.CaveatCallbackResponse;
 import uk.gov.hmcts.probate.model.exceptionrecord.CaseCreationDetails;
 import uk.gov.hmcts.probate.model.exceptionrecord.CaveatCaseUpdateRequest;
 import uk.gov.hmcts.probate.model.exceptionrecord.ExceptionRecordRequest;
 import uk.gov.hmcts.probate.model.exceptionrecord.InputScannedDoc;
+import uk.gov.hmcts.probate.model.exceptionrecord.ResponseCaveatDetails;
 import uk.gov.hmcts.probate.model.exceptionrecord.SuccessfulCaveatUpdateResponse;
 import uk.gov.hmcts.probate.model.exceptionrecord.SuccessfulTransformationResponse;
 import uk.gov.hmcts.probate.model.ocr.OCRField;
@@ -93,7 +95,6 @@ public class ExceptionRecordService {
             return SuccessfulTransformationResponse.builder()
                     .caseCreationDetails(caveatCaseDetailsResponse)
                     .warnings(warnings)
-                    .errors(errors)
                     .build();
 
         } catch (Exception e) {
@@ -133,7 +134,6 @@ public class ExceptionRecordService {
             return SuccessfulTransformationResponse.builder()
                     .caseCreationDetails(grantOfRepresentationCaseDetailsResponse)
                     .warnings(warnings)
-                    .errors(errors)
                     .build();
 
         } catch (Exception e) {
@@ -147,7 +147,8 @@ public class ExceptionRecordService {
 
         List<String> errors = new ArrayList<String>();
         ExceptionRecordRequest erRequest = erCaseUpdateRequest.getExceptionRecord();
-        CaveatDetails caveatDetails = erCaseUpdateRequest.getCaveatDetails();
+        ExceptionRecordCaveatDetails exceptionRecordCaveatDetails = erCaseUpdateRequest.getCaveatDetails();
+        CaveatDetails caveatDetails = new CaveatDetails(exceptionRecordCaveatDetails.getData(), null, exceptionRecordCaveatDetails.getId());
         HashMap<String, String> ocrFieldValues = new HashMap<String, String>();
         List<OCRField> ocrFields = erRequest.getOcrFields();
         String caseReference = null;
@@ -169,11 +170,6 @@ public class ExceptionRecordService {
                     "Missing scanned documents in Exception Record"
             );
 
-            Assert.isTrue(
-                    caveatDetails.getId().toString().equals(caseReference),
-                    "Case retrieved does not match OCR data for caseReference"
-            );
-
             // Create CaveatCallbackRequest
             CaveatCallbackRequest caveatCallbackRequest = new CaveatCallbackRequest(caveatDetails);
 
@@ -192,7 +188,7 @@ public class ExceptionRecordService {
             // Validate caveat extension
             log.info("Validating caveat extension.");
             CaveatCallbackResponse caveatCallbackResponse = eventValidationService.validateCaveatRequest(caveatCallbackRequest, validationRuleCaveatsExpiry);
-            if (caveatCallbackResponse.getErrors().isEmpty()) {
+            if (caveatCallbackResponse.getErrors().isEmpty()) { 
                 LocalDate defaultExpiry = caveatCallbackRequest.getCaseDetails().getData()
                         .getExpiryDate().plusMonths(CAVEAT_EXPIRY_EXTENSION_PERIOD_IN_MONTHS);
                 log.info("No errors found with validateCaveatRequest, updating expiryDate to {} in request.",
@@ -200,13 +196,21 @@ public class ExceptionRecordService {
                 caveatCallbackRequest.getCaseDetails().getData().setExpiryDate(defaultExpiry);
                 log.info("Calling caveatExtend to notify of caveator of extension.");
                 caveatCallbackResponse = caveatNotificationService.caveatExtend(caveatCallbackRequest);
+                if (!caveatDetails.getId().toString().equals(caseReference)) {
+                    if (caveatCallbackResponse.getWarnings() == null) {
+                        caveatCallbackResponse.setWarnings(new ArrayList());
+                    }
+                    caveatCallbackResponse.getWarnings().add("Case retrieved does not match OCR data for caseReference");
+                }
+
                 log.info("Call to caveatExtend was successful.");
+            } else {
+                throw new OCRMappingException(caveatCallbackResponse.getErrors().get(0));
             }
 
             return SuccessfulCaveatUpdateResponse.builder()
-                    .caseUpdateDetails(caveatCallbackResponse.getCaveatData())
+                    .caseUpdateDetails(ResponseCaveatDetails.builder().caseData(caveatCallbackResponse.getCaveatData()).build())
                     .warnings(caveatCallbackResponse.getWarnings())
-                    .errors(caveatCallbackResponse.getErrors())
                     .build();
 
         } catch(Exception e){

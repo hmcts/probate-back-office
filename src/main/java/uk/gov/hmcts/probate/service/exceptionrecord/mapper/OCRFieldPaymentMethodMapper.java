@@ -43,25 +43,4 @@ public class OCRFieldPaymentMethodMapper {
             }
         }
     }
-
-    @ToSolsPaymentMethods
-    public String validateKnownSolictorPaymentMethod(String paymentMethod) {
-        log.info("Beginning mapping for Solicitor Paper Payment Method value: {}", paymentMethod);
-
-        if (paymentMethod == null || paymentMethod.isEmpty()) {
-            return null;
-        } else {
-            switch (paymentMethod.toUpperCase().trim()) {
-                case "CHEQUE":
-                    return SOLS_PAYMENT_METHOD_CHEQUE;
-                case "PBA":
-                    return SOLS_PAYMENT_METHOD_FEE_ACCOUNT;
-                default:
-                    String errorMessage = "Solictor payment method cheque, PBA expected but got '"
-                            + paymentMethod + "'";
-                    log.error(errorMessage);
-                    throw new OCRMappingException(errorMessage);
-            }
-        }
-    }
 }

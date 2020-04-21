@@ -61,11 +61,14 @@ import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_ADMON;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_INTESTACY;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE;
+import static uk.gov.hmcts.probate.model.DocumentType.OTHER;
 import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
 import static uk.gov.hmcts.probate.model.DocumentType.SOT_INFORMATION_REQUEST;
+import static uk.gov.hmcts.probate.model.DocumentType.STATEMENT_OF_TRUTH;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_ADMON_WILL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_DIGITAL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_INTESTACY_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.WELSH_STATEMENT_OF_TRUTH;
 import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.Constants.GRANT_OF_PROBATE_NAME;
 import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.INTESTACY;
 
@@ -78,6 +81,7 @@ public class CallbackResponseTransformer {
     private final AssembleLetterTransformer assembleLetterTransformer;
     private final ExecutorsApplyingNotificationService executorsApplyingNotificationService;
     private final SolicitorExecutorService solicitorExecutorService;
+    private final ReprintTransformer reprintTransformer;
 
     private static final DocumentType[] LEGAL_STATEMENTS = {LEGAL_STATEMENT_PROBATE, LEGAL_STATEMENT_INTESTACY,
         LEGAL_STATEMENT_ADMON};
@@ -255,6 +259,44 @@ public class CallbackResponseTransformer {
         return transformResponse(responseCaseDataBuilder.build());
     }
 
+    public CallbackResponse addBulkPrintInformationForReprint(CallbackRequest callbackRequest, Document document,
+                                                              String letterId, String pdfSize) {
+        CaseDetails caseDetails = callbackRequest.getCaseDetails();
+        CaseData caseData = caseDetails.getData();
+        ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), false);
+        
+        List<Document> documents = Arrays.asList(document);
+        if (documentTransformer.hasDocumentWithType(documents, DIGITAL_GRANT)
+            || documentTransformer.hasDocumentWithType(documents, ADMON_WILL_GRANT)
+            || documentTransformer.hasDocumentWithType(documents, INTESTACY_GRANT)
+            || documentTransformer.hasDocumentWithType(documents, WELSH_DIGITAL_GRANT)
+            || documentTransformer.hasDocumentWithType(documents, WELSH_INTESTACY_GRANT)
+            || documentTransformer.hasDocumentWithType(documents, WELSH_ADMON_WILL_GRANT)) {
+
+            responseCaseDataBuilder
+                .bulkPrintSendLetterId(letterId)
+                .bulkPrintPdfSize(String.valueOf(pdfSize));
+        }
+        if (documentTransformer.hasDocumentWithType(documents, DIGITAL_GRANT_REISSUE)
+            || documentTransformer.hasDocumentWithType(documents, ADMON_WILL_GRANT_REISSUE)
+            || documentTransformer.hasDocumentWithType(documents, INTESTACY_GRANT_REISSUE)
+            || documentTransformer.hasDocumentWithType(documents, STATEMENT_OF_TRUTH)
+            || documentTransformer.hasDocumentWithType(documents, WELSH_STATEMENT_OF_TRUTH)
+            || documentTransformer.hasDocumentWithType(documents, DocumentType.OTHER)) {
+            if (letterId != null) {
+                DocumentType[] documentTypes = {DIGITAL_GRANT_REISSUE, ADMON_WILL_GRANT_REISSUE, INTESTACY_GRANT_REISSUE,
+                    STATEMENT_OF_TRUTH, WELSH_STATEMENT_OF_TRUTH, DocumentType.OTHER};
+                String templateName = getTemplateName(documents, documentTypes);
+                CollectionMember<BulkPrint> bulkPrint = buildBulkPrint(letterId, templateName);
+                appendToBulkPrintCollection(bulkPrint, caseData);
+                responseCaseDataBuilder
+                    .bulkPrintId(caseData.getBulkPrintId());
+            }
+        }
+
+        return transformResponse(responseCaseDataBuilder.build());
+    }
+
     public CallbackResponse addSOTDocument(CallbackRequest callbackRequest, Document document) {
         documentTransformer.addDocument(callbackRequest, document, false);
         ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), false);
@@ -396,6 +438,14 @@ public class CallbackResponseTransformer {
 
         ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), doTransform);
         responseCaseDataBuilder.previewLink(letterPreview.getDocumentLink());
+
+        return transformResponse(responseCaseDataBuilder.build());
+    }
+
+    public CallbackResponse transformCaseForReprint(CallbackRequest callbackRequest) {
+        boolean doTransform = doTransform(callbackRequest);
+        ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), doTransform);
+        reprintTransformer.transformReprintDocuments(callbackRequest.getCaseDetails(), responseCaseDataBuilder);
 
         return transformResponse(responseCaseDataBuilder.build());
     }
@@ -587,7 +637,9 @@ public class CallbackResponseTransformer {
                 .grantDelayedNotificationSent(caseData.getGrantDelayedNotificationSent())
                 .grantAwaitingDocumentationNotificationDate(ofNullable(caseData.getGrantAwaitingDocumentationNotificationDate())
                     .map(dateTimeFormatter::format).orElse(null))
-                .grantAwaitingDocumentatioNotificationSent(caseData.getGrantAwaitingDocumentatioNotificationSent());
+                .grantAwaitingDocumentatioNotificationSent(caseData.getGrantAwaitingDocumentatioNotificationSent())
+                .reprintDocument(caseData.getReprintDocument())
+                .reprintNumberOfCopies((caseData.getReprintNumberOfCopies()));
 
 
         if (transform) {
@@ -746,7 +798,9 @@ public class CallbackResponseTransformer {
                 .grantDelayedNotificationSent(caseData.getGrantDelayedNotificationSent())
                 .grantAwaitingDocumentationNotificationDate(ofNullable(caseData.getGrantAwaitingDocumentationNotificationDate())
                     .map(dateTimeFormatter::format).orElse(null))
-                .grantAwaitingDocumentatioNotificationSent(caseData.getGrantAwaitingDocumentatioNotificationSent());
+                .grantAwaitingDocumentatioNotificationSent(caseData.getGrantAwaitingDocumentatioNotificationSent())
+                .reprintDocument(caseData.getReprintDocument())
+                .reprintNumberOfCopies((caseData.getReprintNumberOfCopies()));
 
         if (YES.equals(caseData.getSolsSolicitorIsMainApplicant())) {
             builder
@@ -873,7 +927,23 @@ public class CallbackResponseTransformer {
                         .solsSolicitorIsApplying(YES)
                         .solsSolicitorNotApplyingReason(null)
                         .solsPrimaryExecutorNotApplyingReason(null);
-            }  else if (YES.equals(caseData.getSolsSolicitorIsApplying())) {
+            } else if (YES.equals(caseData.getSolsSolicitorIsApplying()) || NO.equals(caseData.getSolsSolicitorIsApplying())) {
+                if(getSolsSOTName(caseData.getSolsSOTForenames(), caseData.getSolsSOTSurname()).equals(caseData.getPrimaryApplicantFullName())) {
+                    builder
+                            .primaryApplicantForenames(null)
+                            .primaryApplicantSurname(null)
+                            .primaryApplicantPhoneNumber(null)
+                            .primaryApplicantEmailAddress(null)
+                            .primaryApplicantAddress(null)
+                            .primaryApplicantAlias(null)
+                            .primaryApplicantHasAlias(null)
+                            .primaryApplicantIsApplying(null)
+                            .solsPrimaryExecutorNotApplyingReason(null);
+                } else if(YES.equals(caseData.getSolsSolicitorIsApplying())) {
+                    builder
+                            .solsPrimaryExecutorNotApplyingReason(null);
+                }
+            } else {
                 builder
                         .solsPrimaryExecutorNotApplyingReason(null);
             }
@@ -1057,7 +1127,23 @@ public class CallbackResponseTransformer {
                         .solsSolicitorIsApplying(YES)
                         .solsSolicitorNotApplyingReason(null)
                         .solsPrimaryExecutorNotApplyingReason(null);
-            } else if (YES.equals(caseData.getSolsSolicitorIsApplying())) {
+            } else if (YES.equals(caseData.getSolsSolicitorIsApplying()) || NO.equals(caseData.getSolsSolicitorIsApplying())) {
+                if(getSolsSOTName(caseData.getSolsSOTForenames(), caseData.getSolsSOTSurname()).equals(caseData.getPrimaryApplicantFullName())) {
+                    builder
+                            .primaryApplicantForenames(null)
+                            .primaryApplicantSurname(null)
+                            .primaryApplicantPhoneNumber(null)
+                            .primaryApplicantEmailAddress(null)
+                            .primaryApplicantAddress(null)
+                            .primaryApplicantAlias(null)
+                            .primaryApplicantHasAlias(null)
+                            .primaryApplicantIsApplying(null)
+                            .solsPrimaryExecutorNotApplyingReason(null);
+                } else if(YES.equals(caseData.getSolsSolicitorIsApplying())) {
+                    builder
+                            .solsPrimaryExecutorNotApplyingReason(null);
+                }
+            } else {
                 builder
                         .solsPrimaryExecutorNotApplyingReason(null);
             }
@@ -1130,8 +1216,8 @@ public class CallbackResponseTransformer {
                         .additionalExecutorsNotApplying(execsNotApplying);
             } else {
                 builder
-                        .additionalExecutorsApplying(EMPTY_LIST)
-                        .additionalExecutorsNotApplying(EMPTY_LIST);
+                        .additionalExecutorsApplying(caseData.getAdditionalExecutorsApplying())
+                        .additionalExecutorsNotApplying(caseData.getAdditionalExecutorsNotApplying());
             }
         } else {
             List<CollectionMember<AdditionalExecutorApplying>> applyingExec = new ArrayList<>();

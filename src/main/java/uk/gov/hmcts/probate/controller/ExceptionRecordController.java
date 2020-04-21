@@ -24,8 +24,8 @@ import uk.gov.hmcts.probate.model.exceptionrecord.CaveatCaseUpdateRequest;
 import uk.gov.hmcts.probate.model.exceptionrecord.ExceptionRecordErrorResponse;
 import uk.gov.hmcts.probate.model.exceptionrecord.ExceptionRecordRequest;
 import uk.gov.hmcts.probate.model.exceptionrecord.JourneyClassification;
-import uk.gov.hmcts.probate.model.exceptionrecord.SuccessfulTransformationResponse;
 import uk.gov.hmcts.probate.model.exceptionrecord.SuccessfulCaveatUpdateResponse;
+import uk.gov.hmcts.probate.model.exceptionrecord.SuccessfulTransformationResponse;
 import uk.gov.hmcts.probate.service.exceptionrecord.ExceptionRecordService;
 import uk.gov.hmcts.probate.service.ocr.FormType;
 import uk.gov.hmcts.probate.service.ocr.OCRPopulatedValueMapper;
@@ -65,53 +65,38 @@ public class ExceptionRecordController {
     })
     @PostMapping(path = "/transform-exception-record",
             consumes = APPLICATION_JSON_UTF8_VALUE, produces = APPLICATION_JSON_VALUE)
-    public ResponseEntity<SuccessfulTransformationResponse> transformExceptionRecord(@Valid @RequestBody ExceptionRecordRequest erRequest) {
+    public ResponseEntity<SuccessfulTransformationResponse> updateCase(@Valid @RequestBody ExceptionRecordRequest erRequest) {
 
         log.info("Transform exception record data for form type: {}", erRequest.getFormType());
         FormType.isFormTypeValid(erRequest.getFormType());
         FormType formType = FormType.valueOf(erRequest.getFormType());
         SuccessfulTransformationResponse callbackResponse = SuccessfulTransformationResponse.builder().build();
-        List<String> errors = new ArrayList<>();
-        List<String> warnings = new ArrayList<String>();
-        warnings = ocrToCCDMandatoryField
-                .ocrToCCDMandatoryFields(ocrPopulatedValueMapper.ocrPopulatedValueMapper(erRequest.getOcrFields()), formType, warnings);
+        List<String> warnings = ocrToCCDMandatoryField
+                .ocrToCCDMandatoryFields(ocrPopulatedValueMapper.ocrPopulatedValueMapper(erRequest.getOcrFields()), formType, new ArrayList<String>());
 
         if (!warnings.isEmpty()) {
-            errors.add("Please resolve all warnings before creating this case");
+            throw new OCRMappingException("Please resolve all warnings before creating this case");
         }
 
         if (!erRequest.getJourneyClassification().name().equals(JourneyClassification.NEW_APPLICATION.name())) {
-            errors.add("This Exception Record can not be created as a case");
+            throw new OCRMappingException("This Exception Record can not be created as a case");
         }
 
-        if (!errors.isEmpty()) {
-            log.info("Validation check failed, returning error response for form-type {}", formType);
-            callbackResponse = SuccessfulTransformationResponse.builder()
-                    .warnings(warnings)
-                    .errors(errors)
-                    .build();
-
-        } else {
-            log.info("Validation check passed, attempting to transform case for form-type {}", formType);
-            switch (formType) {
-                case PA8A:
-                    callbackResponse = erService.createCaveatCaseFromExceptionRecord(erRequest, warnings);
-                    logTransformationCallback(callbackResponse);
-                    return ResponseEntity.ok(callbackResponse);
-                case PA1P:
-                    callbackResponse = erService.createGrantOfRepresentationCaseFromExceptionRecord(
-                            erRequest, GrantType.GRANT_OF_PROBATE, warnings);
-                    logTransformationCallback(callbackResponse);
-                    return ResponseEntity.ok(callbackResponse);
-                case PA1A:
-                    callbackResponse = erService.createGrantOfRepresentationCaseFromExceptionRecord(
-                            erRequest, GrantType.INTESTACY, warnings);
-                    logTransformationCallback(callbackResponse);
-                    return ResponseEntity.ok(callbackResponse);
-                default:
-                    // Unreachable code
-                    errors.add("This Exception Record form currently has no case mapping");
-            }
+        log.info("Validation check passed, attempting to transform case for form-type {}", formType);
+        switch (formType) {
+            case PA8A:
+                callbackResponse = erService.createCaveatCaseFromExceptionRecord(erRequest, warnings);
+                break;
+            case PA1P:
+                callbackResponse = erService.createGrantOfRepresentationCaseFromExceptionRecord(
+                        erRequest, GrantType.GRANT_OF_PROBATE, warnings);
+                break;
+            case PA1A:
+                callbackResponse = erService.createGrantOfRepresentationCaseFromExceptionRecord(
+                        erRequest, GrantType.INTESTACY, warnings);
+                break;
+            default:
+                throw new OCRMappingException("This Exception Record form currently has no case mapping");
         }
 
         return ResponseEntity.ok(callbackResponse);
@@ -126,25 +111,25 @@ public class ExceptionRecordController {
     })
     @PostMapping(path = "/update-case",
             consumes = APPLICATION_JSON_UTF8_VALUE, produces = APPLICATION_JSON_VALUE)
-    public ResponseEntity<SuccessfulCaveatUpdateResponse> transformExceptionRecord(@Valid @RequestBody CaveatCaseUpdateRequest erCaseUpdateRequest) {
+    public ResponseEntity<SuccessfulCaveatUpdateResponse> updateCase(@Valid @RequestBody CaveatCaseUpdateRequest erCaseUpdateRequest) {
 
+        logRequest(erCaseUpdateRequest);
+        
         ExceptionRecordRequest erRequest = erCaseUpdateRequest.getExceptionRecord();
         log.info("Update case data from exception record for form type: {}", erRequest.getFormType());
         FormType.isFormTypeValid(erRequest.getFormType());
         FormType formType = FormType.valueOf(erRequest.getFormType());
-        SuccessfulCaveatUpdateResponse callbackResponse = SuccessfulCaveatUpdateResponse.builder().build();
-        List<String> warnings = new ArrayList<String>();
+        SuccessfulCaveatUpdateResponse callbackResponse;
 
         if (!erRequest.getJourneyClassification().name().equals(JourneyClassification.SUPPLEMENTARY_EVIDENCE_WITH_OCR.name())) {
-            log.error("This Exception Record can not be created as a case");
-            throw new OCRMappingException("This Exception Record can not be created as a caseg");
+            log.error("This Exception Record can not be created as a case update");
+            throw new OCRMappingException("This Exception Record can not be created as a case update");
         }
 
         log.info("Validation check passed, attempting to transform case for form-type {}", formType);
         switch (formType) {
             case PA8A: {
                 callbackResponse = erService.updateCaveatCaseFromExceptionRecord(erCaseUpdateRequest);
-                logUpdateCallback(callbackResponse);
                 break;
             }
             default: {
@@ -153,23 +138,8 @@ public class ExceptionRecordController {
             }
         }
 
+        logResponse(callbackResponse);
         return ResponseEntity.ok(callbackResponse);
-    }
-
-    private void logTransformationCallback(SuccessfulTransformationResponse callbackResponse) {
-        try {
-            log.info("Response for transformExceptionRecord: {}", objectMapper.writeValueAsString(callbackResponse));
-        } catch (JsonProcessingException e) {
-            log.error("Exception on transform ExceptionRecord: {}", e);
-        }
-    }
-
-    private void logUpdateCallback(SuccessfulCaveatUpdateResponse callbackResponse) {
-        try {
-            log.info("Response for update ExceptionRecord: {}", objectMapper.writeValueAsString(callbackResponse));
-        } catch (JsonProcessingException e) {
-            log.error("Exception on transformExceptionRecord: {}", e);
-        }
     }
 
     @ExceptionHandler
@@ -184,6 +154,23 @@ public class ExceptionRecordController {
         List<String> warnings = Arrays.asList(OCR_EXCEPTION_WARNING_PREFIX + exception.getMessage());
         List<String> errors = Arrays.asList(OCR_EXCEPTION_ERROR);
         ExceptionRecordErrorResponse errorResponse = new ExceptionRecordErrorResponse(errors, warnings);
-        return ResponseEntity.ok(errorResponse);
+        return new ResponseEntity(errorResponse, HttpStatus.UNPROCESSABLE_ENTITY);
     }
+
+    private void logRequest(CaveatCaseUpdateRequest caveatCaseUpdateRequest) {
+        try {
+            log.info("logging request on ExceptionRecordController: {}", objectMapper.writeValueAsString(caveatCaseUpdateRequest));
+        } catch (JsonProcessingException e) {
+            log.error("POST: {}", e);
+        }
+    }
+    
+    private void logResponse(SuccessfulCaveatUpdateResponse successfulCaveatUpdateResponse) {
+        try {
+            log.info("logging response on ExceptionRecordController: {}", objectMapper.writeValueAsString(successfulCaveatUpdateResponse));
+        } catch (JsonProcessingException e) {
+            log.error("POST: {}", e);
+        }
+    }
+
 }

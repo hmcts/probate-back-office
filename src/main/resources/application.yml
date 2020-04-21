@@ -177,7 +177,7 @@ azure:
 
 notifications:
   grantDelayedNotificationPeriodDays: 49
-  grantDelayedNotificationReleaseDate: "2020-03-16"
+  grantDelayedNotificationReleaseDate: "2020-05-08"
   grantAwaitingDocumentationNotificationPeriodDays: 21
   govNotifyApiKey: "probate_back_office_live_test-4809d6a8-a10b-405d-88eb-1fee9b3042e3-682b1c3b-647e-4a32-99b9-98a8b7c7feb7"
   templates:
@@ -212,6 +212,7 @@ notifications:
           grantReissued: "1e18751f-fd4e-4893-85bb-f59cc5330c38"
           generalCaveatMessage: "afadf00e-c224-4da0-a6dc-fb47a2e5db67"
           excelaData: "fd474506-a272-4caa-ad61-6086cee0639a"
+          grantRaised: "8d4fe65c-f25f-4cc1-a1af-fa267a10755a"
           caveatRaised: "bf9dabd9-b22f-4cb6-b3aa-871ac8532209"
           caveatRaisedCtsc: "ed01d79f-08f0-4703-8cec-f490e499fc33"
           caveatRaisedSols: "022966cb-e4da-4996-a831-02c2310ab4f8"
@@ -382,12 +383,11 @@ registry:
       name: CTSC
       phone: 0300 303 0648
       emailReplyToId: "deb43d21-bb3a-481a-afca-5fdf83a76113"
-      addressline1: Manchester Civil Justice Centre
-      addressline2: Ground Floor
-      addressline3: 1 Bridge Street West
-      addressline4: PO Box 4240
-      town: Manchester
-      postcode: M60 1WJ
+      addressline1: Principal Registry of the Family Division
+      addressline2: HMCTS Probate
+      addressline3: PO Box 12625
+      town: Harlow
+      postcode: CM20 9QE
     bristol:
       name: Bristol District Probate Registry
       phone: 02920 474373
@@ -397,8 +397,7 @@ registry:
       addressline3: Cardiff
       town: South Wales
       postcode: CF24 0RZ
-
-
+      
 document:
   retriever:
     service:

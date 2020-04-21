@@ -38,6 +38,9 @@ public class FileTransferService {
 
     public int uploadFile(File file) {
         log.info("Starting file upload to ftp for file:" + file.toPath() + ":" + file.getName());
+        log.info("targetEnv:{} fileName:{} SV_VALID_FROM:{} SS:{} SRT:{} SP:{} SE_SIG_EXPIRY_DATE:{} ST_SIG_CREATION_DATE:{} SPR:{} signature:{}",  
+            targetEnv , file.getName(), SV_VALID_FROM, SS, SRT, 
+            SP, SE_SIG_EXPIRY_DATE, ST_SIG_CREATION_DATE, SPR, signature);
         Response response = null;
         String fileAsString = fileAsString(file.toPath().toString());
 
@@ -56,7 +59,7 @@ public class FileTransferService {
                 signature);
             log.info("File transfer response: {}", response.status());
             Files.delete(file.toPath());
-        } catch (IOException e) {
+        } catch (Exception e) {
             log.error("Error handling file: " + e.getMessage());
             throw new BadRequestException("Failed to initiate file transfer request: " + e.getMessage());
         }

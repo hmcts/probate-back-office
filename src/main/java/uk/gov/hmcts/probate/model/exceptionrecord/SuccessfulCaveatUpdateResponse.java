@@ -12,11 +12,8 @@ import java.util.List;
 public class SuccessfulCaveatUpdateResponse {
 
     @JsonProperty("case_update_details")
-    public final ResponseCaveatData caseUpdateDetails;
+    public final ResponseCaveatDetails caseUpdateDetails;
 
     @JsonProperty("warnings")
     public final List<String> warnings;
-
-    @JsonProperty("errors")
-    public final List<String> errors;
 }

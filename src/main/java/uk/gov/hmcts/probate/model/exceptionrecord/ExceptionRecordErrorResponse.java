@@ -1,11 +1,13 @@
 package uk.gov.hmcts.probate.model.exceptionrecord;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Builder;
 import lombok.Data;
 
 import java.util.List;
 
 @Data
+@Builder
 public class ExceptionRecordErrorResponse {
 
     @JsonProperty("warnings")
@@ -13,11 +15,6 @@ public class ExceptionRecordErrorResponse {
 
     @JsonProperty("errors")
     public final List<String> errors;
-
-    public ExceptionRecordErrorResponse(List<String> errors) {
-        this.errors = errors;
-        this.warnings = null;
-    }
 
     public ExceptionRecordErrorResponse(List<String> errors, List<String> warnings) {
         this.errors = errors;

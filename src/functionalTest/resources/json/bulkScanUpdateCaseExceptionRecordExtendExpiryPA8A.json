@@ -45,28 +45,7 @@
   },
   "case_details": {
     "id":1578500937039179,
-    "jurisdiction":"PROBATE",
     "case_type_id":"Caveat",
-    "state":"CavCaveatRaised",
-    "created_date": [
-      2018,
-      6,
-      7,
-      10,
-      8,
-      8,
-      695000000
-    ],
-    "last_modified": [
-      2018,
-      6,
-      7,
-      10,
-      8,
-      8,
-      695000000
-    ],
-    "security_classification":"PUBLIC",
     "case_data":{
       "caveatorAddress":{
       "PostCode":"XC1 1XV",
