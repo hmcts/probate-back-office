@@ -147,7 +147,7 @@ public class PDFManagementService {
 
     private String decryptedFileAsBase64String(String fileResource) {
         String cipherMessage = fileSystemResourceService.getFileFromResourceAsString(fileResource);
-        log.info("Decrypting file: {}, cipherMessage.isNull: {}", fileResource, StringUtil.isNullOrEmpty(cipherMessage);
+        log.info("Decrypting file: {}, cipherMessage.isNull: {}", fileResource, StringUtil.isNullOrEmpty(cipherMessage));
         String decryptedString = null;
         try {
             IvParameterSpec iv = new IvParameterSpec(SIGNATURE_DECRYPTION_IV.getBytes(StandardCharsets.UTF_8));
