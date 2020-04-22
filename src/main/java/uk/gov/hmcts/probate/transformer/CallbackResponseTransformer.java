@@ -713,14 +713,14 @@ public class CallbackResponseTransformer {
                 .epaRegistered(caseData.getEpaRegistered())
                 .domicilityCountry(caseData.getDomicilityCountry())
                 .ukEstate(caseData.getUkEstate())
+                .immovableEstate(caseData.getImmovableEstate())
                 .domicilityIHTCert(caseData.getDomicilityIHTCert())
-                .solsEntrustingDoc(caseData.getSolsEntrustingDoc())
                 .applicationGrounds(caseData.getApplicationGrounds())
                 .willDispose(caseData.getWillDispose())
                 .englishWill(caseData.getEnglishWill())
-                .appointExec(caseData.getEnglishWill())
+                .appointExec(caseData.getAppointExec())
                 .appointExecByDuties(caseData.getAppointExecByDuties())
-                .solsDomicilityCert(caseData.getSolsDomicilityCert())
+                .appointExecNo(caseData.getAppointExecNo())
                 .entitledToApply(caseData.getEntitledToApply())
                 .entitledToApplyOther(caseData.getEntitledToApplyOther())
                 .notifiedApplicants(caseData.getNotifiedApplicants())
@@ -810,9 +810,7 @@ public class CallbackResponseTransformer {
 
         if(YES.equals(caseData.getDeceasedDomicileInEngWales())) {
             builder
-                    .domicilityCountry(null)
-                    .solsEntrustingDoc(null)
-                    .solsDomicilityCert(null);
+                    .domicilityCountry(null);
         }
 
         if(!WILL_LEFT.equals(caseData.getSolsWillType())) {
@@ -820,13 +818,15 @@ public class CallbackResponseTransformer {
                     .willDispose(null)
                     .englishWill(null)
                     .appointExec(null)
-                    .appointExecByDuties(null);
+                    .appointExecByDuties(null)
+                    .appointExecNo(null);
         } else if(YES.equals(caseData.getEnglishWill())) {
             builder
                     .appointExecByDuties(null);
         } else if(NO.equals(caseData.getEnglishWill())) {
             builder
-                    .appointExec(null);
+                    .appointExec(null)
+                    .appointExecNo(null);
         }
 
         return builder;

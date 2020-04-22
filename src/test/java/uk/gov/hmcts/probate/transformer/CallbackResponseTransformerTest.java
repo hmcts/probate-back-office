@@ -1473,9 +1473,7 @@ public class CallbackResponseTransformerTest {
                 .paperForm(NO)
                 .deceasedDomicileInEngWales(YES)
                 .ukEstate(UK_ESTATE)
-                .domicilityCountry(DOMICILITY_COUNTRY)
-                .solsEntrustingDoc(NO)
-                .solsDomicilityCert(YES);
+                .domicilityCountry(DOMICILITY_COUNTRY);
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
@@ -1483,8 +1481,6 @@ public class CallbackResponseTransformerTest {
         CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
 
         assertNull(callbackResponse.getData().getDomicilityCountry());
-        assertNull(callbackResponse.getData().getSolsEntrustingDoc());
-        assertNull(callbackResponse.getData().getSolsDomicilityCert());
         assertEquals("Item", callbackResponse.getData().getUkEstate().get(0).getValue().getItem());
         assertEquals("999.99", callbackResponse.getData().getUkEstate().get(0).getValue().getValue());
     }
@@ -1497,9 +1493,7 @@ public class CallbackResponseTransformerTest {
                 .paperForm(NO)
                 .deceasedDomicileInEngWales(NO)
                 .ukEstate(UK_ESTATE)
-                .domicilityCountry(DOMICILITY_COUNTRY)
-                .solsEntrustingDoc(NO)
-                .solsDomicilityCert(YES);
+                .domicilityCountry(DOMICILITY_COUNTRY);
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
@@ -1507,8 +1501,6 @@ public class CallbackResponseTransformerTest {
         CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
 
         assertEquals("OtherCountry", callbackResponse.getData().getDomicilityCountry());
-        assertEquals(NO, callbackResponse.getData().getSolsEntrustingDoc());
-        assertEquals(YES, callbackResponse.getData().getSolsDomicilityCert());
     }
 
     @Test
@@ -1941,8 +1933,6 @@ public class CallbackResponseTransformerTest {
                 .attorneyOnBehalfOfNameAndAddress(attorneyList)
                 .adopted(YES)
                 .adoptiveRelatives(adoptedRelatives)
-                .solsEntrustingDoc(null)
-                .solsDomicilityCert(null)
                 .domicilityIHTCert(YES)
                 .entitledToApply(YES)
                 .entitledToApplyOther(YES)
@@ -2061,8 +2051,6 @@ public class CallbackResponseTransformerTest {
                 .attorneyOnBehalfOfNameAndAddress(attorneyList)
                 .adopted(YES)
                 .adoptiveRelatives(adoptedRelatives)
-                .solsEntrustingDoc(null)
-                .solsDomicilityCert(null)
                 .domicilityIHTCert(YES)
                 .entitledToApply(YES)
                 .entitledToApplyOther(YES)
@@ -2981,8 +2969,6 @@ public class CallbackResponseTransformerTest {
         assertEquals(YES, callbackResponse.getData().getForeignAsset());
         assertEquals("123", callbackResponse.getData().getForeignAssetEstateValue());
         assertEquals(DECEASED_DATE_OF_DEATH_TYPE, callbackResponse.getData().getDateOfDeathType());
-        assertNull(callbackResponse.getData().getSolsEntrustingDoc());
-        assertNull(callbackResponse.getData().getSolsDomicilityCert());
 
         assertEquals(DECEASED_DIVORCED_IN_ENGLAND_OR_WALES, callbackResponse.getData().getDeceasedDivorcedInEnglandOrWales());
         assertEquals(PRIMARY_APPLICANT_ADOPTION_IN_ENGLAND_OR_WALES,

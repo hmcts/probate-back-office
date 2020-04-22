@@ -98,6 +98,10 @@ public class CaseData {
 
     private final String appointExecByDuties;
 
+    private final String appointExecNo;
+
+    private final String immovableEstate;
+
     @NotBlank(groups = {ApplicationUpdatedGroup.class}, message = "{applicationGroundsIsNull}")
     private final String applicationGrounds;
 
@@ -397,8 +401,6 @@ public class CaseData {
     private final String epaRegistered;
     private final String domicilityCountry;
     private final String domicilityIHTCert;
-    private final String solsEntrustingDoc;
-    private final String solsDomicilityCert;
     private final String entitledToApply;
     private final String entitledToApplyOther;
     private final String notifiedApplicants;

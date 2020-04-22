@@ -49,6 +49,7 @@ You should:
 
 *   use recorded delivery
 *   keep copies of all documents
+*   if you are providing a notarial copy or a court sealed copy of the will please also provide a cover letter with the application indicating where the original will is and why it cannot be released. 
 
 Send all documents to:
 
