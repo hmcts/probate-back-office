@@ -27,6 +27,7 @@
    ]]></notes>
         <gav regex="true">^org\.apache\.tomcat\.embed:tomcat-embed-core:.*$</gav>
         <cve>CVE-2019-0232</cve>
+        <cve>CVE-2020-1935</cve>
     </suppress>
     <suppress>
         <notes><![CDATA[
