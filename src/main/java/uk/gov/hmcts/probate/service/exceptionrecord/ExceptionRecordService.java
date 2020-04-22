@@ -76,7 +76,7 @@ public class ExceptionRecordService {
         List<String> errors = new ArrayList<String>();
 
         try {
-            log.info("About to map Caveat OCR fields to CCD.");
+            log.info("About to map Caveat OCR fields to CCD for case: {}", erRequest.getId());
             CaveatData caveatData = erCaveatMapper.toCcdData(erRequest.getOCRFieldsObject());
 
             // Add bulkScanReferenceId
@@ -111,7 +111,7 @@ public class ExceptionRecordService {
         List<String> errors = new ArrayList<String>();
 
         try {
-            log.info("About to map Grant of Representation OCR fields to CCD.");
+            log.info("About to map Grant of Representation OCR fields to CCD for case: {}", erRequest.getId());
             GrantOfRepresentationData grantOfRepresentationData = erGrantOfRepresentationMapper.toCcdData(erRequest.getOCRFieldsObject(), grantType);
 
             // Add bulkScanReferenceId
@@ -158,7 +158,7 @@ public class ExceptionRecordService {
         });
 
         try {
-            log.info("About to update Caveat expiry date extention.");
+            log.info("About to update Caveat expiry date extention for case: {}", erRequest.getId());
 
             if (StringUtils.isNotBlank(ocrFieldValues.get(CAVEAT_EXTEND_CASE_REFERENCE_KEY))
                     && (StringUtils.isNotBlank(caveatDetails.getId().toString()))) {

@@ -65,7 +65,7 @@ public class ExceptionRecordController {
     })
     @PostMapping(path = "/transform-exception-record",
             consumes = APPLICATION_JSON_UTF8_VALUE, produces = APPLICATION_JSON_VALUE)
-    public ResponseEntity<SuccessfulTransformationResponse> updateCase(@Valid @RequestBody ExceptionRecordRequest erRequest) {
+    public ResponseEntity<SuccessfulTransformationResponse> transformCase(@Valid @RequestBody ExceptionRecordRequest erRequest) {
 
         log.info("Transform exception record data for form type: {}, case: {}", erRequest.getFormType(), erRequest.getId());
         FormType.isFormTypeValid(erRequest.getFormType());
