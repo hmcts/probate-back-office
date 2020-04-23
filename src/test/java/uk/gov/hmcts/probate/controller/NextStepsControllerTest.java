@@ -27,7 +27,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static uk.gov.hmcts.probate.controller.CaseDataTestBuilder.ID;
 import static uk.gov.hmcts.probate.controller.CaseDataTestBuilder.LAST_MODIFIED;
-import static uk.gov.hmcts.probate.controller.CaseDataTestBuilder.SOLICITOR_FIRM_LINE1;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -36,6 +35,7 @@ public class NextStepsControllerTest {
   
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private static final String NEXTSTEPS_CONFIRMATION_URL = "/nextsteps/confirmation";
+    private static final String APPLICATION_GROUNDS = "Application grounds";
 
     @Autowired
     private WebApplicationContext webApplicationContext;

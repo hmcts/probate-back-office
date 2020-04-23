@@ -713,7 +713,14 @@ public class CallbackResponseTransformer {
                 .epaRegistered(caseData.getEpaRegistered())
                 .domicilityCountry(caseData.getDomicilityCountry())
                 .ukEstate(caseData.getUkEstate())
+                .immovableEstate(caseData.getImmovableEstate())
                 .domicilityIHTCert(caseData.getDomicilityIHTCert())
+                .applicationGrounds(caseData.getApplicationGrounds())
+                .willDispose(caseData.getWillDispose())
+                .englishWill(caseData.getEnglishWill())
+                .appointExec(caseData.getAppointExec())
+                .appointExecByDuties(caseData.getAppointExecByDuties())
+                .appointExecNo(caseData.getAppointExecNo())
                 .entitledToApply(caseData.getEntitledToApply())
                 .entitledToApplyOther(caseData.getEntitledToApplyOther())
                 .notifiedApplicants(caseData.getNotifiedApplicants())
@@ -799,6 +806,27 @@ public class CallbackResponseTransformer {
             builder
                     .primaryApplicantSecondPhoneNumber(null)
                     .primaryApplicantRelationshipToDeceased(null);
+        }
+
+        if(YES.equals(caseData.getDeceasedDomicileInEngWales())) {
+            builder
+                    .domicilityCountry(null);
+        }
+
+        if(!WILL_LEFT.equals(caseData.getSolsWillType())) {
+            builder
+                    .willDispose(null)
+                    .englishWill(null)
+                    .appointExec(null)
+                    .appointExecByDuties(null)
+                    .appointExecNo(null);
+        } else if(YES.equals(caseData.getEnglishWill())) {
+            builder
+                    .appointExecByDuties(null);
+        } else if(NO.equals(caseData.getEnglishWill())) {
+            builder
+                    .appointExec(null)
+                    .appointExecNo(null);
         }
 
         return builder;

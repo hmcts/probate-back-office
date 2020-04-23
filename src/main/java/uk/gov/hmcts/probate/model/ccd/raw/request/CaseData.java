@@ -90,6 +90,24 @@ public class CaseData {
     private final String solsSolicitorNotApplyingReason;
 
     // EVENT = solicitorUpdateApplication
+    private final String willDispose;
+
+    private final String englishWill;
+
+    private final String appointExec;
+
+    private final String appointExecByDuties;
+
+    private final String appointExecNo;
+
+    private final String immovableEstate;
+
+    @NotBlank(groups = {ApplicationUpdatedGroup.class}, message = "{applicationGroundsIsNull}")
+    private final String applicationGrounds;
+
+    @NotNull(groups = {ApplicationUpdatedGroup.class}, message = "{ukEstateIsNull}")
+    private final List<CollectionMember<EstateItem>> ukEstate;
+
     @NotBlank(groups = {ApplicationUpdatedGroup.class, AmendCaseDetailsGroup.class},
             message = "{deceasedForenameIsNull}")
     private final String deceasedForenames;
@@ -382,7 +400,6 @@ public class CaseData {
     private final String epaOrLpa;
     private final String epaRegistered;
     private final String domicilityCountry;
-    private final List<CollectionMember<EstateItem>> ukEstate;
     private final String domicilityIHTCert;
     private final String entitledToApply;
     private final String entitledToApplyOther;
