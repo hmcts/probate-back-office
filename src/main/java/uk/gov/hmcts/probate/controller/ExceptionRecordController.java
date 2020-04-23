@@ -75,7 +75,7 @@ public class ExceptionRecordController {
                 .ocrToCCDMandatoryFields(ocrPopulatedValueMapper.ocrPopulatedValueMapper(erRequest.getOcrFields()), formType, new ArrayList<String>());
 
         if (!warnings.isEmpty()) {
-            throw new OCRMappingException("Please resolve all warnings before creating this case: " + erRequest.getId());
+            throw new OCRMappingException("Please resolve all warnings before creating the case", warnings);
         }
 
         if (!erRequest.getJourneyClassification().name().equals(JourneyClassification.NEW_APPLICATION.name())) {
@@ -151,7 +151,12 @@ public class ExceptionRecordController {
     @ExceptionHandler(OCRMappingException.class)
     public ResponseEntity<ExceptionRecordErrorResponse> handle(OCRMappingException exception) {
         log.error("An error has occured during the bulk scanning OCR transformation process: {}", exception.getMessage(), exception);
-        List<String> warnings = Arrays.asList(OCR_EXCEPTION_WARNING_PREFIX + exception.getMessage());
+        List<String> warnings;
+        if (!exception.getWarnings().isEmpty()) {
+            warnings = exception.getWarnings();
+        } else {
+            warnings = Arrays.asList(OCR_EXCEPTION_WARNING_PREFIX + exception.getMessage());
+        }
         List<String> errors = Arrays.asList(OCR_EXCEPTION_ERROR);
         ExceptionRecordErrorResponse errorResponse = new ExceptionRecordErrorResponse(errors, warnings);
         return new ResponseEntity(errorResponse, HttpStatus.UNPROCESSABLE_ENTITY);

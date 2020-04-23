@@ -90,7 +90,7 @@ public class ExceptionRecordControllerTest {
                 .content(exceptionRecordPayloadPA8A)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isUnprocessableEntity())
-                .andExpect(content().string(containsString("Please resolve all warnings before creating this case")));
+                .andExpect(content().string(containsString("{\"warnings\":[\"test warning\"],\"errors\":[\"OCR fields could not be mapped to a case\"]}")));
     }
 
     @Test
