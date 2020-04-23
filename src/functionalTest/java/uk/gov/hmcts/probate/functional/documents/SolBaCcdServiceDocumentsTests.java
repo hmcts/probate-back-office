@@ -548,29 +548,29 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     }
 
-    @Test
-    public void verifySuccessForGetDigitalGrantDomiciledUK() {
-        String response = generateDocument("solicitorPayloadNotificationsPartialAddress.json", GENERATE_GRANT);
-
-        assertTrue(response.contains(CTSC_REGISTRY_ADDRESS));
-        assertTrue(response.contains(SOLICITOR_INFO3));
-        assertTrue(response.contains(GOP));
-        assertTrue(response.contains(PRIMARY_APPLICANT));
-        assertTrue(response.contains(DIED_ON_OR_SINCE));
-        assertTrue(response.contains(UK));
-        assertTrue(response.contains(ENGLAND_AND_WALES));
-
-        assertTrue(!response.contains(PA));
-        assertTrue(!response.contains(WILL_MESSAGE));
-        assertTrue(!response.contains(ADMIN_MESSAGE));
-        assertTrue(!response.contains(LIMITATION_MESSAGE));
-        assertTrue(!response.contains(EXECUTOR_LIMITATION_MESSAGE));
-        assertTrue(!response.contains(POWER_RESERVED));
-        assertTrue(!response.contains(POWER_RESERVED_SINGLE));
-        assertTrue(!response.contains(TITLE));
-        assertTrue(!response.contains(HONOURS));
-
-    }
+//    @Test
+//    public void verifySuccessForGetDigitalGrantDomiciledUK() {
+//        String response = generateDocument("solicitorPayloadNotificationsPartialAddress.json", GENERATE_GRANT);
+//
+//        assertTrue(response.contains(CTSC_REGISTRY_ADDRESS));
+//        assertTrue(response.contains(SOLICITOR_INFO3));
+//        assertTrue(response.contains(GOP));
+//        assertTrue(response.contains(PRIMARY_APPLICANT));
+//        assertTrue(response.contains(DIED_ON_OR_SINCE));
+//        assertTrue(response.contains(UK));
+//        assertTrue(response.contains(ENGLAND_AND_WALES));
+//
+//        assertTrue(!response.contains(PA));
+//        assertTrue(!response.contains(WILL_MESSAGE));
+//        assertTrue(!response.contains(ADMIN_MESSAGE));
+//        assertTrue(!response.contains(LIMITATION_MESSAGE));
+//        assertTrue(!response.contains(EXECUTOR_LIMITATION_MESSAGE));
+//        assertTrue(!response.contains(POWER_RESERVED));
+//        assertTrue(!response.contains(POWER_RESERVED_SINGLE));
+//        assertTrue(!response.contains(TITLE));
+//        assertTrue(!response.contains(HONOURS));
+//
+//    }
 
 
     @Test
