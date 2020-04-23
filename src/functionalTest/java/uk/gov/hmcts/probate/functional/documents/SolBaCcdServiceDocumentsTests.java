@@ -557,7 +557,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         assertTrue(response.contains(GOP));
         assertTrue(response.contains(PRIMARY_APPLICANT));
         assertTrue(response.contains(DIED_ON_OR_SINCE));
-        assertTrue(response.contains(UK));
+//        assertTrue(response.contains(UK));
         assertTrue(response.contains(ENGLAND_AND_WALES));
 
         assertTrue(!response.contains(PA));
@@ -585,7 +585,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         assertTrue(response.contains(ENGLAND_AND_WALES));
         assertTrue(response.contains(SPAIN));
 
-//        assertTrue(!response.contains(UK));
+        assertTrue(!response.contains(UK));
         assertTrue(!response.contains(PA));
         assertTrue(!response.contains(WILL_MESSAGE));
         assertTrue(!response.contains(ADMIN_MESSAGE));
