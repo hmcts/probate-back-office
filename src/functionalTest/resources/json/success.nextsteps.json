@@ -78,6 +78,16 @@
         "AddressLine2": "2",
         "AddressLine3": "2"
       },
+      "applicationGrounds": "Grounds for application",
+      "ukEstate": [
+        {
+          "id": "5922cd88-3704-998e-cc30-8ae3bccbdf45",
+          "value": {
+            "item": "item1",
+            "value": "1000"
+          }
+        }
+      ],
       "deceasedDomicileInEngWales": "Yes",
       "outsideUKGrantCopies":1,
       "solsPaymentMethods":"cheque",
@@ -194,6 +204,19 @@
           "AddressLine2": "PUBLIC",
           "AddressLine3": "PUBLIC"
         }
+      },
+      "applicationGrounds": "PUBLIC",
+      "ukEstate": {
+        "classification": "PUBLIC",
+        "value": [
+          {
+            "id": "5922cd88-3704-998e-cc30-8ae3bccbdf45",
+            "value": {
+              "item": "PUBLIC",
+              "value": "PUBLIC"
+            }
+          }
+        ]
       },
       "deceasedDomicileInEngWales": "PUBLIC",
       "ihtNetValue": "PUBLIC",
@@ -316,6 +339,19 @@
           "AddressLine2": "PUBLIC",
           "AddressLine3": "PUBLIC"
         }
+      },
+      "applicationGrounds": "PUBLIC",
+      "ukEstate": {
+        "classification": "PUBLIC",
+        "value": [
+          {
+            "id": "5922cd88-3704-998e-cc30-8ae3bccbdf45",
+            "value": {
+              "item": "PUBLIC",
+              "value": "PUBLIC"
+            }
+          }
+        ]
       },
       "deceasedDomicileInEngWales": "PUBLIC",
       "ihtNetValue": "PUBLIC",
@@ -451,6 +487,16 @@
         "AddressLine2": "2",
         "AddressLine3": "2"
       },
+      "applicationGrounds": "Grounds for application",
+      "ukEstate": [
+        {
+          "id": "5922cd88-3704-998e-cc30-8ae3bccbdf45",
+          "value": {
+            "item": "item1",
+            "value": "1000"
+          }
+        }
+      ],
       "deceasedDomicileInEngWales": "Yes",
       "ihtNetValue": "90009",
       "deceasedSurname": "deceasedLastName",
@@ -560,6 +606,19 @@
           "AddressLine3": "PUBLIC"
         },
         "classification": "PUBLIC"
+      },
+      "applicationGrounds": "PUBLIC",
+      "ukEstate": {
+        "classification": "PUBLIC",
+        "value": [
+          {
+            "id": "5922cd88-3704-998e-cc30-8ae3bccbdf45",
+            "value": {
+              "item": "PUBLIC",
+              "value": "PUBLIC"
+            }
+          }
+        ]
       },
       "deceasedDomicileInEngWales": "PUBLIC",
       "ihtNetValue": "PUBLIC",
@@ -680,6 +739,19 @@
           "AddressLine3": "PUBLIC"
         },
         "classification": "PUBLIC"
+      },
+      "applicationGrounds": "PUBLIC",
+      "ukEstate": {
+        "classification": "PUBLIC",
+        "value": [
+          {
+            "id": "5922cd88-3704-998e-cc30-8ae3bccbdf45",
+            "value": {
+              "item": "PUBLIC",
+              "value": "PUBLIC"
+            }
+          }
+        ]
       },
       "deceasedDomicileInEngWales": "PUBLIC",
       "ihtNetValue": "PUBLIC",

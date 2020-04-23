@@ -65,6 +65,16 @@
       },
       "solsSolicitorEmail": "contact@lonGenArt.com",
       "solsSolicitorPhoneNumber": "0208 863 98688",
+      "applicationGrounds": "Grounds for application",
+      "ukEstate": [
+        {
+          "id": "5922cd88-3704-998e-cc30-8ae3bccbdf45",
+          "value": {
+            "item": "item1",
+            "value": "1000"
+          }
+        }
+      ],
       "deceasedDomicileInEngWales": "Yes",
       "ihtNetValue": "90009",
       "deceasedSurname": "decln",
