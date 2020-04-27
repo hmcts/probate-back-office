@@ -713,7 +713,14 @@ public class CallbackResponseTransformer {
                 .epaRegistered(caseData.getEpaRegistered())
                 .domicilityCountry(caseData.getDomicilityCountry())
                 .ukEstate(caseData.getUkEstate())
+                .immovableEstate(caseData.getImmovableEstate())
                 .domicilityIHTCert(caseData.getDomicilityIHTCert())
+                .applicationGrounds(caseData.getApplicationGrounds())
+                .willDispose(caseData.getWillDispose())
+                .englishWill(caseData.getEnglishWill())
+                .appointExec(caseData.getAppointExec())
+                .appointExecByDuties(caseData.getAppointExecByDuties())
+                .appointExecNo(caseData.getAppointExecNo())
                 .entitledToApply(caseData.getEntitledToApply())
                 .entitledToApplyOther(caseData.getEntitledToApplyOther())
                 .notifiedApplicants(caseData.getNotifiedApplicants())
@@ -799,6 +806,27 @@ public class CallbackResponseTransformer {
             builder
                     .primaryApplicantSecondPhoneNumber(null)
                     .primaryApplicantRelationshipToDeceased(null);
+        }
+
+        if(YES.equals(caseData.getDeceasedDomicileInEngWales())) {
+            builder
+                    .domicilityCountry(null);
+        }
+
+        if(!WILL_LEFT.equals(caseData.getSolsWillType())) {
+            builder
+                    .willDispose(null)
+                    .englishWill(null)
+                    .appointExec(null)
+                    .appointExecByDuties(null)
+                    .appointExecNo(null);
+        } else if(YES.equals(caseData.getEnglishWill())) {
+            builder
+                    .appointExecByDuties(null);
+        } else if(NO.equals(caseData.getEnglishWill())) {
+            builder
+                    .appointExec(null)
+                    .appointExecNo(null);
         }
 
         return builder;
@@ -899,7 +927,23 @@ public class CallbackResponseTransformer {
                         .solsSolicitorIsApplying(YES)
                         .solsSolicitorNotApplyingReason(null)
                         .solsPrimaryExecutorNotApplyingReason(null);
-            }  else if (YES.equals(caseData.getSolsSolicitorIsApplying())) {
+            } else if (YES.equals(caseData.getSolsSolicitorIsApplying()) || NO.equals(caseData.getSolsSolicitorIsApplying())) {
+                if(getSolsSOTName(caseData.getSolsSOTForenames(), caseData.getSolsSOTSurname()).equals(caseData.getPrimaryApplicantFullName())) {
+                    builder
+                            .primaryApplicantForenames(null)
+                            .primaryApplicantSurname(null)
+                            .primaryApplicantPhoneNumber(null)
+                            .primaryApplicantEmailAddress(null)
+                            .primaryApplicantAddress(null)
+                            .primaryApplicantAlias(null)
+                            .primaryApplicantHasAlias(null)
+                            .primaryApplicantIsApplying(null)
+                            .solsPrimaryExecutorNotApplyingReason(null);
+                } else if(YES.equals(caseData.getSolsSolicitorIsApplying())) {
+                    builder
+                            .solsPrimaryExecutorNotApplyingReason(null);
+                }
+            } else {
                 builder
                         .solsPrimaryExecutorNotApplyingReason(null);
             }
@@ -1083,7 +1127,23 @@ public class CallbackResponseTransformer {
                         .solsSolicitorIsApplying(YES)
                         .solsSolicitorNotApplyingReason(null)
                         .solsPrimaryExecutorNotApplyingReason(null);
-            } else if (YES.equals(caseData.getSolsSolicitorIsApplying())) {
+            } else if (YES.equals(caseData.getSolsSolicitorIsApplying()) || NO.equals(caseData.getSolsSolicitorIsApplying())) {
+                if(getSolsSOTName(caseData.getSolsSOTForenames(), caseData.getSolsSOTSurname()).equals(caseData.getPrimaryApplicantFullName())) {
+                    builder
+                            .primaryApplicantForenames(null)
+                            .primaryApplicantSurname(null)
+                            .primaryApplicantPhoneNumber(null)
+                            .primaryApplicantEmailAddress(null)
+                            .primaryApplicantAddress(null)
+                            .primaryApplicantAlias(null)
+                            .primaryApplicantHasAlias(null)
+                            .primaryApplicantIsApplying(null)
+                            .solsPrimaryExecutorNotApplyingReason(null);
+                } else if(YES.equals(caseData.getSolsSolicitorIsApplying())) {
+                    builder
+                            .solsPrimaryExecutorNotApplyingReason(null);
+                }
+            } else {
                 builder
                         .solsPrimaryExecutorNotApplyingReason(null);
             }
@@ -1156,8 +1216,8 @@ public class CallbackResponseTransformer {
                         .additionalExecutorsNotApplying(execsNotApplying);
             } else {
                 builder
-                        .additionalExecutorsApplying(EMPTY_LIST)
-                        .additionalExecutorsNotApplying(EMPTY_LIST);
+                        .additionalExecutorsApplying(caseData.getAdditionalExecutorsApplying())
+                        .additionalExecutorsNotApplying(caseData.getAdditionalExecutorsNotApplying());
             }
         } else {
             List<CollectionMember<AdditionalExecutorApplying>> applyingExec = new ArrayList<>();
