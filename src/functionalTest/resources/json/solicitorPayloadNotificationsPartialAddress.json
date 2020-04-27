@@ -66,6 +66,16 @@
         "AddressLine3": ""
       },
       "solsSolicitorEmail": "probBackosol@gmail.com",
+      "applicationGrounds": "Grounds for application",
+      "ukEstate": [
+        {
+          "id": "5922cd88-3704-998e-cc30-8ae3bccbdf45",
+          "value": {
+            "item": "item1",
+            "value": "1000"
+          }
+        }
+      ],
       "deceasedDomicileInEngWales": "Yes",
       "ihtNetValue": "800000",
       "boStopDetails": "SOLS stop details",
@@ -145,6 +155,19 @@
         }
       },
       "solsSolicitorEmail": "PUBLIC",
+      "applicationGrounds": "PUBLIC",
+      "ukEstate": {
+        "classification": "PUBLIC",
+        "value": [
+          {
+            "id": "5922cd88-3704-998e-cc30-8ae3bccbdf45",
+            "value": {
+              "item": "PUBLIC",
+              "value": "PUBLIC"
+            }
+          }
+        ]
+      },
       "deceasedDomicileInEngWales": "PUBLIC",
       "ihtNetValue": "PUBLIC",
       "deceasedSurname": "PUBLIC",
@@ -225,6 +248,19 @@
         }
       },
       "solsSolicitorEmail": "PUBLIC",
+      "applicationGrounds": "PUBLIC",
+      "ukEstate": {
+        "classification": "PUBLIC",
+        "value": [
+          {
+            "id": "5922cd88-3704-998e-cc30-8ae3bccbdf45",
+            "value": {
+              "item": "PUBLIC",
+              "value": "PUBLIC"
+            }
+          }
+        ]
+      },
       "deceasedDomicileInEngWales": "PUBLIC",
       "ihtNetValue": "PUBLIC",
       "deceasedSurname": "PUBLIC",
@@ -318,6 +354,16 @@
         "AddressLine3": ""
       },
       "solsSolicitorEmail": "probBackosol@gmail.com",
+      "applicationGrounds": "Grounds for application",
+      "ukEstate": [
+        {
+          "id": "5922cd88-3704-998e-cc30-8ae3bccbdf45",
+          "value": {
+            "item": "item1",
+            "value": "1000"
+          }
+        }
+      ],
       "deceasedDomicileInEngWales": "Yes",
       "ihtNetValue": "800000",
       "boStopDetails": "SOLS stop details",
@@ -387,6 +433,19 @@
         "classification": "PUBLIC"
       },
       "solsSolicitorEmail": "PUBLIC",
+      "applicationGrounds": "PUBLIC",
+      "ukEstate": {
+        "classification": "PUBLIC",
+        "value": [
+          {
+            "id": "5922cd88-3704-998e-cc30-8ae3bccbdf45",
+            "value": {
+              "item": "PUBLIC",
+              "value": "PUBLIC"
+            }
+          }
+        ]
+      },
       "deceasedDomicileInEngWales": "PUBLIC",
       "ihtNetValue": "PUBLIC",
       "deceasedSurname": "PUBLIC",
@@ -454,6 +513,19 @@
         "classification": "PUBLIC"
       },
       "solsSolicitorEmail": "PUBLIC",
+      "applicationGrounds": "PUBLIC",
+      "ukEstate": {
+        "classification": "PUBLIC",
+        "value": [
+          {
+            "id": "5922cd88-3704-998e-cc30-8ae3bccbdf45",
+            "value": {
+              "item": "PUBLIC",
+              "value": "PUBLIC"
+            }
+          }
+        ]
+      },
       "deceasedDomicileInEngWales": "PUBLIC",
       "ihtNetValue": "PUBLIC",
       "deceasedSurname": "PUBLIC",

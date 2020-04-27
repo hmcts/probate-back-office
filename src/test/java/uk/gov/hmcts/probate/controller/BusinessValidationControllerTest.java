@@ -19,6 +19,7 @@ import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
+import uk.gov.hmcts.probate.model.ccd.raw.EstateItem;
 import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
@@ -109,6 +110,7 @@ public class BusinessValidationControllerTest {
     private static final String LIFE_INTEREST = "No";
     private static final String ANSWER_NO = "No";
     private static final String SOLS_NOT_APPLYING_REASON = "Power reserved";
+    private static final String APPLICATION_GROUNDS = "Application grounds";
 
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private static final String SOLS_VALIDATE_URL = "/case/sols-validate";
@@ -141,6 +143,13 @@ public class BusinessValidationControllerTest {
                             .type("other")
                             .subtype("will")
                             .url(SCANNED_DOCUMENT_URL)
+                            .build()));
+
+    private static final List<CollectionMember<EstateItem>> UK_ESTATE = Arrays.asList(
+            new CollectionMember<>(null,
+                    EstateItem.builder()
+                            .item("Item")
+                            .value("999.99")
                             .build()));
 
     @Autowired
@@ -204,6 +213,11 @@ public class BusinessValidationControllerTest {
                 .willNumberOfCodicils(NUMBER_OF_CODICILS)
                 .solsSolicitorFirmName(SOLICITOR_FIRM_NAME)
                 .solsSolicitorAddress(solsAddress)
+                .ukEstate(UK_ESTATE)
+                .applicationGrounds(APPLICATION_GROUNDS)
+                .willDispose(YES)
+                .englishWill(NO)
+                .appointExec(YES)
                 .ihtFormId(IHT_FORM)
                 .solsSOTForenames(SOLICITOR_FORENAMES)
                 .solsSOTSurname(SOLICITOR_SURNAME)
@@ -433,6 +447,7 @@ public class BusinessValidationControllerTest {
 
     private void validateSurnameIsNullError(String url) throws Exception {
         caseDataBuilder.deceasedSurname(null);
+        caseDataBuilder.ukEstate(UK_ESTATE);
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
 

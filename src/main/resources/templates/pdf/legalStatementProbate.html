@@ -126,7 +126,11 @@
                 case_details.case_data.deceasedAddress.Country != "" %}{{
                 case_details.case_data.deceasedAddress.Country }}{% endif %}
                 was born on {{ case_details.case_data.deceasedDateOfBirth|date("dd/MM/yyyy", existingFormat="yyyy-MM-dd") }}
-                and died on {{ case_details.case_data.deceasedDateOfDeath|date("dd/MM/yyyy", existingFormat="yyyy-MM-dd") }}, domiciled in England and Wales.
+                and died on {{ case_details.case_data.deceasedDateOfDeath|date("dd/MM/yyyy", existingFormat="yyyy-MM-dd") }}, domiciled in {% if case_details.case_data.domicilityCountry != null and case_details.case_data.domicilityCountry != "" %}{{ case_details.case_data.domicilityCountry }}.{% else %}England and Wales.{% endif %}
+                {% if case_details.case_data.appointExec == "Yes" %}
+                The will appoints an executor.{% endif %}
+                {% if case_details.case_data.appointExecNo == "Yes" %}
+                The will appoints an executor according to the tenor.{% endif %}
             </p>
         </td>
     </tr>
@@ -136,7 +140,8 @@
     </tr>
     <tr>
         <td colspan="2">
-            <p>The gross value for the estate amounts to &#163;{{ (case_details.case_data.ihtGrossValue/100)|numberformat("#.00") }} and the net value for the estate amounts to &#163;{{ (case_details.case_data.ihtNetValue/100)|numberformat("#.00") }}.</p>
+            <p>The gross value for the estate in England and Wales
+                amounts to &#163;{{ (case_details.case_data.ihtGrossValue/100)|numberformat("#.00") }} and the net value for the estate amounts to &#163;{{ (case_details.case_data.ihtNetValue/100)|numberformat("#.00") }}.</p>
             <p>To the best of {% if (case_details.case_data.executorsApplyingForLegalStatement|length > 1) %}our{% else %}my{% endif %} knowledge, information and belief, there was no land vested in {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }} which was settled previously to the death (and not by the will) of {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }} and which remained settled land notwithstanding such death.</p>
         </td>
     </tr>
@@ -146,6 +151,11 @@
     </tr>
     <tr>
         <td colspan="2">
+            <p>
+                {% if case_details.case_data.applicationGrounds != null and case_details.case_data.applicationGrounds != "" %}The grounds for making this application and any supporting evidence are:
+                {{ case_details.case_data.applicationGrounds }}
+                {% endif %}
+            </p>
             {% for executor in case_details.case_data.executorsApplyingForLegalStatement %}
             <p>
                 {{ executor.value.additionalExecForenames }} {{ executor.value.additionalExecLastname }},

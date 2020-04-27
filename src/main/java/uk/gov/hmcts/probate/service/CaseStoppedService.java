@@ -23,27 +23,28 @@ public class CaseStoppedService {
     public void caseResolved(CaseDetails caseDetails) {
         log.info("Case resolved: {} ", caseDetails.getId());
 
-        CaseData caseData = caseDetails.getData();
+        addToGrantDelay(caseDetails);
+        addToAwaitingDocumentation(caseDetails);
 
-        addToGrantDelay(caseData);
-        addToAwaitingDocumentation(caseData);
-
-        caseData.setGrantStoppedDate(null);
+        caseDetails.getData().setGrantStoppedDate(null);
     }
 
-    private void addToAwaitingDocumentation(CaseData caseData) {
+    private void addToAwaitingDocumentation(CaseDetails caseDetails) {
+        CaseData caseData = caseDetails.getData();
         if (caseData.getGrantAwaitingDocumentationNotificationDate() != null
             && caseData.getGrantStoppedDate() != null) {
             
             LocalDate now = LocalDate.now();
             Period period = Period.between(caseData.getGrantStoppedDate(), now);
 
-            caseData.setGrantAwaitingDocumentationNotificationDate(caseData.getGrantAwaitingDocumentationNotificationDate()
-                .plusDays(period.getDays()));
+            LocalDate notificationDate = caseData.getGrantAwaitingDocumentationNotificationDate().plusDays(period.getDays());
+            log.info("From case-stopped/resolved, setting grantAwaitingDocumentationNotificationDate {} for case {}", notificationDate.toString(), caseDetails.getId());
+            caseData.setGrantAwaitingDocumentationNotificationDate(notificationDate);
         }
     }
 
-    private void addToGrantDelay(CaseData caseData) {
+    private void addToGrantDelay(CaseDetails caseDetails) {
+        CaseData caseData = caseDetails.getData();
         if ((StringUtils.isEmpty(caseData.getGrantDelayedNotificationSent())
             || caseData.getGrantDelayedNotificationSent().equals(Constants.NO))
             && caseData.getGrantStoppedDate() != null
@@ -52,8 +53,9 @@ public class CaseStoppedService {
             LocalDate now = LocalDate.now();
             Period period = Period.between(caseData.getGrantStoppedDate(), now);
 
-            caseData.setGrantDelayedNotificationDate(caseData.getGrantDelayedNotificationDate()
-                .plusDays(period.getDays()));
+            LocalDate notificationDate = caseData.getGrantDelayedNotificationDate().plusDays(period.getDays());
+            log.info("From case-stopped/resolved, setting grantDelayedNotificationDate {} for case {}", notificationDate.toString(), caseDetails.getId());
+            caseData.setGrantDelayedNotificationDate(notificationDate);
         }
     }
 }
