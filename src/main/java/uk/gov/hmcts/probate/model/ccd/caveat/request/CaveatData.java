@@ -149,6 +149,7 @@ public class CaveatData {
     private String languagePreferenceWelsh;
 
     private String autoClosedExpiry;
+    private String pcqId;
 
     public String getDeceasedFullName() {
         return String.join(" ", deceasedForenames, deceasedSurname);

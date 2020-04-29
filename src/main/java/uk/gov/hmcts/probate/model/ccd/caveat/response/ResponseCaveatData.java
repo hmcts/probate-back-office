@@ -71,5 +71,6 @@ public class ResponseCaveatData {
     private String languagePreferenceWelsh;
     
     private String autoClosedExpiry;
+    private String pcqId;
 
 }

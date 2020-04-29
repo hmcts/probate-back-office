@@ -557,6 +557,7 @@ public class CaseData {
     private String grantDelayedNotificationSent;
     private LocalDate grantAwaitingDocumentationNotificationDate;
     private String grantAwaitingDocumentatioNotificationSent;
+    private String pcqId;
     
     private DynamicList reprintDocument;
     private String reprintNumberOfCopies;

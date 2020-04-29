@@ -216,7 +216,8 @@ public class CaveatCallbackResponseTransformer {
                 .bulkPrintId(caveatData.getBulkPrintId())
                 .bulkScanCaseReference((caveatData.getBulkScanCaseReference()))
                 .applicationSubmittedDate(transformToString(caveatData.getApplicationSubmittedDate()))
-                .autoClosedExpiry(caveatData.getAutoClosedExpiry());
+                .autoClosedExpiry(caveatData.getAutoClosedExpiry())
+                .pcqId(caveatData.getPcqId());
     }
 
     public CaseCreationDetails bulkScanCaveatCaseTransform(uk.gov.hmcts.reform.probate.model.cases.caveat.CaveatData caveatData) {
