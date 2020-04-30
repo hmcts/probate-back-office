@@ -286,7 +286,7 @@ public class BusinessValidationController {
                 log.debug("POST: {} {}", uri, objectMapper.writeValueAsString(callbackRequest));
             }
         } catch (JsonProcessingException e) {
-            log.error("POST: {}", uri, e);
+            log.error("POST: {} ", uri, e);
         }
     }
 }
