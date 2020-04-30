@@ -10,6 +10,7 @@ import uk.gov.hmcts.probate.changerule.ChangeRule;
 import uk.gov.hmcts.probate.changerule.DiedOrNotApplyingRule;
 import uk.gov.hmcts.probate.changerule.EntitledMinorityRule;
 import uk.gov.hmcts.probate.changerule.ExecutorsRule;
+import uk.gov.hmcts.probate.changerule.ImmovableEstateRule;
 import uk.gov.hmcts.probate.changerule.LifeInterestRule;
 import uk.gov.hmcts.probate.changerule.MinorityInterestRule;
 import uk.gov.hmcts.probate.changerule.NoOriginalWillRule;
@@ -66,6 +67,7 @@ public class ConfirmationResponseService {
     private final DiedOrNotApplyingRule diedOrNotApplyingRule;
     private final EntitledMinorityRule entitledMinorityRule;
     private final ExecutorsRule executorsConfirmationResponseRule;
+    private final ImmovableEstateRule immovableEstateRule;
     private final LifeInterestRule lifeInterestRule;
     private final MinorityInterestRule minorityInterestConfirmationResponseRule;
     private final NoOriginalWillRule noOriginalWillRule;
@@ -125,6 +127,11 @@ public class ConfirmationResponseService {
                 return response.get();
             }
 
+            response = getStopBodyMarkdown(caseData, immovableEstateRule, STOP_BODY);
+            if (response.isPresent()) {
+                return response.get();
+            }
+
             response = getStopBodyMarkdown(caseData, applicantSiblingsConfirmationResponseRule, STOP_BODY);
             if (response.isPresent()) {
                 return response.get();
@@ -147,6 +154,11 @@ public class ConfirmationResponseService {
         }
 
         if (GRANT_TYPE_ADMON.equals(caseData.getSolsWillType())) {
+            response = getStopBodyMarkdown(caseData, immovableEstateRule, STOP_BODY);
+            if (response.isPresent()) {
+                return response.get();
+            }
+
             response = getStopBodyMarkdown(caseData, noOriginalWillRule, STOP_BODY);
             if (response.isPresent()) {
                 return response.get();

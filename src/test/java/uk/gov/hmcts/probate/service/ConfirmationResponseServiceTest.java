@@ -11,6 +11,7 @@ import uk.gov.hmcts.probate.changerule.ApplicantSiblingsRule;
 import uk.gov.hmcts.probate.changerule.DiedOrNotApplyingRule;
 import uk.gov.hmcts.probate.changerule.EntitledMinorityRule;
 import uk.gov.hmcts.probate.changerule.ExecutorsRule;
+import uk.gov.hmcts.probate.changerule.ImmovableEstateRule;
 import uk.gov.hmcts.probate.changerule.LifeInterestRule;
 import uk.gov.hmcts.probate.changerule.MinorityInterestRule;
 import uk.gov.hmcts.probate.changerule.NoOriginalWillRule;
@@ -63,6 +64,8 @@ public class ConfirmationResponseServiceTest {
     @Mock
     private ExecutorsRule executorsRuleMock;
     @Mock
+    private ImmovableEstateRule immovableEstateRule;
+    @Mock
     private LifeInterestRule lifeInterestRuleMock;
     @Mock
     private MinorityInterestRule minorityInterestRuleMock;
@@ -113,7 +116,7 @@ public class ConfirmationResponseServiceTest {
 
         underTest = new ConfirmationResponseService(messageResourceServiceMock, markdownSubstitutionServiceMock,
                 applicantSiblingsRuleMock, diedOrNotApplyingRuleMock, entitledMinorityRuleMock,
-                executorsRuleMock, lifeInterestRuleMock, minorityInterestRuleMock, noOriginalWillRuleMock,
+                executorsRuleMock, immovableEstateRule, lifeInterestRuleMock, minorityInterestRuleMock, noOriginalWillRuleMock,
                 renouncingRuleMock, residuaryRuleMock, solsExecutorRuleMock, spouseOrCivilRuleMock);
         ReflectionTestUtils.setField(underTest, "templatesDirectory", "templates/markdown/");
 
