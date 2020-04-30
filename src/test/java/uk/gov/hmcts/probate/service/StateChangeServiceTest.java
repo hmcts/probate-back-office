@@ -207,6 +207,44 @@ public class StateChangeServiceTest {
     }
 
     @Test
+    public void shouldChangeStateForImmovableEstateRuleIntestacyValid() {
+        when(immovableEstateRule.isChangeNeeded(caseDataMock)).thenReturn(true);
+
+        Optional<String> newState = underTest.getChangedStateForIntestacyUpdate(caseDataMock);
+
+        assertTrue(newState.isPresent());
+        assertEquals("Stopped", newState.get());
+    }
+
+    @Test
+    public void shouldNOTChangeStateForImmovableEstateRuleIntestacy() {
+        when(immovableEstateRule.isChangeNeeded(caseDataMock)).thenReturn(false);
+
+        Optional<String> newState = underTest.getChangedStateForIntestacyUpdate(caseDataMock);
+
+        assertEquals(Optional.empty(), newState);
+    }
+
+    @Test
+        public void shouldChangeStateForImmovableEstateRuleAdmonValid() {
+        when(immovableEstateRule.isChangeNeeded(caseDataMock)).thenReturn(true);
+
+        Optional<String> newState = underTest.getChangedStateForAdmonUpdate(caseDataMock);
+
+        assertTrue(newState.isPresent());
+        assertEquals("Stopped", newState.get());
+    }
+
+    @Test
+    public void shouldNOTChangeStateForImmovableEstateRuleAdmon() {
+        when(immovableEstateRule.isChangeNeeded(caseDataMock)).thenReturn(false);
+
+        Optional<String> newState = underTest.getChangedStateForAdmonUpdate(caseDataMock);
+
+        assertEquals(Optional.empty(), newState);
+    }
+
+    @Test
     public void shouldChangeStateForLifeInterestRuleValid() {
         when(lifeInterestRule.isChangeNeeded(caseDataMock)).thenReturn(true);
 
