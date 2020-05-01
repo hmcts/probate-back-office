@@ -105,9 +105,6 @@ public class CaseData {
     @NotBlank(groups = {ApplicationUpdatedGroup.class}, message = "{applicationGroundsIsNull}")
     private final String applicationGrounds;
 
-    @NotNull(groups = {ApplicationUpdatedGroup.class}, message = "{ukEstateIsNull}")
-    private final List<CollectionMember<EstateItem>> ukEstate;
-
     @NotBlank(groups = {ApplicationUpdatedGroup.class, AmendCaseDetailsGroup.class},
             message = "{deceasedForenameIsNull}")
     private final String deceasedForenames;
@@ -400,6 +397,7 @@ public class CaseData {
     private final String epaOrLpa;
     private final String epaRegistered;
     private final String domicilityCountry;
+    private final List<CollectionMember<EstateItem>> ukEstate;
     private final String domicilityIHTCert;
     private final String entitledToApply;
     private final String entitledToApplyOther;

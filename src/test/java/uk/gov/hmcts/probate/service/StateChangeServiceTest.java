@@ -10,6 +10,7 @@ import uk.gov.hmcts.probate.changerule.ApplicantSiblingsRule;
 import uk.gov.hmcts.probate.changerule.DiedOrNotApplyingRule;
 import uk.gov.hmcts.probate.changerule.EntitledMinorityRule;
 import uk.gov.hmcts.probate.changerule.ExecutorsRule;
+import uk.gov.hmcts.probate.changerule.ImmovableEstateRule;
 import uk.gov.hmcts.probate.changerule.LifeInterestRule;
 import uk.gov.hmcts.probate.changerule.MinorityInterestRule;
 import uk.gov.hmcts.probate.changerule.NoOriginalWillRule;
@@ -48,6 +49,8 @@ public class StateChangeServiceTest {
     private EntitledMinorityRule entitledMinorityRule;
     @Mock
     private ExecutorsRule executorsStateRule;
+    @Mock
+    private ImmovableEstateRule immovableEstateRule;
     @Mock
     private LifeInterestRule lifeInterestRule;
     @Mock
@@ -90,7 +93,7 @@ public class StateChangeServiceTest {
         initMocks(this);
 
         underTest = new StateChangeService(applicantSiblingsRule, diedOrNotApplyingRule,
-                entitledMinorityRule, executorsStateRule, lifeInterestRule, minorityInterestRule, noOriginalWillRule,
+                entitledMinorityRule, executorsStateRule, immovableEstateRule, lifeInterestRule, minorityInterestRule, noOriginalWillRule,
                 renouncingRule, residuaryRule, solsExecutorRule,spouseOrCivilRule, updateApplicationRule, callbackResponseTransformer);
 
         execList = new ArrayList<>();
@@ -199,6 +202,44 @@ public class StateChangeServiceTest {
         when(executorsStateRule.isChangeNeeded(caseDataMock)).thenReturn(false);
 
         Optional<String> newState = underTest.getChangedStateForProbateUpdate(caseDataMock);
+
+        assertEquals(Optional.empty(), newState);
+    }
+
+    @Test
+    public void shouldChangeStateForImmovableEstateRuleIntestacyValid() {
+        when(immovableEstateRule.isChangeNeeded(caseDataMock)).thenReturn(true);
+
+        Optional<String> newState = underTest.getChangedStateForIntestacyUpdate(caseDataMock);
+
+        assertTrue(newState.isPresent());
+        assertEquals("Stopped", newState.get());
+    }
+
+    @Test
+    public void shouldNOTChangeStateForImmovableEstateRuleIntestacy() {
+        when(immovableEstateRule.isChangeNeeded(caseDataMock)).thenReturn(false);
+
+        Optional<String> newState = underTest.getChangedStateForIntestacyUpdate(caseDataMock);
+
+        assertEquals(Optional.empty(), newState);
+    }
+
+    @Test
+        public void shouldChangeStateForImmovableEstateRuleAdmonValid() {
+        when(immovableEstateRule.isChangeNeeded(caseDataMock)).thenReturn(true);
+
+        Optional<String> newState = underTest.getChangedStateForAdmonUpdate(caseDataMock);
+
+        assertTrue(newState.isPresent());
+        assertEquals("Stopped", newState.get());
+    }
+
+    @Test
+    public void shouldNOTChangeStateForImmovableEstateRuleAdmon() {
+        when(immovableEstateRule.isChangeNeeded(caseDataMock)).thenReturn(false);
+
+        Optional<String> newState = underTest.getChangedStateForAdmonUpdate(caseDataMock);
 
         assertEquals(Optional.empty(), newState);
     }

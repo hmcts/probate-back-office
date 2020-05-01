@@ -6,6 +6,7 @@ import uk.gov.hmcts.probate.changerule.ApplicantSiblingsRule;
 import uk.gov.hmcts.probate.changerule.DiedOrNotApplyingRule;
 import uk.gov.hmcts.probate.changerule.EntitledMinorityRule;
 import uk.gov.hmcts.probate.changerule.ExecutorsRule;
+import uk.gov.hmcts.probate.changerule.ImmovableEstateRule;
 import uk.gov.hmcts.probate.changerule.LifeInterestRule;
 import uk.gov.hmcts.probate.changerule.MinorityInterestRule;
 import uk.gov.hmcts.probate.changerule.NoOriginalWillRule;
@@ -42,6 +43,7 @@ public class StateChangeService {
     private final DiedOrNotApplyingRule diedOrNotApplyingRule;
     private final EntitledMinorityRule entitledMinorityRule;
     private final ExecutorsRule executorsRule;
+    private final ImmovableEstateRule immovableEstateRule;
     private final LifeInterestRule lifeInterestRule;
     private final MinorityInterestRule minorityInterestRule;
     private final NoOriginalWillRule noOriginalWillRule;
@@ -69,6 +71,10 @@ public class StateChangeService {
             return Optional.of(STATE_STOPPED);
         }
 
+        if (immovableEstateRule.isChangeNeeded(caseData)) {
+            return Optional.of(STATE_STOPPED);
+        }
+
         if (applicantSiblingsRule.isChangeNeeded(caseData)) {
             return Optional.of(STATE_STOPPED);
         }
@@ -88,6 +94,10 @@ public class StateChangeService {
     }
 
     public Optional<String> getChangedStateForAdmonUpdate(CaseData caseData) {
+        if (immovableEstateRule.isChangeNeeded(caseData)) {
+            return Optional.of(STATE_STOPPED);
+        }
+
         if (noOriginalWillRule.isChangeNeeded(caseData)) {
             return Optional.of(STATE_STOPPED);
         }
