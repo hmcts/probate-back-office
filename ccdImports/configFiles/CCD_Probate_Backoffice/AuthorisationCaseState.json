@@ -182,5 +182,3 @@
   {"LiveFrom": "01/01/2017", "LiveTo": "01/01/2020", "CaseTypeID": "GrantOfRepresentation", "CaseStateID": "Pending", "UserRole": "caseworker-probate-pcqextractor", "CRUD": "CRUD"},
   {"LiveFrom": "01/01/2017", "LiveTo": "01/01/2020", "CaseTypeID": "GrantOfRepresentation", "CaseStateID": "Stopped", "UserRole": "caseworker-probate-pcqextractor", "CRUD": "CRUD"}
 ]
-
-
