@@ -7,5 +7,6 @@
   {"CaseTypeID": "Caveat", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRUD"},
   {"CaseTypeID": "Caveat", "UserRole": "caseworker-probate-scheduler", "CRUD": "CRUD"},
   {"CaseTypeID": "Caveat", "UserRole": "citizen", "CRUD": "CRUD"},
-  {"CaseTypeID": "Caveat", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"}
+  {"CaseTypeID": "Caveat", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"},
+  {"CaseTypeID": "Caveat", "UserRole": "caseworker-probate-pcqextractor", "CRUD": "R"}
 ]

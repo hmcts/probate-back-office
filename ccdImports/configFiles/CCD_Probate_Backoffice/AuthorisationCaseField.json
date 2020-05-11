@@ -2206,5 +2206,6 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "grandChildrenSurvivedOverEighteen", "UserRole": "citizen", "CRUD": "CRU"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "grandChildrenSurvivedUnderEighteen", "UserRole": "citizen", "CRUD": "CRU"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "pcqId", "UserRole": "citizen", "CRUD": "CRU"},
-  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "probateNotificationsGenerated", "UserRole": "citizen", "CRUD": "CRUD"}
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "probateNotificationsGenerated", "UserRole": "citizen", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "pcqId", "UserRole": "caseworker-probate-pcqextractor", "CRUD": "R"}
 ]
