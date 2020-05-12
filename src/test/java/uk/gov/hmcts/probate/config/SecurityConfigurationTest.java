@@ -113,7 +113,7 @@ public class SecurityConfigurationTest {
     @Test
     public void shouldNotAuthenticateForEndpointWithServiceAndUserAuthorizationHeader() throws Exception {
         mvc.perform(post("/notify/grant-delayed-scheduled").header(SERVICE_AUTHORIZATION, "Bearer xxxxx.yyyyy.zzzzz"))
-            .andExpect(unauthenticated());
+            .andExpect(authenticated());
     }
 
     @Test
@@ -126,7 +126,7 @@ public class SecurityConfigurationTest {
     @Test
     public void shouldNotAuthenticateForAwaitDocEndpointWithServiceAndUserAuthorizationHeader() throws Exception {
         mvc.perform(post("/notify/grant-awaiting-documents-scheduled").header(SERVICE_AUTHORIZATION, "Bearer xxxxx.yyyyy.zzzzz"))
-            .andExpect(unauthenticated());
+            .andExpect(authenticated());
     }
 
     @TestConfiguration
