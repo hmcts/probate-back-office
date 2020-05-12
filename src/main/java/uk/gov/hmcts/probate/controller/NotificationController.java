@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -17,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.GrantScheduleResponse;
-import uk.gov.hmcts.probate.model.State;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
@@ -44,12 +42,10 @@ import uk.gov.hmcts.reform.probate.model.ProbateDocumentType;
 import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
 import uk.gov.service.notify.NotificationClientException;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import javax.servlet.http.HttpServletRequest;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -249,29 +245,16 @@ public class NotificationController {
 
     @PostMapping(path = "/grant-delayed-scheduled")
     public ResponseEntity<GrantScheduleResponse> grantDelayed(@RequestParam("date") final String date) {
-        log.info("Calling perform Grants delayed...");
-        ExecutorService executor = Executors.newFixedThreadPool(1);
-        executor.submit(() -> {
-            GrantScheduleResponse grantScheduleResponse = grantNotificationService.handleGrantDelayedNotification(date);
-            log.info("Grants delayed attempted for: {} grants", grantScheduleResponse.getScheduleResponseData().size());
-            return ResponseEntity.ok(grantScheduleResponse);
-        });
-        log.info("...Called perform Grants delayed");
-        return ResponseEntity.ok(GrantScheduleResponse.builder().build());
+        GrantScheduleResponse grantScheduleResponse = grantNotificationService.handleGrantDelayedNotification(date);
+        log.info("Grants delayed attempted for: {} grants", grantScheduleResponse.getScheduleResponseData().size());
+        return ResponseEntity.ok(grantScheduleResponse);
     }
 
     @PostMapping(path = "/grant-awaiting-documents-scheduled")
     public ResponseEntity<GrantScheduleResponse> grantAwaitingDocuments(@RequestParam("date") final String date) {
-        log.info("Calling perform Grants Awaiting Documents...");
-        ExecutorService executor = Executors.newFixedThreadPool(1);
-        executor.submit(() -> {
-            GrantScheduleResponse grantScheduleResponse = grantNotificationService.handleAwaitingDocumentationNotification(date);
-            log.info("Grants delayed attempted for: {} grants", grantScheduleResponse.getScheduleResponseData().size());
-            return ResponseEntity.ok(grantScheduleResponse);
-        });
-        log.info("...Called perform Grants Awaiting Documents");
-        return ResponseEntity.ok(GrantScheduleResponse.builder().build());
-
+        GrantScheduleResponse grantScheduleResponse = grantNotificationService.handleAwaitingDocumentationNotification(date);
+        log.info("Grants delayed attempted for: {} grants", grantScheduleResponse.getScheduleResponseData().size());
+        return ResponseEntity.ok(grantScheduleResponse);
     }
-
+    
 }
