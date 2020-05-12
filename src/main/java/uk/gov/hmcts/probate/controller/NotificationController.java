@@ -47,6 +47,8 @@ import uk.gov.service.notify.NotificationClientException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import javax.servlet.http.HttpServletRequest;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
@@ -247,16 +249,29 @@ public class NotificationController {
 
     @PostMapping(path = "/grant-delayed-scheduled")
     public ResponseEntity<GrantScheduleResponse> grantDelayed(@RequestParam("date") final String date) {
-        GrantScheduleResponse grantScheduleResponse = grantNotificationService.handleGrantDelayedNotification(date);
-        log.info("Grants delayed attempted for: {} grants", grantScheduleResponse.getScheduleResponseData().size());
-        return ResponseEntity.ok(grantScheduleResponse);
+        log.info("Calling perform Grants delayed...");
+        ExecutorService executor = Executors.newFixedThreadPool(1);
+        executor.submit(() -> {
+            GrantScheduleResponse grantScheduleResponse = grantNotificationService.handleGrantDelayedNotification(date);
+            log.info("Grants delayed attempted for: {} grants", grantScheduleResponse.getScheduleResponseData().size());
+            return ResponseEntity.ok(grantScheduleResponse);
+        });
+        log.info("...Called perform Grants delayed");
+        return ResponseEntity.ok(GrantScheduleResponse.builder().build());
     }
 
     @PostMapping(path = "/grant-awaiting-documents-scheduled")
     public ResponseEntity<GrantScheduleResponse> grantAwaitingDocuments(@RequestParam("date") final String date) {
-        GrantScheduleResponse grantScheduleResponse = grantNotificationService.handleAwaitingDocumentationNotification(date);
-        log.info("Grants delayed attempted for: {} grants", grantScheduleResponse.getScheduleResponseData().size());
-        return ResponseEntity.ok(grantScheduleResponse);
+        log.info("Calling perform Grants Awaiting Documents...");
+        ExecutorService executor = Executors.newFixedThreadPool(1);
+        executor.submit(() -> {
+            GrantScheduleResponse grantScheduleResponse = grantNotificationService.handleAwaitingDocumentationNotification(date);
+            log.info("Grants delayed attempted for: {} grants", grantScheduleResponse.getScheduleResponseData().size());
+            return ResponseEntity.ok(grantScheduleResponse);
+        });
+        log.info("...Called perform Grants Awaiting Documents");
+        return ResponseEntity.ok(GrantScheduleResponse.builder().build());
+
     }
 
 }
