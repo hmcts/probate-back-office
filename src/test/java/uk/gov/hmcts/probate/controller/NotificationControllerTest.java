@@ -129,6 +129,7 @@ public class NotificationControllerTest {
     private static final String RAISE_GRANT = "/notify/grant-received";
     private static final String APPLICATION_RECEIVED_URL = "/notify/application-received";
     private static final String GRANT_DELAYED = "/notify/grant-delayed-scheduled?date=aDate";
+    private static final String GRANT_AWAITING_DOCS = "/notify/grant-awaiting-documents-scheduled?date=aDate";
     private static final String START_GRANT_DELAYED_NOTIFICATION_DATE = "/notify/start-grant-delayed-notify-period";
 
     private static final Map<String, Object> EMPTY_MAP = new HashMap();
@@ -557,8 +558,14 @@ public class NotificationControllerTest {
         mockMvc.perform(post(GRANT_DELAYED).contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(content().string(containsString("")));
-
-        verify(grantNotificationService, times(1)).handleGrantDelayedNotification(anyString());
-
+    }
+    
+    @Test
+    public void shouldReturnSuccessfulResponseForGrantAwaitingDocs() throws Exception {
+        GrantScheduleResponse response = GrantScheduleResponse.builder().scheduleResponseData(Arrays.asList("returnString")).build();
+        when(grantNotificationService.handleAwaitingDocumentationNotification("aDate")).thenReturn(response);
+        mockMvc.perform(post(GRANT_AWAITING_DOCS).contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(content().string(containsString("")));
     }
 }
