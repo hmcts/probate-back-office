@@ -251,27 +251,21 @@ public class NotificationController {
     @PostMapping(path = "/grant-delayed-scheduled")
     public ResponseEntity<GrantScheduleResponse> grantDelayed(@RequestParam("date") final String date) {
         log.info("Calling perform Grants delayed...");
-        ExecutorService executor = Executors.newFixedThreadPool(1);
-        executor.submit(() -> {
-            GrantScheduleResponse grantScheduleResponse = grantNotificationService.handleGrantDelayedNotification(date);
-            log.info("Grants delayed attempted for: {} grants, {}", grantScheduleResponse.getScheduleResponseData().size(),
-                StringUtils.joinWith(",", grantScheduleResponse.getScheduleResponseData()));
-        });
+        GrantScheduleResponse grantScheduleResponse = grantNotificationService.handleGrantDelayedNotification(date);
+        log.info("Grants delayed attempted for: {} grants, {}", grantScheduleResponse.getScheduleResponseData().size(),
+            StringUtils.joinWith(",", grantScheduleResponse.getScheduleResponseData()));
         log.info("...Called perform Grants delayed");
-        return ResponseEntity.ok(GrantScheduleResponse.builder().build());
+        return ResponseEntity.ok(grantScheduleResponse);
     }
 
     @PostMapping(path = "/grant-awaiting-documents-scheduled")
     public ResponseEntity<GrantScheduleResponse> grantAwaitingDocuments(@RequestParam("date") final String date) {
         log.info("Calling perform Grants Awaiting Documents...");
-        ExecutorService executor = Executors.newFixedThreadPool(1);
-        executor.submit(() -> {
-            GrantScheduleResponse grantScheduleResponse = grantNotificationService.handleAwaitingDocumentationNotification(date);
-            log.info("Grants awaiting documents attempted for: {} grants, {}", grantScheduleResponse.getScheduleResponseData().size(),
-                StringUtils.joinWith(",", grantScheduleResponse.getScheduleResponseData()));
-        });
+        GrantScheduleResponse grantScheduleResponse = grantNotificationService.handleAwaitingDocumentationNotification(date);
+        log.info("Grants awaiting documents attempted for: {} grants, {}", grantScheduleResponse.getScheduleResponseData().size(),
+            StringUtils.joinWith(",", grantScheduleResponse.getScheduleResponseData()));
         log.info("...Called perform Grants Awaiting Documents");
-        return ResponseEntity.ok(GrantScheduleResponse.builder().build());
+        return ResponseEntity.ok(grantScheduleResponse);
 
     }
 

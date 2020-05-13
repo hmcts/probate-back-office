@@ -127,6 +127,8 @@ public class CaseQueryService {
         HttpEntity<String> entity;
         try {
             tokenHeaders = headers.getAuthorizationHeaders();
+            log.info("CaseQueryService tokenHeaders={}", tokenHeaders.toString());
+            
         } catch (Exception e) {
             log.info("CaseQueryService Exception: " + e.getMessage());
             tokenHeaders = new HttpHeaders();
