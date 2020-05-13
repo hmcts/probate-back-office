@@ -66,7 +66,7 @@ public class GrantNotificationService {
     }
 
     private String sendNotificationForCase(ReturnedCaseDetails foundCase, EventId sentEvent) {
-        log.info("Preparing to send email to executors for grant delayed notification");
+        log.info("Preparing to send email to executors for grant notification");
         CCDData dataForEmailAddress = CCDData.builder()
             .primaryApplicantEmailAddress(foundCase.getData().getPrimaryApplicantEmailAddress())
             .applicationType(foundCase.getData().getApplicationType().getCode())
@@ -74,14 +74,14 @@ public class GrantNotificationService {
         List<FieldErrorResponse> emailErrors = emailAddressNotifyApplicantValidationRule.validate(dataForEmailAddress);
         String caseId = foundCase.getId().toString();
         if (!emailErrors.isEmpty()) {
-            log.error("Cannot send Grant Delayed notification, for email validation errors: {}", emailErrors.get(0).getMessage());
+            log.error("Cannot send Grant notification, for email validation errors: {}", emailErrors.get(0).getMessage());
             return getErroredCaseIdentifier(caseId, emailErrors.get(0).getMessage());
         }
 
         try {
             updateCaseIdentified(foundCase);
         } catch (RuntimeException e) {
-            log.error("Cannot identify Grant Delayed for notification, message: {}", e.getMessage());
+            log.error("Cannot identify Grant for notification, message: {}", e.getMessage());
             return getErroredCaseIdentifier(caseId, e.getMessage());
         }
         try {
@@ -99,10 +99,10 @@ public class GrantNotificationService {
             }
             updateFoundCase(foundCase, emailDocument, sentEvent, grantDelayedNotificationSent, grantAwaitingDocumentatioNotificationSent);
         } catch (NotificationClientException e) {
-            log.error("Error sending email for Grant Delayed with exception: {}. Has message: {}", e.getClass(), e.getMessage());
+            log.error("Error sending email for Grant notification with exception: {}. Has message: {}", e.getClass(), e.getMessage());
             caseId = getErroredCaseIdentifier(caseId, e.getMessage());
         } catch (RuntimeException re) {
-            log.error("Error updating case for Grant Delayed with exception: {}. Has message: {}", re.getClass(), re.getMessage());
+            log.error("Error updating case for Grant notification with exception: {}. Has message: {}", re.getClass(), re.getMessage());
             caseId = getErroredCaseIdentifier(caseId, re.getMessage());
         }
 
@@ -127,7 +127,7 @@ public class GrantNotificationService {
 
     private void updateFoundCase(ReturnedCaseDetails foundCase, Document emailDocument, EventId sentEvent, Boolean grantDelayedNotificationSent,
                                  Boolean grantAwaitingDocumentatioNotificationSent) {
-        log.info("Updating case for grant delayed, caseId: {}", foundCase.getId());
+        log.info("Updating case for grant notification, caseId: {}", foundCase.getId());
 
         GrantOfRepresentationData grantOfRepresentationData = GrantOfRepresentationData.builder()
             .grantDelayedNotificationSent(grantDelayedNotificationSent)
