@@ -34,8 +34,8 @@ public class SecurityConfiguration {
 
             http
                 .requestMatchers()
-                .antMatchers("/notify/grant-delayed-scheduled-REMOVE")
-                .antMatchers("/notify/grant-awaiting-documents-scheduled-REMOVE")
+                .antMatchers("/notify/grant-delayed-scheduled")
+                .antMatchers("/notify/grant-awaiting-documents-scheduled")
                 .and()
                 .addFilter(authCheckerServiceAndUserFilter)
                 .csrf().disable()
@@ -73,8 +73,6 @@ public class SecurityConfiguration {
                 .antMatchers("/case-matching/**")
                 .antMatchers("/caveat/**")
                 .antMatchers("/data-extract/**")
-                .antMatchers("/notify/grant-delayed-scheduled")
-                .antMatchers("/notify/grant-awaiting-documents-scheduled")
                 .antMatchers("/document/**")
                 .antMatchers("/transform-exception-record")
                 .antMatchers("/update-case")

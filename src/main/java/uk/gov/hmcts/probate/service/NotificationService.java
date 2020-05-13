@@ -271,7 +271,7 @@ public class NotificationService {
         String reference = caseDetails.getData().getSolsSolicitorAppReference();
         String emailAddress = caseDetails.getData().getPrimaryApplicantEmailAddress();
         SendEmailResponse response = notificationClient.sendEmail(templateId, emailAddress, personalisation, reference);
-        log.info("Grant delayed email reference response: {}", response.getReference());
+        log.info("Grant notification email reference response: {}", response.getReference());
 
         return getGeneratedSentEmailDocument(response, emailAddress, SENT_EMAIL);
     }

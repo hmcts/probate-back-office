@@ -556,8 +556,7 @@ public class NotificationControllerTest {
         GrantScheduleResponse response = GrantScheduleResponse.builder().scheduleResponseData(Arrays.asList("returnString")).build();
         when(grantNotificationService.handleGrantDelayedNotification("aDate")).thenReturn(response);
         mockMvc.perform(post(GRANT_DELAYED).contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk())
-            .andExpect(content().string(containsString("")));
+            .andExpect(status().isOk());
     }
     
     @Test
@@ -565,7 +564,6 @@ public class NotificationControllerTest {
         GrantScheduleResponse response = GrantScheduleResponse.builder().scheduleResponseData(Arrays.asList("returnString")).build();
         when(grantNotificationService.handleAwaitingDocumentationNotification("aDate")).thenReturn(response);
         mockMvc.perform(post(GRANT_AWAITING_DOCS).contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk())
-            .andExpect(content().string(containsString("")));
+            .andExpect(status().isOk());
     }
 }
