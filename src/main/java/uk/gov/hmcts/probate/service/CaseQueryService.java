@@ -124,7 +124,7 @@ public class CaseQueryService {
             .queryParam(CASE_TYPE_ID, CASE_TYPE.getCode())
             .build().encode().toUri();
 
-        HttpHeaders tokenHeaders = null;
+        HttpHeaders tokenHeaders = new HttpHeaders();
         HttpEntity<String> entity;
         try {
             tokenHeaders.add(AUTHORIZATION, BEARER_PREFIX + headers.getRequestHeader(AUTHORIZATION));
