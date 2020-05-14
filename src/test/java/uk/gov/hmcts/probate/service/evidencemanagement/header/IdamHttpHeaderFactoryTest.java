@@ -58,7 +58,6 @@ public class IdamHttpHeaderFactoryTest {
 
     @Test
     public void shouldGetRequestHeaderValue() {
-        Mockito.when(httpServletRequest.getHeader("key")).thenReturn("value");
         String httpHeader = underTest.getRequestHeader("key");
 
         assertTrue(httpHeader == null);
