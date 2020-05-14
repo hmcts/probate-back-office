@@ -15,6 +15,7 @@ class IdamHttpHeaderFactory implements HttpHeadersFactory {
     private static final String USER_ID = "user-id";
     private static final String SERVICE_AUTH = "ServiceAuthorization";
     private static final String AUTHORIZATION = "Authorization";
+    private static final String BEARER_PREFIX = "Bearer ";
 
     @Override
     public HttpHeaders getMultiPartHttpHeader() {
@@ -47,9 +48,14 @@ class IdamHttpHeaderFactory implements HttpHeadersFactory {
     @Override
     public HttpHeaders getElasticSearchAuthorizationHeaders() {
         HttpHeaders headers = new HttpHeaders();
-        headers.add(SERVICE_AUTH, "Bearer " + httpServletRequest.getHeader(SERVICE_AUTH));
-        headers.add(AUTHORIZATION, "Bearer " + httpServletRequest.getHeader(AUTHORIZATION));
+        headers.add(SERVICE_AUTH, getBearerHeaderValue(SERVICE_AUTH));
+        headers.add(AUTHORIZATION, getBearerHeaderValue(AUTHORIZATION));
         headers.setContentType(MediaType.APPLICATION_JSON);
         return headers;
     }
+    
+    private String getBearerHeaderValue(String key){
+        return BEARER_PREFIX + httpServletRequest.getHeader(key);
+    }
+    
 }
