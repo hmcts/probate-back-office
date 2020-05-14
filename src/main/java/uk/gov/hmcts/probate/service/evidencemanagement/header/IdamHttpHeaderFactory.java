@@ -43,4 +43,13 @@ class IdamHttpHeaderFactory implements HttpHeadersFactory {
         headers.setContentType(MediaType.APPLICATION_JSON);
         return headers;
     }
+    
+    @Override
+    public HttpHeaders getElasticSearchAuthorizationHeaders() {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(SERVICE_AUTH, "Bearer " + httpServletRequest.getHeader(SERVICE_AUTH));
+        headers.add(AUTHORIZATION, "Bearer " + httpServletRequest.getHeader(AUTHORIZATION));
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        return headers;
+    }
 }

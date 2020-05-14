@@ -54,4 +54,15 @@ public class IdamHttpHeaderFactoryTest {
         assertTrue(httpHeaders.containsKey("Authorization"));
         assertEquals(MediaType.APPLICATION_JSON, httpHeaders.getContentType());
     }
+
+    @Test
+    public void getESAuthorizationHeaders() {
+        HttpHeaders httpHeaders = underTest.getElasticSearchAuthorizationHeaders();
+
+        assertTrue(httpHeaders.containsKey("Authorization"));
+        assertTrue(httpHeaders.get("Authorization").get(0).contains("Bearer "));
+        assertTrue(httpHeaders.containsKey("ServiceAuthorization"));
+        assertTrue(httpHeaders.get("ServiceAuthorization").get(0).contains("Bearer "));
+        assertEquals(MediaType.APPLICATION_JSON, httpHeaders.getContentType());
+    }
 }
