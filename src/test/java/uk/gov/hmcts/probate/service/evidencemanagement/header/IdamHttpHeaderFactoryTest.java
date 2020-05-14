@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.HttpHeaders;
@@ -56,13 +57,10 @@ public class IdamHttpHeaderFactoryTest {
     }
 
     @Test
-    public void getESAuthorizationHeaders() {
-        HttpHeaders httpHeaders = underTest.getElasticSearchAuthorizationHeaders();
+    public void shouldGetRequestHeaderValue() {
+        Mockito.when(httpServletRequest.getHeader("key")).thenReturn("value");
+        String httpHeader = underTest.getRequestHeader("key");
 
-        assertTrue(httpHeaders.containsKey("Authorization"));
-        assertTrue(httpHeaders.get("Authorization").get(0).contains("Bearer "));
-        assertTrue(httpHeaders.containsKey("ServiceAuthorization"));
-        assertTrue(httpHeaders.get("ServiceAuthorization").get(0).contains("Bearer "));
-        assertEquals(MediaType.APPLICATION_JSON, httpHeaders.getContentType());
+        assertTrue(httpHeader.equals("value"));
     }
 }

@@ -10,5 +10,5 @@ public interface HttpHeadersFactory {
 
     HttpHeaders getAuthorizationHeaders();
 
-    HttpHeaders getElasticSearchAuthorizationHeaders();
+    String getRequestHeader(String key);
 }

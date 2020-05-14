@@ -42,6 +42,7 @@ public class CaseQueryService {
     private static final String STATE_MATCH = "BOGrantIssued";
     private static final String SERVICE_AUTH = "ServiceAuthorization";
     private static final String AUTHORIZATION = "Authorization";
+    private static final String BEARER_PREFIX = "Bearer ";
     private static final String CASE_TYPE_ID = "ctid";
     private static final CaseType CASE_TYPE = CaseType.GRANT_OF_REPRESENTATION;
     private static final String[] STATES_MATCH_GRANT_DELAYED = {"BOReadyForExamination", "BOCaseMatchingExamining", "BOExamining",
@@ -126,7 +127,9 @@ public class CaseQueryService {
         HttpHeaders tokenHeaders = null;
         HttpEntity<String> entity;
         try {
-            tokenHeaders = headers.getElasticSearchAuthorizationHeaders();
+            tokenHeaders.add(AUTHORIZATION, BEARER_PREFIX + headers.getRequestHeader(AUTHORIZATION));
+            tokenHeaders.add(SERVICE_AUTH, BEARER_PREFIX + headers.getRequestHeader(SERVICE_AUTH));
+            tokenHeaders.setContentType(MediaType.APPLICATION_JSON);
             log.info("CaseQueryService tokenHeaders={}", tokenHeaders.toString());
             
         } catch (Exception e) {
@@ -136,7 +139,6 @@ public class CaseQueryService {
             log.info("DONE serviceAuthTokenGenerator.generate()");
             tokenHeaders.add(AUTHORIZATION, idamAuthenticateUserService.getIdamOauth2Token());
             log.info("DONE idamAuthenticateUserService.getIdamOauth2Token()");
-            tokenHeaders.setContentType(MediaType.APPLICATION_JSON);
         } finally {
             entity = new HttpEntity<>(jsonQuery, tokenHeaders);
             log.info("CaseQueryService Elastic search entity: " + entity);
