@@ -16,6 +16,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.service.ccd.CcdClientApi;
 import uk.gov.hmcts.probate.validator.EmailAddressNotifyApplicantValidationRule;
+import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
 import uk.gov.hmcts.reform.probate.model.ProbateDocument;
 import uk.gov.hmcts.reform.probate.model.ProbateDocumentLink;
 import uk.gov.hmcts.reform.probate.model.ProbateDocumentType;
@@ -25,6 +26,7 @@ import uk.gov.hmcts.reform.probate.model.forms.Form;
 import uk.gov.service.notify.NotificationClientException;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -48,6 +50,7 @@ public class GrantNotificationService {
     public GrantScheduleResponse handleGrantDelayedNotification(String date) {
         List<String> delayedRepsonseData = new ArrayList<>();
         List<ReturnedCaseDetails> foundCases = caseQueryService.findCasesForGrantDelayed(date);
+        Collections.shuffle(foundCases);
         log.info("Found cases for grant delayed notification: {}", foundCases.size());
         for (ReturnedCaseDetails foundCase : foundCases) {
             delayedRepsonseData.add(sendNotificationForCase(foundCase, SCHEDULED_UPDATE_GRANT_DELAY_NOTIFICATION_SENT));
@@ -78,6 +81,9 @@ public class GrantNotificationService {
             return getErroredCaseIdentifier(caseId, emailErrors.get(0).getMessage());
         }
 
+        if (hasCaseSinceBeenUpdated(foundCase, sentEvent)) {
+            return getErroredCaseIdentifier(caseId, "Case has already been updated");
+        }
         try {
             updateCaseIdentified(foundCase);
         } catch (RuntimeException e) {
@@ -107,6 +113,28 @@ public class GrantNotificationService {
         }
 
         return caseId;
+    }
+
+    private boolean hasCaseSinceBeenUpdated(ReturnedCaseDetails foundCase, EventId sentEvent) {
+        final String identifiedKey = "grantDelayedNotificationIdentified";
+        final String delaySentKey = "grantDelayedNotificationSent";
+        final String awaitingSentKey = "grantAwaitingDocumentatioNotificationSent";
+        CaseDetails caseDetails = ccdClientApi.readForCaseWorker(CcdCaseType.GRANT_OF_REPRESENTATION, foundCase.getId().toString(),
+            securityUtils.getUserAndServiceSecurityDTO());
+        if (SCHEDULED_UPDATE_GRANT_DELAY_NOTIFICATION_SENT.equals(sentEvent)) { 
+            if ( (caseDetails.getData().get(identifiedKey) != null && "Yes".equalsIgnoreCase(caseDetails.getData().get(identifiedKey).toString()))
+                || (caseDetails.getData().get(delaySentKey) != null && "Yes".equalsIgnoreCase(caseDetails.getData().get(delaySentKey).toString()))
+            ){
+                return true;
+            }
+        } else if (SCHEDULED_UPDATE_GRANT_AWAITING_DOCUMENTATION_NOTIFICATION_SENT.equals(sentEvent)) {
+            if ( (caseDetails.getData().get(identifiedKey) != null && "Yes".equalsIgnoreCase(caseDetails.getData().get(identifiedKey).toString()))
+                || (caseDetails.getData().get(awaitingSentKey) != null && "Yes".equalsIgnoreCase(caseDetails.getData().get(awaitingSentKey).toString()))
+            ){
+                return true;
+            }
+        }
+        return false;
     }
 
     private String getErroredCaseIdentifier(String caseId, String message) {

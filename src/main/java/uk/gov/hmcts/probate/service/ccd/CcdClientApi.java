@@ -105,6 +105,20 @@ public class CcdClientApi implements CoreCaseDataService {
         return caseDetails;
     }
 
+    @Override
+    public CaseDetails readForCaseWorker(CcdCaseType caseType, String caseId, SecurityDTO securityDTO) {
+        CaseDetails caseDetails = coreCaseDataApi.readForCaseWorker(
+            securityDTO.getAuthorisation(),
+            securityDTO.getServiceAuthorisation(),
+            securityDTO.getUserId(),
+            PROBATE.name(),
+            caseType.getName(),
+            caseId
+        );
+        
+        return caseDetails;
+    }
+    
     private CaseDataContent createCaseDataContent(Object object, EventId eventId, StartEventResponse startEventResponse) {
         return CaseDataContent.builder()
                 .event(createEvent(eventId))
