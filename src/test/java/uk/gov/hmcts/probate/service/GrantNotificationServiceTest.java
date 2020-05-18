@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
 import uk.gov.hmcts.probate.model.ApplicationType;
@@ -14,6 +15,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.service.ccd.CcdClientApi;
@@ -24,11 +26,13 @@ import uk.gov.service.notify.NotificationClientException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static java.lang.Boolean.TRUE;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -118,13 +122,101 @@ public class GrantNotificationServiceTest {
         when(notificationService.sendGrantDelayedEmail(returnedCaseDetails2)).thenReturn(buildDocument());
         when(notificationService.sendGrantDelayedEmail(returnedCaseDetails3)).thenReturn(buildDocument());
 
+        uk.gov.hmcts.reform.ccd.client.model.CaseDetails caseDetails = Mockito.mock(uk.gov.hmcts.reform.ccd.client.model.CaseDetails.class);
+        Map caseData = Mockito.mock(Map.class);
+        when(caseDetails.getData()).thenReturn(caseData);
+//        when(caseData.get("grantDelayedNotificationIdentified")).thenReturn("Yes");
+//        when(caseData.get("grantDelayedNotificationSent")).thenReturn("Yes");
+        when(ccdClientApi.readForCaseWorker(any(), any(), any())).thenReturn(caseDetails);
+
         GrantScheduleResponse response = grantNotificationService.handleGrantDelayedNotification(dateString);
         assertThat(response.getScheduleResponseData().size(), equalTo(3));
 
+        assertThat(response.getScheduleResponseData().contains("1"), equalTo(true));
+        assertThat(response.getScheduleResponseData().contains("2"), equalTo(true));
+        assertThat(response.getScheduleResponseData().contains("3"), equalTo(true));
+    }
+
+    @Test
+    public void shouldNotNotifyForGrantDelayedForNoIdentifiedOrSent() throws NotificationClientException {
+        documents.add(sentEmail);
+
+        String dateString = "31-12-2020";
+        when(caseQueryService.findCasesForGrantDelayed(dateString)).thenReturn(returnedCases);
+        when(notificationService.sendGrantDelayedEmail(returnedCaseDetails1)).thenReturn(buildDocument());
+        when(notificationService.sendGrantDelayedEmail(returnedCaseDetails2)).thenReturn(buildDocument());
+        when(notificationService.sendGrantDelayedEmail(returnedCaseDetails3)).thenReturn(buildDocument());
+
+        uk.gov.hmcts.reform.ccd.client.model.CaseDetails caseDetails = Mockito.mock(uk.gov.hmcts.reform.ccd.client.model.CaseDetails.class);
+        Map caseData = Mockito.mock(Map.class);
+        when(caseDetails.getData()).thenReturn(caseData);
+        when(caseData.get("grantDelayedNotificationIdentified")).thenReturn("Yes");
+        when(caseData.get("grantDelayedNotificationSent")).thenReturn("Yes");
+        when(ccdClientApi.readForCaseWorker(any(), any(), any())).thenReturn(caseDetails);
+
+        GrantScheduleResponse response = grantNotificationService.handleGrantDelayedNotification(dateString);
+
+        verify(ccdClientApi, times(0)).updateCaseAsCaseworker(any(), any(), any(),
+            any(), any());
+
         assertThat(response.getScheduleResponseData().size(), equalTo(3));
-        assertThat(response.getScheduleResponseData().get(0), equalTo("1"));
-        assertThat(response.getScheduleResponseData().get(1), equalTo("2"));
-        assertThat(response.getScheduleResponseData().get(2), equalTo("3"));
+        assertThat(response.getScheduleResponseData().contains("<1:Case has already been updated>"), equalTo(true));
+        assertThat(response.getScheduleResponseData().contains("<2:Case has already been updated>"), equalTo(true));
+        assertThat(response.getScheduleResponseData().contains("<3:Case has already been updated>"), equalTo(true));
+    }
+
+    @Test
+    public void shouldNotNotifyForGrantDelayedForNoIdentified() throws NotificationClientException {
+        documents.add(sentEmail);
+
+        String dateString = "31-12-2020";
+        when(caseQueryService.findCasesForGrantDelayed(dateString)).thenReturn(returnedCases);
+        when(notificationService.sendGrantDelayedEmail(returnedCaseDetails1)).thenReturn(buildDocument());
+        when(notificationService.sendGrantDelayedEmail(returnedCaseDetails2)).thenReturn(buildDocument());
+        when(notificationService.sendGrantDelayedEmail(returnedCaseDetails3)).thenReturn(buildDocument());
+
+        uk.gov.hmcts.reform.ccd.client.model.CaseDetails caseDetails = Mockito.mock(uk.gov.hmcts.reform.ccd.client.model.CaseDetails.class);
+        Map caseData = Mockito.mock(Map.class);
+        when(caseDetails.getData()).thenReturn(caseData);
+        when(caseData.get("grantDelayedNotificationIdentified")).thenReturn("Yes");
+        when(ccdClientApi.readForCaseWorker(any(), any(), any())).thenReturn(caseDetails);
+
+        GrantScheduleResponse response = grantNotificationService.handleGrantDelayedNotification(dateString);
+
+        verify(ccdClientApi, times(0)).updateCaseAsCaseworker(any(), any(), any(),
+            any(), any());
+
+        assertThat(response.getScheduleResponseData().size(), equalTo(3));
+        assertThat(response.getScheduleResponseData().contains("<1:Case has already been updated>"), equalTo(true));
+        assertThat(response.getScheduleResponseData().contains("<2:Case has already been updated>"), equalTo(true));
+        assertThat(response.getScheduleResponseData().contains("<3:Case has already been updated>"), equalTo(true));
+    }
+
+    @Test
+    public void shouldNotNotifyForGrantDelayedForNoSent() throws NotificationClientException {
+        documents.add(sentEmail);
+
+        String dateString = "31-12-2020";
+        when(caseQueryService.findCasesForGrantDelayed(dateString)).thenReturn(returnedCases);
+        when(notificationService.sendGrantDelayedEmail(returnedCaseDetails1)).thenReturn(buildDocument());
+        when(notificationService.sendGrantDelayedEmail(returnedCaseDetails2)).thenReturn(buildDocument());
+        when(notificationService.sendGrantDelayedEmail(returnedCaseDetails3)).thenReturn(buildDocument());
+
+        uk.gov.hmcts.reform.ccd.client.model.CaseDetails caseDetails = Mockito.mock(uk.gov.hmcts.reform.ccd.client.model.CaseDetails.class);
+        Map caseData = Mockito.mock(Map.class);
+        when(caseDetails.getData()).thenReturn(caseData);
+        when(caseData.get("grantDelayedNotificationSent")).thenReturn("Yes");
+        when(ccdClientApi.readForCaseWorker(any(), any(), any())).thenReturn(caseDetails);
+
+        GrantScheduleResponse response = grantNotificationService.handleGrantDelayedNotification(dateString);
+
+        verify(ccdClientApi, times(0)).updateCaseAsCaseworker(any(), any(), any(),
+            any(), any());
+
+        assertThat(response.getScheduleResponseData().size(), equalTo(3));
+        assertThat(response.getScheduleResponseData().contains("<1:Case has already been updated>"), equalTo(true));
+        assertThat(response.getScheduleResponseData().contains("<2:Case has already been updated>"), equalTo(true));
+        assertThat(response.getScheduleResponseData().contains("<3:Case has already been updated>"), equalTo(true));
     }
 
     @Test
@@ -137,6 +229,11 @@ public class GrantNotificationServiceTest {
         when(notificationService.sendGrantDelayedEmail(returnedCaseDetails2)).thenReturn(buildDocument());
         when(notificationService.sendGrantDelayedEmail(returnedCaseDetails3)).thenThrow(new NotificationClientException("notificationError"));
 
+        uk.gov.hmcts.reform.ccd.client.model.CaseDetails caseDetails = Mockito.mock(uk.gov.hmcts.reform.ccd.client.model.CaseDetails.class);
+        Map caseData = Mockito.mock(Map.class);
+        when(caseDetails.getData()).thenReturn(caseData);
+        when(ccdClientApi.readForCaseWorker(any(), any(), any())).thenReturn(caseDetails);
+
         GrantScheduleResponse response = grantNotificationService.handleGrantDelayedNotification(dateString);
 
         ArgumentCaptor<GrantOfRepresentationData> grantOfRepresentationDataArgumentCaptor = ArgumentCaptor.forClass(GrantOfRepresentationData.class);
@@ -146,9 +243,9 @@ public class GrantNotificationServiceTest {
         assertThat(grantOfRepresentationData.getGrantDelayedNotificationSent(), equalTo(TRUE));
 
         assertThat(response.getScheduleResponseData().size(), equalTo(3));
-        assertThat(response.getScheduleResponseData().get(0), equalTo("1"));
-        assertThat(response.getScheduleResponseData().get(1), equalTo("2"));
-        assertThat(response.getScheduleResponseData().get(2), equalTo("<3:notificationError>"));
+        assertThat(response.getScheduleResponseData().contains("1"), equalTo(true));
+        assertThat(response.getScheduleResponseData().contains("2"), equalTo(true));
+        assertThat(response.getScheduleResponseData().contains("<3:notificationError>"), equalTo(true));
     }
 
     @Test
@@ -161,6 +258,11 @@ public class GrantNotificationServiceTest {
         when(notificationService.sendGrantDelayedEmail(returnedCaseDetails2)).thenReturn(buildDocument());
         when(notificationService.sendGrantDelayedEmail(returnedCaseDetails3)).thenThrow(RuntimeException.class);
 
+        uk.gov.hmcts.reform.ccd.client.model.CaseDetails caseDetails = Mockito.mock(uk.gov.hmcts.reform.ccd.client.model.CaseDetails.class);
+        Map caseData = Mockito.mock(Map.class);
+        when(caseDetails.getData()).thenReturn(caseData);
+        when(ccdClientApi.readForCaseWorker(any(), any(), any())).thenReturn(caseDetails);
+
         GrantScheduleResponse response = grantNotificationService.handleGrantDelayedNotification(dateString);
 
         ArgumentCaptor<GrantOfRepresentationData> grantOfRepresentationDataArgumentCaptor = ArgumentCaptor.forClass(GrantOfRepresentationData.class);
@@ -170,9 +272,9 @@ public class GrantNotificationServiceTest {
         assertThat(grantOfRepresentationData.getGrantDelayedNotificationSent(), equalTo(TRUE));
 
         assertThat(response.getScheduleResponseData().size(), equalTo(3));
-        assertThat(response.getScheduleResponseData().get(0), equalTo("1"));
-        assertThat(response.getScheduleResponseData().get(1), equalTo("2"));
-        assertThat(response.getScheduleResponseData().get(2), equalTo("<3:null>"));
+        assertThat(response.getScheduleResponseData().contains("1"), equalTo(true));
+        assertThat(response.getScheduleResponseData().contains("2"), equalTo(true));
+        assertThat(response.getScheduleResponseData().contains("<3:null>"), equalTo(true));
     }
 
     @Test
@@ -185,13 +287,18 @@ public class GrantNotificationServiceTest {
         when(notificationService.sendGrantDelayedEmail(returnedCaseDetails2)).thenReturn(buildDocument());
         when(notificationService.sendGrantDelayedEmail(returnedCaseDetails3)).thenReturn(buildDocument());
 
+        uk.gov.hmcts.reform.ccd.client.model.CaseDetails caseDetails = Mockito.mock(uk.gov.hmcts.reform.ccd.client.model.CaseDetails.class);
+        Map caseData = Mockito.mock(Map.class);
+        when(caseDetails.getData()).thenReturn(caseData);
+        when(ccdClientApi.readForCaseWorker(any(), any(), any())).thenReturn(caseDetails);
+
         when(ccdClientApi.updateCaseAsCaseworker(any(), any(), any(), any(), any())).thenThrow(new RuntimeException());
         GrantScheduleResponse response = grantNotificationService.handleGrantDelayedNotification(dateString);
 
         assertThat(response.getScheduleResponseData().size(), equalTo(3));
-        assertThat(response.getScheduleResponseData().get(0), equalTo("<1:null>"));
-        assertThat(response.getScheduleResponseData().get(1), equalTo("<2:null>"));
-        assertThat(response.getScheduleResponseData().get(2), equalTo("<3:null>"));
+        assertThat(response.getScheduleResponseData().contains("<1:null>"), equalTo(true));
+        assertThat(response.getScheduleResponseData().contains("<2:null>"), equalTo(true));
+        assertThat(response.getScheduleResponseData().contains("<3:null>"), equalTo(true));
     }
 
     @Test
@@ -208,9 +315,9 @@ public class GrantNotificationServiceTest {
         GrantScheduleResponse response = grantNotificationService.handleGrantDelayedNotification(dateString);
 
         assertThat(response.getScheduleResponseData().size(), equalTo(3));
-        assertThat(response.getScheduleResponseData().get(0), equalTo("<1:emailError>"));
-        assertThat(response.getScheduleResponseData().get(1), equalTo("<2:emailError>"));
-        assertThat(response.getScheduleResponseData().get(2), equalTo("<3:emailError>"));
+        assertThat(response.getScheduleResponseData().contains("<1:emailError>"), equalTo(true));
+        assertThat(response.getScheduleResponseData().contains("<2:emailError>"), equalTo(true));
+        assertThat(response.getScheduleResponseData().contains("<3:emailError>"), equalTo(true));
     }
 
     @Test
@@ -223,6 +330,11 @@ public class GrantNotificationServiceTest {
         when(notificationService.sendGrantAwaitingDocumentationEmail(returnedCaseDetails2)).thenReturn(buildDocument());
         when(notificationService.sendGrantAwaitingDocumentationEmail(returnedCaseDetails3)).thenReturn(buildDocument());
 
+        uk.gov.hmcts.reform.ccd.client.model.CaseDetails caseDetails = Mockito.mock(uk.gov.hmcts.reform.ccd.client.model.CaseDetails.class);
+        Map caseData = Mockito.mock(Map.class);
+        when(caseDetails.getData()).thenReturn(caseData);
+        when(ccdClientApi.readForCaseWorker(any(), any(), any())).thenReturn(caseDetails);
+
         GrantScheduleResponse response = grantNotificationService.handleAwaitingDocumentationNotification(dateString);
 
         ArgumentCaptor<GrantOfRepresentationData> grantOfRepresentationDataArgumentCaptor = ArgumentCaptor.forClass(GrantOfRepresentationData.class);
@@ -232,10 +344,37 @@ public class GrantNotificationServiceTest {
         assertThat(grantOfRepresentationData.getGrantAwaitingDocumentatioNotificationSent(), equalTo(TRUE));
 
         assertThat(response.getScheduleResponseData().size(), equalTo(3));
+        assertThat(response.getScheduleResponseData().contains("1"), equalTo(true));
+        assertThat(response.getScheduleResponseData().contains("2"), equalTo(true));
+        assertThat(response.getScheduleResponseData().contains("3"), equalTo(true));
+    }
+
+    @Test
+    public void shouldNotNotifyForGrantAwaitingDocs() throws NotificationClientException {
+        documents.add(sentEmail);
+
+        String dateString = "31-12-2020";
+        when(caseQueryService.findCasesForGrantAwaitingDocumentation(dateString)).thenReturn(returnedCases);
+        when(notificationService.sendGrantAwaitingDocumentationEmail(returnedCaseDetails1)).thenReturn(buildDocument());
+        when(notificationService.sendGrantAwaitingDocumentationEmail(returnedCaseDetails2)).thenReturn(buildDocument());
+        when(notificationService.sendGrantAwaitingDocumentationEmail(returnedCaseDetails3)).thenReturn(buildDocument());
+
+        uk.gov.hmcts.reform.ccd.client.model.CaseDetails caseDetails = Mockito.mock(uk.gov.hmcts.reform.ccd.client.model.CaseDetails.class);
+        Map caseData = Mockito.mock(Map.class);
+        when(caseData.get("grantDelayedNotificationIdentified")).thenReturn("Yes");
+        when(caseData.get("grantDelayedNotificationSent")).thenReturn("Yes");
+        when(caseDetails.getData()).thenReturn(caseData);
+        when(ccdClientApi.readForCaseWorker(any(), any(), any())).thenReturn(caseDetails);
+
+        GrantScheduleResponse response = grantNotificationService.handleAwaitingDocumentationNotification(dateString);
+
+        verify(ccdClientApi, times(0)).updateCaseAsCaseworker(any(), any(), any(),
+            any(), any());
+        
         assertThat(response.getScheduleResponseData().size(), equalTo(3));
-        assertThat(response.getScheduleResponseData().get(0), equalTo("1"));
-        assertThat(response.getScheduleResponseData().get(1), equalTo("2"));
-        assertThat(response.getScheduleResponseData().get(2), equalTo("3"));
+        assertThat(response.getScheduleResponseData().contains("<1:Case has already been updated>"), equalTo(true));
+        assertThat(response.getScheduleResponseData().contains("<2:Case has already been updated>"), equalTo(true));
+        assertThat(response.getScheduleResponseData().contains("<3:Case has already been updated>"), equalTo(true));
     }
 
     @Test
@@ -248,13 +387,18 @@ public class GrantNotificationServiceTest {
         when(notificationService.sendGrantAwaitingDocumentationEmail(returnedCaseDetails2)).thenReturn(buildDocument());
         when(notificationService.sendGrantAwaitingDocumentationEmail(returnedCaseDetails3)).thenReturn(buildDocument());
 
+        uk.gov.hmcts.reform.ccd.client.model.CaseDetails caseDetails = Mockito.mock(uk.gov.hmcts.reform.ccd.client.model.CaseDetails.class);
+        Map caseData = Mockito.mock(Map.class);
+        when(caseDetails.getData()).thenReturn(caseData);
+        when(ccdClientApi.readForCaseWorker(any(), any(), any())).thenReturn(caseDetails);
+
         when(ccdClientApi.updateCaseAsCaseworker(any(), any(), any(), any(), any())).thenThrow(new RuntimeException());
         GrantScheduleResponse response = grantNotificationService.handleAwaitingDocumentationNotification(dateString);
 
         assertThat(response.getScheduleResponseData().size(), equalTo(3));
-        assertThat(response.getScheduleResponseData().get(0), equalTo("<1:null>"));
-        assertThat(response.getScheduleResponseData().get(1), equalTo("<2:null>"));
-        assertThat(response.getScheduleResponseData().get(2), equalTo("<3:null>"));
+        assertThat(response.getScheduleResponseData().contains("<1:null>"), equalTo(true));
+        assertThat(response.getScheduleResponseData().contains("<2:null>"), equalTo(true));
+        assertThat(response.getScheduleResponseData().contains("<3:null>"), equalTo(true));
     }
 
     @Test
@@ -271,9 +415,9 @@ public class GrantNotificationServiceTest {
         GrantScheduleResponse response = grantNotificationService.handleAwaitingDocumentationNotification(dateString);
 
         assertThat(response.getScheduleResponseData().size(), equalTo(3));
-        assertThat(response.getScheduleResponseData().get(0), equalTo("<1:emailError>"));
-        assertThat(response.getScheduleResponseData().get(1), equalTo("<2:emailError>"));
-        assertThat(response.getScheduleResponseData().get(2), equalTo("<3:emailError>"));
+        assertThat(response.getScheduleResponseData().contains("<1:emailError>"), equalTo(true));
+        assertThat(response.getScheduleResponseData().contains("<2:emailError>"), equalTo(true));
+        assertThat(response.getScheduleResponseData().contains("<3:emailError>"), equalTo(true));
     }
 
     private Document buildDocument() {
