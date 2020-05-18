@@ -1,9 +1,7 @@
 package uk.gov.hmcts.probate.service;
 
-import com.google.common.collect.ImmutableMap;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
 import uk.gov.hmcts.probate.model.GrantScheduleResponse;
@@ -20,16 +18,12 @@ import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
 import uk.gov.hmcts.reform.probate.model.ProbateDocument;
 import uk.gov.hmcts.reform.probate.model.ProbateDocumentLink;
 import uk.gov.hmcts.reform.probate.model.ProbateDocumentType;
-import uk.gov.hmcts.reform.probate.model.ProbateType;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData;
-import uk.gov.hmcts.reform.probate.model.forms.Form;
 import uk.gov.service.notify.NotificationClientException;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
-import java.util.function.Function;
 
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
@@ -40,6 +34,10 @@ import static uk.gov.hmcts.probate.model.ccd.EventId.SCHEDULED_UPDATE_GRANT_DELA
 @Service
 @RequiredArgsConstructor
 public class GrantNotificationService {
+
+    private static final String IDENTIFIED_KEY = "grantDelayedNotificationIdentified";
+    private static final String DELAY_SENT_KEY = "grantDelayedNotificationSent";
+    private static final String AWAITING_SENT_KEY = "grantAwaitingDocumentatioNotificationSent";
 
     private final NotificationService notificationService;
     private final EmailAddressNotifyApplicantValidationRule emailAddressNotifyApplicantValidationRule;
@@ -116,20 +114,17 @@ public class GrantNotificationService {
     }
 
     private boolean hasCaseSinceBeenUpdated(ReturnedCaseDetails foundCase, EventId sentEvent) {
-        final String identifiedKey = "grantDelayedNotificationIdentified";
-        final String delaySentKey = "grantDelayedNotificationSent";
-        final String awaitingSentKey = "grantAwaitingDocumentatioNotificationSent";
         CaseDetails caseDetails = ccdClientApi.readForCaseWorker(CcdCaseType.GRANT_OF_REPRESENTATION, foundCase.getId().toString(),
             securityUtils.getUserAndServiceSecurityDTO());
         if (SCHEDULED_UPDATE_GRANT_DELAY_NOTIFICATION_SENT.equals(sentEvent)) { 
-            if ( (caseDetails.getData().get(identifiedKey) != null && "Yes".equalsIgnoreCase(caseDetails.getData().get(identifiedKey).toString()))
-                || (caseDetails.getData().get(delaySentKey) != null && "Yes".equalsIgnoreCase(caseDetails.getData().get(delaySentKey).toString()))
+            if ( (caseDetails.getData().get(IDENTIFIED_KEY) != null && "Yes".equalsIgnoreCase(caseDetails.getData().get(IDENTIFIED_KEY).toString()))
+                || (caseDetails.getData().get(DELAY_SENT_KEY) != null && "Yes".equalsIgnoreCase(caseDetails.getData().get(DELAY_SENT_KEY).toString()))
             ){
                 return true;
             }
         } else if (SCHEDULED_UPDATE_GRANT_AWAITING_DOCUMENTATION_NOTIFICATION_SENT.equals(sentEvent)) {
-            if ( (caseDetails.getData().get(identifiedKey) != null && "Yes".equalsIgnoreCase(caseDetails.getData().get(identifiedKey).toString()))
-                || (caseDetails.getData().get(awaitingSentKey) != null && "Yes".equalsIgnoreCase(caseDetails.getData().get(awaitingSentKey).toString()))
+            if ( (caseDetails.getData().get(IDENTIFIED_KEY) != null && "Yes".equalsIgnoreCase(caseDetails.getData().get(IDENTIFIED_KEY).toString()))
+                || (caseDetails.getData().get(AWAITING_SENT_KEY) != null && "Yes".equalsIgnoreCase(caseDetails.getData().get(AWAITING_SENT_KEY).toString()))
             ){
                 return true;
             }

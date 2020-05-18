@@ -138,6 +138,31 @@ public class GrantNotificationServiceTest {
     }
 
     @Test
+    public void shouldNotifyForGrantDelayedForIdentifiedOrSent() throws NotificationClientException {
+        documents.add(sentEmail);
+
+        String dateString = "31-12-2020";
+        when(caseQueryService.findCasesForGrantDelayed(dateString)).thenReturn(returnedCases);
+        when(notificationService.sendGrantDelayedEmail(returnedCaseDetails1)).thenReturn(buildDocument());
+        when(notificationService.sendGrantDelayedEmail(returnedCaseDetails2)).thenReturn(buildDocument());
+        when(notificationService.sendGrantDelayedEmail(returnedCaseDetails3)).thenReturn(buildDocument());
+
+        uk.gov.hmcts.reform.ccd.client.model.CaseDetails caseDetails = Mockito.mock(uk.gov.hmcts.reform.ccd.client.model.CaseDetails.class);
+        Map caseData = Mockito.mock(Map.class);
+        when(caseDetails.getData()).thenReturn(caseData);
+        when(caseData.get("grantDelayedNotificationIdentified")).thenReturn("No");
+        when(caseData.get("grantDelayedNotificationSent")).thenReturn("NO");
+        when(ccdClientApi.readForCaseWorker(any(), any(), any())).thenReturn(caseDetails);
+
+        GrantScheduleResponse response = grantNotificationService.handleGrantDelayedNotification(dateString);
+        assertThat(response.getScheduleResponseData().size(), equalTo(3));
+
+        assertThat(response.getScheduleResponseData().contains("1"), equalTo(true));
+        assertThat(response.getScheduleResponseData().contains("2"), equalTo(true));
+        assertThat(response.getScheduleResponseData().contains("3"), equalTo(true));
+    }
+
+    @Test
     public void shouldNotNotifyForGrantDelayedForNoIdentifiedOrSent() throws NotificationClientException {
         documents.add(sentEmail);
 
@@ -350,7 +375,38 @@ public class GrantNotificationServiceTest {
     }
 
     @Test
-    public void shouldNotNotifyForGrantAwaitingDocs() throws NotificationClientException {
+    public void shouldNotifyForGrantAwaitingDocsForNotIdentifiedOrNotified() throws NotificationClientException {
+        documents.add(sentEmail);
+
+        String dateString = "31-12-2020";
+        when(caseQueryService.findCasesForGrantAwaitingDocumentation(dateString)).thenReturn(returnedCases);
+        when(notificationService.sendGrantAwaitingDocumentationEmail(returnedCaseDetails1)).thenReturn(buildDocument());
+        when(notificationService.sendGrantAwaitingDocumentationEmail(returnedCaseDetails2)).thenReturn(buildDocument());
+        when(notificationService.sendGrantAwaitingDocumentationEmail(returnedCaseDetails3)).thenReturn(buildDocument());
+
+        uk.gov.hmcts.reform.ccd.client.model.CaseDetails caseDetails = Mockito.mock(uk.gov.hmcts.reform.ccd.client.model.CaseDetails.class);
+        Map caseData = Mockito.mock(Map.class);
+        when(caseDetails.getData()).thenReturn(caseData);
+        when(caseData.get("grantDelayedNotificationIdentified")).thenReturn("No");
+        when(caseData.get("grantAwaitingDocumentatioNotificationSent")).thenReturn("NO");
+        when(ccdClientApi.readForCaseWorker(any(), any(), any())).thenReturn(caseDetails);
+
+        GrantScheduleResponse response = grantNotificationService.handleAwaitingDocumentationNotification(dateString);
+
+        ArgumentCaptor<GrantOfRepresentationData> grantOfRepresentationDataArgumentCaptor = ArgumentCaptor.forClass(GrantOfRepresentationData.class);
+        verify(ccdClientApi, times(3)).updateCaseAsCaseworker(any(), any(), grantOfRepresentationDataArgumentCaptor.capture(),
+            eq(SCHEDULED_UPDATE_GRANT_AWAITING_DOCUMENTATION_NOTIFICATION_SENT), any());
+        GrantOfRepresentationData grantOfRepresentationData = grantOfRepresentationDataArgumentCaptor.getValue();
+        assertThat(grantOfRepresentationData.getGrantAwaitingDocumentatioNotificationSent(), equalTo(TRUE));
+
+        assertThat(response.getScheduleResponseData().size(), equalTo(3));
+        assertThat(response.getScheduleResponseData().contains("1"), equalTo(true));
+        assertThat(response.getScheduleResponseData().contains("2"), equalTo(true));
+        assertThat(response.getScheduleResponseData().contains("3"), equalTo(true));
+    }
+
+    @Test
+    public void shouldNotNotifyForGrantAwaitingDocsForNoIdentificationNoNotification() throws NotificationClientException {
         documents.add(sentEmail);
 
         String dateString = "31-12-2020";
@@ -362,7 +418,7 @@ public class GrantNotificationServiceTest {
         uk.gov.hmcts.reform.ccd.client.model.CaseDetails caseDetails = Mockito.mock(uk.gov.hmcts.reform.ccd.client.model.CaseDetails.class);
         Map caseData = Mockito.mock(Map.class);
         when(caseData.get("grantDelayedNotificationIdentified")).thenReturn("Yes");
-        when(caseData.get("grantDelayedNotificationSent")).thenReturn("Yes");
+        when(caseData.get("grantAwaitingDocumentatioNotificationSent")).thenReturn("Yes");
         when(caseDetails.getData()).thenReturn(caseData);
         when(ccdClientApi.readForCaseWorker(any(), any(), any())).thenReturn(caseDetails);
 
@@ -371,6 +427,60 @@ public class GrantNotificationServiceTest {
         verify(ccdClientApi, times(0)).updateCaseAsCaseworker(any(), any(), any(),
             any(), any());
         
+        assertThat(response.getScheduleResponseData().size(), equalTo(3));
+        assertThat(response.getScheduleResponseData().contains("<1:Case has already been updated>"), equalTo(true));
+        assertThat(response.getScheduleResponseData().contains("<2:Case has already been updated>"), equalTo(true));
+        assertThat(response.getScheduleResponseData().contains("<3:Case has already been updated>"), equalTo(true));
+    }
+
+    @Test
+    public void shouldNotNotifyForGrantAwaitingDocsForNoIdentification() throws NotificationClientException {
+        documents.add(sentEmail);
+
+        String dateString = "31-12-2020";
+        when(caseQueryService.findCasesForGrantAwaitingDocumentation(dateString)).thenReturn(returnedCases);
+        when(notificationService.sendGrantAwaitingDocumentationEmail(returnedCaseDetails1)).thenReturn(buildDocument());
+        when(notificationService.sendGrantAwaitingDocumentationEmail(returnedCaseDetails2)).thenReturn(buildDocument());
+        when(notificationService.sendGrantAwaitingDocumentationEmail(returnedCaseDetails3)).thenReturn(buildDocument());
+
+        uk.gov.hmcts.reform.ccd.client.model.CaseDetails caseDetails = Mockito.mock(uk.gov.hmcts.reform.ccd.client.model.CaseDetails.class);
+        Map caseData = Mockito.mock(Map.class);
+        when(caseData.get("grantDelayedNotificationIdentified")).thenReturn("Yes");
+        when(caseDetails.getData()).thenReturn(caseData);
+        when(ccdClientApi.readForCaseWorker(any(), any(), any())).thenReturn(caseDetails);
+
+        GrantScheduleResponse response = grantNotificationService.handleAwaitingDocumentationNotification(dateString);
+
+        verify(ccdClientApi, times(0)).updateCaseAsCaseworker(any(), any(), any(),
+            any(), any());
+
+        assertThat(response.getScheduleResponseData().size(), equalTo(3));
+        assertThat(response.getScheduleResponseData().contains("<1:Case has already been updated>"), equalTo(true));
+        assertThat(response.getScheduleResponseData().contains("<2:Case has already been updated>"), equalTo(true));
+        assertThat(response.getScheduleResponseData().contains("<3:Case has already been updated>"), equalTo(true));
+    }
+
+    @Test
+    public void shouldNotNotifyForGrantAwaitingDocsForNoNotification() throws NotificationClientException {
+        documents.add(sentEmail);
+
+        String dateString = "31-12-2020";
+        when(caseQueryService.findCasesForGrantAwaitingDocumentation(dateString)).thenReturn(returnedCases);
+        when(notificationService.sendGrantAwaitingDocumentationEmail(returnedCaseDetails1)).thenReturn(buildDocument());
+        when(notificationService.sendGrantAwaitingDocumentationEmail(returnedCaseDetails2)).thenReturn(buildDocument());
+        when(notificationService.sendGrantAwaitingDocumentationEmail(returnedCaseDetails3)).thenReturn(buildDocument());
+
+        uk.gov.hmcts.reform.ccd.client.model.CaseDetails caseDetails = Mockito.mock(uk.gov.hmcts.reform.ccd.client.model.CaseDetails.class);
+        Map caseData = Mockito.mock(Map.class);
+        when(caseData.get("grantAwaitingDocumentatioNotificationSent")).thenReturn("Yes");
+        when(caseDetails.getData()).thenReturn(caseData);
+        when(ccdClientApi.readForCaseWorker(any(), any(), any())).thenReturn(caseDetails);
+
+        GrantScheduleResponse response = grantNotificationService.handleAwaitingDocumentationNotification(dateString);
+
+        verify(ccdClientApi, times(0)).updateCaseAsCaseworker(any(), any(), any(),
+            any(), any());
+
         assertThat(response.getScheduleResponseData().size(), equalTo(3));
         assertThat(response.getScheduleResponseData().contains("<1:Case has already been updated>"), equalTo(true));
         assertThat(response.getScheduleResponseData().contains("<2:Case has already been updated>"), equalTo(true));
