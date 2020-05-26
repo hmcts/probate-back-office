@@ -106,6 +106,14 @@
    ]]></notes>
         <gav regex="true">^dom4j:dom4j:.*$</gav>
         <cve>CVE-2018-1000632</cve>
+        <cve>CVE-2020-10683</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: dom4j-2.1.1.jar
+   ]]></notes>
+        <gav regex="true">^org\.dom4j:dom4j:.*$</gav>
+        <cve>CVE-2020-10683</cve>
     </suppress>
     <suppress>
         <notes><![CDATA[
@@ -512,5 +520,33 @@ file name: spring-jcl-5.1.5.RELEASE.jar
    ]]></notes>
         <gav regex="true">^org\.apache\.logging\.log4j:log4j-api:.*$</gav>
         <cve>CVE-2020-9488</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: spring-security-web-5.1.4.RELEASE.jar
+   ]]></notes>
+        <gav regex="true">^org\.springframework\.security:spring-security-web:.*$</gav>
+        <cve>CVE-2020-5408</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: spring-security-config-5.1.4.RELEASE.jar
+   ]]></notes>
+        <gav regex="true">^org\.springframework\.security:spring-security-config:.*$</gav>
+        <cve>CVE-2020-5408</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: spring-security-core-5.1.4.RELEASE.jar
+   ]]></notes>
+        <gav regex="true">^org\.springframework\.security:spring-security-core:.*$</gav>
+        <cve>CVE-2020-5408</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: spring-security-crypto-5.1.4.RELEASE.jar
+   ]]></notes>
+        <gav regex="true">^org\.springframework\.security:spring-security-crypto:.*$</gav>
+        <cve>CVE-2020-5408</cve>
     </suppress>
 </suppressions>

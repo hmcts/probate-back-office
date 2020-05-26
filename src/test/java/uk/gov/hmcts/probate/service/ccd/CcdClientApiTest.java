@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import uk.gov.hmcts.probate.model.ccd.CcdCaseType;
 import uk.gov.hmcts.probate.model.ccd.EventId;
@@ -172,6 +173,33 @@ public class CcdClientApiTest {
                 .build();
 
         Optional<CaseDetails> actualCaseDetails = ccdClientApi.retrieveCaseByLegacyId(ccdCaseType.getName(), legacyId, securityDTO);
+
+    }
+    
+    @Test
+    public void shouldReadCaseDetails() {
+        CcdCaseType ccdCaseType = CcdCaseType.GRANT_OF_REPRESENTATION;
+        Long legacyId = 1L;
+
+        CaseDetails caseDetails = Mockito.mock(CaseDetails.class);
+        when(coreCaseDataApi.readForCaseWorker(
+            any(String.class),
+            any(String.class),
+            any(String.class),
+            any(String.class),
+            any(String.class),
+            any(String.class))).thenReturn(caseDetails);
+
+        SecurityDTO securityDTO = SecurityDTO.builder()
+            .authorisation(AUTHORISATION)
+            .serviceAuthorisation(SERVICE_AUTHORISATION)
+            .userId(USER_ID)
+            .build();
+
+        CaseDetails actualCaseDetails = ccdClientApi.readForCaseWorker(ccdCaseType, "1", securityDTO);
+
+        assertThat(actualCaseDetails, equalTo(caseDetails));
+
 
     }
 }

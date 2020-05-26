@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -47,6 +48,8 @@ import uk.gov.service.notify.NotificationClientException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import javax.servlet.http.HttpServletRequest;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
@@ -247,16 +250,23 @@ public class NotificationController {
 
     @PostMapping(path = "/grant-delayed-scheduled")
     public ResponseEntity<GrantScheduleResponse> grantDelayed(@RequestParam("date") final String date) {
+        log.info("Calling perform Grants delayed...");
         GrantScheduleResponse grantScheduleResponse = grantNotificationService.handleGrantDelayedNotification(date);
-        log.info("Grants delayed attempted for: {} grants", grantScheduleResponse.getScheduleResponseData().size());
+        log.info("Grants delayed attempted for: {} grants, {}", grantScheduleResponse.getScheduleResponseData().size(),
+            StringUtils.joinWith(",", grantScheduleResponse.getScheduleResponseData()));
+        log.info("...Called perform Grants delayed");
         return ResponseEntity.ok(grantScheduleResponse);
     }
 
     @PostMapping(path = "/grant-awaiting-documents-scheduled")
     public ResponseEntity<GrantScheduleResponse> grantAwaitingDocuments(@RequestParam("date") final String date) {
+        log.info("Calling perform Grants Awaiting Documents...");
         GrantScheduleResponse grantScheduleResponse = grantNotificationService.handleAwaitingDocumentationNotification(date);
-        log.info("Grants delayed attempted for: {} grants", grantScheduleResponse.getScheduleResponseData().size());
+        log.info("Grants awaiting documents attempted for: {} grants, {}", grantScheduleResponse.getScheduleResponseData().size(),
+            StringUtils.joinWith(",", grantScheduleResponse.getScheduleResponseData()));
+        log.info("...Called perform Grants Awaiting Documents");
         return ResponseEntity.ok(grantScheduleResponse);
+
     }
 
 }
