@@ -17,6 +17,7 @@ import uk.gov.hmcts.probate.exception.OCRMappingException;
 import uk.gov.hmcts.probate.model.ccd.ocr.ValidationResponse;
 import uk.gov.hmcts.probate.model.ccd.ocr.ValidationResponseStatus;
 import uk.gov.hmcts.probate.model.exceptionrecord.ExceptionRecordErrorResponse;
+import uk.gov.hmcts.probate.model.ocr.OCRField;
 import uk.gov.hmcts.probate.model.ocr.OCRRequest;
 import uk.gov.hmcts.probate.service.ocr.FormType;
 import uk.gov.hmcts.probate.service.ocr.OCRPopulatedValueMapper;
@@ -50,6 +51,8 @@ public class OCRFormsController {
     public ResponseEntity<ValidationResponse> validateExceptionRecord(@PathVariable("form-type") String formType,
                                                                       @Valid @RequestBody OCRRequest ocrRequest) {
         log.info("Validate ocr data for form type: {}", formType);
+        logOcrRequest(ocrRequest);
+        
         FormType.isFormTypeValid(formType);
         List<String> warnings = new ArrayList<String>();
 
@@ -65,5 +68,13 @@ public class OCRFormsController {
                 ValidationResponse.builder().warnings(warnings)
                         .status(warnings.isEmpty() ? ValidationResponseStatus.SUCCESS : ValidationResponseStatus.WARNINGS).build();
         return ResponseEntity.ok(validationResponse);
+    }
+
+    private void logOcrRequest(OCRRequest ocrRequest) {
+        StringBuilder sb = new StringBuilder();
+        for (OCRField ocrField : ocrRequest.getOcrFields()) {
+            sb.append(ocrField.getName() + ":"+ocrField.getValue()+":"+ocrField.getDescription() +",");
+        }
+        log.info(sb.toString());
     }
 }
