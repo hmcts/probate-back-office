@@ -47,9 +47,9 @@ public class OCRToCCDMandatoryField {
     private static final String SOLICTOR_KEY_IS_APPLYING = "solsSolicitorIsApplying";
     private static final String SOLICTOR_KEY_REPRESENTATIVE_NAME = "solsSolicitorRepresentativeName";
     private static final String SOLICTOR_KEY_FIRM_NAME = "solsSolicitorFirmName";
-
+    
     public List<String> ocrToCCDMandatoryFields(List<OCRField> ocrFields, FormType formType) {
-        List<String> warnings = new ArrayList();
+        List<String> warnings = new ArrayList<>();
         HashMap<String, String> ocrFieldValues = new HashMap<String, String>();
         boolean isSolicitorForm = false;
 
@@ -66,18 +66,18 @@ public class OCRToCCDMandatoryField {
 
                 if (isSolicitorForm) {
                     Stream.of(CaveatSolicitorMandatoryFields.values()).forEach(field -> {
-                        log.info("{}, SOL Checking {} against ocr fields", formType.name(), field.getKey());
+                        log.info("Checking {} against ocr fields", field.getKey());
                         if (!ocrFieldValues.containsKey(field.getKey())) {
-                            log.warn("{}, SOL {} was not found in ocr fields", formType.name(), field.getKey());
+                            log.warn("{} was not found in ocr fields", field.getKey());
                             warnings.add(String.format(MANDATORY_FIELD_WARNING_STIRNG, field.getValue(), field.getKey()));
                         }
                     });
 
                 } else {
                     Stream.of(CaveatCitizenMandatoryFields.values()).forEach(field -> {
-                        log.info("{}, Checking {} against ocr fields", formType.name(), field.getKey());
+                        log.info("Checking {} against ocr fields", field.getKey());
                         if (!ocrFieldValues.containsKey(field.getKey())) {
-                            log.warn("{}, {} was not found in ocr fields", formType.name(), field.getKey());
+                            log.warn("{} was not found in ocr fields", field.getKey());
                             warnings.add(String.format(MANDATORY_FIELD_WARNING_STIRNG, field.getValue(), field.getKey()));
                         }
                     });
@@ -91,9 +91,9 @@ public class OCRToCCDMandatoryField {
 
                 if (isSolicitorForm) {
                     Stream.of(IntestacySolicitorMandatoryFields.values()).forEach(field -> {
-                        log.info("{}, SOL Checking {} against ocr fields", formType.name(), field.getKey());
+                        log.info("Checking {} against ocr fields", field.getKey());
                         if (!ocrFieldValues.containsKey(field.getKey())) {
-                            log.warn("{}, SOL {} was not found in ocr fields", formType.name(), field.getKey());
+                            log.warn("{} was not found in ocr fields", field.getKey());
                             warnings.add(String.format(MANDATORY_FIELD_WARNING_STIRNG, field.getValue(), field.getKey()));
                         }
                     });
@@ -102,15 +102,15 @@ public class OCRToCCDMandatoryField {
                             && ocrFieldValues.get(DEPENDANT_KEY_PAPERPAYMENTMETHOD).equalsIgnoreCase("PBA")
                             && StringUtils.isBlank(ocrFieldValues.get(DEPENDANT_KEY_SOLSFEEACCOUNTNUMBER))
                     ) {
-                        log.warn("{}, SOL {} was not found in ocr fields", formType.name(), DEPENDANT_KEY_SOLSFEEACCOUNTNUMBER);
+                        log.warn("{} was not found in ocr fields", DEPENDANT_KEY_SOLSFEEACCOUNTNUMBER);
                         warnings.add(String.format(MANDATORY_FIELD_WARNING_STIRNG,
                                 DEPENDANT_DESC_SOLSFEEACCOUNTNUMBER, DEPENDANT_KEY_SOLSFEEACCOUNTNUMBER));
                     }
                 } else {
                     Stream.of(IntestacyCitizenMandatoryFields.values()).forEach(field -> {
-                        log.info("{}, Checking {} against ocr fields", formType.name(), field.getKey());
+                        log.info("Checking {} against ocr fields", field.getKey());
                         if (!ocrFieldValues.containsKey(field.getKey())) {
-                            log.warn("{}, {} was not found in ocr fields", formType.name(), field.getKey());
+                            log.warn("{} was not found in ocr fields", field.getKey());
                             warnings.add(String.format(MANDATORY_FIELD_WARNING_STIRNG, field.getValue(), field.getKey()));
                         }
                     });
@@ -119,11 +119,11 @@ public class OCRToCCDMandatoryField {
                 if (ocrFieldValues.containsKey(MANDATORY_KEY_IHTFORMCOMPLETEDONLINE)) {
                     boolean result = BooleanUtils.toBoolean(ocrFieldValues.get(MANDATORY_KEY_IHTFORMCOMPLETEDONLINE));
                     if (result && !ocrFieldValues.containsKey(DEPENDANT_KEY_IHTREFERENCENUMBER)) {
-                        log.warn("{}, {} was not found in ocr fields", DEPENDANT_KEY_IHTREFERENCENUMBER);
+                        log.warn("{} was not found in ocr fields", DEPENDANT_KEY_IHTREFERENCENUMBER);
                         warnings.add(String.format(MANDATORY_FIELD_WARNING_STIRNG,
                                 DEPENDANT_DESC_IHTREFERENCENUMBER, DEPENDANT_KEY_IHTREFERENCENUMBER));
                     } else if (!result && !ocrFieldValues.containsKey(DEPENDANT_KEY_IHTFORMID)) {
-                        log.warn("{}, {} was not found in ocr fields", formType.name(), DEPENDANT_KEY_IHTFORMID);
+                        log.warn("{} was not found in ocr fields", DEPENDANT_KEY_IHTFORMID);
                         warnings.add(String.format(MANDATORY_FIELD_WARNING_STIRNG, DEPENDANT_DESC_IHTFORMID, DEPENDANT_KEY_IHTFORMID));
                     }
                 }
@@ -135,9 +135,9 @@ public class OCRToCCDMandatoryField {
 
                 if (isSolicitorForm) {
                     Stream.of(GORSolicitorMandatoryFields.values()).forEach(field -> {
-                        log.info("{}, SOL Checking {} against ocr fields", formType.name(), field.getKey());
+                        log.info("Checking {} against ocr fields", field.getKey());
                         if (!ocrFieldValues.containsKey(field.getKey())) {
-                            log.warn("{}, SOL {} was not found in ocr fields", formType.name(), field.getKey());
+                            log.warn("{} was not found in ocr fields", field.getKey());
                             warnings.add(String.format(MANDATORY_FIELD_WARNING_STIRNG, field.getValue(), field.getKey()));
                         }
                     });
@@ -146,15 +146,15 @@ public class OCRToCCDMandatoryField {
                             && ocrFieldValues.get(DEPENDANT_KEY_PAPERPAYMENTMETHOD).equalsIgnoreCase("PBA")
                             && StringUtils.isBlank(ocrFieldValues.get(DEPENDANT_KEY_SOLSFEEACCOUNTNUMBER))
                     ) {
-                        log.warn("{}, SOL {} was not found in ocr fields", formType.name(), DEPENDANT_KEY_SOLSFEEACCOUNTNUMBER);
+                        log.warn("{} was not found in ocr fields", DEPENDANT_KEY_SOLSFEEACCOUNTNUMBER);
                         warnings.add(String.format(MANDATORY_FIELD_WARNING_STIRNG,
                                 DEPENDANT_DESC_SOLSFEEACCOUNTNUMBER, DEPENDANT_KEY_SOLSFEEACCOUNTNUMBER));
                     }
                 } else {
                     Stream.of(GORCitizenMandatoryFields.values()).forEach(field -> {
-                        log.info("{}, Checking {} against ocr fields", formType.name(), field.getKey());
+                        log.info("Checking {} against ocr fields", field.getKey());
                         if (!ocrFieldValues.containsKey(field.getKey())) {
-                            log.warn("{}, {} was not found in ocr fields", formType.name(), field.getKey());
+                            log.warn("{} was not found in ocr fields", field.getKey());
                             warnings.add(String.format(MANDATORY_FIELD_WARNING_STIRNG, field.getValue(), field.getKey()));
                         }
                     });
@@ -163,7 +163,7 @@ public class OCRToCCDMandatoryField {
                 if (ocrFieldValues.containsKey(MANDATORY_KEY_PRIMARYAPPLICANTHASALIAS)) {
                     boolean result = BooleanUtils.toBoolean(ocrFieldValues.get(MANDATORY_KEY_PRIMARYAPPLICANTHASALIAS));
                     if (result && !ocrFieldValues.containsKey(DEPENDANT_KEY_PRIMARYAPPLICANTALIAS)) {
-                        log.warn("{}, {} was not found in ocr fields", formType.name(), DEPENDANT_KEY_PRIMARYAPPLICANTALIAS);
+                        log.warn("{} was not found in ocr fields", DEPENDANT_KEY_PRIMARYAPPLICANTALIAS);
                         warnings.add(String.format(MANDATORY_FIELD_WARNING_STIRNG,
                                 DEPENDANT_DESC_PRIMARYAPPLICANTALIAS, DEPENDANT_KEY_PRIMARYAPPLICANTALIAS));
                     }
@@ -179,7 +179,7 @@ public class OCRToCCDMandatoryField {
                     if (ocrFieldValues.containsKey(executorNotApplyingNameKey)) {
                         boolean resultPopulated = !ocrFieldValues.get(executorNotApplyingNameKey).isEmpty();
                         if (resultPopulated && !ocrFieldValues.containsKey(executorNotApplyingReasonKey)) {
-                            log.warn("{}, {} was not found in ocr fields", formType.name(), executorNotApplyingReasonKey);
+                            log.warn("{} was not found in ocr fields", executorNotApplyingReasonKey);
                             warnings.add(String.format(MANDATORY_FIELD_WARNING_STIRNG,
                                     executorNotApplyingReasonDesc, executorNotApplyingReasonKey));
                         }
@@ -189,11 +189,11 @@ public class OCRToCCDMandatoryField {
                 if (ocrFieldValues.containsKey(MANDATORY_KEY_IHTFORMCOMPLETEDONLINE)) {
                     boolean result = BooleanUtils.toBoolean(ocrFieldValues.get(MANDATORY_KEY_IHTFORMCOMPLETEDONLINE));
                     if (result && !ocrFieldValues.containsKey(DEPENDANT_KEY_IHTREFERENCENUMBER)) {
-                        log.warn("{}, {} was not found in ocr fields", formType.name(), DEPENDANT_KEY_IHTREFERENCENUMBER);
+                        log.warn("{} was not found in ocr fields", DEPENDANT_KEY_IHTREFERENCENUMBER);
                         warnings.add(String.format(MANDATORY_FIELD_WARNING_STIRNG,
                                 DEPENDANT_DESC_IHTREFERENCENUMBER, DEPENDANT_KEY_IHTREFERENCENUMBER));
                     } else if (!result && !ocrFieldValues.containsKey(DEPENDANT_KEY_IHTFORMID)) {
-                        log.warn("{}, SOL {} was not found in ocr fields", formType.name(), DEPENDANT_KEY_IHTFORMID);
+                        log.warn("{} was not found in ocr fields", DEPENDANT_KEY_IHTFORMID);
                         warnings.add(String.format(MANDATORY_FIELD_WARNING_STIRNG, DEPENDANT_DESC_IHTFORMID, DEPENDANT_KEY_IHTFORMID));
                     }
                 }
@@ -206,7 +206,7 @@ public class OCRToCCDMandatoryField {
     }
 
     public List<String> ocrToCCDNonMandatoryWarnings(List<OCRField> ocrFields, FormType formType) {
-        List<String> warnings = new ArrayList();
+        List<String> warnings = new ArrayList<>();
         HashMap<String, String> ocrFieldValues = new HashMap<String, String>();
         boolean isSolicitorForm = false;
 
