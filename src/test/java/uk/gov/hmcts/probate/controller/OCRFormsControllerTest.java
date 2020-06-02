@@ -69,7 +69,7 @@ public class OCRFormsControllerTest {
         ocrFields.add(field1);
         warnings.add("test warning");
         when(ocrPopulatedValueMapper.ocrPopulatedValueMapper(any())).thenReturn(ocrFields);
-        when(ocrToCCDMandatoryField.ocrToCCDMandatoryFields(eq(ocrFields), any(), any())).thenReturn(EMPTY_LIST);
+        when(ocrToCCDMandatoryField.ocrToCCDMandatoryFields(eq(ocrFields), any())).thenReturn(EMPTY_LIST);
     }
 
     @Test
@@ -83,7 +83,7 @@ public class OCRFormsControllerTest {
 
     @Test
     public void testWarningsPopulateListAndReturnOkWithWarningsResponseState() throws Exception {
-        when(ocrToCCDMandatoryField.ocrToCCDNonMandatoryWarnings(any(), any(), any())).thenReturn(warnings);
+        when(ocrToCCDMandatoryField.ocrToCCDNonMandatoryWarnings(any(), any())).thenReturn(warnings);
         mockMvc.perform(post("/forms/PA1P/validate-ocr")
                 .content(ocrPayload)
                 .contentType(MediaType.APPLICATION_JSON))

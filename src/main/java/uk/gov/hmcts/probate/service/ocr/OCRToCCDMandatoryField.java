@@ -12,6 +12,7 @@ import uk.gov.hmcts.probate.model.ccd.ocr.IntestacyCitizenMandatoryFields;
 import uk.gov.hmcts.probate.model.ccd.ocr.IntestacySolicitorMandatoryFields;
 import uk.gov.hmcts.probate.model.ocr.OCRField;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Stream;
@@ -47,7 +48,8 @@ public class OCRToCCDMandatoryField {
     private static final String SOLICTOR_KEY_REPRESENTATIVE_NAME = "solsSolicitorRepresentativeName";
     private static final String SOLICTOR_KEY_FIRM_NAME = "solsSolicitorFirmName";
 
-    public List<String> ocrToCCDMandatoryFields(List<OCRField> ocrFields, FormType formType, List<String> warnings) {
+    public List<String> ocrToCCDMandatoryFields(List<OCRField> ocrFields, FormType formType) {
+        List<String> warnings = new ArrayList();
         HashMap<String, String> ocrFieldValues = new HashMap<String, String>();
         boolean isSolicitorForm = false;
 
@@ -203,7 +205,8 @@ public class OCRToCCDMandatoryField {
         return warnings;
     }
 
-    public List<String> ocrToCCDNonMandatoryWarnings(List<OCRField> ocrFields, FormType formType, List<String> warnings) {
+    public List<String> ocrToCCDNonMandatoryWarnings(List<OCRField> ocrFields, FormType formType) {
+        List<String> warnings = new ArrayList();
         HashMap<String, String> ocrFieldValues = new HashMap<String, String>();
         boolean isSolicitorForm = false;
 
