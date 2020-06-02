@@ -54,16 +54,19 @@ public class OCRFormsController {
         logOcrRequest(ocrRequest);
         
         FormType.isFormTypeValid(formType);
-        List<String> warnings = new ArrayList<String>();
 
-        warnings = ocrToCCDMandatoryField
+        List<String> warningsMandatory = ocrToCCDMandatoryField
                 .ocrToCCDMandatoryFields(ocrPopulatedValueMapper.ocrPopulatedValueMapper(ocrRequest.getOcrFields()),
-                        FormType.valueOf(formType), warnings);
+                        FormType.valueOf(formType), new ArrayList<String>());
 
-        warnings = ocrToCCDMandatoryField
+        List<String> warningsNonMandatory = ocrToCCDMandatoryField
                 .ocrToCCDNonMandatoryWarnings(ocrPopulatedValueMapper.ocrPopulatedValueMapper(ocrRequest.getOcrFields()),
-                        FormType.valueOf(formType), warnings);
+                        FormType.valueOf(formType), new ArrayList<String>());
 
+        List<String> warnings = new ArrayList<String>();
+        warnings.addAll(warningsMandatory);
+        warningsNonMandatory.addAll(warningsNonMandatory);
+        
         ValidationResponse validationResponse =
                 ValidationResponse.builder().warnings(warnings)
                         .status(warnings.isEmpty() ? ValidationResponseStatus.SUCCESS : ValidationResponseStatus.WARNINGS).build();
