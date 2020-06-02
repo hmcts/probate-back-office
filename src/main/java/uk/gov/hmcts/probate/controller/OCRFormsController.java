@@ -73,7 +73,7 @@ public class OCRFormsController {
     private void logOcrRequest(OCRRequest ocrRequest) {
         StringBuilder sb = new StringBuilder();
         for (OCRField ocrField : ocrRequest.getOcrFields()) {
-            sb.append(ocrField.getName() + ":"+ocrField.getValue()+":"+ocrField.getDescription() +",");
+            sb.append(ocrField.getName() + ":" + ocrField.getValue() + ",");
         }
         log.info(sb.toString());
     }
