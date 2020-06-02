@@ -80,12 +80,12 @@ public class ExceptionRecordControllerTest {
         updateCasePayload = testUtils.getStringFromFile("updateExceptionRecordDataPA8A.json");
         warnings.add("test warning");
         when(ocrPopulatedValueMapper.ocrPopulatedValueMapper(any())).thenReturn(ocrFields);
-        when(ocrToCCDMandatoryField.ocrToCCDMandatoryFields(eq(ocrFields), any(), any())).thenReturn(EMPTY_LIST);
+        when(ocrToCCDMandatoryField.ocrToCCDMandatoryFields(eq(ocrFields), any())).thenReturn(EMPTY_LIST);
     }
 
     @Test
     public void testWarningsPopulateListAndReturnOkWithWarningsResponseState() throws Exception {
-        when(ocrToCCDMandatoryField.ocrToCCDMandatoryFields(any(), any(), any())).thenReturn(warnings);
+        when(ocrToCCDMandatoryField.ocrToCCDMandatoryFields(any(), any())).thenReturn(warnings);
         mockMvc.perform(post("/transform-exception-record")
                 .content(exceptionRecordPayloadPA8A)
                 .contentType(MediaType.APPLICATION_JSON))

@@ -17,6 +17,7 @@ import uk.gov.hmcts.probate.exception.OCRMappingException;
 import uk.gov.hmcts.probate.model.ccd.ocr.ValidationResponse;
 import uk.gov.hmcts.probate.model.ccd.ocr.ValidationResponseStatus;
 import uk.gov.hmcts.probate.model.exceptionrecord.ExceptionRecordErrorResponse;
+import uk.gov.hmcts.probate.model.ocr.OCRField;
 import uk.gov.hmcts.probate.model.ocr.OCRRequest;
 import uk.gov.hmcts.probate.service.ocr.FormType;
 import uk.gov.hmcts.probate.service.ocr.OCRPopulatedValueMapper;
@@ -50,20 +51,32 @@ public class OCRFormsController {
     public ResponseEntity<ValidationResponse> validateExceptionRecord(@PathVariable("form-type") String formType,
                                                                       @Valid @RequestBody OCRRequest ocrRequest) {
         log.info("Validate ocr data for form type: {}", formType);
+        logOcrRequest(ocrRequest);
+        
         FormType.isFormTypeValid(formType);
+
+        List<OCRField> ocrFields = ocrPopulatedValueMapper.ocrPopulatedValueMapper(ocrRequest.getOcrFields());
+        List<String> warningsMandatory = ocrToCCDMandatoryField
+                .ocrToCCDMandatoryFields(ocrFields, FormType.valueOf(formType));
+
+        List<String> warningsNonMandatory = ocrToCCDMandatoryField
+                .ocrToCCDNonMandatoryWarnings(ocrFields, FormType.valueOf(formType));
+
         List<String> warnings = new ArrayList<String>();
-
-        warnings = ocrToCCDMandatoryField
-                .ocrToCCDMandatoryFields(ocrPopulatedValueMapper.ocrPopulatedValueMapper(ocrRequest.getOcrFields()),
-                        FormType.valueOf(formType), warnings);
-
-        warnings = ocrToCCDMandatoryField
-                .ocrToCCDNonMandatoryWarnings(ocrPopulatedValueMapper.ocrPopulatedValueMapper(ocrRequest.getOcrFields()),
-                        FormType.valueOf(formType), warnings);
-
+        warnings.addAll(warningsMandatory);
+        warnings.addAll(warningsNonMandatory);
+        
         ValidationResponse validationResponse =
                 ValidationResponse.builder().warnings(warnings)
                         .status(warnings.isEmpty() ? ValidationResponseStatus.SUCCESS : ValidationResponseStatus.WARNINGS).build();
         return ResponseEntity.ok(validationResponse);
+    }
+
+    private void logOcrRequest(OCRRequest ocrRequest) {
+        StringBuilder sb = new StringBuilder();
+        for (OCRField ocrField : ocrRequest.getOcrFields()) {
+            sb.append(ocrField.getName() + ":" + ocrField.getValue() + ",");
+        }
+        log.info(sb.toString());
     }
 }

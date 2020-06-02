@@ -33,7 +33,6 @@ import uk.gov.hmcts.probate.service.ocr.OCRToCCDMandatoryField;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -72,7 +71,7 @@ public class ExceptionRecordController {
         FormType formType = FormType.valueOf(erRequest.getFormType());
         SuccessfulTransformationResponse callbackResponse = SuccessfulTransformationResponse.builder().build();
         List<String> warnings = ocrToCCDMandatoryField
-                .ocrToCCDMandatoryFields(ocrPopulatedValueMapper.ocrPopulatedValueMapper(erRequest.getOcrFields()), formType, new ArrayList<String>());
+                .ocrToCCDMandatoryFields(ocrPopulatedValueMapper.ocrPopulatedValueMapper(erRequest.getOcrFields()), formType);
 
         if (!warnings.isEmpty()) {
             throw new OCRMappingException("Please resolve all warnings before creating the case", warnings);
