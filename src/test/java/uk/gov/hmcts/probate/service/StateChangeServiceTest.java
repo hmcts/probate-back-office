@@ -21,10 +21,13 @@ import uk.gov.hmcts.probate.changerule.SpouseOrCivilRule;
 import uk.gov.hmcts.probate.changerule.UpdateApplicationRule;
 import uk.gov.hmcts.probate.model.ExecutorsApplyingNotification;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
+import uk.gov.hmcts.probate.model.ccd.raw.DynamicList;
+import uk.gov.hmcts.probate.model.ccd.raw.DynamicListItem;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -405,6 +408,66 @@ public class StateChangeServiceTest {
 
         assertTrue(newState.isPresent());
         assertEquals(STATE_GRANT_TYPE_CREATED, newState.get());
+    }
+
+    @Test
+    public void shouldChangeStateForCaseReviewOnSelectedLegalStatementChangeAsDeceasedDetails() {
+        when(updateApplicationRule.isChangeNeeded(caseDataMock)).thenReturn(true);
+        DynamicListItem item = DynamicListItem.builder().code("SolAppCreated").label("label1").build();
+        DynamicListItem value = DynamicListItem.builder().code("SolAppCreated").label("label1").build();
+
+        DynamicList list = DynamicList.builder().listItems(Arrays.asList(item)).value(value).build();
+        when(caseDataMock.getSolsAmendLegalStatmentSelect()).thenReturn(list);
+
+        Optional<String> newState = underTest.getChangedStateForCaseReview(caseDataMock);
+
+        assertTrue(newState.isPresent());
+        assertEquals(STATE_GRANT_TYPE_CREATED, newState.get());
+    }
+
+    @Test
+    public void shouldChangeStateForCaseReviewOnSelectedLegalStatementChangeAsProbate() {
+        when(updateApplicationRule.isChangeNeeded(caseDataMock)).thenReturn(true);
+        DynamicListItem item = DynamicListItem.builder().code("WillLeft").label("label1").build();
+        DynamicListItem value = DynamicListItem.builder().code("WillLeft").label("label1").build();
+
+        DynamicList list = DynamicList.builder().listItems(Arrays.asList(item)).value(value).build();
+        when(caseDataMock.getSolsAmendLegalStatmentSelect()).thenReturn(list);
+
+        Optional<String> newState = underTest.getChangedStateForCaseReview(caseDataMock);
+
+        assertTrue(newState.isPresent());
+        assertEquals(STATE_GRANT_TYPE_PROBATE, newState.get());
+    }
+
+    @Test
+    public void shouldChangeStateForCaseReviewOnSelectedLegalStatementChangeAsIntestacy() {
+        when(updateApplicationRule.isChangeNeeded(caseDataMock)).thenReturn(true);
+        DynamicListItem item = DynamicListItem.builder().code("NoWill").label("label1").build();
+        DynamicListItem value = DynamicListItem.builder().code("NoWill").label("label1").build();
+
+        DynamicList list = DynamicList.builder().listItems(Arrays.asList(item)).value(value).build();
+        when(caseDataMock.getSolsAmendLegalStatmentSelect()).thenReturn(list);
+
+        Optional<String> newState = underTest.getChangedStateForCaseReview(caseDataMock);
+
+        assertTrue(newState.isPresent());
+        assertEquals(STATE_GRANT_TYPE_INTESTACY, newState.get());
+    }
+
+    @Test
+    public void shouldChangeStateForCaseReviewOnSelectedLegalStatementChangeAsAdmon() {
+        when(updateApplicationRule.isChangeNeeded(caseDataMock)).thenReturn(true);
+        DynamicListItem item = DynamicListItem.builder().code("WillLeftAnnexed").label("label1").build();
+        DynamicListItem value = DynamicListItem.builder().code("WillLeftAnnexed").label("label1").build();
+
+        DynamicList list = DynamicList.builder().listItems(Arrays.asList(item)).value(value).build();
+        when(caseDataMock.getSolsAmendLegalStatmentSelect()).thenReturn(list);
+
+        Optional<String> newState = underTest.getChangedStateForCaseReview(caseDataMock);
+
+        assertTrue(newState.isPresent());
+        assertEquals(STATE_GRANT_TYPE_ADMON, newState.get());
     }
 
     @Test
