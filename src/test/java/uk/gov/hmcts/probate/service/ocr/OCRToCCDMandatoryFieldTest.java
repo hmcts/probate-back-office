@@ -265,6 +265,18 @@ public class OCRToCCDMandatoryFieldTest {
         assertEquals("The form has been flagged as a Solictor case.", warningsResult.get(0));
     }
 
+    @Test
+    public void testEmailFieldWarning() {
+        final OCRField field = OCRField
+                .builder()
+                .name("primaryApplicantEmailAddress")
+                .value("invalidEmailAddress")
+                .build();
+        ocrFields.add(field);
+        final List<String> warningsResult = ocrToCCDMandatoryField.ocrToCCDNonMandatoryWarnings(ocrFields, FormType.PA8A);
+        assertEquals(1, warningsResult.size());
+    }
+
     private void addIHTMandatoryFields() {
         OCRField field1 = OCRField.builder()
                 .name("ihtFormCompletedOnline")

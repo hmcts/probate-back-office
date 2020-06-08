@@ -48,7 +48,7 @@ public class OCRToCCDMandatoryField {
     private static final String SOLICTOR_KEY_IS_APPLYING = "solsSolicitorIsApplying";
     private static final String SOLICTOR_KEY_REPRESENTATIVE_NAME = "solsSolicitorRepresentativeName";
     private static final String SOLICTOR_KEY_FIRM_NAME = "solsSolicitorFirmName";
-    
+
     public List<String> ocrToCCDMandatoryFields(List<OCRField> ocrFields, FormType formType) {
         List<String> warnings = new ArrayList<>();
         HashMap<String, String> ocrFieldValues = new HashMap<String, String>();
@@ -77,7 +77,7 @@ public class OCRToCCDMandatoryField {
     private Collection<? extends String> getWarningsForPA1PCase(HashMap<String, String> ocrFieldValues) {
         ArrayList<String> warnings = new ArrayList<>();
         boolean isSolicitorForm = false;
-        
+
         if (ocrFieldValues.containsKey(SOLICTOR_KEY_IS_APPLYING)) {
             isSolicitorForm = BooleanUtils.toBoolean(ocrFieldValues.get(SOLICTOR_KEY_IS_APPLYING));
         }
@@ -194,7 +194,7 @@ public class OCRToCCDMandatoryField {
                 warnings.add(String.format(MANDATORY_FIELD_WARNING_STIRNG, DEPENDANT_DESC_IHTFORMID, DEPENDANT_KEY_IHTFORMID));
             }
         }
-        
+
         return warnings;
     }
 
@@ -229,6 +229,7 @@ public class OCRToCCDMandatoryField {
 
     public List<String> ocrToCCDNonMandatoryWarnings(List<OCRField> ocrFields, FormType formType) {
         List<String> warnings = new ArrayList<>();
+        warnings.addAll(OcrEmailValidator.validateField(ocrFields));
         HashMap<String, String> ocrFieldValues = new HashMap<String, String>();
         boolean isSolicitorForm = false;
 

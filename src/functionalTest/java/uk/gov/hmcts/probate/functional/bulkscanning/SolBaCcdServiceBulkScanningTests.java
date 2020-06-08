@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+import static java.lang.String.format;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
@@ -101,6 +102,14 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
         jsonRequest = utils.getJsonFromFile("expectedOCRDataMissingMandatoryFields.json");
         validateOCRDataPostSuccess(jsonRequest, WARNINGS, DOB_MISSING, 2, 0);
         validateOCRDataPostSuccess(jsonRequest, WARNINGS, DOD_MISSING, 2, 1);
+    }
+
+    @Test
+    public void testInvalidEmailFieldsReturnWarnings() {
+        jsonRequest = utils.getJsonFromFile("expectedOCRDataAllInvalidEmailAddress.json");
+        validateOCRDataPostSuccess(jsonRequest, WARNINGS, format("%s %s does not appear to be a valid email address", "primaryApplicantEmailAddress", "invalidPrimaryApplicantEmailAddress"), 3, 0);
+        validateOCRDataPostSuccess(jsonRequest, WARNINGS, format("%s %s does not appear to be a valid email address", "caveatorEmailAddress", "invalidCaveatorEmailAddress"), 3, 1);
+        validateOCRDataPostSuccess(jsonRequest, WARNINGS, format("%s %s does not appear to be a valid email address", "solsSolicitorEmail", "invalidSolsSolicitorEmail"), 3, 2);
     }
 
     @Test
