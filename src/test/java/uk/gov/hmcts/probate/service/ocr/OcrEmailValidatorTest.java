@@ -15,6 +15,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.lang3.RandomStringUtils;
+import org.junit.Before;
 import org.junit.Test;
 
 public class OcrEmailValidatorTest {
@@ -25,6 +26,14 @@ public class OcrEmailValidatorTest {
 
     private static final List<String> emailFieldNames = asList(PRIMARY_APPLICANT_EMAIL_ADDRESS, CAVEATOR_EMAIL_ADDRESS, SOLS_SOLICITOR_EMAIL);
 
+    private OcrEmailValidator ocrEmailValidator;
+
+    @Before
+    public void setUp() {
+        ocrEmailValidator = new OcrEmailValidator();
+    }
+
+
     @Test
     public void shouldCreateWarningForAnInvalidField() {
 
@@ -34,7 +43,7 @@ public class OcrEmailValidatorTest {
                 .value(RandomStringUtils.randomAlphabetic(10))
                 .build();
 
-        final List<String> result = OcrEmailValidator.validateField(singletonList(field));
+        final List<String> result = ocrEmailValidator.validateField(singletonList(field));
         assertThat(result.size(), is(1));
         assertWarning(result, field);
     }
@@ -51,7 +60,7 @@ public class OcrEmailValidatorTest {
                 )
                 .collect(toList());
 
-        final List<String> result = OcrEmailValidator.validateField(fields);
+        final List<String> result = ocrEmailValidator.validateField(fields);
         assertThat(result.size(), is(3));
 
         result.forEach(r -> assertWarning(result, fields.get(0)));
@@ -70,7 +79,7 @@ public class OcrEmailValidatorTest {
                 )
                 .collect(toList());
 
-        final List<String> result = OcrEmailValidator.validateField(fields);
+        final List<String> result = ocrEmailValidator.validateField(fields);
         assertThat(result, is(empty()));
     }
 
@@ -82,7 +91,7 @@ public class OcrEmailValidatorTest {
                 .name(PRIMARY_APPLICANT_EMAIL_ADDRESS)
                 .build();
 
-        final List<String> result = OcrEmailValidator.validateField(singletonList(field));
+        final List<String> result = ocrEmailValidator.validateField(singletonList(field));
         assertThat(result.size(), is(1));
         assertWarning(result, field);
     }
@@ -96,7 +105,7 @@ public class OcrEmailValidatorTest {
                 .value("")
                 .build();
 
-        final List<String> result = OcrEmailValidator.validateField(singletonList(field));
+        final List<String> result = ocrEmailValidator.validateField(singletonList(field));
 
         assertThat(result.size(), is(1));
         assertWarning(result, field);
@@ -110,11 +119,11 @@ public class OcrEmailValidatorTest {
                 .value("Peter Smith")
                 .build();
 
-        final List<String> result = OcrEmailValidator.validateField(singletonList(field));
+        final List<String> result = ocrEmailValidator.validateField(singletonList(field));
         assertThat(result, is(empty()));
     }
 
     private void assertWarning(final List<String> result, final OCRField ocrField) {
-        assertThat(result, hasItem(format("%s %s does not appear to be a valid email address", ocrField.getName(), ocrField.getValue())));
+        assertThat(result, hasItem(format("%s does not appear to be a valid email address", ocrField.getName())));
     }
 }
