@@ -3,6 +3,7 @@ package uk.gov.hmcts.probate.model.ccd.ocr;
 public enum CaveatSolicitorMandatoryFields {
     CAVEATOR_FORNAMES("caveatorForenames", "Caveator forenames"),
     CAVEATOR_SURNAME("caveatorSurnames", "Caveator last name"),
+    CAVEATOR_EMAIL_ADDRESS("caveatorEmailAddress", "Caveator email address"),
     DECEASED_FORENAMES("deceasedForenames", "Deceased first names"),
     DECEASED_SURNAME("deceasedSurname", "Deceased last name"),
     DECEASED_DOD("deceasedDateOfDeath", "Deceased date of death"),

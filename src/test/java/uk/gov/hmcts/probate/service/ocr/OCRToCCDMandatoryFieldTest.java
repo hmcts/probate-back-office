@@ -44,7 +44,8 @@ public class OCRToCCDMandatoryFieldTest {
         List<String> warningsResponse = ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrFields, FormType.PA1P);
         assertEquals("Solicitors Firm name (solsSolicitorFirmName) is mandatory.", warningsResponse.get(0));
         assertEquals("Solictor application reference (solsSolicitorAppReference) is mandatory.", warningsResponse.get(1));
-        assertEquals(2, warningsResponse.size());
+        assertEquals("Solictor email address (solsSolicitorEmail) is mandatory.", warningsResponse.get(2));
+        assertEquals(3, warningsResponse.size());
     }
 
     @Test
@@ -187,7 +188,8 @@ public class OCRToCCDMandatoryFieldTest {
         List<String> warningsResponse = ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrFields, FormType.PA1A);
         assertEquals("Solicitors Firm name (solsSolicitorFirmName) is mandatory.", warningsResponse.get(0));
         assertEquals("Solictor application reference (solsSolicitorAppReference) is mandatory.", warningsResponse.get(1));
-        assertEquals(2, warningsResponse.size());
+        assertEquals("Solictor email address (solsSolicitorEmail) is mandatory.", warningsResponse.get(2));
+        assertEquals(3, warningsResponse.size());
     }
 
     @Test
@@ -249,18 +251,19 @@ public class OCRToCCDMandatoryFieldTest {
     public void testSolicitorMissingMandatoryFieldsPA8A() {
         addAllCaveatCitizenMandatoryFields();
         ocrFields.add(OCRField.builder().name("solsSolicitorRepresentativeName").value("Solicitor Firm").description("Sols Firm").build());
-        List warningsResult = ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrFields, FormType.PA8A);
-        assertEquals(4, warningsResult.size());
-        assertEquals("Solictor address line 1 (solsSolicitorAddressLine1) is mandatory.", warningsResult.get(0));
-        assertEquals("Solictor address postcode (solsSolicitorAddressPostCode) is mandatory.", warningsResult.get(1));
-        assertEquals("Solicitors Firm name (solsSolicitorFirmName) is mandatory.", warningsResult.get(2));
-        assertEquals("Solictor application reference (solsSolicitorAppReference) is mandatory.", warningsResult.get(3));
+        List<String> warningsResult = ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrFields, FormType.PA8A);
+        assertEquals(5, warningsResult.size());
+        assertEquals("Caveator email address (caveatorEmailAddress) is mandatory.", warningsResult.get(0));
+        assertEquals("Solictor address line 1 (solsSolicitorAddressLine1) is mandatory.", warningsResult.get(1));
+        assertEquals("Solictor address postcode (solsSolicitorAddressPostCode) is mandatory.", warningsResult.get(2));
+        assertEquals("Solicitors Firm name (solsSolicitorFirmName) is mandatory.", warningsResult.get(3));
+        assertEquals("Solictor application reference (solsSolicitorAppReference) is mandatory.", warningsResult.get(4));
     }
 
     @Test
     public void testFlagAsSolicitorCaseWarningPA8A() {
         addAllCaveatSolcitorMandatoryFields();
-        List warningsResult = ocrToCCDMandatoryField.ocrToCCDNonMandatoryWarnings(ocrFields, FormType.PA8A);
+        List<String> warningsResult = ocrToCCDMandatoryField.ocrToCCDNonMandatoryWarnings(ocrFields, FormType.PA8A);
         assertEquals(1, warningsResult.size());
         assertEquals("The form has been flagged as a Solictor case.", warningsResult.get(0));
     }
@@ -399,11 +402,16 @@ public class OCRToCCDMandatoryFieldTest {
                 .name("solsSolicitorAppReference")
                 .value("SOLS123456")
                 .description("Solicitor App Reference").build();
+        OCRField field5 = OCRField.builder()
+                .name("solsSolicitorEmail")
+                .value("test@test.com")
+                .description("Solicitor Email Address").build();
 
         ocrFields.add(field1);
         ocrFields.add(field2);
         ocrFields.add(field3);
         ocrFields.add(field4);
+        ocrFields.add(field5);
     }
 
     private void addAllMandatoryIntestacySolicitorFields() {
@@ -424,11 +432,16 @@ public class OCRToCCDMandatoryFieldTest {
                 .name("solsSolicitorAppReference")
                 .value("SOLS123456")
                 .description("Solicitor App Reference").build();
+        OCRField field5 = OCRField.builder()
+                .name("solsSolicitorEmail")
+                .value("test@test.com")
+                .description("Solicitor Email Address").build();
 
         ocrFields.add(field1);
         ocrFields.add(field2);
         ocrFields.add(field3);
         ocrFields.add(field4);
+        ocrFields.add(field5);
     }
 
     private void addAllCaveatCitizenMandatoryFields() {
@@ -492,11 +505,16 @@ public class OCRToCCDMandatoryFieldTest {
                 .name("solsSolicitorAddressPostCode")
                 .value("NW1 5LA")
                 .description("Solicitor address postcode").build();
+        OCRField field6 = OCRField.builder()
+                .name("caveatorEmailAddress")
+                .value("test@test.com")
+                .description("Caveator email address").build();
         ocrFields.add(field1);
         ocrFields.add(field2);
         ocrFields.add(field3);
         ocrFields.add(field4);
         ocrFields.add(field5);
+        ocrFields.add(field6);
     }
 
 
