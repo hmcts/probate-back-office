@@ -26,7 +26,7 @@
     { "name": "caveatorForenames", "value": "Jessica" },
     { "name": "caveatorMiddleNames", "value": "Diana" },
     { "name": "caveatorSurnames", "value": "Simpson" },
-    { "name": "caveatorEmailAddress", "value": "" },
+    { "name": "caveatorEmailAddress", "value": "test@test.com" },
     { "name": "caveatorAddressLine1", "value": "" },
     { "name": "caveatorAddressLine2", "value": "" },
     { "name": "caveatorAddressTown", "value": "" },
