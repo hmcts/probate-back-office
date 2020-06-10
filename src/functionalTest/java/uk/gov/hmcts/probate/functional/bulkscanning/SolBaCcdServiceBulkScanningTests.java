@@ -23,12 +23,15 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
 
     private static final String SUCCESS = "SUCCESS";
     private static final String WARNINGS = "WARNINGS";
-    private static final String ERRORS = "ERRORS";
     private static final String DOB_MISSING = "Deceased date of birth (deceasedDateOfBirth) is mandatory.";
     private static final String DOD_MISSING = "Deceased date of death (deceasedDateOfDeath) is mandatory.";
-    private static final String FORM_TYPE_MISSING = "Form type not found or invalid";
-
-    private static final String VALIDATE_OCR_DATA = "/forms/PA1P/validate-ocr";
+    private static final String CAVEATOR_EMAIL_MISSING = "Caveator email address (caveatorEmailAddress) is mandatory.";
+    private static final String SOLICITOR_EMAIL_MISSING = "Solictor email address (solsSolicitorEmail) is mandatory.";
+    private static final String SOLICITOR_FLAG = "The form has been flagged as a Solictor case.";
+    private static final String VALIDATE_OCR_DATA = "/forms/%s/validate-ocr";
+    private static final String PA1A = "PA1A";
+    private static final String PA1P = "PA1P";
+    private static final String PA8A = "PA8A";
     private static final String VALIDATE_OCR_DATA_UNKNOWN_FORM_TYPE = "/forms/XZY/validate-ocr";
     private static final String TRANSFORM_EXCEPTON_RECORD = "/transform-exception-record";
     private static final String UPDATE_CASE_FROM_EXCEPTON_RECORD = "/update-case";
@@ -38,13 +41,13 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
     private String jsonRequest;
     private String jsonResponse;
 
-    private void validateOCRDataPostSuccess(String bodyText, String containsText,
+    private void validateOCRDataPostSuccess(String formName, String bodyText, String containsText,
                                             String warningMessage, int warningSize, int warningItem) {
         SerenityRest.given()
                 .relaxedHTTPSValidation()
                 .headers(utils.getHeaders())
                 .body(bodyText)
-                .when().post(VALIDATE_OCR_DATA)
+                .when().post(String.format(VALIDATE_OCR_DATA, formName))
                 .then().assertThat().statusCode(200)
                 .and().body("warnings", hasSize(warningSize))
                 .and().body("warnings[" + warningItem + "]", equalTo(warningMessage))
@@ -93,14 +96,33 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
     @Test
     public void testAllMandatoryFieldsPresentReturnNoWarnings() {
         jsonRequest = utils.getJsonFromFile("expectedOCRDataAllMandatoryFields.json");
-        validateOCRDataPostSuccess(jsonRequest, SUCCESS, null, 0, 0);
+        validateOCRDataPostSuccess(PA1P, jsonRequest, SUCCESS, null, 0, 0);
     }
 
     @Test
     public void testMissingMandatoryFieldsReturnWarnings() {
         jsonRequest = utils.getJsonFromFile("expectedOCRDataMissingMandatoryFields.json");
-        validateOCRDataPostSuccess(jsonRequest, WARNINGS, DOB_MISSING, 2, 0);
-        validateOCRDataPostSuccess(jsonRequest, WARNINGS, DOD_MISSING, 2, 1);
+        validateOCRDataPostSuccess(PA1P, jsonRequest, WARNINGS, DOB_MISSING, 2, 0);
+        validateOCRDataPostSuccess(PA1P, jsonRequest, WARNINGS, DOD_MISSING, 2, 1);
+    }
+
+    @Test
+    public void testMissingSolicitorEmailPA1AReturnsWarning() {
+        jsonRequest = utils.getJsonFromFile("expectedOCRDataMissingMandatoryFieldsSolPA1.json");
+        validateOCRDataPostSuccess(PA1A, jsonRequest, WARNINGS, SOLICITOR_EMAIL_MISSING, 2, 0);
+        validateOCRDataPostSuccess(PA1A, jsonRequest, WARNINGS, SOLICITOR_FLAG, 2, 1);    }
+
+    @Test
+    public void testMissingSolicitorEmailPA1PReturnsWarning() {
+        jsonRequest = utils.getJsonFromFile("expectedOCRDataMissingMandatoryFieldsSolPA1.json");
+        validateOCRDataPostSuccess(PA1P, jsonRequest, WARNINGS, SOLICITOR_EMAIL_MISSING, 2, 0);
+        validateOCRDataPostSuccess(PA1P, jsonRequest, WARNINGS, SOLICITOR_FLAG, 2, 1);    }
+
+    @Test
+    public void testMissingCaveatorEmailAddressPA8AReturnsWarning() {
+        jsonRequest = utils.getJsonFromFile("expectedOCRDataMissingMandatoryFieldsSolPA8.json");
+        validateOCRDataPostSuccess(PA8A, jsonRequest, WARNINGS, CAVEATOR_EMAIL_MISSING, 2, 0);
+        validateOCRDataPostSuccess(PA8A, jsonRequest, WARNINGS, SOLICITOR_FLAG, 2, 1);
     }
 
     @Test
