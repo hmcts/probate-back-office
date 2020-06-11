@@ -253,11 +253,11 @@ public class OCRToCCDMandatoryFieldTest {
         ocrFields.add(OCRField.builder().name("solsSolicitorRepresentativeName").value("Solicitor Firm").description("Sols Firm").build());
         List<String> warningsResult = ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrFields, FormType.PA8A);
         assertEquals(5, warningsResult.size());
-        assertEquals("Caveator email address (caveatorEmailAddress) is mandatory.", warningsResult.get(0));
-        assertEquals("Solictor address line 1 (solsSolicitorAddressLine1) is mandatory.", warningsResult.get(1));
-        assertEquals("Solictor address postcode (solsSolicitorAddressPostCode) is mandatory.", warningsResult.get(2));
-        assertEquals("Solicitors Firm name (solsSolicitorFirmName) is mandatory.", warningsResult.get(3));
-        assertEquals("Solictor application reference (solsSolicitorAppReference) is mandatory.", warningsResult.get(4));
+        assertEquals("Solictor address line 1 (solsSolicitorAddressLine1) is mandatory.", warningsResult.get(0));
+        assertEquals("Solictor address postcode (solsSolicitorAddressPostCode) is mandatory.", warningsResult.get(1));
+        assertEquals("Solicitors Firm name (solsSolicitorFirmName) is mandatory.", warningsResult.get(2));
+        assertEquals("Solictor application reference (solsSolicitorAppReference) is mandatory.", warningsResult.get(3));
+        assertEquals("Solictor email address (solsSolicitorEmail) is mandatory.", warningsResult.get(4));
     }
 
     @Test
@@ -506,9 +506,9 @@ public class OCRToCCDMandatoryFieldTest {
                 .value("NW1 5LA")
                 .description("Solicitor address postcode").build();
         OCRField field6 = OCRField.builder()
-                .name("caveatorEmailAddress")
+                .name("solsSolicitorEmail")
                 .value("test@test.com")
-                .description("Caveator email address").build();
+                .description("Solicitor Email Address").build();
         ocrFields.add(field1);
         ocrFields.add(field2);
         ocrFields.add(field3);

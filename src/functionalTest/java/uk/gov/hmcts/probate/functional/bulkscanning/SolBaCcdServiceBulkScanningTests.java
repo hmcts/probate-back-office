@@ -25,7 +25,6 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
     private static final String WARNINGS = "WARNINGS";
     private static final String DOB_MISSING = "Deceased date of birth (deceasedDateOfBirth) is mandatory.";
     private static final String DOD_MISSING = "Deceased date of death (deceasedDateOfDeath) is mandatory.";
-    private static final String CAVEATOR_EMAIL_MISSING = "Caveator email address (caveatorEmailAddress) is mandatory.";
     private static final String SOLICITOR_EMAIL_MISSING = "Solictor email address (solsSolicitorEmail) is mandatory.";
     private static final String SOLICITOR_FLAG = "The form has been flagged as a Solictor case.";
     private static final String VALIDATE_OCR_DATA = "/forms/%s/validate-ocr";
@@ -121,7 +120,7 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
     @Test
     public void testMissingCaveatorEmailAddressPA8AReturnsWarning() {
         jsonRequest = utils.getJsonFromFile("expectedOCRDataMissingMandatoryFieldsSolPA8.json");
-        validateOCRDataPostSuccess(PA8A, jsonRequest, WARNINGS, CAVEATOR_EMAIL_MISSING, 2, 0);
+        validateOCRDataPostSuccess(PA8A, jsonRequest, WARNINGS, SOLICITOR_EMAIL_MISSING, 2, 0);
         validateOCRDataPostSuccess(PA8A, jsonRequest, WARNINGS, SOLICITOR_FLAG, 2, 1);
     }
 
