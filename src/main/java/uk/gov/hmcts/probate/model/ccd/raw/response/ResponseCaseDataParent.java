@@ -8,12 +8,15 @@ public class ResponseCaseDataParent {
 
     protected String reprintNumberOfCopies;
 
+    protected DynamicList solsAmendLegalStatmentSelect;
+
     ResponseCaseDataParent() {
     }
-    
-    ResponseCaseDataParent(DynamicList reprintDocument, String reprintNumberOfCopies) {
+
+    ResponseCaseDataParent(DynamicList reprintDocument, String reprintNumberOfCopies, DynamicList solsAmendLegalStatmentSelect) {
         this.reprintDocument = reprintDocument;
         this.reprintNumberOfCopies = reprintNumberOfCopies;
+        this.solsAmendLegalStatmentSelect = solsAmendLegalStatmentSelect;
     }
 
     public DynamicList getReprintDocument() {
@@ -32,6 +35,14 @@ public class ResponseCaseDataParent {
         this.reprintNumberOfCopies = reprintNumberOfCopies;
     }
 
+    public DynamicList getSolsAmendLegalStatmentSelect() {
+        return solsAmendLegalStatmentSelect;
+    }
+
+    public void setSolsAmendLegalStatmentSelect(DynamicList solsAmendLegalStatmentSelect) {
+        this.solsAmendLegalStatmentSelect = solsAmendLegalStatmentSelect;
+    }
+
     public static ResponseCaseDataParentBuilder builder() {
         return new ResponseCaseDataParentBuilder();
     }
@@ -39,6 +50,7 @@ public class ResponseCaseDataParent {
     public static class ResponseCaseDataParentBuilder {
         protected DynamicList reprintDocument;
         protected String reprintNumberOfCopies;
+        protected DynamicList solsAmendLegalStatmentSelect;
 
         ResponseCaseDataParentBuilder() {
         }
@@ -53,12 +65,17 @@ public class ResponseCaseDataParent {
             return this;
         }
 
+        public ResponseCaseDataParentBuilder solsAmendLegalStatmentSelect(DynamicList solsAmendLegalStatmentSelect) {
+            this.solsAmendLegalStatmentSelect = solsAmendLegalStatmentSelect;
+            return this;
+        }
+
         public ResponseCaseDataParent build() {
-            return new ResponseCaseDataParent(reprintDocument, reprintNumberOfCopies);
+            return new ResponseCaseDataParent(reprintDocument, reprintNumberOfCopies, solsAmendLegalStatmentSelect);
         }
 
         public String toString() {
-            return "ResponseCaseDataParent.ResponseCaseDataParentBuilder(reprintDocument=" + this.reprintDocument + ", reprintNumberOfCopies=" + this.reprintNumberOfCopies + ")";
+            return "ResponseCaseDataParent.ResponseCaseDataParentBuilder(reprintDocument=" + this.reprintDocument + ", reprintNumberOfCopies=" + this.reprintNumberOfCopies + ", solsAmendLegalStatmentSelect=" + solsAmendLegalStatmentSelect + ")";
         }
     }
 }
