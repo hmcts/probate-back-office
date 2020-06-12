@@ -152,13 +152,8 @@
    ]]></notes>
         <gav regex="true">^org\.postgresql:postgresql:.*$</gav>
         <cve>CVE-2016-7048</cve>
-    </suppress>
-    <suppress>
-        <notes><![CDATA[
-   file name: postgresql-42.2.5.jar
-   ]]></notes>
-        <gav regex="true">^org\.postgresql:postgresql:.*$</gav>
         <cve>CVE-2018-1115</cve>
+        <cve>CVE-2020-13692</cve>
     </suppress>
     <suppress>
         <notes><![CDATA[No fix is available]]></notes>
