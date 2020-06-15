@@ -12,7 +12,9 @@ import static org.hamcrest.core.Is.is;
 import uk.gov.hmcts.probate.model.ocr.OCRField;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Before;
@@ -23,8 +25,16 @@ public class OcrEmailValidatorTest {
     private static final String PRIMARY_APPLICANT_EMAIL_ADDRESS = "primaryApplicantEmailAddress";
     private static final String CAVEATOR_EMAIL_ADDRESS = "caveatorEmailAddress";
     private static final String SOLS_SOLICITOR_EMAIL = "solsSolicitorEmail";
+    private static final String PRIMARY_APPLICANT_EMAIL_ADDRESS_DESCRIPTION = "Primary applicant email address";
+    private static final String CAVEATOR_EMAIL_ADDRESS_DESCRIPTION = "Caveator email address";
+    private static final String SOLS_SOLICITOR_EMAIL_DESCRIPTION = "Solicitor email address";
 
-    private static final List<String> emailFieldNames = asList(PRIMARY_APPLICANT_EMAIL_ADDRESS, CAVEATOR_EMAIL_ADDRESS, SOLS_SOLICITOR_EMAIL);
+    private static Map<String, String> emailFields = new HashMap<>();
+    static{
+        emailFields.put(PRIMARY_APPLICANT_EMAIL_ADDRESS, PRIMARY_APPLICANT_EMAIL_ADDRESS_DESCRIPTION);
+        emailFields.put(CAVEATOR_EMAIL_ADDRESS, CAVEATOR_EMAIL_ADDRESS_DESCRIPTION);
+        emailFields.put(SOLS_SOLICITOR_EMAIL, SOLS_SOLICITOR_EMAIL_DESCRIPTION);
+    }
 
     private OcrEmailValidator ocrEmailValidator;
 
@@ -41,7 +51,6 @@ public class OcrEmailValidatorTest {
                 .builder()
                 .name(PRIMARY_APPLICANT_EMAIL_ADDRESS)
                 .value(RandomStringUtils.randomAlphabetic(10))
-                .description(RandomStringUtils.randomAlphabetic(10))
                 .build();
 
         final List<String> result = ocrEmailValidator.validateField(singletonList(field));
@@ -51,13 +60,13 @@ public class OcrEmailValidatorTest {
 
     @Test
     public void shouldCreateWarningForEachInvalidField() {
-        final List<OCRField> fields = emailFieldNames
+        final List<OCRField> fields = emailFields
+                .keySet()
                 .stream()
                 .map(f -> OCRField
                         .builder()
                         .name(f)
                         .value(RandomStringUtils.randomAlphabetic(10))
-                        .description(RandomStringUtils.randomAlphabetic(10))
                         .build()
                 )
                 .collect(toList());
@@ -71,7 +80,8 @@ public class OcrEmailValidatorTest {
 
     @Test
     public void shouldNotCreateWarningForValidField() {
-        final List<OCRField> fields = emailFieldNames
+        final List<OCRField> fields = emailFields
+                .keySet()
                 .stream()
                 .map(f -> OCRField
                         .builder()
@@ -91,7 +101,6 @@ public class OcrEmailValidatorTest {
         final OCRField field = OCRField
                 .builder()
                 .name(PRIMARY_APPLICANT_EMAIL_ADDRESS)
-                .description(RandomStringUtils.randomAlphabetic(10))
                 .build();
 
         final List<String> result = ocrEmailValidator.validateField(singletonList(field));
@@ -106,7 +115,6 @@ public class OcrEmailValidatorTest {
                 .builder()
                 .name(PRIMARY_APPLICANT_EMAIL_ADDRESS)
                 .value("")
-                .description("")
                 .build();
 
         final List<String> result = ocrEmailValidator.validateField(singletonList(field));
@@ -128,6 +136,6 @@ public class OcrEmailValidatorTest {
     }
 
     private void assertWarning(final List<String> result, final OCRField ocrField) {
-        assertThat(result, hasItem(format("%s (%s) does not appear to be a valid email address",ocrField.getDescription(), ocrField.getName())));
+        assertThat(result, hasItem(format("%s (%s) does not appear to be a valid email address", emailFields.get(ocrField.getName()), ocrField.getName())));
     }
 }
