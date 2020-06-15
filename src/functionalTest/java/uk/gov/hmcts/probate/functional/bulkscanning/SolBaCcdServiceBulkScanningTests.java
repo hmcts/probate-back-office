@@ -35,7 +35,7 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
     private static final String UPDATE_CASE_FROM_EXCEPTON_RECORD = "/update-case";
 
     private static final DateTimeFormatter CCD_DATE_FORMAT = CaveatCallbackResponseTransformer.dateTimeFormatter;
-    protected static final String S_DOES_NOT_APPEAR_TO_BE_A_VALID_EMAIL_ADDRESS = "%s does not appear to be a valid email address";
+    protected static final String S_S_DOES_NOT_APPEAR_TO_BE_A_VALID_EMAIL_ADDRESS = "%s (%s) does not appear to be a valid email address";
 
     private String jsonRequest;
     private String jsonResponse;
@@ -108,9 +108,9 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
     @Test
     public void testInvalidEmailFieldsReturnWarnings() {
         jsonRequest = utils.getJsonFromFile("expectedOCRDataAllInvalidEmailAddress.json");
-        validateOCRDataPostSuccess(jsonRequest, WARNINGS, format(S_DOES_NOT_APPEAR_TO_BE_A_VALID_EMAIL_ADDRESS, "primaryApplicantEmailAddress"), 3, 0);
-        validateOCRDataPostSuccess(jsonRequest, WARNINGS, format(S_DOES_NOT_APPEAR_TO_BE_A_VALID_EMAIL_ADDRESS, "caveatorEmailAddress"), 3, 1);
-        validateOCRDataPostSuccess(jsonRequest, WARNINGS, format(S_DOES_NOT_APPEAR_TO_BE_A_VALID_EMAIL_ADDRESS, "solsSolicitorEmail"), 3, 2);
+        validateOCRDataPostSuccess(jsonRequest, WARNINGS, format(S_S_DOES_NOT_APPEAR_TO_BE_A_VALID_EMAIL_ADDRESS, "Primary applicant email address", "primaryApplicantEmailAddress"), 3, 0);
+        validateOCRDataPostSuccess(jsonRequest, WARNINGS, format(S_S_DOES_NOT_APPEAR_TO_BE_A_VALID_EMAIL_ADDRESS, "Caveator email address", "caveatorEmailAddress"), 3, 1);
+        validateOCRDataPostSuccess(jsonRequest, WARNINGS, format(S_S_DOES_NOT_APPEAR_TO_BE_A_VALID_EMAIL_ADDRESS, "Solcicitor email address", "solsSolicitorEmail"), 3, 2);
     }
 
     @Test

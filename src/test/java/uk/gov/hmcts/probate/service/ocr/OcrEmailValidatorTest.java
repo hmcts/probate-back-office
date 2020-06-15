@@ -41,6 +41,7 @@ public class OcrEmailValidatorTest {
                 .builder()
                 .name(PRIMARY_APPLICANT_EMAIL_ADDRESS)
                 .value(RandomStringUtils.randomAlphabetic(10))
+                .description(RandomStringUtils.randomAlphabetic(10))
                 .build();
 
         final List<String> result = ocrEmailValidator.validateField(singletonList(field));
@@ -56,6 +57,7 @@ public class OcrEmailValidatorTest {
                         .builder()
                         .name(f)
                         .value(RandomStringUtils.randomAlphabetic(10))
+                        .description(RandomStringUtils.randomAlphabetic(10))
                         .build()
                 )
                 .collect(toList());
@@ -89,6 +91,7 @@ public class OcrEmailValidatorTest {
         final OCRField field = OCRField
                 .builder()
                 .name(PRIMARY_APPLICANT_EMAIL_ADDRESS)
+                .description(RandomStringUtils.randomAlphabetic(10))
                 .build();
 
         final List<String> result = ocrEmailValidator.validateField(singletonList(field));
@@ -103,6 +106,7 @@ public class OcrEmailValidatorTest {
                 .builder()
                 .name(PRIMARY_APPLICANT_EMAIL_ADDRESS)
                 .value("")
+                .description("")
                 .build();
 
         final List<String> result = ocrEmailValidator.validateField(singletonList(field));
@@ -124,6 +128,6 @@ public class OcrEmailValidatorTest {
     }
 
     private void assertWarning(final List<String> result, final OCRField ocrField) {
-        assertThat(result, hasItem(format("%s does not appear to be a valid email address", ocrField.getName())));
+        assertThat(result, hasItem(format("%s (%s) does not appear to be a valid email address",ocrField.getDescription(), ocrField.getName())));
     }
 }

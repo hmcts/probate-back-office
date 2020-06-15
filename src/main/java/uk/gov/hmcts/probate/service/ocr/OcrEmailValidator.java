@@ -18,13 +18,14 @@ public class OcrEmailValidator {
     private static final String CAVEATOR_EMAIL_ADDRESS = "caveatorEmailAddress";
     private static final String SOLS_SOLICITOR_EMAIL = "solsSolicitorEmail";
     private static final List<String> emailFields = asList(PRIMARY_APPLICANT_EMAIL_ADDRESS, CAVEATOR_EMAIL_ADDRESS, SOLS_SOLICITOR_EMAIL);
+    protected static final String S_S_DOES_NOT_APPEAR_TO_BE_A_VALID_EMAIL_ADDRESS = "%s (%s) does not appear to be a valid email address";
 
     public List<String> validateField(List<OCRField> ocrFields) {
         return ocrFields
                 .stream()
                 .filter(f -> emailFields.contains(f.getName()))
                 .filter(f -> isNotValid(f.getValue()))
-                .map(f -> format("%s does not appear to be a valid email address", f.getName()))
+                .map(f -> format(S_S_DOES_NOT_APPEAR_TO_BE_A_VALID_EMAIL_ADDRESS, f.getDescription(), f.getName()))
                 .collect(toList());
     }
 

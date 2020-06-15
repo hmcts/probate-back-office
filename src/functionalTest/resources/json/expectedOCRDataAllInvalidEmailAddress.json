@@ -88,17 +88,17 @@
     {
       "name": "primaryApplicantEmailAddress",
       "value": "invalidPrimaryApplicantEmailAddress",
-      "description": ""
+      "description": "Primary applicant email address"
     },
     {
       "name": "caveatorEmailAddress",
       "value": "invalidCaveatorEmailAddress",
-      "description": ""
+      "description": "Caveator email address"
     },
     {
       "name": "solsSolicitorEmail",
       "value": "invalidSolsSolicitorEmail",
-      "description": ""
+      "description": "Solcicitor email address"
     }
   ]
 }
