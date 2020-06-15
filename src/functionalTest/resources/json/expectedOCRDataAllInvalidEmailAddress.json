@@ -98,7 +98,7 @@
     {
       "name": "solsSolicitorEmail",
       "value": "invalidSolsSolicitorEmail",
-      "description": "Solcicitor email address"
+      "description": "Solicitor email address"
     }
   ]
 }
