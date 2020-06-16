@@ -410,6 +410,9 @@ public class CallbackResponseTransformerTest {
 
     @Mock
     private ReprintTransformer reprintTransformer;
+    
+    @Mock
+    private SolicitorLegalStatementNextStepsTransformer solicitorLegalStatementNextStepsTransformer;
 
     @Before
     public void setup() {
@@ -2476,6 +2479,12 @@ public class CallbackResponseTransformerTest {
         assertEquals(EXEC_FIRST_NAME + " " + EXEC_SURNAME,
                 callbackResponse.getData().getAdditionalExecutorsApplying().get(0).getValue().getApplyingExecutorName());
 
+    }
+
+    @Test
+    public void shouldCallSolLSAmendTransformer() {
+        underTest.transformCaseForSolicitorLegalStatementRegeneration(callbackRequestMock);
+        verify(solicitorLegalStatementNextStepsTransformer).transformLegalStatmentAmendStates(any(CaseDetails.class), any(ResponseCaseData.ResponseCaseDataBuilder.class));
     }
 
     @Test
