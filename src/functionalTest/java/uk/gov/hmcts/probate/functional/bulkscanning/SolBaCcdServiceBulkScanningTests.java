@@ -129,9 +129,9 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
     @Test
     public void testInvalidEmailFieldsReturnWarnings() {
         jsonRequest = utils.getJsonFromFile("expectedOCRDataAllInvalidEmailAddress.json");
-        validateOCRDataPostSuccess(jsonRequest, WARNINGS, format(S_S_DOES_NOT_APPEAR_TO_BE_A_VALID_EMAIL_ADDRESS, "Primary applicant email address", "primaryApplicantEmailAddress"), 3, 0);
-        validateOCRDataPostSuccess(jsonRequest, WARNINGS, format(S_S_DOES_NOT_APPEAR_TO_BE_A_VALID_EMAIL_ADDRESS, "Caveator email address", "caveatorEmailAddress"), 3, 1);
-        validateOCRDataPostSuccess(jsonRequest, WARNINGS, format(S_S_DOES_NOT_APPEAR_TO_BE_A_VALID_EMAIL_ADDRESS, "Solicitor email address", "solsSolicitorEmail"), 3, 2);
+        validateOCRDataPostSuccess(PA1P, jsonRequest, WARNINGS, format(S_S_DOES_NOT_APPEAR_TO_BE_A_VALID_EMAIL_ADDRESS, "Primary applicant email address", "primaryApplicantEmailAddress"), 3, 0);
+        validateOCRDataPostSuccess(PA1P, jsonRequest, WARNINGS, format(S_S_DOES_NOT_APPEAR_TO_BE_A_VALID_EMAIL_ADDRESS, "Caveator email address", "caveatorEmailAddress"), 3, 1);
+        validateOCRDataPostSuccess(PA1P, jsonRequest, WARNINGS, format(S_S_DOES_NOT_APPEAR_TO_BE_A_VALID_EMAIL_ADDRESS, "Solicitor email address", "solsSolicitorEmail"), 3, 2);
     }
 
     @Test
