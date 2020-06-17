@@ -559,6 +559,8 @@ public class CaseData {
     
     private DynamicList reprintDocument;
     private String reprintNumberOfCopies;
+    
+    private DynamicList solsAmendLegalStatmentSelect;
 
     @Getter(lazy = true)
     private final List<CollectionMember<AdditionalExecutor>> executorsApplyingForLegalStatement = getAllExecutors(true);
