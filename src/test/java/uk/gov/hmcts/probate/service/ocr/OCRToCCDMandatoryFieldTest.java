@@ -2,20 +2,33 @@ package uk.gov.hmcts.probate.service.ocr;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+
 import uk.gov.hmcts.probate.model.ocr.OCRField;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 public class OCRToCCDMandatoryFieldTest {
 
     private List<OCRField> ocrFields;
-    private OCRToCCDMandatoryField ocrToCCDMandatoryField = new OCRToCCDMandatoryField();
+
+    @Mock
+    private OcrEmailValidator ocrEmailValidator;
+
+    @InjectMocks
+    private OCRToCCDMandatoryField ocrToCCDMandatoryField;
 
     @Before
     public void setup() {
+        MockitoAnnotations.initMocks(this);
         ocrFields = new ArrayList<>();
     }
 
@@ -263,6 +276,18 @@ public class OCRToCCDMandatoryFieldTest {
         List warningsResult = ocrToCCDMandatoryField.ocrToCCDNonMandatoryWarnings(ocrFields, FormType.PA8A);
         assertEquals(1, warningsResult.size());
         assertEquals("The form has been flagged as a Solictor case.", warningsResult.get(0));
+    }
+
+    @Test
+    public void testEmailFieldWarning() {
+        final OCRField field = OCRField
+                .builder()
+                .name("primaryApplicantEmailAddress")
+                .value("invalidEmailAddress")
+                .build();
+        ocrFields.add(field);
+        ocrToCCDMandatoryField.ocrToCCDNonMandatoryWarnings(ocrFields, FormType.PA8A);
+        verify(ocrEmailValidator, times(1)).validateField(ocrFields);
     }
 
     private void addIHTMandatoryFields() {
