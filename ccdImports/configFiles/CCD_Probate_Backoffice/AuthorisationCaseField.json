@@ -2215,5 +2215,11 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "grandChildrenSurvivedUnderEighteen", "UserRole": "citizen", "CRUD": "CRU"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "pcqId", "UserRole": "citizen", "CRUD": "CRU"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "probateNotificationsGenerated", "UserRole": "citizen", "CRUD": "CRUD"},
-  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "pcqId", "UserRole": "caseworker-probate-pcqextractor", "CRUD": "R"}
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "pcqId", "UserRole": "caseworker-probate-pcqextractor", "CRUD": "R"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "solsLegalStatementDocument", "UserRole": "caseworker-probate-charity", "CRUD": "R"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "statementOfTruthDocument", "UserRole": "caseworker-probate-charity", "CRUD": "R"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "probateSotDocumentsGenerated", "UserRole": "caseworker-probate-charity", "CRUD": "R"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "probateDocumentsGenerated", "UserRole": "caseworker-probate-charity", "CRUD": "R"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "boDocumentsUploaded", "UserRole": "caseworker-probate-charity", "CRUD": "R"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "grantIssuedDate", "UserRole": "caseworker-probate-charity", "CRUD": "R"}
 ]
