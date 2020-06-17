@@ -21,6 +21,15 @@ public final class Constants {
     public static final String DOCMOSIS_OUTPUT_HTML = "html";
     public static final String REDEC_NOTIFICATION_SENT_STATE = "BORedecNotificationSent";
 
+    public static final String GRANT_TYPE_PROBATE = "WillLeft";
+    public static final String GRANT_TYPE_INTESTACY = "NoWill";
+    public static final String GRANT_TYPE_ADMON = "WillLeftAnnexed";
+
+    public static final String STATE_STOPPED = "Stopped";
+    public static final String STATE_GRANT_TYPE_PROBATE = "SolProbateCreated";
+    public static final String STATE_GRANT_TYPE_INTESTACY = "SolIntestacyCreated";
+    public static final String STATE_GRANT_TYPE_ADMON = "SolAdmonCreated";
+    public static final String STATE_GRANT_TYPE_CREATED = "SolAppCreated";
 
     private Constants() {
     }

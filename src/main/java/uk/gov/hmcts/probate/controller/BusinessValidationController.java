@@ -260,6 +260,13 @@ public class BusinessValidationController {
         return ResponseEntity.ok(callbackResponseTransformer.transform(callbackRequest));
     }
 
+    @PostMapping(path = "/default-sols-next-steps", consumes = APPLICATION_JSON_UTF8_VALUE, produces = {APPLICATION_JSON_VALUE})
+    public ResponseEntity<CallbackResponse> defaulsSolicitorNextStepsForLegalStatementRegeneration(
+            @RequestBody CallbackRequest callbackRequest) {
+
+        return ResponseEntity.ok(callbackResponseTransformer.transformCaseForSolicitorLegalStatementRegeneration(callbackRequest));
+    }
+
     private void validateForPayloadErrors(CallbackRequest callbackRequest, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             log.info(DEFAULT_LOG_ERROR, callbackRequest.getCaseDetails().getId(), bindingResult);

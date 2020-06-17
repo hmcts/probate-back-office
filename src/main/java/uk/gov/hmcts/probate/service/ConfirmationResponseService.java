@@ -37,6 +37,9 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_ADMON;
+import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_INTESTACY;
+import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_PROBATE;
 import static uk.gov.hmcts.probate.model.template.MarkdownTemplate.STOP_BODY;
 
 @Component
@@ -47,9 +50,6 @@ public class ConfirmationResponseService {
     private static final String REASON_FOR_NOT_APPLYING_DIED_BEFORE = "DiedBefore";
     private static final String REASON_FOR_NOT_APPLYING_DIED_AFTER = "DiedAfter";
     private static final String IHT_400421 = "IHT400421";
-    private static final String GRANT_TYPE_PROBATE = "WillLeft";
-    private static final String GRANT_TYPE_INTESTACY = "NoWill";
-    private static final String GRANT_TYPE_ADMON = "WillLeftAnnexed";
     private static final String CAVEAT_APPLICATION_FEE = "20.00";
 
     static final String PAYMENT_METHOD_VALUE_FEE_ACCOUNT = "fee account";

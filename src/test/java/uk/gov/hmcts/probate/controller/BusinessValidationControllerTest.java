@@ -38,6 +38,7 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.containsString;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
@@ -653,5 +654,51 @@ public class BusinessValidationControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
     }
+
+    @Test
+    public void shouldDefaultLegalStatementAmendOptionsForProbateCase() throws Exception {
+        String solicitorPayload = testUtils.getStringFromFile("solicitorWillTypeProbate.json");
+
+        mockMvc.perform(post("/case/default-sols-next-steps")
+            .content(solicitorPayload)
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.data.solsAmendLegalStatmentSelect.list_items[0].code", is("SolAppCreated")))
+            .andExpect(jsonPath("$.data.solsAmendLegalStatmentSelect.list_items[0].label", is("Deceased Details")))
+            .andExpect(jsonPath("$.data.solsAmendLegalStatmentSelect.list_items[1].code", is("WillLeft")))
+            .andExpect(jsonPath("$.data.solsAmendLegalStatmentSelect.list_items[1].label", is("Grant of probate where the deceased left a will")))
+            .andReturn();
+    }
+
+    @Test
+    public void shouldDefaultLegalStatementAmendOptionsForIntestacyCase() throws Exception {
+        String solicitorPayload = testUtils.getStringFromFile("solicitorWillTypeIntestacy.json");
+
+        mockMvc.perform(post("/case/default-sols-next-steps")
+            .content(solicitorPayload)
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.data.solsAmendLegalStatmentSelect.list_items[0].code", is("SolAppCreated")))
+            .andExpect(jsonPath("$.data.solsAmendLegalStatmentSelect.list_items[0].label", is("Deceased Details")))
+            .andExpect(jsonPath("$.data.solsAmendLegalStatmentSelect.list_items[1].code", is("NoWill")))
+            .andExpect(jsonPath("$.data.solsAmendLegalStatmentSelect.list_items[1].label", is("Letters of administration where the deceased left no will")))
+            .andReturn();
+    }
+
+    @Test
+    public void shouldDefaultLegalStatementAmendOptionsForAdmonCase() throws Exception {
+        String solicitorPayload = testUtils.getStringFromFile("solicitorWillTypeAdmon.json");
+
+        mockMvc.perform(post("/case/default-sols-next-steps")
+            .content(solicitorPayload)
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.data.solsAmendLegalStatmentSelect.list_items[0].code", is("SolAppCreated")))
+            .andExpect(jsonPath("$.data.solsAmendLegalStatmentSelect.list_items[0].label", is("Deceased Details")))
+            .andExpect(jsonPath("$.data.solsAmendLegalStatmentSelect.list_items[1].code", is("WillLeftAnnexed")))
+            .andExpect(jsonPath("$.data.solsAmendLegalStatmentSelect.list_items[1].label", is("Letters of administration with will annexed where the deceased left a will but none of the executors can apply")))
+            .andReturn();
+    }
+
 }
 
