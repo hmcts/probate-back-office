@@ -178,7 +178,7 @@ azure:
 notifications:
   grantDelayedNotificationPeriodDays: 49
   grantDelayedNotificationReleaseDate: "2020-05-08"
-  grantAwaitingDocumentationNotificationPeriodDays: 1
+  grantAwaitingDocumentationNotificationPeriodDays: 0
   govNotifyApiKey: "probate_back_office_live_test-4809d6a8-a10b-405d-88eb-1fee9b3042e3-682b1c3b-647e-4a32-99b9-98a8b7c7feb7"
   templates:
     email:
