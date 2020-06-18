@@ -181,6 +181,7 @@ def versions = [
         authCheckerLib                  : '2.1.4',
         jacksonDatabind                 : '2.9.9.3',
         commonsIO                       : '2.6',
+        commonsValidator                : '1.6',
         restAssured                     : '3.0.7',
         lombok                          : '1.16.18',
         springfoxSwagger                : '2.9.2',
@@ -244,7 +245,7 @@ dependencies {
 
   compile group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: '2.9.2'
   compile group: 'commons-io', name: 'commons-io', version: versions.commonsIO
-
+  compile group: 'commons-validator', name: 'commons-validator', version: versions.commonsValidator
   compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: versions.jacksonDatabind
   compile group: 'io.springfox', name: 'springfox-swagger-ui', version: versions.springfoxSwagger
   compile group: 'io.springfox', name: 'springfox-swagger2', version: versions.springfoxSwagger
@@ -267,7 +268,7 @@ dependencies {
   }
   compile group: 'org.mapstruct', name: 'mapstruct-jdk8', version: versions.mapStruct
   compileOnly group: 'org.mapstruct', name: 'mapstruct-processor', version: versions.mapStruct
-  
+
   testCompile group: 'uk.gov.hmcts.reform.probate', name: 'probate-commons', version: versions.probateCommonsVersion
   testCompile("org.springframework.boot:spring-boot-starter-test:$versions.springBootVersion") {
     exclude group: 'com.vaadin.external.google', module:'android-json'
