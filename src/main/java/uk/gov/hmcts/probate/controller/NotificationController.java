@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import uk.gov.hmcts.probate.model.Constants;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.GrantScheduleResponse;
 import uk.gov.hmcts.probate.model.State;
@@ -54,6 +55,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.State.APPLICATION_RECEIVED;
 import static uk.gov.hmcts.probate.model.State.CASE_STOPPED;
 import static uk.gov.hmcts.probate.model.State.CASE_STOPPED_CAVEAT;
@@ -93,7 +95,7 @@ public class NotificationController {
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
         CaseData caseData = callbackRequest.getCaseDetails().getData();
 
-        if (isAnEmailAddressPresent(caseData)) {
+        if (isDigitalApplication(caseData) && isAnEmailAddressPresent(caseData)) {
             CallbackResponse response = eventValidationService.validateEmailRequest(callbackRequest, emailAddressNotificationValidationRules);
             if (response.getErrors().isEmpty()) {
                 Document sentEmailAsDocument = notificationService.sendEmail(APPLICATION_RECEIVED, caseDetails);
@@ -202,27 +204,6 @@ public class NotificationController {
         return ResponseEntity.ok(raiseGrantOfRepresentationNotificationService.handleGrantReceivedNotification(callbackRequest));
     }
 
-    private ProbateDocument buildProbateDocument(Document boDocument) {
-        ProbateDocumentLink probateDocumentLink = ProbateDocumentLink.builder()
-            .documentBinaryUrl(boDocument.getDocumentLink().getDocumentBinaryUrl())
-            .documentFilename(boDocument.getDocumentLink().getDocumentFilename())
-            .documentUrl(boDocument.getDocumentLink().getDocumentUrl())
-            .build();
-        ProbateDocumentType probateDocumentType = ProbateDocumentType.valueOf(boDocument.getDocumentType().name());
-        return ProbateDocument.builder()
-            .documentDateAdded(boDocument.getDocumentDateAdded())
-            .documentFileName(boDocument.getDocumentFileName())
-            .documentGeneratedBy(boDocument.getDocumentGeneratedBy())
-            .documentLink(probateDocumentLink)
-            .documentType(probateDocumentType)
-            .build();
-
-    }
-
-    private boolean isAnEmailAddressPresent(CaseData caseData) {
-        return caseData.isDocsReceivedEmailNotificationRequested();
-    }
-
     @PostMapping(path = "/start-grant-delayed-notify-period", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<CallbackResponse> startDelayedNotificationPeriod(
             @RequestBody CallbackRequest callbackRequest,
@@ -234,18 +215,6 @@ public class NotificationController {
         notificationService.resetAwaitingDocumentationNotificationDate(callbackRequest.getCaseDetails());
         CallbackResponse response = callbackResponseTransformer.transformCase(callbackRequest);
         return ResponseEntity.ok(response);
-    }
-
-    private void logRequest(String uri, CallbackRequest callbackRequest) {
-        try {
-            log.info("POST: {} Case Id: {} ", uri, callbackRequest.getCaseDetails().getId().toString());
-            log.info("POST: {} {}", uri, objectMapper.writeValueAsString(callbackRequest));
-            if (log.isDebugEnabled()) {
-                log.debug("POST: {} {}", uri, objectMapper.writeValueAsString(callbackRequest));
-            }
-        } catch (JsonProcessingException e) {
-            log.error("POST: {}", uri, e);
-        }
     }
 
     @PostMapping(path = "/grant-delayed-scheduled")
@@ -267,6 +236,43 @@ public class NotificationController {
         log.info("...Called perform Grants Awaiting Documents");
         return ResponseEntity.ok(grantScheduleResponse);
 
+    }
+
+    private ProbateDocument buildProbateDocument(Document boDocument) {
+        ProbateDocumentLink probateDocumentLink = ProbateDocumentLink.builder()
+            .documentBinaryUrl(boDocument.getDocumentLink().getDocumentBinaryUrl())
+            .documentFilename(boDocument.getDocumentLink().getDocumentFilename())
+            .documentUrl(boDocument.getDocumentLink().getDocumentUrl())
+            .build();
+        ProbateDocumentType probateDocumentType = ProbateDocumentType.valueOf(boDocument.getDocumentType().name());
+        return ProbateDocument.builder()
+            .documentDateAdded(boDocument.getDocumentDateAdded())
+            .documentFileName(boDocument.getDocumentFileName())
+            .documentGeneratedBy(boDocument.getDocumentGeneratedBy())
+            .documentLink(probateDocumentLink)
+            .documentType(probateDocumentType)
+            .build();
+
+    }
+
+    private boolean isAnEmailAddressPresent(CaseData caseData) {
+        return caseData.isDocsReceivedEmailNotificationRequested();
+    }
+
+    private void logRequest(String uri, CallbackRequest callbackRequest) {
+        try {
+            log.info("POST: {} Case Id: {} ", uri, callbackRequest.getCaseDetails().getId().toString());
+            log.info("POST: {} {}", uri, objectMapper.writeValueAsString(callbackRequest));
+            if (log.isDebugEnabled()) {
+                log.debug("POST: {} {}", uri, objectMapper.writeValueAsString(callbackRequest));
+            }
+        } catch (JsonProcessingException e) {
+            log.error("POST: {}", uri, e);
+        }
+    }
+
+    private boolean isDigitalApplication(CaseData caseData) {
+        return  !YES.equalsIgnoreCase(caseData.getPaperForm());
     }
 
 }

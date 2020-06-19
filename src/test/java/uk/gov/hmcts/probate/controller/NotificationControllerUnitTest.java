@@ -15,6 +15,7 @@ import uk.gov.hmcts.probate.model.State;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.service.BulkPrintService;
@@ -46,6 +47,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.ArgumentMatchers.nullable;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
@@ -99,6 +101,17 @@ public class NotificationControllerUnitTest {
         setUpMocks(APPLICATION_RECEIVED);
         ResponseEntity<ProbateDocument> stringResponseEntity = notificationController.sendApplicationReceivedNotification(callbackRequest);
         assertThat(stringResponseEntity.getStatusCode(), is(HttpStatus.OK));
+    }
+
+    @Test
+    public void shouldNotSendApplicationReceivedForPaper() throws NotificationClientException {
+        CaseDetails caseDetails = new CaseDetails(CaseData.builder().paperForm("Yes").build(), LAST_MODIFIED, ID);
+        callbackRequest = new CallbackRequest(caseDetails);
+        
+        ResponseEntity<ProbateDocument> stringResponseEntity = notificationController.sendApplicationReceivedNotification(callbackRequest);
+        assertThat(stringResponseEntity.getStatusCode(), is(HttpStatus.OK));
+        assertThat(stringResponseEntity.getBody(), equalTo(null));
+        verify(eventValidationService, times(0)).validateEmailRequest(any(), any());
     }
 
     @Test
