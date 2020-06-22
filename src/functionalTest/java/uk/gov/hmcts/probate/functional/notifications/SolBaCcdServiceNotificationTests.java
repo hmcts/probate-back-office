@@ -35,19 +35,18 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
 
     @Test
     public void verifyDigitalGOPApplicationReceivedNotificationSent() {
-        validatePostSuccess("digitalApplicationRecievedPayload", APPLICATION_RECEIVED);
+        validatePostSuccess("digitalApplicationRecievedPayload.json", APPLICATION_RECEIVED);
     }
 
     @Test
     public void verifyDigitalIntestacyApplicationReceivedNotificationSent() {
-        validatePostSuccessWithAttributeUpdate("digitalApplicationRecievedPayload", APPLICATION_RECEIVED, 
+        validatePostSuccessWithAttributeUpdate("digitalApplicationRecievedPayload.json", APPLICATION_RECEIVED, 
             "\"caseType\":\"gop\"", "\"caseType\":\"intestacy\"");
     }
 
     @Test
     public void verifyPaperApplicationReceivedNotificationNotSent() {
-        ResponseBody responseBody = validatePostSuccess("papaerApplicationRecievedPayload.json", APPLICATION_RECEIVED);
-        assertTrue(responseBody.toString().equals(""));
+        validatePostSuccess("paperApplicationRecievedPayload.json", APPLICATION_RECEIVED);
     }
 
     @Test
