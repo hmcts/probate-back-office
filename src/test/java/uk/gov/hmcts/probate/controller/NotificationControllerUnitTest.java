@@ -144,7 +144,6 @@ public class NotificationControllerUnitTest {
     private void setUpMocks(State state, String ...errors) throws NotificationClientException {
         CaseDetails caseDetails = new CaseDetails(CaseDataTestBuilder.withDefaults().build(), LAST_MODIFIED, ID);
         callbackRequest = new CallbackRequest(caseDetails);
-        when(eventValidationService.validateEmailRequest(any(CallbackRequest.class), anyList())).thenReturn(CallbackResponse.builder().errors(Arrays.asList(errors)).build());
         document = Document.builder()
             .documentDateAdded(LocalDate.now())
             .documentFileName("fileName")
@@ -152,7 +151,6 @@ public class NotificationControllerUnitTest {
             .documentLink(DocumentLink.builder().documentUrl("url").documentFilename("file").documentBinaryUrl("binary").build())
             .documentType(DocumentType.DIGITAL_GRANT)
             .build();
-        when(notificationService.sendEmail(state, caseDetails)).thenReturn(document);
     }
 
     private void setUpMocks(State state) throws NotificationClientException {
