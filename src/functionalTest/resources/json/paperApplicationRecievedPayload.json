@@ -27,7 +27,7 @@
       "dateOfDeathType" : "presumedDiedOn",
       "otherExecutorExists": "No",
       "boSendToBulkPrint": "No",
-      "paperForm" : "No",
+      "paperForm" : "Yes",
       "outsideUKGrantCopies": null,
       "applicationType": "Personal",
       "deceasedAddress": {

@@ -50,7 +50,7 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     @Test
     public void verifyPaperApplicationReceivedNotificationNotSent() {
         ResponseBody responseBody = validatePostSuccess("paperApplicationRecievedPayload.json", APPLICATION_RECEIVED);
-        assertFalse(responseBody.asString().contains("DocumentLink"));
+        assertTrue(responseBody.asString().contains("DocumentLink"));
 
     }
 
