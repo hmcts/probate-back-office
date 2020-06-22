@@ -10,6 +10,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 
+import static junit.framework.Assert.assertFalse;
 import static junit.framework.TestCase.assertTrue;
 
 
@@ -35,18 +36,22 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
 
     @Test
     public void verifyDigitalGOPApplicationReceivedNotificationSent() {
-        validatePostSuccess("digitalApplicationRecievedPayload.json", APPLICATION_RECEIVED);
+        ResponseBody responseBody = validatePostSuccess("digitalApplicationRecievedPayload.json", APPLICATION_RECEIVED);
+        assertTrue(responseBody.asString().contains("DocumentLink"));
     }
 
     @Test
     public void verifyDigitalIntestacyApplicationReceivedNotificationSent() {
-        validatePostSuccessWithAttributeUpdate("digitalApplicationRecievedPayload.json", APPLICATION_RECEIVED, 
+        ResponseBody responseBody = validatePostSuccessWithAttributeUpdate("digitalApplicationRecievedPayload.json", APPLICATION_RECEIVED, 
             "\"caseType\":\"gop\"", "\"caseType\":\"intestacy\"");
+        assertTrue(responseBody.asString().contains("DocumentLink"));
     }
 
     @Test
     public void verifyPaperApplicationReceivedNotificationNotSent() {
-        validatePostSuccess("paperApplicationRecievedPayload.json", APPLICATION_RECEIVED);
+        ResponseBody responseBody = validatePostSuccess("paperApplicationRecievedPayload.json", APPLICATION_RECEIVED);
+        assertFalse(responseBody.asString().contains("DocumentLink"));
+
     }
 
     @Test
