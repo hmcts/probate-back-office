@@ -36,15 +36,18 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     private static final String EMAIL_NOTIFICATION_URL = "data.probateNotificationsGenerated[0].value.DocumentLink.document_binary_url";
 
     @Test
-    public void verifyDigitalGOPApplicationReceivedNotificationSent() {
+    public void verifyDigitalGOPApplicationReceivedNotificationEmailText() {
         ResponseBody responseBody = validatePostSuccess("digitalApplicationRecievedPayload.json", APPLICATION_RECEIVED);
         String expectedApplicationRecievedText = utils.getJsonFromFile("digitalApplicationRecievedEmailResponse.txt");
+        expectedApplicationRecievedText = expectedApplicationRecievedText.replace("\n", "").replace("\r", "");
+
         JsonPath jsonPath = JsonPath.from(responseBody.asString());
-        log.info(jsonPath.prettyPrint());
         String documentUrl = jsonPath.get("DocumentLink.document_binary_url");
         String response = utils.downloadPdfAndParseToString(documentUrl);
-        log.info(response);
         response = response.replace("\n", "").replace("\r", "");
+        log.info(response);
+        log.info("*******");
+        log.info(expectedApplicationRecievedText);
         assertTrue(response.contains(expectedApplicationRecievedText));
     }
 
