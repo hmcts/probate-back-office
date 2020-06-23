@@ -45,9 +45,6 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
         String documentUrl = jsonPath.get("DocumentLink.document_binary_url");
         String response = utils.downloadPdfAndParseToString(documentUrl);
         response = response.replace("\n", "").replace("\r", "");
-        log.info(response);
-        log.info("*******");
-        log.info(expectedApplicationRecievedText);
         assertTrue(response.contains(expectedApplicationRecievedText));
     }
 
