@@ -41,7 +41,7 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
         String expectedApplicationRecievedText = utils.getJsonFromFile("digitalApplicationRecievedEmailResponse.txt");
         JsonPath jsonPath = JsonPath.from(responseBody.asString());
         log.info(jsonPath.prettyPrint());
-        String documentUrl = jsonPath.get("ProbateDocument.DocumentLink.document_binary_url");
+        String documentUrl = jsonPath.get("DocumentLink.document_binary_url");
         String response = utils.downloadPdfAndParseToString(documentUrl);
         log.info(response);
         response = response.replace("\n", "").replace("\r", "");
