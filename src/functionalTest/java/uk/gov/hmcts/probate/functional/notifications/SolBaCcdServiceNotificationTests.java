@@ -36,7 +36,7 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     @Test
     public void verifyDigitalGOPApplicationReceivedNotificationSent() {
         ResponseBody responseBody = validatePostSuccess("digitalApplicationRecievedPayload.json", APPLICATION_RECEIVED);
-        String expectedApplicationRecievedText = utils.getStringFromFile("digitalApplicationRecievedEmailResponse.txt");
+        String expectedApplicationRecievedText = utils.getJsonFromFile("digitalApplicationRecievedEmailResponse.txt");
         assertTrue(responseBody.asString().equals(expectedApplicationRecievedText));
     }
 
