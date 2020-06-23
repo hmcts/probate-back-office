@@ -1,13 +1,20 @@
 # To use ccd-docker elements
 
 ## Purpose
-Guidance on how to set up probate locally using the updated docker images. User
+Guidance on how to set up probate locally using the updated docker images.
 
 ##### 1) Install https://stedolan.github.io/jq/ 
 
 ```bash
   sudo apt-get install jq
 ```
+
+For mac 
+```bash
+  brew install jq
+```
+
+NB. If you download the binary version it is called 'jq-osx-amd64' and the scripts later will fail because they are looking for 'jq'. 
 
 ##### 2) Login to azure
 
@@ -18,11 +25,14 @@ Guidance on how to set up probate locally using the updated docker images. User
 ```
 
 ##### 3) Reset your docker images, containers etc. 
+
 ```bash
-   docker image rm $(docker image ls -a -q)
    docker container rm $(docker container ls -a -q)
+   docker image rm $(docker image ls -a -q)
    docker volume rm $(docker volume ls -q)
 ```
+
+NB. Docker for desktop on a mac only allocates 2GB of memory by default, this is not enough I increased mine 16GB.
 
 ##### 4) Run environments script
 ```bash
@@ -31,21 +41,24 @@ Guidance on how to set up probate locally using the updated docker images. User
 
 For mac: 
 ```bash
-   ./bin/set-environment-variables.sh
+    source ./bin/set-environment-variables.sh
 ```
 For linux
 ```bash
    source ./bin/linux-set-environment-variables.sh
 ```
-##### 4.1) setup the logstash
-    In order to work locally on probate-frontend you will need following logstash
+##### 4.1) setup logstash
+ 
+In order to work locally on probate-frontend you will need to clone project ccd-logstash from github.
+Checkout the probate-conf branch and build the docker image
+
 ```
-   clone project ccd-logstash from github
-   checkout branch probate-conf
+   git checkout probate-conf
    docker build . -t ccd-logstash:probate
-   In elasticsearch.yml replace
-   image: hmcts/ccd-logstash:latest with image: "ccd-logstash:probate"  
 ```   
+ In probate-back-office/compose/elasticsearch.yml replace
+   image: hmcts/ccd-logstash:latest with image: "ccd-logstash:probate"
+   
 ##### 5) Start up docker 
 ```bash
    docker network create compose_default
