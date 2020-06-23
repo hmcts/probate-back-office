@@ -3,7 +3,6 @@ package uk.gov.hmcts.probate.functional.notifications;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import io.restassured.response.ResponseBody;
-import lombok.extern.slf4j.Slf4j;
 import net.serenitybdd.junit.runners.SerenityRunner;
 import net.serenitybdd.rest.SerenityRest;
 import org.junit.Ignore;
@@ -14,7 +13,6 @@ import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 import static junit.framework.TestCase.assertTrue;
 
 
-@Slf4j
 @RunWith(SerenityRunner.class)
 public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
 
