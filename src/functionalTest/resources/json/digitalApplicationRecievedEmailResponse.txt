@@ -1,0 +1,27 @@
+Subject: HMCTS received your probate application (action required)
+
+Body:
+Dear ((First name)) ((Last name)),
+
+Your application for probate for ((deceased name)) was received and the reference for this case is '((Case reference number))'.
+
+Send your supporting documents
+
+To avoid any delays in processing your application, send your supporting documents to us by post.
+
+If you are applying with a will, you must include the original will and any updates to it.
+
+Send your supporting documents to:
+HMCTS Probate
+PO Box 12625
+Harlow
+CM20 9QE
+
+HMCTS cannot process your application until you send us all of your documents. We will let you know by email when we’ve received them.
+
+After your documents arrive, it can take up to 7 working days to confirm we’ve received them.
+
+You can contact the ((registry_name)) on ((registry_phone)) for an update if you have not heard from us after this period.
+
+Regards,
+HM Courts & Tribunals Service
