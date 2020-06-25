@@ -333,6 +333,9 @@
         <cve>CVE-2020-11113</cve>
         <cve>CVE-2020-11619</cve>
         <cve>CVE-2020-11620</cve>
+        <cve>CVE-2020-14060</cve>
+        <cve>CVE-2020-14061</cve>
+        <cve>CVE-2020-14062</cve>
     </suppress>
     <suppress>
         <notes><![CDATA[
