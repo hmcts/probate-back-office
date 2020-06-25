@@ -47,7 +47,7 @@ public class OCRToCCDMandatoryFieldTest {
     @Test
     public void testMissingMandatoryFieldsReturnSuccessfullyForPA1P() {
         addDeceasedMandatoryFields();
-        assertEquals(8, ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrFields, FormType.PA1P).size());
+        assertEquals(9, ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrFields, FormType.PA1P).size());
     }
 
     @Test
@@ -172,7 +172,7 @@ public class OCRToCCDMandatoryFieldTest {
     public void testFieldDescriptionIsAddedToMissingValueListForPA1P() {
         addAllMandatoryGORCitizenFields();
         ocrFields.remove(ocrFields.size() - 1);
-        assertEquals("Primary applicant alias (primaryApplicantAlias) is mandatory.",
+        assertEquals("Do you have legal representative acting for you? (solsSolicitorIsApplying) is mandatory.",
                 ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrFields, FormType.PA1P).get(0));
     }
 
@@ -191,7 +191,7 @@ public class OCRToCCDMandatoryFieldTest {
     @Test
     public void testMissingMandatoryFieldsReturnSuccessfullyForPA1A() {
         addDeceasedMandatoryFields();
-        assertEquals(7, ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrFields, FormType.PA1A).size());
+        assertEquals(8, ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrFields, FormType.PA1A).size());
     }
 
     @Test
@@ -223,7 +223,7 @@ public class OCRToCCDMandatoryFieldTest {
     public void testFieldDescriptionIsAddedToMissingValueListForPA1A() {
         addAllMandatoryIntestacyCitizenFields();
         ocrFields.remove(ocrFields.size() - 1);
-        assertEquals("Primary applicant postcode (primaryApplicantAddressPostCode) is mandatory.",
+        assertEquals("Do you have legal representative acting for you? (solsSolicitorIsApplying) is mandatory.",
                 ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrFields, FormType.PA1A).get(0));
     }
 
@@ -398,15 +398,25 @@ public class OCRToCCDMandatoryFieldTest {
                 .name("primaryApplicantAlias")
                 .value("Jack Johnson")
                 .description("Primary applicant alias name").build();
+        OCRField field3 = OCRField.builder()
+                .name("solsSolicitorIsApplying")
+                .value("False")
+                .description("Solicitor Applying").build();
 
         ocrFields.add(field1);
         ocrFields.add(field2);
+        ocrFields.add(field3);
     }
 
     private void addAllMandatoryIntestacyCitizenFields() {
         addIHTMandatoryFields();
         addDeceasedMandatoryFields();
         addPrimaryApplicantFields();
+        OCRField field1 = OCRField.builder()
+                .name("solsSolicitorIsApplying")
+                .value("False")
+                .description("Solicitor Applying").build();
+        ocrFields.add(field1);
     }
 
     private void addAllMandatoryGORSolicitorFields() {
