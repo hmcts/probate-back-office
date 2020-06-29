@@ -55,10 +55,11 @@ public class OCRToCCDMandatoryFieldTest {
         addAllMandatoryGORCitizenFields();
         ocrFields.add(OCRField.builder().name("solsSolicitorIsApplying").value("True").description("Solicitor Applying").build());
         List<String> warningsResponse = ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrFields, FormType.PA1P);
-        assertEquals("Solicitors Firm name (solsSolicitorFirmName) is mandatory.", warningsResponse.get(0));
-        assertEquals("Solictor application reference (solsSolicitorAppReference) is mandatory.", warningsResponse.get(1));
-        assertEquals("Solictor email address (solsSolicitorEmail) is mandatory.", warningsResponse.get(2));
-        assertEquals(3, warningsResponse.size());
+        assertEquals("Solicitor representative name (solsSolicitorRepresentativeName) is mandatory.", warningsResponse.get(0));
+        assertEquals("Solicitors Firm name (solsSolicitorFirmName) is mandatory.", warningsResponse.get(1));
+        assertEquals("Solictor application reference (solsSolicitorAppReference) is mandatory.", warningsResponse.get(2));
+        assertEquals("Solictor email address (solsSolicitorEmail) is mandatory.", warningsResponse.get(3));
+        assertEquals(4, warningsResponse.size());
     }
 
     @Test
@@ -199,10 +200,11 @@ public class OCRToCCDMandatoryFieldTest {
         addAllMandatoryIntestacyCitizenFields();
         ocrFields.add(OCRField.builder().name("solsSolicitorIsApplying").value("True").description("Solicitor Applying").build());
         List<String> warningsResponse = ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrFields, FormType.PA1A);
-        assertEquals("Solicitors Firm name (solsSolicitorFirmName) is mandatory.", warningsResponse.get(0));
-        assertEquals("Solictor application reference (solsSolicitorAppReference) is mandatory.", warningsResponse.get(1));
-        assertEquals("Solictor email address (solsSolicitorEmail) is mandatory.", warningsResponse.get(2));
-        assertEquals(3, warningsResponse.size());
+        assertEquals("Solicitor representative name (solsSolicitorRepresentativeName) is mandatory.", warningsResponse.get(0));
+        assertEquals("Solicitors Firm name (solsSolicitorFirmName) is mandatory.", warningsResponse.get(1));
+        assertEquals("Solictor application reference (solsSolicitorAppReference) is mandatory.", warningsResponse.get(2));
+        assertEquals("Solictor email address (solsSolicitorEmail) is mandatory.", warningsResponse.get(3));
+        assertEquals(4, warningsResponse.size());
     }
 
     @Test

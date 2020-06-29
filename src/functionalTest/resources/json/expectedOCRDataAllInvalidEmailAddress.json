@@ -99,6 +99,11 @@
       "name": "solsSolicitorEmail",
       "value": "invalidSolsSolicitorEmail",
       "description": "Solicitor email address"
+    },
+    {
+      "name": "solsSolicitorIsApplying",
+      "value": "False",
+      "description": "Do you have legal representative acting for you?"
     }
   ]
 }
