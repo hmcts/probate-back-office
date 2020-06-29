@@ -12,6 +12,7 @@ import uk.gov.hmcts.probate.config.FeeServiceConfiguration;
 import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.fee.Fee;
 import uk.gov.hmcts.probate.model.fee.FeeServiceResponse;
+import uk.gov.hmcts.probate.service.FeatureToggleService;
 
 import java.math.BigDecimal;
 
@@ -39,6 +40,9 @@ public class FeeServiceTest {
 
     @Mock
     AppInsights appInsights;
+
+    @Mock
+    FeatureToggleService featureToggleService;
 
     @Before
     public void setUp() {
@@ -103,6 +107,34 @@ public class FeeServiceTest {
 
     @Test
     public void getTotalFee() {
+        when(responseEntity.getStatusCode()).thenReturn(HttpStatus.OK);
+        when(fee.getFeeAmount()).thenReturn(BigDecimal.ONE);
+
+        FeeServiceResponse feeServiceResponse = feeService.getTotalFee(BigDecimal.valueOf(5001), 1L, 1L);
+        assertEquals(BigDecimal.ONE, feeServiceResponse.getApplicationFee());
+        assertEquals(BigDecimal.ONE, feeServiceResponse.getFeeForUkCopies());
+        assertEquals(BigDecimal.ONE, feeServiceResponse.getFeeForNonUkCopies());
+    }
+
+    @Test
+    public void getTotalFeeWithNewKeyword() {
+        when(feeServiceConfiguration.getUrl()).thenReturn("http://test.test/lookupWithKeyword");
+        when(feeServiceConfiguration.getKeyword()).thenReturn("GrantWill");
+        when (featureToggleService.isNewFeeRegisterCodeEnabled()).thenReturn(true);
+        when(responseEntity.getStatusCode()).thenReturn(HttpStatus.OK);
+        when(fee.getFeeAmount()).thenReturn(BigDecimal.ONE);
+
+        FeeServiceResponse feeServiceResponse = feeService.getTotalFee(BigDecimal.valueOf(5001), 1L, 1L);
+        assertEquals(BigDecimal.ONE, feeServiceResponse.getApplicationFee());
+        assertEquals(BigDecimal.ONE, feeServiceResponse.getFeeForUkCopies());
+        assertEquals(BigDecimal.ONE, feeServiceResponse.getFeeForNonUkCopies());
+    }
+
+    @Test
+    public void getTotalFeeWithOldKeyword() {
+        when(feeServiceConfiguration.getUrl()).thenReturn("http://test.test/lookupWithKeyword");
+        when(feeServiceConfiguration.getKeyword()).thenReturn("NewFee");
+        when (featureToggleService.isNewFeeRegisterCodeEnabled()).thenReturn(true);
         when(responseEntity.getStatusCode()).thenReturn(HttpStatus.OK);
         when(fee.getFeeAmount()).thenReturn(BigDecimal.ONE);
 

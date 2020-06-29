@@ -10,6 +10,7 @@ import uk.gov.hmcts.probate.config.FeeServiceConfiguration;
 import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.fee.Fee;
 import uk.gov.hmcts.probate.model.fee.FeeServiceResponse;
+import uk.gov.hmcts.probate.service.FeatureToggleService;
 
 import java.math.BigDecimal;
 import java.net.URI;
@@ -23,6 +24,7 @@ public class FeeService {
     private final FeeServiceConfiguration feeServiceConfiguration;
     private final RestTemplate restTemplate;
     private final AppInsights appInsights;
+    private final FeatureToggleService featureToggleService;
 
     private static final String FEE_API_EVENT_TYPE_ISSUE = "issue";
     private static final String FEE_API_EVENT_TYPE_COPIES = "copies";
@@ -78,8 +80,12 @@ public class FeeService {
             .queryParam("event", event)
             .queryParam("amount_or_volume", amount);
 
-        if (FEE_API_EVENT_TYPE_COPIES.equals(event)) {
+        if (FEE_API_EVENT_TYPE_COPIES.equals(event) && !featureToggleService.isNewFeeRegisterCodeEnabled() ) {
             builder.queryParam("keyword", feeServiceConfiguration.getKeyword());
+        }
+
+        if (FEE_API_EVENT_TYPE_COPIES.equals(event) && featureToggleService.isNewFeeRegisterCodeEnabled()) {
+            builder.queryParam("keyword", "GrantWill");
         }
 
         return builder.build().encode().toUri();

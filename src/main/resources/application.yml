@@ -110,6 +110,13 @@ fee.api:
   applicantType: all
   keyword: NewFee
 
+feature:
+  toggle:
+    fee.api:
+      new:
+        keyword:
+          enabled: true
+
 markdown.templatesDirectory: templates/markdown/
 
 #dev deployment of ccd-print-service used for local
