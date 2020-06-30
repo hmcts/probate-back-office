@@ -404,7 +404,7 @@ registry:
       addressline3: Cardiff
       town: South Wales
       postcode: CF24 0RZ
-      
+
 document:
   retriever:
     service:
@@ -440,3 +440,7 @@ welsh:
     10: "Hydref"
     11: "Tachwedd"
     12: "Rhagfyr"
+
+ld:
+  client_key: changeMe
+  user_key: changeMe
