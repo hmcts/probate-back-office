@@ -554,4 +554,11 @@ file name: spring-jcl-5.1.5.RELEASE.jar
         <gav regex="true">^org\.springframework\.security:spring-security-crypto:.*$</gav>
         <cve>CVE-2020-5408</cve>
     </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: jackson-databind-2.9.9.3.jar
+   ]]></notes>
+        <gav regex="true">^com\.fasterxml\.jackson\.core:jackson-databind:.*$</gav>
+        <cve>CVE-2020-14195</cve>
+    </suppress>
 </suppressions>
