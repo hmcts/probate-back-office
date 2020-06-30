@@ -13,6 +13,7 @@ public class EmailTemplates {
     private String generalCaveatMessage;
     private String excelaData;
     private String grantRaised;
+    private String grantRaisedPaperForm;
     private String caveatRaised;
     private String caveatExtend;
     private String caveatRaisedCtsc;
