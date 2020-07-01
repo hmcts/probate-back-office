@@ -23,14 +23,6 @@
     </suppress>
     <suppress>
         <notes><![CDATA[
-   file name: tomcat-embed-core-9.0.16.jar
-   ]]></notes>
-        <gav regex="true">^org\.apache\.tomcat\.embed:tomcat-embed-core:.*$</gav>
-        <cve>CVE-2019-0232</cve>
-        <cve>CVE-2020-1935</cve>
-    </suppress>
-    <suppress>
-        <notes><![CDATA[
    file name: AppleJavaExtensions-1.4.jar
    ]]></notes>
         <gav regex="true">^com\.apple:AppleJavaExtensions:.*$</gav>
@@ -252,22 +244,11 @@
         <cve>CVE-2020-1938</cve>
         <cve>CVE-2019-12418</cve>
         <cve>CVE-2019-17563</cve>
-    </suppress>
-    <suppress>
-        <notes><![CDATA[
-   file name: tomcat-embed-core-9.0.16.jar
-   ]]></notes>
         <cve>CVE-2019-0221</cve>
-    </suppress>
-    <suppress>
-        <notes><![CDATA[
-   file name: tomcat-embed-core-9.0.16.jar
-   ]]></notes>
         <cve>CVE-2019-10072</cve>
-        <cve>CVE-2019-12418</cve>
-        <cve>CVE-2019-17563</cve>
-        <cve>CVE-2020-1938</cve>
         <cve>CVE-2020-1935</cve>
+        <cve>CVE-2020-1745</cve>
+        <cve>CVE-2020-9484</cve>
     </suppress>
     <suppress>
         <notes><![CDATA[
