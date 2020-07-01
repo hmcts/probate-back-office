@@ -3,6 +3,7 @@ package uk.gov.hmcts.probate.functional.notifications;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import io.restassured.response.ResponseBody;
+import lombok.extern.slf4j.Slf4j;
 import net.serenitybdd.junit.runners.SerenityRunner;
 import net.serenitybdd.rest.SerenityRest;
 import org.junit.Ignore;
@@ -12,7 +13,7 @@ import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 
 import static junit.framework.TestCase.assertTrue;
 
-
+@Slf4j
 @RunWith(SerenityRunner.class)
 public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
 
@@ -88,13 +89,19 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     @Test
     public void verifyDigitalGOPApplicationReceivedNotificationEmailText() {
         ResponseBody responseBody = validatePostSuccess("paperApplicationRecievedPayload.json", APPLICATION_RECEIVED);
+        log.info("responseBody:"+responseBody.prettyPrint());
         String expectedApplicationRecievedText = utils.getJsonFromFile("paperApplicationRecievedEmailResponse.txt");
+        log.info("expectedApplicationRecievedText:"+expectedApplicationRecievedText);
         expectedApplicationRecievedText = expectedApplicationRecievedText.replace("\n", "").replace("\r", "");
+        log.info("expectedApplicationRecievedText:"+expectedApplicationRecievedText);
 
         JsonPath jsonPath = JsonPath.from(responseBody.asString());
+        log.info("jsonPath:"+jsonPath);
         String documentUrl = jsonPath.get("DocumentLink.document_binary_url");
         String response = utils.downloadPdfAndParseToString(documentUrl);
+        log.info("response:"+response);
         response = response.replace("\n", "").replace("\r", "");
+        log.info("response:"+response);
         assertTrue(response.contains(expectedApplicationRecievedText));
     }
 
