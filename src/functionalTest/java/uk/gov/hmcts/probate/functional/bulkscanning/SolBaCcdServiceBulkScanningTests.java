@@ -2,7 +2,7 @@ package uk.gov.hmcts.probate.functional.bulkscanning;
 
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.ValidatableResponse;
-import net.serenitybdd.junit.runners.SerenityRunner;
+import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
 import net.serenitybdd.rest.SerenityRest;
 import org.junit.Assert;
 import org.junit.Test;
@@ -19,7 +19,7 @@ import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 
-@RunWith(SerenityRunner.class)
+@RunWith(SpringIntegrationSerenityRunner.class)
 public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
 
     private static final String SUCCESS = "SUCCESS";

@@ -1,7 +1,7 @@
 package uk.gov.hmcts.probate.functional.nextsteps;
 
 import io.restassured.response.Response;
-import net.serenitybdd.junit.runners.SerenityRunner;
+import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
@@ -11,7 +11,7 @@ import static junit.framework.TestCase.assertTrue;
 import static net.serenitybdd.rest.SerenityRest.given;
 
 
-@RunWith(SerenityRunner.class)
+@RunWith(SpringIntegrationSerenityRunner.class)
 public class SolCcdServiceNextStepsTests extends IntegrationTestBase {
 
     @Test
