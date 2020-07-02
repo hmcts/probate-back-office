@@ -89,25 +89,25 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     @Test
     public void verifyBulkScanPaperFormGOPGrantReceivedNotificationEmailText() {
         postNotificationEmailAndVerifyContents(GRANT_RAISED, "grantRaisedPaperBulkScanPayload.json", "grantRaisedPaperBulkScanEmailExpectedResponse.txt",
-            EMAIL_NOTIFICATION_URL);
+            EMAIL_NOTIFICATION_URL, "pa");
     }
 
     @Test
     public void verifySolicitorBulkScanPaperFormGOPGrantReceivedNotificationEmailText() {
-        postNotificationEmailAndVerifyContents(GRANT_RAISED, "grantRaisedPaperBulkScanSolicitorPayload.json", "grantRaisedPaperBulkScanEmailExpectedResponse.txt",
-            EMAIL_NOTIFICATION_URL);
+        postNotificationEmailAndVerifyContents(GRANT_RAISED, "grantRaisedPaperBulkScanSolicitorPayload.json", "grantRaisedPaperBulkScanEmailExpectedSolicitorResponse.txt",
+            EMAIL_NOTIFICATION_URL "sol");
     }
 
     @Test
     public void verifyBulkScanPaperFormGOPGrantReceivedNotificationEmailTextWelsh() {
         postNotificationEmailAndVerifyContents(GRANT_RAISED, "grantRaisedPaperBulkScanPayloadWelsh.json", "grantRaisedPaperBulkScanEmailExpectedResponse.txt",
-            EMAIL_NOTIFICATION_URL);
+            EMAIL_NOTIFICATION_URL, "pa-welsh");
     }
 
     @Test
     public void verifySolicitorBulkScanPaperFormGOPGrantReceivedNotificationEmailTextWelsh() {
-        postNotificationEmailAndVerifyContents(GRANT_RAISED, "grantRaisedPaperBulkScanSolicitorPayloadWelsh.json", "grantRaisedPaperBulkScanEmailExpectedResponse.txt",
-            EMAIL_NOTIFICATION_URL);
+        postNotificationEmailAndVerifyContents(GRANT_RAISED, "grantRaisedPaperBulkScanSolicitorPayloadWelsh.json", "grantRaisedPaperBulkScanEmailExpectedSolicitorResponse.txt",
+            EMAIL_NOTIFICATION_URL, "sol-welsh");
     }
 
     @Test
@@ -258,19 +258,18 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     }
 
     private void postNotificationEmailAndVerifyContents(String apiPath, String jsonPayloadFile, String expectedResponseFile,
-                                                        String responseDocumentUrl) {
+                                                        String responseDocumentUrl, String testId) {
         ResponseBody responseBody = validatePostSuccess(jsonPayloadFile, apiPath);
-        log.info("responseBody:"+responseBody.prettyPrint());
+        log.info("responseBody"+testId+":"+responseBody.prettyPrint());
         String expectedText = utils.getJsonFromFile(expectedResponseFile);
-        log.info("expectedText:"+expectedText);
+        log.info("expectedText"+testId+":"+expectedText);
 
         JsonPath jsonPath = JsonPath.from(responseBody.asString());
-        log.info("jsonPath:"+jsonPath);
+        log.info("jsonPath"+testId+":"+jsonPath);
         String documentUrl = jsonPath.get(responseDocumentUrl);
         String response = utils.downloadPdfAndParseToString(documentUrl);
-        log.info("response:"+response);
         response = response.replace("\n", "").replace("\r", "");
-        log.info("response:"+response);
+        log.info("response"+testId+":"+response);
         assertTrue(response.contains(expectedText));
     }
 
