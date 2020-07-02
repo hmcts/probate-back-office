@@ -4,16 +4,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
-import uk.gov.hmcts.probate.insights.AppInsights;
-import uk.gov.hmcts.probate.model.ApplicationType;
-import uk.gov.hmcts.probate.model.Constants;
 import uk.gov.hmcts.probate.model.LanguagePreference;
-import uk.gov.hmcts.probate.service.CaveatQueryService;
-import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
-import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
-import uk.gov.service.notify.SendEmailResponse;
 
 import static org.junit.Assert.assertEquals;
 import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
@@ -25,6 +17,7 @@ import static uk.gov.hmcts.probate.model.State.APPLICATION_RECEIVED;
 import static uk.gov.hmcts.probate.model.State.CASE_STOPPED;
 import static uk.gov.hmcts.probate.model.State.CASE_STOPPED_CAVEAT;
 import static uk.gov.hmcts.probate.model.State.CASE_STOPPED_REQUEST_INFORMATION;
+import static uk.gov.hmcts.probate.model.State.CAVEAT_EXTEND;
 import static uk.gov.hmcts.probate.model.State.CAVEAT_RAISED;
 import static uk.gov.hmcts.probate.model.State.CAVEAT_RAISED_SOLS;
 import static uk.gov.hmcts.probate.model.State.DOCUMENTS_RECEIVED;
@@ -32,7 +25,6 @@ import static uk.gov.hmcts.probate.model.State.GENERAL_CAVEAT_MESSAGE;
 import static uk.gov.hmcts.probate.model.State.GRANT_ISSUED;
 import static uk.gov.hmcts.probate.model.State.GRANT_RAISED;
 import static uk.gov.hmcts.probate.model.State.GRANT_REISSUED;
-import static uk.gov.hmcts.probate.model.State.CAVEAT_EXTEND;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
