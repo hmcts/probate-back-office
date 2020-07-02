@@ -8,12 +8,14 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 
+import lombok.extern.slf4j.Slf4j;
 import static org.junit.Assert.assertTrue;
 
-
+@Slf4j
 @RunWith(SerenityRunner.class)
 public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
+    // GoP fields
     private static final String SOLICITOR_INFO1 = "Extracted by Solicitor Firm Name (Ref: 1231-3984-3949-0300) SolAddLn1, SolAddLn2, SolAddLn3, ";
     private static final String SOLICITOR_INFO2 = "SolAddPT, SolAddCounty, KT10 0LA, SolAddCo";
     private static final String SOLICITOR_INFO3 = "Extracted by Solicitor Firm Name (Ref: 1231-3984-3949-0300) SolAddLn1, SolAddLn3, SolAddPT, KT10 0LA, SolAddCo";
@@ -50,10 +52,17 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     private static final String DECEASED_DOD = "Died on 1st January 2000";
     private static final String WATERMARK = "DRAFT COPY - NOT FOR CIRCULATION";
 
+    // Legal statement fields
+    private static final String DECLARATION_CIVIL_WORDING = "proceedings for contempt of court may be brought against the undersigned if it is found that the evidence provided is deliberately untruthful or dishonest, as well as revocation of the grant";
+    private static final String DECLARATION_CRIMINAL_WORDING_SINGLE_EXEC = "criminal proceedings for fraud may be brought against me if I am found to have been deliberately untruthful or dishonest";
+    private static final String LEGAL_STATEMENT = "Legal statement";
+
     private static final String GENERATE_GRANT = "/document/generate-grant";
     private static final String GENERATE_GRANT_DRAFT = "/document/generate-grant-draft";
     private static final String GENERATE_DEPOSIT_RECEIPT= "/document/generate-deposit-receipt";
     private static final String GENERATE_GRANT_DRAFT_REISSUE= "/document/generate-grant-draft-reissue";
+
+    private static final String GENERATE_LEGAL_STATEMENT= "/document/generate-sot";
 
     private static final String DEFAULT_SOLS_PAYLOAD= "solicitorPayloadNotifications.json";
     private static final String DEFAULT_PA_PAYLOAD= "personalPayloadNotifications.json";
@@ -129,6 +138,36 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         String response = utils.downloadPdfAndParseToString(documentUrl);
         response = response.replace("\n", "").replace("\r", "");
         return response;
+    }
+
+    private String generatePdfDocument(String jsonFileName, String path) {
+
+        Response jsonResponse = SerenityRest.given()
+                .relaxedHTTPSValidation()
+                .headers(utils.getHeadersWithUserId())
+                .body(utils.getJsonFromFile(jsonFileName))
+                .when().post(path).andReturn();
+        log.info("json Response: " + jsonResponse.prettyPrint());
+
+
+        JsonPath jsonPath = JsonPath.from(jsonResponse.getBody().asString());
+        log.info("json Path: " + jsonPath.prettyPrint());
+        String documentUrl = jsonPath.get("data.probateSotDocumentsGenerated[0].value.DocumentLink.document_binary_url");
+        String response = utils.downloadPdfAndParseToString(documentUrl);
+        log.info("Response: " + response);
+        response = response.replace("\n", "").replace("\r", "");
+        log.info("Response: " + response);
+        return response;
+    }
+
+    @Test
+    public void verifySuccessForGetPdfLegalStatementProbateWithSingleExecutorSols() {
+        String response = generatePdfDocument(DEFAULT_SOLS_PAYLOAD, GENERATE_LEGAL_STATEMENT);
+
+        assertTrue(response.contains(LEGAL_STATEMENT));
+        assertTrue(response.contains(DECLARATION_CIVIL_WORDING));
+
+        assertTrue(!response.contains(DECLARATION_CRIMINAL_WORDING_SINGLE_EXEC));
     }
 
     @Test
