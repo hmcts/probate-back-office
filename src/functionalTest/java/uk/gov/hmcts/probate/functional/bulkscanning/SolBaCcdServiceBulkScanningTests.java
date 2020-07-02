@@ -1,9 +1,9 @@
 package uk.gov.hmcts.probate.functional.bulkscanning;
 
+import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.ValidatableResponse;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
-import net.serenitybdd.rest.SerenityRest;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -44,7 +44,7 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
 
     private void validateOCRDataPostSuccess(String formName, String bodyText, String containsText,
                                             String warningMessage, int warningSize, int warningItem) {
-        SerenityRest.given()
+        RestAssured.given()
                 .relaxedHTTPSValidation()
                 .headers(utils.getHeaders())
                 .body(bodyText)
@@ -56,7 +56,7 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
     }
 
     private void validateOCRDataPostError(String bodyText) {
-        SerenityRest.given()
+        RestAssured.given()
                 .relaxedHTTPSValidation()
                 .headers(utils.getHeaders())
                 .body(bodyText)
@@ -65,7 +65,7 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
     }
 
     private void transformExceptionPostSuccess(String bodyText, String containsText) {
-        SerenityRest.given()
+        RestAssured.given()
                 .relaxedHTTPSValidation()
                 .headers(utils.getHeaders())
                 .body(bodyText)
@@ -75,7 +75,7 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
     }
 
     private void updateCaseFromExceptionPostSuccess(String bodyText, String containsText) {
-        ValidatableResponse response = SerenityRest.given()
+        ValidatableResponse response = RestAssured.given()
                 .relaxedHTTPSValidation()
                 .headers(utils.getHeaders())
                 .body(bodyText)
@@ -85,7 +85,7 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
     }
 
     private JsonPath fetchJsonPathUpdatedCaveatDetailsFromCaseFromException(String bodyText) throws IOException {
-        ValidatableResponse response = SerenityRest.given()
+        ValidatableResponse response = RestAssured.given()
                 .relaxedHTTPSValidation()
                 .headers(utils.getHeaders())
                 .body(bodyText)
@@ -282,7 +282,7 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
     }
 
     private void transformExceptionPostUnprocessed(String bodyText, String containsText) {
-        SerenityRest.given()
+        RestAssured.given()
             .relaxedHTTPSValidation()
             .headers(utils.getHeaders())
             .body(bodyText)

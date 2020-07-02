@@ -1,9 +1,9 @@
 package uk.gov.hmcts.probate.functional.documents;
 
+import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
-import net.serenitybdd.rest.SerenityRest;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
@@ -108,7 +108,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     }
 
     private void validatePostSuccess(String jsonFileName, String path) {
-        SerenityRest.given()
+        RestAssured.given()
                 .relaxedHTTPSValidation()
                 .headers(utils.getHeaders())
                 .body(utils.getJsonFromFile(jsonFileName))
@@ -118,7 +118,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     private String generateDocument(String jsonFileName, String path) {
 
-        Response jsonResponse = SerenityRest.given()
+        Response jsonResponse = RestAssured.given()
                 .relaxedHTTPSValidation()
                 .headers(utils.getHeadersWithUserId())
                 .body(utils.getJsonFromFile(jsonFileName))

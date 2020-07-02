@@ -1,8 +1,8 @@
 package uk.gov.hmcts.probate.functional.printservice;
 
+import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
-import net.serenitybdd.rest.SerenityRest;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
@@ -15,7 +15,7 @@ public class SolCcdServicePrintServiceTests extends IntegrationTestBase {
 
     @Test
     public void verifySuccessForGetPrintTemplateDocuments() {
-        Response response = SerenityRest.given()
+        Response response = RestAssured.given()
                 .relaxedHTTPSValidation()
                 .headers(utils.getHeadersWithUserId())
                 .body(utils.getJsonFromFile("success.printCaseDetails.json")).
@@ -29,7 +29,7 @@ public class SolCcdServicePrintServiceTests extends IntegrationTestBase {
 
     @Test
     public void verifySolsTemplateDetails() {
-        Response response = SerenityRest.given().relaxedHTTPSValidation()
+        Response response = RestAssured.given().relaxedHTTPSValidation()
                 .headers(utils.getHeadersWithUserId())
                 .when().get("/template/case-details/sol");
 
@@ -59,7 +59,7 @@ public class SolCcdServicePrintServiceTests extends IntegrationTestBase {
 
     @Test
     public void verifyPaTemplateDetails() {
-        Response response = SerenityRest.given().relaxedHTTPSValidation()
+        Response response = RestAssured.given().relaxedHTTPSValidation()
                 .headers(utils.getHeadersWithUserId())
                 .when().get("/template/case-details/pa");
 

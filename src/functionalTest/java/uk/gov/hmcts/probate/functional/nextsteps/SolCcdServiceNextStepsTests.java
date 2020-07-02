@@ -8,7 +8,7 @@ import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
-import static net.serenitybdd.rest.SerenityRest.given;
+import static io.restassured.RestAssured.given;
 
 
 @RunWith(SpringIntegrationSerenityRunner.class)

@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.functional.hardstops;
 
+
 import io.restassured.response.Response;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
 import org.junit.Test;
@@ -8,8 +9,8 @@ import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
-import static net.serenitybdd.rest.SerenityRest.given;
 import static org.hamcrest.Matchers.equalToIgnoringCase;
+import static io.restassured.RestAssured.given;
 
 @RunWith(SpringIntegrationSerenityRunner.class)
 public class SolCcdServiceWillUpdateHardStopTests extends IntegrationTestBase {

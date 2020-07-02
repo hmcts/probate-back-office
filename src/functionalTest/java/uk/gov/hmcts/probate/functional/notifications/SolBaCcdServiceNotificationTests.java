@@ -1,10 +1,10 @@
 package uk.gov.hmcts.probate.functional.notifications;
 
+import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import io.restassured.response.ResponseBody;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
-import net.serenitybdd.rest.SerenityRest;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -168,7 +168,7 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     }
 
     private ResponseBody validatePostSuccess(String jsonFileName, String path) {
-        Response response = SerenityRest.given()
+        Response response = RestAssured.given()
                 .relaxedHTTPSValidation()
                 .headers(utils.getHeadersWithUserId())
                 .body(utils.getJsonFromFile(jsonFileName))
@@ -233,7 +233,7 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
 
     private String generateDocument(String jsonFileName, String path, int placeholder) {
 
-        Response jsonResponse = SerenityRest.given()
+        Response jsonResponse = RestAssured.given()
                 .relaxedHTTPSValidation()
                 .headers(utils.getHeadersWithUserId())
                 .body(utils.getJsonFromFile(jsonFileName))
