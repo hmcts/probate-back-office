@@ -88,21 +88,26 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
 
     @Test
     public void verifyBulkScanPaperFormGOPGrantReceivedNotificationEmailText() {
-        ResponseBody responseBody = validatePostSuccess("grantRaisedPaperBulkScanPayload.json", GRANT_RAISED);
-        log.info("responseBody:"+responseBody.prettyPrint());
-        String expectedApplicationRecievedText = utils.getJsonFromFile("grantRaisedPaperBulkScanEmailExpectedResponse.txt");
-        log.info("expectedApplicationRecievedText:"+expectedApplicationRecievedText);
-        expectedApplicationRecievedText = expectedApplicationRecievedText.replace("\n", "").replace("\r", "");
-        log.info("expectedApplicationRecievedText:"+expectedApplicationRecievedText);
+        postNotificationEmailAndVerifyContents(GRANT_RAISED, "grantRaisedPaperBulkScanPayload.json", "grantRaisedPaperBulkScanEmailExpectedResponse.txt",
+            EMAIL_NOTIFICATION_URL);
+    }
 
-        JsonPath jsonPath = JsonPath.from(responseBody.asString());
-        log.info("jsonPath:"+jsonPath);
-        String documentUrl = jsonPath.get(EMAIL_NOTIFICATION_URL);
-        String response = utils.downloadPdfAndParseToString(documentUrl);
-        log.info("response:"+response);
-        response = response.replace("\n", "").replace("\r", "");
-        log.info("response:"+response);
-        assertTrue(response.contains(expectedApplicationRecievedText));
+    @Test
+    public void verifySolicitorBulkScanPaperFormGOPGrantReceivedNotificationEmailText() {
+        postNotificationEmailAndVerifyContents(GRANT_RAISED, "grantRaisedPaperBulkScanSolicitorPayload.json", "grantRaisedPaperBulkScanEmailExpectedResponse.txt",
+            EMAIL_NOTIFICATION_URL);
+    }
+
+    @Test
+    public void verifyBulkScanPaperFormGOPGrantReceivedNotificationEmailTextWelsh() {
+        postNotificationEmailAndVerifyContents(GRANT_RAISED, "grantRaisedPaperBulkScanPayloadWelsh.json", "grantRaisedPaperBulkScanEmailExpectedResponse.txt",
+            EMAIL_NOTIFICATION_URL);
+    }
+
+    @Test
+    public void verifySolicitorBulkScanPaperFormGOPGrantReceivedNotificationEmailTextWelsh() {
+        postNotificationEmailAndVerifyContents(GRANT_RAISED, "grantRaisedPaperBulkScanSolicitorPayloadWelsh.json", "grantRaisedPaperBulkScanEmailExpectedResponse.txt",
+            EMAIL_NOTIFICATION_URL);
     }
 
     @Test
@@ -252,12 +257,29 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
         assertTrue(document.contains("Declaration"));
     }
 
-    private String generateDocument(String jsonFileName, String path, int placeholder) {
+    private void postNotificationEmailAndVerifyContents(String apiPath, String jsonPayloadFile, String expectedResponseFile,
+                                                        String responseDocumentUrl) {
+        ResponseBody responseBody = validatePostSuccess(jsonPayloadFile, apiPath);
+        log.info("responseBody:"+responseBody.prettyPrint());
+        String expectedText = utils.getJsonFromFile(expectedResponseFile);
+        log.info("expectedText:"+expectedText);
+
+        JsonPath jsonPath = JsonPath.from(responseBody.asString());
+        log.info("jsonPath:"+jsonPath);
+        String documentUrl = jsonPath.get(responseDocumentUrl);
+        String response = utils.downloadPdfAndParseToString(documentUrl);
+        log.info("response:"+response);
+        response = response.replace("\n", "").replace("\r", "");
+        log.info("response:"+response);
+        assertTrue(response.contains(expectedText));
+    }
+
+    private String getProbateDocumentsGeneratedText(String payload, String path, int placeholder) {
 
         Response jsonResponse = SerenityRest.given()
                 .relaxedHTTPSValidation()
                 .headers(utils.getHeadersWithUserId())
-                .body(utils.getJsonFromFile(jsonFileName))
+                .body(utils.getJsonFromFile(payload))
                 .when().post(path).andReturn();
 
         JsonPath jsonPath = JsonPath.from(jsonResponse.getBody().asString());

@@ -29,6 +29,7 @@
       "boSendToBulkPrint": "No",
       "bulkScanCaseReference":"1577986967061368",
       "paperForm" : "Yes",
+      "languagePreferenceWelsh":"Yes",
       "outsideUKGrantCopies": null,
       "applicationType": "Personal",
       "deceasedAddress": {
