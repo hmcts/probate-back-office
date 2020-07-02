@@ -95,7 +95,7 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     @Test
     public void verifySolicitorBulkScanPaperFormGOPGrantReceivedNotificationEmailText() {
         postNotificationEmailAndVerifyContents(GRANT_RAISED, "grantRaisedPaperBulkScanSolicitorPayload.json", "grantRaisedPaperBulkScanEmailExpectedSolicitorResponse.txt",
-            EMAIL_NOTIFICATION_URL "sol");
+            EMAIL_NOTIFICATION_URL, "sol");
     }
 
     @Test
