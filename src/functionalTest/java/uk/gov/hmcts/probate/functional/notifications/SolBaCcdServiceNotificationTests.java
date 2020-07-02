@@ -87,10 +87,10 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyDigitalGOPApplicationReceivedNotificationEmailText() {
-        ResponseBody responseBody = validatePostSuccess("paperApplicationRecievedPayload.json", APPLICATION_RECEIVED);
+    public void verifyBulkScanPaperFormGOPApplicationReceivedNotificationEmailText() {
+        ResponseBody responseBody = validatePostSuccess("applicationRecievedPaperBulkScanPayload.json", APPLICATION_RECEIVED);
         log.info("responseBody:"+responseBody.prettyPrint());
-        String expectedApplicationRecievedText = utils.getJsonFromFile("paperApplicationRecievedEmailResponse.txt");
+        String expectedApplicationRecievedText = utils.getJsonFromFile("applicationRecievedPaperBulkScanEmailExpectedResponse.txt");
         log.info("expectedApplicationRecievedText:"+expectedApplicationRecievedText);
         expectedApplicationRecievedText = expectedApplicationRecievedText.replace("\n", "").replace("\r", "");
         log.info("expectedApplicationRecievedText:"+expectedApplicationRecievedText);

@@ -826,7 +826,7 @@ public class NotificationServiceTest {
         notificationService.sendEmail(GRANT_RAISED, personalGrantRaisedOxfordPaper);
 
         verify(notificationClient).sendEmail(
-            eq("pa-grant-raised-paper"),
+            eq("pa-grant-raised-paper-bulk-scan"),
             eq("personal@test.com"),
             any(),
             isNull());
@@ -841,7 +841,7 @@ public class NotificationServiceTest {
         notificationService.sendEmail(GRANT_RAISED, solicitorGrantRaisedOxfordPaper);
 
         verify(notificationClient).sendEmail(
-            eq("sol-grant-raised-paper"),
+            eq("sol-grant-raised-paper-bulk-scan"),
             eq("solicitor@test.com"),
             any(),
             eq("1234-5678-9012"));

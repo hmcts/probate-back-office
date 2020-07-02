@@ -55,7 +55,7 @@ public class TemplateService {
                 return emailTemplates.getRedeclarationSot();
             case GRANT_RAISED:
                 if (YES.equalsIgnoreCase(paperForm)) {
-                    return emailTemplates.getGrantRaisedPaperForm();
+                    return emailTemplates.getGrantRaisedPaperFormBulkScan();
                 } else {
                     return emailTemplates.getGrantRaised();
                 }

@@ -316,11 +316,11 @@ public class TemplateServiceTest {
 
         String response = templateService.getTemplateId(GRANT_RAISED, PERSONAL, CTSC,
             LanguagePreference.ENGLISH, YES);
-        assertEquals("pa-grant-raised-paper", response);
+        assertEquals("pa-grant-raised-paper-bulk-scan", response);
 
         response = templateService.getTemplateId(GRANT_RAISED, SOLICITOR, CTSC,
             LanguagePreference.ENGLISH, YES);
-        assertEquals("sol-grant-raised-paper", response);
+        assertEquals("sol-grant-raised-paper-bulk-scan", response);
     }
 
 }
