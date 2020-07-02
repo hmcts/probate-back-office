@@ -262,11 +262,13 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
         ResponseBody responseBody = validatePostSuccess(jsonPayloadFile, apiPath);
         log.info("responseBody"+testId+":"+responseBody.prettyPrint());
         String expectedText = utils.getJsonFromFile(expectedResponseFile);
+        expectedText = expectedText.replace("\n", "").replace("\r", "");
         log.info("expectedText"+testId+":"+expectedText);
 
         JsonPath jsonPath = JsonPath.from(responseBody.asString());
         log.info("jsonPath"+testId+":"+jsonPath);
         String documentUrl = jsonPath.get(responseDocumentUrl);
+        log.info("responseDocumentUrl"+testId+":"+responseDocumentUrl);
         String response = utils.downloadPdfAndParseToString(documentUrl);
         response = response.replace("\n", "").replace("\r", "");
         log.info("response"+testId+":"+response);
