@@ -97,7 +97,7 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
 
         JsonPath jsonPath = JsonPath.from(responseBody.asString());
         log.info("jsonPath:"+jsonPath);
-        String documentUrl = jsonPath.get("DocumentLink.document_binary_url");
+        String documentUrl = jsonPath.get(EMAIL_NOTIFICATION_URL);
         String response = utils.downloadPdfAndParseToString(documentUrl);
         log.info("response:"+response);
         response = response.replace("\n", "").replace("\r", "");
