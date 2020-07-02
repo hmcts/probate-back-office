@@ -142,6 +142,8 @@ public class NotificationServiceTest {
     private CaseDetails solicitorGrantRaisedOxford;
     private CaseDetails personalGrantRaisedOxfordPaper;
     private CaseDetails solicitorGrantRaisedOxfordPaper;
+    private CaseDetails personalGrantRaisedOxfordPaperWelsh;
+    private CaseDetails solicitorGrantRaisedOxfordPaperWelsh;
 
     private ImmutableList.Builder<ReturnedCaseDetails> excelaCaseData = new ImmutableList.Builder<>();
     private ImmutableList.Builder<ReturnedCaseDetails> excelaCaseDataNoWillReference = new ImmutableList.Builder<>();
@@ -365,6 +367,15 @@ public class NotificationServiceTest {
             .deceasedDateOfDeath(LocalDate.of(2000, 12, 12))
             .build(), LAST_MODIFIED, ID);
 
+        personalGrantRaisedOxfordPaperWelsh = new CaseDetails(CaseData.builder()
+            .paperForm(YES)
+            .applicationType(PERSONAL)
+            .registryLocation("Oxford")
+            .primaryApplicantEmailAddress("personal@test.com")
+            .deceasedDateOfDeath(LocalDate.of(2000, 12, 12))
+            .languagePreferenceWelsh("Yes")
+            .build(), LAST_MODIFIED, ID);
+
         solicitorGrantRaisedOxfordPaper = new CaseDetails(CaseData.builder()
             .paperForm(YES)
             .applicationType(SOLICITOR)
@@ -372,6 +383,16 @@ public class NotificationServiceTest {
             .solsSolicitorEmail("solicitor@test.com")
             .solsSolicitorAppReference("1234-5678-9012")
             .deceasedDateOfDeath(LocalDate.of(2000, 12, 12))
+            .build(), LAST_MODIFIED, ID);
+
+        solicitorGrantRaisedOxfordPaperWelsh = new CaseDetails(CaseData.builder()
+            .paperForm(YES)
+            .applicationType(SOLICITOR)
+            .registryLocation("Oxford")
+            .solsSolicitorEmail("solicitor@test.com")
+            .solsSolicitorAppReference("1234-5678-9012")
+            .deceasedDateOfDeath(LocalDate.of(2000, 12, 12))
+            .languagePreferenceWelsh("Yes")
             .build(), LAST_MODIFIED, ID);
 
         excelaCaseData.add(new ReturnedCaseDetails(CaseData.builder()
@@ -842,6 +863,36 @@ public class NotificationServiceTest {
 
         verify(notificationClient).sendEmail(
             eq("sol-grant-raised-paper-bulk-scan"),
+            eq("solicitor@test.com"),
+            any(),
+            eq("1234-5678-9012"));
+
+        verify(pdfManagementService).generateAndUpload(any(SentEmail.class), eq(SENT_EMAIL));
+    }
+
+    @Test
+    public void sendGrantRaisedEmailToPersonalApplicantFromOxfordPaperFormWelsh()
+        throws NotificationClientException, BadRequestException {
+
+        notificationService.sendEmail(GRANT_RAISED, personalGrantRaisedOxfordPaperWelsh);
+
+        verify(notificationClient).sendEmail(
+            eq("pa-grant-raised-paper-bulk-scan-welsh"),
+            eq("personal@test.com"),
+            any(),
+            isNull());
+
+        verify(pdfManagementService).generateAndUpload(any(SentEmail.class), eq(SENT_EMAIL));
+    }
+
+    @Test
+    public void sendGrantRaisedEmailToSolicitorApplicantFromOxfordPaperFormWelsh()
+        throws NotificationClientException, BadRequestException {
+
+        notificationService.sendEmail(GRANT_RAISED, solicitorGrantRaisedOxfordPaperWelsh);
+
+        verify(notificationClient).sendEmail(
+            eq("sol-grant-raised-paper-bulk-scan-welsh"),
             eq("solicitor@test.com"),
             any(),
             eq("1234-5678-9012"));
