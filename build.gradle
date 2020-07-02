@@ -287,7 +287,10 @@ dependencies {
   testCompile group: 'org.pdfbox', name: 'com.springsource.org.pdfbox', version: '0.7.3'
   testCompile group: 'org.springframework.security', name: 'spring-security-test', version: versions.springSecurityVersion
   testCompile group: 'com.mitchellbosecke', name: 'pebble', version: '2.4.0'
-
+  testCompile "org.junit.jupiter:junit-jupiter-api:5.6.2"
+  testRuntime "org.junit.jupiter:junit-jupiter-engine:5.6.2"
+  testImplementation "org.junit.jupiter:junit-jupiter-api:5.6.2"
+   
   testSmokeCompile group: 'io.rest-assured', name: 'rest-assured', version: versions.restAssured
   testSmokeCompile sourceSets.main.runtimeClasspath
   testSmokeCompile sourceSets.test.runtimeClasspath
