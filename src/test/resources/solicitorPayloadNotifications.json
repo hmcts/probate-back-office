@@ -85,9 +85,9 @@
           "id": "161186cd-24ee-4e37-8793-b388ebc94444",
           "value": {
             "DocumentLink": {
-              "document_url": "http://localhost:8080/documents/b533ddf6-3695-45a8-8546-aab63ff16093",
-              "document_filename": "legalStatement.pdf",
-              "document_binary_url": "http://localhost:8080/documents/b533ddf6-3695-45a8-8546-aab63ff16093/binary"
+              "document_url": "http://localhost:8080/documents/e1f4f972-1514-4247-bdb1-964998ef3710",
+              "document_filename": "legal_Statement.pdf",
+              "document_binary_url": "http://localhost:8080/documents/e1f4f972-1514-4247-bdb1-964998ef3710/binary"
             },
             "DocumentType": "legalStatement",
             "DocumentFileName": null,
