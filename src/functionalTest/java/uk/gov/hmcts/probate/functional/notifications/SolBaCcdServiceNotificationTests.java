@@ -27,8 +27,6 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     private static final String INFORMATION_REQUEST_DEFAULT_VALUES = "/notify/request-information-default-values";
     private static final String INFORMATION_REQUEST = "/notify/stopped-information-request";
     private static final String GRANT_RAISED = "/notify/grant-received";
-    private static final String APPLICATION_RECEIVED = "/notify/application-received";
-    private static final String REDEC_SOT_URL = "/notify/redeclaration-sot";
 
     private static final String BIRMINGHAM_NO = "0121 681 3401";
 
