@@ -80,6 +80,22 @@
           }
         }
       ],
+      "probateSotDocumentsGenerated": [
+        {
+          "id": "161186cd-24ee-4e37-8793-b388ebc94444",
+          "value": {
+            "DocumentLink": {
+              "document_url": "http://localhost:8080/documents/b533ddf6-3695-45a8-8546-aab63ff16093",
+              "document_filename": "legalStatement.pdf",
+              "document_binary_url": "http://localhost:8080/documents/b533ddf6-3695-45a8-8546-aab63ff16093/binary"
+            },
+            "DocumentType": "legalStatement",
+            "DocumentFileName": null,
+            "DocumentDateAdded": "2018-08-03",
+            "DocumentGeneratedBy": "30"
+          }
+        }
+      ],
       "solsSolicitorEmail": "solicitor@hmcts-test.com",
       "deceasedDomicileInEngWales": "Yes",
       "ihtNetValue": "800000",
