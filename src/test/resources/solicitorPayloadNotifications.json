@@ -2,7 +2,7 @@
   "case_details": {
     "id": 1528365719153338,
     "jurisdiction": "PROBATE",
-    "state": "CaseCreated",
+    "state": "SolAppCreated",
     "case_type_id": "GrantOfRepresentation",
     "created_date": [
       2018,
