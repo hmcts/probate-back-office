@@ -133,9 +133,9 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
                 .body(utils.getJsonFromFile(jsonFileName))
                 .when().post(path).andReturn();
 
-        log.info("json Response: " + jsonResponse.prettyPrint());
+        //log.info("json Response: " + jsonResponse.prettyPrint());
         JsonPath jsonPath = JsonPath.from(jsonResponse.getBody().asString());
-        log.info("json Path: " + jsonPath.prettyPrint());
+        //log.info("json Path: " + jsonPath.prettyPrint());
         String documentUrl = jsonPath.get("data.probateDocumentsGenerated[0].value.DocumentLink.document_binary_url");
         String response = utils.downloadPdfAndParseToString(documentUrl);
         response = response.replace("\n", "").replace("\r", "");
