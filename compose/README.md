@@ -181,6 +181,8 @@ version: 2.0.14
 ```
 https://probate-frontend-pr-1218.service.core-compute-preview.internal/start-eligibility
 ```
+##### VPN and proxy will be needed to access this
+
 #####REMEMBER
 ######Remove your unwanted FE/ORCH PRs when you have finished QA
 
@@ -207,6 +209,18 @@ version: 2.0.14
 * Build the 2 PRs above
 * For probate-caveats-frontend access, go to (use the pr number you just created for fe):
 ```
-https://probate-caveats-fe-pr-276.service.core-compute-preview.internal/caveats/start-apply```
+https://probate-caveats-fe-pr-276.service.core-compute-preview.internal/caveats/start-apply
+```
+##### VPN and proxy will be needed to access this
+
+## PR Health urls
+```
+https://probate-frontend-pr-1218.service.core-compute-preview.internal/health
+https://probate-caveats-fe-pr-276.service.core-compute-preview.internal/caveats/health
+http://probate-orchestrator-service-pr-334.service.core-compute-preview.internal/health
+http://probate-submit-service-pr-334.service.core-compute-preview.internal/health
+http://probate-submit-service-pr-334.service.core-compute-preview.internal/health
+http://probate-business-service-pr-334.service.core-compute-preview.internal/health
+http://probate-back-office-pr-1101.service.core-compute-preview.internal/health
 ```
 
