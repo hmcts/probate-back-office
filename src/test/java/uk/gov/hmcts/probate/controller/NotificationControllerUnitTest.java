@@ -39,6 +39,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.*;
@@ -94,6 +95,7 @@ public class NotificationControllerUnitTest {
 
 
     private CallbackRequest callbackRequest;
+    private CallbackResponse callbackResponse;
     private Document document;
 
     @Test
@@ -162,6 +164,10 @@ public class NotificationControllerUnitTest {
             .documentLink(DocumentLink.builder().documentUrl("url").documentFilename("file").documentBinaryUrl("binary").build())
             .documentType(DocumentType.DIGITAL_GRANT)
             .build();
+        callbackResponse = CallbackResponse.builder().errors(Collections.EMPTY_LIST).build();
+        when(eventValidationService.validateEmailRequest(any(), any())).thenReturn(callbackResponse);
+        when(notificationService.sendEmail(any(), any())).thenReturn(document);
+
     }
 
     private void setUpMocks(State state) throws NotificationClientException {
