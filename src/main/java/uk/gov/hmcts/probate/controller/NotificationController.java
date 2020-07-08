@@ -50,7 +50,7 @@ import java.util.Map;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
-import static uk.gov.hmcts.probate.model.Constants.NO;
+import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.State.APPLICATION_RECEIVED;
 import static uk.gov.hmcts.probate.model.State.CASE_STOPPED;
 import static uk.gov.hmcts.probate.model.State.CASE_STOPPED_CAVEAT;
@@ -104,9 +104,9 @@ public class NotificationController {
 
     @PostMapping(path = "/case-stopped")
     public ResponseEntity<CallbackResponse> sendCaseStoppedNotification(
-            @Validated({EmailAddressNotifyValidationRule.class})
-            @RequestBody CallbackRequest callbackRequest)
-            throws NotificationClientException {
+        @Validated({EmailAddressNotifyValidationRule.class})
+        @RequestBody CallbackRequest callbackRequest)
+        throws NotificationClientException {
 
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
         CaseData caseData = caseDetails.getData();
@@ -120,11 +120,11 @@ public class NotificationController {
             response = eventValidationService.validateEmailRequest(callbackRequest, emailAddressNotifyValidationRules);
             if (response.getErrors().isEmpty()) {
                 log.info("Initiate call to send caveat email for case id {} ",
-                        callbackRequest.getCaseDetails().getId());
+                    callbackRequest.getCaseDetails().getId());
                 document = notificationService.sendEmail(CASE_STOPPED_CAVEAT, caseDetails);
                 documents.add(document);
                 log.info("Successful response for caveat email for case id {} ",
-                        callbackRequest.getCaseDetails().getId());
+                    callbackRequest.getCaseDetails().getId());
             }
         } else if (caseData.isCaveatStopNotificationRequested() && !caseData.isCaveatStopEmailNotificationRequested()) {
 
@@ -132,33 +132,33 @@ public class NotificationController {
             documents.add(coversheet);
 
             log.info("Initiate call to generate Caveat stopped document for case id {} ",
-                    callbackRequest.getCaseDetails().getId());
+                callbackRequest.getCaseDetails().getId());
             Map<String, Object> placeholders = gorDocmosisService.caseDataForStoppedMatchedCaveat(callbackRequest.getCaseDetails());
             Document caveatRaisedDoc =
-                    pdfManagementService.generateDocmosisDocumentAndUpload(placeholders, DocumentType
-                            .CAVEAT_STOPPED);
+                pdfManagementService.generateDocmosisDocumentAndUpload(placeholders, DocumentType
+                    .CAVEAT_STOPPED);
             documents.add(caveatRaisedDoc);
             log.info("Successful response for caveat stopped document for case id {} ", callbackRequest.getCaseDetails().getId());
 
             if (caseData.isCaveatStopSendToBulkPrintRequested()) {
                 log.info("Initiate call to bulk print for Caveat stopped document and coversheet for case id {} ",
-                        callbackRequest.getCaseDetails().getId());
+                    callbackRequest.getCaseDetails().getId());
                 SendLetterResponse sendLetterResponse =
                     bulkPrintService.sendToBulkPrintForGrant(callbackRequest, caveatRaisedDoc, coversheet);
                 letterId = sendLetterResponse != null
-                        ? sendLetterResponse.letterId.toString()
-                        : null;
+                    ? sendLetterResponse.letterId.toString()
+                    : null;
                 response = eventValidationService.validateBulkPrintResponse(letterId, bulkPrintValidationRules);
             }
         } else {
             response = eventValidationService.validateEmailRequest(callbackRequest, emailAddressNotifyValidationRules);
             if (response.getErrors().isEmpty()) {
                 log.info("Initiate call to notify applicant for case id {} ",
-                        callbackRequest.getCaseDetails().getId());
+                    callbackRequest.getCaseDetails().getId());
                 document = notificationService.sendEmail(CASE_STOPPED, caseDetails);
                 documents.add(document);
                 log.info("Successful response from notify for case id {} ",
-                        callbackRequest.getCaseDetails().getId());
+                    callbackRequest.getCaseDetails().getId());
             }
         }
         if (response.getErrors().isEmpty()) {
@@ -169,16 +169,16 @@ public class NotificationController {
 
     @PostMapping(path = "/request-information-default-values")
     public ResponseEntity<CallbackResponse> requestInformationDefaultValues(
-            @RequestBody CallbackRequest callbackRequest) {
+        @RequestBody CallbackRequest callbackRequest) {
         CallbackResponse callbackResponse = callbackResponseTransformer.defaultRequestInformationValues(callbackRequest);
         return ResponseEntity.ok(callbackResponse);
     }
 
     @PostMapping(path = "/documents-received")
     public ResponseEntity<CallbackResponse> sendDocumentReceivedNotification(
-            @Validated({EmailAddressNotificationValidationRule.class})
-            @RequestBody CallbackRequest callbackRequest)
-            throws NotificationClientException {
+        @Validated({EmailAddressNotificationValidationRule.class})
+        @RequestBody CallbackRequest callbackRequest)
+        throws NotificationClientException {
         return ResponseEntity.ok(documentsReceivedNotificationService.handleDocumentReceivedNotification(callbackRequest));
     }
 
@@ -194,16 +194,16 @@ public class NotificationController {
 
     @PostMapping(path = "/grant-received")
     public ResponseEntity<CallbackResponse> sendGrantReceivedNotification(
-            @Validated({EmailAddressNotificationValidationRule.class})
-            @RequestBody CallbackRequest callbackRequest) throws NotificationClientException {
+        @Validated({EmailAddressNotificationValidationRule.class})
+        @RequestBody CallbackRequest callbackRequest) throws NotificationClientException {
         return ResponseEntity.ok(raiseGrantOfRepresentationNotificationService.handleGrantReceivedNotification(callbackRequest));
     }
 
     @PostMapping(path = "/start-grant-delayed-notify-period", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<CallbackResponse> startDelayedNotificationPeriod(
-            @RequestBody CallbackRequest callbackRequest,
-            BindingResult bindingResult,
-            HttpServletRequest request) {
+        @RequestBody CallbackRequest callbackRequest,
+        BindingResult bindingResult,
+        HttpServletRequest request) {
         logRequest(request.getRequestURI(), callbackRequest);
         log.info("start-delayed-notify-period started");
         notificationService.startGrantDelayNotificationPeriod(callbackRequest.getCaseDetails());
@@ -267,7 +267,7 @@ public class NotificationController {
     }
 
     private boolean isDigitalApplication(CaseData caseData) {
-        return  NO.equalsIgnoreCase(caseData.getPaperForm());
+        return !YES.equalsIgnoreCase(caseData.getPaperForm());
     }
 
 }

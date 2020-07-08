@@ -62,6 +62,12 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     }
 
     @Test
+    public void verifyPaperApplicationReceivedNotificationNotSentForNullInPaperForm() {
+        ResponseBody responseBody = validatePostSuccess("paperApplicationRecievedPayloadForCitizen.json", APPLICATION_RECEIVED);
+        assertTrue(!responseBody.asString().contains("DocumentLink"));
+
+    }
+    @Test
     public void verifySolicitorDocumentsReceivedShouldReturnOkResponseCode() {
         validatePostSuccess("solicitorPayloadNotifications.json", DOCUMENTS_RECEIVED);
     }
