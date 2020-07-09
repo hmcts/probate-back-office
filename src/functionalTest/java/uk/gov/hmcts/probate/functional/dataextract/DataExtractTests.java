@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.functional.dataextract;
 
+import io.restassured.RestAssured;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
 import net.serenitybdd.rest.SerenityRest;
 import org.junit.Test;
@@ -23,7 +24,7 @@ public class DataExtractTests extends IntegrationTestBase {
 
     @Test
     public void verifyValidRequestReturnsOkStatusForIronMountain() {
-        SerenityRest.given().relaxedHTTPSValidation().headers(utils.getHeaders(email,
+        RestAssured.given().relaxedHTTPSValidation().headers(utils.getHeaders(email,
                 password, id))
                 .when()
                 .post(IRONMOUNTAIN_URL)
@@ -32,7 +33,7 @@ public class DataExtractTests extends IntegrationTestBase {
 
     @Test
     public void verifyValidDateRequestReturnsOkStatusForIronMountain() {
-        SerenityRest.given().relaxedHTTPSValidation().headers(utils.getHeaders(email,
+        RestAssured.given().relaxedHTTPSValidation().headers(utils.getHeaders(email,
                 password, id))
                 .when()
                 .post(IRONMOUNTAIN_URL + "/2019-02-03")
@@ -41,7 +42,7 @@ public class DataExtractTests extends IntegrationTestBase {
 
     @Test
     public void verifyIncorrectDateFormatReturnsBadRequestForIronMountain() {
-        SerenityRest.given().relaxedHTTPSValidation().headers(utils.getHeaders(email,
+        RestAssured.given().relaxedHTTPSValidation().headers(utils.getHeaders(email,
                 password, id))
                 .when()
                 .post(IRONMOUNTAIN_URL + "/2019-2-2")
@@ -50,7 +51,7 @@ public class DataExtractTests extends IntegrationTestBase {
 
     @Test
     public void verifyValidRequestReturnsOkStatusForExcela() {
-        SerenityRest.given().relaxedHTTPSValidation().headers(utils.getHeaders(email,
+        RestAssured.given().relaxedHTTPSValidation().headers(utils.getHeaders(email,
                 password, id))
                 .when()
                 .post(EXCELA_URL)
@@ -59,7 +60,7 @@ public class DataExtractTests extends IntegrationTestBase {
 
     @Test
     public void verifyValidDateRequestReturnsOkStatusForExcela() {
-        SerenityRest.given().relaxedHTTPSValidation().headers(utils.getHeaders(email,
+        RestAssured.given().relaxedHTTPSValidation().headers(utils.getHeaders(email,
                 password, id))
                 .when()
                 .post(EXCELA_URL + "/2019-02-03")
@@ -68,7 +69,7 @@ public class DataExtractTests extends IntegrationTestBase {
 
     @Test
     public void verifyIncorrectDateFormatReturnsBadRequestForExcela() {
-        SerenityRest.given().relaxedHTTPSValidation().headers(utils.getHeaders(email,
+        RestAssured.given().relaxedHTTPSValidation().headers(utils.getHeaders(email,
                 password, id))
                 .when()
                 .post(EXCELA_URL + "/2019-2-2")
