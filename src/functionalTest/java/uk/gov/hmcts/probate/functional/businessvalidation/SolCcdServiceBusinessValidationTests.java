@@ -216,14 +216,12 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         validatePostSuccess("solicitorPayloadResolveStop.json", RESOLVE_STOP_URL);
     }
 
-    @Ignore
     @Test
     public void verifyRequestSuccessForRedeclarationCompleteWithStateChange() {
         validatePostSuccess("personalPayloadNotifications.json", REDEC_COMPLETE);
     }
 
-    @Ignore
-    @Test
+     @Test
     public void verifyRequestSuccessForRedeclarationCompleteWithoutStateChange() {
         validatePostSuccess("payloadWithResponseRecorded.json", REDEC_COMPLETE);
     }
