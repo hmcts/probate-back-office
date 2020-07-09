@@ -99,6 +99,7 @@
       "boEmailGrantReissuedNotification": "Yes",
       "boCaveatStopSendToBulkPrint": "Yes",
       "boGrantReissueSendToBulkPrint": "Yes",
+      "probateSotDocumentsGenerated": [ ],
       "boEmailRequestInfoNotification": "No",
       "boRequestInfoSendToBulkPrint": "Yes",
       "boAssembleLetterSendToBulkPrint": "Yes",
