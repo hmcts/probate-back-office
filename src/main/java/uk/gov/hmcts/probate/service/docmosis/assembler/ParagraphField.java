@@ -26,6 +26,7 @@ public enum ParagraphField {
     IHT205_GROSS("IHT205GrossEstateOver", "IHT - gross estate over 325k iht205", null),
     IHT217_MISSING("IHT217Miss", "IHT - IHT217 missing", null),
     IHT400("IHT400", "IHT - IHT400", null),
+    MISS_INFO_FEE("MissInfoFee", "Missing fee amount", null),
     MISS_INFO_WILL_OR_DOCICIL("MissInfoWill", "Original Will or Codicil", "willOrCodicil"),
     DATE_OF_REQUEST("MissInfoAwaitResponse", "Date of request", "dateOfRequest"),
     MISS_INFO_ALIAS("MissInfoAlias", "True name/Alias", null),

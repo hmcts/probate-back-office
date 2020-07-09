@@ -71,6 +71,7 @@ import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.Miss
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.MissInfoGrantReq;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.MissInfoRenunWill;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.MissInfoWill;
+import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.MissInfoFee;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.SotNotSigned;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.SotPa1aQ2;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.SotPa1aQ3;
@@ -192,6 +193,7 @@ public class AssembleLetterTransformer {
                 .put(IHT205GrossEstateOver, assembleIHT::ihtGrossEstate)
                 .put(IHT217Miss, assembleIHT::iht217Missing)
                 .put(IHTIHT400, assembleIHT::iht400)
+                .put(MissInfoFee, assembleMissingInformation::missingInfoFee)
                 .put(MissInfoWill, assembleMissingInformation::missingInfoWill)
                 .put(MissInfoDeathCert, assembleMissingInformation::missingInfoDeathCert)
                 .put(MissInfoChangeApp, assembleMissingInformation::missingInfoChangeOfApplicant)

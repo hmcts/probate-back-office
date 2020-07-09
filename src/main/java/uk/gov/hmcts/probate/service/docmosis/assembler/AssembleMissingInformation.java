@@ -21,6 +21,10 @@ public class AssembleMissingInformation {
     private static final String CONDITIONS_DEATH_CERT = "The one supplied was unclear / One was not supplied";
     private final AssemblerBase assemblerBase;
 
+    public List<ParagraphDetail> missingInfoFee(ParagraphCode paragraphCode, CaseData caseData) {
+        return assemblerBase.getTextParagraphDetails(paragraphCode);
+    }
+
     public List<ParagraphDetail> missingInfoWill(ParagraphCode paragraphCode, CaseData caseData) {
         return assemblerBase.getTextParagraphDetailWithDefaultValue(paragraphCode, Arrays.asList(CONDITIONS_WILL));
     }

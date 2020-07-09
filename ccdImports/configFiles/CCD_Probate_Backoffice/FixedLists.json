@@ -219,6 +219,7 @@
   {"LiveFrom": "06/01/2017", "ID": "LifeAndMinParagraphs", "ListElementCode": "LMAdmonLife", "ListElement": "Admon Will: Life interest"},
   {"LiveFrom": "06/01/2017", "ID": "LifeAndMinParagraphs", "ListElementCode": "LMAdmonMinor", "ListElement": "Admon Will: Minority interest"},
   {"LiveFrom": "06/01/2017", "ID": "LifeAndMinParagraphs", "ListElementCode": "LMIntParental", "ListElement": "Intestacy: Minority interest parental responsibility"},
+  {"LiveFrom": "06/01/2017", "ID": "MissInfoParagraphs", "ListElementCode": "MissInfoFee", "ListElement": "Insufficient fee"},
   {"LiveFrom": "06/01/2017", "ID": "MissInfoParagraphs", "ListElementCode": "MissInfoWill", "ListElement": "Original Will or Codicil"},
   {"LiveFrom": "06/01/2017", "ID": "MissInfoParagraphs", "ListElementCode": "MissInfoChangeApp", "ListElement": "Name change of applicant"},
   {"LiveFrom": "06/01/2017", "ID": "MissInfoParagraphs", "ListElementCode": "MissInfoDeathCert", "ListElement": "Death Certificate"},
