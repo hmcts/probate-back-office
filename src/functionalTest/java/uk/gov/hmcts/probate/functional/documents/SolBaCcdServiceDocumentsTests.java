@@ -154,7 +154,8 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
 
         JsonPath jsonPath = JsonPath.from(jsonResponse.getBody().asString());
-        log.info("json Path: " + jsonPath.prettify());
+        log.info("json Path: " + jsonPath.get().toString());
+        
         String documentUrl = jsonPath.get("data.probateSotDocumentsGenerated[0].value.DocumentLink.document_binary_url");
         log.info("DocumentURL: " + documentUrl);
 
