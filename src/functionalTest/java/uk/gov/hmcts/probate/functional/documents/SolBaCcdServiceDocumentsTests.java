@@ -65,6 +65,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     private static final String GENERATE_LEGAL_STATEMENT= "/document/generate-sot";
 
     private static final String DEFAULT_SOLS_PAYLOAD= "solicitorPayloadNotifications.json";
+    private static final String DEFAULT_SOLS_PDF_PAYLOAD= "solicitorPDFPayloadNotifications.json";
     private static final String DEFAULT_PA_PAYLOAD= "personalPayloadNotifications.json";
     private static final String DEFAULT_WILL_PAYLOAD= "willLodgementPayload.json";
     private static final String DEFAULT_REISSUE_PAYLOAD = "personalPayloadReissueDuplicate.json";
@@ -164,7 +165,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     @Test
     public void verifySuccessForGetPdfLegalStatementProbateWithSingleExecutorSols() {
-        String response = generatePdfDocument(DEFAULT_SOLS_PAYLOAD, GENERATE_LEGAL_STATEMENT);
+        String response = generatePdfDocument(DEFAULT_SOLS_PDF_PAYLOAD, GENERATE_LEGAL_STATEMENT);
 
         assertTrue(response.contains(LEGAL_STATEMENT));
         assertTrue(response.contains(DECLARATION_CIVIL_WORDING));
