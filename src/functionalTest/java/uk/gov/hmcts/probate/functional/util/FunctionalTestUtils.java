@@ -35,10 +35,10 @@ public class FunctionalTestUtils {
 
     private String serviceToken;
 
-    @Value("${probate.caseworker.email")
+    @Value("${probate.caseworker.email}")
     private String caseworkerEmail;
 
-    @Value("${probate.caseworker.password")
+    @Value("${probate.caseworker.password}")
     private String caseworkerPassword;
 
     @PostConstruct
