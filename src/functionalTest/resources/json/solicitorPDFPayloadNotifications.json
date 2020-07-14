@@ -103,28 +103,7 @@
       "boEmailRequestInfoNotification": "No",
       "boRequestInfoSendToBulkPrint": "Yes",
       "boAssembleLetterSendToBulkPrint": "Yes",
-      "executorsApplyingForLegalStatement": [
-        {
-          "id": null,
-          "value": {
-            "additionalExecForenames": "Ex",
-            "additionalExecLastname": "Ecutor",
-            "additionalExecNameOnWill": "No",
-            "additionalExecAliasNameOnWill": null,
-            "additionalApplying": "Yes",
-            "additionalExecAddress": {
-              "AddressLine1": "1 Wedderburn Road",
-              "AddressLine2": "",
-              "AddressLine3": "",
-              "County": "",
-              "PostTown": "Harrogate",
-              "PostCode": "HG2 7QH",
-              "Country": ""
-            },
-            "additionalExecReasonNotApplying": null
-          }
-        }
-      ],
+      "executorsApplyingForLegalStatement": [ ],
       "executorsNotApplyingForLegalStatement": [ ],
       "primaryApplicantApplying": true,
       "primaryApplicantFullName": "Ex Ecutor",
