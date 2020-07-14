@@ -156,3 +156,71 @@ When `USE_IDAM` is true to regester you will need to change the call back port f
 Start probate-frontend app. Follow `http:localhost:3000`. Login using `testusername@test.com/Pa55word11`.
 
 
+## Linking to a Probate-frontend PR
+You must link a probate-frontend pr to a probate-orchestrator pr and that to your probate-backoffice pr
+* Create a PR off master for probate-orchestrator-service
+* Use the PR number of the BO build in values.yml. Replace:
+```
+BACK_OFFICE_API_URL: "http://probate-back-office-pr-1101.service.core-compute-preview.internal"
+```
+* upgrade the Chart.yaml version in probate-orchestrator-service
+```
+version: 1.0.1
+```
+* Create a PR off master for probate-frontend
+* Use the PR number of the Orchestrator build in values.yml. Replace:
+```
+ORCHESTRATOR_SERVICE_URL : http://probate-orchestrator-service-pr-334.service.core-compute-preview.internal
+```
+* upgrade the Chart.yaml version in probate-frontend
+```
+version: 2.0.14
+```
+* Build the 2 PRs above
+* For probate-frontend access, go to (use the pr number you just created for fe):
+```
+https://probate-frontend-pr-1218.service.core-compute-preview.internal/start-eligibility
+```
+##### VPN and proxy will be needed to access this
+
+#####REMEMBER
+######Remove your unwanted FE/ORCH PRs when you have finished QA
+
+## Linking to a Caveats Frontend PR
+Exactly the same as above, except you need to link on the probate-caveats-frontend PR
+* Create a PR off master for probate-orchestrator-service
+* Use the PR number of the BO build in values.yml. Replace:
+```
+BACK_OFFICE_API_URL: "http://probate-back-office-pr-1101.service.core-compute-preview.internal"
+```
+* upgrade the Chart.yaml version in probate-orchestrator-service
+```
+version: 1.0.1
+```
+* Create a PR off master for probate-caveats-frontend
+* Use the PR number of the Orchestrator build in values.yml. Replace:
+```
+ORCHESTRATOR_SERVICE_URL : http://probate-orchestrator-service-pr-334.service.core-compute-preview.internal
+```
+* upgrade the Chart.yaml version in probate-caveats-frontend
+```
+version: 2.0.14
+```
+* Build the 2 PRs above
+* For probate-caveats-frontend access, go to (use the pr number you just created for fe):
+```
+https://probate-caveats-fe-pr-276.service.core-compute-preview.internal/caveats/start-apply
+```
+##### VPN and proxy will be needed to access this
+
+## PR Health urls
+```
+https://probate-frontend-pr-1218.service.core-compute-preview.internal/health
+https://probate-caveats-fe-pr-276.service.core-compute-preview.internal/caveats/health
+http://probate-orchestrator-service-pr-334.service.core-compute-preview.internal/health
+http://probate-submit-service-pr-334.service.core-compute-preview.internal/health
+http://probate-submit-service-pr-334.service.core-compute-preview.internal/health
+http://probate-business-service-pr-334.service.core-compute-preview.internal/health
+http://probate-back-office-pr-1101.service.core-compute-preview.internal/health
+```
+
