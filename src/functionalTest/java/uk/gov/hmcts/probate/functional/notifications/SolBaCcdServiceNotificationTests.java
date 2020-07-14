@@ -5,6 +5,7 @@ import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import io.restassured.response.ResponseBody;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
+import net.thucydides.core.annotations.Pending;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
@@ -145,6 +146,7 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
 
     //TODO: uncomment when letters are being used again
     @Test
+    @Pending
     public void verifyPersonalApplicantRequestInformationLetterContentIsOk() {
         String coversheet = generateDocument("personalPayloadNotificationsNoEmailRequested.json", INFORMATION_REQUEST,
                 0);

@@ -7,6 +7,7 @@ import io.restassured.RestAssured;
 import io.restassured.http.Headers;
 import io.restassured.path.json.JsonPath;
 import net.serenitybdd.junit.runners.SerenityParameterizedRunner;
+import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
 import net.thucydides.junit.annotations.TestData;
 import org.awaitility.Awaitility;
 import org.junit.jupiter.api.AfterEach;
@@ -28,7 +29,7 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.awaitility.Awaitility.await;
 import static org.junit.jupiter.api.Assertions.*;
 
-@RunWith(SerenityParameterizedRunner.class)
+@RunWith(SpringIntegrationSerenityRunner.class)
 public class ProbateManFunctionalTests extends IntegrationTestBase {
 
     @Value("${user.auth.provider.oauth2.url}")

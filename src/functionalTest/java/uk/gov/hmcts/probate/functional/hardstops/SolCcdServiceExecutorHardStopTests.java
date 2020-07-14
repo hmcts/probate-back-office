@@ -2,6 +2,7 @@ package uk.gov.hmcts.probate.functional.hardstops;
 
 import io.restassured.response.Response;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
+import net.thucydides.core.annotations.Pending;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
@@ -36,6 +37,7 @@ public class SolCcdServiceExecutorHardStopTests extends IntegrationTestBase {
     }
 
     @Test
+    @Pending
     public void validateHardStopMessageForNoDomicile() {
         Response response = given()
                 .relaxedHTTPSValidation()
