@@ -2,7 +2,7 @@ package uk.gov.hmcts.probate.functional.dataextract;
 
 import io.restassured.RestAssured;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
-import net.serenitybdd.rest.SerenityRest;
+import net.thucydides.core.annotations.Pending;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,6 +22,7 @@ public class DataExtractTests extends IntegrationTestBase {
     @Value("${probate.caseworker.id}")
     private Integer id;
 
+    @Pending
     @Test
     public void verifyValidRequestReturnsOkStatusForIronMountain() {
         RestAssured.given().relaxedHTTPSValidation().headers(utils.getHeaders(email,
@@ -31,6 +32,7 @@ public class DataExtractTests extends IntegrationTestBase {
                 .then().assertThat().statusCode(200);
     }
 
+    @Pending
     @Test
     public void verifyValidDateRequestReturnsOkStatusForIronMountain() {
         RestAssured.given().relaxedHTTPSValidation().headers(utils.getHeaders(email,
@@ -40,6 +42,7 @@ public class DataExtractTests extends IntegrationTestBase {
                 .then().assertThat().statusCode(200);
     }
 
+    @Pending
     @Test
     public void verifyIncorrectDateFormatReturnsBadRequestForIronMountain() {
         RestAssured.given().relaxedHTTPSValidation().headers(utils.getHeaders(email,
@@ -49,6 +52,7 @@ public class DataExtractTests extends IntegrationTestBase {
                 .then().assertThat().statusCode(400);
     }
 
+    @Pending
     @Test
     public void verifyValidRequestReturnsOkStatusForExcela() {
         RestAssured.given().relaxedHTTPSValidation().headers(utils.getHeaders(email,
@@ -58,6 +62,7 @@ public class DataExtractTests extends IntegrationTestBase {
                 .then().assertThat().statusCode(200);
     }
 
+    @Pending
     @Test
     public void verifyValidDateRequestReturnsOkStatusForExcela() {
         RestAssured.given().relaxedHTTPSValidation().headers(utils.getHeaders(email,
@@ -67,6 +72,7 @@ public class DataExtractTests extends IntegrationTestBase {
                 .then().assertThat().statusCode(200);
     }
 
+    @Pending
     @Test
     public void verifyIncorrectDateFormatReturnsBadRequestForExcela() {
         RestAssured.given().relaxedHTTPSValidation().headers(utils.getHeaders(email,

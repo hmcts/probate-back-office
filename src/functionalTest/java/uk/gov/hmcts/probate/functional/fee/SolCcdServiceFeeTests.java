@@ -2,6 +2,7 @@ package uk.gov.hmcts.probate.functional.fee;
 
 
 import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
+import net.thucydides.core.annotations.Pending;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
@@ -15,31 +16,38 @@ import static io.restassured.RestAssured.given;
 @RunWith(SpringIntegrationSerenityRunner.class)
 public class SolCcdServiceFeeTests extends IntegrationTestBase {
 
+
     @Test
+    @Pending
     public void verifyNetValue10000() {
         validatePostRequestSuccessForFee("success.feeNetValue10000.json", "applicationFee", "15500");
     }
 
     @Test
+    @Pending
     public void verifyFeeForUkCopies() {
         validatePostRequestSuccessForFee("success.feeNetValue10000.json", "feeForUkCopies", "150");
     }
 
+    @Pending
     @Test
     public void verifyFeeForNonUkCopies() {
         validatePostRequestSuccessForFee("success.feeNetValue10000.json", "feeForNonUkCopies", "150");
     }
 
+    @Pending
     @Test
     public void verifyTotal() {
         validatePostRequestSuccessForFee("success.feeNetValue10000.json", "totalFee", "15800");
     }
 
+    @Pending
     @Test
     public void verifyNetValue5000() {
         validatePostRequestSuccessForFee("success.feeNetValue5000.json", "applicationFee", "0");
     }
 
+    @Pending
     @Test
     public void verifyNetValue1000() {
         validatePostRequestSuccessForFee("success.feeNetValue1000.json", "applicationFee", "0");
