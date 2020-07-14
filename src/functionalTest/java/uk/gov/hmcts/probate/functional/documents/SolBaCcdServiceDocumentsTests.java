@@ -56,6 +56,9 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     private static final String DECLARATION_CIVIL_WORDING = "proceedings for contempt of court may be brought against the undersigned if it is found that the evidence provided is deliberately untruthful or dishonest, as well as revocation of the grant";
     private static final String DECLARATION_CRIMINAL_WORDING_SINGLE_EXEC = "criminal proceedings for fraud may be brought against me if I am found to have been deliberately untruthful or dishonest";
     private static final String LEGAL_STATEMENT = "Legal statement";
+    private static final String AUTHORISED_SOLICITOR = "They have authorised Firm Name to sign a statement of truth on their behalf.";
+    private static final String LEGAL_STATEMENT_DIED_ON = "died on";
+    private static final String LEGAL_STATEMENT_GOP = "grant of probate";
 
     private static final String GENERATE_GRANT = "/document/generate-grant";
     private static final String GENERATE_GRANT_DRAFT = "/document/generate-grant-draft";
@@ -65,7 +68,9 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     private static final String GENERATE_LEGAL_STATEMENT= "/document/generate-sot";
 
     private static final String DEFAULT_SOLS_PAYLOAD= "solicitorPayloadNotifications.json";
-    private static final String DEFAULT_SOLS_PDF_PAYLOAD= "solicitorPDFPayloadNotifications.json";
+    private static final String DEFAULT_SOLS_PDF_PROBATE_PAYLOAD= "solicitorPDFPayloadProbate.json";
+    private static final String DEFAULT_SOLS_PDF_INTESTACY_PAYLOAD = "solicitorPDFPayloadIntestacy.json";
+    private static final String DEFAULT_SOLS_PDF_ADMON_PAYLOAD = "solicitorPDFPayloadAdmonWill.json";
     private static final String DEFAULT_PA_PAYLOAD= "personalPayloadNotifications.json";
     private static final String DEFAULT_WILL_PAYLOAD= "willLodgementPayload.json";
     private static final String DEFAULT_REISSUE_PAYLOAD = "personalPayloadReissueDuplicate.json";
@@ -168,10 +173,37 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     @Test
     public void verifySuccessForGetPdfLegalStatementProbateWithSingleExecutorSols() {
-        String response = generatePdfDocument(DEFAULT_SOLS_PDF_PAYLOAD, GENERATE_LEGAL_STATEMENT);
+        String response = generatePdfDocument(DEFAULT_SOLS_PDF_PROBATE_PAYLOAD, GENERATE_LEGAL_STATEMENT);
 
         assertTrue(response.contains(LEGAL_STATEMENT));
         assertTrue(response.contains(DECLARATION_CIVIL_WORDING));
+        assertTrue(response.contains(AUTHORISED_SOLICITOR));
+        assertTrue(response.contains(LEGAL_STATEMENT_DIED_ON));
+        assertTrue(response.contains(LEGAL_STATEMENT_GOP));
+
+        assertTrue(!response.contains(DECLARATION_CRIMINAL_WORDING_SINGLE_EXEC));
+    }
+
+    @Test
+    public void verifySuccessForGetPdfLegalStatementIntestacyWithSingleExecutorSols() {
+        String response = generatePdfDocument(DEFAULT_SOLS_PDF_INTESTACY_PAYLOAD, GENERATE_LEGAL_STATEMENT);
+
+        assertTrue(response.contains(LEGAL_STATEMENT));
+        assertTrue(response.contains(DECLARATION_CIVIL_WORDING));
+        assertTrue(response.contains(AUTHORISED_SOLICITOR));
+        assertTrue(response.contains(LEGAL_STATEMENT_DIED_ON));
+
+        assertTrue(!response.contains(DECLARATION_CRIMINAL_WORDING_SINGLE_EXEC));
+    }
+
+    @Test
+    public void verifySuccessForGetPdfLegalStatementAdmonWillSols() {
+        String response = generatePdfDocument(DEFAULT_SOLS_PDF_ADMON_PAYLOAD, GENERATE_LEGAL_STATEMENT);
+
+        assertTrue(response.contains(LEGAL_STATEMENT));
+        assertTrue(response.contains(DECLARATION_CIVIL_WORDING));
+        assertTrue(response.contains(AUTHORISED_SOLICITOR));
+        assertTrue(response.contains(LEGAL_STATEMENT_DIED_ON));
 
         assertTrue(!response.contains(DECLARATION_CRIMINAL_WORDING_SINGLE_EXEC));
     }
