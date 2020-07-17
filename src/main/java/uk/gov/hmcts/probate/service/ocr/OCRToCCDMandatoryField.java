@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.service.ocr;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringUtils;
@@ -20,7 +21,10 @@ import java.util.stream.Stream;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class OCRToCCDMandatoryField {
+
+    private final OcrEmailValidator ocrEmailValidator;
 
     private static final String MANDATORY_FIELD_WARNING_STIRNG = "%s (%s) is mandatory.";
 
@@ -48,7 +52,7 @@ public class OCRToCCDMandatoryField {
     private static final String SOLICTOR_KEY_IS_APPLYING = "solsSolicitorIsApplying";
     private static final String SOLICTOR_KEY_REPRESENTATIVE_NAME = "solsSolicitorRepresentativeName";
     private static final String SOLICTOR_KEY_FIRM_NAME = "solsSolicitorFirmName";
-    
+
     public List<String> ocrToCCDMandatoryFields(List<OCRField> ocrFields, FormType formType) {
         List<String> warnings = new ArrayList<>();
         HashMap<String, String> ocrFieldValues = new HashMap<String, String>();
@@ -77,7 +81,7 @@ public class OCRToCCDMandatoryField {
     private Collection<? extends String> getWarningsForPA1PCase(HashMap<String, String> ocrFieldValues) {
         ArrayList<String> warnings = new ArrayList<>();
         boolean isSolicitorForm = false;
-        
+
         if (ocrFieldValues.containsKey(SOLICTOR_KEY_IS_APPLYING)) {
             isSolicitorForm = BooleanUtils.toBoolean(ocrFieldValues.get(SOLICTOR_KEY_IS_APPLYING));
         }
@@ -194,7 +198,7 @@ public class OCRToCCDMandatoryField {
                 warnings.add(String.format(MANDATORY_FIELD_WARNING_STIRNG, DEPENDANT_DESC_IHTFORMID, DEPENDANT_KEY_IHTFORMID));
             }
         }
-        
+
         return warnings;
     }
 
@@ -229,6 +233,7 @@ public class OCRToCCDMandatoryField {
 
     public List<String> ocrToCCDNonMandatoryWarnings(List<OCRField> ocrFields, FormType formType) {
         List<String> warnings = new ArrayList<>();
+        warnings.addAll(ocrEmailValidator.validateField(ocrFields));
         HashMap<String, String> ocrFieldValues = new HashMap<String, String>();
         boolean isSolicitorForm = false;
 

@@ -150,6 +150,7 @@
     { "name": "ihtReferenceNumber", "value": "IHT-557238-A01" },
     { "name": "ihtFormId", "value": "" },
     { "name": "ihtGrossValue", "value": "251,765.50" },
-    { "name": "ihtNetValue", "value": "199,435.00" }
+    { "name": "ihtNetValue", "value": "199,435.00" },
+    { "name": "solsSolicitorIsApplying", "value": "False" }
   ]
 }

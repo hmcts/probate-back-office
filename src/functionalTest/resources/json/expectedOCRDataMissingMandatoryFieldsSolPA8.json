@@ -46,6 +46,16 @@
       "description": "Deceased postcode"
     },
     {
+      "name": "deceasedDateOfBirth",
+      "value": "1900-01-01",
+      "description": "Deceased date of birth"
+    },
+    {
+      "name": "deceasedDateOfDeath",
+      "value": "2019-01-01",
+      "description": "Deceased date of death"
+    },
+    {
       "name": "deceasedAnyOtherNames",
       "value": "123 Alphabet Street",
       "description": "Deceased address line 1"
@@ -77,8 +87,38 @@
     },
     {
       "name": "solsSolicitorIsApplying",
-      "value": "False",
-      "description": "Do you have legal representative acting for you?"
+      "value": true,
+      "description": ""
+    },
+    {
+      "name": "solsSolicitorFirmName",
+      "value": "wibble, wobble and wang",
+      "description": ""
+    },
+    {
+      "name": "solsSolicitorAppReference",
+      "value": "1234567",
+      "description": ""
+    },
+    {
+      "name": "caveatorForenames",
+      "value": "Forename",
+      "description": ""
+    },
+    {
+      "name": "caveatorSurnames",
+      "value": "Surname",
+      "description": ""
+    },
+    {
+      "name": "solsSolicitorAddressLine1",
+      "value": "Address",
+      "description": ""
+    },
+    {
+      "name": "solsSolicitorAddressPostCode",
+      "value": "Postcode",
+      "description": ""
     }
   ]
 }

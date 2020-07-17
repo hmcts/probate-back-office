@@ -1,13 +1,20 @@
 # To use ccd-docker elements
 
 ## Purpose
-Guidance on how to set up probate locally using the updated docker images. User
+Guidance on how to set up probate locally using the updated docker images.
 
 ##### 1) Install https://stedolan.github.io/jq/ 
 
 ```bash
   sudo apt-get install jq
 ```
+
+For mac 
+```bash
+  brew install jq
+```
+
+NB. If you download the binary version it is called 'jq-osx-amd64' and the scripts later will fail because they are looking for 'jq'. 
 
 ##### 2) Login to azure
 
@@ -18,11 +25,14 @@ Guidance on how to set up probate locally using the updated docker images. User
 ```
 
 ##### 3) Reset your docker images, containers etc. 
+
 ```bash
-   docker image rm $(docker image ls -a -q)
    docker container rm $(docker container ls -a -q)
+   docker image rm $(docker image ls -a -q)
    docker volume rm $(docker volume ls -q)
 ```
+
+NB. Docker for desktop on a mac only allocates 2GB of memory by default, this is not enough I increased mine 16GB.
 
 ##### 4) Run environments script
 ```bash
@@ -31,21 +41,24 @@ Guidance on how to set up probate locally using the updated docker images. User
 
 For mac: 
 ```bash
-   ./bin/set-environment-variables.sh
+    source ./bin/set-environment-variables.sh
 ```
 For linux
 ```bash
    source ./bin/linux-set-environment-variables.sh
 ```
-##### 4.1) setup the logstash
-    In order to work locally on probate-frontend you will need following logstash
+##### 4.1) setup logstash
+ 
+In order to work locally on probate-frontend you will need to clone project ccd-logstash from github.
+Checkout the probate-conf branch and build the docker image
+
 ```
-   clone project ccd-logstash from github
-   checkout branch probate-conf
+   git checkout probate-conf
    docker build . -t ccd-logstash:probate
-   In elasticsearch.yml replace
-   image: hmcts/ccd-logstash:latest with image: "ccd-logstash:probate"  
 ```   
+ In probate-back-office/compose/elasticsearch.yml replace
+   image: hmcts/ccd-logstash:latest with image: "ccd-logstash:probate"
+   
 ##### 5) Start up docker 
 ```bash
    docker network create compose_default
@@ -142,4 +155,72 @@ When `USE_IDAM` is true to regester you will need to change the call back port f
 
 Start probate-frontend app. Follow `http:localhost:3000`. Login using `testusername@test.com/Pa55word11`.
 
+
+## Linking to a Probate-frontend PR
+You must link a probate-frontend pr to a probate-orchestrator pr and that to your probate-backoffice pr
+* Create a PR off master for probate-orchestrator-service
+* Use the PR number of the BO build in values.yml. Replace:
+```
+BACK_OFFICE_API_URL: "http://probate-back-office-pr-1101.service.core-compute-preview.internal"
+```
+* upgrade the Chart.yaml version in probate-orchestrator-service
+```
+version: 1.0.1
+```
+* Create a PR off master for probate-frontend
+* Use the PR number of the Orchestrator build in values.yml. Replace:
+```
+ORCHESTRATOR_SERVICE_URL : http://probate-orchestrator-service-pr-334.service.core-compute-preview.internal
+```
+* upgrade the Chart.yaml version in probate-frontend
+```
+version: 2.0.14
+```
+* Build the 2 PRs above
+* For probate-frontend access, go to (use the pr number you just created for fe):
+```
+https://probate-frontend-pr-1218.service.core-compute-preview.internal/start-eligibility
+```
+##### VPN and proxy will be needed to access this
+
+#####REMEMBER
+######Remove your unwanted FE/ORCH PRs when you have finished QA
+
+## Linking to a Caveats Frontend PR
+Exactly the same as above, except you need to link on the probate-caveats-frontend PR
+* Create a PR off master for probate-orchestrator-service
+* Use the PR number of the BO build in values.yml. Replace:
+```
+BACK_OFFICE_API_URL: "http://probate-back-office-pr-1101.service.core-compute-preview.internal"
+```
+* upgrade the Chart.yaml version in probate-orchestrator-service
+```
+version: 1.0.1
+```
+* Create a PR off master for probate-caveats-frontend
+* Use the PR number of the Orchestrator build in values.yml. Replace:
+```
+ORCHESTRATOR_SERVICE_URL : http://probate-orchestrator-service-pr-334.service.core-compute-preview.internal
+```
+* upgrade the Chart.yaml version in probate-caveats-frontend
+```
+version: 2.0.14
+```
+* Build the 2 PRs above
+* For probate-caveats-frontend access, go to (use the pr number you just created for fe):
+```
+https://probate-caveats-fe-pr-276.service.core-compute-preview.internal/caveats/start-apply
+```
+##### VPN and proxy will be needed to access this
+
+## PR Health urls
+```
+https://probate-frontend-pr-1218.service.core-compute-preview.internal/health
+https://probate-caveats-fe-pr-276.service.core-compute-preview.internal/caveats/health
+http://probate-orchestrator-service-pr-334.service.core-compute-preview.internal/health
+http://probate-submit-service-pr-334.service.core-compute-preview.internal/health
+http://probate-submit-service-pr-334.service.core-compute-preview.internal/health
+http://probate-business-service-pr-334.service.core-compute-preview.internal/health
+http://probate-back-office-pr-1101.service.core-compute-preview.internal/health
+```
 

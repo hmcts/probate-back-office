@@ -9,7 +9,8 @@ public enum CaveatSolicitorMandatoryFields {
     SOLICITOR_ADDRESS_LINE1("solsSolicitorAddressLine1", "Solictor address line 1"),
     SOLICITOR_ADDRESS_POSTCODE("solsSolicitorAddressPostCode", "Solictor address postcode"),
     SOLICITOR_FIRM_NAME("solsSolicitorFirmName", "Solicitors Firm name"),
-    SOLICITOR_APP_REFERENCE("solsSolicitorAppReference", "Solictor application reference");
+    SOLICITOR_APP_REFERENCE("solsSolicitorAppReference", "Solictor application reference"),
+    SOLICITOR_EMAIL_ADDRESS("solsSolicitorEmail", "Solictor email address");
 
     private final String key;
     private final String value;

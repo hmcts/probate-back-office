@@ -14,8 +14,11 @@ public enum IntestacySolicitorMandatoryFields {
     DECEASED_ANY_OTHER_NAMES("deceasedAnyOtherNames", "Did the deceased have assets in any other names?"),
     DECEASED_DOMICILE_IN_ENG_WALES("deceasedDomicileInEngWales",
             "Was the deceased domiciled in England or Wales at the time of their death?"),
+    SOLICITOR_APPLYING("solsSolicitorIsApplying","Do you have legal representative acting for you?"),
+    SOLICITOR_REPRESENTATIVE_NAME("solsSolicitorRepresentativeName", "Solicitor representative name"),
     SOLICITOR_FIRM_NAME("solsSolicitorFirmName", "Solicitors Firm name"),
     SOLICITOR_APP_REFERENCE("solsSolicitorAppReference", "Solictor application reference"),
+    SOLICITOR_EMAIL_ADDRESS("solsSolicitorEmail", "Solictor email address"),
     IHT_FORM_COMPLETED_ONLINE("ihtFormCompletedOnline", "IHT form completed online?"),
     IHT_GROSS_VALUE("ihtGrossValue", "Gross value of the estate"),
     IHT_NET_VALUE("ihtNetValue", "Net value of the estate");
