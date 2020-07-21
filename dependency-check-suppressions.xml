@@ -48,6 +48,9 @@
         <cve>CVE-2020-1745</cve>
         <cve>CVE-2020-11996</cve>
         <cve>CVE-2020-9484</cve>
+        <cve>CVE-2020-13934</cve>
+        <cve>CVE-2020-13935</cve>
+        <cve>CVE-2020-8022</cve>
     </suppress>
     <suppress>
         <notes><![CDATA[
@@ -328,6 +331,14 @@
         <cve>CVE-2020-14061</cve>
         <cve>CVE-2020-14062</cve>
         <cve>CVE-2020-14195</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: hibernate-core-5.3.7.Final.jar
+   ]]></notes>
+        <gav regex="true">^org.hibernate/hibernate-core@5.3.7.Final</gav>
+        <cpe>cpe:2.3:a:hibernate:hibernate_orm:5.3.7:*:*:*:*:*:*:*</cpe>
+        <cve>CVE-2019-14900</cve>
     </suppress>
     <suppress>
         <notes><![CDATA[
