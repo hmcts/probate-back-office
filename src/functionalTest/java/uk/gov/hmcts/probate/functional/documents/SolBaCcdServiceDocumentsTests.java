@@ -15,7 +15,7 @@ import static org.junit.Assert.assertTrue;
 @RunWith(SerenityRunner.class)
 public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
-    // GoP fields
+    // Grant fields
     private static final String SOLICITOR_INFO1 = "Extracted by Solicitor Firm Name (Ref: 1231-3984-3949-0300) SolAddLn1, SolAddLn2, SolAddLn3, ";
     private static final String SOLICITOR_INFO2 = "SolAddPT, SolAddCounty, KT10 0LA, SolAddCo";
     private static final String SOLICITOR_INFO3 = "Extracted by Solicitor Firm Name (Ref: 1231-3984-3949-0300) SolAddLn1, SolAddLn3, SolAddPT, KT10 0LA, SolAddCo";
@@ -59,6 +59,9 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     private static final String AUTHORISED_SOLICITOR = "They have authorised Firm Name to sign a statement of truth on their behalf.";
     private static final String LEGAL_STATEMENT_DIED_ON = "died on";
     private static final String LEGAL_STATEMENT_GOP = "grant of probate";
+    private static final String PRIMARY_APPLICANT_STATEMENT = "I, FirstName LastName of 123 Street, Town, Postcode, make the following statement:";
+    private static final String LEGAL_STATEMENT_INTESTATE = "intestate";
+    private static final String LEGAL_STATEMENT_ADMON_WILL = "Administrators Applying for Letters of Administration (with will annexed)";
 
     private static final String GENERATE_GRANT = "/document/generate-grant";
     private static final String GENERATE_GRANT_DRAFT = "/document/generate-grant-draft";
@@ -180,6 +183,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         assertTrue(response.contains(AUTHORISED_SOLICITOR));
         assertTrue(response.contains(LEGAL_STATEMENT_DIED_ON));
         assertTrue(response.contains(LEGAL_STATEMENT_GOP));
+        assertTrue(response.contains(PRIMARY_APPLICANT_STATEMENT));
 
         assertTrue(!response.contains(DECLARATION_CRIMINAL_WORDING_SINGLE_EXEC));
     }
@@ -192,6 +196,8 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         assertTrue(response.contains(DECLARATION_CIVIL_WORDING));
         assertTrue(response.contains(AUTHORISED_SOLICITOR));
         assertTrue(response.contains(LEGAL_STATEMENT_DIED_ON));
+        assertTrue(response.contains(PRIMARY_APPLICANT_STATEMENT));
+        assertTrue(response.contains(LEGAL_STATEMENT_INTESTATE));
 
         assertTrue(!response.contains(DECLARATION_CRIMINAL_WORDING_SINGLE_EXEC));
     }
@@ -204,6 +210,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         assertTrue(response.contains(DECLARATION_CIVIL_WORDING));
         assertTrue(response.contains(AUTHORISED_SOLICITOR));
         assertTrue(response.contains(LEGAL_STATEMENT_DIED_ON));
+        assertTrue(response.contains(LEGAL_STATEMENT_ADMON_WILL));
 
         assertTrue(!response.contains(DECLARATION_CRIMINAL_WORDING_SINGLE_EXEC));
     }

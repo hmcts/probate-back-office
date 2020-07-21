@@ -35,16 +35,16 @@
       "ihtNetValue": 20000.00,
       "ihtGrossValue": 20000.00,
       "solsWillType": "NoWill",
-      "primaryApplicantForenames": "Main",
-      "primaryApplicantSurname": "Applicant",
+      "primaryApplicantForenames": "FirstName",
+      "primaryApplicantSurname": "LastName",
       "primaryApplicantIsApplying": "Yes",
       "primaryApplicantAddress": {
-        "AddressLine1": "Test",
+        "AddressLine1": "123 Street",
         "AddressLine2": "",
         "AddressLine3": "",
         "County": "",
-        "PostTown": "Test",
-        "PostCode": "A1 2BC",
+        "PostTown": "Town",
+        "PostCode": "Postcode",
         "Country": ""
       },
       "primaryApplicantEmailAddress": "test@test.com",
@@ -57,7 +57,7 @@
       "executorsNotApplying": [],
       "applicationType": "Solicitor",
       "registryLocation": "ctsc",
-      "caseType": "gop",
+      "caseType": "intestacy",
       "paperForm": "No",
       "dateOfDeathType": "diedOn",
       "currentDate": "2020-07-14",
@@ -77,11 +77,32 @@
       "boEmailRequestInfoNotification": "No",
       "boRequestInfoSendToBulkPrint": "Yes",
       "boAssembleLetterSendToBulkPrint": "Yes",
-      "executorsApplyingForLegalStatement": [],
+      "executorsApplyingForLegalStatement": [
+        {
+          "id": null,
+          "value": {
+            "additionalExecForenames": "FirstName",
+            "additionalExecLastname": "LastName",
+            "additionalExecNameOnWill": "No",
+            "additionalExecAliasNameOnWill": null,
+            "additionalApplying": "Yes",
+            "additionalExecAddress": {
+              "AddressLine1": "123 Street",
+              "AddressLine2": "",
+              "AddressLine3": "",
+              "County": "",
+              "PostTown": "Town",
+              "PostCode": "Postcode",
+              "Country": ""
+            },
+            "additionalExecReasonNotApplying": null
+          }
+        }
+      ],
       "executorsNotApplyingForLegalStatement": [],
       "defaultValueForCaveatStopEmailNotification": "Yes",
       "sendForBulkPrintingRequestedGrantReIssued": true,
-      "primaryApplicantFullName": "Main Applicant",
+      "primaryApplicantFullName": "FirstName LastName",
       "languagePreference": "ENGLISH",
       "caveatStopNotificationRequested": false,
       "caveatStopEmailNotificationRequested": false,

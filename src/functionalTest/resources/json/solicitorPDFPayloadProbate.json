@@ -63,17 +63,17 @@
       "solsWillType": "WillLeft",
       "willAccessOriginal": "Yes",
       "willHasCodicils": "No",
-      "primaryApplicantForenames": "Ex",
-      "primaryApplicantSurname": "Ecutor",
+      "primaryApplicantForenames": "FirstName",
+      "primaryApplicantSurname": "LastName",
       "primaryApplicantHasAlias": "No",
       "primaryApplicantIsApplying": "Yes",
       "primaryApplicantAddress": {
-        "AddressLine1": "2 Test Road",
+        "AddressLine1": "123 Street",
         "AddressLine2": "",
         "AddressLine3": "",
         "County": "",
-        "PostTown": "Test Town",
-        "PostCode": "A1 2BC",
+        "PostTown": "Town",
+        "PostCode": "Postcode",
         "Country": ""
       },
       "otherExecutorExists": "No",
@@ -103,7 +103,28 @@
       "boEmailRequestInfoNotification": "No",
       "boRequestInfoSendToBulkPrint": "Yes",
       "boAssembleLetterSendToBulkPrint": "Yes",
-      "executorsApplyingForLegalStatement": [],
+      "executorsApplyingForLegalStatement": [
+        {
+          "id": null,
+          "value": {
+            "additionalExecForenames": "FirstName",
+            "additionalExecLastname": "LastName",
+            "additionalExecNameOnWill": "No",
+            "additionalExecAliasNameOnWill": null,
+            "additionalApplying": "Yes",
+            "additionalExecAddress": {
+              "AddressLine1": "123 Street",
+              "AddressLine2": "",
+              "AddressLine3": "",
+              "County": "",
+              "PostTown": "Town",
+              "PostCode": "Postcode",
+              "Country": ""
+            },
+            "additionalExecReasonNotApplying": null
+          }
+        }
+      ],
       "executorsNotApplyingForLegalStatement": [ ],
       "primaryApplicantApplying": true,
       "primaryApplicantFullName": "Ex Ecutor",
