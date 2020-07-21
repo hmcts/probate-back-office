@@ -7,6 +7,7 @@ import io.restassured.RestAssured;
 import io.restassured.http.Headers;
 import io.restassured.path.json.JsonPath;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
+import net.thucydides.core.annotations.Pending;
 import net.thucydides.junit.annotations.TestData;
 import org.awaitility.Awaitility;
 import org.junit.jupiter.api.AfterEach;
@@ -124,6 +125,7 @@ public class ProbateManFunctionalTests extends IntegrationTestBase {
     }
 
     @Test
+    @Pending
     public void shouldViewProbateManCase() {
         Map<String, Object> dbResultsMap = retrieveRecordFromDb(deceasedForename, deceasedSurname, deceasedAlias, "/scripts/legacy_search_" + caseTypeFilename + "_query.sql");
         Long id = (Long) dbResultsMap.get("id");
@@ -142,6 +144,7 @@ public class ProbateManFunctionalTests extends IntegrationTestBase {
     }
 
     @Test
+    @Pending
     public void shouldDoLegacySearch() throws Exception {
         final String legacySearchQuery = getRequestJson(deceasedForename, deceasedSurname);
 
