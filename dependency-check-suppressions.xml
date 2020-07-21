@@ -336,8 +336,8 @@
         <notes><![CDATA[
    file name: hibernate-core-5.3.7.Final.jar
    ]]></notes>
-        <gav regex="true">^org.hibernate/hibernate-core@5.3.7.Final</gav>
-        <cpe>cpe:2.3:a:hibernate:hibernate_orm:5.3.7:*:*:*:*:*:*:*</cpe>
+        <gav regex="true">^org.hibernate/hibernate-core@5.3.7.Final:.*$</gav>
+        <cpe>cpe:/a:hibernate:hibernate_orm:5.3.7</cpe>
         <cve>CVE-2019-14900</cve>
     </suppress>
     <suppress>
