@@ -541,4 +541,47 @@ file name: spring-jcl-5.1.5.RELEASE.jar
         <gav regex="true">^com\.fasterxml\.jackson\.core:jackson-databind:.*$</gav>
         <cve>CVE-2020-14195</cve>
     </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: hibernate-core-5.3.7.Final.jar
+   ]]></notes>
+        <gav regex="true">^org\.hibernate:hibernate-core:.*$</gav>
+        <cpe>cpe:/a:hibernate:hibernate_orm</cpe>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: hibernate-core-5.3.7.Final.jar
+   ]]></notes>
+        <gav regex="true">^org\.hibernate:hibernate-core:.*$</gav>
+        <cve>CVE-2019-14900</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: tomcat-embed-core-9.0.16.jar
+   ]]></notes>
+        <gav regex="true">^org\.apache\.tomcat\.embed:tomcat-embed-core:.*$</gav>
+        <cpe>cpe:/a:apache:tomcat</cpe>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: tomcat-embed-core-9.0.16.jar
+   ]]></notes>
+        <gav regex="true">^org\.apache\.tomcat\.embed:tomcat-embed-core:.*$</gav>
+        <cve>CVE-2020-13934</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: tomcat-embed-core-9.0.16.jar
+   ]]></notes>
+        <gav regex="true">^org\.apache\.tomcat\.embed:tomcat-embed-core:.*$</gav>
+        <cve>CVE-2020-13935</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: tomcat-embed-core-9.0.16.jar
+   ]]></notes>
+        <gav regex="true">^org\.apache\.tomcat\.embed:tomcat-embed-core:.*$</gav>
+        <cve>CVE-2020-8022</cve>
+    </suppress>
+
 </suppressions>
