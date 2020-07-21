@@ -6,7 +6,6 @@ import com.microsoft.applicationinsights.core.dependencies.apachecommons.lang3.R
 import io.restassured.RestAssured;
 import io.restassured.http.Headers;
 import io.restassured.path.json.JsonPath;
-import net.serenitybdd.junit.runners.SerenityParameterizedRunner;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
 import net.thucydides.junit.annotations.TestData;
 import org.awaitility.Awaitility;
@@ -96,6 +95,8 @@ public class ProbateManFunctionalTests extends IntegrationTestBase {
 
     @BeforeEach
     public void setUp() {
+
+
         Awaitility.reset();
         Awaitility.setDefaultPollDelay(100, MILLISECONDS);
         Awaitility.setDefaultPollInterval(1, SECONDS);
