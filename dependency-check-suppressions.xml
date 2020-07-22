@@ -536,10 +536,10 @@ file name: spring-jcl-5.1.5.RELEASE.jar
     </suppress>
     <suppress>
         <notes><![CDATA[
-   file name: jackson-databind-2.9.9.3.jar
-   ]]></notes>
-        <gav regex="true">^com\.fasterxml\.jackson\.core:jackson-databind:.*$</gav>
-        <cve>CVE-2020-14195</cve>
+    file name: hibernate-core-5.3.7.Final.jar
+    ]]></notes>
+        <gav regex="true">^org\.hibernate:hibernate-core:.*$</gav>
+        <cve>CVE-2019-14900</cve>
     </suppress>
 
 </suppressions>
