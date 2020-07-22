@@ -48,6 +48,9 @@
         <cve>CVE-2020-1745</cve>
         <cve>CVE-2020-11996</cve>
         <cve>CVE-2020-9484</cve>
+        <cve>CVE-2020-13934</cve>
+        <cve>CVE-2020-13935</cve>
+        <cve>CVE-2020-8022</cve>
     </suppress>
     <suppress>
         <notes><![CDATA[
@@ -531,5 +534,12 @@ file name: spring-jcl-5.1.5.RELEASE.jar
    ]]></notes>
         <gav regex="true">^org\.springframework\.security:spring-security-crypto:.*$</gav>
         <cve>CVE-2020-5408</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: hibernate-core-5.3.7.Final.jar
+   ]]></notes>
+        <gav regex="true">^org\.hibernate:hibernate-core:.*$</gav>
+        <cve>CVE-2019-14900</cve>
     </suppress>
 </suppressions>
