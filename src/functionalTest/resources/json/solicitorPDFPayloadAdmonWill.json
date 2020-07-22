@@ -54,7 +54,31 @@
       },
       "primaryApplicantEmailAddress": "test@test.com",
       "willExists": "Yes",
-      "executorsApplying": [],
+      "executorsApplying": [
+        {
+          "id": null,
+          "value": {
+            "applyingExecutorName": "FirstName",
+            "applyingExecutorFirstName": "LastName",
+            "applyingExecutorLastName": "LastName",
+            "applyingExecutorPhoneNumber": "234567",
+            "applyingExecutorEmail": "asetrdyfguhkilj",
+            "additionalApplying": "Yes",
+            "applyingExecutorAddress": {
+              "AddressLine1": "123 Street",
+              "AddressLine2": "",
+              "AddressLine3": "",
+              "County": "",
+              "PostTown": "Town",
+              "PostCode": "Postcode",
+              "Country": "UK"
+            },
+            "applyingExecutorOtherNames": "gksdajgj",
+            "applyingExecutorOtherNamesReason": "fsdnkvdv",
+            "applyingExecutorOtherReason": "gksdajgj"
+          }
+        }
+      ],
       "executorsNotApplying": [],
       "applicationType": "Solicitor",
       "registryLocation": "ctsc",
@@ -78,8 +102,6 @@
       "boEmailRequestInfoNotification": "No",
       "boRequestInfoSendToBulkPrint": "Yes",
       "boAssembleLetterSendToBulkPrint": "Yes",
-      "executorsApplyingForLegalStatement": [],
-      "executorsNotApplyingForLegalStatement": [],
       "defaultValueForCaveatStopEmailNotification": "Yes",
       "sendForBulkPrintingRequestedGrantReIssued": true,
       "primaryApplicantFullName": "Main Applicant",

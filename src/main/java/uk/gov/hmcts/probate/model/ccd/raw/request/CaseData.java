@@ -562,8 +562,10 @@ public class CaseData {
     
     private DynamicList solsAmendLegalStatmentSelect;
 
+    @Getter(lazy = true)
     private final List<CollectionMember<AdditionalExecutor>> executorsApplyingForLegalStatement = getAllExecutors(true);
 
+    @Getter(lazy = true)
     private final List<CollectionMember<AdditionalExecutor>> executorsNotApplyingForLegalStatement = getAllExecutors(false);
 
     public String solicitorIsMainApplicant() {

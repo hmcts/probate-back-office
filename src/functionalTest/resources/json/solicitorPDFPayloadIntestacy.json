@@ -53,7 +53,31 @@
       "solsApplicantRelationshipToDeceased": "SpouseOrCivil",
       "solsMinorityInterest": "No",
       "solsApplicantSiblings": "No",
-      "executorsApplying": [],
+      "executorsApplying": [
+        {
+          "id": null,
+          "value": {
+            "applyingExecutorName": "FirstName",
+            "applyingExecutorFirstName": "LastName",
+            "applyingExecutorLastName": "LastName",
+            "applyingExecutorPhoneNumber": "234567",
+            "applyingExecutorEmail": "asetrdyfguhkilj",
+            "additionalApplying": "Yes",
+            "applyingExecutorAddress": {
+              "AddressLine1": "123 Street",
+              "AddressLine2": "",
+              "AddressLine3": "",
+              "County": "",
+              "PostTown": "Town",
+              "PostCode": "Postcode",
+              "Country": "UK"
+            },
+            "applyingExecutorOtherNames": "gksdajgj",
+            "applyingExecutorOtherNamesReason": "fsdnkvdv",
+            "applyingExecutorOtherReason": "gksdajgj"
+          }
+        }
+      ],
       "executorsNotApplying": [],
       "applicationType": "Solicitor",
       "registryLocation": "ctsc",
@@ -77,29 +101,6 @@
       "boEmailRequestInfoNotification": "No",
       "boRequestInfoSendToBulkPrint": "Yes",
       "boAssembleLetterSendToBulkPrint": "Yes",
-      "executorsApplyingForLegalStatement": [
-        {
-          "id": null,
-          "value": {
-            "additionalExecForenames": "FirstName",
-            "additionalExecLastname": "LastName",
-            "additionalExecNameOnWill": "No",
-            "additionalExecAliasNameOnWill": null,
-            "additionalApplying": "Yes",
-            "additionalExecAddress": {
-              "AddressLine1": "123 Street",
-              "AddressLine2": "",
-              "AddressLine3": "",
-              "County": "",
-              "PostTown": "Town",
-              "PostCode": "Postcode",
-              "Country": ""
-            },
-            "additionalExecReasonNotApplying": null
-          }
-        }
-      ],
-      "executorsNotApplyingForLegalStatement": [],
       "defaultValueForCaveatStopEmailNotification": "Yes",
       "sendForBulkPrintingRequestedGrantReIssued": true,
       "primaryApplicantFullName": "FirstName LastName",
