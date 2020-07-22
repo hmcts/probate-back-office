@@ -19,7 +19,35 @@
    file name: tomcat-embed-core-9.0.16.jar
    ]]></notes>
         <gav regex="true">^org\.apache\.tomcat\.embed:tomcat-embed-core:.*$</gav>
-        <cpe>cpe:/a:apache:tomcat</cpe>
+        <cpe>cpe:/a:apache_software_foundation:tomcat</cpe>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: tomcat-embed-core-9.0.16.jar
+   ]]></notes>
+        <gav regex="true">^org\.apache\.tomcat\.embed:tomcat-embed-core:.*$</gav>
+        <cpe>cpe:/a:apache_tomcat:apache_tomcat</cpe>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: tomcat-embed-core-9.0.16.jar
+   ]]></notes>
+        <gav regex="true">^org\.apache\.tomcat\.embed:tomcat-embed-core:.*$</gav>
+        <cve>CVE-2019-0232</cve>
+        <cve>CVE-2020-1935</cve>
+        <cve>CVE-2019-0232</cve>
+        <cve>CVE-2019-12418</cve>
+        <cve>CVE-2019-17563</cve>
+        <cve>CVE-2019-0221</cve>
+        <cve>CVE-2019-10072</cve>
+        <cve>CVE-2020-10969</cve>
+        <cve>CVE-2020-11113</cve>
+        <cve>CVE-2020-11112</cve>
+        <cve>CVE-2020-11111</cve>
+        <cve>CVE-2020-1938</cve>
+        <cve>CVE-2020-1745</cve>
+        <cve>CVE-2020-11996</cve>
+        <cve>CVE-2020-9484</cve>
     </suppress>
     <suppress>
         <notes><![CDATA[
@@ -234,24 +262,6 @@
     </suppress>
     <suppress>
         <notes><![CDATA[
-   file name: tomcat-embed-core-9.0.16.jar
-   ]]></notes>
-        <cve>CVE-2019-0232</cve>
-        <cve>CVE-2020-10969</cve>
-        <cve>CVE-2020-11113</cve>
-        <cve>CVE-2020-11112</cve>
-        <cve>CVE-2020-11111</cve>
-        <cve>CVE-2020-1938</cve>
-        <cve>CVE-2019-12418</cve>
-        <cve>CVE-2019-17563</cve>
-        <cve>CVE-2019-0221</cve>
-        <cve>CVE-2019-10072</cve>
-        <cve>CVE-2020-1935</cve>
-        <cve>CVE-2020-1745</cve>
-        <cve>CVE-2020-9484</cve>
-    </suppress>
-    <suppress>
-        <notes><![CDATA[
    file name: elasticsearch-6.4.3.jar
    ]]></notes>
         <gav regex="true">^org\.elasticsearch:elasticsearch:.*$</gav>
@@ -458,20 +468,6 @@ file name: spring-jcl-5.1.5.RELEASE.jar
    ]]></notes>
         <gav regex="true">^com\.puppycrawl\.tools:checkstyle:.*$</gav>
         <cve>CVE-2019-10782</cve>
-    </suppress>
-    <suppress>
-        <notes><![CDATA[
-   file name: tomcat-embed-core-9.0.16.jar
-   ]]></notes>
-        <gav regex="true">^org\.apache\.tomcat\.embed:tomcat-embed-core:.*$</gav>
-        <cpe>cpe:/a:apache_software_foundation:tomcat</cpe>
-    </suppress>
-    <suppress>
-        <notes><![CDATA[
-   file name: tomcat-embed-core-9.0.16.jar
-   ]]></notes>
-        <gav regex="true">^org\.apache\.tomcat\.embed:tomcat-embed-core:.*$</gav>
-        <cpe>cpe:/a:apache_tomcat:apache_tomcat</cpe>
     </suppress>
     <suppress>
         <notes><![CDATA[

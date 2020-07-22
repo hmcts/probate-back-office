@@ -3,6 +3,7 @@ package uk.gov.hmcts.probate.functional.notifications;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import io.restassured.response.ResponseBody;
+import lombok.extern.slf4j.Slf4j;
 import net.serenitybdd.junit.runners.SerenityRunner;
 import net.serenitybdd.rest.SerenityRest;
 import org.junit.Ignore;
@@ -13,7 +14,7 @@ import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.TestCase.assertTrue;
 
-
+@Slf4j
 @RunWith(SerenityRunner.class)
 public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
 
@@ -117,6 +118,30 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     @Test
     public void verifyPersonalApplicantGrantRaisedWithoutEmailShouldReturnOkResponseCode() {
         validatePostSuccess("personalRaiseGrantWithoutEmailNotifications.json", GRANT_RAISED);
+    }
+
+    @Test
+    public void verifyBulkScanPaperFormGOPGrantReceivedNotificationEmailText() {
+        postNotificationEmailAndVerifyContents(GRANT_RAISED, "grantRaisedPaperBulkScanPayload.json", "grantRaisedPaperBulkScanEmailExpectedResponse.txt",
+            EMAIL_NOTIFICATION_URL, "pa");
+    }
+
+    @Test
+    public void verifySolicitorBulkScanPaperFormGOPGrantReceivedNotificationEmailText() {
+        postNotificationEmailAndVerifyContents(GRANT_RAISED, "grantRaisedPaperBulkScanSolicitorPayload.json", "grantRaisedPaperBulkScanEmailExpectedSolicitorResponse.txt",
+            EMAIL_NOTIFICATION_URL, "sol");
+    }
+
+    @Test
+    public void verifyBulkScanPaperFormGOPGrantReceivedNotificationEmailTextWelsh() {
+        postNotificationEmailAndVerifyContents(GRANT_RAISED, "grantRaisedPaperBulkScanPayloadWelsh.json", "grantRaisedPaperBulkScanEmailExpectedResponse.txt",
+            EMAIL_NOTIFICATION_URL, "pa-welsh");
+    }
+
+    @Test
+    public void verifySolicitorBulkScanPaperFormGOPGrantReceivedNotificationEmailTextWelsh() {
+        postNotificationEmailAndVerifyContents(GRANT_RAISED, "grantRaisedPaperBulkScanSolicitorPayloadWelsh.json", "grantRaisedPaperBulkScanEmailExpectedSolicitorResponse.txt",
+            EMAIL_NOTIFICATION_URL, "sol-welsh");
     }
 
     @Test
@@ -281,12 +306,25 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
         assertTrue(document.contains("Declaration"));
     }
 
-    private String generateDocument(String jsonFileName, String path, int placeholder) {
+    private void postNotificationEmailAndVerifyContents(String apiPath, String jsonPayloadFile, String expectedResponseFile,
+                                                        String responseDocumentUrl, String testId) {
+        ResponseBody responseBody = validatePostSuccess(jsonPayloadFile, apiPath);
+        String expectedText = utils.getJsonFromFile(expectedResponseFile);
+        expectedText = expectedText.replace("\n", "").replace("\r", "");
+
+        JsonPath jsonPath = JsonPath.from(responseBody.asString());
+        String documentUrl = jsonPath.get(responseDocumentUrl);
+        String response = utils.downloadPdfAndParseToString(documentUrl);
+        response = response.replace("\n", "").replace("\r", "");
+        assertTrue(response.contains(expectedText));
+    }
+
+    private String getProbateDocumentsGeneratedText(String payload, String path, int placeholder) {
 
         Response jsonResponse = SerenityRest.given()
                 .relaxedHTTPSValidation()
                 .headers(utils.getHeadersWithUserId())
-                .body(utils.getJsonFromFile(jsonFileName))
+                .body(utils.getJsonFromFile(payload))
                 .when().post(path).andReturn();
 
         JsonPath jsonPath = JsonPath.from(jsonResponse.getBody().asString());

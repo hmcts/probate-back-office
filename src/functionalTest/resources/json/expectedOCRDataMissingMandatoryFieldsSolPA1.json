@@ -99,6 +99,11 @@
       "name": "solsSolicitorAppReference",
       "value": "1234567",
       "description": ""
+    },
+    {
+      "name": "solsSolicitorRepresentativeName",
+      "value": "A Name",
+      "description": ""
     }
   ]
 }

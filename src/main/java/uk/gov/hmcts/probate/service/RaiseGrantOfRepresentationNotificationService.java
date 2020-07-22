@@ -6,10 +6,7 @@ import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
-import uk.gov.hmcts.probate.service.docmosis.GrantOfRepresentationDocmosisMapperService;
-import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
-import uk.gov.hmcts.probate.validator.BulkPrintValidationRule;
 import uk.gov.hmcts.probate.validator.EmailAddressNotificationValidationRule;
 import uk.gov.service.notify.NotificationClientException;
 
@@ -28,10 +25,6 @@ public class RaiseGrantOfRepresentationNotificationService {
     private final CallbackResponseTransformer callbackResponseTransformer;
     private final EventValidationService eventValidationService;
     private final List<EmailAddressNotificationValidationRule> emailAddressNotificationValidationRules;
-    private final PDFManagementService pdfManagementService;
-    private final GrantOfRepresentationDocmosisMapperService gorDocmosisService;
-    private final BulkPrintService bulkPrintService;
-    private final List<BulkPrintValidationRule> bulkPrintValidationRules;
 
     public CallbackResponse handleGrantReceivedNotification(CallbackRequest callbackRequest) throws NotificationClientException {
 
@@ -50,7 +43,6 @@ public class RaiseGrantOfRepresentationNotificationService {
                 documents.add(document);
                 log.info("Adding document {}", document);
             }
-
         } else {
             log.info("Email address not available and letter sending not currently available.");
         }
