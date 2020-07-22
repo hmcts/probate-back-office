@@ -31,6 +31,7 @@ import static org.elasticsearch.index.query.QueryBuilders.matchQuery;
 import static org.elasticsearch.index.query.QueryBuilders.rangeQuery;
 import static uk.gov.hmcts.probate.insights.AppInsightsEvent.REQUEST_SENT;
 import static uk.gov.hmcts.probate.insights.AppInsightsEvent.REST_CLIENT_EXCEPTION;
+import static uk.gov.hmcts.probate.model.Constants.NO;
 
 @Service
 @RequiredArgsConstructor
@@ -51,6 +52,8 @@ public class CaseQueryService {
     private static final String KEY_GRANT_DELAYED_NOTIFICATION_SENT = "data.grantDelayedNotificationSent";
     private static final String KEY_GRANT_AWAITING_DOCUMENTATION_NOTIFICATION_DATE = "data.grantAwaitingDocumentationNotificationDate";
     private static final String KEY_GRANT_AWAITING_DOCUMENTATION_NOTIFICATION_SENT = "data.grantAwaitingDocumentatioNotificationSent";
+    private static final String KEY_EVIDENCE_HANDLED = "data.evidenceHandled";
+    private static final String KEY_PAPER_FORM = "data.paperForm";
     private final RestTemplate restTemplate;
     private final AppInsights appInsights;
     private final HttpHeadersFactory headers;
@@ -109,7 +112,9 @@ public class CaseQueryService {
         awaitingDocsStateChecks.minimumShouldMatch(1);
         query.must(awaitingDocsStateChecks);
         query.must(matchQuery(KEY_GRANT_AWAITING_DOCUMENTATION_NOTIFICATION_DATE, queryDate));
+        query.must(matchQuery(KEY_PAPER_FORM, NO));
         query.mustNot(existsQuery(KEY_GRANT_AWAITING_DOCUMENTATION_NOTIFICATION_SENT));
+        query.mustNot(existsQuery(KEY_EVIDENCE_HANDLED));
 
         String jsonQuery = new SearchSourceBuilder().query(query).size(10000).toString();
 

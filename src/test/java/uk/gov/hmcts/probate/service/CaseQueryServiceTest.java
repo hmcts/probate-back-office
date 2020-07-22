@@ -4,15 +4,20 @@ import com.google.common.collect.ImmutableList;
 import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import uk.gov.hmcts.probate.config.CCDDataStoreAPIConfiguration;
 import uk.gov.hmcts.probate.exception.CaseMatchingException;
 import uk.gov.hmcts.probate.insights.AppInsights;
+import uk.gov.hmcts.probate.model.ccd.CaseMatch;
+import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCases;
@@ -50,6 +55,9 @@ public class CaseQueryServiceTest {
 
     @Mock
     private ServiceAuthTokenGenerator serviceAuthTokenGenerator;
+
+    @Captor
+    private ArgumentCaptor<HttpEntity<String>> entityCaptor;
 
     @InjectMocks
     private CaseQueryService caseQueryService;
@@ -125,8 +133,23 @@ public class CaseQueryServiceTest {
 
     @Test
     public void findCasesForGrantAwaitingDocs() {
+        CaseData caseData = CaseData.builder()
+            .deceasedSurname("Smith")
+            .build();
+        List<ReturnedCaseDetails> caseList = new ImmutableList.Builder<ReturnedCaseDetails>().add(new ReturnedCaseDetails(caseData,
+            LAST_MODIFIED, 1L))
+            .build();
+        ReturnedCases returnedCases = new ReturnedCases(caseList);
+        when(restTemplate.postForObject(any(), entityCaptor.capture(), any())).thenReturn(returnedCases);
+
         List<ReturnedCaseDetails> cases = caseQueryService.findCasesForGrantAwaitingDocumentation("2019-02-05");
 
+        String expected = "{\"size\":10000,\"query\":{\"bool\":{\"must\":[{\"bool\":{\"should\":[{\"match\":" +
+            "{\"state\":{\"query\":\"CasePrinted\",\"operator\":\"OR\",\"prefix_length\":0,\"max_expansions\":50,\"fuzzy_transpositions\":true,\"lenient\":false,\"zero_terms_query\":\"NONE\",\"auto_generate_synonyms_phrase_query\":true,\"boost\":1.0}}}],\"adjust_pure_negative\":true," +
+            "\"minimum_should_match\":\"1\",\"boost\":1.0}},{\"match\":{\"data.grantAwaitingDocumentationNotificationDate\":{\"query\":\"2019-02-05\",\"operator\":\"OR\",\"prefix_length\":0,\"max_expansions\":50,\"fuzzy_transpositions\":true,\"lenient\":false,\"zero_terms_query\":\"NONE\",\"auto_generate_synonyms_phrase_query\":true,\"boost\":1.0}}}," +
+            "{\"match\":{\"data.paperForm\":{\"query\":\"No\",\"operator\":\"OR\",\"prefix_length\":0,\"max_expansions\":50,\"fuzzy_transpositions\":true,\"lenient\":false,\"zero_terms_query\":\"NONE\",\"auto_generate_synonyms_phrase_query\":true,\"boost\":1.0}}}]," +
+            "\"must_not\":[{\"exists\":{\"field\":\"data.grantAwaitingDocumentatioNotificationSent\",\"boost\":1.0}},{\"exists\":{\"field\":\"data.evidenceHandled\",\"boost\":1.0}}],\"adjust_pure_negative\":true,\"boost\":1.0}}}";
+        assertEquals(expected, entityCaptor.getValue().getBody());
         assertEquals(1, cases.size());
         assertThat(cases.get(0).getId(), is(1L));
         assertEquals("Smith", cases.get(0).getData().getDeceasedSurname());
