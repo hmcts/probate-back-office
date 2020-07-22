@@ -11,6 +11,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 
+import static junit.framework.Assert.assertFalse;
 import static junit.framework.TestCase.assertTrue;
 
 @Slf4j
@@ -45,6 +46,26 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
         String response = utils.downloadPdfAndParseToString(documentUrl);
         response = response.replace("\n", "").replace("\r", "");
         assertTrue(response.contains(expectedApplicationRecievedText));
+    }
+
+    @Test
+    public void verifyDigitalIntestacyApplicationReceivedNotificationSent() {
+        ResponseBody responseBody = validatePostSuccessWithAttributeUpdate("digitalApplicationRecievedPayload.json", APPLICATION_RECEIVED, 
+            "\"caseType\":\"gop\"", "\"caseType\":\"intestacy\"");
+        assertTrue(responseBody.asString().contains("DocumentLink"));
+    }
+
+    @Test
+    public void verifyPaperApplicationReceivedNotificationSentForNullInPaperForm() {
+        ResponseBody responseBody = validatePostSuccess("paperApplicationRecievedPayloadForCitizen.json", APPLICATION_RECEIVED);
+        assertTrue(responseBody.asString().contains("DocumentLink"));
+    }
+
+    @Test
+    public void verifyPaperApplicationReceivedNotificationNotSent() {
+        ResponseBody responseBody = validatePostSuccess("paperApplicationRecievedPayload.json", APPLICATION_RECEIVED);
+        assertTrue(!responseBody.asString().contains("DocumentLink"));
+
     }
 
     @Test
@@ -213,6 +234,21 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
                 .body(utils.getJsonFromFile(jsonFileName))
                 .when().post(path)
                 .andReturn();
+
+        response.then().assertThat().statusCode(200);
+
+        return response.getBody();
+    }
+
+    private ResponseBody validatePostSuccessWithAttributeUpdate(String jsonFileName, String path, String originalAttr, String updatedAttr) {
+        String request = utils.getJsonFromFile(jsonFileName);
+        request = request.replaceAll(originalAttr, updatedAttr);
+        Response response = SerenityRest.given()
+            .relaxedHTTPSValidation()
+            .headers(utils.getHeadersWithUserId())
+            .body(request)
+            .when().post(path)
+            .andReturn();
 
         response.then().assertThat().statusCode(200);
 

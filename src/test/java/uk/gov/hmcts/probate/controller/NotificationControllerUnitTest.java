@@ -15,6 +15,7 @@ import uk.gov.hmcts.probate.model.State;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.service.BulkPrintService;
@@ -38,6 +39,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.*;
@@ -46,6 +48,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.ArgumentMatchers.nullable;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
@@ -92,6 +95,7 @@ public class NotificationControllerUnitTest {
 
 
     private CallbackRequest callbackRequest;
+    private CallbackResponse callbackResponse;
     private Document document;
 
     @Test
@@ -99,6 +103,28 @@ public class NotificationControllerUnitTest {
         setUpMocks(APPLICATION_RECEIVED);
         ResponseEntity<ProbateDocument> stringResponseEntity = notificationController.sendApplicationReceivedNotification(callbackRequest);
         assertThat(stringResponseEntity.getStatusCode(), is(HttpStatus.OK));
+    }
+
+    @Test
+    public void shouldNotSendApplicationReceivedForPaper() throws NotificationClientException {
+        CaseDetails caseDetails = new CaseDetails(CaseData.builder().paperForm("Yes").build(), LAST_MODIFIED, ID);
+        callbackRequest = new CallbackRequest(caseDetails);
+        
+        ResponseEntity<ProbateDocument> stringResponseEntity = notificationController.sendApplicationReceivedNotification(callbackRequest);
+        assertThat(stringResponseEntity.getStatusCode(), is(HttpStatus.OK));
+        assertThat(stringResponseEntity.getBody(), equalTo(null));
+        verify(eventValidationService, times(0)).validateEmailRequest(any(), any());
+    }
+
+    @Test
+    public void shouldNotSendApplicationReceivedForPCitizenPaperAsNull() throws NotificationClientException {
+        CaseDetails caseDetails = new CaseDetails(CaseData.builder().paperForm(null).build(), LAST_MODIFIED, ID);
+        callbackRequest = new CallbackRequest(caseDetails);
+
+        ResponseEntity<ProbateDocument> stringResponseEntity = notificationController.sendApplicationReceivedNotification(callbackRequest);
+        assertThat(stringResponseEntity.getStatusCode(), is(HttpStatus.OK));
+        assertThat(stringResponseEntity.getBody(), equalTo(null));
+        verify(eventValidationService, times(0)).validateEmailRequest(any(), any());
     }
 
     @Test
@@ -131,7 +157,6 @@ public class NotificationControllerUnitTest {
     private void setUpMocks(State state, String ...errors) throws NotificationClientException {
         CaseDetails caseDetails = new CaseDetails(CaseDataTestBuilder.withDefaults().build(), LAST_MODIFIED, ID);
         callbackRequest = new CallbackRequest(caseDetails);
-        when(eventValidationService.validateEmailRequest(any(CallbackRequest.class), anyList())).thenReturn(CallbackResponse.builder().errors(Arrays.asList(errors)).build());
         document = Document.builder()
             .documentDateAdded(LocalDate.now())
             .documentFileName("fileName")
@@ -139,7 +164,10 @@ public class NotificationControllerUnitTest {
             .documentLink(DocumentLink.builder().documentUrl("url").documentFilename("file").documentBinaryUrl("binary").build())
             .documentType(DocumentType.DIGITAL_GRANT)
             .build();
-        when(notificationService.sendEmail(state, caseDetails)).thenReturn(document);
+        callbackResponse = CallbackResponse.builder().errors(Collections.EMPTY_LIST).build();
+        when(eventValidationService.validateEmailRequest(any(), any())).thenReturn(callbackResponse);
+        when(notificationService.sendEmail(any(), any())).thenReturn(document);
+
     }
 
     private void setUpMocks(State state) throws NotificationClientException {

@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.controller;
 
+import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -50,6 +51,7 @@ import static org.hamcrest.CoreMatchers.containsString;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -238,6 +240,17 @@ public class NotificationControllerTest {
                 .andExpect(content().string(containsString("generatedBy")));
     }
 
+    @Test
+    public void personalApplicationReceivedForPaperShouldReturnDataEmptyResponse() throws Exception {
+
+        String solicitorPayload = testUtils.getStringFromFile("personalPayloadNotificationsPaper.json");
+
+        mockMvc.perform(post("/notify/application-received")
+            .content(solicitorPayload)
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(content().string(""));
+    }
 
     @Test
     public void solicitorGrantIssuedShouldReturnDataPayloadOkResponseCode() throws Exception {
