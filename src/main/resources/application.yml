@@ -184,7 +184,7 @@ notifications:
     email:
       english:
         personal:
-          applicationReceived: "917dece3-e89d-460b-a6cb-e605ace39f2e"
+          applicationReceived: "ff626f3a-9ff2-4cfd-a8fe-d4cc02c3186a"
           documentReceived: "9e950599-4f07-4b07-9015-2938e030c25c"
           caseStopped: "60b95b7c-0a76-4608-b549-b3a579cfa3d0"
           caseStoppedCaveat: "937291a0-c0ae-40a4-a8cf-46a3452faff0"
@@ -193,6 +193,7 @@ notifications:
           generalCaveatMessage: "afadf00e-c224-4da0-a6dc-fb47a2e5db67"
           excelaData: "fd474506-a272-4caa-ad61-6086cee0639a"
           grantRaised: "8d4fe65c-f25f-4cc1-a1af-fa267a10755a"
+          grantRaisedPaperFormBulkScan: "d2db94a3-72c8-47af-a687-5e806f065acb"
           grantRaisedCtsc: "8d4fe65c-f25f-4cc1-a1af-fa267a10755a"
           caveatRaised: "bf9dabd9-b22f-4cb6-b3aa-871ac8532209"
           caveatRaisedCtsc: "ed01d79f-08f0-4703-8cec-f490e499fc33"
@@ -204,7 +205,7 @@ notifications:
           grantDelayed: "30baff9f-fff8-41f5-879e-5ea963e3d144"
           grantAwaitingDocumentation: "2debe394-5d0f-4d66-8b05-f3d4276d34eb"
         solicitor:
-          applicationReceived: "917dece3-e89d-460b-a6cb-e605ace39f2e"
+          applicationReceived: "ff626f3a-9ff2-4cfd-a8fe-d4cc02c3186a"
           documentReceived: "7f8ff32d-8297-4702-9867-312047f81492"
           caseStopped: "9e93a9c8-0246-4a95-b792-1c02da4bed4e"
           caseStoppedCaveat: "937291a0-c0ae-40a4-a8cf-46a3452faff0"
@@ -213,6 +214,7 @@ notifications:
           generalCaveatMessage: "afadf00e-c224-4da0-a6dc-fb47a2e5db67"
           excelaData: "fd474506-a272-4caa-ad61-6086cee0639a"
           grantRaised: "8d4fe65c-f25f-4cc1-a1af-fa267a10755a"
+          grantRaisedPaperFormBulkScan: "d2db94a3-72c8-47af-a687-5e806f065acb"
           caveatRaised: "bf9dabd9-b22f-4cb6-b3aa-871ac8532209"
           caveatRaisedCtsc: "ed01d79f-08f0-4703-8cec-f490e499fc33"
           caveatRaisedSols: "022966cb-e4da-4996-a831-02c2310ab4f8"
@@ -231,6 +233,7 @@ notifications:
           grantReissued: "c5232b10-0975-4085-ba5a-3e5a6eb5c2bf"
           generalCaveatMessage: "d2b33c5b-0c65-4472-b26f-9352de5538ba"
           excelaData: "fd474506-a272-4caa-ad61-6086cee0639a"
+          grantRaisedPaperFormBulkScan: "d2db94a3-72c8-47af-a687-5e806f065acb"
           caveatRaised: "251192c8-5d3a-4b44-82e6-a398bfbe72fe"
           caveatRaisedCtsc: "a970c66c-911f-40d6-a6ae-711200ae43a7"
           caveatExtend: "6a8d36f5-75cf-4a4c-9cae-c0b561143c86"
@@ -249,6 +252,7 @@ notifications:
           grantReissued: "1e18751f-fd4e-4893-85bb-f59cc5330c38"
           generalCaveatMessage: "afadf00e-c224-4da0-a6dc-fb47a2e5db67"
           excelaData: "fd474506-a272-4caa-ad61-6086cee0639a"
+          grantRaisedPaperFormBulkScan: "d2db94a3-72c8-47af-a687-5e806f065acb"
           caveatRaised: "bf9dabd9-b22f-4cb6-b3aa-871ac8532209"
           caveatRaisedCtsc: "ed01d79f-08f0-4703-8cec-f490e499fc33"
           caveatRaisedSols: "022966cb-e4da-4996-a831-02c2310ab4f8"

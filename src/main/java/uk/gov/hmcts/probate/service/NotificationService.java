@@ -103,7 +103,7 @@ public class NotificationService {
         log.info("template params, state={}, applicationType()={}, regLocation={}, language={},  for case: {}", 
             state, caseData.getApplicationType(), caseData.getRegistryLocation(), caseData.getLanguagePreference(), caseDetails.getId());
         String templateId = templateService.getTemplateId(state, caseData.getApplicationType(),
-            caseData.getRegistryLocation(), caseData.getLanguagePreference());
+            caseData.getRegistryLocation(), caseData.getLanguagePreference(), caseData.getPaperForm());
         log.info("Got templateId: {}", templateId);
         String emailReplyToId = registry.getEmailReplyToId();
         String emailAddress = getEmail(caseData);

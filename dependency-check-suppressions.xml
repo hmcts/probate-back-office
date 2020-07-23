@@ -439,14 +439,6 @@ file name: spring-beans-5.1.5.RELEASE.jar
     </suppress>
     <suppress>
         <notes><![CDATA[
-file name: hibernate-core-5.3.7.Final.jar
-]]></notes>
-        <gav regex="true">^org\.hibernate:hibernate-core:.*$</gav>
-        <cpe>cpe:/a:hibernate:hibernate_orm</cpe>
-        <cve>CVE-2019-14900</cve>
-    </suppress>
-    <suppress>
-        <notes><![CDATA[
 file name: spring-expression-5.1.5.RELEASE.jar
 ]]></notes>
         <gav regex="true">^org\.springframework:spring-expression:.*$</gav>
@@ -542,5 +534,12 @@ file name: spring-jcl-5.1.5.RELEASE.jar
    ]]></notes>
         <gav regex="true">^org\.springframework\.security:spring-security-crypto:.*$</gav>
         <cve>CVE-2020-5408</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: hibernate-core-5.3.7.Final.jar
+   ]]></notes>
+        <gav regex="true">^org\.hibernate:hibernate-core:.*$</gav>
+        <cve>CVE-2019-14900</cve>
     </suppress>
 </suppressions>
