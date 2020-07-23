@@ -245,7 +245,7 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     private ResponseBody validatePostSuccessWithAttributeUpdate(String jsonFileName, String path, String originalAttr, String updatedAttr) {
         String request = utils.getJsonFromFile(jsonFileName);
         request = request.replaceAll(originalAttr, updatedAttr);
-        Response response = SerenityRest.given()
+        Response response = RestAssured.given()
             .relaxedHTTPSValidation()
             .headers(utils.getHeadersWithUserId())
             .body(request)
