@@ -37,7 +37,7 @@ public class TemplateServiceTest {
 
     @MockBean
     private AppInsights appInsights;
-    
+
     @Test
     public void getDocumentsReceivedPA() {
 

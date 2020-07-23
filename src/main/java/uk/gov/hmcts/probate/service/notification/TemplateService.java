@@ -23,9 +23,9 @@ public class TemplateService {
     public String getTemplateId(State state, ApplicationType applicationType, String registryLocation,
                                 LanguagePreference languagePreference) {
         return getTemplateId(state, applicationType, registryLocation, languagePreference, null);
-        
+
     }
-    
+
     public String getTemplateId(State state, ApplicationType applicationType, String registryLocation,
                                 LanguagePreference languagePreference, String paperForm) {
 

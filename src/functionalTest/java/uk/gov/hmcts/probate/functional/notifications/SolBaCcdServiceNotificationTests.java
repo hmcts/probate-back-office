@@ -1,21 +1,22 @@
 package uk.gov.hmcts.probate.functional.notifications;
 
+import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import io.restassured.response.ResponseBody;
 import lombok.extern.slf4j.Slf4j;
-import net.serenitybdd.junit.runners.SerenityRunner;
+import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
 import net.serenitybdd.rest.SerenityRest;
+import net.thucydides.core.annotations.Pending;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 
-import static junit.framework.Assert.assertFalse;
 import static junit.framework.TestCase.assertTrue;
 
 @Slf4j
-@RunWith(SerenityRunner.class)
+@RunWith(SpringIntegrationSerenityRunner.class)
 public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
 
     private static final String PA_STOP_DETAILS = "PA stop details";
@@ -50,7 +51,7 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
 
     @Test
     public void verifyDigitalIntestacyApplicationReceivedNotificationSent() {
-        ResponseBody responseBody = validatePostSuccessWithAttributeUpdate("digitalApplicationRecievedPayload.json", APPLICATION_RECEIVED, 
+        ResponseBody responseBody = validatePostSuccessWithAttributeUpdate("digitalApplicationRecievedPayload.json", APPLICATION_RECEIVED,
             "\"caseType\":\"gop\"", "\"caseType\":\"intestacy\"");
         assertTrue(responseBody.asString().contains("DocumentLink"));
     }
@@ -207,14 +208,15 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     }
 
     //TODO: uncomment when letters are being used again
-    //@Test
-    //public void verifyPersonalApplicantRequestInformationLetterContentIsOk() {
-    //    String coversheet = generateDocument("personalPayloadNotificationsNoEmailRequested.json", INFORMATION_REQUEST,
-    //            0);
-    //    String letter = generateDocument("personalPayloadNotificationsNoEmailRequested.json", INFORMATION_REQUEST,
-    //            1);
-    //    verifyPALetterInformationRequestRedec(letter);
-    //}
+    @Test
+    @Pending
+    public void verifyPersonalApplicantRequestInformationLetterContentIsOk() {
+        String coversheet = getProbateDocumentsGeneratedText("personalPayloadNotificationsNoEmailRequested.json", INFORMATION_REQUEST,
+                0);
+        String letter = getProbateDocumentsGeneratedText("personalPayloadNotificationsNoEmailRequested.json", INFORMATION_REQUEST,
+                1);
+        verifyPALetterInformationRequestRedec(letter);
+    }
 
 
     private String sendEmail(String fileName, String url, String jsonDocumentUrl) {
@@ -228,7 +230,7 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     }
 
     private ResponseBody validatePostSuccess(String jsonFileName, String path) {
-        Response response = SerenityRest.given()
+        Response response = RestAssured.given()
                 .relaxedHTTPSValidation()
                 .headers(utils.getHeadersWithUserId())
                 .body(utils.getJsonFromFile(jsonFileName))
@@ -243,7 +245,7 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     private ResponseBody validatePostSuccessWithAttributeUpdate(String jsonFileName, String path, String originalAttr, String updatedAttr) {
         String request = utils.getJsonFromFile(jsonFileName);
         request = request.replaceAll(originalAttr, updatedAttr);
-        Response response = SerenityRest.given()
+        Response response = RestAssured.given()
             .relaxedHTTPSValidation()
             .headers(utils.getHeadersWithUserId())
             .body(request)
