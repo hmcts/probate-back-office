@@ -294,6 +294,14 @@ document_management:
   url: http://localhost:5006
 ```
 
+### probate-submit-service
+##### no changes
+
+### probate-backoffice
+You will need to run with payments and fees docker images if you are expecting to make non-zero payments
+
+The xls generation adds a empty Banner tab, which will not load using the /import scrips. Remove this tab from any xls file before importing
+ 
 ## Running the application as a docker image
 
 Create the image of the application by executing the following command:
@@ -330,15 +338,6 @@ You should get a response similar to this:
   {"status":"UP","diskSpace":{"status":"UP","total":249644974080,"free":137188298752,"threshold":10485760}}
 ```
 
-
-### probate-submit-service
-##### no changes
-
-### probate-backoffice
-You will need to run with payments and fees docker images if you are expecting to make non-zero payments
-
-The xls generation adds a empty Banner tab, which will not load using the /import scrips. Remove this tab from any xls file before importing
- 
 ## Linking to a Probate-frontend PR
 You must link a probate-frontend pr to a probate-orchestrator pr and that to your probate-backoffice pr
 * Create a PR off master for probate-orchestrator-service
