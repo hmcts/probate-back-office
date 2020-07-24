@@ -224,3 +224,54 @@ http://probate-business-service-pr-334.service.core-compute-preview.internal/hea
 http://probate-back-office-pr-1101.service.core-compute-preview.internal/health
 ```
 
+## Setup for local FE + e2e development
+### probate-frontend
+set following in default.yml
+```
+  useIDAM: 'true'
+  requireCcdCaseId: 'true'
+```
+you shoud then be able to use a citizen user of
+```
+testusername@test.com/<password TBC>
+```
+add a dev.yaml file to the /config folder with contents
+```
+featureToggles:
+  launchDarklyKey: 'sdk-4d50eb6e-8400-4aa7-b4c5-8bdfc8b1d844'
+```
+emails can be monitored at:
+```
+http://localhost:8025
+```
+run FE using 
+```
+yarn start:ld
+```
+You should also be able to debug on intellij by starting server.js
+
+### probate-caveats-frontend
+##### no changes
+
+### probate-orchestrator
+##### no changes
+
+### probate-business-service
+set the following application.yml
+```
+  port: 8081
+```
+set the following application.yml
+```
+document_management:
+  url: http://localhost:5006
+```
+
+### probate-submit-service
+##### no changes
+
+### probate-backoffice
+You will need to run with payments and fees docker images if you are expecting to make non-zero payments
+
+The xls generation adds a empty Banner tab, which will not load using the /import scrips. Remove this tab from any xls file before importing
+ 
