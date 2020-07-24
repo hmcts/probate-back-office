@@ -221,6 +221,9 @@ For linux (replace ip with your own ip)
 ```bash
    ./ccdImports/conversionScripts/importAllXLS.sh
 ```
+The xls generation adds a empty Banner tab, which will not load using the /import scrips. Remove this tab from any xls file before importing
+ 
+ 
 ##### 10) Start your local service 
 ###### Pull probate specific ccd-logstash
 pull ccd-logstash branch probate-conf locally then
@@ -300,8 +303,7 @@ document_management:
 ### probate-backoffice
 You will need to run with payments and fees docker images if you are expecting to make non-zero payments
 
-The xls generation adds a empty Banner tab, which will not load using the /import scrips. Remove this tab from any xls file before importing
- 
+
 ## Running the application as a docker image
 
 Create the image of the application by executing the following command:
