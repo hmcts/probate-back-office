@@ -89,6 +89,17 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
     }
 
     @Test
+    public void verifySuccessForCaveatRaisedEmailApplicationFee() {
+        String response = generateDocument(DEFAULT_PAYLOAD, CAVEAT_RAISED, 0);
+
+        assertCommons(response);
+        assertTrue(response.contains("1542274092932452"));
+        assertTrue(response.contains("£20 fee"));
+        assertTrue(response.contains("personal@hmcts-test.com"));
+
+    }
+
+    @Test
     public void verifySuccessForCaveatRaisedDocumentAndCoversheet() {
         String coversheet = generateDocument(DEFAULT_PAYLOAD_NO_EMAIL, CAVEAT_RAISED, 0);
         String response = generateDocument(DEFAULT_PAYLOAD_NO_EMAIL, CAVEAT_RAISED, 1);
