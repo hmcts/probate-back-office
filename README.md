@@ -216,12 +216,12 @@ For linux (replace ip with your own ip)
 ```bash
    ./ccdImports/conversionScripts/createAllXLS.sh $MY_IP:4104 
 ```
+The xls generation adds a empty Banner tab for each case type, which will not load using the /import scrips. Remove this tab from any/all xls file before importing it
 
 ###### Import xls
 ```bash
    ./ccdImports/conversionScripts/importAllXLS.sh
 ```
-The xls generation adds a empty Banner tab, which will not load using the /import scrips. Remove this tab from any xls file before importing
  
  
 ##### 10) Start your local service 
