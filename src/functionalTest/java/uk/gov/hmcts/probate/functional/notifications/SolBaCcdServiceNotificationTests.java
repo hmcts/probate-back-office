@@ -194,14 +194,12 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
         assertTrue(document.contains("!@£$%^&*()[]{}<>,.:;~"));
     }
 
-    @Ignore
     @Test
     public void verifyPersonalApplicantRequestInformationEmailContentIsOk() {
         String document = sendEmail("personalPayloadNotifications.json", INFORMATION_REQUEST, EMAIL_NOTIFICATION_URL);
         verifyPAEmailInformationRequestRedec(document);
     }
 
-    @Ignore
     @Test
     public void verifyPersonalApplicantRequestInformationDefaultValuesIsOk() {
         validatePostSuccess("personalPayloadNotifications.json", INFORMATION_REQUEST_DEFAULT_VALUES);
