@@ -17,7 +17,6 @@
       "solsSolicitorNotApplyingReason": null,
       "solsSOTJobTitle": "job title",
       "otherExecutorExists": "Yes",
-      "applicationGrounds": "Grounds for application",
       "deceasedAddress": {
         "AddressLine1": "1",
         "AddressLine2": "1",
@@ -98,7 +97,8 @@
       "solsExecutorAliasNames": "ex1wn",
       "primaryApplicantSurname": "Ex1ln",
       "solsSolicitorAppReference": "appref",
-      "solsSOTNeedToUpdate":"No"
+      "solsSOTNeedToUpdate":"No",
+      "applicationGrounds": "Grounds for application"
     },
     "data_classification": {
       "deceasedDateOfDeath": "PUBLIC",
@@ -135,7 +135,7 @@
       "deceasedDateOfBirth": "PUBLIC",
       "deceasedForenames": "PUBLIC",
       "solsSolicitorFirmName": "PUBLIC",
-      "deceasedSurname": "PUBLIC",
+      "deceasedSurname": "PUBLIC"
     }
   },
   "event_id": "solicitorCreate"
