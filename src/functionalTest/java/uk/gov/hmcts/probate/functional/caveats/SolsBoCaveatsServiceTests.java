@@ -94,7 +94,7 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
 
         assertCommons(response);
         assertTrue(response.contains("1542274092932452"));
-        assertTrue(response.contains("£20 fee"));
+        assertTrue(response.contains("£3 fee"));
         assertTrue(response.contains("personal@hmcts-test.com"));
 
     }
