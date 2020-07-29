@@ -3,6 +3,7 @@
 ## Purpose
 
 The purpose of these scripts is to convert the existing CCD templates to json and vice versa
+Please read in conjunction with the main [ROOT]README.md file
 
 ## Installation
 
