@@ -671,5 +671,6 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "updateApplication", "UserRole": "citizen", "CRUD": "CRU"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "updateCasePaymentFailed", "UserRole": "citizen", "CRUD": "CRU"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "createCaseWithoutPayment", "UserRole": "citizen", "CRUD": "CRU"},
-  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "SYSTEM_MAINTENANCE", "UserRole": "citizen", "CRUD": "R"}
+  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "SYSTEM_MAINTENANCE", "UserRole": "citizen", "CRUD": "R"},
+  {"LiveFrom": "01/01/2020", "CaseTypeID": "GrantOfRepresentation", "CaseEventID": "attachScannedDocsWithOcr", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRU"}
 ]
