@@ -133,11 +133,7 @@ NB. Docker for desktop on a mac only allocates 2GB of memory by default, this is
    ./ccd login
 ```
 
-For mac: 
-```bash
-    source ./bin/set-environment-variables.sh
-```
-For linux
+For linux/Mac
 ```bash
    source ./bin/linux-set-environment-variables.sh
 ```
