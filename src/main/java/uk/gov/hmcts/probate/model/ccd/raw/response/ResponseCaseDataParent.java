@@ -42,96 +42,48 @@ public class ResponseCaseDataParent {
         return reprintDocument;
     }
 
-    public void setReprintDocument(DynamicList reprintDocument) {
-        this.reprintDocument = reprintDocument;
-    }
-
     public String getReprintNumberOfCopies() {
         return reprintNumberOfCopies;
-    }
-
-    public void setReprintNumberOfCopies(String reprintNumberOfCopies) {
-        this.reprintNumberOfCopies = reprintNumberOfCopies;
     }
 
     public DynamicList getSolsAmendLegalStatmentSelect() {
         return solsAmendLegalStatmentSelect;
     }
 
-    public void setSolsAmendLegalStatmentSelect(DynamicList solsAmendLegalStatmentSelect) {
-        this.solsAmendLegalStatmentSelect = solsAmendLegalStatmentSelect;
-    }
-
     public String getIhtNetValueField() {
         return ihtNetValueField;
-    }
-
-    public void setIhtNetValueField(String ihtNetValueField) {
-        this.ihtNetValueField = ihtNetValueField;
     }
 
     public String getIhtGrossValueField() {
         return ihtGrossValueField;
     }
 
-    public void setIhtGrossValueField(String ihtGrossValueField) {
-        this.ihtGrossValueField = ihtGrossValueField;
-    }
-
     public Long getNumberOfExecutors() {
         return numberOfExecutors;
-    }
-
-    public void setNumberOfExecutors(Long numberOfExecutors) {
-        this.numberOfExecutors = numberOfExecutors;
     }
 
     public Long getNumberOfApplicants() {
         return numberOfApplicants;
     }
 
-    public void setNumberOfApplicants(Long numberOfApplicants) {
-        this.numberOfApplicants = numberOfApplicants;
-    }
-
     public String getLegalDeclarationJson() {
         return legalDeclarationJson;
-    }
-
-    public void setLegalDeclarationJson(String legalDeclarationJson) {
-        this.legalDeclarationJson = legalDeclarationJson;
     }
 
     public String getCheckAnswersSummaryJson() {
         return checkAnswersSummaryJson;
     }
 
-    public void setCheckAnswersSummaryJson(String checkAnswersSummaryJson) {
-        this.checkAnswersSummaryJson = checkAnswersSummaryJson;
-    }
-
     public String getRegistryAddress() {
         return registryAddress;
-    }
-
-    public void setRegistryAddress(String registryAddress) {
-        this.registryAddress = registryAddress;
     }
 
     public String getRegistryEmailAddress() {
         return registryEmailAddress;
     }
 
-    public void setRegistryEmailAddress(String registryEmailAddress) {
-        this.registryEmailAddress = registryEmailAddress;
-    }
-
     public String getRegistrySequenceNumber() {
         return registrySequenceNumber;
-    }
-
-    public void setRegistrySequenceNumber(String registrySequenceNumber) {
-        this.registrySequenceNumber = registrySequenceNumber;
     }
 
     public static ResponseCaseDataParentBuilder builder() {
@@ -213,7 +165,7 @@ public class ResponseCaseDataParent {
 
         public ResponseCaseDataParent build() {
             return new ResponseCaseDataParent(reprintDocument, reprintNumberOfCopies, 
-                solsAmendLegalStatmentSelect, ihtNetValueField, ihtGrossValueField, 
+                solsAmendLegalStatmentSelect, ihtGrossValueField, ihtNetValueField, 
                 numberOfExecutors, numberOfApplicants, legalDeclarationJson, checkAnswersSummaryJson, 
                 registryAddress, registryEmailAddress, registrySequenceNumber);
         }
