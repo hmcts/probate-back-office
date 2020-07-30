@@ -2125,6 +2125,60 @@ public class ResponseCaseData extends ResponseCaseDataParent{
             return this;
         }
 
+        @Override
+        public ResponseCaseDataBuilder ihtNetValueField(String ihtNetValueField) {
+            this.ihtNetValueField = ihtNetValueField;
+            return this;
+        }
+
+        @Override
+        public ResponseCaseDataBuilder ihtGrossValueField(String ihtGrossValueField) {
+            this.ihtGrossValueField = ihtGrossValueField;
+            return this;
+        }
+
+        @Override
+        public ResponseCaseDataBuilder numberOfExecutors(Long numberOfExecutors) {
+            this.numberOfExecutors = numberOfExecutors;
+            return this;
+        }
+
+        @Override
+        public ResponseCaseDataBuilder numberOfApplicants(Long numberOfApplicants) {
+            this.numberOfApplicants = numberOfApplicants;
+            return this;
+        }
+
+        @Override
+        public ResponseCaseDataBuilder legalDeclarationJson(String legalDeclarationJson) {
+            this.legalDeclarationJson = legalDeclarationJson;
+            return this;
+        }
+
+        @Override
+        public ResponseCaseDataBuilder checkAnswersSummaryJson(String checkAnswersSummaryJson) {
+            this.checkAnswersSummaryJson = checkAnswersSummaryJson;
+            return this;
+        }
+
+        @Override
+        public ResponseCaseDataBuilder registryAddress(String registryAddress) {
+            this.registryAddress = registryAddress;
+            return this;
+        }
+
+        @Override
+        public ResponseCaseDataBuilder registryEmailAddress(String registryEmailAddress) {
+            this.registryEmailAddress = registryEmailAddress;
+            return this;
+        }
+
+        @Override
+        public ResponseCaseDataBuilder registrySequenceNumber(String registrySequenceNumber) {
+            this.registrySequenceNumber = registrySequenceNumber;
+            return this;
+        }
+
         public ResponseCaseData build() {
             ResponseCaseData responseCaseData = new ResponseCaseData(state, applicationType, registryLocation, deceasedDateOfDeath, deceasedDateOfBirth, deceasedForenames, deceasedSurname, solsSolicitorFirmName, solsSolicitorAddress, solsSolicitorEmail, solsSolicitorPhoneNumber, solsSOTName,
                 solsSOTForenames, solsSOTSurname, solsSOTJobTitle, solsSolicitorAppReference, ihtFormId, solsSolicitorIsExec, solsSolicitorIsMainApplicant, solsSolicitorIsApplying, solsSolicitorNotApplyingReason, solsWillType, solsApplicantRelationshipToDeceased, solsSpouseOrCivilRenouncing,
