@@ -2125,51 +2125,6 @@ public class ResponseCaseData extends ResponseCaseDataParent{
             return this;
         }
 
-        public ResponseCaseDataBuilder ihtNetValueField(String ihtNetValueField) {
-            this.ihtNetValueField = ihtNetValueField;
-            return this;
-        }
-
-        public ResponseCaseDataBuilder ihtGrossValueField(String ihtGrossValueField) {
-            this.ihtGrossValueField = ihtGrossValueField;
-            return this;
-        }
-
-        public ResponseCaseDataBuilder numberOfExecutors(Long numberOfExecutors) {
-            this.numberOfExecutors = numberOfExecutors;
-            return this;
-        }
-
-        public ResponseCaseDataBuilder numberOfApplicants(Long numberOfApplicants) {
-            this.numberOfApplicants = numberOfApplicants;
-            return this;
-        }
-
-        public ResponseCaseDataBuilder legalDeclarationJson(String legalDeclarationJson) {
-            this.legalDeclarationJson = legalDeclarationJson;
-            return this;
-        }
-
-        public ResponseCaseDataBuilder checkAnswersSummaryJson(String checkAnswersSummaryJson) {
-            this.checkAnswersSummaryJson = checkAnswersSummaryJson;
-            return this;
-        }
-
-        public ResponseCaseDataBuilder registryAddress(String registryAddress) {
-            this.registryAddress = registryAddress;
-            return this;
-        }
-
-        public ResponseCaseDataBuilder registryEmailAddress(String registryEmailAddress) {
-            this.registryEmailAddress = registryEmailAddress;
-            return this;
-        }
-
-        public ResponseCaseDataBuilder registrySequenceNumber(String registrySequenceNumber) {
-            this.registrySequenceNumber = registrySequenceNumber;
-            return this;
-        }
-
         public ResponseCaseData build() {
             ResponseCaseData responseCaseData = new ResponseCaseData(state, applicationType, registryLocation, deceasedDateOfDeath, deceasedDateOfBirth, deceasedForenames, deceasedSurname, solsSolicitorFirmName, solsSolicitorAddress, solsSolicitorEmail, solsSolicitorPhoneNumber, solsSOTName,
                 solsSOTForenames, solsSOTSurname, solsSOTJobTitle, solsSolicitorAppReference, ihtFormId, solsSolicitorIsExec, solsSolicitorIsMainApplicant, solsSolicitorIsApplying, solsSolicitorNotApplyingReason, solsWillType, solsApplicantRelationshipToDeceased, solsSpouseOrCivilRenouncing,
