@@ -205,18 +205,6 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
         validatePostSuccess("personalPayloadNotifications.json", INFORMATION_REQUEST_DEFAULT_VALUES);
     }
 
-    //TODO: uncomment when letters are being used again
-    @Test
-    @Pending
-    public void verifyPersonalApplicantRequestInformationLetterContentIsOk() {
-        String coversheet = getProbateDocumentsGeneratedText("personalPayloadNotificationsNoEmailRequested.json", INFORMATION_REQUEST,
-                0);
-        String letter = getProbateDocumentsGeneratedText("personalPayloadNotificationsNoEmailRequested.json", INFORMATION_REQUEST,
-                1);
-        verifyPALetterInformationRequestRedec(letter);
-    }
-
-
     private String sendEmail(String fileName, String url, String jsonDocumentUrl) {
         ResponseBody body = validatePostSuccess(fileName, url);
 
