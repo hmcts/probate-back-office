@@ -105,12 +105,11 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
     }
 
     @Test
-    @Pending
     public void verifyIncorrectInputReturns400() {
         given().relaxedHTTPSValidation()
                 .headers(utils.getHeaders())
-                .body(utils.getJsonFromFile("incorrectInput.checkYourAnswersPayload.json")).
-                when().post("VALIDATE_URL").then().statusCode(400);
+                .body(utils.getJsonFromFile("incorrectInput.checkYourAnswersPayload.json")) // check what incorrect input should be
+                .when().post(VALIDATE_URL).then().statusCode(400);
     }
 
     @Test

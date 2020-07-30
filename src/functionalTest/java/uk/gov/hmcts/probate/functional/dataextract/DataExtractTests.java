@@ -2,6 +2,7 @@ package uk.gov.hmcts.probate.functional.dataextract;
 
 import io.restassured.RestAssured;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
+import net.thucydides.core.annotations.Pending;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,6 +23,7 @@ public class DataExtractTests extends IntegrationTestBase {
     private Integer id;
 
     @Test
+    @Pending
     public void verifyValidDateRequestReturnsOkStatusForIronMountain() {
         RestAssured.given().relaxedHTTPSValidation().headers(utils.getHeaders(email,
                 password, id)).queryParam("date", "2019-02-03")
@@ -49,6 +51,7 @@ public class DataExtractTests extends IntegrationTestBase {
     }
 
     @Test
+    @Pending
     public void verifyValidDateRequestReturnsOkStatusForExcela() {
         RestAssured.given().relaxedHTTPSValidation().headers(utils.getHeaders(email,
                 password, id)).queryParam("date", "2019-02-03")
