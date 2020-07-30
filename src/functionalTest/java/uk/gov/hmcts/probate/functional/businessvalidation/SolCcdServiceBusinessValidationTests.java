@@ -325,8 +325,8 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         JsonPath jsonPath = JsonPath.from(response);
         String ihtGrossValueField = jsonPath.get("data.ihtGrossValueField");
         String ihtNetValueField = jsonPath.get("data.ihtNetValueField");
-        String numberOfExecutors = jsonPath.get("data.numberOfExecutors");
-        String numberOfApplicants = jsonPath.get("data.numberOfApplicants");
+        int numberOfExecutors = jsonPath.get("data.numberOfExecutors");
+        int numberOfApplicants = jsonPath.get("data.numberOfApplicants");
         String legalDeclarationJson = jsonPath.get("data.legalDeclarationJson");
         String checkAnswersSummaryJson = jsonPath.get("data.checkAnswersSummaryJson");
         String registryAddress = jsonPath.get("data.registryAddress");
@@ -335,8 +335,8 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
 
         assertEquals("100001.0", ihtGrossValueField);
         assertEquals("90009.0", ihtNetValueField);
-        assertEquals("2", numberOfExecutors);
-        assertEquals("1", numberOfApplicants);
+        assertEquals(2, numberOfExecutors);
+        assertEquals(1, numberOfApplicants);
         assertEquals("some legal declaration json", legalDeclarationJson);
         assertEquals("some check summary json", checkAnswersSummaryJson);
         assertEquals("RegistryAddress", registryAddress);
