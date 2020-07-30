@@ -108,7 +108,7 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
     public void verifyIncorrectInputReturns400() {
         given().relaxedHTTPSValidation()
                 .headers(utils.getHeaders())
-                .body(utils.getJsonFromFile("incorrectInput.checkYourAnswersPayload.json")) // check what incorrect input should be
+                .body(utils.getJsonFromFile("incorrectInput.checkYourAnswersPayload.json"))
                 .when().post(VALIDATE_URL).then().statusCode(400);
     }
 

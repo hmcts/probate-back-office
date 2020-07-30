@@ -23,13 +23,12 @@ public class DataExtractTests extends IntegrationTestBase {
     private Integer id;
 
     @Test
-    @Pending
     public void verifyValidDateRequestReturnsOkStatusForIronMountain() {
         RestAssured.given().relaxedHTTPSValidation().headers(utils.getHeaders(email,
                 password, id)).queryParam("date", "2019-02-03")
                 .when()
                 .post(IRONMOUNTAIN_URL)
-                .then().assertThat().statusCode(200);
+                .then().assertThat().statusCode(202);
     }
 
     @Test
@@ -51,13 +50,12 @@ public class DataExtractTests extends IntegrationTestBase {
     }
 
     @Test
-    @Pending
     public void verifyValidDateRequestReturnsOkStatusForExcela() {
         RestAssured.given().relaxedHTTPSValidation().headers(utils.getHeaders(email,
                 password, id)).queryParam("date", "2019-02-03")
                 .when()
                 .post(EXCELA_URL)
-                .then().assertThat().statusCode(200);
+                .then().assertThat().statusCode(202);
     }
 
     @Test
