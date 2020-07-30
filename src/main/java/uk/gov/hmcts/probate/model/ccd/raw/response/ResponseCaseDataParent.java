@@ -169,9 +169,5 @@ public class ResponseCaseDataParent {
                 numberOfExecutors, numberOfApplicants, legalDeclarationJson, checkAnswersSummaryJson, 
                 registryAddress, registryEmailAddress, registrySequenceNumber);
         }
-
-        public String toString() {
-            return "ResponseCaseDataParent.ResponseCaseDataParentBuilder(reprintDocument=" + this.reprintDocument + ", reprintNumberOfCopies=" + this.reprintNumberOfCopies + ", solsAmendLegalStatmentSelect=" + solsAmendLegalStatmentSelect + ")";
-        }
     }
 }
