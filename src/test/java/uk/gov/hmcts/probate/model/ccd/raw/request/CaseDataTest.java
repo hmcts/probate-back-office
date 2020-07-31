@@ -592,6 +592,7 @@ public class    CaseDataTest {
         
         final CaseData caseData = CaseData.builder().primaryApplicantForenames("PAFN")
             .reprintDocument(reprintDocument).reprintNumberOfCopies("1").solsAmendLegalStatmentSelect(solsAmendLegalStatmentSelect)
+            .declarationCheckbox("Yes")
             .ihtGrossValueField("1000").ihtNetValueField("900")
             .numberOfExecutors(1L).numberOfApplicants(2L)
             .legalDeclarationJson("legalDeclarationJson").checkAnswersSummaryJson("checkAnswersSummaryJson")
@@ -603,6 +604,7 @@ public class    CaseDataTest {
         assertEquals("1", caseData.getReprintNumberOfCopies());
         assertEquals("solsAmendLegalStatmentSelect", caseData.getSolsAmendLegalStatmentSelect().getValue().getCode());
         assertEquals("1000", caseData.getIhtGrossValueField());
+        assertEquals("Yes", caseData.getDeclarationCheckbox());
         assertEquals("900", caseData.getIhtNetValueField());
         assertEquals(Long.valueOf(1), caseData.getNumberOfExecutors());
         assertEquals(Long.valueOf(2), caseData.getNumberOfApplicants());

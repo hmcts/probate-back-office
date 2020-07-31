@@ -562,6 +562,7 @@ public class CaseData {
     
     private DynamicList solsAmendLegalStatmentSelect;
 
+    private String declarationCheckbox;
     private String ihtGrossValueField;
     private String ihtNetValueField;
     private Long numberOfExecutors;

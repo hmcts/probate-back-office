@@ -15,6 +15,7 @@ public class ResponseCaseDataParentTest {
 
         final ResponseCaseDataParent responseCaseDataParent = ResponseCaseDataParent.builder()
             .reprintDocument(reprintDocument).reprintNumberOfCopies("1").solsAmendLegalStatmentSelect(solsAmendLegalStatmentSelect)
+            .declarationCheckbox("Yes")
             .ihtGrossValueField("1000").ihtNetValueField("900")
             .numberOfExecutors(1L).numberOfApplicants(2L)
             .legalDeclarationJson("legalDeclarationJson").checkAnswersSummaryJson("checkAnswersSummaryJson")
@@ -24,6 +25,7 @@ public class ResponseCaseDataParentTest {
         assertEquals("reprintDocument", responseCaseDataParent.getReprintDocument().getValue().getCode());
         assertEquals("1", responseCaseDataParent.getReprintNumberOfCopies());
         assertEquals("solsAmendLegalStatmentSelect", responseCaseDataParent.getSolsAmendLegalStatmentSelect().getValue().getCode());
+        assertEquals("Yes", responseCaseDataParent.getDeclarationCheckbox());
         assertEquals("1000", responseCaseDataParent.getIhtGrossValueField());
         assertEquals("900", responseCaseDataParent.getIhtNetValueField());
         assertEquals(Long.valueOf(1), responseCaseDataParent.getNumberOfExecutors());

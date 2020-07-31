@@ -10,6 +10,7 @@ public class ResponseCaseDataParent {
 
     protected DynamicList solsAmendLegalStatmentSelect;
 
+    protected String declarationCheckbox;
     protected String ihtGrossValueField;
     protected String ihtNetValueField;
     protected Long numberOfExecutors;
@@ -23,10 +24,13 @@ public class ResponseCaseDataParent {
     ResponseCaseDataParent() {
     }
 
-    ResponseCaseDataParent(DynamicList reprintDocument, String reprintNumberOfCopies, DynamicList solsAmendLegalStatmentSelect, String ihtGrossValueField, String ihtNetValueField, Long numberOfExecutors, Long numberOfApplicants, String legalDeclarationJson, String checkAnswersSummaryJson, String registryAddress, String registryEmailAddress, String registrySequenceNumber) {
+    ResponseCaseDataParent(DynamicList reprintDocument, String reprintNumberOfCopies, DynamicList solsAmendLegalStatmentSelect, String declarationCheckbox, String ihtGrossValueField, String ihtNetValueField, Long numberOfExecutors, Long numberOfApplicants, String legalDeclarationJson,
+                           String checkAnswersSummaryJson,
+                           String registryAddress, String registryEmailAddress, String registrySequenceNumber) {
         this.reprintDocument = reprintDocument;
         this.reprintNumberOfCopies = reprintNumberOfCopies;
         this.solsAmendLegalStatmentSelect = solsAmendLegalStatmentSelect;
+        this.declarationCheckbox = declarationCheckbox;
         this.ihtGrossValueField = ihtGrossValueField;
         this.ihtNetValueField = ihtNetValueField;
         this.numberOfExecutors = numberOfExecutors;
@@ -50,9 +54,11 @@ public class ResponseCaseDataParent {
         return solsAmendLegalStatmentSelect;
     }
 
-    public String getIhtNetValueField() {
-        return ihtNetValueField;
+    public String getDeclarationCheckbox() {
+        return declarationCheckbox;
     }
+    
+    public String getIhtNetValueField() { return ihtNetValueField; }
 
     public String getIhtGrossValueField() {
         return ihtGrossValueField;
@@ -94,6 +100,7 @@ public class ResponseCaseDataParent {
         protected DynamicList reprintDocument;
         protected String reprintNumberOfCopies;
         protected DynamicList solsAmendLegalStatmentSelect;
+        protected String declarationCheckbox;
         protected String ihtNetValueField;
         protected String ihtGrossValueField;
         protected Long numberOfExecutors;
@@ -119,6 +126,11 @@ public class ResponseCaseDataParent {
 
         public ResponseCaseDataParentBuilder solsAmendLegalStatmentSelect(DynamicList solsAmendLegalStatmentSelect) {
             this.solsAmendLegalStatmentSelect = solsAmendLegalStatmentSelect;
+            return this;
+        }
+
+        public ResponseCaseDataParentBuilder declarationCheckbox(String declarationCheckbox) {
+            this.declarationCheckbox = declarationCheckbox;
             return this;
         }
 
@@ -165,7 +177,7 @@ public class ResponseCaseDataParent {
 
         public ResponseCaseDataParent build() {
             return new ResponseCaseDataParent(reprintDocument, reprintNumberOfCopies, 
-                solsAmendLegalStatmentSelect, ihtGrossValueField, ihtNetValueField, 
+                solsAmendLegalStatmentSelect, declarationCheckbox, ihtGrossValueField, ihtNetValueField, 
                 numberOfExecutors, numberOfApplicants, legalDeclarationJson, checkAnswersSummaryJson, 
                 registryAddress, registryEmailAddress, registrySequenceNumber);
         }

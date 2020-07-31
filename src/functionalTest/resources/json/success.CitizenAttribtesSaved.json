@@ -159,6 +159,7 @@
             "solsExecutorAliasNames": "TestPrimaryExecutorAliasName",
             "primaryApplicantSurname": "TestPrimaryExecutorLastName",
             "solsSolicitorAppReference": "refCYA2",
+            "declarationCheckbox": "Yes",
             "ihtGrossValueField": "100001.0",
             "ihtNetValueField": "90009.0",
             "numberOfExecutors":  "2",

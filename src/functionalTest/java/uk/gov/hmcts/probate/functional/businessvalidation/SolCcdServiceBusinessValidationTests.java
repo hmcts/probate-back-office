@@ -323,6 +323,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         String response = transformCase("success.CitizenAttribtesSaved.json", TRANSFORM_URL);
 
         JsonPath jsonPath = JsonPath.from(response);
+        String declarationCheckbox = jsonPath.get("data.declarationCheckbox");
         String ihtGrossValueField = jsonPath.get("data.ihtGrossValueField");
         String ihtNetValueField = jsonPath.get("data.ihtNetValueField");
         int numberOfExecutors = jsonPath.get("data.numberOfExecutors");
@@ -333,6 +334,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         String registryEmailAddress = jsonPath.get("data.registryEmailAddress");
         String registrySequenceNumber = jsonPath.get("data.registrySequenceNumber");
 
+        assertEquals("Yes", declarationCheckbox);
         assertEquals("100001.0", ihtGrossValueField);
         assertEquals("90009.0", ihtNetValueField);
         assertEquals(2, numberOfExecutors);

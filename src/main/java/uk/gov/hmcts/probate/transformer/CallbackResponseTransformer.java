@@ -651,6 +651,7 @@ public class CallbackResponseTransformer {
                 .reprintDocument(caseData.getReprintDocument())
                 .reprintNumberOfCopies(caseData.getReprintNumberOfCopies())
                 .solsAmendLegalStatmentSelect(caseData.getSolsAmendLegalStatmentSelect())
+                .declarationCheckbox(caseData.getDeclarationCheckbox())
                 .ihtGrossValueField(caseData.getIhtGrossValueField())
                 .ihtNetValueField(caseData.getIhtNetValueField())
                 .numberOfExecutors(caseData.getNumberOfExecutors())
