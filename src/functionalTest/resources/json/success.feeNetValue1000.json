@@ -97,7 +97,8 @@
       "solsExecutorAliasNames": "ex1wn",
       "primaryApplicantSurname": "Ex1ln",
       "solsSolicitorAppReference": "appref",
-      "solsSOTNeedToUpdate":"No"
+      "solsSOTNeedToUpdate":"No",
+      "applicationGrounds": "Grounds for application"
     },
     "data_classification": {
       "deceasedDateOfDeath": "PUBLIC",

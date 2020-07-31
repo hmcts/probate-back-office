@@ -7,6 +7,7 @@
     "last_modified": null,
     "security_classification": "PUBLIC",
     "case_data": {
+      "applicationGrounds": "Grounds for application",
       "otherExecutorExists": "No",
       "deceasedAddress": {
         "AddressLine1": "1",
