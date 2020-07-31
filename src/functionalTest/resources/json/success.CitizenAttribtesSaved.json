@@ -65,13 +65,13 @@
             "solsCYAStateTransition": "SolLegalStatementReviewed",
             "primaryApplicantForenames": "TestPrimaryExecutorFirstName",
             "primaryApplicantAddress": {
-                "County": "2",
-                "Country": "2",
-                "PostCode": "2",
-                "PostTown": "2",
-                "AddressLine1": "2",
-                "AddressLine2": "2",
-                "AddressLine3": "2"
+                "County": "Bucks",
+                "Country": "United Kingdom",
+                "PostCode": "HP5 2PN",
+                "PostTown": "Chesham",
+                "AddressLine1": "151 Hivings Hill",
+                "AddressLine2": "Chesham",
+                "AddressLine3": "Chesham"
             },
             "applicationGrounds": "Grounds for application",
             "ukEstate": [
@@ -129,13 +129,13 @@
                         "additionalExecNameOnWill": "No",
                         "additionalExecReasonNotApplying": "DiedBefore",
                         "additionalExecAddress": {
-                            "County": "3",
-                            "Country": "3",
-                            "PostCode": "3",
-                            "PostTown": "3",
-                            "AddressLine1": "3",
-                            "AddressLine2": "3",
-                            "AddressLine3": "3"
+                            "County": "Bucks",
+                            "Country": "United Kingom",
+                            "PostCode": "HA1 4ET",
+                            "PostTown": "Harrow",
+                            "AddressLine1": "87A pinner Road",
+                            "AddressLine2": "Harrow",
+                            "AddressLine3": "Harrow"
                         }
                     }
                 }
