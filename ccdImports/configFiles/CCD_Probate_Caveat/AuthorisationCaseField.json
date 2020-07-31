@@ -353,5 +353,11 @@
   {"CaseTypeID": "Caveat", "CaseFieldID": "paperForm", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRU"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "languagePreferenceWelsh", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "pcqId", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"},
-  {"CaseTypeID": "Caveat", "CaseFieldID": "pcqId", "UserRole": "caseworker-probate-pcqextractor", "CRUD": "R"}
+  {"CaseTypeID": "Caveat", "CaseFieldID": "pcqId", "UserRole": "caseworker-probate-pcqextractor", "CRUD": "R"},
+  {"LiveFrom": "01/01/2020", "CaseTypeID": "Caveat", "CaseFieldID": "bulkScanEnvelopes", "UserRole": "caseworker-probate-issuer", "CRUD": "CRU"},
+  {"LiveFrom": "01/01/2020", "CaseTypeID": "Caveat", "CaseFieldID": "bulkScanEnvelopes", "UserRole": "caseworker-probate-caseadmin", "CRUD": "CRU"},
+  {"LiveFrom": "01/01/2020", "CaseTypeID": "Caveat", "CaseFieldID": "bulkScanEnvelopes", "UserRole": "caseworker-probate-caseofficer", "CRUD": "CRU"},
+  {"LiveFrom": "01/01/2020", "CaseTypeID": "Caveat", "CaseFieldID": "bulkScanEnvelopes", "UserRole": "caseworker-probate-registrar", "CRUD": "CRU"},
+  {"LiveFrom": "01/01/2020", "CaseTypeID": "Caveat", "CaseFieldID": "bulkScanEnvelopes", "UserRole": "caseworker-probate-superuser", "CRUD": "CRU"}
+
 ]
