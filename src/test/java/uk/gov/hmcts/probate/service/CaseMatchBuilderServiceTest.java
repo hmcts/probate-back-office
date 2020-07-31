@@ -73,7 +73,7 @@ public class CaseMatchBuilderServiceTest {
     @Test
     public void shouldNotHaveCaseLinkForLegacyCase() {
         when(caseMock.getData().getLegacyId()).thenReturn("1234");
-        when(caseMock.getId()).thenReturn(1234L);
+        when(caseMock.getExceptionRecordId()).thenReturn(1234L);
 
         CaseMatch caseMatch = caseMatchBuilderService.buildCaseMatch(caseMock);
 
@@ -82,7 +82,7 @@ public class CaseMatchBuilderServiceTest {
 
     @Test
     public void shouldHaveCaseLinkForCCDCase() {
-        when(caseMock.getId()).thenReturn(1234L);
+        when(caseMock.getExceptionRecordId()).thenReturn(1234L);
 
         CaseMatch caseMatch = caseMatchBuilderService.buildCaseMatch(caseMock);
 

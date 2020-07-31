@@ -9,8 +9,8 @@ public class Case {
     @JsonProperty(value = "case_data")
     private final CaseData data;
 
-    private final Long id;
+    private final Long exceptionRecordId;
 
-    @JsonProperty(value = "case_type_id")
-    private final String caseTypeId;
+    @JsonProperty(value = "exception_record_case_type_id")
+    private final String exceptionRecordCaseTypeId;
 }

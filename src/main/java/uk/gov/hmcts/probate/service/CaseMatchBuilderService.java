@@ -49,9 +49,9 @@ public class CaseMatchBuilderService {
         }
 
         if (isEmpty(c.getData().getLegacyId())) {
-            CaseType.fromCode(c.getCaseTypeId())
+            CaseType.fromCode(c.getExceptionRecordCaseTypeId())
                     .ifPresent(caseType -> caseMatchBuilder.type(caseType.getName()));
-            caseMatchBuilder.caseLink(CaseLink.builder().caseReference(c.getId().toString()).build());
+            caseMatchBuilder.caseLink(CaseLink.builder().caseReference(c.getExceptionRecordId().toString()).build());
             if (c.getData().getSolsDeceasedAliasNamesList() != null) {
                 String aliases = c.getData().getSolsDeceasedAliasNamesList().stream()
                         .map(CollectionMember::getValue)
