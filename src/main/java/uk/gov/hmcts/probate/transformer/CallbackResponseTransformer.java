@@ -1423,6 +1423,6 @@ public class CallbackResponseTransformer {
         }
 
         return CaseCreationDetails.builder().<ResponseCaveatData>
-                eventId(EXCEPTION_RECORD_EVENT_ID).caseData(grantOfRepresentationData).exceptionRecordCaseTypeId(EXCEPTION_RECORD_CASE_TYPE_ID).build();
+                eventId(EXCEPTION_RECORD_EVENT_ID).caseData(grantOfRepresentationData).caseTypeId(EXCEPTION_RECORD_CASE_TYPE_ID).build();
     }
 }

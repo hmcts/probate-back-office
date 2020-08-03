@@ -59,7 +59,7 @@ public class CaseMatchingService {
         MatchedCases matchedCases = elasticSearchService.runQuery(caseType, jsonQuery);
 
         return matchedCases.getCases().stream()
-                .filter(c -> c.getExceptionRecordId() == null || !criteria.getId().equals(c.getExceptionRecordId()))
+                .filter(c -> c.getId() == null || !criteria.getId().equals(c.getId()))
                 .map(caseMatchBuilderService::buildCaseMatch)
                 .collect(Collectors.toList());
     }

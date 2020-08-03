@@ -13,9 +13,9 @@ public class ExceptionRecordCaveatDetails {
     @JsonProperty(value = "case_data")
     private final CaveatData data;
 
-    @JsonProperty(value = "exception_record_case_type_id")
-    private final String exceptionRecordCaseTypeId;
+    @JsonProperty(value = "case_type_id")
+    private final String caseTypeId;
 
     @NotNull
-    private final Long exceptionRecordId;
+    private final Long id;
 }

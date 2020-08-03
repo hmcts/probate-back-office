@@ -61,7 +61,7 @@ public class CaseSearchServiceTest {
         when(caseMatchingCriteria.getDeceasedDateOfDeath()).thenReturn("2000-01-01");
 
         when(caseMock.getData()).thenReturn(caseData);
-        when(caseMock.getExceptionRecordId()).thenReturn(1L);
+        when(caseMock.getId()).thenReturn(1L);
         when(elasticSearchService.runQuery(any(CaseType.class), anyString()))
                 .thenReturn(new MatchedCases(Collections.singletonList(caseMock)));
     }

@@ -148,7 +148,7 @@ public class ExceptionRecordService {
         List<String> errors = new ArrayList<String>();
         ExceptionRecordRequest erRequest = erCaseUpdateRequest.getExceptionRecord();
         ExceptionRecordCaveatDetails exceptionRecordCaveatDetails = erCaseUpdateRequest.getCaveatDetails();
-        CaveatDetails caveatDetails = new CaveatDetails(exceptionRecordCaveatDetails.getData(), null, exceptionRecordCaveatDetails.getExceptionRecordId());
+        CaveatDetails caveatDetails = new CaveatDetails(exceptionRecordCaveatDetails.getData(), null, exceptionRecordCaveatDetails.getId());
         HashMap<String, String> ocrFieldValues = new HashMap<String, String>();
         List<OCRField> ocrFields = erRequest.getOcrFields();
         String caseReference = null;

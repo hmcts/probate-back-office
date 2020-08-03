@@ -249,7 +249,7 @@ public class CaveatCallbackResponseTransformer {
         caveatData.setBulkScanCaseReference((caveatData.getBulkScanCaseReference()));
 
         return CaseCreationDetails.builder().<ResponseCaveatData>
-                eventId(EXCEPTION_RECORD_EVENT_ID).caseData(caveatData).exceptionRecordCaseTypeId(EXCEPTION_RECORD_CASE_TYPE_ID).build();
+                eventId(EXCEPTION_RECORD_EVENT_ID).caseData(caveatData).caseTypeId(EXCEPTION_RECORD_CASE_TYPE_ID).build();
     }
 
     private String transformToString(LocalDate dateValue) {

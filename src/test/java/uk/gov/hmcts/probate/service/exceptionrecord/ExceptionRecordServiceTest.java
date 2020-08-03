@@ -123,7 +123,7 @@ public class ExceptionRecordServiceTest {
         caveatData.setCaveatorSurname("Jones");
         caveatData.setApplicationType(ApplicationType.PERSONAL);
         caveatCaseDetailsResponse = CaseCreationDetails.builder().<ResponseCaveatData>
-                eventId(EXCEPTION_RECORD_CAVEAT_EVENT_ID).caseData(caveatData).exceptionRecordCaseTypeId(EXCEPTION_RECORD_CAVEAT_CASE_TYPE_ID).build();
+                eventId(EXCEPTION_RECORD_CAVEAT_EVENT_ID).caseData(caveatData).caseTypeId(EXCEPTION_RECORD_CAVEAT_CASE_TYPE_ID).build();
 
         grantOfRepresentationData = new GrantOfRepresentationData();
         grantOfRepresentationData.setRegistryLocation(RegistryLocation.CTSC);
@@ -132,7 +132,7 @@ public class ExceptionRecordServiceTest {
         grantOfRepresentationData.setGrantType(GrantType.GRANT_OF_PROBATE);
         grantOfProbateCaseDetailsResponse = CaseCreationDetails.builder().<ResponseCaveatData>eventId(EXCEPTION_RECORD_GOR_EVENT_ID)
                 .caseData(grantOfRepresentationData)
-                .exceptionRecordCaseTypeId(EXCEPTION_RECORD_GOR_CASE_TYPE_ID).build();
+                .caseTypeId(EXCEPTION_RECORD_GOR_CASE_TYPE_ID).build();
 
         when(erCaveatMapper.toCcdData(any())).thenReturn(caveatData);
         when(erGrantOfRepresentationMapper.toCcdData(any(), any())).thenReturn(grantOfRepresentationData);
