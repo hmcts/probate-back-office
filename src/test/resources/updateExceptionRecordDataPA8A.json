@@ -2,8 +2,6 @@
   "case_details": {
     "exception_record_id": 1542274092932452,
     "exception_record_case_type_id": "Caveat",
-    "envelope_id": "qwertyuio",
-    "is_automated_process": false,
     "case_data": {
       "applicationType": "Personal",
       "registryLocation": "Leeds",
