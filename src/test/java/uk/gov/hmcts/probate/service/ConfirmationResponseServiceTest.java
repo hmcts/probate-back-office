@@ -637,7 +637,7 @@ public class ConfirmationResponseServiceTest {
 
     private void assertConfirmationValuesCaveats(Map<String, String> nextStepsValues) {
         assertEquals("ref", nextStepsValues.get("{{solicitorReference}}"));
-        assertEquals("20.00", nextStepsValues.get("{{applicationFee}}"));
+        assertEquals("3.00", nextStepsValues.get("{{applicationFee}}"));
         assertEquals("Cheque (payable to 'HM Courts & Tribunals Service')", nextStepsValues.get("{{paymentReferenceNumber}}"));
     }
 
