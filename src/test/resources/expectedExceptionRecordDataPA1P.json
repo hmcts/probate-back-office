@@ -2,6 +2,8 @@
   "exception_record_id": "1002",
   "exception_record_case_type_id": "PROBATE_ExceptionRecord",
   "po_box": "12626",
+  "envelope_id": "qwertyuio",
+  "is_automated_process": false,
   "po_box_jurisdiction": "PROBATE",
   "form_type": "PA1P",
   "journey_classification": "NEW_APPLICATION",

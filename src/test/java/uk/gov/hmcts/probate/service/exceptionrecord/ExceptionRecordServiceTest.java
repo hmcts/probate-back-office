@@ -150,6 +150,18 @@ public class ExceptionRecordServiceTest {
     }
 
     @Test
+    public void testRequestForPA8A(){
+        assertEquals("qwertyuio", erRequestCaveat.getEnvelopeId());
+        assertEquals(false, erRequestCaveat.getIsAutomatedProcess());
+    }
+
+    @Test
+    public void testRequestForPA1P(){
+        assertEquals("qwertyuio", erRequestGrantOfProbate.getEnvelopeId());
+        assertEquals(false, erRequestGrantOfProbate.getIsAutomatedProcess());
+    }
+
+    @Test
     public void shouldUpdateCaveatCaseFromExceptionRecord() throws IOException, NotificationClientException {
         exceptionRecordPayloadPA8A = testUtils.getStringFromFile("updateExceptionRecordDataPA8A.json");
         caveatCaseUpdateRequest = getObjectMapper().readValue(exceptionRecordPayloadPA8A, CaveatCaseUpdateRequest.class);
