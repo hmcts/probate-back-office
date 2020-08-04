@@ -649,8 +649,7 @@ public class CallbackResponseTransformer {
                 .pcqId(caseData.getPcqId())
                 .reprintDocument(caseData.getReprintDocument())
                 .reprintNumberOfCopies(caseData.getReprintNumberOfCopies())
-                .solsAmendLegalStatmentSelect(caseData.getSolsAmendLegalStatmentSelect())
-                .bulkScanEnvelopes(caseData.getBulkScanEnvelopes());
+                .solsAmendLegalStatmentSelect(caseData.getSolsAmendLegalStatmentSelect());
 
         if (transform) {
             updateCaseBuilderForTransformCase(caseData, builder);
@@ -811,7 +810,8 @@ public class CallbackResponseTransformer {
                 .grantAwaitingDocumentatioNotificationSent(caseData.getGrantAwaitingDocumentatioNotificationSent())
                 .reprintDocument(caseData.getReprintDocument())
                 .reprintNumberOfCopies(caseData.getReprintNumberOfCopies())
-                .solsAmendLegalStatmentSelect(caseData.getSolsAmendLegalStatmentSelect());
+                .solsAmendLegalStatmentSelect(caseData.getSolsAmendLegalStatmentSelect())
+                .bulkScanEnvelopes(caseData.getBulkScanEnvelopes());
 
 
         if (YES.equals(caseData.getSolsSolicitorIsMainApplicant())) {
