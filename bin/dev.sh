@@ -14,7 +14,12 @@ docker-compose ${COMPOSE_FILE} up -d sidam-api
 
 # Set up IDAM client with services and roles
 echo "Setting up IDAM client..."
-sleep 30
+until curl http://localhost:5000/health
+do
+  echo "Waiting for IDAM";
+  sleep 10;
+done
+
 ./bin/idam-client-setup.sh
 
 # Start all other images
