@@ -121,6 +121,13 @@ az acr login --name hmctsprivate --subscription DCD-CNP-Prod
 ./bin/dev.sh
 ```
 
+If the functional tests fail the first time, restart docker and boot it up again:
+
+```bash
+docker stop $(docker ps -a -q);
+./bin/dev.sh
+```
+
 ## Full setup
 
 Guidance on how to set up probate locally using the updated docker images.
