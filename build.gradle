@@ -29,6 +29,7 @@ apply plugin: 'org.sonarqube'
 apply plugin: 'jacoco'
 apply plugin: 'net.serenity-bdd.aggregator'
 apply plugin: "com.gorylenko.gradle-git-properties"
+apply plugin: 'java'
 
 group = 'uk.gov.hmcts.probate'
 version = "4.0.0"
@@ -57,7 +58,7 @@ tasks.withType(Checkstyle).each { checkstyleTask ->
 }
 
 jacoco {
-  toolVersion = '0.8.0'
+  toolVersion = '0.8.5'
 }
 
 jacocoTestReport {
