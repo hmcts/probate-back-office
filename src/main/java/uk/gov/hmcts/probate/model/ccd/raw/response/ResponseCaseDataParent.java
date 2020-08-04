@@ -1,6 +1,10 @@
 package uk.gov.hmcts.probate.model.ccd.raw.response;
 
+import uk.gov.hmcts.probate.model.ccd.raw.BulkScanEnvelope;
+import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.DynamicList;
+
+import java.util.List;
 
 public class ResponseCaseDataParent {
 
@@ -10,13 +14,17 @@ public class ResponseCaseDataParent {
 
     protected DynamicList solsAmendLegalStatmentSelect;
 
+    protected List<CollectionMember<BulkScanEnvelope>> bulkScanEnvelopes;
+
+
     ResponseCaseDataParent() {
     }
 
-    ResponseCaseDataParent(DynamicList reprintDocument, String reprintNumberOfCopies, DynamicList solsAmendLegalStatmentSelect) {
+    ResponseCaseDataParent(DynamicList reprintDocument, String reprintNumberOfCopies, DynamicList solsAmendLegalStatmentSelect, List<CollectionMember<BulkScanEnvelope>> bulkScanEnvelopes) {
         this.reprintDocument = reprintDocument;
         this.reprintNumberOfCopies = reprintNumberOfCopies;
         this.solsAmendLegalStatmentSelect = solsAmendLegalStatmentSelect;
+        this.bulkScanEnvelopes = bulkScanEnvelopes;
     }
 
     public DynamicList getReprintDocument() {
@@ -35,6 +43,14 @@ public class ResponseCaseDataParent {
         this.reprintNumberOfCopies = reprintNumberOfCopies;
     }
 
+    public List<CollectionMember<BulkScanEnvelope>> getBulkScanEnvelopes() {
+        return bulkScanEnvelopes;
+    }
+
+    public void setBulkScanEnvelopes(List<CollectionMember<BulkScanEnvelope>> bulkScanEnvelopes) {
+        this.bulkScanEnvelopes = bulkScanEnvelopes;
+    }
+
     public DynamicList getSolsAmendLegalStatmentSelect() {
         return solsAmendLegalStatmentSelect;
     }
@@ -51,6 +67,7 @@ public class ResponseCaseDataParent {
         protected DynamicList reprintDocument;
         protected String reprintNumberOfCopies;
         protected DynamicList solsAmendLegalStatmentSelect;
+        protected List<CollectionMember<BulkScanEnvelope>> bulkScanEnvelopes;
 
         ResponseCaseDataParentBuilder() {
         }
@@ -70,12 +87,17 @@ public class ResponseCaseDataParent {
             return this;
         }
 
+        public ResponseCaseDataParentBuilder bulkScanEnvelopes(List<CollectionMember<BulkScanEnvelope>>  bulkScanEnvelopes) {
+            this.bulkScanEnvelopes = bulkScanEnvelopes;
+            return this;
+        }
+
         public ResponseCaseDataParent build() {
-            return new ResponseCaseDataParent(reprintDocument, reprintNumberOfCopies, solsAmendLegalStatmentSelect);
+            return new ResponseCaseDataParent(reprintDocument, reprintNumberOfCopies, solsAmendLegalStatmentSelect, bulkScanEnvelopes);
         }
 
         public String toString() {
-            return "ResponseCaseDataParent.ResponseCaseDataParentBuilder(reprintDocument=" + this.reprintDocument + ", reprintNumberOfCopies=" + this.reprintNumberOfCopies + ", solsAmendLegalStatmentSelect=" + solsAmendLegalStatmentSelect + ")";
+            return "ResponseCaseDataParent.ResponseCaseDataParentBuilder(reprintDocument=" + this.reprintDocument + ", reprintNumberOfCopies=" + this.reprintNumberOfCopies + ", solsAmendLegalStatmentSelect=" + solsAmendLegalStatmentSelect + ", bulkScanEnvelopes" + bulkScanEnvelopes + ")";
         }
     }
 }
