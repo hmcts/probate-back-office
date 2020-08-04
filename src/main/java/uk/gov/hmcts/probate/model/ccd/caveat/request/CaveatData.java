@@ -153,7 +153,7 @@ public class CaveatData {
     private String pcqId;
 
     @Builder.Default
-    private List<CollectionMember<BulkScanEnvelope>> bulkScanEnvelopes;
+    private List<CollectionMember<BulkScanEnvelope>> bulkScanEnvelopes = new ArrayList<>();;
 
     public String getDeceasedFullName() {
         return String.join(" ", deceasedForenames, deceasedSurname);
