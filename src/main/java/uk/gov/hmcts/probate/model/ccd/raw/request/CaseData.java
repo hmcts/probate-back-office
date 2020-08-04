@@ -557,7 +557,8 @@ public class CaseData {
     private LocalDate grantAwaitingDocumentationNotificationDate;
     private String grantAwaitingDocumentatioNotificationSent;
     private String pcqId;
-
+    
+    @Builder.Default
     private final List<CollectionMember<BulkScanEnvelope>> bulkScanEnvelopes;
     
     private DynamicList reprintDocument;
