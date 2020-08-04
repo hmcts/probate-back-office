@@ -649,7 +649,8 @@ public class CallbackResponseTransformer {
                 .pcqId(caseData.getPcqId())
                 .reprintDocument(caseData.getReprintDocument())
                 .reprintNumberOfCopies(caseData.getReprintNumberOfCopies())
-                .solsAmendLegalStatmentSelect(caseData.getSolsAmendLegalStatmentSelect());
+                .solsAmendLegalStatmentSelect(caseData.getSolsAmendLegalStatmentSelect())
+                .bulkScanEnvelopes(caseData.getBulkScanEnvelopes());
 
         if (transform) {
             updateCaseBuilderForTransformCase(caseData, builder);

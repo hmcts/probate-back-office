@@ -25,6 +25,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.AdoptedRelative;
 import uk.gov.hmcts.probate.model.ccd.raw.AliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.AttorneyApplyingOnBehalfOf;
 import uk.gov.hmcts.probate.model.ccd.raw.BulkPrint;
+import uk.gov.hmcts.probate.model.ccd.raw.BulkScanEnvelope;
 import uk.gov.hmcts.probate.model.ccd.raw.Categories;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Declaration;
@@ -556,6 +557,8 @@ public class CaseData {
     private LocalDate grantAwaitingDocumentationNotificationDate;
     private String grantAwaitingDocumentatioNotificationSent;
     private String pcqId;
+
+    private final List<CollectionMember<BulkScanEnvelope>> bulkScanEnvelopes;
     
     private DynamicList reprintDocument;
     private String reprintNumberOfCopies;
