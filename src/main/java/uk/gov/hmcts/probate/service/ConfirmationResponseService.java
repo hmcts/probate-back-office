@@ -50,7 +50,7 @@ public class ConfirmationResponseService {
     private static final String REASON_FOR_NOT_APPLYING_DIED_BEFORE = "DiedBefore";
     private static final String REASON_FOR_NOT_APPLYING_DIED_AFTER = "DiedAfter";
     private static final String IHT_400421 = "IHT400421";
-    private static final String CAVEAT_APPLICATION_FEE = "20.00";
+    private static final String CAVEAT_APPLICATION_FEE = "3.00";
 
     static final String PAYMENT_METHOD_VALUE_FEE_ACCOUNT = "fee account";
     static final String PAYMENT_REFERENCE_FEE_PREFIX = "Fee account PBA-";
