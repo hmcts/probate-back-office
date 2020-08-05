@@ -1,5 +1,4 @@
 {
-  "exception_record_id": "1000003",
   "exception_record_case_type_id": "PROBATE_ExceptionRecord",
   "po_box": "12626",
   "po_box_jurisdiction": "PROBATE",
@@ -7,11 +6,11 @@
   "journey_classification": "NEW_APPLICATION",
   "delivery_date": "2019-07-20T12:34:56.789Z",
   "opening_date": "2019-07-21T13:00:00.000Z",
-  "is_automated_process": "false",
+  "is_automated_process": "true",
   "scanned_documents": [
     {
     "type": "form",
-    "subtype": "PA8A",
+    "subtype": "PA8A1",
     "url": {
       "document_url":"https://dm-store:5006/fdfsfsdf",
       "document_binary_url":"https://dm-store:5006/fdfsfsdf",
@@ -36,7 +35,7 @@
     { "name": "deceasedForenames", "value": "Thomas" },
     { "name": "deceasedMiddleNames", "value": "Phillip" },
     { "name": "deceasedSurname", "value": "Simpson" },
-    { "name": "deceasedDateOfDeath", "value": "02022019" },
+    { "name": "deceasedDateOfDeath", "value": "02193" },
     { "name": "deceasedDateOfBirth", "value": "12031950" },
     { "name": "deceasedAnyOtherNames", "value": "true" },
     { "name": "deceasedAddressLine1", "value": "3 Roebuck Close" },
