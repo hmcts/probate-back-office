@@ -178,7 +178,7 @@ def versions = [
         commonsIO                       : '2.6',
         commonsValidator                : '1.6',
         restAssured                     : '3.0.7',
-        lombok                          : '1.16.18',
+        lombok                          : '1.16.20',
         springfoxSwagger                : '2.9.2',
         springSecurityVersion           : '5.1.1.RELEASE',
         probateCommonsVersion           : '1.0.6',
@@ -226,7 +226,10 @@ dependencies {
   }
 
   implementation group: 'org.springframework.hateoas', name: 'spring-hateoas', version: '0.23.0.RELEASE'
-
+  compileOnly("org.projectlombok:lombok:${versions.lombok}")
+  testCompileOnly("org.projectlombok:lombok:${versions.lombok}")
+  annotationProcessor("org.projectlombok:lombok:${versions.lombok}")
+  testAnnotationProcessor("org.projectlombok:lombok:${versions.lombok}")
   implementation group: 'uk.gov.hmcts.reform', name: 'logging-spring', version: versions.hmctsJavaLogging
   implementation group: 'uk.gov.hmcts.reform', name: 'logging-httpcomponents', version: versions.hmctsJavaLogging
   implementation group: 'uk.gov.hmcts.reform', name: 'logging-appinsights', version: versions.hmctsJavaLogging
@@ -295,15 +298,15 @@ dependencies {
     force = true
   }
 
-  testCaseCreatorCompile group: 'net.serenity-bdd', name: 'serenity-rest-assured', version: versions.serenity
-  testCaseCreatorCompile group: 'net.serenity-bdd', name: 'serenity-core', version: versions.serenity
-  testCaseCreatorCompile group: 'net.serenity-bdd', name: 'serenity-junit', version: versions.serenity
-  testCaseCreatorCompile group: 'net.serenity-bdd', name: 'serenity-spring', version: versions.serenity
-  testCaseCreatorCompile group: 'net.serenity-bdd', name: 'serenity-single-page-report', version: versions.serenityreporter
-  testCaseCreatorCompile group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.0'
-  testCaseCreatorCompile group: 'uk.gov.hmcts.reform', name: 'service-auth-provider-client', version: versions.serviceAuthVersion
-  testCaseCreatorCompile sourceSets.main.runtimeClasspath
-  testCaseCreatorCompile sourceSets.test.runtimeClasspath
+  testCaseCreatorImplementation group: 'net.serenity-bdd', name: 'serenity-rest-assured', version: versions.serenity
+  testCaseCreatorImplementation group: 'net.serenity-bdd', name: 'serenity-core', version: versions.serenity
+  testCaseCreatorImplementation group: 'net.serenity-bdd', name: 'serenity-junit', version: versions.serenity
+  testCaseCreatorImplementation group: 'net.serenity-bdd', name: 'serenity-spring', version: versions.serenity
+  testCaseCreatorImplementation group: 'net.serenity-bdd', name: 'serenity-single-page-report', version: versions.serenityreporter
+  testCaseCreatorImplementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.0'
+  testCaseCreatorImplementation group: 'uk.gov.hmcts.reform', name: 'service-auth-provider-client', version: versions.serviceAuthVersion
+  testCaseCreatorImplementation sourceSets.main.runtimeClasspath
+  testCaseCreatorImplementation sourceSets.test.runtimeClasspath
 }
 
 tasks.withType(JavaCompile) {
@@ -311,7 +314,7 @@ tasks.withType(JavaCompile) {
 }
 
 bootJar {
-  archiveName = 'back-office.jar'
+  archiveFileName = 'back-office.jar'
   manifest {
 
     attributes 'Implementation-Title': project.name,
