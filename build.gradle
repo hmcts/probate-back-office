@@ -178,7 +178,7 @@ def versions = [
         commonsIO                       : '2.6',
         commonsValidator                : '1.6',
         restAssured                     : '3.0.7',
-        lombok                          : '1.16.20',
+        lombok                          : '1.18.12',
         springfoxSwagger                : '2.9.2',
         springSecurityVersion           : '5.1.1.RELEASE',
         probateCommonsVersion           : '1.0.6',
@@ -283,6 +283,7 @@ dependencies {
   testSmokeImplementation sourceSets.main.runtimeClasspath
   testSmokeImplementation sourceSets.test.runtimeClasspath
 
+  testFunctionalAnnotationProcessor group: 'org.projectlombok', name: 'lombok', version: versions.lombok
   testFunctionalImplementation group: 'net.serenity-bdd', name: 'serenity-rest-assured', version: versions.serenity
   testFunctionalImplementation group: 'net.serenity-bdd', name: 'serenity-core', version: versions.serenity
   testFunctionalImplementation group: 'net.serenity-bdd', name: 'serenity-junit', version: versions.serenity
@@ -298,6 +299,7 @@ dependencies {
     force = true
   }
 
+  testCaseCreatorAnnotationProcessor group: 'org.projectlombok', name: 'lombok', version: versions.lombok
   testCaseCreatorImplementation group: 'net.serenity-bdd', name: 'serenity-rest-assured', version: versions.serenity
   testCaseCreatorImplementation group: 'net.serenity-bdd', name: 'serenity-core', version: versions.serenity
   testCaseCreatorImplementation group: 'net.serenity-bdd', name: 'serenity-junit', version: versions.serenity
