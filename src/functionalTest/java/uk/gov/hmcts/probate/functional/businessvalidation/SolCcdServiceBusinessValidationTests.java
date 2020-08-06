@@ -318,6 +318,34 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
 
     }
 
+    @Test
+    public void shouldTransformCaseWithCitizenAttributes() {
+        String response = transformCase("success.CitizenAttribtesSaved.json", TRANSFORM_URL);
+
+        JsonPath jsonPath = JsonPath.from(response);
+        String declarationCheckbox = jsonPath.get("data.declarationCheckbox");
+        String ihtGrossValueField = jsonPath.get("data.ihtGrossValueField");
+        String ihtNetValueField = jsonPath.get("data.ihtNetValueField");
+        int numberOfExecutors = jsonPath.get("data.numberOfExecutors");
+        int numberOfApplicants = jsonPath.get("data.numberOfApplicants");
+        String legalDeclarationJson = jsonPath.get("data.legalDeclarationJson");
+        String checkAnswersSummaryJson = jsonPath.get("data.checkAnswersSummaryJson");
+        String registryAddress = jsonPath.get("data.registryAddress");
+        String registryEmailAddress = jsonPath.get("data.registryEmailAddress");
+        String registrySequenceNumber = jsonPath.get("data.registrySequenceNumber");
+
+        assertEquals("Yes", declarationCheckbox);
+        assertEquals("100001.0", ihtGrossValueField);
+        assertEquals("90009.0", ihtNetValueField);
+        assertEquals(2, numberOfExecutors);
+        assertEquals(1, numberOfApplicants);
+        assertEquals("some legal declaration json", legalDeclarationJson);
+        assertEquals("some check summary json", checkAnswersSummaryJson);
+        assertEquals("RegistryAddress", registryAddress);
+        assertEquals("RegistryEmail", registryEmailAddress);
+        assertEquals("1", registrySequenceNumber);
+    }
+
 
     private String transformCase(String jsonFileName, String path) {
 

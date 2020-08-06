@@ -9,6 +9,8 @@ import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
+import uk.gov.hmcts.probate.model.ccd.raw.DynamicList;
+import uk.gov.hmcts.probate.model.ccd.raw.DynamicListItem;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 
 import java.time.LocalDate;
@@ -581,5 +583,35 @@ public class    CaseDataTest {
                 .build();
 
         assertEquals(NO, caseData.getDefaultValueForEmailNotifications());
+    }
+    
+    @Test
+    public void shouldApplyParentAttributes() {
+        DynamicList reprintDocument = DynamicList.builder().value(DynamicListItem.builder().code("reprintDocument").build()).build();
+        DynamicList solsAmendLegalStatmentSelect = DynamicList.builder().value(DynamicListItem.builder().code("solsAmendLegalStatmentSelect").build()).build();
+        
+        final CaseData caseData = CaseData.builder().primaryApplicantForenames("PAFN")
+            .reprintDocument(reprintDocument).reprintNumberOfCopies("1").solsAmendLegalStatmentSelect(solsAmendLegalStatmentSelect)
+            .declarationCheckbox("Yes")
+            .ihtGrossValueField("1000").ihtNetValueField("900")
+            .numberOfExecutors(1L).numberOfApplicants(2L)
+            .legalDeclarationJson("legalDeclarationJson").checkAnswersSummaryJson("checkAnswersSummaryJson")
+            .registryAddress("registryAddress").registryEmailAddress("registryEmailAddress").registrySequenceNumber("registrySequenceNumber")
+            .build();
+
+        assertEquals("PAFN", caseData.getPrimaryApplicantForenames());
+        assertEquals("reprintDocument", caseData.getReprintDocument().getValue().getCode());
+        assertEquals("1", caseData.getReprintNumberOfCopies());
+        assertEquals("solsAmendLegalStatmentSelect", caseData.getSolsAmendLegalStatmentSelect().getValue().getCode());
+        assertEquals("1000", caseData.getIhtGrossValueField());
+        assertEquals("Yes", caseData.getDeclarationCheckbox());
+        assertEquals("900", caseData.getIhtNetValueField());
+        assertEquals(Long.valueOf(1), caseData.getNumberOfExecutors());
+        assertEquals(Long.valueOf(2), caseData.getNumberOfApplicants());
+        assertEquals("legalDeclarationJson", caseData.getLegalDeclarationJson());
+        assertEquals("checkAnswersSummaryJson", caseData.getCheckAnswersSummaryJson());
+        assertEquals("registryAddress", caseData.getRegistryAddress());
+        assertEquals("registryEmailAddress", caseData.getRegistryEmailAddress());
+        assertEquals("registrySequenceNumber", caseData.getRegistrySequenceNumber());
     }
 }
