@@ -43,7 +43,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(value = ProbateManController.class, secure = false)
+@WebMvcTest(value = ProbateManController.class)
 public class ProbateManControllerTest {
 
     private static final String ID = "1234567";
