@@ -572,9 +572,6 @@
   {"CaseTypeID": "Caveat", "CaseEventID": "solicitorCreateCaveat", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"},
   {"CaseTypeID": "Caveat", "CaseEventID": "solicitorUpdateCaveat", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"},
   {"CaseTypeID": "Caveat", "CaseEventID": "solicitorCompleteApplication", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"},
-  {"LiveFrom": "01/01/2020", "CaseTypeID": "Caveat", "CaseEventID": "attachScannedDocsWithOcr", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRU"},
   {"LiveFrom": "01/01/2020", "CaseTypeID": "Caveat", "CaseEventID": "raiseCaveatFromBulkScan", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRU"},
   {"LiveFrom": "01/01/2020", "CaseTypeID": "Caveat", "CaseEventID": "createCase", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRU"}
-
-
 ]

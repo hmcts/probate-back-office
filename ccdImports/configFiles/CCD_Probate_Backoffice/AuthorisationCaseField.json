@@ -2222,6 +2222,7 @@
   {"LiveFrom": "01/01/2020", "CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "bulkScanEnvelopes", "UserRole": "caseworker-probate-registrar", "CRUD": "CRU"},
   {"LiveFrom": "01/01/2020", "CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "bulkScanEnvelopes", "UserRole": "caseworker-probate-superuser", "CRUD": "CRU"},
   {"LiveFrom": "01/01/2020", "CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "bulkScanEnvelopes", "UserRole": "caseworker-probate-scheduler", "CRUD": "CRU"},
+  {"LiveFrom": "01/01/2020", "CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "bulkScanEnvelopes", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRU"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "customHistoryViewer", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRU"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "customPaymentHistoryViewer", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRU"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "applicationID", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRU"},
