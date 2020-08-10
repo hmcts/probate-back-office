@@ -2,17 +2,17 @@ package uk.gov.hmcts.probate.model.evidencemanagement;
 
 import org.junit.Test;
 import org.springframework.hateoas.Link;
+import org.springframework.hateoas.Links;
 
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.hasProperty;
-import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 public class EvidenceManagementFileTest {
 
@@ -33,8 +33,8 @@ public class EvidenceManagementFileTest {
 
         evidenceManagementFile.setLinks(linkMap);
 
-        List<Link> links = evidenceManagementFile.getLinks();
-        assertThat(links, hasSize(2));
+        Links links = evidenceManagementFile.getLinks();
+        assertTrue(links.hasSize(2));
         assertThat(links, containsInAnyOrder(
                 hasProperty("rel", is("LABEl1")),
                 hasProperty("rel", is("LABEL2"))
