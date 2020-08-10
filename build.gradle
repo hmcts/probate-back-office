@@ -190,6 +190,7 @@ def versions = [
         probateCommonsVersion           : '1.0.6',
         ccdClient                       : '4.6.4',
         mapStruct                       : '1.2.0.Final',
+        jackson                         : '2.10.2',
         serviceAuthVersion              : '3.0.0'
 ]
 
@@ -228,6 +229,7 @@ dependencies {
   compile group: 'org.springframework', name: 'spring-context-support', version: '5.2.3.RELEASE'
   compile group: 'org.springframework.boot', name: 'spring-boot-devtools', version: versions.springBootVersion
   compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-rest', version: versions.springBootVersion
+  compile group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: versions.springBootVersion
   compile group: 'uk.gov.hmcts.reform.probate', name: 'probate-commons', version: versions.probateCommonsVersion
 
   compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: versions.springCloudStarterNetflixHystrix
@@ -251,10 +253,12 @@ dependencies {
   compile group: 'uk.gov.hmcts.reform', name: 'health-spring-boot-starter', version: '0.0.4'
   compile group: 'uk.gov.hmcts.reform', name: 'properties-volume-spring-boot-starter', version: '0.0.4'
 
-  compile group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: '2.9.2'
+  compile group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: versions.jackson
+  compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: versions.jackson
+  compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: versions.jackson
+  compile group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: versions.jackson
   compile group: 'commons-io', name: 'commons-io', version: versions.commonsIO
   compile group: 'commons-validator', name: 'commons-validator', version: versions.commonsValidator
-  compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: versions.jacksonDatabind
   compile group: 'io.swagger', name: 'swagger-core', version: '1.6.1'
   compile group: 'io.swagger', name: 'swagger-annotations', version: '1.6.1'
   compile group: 'org.projectlombok', name: 'lombok', version: versions.lombok
