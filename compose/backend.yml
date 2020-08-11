@@ -65,7 +65,7 @@ services:
       DATA_STORE_DB_USE_SSL: "${DB_USE_SSL}"
       DATA_STORE_IDAM_KEY: "${IDAM_KEY_CCD_DATA_STORE}"
       DATA_STORE_TOKEN_SECRET: iuasbcuasdcbasdgcasdgcuysachjsacyasdgjcgasdj
-      DATA_STORE_S2S_AUTHORISED_SERVICES: ccd_gw,fpl_case_service,ccd_data,ccd_ps,probate_backend
+      DATA_STORE_S2S_AUTHORISED_SERVICES: ccd_gw,fpl_case_service,ccd_data,ccd_ps,probate_backend,payment-api
       DEFINITION_STORE_HOST: http://ccd-definition-store-api:4451
       USER_PROFILE_HOST: http://ccd-user-profile-api:4453
       IDAM_USER_URL: http://sidam-api:5000
@@ -245,95 +245,119 @@ services:
     ports:
       - 5500:5500
 
-#  fees-api:
-#    image: hmctspublic.azurecr.io/fees-register/api
-#    container_name: fees-api
-#    environment:
-#      SPRING_DATASOURCE_URL: "jdbc:postgresql://fees-database:5432/fees_register"
-#      SPRING_DATASOURCE_USERNAME: "fees_register"
-#      SPRING_DATASOURCE_PASSWORD: "fees_register"
-#      AUTH_IDAM_CLIENT_BASEURL: "http://sidam-api:5000"
-#      APPINSIGHTS_INSTRUMENTATIONKEY: "key"
-#      SPRING_LIQUIBASE_ENABLED: "true"
-#      ENABLE_FEE_LOADER: "true"
-#    ports:
-#      - 4411:8080
-#    depends_on:
-#      - sidam-api
-#      - fees-database
-#
-#  fees-database:
-#    container_name: fees-database
-#    image: postgres:11-alpine
-#    environment:
-#      POSTGRES_USER: "fees_register"
-#      POSTGRES_PASSWORD: "fees_register"
-#      POSTGRES_DB: "fees_register"
-#    ports:
-#      - 5182:5432
-#
-#  payments-api:
-#    image: hmctspublic.azurecr.io/payment/api:latest
-#    container_name: payments-api
-#    environment:
-#      SPRING_DATASOURCE_URL: "jdbc:postgresql://${MY_IP}:5430/payment"
-#      SPRING_DATASOURCE_USERNAME: "payment"
-#      SPRING_DATASOURCE_PASSWORD: ""
-#      S2S_AUTH_URL: "http://service-auth-provider-api:8080/"
-#      FEES_REGISTER_URL: "http://fees-register-api-aat.service.core-compute-aat.internal"
-#      PAYMENTS_REPORT_FILE_LOCATION: "."
-#      PBA_CMC_PAYMENTS_EMAIL_FROM: "no-reply@reform.hmcts.net"
-#      CARD_PAYMENTS_REPORT_SCHEDULER_ENABLED: "true"
-#      PBA_DIVORCE_PAYMENTS_EMAIL_SUBJECT: "AAT Env - PBA Reconciliation Report for Divorce"
-#      GOV_PAY_AUTH_KEY_PROBATE_FRONTEND: "238mpukgl3uonfrqpt7ndqvr82ok75i3t8v66156q470k474iai66ukhdf"
-#      PBA_CMC_PAYMENTS_REPORT_SCHEDULER_ENABLED: "true"
-#      GOV_PAY_OPERATIONAL_SERVICES: "ccd_gw"
-#      CARD_PAYMENTS_EMAIL_TO: "Oluwakemi.Benson@hmcts.net,Leonie.Watson@Justice.gov.uk,kevin.harper@hmcts.net,Krishna.Nuthalapati@HMCTS.NET"
-#      PAYMENT_AUDIT_FILE: "%HOME%\\LogFiles\\payment-audit.log"
-#      PBA_CMC_PAYMENTS_EMAIL_TO: "Oluwakemi.Benson@hmcts.net,Leonie.Watson@Justice.gov.uk,kevin.harper@hmcts.net,Krishna.Nuthalapati@HMCTS.NET"
-#      SPRING_MAIL_PORT: "1025"
-#      SPRING_MAIL_HOST: "smtp-server"
-#      GOV_PAY_URL: "https://publicapi.payments.service.gov.uk/v1/payments"
-#      PBA_DIVORCE_PAYMENTS_EMAIL_FROM: "no-reply@reform.hmcts.net"
-#      PBA_DIVORCE_PAYMENTS_EMAIL_MESSAGE: "Hi <br/><br/>Please find attached today''s Payment by Account reconciliation report. <br/><br/>Regards <br/><br/>Payments team<br/><br/>"
-#      PAYMENT_SERVER_URL: "http://localhost:8383"
-#      GOV_PAY_AUTH_KEY_REFERENCE: "DummyKey"
-#      PBA_CMC_PAYMENTS_EMAIL_MESSAGE: "Hi <br/><br/>Please find attached today''s Payment by Account reconciliation report. <br/><br/>Regards <br/><br/>Payments team<br/><br/>"
-#      REFORM_SERVICE_NAME: "payment-api"
-#      AUTH_IDAM_CLIENT_BASEURL: "http://sidam-api:5000"
-#      GOV_PAY_AUTH_KEY_CMC: "DummyKey"
-#      PBA_CMC_PAYMENTS_EMAIL_SUBJECT: "AAT Env - PBA Reconciliation Report for CMC"
-#      CARD_PAYMENTS_EMAIL_FROM: "no-reply@reform.hmcts.net"
-#      CARD_PAYMENTS_EMAIL_MESSAGE: "Hi <br/><br/>Please find attached today''s reconciliation report. <br/><br/>Regards <br/><br/>Payments team<br/><br/>"
-#      GOV_PAY_AUTH_KEY_DIVORCE_FRONTEND: "DummyKey"
-#      FEATURE_PAYMENTS_SEARCH: "true"
-#      PBA_DIVORCE_PAYMENTS_REPORT_SCHEDULER_ENABLED: "true"
-#      SPRING_MAIL_PROPERTIES_MAIL_SMTP_SSL_TRUST: "*"
-#      WEBSITE_LOCAL_CACHE_OPTION: "Always"
-#      PBA_DIVORCE_PAYMENTS_EMAIL_TO: "Oluwakemi.Benson@hmcts.net,Leonie.Watson@Justice.gov.uk,kevin.harper@hmcts.net,Krishna.Nuthalapati@HMCTS.NET"
-#      SPRING_MAIL_PROPERTIES_MAIL_SMTP_STARTTLS_ENABLE: "true"
-#      APPINSIGHTS_INSTRUMENTATIONKEY: "57b197f7-87bb-4dbf-b812-8572521c620a"
-#      CARD_PAYMENTS_EMAIL_SUBJECT: "AAT Env - Card Payments Reconciliation Report"
-#    ports:
-#      - 8383:8080
-#    links:
-#      - payments-database
-#      - service-auth-provider-api
-#      - sidam-api
-#    depends_on:
-#      - payments-database
-#      - service-auth-provider-api
-#      - sidam-api
-#
-#  payments-database:
-#    container_name: payments-database
-#    image: postgres:9.5.18
-#    environment:
-#      POSTGRES_USER: "payment"
-#      POSTGRES_DB: "payment"
-#    ports:
-#      - 5430:5432
-#
+  fees-api:
+    image: hmctspublic.azurecr.io/fees-register/api
+    container_name: fees-api
+    environment:
+      SPRING_DATASOURCE_URL: "jdbc:postgresql://fees-database:5432/fees_register"
+      SPRING_DATASOURCE_USERNAME: "fees_register"
+      SPRING_DATASOURCE_PASSWORD: "fees_register"
+      AUTH_IDAM_CLIENT_BASEURL: "http://sidam-api:5000"
+      APPINSIGHTS_INSTRUMENTATIONKEY: "key"
+      SPRING_LIQUIBASE_ENABLED: "true"
+      ENABLE_FEE_LOADER: "true"
+    ports:
+      - 4411:8080
+    depends_on:
+      - sidam-api
+      - fees-database
+
+  fees-database:
+    container_name: fees-database
+    image: postgres:11-alpine
+    environment:
+      POSTGRES_USER: "fees_register"
+      POSTGRES_PASSWORD: "fees_register"
+      POSTGRES_DB: "fees_register"
+    ports:
+      - 5182:5432
+
+  payments-api:
+    image: hmctspublic.azurecr.io/payment/api:latest
+    container_name: payments-api
+    environment:
+      - auth.provider.service.client.baseUrl=http://service-auth-provider-api:8080/
+      - auth.idam.client.baseUrl=http://sidam-api:5000
+      - CARD_PAYMENTS_REPORT_SCHEDULER_ENABLED=true
+      - CARD_PAYMENTS_EMAIL_FROM=no-reply@reform.hmcts.net
+      - CARD_PAYMENTS_EMAIL_TO=pepito@grillo.com
+      - CARD_PAYMENTS_EMAIL_MESSAGE=hi
+      - CARD_PAYMENTS_EMAIL_SUBJECT=Docker Env Card Payments Reconciliation Report
+      - BAR_PAYMENTS_REPORT_SCHEDULER_ENABLED=true
+      - BAR_PAYMENTS_EMAIL_FROM=no-reply@reform.hmcts.net
+      - BAR_PAYMENTS_EMAIL_TO=pepito@grillo.com
+      - BAR_PAYMENTS_EMAIL_MESSAGE=hi
+      - BAR_PAYMENTS_EMAIL_SUBJECT=Docker Env Bar Payments Reconciliation Report
+      - FEATURE_PAYMENTS_SEARCH=true
+      - FEES_REGISTER_URL=https://fees-api:8080
+      - GOV_PAY_AUTH_KEY_CMC=la0ohpqa9er1bub2hddieeesc6sabbbqn4smkkve7s9ailn3n9d3hbnhc3
+      - GOV_PAY_AUTH_KEY_DIVORCE_FRONTEND=la0ohpqa9er1bub2hddieeesc6sabbbqn4smkkve7s9ailn3n9d3hbnhc3
+      - GOV_PAY_AUTH_KEY_PROBATE_FRONTEND=la0ohpqa9er1bub2hddieeesc6sabbbqn4smkkve7s9ailn3n9d3hbnhc3
+      - GOV_PAY_OPERATIONAL_SERVICES=ccd_gw
+      - GOV_PAY_URL=https://publicapi.payments.service.gov.uk/v1/payments
+      - payments.report.file.location=.
+      - PBA_CMC_PAYMENTS_REPORT_SCHEDULER_ENABLED=true
+      - PBA_CMC_PAYMENTS_EMAIL_FROM=no-reply@reform.hmcts.net
+      - PBA_CMC_PAYMENTS_EMAIL_TO=pepito@grillo.com
+      - PBA_CMC_PAYMENTS_EMAIL_MESSAGE=hi
+      - PBA_CMC_PAYMENTS_EMAIL_SUBJECT=Docker Env Card Payments Reconciliation Report
+      - PBA_PROBATE_PAYMENTS_REPORT_SCHEDULER_ENABLED=true
+      - PBA_PROBATE_PAYMENTS_EMAIL_FROM=no-reply@reform.hmcts.net
+      - PBA_PROBATE_PAYMENTS_EMAIL_TO=pepito@grillo.com
+      - PBA_PROBATE_PAYMENTS_EMAIL_MESSAGE=hi
+      - PBA_PROBATE_PAYMENTS_EMAIL_SUBJECT=Docker Env Card Payments Reconciliation Report
+      - PBA_FINREM_PAYMENTS_REPORT_SCHEDULER_ENABLED=true
+      - PBA_FINREM_PAYMENTS_EMAIL_FROM=no-reply@reform.hmcts.net
+      - PBA_FINREM_PAYMENTS_EMAIL_TO=pepito@grillo.com
+      - PBA_FINREM_PAYMENTS_EMAIL_MESSAGE=hi
+      - PBA_FINREM_PAYMENTS_EMAIL_SUBJECT=Docker Env Card Payments Reconciliation Report
+      - PBA_DIVORCE_PAYMENTS_REPORT_SCHEDULER_ENABLED=true
+      - PBA_DIVORCE_PAYMENTS_EMAIL_FROM=no-reply@reform.hmcts.net
+      - PBA_DIVORCE_PAYMENTS_EMAIL_TO=pepito@grillo.com
+      - PBA_DIVORCE_PAYMENTS_EMAIL_MESSAGE=hi
+      - PBA_DIVORCE_PAYMENTS_EMAIL_SUBJECT=Docker Env Card Payments Reconciliation Report
+      - PBA_FPL_PAYMENTS_REPORT_SCHEDULER_ENABLED=true
+      - PBA_FPL_PAYMENTS_EMAIL_FROM=no-reply@reform.hmcts.net
+      - PBA_FPL_PAYMENTS_EMAIL_TO=pepito@grillo.com
+      - PBA_FPL_PAYMENTS_EMAIL_MESSAGE=hi
+      - PBA_FPL_PAYMENTS_EMAIL_SUBJECT=Docker Env Card Payments Reconciliation Report
+      - REFORM_ENVIRONMENT=aat
+      - REFORM_SERVICE_NAME=payment-api
+      - REFORM_TEAM=cc
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://payments-database:5432/payment
+      - SPRING_DATASOURCE_USERNAME=payment
+      - SPRING_DATASOURCE_PASSWORD=payment
+      - SPRING_LIQUIBASE_ENABLED=true
+      - SPRING_MAIL_PROPERTIES_MAIL_SMTP_STARTTLS_ENABLE=true
+      - SPRING_MAIL_PROPERTIES_MAIL_SMTP_SSL_TRUST=*
+      - SPRING_MAIL_PORT=25
+      - SPRING_MAIL_HOST=mta.reform.hmcts.net
+      - TRUSTED_S2S_SERVICE_NAMES=cmc,probate_frontend,divorce_frontend,ccd_gw,bar_api,api_gw,finrem_payment_service,ccpay_bubble,jui_webapp,xui_webapp,fpl_case_service,iac
+      - PAYBUBBLE_HOME_URL=https://ccpay-bubble-frontend-aat.service.core-compute-aat.internal
+      - PCI_PAL_CALLBACK_URL=https://core-api-mgmt-aat.azure-api.net/telephony-api/telephony/callback
+      - ASB_CONNECTION_STRING=some-azure-service-bus-connection-string
+      - APPINSIGHTS_INSTRUMENTATIONKEY=DUMMY
+      - CORE_CASE_DATA_API_URL=http://ccd-data-store-api:4452
+    ports:
+      - 8383:8080
+    links:
+      - payments-database
+      - service-auth-provider-api
+      - sidam-api
+    depends_on:
+      - payments-database
+      - service-auth-provider-api
+      - sidam-api
+
+  payments-database:
+    container_name: payments-database
+    image: postgres:9.5.18
+    environment:
+      POSTGRES_USER: "payment"
+      POSTGRES_DB: "payment"
+    ports:
+      - 5430:5432
+
 #  persistence-service:
 #    image: hmctspublic.azurecr.io/probate/persistence-service:pro-5125_persistence_to_orchestrator
 #    container_name: persistence-service
