@@ -56,11 +56,12 @@ public class ExceptionRecordControllerTest {
 
     @MockBean
     private OCRToCCDMandatoryField ocrToCCDMandatoryField;
-    
+
     private String exceptionRecordPayloadCitizenPA8A;
     private String exceptionRecordPayloadCitizenSingleExecutorPA1P;
     private String exceptionRecordPayloadCitizenPA1A;
-    private String exceptionRecordInvalidJsonPayload;
+    private String exceptionRecordInvalidJsonPayloadPA1P;
+    private String exceptionRecordInvalidJsonPayloadPA8A;
     private String updateCasePayload;
     private List<OCRField> ocrFields = new ArrayList<>();
     private List<String> warnings = new ArrayList<>();
@@ -71,7 +72,8 @@ public class ExceptionRecordControllerTest {
         exceptionRecordPayloadCitizenPA8A = testUtils.getStringFromFile("expectedExceptionRecordDataCitizenPA8A.json");
         exceptionRecordPayloadCitizenSingleExecutorPA1P = testUtils.getStringFromFile("expectedExceptionRecordDataCitizenSingleExecutorPA1P.json");
         exceptionRecordPayloadCitizenPA1A = testUtils.getStringFromFile("expectedExceptionRecordDataCitizenPA1A.json");
-        exceptionRecordInvalidJsonPayload = testUtils.getStringFromFile("invalidExceptionRecordDataJson.json");
+        exceptionRecordInvalidJsonPayloadPA1P = testUtils.getStringFromFile("invalidExceptionRecordDataPA1P.json");
+        exceptionRecordInvalidJsonPayloadPA8A = testUtils.getStringFromFile("invalidExceptionRecordDataPA8A.json");
         updateCasePayload = testUtils.getStringFromFile("updateExceptionRecordDataPA8A.json");
         warnings.add("test warning");
         when(ocrPopulatedValueMapper.ocrPopulatedValueMapper(any())).thenReturn(ocrFields);
@@ -174,9 +176,34 @@ public class ExceptionRecordControllerTest {
     }
 
     @Test
-    public void testInvalidExceptionRecordJsonResponse() throws Exception {
+    public void testInvalidExceptionRecordGoPTransformJsonResponse() throws Exception {
         mockMvc.perform(post("/transform-scanned-data")
-                .content(exceptionRecordInvalidJsonPayload)
+                .content(exceptionRecordInvalidJsonPayloadPA1P)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().is4xxClientError());
+    }
+
+    @Test
+    public void testInvalidExceptionRecordCaveatTransformJsonResponse() throws Exception {
+        mockMvc.perform(post("/transform-scanned-data")
+                .content(exceptionRecordInvalidJsonPayloadPA8A)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().is4xxClientError());
+    }
+
+
+    @Test
+    public void testInvalidExceptionRecordGoPUpdateJsonResponse() throws Exception {
+        mockMvc.perform(post("/update-case")
+                .content(exceptionRecordInvalidJsonPayloadPA1P)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().is4xxClientError());
+    }
+
+    @Test
+    public void testInvalidExceptionRecordCaveatUpdateJsonResponse() throws Exception {
+        mockMvc.perform(post("/update-case")
+                .content(exceptionRecordInvalidJsonPayloadPA8A)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is4xxClientError());
     }
