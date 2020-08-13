@@ -1,6 +1,6 @@
 package uk.gov.hmcts.probate.transformer;
 
-import org.apache.commons.lang.BooleanUtils;
+import org.apache.commons.lang3.BooleanUtils;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

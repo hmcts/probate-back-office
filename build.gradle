@@ -61,14 +61,6 @@ jacoco {
   toolVersion = '0.8.0'
 }
 
-jacocoTestReport {
-  group = "Reporting"
-  reports {
-    xml.enabled false
-    html.destination "${buildDir}/reports/jacoco"
-  }
-}
-
 tasks.withType(FindBugs) {
   reports {
     xml.enabled = false
@@ -191,7 +183,7 @@ def versions = [
         commonsIO                       : '2.6',
         commonsValidator                : '1.6',
         restAssured                     : '3.0.7',
-        lombok                          : '1.16.18',
+        lombok                          : '1.18.12',
         springfoxSwagger                : '2.9.2',
         springSecurityVersion           : '5.1.1.RELEASE',
         probateCommonsVersion           : '1.0.6',
@@ -259,6 +251,8 @@ dependencies {
   compile group: 'io.springfox', name: 'springfox-swagger2', version: versions.springfoxSwagger
   compile group: 'org.springframework.hateoas', name: 'spring-hateoas', version: '0.23.0.RELEASE'
   compile group: 'org.projectlombok', name: 'lombok', version: versions.lombok
+  compileOnly "org.projectlombok:lombok:1.18.12"
+  annotationProcessor "org.projectlombok:lombok:1.18.12"
 
   compile group: 'org.elasticsearch.client', name: 'elasticsearch-rest-high-level-client', version: '6.6.0'
 
@@ -304,6 +298,7 @@ dependencies {
   testFunctionalCompile group: 'uk.gov.hmcts.reform', name: 'pdf-service-client', version: '6.0.0'
   testFunctionalCompile sourceSets.main.runtimeClasspath
   testFunctionalCompile sourceSets.test.runtimeClasspath
+  testFunctionalAnnotationProcessor "org.projectlombok:lombok:1.18.12"
   testFunctionalCompile ('io.github.openfeign.form:feign-form-spring:3.8.0') {
     force = true
   }
@@ -317,6 +312,7 @@ dependencies {
   testCaseCreatorCompile group: 'uk.gov.hmcts.reform', name: 'service-auth-provider-client', version: versions.serviceAuthVersion
   testCaseCreatorCompile sourceSets.main.runtimeClasspath
   testCaseCreatorCompile sourceSets.test.runtimeClasspath
+  testCaseCreatorAnnotationProcessor "org.projectlombok:lombok:1.18.12"
 }
 
 compileJava {
