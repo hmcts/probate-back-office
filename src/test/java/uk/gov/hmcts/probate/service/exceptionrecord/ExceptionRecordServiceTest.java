@@ -109,9 +109,9 @@ public class ExceptionRecordServiceTest {
     public void setUp() throws IOException {
         MockitoAnnotations.initMocks(this);
 
-        exceptionRecordPayloadPA8A = testUtils.getStringFromFile("expectedExceptionRecordDataPA8A.json");
+        exceptionRecordPayloadPA8A = testUtils.getStringFromFile("expectedExceptionRecordDataCitizenPA8A.json");
 
-        exceptionRecordPayloadPA1P = testUtils.getStringFromFile("expectedExceptionRecordDataPA1P.json");
+        exceptionRecordPayloadPA1P = testUtils.getStringFromFile("expectedExceptionRecordDataCitizenSingleExecutorPA1P.json");
 
         erRequestCaveat = getObjectMapper().readValue(exceptionRecordPayloadPA8A, ExceptionRecordRequest.class);
 

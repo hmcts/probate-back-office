@@ -5,7 +5,6 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,18 +14,14 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-import uk.gov.hmcts.probate.exception.OCRMappingException;
 import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.exceptionrecord.JourneyClassification;
-import uk.gov.hmcts.probate.model.exceptionrecord.SuccessfulCaveatUpdateResponse;
 import uk.gov.hmcts.probate.model.ocr.OCRField;
 import uk.gov.hmcts.probate.service.ocr.OCRPopulatedValueMapper;
 import uk.gov.hmcts.probate.service.ocr.OCRToCCDMandatoryField;
 import uk.gov.hmcts.probate.util.TestUtils;
 
 import java.io.IOException;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -62,9 +57,9 @@ public class ExceptionRecordControllerTest {
     @MockBean
     private OCRToCCDMandatoryField ocrToCCDMandatoryField;
     
-    private String exceptionRecordPayloadPA8A;
-    private String exceptionRecordPayloadPA1P;
-    private String exceptionRecordPayloadPA1A;
+    private String exceptionRecordPayloadCitizenPA8A;
+    private String exceptionRecordPayloadCitizenSingleExecutorPA1P;
+    private String exceptionRecordPayloadCitizenPA1A;
     private String exceptionRecordInvalidJsonPayload;
     private String updateCasePayload;
     private List<OCRField> ocrFields = new ArrayList<>();
@@ -73,9 +68,9 @@ public class ExceptionRecordControllerTest {
     @Before
     public void setUp() throws IOException {
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-        exceptionRecordPayloadPA8A = testUtils.getStringFromFile("expectedExceptionRecordDataPA8A.json");
-        exceptionRecordPayloadPA1P = testUtils.getStringFromFile("expectedExceptionRecordDataPA1P.json");
-        exceptionRecordPayloadPA1A = testUtils.getStringFromFile("expectedExceptionRecordDataPA1A.json");
+        exceptionRecordPayloadCitizenPA8A = testUtils.getStringFromFile("expectedExceptionRecordDataCitizenPA8A.json");
+        exceptionRecordPayloadCitizenSingleExecutorPA1P = testUtils.getStringFromFile("expectedExceptionRecordDataCitizenSingleExecutorPA1P.json");
+        exceptionRecordPayloadCitizenPA1A = testUtils.getStringFromFile("expectedExceptionRecordDataCitizenPA1A.json");
         exceptionRecordInvalidJsonPayload = testUtils.getStringFromFile("invalidExceptionRecordDataJson.json");
         updateCasePayload = testUtils.getStringFromFile("updateExceptionRecordDataPA8A.json");
         warnings.add("test warning");
@@ -87,7 +82,7 @@ public class ExceptionRecordControllerTest {
     public void testWarningsPopulateListAndReturnOkWithWarningsResponseState() throws Exception {
         when(ocrToCCDMandatoryField.ocrToCCDMandatoryFields(any(), any())).thenReturn(warnings);
         mockMvc.perform(post("/transform-scanned-data")
-                .content(exceptionRecordPayloadPA8A)
+                .content(exceptionRecordPayloadCitizenPA8A)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isUnprocessableEntity())
                 .andExpect(content().string(containsString("{\"warnings\":[\"test warning\"],\"errors\":[\"OCR fields could not be mapped to a case\"]}")));
@@ -96,7 +91,7 @@ public class ExceptionRecordControllerTest {
     @Test
     public void testNoWarningsReturnOkResponseAndSuccessResponseStateForPA8A() throws Exception {
         mockMvc.perform(post("/transform-scanned-data")
-                .content(exceptionRecordPayloadPA8A)
+                .content(exceptionRecordPayloadCitizenPA8A)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("\"bulkScanCaseReference\":\"1001\"")))
@@ -109,7 +104,7 @@ public class ExceptionRecordControllerTest {
     @Test
     public void testNoWarningsReturnOkResponseAndSuccessResponseStateForPA1P() throws Exception {
         mockMvc.perform(post("/transform-scanned-data")
-                .content(exceptionRecordPayloadPA1P)
+                .content(exceptionRecordPayloadCitizenSingleExecutorPA1P)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("\"bulkScanCaseReference\":\"1002\"")))
@@ -123,7 +118,7 @@ public class ExceptionRecordControllerTest {
     @Test
     public void testNoWarningsReturnOkResponseAndSuccessResponseStateForPA1A() throws Exception {
         mockMvc.perform(post("/transform-scanned-data")
-                .content(exceptionRecordPayloadPA1A)
+                .content(exceptionRecordPayloadCitizenPA1A)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("\"bulkScanCaseReference\":\"1003\"")))
@@ -136,7 +131,7 @@ public class ExceptionRecordControllerTest {
 
     @Test
     public void testMissingFormType() throws Exception {
-        JSONObject modifiedExceptionRecordPayload  = new JSONObject(exceptionRecordPayloadPA8A);
+        JSONObject modifiedExceptionRecordPayload  = new JSONObject(exceptionRecordPayloadCitizenPA8A);
         modifiedExceptionRecordPayload.remove("form_type");
         mockMvc.perform(post("/transform-scanned-data")
                 .content(modifiedExceptionRecordPayload.toString())
@@ -150,7 +145,7 @@ public class ExceptionRecordControllerTest {
         String deceasedDateOfDeath = "\"name\": \"deceasedDateOfDeath\", \"value\": \"02022019\"";
         String badDeceasedDateOfDeath = "\"name\": \"deceasedDateOfDeath\", \"value\": \"02022\"";
         mockMvc.perform(post("/transform-scanned-data")
-                .content(exceptionRecordPayloadPA8A.replace(deceasedDateOfDeath, badDeceasedDateOfDeath))
+                .content(exceptionRecordPayloadCitizenPA8A.replace(deceasedDateOfDeath, badDeceasedDateOfDeath))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isUnprocessableEntity())
                 .andExpect(content().string(containsString(
@@ -161,7 +156,7 @@ public class ExceptionRecordControllerTest {
     @Test
     public void testErrorReturnedForIncorrectClassification() throws Exception {
         mockMvc.perform(post("/transform-scanned-data")
-                .content(exceptionRecordPayloadPA8A.replace("NEW_APPLICATION", "SUPPLEMENTARY_EVIDENCE"))
+                .content(exceptionRecordPayloadCitizenPA8A.replace("NEW_APPLICATION", "SUPPLEMENTARY_EVIDENCE"))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isUnprocessableEntity())
                 .andExpect(content().string(containsString(
@@ -171,7 +166,7 @@ public class ExceptionRecordControllerTest {
     @Ignore
     public void testErrorReturnedForUnimplementedFormType() throws Exception {
         mockMvc.perform(post("/transform-scanned-data")
-                .content(exceptionRecordPayloadPA8A.replace("PA8A", "PPPP"))
+                .content(exceptionRecordPayloadCitizenPA8A.replace("PA8A", "PPPP"))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isUnprocessableEntity())
                 .andExpect(content().string(containsString(
