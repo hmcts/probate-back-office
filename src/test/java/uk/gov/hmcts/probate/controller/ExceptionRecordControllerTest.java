@@ -238,15 +238,6 @@ public class ExceptionRecordControllerTest {
                 .andExpect(status().is4xxClientError());
     }
 
-
-    @Test
-    public void testInvalidExceptionRecordGoPUpdateJsonResponse() throws Exception {
-        mockMvc.perform(post("/update-case")
-                .content(exceptionRecordInvalidJsonPayloadPA1P)
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().is4xxClientError());
-    }
-
     @Test
     public void testInvalidExceptionRecordCaveatUpdateJsonResponse() throws Exception {
         mockMvc.perform(post("/update-case")
