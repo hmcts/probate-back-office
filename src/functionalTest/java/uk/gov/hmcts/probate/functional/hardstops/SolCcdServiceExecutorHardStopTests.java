@@ -37,7 +37,6 @@ public class SolCcdServiceExecutorHardStopTests extends IntegrationTestBase {
     }
 
     @Test
-    @Pending
     public void validateHardStopMessageForNoDomicile() {
         Response response = given()
                 .relaxedHTTPSValidation()

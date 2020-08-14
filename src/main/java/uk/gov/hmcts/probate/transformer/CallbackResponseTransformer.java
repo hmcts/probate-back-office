@@ -647,9 +647,20 @@ public class CallbackResponseTransformer {
                     .map(dateTimeFormatter::format).orElse(null))
                 .grantAwaitingDocumentatioNotificationSent(caseData.getGrantAwaitingDocumentatioNotificationSent())
                 .pcqId(caseData.getPcqId())
+            
                 .reprintDocument(caseData.getReprintDocument())
                 .reprintNumberOfCopies(caseData.getReprintNumberOfCopies())
-                .solsAmendLegalStatmentSelect(caseData.getSolsAmendLegalStatmentSelect());
+                .solsAmendLegalStatmentSelect(caseData.getSolsAmendLegalStatmentSelect())
+                .declarationCheckbox(caseData.getDeclarationCheckbox())
+                .ihtGrossValueField(caseData.getIhtGrossValueField())
+                .ihtNetValueField(caseData.getIhtNetValueField())
+                .numberOfExecutors(caseData.getNumberOfExecutors())
+                .numberOfApplicants(caseData.getNumberOfApplicants())
+                .legalDeclarationJson(caseData.getLegalDeclarationJson())
+                .checkAnswersSummaryJson(caseData.getCheckAnswersSummaryJson())
+                .registryAddress(caseData.getRegistryAddress())
+                .registryEmailAddress(caseData.getRegistryEmailAddress())
+                .registrySequenceNumber(caseData.getRegistrySequenceNumber());
 
         if (transform) {
             updateCaseBuilderForTransformCase(caseData, builder);

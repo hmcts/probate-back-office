@@ -194,30 +194,16 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
         assertTrue(document.contains("!@£$%^&*()[]{}<>,.:;~"));
     }
 
-    @Ignore
     @Test
     public void verifyPersonalApplicantRequestInformationEmailContentIsOk() {
         String document = sendEmail("personalPayloadNotifications.json", INFORMATION_REQUEST, EMAIL_NOTIFICATION_URL);
         verifyPAEmailInformationRequestRedec(document);
     }
 
-    @Ignore
     @Test
     public void verifyPersonalApplicantRequestInformationDefaultValuesIsOk() {
         validatePostSuccess("personalPayloadNotifications.json", INFORMATION_REQUEST_DEFAULT_VALUES);
     }
-
-    //TODO: uncomment when letters are being used again
-    @Test
-    @Pending
-    public void verifyPersonalApplicantRequestInformationLetterContentIsOk() {
-        String coversheet = getProbateDocumentsGeneratedText("personalPayloadNotificationsNoEmailRequested.json", INFORMATION_REQUEST,
-                0);
-        String letter = getProbateDocumentsGeneratedText("personalPayloadNotificationsNoEmailRequested.json", INFORMATION_REQUEST,
-                1);
-        verifyPALetterInformationRequestRedec(letter);
-    }
-
 
     private String sendEmail(String fileName, String url, String jsonDocumentUrl) {
         ResponseBody body = validatePostSuccess(fileName, url);

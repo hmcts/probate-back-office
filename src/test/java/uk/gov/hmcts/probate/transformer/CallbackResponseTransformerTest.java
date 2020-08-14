@@ -24,6 +24,8 @@ import uk.gov.hmcts.probate.model.ccd.raw.AttorneyApplyingOnBehalfOf;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
+import uk.gov.hmcts.probate.model.ccd.raw.DynamicList;
+import uk.gov.hmcts.probate.model.ccd.raw.DynamicListItem;
 import uk.gov.hmcts.probate.model.ccd.raw.EstateItem;
 import uk.gov.hmcts.probate.model.ccd.raw.Payment;
 import uk.gov.hmcts.probate.model.ccd.raw.ProbateAliasName;
@@ -2483,6 +2485,37 @@ public class CallbackResponseTransformerTest {
         assertEquals(EXEC_FIRST_NAME + " " + EXEC_SURNAME,
                 callbackResponse.getData().getAdditionalExecutorsApplying().get(0).getValue().getApplyingExecutorName());
 
+    }
+
+    @Test
+    public void shouldUpdateParentBUilderAttributes() {
+        DynamicList reprintDocument = DynamicList.builder().value(DynamicListItem.builder().code("reprintDocument").build()).build();
+        DynamicList solsAmendLegalStatmentSelect = DynamicList.builder().value(DynamicListItem.builder().code("solsAmendLegalStatmentSelect").build()).build();
+
+        caseDataBuilder
+            .primaryApplicantForenames("PAFN")
+            .reprintDocument(reprintDocument).reprintNumberOfCopies("1").solsAmendLegalStatmentSelect(solsAmendLegalStatmentSelect)
+            .ihtGrossValueField("1000").ihtNetValueField("900")
+            .numberOfExecutors(1L).numberOfApplicants(2L)
+            .legalDeclarationJson("legalDeclarationJson").checkAnswersSummaryJson("checkAnswersSummaryJson")
+            .registryAddress("registryAddress").registryEmailAddress("registryEmailAddress").registrySequenceNumber("registrySequenceNumber");
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+        assertEquals("PAFN", callbackResponse.getData().getPrimaryApplicantForenames());
+        assertEquals("reprintDocument", callbackResponse.getData().getReprintDocument().getValue().getCode());
+        assertEquals("1", callbackResponse.getData().getReprintNumberOfCopies());
+        assertEquals("solsAmendLegalStatmentSelect", callbackResponse.getData().getSolsAmendLegalStatmentSelect().getValue().getCode());
+        assertEquals("1000", callbackResponse.getData().getIhtGrossValueField());
+        assertEquals("900", callbackResponse.getData().getIhtNetValueField());
+        assertEquals(Long.valueOf(1), callbackResponse.getData().getNumberOfExecutors());
+        assertEquals(Long.valueOf(2), callbackResponse.getData().getNumberOfApplicants());
+        assertEquals("legalDeclarationJson", callbackResponse.getData().getLegalDeclarationJson());
+        assertEquals("checkAnswersSummaryJson", callbackResponse.getData().getCheckAnswersSummaryJson());
+        assertEquals("registryAddress", callbackResponse.getData().getRegistryAddress());
+        assertEquals("registryEmailAddress", callbackResponse.getData().getRegistryEmailAddress());
+        assertEquals("registrySequenceNumber", callbackResponse.getData().getRegistrySequenceNumber());
     }
 
     @Test
