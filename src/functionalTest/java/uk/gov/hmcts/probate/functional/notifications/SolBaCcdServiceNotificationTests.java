@@ -135,13 +135,13 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
 
     @Test
     public void verifyBulkScanPaperFormGOPGrantReceivedNotificationEmailTextWelsh() {
-        postNotificationEmailAndVerifyContents(GRANT_RAISED, "grantRaisedPaperBulkScanPayloadWelsh.json", "grantRaisedPaperBulkScanEmailExpectedResponse.txt",
+        postNotificationEmailAndVerifyContents(GRANT_RAISED, "grantRaisedPaperBulkScanPayloadWelsh.json", "grantRaisedPaperBulkScanEmailExpectedWelshResponse.txt",
             EMAIL_NOTIFICATION_URL, "pa-welsh");
     }
 
     @Test
     public void verifySolicitorBulkScanPaperFormGOPGrantReceivedNotificationEmailTextWelsh() {
-        postNotificationEmailAndVerifyContents(GRANT_RAISED, "grantRaisedPaperBulkScanSolicitorPayloadWelsh.json", "grantRaisedPaperBulkScanEmailExpectedSolicitorResponse.txt",
+        postNotificationEmailAndVerifyContents(GRANT_RAISED, "grantRaisedPaperBulkScanSolicitorPayloadWelsh.json", "grantRaisedPaperBulkScanEmailExpectedSolicitorWelshResponse.txt",
             EMAIL_NOTIFICATION_URL, "sol-welsh");
     }
 
@@ -223,7 +223,7 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
                 .when().post(path)
                 .andReturn();
 
-        response.then().assertThat().statusCode(200);
+         response.then().assertThat().statusCode(200);
 
         return response.getBody();
     }
