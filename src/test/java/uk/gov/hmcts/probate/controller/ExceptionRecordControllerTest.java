@@ -97,7 +97,7 @@ public class ExceptionRecordControllerTest {
     }
 
     @Test
-    public void testNoWarningsReturnOkResponseAndSuccessResponseStateForPA8A() throws Exception {
+    public void testNoWarningsReturnOkResponseAndSuccessResponseStateForCitizenPA8A() throws Exception {
         mockMvc.perform(post("/transform-scanned-data")
                 .content(exceptionRecordPayloadCitizenPA8A)
                 .contentType(MediaType.APPLICATION_JSON))
@@ -234,15 +234,6 @@ public class ExceptionRecordControllerTest {
     public void testInvalidExceptionRecordCaveatTransformJsonResponse() throws Exception {
         mockMvc.perform(post("/transform-scanned-data")
                 .content(exceptionRecordInvalidJsonPayloadPA8A)
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().is4xxClientError());
-    }
-
-
-    @Test
-    public void testInvalidExceptionRecordGoPUpdateJsonResponse() throws Exception {
-        mockMvc.perform(post("/update-case")
-                .content(exceptionRecordInvalidJsonPayloadPA1P)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is4xxClientError());
     }
