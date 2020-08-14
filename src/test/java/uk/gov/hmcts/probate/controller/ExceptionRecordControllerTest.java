@@ -58,7 +58,10 @@ public class ExceptionRecordControllerTest {
     private OCRToCCDMandatoryField ocrToCCDMandatoryField;
 
     private String exceptionRecordPayloadCitizenPA8A;
+    private String exceptionRecordPayloadSolicitorPA8A;
     private String exceptionRecordPayloadCitizenSingleExecutorPA1P;
+    private String exceptionRecordPayloadSolicitorSingleExecutorPA1P;
+    private String exceptionRecordPayloadCitizenMultipleExecutorPA1P;
     private String exceptionRecordPayloadCitizenPA1A;
     private String exceptionRecordInvalidJsonPayloadPA1P;
     private String exceptionRecordInvalidJsonPayloadPA8A;
@@ -70,8 +73,11 @@ public class ExceptionRecordControllerTest {
     public void setUp() throws IOException {
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
         exceptionRecordPayloadCitizenPA8A = testUtils.getStringFromFile("expectedExceptionRecordDataCitizenPA8A.json");
+        exceptionRecordPayloadSolicitorPA8A = testUtils.getStringFromFile("expectedExceptionRecordDataSolicitorPA8A.json");
         exceptionRecordPayloadCitizenSingleExecutorPA1P = testUtils.getStringFromFile("expectedExceptionRecordDataCitizenSingleExecutorPA1P.json");
+        exceptionRecordPayloadSolicitorSingleExecutorPA1P = testUtils.getStringFromFile("expectedExceptionRecordDataSolicitorSingleExecutorPA1P.json");
         exceptionRecordPayloadCitizenPA1A = testUtils.getStringFromFile("expectedExceptionRecordDataCitizenPA1A.json");
+        exceptionRecordPayloadCitizenMultipleExecutorPA1P = testUtils.getStringFromFile("expectedExceptionRecordDataCitizenMultipleExecutorPA1P.json");
         exceptionRecordInvalidJsonPayloadPA1P = testUtils.getStringFromFile("invalidExceptionRecordDataPA1P.json");
         exceptionRecordInvalidJsonPayloadPA8A = testUtils.getStringFromFile("invalidExceptionRecordDataPA8A.json");
         updateCasePayload = testUtils.getStringFromFile("updateExceptionRecordDataPA8A.json");
@@ -104,7 +110,20 @@ public class ExceptionRecordControllerTest {
     }
 
     @Test
-    public void testNoWarningsReturnOkResponseAndSuccessResponseStateForPA1P() throws Exception {
+    public void testNoWarningsReturnOkResponseAndSuccessResponseStateForSolicitorPA8A() throws Exception {
+        mockMvc.perform(post("/transform-scanned-data")
+                .content(exceptionRecordPayloadSolicitorPA8A)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("\"bulkScanCaseReference\":\"1001\"")))
+                .andExpect(content().string(containsString("\"exception_record_case_type_id\":\"Caveat\"")))
+                .andExpect(content().string(containsString("\"applicationType\":\"Solicitor\"")))
+                .andExpect(content().string(containsString("\"deceasedSurname\":\"Smith\"")))
+                .andExpect(content().string(containsString("\"warnings\":[]")));
+    }
+
+    @Test
+    public void testNoWarningsReturnOkResponseAndSuccessResponseStateForCitizenSingleExecutorPA1P() throws Exception {
         mockMvc.perform(post("/transform-scanned-data")
                 .content(exceptionRecordPayloadCitizenSingleExecutorPA1P)
                 .contentType(MediaType.APPLICATION_JSON))
@@ -112,6 +131,34 @@ public class ExceptionRecordControllerTest {
                 .andExpect(content().string(containsString("\"bulkScanCaseReference\":\"1002\"")))
                 .andExpect(content().string(containsString("\"exception_record_case_type_id\":\"GrantOfRepresentation\"")))
                 .andExpect(content().string(containsString("\"applicationType\":\"Personal\"")))
+                .andExpect(content().string(containsString("\"caseType\":\"gop\"")))
+                .andExpect(content().string(containsString("\"deceasedSurname\":\"Smith\"")))
+                .andExpect(content().string(containsString("\"warnings\":[]")));
+    }
+
+    @Test
+    public void testNoWarningsReturnOkResponseAndSuccessResponseStateForCitizenMultipleExecutorPA1P() throws Exception {
+        mockMvc.perform(post("/transform-scanned-data")
+                .content(exceptionRecordPayloadCitizenMultipleExecutorPA1P)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("\"bulkScanCaseReference\":\"1002\"")))
+                .andExpect(content().string(containsString("\"exception_record_case_type_id\":\"GrantOfRepresentation\"")))
+                .andExpect(content().string(containsString("\"applicationType\":\"Personal\"")))
+                .andExpect(content().string(containsString("\"caseType\":\"gop\"")))
+                .andExpect(content().string(containsString("\"deceasedSurname\":\"Smith\"")))
+                .andExpect(content().string(containsString("\"warnings\":[]")));
+    }
+
+    @Test
+    public void testNoWarningsReturnOkResponseAndSuccessResponseStateForSolicitorSingleExecutorPA1P() throws Exception {
+        mockMvc.perform(post("/transform-scanned-data")
+                .content(exceptionRecordPayloadSolicitorSingleExecutorPA1P)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("\"bulkScanCaseReference\":\"1002\"")))
+                .andExpect(content().string(containsString("\"exception_record_case_type_id\":\"GrantOfRepresentation\"")))
+                .andExpect(content().string(containsString("\"applicationType\":\"Solicitor\"")))
                 .andExpect(content().string(containsString("\"caseType\":\"gop\"")))
                 .andExpect(content().string(containsString("\"deceasedSurname\":\"Smith\"")))
                 .andExpect(content().string(containsString("\"warnings\":[]")));
