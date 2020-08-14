@@ -223,7 +223,7 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
                 .when().post(path)
                 .andReturn();
 
-         response.then().assertThat().statusCode(200);
+        response.then().assertThat().statusCode(200);
 
         return response.getBody();
     }
