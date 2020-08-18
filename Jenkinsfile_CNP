@@ -98,14 +98,14 @@ withPipeline("java", product, component) {
             reportName           : "back-office Code Coverage Report"
     ]
 
-    publishHTML target: [
+    /*publishHTML target: [
             allowMissing         : true,
             alwaysLinkToLastBuild: true,
             keepAll              : true,
             reportDir            : "build/reports/findbugs",
             reportFiles          : "main.html",
             reportName           : "back-office find Bugs Report"
-    ]
+    ]*/
   }
 
   after('functionalTest:preview') {
