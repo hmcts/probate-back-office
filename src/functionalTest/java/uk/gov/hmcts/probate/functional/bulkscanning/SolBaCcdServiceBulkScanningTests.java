@@ -238,6 +238,33 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
     }
 
     @Test
+    public void testUpdateCaseExtendCaveatSolicitorPA8AReturnSuccessfulJSON() throws IOException {
+        String currentDate = LocalDate.now().format(CaveatCallbackResponseTransformer.dateTimeFormatter);
+        String expiryDate7DaysFromNow = LocalDate.now().plusDays(7).format(CaveatCallbackResponseTransformer.dateTimeFormatter);
+        String expectedExpiryDate6MonthsFromNow = LocalDate.now().plusDays(7).plusMonths(6).format(CaveatCallbackResponseTransformer.dateTimeFormatter);
+        String expiryDate = "\"expiryDate\":\"" + expiryDate7DaysFromNow + "\"";
+        jsonRequest = utils.getJsonFromFile("bulkScanUpdateCaseExceptionRecordExtendExpirySolicitorPA8A.json");
+        jsonRequest = jsonRequest.replaceAll("\"expiryDate\":\"[0-9-]+\"", expiryDate);
+        JsonPath jsonPath = fetchJsonPathUpdatedCaveatDetailsFromCaseFromException(jsonRequest);
+
+        // Unable to use static file as documents are generated in the response, picking out specific values instead.
+        Assert.assertEquals("Correct applicationType", "Solicitor", jsonPath.get("case_update_details.case_data.applicationType"));
+        Assert.assertEquals("Correct paperForm", "Yes", jsonPath.get("case_update_details.case_data.paperForm"));
+        Assert.assertEquals("Correct expiry date", expectedExpiryDate6MonthsFromNow, jsonPath.get("case_update_details.case_data.expiryDate"));
+        Assert.assertEquals("Correct registry", "ctsc", jsonPath.get("case_update_details.case_data.registryLocation"));
+
+        // Checked Scanned Documents
+        Assert.assertEquals("Correct number scanned docs", 2, jsonPath.getList("case_update_details.case_data.scannedDocuments").size());
+        Assert.assertEquals("Correct DCN Scan Doc 1", "19365040100100002", jsonPath.get("case_update_details.case_data.scannedDocuments[0].value.controlNumber"));
+        Assert.assertEquals("Correct DCN Scan Doc 2", "123135453645", jsonPath.get("case_update_details.case_data.scannedDocuments[1].value.controlNumber"));
+
+        // Checked Generated Notification Documents
+        Assert.assertEquals("Correct number generated notifications", 2, jsonPath.getList("case_update_details.case_data.notificationsGenerated").size());
+        Assert.assertEquals("Correct DocumentType Doc 1", "sentEmail", jsonPath.get("case_update_details.case_data.notificationsGenerated[0].value.DocumentType"));
+        Assert.assertEquals("Correct DocumentType Doc 2", "sentEmail", jsonPath.get("case_update_details.case_data.notificationsGenerated[1].value.DocumentType"));
+    }
+
+    @Test
     public void testUpdateCaseExtendCaveatPA8AReturnExpiredErrorJSON() {
         jsonRequest = utils.getJsonFromFile("bulkScanUpdateCaseExceptionRecordExtendExpiryPA8A.json");
         jsonResponse = utils.getJsonFromFile("expectedBulkScanUpdateCaseExceptionRecordExpiredCaveatErrorPA8A.json");
@@ -277,6 +304,20 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
     @Test
     public void testTransformPA8AReturnTransformErrorJSON() {
         jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordError.json");
+        jsonResponse = utils.getJsonFromFile("expectedBulkScanTransformExceptionRecordOutputError.json");
+        transformExceptionPostUnprocessed(jsonRequest, jsonResponse);
+    }
+
+    @Test
+    public void testTransformSolicitorPA8AReturnTransformErrorJSON() {
+        jsonRequest = utils.getJsonFromFile("bulkScanTransformSolicitorExceptionRecordError.json");
+        jsonResponse = utils.getJsonFromFile("expectedBulkScanTransformExceptionRecordOutputError.json");
+        transformExceptionPostUnprocessed(jsonRequest, jsonResponse);
+    }
+
+    @Test
+    public void testTransformSolicitorPA8AReturnTransformErrorAutomatedJSON() {
+        jsonRequest = utils.getJsonFromFile("bulkScanTransformSolicitorExceptionRecordErrorAutomated.json");
         jsonResponse = utils.getJsonFromFile("expectedBulkScanTransformExceptionRecordOutputError.json");
         transformExceptionPostUnprocessed(jsonRequest, jsonResponse);
     }
