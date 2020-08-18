@@ -30,6 +30,7 @@ import uk.gov.hmcts.probate.model.template.TemplateResponse;
 import uk.gov.hmcts.probate.service.template.markdown.MarkdownSubstitutionService;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
@@ -323,7 +324,7 @@ public class ConfirmationResponseService {
     }
 
     private String getAmountAsString(BigDecimal amount) {
-        return amount.divide(BigDecimal.valueOf(100), 2, BigDecimal.ROUND_HALF_UP).toString();
+        return amount.divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP).toString();
     }
 
     private String getPaymentReference(CCDData ccdData) {
