@@ -35,8 +35,8 @@ group = 'uk.gov.hmcts.probate'
 version = "4.0.0"
 mainClassName = 'uk.gov.hmcts.probate.BusinessRulesValidationApplication'
 
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+sourceCompatibility = 11
+targetCompatibility = 11
 
 checkstyle.toolVersion = '8.18'
 checkstyle.configFile = new File(rootDir, "checkstyle.xml")
