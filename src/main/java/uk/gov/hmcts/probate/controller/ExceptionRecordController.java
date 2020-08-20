@@ -110,40 +110,7 @@ public class ExceptionRecordController {
     @PostMapping(path = "/transform-exception-record",
             consumes = APPLICATION_JSON_UTF8_VALUE, produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<SuccessfulTransformationResponse> transformCaseNonAutomation(@Valid @RequestBody ExceptionRecordRequest erRequest) {
-
-        log.info("Transform exception record data for form type: {}, case: {}", erRequest.getFormType(), erRequest.getExceptionRecordId());
-        FormType.isFormTypeValid(erRequest.getFormType());
-        FormType formType = FormType.valueOf(erRequest.getFormType());
-        SuccessfulTransformationResponse callbackResponse = SuccessfulTransformationResponse.builder().build();
-        List<String> warnings = ocrToCCDMandatoryField
-                .ocrToCCDMandatoryFields(ocrPopulatedValueMapper.ocrPopulatedValueMapper(erRequest.getOcrFields()), formType);
-
-        if (!warnings.isEmpty()) {
-            throw new OCRMappingException("Please resolve all warnings before creating the case", warnings);
-        }
-
-        if (!erRequest.getJourneyClassification().name().equals(JourneyClassification.NEW_APPLICATION.name())) {
-            throw new OCRMappingException("This Exception Record can not be created as a case: " + erRequest.getExceptionRecordId());
-        }
-
-        log.info("Validation check passed, attempting to transform case for form-type {}, caseId {}", formType, erRequest.getExceptionRecordId());
-        switch (formType) {
-            case PA8A:
-                callbackResponse = erService.createCaveatCaseFromExceptionRecord(erRequest, warnings);
-                break;
-            case PA1P:
-                callbackResponse = erService.createGrantOfRepresentationCaseFromExceptionRecord(
-                        erRequest, GrantType.GRANT_OF_PROBATE, warnings);
-                break;
-            case PA1A:
-                callbackResponse = erService.createGrantOfRepresentationCaseFromExceptionRecord(
-                        erRequest, GrantType.INTESTACY, warnings);
-                break;
-            default:
-                throw new OCRMappingException("This Exception Record form currently has no case mapping for case "+erRequest.getExceptionRecordId());
-        }
-
-        return ResponseEntity.ok(callbackResponse);
+        return transformCase(erRequest);
     }
 
     @ApiOperation(value = "Updates a case based on availability of OCR data and documents", notes = "Will return errors if unsuccessful or no new documents found.")
