@@ -370,7 +370,7 @@ public class CaveatCallbackResponseTransformerTest {
         uk.gov.hmcts.reform.probate.model.cases.caveat.CaveatData caveatData =
                 (uk.gov.hmcts.reform.probate.model.cases.caveat.CaveatData) caveatCreationDetails.getCaseData();
         assertEquals(CAV_EXCEPTION_RECORD_EVENT_ID, caveatCreationDetails.getEventId());
-        assertEquals(CAV_EXCEPTION_RECORD_CASE_TYPE_ID, caveatCreationDetails.getExceptionRecordCaseTypeId());
+        assertEquals(CAV_EXCEPTION_RECORD_CASE_TYPE_ID, caveatCreationDetails.getCaseTypeId());
         assertEquals(BULK_SCAN_CAV_REGISTRY_LOCATION.name(), caveatData.getRegistryLocation().name());
         assertEquals(CAV_APPLICATION_TYPE.name(), caveatData.getApplicationType().getName().toUpperCase());
         assertEquals(DATE_SUBMITTED.toString(), caveatData.getApplicationSubmittedDate().toString());

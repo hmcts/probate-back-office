@@ -8,8 +8,8 @@ import lombok.Data;
 @Builder
 public class CaseCreationDetails<T> {
 
-    @JsonProperty("exception_record_case_type_id")
-    public final String exceptionRecordCaseTypeId;
+    @JsonProperty("case_type_id")
+    public final String caseTypeId;
 
     @JsonProperty("event_id")
     public final String eventId;
@@ -19,11 +19,11 @@ public class CaseCreationDetails<T> {
 
     // region constructor
     public CaseCreationDetails(
-            String exceptionRecordCaseTypeId,
+            String caseTypeId,
             String eventId,
             T caseData
     ) {
-        this.exceptionRecordCaseTypeId = exceptionRecordCaseTypeId;
+        this.caseTypeId = caseTypeId;
         this.eventId = eventId;
         this.caseData = caseData;
     }
