@@ -133,7 +133,7 @@ public class ExceptionRecordControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("\"bulkScanCaseReference\":\"1002\"")))
-                .andExpect(content().string(containsString("\" \":\"GrantOfRepresentation\"")))
+                .andExpect(content().string(containsString("\"case_type_id\":\"GrantOfRepresentation\"")))
                 .andExpect(content().string(containsString("\"applicationType\":\"Personal\"")))
                 .andExpect(content().string(containsString("\"caseType\":\"gop\"")))
                 .andExpect(content().string(containsString("\"deceasedSurname\":\"Smith\"")))
