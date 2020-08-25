@@ -174,6 +174,8 @@ logging:
 
 azure:
   app_insights_key: ${APPINSIGHTS_INSTRUMENTATIONKEY:false}
+  application-insights:
+    instrumentation-key: ${APPINSIGHTS_INSTRUMENTATIONKEY:00000000-0000-0000-0000-000000000000}
 
 notifications:
   grantDelayedNotificationPeriodDays: 49
@@ -184,7 +186,7 @@ notifications:
     email:
       english:
         personal:
-          applicationReceived: "917dece3-e89d-460b-a6cb-e605ace39f2e"
+          applicationReceived: "ff626f3a-9ff2-4cfd-a8fe-d4cc02c3186a"
           documentReceived: "9e950599-4f07-4b07-9015-2938e030c25c"
           caseStopped: "60b95b7c-0a76-4608-b549-b3a579cfa3d0"
           caseStoppedCaveat: "937291a0-c0ae-40a4-a8cf-46a3452faff0"
@@ -193,9 +195,10 @@ notifications:
           generalCaveatMessage: "afadf00e-c224-4da0-a6dc-fb47a2e5db67"
           excelaData: "fd474506-a272-4caa-ad61-6086cee0639a"
           grantRaised: "8d4fe65c-f25f-4cc1-a1af-fa267a10755a"
+          grantRaisedPaperFormBulkScan: "d2db94a3-72c8-47af-a687-5e806f065acb"
           grantRaisedCtsc: "8d4fe65c-f25f-4cc1-a1af-fa267a10755a"
-          caveatRaised: "bf9dabd9-b22f-4cb6-b3aa-871ac8532209"
-          caveatRaisedCtsc: "ed01d79f-08f0-4703-8cec-f490e499fc33"
+          caveatRaised: "d1f19ccd-5946-497d-a8ef-fa0ad2d374a5"
+          caveatRaisedCtsc: "ba3d59f9-4d64-4265-9c06-b9716e5b283d"
           caveatExtend: "6a8d36f5-75cf-4a4c-9cae-c0b561143c86"
           requestInformation: "7888704d-b4fb-409f-9dd9-0869b2e293c0"
           redeclarationSot: "4bd0e8f1-5cbd-4093-813f-f97dedcd0f5f"
@@ -204,7 +207,7 @@ notifications:
           grantDelayed: "30baff9f-fff8-41f5-879e-5ea963e3d144"
           grantAwaitingDocumentation: "2debe394-5d0f-4d66-8b05-f3d4276d34eb"
         solicitor:
-          applicationReceived: "917dece3-e89d-460b-a6cb-e605ace39f2e"
+          applicationReceived: "ff626f3a-9ff2-4cfd-a8fe-d4cc02c3186a"
           documentReceived: "7f8ff32d-8297-4702-9867-312047f81492"
           caseStopped: "9e93a9c8-0246-4a95-b792-1c02da4bed4e"
           caseStoppedCaveat: "937291a0-c0ae-40a4-a8cf-46a3452faff0"
@@ -213,9 +216,10 @@ notifications:
           generalCaveatMessage: "afadf00e-c224-4da0-a6dc-fb47a2e5db67"
           excelaData: "fd474506-a272-4caa-ad61-6086cee0639a"
           grantRaised: "8d4fe65c-f25f-4cc1-a1af-fa267a10755a"
-          caveatRaised: "bf9dabd9-b22f-4cb6-b3aa-871ac8532209"
-          caveatRaisedCtsc: "ed01d79f-08f0-4703-8cec-f490e499fc33"
-          caveatRaisedSols: "022966cb-e4da-4996-a831-02c2310ab4f8"
+          grantRaisedPaperFormBulkScan: "d2db94a3-72c8-47af-a687-5e806f065acb"
+          caveatRaised: "d1f19ccd-5946-497d-a8ef-fa0ad2d374a5"
+          caveatRaisedCtsc: "ba3d59f9-4d64-4265-9c06-b9716e5b283d"
+          caveatRaisedSols: "2c85dac6-d220-4911-bca6-ba0908da3f18"
           requestInformation: "2fb640dd-f21e-496c-b8a4-bddbd87b8981"
           redeclarationSot: "bcd9e4cc-db0c-4810-8172-8bcb2277b775"
           grantIssuedIntestacy: "95aa541b-e55e-4d7c-a6f5-810b5f03adba"
@@ -231,8 +235,9 @@ notifications:
           grantReissued: "c5232b10-0975-4085-ba5a-3e5a6eb5c2bf"
           generalCaveatMessage: "d2b33c5b-0c65-4472-b26f-9352de5538ba"
           excelaData: "fd474506-a272-4caa-ad61-6086cee0639a"
-          caveatRaised: "251192c8-5d3a-4b44-82e6-a398bfbe72fe"
-          caveatRaisedCtsc: "a970c66c-911f-40d6-a6ae-711200ae43a7"
+          grantRaisedPaperFormBulkScan: "d2db94a3-72c8-47af-a687-5e806f065acb"
+          caveatRaised: "025c2410-f1d4-4688-b03f-c94a6776341c"
+          caveatRaisedCtsc: "2b33caf6-66c8-4d2c-9115-dae3ce6b4c3d"
           caveatExtend: "6a8d36f5-75cf-4a4c-9cae-c0b561143c86"
           requestInformation: "67ddef82-707d-418d-a7a1-4af42b9910c5"
           redeclarationSot: "253fa4a9-ef84-4b15-a059-0a0359f4ca5b"
@@ -249,9 +254,10 @@ notifications:
           grantReissued: "1e18751f-fd4e-4893-85bb-f59cc5330c38"
           generalCaveatMessage: "afadf00e-c224-4da0-a6dc-fb47a2e5db67"
           excelaData: "fd474506-a272-4caa-ad61-6086cee0639a"
-          caveatRaised: "bf9dabd9-b22f-4cb6-b3aa-871ac8532209"
-          caveatRaisedCtsc: "ed01d79f-08f0-4703-8cec-f490e499fc33"
-          caveatRaisedSols: "022966cb-e4da-4996-a831-02c2310ab4f8"
+          grantRaisedPaperFormBulkScan: "d2db94a3-72c8-47af-a687-5e806f065acb"
+          caveatRaised: "d1f19ccd-5946-497d-a8ef-fa0ad2d374a5"
+          caveatRaisedCtsc: "ba3d59f9-4d64-4265-9c06-b9716e5b283d"
+          caveatRaisedSols: "2c85dac6-d220-4911-bca6-ba0908da3f18"
           requestInformation: "9a843d4e-103e-4776-be58-7333ee87555b"
           redeclarationSot: "bcd9e4cc-db0c-4810-8172-8bcb2277b775"
           grantIssuedIntestacy: "95aa541b-e55e-4d7c-a6f5-810b5f03adba"

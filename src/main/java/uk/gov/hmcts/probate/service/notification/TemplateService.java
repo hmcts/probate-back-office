@@ -11,6 +11,7 @@ import uk.gov.hmcts.probate.model.LanguagePreference;
 import uk.gov.hmcts.probate.model.State;
 
 import static uk.gov.hmcts.probate.model.Constants.CTSC;
+import static uk.gov.hmcts.probate.model.Constants.YES;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -21,6 +22,12 @@ public class TemplateService {
 
     public String getTemplateId(State state, ApplicationType applicationType, String registryLocation,
                                 LanguagePreference languagePreference) {
+        return getTemplateId(state, applicationType, registryLocation, languagePreference, null);
+
+    }
+
+    public String getTemplateId(State state, ApplicationType applicationType, String registryLocation,
+                                LanguagePreference languagePreference, String paperForm) {
 
         EmailTemplates emailTemplates = notificationTemplates.getEmail().get(languagePreference).get(applicationType);
         switch (state) {
@@ -45,7 +52,11 @@ public class TemplateService {
             case REDECLARATION_SOT:
                 return emailTemplates.getRedeclarationSot();
             case GRANT_RAISED:
-                return emailTemplates.getGrantRaised();
+                if (YES.equalsIgnoreCase(paperForm)) {
+                    return emailTemplates.getGrantRaisedPaperFormBulkScan();
+                } else {
+                    return emailTemplates.getGrantRaised();
+                }
             case CAVEAT_RAISED:
                 if (registryLocation.equalsIgnoreCase(CTSC)) {
                     return emailTemplates.getCaveatRaisedCtsc();

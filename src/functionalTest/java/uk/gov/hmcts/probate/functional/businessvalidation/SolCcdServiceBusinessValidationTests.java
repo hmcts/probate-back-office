@@ -1,11 +1,10 @@
 package uk.gov.hmcts.probate.functional.businessvalidation;
 
+import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
-import net.serenitybdd.junit.runners.SerenityRunner;
-import net.serenitybdd.rest.SerenityRest;
-import org.junit.Ignore;
+import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
@@ -17,7 +16,7 @@ import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.Assert.assertEquals;
 
-@RunWith(SerenityRunner.class)
+@RunWith(SpringIntegrationSerenityRunner.class)
 public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
 
     private static final String VALIDATE_CASE_AMEND_URL = "/case/validateCaseDetails";
@@ -150,7 +149,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
 
     @Test
     public void verifyEmptyRequestReturnsError() {
-        SerenityRest.given().relaxedHTTPSValidation().headers(utils.getHeaders())
+        RestAssured.given().relaxedHTTPSValidation().headers(utils.getHeaders())
                 .contentType(ContentType.JSON)
                 .body("")
                 .when().post(VALIDATE_URL)
@@ -216,14 +215,12 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         validatePostSuccess("solicitorPayloadResolveStop.json", RESOLVE_STOP_URL);
     }
 
-    @Ignore
     @Test
     public void verifyRequestSuccessForRedeclarationCompleteWithStateChange() {
         validatePostSuccess("personalPayloadNotifications.json", REDEC_COMPLETE);
     }
 
-    @Ignore
-    @Test
+     @Test
     public void verifyRequestSuccessForRedeclarationCompleteWithoutStateChange() {
         validatePostSuccess("payloadWithResponseRecorded.json", REDEC_COMPLETE);
     }
@@ -321,10 +318,38 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
 
     }
 
+    @Test
+    public void shouldTransformCaseWithCitizenAttributes() {
+        String response = transformCase("success.CitizenAttribtesSaved.json", TRANSFORM_URL);
+
+        JsonPath jsonPath = JsonPath.from(response);
+        String declarationCheckbox = jsonPath.get("data.declarationCheckbox");
+        String ihtGrossValueField = jsonPath.get("data.ihtGrossValueField");
+        String ihtNetValueField = jsonPath.get("data.ihtNetValueField");
+        int numberOfExecutors = jsonPath.get("data.numberOfExecutors");
+        int numberOfApplicants = jsonPath.get("data.numberOfApplicants");
+        String legalDeclarationJson = jsonPath.get("data.legalDeclarationJson");
+        String checkAnswersSummaryJson = jsonPath.get("data.checkAnswersSummaryJson");
+        String registryAddress = jsonPath.get("data.registryAddress");
+        String registryEmailAddress = jsonPath.get("data.registryEmailAddress");
+        String registrySequenceNumber = jsonPath.get("data.registrySequenceNumber");
+
+        assertEquals("Yes", declarationCheckbox);
+        assertEquals("100001.0", ihtGrossValueField);
+        assertEquals("90009.0", ihtNetValueField);
+        assertEquals(2, numberOfExecutors);
+        assertEquals(1, numberOfApplicants);
+        assertEquals("some legal declaration json", legalDeclarationJson);
+        assertEquals("some check summary json", checkAnswersSummaryJson);
+        assertEquals("RegistryAddress", registryAddress);
+        assertEquals("RegistryEmail", registryEmailAddress);
+        assertEquals("1", registrySequenceNumber);
+    }
+
 
     private String transformCase(String jsonFileName, String path) {
 
-        Response jsonResponse = SerenityRest.given()
+        Response jsonResponse = RestAssured.given()
                 .relaxedHTTPSValidation()
                 .headers(utils.getHeadersWithUserId())
                 .body(utils.getJsonFromFile(jsonFileName))
@@ -334,7 +359,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     }
 
     private void validatePostSuccess(String jsonFileName, String URL) {
-        SerenityRest.given()
+        RestAssured.given()
                 .relaxedHTTPSValidation()
                 .headers(utils.getHeadersWithUserId())
                 .body(utils.getJsonFromFile(jsonFileName))
@@ -363,7 +388,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     }
 
     private void validatePostFailure(String jsonFileName, String errorMessage, Integer statusCode, String URL) {
-        Response response = SerenityRest.given()
+        Response response = RestAssured.given()
                 .relaxedHTTPSValidation()
                 .headers(utils.getHeadersWithUserId())
                 .body(utils.getJsonFromFile(jsonFileName))

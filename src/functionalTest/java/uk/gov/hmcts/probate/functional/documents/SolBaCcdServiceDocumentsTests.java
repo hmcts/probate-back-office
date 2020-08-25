@@ -1,18 +1,17 @@
 package uk.gov.hmcts.probate.functional.documents;
 
+import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
-import net.serenitybdd.junit.runners.SerenityRunner;
-import net.serenitybdd.rest.SerenityRest;
+import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 
-import lombok.extern.slf4j.Slf4j;
 import static org.junit.Assert.assertTrue;
 
-@Slf4j
-@RunWith(SerenityRunner.class)
+
+@RunWith(SpringIntegrationSerenityRunner.class)
 public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     // Grant fields
@@ -126,7 +125,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     }
 
     private void validatePostSuccess(String jsonFileName, String path) {
-        SerenityRest.given()
+        RestAssured.given()
                 .relaxedHTTPSValidation()
                 .headers(utils.getHeaders())
                 .body(utils.getJsonFromFile(jsonFileName))
@@ -136,7 +135,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     private String generateDocument(String jsonFileName, String path) {
 
-        Response jsonResponse = SerenityRest.given()
+        Response jsonResponse = RestAssured.given()
                 .relaxedHTTPSValidation()
                 .headers(utils.getHeadersWithUserId())
                 .body(utils.getJsonFromFile(jsonFileName))
@@ -151,7 +150,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
 
     private String generatePdfDocument(String jsonFileName, String path) {
 
-        Response jsonResponse = SerenityRest.given()
+        Response jsonResponse = RestAssured.given()
                 .relaxedHTTPSValidation()
                 .headers(utils.getHeadersWithUserId())
                 .body(utils.getJsonFromFile(jsonFileName))

@@ -1,10 +1,10 @@
 package uk.gov.hmcts.probate.caseCreator.util;
 
 import com.warrenstrange.googleauth.GoogleAuthenticator;
+import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.http.Header;
 import io.restassured.http.Headers;
-import net.serenitybdd.rest.SerenityRest;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -36,7 +36,7 @@ public class RelaxedServiceAuthTokenGenerator {
         signInDetails.put("microservice", this.microService);
         signInDetails.put("oneTimePassword", oneTimePassword);
 
-        return SerenityRest.given()
+        return RestAssured.given()
                 .baseUri(idamS2sAuthUrl)
                 .relaxedHTTPSValidation()
                 .headers(Headers.headers(new Header("Content-Type", ContentType.JSON.toString())))

@@ -17,6 +17,7 @@
       "solsSolicitorNotApplyingReason": null,
       "solsSOTJobTitle": "job title",
       "otherExecutorExists": "Yes",
+      "applicationGrounds": "Grounds for application",
       "deceasedAddress": {
         "AddressLine1": "1",
         "AddressLine2": "1",

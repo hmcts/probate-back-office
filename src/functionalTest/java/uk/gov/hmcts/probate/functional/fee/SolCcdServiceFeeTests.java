@@ -1,48 +1,51 @@
 package uk.gov.hmcts.probate.functional.fee;
 
-import net.serenitybdd.junit.runners.SerenityRunner;
+
+import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
+import net.thucydides.core.annotations.Pending;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 
 import static io.restassured.http.ContentType.JSON;
-import static net.serenitybdd.rest.SerenityRest.given;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalToIgnoringCase;
+import static io.restassured.RestAssured.given;
 
 
-@RunWith(SerenityRunner.class)
+@RunWith(SpringIntegrationSerenityRunner.class)
 public class SolCcdServiceFeeTests extends IntegrationTestBase {
 
-//    @Test
-//    public void verifyNetValue10000() {
-//        validatePostRequestSuccessForFee("success.feeNetValue10000.json", "applicationFee", "15500");
-//    }
 
-//    @Test
-//    public void verifyFeeForUkCopies() {
-//        validatePostRequestSuccessForFee("success.feeNetValue10000.json", "feeForUkCopies", "150");
-//    }
+    @Test
+    public void verifyNetValue10000() {
+        validatePostRequestSuccessForFee("success.feeNetValue10000.json", "applicationFee", "15500");
+    }
 
-//    @Test
-//    public void verifyFeeForNonUkCopies() {
-//        validatePostRequestSuccessForFee("success.feeNetValue10000.json", "feeForNonUkCopies", "150");
-//    }
+    @Test
+    public void verifyFeeForUkCopies() {
+        validatePostRequestSuccessForFee("success.feeNetValue10000.json", "feeForUkCopies", "150");
+    }
 
-//    @Test
-//    public void verifyTotal() {
-//        validatePostRequestSuccessForFee("success.feeNetValue10000.json", "totalFee", "15800");
-//    }
+    @Test
+    public void verifyFeeForNonUkCopies() {
+        validatePostRequestSuccessForFee("success.feeNetValue10000.json", "feeForNonUkCopies", "150");
+    }
 
-//    @Test
-//    public void verifyNetValue5000() {
-//        validatePostRequestSuccessForFee("success.feeNetValue5000.json", "applicationFee", "0");
-//    }
-//
-//    @Test
-//    public void verifyNetValue1000() {
-//        validatePostRequestSuccessForFee("success.feeNetValue1000.json", "applicationFee", "0");
-//    }
+    @Test
+    public void verifyTotal() {
+        validatePostRequestSuccessForFee("success.feeNetValue10000.json", "totalFee", "15800");
+    }
+
+    @Test
+    public void verifyNetValue5000() {
+        validatePostRequestSuccessForFee("success.feeNetValue5000.json", "applicationFee", "0");
+    }
+
+    @Test
+    public void verifyNetValue1000() {
+        validatePostRequestSuccessForFee("success.feeNetValue1000.json", "applicationFee", "0");
+    }
 
     @Test
     public void verifyIncorrectJsonReturns400() {
