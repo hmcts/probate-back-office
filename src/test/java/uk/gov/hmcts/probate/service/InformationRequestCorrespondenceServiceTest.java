@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import uk.gov.hmcts.probate.model.CaseOrigin;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ExecutorsApplyingNotification;
 import uk.gov.hmcts.probate.model.State;
@@ -20,6 +21,7 @@ import uk.gov.service.notify.NotificationClientException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -91,7 +93,7 @@ public class InformationRequestCorrespondenceServiceTest {
         documents.add(COVERSHEET);
         documents.add(GENERIC_DOCUMENT);
 
-        when(notificationService.sendEmail(eq(State.CASE_STOPPED_REQUEST_INFORMATION), eq(caseDetails), any()))
+        when(notificationService.sendEmail(eq(State.CASE_STOPPED_REQUEST_INFORMATION), eq(caseDetails), any(Optional.class)))
                 .thenReturn(GENERIC_DOCUMENT);
         when(documentGeneratorService.generateCoversheet(callbackRequest, execApplying.getValue().getName(),
                 execApplying.getValue().getAddress())).thenReturn(COVERSHEET);

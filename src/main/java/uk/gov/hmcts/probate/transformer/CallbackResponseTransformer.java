@@ -466,8 +466,9 @@ public class CallbackResponseTransformer {
 
     }
 
-    public CallbackResponse paperForm(CallbackRequest callbackRequest) {
+    public CallbackResponse paperForm(CallbackRequest callbackRequest, Document document) {
 
+        documentTransformer.addDocument(callbackRequest, document, false);
         ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), false);
         responseCaseDataBuilder.paperForm(ANSWER_YES);
         if (callbackRequest.getCaseDetails().getData().getIhtReferenceNumber() != null) {
@@ -476,7 +477,8 @@ public class CallbackResponseTransformer {
             }
         }
         getCaseCreatorResponseCaseBuilder(callbackRequest.getCaseDetails().getData(), responseCaseDataBuilder);
-
+        responseCaseDataBuilder.probateNotificationsGenerated(callbackRequest.getCaseDetails().getData().getProbateNotificationsGenerated());
+        
         return transformResponse(responseCaseDataBuilder.build());
     }
 

@@ -31,6 +31,7 @@ import uk.gov.hmcts.probate.validator.CaseworkerAmendValidationRule;
 import uk.gov.hmcts.probate.validator.CheckListAmendCaseValidationRule;
 import uk.gov.hmcts.probate.validator.RedeclarationSoTValidationRule;
 import uk.gov.hmcts.probate.validator.ValidationRule;
+import uk.gov.service.notify.NotificationClientException;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Collections;
@@ -411,7 +412,7 @@ public class BusinessValidationUnitTest {
     }
 
     @Test(expected = BadRequestException.class)
-    public void shouldPaperFormWithFieldErrors() {
+    public void shouldPaperFormWithFieldErrors() throws NotificationClientException {
         when(bindingResultMock.hasErrors()).thenReturn(true);
         when(bindingResultMock.getFieldErrors()).thenReturn(Collections.singletonList(fieldErrorMock));
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);

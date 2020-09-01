@@ -31,10 +31,18 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     private static final String GRANT_RAISED = "/notify/grant-received";
     private static final String APPLICATION_RECEIVED = "/notify/application-received";
     private static final String REDEC_SOT_URL = "/notify/redeclaration-sot";
+    private static final String APPLICATION_RECEIVED_PAPER_CASEWROKER = "/case/paperForm";
 
     private static final String BIRMINGHAM_NO = "0121 681 3401";
 
     private static final String EMAIL_NOTIFICATION_URL = "data.probateNotificationsGenerated[0].value.DocumentLink.document_binary_url";
+    private static final String EMAIL_NOTIFICATION_DOCUMENT_URL = "DocumentLink.document_binary_url";
+
+    @Test
+    public void verifyPaperApplicationReceivedByCaseworkerNotificationSent() {
+        postNotificationEmailAndVerifyContents(APPLICATION_RECEIVED_PAPER_CASEWROKER, "paperApplicationRecievedCitizenFromCaseworkerPayload.json", "paperApplicationReceivedCitizenFromCaseworkerEmailExpectedResponse.txt",
+            EMAIL_NOTIFICATION_URL, "verifyPaperApplicationReceivedByCaseworkerNotificationSent");
+    }
 
     @Test
     public void verifyDigitalGOPApplicationReceivedNotificationEmailText() {
