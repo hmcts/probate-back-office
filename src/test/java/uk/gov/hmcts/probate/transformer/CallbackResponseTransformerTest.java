@@ -100,9 +100,11 @@ import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
 import static uk.gov.hmcts.probate.model.DocumentType.SOT_INFORMATION_REQUEST;
 import static uk.gov.hmcts.probate.model.DocumentType.STATEMENT_OF_TRUTH;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_ADMON_WILL_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.WELSH_ADMON_WILL_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_DIGITAL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_DIGITAL_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_INTESTACY_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.WELSH_INTESTACY_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_STATEMENT_OF_TRUTH;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -969,7 +971,48 @@ public class CallbackResponseTransformerTest {
         assertEquals(grantIssuedSentEmail, callbackResponse.getData().getProbateNotificationsGenerated().get(0).getValue());
         assertEquals(YES, callbackResponse.getData().getBoEmailGrantReissuedNotificationRequested());
         assertEquals(YES, callbackResponse.getData().getBoGrantReissueSendToBulkPrintRequested());
+    }
 
+    @Test
+    public void shouldSetSendLetterIdAndPdfSizeWelshIntestacyReissue() {
+        Document grantDocument = Document.builder().documentType(WELSH_INTESTACY_GRANT_REISSUE).build();
+        Document grantIssuedSentEmail = Document.builder().documentType(SENT_EMAIL).build();
+
+        CallbackResponse callbackResponse = underTest.addDocuments(callbackRequestMock,
+            Arrays.asList(grantDocument, grantIssuedSentEmail), "abc123", "2");
+
+        assertCommon(callbackResponse);
+
+        assertEquals("abc123", callbackResponse.getData().getBulkPrintId().get(0).getValue().getSendLetterId());
+        assertEquals(WELSH_INTESTACY_GRANT_REISSUE.getTemplateName(),
+            callbackResponse.getData().getBulkPrintId().get(0).getValue().getTemplateName());
+        assertEquals(1, callbackResponse.getData().getProbateDocumentsGenerated().size());
+        assertEquals(grantDocument, callbackResponse.getData().getProbateDocumentsGenerated().get(0).getValue());
+        assertEquals(1, callbackResponse.getData().getProbateNotificationsGenerated().size());
+        assertEquals(grantIssuedSentEmail, callbackResponse.getData().getProbateNotificationsGenerated().get(0).getValue());
+        assertEquals(YES, callbackResponse.getData().getBoEmailGrantReissuedNotificationRequested());
+        assertEquals(YES, callbackResponse.getData().getBoGrantReissueSendToBulkPrintRequested());
+    }
+
+    @Test
+    public void shouldSetSendLetterIdAndPdfSizeWelshAdmonWillReissue() {
+        Document grantDocument = Document.builder().documentType(WELSH_ADMON_WILL_GRANT_REISSUE).build();
+        Document grantIssuedSentEmail = Document.builder().documentType(SENT_EMAIL).build();
+
+        CallbackResponse callbackResponse = underTest.addDocuments(callbackRequestMock,
+            Arrays.asList(grantDocument, grantIssuedSentEmail), "abc123", "2");
+
+        assertCommon(callbackResponse);
+
+        assertEquals("abc123", callbackResponse.getData().getBulkPrintId().get(0).getValue().getSendLetterId());
+        assertEquals(WELSH_ADMON_WILL_GRANT_REISSUE.getTemplateName(),
+            callbackResponse.getData().getBulkPrintId().get(0).getValue().getTemplateName());
+        assertEquals(1, callbackResponse.getData().getProbateDocumentsGenerated().size());
+        assertEquals(grantDocument, callbackResponse.getData().getProbateDocumentsGenerated().get(0).getValue());
+        assertEquals(1, callbackResponse.getData().getProbateNotificationsGenerated().size());
+        assertEquals(grantIssuedSentEmail, callbackResponse.getData().getProbateNotificationsGenerated().get(0).getValue());
+        assertEquals(YES, callbackResponse.getData().getBoEmailGrantReissuedNotificationRequested());
+        assertEquals(YES, callbackResponse.getData().getBoGrantReissueSendToBulkPrintRequested());
     }
 
     @Test
