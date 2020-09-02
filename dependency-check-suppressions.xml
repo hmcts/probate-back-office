@@ -331,6 +331,34 @@
         <cve>CVE-2020-14061</cve>
         <cve>CVE-2020-14062</cve>
         <cve>CVE-2020-14195</cve>
+        <cve>CVE-2020-10672</cve>
+        <cve>CVE-2020-10673</cve>
+        <cve>CVE-2020-10968</cve>
+        <cve>CVE-2020-24616</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: jackson-datatype-jsr310-2.9.4.jar
+   ]]></notes>
+        <gav regex="true">^com\.fasterxml\.jackson\.datatype:jackson-datatype-jsr310:.*$</gav>
+        <cpe>cpe:/a:fasterxml:jackson</cpe>
+        <cve>CVE-2020-24616</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: jackson-datatype-jdk8-2.9.8.jar
+   ]]></notes>
+        <gav regex="true">^com\.fasterxml\.jackson\.datatype:jackson-datatype-jdk8:.*$</gav>
+        <cpe>cpe:/a:fasterxml:jackson</cpe>
+        <cve>CVE-2020-24616</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: jackson-module-parameter-names-2.9.8.jar
+   ]]></notes>
+        <gav regex="true">^com\.fasterxml\.jackson\.module:jackson-module-parameter-names:.*$</gav>
+        <cpe>cpe:/a:fasterxml:jackson</cpe>
+        <cve>CVE-2020-24616</cve>
     </suppress>
     <suppress>
         <notes><![CDATA[
@@ -471,27 +499,6 @@ file name: spring-jcl-5.1.5.RELEASE.jar
    ]]></notes>
         <gav regex="true">^com\.puppycrawl\.tools:checkstyle:.*$</gav>
         <cve>CVE-2019-10782</cve>
-    </suppress>
-    <suppress>
-        <notes><![CDATA[
-   file name: jackson-databind-2.9.9.3.jar
-   ]]></notes>
-        <gav regex="true">^com\.fasterxml\.jackson\.core:jackson-databind:.*$</gav>
-        <cve>CVE-2020-10672</cve>
-    </suppress>
-    <suppress>
-        <notes><![CDATA[
-   file name: jackson-databind-2.9.9.3.jar
-   ]]></notes>
-        <gav regex="true">^com\.fasterxml\.jackson\.core:jackson-databind:.*$</gav>
-        <cve>CVE-2020-10673</cve>
-    </suppress>
-    <suppress>
-        <notes><![CDATA[
-   file name: jackson-databind-2.9.9.3.jar
-   ]]></notes>
-        <gav regex="true">^com\.fasterxml\.jackson\.core:jackson-databind:.*$</gav>
-        <cve>CVE-2020-10968</cve>
     </suppress>
     <suppress>
         <notes><![CDATA[
