@@ -129,7 +129,25 @@ public enum DocumentType {
     WELSH_INTESTACY_GRANT_DRAFT("welshIntestacyGrantDraft"),
 
     @JsonProperty("welshIntestacyGrant")
-    WELSH_INTESTACY_GRANT("welshIntestacyGrant");
+    WELSH_INTESTACY_GRANT("welshIntestacyGrant"),
+
+    @JsonProperty("welshDigitalGrantReissue")
+    WELSH_DIGITAL_GRANT_REISSUE_DRAFT("welshDigitalGrantReissue"),
+
+    @JsonProperty("intestacyGrantReissueDraft")
+    WELSH_INTESTACY_GRANT_REISSUE_DRAFT("welshIntestacyGrantReissueDraft"),
+
+    @JsonProperty("admonWillGrantReissueDraft")
+    WELSH_ADMON_WILL_GRANT_REISSUE_DRAFT("welshAdmonWillGrantReissueDraft"),
+
+    @JsonProperty("digitalGrantReissue")
+    WELSH_DIGITAL_GRANT_REISSUE("welshDigitalGrantReissue"),
+
+    @JsonProperty("intestacyGrantReissue")
+    WELSH_INTESTACY_GRANT_REISSUE("welshIntestacyGrantReissue"),
+
+    @JsonProperty("admonWillGrantReissue")
+    WELSH_ADMON_WILL_GRANT_REISSUE("welshAdmonWillGrantReissue");
 
     private final String templateName;
 

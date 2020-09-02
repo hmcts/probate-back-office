@@ -48,6 +48,12 @@ import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE;
 import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
 import static uk.gov.hmcts.probate.model.DocumentType.SOT_INFORMATION_REQUEST;
 import static uk.gov.hmcts.probate.model.DocumentType.STATEMENT_OF_TRUTH;
+import static uk.gov.hmcts.probate.model.DocumentType.WELSH_ADMON_WILL_GRANT_REISSUE;
+import static uk.gov.hmcts.probate.model.DocumentType.WELSH_ADMON_WILL_GRANT_REISSUE_DRAFT;
+import static uk.gov.hmcts.probate.model.DocumentType.WELSH_DIGITAL_GRANT_REISSUE;
+import static uk.gov.hmcts.probate.model.DocumentType.WELSH_DIGITAL_GRANT_REISSUE_DRAFT;
+import static uk.gov.hmcts.probate.model.DocumentType.WELSH_INTESTACY_GRANT_REISSUE;
+import static uk.gov.hmcts.probate.model.DocumentType.WELSH_INTESTACY_GRANT_REISSUE_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_STATEMENT_OF_TRUTH;
 import static uk.gov.hmcts.probate.model.DocumentType.WILL_LODGEMENT_DEPOSIT_RECEIPT;
 
@@ -257,6 +263,60 @@ public class DocumentTransformerTest {
         assertTrue(callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated().isEmpty());
 
         documentTransformer.addDocument(callbackRequest, Document.builder().documentType(ADMON_WILL_GRANT_REISSUE).build(), false);
+
+        assertEquals(1, callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated().size());
+    }
+
+    @Test
+    public void shouldAddWelshDigitalGrantReissueDraftToGeneratedDocuments() {
+        assertTrue(callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated().isEmpty());
+
+        documentTransformer.addDocument(callbackRequest, Document.builder().documentType(WELSH_DIGITAL_GRANT_REISSUE_DRAFT).build(), false);
+
+        assertEquals(1, callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated().size());
+    }
+
+    @Test
+    public void shouldAddWelshDigitalGrantReissueToGeneratedDocuments() {
+        assertTrue(callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated().isEmpty());
+
+        documentTransformer.addDocument(callbackRequest, Document.builder().documentType(WELSH_DIGITAL_GRANT_REISSUE).build(), false);
+
+        assertEquals(1, callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated().size());
+    }
+
+    @Test
+    public void shouldAddWelshIntestacyGrantReissueDraftToGeneratedDocuments() {
+        assertTrue(callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated().isEmpty());
+
+        documentTransformer.addDocument(callbackRequest, Document.builder().documentType(WELSH_INTESTACY_GRANT_REISSUE_DRAFT).build(), false);
+
+        assertEquals(1, callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated().size());
+    }
+
+    @Test
+    public void shouldAddWelshIntestacyGrantReissueToGeneratedDocuments() {
+        assertTrue(callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated().isEmpty());
+
+        documentTransformer.addDocument(callbackRequest, Document.builder().documentType(WELSH_INTESTACY_GRANT_REISSUE).build(), false);
+
+        assertEquals(1, callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated().size());
+    }
+
+    @Test
+    public void shouldAddWelshAdmonWillGrantReissueDraftToGeneratedDocuments() {
+        assertTrue(callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated().isEmpty());
+
+        documentTransformer.addDocument(callbackRequest, Document.builder().documentType(WELSH_ADMON_WILL_GRANT_REISSUE_DRAFT).build(), false);
+
+        assertEquals(1, callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated().size());
+    }
+
+    @Test
+    public void shouldAddWelshAdmonWillGrantReissueToGeneratedDocuments() {
+        assertTrue(callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated().isEmpty());
+
+        documentTransformer.addDocument(callbackRequest, Document.builder().documentType(WELSH_ADMON_WILL_GRANT_REISSUE).build(), false);
 
         assertEquals(1, callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated().size());
     }

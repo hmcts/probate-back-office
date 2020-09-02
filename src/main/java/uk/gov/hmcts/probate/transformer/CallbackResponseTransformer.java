@@ -67,8 +67,11 @@ import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
 import static uk.gov.hmcts.probate.model.DocumentType.SOT_INFORMATION_REQUEST;
 import static uk.gov.hmcts.probate.model.DocumentType.STATEMENT_OF_TRUTH;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_ADMON_WILL_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.WELSH_ADMON_WILL_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_DIGITAL_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.WELSH_DIGITAL_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_INTESTACY_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.WELSH_INTESTACY_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_STATEMENT_OF_TRUTH;
 import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.Constants.GRANT_OF_PROBATE_NAME;
 import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.INTESTACY;
@@ -235,9 +238,13 @@ public class CallbackResponseTransformer {
 
         if (documentTransformer.hasDocumentWithType(documents, DIGITAL_GRANT_REISSUE)
                 || documentTransformer.hasDocumentWithType(documents, ADMON_WILL_GRANT_REISSUE)
-                || documentTransformer.hasDocumentWithType(documents, INTESTACY_GRANT_REISSUE)) {
+                || documentTransformer.hasDocumentWithType(documents, INTESTACY_GRANT_REISSUE)
+                || documentTransformer.hasDocumentWithType(documents, WELSH_DIGITAL_GRANT_REISSUE)
+                || documentTransformer.hasDocumentWithType(documents, WELSH_ADMON_WILL_GRANT_REISSUE)
+                || documentTransformer.hasDocumentWithType(documents, WELSH_INTESTACY_GRANT_REISSUE)) {
             if (letterId != null) {
-                DocumentType[] documentTypes = {DIGITAL_GRANT_REISSUE, ADMON_WILL_GRANT_REISSUE, INTESTACY_GRANT_REISSUE};
+                DocumentType[] documentTypes = {DIGITAL_GRANT_REISSUE, ADMON_WILL_GRANT_REISSUE, INTESTACY_GRANT_REISSUE,
+                    WELSH_DIGITAL_GRANT_REISSUE, WELSH_ADMON_WILL_GRANT_REISSUE, WELSH_INTESTACY_GRANT_REISSUE};
                 String templateName = getTemplateName(documents, documentTypes);
                 CollectionMember<BulkPrint> bulkPrint = buildBulkPrint(letterId, templateName);
                 appendToBulkPrintCollection(bulkPrint, caseData);
@@ -280,11 +287,15 @@ public class CallbackResponseTransformer {
         if (documentTransformer.hasDocumentWithType(documents, DIGITAL_GRANT_REISSUE)
             || documentTransformer.hasDocumentWithType(documents, ADMON_WILL_GRANT_REISSUE)
             || documentTransformer.hasDocumentWithType(documents, INTESTACY_GRANT_REISSUE)
+            || documentTransformer.hasDocumentWithType(documents, WELSH_DIGITAL_GRANT_REISSUE)
+            || documentTransformer.hasDocumentWithType(documents, WELSH_ADMON_WILL_GRANT_REISSUE)
+            || documentTransformer.hasDocumentWithType(documents, WELSH_INTESTACY_GRANT_REISSUE)
             || documentTransformer.hasDocumentWithType(documents, STATEMENT_OF_TRUTH)
             || documentTransformer.hasDocumentWithType(documents, WELSH_STATEMENT_OF_TRUTH)
             || documentTransformer.hasDocumentWithType(documents, DocumentType.OTHER)) {
             if (letterId != null) {
                 DocumentType[] documentTypes = {DIGITAL_GRANT_REISSUE, ADMON_WILL_GRANT_REISSUE, INTESTACY_GRANT_REISSUE,
+                    WELSH_DIGITAL_GRANT_REISSUE, WELSH_ADMON_WILL_GRANT_REISSUE, WELSH_INTESTACY_GRANT_REISSUE,
                     STATEMENT_OF_TRUTH, WELSH_STATEMENT_OF_TRUTH, DocumentType.OTHER};
                 String templateName = getTemplateName(documents, documentTypes);
                 CollectionMember<BulkPrint> bulkPrint = buildBulkPrint(letterId, templateName);
@@ -433,7 +444,6 @@ public class CallbackResponseTransformer {
     }
 
     public CallbackResponse transformCaseForLetterPreview(CallbackRequest callbackRequest, Document letterPreview) {
-        CaseData caseData = callbackRequest.getCaseDetails().getData();
         boolean doTransform = doTransform(callbackRequest);
 
         ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), doTransform);

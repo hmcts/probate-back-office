@@ -209,11 +209,19 @@ documents:
             gop: DIGITAL_GRANT_DRAFT
       welsh:
         final:
+          reissue:
+            intestacy: WELSH_INTESTACY_GRANT_REISSUE
+            admonWill: WELSH_ADMON_WILL_GRANT_REISSUE
+            gop: WELSH_DIGITAL_GRANT_REISSUE
           grant:
             intestacy: WELSH_INTESTACY_GRANT
             admonWill: WELSH_ADMON_WILL_GRANT
             gop: WELSH_DIGITAL_GRANT
         preview:
+          reissue:
+            intestacy: WELSH_INTESTACY_GRANT_REISSUE_DRAFT
+            admonWill: WELSH_ADMON_WILL_GRANT_REISSUE_DRAFT
+            gop: WELSH_DIGITAL_GRANT_REISSUE_DRAFT
           grant:
             intestacy: WELSH_INTESTACY_GRANT_DRAFT
             admonWill: WELSH_ADMON_WILL_GRANT_DRAFT
