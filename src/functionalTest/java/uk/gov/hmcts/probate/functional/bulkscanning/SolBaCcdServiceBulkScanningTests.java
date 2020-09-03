@@ -201,7 +201,7 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
     }
 
     @Test
-    public void testTransformSolicitorPA1PReturnSuccessfulJSON() {
+    public void testTransformSolicitorPA1PSingleExecReturnSuccessfulJSON() {
         String currentDate = LocalDate.now().format(CCD_DATE_FORMAT);
         String applicationSubmittedDate = "\"applicationSubmittedDate\":\"" + currentDate + "\"";
         jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordSolicitorPA1P.json");
@@ -368,6 +368,16 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
         String applicationSubmittedDate = "\"applicationSubmittedDate\":\"" + currentDate + "\"";
         jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordCombSolicitorPA1PAutomated.json");
         jsonResponse = utils.getJsonFromFile("expectedBulkScanTransformExceptionRecordOutputCombSolicitorPA1P.json");
+        jsonResponse = jsonResponse.replaceAll("\"applicationSubmittedDate\":\"[0-9-]+\"", applicationSubmittedDate);
+        transformExceptionPostSuccess(jsonRequest, jsonResponse);
+    }
+
+    @Test
+    public void testTransformSolicitorPA1PSingleExecReturnSuccessfulAutomatedJSON() {
+        String currentDate = LocalDate.now().format(CCD_DATE_FORMAT);
+        String applicationSubmittedDate = "\"applicationSubmittedDate\":\"" + currentDate + "\"";
+        jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordSolicitorPA1PAutomated.json");
+        jsonResponse = utils.getJsonFromFile("expectedBulkScanTransformExceptionRecordOutputSolicitorPA1P.json");
         jsonResponse = jsonResponse.replaceAll("\"applicationSubmittedDate\":\"[0-9-]+\"", applicationSubmittedDate);
         transformExceptionPostSuccess(jsonRequest, jsonResponse);
     }
