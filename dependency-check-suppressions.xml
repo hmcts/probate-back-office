@@ -570,4 +570,67 @@ file name: spring-jcl-5.1.5.RELEASE.jar
         <gav regex="true">^org\.yaml:snakeyaml:.*$</gav>
         <cve>CVE-2017-18640</cve>
     </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: jackson-datatype-jsr310-2.9.4.jar
+   ]]></notes>
+        <gav regex="true">^com\.fasterxml\.jackson\.datatype:jackson-datatype-jsr310:.*$</gav>
+        <cve>CVE-2020-24616</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: jackson-datatype-jdk8-2.9.8.jar
+   ]]></notes>
+        <gav regex="true">^com\.fasterxml\.jackson\.datatype:jackson-datatype-jdk8:.*$</gav>
+        <cve>CVE-2020-24616</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: jackson-module-parameter-names-2.9.8.jar
+   ]]></notes>
+        <gav regex="true">^com\.fasterxml\.jackson\.module:jackson-module-parameter-names:.*$</gav>
+        <cve>CVE-2020-24616</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: jackson-databind-2.9.9.3.jar
+   ]]></notes>
+        <gav regex="true">^com\.fasterxml\.jackson\.core:jackson-databind:.*$</gav>
+        <cve>CVE-2020-24616</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: jackson-annotations-2.9.0.jar
+   ]]></notes>
+        <gav regex="true">^com\.fasterxml\.jackson\.core:jackson-annotations:.*$</gav>
+        <cve>CVE-2020-24616</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: jackson-core-2.9.8.jar
+   ]]></notes>
+        <gav regex="true">^com\.fasterxml\.jackson\.core:jackson-core:.*$</gav>
+        <cve>CVE-2020-24616</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: jackson-dataformat-smile-2.9.8.jar
+   ]]></notes>
+        <gav regex="true">^com\.fasterxml\.jackson\.dataformat:jackson-dataformat-smile:.*$</gav>
+        <cve>CVE-2020-24616</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: jackson-dataformat-yaml-2.9.8.jar
+   ]]></notes>
+        <gav regex="true">^com\.fasterxml\.jackson\.dataformat:jackson-dataformat-yaml:.*$</gav>
+        <cve>CVE-2020-24616</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: jackson-dataformat-cbor-2.9.8.jar
+   ]]></notes>
+        <gav regex="true">^com\.fasterxml\.jackson\.dataformat:jackson-dataformat-cbor:.*$</gav>
+        <cve>CVE-2020-24616</cve>
+    </suppress>
 </suppressions>
