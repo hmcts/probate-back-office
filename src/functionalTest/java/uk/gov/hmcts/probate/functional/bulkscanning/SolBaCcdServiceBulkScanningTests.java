@@ -201,13 +201,33 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
     }
 
     @Test
-    public void testTransformSolicitorPA1PSingleExecReturnSuccessfulJSON() {
+    public void testTransformSolicitorPA1PReturnSuccessfulJSON() {
         String currentDate = LocalDate.now().format(CCD_DATE_FORMAT);
         String applicationSubmittedDate = "\"applicationSubmittedDate\":\"" + currentDate + "\"";
         jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordSolicitorPA1P.json");
         jsonResponse = utils.getJsonFromFile("expectedBulkScanTransformExceptionRecordOutputSolicitorPA1P.json");
         jsonResponse = jsonResponse.replaceAll("\"applicationSubmittedDate\":\"[0-9-]+\"", applicationSubmittedDate);
         transformExceptionPostSuccess(jsonRequest, jsonResponse);
+    }
+
+    @Test
+    public void testTransformMissingMandatoryPA1PReturnUnprocessedJSON() {
+        String currentDate = LocalDate.now().format(CCD_DATE_FORMAT);
+        String applicationSubmittedDate = "\"applicationSubmittedDate\":\"" + currentDate + "\"";
+        jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordMissingMandatoryPA1P.json");
+        jsonResponse = utils.getJsonFromFile("expectedBulkScanExceptionRecordMissingMandatoryPA1P.json");
+        jsonResponse = jsonResponse.replaceAll("\"applicationSubmittedDate\":\"[0-9-]+\"", applicationSubmittedDate);
+        transformExceptionPostUnprocessed(jsonRequest, jsonResponse);
+    }
+
+    @Test
+    public void testTransformMissingMandatoryPA1AReturnUnprocessedJSON() {
+        String currentDate = LocalDate.now().format(CCD_DATE_FORMAT);
+        String applicationSubmittedDate = "\"applicationSubmittedDate\":\"" + currentDate + "\"";
+        jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordMissingMandatoryPA1A.json");
+        jsonResponse = utils.getJsonFromFile("expectedBulkScanExceptionRecordMissingMandatoryPA1A.json");
+        jsonResponse = jsonResponse.replaceAll("\"applicationSubmittedDate\":\"[0-9-]+\"", applicationSubmittedDate);
+        transformExceptionPostUnprocessed(jsonRequest, jsonResponse);
     }
 
     @Test
