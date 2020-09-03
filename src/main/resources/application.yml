@@ -100,17 +100,17 @@ docmosis:
     welshAdmonWillGrantDraft:
       templateName: FL-PRB-GRP-WEL-00226.doc
     welshDigitalGrantReissueDraft:
-      templateName: FL-PRB-GNO-ENG-00226.doc
+      templateName: FL-PRB-GRP-WEL-00226.doc
     welshIntestacyGrantReissueDraft:
-      templateName: FL-PRB-GNO-ENG-00226.doc
+      templateName: FL-PRB-GRP-WEL-00226.doc
     welshAdmonWillGrantReissueDraft:
-      templateName: FL-PRB-GNO-ENG-00226.doc
+      templateName: FL-PRB-GRP-WEL-00226.doc
     welshDigitalGrantReissue:
-      templateName: FL-PRB-GNO-ENG-00226.doc
+      templateName: FL-PRB-GRP-WEL-00226.doc
     welshIntestacyGrantReissue:
-      templateName: FL-PRB-GNO-ENG-00226.doc
+      templateName: FL-PRB-GRP-WEL-00226.doc
     welshAdmonWillGrantReissue:
-      templateName: FL-PRB-GNO-ENG-00226.doc
+      templateName: FL-PRB-GRP-WEL-00226.doc
 
 fee.api:
   url: http://localhost:4411

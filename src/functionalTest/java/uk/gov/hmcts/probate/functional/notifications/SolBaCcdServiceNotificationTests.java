@@ -7,8 +7,6 @@ import io.restassured.response.ResponseBody;
 import lombok.extern.slf4j.Slf4j;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
 import net.serenitybdd.rest.SerenityRest;
-import net.thucydides.core.annotations.Pending;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
@@ -35,6 +33,49 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     private static final String BIRMINGHAM_NO = "0121 681 3401";
 
     private static final String EMAIL_NOTIFICATION_URL = "data.probateNotificationsGenerated[0].value.DocumentLink.document_binary_url";
+    private static final String GENERATED_DOCUMENT_URL = "data.probateDocumentsGenerated[0].value.DocumentLink.document_binary_url";
+
+    @Test
+    public void verifyGrantReissueDocumentAndEmail() {
+        verifyDocumentAndEmailNotification(GRANT_REISSUED,"personalPayloadGrantReissued.json",
+            "expectedPersonalDocumentGrantReissued.txt",
+            "expectedPersonalEmailGrantReissued.txt");
+    }
+
+    @Test
+    public void verifyIntestacyReissueDocumentAndEmail() {
+        verifyDocumentAndEmailNotification(GRANT_REISSUED,"personalPayloadIntestacyReissued.json",
+            "expectedPersonalDocumentIntestacyReissued.txt",
+            "expectedPersonalEmailGrantReissued.txt");
+    }
+
+    @Test
+    public void verifyAdmonWillReissueDocumentAndEmail() {
+        verifyDocumentAndEmailNotification(GRANT_REISSUED,"personalPayloadAdmonWillReissued.json",
+            "expectedPersonalDocumentAdmonWillReissued.txt",
+            "expectedPersonalEmailGrantReissued.txt");
+    }
+
+    @Test
+    public void verifyWelshGrantReissueDocumentAndEmail() {
+        verifyDocumentAndEmailNotification(GRANT_REISSUED,"personalPayloadWelshGrantReissued.json",
+            "expectedPersonalDocumentWelshGrantReissued.txt",
+            "expectedPersonalEmailWelshGrantReissued.txt");
+    }
+
+    @Test
+    public void verifyWelshIntestacyReissueDocumentAndEmail() {
+        verifyDocumentAndEmailNotification(GRANT_REISSUED,"personalPayloadWelshIntestacyReissued.json",
+            "expectedPersonalDocumentWelshIntestacyReissued.txt",
+            "expectedPersonalEmailWelshGrantReissued.txt");
+    }
+
+    @Test
+    public void verifyWelshAdmonWillReissueDocumentAndEmail() {
+        verifyDocumentAndEmailNotification(GRANT_REISSUED,"personalPayloadWelshAdmonWillReissued.json", 
+            "expectedPersonalDocumentWelshAdmonWillReissued.txt",
+            "expectedPersonalEmailWelshGrantReissued.txt");
+    }
 
     @Test
     public void verifyDigitalGOPApplicationReceivedNotificationEmailText() {
@@ -322,5 +363,25 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
         String response = utils.downloadPdfAndParseToString(documentUrl);
         response = response.replace("\n", "").replace("\r", "");
         return response;
+    }
+
+    private void verifyDocumentAndEmailNotification(String api, String payload, String documentText, String emailText) {
+        ResponseBody responseBody = validatePostSuccess(payload, api);
+        String expectedDocumentText = utils.getJsonFromFile(documentText);
+        expectedDocumentText = expectedDocumentText.replace("\n", "").replace("\r", "");
+
+        JsonPath jsonPath = JsonPath.from(responseBody.asString());
+        String documentUrl = jsonPath.get(GENERATED_DOCUMENT_URL);
+        String response = utils.downloadPdfAndParseToString(documentUrl);
+        response = response.replace("\n", "").replace("\r", "");
+        assertTrue(response.contains(expectedDocumentText));
+
+        String expectedEmailText = utils.getJsonFromFile(emailText);
+        expectedEmailText = expectedEmailText.replace("\n", "").replace("\r", "");
+
+        String emailUrl = jsonPath.get(EMAIL_NOTIFICATION_URL);
+        response = utils.downloadPdfAndParseToString(emailUrl);
+        response = response.replace("\n", "").replace("\r", "");
+        assertTrue(response.contains(expectedEmailText));
     }
 }
