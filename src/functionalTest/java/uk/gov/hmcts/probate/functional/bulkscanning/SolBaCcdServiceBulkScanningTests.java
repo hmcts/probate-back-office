@@ -546,7 +546,7 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
 //    private void test401(String bodyText) {
 //        RestAssured.given()
 //                .relaxedHTTPSValidation()
-//                .headers(utils.getHeadersTEST())
+//                .headers(utils.getHeadersWithUserId())
 //                .body(bodyText)
 //                .when().post(TRANSFORM_EXCEPTON_RECORD)
 //                .then().assertThat().statusCode(401);

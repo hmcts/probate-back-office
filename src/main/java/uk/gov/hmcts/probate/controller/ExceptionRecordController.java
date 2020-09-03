@@ -60,6 +60,7 @@ public class ExceptionRecordController {
     @ApiResponses({
             @ApiResponse(code = 200, response = ValidationResponse.class, message = "Validation executed successfully"),
             @ApiResponse(code = 400, message = "Request failed due to malformed syntax"),
+            @ApiResponse(code = 401, message = "Unauthorised"),
             @ApiResponse(code = 403, message = "S2S token is not authorized, missing or invalid")
     })
     @PostMapping(path = "/transform-scanned-data",
@@ -105,6 +106,7 @@ public class ExceptionRecordController {
     @ApiResponses({
             @ApiResponse(code = 200, response = ValidationResponse.class, message = "Validation executed successfully"),
             @ApiResponse(code = 400, message = "Request failed due to malformed syntax"),
+            @ApiResponse(code = 401, message = "Unauthorised"),
             @ApiResponse(code = 403, message = "S2S token is not authorized, missing or invalid")
     })
     @PostMapping(path = "/transform-exception-record",
@@ -117,6 +119,7 @@ public class ExceptionRecordController {
     @ApiResponses({
             @ApiResponse(code = 200, response = ValidationResponse.class, message = "Validation executed successfully"),
             @ApiResponse(code = 400, message = "Request failed due to malformed syntax"),
+            @ApiResponse(code = 401, message = "Unauthorised"),
             @ApiResponse(code = 403, message = "S2S token is not authorized, missing or invalid"),
             @ApiResponse(code = 404, message = "Form type not found")
     })
