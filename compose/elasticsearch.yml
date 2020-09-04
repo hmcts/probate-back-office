@@ -33,6 +33,7 @@ services:
       - DB_USER=ccd
       - DB_PWD=ccd
       - ES_DATA_NODES_URL=http://ccd-elasticsearch:9200
+      - APPINSIGHTS_INSTRUMENTATIONKEY=dummy
     networks:
       - compose_default
 
