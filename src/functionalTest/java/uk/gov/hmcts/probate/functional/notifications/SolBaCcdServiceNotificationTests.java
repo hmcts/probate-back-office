@@ -22,7 +22,6 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
 
     private static final String DOCUMENTS_RECEIVED = "/notify/documents-received";
     private static final String GRANT_ISSUED = "/document/generate-grant";
-    private static final String GRANT_REISSUED_DRAFT = "/document//generate-grant-draft-reissue";
     private static final String GRANT_REISSUED = "/document/generate-grant-reissue";
     private static final String CASE_STOPPED = "/notify/case-stopped";
     private static final String INFORMATION_REQUEST_DEFAULT_VALUES = "/notify/request-information-default-values";
@@ -37,21 +36,10 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     private static final String GENERATED_DOCUMENT_URL = "data.probateDocumentsGenerated[0].value.DocumentLink.document_binary_url";
 
     @Test
-    public void verifyGrantReissueDraftDocument() {
-        verifyDocumentGenerated(GRANT_REISSUED_DRAFT, "personalPayloadGrantReissued.json",
-            "expectedPersonalDocumentGrantReissued.txt");
-    }
-
     public void verifyGrantReissueDocumentAndEmail() {
-        verifyDocumentAndEmailNotificationGenerated(GRANT_REISSUED, "personalPayloadAdmonWillReissued.json",
+        verifyDocumentAndEmailNotificationGenerated(GRANT_REISSUED, "personalPayloadGrantReissued.json",
             "expectedPersonalDocumentGrantReissued.txt",
             "expectedPersonalEmailGrantReissued.txt");
-    }
-
-    @Test
-    public void verifyIntestacyReissueDraftDocument() {
-        verifyDocumentGenerated(GRANT_REISSUED_DRAFT, "personalPayloadIntestacyReissued.json",
-            "expectedPersonalDocumentIntestacyReissued.txt");
     }
 
     @Test
@@ -62,24 +50,12 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyAdmonWillReissueDraftDocument() {
-        verifyDocumentGenerated(GRANT_REISSUED_DRAFT, "personalPayloadGrantReissued.json",
-            "expectedPersonalDocumentAdmonWillReissued.txt");
-    }
-
-    @Test
     public void verifyAdmonWillReissueDocumentAndEmail() {
         verifyDocumentAndEmailNotificationGenerated(GRANT_REISSUED,"personalPayloadAdmonWillReissued.json",
             "expectedPersonalDocumentAdmonWillReissued.txt",
             "expectedPersonalEmailGrantReissued.txt");
     }
-
-    @Test
-    public void verifyWelshGrantReissueDraftDocument() {
-        verifyDocumentGenerated(GRANT_REISSUED_DRAFT, "personalPayloadWelshGrantReissued.json",
-            "expectedPersonalDocumentWelshGrantReissued.txt");
-    }
-
+    
     @Test
     public void verifyWelshGrantReissueDocumentAndEmail() {
         verifyDocumentAndEmailNotificationGenerated(GRANT_REISSUED,"personalPayloadWelshGrantReissued.json",
@@ -88,22 +64,10 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyWelshIntestacyReissueDraftDocument() {
-        verifyDocumentGenerated(GRANT_REISSUED_DRAFT, "personalPayloadWelshIntestacyReissued.json",
-            "expectedPersonalDocumentWelshIntestacyReissued.txt");
-    }
-
-    @Test
     public void verifyWelshIntestacyReissueDocumentAndEmail() {
         verifyDocumentAndEmailNotificationGenerated(GRANT_REISSUED,"personalPayloadWelshIntestacyReissued.json",
             "expectedPersonalDocumentWelshIntestacyReissued.txt",
             "expectedPersonalEmailWelshGrantReissued.txt");
-    }
-
-    @Test
-    public void verifyWelshAdmonWillReissueDraftDocument() {
-        verifyDocumentGenerated(GRANT_REISSUED_DRAFT, "personalPayloadWelshAdmonWillReissued.json",
-            "expectedPersonalDocumentWelshAdmonWillReissued.txt");
     }
 
     @Test
