@@ -633,4 +633,18 @@ file name: spring-jcl-5.1.5.RELEASE.jar
         <gav regex="true">^com\.fasterxml\.jackson\.dataformat:jackson-dataformat-cbor:.*$</gav>
         <cve>CVE-2020-24616</cve>
     </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: compiler-0.9.3.jar
+   ]]></notes>
+        <gav regex="true">^com\.github\.spullara\.mustache\.java:compiler:.*$</gav>
+        <cve>CVE-2020-10517</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: compiler-0.9.3.jar
+   ]]></notes>
+        <gav regex="true">^com\.github\.spullara\.mustache\.java:compiler:.*$</gav>
+        <cve>CVE-2020-10518</cve>
+    </suppress>
 </suppressions>
