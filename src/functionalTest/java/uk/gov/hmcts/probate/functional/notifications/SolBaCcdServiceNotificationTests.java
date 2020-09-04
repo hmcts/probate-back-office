@@ -22,6 +22,7 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
 
     private static final String DOCUMENTS_RECEIVED = "/notify/documents-received";
     private static final String GRANT_ISSUED = "/document/generate-grant";
+    private static final String GRANT_REISSUED_DRAFT = "/document//generate-grant-draft-reissue";
     private static final String GRANT_REISSUED = "/document/generate-grant-reissue";
     private static final String CASE_STOPPED = "/notify/case-stopped";
     private static final String INFORMATION_REQUEST_DEFAULT_VALUES = "/notify/request-information-default-values";
@@ -36,43 +37,78 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     private static final String GENERATED_DOCUMENT_URL = "data.probateDocumentsGenerated[0].value.DocumentLink.document_binary_url";
 
     @Test
+    public void verifyGrantReissueDraftDocument() {
+        verifyDocumentGenerated(GRANT_REISSUED_DRAFT, "personalPayloadGrantReissued.json",
+            "expectedPersonalDocumentGrantReissued.txt");
+    }
+
     public void verifyGrantReissueDocumentAndEmail() {
-        verifyDocumentAndEmailNotification(GRANT_REISSUED,"personalPayloadGrantReissued.json",
+        verifyDocumentAndEmailNotificationGenerated(GRANT_REISSUED, "personalPayloadAdmonWillReissued.json",
             "expectedPersonalDocumentGrantReissued.txt",
             "expectedPersonalEmailGrantReissued.txt");
     }
 
     @Test
+    public void verifyIntestacyReissueDraftDocument() {
+        verifyDocumentGenerated(GRANT_REISSUED_DRAFT, "personalPayloadIntestacyReissued.json",
+            "expectedPersonalDocumentIntestacyReissued.txt");
+    }
+
+    @Test
     public void verifyIntestacyReissueDocumentAndEmail() {
-        verifyDocumentAndEmailNotification(GRANT_REISSUED,"personalPayloadIntestacyReissued.json",
+        verifyDocumentAndEmailNotificationGenerated(GRANT_REISSUED,"personalPayloadIntestacyReissued.json",
             "expectedPersonalDocumentIntestacyReissued.txt",
             "expectedPersonalEmailGrantReissued.txt");
     }
 
     @Test
+    public void verifyAdmonWillReissueDraftDocument() {
+        verifyDocumentGenerated(GRANT_REISSUED_DRAFT, "personalPayloadGrantReissued.json",
+            "expectedPersonalDocumentAdmonWillReissued.txt");
+    }
+
+    @Test
     public void verifyAdmonWillReissueDocumentAndEmail() {
-        verifyDocumentAndEmailNotification(GRANT_REISSUED,"personalPayloadAdmonWillReissued.json",
+        verifyDocumentAndEmailNotificationGenerated(GRANT_REISSUED,"personalPayloadAdmonWillReissued.json",
             "expectedPersonalDocumentAdmonWillReissued.txt",
             "expectedPersonalEmailGrantReissued.txt");
     }
 
     @Test
+    public void verifyWelshGrantReissueDraftDocument() {
+        verifyDocumentGenerated(GRANT_REISSUED_DRAFT, "personalPayloadWelshGrantReissued.json",
+            "expectedPersonalDocumentWelshGrantReissued.txt");
+    }
+
+    @Test
     public void verifyWelshGrantReissueDocumentAndEmail() {
-        verifyDocumentAndEmailNotification(GRANT_REISSUED,"personalPayloadWelshGrantReissued.json",
+        verifyDocumentAndEmailNotificationGenerated(GRANT_REISSUED,"personalPayloadWelshGrantReissued.json",
             "expectedPersonalDocumentWelshGrantReissued.txt",
             "expectedPersonalEmailWelshGrantReissued.txt");
     }
 
     @Test
+    public void verifyWelshIntestacyReissueDraftDocument() {
+        verifyDocumentGenerated(GRANT_REISSUED_DRAFT, "personalPayloadWelshIntestacyReissued.json",
+            "expectedPersonalDocumentWelshIntestacyReissued.txt");
+    }
+
+    @Test
     public void verifyWelshIntestacyReissueDocumentAndEmail() {
-        verifyDocumentAndEmailNotification(GRANT_REISSUED,"personalPayloadWelshIntestacyReissued.json",
+        verifyDocumentAndEmailNotificationGenerated(GRANT_REISSUED,"personalPayloadWelshIntestacyReissued.json",
             "expectedPersonalDocumentWelshIntestacyReissued.txt",
             "expectedPersonalEmailWelshGrantReissued.txt");
     }
 
     @Test
+    public void verifyWelshAdmonWillReissueDraftDocument() {
+        verifyDocumentGenerated(GRANT_REISSUED_DRAFT, "personalPayloadWelshAdmonWillReissued.json",
+            "expectedPersonalDocumentWelshAdmonWillReissued.txt");
+    }
+
+    @Test
     public void verifyWelshAdmonWillReissueDocumentAndEmail() {
-        verifyDocumentAndEmailNotification(GRANT_REISSUED,"personalPayloadWelshAdmonWillReissued.json", 
+        verifyDocumentAndEmailNotificationGenerated(GRANT_REISSUED,"personalPayloadWelshAdmonWillReissued.json", 
             "expectedPersonalDocumentWelshAdmonWillReissued.txt",
             "expectedPersonalEmailWelshGrantReissued.txt");
     }
@@ -365,22 +401,35 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
         return response;
     }
 
-    private void verifyDocumentAndEmailNotification(String api, String payload, String documentText, String emailText) {
+    private void verifyDocumentGenerated(String api, String payload, String documentText) {
         ResponseBody responseBody = validatePostSuccess(payload, api);
+        JsonPath jsonPath = JsonPath.from(responseBody.asString());
+        verifyDocumentGenerated(jsonPath, documentText);
+    }
+
+    private void verifyDocumentAndEmailNotificationGenerated(String api, String payload, String documentText, String emailText) {
+        ResponseBody responseBody = validatePostSuccess(payload, api);
+        JsonPath jsonPath = JsonPath.from(responseBody.asString());
+        verifyDocumentGenerated(jsonPath, documentText);
+        verifyEmailGenerated(jsonPath, emailText);
+    }
+
+    private void verifyDocumentGenerated(JsonPath jsonPath, String documentText) {
         String expectedDocumentText = utils.getJsonFromFile(documentText);
         expectedDocumentText = expectedDocumentText.replace("\n", "").replace("\r", "");
 
-        JsonPath jsonPath = JsonPath.from(responseBody.asString());
         String documentUrl = jsonPath.get(GENERATED_DOCUMENT_URL);
         String response = utils.downloadPdfAndParseToString(documentUrl);
         response = response.replace("\n", "").replace("\r", "");
         assertTrue(response.contains(expectedDocumentText));
+    }
 
+    private void verifyEmailGenerated(JsonPath jsonPath, String emailText) {
         String expectedEmailText = utils.getJsonFromFile(emailText);
         expectedEmailText = expectedEmailText.replace("\n", "").replace("\r", "");
 
         String emailUrl = jsonPath.get(EMAIL_NOTIFICATION_URL);
-        response = utils.downloadPdfAndParseToString(emailUrl);
+        String response = utils.downloadPdfAndParseToString(emailUrl);
         response = response.replace("\n", "").replace("\r", "");
         assertTrue(response.contains(expectedEmailText));
     }
