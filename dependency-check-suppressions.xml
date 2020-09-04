@@ -634,4 +634,13 @@ file name: jackson-dataformat-cbor-2.9.8.jar
         <cpe>cpe:/a:fasterxml:jackson-dataformat-xml</cpe>
         <cve>CVE-2020-24616</cve>
     </suppress>
+    <suppress>
+        <notes><![CDATA[
+file name: compiler-0.9.3.jar
+]]></notes>
+        <gav regex="true">^com\.github\.spullara\.mustache\.java:compiler:.*$</gav>
+        <cpe>cpe:/a:github:github</cpe>
+        <cve>CVE-2020-10517</cve>
+        <cve>CVE-2020-10518</cve>
+    </suppress>
 </suppressions>
