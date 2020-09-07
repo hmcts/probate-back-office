@@ -441,6 +441,25 @@ services:
     image: alpine
     command: [ "sh", "-c", "while :; do date; sleep 1; done | nc 'probate-back-office' 4104 -v"]
 
+  probate-frontend:
+    image: hmctspublic.azurecr.io/probate/frontend:latest
+    container_name: probate-frontend
+    environment:
+      - IDAM_API_URL=http://idam-api:8080
+      - IDAM_S2S_URL=http://service-auth-provider-api:8080
+      - PAYMENT_API_URL=http://payments-api:8383
+      - VALIDATION_SERVICE_URL=http://localhost:8081/validate
+      - ORCHESTRATOR_SERVICE_URL=http://localhost:8888
+      - FEES_REGISTRY_URL=http://fees-api:4411/fees-register
+      - USE_REDIS=false
+      - REDIS_USE_TLS=false
+      - USE_IDAM=true
+      - REQUIRE_CCD_CASE_ID=true
+      - NODE_ENV=ev
+    ports:
+      - 3000:3000
+
+
 networks:
   default:
     driver: bridge
