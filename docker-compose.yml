@@ -445,7 +445,7 @@ services:
     image: hmctspublic.azurecr.io/probate/frontend:latest
     container_name: probate-frontend
     environment:
-      - IDAM_API_URL=http://idam-api:8080
+      - IDAM_API_URL=http://sidam-api:5000
       - IDAM_S2S_URL=http://service-auth-provider-api:8080
       - PAYMENT_API_URL=http://payments-api:8383
       - VALIDATION_SERVICE_URL=http://localhost:8081/validate
@@ -455,7 +455,7 @@ services:
       - REDIS_USE_TLS=false
       - USE_IDAM=true
       - REQUIRE_CCD_CASE_ID=true
-      - NODE_ENV=ev
+      - NODE_ENV=dev
     ports:
       - 3000:3000
 
