@@ -27,6 +27,7 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
+import static uk.gov.hmcts.probate.model.State.CASE_STOPPED_REQUEST_INFORMATION;
 
 public class InformationRequestCorrespondenceServiceTest {
 
@@ -103,7 +104,7 @@ public class InformationRequestCorrespondenceServiceTest {
     }
 
     @Test
-    public void testEmailInformationRequestMultipleExecSuccessful() {
+    public void testEmailInformationRequestMultipleExecSuccessful() throws NotificationClientException {
         List<CollectionMember<ExecutorsApplyingNotification>> executorsApplyingList = new ArrayList<>();
         executorsApplyingList.add(execApplyingNotifIsNo);
         executorsApplyingList.add(execApplying);
@@ -112,13 +113,17 @@ public class InformationRequestCorrespondenceServiceTest {
                 .boRequestInfoSendToBulkPrintRequested("Yes").build();
         caseDetailsMultiple = new CaseDetails(caseDataMultiple, LAST_MODIFIED, ID);
 
+        when(notificationService.sendEmail(eq(State.CASE_STOPPED_REQUEST_INFORMATION), eq(caseDetails), any(ExecutorsApplyingNotification.class)))
+            .thenReturn(GENERIC_DOCUMENT);
         List<Document> response =  informationRequestCorrespondenceService.emailInformationRequest(caseDetails);
         assertEquals(GENERIC_DOCUMENT, response.get(0));
 
     }
 
     @Test
-    public void testEmailInformationRequestSuccessful() {
+    public void testEmailInformationRequestSuccessful() throws NotificationClientException {
+        when(notificationService.sendEmail(eq(State.CASE_STOPPED_REQUEST_INFORMATION), eq(caseDetails), any(ExecutorsApplyingNotification.class)))
+            .thenReturn(GENERIC_DOCUMENT);
         assertEquals(GENERIC_DOCUMENT,
                 informationRequestCorrespondenceService.emailInformationRequest(caseDetails).get(0));
     }

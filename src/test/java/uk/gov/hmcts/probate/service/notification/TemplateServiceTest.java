@@ -7,6 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 import uk.gov.hmcts.probate.insights.AppInsights;
+import uk.gov.hmcts.probate.model.CaseOrigin;
 import uk.gov.hmcts.probate.model.LanguagePreference;
 
 import static org.junit.Assert.assertEquals;
@@ -318,6 +319,30 @@ public class TemplateServiceTest {
         response = templateService.getTemplateId(GRANT_RAISED, SOLICITOR, CTSC,
             LanguagePreference.ENGLISH, YES);
         assertEquals("sol-grant-raised-paper-bulk-scan", response);
+    }
+
+    @Test
+    public void getApplicationReceivedPACaseworkerOrigin() {
+
+        String response = templateService.getTemplateId(APPLICATION_RECEIVED, PERSONAL, CTSC,
+            LanguagePreference.ENGLISH, YES, CaseOrigin.CASEWORKER);
+        assertEquals("pa-application-received-cw", response);
+
+        response = templateService.getTemplateId(APPLICATION_RECEIVED, SOLICITOR, CTSC,
+            LanguagePreference.ENGLISH, YES, CaseOrigin.CASEWORKER);
+        assertEquals("sol-application-received-cw", response);
+    }
+
+    @Test
+    public void getApplicationReceivedPAOtherOrigin() {
+
+        String response = templateService.getTemplateId(APPLICATION_RECEIVED, PERSONAL, CTSC,
+            LanguagePreference.ENGLISH, YES, CaseOrigin.CITIZEN);
+        assertEquals("pa-application-received", response);
+
+        response = templateService.getTemplateId(APPLICATION_RECEIVED, SOLICITOR, CTSC,
+            LanguagePreference.ENGLISH, YES, CaseOrigin.CITIZEN);
+        assertEquals("sol-application-received", response);
     }
 
 }
