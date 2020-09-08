@@ -448,8 +448,8 @@ services:
       - IDAM_API_URL=http://sidam-api:5000
       - IDAM_S2S_URL=http://service-auth-provider-api:8080
       - PAYMENT_API_URL=http://payments-api:8383
-      - VALIDATION_SERVICE_URL=http://localhost:8081/validate
-      - ORCHESTRATOR_SERVICE_URL=http://localhost:8888
+      - VALIDATION_SERVICE_URL=http://probate-business-service:8081/validate
+      - ORCHESTRATOR_SERVICE_URL=http://probate-orchestrator:8888
       - FEES_REGISTRY_URL=http://fees-api:4411/fees-register
       - USE_REDIS=false
       - REDIS_USE_TLS=false
