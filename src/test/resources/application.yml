@@ -135,7 +135,6 @@ notifications:
           grantAwaitingDocumentation: "pa-grantAwaitingDoc"
         solicitor:
           applicationReceived: "sol-application-received"
-          applicationReceivedPaperFormCaseworker: "sol-application-received-cw"
           documentReceived: "sol-document-received"
           caseStopped: "sol-case-stopped"
           caseStoppedCaveat: "sol-case-stopped-caveat"

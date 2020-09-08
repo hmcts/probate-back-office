@@ -11,8 +11,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 
-import static junit.framework.Assert.assertNull;
 import static junit.framework.TestCase.assertTrue;
+import static org.junit.Assert.assertNull;
 
 @Slf4j
 @RunWith(SpringIntegrationSerenityRunner.class)

@@ -11,6 +11,7 @@ import uk.gov.hmcts.probate.model.CaseOrigin;
 import uk.gov.hmcts.probate.model.LanguagePreference;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
 import static uk.gov.hmcts.probate.model.Constants.CTSC;
@@ -330,7 +331,7 @@ public class TemplateServiceTest {
 
         response = templateService.getTemplateId(APPLICATION_RECEIVED, SOLICITOR, CTSC,
             LanguagePreference.ENGLISH, YES, CaseOrigin.CASEWORKER);
-        assertEquals("sol-application-received-cw", response);
+        assertNull(response);
     }
 
     @Test
