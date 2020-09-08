@@ -19,6 +19,7 @@ import uk.gov.hmcts.probate.controller.validation.ApplicationIntestacyGroup;
 import uk.gov.hmcts.probate.controller.validation.ApplicationProbateGroup;
 import uk.gov.hmcts.probate.controller.validation.ApplicationUpdatedGroup;
 import uk.gov.hmcts.probate.exception.BadRequestException;
+import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.CaseOrigin;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
@@ -241,7 +242,10 @@ public class BusinessValidationController {
 
         validateForPayloadErrors(callbackRequest, bindingResult);
 
-        Document document = notificationService.sendEmail(APPLICATION_RECEIVED, callbackRequest.getCaseDetails(), Optional.of(CaseOrigin.CASEWORKER));
+        Document document = null;
+        if (callbackRequest.getCaseDetails().getData().getApplicationType().equals(ApplicationType.PERSONAL)) {
+            document = notificationService.sendEmail(APPLICATION_RECEIVED, callbackRequest.getCaseDetails(), Optional.of(CaseOrigin.CASEWORKER));
+        }
         CallbackResponse response = callbackResponseTransformer.paperForm(callbackRequest, document);
 
         return ResponseEntity.ok(response);

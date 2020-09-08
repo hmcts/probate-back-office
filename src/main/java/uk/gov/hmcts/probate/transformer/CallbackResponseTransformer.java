@@ -468,7 +468,9 @@ public class CallbackResponseTransformer {
 
     public CallbackResponse paperForm(CallbackRequest callbackRequest, Document document) {
 
-        documentTransformer.addDocument(callbackRequest, document, false);
+        if (document != null) {
+            documentTransformer.addDocument(callbackRequest, document, false);
+        }
         ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), false);
         responseCaseDataBuilder.paperForm(ANSWER_YES);
         if (callbackRequest.getCaseDetails().getData().getIhtReferenceNumber() != null) {

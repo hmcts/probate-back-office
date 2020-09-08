@@ -209,7 +209,6 @@ notifications:
           grantAwaitingDocumentation: "2debe394-5d0f-4d66-8b05-f3d4276d34eb"
         solicitor:
           applicationReceived: "ff626f3a-9ff2-4cfd-a8fe-d4cc02c3186a"
-          applicationReceivedPaperFormCaseworker: "92efedd8-feb9-4e50-896c-cddc930a9524"
           documentReceived: "7f8ff32d-8297-4702-9867-312047f81492"
           caseStopped: "9e93a9c8-0246-4a95-b792-1c02da4bed4e"
           caseStoppedCaveat: "937291a0-c0ae-40a4-a8cf-46a3452faff0"

@@ -44,6 +44,7 @@ import java.util.Optional;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.containsString;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -541,14 +542,14 @@ public class BusinessValidationControllerTest {
     }
 
     @Test
-    public void shouldReturnPaperFormSuccess() throws Exception {
+    public void shouldReturnSolicitorPaperFormSuccess() throws Exception {
         String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadAliasNames.json");
-        Document document = Document.builder().documentType(DocumentType.DIGITAL_GRANT).build();
-        when(notificationService.sendEmail(any(State.class), any(CaseDetails.class), any(Optional.class))).thenReturn(document);
         
         mockMvc.perform(post(PAPER_FORM_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
+
+        verify(notificationService, times(0)).sendEmail(any(State.class), any(CaseDetails.class), any(Optional.class));
     }
 
     @Test
