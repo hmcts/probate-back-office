@@ -94,7 +94,18 @@ To build the project execute the following command:
   ./gradlew build
 ```
 
-## Minimal docker development environment
+## Docker environment
+
+Because the probate back office relies on CCD callbacks it must be run inside the docker-compose environment, and must be built before bringing the environment up. You will need to recompile after any code changes.
+
+Build the jar with:
+
+```
+./gradlew assemble
+docker-compose build
+```
+
+Bring up the environment: 
 
 ```
 # first time only
