@@ -113,6 +113,13 @@ npx @hmcts/probate-dev-env --create
 npx @hmcts/probate-dev-env
 ```
 
+If you would like to test a new CCD config locally, you should run:
+
+```
+./ccdImports/conversionScripts/createAllXLS.sh probate-back-office:4104
+./ccdImports/conversionScripts/importAllXLS.sh
+```
+
 ## Full setup
 
 Guidance on how to set up probate locally using the updated docker images.
