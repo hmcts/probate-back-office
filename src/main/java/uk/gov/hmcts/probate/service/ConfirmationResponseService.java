@@ -2,7 +2,7 @@ package uk.gov.hmcts.probate.service;
 
 import com.google.common.base.Strings;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.changerule.ApplicantSiblingsRule;
@@ -30,6 +30,7 @@ import uk.gov.hmcts.probate.model.template.TemplateResponse;
 import uk.gov.hmcts.probate.service.template.markdown.MarkdownSubstitutionService;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
@@ -323,7 +324,7 @@ public class ConfirmationResponseService {
     }
 
     private String getAmountAsString(BigDecimal amount) {
-        return amount.divide(BigDecimal.valueOf(100), 2, BigDecimal.ROUND_HALF_UP).toString();
+        return amount.divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP).toString();
     }
 
     private String getPaymentReference(CCDData ccdData) {
