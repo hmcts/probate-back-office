@@ -2,3 +2,16 @@ dependencies:
   - name: java
     version:  ~2.18.0
     repository: '@hmctspublic'
+  - name: ccd
+    version: ~4.3.3
+    repository: '@hmctspublic'
+    tags:
+      - probate-ccd-stack
+  - name: xui-webapp
+    version: ~0.2.1
+    repository: '@hmctspublic'
+    condition: xui-webapp.enabled
+  - name: idam-pr
+    version: 2.2.6
+    repository: '@hmctspublic'
+    condition: idam-pr.enabled

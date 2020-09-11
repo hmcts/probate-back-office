@@ -45,7 +45,8 @@ def secrets = [
                 secret('microservicekey-ccd-ps', 'PRINT_S2S_KEY')
         ],
         'ccd-${env}'      : [
-                secret('ccd-api-gateway-oauth2-client-secret', 'API_GATEWAY_IDAM_SECRET')
+                secret('ccd-api-gateway-oauth2-client-secret', 'API_GATEWAY_IDAM_SECRET'),
+                secret('postcode-info-address-lookup-token', 'ADDRESS_LOOKUP_TOKEN')
         ]
 ]
 
@@ -59,25 +60,13 @@ static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
 }
 
 withPipeline("java", product, component) {
-  env.APPINSIGHTS_INSTRUMENTATIONKEY=false
-
   enableAksStagingDeployment()
   disableLegacyDeployment()
   loadVaultSecrets(secrets)
 
   enableSlackNotifications('#probate-jenkins')
 
-//  before('buildinfra:prod') {
-//     error 'Deliberately breaking pipeline to prevent prod deployment'
-//  }
-
-    after('test') {
-    try {
-      //sh './gradlew pitest'
-    } finally {
-      //steps.archiveArtifacts "build/reports/pitest/**/*.*"
-    }
-
+  after('test') {
     junit 'build/test-results/test/**/*.xml'
     archiveArtifacts 'build/reports/tests/test/index.html'
     publishHTML target: [

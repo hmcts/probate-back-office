@@ -1,3 +1,12 @@
+tags:
+  probate-ccd-stack: false
+
+idam-pr:
+  enabled: false
+
+xui-webapp:
+  enabled: false
+
 java:
   applicationPort: 4104
   image: hmctspublic.azurecr.io/probate/back-office:latest
