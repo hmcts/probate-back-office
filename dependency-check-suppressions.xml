@@ -542,4 +542,11 @@ file name: spring-jcl-5.1.5.RELEASE.jar
         <gav regex="true">^org\.hibernate:hibernate-core:.*$</gav>
         <cve>CVE-2019-14900</cve>
     </suppress>
+    <suppress>
+        <cve>CVE-2020-24616</cve>
+        <cve>CVE-2020-7019</cve>
+        <cve>CVE-2017-18640</cve>
+        <cve>CVE-2020-10517</cve>
+        <cve>CVE-2020-10518</cve>
+    </suppress>
 </suppressions>
