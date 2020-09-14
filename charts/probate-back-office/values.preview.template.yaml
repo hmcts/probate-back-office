@@ -19,6 +19,8 @@ ccd:
       enabled: true
     s2s:
       enabled: false
+    postgresql:
+      enabled: false
 
   global:
     ccdApiGatewayIngress: gateway-${SERVICE_FQDN}
