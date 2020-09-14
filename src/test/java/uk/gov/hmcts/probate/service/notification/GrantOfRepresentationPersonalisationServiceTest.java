@@ -208,7 +208,7 @@ public class GrantOfRepresentationPersonalisationServiceTest {
                 grantOfRepresentationPersonalisationService.getExcelaPersonalisation(excelaCaseData);
 
         assertEquals(LocalDateTime.now().format(EXCELA_DATE) + "will", response.get(PERSONALISATION_EXCELA_NAME));
-        assertEquals("123456, Jack Michelson, 01/01/2019, 01/05/2019, 1\n", response.get(PERSONALISATION_CASE_DATA));
+        assertEquals("123456, Jack, Michelson, 01/01/2019, 01/05/2019, 1\n", response.get(PERSONALISATION_CASE_DATA));
     }
 
     @Test
@@ -217,7 +217,7 @@ public class GrantOfRepresentationPersonalisationServiceTest {
                 grantOfRepresentationPersonalisationService.getExcelaPersonalisation(excelaCaseDataNoWillReference);
 
         assertEquals(LocalDateTime.now().format(EXCELA_DATE) + "will", response.get(PERSONALISATION_EXCELA_NAME));
-        assertEquals(", Jack Michelson, 01/01/2019, 01/05/2019, 1\n", response.get(PERSONALISATION_CASE_DATA));
+        assertEquals(", Jack, Michelson, 01/01/2019, 01/05/2019, 1\n", response.get(PERSONALISATION_CASE_DATA));
     }
 
 
@@ -227,7 +227,7 @@ public class GrantOfRepresentationPersonalisationServiceTest {
                 grantOfRepresentationPersonalisationService.getExcelaPersonalisation(excelaCaseDataNoSubtype);
 
         assertEquals(LocalDateTime.now().format(EXCELA_DATE) + "will", response.get(PERSONALISATION_EXCELA_NAME));
-        assertEquals(", Jack Michelson, 01/01/2019, 01/05/2019, 1\n", response.get(PERSONALISATION_CASE_DATA));
+        assertEquals(", Jack, Michelson, 01/01/2019, 01/05/2019, 1\n", response.get(PERSONALISATION_CASE_DATA));
     }
 
     @Test
