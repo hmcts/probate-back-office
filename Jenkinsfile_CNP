@@ -60,6 +60,8 @@ static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
 }
 
 withPipeline("java", product, component) {
+  env.APPINSIGHTS_INSTRUMENTATIONKEY=false
+
   enableAksStagingDeployment()
   disableLegacyDeployment()
   loadVaultSecrets(secrets)
@@ -96,6 +98,18 @@ withPipeline("java", product, component) {
             reportName           : "back-office find Bugs Report"
     ]
   }
+
+//  before('smoketest:preview') {
+//    sh """
+//      eval \$(./bin/variables/load-preview-environment-variables.sh ${CHANGE_ID})
+//      ./fpla-docker/bin/add-roles.sh
+//      ./bin/import-ccd-definition.sh
+//    """
+//
+//    env.DM_STORE_URL="http://dm-store-aat.service.core-compute-aat.internal"
+//    env.IDAM_API_URL="https://idam-api.aat.platform.hmcts.net"
+//    env.URL="https://xui-fpl-case-service-pr-${CHANGE_ID}.service.core-compute-preview.internal"
+//  }
 
   after('functionalTest:preview') {
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/site/serenity/**/*'
