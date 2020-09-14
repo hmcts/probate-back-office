@@ -233,7 +233,6 @@ public class CaseData {
     @NotBlank(groups = {ApplicationIntestacyGroup.class}, message = "{solsMinorityInterestIsNull}")
     private final String solsMinorityInterest;
 
-    @NotBlank(groups = {ApplicationIntestacyGroup.class}, message = "{solsApplicantSiblingsIsNull}")
     private final String solsApplicantSiblings;
 
     private final String boEmailDocsReceivedNotificationRequested;
