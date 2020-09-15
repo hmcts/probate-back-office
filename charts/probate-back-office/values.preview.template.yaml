@@ -21,12 +21,14 @@ postgresql:
 
 idam-pr:
   enabled: true
+  releaseNameOverride: ${SERVICE_NAME}-probate-idam-pr
   redirect_uris:
     Probate:
       - https://${SERVICE_FQDN}/oauth2/callback
     XUI:
       - https://xui-${SERVICE_FQDN}/oauth2/callback
-
+    CCD:
+      - https://case-management-web-${SERVICE_FQDN}/oauth2redirect
 ccd:
   ccd:
     adminWeb:
