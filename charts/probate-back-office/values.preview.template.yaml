@@ -24,6 +24,8 @@ idam-pr:
   redirect_uris:
     Probate:
       - https://${SERVICE_FQDN}/oauth2/callback
+    XUI:
+      - https://xui-${SERVICE_FQDN}/oauth2/callback
 
 ccd:
   ccd:
