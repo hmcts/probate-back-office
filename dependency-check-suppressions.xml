@@ -236,6 +236,7 @@
    file name: elasticsearch-6.4.3.jar
    ]]></notes>
         <cve>CVE-2019-7614</cve>
+        <cve>CVE-2020-7019</cve>
     </suppress>
     <suppress>
         <notes><![CDATA[
@@ -331,6 +332,7 @@
         <cve>CVE-2020-14061</cve>
         <cve>CVE-2020-14062</cve>
         <cve>CVE-2020-14195</cve>
+        <cve>CVE-2020-24616</cve>
     </suppress>
     <suppress>
         <notes><![CDATA[
@@ -541,5 +543,20 @@ file name: spring-jcl-5.1.5.RELEASE.jar
    ]]></notes>
         <gav regex="true">^org\.hibernate:hibernate-core:.*$</gav>
         <cve>CVE-2019-14900</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: snakeyaml-1.23.jar
+   ]]></notes>
+        <gav regex="true">^org\.yaml:snakeyaml:.*$</gav>
+        <cve>CVE-2017-18640</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: compiler-0.9.3.jar
+   ]]></notes>
+        <gav regex="true">^com\.github\.spullara\.mustache\.java:compiler:.*$</gav>
+        <cve>CVE-2020-10517</cve>
+        <cve>CVE-2020-10518</cve>
     </suppress>
 </suppressions>
