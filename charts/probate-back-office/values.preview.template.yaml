@@ -21,7 +21,7 @@ postgresql:
 
 idam-pr:
   enabled: true
-  releaseNameOverride: ${SERVICE_NAME}-probate-idam-pr
+  releaseNameOverride: ${SERVICE_NAME}-xui-idam-pr
   redirect_uris:
     Probate:
       - https://${SERVICE_FQDN}/oauth2/callback
@@ -94,6 +94,10 @@ ccd:
         USER_PROFILE_DB_HOST: ${SERVICE_NAME}-postgresql
       keyVaults:
       ingressHost: ccd-user-profile-api-${SERVICE_FQDN}
+  ccd-user-profile-importer:
+    image: hmctspublic.azurecr.io/ccd/user-profile-importer:latest
+    users:
+      - probatebackoffice@gmail.com|PROBATE|GrantOfRepresentation|open
 
   postgresql:
     persistence:
