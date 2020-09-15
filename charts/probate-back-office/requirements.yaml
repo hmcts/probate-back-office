@@ -3,7 +3,7 @@ dependencies:
     version:  ~3.0.2
     repository: '@hmctspublic'
   - name: ccd
-    version: ~4.3.3
+    version: 4.3.2
     repository: '@hmctspublic'
     tags:
       - probate-ccd-stack
@@ -15,3 +15,8 @@ dependencies:
     version: 2.2.6
     repository: '@hmctspublic'
     condition: idam-pr.enabled
+
+  - name: postgresql
+    version: 8.9.8
+    repository: https://charts.bitnami.com/bitnami
+    condition: postgresql.enabled
