@@ -21,6 +21,9 @@ ccdUrl=${CCD_DEF_URL:-http://localhost:4451}
 userToken="$(${binFolder}/idam-user-token.sh)"
 serviceToken="$(${binFolder}/idam-service-token.sh ccd_gw)"
 
+echo "User token: ${userToken}"
+echo "Service token: ${serviceToken}"
+
 curl --silent \
   $CURL_OPTS \
   ${ccdUrl}/import \
