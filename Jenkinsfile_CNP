@@ -106,7 +106,7 @@ withPipeline("java", product, component) {
     env.URL="https://xui-probate-back-office-pr-${CHANGE_ID}.service.core-compute-preview.internal"
 
     sh """
-      ./bin/ccd-all-roles.sh
+      ./bin/ccd-add-roles.sh
       ./bin/ccd-import-definition.sh "./jsonToXLS/CCD_Probate_Backoffice.xlsx"
       ./bin/ccd-import-definition.sh "./jsonToXLS/CCD_Probate_Caveat.xlsx"
       ./bin/ccd-import-definition.sh "./jsonToXLS/CCD_Probate_Legacy_Cases.xlsx"
