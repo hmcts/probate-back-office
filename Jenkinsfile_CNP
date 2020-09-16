@@ -107,6 +107,7 @@ withPipeline("java", product, component) {
     env.CURL_OPTS="--insecure "
     sh """
       ./bin/ccd-add-roles.sh
+      ./ccdImports/conversionScripts/createAllXLS.sh probate-back-office-pr-${CHANGE_ID}.service.core-compute-preview.internal
       ./bin/ccd-import-definition.sh "./jsonToXLS/CCD_Probate_Backoffice.xlsx"
       ./bin/ccd-import-definition.sh "./jsonToXLS/CCD_Probate_Caveat.xlsx"
       ./bin/ccd-import-definition.sh "./jsonToXLS/CCD_Probate_Legacy_Cases.xlsx"
