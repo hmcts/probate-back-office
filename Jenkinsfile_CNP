@@ -108,6 +108,7 @@ withPipeline("java", product, component) {
     env.IDAM_REDIRECT_URL="https://ccd-case-management-web-aat.service.core-compute-aat.internal/oauth2redirect"
 
     sh """
+      echo $API_GATEWAY_IDAM_SECRET
       ./bin/ccd-add-roles.sh
       ./ccdImports/conversionScripts/createAllXLS.sh probate-back-office-pr-${CHANGE_ID}.service.core-compute-preview.internal
       ./ccdImports/conversionScripts/importAllXLS.sh
