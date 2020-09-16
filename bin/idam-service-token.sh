@@ -9,7 +9,8 @@
 microservice="${1:-ccd_gw}"
 URL=${S2S_API_URL:-http://localhost:4502}
 
-curl -X POST \
+curl ${CURL_OPTS} \
+  -X POST \
   -H "Content-Type: application/json" \
   -d '{"microservice":"'${microservice}'"}' \
   ${URL}/testing-support/lease
