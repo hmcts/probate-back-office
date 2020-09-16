@@ -105,7 +105,7 @@ withPipeline("java", product, component) {
     env.CCD_DEF_URL="https://ccd-definition-store-probate-back-office-pr-${CHANGE_ID}.service.core-compute-preview.internal"
     env.URL="https://xui-probate-back-office-pr-${CHANGE_ID}.service.core-compute-preview.internal"
     env.CURL_OPTS="--insecure "
-    env.IDAM_REDIRECT_URL="https://ccd-case-management-web-aat.service.core-compute-aat.internal/oauth2redirect"
+    env.CCD_IDAM_REDIRECT_URL="https://ccd-case-management-web-aat.service.core-compute-aat.internal/oauth2redirect"
 
     sh """
       ./bin/idam-user-token.sh
