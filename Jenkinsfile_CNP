@@ -99,17 +99,23 @@ withPipeline("java", product, component) {
     ]
   }
 
-//  before('smoketest:preview') {
-//    sh """
-//      eval \$(./bin/variables/load-preview-environment-variables.sh ${CHANGE_ID})
-//      ./fpla-docker/bin/add-roles.sh
-//      ./bin/import-ccd-definition.sh
-//    """
-//
-//    env.DM_STORE_URL="http://dm-store-aat.service.core-compute-aat.internal"
-//    env.IDAM_API_URL="https://idam-api.aat.platform.hmcts.net"
-//    env.URL="https://xui-fpl-case-service-pr-${CHANGE_ID}.service.core-compute-preview.internal"
-//  }
+  before('smoketest:preview') {
+    env.IDAM_API_URL="https://idam-api.aat.platform.hmcts.net"
+    env.S2S_API_URL="https://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
+    env.CCD_DEF_URL="https://ccd-definition-store-probate-back-office-pr-${CHANGE_ID}.service.core-compute-preview.internal"
+    env.URL="https://xui-probate-back-office-pr-${CHANGE_ID}.service.core-compute-preview.internal"
+
+    sh """
+      ./bin/ccd-all-roles.sh
+      ./bin/ccd-import-definition.sh "./jsonToXLS/CCD_Probate_Backoffice.xlsx"
+      ./bin/ccd-import-definition.sh "./jsonToXLS/CCD_Probate_Caveat.xlsx"
+      ./bin/ccd-import-definition.sh "./jsonToXLS/CCD_Probate_Legacy_Cases.xlsx"
+      ./bin/ccd-import-definition.sh "./jsonToXLS/CCD_Probate_Legacy_Search.xlsx"
+      ./bin/ccd-import-definition.sh "./jsonToXLS/CCD_Probate_Will_Lodgement.xlsx"
+      ./bin/ccd-import-definition.sh "./jsonToXLS/CCD_Probate_Standing_Search.xlsx"
+      ./bin/ccd-import-definition.sh "./jsonToXLS/CCD_Probate_BulkScanning_ExceptionRecord.xlsx"
+    """
+  }
 
   after('functionalTest:preview') {
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/site/serenity/**/*'
