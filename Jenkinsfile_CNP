@@ -101,10 +101,12 @@ withPipeline("java", product, component) {
 
   before('smoketest:preview') {
     env.IDAM_API_URL="https://idam-api.aat.platform.hmcts.net"
-    env.S2S_API_URL="https://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
+    env.S2S_API_URL="http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
     env.CCD_DEF_URL="https://ccd-definition-store-probate-back-office-pr-${CHANGE_ID}.service.core-compute-preview.internal"
     env.URL="https://xui-probate-back-office-pr-${CHANGE_ID}.service.core-compute-preview.internal"
     env.CURL_OPTS="--insecure "
+    env.IDAM_REDIRECT_URL="https://ccd-case-management-web-aat.service.core-compute-aat.internal/oauth2redirect"
+
     sh """
       ./bin/ccd-add-roles.sh
       ./ccdImports/conversionScripts/createAllXLS.sh probate-back-office-pr-${CHANGE_ID}.service.core-compute-preview.internal
