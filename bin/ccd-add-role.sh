@@ -32,6 +32,7 @@ serviceToken="$(${binFolder}/idam-service-token.sh ccd_gw)"
 ccdUrl=${CCD_DEF_URL:-http://localhost:4451}
 
 curl -XPUT \
+  $CURL_OPTS \
   $ccdUrl/api/user-role \
   -H "Authorization: Bearer ${userToken}" \
   -H "ServiceAuthorization: Bearer ${serviceToken}" \
