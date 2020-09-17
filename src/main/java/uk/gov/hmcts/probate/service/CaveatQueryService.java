@@ -23,7 +23,6 @@ import uk.gov.hmcts.probate.service.evidencemanagement.header.HttpHeadersFactory
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.authorisation.generators.ServiceAuthTokenGenerator;
 
-import javax.annotation.Nullable;
 import java.net.URI;
 import java.util.List;
 import java.util.Locale;
