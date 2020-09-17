@@ -7,8 +7,6 @@ import io.restassured.response.ResponseBody;
 import lombok.extern.slf4j.Slf4j;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
 import net.serenitybdd.rest.SerenityRest;
-import net.thucydides.core.annotations.Pending;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
@@ -71,7 +69,9 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
 
     @Test
     public void verifySolicitorDocumentsReceivedShouldReturnOkResponseCode() {
-        validatePostSuccess("solicitorPayloadNotifications.json", DOCUMENTS_RECEIVED);
+        postNotificationEmailAndVerifyContents(DOCUMENTS_RECEIVED, "solicitorPayloadNotifications.json", 
+            "documentReceivedSolicitorResponse.txt",
+            EMAIL_NOTIFICATION_URL, "sol");
     }
 
     @Test
@@ -93,7 +93,16 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
 
     @Test
     public void verifySolicitorGrantIssuedShouldReturnOkResponseCode() {
-        validatePostSuccess("solicitorPayloadNotifications.json", GRANT_ISSUED);
+        postNotificationEmailAndVerifyContents(GRANT_ISSUED, "solicitorPayloadNotifications.json",
+            "grantIssuedSolicitorResponse.txt",
+            EMAIL_NOTIFICATION_URL, "sol");
+    }
+
+    @Test
+    public void verifySolicitorGrantIssuedIntestacyShouldReturnOkResponseCode() {
+        postNotificationEmailAndVerifyContents(GRANT_ISSUED, "solicitorPayloadNotificationsIntestacy.json",
+            "grantIssuedIntestacySolicitorResponse.txt",
+            EMAIL_NOTIFICATION_URL, "sol");
     }
 
     @Test
@@ -103,7 +112,16 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
 
     @Test
     public void verifySolicitorGrantReissuedShouldReturnOkResponseCode() {
-        validatePostSuccess("solicitorPayloadNotifications.json", GRANT_REISSUED);
+        postNotificationEmailAndVerifyContents(GRANT_REISSUED, "solicitorPayloadNotifications.json",
+            "grantReissuedSolicitorResponse.txt",
+            EMAIL_NOTIFICATION_URL, "sol");
+    }
+
+    @Test
+    public void verifySolicitorGrantRaisedShouldReturnOkResponseCode() {
+        postNotificationEmailAndVerifyContents(GRANT_RAISED, "solicitorPayloadNotifications.json",
+            "grantRaisedSolicitorResponse.txt",
+            EMAIL_NOTIFICATION_URL, "sol");
     }
 
     @Test
