@@ -3,6 +3,7 @@ package uk.gov.hmcts.probate.service.fee;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -14,6 +15,7 @@ import uk.gov.hmcts.probate.model.fee.FeeServiceResponse;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.net.URI;
+import java.util.Objects;
 
 import static uk.gov.hmcts.probate.insights.AppInsightsEvent.REQUEST_SENT;
 
@@ -28,7 +30,6 @@ public class FeeService {
     private static final String FEE_API_EVENT_TYPE_ISSUE = "issue";
     private static final String FEE_API_EVENT_TYPE_COPIES = "copies";
 
-    @NotNull
     public BigDecimal getApplicationFee(BigDecimal amountInPound) {
         URI uri = buildUri(FEE_API_EVENT_TYPE_ISSUE, amountInPound.toString());
         appInsights.trackEvent(REQUEST_SENT, uri.toString());
@@ -41,7 +42,6 @@ public class FeeService {
         return responseEntity.getBody().getFeeAmount();
     }
 
-    @NotNull
     public BigDecimal getCopiesFee(Long copies) {
         if (copies == null) {
             return BigDecimal.ZERO;

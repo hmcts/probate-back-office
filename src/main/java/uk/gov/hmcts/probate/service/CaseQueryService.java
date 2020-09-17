@@ -122,7 +122,6 @@ public class CaseQueryService {
         return runQuery(jsonQuery);
     }
 
-    @Nullable
     private List<ReturnedCaseDetails> runQuery(String jsonQuery) {
         log.info("CaseQueryService runQuery: " + jsonQuery);
         URI uri = UriComponentsBuilder
