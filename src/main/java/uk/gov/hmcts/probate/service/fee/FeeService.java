@@ -11,6 +11,7 @@ import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.fee.Fee;
 import uk.gov.hmcts.probate.model.fee.FeeServiceResponse;
 
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.net.URI;
 
@@ -27,6 +28,7 @@ public class FeeService {
     private static final String FEE_API_EVENT_TYPE_ISSUE = "issue";
     private static final String FEE_API_EVENT_TYPE_COPIES = "copies";
 
+    @NotNull
     public BigDecimal getApplicationFee(BigDecimal amountInPound) {
         URI uri = buildUri(FEE_API_EVENT_TYPE_ISSUE, amountInPound.toString());
         appInsights.trackEvent(REQUEST_SENT, uri.toString());
@@ -39,6 +41,7 @@ public class FeeService {
         return responseEntity.getBody().getFeeAmount();
     }
 
+    @NotNull
     public BigDecimal getCopiesFee(Long copies) {
         if (copies == null) {
             return BigDecimal.ZERO;
