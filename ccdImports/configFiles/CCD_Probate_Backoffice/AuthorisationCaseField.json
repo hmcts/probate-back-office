@@ -2228,5 +2228,6 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "deceasedDateOfDeath", "UserRole": "caseworker-probate-charity", "CRUD": "R"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "registryLocation", "UserRole": "caseworker-probate-charity", "CRUD": "R"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "applicationType", "UserRole": "caseworker-probate-charity", "CRUD": "R"},
-  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "scannedDocuments", "UserRole": "caseworker-probate-charity", "CRUD": "R"}
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "scannedDocuments", "UserRole": "caseworker-probate-charity", "CRUD": "R"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "caseType", "UserRole": "caseworker-probate-charity", "CRUD": "R"}
 ]
