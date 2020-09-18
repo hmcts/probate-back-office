@@ -14,6 +14,7 @@ import uk.gov.hmcts.probate.model.evidencemanagement.EvidenceManagementTTL;
 import uk.gov.hmcts.probate.service.evidencemanagement.builder.DocumentManagementURIBuilder;
 import uk.gov.hmcts.probate.service.evidencemanagement.header.HttpHeadersFactory;
 
+import javax.annotation.Nullable;
 import java.io.IOException;
 import java.time.ZonedDateTime;
 import java.util.HashMap;
@@ -38,7 +39,7 @@ public class EmUploadService implements UploadService {
                 new HttpEntity<MultiValueMap>(parameters, headers.getMultiPartHttpHeader()),
                 HashMap.class);
 
-        ObjectMapper originalObjectMapper = new ObjectMapper();
+        @Nullable ObjectMapper originalObjectMapper = new ObjectMapper();
         Map embedded = (Map) response.get("_embedded");
         List documents = (List) embedded.get("documents");
 

@@ -32,11 +32,12 @@ public class FeeService {
         URI uri = buildUri(FEE_API_EVENT_TYPE_ISSUE, amountInPound.toString());
         appInsights.trackEvent(REQUEST_SENT, uri.toString());
         ResponseEntity<Fee> responseEntity = restTemplate.getForEntity(uri, Fee.class);
-        Objects.nonNull(responseEntity);
 
         if (responseEntity.getStatusCode().equals(HttpStatus.NO_CONTENT)) {
             return BigDecimal.ZERO;
         }
+
+        Objects.nonNull(responseEntity);
 
         return responseEntity.getBody().getFeeAmount();
     }
@@ -49,11 +50,12 @@ public class FeeService {
         URI uri = buildUri(FEE_API_EVENT_TYPE_COPIES, copies.toString());
 
         ResponseEntity<Fee> responseEntity = restTemplate.getForEntity(uri, Fee.class);
-        Objects.nonNull(responseEntity);
 
         if (responseEntity.getStatusCode().equals(HttpStatus.NO_CONTENT)) {
             return BigDecimal.ZERO;
         }
+
+        Objects.nonNull(responseEntity);
 
         return responseEntity.getBody().getFeeAmount();
     }

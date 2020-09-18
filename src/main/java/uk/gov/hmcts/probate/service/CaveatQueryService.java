@@ -23,7 +23,7 @@ import uk.gov.hmcts.probate.service.evidencemanagement.header.HttpHeadersFactory
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.authorisation.generators.ServiceAuthTokenGenerator;
 
-import javax.validation.constraints.Null;
+import javax.annotation.Nullable;
 import java.net.URI;
 import java.util.List;
 import java.util.Locale;
@@ -103,7 +103,7 @@ public class CaveatQueryService {
             log.info("Data search - caveat cases: " + entity);
         }
 
-        @Null ReturnedCaveats returnedCaveats;
+        @Nullable ReturnedCaveats returnedCaveats;
         try {
             returnedCaveats = restTemplate.postForObject(uri, entity, ReturnedCaveats.class);
         } catch (HttpClientErrorException e) {
