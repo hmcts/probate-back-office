@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.service;
 
+import jdk.internal.jline.internal.Nullable;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.index.query.BoolQueryBuilder;
@@ -102,7 +103,7 @@ public class CaveatQueryService {
             log.info("Data search - caveat cases: " + entity);
         }
 
-        ReturnedCaveats returnedCaveats;
+        @Nullable ReturnedCaveats returnedCaveats;
         try {
             returnedCaveats = restTemplate.postForObject(uri, entity, ReturnedCaveats.class);
         } catch (HttpClientErrorException e) {

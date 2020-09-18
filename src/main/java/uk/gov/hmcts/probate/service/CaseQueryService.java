@@ -21,6 +21,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCases;
 import uk.gov.hmcts.probate.service.evidencemanagement.header.HttpHeadersFactory;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 
+import javax.annotation.Nullable;
 import java.net.URI;
 import java.util.Arrays;
 import java.util.List;
@@ -147,7 +148,7 @@ public class CaseQueryService {
             log.info("CaseQueryService Elastic search entity: " + entity);
         }
 
-        ReturnedCases returnedCases;
+        @Nullable ReturnedCases returnedCases;
         try {
             log.info("Posting object for CaseQueryService...");
             returnedCases = restTemplate.postForObject(uri, entity, ReturnedCases.class);

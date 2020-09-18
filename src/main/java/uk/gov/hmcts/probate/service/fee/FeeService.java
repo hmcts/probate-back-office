@@ -13,6 +13,7 @@ import uk.gov.hmcts.probate.model.fee.FeeServiceResponse;
 
 import java.math.BigDecimal;
 import java.net.URI;
+import java.util.Objects;
 
 import static uk.gov.hmcts.probate.insights.AppInsightsEvent.REQUEST_SENT;
 
@@ -31,6 +32,7 @@ public class FeeService {
         URI uri = buildUri(FEE_API_EVENT_TYPE_ISSUE, amountInPound.toString());
         appInsights.trackEvent(REQUEST_SENT, uri.toString());
         ResponseEntity<Fee> responseEntity = restTemplate.getForEntity(uri, Fee.class);
+        Objects.nonNull(responseEntity);
 
         if (responseEntity.getStatusCode().equals(HttpStatus.NO_CONTENT)) {
             return BigDecimal.ZERO;
@@ -47,6 +49,7 @@ public class FeeService {
         URI uri = buildUri(FEE_API_EVENT_TYPE_COPIES, copies.toString());
 
         ResponseEntity<Fee> responseEntity = restTemplate.getForEntity(uri, Fee.class);
+        Objects.nonNull(responseEntity);
 
         if (responseEntity.getStatusCode().equals(HttpStatus.NO_CONTENT)) {
             return BigDecimal.ZERO;
