@@ -121,7 +121,6 @@ public class SolCCDServiceAuthTokenGenerator {
             "&redirect_uri=" + redirectUri +
             "&grant_type=authorization_code")
             .body().jsonPath();
-        jp.prettyPrint();
         String token = jp.get("access_token");
 
         return token;
@@ -138,9 +137,8 @@ public class SolCCDServiceAuthTokenGenerator {
             .header("Authorization", "Basic " + encoded)
             .post("/oauth2/authorize?response_type=code&client_id=" + probateClientId + "&redirect_uri=" + redirectUri)
             .body();
-        authorization.prettyPrint();
+        
         return authorization.jsonPath().get("code");
-
     }
 
 }

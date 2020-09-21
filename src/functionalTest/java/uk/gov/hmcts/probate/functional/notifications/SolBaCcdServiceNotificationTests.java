@@ -152,7 +152,7 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyBulkScanPaperFormGOPGrantReceivedNotificationEmailTextWelsh() {
+        public void verifyBulkScanPaperFormGOPGrantReceivedNotificationEmailTextWelsh() {
         postNotificationEmailAndVerifyContents(GRANT_RAISED, "grantRaisedPaperBulkScanPayloadWelsh.json", "grantRaisedPaperBulkScanEmailExpectedWelshResponse.txt",
             EMAIL_NOTIFICATION_URL, "pa-welsh");
     }
