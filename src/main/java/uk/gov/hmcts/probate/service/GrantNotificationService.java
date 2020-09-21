@@ -158,7 +158,7 @@ public class GrantNotificationService {
             .grantDelayedNotificationIdentified(FALSE)
             .probateNotificationsGenerated(getProbateDocuments(emailDocument, foundCase.getData().getProbateNotificationsGenerated()))
             .build();
-        CaseDetails caseDetails = ccdClientApi.updateCaseAsCaseworker(CcdCaseType.GRANT_OF_REPRESENTATION, foundCase.getId().toString(),
+        ccdClientApi.updateCaseAsCaseworker(CcdCaseType.GRANT_OF_REPRESENTATION, foundCase.getId().toString(),
             grantOfRepresentationData, sentEvent, securityUtils.getUserAndServiceSecurityDTO());
         log.info("Updated found case:{}", foundCase.getId());
 
