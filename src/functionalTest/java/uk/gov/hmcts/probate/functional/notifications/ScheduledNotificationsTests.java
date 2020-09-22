@@ -20,9 +20,18 @@ public class ScheduledNotificationsTests extends IntegrationTestBase {
 
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-    private static final String GRANT_APPLY_PAYLOAD = "grantApplyforGrantPaperApplicationMan.json";
+    private static final String GRANT_APPLY_PAYLOAD = "applyforGrantPaperApplicationManPayload.json";
+    private static final String AWAITING_DOCS_RESPONSE = "awaitingDocsEmailExpectedResponse.txt";
     private static final String GRANT_DELAYED = "/notify/grant-delayed-scheduled";
     private static final String GRANT_AWAITING_DOCUMENTATION = "/notify/grant-awaiting-documents-scheduled";
+    private static final String TOKEN_PARM = "TOKEN_PARM";
+    private static final String EVENT_PARM = "EVENT_PARM";
+    private static final String RESPONSE_CASE_NUM_PARM = "XXXXXXXXXXXXXXXX";
+    private static final long ES_DELAY = 10000l;
+    
+    private static final String EVENT_PRINT_CASE = "boPrintCase";
+    private static final String EVENT_MARK_AS_READY_FOR_EXAMINATION = "boMarkAsReadyForExamination";
+
     private static final String DOC_INDEX = "DOC_INDEX";
     private static final String GRANT_SCHEDULE_EMAIL_NOTIFICATION_URL = "case_data.probateNotificationsGenerated["+DOC_INDEX+"].value.DocumentLink.document_binary_url";
 
@@ -35,19 +44,19 @@ public class ScheduledNotificationsTests extends IntegrationTestBase {
         JsonPath jsonPathApply = JsonPath.from(applyforGrantPaperApplicationManResponse);
         String caseId = jsonPathApply.get("id").toString();
 
-        String printCaseStartResponseToken = utils.startUpdateCaseAsCaseworker(caseId, "boPrintCase");
-        String printCaseUpdateJson = grantDelayCaseJson.replaceAll("sampletoken", printCaseStartResponseToken);
-        printCaseUpdateJson = printCaseUpdateJson.replaceAll("applyforGrantPaperApplicationMan", "boPrintCase");
+        String printCaseStartResponseToken = utils.startUpdateCaseAsCaseworker(caseId, EVENT_PRINT_CASE);
+        String printCaseUpdateJson = grantDelayCaseJson.replaceAll(TOKEN_PARM, printCaseStartResponseToken);
+        printCaseUpdateJson = printCaseUpdateJson.replaceAll(EVENT_PARM, EVENT_PRINT_CASE);
         printCaseUpdateJson = printCaseUpdateJson.replaceAll("\"applicationID\": \"603\",", "\"applicationID\": \"603\",\"grantDelayedNotificationDate\": \"" + delayedDate + "\",");
         String printCaseUpdateResponse = utils.updateCaseAsCaseworker(printCaseUpdateJson, caseId);
 
-        String markAsReadyForExaminationStartResponseToken = utils.startUpdateCaseAsCaseworker(caseId, "boMarkAsReadyForExamination");
+        String markAsReadyForExaminationStartResponseToken = utils.startUpdateCaseAsCaseworker(caseId, EVENT_MARK_AS_READY_FOR_EXAMINATION);
         String markAsReadyForExaminationUpdateJson = printCaseUpdateJson.replaceAll(printCaseStartResponseToken, markAsReadyForExaminationStartResponseToken);
-        markAsReadyForExaminationUpdateJson = markAsReadyForExaminationUpdateJson.replaceAll("boPrintCase", "boMarkAsReadyForExamination");
+        markAsReadyForExaminationUpdateJson = markAsReadyForExaminationUpdateJson.replaceAll(EVENT_PRINT_CASE, EVENT_MARK_AS_READY_FOR_EXAMINATION);
         String markAsReadyForExaminationUpdateResponse = utils.updateCaseAsCaseworker(markAsReadyForExaminationUpdateJson, caseId);
 
         //pause to enable ccd logstash/ES to index the case update
-        Thread.sleep(10000l);
+        Thread.sleep(ES_DELAY);
         Response response = RestAssured.given()
             .relaxedHTTPSValidation()
             .headers(utils.getHeadersWithSchedulerCaseworkerUser())
@@ -59,7 +68,7 @@ public class ScheduledNotificationsTests extends IntegrationTestBase {
         String delayResponse = response.getBody().asString();
         assertTrue(delayResponse.contains(caseId));
 
-        String expectedText = utils.getJsonFromFile("grantDelayEmailExpectedResponse.txt").replaceAll("XXXXXXXXXXXXXXXX", caseId);
+        String expectedText = utils.getJsonFromFile(AWAITING_DOCS_RESPONSE).replaceAll(RESPONSE_CASE_NUM_PARM, caseId);
         String delayedCase = utils.findCaseAsCaseworker(caseId);
         JsonPath delayedCaseJson = JsonPath.from(delayedCase);
         String documentUrl = delayedCaseJson.get(GRANT_SCHEDULE_EMAIL_NOTIFICATION_URL.replaceAll(DOC_INDEX, "1"));
@@ -78,13 +87,13 @@ public class ScheduledNotificationsTests extends IntegrationTestBase {
         JsonPath jsonPathApply = JsonPath.from(applyforGrantPaperApplicationManResponse);
         String caseId = jsonPathApply.get("id").toString();
 
-        String printCaseStartResponseToken = utils.startUpdateCaseAsCaseworker(caseId, "boPrintCase");
-        String printCaseUpdateJson = grantDocCaseJson.replaceAll("sampletoken", printCaseStartResponseToken);
-        printCaseUpdateJson = printCaseUpdateJson.replaceAll("applyforGrantPaperApplicationMan", "boPrintCase");
+        String printCaseStartResponseToken = utils.startUpdateCaseAsCaseworker(caseId, EVENT_PRINT_CASE);
+        String printCaseUpdateJson = grantDocCaseJson.replaceAll(TOKEN_PARM, printCaseStartResponseToken);
+        printCaseUpdateJson = printCaseUpdateJson.replaceAll(EVENT_PARM, EVENT_PRINT_CASE);
         String printCaseUpdateResponse = utils.updateCaseAsCaseworker(printCaseUpdateJson, caseId);
 
         //pause to enable ccd logstash/ES to index the case update
-        Thread.sleep(10000l);
+        Thread.sleep(ES_DELAY);
         Response response = RestAssured.given()
             .relaxedHTTPSValidation()
             .headers(utils.getHeadersWithSchedulerCaseworkerUser())
@@ -96,7 +105,7 @@ public class ScheduledNotificationsTests extends IntegrationTestBase {
         String docResponse = response.getBody().asString();
         assertTrue(docResponse.contains(caseId));
 
-        String expectedText = utils.getJsonFromFile("grantAwaitingDocsEmailExpectedResponse.txt").replaceAll("XXXXXXXXXXXXXXXX", caseId);
+        String expectedText = utils.getJsonFromFile(AWAITING_DOCS_RESPONSE).replaceAll(RESPONSE_CASE_NUM_PARM, caseId);
         String docCase = utils.findCaseAsCaseworker(caseId);
         JsonPath docCaseJson = JsonPath.from(docCase);
         String documentUrl = docCaseJson.get(GRANT_SCHEDULE_EMAIL_NOTIFICATION_URL.replaceAll(DOC_INDEX, "0"));
