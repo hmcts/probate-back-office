@@ -1,7 +1,7 @@
 {
   "event": {
     "id": "EVENT_PARM",
-    "description": "",
+    "description": "Probate Application created by FT",
     "summary": "Probate application"
   },
   "ignore_warning": true,

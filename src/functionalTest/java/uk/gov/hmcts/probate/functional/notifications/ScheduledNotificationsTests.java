@@ -20,7 +20,7 @@ public class ScheduledNotificationsTests extends IntegrationTestBase {
 
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-    private static final String GRANT_APPLY_PAYLOAD = "applyforGrantPaperApplicationManPayload.json";
+    private static final String APPLY_FOR_GRANT_PAYLOAD = "applyforGrantPaperApplicationManPayload.json";
     private static final String AWAITING_DOCS_RESPONSE = "awaitingDocsEmailExpectedResponse.txt";
     private static final String GRANT_DELAYED = "/notify/grant-delayed-scheduled";
     private static final String GRANT_AWAITING_DOCUMENTATION = "/notify/grant-awaiting-documents-scheduled";
@@ -29,6 +29,7 @@ public class ScheduledNotificationsTests extends IntegrationTestBase {
     private static final String RESPONSE_CASE_NUM_PARM = "XXXXXXXXXXXXXXXX";
     private static final long ES_DELAY = 10000l;
     
+    private static final String EVENT_APPLY = "applyforGrantPaperApplicationMan";
     private static final String EVENT_PRINT_CASE = "boPrintCase";
     private static final String EVENT_MARK_AS_READY_FOR_EXAMINATION = "boMarkAsReadyForExamination";
 
@@ -39,7 +40,9 @@ public class ScheduledNotificationsTests extends IntegrationTestBase {
     public void createCaseAndVerifyGrantDelayed() throws InterruptedException {
         String delayedDate = DATE_FORMAT.format(LocalDate.now());
 
-        String grantDelayCaseJson = utils.getJsonFromFile(GRANT_APPLY_PAYLOAD);
+        String grantDelayCaseJson = utils.getJsonFromFile(APPLY_FOR_GRANT_PAYLOAD);
+        grantDelayCaseJson = grantDelayCaseJson.replaceAll(EVENT_PARM, EVENT_APPLY);
+        
         String applyforGrantPaperApplicationManResponse = utils.createCaseAsCaseworker(grantDelayCaseJson);
         JsonPath jsonPathApply = JsonPath.from(applyforGrantPaperApplicationManResponse);
         String caseId = jsonPathApply.get("id").toString();
@@ -82,7 +85,8 @@ public class ScheduledNotificationsTests extends IntegrationTestBase {
     public void createCaseAndVerifyGrantAwaitingDocumentation() throws InterruptedException {
         String docDate = DATE_FORMAT.format(LocalDate.now().plusDays(21));
 
-        String grantDocCaseJson = utils.getJsonFromFile(GRANT_APPLY_PAYLOAD);
+        String grantDocCaseJson = utils.getJsonFromFile(APPLY_FOR_GRANT_PAYLOAD);
+        grantDocCaseJson = grantDocCaseJson.replaceAll(EVENT_PARM, EVENT_APPLY);
         String applyforGrantPaperApplicationManResponse = utils.createCaseAsCaseworker(grantDocCaseJson);
         JsonPath jsonPathApply = JsonPath.from(applyforGrantPaperApplicationManResponse);
         String caseId = jsonPathApply.get("id").toString();
