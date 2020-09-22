@@ -26,6 +26,3 @@ echo
 echo CCD_Probate_Standing_Search ...............
 ${binFolder}/ccd-import-definition.sh "${xlsToJsonFolder}/CCD_Probate_Standing_Search.xlsx"
 echo
-echo CCD_Probate_BulkScanning_ExceptionRecord ..
-${binFolder}/ccd-import-definition.sh "${xlsToJsonFolder}/CCD_Probate_BulkScanning_ExceptionRecord.xlsx"
-echo
