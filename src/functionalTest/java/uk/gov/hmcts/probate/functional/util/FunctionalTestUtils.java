@@ -6,6 +6,7 @@ import io.restassured.http.Header;
 import io.restassured.http.Headers;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
+import lombok.extern.slf4j.Slf4j;
 import org.pdfbox.cos.COSDocument;
 import org.pdfbox.pdfparser.PDFParser;
 import org.pdfbox.pdmodel.PDDocument;
@@ -26,6 +27,7 @@ import java.nio.file.Files;
 
 @ContextConfiguration(classes = TestContextConfiguration.class)
 @Component
+@Slf4j
 public class FunctionalTestUtils {
 
     @Autowired
@@ -210,7 +212,7 @@ public class FunctionalTestUtils {
 
     public String createCaseAsCaseworker(String caseJson) {
         String user = getCaseworkerUserId();
-
+        log.info("coreCaseDataApiUrl="+coreCaseDataApiUrl);
         String ccdStartAsCaseworkerUrl = coreCaseDataApiUrl+"/caseworkers/"+user+"/jurisdictions/PROBATE/case-types/GrantOfRepresentation/event-triggers/applyforGrantPaperApplicationMan/token";
         Response startResponse = RestAssured.given()
             .relaxedHTTPSValidation()
