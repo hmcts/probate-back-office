@@ -34,6 +34,7 @@ public class ScheduledNotificationsTests extends IntegrationTestBase {
         String applyforGrantPaperApplicationManResponse = utils.createCaseAsCaseworker(grantDelayCaseJson);
         JsonPath jsonPathApply = JsonPath.from(applyforGrantPaperApplicationManResponse);
         String caseId = jsonPathApply.get("id").toString();
+        log.info("createCaseAndVerifyGrantDelayed caseId:"+caseId);
 
         String printCaseStartResponseToken = utils.startUpdateCaseAsCaseworker(caseId, "boPrintCase");
         String printCaseUpdateJson = grantDelayCaseJson.replaceAll("sampletoken", printCaseStartResponseToken);
@@ -77,6 +78,7 @@ public class ScheduledNotificationsTests extends IntegrationTestBase {
         String applyforGrantPaperApplicationManResponse = utils.createCaseAsCaseworker(grantDocCaseJson);
         JsonPath jsonPathApply = JsonPath.from(applyforGrantPaperApplicationManResponse);
         String caseId = jsonPathApply.get("id").toString();
+        log.info("createCaseAndVerifyGrantAwaitingDocumentation caseId:"+caseId);
 
         String printCaseStartResponseToken = utils.startUpdateCaseAsCaseworker(caseId, "boPrintCase");
         String printCaseUpdateJson = grantDocCaseJson.replaceAll("sampletoken", printCaseStartResponseToken);
