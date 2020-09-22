@@ -6,6 +6,7 @@ import io.jsonwebtoken.Jwts;
 import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.ResponseBody;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -19,6 +20,7 @@ import java.util.Base64;
 import static io.restassured.RestAssured.given;
 import static io.restassured.RestAssured.post;
 
+@Slf4j
 @Component
 public class SolCCDServiceAuthTokenGenerator {
 
@@ -121,7 +123,13 @@ public class SolCCDServiceAuthTokenGenerator {
             "&redirect_uri=" + redirectUri +
             "&grant_type=authorization_code")
             .body().jsonPath();
+        log.info("generateClientToken.idamUrl="+idamUrl);
+        log.info("generateClientToken.probateClientSecret="+probateClientSecret);
+        log.info("generateClientToken.probateClientId="+probateClientId);
+        log.info("generateClientToken.redirectUri="+redirectUri);
+        log.info("generateClientToken.jp="+jp.prettyPrint());
         String token = jp.get("access_token");
+        log.info("generateClientToken.token="+token);
 
         return token;
     }
@@ -138,6 +146,7 @@ public class SolCCDServiceAuthTokenGenerator {
             .post("/oauth2/authorize?response_type=code&client_id=" + probateClientId + "&redirect_uri=" + redirectUri)
             .body();
         
+        log.info("authorization="+authorization.prettyPrint());
         return authorization.jsonPath().get("code");
     }
 
