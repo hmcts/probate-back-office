@@ -62,6 +62,7 @@ static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
 
 withPipeline("java", product, component) {
   env.APPINSIGHTS_INSTRUMENTATIONKEY=false
+  env.IDAM_CLIENT_NAME=probate
 
   enableAksStagingDeployment()
   disableLegacyDeployment()
