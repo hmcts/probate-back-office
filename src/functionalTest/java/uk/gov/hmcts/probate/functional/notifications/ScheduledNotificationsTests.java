@@ -46,6 +46,7 @@ public class ScheduledNotificationsTests extends IntegrationTestBase {
         String markAsReadyForExaminationUpdateJson = printCaseUpdateJson.replaceAll(printCaseStartResponseToken, markAsReadyForExaminationStartResponseToken);
         markAsReadyForExaminationUpdateJson = markAsReadyForExaminationUpdateJson.replaceAll("boPrintCase", "boMarkAsReadyForExamination");
         String markAsReadyForExaminationUpdateResponse = utils.updateCaseAsCaseworker(markAsReadyForExaminationUpdateJson, caseId);
+        log.info("markAsReadyForExaminationUpdateResponse:"+markAsReadyForExaminationUpdateResponse);
 
         //pause to enable ccd logstash/ES to index the case update
         Thread.sleep(10000l);
