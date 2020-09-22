@@ -29,9 +29,11 @@ binFolder=$(dirname "$0")
 
 userToken="$(${binFolder}/idam-user-token.sh)"
 serviceToken="$(${binFolder}/idam-service-token.sh ccd_gw)"
+ccdUrl=${CCD_DEF_URL:-http://localhost:4451}
 
 curl -XPUT \
-  http://localhost:4451/api/user-role \
+  $CURL_OPTS \
+  $ccdUrl/api/user-role \
   -H "Authorization: Bearer ${userToken}" \
   -H "ServiceAuthorization: Bearer ${serviceToken}" \
   -H "Content-Type: application/json" \

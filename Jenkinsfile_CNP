@@ -45,7 +45,8 @@ def secrets = [
                 secret('microservicekey-ccd-ps', 'PRINT_S2S_KEY')
         ],
         'ccd-${env}'      : [
-                secret('ccd-api-gateway-oauth2-client-secret', 'API_GATEWAY_IDAM_SECRET')
+                secret('ccd-api-gateway-oauth2-client-secret', 'API_GATEWAY_IDAM_SECRET'),
+                secret('postcode-info-address-lookup-token', 'ADDRESS_LOOKUP_TOKEN')
         ]
 ]
 
@@ -67,17 +68,7 @@ withPipeline("java", product, component) {
 
   enableSlackNotifications('#probate-jenkins')
 
-//  before('buildinfra:prod') {
-//     error 'Deliberately breaking pipeline to prevent prod deployment'
-//  }
-
-    after('test') {
-    try {
-      //sh './gradlew pitest'
-    } finally {
-      //steps.archiveArtifacts "build/reports/pitest/**/*.*"
-    }
-
+  after('test') {
     junit 'build/test-results/test/**/*.xml'
     archiveArtifacts 'build/reports/tests/test/index.html'
     publishHTML target: [
@@ -106,6 +97,21 @@ withPipeline("java", product, component) {
             reportFiles          : "main.html",
             reportName           : "back-office find Bugs Report"
     ]
+  }
+
+  before('smoketest:preview') {
+    env.IDAM_API_URL="https://idam-api.aat.platform.hmcts.net"
+    env.S2S_API_URL="http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
+    env.CCD_DEF_URL="https://ccd-definition-store-probate-back-office-pr-${CHANGE_ID}.service.core-compute-preview.internal"
+    env.URL="https://xui-probate-back-office-pr-${CHANGE_ID}.service.core-compute-preview.internal"
+    env.CURL_OPTS="--insecure "
+    env.CCD_IDAM_REDIRECT_URL="https://ccd-case-management-web-aat.service.core-compute-aat.internal/oauth2redirect"
+
+    sh """
+      ./bin/ccd-add-roles.sh
+      ./ccdImports/conversionScripts/createAllXLS.sh probate-back-office-pr-${CHANGE_ID}.service.core-compute-preview.internal
+      ./ccdImports/conversionScripts/importAllXLS.sh
+    """
   }
 
   after('functionalTest:preview') {
