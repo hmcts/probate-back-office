@@ -212,12 +212,12 @@ public class FunctionalTestUtils {
 
     public String createCaseAsCaseworker(String caseJson) {
         String user = getCaseworkerUserId();
-        log.info("coreCaseDataApiUrl="+coreCaseDataApiUrl);
         String ccdStartAsCaseworkerUrl = coreCaseDataApiUrl+"/caseworkers/"+user+"/jurisdictions/PROBATE/case-types/GrantOfRepresentation/event-triggers/applyforGrantPaperApplicationMan/token";
         Response startResponse = RestAssured.given()
             .relaxedHTTPSValidation()
             .headers(getHeadersWithCaseworkerUser())
             .when().get(ccdStartAsCaseworkerUrl).andReturn();
+        log.info("startResponse="+startResponse.getBody().asString());
         String token = startResponse.getBody().jsonPath().get("token");
         String caseCreateJson = caseJson.replaceAll("sampletoken",token);
         String submitForCaseworkerUrl = coreCaseDataApiUrl+"/caseworkers/"+user+"/jurisdictions/PROBATE/case-types/GrantOfRepresentation/cases";
