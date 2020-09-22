@@ -105,7 +105,7 @@ withPipeline("java", product, component) {
     env.CCD_DEF_URL="https://ccd-definition-store-probate-back-office-pr-${CHANGE_ID}.service.core-compute-preview.internal"
     env.URL="https://xui-probate-back-office-pr-${CHANGE_ID}.service.core-compute-preview.internal"
     env.IMPORTER_USERNAME="ccd.probate.default@hmcts.net"
-    env.CURL_OPTS="--insecure --retry-all-errors --retry 3 "
+    env.CURL_OPTS="--insecure --retry-connrefused --retry 3 "
     env.CCD_IDAM_REDIRECT_URL="https://ccd-case-management-web-aat.service.core-compute-aat.internal/oauth2redirect"
 
     sh """
