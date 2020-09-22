@@ -44,19 +44,24 @@ public class ScheduledNotificationsTests extends IntegrationTestBase {
         grantDelayCaseJson = grantDelayCaseJson.replaceAll(EVENT_PARM, EVENT_APPLY);
         
         String applyforGrantPaperApplicationManResponse = utils.createCaseAsCaseworker(grantDelayCaseJson);
+        log.info("applyforGrantPaperApplicationManResponse:"+applyforGrantPaperApplicationManResponse);
         JsonPath jsonPathApply = JsonPath.from(applyforGrantPaperApplicationManResponse);
         String caseId = jsonPathApply.get("id").toString();
 
         String printCaseStartResponseToken = utils.startUpdateCaseAsCaseworker(caseId, EVENT_PRINT_CASE);
+        log.info("printCaseStartResponseToken:"+printCaseStartResponseToken);
         String printCaseUpdateJson = grantDelayCaseJson.replaceAll(TOKEN_PARM, printCaseStartResponseToken);
         printCaseUpdateJson = printCaseUpdateJson.replaceAll(EVENT_PARM, EVENT_PRINT_CASE);
         printCaseUpdateJson = printCaseUpdateJson.replaceAll("\"applicationID\": \"603\",", "\"applicationID\": \"603\",\"grantDelayedNotificationDate\": \"" + delayedDate + "\",");
         String printCaseUpdateResponse = utils.updateCaseAsCaseworker(printCaseUpdateJson, caseId);
+        log.info("printCaseUpdateResponse:"+printCaseUpdateResponse);
 
         String markAsReadyForExaminationStartResponseToken = utils.startUpdateCaseAsCaseworker(caseId, EVENT_MARK_AS_READY_FOR_EXAMINATION);
+        log.info("markAsReadyForExaminationStartResponseToken:"+markAsReadyForExaminationStartResponseToken);
         String markAsReadyForExaminationUpdateJson = printCaseUpdateJson.replaceAll(printCaseStartResponseToken, markAsReadyForExaminationStartResponseToken);
         markAsReadyForExaminationUpdateJson = markAsReadyForExaminationUpdateJson.replaceAll(EVENT_PRINT_CASE, EVENT_MARK_AS_READY_FOR_EXAMINATION);
         String markAsReadyForExaminationUpdateResponse = utils.updateCaseAsCaseworker(markAsReadyForExaminationUpdateJson, caseId);
+        log.info("markAsReadyForExaminationUpdateResponse:"+markAsReadyForExaminationUpdateResponse);
 
         //pause to enable ccd logstash/ES to index the case update
         Thread.sleep(ES_DELAY);
