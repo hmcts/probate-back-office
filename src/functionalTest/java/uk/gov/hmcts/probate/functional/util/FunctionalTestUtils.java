@@ -201,7 +201,6 @@ public class FunctionalTestUtils {
     }
 
     public Headers getHeadersWithSchedulerCaseworkerUser() {
-        log.info("schedulerEmail:schedulerPassword="+schedulerEmail+":"+schedulerPassword);
         String authorizationToken = serviceAuthTokenGenerator.generateClientToken(schedulerEmail, schedulerPassword);
         String id = getUserId(schedulerEmail, schedulerPassword);
         return Headers.headers(
@@ -218,7 +217,6 @@ public class FunctionalTestUtils {
             .relaxedHTTPSValidation()
             .headers(getHeadersWithCaseworkerUser())
             .when().get(ccdStartAsCaseworkerUrl).andReturn();
-        log.info("startResponse="+startResponse.getBody().asString());
         String token = startResponse.getBody().jsonPath().get("token");
         String caseCreateJson = caseJson.replaceAll("sampletoken",token);
         String submitForCaseworkerUrl = coreCaseDataApiUrl+"/caseworkers/"+user+"/jurisdictions/PROBATE/case-types/GrantOfRepresentation/cases";
