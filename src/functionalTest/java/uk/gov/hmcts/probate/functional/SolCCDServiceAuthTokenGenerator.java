@@ -139,7 +139,7 @@ public class SolCCDServiceAuthTokenGenerator {
             .post("/oauth2/authorize?response_type=code&client_id=" + probateClientId + "&redirect_uri=" + redirectUri)
             .body();
         authorization.prettyPrint();
-        return authorization.jsonPath().get("code").toString();
+        return authorization.jsonPath().get("code");
 
     }
 
