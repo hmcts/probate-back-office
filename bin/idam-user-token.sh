@@ -1,7 +1,7 @@
 #!/bin/sh
 
-IMPORTER_USERNAME=${1:-ccd.docker.default@hmcts.net}
-IMPORTER_PASSWORD=${2:-Pa55word11}
+IMPORTER_USERNAME=${IMPORTER_USERNAME:-ccd.docker.default@hmcts.net}
+IMPORTER_PASSWORD=${IMPORTER_PASSWORD:-Pa55word11}
 IDAM_URI=${IDAM_API_URL:-http://localhost:5000}
 REDIRECT_URI=${CCD_IDAM_REDIRECT_URL:-http://localhost:3451/oauth2redirect}
 CLIENT_ID="ccd_gateway"
