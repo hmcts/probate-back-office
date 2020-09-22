@@ -34,12 +34,12 @@ public class EmUploadService implements UploadService {
     public EvidenceManagementFile store(EvidenceManagementFileUpload file) throws IOException {
         MultiValueMap<String, Object> parameters = UploadRequestBuilder.prepareRequest(file);
 
-        HashMap response = evidenceManagementRestTemplate.postForObject(
+        @Nullable HashMap response = evidenceManagementRestTemplate.postForObject(
                 documentManagementURIBuilder.buildUrl(),
                 new HttpEntity<MultiValueMap>(parameters, headers.getMultiPartHttpHeader()),
                 HashMap.class);
 
-        @Nullable ObjectMapper originalObjectMapper = new ObjectMapper();
+        ObjectMapper originalObjectMapper = new ObjectMapper();
         Map embedded = (Map) response.get("_embedded");
         List documents = (List) embedded.get("documents");
 
