@@ -22,6 +22,7 @@ public class ScheduledNotificationsTests extends IntegrationTestBase {
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     private static final String APPLY_FOR_GRANT_PAYLOAD = "applyforGrantPaperApplicationManPayload.json";
+    private static final String GRANT_DELAY_RESPONSE = "grantDelayEmailExpectedResponse.txt";
     private static final String AWAITING_DOCS_RESPONSE = "awaitingDocsEmailExpectedResponse.txt";
     private static final String GRANT_DELAYED = "/notify/grant-delayed-scheduled";
     private static final String GRANT_AWAITING_DOCUMENTATION = "/notify/grant-awaiting-documents-scheduled";
@@ -71,7 +72,7 @@ public class ScheduledNotificationsTests extends IntegrationTestBase {
         String delayResponse = response.getBody().asString();
         assertTrue(delayResponse.contains(caseId));
 
-        String expectedText = utils.getJsonFromFile(AWAITING_DOCS_RESPONSE).replaceAll(RESPONSE_CASE_NUM_PARM, caseId);
+        String expectedText = utils.getJsonFromFile(GRANT_DELAY_RESPONSE).replaceAll(RESPONSE_CASE_NUM_PARM, caseId);
         String delayedCase = utils.findCaseAsCaseworker(caseId);
         JsonPath delayedCaseJson = JsonPath.from(delayedCase);
         String documentUrl = delayedCaseJson.get(GRANT_SCHEDULE_EMAIL_NOTIFICATION_URL.replaceAll(DOC_INDEX, "1"));
