@@ -29,6 +29,7 @@ import java.nio.file.Files;
 @Component
 @Slf4j
 public class FunctionalTestUtils {
+    public static final String TOKEN_PARM = "TOKEN_PARM";
 
     @Autowired
     protected SolCCDServiceAuthTokenGenerator serviceAuthTokenGenerator;
@@ -218,7 +219,7 @@ public class FunctionalTestUtils {
             .headers(getHeadersWithCaseworkerUser())
             .when().get(ccdStartAsCaseworkerUrl).andReturn();
         String token = startResponse.getBody().jsonPath().get("token");
-        String caseCreateJson = caseJson.replaceAll("sampletoken",token);
+        String caseCreateJson = caseJson.replaceAll(TOKEN_PARM,token);
         String submitForCaseworkerUrl = coreCaseDataApiUrl+"/caseworkers/"+user+"/jurisdictions/PROBATE/case-types/GrantOfRepresentation/cases";
         Response submitResponse = RestAssured.given()
             .relaxedHTTPSValidation()

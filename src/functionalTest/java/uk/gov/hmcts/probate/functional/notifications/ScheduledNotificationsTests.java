@@ -13,6 +13,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 import static junit.framework.TestCase.assertTrue;
+import static uk.gov.hmcts.probate.functional.util.FunctionalTestUtils.TOKEN_PARM;
 
 @Slf4j
 @RunWith(SpringIntegrationSerenityRunner.class)
@@ -24,7 +25,6 @@ public class ScheduledNotificationsTests extends IntegrationTestBase {
     private static final String AWAITING_DOCS_RESPONSE = "awaitingDocsEmailExpectedResponse.txt";
     private static final String GRANT_DELAYED = "/notify/grant-delayed-scheduled";
     private static final String GRANT_AWAITING_DOCUMENTATION = "/notify/grant-awaiting-documents-scheduled";
-    private static final String TOKEN_PARM = "TOKEN_PARM";
     private static final String EVENT_PARM = "EVENT_PARM";
     private static final String RESPONSE_CASE_NUM_PARM = "XXXXXXXXXXXXXXXX";
     private static final long ES_DELAY = 10000l;
@@ -40,8 +40,8 @@ public class ScheduledNotificationsTests extends IntegrationTestBase {
     public void createCaseAndVerifyGrantDelayed() throws InterruptedException {
         String delayedDate = DATE_FORMAT.format(LocalDate.now());
 
-        String grantDelayCaseJson = utils.getJsonFromFile(APPLY_FOR_GRANT_PAYLOAD);
-        grantDelayCaseJson = grantDelayCaseJson.replaceAll(EVENT_PARM, EVENT_APPLY);
+        String baseCaseJson = utils.getJsonFromFile(APPLY_FOR_GRANT_PAYLOAD);
+        String grantDelayCaseJson = baseCaseJson.replaceAll(EVENT_PARM, EVENT_APPLY);
         
         String applyforGrantPaperApplicationManResponse = utils.createCaseAsCaseworker(grantDelayCaseJson);
         log.info("applyforGrantPaperApplicationManResponse:"+applyforGrantPaperApplicationManResponse);
@@ -50,7 +50,7 @@ public class ScheduledNotificationsTests extends IntegrationTestBase {
 
         String printCaseStartResponseToken = utils.startUpdateCaseAsCaseworker(caseId, EVENT_PRINT_CASE);
         log.info("printCaseStartResponseToken:"+printCaseStartResponseToken);
-        String printCaseUpdateJson = grantDelayCaseJson.replaceAll(TOKEN_PARM, printCaseStartResponseToken);
+        String printCaseUpdateJson = baseCaseJson.replaceAll(TOKEN_PARM, printCaseStartResponseToken);
         printCaseUpdateJson = printCaseUpdateJson.replaceAll(EVENT_PARM, EVENT_PRINT_CASE);
         printCaseUpdateJson = printCaseUpdateJson.replaceAll("\"applicationID\": \"603\",", "\"applicationID\": \"603\",\"grantDelayedNotificationDate\": \"" + delayedDate + "\",");
         String printCaseUpdateResponse = utils.updateCaseAsCaseworker(printCaseUpdateJson, caseId);
@@ -90,14 +90,14 @@ public class ScheduledNotificationsTests extends IntegrationTestBase {
     public void createCaseAndVerifyGrantAwaitingDocumentation() throws InterruptedException {
         String docDate = DATE_FORMAT.format(LocalDate.now().plusDays(21));
 
-        String grantDocCaseJson = utils.getJsonFromFile(APPLY_FOR_GRANT_PAYLOAD);
-        grantDocCaseJson = grantDocCaseJson.replaceAll(EVENT_PARM, EVENT_APPLY);
+        String baseCaseJson = utils.getJsonFromFile(APPLY_FOR_GRANT_PAYLOAD);
+        String grantDocCaseJson = baseCaseJson.replaceAll(EVENT_PARM, EVENT_APPLY);
         String applyforGrantPaperApplicationManResponse = utils.createCaseAsCaseworker(grantDocCaseJson);
         JsonPath jsonPathApply = JsonPath.from(applyforGrantPaperApplicationManResponse);
         String caseId = jsonPathApply.get("id").toString();
 
         String printCaseStartResponseToken = utils.startUpdateCaseAsCaseworker(caseId, EVENT_PRINT_CASE);
-        String printCaseUpdateJson = grantDocCaseJson.replaceAll(TOKEN_PARM, printCaseStartResponseToken);
+        String printCaseUpdateJson = baseCaseJson.replaceAll(TOKEN_PARM, printCaseStartResponseToken);
         printCaseUpdateJson = printCaseUpdateJson.replaceAll(EVENT_PARM, EVENT_PRINT_CASE);
         String printCaseUpdateResponse = utils.updateCaseAsCaseworker(printCaseUpdateJson, caseId);
 
