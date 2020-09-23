@@ -75,7 +75,7 @@ public class ScheduledNotificationsTests extends IntegrationTestBase {
         String delayedCase = utils.findCaseAsCaseworker(caseId);
         JsonPath delayedCaseJson = JsonPath.from(delayedCase);
         String documentUrl = delayedCaseJson.get(GRANT_SCHEDULE_EMAIL_NOTIFICATION_URL.replaceAll(DOC_INDEX, "1"));
-        String emailDocText = utils.downloadPdfAndParseToStringWithUserId(documentUrl, utils.getSchedulerCaseworkerUserId());
+        String emailDocText = utils.downloadPdfAndParseToStringForScheduler(documentUrl);
         emailDocText = emailDocText.replace("\n", "").replace("\r", "");
         assertTrue(emailDocText.contains(expectedText));
 
@@ -114,7 +114,7 @@ public class ScheduledNotificationsTests extends IntegrationTestBase {
         JsonPath docCaseJson = JsonPath.from(docCase);
         String documentAtIndex = replaceAttribute(GRANT_SCHEDULE_EMAIL_NOTIFICATION_URL, DOC_INDEX, "0");
         String documentUrl = docCaseJson.get(documentAtIndex);
-        String emailDocText = utils.downloadPdfAndParseToStringWithUserId(documentUrl, utils.getSchedulerCaseworkerUserId());
+        String emailDocText = utils.downloadPdfAndParseToStringForScheduler(documentUrl);
         emailDocText = emailDocText.replace("\n", "").replace("\r", "");
         assertTrue(emailDocText.contains(expectedText));
 

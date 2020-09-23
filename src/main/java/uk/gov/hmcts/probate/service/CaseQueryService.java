@@ -21,6 +21,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCases;
 import uk.gov.hmcts.probate.service.evidencemanagement.header.HttpHeadersFactory;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 
+import javax.annotation.Nullable;
 import java.net.URI;
 import java.util.Arrays;
 import java.util.List;
@@ -121,6 +122,7 @@ public class CaseQueryService {
         return runQuery(jsonQuery);
     }
 
+    @Nullable
     private List<ReturnedCaseDetails> runQuery(String jsonQuery) {
         log.info("CaseQueryService runQuery: " + jsonQuery);
         URI uri = UriComponentsBuilder

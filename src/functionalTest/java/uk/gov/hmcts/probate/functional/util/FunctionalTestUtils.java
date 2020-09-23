@@ -45,6 +45,9 @@ public class FunctionalTestUtils {
     @Value("${probate.caseworker.password}")
     private String caseworkerPassword;
 
+    @Value("${evidence.management.url}")
+    private String dmStoreUrl;
+
     @Value("${probate.scheduler.username}")
     private String schedulerEmail;
 
@@ -113,16 +116,17 @@ public class FunctionalTestUtils {
         Response document = RestAssured.given()
                 .relaxedHTTPSValidation()
                 .headers(getHeadersWithUserId())
-                .when().get(documentUrl).andReturn();
+                .when().get(documentUrl.replace("http://dm-store:8080", dmStoreUrl)).andReturn();
 
         return parsePDFToString(document.getBody().asInputStream());
     }
 
-    public String downloadPdfAndParseToStringWithUserId(String documentUrl, String userId) {
+    public String downloadPdfAndParseToStringForScheduler(String documentUrl) {
+        String userId = getSchedulerCaseworkerUserId();
         Response document = RestAssured.given()
             .relaxedHTTPSValidation()
             .headers(getHeadersWithUserId(serviceToken, userId))
-            .when().get(documentUrl).andReturn();
+            .when().get(documentUrl.replace("http://dm-store:8080", dmStoreUrl)).andReturn();
 
         return parsePDFToString(document.getBody().asInputStream());
     }
