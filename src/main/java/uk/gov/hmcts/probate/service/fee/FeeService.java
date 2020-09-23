@@ -38,7 +38,6 @@ public class FeeService {
         }
 
         Objects.nonNull(responseEntity);
-
         return responseEntity.getBody().getFeeAmount();
     }
 
@@ -56,7 +55,6 @@ public class FeeService {
         }
 
         Objects.nonNull(responseEntity);
-
         return responseEntity.getBody().getFeeAmount();
     }
 
