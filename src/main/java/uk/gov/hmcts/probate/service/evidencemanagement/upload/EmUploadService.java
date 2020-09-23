@@ -14,6 +14,7 @@ import uk.gov.hmcts.probate.model.evidencemanagement.EvidenceManagementTTL;
 import uk.gov.hmcts.probate.service.evidencemanagement.builder.DocumentManagementURIBuilder;
 import uk.gov.hmcts.probate.service.evidencemanagement.header.HttpHeadersFactory;
 
+import javax.annotation.Nullable;
 import java.io.IOException;
 import java.time.ZonedDateTime;
 import java.util.HashMap;
@@ -33,7 +34,7 @@ public class EmUploadService implements UploadService {
     public EvidenceManagementFile store(EvidenceManagementFileUpload file) throws IOException {
         MultiValueMap<String, Object> parameters = UploadRequestBuilder.prepareRequest(file);
 
-        HashMap response = evidenceManagementRestTemplate.postForObject(
+        @Nullable HashMap response = evidenceManagementRestTemplate.postForObject(
                 documentManagementURIBuilder.buildUrl(),
                 new HttpEntity<MultiValueMap>(parameters, headers.getMultiPartHttpHeader()),
                 HashMap.class);
