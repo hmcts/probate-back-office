@@ -122,6 +122,7 @@ public class CaseQueryService {
         return runQuery(jsonQuery);
     }
 
+    @Nullable
     private List<ReturnedCaseDetails> runQuery(String jsonQuery) {
         log.info("CaseQueryService runQuery: " + jsonQuery);
         URI uri = UriComponentsBuilder
@@ -148,7 +149,7 @@ public class CaseQueryService {
             log.info("CaseQueryService Elastic search entity: " + entity);
         }
 
-        @Nullable ReturnedCases returnedCases;
+        ReturnedCases returnedCases;
         try {
             log.info("Posting object for CaseQueryService...");
             returnedCases = restTemplate.postForObject(uri, entity, ReturnedCases.class);

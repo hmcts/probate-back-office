@@ -31,10 +31,11 @@ public class EmUploadService implements UploadService {
     private final ObjectMapper objectMapper;
 
     @Override
+    @Nullable
     public EvidenceManagementFile store(EvidenceManagementFileUpload file) throws IOException {
         MultiValueMap<String, Object> parameters = UploadRequestBuilder.prepareRequest(file);
 
-        @Nullable HashMap response = evidenceManagementRestTemplate.postForObject(
+        HashMap response = evidenceManagementRestTemplate.postForObject(
                 documentManagementURIBuilder.buildUrl(),
                 new HttpEntity<MultiValueMap>(parameters, headers.getMultiPartHttpHeader()),
                 HashMap.class);

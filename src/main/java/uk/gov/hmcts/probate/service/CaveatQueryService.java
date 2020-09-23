@@ -82,6 +82,7 @@ public class CaveatQueryService {
         return foundCaveats.get(0).getData();
     }
 
+    @Nullable
     private List<ReturnedCaveatDetails> runQuery(CaseType caseType, String jsonQuery) {
         log.info("CaveatMatchingService runQuery: " + jsonQuery);
         URI uri = UriComponentsBuilder
@@ -103,7 +104,7 @@ public class CaveatQueryService {
             log.info("Data search - caveat cases: " + entity);
         }
 
-        @Nullable ReturnedCaveats returnedCaveats;
+        ReturnedCaveats returnedCaveats;
         try {
             returnedCaveats = restTemplate.postForObject(uri, entity, ReturnedCaveats.class);
         } catch (HttpClientErrorException e) {
