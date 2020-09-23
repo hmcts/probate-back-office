@@ -120,6 +120,8 @@ public class ScheduledNotificationsTests extends IntegrationTestBase {
         String documentUrl = docCaseJson.get(GRANT_SCHEDULE_EMAIL_NOTIFICATION_URL.replaceAll(DOC_INDEX, "0"));
         String emailDocText = utils.downloadPdfAndParseToStringWithUserId(documentUrl, utils.getSchedulerCaseworkerUserId());
         emailDocText = emailDocText.replace("\n", "").replace("\r", "");
+        log.info("expectedText:"+expectedText);
+        log.info("emailDocText:"+emailDocText);
         assertTrue(emailDocText.contains(expectedText));
 
     }
