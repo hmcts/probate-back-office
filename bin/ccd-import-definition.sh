@@ -17,13 +17,12 @@ elif [ ! -f "$1" ]
 fi
 
 binFolder=$(dirname "$0")
-ccdUrl=${CCD_DEF_URL:-http://localhost:4451}
+
 userToken="$(${binFolder}/idam-user-token.sh)"
 serviceToken="$(${binFolder}/idam-service-token.sh ccd_gw)"
 
 curl --silent \
-  $CURL_OPTS \
-  ${ccdUrl}/import \
+  http://localhost:4451/import \
   -H "Authorization: Bearer ${userToken}" \
   -H "ServiceAuthorization: Bearer ${serviceToken}" \
   -F file="@$1"
