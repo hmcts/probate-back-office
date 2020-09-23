@@ -41,6 +41,9 @@ public class FunctionalTestUtils {
     @Value("${probate.caseworker.password}")
     private String caseworkerPassword;
 
+    @Value("${evidence.management.url}")
+    private String dmStoreUrl;
+
     @PostConstruct
     public void init() {
         serviceToken = serviceAuthTokenGenerator.generateServiceToken();
@@ -97,7 +100,7 @@ public class FunctionalTestUtils {
         Response document = RestAssured.given()
                 .relaxedHTTPSValidation()
                 .headers(getHeadersWithUserId())
-                .when().get(documentUrl).andReturn();
+                .when().get(documentUrl.replace("http://dm-store:8080", dmStoreUrl)).andReturn();
 
         return parsePDFToString(document.getBody().asInputStream());
     }
