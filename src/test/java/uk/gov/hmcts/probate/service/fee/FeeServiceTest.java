@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.service.fee;
 
+import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -9,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 import uk.gov.hmcts.probate.config.FeeServiceConfiguration;
+import uk.gov.hmcts.probate.exception.ClientDataException;
 import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.fee.Fee;
 import uk.gov.hmcts.probate.model.fee.FeeServiceResponse;
@@ -110,5 +112,14 @@ public class FeeServiceTest {
         assertEquals(BigDecimal.ONE, feeServiceResponse.getApplicationFee());
         assertEquals(BigDecimal.ONE, feeServiceResponse.getFeeForUkCopies());
         assertEquals(BigDecimal.ONE, feeServiceResponse.getFeeForNonUkCopies());
+    }
+
+    @Test
+    public void testExceptionIfResponseEntityIsNull() {
+        when(restTemplate.getForEntity(any(), eq(Fee.class))).thenReturn(null);
+
+        Assertions.assertThatThrownBy(() -> feeService.getApplicationFee(BigDecimal.valueOf(1000)))
+            .isInstanceOf(ClientDataException.class);
+
     }
 }

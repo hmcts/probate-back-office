@@ -5,8 +5,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 import org.springframework.util.MultiValueMap;
 import uk.gov.hmcts.probate.config.EvidenceManagementRestTemplate;
+import uk.gov.hmcts.probate.exception.ClientDataException;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.evidencemanagement.EvidenceManagementFile;
 import uk.gov.hmcts.probate.model.evidencemanagement.EvidenceManagementFileUpload;
@@ -32,13 +34,13 @@ public class EmUploadService implements UploadService {
 
     @Override
     @Nullable
-    public EvidenceManagementFile store(EvidenceManagementFileUpload file) throws IOException {
+    public EvidenceManagementFile store(EvidenceManagementFileUpload file) throws IOException,ClientDataException {
         MultiValueMap<String, Object> parameters = UploadRequestBuilder.prepareRequest(file);
 
-        HashMap response = evidenceManagementRestTemplate.postForObject(
-                documentManagementURIBuilder.buildUrl(),
-                new HttpEntity<MultiValueMap>(parameters, headers.getMultiPartHttpHeader()),
-                HashMap.class);
+        HashMap response = nonNull(evidenceManagementRestTemplate.postForObject(
+            documentManagementURIBuilder.buildUrl(),
+            new HttpEntity<MultiValueMap>(parameters, headers.getMultiPartHttpHeader()),
+            HashMap.class));
 
         ObjectMapper originalObjectMapper = new ObjectMapper();
         Map embedded = (Map) response.get("_embedded");
@@ -55,5 +57,14 @@ public class EmUploadService implements UploadService {
                 document.getDocumentLink().getDocumentUrl(),
                 new HttpEntity<>(json, headers.getApplicationJsonHttpHeader()),
                 HashMap.class);
+    }
+
+    private static <T> T nonNull(@Nullable T result) {
+        try {
+            Assert.state(result != null, "Entity should be non null in EmUploadService");
+        }catch (IllegalStateException e) {
+            throw new ClientDataException(e.getMessage());
+        }
+        return result;
     }
 }
