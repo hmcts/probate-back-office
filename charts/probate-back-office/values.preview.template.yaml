@@ -130,7 +130,6 @@ probate-frontend:
     releaseNameOverride: ${SERVICE_NAME}-probate-frontend
     image: hmctspublic.azurecr.io/probate/frontend:latest
     ingressHost: frontend-${SERVICE_FQDN}
-    aadIdentityName: probate
     environment:
       REDIS_HOST: ${SERVICE_NAME}-redis-master
       REDIS_PORT: 6379
