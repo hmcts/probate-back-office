@@ -14,6 +14,7 @@ import uk.gov.hmcts.probate.config.CCDDataStoreAPIConfiguration;
 import uk.gov.hmcts.probate.exception.BadRequestException;
 import uk.gov.hmcts.probate.exception.BusinessValidationException;
 import uk.gov.hmcts.probate.exception.CaseMatchingException;
+import uk.gov.hmcts.probate.exception.ClientDataException;
 import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.CaseType;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
@@ -86,16 +87,6 @@ public class CaveatQueryServiceTest {
     }
 
     @Test
-    public void findCaveatsWithCaveatIDMatch() {
-        List<ReturnedCaveatDetails> cases = caveatQueryService.findCaveatsById(CaseType.CAVEAT,
-                "1234567812345678");
-
-        assertEquals(1, cases.size());
-        assertThat(cases.get(0).getId(), is(1L));
-        assertEquals("Smith", cases.get(0).getData().getDeceasedSurname());
-    }
-
-    @Test
     public void findCaveatWithCaveatIDMatch() {
         CaveatData caveatData = caveatQueryService.findCaveatById(CaseType.CAVEAT,
                 "1234567812345678");
@@ -119,7 +110,15 @@ public class CaveatQueryServiceTest {
     public void testHttpExceptionCaughtWithBadPost() {
         when(restTemplate.postForObject(any(), any(), any())).thenThrow(HttpClientErrorException.class);
 
-        Assertions.assertThatThrownBy(() -> caveatQueryService.findCaveatsById(CaseType.CAVEAT, "1234567812345678"))
+        Assertions.assertThatThrownBy(() -> caveatQueryService.findCaveatById(CaseType.CAVEAT, "1234567812345678"))
                 .isInstanceOf(CaseMatchingException.class);
+    }
+
+    @Test
+    public void testExceptionWithNullFromRestTemplatePost() {
+        when(restTemplate.postForObject(any(), any(), any())).thenReturn(null);
+
+        Assertions.assertThatThrownBy(() -> caveatQueryService.findCaveatById(CaseType.CAVEAT, "1234567812345678"))
+            .isInstanceOf(ClientDataException.class);
     }
 }

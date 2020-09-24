@@ -6,7 +6,6 @@ import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -16,7 +15,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import uk.gov.hmcts.probate.config.CCDDataStoreAPIConfiguration;
 import uk.gov.hmcts.probate.exception.BusinessValidationException;
 import uk.gov.hmcts.probate.exception.CaseMatchingException;
-import uk.gov.hmcts.probate.exception.ClientException;
+import uk.gov.hmcts.probate.exception.ClientDataException;
 import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.CaseType;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
@@ -29,7 +28,6 @@ import javax.annotation.Nullable;
 import java.net.URI;
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
 
 import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
 import static org.elasticsearch.index.query.QueryBuilders.matchQuery;
@@ -56,16 +54,6 @@ public class CaveatQueryService {
     private final AuthTokenGenerator serviceAuthTokenGenerator;
     private final IdamAuthenticateUserService idamAuthenticateUserService;
     private final BusinessValidationMessageRetriever businessValidationMessageRetriever;
-
-    public List<ReturnedCaveatDetails> findCaveatsById(CaseType caseType, String caveatId) {
-        BoolQueryBuilder query = boolQuery();
-
-        query.must(matchQuery(REFERENCE, caveatId));
-
-        String jsonQuery = new SearchSourceBuilder().query(query).toString();
-
-        return runQuery(caseType, jsonQuery);
-    }
 
     public CaveatData findCaveatById(CaseType caseType, String caveatId) {
         BoolQueryBuilder query = boolQuery();
@@ -112,10 +100,12 @@ public class CaveatQueryService {
         } catch (HttpClientErrorException e) {
             appInsights.trackEvent(REST_CLIENT_EXCEPTION, e.getMessage());
             throw new CaseMatchingException(e.getStatusCode(), e.getMessage());
+        }catch (IllegalStateException e) {
+            throw new ClientDataException(e.getMessage());
         }
 
-        appInsights.trackEvent(REQUEST_SENT, uri.toString());
 
+        appInsights.trackEvent(REQUEST_SENT, uri.toString());
         return returnedCaveats.getCaveats();
     }
 
