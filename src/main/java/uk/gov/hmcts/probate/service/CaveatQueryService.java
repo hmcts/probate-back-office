@@ -116,15 +116,11 @@ public class CaveatQueryService {
 
         appInsights.trackEvent(REQUEST_SENT, uri.toString());
 
-        if(Objects.nonNull(returnedCaveats)){
-            return returnedCaveats.getCaveats();
-        } else {
-            throw new ClientException(HttpStatus.INTERNAL_SERVER_ERROR.value(), "CaveatQueryService attempt to return a null");
-        }
+        return returnedCaveats.getCaveats();
     }
 
     private static <T> T nonNull(@Nullable T result) {
-        Assert.state(result != null, "No result");
+        Assert.state(result != null, "Entity should be non null in CaveatQueryService");
         return result;
     }
 }
