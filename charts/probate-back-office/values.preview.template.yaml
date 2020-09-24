@@ -27,6 +27,7 @@ idam-pr:
       - https://${SERVICE_FQDN}/oauth2/callback
     XUI:
       - https://xui-${SERVICE_FQDN}/oauth2/callback
+      - http://xui-${SERVICE_FQDN}/oauth2/callback
     CCD:
       - https://case-management-web-${SERVICE_FQDN}/oauth2redirect
 ccd:
@@ -127,6 +128,9 @@ java:
     PROBATE_POSTGRESQL_PASSWORD: "hmcts"
     PROBATE_POSTGRESQL_HOSTNAME: ${SERVICE_NAME}-postgresql
     PROBATE_POSTGRESQL_DATABASE: probate
+    CCD_GATEWAY_HOST: http://gateway-${SERVICE_FQDN}
+    SERVICES_CORECASEDATA_BASEURL : http://ccd-data-store-api-${SERVICE_FQDN}
+    CCD_DATA_STORE_API_HOST : http://ccd-data-store-api-${SERVICE_FQDN}
 
   keyVaults:
     probate:
