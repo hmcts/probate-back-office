@@ -2,6 +2,7 @@ package uk.gov.hmcts.probate.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.ObjectUtils;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.springframework.http.HttpEntity;
@@ -9,6 +10,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -30,6 +32,7 @@ import javax.annotation.Nullable;
 import java.net.URI;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
 import static org.elasticsearch.index.query.QueryBuilders.matchQuery;
@@ -108,7 +111,7 @@ public class CaveatQueryService {
 
         ReturnedCaveats returnedCaveats;
         try {
-            returnedCaveats = restTemplate.postForObject(uri, entity, ReturnedCaveats.class);
+            returnedCaveats = nonNull(restTemplate.postForObject(uri, entity, ReturnedCaveats.class));
         } catch (HttpClientErrorException e) {
             appInsights.trackEvent(REST_CLIENT_EXCEPTION, e.getMessage());
             throw new CaseMatchingException(e.getStatusCode(), e.getMessage());
@@ -116,10 +119,15 @@ public class CaveatQueryService {
 
         appInsights.trackEvent(REQUEST_SENT, uri.toString());
 
-        if(returnedCaveats == null){
-            throw new ClientException(HttpStatus.INTERNAL_SERVER_ERROR.value(), "CaveatQueryService attempt to return a null");
-        } else {
+        if(Objects.nonNull(returnedCaveats)){
             return returnedCaveats.getCaveats();
+        } else {
+            throw new ClientException(HttpStatus.INTERNAL_SERVER_ERROR.value(), "CaveatQueryService attempt to return a null");
         }
+    }
+
+    private static <T> T nonNull(@Nullable T result) {
+        Assert.state(result != null, "No result");
+        return result;
     }
 }
