@@ -21,7 +21,7 @@ import static uk.gov.hmcts.probate.functional.util.FunctionalTestUtils.TOKEN_PAR
 public class ScheduledNotificationsTests extends IntegrationTestBase {
     
     @Value("${notifications.grantAwaitingDocumentationNotificationPeriodDays}")
-    private Long grantAwaitingDocumentationNotificationPeriodDays;
+    private String grantAwaitingDocumentationNotificationPeriodDays;
 
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
@@ -78,7 +78,7 @@ public class ScheduledNotificationsTests extends IntegrationTestBase {
 
     @Test
     public void createCaseAndVerifyGrantAwaitingDocumentation() throws InterruptedException {
-        String docDate = DATE_FORMAT.format(LocalDate.now().plusDays(grantAwaitingDocumentationNotificationPeriodDays));
+        String docDate = DATE_FORMAT.format(LocalDate.now().plusDays(Integer.valueOf(grantAwaitingDocumentationNotificationPeriodDays)));
 
         String baseCaseJson = utils.getJsonFromFile(APPLY_FOR_GRANT_PAYLOAD);
         String grantDocCaseJson = utils.replaceAttribute(baseCaseJson, EVENT_PARM, EVENT_APPLY);
