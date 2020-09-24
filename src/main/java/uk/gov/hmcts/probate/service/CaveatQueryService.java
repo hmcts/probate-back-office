@@ -84,8 +84,7 @@ public class CaveatQueryService {
         }
         return foundCaveats.get(0).getData();
     }
-
-    @Nullable
+    
     private List<ReturnedCaveatDetails> runQuery(CaseType caseType, String jsonQuery) {
         log.info("CaveatMatchingService runQuery: " + jsonQuery);
         URI uri = UriComponentsBuilder
