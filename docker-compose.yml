@@ -64,7 +64,7 @@ services:
       DATA_STORE_IDAM_KEY: AAAAAAAAAAAAAAAA
       DATA_STORE_TOKEN_SECRET: iuasbcuasdcbasdgcasdgcuysachjsacyasdgjcgasdj
       DATA_STORE_S2S_AUTHORISED_SERVICES: ccd_gw,fpl_case_service,ccd_data,ccd_ps,probate_backend,payment-api
-      CCD_DM_DOMAIN: http://localhost:5006
+      CCD_DM_DOMAIN: http://dm-store:8080
       DEFINITION_STORE_HOST: http://ccd-definition-store-api:4451
       USER_PROFILE_HOST: http://ccd-user-profile-api:4453
       IDAM_USER_URL: http://sidam-api:5000
@@ -96,7 +96,7 @@ services:
       DM_GATEWAY_BASE_URL: https://api-gateway.dev.dm.reform.hmcts.net
       OAUTH2_CLIENT_ID: ccd_gateway
       DM_URL: http://localhost:3453/documents
-      DM_URL_REMOTE: http://localhost:5006/documents
+      DM_URL_REMOTE: http://dm-store:8080/documents
     ports:
       - 3451:3451
     depends_on:
@@ -432,18 +432,99 @@ services:
       - shared-database
 
   probate-back-office:
-    image: qoomon/docker-host
-    cap_add: [ 'NET_ADMIN', 'NET_RAW' ]
-    restart: on-failure
+    build:
+      context: .
+    dns:
+      - 172.16.0.10
+      - 172.16.0.14
+      - 8.8.8.8
+    environment:
+      JAVA_TOOL_OPTIONS: -Xms128m -Xmx400m
+      AUTH_IDAM_CLIENT_BASEURL: http://sidam-api:5000
+      S2S_AUTH_URL: http://service-auth-provider-api:8080
+      SPRING_DATASOURCE_URL: jdbc:postgresql://shared-database:5432/probate_man
+      SPRING_DATASOURCE_USERNAME: ${DB_USERNAME}
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
+      EVIDENCE_MANAGEMENT_URL: http://dm-store:8080
+      PDF_SERVICE_URL: http://pdf-service-api:5500
+      PRINTSERVICE_HOST:
+      IDAM_SERVICE_HOST: http://sidam-api:5000
+      FEE_API_URL: http://fees-api:8080
+      EVIDENCE_MANAGEMENT_HOST: http://dm-store:8080
+      CCD_GATEWAY_HOST: http://ccd-api-gateway:3453
+      SEND_LETTER_SERIVCE_BASEURL: http://send-letter-service:8485
+      SERVICES_CORECASEDATA_BASEURL: http://ccd-data-store-api:4452
+      CCD_DATA_STORE_API_HOST: http://ccd-data-store-api:4452
+    ports:
+      - 4104:4104
+    depends_on:
+      - sidam-api
+      - shared-database
+      - service-auth-provider-api
+      - dm-store
 
-  tcp_message_emitter:
-    depends_on: [ probate-back-office ]
-    image: alpine
-    command: [ "sh", "-c", "while :; do date; sleep 1; done | nc 'probate-back-office' 4104 -v"]
+  probate-frontend:
+    image: hmctspublic.azurecr.io/probate/frontend:latest
+    environment:
+      - IDAM_API_URL=http://sidam-api:5000
+      - IDAM_S2S_URL=http://service-auth-provider-api:8080
+      - PAYMENT_API_URL=http://payments-api:8383
+      - VALIDATION_SERVICE_URL=http://probate-business-service:8081/validate
+      - ORCHESTRATOR_SERVICE_URL=http://probate-orchestrator:8888
+      - FEES_REGISTRY_URL=http://fees-api:4411/fees-register
+      - USE_REDIS=false
+      - REDIS_USE_TLS=false
+      - USE_IDAM=true
+      - REQUIRE_CCD_CASE_ID=true
+      - NODE_ENV=dev
+    ports:
+      - 3000:3000
 
-networks:
-  default:
-    driver: bridge
+
+  probate-orchestrator:
+    image: hmctspublic.azurecr.io/probate/orchestrator-service:latest
+    environment:
+      JAVA_TOOL_OPTIONS: -Xms128m -Xmx256m
+      AUTH_IDAM_CLIENT_BASEURL: http://sidam-api:5000
+      AUTH_PROVIDER_SERVICE_CLIENT_BASEURL: http://service-auth-provider-api:8080
+      SUBMIT_SERVICE_API_URL: http://probate-submit-service:8181
+      BUSINESS_SERVICE_API_URL:  http://probate-business-service:8081
+      BACK_OFFICE_API_URL: http://probate-back-office:4104
+      SERVICES_CORECASEDATA_BASEURL: http://ccd-data-store-api:4452
+    ports:
+      - 8888:8888
+    depends_on:
+      - sidam-api
+      - service-auth-provider-api
+      - probate-back-office
+
+  probate-submit-service:
+    image: hmctspublic.azurecr.io/probate/submit-service:latest
+    environment:
+      JAVA_TOOL_OPTIONS: -Xms128m -Xmx400m
+      AUTH_IDAM_CLIENT_BASEURL: http://sidam-api:5000
+      AUTH_PROVIDER_SERVICE_CLIENT_BASEURL: http://service-auth-provider-api:8080
+      SERVICES_CORECASEDATA_BASEURL: http://ccd-data-store-api:4452
+    ports:
+      - 8181:8181
+    depends_on:
+      - sidam-api
+      - shared-database
+      - ccd-data-store-api
+      - service-auth-provider-api
+
+  probate-business-service:
+    image: hmctspublic.azurecr.io/probate/business-service:latest
+    environment:
+      - JAVA_TOOL_OPTIONS=-Xms128m -Xmx400m
+      - SERVER_PORT=8081
+      - SPRING_APPLICATION_JSON={
+        "services.auth.provider.baseUrl":"http://service-auth-provider-api:8080",
+        "services.pdf.service.url":"http://pdf-service-api:5500",
+        "document_management.url":"http://dm-store:8080"
+        }
+    ports:
+      - 8081:8081
 
 volumes:
   ccd-docker-azure-blob-data:

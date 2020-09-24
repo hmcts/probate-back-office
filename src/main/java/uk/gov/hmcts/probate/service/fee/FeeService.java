@@ -13,6 +13,7 @@ import uk.gov.hmcts.probate.model.fee.FeeServiceResponse;
 
 import java.math.BigDecimal;
 import java.net.URI;
+import java.util.Objects;
 
 import static uk.gov.hmcts.probate.insights.AppInsightsEvent.REQUEST_SENT;
 
@@ -36,6 +37,8 @@ public class FeeService {
             return BigDecimal.ZERO;
         }
 
+        Objects.nonNull(responseEntity);
+        Objects.nonNull(responseEntity.getBody());
         return responseEntity.getBody().getFeeAmount();
     }
 
@@ -52,6 +55,8 @@ public class FeeService {
             return BigDecimal.ZERO;
         }
 
+        Objects.nonNull(responseEntity);
+        Objects.nonNull(responseEntity.getBody());
         return responseEntity.getBody().getFeeAmount();
     }
 
