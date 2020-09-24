@@ -61,12 +61,11 @@ public class ScheduledNotificationsTests extends IntegrationTestBase {
         String printCaseUpdateResponse = utils.continueUpdateCaseAsCaseworker(printCaseUpdateJson, caseId);
 
         String markAsReadyForExaminationStartResponseToken = utils.startUpdateCaseAsCaseworker(caseId, EVENT_MARK_AS_READY_FOR_EXAMINATION);
-        String markAsReadyForExaminationUpdateJson = utils.replaceAttribute(printCaseUpdateResponse, printCaseStartResponseToken, markAsReadyForExaminationStartResponseToken);
+        String markAsReadyForExaminationUpdateJson = utils.replaceAttribute(printCaseUpdateJson, printCaseStartResponseToken, markAsReadyForExaminationStartResponseToken);
         markAsReadyForExaminationUpdateJson = utils.replaceAttribute(markAsReadyForExaminationUpdateJson, EVENT_PRINT_CASE, EVENT_MARK_AS_READY_FOR_EXAMINATION);
         log.info("markAsReadyForExaminationUpdateJson:"+markAsReadyForExaminationUpdateJson);
         String markAsReadyForExaminationUpdateResponse = utils.continueUpdateCaseAsCaseworker(markAsReadyForExaminationUpdateJson, caseId);
 
-        log.info("markAsReadyForExaminationUpdateResponse:"+markAsReadyForExaminationUpdateResponse);
         postAndAssertAsScheduler(GRANT_DELAYED, delayedDate, caseId);
         
         String expectedText = utils.getJsonFromFile(GRANT_DELAY_RESPONSE).replaceAll(RESPONSE_CASE_NUM_PARM, caseId);
@@ -85,12 +84,13 @@ public class ScheduledNotificationsTests extends IntegrationTestBase {
         String baseCaseJson = utils.getJsonFromFile(APPLY_FOR_GRANT_PAYLOAD);
         String grantDocCaseJson = utils.replaceAttribute(baseCaseJson, EVENT_PARM, EVENT_APPLY);
         String applyforGrantPaperApplicationManResponse = utils.createCaseAsCaseworker(grantDocCaseJson, EVENT_APPLY);
+        log.info("applyforGrantPaperApplicationManResponse:"+applyforGrantPaperApplicationManResponse);
         JsonPath jsonPathApply = JsonPath.from(applyforGrantPaperApplicationManResponse);
         String caseId = jsonPathApply.get("id").toString();
+        String applyCase = utils.findCaseAsCaseworker(caseId);
 
-        String printCaseUpdateResponse = utils.updateCaseAsCaseworker(applyforGrantPaperApplicationManResponse, EVENT_PRINT_CASE, caseId);
+        String printCaseUpdateResponse = utils.updateCaseAsCaseworker(applyCase, EVENT_PRINT_CASE, caseId);
 
-        log.info("printCaseUpdateResponse:"+printCaseUpdateResponse);
         postAndAssertAsScheduler(GRANT_AWAITING_DOCUMENTATION, docDate, caseId);
 
         String expectedText = utils.replaceAttribute(utils.getJsonFromFile(AWAITING_DOCS_RESPONSE), RESPONSE_CASE_NUM_PARM, caseId);
