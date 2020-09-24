@@ -61,7 +61,7 @@ public class ScheduledNotificationsTests extends IntegrationTestBase {
         String printCaseUpdateResponse = utils.continueUpdateCaseAsCaseworker(printCaseUpdateJson, caseId);
 
         String markAsReadyForExaminationStartResponseToken = utils.startUpdateCaseAsCaseworker(caseId, EVENT_MARK_AS_READY_FOR_EXAMINATION);
-        String markAsReadyForExaminationUpdateJson = utils.replaceAttribute(printCaseUpdateJson, printCaseStartResponseToken, markAsReadyForExaminationStartResponseToken);
+        String markAsReadyForExaminationUpdateJson = utils.replaceAttribute(printCaseUpdateResponse, printCaseStartResponseToken, markAsReadyForExaminationStartResponseToken);
         markAsReadyForExaminationUpdateJson = utils.replaceAttribute(markAsReadyForExaminationUpdateJson, EVENT_PRINT_CASE, EVENT_MARK_AS_READY_FOR_EXAMINATION);
         String markAsReadyForExaminationUpdateResponse = utils.continueUpdateCaseAsCaseworker(markAsReadyForExaminationUpdateJson, caseId);
 
