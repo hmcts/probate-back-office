@@ -23,6 +23,7 @@ import uk.gov.hmcts.probate.service.evidencemanagement.header.HttpHeadersFactory
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.authorisation.generators.ServiceAuthTokenGenerator;
 
+import javax.annotation.Nullable;
 import java.net.URI;
 import java.util.List;
 import java.util.Locale;
@@ -81,6 +82,7 @@ public class CaveatQueryService {
         return foundCaveats.get(0).getData();
     }
 
+    @Nullable
     private List<ReturnedCaveatDetails> runQuery(CaseType caseType, String jsonQuery) {
         log.info("CaveatMatchingService runQuery: " + jsonQuery);
         URI uri = UriComponentsBuilder
