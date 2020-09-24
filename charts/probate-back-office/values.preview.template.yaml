@@ -19,6 +19,9 @@ postgresql:
   persistence:
     enabled: false
 
+redis:
+  enabled: true
+
 idam-pr:
   enabled: true
   releaseNameOverride: ${SERVICE_NAME}-xui-idam-pr
@@ -119,6 +122,44 @@ xui-webapp:
       SERVICES_CCD_DATA_STORE_API: http://${SERVICE_NAME}-ccd-data-store-api
       SERVICES_TERMS_AND_CONDITIONS: http://xui-terms-and-conditions-${SERVICE_FQDN}.service.core-compute-preview.internal
       JURISDICTIONS: PROBATE
+
+probate-frontend:
+  enabled: true
+  nodejs:
+    imagePullPolicy: Always
+    releaseNameOverride: ${SERVICE_NAME}-probate-frontend
+    image: hmctspublic.azurecr.io/probate/frontend:latest
+    ingressHost: frontend-${SERVICE_FQDN}
+    aadIdentityName: probate
+    environment:
+      REDIS_HOST: ${SERVICE_NAME}-redis-master
+      REDIS_PORT: 6379
+      REDIS_USE_TLS: false
+      LAUNCHDARKLY_ENABLED: true
+      IDAM_SERVICE_KEY: ${API_GATEWAY_S2S_KEY}
+      IDAM_OAUTH2_CLIENT_SECRET: ${API_GATEWAY_IDAM_SECRET}
+    keyVaults:
+      probate:
+        secrets:
+          - idam-s2s-secret
+          - ccidam-idam-api-secrets-probate
+          - postcode-service-url
+          - postcode-service-token2
+          - probate-survey
+          - probate-survey-end
+          - probate-service-id
+          - probate-site-id
+          - probate-webchat-id
+          - probate-webchat-tenant
+          - probate-webchat-button-no-agents
+          - probate-webchat-button-busy
+          - probate-webchat-button-service-closed
+          - payCaseWorkerUser
+          - payCaseWorkerPass
+          - frontend-redis-access-key
+          - AppInsightsInstrumentationKey
+          - launchdarkly-key
+          - pcq-token-key
 
 java:
   image: ${IMAGE_NAME}

@@ -20,3 +20,13 @@ dependencies:
     version: 8.9.8
     repository: https://charts.bitnami.com/bitnami
     condition: postgresql.enabled
+
+  - name: probate-frontend
+    version: ~2.0.14
+    repository: '@hmctspublic'
+    condition: probate-frontend.enabled
+
+  - name: redis
+    version: 10.6.18
+    repository: "https://charts.bitnami.com/bitnami"
+    condition: redis.enabled

@@ -10,6 +10,12 @@ xui-webapp:
 postgresql:
   enabled: false
 
+probate-frontend:
+  enabled: false
+
+redis:
+  enabled: false
+
 java:
   applicationPort: 4104
   image: hmctspublic.azurecr.io/probate/back-office:latest
