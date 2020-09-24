@@ -102,9 +102,9 @@ withPipeline("java", product, component) {
   before('smoketest:preview') {
     env.IDAM_API_URL="https://idam-api.aat.platform.hmcts.net"
     env.S2S_API_URL="http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
-    env.CCD_DEF_URL="https://ccd-definition-store-probate-back-office-pr-${CHANGE_ID}.service.core-compute-preview.internal"
-    env.CCD_PRO_URL="https://ccd-user-profile-api-probate-back-office-pr-${CHANGE_ID}.service.core-compute-preview.internal"
-    env.CCD_DAT_URL="https://ccd-data-store-api-probate-back-office-pr-${CHANGE_ID}.service.core-compute-preview.internal"
+    env.CCD_DEF_URL="http://ccd-definition-store-probate-back-office-pr-${CHANGE_ID}.service.core-compute-preview.internal"
+    env.CCD_PRO_URL="http://ccd-user-profile-api-probate-back-office-pr-${CHANGE_ID}.service.core-compute-preview.internal"
+    env.CCD_DAT_URL="http://ccd-data-store-api-probate-back-office-pr-${CHANGE_ID}.service.core-compute-preview.internal"
 
     env.URL="https://xui-probate-back-office-pr-${CHANGE_ID}.service.core-compute-preview.internal"
     env.IMPORTER_USERNAME="ccd.probate.default@hmcts.net"
