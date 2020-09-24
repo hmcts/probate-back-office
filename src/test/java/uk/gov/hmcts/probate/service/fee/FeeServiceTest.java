@@ -115,10 +115,11 @@ public class FeeServiceTest {
     }
 
     @Test
-    public void testExceptionIfResponseEntityIsNull() {
+    public void testExceptionIfRestTemplateReturnsNull() {
+        when(responseEntity.getBody()).thenReturn(fee);
         when(restTemplate.getForEntity(any(), eq(Fee.class))).thenReturn(null);
 
-        Assertions.assertThatThrownBy(() -> feeService.getApplicationFee(BigDecimal.valueOf(1000)))
+        Assertions.assertThatThrownBy(() -> feeService.getApplicationFee(BigDecimal.valueOf(5000)))
             .isInstanceOf(ClientDataException.class);
 
     }

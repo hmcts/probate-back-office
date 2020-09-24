@@ -9,7 +9,6 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.MediaType;
 import uk.gov.hmcts.probate.config.EvidenceManagementRestTemplate;
 import uk.gov.hmcts.probate.exception.ClientDataException;
-import uk.gov.hmcts.probate.model.CaseType;
 import uk.gov.hmcts.probate.model.evidencemanagement.EvidenceManagementFile;
 import uk.gov.hmcts.probate.model.evidencemanagement.EvidenceManagementFileUpload;
 import uk.gov.hmcts.probate.service.evidencemanagement.builder.DocumentManagementURIBuilder;
@@ -75,23 +74,7 @@ public class EmUploadServiceTest {
     }
 
     @Test
-    public void testExceptionWithNullFromApiCall() throws Exception {
-        EvidenceManagementFile evidenceManagementFile = new EvidenceManagementFile();
-        evidenceManagementFile.setDocumentType("TEST_DOCUMENT_TYPE");
-        evidenceManagementFile.setSize(200L);
-        evidenceManagementFile.setOriginalDocumentName("ORIGINAL_DOCUMENT_NAME");
-        evidenceManagementFile.setCreatedBy("TEST_USER");
-        evidenceManagementFile.setLastModifiedBy("TEST_USER");
-        evidenceManagementFile.setModifiedOn(new Date());
-        evidenceManagementFile.setCreatedOn(new Date());
-        evidenceManagementFile.setMimeType("mime type");
-        evidenceManagementFile.setLinks(new HashMap<>());
-
-        HashMap embedded = new HashMap();
-        embedded.put("documents", Collections.singletonList(evidenceManagementFile));
-        HashMap response = new HashMap();
-        response.put("_embedded", embedded);
-
+    public void testExceptionWithNullFromApiCall() {
         when(documentManagementURIBuilder.buildUrl()).thenReturn(URL);
         when(evidenceManagementRestTemplate.postForObject(eq(URL), any(), eq(HashMap.class))).thenReturn(null);
         EvidenceManagementFileUpload evidenceManagementFileUpload =
