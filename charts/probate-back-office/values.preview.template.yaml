@@ -42,7 +42,7 @@ ccd:
     definitionImporter:
       enabled: false
     managementWeb:
-      enabled: true
+      enabled: false
     s2s:
       enabled: false
     postgresql:
@@ -50,7 +50,6 @@ ccd:
 
   global:
     ccdApiGatewayIngress: gateway-${SERVICE_FQDN}
-    ccdCaseManagementWebIngress: case-management-web-${SERVICE_FQDN}
     ccdDataStoreUrl: http://${SERVICE_NAME}-ccd-data-store-api
     ccdDefinitionStoreUrl: http://${SERVICE_NAME}-ccd-definition-store
     ccdUserProfileUrl: http://${SERVICE_NAME}-ccd-user-profile-api
@@ -102,10 +101,6 @@ ccd:
     image: hmctspublic.azurecr.io/ccd/user-profile-importer:latest
     users:
       - probatebackoffice@gmail.com|PROBATE|GrantOfRepresentation|open
-
-  postgresql:
-    persistence:
-      enabled: false
 
 xui-webapp:
   enabled: true
@@ -169,8 +164,8 @@ java:
     PROBATE_POSTGRESQL_HOSTNAME: ${SERVICE_NAME}-postgresql
     PROBATE_POSTGRESQL_DATABASE: probate
     CCD_GATEWAY_HOST: http://gateway-${SERVICE_FQDN}
-    SERVICES_CORECASEDATA_BASEURL : http://ccd-data-store-api-${SERVICE_FQDN}
-    CCD_DATA_STORE_API_HOST : http://ccd-data-store-api-${SERVICE_FQDN}
+    SERVICES_CORECASEDATA_BASEURL : http://${SERVICE_NAME}-ccd-data-store-api
+    CCD_DATA_STORE_API_HOST : http://${SERVICE_NAME}-ccd-data-store-api
 
   keyVaults:
     probate:
