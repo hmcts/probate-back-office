@@ -99,10 +99,6 @@ ccd:
     users:
       - probatebackoffice@gmail.com|PROBATE|GrantOfRepresentation|open
 
-  postgresql:
-    persistence:
-      enabled: false
-
 xui-webapp:
   enabled: true
   nodejs:
