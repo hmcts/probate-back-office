@@ -6,6 +6,7 @@ import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
@@ -14,11 +15,13 @@ import org.springframework.web.util.UriComponentsBuilder;
 import uk.gov.hmcts.probate.config.CCDDataStoreAPIConfiguration;
 import uk.gov.hmcts.probate.exception.BusinessValidationException;
 import uk.gov.hmcts.probate.exception.CaseMatchingException;
+import uk.gov.hmcts.probate.exception.ClientException;
 import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.CaseType;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.ReturnedCaveatDetails;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.ReturnedCaveats;
+import uk.gov.hmcts.probate.model.evidencemanagement.EvidenceManagementFile;
 import uk.gov.hmcts.probate.service.evidencemanagement.header.HttpHeadersFactory;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.authorisation.generators.ServiceAuthTokenGenerator;
@@ -114,6 +117,10 @@ public class CaveatQueryService {
 
         appInsights.trackEvent(REQUEST_SENT, uri.toString());
 
-        return returnedCaveats.getCaveats();
+        if(returnedCaveats == null){
+            throw new ClientException(HttpStatus.INTERNAL_SERVER_ERROR.value(), "CaveatQueryService attempt to return a null");
+        } else {
+            return returnedCaveats.getCaveats();
+        }
     }
 }
