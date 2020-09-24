@@ -88,7 +88,8 @@ public class ScheduledNotificationsTests extends IntegrationTestBase {
         JsonPath jsonPathApply = JsonPath.from(applyforGrantPaperApplicationManResponse);
         String caseId = jsonPathApply.get("id").toString();
 
-        String printCaseUpdateResponse = utils.updateCaseAsCaseworker(baseCaseJson, EVENT_PRINT_CASE, caseId);
+        String updateGrantDocCaseJson = utils.replaceAttribute(baseCaseJson, EVENT_PARM, EVENT_PRINT_CASE);
+        String printCaseUpdateResponse = utils.updateCaseAsCaseworker(updateGrantDocCaseJson, EVENT_PRINT_CASE, caseId);
 
         postAndAssertAsScheduler(GRANT_AWAITING_DOCUMENTATION, docDate, caseId);
 
