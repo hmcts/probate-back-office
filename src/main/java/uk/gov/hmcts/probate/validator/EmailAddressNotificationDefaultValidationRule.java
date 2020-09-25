@@ -1,6 +1,7 @@
 package uk.gov.hmcts.probate.validator;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.validator.routines.EmailValidator;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
@@ -26,11 +27,16 @@ class EmailAddressNotificationDefaultValidationRule implements EmailAddressNotif
         Set<FieldErrorResponse> errors = new HashSet<>();
 
         if (ccdData.getApplicationType().equalsIgnoreCase(String.valueOf(PERSONAL))
-                && ccdData.getPrimaryApplicantEmailAddress().isEmpty()) {
+            && (!isValid(ccdData.getPrimaryApplicantEmailAddress()))) {
             errors.add(businessValidationMessageService.generateError(BUSINESS_ERROR, "emailNotProvidedPA"));
-        } else if (ccdData.getApplicationType().equalsIgnoreCase(String.valueOf(SOLICITOR)) && ccdData.getSolsSolicitorEmail().isEmpty()) {
+        } else if (ccdData.getApplicationType().equalsIgnoreCase(String.valueOf(SOLICITOR))
+            && (!isValid(ccdData.getPrimaryApplicantEmailAddress()))) {
             errors.add(businessValidationMessageService.generateError(BUSINESS_ERROR, "emailNotProvidedSOLS"));
         }
         return new ArrayList<>(errors);
+    }
+
+    private boolean isValid(String email) {
+        return email != null && !email.isEmpty() && EmailValidator.getInstance().isValid(email);
     }
 }
