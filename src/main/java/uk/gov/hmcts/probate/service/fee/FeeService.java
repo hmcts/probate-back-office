@@ -14,7 +14,6 @@ import uk.gov.hmcts.probate.model.fee.Fee;
 import uk.gov.hmcts.probate.model.fee.FeeServiceResponse;
 
 import javax.annotation.Nullable;
-import javax.validation.constraints.Null;
 import java.math.BigDecimal;
 import java.net.URI;
 import java.util.Objects;

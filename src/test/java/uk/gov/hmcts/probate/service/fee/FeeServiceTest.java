@@ -121,13 +121,24 @@ public class FeeServiceTest {
     }
     @Test(expected = ClientDataException.class)
     public void testExceptionIfResponseEntityGetBodyReturnsNull() {
+        when(fee.getFeeAmount()).thenReturn(BigDecimal.ONE);
+        when(responseEntity.getStatusCode()).thenReturn(HttpStatus.OK);
+
+        when(responseEntity.getBody()).thenReturn(null);
+        feeService.getApplicationFee(BigDecimal.valueOf(5000));
+    }
+
+    @Test(expected = ClientDataException.class)
+    public void copiesFeeExceptionIfResponseEntityGetBodyReturnsNull() {
+
         when(feeServiceConfiguration.getUrl()).thenReturn("http://test.test/lookupWithKeyword");
         when(feeServiceConfiguration.getKeyword()).thenReturn("FeeKey");
-        when(responseEntity.getStatusCode()).thenReturn(HttpStatus.OK);
         when(restTemplate.getForEntity(eq("http://test.test/lookupWithKeywordnull?service&jurisdiction1&"
                 + "jurisdiction2&channel&applicant_type&event=copies&amount_or_volume=1&keyword=KeyFee"),
             eq(Fee.class))).thenReturn(responseEntity);
+        when(responseEntity.getStatusCode()).thenReturn(HttpStatus.OK);
+        when(fee.getFeeAmount()).thenReturn(BigDecimal.ONE);
         when(responseEntity.getBody()).thenReturn(null);
-        feeService.getApplicationFee(BigDecimal.valueOf(5000));
+        feeService.getCopiesFee(1L);
     }
 }
