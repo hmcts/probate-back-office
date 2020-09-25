@@ -114,12 +114,9 @@ public class FeeServiceTest {
         assertEquals(BigDecimal.ONE, feeServiceResponse.getFeeForNonUkCopies());
     }
 
-    @Test
+    @Test(expected = ClientDataException.class)
     public void testExceptionIfRestTemplateReturnsNull() {
         when(restTemplate.getForEntity(any(), eq(Fee.class))).thenReturn(null);
-
-        Assertions.assertThatThrownBy(() -> feeService.getApplicationFee(BigDecimal.valueOf(5000)))
-            .isInstanceOf(ClientDataException.class);
-
+        feeService.getApplicationFee(BigDecimal.valueOf(5000));
     }
 }
