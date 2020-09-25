@@ -41,7 +41,7 @@ public class EmUploadService implements UploadService {
             HashMap.class));
 
         ObjectMapper originalObjectMapper = new ObjectMapper();
-        Map embedded = (Map) response.get("_embedded");
+        Map embedded = response.get("_embedded");
         List documents = (List) embedded.get("documents");
 
         return originalObjectMapper.readValue(originalObjectMapper.writeValueAsString(documents.get(0)), EvidenceManagementFile.class);

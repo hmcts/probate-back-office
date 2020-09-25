@@ -116,7 +116,6 @@ public class FeeServiceTest {
 
     @Test
     public void testExceptionIfRestTemplateReturnsNull() {
-        when(responseEntity.getBody()).thenReturn(fee);
         when(restTemplate.getForEntity(any(), eq(Fee.class))).thenReturn(null);
 
         Assertions.assertThatThrownBy(() -> feeService.getApplicationFee(BigDecimal.valueOf(5000)))
