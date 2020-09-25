@@ -104,7 +104,6 @@ public class CaveatQueryService {
             throw new ClientDataException(e.getMessage());
         }
 
-
         appInsights.trackEvent(REQUEST_SENT, uri.toString());
         return returnedCaveats.getCaveats();
     }

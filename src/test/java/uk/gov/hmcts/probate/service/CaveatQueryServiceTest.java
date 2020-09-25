@@ -111,11 +111,9 @@ public class CaveatQueryServiceTest {
                 .isInstanceOf(CaseMatchingException.class);
     }
 
-    @Test
+    @Test(expected = ClientDataException.class)
     public void testExceptionWithNullFromRestTemplatePost() {
         when(restTemplate.postForObject(any(), any(), any())).thenReturn(null);
-
-        Assertions.assertThatThrownBy(() -> caveatQueryService.findCaveatById(CaseType.CAVEAT, "1234567812345678"))
-            .isInstanceOf(ClientDataException.class);
+        caveatQueryService.findCaveatById(CaseType.CAVEAT, "1234567812345678");
     }
 }
