@@ -130,8 +130,6 @@ probate-frontend:
       REDIS_PORT: 6379
       REDIS_USE_TLS: false
       LAUNCHDARKLY_ENABLED: true
-      IDAM_SERVICE_KEY: ${API_GATEWAY_S2S_KEY}
-      IDAM_OAUTH2_CLIENT_SECRET: ${API_GATEWAY_IDAM_SECRET}
     keyVaults:
       probate:
         secrets:
