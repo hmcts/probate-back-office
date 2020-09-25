@@ -14,6 +14,7 @@ import uk.gov.hmcts.probate.model.evidencemanagement.EvidenceManagementFileUploa
 import uk.gov.hmcts.probate.service.evidencemanagement.builder.DocumentManagementURIBuilder;
 import uk.gov.hmcts.probate.service.evidencemanagement.header.HttpHeadersFactory;
 
+import java.io.IOException;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -73,14 +74,13 @@ public class EmUploadServiceTest {
         verify(documentManagementURIBuilder).buildUrl();
     }
 
-    @Test
-    public void testExceptionWithNullFromApiCall() {
+    @Test(expected = ClientDataException.class)
+    public void testExceptionWithNullFromApiCall() throws IOException {
         when(documentManagementURIBuilder.buildUrl()).thenReturn(URL);
         when(evidenceManagementRestTemplate.postForObject(eq(URL), any(), eq(HashMap.class))).thenReturn(null);
         EvidenceManagementFileUpload evidenceManagementFileUpload =
             new EvidenceManagementFileUpload(MediaType.APPLICATION_PDF, new byte[100]);
 
-        Assertions.assertThatThrownBy(() -> emUploadService.store(evidenceManagementFileUpload))
-            .isInstanceOf(ClientDataException.class);
+        emUploadService.store(evidenceManagementFileUpload);
     }
 }

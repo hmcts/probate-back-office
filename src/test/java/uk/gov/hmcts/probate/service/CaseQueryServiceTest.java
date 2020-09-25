@@ -156,11 +156,9 @@ public class CaseQueryServiceTest {
         assertEquals("Smith", cases.get(0).getData().getDeceasedSurname());
     }
 
-    @Test
+    @Test(expected = ClientDataException.class)
     public void testExceptionWithNullFromRestTemplatePost() {
         when(restTemplate.postForObject(any(), any(), any())).thenReturn(null);
-
-        Assertions.assertThatThrownBy(() -> caseQueryService.findCasesWithDatedDocument("testDate"))
-            .isInstanceOf(ClientDataException.class);
+        caseQueryService.findCasesWithDatedDocument("testDate");
     }
 }
