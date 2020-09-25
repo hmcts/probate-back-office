@@ -119,6 +119,7 @@ public class FeeServiceTest {
         when(restTemplate.getForEntity(any(), eq(Fee.class))).thenReturn(null);
         feeService.getApplicationFee(BigDecimal.valueOf(5000));
     }
+
     @Test(expected = ClientDataException.class)
     public void testExceptionIfResponseEntityGetBodyReturnsNull() {
         when(fee.getFeeAmount()).thenReturn(BigDecimal.ONE);

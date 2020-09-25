@@ -40,10 +40,10 @@ public class FeeService {
             return BigDecimal.ZERO;
         }
 
-        if(Objects.nonNull(responseEntity.getBody())) {
+        try {
                 return responseEntity.getBody().getFeeAmount();
             }
-            else {
+            catch(NullPointerException e) {
             throw new ClientDataException("responseEntity.getBody() returned null in FeeService:getApplicationFee");
         }
       }
@@ -61,10 +61,10 @@ public class FeeService {
             return BigDecimal.ZERO;
         }
 
-        if(Objects.nonNull(responseEntity.getBody())) {
+        try {
             return responseEntity.getBody().getFeeAmount();
         }
-        else {
+        catch(NullPointerException e) {
             throw new ClientDataException("responseEntity.getBody() returned null in FeeService:getCopiesFee");
         }
     }
