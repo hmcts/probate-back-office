@@ -14,6 +14,7 @@ import uk.gov.hmcts.probate.model.fee.Fee;
 import uk.gov.hmcts.probate.model.fee.FeeServiceResponse;
 
 import javax.annotation.Nullable;
+import javax.validation.constraints.Null;
 import java.math.BigDecimal;
 import java.net.URI;
 import java.util.Objects;
@@ -40,14 +41,13 @@ public class FeeService {
             return BigDecimal.ZERO;
         }
 
-        try{
-            return nonNull(responseEntity.getBody().getFeeAmount());
+        if(Objects.nonNull(responseEntity.getBody())) {
+                return responseEntity.getBody().getFeeAmount();
+            }
+            else {
+            throw new ClientDataException("responseEntity.getBody() returned null in FeeService:getApplicationFee");
         }
-        catch(ClientDataException e)
-        {
-            throw e ;
-        }
-    }
+      }
 
     public BigDecimal getCopiesFee(Long copies) {
         if (copies == null) {
@@ -62,12 +62,11 @@ public class FeeService {
             return BigDecimal.ZERO;
         }
 
-        try{
-            return nonNull(responseEntity.getBody().getFeeAmount());
+        if(Objects.nonNull(responseEntity.getBody())) {
+            return responseEntity.getBody().getFeeAmount();
         }
-        catch(ClientDataException e)
-        {
-            throw e ;
+        else {
+            throw new ClientDataException("responseEntity.getBody() returned null in FeeService:getCopiesFee");
         }
     }
 

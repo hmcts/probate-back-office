@@ -127,7 +127,7 @@ public class FeeServiceTest {
         when(restTemplate.getForEntity(eq("http://test.test/lookupWithKeywordnull?service&jurisdiction1&"
                 + "jurisdiction2&channel&applicant_type&event=copies&amount_or_volume=1&keyword=KeyFee"),
             eq(Fee.class))).thenReturn(responseEntity);
-
+        when(responseEntity.getBody()).thenReturn(null);
         feeService.getApplicationFee(BigDecimal.valueOf(5000));
     }
 }
