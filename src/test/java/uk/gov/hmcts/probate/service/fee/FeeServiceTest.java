@@ -119,4 +119,15 @@ public class FeeServiceTest {
         when(restTemplate.getForEntity(any(), eq(Fee.class))).thenReturn(null);
         feeService.getApplicationFee(BigDecimal.valueOf(5000));
     }
+    @Test(expected = ClientDataException.class)
+    public void testExceptionIfResponseEntityGetBodyReturnsNull() {
+        when(feeServiceConfiguration.getUrl()).thenReturn("http://test.test/lookupWithKeyword");
+        when(feeServiceConfiguration.getKeyword()).thenReturn("FeeKey");
+        when(responseEntity.getStatusCode()).thenReturn(HttpStatus.OK);
+        when(restTemplate.getForEntity(eq("http://test.test/lookupWithKeywordnull?service&jurisdiction1&"
+                + "jurisdiction2&channel&applicant_type&event=copies&amount_or_volume=1&keyword=KeyFee"),
+            eq(Fee.class))).thenReturn(responseEntity);
+
+        feeService.getApplicationFee(BigDecimal.valueOf(5000));
+    }
 }

@@ -16,6 +16,7 @@ import uk.gov.hmcts.probate.model.fee.FeeServiceResponse;
 import javax.annotation.Nullable;
 import java.math.BigDecimal;
 import java.net.URI;
+import java.util.Objects;
 
 import static uk.gov.hmcts.probate.insights.AppInsightsEvent.REQUEST_SENT;
 
@@ -39,7 +40,13 @@ public class FeeService {
             return BigDecimal.ZERO;
         }
 
-        return responseEntity.getBody().getFeeAmount();
+        try{
+            return nonNull(responseEntity.getBody().getFeeAmount());
+        }
+        catch(ClientDataException e)
+        {
+            throw e ;
+        }
     }
 
     public BigDecimal getCopiesFee(Long copies) {
@@ -55,7 +62,13 @@ public class FeeService {
             return BigDecimal.ZERO;
         }
 
-        return responseEntity.getBody().getFeeAmount();
+        try{
+            return nonNull(responseEntity.getBody().getFeeAmount());
+        }
+        catch(ClientDataException e)
+        {
+            throw e ;
+        }
     }
 
     public FeeServiceResponse getTotalFee(BigDecimal amountInPounds, Long ukCopies, Long nonUkCopies) {
