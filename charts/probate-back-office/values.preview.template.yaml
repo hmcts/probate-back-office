@@ -122,7 +122,7 @@ probate-frontend:
   enabled: true
   nodejs:
     imagePullPolicy: Always
-    releaseNameOverride: ${SERVICE_NAME}-probate-frontend
+    releaseNameOverride: ${SERVICE_NAME}-frontend
     image: hmctspublic.azurecr.io/probate/frontend:latest
     ingressHost: frontend-${SERVICE_FQDN}
     environment:
@@ -148,10 +148,7 @@ probate-frontend:
           - probate-webchat-button-service-closed
           - payCaseWorkerUser
           - payCaseWorkerPass
-          - frontend-redis-access-key
-          - AppInsightsInstrumentationKey
           - launchdarkly-key
-          - pcq-token-key
 
 java:
   image: ${IMAGE_NAME}
