@@ -96,36 +96,16 @@ To build the project execute the following command:
 
 ## Minimal docker development environment
 
-##### 1) Install jq
-
-```bash
-sudo apt-get install jq
 ```
 
-For mac 
-```bash
-brew install jq
-```
+# build the jar
+./gradlew assemble
 
-##### 2) Login to azure
+# first time only
+npx @hmcts/probate-dev-env --create
 
-```bash
-az login
-az acr login --name hmctspublic --subscription DCD-CNP-Prod
-az acr login --name hmctsprivate --subscription DCD-CNP-Prod
-```
-
-##### 3) Start docker containers
-
-```bash
-./bin/dev.sh
-```
-
-If the functional tests fail the first time, restart docker and boot it up again:
-
-```bash
-docker stop $(docker ps -a -q);
-./bin/dev.sh
+# spin up the docker containers
+npx @hmcts/probate-dev-env
 ```
 
 ## Full setup
