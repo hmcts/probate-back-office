@@ -39,12 +39,14 @@ public class FeeService {
             return BigDecimal.ZERO;
         }
 
-        try {
-                return responseEntity.getBody().getFeeAmount();
-            }
-            catch(NullPointerException e) {
-            throw new ClientDataException("responseEntity.getBody() returned null in FeeService:getApplicationFee :" + e);
+        Fee body = responseEntity.getBody();
+        if( body == null){
+            throw new ClientDataException("No Body in FeeService: getApplicationFee");
         }
+        else{
+            return body.getFeeAmount();
+        }
+
       }
 
     public BigDecimal getCopiesFee(Long copies) {
@@ -60,11 +62,12 @@ public class FeeService {
             return BigDecimal.ZERO;
         }
 
-        try {
-            return responseEntity.getBody().getFeeAmount();
+        Fee body = responseEntity.getBody();
+        if(body == null){
+            throw new ClientDataException("No Body in FeeService: getCopiesFee");
         }
-        catch(NullPointerException e) {
-            throw new ClientDataException("responseEntity.getBody() returned null in FeeService:getCopiesFee :" + e);
+        else{
+            return body.getFeeAmount();
         }
     }
 
