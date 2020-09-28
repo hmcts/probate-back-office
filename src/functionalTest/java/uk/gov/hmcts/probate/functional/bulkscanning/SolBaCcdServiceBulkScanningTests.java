@@ -33,7 +33,7 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
     private static final String PA1P = "PA1P";
     private static final String PA8A = "PA8A";
     private static final String VALIDATE_OCR_DATA_UNKNOWN_FORM_TYPE = "/forms/XZY/validate-ocr";
-    private static final String TRANSFORM_EXCEPTON_RECORD = "/transform-exception-record";
+    private static final String TRANSFORM_EXCEPTON_RECORD = "/transform-scanned-data";
     private static final String UPDATE_CASE_FROM_EXCEPTON_RECORD = "/update-case";
 
     private static final DateTimeFormatter CCD_DATE_FORMAT = CaveatCallbackResponseTransformer.dateTimeFormatter;

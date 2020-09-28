@@ -62,7 +62,7 @@ public class ExceptionRecordController {
             @ApiResponse(code = 400, message = "Request failed due to malformed syntax"),
             @ApiResponse(code = 403, message = "S2S token is not authorized, missing or invalid")
     })
-    @PostMapping(path = "/transform-exception-record",
+    @PostMapping(path = "/transform-scanned-data",
             consumes = APPLICATION_JSON_UTF8_VALUE, produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<SuccessfulTransformationResponse> transformCase(@Valid @RequestBody ExceptionRecordRequest erRequest) {
 
