@@ -43,7 +43,7 @@ public class FeeService {
                 return responseEntity.getBody().getFeeAmount();
             }
             catch(NullPointerException e) {
-            throw new ClientDataException("responseEntity.getBody() returned null in FeeService:getApplicationFee");
+            throw new ClientDataException("responseEntity.getBody() returned null in FeeService:getApplicationFee :" + e);
         }
       }
 
@@ -64,7 +64,7 @@ public class FeeService {
             return responseEntity.getBody().getFeeAmount();
         }
         catch(NullPointerException e) {
-            throw new ClientDataException("responseEntity.getBody() returned null in FeeService:getCopiesFee");
+            throw new ClientDataException("responseEntity.getBody() returned null in FeeService:getCopiesFee :" + e);
         }
     }
 
