@@ -465,7 +465,6 @@ services:
 
   probate-frontend:
     image: hmctspublic.azurecr.io/probate/frontend:latest
-    container_name: probate-frontend
     environment:
       - IDAM_API_URL=http://sidam-api:5000
       - IDAM_S2S_URL=http://service-auth-provider-api:8080

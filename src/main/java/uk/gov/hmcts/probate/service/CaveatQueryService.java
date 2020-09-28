@@ -8,12 +8,14 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 import uk.gov.hmcts.probate.config.CCDDataStoreAPIConfiguration;
 import uk.gov.hmcts.probate.exception.BusinessValidationException;
 import uk.gov.hmcts.probate.exception.CaseMatchingException;
+import uk.gov.hmcts.probate.exception.ClientDataException;
 import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.CaseType;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
@@ -21,8 +23,8 @@ import uk.gov.hmcts.probate.model.ccd.caveat.request.ReturnedCaveatDetails;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.ReturnedCaveats;
 import uk.gov.hmcts.probate.service.evidencemanagement.header.HttpHeadersFactory;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
-import uk.gov.hmcts.reform.authorisation.generators.ServiceAuthTokenGenerator;
 
+import javax.annotation.Nullable;
 import java.net.URI;
 import java.util.List;
 import java.util.Locale;
@@ -53,16 +55,6 @@ public class CaveatQueryService {
     private final IdamAuthenticateUserService idamAuthenticateUserService;
     private final BusinessValidationMessageRetriever businessValidationMessageRetriever;
 
-    public List<ReturnedCaveatDetails> findCaveatsById(CaseType caseType, String caveatId) {
-        BoolQueryBuilder query = boolQuery();
-
-        query.must(matchQuery(REFERENCE, caveatId));
-
-        String jsonQuery = new SearchSourceBuilder().query(query).toString();
-
-        return runQuery(caseType, jsonQuery);
-    }
-
     public CaveatData findCaveatById(CaseType caseType, String caveatId) {
         BoolQueryBuilder query = boolQuery();
 
@@ -80,7 +72,7 @@ public class CaveatQueryService {
         }
         return foundCaveats.get(0).getData();
     }
-
+    
     private List<ReturnedCaveatDetails> runQuery(CaseType caseType, String jsonQuery) {
         log.info("CaveatMatchingService runQuery: " + jsonQuery);
         URI uri = UriComponentsBuilder
@@ -104,14 +96,20 @@ public class CaveatQueryService {
 
         ReturnedCaveats returnedCaveats;
         try {
-            returnedCaveats = restTemplate.postForObject(uri, entity, ReturnedCaveats.class);
+            returnedCaveats = nonNull(restTemplate.postForObject(uri, entity, ReturnedCaveats.class));
         } catch (HttpClientErrorException e) {
             appInsights.trackEvent(REST_CLIENT_EXCEPTION, e.getMessage());
             throw new CaseMatchingException(e.getStatusCode(), e.getMessage());
+        }catch (IllegalStateException e) {
+            throw new ClientDataException(e.getMessage());
         }
 
         appInsights.trackEvent(REQUEST_SENT, uri.toString());
-
         return returnedCaveats.getCaveats();
+    }
+
+    private static <T> T nonNull(@Nullable T result) {
+        Assert.state(result != null, "Entity should be non null in CaveatQueryService");
+        return result;
     }
 }

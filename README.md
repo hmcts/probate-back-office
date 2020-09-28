@@ -108,8 +108,14 @@ docker-compose build
 Bring up the environment: 
 
 ```
+
+# build the jar
+./gradlew assemble
+
 # first time only
 npx @hmcts/probate-dev-env --create
+
+# spin up the docker containers
 npx @hmcts/probate-dev-env
 ```
 
