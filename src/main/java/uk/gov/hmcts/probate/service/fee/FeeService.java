@@ -39,11 +39,12 @@ public class FeeService {
             return BigDecimal.ZERO;
         }
 
-        if(responseEntity.getBody() == null){
+        Fee body = responseEntity.getBody();
+        if( body == null){
             throw new ClientDataException("No Body in FeeService: getApplicationFee");
         }
         else{
-            return responseEntity.getBody().getFeeAmount();
+            return body.getFeeAmount();
         }
 
       }
@@ -61,11 +62,12 @@ public class FeeService {
             return BigDecimal.ZERO;
         }
 
-        if(responseEntity.getBody() == null){
+        Fee body = responseEntity.getBody();
+        if(body == null){
             throw new ClientDataException("No Body in FeeService: getCopiesFee");
         }
         else{
-            return responseEntity.getBody().getFeeAmount();
+            return body.getFeeAmount();
         }
     }
 
