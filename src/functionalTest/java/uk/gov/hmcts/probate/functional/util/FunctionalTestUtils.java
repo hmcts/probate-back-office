@@ -148,6 +148,7 @@ public class FunctionalTestUtils {
             parsedText = pdfStripper.getText(pdDoc);
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
             try {
                 if (cosDoc != null) {
                     cosDoc.close();
@@ -156,9 +157,8 @@ public class FunctionalTestUtils {
                     pdDoc.close();
                 }
             } catch (Exception e1) {
-                e.printStackTrace();
+                e1.printStackTrace();
             }
-
         }
         return parsedText;
     }
