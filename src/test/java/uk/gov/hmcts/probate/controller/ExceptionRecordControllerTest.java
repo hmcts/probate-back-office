@@ -22,6 +22,7 @@ import uk.gov.hmcts.probate.model.exceptionrecord.SuccessfulCaveatUpdateResponse
 import uk.gov.hmcts.probate.model.ocr.OCRField;
 import uk.gov.hmcts.probate.service.ocr.OCRPopulatedValueMapper;
 import uk.gov.hmcts.probate.service.ocr.OCRToCCDMandatoryField;
+import uk.gov.hmcts.probate.service.ocr.OcrEmailValidator;
 import uk.gov.hmcts.probate.util.TestUtils;
 
 import java.io.IOException;
@@ -61,7 +62,11 @@ public class ExceptionRecordControllerTest {
 
     @MockBean
     private OCRToCCDMandatoryField ocrToCCDMandatoryField;
-    
+
+    @MockBean
+    private OcrEmailValidator ocrEmailValidator;
+
+
     private String exceptionRecordPayloadPA8A;
     private String exceptionRecordPayloadPA1P;
     private String exceptionRecordPayloadPA1A;
@@ -81,6 +86,7 @@ public class ExceptionRecordControllerTest {
         warnings.add("test warning");
         when(ocrPopulatedValueMapper.ocrPopulatedValueMapper(any())).thenReturn(ocrFields);
         when(ocrToCCDMandatoryField.ocrToCCDMandatoryFields(eq(ocrFields), any())).thenReturn(EMPTY_LIST);
+        when(ocrEmailValidator.validateField(eq(ocrFields))).thenReturn(EMPTY_LIST);
     }
 
     @Test
@@ -91,6 +97,18 @@ public class ExceptionRecordControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isUnprocessableEntity())
                 .andExpect(content().string(containsString("{\"warnings\":[\"test warning\"],\"errors\":[\"OCR fields could not be mapped to a case\"]}")));
+    }
+
+    @Test
+    public void testInvalidEmailWarningsPopulateListAndReturnOkWithWarningsResponseState() throws Exception {
+        List<String> emailWarnings = new ArrayList<>();
+        emailWarnings.add("invalid email");
+        when(ocrEmailValidator.validateField(any())).thenReturn(emailWarnings);
+        mockMvc.perform(post("/transform-exception-record")
+            .content(exceptionRecordPayloadPA8A)
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isUnprocessableEntity())
+            .andExpect(content().string(containsString("{\"warnings\":[\"invalid email\"],\"errors\":[\"OCR fields could not be mapped to a case\"]}")));
     }
 
     @Test

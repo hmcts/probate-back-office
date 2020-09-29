@@ -30,9 +30,11 @@ import uk.gov.hmcts.probate.service.exceptionrecord.ExceptionRecordService;
 import uk.gov.hmcts.probate.service.ocr.FormType;
 import uk.gov.hmcts.probate.service.ocr.OCRPopulatedValueMapper;
 import uk.gov.hmcts.probate.service.ocr.OCRToCCDMandatoryField;
+import uk.gov.hmcts.probate.service.ocr.OcrEmailValidator;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -49,6 +51,7 @@ public class ExceptionRecordController {
     private final OCRPopulatedValueMapper ocrPopulatedValueMapper;
     private final OCRToCCDMandatoryField ocrToCCDMandatoryField;
     private final ObjectMapper objectMapper;
+    private final OcrEmailValidator ocrEmailValidator;
 
     private static final String OCR_EXCEPTION_WARNING_PREFIX = "OCR Data Mapping Error: ";
     private static final String OCR_EXCEPTION_ERROR = "OCR fields could not be mapped to a case";
@@ -75,6 +78,11 @@ public class ExceptionRecordController {
 
         if (!warnings.isEmpty()) {
             throw new OCRMappingException("Please resolve all warnings before creating the case", warnings);
+        }
+
+        List<String> emailWarnings = ocrEmailValidator.validateField(erRequest.getOcrFields());
+        if (!emailWarnings.isEmpty()) {
+            throw new OCRMappingException("Please resolve all warnings before creating the case", emailWarnings);
         }
 
         if (!erRequest.getJourneyClassification().name().equals(JourneyClassification.NEW_APPLICATION.name())) {
