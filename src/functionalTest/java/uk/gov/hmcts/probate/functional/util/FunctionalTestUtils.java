@@ -35,11 +35,14 @@ public class FunctionalTestUtils {
 
     private String serviceToken;
 
-    @Value("${probate.caseworker.email")
+    @Value("${probate.caseworker.email}")
     private String caseworkerEmail;
 
-    @Value("${probate.caseworker.password")
+    @Value("${probate.caseworker.password}")
     private String caseworkerPassword;
+
+    @Value("${evidence.management.url}")
+    private String dmStoreUrl;
 
     @PostConstruct
     public void init() {
@@ -97,7 +100,7 @@ public class FunctionalTestUtils {
         Response document = RestAssured.given()
                 .relaxedHTTPSValidation()
                 .headers(getHeadersWithUserId())
-                .when().get(documentUrl).andReturn();
+                .when().get(documentUrl.replace("http://dm-store:8080", dmStoreUrl)).andReturn();
 
         return parsePDFToString(document.getBody().asInputStream());
     }
