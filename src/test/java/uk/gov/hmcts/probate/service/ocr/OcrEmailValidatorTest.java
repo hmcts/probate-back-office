@@ -11,6 +11,7 @@ import static org.hamcrest.core.Is.is;
 
 import uk.gov.hmcts.probate.model.ocr.OCRField;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -135,6 +136,69 @@ public class OcrEmailValidatorTest {
         assertThat(result, is(empty()));
     }
 
+    @Test
+    public void shouldNotCreateWarningForAnNonEmptyInvalidField() {
+
+        final OCRField field1 = OCRField
+            .builder()
+            .name(PRIMARY_APPLICANT_EMAIL_ADDRESS)
+            .value("")
+            .build();
+
+        final OCRField field2 = OCRField
+            .builder()
+            .name(SOLS_SOLICITOR_EMAIL)
+            .value("")
+            .build();
+
+        final OCRField field3 = OCRField
+            .builder()
+            .name(CAVEATOR_EMAIL_ADDRESS)
+            .value("")
+            .build();
+
+        final OCRField field4 = OCRField
+            .builder()
+            .name("another field")
+            .value("")
+            .build();
+        
+        final List<String> result = ocrEmailValidator.validateNonEmptyField(Arrays.asList(field1, field2, field3, field4));
+        assertThat(result.size(), is(0));
+    }
+
+    @Test
+    public void shouldCreateWarningForAnNonEmptyInvalidField() {
+
+        final OCRField field1 = OCRField
+            .builder()
+            .name(PRIMARY_APPLICANT_EMAIL_ADDRESS)
+            .value("a,b.c.d@b.com")
+            .build();
+
+        final OCRField field2 = OCRField
+            .builder()
+            .name(SOLS_SOLICITOR_EMAIL)
+            .value("")
+            .build();
+
+        final OCRField field3 = OCRField
+            .builder()
+            .name(CAVEATOR_EMAIL_ADDRESS)
+            .value("")
+            .build();
+
+        final OCRField field4 = OCRField
+            .builder()
+            .name("another field")
+            .value("")
+            .build();
+
+        final List<String> result = ocrEmailValidator.validateNonEmptyField(Arrays.asList(field1, field2, field3, field4));
+        assertThat(result.size(), is(1));
+        assertWarning(result, field1);
+    }
+    
     private void assertWarning(final List<String> result, final OCRField ocrField) {
         assertThat(result, hasItem(format("%s (%s) does not appear to be a valid email address", emailFields.get(ocrField.getName()), ocrField.getName())));
     }

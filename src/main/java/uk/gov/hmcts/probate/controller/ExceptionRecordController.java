@@ -80,7 +80,7 @@ public class ExceptionRecordController {
             throw new OCRMappingException("Please resolve all warnings before creating the case", warnings);
         }
 
-        List<String> emailWarnings = ocrEmailValidator.validateField(erRequest.getOcrFields());
+        List<String> emailWarnings = ocrEmailValidator.validateNonEmptyField(erRequest.getOcrFields());
         if (!emailWarnings.isEmpty()) {
             throw new OCRMappingException("Please resolve all warnings before creating the case", emailWarnings);
         }

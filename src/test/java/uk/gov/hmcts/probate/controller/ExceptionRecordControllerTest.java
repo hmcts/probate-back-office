@@ -103,7 +103,7 @@ public class ExceptionRecordControllerTest {
     public void testInvalidEmailWarningsPopulateListAndReturnOkWithWarningsResponseState() throws Exception {
         List<String> emailWarnings = new ArrayList<>();
         emailWarnings.add("invalid email");
-        when(ocrEmailValidator.validateField(any())).thenReturn(emailWarnings);
+        when(ocrEmailValidator.validateNonEmptyField(any())).thenReturn(emailWarnings);
         mockMvc.perform(post("/transform-exception-record")
             .content(exceptionRecordPayloadPA8A)
             .contentType(MediaType.APPLICATION_JSON))
