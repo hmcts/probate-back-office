@@ -34,7 +34,6 @@ import uk.gov.hmcts.probate.service.ocr.OcrEmailValidator;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
