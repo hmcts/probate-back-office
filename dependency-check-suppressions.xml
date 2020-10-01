@@ -383,7 +383,9 @@
 file name: spring-webmvc-5.1.5.RELEASE.jar
 ]]></notes>
         <gav regex="true">^org\.springframework:spring-webmvc:.*$</gav>
+        <cpe>cpe:/a:pivotal_software:spring_framework</cpe>
         <cve>CVE-2020-5398</cve>
+        <cve>CVE-2020-5421</cve>
     </suppress>
     <suppress>
         <notes><![CDATA[
@@ -453,14 +455,20 @@ file name: spring-expression-5.1.5.RELEASE.jar
 file name: spring-core-5.1.5.RELEASE.jar
 ]]></notes>
         <gav regex="true">^org\.springframework:spring-core:.*$</gav>
+        <cpe>cpe:/a:pivotal_software:spring_framework</cpe>
+        <cpe>cpe:/a:springsource:spring_framework</cpe>
+        <cpe>cpe:/a:vmware:springsource_spring_framework</cpe>
         <cve>CVE-2020-5398</cve>
+        <cve>CVE-2020-5421</cve>
     </suppress>
     <suppress>
         <notes><![CDATA[
 file name: spring-jcl-5.1.5.RELEASE.jar
 ]]></notes>
         <gav regex="true">^org\.springframework:spring-jcl:.*$</gav>
+        <cpe>cpe:/a:pivotal_software:spring_framework</cpe>
         <cve>CVE-2020-5398</cve>
+        <cve>CVE-2020-5421</cve>
     </suppress>
     <suppress>
         <notes><![CDATA[
