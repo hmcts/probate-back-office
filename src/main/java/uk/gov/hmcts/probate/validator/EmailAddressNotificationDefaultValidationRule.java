@@ -1,6 +1,7 @@
 package uk.gov.hmcts.probate.validator;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.validator.routines.EmailValidator;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
@@ -37,6 +38,6 @@ class EmailAddressNotificationDefaultValidationRule implements EmailAddressNotif
     }
 
     private boolean isValid(String email) {
-        return email != null && !email.isEmpty() && EmailValidator.getInstance().isValid(email);
+        return !StringUtils.isEmpty(email) && EmailValidator.getInstance().isValid(email);
     }
 }
