@@ -15,6 +15,7 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import uk.gov.hmcts.probate.config.CCDDataStoreAPIConfiguration;
 import uk.gov.hmcts.probate.exception.CaseMatchingException;
+import uk.gov.hmcts.probate.exception.ClientDataException;
 import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
@@ -153,5 +154,11 @@ public class CaseQueryServiceTest {
         assertEquals(1, cases.size());
         assertThat(cases.get(0).getId(), is(1L));
         assertEquals("Smith", cases.get(0).getData().getDeceasedSurname());
+    }
+
+    @Test(expected = ClientDataException.class)
+    public void testExceptionWithNullFromRestTemplatePost() {
+        when(restTemplate.postForObject(any(), any(), any())).thenReturn(null);
+        caseQueryService.findCasesWithDatedDocument("testDate");
     }
 }
