@@ -570,10 +570,7 @@ file name: spring-jcl-5.1.5.RELEASE.jar
         <cpe>cpe:/a:github:github</cpe>
         <cve>CVE-2020-10517</cve>
         <cve>CVE-2020-10518</cve>
-<<<<<<< HEAD
-=======
         <cve>CVE-2020-10517</cve>
         <cve>CVE-2020-10518</cve>
->>>>>>> 2214cffec503c5eec221fbdc0f0e29a8f5f271f6
     </suppress>
 </suppressions>
