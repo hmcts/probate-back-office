@@ -353,5 +353,6 @@
   {"CaseTypeID": "Caveat", "CaseFieldID": "paperForm", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRU"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "languagePreferenceWelsh", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "pcqId", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"},
-  {"CaseTypeID": "Caveat", "CaseFieldID": "pcqId", "UserRole": "caseworker-probate-pcqextractor", "CRUD": "R"}
+  {"CaseTypeID": "Caveat", "CaseFieldID": "pcqId", "UserRole": "caseworker-probate-pcqextractor", "CRUD": "R"},
+  {"CaseTypeID": "Caveat", "CaseFieldID": "scannedDocuments", "UserRole": "caseworker-probate-pcqextractor", "CRUD": "R"}
 ]
