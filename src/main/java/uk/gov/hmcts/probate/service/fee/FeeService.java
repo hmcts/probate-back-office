@@ -4,13 +4,16 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 import uk.gov.hmcts.probate.config.FeeServiceConfiguration;
+import uk.gov.hmcts.probate.exception.ClientDataException;
 import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.fee.Fee;
 import uk.gov.hmcts.probate.model.fee.FeeServiceResponse;
 
+import javax.annotation.Nullable;
 import java.math.BigDecimal;
 import java.net.URI;
 
@@ -30,14 +33,21 @@ public class FeeService {
     public BigDecimal getApplicationFee(BigDecimal amountInPound) {
         URI uri = buildUri(FEE_API_EVENT_TYPE_ISSUE, amountInPound.toString());
         appInsights.trackEvent(REQUEST_SENT, uri.toString());
-        ResponseEntity<Fee> responseEntity = restTemplate.getForEntity(uri, Fee.class);
+        ResponseEntity<Fee> responseEntity = nonNull(restTemplate.getForEntity(uri, Fee.class));
 
         if (responseEntity.getStatusCode().equals(HttpStatus.NO_CONTENT)) {
             return BigDecimal.ZERO;
         }
 
-        return responseEntity.getBody().getFeeAmount();
-    }
+        Fee body = responseEntity.getBody();
+        if( body == null){
+            throw new ClientDataException("No Body in FeeService: getApplicationFee");
+        }
+        else{
+            return body.getFeeAmount();
+        }
+
+      }
 
     public BigDecimal getCopiesFee(Long copies) {
         if (copies == null) {
@@ -46,13 +56,19 @@ public class FeeService {
 
         URI uri = buildUri(FEE_API_EVENT_TYPE_COPIES, copies.toString());
 
-        ResponseEntity<Fee> responseEntity = restTemplate.getForEntity(uri, Fee.class);
+        ResponseEntity<Fee> responseEntity = nonNull(restTemplate.getForEntity(uri, Fee.class));
 
         if (responseEntity.getStatusCode().equals(HttpStatus.NO_CONTENT)) {
             return BigDecimal.ZERO;
         }
 
-        return responseEntity.getBody().getFeeAmount();
+        Fee body = responseEntity.getBody();
+        if(body == null){
+            throw new ClientDataException("No Body in FeeService: getCopiesFee");
+        }
+        else{
+            return body.getFeeAmount();
+        }
     }
 
     public FeeServiceResponse getTotalFee(BigDecimal amountInPounds, Long ukCopies, Long nonUkCopies) {
@@ -83,5 +99,14 @@ public class FeeService {
         }
 
         return builder.build().encode().toUri();
+    }
+
+    private static <T> T nonNull(@Nullable T result) {
+        try {
+            Assert.state(result != null, "Entity should be non null in FeeService");
+        }catch (IllegalStateException e) {
+            throw new ClientDataException(e.getMessage());
+        }
+        return result;
     }
 }

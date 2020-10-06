@@ -9,11 +9,13 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 import uk.gov.hmcts.probate.config.CCDDataStoreAPIConfiguration;
 import uk.gov.hmcts.probate.exception.CaseMatchingException;
+import uk.gov.hmcts.probate.exception.ClientDataException;
 import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.CaseType;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
@@ -21,6 +23,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCases;
 import uk.gov.hmcts.probate.service.evidencemanagement.header.HttpHeadersFactory;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 
+import javax.annotation.Nullable;
 import java.net.URI;
 import java.util.Arrays;
 import java.util.List;
@@ -121,6 +124,7 @@ public class CaseQueryService {
         return runQuery(jsonQuery);
     }
 
+    @Nullable
     private List<ReturnedCaseDetails> runQuery(String jsonQuery) {
         log.info("CaseQueryService runQuery: " + jsonQuery);
         URI uri = UriComponentsBuilder
@@ -150,17 +154,24 @@ public class CaseQueryService {
         ReturnedCases returnedCases;
         try {
             log.info("Posting object for CaseQueryService...");
-            returnedCases = restTemplate.postForObject(uri, entity, ReturnedCases.class);
+            returnedCases = nonNull(restTemplate.postForObject(uri, entity, ReturnedCases.class));
             log.info("...Posted object for CaseQueryService");
         } catch (HttpClientErrorException e) {
             log.error("CaseMatchingException on CaseQueryService, message="+e.getMessage());
             appInsights.trackEvent(REST_CLIENT_EXCEPTION, e.getMessage());
             throw new CaseMatchingException(e.getStatusCode(), e.getMessage());
+        }catch (IllegalStateException e) {
+            throw new ClientDataException(e.getMessage());
         }
 
         appInsights.trackEvent(REQUEST_SENT, uri.toString());
 
         log.info("CaseQueryService returnedCases.size = {}", returnedCases.getCases().size());
         return returnedCases.getCases();
+    }
+
+    private static <T> T nonNull(@Nullable T result) {
+        Assert.state(result != null, "Entity should be non null in CaseQueryService");
+        return result;
     }
 }

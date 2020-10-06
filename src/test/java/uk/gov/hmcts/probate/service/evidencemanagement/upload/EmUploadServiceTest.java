@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.service.evidencemanagement.upload;
 
+import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -7,11 +8,13 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.MediaType;
 import uk.gov.hmcts.probate.config.EvidenceManagementRestTemplate;
+import uk.gov.hmcts.probate.exception.ClientDataException;
 import uk.gov.hmcts.probate.model.evidencemanagement.EvidenceManagementFile;
 import uk.gov.hmcts.probate.model.evidencemanagement.EvidenceManagementFileUpload;
 import uk.gov.hmcts.probate.service.evidencemanagement.builder.DocumentManagementURIBuilder;
 import uk.gov.hmcts.probate.service.evidencemanagement.header.HttpHeadersFactory;
 
+import java.io.IOException;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -69,5 +72,15 @@ public class EmUploadServiceTest {
         verify(evidenceManagementRestTemplate).postForObject(eq(URL), any(), eq(HashMap.class));
         verify(httpHeadersFactory).getMultiPartHttpHeader();
         verify(documentManagementURIBuilder).buildUrl();
+    }
+
+    @Test(expected = ClientDataException.class)
+    public void testExceptionWithNullFromApiCall() throws IOException {
+        when(documentManagementURIBuilder.buildUrl()).thenReturn(URL);
+        when(evidenceManagementRestTemplate.postForObject(eq(URL), any(), eq(HashMap.class))).thenReturn(null);
+        EvidenceManagementFileUpload evidenceManagementFileUpload =
+            new EvidenceManagementFileUpload(MediaType.APPLICATION_PDF, new byte[100]);
+
+        emUploadService.store(evidenceManagementFileUpload);
     }
 }
