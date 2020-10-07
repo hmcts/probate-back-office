@@ -11,7 +11,7 @@ public class ApplicantSiblingsRule implements ChangeRule {
 
     @Override
     public boolean isChangeNeeded(CaseData caseData) {
-        return YES.equals(caseData.getSolsApplicantSiblings()) && caseData.getSolsApplicantRelationshipToDeceased().contains("Child");
+        return YES.equals(caseData.getSolsApplicantSiblings());
     }
 
     @Override

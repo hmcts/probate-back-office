@@ -34,16 +34,24 @@ public class ApplicantSiblingsRuleTest {
     }
 
     @Test
-    public void shouldNotNeedChange() {
+    public void shouldNotNeedChangeChild() {
         when(caseDataMock.getSolsApplicantSiblings()).thenReturn("No");
+        when(caseDataMock.getSolsApplicantRelationshipToDeceased()).thenReturn("Child");
+
+        assertFalse(underTest.isChangeNeeded(caseDataMock));
+    }
+
+    @Test
+    public void shouldNotNeedChangeChildAdopted() {
+        when(caseDataMock.getSolsApplicantSiblings()).thenReturn("No");
+        when(caseDataMock.getSolsApplicantRelationshipToDeceased()).thenReturn("ChildAdopted");
 
         assertFalse(underTest.isChangeNeeded(caseDataMock));
     }
 
     @Test
     public void shouldNotNeedChangeWithSpouseOrCivil() {
-        when(caseDataMock.getSolsApplicantSiblings()).thenReturn("Yes");
-        when(caseDataMock.getSolsApplicantRelationshipToDeceased()).thenReturn("Spouse or civil partner");
+        when(caseDataMock.getSolsApplicantRelationshipToDeceased()).thenReturn("SpouseOrCivil");
 
         assertFalse(underTest.isChangeNeeded(caseDataMock));
     }
