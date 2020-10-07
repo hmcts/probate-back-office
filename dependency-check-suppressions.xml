@@ -545,6 +545,7 @@ file name: spring-jcl-5.1.5.RELEASE.jar
        <cve>CVE-2020-10968</cve>
        <cve>CVE-2020-10672</cve>
        <cve>CVE-2020-10673</cve>
+       <cve>CVE-2020-24750</cve>
     </suppress>
     <suppress>
         <notes><![CDATA[
