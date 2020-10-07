@@ -2216,6 +2216,7 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "pcqId", "UserRole": "citizen", "CRUD": "CRU"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "probateNotificationsGenerated", "UserRole": "citizen", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "pcqId", "UserRole": "caseworker-probate-pcqextractor", "CRUD": "R"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "scannedDocuments", "UserRole": "caseworker-probate-pcqextractor", "CRUD": "R"}
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "bulkScanEnvelopes", "UserRole": "caseworker-probate-issuer", "CRUD": "CRU"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "bulkScanEnvelopes", "UserRole": "caseworker-probate-caseadmin", "CRUD": "CRU"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "bulkScanEnvelopes", "UserRole": "caseworker-probate-caseofficer", "CRUD": "CRU"},
@@ -2543,4 +2544,3 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "reprintDocument", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRU"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "reprintNumberOfCopies", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRU"}
   ]
-
