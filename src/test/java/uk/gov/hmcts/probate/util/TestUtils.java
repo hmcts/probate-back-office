@@ -15,4 +15,11 @@ public class TestUtils {
 
         return new String(Files.readAllBytes(file.toPath()));
     }
+
+    public String stripSuperfluousChars(String text) {
+        if (text == null || text.isEmpty()) {
+            return text;
+        }
+        return text.replaceAll("\r", "");
+    }
 }

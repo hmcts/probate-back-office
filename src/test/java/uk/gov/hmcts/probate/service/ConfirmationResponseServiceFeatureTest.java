@@ -79,7 +79,7 @@ public class ConfirmationResponseServiceFeatureTest {
 
         String expectedConfirmationBody = testUtils.getStringFromFile("expectedConfirmationBody.md");
 
-        assertThat(stopConfirmation.getConfirmationBody(), is(expectedConfirmationBody));
+        assertThat(testUtils.stripSuperfluousChars(stopConfirmation.getConfirmationBody()), is(testUtils.stripSuperfluousChars(expectedConfirmationBody)));
     }
 
     @Test
@@ -89,7 +89,7 @@ public class ConfirmationResponseServiceFeatureTest {
 
         String expectedConfirmationBody = testUtils.getStringFromFile("expectedConfirmationBodyWithNoWill.md");
 
-        assertThat(stopConfirmation.getConfirmationBody(), is(expectedConfirmationBody));
+        assertThat(testUtils.stripSuperfluousChars(stopConfirmation.getConfirmationBody()), is(testUtils.stripSuperfluousChars(expectedConfirmationBody)));
     }
 
     @Test
@@ -100,7 +100,7 @@ public class ConfirmationResponseServiceFeatureTest {
 
         String expectedConfirmationBody = testUtils.getStringFromFile("expectedConfirmationBodyWithRenouncingExecutor.md");
 
-        assertThat(stopConfirmation.getConfirmationBody(), is(expectedConfirmationBody));
+        assertThat(testUtils.stripSuperfluousChars(stopConfirmation.getConfirmationBody()), is(testUtils.stripSuperfluousChars(expectedConfirmationBody)));
     }
 
     @Test
@@ -112,7 +112,7 @@ public class ConfirmationResponseServiceFeatureTest {
 
         String expectedConfirmationBody = testUtils.getStringFromFile("expectedConfirmationBodyWithMultipleRenouncingExecutors.md");
 
-        assertThat(stopConfirmation.getConfirmationBody(), is(expectedConfirmationBody));
+        assertThat(testUtils.stripSuperfluousChars(stopConfirmation.getConfirmationBody()), is(testUtils.stripSuperfluousChars(expectedConfirmationBody)));
     }
 
     @Test
@@ -123,7 +123,7 @@ public class ConfirmationResponseServiceFeatureTest {
 
         String expectedConfirmationBody = testUtils.getStringFromFile("expectedConfirmationBodyWithDeadExecutor.md");
 
-        assertThat(stopConfirmation.getConfirmationBody(), is(expectedConfirmationBody));
+        assertThat(testUtils.stripSuperfluousChars(stopConfirmation.getConfirmationBody()), is(testUtils.stripSuperfluousChars(expectedConfirmationBody)));
     }
 
     @Test
@@ -135,7 +135,7 @@ public class ConfirmationResponseServiceFeatureTest {
 
         String expectedConfirmationBody = testUtils.getStringFromFile("expectedConfirmationBodyWithMultipleDeadExecutors.md");
 
-        assertThat(stopConfirmation.getConfirmationBody(), is(expectedConfirmationBody));
+        assertThat(testUtils.stripSuperfluousChars(stopConfirmation.getConfirmationBody()), is(testUtils.stripSuperfluousChars(expectedConfirmationBody)));
     }
 
     @Test
@@ -145,7 +145,7 @@ public class ConfirmationResponseServiceFeatureTest {
 
         String expectedConfirmationBody = testUtils.getStringFromFile("expectedConfirmationBodyWithIHT400421.md");
 
-        assertThat(stopConfirmation.getConfirmationBody(), is(expectedConfirmationBody));
+        assertThat(testUtils.stripSuperfluousChars(stopConfirmation.getConfirmationBody()), is(testUtils.stripSuperfluousChars(expectedConfirmationBody)));
     }
 
     @Test
@@ -159,7 +159,7 @@ public class ConfirmationResponseServiceFeatureTest {
 
         String expectedConfirmationBody = testUtils.getStringFromFile("expectedConfirmationBodyWithAllCombinations.md");
 
-        assertThat(stopConfirmation.getConfirmationBody(), is(expectedConfirmationBody));
+        assertThat(testUtils.stripSuperfluousChars(stopConfirmation.getConfirmationBody()), is(testUtils.stripSuperfluousChars(expectedConfirmationBody)));
     }
 
     @Test
@@ -175,7 +175,7 @@ public class ConfirmationResponseServiceFeatureTest {
 
         String expectedConfirmationBody = testUtils.getStringFromFile("expectedConfirmationBodyWithAllCombinationsAndMultiples.md");
 
-        assertThat(stopConfirmation.getConfirmationBody(), is(expectedConfirmationBody));
+        assertThat(testUtils.stripSuperfluousChars(stopConfirmation.getConfirmationBody()), is(testUtils.stripSuperfluousChars(expectedConfirmationBody)));
     }
 
     @Test
@@ -185,7 +185,7 @@ public class ConfirmationResponseServiceFeatureTest {
 
         String expectedConfirmationBody = testUtils.getStringFromFile("expectedConfirmationBodyCaveat.md");
 
-        assertThat(stopConfirmation.getConfirmationBody(), is(expectedConfirmationBody));
+        assertThat(testUtils.stripSuperfluousChars(stopConfirmation.getConfirmationBody()), is(testUtils.stripSuperfluousChars(expectedConfirmationBody)));
     }
 
     private CCDData.CCDDataBuilder createCCDataBuilder() {
