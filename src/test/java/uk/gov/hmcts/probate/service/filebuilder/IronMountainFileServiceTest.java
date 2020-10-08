@@ -10,6 +10,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 import uk.gov.hmcts.probate.util.FileUtils;
+import uk.gov.hmcts.probate.util.TestUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -27,6 +28,7 @@ import static org.junit.Assert.assertThat;
 
 public class IronMountainFileServiceTest {
 
+    private final TestUtils testUtils = new TestUtils();
     private IronMountainFileService ironmountainFileService = new IronMountainFileService(new TextFileBuilderService());
     private ImmutableList.Builder<ReturnedCaseDetails> caseList = new ImmutableList.Builder<>();
     private CaseData.CaseDataBuilder caseData;
@@ -100,8 +102,10 @@ public class IronMountainFileServiceTest {
         builtData = caseData.build();
         createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, 1234567890876L);
         caseList.add(createdCase);
-        assertThat(createFile(ironmountainFileService.createIronMountainFile(caseList.build(), FILE_NAME)),
-                is(FileUtils.getStringFromFile("expectedGeneratedFiles/ironMountainFilePopulated.txt")));
+        assertThat(testUtils.stripSuperfluousChars(createFile(
+                ironmountainFileService.createIronMountainFile(caseList.build(), FILE_NAME))),
+                is(testUtils.stripSuperfluousChars(
+                        FileUtils.getStringFromFile("expectedGeneratedFiles/ironMountainFilePopulated.txt"))));
     }
 
     @Test
@@ -111,8 +115,10 @@ public class IronMountainFileServiceTest {
         builtData = caseData.build();
         createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, 1234567890876L);
         caseList.add(createdCase);
-        assertThat(createFile(ironmountainFileService.createIronMountainFile(caseList.build(), FILE_NAME)),
-            is(FileUtils.getStringFromFile("expectedGeneratedFiles/ironMountainFilePopulatedZeroIHTs.txt")));
+        assertThat(testUtils.stripSuperfluousChars(
+                createFile(ironmountainFileService.createIronMountainFile(caseList.build(), FILE_NAME))),
+            is(testUtils.stripSuperfluousChars(
+                FileUtils.getStringFromFile("expectedGeneratedFiles/ironMountainFilePopulatedZeroIHTs.txt"))));
     }
 
     @Test
@@ -132,8 +138,10 @@ public class IronMountainFileServiceTest {
         builtData = caseData.build();
         createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, 1234567890876L);
         caseList.add(createdCase);
-        assertThat(createFile(ironmountainFileService.createIronMountainFile(caseList.build(), FILE_NAME)),
-                is(FileUtils.getStringFromFile("expectedGeneratedFiles/ironMountainFileEmptyOptionals.txt")));
+        assertThat(testUtils.stripSuperfluousChars(
+                createFile(ironmountainFileService.createIronMountainFile(caseList.build(), FILE_NAME))),
+                is(testUtils.stripSuperfluousChars(
+                    FileUtils.getStringFromFile("expectedGeneratedFiles/ironMountainFileEmptyOptionals.txt"))));
     }
 
     @Test
@@ -142,8 +150,10 @@ public class IronMountainFileServiceTest {
         builtData = caseData.build();
         createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, 1234567890876L);
         caseList.add(createdCase);
-        assertThat(createFile(ironmountainFileService.createIronMountainFile(caseList.build(), FILE_NAME)),
-                is(FileUtils.getStringFromFile("expectedGeneratedFiles/ironMountainPrimaryApplicantNo.txt")));
+        assertThat(testUtils.stripSuperfluousChars(
+            createFile(ironmountainFileService.createIronMountainFile(caseList.build(), FILE_NAME))),
+                is(testUtils.stripSuperfluousChars(
+                    FileUtils.getStringFromFile("expectedGeneratedFiles/ironMountainPrimaryApplicantNo.txt"))));
     }
 
     @Test
@@ -152,8 +162,10 @@ public class IronMountainFileServiceTest {
         builtData = caseData.build();
         createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, 1234567890876L);
         caseList.add(createdCase);
-        assertThat(createFile(ironmountainFileService.createIronMountainFile(caseList.build(), FILE_NAME)),
-                is(FileUtils.getStringFromFile("expectedGeneratedFiles/ironMountainSolicitor.txt")));
+        assertThat(testUtils.stripSuperfluousChars(
+                createFile(ironmountainFileService.createIronMountainFile(caseList.build(), FILE_NAME))),
+                is(testUtils.stripSuperfluousChars(
+                        FileUtils.getStringFromFile("expectedGeneratedFiles/ironMountainSolicitor.txt"))));
     }
 
     @Test
@@ -161,8 +173,10 @@ public class IronMountainFileServiceTest {
         builtData = caseData2.build();
         createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, 1234567890876L);
         caseList.add(createdCase);
-        assertThat(createFile(ironmountainFileService.createIronMountainFile(caseList.build(), FILE_NAME)),
-                is(FileUtils.getStringFromFile("expectedGeneratedFiles/ironMountainOneAddressLine.txt")));
+        assertThat(testUtils.stripSuperfluousChars(
+                createFile(ironmountainFileService.createIronMountainFile(caseList.build(), FILE_NAME))),
+                is(testUtils.stripSuperfluousChars(
+                        FileUtils.getStringFromFile("expectedGeneratedFiles/ironMountainOneAddressLine.txt"))));
     }
 
     @Test
@@ -171,8 +185,10 @@ public class IronMountainFileServiceTest {
         builtData = caseData.build();
         createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, 1234567890876L);
         caseList.add(createdCase);
-        assertThat(createFile(ironmountainFileService.createIronMountainFile(caseList.build(), FILE_NAME)),
-                is(FileUtils.getStringFromFile("expectedGeneratedFiles/ironMountainFileCtsc.txt")));
+        assertThat(testUtils.stripSuperfluousChars(
+                createFile(ironmountainFileService.createIronMountainFile(caseList.build(), FILE_NAME))),
+                is(testUtils.stripSuperfluousChars(
+                        FileUtils.getStringFromFile("expectedGeneratedFiles/ironMountainFileCtsc.txt"))));
     }
 
     @Test
@@ -183,8 +199,10 @@ public class IronMountainFileServiceTest {
         builtData = caseData.build();
         createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, 1234567890876L);
         caseList.add(createdCase);
-        assertThat(createFile(ironmountainFileService.createIronMountainFile(caseList.build(), FILE_NAME)),
-                is(FileUtils.getStringFromFile("expectedGeneratedFiles/ironMountainSolAsPrimary.txt")));
+        assertThat(testUtils.stripSuperfluousChars(
+                createFile(ironmountainFileService.createIronMountainFile(caseList.build(), FILE_NAME))),
+                is(testUtils.stripSuperfluousChars(
+                        FileUtils.getStringFromFile("expectedGeneratedFiles/ironMountainSolAsPrimary.txt"))));
     }
 
     @Test
@@ -193,8 +211,10 @@ public class IronMountainFileServiceTest {
         builtData = caseData2.build();
         createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, 1234567890876L);
         caseList.add(createdCase);
-        assertThat(createFile(ironmountainFileService.createIronMountainFile(caseList.build(), FILE_NAME)),
-            is(FileUtils.getStringFromFile("expectedGeneratedFiles/ironMountainExceptionCase.txt")));
+        assertThat(testUtils.stripSuperfluousChars(
+                createFile(ironmountainFileService.createIronMountainFile(caseList.build(), FILE_NAME))),
+            is(testUtils.stripSuperfluousChars(
+                    FileUtils.getStringFromFile("expectedGeneratedFiles/ironMountainExceptionCase.txt"))));
     }
 
     private String createFile(File file) throws IOException {

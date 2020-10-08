@@ -13,6 +13,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 import uk.gov.hmcts.probate.util.FileUtils;
+import uk.gov.hmcts.probate.util.TestUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -26,6 +27,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -34,6 +36,7 @@ import static org.mockito.Mockito.when;
 public class HmrcFileServiceTest {
     private FileExtractDateFormatter fileExtractDateFormatter = Mockito.mock(FileExtractDateFormatter.class);
     private HmrcFileService hmrcFileService = new HmrcFileService(new TextFileBuilderService(), fileExtractDateFormatter);
+    private final TestUtils testUtils = new uk.gov.hmcts.probate.util.TestUtils();
 
     private ImmutableList.Builder<ReturnedCaseDetails> caseList = new ImmutableList.Builder<>();
     private CaseData.CaseDataBuilder caseDataSolictor;
@@ -194,8 +197,10 @@ public class HmrcFileServiceTest {
         builtData = caseDataSolictor.build();
         createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, 1111222233334444L);
         caseList.add(createdCase);
-        assertThat(createFile(hmrcFileService.createHmrcFile(caseList.build(), FILE_NAME)),
-            is(FileUtils.getStringFromFile("expectedGeneratedFiles/hmrcSolicitor.txt")));
+        assertThat(testUtils.stripSuperfluousChars(
+                createFile(hmrcFileService.createHmrcFile(caseList.build(), FILE_NAME))),
+            is(testUtils.stripSuperfluousChars(
+                    FileUtils.getStringFromFile("expectedGeneratedFiles/hmrcSolicitor.txt"))));
     }
 
     @Test
@@ -204,7 +209,8 @@ public class HmrcFileServiceTest {
         createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, 2222333344445555L);
         caseList.add(createdCase);
         assertThat(createFile(hmrcFileService.createHmrcFile(caseList.build(), FILE_NAME)),
-            is(FileUtils.getStringFromFile("expectedGeneratedFiles/hmrcPersonal.txt")));
+            is(testUtils.stripSuperfluousChars(
+                    FileUtils.getStringFromFile("expectedGeneratedFiles/hmrcPersonal.txt"))));
     }
 
     @Test
@@ -215,8 +221,10 @@ public class HmrcFileServiceTest {
 
         createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, 2222333344445555L);
         caseList.add(createdCase);
-        assertThat(createFile(hmrcFileService.createHmrcFile(caseList.build(), FILE_NAME)),
-            is(FileUtils.getStringFromFile("expectedGeneratedFiles/hmrcPersonalZeroIHTs.txt")));
+        assertThat(testUtils.stripSuperfluousChars(
+                createFile(hmrcFileService.createHmrcFile(caseList.build(), FILE_NAME))),
+            is(testUtils.stripSuperfluousChars(
+                    FileUtils.getStringFromFile("expectedGeneratedFiles/hmrcPersonalZeroIHTs.txt"))));
     }
 
     @Test
@@ -225,8 +233,10 @@ public class HmrcFileServiceTest {
         caseList.add(new ReturnedCaseDetails(builtData, LAST_MODIFIED, 2222333344445555L));
         builtData = caseDataSolictor.build();
         caseList.add(new ReturnedCaseDetails(builtData, LAST_MODIFIED, 1111222233334444L));
-        assertThat(createFile(hmrcFileService.createHmrcFile(caseList.build(), FILE_NAME)),
-            is(FileUtils.getStringFromFile("expectedGeneratedFiles/hmrcMultipleCases.txt")));
+        assertThat(testUtils.stripSuperfluousChars(
+                createFile(hmrcFileService.createHmrcFile(caseList.build(), FILE_NAME))),
+            is(testUtils.stripSuperfluousChars(
+                    FileUtils.getStringFromFile("expectedGeneratedFiles/hmrcMultipleCases.txt"))));
     }
 
     @Test
@@ -244,8 +254,10 @@ public class HmrcFileServiceTest {
         builtData = caseDataSolictor.build();
         createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, 3333444455556666L);
         caseList.add(createdCase);
-        assertThat(createFile(hmrcFileService.createHmrcFile(caseList.build(), FILE_NAME)),
-            is(FileUtils.getStringFromFile("expectedGeneratedFiles/hmrcEmptyOptionals.txt")));
+        assertThat(testUtils.stripSuperfluousChars(
+                createFile(hmrcFileService.createHmrcFile(caseList.build(), FILE_NAME))),
+            is(testUtils.stripSuperfluousChars(
+                    FileUtils.getStringFromFile("expectedGeneratedFiles/hmrcEmptyOptionals.txt"))));
     }
 
     @Test
@@ -254,17 +266,10 @@ public class HmrcFileServiceTest {
         builtData = caseDataPersonal.build();
         createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, 4444555566667777L);
         caseList.add(createdCase);
-        assertThat(createFile(hmrcFileService.createHmrcFile(caseList.build(), FILE_NAME)),
-            is(FileUtils.getStringFromFile("expectedGeneratedFiles/hmrcPrimaryApplicantNo.txt")));
-    }
-
-    @Test
-    public void testCarriageReturnInAddressIsReplacedWithSpace() throws IOException {
-        builtData = caseDataCarriageReturns.build();
-        createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, 5555666677778888L);
-        caseList.add(createdCase);
-        assertThat(createFile(hmrcFileService.createHmrcFile(caseList.build(), FILE_NAME)),
-            is(FileUtils.getStringFromFile("expectedGeneratedFiles/hmrcPersonalReplaced.txt")));
+        assertThat(testUtils.stripSuperfluousChars(
+                createFile(hmrcFileService.createHmrcFile(caseList.build(), FILE_NAME))),
+            is(testUtils.stripSuperfluousChars(
+                    FileUtils.getStringFromFile("expectedGeneratedFiles/hmrcPrimaryApplicantNo.txt"))));
     }
 
     @Test
@@ -272,8 +277,21 @@ public class HmrcFileServiceTest {
         builtData = caseDataMissingData.build();
         createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, 5555666677778888L);
         caseList.add(createdCase);
-        assertThat(createFile(hmrcFileService.createHmrcFile(caseList.build(), FILE_NAME)),
-            is(FileUtils.getStringFromFile("expectedGeneratedFiles/hmrcPersonalMissingAddresses.txt")));
+        assertThat(testUtils.stripSuperfluousChars(
+                    createFile(hmrcFileService.createHmrcFile(caseList.build(), FILE_NAME))),
+                is(testUtils.stripSuperfluousChars(
+                    FileUtils.getStringFromFile("expectedGeneratedFiles/hmrcPersonalMissingAddresses.txt"))));
+    }
+
+    @Test
+    public void testCarriageReturnInAddressIsReplacedWithSpace() throws IOException {
+        builtData = caseDataCarriageReturns.build();
+        createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, 5555666677778888L);
+        caseList.add(createdCase);
+        assertThat(testUtils.stripSuperfluousChars(
+                createFile(hmrcFileService.createHmrcFile(caseList.build(), FILE_NAME))),
+            is(testUtils.stripSuperfluousChars(
+                    FileUtils.getStringFromFile("expectedGeneratedFiles/hmrcPersonalReplaced.txt"))));
     }
 
     @Test
@@ -284,8 +302,9 @@ public class HmrcFileServiceTest {
         caseList.add(createdCase);
         String expected = FileUtils.getStringFromFile("expectedGeneratedFiles/hmrcPersonalMissingIHT.txt");
         
-        assertThat(createFile(hmrcFileService.createHmrcFile(caseList.build(), FILE_NAME)),
-            is(expected));
+        assertThat(testUtils.stripSuperfluousChars(
+                createFile(hmrcFileService.createHmrcFile(caseList.build(), FILE_NAME))),
+            is(testUtils.stripSuperfluousChars(expected)));
     }
 
     @Test
@@ -297,7 +316,7 @@ public class HmrcFileServiceTest {
         String expected = FileUtils.getStringFromFile("expectedGeneratedFiles/hmrcPersonalMissingCase.txt");
 
         assertThat(createFile(hmrcFileService.createHmrcFile(caseList.build(), FILE_NAME)),
-            is(expected));
+            is(testUtils.stripSuperfluousChars(expected)));
     }
     
     private String createFile(File file) throws IOException {
