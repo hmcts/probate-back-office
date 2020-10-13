@@ -575,4 +575,13 @@ file name: spring-jcl-5.1.5.RELEASE.jar
         <cve>CVE-2020-10517</cve>
         <cve>CVE-2020-10518</cve>
     </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: spring-web-5.1.5.RELEASE.jar
+   ]]></notes>
+        <gav regex="true">^org\.springframework:spring-web:.*$</gav>
+        <cpe>cpe:/a:pivotal_software:spring_framework</cpe>
+        <cve>CVE-2020-5398</cve>
+        <cve>CVE-2020-5421</cve>
+    </suppress>
 </suppressions>
