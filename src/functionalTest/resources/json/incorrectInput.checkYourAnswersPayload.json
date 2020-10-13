@@ -1,83 +1,137 @@
 {
-    "case_details": {
-        "submit_data": {
-            "id": 12345678,
-            "applicantFirstName": "TestFirstName",
-            "applicantLastName": "TestLastName",
-            "applicantSameWillName":"No",
-            "applicantAlias":"TestApplicantAliasName",
-            "applicantAliasReason":"other",
-            "applicantAliasOtherReason":"nickname",
-            "applicantAddress": "Test AddressLine1,Test AddressLine2",
-            "applicantPhone": "324234",
-            "applicantEmail": "bob.stones@email.co.uk",
-            "applicantIsExecutor": "Yes",
-            "deceasedFirstName": "Sammy",
-            "deceasedLastName": "Stones",
-            "deceasedAliasAssets": "Yes",
-            "deceasedOtherNames": [
-                {
-                    "firstName": "Bobby",
-                    "lastName": "Stones"
-                },
-                {
-                    "firstName": "Robert",
-                    "lastName": "Stanley"
-                },
-                {
-                    "firstName": "Rob",
-                    "lastName": "Stones"
-                }
-            ],
-            "deceasedMarriedAfterDateOnWill": "Yes",
-            "deceasedAddress": "20, Flower Gardens",
-            "deceasedDod": "2017-09-11",
-            "deceasedDob": "1900-02-01",
-            "deceasedDomicile": "live (domicile) permanently in England or Wales",
-            "willLeft": "Yes",
-            "solsWillType": "WillLeft",
-            "solsApplicantRelationshipToDeceased": null,
-            "solsSpouseOrCivilRenouncing": null,
-            "solsAdoptedEnglandOrWales": null,
-            "solsMinorityInterest": null,
-            "solsApplicantSiblings": null,
-            "willOriginal": "Yes",
-            "willWithDate": "Yes",
-            "willWithCodicils": "Yes",
-            "willDate": "1985-01-01",
-            "willCodicilsNumber": "2",
-            "willCodicilsWithDate": "Yes",
-            "willCodicilsDate": "1986-01-01",
-            "solsCYANeedToUpdate":true,
-            "noOfApplicants": 5,
-            "legalStatement": {
-                "will": "I will send and sign what I believe to be the true and original last will and testament of deceased person.",
-                "intro": "This statement is based on the information given in your application. It will be stored as a public record.",
-                "accept": "I confirm that the information I have provided is correct to the best of my knowledge.",
-                "deceased": "That deceased person, also known as another  name, an alias, aka someoneelse, of their address\r\n, was born on 1 February 1900 and died on 1 February 2000, domiciled in England and Wales.",
-                "executor": "I am an executor named in the will. To the best of my knowledge, information and belief, there was no land vested in the person who died which was settled previously to the death (and not by the will) of the person who died and which remained settled land notwithstanding such death.",
-                "applicant": "I, Applicant NAme, of my address make the following statement:",
-                "estateValue": "That the gross estate value for the estate amounts to £222 and the net estate value amounts to £22.",
-                "otherExecutors": [
-                    "executor two, another executor named in the will, died (before the person who has died).",
-                    "executor3 three, another executor named in the will, died (after the person who has died).",
-                    "executor4 four, another executor named in the will, doesn't want to apply now, but may do in the future. I have notified them in writing.",
-                    "executor5 five, another executor named in the will, doesn't want to apply now, and gives up the right to do so in the future."
-                ]
-            },
-            "declaration": {
-                "accept": "I confirm that I will administer the estate of the person who died according to law, and that my application is truthful.",
-                "confirm": "I confirm that I will administer the estate of deceased person, according to law. I will:",
-                "requests": "If the probate registry (court) asks me to do so, I will:",
-                "understand": "I understand that:",
-                "confirmItem1": "collect the whole estate",
-                "confirmItem2": "keep full details (an inventory) of the estate",
-                "confirmItem3": "keep a full account of how the estate has been distributed",
-                "requestsItem1": "provide the full details of the estate and how it has been distributed",
-                "requestsItem2": "return the grant of probate to the court",
-                "understandItem1": "my application will be rejected if I do not provide information (if asked)",
-                "understandItem2": "criminal proceedings for fraud may be brought against me if I am found to have been deliberately untruthful or dishonest"
-            }
+  "case_details": {
+    "id": 1512040945638398,
+    "jurisdiction": "PROBATE",
+    "state": "SolDraftCase",
+    "case_type_id": "GrantOfRepresentation",
+    "last_modified": null,
+    "security_classification": "PUBLIC",
+    "case_data": {
+      "otherExecutorExists": "Yes",
+      "deceasedAddress": {
+        "AddressLine1": "1",
+        "AddressLine2": "1",
+        "AddressLine3": "1",
+        "PostTown": "1",
+        "County": "1",
+        "PostCode": "1",
+        "Country": "1"
+      },
+      "deceasedAnyOtherNames": "Yes",
+      "solsSolicitorPhoneNumber": "07958995330",
+      "solsAdditionalInfo": "Additional Info",
+      "deceasedDateOfBirth": "1987-01-01",
+      "willHasCodicils": "Yes",
+      "solsDeceasedAliasNamesList": [
+        {
+          "value": {
+            "SolsAliasname": "decalias1"
+          },
+          "id": "95d45c17-aba1-4441-8d98-aaaa2ec49668"
         }
+      ],
+      "willAccessOriginal": "Yes",
+      "solsSolicitorFirmName": "firmname",
+      "willExists": "Yes",
+      "solsWillType": "WillLeft",
+      "solsSOTName": "Solicitor_fn Solicitor_ln",
+      "solsSOTForenames": "Solicitor_fn",
+      "solsSOTSurname": "Solicitor_ln",
+      "solsSolicitorIsExec": "No",
+      "solsSolicitorIsMainApplicant": null,
+      "solsSolicitorIsApplying": null,
+      "solsSolicitorNotApplyingReason": null,
+      "solsApplicantRelationshipToDeceased": null,
+      "solsSpouseOrCivilRenouncing": null,
+      "solsAdoptedEnglandOrWales": null,
+      "solsMinorityInterest": null,
+      "solsApplicantSiblings": null,
+      "deceasedDateOfDeath": "2018-01-01",
+      "primaryApplicantForenames": "Ex1fn",
+      "primaryApplicantAddress": {
+        "AddressLine1": "2",
+        "AddressLine2": "2",
+        "AddressLine3": "2",
+        "PostTown": "2",
+        "County": "2",
+        "PostCode": "2",
+        "Country": "2"
+      },
+      "solsSolicitorEmail": "contact@lonGenArt.com",
+      "solsSolicitorPhoneNumber": "0208 863 98688",
+      "deceasedDomicileInEngWales": "Yes",
+      "ihtNetValue": "90009",
+      "deceasedSurname": "decln",
+      "solsAdditionalExecutorList": [
+        {
+          "value": {
+            "additionalExecForenames": "Ex2fn",
+            "additionalExecLastname": "Ex2ln",
+            "additionalExecNameOnWill": "Yes",
+            "additionalExecAliasNameOnWill": "Wx2wn",
+            "additionalApplying": "No",
+            "additionalExecReasonNotApplying": "DiedBefore"
+          },
+          "id": "366406fe-e6c3-4bdf-8709-121f8f64c1f7"
+        }
+      ],
+      "solsSolicitorAddress": {
+        "AddressLine1": "SolAddLn1",
+        "AddressLine2": "SolAddLn2",
+        "AddressLine3": "SolAddLn3",
+        "PostTown": "SolAddPT",
+        "County": "SolAddCounty",
+        "PostCode": "firmpc",
+        "Country": "SolAddCo"
+      },
+      "deceasedForenames": "decfn",
+      "willNumberOfCodicils": "1",
+      "primaryApplicantIsApplying": "Yes",
+      "primaryApplicantHasAlias": "Yes",
+      "ihtFormId": "IHT205",
+      "ihtGrossValue": "100001",
+      "solsExecutorAliasNames": "ex1wn",
+      "primaryApplicantSurname": "Ex1ln",
+      "solsSolicitorAppReference": "appref",
+      "solsSOTNeedToUpdate":"Yes"
+    },
+    "data_classification": {
+      "deceasedDateOfDeath": "PUBLIC",
+      "solsSolicitorAddress": {
+        "AddressLine1": "PUBLIC",
+        "AddressLine2": "PUBLIC",
+        "AddressLine3": "PUBLIC",
+        "PostTown": "PUBLIC",
+        "County": "PUBLIC",
+        "PostCode": "PUBLIC",
+        "Country": "PUBLIC"
+      },
+      "solsSolicitorAppReference": "PUBLIC",
+      "deceasedDateOfBirth": "PUBLIC",
+      "deceasedForenames": "PUBLIC",
+      "solsSolicitorFirmName": "PUBLIC",
+      "deceasedSurname": "PUBLIC"
+    },
+    "after_submit_callback_response": null,
+    "callback_response_status_code": null,
+    "callback_response_status": null,
+    "security_classifications": {
+      "deceasedDateOfDeath": "PUBLIC",
+      "solsSolicitorAddress": {
+        "AddressLine1": "PUBLIC",
+        "AddressLine2": "PUBLIC",
+        "AddressLine3": "PUBLIC",
+        "PostTown": "PUBLIC",
+        "County": "PUBLIC",
+        "PostCode": "PUBLIC",
+        "Country": "PUBLIC"
+      },
+      "solsSolicitorAppReference": "PUBLIC",
+      "deceasedDateOfBirth": "PUBLIC",
+      "deceasedForenames": "PUBLIC",
+      "solsSolicitorFirmName": "PUBLIC",
+      "deceasedSurname": "PUBLIC"
     }
+  },
+  "event_id": "solicitorCreate"
 }

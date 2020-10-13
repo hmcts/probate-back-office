@@ -6,7 +6,7 @@ This caveat application has now been submitted
 
 Payment summary
 -------------------------------------------------
-**Application fee** &pound;20.00
+**Application fee** &pound;3.00
 
 **Payment method** Cheque
 

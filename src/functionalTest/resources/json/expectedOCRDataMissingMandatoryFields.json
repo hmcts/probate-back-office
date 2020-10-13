@@ -74,6 +74,11 @@
       "name": "ihtNetValue",
       "value": "234,293",
       "description": "Net value of the estate"
+    },
+    {
+      "name": "solsSolicitorIsApplying",
+      "value": "False",
+      "description": "Do you have legal representative acting for you?"
     }
   ]
 }

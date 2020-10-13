@@ -562,6 +562,17 @@ public class CaseData {
     
     private DynamicList solsAmendLegalStatmentSelect;
 
+    private String declarationCheckbox;
+    private String ihtGrossValueField;
+    private String ihtNetValueField;
+    private Long numberOfExecutors;
+    private Long numberOfApplicants;
+    private String legalDeclarationJson;
+    private String checkAnswersSummaryJson;
+    private String registryAddress;
+    private String registryEmailAddress;
+    private String registrySequenceNumber;
+
     @Getter(lazy = true)
     private final List<CollectionMember<AdditionalExecutor>> executorsApplyingForLegalStatement = getAllExecutors(true);
 

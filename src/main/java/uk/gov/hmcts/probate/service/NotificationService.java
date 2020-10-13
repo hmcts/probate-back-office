@@ -2,7 +2,7 @@ package uk.gov.hmcts.probate.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -103,7 +103,7 @@ public class NotificationService {
         log.info("template params, state={}, applicationType()={}, regLocation={}, language={},  for case: {}", 
             state, caseData.getApplicationType(), caseData.getRegistryLocation(), caseData.getLanguagePreference(), caseDetails.getId());
         String templateId = templateService.getTemplateId(state, caseData.getApplicationType(),
-            caseData.getRegistryLocation(), caseData.getLanguagePreference());
+            caseData.getRegistryLocation(), caseData.getLanguagePreference(), caseData.getPaperForm());
         log.info("Got templateId: {}", templateId);
         String emailReplyToId = registry.getEmailReplyToId();
         String emailAddress = getEmail(caseData);
