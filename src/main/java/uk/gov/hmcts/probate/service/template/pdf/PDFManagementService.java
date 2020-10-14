@@ -49,7 +49,7 @@ public class PDFManagementService {
     private final PDFServiceConfiguration pdfServiceConfiguration;
     private final FileSystemResourceService fileSystemResourceService;
 
-    static final String SIGNATURE_DECRYPTION_IV = "P3oba73En3yp7ion";
+    static final String SIGNATURE_DECRYPTION_IV = "P3oba73En3yp7ion"; 
 
     @Autowired
     public PDFManagementService(PDFGeneratorService pdfGeneratorService, UploadService uploadService,
