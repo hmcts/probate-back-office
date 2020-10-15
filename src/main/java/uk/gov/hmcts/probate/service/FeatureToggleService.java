@@ -23,7 +23,7 @@ public class FeatureToggleService {
     }
 
     public boolean isNewFeeRegisterCodeEnabled() {
-        return ldClient.boolVariation("newfee-register-code", ldUser, false);
+        return ldClient.boolVariation("probate-newfee-register-code", ldUser, false);
     }
 
 }

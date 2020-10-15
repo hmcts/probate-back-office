@@ -145,7 +145,7 @@ public class FeeServiceTest {
         assertEquals(BigDecimal.ONE, feeServiceResponse.getFeeForUkCopies());
         assertEquals(BigDecimal.ONE, feeServiceResponse.getFeeForNonUkCopies());
     }
-}
+
     @Test(expected = ClientDataException.class)
     public void testExceptionIfRestTemplateReturnsNull() {
         when(restTemplate.getForEntity(any(), eq(Fee.class))).thenReturn(null);

@@ -96,6 +96,9 @@ public class FeeService {
             .queryParam("event", event)
             .queryParam("amount_or_volume", amount);
 
+
+            System.out.println("FEE SERVICE BUILD URRI ==========>");
+            System.out.println(featureToggleService.isNewFeeRegisterCodeEnabled());
         if (FEE_API_EVENT_TYPE_COPIES.equals(event) && !featureToggleService.isNewFeeRegisterCodeEnabled() ) {
             builder.queryParam("keyword", feeServiceConfiguration.getKeyword());
         }
@@ -103,7 +106,8 @@ public class FeeService {
         if (FEE_API_EVENT_TYPE_COPIES.equals(event) && featureToggleService.isNewFeeRegisterCodeEnabled()) {
             builder.queryParam("keyword", "GrantWill");
         }
-
+        System.out.println("BUILDERR BUIOLD ENCODE ================================================>");
+        System.out.println(builder.build().encode().toUri());
         return builder.build().encode().toUri();
     }
 

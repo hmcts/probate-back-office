@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class LDClientConfiguration {
     @Bean
-    public LDClient ldClient(@Value("${ld.client_key}") String ldClientKey) {
+    public LDClient ldClient(@Value("${ld.sdk_key}") String ldClientKey) {
         return new LDClient(ldClientKey);
     }
 }
