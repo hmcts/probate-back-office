@@ -164,7 +164,6 @@ public class CallbackResponseTransformerTest {
     private static final BigDecimal IHT_NET = BigDecimal.valueOf(9000f);
 
     private static final String SOL_PAY_METHODS_FEE = "fee account";
-    private static final String SOL_PAY_METHODS_CHEQUE = "cheque";
     private static final String FEE_ACCT_NUMBER = "1234";
     private static final String PAY_REF_CHEQUE = "Cheque (payable to ‘HM Courts & Tribunals Service’)";
 
@@ -771,26 +770,26 @@ public class CallbackResponseTransformerTest {
         assertEquals(null, callbackResponse.getData().getDeceasedDateOfDeath());
     }
 
-    @Test
-    public void shouldConvertRequestToDataBeanForPaymentWithCheque() {
-        CaseData caseData = caseDataBuilder.solsPaymentMethods(SOL_PAY_METHODS_CHEQUE)
-                .build();
-        when(caseDetailsMock.getData()).thenReturn(caseData);
-
-        when(feeServiceResponseMock.getFeeForNonUkCopies()).thenReturn(feeForNonUkCopies);
-        when(feeServiceResponseMock.getFeeForUkCopies()).thenReturn(feeForUkCopies);
-        when(feeServiceResponseMock.getApplicationFee()).thenReturn(applicationFee);
-        when(feeServiceResponseMock.getTotal()).thenReturn(totalFee);
-
-        CallbackResponse callbackResponse = underTest.transformForSolicitorComplete(callbackRequestMock, feeServiceResponseMock);
-
-        assertCommon(callbackResponse);
-        assertLegacyInfo(callbackResponse);
-        assertEquals(NO, callbackResponse.getData().getBoEmailRequestInfoNotification());
-        assertEquals(TOTAL_FEE, callbackResponse.getData().getTotalFee());
-        assertEquals(SOL_PAY_METHODS_CHEQUE, callbackResponse.getData().getSolsPaymentMethods());
-        assertNull(callbackResponse.getData().getSolsFeeAccountNumber());
-    }
+//    @Test
+//    public void shouldConvertRequestToDataBeanForPaymentWithCheque() {
+//        CaseData caseData = caseDataBuilder.solsPaymentMethods(SOL_PAY_METHODS_CHEQUE)
+//                .build();
+//        when(caseDetailsMock.getData()).thenReturn(caseData);
+//
+//        when(feeServiceResponseMock.getFeeForNonUkCopies()).thenReturn(feeForNonUkCopies);
+//        when(feeServiceResponseMock.getFeeForUkCopies()).thenReturn(feeForUkCopies);
+//        when(feeServiceResponseMock.getApplicationFee()).thenReturn(applicationFee);
+//        when(feeServiceResponseMock.getTotal()).thenReturn(totalFee);
+//
+//        CallbackResponse callbackResponse = underTest.transformForSolicitorComplete(callbackRequestMock, feeServiceResponseMock);
+//
+//        assertCommon(callbackResponse);
+//        assertLegacyInfo(callbackResponse);
+//        assertEquals(NO, callbackResponse.getData().getBoEmailRequestInfoNotification());
+//        assertEquals(TOTAL_FEE, callbackResponse.getData().getTotalFee());
+//        assertEquals(SOL_PAY_METHODS_CHEQUE, callbackResponse.getData().getSolsPaymentMethods());
+//        assertNull(callbackResponse.getData().getSolsFeeAccountNumber());
+//    }
 
     @Test
     public void shouldAddDocumentsToProbateDocumentsAndNotificationsGenerated() {
