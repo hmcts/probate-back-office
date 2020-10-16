@@ -243,7 +243,7 @@ dependencies {
   annotationProcessor group:'org.projectlombok', name:'lombok', version: versions.lombok
   
   compile group: 'org.elasticsearch.client', name: 'elasticsearch-rest-high-level-client', version: '6.6.0'
-  compile group: 'com.launchdarkly', name: 'launchdarkly-java-server-sdk', version: '5.0.0'
+  compile group: 'com.launchdarkly', name: 'launchdarkly-java-server-sdk', version: '5.2.0'
   
   compile group: 'io.github.openfeign', name: 'feign-httpclient', version: '10.7.4'
 

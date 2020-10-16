@@ -77,7 +77,7 @@ public class FeeService {
         BigDecimal applicationFee = getApplicationFee(amountInPounds);
         BigDecimal ukCopiesFee = getCopiesFee(ukCopies);
         BigDecimal nonUkCopiesFee = getCopiesFee(nonUkCopies);
-
+        System.out.println("GET TOTAL FEE ===> ");
         return FeeServiceResponse.builder()
             .applicationFee(applicationFee)
             .feeForUkCopies(ukCopiesFee)

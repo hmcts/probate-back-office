@@ -448,5 +448,8 @@ welsh:
     12: "Rhagfyr"
 
 ld:
-  user_key: ${LD_USER_KEY:"35222af3-7867-44ea-a2a0-f8e533ad12de"}
   sdk_key: ${LD_SDK_KEY:"sdk-4d50eb6e-8400-4aa7-b4c5-8bdfc8b1d844"}
+  user:
+    key: ${LD_USER_KEY:"35222af3-7867-44ea-a1a0-f8fs32backend"}
+    firstName: 'Probate'
+    lastName: 'Backend'

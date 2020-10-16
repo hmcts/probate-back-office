@@ -9,6 +9,8 @@ import org.springframework.context.annotation.Configuration;
 public class LDClientConfiguration {
     @Bean
     public LDClient ldClient(@Value("${ld.sdk_key}") String ldClientKey) {
+        System.out.println("============= SDKY LAUNCH DARKLY CONFIGURRATION =======>");
+        System.out.println(ldClientKey);
         return new LDClient(ldClientKey);
     }
 }
