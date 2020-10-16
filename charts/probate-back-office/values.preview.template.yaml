@@ -68,7 +68,7 @@ ccd:
         PROXY_DOCUMENT_MANAGEMENT: http://dm-store-aat.service.core-compute-aat.internal
       ingressHost: gateway-${SERVICE_FQDN}
       ingressIP: ${INGRESS_IP}
-      keyVaults:
+      keyVaults: []
   ccd-data-store-api:
     java:
       imagePullPolicy: Always
