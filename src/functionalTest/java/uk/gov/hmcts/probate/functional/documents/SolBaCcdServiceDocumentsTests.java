@@ -61,6 +61,7 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
     private static final String PRIMARY_APPLICANT_STATEMENT = "I, FirstName LastName of 123 Street, Town, Postcode, make the following statement:";
     private static final String LEGAL_STATEMENT_INTESTATE = "intestate";
     private static final String LEGAL_STATEMENT_ADMON_WILL = "Administrators Applying for Letters of Administration (with will annexed)";
+    private static final String APPLICATION_GROUNDS = "Grounds.";
 
     private static final String GENERATE_GRANT = "/document/generate-grant";
     private static final String GENERATE_GRANT_DRAFT = "/document/generate-grant-draft";
@@ -204,6 +205,42 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
         assertTrue(response.contains(LEGAL_STATEMENT_ADMON_WILL));
 
         assertTrue(!response.contains(DECLARATION_CRIMINAL_WORDING_SINGLE_EXEC));
+    }
+
+    @Test
+    public void verifySuccessForGetPdfLegalStatementGOPSolsApplicationGrounds() {
+        String response = generatePdfDocument(DEFAULT_SOLS_PDF_PROBATE_PAYLOAD, GENERATE_LEGAL_STATEMENT);
+
+        assertTrue(response.contains(LEGAL_STATEMENT));
+        assertTrue(response.contains(DECLARATION_CIVIL_WORDING));
+        assertTrue(response.contains(AUTHORISED_SOLICITOR));
+        assertTrue(response.contains(LEGAL_STATEMENT_DIED_ON));
+        assertTrue(response.contains(LEGAL_STATEMENT_GOP));
+        assertTrue(response.contains(APPLICATION_GROUNDS));
+    }
+
+    @Test
+    public void verifySuccessForGetPdfLegalStatementAdmonSolsApplicationGrounds() {
+        String response = generatePdfDocument(DEFAULT_SOLS_PDF_ADMON_PAYLOAD, GENERATE_LEGAL_STATEMENT);
+
+        assertTrue(response.contains(LEGAL_STATEMENT));
+        assertTrue(response.contains(DECLARATION_CIVIL_WORDING));
+        assertTrue(response.contains(AUTHORISED_SOLICITOR));
+        assertTrue(response.contains(LEGAL_STATEMENT_DIED_ON));
+        assertTrue(response.contains(LEGAL_STATEMENT_ADMON_WILL));
+        assertTrue(response.contains(APPLICATION_GROUNDS));
+    }
+
+    @Test
+    public void verifySuccessForGetPdfLegalStatementIntestacySolsApplicationGrounds() {
+        String response = generatePdfDocument(DEFAULT_SOLS_PDF_INTESTACY_PAYLOAD, GENERATE_LEGAL_STATEMENT);
+
+        assertTrue(response.contains(LEGAL_STATEMENT));
+        assertTrue(response.contains(DECLARATION_CIVIL_WORDING));
+        assertTrue(response.contains(AUTHORISED_SOLICITOR));
+        assertTrue(response.contains(LEGAL_STATEMENT_DIED_ON));
+        assertTrue(response.contains(LEGAL_STATEMENT_INTESTATE));
+        assertTrue(response.contains(APPLICATION_GROUNDS));
     }
 
     @Test
