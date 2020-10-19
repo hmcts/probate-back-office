@@ -4,7 +4,7 @@ w # Spring Boot application template
 
 [![codecov](https://codecov.io/gh/hmcts/probate-back-office/branch/master/graph/badge.svg)](https://codecov.io/gh/hmcts/probate-back-office)
 
-## Purpose
+## Purpose.
 
 The purpose of this template is to speed up the creation of new Spring applications within HMCTS
 and help keep the same standards across multiple teams. If you need to create a new app, you can
