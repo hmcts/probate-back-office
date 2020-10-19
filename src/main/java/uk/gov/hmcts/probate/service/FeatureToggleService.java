@@ -18,31 +18,15 @@ public class FeatureToggleService {
     public FeatureToggleService(LDClient ldClient, @Value("${ld.user.key}") String ldUserKey,  @Value("${ld.user.firstName}") String ldUserFirstName, @Value("${ld.user.lastName}") String ldUserLastName) {
         this.ldClient =  ldClient;
 
-        System.out.println("========================== FeatureToggleService LAUNCH DARKLY ======> ");
-        System.out.println("key" + ldUserKey);
-        System.out.println("first name=>" +ldUserFirstName);
-        System.out.println("last name=>" +ldUserLastName);
-
         this.ldUserBuilder = new LDUser.Builder(ldUserKey)
             .firstName(ldUserFirstName)
             .lastName(ldUserLastName)
             .custom("timestamp", String.valueOf(System.currentTimeMillis()));
         this.ldUser = this.ldUserBuilder.build();
-
-        System.out.println("DONE WITH FEATURE TOGGLE SERVICE");
-        System.out.println("IS LDCLIENT INITIALISED======>");
-        System.out.println(this.ldClient.isInitialized());
     }
 
     public boolean isNewFeeRegisterCodeEnabled() {
-        System.out.println("IS LDCLIENT INITIALISED======>");
-        System.out.println(this.ldClient.isInitialized());
-        System.out.println("IS FEATURRE KNOWN ===> ");
-        System.out.println(String.valueOf(this.ldClient.isFlagKnown("probate-newfee-register-code")));
-        EvaluationDetail eval = this.ldClient.boolVariationDetail("probate-newfee-register-code", this.ldUser, true);
-        System.out.println("NEW FEE REGISTERR CODE VALUTION DETAILS => ");
-        System.out.println(eval.toString());
-        return this.ldClient.boolVariation("probate-newfee-register-code", this.ldUser, true);
+        return this.ldClient.boolVariation("probate-newfee-register-code", this.ldUser, false);
     }
 
 }

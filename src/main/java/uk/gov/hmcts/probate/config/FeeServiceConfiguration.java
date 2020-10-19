@@ -17,4 +17,5 @@ public class FeeServiceConfiguration {
     private String channel;
     private String applicantType;
     private String keyword;
+    private String newCopiesFeeKeyword;
 }

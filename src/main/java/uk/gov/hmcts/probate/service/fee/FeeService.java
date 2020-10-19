@@ -77,7 +77,6 @@ public class FeeService {
         BigDecimal applicationFee = getApplicationFee(amountInPounds);
         BigDecimal ukCopiesFee = getCopiesFee(ukCopies);
         BigDecimal nonUkCopiesFee = getCopiesFee(nonUkCopies);
-        System.out.println("GET TOTAL FEE ===> ");
         return FeeServiceResponse.builder()
             .applicationFee(applicationFee)
             .feeForUkCopies(ukCopiesFee)
@@ -96,18 +95,14 @@ public class FeeService {
             .queryParam("event", event)
             .queryParam("amount_or_volume", amount);
 
-
-            System.out.println("FEE SERVICE BUILD URRI ==========>");
-            System.out.println(featureToggleService.isNewFeeRegisterCodeEnabled());
-        if (FEE_API_EVENT_TYPE_COPIES.equals(event) && !featureToggleService.isNewFeeRegisterCodeEnabled() ) {
-            builder.queryParam("keyword", feeServiceConfiguration.getKeyword());
+        if (FEE_API_EVENT_TYPE_COPIES.equals(event)) {
+            if (featureToggleService.isNewFeeRegisterCodeEnabled()) {
+                builder.queryParam("keyword", feeServiceConfiguration.getNewCopiesFeeKeyword());
+            } else {
+                builder.queryParam("keyword", feeServiceConfiguration.getKeyword());
+            }
         }
 
-        if (FEE_API_EVENT_TYPE_COPIES.equals(event) && featureToggleService.isNewFeeRegisterCodeEnabled()) {
-            builder.queryParam("keyword", "GrantWill");
-        }
-        System.out.println("BUILDERR BUIOLD ENCODE ================================================>");
-        System.out.println(builder.build().encode().toUri());
         return builder.build().encode().toUri();
     }
 
