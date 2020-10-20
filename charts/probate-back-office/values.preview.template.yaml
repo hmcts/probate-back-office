@@ -141,8 +141,8 @@ probate-submit-service:
         secrets:
           - s2s-probate-backend
           - AppInsightsInstrumentationKey
-    releaseNameOverride: ${SERVICE_NAME}submit-service
-    image: hmctspublic.azurecr.io/probate/probate-submit-service:latest
+    releaseNameOverride: ${SERVICE_NAME}-submit-service
+    image: hmctspublic.azurecr.io/probate/submit-service:latest
 
 java:
   image: ${IMAGE_NAME}
