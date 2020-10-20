@@ -147,7 +147,6 @@ probate-submit-service:
 probate-business-service:
   enabled: true
   java:
-    applicationPort: 8080
     ingressHost: ""
     environment:
       REFORM_TEAM: probate
