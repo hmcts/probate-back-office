@@ -119,8 +119,8 @@ probate-submit-service:
   enabled: true
   java:
     applicationPort: 8181
-    ingressHost: probate-submit-service-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
-    environment:
+    ingressHost: probate-submit-service-${SERVICE_FQDN}
+   environment:
       REFORM_TEAM: probate
       REFORM_SERVICE_NAME: submit-service
       MAIL_JAVAMAILPROPERTIES_MAIL_SMTP_SSL_ENABLE: false
@@ -141,7 +141,7 @@ probate-submit-service:
         secrets:
           - s2s-probate-backend
           - AppInsightsInstrumentationKey
-    releaseNameOverride: "probate-submit-service-{{ .Release.Name }}"
+    releaseNameOverride: ${SERVICE_NAME}submit-service
     image: hmctspublic.azurecr.io/probate/probate-submit-service:latest
 
 java:
