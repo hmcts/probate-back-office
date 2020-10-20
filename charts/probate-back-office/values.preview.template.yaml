@@ -119,7 +119,7 @@ probate-submit-service:
   enabled: true
   java:
     applicationPort: 8181
-    ingressHost: probate-submit-service
+    ingressHost: ""
    environment:
       REFORM_TEAM: probate
       REFORM_SERVICE_NAME: submit-service
