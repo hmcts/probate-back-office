@@ -1,5 +1,5 @@
 tags:
-  probate-ccd-stack: false
+  probate-ccd-stack: true
 
 postgresql:
   enabled: true
@@ -116,7 +116,7 @@ xui-webapp:
       JURISDICTIONS: PROBATE
 
 probate-submit-service:
-  enabled: false
+  enabled: true
   java:
     applicationPort: 8181
     ingressHost: probate-submit-service-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
@@ -141,6 +141,7 @@ probate-submit-service:
         secrets:
           - s2s-probate-backend
           - AppInsightsInstrumentationKey
+    releaseNameOverride: "probate-submit-service-{{ .Release.Name }}"
     image: hmctspublic.azurecr.io/probate/probate-submit-service:latest
 
 java:
