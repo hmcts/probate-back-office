@@ -165,6 +165,7 @@ probate-business-service:
           - business-services-notify-pin-templateId
           - s2s-probate-backend
           - AppInsightsInstrumentationKey
+    releaseNameOverride: ${SERVICE_NAME}-business-service
     image: hmctspublic.azurecr.io/probate/business-service:latest
 
 
