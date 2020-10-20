@@ -115,6 +115,34 @@ xui-webapp:
       SERVICES_TERMS_AND_CONDITIONS: http://xui-terms-and-conditions-${SERVICE_FQDN}.service.core-compute-preview.internal
       JURISDICTIONS: PROBATE
 
+probate-submit-service:
+  enabled: true
+  java:
+    applicationPort: 8181
+    ingressHost: probate-submit-service-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
+    environment:
+      REFORM_TEAM: probate
+      REFORM_SERVICE_NAME: submit-service
+      MAIL_JAVAMAILPROPERTIES_MAIL_SMTP_SSL_ENABLE: false
+      MAIL_JAVAMAILPROPERTIES_MAIL_SMTP_AUTH: false
+      MAIL_JAVAMAILPROPERTIES_SUBJECT: "Probate Application"
+      PACT_BROKER_URL: pact-broker.platform.hmcts.net
+      PACT_BROKER_PORT: 80
+      LOG_LEVEL : INFO
+      AUTH_S2S_CLIENT_ID: "probate_backend"
+      AUTH_PROVIDER_SERVICE_CLIENT_BASEURL: http://rpe-service-auth-provider-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
+      SERVICES_PERSISTENCE_BASEURL: http://probate-persistence-service-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
+      SERVICES_CORECASEDATA_BASEURL : http://ccd-data-store-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
+      AUTH_IDAM_CLIENT_BASEURL: https://idam-api.{{ .Values.global.environment }}.platform.hmcts.net
+      SERVICES_CORECASEDATA_ENABLED : true
+      SPRING_APPLICATION_JSON : '{"registries":[{"address":"Principal Registry of the Family Division (PRFD)\nHMCTS Probate\nPO Box 12625\nHarlow\nCM20 9QE","name":"ctsc"}]}'
+    keyVaults:
+      probate:
+        secrets:
+          - s2s-probate-backend
+          - AppInsightsInstrumentationKey
+    image: hmctspublic.azurecr.io/probate/probate-submit-service:latest
+
 java:
   image: ${IMAGE_NAME}
   ingressHost: ${SERVICE_FQDN}
@@ -145,29 +173,3 @@ java:
         - idam-secret-probate
         - idamRedirectUrl
 
-probate-submit-service:
-  java:
-    applicationPort: 8181
-    ingressHost: probate-submit-service-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
-    environment:
-      REFORM_TEAM: probate
-      REFORM_SERVICE_NAME: submit-service
-      MAIL_JAVAMAILPROPERTIES_MAIL_SMTP_SSL_ENABLE: false
-      MAIL_JAVAMAILPROPERTIES_MAIL_SMTP_AUTH: false
-      MAIL_JAVAMAILPROPERTIES_SUBJECT: "Probate Application"
-      PACT_BROKER_URL: pact-broker.platform.hmcts.net
-      PACT_BROKER_PORT: 80
-      LOG_LEVEL : INFO
-      AUTH_S2S_CLIENT_ID: "probate_backend"
-      AUTH_PROVIDER_SERVICE_CLIENT_BASEURL: http://rpe-service-auth-provider-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
-      SERVICES_PERSISTENCE_BASEURL: http://probate-persistence-service-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
-      SERVICES_CORECASEDATA_BASEURL : http://ccd-data-store-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
-      AUTH_IDAM_CLIENT_BASEURL: https://idam-api.{{ .Values.global.environment }}.platform.hmcts.net
-      SERVICES_CORECASEDATA_ENABLED : true
-      SPRING_APPLICATION_JSON : '{"registries":[{"address":"Principal Registry of the Family Division (PRFD)\nHMCTS Probate\nPO Box 12625\nHarlow\nCM20 9QE","name":"ctsc"}]}'
-    keyVaults:
-      probate:
-        secrets:
-          - s2s-probate-backend
-          - AppInsightsInstrumentationKey
-    image: hmctspublic.azurecr.io/probate/probate-submit-service:latest
