@@ -148,7 +148,6 @@ java:
 probate-submit-service:
   applicationPort: 8181
   ingressHost: probate-submit-service-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
-  aadIdentityName: probate
   environment:
     REFORM_TEAM: probate
     REFORM_SERVICE_NAME: submit-service
