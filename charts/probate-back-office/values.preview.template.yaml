@@ -148,7 +148,6 @@ probate-business-service:
   enabled: true
   java:
     applicationPort: 8080
-    aadIdentityName: probate
     ingressHost: ""
     environment:
       REFORM_TEAM: probate

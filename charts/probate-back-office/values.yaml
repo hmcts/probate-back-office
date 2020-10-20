@@ -12,6 +12,8 @@ postgresql:
 
 probate-submit-service:
   enabled: false
+probate-business-service:
+  enabled: false
 
 java:
   applicationPort: 4104
