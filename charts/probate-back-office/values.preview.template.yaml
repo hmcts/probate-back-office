@@ -120,7 +120,7 @@ probate-submit-service:
   java:
     applicationPort: 8181
     ingressHost: ""
-   environment:
+    environment:
       REFORM_TEAM: probate
       REFORM_SERVICE_NAME: submit-service
       MAIL_JAVAMAILPROPERTIES_MAIL_SMTP_SSL_ENABLE: false
