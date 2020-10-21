@@ -40,6 +40,7 @@ import java.util.stream.Collectors;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_ADMON;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_INTESTACY;
@@ -433,7 +434,7 @@ public class BusinessValidationUnitTest {
             bindingResultMock);
 
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
-        assertThat(response.getBody().getErrors().isEmpty(), is(true));
+        assertThat(response.getBody().getErrors(), isNull());
         assertThat(response.getBody().getData().getPaperForm(), is("Yes"));
     }
 
@@ -447,7 +448,7 @@ public class BusinessValidationUnitTest {
             bindingResultMock);
 
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
-        assertThat(response.getBody().getErrors().isEmpty(), is(true));
+        assertThat(response.getBody().getErrors(), isNull());
         assertThat(response.getBody().getData().getPaperForm(), is("No"));
     }
 }
