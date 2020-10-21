@@ -169,7 +169,7 @@ probate-business-service:
 
 probate-orchestrator-service:
   enabled: true
-    java:
+  java:
     applicationPort: 8888
     environment:
       REFORM_TEAM: probate
