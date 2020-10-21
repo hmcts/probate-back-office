@@ -22,6 +22,6 @@ dependencies:
     condition: postgresql.enabled
 
   - name: probate-submit-service
-    version: ~0.2.7
+    version: 0.2.7
     repository: '@hmctspublic'
     condition: probate-submit-service.enabled
