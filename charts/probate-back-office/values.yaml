@@ -9,6 +9,9 @@ xui-webapp:
 
 postgresql:
   enabled: false
+  
+probate-submit-service:
+  enabled: false
 
 java:
   applicationPort: 4104
