@@ -423,4 +423,29 @@ public class BusinessValidationUnitTest {
         assertThat(response.getBody().getErrors().isEmpty(), is(false));
     }
 
+    @Test
+    public void shouldSubmitPaperFormYes() {
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData().getPaperForm()).thenReturn("Yes");
+
+        ResponseEntity<CallbackResponse> response = underTest.paperFormCaseDetails(callbackRequestMock,
+            bindingResultMock);
+
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        assertThat(response.getBody().getErrors().isEmpty(), is(true));
+        assertThat(response.getBody().getData().getPaperForm(), is("Yes"));
+    }
+
+    @Test
+    public void shouldSubmitPaperFormNo() {
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData().getPaperForm()).thenReturn("No");
+
+        ResponseEntity<CallbackResponse> response = underTest.paperFormCaseDetails(callbackRequestMock,
+            bindingResultMock);
+
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        assertThat(response.getBody().getErrors().isEmpty(), is(true));
+        assertThat(response.getBody().getData().getPaperForm(), is("No"));
+    }
 }

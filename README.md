@@ -106,6 +106,12 @@ npx @hmcts/probate-dev-env --create
 
 # spin up the docker containers
 npx @hmcts/probate-dev-env
+
+# use local probate backoffice
+docker-compose stop probate-back-office
+./gradlew assemble
+docker-compose up -d --build probate-back-office
+
 ```
 
 ## Full setup

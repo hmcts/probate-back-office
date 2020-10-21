@@ -537,7 +537,7 @@ public class BusinessValidationControllerTest {
     }
 
     @Test
-    public void shouldReturnPaperFormSuccess() throws Exception {
+    public void shouldReturnPaperFormForSolicitor() throws Exception {
         String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadAliasNames.json");
 
         mockMvc.perform(post(PAPER_FORM_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON_UTF8))
