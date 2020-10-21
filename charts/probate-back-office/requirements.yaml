@@ -30,3 +30,8 @@ dependencies:
     version: 0.1.1
     repository: '@hmctspublic'
     condition: probate-business-service.enabled
+
+  - name: probate-orchestrator-service
+    version: 1.0.0
+    repository: '@hmctspublic'
+    condition: probate-orchestrator-service.enabled

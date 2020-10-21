@@ -167,6 +167,50 @@ probate-business-service:
     releaseNameOverride: ${SERVICE_NAME}-business-service
     image: hmctspublic.azurecr.io/probate/business-service:latest
 
+probate-orchestrator-service:
+  enabled: true
+    java:
+    applicationPort: 8888
+    environment:
+      REFORM_TEAM: probate
+      REFORM_SERVICE_NAME: orchestrator-service
+      PACT_BROKER_URL: pact-broker.platform.hmcts.net
+      PACT_BROKER_PORT: 80
+      REFORM_ENVIRONMENT : "{{ .Values.global.environment }}"
+      DEPLOYMENT_ENV : "{{ .Values.global.environment }}"
+      SERVICES_PERSISTENCE_BASEURL : "http://probate-persistence-service-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal"
+      AUTH_PROVIDER_SERVICE_CLIENT_BASEURL : "http://rpe-service-auth-provider-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal"
+      SERVICES_CORECASEDATA_BASEURL : "http://ccd-data-store-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal"
+      SERVICES_AUTH_PROVIDER_BASEURL : "http://rpe-service-auth-provider-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal"
+      AUTH_IDAM_CLIENT_BASEURL : "https://idam-api.{{ .Values.global.environment }}.platform.hmcts.net"
+      SUBMIT_SERVICE_API_URL : "http://probate-submit-service-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal"
+      BUSINESS_SERVICE_API_URL : "http://probate-business-service-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal"
+      BACK_OFFICE_API_URL: "http://probate-back-office-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal"
+      MAIL_JAVAMAILPROPERTIES_MAIL_SMTP_SSL_ENABLE: false
+      MAIL_JAVAMAILPROPERTIES_MAIL_SMTP_AUTH: false
+      SERVICES_CORECASEDATA_ENABLED: true
+      MAIL_JAVAMAILPROPERTIES_SUBJECT: Probate Application
+      java_app_name: "orchestrator-service"
+      LOG_LEVEL: "INFO"
+      IDAM_CLIENT_ID: "probate"
+      AUTH_S2S_CLIENT_ID: "probate_backend"
+      MIGRATION_JOB_SCHEDULER: false
+    image: hmctspublic.azurecr.io/probate/orchestrator-service:latest
+    releaseNameOverride: ${SERVICE_NAME}-orchestrator-service
+    keyVaults:
+      probate:
+        secrets:
+          - AppInsightsInstrumentationKey
+          - s2s-probate-backend
+          - ccidam-idam-api-secrets-probate
+          - s2sAuthTotpSecret
+          - idamRedirectUrl
+          - payCaseWorkerPass
+          - payCaseWorkerUser
+          - schedulerCaseWorkerUser
+          - schedulerCaseWorkerPass
+
+
 java:
   image: ${IMAGE_NAME}
   ingressHost: ${SERVICE_FQDN}
