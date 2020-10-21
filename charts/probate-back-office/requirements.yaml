@@ -26,7 +26,4 @@ dependencies:
     repository: '@hmctspublic'
     condition: probate-submit-service.enabled
 
-  - name: probate-business-service
-    version: ~0.1.1
-    repository: '@hmctspublic'
-    condition: probate-business-service.enabled
+
