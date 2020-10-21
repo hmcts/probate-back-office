@@ -427,7 +427,7 @@ public class BusinessValidationUnitTest {
     public void shouldSubmitPaperFormYes() {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
-        when(caseDataMock..getPaperForm().thenReturn("Yes");
+        when(caseDataMock.getPaperForm().thenReturn("Yes");
 
         ResponseEntity<CallbackResponse> response = underTest.paperFormCaseDetails(callbackRequestMock,
             bindingResultMock);
@@ -441,7 +441,7 @@ public class BusinessValidationUnitTest {
     public void shouldSubmitPaperFormNo() {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
-        when(caseDataMock..getPaperForm().thenReturn("No");
+        when(caseDataMock.getPaperForm().thenReturn("No");
 
         ResponseEntity<CallbackResponse> response = underTest.paperFormCaseDetails(callbackRequestMock,
             bindingResultMock);
