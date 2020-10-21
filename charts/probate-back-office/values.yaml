@@ -13,6 +13,9 @@ postgresql:
 probate-submit-service:
   enabled: false
 
+probate-business-service:
+  enabled: false
+
 java:
   applicationPort: 4104
   image: hmctspublic.azurecr.io/probate/back-office:latest
