@@ -1,4 +1,4 @@
 
 output "vaultName" {
-  value = "${local.vaultName}"
+  value = local.vaultName
 }
