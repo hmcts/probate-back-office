@@ -8,7 +8,7 @@ w # Spring Boot application template
 
 The purpose of this template is to speed up the creation of new Spring applications within HMCTS
 and help keep the same standards across multiple teams. If you need to create a new app, you can
-simply use this one as a starting point and build on top of it.
+simply use this one as a starting point and build on top of it..
 
 ## What's inside
 
