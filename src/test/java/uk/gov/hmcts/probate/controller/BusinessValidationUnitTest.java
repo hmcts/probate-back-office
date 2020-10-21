@@ -20,6 +20,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.AfterSubmitCallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
+import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
 import uk.gov.hmcts.probate.service.CaseStoppedService;
 import uk.gov.hmcts.probate.service.ConfirmationResponseService;
 import uk.gov.hmcts.probate.service.EventValidationService;
@@ -426,29 +427,27 @@ public class BusinessValidationUnitTest {
 
     @Test
     public void shouldSubmitPaperFormYes() {
-        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
-        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
-        when(caseDataMock.getPaperForm()).thenReturn("Yes");
-
+        String paperFormValue = "Yes";
+        ResponseCaseData responseCaseData = ResponseCaseData.builder().paperForm(paperFormValue).build();
+        when(callbackResponseMock.getData()).thenReturn(responseCaseData);
+        when(callbackResponseTransformerMock.paperForm(callbackRequestMock)).thenReturn(callbackResponseMock);
         ResponseEntity<CallbackResponse> response = underTest.paperFormCaseDetails(callbackRequestMock,
             bindingResultMock);
 
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
-        assertThat(response.getBody().getErrors(), isNull());
-        assertThat(response.getBody().getData().getPaperForm(), is("Yes"));
+        assertThat(response.getBody().getData().getPaperForm(), is(paperFormValue));
     }
 
     @Test
     public void shouldSubmitPaperFormNo() {
-        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
-        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
-        when(caseDataMock.getPaperForm()).thenReturn("No");
-
+        String paperFormValue = "No";
+        ResponseCaseData responseCaseData = ResponseCaseData.builder().paperForm(paperFormValue).build();
+        when(callbackResponseMock.getData()).thenReturn(responseCaseData);
+        when(callbackResponseTransformerMock.paperForm(callbackRequestMock)).thenReturn(callbackResponseMock);
         ResponseEntity<CallbackResponse> response = underTest.paperFormCaseDetails(callbackRequestMock,
             bindingResultMock);
 
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
-        assertThat(response.getBody().getErrors(), isNull());
-        assertThat(response.getBody().getData().getPaperForm(), is("No"));
+        assertThat(response.getBody().getData().getPaperForm(), is(paperFormValue));
     }
 }
