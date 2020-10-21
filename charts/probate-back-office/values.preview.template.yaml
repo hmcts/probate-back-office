@@ -145,6 +145,7 @@ probate-submit-service:
     image: hmctspublic.azurecr.io/probate/submit-service:latest
 
 probate-business-service:
+  applicationPort: 8180
   enabled: false
   java:
     ingressHost: ""
