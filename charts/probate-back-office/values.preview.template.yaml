@@ -143,7 +143,31 @@ probate-submit-service:
           - AppInsightsInstrumentationKey
     releaseNameOverride: ${SERVICE_NAME}-submit-service
     image: hmctspublic.azurecr.io/probate/submit-service:latest
-    
+
+probate-business-service:
+  enabled: true
+  java:
+    applicationPort: 8180
+    ingressHost: ""
+    environment:
+      REFORM_TEAM: probate
+      REFORM_SERVICE_NAME: business-service
+      SERVICES_AUTH_PROVIDER_BASEURL: http://rpe-service-auth-provider-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
+      SERVICES_PDF_SERVICE_URL: http://cmc-pdf-service-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
+      SERVICES_PERSISTENCE_BASEURL: http://probate-persistence-service-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
+      DOCUMENT_MANAGEMENT_URL: http://dm-store-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
+      SERVICES_NOTIFY_INVITEDATA_INVITELINK: https://probate.{{ .Values.global.environment }}.platform.hmcts.net/executors/invitation/
+    keyVaults:
+      probate:
+        secrets:
+          - probate-notify-invite-apikey
+          - business-services-notify-invitedata-templateId
+          - business-services-notify-pin-templateId
+          - s2s-probate-backend
+          - AppInsightsInstrumentationKey
+    releaseNameOverride: ${SERVICE_NAME}-business-service
+    image: hmctspublic.azurecr.io/probate/business-service:latest
+
 java:
   image: ${IMAGE_NAME}
   ingressHost: ${SERVICE_FQDN}
