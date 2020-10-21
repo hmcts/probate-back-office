@@ -14,12 +14,15 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import uk.gov.hmcts.probate.exception.BadRequestException;
 import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
+import uk.gov.hmcts.probate.model.ApplicationType;
+import uk.gov.hmcts.probate.model.CaseOrigin;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.AfterSubmitCallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
+import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
 import uk.gov.hmcts.probate.service.CaseStoppedService;
 import uk.gov.hmcts.probate.service.ConfirmationResponseService;
 import uk.gov.hmcts.probate.service.EventValidationService;
@@ -41,10 +44,15 @@ import java.util.stream.Collectors;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.isNull;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_ADMON;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_INTESTACY;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE;
+import static uk.gov.hmcts.probate.model.State.APPLICATION_RECEIVED;
 
 @RunWith(MockitoJUnitRunner.class)
 public class BusinessValidationUnitTest {
@@ -422,6 +430,76 @@ public class BusinessValidationUnitTest {
 
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(response.getBody().getErrors().isEmpty(), is(false));
+    }
+
+    @Test
+    public void shouldSubmitPaperFormYesForPersonal() throws NotificationClientException {
+        String paperFormValue = "Yes";
+        ResponseCaseData responseCaseData = ResponseCaseData.builder().paperForm(paperFormValue).build();
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        when(caseDataMock.getApplicationType()).thenReturn(ApplicationType.PERSONAL);
+        when(callbackResponseMock.getData()).thenReturn(responseCaseData);
+        Document documentMock = Mockito.mock(Document.class);
+        when(notificationService.sendEmail(APPLICATION_RECEIVED, caseDetailsMock, Optional.of(CaseOrigin.CASEWORKER))).thenReturn(documentMock);
+        when(callbackResponseTransformerMock.paperForm(callbackRequestMock, documentMock)).thenReturn(callbackResponseMock);
+        ResponseEntity<CallbackResponse> response = underTest.paperFormCaseDetails(callbackRequestMock,
+            bindingResultMock);
+
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        assertThat(response.getBody().getData().getPaperForm(), is(paperFormValue));
+    }
+
+    @Test
+    public void shouldSubmitPaperFormNoForPersonal() throws NotificationClientException {
+        String paperFormValue = "No";
+        ResponseCaseData responseCaseData = ResponseCaseData.builder().paperForm(paperFormValue).build();
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        when(caseDataMock.getApplicationType()).thenReturn(ApplicationType.PERSONAL);
+        when(callbackResponseMock.getData()).thenReturn(responseCaseData);
+        Document documentMock = Mockito.mock(Document.class);
+        when(notificationService.sendEmail(APPLICATION_RECEIVED, caseDetailsMock, Optional.of(CaseOrigin.CASEWORKER))).thenReturn(documentMock);
+        when(callbackResponseTransformerMock.paperForm(callbackRequestMock, documentMock)).thenReturn(callbackResponseMock);
+        ResponseEntity<CallbackResponse> response = underTest.paperFormCaseDetails(callbackRequestMock,
+            bindingResultMock);
+
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        assertThat(response.getBody().getData().getPaperForm(), is(paperFormValue));
+    }
+
+    @Test
+    public void shouldSubmitPaperFormYesForSolicitor() throws NotificationClientException {
+        String paperFormValue = "Yes";
+        ResponseCaseData responseCaseData = ResponseCaseData.builder().paperForm(paperFormValue).build();
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        when(caseDataMock.getApplicationType()).thenReturn(ApplicationType.SOLICITOR);
+        when(callbackResponseMock.getData()).thenReturn(responseCaseData);
+        when(callbackResponseTransformerMock.paperForm(callbackRequestMock, null)).thenReturn(callbackResponseMock);
+        ResponseEntity<CallbackResponse> response = underTest.paperFormCaseDetails(callbackRequestMock,
+            bindingResultMock);
+
+        verify(notificationService, times(0)).sendEmail(APPLICATION_RECEIVED, caseDetailsMock, Optional.of(CaseOrigin.CASEWORKER));
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        assertThat(response.getBody().getData().getPaperForm(), is(paperFormValue));
+    }
+
+    @Test
+    public void shouldSubmitPaperFormNoForSolicitor() throws NotificationClientException {
+        String paperFormValue = "No";
+        ResponseCaseData responseCaseData = ResponseCaseData.builder().paperForm(paperFormValue).build();
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        when(caseDataMock.getApplicationType()).thenReturn(ApplicationType.SOLICITOR);
+        when(callbackResponseMock.getData()).thenReturn(responseCaseData);
+        when(callbackResponseTransformerMock.paperForm(callbackRequestMock, null)).thenReturn(callbackResponseMock);
+        ResponseEntity<CallbackResponse> response = underTest.paperFormCaseDetails(callbackRequestMock,
+            bindingResultMock);
+
+        verify(notificationService, times(0)).sendEmail(APPLICATION_RECEIVED, caseDetailsMock, Optional.of(CaseOrigin.CASEWORKER));
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        assertThat(response.getBody().getData().getPaperForm(), is(paperFormValue));
     }
 
 }
