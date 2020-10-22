@@ -19,6 +19,11 @@ probate-business-service:
 probate-orchestrator-service:
   enabled: false
 
+probate-frontend:
+  enabled: false
+
+redis:
+  enabled: false
 
 java:
   applicationPort: 4104

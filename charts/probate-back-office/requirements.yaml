@@ -35,3 +35,13 @@ dependencies:
     version: 1.0.0
     repository: '@hmctspublic'
     condition: probate-orchestrator-service.enabled
+
+  - name: probate-frontend
+    version: 2.0.14
+    repository: '@hmctspublic'
+    condition: probate-frontend.enabled
+
+  - name: redis
+    version: 10.6.18
+    repository: "https://charts.bitnami.com/bitnami"
+    condition: redis.enabled

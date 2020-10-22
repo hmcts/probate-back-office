@@ -210,6 +210,43 @@ probate-orchestrator-service:
           - schedulerCaseWorkerUser
           - schedulerCaseWorkerPass
 
+probate-frontend:
+  enabled: true
+  nodejs:
+    image: ${IMAGE_NAME}
+    ingressHost: ${SERVICE_FQDN}
+    environment:
+      REDIS_HOST: ${SERVICE_NAME}-redis-master
+      REDIS_PORT: 6379
+      REDIS_USE_TLS: false
+      LAUNCHDARKLY_ENABLED: true
+    keyVaults:
+      probate:
+        secrets:
+          - idam-s2s-secret
+          - ccidam-idam-api-secrets-probate
+          - postcode-service-url
+          - postcode-service-token2
+          - probate-survey
+          - probate-survey-end
+          - probate-service-id
+          - probate-site-id
+          - probate-webchat-id
+          - probate-webchat-tenant
+          - probate-webchat-button-no-agents
+          - probate-webchat-button-busy
+          - probate-webchat-button-service-closed
+          - payCaseWorkerUser
+          - payCaseWorkerPass
+          - launchdarkly-key
+  redis:
+    enabled: true
+  idam-pr:
+    enabled: true
+    redirect_uris:
+      Probate:
+        - https://${SERVICE_FQDN}/oauth2/callback
+
 
 java:
   image: ${IMAGE_NAME}
