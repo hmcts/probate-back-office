@@ -23,10 +23,12 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData.ResponseCaseDataBuilder;
+import uk.gov.hmcts.probate.model.ccd.tasklist.Alert;
 import uk.gov.hmcts.probate.model.exceptionrecord.CaseCreationDetails;
 import uk.gov.hmcts.probate.model.fee.FeeServiceResponse;
 import uk.gov.hmcts.probate.service.ExecutorsApplyingNotificationService;
 import uk.gov.hmcts.probate.service.SolicitorExecutorService;
+import uk.gov.hmcts.probate.service.tasklist.TaskListRenderer;
 import uk.gov.hmcts.probate.transformer.assembly.AssembleLetterTransformer;
 import uk.gov.hmcts.reform.probate.model.cases.RegistryLocation;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData;
@@ -107,6 +109,27 @@ public class CallbackResponseTransformer {
     public static final RegistryLocation EXCEPTION_RECORD_REGISTRY_LOCATION = RegistryLocation.CTSC;
 
     protected static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(DATE_FORMAT);
+
+    public CallbackResponse updateTaskList(CallbackRequest callbackRequest) {
+        ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), false);
+        CaseData caseData = callbackRequest.getCaseDetails().getData();
+        TaskListRenderer renderer = new TaskListRenderer();
+
+        Alert caseStoppedAlert = Alert.builder()
+                .inset("Case stopped")
+                .body("The case was stopped on <date> for one of two reasons:\n<list>\nYou will be notified by email" +
+                        "if we need any information from you to progress the case.\nOnly contact the CTSC" +
+                        "staff if your case has been stopped for XX weeks or more and you have not received any" +
+                        "communication since then.")
+                .date("09/10/2020")
+                .build()
+                .withList(List.of("an internal review is needed", "further information" +
+                        " from the applicant or solicitor is needed"));
+        String newTaskList = renderer.render(caseStoppedAlert);
+
+        responseCaseDataBuilder.taskList(newTaskList);
+        return transformResponse(responseCaseDataBuilder.build());
+    }
 
     public CallbackResponse transformWithConditionalStateChange(CallbackRequest callbackRequest, Optional<String> newState) {
         ResponseCaseData responseCaseData = getResponseCaseData(callbackRequest.getCaseDetails(), false)
@@ -660,7 +683,8 @@ public class CallbackResponseTransformer {
                 .checkAnswersSummaryJson(caseData.getCheckAnswersSummaryJson())
                 .registryAddress(caseData.getRegistryAddress())
                 .registryEmailAddress(caseData.getRegistryEmailAddress())
-                .registrySequenceNumber(caseData.getRegistrySequenceNumber());
+                .registrySequenceNumber(caseData.getRegistrySequenceNumber())
+                .taskList(caseData.getTaskList());
 
         if (transform) {
             updateCaseBuilderForTransformCase(caseData, builder);
