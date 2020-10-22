@@ -248,7 +248,6 @@ probate-frontend:
       Probate:
         - https://${SERVICE_FQDN}/oauth2/callback
 
-
 java:
   image: ${IMAGE_NAME}
   ingressHost: ${SERVICE_FQDN}
