@@ -213,7 +213,7 @@ probate-orchestrator-service:
 probate-frontend:
   enabled: true
   nodejs:
-    image: ${IMAGE_NAME}
+    image: hmctspublic.azurecr.io/probate/frontend:latest
     ingressHost: probate-frontend-${SERVICE_FQDN}
     environment:
       REDIS_HOST: ${SERVICE_NAME}-redis-master
