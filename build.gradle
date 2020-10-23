@@ -218,7 +218,7 @@ dependencies {
     force = true
   }
 
-  compile group: 'org.springframework.hateoas', name: 'spring-hateoas', version: '0.23.0.RELEASE'
+  compile group: 'org.springframework.hateoas', name: 'spring-hateoas', version: '1.1.2.RELEASE'
 
   compile group: 'uk.gov.hmcts.reform', name: 'logging-spring', version: versions.hmctsJavaLogging
   compile group: 'uk.gov.hmcts.reform', name: 'logging-httpcomponents', version: versions.hmctsJavaLogging
