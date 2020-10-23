@@ -71,7 +71,7 @@ public class BusinessValidationControllerTest {
     private static final String SOLICITOR_FORENAMES = "Peter";
     private static final String SOLICITOR_SURNAME = "Crouch";
     private static final String SOLICITOR_JOB_TITLE = "Lawyer";
-    private static final String PAYMENT_METHOD = "Fee account";
+    private static final String PAYMENT_METHOD = "fee account";
     private static final String WILL_HAS_CODICILS = "Yes";
     private static final String NUMBER_OF_CODICILS = "1";
     private static final BigDecimal APPLICATION_FEE = BigDecimal.TEN;
