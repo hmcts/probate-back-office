@@ -253,12 +253,13 @@ probate-caveats-frontend:
   nodejs:
     image: hmctspublic.azurecr.io/probate/caveats-fe:latest
     ingressHost: probate-caveats-frontend-${SERVICE_FQDN}
+    releaseNameOverride: ${SERVICE_NAME}-caveats
     environment:
       REDIS_HOST: ${SERVICE_NAME}-redis-master
       REDIS_PORT: 6379
       REDIS_USE_TLS: false
-      LAUNCHDARKLY_ENABLED: true
-    releaseNameOverride: ${SERVICE_NAME}-caveats-frontend
+      LAUNCHDARKLY_ENABLED: false
+
 
 
 java:
