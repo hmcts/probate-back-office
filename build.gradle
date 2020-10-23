@@ -165,6 +165,7 @@ def versions = [
         serenity                        : '2.0.23',
         serenityreporter                : '2.1.4',
         springBootVersion               : '2.3.4.RELEASE',
+        hateoas                         : '1.1.2.RELEASE',
         hmctsJavaLogging                : '5.1.1',
         authCheckerLib                  : '2.1.4',
         jacksonDatabind                 : '2.9.9.3',
@@ -218,7 +219,7 @@ dependencies {
     force = true
   }
 
-  compile group: 'org.springframework.hateoas', name: 'spring-hateoas', version: '1.1.2.RELEASE'
+  compile group: 'org.springframework.hateoas', name: 'spring-hateoas', version: versions.hateoas
 
   compile group: 'uk.gov.hmcts.reform', name: 'logging-spring', version: versions.hmctsJavaLogging
   compile group: 'uk.gov.hmcts.reform', name: 'logging-httpcomponents', version: versions.hmctsJavaLogging
