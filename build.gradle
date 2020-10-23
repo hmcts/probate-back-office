@@ -165,7 +165,7 @@ def versions = [
         serenity                        : '2.0.23',
         serenityreporter                : '2.1.4',
         springBootVersion               : '2.3.4.RELEASE',
-        hateoas                         : '1.1.2.RELEASE',
+        hateoas                         : '0.23.0.RELEASE',
         hmctsJavaLogging                : '5.1.1',
         authCheckerLib                  : '2.1.4',
         jacksonDatabind                 : '2.9.9.3',
@@ -238,7 +238,6 @@ dependencies {
   compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: versions.jacksonDatabind
   compile group: 'io.springfox', name: 'springfox-swagger-ui', version: versions.springfoxSwagger
   compile group: 'io.springfox', name: 'springfox-swagger2', version: versions.springfoxSwagger
-  compile group: 'org.springframework.hateoas', name: 'spring-hateoas', version: '0.23.0.RELEASE'
   compile group: 'org.projectlombok', name: 'lombok', version: versions.lombok
   compileOnly group:'org.projectlombok', name: 'lombok', version: versions.lombok
   annotationProcessor group:'org.projectlombok', name:'lombok', version: versions.lombok
