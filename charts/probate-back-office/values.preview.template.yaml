@@ -39,7 +39,7 @@ ccd:
     definitionImporter:
       enabled: false
     managementWeb:
-      enabled: false
+      enabled: true
     s2s:
       enabled: false
     postgresql:
@@ -98,6 +98,17 @@ ccd:
     image: hmctspublic.azurecr.io/ccd/user-profile-importer:latest
     users:
       - probatebackoffice@gmail.com|PROBATE|GrantOfRepresentation|open
+  ccd-case-management-web:
+    nodejs:
+      environment:
+        CCD_ACTIVITY_URL: null
+        DM_URL: https://gateway-${SERVICE_FQDN}/documents
+        DM_URL_REMOTE: https?://(gateway-${SERVICE_FQDN}:443|dm-store-aat.service.core-compute-aat.internal)/documents
+        NODE_TLS_REJECT_UNAUTHORIZED: 0
+      ingressHost: case-management-web-${SERVICE_FQDN}
+      ingressIP: ${INGRESS_IP}
+    idam-pr:
+      enabled: true
 
 xui-webapp:
   enabled: true
