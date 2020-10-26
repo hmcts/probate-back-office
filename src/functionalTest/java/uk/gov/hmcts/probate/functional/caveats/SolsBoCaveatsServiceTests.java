@@ -6,8 +6,11 @@ import io.restassured.response.Response;
 import org.junit.Test;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 
+import java.time.LocalDate;
+
 import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertEquals;
+import static uk.gov.hmcts.probate.model.Constants.CAVEAT_LIFESPAN;
 
 public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
 
@@ -97,6 +100,19 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
         assertTrue(response.contains("£3 fee"));
         assertTrue(response.contains("personal@hmcts-test.com"));
 
+    }
+
+    @Test
+    public void verifyCaveatRaisedGeneratesExpiryDateWithCaveatorEmailAddress() {
+        String response = validatePostSuccessReturnPayload(DEFAULT_PAYLOAD, CAVEAT_RAISED);
+        assertTrue(response.contains("\"expiryDate\":\"" + LocalDate.now().plusMonths(CAVEAT_LIFESPAN) + "\""));
+
+    }
+
+    @Test
+    public void verifyCaveatRaisedGeneratesExpiryDateWithoutCaveatorEmailAddress() {
+        String response = validatePostSuccessReturnPayload(DEFAULT_PAYLOAD_NO_EMAIL, CAVEAT_RAISED);
+        assertTrue(response.contains("\"expiryDate\":\"" + LocalDate.now().plusMonths(CAVEAT_LIFESPAN) + "\""));
     }
 
     @Test
