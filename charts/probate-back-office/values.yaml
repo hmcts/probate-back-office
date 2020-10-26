@@ -22,7 +22,7 @@ probate-orchestrator-service:
 probate-frontend:
   enabled: false
 
-probate-caveats-frontend:
+probate-caveats-fe:
   enabled: false
 
 redis:

@@ -248,7 +248,7 @@ probate-frontend:
       Probate:
         - https://${SERVICE_FQDN}/oauth2/callback
 
-probate-caveats-frontend:
+probate-caveats-fe:
   enabled: true
   nodejs:
     image: hmctspublic.azurecr.io/probate/caveats-fe:latest
