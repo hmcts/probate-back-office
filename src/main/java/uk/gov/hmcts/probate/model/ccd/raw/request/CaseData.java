@@ -66,7 +66,6 @@ import static uk.gov.hmcts.probate.model.Constants.YES;
 public class CaseData {
 
     // Tasklist update
-    @NotBlank(groups = {ApplicationCreatedGroup.class}, message = "{taskListIsNull}")
     private final String taskList;
 
     // EVENT = solicitorCreateApplication
